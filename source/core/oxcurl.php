@@ -28,6 +28,7 @@
 
 class oxCurl
 {
+
     /**
      * Curl instance.
      *
@@ -65,18 +66,21 @@ class oxCurl
 
     /**
      * Connection Charset.
+     *
      * @var string
      */
     protected $_sConnectionCharset = "UTF-8";
 
     /**
      * Curl call header.
+     *
      * @var array
      */
     protected $_aHeader = null;
 
     /**
      * Host for header.
+     *
      * @var string
      */
     protected $_sHost = null;
@@ -104,7 +108,7 @@ class oxCurl
      *
      * @return null
      */
-    public function setUrl( $sUrl )
+    public function setUrl($sUrl)
     {
         $this->_sUrl = $sUrl;
     }
@@ -119,13 +123,14 @@ class oxCurl
         if ($this->getMethod() == "GET" && $this->getQuery()) {
             $this->_sUrl = $this->_sUrl . "?" . $this->getQuery();
         }
+
         return $this->_sUrl;
     }
 
     /**
      * Set query like "param1=value1&param2=values2.."
      */
-    public function setQuery( $sQuery  )
+    public function setQuery($sQuery)
     {
         $this->_sQuery = $sQuery;
     }
@@ -137,11 +142,11 @@ class oxCurl
      */
     public function getQuery()
     {
-        if ( is_null( $this->_sQuery ) ) {
+        if (is_null($this->_sQuery)) {
             $sQuery = "";
-            if ( $aParams = $this->getParameters() ) {
-                $aParams = $this->_prepareQueryParameters( $aParams );
-                $sQuery = http_build_query( $aParams, "", "&" );
+            if ($aParams = $this->getParameters()) {
+                $aParams = $this->_prepareQueryParameters($aParams);
+                $sQuery = http_build_query($aParams, "", "&");
             }
             $this->setQuery($sQuery);
         }
@@ -154,9 +159,9 @@ class oxCurl
      *
      * @param array $aParameters parameters
      */
-    public function setParameters( $aParameters )
+    public function setParameters($aParameters)
     {
-        $this->setQuery( null );
+        $this->setQuery(null);
         $this->_aParameters = $aParameters;
     }
 
@@ -177,7 +182,7 @@ class oxCurl
      *
      * @return null
      */
-    public function setHost( $sHost )
+    public function setHost($sHost)
     {
         $this->_sHost = $sHost;
     }
@@ -199,16 +204,16 @@ class oxCurl
      *
      * @return null
      */
-    public function setHeader( $aHeader = null )
+    public function setHeader($aHeader = null)
     {
-        if ( is_null( $aHeader ) && $this->getMethod() == "POST") {
+        if (is_null($aHeader) && $this->getMethod() == "POST") {
             $sHost = $this->getHost();
 
             $aHeader = array();
             $aHeader[] = 'POST /cgi-bin/webscr HTTP/1.1';
             $aHeader[] = 'Content-Type: application/x-www-form-urlencoded';
-            if ( isset( $sHost ) ) {
-                $aHeader[] = 'Host: '. $sHost;
+            if (isset($sHost)) {
+                $aHeader[] = 'Host: ' . $sHost;
             }
             $aHeader[] = 'Connection: close';
         }
@@ -222,9 +227,10 @@ class oxCurl
      */
     public function getHeader()
     {
-        if ( is_null( $this->_aHeader ) ) {
+        if (is_null($this->_aHeader)) {
             $this->setHeader();
         }
+
         return $this->_aHeader;
     }
 
@@ -260,15 +266,15 @@ class oxCurl
      *
      * @return null
      */
-    public function setOption( $sName, $sValue )
+    public function setOption($sName, $sValue)
     {
-        if (strpos( $sName, 'CURLOPT_' ) !== 0 || !defined($sConstant = strtoupper($sName))) {
+        if (strpos($sName, 'CURLOPT_') !== 0 || !defined($sConstant = strtoupper($sName))) {
             /**
              * @var oxException $oException
              */
-            $oException = oxNew( 'oxException' );
+            $oException = oxNew('oxException');
             $oLang = oxRegistry::getLang();
-            $oException->setMessage( sprintf( $oLang->translateString( 'EXCEPTION_NOT_VALID_CURL_CONSTANT', $oLang->getTplLanguage() ), $sName ) );
+            $oException->setMessage(sprintf($oLang->translateString('EXCEPTION_NOT_VALID_CURL_CONSTANT', $oLang->getTplLanguage()), $sName));
             throw $oException;
         }
 
@@ -303,13 +309,13 @@ class oxCurl
 
         $this->_close();
 
-        if ( $iCurlErrorNumber ) {
+        if ($iCurlErrorNumber) {
             /**
              * @var oxException $oException
              */
-            $oException = oxNew( 'oxException' );
+            $oException = oxNew('oxException');
             $oLang = oxRegistry::getLang();
-            $oException->setMessage( sprintf( $oLang->translateString( 'EXCEPTION_CURL_ERROR', $oLang->getTplLanguage() ), $iCurlErrorNumber ) );
+            $oException->setMessage(sprintf($oLang->translateString('EXCEPTION_CURL_ERROR', $oLang->getTplLanguage()), $iCurlErrorNumber));
             throw $oException;
         }
 
@@ -321,7 +327,7 @@ class oxCurl
      *
      * @param string $sCharset charset
      */
-    public function setConnectionCharset( $sCharset )
+    public function setConnectionCharset($sCharset)
     {
         $this->_sConnectionCharset = $sCharset;
     }
@@ -351,7 +357,7 @@ class oxCurl
      *
      * @param resource $rCurl curl.
      */
-    protected function _setResource( $rCurl )
+    protected function _setResource($rCurl)
     {
         $this->_rCurl = $rCurl;
     }
@@ -363,9 +369,10 @@ class oxCurl
      */
     protected function _getResource()
     {
-        if ( is_null( $this->_rCurl ) ) {
-            $this->_setResource( curl_init() );
+        if (is_null($this->_rCurl)) {
+            $this->_setResource(curl_init());
         }
+
         return $this->_rCurl;
     }
 
@@ -375,19 +382,19 @@ class oxCurl
     protected function _setOptions()
     {
         if (!is_null($this->getHeader())) {
-            $this->_setOpt( CURLOPT_HTTPHEADER, $this->getHeader() );
+            $this->_setOpt(CURLOPT_HTTPHEADER, $this->getHeader());
         }
-        $this->_setOpt( CURLOPT_URL, $this->getUrl() );
+        $this->_setOpt(CURLOPT_URL, $this->getUrl());
 
-        if ( $this->getMethod() == "POST" ) {
-            $this->_setOpt( CURLOPT_POST, 1 );
-            $this->_setOpt( CURLOPT_POSTFIELDS, $this->getQuery() );
+        if ($this->getMethod() == "POST") {
+            $this->_setOpt(CURLOPT_POST, 1);
+            $this->_setOpt(CURLOPT_POSTFIELDS, $this->getQuery());
         }
 
         $aOptions = $this->getOptions();
-        if ( count($aOptions) ) {
-            foreach( $aOptions as $sName => $mValue  ) {
-                $this->_setOpt( constant( $sName ), $mValue );
+        if (count($aOptions)) {
+            foreach ($aOptions as $sName => $mValue) {
+                $this->_setOpt(constant($sName), $mValue);
             }
         }
     }
@@ -399,7 +406,7 @@ class oxCurl
      */
     protected function _execute()
     {
-        return curl_exec( $this->_getResource() );
+        return curl_exec($this->_getResource());
     }
 
     /**
@@ -409,8 +416,8 @@ class oxCurl
      */
     protected function _close()
     {
-        curl_close( $this->_getResource() );
-        $this->_setResource( null );
+        curl_close($this->_getResource());
+        $this->_setResource(null);
     }
 
     /**
@@ -419,9 +426,9 @@ class oxCurl
      * @param string $sName  curl option name to set value to.
      * @param string $sValue curl option value to set.
      */
-    protected function _setOpt( $sName, $sValue )
+    protected function _setOpt($sName, $sValue)
     {
-        curl_setopt( $this->_getResource(), $sName, $sValue );
+        curl_setopt($this->_getResource(), $sName, $sValue);
     }
 
     /**
@@ -431,7 +438,7 @@ class oxCurl
      */
     protected function _getErrorNumber()
     {
-        return curl_errno( $this->_getResource() );
+        return curl_errno($this->_getResource());
     }
 
     /**
@@ -446,12 +453,13 @@ class oxCurl
      * Decodes html entities.
      *
      * @param $aParams
+     *
      * @return array
      */
-    protected function _prepareQueryParameters( $aParams )
+    protected function _prepareQueryParameters($aParams)
     {
-        $aParams = array_filter( $aParams );
-        $aParams = array_map( array( $this, '_htmlDecode' ), $aParams );
+        $aParams = array_filter($aParams);
+        $aParams = array_map(array($this, '_htmlDecode'), $aParams);
 
         return $aParams;
     }
@@ -463,12 +471,12 @@ class oxCurl
      *
      * @return string
      */
-    protected function _htmlDecode( $mParam )
+    protected function _htmlDecode($mParam)
     {
-        if ( is_array( $mParam ) ) {
-            $mParam = $this->_prepareQueryParameters( $mParam );
+        if (is_array($mParam)) {
+            $mParam = $this->_prepareQueryParameters($mParam);
         } else {
-            $mParam = html_entity_decode( stripslashes( $mParam ), ENT_QUOTES, $this->getConnectionCharset() );
+            $mParam = html_entity_decode(stripslashes($mParam), ENT_QUOTES, $this->getConnectionCharset());
         }
 
         return $mParam;

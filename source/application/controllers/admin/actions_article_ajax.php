@@ -25,6 +25,7 @@
  */
 class actions_article_ajax extends ajaxListComponent
 {
+
     /**
      * If true extended column selection will be build
      *
@@ -37,16 +38,16 @@ class actions_article_ajax extends ajaxListComponent
      *
      * @var array
      */
-    protected $_aColumns = array( 'container1' => array(    // field , table,         visible, multilanguage, ident
-                                        array( 'oxartnum', 'oxarticles', 1, 0, 0 ),
-                                        array( 'oxtitle',  'oxarticles', 1, 1, 0 ),
-                                        array( 'oxean',    'oxarticles', 1, 0, 0 ),
-                                        array( 'oxmpn',    'oxarticles', 0, 0, 0 ),
-                                        array( 'oxprice',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxstock',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxid',     'oxarticles', 0, 0, 1 )
-                                        )
-                                );
+    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
+        array('oxartnum', 'oxarticles', 1, 0, 0),
+        array('oxtitle', 'oxarticles', 1, 1, 0),
+        array('oxean', 'oxarticles', 1, 0, 0),
+        array('oxmpn', 'oxarticles', 0, 0, 0),
+        array('oxprice', 'oxarticles', 0, 0, 0),
+        array('oxstock', 'oxarticles', 0, 0, 0),
+        array('oxid', 'oxarticles', 0, 0, 1)
+    )
+    );
 
     /**
      * Returns SQL query for data to fetc
@@ -55,31 +56,31 @@ class actions_article_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig      = $this->getConfig();
-        $oDb           = oxDb::getDb();
-        $sArticleTable = $this->_getViewName( 'oxarticles' );
-        $sO2CView      = $this->_getViewName( 'oxobject2category' );
+        $myConfig = $this->getConfig();
+        $oDb = oxDb::getDb();
+        $sArticleTable = $this->_getViewName('oxarticles');
+        $sO2CView = $this->_getViewName('oxobject2category');
 
-        $sSelId      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
+        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
-        if ( !$sSelId ) {
-            $sQAdd  = " from $sArticleTable where 1 ";
-            $sQAdd .= $myConfig->getConfigParam( 'blVariantsSelection' )?'':" and $sArticleTable.oxparentid = '' ";
+        if (!$sSelId) {
+            $sQAdd = " from $sArticleTable where 1 ";
+            $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? '' : " and $sArticleTable.oxparentid = '' ";
         } else {
             // selected category ?
-            if ( $sSynchSelId ) {
-                $sQAdd  = " from $sO2CView as oxobject2category left join $sArticleTable on ";
-                $sQAdd .= $myConfig->getConfigParam( 'blVariantsSelection' )?" ($sArticleTable.oxid=oxobject2category.oxobjectid or $sArticleTable.oxparentid=oxobject2category.oxobjectid)":" $sArticleTable.oxid=oxobject2category.oxobjectid ";
-                $sQAdd .= " where oxobject2category.oxcatnid = " . $oDb->quote( $sSelId ) . " ";
+            if ($sSynchSelId) {
+                $sQAdd = " from $sO2CView as oxobject2category left join $sArticleTable on ";
+                $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? " ($sArticleTable.oxid=oxobject2category.oxobjectid or $sArticleTable.oxparentid=oxobject2category.oxobjectid)" : " $sArticleTable.oxid=oxobject2category.oxobjectid ";
+                $sQAdd .= " where oxobject2category.oxcatnid = " . $oDb->quote($sSelId) . " ";
             }
         }
         // #1513C/#1826C - skip references, to not existing articles
         $sQAdd .= " and $sArticleTable.oxid IS NOT NULL ";
 
         // skipping self from list
-        $sQAdd .= " and $sArticleTable.oxid != " . $oDb->quote( $sSynchSelId ) . " ";
+        $sQAdd .= " and $sArticleTable.oxid != " . $oDb->quote($sSynchSelId) . " ";
 
         return $sQAdd;
     }
@@ -91,13 +92,14 @@ class actions_article_ajax extends ajaxListComponent
      *
      * @return string
      */
-    protected function _addFilter( $sQ )
+    protected function _addFilter($sQ)
     {
         $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = parent::_addFilter( $sQ );
+        $sQ = parent::_addFilter($sQ);
 
         // display variants or not ?
-        $sQ .= $this->getConfig()->getConfigParam( 'blVariantsSelection' ) ? ' group by '.$sArtTable.'.oxid ' : '';
+        $sQ .= $this->getConfig()->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';
+
         return $sQ;
     }
 
@@ -108,14 +110,14 @@ class actions_article_ajax extends ajaxListComponent
      */
     public function removeActionArticle()
     {
-        $sActionId = oxRegistry::getConfig()->getRequestParameter( 'oxid');
+        $sActionId = oxRegistry::getConfig()->getRequestParameter('oxid');
         //$sActionId = $this->getConfig()->getConfigParam( 'oxid' );
 
-        $oDb        = oxDb::getDb();
+        $oDb = oxDb::getDb();
 
         $oDb->Execute(
-              'delete from oxobject2action '
-            . 'where oxactionid='.$oDb->quote($sActionId)
+            'delete from oxobject2action '
+            . 'where oxactionid=' . $oDb->quote($sActionId)
             . ' and oxclass = "oxarticle"'
         );
     }
@@ -127,21 +129,21 @@ class actions_article_ajax extends ajaxListComponent
      */
     public function setActionArticle()
     {
-        $sArticleId = oxRegistry::getConfig()->getRequestParameter( 'oxarticleid' );
-        $sActionId  = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
-        $oDb        = oxDb::getDb();
+        $sArticleId = oxRegistry::getConfig()->getRequestParameter('oxarticleid');
+        $sActionId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $oDb = oxDb::getDb();
 
         $oDb->Execute(
-              'delete from oxobject2action '
-            . 'where oxactionid='.$oDb->quote($sActionId)
+            'delete from oxobject2action '
+            . 'where oxactionid=' . $oDb->quote($sActionId)
             . ' and oxclass = "oxarticle"'
         );
 
-        $oObject2Promotion = oxNew( "oxbase" );
-        $oObject2Promotion->init( 'oxobject2action' );
-        $oObject2Promotion->oxobject2action__oxactionid = new oxField( $sActionId );
-        $oObject2Promotion->oxobject2action__oxobjectid = new oxField( $sArticleId );
-        $oObject2Promotion->oxobject2action__oxclass    = new oxField( "oxarticle" );
+        $oObject2Promotion = oxNew("oxbase");
+        $oObject2Promotion->init('oxobject2action');
+        $oObject2Promotion->oxobject2action__oxactionid = new oxField($sActionId);
+        $oObject2Promotion->oxobject2action__oxobjectid = new oxField($sArticleId);
+        $oObject2Promotion->oxobject2action__oxclass = new oxField("oxarticle");
         $oObject2Promotion->save();
     }
 }

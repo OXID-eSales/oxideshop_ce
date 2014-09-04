@@ -25,12 +25,13 @@
  */
 class GenExport_Main extends DynExportBase
 {
+
     /**
      * Export class name
      *
      * @var string
      */
-    public $sClassDo   = "genExport_do";
+    public $sClassDo = "genExport_do";
 
     /**
      * Export ui class name
@@ -41,6 +42,7 @@ class GenExport_Main extends DynExportBase
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = "dyn_exportdefault.tpl";

@@ -25,20 +25,24 @@
  */
 class Rss extends oxUBase
 {
+
     /**
      * current rss object
+     *
      * @var oxRssFeed
      */
     protected $_oRss = null;
 
     /**
      * Current rss channel
+     *
      * @var object
      */
     protected $_oChannel = null;
 
     /**
      * Xml start and end definition
+     *
      * @var array
      */
     protected $_aXmlDef = null;
@@ -46,6 +50,7 @@ class Rss extends oxUBase
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'widget/rss.tpl';
@@ -60,6 +65,7 @@ class Rss extends oxUBase
         if (!$this->_oRss) {
             $this->_oRss = oxNew('oxRssFeed');
         }
+
         return $this->_oRss;
     }
 
@@ -83,17 +89,17 @@ class Rss extends oxUBase
             $oSmarty->php_handling = SMARTY_PHP_PASSTHRU;
         }
 
-        foreach ( array_keys( $this->_aViewData ) as $sViewName ) {
-            $oSmarty->assign_by_ref( $sViewName, $this->_aViewData[$sViewName] );
+        foreach (array_keys($this->_aViewData) as $sViewName) {
+            $oSmarty->assign_by_ref($sViewName, $this->_aViewData[$sViewName]);
         }
 
         // return rss xml, no further processing
-        oxRegistry::getUtils()->setHeader( "Content-Type: text/xml; charset=".oxRegistry::getLang()->translateString( "charset" ) );
+        oxRegistry::getUtils()->setHeader("Content-Type: text/xml; charset=" . oxRegistry::getLang()->translateString("charset"));
         oxRegistry::getUtils()->showMessageAndExit(
-                    $this->_processOutput(
-                            $oSmarty->fetch($this->_sThisTemplate, $this->getViewId())
-                    )
-                );
+            $this->_processOutput(
+                $oSmarty->fetch($this->_sThisTemplate, $this->getViewId())
+            )
+        );
     }
 
     /**
@@ -103,9 +109,9 @@ class Rss extends oxUBase
      *
      * @return string
      */
-    protected function _processOutput( $sInput )
+    protected function _processOutput($sInput)
     {
-        return getStr()->recodeEntities( $sInput );
+        return getStr()->recodeEntities($sInput);
     }
 
     /**
@@ -116,7 +122,7 @@ class Rss extends oxUBase
      */
     public function topshop()
     {
-        if ($this->getConfig()->getConfigParam( 'bl_rssTopShop' )) {
+        if ($this->getConfig()->getConfigParam('bl_rssTopShop')) {
             $this->_getRssFeed()->loadTopInShop();
         } else {
             error_404_handler();
@@ -131,7 +137,7 @@ class Rss extends oxUBase
      */
     public function newarts()
     {
-        if ($this->getConfig()->getConfigParam( 'bl_rssNewest' )) {
+        if ($this->getConfig()->getConfigParam('bl_rssNewest')) {
             $this->_getRssFeed()->loadNewestArticles();
         } else {
             error_404_handler();
@@ -146,7 +152,7 @@ class Rss extends oxUBase
      */
     public function catarts()
     {
-        if ($this->getConfig()->getConfigParam( 'bl_rssCategories' )) {
+        if ($this->getConfig()->getConfigParam('bl_rssCategories')) {
             $oCat = oxNew('oxCategory');
             if ($oCat->load(oxRegistry::getConfig()->getRequestParameter('cat'))) {
                 $this->_getRssFeed()->loadCategoryArticles($oCat);
@@ -164,8 +170,8 @@ class Rss extends oxUBase
      */
     public function searcharts()
     {
-        if ($this->getConfig()->getConfigParam( 'bl_rssSearch' )) {
-            $this->_getRssFeed()->loadSearchArticles( oxRegistry::getConfig()->getRequestParameter('searchparam', true), oxRegistry::getConfig()->getRequestParameter('searchcnid'), oxRegistry::getConfig()->getRequestParameter('searchvendor'), oxRegistry::getConfig()->getRequestParameter('searchmanufacturer'));
+        if ($this->getConfig()->getConfigParam('bl_rssSearch')) {
+            $this->_getRssFeed()->loadSearchArticles(oxRegistry::getConfig()->getRequestParameter('searchparam', true), oxRegistry::getConfig()->getRequestParameter('searchcnid'), oxRegistry::getConfig()->getRequestParameter('searchvendor'), oxRegistry::getConfig()->getRequestParameter('searchmanufacturer'));
         } else {
             error_404_handler();
         }
@@ -179,10 +185,11 @@ class Rss extends oxUBase
      */
     public function recommlists()
     {
-        if ($this->getViewConfig()->getShowListmania() && $this->getConfig()->getConfigParam( 'bl_rssRecommLists' )) {
+        if ($this->getViewConfig()->getShowListmania() && $this->getConfig()->getConfigParam('bl_rssRecommLists')) {
             $oArticle = oxNew('oxarticle');
             if ($oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'))) {
                 $this->_getRssFeed()->loadRecommLists($oArticle);
+
                 return;
             }
         }
@@ -197,10 +204,11 @@ class Rss extends oxUBase
      */
     public function recommlistarts()
     {
-        if ($this->getConfig()->getConfigParam( 'bl_rssRecommListArts' )) {
+        if ($this->getConfig()->getConfigParam('bl_rssRecommListArts')) {
             $oRecommList = oxNew('oxrecommlist');
             if ($oRecommList->load(oxRegistry::getConfig()->getRequestParameter('recommid'))) {
                 $this->_getRssFeed()->loadRecommListArticles($oRecommList);
+
                 return;
             }
         }
@@ -215,7 +223,7 @@ class Rss extends oxUBase
      */
     public function bargain()
     {
-        if ($this->getConfig()->getConfigParam( 'bl_rssBargain' )) {
+        if ($this->getConfig()->getConfigParam('bl_rssBargain')) {
             $this->_getRssFeed()->loadBargain();
         } else {
             error_404_handler();
@@ -229,9 +237,10 @@ class Rss extends oxUBase
      */
     public function getChannel()
     {
-        if ( $this->_oChannel === null ) {
+        if ($this->_oChannel === null) {
             $this->_oChannel = $this->_getRssFeed()->getChannel();
         }
+
         return $this->_oChannel;
     }
 

@@ -26,6 +26,7 @@
  */
 class oxOrderFile extends oxBase
 {
+
     /**
      * Object core table name
      *
@@ -61,15 +62,15 @@ class oxOrderFile extends oxBase
     {
         $oArticleFile = oxNew('oxFile');
         $oArticleFile->load($this->oxorderfiles__oxfileid->value);
-        if ( file_exists($oArticleFile->getStoreLocation()) ) {
-            $this->oxorderfiles__oxdownloadcount = new oxField( 0 );
-            $this->oxorderfiles__oxfirstdownload = new oxField( '0000-00-00 00:00:00' );
-            $this->oxorderfiles__oxlastdownload = new oxField( '0000-00-00 00:00:00' );
+        if (file_exists($oArticleFile->getStoreLocation())) {
+            $this->oxorderfiles__oxdownloadcount = new oxField(0);
+            $this->oxorderfiles__oxfirstdownload = new oxField('0000-00-00 00:00:00');
+            $this->oxorderfiles__oxlastdownload = new oxField('0000-00-00 00:00:00');
             $iExpirationTime = $this->oxorderfiles__oxlinkexpirationtime->value * 3600;
             $sNow = oxRegistry::get("oxUtilsDate")->getTime();
-            $sDate = date( 'Y-m-d H:i:s', $sNow + $iExpirationTime );
-            $this->oxorderfiles__oxvaliduntil = new oxField( $sDate );
-            $this->oxorderfiles__oxresetcount = new oxField( $this->oxorderfiles__oxresetcount->value + 1 );
+            $sDate = date('Y-m-d H:i:s', $sNow + $iExpirationTime);
+            $this->oxorderfiles__oxvaliduntil = new oxField($sDate);
+            $this->oxorderfiles__oxresetcount = new oxField($this->oxorderfiles__oxresetcount->value + 1);
         }
     }
 
@@ -80,9 +81,9 @@ class oxOrderFile extends oxBase
      *
      * @return null
      */
-    public function setOrderId( $sOrderId )
+    public function setOrderId($sOrderId)
     {
-        $this->oxorderfiles__oxorderid = new oxField( $sOrderId );
+        $this->oxorderfiles__oxorderid = new oxField($sOrderId);
     }
 
     /**
@@ -92,9 +93,9 @@ class oxOrderFile extends oxBase
      *
      * @return null
      */
-    public function setOrderArticleId( $sOrderArticleId )
+    public function setOrderArticleId($sOrderArticleId)
     {
-        $this->oxorderfiles__oxorderarticleid = new oxField( $sOrderArticleId );
+        $this->oxorderfiles__oxorderarticleid = new oxField($sOrderArticleId);
     }
 
     /**
@@ -104,9 +105,9 @@ class oxOrderFile extends oxBase
      *
      * @return null
      */
-    public function setShopId( $sShopId )
+    public function setShopId($sShopId)
     {
-        $this->oxorderfiles__oxshopid = new oxField( $sShopId );
+        $this->oxorderfiles__oxshopid = new oxField($sShopId);
     }
 
     /**
@@ -120,17 +121,17 @@ class oxOrderFile extends oxBase
      *
      * @return null
      */
-    public function setFile( $sFileName, $sFileId, $iMaxDownloadCounts, $iExpirationTime, $iExpirationDownloadTime )
+    public function setFile($sFileName, $sFileId, $iMaxDownloadCounts, $iExpirationTime, $iExpirationDownloadTime)
     {
         $sNow = oxRegistry::get("oxUtilsDate")->getTime();
-        $sDate = date( 'Y-m-d G:i', $sNow + $iExpirationTime*3600 );
+        $sDate = date('Y-m-d G:i', $sNow + $iExpirationTime * 3600);
 
-        $this->oxorderfiles__oxfileid = new oxField( $sFileId );
-        $this->oxorderfiles__oxfilename = new oxField( $sFileName );
-        $this->oxorderfiles__oxmaxdownloadcount = new oxField( $iMaxDownloadCounts );
-        $this->oxorderfiles__oxlinkexpirationtime = new oxField( $iExpirationTime );
-        $this->oxorderfiles__oxdownloadexpirationtime = new oxField( $iExpirationDownloadTime );
-        $this->oxorderfiles__oxvaliduntil = new oxField( $sDate );
+        $this->oxorderfiles__oxfileid = new oxField($sFileId);
+        $this->oxorderfiles__oxfilename = new oxField($sFileName);
+        $this->oxorderfiles__oxmaxdownloadcount = new oxField($iMaxDownloadCounts);
+        $this->oxorderfiles__oxlinkexpirationtime = new oxField($iExpirationTime);
+        $this->oxorderfiles__oxdownloadexpirationtime = new oxField($iExpirationDownloadTime);
+        $this->oxorderfiles__oxvaliduntil = new oxField($sDate);
     }
 
     /**
@@ -142,6 +143,7 @@ class oxOrderFile extends oxBase
     {
         $oFile = oxNew("oxfile");
         $oFile->load($this->oxorderfiles__oxfileid->value);
+
         return $oFile->getSize();
     }
 
@@ -152,7 +154,7 @@ class oxOrderFile extends oxBase
      *
      * @return string
      */
-    protected function _getFieldLongName( $sFieldName )
+    protected function _getFieldLongName($sFieldName)
     {
         $aFieldNames = array(
             'oxorderfiles__oxarticletitle',
@@ -163,11 +165,11 @@ class oxOrderFile extends oxBase
             'oxorderfiles__oxpurchasedonly'
         );
 
-        if ( in_array( $sFieldName, $aFieldNames ) ) {
+        if (in_array($sFieldName, $aFieldNames)) {
             return $sFieldName;
         }
 
-        return parent::_getFieldLongName( $sFieldName );
+        return parent::_getFieldLongName($sFieldName);
     }
 
     /**
@@ -177,18 +179,19 @@ class oxOrderFile extends oxBase
      */
     public function isValid()
     {
-        if ( !$this->oxorderfiles__oxmaxdownloadcount->value || ($this->oxorderfiles__oxdownloadcount->value < $this->oxorderfiles__oxmaxdownloadcount->value) ) {
+        if (!$this->oxorderfiles__oxmaxdownloadcount->value || ($this->oxorderfiles__oxdownloadcount->value < $this->oxorderfiles__oxmaxdownloadcount->value)) {
 
-            if ( !$this->oxorderfiles__oxlinkexpirationtime->value && !$this->oxorderfiles__oxdownloadxpirationtime->value ) {
+            if (!$this->oxorderfiles__oxlinkexpirationtime->value && !$this->oxorderfiles__oxdownloadxpirationtime->value) {
                 return true;
             } else {
                 $sNow = oxRegistry::get("oxUtilsDate")->getTime();
                 $iTimestamp = strtotime($this->oxorderfiles__oxvaliduntil->value);
-                if ( !$iTimestamp || ( $iTimestamp > $sNow ) ) {
+                if (!$iTimestamp || ($iTimestamp > $sNow)) {
                     return true;
                 }
             }
         }
+
         return false;
     }
 
@@ -209,7 +212,7 @@ class oxOrderFile extends oxBase
      */
     public function getValidUntil()
     {
-        return substr( $this->oxorderfiles__oxvaliduntil->value, 0, 16 );
+        return substr($this->oxorderfiles__oxvaliduntil->value, 0, 16);
     }
 
     /**
@@ -223,6 +226,7 @@ class oxOrderFile extends oxBase
         if ($iLeft < 0) {
             $iLeft = 0;
         }
+
         return $iLeft;
     }
 
@@ -233,26 +237,28 @@ class oxOrderFile extends oxBase
      */
     public function processOrderFile()
     {
-        if ( $this->isValid() ) {
+        if ($this->isValid()) {
             //first download
             if (!$this->oxorderfiles__oxdownloadcount->value) {
-                $this->oxorderfiles__oxdownloadcount = new oxField( 1 );
+                $this->oxorderfiles__oxdownloadcount = new oxField(1);
 
                 $iExpirationTime = $this->oxorderfiles__oxdownloadexpirationtime->value * 3600;
                 $iTime = oxRegistry::get("oxUtilsDate")->getTime();
-                $this->oxorderfiles__oxvaliduntil = new oxField( date( 'Y-m-d H:i:s', $iTime + $iExpirationTime ) );
+                $this->oxorderfiles__oxvaliduntil = new oxField(date('Y-m-d H:i:s', $iTime + $iExpirationTime));
 
-                $this->oxorderfiles__oxfirstdownload = new oxField( date( 'Y-m-d H:i:s', $iTime ) );
-                $this->oxorderfiles__oxlastdownload = new oxField( date( 'Y-m-d H:i:s', $iTime ) );
+                $this->oxorderfiles__oxfirstdownload = new oxField(date('Y-m-d H:i:s', $iTime));
+                $this->oxorderfiles__oxlastdownload = new oxField(date('Y-m-d H:i:s', $iTime));
             } else {
-                $this->oxorderfiles__oxdownloadcount = new oxField( $this->oxorderfiles__oxdownloadcount->value + 1 );
+                $this->oxorderfiles__oxdownloadcount = new oxField($this->oxorderfiles__oxdownloadcount->value + 1);
 
                 $iTime = oxRegistry::get("oxUtilsDate")->getTime();
-                $this->oxorderfiles__oxlastdownload = new oxField( date( 'Y-m-d H:i:s', $iTime ) );
+                $this->oxorderfiles__oxlastdownload = new oxField(date('Y-m-d H:i:s', $iTime));
             }
             $this->save();
+
             return $this->oxorderfiles__oxfileid->value;
         }
+
         return false;
     }
 

@@ -32,18 +32,18 @@ class article_extend_ajax extends ajaxListComponent
      * @var array
      */
     protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-                                                        array('oxtitle', 'oxcategories', 1, 1, 0),
-                                                        array('oxdesc', 'oxcategories', 1, 1, 0),
-                                                        array('oxid', 'oxcategories', 0, 0, 0),
-                                                        array('oxid', 'oxcategories', 0, 0, 1)
+        array('oxtitle', 'oxcategories', 1, 1, 0),
+        array('oxdesc', 'oxcategories', 1, 1, 0),
+        array('oxid', 'oxcategories', 0, 0, 0),
+        array('oxid', 'oxcategories', 0, 0, 1)
     ),
                                  'container2' => array(
-                                 array('oxtitle', 'oxcategories', 1, 1, 0),
-                                 array('oxdesc', 'oxcategories', 1, 1, 0),
-                                 array('oxid', 'oxcategories', 0, 0, 0),
-                                 array('oxid', 'oxobject2category', 0, 0, 1),
-                                 array('oxtime', 'oxobject2category', 0, 0, 1),
-                                 array('oxid', 'oxcategories', 0, 0, 1)
+                                     array('oxtitle', 'oxcategories', 1, 1, 0),
+                                     array('oxdesc', 'oxcategories', 1, 1, 0),
+                                     array('oxid', 'oxcategories', 0, 0, 0),
+                                     array('oxid', 'oxobject2category', 0, 0, 1),
+                                     array('oxtime', 'oxobject2category', 0, 0, 1),
+                                     array('oxid', 'oxcategories', 0, 0, 1)
                                  ),
     );
 
@@ -69,7 +69,7 @@ class article_extend_ajax extends ajaxListComponent
         } else {
             $sQAdd = " from $sCategoriesTable where $sCategoriesTable.oxid not in ( ";
             $sQAdd .= " select $sCategoriesTable.oxid from $sO2CView "
-                      ."left join $sCategoriesTable on $sCategoriesTable.oxid=$sO2CView.oxcatnid ";
+                      . "left join $sCategoriesTable on $sCategoriesTable.oxid=$sO2CView.oxcatnid ";
             $sQAdd .= " where $sO2CView.oxobjectid = " . $oDb->quote($sSynchOxid)
                       . " and $sCategoriesTable.oxid is not null ) and $sCategoriesTable.oxpriceto = '0'";
         }

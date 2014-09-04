@@ -24,10 +24,11 @@
  * Contains system event handler methods
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class oxSystemEventHandler
 {
+
     /**
      * @Var oxOnlineModuleVersionNotifier
      */
@@ -71,12 +72,9 @@ class oxSystemEventHandler
             /** @var oxOnlineLicenseCheckCaller $oLicenseCaller */
             $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oOnlineCaller, $oSimpleXml);
 
-            /** @var oxUserCounter $oUserCounter */
-            $oUserCounter = oxNew('oxUserCounter');
-
             /** @var oxOnlineLicenseCheck $oOLC */
-            $oOLC = oxNew("oxOnlineLicenseCheck", $oLicenseCaller, $oUserCounter);
-            $this->setOnlineLicenseCheck( $oOLC );
+            $oOLC = oxNew("oxOnlineLicenseCheck", $oLicenseCaller);
+            $this->setOnlineLicenseCheck($oOLC);
         }
 
         return $this->_oOnlineLicenseCheck;
@@ -119,7 +117,7 @@ class oxSystemEventHandler
             /** @var oxOnlineModuleVersionNotifier $oOnlineModuleVersionNotifier */
             $oOnlineModuleVersionNotifier = oxNew("oxOnlineModuleVersionNotifier", $oOnlineModuleVersionNotifierCaller, $oModuleList);
 
-            $this->setOnlineModuleVersionNotifier( $oOnlineModuleVersionNotifier );
+            $this->setOnlineModuleVersionNotifier($oOnlineModuleVersionNotifier);
         }
 
         return $this->_oOnlineModuleVersionNotifier;
@@ -127,15 +125,18 @@ class oxSystemEventHandler
 
     /**
      * onAdminLogin() is called on every successful login to the backend
+     *
+     * @param string $sActiveShop Active shop
      */
-    public function onAdminLogin()
+    public function onAdminLogin($sActiveShop)
     {
         // Checks if newer versions of modules are available.
         // Will be used by the upcoming online one click installer.
         // Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
         try {
             $this->getOnlineModuleVersionNotifier()->versionNotify();
-        } catch (Exception $o) { }
+        } catch (Exception $o) {
+        }
     }
 
     /**
@@ -143,31 +144,10 @@ class oxSystemEventHandler
      */
     public function onShopStart()
     {
-        $oProcessor = $this->_getServerProcessor();
-        $oProcessor->process();
-
-        if ($this->_isSendingShopDataEnabled()) {
-            $this->_sendShopInformation();
-        }
-
+        $this->_sendShopInformation();
         $this->_validateOffline();
     }
 
-    /**
-     * @return bool
-     */
-    protected function _isSendingShopDataEnabled()
-    {
-        $blSendData = true;
-
-            $blSendData = (bool) $this->_getConfig()->getConfigParam('blSendShopDataToOxid');
-
-        return $blSendData;
-    }
-
-    /**
-     * Sends shop information to oxid servers.
-     */
     protected function _sendShopInformation()
     {
         if ($this->_needToSendShopInformation()) {
@@ -187,7 +167,7 @@ class oxSystemEventHandler
     {
         $blNeedToSend = false;
 
-        if ($this->_getNextCheckTime() < $this->_getCurrentTime()) {
+        if ($this->_getLastCheckTime() < $this->_getCurrentTime()) {
             $blNeedToSend = true;
         }
 
@@ -199,7 +179,7 @@ class oxSystemEventHandler
      *
      * @return int
      */
-    private function _getNextCheckTime()
+    private function _getLastCheckTime()
     {
         return (int) $this->_getConfig()->getSystemConfigParameter('sOnlineLicenseCheckTime');
     }
@@ -210,8 +190,10 @@ class oxSystemEventHandler
      */
     private function _updateNextCheckTime()
     {
-        $this->_getConfig()->saveSystemConfigParameter('arr', 'sOnlineLicenseCheckTime',
-            $this->_getCurrentTime() + $this->_getWhiteNoise() + $this->_getLicenseCheckValidityTime());
+        $this->_getConfig()->saveSystemConfigParameter(
+            'arr', 'sOnlineLicenseCheckTime',
+            $this->_getCurrentTime() + $this->_getWhiteNoise() + $this->_getLicenseCheckValidityTime()
+        );
     }
 
     /**
@@ -275,14 +257,5 @@ class oxSystemEventHandler
     protected function _getConfig()
     {
         return oxRegistry::getConfig();
-    }
-
-    /**
-     * @return oxServerProcessor
-     */
-    protected function _getServerProcessor()
-    {
-        /** @var oxServerProcessor $oProcessor */
-        return oxNew('oxServerProcessor');
     }
 }

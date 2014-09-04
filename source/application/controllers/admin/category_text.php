@@ -27,6 +27,7 @@
  */
 class Category_Text extends oxAdminDetails
 {
+
     /**
      * Loads category object data, pases it to Smarty engine and returns
      * name of template file "category_text.tpl".
@@ -37,30 +38,31 @@ class Category_Text extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oCategory = oxNew( 'oxcategory' );
+        $this->_aViewData['edit'] = $oCategory = oxNew('oxcategory');
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
             $iCatLang = oxRegistry::getConfig()->getRequestParameter("catlang");
 
-            if (!isset($iCatLang))
+            if (!isset($iCatLang)) {
                 $iCatLang = $this->_iEditLang;
+            }
 
             $this->_aViewData["catlang"] = $iCatLang;
 
-            $oCategory->loadInLang( $iCatLang, $soxId );
+            $oCategory->loadInLang($iCatLang, $soxId);
 
 
-            foreach ( oxRegistry::getLang()->getLanguageNames() as $id => $language) {
-                $oLang= new stdClass();
+            foreach (oxRegistry::getLang()->getLanguageNames() as $id => $language) {
+                $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
         }
 
-        $this->_aViewData["editor"] = $this->_generateTextEditor( "100%", 300, $oCategory, "oxcategories__oxlongdesc", "list.tpl.css");
+        $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 300, $oCategory, "oxcategories__oxlongdesc", "list.tpl.css");
 
         return "category_text.tpl";
     }
@@ -74,28 +76,28 @@ class Category_Text extends oxAdminDetails
     {
         parent::save();
 
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oCategory = oxNew( "oxcategory" );
+        $oCategory = oxNew("oxcategory");
         $iCatLang = oxRegistry::getConfig()->getRequestParameter("catlang");
         $iCatLang = $iCatLang ? $iCatLang : 0;
 
-        if ( $soxId != "-1" ) {
-            $oCategory->loadInLang( $iCatLang, $soxId );
+        if ($soxId != "-1") {
+            $oCategory->loadInLang($iCatLang, $soxId);
         } else {
             $aParams['oxcategories__oxid'] = null;
         }
 
 
         $oCategory->setLanguage(0);
-        $oCategory->assign( $aParams );
-        $oCategory->setLanguage( $iCatLang );
+        $oCategory->assign($aParams);
+        $oCategory->setLanguage($iCatLang);
         $oCategory->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oCategory->getId() );
+        $this->setEditObjectId($oCategory->getId());
     }
 }

@@ -25,8 +25,10 @@
  */
 class GenImport extends GenImport_Main
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = "genimport_main.tpl";

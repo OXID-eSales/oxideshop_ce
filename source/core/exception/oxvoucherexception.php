@@ -25,6 +25,7 @@
  */
 class oxVoucherException extends oxException
 {
+
     /**
      * Voucher nr. involved in this exception
      *
@@ -39,7 +40,7 @@ class oxVoucherException extends oxException
      *
      * @return null
      */
-    public function setVoucherNr( $sVoucherNr )
+    public function setVoucherNr($sVoucherNr)
     {
         $this->_sVoucherNr = ( string ) $sVoucherNr;
     }
@@ -62,7 +63,7 @@ class oxVoucherException extends oxException
      */
     public function getString()
     {
-        return __CLASS__.'-'.parent::getString()." Faulty Voucher Nr --> ".$this->_sVoucherNr;
+        return __CLASS__ . '-' . parent::getString() . " Faulty Voucher Nr --> " . $this->_sVoucherNr;
     }
 
     /**
@@ -77,6 +78,7 @@ class oxVoucherException extends oxException
     {
         $aRes = parent::getValues();
         $aRes['voucherNr'] = $this->getVoucherNr();
+
         return $aRes;
     }
 }

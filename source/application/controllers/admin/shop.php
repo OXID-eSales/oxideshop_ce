@@ -28,6 +28,7 @@
  */
 class Shop extends oxAdminView
 {
+
     /**
      * Executes parent method parent::render() and returns name of template
      * file "shop.tpl".
@@ -41,10 +42,11 @@ class Shop extends oxAdminView
             $sCurrentAdminShop = oxRegistry::getSession()->getVariable("currentadminshop");
 
             if (!$sCurrentAdminShop) {
-                if (oxRegistry::getSession()->getVariable( "malladmin"))
+                if (oxRegistry::getSession()->getVariable("malladmin")) {
                     $sCurrentAdminShop = "oxbaseshop";
-                else
-                    $sCurrentAdminShop = oxRegistry::getSession()->getVariable( "actshop");
+                } else {
+                    $sCurrentAdminShop = oxRegistry::getSession()->getVariable("actshop");
+                }
             }
 
             $this->_aViewData["currentadminshop"] = $sCurrentAdminShop;

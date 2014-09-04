@@ -27,8 +27,10 @@
  */
 class Dynscreen_Local extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'dynscreen_local.tpl';

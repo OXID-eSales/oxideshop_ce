@@ -72,18 +72,18 @@ class oxTag extends oxSuperCfg
      *
      * @var array
      */
-    protected $_aMetaChars = array('+','-','>','<','(',')','~','*','"','\'','\\','[',']','{','}',';',':','.','/','|','!','@','#','$','%','^','&','?','=','`');
+    protected $_aMetaChars = array('+', '-', '>', '<', '(', ')', '~', '*', '"', '\'', '\\', '[', ']', '{', '}', ';', ':', '.', '/', '|', '!', '@', '#', '$', '%', '^', '&', '?', '=', '`');
 
     /**
      * Sets tag value
      *
      * @param string $sTag tag value
      */
-    public function __construct( $sTag = null )
+    public function __construct($sTag = null)
     {
         parent::__construct();
-        if ( $sTag !== null ) {
-            $this->set( $sTag );
+        if ($sTag !== null) {
+            $this->set($sTag);
         }
     }
 
@@ -94,7 +94,7 @@ class oxTag extends oxSuperCfg
      *
      * @return int
      */
-    public function setMaxLength( $iTagMaxLength )
+    public function setMaxLength($iTagMaxLength)
     {
         $this->_iTagMaxLength = $iTagMaxLength;
     }
@@ -117,9 +117,9 @@ class oxTag extends oxSuperCfg
      *
      * @return null
      */
-    public function set( $sTag, $blPrepare = true )
+    public function set($sTag, $blPrepare = true)
     {
-        $this->_sTag = $blPrepare? $this->prepare( $sTag ) : $sTag;
+        $this->_sTag = $blPrepare ? $this->prepare($sTag) : $sTag;
         $this->setLink();
     }
 
@@ -140,7 +140,7 @@ class oxTag extends oxSuperCfg
      *
      * @return void
      */
-    public function setHitCount( $iHitCount )
+    public function setHitCount($iHitCount)
     {
         $this->_iHitCount = $iHitCount;
     }
@@ -172,10 +172,11 @@ class oxTag extends oxSuperCfg
      */
     public function isValid()
     {
-        $blValid = strlen($this->_sTag) > 0? true : false;
-        if ( $blValid && in_array( $this->_sTag, $this->_aForbiddenTags ) ) {
+        $blValid = strlen($this->_sTag) > 0 ? true : false;
+        if ($blValid && in_array($this->_sTag, $this->_aForbiddenTags)) {
             $blValid = false;
         }
+
         return $blValid;
     }
 
@@ -186,9 +187,10 @@ class oxTag extends oxSuperCfg
      */
     public function getLink()
     {
-        if ( is_null($this->_sTagLink) ) {
-             $this->_sTagLink = $this->formLink( $this->get() );
+        if (is_null($this->_sTagLink)) {
+            $this->_sTagLink = $this->formLink($this->get());
         }
+
         return $this->_sTagLink;
     }
 
@@ -199,7 +201,7 @@ class oxTag extends oxSuperCfg
      *
      * @return string
      */
-    public function setLink( $sTagLink = null )
+    public function setLink($sTagLink = null)
     {
         $this->_sTagLink = $sTagLink;
     }
@@ -211,7 +213,7 @@ class oxTag extends oxSuperCfg
      */
     public function getTitle()
     {
-        return getStr()->htmlentities( $this->get() );
+        return getStr()->htmlentities($this->get());
     }
 
     /**
@@ -232,15 +234,16 @@ class oxTag extends oxSuperCfg
      *
      * @return object oxTag
      */
-    public function prepare( $sTag )
+    public function prepare($sTag)
     {
         $sTag = $this->stripMetaChars($sTag);
         $oStr = getStr();
-        $iLen = $oStr->strlen( $sTag );
-        if ( $iLen > $this->getMaxLength() ) {
-            $sTag = trim( $oStr->substr( $sTag, 0, $this->getMaxLength() ) );
+        $iLen = $oStr->strlen($sTag);
+        if ($iLen > $this->getMaxLength()) {
+            $sTag = trim($oStr->substr($sTag, 0, $this->getMaxLength()));
         }
-        return $oStr->strtolower( $sTag );
+
+        return $oStr->strtolower($sTag);
     }
 
     /**
@@ -250,15 +253,15 @@ class oxTag extends oxSuperCfg
      *
      * @return string
      */
-    public function stripMetaChars( $sText )
+    public function stripMetaChars($sText)
     {
-        $oStr  = getStr();
+        $oStr = getStr();
 
         // Remove meta chars
         $sText = str_replace($this->_aMetaChars, ' ', $sText);
 
         // Replace multiple spaces with single space
-        $sText = $oStr->preg_replace( "/\s+/", " ", trim( $sText ) );
+        $sText = $oStr->preg_replace("/\s+/", " ", trim($sText));
 
         return $sText;
     }
@@ -270,17 +273,18 @@ class oxTag extends oxSuperCfg
      *
      * @return string
      */
-    public function formLink( $sTag )
+    public function formLink($sTag)
     {
         $oSeoEncoderTag = oxRegistry::get("oxSeoEncoderTag");
 
         $iLang = oxRegistry::getLang()->getBaseLanguage();
 
         $sUrl = false;
-        if ( oxRegistry::getUtils()->seoIsActive() ) {
-            $sUrl = $oSeoEncoderTag->getTagUrl( $sTag, $iLang );
+        if (oxRegistry::getUtils()->seoIsActive()) {
+            $sUrl = $oSeoEncoderTag->getTagUrl($sTag, $iLang);
         }
-        return $sUrl ? $sUrl : $this->getConfig()->getShopUrl() . $oSeoEncoderTag->getStdTagUri( $sTag ) . "&amp;lang=" . $iLang;
+
+        return $sUrl ? $sUrl : $this->getConfig()->getShopUrl() . $oSeoEncoderTag->getStdTagUri($sTag) . "&amp;lang=" . $iLang;
     }
 
     /**
@@ -291,14 +295,14 @@ class oxTag extends oxSuperCfg
     public function addUnderscores()
     {
         $oStr = getStr();
-        $aTagParts = explode( ' ', $this->get() );
+        $aTagParts = explode(' ', $this->get());
         foreach ($aTagParts as &$sTagPart) {
-            if ( $oStr->strlen( $sTagPart ) < OXTAGCLOUD_MINTAGLENGTH ) {
-                $sTagPart .= str_repeat( "_", OXTAGCLOUD_MINTAGLENGTH - $oStr->strlen( $sTagPart ) );
+            if ($oStr->strlen($sTagPart) < OXTAGCLOUD_MINTAGLENGTH) {
+                $sTagPart .= str_repeat("_", OXTAGCLOUD_MINTAGLENGTH - $oStr->strlen($sTagPart));
             }
         }
         unset($sTagPart);
-        $this->set( implode( ' ', $aTagParts ), false );
+        $this->set(implode(' ', $aTagParts), false);
     }
 
 
@@ -311,14 +315,14 @@ class oxTag extends oxSuperCfg
     {
         $oStr = getStr();
         $sRes = '';
-        if ( $oStr->preg_match_all( "/([\s\-]?)([^\s\-]+)([\s\-]?)/", $this->get(), $aMatches ) ) {
-            foreach ( $aMatches[2] as $iKey => $sMatch ) {
-                if ( $oStr->strlen( $sMatch ) <= OXTAGCLOUD_MINTAGLENGTH ) {
-                    $sMatch = rtrim( $sMatch, "_" );
+        if ($oStr->preg_match_all("/([\s\-]?)([^\s\-]+)([\s\-]?)/", $this->get(), $aMatches)) {
+            foreach ($aMatches[2] as $iKey => $sMatch) {
+                if ($oStr->strlen($sMatch) <= OXTAGCLOUD_MINTAGLENGTH) {
+                    $sMatch = rtrim($sMatch, "_");
                 }
                 $sRes .= $aMatches[1][$iKey] . $sMatch . $aMatches[3][$iKey];
             }
         }
-        $this->set( $sRes, false );
+        $this->set($sRes, false);
     }
 }

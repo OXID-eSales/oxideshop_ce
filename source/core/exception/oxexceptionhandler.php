@@ -25,6 +25,7 @@
  */
 class oxExceptionHandler
 {
+
     /**
      * Log file path/name
      *
@@ -44,7 +45,7 @@ class oxExceptionHandler
      *
      * @param integer $iDebug debug level
      */
-    public function __construct( $iDebug = 0 )
+    public function __construct($iDebug = 0)
     {
         $this->_iDebug = (int) $iDebug;
     }
@@ -90,17 +91,18 @@ class oxExceptionHandler
      *
      * @return null
      */
-    public function handleUncaughtException( Exception $oEx )
+    public function handleUncaughtException(Exception $oEx)
     {
         // split between php or shop exception
-        if ( !$oEx instanceof oxException ) {
-            $this->_dealWithNoOxException( $oEx );
-            return;    // Return straight away ! (in case of unit testing)
+        if (!$oEx instanceof oxException) {
+            $this->_dealWithNoOxException($oEx);
+
+            return; // Return straight away ! (in case of unit testing)
         }
 
-        $oEx->setLogFileName( $this->_sFileName );  // set common log file ...
+        $oEx->setLogFileName($this->_sFileName); // set common log file ...
 
-        $this->_uncaughtException( $oEx );    // Return straight away ! (in case of unit testing)
+        $this->_uncaughtException($oEx); // Return straight away ! (in case of unit testing)
     }
 
     /**
@@ -110,22 +112,23 @@ class oxExceptionHandler
      *
      * @return null
      */
-    protected function _uncaughtException( oxException $oEx )
+    protected function _uncaughtException(oxException $oEx)
     {
         // exception occurred in function processing
         $oEx->setNotCaught();
         // general log entry for all exceptions here
         $oEx->debugOut();
 
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
+        if (defined('OXID_PHP_UNIT')) {
             return $oEx->getString();
-        } elseif ( 0 != $this->_iDebug ) {
-            oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
+        } elseif (0 != $this->_iDebug) {
+            oxRegistry::getUtils()->showMessageAndExit($oEx->getString());
         }
 
         try {
             oxRegistry::getUtils()->redirectOffline(500);
-        } catch (Exception $oException) {}
+        } catch (Exception $oException) {
+        }
 
         exit();
     }
@@ -137,21 +140,22 @@ class oxExceptionHandler
      *
      * @return null
      */
-    protected function _dealWithNoOxException( Exception $oEx )
+    protected function _dealWithNoOxException(Exception $oEx)
     {
-        if ( 0 != $this->_iDebug ) {
-            $sLogMsg = date( 'Y-m-d H:i:s' ) . $oEx . "\n---------------------------------------------\n";
-            oxRegistry::getUtils()->writeToLog( $sLogMsg, $this->getLogFileName() );
-            if ( defined( 'OXID_PHP_UNIT' ) ) {
+        if (0 != $this->_iDebug) {
+            $sLogMsg = date('Y-m-d H:i:s') . $oEx . "\n---------------------------------------------\n";
+            oxRegistry::getUtils()->writeToLog($sLogMsg, $this->getLogFileName());
+            if (defined('OXID_PHP_UNIT')) {
                 return;
-            } elseif ( 0 != $this->_iDebug ) {
-                oxRegistry::getUtils()->showMessageAndExit( $sLogMsg );
+            } elseif (0 != $this->_iDebug) {
+                oxRegistry::getUtils()->showMessageAndExit($sLogMsg);
             }
         }
 
         try {
             oxRegistry::getUtils()->redirectOffline(500);
-        } catch (Exception $oException) {}
+        } catch (Exception $oException) {
+        }
 
         exit();
     }
@@ -167,17 +171,17 @@ class oxExceptionHandler
      *
      * @return string
      */
-    public function __call( $sMethod, $aArgs )
+    public function __call($sMethod, $aArgs)
     {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            if ( substr( $sMethod, 0, 4) == "UNIT") {
-                $sMethod = str_replace( "UNIT", "_", $sMethod);
+        if (defined('OXID_PHP_UNIT')) {
+            if (substr($sMethod, 0, 4) == "UNIT") {
+                $sMethod = str_replace("UNIT", "_", $sMethod);
             }
-            if ( method_exists( $this, $sMethod)) {
-                return call_user_func_array( array( & $this, $sMethod), $aArgs );
+            if (method_exists($this, $sMethod)) {
+                return call_user_func_array(array(& $this, $sMethod), $aArgs);
             }
         }
 
-        throw new oxSystemComponentException( "Function '$sMethod' does not exist or is not accessible! (".__CLASS__.")".PHP_EOL);
+        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . __CLASS__ . ")" . PHP_EOL);
     }
 }

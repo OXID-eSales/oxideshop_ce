@@ -25,6 +25,7 @@
  */
 abstract class oxHasher
 {
+
     /**
      * Hash string.
      *

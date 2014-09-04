@@ -28,8 +28,10 @@
  */
 class Delivery extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'delivery.tpl';

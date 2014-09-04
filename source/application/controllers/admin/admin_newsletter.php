@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,19 +18,21 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
-
-/**
- * Admin newsletter manager.
- * Returns template, that arranges two other templates ("newsletter_list.tpl"
- * and "newsletter_main.tpl") to frame.
- * Admin Menu: Customer News -> Newsletter.
- */
-class Admin_Newsletter extends oxAdminView
-{
-    /**
-     * Current class template name.
-     * @var string
      */
-    protected $_sThisTemplate = 'newsletter.tpl';
-}
+
+    /**
+     * Admin newsletter manager.
+     * Returns template, that arranges two other templates ("newsletter_list.tpl"
+     * and "newsletter_main.tpl") to frame.
+     * Admin Menu: Customer News -> Newsletter.
+     */
+    class Admin_Newsletter extends oxAdminView
+    {
+
+        /**
+         * Current class template name.
+         *
+         * @var string
+         */
+        protected $_sThisTemplate = 'newsletter.tpl';
+    }

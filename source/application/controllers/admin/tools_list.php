@@ -27,6 +27,7 @@
  */
 class Tools_List extends oxAdminList
 {
+
     /**
      * Current class template name
      *
@@ -42,7 +43,7 @@ class Tools_List extends oxAdminList
     public function updateViews()
     {
         //preventing edit for anyone except malladmin
-        if ( oxRegistry::getSession()->getVariable( "malladmin" ) ) {
+        if (oxRegistry::getSession()->getVariable("malladmin")) {
             $oMetaData = oxNew('oxDbMetaDataHandler');
             $this->_aViewData["blViewSuccess"] = $oMetaData->updateViews();
         }
@@ -55,51 +56,53 @@ class Tools_List extends oxAdminList
      */
     public function performsql()
     {
-        $oAuthUser = oxNew( 'oxuser' );
+        $oAuthUser = oxNew('oxuser');
         $oAuthUser->loadAdminUser();
-        if ( $oAuthUser->oxuser__oxrights->value === "malladmin" ) {
+        if ($oAuthUser->oxuser__oxrights->value === "malladmin") {
 
             $sUpdateSQL = oxRegistry::getConfig()->getRequestParameter("updatesql");
             $sUpdateSQLFile = $this->_processFiles();
 
-            if ( $sUpdateSQLFile && strlen( $sUpdateSQLFile ) > 0 ) {
-                if ( isset( $sUpdateSQL ) && strlen( $sUpdateSQL ) )
-                    $sUpdateSQL .= ";\r\n".$sUpdateSQLFile;
-                else
-                    $sUpdateSQL  = $sUpdateSQLFile;
+            if ($sUpdateSQLFile && strlen($sUpdateSQLFile) > 0) {
+                if (isset($sUpdateSQL) && strlen($sUpdateSQL)) {
+                    $sUpdateSQL .= ";\r\n" . $sUpdateSQLFile;
+                } else {
+                    $sUpdateSQL = $sUpdateSQLFile;
+                }
             }
 
-            $sUpdateSQL = trim( stripslashes( $sUpdateSQL ) );
+            $sUpdateSQL = trim(stripslashes($sUpdateSQL));
             $oStr = getStr();
-            $iLen = $oStr->strlen( $sUpdateSQL );
-            if ( $this->_prepareSQL( $sUpdateSQL, $iLen ) ) {
+            $iLen = $oStr->strlen($sUpdateSQL);
+            if ($this->_prepareSQL($sUpdateSQL, $iLen)) {
                 $aQueries = $this->aSQLs;
                 $this->_aViewData["aQueries"] = array();
-                $aPassedQueries  = array();
-                $aQAffectedRows  = array();
+                $aPassedQueries = array();
+                $aQAffectedRows = array();
                 $aQErrorMessages = array();
-                $aQErrorNumbers  = array();
+                $aQErrorNumbers = array();
 
-                if ( count( $aQueries ) > 0 ) {
+                if (count($aQueries) > 0) {
                     $blStop = false;
                     $oDB = oxDb::getDb();
                     $iQueriesCounter = 0;
-                    for ( $i = 0; $i < count( $aQueries ); $i++ ) {
+                    for ($i = 0; $i < count($aQueries); $i++) {
                         $sUpdateSQL = $aQueries[$i];
-                        $sUpdateSQL = trim( $sUpdateSQL );
+                        $sUpdateSQL = trim($sUpdateSQL);
 
-                        if ( $oStr->strlen( $sUpdateSQL ) > 0 ) {
+                        if ($oStr->strlen($sUpdateSQL) > 0) {
                             $aPassedQueries[$iQueriesCounter] = nl2br(oxStr::getStr()->htmlentities($sUpdateSQL));
-                            if ( $oStr->strlen( $aPassedQueries[$iQueriesCounter] ) > 200 )
-                                $aPassedQueries[$iQueriesCounter] = $oStr->substr( $aPassedQueries[$iQueriesCounter], 0, 200 )."...";
+                            if ($oStr->strlen($aPassedQueries[$iQueriesCounter]) > 200) {
+                                $aPassedQueries[$iQueriesCounter] = $oStr->substr($aPassedQueries[$iQueriesCounter], 0, 200) . "...";
+                            }
 
-                            while ( $sUpdateSQL[ $oStr->strlen( $sUpdateSQL)-1] == ";") {
-                                $sUpdateSQL = $oStr->substr( $sUpdateSQL, 0, ( $oStr->strlen( $sUpdateSQL)-1));
+                            while ($sUpdateSQL[$oStr->strlen($sUpdateSQL) - 1] == ";") {
+                                $sUpdateSQL = $oStr->substr($sUpdateSQL, 0, ($oStr->strlen($sUpdateSQL) - 1));
                             }
 
                             try {
-                                $oDB->execute( $sUpdateSQL );
-                            } catch ( Exception $oExcp ) {
+                                $oDB->execute($sUpdateSQL);
+                            } catch (Exception $oExcp) {
                                 // catching exception ...
                                 $blStop = true;
                             }
@@ -109,25 +112,25 @@ class Tools_List extends oxAdminList
                             $aQErrorNumbers [$iQueriesCounter] = null;
 
                             $iErrorNum = $oDB->ErrorNo();
-                            if ( $iAffectedRows = $oDB->affected_Rows() !== false && $iErrorNum == 0 ) {
-                                $aQAffectedRows[$iQueriesCounter] =  $iAffectedRows;
+                            if ($iAffectedRows = $oDB->affected_Rows() !== false && $iErrorNum == 0) {
+                                $aQAffectedRows[$iQueriesCounter] = $iAffectedRows;
                             } else {
-                                $aQErrorMessages[$iQueriesCounter] = oxStr::getStr()->htmlentities( $oDB->errorMsg() );
-                                $aQErrorNumbers[$iQueriesCounter]  = oxStr::getStr()->htmlentities( $iErrorNum );
+                                $aQErrorMessages[$iQueriesCounter] = oxStr::getStr()->htmlentities($oDB->errorMsg());
+                                $aQErrorNumbers[$iQueriesCounter] = oxStr::getStr()->htmlentities($iErrorNum);
                             }
                             $iQueriesCounter++;
 
                             // stopping on first error..
-                            if ( $blStop ) {
+                            if ($blStop) {
                                 break;
                             }
                         }
                     }
                 }
-                $this->_aViewData["aQueries"]       = $aPassedQueries;
-                $this->_aViewData["aAffectedRows"]  = $aQAffectedRows;
+                $this->_aViewData["aQueries"] = $aPassedQueries;
+                $this->_aViewData["aAffectedRows"] = $aQAffectedRows;
                 $this->_aViewData["aErrorMessages"] = $aQErrorMessages;
-                $this->_aViewData["aErrorNumbers"]  = $aQErrorNumbers;
+                $this->_aViewData["aErrorNumbers"] = $aQErrorNumbers;
             }
             $this->_iDefEdit = 1;
         }
@@ -140,37 +143,40 @@ class Tools_List extends oxAdminList
      */
     protected function _processFiles()
     {
-        if ( isset( $_FILES['myfile']['name'] ) ) {
+        if (isset($_FILES['myfile']['name'])) {
             // process all files
-            while ( list( $key, $value ) = each( $_FILES['myfile']['name'] ) ) {
+            while (list($key, $value) = each($_FILES['myfile']['name'])) {
                 $aSource = $_FILES['myfile']['tmp_name'];
                 $sSource = $aSource[$key];
-                $aFiletype = explode( "@", $key );
-                $key    = $aFiletype[1];
-                $sType  = $aFiletype[0];
-                $value = strtolower( $value );
+                $aFiletype = explode("@", $key);
+                $key = $aFiletype[1];
+                $sType = $aFiletype[0];
+                $value = strtolower($value);
                 // add type to name
-                $aFilename = explode( ".", $value );
+                $aFilename = explode(".", $value);
 
                 //hack?
 
-                $aBadFiles = array( "php", 'php4', 'php5', "jsp", "cgi", "cmf", "exe" );
+                $aBadFiles = array("php", 'php4', 'php5', "jsp", "cgi", "cmf", "exe");
 
-                if ( in_array( $aFilename[1], $aBadFiles ) ) {
-                    oxRegistry::getUtils()->showMessageAndExit( "We don't play this game, go away" );
+                if (in_array($aFilename[1], $aBadFiles)) {
+                    oxRegistry::getUtils()->showMessageAndExit("We don't play this game, go away");
                 }
 
                 //reading SQL dump file
-                if ( $sSource ) {
-                    $rHandle   = fopen( $sSource, "r");
-                    $sContents = fread( $rHandle, filesize ( $sSource ) );
-                    fclose( $rHandle );
+                if ($sSource) {
+                    $rHandle = fopen($sSource, "r");
+                    $sContents = fread($rHandle, filesize($sSource));
+                    fclose($rHandle);
+
                     //reading only one SQL dump file
                     return $sContents;
                 }
+
                 return;
             }
         }
+
         return;
     }
 
@@ -182,82 +188,92 @@ class Tools_List extends oxAdminList
      *
      * @return mixed
      */
-    protected function _prepareSQL( $sSQL, $iSQLlen )
+    protected function _prepareSQL($sSQL, $iSQLlen)
     {
         $sChar = "";
         $sStrStart = "";
-        $blString  = false;
+        $blString = false;
         $oStr = getStr();
 
         //removing "mysqldump" application comments
-        while ( $oStr->preg_match( "/^\-\-.*\n/", $sSQL ) )
-            $sSQL = trim( $oStr->preg_replace( "/^\-\-.*\n/", "", $sSQL ) );
-        while ( $oStr->preg_match( "/\n\-\-.*\n/", $sSQL ) )
-            $sSQL = trim( $oStr->preg_replace( "/\n\-\-.*\n/", "\n", $sSQL ) );
+        while ($oStr->preg_match("/^\-\-.*\n/", $sSQL)) {
+            $sSQL = trim($oStr->preg_replace("/^\-\-.*\n/", "", $sSQL));
+        }
+        while ($oStr->preg_match("/\n\-\-.*\n/", $sSQL)) {
+            $sSQL = trim($oStr->preg_replace("/\n\-\-.*\n/", "\n", $sSQL));
+        }
 
-        for ( $iPos = 0; $iPos < $iSQLlen; ++$iPos ) {
+        for ($iPos = 0; $iPos < $iSQLlen; ++$iPos) {
             $sChar = $sSQL[$iPos];
-            if ( $blString ) {
-                while ( true ) {
-                    $iPos = $oStr->strpos( $sSQL, $sStrStart, $iPos );
+            if ($blString) {
+                while (true) {
+                    $iPos = $oStr->strpos($sSQL, $sStrStart, $iPos);
                     //we are at the end of string ?
-                    if ( !$iPos ) {
+                    if (!$iPos) {
                         $this->aSQLs[] = $sSQL;
+
                         return true;
-                    } elseif ( $sStrStart == '`' || $sSQL[$iPos-1] != '\\' ) {
+                    } elseif ($sStrStart == '`' || $sSQL[$iPos - 1] != '\\') {
                         //found some query separators
-                        $blString  = false;
+                        $blString = false;
                         $sStrStart = "";
                         break;
                     } else {
                         $iNext = 2;
                         $blBackslash = false;
-                        while ( $iPos-$iNext > 0 && $sSQL[$iPos-$iNext] == '\\' ) {
+                        while ($iPos - $iNext > 0 && $sSQL[$iPos - $iNext] == '\\') {
                             $blBackslash = !$blBackslash;
                             $iNext++;
                         }
-                        if ( $blBackslash ) {
-                            $blString  = false;
+                        if ($blBackslash) {
+                            $blString = false;
                             $sStrStart = "";
                             break;
-                        } else
+                        } else {
                             $iPos++;
+                        }
                     }
                 }
-            } elseif ( $sChar == ";" ) {
+            } elseif ($sChar == ";") {
                 // delimiter found, appending query array
-                $this->aSQLs[] = $oStr->substr( $sSQL, 0, $iPos );
-                $sSQL = ltrim( $oStr->substr( $sSQL, min( $iPos + 1, $iSQLlen ) ) );
-                $iSQLlen = $oStr->strlen( $sSQL );
-                if ( $iSQLlen )
-                    $iPos      = -1;
-                else
+                $this->aSQLs[] = $oStr->substr($sSQL, 0, $iPos);
+                $sSQL = ltrim($oStr->substr($sSQL, min($iPos + 1, $iSQLlen)));
+                $iSQLlen = $oStr->strlen($sSQL);
+                if ($iSQLlen) {
+                    $iPos = -1;
+                } else {
                     return true;
-            } elseif ( ( $sChar == '"') || ( $sChar == '\'') || ( $sChar == '`')) {
-                $blString  = true;
+                }
+            } elseif (($sChar == '"') || ($sChar == '\'') || ($sChar == '`')) {
+                $blString = true;
                 $sStrStart = $sChar;
-            } elseif ( $sChar == "#" || ( $sChar == ' ' && $iPos > 1 && $sSQL[$iPos-2] . $sSQL[$iPos-1] == '--')) {
+            } elseif ($sChar == "#" || ($sChar == ' ' && $iPos > 1 && $sSQL[$iPos - 2] . $sSQL[$iPos - 1] == '--')) {
                 // removing # commented query code
-                $iCommStart = (( $sSQL[$iPos] == "#") ? $iPos : $iPos-2);
-                $iCommEnd = ($oStr->strpos(' ' . $sSQL, "\012", $iPos+2))
-                           ? $oStr->strpos(' ' . $sSQL, "\012", $iPos+2)
-                           : $oStr->strpos(' ' . $sSQL, "\015", $iPos+2);
-                if ( !$iCommEnd ) {
-                    if ( $iCommStart > 0 )
-                        $this->aSQLs[] = trim( $oStr->substr( $sSQL, 0, $iCommStart ) );
+                $iCommStart = (($sSQL[$iPos] == "#") ? $iPos : $iPos - 2);
+                $iCommEnd = ($oStr->strpos(' ' . $sSQL, "\012", $iPos + 2))
+                    ? $oStr->strpos(' ' . $sSQL, "\012", $iPos + 2)
+                    : $oStr->strpos(' ' . $sSQL, "\015", $iPos + 2);
+                if (!$iCommEnd) {
+                    if ($iCommStart > 0) {
+                        $this->aSQLs[] = trim($oStr->substr($sSQL, 0, $iCommStart));
+                    }
+
                     return true;
                 } else {
-                    $sSQL = $oStr->substr( $sSQL, 0, $iCommStart ).ltrim( $oStr->substr( $sSQL, $iCommEnd ) );
-                    $iSQLlen = $oStr->strlen( $sSQL );
+                    $sSQL = $oStr->substr($sSQL, 0, $iCommStart) . ltrim($oStr->substr($sSQL, $iCommEnd));
+                    $iSQLlen = $oStr->strlen($sSQL);
                     $iPos--;
                 }
-            } elseif ( 32358 < 32270 && ($sChar == '!' && $iPos > 1  && $sSQL[$iPos-2] . $sSQL[$iPos-1] == '/*'))  // removing comments like /**/
+            } elseif (32358 < 32270 && ($sChar == '!' && $iPos > 1 && $sSQL[$iPos - 2] . $sSQL[$iPos - 1] == '/*')) // removing comments like /**/
+            {
                 $sSQL[$iPos] = ' ';
+            }
         }
 
-        if ( !empty( $sSQL ) && $oStr->preg_match( "/[^[:space:]]+/", $sSQL ) ) {
+        if (!empty($sSQL) && $oStr->preg_match("/[^[:space:]]+/", $sSQL)) {
             $this->aSQLs[] = $sSQL;
         }
+
         return true;
     }
 }

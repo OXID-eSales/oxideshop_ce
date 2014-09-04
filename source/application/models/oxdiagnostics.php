@@ -28,33 +28,34 @@
 
 class oxDiagnostics
 {
+
     /**
      * Edition of THIS OXID eShop
      *
      * @var string
      */
-    protected  $_sEdition          = "";
+    protected $_sEdition = "";
 
     /**
      * Version of THIS OXID eShop
      *
      * @var string
      */
-    protected $_sVersion          = "";
+    protected $_sVersion = "";
 
     /**
      * Revision of THIS OXID eShop
      *
      * @var string
      */
-    protected $_sRevision         = "";
+    protected $_sRevision = "";
 
     /**
      * Revision of THIS OXID eShop
      *
      * @var string
      */
-    protected $_sShopLink         = "";
+    protected $_sShopLink = "";
 
     /**
      * Array of all files and folders in shop root folder which are to be checked
@@ -62,30 +63,30 @@ class oxDiagnostics
      * @var array
      */
     protected $_aFileCheckerPathList = array(
-                                        'bootstrap.php',
-                                        'index.php',
-                                        'oxid.php',
-                                        'oxseo.php',
-                                        'admin/',
-                                        'application/',
-                                        'bin/',
-                                        'core/',
-                                        'modules/',
-                                    );
+        'bootstrap.php',
+        'index.php',
+        'oxid.php',
+        'oxseo.php',
+        'admin/',
+        'application/',
+        'bin/',
+        'core/',
+        'modules/',
+    );
 
     /**
      * Array of file extensions which are to be checked
      *
      * @var array
      */
-    protected $_aFileCheckerExtensionList = array( 'php', 'tpl' );
+    protected $_aFileCheckerExtensionList = array('php', 'tpl');
 
     /**
      * Setter for list of files and folders to check
      *
      * @param $aPathList array
      */
-    public function setFileCheckerPathList( $aPathList )
+    public function setFileCheckerPathList($aPathList)
     {
         $this->_aFileCheckerPathList = $aPathList;
     }
@@ -105,7 +106,7 @@ class oxDiagnostics
      *
      * @param $aExtList array
      */
-    public function setFileCheckerExtensionList( $aExtList )
+    public function setFileCheckerExtensionList($aExtList)
     {
         $this->_aFileCheckerExtensionList = $aExtList;
     }
@@ -126,9 +127,9 @@ class oxDiagnostics
      *
      * @param $sVersion string
      */
-    public function setVersion( $sVersion )
+    public function setVersion($sVersion)
     {
-        if ( !empty( $sVersion ) ) {
+        if (!empty($sVersion)) {
             $this->_sVersion = $sVersion;
         }
     }
@@ -148,9 +149,9 @@ class oxDiagnostics
      *
      * @param $sEdition string
      */
-    public function setEdition( $sEdition )
+    public function setEdition($sEdition)
     {
-        if ( !empty( $sEdition ) ) {
+        if (!empty($sEdition)) {
             $this->_sEdition = $sEdition;
         }
     }
@@ -170,9 +171,9 @@ class oxDiagnostics
      *
      * @param $sRevision string
      */
-    public function setRevision( $sRevision )
+    public function setRevision($sRevision)
     {
-        if ( !empty( $sRevision ) ) {
+        if (!empty($sRevision)) {
             $this->_sRevision = $sRevision;
         }
     }
@@ -193,9 +194,9 @@ class oxDiagnostics
      *
      * @param $sShopLink string
      */
-    public function setShopLink( $sShopLink )
+    public function setShopLink($sShopLink)
     {
-        if ( !empty( $sShopLink ) ) {
+        if (!empty($sShopLink)) {
             $this->_sShopLink = $sShopLink;
         }
     }
@@ -218,18 +219,18 @@ class oxDiagnostics
     public function getShopDetails()
     {
         $aShopDetails = array(
-            'Date'					=>	date( oxRegistry::getLang()->translateString( 'fullDateFormat' ), time() ),
-            'URL'					=>	$this->getShopLink(),
-            'Edition'				=>	$this->getEdition(),
-            'Version'				=>	$this->getVersion(),
-            'Revision'				=>	$this->getRevision(),
-            'Subshops (Total)'		=>	$this->_countRows( 'oxshops', true ),
-            'Subshops (Active)'		=>	$this->_countRows( 'oxshops', false ),
-            'Categories (Total)'	=>	$this->_countRows( 'oxcategories', true ),
-            'Categories (Active)'	=>	$this->_countRows( 'oxcategories', false ),
-            'Articles (Total)'		=>	$this->_countRows( 'oxarticles', true ),
-            'Articles (Active)'		=>	$this->_countRows( 'oxarticles', false ),
-            'Users (Total)'			=>	$this->_countRows( 'oxuser', true ),
+            'Date'                => date(oxRegistry::getLang()->translateString('fullDateFormat'), time()),
+            'URL'                 => $this->getShopLink(),
+            'Edition'             => $this->getEdition(),
+            'Version'             => $this->getVersion(),
+            'Revision'            => $this->getRevision(),
+            'Subshops (Total)'    => $this->_countRows('oxshops', true),
+            'Subshops (Active)'   => $this->_countRows('oxshops', false),
+            'Categories (Total)'  => $this->_countRows('oxcategories', true),
+            'Categories (Active)' => $this->_countRows('oxcategories', false),
+            'Articles (Total)'    => $this->_countRows('oxarticles', true),
+            'Articles (Active)'   => $this->_countRows('oxarticles', false),
+            'Users (Total)'       => $this->_countRows('oxuser', true),
         );
 
         return $aShopDetails;
@@ -238,23 +239,24 @@ class oxDiagnostics
     /**
      * counts result Rows
      *
-     * @param string $sTable,
+     * @param string  $sTable ,
      * @param boolean $blMode
+     *
      * @return integer
      */
-    protected function _countRows( $sTable, $blMode )
+    protected function _countRows($sTable, $blMode)
     {
         $oDb = oxDb::getDb();
-        $sRequest = 'SELECT COUNT(*) FROM '.$sTable;
+        $sRequest = 'SELECT COUNT(*) FROM ' . $sTable;
 
-        if ( $blMode == false){
+        if ($blMode == false) {
             $sRequest .= ' WHERE oxactive = 1';
         }
 
-        $aRes = $oDb->execute( $sRequest)->fields(0);
+        $aRes = $oDb->execute($sRequest)->fields(0);
+
         return $aRes[0];
     }
-
 
 
     /**
@@ -277,14 +279,13 @@ class oxDiagnostics
 
         $aPhpIniConf = array();
 
-        foreach ( $aPhpIniParams as $sParam ){
-            $sValue = ini_get( $sParam );
+        foreach ($aPhpIniParams as $sParam) {
+            $sValue = ini_get($sParam);
             $aPhpIniConf[$sParam] = $sValue;
         }
 
         return $aPhpIniConf;
     }
-
 
 
     /**
@@ -296,19 +297,16 @@ class oxDiagnostics
     {
         $sReturn = 'Zend ';
 
-        if ( function_exists( 'zend_optimizer_version' ) )
-        {
+        if (function_exists('zend_optimizer_version')) {
             $sReturn .= 'Optimizer';
         }
 
-        if ( function_exists( 'zend_loader_enabled' ) )
-        {
+        if (function_exists('zend_loader_enabled')) {
             $sReturn .= 'Guard Loader';
         }
 
         return $sReturn;
     }
-
 
 
     /**
@@ -323,36 +321,35 @@ class oxDiagnostics
         $iCpuAmnt = $iCpuMhz = $iBogo = $iMemTotal = $iMemFree = $sCpuModelName = $sCpuModel = $sCpuFreq = $iCpuCores = null;
 
         // fill, if exec is allowed
-        if ( $this->isExecAllowed())
-        {
+        if ($this->isExecAllowed()) {
             $iCpuAmnt = $this->_getCpuAmount();
             $iCpuMhz = $this->_getCpuMhz();
             $iBogo = $this->_getBogoMips();
             $iMemTotal = $this->_getMemoryTotal();
             $iMemFree = $this->_getMemoryFree();
             $sCpuModelName = $this->_getCpuModel();
-            $sCpuModel = $iCpuAmnt.'x '.$sCpuModelName;
-            $sCpuFreq = $iCpuMhz.' MHz';
+            $sCpuModel = $iCpuAmnt . 'x ' . $sCpuModelName;
+            $sCpuFreq = $iCpuMhz . ' MHz';
 
             // prevent "division by zero" error
-            if ( $iBogo && $iCpuMhz ){
+            if ($iBogo && $iCpuMhz) {
                 $iCpuCores = $iBogo / $iCpuMhz;
             }
         }
 
         $aServerInfo = array(
-            'Server OS'		=> @php_uname('s'),
-            'VM'			=> $this->_getVirtualizationSystem(),
-            'PHP'			=> $this->_getPhpVersion(),
-            'MySQL'			=> $this->_getMySqlServerInfo(),
-            'Apache'		=> $this->_getApacheVersion(),
-            'Disk total'	=> $this->_getDiskTotalSpace(),
-            'Disk free'		=> $this->_getDiskFreeSpace(),
-            'Memory total'	=> $iMemTotal,
-            'Memory free'	=> $iMemFree,
-            'CPU Model'		=> $sCpuModel,
-            'CPU frequency'	=> $sCpuFreq,
-            'CPU cores'		=> round( $iCpuCores,0),
+            'Server OS'     => @php_uname('s'),
+            'VM'            => $this->_getVirtualizationSystem(),
+            'PHP'           => $this->_getPhpVersion(),
+            'MySQL'         => $this->_getMySqlServerInfo(),
+            'Apache'        => $this->_getApacheVersion(),
+            'Disk total'    => $this->_getDiskTotalSpace(),
+            'Disk free'     => $this->_getDiskFreeSpace(),
+            'Memory total'  => $iMemTotal,
+            'Memory free'   => $iMemFree,
+            'CPU Model'     => $sCpuModel,
+            'CPU frequency' => $sCpuFreq,
+            'CPU cores'     => round($iCpuCores, 0),
         );
 
         return $aServerInfo;
@@ -365,7 +362,7 @@ class oxDiagnostics
      */
     protected function _getApacheVersion()
     {
-        if ( function_exists( 'apache_get_version' ) ){
+        if (function_exists('apache_get_version')) {
             $sReturn = apache_get_version();
         } else {
             $sReturn = $_SERVER['SERVER_SOFTWARE'];
@@ -383,24 +380,24 @@ class oxDiagnostics
     {
         $sSystemType = '';
 
-        if ( $this->isExecAllowed() ){
+        if ($this->isExecAllowed()) {
             //VMWare
-            @$sDeviceList = $this->_getDeviceList( 'vmware' );
-            if ( $sDeviceList ){
+            @$sDeviceList = $this->_getDeviceList('vmware');
+            if ($sDeviceList) {
                 $sSystemType = 'VMWare';
-                unset( $sDeviceList );
+                unset($sDeviceList);
             }
 
             //VirtualBox
-            @$sDeviceList = $this->_getDeviceList( 'VirtualBox' );
-            if( $sDeviceList ){
+            @$sDeviceList = $this->_getDeviceList('VirtualBox');
+            if ($sDeviceList) {
                 $sSystemType = 'VirtualBox';
-                unset( $sDeviceList );
+                unset($sDeviceList);
             }
         }
 
         return $sSystemType;
-     }
+    }
 
     /**
      * Determines, whether the exec() command is allowed or not.
@@ -409,18 +406,19 @@ class oxDiagnostics
      */
     public function isExecAllowed()
     {
-        return function_exists( 'exec' );
+        return function_exists('exec');
     }
 
     /**
      * Finds the list of system devices for given system type
      *
      * @param $sSystemType
+     *
      * @return string
      */
-    protected function _getDeviceList( $sSystemType )
+    protected function _getDeviceList($sSystemType)
     {
-        return exec( 'lspci | grep -i '. $sSystemType );
+        return exec('lspci | grep -i ' . $sSystemType);
     }
 
     /**
@@ -441,7 +439,7 @@ class oxDiagnostics
      */
     protected function _getCpuMhz()
     {
-        return round(exec('cat /proc/cpuinfo | grep "MHz" | sort -u | cut -d: -f2'),0);
+        return round(exec('cat /proc/cpuinfo | grep "MHz" | sort -u | cut -d: -f2'), 0);
     }
 
     /**
@@ -491,7 +489,7 @@ class oxDiagnostics
      */
     protected function _getDiskTotalSpace()
     {
-        return round( disk_total_space('/') / 1024 / 1024 , 0 ) .' GiB';
+        return round(disk_total_space('/') / 1024 / 1024, 0) . ' GiB';
     }
 
     /**
@@ -522,6 +520,7 @@ class oxDiagnostics
     protected function _getMySqlServerInfo()
     {
         $aResult = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getRow("SHOW VARIABLES LIKE 'version'");
+
         return $aResult['Value'];
     }
 

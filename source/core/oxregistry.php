@@ -25,6 +25,7 @@
  */
 class oxRegistry
 {
+
     /**
      * Instance array
      *
@@ -41,13 +42,14 @@ class oxRegistry
      *
      * @return object
      */
-    public static function get( $sClassName )
+    public static function get($sClassName)
     {
-        $sClassName = strtolower( $sClassName );
-        if ( isset( self::$_aInstances[$sClassName] ) ) {
+        $sClassName = strtolower($sClassName);
+        if (isset(self::$_aInstances[$sClassName])) {
             return self::$_aInstances[$sClassName];
         } else {
-            self::$_aInstances[$sClassName] = oxNew( $sClassName );
+            self::$_aInstances[$sClassName] = oxNew($sClassName);
+
             return self::$_aInstances[$sClassName];
         }
     }
@@ -62,12 +64,13 @@ class oxRegistry
      *
      * @return null
      */
-    public static function set( $sClassName, $oInstance )
+    public static function set($sClassName, $oInstance)
     {
-        $sClassName = strtolower( $sClassName );
+        $sClassName = strtolower($sClassName);
 
-        if ( is_null( $oInstance ) ) {
-            unset( self::$_aInstances[$sClassName] );
+        if (is_null($oInstance)) {
+            unset(self::$_aInstances[$sClassName]);
+
             return;
         }
 
@@ -83,7 +86,7 @@ class oxRegistry
      */
     public static function getConfig()
     {
-        return self::get( "oxConfig" );
+        return self::get("oxConfig");
     }
 
     /**
@@ -95,7 +98,7 @@ class oxRegistry
      */
     public static function getSession()
     {
-        return self::get( "oxSession" );
+        return self::get("oxSession");
     }
 
     /**
@@ -129,6 +132,6 @@ class oxRegistry
      */
     public static function getKeys()
     {
-        return array_keys( self::$_aInstances );
+        return array_keys(self::$_aInstances);
     }
 }

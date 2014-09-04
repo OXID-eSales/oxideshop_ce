@@ -27,8 +27,10 @@
  */
 class News_List extends oxAdminList
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'news_list.tpl';
@@ -62,9 +64,10 @@ class News_List extends oxAdminList
     public function getListSorting()
     {
         $aSorting = parent::getListSorting();
-        if ( isset( $aSorting["oxnews"][$this->_sDefSortField] )) {
+        if (isset($aSorting["oxnews"][$this->_sDefSortField])) {
             $this->_blDesc = true;
         }
+
         return $aSorting;
     }
 }

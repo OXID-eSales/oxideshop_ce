@@ -27,6 +27,7 @@ require_once 'oxerptype.php';
  */
 class oxERPType_Category extends oxERPType
 {
+
     /**
      * class constructor
      *
@@ -54,9 +55,9 @@ class oxERPType_Category extends oxERPType
         $aData = parent::_preAssignObject($oShopObject, $aData, $blAllowCustomShopId);
 
         if (!$aData['OXPARENTID']) {
-                $aData['OXPARENTID'] = 'oxrootid';
+            $aData['OXPARENTID'] = 'oxrootid';
         }
-        
+
         return $aData;
     }
 

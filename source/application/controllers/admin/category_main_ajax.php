@@ -39,22 +39,22 @@ class category_main_ajax extends ajaxListComponent
      * @var array
      */
     protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-                                                        array('oxartnum', 'oxarticles', 1, 0, 0),
-                                                        array('oxtitle', 'oxarticles', 1, 1, 0),
-                                                        array('oxean', 'oxarticles', 1, 0, 0),
-                                                        array('oxmpn', 'oxarticles', 0, 0, 0),
-                                                        array('oxprice', 'oxarticles', 0, 0, 0),
-                                                        array('oxstock', 'oxarticles', 0, 0, 0),
-                                                        array('oxid', 'oxarticles', 0, 0, 1)
+        array('oxartnum', 'oxarticles', 1, 0, 0),
+        array('oxtitle', 'oxarticles', 1, 1, 0),
+        array('oxean', 'oxarticles', 1, 0, 0),
+        array('oxmpn', 'oxarticles', 0, 0, 0),
+        array('oxprice', 'oxarticles', 0, 0, 0),
+        array('oxstock', 'oxarticles', 0, 0, 0),
+        array('oxid', 'oxarticles', 0, 0, 1)
     ),
                                  'container2' => array(
-                                 array('oxartnum', 'oxarticles', 1, 0, 0),
-                                 array('oxtitle', 'oxarticles', 1, 1, 0),
-                                 array('oxean', 'oxarticles', 1, 0, 0),
-                                 array('oxmpn', 'oxarticles', 0, 0, 0),
-                                 array('oxprice', 'oxarticles', 0, 0, 0),
-                                 array('oxstock', 'oxarticles', 0, 0, 0),
-                                 array('oxid', 'oxarticles', 0, 0, 1)
+                                     array('oxartnum', 'oxarticles', 1, 0, 0),
+                                     array('oxtitle', 'oxarticles', 1, 1, 0),
+                                     array('oxean', 'oxarticles', 1, 0, 0),
+                                     array('oxmpn', 'oxarticles', 0, 0, 0),
+                                     array('oxprice', 'oxarticles', 0, 0, 0),
+                                     array('oxstock', 'oxarticles', 0, 0, 0),
+                                     array('oxid', 'oxarticles', 0, 0, 1)
                                  )
     );
 
@@ -155,7 +155,7 @@ class category_main_ajax extends ajaxListComponent
 
                 // check, if it's already in, then don't add it again
                 $sSelect = "select 1 from $sO2CView as oxobject2category where oxobject2category.oxcatnid= "
-                       . $oDb->quote($sCategoryID) . " and oxobject2category.oxobjectid = " . $oDb->quote($sAdd) . "";
+                           . $oDb->quote($sCategoryID) . " and oxobject2category.oxobjectid = " . $oDb->quote($sAdd) . "";
                 if ($oDb->getOne($sSelect, false, false)) {
                     continue;
                 }

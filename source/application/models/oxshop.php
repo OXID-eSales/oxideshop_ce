@@ -27,6 +27,7 @@
  */
 class oxShop extends oxI18n
 {
+
     /**
      * Name of current class.
      *
@@ -79,6 +80,7 @@ class oxShop extends oxI18n
             $aTables = array_unique($aMultilangTables);
             $this->setTables($aTables);
         }
+
         return $this->_aTables;
     }
 
@@ -111,6 +113,7 @@ class oxShop extends oxI18n
     {
         $this->_aQueries[] = $sQuery;
     }
+
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
@@ -119,10 +122,10 @@ class oxShop extends oxI18n
         parent::__construct();
 
 
-        $this->init( 'oxshops' );
+        $this->init('oxshops');
 
-        if ( $iMax = $this->getConfig()->getConfigParam('iMaxShopId') ) {
-            $this->setMaxShopId( $iMax );
+        if ($iMax = $this->getConfig()->getConfigParam('iMaxShopId')) {
+            $this->setMaxShopId($iMax);
         }
 
     }
@@ -147,6 +150,7 @@ class oxShop extends oxI18n
         if (is_null($this->_aMultiShopTables)) {
             $this->_aMultiShopTables = array();
         }
+
         return $this->_aMultiShopTables;
     }
 
@@ -177,14 +181,14 @@ class oxShop extends oxI18n
      *
      * @return string
      */
-    protected function _getViewSelect($sTable,$iLang)
+    protected function _getViewSelect($sTable, $iLang)
     {
         /** @var oxDbMetaDataHandler $oMetaData */
         $oMetaData = oxNew('oxDbMetaDataHandler');
         $aFields = $oMetaData->getSinglelangFields($sTable, $iLang);
         foreach ($aFields as $sCoreField => $sField) {
             if ($sCoreField !== $sField) {
-                $aFields[$sCoreField] = $sField.' AS '.$sCoreField;
+                $aFields[$sCoreField] = $sField . ' AS ' . $sCoreField;
             }
         }
 
@@ -204,7 +208,7 @@ class oxShop extends oxI18n
 
         /** @var oxDbMetaDataHandler $oMetaData */
         $oMetaData = oxNew('oxDbMetaDataHandler');
-        $aTables   = array_merge(array($sTable), $oMetaData->getAllMultiTables($sTable));
+        $aTables = array_merge(array($sTable), $oMetaData->getAllMultiTables($sTable));
         foreach ($aTables as $sTableKey => $sTableName) {
             $aTableFields = $oMetaData->getFields($sTableName);
             foreach ($aTableFields as $sCoreField => $sField) {
@@ -234,6 +238,7 @@ class oxShop extends oxI18n
                 $sJoin .= "LEFT JOIN {$sTableName} USING (OXID) ";
             }
         }
+
         return $sJoin;
     }
 
@@ -245,13 +250,14 @@ class oxShop extends oxI18n
      *
      * @return string $sSQL
      */
-    protected function _getViewJoinLang($sTable,$iLang)
+    protected function _getViewJoinLang($sTable, $iLang)
     {
         $sJoin = ' ';
         $sLangTable = getLangTableName($sTable, $iLang);
         if ($sLangTable && $sLangTable !== $sTable) {
             $sJoin .= "LEFT JOIN {$sLangTable} USING (OXID) ";
         }
+
         return $sJoin;
     }
 
@@ -329,8 +335,8 @@ class oxShop extends oxI18n
     /**
      * Creates view query and adds it to query array
      *
-     * @param string $sTable      table name
-     * @param array  $aLanguages  language array( id => abbreviation )
+     * @param string $sTable     table name
+     * @param array  $aLanguages language array( id => abbreviation )
      */
     public function createViewQuery($sTable, $aLanguages = null)
     {
@@ -349,10 +355,10 @@ class oxShop extends oxI18n
 
             if ($sLang === null) {
                 $sFields = $this->_getViewSelectMultilang($sTable);
-                $sJoin   = $this->_getViewJoinAll($sTable);
+                $sJoin = $this->_getViewJoinAll($sTable);
             } else {
                 $sFields = $this->_getViewSelect($sTable, $iLang);
-                $sJoin   = $this->_getViewJoinLang($sTable, $iLang);
+                $sJoin = $this->_getViewJoinLang($sTable, $iLang);
             }
 
             $sQuery = "{$sStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$sTable}{$sJoin}";

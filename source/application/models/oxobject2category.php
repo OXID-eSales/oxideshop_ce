@@ -25,6 +25,7 @@
  */
 class oxObject2Category extends oxBase
 {
+
     /**
      * Current class name
      *
@@ -38,7 +39,7 @@ class oxObject2Category extends oxBase
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxobject2category' );
+        $this->init('oxobject2category');
     }
 
 

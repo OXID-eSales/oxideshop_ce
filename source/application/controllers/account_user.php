@@ -30,6 +30,7 @@
  */
 class Account_User extends Account
 {
+
     /**
      * Current class template name.
      *
@@ -50,7 +51,7 @@ class Account_User extends Account
         parent::render();
 
         // is logged in ?
-        if ( !( $this->getUser() ) ) {
+        if (!($this->getUser())) {
             return $this->_sThisTemplate = $this->_sThisLoginTemplate;
         }
 
@@ -64,7 +65,7 @@ class Account_User extends Account
      */
     public function showShipAddress()
     {
-        return oxRegistry::getSession()->getVariable( 'blshowshipaddress' );
+        return oxRegistry::getSession()->getVariable('blshowshipaddress');
     }
 
     /**
@@ -77,12 +78,12 @@ class Account_User extends Account
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = oxRegistry::get("oxSeoEncoder")->getStaticUrl( $this->getViewConfig()->getSelfLink() . 'cl=account' );
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'BILLING_SHIPPING_SETTINGS', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('BILLING_SHIPPING_SETTINGS', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

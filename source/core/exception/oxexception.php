@@ -26,6 +26,7 @@
  */
 class oxException extends Exception
 {
+
     /**
      * Log file path/name
      *
@@ -143,7 +144,7 @@ class oxException extends Exception
         //We are most likely are already dealing with an exception so making sure no other exceptions interfere
         try {
             $sLogMsg = $this->getString() . "\n---------------------------------------------\n";
-            oxRegistry::getUtils()->writeToLog( $sLogMsg, $this->getLogFileName() );
+            oxRegistry::getUtils()->writeToLog($sLogMsg, $this->getLogFileName());
         } catch (Exception $e) {
         }
     }
@@ -157,15 +158,15 @@ class oxException extends Exception
     public function getString()
     {
         $sWarning = "";
-        if ( $this->_blNotCaught ) {
+        if ($this->_blNotCaught) {
             $sWarning .= "--!--NOT CAUGHT--!--";
         }
 
-        if ( $this->_blRenderer ) {
+        if ($this->_blRenderer) {
             $sWarning .= "--!--RENDERER--!--";
         }
 
-        return $sWarning . __CLASS__ . " (time: ". date('Y-m-d H:i:s') ."): [{$this->code}]: {$this->message} \n Stack Trace: {$this->getTraceAsString()}\n\n";
+        return $sWarning . __CLASS__ . " (time: " . date('Y-m-d H:i:s') . "): [{$this->code}]: {$this->message} \n Stack Trace: {$this->getTraceAsString()}\n\n";
     }
 
     /**
@@ -198,7 +199,7 @@ class oxException extends Exception
      *
      * @return null
      */
-    public function setDestination( $sDestination )
+    public function setDestination($sDestination)
     {
     }
 }

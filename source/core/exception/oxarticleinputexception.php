@@ -35,6 +35,6 @@ class oxArticleInputException extends oxArticleException
      */
     public function getString()
     {
-        return __CLASS__ .'-'.parent::getString();
+        return __CLASS__ . '-' . parent::getString();
     }
 }

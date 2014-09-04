@@ -27,6 +27,7 @@
  */
 class User_Remark extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates oxuser, oxlist and
      * oxRemark objects, passes data to Smarty engine and returns name of
@@ -39,20 +40,20 @@ class User_Remark extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sRemoxId = oxRegistry::getConfig()->getRequestParameter( "rem_oxid");
-        if ( $soxId != "-1" && isset( $soxId)) {
+        $sRemoxId = oxRegistry::getConfig()->getRequestParameter("rem_oxid");
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oUser = oxNew( "oxuser" );
-            $oUser->load( $soxId);
-            $this->_aViewData["edit"] =  $oUser;
+            $oUser = oxNew("oxuser");
+            $oUser->load($soxId);
+            $this->_aViewData["edit"] = $oUser;
 
             // all remark
-            $oRems = oxNew( "oxlist" );
-            $oRems->init( "oxremark");
-            $sSelect = "select * from oxremark where oxparentid=".oxDb::getDb()->quote( $oUser->getId() )." order by oxcreate desc";
-            $oRems->selectString( $sSelect );
+            $oRems = oxNew("oxlist");
+            $oRems->init("oxremark");
+            $sSelect = "select * from oxremark where oxparentid=" . oxDb::getDb()->quote($oUser->getId()) . " order by oxcreate desc";
+            $oRems->selectString($sSelect);
             foreach ($oRems as $key => $val) {
-                if ( $val->oxremark__oxid->value == $sRemoxId) {
+                if ($val->oxremark__oxid->value == $sRemoxId) {
                     $val->selected = 1;
                     $oRems[$key] = $val;
                     break;
@@ -61,11 +62,11 @@ class User_Remark extends oxAdminDetails
 
             $this->_aViewData["allremark"] = $oRems;
 
-            if ( isset( $sRemoxId)) {
-                $oRemark = oxNew( "oxRemark" );
-                $oRemark->load( $sRemoxId);
-                $this->_aViewData["remarktext"]      = $oRemark->oxremark__oxtext->value;
-                $this->_aViewData["remarkheader"]    = $oRemark->oxremark__oxheader->value;
+            if (isset($sRemoxId)) {
+                $oRemark = oxNew("oxRemark");
+                $oRemark->load($sRemoxId);
+                $this->_aViewData["remarktext"] = $oRemark->oxremark__oxtext->value;
+                $this->_aViewData["remarkheader"] = $oRemark->oxremark__oxheader->value;
             }
         }
 
@@ -81,15 +82,15 @@ class User_Remark extends oxAdminDetails
     {
         parent::save();
 
-        $oRemark = oxNew( "oxremark" );
+        $oRemark = oxNew("oxremark");
 
         // try to load if exists
-        $oRemark->load( oxRegistry::getConfig()->getRequestParameter( "rem_oxid" ) );
+        $oRemark->load(oxRegistry::getConfig()->getRequestParameter("rem_oxid"));
 
-        $oRemark->oxremark__oxtext     = new oxField( oxRegistry::getConfig()->getRequestParameter( "remarktext") );
-        $oRemark->oxremark__oxheader   = new oxField( oxRegistry::getConfig()->getRequestParameter( "remarkheader") );
-        $oRemark->oxremark__oxparentid = new oxField( $this->getEditObjectId() );
-        $oRemark->oxremark__oxtype     = new oxField( "r" );
+        $oRemark->oxremark__oxtext = new oxField(oxRegistry::getConfig()->getRequestParameter("remarktext"));
+        $oRemark->oxremark__oxheader = new oxField(oxRegistry::getConfig()->getRequestParameter("remarkheader"));
+        $oRemark->oxremark__oxparentid = new oxField($this->getEditObjectId());
+        $oRemark->oxremark__oxtype = new oxField("r");
         $oRemark->save();
     }
 
@@ -100,7 +101,7 @@ class User_Remark extends oxAdminDetails
      */
     public function delete()
     {
-        $oRemark = oxNew( "oxRemark" );
-        $oRemark->delete( oxRegistry::getConfig()->getRequestParameter( "rem_oxid" ) );
+        $oRemark = oxNew("oxRemark");
+        $oRemark->delete(oxRegistry::getConfig()->getRequestParameter("rem_oxid"));
     }
 }

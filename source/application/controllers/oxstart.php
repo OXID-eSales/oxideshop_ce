@@ -25,6 +25,7 @@
  */
 class oxStart extends oxUBase
 {
+
     /**
      * Initializes globals and environment vars
      *
@@ -34,9 +35,12 @@ class oxStart extends oxUBase
     {
         $this->pageStart();
 
-        if ( 'oxstart' == oxRegistry::getConfig()->getRequestParameter( 'cl' )  || $this->isAdmin() ) {
+        if ('oxstart' == oxRegistry::getConfig()->getRequestParameter('cl') || $this->isAdmin()) {
             return;
         }
+
+        $oProcessor = $this->_getServerProcessor();
+        $oProcessor->process();
 
         $oSystemEventHandler = $this->_getSystemEventHandler();
         $oSystemEventHandler->onShopStart();
@@ -51,17 +55,17 @@ class oxStart extends oxUBase
     {
         parent::render();
 
-        $sErrorNo = oxRegistry::getConfig()->getRequestParameter( 'execerror' );
+        $sErrorNo = oxRegistry::getConfig()->getRequestParameter('execerror');
 
         $sTemplate = '';
 
 
 
-        if ( $sErrorNo == 'unknown' ) {
+        if ($sErrorNo == 'unknown') {
             $sTemplate = 'message/err_unknown.tpl';
         }
 
-        if ( $sTemplate ) {
+        if ($sTemplate) {
             return $sTemplate;
         } else {
             return 'message/err_unknown.tpl';
@@ -75,11 +79,11 @@ class oxStart extends oxUBase
      */
     public function pageStart()
     {
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
 
 
-        $myConfig->setConfigParam( 'iMaxMandates', $myConfig->getConfigParam( 'IMS' ) );
-        $myConfig->setConfigParam( 'iMaxArticles', $myConfig->getConfigParam( 'IMA' ) );
+        $myConfig->setConfigParam('iMaxMandates', $myConfig->getConfigParam('IMS'));
+        $myConfig->setConfigParam('iMaxArticles', $myConfig->getConfigParam('IMA'));
     }
 
     /**
@@ -91,7 +95,7 @@ class oxStart extends oxUBase
     {
         $mySession = $this->getSession();
 
-        if ( isset( $mySession ) ) {
+        if (isset($mySession)) {
             $mySession->freeze();
         }
 
@@ -106,7 +110,16 @@ class oxStart extends oxUBase
      */
     public function getErrorNumber()
     {
-        return oxRegistry::getConfig()->getRequestParameter( 'errornr' );
+        return oxRegistry::getConfig()->getRequestParameter('errornr');
+    }
+
+    /**
+     * @return oxServerProcessor
+     */
+    protected function _getServerProcessor()
+    {
+        /** @var oxServerProcessor $oProcessor */
+        return oxNew('oxServerProcessor');
     }
 
     /**

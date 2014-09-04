@@ -28,6 +28,7 @@ class Wishlist extends oxUBase
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/wishlist/wishlist.tpl';
@@ -62,6 +63,7 @@ class Wishlist extends oxUBase
 
     /**
      * Sign if to load and show bargain action
+     *
      * @var bool
      */
     protected $_blBargainAction = true;
@@ -75,22 +77,23 @@ class Wishlist extends oxUBase
     public function getWishUser()
     {
 
-        if ( $this->_oWishUser === null) {
+        if ($this->_oWishUser === null) {
             $this->_oWishUser = false;
 
-            $sUserId = oxRegistry::getConfig()->getRequestParameter( 'wishid') ? oxRegistry::getConfig()->getRequestParameter( 'wishid' ): oxRegistry::getSession()->getVariable( 'wishid');
-            if ( $sUserId ) {
-                $oUser = oxNew( 'oxuser' );
-                if ( $oUser->load( $sUserId ) ) {
+            $sUserId = oxRegistry::getConfig()->getRequestParameter('wishid') ? oxRegistry::getConfig()->getRequestParameter('wishid') : oxRegistry::getSession()->getVariable('wishid');
+            if ($sUserId) {
+                $oUser = oxNew('oxuser');
+                if ($oUser->load($sUserId)) {
 
                     // passing wishlist information
                     $this->_oWishUser = $oUser;
 
                     // store this one to session
-                    oxRegistry::getSession()->setVariable( 'wishid', $sUserId );
+                    oxRegistry::getSession()->setVariable('wishid', $sUserId);
                 }
             }
         }
+
         return $this->_oWishUser;
     }
 
@@ -101,21 +104,23 @@ class Wishlist extends oxUBase
      */
     public function getWishList()
     {
-        if ( $this->_oWishList === null) {
+        if ($this->_oWishList === null) {
             $this->_oWishList = false;
 
             // passing wishlist information
-            if ( $oUser = $this->getWishUser() ) {
+            if ($oUser = $this->getWishUser()) {
 
-                $oWishlistBasket = $oUser->getBasket( 'wishlist' );
+                $oWishlistBasket = $oUser->getBasket('wishlist');
                 $this->_oWishList = $oWishlistBasket->getArticles();
 
-                if (!$oWishlistBasket->isVisible())
+                if (!$oWishlistBasket->isVisible()) {
                     $this->_oWishList = false;
+                }
 
 
             }
         }
+
         return $this->_oWishList;
     }
 
@@ -130,12 +135,12 @@ class Wishlist extends oxUBase
      */
     public function searchForWishList()
     {
-        if ( $sSearch = oxRegistry::getConfig()->getRequestParameter( 'search' ) ) {
+        if ($sSearch = oxRegistry::getConfig()->getRequestParameter('search')) {
 
             // search for baskets
-            $oUserList = oxNew( 'oxuserlist' );
-            $oUserList->loadWishlistUsers( $sSearch );
-            if ( $oUserList->count() ) {
+            $oUserList = oxNew('oxuserlist');
+            $oUserList->loadWishlistUsers($sSearch);
+            if ($oUserList->count()) {
                 $this->_oWishListUsers = $oUserList;
             }
             $this->_sSearchParam = $sSearch;
@@ -173,8 +178,8 @@ class Wishlist extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;
@@ -187,10 +192,10 @@ class Wishlist extends oxUBase
      */
     public function getTitle()
     {
-        if ( $oUser = $this->getWishUser() ) {
-            $sTitle = oxRegistry::getLang()->translateString( 'GIFT_REGISTRY_OF_3', oxRegistry::getLang()->getBaseLanguage(), false ). ' ' . $oUser->oxuser__oxfname->value . ' ' . $oUser->oxuser__oxlname->value ;
+        if ($oUser = $this->getWishUser()) {
+            $sTitle = oxRegistry::getLang()->translateString('GIFT_REGISTRY_OF_3', oxRegistry::getLang()->getBaseLanguage(), false) . ' ' . $oUser->oxuser__oxfname->value . ' ' . $oUser->oxuser__oxlname->value;
         } else {
-            $sTitle = oxRegistry::getLang()->translateString( 'PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false );
+            $sTitle = oxRegistry::getLang()->translateString('PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false);
         }
 
         return $sTitle;

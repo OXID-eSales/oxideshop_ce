@@ -76,25 +76,27 @@ class oxUserPayment extends oxBase
      *
      * @return string
      */
-    public function __get( $sName )
+    public function __get($sName)
     {
         //due to compatibility with templates
-        if ( $sName == 'oxpayments__oxdesc' ) {
-            if ( $this->_oPayment === null ) {
-                $this->_oPayment = oxNew( 'oxpayment' );
-                $this->_oPayment->load( $this->oxuserpayments__oxpaymentsid->value );
+        if ($sName == 'oxpayments__oxdesc') {
+            if ($this->_oPayment === null) {
+                $this->_oPayment = oxNew('oxpayment');
+                $this->_oPayment->load($this->oxuserpayments__oxpaymentsid->value);
             }
+
             return $this->_oPayment->oxpayments__oxdesc;
         }
 
-        if ( $sName == 'aDynValues' ) {
-            if ( $this->_aDynValues === null ) {
+        if ($sName == 'aDynValues') {
+            if ($this->_aDynValues === null) {
                 $this->_aDynValues = $this->getDynValues();
             }
+
             return $this->_aDynValues;
         }
 
-        return parent::__get( $sName );
+        return parent::__get($sName);
     }
 
     /**
@@ -103,9 +105,9 @@ class oxUserPayment extends oxBase
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxuserpayments' );
-        $this->_sPaymentKey = oxRegistry::getUtils()->strRot13( $this->_sPaymentKey );
-        $this->setStoreCreditCardInfo( $this->getConfig()->getConfigParam( 'blStoreCreditCardInfo' ) );
+        $this->init('oxuserpayments');
+        $this->_sPaymentKey = oxRegistry::getUtils()->strRot13($this->_sPaymentKey);
+        $this->setStoreCreditCardInfo($this->getConfig()->getConfigParam('blStoreCreditCardInfo'));
     }
 
     /**
@@ -125,39 +127,39 @@ class oxUserPayment extends oxBase
      *
      * @return mixed
      */
-    public function load( $sOxId )
+    public function load($sOxId)
     {
-        $sSelect = 'select oxid, oxuserid, oxpaymentsid, DECODE( oxvalue, "'.$this->getPaymentKey().'" ) as oxvalue
-                    from oxuserpayments where oxid = '. oxDb::getDb()->quote( $sOxId );
+        $sSelect = 'select oxid, oxuserid, oxpaymentsid, DECODE( oxvalue, "' . $this->getPaymentKey() . '" ) as oxvalue
+                    from oxuserpayments where oxid = ' . oxDb::getDb()->quote($sOxId);
 
-        return $this->assignRecord( $sSelect );
+        return $this->assignRecord($sSelect);
     }
 
 
     /**
-    * Inserts payment information to DB. Returns insert status.
-    *
+     * Inserts payment information to DB. Returns insert status.
+     *
      * @return bool
      */
     protected function _insert()
     {
         // we do not store credit card information
         // check and in case skip it
-        if ( !$this->getStoreCreditCardInfo() && $this->oxuserpayments__oxpaymentsid->value == 'oxidcreditcard' ) {
+        if (!$this->getStoreCreditCardInfo() && $this->oxuserpayments__oxpaymentsid->value == 'oxidcreditcard') {
             return true;
         }
 
         //encode sensitive data
-        if ( $sValue = $this->oxuserpayments__oxvalue->value ) {
+        if ($sValue = $this->oxuserpayments__oxvalue->value) {
             $oDb = oxDb::getDb();
-            $sEncodedValue = $oDb->getOne( "select encode( " . $oDb->quote( $sValue ) . ", '" . $this->getPaymentKey() . "' )", false, false);
+            $sEncodedValue = $oDb->getOne("select encode( " . $oDb->quote($sValue) . ", '" . $this->getPaymentKey() . "' )", false, false);
             $this->oxuserpayments__oxvalue->setValue($sEncodedValue);
         }
 
         $blRet = parent::_insert();
 
         //restore, as encoding was needed only for saving
-        if ( $sEncodedValue ) {
+        if ($sEncodedValue) {
             $this->oxuserpayments__oxvalue->setValue($sValue);
         }
 
@@ -174,15 +176,15 @@ class oxUserPayment extends oxBase
         $oDb = oxDb::getDb();
 
         //encode sensitive data
-        if ( $sValue = $this->oxuserpayments__oxvalue->value ) {
-            $sEncodedValue = $oDb->getOne( "select encode( " . $oDb->quote( $sValue ) . ", '" . $this->getPaymentKey() . "' )", false, false);
+        if ($sValue = $this->oxuserpayments__oxvalue->value) {
+            $sEncodedValue = $oDb->getOne("select encode( " . $oDb->quote($sValue) . ", '" . $this->getPaymentKey() . "' )", false, false);
             $this->oxuserpayments__oxvalue->setValue($sEncodedValue);
         }
 
         $blRet = parent::_update();
 
         //restore, as encoding was needed only for saving
-        if ( $sEncodedValue ) {
+        if ($sEncodedValue) {
             $this->oxuserpayments__oxvalue->setValue($sValue);
         }
 
@@ -196,7 +198,7 @@ class oxUserPayment extends oxBase
      *
      * @return null
      */
-    public function setStoreCreditCardInfo( $blStoreCreditCardInfo )
+    public function setStoreCreditCardInfo($blStoreCreditCardInfo)
     {
         $this->_blStoreCreditCardInfo = $blStoreCreditCardInfo;
     }
@@ -219,15 +221,15 @@ class oxUserPayment extends oxBase
      *
      * @return bool
      */
-    public function getPaymentByPaymentType( $oUser = null, $sPaymentType = null )
+    public function getPaymentByPaymentType($oUser = null, $sPaymentType = null)
     {
         $blGet = false;
-        if ( $oUser && $sPaymentType != null ) {
+        if ($oUser && $sPaymentType != null) {
             $oDb = oxDb::getDb();
-            $sQ  = 'select oxpaymentid from oxorder where oxpaymenttype=' . $oDb->quote( $sPaymentType ) . ' and
-                    oxuserid=' . $oDb->quote( $oUser->getId() ).' order by oxorderdate desc';
-            if ( ( $sOxId = $oDb->getOne( $sQ ) ) ) {
-                $blGet = $this->load( $sOxId );
+            $sQ = 'select oxpaymentid from oxorder where oxpaymenttype=' . $oDb->quote($sPaymentType) . ' and
+                    oxuserid=' . $oDb->quote($oUser->getId()) . ' order by oxorderdate desc';
+            if (($sOxId = $oDb->getOne($sQ))) {
+                $blGet = $this->load($sOxId);
             }
         }
 
@@ -241,19 +243,20 @@ class oxUserPayment extends oxBase
      */
     public function getDynValues()
     {
-        if ( !$this->getStoreCreditCardInfo() && $this->oxuserpayments__oxpaymentsid->value == 'oxidcreditcard' ) {
+        if (!$this->getStoreCreditCardInfo() && $this->oxuserpayments__oxpaymentsid->value == 'oxidcreditcard') {
             return null;
         }
 
-        if ( !$this->_aDynValues ) {
+        if (!$this->_aDynValues) {
 
             $sRawDynValue = null;
-            if ( is_object($this->oxuserpayments__oxvalue) ) {
+            if (is_object($this->oxuserpayments__oxvalue)) {
                 $sRawDynValue = $this->oxuserpayments__oxvalue->getRawValue();
             }
 
-            $this->_aDynValues = oxRegistry::getUtils()->assignValuesFromText( $sRawDynValue );
+            $this->_aDynValues = oxRegistry::getUtils()->assignValuesFromText($sRawDynValue);
         }
+
         return $this->_aDynValues;
     }
 
@@ -264,7 +267,7 @@ class oxUserPayment extends oxBase
      *
      * @return null
      */
-    public function setDynValues( $aDynValues )
+    public function setDynValues($aDynValues)
     {
         $this->_aDynValues = $aDynValues;
     }

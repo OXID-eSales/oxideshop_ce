@@ -81,9 +81,9 @@ class oxManufacturer extends oxI18n implements oxIUrl
      */
     public function __construct()
     {
-        $this->setShowArticleCnt( $this->getConfig()->getConfigParam( 'bl_perfShowActionCatArticleCnt' ) );
+        $this->setShowArticleCnt($this->getConfig()->getConfigParam('bl_perfShowActionCatArticleCnt'));
         parent::__construct();
-        $this->init( 'oxmanufacturers');
+        $this->init('oxmanufacturers');
     }
 
     /**
@@ -93,9 +93,9 @@ class oxManufacturer extends oxI18n implements oxIUrl
      *
      * @return mixed
      */
-    public function __get( $sName )
+    public function __get($sName)
     {
-        switch ( $sName ) {
+        switch ($sName) {
             case 'oxurl':
             case 'openlink':
             case 'closelink':
@@ -112,7 +112,7 @@ class oxManufacturer extends oxI18n implements oxIUrl
                 $sValue = $this->getHasVisibleSubCats();
                 break;
             default:
-                $sValue = parent::__get( $sName );
+                $sValue = parent::__get($sName);
                 break;
         }
         return $sValue;
@@ -125,7 +125,7 @@ class oxManufacturer extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setShowArticleCnt( $blShowArticleCount = false )
+    public function setShowArticleCnt($blShowArticleCount = false)
     {
         $this->_blShowArticleCnt = $blShowArticleCount;
     }
@@ -137,13 +137,13 @@ class oxManufacturer extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function assign( $dbRecord )
+    public function assign($dbRecord)
     {
-        parent::assign( $dbRecord );
+        parent::assign($dbRecord);
 
         // manufacturer article count is stored in cache
-        if ( $this->_blShowArticleCnt && !$this->isAdmin() ) {
-            $this->_iNrOfArticles = oxRegistry::get("oxUtilsCount")->getManufacturerArticleCount( $this->getId() );
+        if ($this->_blShowArticleCnt && !$this->isAdmin()) {
+            $this->_iNrOfArticles = oxRegistry::get("oxUtilsCount")->getManufacturerArticleCount($this->getId());
         }
 
         $this->oxmanufacturers__oxnrofarticles = new oxField($this->_iNrOfArticles, oxField::T_RAW);
@@ -157,12 +157,13 @@ class oxManufacturer extends oxI18n implements oxIUrl
      *
      * @return oxmanufacturer
      */
-    public function load( $sOxid )
+    public function load($sOxid)
     {
-        if ( $sOxid == 'root' ) {
+        if ($sOxid == 'root') {
             return $this->_setRootObjectData();
         }
-        return parent::load( $sOxid );
+
+        return parent::load($sOxid);
     }
 
     /**
@@ -172,10 +173,10 @@ class oxManufacturer extends oxI18n implements oxIUrl
      */
     protected function _setRootObjectData()
     {
-        $this->setId( 'root' );
-        $this->oxmanufacturers__oxicon = new oxField( '', oxField::T_RAW );
-        $this->oxmanufacturers__oxtitle = new oxField( oxRegistry::getLang()->translateString( 'BY_MANUFACTURER', $this->getLanguage(), false ), oxField::T_RAW );
-        $this->oxmanufacturers__oxshortdesc = new oxField( '', oxField::T_RAW );
+        $this->setId('root');
+        $this->oxmanufacturers__oxicon = new oxField('', oxField::T_RAW);
+        $this->oxmanufacturers__oxtitle = new oxField(oxRegistry::getLang()->translateString('BY_MANUFACTURER', $this->getLanguage(), false), oxField::T_RAW);
+        $this->oxmanufacturers__oxshortdesc = new oxField('', oxField::T_RAW);
 
         return true;
     }
@@ -188,13 +189,14 @@ class oxManufacturer extends oxI18n implements oxIUrl
      *
      * @return string
      */
-    public function getBaseSeoLink( $iLang, $iPage = 0 )
+    public function getBaseSeoLink($iLang, $iPage = 0)
     {
         $oEncoder = oxRegistry::get("oxSeoEncoderManufacturer");
-        if ( !$iPage ) {
-            return $oEncoder->getManufacturerUrl( $this, $iLang );
+        if (!$iPage) {
+            return $oEncoder->getManufacturerUrl($this, $iLang);
         }
-        return $oEncoder->getManufacturerPageUrl( $this, $iPage, $iLang );
+
+        return $oEncoder->getManufacturerPageUrl($this, $iPage, $iLang);
     }
 
     /**
@@ -204,18 +206,18 @@ class oxManufacturer extends oxI18n implements oxIUrl
      *
      * @return string
      */
-    public function getLink( $iLang = null )
+    public function getLink($iLang = null)
     {
-        if ( !oxRegistry::getUtils()->seoIsActive() ) {
-            return $this->getStdLink( $iLang );
+        if (!oxRegistry::getUtils()->seoIsActive()) {
+            return $this->getStdLink($iLang);
         }
 
-        if ( $iLang === null ) {
+        if ($iLang === null) {
             $iLang = $this->getLanguage();
         }
 
-        if ( !isset( $this->_aSeoUrls[$iLang] ) ) {
-            $this->_aSeoUrls[$iLang] = $this->getBaseSeoLink( $iLang );
+        if (!isset($this->_aSeoUrls[$iLang])) {
+            $this->_aSeoUrls[$iLang] = $this->getBaseSeoLink($iLang);
         }
 
         return $this->_aSeoUrls[$iLang];
@@ -230,15 +232,15 @@ class oxManufacturer extends oxI18n implements oxIUrl
      *
      * @return string
      */
-    public function getBaseStdLink( $iLang, $blAddId = true, $blFull = true )
+    public function getBaseStdLink($iLang, $blAddId = true, $blFull = true)
     {
         $sUrl = '';
-        if ( $blFull ) {
+        if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl( $iLang, false );
+            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
         }
 
-        return $sUrl . "index.php?cl=manufacturerlist" . ( $blAddId ? "&amp;mnid=".$this->getId() : "" );
+        return $sUrl . "index.php?cl=manufacturerlist" . ($blAddId ? "&amp;mnid=" . $this->getId() : "");
     }
 
     /**
@@ -249,13 +251,13 @@ class oxManufacturer extends oxI18n implements oxIUrl
      *
      * @return string
      */
-    public function getStdLink( $iLang = null, $aParams = array() )
+    public function getStdLink($iLang = null, $aParams = array())
     {
-        if ( $iLang === null ) {
+        if ($iLang === null) {
             $iLang = $this->getLanguage();
         }
 
-        return oxRegistry::get("oxUtilsUrl")->processUrl( $this->getBaseStdLink( $iLang ), true, $aParams, $iLang);
+        return oxRegistry::get("oxUtilsUrl")->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
     }
 
     /**
@@ -265,7 +267,7 @@ class oxManufacturer extends oxI18n implements oxIUrl
      */
     public function getNrOfArticles()
     {
-        if ( !$this->_blShowArticleCnt || $this->isAdmin() ) {
+        if (!$this->_blShowArticleCnt || $this->isAdmin()) {
             return -1;
         }
 
@@ -298,7 +300,7 @@ class oxManufacturer extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setIsVisible( $blVisible )
+    public function setIsVisible($blVisible)
     {
         $this->_blIsVisible = $blVisible;
     }
@@ -310,7 +312,7 @@ class oxManufacturer extends oxI18n implements oxIUrl
      */
     public function getHasVisibleSubCats()
     {
-        if ( !isset( $this->_blHasVisibleSubCats ) ) {
+        if (!isset($this->_blHasVisibleSubCats)) {
             $this->_blHasVisibleSubCats = false;
         }
 
@@ -324,7 +326,7 @@ class oxManufacturer extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setHasVisibleSubCats( $blHasVisibleSubcats )
+    public function setHasVisibleSubCats($blHasVisibleSubcats)
     {
         $this->_blHasVisibleSubCats = $blHasVisibleSubcats;
     }
@@ -345,12 +347,14 @@ class oxManufacturer extends oxI18n implements oxIUrl
      *
      * @return bool
      */
-    public function delete( $sOXID = null)
+    public function delete($sOXID = null)
     {
-        if ( parent::delete( $sOXID ) ) {
-            oxRegistry::get("oxSeoEncoderManufacturer")->onDeleteManufacturer( $this );
+        if (parent::delete($sOXID)) {
+            oxRegistry::get("oxSeoEncoderManufacturer")->onDeleteManufacturer($this);
+
             return true;
         }
+
         return false;
     }
 
@@ -361,14 +365,14 @@ class oxManufacturer extends oxI18n implements oxIUrl
      */
     public function getIconUrl()
     {
-        if ( ( $sIcon = $this->oxmanufacturers__oxicon->value ) ) {
+        if (($sIcon = $this->oxmanufacturers__oxicon->value)) {
             $oConfig = $this->getConfig();
-            $sSize = $oConfig->getConfigParam( 'sManufacturerIconsize' );
-            if ( !$sSize ) {
-                $sSize = $oConfig->getConfigParam( 'sIconsize' );
+            $sSize = $oConfig->getConfigParam('sManufacturerIconsize');
+            if (!$sSize) {
+                $sSize = $oConfig->getConfigParam('sIconsize');
             }
 
-            return oxRegistry::get("oxPictureHandler")->getPicUrl( "manufacturer/icon/", $sIcon, $sSize );
+            return oxRegistry::get("oxPictureHandler")->getPicUrl("manufacturer/icon/", $sIcon, $sSize);
         }
     }
 

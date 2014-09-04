@@ -25,6 +25,7 @@
  */
 class oxUtilsUrl extends oxSuperCfg
 {
+
     /**
      * Additional url parameters which should be appended to seo/std urls.
      *
@@ -132,7 +133,7 @@ class oxUtilsUrl extends oxSuperCfg
     {
         $oConfig = $this->getConfig();
         /** @var oxStrRegular $oStr */
-        $oStr    = getStr();
+        $oStr = getStr();
 
         // cleaning up session id..
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[a-z0-9\._]+&?(amp;)?/i', '\1', $sUrl);
@@ -158,7 +159,7 @@ class oxUtilsUrl extends oxSuperCfg
      *
      * @param string $sUrl       url to append
      * @param array  $aAddParams parameters to append
-     * @param bool $blFinalUrl
+     * @param bool   $blFinalUrl
      *
      * @return string
      */
@@ -181,6 +182,7 @@ class oxUtilsUrl extends oxSuperCfg
         if ($sUrl && !$blFinalUrl) {
             $sUrl .= $sSeparator;
         }
+
         return $sUrl;
     }
 
@@ -216,13 +218,14 @@ class oxUtilsUrl extends oxSuperCfg
      * Adds shop host if url does not start with it.
      *
      * @param string $sUrl
+     *
      * @return string
      */
     public function addShopHost($sUrl)
     {
-        if ( !preg_match( "#^https?://#i", $sUrl) ) {
+        if (!preg_match("#^https?://#i", $sUrl)) {
             $sShopUrl = $this->getConfig()->getSslShopUrl();
-            $sUrl = $sShopUrl . $sUrl ;
+            $sUrl = $sShopUrl . $sUrl;
         }
 
         return $sUrl;
@@ -242,7 +245,7 @@ class oxUtilsUrl extends oxSuperCfg
     {
         $sUrl = $this->appendUrl($sUrl, $aParams, $blFinalUrl);
 
-        if ( $this->isCurrentShopHost($sUrl) ) {
+        if ($this->isCurrentShopHost($sUrl)) {
             $sUrl = $this->processShopUrl($sUrl, $blFinalUrl, $iLang);
         }
 
@@ -262,9 +265,9 @@ class oxUtilsUrl extends oxSuperCfg
     {
         $aAddParams = $this->getAddUrlParams();
 
-        $sUrl = $this->appendUrl( $sUrl, $aAddParams, $blFinalUrl );
-        $sUrl = oxRegistry::getLang()->processUrl( $sUrl, $iLang );
-        $sUrl = oxRegistry::getSession()->processUrl( $sUrl );
+        $sUrl = $this->appendUrl($sUrl, $aAddParams, $blFinalUrl);
+        $sUrl = oxRegistry::getLang()->processUrl($sUrl, $iLang);
+        $sUrl = oxRegistry::getSession()->processUrl($sUrl);
 
         if ($blFinalUrl) {
             $sUrl = getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sUrl);
@@ -340,11 +343,11 @@ class oxUtilsUrl extends oxSuperCfg
             return $sUrl;
         }
 
-        $sUrl       = $aUrlParts[0];
+        $sUrl = $aUrlParts[0];
         $sUrlParams = $aUrlParts[1];
 
         /** @var oxStrRegular $oStrUtils */
-        $oStrUtils  = getStr();
+        $oStrUtils = getStr();
         $sUrlParams = $oStrUtils->preg_replace(
             array('@(\&(amp;){1,})@ix', '@\&{1,}@', '@\?&@x'),
             array('&', '&', '?'),
@@ -396,10 +399,10 @@ class oxUtilsUrl extends oxSuperCfg
     {
         $oUtilsServer = oxRegistry::get("oxUtilsServer");
 
-        $aServerParams["HTTPS"]                  = $oUtilsServer->getServerVar("HTTPS");
+        $aServerParams["HTTPS"] = $oUtilsServer->getServerVar("HTTPS");
         $aServerParams["HTTP_X_FORWARDED_PROTO"] = $oUtilsServer->getServerVar("HTTP_X_FORWARDED_PROTO");
-        $aServerParams["HTTP_HOST"]              = $oUtilsServer->getServerVar("HTTP_HOST");
-        $aServerParams["REQUEST_URI"]            = $oUtilsServer->getServerVar("REQUEST_URI");
+        $aServerParams["HTTP_HOST"] = $oUtilsServer->getServerVar("HTTP_HOST");
+        $aServerParams["REQUEST_URI"] = $oUtilsServer->getServerVar("REQUEST_URI");
 
         $sProtocol = "http://";
 
@@ -427,12 +430,12 @@ class oxUtilsUrl extends oxSuperCfg
     {
         // url building
         // replace possible ampersands, explode, and filter out empty values
-        $sValue     = str_replace("&amp;", "&", $sValue);
+        $sValue = str_replace("&amp;", "&", $sValue);
         $aNavParams = explode("&", $sValue);
         $aNavParams = array_filter($aNavParams);
-        $aParams    = array();
+        $aParams = array();
         foreach ($aNavParams as $sValue) {
-            $exp              = explode("=", $sValue);
+            $exp = explode("=", $sValue);
             $aParams[$exp[0]] = $exp[1];
         }
 
@@ -455,6 +458,7 @@ class oxUtilsUrl extends oxSuperCfg
      * Returns url separator (?,&amp;) for adding new parameters.
      *
      * @param string $sUrl
+     *
      * @return string
      */
     private function _getUrlParametersSeparator($sUrl)
@@ -465,8 +469,10 @@ class oxUtilsUrl extends oxSuperCfg
         $sSeparator = '';
         if ($oStr->strpos($sUrl, '?') === false) {
             $sSeparator = '?';
-        } else if ( $sSeparator === '' && !$oStr->preg_match("/(\?|&(amp;)?)$/", $sUrl)) {
-            $sSeparator = '&amp;';
+        } else {
+            if ($sSeparator === '' && !$oStr->preg_match("/(\?|&(amp;)?)$/", $sUrl)) {
+                $sSeparator = '&amp;';
+            }
         }
 
         return $sSeparator;

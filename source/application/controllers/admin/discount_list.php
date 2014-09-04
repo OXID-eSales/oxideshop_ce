@@ -28,8 +28,10 @@
  */
 class Discount_List extends oxAdminList
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'discount_list.tpl';

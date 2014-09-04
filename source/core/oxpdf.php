@@ -22,51 +22,51 @@
 
 $myConfig = oxRegistry::getConfig();
 
-$sTcPdfPath = $myConfig->getConfigParam( 'sCoreDir' ) . "tcpdf/";
-$sTcPdfUrl  = $myConfig->getConfigParam( 'sShopURL') . "/" . $myConfig->getConfigParam( 'sCoreDir' ) . "tcpdf/";
+$sTcPdfPath = $myConfig->getConfigParam('sCoreDir') . "tcpdf/";
+$sTcPdfUrl = $myConfig->getConfigParam('sShopURL') . "/" . $myConfig->getConfigParam('sCoreDir') . "tcpdf/";
 
 /**
  * Using own config params
  */
-define ('K_TCPDF_EXTERNAL_CONFIG', 1 );
+define ('K_TCPDF_EXTERNAL_CONFIG', 1);
 
 /**
  * Installation path (/var/www/tcpdf/).
  * By default it is automatically calculated but you can also set it as a fixed string to improve performances.
  */
-define ('K_PATH_MAIN', $sTcPdfPath );
+define ('K_PATH_MAIN', $sTcPdfPath);
 
 /**
  * URL path to tcpdf installation folder (http://localhost/tcpdf/).
  * By default it is automatically calculated but you can also set it as a fixed string to improve performances.
  */
-define ('K_PATH_URL', $sTcPdfUrl );
+define ('K_PATH_URL', $sTcPdfUrl);
 
 /**
  * path for PDF fonts
  * use K_PATH_MAIN.'fonts/old/' for old non-UTF8 fonts
  */
-define ('K_PATH_FONTS', K_PATH_MAIN.'fonts/');
+define ('K_PATH_FONTS', K_PATH_MAIN . 'fonts/');
 
 /**
  * cache directory for temporary files (full path)
  */
-define ('K_PATH_CACHE', K_PATH_MAIN.'cache/');
+define ('K_PATH_CACHE', K_PATH_MAIN . 'cache/');
 
 /**
  * cache directory for temporary files (url path)
  */
-define ('K_PATH_URL_CACHE', K_PATH_URL.'cache/');
+define ('K_PATH_URL_CACHE', K_PATH_URL . 'cache/');
 
 /**
  *images directory
  */
-define ('K_PATH_IMAGES', K_PATH_MAIN.'images/');
+define ('K_PATH_IMAGES', K_PATH_MAIN . 'images/');
 
 /**
  * blank image
  */
-define ('K_BLANK_IMAGE', K_PATH_IMAGES.'_blank.png');
+define ('K_BLANK_IMAGE', K_PATH_IMAGES . '_blank.png');
 
 /**
  * page format
@@ -191,7 +191,7 @@ define('K_TITLE_MAGNIFICATION', 1.3);
 /**
  * reduction factor for small font
  */
-define('K_SMALL_RATIO', 2/3);
+define('K_SMALL_RATIO', 2 / 3);
 
 /**
  * Including language file
@@ -208,6 +208,7 @@ require_once $sTcPdfPath . "tcpdf.php";
  */
 class oxPDF extends TCPDF
 {
+
     /**
      * This is the class constructor.
      * It allows to set up the page format, the orientation and
@@ -221,18 +222,18 @@ class oxPDF extends TCPDF
      * @param boolean $diskcache   if TRUE reduce the RAM memory usage by caching temporary data on filesystem (slower).
      *
      * @access public
-     * @since 1.0
+     * @since  1.0
      */
-    public function __construct( $orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8', $diskcache=false )
+    public function __construct($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8', $diskcache = false)
     {
         $myConfig = oxRegistry::getConfig();
-        $unicode  = $myConfig->isUtf();
-        $encoding = $unicode ? 'UTF-8' : oxRegistry::getLang()->translateString( "charset" );
+        $unicode = $myConfig->isUtf();
+        $encoding = $unicode ? 'UTF-8' : oxRegistry::getLang()->translateString("charset");
         //#1161: Thin line and unknown characters on every pdf page
         //we use myorder::pdfFooter()
         $this->setPrintFooter(false);
 
-        parent::__construct( $orientation, $unit, $format, $unicode, $encoding, $diskcache );
+        parent::__construct($orientation, $unit, $format, $unicode, $encoding, $diskcache);
     }
 
     /**
@@ -249,34 +250,34 @@ class oxPDF extends TCPDF
      *
      * @access public
      * @return null
-     * @uses MultiCell()
-     * @see Multicell(), writeHTML()
+     * @uses   MultiCell()
+     * @see    Multicell(), writeHTML()
      */
-    public function WriteHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
+    public function WriteHTML($html, $ln = true, $fill = false, $reseth = false, $cell = false, $align = '')
     {
         //HTML parser
-        $html = str_replace( "\n", ' ', $html );
-        $a    = preg_split('/<(.*)>/U', $html, -1, PREG_SPLIT_DELIM_CAPTURE );
-        foreach ($a as $i=>$e) {
-            if ($i%2==0) {
+        $html = str_replace("\n", ' ', $html);
+        $a = preg_split('/<(.*)>/U', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
+        foreach ($a as $i => $e) {
+            if ($i % 2 == 0) {
                 //Text
                 if ($this->HREF) {
-                    $this->PutLink( $this->HREF, $e );
+                    $this->PutLink($this->HREF, $e);
                 } else {
-                    $this->Write( 5, $e );
+                    $this->Write(5, $e);
                 }
             } else {
                 //Tag
-                if ($e{0}=='/') {
+                if ($e{0} == '/') {
                     $this->CloseTag(strtoupper(substr($e, 1)));
                 } else {
                     //Extract attributes
-                    $a2=explode(' ', $e);
-                    $tag=strtoupper(array_shift($a2));
-                    $attr=array();
+                    $a2 = explode(' ', $e);
+                    $tag = strtoupper(array_shift($a2));
+                    $attr = array();
                     foreach ($a2 as $v) {
                         if (preg_match('/^([^=]*)=["\']?([^"\']*)["\']?$/', $v, $a3)) {
-                            $attr[strtoupper($a3[1])]=$a3[2];
+                            $attr[strtoupper($a3[1])] = $a3[2];
                         }
                     }
                     $this->OpenTag($tag, $attr);
@@ -293,17 +294,17 @@ class oxPDF extends TCPDF
      *
      * @return null
      */
-    public function OpenTag($tag,$attr)
+    public function OpenTag($tag, $attr)
     {
-        if ( $tag=='B' or $tag=='I' or $tag=='U' ) {
+        if ($tag == 'B' or $tag == 'I' or $tag == 'U') {
             $this->SetStyle($tag, true);
         }
 
-        if ( $tag=='A' ) {
+        if ($tag == 'A') {
             $this->HREF = (is_array($attr) && isset($attr['HREF'])) ? $attr['HREF'] : '';
         }
 
-        if ( $tag=='BR' ) {
+        if ($tag == 'BR') {
             $this->Ln(5);
         }
     }
@@ -317,11 +318,11 @@ class oxPDF extends TCPDF
      */
     public function CloseTag($tag)
     {
-        if ( $tag=='B' or $tag=='I' or $tag=='U' ) {
+        if ($tag == 'B' or $tag == 'I' or $tag == 'U') {
             $this->SetStyle($tag, false);
         }
 
-        if ( $tag=='A' ) {
+        if ($tag == 'A') {
             $this->HREF = '';
         }
     }
@@ -334,13 +335,13 @@ class oxPDF extends TCPDF
      *
      * @return null
      */
-    public function SetStyle($tag,$enable)
+    public function SetStyle($tag, $enable)
     {
-        $this->$tag+=($enable ? 1 : -1);
-        $style='';
+        $this->$tag += ($enable ? 1 : -1);
+        $style = '';
         foreach (array('B', 'I', 'U') as $s) {
-            if ($this->$s>0) {
-                $style.=$s;
+            if ($this->$s > 0) {
+                $style .= $s;
             }
         }
         $this->SetFont('', $style);
@@ -356,11 +357,11 @@ class oxPDF extends TCPDF
      */
     public function PutLink($sURL, $sText)
     {
-        $this->SetTextColor( 0, 0, 255 );
-        $this->SetStyle( 'U', true );
-        $this->Write( 5, $sText, $sURL );
-        $this->SetStyle( 'U', false );
-        $this->SetTextColor( 0 );
+        $this->SetTextColor(0, 0, 255);
+        $this->SetStyle('U', true);
+        $this->Write(5, $sText, $sURL);
+        $this->SetStyle('U', false);
+        $this->SetTextColor(0);
     }
 
     /**
@@ -375,9 +376,9 @@ class oxPDF extends TCPDF
      *
      * @return null
      */
-    public function SetFont($family, $style='', $size=0, $fontfile='')
+    public function SetFont($family, $style = '', $size = 0, $fontfile = '')
     {
-        if ( $family == 'Arial' ) {
+        if ($family == 'Arial') {
             // overriding standard ..
             $family = oxRegistry::getConfig()->isUtf() ? 'freesans' : '';
         }

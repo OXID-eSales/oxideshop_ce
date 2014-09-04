@@ -26,6 +26,7 @@
  */
 class oxSeoEncoderContent extends oxSeoEncoder
 {
+
     /**
      * Returns target "extension" (/)
      *
@@ -55,7 +56,7 @@ class oxSeoEncoderContent extends oxSeoEncoder
         if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxContent', $oCont->getId(), $iLang))) {
 
             if ($iLang != $oCont->getLanguage()) {
-                $sId   = $oCont->getId();
+                $sId = $oCont->getId();
                 $oCont = oxNew('oxContent');
                 $oCont->loadInLang($iLang, $sId);
             }
@@ -109,7 +110,7 @@ class oxSeoEncoderContent extends oxSeoEncoder
      */
     public function onDeleteContent($sId)
     {
-        $oDb       = oxDb::getDb();
+        $oDb = oxDb::getDb();
         $sIdQuoted = $oDb->quote($sId);
         $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxcontent'");
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
@@ -127,7 +128,7 @@ class oxSeoEncoderContent extends oxSeoEncoder
     {
         $sSeoUrl = null;
         /** @var oxContent $oCont */
-        $oCont   = oxNew("oxcontent");
+        $oCont = oxNew("oxcontent");
         if ($oCont->loadInLang($iLang, $sObjectId)) {
             $sSeoUrl = $this->getContentUri($oCont, $iLang, true);
         }

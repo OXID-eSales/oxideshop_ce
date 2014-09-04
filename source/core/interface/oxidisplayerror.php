@@ -26,7 +26,8 @@
  */
 interface oxIDisplayError
 {
-   /**
+
+    /**
      * This method should return a localized message for displaying
      *
      * @return a string to display to the user

@@ -26,14 +26,17 @@
  */
 class oxSelectlist extends oxI18n implements oxISelectList
 {
+
     /**
      * Select list fields array
+     *
      * @var array
      */
     protected $_aFieldList = null;
 
     /**
      * Current class name
+     *
      * @var string
      */
     protected $_sClassName = 'oxselectlist';
@@ -47,12 +50,14 @@ class oxSelectlist extends oxI18n implements oxISelectList
 
     /**
      * Product VAT
+     *
      * @var float
      */
     protected $_dVat = null;
 
     /**
      * Active selection object
+     *
      * @var oxSelection
      */
     protected $_oActiveSelection = null;
@@ -75,14 +80,15 @@ class oxSelectlist extends oxI18n implements oxISelectList
      *
      * @return array
      */
-    public function getFieldList( $dVat = null )
+    public function getFieldList($dVat = null)
     {
-        if ( $this->_aFieldList == null && $this->oxselectlist__oxvaldesc->value ) {
-            $this->_aFieldList = oxRegistry::getUtils()->assignValuesFromText( $this->oxselectlist__oxvaldesc->value, $dVat );
-            foreach ( $this->_aFieldList as $sKey => $oField ) {
-                $this->_aFieldList[$sKey]->name = getStr()->strip_tags( $this->_aFieldList[$sKey]->name );
+        if ($this->_aFieldList == null && $this->oxselectlist__oxvaldesc->value) {
+            $this->_aFieldList = oxRegistry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->value, $dVat);
+            foreach ($this->_aFieldList as $sKey => $oField) {
+                $this->_aFieldList[$sKey]->name = getStr()->strip_tags($this->_aFieldList[$sKey]->name);
             }
         }
+
         return $this->_aFieldList;
     }
 
@@ -93,19 +99,19 @@ class oxSelectlist extends oxI18n implements oxISelectList
      *
      * @return bool
      */
-    public function delete( $sOXID = null )
+    public function delete($sOXID = null)
     {
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             $sOXID = $this->getId();
         }
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             return false;
         }
 
         // remove selectlists from articles also
-        if ( $blRemove = parent::delete( $sOXID ) ) {
+        if ($blRemove = parent::delete($sOXID)) {
             $oDb = oxDb::getDb();
-            $oDb->execute( "delete from oxobject2selectlist where oxselnid = " . $oDb->quote( $sOXID ) . " " );
+            $oDb->execute("delete from oxobject2selectlist where oxselnid = " . $oDb->quote($sOXID) . " ");
         }
 
         return $blRemove;
@@ -118,7 +124,7 @@ class oxSelectlist extends oxI18n implements oxISelectList
      *
      * @return null
      */
-    public function setVat( $dVat )
+    public function setVat($dVat)
     {
         $this->_dVat = $dVat;
     }
@@ -150,15 +156,16 @@ class oxSelectlist extends oxI18n implements oxISelectList
      */
     public function getSelections()
     {
-        if ( $this->_aList === null && $this->oxselectlist__oxvaldesc->value ) {
+        if ($this->_aList === null && $this->oxselectlist__oxvaldesc->value) {
             $this->_aList = false;
-            $aList = oxRegistry::getUtils()->assignValuesFromText( $this->oxselectlist__oxvaldesc->getRawValue(), $this->getVat() );
-            foreach ( $aList as $sKey => $oField ) {
-                if ( $oField->name ) {
-                   $this->_aList[$sKey] = oxNew( "oxSelection", getStr()->strip_tags( $oField->name ), $sKey, false, $this->_aList === false ? true : false );
+            $aList = oxRegistry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->getRawValue(), $this->getVat());
+            foreach ($aList as $sKey => $oField) {
+                if ($oField->name) {
+                    $this->_aList[$sKey] = oxNew("oxSelection", getStr()->strip_tags($oField->name), $sKey, false, $this->_aList === false ? true : false);
                 }
             }
         }
+
         return $this->_aList;
     }
 
@@ -169,10 +176,10 @@ class oxSelectlist extends oxI18n implements oxISelectList
      */
     public function getActiveSelection()
     {
-        if ( $this->_oActiveSelection === null ) {
-            if ( ( $aSelections = $this->getSelections() ) ) {
+        if ($this->_oActiveSelection === null) {
+            if (($aSelections = $this->getSelections())) {
                 // first is allways active
-                $this->_oActiveSelection = reset( $aSelections );
+                $this->_oActiveSelection = reset($aSelections);
             }
         }
 
@@ -186,20 +193,19 @@ class oxSelectlist extends oxI18n implements oxISelectList
      *
      * @return null
      */
-    public function setActiveSelectionByIndex( $iIdx )
+    public function setActiveSelectionByIndex($iIdx)
     {
-        if ( ( $aSelections = $this->getSelections() ) ) {
+        if (($aSelections = $this->getSelections())) {
             $iSelIdx = 0;
-            foreach ( $aSelections as $oSelection ) {
-                $oSelection->setActiveState( $iSelIdx == $iIdx );
-                if ( $iSelIdx == $iIdx ) {
+            foreach ($aSelections as $oSelection) {
+                $oSelection->setActiveState($iSelIdx == $iIdx);
+                if ($iSelIdx == $iIdx) {
                     $this->_oActiveSelection = $oSelection;
                 }
                 $iSelIdx++;
             }
         }
     }
-
 
 
 

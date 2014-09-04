@@ -71,9 +71,9 @@ class Category_Main extends oxAdminDetails
             }
 
             foreach ($oOtherLang as $id => $language) {
-                $oLang                              = new stdClass();
-                $oLang->sLangDesc                   = $language;
-                $oLang->selected                    = ($id == $this->_iEditLang);
+                $oLang = new stdClass();
+                $oLang->sLangDesc = $language;
+                $oLang->selected = ($id == $this->_iEditLang);
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
 
@@ -92,7 +92,7 @@ class Category_Main extends oxAdminDetails
 
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
             /** @var category_main_ajax $oCategoryMainAjax */
-            $oCategoryMainAjax          = oxNew('category_main_ajax');
+            $oCategoryMainAjax = oxNew('category_main_ajax');
             $this->_aViewData['oxajax'] = $oCategoryMainAjax->getColumns();
 
             return "popups/category_main.tpl";
@@ -122,9 +122,9 @@ class Category_Main extends oxAdminDetails
         );
         /** @var oxDbMetaDataHandler $oDbHandler */
         $oDbHandler = oxNew("oxDbMetaDataHandler");
-        $aFields    = array_merge($oDbHandler->getMultilangFields('oxarticles'), array_keys($oDbHandler->getSinglelangFields('oxarticles', 0)));
-        $aFields    = array_diff($aFields, $aSkipFields);
-        $aFields    = array_unique($aFields);
+        $aFields = array_merge($oDbHandler->getMultilangFields('oxarticles'), array_keys($oDbHandler->getSinglelangFields('oxarticles', 0)));
+        $aFields = array_diff($aFields, $aSkipFields);
+        $aFields = array_unique($aFields);
 
         return $aFields;
     }
@@ -224,7 +224,7 @@ class Category_Main extends oxAdminDetails
             return;
         }
 
-        $sOxId  = $this->getEditObjectId();
+        $sOxId = $this->getEditObjectId();
         $sField = oxRegistry::getConfig()->getRequestParameter('masterPicField');
         if (empty($sField)) {
             return;

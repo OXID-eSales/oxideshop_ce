@@ -27,6 +27,7 @@
  */
 class User_Extend extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates oxuser object and
      * returns name of template file "user_extend.tpl".
@@ -38,20 +39,20 @@ class User_Extend extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId ) ) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oUser = oxNew( "oxuser" );
-            $oUser->load( $soxId );
+            $oUser = oxNew("oxuser");
+            $oUser->load($soxId);
 
             //show country in active language
-            $oCountry = oxNew( "oxCountry" );
-            $oCountry->loadInLang( oxRegistry::getLang()->getObjectTplLanguage(), $oUser->oxuser__oxcountryid->value );
-            $oUser->oxuser__oxcountry = new oxField( $oCountry->oxcountry__oxtitle->value);
+            $oCountry = oxNew("oxCountry");
+            $oCountry->loadInLang(oxRegistry::getLang()->getObjectTplLanguage(), $oUser->oxuser__oxcountryid->value);
+            $oUser->oxuser__oxcountry = new oxField($oCountry->oxcountry__oxtitle->value);
 
-            $this->_aViewData["edit"] =  $oUser;
+            $this->_aViewData["edit"] = $oUser;
         }
 
-        if ( !$this->_allowAdminEdit( $soxId ) ) {
+        if (!$this->_allowAdminEdit($soxId)) {
             $this->_aViewData['readonly'] = true;
         }
 
@@ -69,14 +70,15 @@ class User_Extend extends oxAdminDetails
 
         $soxId = $this->getEditObjectId();
 
-        if ( !$this->_allowAdminEdit( $soxId ) )
+        if (!$this->_allowAdminEdit($soxId)) {
             return false;
+        }
 
-        $aParams       = oxRegistry::getConfig()->getRequestParameter( "editval" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oUser = oxNew( "oxuser" );
-        if ( $soxId != "-1" ) {
-            $oUser->load( $soxId );
+        $oUser = oxNew("oxuser");
+        if ($soxId != "-1") {
+            $oUser->load($soxId);
         } else {
             $aParams['oxuser__oxid'] = null;
         }
@@ -84,17 +86,17 @@ class User_Extend extends oxAdminDetails
         // checkbox handling
         $aParams['oxuser__oxactive'] = $oUser->oxuser__oxactive->value;
 
-        $blNewsParams  = oxRegistry::getConfig()->getRequestParameter( "editnews" );
-        if ( isset( $blNewsParams ) ) {
+        $blNewsParams = oxRegistry::getConfig()->getRequestParameter("editnews");
+        if (isset($blNewsParams)) {
             $oNewsSubscription = $oUser->getNewsSubscription();
-            $oNewsSubscription->setOptInStatus( (int) $blNewsParams );
-            $oNewsSubscription->setOptInEmailStatus( (int) oxRegistry::getConfig()->getRequestParameter( "emailfailed" ) );
+            $oNewsSubscription->setOptInStatus((int) $blNewsParams);
+            $oNewsSubscription->setOptInEmailStatus((int) oxRegistry::getConfig()->getRequestParameter("emailfailed"));
         }
 
-        $oUser->assign( $aParams );
+        $oUser->assign($aParams);
         $oUser->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oUser->getId() );
+        $this->setEditObjectId($oUser->getId());
     }
 }

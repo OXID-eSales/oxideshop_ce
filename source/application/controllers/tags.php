@@ -25,6 +25,7 @@
  */
 class Tags extends oxUBase
 {
+
     /**
      * Class template
      *
@@ -41,9 +42,10 @@ class Tags extends oxUBase
     public function render()
     {
         // if tags are off - showing 404 page
-        if ( !$this->showTags()  ) {
+        if (!$this->showTags()) {
             error_404_handler();
         }
+
         return parent::render();
     }
 
@@ -54,11 +56,11 @@ class Tags extends oxUBase
      */
     public function getTagCloudManager()
     {
-        $oTagList = oxNew( "oxTagList" );
+        $oTagList = oxNew("oxTagList");
         //$oTagList->loadList();
-        $oTagCloud = oxNew( "oxTagCloud" );
+        $oTagCloud = oxNew("oxTagCloud");
         $oTagCloud->setTagList($oTagList);
-        $oTagCloud->setExtendedMode( true );
+        $oTagCloud->setExtendedMode(true);
 
         return $oTagCloud;
     }
@@ -79,8 +81,8 @@ class Tags extends oxUBase
      */
     public function getTitlePageSuffix()
     {
-        if ( ( $iPage = $this->getActPage() ) ) {
-            return oxRegistry::getLang()->translateString( 'PAGE' )." ". ( $iPage + 1 );
+        if (($iPage = $this->getActPage())) {
+            return oxRegistry::getLang()->translateString('PAGE') . " " . ($iPage + 1);
         }
     }
 
@@ -94,8 +96,8 @@ class Tags extends oxUBase
         $aPaths = array();
         $aCatPath = array();
 
-        $aCatPath['title'] = oxRegistry::getLang()->translateString( 'TAGS', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aCatPath['link']  = $this->getLink();
+        $aCatPath['title'] = oxRegistry::getLang()->translateString('TAGS', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aCatPath['link'] = $this->getLink();
         $aPaths[] = $aCatPath;
 
         return $aPaths;

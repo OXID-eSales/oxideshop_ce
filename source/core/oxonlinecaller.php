@@ -4,12 +4,13 @@
  * Class oxOnlineCaller makes call to given URL address and send request parameter.
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  *
- * @ignore This class will not be included in documentation.
+ * @ignore   This class will not be included in documentation.
  */
 class oxOnlineCaller
 {
+
     const ALLOWED_HTTP_FAILED_CALLS_COUNT = 4;
 
     /**
@@ -23,7 +24,7 @@ class oxOnlineCaller
     private $_oEmailBuilder;
 
     /**
-     * @param oxCurl $oCurl
+     * @param oxCurl                     $oCurl
      * @param oxOnlineServerEmailBuilder $oEmailBuilder
      */
     public function __construct(oxCurl $oCurl, oxOnlineServerEmailBuilder $oEmailBuilder)

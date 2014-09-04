@@ -25,23 +25,24 @@
  **/
 abstract class oxERPBase
 {
-    const ERROR_USER_WRONG                        = "ERROR: Could not login";
-    const ERROR_USER_NO_RIGHTS                    = "Not sufficient rights to perform operation!";
-    const ERROR_USER_EXISTS                       = "ERROR: User already exists";
-    const ERROR_NO_INIT                           = "Init not executed, Access denied!";
-    const ERROR_DELETE_NO_EMPTY_CATEGORY          = "Only empty category can be deleated";
-    const ERROR_OBJECT_NOT_EXISTING               = "Object does not exist";
+
+    const ERROR_USER_WRONG = "ERROR: Could not login";
+    const ERROR_USER_NO_RIGHTS = "Not sufficient rights to perform operation!";
+    const ERROR_USER_EXISTS = "ERROR: User already exists";
+    const ERROR_NO_INIT = "Init not executed, Access denied!";
+    const ERROR_DELETE_NO_EMPTY_CATEGORY = "Only empty category can be deleated";
+    const ERROR_OBJECT_NOT_EXISTING = "Object does not exist";
     const ERROR_ERP_VERSION_NOT_SUPPORTED_BY_SHOP = "ERROR: shop does not support requested ERP version.";
     const ERROR_SHOP_VERSION_NOT_SUPPORTED_BY_ERP = "ERROR: ERP does not support current shop version.";
 
-    static $MODE_IMPORT     = "Import";
-    static $MODE_DELETE     = "Delete";
+    static $MODE_IMPORT = "Import";
+    static $MODE_DELETE = "Delete";
 
-    protected   $_blInit    = false;
-    protected   $_iLanguage = null;
-    protected   $_sUserID   = null;
+    protected $_blInit = false;
+    protected $_iLanguage = null;
+    protected $_sUserID = null;
     //session id
-    protected   $_sSID      = null;
+    protected $_sSID = null;
 
     protected static $_sRequestedVersion = '';
 
@@ -63,18 +64,20 @@ abstract class oxERPBase
 
     /**
      * Imported id array
+     *
      * @var array
      */
     protected $_aImportedIds = array();
 
     /**
      * Imported row count
+     *
      * @var array
      */
     protected $_iImportedRowCount = 0;
 
     public $_aStatistics = array();
-    public $_iIdx        = 0;
+    public $_iIdx = 0;
 
     /** gets count of imported rows, total, during import
      *
@@ -88,7 +91,8 @@ abstract class oxERPBase
      *
      * @return null
      */
-    public abstract function setImportedIds( $key );
+    public abstract function setImportedIds($key);
+
     /**
      * _aStatistics getter
      *
@@ -190,7 +194,7 @@ abstract class oxERPBase
      */
     public function __call($sMethod, $aArguments)
     {
-        throw new Exception( "ERROR: Handler for Object '$sMethod' not implemented!");
+        throw new Exception("ERROR: Handler for Object '$sMethod' not implemented!");
     }
 
 
@@ -217,42 +221,42 @@ abstract class oxERPBase
         ini_set('session.use_cookies', 0);
         $_COOKIE = array('admin_sid' => false);
         $myConfig = oxRegistry::getConfig();
-        $myConfig->setConfigParam( 'blForceSessionStart', 1 );
-        $myConfig->setConfigParam( 'blSessionUseCookies', 0);
-        $myConfig->setConfigParam( 'blAdmin', 1 );
-        $myConfig->setAdminMode( true );
+        $myConfig->setConfigParam('blForceSessionStart', 1);
+        $myConfig->setConfigParam('blSessionUseCookies', 0);
+        $myConfig->setConfigParam('blAdmin', 1);
+        $myConfig->setAdminMode(true);
 
         $mySession = oxRegistry::getSession();
         @$mySession->start();
 
 
-        oxRegistry::getSession()->setVariable( "lang", $iLanguage);
-        oxRegistry::getSession()->setVariable( "language", $iLanguage);
+        oxRegistry::getSession()->setVariable("lang", $iLanguage);
+        oxRegistry::getSession()->setVariable("language", $iLanguage);
 
         $oUser = oxNew('oxuser');
         try {
             if (!$oUser->login($sUserName, $sPassword)) {
                 $oUser = null;
             }
-        }catch(oxUserException $e) {
+        } catch (oxUserException $e) {
             $oUser = null;
         }
 
         self::_checkShopVersion();
 
-        if ( !$oUser || ( isset($oUser->iError) && $oUser->iError == -1000)) {
+        if (!$oUser || (isset($oUser->iError) && $oUser->iError == -1000)) {
             // authorization error
-            throw new Exception( self::ERROR_USER_WRONG );
-        } elseif ( ($oUser->oxuser__oxrights->value == "malladmin" || $oUser->oxuser__oxrights->value == $myConfig->getShopID()) ) {
-            $this->_sSID        = $mySession->getId();
-            $this->_blInit      = true;
-            $this->_iLanguage   = $iLanguage;
-            $this->_sUserID     = $oUser->getId();
+            throw new Exception(self::ERROR_USER_WRONG);
+        } elseif (($oUser->oxuser__oxrights->value == "malladmin" || $oUser->oxuser__oxrights->value == $myConfig->getShopID())) {
+            $this->_sSID = $mySession->getId();
+            $this->_blInit = true;
+            $this->_iLanguage = $iLanguage;
+            $this->_sUserID = $oUser->getId();
             //$mySession->freeze();
         } else {
 
             //user does not have sufficient rights for shop
-            throw new Exception( self::ERROR_USER_NO_RIGHTS );
+            throw new Exception(self::ERROR_USER_NO_RIGHTS);
         }
 
         $this->_resetIdx();
@@ -268,16 +272,16 @@ abstract class oxERPBase
      *
      * @return null
      */
-    public function loadSessionData( $sSessionID )
+    public function loadSessionData($sSessionID)
     {
         if (!$sSessionID) {
-            throw new Exception( "ERROR: Session ID not valid!");
+            throw new Exception("ERROR: Session ID not valid!");
         }
         $_COOKIE = array('admin_sid' => $sSessionID);
         // start session
         $myConfig = oxRegistry::getConfig();
-        $myConfig->setConfigParam( 'blAdmin', 1 );
-        $myConfig->setAdminMode( true );
+        $myConfig->setConfigParam('blAdmin', 1);
+        $myConfig->setAdminMode(true);
         $mySession = oxRegistry::getSession();
 
         // change session if needed
@@ -292,14 +296,14 @@ abstract class oxERPBase
         $sAuth = $mySession->getVariable('auth');
 
         if (!isset($sAuth) || !$sAuth) {
-            throw new Exception( "ERROR: Session ID not valid!");
+            throw new Exception("ERROR: Session ID not valid!");
         }
 
-        $this->_iLanguage   = $mySession->getVariable('lang');
-        $this->_sUserID     = $sAuth;
+        $this->_iLanguage = $mySession->getVariable('lang');
+        $this->_sUserID = $sAuth;
 
 
-        $this->_blInit      = true;
+        $this->_blInit = true;
     }
 
     /**
@@ -343,17 +347,17 @@ abstract class oxERPBase
      */
     protected function _getInstanceOfType($sType)
     {
-        $sClassName = 'oxerptype_'.$sType;
-        $sFullPath  = dirname(__FILE__).'/objects/'.$sClassName.'.php';
+        $sClassName = 'oxerptype_' . $sType;
+        $sFullPath = dirname(__FILE__) . '/objects/' . $sClassName . '.php';
 
-        if ( !file_exists($sFullPath)) {
-            throw new Exception( "Type $sType not supported in ERP interface!");
+        if (!file_exists($sFullPath)) {
+            throw new Exception("Type $sType not supported in ERP interface!");
         }
 
         include_once $sFullPath;
 
         //return new $sClassName;
-        return oxNew ($sClassName);
+        return oxNew($sClassName);
     }
 
     /**
@@ -375,19 +379,19 @@ abstract class oxERPBase
 
         $myConfig = oxRegistry::getConfig();
         // prepare
-        $oType   = $this->_getInstanceOfType($sType);
+        $oType = $this->_getInstanceOfType($sType);
         //$sSQL    = $oType->getSQL($sWhere, $this->_iLanguage, $this->_iShopID);
-        $sSQL    = $oType->getSQL($sWhere, $this->_iLanguage, $myConfig->getShopId());
-        $sSQL    .= $oType->getSortString($sSortFieldName, $sSortType);
-        $sFnc    = '_Export'.$oType->getFunctionSuffix();
+        $sSQL = $oType->getSQL($sWhere, $this->_iLanguage, $myConfig->getShopId());
+        $sSQL .= $oType->getSortString($sSortFieldName, $sSortType);
+        $sFnc = '_Export' . $oType->getFunctionSuffix();
 
         $save = $ADODB_FETCH_MODE;
 
-        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         if (isset($iCount) || isset($iStart)) {
-            $rs = $oDb->selectLimit( $sSQL, $iCount, $iStart );
+            $rs = $oDb->selectLimit($sSQL, $iCount, $iStart);
         } else {
-            $rs = $oDb->select( $sSQL );
+            $rs = $oDb->select($sSQL);
         }
 
         if ($rs != false && $rs->recordCount() > 0) {
@@ -401,21 +405,21 @@ abstract class oxERPBase
                 $this->_checkAccess($oType, false);
 
                 // export now
-                try{
-                    $blExport = $this->$sFnc($rs->fields );
+                try {
+                    $blExport = $this->$sFnc($rs->fields);
                 } catch (Exception $e) {
                     $sMessage = $e->getMessage();
 
                 }
 
-                $this->_aStatistics[$this->_iIdx] = array('r'=>$blExport,'m'=>$sMessage);
+                $this->_aStatistics[$this->_iIdx] = array('r' => $blExport, 'm' => $sMessage);
                 //#2428 MAFI
                 $this->_nextIdx();
 
                 $rs->moveNext();
             }
         }
-        $ADODB_FETCH_MODE       = $save;
+        $ADODB_FETCH_MODE = $save;
     }
 
     /**
@@ -431,8 +435,8 @@ abstract class oxERPBase
 
         $iIdx = 0;
         foreach ($aData as $key => $oADODBField) {
-            if ( !(is_numeric( substr($oADODBField->name, strlen($oADODBField->name) - 1, 1)) &&  substr($oADODBField->name, strlen($oADODBField->name) - 2, 1) == '_')) {
-                echo( "'".$oADODBField->name."'\t\t => '".$oADODBField->name."',\n");
+            if (!(is_numeric(substr($oADODBField->name, strlen($oADODBField->name) - 1, 1)) && substr($oADODBField->name, strlen($oADODBField->name) - 2, 1) == '_')) {
+                echo("'" . $oADODBField->name . "'\t\t => '" . $oADODBField->name . "',\n");
                 $iIdx++;
             }
         }
@@ -453,6 +457,7 @@ abstract class oxERPBase
             // note: also pass false here
             return $sOXID;
         }
+
         return oxUtilsObject::getInstance()->generateUID();
     }
 
@@ -466,8 +471,8 @@ abstract class oxERPBase
         $this->_iIdx = 0;
 
         if (count($this->_aStatistics) && isset($this->_aStatistics[$this->_iIdx])) {
-            while ( isset($this->_aStatistics[$this->_iIdx]) && $this->_aStatistics[$this->_iIdx]['r'] ) {
-                $this->_iIdx ++;
+            while (isset($this->_aStatistics[$this->_iIdx]) && $this->_aStatistics[$this->_iIdx]['r']) {
+                $this->_iIdx++;
             }
         }
     }
@@ -479,11 +484,11 @@ abstract class oxERPBase
      */
     protected function _nextIdx()
     {
-        $this->_iIdx ++;
+        $this->_iIdx++;
 
         if (count($this->_aStatistics) && isset($this->_aStatistics[$this->_iIdx])) {
-            while ( isset($this->_aStatistics[$this->_iIdx]) && $this->_aStatistics[$this->_iIdx]['r'] ) {
-                $this->_iIdx ++;
+            while (isset($this->_aStatistics[$this->_iIdx]) && $this->_aStatistics[$this->_iIdx]['r']) {
+                $this->_iIdx++;
             }
         }
     }
@@ -530,13 +535,13 @@ abstract class oxERPBase
             $blImport = false;
             $sMessage = '';
 
-            $sType  = $this->_getImportType($aData);
+            $sType = $this->_getImportType($aData);
             $sMode = $this->_getImportMode($aData);
-            $oType  = $this->_getInstanceOfType($sType);
+            $oType = $this->_getInstanceOfType($sType);
             $aData = $this->_modifyData($aData, $oType);
 
             // import now
-            $sFnc   = '_' . $sMode . $oType->getFunctionSuffix();
+            $sFnc = '_' . $sMode . $oType->getFunctionSuffix();
 
             if ($sMode == oxERPBase::$MODE_IMPORT) {
                 $aData = $oType->addImportData($aData);
@@ -544,10 +549,10 @@ abstract class oxERPBase
 
             try {
                 $iId = $this->$sFnc($oType, $aData);
-                if ( !$iId )
+                if (!$iId) {
                     $blImport = false;
-                else {
-                    $this->setImportedIds( $iId );
+                } else {
+                    $this->setImportedIds($iId);
                     $blImport = true;
                 }
                 $sMessage = '';
@@ -555,7 +560,7 @@ abstract class oxERPBase
                 $sMessage = $e->getMessage();
             }
 
-            $this->_aStatistics[$this->_iIdx] = array('r'=>$blImport,'m'=>$sMessage);
+            $this->_aStatistics[$this->_iIdx] = array('r' => $blImport, 'm' => $sMessage);
 
         }
         //hotfix #2428 MAFI
@@ -598,7 +603,7 @@ abstract class oxERPBase
     protected static function _checkShopVersion()
     {
         $myConfig = oxRegistry::getConfig();
-        if ( method_exists($myConfig, 'getSerial') ) {
+        if (method_exists($myConfig, 'getSerial')) {
             if ($myConfig->getSerial() instanceof oxSerial) {
                 return;
             }
@@ -630,6 +635,7 @@ abstract class oxERPBase
         if (!self::$_sRequestedVersion) {
             self::setVersion();
         }
+
         return self::$_sRequestedVersion;
     }
 
@@ -654,7 +660,7 @@ abstract class oxERPBase
      */
     public static function setVersion($sDbLayerVersion = '')
     {
-        $sDbLayerVersion =  '2.9.0';
+        $sDbLayerVersion = '2.9.0';
         self::$_sRequestedVersion = $sDbLayerVersion;
         self::_checkRequestedVersion();
     }
@@ -671,17 +677,17 @@ abstract class oxERPBase
         $sClassName = preg_replace('/[^a-z0-9_]/i', '', $sId);
         if (preg_match('/(.*)Plugin$/i', $sClassName, $m)) {
             // fix possible case changes
-            $sClassName = $m[1].'Plugin';
+            $sClassName = $m[1] . 'Plugin';
         } else {
             throw new Exception("Plugin handler class has to end with 'Plugin' word (GOT '$sClassName').");
         }
 
-        $sFileName = dirname(__FILE__).'/plugins/'.strtolower($sClassName).'.php';
+        $sFileName = dirname(__FILE__) . '/plugins/' . strtolower($sClassName) . '.php';
         if (!is_readable($sFileName)) {
             $sFileName = basename($sFileName);
             throw new Exception("Can not find the requested plugin file ('$sFileName').");
         }
-        include_once dirname(__FILE__).'/plugins/oxerppluginbase.php';
+        include_once dirname(__FILE__) . '/plugins/oxerppluginbase.php';
         include_once $sFileName;
         if (!class_exists($sClassName)) {
             throw new Exception("Can not find the requested plugin class.");

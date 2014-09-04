@@ -26,6 +26,7 @@
  */
 interface oxIUrl
 {
+
     /**
      * Returns object URL. If SEO if ON returned link will be in SEO form,
      * else URL will have dynamic form
@@ -34,7 +35,7 @@ interface oxIUrl
      *
      * @return string
      */
-    public function getLink( $iLang = null );
+    public function getLink($iLang = null);
 
     /**
      * Returns standard (dynamic) object URL
@@ -44,7 +45,7 @@ interface oxIUrl
      *
      * @return string
      */
-    public function getStdLink( $iLang = null, $aParams = array() );
+    public function getStdLink($iLang = null, $aParams = array());
 
     /**
      * Returns base dynamic url: e.g. shopurl/index.php?cl=details&anid=artid
@@ -55,5 +56,5 @@ interface oxIUrl
      *
      * @return string
      */
-    public function getBaseStdLink( $iLang, $blAddId = true, $blFull = true );
+    public function getBaseStdLink($iLang, $blAddId = true, $blFull = true);
 }

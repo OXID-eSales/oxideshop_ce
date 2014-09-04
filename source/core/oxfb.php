@@ -23,9 +23,10 @@
 
 try {
     include_once getShopBasePath() . "core/facebook/facebook.php";
-} catch ( Exception $oEx ) {
+} catch (Exception $oEx) {
     // skipping class includion if curl or json is not active
-    oxRegistry::getConfig()->setConfigParam( "bl_showFbConnect", false );
+    oxRegistry::getConfig()->setConfigParam("bl_showFbConnect", false);
+
     return;
 }
 
@@ -35,6 +36,7 @@ try {
  */
 class oxFb extends Facebook
 {
+
     /**
      * User is connected using Facebook connect.
      *
@@ -52,11 +54,11 @@ class oxFb extends Facebook
     {
         $oConfig = oxRegistry::getConfig();
 
-        $aFbConfig["appId"]  = $oConfig->getConfigParam( "sFbAppId" );
-        $aFbConfig["secret"] = $oConfig->getConfigParam( "sFbSecretKey" );
+        $aFbConfig["appId"] = $oConfig->getConfigParam("sFbAppId");
+        $aFbConfig["secret"] = $oConfig->getConfigParam("sFbSecretKey");
         $aFbConfig["cookie"] = true;
 
-        BaseFacebook::__construct( $aFbConfig );
+        BaseFacebook::__construct($aFbConfig);
     }
 
     /**
@@ -68,11 +70,11 @@ class oxFb extends Facebook
     {
         $oConfig = oxRegistry::getConfig();
 
-        if ( !$oConfig->getConfigParam( "bl_showFbConnect" ) ) {
+        if (!$oConfig->getConfigParam("bl_showFbConnect")) {
             return false;
         }
 
-        if ( $this->_blIsConnected !== null ) {
+        if ($this->_blIsConnected !== null) {
             return $this->_blIsConnected;
         }
 
@@ -81,6 +83,7 @@ class oxFb extends Facebook
 
         if (!$oUser) {
             $this->_blIsConnected = false;
+
             return $this->_blIsConnected;
         }
 
@@ -109,6 +112,7 @@ class oxFb extends Facebook
     {
         if (!in_array($key, self::$kSupportedKeys)) {
             self::errorLog('Unsupported key passed to setPersistentData.');
+
             return;
         }
 
@@ -128,10 +132,12 @@ class oxFb extends Facebook
     {
         if (!in_array($key, self::$kSupportedKeys)) {
             self::errorLog('Unsupported key passed to getPersistentData.');
+
             return $default;
         }
 
         $sSessionVarName = $this->constructSessionVariableName($key);
+
         return (oxRegistry::getSession()->hasVariable($sSessionVarName) ?
             oxRegistry::getSession()->getVariable($sSessionVarName) : $default);
     }
@@ -147,6 +153,7 @@ class oxFb extends Facebook
     {
         if (!in_array($key, self::$kSupportedKeys)) {
             self::errorLog('Unsupported key passed to clearPersistentData.');
+
             return;
         }
 

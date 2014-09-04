@@ -24,12 +24,13 @@
  * Performs Online License Key check
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  *
- * @ignore This class will not be included in documentation.
+ * @ignore   This class will not be included in documentation.
  */
 class oxOnlineLicenseCheck
 {
+
     /**
      * Variable name to be used in oxConfig table
      */
@@ -70,20 +71,17 @@ class oxOnlineLicenseCheck
      */
     protected $_blIsException = false;
 
-    /** @var oxOnlineLicenseCheckCaller */
+    /**
+     * @var oxOnlineLicenseCheckCaller
+     */
     protected $_oCaller = null;
 
-    /** @var oxUserCounter */
-    protected $_oUserCounter = null;
-
     /**
-     * @param oxOnlineLicenseCheckCaller $oCaller
-     * @param oxUserCounter $oUserCounter
+     * @param null $oCaller
      */
-    public function __construct($oCaller, $oUserCounter)
+    public function __construct($oCaller)
     {
         $this->_oCaller = $oCaller;
-        $this->_oUserCounter = $oUserCounter;
     }
 
     /**
@@ -173,6 +171,7 @@ class oxOnlineLicenseCheck
      * Performs a check of the response code and message.
      *
      * @param $oResponse
+     *
      * @throws oxException
      *
      * @return bool
@@ -202,6 +201,7 @@ class oxOnlineLicenseCheck
      * Builds request object with required parameters.
      *
      * @param array $aSerial
+     *
      * @throws oxException
      *
      * @return oxOnlineLicenseCheckRequest
@@ -209,7 +209,6 @@ class oxOnlineLicenseCheck
     protected function _formRequest($aSerial)
     {
         $oConfig = oxRegistry::getConfig();
-        $oUserCounter = $this->_getUserCounter();
 
         /** @var oxOnlineLicenseCheckRequest $oRequest */
         $oRequest = oxNew('oxOnlineLicenseCheckRequest');
@@ -219,23 +218,8 @@ class oxOnlineLicenseCheck
         $oRequest->keys = new stdClass();
         $oRequest->keys->key = $aSerial;
 
-        $oServers = new stdClass();
-        $oServers->server = $oConfig->getConfigParam('aServersData');
-
-        $oCounter = new stdClass();
-        $oCounter->name = 'admin users';
-        $oCounter->value = $oUserCounter->getAdminCount();
-
-        $oSubShops = new stdClass();
-        $oSubShops->name = 'subShops';
-        $oSubShops->value = $oConfig->getMandateCount();
-
-        $oCounters = new stdClass();
-        $oCounters->counter = array($oCounter, $oSubShops);
-
-        $oRequest->productSpecificInformation = new stdClass();
-        $oRequest->productSpecificInformation->servers = $oServers;
-        $oRequest->productSpecificInformation->counters = $oCounters;
+        $oRequest->servers = new stdClass();
+        $oRequest->servers->server = $oConfig->getConfigParam('aServersData');
 
         return $oRequest;
     }
@@ -262,13 +246,5 @@ class oxOnlineLicenseCheck
 
     protected function _startGracePeriod()
     {
-    }
-
-    /**
-     * @return oxUserCounter
-     */
-    protected function _getUserCounter()
-    {
-        return $this->_oUserCounter;
     }
 }

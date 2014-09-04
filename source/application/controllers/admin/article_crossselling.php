@@ -28,6 +28,7 @@
  */
 class Article_Crossselling extends oxAdminDetails
 {
+
     /**
      * Collects article crosselling and attributes information, passes
      * them to Smarty engine and returns name or template file
@@ -39,35 +40,37 @@ class Article_Crossselling extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oArticle = oxNew( 'oxarticle' );
+        $this->_aViewData['edit'] = $oArticle = oxNew('oxarticle');
 
         // crossselling
-        $this->_createCategoryTree( "artcattree");
+        $this->_createCategoryTree("artcattree");
 
         // accessoires
-        $this->_createCategoryTree( "artcattree2");
+        $this->_createCategoryTree("artcattree2");
 
         $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId ) ) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oArticle->load( $soxId);
+            $oArticle->load($soxId);
 
-            if ($oArticle->isDerived())
+            if ($oArticle->isDerived()) {
                 $this->_aViewData['readonly'] = true;
+            }
         }
 
         $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
-        if ( $iAoc == 1 ) {            
-            $oArticleCrossellingAjax = oxNew( 'article_crossselling_ajax' );
+        if ($iAoc == 1) {
+            $oArticleCrossellingAjax = oxNew('article_crossselling_ajax');
             $this->_aViewData['oxajax'] = $oArticleCrossellingAjax->getColumns();
 
             return "popups/article_crossselling.tpl";
-        } elseif ( $iAoc == 2 ) {
-            $oArticleAccessoriesAjax = oxNew( 'article_accessories_ajax' );
+        } elseif ($iAoc == 2) {
+            $oArticleAccessoriesAjax = oxNew('article_accessories_ajax');
             $this->_aViewData['oxajax'] = $oArticleAccessoriesAjax->getColumns();
 
             return "popups/article_accessories.tpl";
         }
+
         return "article_crossselling.tpl";
     }
 }

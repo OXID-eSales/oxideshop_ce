@@ -25,6 +25,7 @@
  */
 class vendor_main_ajax extends ajaxListComponent
 {
+
     /**
      * If true extended column selection will be build
      *
@@ -37,25 +38,25 @@ class vendor_main_ajax extends ajaxListComponent
      *
      * @var array
      */
-    protected $_aColumns = array( 'container1' => array(    // field , table,       visible, multilanguage, ident
-                                        array( 'oxartnum', 'oxarticles', 1, 0, 0 ),
-                                        array( 'oxtitle',  'oxarticles', 1, 1, 0 ),
-                                        array( 'oxean',    'oxarticles', 1, 0, 0 ),
-                                        array( 'oxmpn',    'oxarticles', 0, 0, 0 ),
-                                        array( 'oxprice',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxstock',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxid',     'oxarticles', 0, 0, 1 )
-                                        ),
-                                    'container2' => array(
-                                        array( 'oxartnum', 'oxarticles', 1, 0, 0 ),
-                                        array( 'oxtitle',  'oxarticles', 1, 1, 0 ),
-                                        array( 'oxean',    'oxarticles', 1, 0, 0 ),
-                                        array( 'oxmpn',    'oxarticles', 0, 0, 0 ),
-                                        array( 'oxprice',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxstock',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxid',     'oxarticles', 0, 0, 1 )
-                                        )
-                                );
+    protected $_aColumns = array('container1' => array( // field , table,       visible, multilanguage, ident
+        array('oxartnum', 'oxarticles', 1, 0, 0),
+        array('oxtitle', 'oxarticles', 1, 1, 0),
+        array('oxean', 'oxarticles', 1, 0, 0),
+        array('oxmpn', 'oxarticles', 0, 0, 0),
+        array('oxprice', 'oxarticles', 0, 0, 0),
+        array('oxstock', 'oxarticles', 0, 0, 0),
+        array('oxid', 'oxarticles', 0, 0, 1)
+    ),
+                                 'container2' => array(
+                                     array('oxartnum', 'oxarticles', 1, 0, 0),
+                                     array('oxtitle', 'oxarticles', 1, 1, 0),
+                                     array('oxean', 'oxarticles', 1, 0, 0),
+                                     array('oxmpn', 'oxarticles', 0, 0, 0),
+                                     array('oxprice', 'oxarticles', 0, 0, 0),
+                                     array('oxstock', 'oxarticles', 0, 0, 0),
+                                     array('oxid', 'oxarticles', 0, 0, 1)
+                                 )
+    );
 
     /**
      * Returns SQL query for data to fetc
@@ -66,27 +67,27 @@ class vendor_main_ajax extends ajaxListComponent
     {
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
-        $sO2CView  = $this->_getViewName('oxobject2category');
+        $sO2CView = $this->_getViewName('oxobject2category');
         $oDb = oxDb::getDb();
         $oConfig = oxRegistry::getConfig();
-        $sVendorId      = $oConfig->getRequestParameter( 'oxid' );
-        $sSynchVendorId = $oConfig->getRequestParameter( 'synchoxid' );
+        $sVendorId = $oConfig->getRequestParameter('oxid');
+        $sSynchVendorId = $oConfig->getRequestParameter('synchoxid');
 
         // vendor selected or not ?
-        if ( !$sVendorId ) {
-            $sQAdd  = ' from '.$sArtTable.' where '.$sArtTable.'.oxshopid="'.$oConfig->getShopId().'" and 1 ';
-            $sQAdd .= $oConfig->getConfigParam( 'blVariantsSelection' ) ?'':" and $sArtTable.oxparentid = '' and $sArtTable.oxvendorid != ".$oDb->quote( $sSynchVendorId );
+        if (!$sVendorId) {
+            $sQAdd = ' from ' . $sArtTable . ' where ' . $sArtTable . '.oxshopid="' . $oConfig->getShopId() . '" and 1 ';
+            $sQAdd .= $oConfig->getConfigParam('blVariantsSelection') ? '' : " and $sArtTable.oxparentid = '' and $sArtTable.oxvendorid != " . $oDb->quote($sSynchVendorId);
         } else {
             // selected category ?
-            if ( $sSynchVendorId && $sSynchVendorId != $sVendorId ) {
-                $sQAdd  = " from $sO2CView left join $sArtTable on ";
-                $sQAdd .= $oConfig->getConfigParam( 'blVariantsSelection' )?" ( $sArtTable.oxid = $sO2CView.oxobjectid or $sArtTable.oxparentid = oxobject2category.oxobjectid )":" $sArtTable.oxid = $sO2CView.oxobjectid ";
-                $sQAdd .= 'where '.$sArtTable.'.oxshopid="'.$oConfig->getShopId().'" and '.$sO2CView.'.oxcatnid = '.$oDb->quote( $sVendorId ).' and '.$sArtTable.'.oxvendorid != '. $oDb->quote( $sSynchVendorId );
+            if ($sSynchVendorId && $sSynchVendorId != $sVendorId) {
+                $sQAdd = " from $sO2CView left join $sArtTable on ";
+                $sQAdd .= $oConfig->getConfigParam('blVariantsSelection') ? " ( $sArtTable.oxid = $sO2CView.oxobjectid or $sArtTable.oxparentid = oxobject2category.oxobjectid )" : " $sArtTable.oxid = $sO2CView.oxobjectid ";
+                $sQAdd .= 'where ' . $sArtTable . '.oxshopid="' . $oConfig->getShopId() . '" and ' . $sO2CView . '.oxcatnid = ' . $oDb->quote($sVendorId) . ' and ' . $sArtTable . '.oxvendorid != ' . $oDb->quote($sSynchVendorId);
             } else {
-                $sQAdd  = " from $sArtTable where $sArtTable.oxvendorid = ".$oDb->quote( $sVendorId );
+                $sQAdd = " from $sArtTable where $sArtTable.oxvendorid = " . $oDb->quote($sVendorId);
             }
 
-            $sQAdd .= $oConfig->getConfigParam( 'blVariantsSelection' )?'':" and $sArtTable.oxparentid = '' ";
+            $sQAdd .= $oConfig->getConfigParam('blVariantsSelection') ? '' : " and $sArtTable.oxparentid = '' ";
         }
 
         return $sQAdd;
@@ -99,13 +100,14 @@ class vendor_main_ajax extends ajaxListComponent
      *
      * @return string
      */
-    protected function _addFilter( $sQ )
+    protected function _addFilter($sQ)
     {
         $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = parent::_addFilter( $sQ );
+        $sQ = parent::_addFilter($sQ);
 
         // display variants or not ?
-        $sQ .= $this->getConfig()->getConfigParam( 'blVariantsSelection' ) ? ' group by '.$sArtTable.'.oxid ' : '';
+        $sQ .= $this->getConfig()->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';
+
         return $sQ;
     }
 
@@ -116,18 +118,18 @@ class vendor_main_ajax extends ajaxListComponent
      */
     public function removeVendor()
     {
-        $oConfig    = $this->getConfig();
-        $aRemoveArt = $this->_getActionIds( 'oxarticles.oxid' );
+        $oConfig = $this->getConfig();
+        $aRemoveArt = $this->_getActionIds('oxarticles.oxid');
 
-        if ( $oConfig->getRequestParameter( 'all' ) ) {
-            $sArtTable = $this->_getViewName( 'oxarticles' );
-            $aRemoveArt = $this->_getAll( $this->_addFilter( "select $sArtTable.oxid ".$this->_getQuery() ) );
+        if ($oConfig->getRequestParameter('all')) {
+            $sArtTable = $this->_getViewName('oxarticles');
+            $aRemoveArt = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        if ( is_array(  $aRemoveArt ) ) {
-            $sSelect = "update oxarticles set oxvendorid = null where oxid in ( ".implode(", ", oxDb::getInstance()->quoteArray( $aRemoveArt ) ) . ") ";
-            oxDb::getDb()->Execute( $sSelect);
-            $this->resetCounter( "vendorArticle", $oConfig->getRequestParameter( 'oxid' ) );
+        if (is_array($aRemoveArt)) {
+            $sSelect = "update oxarticles set oxvendorid = null where oxid in ( " . implode(", ", oxDb::getInstance()->quoteArray($aRemoveArt)) . ") ";
+            oxDb::getDb()->Execute($sSelect);
+            $this->resetCounter("vendorArticle", $oConfig->getRequestParameter('oxid'));
         }
     }
 
@@ -140,20 +142,20 @@ class vendor_main_ajax extends ajaxListComponent
     {
         $oConfig = $this->getConfig();
 
-        $aAddArticle = $this->_getActionIds( 'oxarticles.oxid' );
-        $soxId       = $oConfig->getRequestParameter( 'synchoxid' );
+        $aAddArticle = $this->_getActionIds('oxarticles.oxid');
+        $soxId = $oConfig->getRequestParameter('synchoxid');
 
-        if ( $oConfig->getRequestParameter( 'all' ) ) {
-            $sArtTable = $this->_getViewName( 'oxarticles' );
-            $aAddArticle = $this->_getAll( $this->_addFilter( "select $sArtTable.oxid ".$this->_getQuery() ) );
+        if ($oConfig->getRequestParameter('all')) {
+            $sArtTable = $this->_getViewName('oxarticles');
+            $aAddArticle = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        if ( $soxId && $soxId != "-1" && is_array( $aAddArticle ) ) {
+        if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
             $oDb = oxDb::getDb();
-            $sSelect = "update oxarticles set oxvendorid = ".$oDb->quote( $soxId )." where oxid in ( ".implode(", ", oxDb::getInstance()->quoteArray( $aAddArticle ) )." )";
+            $sSelect = "update oxarticles set oxvendorid = " . $oDb->quote($soxId) . " where oxid in ( " . implode(", ", oxDb::getInstance()->quoteArray($aAddArticle)) . " )";
 
-            $oDb->Execute( $sSelect);
-            $this->resetCounter( "vendorArticle", $soxId );
+            $oDb->Execute($sSelect);
+            $this->resetCounter("vendorArticle", $soxId);
         }
     }
 }

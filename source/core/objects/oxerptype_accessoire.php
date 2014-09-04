@@ -28,6 +28,7 @@ require_once 'oxerptype.php';
  */
 class oxERPType_Accessoire extends oxERPType
 {
+
     /**
      * class constructor
      *
@@ -36,7 +37,7 @@ class oxERPType_Accessoire extends oxERPType
     public function __construct()
     {
         parent::__construct();
-        
+
         $this->_sTableName = 'oxaccessoire2article';
     }
 

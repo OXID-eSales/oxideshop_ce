@@ -27,6 +27,7 @@
  */
 class oxDiscountList extends oxList
 {
+
     /**
      * Discount user id
      *
@@ -43,10 +44,10 @@ class oxDiscountList extends oxList
 
 
     /**
-    * If any shops category has "skip discounts" status this parameter value will be true
-    *
-    * @var bool
-    */
+     * If any shops category has "skip discounts" status this parameter value will be true
+     *
+     * @var bool
+     */
     protected $_hasSkipDiscountCategories = null;
 
     /**
@@ -68,17 +69,17 @@ class oxDiscountList extends oxList
      *
      * @return array
      */
-    protected function _getList( $oUser = null )
+    protected function _getList($oUser = null)
     {
-        $sUserId = $oUser?$oUser->getId():'';
+        $sUserId = $oUser ? $oUser->getId() : '';
 
-        if ( $this->_blReload || $sUserId !== $this->_sUserId ) {
+        if ($this->_blReload || $sUserId !== $this->_sUserId) {
             // loading list
-            $this->selectString( $this->_getFilterSelect( $oUser ) );
+            $this->selectString($this->_getFilterSelect($oUser));
 
             // setting list proterties
-            $this->_blReload = false;    // reload marker
-            $this->_sUserId  = $sUserId; // discount list user id
+            $this->_blReload = false; // reload marker
+            $this->_sUserId = $sUserId; // discount list user id
         }
 
         // resetting array pointer
@@ -94,10 +95,10 @@ class oxDiscountList extends oxList
      *
      * @return string
      */
-    public function getCountryId( $oUser )
+    public function getCountryId($oUser)
     {
         $sCountryId = null;
-        if ( $oUser ) {
+        if ($oUser) {
             $sCountryId = $oUser->getActiveCountry();
         }
 
@@ -121,43 +122,43 @@ class oxDiscountList extends oxList
      *
      * @return string
      */
-    protected function _getFilterSelect( $oUser )
+    protected function _getFilterSelect($oUser)
     {
         $oBaseObject = $this->getBaseObject();
 
         $sTable = $oBaseObject->getViewName();
-        $sQ  = "select ".$oBaseObject->getSelectFields()." from $sTable ";
-        $sQ .= "where ".$oBaseObject->getSqlActiveSnippet().' ';
+        $sQ = "select " . $oBaseObject->getSelectFields() . " from $sTable ";
+        $sQ .= "where " . $oBaseObject->getSqlActiveSnippet() . ' ';
 
 
         // defining initial filter parameters
-        $sUserId    = null;
-        $sGroupIds  = null;
-        $sCountryId = $this->getCountryId( $oUser );
+        $sUserId = null;
+        $sGroupIds = null;
+        $sCountryId = $this->getCountryId($oUser);
         $oDb = oxDb::getDb();
 
         // checking for current session user which gives additional restrictions for user itself, users group and country
-        if ( $oUser ) {
+        if ($oUser) {
 
             // user ID
             $sUserId = $oUser->getId();
 
             // user group ids
-            foreach ( $oUser->getUserGroups() as $oGroup ) {
-                if ( $sGroupIds ) {
+            foreach ($oUser->getUserGroups() as $oGroup) {
+                if ($sGroupIds) {
                     $sGroupIds .= ', ';
                 }
-                $sGroupIds .= $oDb->quote( $oGroup->getId() );
+                $sGroupIds .= $oDb->quote($oGroup->getId());
             }
         }
 
-        $sUserTable    = getViewName( 'oxuser' );
-        $sGroupTable   = getViewName( 'oxgroups' );
-        $sCountryTable = getViewName( 'oxcountry' );
+        $sUserTable = getViewName('oxuser');
+        $sGroupTable = getViewName('oxgroups');
+        $sCountryTable = getViewName('oxcountry');
 
-        $sCountrySql = $sCountryId?"EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxcountry' and oxobject2discount.OXOBJECTID=".$oDb->quote( $sCountryId ).")":'0';
-        $sUserSql    = $sUserId   ?"EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxuser' and oxobject2discount.OXOBJECTID=".$oDb->quote( $sUserId ). ")":'0';
-        $sGroupSql   = $sGroupIds ?"EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxgroups' and oxobject2discount.OXOBJECTID in ($sGroupIds) )":'0';
+        $sCountrySql = $sCountryId ? "EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxcountry' and oxobject2discount.OXOBJECTID=" . $oDb->quote($sCountryId) . ")" : '0';
+        $sUserSql = $sUserId ? "EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxuser' and oxobject2discount.OXOBJECTID=" . $oDb->quote($sUserId) . ")" : '0';
+        $sGroupSql = $sGroupIds ? "EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxgroups' and oxobject2discount.OXOBJECTID in ($sGroupIds) )" : '0';
 
         $sQ .= "and (
             select
@@ -183,12 +184,12 @@ class oxDiscountList extends oxList
      *
      * @return array
      */
-    public function getArticleDiscounts( $oArticle, $oUser = null )
+    public function getArticleDiscounts($oArticle, $oUser = null)
     {
         $aList = array();
-        $aDiscList = $this->_getList( $oUser )->getArray();
-        foreach ( $aDiscList as $oDiscount ) {
-            if ( $oDiscount->isForArticle( $oArticle ) ) {
+        $aDiscList = $this->_getList($oUser)->getArray();
+        foreach ($aDiscList as $oDiscount) {
+            if ($oDiscount->isForArticle($oArticle)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
             }
         }
@@ -205,12 +206,12 @@ class oxDiscountList extends oxList
      *
      * @return array
      */
-    public function getBasketItemDiscounts( $oArticle, $oBasket, $oUser = null )
+    public function getBasketItemDiscounts($oArticle, $oBasket, $oUser = null)
     {
         $aList = array();
-        $aDiscList = $this->_getList( $oUser )->getArray();
-        foreach ( $aDiscList as $oDiscount ) {
-            if ( $oDiscount->isForBasketItem( $oArticle ) && $oDiscount->isForBasketAmount( $oBasket ) ) {
+        $aDiscList = $this->_getList($oUser)->getArray();
+        foreach ($aDiscList as $oDiscount) {
+            if ($oDiscount->isForBasketItem($oArticle) && $oDiscount->isForBasketAmount($oBasket)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
             }
         }
@@ -226,12 +227,12 @@ class oxDiscountList extends oxList
      *
      * @return array
      */
-    public function getBasketDiscounts( $oBasket, $oUser = null )
+    public function getBasketDiscounts($oBasket, $oUser = null)
     {
         $aList = array();
-        $aDiscList = $this->_getList( $oUser )->getArray();
-        foreach ( $aDiscList as $oDiscount ) {
-            if ( $oDiscount->isForBasket( $oBasket ) ) {
+        $aDiscList = $this->_getList($oUser)->getArray();
+        foreach ($aDiscList as $oDiscount) {
+            if ($oDiscount->isForBasket($oBasket)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
             }
         }
@@ -248,12 +249,12 @@ class oxDiscountList extends oxList
      *
      * @return array
      */
-    public function getBasketItemBundleDiscounts( $oArticle, $oBasket, $oUser = null )
+    public function getBasketItemBundleDiscounts($oArticle, $oBasket, $oUser = null)
     {
         $aList = array();
-        $aDiscList = $this->_getList( $oUser )->getArray();
-        foreach ( $aDiscList as $oDiscount ) {
-            if ( $oDiscount->isForBundleItem( $oArticle, $oBasket ) && $oDiscount->isForBasketAmount($oBasket) ) {
+        $aDiscList = $this->_getList($oUser)->getArray();
+        foreach ($aDiscList as $oDiscount) {
+            if ($oDiscount->isForBundleItem($oArticle, $oBasket) && $oDiscount->isForBasketAmount($oBasket)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
             }
         }
@@ -269,12 +270,12 @@ class oxDiscountList extends oxList
      *
      * @return array
      */
-    public function getBasketBundleDiscounts( $oBasket, $oUser = null )
+    public function getBasketBundleDiscounts($oBasket, $oUser = null)
     {
         $aList = array();
-        $aDiscList = $this->_getList( $oUser )->getArray();
-        foreach ( $aDiscList as $oDiscount ) {
-            if ( $oDiscount->isForBundleBasket( $oBasket ) ) {
+        $aDiscList = $this->_getList($oUser)->getArray();
+        foreach ($aDiscList as $oDiscount) {
+            if ($oDiscount->isForBundleBasket($oBasket)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
             }
         }
@@ -289,12 +290,13 @@ class oxDiscountList extends oxList
      */
     public function hasSkipDiscountCategories()
     {
-        if ( $this->_hasSkipDiscountCategories === null  || $this->_blReload ) {
-            $sViewName = getViewName( 'oxcategories' );
+        if ($this->_hasSkipDiscountCategories === null || $this->_blReload) {
+            $sViewName = getViewName('oxcategories');
             $sQ = "select 1 from {$sViewName} where {$sViewName}.oxactive = 1 and {$sViewName}.oxskipdiscounts = '1' ";
 
-            $this->_hasSkipDiscountCategories = (bool) oxDb::getDb()->getOne( $sQ );
+            $this->_hasSkipDiscountCategories = (bool) oxDb::getDb()->getOne($sQ);
         }
+
         return $this->_hasSkipDiscountCategories;
     }
 }

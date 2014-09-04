@@ -45,7 +45,7 @@ class Order_Downloads extends oxAdminDetails
     {
         parent::render();
 
-        if ( $oOrder = $this->getEditObject() ) {
+        if ($oOrder = $this->getEditObject()) {
             $this->_aViewData["edit"] = $oOrder;
         }
 
@@ -60,10 +60,11 @@ class Order_Downloads extends oxAdminDetails
     public function getEditObject()
     {
         $soxId = $this->getEditObjectId();
-        if ( $this->_oEditObject === null && isset( $soxId ) && $soxId != "-1" ) {
-            $this->_oEditObject = oxNew( "oxOrderFileList" );
-            $this->_oEditObject->loadOrderFiles( $soxId );
+        if ($this->_oEditObject === null && isset($soxId) && $soxId != "-1") {
+            $this->_oEditObject = oxNew("oxOrderFileList");
+            $this->_oEditObject->loadOrderFiles($soxId);
         }
+
         return $this->_oEditObject;
     }
 
@@ -74,9 +75,9 @@ class Order_Downloads extends oxAdminDetails
      */
     public function resetDownloadLink()
     {
-        $sOrderFileId = oxRegistry::getConfig()->getRequestParameter( 'oxorderfileid' );
+        $sOrderFileId = oxRegistry::getConfig()->getRequestParameter('oxorderfileid');
         $oOrderFile = oxNew("oxorderfile");
-        if ( $oOrderFile->load($sOrderFileId) ) {
+        if ($oOrderFile->load($sOrderFileId)) {
             $oOrderFile->reset();
             $oOrderFile->save();
         }

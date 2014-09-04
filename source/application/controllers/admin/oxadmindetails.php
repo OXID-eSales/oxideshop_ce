@@ -30,6 +30,7 @@
  */
 class oxAdminDetails extends oxAdminView
 {
+
     /**
      * Global editor object
      *
@@ -49,17 +50,17 @@ class oxAdminDetails extends oxAdminView
 
         // generate help link
         $myConfig = $this->getConfig();
-        $sDir = $myConfig->getConfigParam( 'sShopDir' ) . '/documentation/admin';
+        $sDir = $myConfig->getConfigParam('sShopDir') . '/documentation/admin';
         $iLang = 1;
         $sAbbr = $oLang->getLanguageAbbr($oLang->getTplLanguage());
-        if ( $sAbbr == "de" ) {
+        if ($sAbbr == "de") {
             $iLang = 0;
         }
-        if ( is_dir( $sDir ) ) {
-            $sDir = $myConfig->getConfigParam( 'sShopURL' ) . 'documentation/admin';
+        if (is_dir($sDir)) {
+            $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
         } else {
 
-                $oShop = $this->_getEditShop( oxRegistry::getSession()->getVariable( 'actshop' ) );
+                $oShop = $this->_getEditShop(oxRegistry::getSession()->getVariable('actshop'));
                 //$sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $myConfig->getConfigParam( 'iAdminLanguage' ) . '/admin';
                 $sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $iLang . '/admin';
         }
@@ -80,20 +81,20 @@ class oxAdminDetails extends oxAdminView
      *
      * @return wysiwygPro
      */
-    protected function _getTextEditor( $iWidth, $iHeight, $oObject, $sField, $sStylesheet = null )
+    protected function _getTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet = null)
     {
-        if ( $this->_oEditor === null ) {
+        if ($this->_oEditor === null) {
             $myConfig = $this->getConfig();
 
             // include the config file and editor class:
             $sEditorPath = 'wysiwigpro';
-            $sEditorFile = getShopBasePath()."core/".$sEditorPath . '/wysiwygPro.class.php';
+            $sEditorFile = getShopBasePath() . "core/" . $sEditorPath . '/wysiwygPro.class.php';
 
 
             // setting loaded state
             $this->_oEditor = false;
 
-            if ( $sEditorFile && file_exists( $sEditorFile ) ) {
+            if ($sEditorFile && file_exists($sEditorFile)) {
                 include_once $sEditorFile;
 
                 // create a new instance of the wysiwygPro class:
@@ -109,8 +110,8 @@ class oxAdminDetails extends oxAdminView
                 $this->_oEditor->urlFormat = 'preserve';
 
                 // document & image directory:
-                $this->_oEditor->documentDir = $this->_oEditor->imageDir = $myConfig->getPictureDir( false ).'wysiwigpro/';
-                $this->_oEditor->documentURL = $this->_oEditor->imageURL = $myConfig->getPictureUrl( null, false ).'wysiwigpro/';
+                $this->_oEditor->documentDir = $this->_oEditor->imageDir = $myConfig->getPictureDir(false) . 'wysiwigpro/';
+                $this->_oEditor->documentURL = $this->_oEditor->imageURL = $myConfig->getPictureUrl(null, false) . 'wysiwigpro/';
 
                 // enabling upload
                 $this->_oEditor->upload = true;
@@ -126,50 +127,50 @@ class oxAdminDetails extends oxAdminView
                 $this->_oEditor->allowedImageExtensions = '.jpg, .jpeg, .gif, .png';
 
                 // allowed document extensions
-                $this->_oEditor->allowedDocExtensions   = '.html, .htm, .pdf, .doc, .rtf, .txt, .xl, .xls, .ppt, .pps, .zip, .tar, .swf, .wmv, .rm, .mov, .jpg, .jpeg, .gif, .png';
+                $this->_oEditor->allowedDocExtensions = '.html, .htm, .pdf, .doc, .rtf, .txt, .xl, .xls, .ppt, .pps, .zip, .tar, .swf, .wmv, .rm, .mov, .jpg, .jpeg, .gif, .png';
 
                 // set name
                 $this->_oEditor->name = $sField;
 
                 // set language file name
                 $oLang = oxRegistry::getLang();
-                $this->_oEditor->lang = $oLang->translateString( 'editor_language', $oLang->getTplLanguage() );
+                $this->_oEditor->lang = $oLang->translateString('editor_language', $oLang->getTplLanguage());
 
                 // set contents
-                if ( $sEditObjectValue = $this->_getEditValue( $oObject, $sField ) ) {
+                if ($sEditObjectValue = $this->_getEditValue($oObject, $sField)) {
                     $this->_oEditor->value = $sEditObjectValue;
-                    $this->_oEditor->encoding = $this->getConfig()->isUtf() ? 'UTF-8': 'ISO-8859-15';
+                    $this->_oEditor->encoding = $this->getConfig()->isUtf() ? 'UTF-8' : 'ISO-8859-15';
                 }
 
                 // parse for styles and add them
-                $this->setAdminMode( false );
-                $sCSSPath = $myConfig->getResourcePath("{$sStylesheet}", false );
-                $sCSSUrl  = $myConfig->getResourceUrl("{$sStylesheet}", false );
+                $this->setAdminMode(false);
+                $sCSSPath = $myConfig->getResourcePath("{$sStylesheet}", false);
+                $sCSSUrl = $myConfig->getResourceUrl("{$sStylesheet}", false);
 
                 $aCSSPaths = array();
-                $this->setAdminMode( true );
+                $this->setAdminMode(true);
 
                 if (is_file($sCSSPath)) {
 
                     $aCSSPaths[] = $sCSSUrl;
 
                     if (is_readable($sCSSPath)) {
-                        $aCSS = @file( $sCSSPath);
-                        if ( isset( $aCSS) && $aCSS) {
+                        $aCSS = @file($sCSSPath);
+                        if (isset($aCSS) && $aCSS) {
                             $aClasses = array();
                             $oStr = getStr();
-                            foreach ( $aCSS as $key => $sLine ) {
+                            foreach ($aCSS as $key => $sLine) {
                                 $sLine = trim($sLine);
 
-                                if ( $sLine[0] == '.' && !$oStr->strstr( $sLine, 'default' ) ) {
+                                if ($sLine[0] == '.' && !$oStr->strstr($sLine, 'default')) {
                                     // found one tag
-                                    $sTag = $oStr->substr( $sLine, 1);
-                                    $iEnd = $oStr->strpos( $sTag, ' ' );
-                                    if ( !isset( $iEnd ) || !$iEnd ) {
-                                        $iEnd = $oStr->strpos( $sTag, '\n' );
+                                    $sTag = $oStr->substr($sLine, 1);
+                                    $iEnd = $oStr->strpos($sTag, ' ');
+                                    if (!isset($iEnd) || !$iEnd) {
+                                        $iEnd = $oStr->strpos($sTag, '\n');
                                     }
 
-                                    if ( $sTag = $oStr->substr( $sTag, 0, $iEnd ) ) {
+                                    if ($sTag = $oStr->substr($sTag, 0, $iEnd)) {
                                         $aClasses["span class='{$sTag}'"] = $sTag;
                                     }
                                 }
@@ -179,18 +180,18 @@ class oxAdminDetails extends oxAdminView
                     }
                 }
 
-                foreach ( $aCSSPaths as $sCssPath ) {
-                    $this->_oEditor->addStylesheet( $sCssPath );
+                foreach ($aCSSPaths as $sCssPath) {
+                    $this->_oEditor->addStylesheet($sCssPath);
                 }
 
                 //while there is a bug in editor template filter we cannot use this feature
                 // loading template filter plugin
-                $this->_oEditor->loadPlugin( 'templateFilter' );
-                $this->_oEditor->plugins['templateFilter']->protect( '[{', '}]' );
-                if ( $myConfig->getConfigParam( 'bl_perfParseLongDescinSmarty' ) ) {
-                    $this->_oEditor->plugins['templateFilter']->assign( '[{$oViewConf->getCurrentHomeDir()}]', $myConfig->getShopURL() );
+                $this->_oEditor->loadPlugin('templateFilter');
+                $this->_oEditor->plugins['templateFilter']->protect('[{', '}]');
+                if ($myConfig->getConfigParam('bl_perfParseLongDescinSmarty')) {
+                    $this->_oEditor->plugins['templateFilter']->assign('[{$oViewConf->getCurrentHomeDir()}]', $myConfig->getShopURL());
                     // note: in "[{ $" the space is needed for this parameter not to override previous call. see assign fnc of templateFilter
-                    $this->_oEditor->plugins['templateFilter']->assign( '[{ $oViewConf->getCurrentHomeDir()}]', $myConfig->getSSLShopURL() );
+                    $this->_oEditor->plugins['templateFilter']->assign('[{ $oViewConf->getCurrentHomeDir()}]', $myConfig->getSSLShopURL());
                 }
             }
 
@@ -206,19 +207,19 @@ class oxAdminDetails extends oxAdminView
      *
      * @return string
      */
-    protected function _getEditValue( $oObject, $sField )
+    protected function _getEditValue($oObject, $sField)
     {
         $sEditObjectValue = '';
-        if ( $oObject && $sField && isset( $oObject->$sField ) ) {
+        if ($oObject && $sField && isset($oObject->$sField)) {
 
-            if ( $oObject->$sField instanceof oxField ) {
+            if ($oObject->$sField instanceof oxField) {
                 $sEditObjectValue = $oObject->$sField->getRawValue();
             } else {
                 $sEditObjectValue = $oObject->$sField->value;
             }
 
-            $sEditObjectValue = $this->_processEditValue( $sEditObjectValue );
-            $oObject->$sField = new oxField( $sEditObjectValue, oxField::T_RAW );
+            $sEditObjectValue = $this->_processEditValue($sEditObjectValue);
+            $oObject->$sField = new oxField($sEditObjectValue, oxField::T_RAW);
         }
 
         return $sEditObjectValue;
@@ -231,15 +232,16 @@ class oxAdminDetails extends oxAdminView
      *
      * @return string
      */
-    protected function _processEditValue( $sValue )
+    protected function _processEditValue($sValue)
     {
         // A. replace ONLY if long description is not processed by smarty, or users will not be able to
         // store smarty tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
         // descriptions, which are filled dynamically
-        if ( !$this->getConfig()->getConfigParam( 'bl_perfParseLongDescinSmarty' ) ) {
-            $aReplace = array( '[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]' );
-            $sValue = str_replace( $aReplace, $this->getConfig()->getCurrentShopURL(false), $sValue );
+        if (!$this->getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
+            $aReplace = array('[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]');
+            $sValue = str_replace($aReplace, $this->getConfig()->getCurrentShopURL(false), $sValue);
         }
+
         return $sValue;
     }
 
@@ -253,16 +255,17 @@ class oxAdminDetails extends oxAdminView
      *
      * @return string
      */
-    protected function _getPlainEditor( $iWidth, $iHeight, $oObject, $sField )
+    protected function _getPlainEditor($iWidth, $iHeight, $oObject, $sField)
     {
-        $sEditObjectValue = $this->_getEditValue( $oObject, $sField );
+        $sEditObjectValue = $this->_getEditValue($oObject, $sField);
 
-        if ( strpos( $iWidth, '%' ) === false ) {
+        if (strpos($iWidth, '%') === false) {
             $iWidth .= 'px';
         }
-        if ( strpos( $iHeight, '%' ) === false ) {
+        if (strpos($iHeight, '%') === false) {
             $iHeight .= 'px';
         }
+
         return "<textarea id='editor_{$sField}' style='width:{$iWidth}; height:{$iHeight};'>{$sEditObjectValue}</textarea>";
     }
 
@@ -277,14 +280,14 @@ class oxAdminDetails extends oxAdminView
      *
      * @return string Editor output
      */
-    protected function _generateTextEditor( $iWidth, $iHeight, $oObject, $sField, $sStylesheet = null )
+    protected function _generateTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet = null)
     {
         // setup editor
-        if ( $oEditor = $this->_getTextEditor( $iWidth, $iHeight, $oObject, $sField, $sStylesheet ) ) {
+        if ($oEditor = $this->_getTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet)) {
             // generate and return editor code
-            $sEditorHtml = $oEditor->fetch( $iWidth, $iHeight );
+            $sEditorHtml = $oEditor->fetch($iWidth, $iHeight);
         } else {
-            $sEditorHtml = $this->_getPlainEditor( $iWidth, $iHeight, $oObject, $sField );
+            $sEditorHtml = $this->_getPlainEditor($iWidth, $iHeight, $oObject, $sField);
         }
 
         return $sEditorHtml;
@@ -333,16 +336,16 @@ class oxAdminDetails extends oxAdminView
      *
      * @return string
      */
-    protected function _createCategoryTree( $sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null )
+    protected function _createCategoryTree($sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null)
     {
         // caching category tree, to load it once, not many times
-        if ( !isset( $this->oCatTree ) || $blForceNonCache ) {
-            $this->oCatTree = oxNew( 'oxCategoryList' );
-            $this->oCatTree->setShopID( $iTreeShopId );
+        if (!isset($this->oCatTree) || $blForceNonCache) {
+            $this->oCatTree = oxNew('oxCategoryList');
+            $this->oCatTree->setShopID($iTreeShopId);
 
             // setting language
             $oBase = $this->oCatTree->getBaseObject();
-            $oBase->setLanguage( $this->_iEditLang );
+            $oBase->setLanguage($this->_iEditLang);
 
             $this->oCatTree->loadList();
         }
@@ -350,15 +353,15 @@ class oxAdminDetails extends oxAdminView
         // copying tree
         $oCatTree = $this->oCatTree;
         //removing current category
-        if ( $sEditCatId && isset( $oCatTree[$sEditCatId] ) ) {
-            unset( $oCatTree[$sEditCatId] );
+        if ($sEditCatId && isset($oCatTree[$sEditCatId])) {
+            unset($oCatTree[$sEditCatId]);
         }
 
         // add first fake category for not assigned articles
-        $oRoot = oxNew( 'oxcategory' );
+        $oRoot = oxNew('oxcategory');
         $oRoot->oxcategories__oxtitle = new oxField('--');
 
-        $oCatTree->assign( array_merge( array( '' => $oRoot ), $oCatTree->getArray() ) );
+        $oCatTree->assign(array_merge(array('' => $oRoot), $oCatTree->getArray()));
 
         // passing to view
         $this->_aViewData[$sTplVarName] = $oCatTree;
@@ -367,26 +370,26 @@ class oxAdminDetails extends oxAdminView
     }
 
     /**
-    * Function creates category tree for select list used in "Category main", "Article extend" etc.
-    * Returns ID of selected category if available
-    *
-    * @param string $sTplVarName     name of template variable where is stored category tree
-    * @param string $sSelectedCatId  ID of category witch was selected in select list
-    * @param string $sEditCatId      ID of category witch we are editing
-    * @param bool   $blForceNonCache Set to true to disable caching
-    * @param int    $iTreeShopId     tree shop id
-    *
-    * @return string
-    */
-    protected function _getCategoryTree( $sTplVarName, $sSelectedCatId, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null )
+     * Function creates category tree for select list used in "Category main", "Article extend" etc.
+     * Returns ID of selected category if available
+     *
+     * @param string $sTplVarName     name of template variable where is stored category tree
+     * @param string $sSelectedCatId  ID of category witch was selected in select list
+     * @param string $sEditCatId      ID of category witch we are editing
+     * @param bool   $blForceNonCache Set to true to disable caching
+     * @param int    $iTreeShopId     tree shop id
+     *
+     * @return string
+     */
+    protected function _getCategoryTree($sTplVarName, $sSelectedCatId, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null)
     {
         $oCatTree = $this->_createCategoryTree($sTplVarName, $sEditCatId, $blForceNonCache, $iTreeShopId);
 
         // mark selected
-        if ( $sSelectedCatId ) {
+        if ($sSelectedCatId) {
             // fixed parent category in select list
             foreach ($oCatTree as $oCategory) {
-                if ($oCategory->getId() == $sSelectedCatId ) {
+                if ($oCategory->getId() == $sSelectedCatId) {
                     $oCategory->selected = 1;
                     break;
                 }
@@ -394,14 +397,14 @@ class oxAdminDetails extends oxAdminView
         } else {
             // no category selected - opening first available
             $oCatTree->rewind();
-            if ( $oCat = $oCatTree->current() ) {
+            if ($oCat = $oCatTree->current()) {
                 $oCat->selected = 1;
                 $sSelectedCatId = $oCat->getId();
             }
         }
 
         // passing to view
-        $this->_aViewData[$sTplVarName] =  $oCatTree;
+        $this->_aViewData[$sTplVarName] = $oCatTree;
 
         return $sSelectedCatId;
     }
@@ -413,15 +416,15 @@ class oxAdminDetails extends oxAdminView
      */
     public function changeFolder()
     {
-        $sFolder = oxRegistry::getConfig()->getRequestParameter( 'setfolder' );
-        $sFolderClass = oxRegistry::getConfig()->getRequestParameter( 'folderclass' );
+        $sFolder = oxRegistry::getConfig()->getRequestParameter('setfolder');
+        $sFolderClass = oxRegistry::getConfig()->getRequestParameter('folderclass');
 
-        if ( $sFolderClass == 'oxcontent' && $sFolder == 'CMSFOLDER_NONE' ) {
+        if ($sFolderClass == 'oxcontent' && $sFolder == 'CMSFOLDER_NONE') {
             $sFolder = '';
         }
 
-        $oObject = oxNew( $sFolderClass );
-        if ( $oObject->load( $this->getEditObjectId() ) ) {
+        $oObject = oxNew($sFolderClass);
+        if ($oObject->load($this->getEditObjectId())) {
             $oObject->{$oObject->getCoreTableName() . '__oxfolder'} = new oxField($sFolder);
             $oObject->save();
         }
@@ -434,18 +437,18 @@ class oxAdminDetails extends oxAdminView
      *
      * @return null
      */
-    protected function _setupNavigation( $sNode )
+    protected function _setupNavigation($sNode)
     {
         // navigation according to class
-        if ( $sNode ) {
+        if ($sNode) {
 
             $myAdminNavig = $this->getNavigation();
 
             // default tab
-            $this->_aViewData['default_edit'] = $myAdminNavig->getActiveTab( $sNode, $this->_iDefEdit );
+            $this->_aViewData['default_edit'] = $myAdminNavig->getActiveTab($sNode, $this->_iDefEdit);
 
             // buttons
-            $this->_aViewData['bottom_buttons'] = $myAdminNavig->getBtn( $sNode );
+            $this->_aViewData['bottom_buttons'] = $myAdminNavig->getBtn($sNode);
         }
     }
 
@@ -456,17 +459,17 @@ class oxAdminDetails extends oxAdminView
      *
      * @return null
      */
-    protected function _resetCounts( $aIds )
+    protected function _resetCounts($aIds)
     {
         $oUtils = oxRegistry::get("oxUtilsCount");
-        foreach ( $aIds as $sType => $aResetInfo ) {
-            foreach ( $aResetInfo as $sResetId => $iPos ) {
-                switch ( $sType ) {
+        foreach ($aIds as $sType => $aResetInfo) {
+            foreach ($aResetInfo as $sResetId => $iPos) {
+                switch ($sType) {
                     case 'vendor':
-                        $this->resetCounter( "vendorArticle", $sResetId );
+                        $this->resetCounter("vendorArticle", $sResetId);
                         break;
                     case 'manufacturer':
-                        $this->resetCounter( "manufacturerArticle", $sResetId );
+                        $this->resetCounter("manufacturerArticle", $sResetId);
                         break;
                 }
             }

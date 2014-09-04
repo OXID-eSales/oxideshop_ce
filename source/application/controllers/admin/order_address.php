@@ -27,6 +27,7 @@
  */
 class Order_Address extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates oxorder object
      * and passes it's data to Smarty engine. Returns name of template
@@ -39,16 +40,16 @@ class Order_Address extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oOrder = oxNew( "oxorder" );
-            $oOrder->load( $soxId);
+            $oOrder = oxNew("oxorder");
+            $oOrder->load($soxId);
 
-            $this->_aViewData["edit"] =  $oOrder;
+            $this->_aViewData["edit"] = $oOrder;
         }
 
-        $oCountryList = oxNew( "oxCountryList" );
-        $oCountryList->loadActiveCountries( oxRegistry::getLang()->getObjectTplLanguage() );
+        $oCountryList = oxNew("oxCountryList");
+        $oCountryList->loadActiveCountries(oxRegistry::getLang()->getObjectTplLanguage());
 
         $this->_aViewData["countrylist"] = $oCountryList;
 
@@ -65,7 +66,7 @@ class Order_Address extends oxAdminDetails
      *
      * @return null
      */
-    protected function _processAddress( $aData, $sTypeToProcess, $aIgnore )
+    protected function _processAddress($aData, $sTypeToProcess, $aIgnore)
     {
         // empty address fields?
         $blEmpty = true;
@@ -73,16 +74,16 @@ class Order_Address extends oxAdminDetails
         // here we will store names of fields which needs to be cleaned up
         $aFields = array();
 
-        foreach ( $aData as $sName => $sValue ) {
+        foreach ($aData as $sName => $sValue) {
 
             // if field type matches..
-            if ( strpos( $sName, $sTypeToProcess ) !== false ) {
+            if (strpos($sName, $sTypeToProcess) !== false) {
 
                 // storing which fields must be unset..
                 $aFields[] = $sName;
 
                 // ignoring whats need to be ignored and testing values
-                if ( !in_array( $sName, $aIgnore ) && $sValue ) {
+                if (!in_array($sName, $aIgnore) && $sValue) {
 
                     // something was found - means leaving as is..
                     $blEmpty = false;
@@ -92,8 +93,8 @@ class Order_Address extends oxAdminDetails
         }
 
         // cleanup if empty
-        if ( $blEmpty ) {
-            foreach ( $aFields as $sName ) {
+        if ($blEmpty) {
+            foreach ($aFields as $sName) {
                 $aData[$sName] = "";
             }
         }
@@ -111,24 +112,24 @@ class Order_Address extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = (array) oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = (array) oxRegistry::getConfig()->getRequestParameter("editval");
 
             //TODO check if shop id is realy necessary at this place.
-            $sShopID = oxRegistry::getSession()->getVariable( "actshop" );
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxorder__oxshopid'] = $sShopID;
 
-        $oOrder = oxNew( "oxorder" );
-        if ( $soxId != "-1") {
-            $oOrder->load( $soxId );
+        $oOrder = oxNew("oxorder");
+        if ($soxId != "-1") {
+            $oOrder->load($soxId);
         } else {
             $aParams['oxorder__oxid'] = null;
         }
 
-        $aParams = $this->_processAddress( $aParams, "oxorder__oxdel", array( "oxorder__oxdelsal" ) );
-        $oOrder->assign( $aParams );
+        $aParams = $this->_processAddress($aParams, "oxorder__oxdel", array("oxorder__oxdelsal"));
+        $oOrder->assign($aParams);
         $oOrder->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oOrder->getId() );
+        $this->setEditObjectId($oOrder->getId());
     }
 }

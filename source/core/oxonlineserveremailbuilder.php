@@ -24,12 +24,13 @@
  * Class oxOnlineServerEmailBuilder is responsible for email sending when it's not possible to make call via CURL.
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  *
- * @ignore This class will not be included in documentation.
+ * @ignore   This class will not be included in documentation.
  */
 class oxOnlineServerEmailBuilder
 {
+
     /**
      * Created oxEmail object and sets values.
      *
@@ -42,7 +43,7 @@ class oxOnlineServerEmailBuilder
         /** @var oxEmail $oExpirationEmail */
         $oExpirationEmail = oxNew('oxEmail');
         $oExpirationEmail->setSubject(oxRegistry::getLang()->translateString('SUBJECT_UNABLE_TO_SEND_VIA_CURL', null, true));
-        $oExpirationEmail->setRecipient('olc@oxid-esales.com');
+        $oExpirationEmail->setRecipient('info@oxid-esales.com');
         $oExpirationEmail->setFrom($this->_getShopInfoAddress());
         $oExpirationEmail->setBody($sBody);
 

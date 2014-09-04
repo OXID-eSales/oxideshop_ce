@@ -28,31 +28,36 @@
 
 class oxPaymentGateway extends oxSuperCfg
 {
+
     /**
      * Payment status (active - true/not active - false) (default false).
+     *
      * @var bool
      */
-    protected $_blActive       = false;
+    protected $_blActive = false;
 
     /**
      * oUserpayment object (default null).
+     *
      * @var object
      */
-    protected $_oPaymentInfo   = null;
+    protected $_oPaymentInfo = null;
 
     /**
      * Last error nr. For backward compatibility must be >3
+     *
      * @abstract
      * @var string
      */
-    protected $_iLastErrorNo   = 4;
+    protected $_iLastErrorNo = 4;
 
     /**
      * Last error text.
+     *
      * @abstract
      * @var string
      */
-    protected $_sLastError     = null;
+    protected $_sLastError = null;
 
     /**
      * Sets payment parameters.
@@ -61,7 +66,7 @@ class oxPaymentGateway extends oxSuperCfg
      *
      * @return null
      */
-    public function setPaymentParams( $oUserpayment )
+    public function setPaymentParams($oUserpayment)
     {
         // store data
         $this->_oPaymentInfo = & $oUserpayment;
@@ -75,13 +80,13 @@ class oxPaymentGateway extends oxSuperCfg
      *
      * @return bool
      */
-    public function executePayment( $dAmount, & $oOrder )
+    public function executePayment($dAmount, & $oOrder)
     {
         $this->_iLastErrorNo = null;
         $this->_sLastError = null;
 
-        if ( !$this->_isActive()) {
-            return true;    // fake yes
+        if (!$this->_isActive()) {
+            return true; // fake yes
         }
 
         // proceed with no payment

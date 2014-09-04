@@ -25,6 +25,7 @@
  */
 class List_User extends User_List
 {
+
     /**
      * Viewable list size getter
      *
@@ -56,6 +57,7 @@ class List_User extends User_List
     {
         parent::render();
         $this->_aViewData["menustructure"] = $this->getNavigation()->getDomXml()->documentElement->childNodes;
+
         return "list_user.tpl";
     }
 }

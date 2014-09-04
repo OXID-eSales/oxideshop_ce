@@ -27,6 +27,7 @@
  */
 class deliveryset_rdfa extends payment_rdfa
 {
+
     /**
      * Current class template name.
      *
@@ -40,15 +41,15 @@ class deliveryset_rdfa extends payment_rdfa
      * @var array
      */
     protected $_aRDFaDeliveries = array(
-                                        "DeliveryModeDirectDownload" => 0,
-                                        "DeliveryModeFreight" => 0,
-                                        "DeliveryModeMail" => 0,
-                                        "DeliveryModeOwnFleet" => 0,
-                                        "DeliveryModePickUp" => 0,
-                                        "DHL" => 1,
-                                        "FederalExpress" => 1,
-                                        "UPS" => 1
-                                            );
+        "DeliveryModeDirectDownload" => 0,
+        "DeliveryModeFreight"        => 0,
+        "DeliveryModeMail"           => 0,
+        "DeliveryModeOwnFleet"       => 0,
+        "DeliveryModePickUp"         => 0,
+        "DHL"                        => 1,
+        "FederalExpress"             => 1,
+        "UPS"                        => 1
+    );
 
     /**
      * Saves changed mapping configurations
@@ -62,10 +63,10 @@ class deliveryset_rdfa extends payment_rdfa
 
         // Delete old mappings
         $oDb = oxDb::getDb();
-        $oDb->execute("DELETE FROM oxobject2delivery WHERE oxdeliveryid = '".oxRegistry::getConfig()->getRequestParameter("oxid")."' AND OXTYPE = 'rdfadeliveryset'");
+        $oDb->execute("DELETE FROM oxobject2delivery WHERE oxdeliveryid = '" . oxRegistry::getConfig()->getRequestParameter("oxid") . "' AND OXTYPE = 'rdfadeliveryset'");
 
         // Save new mappings
-        foreach ( $aRDFaDeliveries as $sDelivery ) {
+        foreach ($aRDFaDeliveries as $sDelivery) {
             $oMapping = oxNew("oxbase");
             $oMapping->init("oxobject2delivery");
             $oMapping->assign($aParams);
@@ -90,6 +91,7 @@ class deliveryset_rdfa extends payment_rdfa
             $oDelivery->checked = in_array($sName, $aAssignedRDFaDeliveries);
             $aRDFaDeliveries[] = $oDelivery;
         }
+
         return $aRDFaDeliveries;
     }
 
@@ -102,14 +104,15 @@ class deliveryset_rdfa extends payment_rdfa
     {
         $oDb = oxDb::getDb();
         $aRDFaDeliveries = array();
-        $sSelect = 'select oxobjectid from oxobject2delivery where oxdeliveryid='.$oDb->quote( oxRegistry::getConfig()->getRequestParameter("oxid") ).' and oxtype = "rdfadeliveryset" ';
-        $rs = $oDb->execute( $sSelect );
-        if ( $rs && $rs->recordCount()) {
-            while ( !$rs->EOF ) {
+        $sSelect = 'select oxobjectid from oxobject2delivery where oxdeliveryid=' . $oDb->quote(oxRegistry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfadeliveryset" ';
+        $rs = $oDb->execute($sSelect);
+        if ($rs && $rs->recordCount()) {
+            while (!$rs->EOF) {
                 $aRDFaDeliveries[] = $rs->fields[0];
                 $rs->moveNext();
             }
         }
+
         return $aRDFaDeliveries;
     }
 

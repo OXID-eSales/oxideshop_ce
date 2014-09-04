@@ -32,21 +32,21 @@ class oxErpGenImport extends oxErpCsv
      *
      * @var array
      */
-    protected $_aObjects = array    (
-                                'A' => 'article',
-                                'K' => 'category',
-                                'H' => 'vendor',
-                                'C' => 'crossselling',
-                                'Z' => 'accessoire',
-                                'T' => 'article2category',
-                                'I' => 'article2action',
-                                'P' => 'scaleprice',
-                                'U' => 'user',
-                                'O' => 'order',
-                                'R' => 'orderarticle',
-                                'N' => 'country',
-                                'Y' => 'artextends',
-                            );
+    protected $_aObjects = array(
+        'A' => 'article',
+        'K' => 'category',
+        'H' => 'vendor',
+        'C' => 'crossselling',
+        'Z' => 'accessoire',
+        'T' => 'article2category',
+        'I' => 'article2action',
+        'P' => 'scaleprice',
+        'U' => 'user',
+        'O' => 'order',
+        'R' => 'orderarticle',
+        'N' => 'country',
+        'Y' => 'artextends',
+    );
     /**
      * CSV file fields array.
      *
@@ -63,12 +63,14 @@ class oxErpGenImport extends oxErpCsv
 
     /**
      * Csv file field terminator
+     *
      * @var string
      */
     protected $_sDefaultStringTerminator = ";";
 
     /**
      * Csv file field encloser
+     *
      * @var string
      */
     protected $_sDefaultStringEncloser = '"';
@@ -84,18 +86,18 @@ class oxErpGenImport extends oxErpCsv
      *
      * @return string
      */
-    public function __call( $sMethod, $aArgs )
+    public function __call($sMethod, $aArgs)
     {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            if ( substr( $sMethod, 0, 4) == "UNIT" ) {
-                $sMethod = str_replace( "UNIT", "_", $sMethod );
+        if (defined('OXID_PHP_UNIT')) {
+            if (substr($sMethod, 0, 4) == "UNIT") {
+                $sMethod = str_replace("UNIT", "_", $sMethod);
             }
-            if ( method_exists( $this, $sMethod)) {
-                return call_user_func_array( array( & $this, $sMethod ), $aArgs );
+            if (method_exists($this, $sMethod)) {
+                return call_user_func_array(array(& $this, $sMethod), $aArgs);
             }
         }
 
-        throw new oxSystemComponentException( "Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")".PHP_EOL);
+        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
     }
 
     /**
@@ -117,9 +119,9 @@ class oxErpGenImport extends oxErpCsv
      *
      * @return object
      */
-    public function getInstanceOfType( $sType )
+    public function getInstanceOfType($sType)
     {
-        return parent::_getInstanceOfType( $sType );
+        return parent::_getInstanceOfType($sType);
     }
 
     /**
@@ -130,8 +132,8 @@ class oxErpGenImport extends oxErpCsv
     protected function _setDbLayerVersion()
     {
         $aVersions = array_keys(oxErpBase::$_aDbLayer2ShopDbVersions);
-        $sVersion = array_pop( $aVersions) ;
-        oxErpBase::setVersion( $sVersion );
+        $sVersion = array_pop($aVersions);
+        oxErpBase::setVersion($sVersion);
     }
 
     /**
@@ -161,9 +163,9 @@ class oxErpGenImport extends oxErpCsv
         $aRet = array();
         $iIndex = 0;
 
-        foreach ( $this->_aCsvFileFieldsOrder as $sValue ) {
-            if ( !empty($sValue) ) {
-                if ( strtolower( $aData[$iIndex] ) == "null" ) {
+        foreach ($this->_aCsvFileFieldsOrder as $sValue) {
+            if (!empty($sValue)) {
+                if (strtolower($aData[$iIndex]) == "null") {
                     $aRet[$sValue] = null;
                 } else {
                     $aRet[$sValue] = $aData[$iIndex];
@@ -184,12 +186,12 @@ class oxErpGenImport extends oxErpCsv
      *
      * @return string
      */
-    protected function _getImportType( & $aData )
+    protected function _getImportType(& $aData)
     {
         $sType = $this->_sImportTypePrefix;
 
-        if ( strlen($sType) != 1 || !array_key_exists($sType, $this->_aObjects) ) {
-            throw new Exception("Error unknown command: ".$sType);
+        if (strlen($sType) != 1 || !array_key_exists($sType, $this->_aObjects)) {
+            throw new Exception("Error unknown command: " . $sType);
         } else {
             return $this->_aObjects[$sType];
         }
@@ -202,7 +204,7 @@ class oxErpGenImport extends oxErpCsv
      *
      * @return string
      */
-    protected function _getImportMode( $aData )
+    protected function _getImportMode($aData)
     {
         return oxERPBase::$MODE_IMPORT;
     }
@@ -214,13 +216,14 @@ class oxErpGenImport extends oxErpCsv
      *
      * @return object
      */
-    public function getImportObject( $sType )
+    public function getImportObject($sType)
     {
         $this->_sImportTypePrefix = $sType;
         try {
-            $sImportType = $this->_getImportType( $this->_aData );
-            return $this->_getInstanceOfType( $sImportType );
-        } catch( Exception $e) {
+            $sImportType = $this->_getImportType($this->_aData);
+
+            return $this->_getInstanceOfType($sImportType);
+        } catch (Exception $e) {
         }
     }
 
@@ -231,7 +234,7 @@ class oxErpGenImport extends oxErpCsv
      *
      * @return null
      */
-    public function setImportTypePrefix( $sType )
+    public function setImportTypePrefix($sType)
     {
         $this->_sImportTypePrefix = $sType;
     }
@@ -243,10 +246,11 @@ class oxErpGenImport extends oxErpCsv
      */
     public function getImportObjectsList()
     {
-        foreach ( $this->_aObjects as $sKey => $sImportType ) {
-            $oType = $this->_getInstanceOfType( $sImportType );
+        foreach ($this->_aObjects as $sKey => $sImportType) {
+            $oType = $this->_getInstanceOfType($sImportType);
             $aList[$sKey] = $oType->getBaseTableName();
         }
+
         return $aList;
     }
 
@@ -261,23 +265,23 @@ class oxErpGenImport extends oxErpCsv
      *
      * @return boolean
      */
-    public function init( $sUserName, $sPassword, $iShopID = 1, $iLanguage = 0)
+    public function init($sUserName, $sPassword, $iShopID = 1, $iLanguage = 0)
     {
         $myConfig = oxRegistry::getConfig();
         $mySession = oxRegistry::getSession();
         $oUser = oxNew('oxUser');
         $oUser->loadAdminUser();
 
-        if ( ( $oUser->oxuser__oxrights->value == "malladmin" || $oUser->oxuser__oxrights->value == $myConfig->getShopID()) ) {
-            $this->_sSID        = $mySession->getId();
-            $this->_blInit      = true;
-            $this->_iLanguage   = oxRegistry::getLang()->getBaseLanguage();
-            $this->_sUserID     = $oUser->getId();
+        if (($oUser->oxuser__oxrights->value == "malladmin" || $oUser->oxuser__oxrights->value == $myConfig->getShopID())) {
+            $this->_sSID = $mySession->getId();
+            $this->_blInit = true;
+            $this->_iLanguage = oxRegistry::getLang()->getBaseLanguage();
+            $this->_sUserID = $oUser->getId();
             //$mySession->freeze();
         } else {
 
             //user does not have sufficient rights for shop
-            throw new Exception( self::ERROR_USER_NO_RIGHTS);
+            throw new Exception(self::ERROR_USER_NO_RIGHTS);
         }
 
         $this->_resetIdx();
@@ -292,7 +296,7 @@ class oxErpGenImport extends oxErpCsv
      *
      * @return null
      */
-    public function setCsvFileFieldsOrder( $aCsvFields )
+    public function setCsvFileFieldsOrder($aCsvFields)
     {
         $this->_aCsvFileFieldsOrder = $aCsvFields;
     }
@@ -304,7 +308,7 @@ class oxErpGenImport extends oxErpCsv
      *
      * @return null
      */
-    public function setCsvContainsHeader( $blCsvContainsHeader )
+    public function setCsvContainsHeader($blCsvContainsHeader)
     {
         $this->_blCsvContainsHeader = $blCsvContainsHeader;
     }
@@ -331,7 +335,7 @@ class oxErpGenImport extends oxErpCsv
      * @return string
      *
      */
-    public function doImport($sPath = null, $sUserName = null, $sUserPassword = null, $sShopId = null, $sShopLanguage = null )
+    public function doImport($sPath = null, $sUserName = null, $sUserPassword = null, $sShopId = null, $sShopLanguage = null)
     {
         $myConfig = oxRegistry::getConfig();
         $mySession = oxRegistry::getSession();
@@ -344,24 +348,24 @@ class oxErpGenImport extends oxErpCsv
         //init with given data
         try {
             $this->init(null, null);
-        }catch(Exception $ex){
+        } catch (Exception $ex) {
             return $this->_sReturn = 'ERPGENIMPORT_ERROR_USER_NO_RIGHTS';
         }
 
         $file = @fopen($this->_sPath, "r");
 
-        if ( isset($file) && $file ) {
+        if (isset($file) && $file) {
             $iRow = 0;
             $aRow = array();
 
-            while ( ($aRow = fgetcsv( $file, $iMaxLineLength, $this->_getCsvFieldsTerminator(), $this->_getCsvFieldsEncolser()) ) !== false ) {
+            while (($aRow = fgetcsv($file, $iMaxLineLength, $this->_getCsvFieldsTerminator(), $this->_getCsvFieldsEncolser())) !== false) {
 
                 $this->_aData[] = $aRow;
             }
 
-            if ( $this->_blCsvContainsHeader ) {
+            if ($this->_blCsvContainsHeader) {
                 //skipping first row - it's header
-                array_shift( $this->_aData );
+                array_shift($this->_aData);
             }
 
             try {
@@ -389,14 +393,15 @@ class oxErpGenImport extends oxErpCsv
     {
         $myConfig = oxRegistry::getConfig();
 
-        $sChar = $myConfig->getConfigParam( 'sGiCsvFieldTerminator' );
+        $sChar = $myConfig->getConfigParam('sGiCsvFieldTerminator');
 
-        if ( !$sChar ) {
-            $sChar = $myConfig->getConfigParam( 'sCSVSign' );
+        if (!$sChar) {
+            $sChar = $myConfig->getConfigParam('sCSVSign');
         }
-        if ( !$sChar ) {
+        if (!$sChar) {
             $sChar = $this->_sDefaultStringTerminator;
         }
+
         return $sChar;
     }
 
@@ -409,7 +414,7 @@ class oxErpGenImport extends oxErpCsv
     {
         $myConfig = oxRegistry::getConfig();
 
-        if ( $sChar = $myConfig->getConfigParam( 'sGiCsvFieldEncloser' ) ) {
+        if ($sChar = $myConfig->getConfigParam('sGiCsvFieldEncloser')) {
             return $sChar;
         } else {
             return $this->_sDefaultStringEncloser;

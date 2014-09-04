@@ -25,6 +25,7 @@
  */
 class Country_List extends oxAdminList
 {
+
     /**
      * Name of chosen object class (default null).
      *
@@ -57,6 +58,7 @@ class Country_List extends oxAdminList
     {
 
         parent::render();
+
         return "country_list.tpl";
     }
 }

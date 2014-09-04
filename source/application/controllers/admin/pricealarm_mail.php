@@ -27,6 +27,7 @@
  */
 class PriceAlarm_Mail extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates oxpricealarm object
      * and passes it's data to Smarty engine. Returns name of template file
@@ -40,9 +41,10 @@ class PriceAlarm_Mail extends oxAdminDetails
 
         parent::render();
         // #889C - Netto prices in Admin
-        $sIndex="";
-        if ( $myConfig->getConfigParam( 'blEnterNetPrice' ) )
-            $sIndex = " * ". (1+$myConfig->getConfigParam( 'dDefaultVAT' )/100);
+        $sIndex = "";
+        if ($myConfig->getConfigParam('blEnterNetPrice')) {
+            $sIndex = " * " . (1 + $myConfig->getConfigParam('dDefaultVAT') / 100);
+        }
 
         $sShopID = $myConfig->getShopId();
         //articles price in subshop and baseshop can be different
@@ -59,8 +61,8 @@ class PriceAlarm_Mail extends oxAdminDetails
                         $this->_aViewData['iAllCnt'] += 1;
                     }
                 } else {
-                    $oArticle = oxNew( "oxarticle" );
-                    if ( $oArticle->load($sArtID)) {
+                    $oArticle = oxNew("oxarticle");
+                    if ($oArticle->load($sArtID)) {
                         $dArtPrice = $aSimpleCache[$sArtID] = $oArticle->getPrice()->getBruttoPrice();
                         if ($dArtPrice <= $sPrice) {
                             $this->_aViewData['iAllCnt'] += 1;
@@ -70,6 +72,7 @@ class PriceAlarm_Mail extends oxAdminDetails
                 $rs->moveNext();
             }
         }
+
         return "pricealarm_mail.tpl";
     }
 }

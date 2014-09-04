@@ -25,6 +25,7 @@
  */
 class OxConfigFile
 {
+
     /**
      * Performs variable loading from configuration file by including the php file.
      * It works with current configuration file format well,
@@ -104,16 +105,16 @@ class OxConfigFile
     }
 
     /**
-      * Sets custom config file to include
-      *
-      * @param string $sFileName custom configuration file name
-      *
-      * @return null
-      */
-    public function setFile( $sFileName )
+     * Sets custom config file to include
+     *
+     * @param string $sFileName custom configuration file name
+     *
+     * @return null
+     */
+    public function setFile($sFileName)
     {
-        if ( is_readable( $sFileName ) ) {
-            $this->_loadVars( $sFileName );
+        if (is_readable($sFileName)) {
+            $this->_loadVars($sFileName);
         }
     }
 }

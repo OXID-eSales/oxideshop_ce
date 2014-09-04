@@ -37,7 +37,7 @@ class Module_Main extends oxAdminDetails
      */
     public function render()
     {
-        if ( oxRegistry::getConfig()->getRequestParameter("moduleId") ) {
+        if (oxRegistry::getConfig()->getRequestParameter("moduleId")) {
             $sModuleId = oxRegistry::getConfig()->getRequestParameter("moduleId");
         } else {
             $sModuleId = $this->getEditObjectId();
@@ -45,15 +45,15 @@ class Module_Main extends oxAdminDetails
 
         $oModule = oxNew('oxModule');
 
-        if ( $sModuleId ) {
-            if ( $oModule->load( $sModuleId ) ) {
+        if ($sModuleId) {
+            if ($oModule->load($sModuleId)) {
                 $iLang = oxRegistry::getLang()->getTplLanguage();
 
-                $this->_aViewData["oModule"]     =  $oModule;
-                $this->_aViewData["sModuleName"] = basename( $oModule->getInfo( "title", $iLang ) );
-                $this->_aViewData["sModuleId"]   = str_replace( "/", "_", $oModule->getModulePath() );
+                $this->_aViewData["oModule"] = $oModule;
+                $this->_aViewData["sModuleName"] = basename($oModule->getInfo("title", $iLang));
+                $this->_aViewData["sModuleId"] = str_replace("/", "_", $oModule->getModulePath());
             } else {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay( new oxException('EXCEPTION_MODULE_NOT_LOADED') );
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
             }
         }
 
@@ -73,20 +73,21 @@ class Module_Main extends oxAdminDetails
         /** @var oxModule $oModule */
         $oModule = oxNew('oxModule');
         if (!$oModule->load($sModule)) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( new oxException('EXCEPTION_MODULE_NOT_LOADED') );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
+
             return;
         }
         try {
             /** @var oxModuleCache $oModuleCache */
-            $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+            $oModuleCache = oxNew('oxModuleCache', $oModule);
             /** @var oxModuleInstaller $oModuleInstaller */
-            $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
+            $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
 
-            if ( $oModuleInstaller->activate( $oModule ) ) {
+            if ($oModuleInstaller->activate($oModule)) {
                 $this->_aViewData["updatenav"] = "1";
             }
         } catch (oxException $oEx) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
             $oEx->debugOut();
         }
     }
@@ -102,20 +103,21 @@ class Module_Main extends oxAdminDetails
         /** @var oxModule $oModule */
         $oModule = oxNew('oxModule');
         if (!$oModule->load($sModule)) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( new oxException('EXCEPTION_MODULE_NOT_LOADED') );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
+
             return;
         }
         try {
             /** @var oxModuleCache $oModuleCache */
-            $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+            $oModuleCache = oxNew('oxModuleCache', $oModule);
             /** @var oxModuleInstaller $oModuleInstaller */
-            $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
+            $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
 
-            if ( $oModuleInstaller->deactivate($oModule) ) {
+            if ($oModuleInstaller->deactivate($oModule)) {
                 $this->_aViewData["updatenav"] = "1";
             }
         } catch (oxException $oEx) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
             $oEx->debugOut();
         }
     }

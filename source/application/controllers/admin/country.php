@@ -27,8 +27,10 @@
  */
 class Country extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'country.tpl';

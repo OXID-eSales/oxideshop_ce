@@ -327,14 +327,14 @@ class Account extends oxUBase
     public function getBreadCrumb()
     {
         $aPaths = array();
-        $aPath  = array();
+        $aPath = array();
         if ($oUser = $this->getUser()) {
             $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false) . " - " . $oUser->oxuser__oxusername->value;
         } else {
             $aPath['title'] = oxRegistry::getLang()->translateString('LOGIN', oxRegistry::getLang()->getBaseLanguage(), false);
         }
         $aPath['link'] = $this->getLink();
-        $aPaths[]      = $aPath;
+        $aPaths[] = $aPath;
 
         return $aPaths;
     }
@@ -346,7 +346,7 @@ class Account extends oxUBase
      */
     public function getCompareItemsCnt()
     {
-        $oCompare      = oxNew("compare");
+        $oCompare = oxNew("compare");
         $iCompItemsCnt = $oCompare->getCompareItemsCnt();
 
         return $iCompItemsCnt;
@@ -361,10 +361,10 @@ class Account extends oxUBase
     {
         $sTitle = parent::getTitle();
 
-        if ( $this->getConfig()->getActiveView()->getClassName() == 'account' ) {
-            $sTitle = oxRegistry::getLang()->translateString( 'PAGE_TITLE_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
-            if ( $oUser = $this->getUser() ) {
-                $sTitle .= ' - "' . $oUser->oxuser__oxusername->value.'"';
+        if ($this->getConfig()->getActiveView()->getClassName() == 'account') {
+            $sTitle = oxRegistry::getLang()->translateString('PAGE_TITLE_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
+            if ($oUser = $this->getUser()) {
+                $sTitle .= ' - "' . $oUser->oxuser__oxusername->value . '"';
             }
         }
 

@@ -26,6 +26,7 @@
  */
 class Register extends User
 {
+
     /**
      * Current class template.
      *
@@ -49,6 +50,7 @@ class Register extends User
 
     /**
      * Order step marker
+     *
      * @var bool
      */
     protected $_blIsOrderStep = false;
@@ -71,9 +73,9 @@ class Register extends User
         parent::render();
 
         // checking registration status
-        if ( $this->isEnabledPrivateSales() && $this->isConfirmed() ) {
+        if ($this->isEnabledPrivateSales() && $this->isConfirmed()) {
             $sTemplate = $this->_sConfirmTemplate;
-        } elseif ( $this->getRegistrationStatus() ) {
+        } elseif ($this->getRegistrationStatus()) {
             $sTemplate = $this->_sSuccessTemplate;
         } else {
             $sTemplate = $this->_sThisTemplate;
@@ -89,7 +91,7 @@ class Register extends User
      */
     public function getRegistrationError()
     {
-        return oxRegistry::getConfig()->getRequestParameter( 'newslettererror' );
+        return oxRegistry::getConfig()->getRequestParameter('newslettererror');
     }
 
     /**
@@ -99,7 +101,7 @@ class Register extends User
      */
     public function getRegistrationStatus()
     {
-        return oxRegistry::getConfig()->getRequestParameter( 'success' );
+        return oxRegistry::getConfig()->getRequestParameter('success');
     }
 
     /**
@@ -109,10 +111,10 @@ class Register extends User
      *
      * @return bool
      */
-    public function isFieldRequired( $sField )
+    public function isFieldRequired($sField)
     {
-        if ( $aMustFillFields = $this->getMustFillFields() ) {
-            if ( isset( $aMustFillFields[$sField] ) ) {
+        if ($aMustFillFields = $this->getMustFillFields()) {
+            if (isset($aMustFillFields[$sField])) {
                 return true;
             }
         }
@@ -129,24 +131,24 @@ class Register extends User
      */
     public function confirmRegistration()
     {
-        $oUser = oxNew( 'oxuser' );
-        if ( $oUser->loadUserByUpdateId( $this->getUpdateId() ) ) {
+        $oUser = oxNew('oxuser');
+        if ($oUser->loadUserByUpdateId($this->getUpdateId())) {
 
             // resetting update key parameter
-            $oUser->setUpdateKey( true );
+            $oUser->setUpdateKey(true);
 
             // saving ..
-            $oUser->oxuser__oxactive = new oxField( 1 );
+            $oUser->oxuser__oxactive = new oxField(1);
             $oUser->save();
 
             // forcing user login
-            oxRegistry::getSession()->setVariable( 'usr', $oUser->getId() );
+            oxRegistry::getSession()->setVariable('usr', $oUser->getId());
 
             // redirecting to confirmation page
             return 'register?confirmstate=1';
         } else {
             // confirmation failed
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'REGISTER_ERRLINKEXPIRED', false, true );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay('REGISTER_ERRLINKEXPIRED', false, true);
 
             // redirecting to confirmation page
             return 'account';
@@ -160,7 +162,7 @@ class Register extends User
      */
     public function getUpdateId()
     {
-        return oxRegistry::getConfig()->getRequestParameter( 'uid' );
+        return oxRegistry::getConfig()->getRequestParameter('uid');
     }
 
     /**
@@ -170,7 +172,7 @@ class Register extends User
      */
     public function isConfirmed()
     {
-         return (bool) oxRegistry::getConfig()->getRequestParameter( "confirmstate" );
+        return (bool) oxRegistry::getConfig()->getRequestParameter("confirmstate");
     }
 
     /**
@@ -183,8 +185,8 @@ class Register extends User
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'REGISTER', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('REGISTER', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

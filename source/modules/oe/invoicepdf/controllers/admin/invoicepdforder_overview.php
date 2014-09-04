@@ -15,10 +15,10 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   modules
+ * @link          http://www.oxid-esales.com
+ * @package       modules
  * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @version       OXID eShop CE
  */
 
 /**
@@ -26,7 +26,8 @@
  */
 class InvoicepdfOrder_Overview extends InvoicepdfOrder_Overview_parent
 {
-/**
+
+    /**
      * Add Languages to parameters.
      *
      * @return string
@@ -47,24 +48,24 @@ class InvoicepdfOrder_Overview extends InvoicepdfOrder_Overview_parent
     public function createPDF()
     {
         $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId ) ) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oOrder = oxNew( "oxorder" );
-            if ( $oOrder->load( $soxId ) ) {
+            $oOrder = oxNew("oxorder");
+            if ($oOrder->load($soxId)) {
                 $oUtils = oxRegistry::getUtils();
                 $sTrimmedBillName = trim($oOrder->oxorder__oxbilllname->getRawValue());
                 $sFilename = $oOrder->oxorder__oxordernr->value . "_" . $sTrimmedBillName . ".pdf";
                 $sFilename = $this->makeValidFileName($sFilename);
                 ob_start();
-                $oOrder->genPDF( $sFilename, oxRegistry::getConfig()->getRequestParameter( "pdflanguage" ) );
+                $oOrder->genPDF($sFilename, oxRegistry::getConfig()->getRequestParameter("pdflanguage"));
                 $sPDF = ob_get_contents();
                 ob_end_clean();
-                $oUtils->setHeader( "Pragma: public" );
-                $oUtils->setHeader( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
-                $oUtils->setHeader( "Expires: 0" );
-                $oUtils->setHeader( "Content-type: application/pdf" );
-                $oUtils->setHeader( "Content-Disposition: attachment; filename=".$sFilename );
-                oxRegistry::getUtils()->showMessageAndExit( $sPDF );
+                $oUtils->setHeader("Pragma: public");
+                $oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                $oUtils->setHeader("Expires: 0");
+                $oUtils->setHeader("Content-type: application/pdf");
+                $oUtils->setHeader("Content-Disposition: attachment; filename=" . $sFilename);
+                oxRegistry::getUtils()->showMessageAndExit($sPDF);
             }
         }
     }

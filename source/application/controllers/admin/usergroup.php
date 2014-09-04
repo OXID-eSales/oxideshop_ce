@@ -28,8 +28,10 @@
  */
 class UserGroup extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'usergroup.tpl';

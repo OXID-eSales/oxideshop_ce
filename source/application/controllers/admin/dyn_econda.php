@@ -21,15 +21,14 @@
  */
 
 
-
-
-
 /**
  * Admin Econda manager.
+ *
  * @subpackage dyn
  */
 class dyn_econda extends Shop_Config
 {
+
     /**
      * Creates shop object, passes shop data to Smarty engine and returns name of
      * template file "dyn_trusted.tpl".

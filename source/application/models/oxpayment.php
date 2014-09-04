@@ -27,32 +27,38 @@
  */
 class oxPayment extends oxI18n
 {
+
     /**
      * Consider for calculation of base sum - Value of all goods in basket
+     *
      * @var int
      */
     const PAYMENT_ADDSUMRULE_ALLGOODS = 1;
 
     /**
      * Consider for calculation of base sum - Discounts
+     *
      * @var int
      */
     const PAYMENT_ADDSUMRULE_DISCOUNTS = 2;
 
     /**
      * Consider for calculation of base sum - Vouchers
+     *
      * @var int
      */
     const PAYMENT_ADDSUMRULE_VOUCHERS = 4;
 
     /**
      * Consider for calculation of base sum - Shipping costs
+     *
      * @var int
      */
     const PAYMENT_ADDSUMRULE_SHIPCOSTS = 8;
 
     /**
      * Consider for calculation of base sum - Gift Wrapping/Greeting Card
+     *
      * @var int
      */
     const PAYMENT_ADDSUMRULE_GIFTS = 16;
@@ -112,9 +118,9 @@ class oxPayment extends oxI18n
      */
     public function __construct()
     {
-        $this->setPaymentVatOnTop( $this->getConfig()->getConfigParam( 'blPaymentVatOnTop' ) );
+        $this->setPaymentVatOnTop($this->getConfig()->getConfigParam('blPaymentVatOnTop'));
         parent::__construct();
-        $this->init( 'oxpayments' );
+        $this->init('oxpayments');
     }
 
     /**
@@ -124,7 +130,7 @@ class oxPayment extends oxI18n
      *
      * @return null
      */
-    public function setPaymentVatOnTop( $blOnTop )
+    public function setPaymentVatOnTop($blOnTop)
     {
         $this->_blPaymentVatOnTop = $blOnTop;
     }
@@ -136,17 +142,17 @@ class oxPayment extends oxI18n
      */
     public function getGroups()
     {
-        if ( $this->_oGroups == null && ( $sOxid = $this->getId() ) ) {
+        if ($this->_oGroups == null && ($sOxid = $this->getId())) {
 
             // user groups
-            $this->_oGroups = oxNew( 'oxlist', 'oxgroups' );
-            $sViewName = getViewName( "oxgroups", $this->getLanguage() );
+            $this->_oGroups = oxNew('oxlist', 'oxgroups');
+            $sViewName = getViewName("oxgroups", $this->getLanguage());
 
             // performance
             $sSelect = "select {$sViewName}.* from {$sViewName}, oxobject2group
                         where oxobject2group.oxobjectid = '{$sOxid}'
                         and oxobject2group.oxgroupsid={$sViewName}.oxid ";
-            $this->_oGroups->selectString( $sSelect );
+            $this->_oGroups->selectString($sSelect);
         }
 
         return $this->_oGroups;
@@ -159,7 +165,7 @@ class oxPayment extends oxI18n
      *
      * @return null
      */
-    public function setDynValues( $aDynValues )
+    public function setDynValues($aDynValues)
     {
         $this->_aDynValues = $aDynValues;
     }
@@ -172,7 +178,7 @@ class oxPayment extends oxI18n
      *
      * @return null
      */
-    public function setDynValue( $oKey, $oVal )
+    public function setDynValue($oKey, $oVal)
     {
         $this->_aDynValues[$oKey] = $oVal;
     }
@@ -184,14 +190,15 @@ class oxPayment extends oxI18n
      */
     public function getDynValues()
     {
-        if ( !$this->_aDynValues ) {
+        if (!$this->_aDynValues) {
             $sRawDynValue = null;
-            if ( is_object($this->oxpayments__oxvaldesc ) ) {
+            if (is_object($this->oxpayments__oxvaldesc)) {
                 $sRawDynValue = $this->oxpayments__oxvaldesc->getRawValue();
             }
 
-            $this->_aDynValues = oxRegistry::getUtils()->assignValuesFromText( $sRawDynValue );
+            $this->_aDynValues = oxRegistry::getUtils()->assignValuesFromText($sRawDynValue);
         }
+
         return $this->_aDynValues;
     }
 
@@ -202,18 +209,18 @@ class oxPayment extends oxI18n
      *
      * @return double
      */
-    public function getPaymentValue( $dBasePrice )
+    public function getPaymentValue($dBasePrice)
     {
         $dRet = 0;
 
-        if ( $this->oxpayments__oxaddsumtype->value == "%") {
-            $dRet = $dBasePrice * $this->oxpayments__oxaddsum->value/100;
+        if ($this->oxpayments__oxaddsumtype->value == "%") {
+            $dRet = $dBasePrice * $this->oxpayments__oxaddsum->value / 100;
         } else {
             $oCur = $this->getConfig()->getActShopCurrencyObject();
             $dRet = $this->oxpayments__oxaddsum->value * $oCur->rate;
         }
 
-        if ( ($dRet * -1 ) > $dBasePrice ) {
+        if (($dRet * -1) > $dBasePrice) {
             $dRet = $dBasePrice;
         }
 
@@ -228,30 +235,32 @@ class oxPayment extends oxI18n
      *
      * @return double
      */
-    public function getBaseBasketPriceForPaymentCostCalc( $oBasket )
+    public function getBaseBasketPriceForPaymentCostCalc($oBasket)
     {
         $dBasketPrice = 0;
         $iRules = $this->oxpayments__oxaddsumrules->value;
 
         // products brutto price
-        if ( !$iRules || ( $iRules & self::PAYMENT_ADDSUMRULE_ALLGOODS ) ) {
-            $dBasketPrice += $oBasket->getProductsPrice()->getSum( $oBasket->isCalculationModeNetto() );
+        if (!$iRules || ($iRules & self::PAYMENT_ADDSUMRULE_ALLGOODS)) {
+            $dBasketPrice += $oBasket->getProductsPrice()->getSum($oBasket->isCalculationModeNetto());
         }
 
         // discounts
-        if ( ( !$iRules || ( $iRules & self::PAYMENT_ADDSUMRULE_DISCOUNTS ) ) &&
-             ( $oCosts = $oBasket->getTotalDiscount() ) ) {
+        if ((!$iRules || ($iRules & self::PAYMENT_ADDSUMRULE_DISCOUNTS)) &&
+            ($oCosts = $oBasket->getTotalDiscount())
+        ) {
             $dBasketPrice -= $oCosts->getPrice();
         }
 
         // vouchers
-        if ( !$iRules || ( $iRules & self::PAYMENT_ADDSUMRULE_VOUCHERS ) ) {
+        if (!$iRules || ($iRules & self::PAYMENT_ADDSUMRULE_VOUCHERS)) {
             $dBasketPrice -= $oBasket->getVoucherDiscValue();
         }
 
         // delivery
-        if ( ( !$iRules || ( $iRules & self::PAYMENT_ADDSUMRULE_SHIPCOSTS ) ) &&
-             ( $oCosts = $oBasket->getCosts( 'oxdelivery' ) ) ) {
+        if ((!$iRules || ($iRules & self::PAYMENT_ADDSUMRULE_SHIPCOSTS)) &&
+            ($oCosts = $oBasket->getCosts('oxdelivery'))
+        ) {
             if ($oBasket->isCalculationModeNetto()) {
                 $dBasketPrice += $oCosts->getNettoPrice();
             } else {
@@ -261,8 +270,9 @@ class oxPayment extends oxI18n
         }
 
         // wrapping
-        if ( ( $iRules & self::PAYMENT_ADDSUMRULE_GIFTS ) &&
-             ( $oCosts = $oBasket->getCosts( 'oxwrapping' ) ) ) {
+        if (($iRules & self::PAYMENT_ADDSUMRULE_GIFTS) &&
+            ($oCosts = $oBasket->getCosts('oxwrapping'))
+        ) {
             if ($oBasket->isCalculationModeNetto()) {
                 $dBasketPrice += $oCosts->getNettoPrice();
             } else {
@@ -271,8 +281,9 @@ class oxPayment extends oxI18n
         }
 
         // gift card
-        if ( ( $iRules & self::PAYMENT_ADDSUMRULE_GIFTS ) &&
-             ( $oCosts = $oBasket->getCosts( 'oxgiftcard' ) ) ) {
+        if (($iRules & self::PAYMENT_ADDSUMRULE_GIFTS) &&
+            ($oCosts = $oBasket->getCosts('oxgiftcard'))
+        ) {
 
             if ($oBasket->isCalculationModeNetto()) {
                 $dBasketPrice += $oCosts->getNettoPrice();
@@ -291,19 +302,19 @@ class oxPayment extends oxI18n
      *
      * @return null
      */
-    public function calculate( $oBasket )
+    public function calculate($oBasket)
     {
         //getting basket price with applied discounts and vouchers
-        $dPrice = $this->getPaymentValue( $this->getBaseBasketPriceForPaymentCostCalc( $oBasket ) );
+        $dPrice = $this->getPaymentValue($this->getBaseBasketPriceForPaymentCostCalc($oBasket));
 
-        if ( $dPrice ) {
+        if ($dPrice) {
             // calculating total price
-            $oPrice = oxNew( 'oxPrice' );
-            $oPrice->setNettoMode( $this->_blPaymentVatOnTop );
+            $oPrice = oxNew('oxPrice');
+            $oPrice->setNettoMode($this->_blPaymentVatOnTop);
 
-            $oPrice->setPrice( $dPrice );
-            if ( $dPrice > 0 ) {
-                $oPrice->setVat( $oBasket->getAdditionalServicesVatPercent() );
+            $oPrice->setPrice($dPrice);
+            if ($dPrice > 0) {
+                $oPrice->setVat($oBasket->getAdditionalServicesVatPercent());
             }
 
             $this->_oPrice = $oPrice;
@@ -330,8 +341,8 @@ class oxPayment extends oxI18n
      */
     public function getFNettoPrice()
     {
-        if ( $this->getPrice() ) {
-            return oxRegistry::getLang()->formatCurrency( $this->getPrice()->getNettoPrice() );
+        if ($this->getPrice()) {
+            return oxRegistry::getLang()->formatCurrency($this->getPrice()->getNettoPrice());
         }
     }
 
@@ -344,8 +355,8 @@ class oxPayment extends oxI18n
      */
     public function getFBruttoPrice()
     {
-        if ( $this->getPrice() ) {
-            return oxRegistry::getLang()->formatCurrency( $this->getPrice()->getBruttoPrice() );
+        if ($this->getPrice()) {
+            return oxRegistry::getLang()->formatCurrency($this->getPrice()->getBruttoPrice());
         }
     }
 
@@ -358,8 +369,8 @@ class oxPayment extends oxI18n
      */
     public function getFPriceVat()
     {
-        if ( $this->getPrice() ) {
-            return oxRegistry::getLang()->formatCurrency( $this->getPrice()->getVatValue() );
+        if ($this->getPrice()) {
+            return oxRegistry::getLang()->formatCurrency($this->getPrice()->getVatValue());
         }
     }
 
@@ -370,13 +381,14 @@ class oxPayment extends oxI18n
      */
     public function getCountries()
     {
-        if ( $this->_aCountries === null ) {
+        if ($this->_aCountries === null) {
             $oDb = oxDb::getDb();
             $this->_aCountries = array();
-            $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid='.$oDb->quote( $this->getId() ).' and oxtype = "oxcountry" ';
-            $rs = $oDb->getCol( $sSelect );
+            $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid=' . $oDb->quote($this->getId()) . ' and oxtype = "oxcountry" ';
+            $rs = $oDb->getCol($sSelect);
             $this->_aCountries = $rs;
         }
+
         return $this->_aCountries;
     }
 
@@ -387,15 +399,16 @@ class oxPayment extends oxI18n
      *
      * @return bool
      */
-    public function delete( $sOxId = null )
+    public function delete($sOxId = null)
     {
-        if ( parent::delete( $sOxId ) ) {
+        if (parent::delete($sOxId)) {
 
             $sOxId = $sOxId ? $sOxId : $this->getId();
             $oDb = oxDb::getDb();
 
             // deleting payment related data
-            $rs = $oDb->execute( "delete from oxobject2payment where oxpaymentid = ".$oDb->quote( $sOxId ) );
+            $rs = $oDb->execute("delete from oxobject2payment where oxpaymentid = " . $oDb->quote($sOxId));
+
             return $rs->EOF;
         }
 
@@ -413,49 +426,58 @@ class oxPayment extends oxI18n
      *
      * @return bool true if payment is valid
      */
-    public function isValidPayment( $aDynValue, $sShopId, $oUser, $dBasketPrice, $sShipSetId )
+    public function isValidPayment($aDynValue, $sShopId, $oUser, $dBasketPrice, $sShipSetId)
     {
         $myConfig = $this->getConfig();
-        if ( $this->oxpayments__oxid->value == 'oxempty' ) {
+        if ($this->oxpayments__oxid->value == 'oxempty') {
             // inactive or blOtherCountryOrder is off
-            if ( !$this->oxpayments__oxactive->value || !$myConfig->getConfigParam( "blOtherCountryOrder" ) ) {
+            if (!$this->oxpayments__oxactive->value || !$myConfig->getConfigParam("blOtherCountryOrder")) {
                 $this->_iPaymentError = -2;
+
                 return false;
             }
-            if (count(oxRegistry::get("oxDeliverySetList")
-                            ->getDeliverySetList(
-                                        $oUser,
-                                        $oUser->getActiveCountry()
-                                )
-                    )) {
+            if (count(
+                oxRegistry::get("oxDeliverySetList")
+                    ->getDeliverySetList(
+                        $oUser,
+                        $oUser->getActiveCountry()
+                    )
+            )
+            ) {
                 $this->_iPaymentError = -3;
+
                 return false;
             }
+
             return true;
         }
 
-        $mxValidationResult = oxRegistry::get("oxInputValidator")->validatePaymentInputData( $this->oxpayments__oxid->value, $aDynValue );
+        $mxValidationResult = oxRegistry::get("oxInputValidator")->validatePaymentInputData($this->oxpayments__oxid->value, $aDynValue);
 
-        if ( is_integer($mxValidationResult) ) {
+        if (is_integer($mxValidationResult)) {
             $this->_iPaymentError = $mxValidationResult;
+
             return false;
         } elseif ($mxValidationResult === false) {
             $this->_iPaymentError = 1;
+
             return false;
         }
 
         $oCur = $myConfig->getActShopCurrencyObject();
         $dBasketPrice = $dBasketPrice / $oCur->rate;
 
-        if ( $sShipSetId ) {
-            $aPaymentList = oxRegistry::get("oxPaymentList")->getPaymentList( $sShipSetId, $dBasketPrice, $oUser );
+        if ($sShipSetId) {
+            $aPaymentList = oxRegistry::get("oxPaymentList")->getPaymentList($sShipSetId, $dBasketPrice, $oUser);
 
-            if ( !array_key_exists( $this->getId(), $aPaymentList ) ) {
+            if (!array_key_exists($this->getId(), $aPaymentList)) {
                 $this->_iPaymentError = -3;
+
                 return false;
             }
         } else {
             $this->_iPaymentError = -2;
+
             return false;
         }
 

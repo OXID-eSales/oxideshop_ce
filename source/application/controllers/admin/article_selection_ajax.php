@@ -25,24 +25,25 @@
  */
 class article_selection_ajax extends ajaxListComponent
 {
+
     /**
      * Columns array
      *
      * @var array
      */
-    protected $_aColumns = array( 'container1' => array(    // field , table,         visible, multilanguage, ident
-                                        array( 'oxtitle',   'oxselectlist', 1, 1, 0 ),
-                                        array( 'oxident',   'oxselectlist', 1, 0, 0 ),
-                                        array( 'oxvaldesc', 'oxselectlist', 1, 0, 0 ),
-                                        array( 'oxid',      'oxselectlist', 0, 0, 1 )
-                                        ),
-                                    'container2' => array(
-                                        array( 'oxtitle',   'oxselectlist', 1, 1, 0 ),
-                                        array( 'oxident',   'oxselectlist', 1, 0, 0 ),
-                                        array( 'oxvaldesc', 'oxselectlist', 1, 0, 0 ),
-                                        array( 'oxid',      'oxobject2selectlist', 0, 0, 1 )
-                                        )
-                                );
+    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
+        array('oxtitle', 'oxselectlist', 1, 1, 0),
+        array('oxident', 'oxselectlist', 1, 0, 0),
+        array('oxvaldesc', 'oxselectlist', 1, 0, 0),
+        array('oxid', 'oxselectlist', 0, 0, 1)
+    ),
+                                 'container2' => array(
+                                     array('oxtitle', 'oxselectlist', 1, 1, 0),
+                                     array('oxident', 'oxselectlist', 1, 0, 0),
+                                     array('oxvaldesc', 'oxselectlist', 1, 0, 0),
+                                     array('oxid', 'oxobject2selectlist', 0, 0, 1)
+                                 )
+    );
 
     /**
      * Returns SQL query for data to fetc
@@ -51,27 +52,27 @@ class article_selection_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $sSLViewName  = $this->_getViewName('oxselectlist');
+        $sSLViewName = $this->_getViewName('oxselectlist');
         $sArtViewName = $this->_getViewName('oxarticles');
-        $oDb          = oxDb::getDb();
+        $oDb = oxDb::getDb();
 
-        $sArtId      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
-        $sSynchArtId = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
+        $sArtId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sSynchArtId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
-        $sOxid = ( $sArtId ) ? $sArtId : $sSynchArtId;
-        $sQ = "select oxparentid from $sArtViewName where oxid = " . $oDb->quote( $sOxid ) . " and oxparentid != '' ";
-        $sQ .= "and (select count(oxobjectid) from oxobject2selectlist where oxobjectid = " . $oDb->quote( $sOxid ) . ") = 0";
-        $sParentId = oxDb::getDb()->getOne( $sQ, false, false );
+        $sOxid = ($sArtId) ? $sArtId : $sSynchArtId;
+        $sQ = "select oxparentid from $sArtViewName where oxid = " . $oDb->quote($sOxid) . " and oxparentid != '' ";
+        $sQ .= "and (select count(oxobjectid) from oxobject2selectlist where oxobjectid = " . $oDb->quote($sOxid) . ") = 0";
+        $sParentId = oxDb::getDb()->getOne($sQ, false, false);
 
         // all selectlists article is in
-        $sQAdd  = " from oxobject2selectlist left join $sSLViewName on $sSLViewName.oxid=oxobject2selectlist.oxselnid ";
-        $sQAdd .= " where oxobject2selectlist.oxobjectid = " . $oDb->quote( $sOxid ) . " ";
-        if ( $sParentId ) {
-            $sQAdd .= "or oxobject2selectlist.oxobjectid = " . $oDb->quote( $sParentId ) . " ";
+        $sQAdd = " from oxobject2selectlist left join $sSLViewName on $sSLViewName.oxid=oxobject2selectlist.oxselnid ";
+        $sQAdd .= " where oxobject2selectlist.oxobjectid = " . $oDb->quote($sOxid) . " ";
+        if ($sParentId) {
+            $sQAdd .= "or oxobject2selectlist.oxobjectid = " . $oDb->quote($sParentId) . " ";
         }
         // all not assigned selectlists
-        if ( $sSynchArtId ) {
-            $sQAdd  = " from $sSLViewName  where $sSLViewName.oxid not in ( select oxobject2selectlist.oxselnid $sQAdd ) ";
+        if ($sSynchArtId) {
+            $sQAdd = " from $sSLViewName  where $sSLViewName.oxid not in ( select oxobject2selectlist.oxselnid $sQAdd ) ";
         }
 
         return $sQAdd;
@@ -84,14 +85,14 @@ class article_selection_ajax extends ajaxListComponent
      */
     public function removeSel()
     {
-        $aChosenArt = $this->_getActionIds( 'oxobject2selectlist.oxid' );
-        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
+        $aChosenArt = $this->_getActionIds('oxobject2selectlist.oxid');
+        if (oxRegistry::getConfig()->getRequestParameter('all')) {
 
-            $sQ = $this->_addFilter( "delete oxobject2selectlist.* ".$this->_getQuery() );
-            oxDb::getDb()->Execute( $sQ );
-        } elseif ( is_array( $aChosenArt ) ) {
-            $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode( ", ", oxDb::getInstance()->quoteArray( $aChosenArt ) ) . ") ";
-            oxDb::getDb()->Execute( $sQ );
+            $sQ = $this->_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
+            oxDb::getDb()->Execute($sQ);
+        } elseif (is_array($aChosenArt)) {
+            $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
+            oxDb::getDb()->Execute($sQ);
         }
 
     }
@@ -103,23 +104,23 @@ class article_selection_ajax extends ajaxListComponent
      */
     public function addSel()
     {
-        $aAddSel = $this->_getActionIds( 'oxselectlist.oxid' );
-        $soxId   = oxRegistry::getConfig()->getRequestParameter( 'synchoxid');
+        $aAddSel = $this->_getActionIds('oxselectlist.oxid');
+        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
         // adding
-        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
+        if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sSLViewName = $this->_getViewName('oxselectlist');
-            $aAddSel = $this->_getAll( $this->_addFilter( "select $sSLViewName.oxid ".$this->_getQuery() ) );
+            $aAddSel = $this->_getAll($this->_addFilter("select $sSLViewName.oxid " . $this->_getQuery()));
         }
 
-        if ( $soxId && $soxId != "-1" && is_array( $aAddSel ) ) {
+        if ($soxId && $soxId != "-1" && is_array($aAddSel)) {
             $oDb = oxDb::getDb();
             foreach ($aAddSel as $sAdd) {
-                $oNew = oxNew( "oxbase" );
-                $oNew->init( "oxobject2selectlist" );
+                $oNew = oxNew("oxbase");
+                $oNew->init("oxobject2selectlist");
                 $oNew->oxobject2selectlist__oxobjectid = new oxField($soxId);
-                $oNew->oxobject2selectlist__oxselnid   = new oxField($sAdd);
-                $oNew->oxobject2selectlist__oxsort     = new oxField( ( int ) $oDb->getOne( "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $oDb->quote( $soxId ) . " ", false, false ) );
+                $oNew->oxobject2selectlist__oxselnid = new oxField($sAdd);
+                $oNew->oxobject2selectlist__oxsort = new oxField(( int ) $oDb->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $oDb->quote($soxId) . " ", false, false));
                 $oNew->save();
             }
 

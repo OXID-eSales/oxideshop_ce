@@ -27,6 +27,7 @@
  */
 class Order_Remark extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates oxorder and
      * oxlist objects, passes it's data to Smarty engine and returns
@@ -39,18 +40,18 @@ class Order_Remark extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sRemoxId = oxRegistry::getConfig()->getRequestParameter( "rem_oxid");
-        if ( $soxId != "-1" && isset( $soxId)) {
-            $oOrder = oxNew( "oxorder" );
-            $oOrder->load( $soxId);
+        $sRemoxId = oxRegistry::getConfig()->getRequestParameter("rem_oxid");
+        if ($soxId != "-1" && isset($soxId)) {
+            $oOrder = oxNew("oxorder");
+            $oOrder->load($soxId);
 
             // all remark
-            $oRems = oxNew( "oxlist" );
-            $oRems->init( "oxremark");
-            $sSelect = "select * from oxremark where oxparentid=".oxDb::getDb()->quote( $oOrder->oxorder__oxuserid->value )." order by oxcreate desc";
-            $oRems->selectString( $sSelect );
+            $oRems = oxNew("oxlist");
+            $oRems->init("oxremark");
+            $sSelect = "select * from oxremark where oxparentid=" . oxDb::getDb()->quote($oOrder->oxorder__oxuserid->value) . " order by oxcreate desc";
+            $oRems->selectString($sSelect);
             foreach ($oRems as $key => $val) {
-                if ( $val->oxremark__oxid->value == $sRemoxId) {
+                if ($val->oxremark__oxid->value == $sRemoxId) {
                     $val->selected = 1;
                     $oRems[$key] = $val;
                     break;
@@ -59,11 +60,11 @@ class Order_Remark extends oxAdminDetails
 
             $this->_aViewData["allremark"] = $oRems;
 
-            if ( isset( $sRemoxId)) {
-                $oRemark = oxNew( "oxRemark" );
-                $oRemark->load( $sRemoxId);
-                $this->_aViewData["remarktext"]      = $oRemark->oxremark__oxtext->value;
-                $this->_aViewData["remarkheader"]    = $oRemark->oxremark__oxheader->value;
+            if (isset($sRemoxId)) {
+                $oRemark = oxNew("oxRemark");
+                $oRemark->load($sRemoxId);
+                $this->_aViewData["remarktext"] = $oRemark->oxremark__oxtext->value;
+                $this->_aViewData["remarkheader"] = $oRemark->oxremark__oxheader->value;
             }
         }
 
@@ -79,15 +80,15 @@ class Order_Remark extends oxAdminDetails
     {
         parent::save();
 
-        $oOrder = oxNew( "oxorder" );
-        if ( $oOrder->load( $this->getEditObjectId() ) ) {
-            $oRemark = oxNew( "oxremark" );
-            $oRemark->load( oxRegistry::getConfig()->getRequestParameter( "rem_oxid" ) );
+        $oOrder = oxNew("oxorder");
+        if ($oOrder->load($this->getEditObjectId())) {
+            $oRemark = oxNew("oxremark");
+            $oRemark->load(oxRegistry::getConfig()->getRequestParameter("rem_oxid"));
 
-            $oRemark->oxremark__oxtext     = new oxField( oxRegistry::getConfig()->getRequestParameter( "remarktext" ) );
-            $oRemark->oxremark__oxheader   = new oxField( oxRegistry::getConfig()->getRequestParameter( "remarkheader" ) );
-            $oRemark->oxremark__oxtype     = new oxField( "r" );
-            $oRemark->oxremark__oxparentid = new oxField( $oOrder->oxorder__oxuserid->value );
+            $oRemark->oxremark__oxtext = new oxField(oxRegistry::getConfig()->getRequestParameter("remarktext"));
+            $oRemark->oxremark__oxheader = new oxField(oxRegistry::getConfig()->getRequestParameter("remarkheader"));
+            $oRemark->oxremark__oxtype = new oxField("r");
+            $oRemark->oxremark__oxparentid = new oxField($oOrder->oxorder__oxuserid->value);
             $oRemark->save();
         }
     }
@@ -99,7 +100,7 @@ class Order_Remark extends oxAdminDetails
      */
     public function delete()
     {
-        $oRemark = oxNew( "oxRemark" );
-        $oRemark->delete( oxRegistry::getConfig()->getRequestParameter( "rem_oxid" ) );
+        $oRemark = oxNew("oxRemark");
+        $oRemark->delete(oxRegistry::getConfig()->getRequestParameter("rem_oxid"));
     }
 }

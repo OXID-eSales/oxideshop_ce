@@ -26,7 +26,8 @@
  *
  */
 
-class oxFileCheckerResult {
+class oxFileCheckerResult
+{
 
     /**
      * For result output
@@ -67,7 +68,7 @@ class oxFileCheckerResult {
      *
      * @param $blListAllFiles boolean
      */
-    public function setListAllFiles( $blListAllFiles )
+    public function setListAllFiles($blListAllFiles)
     {
         $this->_blListAllFiles = $blListAllFiles;
     }
@@ -106,18 +107,19 @@ class oxFileCheckerResult {
      * Methods saves result of one file check and returns updated summary array
      *
      * @param $aResult
+     *
      * @return array
      */
-    public function addResult( $aResult )
+    public function addResult($aResult)
     {
         $this->_aResultSummary['FILES']++;
         $this->_aResultSummary[$aResult['result']]++;
 
-        if ( !$aResult['ok'] ) {
+        if (!$aResult['ok']) {
             $this->_aResultSummary['SHOP_OK'] = false;
         }
 
-        if ( ( $aResult['ok'] && $this->getListAllFiles() ) || !$aResult['ok'] ) {
+        if (($aResult['ok'] && $this->getListAllFiles()) || !$aResult['ok']) {
             $this->_aResult[] = $aResult;
         }
 

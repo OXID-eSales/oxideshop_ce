@@ -26,6 +26,7 @@
  */
 class oxOutput extends oxSuperCfg
 {
+
     const OUTPUT_FORMAT_HTML = 'html';
     const OUTPUT_FORMAT_JSON = 'json';
 
@@ -64,7 +65,7 @@ class oxOutput extends oxSuperCfg
      */
     public function __construct()
     {
-        $this->setIsSearchEngine( oxRegistry::getUtils()->isSearchEngine() );
+        $this->setIsSearchEngine(oxRegistry::getUtils()->isSearchEngine());
     }
 
     /**
@@ -74,7 +75,7 @@ class oxOutput extends oxSuperCfg
      *
      * @return null
      */
-    public function setIsSearchEngine( $blOn )
+    public function setIsSearchEngine($blOn)
     {
         $this->_blSearchEngine = $blOn;
     }
@@ -88,13 +89,13 @@ class oxOutput extends oxSuperCfg
      *
      * @return string
      */
-    public function process( $sValue, $sClassName )
+    public function process($sValue, $sClassName)
     {
         $myConfig = $this->getConfig();
 
         //fix for euro currency problem (it's invisible in some older browsers)
-        if ( !$myConfig->getConfigParam( 'blSkipEuroReplace' ) && !$myConfig->isUtf() ) {
-            $sValue = str_replace( '¤', '&euro;', $sValue );
+        if (!$myConfig->getConfigParam('blSkipEuroReplace') && !$myConfig->isUtf()) {
+            $sValue = str_replace('¤', '&euro;', $sValue);
         }
 
         return $sValue;
@@ -107,12 +108,12 @@ class oxOutput extends oxSuperCfg
      *
      * @return string
      */
-    final public function addVersionTags( $sOutput )
+    final public function addVersionTags($sOutput)
     {
         // DISPLAY IT
-        $sVersion  = $this->getConfig()->getVersion();
-        $sEdition  = $this->getConfig()->getFullEdition();
-        $sCurYear  = date("Y");
+        $sVersion = $this->getConfig()->getVersion();
+        $sEdition = $this->getConfig()->getFullEdition();
+        $sCurYear = date("Y");
         $sShopMode = "";
 
         // SHOW ONLY MAJOR VERSION NUMBER
@@ -125,7 +126,7 @@ class oxOutput extends oxSuperCfg
         $sReplace = "</head>\n  <!-- OXID eShop {$sEdition}, Version {$sMajorVersion}{$sShopMode}, Shopping Cart System (c) OXID eSales AG 2003 - {$sCurYear} - http://www.oxid-esales.com -->";
 
         $sOutput = ltrim($sOutput);
-        if ( ($pos = stripos( $sOutput, $sSearch )) !== false) {
+        if (($pos = stripos($sOutput, $sSearch)) !== false) {
             $sOutput = substr_replace($sOutput, $sReplace, $pos, strlen($sSearch));
         }
 
@@ -153,7 +154,7 @@ class oxOutput extends oxSuperCfg
      *
      * @return null
      */
-    public function processEmail( & $oEmail)
+    public function processEmail(& $oEmail)
     {
         // #669 PHP5 claims that you cant pas full this but should instead pass reference what is anyway a much better idea
         // removed "return" as by reference you dont need any return
@@ -232,11 +233,11 @@ class oxOutput extends oxSuperCfg
     {
         switch ($this->_sOutputFormat) {
             case self::OUTPUT_FORMAT_JSON:
-                oxRegistry::getUtils()->setHeader( "Content-Type: application/json; charset=".$this->_sCharset );
+                oxRegistry::getUtils()->setHeader("Content-Type: application/json; charset=" . $this->_sCharset);
                 break;
             case self::OUTPUT_FORMAT_HTML:
             default:
-                oxRegistry::getUtils()->setHeader( "Content-Type: text/html; charset=".$this->_sCharset );
+                oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . $this->_sCharset);
                 break;
         }
     }

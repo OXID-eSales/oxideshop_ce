@@ -28,6 +28,7 @@
  */
 class Delivery_Users extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates delivery category tree,
      * passes data to Smarty engine and returns name of template file "delivery_main.tpl".
@@ -39,48 +40,49 @@ class Delivery_Users extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sSelGroup = oxRegistry::getConfig()->getRequestParameter( "selgroup");
+        $sSelGroup = oxRegistry::getConfig()->getRequestParameter("selgroup");
 
-        $sViewName = getViewName( "oxgroups", $this->_iEditLang );
+        $sViewName = getViewName("oxgroups", $this->_iEditLang);
         // all usergroups
-        $oGroups = oxNew( "oxlist" );
-        $oGroups->init( 'oxgroups' );
-        $oGroups->selectString( "select * from {$sViewName}" );
+        $oGroups = oxNew("oxlist");
+        $oGroups->init('oxgroups');
+        $oGroups->selectString("select * from {$sViewName}");
 
         $oRoot = new oxGroups();
-        $oRoot->oxgroups__oxid    = new oxField("");
+        $oRoot->oxgroups__oxid = new oxField("");
         $oRoot->oxgroups__oxtitle = new oxField("-- ");
         // rebuild list as we need the "no value" entry at the first position
         $aNewList = array();
         $aNewList[] = $oRoot;
 
-        foreach ( $oGroups as $val ) {
+        foreach ($oGroups as $val) {
             $aNewList[$val->oxgroups__oxid->value] = new oxGroups();
-            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxid    = new oxField($val->oxgroups__oxid->value);
+            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxid = new oxField($val->oxgroups__oxid->value);
             $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxtitle = new oxField($val->oxgroups__oxtitle->value);
         }
 
         $oGroups = $aNewList;
 
-        if ( isset($soxId) && $soxId != "-") {
-            $oDelivery = oxNew( "oxdelivery" );
-            $oDelivery->load( $soxId);
+        if (isset($soxId) && $soxId != "-") {
+            $oDelivery = oxNew("oxdelivery");
+            $oDelivery->load($soxId);
 
             //Disable editing for derived articles
-            if ($oDelivery->isDerived())
-               $this->_aViewData['readonly'] = true;
+            if ($oDelivery->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
         }
 
-        $this->_aViewData["allgroups2"]  = $oGroups;
+        $this->_aViewData["allgroups2"] = $oGroups;
 
         $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
-        if ( $iAoc == 1 ) {
-            $oDeliveryUsersAjax = oxNew( 'delivery_users_ajax' );
+        if ($iAoc == 1) {
+            $oDeliveryUsersAjax = oxNew('delivery_users_ajax');
             $this->_aViewData['oxajax'] = $oDeliveryUsersAjax->getColumns();
 
             return "popups/delivery_users.tpl";
-        } elseif ( $iAoc == 2 ) {
-            $oDeliveryGroupsAjax = oxNew( 'delivery_groups_ajax' );
+        } elseif ($iAoc == 2) {
+            $oDeliveryGroupsAjax = oxNew('delivery_groups_ajax');
             $this->_aViewData['oxajax'] = $oDeliveryGroupsAjax->getColumns();
 
             return "popups/delivery_groups.tpl";

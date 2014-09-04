@@ -26,8 +26,10 @@
  */
 class sysreq_list extends oxAdminList
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'sysreq_list.tpl';

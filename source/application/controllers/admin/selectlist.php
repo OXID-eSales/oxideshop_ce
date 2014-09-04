@@ -27,8 +27,10 @@
  */
 class SelectList extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'selectlist.tpl';

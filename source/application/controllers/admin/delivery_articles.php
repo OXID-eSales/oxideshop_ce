@@ -21,8 +21,6 @@
  */
 
 
-
-
 /**
  * Admin article main delivery manager.
  * There is possibility to change delivery name, article, user
@@ -31,6 +29,7 @@
  */
 class Delivery_Articles extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates delivery category tree,
      * passes data to Smarty engine and returns name of template file "delivery_main.tpl".
@@ -43,27 +42,28 @@ class Delivery_Articles extends oxAdminDetails
 
         $soxId = $this->getEditObjectId();
 
-        if ( $soxId != "-1" && isset( $soxId)) {
-            $this->_createCategoryTree( "artcattree");
+        if ($soxId != "-1" && isset($soxId)) {
+            $this->_createCategoryTree("artcattree");
 
             // load object
-            $oDelivery = oxNew( "oxdelivery" );
-            $oDelivery->load( $soxId);
-            $this->_aViewData["edit"] =  $oDelivery;
+            $oDelivery = oxNew("oxdelivery");
+            $oDelivery->load($soxId);
+            $this->_aViewData["edit"] = $oDelivery;
 
             //Disable editing for derived articles
-            if ($oDelivery->isDerived())
-               $this->_aViewData['readonly'] = true;
+            if ($oDelivery->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
         }
 
         $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
-        if ( $iAoc == 1 ) {
-            $oDeliveryArticlesAjax = oxNew( 'delivery_articles_ajax' );
+        if ($iAoc == 1) {
+            $oDeliveryArticlesAjax = oxNew('delivery_articles_ajax');
             $this->_aViewData['oxajax'] = $oDeliveryArticlesAjax->getColumns();
 
             return "popups/delivery_articles.tpl";
-        } elseif ( $iAoc == 2 ) {
-            $oDeliveryCategoriesAjax = oxNew( 'delivery_categories_ajax' );
+        } elseif ($iAoc == 2) {
+            $oDeliveryCategoriesAjax = oxNew('delivery_categories_ajax');
             $this->_aViewData['oxajax'] = $oDeliveryCategoriesAjax->getColumns();
 
             return "popups/delivery_categories.tpl";

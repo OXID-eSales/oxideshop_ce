@@ -29,6 +29,7 @@
  */
 class oxConnectionException extends oxException
 {
+
     /**
      * Address value
      *
@@ -72,7 +73,7 @@ class oxConnectionException extends oxException
      *
      * @return null
      */
-    public function setConnectionError( $sConnError )
+    public function setConnectionError($sConnError)
     {
         $this->_sConnectionError = $sConnError;
     }
@@ -95,7 +96,7 @@ class oxConnectionException extends oxException
      */
     public function getString()
     {
-        return __CLASS__ .'-'.parent::getString()." Connection Adress --> ".$this->_sAddress."\n". "Connection Error --> ". $this->_sConnectionError;
+        return __CLASS__ . '-' . parent::getString() . " Connection Adress --> " . $this->_sAddress . "\n" . "Connection Error --> " . $this->_sConnectionError;
     }
 
     /**
@@ -108,6 +109,7 @@ class oxConnectionException extends oxException
         $aRes = parent::getValues();
         $aRes['adress'] = $this->getAdress();
         $aRes['connectionError'] = $this->getConnectionError();
+
         return $aRes;
     }
 }

@@ -26,6 +26,7 @@
  */
 class oxSeoEncoderVendor extends oxSeoEncoder
 {
+
     /**
      * Root vendor uri cache
      *
@@ -52,36 +53,37 @@ class oxSeoEncoderVendor extends oxSeoEncoder
      *
      * @return string
      */
-    public function getVendorUri( $oVendor, $iLang = null, $blRegenerate = false  )
+    public function getVendorUri($oVendor, $iLang = null, $blRegenerate = false)
     {
         if (!isset($iLang)) {
             $iLang = $oVendor->getLanguage();
         }
         // load from db
-        if ( $blRegenerate || !( $sSeoUrl = $this->_loadFromDb( 'oxvendor', $oVendor->getId(), $iLang ) ) ) {
+        if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxvendor', $oVendor->getId(), $iLang))) {
 
             if ($iLang != $oVendor->getLanguage()) {
                 $sId = $oVendor->getId();
                 $oVendor = oxNew('oxvendor');
-                $oVendor->loadInLang( $iLang, $sId );
+                $oVendor->loadInLang($iLang, $sId);
             }
 
             $sSeoUrl = '';
-            if ( $oVendor->getId() != 'root' ) {
-                if ( !isset( $this->_aRootVendorUri[$iLang] ) ) {
+            if ($oVendor->getId() != 'root') {
+                if (!isset($this->_aRootVendorUri[$iLang])) {
                     $oRootVendor = oxNew('oxvendor');
-                    $oRootVendor->loadInLang( $iLang, 'root' );
-                    $this->_aRootVendorUri[$iLang] = $this->getVendorUri( $oRootVendor, $iLang );
+                    $oRootVendor->loadInLang($iLang, 'root');
+                    $this->_aRootVendorUri[$iLang] = $this->getVendorUri($oRootVendor, $iLang);
                 }
                 $sSeoUrl .= $this->_aRootVendorUri[$iLang];
             }
 
-            $sSeoUrl .= $this->_prepareTitle( $oVendor->oxvendor__oxtitle->value, false, $oVendor->getLanguage() ) .'/';
-            $sSeoUrl  = $this->_processSeoUrl( $sSeoUrl, $oVendor->getId(), $iLang );
+            $sSeoUrl .= $this->_prepareTitle($oVendor->oxvendor__oxtitle->value, false, $oVendor->getLanguage()) . '/';
+            $sSeoUrl = $this->_processSeoUrl($sSeoUrl, $oVendor->getId(), $iLang);
 
             // save to db
-            $this->_saveToDb( 'oxvendor', $oVendor->getId(), $oVendor->getBaseStdLink($iLang), $sSeoUrl, $iLang );
+            $this->_saveToDb('oxvendor', $oVendor->getId(), $oVendor->getBaseStdLink($iLang), $sSeoUrl, $iLang);
         }
+
         return $sSeoUrl;
     }
 
@@ -95,7 +97,7 @@ class oxSeoEncoderVendor extends oxSeoEncoder
      *
      * @return string
      */
-    public function getVendorPageUrl( $oVendor, $iPage, $iLang = null, $blFixed = null )
+    public function getVendorPageUrl($oVendor, $iPage, $iLang = null, $blFixed = null)
     {
         if (!isset($iLang)) {
             $iLang = $oVendor->getLanguage();
@@ -103,13 +105,14 @@ class oxSeoEncoderVendor extends oxSeoEncoder
         $sStdUrl = $oVendor->getBaseStdLink($iLang) . '&amp;pgNr=' . $iPage;
         $sParams = (int) ($iPage + 1);
 
-        $sStdUrl = $this->_trimUrl( $sStdUrl, $iLang );
-        $sSeoUrl = $this->getVendorUri( $oVendor, $iLang ) . $sParams . "/";
+        $sStdUrl = $this->_trimUrl($sStdUrl, $iLang);
+        $sSeoUrl = $this->getVendorUri($oVendor, $iLang) . $sParams . "/";
 
-        if ( $blFixed === null ) {
-            $blFixed = $this->_isFixed( 'oxvendor', $oVendor->getId(), $iLang );
+        if ($blFixed === null) {
+            $blFixed = $this->_isFixed('oxvendor', $oVendor->getId(), $iLang);
         }
-        return $this->_getFullUrl( $this->_getPageUri( $oVendor, 'oxvendor', $sStdUrl, $sSeoUrl, $sParams, $iLang, $blFixed ), $iLang );
+
+        return $this->_getFullUrl($this->_getPageUri($oVendor, 'oxvendor', $sStdUrl, $sSeoUrl, $sParams, $iLang, $blFixed), $iLang);
     }
 
     /**
@@ -120,12 +123,13 @@ class oxSeoEncoderVendor extends oxSeoEncoder
      *
      * @return null
      */
-    public function getVendorUrl( $oVendor, $iLang = null )
+    public function getVendorUrl($oVendor, $iLang = null)
     {
         if (!isset($iLang)) {
             $iLang = $oVendor->getLanguage();
         }
-        return $this->_getFullUrl( $this->getVendorUri( $oVendor, $iLang ), $iLang );
+
+        return $this->_getFullUrl($this->getVendorUri($oVendor, $iLang), $iLang);
     }
 
     /**
@@ -135,7 +139,7 @@ class oxSeoEncoderVendor extends oxSeoEncoder
      *
      * @return null
      */
-    public function onDeleteVendor( $oVendor )
+    public function onDeleteVendor($oVendor)
     {
         $oDb = oxDb::getDb();
         $sIdQuoted = $oDb->quote($oVendor->getId());
@@ -151,13 +155,14 @@ class oxSeoEncoderVendor extends oxSeoEncoder
      *
      * @return string
      */
-    protected function _getAltUri( $sObjectId, $iLang )
+    protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
-        $oVendor = oxNew( "oxvendor" );
-        if ( $oVendor->loadInLang( $iLang, $sObjectId ) ) {
-            $sSeoUrl = $this->getVendorUri( $oVendor, $iLang, true );
+        $oVendor = oxNew("oxvendor");
+        if ($oVendor->loadInLang($iLang, $sObjectId)) {
+            $sSeoUrl = $this->getVendorUri($oVendor, $iLang, true);
         }
+
         return $sSeoUrl;
     }
 }

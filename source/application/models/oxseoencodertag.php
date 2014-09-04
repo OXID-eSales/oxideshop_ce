@@ -26,6 +26,7 @@
  */
 class oxSeoEncoderTag extends oxSeoEncoder
 {
+
     /**
      * Tag preparation util object
      *
@@ -42,9 +43,9 @@ class oxSeoEncoderTag extends oxSeoEncoder
      *
      * @return string
      */
-    public function getTagUri( $sTag, $iLang = null, $sOxid = null )
+    public function getTagUri($sTag, $iLang = null, $sOxid = null)
     {
-        return $this->_getDynamicTagUri( $sTag, $this->getStdTagUri( $sTag ), "tag/{$sTag}/", $iLang, $sOxid );
+        return $this->_getDynamicTagUri($sTag, $this->getStdTagUri($sTag), "tag/{$sTag}/", $iLang, $sOxid);
     }
 
     /**
@@ -58,28 +59,28 @@ class oxSeoEncoderTag extends oxSeoEncoder
      *
      * @return string
      */
-    protected function _getDynamicTagUri( $sTag, $sStdUrl, $sSeoUrl, $iLang, $sOxid = null )
+    protected function _getDynamicTagUri($sTag, $sStdUrl, $sSeoUrl, $iLang, $sOxid = null)
     {
         $iShopId = $this->getConfig()->getShopId();
 
-        $sStdUrl   = $this->_trimUrl( $sStdUrl );
-        $sObjectId = $this->getDynamicObjectId( $iShopId, $sStdUrl );
-        $sSeoUrl   = $this->_prepareUri( $this->addLanguageParam( $sSeoUrl, $iLang ), $iLang );
+        $sStdUrl = $this->_trimUrl($sStdUrl);
+        $sObjectId = $this->getDynamicObjectId($iShopId, $sStdUrl);
+        $sSeoUrl = $this->_prepareUri($this->addLanguageParam($sSeoUrl, $iLang), $iLang);
 
         //load details link from DB
-        $sOldSeoUrl = $this->_loadFromDb( 'dynamic', $sObjectId, $iLang );
-        if ( $sOldSeoUrl === $sSeoUrl ) {
+        $sOldSeoUrl = $this->_loadFromDb('dynamic', $sObjectId, $iLang);
+        if ($sOldSeoUrl === $sSeoUrl) {
             $sSeoUrl = $sOldSeoUrl;
         } else {
-            if ( $sOldSeoUrl ) {
+            if ($sOldSeoUrl) {
                 // old must be transferred to history
-                $this->_copyToHistory( $sObjectId, $iShopId, $iLang, 'dynamic' );
+                $this->_copyToHistory($sObjectId, $iShopId, $iLang, 'dynamic');
             }
             // creating unique
-            $sSeoUrl = $this->_processSeoUrl( $sSeoUrl, $sObjectId, $iLang );
+            $sSeoUrl = $this->_processSeoUrl($sSeoUrl, $sObjectId, $iLang);
 
             // inserting
-            $this->_saveToDb( 'dynamic', $sObjectId, $sStdUrl, $sSeoUrl, $iLang, $iShopId );
+            $this->_saveToDb('dynamic', $sObjectId, $sStdUrl, $sSeoUrl, $iLang, $iShopId);
         }
 
         return $sSeoUrl;
@@ -92,10 +93,10 @@ class oxSeoEncoderTag extends oxSeoEncoder
      *
      * @return string
      */
-    protected function _prepareTag( $sTag )
+    protected function _prepareTag($sTag)
     {
-        if ( $this->_oTagPrepareUtil == null ) {
-           $this->_oTagPrepareUtil = oxNew('oxtagcloud');
+        if ($this->_oTagPrepareUtil == null) {
+            $this->_oTagPrepareUtil = oxNew('oxtagcloud');
         }
 
         return $sTag = $this->_oTagPrepareUtil->prepareTags($sTag);
@@ -109,13 +110,14 @@ class oxSeoEncoderTag extends oxSeoEncoder
      *
      * @return string
      */
-    public function getStdTagUri( $sTag, $blIncludeIndex = true )
+    public function getStdTagUri($sTag, $blIncludeIndex = true)
     {
         // while tags are just strings, standard ulrs formatted stays here
-        $sUri = "cl=tag&amp;searchtag=" . rawurlencode( $sTag );
-        if ( $blIncludeIndex ) {
+        $sUri = "cl=tag&amp;searchtag=" . rawurlencode($sTag);
+        if ($blIncludeIndex) {
             $sUri = "index.php?" . $sUri;
         }
+
         return $sUri;
     }
 
@@ -127,12 +129,13 @@ class oxSeoEncoderTag extends oxSeoEncoder
      *
      * @return string
      */
-    public function getTagUrl( $sTag, $iLang = null)
+    public function getTagUrl($sTag, $iLang = null)
     {
         if (!isset($iLang)) {
             $iLang = oxRegistry::getLang()->getBaseLanguage();
         }
-        return $this->_getFullUrl( $this->getTagUri( $sTag, $iLang ), $iLang );
+
+        return $this->_getFullUrl($this->getTagUri($sTag, $iLang), $iLang);
     }
 
     /**
@@ -145,17 +148,17 @@ class oxSeoEncoderTag extends oxSeoEncoder
      *
      * @return string
      */
-    public function getTagPageUrl( $sTag, $iPage, $iLang = null, $blFixed = false )
+    public function getTagPageUrl($sTag, $iPage, $iLang = null, $blFixed = false)
     {
         if (!isset($iLang)) {
             $iLang = oxRegistry::getLang()->getBaseLanguage();
         }
-        $sStdUrl = $this->getStdTagUri( $sTag ) . '&amp;pgNr=' . $iPage;
+        $sStdUrl = $this->getStdTagUri($sTag) . '&amp;pgNr=' . $iPage;
         $sParams = (int) ($iPage + 1);
 
-        $sStdUrl = $this->_trimUrl( $sStdUrl, $iLang );
-        $sSeoUrl = $this->getTagUri( $sTag, $iLang ) . $sParams . "/";
+        $sStdUrl = $this->_trimUrl($sStdUrl, $iLang);
+        $sSeoUrl = $this->getTagUri($sTag, $iLang) . $sParams . "/";
 
-        return $this->_getFullUrl( $this->_getDynamicTagUri( $sTag, $sStdUrl, $sSeoUrl, $iLang ), $iLang );
+        return $this->_getFullUrl($this->_getDynamicTagUri($sTag, $sStdUrl, $sSeoUrl, $iLang), $iLang);
     }
 }

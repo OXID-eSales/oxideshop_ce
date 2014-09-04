@@ -28,6 +28,7 @@
  */
 class Attribute_Category extends oxAdminDetails
 {
+
     /**
      * Loads Attribute categories info, passes it to Smarty engine and
      * returns name of template file "attribute_main.tpl".
@@ -41,19 +42,20 @@ class Attribute_Category extends oxAdminDetails
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
 
             $aListAllIn = array();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oAttr = oxNew( "oxattribute" );
-            $oAttr->load( $soxId);
-            $this->_aViewData["edit"] =  $oAttr;
+            $oAttr = oxNew("oxattribute");
+            $oAttr->load($soxId);
+            $this->_aViewData["edit"] = $oAttr;
         }
 
-        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
-            $oAttributeCategoryAjax = oxNew( 'attribute_category_ajax' );
+        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+            $oAttributeCategoryAjax = oxNew('attribute_category_ajax');
             $this->_aViewData['oxajax'] = $oAttributeCategoryAjax->getColumns();
 
             return "popups/attribute_category.tpl";
         }
+
         return "attribute_category.tpl";
     }
 }

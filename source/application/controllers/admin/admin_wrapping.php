@@ -28,8 +28,10 @@
  */
 class Admin_Wrapping extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'wrapping.tpl';

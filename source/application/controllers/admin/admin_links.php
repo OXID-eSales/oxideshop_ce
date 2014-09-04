@@ -28,8 +28,10 @@
  */
 class Admin_Links extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'admin_links.tpl';

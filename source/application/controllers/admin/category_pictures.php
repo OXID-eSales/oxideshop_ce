@@ -27,6 +27,7 @@
  */
 class Category_Pictures extends oxAdminDetails
 {
+
     /**
      * Loads category object, passes it to Smarty engine and returns name
      * of template file "category_pictures.tpl".
@@ -37,12 +38,12 @@ class Category_Pictures extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oCategory = oxNew( 'oxcategory' );
+        $this->_aViewData['edit'] = $oCategory = oxNew('oxcategory');
 
         $soxId = $this->getEditObjectId();
-        if ( $soxId != '-1' && isset( $soxId ) ) {
+        if ($soxId != '-1' && isset($soxId)) {
             // load object
-            $oCategory->load( $soxId );
+            $oCategory->load($soxId);
         }
 
         return "category_pictures.tpl";

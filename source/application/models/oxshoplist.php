@@ -27,6 +27,7 @@
  */
 class oxShopList extends oxList
 {
+
     /**
      * Calls parent constructor
      *
@@ -44,7 +45,7 @@ class oxShopList extends oxList
      */
     public function getAll()
     {
-        $this->selectString( 'SELECT `oxshops`.* FROM `oxshops`' );
+        $this->selectString('SELECT `oxshops`.* FROM `oxshops`');
     }
 
     /**

@@ -28,6 +28,7 @@
  */
 class VoucherSerie_Groups extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates oxlist and oxvoucherserie
      * objects, passes it's data to Smarty engine and returns name of template
@@ -40,19 +41,20 @@ class VoucherSerie_Groups extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oVoucherSerie = oxNew( "oxvoucherserie" );
-            $oVoucherSerie->load( $soxId);
+            $oVoucherSerie = oxNew("oxvoucherserie");
+            $oVoucherSerie->load($soxId);
             $oVoucherSerie->setUserGroups();
-            $this->_aViewData["edit"] =  $oVoucherSerie;
+            $this->_aViewData["edit"] = $oVoucherSerie;
 
             //Disable editing for derived items
-            if ($oVoucherSerie->isDerived())
+            if ($oVoucherSerie->isDerived()) {
                 $this->_aViewData['readonly'] = true;
+            }
         }
-        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
-            $oVoucherSerieGroupsAjax = oxNew( 'voucherserie_groups_ajax' );
+        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+            $oVoucherSerieGroupsAjax = oxNew('voucherserie_groups_ajax');
             $this->_aViewData['oxajax'] = $oVoucherSerieGroupsAjax->getColumns();
 
             return "popups/voucherserie_groups.tpl";

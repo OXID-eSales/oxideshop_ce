@@ -28,20 +28,24 @@
  */
 class oxUser extends oxBase
 {
+
     /**
      * Shop control variable
+     *
      * @var string
      */
     protected $_blDisableShopCheck = true;
 
     /**
      * Current Subscription Object if there is any
+     *
      * @var object
      */
     protected $_oNewsSubscription = null;
 
     /**
      * Current object class name
+     *
      * @var string
      */
     protected $_sClassName = 'oxuser';
@@ -128,30 +132,30 @@ class oxUser extends oxBase
      *
      * @var bool
      */
-    protected $_blLoadedFromCookie  = null;
+    protected $_blLoadedFromCookie = null;
 
-     /**
+    /**
      * User selected shipping address id
      *
      * @var string
      */
     protected $_sSelAddressId = null;
 
-     /**
+    /**
      * User selected shipping address
      *
      * @var object
      */
     protected $_oSelAddress = null;
 
-     /**
+    /**
      * Id of wishlist user
      *
      * @var string
      */
     protected $_sWishId = null;
 
-     /**
+    /**
      * Country title field
      *
      * @var object
@@ -168,8 +172,8 @@ class oxUser extends oxBase
      */
     protected function _getStateObject()
     {
-        if ( is_null( $this->_oStateObject ) ) {
-            $this->_oStateObject = oxNew( 'oxState' );
+        if (is_null($this->_oStateObject)) {
+            $this->_oStateObject = oxNew('oxState');
         }
 
         return $this->_oStateObject;
@@ -182,10 +186,10 @@ class oxUser extends oxBase
      */
     public function __construct()
     {
-        $this->setMallUsersStatus( $this->getConfig()->getConfigParam( 'blMallUsers' ) );
+        $this->setMallUsersStatus($this->getConfig()->getConfigParam('blMallUsers'));
 
         parent::__construct();
-        $this->init( 'oxuser' );
+        $this->init('oxuser');
     }
 
     /**
@@ -195,7 +199,7 @@ class oxUser extends oxBase
      *
      * @return null
      */
-    public function setMallUsersStatus( $blOn = false )
+    public function setMallUsersStatus($blOn = false)
     {
         $this->_blMallUsers = $blOn;
     }
@@ -207,10 +211,10 @@ class oxUser extends oxBase
      *
      * @return mixed
      */
-    public function __get( $sParamName )
+    public function __get($sParamName)
     {
         // it saves memory using - loads data only if it is used
-        switch ( $sParamName ) {
+        switch ($sParamName) {
             case 'oGroups':
                 return $this->_oGroups = $this->getUserGroups();
                 break;
@@ -248,22 +252,22 @@ class oxUser extends oxBase
      */
     public function getNewsSubscription()
     {
-        if ( $this->_oNewsSubscription !== null ) {
+        if ($this->_oNewsSubscription !== null) {
             return $this->_oNewsSubscription;
         }
 
-        $this->_oNewsSubscription = oxNew( 'oxnewssubscribed' );
+        $this->_oNewsSubscription = oxNew('oxnewssubscribed');
 
         // if subscription object is not set yet - we should create one
-        if ( !$this->_oNewsSubscription->loadFromUserId( $this->getId() ) ) {
-            if ( !$this->_oNewsSubscription->loadFromEmail( $this->oxuser__oxusername->value ) ) {
+        if (!$this->_oNewsSubscription->loadFromUserId($this->getId())) {
+            if (!$this->_oNewsSubscription->loadFromEmail($this->oxuser__oxusername->value)) {
 
                 // no subscription defined yet - creating one
                 $this->_oNewsSubscription->oxnewssubscribed__oxuserid = new oxField($this->getId(), oxField::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxemail  = new oxField($this->oxuser__oxusername->value, oxField::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxsal    = new oxField($this->oxuser__oxsal->value, oxField::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxfname  = new oxField($this->oxuser__oxfname->value, oxField::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxlname  = new oxField($this->oxuser__oxlname->value, oxField::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxemail = new oxField($this->oxuser__oxusername->value, oxField::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxsal = new oxField($this->oxuser__oxsal->value, oxField::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxfname = new oxField($this->oxuser__oxfname->value, oxField::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxlname = new oxField($this->oxuser__oxlname->value, oxField::T_RAW);
             }
         }
 
@@ -279,15 +283,15 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    public function getUserCountry( $sCountryId = null, $iLang = null )
+    public function getUserCountry($sCountryId = null, $iLang = null)
     {
-        if ( $this->_oUserCountryTitle == null || $sCountryId ) {
+        if ($this->_oUserCountryTitle == null || $sCountryId) {
             $sId = $sCountryId ? $sCountryId : $this->oxuser__oxcountryid->value;
             $oDb = oxDb::getDb();
-            $sViewName = getViewName( 'oxcountry', $iLang );
-            $sQ = "select oxtitle from {$sViewName} where oxid = " . $oDb->quote( $sId ) . " ";
-            $oCountry = new oxField( $oDb->getOne( $sQ ), oxField::T_RAW);
-            if ( !$sCountryId ) {
+            $sViewName = getViewName('oxcountry', $iLang);
+            $sQ = "select oxtitle from {$sViewName} where oxid = " . $oDb->quote($sId) . " ";
+            $oCountry = new oxField($oDb->getOne($sQ), oxField::T_RAW);
+            if (!$sCountryId) {
                 $this->_oUserCountryTitle = $oCountry;
             }
         } else {
@@ -304,11 +308,11 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    public function getUserCountryId( $sCountry = null )
+    public function getUserCountryId($sCountry = null)
     {
         $oDb = oxDb::getDb();
-        $sQ = "select oxid from ".getviewName( "oxcountry" )." where oxactive = '1' and oxisoalpha2 = " . $oDb->quote( $sCountry ) . " ";
-        $sCountryId = $oDb->getOne( $sQ );
+        $sQ = "select oxid from " . getviewName("oxcountry") . " where oxactive = '1' and oxisoalpha2 = " . $oDb->quote($sCountry) . " ";
+        $sCountryId = $oDb->getOne($sQ);
 
         return $sCountryId;
     }
@@ -320,22 +324,23 @@ class oxUser extends oxBase
      *
      * @return object
      */
-    public function getUserGroups( $sOXID = null )
+    public function getUserGroups($sOXID = null)
     {
 
-        if ( isset( $this->_oGroups ) ) {
+        if (isset($this->_oGroups)) {
             return $this->_oGroups;
         }
 
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             $sOXID = $this->getId();
         }
 
-        $sViewName = getViewName( "oxgroups" );
-        $this->_oGroups = oxNew( 'oxList', 'oxgroups' );
-        $sSelect  = "select {$sViewName}.* from {$sViewName} left join oxobject2group on oxobject2group.oxgroupsid = {$sViewName}.oxid
-                     where oxobject2group.oxobjectid = " . oxDb::getDb()->quote( $sOXID );
-        $this->_oGroups->selectString( $sSelect );
+        $sViewName = getViewName("oxgroups");
+        $this->_oGroups = oxNew('oxList', 'oxgroups');
+        $sSelect = "select {$sViewName}.* from {$sViewName} left join oxobject2group on oxobject2group.oxgroupsid = {$sViewName}.oxid
+                     where oxobject2group.oxobjectid = " . oxDb::getDb()->quote($sOXID);
+        $this->_oGroups->selectString($sSelect);
+
         return $this->_oGroups;
     }
 
@@ -346,24 +351,25 @@ class oxUser extends oxBase
      *
      * @return array
      */
-    public function getUserAddresses( $sUserId = null )
+    public function getUserAddresses($sUserId = null)
     {
-        $sUserId = isset( $sUserId ) ? $sUserId : $this->getId();
-        if ( !isset( $this->_aAddresses[$sUserId] ) ) {
+        $sUserId = isset($sUserId) ? $sUserId : $this->getId();
+        if (!isset($this->_aAddresses[$sUserId])) {
             $oUserAddressList = oxNew('oxUserAddressList');
             $oUserAddressList->load($sUserId);
             $this->_aAddresses[$sUserId] = $oUserAddressList;
 
             // marking selected
-            if ( $sAddressId = $this->getSelectedAddressId() ) {
-                foreach ( $this->_aAddresses[$sUserId] as $oAddress ) {
-                    if ( $oAddress->getId() === $sAddressId ) {
+            if ($sAddressId = $this->getSelectedAddressId()) {
+                foreach ($this->_aAddresses[$sUserId] as $oAddress) {
+                    if ($oAddress->getId() === $sAddressId) {
                         $oAddress->setSelected();
                         break;
                     }
                 }
             }
         }
+
         return $this->_aAddresses[$sUserId];
     }
 
@@ -374,7 +380,7 @@ class oxUser extends oxBase
      *
      * @return null
      */
-    public function setSelectedAddressId( $sAddressId )
+    public function setSelectedAddressId($sAddressId)
     {
         $this->_sSelAddressId = $sAddressId;
     }
@@ -386,14 +392,15 @@ class oxUser extends oxBase
      */
     public function getSelectedAddressId()
     {
-        if ( $this->_sSelAddressId !== null ) {
+        if ($this->_sSelAddressId !== null) {
             return $this->_sSelAddressId;
         }
 
-        $sAddressId = oxRegistry::getConfig()->getRequestParameter( "oxaddressid");
-        if ( !$sAddressId && !oxRegistry::getConfig()->getRequestParameter( 'reloadaddress' ) ) {
-            $sAddressId = oxRegistry::getSession()->getVariable( "deladrid" );
+        $sAddressId = oxRegistry::getConfig()->getRequestParameter("oxaddressid");
+        if (!$sAddressId && !oxRegistry::getConfig()->getRequestParameter('reloadaddress')) {
+            $sAddressId = oxRegistry::getSession()->getVariable("deladrid");
         }
+
         return $sAddressId;
     }
 
@@ -407,12 +414,13 @@ class oxUser extends oxBase
         $this->_sWishId = null;
         // check if we have to set it here
         $oBasket = $this->getSession()->getBasket();
-        foreach ( $oBasket->getContents() as $oBasketItem ) {
-            if ( $this->_sWishId = $oBasketItem->getWishId() ) {
+        foreach ($oBasket->getContents() as $oBasketItem) {
+            if ($this->_sWishId = $oBasketItem->getWishId()) {
                 // stop on first found
                 break;
             }
         }
+
         return $this->_sWishId;
     }
 
@@ -424,18 +432,18 @@ class oxUser extends oxBase
      *
      * @return object $oSelectedAddress
      */
-    public function getSelectedAddress( $sWishId = false )
+    public function getSelectedAddress($sWishId = false)
     {
-        if ( $this->_oSelAddress !== null ) {
+        if ($this->_oSelAddress !== null) {
             return $this->_oSelAddress;
         }
 
         $oSelectedAddress = null;
         $oAddresses = $this->getUserAddresses();
-        if ( $oAddresses->count() ) {
-            if ( $sAddressId = $this->getSelectedAddressId() ) {
-                foreach ( $oAddresses as $oAddress ) {
-                    if ( $oAddress->getId() == $sAddressId ) {
+        if ($oAddresses->count()) {
+            if ($sAddressId = $this->getSelectedAddressId()) {
+                foreach ($oAddresses as $oAddress) {
+                    if ($oAddress->getId() == $sAddressId) {
                         $oAddress->selected = 1;
                         $oAddress->setSelected();
                         $oSelectedAddress = $oAddress;
@@ -445,13 +453,13 @@ class oxUser extends oxBase
             }
 
             // in case none is set - setting first one
-            if ( !$oSelectedAddress ) {
-                if ( !$sAddressId || $sAddressId >= 0 ) {
+            if (!$oSelectedAddress) {
+                if (!$sAddressId || $sAddressId >= 0) {
                     $oAddresses->rewind();
                     $oAddress = $oAddresses->current();
                 } else {
                     $aAddresses = $oAddresses->getArray();
-                    $oAddress   = array_pop( $aAddresses );
+                    $oAddress = array_pop($aAddresses);
                 }
                 $oAddress->selected = 1;
                 $oAddress->setSelected();
@@ -459,6 +467,7 @@ class oxUser extends oxBase
             }
         }
         $this->_oSelAddress = $oSelectedAddress;
+
         return $oSelectedAddress;
     }
 
@@ -469,19 +478,19 @@ class oxUser extends oxBase
      *
      * @return object oxList with oxuserpayments objects
      */
-    public function getUserPayments( $sOXID = null )
+    public function getUserPayments($sOXID = null)
     {
-        if ( $this->_oPayments === null ) {
+        if ($this->_oPayments === null) {
 
-            if ( !$sOXID ) {
+            if (!$sOXID) {
                 $sOXID = $this->getId();
             }
 
-            $sSelect = 'select * from oxuserpayments where oxuserid = ' . oxDb::getDb()->quote( $sOXID ) . ' ';
+            $sSelect = 'select * from oxuserpayments where oxuserid = ' . oxDb::getDb()->quote($sOXID) . ' ';
 
-            $this->_oPayments = oxNew( 'oxList' );
-            $this->_oPayments->init( 'oxUserPayment' );
-            $this->_oPayments->selectString( $sSelect );
+            $this->_oPayments = oxNew('oxList');
+            $this->_oPayments->init('oxUserPayment');
+            $this->_oPayments->selectString($sSelect);
 
         }
 
@@ -495,38 +504,38 @@ class oxUser extends oxBase
      */
     public function save()
     {
-        $myConfig  = oxRegistry::getConfig();
+        $myConfig = oxRegistry::getConfig();
 
         $blAddRemark = false;
-        if ( $this->oxuser__oxpassword->value && $this->oxuser__oxregister->value < 1 ) {
+        if ($this->oxuser__oxpassword->value && $this->oxuser__oxregister->value < 1) {
             $blAddRemark = true;
             //save oxregister value
-            $this->oxuser__oxregister = new oxField(date( 'Y-m-d H:i:s' ), oxField::T_RAW);
+            $this->oxuser__oxregister = new oxField(date('Y-m-d H:i:s'), oxField::T_RAW);
         }
 
         // setting user rights
         $this->oxuser__oxrights = new oxField($this->_getUserRights(), oxField::T_RAW);
 
         // processing birth date which came from output as array
-        if ( is_array( $this->oxuser__oxbirthdate->value ) ) {
-            $this->oxuser__oxbirthdate = new oxField($this->convertBirthday( $this->oxuser__oxbirthdate->value ), oxField::T_RAW);
+        if (is_array($this->oxuser__oxbirthdate->value)) {
+            $this->oxuser__oxbirthdate = new oxField($this->convertBirthday($this->oxuser__oxbirthdate->value), oxField::T_RAW);
         }
 
         // checking if user Facebook ID should be updated
-        if ( $myConfig->getConfigParam( "bl_showFbConnect" ) ) {
+        if ($myConfig->getConfigParam("bl_showFbConnect")) {
             $oFb = oxRegistry::get("oxFb");
-            if ( $oFb->isConnected() && $oFb->getUser() ) {
-                 $this->oxuser__oxfbid = new oxField( $oFb->getUser() );
+            if ($oFb->isConnected() && $oFb->getUser()) {
+                $this->oxuser__oxfbid = new oxField($oFb->getUser());
             }
         }
 
         $blRet = parent::save();
 
         //add registered remark
-        if ( $blAddRemark && $blRet ) {
-            $oRemark = oxNew( 'oxremark' );
-            $oRemark->oxremark__oxtext     = new oxField(oxRegistry::getLang()->translateString( 'usrRegistered', null, true ), oxField::T_RAW);
-            $oRemark->oxremark__oxtype     = new oxField('r', oxField::T_RAW);
+        if ($blAddRemark && $blRet) {
+            $oRemark = oxNew('oxremark');
+            $oRemark->oxremark__oxtext = new oxField(oxRegistry::getLang()->translateString('usrRegistered', null, true), oxField::T_RAW);
+            $oRemark->oxremark__oxtype = new oxField('r', oxField::T_RAW);
             $oRemark->oxremark__oxparentid = new oxField($this->getId(), oxField::T_RAW);
             $oRemark->save();
         }
@@ -551,11 +560,11 @@ class oxUser extends oxBase
      *
      * @return bool
      */
-    public function inGroup( $sGroupID )
+    public function inGroup($sGroupID)
     {
         $blIn = false;
-        if ( ( $oGroups = $this->getUserGroups() ) ) {
-            $blIn = isset( $oGroups[ $sGroupID ] );
+        if (($oGroups = $this->getUserGroups())) {
+            $blIn = isset($oGroups[$sGroupID]);
         }
 
         return $blIn;
@@ -569,42 +578,42 @@ class oxUser extends oxBase
      *
      * @return bool
      */
-    public function delete( $sOXID = null )
+    public function delete($sOXID = null)
     {
 
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             $sOXID = $this->getId();
         }
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             return false;
         }
 
-        $blDeleted = parent::delete( $sOXID );
+        $blDeleted = parent::delete($sOXID);
 
-        if ( $blDeleted ) {
+        if ($blDeleted) {
             $oDb = oxDb::getDb();
             $sOXIDQuoted = $oDb->quote($sOXID);
 
             // deleting stored payment, address, group dependencies, remarks info
-            $rs = $oDb->execute( "delete from oxaddress where oxaddress.oxuserid = {$sOXIDQuoted}" );
-            $rs = $oDb->execute( "delete from oxobject2group where oxobject2group.oxobjectid = {$sOXIDQuoted}" );
+            $rs = $oDb->execute("delete from oxaddress where oxaddress.oxuserid = {$sOXIDQuoted}");
+            $rs = $oDb->execute("delete from oxobject2group where oxobject2group.oxobjectid = {$sOXIDQuoted}");
 
             // deleting notice/wish lists
-            $rs = $oDb->execute( "delete oxuserbasketitems.* from oxuserbasketitems, oxuserbaskets where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid and oxuserid = {$sOXIDQuoted}" );
-            $rs = $oDb->execute( "delete from oxuserbaskets where oxuserid = {$sOXIDQuoted}" );
+            $rs = $oDb->execute("delete oxuserbasketitems.* from oxuserbasketitems, oxuserbaskets where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid and oxuserid = {$sOXIDQuoted}");
+            $rs = $oDb->execute("delete from oxuserbaskets where oxuserid = {$sOXIDQuoted}");
 
             // deleting newsletter subscription
-            $rs = $oDb->execute( "delete from oxnewssubscribed where oxuserid = {$sOXIDQuoted}" );
+            $rs = $oDb->execute("delete from oxnewssubscribed where oxuserid = {$sOXIDQuoted}");
 
             // delivery and delivery sets
-            $rs = $oDb->execute( "delete from oxobject2delivery where oxobjectid = {$sOXIDQuoted}");
+            $rs = $oDb->execute("delete from oxobject2delivery where oxobjectid = {$sOXIDQuoted}");
 
             // discounts
-            $rs = $oDb->execute( "delete from oxobject2discount where oxobjectid = {$sOXIDQuoted}");
+            $rs = $oDb->execute("delete from oxobject2discount where oxobjectid = {$sOXIDQuoted}");
 
 
             // and leaving all order related information
-            $rs = $oDb->execute( "delete from oxremark where oxparentid = {$sOXIDQuoted} and oxtype !='o'" );
+            $rs = $oDb->execute("delete from oxremark where oxparentid = {$sOXIDQuoted} and oxtype !='o'");
 
             $blDeleted = $rs->EOF;
         }
@@ -619,19 +628,19 @@ class oxUser extends oxBase
      *
      * @return bool
      */
-    public function load( $oxID )
+    public function load($oxID)
     {
 
-        $blRet = parent::load( $oxID );
+        $blRet = parent::load($oxID);
 
         // convert date's to international format
-        if ( isset( $this->oxuser__oxcreate->value ) ) {
-            $this->oxuser__oxcreate->setValue(oxRegistry::get("oxUtilsDate")->formatDBDate( $this->oxuser__oxcreate->value ));
+        if (isset($this->oxuser__oxcreate->value)) {
+            $this->oxuser__oxcreate->setValue(oxRegistry::get("oxUtilsDate")->formatDBDate($this->oxuser__oxcreate->value));
         }
 
         // change newsSubcription user id
-        if ( isset($this->_oNewsSubscription) ) {
-            $this->_oNewsSubscription->oxnewssubscribed__oxuserid = new oxField( $oxID, oxField::T_RAW);
+        if (isset($this->_oNewsSubscription)) {
+            $this->_oNewsSubscription->oxnewssubscribed__oxuserid = new oxField($oxID, oxField::T_RAW);
         }
 
         return $blRet;
@@ -644,40 +653,43 @@ class oxUser extends oxBase
      *
      * @return bool
      */
-    public function exists( $sOXID = null )
+    public function exists($sOXID = null)
     {
         $oDb = oxDb::getDb();
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             $sOXID = $this->getId();
         }
 
         $sShopSelect = '';
-        if ( !$this->_blMallUsers && $this->oxuser__oxrights->value != 'malladmin') {
-            $sShopSelect = ' AND oxshopid = "'.$this->getConfig()->getShopId().'" ';
+        if (!$this->_blMallUsers && $this->oxuser__oxrights->value != 'malladmin') {
+            $sShopSelect = ' AND oxshopid = "' . $this->getConfig()->getShopId() . '" ';
         }
 
         //#4543 Query optimisation by splitting it into two, might need an logics optimisation as well
-        if ( $sOXID ) {
-            $sSelect = 'SELECT oxid FROM '.$this->getViewName().'
-                    WHERE ( oxid = '.$oDb->quote( $sOXID ).' ) ';
+        if ($sOXID) {
+            $sSelect = 'SELECT oxid FROM ' . $this->getViewName() . '
+                    WHERE ( oxid = ' . $oDb->quote($sOXID) . ' ) ';
             $sSelect .= $sShopSelect;
 
-            if ( ( $sOxid = $oDb->getOne( $sSelect, false, false ) ) ) {
+            if (($sOxid = $oDb->getOne($sSelect, false, false))) {
                 // update - set oxid
-                $this->setId( $sOxid );
+                $this->setId($sOxid);
+
                 return true;
             }
         }
 
-        $sSelect = 'SELECT oxid FROM '.$this->getViewName().'
-                    WHERE ( oxusername = '.$oDb->quote( $this->oxuser__oxusername->value).' ) ';
+        $sSelect = 'SELECT oxid FROM ' . $this->getViewName() . '
+                    WHERE ( oxusername = ' . $oDb->quote($this->oxuser__oxusername->value) . ' ) ';
         $sSelect .= $sShopSelect;
 
-        if ( ( $sOxid = $oDb->getOne( $sSelect, false, false ) ) ) {
-             // update - set oxid
-            $this->setId( $sOxid );
+        if (($sOxid = $oDb->getOne($sSelect, false, false))) {
+            // update - set oxid
+            $this->setId($sOxid);
+
             return true;
         }
+
         return false;
     }
 
@@ -689,13 +701,13 @@ class oxUser extends oxBase
      *
      * @return oxList
      */
-    public function getOrders( $iLimit = false, $iPage = 0 )
+    public function getOrders($iLimit = false, $iPage = 0)
     {
-        $oOrders = oxNew( 'oxList' );
-        $oOrders->init( 'oxorder' );
+        $oOrders = oxNew('oxList');
+        $oOrders->init('oxorder');
 
-        if ( $iLimit !== false ) {
-            $oOrders->setSqlLimit( $iLimit * $iPage, $iLimit );
+        if ($iLimit !== false) {
+            $oOrders->setSqlLimit($iLimit * $iPage, $iLimit);
         }
 
         //P
@@ -705,14 +717,14 @@ class oxUser extends oxBase
         // $oOrders->aSetBeforeAssign['blLoadProdInfo'] = true;
 
         //loading order for registered user
-        if ( $this->oxuser__oxregister->value > 1 ) {
+        if ($this->oxuser__oxregister->value > 1) {
             $oDb = oxDb::getDb();
-            $sQ = 'select * from oxorder where oxuserid = '.$oDb->quote( $this->getId() ).' and oxorderdate >= ' . $oDb->quote( $this->oxuser__oxregister->value ) . ' ';
+            $sQ = 'select * from oxorder where oxuserid = ' . $oDb->quote($this->getId()) . ' and oxorderdate >= ' . $oDb->quote($this->oxuser__oxregister->value) . ' ';
 
             //#1546 - shopid check added, if it is not multishop
 
             $sQ .= ' order by oxorderdate desc ';
-            $oOrders->selectString( $sQ );
+            $oOrders->selectString($sQ);
         }
 
         return $oOrders;
@@ -726,10 +738,10 @@ class oxUser extends oxBase
     public function getOrderCount()
     {
         $iCnt = 0;
-        if ( $this->getId() && $this->oxuser__oxregister->value > 1 ) {
+        if ($this->getId() && $this->oxuser__oxregister->value > 1) {
             $oDb = oxDb::getDb();
-            $sQ  = 'select count(*) from oxorder where oxuserid = '.$oDb->quote( $this->getId() ).' AND oxorderdate >= ' . $oDb->quote( $this->oxuser__oxregister->value) . ' and oxshopid = "'.$this->getConfig()->getShopId().'" ';
-            $iCnt = (int) $oDb->getOne( $sQ );
+            $sQ = 'select count(*) from oxorder where oxuserid = ' . $oDb->quote($this->getId()) . ' AND oxorderdate >= ' . $oDb->quote($this->oxuser__oxregister->value) . ' and oxshopid = "' . $this->getConfig()->getShopId() . '" ';
+            $iCnt = (int) $oDb->getOne($sQ);
         }
 
         return $iCnt;
@@ -742,12 +754,13 @@ class oxUser extends oxBase
      */
     public function getNoticeListArtCnt()
     {
-        if ( $this->_iCntNoticeListArticles === null ) {
+        if ($this->_iCntNoticeListArticles === null) {
             $this->_iCntNoticeListArticles = 0;
-            if ( $this->getId() ) {
-                $this->_iCntNoticeListArticles = $this->getBasket( 'noticelist' )->getItemCount();
+            if ($this->getId()) {
+                $this->_iCntNoticeListArticles = $this->getBasket('noticelist')->getItemCount();
             }
         }
+
         return $this->_iCntNoticeListArticles;
     }
 
@@ -758,12 +771,13 @@ class oxUser extends oxBase
      */
     public function getWishListArtCnt()
     {
-        if ( $this->_iCntWishListArticles === null ) {
+        if ($this->_iCntWishListArticles === null) {
             $this->_iCntWishListArticles = false;
-            if ( $this->getId() ) {
-                $this->_iCntWishListArticles = $this->getBasket( 'wishlist' )->getItemCount();
+            if ($this->getId()) {
+                $this->_iCntWishListArticles = $this->getBasket('wishlist')->getItemCount();
             }
         }
+
         return $this->_iCntWishListArticles;
     }
 
@@ -786,16 +800,16 @@ class oxUser extends oxBase
     public function getActiveCountry()
     {
         $sDeliveryCountry = '';
-        $soxAddressId = oxRegistry::getSession()->getVariable( 'deladrid' );
-        if ( $soxAddressId ) {
-            $oDelAddress = oxNew( 'oxaddress' );
-            $oDelAddress->load( $soxAddressId );
+        $soxAddressId = oxRegistry::getSession()->getVariable('deladrid');
+        if ($soxAddressId) {
+            $oDelAddress = oxNew('oxaddress');
+            $oDelAddress->load($soxAddressId);
             $sDeliveryCountry = $oDelAddress->oxaddress__oxcountryid->value;
-        } elseif ( $this->getId() ) {
+        } elseif ($this->getId()) {
             $sDeliveryCountry = $this->oxuser__oxcountryid->value;
         } else {
-            $oUser = oxNew( 'oxuser' );
-            if ( $oUser->loadActiveUser() ) {
+            $oUser = oxNew('oxuser');
+            if ($oUser->loadActiveUser()) {
                 $sDeliveryCountry = $oUser->oxuser__oxcountryid->value;
             }
         }
@@ -816,37 +830,37 @@ class oxUser extends oxBase
         $sShopID = $this->getConfig()->getShopId();
 
         // check if user exists AND there is no password - in this case we update otherwise we try to insert
-        $sSelect = "select oxid from oxuser where oxusername = " . $oDb->quote( $this->oxuser__oxusername->value ) . " and oxpassword = '' ";
-        if ( !$this->_blMallUsers ) {
+        $sSelect = "select oxid from oxuser where oxusername = " . $oDb->quote($this->oxuser__oxusername->value) . " and oxpassword = '' ";
+        if (!$this->_blMallUsers) {
             $sSelect .= " and oxshopid = '{$sShopID}' ";
         }
-        $sOXID = $oDb->getOne( $sSelect, false, false );
+        $sOXID = $oDb->getOne($sSelect, false, false);
 
         // user without password found - lets use
-        if ( isset( $sOXID ) && $sOXID ) {
+        if (isset($sOXID) && $sOXID) {
             // try to update
-            $this->delete( $sOXID );
-        } elseif ( $this->_blMallUsers ) {
+            $this->delete($sOXID);
+        } elseif ($this->_blMallUsers) {
             // must be sure if there is no dublicate user
-            $sQ = "select oxid from oxuser where oxusername = " . $oDb->quote( $this->oxuser__oxusername->value ) . " and oxusername != '' ";
-            if ( $oDb->getOne( $sQ, false, false ) ) {
+            $sQ = "select oxid from oxuser where oxusername = " . $oDb->quote($this->oxuser__oxusername->value) . " and oxusername != '' ";
+            if ($oDb->getOne($sQ, false, false)) {
                 /** @var oxUserException $oEx */
-                $oEx = oxNew( 'oxUserException' );
+                $oEx = oxNew('oxUserException');
                 $oLang = oxRegistry::getLang();
-                $oEx->setMessage( sprintf( $oLang->translateString( 'ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage() ), $this->oxuser__oxusername->value ) );
+                $oEx->setMessage(sprintf($oLang->translateString('ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage()), $this->oxuser__oxusername->value));
                 throw $oEx;
             }
         }
 
-        $this->oxuser__oxshopid = new oxField( $sShopID, oxField::T_RAW );
-        if ( ( $blOK = $this->save() ) ) {
+        $this->oxuser__oxshopid = new oxField($sShopID, oxField::T_RAW);
+        if (($blOK = $this->save())) {
             // dropping/cleaning old delivery address/payment info
-            $oDb->execute( "delete from oxaddress where oxaddress.oxuserid = " . $oDb->quote( $this->oxuser__oxid->value ) . " " );
-            $oDb->execute( "update oxuserpayments set oxuserpayments.oxuserid = " . $oDb->quote( $this->oxuser__oxusername->value ) . " where oxuserpayments.oxuserid = " . $oDb->quote( $this->oxuser__oxid->value ) . " " );
+            $oDb->execute("delete from oxaddress where oxaddress.oxuserid = " . $oDb->quote($this->oxuser__oxid->value) . " ");
+            $oDb->execute("update oxuserpayments set oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxusername->value) . " where oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxid->value) . " ");
         } else {
             /** @var oxUserException $oEx */
-            $oEx = oxNew( 'oxUserException' );
-            $oEx->setMessage( 'EXCEPTION_USER_USERCREATIONFAILED' );
+            $oEx = oxNew('oxUserException');
+            $oEx->setMessage('EXCEPTION_USER_USERCREATIONFAILED');
             throw $oEx;
         }
 
@@ -860,21 +874,23 @@ class oxUser extends oxBase
      *
      * @return bool
      */
-    public function addToGroup( $sGroupID )
+    public function addToGroup($sGroupID)
     {
-        if ( !$this->inGroup( $sGroupID ) ) {
+        if (!$this->inGroup($sGroupID)) {
             // create oxgroup object
             $oGroup = oxNew('oxGroups');
-            if ( $oGroup->load($sGroupID) ) {
-                $oNewGroup = oxNew( 'oxobject2group' );
-                $oNewGroup->oxobject2group__oxobjectid = new oxField( $this->getId(), oxField::T_RAW );
-                $oNewGroup->oxobject2group__oxgroupsid = new oxField( $sGroupID, oxField::T_RAW );
-                if ( $oNewGroup->save() ) {
+            if ($oGroup->load($sGroupID)) {
+                $oNewGroup = oxNew('oxobject2group');
+                $oNewGroup->oxobject2group__oxobjectid = new oxField($this->getId(), oxField::T_RAW);
+                $oNewGroup->oxobject2group__oxgroupsid = new oxField($sGroupID, oxField::T_RAW);
+                if ($oNewGroup->save()) {
                     $this->_oGroups[$sGroupID] = $oGroup;
+
                     return true;
                 }
             }
         }
+
         return false;
     }
 
@@ -885,16 +901,16 @@ class oxUser extends oxBase
      *
      * @return null
      */
-    public function removeFromGroup( $sGroupID = null )
+    public function removeFromGroup($sGroupID = null)
     {
-        if ( $sGroupID != null && $this->inGroup( $sGroupID ) ) {
-            $oGroups = oxNew( 'oxList' );
-            $oGroups->init( 'oxobject2group' );
-            $sSelect = 'select * from oxobject2group where oxobject2group.oxobjectid = "'.$this->getId().'" and oxobject2group.oxgroupsid = "'.$sGroupID.'" ';
-            $oGroups->selectString( $sSelect );
-            foreach ( $oGroups as $oRemgroup ) {
-                if ( $oRemgroup->delete() ) {
-                    unset( $this->_oGroups[$oRemgroup->oxobject2group__oxgroupsid->value] );
+        if ($sGroupID != null && $this->inGroup($sGroupID)) {
+            $oGroups = oxNew('oxList');
+            $oGroups->init('oxobject2group');
+            $sSelect = 'select * from oxobject2group where oxobject2group.oxobjectid = "' . $this->getId() . '" and oxobject2group.oxgroupsid = "' . $sGroupID . '" ';
+            $oGroups->selectString($sSelect);
+            foreach ($oGroups as $oRemgroup) {
+                if ($oRemgroup->delete()) {
+                    unset($this->_oGroups[$oRemgroup->oxobject2group__oxgroupsid->value]);
                 }
             }
         }
@@ -908,29 +924,29 @@ class oxUser extends oxBase
      *
      * @return null
      */
-    public function onOrderExecute( $oBasket, $iSuccess )
+    public function onOrderExecute($oBasket, $iSuccess)
     {
 
-        if ( is_numeric( $iSuccess ) && $iSuccess != 2 && $iSuccess <= 3 ) {
+        if (is_numeric($iSuccess) && $iSuccess != 2 && $iSuccess <= 3) {
             //adding user to particular customer groups
             $myConfig = $this->getConfig();
-            $dMidlleCustPrice = (float) $myConfig->getConfigParam( 'sMidlleCustPrice' );
-            $dLargeCustPrice  = (float) $myConfig->getConfigParam( 'sLargeCustPrice' );
+            $dMidlleCustPrice = (float) $myConfig->getConfigParam('sMidlleCustPrice');
+            $dLargeCustPrice = (float) $myConfig->getConfigParam('sLargeCustPrice');
 
-            $this->addToGroup( 'oxidcustomer' );
+            $this->addToGroup('oxidcustomer');
             $dBasketPrice = $oBasket->getPrice()->getBruttoPrice();
-            if ( $dBasketPrice < $dMidlleCustPrice ) {
-                $this->addToGroup( 'oxidsmallcust' );
+            if ($dBasketPrice < $dMidlleCustPrice) {
+                $this->addToGroup('oxidsmallcust');
             }
-            if ( $dBasketPrice >= $dMidlleCustPrice && $dBasketPrice < $dLargeCustPrice ) {
-                $this->addToGroup( 'oxidmiddlecust' );
+            if ($dBasketPrice >= $dMidlleCustPrice && $dBasketPrice < $dLargeCustPrice) {
+                $this->addToGroup('oxidmiddlecust');
             }
-            if ( $dBasketPrice >= $dLargeCustPrice ) {
-                $this->addToGroup( 'oxidgoodcust' );
+            if ($dBasketPrice >= $dLargeCustPrice) {
+                $this->addToGroup('oxidgoodcust');
             }
 
-            if ( $this->inGroup( 'oxidnotyetordered' ) ) {
-                $this->removeFromGroup( 'oxidnotyetordered' );
+            if ($this->inGroup('oxidnotyetordered')) {
+                $this->removeFromGroup('oxidnotyetordered');
             }
         }
     }
@@ -942,15 +958,15 @@ class oxUser extends oxBase
      *
      * @return oxuserbasket
      */
-    public function getBasket( $sName )
+    public function getBasket($sName)
     {
-        if ( !isset( $this->_aBaskets[$sName] ) ) {
-            $oBasket = oxNew( 'oxuserbasket' );
-            $aWhere = array( 'oxuserbaskets.oxuserid' => $this->getId(), 'oxuserbaskets.oxtitle' => $sName );
+        if (!isset($this->_aBaskets[$sName])) {
+            $oBasket = oxNew('oxuserbasket');
+            $aWhere = array('oxuserbaskets.oxuserid' => $this->getId(), 'oxuserbaskets.oxtitle' => $sName);
 
             // creating if it does not exist
-            if ( !$oBasket->assignRecord( $oBasket->buildSelectString( $aWhere ) ) ) {
-                $oBasket->oxuserbaskets__oxtitle  = new oxField($sName);
+            if (!$oBasket->assignRecord($oBasket->buildSelectString($aWhere))) {
+                $oBasket->oxuserbaskets__oxtitle = new oxField($sName);
                 $oBasket->oxuserbaskets__oxuserid = new oxField($this->getId());
 
                 // marking basket as new (it will not be saved in DB yet)
@@ -971,32 +987,36 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    public function convertBirthday( $aData )
+    public function convertBirthday($aData)
     {
 
         // preparing data to process
-        $iYear  = isset($aData['year'])?((int) $aData['year']):false;
-        $iMonth = isset($aData['month'])?((int) $aData['month']):false;
-        $iDay   = isset($aData['day'])?((int) $aData['day']):false;
+        $iYear = isset($aData['year']) ? ((int) $aData['year']) : false;
+        $iMonth = isset($aData['month']) ? ((int) $aData['month']) : false;
+        $iDay = isset($aData['day']) ? ((int) $aData['day']) : false;
 
         // leaving empty if not set
-        if ( !$iYear && !$iMonth && !$iDay )
+        if (!$iYear && !$iMonth && !$iDay) {
             return "";
+        }
 
         // year
-        if ( !$iYear || $iYear < 1000 || $iYear > 9999)
+        if (!$iYear || $iYear < 1000 || $iYear > 9999) {
             $iYear = date('Y');
+        }
 
         // month
-        if ( !$iMonth || $iMonth < 1 || $iMonth > 12)
+        if (!$iMonth || $iMonth < 1 || $iMonth > 12) {
             $iMonth = 1;
+        }
 
         // maximum nuber of days in month
         $iMaxDays = 31;
-        switch( $iMonth) {
+        switch ($iMonth) {
             case 2 :
-                if ($iMaxDays > 28)
+                if ($iMaxDays > 28) {
                     $iMaxDays = ($iYear % 4 == 0 && ($iYear % 100 != 0 || $iYear % 400 == 0)) ? 29 : 28;
+                }
                 break;
             case 4  :
             case 6  :
@@ -1007,7 +1027,7 @@ class oxUser extends oxBase
         }
 
         // day
-        if ( !$iDay || $iDay < 1 || $iDay > $iMaxDays) {
+        if (!$iDay || $iDay < 1 || $iDay > $iMaxDays) {
             $iDay = 1;
         }
 
@@ -1022,7 +1042,7 @@ class oxUser extends oxBase
      */
     public function getBoni()
     {
-        if ( ! $iBoni = $this->getConfig()->getConfigParam( 'iCreditRating' ) ) {
+        if (!$iBoni = $this->getConfig()->getConfigParam('iCreditRating')) {
             $iBoni = 1000;
         }
 
@@ -1047,32 +1067,32 @@ class oxUser extends oxBase
      *
      * @return null
      */
-    public function checkValues( $sLogin, $sPassword, $sPassword2, $aInvAddress, $aDelAddress )
+    public function checkValues($sLogin, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
     {
         /** @var oxInputValidator $oInputValidator */
         $oInputValidator = oxRegistry::get('oxInputValidator');
 
         // 1. checking user name
-        $sLogin = $oInputValidator->checkLogin( $this, $sLogin, $aInvAddress );
+        $sLogin = $oInputValidator->checkLogin($this, $sLogin, $aInvAddress);
 
         // 2. checking email
-        $oInputValidator->checkEmail( $this, $sLogin, $aInvAddress );
+        $oInputValidator->checkEmail($this, $sLogin, $aInvAddress);
 
         // 3. password
-        $oInputValidator->checkPassword( $this, $sPassword, $sPassword2, ((int) oxRegistry::getConfig()->getRequestParameter( 'option' ) == 3) );
+        $oInputValidator->checkPassword($this, $sPassword, $sPassword2, ((int) oxRegistry::getConfig()->getRequestParameter('option') == 3));
 
         // 4. required fields
-        $oInputValidator->checkRequiredFields( $this, $aInvAddress, $aDelAddress );
+        $oInputValidator->checkRequiredFields($this, $aInvAddress, $aDelAddress);
 
         // 5. country check
-        $oInputValidator->checkCountries( $this, $aInvAddress, $aDelAddress );
+        $oInputValidator->checkCountries($this, $aInvAddress, $aDelAddress);
 
         // 6. vat id check.
-            $oInputValidator->checkVatId( $this, $aInvAddress );
+            $oInputValidator->checkVatId($this, $aInvAddress);
 
 
         // throwing first validation error
-        if ( $oError = oxRegistry::get("oxInputValidator")->getFirstValidationError() ) {
+        if ($oError = oxRegistry::get("oxInputValidator")->getFirstValidationError()) {
             throw $oError;
         }
     }
@@ -1086,42 +1106,42 @@ class oxUser extends oxBase
      *
      * @return bool
      */
-    public function setNewsSubscription( $blSubscribe, $blSendOptIn, $blForceCheckOptIn = false )
+    public function setNewsSubscription($blSubscribe, $blSendOptIn, $blForceCheckOptIn = false)
     {
         // assigning to newsletter
         $blSuccess = false;
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
         $mySession = $this->getSession();
 
         // user wants to get newsletter messages or no ?
         $oNewsSubscription = $this->getNewsSubscription();
-        if ( $oNewsSubscription ) {
-            if ( $blSubscribe && ($blForceCheckOptIn || ( $iOptInStatus = $oNewsSubscription->getOptInStatus() ) != 1) ) {
-                if ( !$blSendOptIn ) {
+        if ($oNewsSubscription) {
+            if ($blSubscribe && ($blForceCheckOptIn || ($iOptInStatus = $oNewsSubscription->getOptInStatus()) != 1)) {
+                if (!$blSendOptIn) {
 
                     // double-opt-in check is disabled - assigning automatically
-                    $this->addToGroup( 'oxidnewsletter' );
+                    $this->addToGroup('oxidnewsletter');
                     // and setting subscribed status
-                    $oNewsSubscription->setOptInStatus( 1 );
+                    $oNewsSubscription->setOptInStatus(1);
                     $blSuccess = true;
                 } else {
 
                     // double-opt-in check enabled - sending confirmation email and setting waiting status
-                    if ( $iOptInStatus != 2 ) {
+                    if ($iOptInStatus != 2) {
                         // sending double-opt-in mail
-                        $oEmail = oxNew( 'oxemail' );
-                        $blSuccess = $oEmail->sendNewsletterDbOptInMail( $this );
+                        $oEmail = oxNew('oxemail');
+                        $blSuccess = $oEmail->sendNewsletterDbOptInMail($this);
                     } else {
                         // mail already was sent, so just confirming that
                         $blSuccess = true;
                     }
 
-                    $oNewsSubscription->setOptInStatus( 2 );
+                    $oNewsSubscription->setOptInStatus(2);
                 }
-            } elseif ( !$blSubscribe ) {
+            } elseif (!$blSubscribe) {
                 // removing user from newsletter subscribers
-                $this->removeFromGroup( 'oxidnewsletter' );
-                $oNewsSubscription->setOptInStatus( 0 );
+                $this->removeFromGroup('oxidnewsletter');
+                $oNewsSubscription->setOptInStatus(0);
                 $blSuccess = true;
             }
         }
@@ -1146,24 +1166,24 @@ class oxUser extends oxBase
      *
      * @return bool
      */
-    public function changeUserData( $sUser, $sPassword, $sPassword2, $aInvAddress, $aDelAddress )
+    public function changeUserData($sUser, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
     {
         // validating values before saving. If validation fails - exception is thrown
-        $this->checkValues( $sUser, $sPassword, $sPassword2, $aInvAddress, $aDelAddress );
+        $this->checkValues($sUser, $sPassword, $sPassword2, $aInvAddress, $aDelAddress);
         // input data is fine - lets save updated user info
 
-        $this->assign( $aInvAddress );
+        $this->assign($aInvAddress);
 
 
         // update old or add new delivery address
-        $this->_assignAddress( $aDelAddress );
+        $this->_assignAddress($aDelAddress);
 
         // saving new values
-        if ( $this->save() ) {
+        if ($this->save()) {
 
             // assigning automatically to specific groups
-            $sCountryId = isset( $aInvAddress['oxuser__oxcountryid'] )?$aInvAddress['oxuser__oxcountryid']:'';
-            $this->_setAutoGroups( $sCountryId );
+            $sCountryId = isset($aInvAddress['oxuser__oxcountryid']) ? $aInvAddress['oxuser__oxcountryid'] : '';
+            $this->_setAutoGroups($sCountryId);
         }
     }
 
@@ -1201,29 +1221,29 @@ class oxUser extends oxBase
      *
      * @return null
      */
-    protected function _assignAddress( $aDelAddress )
+    protected function _assignAddress($aDelAddress)
     {
-        if ( is_array( $aDelAddress ) && count( $aDelAddress ) ) {
+        if (is_array($aDelAddress) && count($aDelAddress)) {
 
-            $sAddressId = $this->getConfig()->getRequestParameter( 'oxaddressid' );
-            $sAddressId = ( $sAddressId === null || $sAddressId == -1 || $sAddressId == -2 ) ?  null : $sAddressId;
+            $sAddressId = $this->getConfig()->getRequestParameter('oxaddressid');
+            $sAddressId = ($sAddressId === null || $sAddressId == -1 || $sAddressId == -2) ? null : $sAddressId;
 
-            $oAddress = oxNew( 'oxaddress' );
-            $oAddress->setId( $sAddressId );
-            $oAddress->load( $sAddressId );
-            $oAddress->assign( $aDelAddress );
-            $oAddress->oxaddress__oxuserid  = new oxField( $this->getId(), oxField::T_RAW );
-            $oAddress->oxaddress__oxcountry = $this->getUserCountry( $oAddress->oxaddress__oxcountryid->value );
+            $oAddress = oxNew('oxaddress');
+            $oAddress->setId($sAddressId);
+            $oAddress->load($sAddressId);
+            $oAddress->assign($aDelAddress);
+            $oAddress->oxaddress__oxuserid = new oxField($this->getId(), oxField::T_RAW);
+            $oAddress->oxaddress__oxcountry = $this->getUserCountry($oAddress->oxaddress__oxcountryid->value);
             $oAddress->save();
 
             // resetting addresses
             $this->_aAddresses = null;
 
             // saving delivery Address for later use
-            oxRegistry::getSession()->setVariable( 'deladrid', $oAddress->getId() );
+            oxRegistry::getSession()->setVariable('deladrid', $oAddress->getId());
         } else {
             // resetting
-            oxRegistry::getSession()->setVariable( 'deladrid', null );
+            oxRegistry::getSession()->setVariable('deladrid', null);
         }
     }
 
@@ -1237,18 +1257,18 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    protected function _getLoginQueryHashedWithMD5( $sUser, $sPassword, $sShopID, $blAdmin )
+    protected function _getLoginQueryHashedWithMD5($sUser, $sPassword, $sShopID, $blAdmin)
     {
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
 
-        $sUserSelect = "oxuser.oxusername = " . $oDb->quote( $sUser );
-        $sPassSelect = " oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) ) ";
+        $sUserSelect = "oxuser.oxusername = " . $oDb->quote($sUser);
+        $sPassSelect = " oxuser.oxpassword = BINARY MD5( CONCAT( " . $oDb->quote($sPassword) . ", UNHEX( oxuser.oxpasssalt ) ) ) ";
         $sShopSelect = "";
 
 
         // admin view: can only login with higher than 'user' rights
-        if ( $blAdmin ) {
+        if ($blAdmin) {
             $sShopSelect = " and ( oxrights != 'user' ) ";
         }
 
@@ -1261,30 +1281,30 @@ class oxUser extends oxBase
     /**
      * Builds and returns user login query
      *
-     * @param string $sUser login name
+     * @param string $sUser     login name
      * @param string $sPassword login password
-     * @param string $sShopID shopid
-     * @param bool $blAdmin admin/non admin mode
+     * @param string $sShopID   shopid
+     * @param bool   $blAdmin   admin/non admin mode
      *
      * @throws object
      *
      * @return string
      */
-    protected function _getLoginQuery( $sUser, $sPassword, $sShopID, $blAdmin )
+    protected function _getLoginQuery($sUser, $sPassword, $sShopID, $blAdmin)
     {
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
 
-        $sUserSelect = "oxuser.oxusername = " . $oDb->quote( $sUser );
+        $sUserSelect = "oxuser.oxusername = " . $oDb->quote($sUser);
 
         $sSalt = $oDb->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  " . $sUserSelect);
 
-        $sPassSelect = " oxuser.oxpassword = " . $oDb->quote($this->encodePassword($sPassword, $sSalt) );
+        $sPassSelect = " oxuser.oxpassword = " . $oDb->quote($this->encodePassword($sPassword, $sSalt));
         $sShopSelect = "";
 
 
         // admin view: can only login with higher than 'user' rights
-        if ( $blAdmin ) {
+        if ($blAdmin) {
             $sShopSelect = " and ( oxrights != 'user' ) ";
         }
 
@@ -1303,11 +1323,11 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    protected function _getShopSelect( $myConfig, $sShopID, $blAdmin )
+    protected function _getShopSelect($myConfig, $sShopID, $blAdmin)
     {
         $sShopSelect = "";
         // admin view: can only login with higher than 'user' rights
-        if ( $blAdmin ) {
+        if ($blAdmin) {
             $sShopSelect = " and ( oxrights != 'user' ) ";
         }
 
@@ -1318,9 +1338,9 @@ class oxUser extends oxBase
      * Performs user login by username and password. Fetches user data from DB.
      * Registers in session. Returns true on success, FALSE otherwise.
      *
-     * @param string $sUser User username
+     * @param string $sUser     User username
      * @param string $sPassword User password
-     * @param bool $blCookie (default false)
+     * @param bool   $blCookie  (default false)
      *
      * @throws object
      * @throws oxCookieException
@@ -1328,55 +1348,52 @@ class oxUser extends oxBase
      *
      * @return bool
      */
-    public function login( $sUser, $sPassword, $blCookie = false)
+    public function login($sUser, $sPassword, $blCookie = false)
     {
-        if ( $this->isAdmin() && !count( oxRegistry::get("oxUtilsServer")->getOxCookie() ) ) {
+        if ($this->isAdmin() && !count(oxRegistry::get("oxUtilsServer")->getOxCookie())) {
             /** @var oxCookieException $oEx */
-            $oEx = oxNew( 'oxCookieException' );
-            $oEx->setMessage( 'ERROR_MESSAGE_COOKIE_NOCOOKIE' );
+            $oEx = oxNew('oxCookieException');
+            $oEx->setMessage('ERROR_MESSAGE_COOKIE_NOCOOKIE');
             throw $oEx;
         }
 
         $oConfig = $this->getConfig();
 
 
-        if ( $sPassword ) {
+        if ($sPassword) {
 
             $sShopID = $oConfig->getShopId();
-            $this->_dbLogin( $sUser, $sPassword, $sShopID );
+            $this->_dbLogin($sUser, $sPassword, $sShopID);
 
         }
 
 
 
 
-
-
-
         //login successful?
-        if ( $this->oxuser__oxid->value ) {
+        if ($this->oxuser__oxid->value) {
 
             // yes, successful login
 
             //resetting active user
-            $this->setUser( null );
+            $this->setUser(null);
 
-            if ( $this->isAdmin() ) {
-                oxRegistry::getSession()->setVariable( 'auth', $this->oxuser__oxid->value );
+            if ($this->isAdmin()) {
+                oxRegistry::getSession()->setVariable('auth', $this->oxuser__oxid->value);
             } else {
-                oxRegistry::getSession()->setVariable( 'usr', $this->oxuser__oxid->value );
+                oxRegistry::getSession()->setVariable('usr', $this->oxuser__oxid->value);
             }
 
             // cookie must be set ?
-            if ( $blCookie && $oConfig->getConfigParam( 'blShowRememberMe' ) ) {
-                oxRegistry::get("oxUtilsServer")->setUserCookie( $this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $oConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value );
+            if ($blCookie && $oConfig->getConfigParam('blShowRememberMe')) {
+                oxRegistry::get("oxUtilsServer")->setUserCookie($this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $oConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value);
             }
 
             return true;
         } else {
             /** @var oxUserException $oEx */
-            $oEx = oxNew( 'oxUserException' );
-            $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
+            $oEx = oxNew('oxUserException');
+            $oEx->setMessage('ERROR_MESSAGE_USER_NOVALIDLOGIN');
             throw $oEx;
         }
     }
@@ -1389,17 +1406,17 @@ class oxUser extends oxBase
     public function logout()
     {
         // deleting session info
-        oxRegistry::getSession()->deleteVariable( 'usr' );  // for front end
-        oxRegistry::getSession()->deleteVariable( 'auth' ); // for back end
-        oxRegistry::getSession()->deleteVariable( 'dynvalue' );
-        oxRegistry::getSession()->deleteVariable( 'paymentid' );
+        oxRegistry::getSession()->deleteVariable('usr'); // for front end
+        oxRegistry::getSession()->deleteVariable('auth'); // for back end
+        oxRegistry::getSession()->deleteVariable('dynvalue');
+        oxRegistry::getSession()->deleteVariable('paymentid');
         // oxRegistry::getSession()->deleteVariable( 'deladrid' );
 
         // delete cookie
-        oxRegistry::get("oxUtilsServer")->deleteUserCookie( $this->getConfig()->getShopID() );
+        oxRegistry::get("oxUtilsServer")->deleteUserCookie($this->getConfig()->getShopID());
 
         // unsetting global user
-        $this->setUser( null );
+        $this->setUser(null);
 
         return true;
     }
@@ -1412,7 +1429,7 @@ class oxUser extends oxBase
      */
     public function loadAdminUser()
     {
-        return $this->loadActiveUser( true );
+        return $this->loadActiveUser(true);
     }
 
     /**
@@ -1423,47 +1440,48 @@ class oxUser extends oxBase
      *
      * @return bool
      */
-    public function loadActiveUser( $blForceAdmin = false )
+    public function loadActiveUser($blForceAdmin = false)
     {
         $oConfig = $this->getConfig();
 
         $blAdmin = $this->isAdmin() || $blForceAdmin;
 
         // first - checking session info
-        $sUserID = $blAdmin ? oxRegistry::getSession()->getVariable( 'auth' ) : oxRegistry::getSession()->getVariable( 'usr' );
+        $sUserID = $blAdmin ? oxRegistry::getSession()->getVariable('auth') : oxRegistry::getSession()->getVariable('usr');
 
         // trying automatic login (by 'remember me' cookie)
         $blFoundInCookie = false;
-        if ( !$sUserID && !$blAdmin && $oConfig->getConfigParam('blShowRememberMe') ) {
+        if (!$sUserID && !$blAdmin && $oConfig->getConfigParam('blShowRememberMe')) {
             $sUserID = $this->_getCookieUserId();
-            $blFoundInCookie = $sUserID? true : false;
+            $blFoundInCookie = $sUserID ? true : false;
         }
 
         // If facebook connection is enabled, trying to login user using Facebook ID
-        if ( !$sUserID && !$blAdmin && $oConfig->getConfigParam( "bl_showFbConnect") ) {
+        if (!$sUserID && !$blAdmin && $oConfig->getConfigParam("bl_showFbConnect")) {
             $sUserID = $this->_getFacebookUserId();
         }
 
         // checking user results
-        if ( $sUserID ) {
-            if ( $this->load( $sUserID ) ) {
+        if ($sUserID) {
+            if ($this->load($sUserID)) {
                 // storing into session
                 if ($blAdmin) {
-                    oxRegistry::getSession()->setVariable( 'auth', $sUserID );
+                    oxRegistry::getSession()->setVariable('auth', $sUserID);
                 } else {
-                    oxRegistry::getSession()->setVariable( 'usr', $sUserID );
+                    oxRegistry::getSession()->setVariable('usr', $sUserID);
                 }
 
                 // marking the way user was loaded
                 $this->_blLoadedFromCookie = $blFoundInCookie;
+
                 return true;
             }
         } else {
             // no user
             if ($blAdmin) {
-                oxRegistry::getSession()->deleteVariable( 'auth' );
+                oxRegistry::getSession()->deleteVariable('auth');
             } else {
-                oxRegistry::getSession()->deleteVariable( 'usr' );
+                oxRegistry::getSession()->deleteVariable('usr');
             }
 
             return false;
@@ -1480,14 +1498,15 @@ class oxUser extends oxBase
         $oDb = oxDb::getDb();
         $oFb = oxRegistry::get("oxFb");
         $oConfig = $this->getConfig();
-        if ( $oFb->isConnected() && $oFb->getUser() ) {
-            $sUserSelect = "oxuser.oxfbid = " . $oDb->quote( $oFb->getUser() );
+        if ($oFb->isConnected() && $oFb->getUser()) {
+            $sUserSelect = "oxuser.oxfbid = " . $oDb->quote($oFb->getUser());
             $sShopSelect = "";
 
 
-            $sSelect =  "select oxid from oxuser where oxuser.oxactive = 1 and {$sUserSelect} {$sShopSelect} ";
-            $sUserID = $oDb->getOne( $sSelect );
+            $sSelect = "select oxid from oxuser where oxuser.oxactive = 1 and {$sUserSelect} {$sShopSelect} ";
+            $sUserID = $oDb->getOne($sSelect);
         }
+
         return $sUserID;
     }
 
@@ -1501,19 +1520,19 @@ class oxUser extends oxBase
         $sUserID = null;
         $oConfig = $this->getConfig();
         $sShopID = $oConfig->getShopId();
-        if ( ( $sSet = oxRegistry::get("oxUtilsServer")->getUserCookie( $sShopID ) ) ) {
+        if (($sSet = oxRegistry::get("oxUtilsServer")->getUserCookie($sShopID))) {
             $oDb = oxDb::getDb();
-            $aData = explode( '@@@', $sSet );
+            $aData = explode('@@@', $sSet);
             $sUser = $aData[0];
-            $sPWD  = @$aData[1];
+            $sPWD = @$aData[1];
 
-            $sSelect =  'select oxid, oxpassword, oxpasssalt from oxuser where oxuser.oxpassword != "" and  oxuser.oxactive = 1 and oxuser.oxusername = '.$oDb->quote($sUser);
+            $sSelect = 'select oxid, oxpassword, oxpasssalt from oxuser where oxuser.oxpassword != "" and  oxuser.oxactive = 1 and oxuser.oxusername = ' . $oDb->quote($sUser);
 
-            $rs = $oDb->select( $sSelect );
-            if ( $rs != false && $rs->recordCount() > 0 ) {
+            $rs = $oDb->select($sSelect);
+            if ($rs != false && $rs->recordCount() > 0) {
                 while (!$rs->EOF) {
-                    $sTest = crypt( $rs->fields[1], $rs->fields[2] );
-                    if ( $sTest == $sPWD ) {
+                    $sTest = crypt($rs->fields[1], $rs->fields[2]);
+                    if ($sTest == $sPWD) {
                         // found
                         $sUserID = $rs->fields[0];
                         break;
@@ -1522,10 +1541,11 @@ class oxUser extends oxBase
                 }
             }
             // if cookie info is not valid, remove it.
-            if ( !$sUserID ) {
-                oxRegistry::get('oxUtilsServer')->deleteUserCookie( $sShopID );
+            if (!$sUserID) {
+                oxRegistry::get('oxUtilsServer')->deleteUserCookie($sShopID);
             }
         }
+
         return $sUserID;
     }
 
@@ -1541,55 +1561,55 @@ class oxUser extends oxBase
      *
      * @return null
      */
-    protected function _ldapLogin( $sUser, $sPassword, $sShopID, $sShopSelect)
+    protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect)
     {
-        $aLDAPParams = $this->getConfig()->getConfigParam( 'aLDAPParams' );
-        $oLDAP = oxNew( "oxLDAP", $aLDAPParams['HOST'], $aLDAPParams['PORT'] );
+        $aLDAPParams = $this->getConfig()->getConfigParam('aLDAPParams');
+        $oLDAP = oxNew("oxLDAP", $aLDAPParams['HOST'], $aLDAPParams['PORT']);
 
         // maybe this is LDAP user but supplied email Address instead of LDAP login
         $oDb = oxDb::getDb();
-        $sLDAPKey = $oDb->getOne( "select oxldapkey from oxuser where oxuser.oxactive = 1 and oxuser.oxusername = ".$oDb->quote( $sUser )." $sShopSelect");
-        if ( isset( $sLDAPKey) && $sLDAPKey) {
+        $sLDAPKey = $oDb->getOne("select oxldapkey from oxuser where oxuser.oxactive = 1 and oxuser.oxusername = " . $oDb->quote($sUser) . " $sShopSelect");
+        if (isset($sLDAPKey) && $sLDAPKey) {
             $sUser = $sLDAPKey;
         }
 
         //$throws oxConnectionException
-        $oLDAP->login( $sUser, $sPassword, $aLDAPParams['USERQUERY'], $aLDAPParams['BASEDN'], $aLDAPParams['FILTER'] );
+        $oLDAP->login($sUser, $sPassword, $aLDAPParams['USERQUERY'], $aLDAPParams['BASEDN'], $aLDAPParams['FILTER']);
 
         $aData = $oLDAP->mapData($aLDAPParams['DATAMAP']);
-        if ( isset( $aData['OXUSERNAME']) && $aData['OXUSERNAME']) {
+        if (isset($aData['OXUSERNAME']) && $aData['OXUSERNAME']) {
             // login successful
 
             // check if user is already in database
-            $sSelect =  "select oxid from oxuser where oxuser.oxusername = ".$oDb->quote( $aData['OXUSERNAME'] )." $sShopSelect";
-            $sOXID = $oDb->getOne( $sSelect );
+            $sSelect = "select oxid from oxuser where oxuser.oxusername = " . $oDb->quote($aData['OXUSERNAME']) . " $sShopSelect";
+            $sOXID = $oDb->getOne($sSelect);
 
-            if ( !isset( $sOXID ) || !$sOXID ) {
+            if (!isset($sOXID) || !$sOXID) {
                 // we need to create a new user
                 //$oUser->oxuser__oxid->setValue($oUser->setId());
                 $this->setId();
 
                 // map all user data fields
-                foreach ( $aData as $fldname => $value) {
-                    $sField = "oxuser__".strtolower( $fldname);
-                    $this->$sField = new oxField( $aData[$fldname] );
+                foreach ($aData as $fldname => $value) {
+                    $sField = "oxuser__" . strtolower($fldname);
+                    $this->$sField = new oxField($aData[$fldname]);
                 }
 
-                $this->oxuser__oxactive  = new oxField( 1 );
-                $this->oxuser__oxshopid  = new oxField( $sShopID );
-                $this->oxuser__oxldapkey = new oxField( $sUser );
-                $this->oxuser__oxrights  = new oxField( "user" );
-                $this->setPassword( "ldap user" );
+                $this->oxuser__oxactive = new oxField(1);
+                $this->oxuser__oxshopid = new oxField($sShopID);
+                $this->oxuser__oxldapkey = new oxField($sUser);
+                $this->oxuser__oxrights = new oxField("user");
+                $this->setPassword("ldap user");
 
                 $this->save();
             } else {
                 // LDAP user is already in OXID DB, load it
-                $this->load( $sOXID);
+                $this->load($sOXID);
             }
 
         } else {
             /** @var oxUserException $oEx */
-            $oEx = oxNew( 'oxUserException' );
+            $oEx = oxNew('oxUserException');
             $oEx->setMessage('EXCEPTION_USER_NOVALUES');
             throw $oEx;
         }
@@ -1604,35 +1624,36 @@ class oxUser extends oxBase
     protected function _getUserRights()
     {
         // previously user had no rights defined
-        if ( !$this->oxuser__oxrights->value )
+        if (!$this->oxuser__oxrights->value) {
             return 'user';
+        }
 
         $oDb = oxDb::getDb();
-        $myConfig    = $this->getConfig();
+        $myConfig = $this->getConfig();
         $sAuthRights = null;
 
         // choosing possible user rights index
-        $sAuthUserID = $this->isAdmin()?oxRegistry::getSession()->getVariable( 'auth' ):null;
-        $sAuthUserID = $sAuthUserID?$sAuthUserID:oxRegistry::getSession()->getVariable( 'usr' );
-        if ( $sAuthUserID ) {
-            $sAuthRights = $oDb->getOne( 'select oxrights from '.$this->getViewName().' where oxid='.$oDb->quote( $sAuthUserID ) );
+        $sAuthUserID = $this->isAdmin() ? oxRegistry::getSession()->getVariable('auth') : null;
+        $sAuthUserID = $sAuthUserID ? $sAuthUserID : oxRegistry::getSession()->getVariable('usr');
+        if ($sAuthUserID) {
+            $sAuthRights = $oDb->getOne('select oxrights from ' . $this->getViewName() . ' where oxid=' . $oDb->quote($sAuthUserID));
         }
 
         //preventing user rights edit for non admin
         $aRights = array();
 
         // selecting current users rights ...
-        if ( $sCurrRights = $oDb->getOne( 'select oxrights from '.$this->getViewName().' where oxid='.$oDb->quote( $this->getId() ) ) ) {
+        if ($sCurrRights = $oDb->getOne('select oxrights from ' . $this->getViewName() . ' where oxid=' . $oDb->quote($this->getId()))) {
             $aRights[] = $sCurrRights;
         }
         $aRights[] = 'user';
 
-        if ( !$sAuthRights || !( $sAuthRights == 'malladmin' || $sAuthRights == $myConfig->getShopId() ) ) {
-            return current( $aRights );
-        } elseif ( $sAuthRights == $myConfig->getShopId() ) {
+        if (!$sAuthRights || !($sAuthRights == 'malladmin' || $sAuthRights == $myConfig->getShopId())) {
+            return current($aRights);
+        } elseif ($sAuthRights == $myConfig->getShopId()) {
             $aRights[] = $sAuthRights;
-            if ( !in_array( $this->oxuser__oxrights->value, $aRights ) ) {
-                return current( $aRights );
+            if (!in_array($this->oxuser__oxrights->value, $aRights)) {
+                return current($aRights);
             }
         }
 
@@ -1649,9 +1670,9 @@ class oxUser extends oxBase
     {
 
         // set oxcreate date
-        $this->oxuser__oxcreate = new oxField(date( 'Y-m-d H:i:s' ), oxField::T_RAW);
+        $this->oxuser__oxcreate = new oxField(date('Y-m-d H:i:s'), oxField::T_RAW);
 
-        if ( !isset( $this->oxuser__oxboni->value ) ) {
+        if (!isset($this->oxuser__oxboni->value)) {
             $this->oxuser__oxboni = new oxField($this->getBoni(), oxField::T_RAW);
         }
 
@@ -1672,14 +1693,14 @@ class oxUser extends oxBase
 
         // don't change this field
         $this->_aSkipSaveFields[] = 'oxcreate';
-        if ( !$this->isAdmin() ) {
+        if (!$this->isAdmin()) {
             $this->_aSkipSaveFields[] = 'oxcustnr';
             $this->_aSkipSaveFields[] = 'oxrights';
         }
 
         // updating subscription information
-        if ( ( $blUpdate = parent::_update() ) ) {
-            $this->getNewsSubscription()->updateSubscription( $this );
+        if (($blUpdate = parent::_update())) {
+            $this->getNewsSubscription()->updateSubscription($this);
         }
 
         return $blUpdate;
@@ -1692,24 +1713,24 @@ class oxUser extends oxBase
      *
      * @return null
      */
-    public function checkIfEmailExists( $sEmail )
+    public function checkIfEmailExists($sEmail)
     {
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
         $iShopId = $myConfig->getShopId();
         $blExists = false;
 
-        $sQ = 'select oxshopid, oxrights, oxpassword from oxuser where oxusername = '. $oDb->quote( $sEmail );
-        if ( ( $sOxid = $this->getId() ) ) {
-            $sQ .= " and oxid <> ".$oDb->quote( $sOxid );
+        $sQ = 'select oxshopid, oxrights, oxpassword from oxuser where oxusername = ' . $oDb->quote($sEmail);
+        if (($sOxid = $this->getId())) {
+            $sQ .= " and oxid <> " . $oDb->quote($sOxid);
         }
-        $oRs = $oDb->select( $sQ, false, false );
-        if ( $oRs != false && $oRs->recordCount() > 0 ) {
+        $oRs = $oDb->select($sQ, false, false);
+        if ($oRs != false && $oRs->recordCount() > 0) {
 
-            if ( $this->_blMallUsers ) {
+            if ($this->_blMallUsers) {
 
                 $blExists = true;
-                if ( $oRs->fields[1] == 'user' && !$oRs->fields[2] ) {
+                if ($oRs->fields[1] == 'user' && !$oRs->fields[2]) {
 
                     // password is not set - allow to override
                     $blExists = false;
@@ -1717,13 +1738,13 @@ class oxUser extends oxBase
             } else {
 
                 $blExists = false;
-                while ( !$oRs->EOF ) {
-                    if ( $oRs->fields[1] != 'user' ) {
+                while (!$oRs->EOF) {
+                    if ($oRs->fields[1] != 'user') {
 
                         // exists admin with same login - must not allow
                         $blExists = true;
                         break;
-                    } elseif ( $oRs->fields[0] == $iShopId && $oRs->fields[2] ) {
+                    } elseif ($oRs->fields[0] == $iShopId && $oRs->fields[2]) {
 
                         // exists same login (with password) in same shop
                         $blExists = true;
@@ -1734,6 +1755,7 @@ class oxUser extends oxBase
                 }
             }
         }
+
         return $blExists;
     }
 
@@ -1744,26 +1766,27 @@ class oxUser extends oxBase
      *
      * @return object oxList with oxrecommlist objects
      */
-    public function getUserRecommLists( $sOXID = null )
+    public function getUserRecommLists($sOXID = null)
     {
-        if ( !$sOXID )
+        if (!$sOXID) {
             $sOXID = $this->getId();
+        }
 
         // sets active page
-        $iActPage = (int) oxRegistry::getConfig()->getRequestParameter( 'pgNr' );
+        $iActPage = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
         $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
         // load only lists which we show on screen
-        $iNrofCatArticles = $this->getConfig()->getConfigParam( 'iNrofCatArticles' );
+        $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
 
-        $oRecommList = oxNew( 'oxList' );
-        $oRecommList->init( 'oxrecommlist' );
-        $oRecommList->setSqlLimit( $iNrofCatArticles * $iActPage, $iNrofCatArticles );
+        $oRecommList = oxNew('oxList');
+        $oRecommList->init('oxrecommlist');
+        $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
         $iShopId = $this->getConfig()->getShopId();
-        $sSelect = 'select * from oxrecommlists where oxuserid ='. oxDb::getDb()->quote( $sOXID ) . ' and oxshopid ="'. $iShopId .'"';
-        $oRecommList->selectString( $sSelect );
+        $sSelect = 'select * from oxrecommlists where oxuserid =' . oxDb::getDb()->quote($sOXID) . ' and oxshopid ="' . $iShopId . '"';
+        $oRecommList->selectString($sSelect);
 
         return $oRecommList;
     }
@@ -1775,19 +1798,20 @@ class oxUser extends oxBase
      *
      * @return int
      */
-    public function getRecommListsCount( $sOx = null )
+    public function getRecommListsCount($sOx = null)
     {
-        if ( !$sOx ) {
+        if (!$sOx) {
             $sOx = $this->getId();
         }
 
-        if ( $this->_iCntRecommLists === null || $sOx ) {
+        if ($this->_iCntRecommLists === null || $sOx) {
             $oDb = oxDb::getDb();
             $this->_iCntRecommLists = 0;
             $iShopId = $this->getConfig()->getShopId();
-            $sSelect = 'select count(oxid) from oxrecommlists where oxuserid = ' . $oDb->quote( $sOx ) . ' and oxshopid ="'. $iShopId .'"';
-            $this->_iCntRecommLists = $oDb->getOne( $sSelect );
+            $sSelect = 'select count(oxid) from oxrecommlists where oxuserid = ' . $oDb->quote($sOx) . ' and oxshopid ="' . $iShopId . '"';
+            $this->_iCntRecommLists = $oDb->getOne($sSelect);
         }
+
         return $this->_iCntRecommLists;
     }
 
@@ -1799,16 +1823,16 @@ class oxUser extends oxBase
      *
      * @return null
      */
-    protected function _setAutoGroups( $sCountryId )
+    protected function _setAutoGroups($sCountryId)
     {
         // assigning automatically to specific groups
         $blForeigner = true;
         $blForeignGroupExists = false;
         $blInlandGroupExists = false;
 
-        $aHomeCountry = $this->getConfig()->getConfigParam( 'aHomeCountry' );
+        $aHomeCountry = $this->getConfig()->getConfigParam('aHomeCountry');
         // foreigner ?
-        if ( is_array($aHomeCountry)) {
+        if (is_array($aHomeCountry)) {
             if (in_array($sCountryId, $aHomeCountry)) {
                 $blForeigner = false;
             }
@@ -1816,25 +1840,25 @@ class oxUser extends oxBase
             $blForeigner = false;
         }
 
-        if ( $this->inGroup( 'oxidforeigncustomer' ) ) {
+        if ($this->inGroup('oxidforeigncustomer')) {
             $blForeignGroupExists = true;
-            if ( !$blForeigner ) {
-                $this->removeFromGroup( 'oxidforeigncustomer' );
+            if (!$blForeigner) {
+                $this->removeFromGroup('oxidforeigncustomer');
             }
         }
 
-        if ( $this->inGroup( 'oxidnewcustomer' ) ) {
+        if ($this->inGroup('oxidnewcustomer')) {
             $blInlandGroupExists = true;
-            if ( $blForeigner ) {
-                $this->removeFromGroup( 'oxidnewcustomer' );
+            if ($blForeigner) {
+                $this->removeFromGroup('oxidnewcustomer');
             }
         }
 
-        if ( !$blForeignGroupExists && $blForeigner ) {
-            $this->addToGroup( 'oxidforeigncustomer' );
+        if (!$blForeignGroupExists && $blForeigner) {
+            $this->addToGroup('oxidforeigncustomer');
         }
-        if ( !$blInlandGroupExists && !$blForeigner ) {
-            $this->addToGroup( 'oxidnewcustomer' );
+        if (!$blInlandGroupExists && !$blForeigner) {
+            $this->addToGroup('oxidnewcustomer');
         }
     }
 
@@ -1847,12 +1871,12 @@ class oxUser extends oxBase
      *
      * @return oxuser
      */
-    public function loadUserByUpdateId( $sUid )
+    public function loadUserByUpdateId($sUid)
     {
         $oDb = oxDb::getDb();
-        $sQ = "select oxid from ".$this->getViewName()." where oxupdateexp >= ".time()." and MD5( CONCAT( oxid, oxshopid, oxupdatekey ) ) = ".$oDb->quote( $sUid );
-        if ( $sUserId = $oDb->getOne( $sQ ) ) {
-            return $this->load( $sUserId );
+        $sQ = "select oxid from " . $this->getViewName() . " where oxupdateexp >= " . time() . " and MD5( CONCAT( oxid, oxshopid, oxupdatekey ) ) = " . $oDb->quote($sUid);
+        if ($sUserId = $oDb->getOne($sQ)) {
+            return $this->load($sUserId);
         }
     }
 
@@ -1863,16 +1887,16 @@ class oxUser extends oxBase
      *
      * @return null
      */
-    public function setUpdateKey( $blReset = false )
+    public function setUpdateKey($blReset = false)
     {
-        $sUpKey  = $blReset ? '' : oxUtilsObject::getInstance()->generateUId();
+        $sUpKey = $blReset ? '' : oxUtilsObject::getInstance()->generateUId();
         $iUpTime = $blReset ? 0 : oxRegistry::get("oxUtilsDate")->getTime() + $this->getUpdateLinkTerm();
 
         // generating key
-        $this->oxuser__oxupdatekey = new oxField( $sUpKey, oxField::T_RAW );
+        $this->oxuser__oxupdatekey = new oxField($sUpKey, oxField::T_RAW);
 
         // setting expiration time for 6 hours
-        $this->oxuser__oxupdateexp = new oxField( $iUpTime, oxField::T_RAW );
+        $this->oxuser__oxupdateexp = new oxField($iUpTime, oxField::T_RAW);
 
         // saving
         $this->save();
@@ -1895,11 +1919,12 @@ class oxUser extends oxBase
      *
      * @return bool
      */
-    public function isExpiredUpdateId( $sKey )
+    public function isExpiredUpdateId($sKey)
     {
         $oDb = oxDb::getDb();
-        $sQ = "select 1 from ".$this->getViewName()." where oxupdateexp >= ".time()." and MD5( CONCAT( oxid, oxshopid, oxupdatekey ) ) = ".$oDb->quote( $sKey );
-        return !( (bool) $oDb->getOne( $sQ ) );
+        $sQ = "select 1 from " . $this->getViewName() . " where oxupdateexp >= " . time() . " and MD5( CONCAT( oxid, oxshopid, oxupdatekey ) ) = " . $oDb->quote($sKey);
+
+        return !((bool) $oDb->getOne($sQ));
     }
 
     /**
@@ -1909,10 +1934,11 @@ class oxUser extends oxBase
      */
     public function getUpdateId()
     {
-        if ( $this->_sUpdateKey === null ) {
+        if ($this->_sUpdateKey === null) {
             $this->setUpdateKey();
-            $this->_sUpdateKey = md5( $this->getId() . $this->oxuser__oxshopid->value . $this->oxuser__oxupdatekey->value );
+            $this->_sUpdateKey = md5($this->getId() . $this->oxuser__oxshopid->value . $this->oxuser__oxupdatekey->value);
         }
+
         return $this->_sUpdateKey;
     }
 
@@ -1924,12 +1950,12 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    public function encodePassword( $sPassword, $sSalt )
+    public function encodePassword($sPassword, $sSalt)
     {
         /** @var oxSha512Hasher $oSha512Hasher */
-        $oSha512Hasher  = oxNew('oxSha512Hasher');
+        $oSha512Hasher = oxNew('oxSha512Hasher');
         /** @var oxPasswordHasher $oHasher */
-        $oHasher = oxNew('oxPasswordHasher', $oSha512Hasher );
+        $oHasher = oxNew('oxPasswordHasher', $oSha512Hasher);
 
         return $oHasher->hash($sPassword, $sSalt);
     }
@@ -1943,7 +1969,7 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    public function prepareSalt( $sSalt )
+    public function prepareSalt($sSalt)
     {
         /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
         $oOpenSSLFunctionalityChecker = oxNew('oxOpenSSLFunctionalityChecker');
@@ -1962,9 +1988,9 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    public function decodeSalt( $sSaltHex )
+    public function decodeSalt($sSaltHex)
     {
-        return ( $sSaltHex ? oxDb::getDb()->getOne( "select UNHEX( '{$sSaltHex}' )" ) : '' );
+        return ($sSaltHex ? oxDb::getDb()->getOne("select UNHEX( '{$sSaltHex}' )") : '');
     }
 
     /**
@@ -1974,7 +2000,7 @@ class oxUser extends oxBase
      *
      * @return null
      */
-    public function setPassword( $sPassword = null )
+    public function setPassword($sPassword = null)
     {
         /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
         $oOpenSSLFunctionalityChecker = oxNew('oxOpenSSLFunctionalityChecker');
@@ -1985,29 +2011,29 @@ class oxUser extends oxBase
         $sSalt = $sPassword ? $oSaltGenerator->generate() : '';
 
         // encoding only if password was not empty (e.g. user registration without pass)
-        $sPassword = $sPassword ? $this->encodePassword( $sPassword, $sSalt ) : '';
+        $sPassword = $sPassword ? $this->encodePassword($sPassword, $sSalt) : '';
 
-        $this->oxuser__oxpassword = new oxField( $sPassword, oxField::T_RAW );
-        $this->oxuser__oxpasssalt = new oxField( $sSalt, oxField::T_RAW );
+        $this->oxuser__oxpassword = new oxField($sPassword, oxField::T_RAW);
+        $this->oxuser__oxpasssalt = new oxField($sSalt, oxField::T_RAW);
     }
 
-     /**
-      * Checks if user entered password is the same as old
-      *
-      * @param string $sNewPass new password
-      *
-      * @return bool
-      */
-    public function isSamePassword( $sNewPass )
+    /**
+     * Checks if user entered password is the same as old
+     *
+     * @param string $sNewPass new password
+     *
+     * @return bool
+     */
+    public function isSamePassword($sNewPass)
     {
-        return $this->encodePassword( $sNewPass, $this->oxuser__oxpasssalt->value ) == $this->oxuser__oxpassword->value;
+        return $this->encodePassword($sNewPass, $this->oxuser__oxpasssalt->value) == $this->oxuser__oxpassword->value;
     }
 
-     /**
-      * Returns if user was loaded from cookie
-      *
-      * @return bool
-      */
+    /**
+     * Returns if user was loaded from cookie
+     *
+     * @return bool
+     */
     public function isLoadedFromCookie()
     {
         return $this->_blLoadedFromCookie;
@@ -2024,9 +2050,10 @@ class oxUser extends oxBase
     public function getPasswordHash()
     {
         $sHash = null;
-        if ( $this->oxuser__oxpassword->value ) {
+        if ($this->oxuser__oxpassword->value) {
             $sHash = $this->oxuser__oxpassword->value;
         }
+
         return $sHash;
     }
 
@@ -2037,10 +2064,11 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    public function getReviewUserHash( $sUserId )
+    public function getReviewUserHash($sUserId)
     {
         $oDb = oxDb::getDb();
-        $sReviewUserHash = $oDb->getOne('select md5(concat("oxid", oxpassword, oxusername )) from oxuser where oxid = ' . $oDb->quote( $sUserId ) .'');
+        $sReviewUserHash = $oDb->getOne('select md5(concat("oxid", oxpassword, oxusername )) from oxuser where oxid = ' . $oDb->quote($sUserId) . '');
+
         return $sReviewUserHash;
     }
 
@@ -2051,10 +2079,11 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    public function getReviewUserId( $sReviewUserHash )
+    public function getReviewUserId($sReviewUserHash)
     {
         $oDb = oxDb::getDb();
-        $sUserId = $oDb->getOne('select oxid from oxuser where md5(concat("oxid", oxpassword, oxusername )) = ' . $oDb->quote( $sReviewUserHash ) .'');
+        $sUserId = $oDb->getOne('select oxid from oxuser where md5(concat("oxid", oxpassword, oxusername )) = ' . $oDb->quote($sReviewUserHash) . '');
+
         return $sUserId;
     }
 
@@ -2087,15 +2116,15 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    public function getStateTitle( $sId = null )
+    public function getStateTitle($sId = null)
     {
         $oState = $this->_getStateObject();
 
-        if ( is_null( $sId ) ) {
+        if (is_null($sId)) {
             $sId = $this->getStateId();
         }
 
-        return $oState->getTitleById( $sId );
+        return $oState->getTitleById($sId);
     }
 
     /**
@@ -2107,8 +2136,9 @@ class oxUser extends oxBase
     {
         $oDb = oxDb::getDb();
         $sShopId = $this->getConfig()->getShopId();
-        $sUserId = $oDb->quote( $this->getId() );
-        return (bool) $oDb->getOne( "select 1 from oxacceptedterms where oxuserid={$sUserId} and oxshopid='{$sShopId}'" );
+        $sUserId = $oDb->quote($this->getId());
+
+        return (bool) $oDb->getOne("select 1 from oxacceptedterms where oxuserid={$sUserId} and oxshopid='{$sShopId}'");
     }
 
     /**
@@ -2119,11 +2149,11 @@ class oxUser extends oxBase
     public function acceptTerms()
     {
         $oDb = oxDb::getDb();
-        $sUserId  = $oDb->quote( $this->getId() );
-        $sShopId  = $this->getConfig()->getShopId();
-        $sVersion = oxNew( "oxcontent" )->getTermsVersion();
+        $sUserId = $oDb->quote($this->getId());
+        $sShopId = $this->getConfig()->getShopId();
+        $sVersion = oxNew("oxcontent")->getTermsVersion();
 
-        $oDb->execute( "replace oxacceptedterms set oxuserid={$sUserId}, oxshopid='{$sShopId}', oxtermversion='{$sVersion}'" );
+        $oDb->execute("replace oxacceptedterms set oxuserid={$sUserId}, oxshopid='{$sShopId}', oxtermversion='{$sVersion}'");
     }
 
     /**
@@ -2135,26 +2165,26 @@ class oxUser extends oxBase
      *
      * @return bool
      */
-    public function setCreditPointsForRegistrant( $sUserId, $sRecEmail )
+    public function setCreditPointsForRegistrant($sUserId, $sRecEmail)
     {
-        $blSet   = false;
+        $blSet = false;
         $oDb = oxDb::getDb();
-        $iPoints = $this->getConfig()->getConfigParam( 'dPointsForRegistration' );
+        $iPoints = $this->getConfig()->getConfigParam('dPointsForRegistration');
         // check if this invitation is still not accepted
-        $iPending = $oDb->getOne( "select count(oxuserid) from oxinvitations where oxuserid = ".$oDb->quote( $sUserId )." and md5(oxemail) = ".$oDb->quote( $sRecEmail )." and oxpending = 1 and oxaccepted = 0", false, false);
-        if ( $iPoints && $iPending ) {
-            $this->oxuser__oxpoints = new oxField( $iPoints, oxField::T_RAW );
-            if ( $blSet = $this->save() ) {
+        $iPending = $oDb->getOne("select count(oxuserid) from oxinvitations where oxuserid = " . $oDb->quote($sUserId) . " and md5(oxemail) = " . $oDb->quote($sRecEmail) . " and oxpending = 1 and oxaccepted = 0", false, false);
+        if ($iPoints && $iPending) {
+            $this->oxuser__oxpoints = new oxField($iPoints, oxField::T_RAW);
+            if ($blSet = $this->save()) {
                 // updating users statistics
-                $oDb->execute( "UPDATE oxinvitations SET oxpending = '0', oxaccepted = '1' where oxuserid = ".$oDb->quote( $sUserId )." and md5(oxemail) = ".$oDb->quote( $sRecEmail ) );
-                $oInvUser = oxNew( "oxuser" );
-                if ( $oInvUser->load( $sUserId ) ) {
+                $oDb->execute("UPDATE oxinvitations SET oxpending = '0', oxaccepted = '1' where oxuserid = " . $oDb->quote($sUserId) . " and md5(oxemail) = " . $oDb->quote($sRecEmail));
+                $oInvUser = oxNew("oxuser");
+                if ($oInvUser->load($sUserId)) {
                     $blSet = $oInvUser->setCreditPointsForInviter();
                 }
             }
         }
-        oxRegistry::getSession()->deleteVariable( 'su' );
-        oxRegistry::getSession()->deleteVariable( 're' );
+        oxRegistry::getSession()->deleteVariable('su');
+        oxRegistry::getSession()->deleteVariable('re');
 
         return $blSet;
     }
@@ -2166,11 +2196,11 @@ class oxUser extends oxBase
      */
     public function setCreditPointsForInviter()
     {
-        $blSet   = false;
-        $iPoints = $this->getConfig()->getConfigParam( 'dPointsForInvitation' );
-        if ( $iPoints ) {
+        $blSet = false;
+        $iPoints = $this->getConfig()->getConfigParam('dPointsForInvitation');
+        if ($iPoints) {
             $iNewPoints = $this->oxuser__oxpoints->value + $iPoints;
-            $this->oxuser__oxpoints = new oxField( $iNewPoints, oxField::T_RAW );
+            $this->oxuser__oxpoints = new oxField($iNewPoints, oxField::T_RAW);
             $blSet = $this->save();
         }
 
@@ -2187,9 +2217,9 @@ class oxUser extends oxBase
         $oFb = oxRegistry::get("oxFb");
         $blRet = false;
 
-        if ( $oFb->isConnected() && $oFb->getUser() ) {
-             $this->oxuser__oxfbid = new oxField( $oFb->getUser() );
-             $blRet = $this->save();
+        if ($oFb->isConnected() && $oFb->getUser()) {
+            $this->oxuser__oxfbid = new oxField($oFb->getUser());
+            $blRet = $this->save();
         }
 
         return $blRet;
@@ -2202,18 +2232,18 @@ class oxUser extends oxBase
      *
      * @return null
      */
-    public function updateInvitationStatistics( $aRecEmail )
+    public function updateInvitationStatistics($aRecEmail)
     {
         $oDb = oxDb::getDb();
         $sUserId = $this->getId();
 
-        if ( $sUserId && is_array( $aRecEmail ) && count( $aRecEmail ) > 0 ) {
+        if ($sUserId && is_array($aRecEmail) && count($aRecEmail) > 0) {
             //iserting statistics about invitation
-            $sDate = oxRegistry::get("oxUtilsDate")->formatDBDate( date("Y-m-d"), true );
-            $aRecEmail = oxDb::getInstance()->quoteArray( $aRecEmail );
-            foreach ( $aRecEmail as $sRecEmail ) {
-                $sSql = "INSERT INTO oxinvitations SET oxuserid = ".$oDb->quote( $sUserId ).", oxemail = $sRecEmail,  oxdate='$sDate', oxpending = '1', oxaccepted = '0', oxtype = '1' ";
-                $oDb->execute( $sSql );
+            $sDate = oxRegistry::get("oxUtilsDate")->formatDBDate(date("Y-m-d"), true);
+            $aRecEmail = oxDb::getInstance()->quoteArray($aRecEmail);
+            foreach ($aRecEmail as $sRecEmail) {
+                $sSql = "INSERT INTO oxinvitations SET oxuserid = " . $oDb->quote($sUserId) . ", oxemail = $sRecEmail,  oxdate='$sDate', oxpending = '1', oxaccepted = '0', oxtype = '1' ";
+                $oDb->execute($sSql);
             }
         }
     }
@@ -2225,15 +2255,15 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    public function getIdByUserName( $sUserName )
+    public function getIdByUserName($sUserName)
     {
         $oDb = oxDb::getDb();
-        $sQ = "SELECT `oxid` FROM `oxuser` WHERE `oxusername` = ". $oDb->quote( $sUserName );
-        if ( !$this->getConfig()->getConfigParam( 'blMallUsers' ) ) {
-            $sQ .= " AND `oxshopid` = ". $oDb->quote( $this->getConfig()->getShopId() );
+        $sQ = "SELECT `oxid` FROM `oxuser` WHERE `oxusername` = " . $oDb->quote($sUserName);
+        if (!$this->getConfig()->getConfigParam('blMallUsers')) {
+            $sQ .= " AND `oxshopid` = " . $oDb->quote($this->getConfig()->getShopId());
         }
 
-        return $oDb->getOne( $sQ );
+        return $oDb->getOne($sQ);
     }
 
     /**
@@ -2265,28 +2295,28 @@ class oxUser extends oxBase
      *
      * @throws object
      */
-    protected function _dbLogin( $sUser, $sPassword, $sShopID )
+    protected function _dbLogin($sUser, $sPassword, $sShopID)
     {
         $blOldHash = false;
         $oDb = oxDb::getDb();
 
         if ($this->_isDemoShop() && $this->isAdmin()) {
-            $sUserOxId = $oDb->getOne( $this->_getDemoShopLoginQuery( $sUser, $sPassword ));
+            $sUserOxId = $oDb->getOne($this->_getDemoShopLoginQuery($sUser, $sPassword));
         } else {
-            $sUserOxId = $oDb->getOne( $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
-            if( !$sUserOxId ){
-                $sUserOxId = $oDb->getOne( $this->_getLoginQueryHashedWithMD5( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
+            $sUserOxId = $oDb->getOne($this->_getLoginQuery($sUser, $sPassword, $sShopID, $this->isAdmin()));
+            if (!$sUserOxId) {
+                $sUserOxId = $oDb->getOne($this->_getLoginQueryHashedWithMD5($sUser, $sPassword, $sShopID, $this->isAdmin()));
                 $blOldHash = true;
             }
         }
 
-        if ( $sUserOxId ) {
-            if ( !$this->load( $sUserOxId ) ) {
-                /** @var oxUserException  $oEx */
-                $oEx = oxNew( 'oxUserException' );
-                $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
+        if ($sUserOxId) {
+            if (!$this->load($sUserOxId)) {
+                /** @var oxUserException $oEx */
+                $oEx = oxNew('oxUserException');
+                $oEx->setMessage('ERROR_MESSAGE_USER_NOVALIDLOGIN');
                 throw $oEx;
-            }elseif($blOldHash && $this->getId()){
+            } elseif ($blOldHash && $this->getId()) {
                 $this->setPassword($sPassword);
                 $this->save();
             }
@@ -2305,14 +2335,14 @@ class oxUser extends oxBase
         return $blDemoMode;
     }
 
-    protected function _getDemoShopLoginQuery( $sUser, $sPassword )
+    protected function _getDemoShopLoginQuery($sUser, $sPassword)
     {
-        if ( $sPassword == "admin" && $sUser == "admin" ) {
+        if ($sPassword == "admin" && $sUser == "admin") {
             $sSelect = "SELECT `oxid` FROM `oxuser` WHERE `oxrights` = 'malladmin' ";
         } else {
             /** @var oxUserException $oEx */
-            $oEx = oxNew( 'oxUserException' );
-            $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
+            $oEx = oxNew('oxUserException');
+            $oEx->setMessage('ERROR_MESSAGE_USER_NOVALIDLOGIN');
             throw $oEx;
         }
 

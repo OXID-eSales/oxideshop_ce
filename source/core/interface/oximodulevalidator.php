@@ -22,6 +22,7 @@
 
 interface oxIModuleValidator
 {
+
     /**
      * Validates module information.
      *

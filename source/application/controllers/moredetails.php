@@ -27,26 +27,31 @@
  */
 class MoreDetails extends Details
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'moredetails.tpl';
 
     /**
      * Current article id
+     *
      * @var string
      */
     protected $_sProductId = null;
 
     /**
      * Active picture id
+     *
      * @var string
      */
     protected $_sActPicId = null;
 
     /**
      * Article zoom pictures
+     *
      * @var array
      */
     protected $_aArtZoomPics = null;
@@ -65,9 +70,10 @@ class MoreDetails extends Details
      */
     public function getProductId()
     {
-        if ( $this->_sProductId === null ) {
+        if ($this->_sProductId === null) {
             $this->_sProductId = $this->getProduct()->getId();
         }
+
         return $this->_sProductId;
     }
 
@@ -78,15 +84,16 @@ class MoreDetails extends Details
      */
     public function getActPictureId()
     {
-        if ( $this->_sActPicId === null ) {
+        if ($this->_sActPicId === null) {
             $this->_sActPicId = false;
             $aPicGallery = $this->getProduct()->getPictureGallery();
 
-            if ( $aPicGallery['ZoomPic'] ) {
-                $sActPicId = oxRegistry::getConfig()->getRequestParameter( 'actpicid' );
+            if ($aPicGallery['ZoomPic']) {
+                $sActPicId = oxRegistry::getConfig()->getRequestParameter('actpicid');
                 $this->_sActPicId = $sActPicId ? $sActPicId : 1;
             }
         }
+
         return $this->_sActPicId;
     }
 
@@ -97,17 +104,18 @@ class MoreDetails extends Details
      */
     public function getArtZoomPics()
     {
-        if ( $this->_aArtZoomPics === null ) {
+        if ($this->_aArtZoomPics === null) {
             $this->_aArtZoomPics = false;
             //Get picture gallery
             $aPicGallery = $this->getProduct()->getPictureGallery();
             $blArtPic = $aPicGallery['ZoomPic'];
             $aArtPics = $aPicGallery['ZoomPics'];
 
-            if ( $blArtPic ) {
+            if ($blArtPic) {
                 $this->_aArtZoomPics = $aArtPics;
             }
         }
+
         return $this->_aArtZoomPics;
     }
 
@@ -118,11 +126,12 @@ class MoreDetails extends Details
      */
     public function getProduct()
     {
-        if ( $this->_oProduct === null ) {
-            $oArticle = oxNew( 'oxArticle' );
-            $oArticle->load( oxRegistry::getConfig()->getRequestParameter( 'anid' ) );
+        if ($this->_oProduct === null) {
+            $oArticle = oxNew('oxArticle');
+            $oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'));
             $this->_oProduct = $oArticle;
         }
+
         return $this->_oProduct;
     }
 }

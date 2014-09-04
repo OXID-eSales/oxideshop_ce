@@ -26,6 +26,7 @@
  */
 class oxCompanyVatInCountryChecker extends oxCompanyVatInChecker implements oxICountryAware
 {
+
     /**
      * Error string if country mismatch
      */
@@ -43,7 +44,7 @@ class oxCompanyVatInCountryChecker extends oxCompanyVatInChecker implements oxIC
      *
      * @param oxCountry $oCountry
      */
-    public function setCountry( oxCountry $oCountry )
+    public function setCountry(oxCountry $oCountry)
     {
         $this->_oCountry = $oCountry;
     }
@@ -63,14 +64,14 @@ class oxCompanyVatInCountryChecker extends oxCompanyVatInChecker implements oxIC
      *
      * @return bool
      */
-    public function validate( oxCompanyVatIn $oVatIn )
+    public function validate(oxCompanyVatIn $oVatIn)
     {
         $blResult = false;
         $oCountry = $this->getCountry();
-        if(!is_null($oCountry)){
+        if (!is_null($oCountry)) {
             $blResult = ($oCountry->getVATIdentificationNumberPrefix() === $oVatIn->getCountryCode());
-            if(!$blResult){
-                $this->setError( self::ERROR_ID_NOT_VALID );
+            if (!$blResult) {
+                $this->setError(self::ERROR_ID_NOT_VALID);
             }
         }
 

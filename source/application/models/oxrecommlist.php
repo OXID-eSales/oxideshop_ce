@@ -26,6 +26,7 @@
  */
 class oxRecommList extends oxBase implements oxIUrl
 {
+
     /**
      * Current object class name
      *
@@ -38,7 +39,7 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @var string
      */
-    protected $_oArticles  = null;
+    protected $_oArticles = null;
 
     /**
      * Article list loading filter (appended where statement)
@@ -62,7 +63,7 @@ class oxRecommList extends oxBase implements oxIUrl
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxrecommlists' );
+        $this->init('oxrecommlists');
     }
 
     /**
@@ -74,21 +75,21 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return oxList
      */
-    public function getArticles(  $iStart = null, $iNrofArticles = null, $blReload = false )
+    public function getArticles($iStart = null, $iNrofArticles = null, $blReload = false)
     {
         // cached ?
-        if ( $this->_oArticles !== null && !$blReload ) {
+        if ($this->_oArticles !== null && !$blReload) {
             return $this->_oArticles;
         }
 
-        $this->_oArticles = oxNew( 'oxarticlelist' );
+        $this->_oArticles = oxNew('oxarticlelist');
 
-        if ( $iStart !== null && $iNrofArticles !== null ) {
-            $this->_oArticles->setSqlLimit( $iStart, $iNrofArticles );
+        if ($iStart !== null && $iNrofArticles !== null) {
+            $this->_oArticles->setSqlLimit($iStart, $iNrofArticles);
         }
 
         // loading basket items
-        $this->_oArticles->loadRecommArticles( $this->getId(), $this->_sArticlesFilter );
+        $this->_oArticles->loadRecommArticles($this->getId(), $this->_sArticlesFilter);
 
         return $this->_oArticles;
     }
@@ -102,9 +103,10 @@ class oxRecommList extends oxBase implements oxIUrl
     {
         $iCnt = 0;
         $sSelect = $this->_getArticleSelect();
-        if ( $sSelect ) {
-            $iCnt = oxDb::getDb()->getOne( $sSelect );
+        if ($sSelect) {
+            $iCnt = oxDb::getDb()->getOne($sSelect);
         }
+
         return $iCnt;
     }
 
@@ -115,10 +117,10 @@ class oxRecommList extends oxBase implements oxIUrl
      */
     protected function _getArticleSelect()
     {
-        $sArtView = getViewName( 'oxarticles' );
-        $sSelect  = "select count(distinct $sArtView.oxid) from oxobject2list ";
+        $sArtView = getViewName('oxarticles');
+        $sSelect = "select count(distinct $sArtView.oxid) from oxobject2list ";
         $sSelect .= "left join $sArtView on oxobject2list.oxobjectid = $sArtView.oxid ";
-        $sSelect .= "where (oxobject2list.oxlistid = '".$this->getId()."') ";
+        $sSelect .= "where (oxobject2list.oxlistid = '" . $this->getId() . "') ";
 
         return $sSelect;
     }
@@ -130,10 +132,11 @@ class oxRecommList extends oxBase implements oxIUrl
      */
     public function getFirstArticle()
     {
-        $oArtList = oxNew( 'oxarticlelist' );
-        $oArtList->setSqlLimit( 0, 1 );
-        $oArtList->loadRecommArticles( $this->getId(), $this->_sArticlesFilter );
+        $oArtList = oxNew('oxarticlelist');
+        $oArtList->setSqlLimit(0, 1);
+        $oArtList->loadRecommArticles($this->getId(), $this->_sArticlesFilter);
         $oArtList->rewind();
+
         return $oArtList->current();
     }
 
@@ -144,19 +147,19 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return bool
      */
-    public function delete( $sOXID = null )
+    public function delete($sOXID = null)
     {
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             $sOXID = $this->getId();
         }
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             return false;
         }
 
-        if ( ( $blDelete = parent::delete( $sOXID ) ) ) {
+        if (($blDelete = parent::delete($sOXID))) {
             $oDb = oxDb::getDb();
             // cleaning up related data
-            $oDb->execute( "delete from oxobject2list where oxlistid = ".$oDb->quote( $sOXID ) );
+            $oDb->execute("delete from oxobject2list where oxlistid = " . $oDb->quote($sOXID));
 
 
         }
@@ -171,15 +174,16 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return string
      */
-    public function getArtDescription( $sOXID )
+    public function getArtDescription($sOXID)
     {
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             return false;
         }
 
         $oDb = oxDb::getDb();
-        $sSelect = 'select oxdesc from oxobject2list where oxlistid = '.$oDb->quote( $this->getId() ).' and oxobjectid = '.$oDb->quote( $sOXID );
-        return $oDb->getOne( $sSelect );
+        $sSelect = 'select oxdesc from oxobject2list where oxlistid = ' . $oDb->quote($this->getId()) . ' and oxobjectid = ' . $oDb->quote($sOXID);
+
+        return $oDb->getOne($sSelect);
     }
 
     /**
@@ -189,13 +193,14 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return bool
      */
-    public function removeArticle( $sOXID )
+    public function removeArticle($sOXID)
     {
-        if ( $sOXID ) {
+        if ($sOXID) {
 
             $oDb = oxDb::getDb();
-            $sQ = "delete from oxobject2list where oxobjectid = ".$oDb->quote( $sOXID ) ." and oxlistid=".$oDb->quote( $this->getId() );
-            return $oDb->execute( $sQ );
+            $sQ = "delete from oxobject2list where oxobjectid = " . $oDb->quote($sOXID) . " and oxlistid=" . $oDb->quote($this->getId());
+
+            return $oDb->execute($sQ);
         }
     }
 
@@ -207,17 +212,18 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return bool
      */
-    public function addArticle( $sOXID, $sDesc )
+    public function addArticle($sOXID, $sDesc)
     {
         $blAdd = false;
-        if ( $sOXID ) {
+        if ($sOXID) {
             $oDb = oxDb::getDb();
-            if ( !$oDb->getOne( "select oxid from oxobject2list where oxobjectid=".$oDb->quote( $sOXID )." and oxlistid=".$oDb->quote( $this->getId() ), false, false) ) {
-                $sUid  = oxUtilsObject::getInstance()->generateUID();
-                $sQ    = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', ".$oDb->quote( $sOXID ).", ".$oDb->quote( $this->getId() ).", ".$oDb->quote( $sDesc )." )";
-                $blAdd = $oDb->execute( $sQ );
+            if (!$oDb->getOne("select oxid from oxobject2list where oxobjectid=" . $oDb->quote($sOXID) . " and oxlistid=" . $oDb->quote($this->getId()), false, false)) {
+                $sUid = oxUtilsObject::getInstance()->generateUID();
+                $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $oDb->quote($sOXID) . ", " . $oDb->quote($this->getId()) . ", " . $oDb->quote($sDesc) . " )";
+                $blAdd = $oDb->execute($sQ);
             }
         }
+
         return $blAdd;
     }
 
@@ -231,38 +237,38 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return oxList
      */
-    public function getRecommListsByIds( $aArticleIds )
+    public function getRecommListsByIds($aArticleIds)
     {
-        if ( count( $aArticleIds ) ) {
+        if (count($aArticleIds)) {
             startProfile(__FUNCTION__);
 
-            $sIds = implode( ",", oxDb::getInstance()->quoteArray( $aArticleIds ) );
+            $sIds = implode(",", oxDb::getInstance()->quoteArray($aArticleIds));
 
-            $oRecommList = oxNew( 'oxlist' );
-            $oRecommList->init( 'oxrecommlist' );
+            $oRecommList = oxNew('oxlist');
+            $oRecommList->init('oxrecommlist');
 
             $iShopId = $this->getConfig()->getShopId();
-            $iCnt = $this->getConfig()->getConfigParam( 'iNrofCrossellArticles' );
+            $iCnt = $this->getConfig()->getConfigParam('iNrofCrossellArticles');
 
-            $oRecommList->setSqlLimit( 0, $iCnt );
+            $oRecommList->setSqlLimit(0, $iCnt);
 
             $sSelect = "SELECT distinct lists.* FROM oxobject2list AS o2l_lists";
-            $sSelect.= " LEFT JOIN oxobject2list AS o2l_count ON o2l_lists.oxlistid = o2l_count.oxlistid";
-            $sSelect.= " LEFT JOIN oxrecommlists as lists ON o2l_lists.oxlistid = lists.oxid";
-            $sSelect.= " WHERE o2l_lists.oxobjectid IN ( $sIds ) and lists.oxshopid ='$iShopId'";
-            $sSelect.= " GROUP BY lists.oxid order by (";
-            $sSelect.= " SELECT count( order1.oxobjectid ) FROM oxobject2list AS order1";
-            $sSelect.= " WHERE order1.oxobjectid IN ( $sIds ) AND o2l_lists.oxlistid = order1.oxlistid";
-            $sSelect.= " ) DESC, count( lists.oxid ) DESC";
+            $sSelect .= " LEFT JOIN oxobject2list AS o2l_count ON o2l_lists.oxlistid = o2l_count.oxlistid";
+            $sSelect .= " LEFT JOIN oxrecommlists as lists ON o2l_lists.oxlistid = lists.oxid";
+            $sSelect .= " WHERE o2l_lists.oxobjectid IN ( $sIds ) and lists.oxshopid ='$iShopId'";
+            $sSelect .= " GROUP BY lists.oxid order by (";
+            $sSelect .= " SELECT count( order1.oxobjectid ) FROM oxobject2list AS order1";
+            $sSelect .= " WHERE order1.oxobjectid IN ( $sIds ) AND o2l_lists.oxlistid = order1.oxlistid";
+            $sSelect .= " ) DESC, count( lists.oxid ) DESC";
 
-            $oRecommList->selectString( $sSelect );
+            $oRecommList->selectString($sSelect);
 
             stopProfile(__FUNCTION__);
 
-            if ( $oRecommList->count() ) {
+            if ($oRecommList->count()) {
                 startProfile('_loadFirstArticles');
 
-                $this->_loadFirstArticles( $oRecommList, $aArticleIds );
+                $this->_loadFirstArticles($oRecommList, $aArticleIds);
 
                 stopProfile('_loadFirstArticles');
 
@@ -284,23 +290,23 @@ class oxRecommList extends oxBase implements oxIUrl
      */
     protected function _loadFirstArticles(oxList $oRecommList, $aIds)
     {
-        $aIds = oxDb::getInstance()->quoteArray( $aIds );
+        $aIds = oxDb::getInstance()->quoteArray($aIds);
         $sIds = implode(", ", $aIds);
 
         $aPrevIds = array();
-        $sArtView = getViewName( 'oxarticles' );
+        $sArtView = getViewName('oxarticles');
         foreach ($oRecommList as $key => $oRecomm) {
 
             if (count($aPrevIds)) {
-                $sNegateSql = " AND $sArtView.oxid not in ( '".implode("','", $aPrevIds)."' ) ";
+                $sNegateSql = " AND $sArtView.oxid not in ( '" . implode("','", $aPrevIds) . "' ) ";
             } else {
                 $sNegateSql = '';
             }
             $sArticlesFilter = "$sNegateSql ORDER BY $sArtView.oxid in ( $sIds ) desc";
             $oRecomm->setArticlesFilter($sArticlesFilter);
-            $oArtList = oxNew( 'oxarticlelist' );
-            $oArtList->setSqlLimit( 0, 1 );
-            $oArtList->loadRecommArticles( $oRecomm->getId(), $sArticlesFilter );
+            $oArtList = oxNew('oxarticlelist');
+            $oArtList->setSqlLimit(0, 1);
+            $oArtList->loadRecommArticles($oRecomm->getId(), $sArticlesFilter);
 
             if (count($oArtList) == 1) {
                 $oArtList->rewind();
@@ -322,22 +328,22 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return object oxlist with oxrecommlist objects
      */
-    public function getSearchRecommLists( $sSearchStr )
+    public function getSearchRecommLists($sSearchStr)
     {
-        if ( $sSearchStr ) {
+        if ($sSearchStr) {
             // sets active page
-            $iActPage = (int) oxRegistry::getConfig()->getRequestParameter( 'pgNr' );
+            $iActPage = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
             $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
             // load only lists which we show on screen
-            $iNrofCatArticles = $this->getConfig()->getConfigParam( 'iNrofCatArticles' );
+            $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
-            $oRecommList = oxNew( 'oxlist' );
-            $oRecommList->init( 'oxrecommlist' );
-            $sSelect = $this->_getSearchSelect( $sSearchStr );
-            $oRecommList->setSqlLimit( $iNrofCatArticles * $iActPage, $iNrofCatArticles );
-            $oRecommList->selectString( $sSelect );
+            $oRecommList = oxNew('oxlist');
+            $oRecommList->init('oxrecommlist');
+            $sSelect = $this->_getSearchSelect($sSearchStr);
+            $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
+            $oRecommList->selectString($sSelect);
 
             return $oRecommList;
         }
@@ -350,16 +356,17 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return int
      */
-    public function getSearchRecommListCount( $sSearchStr )
+    public function getSearchRecommListCount($sSearchStr)
     {
         $iCnt = 0;
-        $sSelect = $this->_getSearchSelect( $sSearchStr );
-        if ( $sSelect ) {
+        $sSelect = $this->_getSearchSelect($sSearchStr);
+        if ($sSelect) {
 
-            $sPartial = substr( $sSelect, strpos( $sSelect, ' from ' ) );
-            $sSelect  = "select count( distinct rl.oxid ) $sPartial ";
-            $iCnt = oxDb::getDb()->getOne( $sSelect );
+            $sPartial = substr($sSelect, strpos($sSelect, ' from '));
+            $sSelect = "select count( distinct rl.oxid ) $sPartial ";
+            $iCnt = oxDb::getDb()->getOne($sSelect);
         }
+
         return $iCnt;
     }
 
@@ -370,15 +377,15 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return string
      */
-    protected function _getSearchSelect( $sSearchStr )
+    protected function _getSearchSelect($sSearchStr)
     {
-        $iShopId          = $this->getConfig()->getShopId();
-        $sSearchStrQuoted = oxDb::getDb()->quote( "%$sSearchStr%" );
+        $iShopId = $this->getConfig()->getShopId();
+        $sSearchStrQuoted = oxDb::getDb()->quote("%$sSearchStr%");
 
         $sSelect = "select distinct rl.* from oxrecommlists as rl";
-        $sSelect.= " inner join oxobject2list as o2l on o2l.oxlistid = rl.oxid";
-        $sSelect.= " where ( rl.oxtitle like $sSearchStrQuoted or rl.oxdesc like $sSearchStrQuoted";
-        $sSelect.= " or o2l.oxdesc like $sSearchStrQuoted ) and rl.oxshopid = '$iShopId'";
+        $sSelect .= " inner join oxobject2list as o2l on o2l.oxlistid = rl.oxid";
+        $sSelect .= " where ( rl.oxtitle like $sSearchStrQuoted or rl.oxdesc like $sSearchStrQuoted";
+        $sSelect .= " or o2l.oxdesc like $sSearchStrQuoted ) and rl.oxshopid = '$iShopId'";
 
         return $sSelect;
     }
@@ -390,11 +397,11 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return null
      */
-    public function addToRatingAverage( $iRating)
+    public function addToRatingAverage($iRating)
     {
         $dOldRating = $this->oxrecommlists__oxrating->value;
-        $dOldCnt    = $this->oxrecommlists__oxratingcnt->value;
-        $this->oxrecommlists__oxrating    = new oxField(( $dOldRating * $dOldCnt + $iRating ) / ($dOldCnt + 1), oxField::T_RAW);
+        $dOldCnt = $this->oxrecommlists__oxratingcnt->value;
+        $this->oxrecommlists__oxrating = new oxField(($dOldRating * $dOldCnt + $iRating) / ($dOldCnt + 1), oxField::T_RAW);
         $this->oxrecommlists__oxratingcnt = new oxField($dOldCnt + 1, oxField::T_RAW);
         $this->save();
     }
@@ -409,9 +416,10 @@ class oxRecommList extends oxBase implements oxIUrl
         $oReview = oxNew('oxreview');
         $oRevs = $oReview->loadList('oxrecommlist', $this->getId());
         //if no review found, return null
-        if ( $oRevs->count() < 1 ) {
+        if ($oRevs->count() < 1) {
             return null;
         }
+
         return $oRevs;
     }
 
@@ -423,13 +431,14 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return string
      */
-    public function getBaseSeoLink( $iLang, $iPage = 0 )
+    public function getBaseSeoLink($iLang, $iPage = 0)
     {
         $oEncoder = oxRegistry::get("oxSeoEncoderRecomm");
-        if ( !$iPage ) {
-            return $oEncoder->getRecommUrl( $this, $iLang );
+        if (!$iPage) {
+            return $oEncoder->getRecommUrl($this, $iLang);
         }
-        return $oEncoder->getRecommPageUrl( $this, $iPage, $iLang );
+
+        return $oEncoder->getRecommPageUrl($this, $iPage, $iLang);
     }
 
     /**
@@ -439,18 +448,18 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return string
      */
-    public function getLink( $iLang = null )
+    public function getLink($iLang = null)
     {
-        if ( $iLang === null ) {
+        if ($iLang === null) {
             $iLang = oxRegistry::getLang()->getBaseLanguage();
         }
 
-        if ( !oxRegistry::getUtils()->seoIsActive() ) {
-            return $this->getStdLink( $iLang );
+        if (!oxRegistry::getUtils()->seoIsActive()) {
+            return $this->getStdLink($iLang);
         }
 
-        if ( !isset( $this->_aSeoUrls[$iLang] ) ) {
-            $this->_aSeoUrls[$iLang] = $this->getBaseSeoLink( $iLang );
+        if (!isset($this->_aSeoUrls[$iLang])) {
+            $this->_aSeoUrls[$iLang] = $this->getBaseSeoLink($iLang);
         }
 
         return $this->_aSeoUrls[$iLang];
@@ -464,13 +473,13 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return string
      */
-    public function getStdLink( $iLang = null, $aParams = array() )
+    public function getStdLink($iLang = null, $aParams = array())
     {
-        if ( $iLang === null ) {
+        if ($iLang === null) {
             $iLang = oxRegistry::getLang()->getBaseLanguage();
         }
 
-        return oxRegistry::get("oxUtilsUrl")->processUrl( $this->getBaseStdLink( $iLang ), true, $aParams, $iLang);
+        return oxRegistry::get("oxUtilsUrl")->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
     }
 
     /**
@@ -482,15 +491,15 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @return string
      */
-    public function getBaseStdLink( $iLang, $blAddId = true, $blFull = true )
+    public function getBaseStdLink($iLang, $blAddId = true, $blFull = true)
     {
         $sUrl = '';
-        if ( $blFull ) {
+        if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl( $iLang, false );
+            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
         }
 
-        return $sUrl . "index.php?cl=recommlist" . ( $blAddId ? "&amp;recommid=".$this->getId() : "" );
+        return $sUrl . "index.php?cl=recommlist" . ($blAddId ? "&amp;recommid=" . $this->getId() : "");
     }
 
     /**
@@ -513,7 +522,7 @@ class oxRecommList extends oxBase implements oxIUrl
     public function save()
     {
         if (!$this->oxrecommlists__oxtitle->value) {
-            throw oxNew( "oxObjectException", 'EXCEPTION_RECOMMLIST_NOTITLE');
+            throw oxNew("oxObjectException", 'EXCEPTION_RECOMMLIST_NOTITLE');
         }
 
         return parent::save();

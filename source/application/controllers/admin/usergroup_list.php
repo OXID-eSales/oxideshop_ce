@@ -27,6 +27,7 @@
  */
 class UserGroup_List extends oxAdminList
 {
+
     /**
      * Name of chosen object class (default null).
      *
@@ -51,6 +52,7 @@ class UserGroup_List extends oxAdminList
     {
 
         parent::render();
+
         return "usergroup_list.tpl";
     }
 }

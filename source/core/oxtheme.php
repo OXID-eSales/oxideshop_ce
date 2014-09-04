@@ -24,18 +24,21 @@
  * Themes handler class.
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class oxTheme extends oxSuperCfg
 {
+
     /**
      * Theme info array
+     *
      * @var array
      */
     protected $_aTheme = array();
 
     /**
      * Theme info list
+     *
      * @var array
      */
     protected $_aThemeList = array();
@@ -49,13 +52,14 @@ class oxTheme extends oxSuperCfg
      */
     public function load($sOXID)
     {
-        $sFilePath = $this->getConfig()->getViewsDir().$sOXID."/theme.php";
-        if ( file_exists( $sFilePath ) && is_readable( $sFilePath ) ) {
+        $sFilePath = $this->getConfig()->getViewsDir() . $sOXID . "/theme.php";
+        if (file_exists($sFilePath) && is_readable($sFilePath)) {
             $aTheme = array();
             include $sFilePath;
             $this->_aTheme = $aTheme;
             $this->_aTheme['id'] = $sOXID;
             $this->_aTheme['active'] = ($this->getActiveThemeId() == $sOXID);
+
             return true;
         }
 
@@ -72,7 +76,7 @@ class oxTheme extends oxSuperCfg
         $sError = $this->checkForActivationErrors();
         if ($sError) {
             /** @var oxException $oException */
-            $oException = oxNew( "oxException", $sError );
+            $oException = oxNew("oxException", $sError);
             throw $oException;
         }
         $sParent = $this->getInfo('parentTheme');
@@ -92,14 +96,15 @@ class oxTheme extends oxSuperCfg
      */
     public function getList()
     {
-        $this->_aThemeList   = array();
+        $this->_aThemeList = array();
         $sOutDir = $this->getConfig()->getViewsDir();
-        foreach ( glob( $sOutDir."*", GLOB_ONLYDIR ) as $sDir ) {
+        foreach (glob($sOutDir . "*", GLOB_ONLYDIR) as $sDir) {
             $oTheme = oxNew('oxTheme');
             if ($oTheme->load(basename($sDir))) {
                 $this->_aThemeList[$sDir] = $oTheme;
             }
         }
+
         return $this->_aThemeList;
     }
 
@@ -115,6 +120,7 @@ class oxTheme extends oxSuperCfg
         if (!isset($this->_aTheme[$sName])) {
             return null;
         }
+
         return $this->_aTheme[$sName];
     }
 
@@ -129,6 +135,7 @@ class oxTheme extends oxSuperCfg
         if ($sCustTheme) {
             return $sCustTheme;
         }
+
         return $this->getConfig()->getConfigParam('sTheme');
     }
 
@@ -147,6 +154,7 @@ class oxTheme extends oxSuperCfg
         if ($oTheme->load($sParent)) {
             return $oTheme;
         }
+
         return null;
     }
 
@@ -177,6 +185,7 @@ class oxTheme extends oxSuperCfg
         } elseif ($this->getInfo('parentTheme')) {
             return 'EXCEPTION_PARENT_THEME_NOT_FOUND';
         }
+
         return false;
     }
 
@@ -187,7 +196,7 @@ class oxTheme extends oxSuperCfg
      */
     public function getId()
     {
-        return $this->getInfo( "id" );
+        return $this->getInfo("id");
     }
 }
 

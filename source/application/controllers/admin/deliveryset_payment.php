@@ -28,6 +28,7 @@
  */
 class DeliverySet_Payment extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render()
      * passes data to Smarty engine and returns name of template file "deliveryset_payment.tpl".
@@ -39,39 +40,41 @@ class DeliverySet_Payment extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $odeliveryset = oxNew( "oxdeliveryset" );
+            $odeliveryset = oxNew("oxdeliveryset");
             $odeliveryset->setLanguage($this->_iEditLang);
-            $odeliveryset->load( $soxId);
+            $odeliveryset->load($soxId);
 
             $oOtherLang = $odeliveryset->getAvailableInLangs();
 
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $odeliveryset->setLanguage(key($oOtherLang));
-                $odeliveryset->load( $soxId );
+                $odeliveryset->load($soxId);
             }
 
-            $this->_aViewData["edit"] =  $odeliveryset;
+            $this->_aViewData["edit"] = $odeliveryset;
 
             //Disable editing for derived articles
-            if ($odeliveryset->isDerived())
+            if ($odeliveryset->isDerived()) {
                 $this->_aViewData['readonly'] = true;
+            }
         }
 
         $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
-        if ( $iAoc == 1 ) {            
-            $oDeliverysetPaymentAjax = oxNew( 'deliveryset_payment_ajax' );
+        if ($iAoc == 1) {
+            $oDeliverysetPaymentAjax = oxNew('deliveryset_payment_ajax');
             $this->_aViewData['oxajax'] = $oDeliverysetPaymentAjax->getColumns();
 
             return "popups/deliveryset_payment.tpl";
-        } elseif ( $iAoc == 2 ) {
-            $oDeliverysetCountryAjax = oxNew( 'deliveryset_country_ajax' );
+        } elseif ($iAoc == 2) {
+            $oDeliverysetCountryAjax = oxNew('deliveryset_country_ajax');
             $this->_aViewData['oxajax'] = $oDeliverysetCountryAjax->getColumns();
 
             return "popups/deliveryset_country.tpl";
         }
+
         return "deliveryset_payment.tpl";
     }
 }

@@ -26,13 +26,14 @@
  */
 class Login extends oxAdminView
 {
+
     /**
      * Sets value for _sThisAction to "login".
      */
     public function __construct()
     {
-        $this->getConfig()->setConfigParam( 'blAdmin', true );
-        $this->_sThisAction  = "login";
+        $this->getConfig()->setConfigParam('blAdmin', true);
+        $this->_sThisAction = "login";
     }
 
     /**
@@ -46,34 +47,34 @@ class Login extends oxAdminView
         $myConfig = $this->getConfig();
 
         //resets user once on this screen.
-        $oUser = oxNew( "oxuser" );
+        $oUser = oxNew("oxuser");
         $oUser->logout();
 
         oxView::render();
 
         //if( $myConfig->blDemoMode)
-        $oBaseShop = oxNew( "oxshop" );
+        $oBaseShop = oxNew("oxshop");
 
-        $oBaseShop->load( $myConfig->getBaseShopId());
+        $oBaseShop->load($myConfig->getBaseShopId());
             $sVersion = $oBaseShop->oxshops__oxversion->value;
 
-        $this->getViewConfig()->setViewConfigParam( 'sShopVersion', $sVersion );
+        $this->getViewConfig()->setViewConfigParam('sShopVersion', $sVersion);
 
-        if ( $myConfig->isDemoShop() ) {
+        if ($myConfig->isDemoShop()) {
             // demo
-            $this->addTplParam( "user", "admin");
-            $this->addTplParam( "pwd", "admin");
+            $this->addTplParam("user", "admin");
+            $this->addTplParam("pwd", "admin");
         }
         //#533 user profile
-        $this->addTplParam( "profiles", oxRegistry::getUtils()->loadAdminProfile( $myConfig->getConfigParam( 'aInterfaceProfiles' ) ) );
+        $this->addTplParam("profiles", oxRegistry::getUtils()->loadAdminProfile($myConfig->getConfigParam('aInterfaceProfiles')));
 
         $aLanguages = $this->_getAvailableLanguages();
-        $this->addTplParam( "aLanguages", $aLanguages );
+        $this->addTplParam("aLanguages", $aLanguages);
 
         // setting templates language to selected language id
         foreach ($aLanguages as $iKey => $oLang) {
-            if ( $aLanguages[$iKey]->selected ) {
-                oxRegistry::getLang()->setTplLanguage( $iKey );
+            if ($aLanguages[$iKey]->selected) {
+                oxRegistry::getLang()->setTplLanguage($iKey);
                 break;
             }
         }
@@ -89,72 +90,74 @@ class Login extends oxAdminView
     public function checklogin()
     {
         $myUtilsServer = oxRegistry::get("oxUtilsServer");
-        $myUtilsView   = oxRegistry::get("oxUtilsView");
+        $myUtilsView = oxRegistry::get("oxUtilsView");
 
-        $sUser    = oxRegistry::getConfig()->getRequestParameter( 'user', true );
-        $sPass    = oxRegistry::getConfig()->getRequestParameter( 'pwd', true );
-        $sProfile = oxRegistry::getConfig()->getRequestParameter( 'profile' );
+        $sUser = oxRegistry::getConfig()->getRequestParameter('user', true);
+        $sPass = oxRegistry::getConfig()->getRequestParameter('pwd', true);
+        $sProfile = oxRegistry::getConfig()->getRequestParameter('profile');
 
         try { // trying to login
             /** @var oxUser $oUser */
-            $oUser = oxNew( "oxuser" );
-            $oUser->login( $sUser, $sPass );
-            $iSubshop = (int)$oUser->oxuser__oxrights->value;
+            $oUser = oxNew("oxuser");
+            $oUser->login($sUser, $sPass);
+            $iSubshop = (int) $oUser->oxuser__oxrights->value;
             if ($iSubshop) {
-                oxRegistry::getSession()->setVariable( "shp", $iSubshop );
-                oxRegistry::getSession()->setVariable( 'currentadminshop', $iSubshop );
+                oxRegistry::getSession()->setVariable("shp", $iSubshop);
+                oxRegistry::getSession()->setVariable('currentadminshop', $iSubshop);
                 oxRegistry::getConfig()->setShopId($iSubshop);
             }
-        } catch ( oxUserException $oEx ) {
+        } catch (oxUserException $oEx) {
             $myUtilsView->addErrorToDisplay('LOGIN_ERROR');
             $oStr = getStr();
-            $this->addTplParam( 'user', $oStr->htmlspecialchars( $sUser ) );
-            $this->addTplParam( 'pwd', $oStr->htmlspecialchars( $sPass ) );
-            $this->addTplParam( 'profile', $oStr->htmlspecialchars( $sProfile ) );
+            $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
+            $this->addTplParam('pwd', $oStr->htmlspecialchars($sPass));
+            $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));
+
             return;
-        } catch ( oxCookieException $oEx ) {
+        } catch (oxCookieException $oEx) {
             $myUtilsView->addErrorToDisplay('LOGIN_NO_COOKIE_SUPPORT');
             $oStr = getStr();
-            $this->addTplParam( 'user', $oStr->htmlspecialchars( $sUser ) );
-            $this->addTplParam( 'pwd', $oStr->htmlspecialchars( $sPass ) );
-            $this->addTplParam( 'profile', $oStr->htmlspecialchars( $sProfile ) );
+            $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
+            $this->addTplParam('pwd', $oStr->htmlspecialchars($sPass));
+            $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));
+
             return;
-        } catch ( oxConnectionException $oEx ) {
+        } catch (oxConnectionException $oEx) {
             $myUtilsView->addErrorToDisplay($oEx);
         }
 
         // success
-        oxRegistry::getUtils()->logger( "login successful" );
+        oxRegistry::getUtils()->logger("login successful");
 
         //execute onAdminLogin() event
         $oEvenHandler = oxNew("oxSystemEventHandler");
-        $oEvenHandler->onAdminLogin( oxRegistry::getConfig()->getShopId() );
+        $oEvenHandler->onAdminLogin(oxRegistry::getConfig()->getShopId());
 
         // #533
-        if ( isset( $sProfile ) ) {
-            $aProfiles = oxRegistry::getSession()->getVariable( "aAdminProfiles" );
-            if ( $aProfiles && isset($aProfiles[$sProfile])) {
+        if (isset($sProfile)) {
+            $aProfiles = oxRegistry::getSession()->getVariable("aAdminProfiles");
+            if ($aProfiles && isset($aProfiles[$sProfile])) {
                 // setting cookie to store last locally used profile
-                $myUtilsServer->setOxCookie ("oxidadminprofile", $sProfile."@".implode( "@", $aProfiles[$sProfile]), time()+31536000, "/" );
-                oxRegistry::getSession()->setVariable( "profile", $aProfiles[$sProfile] );
+                $myUtilsServer->setOxCookie("oxidadminprofile", $sProfile . "@" . implode("@", $aProfiles[$sProfile]), time() + 31536000, "/");
+                oxRegistry::getSession()->setVariable("profile", $aProfiles[$sProfile]);
             }
         } else {
             //deleting cookie info, as setting profile to default
-            $myUtilsServer->setOxCookie( "oxidadminprofile", "", time()-3600, "/" );
+            $myUtilsServer->setOxCookie("oxidadminprofile", "", time() - 3600, "/");
         }
 
         // languages
-        $iLang = oxRegistry::getConfig()->getRequestParameter( "chlanguage" );
+        $iLang = oxRegistry::getConfig()->getRequestParameter("chlanguage");
         $aLanguages = oxRegistry::getLang()->getAdminTplLanguageArray();
-        if ( !isset( $aLanguages[$iLang] ) ) {
-            $iLang = key( $aLanguages );
+        if (!isset($aLanguages[$iLang])) {
+            $iLang = key($aLanguages);
         }
 
-        $myUtilsServer->setOxCookie( "oxidadminlanguage", $aLanguages[$iLang]->abbr, time() + 31536000, "/" );
+        $myUtilsServer->setOxCookie("oxidadminlanguage", $aLanguages[$iLang]->abbr, time() + 31536000, "/");
 
         //P
         //oxRegistry::getSession()->setVariable( "blAdminTemplateLanguage", $iLang );
-        oxRegistry::getLang()->setTplLanguage( $iLang );
+        oxRegistry::getLang()->setTplLanguage($iLang);
 
         return "admin_start";
     }
@@ -177,7 +180,7 @@ class Login extends oxAdminView
      */
     public function getViewId()
     {
-        return strtolower( get_class( $this ) );
+        return strtolower(get_class($this));
     }
 
 
@@ -188,12 +191,12 @@ class Login extends oxAdminView
      */
     protected function _getAvailableLanguages()
     {
-        $sDefLang = oxRegistry::get("oxUtilsServer")->getOxCookie( 'oxidadminlanguage' );
+        $sDefLang = oxRegistry::get("oxUtilsServer")->getOxCookie('oxidadminlanguage');
         $sDefLang = $sDefLang ? $sDefLang : $this->_getBrowserLanguage();
 
         $aLanguages = oxRegistry::getLang()->getAdminTplLanguageArray();
-        foreach ( $aLanguages as $oLang ) {
-            $oLang->selected = ( $sDefLang == $oLang->abbr ) ? 1 : 0;
+        foreach ($aLanguages as $oLang) {
+            $oLang->selected = ($sDefLang == $oLang->abbr) ? 1 : 0;
         }
 
         return $aLanguages;
@@ -206,6 +209,6 @@ class Login extends oxAdminView
      */
     protected function _getBrowserLanguage()
     {
-        return strtolower( substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2) );
+        return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
     }
 }

@@ -28,6 +28,7 @@
 
 class oxFileCollector
 {
+
     /**
      * base directory
      *
@@ -47,10 +48,9 @@ class oxFileCollector
      *
      * @param $sDir
      */
-    public function setBaseDirectory( $sDir )
+    public function setBaseDirectory($sDir)
     {
-        if ( !empty( $sDir ) )
-        {
+        if (!empty($sDir)) {
             $this->_sBaseDirectory = $sDir;
         }
     }
@@ -69,22 +69,24 @@ class oxFileCollector
      * Add one file to collection if it exists
      *
      * @param string $sFile file name to add to collection
+     *
      * @throws Exception
      * @return null
      */
-    public function addFile( $sFile )
+    public function addFile($sFile)
     {
-        if ( empty( $sFile ) ) {
-            throw new Exception( 'Parameter $sFile is empty!' );
+        if (empty($sFile)) {
+            throw new Exception('Parameter $sFile is empty!');
         }
 
-        if ( empty( $this->_sBaseDirectory ) ) {
-            throw new Exception( 'Base directory is not set, please use setter setBaseDirectory!' );
+        if (empty($this->_sBaseDirectory)) {
+            throw new Exception('Base directory is not set, please use setter setBaseDirectory!');
         }
 
-        if ( is_file( $this->_sBaseDirectory .  $sFile ) ) {
+        if (is_file($this->_sBaseDirectory . $sFile)) {
 
             $this->_aFiles[] = $sFile;
+
             return true;
         }
 
@@ -95,55 +97,55 @@ class oxFileCollector
     /**
      * browse all folders and sub-folders after files which have given extensions
      *
-     * @param string $sFolder which is explored
-     * @param array $aExtensions list of extensions to scan - if empty all files are taken
+     * @param string  $sFolder     which is explored
+     * @param array   $aExtensions list of extensions to scan - if empty all files are taken
      * @param boolean $blRecursive should directories be checked in recursive manner
+     *
      * @throws exception
      * @return null
      */
-    public function addDirectoryFiles( $sFolder, $aExtensions = array(), $blRecursive = false )
+    public function addDirectoryFiles($sFolder, $aExtensions = array(), $blRecursive = false)
     {
-        if ( empty( $sFolder ) ) {
-            throw new Exception( 'Parameter $sFolder is empty!' );
+        if (empty($sFolder)) {
+            throw new Exception('Parameter $sFolder is empty!');
         }
 
-        if ( empty( $this->_sBaseDirectory ) ) {
-            throw new Exception( 'Base directory is not set, please use setter setBaseDirectory!' );
+        if (empty($this->_sBaseDirectory)) {
+            throw new Exception('Base directory is not set, please use setter setBaseDirectory!');
         }
 
         $aCurrentList = array();
 
-        if (!is_dir( $this->_sBaseDirectory . $sFolder ) ) {
+        if (!is_dir($this->_sBaseDirectory . $sFolder)) {
             return;
         }
 
-        $handle = opendir( $this->_sBaseDirectory . $sFolder );
+        $handle = opendir($this->_sBaseDirectory . $sFolder);
 
-        while ( $sFile = readdir( $handle ) ){
+        while ($sFile = readdir($handle)) {
 
-            if ( $sFile != "." && $sFile != "..") {
-                if ( is_dir( $this->_sBaseDirectory . $sFolder . $sFile ) ) {
-                    if ( $blRecursive ) {
-                        $aResultList = $this->addDirectoryFiles( $sFolder . $sFile . '/', $aExtensions, $blRecursive );
+            if ($sFile != "." && $sFile != "..") {
+                if (is_dir($this->_sBaseDirectory . $sFolder . $sFile)) {
+                    if ($blRecursive) {
+                        $aResultList = $this->addDirectoryFiles($sFolder . $sFile . '/', $aExtensions, $blRecursive);
 
-                        if ( is_array( $aResultList ) ) {
-                            $aCurrentList = array_merge( $aCurrentList, $aResultList );
+                        if (is_array($aResultList)) {
+                            $aCurrentList = array_merge($aCurrentList, $aResultList);
                         }
                     }
-                }
-                else
-                {
-                    $sExt = substr( strrchr( $sFile, '.'), 1 );
+                } else {
+                    $sExt = substr(strrchr($sFile, '.'), 1);
 
-                    if ( ( !empty( $aExtensions ) && is_array( $aExtensions ) && in_array( $sExt, $aExtensions ) ) ||
-                         ( empty( $aExtensions ) ) ) {
+                    if ((!empty($aExtensions) && is_array($aExtensions) && in_array($sExt, $aExtensions)) ||
+                        (empty($aExtensions))
+                    ) {
 
-                        $this->addFile( $sFolder . $sFile );
+                        $this->addFile($sFolder . $sFile);
                     }
                 }
             }
         }
-        closedir( $handle );
+        closedir($handle);
     }
 
 }

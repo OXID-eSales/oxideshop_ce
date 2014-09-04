@@ -22,20 +22,21 @@
 
 /**
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class oxServerProcessor extends oxSuperCfg
 {
+
     /** @var oxServersManager */
     private $_oServerNodesManager;
 
     /** @var oxServerChecker */
     private $_oServerNodeChecker;
 
-    /** @var oxUtilsServer  */
+    /** @var oxUtilsServer */
     private $_oUtilsServer;
 
-    /** @var oxUtilsDate  */
+    /** @var oxUtilsDate */
     private $_oUtilsDate;
 
     /**
@@ -72,9 +73,9 @@ class oxServerProcessor extends oxSuperCfg
 
     /**
      * @param oxServersManager $oServerNodesManager
-     * @param oxServerChecker $oServerNodeChecker
-     * @param oxUtilsServer $oUtilsServer
-     * @param oxUtilsDate $oUtilsDate
+     * @param oxServerChecker  $oServerNodeChecker
+     * @param oxUtilsServer    $oUtilsServer
+     * @param oxUtilsDate      $oUtilsDate
      */
     public function __construct(oxServersManager $oServerNodesManager = null,
                                 oxServerChecker $oServerNodeChecker = null,
@@ -131,7 +132,6 @@ class oxServerProcessor extends oxSuperCfg
         $oNode->setId($sServerNodeId);
         $oNode->setIp($oUtilsServer->getServerIp());
         $oNode->setTimestamp($oUtilsDate->getTime());
-        $oNode->setIsValid();
         if ($this->isAdmin()) {
             $oNode->setLastAdminUsage($oUtilsDate->getTime());
         } else {

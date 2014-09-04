@@ -28,8 +28,10 @@
  */
 class Discount extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'discount.tpl';

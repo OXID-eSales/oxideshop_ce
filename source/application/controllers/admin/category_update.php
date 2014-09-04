@@ -25,6 +25,7 @@
  */
 class Category_Update extends oxAdminView
 {
+
     /**
      * Current class template name.
      *
@@ -46,10 +47,11 @@ class Category_Update extends oxAdminView
      */
     protected function _getCategoryList()
     {
-        if ( $this->_oCatList == null ) {
-            $this->_oCatList = oxNew( "oxCategoryList" );
-            $this->_oCatList->updateCategoryTree( false );
+        if ($this->_oCatList == null) {
+            $this->_oCatList = oxNew("oxCategoryList");
+            $this->_oCatList->updateCategoryTree(false);
         }
+
         return $this->_oCatList;
     }
 

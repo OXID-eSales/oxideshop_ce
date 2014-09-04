@@ -26,6 +26,7 @@
  */
 class oxTsProtection extends oxSuperCfg
 {
+
     /**
      * TS protection product Ids
      *
@@ -47,13 +48,13 @@ class oxTsProtection extends oxSuperCfg
      * @var array
      */
     protected $_sTsCurrencyProducts = array(
-                                       "TS080501_500_30_EUR"   => array( "GBP" => "TS100629_500_30_GBP", "CHF" => "TS100629_500_30_CHF", "USD" => "TS080501_500_30_USD" ),
-                                       "TS080501_1500_30_EUR"  => array( "GBP" => "TS100629_1500_30_GBP", "CHF" => "TS100629_1500_30_CHF", "USD" => "TS100629_1500_30_USD" ),
-                                       "TS080501_2500_30_EUR"  => array( "GBP" => "TS100629_2500_30_GBP", "CHF" => "TS100629_2500_30_CHF", "USD" => "TS100629_2500_30_USD" ),
-                                       "TS080501_5000_30_EUR"  => array( "GBP" => "TS100629_5000_30_GBP", "CHF" => "TS100629_5000_30_CHF", "USD" => "TS100629_5000_30_USD" ),
-                                       "TS080501_10000_30_EUR" => array( "GBP" => "TS100629_1000_30_GBP", "CHF" => "TS100629_10000_30_CHF", "USD" => "TS100629_10000_30_USD" ),
-                                       "TS080501_20000_30_EUR" => array( "GBP" => "TS100629_2000_30_GBP", "CHF" => "TS100629_20000_30_CHF", "USD" => "TS100629_20000_30_USD" )
-                                );
+        "TS080501_500_30_EUR"   => array("GBP" => "TS100629_500_30_GBP", "CHF" => "TS100629_500_30_CHF", "USD" => "TS080501_500_30_USD"),
+        "TS080501_1500_30_EUR"  => array("GBP" => "TS100629_1500_30_GBP", "CHF" => "TS100629_1500_30_CHF", "USD" => "TS100629_1500_30_USD"),
+        "TS080501_2500_30_EUR"  => array("GBP" => "TS100629_2500_30_GBP", "CHF" => "TS100629_2500_30_CHF", "USD" => "TS100629_2500_30_USD"),
+        "TS080501_5000_30_EUR"  => array("GBP" => "TS100629_5000_30_GBP", "CHF" => "TS100629_5000_30_CHF", "USD" => "TS100629_5000_30_USD"),
+        "TS080501_10000_30_EUR" => array("GBP" => "TS100629_1000_30_GBP", "CHF" => "TS100629_10000_30_CHF", "USD" => "TS100629_10000_30_USD"),
+        "TS080501_20000_30_EUR" => array("GBP" => "TS100629_2000_30_GBP", "CHF" => "TS100629_20000_30_CHF", "USD" => "TS100629_20000_30_USD")
+    );
 
     /**
      * Return VAT
@@ -72,7 +73,7 @@ class oxTsProtection extends oxSuperCfg
      *
      * @return null
      */
-    public function setVat( $dVat )
+    public function setVat($dVat)
     {
         $this->_dVat = $dVat;
     }
@@ -84,17 +85,18 @@ class oxTsProtection extends oxSuperCfg
      *
      * @return array
      */
-    public function getTsProducts( $dPrice )
+    public function getTsProducts($dPrice)
     {
         $aProducts = array();
-        if ( $aTsProducts = $this->_getTsAllProducts()) {
-            foreach ( $aTsProducts as $oProduct ) {
+        if ($aTsProducts = $this->_getTsAllProducts()) {
+            foreach ($aTsProducts as $oProduct) {
                 $aProducts[] = $oProduct;
-                if ( $oProduct->getAmount() > $dPrice ) {
+                if ($oProduct->getAmount() > $dPrice) {
                     break;
                 }
             }
         }
+
         return $aProducts;
     }
 
@@ -105,10 +107,11 @@ class oxTsProtection extends oxSuperCfg
      *
      * @return oxTsProduct
      */
-    public function getTsProduct( $sTsId )
+    public function getTsProduct($sTsId)
     {
         $oProduct = oxNew("oxTsProduct");
         $oProduct->setTsId($sTsId);
+
         return $oProduct;
     }
 
@@ -120,53 +123,60 @@ class oxTsProtection extends oxSuperCfg
      *
      * @return bool
      */
-    public function requestForTsProtection( $aValues, $sPaymentId )
+    public function requestForTsProtection($aValues, $sPaymentId)
     {
         $oConfig = $this->getConfig();
         $iLangId = (int) oxRegistry::getLang()->getBaseLanguage();
-        $blTsTestMode = $oConfig->getConfigParam( 'tsTestMode' );
-        $aTsUser = $oConfig->getConfigParam( 'aTsUser' );
-        $aTsPassword = $oConfig->getConfigParam( 'aTsPassword' );
-        $aTrustedShopIds = $oConfig->getConfigParam( 'iShopID_TrustedShops' );
-        if ( $aTrustedShopIds && $aTrustedShopIds[$iLangId] ) {
+        $blTsTestMode = $oConfig->getConfigParam('tsTestMode');
+        $aTsUser = $oConfig->getConfigParam('aTsUser');
+        $aTsPassword = $oConfig->getConfigParam('aTsPassword');
+        $aTrustedShopIds = $oConfig->getConfigParam('iShopID_TrustedShops');
+        if ($aTrustedShopIds && $aTrustedShopIds[$iLangId]) {
             try {
-                if ( $blTsTestMode ) {
-                    $sSoapUrl = $oConfig->getConfigParam( 'sTsTestProtectionUrl' );
+                if ($blTsTestMode) {
+                    $sSoapUrl = $oConfig->getConfigParam('sTsTestProtectionUrl');
                 } else {
-                    $sSoapUrl = $oConfig->getConfigParam( 'sTsProtectionUrl' );
+                    $sSoapUrl = $oConfig->getConfigParam('sTsProtectionUrl');
                 }
                 $sFunction = 'requestForProtectionV2';
                 $sVersion = $this->getConfig()->getVersion();
                 $sEdition = $this->getConfig()->getFullEdition();
                 $sTsPaymentId = $this->_getTsPaymentId($sPaymentId);
                 $tsProductId = $this->_getTsProductCurrId($aValues['tsProductId'], $aValues['currency']);
-                $aValues['tsId']    = $aTrustedShopIds[$iLangId];
+                $aValues['tsId'] = $aTrustedShopIds[$iLangId];
                 $aValues['paymentType'] = $sTsPaymentId;
                 $aValues['shopSystemVersion'] = $sEdition . " " . $sVersion;
                 $aValues['wsUser'] = $aTsUser[$iLangId];
                 $aValues['wsPassword'] = $aTsPassword[$iLangId];
                 $aValues['orderDate'] = str_replace(" ", "T", $aValues['orderDate']);
                 $oSoap = new SoapClient($sSoapUrl);
-                $aResults = $oSoap->{$sFunction}($aValues['tsId'],$tsProductId,$aValues['amount'],$aValues['currency'],$aValues['paymentType'],
-                $aValues['buyerEmail'],$aValues['shopCustomerID'],$aValues['shopOrderID'],$aValues['orderDate'],$aValues['shopSystemVersion'],
-                $aValues['wsUser'],$aValues['wsPassword']);
+                $aResults = $oSoap->{$sFunction}(
+                    $aValues['tsId'], $tsProductId, $aValues['amount'], $aValues['currency'], $aValues['paymentType'],
+                    $aValues['buyerEmail'], $aValues['shopCustomerID'], $aValues['shopOrderID'], $aValues['orderDate'], $aValues['shopSystemVersion'],
+                    $aValues['wsUser'], $aValues['wsPassword']
+                );
 
-                if ( isset($aResults) && "" != $aResults ) {
-                    if ( $aResults == "-10001" ) {
-                        oxRegistry::getUtils()->logger( "NO_VALID_SHOP" );
+                if (isset($aResults) && "" != $aResults) {
+                    if ($aResults == "-10001") {
+                        oxRegistry::getUtils()->logger("NO_VALID_SHOP");
+
                         return false;
                     }
-                    if ( $aResults == "-11111" ) {
-                        oxRegistry::getUtils()->logger( "SYSTEM_ERROR" );
+                    if ($aResults == "-11111") {
+                        oxRegistry::getUtils()->logger("SYSTEM_ERROR");
+
                         return false;
                     }
+
                     return $aResults;
                 }
-            } catch( Exception $eException ) {
-                oxRegistry::getUtils()->logger( "Soap-Error: " . $eException->faultstring );
+            } catch (Exception $eException) {
+                oxRegistry::getUtils()->logger("Soap-Error: " . $eException->faultstring);
+
                 return false;
             }
         }
+
         return null;
 
     }
@@ -179,19 +189,21 @@ class oxTsProtection extends oxSuperCfg
      *
      * @return object
      */
-    public function checkCertificate( $iTrustedShopId, $blTsTestMode )
+    public function checkCertificate($iTrustedShopId, $blTsTestMode)
     {
-        if ( $iTrustedShopId ) {
-            if ( $blTsTestMode == "true" ) {
+        if ($iTrustedShopId) {
+            if ($blTsTestMode == "true") {
                 $sSoapUrl = 'https://qa.trustedshops.de/ts/services/TsProtection?wsdl';
             } else {
                 $sSoapUrl = 'https://www.trustedshops.de/ts/services/TsProtection?wsdl';
             }
             $sFunction = 'checkCertificate';
             $aValues['tsId'] = $iTrustedShopId;
-            $aResults = $this->executeSoap( $sSoapUrl, $sFunction, $aValues['tsId']);
+            $aResults = $this->executeSoap($sSoapUrl, $sFunction, $aValues['tsId']);
+
             return $aResults;
         }
+
         return null;
 
     }
@@ -205,18 +217,20 @@ class oxTsProtection extends oxSuperCfg
      *
      * @return object
      */
-    public function executeSoap( $sSoapUrl, $sFunction, $sValues )
+    public function executeSoap($sSoapUrl, $sFunction, $sValues)
     {
         try {
             $oSoap = new SoapClient($sSoapUrl);
             $aResults = $oSoap->{$sFunction}($sValues);
-            if ( isset($aResults) ) {
+            if (isset($aResults)) {
                 return $aResults;
             }
-        } catch( Exception $eException ) {
-            oxRegistry::getUtils()->logger( "Soap-Error: " . $eException->faultstring );
+        } catch (Exception $eException) {
+            oxRegistry::getUtils()->logger("Soap-Error: " . $eException->faultstring);
+
             return false;
         }
+
         return null;
 
     }
@@ -228,14 +242,15 @@ class oxTsProtection extends oxSuperCfg
      *
      * @return string
      */
-    protected function _getTsPaymentId( $sPaymentId )
+    protected function _getTsPaymentId($sPaymentId)
     {
         $sTsPaymentId = '';
 
         $aPayment = oxNew("oxPayment");
-        if ( $aPayment->load($sPaymentId) ) {
+        if ($aPayment->load($sPaymentId)) {
             $sTsPaymentId = $aPayment->oxpayments__oxtspaymentid->value;
         }
+
         return $sTsPaymentId;
     }
 
@@ -249,15 +264,16 @@ class oxTsProtection extends oxSuperCfg
         if ($this->_aAllProducts == null) {
             $this->_aAllProducts = false;
             $oTsProduct = oxNew("oxTsProduct");
-            if ( $aTsProducts = $oTsProduct->getAllTsProducts()) {
-                foreach ( $aTsProducts as $sId => $aTsProduct ) {
+            if ($aTsProducts = $oTsProduct->getAllTsProducts()) {
+                foreach ($aTsProducts as $sId => $aTsProduct) {
                     $oProduct = oxNew("oxTsProduct");
                     $oProduct->setTsId($sId);
-                    $oProduct->setVat( $this->getVat() );
+                    $oProduct->setVat($this->getVat());
                     $this->_aAllProducts[] = $oProduct;
                 }
             }
         }
+
         return $this->_aAllProducts;
     }
 
@@ -269,13 +285,14 @@ class oxTsProtection extends oxSuperCfg
      *
      * @return array
      */
-    protected function _getTsProductCurrId( $sTsId, $sCurr )
+    protected function _getTsProductCurrId($sTsId, $sCurr)
     {
         $sTsCurrId = $sTsId;
         if ($sCurr != 'EUR') {
             $aTsCurrId = $this->_sTsCurrencyProducts[$sTsId];
             $sTsCurrId = $aTsCurrId[$sCurr];
         }
+
         return $sTsCurrId;
     }
 

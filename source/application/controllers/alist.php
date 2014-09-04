@@ -158,11 +158,11 @@ class aList extends oxUBase
     public function getViewId()
     {
         if (!isset($this->_sViewId)) {
-            $sCatId           = oxRegistry::getConfig()->getRequestParameter('cnid');
-            $iActPage         = $this->getActPage();
-            $iArtPerPage      = oxRegistry::getSession()->getVariable('_artperpage');
+            $sCatId = oxRegistry::getConfig()->getRequestParameter('cnid');
+            $iActPage = $this->getActPage();
+            $iArtPerPage = oxRegistry::getSession()->getVariable('_artperpage');
             $sListDisplayType = $this->_getListDisplayType();
-            $sParentViewId    = parent::getViewId();
+            $sParentViewId = parent::getViewId();
 
             // shorten it
                 $this->_sViewId = md5(
@@ -190,23 +190,23 @@ class aList extends oxUBase
     {
         $myConfig = $this->getConfig();
 
-        $oCategory      = null;
-        $blContinue     = true;
+        $oCategory = null;
+        $blContinue = true;
         $this->_blIsCat = false;
 
         // A. checking for fake "more" category
         if ('oxmore' == $myConfig->getRequestParameter('cnid')) {
             // overriding some standard value and parameters
-            $this->_sThisTemplate              = $this->_sThisMoreTemplate;
-            $oCategory                         = oxNew('oxcategory');
+            $this->_sThisTemplate = $this->_sThisMoreTemplate;
+            $oCategory = oxNew('oxcategory');
             $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
             $this->setActiveCategory($oCategory);
 
             $this->_blShowTagCloud = true;
 
         } elseif (($oCategory = $this->getActiveCategory())) {
-            $blContinue             = ( bool ) $oCategory->oxcategories__oxactive->value;
-            $this->_blIsCat         = true;
+            $blContinue = ( bool ) $oCategory->oxcategories__oxactive->value;
+            $this->_blIsCat = true;
             $this->_blBargainAction = true;
         }
 
@@ -267,7 +267,7 @@ class aList extends oxUBase
     protected function _processListArticles()
     {
         if ($aArtList = $this->getArticleList()) {
-            $iLinkType     = $this->_getProductLinkType();
+            $iLinkType = $this->_getProductLinkType();
             $sAddDynParams = $this->getAddUrlParams();
             $sAddSeoParams = $this->getAddSeoUrlParams();
 
@@ -351,7 +351,7 @@ class aList extends oxUBase
             $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
             //fix for #2904 - if language will be changed attributes of this category will be deleted from session
             //and new filters for active language set.
-            $aSessionFilter[$sActCat]         = null;
+            $aSessionFilter[$sActCat] = null;
             $aSessionFilter[$sActCat][$iLang] = $aFilter;
             oxRegistry::getSession()->setVariable('session_attrfilter', $aSessionFilter);
         }
@@ -378,13 +378,13 @@ class aList extends oxUBase
 
         if ($oCategory->isPriceCategory()) {
             $dPriceFrom = $oCategory->oxcategories__oxpricefrom->value;
-            $dPriceTo   = $oCategory->oxcategories__oxpriceto->value;
+            $dPriceTo = $oCategory->oxcategories__oxpriceto->value;
 
             $this->_iAllArtCnt = $oArtList->loadPriceArticles($dPriceFrom, $dPriceTo, $oCategory);
         } else {
             $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
 
-            $sActCat           = oxRegistry::getConfig()->getRequestParameter('cnid');
+            $sActCat = oxRegistry::getConfig()->getRequestParameter('cnid');
             $this->_iAllArtCnt = $oArtList->loadCategoryArticles($sActCat, $aSessionFilter);
         }
 
@@ -459,7 +459,7 @@ class aList extends oxUBase
             //fetching category path
             if (is_array($aPath = $this->getCatTreePath())) {
 
-                $oStr                  = getStr();
+                $oStr = getStr();
                 $this->_sCatPathString = '';
                 foreach ($aPath as $oCat) {
                     if ($this->_sCatPathString) {
@@ -619,7 +619,7 @@ class aList extends oxUBase
     protected function _collectMetaKeyword($sKeywords)
     {
         $iMaxTextLength = 60;
-        $sText          = '';
+        $sText = '';
 
         if (count($aArticleList = $this->getArticleList())) {
             $oStr = getStr();
@@ -631,7 +631,7 @@ class aList extends oxUBase
 
                 if ($oStr->strlen($sDesc) > $iMaxTextLength) {
                     $sMidText = $oStr->substr($sDesc, 0, $iMaxTextLength);
-                    $sDesc    = $oStr->substr(
+                    $sDesc = $oStr->substr(
                         $sMidText,
                         0,
                         ($oStr->strlen($sMidText) - $oStr->strpos(strrev($sMidText), ' '))
@@ -734,9 +734,9 @@ class aList extends oxUBase
         if ($oCategory && $oCategory instanceof oxCategory) {
             if ($sDefaultSorting = $oCategory->getDefaultSorting()) {
                 $sArticleTable = getViewName('oxarticles');
-                $sSortBy       = $sArticleTable . '.' . $sDefaultSorting;
-                $sSortDir      = ($oCategory->getDefaultSortingMode()) ? "desc" : "asc";
-                $aSorting      = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);
+                $sSortBy = $sArticleTable . '.' . $sDefaultSorting;
+                $sSortDir = ($oCategory->getDefaultSortingMode()) ? "desc" : "asc";
+                $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);
             }
         }
 
@@ -809,7 +809,7 @@ class aList extends oxUBase
     public function getArticleList()
     {
         if ($this->_aArticleList === null) {
-            if (/*$this->_isActCategory() &&*/
+            if ( /*$this->_isActCategory() &&*/
             ($oCategory = $this->getActiveCategory())
             ) {
                 $aArticleList = $this->_loadArticles($oCategory);
@@ -890,13 +890,13 @@ class aList extends oxUBase
         $aPaths = array();
 
         if ('oxmore' == oxRegistry::getConfig()->getRequestParameter('cnid')) {
-            $aPath          = array();
+            $aPath = array();
             $aPath['title'] = oxRegistry::getLang()->translateString(
                 'CATEGORY_OVERVIEW',
                 oxRegistry::getLang()->getBaseLanguage(),
                 false
             );
-            $aPath['link']  = $this->getLink();
+            $aPath['link'] = $this->getLink();
 
             $aPaths[] = $aPath;
 
@@ -907,7 +907,7 @@ class aList extends oxUBase
             foreach ($oCatPath as $oCat) {
                 $aCatPath = array();
 
-                $aCatPath['link']  = $oCat->getLink();
+                $aCatPath['link'] = $oCat->getLink();
                 $aCatPath['title'] = $oCat->oxcategories__oxtitle->value;
 
                 $aPaths[] = $aCatPath;
@@ -975,8 +975,8 @@ class aList extends oxUBase
     {
         if ($this->_sCatTitle === null) {
             $this->_sCatTitle = false;
-            if( $this->getCategoryId() == 'oxmore' ){
-                $this->_sCatTitle = oxRegistry::getLang()->translateString( 'CATEGORY_OVERVIEW', oxRegistry::getLang()->getBaseLanguage(), false );
+            if ($this->getCategoryId() == 'oxmore') {
+                $this->_sCatTitle = oxRegistry::getLang()->translateString('CATEGORY_OVERVIEW', oxRegistry::getLang()->getBaseLanguage(), false);
             } elseif (($oCategory = $this->getActiveCategory())) {
                 $this->_sCatTitle = $oCategory->oxcategories__oxtitle->value;
             }
@@ -1015,7 +1015,7 @@ class aList extends oxUBase
     {
         if ($this->_oActCategory === null) {
             $this->_oActCategory = false;
-            $oCategory           = oxNew('oxCategory');
+            $oCategory = oxNew('oxCategory');
             if ($oCategory->load($this->getCategoryId())) {
                 $this->_oActCategory = $oCategory;
             }

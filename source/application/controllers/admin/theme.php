@@ -28,6 +28,7 @@
  */
 class Theme extends oxAdminView
 {
+
     /**
      * Executes parent method parent::render() and returns name of template
      * file "theme.tpl".

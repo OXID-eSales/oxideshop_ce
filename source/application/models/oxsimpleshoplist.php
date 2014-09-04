@@ -21,47 +21,43 @@
  */
 
 /**
- * Admin links collection.
- * Collects list of admin links. Links may be viewed by language, sorted by date,
- * url or any keyword.
- * Admin Menu: Customer News -> Links.
+ * Simple shop list
+ * Organizes list of shop objects.
  */
-class Adminlinks_List extends oxAdminList
+class oxSimpleShopList
 {
 
     /**
-     * Current class template name.
+     * Base query for getting all shops
      *
      * @var string
      */
-    protected $_sThisTemplate = 'adminlinks_list.tpl';
+    protected $_sBaseQuery = 'SELECT `OXID`, `OXNAME` FROM `oxshops`';
 
     /**
-     * Name of chosen object class (default null).
+     * Loads only necesarry list data into a simple object.
+     * Takes only OXID and OXNAME from retrieved table data.
      *
-     * @var string
-     */
-    protected $_sListClass = 'oxlinks';
-
-    /**
-     * Default SQL sorting parameter (default null).
-     *
-     * @var string
-     */
-    protected $_sDefSortField = 'oxinsert';
-
-    /**
-     * Returns sorting fields array
+     * @param string $sWhere WHERE statement for the shop selection query. Ex.: 'oxactive = 1'.
      *
      * @return array
      */
-    public function getListSorting()
+    public function getList($sWhere = null)
     {
-        $aSorting = parent::getListSorting();
-        if (isset($aSorting["oxlinks"][$this->_sDefSortField])) {
-            $this->_blDesc = true;
+        $sSql = $this->_sBaseQuery;
+        if (!empty($sWhere)) {
+            $sSql .= " WHERE $sWhere";
         }
 
-        return $aSorting;
+        $aShopList = array();
+        $aResults = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
+        foreach ($aResults as $aRow) {
+            $iShopId = $aRow['OXID'];
+            $aShopList[$iShopId] = new StdClass();
+            $aShopList[$iShopId]->oxshops__oxid = new oxField($aRow['OXID']);
+            $aShopList[$iShopId]->oxshops__oxname = new oxField($aRow['OXNAME']);
+        }
+
+        return $aShopList;
     }
 }

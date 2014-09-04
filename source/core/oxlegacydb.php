@@ -35,14 +35,14 @@ class oxLegacyDb extends oxSuperCfg
     protected $_oDb = null;
 
 
-     /**
+    /**
      * Set connection
      *
      * @param object $oConnection Connection
      *
      * @return null
      */
-    public function setConnection( $oConnection )
+    public function setConnection($oConnection)
     {
         $this->_oDb = $oConnection;
     }
@@ -54,9 +54,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return null
      */
-    public function setFetchMode ( $iFetchMode )
+    public function setFetchMode($iFetchMode)
     {
-        $this->_oDb->setFetchMode( $iFetchMode );
+        $this->_oDb->setFetchMode($iFetchMode);
 
     }
 
@@ -67,7 +67,7 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return object
      */
-    public function getDb( $blType = true )
+    public function getDb($blType = true)
     {
 
             return $this->_oDb;
@@ -82,9 +82,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return string
      */
-    public function getOne( $sSql, $aParams = false, $blType = true )
+    public function getOne($sSql, $aParams = false, $blType = true)
     {
-        return $this->getDb( $blType )->getOne( $sSql, $aParams );
+        return $this->getDb($blType)->getOne($sSql, $aParams);
     }
 
     /**
@@ -96,9 +96,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return array
      */
-    public function getArray( $sSql, $aParams = false, $blType = true )
+    public function getArray($sSql, $aParams = false, $blType = true)
     {
-        return $this->getDb( $blType )->getArray( $sSql, $aParams );
+        return $this->getDb($blType)->getArray($sSql, $aParams);
     }
 
     /**
@@ -110,9 +110,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return array
      */
-    public function getRow( $sSql, $aParams = false, $blType = true )
+    public function getRow($sSql, $aParams = false, $blType = true)
     {
-        return $this->getDb( $blType )->getRow( $sSql, $aParams );
+        return $this->getDb($blType)->getRow($sSql, $aParams);
     }
 
     /**
@@ -124,10 +124,10 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return array
      */
-    public function getAll( $sSql, $aParams = false, $blType = true )
+    public function getAll($sSql, $aParams = false, $blType = true)
     {
 
-        return $this->getDb( $blType )->getAll( $sSql, $aParams );
+        return $this->getDb($blType)->getAll($sSql, $aParams);
     }
 
     /**
@@ -139,9 +139,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return object
      */
-    public function select( $sSql, $aParams = false, $blType = true )
+    public function select($sSql, $aParams = false, $blType = true)
     {
-        return $this->getDb( $blType )->execute( $sSql, $aParams );
+        return $this->getDb($blType)->execute($sSql, $aParams);
     }
 
     /**
@@ -153,9 +153,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return array
      */
-    public function getAssoc( $sSql, $aParams = false, $blType = true )
+    public function getAssoc($sSql, $aParams = false, $blType = true)
     {
-        return $this->getDb( $blType )->getAssoc( $sSql, $aParams );
+        return $this->getDb($blType)->getAssoc($sSql, $aParams);
     }
 
     /**
@@ -167,9 +167,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return object
      */
-    public function getCol( $sSql, $aParams = false, $blType = true )
+    public function getCol($sSql, $aParams = false, $blType = true)
     {
-        return $this->getDb( $blType )->getCol( $sSql, $aParams );
+        return $this->getDb($blType)->getCol($sSql, $aParams);
     }
 
     /**
@@ -183,9 +183,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return object
      */
-    public function selectLimit( $sSql, $iRows=-1, $iOffset=-1, $aParams = false, $blType = true )
+    public function selectLimit($sSql, $iRows = -1, $iOffset = -1, $aParams = false, $blType = true)
     {
-        return $this->getDb( $blType )->SelectLimit( $sSql, $iRows, $iOffset, $aParams );
+        return $this->getDb($blType)->SelectLimit($sSql, $iRows, $iOffset, $aParams);
     }
 
     /**
@@ -196,9 +196,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return object
      */
-    public function execute( $sSql, $aParams = false )
+    public function execute($sSql, $aParams = false)
     {
-        return $this->getDb( false )->execute( $sSql, $aParams );
+        return $this->getDb(false)->execute($sSql, $aParams);
     }
 
     /**
@@ -209,9 +209,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return object
      */
-    public function query( $sSql, $aParams = false )
+    public function query($sSql, $aParams = false)
     {
-        return $this->getDb( false )->Query( $sSql, $aParams );
+        return $this->getDb(false)->Query($sSql, $aParams);
     }
 
     /**
@@ -221,17 +221,17 @@ class oxLegacyDb extends oxSuperCfg
      */
     public function Affected_Rows()
     {
-        return $this->getDb( false )->Affected_Rows();
+        return $this->getDb(false)->Affected_Rows();
     }
 
-     /**
+    /**
      * Return error number
      *
      * @return int
      */
     public function errorNo()
     {
-        return $this->getDb( false )->ErrorNo();
+        return $this->getDb(false)->ErrorNo();
     }
 
     /**
@@ -241,7 +241,7 @@ class oxLegacyDb extends oxSuperCfg
      */
     public function errorMsg()
     {
-        return $this->getDb( false )->ErrorMsg();
+        return $this->getDb(false)->ErrorMsg();
     }
 
     /**
@@ -251,9 +251,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return string
      */
-    public function qstr( $sValue )
+    public function qstr($sValue)
     {
-        return $this->getDb( false )->qstr( $sValue );
+        return $this->getDb(false)->qstr($sValue);
     }
 
     /**
@@ -263,9 +263,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return string
      */
-    public function quote( $sValue )
+    public function quote($sValue)
     {
-        return $this->getDb( false )->quote( $sValue );
+        return $this->getDb(false)->quote($sValue);
     }
 
     /**
@@ -275,10 +275,10 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return array
      */
-    public function quoteArray( $aStrArray )
+    public function quoteArray($aStrArray)
     {
-        foreach ( $aStrArray as $sKey => $sString ) {
-            $aStrArray[$sKey] = $this->quote( $sString );
+        foreach ($aStrArray as $sKey => $sString) {
+            $aStrArray[$sKey] = $this->quote($sString);
         }
 
         return $aStrArray;
@@ -291,9 +291,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return array
      */
-    public function metaColumns( $sTable )
+    public function metaColumns($sTable)
     {
-        return $this->getDb( false )->MetaColumns( $sTable );
+        return $this->getDb(false)->MetaColumns($sTable);
     }
 
     /**
@@ -304,9 +304,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return array
      */
-    public function metaColumnNames( $sTable, $blNumIndexes=false )
+    public function metaColumnNames($sTable, $blNumIndexes = false)
     {
-        return $this->getDb( false )->MetaColumnNames( $sTable, $blNumIndexes );
+        return $this->getDb(false)->MetaColumnNames($sTable, $blNumIndexes);
     }
 
     /**
@@ -316,7 +316,7 @@ class oxLegacyDb extends oxSuperCfg
      */
     public function startTransaction()
     {
-        return $this->getDb( false )->execute( 'START TRANSACTION' );
+        return $this->getDb(false)->execute('START TRANSACTION');
     }
 
     /**
@@ -326,7 +326,7 @@ class oxLegacyDb extends oxSuperCfg
      */
     public function commitTransaction()
     {
-        return $this->getDb( false )->execute( 'COMMIT' );
+        return $this->getDb(false)->execute('COMMIT');
     }
 
     /**
@@ -336,7 +336,7 @@ class oxLegacyDb extends oxSuperCfg
      */
     public function rollbackTransaction()
     {
-        return $this->getDb( false )->execute( 'ROLLBACK' );
+        return $this->getDb(false)->execute('ROLLBACK');
     }
 
     /**
@@ -347,13 +347,13 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return bool
      */
-    public function setTransactionIsolationLevel( $sLevel = null )
+    public function setTransactionIsolationLevel($sLevel = null)
     {
         $blResult = false;
 
-        $aLevels = array( 'READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE' );
-        if ( in_array( strtoupper( $sLevel ), $aLevels ) ) {
-            $blResult =  $this->getDb( false )->execute( 'SET TRANSACTION ISOLATION LEVEL ' . $sLevel );
+        $aLevels = array('READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE');
+        if (in_array(strtoupper($sLevel), $aLevels)) {
+            $blResult = $this->getDb(false)->execute('SET TRANSACTION ISOLATION LEVEL ' . $sLevel);
         }
 
         return $blResult;
@@ -366,9 +366,9 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return null
      */
-    public function UI( $iPollSecs=5 )
+    public function UI($iPollSecs = 5)
     {
-        $this->getDb( false )->UI( $iPollSecs );
+        $this->getDb(false)->UI($iPollSecs);
     }
 
     /**
@@ -378,7 +378,7 @@ class oxLegacyDb extends oxSuperCfg
      */
     public function Insert_ID()
     {
-        return $this->getDb( false )->Insert_ID();
+        return $this->getDb(false)->Insert_ID();
     }
 
 }

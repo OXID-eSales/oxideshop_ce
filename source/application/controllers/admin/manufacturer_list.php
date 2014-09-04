@@ -25,8 +25,10 @@
  */
 class Manufacturer_List extends oxAdminList
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'manufacturer_list.tpl';

@@ -39,25 +39,25 @@ class oxState extends oxI18n
     public function __construct()
     {
         parent::__construct();
-        $this->init( "oxstates" );
+        $this->init("oxstates");
     }
 
     /**
      * Returns country id by code
      *
-     * @param string $sCode country code
+     * @param string $sCode      country code
      * @param string $sCountryId country id
      *
      * @return string
      */
-    public function getIdByCode( $sCode, $sCountryId )
+    public function getIdByCode($sCode, $sCountryId)
     {
         $oDb = oxDb::getDb();
 
         return $oDb->getOne(
             "SELECT oxid FROM oxstates WHERE oxisoalpha2 = " . $oDb->quote(
                 $sCode
-            ) . " AND oxcountryid = " . $oDb->quote( $sCountryId )
+            ) . " AND oxcountryid = " . $oDb->quote($sCountryId)
         );
     }
 
@@ -68,11 +68,11 @@ class oxState extends oxI18n
      *
      * @return string
      */
-    public function getTitleById( $iStateId )
+    public function getTitleById($iStateId)
     {
         $oDb = oxDb::getDb();
-        $sQ = "SELECT oxtitle FROM " . getViewName( "oxstates" ) . " WHERE oxid = " . $oDb->quote( $iStateId );
-        $sStateTitle = $oDb->getOne( $sQ );
+        $sQ = "SELECT oxtitle FROM " . getViewName("oxstates") . " WHERE oxid = " . $oDb->quote($iStateId);
+        $sStateTitle = $oDb->getOne($sQ);
 
         return (string) $sStateTitle;
     }

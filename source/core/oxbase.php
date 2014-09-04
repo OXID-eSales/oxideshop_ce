@@ -35,14 +35,17 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
  */
 class oxBase extends oxSuperCfg
 {
+
     /**
      * Unique object ID. Normally representing record oxid field value
+     *
      * @var string
      */
     protected $_sOXID = null;
 
     /**
      * ID of running shop session (default null).
+     *
      * @var int
      */
     protected $_iShopId = null;
@@ -56,6 +59,7 @@ class oxBase extends oxSuperCfg
 
     /**
      * Name of current class.
+     *
      * @var string
      */
     protected $_sClassName = 'oxbase';
@@ -69,9 +73,10 @@ class oxBase extends oxSuperCfg
 
     /**
      * Current view name where object record is supposed to be SELECTED from.
+     *
      * @var string
      */
-    protected $_sViewTable  = null;
+    protected $_sViewTable = null;
 
 
     /**
@@ -111,6 +116,7 @@ class oxBase extends oxSuperCfg
 
     /**
      * SQL query string for searching in DB (??)
+     *
      * @var string
      */
     protected $_sExistKey = 'oxid';
@@ -194,7 +200,7 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    public function setUseSkipSaveFields( $blUseSkipSaveFields )
+    public function setUseSkipSaveFields($blUseSkipSaveFields)
     {
         $this->_blUseSkipSaveFields = $blUseSkipSaveFields;
     }
@@ -211,18 +217,18 @@ class oxBase extends oxSuperCfg
         $this->_addSkippedSaveFieldsForMapping();
         $this->_disableLazyLoadingForCaching();
 
-        if ( $this->_blUseLazyLoading ) {
+        if ($this->_blUseLazyLoading) {
             $this->_sCacheKey .= $myConfig->getActiveView()->getClassName();
         } else {
             $this->_sCacheKey .= 'allviews';
         }
 
         //do not cache for admin?
-        if ( $this->isAdmin() ) {
+        if ($this->isAdmin()) {
             $this->_sCacheKey = null;
         }
 
-        $this->setShopId( $myConfig->getShopId() );
+        $this->setShopId($myConfig->getShopId());
     }
 
     /**
@@ -233,16 +239,16 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    public function __set( $sName, $sValue )
+    public function __set($sName, $sValue)
     {
         $this->$sName = $sValue;
-        if ( $this->_blUseLazyLoading && strpos( $sName, $this->_sCoreTable . '__' ) === 0 ) {
-            $sFieldName = str_replace( $this->_sCoreTable . "__", '', $sName );
-            if ( $sFieldName != 'oxnid' && ( !isset( $this->_aFieldNames[$sFieldName] ) || !$this->_aFieldNames[$sFieldName] ) ) {
+        if ($this->_blUseLazyLoading && strpos($sName, $this->_sCoreTable . '__') === 0) {
+            $sFieldName = str_replace($this->_sCoreTable . "__", '', $sName);
+            if ($sFieldName != 'oxnid' && (!isset($this->_aFieldNames[$sFieldName]) || !$this->_aFieldNames[$sFieldName])) {
                 $aAllFields = $this->_getAllFields(true);
-                if ( isset( $aAllFields[strtolower($sFieldName)] ) ) {
-                    $iFieldStatus = $this->_getFieldStatus( $sFieldName );
-                    $this->_addField( $sFieldName, $iFieldStatus );
+                if (isset($aAllFields[strtolower($sFieldName)])) {
+                    $iFieldStatus = $this->_getFieldStatus($sFieldName);
+                    $this->_addField($sFieldName, $iFieldStatus);
                 }
             }
         }
@@ -255,9 +261,9 @@ class oxBase extends oxSuperCfg
      *
      * @return mixed
      */
-    public function __get( $sName )
+    public function __get($sName)
     {
-        switch ( $sName ) {
+        switch ($sName) {
             case 'blIsDerived':
                 return $this->isDerived();
                 break;
@@ -272,27 +278,27 @@ class oxBase extends oxSuperCfg
         // implementing lazy loading fields
         // This part of the code is slow and normally is called before field cache is built.
         // Make sure it is not called after first page is loaded and cache data is fully built.
-        if ( $this->_blUseLazyLoading && stripos( $sName, $this->_sCoreTable . "__" ) === 0 ) {
+        if ($this->_blUseLazyLoading && stripos($sName, $this->_sCoreTable . "__") === 0) {
 
-            if ( $this->getId() ) {
+            if ($this->getId()) {
 
                 //lazy load it
-                $sFieldName      = str_replace( $this->_sCoreTable . '__', '', $sName );
-                $sCacheFieldName = strtoupper( $sFieldName );
+                $sFieldName = str_replace($this->_sCoreTable . '__', '', $sName);
+                $sCacheFieldName = strtoupper($sFieldName);
 
-                $iFieldStatus = $this->_getFieldStatus( $sFieldName );
-                $sViewName    = $this->getViewName();
+                $iFieldStatus = $this->_getFieldStatus($sFieldName);
+                $sViewName = $this->getViewName();
                 $sId = $this->getId();
 
                 try {
-                    if ( $this->_aInnerLazyCache === null ) {
+                    if ($this->_aInnerLazyCache === null) {
 
-                        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-                        $sQ = 'SELECT * FROM ' . $sViewName . ' WHERE `oxid` = ' . $oDb->quote( $sId );
-                        $rs = $oDb->select( $sQ );
-                        if ( $rs && $rs->RecordCount() ) {
-                            $this->_aInnerLazyCache = array_change_key_case( $rs->fields, CASE_UPPER );
-                            if ( array_key_exists( $sCacheFieldName, $this->_aInnerLazyCache ) ) {
+                        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+                        $sQ = 'SELECT * FROM ' . $sViewName . ' WHERE `oxid` = ' . $oDb->quote($sId);
+                        $rs = $oDb->select($sQ);
+                        if ($rs && $rs->RecordCount()) {
+                            $this->_aInnerLazyCache = array_change_key_case($rs->fields, CASE_UPPER);
+                            if (array_key_exists($sCacheFieldName, $this->_aInnerLazyCache)) {
                                 $sFieldValue = $this->_aInnerLazyCache[$sCacheFieldName];
                             } else {
                                 return null;
@@ -300,37 +306,37 @@ class oxBase extends oxSuperCfg
                         } else {
                             return null;
                         }
-                    } elseif ( array_key_exists( $sCacheFieldName, $this->_aInnerLazyCache ) ) {
+                    } elseif (array_key_exists($sCacheFieldName, $this->_aInnerLazyCache)) {
                         $sFieldValue = $this->_aInnerLazyCache[$sCacheFieldName];
                     } else {
                         return null;
                     }
 
-                    $this->_addField( $sFieldName, $iFieldStatus );
-                    $this->_setFieldData( $sFieldName, $sFieldValue );
+                    $this->_addField($sFieldName, $iFieldStatus);
+                    $this->_setFieldData($sFieldName, $sFieldValue);
 
                     //save names to cache for next loading
                     if ($this->_sCacheKey) {
                         $myUtils = oxRegistry::getUtils();
                         $sCacheKey = 'fieldnames_' . $this->_sCoreTable . '_' . $this->_sCacheKey;
-                        $aFieldNames = $myUtils->fromFileCache( $sCacheKey );
+                        $aFieldNames = $myUtils->fromFileCache($sCacheKey);
                         $aFieldNames[$sFieldName] = $iFieldStatus;
-                        $myUtils->toFileCache( $sCacheKey, $aFieldNames );
+                        $myUtils->toFileCache($sCacheKey, $aFieldNames);
                     }
-                } catch ( Exception $e ) {
+                } catch (Exception $e) {
                     return null;
                 }
 
                 //do not use field cache for this page
                 //as if we use it for lists then objects are loaded empty instead of lazy loading.
-                self::$_blDisableFieldCaching[get_class( $this )] = true;
+                self::$_blDisableFieldCaching[get_class($this)] = true;
             }
 
             oxUtilsObject::getInstance()->resetInstanceCache(get_class($this));
         }
 
         //returns stdClass implementing __toString() method due to uknown scenario where this var should be used.
-        if (!isset( $this->$sName ) ) {
+        if (!isset($this->$sName)) {
             $this->$sName = null;
         }
 
@@ -357,9 +363,9 @@ class oxBase extends oxSuperCfg
     public function __clone()
     {
         if (!$this->_blIsSimplyClonable) {
-            foreach ( $this->_aFieldNames as $sField => $sVal ) {
-                $sLongName = $this->_getFieldLongName( $sField );
-                if ( is_object($this->$sLongName)) {
+            foreach ($this->_aFieldNames as $sField => $sVal) {
+                $sLongName = $this->_getFieldLongName($sField);
+                if (is_object($this->$sLongName)) {
                     $this->$sLongName = clone $this->$sLongName;
                 }
             }
@@ -373,11 +379,11 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    public function oxClone( $oObject )
+    public function oxClone($oObject)
     {
-        $aClasVars = get_object_vars( $oObject );
-        while (list($name, $value) = each( $aClasVars )) {
-            if ( is_object( $oObject->$name ) ) {
+        $aClasVars = get_object_vars($oObject);
+        while (list($name, $value) = each($aClasVars)) {
+            if (is_object($oObject->$name)) {
                 $this->$name = clone $oObject->$name;
             } else {
                 $this->$name = $oObject->$name;
@@ -393,17 +399,17 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    public function init( $sTableName = null, $blForceAllFields = false )
+    public function init($sTableName = null, $blForceAllFields = false)
     {
-        if ( $sTableName ) {
+        if ($sTableName) {
             $this->_sCoreTable = $sTableName;
         }
 
         // reset view table
         $this->_sViewTable = false;
 
-        if ( count( $this->_aFieldNames ) <= 1 ) {
-            $this->_initDataStructure( $blForceAllFields );
+        if (count($this->_aFieldNames) <= 1) {
+            $this->_initDataStructure($blForceAllFields);
         }
     }
 
@@ -414,25 +420,25 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    public function assign( $dbRecord )
+    public function assign($dbRecord)
     {
-        if ( !is_array( $dbRecord ) ) {
+        if (!is_array($dbRecord)) {
             return;
         }
 
 
-        reset($dbRecord );
-        while ( list( $sName, $sValue ) = each( $dbRecord ) ) {
+        reset($dbRecord);
+        while (list($sName, $sValue) = each($dbRecord)) {
 
             // patch for IIS
             //TODO: test it on IIS do we still need it
             //if( is_array($value) && count( $value) == 1)
             //    $value = current( $value);
 
-            $this->_setFieldData( $sName, $sValue );
+            $this->_setFieldData($sName, $sValue);
         }
 
-        $sOxidField = $this->_getFieldLongName( 'oxid' );
+        $sOxidField = $this->_getFieldLongName('oxid');
         $this->_sOXID = $this->$sOxidField->value;
 
     }
@@ -502,7 +508,7 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    public function setShopId( $iShopId )
+    public function setShopId($iShopId)
     {
         $this->_iShopId = $iShopId;
     }
@@ -524,26 +530,27 @@ class oxBase extends oxSuperCfg
      *
      * @return string
      */
-    public function getViewName( $blForceCoreTableUsage = null )
+    public function getViewName($blForceCoreTableUsage = null)
     {
-        if (!$this->_sViewTable || ( $blForceCoreTableUsage !== null )) {
-            if ( $blForceCoreTableUsage === true ) {
+        if (!$this->_sViewTable || ($blForceCoreTableUsage !== null)) {
+            if ($blForceCoreTableUsage === true) {
                 return $this->getCoreTableName();
             }
 
 
-            if ( ( $blForceCoreTableUsage !== null ) && $blForceCoreTableUsage ) {
+            if (($blForceCoreTableUsage !== null) && $blForceCoreTableUsage) {
                 $iShopId = -1;
             } else {
                 $iShopId = oxRegistry::getConfig()->getShopId();
             }
 
-            $sViewName = getViewName( $this->getCoreTableName(), $this->_blEmployMultilanguage == false ? -1 : $this->getLanguage(), $iShopId );
-            if ( $blForceCoreTableUsage !== null ) {
+            $sViewName = getViewName($this->getCoreTableName(), $this->_blEmployMultilanguage == false ? -1 : $this->getLanguage(), $iShopId);
+            if ($blForceCoreTableUsage !== null) {
                 return $sViewName;
             }
             $this->_sViewTable = $sViewName;
         }
+
         return $this->_sViewTable;
     }
 
@@ -555,9 +562,9 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    public function modifyCacheKey( $sCacheKey, $blOverride = false )
+    public function modifyCacheKey($sCacheKey, $blOverride = false)
     {
-        if ( $blOverride ) {
+        if ($blOverride) {
             $this->_sCacheKey = $sCacheKey;
         } else {
             $this->_sCacheKey .= $sCacheKey;
@@ -594,7 +601,7 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    public function setIsDerived( $blVal )
+    public function setIsDerived($blVal)
     {
         $this->_blIsDerived = $blVal;
     }
@@ -619,13 +626,13 @@ class oxBase extends oxSuperCfg
      *
      * @return bool
      */
-    public function load( $sOXID )
+    public function load($sOXID)
     {
 
         //getting at least one field before lazy loading the object
-        $this->_addField( 'oxid', 0 );
-        $sSelect = $this->buildSelectString( array( $this->getViewName() . '.oxid' => $sOXID) );
-        $this->_isLoaded = $this->assignRecord( $sSelect );
+        $this->_addField('oxid', 0);
+        $sSelect = $this->buildSelectString(array($this->getViewName() . '.oxid' => $sOXID));
+        $this->_isLoaded = $this->assignRecord($sSelect);
 
 
         return $this->_isLoaded;
@@ -649,17 +656,17 @@ class oxBase extends oxSuperCfg
      *
      * @return string
      */
-    public function buildSelectString( $aWhere = null)
+    public function buildSelectString($aWhere = null)
     {
         $oDB = oxDb::getDb();
 
         $sGet = $this->getSelectFields();
         $sSelect = "select $sGet from " . $this->getViewName() . ' where 1 ';
 
-        if ( $aWhere) {
+        if ($aWhere) {
             reset($aWhere);
             while (list($name, $value) = each($aWhere)) {
-                $sSelect .=  ' and ' . $name . ' = '.$oDB->quote($value);
+                $sSelect .= ' and ' . $name . ' = ' . $oDB->quote($value);
             }
         }
 
@@ -675,15 +682,15 @@ class oxBase extends oxSuperCfg
      *
      * @return bool
      */
-    public function assignRecord( $sSelect )
+    public function assignRecord($sSelect)
     {
         $blRet = false;
 
-        $rs = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->select( $sSelect );
+            $rs = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->select($sSelect);
 
         if ($rs != false && $rs->recordCount() > 0) {
             $blRet = true;
-            $this->assign( $rs->fields);
+            $this->assign($rs->fields);
         }
 
         return $blRet;
@@ -696,10 +703,11 @@ class oxBase extends oxSuperCfg
      *
      * @return mixed value of a data field
      */
-    public function getFieldData( $sFieldName )
+    public function getFieldData($sFieldName)
     {
-        $sLongFieldName = $this->_getFieldLongName( $sFieldName );
-            return $this->$sLongFieldName->value;
+        $sLongFieldName = $this->_getFieldLongName($sFieldName);
+
+        return $this->$sLongFieldName->value;
     }
 
     /**
@@ -709,14 +717,14 @@ class oxBase extends oxSuperCfg
      *
      * @return string
      */
-    public function getSelectFields( $blForceCoreTableUsage = null )
+    public function getSelectFields($blForceCoreTableUsage = null)
     {
         $aSelectFields = array();
 
-        $sViewName = $this->getViewName( $blForceCoreTableUsage );
+        $sViewName = $this->getViewName($blForceCoreTableUsage);
 
-        foreach ( $this->_aFieldNames as $sKey => $sField ) {
-            if ( $sViewName ) {
+        foreach ($this->_aFieldNames as $sKey => $sField) {
+            if ($sViewName) {
                 $aSelectFields[] = "`$sViewName`.`$sKey`";
             } else {
                 $aSelectFields[] = ".`$sKey`";
@@ -724,7 +732,8 @@ class oxBase extends oxSuperCfg
 
         }
 
-        $sSelectFields = join( ', ', $aSelectFields );
+        $sSelectFields = join(', ', $aSelectFields);
+
         return $sSelectFields;
     }
 
@@ -781,27 +790,27 @@ class oxBase extends oxSuperCfg
      */
     public function save()
     {
-        if ( !is_array( $this->_aFieldNames ) ) {
+        if (!is_array($this->_aFieldNames)) {
             return false;
         }
 
         // #739A - should be executed here because of date/time formatting feature
-        if ( $this->isAdmin() && !$this->getConfig()->getConfigParam( 'blSkipFormatConversion' ) ) {
+        if ($this->isAdmin() && !$this->getConfig()->getConfigParam('blSkipFormatConversion')) {
             foreach ($this->_aFieldNames as $sName => $sVal) {
                 $sLongName = $this->_getFieldLongName($sName);
-                if ( isset($this->$sLongName->fldtype) && $this->$sLongName->fldtype == 'datetime' ) {
-                    oxRegistry::get('oxUtilsDate')->convertDBDateTime( $this->$sLongName, true );
-                } elseif ( isset($this->$sLongName->fldtype) && $this->$sLongName->fldtype == 'timestamp' ) {
-                    oxRegistry::get('oxUtilsDate')->convertDBTimestamp( $this->$sLongName, true );
-                } elseif ( isset($this->$sLongName->fldtype) && $this->$sLongName->fldtype == 'date' ) {
-                    oxRegistry::get('oxUtilsDate')->convertDBDate( $this->$sLongName, true );
+                if (isset($this->$sLongName->fldtype) && $this->$sLongName->fldtype == 'datetime') {
+                    oxRegistry::get('oxUtilsDate')->convertDBDateTime($this->$sLongName, true);
+                } elseif (isset($this->$sLongName->fldtype) && $this->$sLongName->fldtype == 'timestamp') {
+                    oxRegistry::get('oxUtilsDate')->convertDBTimestamp($this->$sLongName, true);
+                } elseif (isset($this->$sLongName->fldtype) && $this->$sLongName->fldtype == 'date') {
+                    oxRegistry::get('oxUtilsDate')->convertDBDate($this->$sLongName, true);
                 }
             }
         }
 
-        if ( $this->exists() ) {
+        if ($this->exists()) {
             //do not allow derived update
-            if ( !$this->allowDerivedUpdate() ) {
+            if (!$this->allowDerivedUpdate()) {
                 return false;
             }
 
@@ -814,7 +823,7 @@ class oxBase extends oxSuperCfg
 
         $this->onChange($sAction);
 
-        if ( $blRet ) {
+        if ($blRet) {
             return $this->getId();
         } else {
             return false;
@@ -848,20 +857,20 @@ class oxBase extends oxSuperCfg
      *
      * @return bool
      */
-    public function exists( $sOXID = null)
+    public function exists($sOXID = null)
     {
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             $sOXID = $this->getId();
         }
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             return false;
         }
 
         $sViewName = $this->getCoreTableName();
-        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-        $sSelect= "select {$this->_sExistKey} from {$sViewName} where {$this->_sExistKey} = " . $oDb->quote( $sOXID );
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $sSelect = "select {$this->_sExistKey} from {$sViewName} where {$this->_sExistKey} = " . $oDb->quote($sOXID);
 
-        return ( bool ) $oDb->getOne( $sSelect, false, false );
+        return ( bool ) $oDb->getOne($sSelect, false, false);
     }
 
     /**
@@ -871,20 +880,20 @@ class oxBase extends oxSuperCfg
      *
      * @return string
      */
-    public function getSqlActiveSnippet( $blForceCoreTable = null )
+    public function getSqlActiveSnippet($blForceCoreTable = null)
     {
         $sQ = '';
         $sTable = $this->getViewName($blForceCoreTable);
 
         // has 'active' field ?
-        if ( isset( $this->_aFieldNames['oxactive'] ) ) {
+        if (isset($this->_aFieldNames['oxactive'])) {
             $sQ = " $sTable.oxactive = 1 ";
         }
 
         // has 'activefrom'/'activeto' fields ?
-        if ( isset( $this->_aFieldNames['oxactivefrom'] ) && isset( $this->_aFieldNames['oxactiveto'] ) ) {
+        if (isset($this->_aFieldNames['oxactivefrom']) && isset($this->_aFieldNames['oxactiveto'])) {
 
-            $sDate = date( 'Y-m-d H:i:s', oxRegistry::get('oxUtilsDate')->getTime() );
+            $sDate = date('Y-m-d H:i:s', oxRegistry::get('oxUtilsDate')->getTime());
 
             $sQ = $sQ ? " $sQ or " : '';
             $sQ = " ( $sQ ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) ) ";
@@ -901,7 +910,7 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    public function beforeUpdate( $sOXID = null )
+    public function beforeUpdate($sOXID = null)
     {
     }
 
@@ -915,7 +924,7 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    public function onChange( $iAction = null, $sOXID = null )
+    public function onChange($iAction = null, $sOXID = null)
     {
     }
 
@@ -948,9 +957,10 @@ class oxBase extends oxSuperCfg
      *
      * @return string
      */
-    protected function _getObjectViewName( $sTable, $sShopID = null )
+    protected function _getObjectViewName($sTable, $sShopID = null)
     {
-        return getViewName( $sTable, -1, $sShopID);
+
+        return getViewName($sTable, -1, $sShopID);
     }
 
 
@@ -964,33 +974,34 @@ class oxBase extends oxSuperCfg
      *
      * @return array
      */
-    protected function _getTableFields($sTable, $blReturnSimple = false )
+    protected function _getTableFields($sTable, $blReturnSimple = false)
     {
         $myUtils = oxRegistry::getUtils();
 
-        $sCacheKey   = $sTable . '_allfields_' . $blReturnSimple;
-        $aMetaFields = $myUtils->fromFileCache( $sCacheKey );
+        $sCacheKey = $sTable . '_allfields_' . $blReturnSimple;
+        $aMetaFields = $myUtils->fromFileCache($sCacheKey);
 
-        if ( $aMetaFields ) {
+        if ($aMetaFields) {
             return $aMetaFields;
         }
 
-        $aMetaFields = oxDb::getInstance()->getTableDescription( $sTable );
+        $aMetaFields = oxDb::getInstance()->getTableDescription($sTable);
 
-        if ( !$blReturnSimple ) {
-            $myUtils->toFileCache( $sCacheKey, $aMetaFields );
+        if (!$blReturnSimple) {
+            $myUtils->toFileCache($sCacheKey, $aMetaFields);
+
             return $aMetaFields;
         }
 
         //returning simple array
         $aRet = array();
         if (is_array($aMetaFields)) {
-            foreach ( $aMetaFields as $oVal ) {
-                $aRet[strtolower( $oVal->name )] = 0;
+            foreach ($aMetaFields as $oVal) {
+                $aRet[strtolower($oVal->name)] = 0;
             }
         }
 
-        $myUtils->toFileCache( $sCacheKey, $aRet);
+        $myUtils->toFileCache($sCacheKey, $aRet);
 
         return $aRet;
     }
@@ -1006,11 +1017,12 @@ class oxBase extends oxSuperCfg
      *
      * @return array
      */
-    protected function _getAllFields($blReturnSimple = false )
+    protected function _getAllFields($blReturnSimple = false)
     {
         if (!$this->getCoreTableName()) {
             return array();
         }
+
         return $this->_getTableFields($this->getCoreTableName(), $blReturnSimple);
     }
 
@@ -1022,7 +1034,7 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    protected function _initDataStructure($blForceFullStructure = false )
+    protected function _initDataStructure($blForceFullStructure = false)
     {
         $myUtils = oxRegistry::getUtils();
 
@@ -1030,19 +1042,19 @@ class oxBase extends oxSuperCfg
         $aFieldNames = null;
         $sFullCacheKey = 'fieldnames_' . $this->getCoreTableName() . '_' . $this->_sCacheKey;
         if ($this->_sCacheKey && !$this->_isDisabledFieldCache()) {
-            $aFieldNames = $myUtils->fromFileCache( $sFullCacheKey );
+            $aFieldNames = $myUtils->fromFileCache($sFullCacheKey);
         }
 
         if (!$aFieldNames) {
-            $aFieldNames = $this->_getNonCachedFieldNames( $blForceFullStructure );
+            $aFieldNames = $this->_getNonCachedFieldNames($blForceFullStructure);
             if ($this->_sCacheKey && !$this->_isDisabledFieldCache()) {
-                $myUtils->toFileCache( $sFullCacheKey, $aFieldNames );
+                $myUtils->toFileCache($sFullCacheKey, $aFieldNames);
             }
         }
 
-        if ( $aFieldNames !== false ) {
-            foreach ( $aFieldNames as $sField => $sStatus ) {
-                $this->_addField( $sField, $sStatus );
+        if ($aFieldNames !== false) {
+            foreach ($aFieldNames as $sField => $sStatus) {
+                $this->_addField($sField, $sStatus);
             }
         }
     }
@@ -1058,7 +1070,7 @@ class oxBase extends oxSuperCfg
      *
      * @return array
      */
-    protected function _getNonCachedFieldNames( $blForceFullStructure = false )
+    protected function _getNonCachedFieldNames($blForceFullStructure = false)
     {
         //T2008-02-22
         //so if this method is executed on cached version we see it when profiling
@@ -1067,34 +1079,37 @@ class oxBase extends oxSuperCfg
         //case 1. (admin)
         if ($this->isAdmin()) {
             $aMetaFields = $this->_getAllFields();
-            foreach ( $aMetaFields as $oField ) {
-                if ( $oField->max_length == -1 ) {
-                    $oField->max_length = 10;      // double or float
+            foreach ($aMetaFields as $oField) {
+                if ($oField->max_length == -1) {
+                    $oField->max_length = 10; // double or float
                 }
 
-                if ( $oField->type == 'datetime' ) {
+                if ($oField->type == 'datetime') {
                     $oField->max_length = 20;
                 }
 
-                $this->_addField( $oField->name, $this->_getFieldStatus($oField->name), $oField->type, $oField->max_length );
+                $this->_addField($oField->name, $this->_getFieldStatus($oField->name), $oField->type, $oField->max_length);
             }
             stopProfile('!__CACHABLE__!');
+
             return false;
         }
 
         //case 2. (just get all fields)
-        if ( $blForceFullStructure || !$this->_blUseLazyLoading ) {
+        if ($blForceFullStructure || !$this->_blUseLazyLoading) {
             $aMetaFields = $this->_getAllFields(true);
             /*
             foreach ( $aMetaFields as $sFieldName => $sVal) {
                 $this->_addField( $sFieldName, $this->_getFieldStatus($sFieldName));
             }*/
             stopProfile('!__CACHABLE__!');
+
             return $aMetaFields;
         }
 
         //case 3. (get only oxid field, so we can fetch the rest of the fields over lazy loading mechanism)
         stopProfile('!__CACHABLE__!');
+
         return array('oxid' => 0);
     }
 
@@ -1106,7 +1121,7 @@ class oxBase extends oxSuperCfg
      *
      * @return int
      */
-    protected function _getFieldStatus( $sFieldName )
+    protected function _getFieldStatus($sFieldName)
     {
         return 0;
     }
@@ -1121,24 +1136,24 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    protected function _addField($sName, $iStatus, $sType = null, $sLength = null )
+    protected function _addField($sName, $iStatus, $sType = null, $sLength = null)
     {
         //preparation
-        $sName = strtolower( $sName );
+        $sName = strtolower($sName);
 
         //adding field names element
         $this->_aFieldNames[$sName] = $iStatus;
 
         //already set?
-        $sLongName = $this->_getFieldLongName( $sName );
-        if ( isset($this->$sLongName) ) {
+        $sLongName = $this->_getFieldLongName($sName);
+        if (isset($this->$sLongName)) {
             return;
         }
 
         //defining the field
         $oField = false;
 
-        if ( isset( $sType ) ) {
+        if (isset($sType)) {
             $oField = new oxField();
             $oField->fldtype = $sType;
             //T2008-01-29
@@ -1146,8 +1161,8 @@ class oxBase extends oxSuperCfg
             $this->_blIsSimplyClonable = false;
         }
 
-        if ( isset( $sLength ) ) {
-            if ( !$oField ) {
+        if (isset($sLength)) {
+            if (!$oField) {
                 $oField = new oxField();
             }
             $oField->fldmax_length = $sLength;
@@ -1164,15 +1179,15 @@ class oxBase extends oxSuperCfg
      *
      * @return string
      */
-    protected function _getFieldLongName( $sFieldName )
+    protected function _getFieldLongName($sFieldName)
     {
         //trying to avoid strpos call as often as possible
         $sCoreTableName = $this->getCoreTableName();
-        if ( $sFieldName[2] == $sCoreTableName[2] && strpos( $sFieldName, $sCoreTableName . '__' ) === 0 ) {
+        if ($sFieldName[2] == $sCoreTableName[2] && strpos($sFieldName, $sCoreTableName . '__') === 0) {
             return $sFieldName;
         }
 
-        return $sCoreTableName . '__' . strtolower( $sFieldName );
+        return $sCoreTableName . '__' . strtolower($sFieldName);
     }
 
     /**
@@ -1184,10 +1199,10 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    protected function _setFieldData( $sFieldName, $sValue, $iDataType = oxField::T_TEXT )
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
     {
 
-        $sLongFieldName = $this->_getFieldLongName( $sFieldName);
+        $sLongFieldName = $this->_getFieldLongName($sFieldName);
         //$sLongFieldName = $this->_sCoreTable . "__" . strtolower($sFieldName);
 
         //T2008-03-14
@@ -1198,22 +1213,22 @@ class oxBase extends oxSuperCfg
             return;*/
 
         //in non lazy loading case we just add a field and do not care about it more
-        if (!$this->_blUseLazyLoading && !isset( $this->$sLongFieldName )) {
+        if (!$this->_blUseLazyLoading && !isset($this->$sLongFieldName)) {
             $aFields = $this->_getAllFields(true);
-            if ( isset( $aFields[strtolower( $sFieldName )] ) ) {
-                $this->_addField( $sFieldName, $this->_getFieldStatus( $sFieldName ) );
+            if (isset($aFields[strtolower($sFieldName)])) {
+                $this->_addField($sFieldName, $this->_getFieldStatus($sFieldName));
             }
         }
         // if we have a double field we replace "," with "." in case somebody enters it in european format
-        if (isset($this->$sLongFieldName) && isset( $this->$sLongFieldName->fldtype ) && $this->$sLongFieldName->fldtype == 'double') {
-            $sValue = str_replace( ',', '.', $sValue );
+        if (isset($this->$sLongFieldName) && isset($this->$sLongFieldName->fldtype) && $this->$sLongFieldName->fldtype == 'double') {
+            $sValue = str_replace(',', '.', $sValue);
         }
 
         // isset is REQUIRED here not to use getter
-        if ( isset( $this->$sLongFieldName ) && is_object( $this->$sLongFieldName ) ) {
-            $this->$sLongFieldName->setValue( $sValue, $iDataType );
+        if (isset($this->$sLongFieldName) && is_object($this->$sLongFieldName)) {
+            $this->$sLongFieldName->setValue($sValue, $iDataType);
         } else {
-            $this->$sLongFieldName = new oxField( $sValue, $iDataType );
+            $this->$sLongFieldName = new oxField($sValue, $iDataType);
         }
 
     }
@@ -1225,14 +1240,15 @@ class oxBase extends oxSuperCfg
      *
      * @return bool
      */
-    protected function _canFieldBeNull( $sFieldName )
+    protected function _canFieldBeNull($sFieldName)
     {
         $aMetaData = $this->_getAllFields();
-        foreach ( $aMetaData as $oMetaInfo ) {
-            if ( strcasecmp( $oMetaInfo->name, $sFieldName ) == 0 ) {
+        foreach ($aMetaData as $oMetaInfo) {
+            if (strcasecmp($oMetaInfo->name, $sFieldName) == 0) {
                 return !$oMetaInfo->not_null;
             }
         }
+
         return false;
     }
 
@@ -1243,14 +1259,15 @@ class oxBase extends oxSuperCfg
      *
      * @return mixed
      */
-    protected function _getFieldDefaultValue( $sFieldName )
+    protected function _getFieldDefaultValue($sFieldName)
     {
         $aMetaData = $this->_getAllFields();
-        foreach ( $aMetaData as $oMetaInfo ) {
-            if ( strcasecmp( $oMetaInfo->name, $sFieldName ) == 0 ) {
+        foreach ($aMetaData as $oMetaInfo) {
+            if (strcasecmp($oMetaInfo->name, $sFieldName) == 0) {
                 return $oMetaInfo->default_value;
             }
         }
+
         return false;
     }
 
@@ -1262,26 +1279,26 @@ class oxBase extends oxSuperCfg
      *
      * @return string
      */
-    protected function _getUpdateFieldValue( $sFieldName, $oField )
+    protected function _getUpdateFieldValue($sFieldName, $oField)
     {
         $mValue = null;
-        if ( $oField instanceof oxField ) {
+        if ($oField instanceof oxField) {
             $mValue = $oField->getRawValue();
-        } elseif ( isset( $oField->value ) ) {
+        } elseif (isset($oField->value)) {
             $mValue = $oField->value;
         }
 
         $oDb = oxDb::getDb();
         //Check if this field value is null AND it can be null according if not returning default value
-        if ( ( null === $mValue ) ) {
-            if ( $this->_canFieldBeNull( $sFieldName ) ) {
+        if ((null === $mValue)) {
+            if ($this->_canFieldBeNull($sFieldName)) {
                 return 'null';
-            } elseif ( $mValue = $this->_getFieldDefaultValue( $sFieldName ) ) {
-                return $oDb->quote( $mValue );
+            } elseif ($mValue = $this->_getFieldDefaultValue($sFieldName)) {
+                return $oDb->quote($mValue);
             }
         }
 
-        return $oDb->quote( $mValue );
+        return $oDb->quote($mValue);
     }
 
     /**
@@ -1292,18 +1309,18 @@ class oxBase extends oxSuperCfg
      *
      * @return string
      */
-    protected function _getUpdateFields( $blUseSkipSaveFields = true )
+    protected function _getUpdateFields($blUseSkipSaveFields = true)
     {
         $sSql = '';
-        $blSep  = false;
+        $blSep = false;
 
-        foreach ( array_keys( $this->_aFieldNames ) as $sKey ) {
-            $sLongName = $this->_getFieldLongName( $sKey );
+        foreach (array_keys($this->_aFieldNames) as $sKey) {
+            $sLongName = $this->_getFieldLongName($sKey);
             $oField = $this->$sLongName;
 
 
-            if ( !$blUseSkipSaveFields || ( $blUseSkipSaveFields && !in_array( strtolower( $sKey ), $this->_aSkipSaveFields ) ) ) {
-                $sSql .= (( $blSep) ? ',' : '' ) . $sKey . ' = ' . $this->_getUpdateFieldValue( $sKey, $oField );
+            if (!$blUseSkipSaveFields || ($blUseSkipSaveFields && !in_array(strtolower($sKey), $this->_aSkipSaveFields))) {
+                $sSql .= (($blSep) ? ',' : '') . $sKey . ' = ' . $this->_getUpdateFieldValue($sKey, $oField);
                 $blSep = true;
             }
         }
@@ -1323,33 +1340,33 @@ class oxBase extends oxSuperCfg
     protected function _update()
     {
         //do not allow derived item update
-        if ( !$this->allowDerivedUpdate() ) {
+        if (!$this->allowDerivedUpdate()) {
             return false;
         }
 
 
-        if ( !$this->getId() ) {
+        if (!$this->getId()) {
             /**
              * @var oxObjectException $oEx
              */
-            $oEx = oxNew( 'oxObjectException' );
-            $oEx->setMessage( 'EXCEPTION_OBJECT_OXIDNOTSET' );
+            $oEx = oxNew('oxObjectException');
+            $oEx->setMessage('EXCEPTION_OBJECT_OXIDNOTSET');
             $oEx->setObject($this);
             throw $oEx;
         }
         $sCoreTableName = $this->getCoreTableName();
 
-        $sIDKey = oxRegistry::getUtils()->getArrFldName( $sCoreTableName . '.oxid' );
+        $sIDKey = oxRegistry::getUtils()->getArrFldName($sCoreTableName . '.oxid');
         $this->$sIDKey = new oxField($this->getId(), oxField::T_RAW);
         $oDb = oxDb::getDb();
 
-        $sUpdate= "update {$sCoreTableName} set " . $this->_getUpdateFields()
-                 ." where {$sCoreTableName}.oxid = " . $oDb->quote( $this->getId() );
+        $sUpdate = "update {$sCoreTableName} set " . $this->_getUpdateFields()
+                   . " where {$sCoreTableName}.oxid = " . $oDb->quote($this->getId());
 
         //trigger event
         $this->beforeUpdate();
 
-        $blRet = (bool) $oDb->execute( $sUpdate );
+        $blRet = (bool) $oDb->execute($sUpdate);
 
         return $blRet;
     }
@@ -1401,8 +1418,8 @@ class oxBase extends oxSuperCfg
      */
     protected function _isDisabledFieldCache()
     {
-        $sClass = get_class( $this );
-        if ( isset( self::$_blDisableFieldCaching[$sClass] ) && self::$_blDisableFieldCaching[$sClass] ) {
+        $sClass = get_class($this);
+        if (isset(self::$_blDisableFieldCaching[$sClass]) && self::$_blDisableFieldCaching[$sClass]) {
             return true;
         }
 
@@ -1422,6 +1439,7 @@ class oxBase extends oxSuperCfg
     protected function _disableLazyLoadingForCaching()
     {
     }
+
     /**
      * Checks if object ID's first two chars are 'o' and 'x'. Returns true or false
      *
@@ -1430,9 +1448,10 @@ class oxBase extends oxSuperCfg
     public function isOx()
     {
         $sOxId = $this->getId();
-        if ( $sOxId[0] == 'o' && $sOxId[1] == 'x' ) {
+        if ($sOxId[0] == 'o' && $sOxId[1] == 'x') {
             return true;
         }
+
         return false;
     }
 
@@ -1453,7 +1472,7 @@ class oxBase extends oxSuperCfg
      *
      * @return null
      */
-    public function setReadOnly( $blReadOnly )
+    public function setReadOnly($blReadOnly)
     {
         $this->_blReadOnly = $blReadOnly;
     }
@@ -1465,7 +1484,7 @@ class oxBase extends oxSuperCfg
      */
     public function getFieldNames()
     {
-        return array_keys( $this->_aFieldNames );
+        return array_keys($this->_aFieldNames);
     }
 
     /**
@@ -1475,10 +1494,10 @@ class oxBase extends oxSuperCfg
      *
      * @return null;
      */
-    public function addFieldName( $sName )
+    public function addFieldName($sName)
     {
         //preparation
-        $sName = strtolower( $sName );
+        $sName = strtolower($sName);
         $this->_aFieldNames[$sName] = 0;
     }
 

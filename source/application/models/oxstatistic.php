@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,63 +18,65 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
-
-/**
- * Statistics manager.
- */
-class oxStatistic extends oxBase
-{
-    /**
-     * @var string Name of current class
      */
-    protected $_sClassName = 'oxstatistic';
 
     /**
-     * Class constructor, initiates paren constructor (parent::oxBase()).
+     * Statistics manager.
      */
-    public function __construct()
+    class oxStatistic extends oxBase
     {
-        parent::__construct();
-        $this->init( 'oxstatistics' );
-    }
 
-    /**
-     * Sets reports array to current statistics object
-     *
-     * @param array $aVal array of reports to set in current statistics object
-     *
-     * @return null
-     */
-    public function setReports( $aVal )
-    {
-        $this->oxstatistics__oxvalue = new oxField( serialize( $aVal ), oxField::T_RAW );
-    }
+        /**
+         * @var string Name of current class
+         */
+        protected $_sClassName = 'oxstatistic';
 
-    /**
-     * Returns array of reports assigned to current statistics object
-     *
-     * @return array
-     */
-    public function getReports()
-    {
-        return unserialize($this->oxstatistics__oxvalue->value);
-    }
-
-    /**
-     * Sets data field value
-     *
-     * @param string $sFieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
-     * @param string $sValue     value of data field
-     * @param int    $iDataType  field type
-     *
-     * @return null
-     */
-    protected function _setFieldData( $sFieldName, $sValue, $iDataType = oxField::T_TEXT )
-    {
-        if ( 'oxvalue' === $sFieldName ) {
-            $iDataType = oxField::T_RAW;
+        /**
+         * Class constructor, initiates paren constructor (parent::oxBase()).
+         */
+        public function __construct()
+        {
+            parent::__construct();
+            $this->init('oxstatistics');
         }
-        return parent::_setFieldData($sFieldName, $sValue, $iDataType);
+
+        /**
+         * Sets reports array to current statistics object
+         *
+         * @param array $aVal array of reports to set in current statistics object
+         *
+         * @return null
+         */
+        public function setReports($aVal)
+        {
+            $this->oxstatistics__oxvalue = new oxField(serialize($aVal), oxField::T_RAW);
+        }
+
+        /**
+         * Returns array of reports assigned to current statistics object
+         *
+         * @return array
+         */
+        public function getReports()
+        {
+            return unserialize($this->oxstatistics__oxvalue->value);
+        }
+
+        /**
+         * Sets data field value
+         *
+         * @param string $sFieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
+         * @param string $sValue     value of data field
+         * @param int    $iDataType  field type
+         *
+         * @return null
+         */
+        protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
+        {
+            if ('oxvalue' === $sFieldName) {
+                $iDataType = oxField::T_RAW;
+            }
+
+            return parent::_setFieldData($sFieldName, $sValue, $iDataType);
+        }
     }
-}

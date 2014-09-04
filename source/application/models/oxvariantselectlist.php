@@ -26,26 +26,31 @@
  */
 class oxVariantSelectList implements oxISelectList
 {
+
     /**
      * Variant selection list label
+     *
      * @var string
      */
     protected $_sLabel = null;
 
     /**
      * Selection list index
+     *
      * @var int
      */
     protected $_iIndex = 0;
 
     /**
      * List with selections
+     *
      * @var array
      */
     protected $_aList = array();
 
     /**
      * Active variant selection object
+     *
      * @var oxSelection
      */
     protected $_oActiveSelection = null;
@@ -58,9 +63,9 @@ class oxVariantSelectList implements oxISelectList
      *
      * @return null
      */
-    public function __construct( $sLabel, $iIndex )
+    public function __construct($sLabel, $iIndex)
     {
-        $this->_sLabel = trim( $sLabel );
+        $this->_sLabel = trim($sLabel);
         $this->_iIndex = $iIndex;
     }
 
@@ -71,7 +76,7 @@ class oxVariantSelectList implements oxISelectList
      */
     public function getLabel()
     {
-        return getStr()->htmlspecialchars( $this->_sLabel );
+        return getStr()->htmlspecialchars($this->_sLabel);
     }
 
     /**
@@ -84,28 +89,28 @@ class oxVariantSelectList implements oxISelectList
      *
      * @return bool
      */
-    public function addVariant( $sName, $sValue, $blDisabled, $blActive )
+    public function addVariant($sName, $sValue, $blDisabled, $blActive)
     {
-        if ( ( $sName = trim( $sName ) ) ) {
+        if (($sName = trim($sName))) {
             $sKey = $sValue;
 
             // creating new
-            if ( !isset( $this->_aList[$sKey] ) ) {
-                $this->_aList[$sKey] = oxNew( "oxSelection", $sName, $sValue, $blDisabled, $blActive );
+            if (!isset($this->_aList[$sKey])) {
+                $this->_aList[$sKey] = oxNew("oxSelection", $sName, $sValue, $blDisabled, $blActive);
             } else {
 
                 // overriding states
-                if ( $this->_aList[$sKey]->isDisabled() && !$blDisabled ) {
-                    $this->_aList[$sKey]->setDisabled( $blDisabled );
+                if ($this->_aList[$sKey]->isDisabled() && !$blDisabled) {
+                    $this->_aList[$sKey]->setDisabled($blDisabled);
                 }
 
-                if ( !$this->_aList[$sKey]->isActive() && $blActive ) {
-                    $this->_aList[$sKey]->setActiveState( $blActive );
+                if (!$this->_aList[$sKey]->isActive() && $blActive) {
+                    $this->_aList[$sKey]->setActiveState($blActive);
                 }
             }
 
             // storing active selection
-            if ( $this->_aList[$sKey]->isActive() ) {
+            if ($this->_aList[$sKey]->isActive()) {
                 $this->_oActiveSelection = $this->_aList[$sKey];
             }
         }

@@ -28,20 +28,24 @@
  */
 class VendorList extends aList
 {
+
     /**
      * List type
+     *
      * @var string
      */
     protected $_sListType = 'vendor';
 
     /**
      * List type
+     *
      * @var string
      */
     protected $_blVisibleSubCats = null;
 
     /**
      * List type
+     *
      * @var string
      */
     protected $_oSubCatList = null;
@@ -62,12 +66,14 @@ class VendorList extends aList
 
     /**
      * Page navigation
+     *
      * @var object
      */
     protected $_oPageNavigation = null;
 
     /**
      * Marked which defines if current view is sortable or not
+     *
      * @var bool
      */
     protected $_blShowSorting = true;
@@ -84,7 +90,7 @@ class VendorList extends aList
      *
      * @var object
      */
-    protected $_oVendorTree  = null;
+    protected $_oVendorTree = null;
 
     /**
      * Executes parent::render(), loads active vendor, prepares article
@@ -101,9 +107,9 @@ class VendorList extends aList
         oxUBase::render();
 
         // load vendor
-        if ( ( $this->_getVendorId() && $this->getVendorTree() ) ) {
-            if ( ( $oVendor = $this->getActVendor() ) ) {
-                if ( $oVendor->getId() != 'root' ) {
+        if (($this->_getVendorId() && $this->getVendorTree())) {
+            if (($oVendor = $this->getActVendor())) {
+                if ($oVendor->getId() != 'root') {
                     // load the articles
                     $this->getArticleList();
 
@@ -136,25 +142,25 @@ class VendorList extends aList
      *
      * @return array
      */
-    protected function _loadArticles( $oVendor )
+    protected function _loadArticles($oVendor)
     {
         $sVendorId = $oVendor->getId();
 
         // load only articles which we show on screen
-        $iNrOfCatArticles = (int) $this->getConfig()->getConfigParam( 'iNrofCatArticles' );
+        $iNrOfCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
         $iNrOfCatArticles = $iNrOfCatArticles ? $iNrOfCatArticles : 1;
 
-        $oArtList = oxNew( 'oxArticleList' );
-        $oArtList->setSqlLimit( $iNrOfCatArticles * $this->_getRequestPageNr(), $iNrOfCatArticles );
-        $oArtList->setCustomSorting( $this->getSortingSql( $this->getSortIdent() ) );
+        $oArtList = oxNew('oxArticleList');
+        $oArtList->setSqlLimit($iNrOfCatArticles * $this->_getRequestPageNr(), $iNrOfCatArticles);
+        $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
         // load the articles
-        $this->_iAllArtCnt = $oArtList->loadVendorArticles( $sVendorId, $oVendor );
+        $this->_iAllArtCnt = $oArtList->loadVendorArticles($sVendorId, $oVendor);
 
         // counting pages
-        $this->_iCntPages = round( $this->_iAllArtCnt / $iNrOfCatArticles + 0.49 );
+        $this->_iCntPages = round($this->_iAllArtCnt / $iNrOfCatArticles + 0.49);
 
-        return array( $oArtList, $this->_iAllArtCnt );
+        return array($oArtList, $this->_iAllArtCnt);
     }
 
     /**
@@ -164,7 +170,7 @@ class VendorList extends aList
      */
     protected function _getSeoObjectId()
     {
-        if ( ( $oVendor = $this->getActVendor() ) ) {
+        if (($oVendor = $this->getActVendor())) {
             return $oVendor->getId();
         }
     }
@@ -179,16 +185,17 @@ class VendorList extends aList
      *
      * @return string
      */
-    protected function _addPageNrParam( $sUrl, $iPage, $iLang = null)
+    protected function _addPageNrParam($sUrl, $iPage, $iLang = null)
     {
-        if ( oxRegistry::getUtils()->seoIsActive() && ( $oVendor = $this->getActVendor() ) ) {
-            if ( $iPage ) {
+        if (oxRegistry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor())) {
+            if ($iPage) {
                 // only if page number > 0
-                $sUrl = $oVendor->getBaseSeoLink( $iLang, $iPage );
+                $sUrl = $oVendor->getBaseSeoLink($iLang, $iPage);
             }
         } else {
-            $sUrl = oxUBase::_addPageNrParam( $sUrl, $iPage, $iLang );
+            $sUrl = oxUBase::_addPageNrParam($sUrl, $iPage, $iLang);
         }
+
         return $sUrl;
     }
 
@@ -197,12 +204,12 @@ class VendorList extends aList
      *
      * @return string
      */
-    public function generatePageNavigationUrl( )
+    public function generatePageNavigationUrl()
     {
-        if ( ( oxRegistry::getUtils()->seoIsActive() && ( $oVendor = $this->getActVendor() ) ) ) {
+        if ((oxRegistry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor()))) {
             return $oVendor->getLink();
         } else {
-            return parent::generatePageNavigationUrl( );
+            return parent::generatePageNavigationUrl();
         }
     }
 
@@ -213,17 +220,18 @@ class VendorList extends aList
      */
     public function hasVisibleSubCats()
     {
-        if ( $this->_blVisibleSubCats === null ) {
+        if ($this->_blVisibleSubCats === null) {
             $this->_blVisibleSubCats = false;
-            if ( ($this->_getVendorId() && $oVendorTree = $this->getVendorTree() ) ) {
-                if ( ( $oVendor = $this->getActVendor() ) ) {
-                    if ( $oVendor->getId() == 'root' ) {
+            if (($this->_getVendorId() && $oVendorTree = $this->getVendorTree())) {
+                if (($oVendor = $this->getActVendor())) {
+                    if ($oVendor->getId() == 'root') {
                         $this->_blVisibleSubCats = $oVendorTree->count();
                         $this->_oSubCatList = $oVendorTree;
                     }
                 }
             }
         }
+
         return $this->_blVisibleSubCats;
     }
 
@@ -234,12 +242,13 @@ class VendorList extends aList
      */
     public function getSubCatList()
     {
-        if ( $this->_oSubCatList === null ) {
+        if ($this->_oSubCatList === null) {
             $this->_oSubCatList = array();
-            if ( $this->hasVisibleSubCats() ) {
+            if ($this->hasVisibleSubCats()) {
                 return $this->_oSubCatList;
             }
         }
+
         return $this->_oSubCatList;
     }
 
@@ -250,15 +259,16 @@ class VendorList extends aList
      */
     public function getArticleList()
     {
-        if ( $this->_aArticleList === null ) {
+        if ($this->_aArticleList === null) {
             $this->_aArticleList = array();
-                if ( ( $oVendor = $this->getActVendor() ) && ( $oVendor->getId() != 'root' ) ) {
-                    list( $aArticleList, $iAllArtCnt ) = $this->_loadArticles( $oVendor );
-                    if ( $iAllArtCnt ) {
-                        $this->_aArticleList = $aArticleList;
-                    }
+            if (($oVendor = $this->getActVendor()) && ($oVendor->getId() != 'root')) {
+                list($aArticleList, $iAllArtCnt) = $this->_loadArticles($oVendor);
+                if ($iAllArtCnt) {
+                    $this->_aArticleList = $aArticleList;
                 }
+            }
         }
+
         return $this->_aArticleList;
     }
 
@@ -269,12 +279,13 @@ class VendorList extends aList
      */
     public function getTitle()
     {
-        if ( $this->_sCatTitle === null ) {
+        if ($this->_sCatTitle === null) {
             $this->_sCatTitle = '';
-                if ( $oVendor = $this->getActVendor() ) {
-                    $this->_sCatTitle = $oVendor->oxvendor__oxtitle->value;
-                }
+            if ($oVendor = $this->getActVendor()) {
+                $this->_sCatTitle = $oVendor->oxvendor__oxtitle->value;
+            }
         }
+
         return $this->_sCatTitle;
     }
 
@@ -285,14 +296,14 @@ class VendorList extends aList
      */
     public function getTreePath()
     {
-        if ( $this->_getVendorId() && $oVendorTree = $this->getVendorTree() ) {
+        if ($this->_getVendorId() && $oVendorTree = $this->getVendorTree()) {
             return $oVendorTree->getPath();
         }
     }
 
     protected function _getVendorId()
     {
-        return oxRegistry::getConfig()->getRequestParameter( 'cnid' );
+        return oxRegistry::getConfig()->getRequestParameter('cnid');
     }
 
     /**
@@ -302,14 +313,15 @@ class VendorList extends aList
      */
     public function getActiveCategory()
     {
-        if ( $this->_oActCategory === null ) {
+        if ($this->_oActCategory === null) {
             $this->_oActCategory = false;
-            if ( ( $this->_getVendorId() && $oVendorTree = $this->getVendorTree() ) ) {
-                if ( $oVendor = $this->getActVendor() ) {
+            if (($this->_getVendorId() && $oVendorTree = $this->getVendorTree())) {
+                if ($oVendor = $this->getActVendor()) {
                     $this->_oActCategory = $oVendor;
                 }
             }
         }
+
         return $this->_oActCategory;
     }
 
@@ -320,12 +332,13 @@ class VendorList extends aList
      */
     public function getCatTreePath()
     {
-        if ( $this->_sCatTreePath === null ) {
+        if ($this->_sCatTreePath === null) {
             $this->_sCatTreePath = false;
-            if ( ( $oVendorTree = $this->getVendorTree() ) ) {
-                $this->_sCatTreePath  = $oVendorTree->getPath();
+            if (($oVendorTree = $this->getVendorTree())) {
+                $this->_sCatTreePath = $oVendorTree->getPath();
             }
         }
+
         return $this->_sCatTreePath;
     }
 
@@ -336,7 +349,7 @@ class VendorList extends aList
      */
     public function getTitleSuffix()
     {
-        if ( $this->getActVendor()->oxvendor__oxshowsuffix->value ) {
+        if ($this->getActVendor()->oxvendor__oxshowsuffix->value) {
             return $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
         }
     }
@@ -350,9 +363,9 @@ class VendorList extends aList
      *
      * @return string
      */
-    protected function _prepareMetaKeyword( $sKeywords, $blRemoveDuplicatedWords = true )
+    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
     {
-        return parent::_collectMetaKeyword( $sKeywords );
+        return parent::_collectMetaKeyword($sKeywords);
     }
 
     /**
@@ -365,9 +378,9 @@ class VendorList extends aList
      *
      * @return string
      */
-    protected function _prepareMetaDescription( $sMeta, $iLength = 1024, $blDescTag = false )
+    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
     {
-        return parent::_collectMetaDescription( $sMeta, $iLength, $blDescTag );
+        return parent::_collectMetaDescription($sMeta, $iLength, $blDescTag);
     }
 
     /**
@@ -378,7 +391,7 @@ class VendorList extends aList
      *
      * @return object
      */
-    protected function _getSubject( $iLang )
+    protected function _getSubject($iLang)
     {
         return $this->getActVendor();
     }
@@ -390,11 +403,12 @@ class VendorList extends aList
      */
     public function getAddUrlParams()
     {
-        $sAddParams  = parent::getAddUrlParams();
-        $sAddParams .= ($sAddParams?'&amp;':'') . "listtype={$this->_sListType}";
-        if ( $oVendor = $this->getActVendor() ) {
+        $sAddParams = parent::getAddUrlParams();
+        $sAddParams .= ($sAddParams ? '&amp;' : '') . "listtype={$this->_sListType}";
+        if ($oVendor = $this->getActVendor()) {
             $sAddParams .= "&amp;cnid=v_" . $oVendor->getId();
         }
+
         return $sAddParams;
     }
 
@@ -408,8 +422,8 @@ class VendorList extends aList
         $aPaths = array();
         $oCatTree = $this->getVendorTree();
 
-        if ( $oCatTree ) {
-            foreach ( $oCatTree->getPath() as $oCat ) {
+        if ($oCatTree) {
+            foreach ($oCatTree->getPath() as $oCat) {
                 $aCatPath = array();
 
                 $aCatPath['link'] = $oCat->getLink();
@@ -423,16 +437,16 @@ class VendorList extends aList
     }
 
 
-     /**
+    /**
      * Returns vendor tree
      *
      * @return oxVendorList
      */
     public function getVendorTree()
     {
-        if ( $this->_getVendorId() && $this->_oVendorTree === null) {
-            $oVendorTree = oxNew( 'oxVendorList' );
-            $oVendorTree->buildVendorTree( 'vendorlist', $this->getActVendor()->getId(), $this->getConfig()->getShopHomeURL() );
+        if ($this->_getVendorId() && $this->_oVendorTree === null) {
+            $oVendorTree = oxNew('oxVendorList');
+            $oVendorTree->buildVendorTree('vendorlist', $this->getActVendor()->getId(), $this->getConfig()->getShopHomeURL());
             $this->_oVendorTree = $oVendorTree;
         }
 
@@ -446,7 +460,7 @@ class VendorList extends aList
      *
      * @return null
      */
-    public function setVendorTree( $oVendorTree )
+    public function setVendorTree($oVendorTree)
     {
         $this->_oVendorTree = $oVendorTree;
     }

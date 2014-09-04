@@ -27,6 +27,7 @@
  */
 class Wrapping_List extends oxAdminList
 {
+
     /**
      * Name of chosen object class (default null).
      *
@@ -51,6 +52,7 @@ class Wrapping_List extends oxAdminList
     {
 
         parent::render();
+
         return "wrapping_list.tpl";
     }
 }

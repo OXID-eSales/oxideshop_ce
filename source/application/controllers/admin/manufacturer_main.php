@@ -26,6 +26,7 @@
  */
 class Manufacturer_Main extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(),
      * and returns name of template file
@@ -38,44 +39,47 @@ class Manufacturer_Main extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oManufacturer = oxNew( "oxmanufacturer" );
-            $oManufacturer->loadInLang( $this->_iEditLang, $soxId );
+            $oManufacturer = oxNew("oxmanufacturer");
+            $oManufacturer->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oManufacturer->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oManufacturer->loadInLang( key($oOtherLang), $soxId );
+                $oManufacturer->loadInLang(key($oOtherLang), $soxId);
             }
-            $this->_aViewData["edit"] =  $oManufacturer;
+            $this->_aViewData["edit"] = $oManufacturer;
 
             // category tree
-            $this->_createCategoryTree( "artcattree");
+            $this->_createCategoryTree("artcattree");
 
             //Disable editing for derived articles
-            if ($oManufacturer->isDerived())
-               $this->_aViewData['readonly'] = true;
+            if ($oManufacturer->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
 
             // remove already created languages
-            $aLang = array_diff ( oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
-            if ( count( $aLang))
+            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
+            }
 
-            foreach ( $oOtherLang as $id => $language) {
-                $oLang= new stdClass();
+            foreach ($oOtherLang as $id => $language) {
+                $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
         }
 
-        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
-            $oManufacturerMainAjax = oxNew( 'manufacturer_main_ajax' );
+        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+            $oManufacturerMainAjax = oxNew('manufacturer_main_ajax');
             $this->_aViewData['oxajax'] = $oManufacturerMainAjax->getColumns();
 
             return "popups/manufacturer_main.tpl";
         }
+
         return "manufacturer_main.tpl";
     }
 
@@ -89,19 +93,20 @@ class Manufacturer_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        if ( !isset( $aParams['oxmanufacturers__oxactive']))
+        if (!isset($aParams['oxmanufacturers__oxactive'])) {
             $aParams['oxmanufacturers__oxactive'] = 0;
+        }
 
             // shopid
-            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxmanufacturers__oxshopid'] = $sShopID;
 
-        $oManufacturer = oxNew( "oxmanufacturer" );
+        $oManufacturer = oxNew("oxmanufacturer");
 
-        if ( $soxId != "-1")
-            $oManufacturer->loadInLang( $this->_iEditLang, $soxId );
+        if ($soxId != "-1")
+            $oManufacturer->loadInLang($this->_iEditLang, $soxId);
         else {
             $aParams['oxmanufacturers__oxid'] = null;
         }
@@ -109,13 +114,13 @@ class Manufacturer_Main extends oxAdminDetails
 
         //$aParams = $oManufacturer->ConvertNameArray2Idx( $aParams);
         $oManufacturer->setLanguage(0);
-        $oManufacturer->assign( $aParams);
+        $oManufacturer->assign($aParams);
         $oManufacturer->setLanguage($this->_iEditLang);
-        $oManufacturer = oxRegistry::get("oxUtilsFile")->processFiles( $oManufacturer );
+        $oManufacturer = oxRegistry::get("oxUtilsFile")->processFiles($oManufacturer);
         $oManufacturer->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oManufacturer->getId() );
+        $this->setEditObjectId($oManufacturer->getId());
     }
 
     /**
@@ -126,19 +131,19 @@ class Manufacturer_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        if ( !isset( $aParams['oxmanufacturers__oxactive']))
+        if (!isset($aParams['oxmanufacturers__oxactive']))
             $aParams['oxmanufacturers__oxactive'] = 0;
 
             // shopid
-            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxmanufacturers__oxshopid'] = $sShopID;
 
-        $oManufacturer = oxNew( "oxmanufacturer" );
+        $oManufacturer = oxNew("oxmanufacturer");
 
-        if ( $soxId != "-1")
-            $oManufacturer->loadInLang( $this->_iEditLang, $soxId );
+        if ($soxId != "-1")
+            $oManufacturer->loadInLang($this->_iEditLang, $soxId);
         else {
             $aParams['oxmanufacturers__oxid'] = null;
         }
@@ -146,12 +151,12 @@ class Manufacturer_Main extends oxAdminDetails
 
         //$aParams = $oManufacturer->ConvertNameArray2Idx( $aParams);
         $oManufacturer->setLanguage(0);
-        $oManufacturer->assign( $aParams);
+        $oManufacturer->assign($aParams);
         $oManufacturer->setLanguage($this->_iEditLang);
-        $oManufacturer = oxRegistry::get("oxUtilsFile")->processFiles( $oManufacturer );
+        $oManufacturer = oxRegistry::get("oxUtilsFile")->processFiles($oManufacturer);
         $oManufacturer->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oManufacturer->getId() );
+        $this->setEditObjectId($oManufacturer->getId());
     }
 }

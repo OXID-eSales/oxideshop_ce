@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,32 +18,34 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
-
-/**
- * Admin newsletter list manager.
- * Performs collection and managing (such as filtering or deleting) function.
- * Admin Menu: Customer News -> Newsletter.
- */
-class Newsletter_List extends oxAdminList
-{
-    /**
-     * Current class template name.
-     * @var string
      */
-    protected $_sThisTemplate = 'newsletter_list.tpl';
 
     /**
-     * Name of chosen object class (default null).
-     *
-     * @var string
+     * Admin newsletter list manager.
+     * Performs collection and managing (such as filtering or deleting) function.
+     * Admin Menu: Customer News -> Newsletter.
      */
-    protected $_sListClass = 'oxnewsletter';
+    class Newsletter_List extends oxAdminList
+    {
 
-    /**
-     * Default SQL sorting parameter (default null).
-     *
-     * @var string
-     */
-    protected $_sDefSortField = "oxtitle";
-}
+        /**
+         * Current class template name.
+         *
+         * @var string
+         */
+        protected $_sThisTemplate = 'newsletter_list.tpl';
+
+        /**
+         * Name of chosen object class (default null).
+         *
+         * @var string
+         */
+        protected $_sListClass = 'oxnewsletter';
+
+        /**
+         * Default SQL sorting parameter (default null).
+         *
+         * @var string
+         */
+        protected $_sDefSortField = "oxtitle";
+    }

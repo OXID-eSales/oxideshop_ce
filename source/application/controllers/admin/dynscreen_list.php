@@ -23,10 +23,12 @@
 /**
  * Admin dynscreen list manager.
  * Arranges controll tabs and sets title.
+ *
  * @subpackage dyn
  */
 class Dynscreen_List extends Dynscreen
 {
+
     /**
      * Executes marent method parent::render() and returns mane of template
      * file "dynscreen_list.tpl".
@@ -36,7 +38,7 @@ class Dynscreen_List extends Dynscreen
     public function render()
     {
         parent::render();
-        $this->_aViewData['menu'] = basename( oxRegistry::getConfig()->getRequestParameter( "menu" ) );
+        $this->_aViewData['menu'] = basename(oxRegistry::getConfig()->getRequestParameter("menu"));
 
         return "dynscreen_list.tpl";
     }

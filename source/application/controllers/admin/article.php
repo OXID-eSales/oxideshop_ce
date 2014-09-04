@@ -27,8 +27,10 @@
  */
 class Article extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'article.tpl';

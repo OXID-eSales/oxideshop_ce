@@ -28,14 +28,17 @@
  */
 class oxCategory extends oxI18n implements oxIUrl
 {
+
     /**
      * Subcategories array.
+     *
      * @var array
      */
     protected $_aSubCats = array();
 
     /**
      * Content category array.
+     *
      * @var array
      */
     protected $_aContentCats = array();
@@ -126,6 +129,7 @@ class oxCategory extends oxI18n implements oxIUrl
 
     /**
      * Category attributes cache
+     *
      * @var array
      */
     protected static $_aCatAttributes = array();
@@ -143,7 +147,7 @@ class oxCategory extends oxI18n implements oxIUrl
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxcategories' );
+        $this->init('oxcategories');
     }
 
     /**
@@ -173,9 +177,9 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return string
      */
-    public function __get( $sName )
+    public function __get($sName)
     {
-        switch ( $sName ) {
+        switch ($sName) {
             case 'aSubCats':
                 return $this->_aSubCats;
                 break;
@@ -219,27 +223,29 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return array
      */
-    protected function _loadFromDb( $sOXID )
+    protected function _loadFromDb($sOXID)
     {
-        $sSelect = $this->buildSelectString( array( "`{$this->getViewName()}`.`oxid`" => $sOXID ));
-        $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getRow( $sSelect );
+        $sSelect = $this->buildSelectString(array("`{$this->getViewName()}`.`oxid`" => $sOXID));
+        $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getRow($sSelect);
+
         return $aData;
     }
 
-     /**
+    /**
      * Load category data
      *
      * @param string $sOXID id
      *
      * @return null
      */
-    public function load( $sOXID )
+    public function load($sOXID)
     {
 
-            $aData = $this->_loadFromDb( $sOXID );
+            $aData = $this->_loadFromDb($sOXID);
 
-        if ( $aData ) {
-            $this->assign( $aData );
+        if ($aData) {
+            $this->assign($aData);
+
             return true;
         }
 
@@ -254,10 +260,11 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function assign( $dbRecord )
+    public function assign($dbRecord)
     {
         $this->_iNrOfArticles = null;
-        return parent::assign( $dbRecord );
+
+        return parent::assign($dbRecord);
     }
 
     /**
@@ -267,54 +274,58 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return bool
      */
-    public function delete( $sOXID = null )
+    public function delete($sOXID = null)
     {
-        if ( !$this->getId() ) {
-            $this->load( $sOXID );
+        if (!$this->getId()) {
+            $this->load($sOXID);
         }
 
-        $sOXID = isset( $sOXID ) ? $sOXID : $this->getId();
+        $sOXID = isset($sOXID) ? $sOXID : $this->getId();
 
 
         $myConfig = $this->getConfig();
-        $oDb      = oxDb::getDb();
-        $blRet    = false;
+        $oDb = oxDb::getDb();
+        $blRet = false;
 
-        if ( $this->oxcategories__oxright->value == ($this->oxcategories__oxleft->value+1) ) {
+        if ($this->oxcategories__oxright->value == ($this->oxcategories__oxleft->value + 1)) {
             $myUtilsPic = oxRegistry::get("oxUtilsPic");
             $sDir = $myConfig->getPictureDir(false);
 
             // only delete empty categories
             // #1173M - not all pic are deleted, after article is removed
-            $myUtilsPic->safePictureDelete( $this->oxcategories__oxthumb->value, $sDir . oxRegistry::get("oxUtilsFile")->getImageDirByType('TC'), 'oxcategories', 'oxthumb' );
-            $myUtilsPic->safePictureDelete( $this->oxcategories__oxicon->value, $sDir . oxRegistry::get("oxUtilsFile")->getImageDirByType('CICO'), 'oxcategories', 'oxicon' );
-            $myUtilsPic->safePictureDelete( $this->oxcategories__oxpromoicon->value, $sDir . oxRegistry::get("oxUtilsFile")->getImageDirByType('PICO'), 'oxcategories', 'oxpromoicon' );
+            $myUtilsPic->safePictureDelete($this->oxcategories__oxthumb->value, $sDir . oxRegistry::get("oxUtilsFile")->getImageDirByType('TC'), 'oxcategories', 'oxthumb');
+            $myUtilsPic->safePictureDelete($this->oxcategories__oxicon->value, $sDir . oxRegistry::get("oxUtilsFile")->getImageDirByType('CICO'), 'oxcategories', 'oxicon');
+            $myUtilsPic->safePictureDelete($this->oxcategories__oxpromoicon->value, $sDir . oxRegistry::get("oxUtilsFile")->getImageDirByType('PICO'), 'oxcategories', 'oxpromoicon');
 
             $sAdd = " and oxshopid = '" . $this->getShopId() . "' ";
 
-            $oDb->execute( "UPDATE oxcategories SET OXLEFT = OXLEFT - 2
-                            WHERE  OXROOTID = ".$oDb->quote($this->oxcategories__oxrootid->value)."
-                            AND OXLEFT >   ".((int) $this->oxcategories__oxleft->value).$sAdd );
+            $oDb->execute(
+                "UPDATE oxcategories SET OXLEFT = OXLEFT - 2
+                                           WHERE  OXROOTID = " . $oDb->quote($this->oxcategories__oxrootid->value) . "
+                            AND OXLEFT >   " . ((int) $this->oxcategories__oxleft->value) . $sAdd
+            );
 
-            $oDb->execute( "UPDATE oxcategories SET OXRIGHT = OXRIGHT - 2
-                            WHERE  OXROOTID = ".$oDb->quote($this->oxcategories__oxrootid->value)."
-                            AND OXRIGHT >   ".((int) $this->oxcategories__oxright->value).$sAdd );
+            $oDb->execute(
+                "UPDATE oxcategories SET OXRIGHT = OXRIGHT - 2
+                                           WHERE  OXROOTID = " . $oDb->quote($this->oxcategories__oxrootid->value) . "
+                            AND OXRIGHT >   " . ((int) $this->oxcategories__oxright->value) . $sAdd
+            );
 
             // delete entry
-            $blRet = parent::delete( $sOXID );
+            $blRet = parent::delete($sOXID);
 
-            $sOxidQuoted = $oDb->quote( $sOXID );
+            $sOxidQuoted = $oDb->quote($sOXID);
             // delete links to articles
-            $oDb->execute( "delete from oxobject2category where oxobject2category.oxcatnid=$sOxidQuoted ");
+            $oDb->execute("delete from oxobject2category where oxobject2category.oxcatnid=$sOxidQuoted ");
 
             // #657 ADDITIONAL delete links to attributes
-            $oDb->execute( "delete from oxcategory2attribute where oxcategory2attribute.oxobjectid=$sOxidQuoted ");
+            $oDb->execute("delete from oxcategory2attribute where oxcategory2attribute.oxobjectid=$sOxidQuoted ");
 
             // A. removing assigned:
             // - deliveries
-            $oDb->execute( "delete from oxobject2delivery where oxobject2delivery.oxobjectid=$sOxidQuoted ");
+            $oDb->execute("delete from oxobject2delivery where oxobject2delivery.oxobjectid=$sOxidQuoted ");
             // - discounts
-            $oDb->execute( "delete from oxobject2discount where oxobject2discount.oxobjectid=$sOxidQuoted ");
+            $oDb->execute("delete from oxobject2discount where oxobject2discount.oxobjectid=$sOxidQuoted ");
 
             oxRegistry::get("oxSeoEncoderCategory")->onDeleteCategory($this);
         }
@@ -351,17 +362,17 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setSubCats( $aCats )
+    public function setSubCats($aCats)
     {
         $this->_aSubCats = $aCats;
 
-        foreach ( $aCats as $oCat ) {
+        foreach ($aCats as $oCat) {
 
             // keeping ref. to parent
-            $oCat->setParentCategory( $this );
+            $oCat->setParentCategory($this);
 
-            if ( $oCat->getIsVisible() ) {
-                $this->setHasVisibleSubCats( true );
+            if ($oCat->getIsVisible()) {
+                $this->setHasVisibleSubCats(true);
             }
         }
     }
@@ -374,19 +385,19 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setSubCat( $oCat, $sKey=null )
+    public function setSubCat($oCat, $sKey = null)
     {
-        if ( $sKey ) {
+        if ($sKey) {
             $this->_aSubCats[$sKey] = $oCat;
         } else {
             $this->_aSubCats[] = $oCat;
         }
 
         // keeping ref. to parent
-        $oCat->setParentCategory( $this );
+        $oCat->setParentCategory($this);
 
-        if ( $oCat->getIsVisible() ) {
-            $this->setHasVisibleSubCats( true );
+        if ($oCat->getIsVisible()) {
+            $this->setHasVisibleSubCats(true);
         }
     }
 
@@ -407,7 +418,7 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setContentCats( $aContent )
+    public function setContentCats($aContent)
     {
         $this->_aContentCats = $aContent;
     }
@@ -420,9 +431,9 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setContentCat( $oContent, $sKey=null )
+    public function setContentCat($oContent, $sKey = null)
     {
-        if ( $sKey ) {
+        if ($sKey) {
             $this->_aContentCats[$sKey] = $oContent;
         } else {
             $this->_aContentCats[] = $oContent;
@@ -438,21 +449,22 @@ class oxCategory extends oxI18n implements oxIUrl
     {
         $myConfig = $this->getConfig();
 
-        if ( !isset($this->_iNrOfArticles)
-          && !$this->isAdmin()
-          && (
-                 $myConfig->getConfigParam( 'bl_perfShowActionCatArticleCnt' )
-              || $myConfig->getConfigParam('blDontShowEmptyCategories')
-             ) ) {
+        if (!isset($this->_iNrOfArticles)
+            && !$this->isAdmin()
+            && (
+                $myConfig->getConfigParam('bl_perfShowActionCatArticleCnt')
+                || $myConfig->getConfigParam('blDontShowEmptyCategories')
+            )
+        ) {
 
-            if ( $this->isPriceCategory() ) {
-                $this->_iNrOfArticles = oxRegistry::get("oxUtilsCount")->getPriceCatArticleCount( $this->getId(), $this->oxcategories__oxpricefrom->value, $this->oxcategories__oxpriceto->value );
+            if ($this->isPriceCategory()) {
+                $this->_iNrOfArticles = oxRegistry::get("oxUtilsCount")->getPriceCatArticleCount($this->getId(), $this->oxcategories__oxpricefrom->value, $this->oxcategories__oxpriceto->value);
             } else {
-                $this->_iNrOfArticles = oxRegistry::get("oxUtilsCount")->getCatArticleCount( $this->getId() );
+                $this->_iNrOfArticles = oxRegistry::get("oxUtilsCount")->getCatArticleCount($this->getId());
             }
         }
 
-        return (int)$this->_iNrOfArticles;
+        return (int) $this->_iNrOfArticles;
     }
 
     /**
@@ -462,7 +474,7 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setNrOfArticles( $iNum )
+    public function setNrOfArticles($iNum)
     {
         $this->_iNrOfArticles = $iNum;
     }
@@ -474,9 +486,9 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function getIsVisible()
     {
-        if (!isset( $this->_blIsVisible ) ) {
+        if (!isset($this->_blIsVisible)) {
 
-            if ( $this->getConfig()->getConfigParam( 'blDontShowEmptyCategories' ) ) {
+            if ($this->getConfig()->getConfigParam('blDontShowEmptyCategories')) {
                 $blEmpty = ($this->getNrOfArticles() < 1) && !$this->getHasVisibleSubCats();
             } else {
                 $blEmpty = false;
@@ -495,7 +507,7 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setIsVisible( $blVisible )
+    public function setIsVisible($blVisible)
     {
         $this->_blIsVisible = $blVisible;
     }
@@ -507,10 +519,11 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function getPictureUrl()
     {
-        if ( $this->_sDynImageDir === null ) {
+        if ($this->_sDynImageDir === null) {
             $sThisShop = $this->oxcategories__oxshopid->value;
-            $this->_sDynImageDir = $this->getConfig()->getPictureUrl( null, false, null, null, $sThisShop);
+            $this->_sDynImageDir = $this->getConfig()->getPictureUrl(null, false, null, null, $sThisShop);
         }
+
         return $this->_sDynImageDir;
     }
 
@@ -522,13 +535,14 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return string
      */
-    public function getBaseSeoLink( $iLang, $iPage = 0 )
+    public function getBaseSeoLink($iLang, $iPage = 0)
     {
         $oEncoder = oxRegistry::get("oxSeoEncoderCategory");
-        if ( !$iPage ) {
-            return $oEncoder->getCategoryUrl( $this, $iLang );
+        if (!$iPage) {
+            return $oEncoder->getCategoryUrl($this, $iLang);
         }
-        return $oEncoder->getCategoryPageUrl( $this, $iPage, $iLang );
+
+        return $oEncoder->getCategoryPageUrl($this, $iPage, $iLang);
     }
 
     /**
@@ -538,20 +552,22 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return string
      */
-    public function getLink( $iLang = null )
+    public function getLink($iLang = null)
     {
-        if ( !oxRegistry::getUtils()->seoIsActive() ||
-             ( isset( $this->oxcategories__oxextlink ) && $this->oxcategories__oxextlink->value ) ) {
-            return $this->getStdLink( $iLang );
+        if (!oxRegistry::getUtils()->seoIsActive() ||
+            (isset($this->oxcategories__oxextlink) && $this->oxcategories__oxextlink->value)
+        ) {
+            return $this->getStdLink($iLang);
         }
 
-        if ( $iLang === null ) {
+        if ($iLang === null) {
             $iLang = $this->getLanguage();
         }
 
-        if ( !isset( $this->_aSeoUrls[$iLang] ) ) {
-            $this->_aSeoUrls[$iLang] = $this->getBaseSeoLink( $iLang );
+        if (!isset($this->_aSeoUrls[$iLang])) {
+            $this->_aSeoUrls[$iLang] = $this->getBaseSeoLink($iLang);
         }
+
         return $this->_aSeoUrls[$iLang];
     }
 
@@ -562,10 +578,10 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setLink( $sLink )
+    public function setLink($sLink)
     {
         $iLang = $this->getLanguage();
-        if ( oxRegistry::getUtils()->seoIsActive() ) {
+        if (oxRegistry::getUtils()->seoIsActive()) {
             $this->_aSeoUrls[$iLang] = $sLink;
         } else {
             $this->_aStdUrls[$iLang] = $sLink;
@@ -579,12 +595,12 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return string
      */
-    public function getSqlActiveSnippet( $blForceCoreTable = null )
+    public function getSqlActiveSnippet($blForceCoreTable = null)
     {
-        $sQ  = parent::getSqlActiveSnippet( $blForceCoreTable );
+        $sQ = parent::getSqlActiveSnippet($blForceCoreTable);
 
         $sTable = $this->getViewName($blForceCoreTable);
-        $sQ .= ( strlen( $sQ )? ' and ' : '' ) . " $sTable.oxhidden = '0' ";
+        $sQ .= (strlen($sQ) ? ' and ' : '') . " $sTable.oxhidden = '0' ";
 
 
         return "( $sQ ) ";
@@ -599,20 +615,20 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return string
      */
-    public function getBaseStdLink( $iLang, $blAddId = true, $blFull = true )
+    public function getBaseStdLink($iLang, $blAddId = true, $blFull = true)
     {
-        if ( isset( $this->oxcategories__oxextlink ) && $this->oxcategories__oxextlink->value ) {
-            return  $this->oxcategories__oxextlink->value;
+        if (isset($this->oxcategories__oxextlink) && $this->oxcategories__oxextlink->value) {
+            return $this->oxcategories__oxextlink->value;
         }
 
         $sUrl = '';
-        if ( $blFull ) {
+        if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl( $iLang, false );
+            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
         }
 
         //always returns shop url, not admin
-        return $sUrl . "index.php?cl=alist" . ( $blAddId ? "&amp;cnid=".$this->getId() : "" );
+        return $sUrl . "index.php?cl=alist" . ($blAddId ? "&amp;cnid=" . $this->getId() : "");
     }
 
     /**
@@ -623,21 +639,21 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return string
      */
-    public function getStdLink( $iLang = null, $aParams = array() )
+    public function getStdLink($iLang = null, $aParams = array())
     {
-        if ( isset( $this->oxcategories__oxextlink ) && $this->oxcategories__oxextlink->value ) {
-            return  oxRegistry::get("oxUtilsUrl")->processUrl( $this->oxcategories__oxextlink->value, false );
+        if (isset($this->oxcategories__oxextlink) && $this->oxcategories__oxextlink->value) {
+            return oxRegistry::get("oxUtilsUrl")->processUrl($this->oxcategories__oxextlink->value, false);
         }
 
-        if ( $iLang === null ) {
+        if ($iLang === null) {
             $iLang = $this->getLanguage();
         }
 
-        if ( !isset( $this->_aStdUrls[$iLang] ) ) {
-            $this->_aStdUrls[$iLang] = $this->getBaseStdLink( $iLang );
+        if (!isset($this->_aStdUrls[$iLang])) {
+            $this->_aStdUrls[$iLang] = $this->getBaseStdLink($iLang);
         }
 
-        return oxRegistry::get("oxUtilsUrl")->processUrl( $this->_aStdUrls[$iLang], true, $aParams, $iLang );
+        return oxRegistry::get("oxUtilsUrl")->processUrl($this->_aStdUrls[$iLang], true, $aParams, $iLang);
     }
 
     /**
@@ -657,7 +673,7 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setExpanded( $blExpanded )
+    public function setExpanded($blExpanded)
     {
         $this->_blExpanded = $blExpanded;
     }
@@ -669,8 +685,8 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function getHasSubCats()
     {
-        if ( !isset( $this->_blHasSubCats ) ) {
-            $this->_blHasSubCats = $this->oxcategories__oxright->value > $this->oxcategories__oxleft->value + 1 ;
+        if (!isset($this->_blHasSubCats)) {
+            $this->_blHasSubCats = $this->oxcategories__oxright->value > $this->oxcategories__oxleft->value + 1;
         }
 
         return $this->_blHasSubCats;
@@ -683,7 +699,7 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function getHasVisibleSubCats()
     {
-        if ( !isset( $this->_blHasVisibleSubCats ) ) {
+        if (!isset($this->_blHasVisibleSubCats)) {
             $this->_blHasVisibleSubCats = false;
         }
 
@@ -697,12 +713,12 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setHasVisibleSubCats( $blHasVisibleSubcats )
+    public function setHasVisibleSubCats($blHasVisibleSubcats)
     {
-        if ( $blHasVisibleSubcats && !$this->_blHasVisibleSubCats ) {
-            unset( $this->_blIsVisible );
+        if ($blHasVisibleSubcats && !$this->_blHasVisibleSubCats) {
+            unset($this->_blIsVisible);
             if ($this->_oParent instanceof oxCategory) {
-                $this->_oParent->setHasVisibleSubCats( true );
+                $this->_oParent->setHasVisibleSubCats(true);
             }
         }
         $this->_blHasVisibleSubCats = $blHasVisibleSubcats;
@@ -717,10 +733,10 @@ class oxCategory extends oxI18n implements oxIUrl
     {
         $sActCat = $this->getId();
 
-        $sKey = md5( $sActCat . serialize( oxRegistry::getSession()->getVariable( 'session_attrfilter' ) ) );
-        if ( !isset( self::$_aCatAttributes[$sKey] ) ) {
-            $oAttrList = oxNew( "oxAttributeList" );
-            $oAttrList->getCategoryAttributes( $sActCat, $this->getLanguage() );
+        $sKey = md5($sActCat . serialize(oxRegistry::getSession()->getVariable('session_attrfilter')));
+        if (!isset(self::$_aCatAttributes[$sKey])) {
+            $oAttrList = oxNew("oxAttributeList");
+            $oAttrList->getCategoryAttributes($sActCat, $this->getLanguage());
             self::$_aCatAttributes[$sKey] = $oAttrList;
         }
 
@@ -734,17 +750,18 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return object
      */
-    public function getCatInLang( $oActCategory = null )
+    public function getCatInLang($oActCategory = null)
     {
-        $oCategoryInDefaultLanguage= oxNew( "oxCategory" );
-        if ( $this->isPriceCategory() ) {
+        $oCategoryInDefaultLanguage = oxNew("oxCategory");
+        if ($this->isPriceCategory()) {
             // get it in base language
-            $oCategoryInDefaultLanguage= oxNew( "oxCategory" );
-            $oCategoryInDefaultLanguage->loadInLang( 0, $this->getId());
+            $oCategoryInDefaultLanguage = oxNew("oxCategory");
+            $oCategoryInDefaultLanguage->loadInLang(0, $this->getId());
         } else {
-            $oCategoryInDefaultLanguage= oxNew( "oxCategory" );
-            $oCategoryInDefaultLanguage->loadInLang( 0, $oActCategory->getId());
+            $oCategoryInDefaultLanguage = oxNew("oxCategory");
+            $oCategoryInDefaultLanguage->loadInLang(0, $oActCategory->getId());
         }
+
         return $oCategoryInDefaultLanguage;
     }
 
@@ -755,7 +772,7 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function setParentCategory( $oCategory )
+    public function setParentCategory($oCategory)
     {
         $this->_oParent = $oCategory;
     }
@@ -770,20 +787,21 @@ class oxCategory extends oxI18n implements oxIUrl
         $oCat = null;
 
         // loading only if parent id is not rootid
-        if ( $this->oxcategories__oxparentid->value && $this->oxcategories__oxparentid->value != 'oxrootid' ) {
+        if ($this->oxcategories__oxparentid->value && $this->oxcategories__oxparentid->value != 'oxrootid') {
 
             // checking if object itself has ref to parent
-            if ( $this->_oParent ) {
+            if ($this->_oParent) {
                 $oCat = $this->_oParent;
             } else {
-                $oCat = oxNew( 'oxCategory' );
-                if ( !$oCat->load( $this->oxcategories__oxparentid->value ) ) {
+                $oCat = oxNew('oxCategory');
+                if (!$oCat->load($this->oxcategories__oxparentid->value)) {
                     $oCat = null;
                 } else {
                     $this->_oParent = $oCat;
                 }
             }
         }
+
         return $oCat;
     }
 
@@ -796,12 +814,12 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public static function getRootId($sCategoryId)
     {
-        if ( !isset( $sCategoryId ) ) {
+        if (!isset($sCategoryId)) {
             return;
         }
         $oDb = oxDb::getDb();
 
-        return $oDb->getOne( 'select oxrootid from '.getViewName('oxcategories').' where oxid = ' . $oDb->quote( $sCategoryId ) );
+        return $oDb->getOne('select oxrootid from ' . getViewName('oxcategories') . ' where oxid = ' . $oDb->quote($sCategoryId));
     }
 
 
@@ -814,8 +832,8 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function assignViewableRecord($sSelect)
     {
-            if ( $this->assignRecord( $sSelect ) ) {
-                return  true;
+            if ($this->assignRecord($sSelect)) {
+                return true;
             }
 
 
@@ -832,11 +850,11 @@ class oxCategory extends oxI18n implements oxIUrl
 
 
 
-        if ( $this->oxcategories__oxparentid->value != "oxrootid") {
+        if ($this->oxcategories__oxparentid->value != "oxrootid") {
             // load parent
-            $oParent = oxNew( "oxCategory" );
+            $oParent = oxNew("oxCategory");
             //#M317 check if parent is loaded
-            if ( !$oParent->load( $this->oxcategories__oxparentid->value) ) {
+            if (!$oParent->load($this->oxcategories__oxparentid->value)) {
                 return false;
             }
 
@@ -844,33 +862,39 @@ class oxCategory extends oxI18n implements oxIUrl
 
             // update existing nodes
             $oDb = oxDb::getDb();
-            $oDb->execute( "UPDATE oxcategories SET OXLEFT = OXLEFT + 2
-                            WHERE  OXROOTID = ".$oDb->quote($oParent->oxcategories__oxrootid->value)."
-                            AND OXLEFT >   ".((int) $oParent->oxcategories__oxright->value)."
-                            AND OXRIGHT >= ".((int) $oParent->oxcategories__oxright->value).$sAdd);
+            $oDb->execute(
+                "UPDATE oxcategories SET OXLEFT = OXLEFT + 2
+                                           WHERE  OXROOTID = " . $oDb->quote($oParent->oxcategories__oxrootid->value) . "
+                            AND OXLEFT >   " . ((int) $oParent->oxcategories__oxright->value) . "
+                            AND OXRIGHT >= " . ((int) $oParent->oxcategories__oxright->value) . $sAdd
+            );
 
 
-            $oDb->execute( "UPDATE oxcategories SET OXRIGHT = OXRIGHT + 2
-                            WHERE  OXROOTID = ".$oDb->quote($oParent->oxcategories__oxrootid->value)."
-                            AND OXRIGHT >= ".((int) $oParent->oxcategories__oxright->value).$sAdd );
+            $oDb->execute(
+                "UPDATE oxcategories SET OXRIGHT = OXRIGHT + 2
+                                           WHERE  OXROOTID = " . $oDb->quote($oParent->oxcategories__oxrootid->value) . "
+                            AND OXRIGHT >= " . ((int) $oParent->oxcategories__oxright->value) . $sAdd
+            );
 
-            if ( !$this->getId() ) {
+            if (!$this->getId()) {
                 $this->setId();
             }
 
             $this->oxcategories__oxrootid = new oxField($oParent->oxcategories__oxrootid->value, oxField::T_RAW);
             $this->oxcategories__oxleft = new oxField($oParent->oxcategories__oxright->value, oxField::T_RAW);
             $this->oxcategories__oxright = new oxField($oParent->oxcategories__oxright->value + 1, oxField::T_RAW);
+
             return parent::_insert();
         } else {
             // root entry
-            if ( !$this->getId() ) {
+            if (!$this->getId()) {
                 $this->setId();
             }
 
             $this->oxcategories__oxrootid = new oxField($this->getId(), oxField::T_RAW);
             $this->oxcategories__oxleft = new oxField(1, oxField::T_RAW);
             $this->oxcategories__oxright = new oxField(2, oxField::T_RAW);
+
             return parent::_insert();
         }
     }
@@ -884,9 +908,9 @@ class oxCategory extends oxI18n implements oxIUrl
     {
 
         $oDb = oxDb::getDb();
-        $sOldParentID = $oDb->getOne( "select oxparentid from oxcategories where oxid = ".$oDb->quote( $this->getId() ), false, false );
+        $sOldParentID = $oDb->getOne("select oxparentid from oxcategories where oxid = " . $oDb->quote($this->getId()), false, false);
 
-        if ( $this->_blIsSeoObject && $this->isAdmin() ) {
+        if ($this->_blIsSeoObject && $this->isAdmin()) {
             oxRegistry::get("oxSeoEncoderCategory")->markRelatedAsExpired($this);
         }
 
@@ -901,36 +925,37 @@ class oxCategory extends oxI18n implements oxIUrl
         // 3. decreasing oxleft and oxright values of current root tree, where oxleft >= $sOldParentRight+1 , oxright >= $sOldParentRight+1
 
         // did we change position in tree ?
-        if ( $this->oxcategories__oxparentid->value != $sOldParentID) {
+        if ($this->oxcategories__oxparentid->value != $sOldParentID) {
             $sOldParentLeft = $this->oxcategories__oxleft->value;
             $sOldParentRight = $this->oxcategories__oxright->value;
 
-            $iTreeSize = $sOldParentRight-$sOldParentLeft+1;
+            $iTreeSize = $sOldParentRight - $sOldParentLeft + 1;
 
-            $sNewRootID = $oDb->getOne( "select oxrootid from oxcategories where oxid = ".$oDb->quote($this->oxcategories__oxparentid->value), false, false);
+            $sNewRootID = $oDb->getOne("select oxrootid from oxcategories where oxid = " . $oDb->quote($this->oxcategories__oxparentid->value), false, false);
 
             //If empty rootID, we set it to categorys oxid
-            if ( $sNewRootID == "") {
+            if ($sNewRootID == "") {
                 //echo "<br>* ) Creating new root tree ( {$this->_sOXID} )";
                 $sNewRootID = $this->getId();
             }
 
-            $sNewParentLeft = $oDb->getOne( "select oxleft from oxcategories where oxid = ".$oDb->quote($this->oxcategories__oxparentid->value), false, false);
+            $sNewParentLeft = $oDb->getOne("select oxleft from oxcategories where oxid = " . $oDb->quote($this->oxcategories__oxparentid->value), false, false);
 
             //if(!$sNewParentLeft){
-                //the current node has become root node, (oxrootid == "oxrootid")
+            //the current node has become root node, (oxrootid == "oxrootid")
             //    $sNewParentLeft = 0;
             //}
 
-            $iMoveAfter = $sNewParentLeft+1;
+            $iMoveAfter = $sNewParentLeft + 1;
 
             //New parentid can not be set to it's child
             if ($sNewParentLeft > $sOldParentLeft && $sNewParentLeft < $sOldParentRight && $this->oxcategories__oxrootid->value == $sNewRootID) {
                 //echo "<br>* ) Can't asign category to it's child";
 
                 //Restoring old parentid, stoping further actions
-                $sRestoreOld = "UPDATE oxcategories SET OXPARENTID = ".$oDb->quote($sOldParentID)." WHERE oxid = ".$oDb->quote($this->getId());
-                $oDb->execute( $sRestoreOld );
+                $sRestoreOld = "UPDATE oxcategories SET OXPARENTID = " . $oDb->quote($sOldParentID) . " WHERE oxid = " . $oDb->quote($this->getId());
+                $oDb->execute($sRestoreOld);
+
                 return false;
             }
 
@@ -940,35 +965,35 @@ class oxCategory extends oxI18n implements oxIUrl
                 $sOldParentRight += $iTreeSize;
             }
 
-            $iDelta = $iMoveAfter-$sOldParentLeft;
+            $iDelta = $iMoveAfter - $sOldParentLeft;
 
             //echo "Size=$iTreeSize, NewStart=$iMoveAfter, delta=$iDelta";
 
-            $sAddOld = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = ".$oDb->quote($this->oxcategories__oxrootid->value).";";
-            $sAddNew = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = ".$oDb->quote($sNewRootID).";";
+            $sAddOld = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $oDb->quote($this->oxcategories__oxrootid->value) . ";";
+            $sAddNew = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $oDb->quote($sNewRootID) . ";";
 
             //Updating everything after new position
-            $oDb->execute( "UPDATE oxcategories SET OXLEFT = (OXLEFT + ".$iTreeSize.") WHERE OXLEFT >= ".$iMoveAfter.$sAddNew );
-            $oDb->execute( "UPDATE oxcategories SET OXRIGHT = (OXRIGHT + ".$iTreeSize.") WHERE OXRIGHT >= ".$iMoveAfter.$sAddNew );
+            $oDb->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + " . $iTreeSize . ") WHERE OXLEFT >= " . $iMoveAfter . $sAddNew);
+            $oDb->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT + " . $iTreeSize . ") WHERE OXRIGHT >= " . $iMoveAfter . $sAddNew);
             //echo "<br>1.) + $iTreeSize, >= $iMoveAfter";
 
             $sChangeRootID = "";
             if ($this->oxcategories__oxrootid->value != $sNewRootID) {
                 //echo "<br>* ) changing root IDs ( {$this->oxcategories__oxrootid->value} -> {$sNewRootID} )";
-                $sChangeRootID = ", OXROOTID=".$oDb->quote($sNewRootID);
+                $sChangeRootID = ", OXROOTID=" . $oDb->quote($sNewRootID);
             }
 
             //Updating subtree
-            $oDb->execute( "UPDATE oxcategories SET OXLEFT = (OXLEFT + ".$iDelta."), OXRIGHT = (OXRIGHT + ".$iDelta.") ".$sChangeRootID." WHERE OXLEFT >= ".$sOldParentLeft." AND OXRIGHT <= ".$sOldParentRight.$sAddOld );
+            $oDb->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + " . $iDelta . "), OXRIGHT = (OXRIGHT + " . $iDelta . ") " . $sChangeRootID . " WHERE OXLEFT >= " . $sOldParentLeft . " AND OXRIGHT <= " . $sOldParentRight . $sAddOld);
             //echo "<br>2.) + $iDelta, >= $sOldParentLeft and <= $sOldParentRight";
 
             //Updating everything after old position
-            $oDb->execute( "UPDATE oxcategories SET OXLEFT = (OXLEFT - ".$iTreeSize.") WHERE OXLEFT >=   ".($sOldParentRight+1).$sAddOld );
-            $oDb->execute( "UPDATE oxcategories SET OXRIGHT = (OXRIGHT - ".$iTreeSize.") WHERE OXRIGHT >=   ".($sOldParentRight+1).$sAddOld );
+            $oDb->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT - " . $iTreeSize . ") WHERE OXLEFT >=   " . ($sOldParentRight + 1) . $sAddOld);
+            $oDb->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT - " . $iTreeSize . ") WHERE OXRIGHT >=   " . ($sOldParentRight + 1) . $sAddOld);
             //echo "<br>3.) - $iTreeSize, >= ".($sOldParentRight+1);
         }
 
-        if ( $blRes && $this->_blIsSeoObject && $this->isAdmin() ) {
+        if ($blRes && $this->_blIsSeoObject && $this->isAdmin()) {
             oxRegistry::get("oxSeoEncoderCategory")->markRelatedAsExpired($this);
         }
 
@@ -984,14 +1009,15 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    protected function _setFieldData( $sFieldName, $sValue, $iDataType = oxField::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
     {
         //preliminary quick check saves 3% of execution time in category lists by avoiding redundant strtolower() call
-        if ($sFieldName[2] == 'l' || $sFieldName[2] == 'L' || (isset($sFieldName[16]) && ($sFieldName[16] == 'l' || $sFieldName[16] == 'L') ) ) {
+        if ($sFieldName[2] == 'l' || $sFieldName[2] == 'L' || (isset($sFieldName[16]) && ($sFieldName[16] == 'l' || $sFieldName[16] == 'L'))) {
             if ('oxlongdesc' === strtolower($sFieldName) || 'oxcategories__oxlongdesc' === strtolower($sFieldName)) {
                 $iDataType = oxField::T_RAW;
             }
         }
+
         return parent::_setFieldData($sFieldName, $sValue, $iDataType);
     }
 
@@ -1003,14 +1029,14 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function getIconUrl()
     {
-        if ( ( $sIcon = $this->oxcategories__oxicon->value ) ) {
+        if (($sIcon = $this->oxcategories__oxicon->value)) {
             $oConfig = $this->getConfig();
-            $sSize = $oConfig->getConfigParam( 'sCatIconsize' );
-            if ( !isset( $sSize ) ) {
-                $sSize = $oConfig->getConfigParam( 'sIconsize' );
+            $sSize = $oConfig->getConfigParam('sCatIconsize');
+            if (!isset($sSize)) {
+                $sSize = $oConfig->getConfigParam('sIconsize');
             }
 
-            return oxRegistry::get("oxPictureHandler")->getPicUrl( "category/icon/", $sIcon, $sSize );
+            return oxRegistry::get("oxPictureHandler")->getPicUrl("category/icon/", $sIcon, $sSize);
         }
     }
 
@@ -1021,9 +1047,10 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function getThumbUrl()
     {
-        if ( ( $sIcon = $this->oxcategories__oxthumb->value ) ) {
-            $sSize = $this->getConfig()->getConfigParam( 'sCatThumbnailsize' );
-            return oxRegistry::get("oxPictureHandler")->getPicUrl( "category/thumb/", $sIcon, $sSize );
+        if (($sIcon = $this->oxcategories__oxthumb->value)) {
+            $sSize = $this->getConfig()->getConfigParam('sCatThumbnailsize');
+
+            return oxRegistry::get("oxPictureHandler")->getPicUrl("category/thumb/", $sIcon, $sSize);
         }
     }
 
@@ -1034,9 +1061,10 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function getPromotionIconUrl()
     {
-        if ( ( $sIcon = $this->oxcategories__oxpromoicon->value ) ) {
-            $sSize = $this->getConfig()->getConfigParam( 'sCatPromotionsize' );
-            return oxRegistry::get("oxPictureHandler")->getPicUrl( "category/promo_icon/", $sIcon, $sSize );
+        if (($sIcon = $this->oxcategories__oxpromoicon->value)) {
+            $sSize = $this->getConfig()->getConfigParam('sCatPromotionsize');
+
+            return oxRegistry::get("oxPictureHandler")->getPicUrl("category/promo_icon/", $sIcon, $sSize);
         }
     }
 
@@ -1048,9 +1076,9 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @return mixed
      */
-    public function getPictureUrlForType( $sPicName, $sPicType )
+    public function getPictureUrlForType($sPicName, $sPicType)
     {
-        if ( $sPicName ) {
+        if ($sPicName) {
             return $this->getPictureUrl() . $sPicType . '/' . $sPicName;
         } else {
             return false;
@@ -1064,9 +1092,10 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function isTopCategory()
     {
-        if ( $this->_blTopCategory == null ) {
+        if ($this->_blTopCategory == null) {
             $this->_blTopCategory = $this->oxcategories__oxparentid->value == 'oxrootid';
         }
+
         return $this->_blTopCategory;
     }
 
@@ -1077,7 +1106,7 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function isPriceCategory()
     {
-        return (bool) ( $this->oxcategories__oxpricefrom->value || $this->oxcategories__oxpriceto->value );
+        return (bool) ($this->oxcategories__oxpricefrom->value || $this->oxcategories__oxpriceto->value);
     }
 
     /**
@@ -1088,8 +1117,8 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function getLongDesc()
     {
-        if ( isset( $this->oxcategories__oxlongdesc ) && $this->oxcategories__oxlongdesc instanceof oxField ) {
-           return oxRegistry::get("oxUtilsView")->parseThroughSmarty( $this->oxcategories__oxlongdesc->getRawValue(), $this->getId().$this->getLanguage() );
+        if (isset($this->oxcategories__oxlongdesc) && $this->oxcategories__oxlongdesc instanceof oxField) {
+            return oxRegistry::get("oxUtilsView")->parseThroughSmarty($this->oxcategories__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage());
         }
     }
 
@@ -1131,9 +1160,9 @@ class oxCategory extends oxI18n implements oxIUrl
             return false;
         }
 
-        $sTable  = $this->getViewName();
-        $sField  = "`{$sTable}`.`{$sField}`";
-        $sSql    = "SELECT $sField FROM `{$sTable}` WHERE `OXROOTID` = ? AND `OXPARENTID` != 'oxrootid'";
+        $sTable = $this->getViewName();
+        $sField = "`{$sTable}`.`{$sField}`";
+        $sSql = "SELECT $sField FROM `{$sTable}` WHERE `OXROOTID` = ? AND `OXPARENTID` != 'oxrootid'";
         $aResult = oxDb::getDb()->getCol($sSql, array($sOXID));
 
         return $aResult;

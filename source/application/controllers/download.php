@@ -26,6 +26,7 @@
  */
 class Download extends oxUBase
 {
+
     /**
      * Prevents from loading any component as this controller
      * only returns file content if token is valid
@@ -47,14 +48,14 @@ class Download extends oxUBase
     {
         $sFileOrderId = oxRegistry::getConfig()->getRequestParameter('sorderfileid');
 
-        if ( $sFileOrderId ) {
+        if ($sFileOrderId) {
             $oArticleFile = oxNew('oxFile');
             try {
                 /** @var oxOrderFile $oOrderFile */
                 $oOrderFile = oxNew('oxOrderFile');
-                if ( $oOrderFile->load($sFileOrderId) ) {
+                if ($oOrderFile->load($sFileOrderId)) {
                     $sFileId = $oOrderFile->getFileId();
-                    if ( $sFileId && $oArticleFile->load($sFileId) && $oArticleFile->exist() && $oOrderFile->processOrderFile() ) {
+                    if ($sFileId && $oArticleFile->load($sFileId) && $oArticleFile->exist() && $oOrderFile->processOrderFile()) {
                         $oArticleFile->download();
                     } else {
                         $sError = "ERROR_MESSAGE_FILE_DOESNOT_EXIST";
@@ -66,11 +67,11 @@ class Download extends oxUBase
         } else {
             $sError = "ERROR_MESSAGE_WRONG_DOWNLOAD_LINK";
         }
-        if ( $sError ) {
+        if ($sError) {
             $oEx = new oxExceptionToDisplay();
-            $oEx->setMessage( $sError );
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx, false );
-            oxRegistry::getUtils()->redirect( oxRegistry::getConfig()->getShopUrl() . 'index.php?cl=account_downloads');
+            $oEx->setMessage($sError);
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+            oxRegistry::getUtils()->redirect(oxRegistry::getConfig()->getShopUrl() . 'index.php?cl=account_downloads');
         }
     }
 }

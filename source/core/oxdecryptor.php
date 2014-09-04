@@ -30,19 +30,20 @@ class oxDecryptor
      * Decrypts string with given key.
      *
      * @param string $sString string
-     * @param string $sKey key
+     * @param string $sKey    key
+     *
      * @return string
      */
-    public function decrypt( $sString, $sKey )
+    public function decrypt($sString, $sKey)
     {
         $sKey = $this->_formKey($sKey, $sString);
 
-        $sString = substr( $sString, 3 );
-        $sString = str_replace( '!', '=', $sString );
-        $sString = base64_decode( $sString );
+        $sString = substr($sString, 3);
+        $sString = str_replace('!', '=', $sString);
+        $sString = base64_decode($sString);
         $sString = $sString ^ $sKey;
 
-        return substr( $sString, 2, -2 );
+        return substr($sString, 2, -2);
     }
 
     /**
@@ -50,13 +51,14 @@ class oxDecryptor
      *
      * @param string $sKey
      * @param string $sString
+     *
      * @return string
      */
     protected function _formKey($sKey, $sString)
     {
         $sKey = '_' . $sKey;
-        $iKeyLength = (strlen( $sString ) / strlen( $sKey )) + 5;
+        $iKeyLength = (strlen($sString) / strlen($sKey)) + 5;
 
-        return str_repeat( $sKey, $iKeyLength );
+        return str_repeat($sKey, $iKeyLength);
     }
 }

@@ -25,19 +25,20 @@
  */
 class GenExport_Do extends DynExportBase
 {
+
     /**
      * Export class name
      *
      * @var string
      */
-    public $sClassDo       = "genExport_do";
+    public $sClassDo = "genExport_do";
 
     /**
      * Export ui class name
      *
      * @var string
      */
-    public $sClassMain     = "genExport_main";
+    public $sClassMain = "genExport_main";
 
     /**
      * Export file name
@@ -48,6 +49,7 @@ class GenExport_Do extends DynExportBase
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = "dynbase_do.tpl";
@@ -59,19 +61,20 @@ class GenExport_Do extends DynExportBase
      *
      * @return bool
      */
-    public function nextTick( $iCnt )
+    public function nextTick($iCnt)
     {
         $iExportedItems = $iCnt;
         $blContinue = false;
-        if ( $oArticle = $this->getOneArticle( $iCnt, $blContinue ) ) {
+        if ($oArticle = $this->getOneArticle($iCnt, $blContinue)) {
             $myConfig = oxRegistry::getConfig();
             $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-            $oSmarty->assign( "sCustomHeader", oxRegistry::getSession()->getVariable("sExportCustomHeader") );
-            $oSmarty->assign_by_ref( "linenr", $iCnt );
-            $oSmarty->assign_by_ref( "article", $oArticle );
-            $oSmarty->assign( "spr", $myConfig->getConfigParam( 'sCSVSign' ) );
-            $oSmarty->assign( "encl", $myConfig->getConfigParam( 'sGiCsvFieldEncloser' ) );
-            $this->write( $oSmarty->fetch( "genexport.tpl", $this->getViewId() ) );
+            $oSmarty->assign("sCustomHeader", oxRegistry::getSession()->getVariable("sExportCustomHeader"));
+            $oSmarty->assign_by_ref("linenr", $iCnt);
+            $oSmarty->assign_by_ref("article", $oArticle);
+            $oSmarty->assign("spr", $myConfig->getConfigParam('sCSVSign'));
+            $oSmarty->assign("encl", $myConfig->getConfigParam('sGiCsvFieldEncloser'));
+            $this->write($oSmarty->fetch("genexport.tpl", $this->getViewId()));
+
             return ++$iExportedItems;
         }
 
@@ -85,14 +88,14 @@ class GenExport_Do extends DynExportBase
      *
      * @return null
      */
-    public function write( $sLine )
+    public function write($sLine)
     {
-        $sLine = $this->removeSID( $sLine );
+        $sLine = $this->removeSID($sLine);
 
-        $sLine = str_replace( array("\r\n","\n"), "", $sLine );
-        $sLine = str_replace( "<br>", "\n", $sLine );
+        $sLine = str_replace(array("\r\n", "\n"), "", $sLine);
+        $sLine = str_replace("<br>", "\n", $sLine);
 
-        fwrite( $this->fpFile, $sLine."\r\n");
+        fwrite($this->fpFile, $sLine . "\r\n");
     }
 
 }

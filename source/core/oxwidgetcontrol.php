@@ -28,6 +28,7 @@
 class oxWidgetControl extends oxShopControl
 {
 
+
     /**
      * Skip handler set for widget as it already set in oxShopControl.
      *
@@ -63,15 +64,15 @@ class oxWidgetControl extends oxShopControl
      *
      * @return null
      */
-    public function start( $sClass = null, $sFunction = null, $aParams = null, $aViewsChain = null )
+    public function start($sClass = null, $sFunction = null, $aParams = null, $aViewsChain = null)
     {
         //$aParams = ( isset($aParams) ) ? $aParams : oxRegistry::getConfig()->getRequestParameter( 'oxwparams' );
 
-        if ( !isset($aViewsChain) && oxRegistry::getConfig()->getRequestParameter( 'oxwparent' ) ) {
-            $aViewsChain =  explode( "|", oxRegistry::getConfig()->getRequestParameter( 'oxwparent' ) );
+        if (!isset($aViewsChain) && oxRegistry::getConfig()->getRequestParameter('oxwparent')) {
+            $aViewsChain = explode("|", oxRegistry::getConfig()->getRequestParameter('oxwparent'));
         }
 
-        parent::start( $sClass, $sFunction, $aParams, $aViewsChain );
+        parent::start($sClass, $sFunction, $aParams, $aViewsChain);
 
         //perform tasks that should be done at the end of widget processing
         $this->_runLast();
@@ -99,13 +100,13 @@ class oxWidgetControl extends oxShopControl
     {
         $oConfig = $this->getConfig();
 
-        if ( $oConfig->hasActiveViewsChain() ) {
+        if ($oConfig->hasActiveViewsChain()) {
             // Removing current active view.
             $oConfig->dropLastActiveView();
 
             // Setting back last active view.
             $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-            $oSmarty->assign('oView', $oConfig->getActiveView() );
+            $oSmarty->assign('oView', $oConfig->getActiveView());
         }
     }
 
@@ -119,35 +120,35 @@ class oxWidgetControl extends oxShopControl
      *
      * @return oxView Current active view
      */
-    protected function _initializeViewObject( $sClass, $sFunction, $aParams = null, $aViewsChain = null )
+    protected function _initializeViewObject($sClass, $sFunction, $aParams = null, $aViewsChain = null)
     {
         $oConfig = $this->getConfig();
         $aActiveViewsNames = $oConfig->getActiveViewsNames();
-        $aActiveViewsNames = array_map( "strtolower", $aActiveViewsNames );
+        $aActiveViewsNames = array_map("strtolower", $aActiveViewsNames);
 
         // if exists views chain, initializing these view at first
-        if ( is_array($aViewsChain) && !empty($aViewsChain) ) {
+        if (is_array($aViewsChain) && !empty($aViewsChain)) {
 
-            foreach ( $aViewsChain as $sParentClassName ) {
-                if ( $sParentClassName != $sClass && !in_array( strtolower($sParentClassName), $aActiveViewsNames ) ) {
+            foreach ($aViewsChain as $sParentClassName) {
+                if ($sParentClassName != $sClass && !in_array(strtolower($sParentClassName), $aActiveViewsNames)) {
                     // creating parent view object
-                    if ( strtolower($sParentClassName) == 'oxubase' ) {
-                        $oViewObject = oxNew( 'oxubase' );
-                        $oConfig->setActiveView( $oViewObject );
+                    if (strtolower($sParentClassName) == 'oxubase') {
+                        $oViewObject = oxNew('oxubase');
+                        $oConfig->setActiveView($oViewObject);
                     } else {
-                        $oViewObject = oxNew( $sParentClassName );
-                        $oViewObject->setClassName( $sParentClassName );
-                        $oConfig->setActiveView( $oViewObject );
+                        $oViewObject = oxNew($sParentClassName);
+                        $oViewObject->setClassName($sParentClassName);
+                        $oConfig->setActiveView($oViewObject);
                     }
                 }
             }
         }
 
-        $oWidgetViewObject = parent::_initializeViewObject( $sClass, $sFunction, $aParams );
+        $oWidgetViewObject = parent::_initializeViewObject($sClass, $sFunction, $aParams);
 
         // Set template name for current widget.
-        if ( !empty($aParams['oxwtemplate']) ) {
-            $oWidgetViewObject->setTemplateName( $aParams['oxwtemplate'] );
+        if (!empty($aParams['oxwtemplate'])) {
+            $oWidgetViewObject->setTemplateName($aParams['oxwtemplate']);
         }
 
         return $oWidgetViewObject;

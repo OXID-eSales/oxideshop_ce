@@ -29,19 +29,20 @@
  * Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  *
- * @ignore This class will not be included in documentation.
+ * @ignore   This class will not be included in documentation.
  */
 class oxOnlineModuleVersionNotifier
 {
-    /** @var oxOnlineModuleVersionNotifierCaller  */
+
+    /** @var oxOnlineModuleVersionNotifierCaller */
     private $_oCaller = null;
 
-    /** @var oxModuleList  */
+    /** @var oxModuleList */
     private $_oModuleList = null;
 
-    function __construct( oxOnlineModuleVersionNotifierCaller $oCaller, oxModuleList $oModuleList )
+    function __construct(oxOnlineModuleVersionNotifierCaller $oCaller, oxModuleList $oModuleList)
     {
         $this->_oCaller = $oCaller;
         $this->_oModuleList = $oModuleList;
@@ -67,7 +68,7 @@ class oxOnlineModuleVersionNotifier
     {
         $aPreparedModules = array();
         $aModules = $this->_getModules();
-        foreach( $aModules as $oModule ) {
+        foreach ($aModules as $oModule) {
             /** @var oxModule $oModule */
 
             $oPreparedModule = new stdClass();
@@ -88,7 +89,7 @@ class oxOnlineModuleVersionNotifier
     /**
      * Send request message to Online Module Version Notifier web service.
      *
-     * @return oxOnlineModulesNotifierRequest
+     * @return oxOnlineModuleNotifierRequest
      */
     protected function _formRequest()
     {

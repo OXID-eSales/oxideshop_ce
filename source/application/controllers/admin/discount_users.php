@@ -28,6 +28,7 @@
  */
 class Discount_Users extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates discount category tree,
      * passes data to Smarty engine and returns name of template file "discount_main.tpl".
@@ -39,44 +40,45 @@ class Discount_Users extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sSelGroup = oxRegistry::getConfig()->getRequestParameter( "selgroup");
+        $sSelGroup = oxRegistry::getConfig()->getRequestParameter("selgroup");
 
         // all usergroups
-        $oGroups = oxNew( 'oxlist' );
-        $oGroups->init( 'oxgroups' );
-        $oGroups->selectString( "select * from ".getViewName( "oxgroups", $this->_iEditLang ) );
+        $oGroups = oxNew('oxlist');
+        $oGroups->init('oxgroups');
+        $oGroups->selectString("select * from " . getViewName("oxgroups", $this->_iEditLang));
 
         $oRoot = new stdClass();
-        $oRoot->oxgroups__oxid    = new oxField("");
+        $oRoot->oxgroups__oxid = new oxField("");
         $oRoot->oxgroups__oxtitle = new oxField("-- ");
         // rebuild list as we need the "no value" entry at the first position
         $aNewList = array();
         $aNewList[] = $oRoot;
 
-        foreach ( $oGroups as $val ) {
+        foreach ($oGroups as $val) {
             $aNewList[$val->oxgroups__oxid->value] = new stdClass();
-            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxid    = new oxField($val->oxgroups__oxid->value);
+            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxid = new oxField($val->oxgroups__oxid->value);
             $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxtitle = new oxField($val->oxgroups__oxtitle->value);
         }
 
         $this->_aViewData["allgroups2"] = $aNewList;
 
-        if ( isset($soxId) && $soxId != "-") {
-            $oDiscount = oxNew( "oxdiscount" );
-            $oDiscount->load( $soxId);
+        if (isset($soxId) && $soxId != "-") {
+            $oDiscount = oxNew("oxdiscount");
+            $oDiscount->load($soxId);
 
-            if ($oDiscount->isDerived())
-                $this->_aViewData["readonly"] =  true;
+            if ($oDiscount->isDerived()) {
+                $this->_aViewData["readonly"] = true;
+            }
         }
 
         $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
-        if ( $iAoc == 1 ) {
-            $oDiscountGroupsAjax = oxNew( 'discount_groups_ajax' );
+        if ($iAoc == 1) {
+            $oDiscountGroupsAjax = oxNew('discount_groups_ajax');
             $this->_aViewData['oxajax'] = $oDiscountGroupsAjax->getColumns();
 
             return "popups/discount_groups.tpl";
-        } elseif ( $iAoc == 2 ) {
-            $oDiscountUsersAjax = oxNew( 'discount_users_ajax' );
+        } elseif ($iAoc == 2) {
+            $oDiscountUsersAjax = oxNew('discount_users_ajax');
             $this->_aViewData['oxajax'] = $oDiscountUsersAjax->getColumns();
 
             return "popups/discount_users.tpl";

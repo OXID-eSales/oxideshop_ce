@@ -28,8 +28,10 @@
  */
 class VoucherSerie extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'voucherserie.tpl';

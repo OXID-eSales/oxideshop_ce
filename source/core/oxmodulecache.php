@@ -24,7 +24,7 @@
  * Module cache events handler class.
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class oxModuleCache extends oxSuperCfg
 {
@@ -37,7 +37,7 @@ class oxModuleCache extends oxSuperCfg
     /**
      * @param oxModule $_oModule
      */
-    function __construct( oxModule $_oModule )
+    function __construct(oxModule $_oModule)
     {
         $this->_oModule = $_oModule;
     }
@@ -45,7 +45,7 @@ class oxModuleCache extends oxSuperCfg
     /**
      * @param oxModule $oModule
      */
-    public function setModule( $oModule )
+    public function setModule($oModule)
     {
         $this->_oModule = $oModule;
     }
@@ -67,7 +67,7 @@ class oxModuleCache extends oxSuperCfg
     {
         $aTemplates = $this->getModule()->getTemplates();
         $oUtils = oxRegistry::getUtils();
-        $oUtils->resetTemplateCache( $aTemplates );
+        $oUtils->resetTemplateCache($aTemplates);
         $oUtils->resetLanguageCache();
         $oUtils->resetMenuCache();
 
@@ -82,7 +82,7 @@ class oxModuleCache extends oxSuperCfg
      */
     protected function _clearApcCache()
     {
-        if ( extension_loaded( 'apc' ) && ini_get( 'apc.enabled' ) ) {
+        if (extension_loaded('apc') && ini_get('apc.enabled')) {
             apc_clear_cache();
         }
     }

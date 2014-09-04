@@ -26,6 +26,7 @@
  */
 class oxPasswordSaltGenerator
 {
+
     /**
      * @var oxOpenSSLFunctionalityChecker
      */

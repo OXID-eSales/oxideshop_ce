@@ -27,8 +27,10 @@
  */
 class Language extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'language.tpl';

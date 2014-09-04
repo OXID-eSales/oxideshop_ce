@@ -27,8 +27,10 @@
  */
 class Shop_License extends Shop_Config
 {
+
     /**
      * Current class template.
+     *
      * @var string
      */
     protected $_sThisTemplate = "shop_license.tpl";
@@ -36,12 +38,13 @@ class Shop_License extends Shop_Config
 
     /**
      * Getting current shop version links for editions
+     *
      * @var array
      */
     protected $_aVersionCheckLinks = array(
-            "EE" => "http://admin.oxid-esales.com/EE/onlinecheck.php",
-            "PE" => "http://admin.oxid-esales.com/PE/onlinecheck.php",
-            "CE" => "http://admin.oxid-esales.com/CE/onlinecheck.php"
+        "EE" => "http://admin.oxid-esales.com/EE/onlinecheck.php",
+        "PE" => "http://admin.oxid-esales.com/PE/onlinecheck.php",
+        "CE" => "http://admin.oxid-esales.com/CE/onlinecheck.php"
     );
 
 
@@ -53,27 +56,27 @@ class Shop_License extends Shop_Config
      */
     public function render()
     {
-        $myConfig   = $this->getConfig();
+        $myConfig = $this->getConfig();
         if ($myConfig->isDemoShop()) {
             /** @var oxSystemComponentException $oSystemComponentException */
-            $oSystemComponentException = oxNew( "oxSystemComponentException", "license" );
+            $oSystemComponentException = oxNew("oxSystemComponentException", "license");
             throw $oSystemComponentException;
         }
 
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId ) ) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oShop = oxNew( "oxshop" );
-            $oShop->load( $soxId );
-            $this->_aViewData["edit"] =  $oShop;
+            $oShop = oxNew("oxshop");
+            $oShop->load($soxId);
+            $this->_aViewData["edit"] = $oShop;
         }
 
         $this->_aViewData["version"] = $myConfig->getVersion();
 
 
-            $this->_aViewData['aCurVersionInfo'] = $this->_fetchCurVersionInfo( $this->_aVersionCheckLinks["CE"] );
+            $this->_aViewData['aCurVersionInfo'] = $this->_fetchCurVersionInfo($this->_aVersionCheckLinks["CE"]);
 
         if (!$this->_canUpdate()) {
             $this->_aViewData['readonly'] = true;
@@ -92,7 +95,7 @@ class Shop_License extends Shop_Config
     {
         $myConfig = $this->getConfig();
 
-        $blIsMallAdmin = oxRegistry::getSession()->getVariable( 'malladmin' );
+        $blIsMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
         if (!$blIsMallAdmin) {
             return false;
         }
@@ -111,12 +114,12 @@ class Shop_License extends Shop_Config
      *
      * @return string
      */
-    protected function _fetchCurVersionInfo( $sUrl )
+    protected function _fetchCurVersionInfo($sUrl)
     {
-        $aParams = array("myversion" => $this->getConfig()->getVersion() );
+        $aParams = array("myversion" => $this->getConfig()->getVersion());
         $oLang = oxRegistry::getLang();
         $iLang = $oLang->getTplLanguage();
-        $sLang = $oLang->getLanguageAbbr( $iLang );
+        $sLang = $oLang->getLanguageAbbr($iLang);
 
         $oCurl = oxNew('oxCurl');
         $oCurl->setMethod("POST");
@@ -126,7 +129,7 @@ class Shop_License extends Shop_Config
 
         $sOutput = strip_tags($sOutput, "<br>, <b>");
         $aResult = explode("<br>", $sOutput);
-        if ( strstr( $aResult[5], "update" ) ) {
+        if (strstr($aResult[5], "update")) {
             $sUpdateLink = 'http://wiki.oxidforge.org/Category:Downloads';
             $aResult[5] = "<a id='linkToUpdate' href='$sUpdateLink' target='_blank'>" . $aResult[5] . "</a>";
         }

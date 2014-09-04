@@ -93,9 +93,9 @@ class oxViewConfig extends oxSuperCfg
     {
         if (($sValue = $this->getViewConfigParam('homeLink')) === null) {
             $myConfig = $this->getConfig();
-            $myUtils  = oxRegistry::getUtils();
-            $oLang    = oxRegistry::getLang();
-            $iLang    = $oLang->getBaseLanguage();
+            $myUtils = oxRegistry::getUtils();
+            $oLang = oxRegistry::getLang();
+            $iLang = $oLang->getBaseLanguage();
 
             $sValue = null;
 
@@ -164,16 +164,16 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getLogoutLink()
     {
-        $sClass         = $this->getTopActionClassName();
-        $sCatnid        = $this->getActCatId();
-        $sMnfid         = $this->getActManufacturerId();
-        $sArtnid        = $this->getActArticleId();
-        $sTplName       = $this->getActTplName();
+        $sClass = $this->getTopActionClassName();
+        $sCatnid = $this->getActCatId();
+        $sMnfid = $this->getActManufacturerId();
+        $sArtnid = $this->getActArticleId();
+        $sTplName = $this->getActTplName();
         $sContentLoadId = $this->getActContentLoadId();
-        $sSearchParam   = $this->getActSearchParam();
-        $sSearchTag     = $this->getActSearchTag();
-        $sRecommId      = $this->getActRecommendationId();
-        $sListType      = $this->getActListType();
+        $sSearchParam = $this->getActSearchParam();
+        $sSearchTag = $this->getActSearchTag();
+        $sRecommId = $this->getActRecommendationId();
+        $sListType = $this->getActListType();
 
         $oConfig = $this->getConfig();
 
@@ -214,7 +214,7 @@ class oxViewConfig extends oxSuperCfg
         if ($this->_sHelpPageLink === null) {
             $this->_sHelpPageLink = "";
             $aContentIdents = $this->_getHelpContentIdents();
-            $oContent       = oxNew("oxContent");
+            $oContent = oxNew("oxContent");
             foreach ($aContentIdents as $sIdent) {
                 if ($oContent->loadByIdent($sIdent)) {
                     $this->_sHelpPageLink = $oContent->getLink();
@@ -360,7 +360,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function setViewShop($oShop, $aViewData)
     {
-        $this->_oShop     = $oShop;
+        $this->_oShop = $oShop;
         $this->_aViewData = $aViewData;
     }
 
@@ -856,7 +856,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getShowCompareList()
     {
-        $myConfig          = $this->getConfig();
+        $myConfig = $this->getConfig();
         $blShowCompareList = true;
 
         if (!$myConfig->getConfigParam('bl_showCompareList') ||
@@ -906,7 +906,7 @@ class oxViewConfig extends oxSuperCfg
     public function getActLanguageId()
     {
         if (($sValue = $this->getViewConfigParam('lang')) === null) {
-            $iLang  = oxRegistry::getConfig()->getRequestParameter('lang');
+            $iLang = oxRegistry::getConfig()->getRequestParameter('lang');
             $sValue = ($iLang !== null) ? $iLang : oxRegistry::getLang()->getBaseLanguage();
             $this->setViewConfigParam('lang', $sValue);
         }
@@ -963,7 +963,7 @@ class oxViewConfig extends oxSuperCfg
     public function getNavUrlParams()
     {
         if (($sParams = $this->getViewConfigParam('navurlparams')) === null) {
-            $sParams    = '';
+            $sParams = '';
             $aNavParams = $this->getConfig()->getActiveView()->getNavigationParams();
             foreach ($aNavParams as $sName => $sValue) {
                 if (isset($sValue)) {
@@ -991,8 +991,8 @@ class oxViewConfig extends oxSuperCfg
     {
 
         if (($sParams = $this->getViewConfigParam('navformparams')) === null) {
-            $oStr       = getStr();
-            $sParams    = '';
+            $oStr = getStr();
+            $sParams = '';
             $aNavParams = $this->getConfig()->getTopActiveView()->getNavigationParams();
             foreach ($aNavParams as $sName => $sValue) {
                 if (isset($sValue)) {
@@ -1164,7 +1164,7 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getTsDomain()
     {
-        $sDomain   = false;
+        $sDomain = false;
         $aTsConfig = $this->getConfig()->getConfigParam("aTsConfig");
         if (is_array($aTsConfig)) {
             $sDomain = $aTsConfig["blTestMode"] ? $aTsConfig["sTsTestUrl"] : $aTsConfig["sTsUrl"];
@@ -1201,12 +1201,12 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getTsRatingUrl()
     {
-        $sUrl  = false;
+        $sUrl = false;
         $sTsId = $this->getTsId();
         if ($sTsId) {
             $sTsUrl = $this->getTsDomain();
 
-            $sLangId   = oxRegistry::getLang()->getLanguageAbbr();
+            $sLangId = oxRegistry::getLang()->getLanguageAbbr();
             $aTsConfig = $this->getConfig()->getConfigParam("aTsConfig");
             if (isset($aTsConfig["sTsRatingUri"]) && isset($aTsConfig["sTsRatingUri"][$sLangId])) {
                 $sTsRateUri = $aTsConfig["sTsRatingUri"][$sLangId];
@@ -1257,8 +1257,8 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getTsId()
     {
-        $sTsId    = false;
-        $oConfig  = $this->getConfig();
+        $sTsId = false;
+        $oConfig = $this->getConfig();
         $aLangIds = $oConfig->getConfigParam("aTsLangIds");
         $aActInfo = $oConfig->getConfigParam("aTsActiveLangIds");
 
@@ -1333,9 +1333,9 @@ class oxViewConfig extends oxSuperCfg
         if (!$sFile || ($sFile[0] != '/')) {
             $sFile = '/' . $sFile;
         }
-        $oModule     = oxNew("oxmodule");
+        $oModule = oxNew("oxmodule");
         $sModulePath = $oModule->getModulePath($sModule);
-        $sFile       = $this->getConfig()->getModulesDir() . $sModulePath . $sFile;
+        $sFile = $this->getConfig()->getModulesDir() . $sModulePath . $sFile;
         if (file_exists($sFile) || is_dir($sFile)) {
             return $sFile;
         } else {
@@ -1443,7 +1443,7 @@ class oxViewConfig extends oxSuperCfg
     public function getActiveTheme()
     {
         if ($this->_sActiveTheme === null) {
-            $oTheme              = oxNew('oxTheme');
+            $oTheme = oxNew('oxTheme');
             $this->_sActiveTheme = $oTheme->getActiveThemeId();
         }
 

@@ -25,6 +25,7 @@
  */
 class SelectList_List extends oxAdminList
 {
+
     /**
      * Name of chosen object class (default null).
      *
@@ -34,6 +35,7 @@ class SelectList_List extends oxAdminList
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'selectlist_list.tpl';

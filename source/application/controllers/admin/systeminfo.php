@@ -27,6 +27,7 @@
  */
 class SystemInfo extends oxAdminView
 {
+
     /**
      * Executes parent method parent::render(), prints shop and
      * PHP configuration information.
@@ -35,44 +36,46 @@ class SystemInfo extends oxAdminView
      */
     public function render()
     {
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
 
         parent::render();
 
-        $oAuthUser = oxNew( 'oxuser' );
+        $oAuthUser = oxNew('oxuser');
         $oAuthUser->loadAdminUser();
         $blisMallAdmin = $oAuthUser->oxuser__oxrights->value == "malladmin";
 
-        if ( $blisMallAdmin && !$myConfig->isDemoShop()) {
-            $aClassVars = get_object_vars( $myConfig);
+        if ($blisMallAdmin && !$myConfig->isDemoShop()) {
+            $aClassVars = get_object_vars($myConfig);
             $aSystemInfo = array();
             $aSystemInfo['pkg.info'] = $myConfig->getPackageInfo();
             $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
             while (list($name, $value) = each($aClassVars)) {
-                if (gettype($value)=="object")
+                if (gettype($value) == "object") {
                     continue;
+                }
                 // security fix - we do not output dbname and dbpwd cause of demoshops
-                if ( $name == "oDB" || $name == "dbUser" || $name == "dbPwd" ||
-                    $name == "oSerial" || $name == "aSerials" || $name == "sSerialNr" )
+                if ($name == "oDB" || $name == "dbUser" || $name == "dbPwd" ||
+                    $name == "oSerial" || $name == "aSerials" || $name == "sSerialNr"
+                )
                     continue;
                 $value = var_export($value, true);
-                $value = str_replace( "\n", "<br>", $value);
+                $value = str_replace("\n", "<br>", $value);
                 $aSystemInfo[$name] = $value;
                 //echo( "$name = $value <br>");
             }
-            $oSmarty->assign( "oViewConf", $this->_aViewData["oViewConf"]);
-            $oSmarty->assign( "oView", $this->_aViewData["oView"]);
-            $oSmarty->assign( "shop", $this->_aViewData["shop"]);
-            $oSmarty->assign( "isdemo", $myConfig->isDemoShop());
-            $oSmarty->assign( "aSystemInfo", $aSystemInfo);
+            $oSmarty->assign("oViewConf", $this->_aViewData["oViewConf"]);
+            $oSmarty->assign("oView", $this->_aViewData["oView"]);
+            $oSmarty->assign("shop", $this->_aViewData["shop"]);
+            $oSmarty->assign("isdemo", $myConfig->isDemoShop());
+            $oSmarty->assign("aSystemInfo", $aSystemInfo);
             echo $oSmarty->fetch("systeminfo.tpl");
-            echo( "<br><br>");
+            echo("<br><br>");
 
             phpinfo();
 
-            oxRegistry::getUtils()->showMessageAndExit( "" );
+            oxRegistry::getUtils()->showMessageAndExit("");
         } else {
-            return oxRegistry::getUtils()->showMessageAndExit( "Access denied !" );
+            return oxRegistry::getUtils()->showMessageAndExit("Access denied !");
         }
     }
 }

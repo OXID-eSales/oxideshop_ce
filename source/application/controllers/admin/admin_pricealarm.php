@@ -28,6 +28,7 @@
  */
 class Admin_Pricealarm extends oxAdminView
 {
+
     /**
      * Default active tab number
      *
@@ -37,6 +38,7 @@ class Admin_Pricealarm extends oxAdminView
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'admin_pricealarm.tpl';

@@ -26,14 +26,15 @@
  *
  */
 
-class oxDiagnosticsOutput {
+class oxDiagnosticsOutput
+{
 
     /**
      * result key
      *
      * @var string
      */
-    protected $_sOutputKey             = "diagnostic_tool_result";
+    protected $_sOutputKey = "diagnostic_tool_result";
 
 
     /**
@@ -41,7 +42,7 @@ class oxDiagnosticsOutput {
      *
      * @var string
      */
-    protected $_sOutputFileName        = "diagnostic_tool_result.html";
+    protected $_sOutputFileName = "diagnostic_tool_result.html";
 
     /**
      * Utils object
@@ -63,9 +64,9 @@ class oxDiagnosticsOutput {
      *
      * @param $sOutputKey string
      */
-    public function setOutputKey( $sOutputKey )
+    public function setOutputKey($sOutputKey)
     {
-        if ( !empty( $sOutputKey ) ) {
+        if (!empty($sOutputKey)) {
             $this->_sOutputKey = $sOutputKey;
         }
     }
@@ -85,9 +86,9 @@ class oxDiagnosticsOutput {
      *
      * @param $sOutputFileName string
      */
-    public function setOutputFileName( $sOutputFileName )
+    public function setOutputFileName($sOutputFileName)
     {
-        if ( !empty( $sOutputFileName ) ) {
+        if (!empty($sOutputFileName)) {
             $this->_sOutputFileName = $sOutputFileName;
         }
     }
@@ -107,9 +108,9 @@ class oxDiagnosticsOutput {
      *
      * @param $sResult
      */
-    public function storeResult( $sResult )
+    public function storeResult($sResult)
     {
-        $this->_oUtils->toFileCache( $this->_sOutputKey, $sBody . $sResult );
+        $this->_oUtils->toFileCache($this->_sOutputKey, $sBody . $sResult);
     }
 
     /**
@@ -117,11 +118,11 @@ class oxDiagnosticsOutput {
      *
      * @return string
      */
-    public function readResultFile( $sOutputKey = null )
+    public function readResultFile($sOutputKey = null)
     {
-        $sCurrentKey = ( empty($sOutputKey) ) ?  $this->_sOutputKey : $sOutputKey;
+        $sCurrentKey = (empty($sOutputKey)) ? $this->_sOutputKey : $sOutputKey;
 
-        return $this->_oUtils->fromFileCache( $sCurrentKey );
+        return $this->_oUtils->fromFileCache($sCurrentKey);
     }
 
     /**
@@ -129,21 +130,21 @@ class oxDiagnosticsOutput {
      *
      * @return null
      */
-    public function downloadResultFile( $sOutputKey = null )
+    public function downloadResultFile($sOutputKey = null)
     {
-        $sCurrentKey = ( empty($sOutputKey) ) ?  $this->_sOutputKey : $sOutputKey;
+        $sCurrentKey = (empty($sOutputKey)) ? $this->_sOutputKey : $sOutputKey;
 
         $this->_oUtils = oxRegistry::getUtils();
-        $iFileSize = filesize( $this->_oUtils->getCacheFilePath( $sCurrentKey ) );
+        $iFileSize = filesize($this->_oUtils->getCacheFilePath($sCurrentKey));
 
-        $this->_oUtils->setHeader( "Pragma: public" );
-        $this->_oUtils->setHeader( "Expires: 0" );
-        $this->_oUtils->setHeader( "Cache-Control: must-revalidate, post-check=0, pre-check=0, private" );
-        $this->_oUtils->setHeader('Content-Disposition: attachment;filename=' . $this->_sOutputFileName );
-        $this->_oUtils->setHeader( "Content-Type: application/octet-stream" );
-        if ( $iFileSize) {
-            $this->_oUtils->setHeader( "Content-Length: " . $iFileSize );
+        $this->_oUtils->setHeader("Pragma: public");
+        $this->_oUtils->setHeader("Expires: 0");
+        $this->_oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0, private");
+        $this->_oUtils->setHeader('Content-Disposition: attachment;filename=' . $this->_sOutputFileName);
+        $this->_oUtils->setHeader("Content-Type: application/octet-stream");
+        if ($iFileSize) {
+            $this->_oUtils->setHeader("Content-Length: " . $iFileSize);
         }
-        echo $this->_oUtils->fromFileCache( $sCurrentKey );
+        echo $this->_oUtils->fromFileCache($sCurrentKey);
     }
 }

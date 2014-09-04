@@ -24,16 +24,17 @@
  * Checks if server node is valid, information is not outdated.
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  *
- * @ignore This class will not be included in documentation.
+ * @ignore   This class will not be included in documentation.
  */
 class oxServerChecker
 {
+
     /**
      * Time in seconds, server node information life time.
      */
-    CONST NODE_VALIDITY_TIME = 43200;
+    CONST NODE_VALIDITY_TIME = 82800;
 
     /**
      * Current checking time - timestamp.
@@ -74,7 +75,7 @@ class oxServerChecker
      */
     private function _isValid($oServer)
     {
-        return ($oServer->getTimestamp()- $this->_getCurrentTime() + self::NODE_VALIDITY_TIME) > 0;
+        return ($oServer->getTimestamp() - $this->_getCurrentTime() + self::NODE_VALIDITY_TIME) > 0;
     }
 
     /**

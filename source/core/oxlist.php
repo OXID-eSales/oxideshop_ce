@@ -26,6 +26,7 @@
  */
 class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
 {
+
     /**
      * Array of objects (some object list).
      *
@@ -73,9 +74,9 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @return boolean
      */
-    public function offsetExists( $offset )
+    public function offsetExists($offset)
     {
-        if ( isset( $this->_aArray[$offset] ) ) {
+        if (isset($this->_aArray[$offset])) {
             return true;
         } else {
             return false;
@@ -89,9 +90,9 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @return oxBase
      */
-    public function offsetGet( $offset )
+    public function offsetGet($offset)
     {
-        if ( $this->offsetExists( $offset ) ) {
+        if ($this->offsetExists($offset)) {
             return $this->_aArray[$offset];
         } else {
             return false;
@@ -106,13 +107,13 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @return null;
      */
-    public function offsetSet( $offset, $oBase )
+    public function offsetSet($offset, $oBase)
     {
-        if ( isset( $offset ) ) {
+        if (isset($offset)) {
             $this->_aArray[$offset] = & $oBase;
         } else {
-            $sLongFieldName = $this->_getFieldLongName( 'oxid' );
-            if ( isset( $oBase->$sLongFieldName->value ) ) {
+            $sLongFieldName = $this->_getFieldLongName('oxid');
+            if (isset($oBase->$sLongFieldName->value)) {
                 $sOxid = $oBase->$sLongFieldName->value;
                 $this->_aArray[$sOxid] = & $oBase;
             } else {
@@ -129,14 +130,14 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @return null;
      */
-    public function offsetUnset( $offset )
+    public function offsetUnset($offset)
     {
         if (strcmp($offset, $this->key()) === 0) {
             // #0002184: active element removed, next element will be prev / first
             $this->_blRemovedActive = true;
         }
 
-        unset( $this->_aArray[$offset] );
+        unset($this->_aArray[$offset]);
     }
 
     /**
@@ -146,7 +147,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      */
     public function arrayKeys()
     {
-        return array_keys( $this->_aArray );
+        return array_keys($this->_aArray);
     }
 
     /**
@@ -157,7 +158,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
     public function rewind()
     {
         $this->_blRemovedActive = false;
-        $this->_blValid = ( false !== reset( $this->_aArray ) );
+        $this->_blValid = (false !== reset($this->_aArray));
     }
 
     /**
@@ -167,7 +168,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      */
     public function current()
     {
-        return current( $this->_aArray );
+        return current($this->_aArray);
     }
 
     /**
@@ -177,7 +178,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      */
     public function key()
     {
-        return key( $this->_aArray );
+        return key($this->_aArray);
     }
 
     /**
@@ -193,6 +194,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
             $oVar = reset($this->_aArray);
         }
         $this->_blRemovedActive = false;
+
         return $oVar;
     }
 
@@ -209,7 +211,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
             $oVar = next($this->_aArray);
         }
 
-        $this->_blValid = ( false !== $oVar );
+        $this->_blValid = (false !== $oVar);
     }
 
     /**
@@ -229,7 +231,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      */
     public function count()
     {
-        return count( $this->_aArray );
+        return count($this->_aArray);
     }
 
     /**
@@ -254,7 +256,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @return null
      */
-    public function assign( $aArray )
+    public function assign($aArray)
     {
         $this->_aArray = $aArray;
     }
@@ -266,7 +268,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      */
     public function reverse()
     {
-        return array_reverse( $this->_aArray );
+        return array_reverse($this->_aArray);
     }
 
     /**
@@ -304,15 +306,15 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @param string $sObjectName Associated list item object type
      */
-    public function __construct( $sObjectName = null )
+    public function __construct($sObjectName = null)
     {
         $myConfig = $this->getConfig();
         $this->_aSqlLimit[0] = 0;
         $this->_aSqlLimit[1] = 0;
-        $this->_sShopID   = $myConfig->getShopId();
+        $this->_sShopID = $myConfig->getShopId();
 
-        if ( $sObjectName ) {
-            $this->init( $sObjectName );
+        if ($sObjectName) {
+            $this->init($sObjectName);
         }
     }
 
@@ -323,9 +325,9 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @return mixed
      */
-    public function __get( $sName )
+    public function __get($sName)
     {
-        if ( $sName == 'aList') {
+        if ($sName == 'aList') {
             return $this->_aArray;
         }
     }
@@ -363,23 +365,13 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      */
     public function getBaseObject()
     {
-        if ( !$this->_oBaseObject ) {
-            $this->_oBaseObject = oxNew( $this->_sObjectsInListName );
+        if (!$this->_oBaseObject) {
+            $this->_oBaseObject = oxNew($this->_sObjectsInListName);
             $this->_oBaseObject->setInList();
-            $this->_oBaseObject->init( $this->_sCoreTable );
+            $this->_oBaseObject->init($this->_sCoreTable);
         }
 
         return $this->_oBaseObject;
-    }
-
-    /**
-     * Sets base object for list.
-     *
-     * @param object $oObject Base object
-     */
-    public function setBaseObject($oObject)
-    {
-        $this->_oBaseObject = $oObject;
     }
 
     /**
@@ -389,15 +381,15 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @return null;
      */
-    public function selectString( $sSql )
+    public function selectString($sSql)
     {
         $this->clear();
 
-        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-        if ( $this->_aSqlLimit[0] || $this->_aSqlLimit[1]) {
-            $rs = $oDb->selectLimit( $sSql, $this->_aSqlLimit[1], $this->_aSqlLimit[0] );
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        if ($this->_aSqlLimit[0] || $this->_aSqlLimit[1]) {
+            $rs = $oDb->selectLimit($sSql, $this->_aSqlLimit[1], $this->_aSqlLimit[0]);
         } else {
-            $rs = $oDb->select( $sSql );
+            $rs = $oDb->select($sSql);
         }
 
         if ($rs != false && $rs->recordCount() > 0) {
@@ -410,26 +402,17 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
 
                 $this->_assignElement($oListObject, $rs->fields);
 
-                $this->add($oListObject);
+                if ($oListObject->getId()) {
+                    $this->_aArray[$oListObject->getId()] = $oListObject;
+                } else {
+                    $this->_aArray[] = $oListObject;
+                }
 
                 $rs->moveNext();
             }
         }
     }
 
-    /**
-     * Add an entry to object array.
-     *
-     * @param object $oObject Object to be added.
-     */
-    public function add($oObject)
-    {
-        if ($oObject->getId()) {
-            $this->_aArray[$oObject->getId()] = $oObject;
-        } else {
-            $this->_aArray[] = $oObject;
-        }
-    }
 
     /**
      * Assign data from array to list
@@ -438,18 +421,18 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @return null;
      */
-    public function assignArray( $aData )
+    public function assignArray($aData)
     {
         $this->clear();
-        if ( count( $aData ) ) {
+        if (count($aData)) {
 
             $oSaved = clone $this->getBaseObject();
 
             foreach ($aData as $aItem) {
                 $oListObject = clone $oSaved;
-                $this->_assignElement( $oListObject, $aItem );
-                if ( $oListObject->getId() ) {
-                    $this->_aArray[ $oListObject->getId() ] = $oListObject;
+                $this->_assignElement($oListObject, $aItem);
+                if ($oListObject->getId()) {
+                    $this->_aArray[$oListObject->getId()] = $oListObject;
                 } else {
                     $this->_aArray[] = $oListObject;
                 }
@@ -466,7 +449,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @return null;
      */
-    public function setSqlLimit( $iStart, $iRecords)
+    public function setSqlLimit($iStart, $iRecords)
     {
         $this->_aSqlLimit[0] = $iStart;
         $this->_aSqlLimit[1] = $iRecords;
@@ -499,10 +482,10 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      */
     public function getList()
     {
-        $oListObject =$this->getBaseObject();
+        $oListObject = $this->getBaseObject();
         $sFieldList = $oListObject->getSelectFields();
         $sQ = "select $sFieldList from " . $oListObject->getViewName();
-        if ( $sActiveSnippet = $oListObject->getSqlActiveSnippet() ) {
+        if ($sActiveSnippet = $oListObject->getSqlActiveSnippet()) {
             $sQ .= " where $sActiveSnippet ";
         }
         $this->selectString($sQ);

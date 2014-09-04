@@ -26,6 +26,7 @@
  */
 class oxDbMetaDataHandler extends oxSuperCfg
 {
+
     /**
      *
      * @var array
@@ -49,24 +50,25 @@ class oxDbMetaDataHandler extends oxSuperCfg
      *
      * @var array Tables which should be skipped from resetting
      */
-    protected $_aSkipTablesOnReset = array( "oxcountry" );
+    protected $_aSkipTablesOnReset = array("oxcountry");
 
     /**
      *  Get table fields
      *
-     *  @param string $sTableName table name
+     * @param string $sTableName table name
      *
-     *  @return array
+     * @return array
      */
-    public function getFields( $sTableName )
+    public function getFields($sTableName)
     {
-        $aFields    = array();
-        $aRawFields = oxDb::getDb()->MetaColumns( $sTableName );
+        $aFields = array();
+        $aRawFields = oxDb::getDb()->MetaColumns($sTableName);
         if (is_array($aRawFields)) {
-            foreach ( $aRawFields as $oField ) {
+            foreach ($aRawFields as $oField) {
                 $aFields[$oField->name] = "{$sTableName}.{$oField->name}";
             }
         }
+
         return $aFields;
     }
 
@@ -77,10 +79,11 @@ class oxDbMetaDataHandler extends oxSuperCfg
      *
      * @return bool
      */
-    public function tableExists( $sTableName )
+    public function tableExists($sTableName)
     {
         $oDb = oxDb::getDb();
-        $aTables = $oDb->getAll("show tables like ". $oDb->quote($sTableName));
+        $aTables = $oDb->getAll("show tables like " . $oDb->quote($sTableName));
+
         return count($aTables) > 0;
     }
 
@@ -92,14 +95,14 @@ class oxDbMetaDataHandler extends oxSuperCfg
      *
      * @return bool
      */
-    public function fieldExists( $sFieldName, $sTableName )
+    public function fieldExists($sFieldName, $sTableName)
     {
-        $aTableFields = $this->getFields( $sTableName );
+        $aTableFields = $this->getFields($sTableName);
         $sTableName = strtoupper($sTableName);
-        if ( is_array($aTableFields) ) {
-            $sFieldName = strtoupper( $sFieldName );
+        if (is_array($aTableFields)) {
+            $sFieldName = strtoupper($sFieldName);
             $aTableFields = array_map('strtoupper', $aTableFields);
-            if ( in_array( "{$sTableName}.{$sFieldName}", $aTableFields ) ) {
+            if (in_array("{$sTableName}.{$sFieldName}", $aTableFields)) {
                 return true;
             }
         }
@@ -116,16 +119,17 @@ class oxDbMetaDataHandler extends oxSuperCfg
      */
     public function getAllTables()
     {
-        if ( empty($this->_aTables) ) {
+        if (empty($this->_aTables)) {
 
             $aTables = oxDb::getDb()->getAll("show tables");
 
-            foreach ( $aTables as $aTableInfo) {
+            foreach ($aTables as $aTableInfo) {
                 $sTableName = $aTableInfo[0];
 
                 $this->_aTables[] = $aTableInfo[0];
             }
         }
+
         return $this->_aTables;
     }
 
@@ -140,11 +144,12 @@ class oxDbMetaDataHandler extends oxSuperCfg
     {
         $aMLTables = array();
         foreach (array_keys(oxRegistry::getLang()->getLanguageIds()) as $iLangId) {
-            $sLangTableName = getLangTableName($sTable, $iLangId );
+            $sLangTableName = getLangTableName($sTable, $iLangId);
             if ($sTable != $sLangTableName && !in_array($sLangTableName, $aMLTables)) {
                 $aMLTables[] = $sLangTableName;
             }
         }
+
         return $aMLTables;
     }
 
@@ -157,15 +162,16 @@ class oxDbMetaDataHandler extends oxSuperCfg
      * @return string
      *
      */
-    protected function _getCreateTableSetSql( $sTable, $iLang)
+    protected function _getCreateTableSetSql($sTable, $iLang)
     {
         $sTableSet = getLangTableName($sTable, $iLang);
 
-        $aRes = oxDb::getDb()->getAll( "show create table {$sTable}" );
-        $sSql = "CREATE TABLE `{$sTableSet}` (".
-                "`OXID` char(32) COLLATE latin1_general_ci NOT NULL, ".
-                "PRIMARY KEY (`OXID`)".
-                ") ".strstr($aRes[0][1], 'ENGINE=');
+        $aRes = oxDb::getDb()->getAll("show create table {$sTable}");
+        $sSql = "CREATE TABLE `{$sTableSet}` (" .
+                "`OXID` char(32) COLLATE latin1_general_ci NOT NULL, " .
+                "PRIMARY KEY (`OXID`)" .
+                ") " . strstr($aRes[0][1], 'ENGINE=');
+
         return $sSql;
     }
 
@@ -180,30 +186,30 @@ class oxDbMetaDataHandler extends oxSuperCfg
      *
      * @return string
      */
-    public function getAddFieldSql( $sTable, $sField, $sNewField, $sPrevField, $sTableSet = null )
+    public function getAddFieldSql($sTable, $sField, $sNewField, $sPrevField, $sTableSet = null)
     {
         if (!$sTableSet) {
             $sTableSet = $sTable;
         }
-        $aRes = oxDb::getDb()->getAll( "show create table {$sTable}" );
+        $aRes = oxDb::getDb()->getAll("show create table {$sTable}");
         $sTableSql = $aRes[0][1];
 
         // removing comments;
         $sTableSql = preg_replace('/COMMENT \\\'.*?\\\'/', '', $sTableSql);
-        preg_match( "/.*,\s+(['`]?".preg_quote($sField, '/')."['`]?\s+[^,]+),.*/", $sTableSql, $aMatch );
+        preg_match("/.*,\s+(['`]?" . preg_quote($sField, '/') . "['`]?\s+[^,]+),.*/", $sTableSql, $aMatch);
         $sFieldSql = $aMatch[1];
 
         $sSql = "";
-        if ( !empty($sFieldSql) ) {
-            $sFieldSql = preg_replace( "/".preg_quote($sField, '/')."/", $sNewField, $sFieldSql );
+        if (!empty($sFieldSql)) {
+            $sFieldSql = preg_replace("/" . preg_quote($sField, '/') . "/", $sNewField, $sFieldSql);
             $sSql = "ALTER TABLE `$sTableSet` ADD " . $sFieldSql;
             if ($this->tableExists($sTableSet) && $this->fieldExists($sPrevField, $sTableSet)) {
                 $sSql .= " AFTER `$sPrevField`";
             }
         }
+
         return $sSql;
     }
-
 
 
     /**
@@ -216,43 +222,43 @@ class oxDbMetaDataHandler extends oxSuperCfg
      *
      * @return string
      */
-    public function getAddFieldIndexSql( $sTable, $sField, $sNewField, $sTableSet = null )
+    public function getAddFieldIndexSql($sTable, $sField, $sNewField, $sTableSet = null)
     {
-        $aRes = oxDb::getDb()->getAll( "show create table {$sTable}" );
+        $aRes = oxDb::getDb()->getAll("show create table {$sTable}");
 
         $sTableSql = $aRes[0][1];
 
         preg_match_all("/([\w]+\s+)?\bKEY\s+(`[^`]+`)?\s*\([^)]+\)/iU", $sTableSql, $aMatch);
         $aIndex = $aMatch[0];
 
-        $blUsingTableSet = $sTableSet ?  true : false;
+        $blUsingTableSet = $sTableSet ? true : false;
 
         if (!$sTableSet) {
             $sTableSet = $sTable;
         }
 
         $aIndexSql = array();
-        $aSql      = array();
-        if ( count($aIndex) ) {
-            foreach ( $aIndex as $sIndexSql ) {
-                if ( preg_match("/\([^)]*\b" . $sField . "\b[^)]*\)/i", $sIndexSql )  ) {
+        $aSql = array();
+        if (count($aIndex)) {
+            foreach ($aIndex as $sIndexSql) {
+                if (preg_match("/\([^)]*\b" . $sField . "\b[^)]*\)/i", $sIndexSql)) {
 
                     //removing index name - new will be added automaticly
-                    $sIndexSql = preg_replace("/(.*\bKEY\s+)`[^`]+`/", "$1", $sIndexSql );
+                    $sIndexSql = preg_replace("/(.*\bKEY\s+)`[^`]+`/", "$1", $sIndexSql);
 
-                    if ( $blUsingTableSet ) {
+                    if ($blUsingTableSet) {
                         // replacing multiple fields to one (#3269)
-                        $sIndexSql = preg_replace("/\([^\)]+\)/", "(`$sNewField`)", $sIndexSql );
+                        $sIndexSql = preg_replace("/\([^\)]+\)/", "(`$sNewField`)", $sIndexSql);
                     } else {
                         //replacing previous field name with new one
-                        $sIndexSql = preg_replace("/\b" . $sField . "\b/", $sNewField, $sIndexSql );
+                        $sIndexSql = preg_replace("/\b" . $sField . "\b/", $sNewField, $sIndexSql);
                     }
 
-                    $aIndexSql[] =  "ADD ". $sIndexSql;
+                    $aIndexSql[] = "ADD " . $sIndexSql;
                 }
             }
-            if ( count($aIndexSql) ) {
-                $aSql = array("ALTER TABLE `$sTableSet` ".implode(", ", $aIndexSql));
+            if (count($aIndexSql)) {
+                $aSql = array("ALTER TABLE `$sTableSet` " . implode(", ", $aIndexSql));
             }
         }
 
@@ -267,20 +273,21 @@ class oxDbMetaDataHandler extends oxSuperCfg
      */
     public function getCurrentMaxLangId()
     {
-        if ( isset($this->_iCurrentMaxLangId) ) {
+        if (isset($this->_iCurrentMaxLangId)) {
             return $this->_iCurrentMaxLangId;
         }
 
         $sTable = $sTableSet = "oxarticles";
         $sField = $sFieldSet = "oxtitle";
-        $iLang  = 0;
+        $iLang = 0;
         while ($this->tableExists($sTableSet) && $this->fieldExists($sFieldSet, $sTableSet)) {
-            $iLang ++;
+            $iLang++;
             $sTableSet = getLangTableName($sTable, $iLang);
-            $sFieldSet = $sField.'_'.$iLang;
+            $sFieldSet = $sField . '_' . $iLang;
         }
 
         $this->_iCurrentMaxLangId = --$iLang;
+
         return $this->_iCurrentMaxLangId;
     }
 
@@ -301,13 +308,13 @@ class oxDbMetaDataHandler extends oxSuperCfg
      *
      * @return array
      */
-    public function getMultilangFields( $sTable )
+    public function getMultilangFields($sTable)
     {
-        $aFields = $this->getFields( $sTable );
+        $aFields = $this->getFields($sTable);
         $aMultiLangFields = array();
 
-        foreach ( $aFields as $sField ) {
-            if ( preg_match("/({$sTable}\.)?(?<field>.+)_1$/", $sField, $aMatches) ) {
+        foreach ($aFields as $sField) {
+            if (preg_match("/({$sTable}\.)?(?<field>.+)_1$/", $sField, $aMatches)) {
                 $aMultiLangFields[] = $aMatches['field'];
             }
         }
@@ -323,14 +330,14 @@ class oxDbMetaDataHandler extends oxSuperCfg
      *
      * @return array
      */
-    public function getSinglelangFields( $sTable, $iLang )
+    public function getSinglelangFields($sTable, $iLang)
     {
         $sLangTable = getLangTableName($sTable, $iLang);
 
         $aFields = array_merge($this->getFields($sTable), $this->getFields($sLangTable));
         $aSingleLangFields = array();
 
-        foreach ( $aFields as $sFieldName => $sField ) {
+        foreach ($aFields as $sFieldName => $sField) {
             if (preg_match("/(({$sTable}|{$sLangTable})\.)?(?<field>.+)_(?<lang>[0-9]+)$/", $sField, $aMatches)) {
                 if ($aMatches['lang'] == $iLang) {
                     $aSingleLangFields[$aMatches['field']] = $sField;
@@ -351,32 +358,32 @@ class oxDbMetaDataHandler extends oxSuperCfg
      *
      * @return null
      */
-    public function addNewMultilangField( $sTable )
+    public function addNewMultilangField($sTable)
     {
         $aSql = array();
-        $aFields  = $this->getMultilangFields($sTable);
+        $aFields = $this->getMultilangFields($sTable);
         $iMaxLang = $this->getCurrentMaxLangId();
         $iNewLang = $this->getNextLangId();
 
         $sTableSet = getLangTableName($sTable, $iNewLang);
         if (!$this->tableExists($sTableSet)) {
-            $aSql[] = $this->_getCreateTableSetSql( $sTable, $iNewLang );
+            $aSql[] = $this->_getCreateTableSetSql($sTable, $iNewLang);
         }
 
-        if ( is_array($aFields) && count($aFields) > 0 ) {
-            foreach ( $aFields as $sField ) {
+        if (is_array($aFields) && count($aFields) > 0) {
+            foreach ($aFields as $sField) {
                 $sNewFieldName = $sField . "_" . $iNewLang;
-                if ($iNewLang>1) {
-                    $iPrevLang = $iNewLang-1;
-                    $sPrevField = $sField.'_'.$iPrevLang;
+                if ($iNewLang > 1) {
+                    $iPrevLang = $iNewLang - 1;
+                    $sPrevField = $sField . '_' . $iPrevLang;
                 } else {
                     $sPrevField = $sField;
                 }
 
-                if ( !$this->tableExists($sTableSet) || !$this->fieldExists( $sNewFieldName, $sTableSet ) ) {
+                if (!$this->tableExists($sTableSet) || !$this->fieldExists($sNewFieldName, $sTableSet)) {
 
                     //getting add field sql
-                    $aSql[] = $this->getAddFieldSql( $sTable, $sField, $sNewFieldName, $sPrevField, $sTableSet );
+                    $aSql[] = $this->getAddFieldSql($sTable, $sField, $sNewFieldName, $sPrevField, $sTableSet);
 
                     //getting add index sql on added field
                     $aSql = array_merge($aSql, (array) $this->getAddFieldIndexSql($sTable, $sField, $sNewFieldName, $sTableSet));
@@ -396,30 +403,30 @@ class oxDbMetaDataHandler extends oxSuperCfg
      *
      * @return null
      */
-    public function resetMultilangFields( $iLangId, $sTableName )
+    public function resetMultilangFields($iLangId, $sTableName)
     {
-        $iLangId = (int)$iLangId;
+        $iLangId = (int) $iLangId;
 
-        if ( $iLangId === 0 ) {
+        if ($iLangId === 0) {
             return;
         }
 
         $aSql = array();
 
-        $aFields = $this->getMultilangFields( $sTableName );
-        if ( is_array($aFields) && count($aFields) > 0 ) {
-            foreach ( $aFields as $sFieldName ) {
+        $aFields = $this->getMultilangFields($sTableName);
+        if (is_array($aFields) && count($aFields) > 0) {
+            foreach ($aFields as $sFieldName) {
                 $sFieldName = $sFieldName . "_" . $iLangId;
 
-                if ( $this->fieldExists( $sFieldName, $sTableName ) ) {
+                if ($this->fieldExists($sFieldName, $sTableName)) {
                     //resetting field value to default
                     $aSql[] = "UPDATE {$sTableName} SET {$sFieldName} = DEFAULT;";
                 }
             }
         }
 
-        if ( !empty($aSql) ) {
-            $this->executeSql( $aSql );
+        if (!empty($aSql)) {
+            $this->executeSql($aSql);
         }
     }
 
@@ -436,8 +443,8 @@ class oxDbMetaDataHandler extends oxSuperCfg
 
         $aTable = $this->getAllTables();
 
-        foreach ( $aTable as $sTableName ) {
-            $this->addNewMultilangField( $sTableName );
+        foreach ($aTable as $sTableName) {
+            $this->addNewMultilangField($sTableName);
         }
 
         //updating views
@@ -452,24 +459,24 @@ class oxDbMetaDataHandler extends oxSuperCfg
      *
      * @return null
      */
-    public function resetLanguage( $iLangId )
+    public function resetLanguage($iLangId)
     {
-        if ( (int)$iLangId === 0 ) {
+        if ((int) $iLangId === 0) {
             return;
         }
 
         $aTables = $this->getAllTables();
 
         // removing tables which does not requires reset
-        foreach ( $this->_aSkipTablesOnReset as $sSkipTable ) {
+        foreach ($this->_aSkipTablesOnReset as $sSkipTable) {
 
-            if ( ($iSkipId = array_search( $sSkipTable, $aTables )) !== false ) {
-                unset( $aTables[$iSkipId] );
+            if (($iSkipId = array_search($sSkipTable, $aTables)) !== false) {
+                unset($aTables[$iSkipId]);
             }
         }
 
-        foreach ( $aTables as $sTableName ) {
-            $this->resetMultilangFields( $iLangId, $sTableName );
+        foreach ($aTables as $sTableName) {
+            $this->resetMultilangFields($iLangId, $sTableName);
         }
     }
 
@@ -480,15 +487,15 @@ class oxDbMetaDataHandler extends oxSuperCfg
      *
      * @return null
      */
-    public function executeSql( $aSql )
+    public function executeSql($aSql)
     {
         $oDb = oxDb::getDb();
 
-        if ( is_array($aSql) && !empty($aSql) ) {
-            foreach ( $aSql as $sSql) {
+        if (is_array($aSql) && !empty($aSql)) {
+            foreach ($aSql as $sSql) {
                 $sSql = trim($sSql);
                 if (!empty($sSql)) {
-                    $oDb->execute( $sSql );
+                    $oDb->execute($sSql);
                 }
             }
         }
@@ -501,28 +508,28 @@ class oxDbMetaDataHandler extends oxSuperCfg
      *
      * @return bool
      */
-    public function updateViews( $aTables = null )
+    public function updateViews($aTables = null)
     {
-        set_time_limit( 0 );
+        set_time_limit(0);
 
         $oDb = oxDb::getDb();
         $oConfig = oxRegistry::getConfig();
 
-        $aShops = $oDb->getAll( "select * from oxshops" );
+        $aShops = $oDb->getAll("select * from oxshops");
 
-        $aTables = $aTables ? $aTables : $oConfig->getConfigParam( 'aMultiShopTables' );
+        $aTables = $aTables ? $aTables : $oConfig->getConfigParam('aMultiShopTables');
 
         $bSuccess = true;
-        foreach ( $aShops as $aShop ) {
+        foreach ($aShops as $aShop) {
             $sShopId = $aShop[0];
-            $oShop = oxNew( 'oxshop' );
-            $oShop->load( $sShopId );
-            $oShop->setMultiShopTables( $aTables );
+            $oShop = oxNew('oxshop');
+            $oShop->load($sShopId);
+            $oShop->setMultiShopTables($aTables);
             $aMallInherit = array();
-            foreach ( $aTables as $sTable ) {
-                $aMallInherit[$sTable] = $oConfig->getShopConfVar( 'blMallInherit_' . $sTable, $sShopId );
+            foreach ($aTables as $sTable) {
+                $aMallInherit[$sTable] = $oConfig->getShopConfVar('blMallInherit_' . $sTable, $sShopId);
             }
-            if ( !$oShop->generateViews( false, $aMallInherit ) && $bSuccess ) {
+            if (!$oShop->generateViews(false, $aMallInherit) && $bSuccess) {
                 $bSuccess = false;
             }
         }

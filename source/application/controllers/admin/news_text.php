@@ -25,6 +25,7 @@
  */
 class News_Text extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates oxnews object and
      * passes news text to smarty. Returns name of template file "news_text.tpl".
@@ -32,35 +33,37 @@ class News_Text extends oxAdminDetails
      * @return string
      */
     public function render()
-    {   $myConfig = $this->getConfig();
+    {
+        $myConfig = $this->getConfig();
 
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oNews = oxNew( "oxnews" );
+            $oNews = oxNew("oxnews");
             $iNewsLang = oxRegistry::getConfig()->getRequestParameter("newslang");
 
-            if (!isset($iNewsLang))
+            if (!isset($iNewsLang)) {
                 $iNewsLang = $this->_iEditLang;
+            }
 
             $this->_aViewData["newslang"] = $iNewsLang;
-            $oNews->loadInLang( $iNewsLang, $soxId );
+            $oNews->loadInLang($iNewsLang, $soxId);
 
-            foreach ( oxRegistry::getLang()->getLanguageNames() as $id => $language) {
-                $oLang= new stdClass();
+            foreach (oxRegistry::getLang()->getLanguageNames() as $id => $language) {
+                $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
 
 
-            $this->_aViewData["edit"] =  $oNews;
+            $this->_aViewData["edit"] = $oNews;
 
 
         }
-        $this->_aViewData["editor"] = $this->_generateTextEditor( "100%", 255, $oNews, "oxnews__oxlongdesc", "news.tpl.css");
+        $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 255, $oNews, "oxnews__oxlongdesc", "news.tpl.css");
 
         return "news_text.tpl";
     }
@@ -74,20 +77,20 @@ class News_Text extends oxAdminDetails
     {
         parent::save();
 
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oNews = oxNew( "oxnews" );
+        $oNews = oxNew("oxnews");
 
         $iNewsLang = oxRegistry::getConfig()->getRequestParameter("newslang");
 
         if (!isset($iNewsLang))
             $iNewsLang = $this->_iEditLang;
 
-        if ( $soxId != "-1")
-            $oNews->loadInLang( $iNewsLang, $soxId );
+        if ($soxId != "-1")
+            $oNews->loadInLang($iNewsLang, $soxId);
         else
             $aParams['oxnews__oxid'] = null;
 
@@ -96,12 +99,12 @@ class News_Text extends oxAdminDetails
         //$aParams = $oNews->ConvertNameArray2Idx( $aParams);
 
         $oNews->setLanguage(0);
-        $oNews->assign( $aParams);
+        $oNews->assign($aParams);
         $oNews->setLanguage($iNewsLang);
 
         $oNews->save();
         // set oxid if inserted
-        $this->setEditObjectId( $oNews->getId() );
+        $this->setEditObjectId($oNews->getId());
     }
 
 }

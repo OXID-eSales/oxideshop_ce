@@ -23,7 +23,7 @@
 /**
  * Includes Smarty engine class.
  */
-require_once getShopBasePath()."core/smarty/Smarty.class.php";
+require_once getShopBasePath() . "core/smarty/Smarty.class.php";
 
 /**
  * General utils class
@@ -31,6 +31,7 @@ require_once getShopBasePath()."core/smarty/Smarty.class.php";
  */
 class oxUtils extends oxSuperCfg
 {
+
     /**
      * Cached currency precision
      *
@@ -106,7 +107,7 @@ class oxUtils extends oxSuperCfg
      *
      * @return string
      */
-    public function strMan( $sVal, $sKey = null )
+    public function strMan($sVal, $sKey = null)
     {
         $oEncryptor = oxNew('oxEncryptor');
         $sKey = $sKey ? $sKey : $this->getConfig()->getConfigParam('sConfigKey');
@@ -124,7 +125,7 @@ class oxUtils extends oxSuperCfg
      *
      * @return string
      */
-    public function strRem( $sVal, $sKey = null )
+    public function strRem($sVal, $sKey = null)
     {
         $oDecryptor = oxNew('oxDecryptor');
         $sKey = $sKey ? $sKey : $this->getConfig()->getConfigParam('sConfigKey');
@@ -139,9 +140,9 @@ class oxUtils extends oxSuperCfg
      *
      * @return string
      */
-    public function getArrFldName( $sName )
+    public function getArrFldName($sName)
     {
-        return str_replace( ".", "__", $sName);
+        return str_replace(".", "__", $sName);
     }
 
     /**
@@ -152,18 +153,19 @@ class oxUtils extends oxSuperCfg
      *
      * @return array
      */
-    public function assignValuesFromText( $sIn, $dVat = null )
+    public function assignValuesFromText($sIn, $dVat = null)
     {
         $aRet = array();
-        $aPieces = explode( '@@', $sIn );
-        while ( list( $sKey, $sVal ) = each( $aPieces ) ) {
-            if ( $sVal ) {
-                $aName = explode( '__', $sVal );
-                if ( isset( $aName[0] ) && isset( $aName[1] ) ) {
-                    $aRet[] = $this->_fillExplodeArray( $aName, $dVat );
+        $aPieces = explode('@@', $sIn);
+        while (list($sKey, $sVal) = each($aPieces)) {
+            if ($sVal) {
+                $aName = explode('__', $sVal);
+                if (isset($aName[0]) && isset($aName[1])) {
+                    $aRet[] = $this->_fillExplodeArray($aName, $dVat);
                 }
             }
         }
+
         return $aRet;
     }
 
@@ -174,16 +176,17 @@ class oxUtils extends oxSuperCfg
      *
      * @return string
      */
-    public function assignValuesToText( $aIn)
+    public function assignValuesToText($aIn)
     {
         $sRet = "";
-        reset( $aIn );
+        reset($aIn);
         while (list($sKey, $sVal) = each($aIn)) {
             $sRet .= $sKey;
             $sRet .= "__";
             $sRet .= $sVal;
             $sRet .= "@@";
         }
+
         return $sRet;
     }
 
@@ -194,18 +197,19 @@ class oxUtils extends oxSuperCfg
      *
      * @return float
      */
-    public function currency2Float( $sValue)
+    public function currency2Float($sValue)
     {
         $fRet = $sValue;
-        $iPos = strrpos( $sValue, ".");
-        if ($iPos && ((strlen($sValue)-1-$iPos) < 2+1)) {
+        $iPos = strrpos($sValue, ".");
+        if ($iPos && ((strlen($sValue) - 1 - $iPos) < 2 + 1)) {
             // replace decimal with ","
-            $fRet = substr_replace( $fRet, ",", $iPos, 1);
+            $fRet = substr_replace($fRet, ",", $iPos, 1);
         }
         // remove thousands
-        $fRet = str_replace( array(" ","."), "", $fRet);
+        $fRet = str_replace(array(" ", "."), "", $fRet);
 
-        $fRet = str_replace( ",", ".", $fRet);
+        $fRet = str_replace(",", ".", $fRet);
+
         return (float) $fRet;
     }
 
@@ -216,23 +220,26 @@ class oxUtils extends oxSuperCfg
      *
      * @return float
      */
-    public function string2Float( $sValue)
+    public function string2Float($sValue)
     {
-        $fRet = str_replace( " ", "", $sValue);
-        $iCommaPos = strpos( $fRet, ",");
-        $iDotPos = strpos( $fRet, ".");
+        $fRet = str_replace(" ", "", $sValue);
+        $iCommaPos = strpos($fRet, ",");
+        $iDotPos = strpos($fRet, ".");
         if (!$iDotPos xor !$iCommaPos) {
-            if (substr_count( $fRet, ",") > 1 || substr_count( $fRet, ".") > 1) {
-                $fRet = str_replace( array(",","."), "", $fRet);
+            if (substr_count($fRet, ",") > 1 || substr_count($fRet, ".") > 1) {
+                $fRet = str_replace(array(",", "."), "", $fRet);
             } else {
-                $fRet = str_replace( ",", ".", $fRet);
+                $fRet = str_replace(",", ".", $fRet);
             }
-        } else if ( $iDotPos < $iCommaPos ) {
-            $fRet = str_replace( ".", "", $fRet);
-            $fRet = str_replace( ",", ".", $fRet);
+        } else {
+            if ($iDotPos < $iCommaPos) {
+                $fRet = str_replace(".", "", $fRet);
+                $fRet = str_replace(",", ".", $fRet);
+            }
         }
         // remove thousands
-        $fRet = str_replace( array(" ",","), "", $fRet);
+        $fRet = str_replace(array(" ", ","), "", $fRet);
+
         return (float) $fRet;
     }
 
@@ -243,11 +250,12 @@ class oxUtils extends oxSuperCfg
      *
      * @return bool
      */
-    public function isSearchEngine( $sClient = null )
+    public function isSearchEngine($sClient = null)
     {
         if (is_null($this->_blIsSe)) {
-            $this->setSearchEngine( null, $sClient );
+            $this->setSearchEngine(null, $sClient);
         }
+
         return $this->_blIsSe;
     }
 
@@ -259,29 +267,30 @@ class oxUtils extends oxSuperCfg
      *
      * @return null
      */
-    public function setSearchEngine( $blIsSe = null, $sClient = null )
+    public function setSearchEngine($blIsSe = null, $sClient = null)
     {
         if (isset($blIsSe)) {
             $this->_blIsSe = $blIsSe;
+
             return;
         }
         startProfile("isSearchEngine");
 
         $myConfig = $this->getConfig();
-        $blIsSe   = false;
+        $blIsSe = false;
 
-        if ( !( $myConfig->getConfigParam( 'iDebug' ) && $this->isAdmin() ) ) {
-            $aRobots = $myConfig->getConfigParam( 'aRobots' );
-            $aRobots = is_array( $aRobots )?$aRobots:array();
+        if (!($myConfig->getConfigParam('iDebug') && $this->isAdmin())) {
+            $aRobots = $myConfig->getConfigParam('aRobots');
+            $aRobots = is_array($aRobots) ? $aRobots : array();
 
-            $aRobotsExcept = $myConfig->getConfigParam( 'aRobotsExcept' );
-            $aRobotsExcept = is_array( $aRobotsExcept )?$aRobotsExcept:array();
+            $aRobotsExcept = $myConfig->getConfigParam('aRobotsExcept');
+            $aRobotsExcept = is_array($aRobotsExcept) ? $aRobotsExcept : array();
 
-            $sClient = $sClient?$sClient:strtolower( getenv( 'HTTP_USER_AGENT' ) );
-            $blIsSe  = false;
-            $aRobots = array_merge( $aRobots, $aRobotsExcept );
-            foreach ( $aRobots as $sRobot ) {
-                if ( strpos( $sClient, $sRobot ) !== false ) {
+            $sClient = $sClient ? $sClient : strtolower(getenv('HTTP_USER_AGENT'));
+            $blIsSe = false;
+            $aRobots = array_merge($aRobots, $aRobotsExcept);
+            foreach ($aRobots as $sRobot) {
+                if (strpos($sClient, $sRobot) !== false) {
                     $blIsSe = true;
                     break;
                 }
@@ -303,10 +312,11 @@ class oxUtils extends oxSuperCfg
      *
      * @return bool
      */
-    public function isValidEmail( $sEmail )
+    public function isValidEmail($sEmail)
     {
         $oMailValidator = oxNew('oxMailValidator');
-        return $oMailValidator->isValidEmail( $sEmail );
+
+        return $oMailValidator->isValidEmail($sEmail);
     }
 
     /**
@@ -320,7 +330,7 @@ class oxUtils extends oxSuperCfg
     {
         // improved #533
         // checking for available profiles list
-        if ( is_array( $aInterfaceProfiles ) ) {
+        if (is_array($aInterfaceProfiles)) {
             //checking for previous profiles
             $sPrevProfile = oxRegistry::get("oxUtilsServer")->getOxCookie('oxidadminprofile');
             if (isset($sPrevProfile)) {
@@ -329,7 +339,7 @@ class oxUtils extends oxSuperCfg
 
             //array to store profiles
             $aProfiles = array();
-            foreach ( $aInterfaceProfiles as $iPos => $sProfile) {
+            foreach ($aInterfaceProfiles as $iPos => $sProfile) {
                 $aProfileSettings = array($iPos, $sProfile);
                 $aProfiles[] = $aProfileSettings;
             }
@@ -339,8 +349,10 @@ class oxUtils extends oxSuperCfg
             }
 
             oxRegistry::getSession()->setVariable("aAdminProfiles", $aProfiles);
+
             return $aProfiles;
         }
+
         return null;
     }
 
@@ -358,12 +370,12 @@ class oxUtils extends oxSuperCfg
 
         //cached currency precision, this saves about 1% of execution time
         $iCurPrecision = null;
-        if (! defined('OXID_PHP_UNIT')) {
+        if (!defined('OXID_PHP_UNIT')) {
             $iCurPrecision = $this->_iCurPrecision;
         }
 
         if (is_null($iCurPrecision)) {
-            if ( !$oCur ) {
+            if (!$oCur) {
                 $oCur = $this->getConfig()->getActShopCurrencyObject();
             }
 
@@ -375,13 +387,14 @@ class oxUtils extends oxSuperCfg
         static $dprez = null;
         if (!$dprez) {
             $prez = @ini_get("precision");
-            if (!$prez || $prez > 12 ) {
-               $prez = 12;
+            if (!$prez || $prez > 12) {
+                $prez = 12;
             }
             $dprez = pow(10, -$prez);
         }
         stopProfile('fround');
-        return round($sVal + $dprez * ( $sVal >= 0 ? 1 : -1 ), $iCurPrecision);
+
+        return round($sVal + $dprez * ($sVal >= 0 ? 1 : -1), $iCurPrecision);
     }
 
     /**
@@ -393,10 +406,10 @@ class oxUtils extends oxSuperCfg
      *
      * @return null
      */
-    public function toStaticCache( $sName, $sContent, $sKey = null )
+    public function toStaticCache($sName, $sContent, $sKey = null)
     {
         // if it's an array then we add
-        if ( $sKey ) {
+        if ($sKey) {
             $this->_aStaticCache[$sName][$sKey] = $sContent;
         } else {
             $this->_aStaticCache[$sName] = $sContent;
@@ -410,11 +423,12 @@ class oxUtils extends oxSuperCfg
      *
      * @return mixed
      */
-    public function fromStaticCache( $sName)
+    public function fromStaticCache($sName)
     {
-        if ( isset( $this->_aStaticCache[$sName])) {
+        if (isset($this->_aStaticCache[$sName])) {
             return $this->_aStaticCache[$sName];
         }
+
         return null;
     }
 
@@ -443,16 +457,16 @@ class oxUtils extends oxSuperCfg
      *
      * @return null;
      */
-    public function toPhpFileCache( $sKey, $mContents )
+    public function toPhpFileCache($sKey, $mContents)
     {
         //only simple arrays are supported
-        if ( is_array( $mContents ) && ( $sCachePath = $this->getCacheFilePath( $sKey, false, 'php' ) ) ) {
+        if (is_array($mContents) && ($sCachePath = $this->getCacheFilePath($sKey, false, 'php'))) {
 
             // setting meta
-            $this->setCacheMeta( $sKey, array( "serialize" => false, "cachepath" => $sCachePath ) );
+            $this->setCacheMeta($sKey, array("serialize" => false, "cachepath" => $sCachePath));
 
             // caching..
-            $this->toFileCache( $sKey, $mContents );
+            $this->toFileCache($sKey, $mContents);
         }
     }
 
@@ -463,11 +477,12 @@ class oxUtils extends oxSuperCfg
      *
      * @return null;
      */
-    public function fromPhpFileCache( $sKey )
+    public function fromPhpFileCache($sKey)
     {
         // setting meta
-        $this->setCacheMeta( $sKey, array( "include" => true, "cachepath" => $this->getCacheFilePath( $sKey, false, 'php' ) ) );
-        return $this->fromFileCache( $sKey );
+        $this->setCacheMeta($sKey, array("include" => true, "cachepath" => $this->getCacheFilePath($sKey, false, 'php')));
+
+        return $this->fromFileCache($sKey);
     }
 
     /**
@@ -477,9 +492,9 @@ class oxUtils extends oxSuperCfg
      *
      * @return mixed
      */
-    public function getCacheMeta( $sKey )
+    public function getCacheMeta($sKey)
     {
-        return isset( $this->_aFileCacheMeta[$sKey] ) ? $this->_aFileCacheMeta[$sKey] : false;
+        return isset($this->_aFileCacheMeta[$sKey]) ? $this->_aFileCacheMeta[$sKey] : false;
     }
 
     /**
@@ -490,7 +505,7 @@ class oxUtils extends oxSuperCfg
      *
      * @return null
      */
-    public function setCacheMeta( $sKey, $aMeta )
+    public function setCacheMeta($sKey, $aMeta)
     {
         // cache meta data
         $this->_aFileCacheMeta[$sKey] = $aMeta;
@@ -506,19 +521,20 @@ class oxUtils extends oxSuperCfg
      *
      * @return bool
      */
-    public function toFileCache( $sKey, $mContents, $iTtl = 0 )
+    public function toFileCache($sKey, $mContents, $iTtl = 0)
     {
         $aCacheData['content'] = $mContents;
-        $aMeta = $this->getCacheMeta( $sKey );
-        if ( $iTtl ) {
+        $aMeta = $this->getCacheMeta($sKey);
+        if ($iTtl) {
             $aCacheData['ttl'] = $iTtl;
             $aCacheData['timestamp'] = oxRegistry::get("oxUtilsDate")->getTime();
         }
         $this->_aFileCacheContents[$sKey] = $aCacheData;
 
         // looking for cache meta
-        $sCachePath = isset( $aMeta["cachepath"] ) ? $aMeta["cachepath"] : $this->getCacheFilePath( $sKey );
-        return ( bool ) $this->_lockFile( $sCachePath, $sKey );
+        $sCachePath = isset($aMeta["cachepath"]) ? $aMeta["cachepath"] : $this->getCacheFilePath($sKey);
+
+        return ( bool ) $this->_lockFile($sCachePath, $sKey);
     }
 
     /**
@@ -528,34 +544,34 @@ class oxUtils extends oxSuperCfg
      *
      * @return mixed
      */
-    public function fromFileCache( $sKey )
+    public function fromFileCache($sKey)
     {
-        if ( !array_key_exists( $sKey, $this->_aFileCacheContents ) ) {
+        if (!array_key_exists($sKey, $this->_aFileCacheContents)) {
             $sRes = null;
 
-            $aMeta = $this->getCacheMeta( $sKey );
-            $blInclude  = isset( $aMeta["include"] ) ? $aMeta["include"] : false;
-            $sCachePath = isset( $aMeta["cachepath"] ) ? $aMeta["cachepath"] : $this->getCacheFilePath( $sKey );
+            $aMeta = $this->getCacheMeta($sKey);
+            $blInclude = isset($aMeta["include"]) ? $aMeta["include"] : false;
+            $sCachePath = isset($aMeta["cachepath"]) ? $aMeta["cachepath"] : $this->getCacheFilePath($sKey);
 
             // trying to lock
-            $this->_lockFile( $sCachePath, $sKey, LOCK_SH );
+            $this->_lockFile($sCachePath, $sKey, LOCK_SH);
 
             clearstatcache();
-            if ( is_readable( $sCachePath ) ) {
-                $sRes = $blInclude ? $this->_includeFile( $sCachePath ) : $this->_readFile( $sCachePath );
+            if (is_readable($sCachePath)) {
+                $sRes = $blInclude ? $this->_includeFile($sCachePath) : $this->_readFile($sCachePath);
             }
 
-            if ( isset( $sRes['ttl'] ) && $sRes['ttl'] != 0 ) {
+            if (isset($sRes['ttl']) && $sRes['ttl'] != 0) {
                 $iTimestamp = $sRes['timestamp'];
                 $iTtl = $sRes['ttl'];
 
                 $iTime = oxRegistry::get("oxUtilsDate")->getTime();
-                if ( $iTime > $iTimestamp + $iTtl ) {
+                if ($iTime > $iTimestamp + $iTtl) {
                     return null;
                 }
             }
             // release lock
-            $this->_releaseFile( $sKey, LOCK_SH );
+            $this->_releaseFile($sKey, LOCK_SH);
 
             // caching
             $this->_aFileCacheContents[$sKey] = $sRes;
@@ -571,10 +587,11 @@ class oxUtils extends oxSuperCfg
      *
      * @return string
      */
-    protected function _readFile( $sFilePath )
+    protected function _readFile($sFilePath)
     {
-        $sRes = file_get_contents( $sFilePath );
-        return $sRes ? unserialize( $sRes ) : null;
+        $sRes = file_get_contents($sFilePath);
+
+        return $sRes ? unserialize($sRes) : null;
     }
 
     /**
@@ -584,10 +601,11 @@ class oxUtils extends oxSuperCfg
      *
      * @return mixed
      */
-    protected function _includeFile( $sFilePath )
+    protected function _includeFile($sFilePath)
     {
         $_aCacheContents = null;
         include $sFilePath;
+
         return $_aCacheContents;
     }
 
@@ -599,16 +617,16 @@ class oxUtils extends oxSuperCfg
      *
      * @return mixed
      */
-    protected function _processCache( $sKey, $mContents )
+    protected function _processCache($sKey, $mContents)
     {
         // looking for cache meta
-        $aCacheMeta  = $this->getCacheMeta( $sKey );
-        $blSerialize = isset( $aCacheMeta["serialize"] ) ? $aCacheMeta["serialize"] : true;
+        $aCacheMeta = $this->getCacheMeta($sKey);
+        $blSerialize = isset($aCacheMeta["serialize"]) ? $aCacheMeta["serialize"] : true;
 
-        if ( $blSerialize ) {
-            $mContents = serialize( $mContents );
+        if ($blSerialize) {
+            $mContents = serialize($mContents);
         } else {
-            $mContents = "<?php\n//automatically generated file\n//" . date( "Y-m-d H:i:s" ) . "\n\n\$_aCacheContents = " . var_export( $mContents, true ) . "\n?>";
+            $mContents = "<?php\n//automatically generated file\n//" . date("Y-m-d H:i:s") . "\n\n\$_aCacheContents = " . var_export($mContents, true) . "\n?>";
         }
 
         return $mContents;
@@ -622,19 +640,19 @@ class oxUtils extends oxSuperCfg
      */
     public function commitFileCache()
     {
-        if ( !empty( $this->_aLockedFileHandles[LOCK_EX] ) ) {
+        if (!empty($this->_aLockedFileHandles[LOCK_EX])) {
             startProfile("!__SAVING CACHE__! (warning)");
-            foreach ( $this->_aLockedFileHandles[LOCK_EX] as $sKey => $rHandle ) {
-                if ( $rHandle !== false && isset( $this->_aFileCacheContents[$sKey] ) ) {
+            foreach ($this->_aLockedFileHandles[LOCK_EX] as $sKey => $rHandle) {
+                if ($rHandle !== false && isset($this->_aFileCacheContents[$sKey])) {
 
                     // #0002931A truncate file once more before writing
-                    ftruncate( $rHandle, 0 );
+                    ftruncate($rHandle, 0);
 
                     // writing cache
-                    fwrite( $rHandle, $this->_processCache( $sKey, $this->_aFileCacheContents[$sKey] ) );
+                    fwrite($rHandle, $this->_processCache($sKey, $this->_aFileCacheContents[$sKey]));
 
                     // releasing locks
-                    $this->_releaseFile( $sKey );
+                    $this->_releaseFile($sKey);
                 }
             }
 
@@ -654,44 +672,44 @@ class oxUtils extends oxSuperCfg
      *
      * @return mixed lock file resource or false on error
      */
-    protected function _lockFile( $sFilePath, $sIdent, $iLockMode = LOCK_EX )
+    protected function _lockFile($sFilePath, $sIdent, $iLockMode = LOCK_EX)
     {
-        $rHandle = isset( $this->_aLockedFileHandles[$iLockMode][$sIdent] ) ? $this->_aLockedFileHandles[$iLockMode][$sIdent] : null;
-        if ( $rHandle === null ) {
+        $rHandle = isset($this->_aLockedFileHandles[$iLockMode][$sIdent]) ? $this->_aLockedFileHandles[$iLockMode][$sIdent] : null;
+        if ($rHandle === null) {
 
             $blLocked = false;
-            $rHandle = @fopen( $sFilePath, "a+" );
+            $rHandle = @fopen($sFilePath, "a+");
 
-            if ( $rHandle !== false ) {
+            if ($rHandle !== false) {
 
-                if ( flock( $rHandle, $iLockMode | LOCK_NB ) ) {
-                    if ( $iLockMode === LOCK_EX ) {
+                if (flock($rHandle, $iLockMode | LOCK_NB)) {
+                    if ($iLockMode === LOCK_EX) {
                         // truncate file
-                        $blLocked = ftruncate( $rHandle, 0 );
+                        $blLocked = ftruncate($rHandle, 0);
                     } else {
                         // move to a start position
-                        $blLocked = fseek( $rHandle, 0 ) === 0;
+                        $blLocked = fseek($rHandle, 0) === 0;
                     }
                 }
 
                 // on failure - closing and setting false..
-                if ( !$blLocked ) {
-                    fclose( $rHandle );
+                if (!$blLocked) {
+                    fclose($rHandle);
                     $rHandle = false;
                 }
             }
 
             // in case system does not support file locking
-            if ( !$blLocked && $iLockMode === LOCK_EX ) {
+            if (!$blLocked && $iLockMode === LOCK_EX) {
 
                 // clearing on first call
-                if ( count( $this->_aLockedFileHandles ) == 0 ) {
+                if (count($this->_aLockedFileHandles) == 0) {
                     clearstatcache();
                 }
 
                 // start a blank file to inform other processes we are dealing with it.
-                if (!( file_exists( $sFilePath ) && !filesize( $sFilePath ) && abs( time() - filectime( $sFilePath ) < 40 ) ) ) {
-                    $rHandle = @fopen( $sFilePath, "w" );
+                if (!(file_exists($sFilePath) && !filesize($sFilePath) && abs(time() - filectime($sFilePath) < 40))) {
+                    $rHandle = @fopen($sFilePath, "w");
                 }
             }
 
@@ -709,16 +727,17 @@ class oxUtils extends oxSuperCfg
      *
      * @return bool
      */
-    protected function _releaseFile( $sIdent, $iLockMode = LOCK_EX )
+    protected function _releaseFile($sIdent, $iLockMode = LOCK_EX)
     {
         $blSuccess = true;
-        if ( isset( $this->_aLockedFileHandles[$iLockMode][$sIdent] ) &&
-             $this->_aLockedFileHandles[$iLockMode][$sIdent] !== false ) {
+        if (isset($this->_aLockedFileHandles[$iLockMode][$sIdent]) &&
+            $this->_aLockedFileHandles[$iLockMode][$sIdent] !== false
+        ) {
 
-             // release the lock and close file
-            $blSuccess = flock( $this->_aLockedFileHandles[$iLockMode][$sIdent], LOCK_UN ) &&
-                         fclose( $this->_aLockedFileHandles[$iLockMode][$sIdent] );
-            unset( $this->_aLockedFileHandles[$iLockMode][$sIdent] );
+            // release the lock and close file
+            $blSuccess = flock($this->_aLockedFileHandles[$iLockMode][$sIdent], LOCK_UN) &&
+                         fclose($this->_aLockedFileHandles[$iLockMode][$sIdent]);
+            unset($this->_aLockedFileHandles[$iLockMode][$sIdent]);
         }
 
         return $blSuccess;
@@ -733,12 +752,12 @@ class oxUtils extends oxSuperCfg
      */
     public function oxResetFileCache()
     {
-        $aFiles = glob( $this->getCacheFilePath( null, true ) . '*' );
-        if ( is_array( $aFiles ) ) {
+        $aFiles = glob($this->getCacheFilePath(null, true) . '*');
+        if (is_array($aFiles)) {
             // delete all the files, except cached tables field names
-            $aFiles = preg_grep( $this->_sPermanentCachePattern, $aFiles, PREG_GREP_INVERT );
-            foreach ( $aFiles as $sFile ) {
-                @unlink( $sFile );
+            $aFiles = preg_grep($this->_sPermanentCachePattern, $aFiles, PREG_GREP_INVERT);
+            foreach ($aFiles as $sFile) {
+                @unlink($sFile);
             }
         }
     }
@@ -754,20 +773,20 @@ class oxUtils extends oxSuperCfg
     {
         $sSmartyDir = oxRegistry::get("oxUtilsView")->getSmartyDir();
         //$aFiles = glob( $this->getCacheFilePath( null, true ) . '*' );
-        $aFiles = glob( $sSmartyDir . '*' );
+        $aFiles = glob($sSmartyDir . '*');
 
-        if ( is_array( $aFiles ) && is_array( $aTemplates ) && count($aTemplates) ) {
+        if (is_array($aFiles) && is_array($aTemplates) && count($aTemplates)) {
             // delete all template cache files
             foreach ($aTemplates as &$sTemplate) {
                 $sTemplate = preg_quote(basename(strtolower($sTemplate), '.tpl'));
             }
 
             $sPattern = sprintf("/%%(%s)\.tpl\.php$/i", implode('|', $aTemplates));
-            $aFiles = preg_grep( $sPattern, $aFiles );
+            $aFiles = preg_grep($sPattern, $aFiles);
 
-            if (is_array( $aFiles ) ) {
-                foreach ( $aFiles as $sFile ) {
-                    @unlink( $sFile );
+            if (is_array($aFiles)) {
+                foreach ($aFiles as $sFile) {
+                    @unlink($sFile);
                 }
             }
         }
@@ -781,13 +800,13 @@ class oxUtils extends oxSuperCfg
      */
     public function resetLanguageCache()
     {
-        $aFiles = glob( $this->getCacheFilePath( null, true ) . '*' );
-        if ( is_array( $aFiles ) ) {
+        $aFiles = glob($this->getCacheFilePath(null, true) . '*');
+        if (is_array($aFiles)) {
             // delete all language cache files
             $sPattern = $this->_sLanguageCachePattern;
-            $aFiles = preg_grep( $sPattern, $aFiles );
-            foreach ( $aFiles as $sFile ) {
-                @unlink( $sFile );
+            $aFiles = preg_grep($sPattern, $aFiles);
+            foreach ($aFiles as $sFile) {
+                @unlink($sFile);
             }
         }
     }
@@ -799,13 +818,13 @@ class oxUtils extends oxSuperCfg
      */
     public function resetMenuCache()
     {
-        $aFiles = glob( $this->getCacheFilePath( null, true ) . '*' );
-        if ( is_array( $aFiles ) ) {
+        $aFiles = glob($this->getCacheFilePath(null, true) . '*');
+        if (is_array($aFiles)) {
             // delete all menu cache files
             $sPattern = $this->_sMenuCachePattern;
-            $aFiles = preg_grep( $sPattern, $aFiles );
-            foreach ( $aFiles as $sFile ) {
-                @unlink( $sFile );
+            $aFiles = preg_grep($sPattern, $aFiles);
+            foreach ($aFiles as $sFile) {
+                @unlink($sFile);
             }
         }
     }
@@ -822,46 +841,47 @@ class oxUtils extends oxSuperCfg
     public function getRemoteCachePath($sRemote, $sLocal)
     {
         clearstatcache();
-        if ( file_exists( $sLocal ) && filemtime( $sLocal ) && filemtime( $sLocal ) > time() - 86400 ) {
+        if (file_exists($sLocal) && filemtime($sLocal) && filemtime($sLocal) > time() - 86400) {
             return $sLocal;
         }
-        $hRemote = @fopen( $sRemote, "rb");
+        $hRemote = @fopen($sRemote, "rb");
         $blSuccess = false;
-        if ( isset( $hRemote) && $hRemote ) {
-            $hLocal = fopen( $sLocal, "wb");
+        if (isset($hRemote) && $hRemote) {
+            $hLocal = fopen($sLocal, "wb");
             stream_copy_to_stream($hRemote, $hLocal);
             fclose($hRemote);
             fclose($hLocal);
             $blSuccess = true;
         } else {
             // try via fsockopen
-            $aUrl = @parse_url( $sRemote);
-            if ( !empty( $aUrl["host"])) {
+            $aUrl = @parse_url($sRemote);
+            if (!empty($aUrl["host"])) {
                 $sPath = $aUrl["path"];
-                if ( empty( $sPath ) ) {
+                if (empty($sPath)) {
                     $sPath = "/";
                 }
                 $sHost = $aUrl["host"];
 
-                $hSocket = @fsockopen( $sHost, 80, $iErrorNumber, $iErrStr, 5);
-                if ( $hSocket) {
-                    fputs( $hSocket, "GET ".$sPath." HTTP/1.0\r\nHost: $sHost\r\n\r\n");
+                $hSocket = @fsockopen($sHost, 80, $iErrorNumber, $iErrStr, 5);
+                if ($hSocket) {
+                    fputs($hSocket, "GET " . $sPath . " HTTP/1.0\r\nHost: $sHost\r\n\r\n");
                     $headers = stream_get_line($hSocket, 4096, "\r\n\r\n");
-                    if ( ( $hLocal = @fopen( $sLocal, "wb") ) !== false ) {
+                    if (($hLocal = @fopen($sLocal, "wb")) !== false) {
                         rewind($hLocal);
                         // does not copy all the data
                         // stream_copy_to_stream($hSocket, $hLocal);
-                        fwrite ( $hLocal, stream_get_contents( $hSocket ) );
-                        fclose( $hLocal );
-                        fclose( $hSocket );
+                        fwrite($hLocal, stream_get_contents($hSocket));
+                        fclose($hLocal);
+                        fclose($hSocket);
                         $blSuccess = true;
                     }
                 }
             }
         }
-        if ( $blSuccess || file_exists( $sLocal ) ) {
+        if ($blSuccess || file_exists($sLocal)) {
             return $sLocal;
         }
+
         return false;
     }
 
@@ -873,13 +893,14 @@ class oxUtils extends oxSuperCfg
     public function canPreview()
     {
         $blCan = null;
-        if ( ( $sPrevId = oxRegistry::getConfig()->getRequestParameter( 'preview' ) ) &&
-             ( $sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie( 'admin_sid' ) ) ) {
+        if (($sPrevId = oxRegistry::getConfig()->getRequestParameter('preview')) &&
+            ($sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie('admin_sid'))
+        ) {
 
-            $sTable = getViewName( 'oxuser' );
+            $sTable = getViewName('oxuser');
             $oDb = oxDb::getDb();
-            $sQ = "select 1 from $sTable where MD5( CONCAT( ".$oDb->quote($sAdminSid).", {$sTable}.oxid, {$sTable}.oxpassword, {$sTable}.oxrights ) ) = ".oxDb::getDb()->quote($sPrevId);
-            $blCan = (bool) $oDb->getOne( $sQ );
+            $sQ = "select 1 from $sTable where MD5( CONCAT( " . $oDb->quote($sAdminSid) . ", {$sTable}.oxid, {$sTable}.oxpassword, {$sTable}.oxrights ) ) = " . oxDb::getDb()->quote($sPrevId);
+            $blCan = (bool) $oDb->getOne($sQ);
         }
 
         return $blCan;
@@ -892,9 +913,9 @@ class oxUtils extends oxSuperCfg
      */
     public function getPreviewId()
     {
-        $sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie( 'admin_sid' );
-        if ( ( $oUser = $this->getUser() ) ) {
-            return md5( $sAdminSid . $oUser->getId() . $oUser->oxuser__oxpassword->value . $oUser->oxuser__oxrights->value );
+        $sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie('admin_sid');
+        if (($oUser = $this->getUser())) {
+            return md5($sAdminSid . $oUser->getId() . $oUser->oxuser__oxpassword->value . $oUser->oxuser__oxrights->value);
         }
     }
 
@@ -905,52 +926,52 @@ class oxUtils extends oxSuperCfg
      */
     public function checkAccessRights()
     {
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
 
         $blIsAuth = false;
 
-        $sUserID = oxRegistry::getSession()->getVariable( "auth");
+        $sUserID = oxRegistry::getSession()->getVariable("auth");
 
         // deleting admin marker
-        oxRegistry::getSession()->setVariable( "malladmin", 0);
-        oxRegistry::getSession()->setVariable( "blIsAdmin", 0);
-        oxRegistry::getSession()->deleteVariable( "blIsAdmin" );
-        $myConfig->setConfigParam( 'blMallAdmin', false );
+        oxRegistry::getSession()->setVariable("malladmin", 0);
+        oxRegistry::getSession()->setVariable("blIsAdmin", 0);
+        oxRegistry::getSession()->deleteVariable("blIsAdmin");
+        $myConfig->setConfigParam('blMallAdmin', false);
         //#1552T
-        $myConfig->setConfigParam( 'blAllowInheritedEdit', false );
+        $myConfig->setConfigParam('blAllowInheritedEdit', false);
 
-        if ( $sUserID) {
+        if ($sUserID) {
             // escaping
             $oDb = oxDb::getDb();
-            $sRights = $oDb->getOne("select oxrights from oxuser where oxid = ".$oDb->quote($sUserID));
+            $sRights = $oDb->getOne("select oxrights from oxuser where oxid = " . $oDb->quote($sUserID));
 
-            if ( $sRights != "user") {
+            if ($sRights != "user") {
                 // malladmin ?
-                if ( $sRights == "malladmin") {
-                    oxRegistry::getSession()->setVariable( "malladmin", 1);
-                    $myConfig->setConfigParam( 'blMallAdmin', true );
+                if ($sRights == "malladmin") {
+                    oxRegistry::getSession()->setVariable("malladmin", 1);
+                    $myConfig->setConfigParam('blMallAdmin', true);
 
                     //#1552T
                     //So far this blAllowSharedEdit is Equal to blMallAdmin but in future to be solved over rights and roles
-                    $myConfig->setConfigParam( 'blAllowSharedEdit', true );
+                    $myConfig->setConfigParam('blAllowSharedEdit', true);
 
-                    $sShop = oxRegistry::getSession()->getVariable( "actshop");
-                    if ( !isset($sShop)) {
-                        oxRegistry::getSession()->setVariable( "actshop", $myConfig->getBaseShopId());
+                    $sShop = oxRegistry::getSession()->getVariable("actshop");
+                    if (!isset($sShop)) {
+                        oxRegistry::getSession()->setVariable("actshop", $myConfig->getBaseShopId());
                     }
                     $blIsAuth = true;
                 } else {
                     // Shopadmin... check if this shop is valid and exists
-                    $sShopID = $oDb->getOne("select oxid from oxshops where oxid = " . $oDb->quote( $sRights ) );
-                    if ( isset( $sShopID) && $sShopID) {
+                    $sShopID = $oDb->getOne("select oxid from oxshops where oxid = " . $oDb->quote($sRights));
+                    if (isset($sShopID) && $sShopID) {
                         // success, this shop exists
 
-                        oxRegistry::getSession()->setVariable( "actshop", $sRights);
-                        oxRegistry::getSession()->setVariable( "currentadminshop", $sRights);
-                        oxRegistry::getSession()->setVariable( "shp", $sRights);
+                        oxRegistry::getSession()->setVariable("actshop", $sRights);
+                        oxRegistry::getSession()->setVariable("currentadminshop", $sRights);
+                        oxRegistry::getSession()->setVariable("shp", $sRights);
 
                         // check if this subshop admin is evil.
-                        if ('chshp' == oxRegistry::getConfig()->getRequestParameter( 'fnc' )) {
+                        if ('chshp' == oxRegistry::getConfig()->getRequestParameter('fnc')) {
                             // dont allow this call
                             $blIsAuth = false;
                         } else {
@@ -958,7 +979,7 @@ class oxUtils extends oxSuperCfg
 
                             $aShopIdVars = array('actshop', 'shp', 'currentadminshop');
                             foreach ($aShopIdVars as $sShopIdVar) {
-                                if ($sGotShop = oxRegistry::getConfig()->getRequestParameter( $sShopIdVar )) {
+                                if ($sGotShop = oxRegistry::getConfig()->getRequestParameter($sShopIdVar)) {
                                     if ($sGotShop != $sRights) {
                                         $blIsAuth = false;
                                         break;
@@ -969,9 +990,10 @@ class oxUtils extends oxSuperCfg
                     }
                 }
                 // marking user as admin
-                oxRegistry::getSession()->setVariable( "blIsAdmin", 1);
+                oxRegistry::getSession()->setVariable("blIsAdmin", 1);
             }
         }
+
         return $blIsAuth;
     }
 
@@ -984,23 +1006,23 @@ class oxUtils extends oxSuperCfg
      *
      * @return bool
      */
-    public function seoIsActive( $blReset = false, $sShopId = null, $iActLang = null )
+    public function seoIsActive($blReset = false, $sShopId = null, $iActLang = null)
     {
-        if ( !is_null( $this->_blSeoIsActive ) && !$blReset ) {
+        if (!is_null($this->_blSeoIsActive) && !$blReset) {
             return $this->_blSeoIsActive;
         }
 
         $myConfig = $this->getConfig();
 
-        if ( ( $this->_blSeoIsActive = $myConfig->getConfigParam( 'blSeoMode' ) ) === null ) {
+        if (($this->_blSeoIsActive = $myConfig->getConfigParam('blSeoMode')) === null) {
             $this->_blSeoIsActive = true;
 
-            $aSeoModes  = $myConfig->getconfigParam( 'aSeoModes' );
+            $aSeoModes = $myConfig->getconfigParam('aSeoModes');
             $sActShopId = $sShopId ? $sShopId : $myConfig->getActiveShop()->getId();
-            $iActLang   = $iActLang ? $iActLang : (int) oxRegistry::getLang()->getBaseLanguage();
+            $iActLang = $iActLang ? $iActLang : (int) oxRegistry::getLang()->getBaseLanguage();
 
             // checking special config param for active shop and language
-            if ( is_array( $aSeoModes ) && isset( $aSeoModes[$sActShopId] ) && isset( $aSeoModes[$sActShopId][$iActLang] ) ) {
+            if (is_array($aSeoModes) && isset($aSeoModes[$sActShopId]) && isset($aSeoModes[$sActShopId][$iActLang])) {
                 $this->_blSeoIsActive = (bool) $aSeoModes[$sActShopId][$iActLang];
             }
         }
@@ -1015,9 +1037,9 @@ class oxUtils extends oxSuperCfg
      *
      * @return bool
      */
-    public function isValidAlpha( $sField )
+    public function isValidAlpha($sField)
     {
-        return (boolean) getStr()->preg_match( '/^[a-zA-Z0-9_]*$/', $sField );
+        return (boolean) getStr()->preg_match('/^[a-zA-Z0-9_]*$/', $sField);
     }
 
     /**
@@ -1029,23 +1051,24 @@ class oxUtils extends oxSuperCfg
      *
      * @return null
      */
-    protected function _simpleRedirect( $sUrl, $sHeaderCode )
+    protected function _simpleRedirect($sUrl, $sHeaderCode)
     {
-        $oHeader = oxNew( "oxHeader" );
-        $oHeader->setHeader( $sHeaderCode );
-        $oHeader->setHeader( "Location: $sUrl" );
-        $oHeader->setHeader( "Connection: close" );
+        $oHeader = oxNew("oxHeader");
+        $oHeader->setHeader($sHeaderCode);
+        $oHeader->setHeader("Location: $sUrl");
+        $oHeader->setHeader("Connection: close");
         $oHeader->sendHeader();
     }
 
     /**
      * Redirects to shop offline page
-     * @param int    $iHeaderCode        header code, default 302
+     *
+     * @param int $iHeaderCode header code, default 302
      *
      */
     public function redirectOffline($iHeaderCode = 302)
     {
-        $sUrl = $this->getConfig()->getShopUrl() .'offline.html';
+        $sUrl = $this->getConfig()->getShopUrl() . 'offline.html';
         $this->redirect($sUrl, false, $iHeaderCode);
     }
 
@@ -1058,19 +1081,19 @@ class oxUtils extends oxSuperCfg
      *
      * @return null or exit
      */
-    public function redirect( $sUrl, $blAddRedirectParam = true, $iHeaderCode = 302 )
+    public function redirect($sUrl, $blAddRedirectParam = true, $iHeaderCode = 302)
     {
         //preventing possible cyclic redirection
         //#M341 and check only if redirect parameter must be added
-        if ( $blAddRedirectParam && oxRegistry::getConfig()->getRequestParameter( 'redirected' ) ) {
+        if ($blAddRedirectParam && oxRegistry::getConfig()->getRequestParameter('redirected')) {
             return;
         }
 
-        if ( $blAddRedirectParam ) {
-            $sUrl = $this->_addUrlParameters( $sUrl, array( 'redirected' => 1 ) );
+        if ($blAddRedirectParam) {
+            $sUrl = $this->_addUrlParameters($sUrl, array('redirected' => 1));
         }
 
-        $sUrl = str_ireplace( "&amp;", "&", $sUrl );
+        $sUrl = str_ireplace("&amp;", "&", $sUrl);
 
         switch ($iHeaderCode) {
             case 301:
@@ -1084,20 +1107,20 @@ class oxUtils extends oxSuperCfg
                 $sHeaderCode = "HTTP/1.1 302 Found";
         }
 
-        $this->_simpleRedirect( $sUrl, $sHeaderCode );
+        $this->_simpleRedirect($sUrl, $sHeaderCode);
 
-        try {//may occur in case db is lost
+        try { //may occur in case db is lost
             $this->getSession()->freeze();
-        } catch( oxException $oEx ) {
+        } catch (oxException $oEx) {
             $oEx->debugOut();
             //do nothing else to make sure the redirect takes place
         }
 
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
+        if (defined('OXID_PHP_UNIT')) {
             return;
         }
 
-        $this->showMessageAndExit( '' );
+        $this->showMessageAndExit('');
     }
 
     /**
@@ -1108,17 +1131,17 @@ class oxUtils extends oxSuperCfg
      *
      * @return null dies
      */
-    public function showMessageAndExit( $sMsg )
+    public function showMessageAndExit($sMsg)
     {
         $this->getSession()->freeze();
         $this->commitFileCache();
 
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
+        if (defined('OXID_PHP_UNIT')) {
             return;
         }
 
 
-        exit( $sMsg );
+        exit($sMsg);
     }
 
     /**
@@ -1141,10 +1164,10 @@ class oxUtils extends oxSuperCfg
      *
      * @return string
      */
-    protected function _addUrlParameters( $sUrl, $aParams )
+    protected function _addUrlParameters($sUrl, $aParams)
     {
-        $sDelimiter = ( ( getStr()->strpos( $sUrl, '?' ) !== false ) )?'&':'?';
-        foreach ( $aParams as $sName => $sVal ) {
+        $sDelimiter = ((getStr()->strpos($sUrl, '?') !== false)) ? '&' : '?';
+        foreach ($aParams as $sName => $sVal) {
             $sUrl = $sUrl . $sDelimiter . $sName . '=' . $sVal;
             $sDelimiter = '&';
         }
@@ -1163,58 +1186,59 @@ class oxUtils extends oxSuperCfg
      * @todo rename function more closely to actual purpose
      * @todo finish refactoring
      */
-    protected function _fillExplodeArray( $aName, $dVat = null)
+    protected function _fillExplodeArray($aName, $dVat = null)
     {
         $myConfig = $this->getConfig();
         $oObject = new stdClass();
-        $aPrice = explode( '!P!', $aName[0]);
+        $aPrice = explode('!P!', $aName[0]);
 
-        if ( ( $myConfig->getConfigParam( 'bl_perfLoadSelectLists' ) && $myConfig->getConfigParam( 'bl_perfUseSelectlistPrice' ) && isset( $aPrice[0] ) && isset( $aPrice[1] ) ) || $this->isAdmin() ) {
+        if (($myConfig->getConfigParam('bl_perfLoadSelectLists') && $myConfig->getConfigParam('bl_perfUseSelectlistPrice') && isset($aPrice[0]) && isset($aPrice[1])) || $this->isAdmin()) {
 
             // yes, price is there
-            $oObject->price = isset( $aPrice[1] ) ? $aPrice[1] : 0;
-            $aName[0] = isset( $aPrice[0] ) ? $aPrice[0] : '';
+            $oObject->price = isset($aPrice[1]) ? $aPrice[1] : 0;
+            $aName[0] = isset($aPrice[0]) ? $aPrice[0] : '';
 
-            $iPercPos = getStr()->strpos( $oObject->price, '%' );
-            if ( $iPercPos !== false ) {
+            $iPercPos = getStr()->strpos($oObject->price, '%');
+            if ($iPercPos !== false) {
                 $oObject->priceUnit = '%';
                 $oObject->fprice = $oObject->price;
-                $oObject->price  = substr( $oObject->price, 0, $iPercPos );
+                $oObject->price = substr($oObject->price, 0, $iPercPos);
             } else {
                 $oCur = $myConfig->getActShopCurrencyObject();
                 $oObject->price = str_replace(',', '.', $oObject->price);
-                $oObject->fprice = oxRegistry::getLang()->formatCurrency( $oObject->price  * $oCur->rate, $oCur);
+                $oObject->fprice = oxRegistry::getLang()->formatCurrency($oObject->price * $oCur->rate, $oCur);
                 $oObject->priceUnit = 'abs';
             }
 
             // add price info into list
-            if ( !$this->isAdmin() && $oObject->price != 0 ) {
+            if (!$this->isAdmin() && $oObject->price != 0) {
                 $aName[0] .= " ";
 
-                $dPrice = $this->_preparePrice( $oObject->price, $dVat );
+                $dPrice = $this->_preparePrice($oObject->price, $dVat);
 
-                if ( $oObject->price > 0 ) {
+                if ($oObject->price > 0) {
                     $aName[0] .= "+";
                 }
                 //V FS#2616
-                if ( $dVat != null && $oObject->priceUnit == 'abs' ) {
+                if ($dVat != null && $oObject->priceUnit == 'abs') {
                     $oPrice = oxNew('oxPrice');
                     $oPrice->setPrice($oObject->price, $dVat);
-                    $aName[0] .= oxRegistry::getLang()->formatCurrency( $dPrice * $oCur->rate, $oCur);
+                    $aName[0] .= oxRegistry::getLang()->formatCurrency($dPrice * $oCur->rate, $oCur);
                 } else {
                     $aName[0] .= $oObject->fprice;
                 }
-                if ( $oObject->priceUnit == 'abs' ) {
-                    $aName[0] .= " ".$oCur->sign;
+                if ($oObject->priceUnit == 'abs') {
+                    $aName[0] .= " " . $oCur->sign;
                 }
             }
-        } elseif ( isset( $aPrice[0] ) && isset($aPrice[1] ) ) {
+        } elseif (isset($aPrice[0]) && isset($aPrice[1])) {
             // A. removing unused part of information
-            $aName[0] = getStr()->preg_replace( "/!P!.*/", "", $aName[0] );
+            $aName[0] = getStr()->preg_replace("/!P!.*/", "", $aName[0]);
         }
 
-        $oObject->name  = $aName[0];
+        $oObject->name = $aName[0];
         $oObject->value = $aName[1];
+
         return $oObject;
     }
 
@@ -1226,20 +1250,22 @@ class oxUtils extends oxSuperCfg
      *
      * @return float
      */
-    protected function _preparePrice( $dPrice, $dVat )
+    protected function _preparePrice($dPrice, $dVat)
     {
         $blCalculationModeNetto = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
 
         $oCurrency = $this->getConfig()->getActShopCurrencyObject();
 
         $blEnterNetPrice = $this->getConfig()->getConfigParam('blEnterNetPrice');
-        if ( $blCalculationModeNetto && !$blEnterNetPrice ) {
-            $dPrice = round( oxPrice::brutto2Netto( $dPrice, $dVat ), $oCurrency->decimal );
-        } elseif ( !$blCalculationModeNetto && $blEnterNetPrice ) {
-            $dPrice = round( oxPrice::netto2Brutto( $dPrice, $dVat ), $oCurrency->decimal );
+        if ($blCalculationModeNetto && !$blEnterNetPrice) {
+            $dPrice = round(oxPrice::brutto2Netto($dPrice, $dVat), $oCurrency->decimal);
+        } elseif (!$blCalculationModeNetto && $blEnterNetPrice) {
+            $dPrice = round(oxPrice::netto2Brutto($dPrice, $dVat), $oCurrency->decimal);
         }
+
         return $dPrice;
     }
+
     /**
      * returns manually set mime types
      *
@@ -1247,14 +1273,14 @@ class oxUtils extends oxSuperCfg
      *
      * @return string
      */
-    public function oxMimeContentType( $sFileName )
+    public function oxMimeContentType($sFileName)
     {
-        $sFileName = strtolower( $sFileName );
-        $iLastDot  = strrpos( $sFileName, '.' );
+        $sFileName = strtolower($sFileName);
+        $iLastDot = strrpos($sFileName, '.');
 
-        if ( $iLastDot !== false ) {
-            $sType = substr( $sFileName, $iLastDot + 1 );
-            switch ( $sType ) {
+        if ($iLastDot !== false) {
+            $sType = substr($sFileName, $iLastDot + 1);
+            switch ($sType) {
                 case 'gif':
                     $sType = 'image/gif';
                     break;
@@ -1270,6 +1296,7 @@ class oxUtils extends oxSuperCfg
                     break;
             }
         }
+
         return $sType;
     }
 
@@ -1281,32 +1308,33 @@ class oxUtils extends oxSuperCfg
      *
      * @return null
      */
-    public function logger( $sText, $blNewline = false )
-    {   $myConfig = $this->getConfig();
+    public function logger($sText, $blNewline = false)
+    {
+        $myConfig = $this->getConfig();
 
-        if ( $myConfig->getConfigParam( 'iDebug' ) == -2) {
-            if ( gettype( $sText ) != 'string' ) {
-                $sText = var_export( $sText, true);
+        if ($myConfig->getConfigParam('iDebug') == -2) {
+            if (gettype($sText) != 'string') {
+                $sText = var_export($sText, true);
             }
-            $sLogMsg = "----------------------------------------------\n{$sText}".( ( $blNewline ) ?"\n":"" )."\n";
-            $this->writeToLog( $sLogMsg, "log.txt" );
+            $sLogMsg = "----------------------------------------------\n{$sText}" . (($blNewline) ? "\n" : "") . "\n";
+            $this->writeToLog($sLogMsg, "log.txt");
         }
 
     }
 
     /**
-    * Applies ROT13 encoding to $sStr
-    *
-    * @param string $sStr to encoding string
-    *
-    * @return string
-    */
-    public function strRot13( $sStr )
+     * Applies ROT13 encoding to $sStr
+     *
+     * @param string $sStr to encoding string
+     *
+     * @return string
+     */
+    public function strRot13($sStr)
     {
         $sFrom = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $sTo   = 'nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM';
+        $sTo = 'nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM';
 
-        return strtr( $sStr, $sFrom, $sTo );
+        return strtr($sStr, $sFrom, $sTo);
     }
 
     /**
@@ -1318,12 +1346,12 @@ class oxUtils extends oxSuperCfg
      *
      * @return string
      */
-    public function getCacheFilePath( $sCacheName, $blPathOnly = false, $sExtension = 'txt' )
+    public function getCacheFilePath($sCacheName, $blPathOnly = false, $sExtension = 'txt')
     {
 
             $sVersionPrefix = 'pe';
 
-        $sPath = realpath($this->getConfig()->getConfigParam( 'sCompileDir' ));
+        $sPath = realpath($this->getConfig()->getConfigParam('sCompileDir'));
 
         if (!$sPath) {
             return false;
@@ -1339,13 +1367,14 @@ class oxUtils extends oxSuperCfg
      *
      * @return array
      */
-    public function getLangCache( $sCacheName )
+    public function getLangCache($sCacheName)
     {
         $aLangCache = null;
-        $sFilePath = $this->getCacheFilePath( $sCacheName );
-        if ( file_exists( $sFilePath ) && is_readable( $sFilePath ) ) {
+        $sFilePath = $this->getCacheFilePath($sCacheName);
+        if (file_exists($sFilePath) && is_readable($sFilePath)) {
             include $sFilePath;
         }
+
         return $aLangCache;
     }
 
@@ -1357,10 +1386,11 @@ class oxUtils extends oxSuperCfg
      *
      * @return null
      */
-    public function setLangCache( $sCacheName, $aLangCache )
+    public function setLangCache($sCacheName, $aLangCache)
     {
-        $sCache = "<?php\n\$aLangCache = ".var_export( $aLangCache, true ).";\n?>";
+        $sCache = "<?php\n\$aLangCache = " . var_export($aLangCache, true) . ";\n?>";
         $blRes = file_put_contents($this->getCacheFilePath($sCacheName), $sCache, LOCK_EX);
+
         return $blRes;
     }
 
@@ -1371,9 +1401,9 @@ class oxUtils extends oxSuperCfg
      *
      * @return string
      */
-    public function checkUrlEndingSlash( $sUrl )
+    public function checkUrlEndingSlash($sUrl)
     {
-        if ( !getStr()->preg_match("/\/$/", $sUrl) ) {
+        if (!getStr()->preg_match("/\/$/", $sUrl)) {
             $sUrl .= '/';
         }
 
@@ -1388,14 +1418,14 @@ class oxUtils extends oxSuperCfg
      *
      * @return bool
      */
-    public function writeToLog( $sLogMessage, $sLogFileName )
+    public function writeToLog($sLogMessage, $sLogFileName)
     {
-        $sLogDist = $this->getConfig()->getLogsDir().$sLogFileName;
+        $sLogDist = $this->getConfig()->getLogsDir() . $sLogFileName;
         $blOk = false;
 
-        if ( ( $oHandle = fopen( $sLogDist, 'a' ) ) !== false ) {
-            fwrite( $oHandle, $sLogMessage );
-            $blOk = fclose( $oHandle );
+        if (($oHandle = fopen($sLogDist, 'a')) !== false) {
+            fwrite($oHandle, $sLogMessage);
+            $blOk = fclose($oHandle);
         }
 
         return $blOk;
@@ -1411,7 +1441,7 @@ class oxUtils extends oxSuperCfg
     public function handlePageNotFoundError($sUrl = '')
     {
         $this->setHeader("HTTP/1.0 404 Not Found");
-        if ( oxRegistry::getConfig()->isUtf() ) {
+        if (oxRegistry::getConfig()->isUtf()) {
             $this->setHeader("Content-Type: text/html; charset=UTF-8");
         }
 
@@ -1420,14 +1450,14 @@ class oxUtils extends oxSuperCfg
             $oView = oxNew('oxUBase');
             $oView->init();
             $oView->render();
-            $oView->setClassName( 'oxUBase' );
+            $oView->setClassName('oxUBase');
             $oView->addTplParam('sUrl', $sUrl);
             if ($sRet = oxRegistry::get("oxUtilsView")->getTemplateOutput('message/err_404.tpl', $oView)) {
                 $sReturn = $sRet;
             }
         } catch (Exception $e) {
         }
-        $this->showMessageAndExit( $sReturn );
+        $this->showMessageAndExit($sReturn);
     }
 
     /**
@@ -1437,14 +1467,15 @@ class oxUtils extends oxSuperCfg
      *
      * @return string
      */
-    public function extractDomain( $sHost )
+    public function extractDomain($sHost)
     {
         $oStr = getStr();
-        if ( !$oStr->preg_match( '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/', $sHost ) &&
-             ( $iLastDot = strrpos( $sHost, '.' ) ) !== false ) {
-            $iLen = $oStr->strlen( $sHost );
-            if ( ( $iNextDot = strrpos( $sHost, '.', ( $iLen - $iLastDot + 1 ) * - 1 ) ) !== false ) {
-                $sHost = trim( $oStr->substr( $sHost, $iNextDot ), '.' );
+        if (!$oStr->preg_match('/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/', $sHost) &&
+            ($iLastDot = strrpos($sHost, '.')) !== false
+        ) {
+            $iLen = $oStr->strlen($sHost);
+            if (($iNextDot = strrpos($sHost, '.', ($iLen - $iLastDot + 1) * -1)) !== false) {
+                $sHost = trim($oStr->substr($sHost, $iNextDot), '.');
             }
         }
 

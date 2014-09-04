@@ -26,6 +26,7 @@
  */
 class oxMaintenance
 {
+
     /**
      * Executes maintenance tasks. Currently calls oxArticleList::updateUpcomingPrices()
      *
@@ -34,6 +35,6 @@ class oxMaintenance
     public function execute()
     {
         // updating upcoming prices
-        oxNew("oxArticleList")->updateUpcomingPrices( true );
+        oxNew("oxArticleList")->updateUpcomingPrices(true);
     }
 }

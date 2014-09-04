@@ -28,6 +28,7 @@
  */
 class Delivery_Main extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates delivery category tree,
      * passes data to Smarty engine and returns name of template file "delivery_main.tpl".
@@ -44,56 +45,57 @@ class Delivery_Main extends oxAdminDetails
         $iLang = $oLang->getTplLanguage();
 
         // remove itm from list
-        unset( $this->_aViewData["sumtype"][2]);
+        unset($this->_aViewData["sumtype"][2]);
 
         // Deliverytypes
         $aDelTypes = array();
         $oType = new stdClass();
-        $oType->sType     = "a";      // amount
-        $oType->sDesc    = $oLang->translateString( "amount", $iLang );
+        $oType->sType = "a"; // amount
+        $oType->sDesc = $oLang->translateString("amount", $iLang);
         $aDelTypes['a'] = $oType;
         $oType = new stdClass();
-        $oType->sType     = "s";      // Size
-        $oType->sDesc    = $oLang->translateString( "size", $iLang );
+        $oType->sType = "s"; // Size
+        $oType->sDesc = $oLang->translateString("size", $iLang);
         $aDelTypes['s'] = $oType;
         $oType = new stdClass();
-        $oType->sType     = "w";      // Weight
-        $oType->sDesc    = $oLang->translateString( "weight", $iLang );
+        $oType->sType = "w"; // Weight
+        $oType->sDesc = $oLang->translateString("weight", $iLang);
         $aDelTypes['w'] = $oType;
         $oType = new stdClass();
-        $oType->sType     = "p";      // Price
-        $oType->sDesc    = $oLang->translateString( "price", $iLang );
+        $oType->sType = "p"; // Price
+        $oType->sDesc = $oLang->translateString("price", $iLang);
         $aDelTypes['p'] = $oType;
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oDelivery = oxNew( "oxdelivery" );
-            $oDelivery->loadInLang( $this->_iEditLang, $soxId );
+            $oDelivery = oxNew("oxdelivery");
+            $oDelivery->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oDelivery->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oDelivery->loadInLang( key($oOtherLang), $soxId );
+                $oDelivery->loadInLang(key($oOtherLang), $soxId);
             }
 
-            $this->_aViewData["edit"] =  $oDelivery;
+            $this->_aViewData["edit"] = $oDelivery;
 
 
             // remove already created languages
-            $aLang = array_diff ( $oLang->getLanguageNames(), $oOtherLang);
-            if ( count( $aLang))
+            $aLang = array_diff($oLang->getLanguageNames(), $oOtherLang);
+            if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
+            }
 
-            foreach ( $oOtherLang as $id => $language) {
-                $oLang= new stdClass();
+            foreach ($oOtherLang as $id => $language) {
+                $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
 
             // set selected delivery type
-            if ( !$oDelivery->oxdelivery__oxdeltype->value ) {
+            if (!$oDelivery->oxdelivery__oxdeltype->value) {
                 $oDelivery->oxdelivery__oxdeltype = new oxField("a"); // default
             }
             $aDelTypes[$oDelivery->oxdelivery__oxdeltype->value]->selected = true;
@@ -101,12 +103,13 @@ class Delivery_Main extends oxAdminDetails
 
         $this->_aViewData["deltypes"] = $aDelTypes;
 
-        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
-            $oDeliveryMainAjax = oxNew( 'delivery_main_ajax' );
+        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+            $oDeliveryMainAjax = oxNew('delivery_main_ajax');
             $this->_aViewData['oxajax'] = $oDeliveryMainAjax->getColumns();
 
             return "popups/delivery_main.tpl";
         }
+
         return "delivery_main.tpl";
     }
 
@@ -120,39 +123,39 @@ class Delivery_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
             // shopid
-            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxdelivery__oxshopid'] = $sShopID;
 
-        $oDelivery = oxNew( "oxdelivery" );
+        $oDelivery = oxNew("oxdelivery");
 
-        if ( $soxId != "-1") {
-            $oDelivery->loadInLang( $this->_iEditLang, $soxId );
+        if ($soxId != "-1") {
+            $oDelivery->loadInLang($this->_iEditLang, $soxId);
         } else {
             $aParams['oxdelivery__oxid'] = null;
         }
 
         // checkbox handling
-        if ( !isset( $aParams['oxdelivery__oxactive']))
+        if (!isset($aParams['oxdelivery__oxactive']))
             $aParams['oxdelivery__oxactive'] = 0;
-        if ( !isset( $aParams['oxdelivery__oxfixed']))
+        if (!isset($aParams['oxdelivery__oxfixed']))
             $aParams['oxdelivery__oxfixed'] = 0;
-        if ( !isset( $aParams['oxdelivery__oxfinalize']))
+        if (!isset($aParams['oxdelivery__oxfinalize']))
             $aParams['oxdelivery__oxfinalize'] = 0;
-        if ( !isset( $aParams['oxdelivery__oxsort']))
+        if (!isset($aParams['oxdelivery__oxsort']))
             $aParams['oxdelivery__oxsort'] = 9999;
 
 
         $oDelivery->setLanguage(0);
-        $oDelivery->assign( $aParams );
+        $oDelivery->assign($aParams);
         $oDelivery->setLanguage($this->_iEditLang);
-        $oDelivery = oxRegistry::get("oxUtilsFile")->processFiles( $oDelivery );
+        $oDelivery = oxRegistry::get("oxUtilsFile")->processFiles($oDelivery);
         $oDelivery->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oDelivery->getId() );
+        $this->setEditObjectId($oDelivery->getId());
     }
 
     /**
@@ -163,36 +166,36 @@ class Delivery_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
             // shopid
-            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxdelivery__oxshopid'] = $sShopID;
 
-        $oDelivery = oxNew( "oxdelivery" );
+        $oDelivery = oxNew("oxdelivery");
 
-        if ( $soxId != "-1") {
-            $oDelivery->loadInLang( $this->_iEditLang, $soxId );
+        if ($soxId != "-1") {
+            $oDelivery->loadInLang($this->_iEditLang, $soxId);
         } else {
             $aParams['oxdelivery__oxid'] = null;
         }
 
         // checkbox handling
-        if ( !isset( $aParams['oxdelivery__oxactive'])) {
+        if (!isset($aParams['oxdelivery__oxactive'])) {
             $aParams['oxdelivery__oxactive'] = 0;
         }
-        if ( !isset( $aParams['oxdelivery__oxfixed'])) {
+        if (!isset($aParams['oxdelivery__oxfixed'])) {
             $aParams['oxdelivery__oxfixed'] = 0;
         }
 
 
         $oDelivery->setLanguage(0);
-        $oDelivery->assign( $aParams);
+        $oDelivery->assign($aParams);
         $oDelivery->setLanguage($this->_iEditLang);
-        $oDelivery = oxRegistry::get("oxUtilsFile")->processFiles( $oDelivery );
+        $oDelivery = oxRegistry::get("oxUtilsFile")->processFiles($oDelivery);
         $oDelivery->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oDelivery->getId() );
+        $this->setEditObjectId($oDelivery->getId());
     }
 }

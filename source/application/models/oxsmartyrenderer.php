@@ -25,23 +25,23 @@
  * Renders smarty template with given parameters and returns rendered body.
  *
  */
-class oxSmartyRenderer {
+class oxSmartyRenderer
+{
 
     /**
      * Template renderer
      *
      * @return string
      */
-    public function renderTemplate( $sTemplateName, $aViewData = array() )
+    public function renderTemplate($sTemplateName, $aViewData = array())
     {
         $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
 
-        foreach ( $aViewData as $key => $value)
-        {
-            $oSmarty->assign( $key, $value );
+        foreach ($aViewData as $key => $value) {
+            $oSmarty->assign($key, $value);
         }
 
-        $sBody = $oSmarty->fetch( $sTemplateName );
+        $sBody = $oSmarty->fetch($sTemplateName);
 
         return $sBody;
     }

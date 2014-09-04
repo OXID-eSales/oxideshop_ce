@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,41 +18,42 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
-
-/**
- * Admin statistics service setting manager.
- * Collects statistics service settings, updates it on user submit, etc.
- * Admin Menu: Statistics -> Show -> Clear Log.
- */
-class Statistic_Service extends oxAdminDetails
-{
-    /**
-     * Executes parent method parent::render() and returns name of template
-     * file "statistic_service.tpl".
-     *
-     * @return string
      */
-    public function render()
-    {
-        parent::render();
-        $this->_aViewData['iLogCount'] = oxDb::getDb()->getOne( "select count(*) from oxlogs where oxshopid = '".$this->getConfig()->getShopId()."'", false, false);
-
-        return "statistic_service.tpl";
-    }
 
     /**
-     * Performs cleanup of statistic data for selected period.
-     *
-     * @return null
+     * Admin statistics service setting manager.
+     * Collects statistics service settings, updates it on user submit, etc.
+     * Admin Menu: Statistics -> Show -> Clear Log.
      */
-    public function cleanup()
+    class Statistic_Service extends oxAdminDetails
     {
-        $iTimeFrame = oxRegistry::getConfig()->getRequestParameter( "timeframe");
-        $dNow = time();
-        $sDeleteFrom = date( "Y-m-d H:i:s", mktime( date( "H", $dNow), date( "i", $dNow), date( "s", $dNow), date( "m", $dNow), date( "d", $dNow) - $iTimeFrame, date( "Y", $dNow)));
 
-        $oDb = oxDb::getDb();
-        $oDb->Execute( "delete from oxlogs where oxtime < ".$oDb->quote( $sDeleteFrom ) );
+        /**
+         * Executes parent method parent::render() and returns name of template
+         * file "statistic_service.tpl".
+         *
+         * @return string
+         */
+        public function render()
+        {
+            parent::render();
+            $this->_aViewData['iLogCount'] = oxDb::getDb()->getOne("select count(*) from oxlogs where oxshopid = '" . $this->getConfig()->getShopId() . "'", false, false);
+
+            return "statistic_service.tpl";
+        }
+
+        /**
+         * Performs cleanup of statistic data for selected period.
+         *
+         * @return null
+         */
+        public function cleanup()
+        {
+            $iTimeFrame = oxRegistry::getConfig()->getRequestParameter("timeframe");
+            $dNow = time();
+            $sDeleteFrom = date("Y-m-d H:i:s", mktime(date("H", $dNow), date("i", $dNow), date("s", $dNow), date("m", $dNow), date("d", $dNow) - $iTimeFrame, date("Y", $dNow)));
+
+            $oDb = oxDb::getDb();
+            $oDb->Execute("delete from oxlogs where oxtime < " . $oDb->quote($sDeleteFrom));
+        }
     }
-}

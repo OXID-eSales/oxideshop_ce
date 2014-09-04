@@ -88,7 +88,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @var array
      */
-    protected $_aSkipSaveFields = array( 'oxtimestamp' );
+    protected $_aSkipSaveFields = array('oxtimestamp');
 
     /**
      * Class constructor, initiates class constructor (parent::oxbase()).
@@ -96,7 +96,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxorderarticles' );
+        $this->init('oxorderarticles');
     }
 
     /**
@@ -106,20 +106,20 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return null
      */
-    public function copyThis( $oProduct )
+    public function copyThis($oProduct)
     {
-        $aObjectVars = get_object_vars( $oProduct );
+        $aObjectVars = get_object_vars($oProduct);
 
-        foreach ( $aObjectVars as $sName => $sValue ) {
-            if ( isset( $oProduct->$sName->value ) ) {
+        foreach ($aObjectVars as $sName => $sValue) {
+            if (isset($oProduct->$sName->value)) {
                 $sFieldName = preg_replace('/oxarticles__/', 'oxorderarticles__', $sName);
-                if ( $sFieldName != "oxorderarticles__oxtimestamp" ) {
+                if ($sFieldName != "oxorderarticles__oxtimestamp") {
                     $this->$sFieldName = $oProduct->$sName;
                 }
                 // formatting view
-                if ( !$this->getConfig()->getConfigParam( 'blSkipFormatConversion' ) ) {
-                    if ( $sFieldName == "oxorderarticles__oxinsert" ) {
-                        oxRegistry::get("oxUtilsDate")->convertDBDate( $this->$sFieldName, true );
+                if (!$this->getConfig()->getConfigParam('blSkipFormatConversion')) {
+                    if ($sFieldName == "oxorderarticles__oxinsert") {
+                        oxRegistry::get("oxUtilsDate")->convertDBDate($this->$sFieldName, true);
                     }
                 }
             }
@@ -134,9 +134,9 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return null
      */
-    public function assign( $dbRecord )
+    public function assign($dbRecord)
     {
-        parent::assign( $dbRecord );
+        parent::assign($dbRecord);
         $this->_setArticleParams();
     }
 
@@ -150,26 +150,26 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return null
      */
-    public function updateArticleStock( $dAddAmount, $blAllowNegativeStock = false )
+    public function updateArticleStock($dAddAmount, $blAllowNegativeStock = false)
     {
         // TODO: use oxarticle reduceStock
         // decrement stock if there is any
-        $oArticle = oxNew( 'oxarticle' );
-        $oArticle->load( $this->oxorderarticles__oxartid->value );
+        $oArticle = oxNew('oxarticle');
+        $oArticle->load($this->oxorderarticles__oxartid->value);
         $oArticle->beforeUpdate();
 
-        if ( $this->getConfig()->getConfigParam( 'blUseStock' ) ) {
+        if ($this->getConfig()->getConfigParam('blUseStock')) {
             // get real article stock count
-            $iStockCount = $this->_getArtStock( $dAddAmount, $blAllowNegativeStock );
+            $iStockCount = $this->_getArtStock($dAddAmount, $blAllowNegativeStock);
             $oDb = oxDb::getDb();
 
             $oArticle->oxarticles__oxstock = new oxField($iStockCount);
-            $oDb->execute( 'update oxarticles set oxarticles.oxstock = '.$oDb->quote( $iStockCount ).' where oxarticles.oxid = '.$oDb->quote( $this->oxorderarticles__oxartid->value ) );
-            $oArticle->onChange( ACTION_UPDATE_STOCK );
+            $oDb->execute('update oxarticles set oxarticles.oxstock = ' . $oDb->quote($iStockCount) . ' where oxarticles.oxid = ' . $oDb->quote($this->oxorderarticles__oxartid->value));
+            $oArticle->onChange(ACTION_UPDATE_STOCK);
         }
 
         //update article sold amount
-        $oArticle->updateSoldAmount( $dAddAmount * ( -1 ) );
+        $oArticle->updateSoldAmount($dAddAmount * (-1));
     }
 
     /**
@@ -180,18 +180,18 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return double
      */
-    protected function _getArtStock( $dAddAmount = 0, $blAllowNegativeStock = false )
+    protected function _getArtStock($dAddAmount = 0, $blAllowNegativeStock = false)
     {
         $oDb = oxDb::getDb();
 
         // #1592A. must take real value
-        $sQ = 'select oxstock from oxarticles where oxid = '.$oDb->quote( $this->oxorderarticles__oxartid->value );
-        $iStockCount  = ( float ) $oDb->getOne( $sQ, false, false );
+        $sQ = 'select oxstock from oxarticles where oxid = ' . $oDb->quote($this->oxorderarticles__oxartid->value);
+        $iStockCount = ( float ) $oDb->getOne($sQ, false, false);
 
         $iStockCount += $dAddAmount;
 
         // #1592A. calculating according new stock option
-        if ( !$blAllowNegativeStock && $iStockCount < 0 ) {
+        if (!$blAllowNegativeStock && $iStockCount < 0) {
             $iStockCount = 0;
         }
 
@@ -206,12 +206,12 @@ class oxOrderArticle extends oxBase implements oxIArticle
      */
     public function getPersParams()
     {
-        if ( $this->_aPersParam != null ) {
+        if ($this->_aPersParam != null) {
             return $this->_aPersParam;
         }
 
-        if ( $this->oxorderarticles__oxpersparam->value ) {
-            $this->_aPersParam = unserialize( $this->oxorderarticles__oxpersparam->value );
+        if ($this->oxorderarticles__oxpersparam->value) {
+            $this->_aPersParam = unserialize($this->oxorderarticles__oxpersparam->value);
         }
 
         return $this->_aPersParam;
@@ -224,12 +224,12 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return null
      */
-    public function setPersParams( $aParams )
+    public function setPersParams($aParams)
     {
         $this->_aPersParam = $aParams;
 
         // serializing persisten info stored while ordering
-        $this->oxorderarticles__oxpersparam = new oxField(serialize( $aParams ), oxField::T_RAW);
+        $this->oxorderarticles__oxpersparam = new oxField(serialize($aParams), oxField::T_RAW);
     }
 
     /**
@@ -241,10 +241,10 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return null
      */
-    protected function _setFieldData( $sFieldName, $sValue, $iDataType = oxField::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
     {
         $sFieldName = strtolower($sFieldName);
-        switch ( $sFieldName ) {
+        switch ($sFieldName) {
             case 'oxpersparam':
             case 'oxorderarticles__oxpersparam':
             case 'oxerpstatus':
@@ -254,6 +254,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
                 $iDataType = oxField::T_RAW;
                 break;
         }
+
         return parent::_setFieldData($sFieldName, $sValue, $iDataType);
     }
 
@@ -265,9 +266,9 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return bool
      */
-    public function loadInLang( $iLanguage, $sOxid )
+    public function loadInLang($iLanguage, $sOxid)
     {
-        return $this->load( $sOxid );
+        return $this->load($sOxid);
     }
 
     /**
@@ -300,14 +301,15 @@ class oxOrderArticle extends oxBase implements oxIArticle
     public function getParentId()
     {
         // when this field will be introduced there will be no need to load from real article
-        if ( isset( $this->oxorderarticles__oxartparentid ) && $this->oxorderarticles__oxartparentid->value !== false ) {
+        if (isset($this->oxorderarticles__oxartparentid) && $this->oxorderarticles__oxartparentid->value !== false) {
             return $this->oxorderarticles__oxartparentid->value;
         }
 
         $oDb = oxDb::getDb();
-        $oArticle = oxNew( "oxarticle" );
-        $sQ = "select oxparentid from " . $oArticle->getViewName() . " where oxid=" . $oDb->quote( $this->getProductId() );
-        $this->oxarticles__oxparentid = new oxField( $oDb->getOne( $sQ ) );
+        $oArticle = oxNew("oxarticle");
+        $sQ = "select oxparentid from " . $oArticle->getViewName() . " where oxid=" . $oDb->quote($this->getProductId());
+        $this->oxarticles__oxparentid = new oxField($oDb->getOne($sQ));
+
         return $this->oxarticles__oxparentid->value;
     }
 
@@ -319,38 +321,38 @@ class oxOrderArticle extends oxBase implements oxIArticle
     protected function _setArticleParams()
     {
         // creating needed fields
-        $this->oxarticles__oxstock  = $this->oxorderarticles__oxamount;
-        $this->oxarticles__oxtitle  = $this->oxorderarticles__oxtitle;
-        $this->oxarticles__oxwidth  = $this->oxorderarticles__oxwidth;
+        $this->oxarticles__oxstock = $this->oxorderarticles__oxamount;
+        $this->oxarticles__oxtitle = $this->oxorderarticles__oxtitle;
+        $this->oxarticles__oxwidth = $this->oxorderarticles__oxwidth;
         $this->oxarticles__oxlength = $this->oxorderarticles__oxlength;
         $this->oxarticles__oxheight = $this->oxorderarticles__oxheight;
         $this->oxarticles__oxweight = $this->oxorderarticles__oxweight;
-        $this->oxarticles__oxsubclass  = $this->oxorderarticles__oxsubclass;
-        $this->oxarticles__oxartnum    = $this->oxorderarticles__oxartnum;
+        $this->oxarticles__oxsubclass = $this->oxorderarticles__oxsubclass;
+        $this->oxarticles__oxartnum = $this->oxorderarticles__oxartnum;
         $this->oxarticles__oxshortdesc = $this->oxorderarticles__oxshortdesc;
 
-        $this->oxarticles__oxvat    = $this->oxorderarticles__oxvat;
-        $this->oxarticles__oxprice  = $this->oxorderarticles__oxprice;
+        $this->oxarticles__oxvat = $this->oxorderarticles__oxvat;
+        $this->oxarticles__oxprice = $this->oxorderarticles__oxprice;
         $this->oxarticles__oxbprice = $this->oxorderarticles__oxbprice;
 
         $this->oxarticles__oxthumb = $this->oxorderarticles__oxthumb;
-        $this->oxarticles__oxpic1  = $this->oxorderarticles__oxpic1;
-        $this->oxarticles__oxpic2  = $this->oxorderarticles__oxpic2;
-        $this->oxarticles__oxpic3  = $this->oxorderarticles__oxpic3;
-        $this->oxarticles__oxpic4  = $this->oxorderarticles__oxpic4;
-        $this->oxarticles__oxpic5  = $this->oxorderarticles__oxpic5;
+        $this->oxarticles__oxpic1 = $this->oxorderarticles__oxpic1;
+        $this->oxarticles__oxpic2 = $this->oxorderarticles__oxpic2;
+        $this->oxarticles__oxpic3 = $this->oxorderarticles__oxpic3;
+        $this->oxarticles__oxpic4 = $this->oxorderarticles__oxpic4;
+        $this->oxarticles__oxpic5 = $this->oxorderarticles__oxpic5;
 
-        $this->oxarticles__oxfile     = $this->oxorderarticles__oxfile;
+        $this->oxarticles__oxfile = $this->oxorderarticles__oxfile;
         $this->oxarticles__oxdelivery = $this->oxorderarticles__oxdelivery;
         $this->oxarticles__oxissearch = $this->oxorderarticles__oxissearch;
-        $this->oxarticles__oxfolder   = $this->oxorderarticles__oxfolder;
+        $this->oxarticles__oxfolder = $this->oxorderarticles__oxfolder;
         $this->oxarticles__oxtemplate = $this->oxorderarticles__oxtemplate;
-        $this->oxarticles__oxexturl   = $this->oxorderarticles__oxexturl;
-        $this->oxarticles__oxurlimg   = $this->oxorderarticles__oxurlimg;
-        $this->oxarticles__oxurldesc  = $this->oxorderarticles__oxurldesc;
-        $this->oxarticles__oxshopid   = $this->oxorderarticles__oxordershopid;
+        $this->oxarticles__oxexturl = $this->oxorderarticles__oxexturl;
+        $this->oxarticles__oxurlimg = $this->oxorderarticles__oxurlimg;
+        $this->oxarticles__oxurldesc = $this->oxorderarticles__oxurldesc;
+        $this->oxarticles__oxshopid = $this->oxorderarticles__oxordershopid;
         $this->oxarticles__oxquestionemail = $this->oxorderarticles__oxquestionemail;
-        $this->oxarticles__oxsearchkeys    = $this->oxorderarticles__oxsearchkeys;
+        $this->oxarticles__oxsearchkeys = $this->oxorderarticles__oxsearchkeys;
     }
 
     /**
@@ -361,7 +363,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return bool
      */
-    public function checkForStock( $dAmount, $dArtStockAmount = 0 )
+    public function checkForStock($dAmount, $dArtStockAmount = 0)
     {
         return true;
     }
@@ -374,17 +376,18 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return oxarticle | false
      */
-    protected function _getOrderArticle( $sArticleId = null )
+    protected function _getOrderArticle($sArticleId = null)
     {
-        if ( $this->_oOrderArticle === null ) {
+        if ($this->_oOrderArticle === null) {
             $this->_oOrderArticle = false;
 
             $sArticleId = $sArticleId ? $sArticleId : $this->getProductId();
-            $oArticle = oxNew( "oxArticle" );
-            if ( $oArticle->load( $sArticleId ) ) {
+            $oArticle = oxNew("oxArticle");
+            if ($oArticle->load($sArticleId)) {
                 $this->_oOrderArticle = $oArticle;
             }
         }
+
         return $this->_oOrderArticle;
     }
 
@@ -395,12 +398,13 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return array
      */
-    public function getSelectLists( $sKeyPrefix = null )
+    public function getSelectLists($sKeyPrefix = null)
     {
         $aSelLists = array();
-        if ( $oArticle = $this->_getOrderArticle() ) {
+        if ($oArticle = $this->_getOrderArticle()) {
             $aSelLists = $oArticle->getSelectLists();
         }
+
         return $aSelLists;
     }
 
@@ -412,40 +416,40 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return array
      */
-    public function getOrderArticleSelectList( $sArtId = null, $sOrderArtSelList = null )
+    public function getOrderArticleSelectList($sArtId = null, $sOrderArtSelList = null)
     {
-        if ( $this->_aOrderArticleSelList === null ) {
+        if ($this->_aOrderArticleSelList === null) {
 
             $sOrderArtSelList = $sOrderArtSelList ? $sOrderArtSelList : $this->oxorderarticles__oxselvariant->value;
 
-            $aRet  = array();
+            $aRet = array();
 
-            if ( $oArticle = $this->_getOrderArticle( $sArtId ) ) {
-                $aList = explode( ", ", $sOrderArtSelList );
+            if ($oArticle = $this->_getOrderArticle($sArtId)) {
+                $aList = explode(", ", $sOrderArtSelList);
                 $oStr = getStr();
 
                 $aArticleSelList = $oArticle->getSelectLists();
 
                 //formatting temporary list array from string
-                foreach ( $aList as $sList ) {
-                    if ( $sList ) {
+                foreach ($aList as $sList) {
+                    if ($sList) {
 
-                        $aVal = explode( ":", $sList );
-                        if ( isset($aVal[0]) && isset($aVal[1])) {
-                            $sOrderArtListTitle = $oStr->strtolower( trim($aVal[0]) );
-                            $sOrderArtSelValue  = $oStr->strtolower( trim($aVal[1]) );
+                        $aVal = explode(":", $sList);
+                        if (isset($aVal[0]) && isset($aVal[1])) {
+                            $sOrderArtListTitle = $oStr->strtolower(trim($aVal[0]));
+                            $sOrderArtSelValue = $oStr->strtolower(trim($aVal[1]));
 
                             //checking article list for matches with article list stored in oxOrderItem
                             $iSelListNum = 0;
-                            if ( count($aArticleSelList) > 0 ) {
-                                foreach ( $aArticleSelList as $aSelect ) {
+                            if (count($aArticleSelList) > 0) {
+                                foreach ($aArticleSelList as $aSelect) {
                                     //check if selects titles are equal
 
-                                    if ( $oStr->strtolower($aSelect['name']) ==  $sOrderArtListTitle) {
+                                    if ($oStr->strtolower($aSelect['name']) == $sOrderArtListTitle) {
                                         //try to find matching select items value
                                         $iSelValueNum = 0;
-                                        foreach ( $aSelect as $oSel ) {
-                                            if ( $oStr->strtolower($oSel->name) == $sOrderArtSelValue ) {
+                                        foreach ($aSelect as $oSel) {
+                                            if ($oStr->strtolower($oSel->name) == $sOrderArtSelValue) {
                                                 // found, adding to return array
                                                 $aRet[$iSelListNum] = $iSelValueNum;
                                             }
@@ -477,11 +481,11 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return oxprice
      */
-    public function getBasketPrice( $dAmount, $aSelList, $oBasket )
+    public function getBasketPrice($dAmount, $aSelList, $oBasket)
     {
         $oArticle = $this->_getOrderArticle();
-        if ( $oArticle ) {
-            return $oArticle->getBasketPrice( $dAmount, $aSelList, $oBasket );
+        if ($oArticle) {
+            return $oArticle->getBasketPrice($dAmount, $aSelList, $oBasket);
         } else {
             return $this->getPrice();
         }
@@ -505,12 +509,13 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return array
      */
-    public function getCategoryIds( $blActCats = false, $blSkipCache = false )
+    public function getCategoryIds($blActCats = false, $blSkipCache = false)
     {
         $aCatIds = array();
-        if ( $oOrderArticle = $this->_getOrderArticle() ) {
-            $aCatIds = $oOrderArticle->getCategoryIds( $blActCats, $blSkipCache );
+        if ($oOrderArticle = $this->_getOrderArticle()) {
+            $aCatIds = $oOrderArticle->getCategoryIds($blActCats, $blSkipCache);
         }
+
         return $aCatIds;
     }
 
@@ -531,7 +536,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return object
      */
-    public function getBasePrice( $dAmount = 1 )
+    public function getBasePrice($dAmount = 1)
     {
 
         return $this->getPrice();
@@ -544,11 +549,11 @@ class oxOrderArticle extends oxBase implements oxIArticle
      */
     public function getPrice()
     {
-        $oBasePrice = oxNew( 'oxPrice' );
+        $oBasePrice = oxNew('oxPrice');
         // prices in db are ONLY brutto
         $oBasePrice->setBruttoPriceMode();
-        $oBasePrice->setVat( $this->oxorderarticles__oxvat->value );
-        $oBasePrice->setPrice( $this->oxorderarticles__oxbprice->value );
+        $oBasePrice->setVat($this->oxorderarticles__oxvat->value);
+        $oBasePrice->setPrice($this->oxorderarticles__oxbprice->value);
 
         return $oBasePrice;
     }
@@ -560,7 +565,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return null
      */
-    public function setIsNewOrderItem( $blIsNew )
+    public function setIsNewOrderItem($blIsNew)
     {
         $this->_blIsNewOrderItem = $blIsNew;
     }
@@ -584,26 +589,26 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return null
      */
-    public function setNewAmount( $iNewAmount )
+    public function setNewAmount($iNewAmount)
     {
-        if ( $iNewAmount >= 0 ) {
+        if ($iNewAmount >= 0) {
             // to update stock we must first check if it is possible - article exists?
-            $oArticle = oxNew( "oxarticle" );
-            if ( $oArticle->load( $this->oxorderarticles__oxartid->value ) ) {
+            $oArticle = oxNew("oxarticle");
+            if ($oArticle->load($this->oxorderarticles__oxartid->value)) {
 
                 // updating stock info
                 $iStockChange = $iNewAmount - $this->oxorderarticles__oxamount->value;
-                if ( $iStockChange > 0 && ( $iOnStock = $oArticle->checkForStock( $iStockChange ) ) !== false ) {
-                    if ( $iOnStock !== true ) {
+                if ($iStockChange > 0 && ($iOnStock = $oArticle->checkForStock($iStockChange)) !== false) {
+                    if ($iOnStock !== true) {
                         $iStockChange = $iOnStock;
-                        $iNewAmount   = $this->oxorderarticles__oxamount->value + $iStockChange;
+                        $iNewAmount = $this->oxorderarticles__oxamount->value + $iStockChange;
                     }
                 }
 
-                $this->updateArticleStock( $iStockChange * -1, $this->getConfig()->getConfigParam( 'blAllowNegativeStock' ) );
+                $this->updateArticleStock($iStockChange * -1, $this->getConfig()->getConfigParam('blAllowNegativeStock'));
 
                 // updating self
-                $this->oxorderarticles__oxamount = new oxField ( $iNewAmount, oxField::T_RAW );
+                $this->oxorderarticles__oxamount = new oxField ($iNewAmount, oxField::T_RAW);
                 $this->save();
             }
         }
@@ -625,14 +630,14 @@ class oxOrderArticle extends oxBase implements oxIArticle
      * restores previous oxarticle stock state
      *
      * @return null
-    */
+     */
     public function cancelOrderArticle()
     {
-        if ( $this->oxorderarticles__oxstorno->value == 0 ) {
+        if ($this->oxorderarticles__oxstorno->value == 0) {
             $myConfig = $this->getConfig();
-            $this->oxorderarticles__oxstorno = new oxField( 1 );
-            if ( $this->save() ) {
-                $this->updateArticleStock( $this->oxorderarticles__oxamount->value, $myConfig->getConfigParam('blAllowNegativeStock') );
+            $this->oxorderarticles__oxstorno = new oxField(1);
+            if ($this->save()) {
+                $this->updateArticleStock($this->oxorderarticles__oxamount->value, $myConfig->getConfigParam('blAllowNegativeStock'));
             }
         }
     }
@@ -645,14 +650,15 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return bool
      */
-    public function delete( $sOXID = null)
+    public function delete($sOXID = null)
     {
-        if ( $blDelete = parent::delete( $sOXID ) ) {
+        if ($blDelete = parent::delete($sOXID)) {
             $myConfig = $this->getConfig();
-            if ( $this->oxorderarticles__oxstorno->value != 1 ) {
-                $this->updateArticleStock( $this->oxorderarticles__oxamount->value, $myConfig->getConfigParam('blAllowNegativeStock') );
+            if ($this->oxorderarticles__oxstorno->value != 1) {
+                $this->updateArticleStock($this->oxorderarticles__oxamount->value, $myConfig->getConfigParam('blAllowNegativeStock'));
             }
         }
+
         return $blDelete;
     }
 
@@ -666,25 +672,26 @@ class oxOrderArticle extends oxBase implements oxIArticle
     public function save()
     {
         // ordered articles
-        if ( ( $blSave = parent::save() ) && $this->isNewOrderItem() ) {
+        if (($blSave = parent::save()) && $this->isNewOrderItem()) {
             $myConfig = $this->getConfig();
-            if ( $myConfig->getConfigParam( 'blUseStock' ) &&
-                 $myConfig->getConfigParam( 'blPsBasketReservationEnabled' ) ) {
-                    $this->getSession()
-                            ->getBasketReservations()
-                            ->commitArticleReservation(
-                                   $this->oxorderarticles__oxartid->value,
-                                   $this->oxorderarticles__oxamount->value
-                           );
+            if ($myConfig->getConfigParam('blUseStock') &&
+                $myConfig->getConfigParam('blPsBasketReservationEnabled')
+            ) {
+                $this->getSession()
+                    ->getBasketReservations()
+                    ->commitArticleReservation(
+                        $this->oxorderarticles__oxartid->value,
+                        $this->oxorderarticles__oxamount->value
+                    );
             } else {
-                $this->updateArticleStock( $this->oxorderarticles__oxamount->value * (-1), $myConfig->getConfigParam( 'blAllowNegativeStock' ) );
+                $this->updateArticleStock($this->oxorderarticles__oxamount->value * (-1), $myConfig->getConfigParam('blAllowNegativeStock'));
             }
 
             // seting downloadable products article files
             $this->_setOrderFiles();
 
             // marking object as "non new" disable further stock changes
-            $this->setIsNewOrderItem( false );
+            $this->setIsNewOrderItem(false);
         }
 
         return $blSave;
@@ -703,6 +710,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
                 return $oWrapping;
             }
         }
+
         return null;
     }
 
@@ -725,8 +733,9 @@ class oxOrderArticle extends oxBase implements oxIArticle
     {
         $oLang = oxRegistry::getLang();
         $oOrder = $this->getOrder();
-        $oCurrency = $this->getConfig()->getCurrencyObject( $oOrder->oxorder__oxcurrency->value );
-        return $oLang->formatCurrency( $this->oxorderarticles__oxbrutprice->value, $oCurrency );
+        $oCurrency = $this->getConfig()->getCurrencyObject($oOrder->oxorder__oxcurrency->value);
+
+        return $oLang->formatCurrency($this->oxorderarticles__oxbrutprice->value, $oCurrency);
     }
 
     /**
@@ -738,8 +747,9 @@ class oxOrderArticle extends oxBase implements oxIArticle
     {
         $oLang = oxRegistry::getLang();
         $oOrder = $this->getOrder();
-        $oCurrency = $this->getConfig()->getCurrencyObject( $oOrder->oxorder__oxcurrency->value );
-        return $oLang->formatCurrency(  $this->oxorderarticles__oxbprice->value, $oCurrency );
+        $oCurrency = $this->getConfig()->getCurrencyObject($oOrder->oxorder__oxcurrency->value);
+
+        return $oLang->formatCurrency($this->oxorderarticles__oxbprice->value, $oCurrency);
     }
 
     /**
@@ -751,8 +761,9 @@ class oxOrderArticle extends oxBase implements oxIArticle
     {
         $oLang = oxRegistry::getLang();
         $oOrder = $this->getOrder();
-        $oCurrency = $this->getConfig()->getCurrencyObject( $oOrder->oxorder__oxcurrency->value );
-        return $oLang->formatCurrency(  $this->oxorderarticles__oxnprice->value, $oCurrency );
+        $oCurrency = $this->getConfig()->getCurrencyObject($oOrder->oxorder__oxcurrency->value);
+
+        return $oLang->formatCurrency($this->oxorderarticles__oxnprice->value, $oCurrency);
     }
 
     /**
@@ -762,15 +773,15 @@ class oxOrderArticle extends oxBase implements oxIArticle
      */
     public function getOrder()
     {
-        if ( $this->oxorderarticles__oxorderid->value ) {
+        if ($this->oxorderarticles__oxorderid->value) {
             // checking if the object already exists in the cache
-            if ( isset( $this->_aOrderCache[ $this->oxorderarticles__oxorderid->value ] )) {
+            if (isset($this->_aOrderCache[$this->oxorderarticles__oxorderid->value])) {
                 // returning the cached object
-                return $this->_aOrderCache[ $this->oxorderarticles__oxorderid->value ];
+                return $this->_aOrderCache[$this->oxorderarticles__oxorderid->value];
             }
             // creatina new order object and trying to load it
-            $oOrder = oxNew( 'oxOrder' );
-            if ( $oOrder->load( $this->oxorderarticles__oxorderid->value )) {
+            $oOrder = oxNew('oxOrder');
+            if ($oOrder->load($this->oxorderarticles__oxorderid->value)) {
                 return $this->_aOrderCache[$this->oxorderarticles__oxorderid->value] = $oOrder;
             }
         }
@@ -789,7 +800,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
     {
         $iInsertTime = time();
         $now = date('Y-m-d H:i:s', $iInsertTime);
-        $this->oxorderarticles__oxtimestamp = new oxField( $now );
+        $this->oxorderarticles__oxtimestamp = new oxField($now);
 
         return parent::_insert();
     }
@@ -802,7 +813,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @return void
      */
-    public function setArticle( $oArticle )
+    public function setArticle($oArticle)
     {
         $this->_oArticle = $oArticle;
     }
@@ -814,8 +825,8 @@ class oxOrderArticle extends oxBase implements oxIArticle
      */
     public function getArticle()
     {
-        if ( $this->_oArticle === null ) {
-            $oArticle = oxNew( 'oxArticle' );
+        if ($this->_oArticle === null) {
+            $oArticle = oxNew('oxArticle');
             $oArticle->load($this->oxorderarticles__oxartid->value);
             $this->_oArticle = $oArticle;
         }
@@ -824,34 +835,33 @@ class oxOrderArticle extends oxBase implements oxIArticle
     }
 
 
-
     /**
      * Set order files
      *
-     *@return void
+     * @return void
      */
     public function _setOrderFiles()
     {
         $oArticle = $this->getArticle();
 
-        if ( $oArticle->oxarticles__oxisdownloadable->value ) {
+        if ($oArticle->oxarticles__oxisdownloadable->value) {
 
-            $oConfig          = $this->getConfig();
-            $sOrderId          = $this->oxorderarticles__oxorderid->value;
+            $oConfig = $this->getConfig();
+            $sOrderId = $this->oxorderarticles__oxorderid->value;
             $sOrderArticleId = $this->getId();
-            $sShopId          = $oConfig->getShopId();
+            $sShopId = $oConfig->getShopId();
 
-            $oUser             = $oConfig->getUser();
+            $oUser = $oConfig->getUser();
 
-            $oFiles = $oArticle->getArticleFiles( true );
+            $oFiles = $oArticle->getArticleFiles(true);
 
-            if ( $oFiles ) {
+            if ($oFiles) {
                 foreach ($oFiles as $oFile) {
-                    $oOrderFile = oxNew( 'oxOrderFile' );
-                    $oOrderFile->setOrderId( $sOrderId );
-                    $oOrderFile->setOrderArticleId( $sOrderArticleId );
-                    $oOrderFile->setShopId( $sShopId );
-                    $iMaxDownloadCount = (!empty($oUser) && !$oUser->hasAccount()) ? $oFile->getMaxUnregisteredDownloadsCount() :  $oFile->getMaxDownloadsCount();
+                    $oOrderFile = oxNew('oxOrderFile');
+                    $oOrderFile->setOrderId($sOrderId);
+                    $oOrderFile->setOrderArticleId($sOrderArticleId);
+                    $oOrderFile->setShopId($sShopId);
+                    $iMaxDownloadCount = (!empty($oUser) && !$oUser->hasAccount()) ? $oFile->getMaxUnregisteredDownloadsCount() : $oFile->getMaxDownloadsCount();
                     $oOrderFile->setFile(
                         $oFile->oxfiles__oxfilename->value,
                         $oFile->getId(),
@@ -875,7 +885,8 @@ class oxOrderArticle extends oxBase implements oxIArticle
     {
         $oLang = oxRegistry::getLang();
         $oOrder = $this->getOrder();
-        $oCurrency = $this->getConfig()->getCurrencyObject( $oOrder->oxorder__oxcurrency->value );
-        return $oLang->formatCurrency( $this->oxorderarticles__oxnetprice->value, $oCurrency );
+        $oCurrency = $this->getConfig()->getCurrencyObject($oOrder->oxorder__oxcurrency->value);
+
+        return $oLang->formatCurrency($this->oxorderarticles__oxnetprice->value, $oCurrency);
     }
 }

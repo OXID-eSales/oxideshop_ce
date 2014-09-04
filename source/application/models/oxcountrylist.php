@@ -27,6 +27,7 @@
  */
 class oxCountryList extends oxList
 {
+
     /**
      * Call parent class constructor
      *
@@ -44,10 +45,10 @@ class oxCountryList extends oxList
      *
      * @return null
      */
-    public function loadActiveCountries( $iLang = null )
+    public function loadActiveCountries($iLang = null)
     {
-        $sViewName = getViewName( 'oxcountry', $iLang );
+        $sViewName = getViewName('oxcountry', $iLang);
         $sSelect = "SELECT oxid, oxtitle, oxisoalpha2 FROM {$sViewName} WHERE oxactive = '1' ORDER BY oxorder, oxtitle ";
-        $this->selectString( $sSelect );
+        $this->selectString($sSelect);
     }
 }

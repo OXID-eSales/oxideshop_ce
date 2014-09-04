@@ -28,6 +28,7 @@
  */
 class Theme_List extends oxAdminList
 {
+
     /**
      * Calls parent::render() and returns name of template to render
      *

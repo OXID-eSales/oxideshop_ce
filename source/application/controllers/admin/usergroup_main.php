@@ -27,6 +27,7 @@
  */
 class UserGroup_Main extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates oxgroups object,
      * passes data to Smarty engine and returns name of template file
@@ -39,38 +40,40 @@ class UserGroup_Main extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oGroup = oxNew( "oxgroups" );
-            $oGroup->loadInLang( $this->_iEditLang, $soxId);
+            $oGroup = oxNew("oxgroups");
+            $oGroup->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oGroup->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oGroup->loadInLang( key($oOtherLang), $soxId );
+                $oGroup->loadInLang(key($oOtherLang), $soxId);
             }
 
-            $this->_aViewData["edit"] =  $oGroup;
+            $this->_aViewData["edit"] = $oGroup;
 
             // remove already created languages
-            $aLang = array_diff ( oxRegistry::getLang()->getLanguageNames(), $oOtherLang );
+            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
 
-            if ( count( $aLang))
+            if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
+            }
 
-            foreach ( $oOtherLang as $id => $language) {
-                $oLang= new stdClass();
+            foreach ($oOtherLang as $id => $language) {
+                $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
         }
-        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
-            $oUsergroupMainAjax = oxNew( 'usergroup_main_ajax' );
+        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+            $oUsergroupMainAjax = oxNew('usergroup_main_ajax');
             $this->_aViewData['oxajax'] = $oUsergroupMainAjax->getColumns();
 
             return "popups/usergroup_main.tpl";
         }
+
         return "usergroup_main.tpl";
     }
 
@@ -85,26 +88,26 @@ class UserGroup_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
         // checkbox handling
-        if ( !isset( $aParams['oxgroups__oxactive'] ) ) {
+        if (!isset($aParams['oxgroups__oxactive'])) {
             $aParams['oxgroups__oxactive'] = 0;
         }
 
-        $oGroup = oxNew( "oxgroups" );
-        if ( $soxId != "-1") {
-            $oGroup->load( $soxId );
+        $oGroup = oxNew("oxgroups");
+        if ($soxId != "-1") {
+            $oGroup->load($soxId);
         } else {
             $aParams['oxgroups__oxid'] = null;
         }
 
-        $oGroup->setLanguage( 0 );
-        $oGroup->assign( $aParams);
-        $oGroup->setLanguage( $this->_iEditLang );
+        $oGroup->setLanguage(0);
+        $oGroup->assign($aParams);
+        $oGroup->setLanguage($this->_iEditLang);
         $oGroup->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oGroup->getId() );
+        $this->setEditObjectId($oGroup->getId());
     }
 
     /**

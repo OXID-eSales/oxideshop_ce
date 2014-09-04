@@ -27,6 +27,7 @@ require_once 'oxerptype.php';
  */
 class oxERPType_Country extends oxERPType
 {
+
     /**
      * class constructor
      *

@@ -25,6 +25,7 @@
  */
 class oxSuperCfg
 {
+
     /**
      * oxconfig instance
      *
@@ -71,18 +72,18 @@ class oxSuperCfg
      *
      * @return string
      */
-    public function __call( $sMethod, $aArgs )
+    public function __call($sMethod, $aArgs)
     {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            if ( substr( $sMethod, 0, 4) == "UNIT" ) {
-                $sMethod = str_replace( "UNIT", "_", $sMethod );
+        if (defined('OXID_PHP_UNIT')) {
+            if (substr($sMethod, 0, 4) == "UNIT") {
+                $sMethod = str_replace("UNIT", "_", $sMethod);
             }
-            if ( method_exists( $this, $sMethod)) {
-                return call_user_func_array( array( & $this, $sMethod ), $aArgs );
+            if (method_exists($this, $sMethod)) {
+                return call_user_func_array(array(& $this, $sMethod), $aArgs);
             }
         }
 
-        throw new oxSystemComponentException( "Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")".PHP_EOL);
+        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
     }
 
     /**
@@ -101,14 +102,15 @@ class oxSuperCfg
      */
     public function getConfig()
     {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            if ( isset( $this->unitCustModConf ) ) {
+        if (defined('OXID_PHP_UNIT')) {
+            if (isset($this->unitCustModConf)) {
                 return $this->unitCustModConf;
             }
+
             return oxRegistry::getConfig();
         }
 
-        if ( self::$_oConfig == null ) {
+        if (self::$_oConfig == null) {
             self::$_oConfig = oxRegistry::getConfig();
         }
 
@@ -122,10 +124,11 @@ class oxSuperCfg
      *
      * @return null
      */
-    public function setConfig( $oConfig )
+    public function setConfig($oConfig)
     {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
+        if (defined('OXID_PHP_UNIT')) {
             $this->unitCustModConf = $oConfig;
+
             return;
         }
 
@@ -139,14 +142,15 @@ class oxSuperCfg
      */
     public function getSession()
     {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            if ( isset( $this->unitCustModSess ) ) {
+        if (defined('OXID_PHP_UNIT')) {
+            if (isset($this->unitCustModSess)) {
                 return $this->unitCustModSess;
             }
+
             return oxRegistry::getSession();
         }
 
-        if ( self::$_oSession == null ) {
+        if (self::$_oSession == null) {
             self::$_oSession = oxRegistry::getSession();
         }
 
@@ -160,10 +164,11 @@ class oxSuperCfg
      *
      * @return null
      */
-    public function setSession( $oSession )
+    public function setSession($oSession)
     {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
+        if (defined('OXID_PHP_UNIT')) {
             $this->unitCustModSess = $oSession;
+
             return;
         }
 
@@ -177,21 +182,22 @@ class oxSuperCfg
      */
     public function getUser()
     {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            if ( isset( $this->unitCustModUser ) ) {
+        if (defined('OXID_PHP_UNIT')) {
+            if (isset($this->unitCustModUser)) {
                 return $this->unitCustModUser;
             }
-            $oUser = oxNew( 'oxuser' );
-            if ( $oUser->loadActiveUser() ) {
+            $oUser = oxNew('oxuser');
+            if ($oUser->loadActiveUser()) {
                 return $oUser;
             }
+
             return false;
         }
 
-        if ( self::$_oActUser === null ) {
+        if (self::$_oActUser === null) {
             self::$_oActUser = false;
-            $oUser = oxNew( 'oxuser' );
-            if ( $oUser->loadActiveUser() ) {
+            $oUser = oxNew('oxuser');
+            if ($oUser->loadActiveUser()) {
                 self::$_oActUser = $oUser;
             }
         }
@@ -206,10 +212,11 @@ class oxSuperCfg
      *
      * @return null
      */
-    public function setUser( $oUser )
+    public function setUser($oUser)
     {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
+        if (defined('OXID_PHP_UNIT')) {
             $this->unitCustModUser = $oUser;
+
             return;
         }
 
@@ -223,7 +230,7 @@ class oxSuperCfg
      */
     public function isAdmin()
     {
-        if ( self::$_blIsAdmin === null ) {
+        if (self::$_blIsAdmin === null) {
             self::$_blIsAdmin = isAdmin();
         }
 
@@ -237,7 +244,7 @@ class oxSuperCfg
      *
      * @return null
      */
-    public function setAdminMode( $blAdmin )
+    public function setAdminMode($blAdmin)
     {
         self::$_blIsAdmin = $blAdmin;
     }

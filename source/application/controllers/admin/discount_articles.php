@@ -28,6 +28,7 @@
  */
 class Discount_Articles extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates discount category tree,
      * passes data to Smarty engine and returns name of template file "discount_main.tpl".
@@ -39,32 +40,34 @@ class Discount_Articles extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if ( $soxId != '-1' && isset( $soxId)) {
+        if ($soxId != '-1' && isset($soxId)) {
             // load object
-            $oDiscount = oxNew( 'oxdiscount' );
-            $oDiscount->load( $soxId );
+            $oDiscount = oxNew('oxdiscount');
+            $oDiscount->load($soxId);
             $this->_aViewData['edit'] = $oDiscount;
 
             //disabling derived items
-            if ($oDiscount->isDerived())
-                $this->_aViewData['readonly'] =  true;
+            if ($oDiscount->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
 
             // generating category tree for artikel choose select list
-            $this->_createCategoryTree( "artcattree" );
+            $this->_createCategoryTree("artcattree");
         }
 
         $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
-        if ( $iAoc == 1 ) {
-            $oDiscountArticlesAjax = oxNew( 'discount_articles_ajax' );
+        if ($iAoc == 1) {
+            $oDiscountArticlesAjax = oxNew('discount_articles_ajax');
             $this->_aViewData['oxajax'] = $oDiscountArticlesAjax->getColumns();
 
             return "popups/discount_articles.tpl";
-        } elseif ( $iAoc == 2 ) {
-            $oDiscountCategoriesAjax = oxNew( 'discount_categories_ajax' );
+        } elseif ($iAoc == 2) {
+            $oDiscountCategoriesAjax = oxNew('discount_categories_ajax');
             $this->_aViewData['oxajax'] = $oDiscountCategoriesAjax->getColumns();
 
             return "popups/discount_categories.tpl";
         }
+
         return 'discount_articles.tpl';
     }
 }

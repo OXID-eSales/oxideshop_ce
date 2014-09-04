@@ -27,8 +27,10 @@
  */
 class Shop_System extends Shop_Config
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'shop_system.tpl';
@@ -41,7 +43,7 @@ class Shop_System extends Shop_Config
      */
     public function render()
     {
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
         parent::render();
 
         $aConfArrs = array();
@@ -49,17 +51,18 @@ class Shop_System extends Shop_Config
         $oLang = oxRegistry::getLang();
 
         $aLanguages = $oLang->getLanguageArray();
-        $sLangAbbr  = $aLanguages[$oLang->getObjectTplLanguage()]->abbr;
+        $sLangAbbr = $aLanguages[$oLang->getObjectTplLanguage()]->abbr;
 
         // loading shop location countries list (defines in which country shop exists)
         include "shop_countries.php";
 
         $soxId = $this->getEditObjectId();
-        if ( !$soxId)
+        if (!$soxId) {
             $soxId = $myConfig->getShopId();
+        }
 
         $oDb = oxDb::getDb();
-        $sShopCountry = $oDb->getOne("select DECODE( oxvarvalue, ".$oDb->quote( $myConfig->getConfigParam( 'sConfigKey' ) ).") as oxvarvalue from oxconfig where oxshopid = '$soxId' and oxvarname = 'sShopCountry'", false, false);
+        $sShopCountry = $oDb->getOne("select DECODE( oxvarvalue, " . $oDb->quote($myConfig->getConfigParam('sConfigKey')) . ") as oxvarvalue from oxconfig where oxshopid = '$soxId' and oxvarname = 'sShopCountry'", false, false);
 
         $this->_aViewData["shop_countries"] = $aLocationCountries[$sLangAbbr];
         $this->_aViewData["confstrs"]["sShopCountry"] = $sShopCountry;

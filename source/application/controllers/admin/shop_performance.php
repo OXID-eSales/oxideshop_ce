@@ -27,8 +27,10 @@
  */
 class Shop_Performance extends Shop_Config
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'shop_performance.tpl';

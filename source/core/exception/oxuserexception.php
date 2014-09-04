@@ -27,6 +27,7 @@
  */
 class oxUserException extends oxException
 {
+
     /**
      * Get string dump
      * Overrides oxException::getString()
@@ -35,6 +36,6 @@ class oxUserException extends oxException
      */
     public function getString()
     {
-        return __CLASS__ .'-'.parent::getString();
+        return __CLASS__ . '-' . parent::getString();
     }
 }

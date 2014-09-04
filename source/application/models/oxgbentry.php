@@ -27,6 +27,7 @@
  */
 class oxGbEntry extends oxBase
 {
+
     /**
      * skipped fields
      *
@@ -49,7 +50,7 @@ class oxGbEntry extends oxBase
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxgbentries' );
+        $this->init('oxgbentries');
     }
 
     /**
@@ -59,14 +60,14 @@ class oxGbEntry extends oxBase
      *
      * @return bool
      */
-    public function assign( $dbRecord )
+    public function assign($dbRecord)
     {
 
-        $blRet = parent::assign( $dbRecord );
+        $blRet = parent::assign($dbRecord);
 
-        if ( isset( $this->oxgbentries__oxuserid ) && $this->oxgbentries__oxuserid->value ) {
+        if (isset($this->oxgbentries__oxuserid) && $this->oxgbentries__oxuserid->value) {
             $oDb = oxDb::getDb();
-            $this->oxuser__oxfname = new oxField( $oDb->getOne( "select oxfname from oxuser where oxid=".$oDb->quote( $this->oxgbentries__oxuserid->value ) ));
+            $this->oxuser__oxfname = new oxField($oDb->getOne("select oxfname from oxuser where oxid=" . $oDb->quote($this->oxgbentries__oxuserid->value)));
         }
 
         return $blRet;
@@ -80,7 +81,8 @@ class oxGbEntry extends oxBase
     protected function _insert()
     {
         // set oxcreate
-        $this->oxgbentries__oxcreate = new oxField( date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() ));
+        $this->oxgbentries__oxcreate = new oxField(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+
         return parent::_insert();
     }
 
@@ -93,35 +95,35 @@ class oxGbEntry extends oxBase
      *
      * @return array $oEntries guestbook entries
      */
-    public function getAllEntries( $iStart, $iNrofCatArticles, $sSortBy)
+    public function getAllEntries($iStart, $iNrofCatArticles, $sSortBy)
     {
         $myConfig = $this->getConfig();
 
         // loading entries
-        $sSelect  = 'select oxgbentries.*, oxuser.oxfname,
+        $sSelect = 'select oxgbentries.*, oxuser.oxfname,
                     `oxuser`.`oxusername` AS `author`, `oxgbentries`.`oxcreate` AS `date`
             from oxgbentries left join oxuser on oxgbentries.oxuserid = oxuser.oxid ';
-        $sSelect .= 'where oxuser.oxid is not null and oxgbentries.oxshopid = "'.$myConfig->getShopId().'" ';
+        $sSelect .= 'where oxuser.oxid is not null and oxgbentries.oxshopid = "' . $myConfig->getShopId() . '" ';
 
         // setting GB entry view restirction rules
-        if ( $myConfig->getConfigParam( 'blGBModerate') ) {
+        if ($myConfig->getConfigParam('blGBModerate')) {
             $oUser = $this->getUser();
             $sSelect .= " and ( oxgbentries.oxactive = '1' ";
-            $sSelect .= $oUser?" or oxgbentries.oxuserid = " . oxDb::getDb()->quote( $oUser->getId() ) : '';
+            $sSelect .= $oUser ? " or oxgbentries.oxuserid = " . oxDb::getDb()->quote($oUser->getId()) : '';
             $sSelect .= " ) ";
         }
 
         // setting sort
-        if ( $sSortBy ) {
+        if ($sSortBy) {
             $sSelect .= "order by $sSortBy ";
         }
 
 
-        $oEntries = oxNew( 'oxlist' );
-        $oEntries->init( 'oxgbentry' );
+        $oEntries = oxNew('oxlist');
+        $oEntries->init('oxgbentry');
 
-        $oEntries->setSqlLimit( $iStart, $iNrofCatArticles );
-        $oEntries->selectString( $sSelect );
+        $oEntries->setSqlLimit($iStart, $iNrofCatArticles);
+        $oEntries->selectString($sSelect);
 
         return $oEntries;
     }
@@ -137,19 +139,20 @@ class oxGbEntry extends oxBase
         $oDb = oxDb::getDb();
 
         // loading entries
-        $sSelect  = 'select count(*) from oxgbentries left join oxuser on oxgbentries.oxuserid = oxuser.oxid ';
-        $sSelect .= 'where oxuser.oxid is not null and oxgbentries.oxshopid = "'.$myConfig->getShopId().'" ';
+        $sSelect = 'select count(*) from oxgbentries left join oxuser on oxgbentries.oxuserid = oxuser.oxid ';
+        $sSelect .= 'where oxuser.oxid is not null and oxgbentries.oxshopid = "' . $myConfig->getShopId() . '" ';
 
         // setting GB entry view restirction rules
-        if ( $myConfig->getConfigParam( 'blGBModerate') ) {
+        if ($myConfig->getConfigParam('blGBModerate')) {
             $oUser = $this->getUser();
             $sSelect .= " and ( oxgbentries.oxactive = '1' ";
-            $sSelect .= $oUser?" or oxgbentries.oxuserid = ".$oDb->quote( $oUser->getId() ):'';
+            $sSelect .= $oUser ? " or oxgbentries.oxuserid = " . $oDb->quote($oUser->getId()) : '';
             $sSelect .= " ) ";
         }
 
         // loading only if there is some data
-        $iRecCnt = (int) $oDb->getOne( $sSelect );
+        $iRecCnt = (int) $oDb->getOne($sSelect);
+
         return $iRecCnt;
     }
 
@@ -163,22 +166,23 @@ class oxGbEntry extends oxBase
      *
      * @return  bool    result
      */
-    public function floodProtection( $sShopid = 0, $sUserId = null )
+    public function floodProtection($sShopid = 0, $sUserId = null)
     {
         $result = true;
-        if ( $sUserId && $sShopid) {
+        if ($sUserId && $sShopid) {
             $oDb = oxDb::getDb();
-            $sToday = date( 'Y-m-d' );
-            $sSelect  = "select count(*) from oxgbentries ";
-            $sSelect .= "where oxgbentries.oxuserid = " . $oDb->quote( $sUserId ) . " and oxgbentries.oxshopid = " . $oDb->quote( $sShopid ) . " ";
+            $sToday = date('Y-m-d');
+            $sSelect = "select count(*) from oxgbentries ";
+            $sSelect .= "where oxgbentries.oxuserid = " . $oDb->quote($sUserId) . " and oxgbentries.oxshopid = " . $oDb->quote($sShopid) . " ";
             $sSelect .= "and oxgbentries.oxcreate >= '$sToday 00:00:00' and oxgbentries.oxcreate <= '$sToday 23:59:59' ";
-            $iCnt = $oDb->getOne( $sSelect );
+            $iCnt = $oDb->getOne($sSelect);
 
             $myConfig = $this->getConfig();
-            if ( ( !$myConfig->getConfigParam( 'iMaxGBEntriesPerDay' ) ) || ( $iCnt < $myConfig->getConfigParam( 'iMaxGBEntriesPerDay' ) ) ) {
+            if ((!$myConfig->getConfigParam('iMaxGBEntriesPerDay')) || ($iCnt < $myConfig->getConfigParam('iMaxGBEntriesPerDay'))) {
                 $result = false;
             }
         }
+
         return $result;
     }
 

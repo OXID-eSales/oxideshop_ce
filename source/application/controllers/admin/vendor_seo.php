@@ -25,6 +25,7 @@
  */
 class Vendor_Seo extends Object_Seo
 {
+
     /**
      * Updating showsuffix field
      *
@@ -32,10 +33,10 @@ class Vendor_Seo extends Object_Seo
      */
     public function save()
     {
-        $oVendor = oxNew( 'oxbase' );
-        $oVendor->init( 'oxvendor' );
-        if ( $oVendor->load( $this->getEditObjectId() ) ) {
-            $oVendor->oxvendor__oxshowsuffix = new oxField( (int) oxRegistry::getConfig()->getRequestParameter( 'blShowSuffix' ) );
+        $oVendor = oxNew('oxbase');
+        $oVendor->init('oxvendor');
+        if ($oVendor->load($this->getEditObjectId())) {
+            $oVendor->oxvendor__oxshowsuffix = new oxField((int) oxRegistry::getConfig()->getRequestParameter('blShowSuffix'));
             $oVendor->save();
         }
 
@@ -69,12 +70,12 @@ class Vendor_Seo extends Object_Seo
      */
     public function isEntrySuffixed()
     {
-        $oVendor = oxNew( 'oxvendor' );
-        if ( $oVendor->load( $this->getEditObjectId() ) ) {
+        $oVendor = oxNew('oxvendor');
+        if ($oVendor->load($this->getEditObjectId())) {
             return (bool) $oVendor->oxvendor__oxshowsuffix->value;
         }
     }
-    
+
     /**
      * Returns url type
      *
@@ -84,7 +85,7 @@ class Vendor_Seo extends Object_Seo
     {
         return 'oxvendor';
     }
-    
+
     /**
      * Returns seo uri
      *
@@ -92,9 +93,9 @@ class Vendor_Seo extends Object_Seo
      */
     public function getEntryUri()
     {
-        $oVendor = oxNew( 'oxvendor' );
-        if ( $oVendor->load( $this->getEditObjectId() ) ) {
-            return $this->_getEncoder()->getVendorUri( $oVendor, $this->getEditLang() );
+        $oVendor = oxNew('oxvendor');
+        if ($oVendor->load($this->getEditObjectId())) {
+            return $this->_getEncoder()->getVendorUri($oVendor, $this->getEditLang());
         }
     }
 }

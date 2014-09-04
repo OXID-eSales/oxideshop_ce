@@ -26,6 +26,7 @@
  */
 interface oxISelectList
 {
+
     /**
      * Returns selection list label
      *

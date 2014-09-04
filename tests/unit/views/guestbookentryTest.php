@@ -65,6 +65,11 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
     {
         modSession::getInstance()->setVar('usr', null);
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         $oView = new GuestbookEntry();
         $this->assertNull($oView->saveEntry());
 
@@ -87,7 +92,12 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock("oxconfig", array("getShopId"));
-        $oConfig->expects($this->once())->method('getShopId')->will($this->returnValue(null));
+        $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue(null));
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var GuestbookEntry|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("GuestbookEntry", array("init", "getConfig"));
@@ -113,6 +123,11 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         modSession::getInstance()->setVar('usr', 'xxx');
         modConfig::setRequestParameter('rvw_txt', null);
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         $oView = new GuestbookEntry();
         $this->assertEquals('guestbookentry', $oView->saveEntry());
 
@@ -135,6 +150,11 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
 
         modSession::getInstance()->setVar('usr', 'xxx');
         modConfig::setRequestParameter('rvw_txt', 'xxx');
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         $oView = new GuestbookEntry();
         $this->assertEquals('guestbookentry', $oView->saveEntry());
@@ -160,6 +180,11 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         modConfig::setRequestParameter('rvw_txt', 'xxx');
         modConfig::setRequestParameter('gbFormId', 'yyy');
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         $oView = new GuestbookEntry();
         $this->assertEquals('guestbook', $oView->saveEntry());
 
@@ -178,6 +203,11 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
 
         modConfig::setRequestParameter('rvw_txt', 'xxx');
         modConfig::setRequestParameter('gbFormId', 'xxx');
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var GuestbookEntry|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("guestbookEntry", array("canAcceptFormData"));

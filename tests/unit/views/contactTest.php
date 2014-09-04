@@ -52,8 +52,14 @@ class Unit_Views_contactTest extends OxidTestCase
         oxSession::deleteVar( 'Errors' );
 
         $aParams['oxuser__oxusername'] = 'invalidEmail';
-        modConfig::setParameter( 'editval', $aParams );
-        $oContact = oxNew( 'Contact' );
+        modConfig::setParameter('editval', $aParams);
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
+        $oContact = oxNew('Contact');
 
         $this->assertFalse($oContact->send());
 
@@ -76,8 +82,14 @@ class Unit_Views_contactTest extends OxidTestCase
         oxSession::deleteVar( 'Errors' );
 
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
-        modConfig::setParameter( 'editval', $aParams );
-        $oContact = oxNew( 'Contact' );
+        modConfig::setParameter('editval', $aParams);
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
+        $oContact = oxNew('Contact');
 
         $this->assertFalse($oContact->send());
 
@@ -101,8 +113,14 @@ class Unit_Views_contactTest extends OxidTestCase
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
 
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
-        modConfig::setParameter( 'editval', $aParams );
-        $oContact = oxNew( 'Contact' );
+        modConfig::setParameter('editval', $aParams);
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
+        $oContact = oxNew('Contact');
 
         $this->assertFalse($oContact->send());
 
@@ -129,6 +147,12 @@ class Unit_Views_contactTest extends OxidTestCase
         $aParams['oxuser__oxlname'] = 'last name';
         modConfig::setParameter( 'editval', $aParams );
         modConfig::setParameter( 'c_subject', "testSubject" );
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         $oObj = $this->getProxyClass("Contact");
         $oObj->send();
 
@@ -235,6 +259,11 @@ class Unit_Views_contactTest extends OxidTestCase
         $oCaptcha = $this->getMock("oxCaptcha", array("pass"));
         $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         /** @var Contact|PHPUnit_Framework_MockObject_MockObject $oContact */
         $oContact = $this->getMock("Contact", array("getCaptcha"));
         $oContact->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
@@ -271,6 +300,11 @@ class Unit_Views_contactTest extends OxidTestCase
         /** @var oxCaptcha|PHPUnit_Framework_MockObject_MockObject $oCaptcha */
         $oCaptcha = $this->getMock("oxCaptcha", array("pass"));
         $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var Contact|PHPUnit_Framework_MockObject_MockObject $oContact */
         $oContact = $this->getMock("Contact", array("getCaptcha"));

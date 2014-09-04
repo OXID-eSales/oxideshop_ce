@@ -38,6 +38,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
     {
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
+
         $this->assertNull($oView->changePassword());
         $this->assertFalse($oView->isPasswordChanged());
         $this->assertFalse($oView->isPasswordChanged());
@@ -57,6 +58,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
 
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+
         $this->assertEquals("ERROR_MESSAGE_INPUT_EMPTYPASS", $oView->changePassword());
         $this->assertFalse($oView->isPasswordChanged());
     }
@@ -75,6 +77,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
 
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+
         $this->assertEquals("ERROR_MESSAGE_PASSWORD_TOO_SHORT", $oView->changePassword());
         $this->assertFalse($oView->isPasswordChanged());
     }
@@ -93,6 +96,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
 
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+
         $this->assertEquals("ACCOUNT_PASSWORD_ERRPASSWDONOTMATCH", $oView->changePassword());
         $this->assertFalse($oView->isPasswordChanged());
     }
@@ -113,6 +117,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
 
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+
         $this->assertEquals("ACCOUNT_PASSWORD_ERRINCORRECTCURRENTPASSW", $oView->changePassword());
         $this->assertFalse($oView->isPasswordChanged());
     }
@@ -136,6 +141,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
 
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+
         $this->assertNull($oView->changePassword());
         $this->assertTrue($oView->isPasswordChanged());
     }
@@ -163,6 +169,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
     {
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
+
         $this->assertEquals('page/account/login.tpl', $oView->render());
     }
 
@@ -173,11 +180,12 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oUser = new oxuser;
+        $oUser                     = new oxuser;
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+
         $this->assertEquals('page/account/password.tpl', $oView->render());
     }
 
@@ -206,7 +214,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
         $this->setExpectedException('oxException', 'ChangePass user test');
 
         $sOldPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%_old';
-        $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
+        $sPass    = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
         modConfig::setRequestParameter('password_old', $sOldPass);
         modConfig::setRequestParameter('password_new', $sPass);
         modConfig::setRequestParameter('password_new_confirm', $sPass);
@@ -226,6 +234,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
 
         $oView = $this->getMock('Account_Password', array('getUser'));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+
         $oView->changePassword();
 
         oxRegistry::set('oxInputValidator', $oRealInputValidator);

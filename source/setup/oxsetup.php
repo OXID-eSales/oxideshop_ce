@@ -681,41 +681,41 @@ class OxSetupSession extends oxSetupCore
     {
         $oUtils = $this->getInstance( "oxSetupUtils" );
 
-        //storring country value settings to session
-        $sLocationLang = $oUtils->getRequestVar( "location_lang", "post" );
-        if ( isset( $sLocationLang ) ) {
-            $this->setSessionParam( 'location_lang', $sLocationLang );
-        }
+            //storring country value settings to session
+            $sLocationLang = $oUtils->getRequestVar( "location_lang", "post" );
+            if ( isset( $sLocationLang ) ) {
+                $this->setSessionParam( 'location_lang', $sLocationLang );
+            }
 
-        //storring country value settings to session
-        $sCountryLang = $oUtils->getRequestVar( "country_lang", "post" );
-        if ( isset( $sCountryLang ) ) {
-            $this->setSessionParam( 'country_lang', $sCountryLang );
-        }
+            //storring country value settings to session
+            $sCountryLang = $oUtils->getRequestVar( "country_lang", "post" );
+            if ( isset( $sCountryLang ) ) {
+                $this->setSessionParam( 'country_lang', $sCountryLang );
+            }
 
-        //storring shop language value settings to session
-        $sShopLang = $oUtils->getRequestVar( "sShopLang", "post" );
-        if ( isset( $sShopLang ) ) {
-            $this->setSessionParam( 'sShopLang', $sShopLang );
-        }
+            //storring shop language value settings to session
+            $sShopLang = $oUtils->getRequestVar( "sShopLang", "post" );
+            if ( isset( $sShopLang ) ) {
+                $this->setSessionParam( 'sShopLang', $sShopLang );
+            }
 
-        //storring dyn pages settings to session
-        $blUseDynPages = $oUtils->getRequestVar( "use_dynamic_pages", "post" );
-        if ( isset( $blUseDynPages ) ) {
-            $this->setSessionParam( 'use_dynamic_pages', $blUseDynPages  );
-        }
+            //storring dyn pages settings to session
+            $blUseDynPages = $oUtils->getRequestVar( "use_dynamic_pages", "post" );
+            if ( isset( $blUseDynPages ) ) {
+                $this->setSessionParam( 'use_dynamic_pages', $blUseDynPages  );
+            }
 
-        //storring dyn pages settings to session
-        $blCheckForUpdates = $oUtils->getRequestVar( "check_for_updates", "post" );
-        if ( isset( $blCheckForUpdates ) ) {
-            $this->setSessionParam( 'check_for_updates', $blCheckForUpdates  );
-        }
+            //storring dyn pages settings to session
+            $blCheckForUpdates = $oUtils->getRequestVar( "check_for_updates", "post" );
+            if ( isset( $blCheckForUpdates ) ) {
+                $this->setSessionParam( 'check_for_updates', $blCheckForUpdates  );
+            }
 
-        // store eula to session
-        $iEula = $oUtils->getRequestVar( "iEula", "post" );
-        if ( isset( $iEula ) ) {
-            $this->setSessionParam( 'eula', $iEula  );
-        }
+            // store eula to session
+            $iEula = $oUtils->getRequestVar( "iEula", "post" );
+            if ( isset( $iEula ) ) {
+                $this->setSessionParam( 'eula', $iEula  );
+            }
 
         // store anonymous information config
         $blSendShopDataToOxid = $oUtils->getRequestVar( "blSendShopDataToOxid", "post" );
@@ -963,13 +963,13 @@ class OxSetupDb extends oxSetupCore
     }
 
     /**
-     * Saves shop settings.
+     * Saves dyn pages settings parameters
      *
      * @param array $aParams parameters to save to db
      *
      * @return null
      */
-    public function saveShopSettings( $aParams )
+    public function saveDynPagesSettings( $aParams )
     {
         $oUtils   = $this->getInstance( "oxSetupUtils" );
         $oSession = $this->getInstance( "oxSetupSession" );
@@ -1015,7 +1015,7 @@ class OxSetupDb extends oxSetupCore
                                  values('$sID3', '$sBaseShopId', 'blCheckForUpdates', 'bool', ENCODE( '$blCheckForUpdates', '".$oConfk->sConfigKey."'))" );
 
 
-        $this->_addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession);
+        $this->_addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk);
 
         //set only one active language
         $aRes = $this->execSql( "select oxvarname, oxvartype, DECODE( oxvarvalue, '".$oConfk->sConfigKey."') AS oxvarvalue from oxconfig where oxvarname='aLanguageParams'" );
@@ -1197,15 +1197,15 @@ class OxSetupDb extends oxSetupCore
      * @param $sBaseShopId
      * @param $aParams
      * @param $oConfk
-     * @param $oSession
      */
-    private function _addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession)
+    private function _addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk)
     {
+        $oSession = $this->getInstance( "oxSetupSession" );
         $blSendShopDataToOxid  = isset( $aParams["blSendShopDataToOxid"] ) ? $aParams["blSendShopDataToOxid"] : $oSession->getSessionParam( 'blSendShopDataToOxid' );
 
-        $sID = $oUtils->generateUid();
+        $sID4 = $oUtils->generateUid();
         $this->execSql("insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values('$sID', '$sBaseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $oConfk->sConfigKey . "'))");
+                                 values('$sID4', '$sBaseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $oConfk->sConfigKey . "'))");
     }
 }
 
@@ -2298,7 +2298,7 @@ class oxSetupController extends oxSetupCore
         }
 
         //update dyn pages / shop country config options (from first step)
-        $oDb->saveShopSettings( array() );
+        $oDb->saveDynPagesSettings( array() );
 
         //applying utf-8 specific queries
 
@@ -2606,7 +2606,7 @@ class oxSetupAps extends oxSetupCore
         }
 
         //update dyn pages / shop country config options (from first step)
-        $oDb->saveShopSettings( $aParams );
+        $oDb->saveDynPagesSettings( $aParams );
 
         //applying utf-8 specific queries
         if ( $iUtfMode ) {

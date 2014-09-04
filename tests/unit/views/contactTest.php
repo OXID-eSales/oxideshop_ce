@@ -55,14 +55,14 @@ class Unit_Views_contactTest extends OxidTestCase
         modConfig::setParameter( 'editval', $aParams );
         $oContact = oxNew( 'Contact' );
 
-        $this->assertFalse( $oContact->send() );
+        $this->assertFalse($oContact->send());
 
         //checking if warning was added to errors list
         $sErr = oxLang::getInstance()->translateString( 'EXCEPTION_INPUT_NOVALIDEMAIL' );
         $aEx = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aEx['default'][0] );
 
-        $this->assertEquals( $sErr, $oErr->getOxMessage() );
+        $this->assertEquals($sErr, $oErr->getOxMessage());
     }
 
     /**
@@ -79,14 +79,14 @@ class Unit_Views_contactTest extends OxidTestCase
         modConfig::setParameter( 'editval', $aParams );
         $oContact = oxNew( 'Contact' );
 
-        $this->assertFalse( $oContact->send() );
+        $this->assertFalse($oContact->send());
 
         //checking if warning was added to errors list
         $sErr = oxLang::getInstance()->translateString( 'EXCEPTION_INPUT_WRONGCAPTCHA' );
         $aEx = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aEx['default'][0] );
 
-        $this->assertEquals( $sErr, $oErr->getOxMessage() );
+        $this->assertEquals($sErr, $oErr->getOxMessage());
     }
 
     /**
@@ -104,14 +104,14 @@ class Unit_Views_contactTest extends OxidTestCase
         modConfig::setParameter( 'editval', $aParams );
         $oContact = oxNew( 'Contact' );
 
-        $this->assertFalse( $oContact->send() );
+        $this->assertFalse($oContact->send());
 
         //checking if warning was added to errors list
         $sErr = oxLang::getInstance()->translateString( 'EXCEPTION_INPUT_NOTALLFIELDS' );
         $aEx = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aEx['default'][0] );
 
-        $this->assertEquals( $sErr, $oErr->getOxMessage() );
+        $this->assertEquals($sErr, $oErr->getOxMessage());
     }
 
     /**
@@ -209,14 +209,14 @@ class Unit_Views_contactTest extends OxidTestCase
     /**
      * Test case for bug #0002065: Contact-Mail shows MR or MRS instead of localized salutation
      *
-     *  @return null
+     * @return null
      */
     public function testSendForBugtrackEntry0002065()
     {
-        $aParams = array( "oxuser__oxusername" => "info@oxid-esales.com",
-                          "oxuser__oxfname"    => "admin",
-                          "oxuser__oxlname"    => "admin",
-                          "oxuser__oxsal"      => "MR" );
+        $aParams = array("oxuser__oxusername" => "info@oxid-esales.com",
+                         "oxuser__oxfname"    => "admin",
+                         "oxuser__oxlname"    => "admin",
+                         "oxuser__oxsal"      => "MR");
 
         modConfig::setParameter( "editval", $aParams );
         modConfig::setParameter( "c_message", "message" );
@@ -225,16 +225,16 @@ class Unit_Views_contactTest extends OxidTestCase
         $oLang = oxLang::getInstance();
         $sMessage = $oLang->translateString( 'CONTACT_FROM' ) . " " . $oLang->translateString( 'MR' ) ." admin admin(info@oxid-esales.com)<br /><br />message";
 
-        $oEmail = $this->getMock( "oxemail", array( "sendContactMail" ) );
-        $oEmail->expects( $this->once() )->method( 'sendContactMail')->with( $this->equalTo( 'info@oxid-esales.com' ), $this->equalTo( 'subject' ), $this->equalTo( $sMessage ) )->will( $this->returnValue( true ) );
+        $oEmail = $this->getMock("oxemail", array("sendContactMail"));
+        $oEmail->expects($this->once())->method('sendContactMail')->with($this->equalTo('info@oxid-esales.com'), $this->equalTo('subject'), $this->equalTo($sMessage))->will($this->returnValue(true));
 
-        oxTestModules::addModuleObject( 'oxemail', $oEmail );
+        oxTestModules::addModuleObject('oxemail', $oEmail);
 
-        $oCaptcha = $this->getMock( "oxCaptcha", array( "pass" ) );
-        $oCaptcha->expects( $this->once() )->method( 'pass')->will( $this->returnValue( true ) );
+        $oCaptcha = $this->getMock("oxCaptcha", array("pass"));
+        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
-        $oContact = $this->getMock( "Contact", array( "getCaptcha" ) );
-        $oContact->expects( $this->once() )->method( 'getCaptcha')->will( $this->returnValue( $oCaptcha ) );
+        $oContact = $this->getMock("Contact", array("getCaptcha"));
+        $oContact->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
         $oContact->send();
     }
 
@@ -245,29 +245,29 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testSendEmailNotSend()
     {
-        $oUtils = $this->getMock('oxUtilsView', array( 'addErrorToDisplay' ) );
-        $oUtils->expects($this->once())->method('addErrorToDisplay')->with( $this->equalTo( "ERROR_MESSAGE_CHECK_EMAIL" ) );
-        oxTestModules::addModuleObject( 'oxUtilsView', $oUtils );
+        $oUtils = $this->getMock('oxUtilsView', array('addErrorToDisplay'));
+        $oUtils->expects($this->once())->method('addErrorToDisplay')->with($this->equalTo("ERROR_MESSAGE_CHECK_EMAIL"));
+        oxTestModules::addModuleObject('oxUtilsView', $oUtils);
 
-        $aParams = array( "oxuser__oxusername" => "info@oxid-esales.com",
-                          "oxuser__oxfname"    => "admin",
-                          "oxuser__oxlname"    => "admin",
-                          "oxuser__oxsal"      => "MR" );
+        $aParams = array("oxuser__oxusername" => "info@oxid-esales.com",
+                         "oxuser__oxfname"    => "admin",
+                         "oxuser__oxlname"    => "admin",
+                         "oxuser__oxsal"      => "MR");
 
         modConfig::setParameter( "editval", $aParams );
         modConfig::setParameter( "c_message", "message" );
         modConfig::setParameter( "c_subject", "subject" );
 
-        $oEmail = $this->getMock( "oxemail", array( "sendContactMail" ) );
-        $oEmail->expects( $this->once() )->method( 'sendContactMail')->will( $this->returnValue( false ) );
+        $oEmail = $this->getMock("oxemail", array("sendContactMail"));
+        $oEmail->expects($this->once())->method('sendContactMail')->will($this->returnValue(false));
 
-        oxTestModules::addModuleObject( 'oxemail', $oEmail );
+        oxTestModules::addModuleObject('oxemail', $oEmail);
 
-        $oCaptcha = $this->getMock( "oxCaptcha", array( "pass" ) );
-        $oCaptcha->expects( $this->once() )->method( 'pass')->will( $this->returnValue( true ) );
+        $oCaptcha = $this->getMock("oxCaptcha", array("pass"));
+        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
-        $oContact = $this->getMock( "Contact", array( "getCaptcha" ) );
-        $oContact->expects( $this->once() )->method( 'getCaptcha')->will( $this->returnValue( $oCaptcha ) );
+        $oContact = $this->getMock("Contact", array("getCaptcha"));
+        $oContact->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
         $oContact->send();
     }
 

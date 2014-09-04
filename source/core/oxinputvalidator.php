@@ -390,7 +390,7 @@ class oxInputValidator extends oxSuperCfg
                     return $this->_addValidationError( "oxuser__oxustid", $oEx );
                 }
             }
-        } elseif ($aInvAddress['oxuser__oxustid'] &&  !$aInvAddress['oxuser__oxcompany']) {
+        } elseif (!$aInvAddress['oxuser__oxcompany']) {
             /** @var oxInputException $oEx */
             $oEx = oxNew( 'oxInputException' );
             $oEx->setMessage(oxRegistry::getLang()->translateString('VAT_MESSAGE_COMPANY_MISSING'));

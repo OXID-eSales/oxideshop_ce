@@ -188,6 +188,11 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
         modConfig::setRequestParameter("editval", $aParams);
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }');
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         $oView = new Account_Wishlist();
         $this->assertEquals("addErrorToDisplay", $oView->sendWishList());
         $this->assertEquals(( object ) $aParams, $oView->getEnteredData());
@@ -218,6 +223,11 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
         $oView = $this->getMock("Account_Wishlist", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         $this->assertEquals("addErrorToDisplay", $oView->sendWishList());
         $this->assertEquals($oObj, $oView->getEnteredData());
         $this->assertFalse($oView->isWishListEmailSent());
@@ -239,6 +249,11 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
         /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock("oxUser", array("getBasket"));
         $oUser->expects($this->once())->method('getBasket')->with($this->equalTo("wishlist"))->will($this->returnValue($oBasket));
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var Account_Wishlist|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Wishlist", array("getUser"));

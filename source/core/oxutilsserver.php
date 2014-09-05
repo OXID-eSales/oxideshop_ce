@@ -462,7 +462,7 @@ class oxUtilsServer extends oxSuperCfg
      */
     public function getServerNodeId()
     {
-        return md5(php_uname());
+        return md5($this->getServerName() . $this->getServerIp());
     }
 
     /**
@@ -471,5 +471,15 @@ class oxUtilsServer extends oxSuperCfg
     public function getServerIp()
     {
         return $this->getServerVar('SERVER_ADDR');
+    }
+
+    /**
+     * Return server system parameter similar as unix uname.
+     *
+     * @return string
+     */
+    private function getServerName()
+    {
+        return php_uname();
     }
 }

@@ -70,17 +70,20 @@ class oxOnlineLicenseCheck
      */
     protected $_blIsException = false;
 
-    /**
-     * @var oxOnlineLicenseCheckCaller
-     */
+    /** @var oxOnlineLicenseCheckCaller */
     protected $_oCaller = null;
+
+    /** @var oxUserCounter */
+    protected $_oUserCounter = null;
 
     /**
      * @param oxOnlineLicenseCheckCaller $oCaller
+     * @param oxUserCounter $oUserCounter
      */
-    public function __construct($oCaller)
+    public function __construct($oCaller, $oUserCounter)
     {
         $this->_oCaller = $oCaller;
+        $this->_oUserCounter = $oUserCounter;
     }
 
     /**
@@ -206,6 +209,7 @@ class oxOnlineLicenseCheck
     protected function _formRequest($aSerial)
     {
         $oConfig = oxRegistry::getConfig();
+        $oUserCounter = $this->_getUserCounter();
 
         /** @var oxOnlineLicenseCheckRequest $oRequest */
         $oRequest = oxNew('oxOnlineLicenseCheckRequest');
@@ -220,6 +224,15 @@ class oxOnlineLicenseCheck
 
         $oRequest->productSpecificInformation = new stdClass();
         $oRequest->productSpecificInformation->servers = $oServers;
+
+        $oCounter = new stdClass();
+        $oCounter->name = 'admin users';
+        $oCounter->value = $oUserCounter->getAdminCount();
+
+        $oCounters = new stdClass();
+        $oCounters->cuonter = $oCounter;
+
+        $oRequest->productSpecificInformation->counters = $oCounters;
 
         return $oRequest;
     }
@@ -246,5 +259,13 @@ class oxOnlineLicenseCheck
 
     protected function _startGracePeriod()
     {
+    }
+
+    /**
+     * @return oxUserCounter
+     */
+    protected function _getUserCounter()
+    {
+        return $this->_oUserCounter;
     }
 }

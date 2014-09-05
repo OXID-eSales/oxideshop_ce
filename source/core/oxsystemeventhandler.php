@@ -140,10 +140,28 @@ class oxSystemEventHandler
      */
     public function onShopStart()
     {
-        $this->_sendShopInformation();
+        if ($this->_isSendingShopDataEnabled()) {
+            $this->_sendShopInformation();
+        }
+
         $this->_validateOffline();
     }
 
+    /**
+     * @return bool
+     */
+    protected function _isSendingShopDataEnabled()
+    {
+        $blSendData = true;
+
+            $blSendData = (bool) $this->_getConfig()->getConfigParam('blSendShopDataToOxid');
+
+        return $blSendData;
+    }
+
+    /**
+     * Sends shop information to oxid servers.
+     */
     protected function _sendShopInformation()
     {
         if ($this->_needToSendShopInformation()) {

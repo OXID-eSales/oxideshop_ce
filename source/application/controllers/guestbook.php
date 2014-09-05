@@ -306,7 +306,11 @@ class GuestBook extends oxUBase
      */
     public function saveEntry()
     {
-        $sReviewText = trim( ( string ) oxConfig::getParameter( 'rvw_txt', true ) );
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
+        $sReviewText = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'rvw_txt', true ) );
         $sShopId     = $this->getConfig()->getShopId();
         $sUserId     = oxSession::getVar( 'usr' );
 

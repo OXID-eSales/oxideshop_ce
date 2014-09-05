@@ -34,9 +34,11 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
 {
     public function testRequestFormation()
     {
-        $this->getConfig()->setConfigParam('aSerials', array('license_key'));
-        $this->getConfig()->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
-        $this->getConfig()->setConfigParam('aServersData', array(
+        $oConfig = $this->getConfig();
+
+        $oConfig->setConfigParam('aSerials', array('license_key'));
+        $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
+        $oConfig->setConfigParam('aServersData', array(
             'server_id1' => array(
                 'id' => 'server_id1',
                 'timestamp' => '1409919510',
@@ -45,13 +47,11 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
                 'lastAdminUsage' => '1409919510',
         )));
 
-        $iAdminUsers = 1;
-
-        $oConfig = $this->getConfig();
         $sEdition = $oConfig->getEdition();
         $sVersion = $oConfig->getVersion();
         $sShopUrl = $oConfig->getShopUrl();
         $sRevision = $oConfig->getRevision();
+        $iAdminUsers = 1;
 
         $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
         $sXml .= '<olcRequest>';

@@ -35,8 +35,10 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $this->setConfigParam('aServersData', $aServers);
 
         $iAdminUsers = 25;
+        $iSubShops = 5;
 
         $oRequest = new oxOnlineLicenseCheckRequest();
+        $oRequest->revision = oxRegistry::getConfig()->getRevision();
         $oRequest->pVersion = '1.0';
         $oRequest->productId = 'eShop';
         $oRequest->keys = new stdClass();
@@ -50,11 +52,14 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oCounter = new stdClass();
         $oCounter->name = 'admin users';
         $oCounter->value = $iAdminUsers;
-        $oCounters = new stdClass();
-        $oCounters->cuonter = $oCounter;
-        $oRequest->productSpecificInformation->counters = $oCounters;
 
-//        $oRequest->productSpecificInformation->subShops = 5;
+        $oSubShops = new stdClass();
+        $oSubShops->name = 'subShops';
+        $oSubShops->value = $iSubShops;
+
+        $oCounters = new stdClass();
+        $oCounters->counter = array($oCounter, $oSubShops);
+        $oRequest->productSpecificInformation->counters = $oCounters;
 
         $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
         $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
@@ -135,6 +140,8 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
 
     public function testSerialsAreTakenFromConfigInShopSerialsValidation()
     {
+        $iAdminUsers = 25;
+        $iSubShops = 5;
         $aServers = array('7da43ed884a1ad1d6035d4c1d630fc4e' => array(
             'id' => '7da43ed884a1ad1d6035d4c1d630fc4e',
             'timestamp' => '1409911182',
@@ -161,9 +168,14 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
 
         $oCounter = new stdClass();
         $oCounter->name = 'admin users';
-        $oCounter->value = 25;
+        $oCounter->value = $iAdminUsers;
+
+        $oSubShops = new stdClass();
+        $oSubShops->name = 'subShops';
+        $oSubShops->value = $iSubShops;
+
         $oCounters = new stdClass();
-        $oCounters->cuonter = $oCounter;
+        $oCounters->counter = array($oCounter, $oSubShops);
         $oRequest->productSpecificInformation->counters = $oCounters;
 
 //        $oRequest->productSpecificInformation->subShops = 5;

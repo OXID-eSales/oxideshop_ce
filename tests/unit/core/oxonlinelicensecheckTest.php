@@ -22,9 +22,10 @@
 
 class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
 {
-
     public function testRequestFormation()
     {
+        $iAdminUsers = 25;
+        $iSubShops = 5;
         $aServers = array('7da43ed884a1ad1d6035d4c1d630fc4e' => array(
             'id' => '7da43ed884a1ad1d6035d4c1d630fc4e',
             'timestamp' => '1409911182',
@@ -32,10 +33,13 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
             'lastFrontendUsage' => '1409911182',
             'lastAdminUsage' => null,
         ));
-        $this->setConfigParam('aServersData', $aServers);
 
-        $iAdminUsers = 25;
-        $iSubShops = 5;
+        $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
+        $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
+        /** @var oxConfig $oConfig */
+        $oConfig->setConfigParam('aServersData', $aServers);
+        $this->setConfigParam('aServersData', $aServers);
+        oxRegistry::set('oxConfig', $oConfig);
 
         $oRequest = new oxOnlineLicenseCheckRequest();
         $oRequest->revision = oxRegistry::getConfig()->getRevision();
@@ -149,7 +153,13 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
             'lastFrontendUsage' => '1409911182',
             'lastAdminUsage' => null,
         ));
+
+        $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
+        $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
+        /** @var oxConfig $oConfig */
+        $oConfig->setConfigParam('aServersData', $aServers);
         $this->setConfigParam('aServersData', $aServers);
+        oxRegistry::set('oxConfig', $oConfig);
 
         $oRequest = new oxOnlineLicenseCheckRequest();
         $oRequest->edition = oxRegistry::getConfig()->getEdition();
@@ -177,8 +187,6 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oCounters = new stdClass();
         $oCounters->counter = array($oCounter, $oSubShops);
         $oRequest->productSpecificInformation->counters = $oCounters;
-
-//        $oRequest->productSpecificInformation->subShops = 5;
 
         $this->getConfig()->setConfigParam("aSerials", array('key1', 'key2'));
 

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class Unit_Core_oxuserbasketTest extends OxidTestCase
+class Unit_Core_oxUserCounterTest extends OxidTestCase
 {
     public function testCountingAdmins()
     {
@@ -38,6 +38,12 @@ class Unit_Core_oxuserbasketTest extends OxidTestCase
     {
         $oCounter = new oxUserCounter();
         $this->assertEquals(0, $oCounter->getSubShopAdminCount());
+    }
+
+    public function testCountingCustomers()
+    {
+        $oCounter = new oxUserCounter();
+        $this->assertEquals(0, $oCounter->getCustomersCount());
     }
 
     public function testCountingUsersByGroup()

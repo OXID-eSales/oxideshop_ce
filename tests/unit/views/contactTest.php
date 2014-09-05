@@ -53,12 +53,6 @@ class Unit_Views_contactTest extends OxidTestCase
 
         $aParams['oxuser__oxusername'] = 'invalidEmail';
         modConfig::setRequestParameter('editval', $aParams);
-
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
-
         $oContact = oxNew('Contact');
 
         $this->assertFalse($oContact->send());
@@ -83,12 +77,6 @@ class Unit_Views_contactTest extends OxidTestCase
 
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
         modConfig::setRequestParameter('editval', $aParams);
-
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
-
         $oContact = oxNew('Contact');
 
         $this->assertFalse($oContact->send());
@@ -114,12 +102,6 @@ class Unit_Views_contactTest extends OxidTestCase
 
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
         modConfig::setRequestParameter('editval', $aParams);
-
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
-
         $oContact = oxNew('Contact');
 
         $this->assertFalse($oContact->send());
@@ -147,12 +129,6 @@ class Unit_Views_contactTest extends OxidTestCase
         $aParams['oxuser__oxlname'] = 'last name';
         modConfig::setRequestParameter( 'editval', $aParams );
         modConfig::setRequestParameter( 'c_subject', "testSubject" );
-
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
-
         $oObj = $this->getProxyClass("Contact");
         $oObj->send();
 
@@ -259,11 +235,6 @@ class Unit_Views_contactTest extends OxidTestCase
         $oCaptcha = $this->getMock("oxCaptcha", array("pass"));
         $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
-
         /** @var Contact|PHPUnit_Framework_MockObject_MockObject $oContact */
         $oContact = $this->getMock("Contact", array("getCaptcha"));
         $oContact->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
@@ -300,11 +271,6 @@ class Unit_Views_contactTest extends OxidTestCase
         /** @var oxCaptcha|PHPUnit_Framework_MockObject_MockObject $oCaptcha */
         $oCaptcha = $this->getMock("oxCaptcha", array("pass"));
         $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
-
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
 
         /** @var Contact|PHPUnit_Framework_MockObject_MockObject $oContact */
         $oContact = $this->getMock("Contact", array("getCaptcha"));

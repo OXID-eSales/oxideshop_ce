@@ -59,4 +59,32 @@ class Unit_Core_oxApplicationServerTest extends OxidTestCase
         $oServerNode->setLastAdminUsage(123456789);
         $this->assertSame(123456789, $oServerNode->getLastAdminUsage());
     }
+
+    public function testServerValidityOnCreation()
+    {
+        $oServerNode = new oxApplicationServer();
+        $this->assertFalse($oServerNode->isValid());
+    }
+
+    public function testServerValidityOnSetFalse()
+    {
+        $oServerNode = new oxApplicationServer();
+        $oServerNode->setIsValid(false);
+        $this->assertFalse($oServerNode->isValid());
+    }
+
+    public function testServerValidityOnSetTrue()
+    {
+        $oServerNode = new oxApplicationServer();
+        $oServerNode->setIsValid(true);
+        $this->assertTrue($oServerNode->isValid());
+    }
+
+    public function testServerValidityOnSetDefault()
+    {
+        $oServerNode = new oxApplicationServer();
+        $oServerNode->setIsValid();
+        $this->assertTrue($oServerNode->isValid());
+    }
+
 }

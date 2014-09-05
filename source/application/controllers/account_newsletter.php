@@ -93,6 +93,10 @@ class Account_Newsletter extends Account
      */
     public function subscribe()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return false;
+        }
+
         // is logged in ?
         $oUser = $this->getUser();
         if ( !$oUser ) {

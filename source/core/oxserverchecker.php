@@ -33,7 +33,7 @@ class oxServerChecker
     /**
      * Time in seconds, server node information life time.
      */
-    CONST NODE_VALIDITY_TIME = 82800;
+    CONST NODE_VALIDITY_TIME = 43200;
 
     /**
      * Current checking time - timestamp.

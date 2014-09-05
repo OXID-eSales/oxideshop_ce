@@ -96,8 +96,7 @@ class oxcmp_utils extends oxView
             $aExport['oxdetaillink'] = $oProduct->getLink();
             $aExport['oxmoredetaillink'] = $oProduct->getMoreDetailLink();
             $aExport['tobasketlink'] = $oProduct->getToBasketLink();
-            $sPictureUrl = $myConfig->getPictureUrl(null, false, $myConfig->isSsl());
-            $aExport['thumbnaillink'] = $sPictureUrl . "/" . $aExport['oxthumb'];
+            $aExport['thumbnaillink'] = $myConfig->getPictureUrl(null, false, $myConfig->isSsl()) . "/" . $aExport['oxthumb'];
             $sOutput = serialize($aExport);
         }
 
@@ -113,14 +112,15 @@ class oxcmp_utils extends oxView
      * @param array  $aSel       (default null)
      * @param bool   $blOverride allow override
      * @param bool   $blBundle   bundled
+     *
+     * @return  void
      */
-    public function toCompareList(
-        $sProductId = null,
-        $dAmount = null,
-        $aSel = null,
-        $blOverride = false,
-        $blBundle = false
-    ) {
+    public function toCompareList($sProductId = null, $dAmount = null, $aSel = null, $blOverride = false, $blBundle = false)
+    {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         // only if enabled and not search engine..
         if ($this->getViewConfig()->getShowCompareList() && !oxRegistry::getUtils()->isSearchEngine()) {
 
@@ -179,6 +179,10 @@ class oxcmp_utils extends oxView
      */
     public function toNoticeList($sProductId = null, $dAmount = null, $aSel = null)
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         $this->_toList('noticelist', $sProductId, $dAmount, $aSel);
     }
 
@@ -194,6 +198,10 @@ class oxcmp_utils extends oxView
      */
     public function toWishList($sProductId = null, $dAmount = null, $aSel = null)
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         // only if enabled
         if ($this->getViewConfig()->getShowWishlist()) {
             $this->_toList('wishlist', $sProductId, $dAmount, $aSel);

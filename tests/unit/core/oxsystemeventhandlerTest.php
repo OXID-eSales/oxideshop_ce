@@ -176,6 +176,17 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $oSystemEventHandler->onShopStart();
     }
 
+    public function testOnShopStartSaveServerInformation()
+    {
+        $oProcessor = $this->getMock('oxServerProcessor');
+        $oProcessor->expects($this->once())->method('process');
+
+        $oSystemEventHandler = $this->getMock('oxSystemEventHandler', array('_getServerProcessor', 'pageStart'));
+        $oSystemEventHandler->expects($this->any())->method('_getServerProcessor')->will($this->returnValue($oProcessor));
+
+        $oSystemEventHandler->onShopStart();
+    }
+
     public function testShopInformationSendingWhenSendingIsAllowed()
     {
         $this->_prepareCurrentTime(1400000000);

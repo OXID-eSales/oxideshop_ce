@@ -32,7 +32,7 @@ class oxUserCounter
 
     public function getMallAdminCount()
     {
-        return $this->getUserCountByGroup('malladmin');
+        return $this->getUserCountByRights('malladmin');
     }
 
     public function getSubShopAdminCount()
@@ -40,7 +40,12 @@ class oxUserCounter
         return 0;
     }
 
-    public function getUserCountByGroup()
+    public function getCustomersCount()
+    {
+        return $this->getUserCountByRights('user');
+    }
+
+    public function getUserCountByRights($sRights)
     {
         return 6;
     }

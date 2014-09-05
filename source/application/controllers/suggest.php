@@ -80,7 +80,11 @@ class Suggest extends oxUBase
      */
     public function send()
     {
-        $aParams = oxConfig::getParameter( 'editval', true );
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
+        $aParams = oxRegistry::getConfig()->getRequestParameter( 'editval', true );
         if ( !is_array( $aParams ) ) {
             return;
         }

@@ -25,29 +25,62 @@
  */
 class oxUserCounter
 {
+
+    /**
+     * Returns count of all admins (mall and subshops).
+     *
+     * @return int
+     */
     public function getAdminCount()
     {
         return $this->getSubShopAdminCount() + $this->getMallAdminCount();
     }
 
+    /**
+     * Returns count of mall admins.
+     *
+     * @return int
+     */
     public function getMallAdminCount()
     {
         return $this->getUserCountByRights('malladmin');
     }
 
+    /**
+     * Returns count of subshop admins.
+     *
+     * @return int
+     */
     public function getSubShopAdminCount()
     {
-        return 0;
+        $oDb = oxDb::getDb();
+        $sQuery = "SELECT COUNT(1) FROM oxuser WHERE oxrights != 'malladmin' AND oxrights != 'user' ";
+
+        return (int) $oDb->getOne($sQuery);
     }
 
+    /**
+     * Returns count of regular users.
+     *
+     * @return int
+     */
     public function getCustomersCount()
     {
         return $this->getUserCountByRights('user');
     }
 
+    /**
+     * Returns count of users depending on rights provided.
+     *
+     * @param $sRights
+     * @return int
+     */
     public function getUserCountByRights($sRights)
     {
-        return 6;
+        $oDb = oxDb::getDb();
+        $sQuery = "SELECT COUNT(1) FROM oxuser WHERE oxrights = '$sRights'";
+
+        return (int) $oDb->getOne($sQuery);
     }
 
 }

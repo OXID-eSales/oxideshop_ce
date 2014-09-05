@@ -20,25 +20,36 @@
  * @version   OXID eShop CE
  */
 
-class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
+class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
 {
 
     public function testRequestFormation()
     {
+        $aServers = array('7da43ed884a1ad1d6035d4c1d630fc4e' => array(
+            'id' => '7da43ed884a1ad1d6035d4c1d630fc4e',
+            'timestamp' => '1409911182',
+            'ip' => null,
+            'lastFrontendUsage' => '1409911182',
+            'lastAdminUsage' => null,
+        ));
+        $this->setConfigParam('aServersData', $aServers);
+
         $oRequest = new oxOnlineLicenseCheckRequest();
-        $oRequest->edition = oxRegistry::getConfig()->getEdition();
-        $oRequest->version = oxRegistry::getConfig()->getVersion();
-        $oRequest->revision = oxRegistry::getConfig()->getRevision();
-        $oRequest->shopUrl = oxRegistry::getConfig()->getShopUrl();
         $oRequest->pVersion = '1.0';
         $oRequest->productId = 'eShop';
         $oRequest->keys = new stdClass();
         $oRequest->keys->key = array('validSerial');
-        $oRequest->servers = new stdClass();
-        $oRequest->servers->server = oxRegistry::getConfig()->getConfigParam('aServersData');
+
+        $oServers = new stdClass();
+        $oServers->server = $aServers;
+        $oRequest->productSpecificInformation = new stdClass();
+        $oRequest->productSpecificInformation->servers = $oServers;
+//        $oRequest->productSpecificInformation->subShops = 5;
+//        $oRequest->productSpecificInformation->adminUsers = 25;
 
         $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
         $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
+        /** @var oxOnlineLicenseCheckCaller $oCaller */
 
         $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
         $oLicenseCheck->validate('validSerial');
@@ -102,6 +113,15 @@ class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
 
     public function testSerialsAreTakenFromConfigInShopSerialsValidation()
     {
+        $aServers = array('7da43ed884a1ad1d6035d4c1d630fc4e' => array(
+            'id' => '7da43ed884a1ad1d6035d4c1d630fc4e',
+            'timestamp' => '1409911182',
+            'ip' => null,
+            'lastFrontendUsage' => '1409911182',
+            'lastAdminUsage' => null,
+        ));
+        $this->setConfigParam('aServersData', $aServers);
+
         $oRequest = new oxOnlineLicenseCheckRequest();
         $oRequest->edition = oxRegistry::getConfig()->getEdition();
         $oRequest->version = oxRegistry::getConfig()->getVersion();
@@ -111,8 +131,11 @@ class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
         $oRequest->productId = 'eShop';
         $oRequest->keys = new stdClass();
         $oRequest->keys->key = array('key1', 'key2');
-        $oRequest->servers = new stdClass();
-        $oRequest->servers->server = oxRegistry::getConfig()->getConfigParam('aServersData');
+
+        $oServers = new stdClass();
+        $oServers->server = $aServers;
+        $oRequest->productSpecificInformation = new stdClass();
+        $oRequest->productSpecificInformation->servers = $oServers;
 
         $this->getConfig()->setConfigParam("aSerials", array('key1', 'key2'));
 

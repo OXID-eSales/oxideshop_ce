@@ -1015,7 +1015,7 @@ class OxSetupDb extends oxSetupCore
                                  values('$sID3', '$sBaseShopId', 'blCheckForUpdates', 'bool', ENCODE( '$blCheckForUpdates', '".$oConfk->sConfigKey."'))" );
 
 
-        $this->_addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk);
+        $this->_addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession);
 
         //set only one active language
         $aRes = $this->execSql( "select oxvarname, oxvartype, DECODE( oxvarvalue, '".$oConfk->sConfigKey."') AS oxvarvalue from oxconfig where oxvarname='aLanguageParams'" );
@@ -1197,10 +1197,10 @@ class OxSetupDb extends oxSetupCore
      * @param $sBaseShopId
      * @param $aParams
      * @param $oConfk
+     * @param $oSession
      */
-    private function _addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk)
+    private function _addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession)
     {
-        $oSession = $this->getInstance( "oxSetupSession" );
         $blSendShopDataToOxid  = isset( $aParams["blSendShopDataToOxid"] ) ? $aParams["blSendShopDataToOxid"] : $oSession->getSessionParam( 'blSendShopDataToOxid' );
 
         $sID = $oUtils->generateUid();

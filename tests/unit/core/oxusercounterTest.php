@@ -27,6 +27,7 @@ class Unit_Core_oxuserbasketTest extends OxidTestCase
         $oCounter = new oxUserCounter();
         $this->assertEquals(6, $oCounter->getAdminCount());
     }
+
     public function testCountingMallAdmins()
     {
         $oCounter = new oxUserCounter();
@@ -42,6 +43,6 @@ class Unit_Core_oxuserbasketTest extends OxidTestCase
     public function testCountingUsersByGroup()
     {
         $oCounter = new oxUserCounter();
-        $this->assertEquals(6, $oCounter->getUserCountByGroup('malladmin'));
+        $this->assertEquals(6, $oCounter->getUserCountByRights('malladmin'));
     }
 }

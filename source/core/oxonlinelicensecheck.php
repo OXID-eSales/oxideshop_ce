@@ -76,7 +76,7 @@ class oxOnlineLicenseCheck
     protected $_oCaller = null;
 
     /**
-     * @param null $oCaller
+     * @param oxOnlineLicenseCheckCaller $oCaller
      */
     public function __construct($oCaller)
     {

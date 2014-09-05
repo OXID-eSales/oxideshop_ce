@@ -130,6 +130,7 @@ class oxShopControl extends oxSuperCfg
             $this->_handleSystemException($oEx);
         } catch (oxCookieException $oEx) {
             $this->_handleCookieException($oEx);
+        }
         catch (oxConnectionException $oEx) {
             $this->_handleDbConnectionException($oEx);
         } catch (oxException $oEx) {

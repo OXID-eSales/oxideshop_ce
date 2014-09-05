@@ -24,34 +24,51 @@ class Unit_Core_oxUserCounterTest extends OxidTestCase
 {
     public function testCountingAdmins()
     {
-        $iUsersCount = 1;
+        $this->getDb()->execute("delete from `oxuser`");
+
+        $this->_createUserWithRights('_testMallAdmin1', true, 'malladmin');
+        $this->_createUserWithRights('_testMallAdmin2', true, 'malladmin');
+        $this->_createUserWithRights('_tesAdmin1', true, '1');
+        $this->_createUserWithRights('_tesAdmin2', true, '2');
+        $this->_createUserWithRights('_tesUser', true, 'user');
+
         $oCounter = new oxUserCounter();
-        $this->assertEquals($iUsersCount, $oCounter->getAdminCount());
+        $this->assertEquals(4, $oCounter->getAdminCount());
     }
 
-    public function testCountingMallAdmins()
+    public function testCountingAdminsWhenInActiveAdminsExist()
     {
-        $iUsersCount = 1;
+        $this->getDb()->execute("delete from `oxuser`");
+
+        $this->_createUserWithRights('_testMallAdmin1', true, 'malladmin');
+        $this->_createUserWithRights('_testMallAdmin2', false, 'malladmin');
+        $this->_createUserWithRights('_tesAdmin1', true, '1');
+        $this->_createUserWithRights('_tesAdmin2', false, '2');
+        $this->_createUserWithRights('_tesUser', true, 'user');
+
         $oCounter = new oxUserCounter();
-        $this->assertEquals($iUsersCount, $oCounter->getMallAdminCount());
+        $this->assertEquals(4, $oCounter->getAdminCount());
     }
 
-    public function testCountingSubShopAdmins()
+    public function testCountingAdminsWhenNoAdminsExist()
     {
+        $this->getDb()->execute("delete from `oxuser`");
+
+        $this->_createUserWithRights('_tesUser1', true, 'user');
+        $this->_createUserWithRights('_tesUser2', true, 'user');
+
         $oCounter = new oxUserCounter();
-        $this->assertEquals(0, $oCounter->getSubShopAdminCount());
+        $this->assertEquals(0, $oCounter->getAdminCount());
     }
 
-    public function testCountingCustomers()
+    /**
+     * @param string $sId
+     * @param string $sActive
+     * @param string $sRights
+     */
+    protected function _createUserWithRights($sId, $sActive, $sRights)
     {
-        $oCounter = new oxUserCounter();
-        $this->assertEquals(0, $oCounter->getCustomersCount());
-    }
-
-    public function testCountingUsersByGroup()
-    {
-        $iUsersCount = 1;
-        $oCounter = new oxUserCounter();
-        $this->assertEquals($iUsersCount, $oCounter->getUserCountByRights('malladmin'));
+        $sQ = "insert into `oxuser` (oxid, oxusername, oxactive, oxrights) values ('$sId', '$sId', '$sActive', '$sRights')";
+        $this->getDb()->execute($sQ);
     }
 }

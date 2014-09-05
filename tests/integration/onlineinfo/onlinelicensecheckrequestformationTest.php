@@ -21,12 +21,14 @@
  */
 
 /**
- * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
+ * Class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest
  *
- * @covers oxServerProcessor
- * @covers oxApplicationServer
- * @covers oxServerChecker
- * @covers oxServerManager
+ * @covers oxOnlineServerEmailBuilder
+ * @covers oxOnlineCaller
+ * @covers oxSimpleXml
+ * @covers oxOnlineLicenseCheckCaller
+ * @covers oxUserCounter
+ * @covers oxOnlineLicenseCheck
  */
 class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends OxidTestCase
 {

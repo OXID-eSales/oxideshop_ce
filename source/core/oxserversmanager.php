@@ -68,6 +68,7 @@ class oxServersManager
             'ip' => $oNode->getIp(),
             'lastFrontendUsage' => $oNode->getLastFrontendUsage(),
             'lastAdminUsage' => $oNode->getLastAdminUsage(),
+            'isValid' => $oNode->isValid()
         );
 
         oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aServersData);
@@ -112,6 +113,7 @@ class oxServersManager
         $oAppServer->setIp($this->_getServerParameter($aData, 'serverIp'));
         $oAppServer->setLastFrontendUsage($this->_getServerParameter($aData, 'lastFrontendUsage'));
         $oAppServer->setLastAdminUsage($this->_getServerParameter($aData, 'lastAdminUsage'));
+        $oAppServer->setIsValid($this->_getServerParameter($aData, 'isValid'));
 
         return $oAppServer;
     }

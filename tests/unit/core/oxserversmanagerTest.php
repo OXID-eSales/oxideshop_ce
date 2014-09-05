@@ -77,6 +77,8 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $oServer->setIp('127.0.0.1');
         $oServer->setLastFrontendUsage('frontendUsageTimestamp');
         $oServer->setLastAdminUsage('adminUsageTimestamp');
+        $oServer->setIsValid();
+
 
         $oServerList = new oxServersManager();
         $oServerList->saveServer($oServer);
@@ -88,6 +90,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                 'ip' => '127.0.0.1',
                 'lastFrontendUsage' => 'frontendUsageTimestamp',
                 'lastAdminUsage' => 'adminUsageTimestamp',
+                'isValid' => true
             ),
         );
         $this->assertEquals($aExpectedServerData, $this->getConfig()->getConfigParam('aServersData'));
@@ -103,6 +106,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                 'ip' => '127.0.0.1',
                 'lastFrontendUsage' => 'frontendUsageTimestamp',
                 'lastAdminUsage' => 'adminUsageTimestamp',
+                'isValid' => false
             ),
             'serverNameHash3' => array(),
         ));
@@ -113,6 +117,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $oServer->setIp('127.0.0.255');
         $oServer->setLastFrontendUsage('frontendUsageTimestampUpdated');
         $oServer->setLastAdminUsage('adminUsageTimestampUpdated');
+        $oServer->setIsValid();
 
         $oServerList = new oxServersManager();
         $oServerList->saveServer($oServer);
@@ -125,6 +130,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                 'ip' => '127.0.0.255',
                 'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
                 'lastAdminUsage' => 'adminUsageTimestampUpdated',
+                'isValid' => true
             ),
             'serverNameHash3' => array(),
         );
@@ -143,6 +149,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $oServer->setIp('127.0.0.1');
         $oServer->setLastFrontendUsage('frontendUsageTimestampUpdated');
         $oServer->setLastAdminUsage('adminUsageTimestampUpdated');
+        $oServer->setIsValid(false);
 
         $oServerList = new oxServersManager();
         $oServerList->saveServer($oServer);
@@ -154,6 +161,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                 'ip' => '127.0.0.1',
                 'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
                 'lastAdminUsage' => 'adminUsageTimestampUpdated',
+                'isValid' => false
             ),
         );
         $this->assertEquals($aExpectedServerData, $this->getConfig()->getConfigParam('aServersData'));

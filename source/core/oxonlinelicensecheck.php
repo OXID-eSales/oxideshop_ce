@@ -228,7 +228,7 @@ class oxOnlineLicenseCheck
 
         $oSubShops = new stdClass();
         $oSubShops->name = 'subShops';
-        $oSubShops->value = 5;
+        $oSubShops->value = $oConfig->getMandateCount();
 
         $oCounters = new stdClass();
         $oCounters->counter = array($oCounter, $oSubShops);

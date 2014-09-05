@@ -24,14 +24,16 @@ class Unit_Core_oxUserCounterTest extends OxidTestCase
 {
     public function testCountingAdmins()
     {
+        $iUsersCount = 1;
         $oCounter = new oxUserCounter();
-        $this->assertEquals(6, $oCounter->getAdminCount());
+        $this->assertEquals($iUsersCount, $oCounter->getAdminCount());
     }
 
     public function testCountingMallAdmins()
     {
+        $iUsersCount = 1;
         $oCounter = new oxUserCounter();
-        $this->assertEquals(6, $oCounter->getMallAdminCount());
+        $this->assertEquals($iUsersCount, $oCounter->getMallAdminCount());
     }
 
     public function testCountingSubShopAdmins()
@@ -48,7 +50,8 @@ class Unit_Core_oxUserCounterTest extends OxidTestCase
 
     public function testCountingUsersByGroup()
     {
+        $iUsersCount = 1;
         $oCounter = new oxUserCounter();
-        $this->assertEquals(6, $oCounter->getUserCountByRights('malladmin'));
+        $this->assertEquals($iUsersCount, $oCounter->getUserCountByRights('malladmin'));
     }
 }

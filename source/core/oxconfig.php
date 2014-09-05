@@ -1766,6 +1766,18 @@ class oxConfig extends oxSuperCfg
         return $sRev;
     }
 
+    /**
+     * Counts OXID mandates
+     *
+     * @return int
+     */
+    public function getMandateCount()
+    {
+        $iShopCount = 1;
+
+
+        return $iShopCount;
+    }
 
     /**
      * Checks if shop is MALL. Returns true on success.

@@ -31,7 +31,6 @@
  */
 class Account_Password extends Account
 {
-
     /**
      * Current class template name.
      *
@@ -60,7 +59,7 @@ class Account_Password extends Account
 
         // is logged in ?
         $oUser = $this->getUser();
-        if (!$oUser) {
+        if ( !$oUser ) {
             return $this->_sThisTemplate = $this->_sThisLoginTemplate;
         }
 
@@ -75,48 +74,41 @@ class Account_Password extends Account
      */
     public function changePassword()
     {
-        $oUser = $this->getUser();
-        if (!$oUser) {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
             return;
         }
 
-        $sOldPass = oxRegistry::getConfig()->getRequestParameter('password_old', true);
-        $sNewPass = oxRegistry::getConfig()->getRequestParameter('password_new', true);
-        $sConfPass = oxRegistry::getConfig()->getRequestParameter('password_new_confirm', true);
+        $oUser = $this->getUser();
+        if ( !$oUser ) {
+            return;
+        }
+
+        $sOldPass  = oxRegistry::getConfig()->getRequestParameter( 'password_old', true );
+        $sNewPass  = oxRegistry::getConfig()->getRequestParameter( 'password_new', true );
+        $sConfPass = oxRegistry::getConfig()->getRequestParameter( 'password_new_confirm', true );
 
         /** @var oxInputValidator $oInputValidator */
         $oInputValidator = oxRegistry::get('oxInputValidator');
-        if (($oExcp = $oInputValidator->checkPassword($oUser, $sNewPass, $sConfPass, true))) {
-            switch ($oExcp->getMessage()) {
+        if ( ( $oExcp = $oInputValidator->checkPassword( $oUser, $sNewPass, $sConfPass, true ) ) ) {
+            switch ( $oExcp->getMessage() ) {
                 case 'ERROR_MESSAGE_INPUT_EMPTYPASS':
                 case 'ERROR_MESSAGE_PASSWORD_TOO_SHORT':
-                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay(
-                        'ERROR_MESSAGE_PASSWORD_TOO_SHORT',
-                        false,
-                        true
-                    );
+                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_TOO_SHORT', false, true);
                 default:
-                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay(
-                        'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH',
-                        false,
-                        true
-                    );
+                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH', false, true);
             }
         }
         
-        if (!$sOldPass || !$oUser->isSamePassword($sOldPass)) {
-            /** @var oxUtilsView $oUtilsView */
-            $oUtilsView = oxRegistry::get("oxUtilsView");
-
-            return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_CURRENT_PASSWORD_INVALID', false, true);
+        if ( !$sOldPass || !$oUser->isSamePassword( $sOldPass ) ) {
+            return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_CURRENT_PASSWORD_INVALID', false, true);
         }
 
         // testing passed - changing password
-        $oUser->setPassword($sNewPass);
-        if ($oUser->save()) {
+        $oUser->setPassword( $sNewPass );
+        if ( $oUser->save() ) {
             $this->_blPasswordChanged = true;
             // deleting user autologin cookies.
-            oxRegistry::get("oxUtilsServer")->deleteUserCookie($this->getConfig()->getShopId());
+            oxRegistry::get("oxUtilsServer")->deleteUserCookie( $this->getConfig()->getShopId() );
         }
     }
 
@@ -140,16 +132,12 @@ class Account_Password extends Account
         $aPaths = array();
         $aPath = array();
 
-        /** @var oxSeoEncoder $oSeoEncoder */
-        $oSeoEncoder = oxRegistry::get("oxSeoEncoder");
-        $oLang = oxRegistry::getLang();
-        $iBaseLanguage = $oLang->getBaseLanguage();
-        $aPath['title'] = $oLang->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = $oSeoEncoder->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['link']  = oxRegistry::get("oxSeoEncoder")->getStaticUrl( $this->getViewConfig()->getSelfLink() . 'cl=account' );
         $aPaths[] = $aPath;
 
-        $aPath['title'] = $oLang->translateString('CHANGE_PASSWORD', $iBaseLanguage, false);
-        $aPath['link'] = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'CHANGE_PASSWORD', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

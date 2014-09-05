@@ -88,7 +88,7 @@ class oxOnlineModuleVersionNotifier
     /**
      * Send request message to Online Module Version Notifier web service.
      *
-     * @return oxOnlineModuleNotifierRequest
+     * @return oxOnlineModulesNotifierRequest
      */
     protected function _formRequest()
     {

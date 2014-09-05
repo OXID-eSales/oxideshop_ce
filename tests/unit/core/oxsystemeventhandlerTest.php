@@ -35,6 +35,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
     {
         parent::setUp();
         $this->getConfig()->saveShopConfVar('arr', 'sOnlineLicenseCheckTime', null);
+        $this->getConfig()->setConfigParam('blSendShopDataToOxid', true);
     }
 
     public function testOnAdminLoginOnlineModuleVersionNotifier()
@@ -161,6 +162,39 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $oSystemEventHandler = new oxSystemEventHandler();
         $this->assertInstanceOf('oxOnlineLicenseCheck', $oSystemEventHandler->getOnlineLicenseCheck());
     }
+
+    public function testShopInformationSendingWhenSendingIsAllowed()
+    {
+        $this->_prepareCurrentTime(1400000000);
+        $this->getConfig()->setConfigParam('blSendShopDataToOxid', true);
+
+        $oSystemEventHandler = new oxSystemEventHandler();
+
+        $oOnlineLicenseCheck = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
+        $oOnlineLicenseCheck->expects($this->once())->method("validateShopSerials");
+        /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
+
+        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+
+        $oSystemEventHandler->onShopStart();
+    }
+
+    public function testShopInformationSendingWhenSendingIsNotAllowedInCommunityEdition()
+    {
+        $this->_prepareCurrentTime(1400000000);
+        $this->getConfig()->setConfigParam('blSendShopDataToOxid', false);
+
+        $oSystemEventHandler = new oxSystemEventHandler();
+
+        $oOnlineLicenseCheck = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
+        $oOnlineLicenseCheck->expects($this->never())->method("validateShopSerials");
+        /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
+
+        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+
+        $oSystemEventHandler->onShopStart();
+    }
+
 
     /**
      * @param int $iCurrentTime

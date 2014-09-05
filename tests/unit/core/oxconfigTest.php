@@ -1117,6 +1117,19 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     }
 
 
+
+    /**
+     * Testing Mandate Counter (default installation count is 0)
+     */
+    public function testGetMandateCountOneSubShop()
+    {
+
+        $oConfig = new oxConfig();
+        $oConfig->init();
+
+        $this->assertEquals(1, $oConfig->getMandateCount() );
+    }
+
     public function testThemeNameExpectsDefault()
     {
         $oConfig = new modForTestGetBaseTplDirExpectsDefault();

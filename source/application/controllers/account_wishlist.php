@@ -211,6 +211,10 @@ class Account_Wishlist extends Account
      */
     public function sendWishList()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return false;
+        }
+
         $aParams = oxConfig::getParameter( 'editval', true );
         if ( is_array( $aParams ) ) {
 
@@ -276,6 +280,10 @@ class Account_Wishlist extends Account
      */
     public function togglePublic()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return false;
+        }
+
         if ( $oUser = $this->getUser() ) {
 
             $blPublic = (int) oxConfig::getParameter( 'blpublic' );

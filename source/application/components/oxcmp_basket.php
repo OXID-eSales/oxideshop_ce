@@ -131,6 +131,10 @@ class oxcmp_basket extends oxView
      */
     public function tobasket($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false)
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         // adding to basket is not allowed ?
         $myConfig = $this->getConfig();
         if (oxRegistry::getUtils()->isSearchEngine()) {
@@ -172,13 +176,8 @@ class oxcmp_basket extends oxView
      *
      * @return mixed
      */
-    public function changebasket(
-        $sProductId = null,
-        $dAmount = null,
-        $aSel = null,
-        $aPersParam = null,
-        $blOverride = true
-    ) {
+    public function changebasket($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = true)
+    {
         // adding to basket is not allowed ?
         if (oxRegistry::getUtils()->isSearchEngine()) {
             return;
@@ -192,9 +191,7 @@ class oxcmp_basket extends oxView
                 $oBasket = $this->getSession()->getBasket();
                 //take params
                 $aBasketContents = $oBasket->getContents();
-                $oItem = $aBasketContents[$sBasketItemId];
-
-                $sProductId = isset($oItem) ? $oItem->getProductId() : null;
+                $sProductId = isset($aBasketContents[$sBasketItemId]) ? $aBasketContents[$sBasketItemId]->getProductId() : null;
             } else {
                 $sProductId = oxRegistry::getConfig()->getRequestParameter('aid');
             }
@@ -272,13 +269,8 @@ class oxcmp_basket extends oxView
      *
      * @return mixed
      */
-    protected function _getItems(
-        $sProductId = null,
-        $dAmount = null,
-        $aSel = null,
-        $aPersParam = null,
-        $blOverride = false
-    ) {
+    protected function _getItems($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false)
+    {
         // collecting items to add
         $aProducts = oxRegistry::getConfig()->getRequestParameter('aproducts');
 
@@ -350,27 +342,17 @@ class oxcmp_basket extends oxView
             $sProductId = isset($aProductInfo['aid']) ? $aProductInfo['aid'] : $sAddProductId;
 
             // collecting input
-            $oProduct = $oBasketInfo->aArticles[$sProductId];
-            $aProducts[$sAddProductId]['oldam'] = isset($oProduct) ? $oProduct : 0;
+            $aProducts[$sAddProductId]['oldam'] = isset($oBasketInfo->aArticles[$sProductId]) ? $oBasketInfo->aArticles[$sProductId] : 0;
 
             $dAmount = isset($aProductInfo['am']) ? $aProductInfo['am'] : 0;
             $aSelList = isset($aProductInfo['sel']) ? $aProductInfo['sel'] : null;
-            $aParams = $aProductInfo['persparam'];
-            $aPersParam = (isset($aParams) && is_array($aParams) && strlen($aParams['details'])) ? $aParams : null;
+            $aPersParam = (isset($aProductInfo['persparam']) && is_array($aProductInfo['persparam']) && strlen($aProductInfo['persparam']['details'])) ? $aProductInfo['persparam'] : null;
             $blOverride = isset($aProductInfo['override']) ? $aProductInfo['override'] : null;
             $blIsBundle = isset($aProductInfo['bundle']) ? true : false;
             $sOldBasketItemId = isset($aProductInfo['basketitemid']) ? $aProductInfo['basketitemid'] : null;
 
             try {
-                $oBasketItem = $oBasket->addToBasket(
-                    $sProductId,
-                    $dAmount,
-                    $aSelList,
-                    $aPersParam,
-                    $blOverride,
-                    $blIsBundle,
-                    $sOldBasketItemId
-                );
+                $oBasketItem = $oBasket->addToBasket($sProductId, $dAmount, $aSelList, $aPersParam, $blOverride, $blIsBundle, $sOldBasketItemId);
             } catch (oxOutOfStockException $oEx) {
                 $oEx->setDestination($sErrorDest);
                 // #950 Change error destination to basket popup
@@ -387,8 +369,7 @@ class oxcmp_basket extends oxView
             }
             if (!$oBasketItem) {
                 $oInfo = $oBasket->getBasketSummary();
-                $oProduct = $oInfo->aArticles[$sProductId];
-                $aProducts[$sAddProductId]['am'] = isset($oProduct) ? $oProduct : 0;
+                $aProducts[$sAddProductId]['am'] = isset($oInfo->aArticles[$sProductId]) ? $oInfo->aArticles[$sProductId] : 0;
             }
         }
 

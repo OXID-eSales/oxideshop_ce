@@ -30,7 +30,6 @@
  */
 class oxOnlineLicenseCheckRequest extends oxOnlineRequest
 {
-
     /**
      * Web service protocol version.
      *
@@ -53,9 +52,10 @@ class oxOnlineLicenseCheckRequest extends oxOnlineRequest
     public $revision;
 
     /**
-     * Shop Servers information.
+     * Product related specific information
+     * like amount of sub shops and amount of admin users.
      *
-     * @var string
+     * @var object
      */
-    public $servers;
+    public $productSpecificInformation;
 }

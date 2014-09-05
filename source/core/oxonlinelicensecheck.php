@@ -215,8 +215,11 @@ class oxOnlineLicenseCheck
         $oRequest->keys = new stdClass();
         $oRequest->keys->key = $aSerial;
 
-        $oRequest->servers = new stdClass();
-        $oRequest->servers->server = $oConfig->getConfigParam('aServersData');
+        $oServers = new stdClass();
+        $oServers->server = $oConfig->getConfigParam('aServersData');
+
+        $oRequest->productSpecificInformation = new stdClass();
+        $oRequest->productSpecificInformation->servers = $oServers;
 
         return $oRequest;
     }

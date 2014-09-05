@@ -127,6 +127,10 @@ class oxcmp_basket extends oxView
      */
     public function tobasket( $sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false )
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         // adding to basket is not allowed ?
         $myConfig = $this->getConfig();
         if ( oxRegistry::getUtils()->isSearchEngine() ) {

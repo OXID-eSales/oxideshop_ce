@@ -143,6 +143,9 @@ class oxSystemEventHandler
      */
     public function onShopStart()
     {
+        $oProcessor = $this->_getServerProcessor();
+        $oProcessor->process();
+
         if ($this->_isSendingShopDataEnabled()) {
             $this->_sendShopInformation();
         }
@@ -272,5 +275,14 @@ class oxSystemEventHandler
     protected function _getConfig()
     {
         return oxRegistry::getConfig();
+    }
+
+    /**
+     * @return oxServerProcessor
+     */
+    protected function _getServerProcessor()
+    {
+        /** @var oxServerProcessor $oProcessor */
+        return oxNew('oxServerProcessor');
     }
 }

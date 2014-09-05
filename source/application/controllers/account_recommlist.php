@@ -218,6 +218,10 @@ class Account_Recommlist extends Account
      */
     public function saveRecommList()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         if (!$this->getViewConfig()->getShowListmania()) {
             return;
         }
@@ -267,6 +271,10 @@ class Account_Recommlist extends Account
      */
     public function editList()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         if (!$this->getViewConfig()->getShowListmania()) {
             return;
         }
@@ -288,6 +296,10 @@ class Account_Recommlist extends Account
      */
     public function removeArticle()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         if (!$this->getViewConfig()->getShowListmania()) {
             return;
         }

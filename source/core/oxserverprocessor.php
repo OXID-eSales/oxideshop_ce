@@ -131,6 +131,7 @@ class oxServerProcessor extends oxSuperCfg
         $oNode->setId($sServerNodeId);
         $oNode->setIp($oUtilsServer->getServerIp());
         $oNode->setTimestamp($oUtilsDate->getTime());
+        $oNode->setIsValid();
         if ($this->isAdmin()) {
             $oNode->setLastAdminUsage($oUtilsDate->getTime());
         } else {

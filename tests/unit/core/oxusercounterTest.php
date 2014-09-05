@@ -47,7 +47,7 @@ class Unit_Core_oxUserCounterTest extends OxidTestCase
         $this->_createUserWithRights('_tesUser', true, 'user');
 
         $oCounter = new oxUserCounter();
-        $this->assertEquals(4, $oCounter->getAdminCount());
+        $this->assertEquals(2, $oCounter->getAdminCount());
     }
 
     public function testCountingAdminsWhenNoAdminsExist()

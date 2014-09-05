@@ -101,6 +101,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $oNode->setId($sServerId);
         $oNode->setIp($sIP);
         $oNode->setTimestamp($sCurrentTime);
+        $oNode->setIsValid();
 
         $oNodeFrontend = clone($oNode);
         $oNodeFrontend->setLastFrontendUsage($sCurrentTime);

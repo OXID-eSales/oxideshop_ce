@@ -130,4 +130,24 @@ class oxServersManager
         return array_key_exists($sName, $aData)? $aData[$sName] : null;
     }
 
+    /**
+     * Return active server nodes
+     *
+     * @return array
+     */
+    public function getServers()
+    {
+        $aServers = $this->_getServersData();
+        foreach($aServers as $sServerId => $aServer ){
+            if($aServer['isValid']){
+                unset($aServers[$sServerId]['isValid']);
+                unset($aServers[$sServerId]['timestamp']);
+            }else{
+                unset($aServers[$sServerId]);
+            }
+        }
+
+        return $aServers;
+    }
+
 }

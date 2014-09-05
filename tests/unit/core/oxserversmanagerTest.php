@@ -166,4 +166,42 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         );
         $this->assertEquals($aExpectedServerData, $this->getConfig()->getConfigParam('aServersData'));
     }
+
+    public function testGetServerNodes()
+    {
+        $aStoredData = array(
+            'serverNameHash1' => array(
+                'id' => 'serverNameHash1',
+                'timestamp' => 'timestampUpdated',
+                'ip' => '127.0.0.1',
+                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
+                'lastAdminUsage' => 'adminUsageTimestampUpdated',
+                'isValid' => false
+            ),
+            'serverNameHash2' => array(
+                'id' => 'serverNameHash2',
+                'timestamp' => 'timestampUpdated',
+                'ip' => '127.0.0.2',
+                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
+                'lastAdminUsage' => 'adminUsageTimestampUpdated',
+                'isValid' => true
+            ),
+        );
+
+        $aServers = array(
+            'serverNameHash2' => array(
+                'id' => 'serverNameHash2',
+                'ip' => '127.0.0.2',
+                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
+                'lastAdminUsage' => 'adminUsageTimestampUpdated',
+            ),
+        );
+
+        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
+
+        $oManager = new oxServersManager();
+
+        $this->assertEquals($aServers, $oManager->getServers());
+    }
+
 }

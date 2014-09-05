@@ -74,6 +74,10 @@ class Account_Password extends Account
      */
     public function changePassword()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         $oUser = $this->getUser();
         if ( !$oUser ) {
             return;

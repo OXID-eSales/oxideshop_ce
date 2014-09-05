@@ -38,9 +38,6 @@ class oxStart extends oxUBase
             return;
         }
 
-        $oProcessor = $this->_getServerProcessor();
-        $oProcessor->process();
-
         $oSystemEventHandler = $this->_getSystemEventHandler();
         $oSystemEventHandler->onShopStart();
     }
@@ -110,15 +107,6 @@ class oxStart extends oxUBase
     public function getErrorNumber()
     {
         return oxRegistry::getConfig()->getRequestParameter( 'errornr' );
-    }
-
-    /**
-     * @return oxServerProcessor
-     */
-    protected function _getServerProcessor()
-    {
-        /** @var oxServerProcessor $oProcessor */
-        return oxNew('oxServerProcessor');
     }
 
     /**

@@ -157,10 +157,23 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $this->assertNotSame($sOnlineLicenseCheckTime1, $sOnlineLicenseCheckTime2);
     }
 
-    public function testFormationOfOnlineLicenseCheckObjectWhenNotSet()
+
+
+   /* public function testFormationOfOnlineLicenseCheckObjectWhenNotSet()
     {
         $oSystemEventHandler = new oxSystemEventHandler();
         $this->assertInstanceOf('oxOnlineLicenseCheck', $oSystemEventHandler->getOnlineLicenseCheck());
+    }*/
+
+    public function testOnShopStartSaveServerInformation()
+    {
+        $oProcessor = $this->getMock('oxServerProcessor');
+        $oProcessor->expects($this->once())->method('process');
+
+        $oSystemEventHandler = $this->getMock('oxSystemEventHandler', array('_getServerProcessor', 'pageStart'));
+        $oSystemEventHandler->expects($this->any())->method('_getServerProcessor')->will($this->returnValue($oProcessor));
+
+        $oSystemEventHandler->onShopStart();
     }
 
     public function testShopInformationSendingWhenSendingIsAllowed()

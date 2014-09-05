@@ -222,16 +222,19 @@ class oxOnlineLicenseCheck
         $oServers = new stdClass();
         $oServers->server = $oConfig->getConfigParam('aServersData');
 
-        $oRequest->productSpecificInformation = new stdClass();
-        $oRequest->productSpecificInformation->servers = $oServers;
-
         $oCounter = new stdClass();
         $oCounter->name = 'admin users';
         $oCounter->value = $oUserCounter->getAdminCount();
 
-        $oCounters = new stdClass();
-        $oCounters->cuonter = $oCounter;
+        $oSubShops = new stdClass();
+        $oSubShops->name = 'subShops';
+        $oSubShops->value = 5;
 
+        $oCounters = new stdClass();
+        $oCounters->counter = array($oCounter, $oSubShops);
+
+        $oRequest->productSpecificInformation = new stdClass();
+        $oRequest->productSpecificInformation->servers = $oServers;
         $oRequest->productSpecificInformation->counters = $oCounters;
 
         return $oRequest;

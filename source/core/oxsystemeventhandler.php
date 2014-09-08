@@ -206,7 +206,7 @@ class oxSystemEventHandler
      */
     private function _getNextCheckTime()
     {
-        return (int) $this->_getConfig()->getSystemConfigParameter('sOnlineLicenseCheckTime');
+        return (int) $this->_getConfig()->getSystemConfigParameter('sOnlineLicenseNextCheckTime');
     }
 
     /**
@@ -215,33 +215,33 @@ class oxSystemEventHandler
      */
     private function _updateNextCheckTime()
     {
-        $this->_getConfig()->saveSystemConfigParameter(
-            'arr', 'sOnlineLicenseCheckTime',
-            $this->_getCurrentTime() + $this->_getWhiteNoise() + $this->_getLicenseCheckValidityTime()
-        );
+        $sHourToCheck = $this->_getCheckTime();
+        $aHourToCheck = explode(':', $sHourToCheck);
+
+        $sNextCheckTime = new DateTime('tomorrow');
+        $sNextCheckTime->setTime($aHourToCheck[0], $aHourToCheck[1], $aHourToCheck[2]);
+        $this->_getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseNextCheckTime', $sNextCheckTime->getTimestamp());
     }
 
     /**
-     * License check is done after 24 hours from last check.
+     * Returns time (hour minutes seconds) when to perform license check.
+     * Create if does not exist.
      *
-     * @return int
+     * @return string time formed as H:i:s
      */
-    private function _getLicenseCheckValidityTime()
+    private function _getCheckTime()
     {
-        return 24 * 60 * 60;
-    }
+        $sCheckTime = $this->_getConfig()->getSystemConfigParameter('sOnlineLicenseCheckTime');
+        if (!$sCheckTime) {
+            $iHourToCheck = rand(8, 23);
+            $iMinuteToCheck = rand(0, 59);
+            $iSecondToCheck = rand(0, 59);
 
-    /**
-     * Get white noise so each license check would be performed in different time.
-     *
-     * @return int
-     */
-    private function _getWhiteNoise()
-    {
-        $iWhiteNoiseMinTime = 0;
-        $iWhiteNoiseMaxTime = 12 * 60 * 60;
+            $sCheckTime = $iHourToCheck .':'. $iMinuteToCheck .':'. $iSecondToCheck;
+            $this->_getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseCheckTime', $sCheckTime);
+        }
 
-        return rand($iWhiteNoiseMinTime, $iWhiteNoiseMaxTime);
+        return $sCheckTime;
     }
 
     /**

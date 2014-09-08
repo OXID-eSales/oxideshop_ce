@@ -89,7 +89,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
     public function testOnShopStartDoNotSendShopInformationTimeNotExpired()
     {
-        $this->setConfigParam('sOnlineLicenseCheckTime', time());
+        $this->setConfigParam('sOnlineLicenseCheckTime', time() + (24 * 60 * 60));
 
         $oSystemEventHandler = new oxSystemEventHandler();
 

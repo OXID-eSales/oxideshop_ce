@@ -76,8 +76,10 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oServersManager->expects($this->once())->method('getServers')->will($this->returnValue($aServers));
         /** @var oxServersManager $oServersManager */
 
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller, $oUserCounter);
+        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
         $oLicenseCheck->setServersManager($oServersManager);
+        $oLicenseCheck->setUserCounter($oUserCounter);
+
         $oLicenseCheck->validate('validSerial');
     }
 
@@ -93,11 +95,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
         $oCaller->expects($this->any())->method('doRequest')->will($this->returnValue($oResponse));
 
-        $oUserCounter = $this->getMock('oxUserCounter', array('getAdminCount'), array(), '', false);
-        $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue(25));
-        /** @var oxUserCounter $oUserCounter */
-
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller, $oUserCounter);
+        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
 
         $this->assertEquals(true, $oLicenseCheck->validate('validSerial'));
 
@@ -126,11 +124,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oCaller->expects($this->any())->method('doRequest')->will($this->returnValue($oResponse));
         /** @var oxOnlineLicenseCheckCaller $oCaller */
 
-        $oUserCounter = $this->getMock('oxUserCounter', array('getAdminCount'), array(), '', false);
-        $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue(25));
-        /** @var oxUserCounter $oUserCounter */
-
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller, $oUserCounter);
+        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
 
         $this->assertEquals(false, $oLicenseCheck->validate('invalidSerial'));
 
@@ -205,8 +199,9 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         /** @var oxServersManager $oServersManager */
 
 
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller, $oUserCounter);
+        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
         $oLicenseCheck->setServersManager($oServersManager);
+        $oLicenseCheck->setUserCounter($oUserCounter);
         $oLicenseCheck->validateShopSerials();
     }
 
@@ -271,11 +266,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oCaller->expects($this->any())->method('doRequest')->will($this->throwException(new oxException()));
         /** @var oxOnlineLicenseCheckCaller $oUserCounter */
 
-        $oUserCounter = $this->getMock('oxUserCounter', array('getAdminCount'), array(), '', false);
-        $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue(25));
-        /** @var oxUserCounter $oUserCounter */
-
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller, $oUserCounter);
+        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
         $oLicenseCheck->validate('validSerial');
 
         $this->assertEquals(true, $oLicenseCheck->isException());
@@ -291,11 +282,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oCaller->expects($this->any())->method('doRequest')->will($this->returnValue($oResponse));
         /** @var oxOnlineLicenseCheckCaller $oUserCounter */
 
-        $oUserCounter = $this->getMock('oxUserCounter', array('getAdminCount'), array(), '', false);
-        $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue(25));
-        /** @var oxUserCounter $oUserCounter */
-
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller, $oUserCounter);
+        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
 
         $this->setTime(10);
 

@@ -21,10 +21,56 @@
  */
 
 /**
- * Wraps simpleXML functions.
+ * Parses objects to XML and XML to simple XML objects.
+ *
+ * Example object:
+ * oxStdClass Object
+ *   (
+ *       [title] => TestTitle
+ *       [keys] => oxStdClass Object
+ *           (
+ *               [key] => Array
+ *                   (
+ *                       [0] => testKey1
+ *                       [1] => testKey2
+ *                   )
+ *           )
+ *   )
+ *
+ * would produce the following XML:
+ * <?xml version="1.0" encoding="utf-8"?>
+ * <testXml><title>TestTitle</title><keys><key>testKey1</key><key>testKey2</key></keys></testXml>
  */
 class oxSimpleXml
 {
+    /**
+     * Parses object structure to XML string
+     *
+     * @param  object $oInput    Input object
+     * @param  string $sDocument Document name.
+     *
+     * @return string
+     */
+    public function objectToXml($oInput, $sDocument)
+    {
+        $oXml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"utf-8\"?><$sDocument/>");
+        $this->_addSimpleXmlElement($oXml, $oInput);
+
+        return $oXml->asXml();
+    }
+
+    /**
+     * Parses XML string into object structure
+     *
+     * @param string $sXml XML Input
+     *
+     * @return SimpleXMLElement
+     */
+    public function xmlToObject($sXml)
+    {
+        return simplexml_load_string($sXml);
+    }
+
     /**
      * Recursively adds $oInput object data to SimpleXMLElement structure
      *
@@ -55,62 +101,37 @@ class oxSimpleXml
      */
     protected function _addChildNode($oXml, $sKey, $mElement)
     {
+        if (is_array( $mElement) && array_key_exists('attributes', $mElement) && is_array($mElement['attributes'])) {
+            $aAttributes = $mElement['attributes'];
+            $mElement = $mElement['value'];
+        }
+
         if (is_object( $mElement ) ) {
             $oChildNode = $oXml->addChild($sKey);
+            $this->addAttributes($oChildNode, $aAttributes);
             $this->_addSimpleXmlElement($oChildNode, $mElement);
         } elseif (is_array( $mElement) ) {
             $this->_addSimpleXmlElement($oXml, $mElement, $sKey);
         } else {
-            //assume $oVar is string
-            $oXml->addChild($sKey, $mElement);
+            $oChildNode = $oXml->addChild($sKey, $mElement);
+            $this->addAttributes($oChildNode, $aAttributes);
         }
 
         return $oXml;
     }
 
     /**
-     * Parses object structure to XML string
-     *
-     * Example object:
-     * oxStdClass Object
-     *   (
-     *       [title] => TestTitle
-     *       [keys] => oxStdClass Object
-     *           (
-     *               [key] => Array
-     *                   (
-     *                       [0] => testKey1
-     *                       [1] => testKey2
-     *                   )
-     *           )
-     *   )
-     *
-     * would produce the following XML:
-     * <?xml version="1.0" encoding="utf-8"?>
-     * <testXml><title>TestTitle</title><keys><key>testKey1</key><key>testKey2</key></keys></testXml>
-     *
-     * @param  object $oInput    Input object
-     * @param  string $sDocument Document name.
-     *
-     * @return string
-     */
-    public function objectToXml($oInput, $sDocument)
-    {
-        $oXml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"utf-8\"?><$sDocument/>");
-        $this->_addSimpleXmlElement($oXml, $oInput);
-
-        return $oXml->asXml();
-    }
-
-    /**
-     * Parses XML string into object structure
-     *
-     * @param string $sXml XML Input
-     *
+     * @param SimpleXMLElement $oNode
+     * @param $aAttributes
      * @return SimpleXMLElement
      */
-    public function xmlToObject($sXml)
+    protected function addAttributes($oNode, $aAttributes)
     {
-        return simplexml_load_string($sXml);
+        $aAttributes = (array) $aAttributes;
+        foreach($aAttributes as $sKey => $sValue) {
+            $oNode->addAttribute($sKey, $sValue);
+        }
+
+        return $oNode;
     }
 }

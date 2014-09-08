@@ -8,10 +8,24 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-class oxOnlineCaller
+abstract class oxOnlineCaller
 {
 
     const ALLOWED_HTTP_FAILED_CALLS_COUNT = 4;
+
+    /**
+     * XML document tag name.
+     *
+     * @var string
+     */
+    protected $_sXMLDocumentName = 'onlineRequest';
+
+    /**
+     * Web service url.
+     *
+     * @var string
+     */
+    protected $_sServiceUrl;
 
     /**
      * @var oxCurl
@@ -24,32 +38,60 @@ class oxOnlineCaller
     private $_oEmailBuilder;
 
     /**
-     * @param oxCurl                     $oCurl
-     * @param oxOnlineServerEmailBuilder $oEmailBuilder
+     * @var oxSimpleXml
      */
-    public function __construct(oxCurl $oCurl, oxOnlineServerEmailBuilder $oEmailBuilder)
+    private $_oSimpleXml;
+
+    /**
+     * @param oxCurl $oCurl
+     * @param oxOnlineServerEmailBuilder $oEmailBuilder
+     * @param oxSimpleXml $oSimpleXml
+     */
+    public function __construct(oxCurl $oCurl, oxOnlineServerEmailBuilder $oEmailBuilder, oxSimpleXml $oSimpleXml)
     {
         $this->_oCurl = $oCurl;
         $this->_oEmailBuilder = $oEmailBuilder;
+        $this->_oSimpleXml = $oSimpleXml;
+    }
+
+    /**
+     * Get web service url.
+     *
+     * @return string
+     */
+    public function getWebServiceUrl()
+    {
+        return $this->_sServiceUrl;
+    }
+
+    /**
+     * Set web service url.
+     *
+     * @param string $sUrl
+     */
+    public function setWebServiceUrl($sUrl)
+    {
+        $this->_sServiceUrl = $sUrl;
     }
 
     /**
      * Makes curl call with given parameters to given url.
      *
-     * @param string $sUrl
-     * @param string $sXml
+     * @param oxOnlineRequest $oRequest
      *
      * @return null|string In XML format.
      */
-    public function call($sUrl, $sXml)
+    public function call(oxOnlineRequest $oRequest)
     {
         $sOutputXml = null;
         $iFailedCallsCount = oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount');
         try {
-            $sOutputXml = $this->_executeCurlCall($sUrl, $sXml);
+            $sXml = $this->_formXMLRequest($oRequest);
+            $sOutputXml = $this->_executeCurlCall($this->getWebServiceUrl(), $sXml);
             $this->_resetFailedCallsCount($iFailedCallsCount);
         } catch (Exception $oEx) {
             if ($iFailedCallsCount > self::ALLOWED_HTTP_FAILED_CALLS_COUNT) {
+                $sXml = $this->_formEmail($oRequest);
                 $this->_sendEmail($sXml);
                 $this->_resetFailedCallsCount($iFailedCallsCount);
             } else {
@@ -61,15 +103,31 @@ class oxOnlineCaller
     }
 
     /**
-     * Resets config parameter iFailedOnlineCallsCount if it's bigger than 0.
+     * @param oxOnlineRequest $oRequest
      *
-     * @param int $iFailedOnlineCallsCount
+     * @return string
      */
-    private function _resetFailedCallsCount($iFailedOnlineCallsCount)
+    protected function _formEmail($oRequest)
     {
-        if ($iFailedOnlineCallsCount > 0) {
-            oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 0);
-        }
+        return $this->_formXMLRequest($oRequest);
+    }
+
+    /**
+     * @param oxOnlineRequest $oRequest
+     *
+     * @return string
+     */
+    protected function _formXMLRequest($oRequest)
+    {
+        return $this->_getSimpleXml()->objectToXml($oRequest, $this->_sXMLDocumentName);
+    }
+
+    /**
+     * @return oxSimpleXml
+     */
+    protected function _getSimpleXml()
+    {
+        return $this->_oSimpleXml;
     }
 
     /**
@@ -92,14 +150,6 @@ class oxOnlineCaller
     }
 
     /**
-     * @param int $iFailedOnlineCallsCount
-     */
-    private function _increaseFailedCallsCount($iFailedOnlineCallsCount)
-    {
-        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', ++$iFailedOnlineCallsCount);
-    }
-
-    /**
      * Sends an email with server information.
      *
      * @param string $sBody
@@ -108,5 +158,25 @@ class oxOnlineCaller
     {
         $oEmail = $this->_oEmailBuilder->build($sBody);
         $oEmail->send();
+    }
+
+    /**
+     * Resets config parameter iFailedOnlineCallsCount if it's bigger than 0.
+     *
+     * @param int $iFailedOnlineCallsCount
+     */
+    private function _resetFailedCallsCount($iFailedOnlineCallsCount)
+    {
+        if ($iFailedOnlineCallsCount > 0) {
+            oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 0);
+        }
+    }
+
+    /**
+     * @param int $iFailedOnlineCallsCount
+     */
+    private function _increaseFailedCallsCount($iFailedOnlineCallsCount)
+    {
+        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', ++$iFailedOnlineCallsCount);
     }
 }

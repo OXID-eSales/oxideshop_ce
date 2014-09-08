@@ -75,9 +75,14 @@ class oxSystemEventHandler
             /** @var oxUserCounter $oUserCounter */
             $oUserCounter = oxNew('oxUserCounter');
 
+            /** @var oxServersManager $oServerManager */
+            $oServerManager = oxNew('oxServersManager');
+
             /** @var oxOnlineLicenseCheck $oOLC */
             $oOLC = oxNew("oxOnlineLicenseCheck", $oLicenseCaller, $oUserCounter);
-            $this->setOnlineLicenseCheck($oOLC);
+            $oOLC->setServersManager($oServerManager);
+
+            $this->setOnlineLicenseCheck( $oOLC );
         }
 
         return $this->_oOnlineLicenseCheck;

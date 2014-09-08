@@ -36,9 +36,8 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
 
         $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
         $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
+
         /** @var oxConfig $oConfig */
-        $oConfig->setConfigParam('aServersData', $aServers);
-        $this->setConfigParam('aServersData', $aServers);
         oxRegistry::set('oxConfig', $oConfig);
 
         $oRequest = new oxOnlineLicenseCheckRequest();
@@ -73,7 +72,12 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue(25));
         /** @var oxUserCounter $oUserCounter */
 
+        $oServersManager = $this->getMock('oxServersManager', array('getServers'), array(), '', false);
+        $oServersManager->expects($this->once())->method('getServers')->will($this->returnValue($aServers));
+        /** @var oxServersManager $oServersManager */
+
         $oLicenseCheck = new oxOnlineLicenseCheck($oCaller, $oUserCounter);
+        $oLicenseCheck->setServersManager($oServersManager);
         $oLicenseCheck->validate('validSerial');
     }
 
@@ -157,8 +161,6 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
         $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
         /** @var oxConfig $oConfig */
-        $oConfig->setConfigParam('aServersData', $aServers);
-        $this->setConfigParam('aServersData', $aServers);
         oxRegistry::set('oxConfig', $oConfig);
 
         $oRequest = new oxOnlineLicenseCheckRequest();
@@ -198,7 +200,13 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue(25));
         /** @var oxUserCounter $oUserCounter */
 
+        $oServersManager = $this->getMock('oxServersManager', array('getServers'), array(), '', false);
+        $oServersManager->expects($this->once())->method('getServers')->will($this->returnValue($aServers));
+        /** @var oxServersManager $oServersManager */
+
+
         $oLicenseCheck = new oxOnlineLicenseCheck($oCaller, $oUserCounter);
+        $oLicenseCheck->setServersManager($oServersManager);
         $oLicenseCheck->validateShopSerials();
     }
 

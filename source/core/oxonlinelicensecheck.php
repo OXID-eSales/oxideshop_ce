@@ -89,7 +89,7 @@ class oxOnlineLicenseCheck
     }
 
     /**
-     * @return oxServerManager
+     * @return oxServersManager
      */
     public function getServersManager()
     {
@@ -269,8 +269,7 @@ class oxOnlineLicenseCheck
 
         $oRequest->revision = $oConfig->getRevision();
 
-        $oRequest->keys = new stdClass();
-        $oRequest->keys->key = $aSerial;
+        $oRequest->keys = array('key' => $aSerial);
 
         $oServers = new stdClass();
         if(!is_null($this->getServersManager()) ){

@@ -29,6 +29,16 @@
 class oxServersManager
 {
     /**
+     * Time in seconds, server node information life time.
+     */
+    CONST NODE_AVAILABILITY_CHECK_PERIOD = 86400;
+
+    /**
+     * Time in seconds, server node information life time.
+     */
+    CONST INACTIVE_NODE_STORAGE_PERIOD = 259200;
+
+    /**
      * Servers data array.
      * @var array
      */
@@ -72,7 +82,7 @@ class oxServersManager
             'isValid' => $oServer->isValid()
         );
 
-        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aServersData);
+        $this->_save( $aServersData );
     }
 
     /**
@@ -139,7 +149,11 @@ class oxServersManager
      */
     public function getServers()
     {
+        $this->markInActiveServers();
+        $this->deleteInActiveServers();
+
         $aServers = $this->_getServersData();
+
         foreach($aServers as $sServerId => $aServer ){
             if($aServer['isValid']){
                 unset($aServers[$sServerId]['isValid']);
@@ -161,7 +175,45 @@ class oxServersManager
     {
         $aServersData = $this->_getServersData();
         unset($aServersData[$sServerId]);
-        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aServersData);
+        $this->_save($aServersData);
     }
 
+    /**
+     * Mark servers as inactive if they are not used anymore
+     */
+    public function markInActiveServers()
+    {
+        $aServersData = $this->_getServersData();
+
+        foreach($aServersData as $sServerId => $aServerData){
+            if($aServerData['timestamp'] < oxRegistry::get("oxUtilsDate")->getTime() - self::NODE_AVAILABILITY_CHECK_PERIOD){
+                $oServer = $this->getServer($sServerId);
+                $oServer->setIsValid(false);
+                $this->saveServer($oServer);
+            }
+        }
+    }
+
+    /**
+     * Removes information about old and not used servers
+     */
+    public function deleteInActiveServers()
+    {
+        $aServersData = $this->_getServersData();
+
+        foreach($aServersData as $sServerId => $aServerData){
+            if($aServerData['timestamp'] < oxRegistry::get("oxUtilsDate")->getTime() - self::INACTIVE_NODE_STORAGE_PERIOD){
+                $this->deleteServer($sServerId);
+            }
+        }
+    }
+
+    /**
+     * @param $aServersData
+     */
+    protected function _save($aServersData)
+    {
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aServersData);
+        $this->_aServersData = $aServersData;
+    }
 }

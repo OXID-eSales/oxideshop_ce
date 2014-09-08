@@ -72,8 +72,11 @@ class oxSystemEventHandler
             /** @var oxOnlineLicenseCheckCaller $oLicenseCaller */
             $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oOnlineCaller, $oSimpleXml);
 
+            /** @var oxUserCounter $oUserCounter */
+            $oUserCounter = oxNew('oxUserCounter');
+
             /** @var oxOnlineLicenseCheck $oOLC */
-            $oOLC = oxNew("oxOnlineLicenseCheck", $oLicenseCaller);
+            $oOLC = oxNew("oxOnlineLicenseCheck", $oLicenseCaller, $oUserCounter);
             $this->setOnlineLicenseCheck($oOLC);
         }
 
@@ -125,10 +128,8 @@ class oxSystemEventHandler
 
     /**
      * onAdminLogin() is called on every successful login to the backend
-     *
-     * @param string $sActiveShop Active shop
      */
-    public function onAdminLogin($sActiveShop)
+    public function onAdminLogin()
     {
         // Checks if newer versions of modules are available.
         // Will be used by the upcoming online one click installer.
@@ -144,10 +145,31 @@ class oxSystemEventHandler
      */
     public function onShopStart()
     {
-        $this->_sendShopInformation();
+        $oProcessor = $this->_getServerProcessor();
+        $oProcessor->process();
+
+        if ($this->_isSendingShopDataEnabled()) {
+            $this->_sendShopInformation();
+        }
+
         $this->_validateOffline();
     }
 
+    /**
+     * @return bool
+     */
+    protected function _isSendingShopDataEnabled()
+    {
+        $blSendData = true;
+
+            $blSendData = (bool) $this->_getConfig()->getConfigParam('blSendShopDataToOxid');
+
+        return $blSendData;
+    }
+
+    /**
+     * Sends shop information to oxid servers.
+     */
     protected function _sendShopInformation()
     {
         if ($this->_needToSendShopInformation()) {
@@ -167,7 +189,7 @@ class oxSystemEventHandler
     {
         $blNeedToSend = false;
 
-        if ($this->_getLastCheckTime() < $this->_getCurrentTime()) {
+        if ($this->_getNextCheckTime() < $this->_getCurrentTime()) {
             $blNeedToSend = true;
         }
 
@@ -179,7 +201,7 @@ class oxSystemEventHandler
      *
      * @return int
      */
-    private function _getLastCheckTime()
+    private function _getNextCheckTime()
     {
         return (int) $this->_getConfig()->getSystemConfigParameter('sOnlineLicenseCheckTime');
     }
@@ -257,5 +279,14 @@ class oxSystemEventHandler
     protected function _getConfig()
     {
         return oxRegistry::getConfig();
+    }
+
+    /**
+     * @return oxServerProcessor
+     */
+    protected function _getServerProcessor()
+    {
+        /** @var oxServerProcessor $oProcessor */
+        return oxNew('oxServerProcessor');
     }
 }

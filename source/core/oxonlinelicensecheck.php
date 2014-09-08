@@ -77,6 +77,25 @@ class oxOnlineLicenseCheck
     /** @var oxUserCounter */
     protected $_oUserCounter = null;
 
+    /** @var oxServerManager */
+    protected $_oServersManager = null;
+
+    /**
+     * @param oxServersManager $oServersManager
+     */
+    public function setServersManager( $oServersManager )
+    {
+        $this->_oServersManager = $oServersManager;
+    }
+
+    /**
+     * @return oxServerManager
+     */
+    public function getServersManager()
+    {
+        return $this->_oServersManager;
+    }
+
     /**
      * @param oxOnlineLicenseCheckCaller $oCaller
      * @param oxUserCounter $oUserCounter
@@ -238,7 +257,9 @@ class oxOnlineLicenseCheck
         $oRequest->keys->key = $aSerial;
 
         $oServers = new stdClass();
-        $oServers->server = $oConfig->getConfigParam('aServersData');
+        if(!is_null($this->getServersManager()) ){
+            $oServers->server = $this->getServersManager()->getServers();
+        }
 
         $oCounter = new stdClass();
         $oCounter->name = 'admin users';

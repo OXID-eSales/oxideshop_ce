@@ -93,9 +93,11 @@ class oxSimpleXml
     }
 
     /**
+     * Adds child node to given simple xml object.
+     *
      * @param SimpleXMLElement $oXml
      * @param string $sKey
-     * @param mixed $mElement
+     * @param string|array|object $mElement
      *
      * @return SimpleXMLElement
      */
@@ -121,8 +123,11 @@ class oxSimpleXml
     }
 
     /**
+     * Adds attributes to given node.
+     *
      * @param SimpleXMLElement $oNode
-     * @param $aAttributes
+     * @param array $aAttributes
+     *
      * @return SimpleXMLElement
      */
     protected function _addNodeAttributes($oNode, $aAttributes)

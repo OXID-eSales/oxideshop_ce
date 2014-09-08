@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
 
 /**
  * Testing oxXml class.
@@ -42,7 +42,7 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
         $sTestResult .= "<keys><key>testKey1</key><key>testKey2</key></keys>";
         $sTestResult .= "</testXml>\n";
 
-        $this->assertEquals($sTestResult, $oXml->objectToXml( $oTestObject, "testXml" ));
+        $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
     }
 
     public function testObjectToXmlWithObjectsInArray()
@@ -71,7 +71,7 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
         $sTestResult .= "</modules>";
         $sTestResult .= "</testXml>\n";
 
-        $this->assertEquals($sTestResult, $oXml->objectToXml( $oTestObject, "testXml" ));
+        $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
     }
 
     public function testXmlToObject()
@@ -84,11 +84,11 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
         $sTestXml .= '<keys><key>testKey1</key><key>testKey2</key></keys>';
         $sTestXml .= '</testXml>';
 
-        $oRes = $oXml->xmlToObject( $sTestXml );
+        $oRes = $oXml->xmlToObject($sTestXml);
 
-        $this->assertEquals((string) $oRes->title,         "TestTitle");
-        $this->assertEquals((string) $oRes->keys->key[0],  "testKey1");
-        $this->assertEquals((string) $oRes->keys->key[1],  "testKey2");
+        $this->assertEquals((string)$oRes->title, "TestTitle");
+        $this->assertEquals((string)$oRes->keys->key[0], "testKey1");
+        $this->assertEquals((string)$oRes->keys->key[1], "testKey2");
     }
 
     public function testObjectToXmlWithElementsAndAttributes()
@@ -105,17 +105,17 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
 
         $oTestObject = new stdClass();
         $oTestObject->elements = new stdClass();
-        $oTestObject->elements->element = array(array('attributes'=>array('attr3' => 'value3'), 'value' => $oElement1), $oElement2);
+        $oTestObject->elements->element = array(array('attributes' => array('attr3' => 'value3'), 'value' => $oElement1), $oElement2);
 
-        $sTestResult = '<?xml version="1.0" encoding="utf-8"?>'."\n";
+        $sTestResult = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
         $sTestResult .= '<testXml>';
         $sTestResult .= '<elements>';
         $sTestResult .= '<element attr3="value3"><id>id1</id><active>1</active></element>';
         $sTestResult .= '<element><id attr1="value1" attr2="value2">id2</id><active>1</active></element>';
         $sTestResult .= '</elements>';
-        $sTestResult .= '</testXml>'."\n";
+        $sTestResult .= '</testXml>' . "\n";
 
-        $this->assertEquals($sTestResult, $oXml->objectToXml( $oTestObject, "testXml" ));
+        $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
     }
 
     public function testObjectToXmlWithElementsWithAttributesKey()
@@ -126,14 +126,14 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
         $oTestObject->attributes = new stdClass();
         $oTestObject->attributes->attribute = array('attrValue1', 'attrValue2');
 
-        $sTestResult = '<?xml version="1.0" encoding="utf-8"?>'."\n";
+        $sTestResult = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
         $sTestResult .= '<testXml>';
         $sTestResult .= '<attributes>';
         $sTestResult .= '<attribute>attrValue1</attribute>';
         $sTestResult .= '<attribute>attrValue2</attribute>';
         $sTestResult .= '</attributes>';
-        $sTestResult .= '</testXml>'."\n";
+        $sTestResult .= '</testXml>' . "\n";
 
-        $this->assertEquals($sTestResult, $oXml->objectToXml( $oTestObject, "testXml" ));
+        $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
     }
 }

@@ -46,7 +46,7 @@ class oxSimpleXml
     /**
      * Parses object structure to XML string
      *
-     * @param  object $oInput    Input object
+     * @param  object $oInput Input object
      * @param  string $sDocument Document name.
      *
      * @return string
@@ -74,7 +74,7 @@ class oxSimpleXml
     /**
      * Recursively adds $oInput object data to SimpleXMLElement structure
      *
-     * @param SimpleXMLElement    $oXml   Xml handler
+     * @param SimpleXMLElement $oXml Xml handler
      * @param string|array|object $oInput Input object
      * @param string $sPreferredKey Key to use instead of node's key.
      *
@@ -82,10 +82,10 @@ class oxSimpleXml
      */
     protected function _addSimpleXmlElement($oXml, $oInput, $sPreferredKey = null)
     {
-        $aElements = is_object($oInput)? get_object_vars($oInput) : (array) $oInput;
+        $aElements = is_object($oInput) ? get_object_vars($oInput) : (array)$oInput;
 
         foreach ($aElements as $sKey => $mElement) {
-            $sKey = $sPreferredKey? $sPreferredKey : $sKey;
+            $sKey = $sPreferredKey ? $sPreferredKey : $sKey;
             $oXml = $this->_addChildNode($oXml, $sKey, $mElement);
         }
 
@@ -103,16 +103,16 @@ class oxSimpleXml
      */
     protected function _addChildNode($oXml, $sKey, $mElement)
     {
-        if (is_array( $mElement) && array_key_exists('attributes', $mElement) && is_array($mElement['attributes'])) {
+        if (is_array($mElement) && array_key_exists('attributes', $mElement) && is_array($mElement['attributes'])) {
             $aAttributes = $mElement['attributes'];
             $mElement = $mElement['value'];
         }
 
-        if (is_object( $mElement ) ) {
+        if (is_object($mElement)) {
             $oChildNode = $oXml->addChild($sKey);
             $this->_addNodeAttributes($oChildNode, $aAttributes);
             $this->_addSimpleXmlElement($oChildNode, $mElement);
-        } elseif (is_array( $mElement) ) {
+        } elseif (is_array($mElement)) {
             $this->_addSimpleXmlElement($oXml, $mElement, $sKey);
         } else {
             $oChildNode = $oXml->addChild($sKey, $mElement);
@@ -132,8 +132,8 @@ class oxSimpleXml
      */
     protected function _addNodeAttributes($oNode, $aAttributes)
     {
-        $aAttributes = (array) $aAttributes;
-        foreach($aAttributes as $sKey => $sValue) {
+        $aAttributes = (array)$aAttributes;
+        foreach ($aAttributes as $sKey => $sValue) {
             $oNode->addAttribute($sKey, $sValue);
         }
 

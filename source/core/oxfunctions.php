@@ -70,7 +70,6 @@ function oxAutoload( $sClass )
         if ( file_exists( $sFilename ) ) {
             if (!isset($aClassPaths[$sClass])) {
                 $aClassPaths[$sClass] = $sFilename;
-                //oxRegistry::getUtils()->toPhpFileCache("class_file_paths", $aClassPaths);
             }
             stopProfile("oxAutoload");
             include $sFilename;
@@ -95,7 +94,6 @@ function oxAutoload( $sClass )
                     if ( file_exists( $sFilename ) ) {
                         if (!isset($aClassPaths[$sClass])) {
                             $aClassPaths[$sClass] = $sFilename;
-                            oxRegistry::getUtils()->toPhpFileCache("class_file_paths", $aClassPaths);
                         }
                         stopProfile("oxAutoload");
                         include $sFilename;

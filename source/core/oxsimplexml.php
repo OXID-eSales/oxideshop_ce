@@ -30,38 +30,39 @@ class oxSimpleXml
      *
      * @param SimpleXMLElement    $oXml   Xml handler
      * @param string|array|object $oInput Input object
+     * @param string $sPreferredKey Key to use instead of node's key.
      *
      * @return SimpleXMLElement
      */
-    protected function _addSimpleXmlElement($oXml, $oInput)
+    protected function _addSimpleXmlElement($oXml, $oInput, $sPreferredKey = null)
     {
-        if (is_object( $oInput )) {
-            $aObjectVars = get_object_vars( $oInput );
-        } elseif (is_array($oInput) ) {
-            $aObjectVars = $oInput;
-        } else {
-            return $oXml;
+        $aElements = is_object($oInput)? get_object_vars($oInput) : (array) $oInput;
+
+        foreach ($aElements as $sKey => $mElement) {
+            $sKey = $sPreferredKey? $sPreferredKey : $sKey;
+            $oXml = $this->_addChildNode($oXml, $sKey, $mElement);
         }
 
-        foreach ($aObjectVars as $sKey => $oVar) {
-            if (is_object( $oVar ) ) {
-                $oChildNode = $oXml->addChild($sKey);
-                $this->_addSimpleXmlElement($oChildNode, $oVar);
-            } elseif (is_array( $oVar) ) {
-                foreach ($oVar as $oSubValue) {
-                    //this check for complex type is probably redundant, but I give up to solve it over single recursion call
-                    //use existing Unit tests for refactoring
-                    if (is_array($oSubValue) || is_object($oSubValue)) {
-                        $oChildNode = $oXml->addChild($sKey);
-                        $this->_addSimpleXmlElement($oChildNode, $oSubValue);
-                    } else {
-                        $oXml->addChild($sKey, $oSubValue);
-                    }
-                }
-            } else {
-                //assume $oVar is string
-                $oXml->addChild($sKey, $oVar);
-            }
+        return $oXml;
+    }
+
+    /**
+     * @param SimpleXMLElement $oXml
+     * @param string $sKey
+     * @param mixed $mElement
+     *
+     * @return SimpleXMLElement
+     */
+    protected function _addChildNode($oXml, $sKey, $mElement)
+    {
+        if (is_object( $mElement ) ) {
+            $oChildNode = $oXml->addChild($sKey);
+            $this->_addSimpleXmlElement($oChildNode, $mElement);
+        } elseif (is_array( $mElement) ) {
+            $this->_addSimpleXmlElement($oXml, $mElement, $sKey);
+        } else {
+            //assume $oVar is string
+            $oXml->addChild($sKey, $mElement);
         }
 
         return $oXml;

@@ -28,7 +28,7 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-class oxOnlineLicenseCheckCaller
+class oxOnlineLicenseCheckCaller extends oxOnlineCaller
 {
 
     /**
@@ -53,34 +53,11 @@ class oxOnlineLicenseCheckCaller
     protected $_sResponseElement = 'olc';
 
     /**
-     * @var oxOnlineCaller
-     */
-    private $_oOnlineCaller;
-
-    /**
-     * @var oxSimpleXml
-     */
-    private $_oSimpleXml;
-
-    /**
-     * @param oxOnlineCaller $oOnlineCaller
-     * @param oxSimpleXml    $oSimpleXml
-     */
-    public function __construct(oxOnlineCaller $oOnlineCaller, oxSimpleXml $oSimpleXml)
-    {
-        $this->_oOnlineCaller = $oOnlineCaller;
-        $this->_oSimpleXml = $oSimpleXml;
-    }
-
-    /**
-     * Get Online License Key Check web service url.
+     * XML document tag name.
      *
-     * @return string
+     * @var string
      */
-    public function getWebServiceUrl()
-    {
-        return $this->_sServiceUrl;
-    }
+    protected $_sXMLDocumentName = 'olcRequest';
 
     /**
      * Performs Web service request
@@ -92,29 +69,21 @@ class oxOnlineLicenseCheckCaller
      */
     public function doRequest(oxOnlineLicenseCheckRequest $oRequest)
     {
-        $oSimpleXml = $this->_getSimpleXml();
-        $sRequest = $oSimpleXml->objectToXml($oRequest, 'olcRequest');
-
-        $oCaller = $this->_getOnlineCaller();
-        $sResponse = $oCaller->call($this->getWebServiceUrl(), $sRequest);
+        $sResponse = $this->call($oRequest);
 
         return $this->_formResponse($sResponse);
     }
 
     /**
-     * @return oxOnlineCaller
+     * @param oxOnlineLicenseCheckRequest $oRequest
+     *
+     * @return string
      */
-    protected function _getOnlineCaller()
+    protected function _formEmail($oRequest)
     {
-        return $this->_oOnlineCaller;
-    }
+        $oRequest->keys = null;
 
-    /**
-     * @return oxSimpleXml
-     */
-    protected function _getSimpleXml()
-    {
-        return $this->_oSimpleXml;
+        return parent::_formEmail($oRequest);
     }
 
     /**
@@ -123,6 +92,7 @@ class oxOnlineLicenseCheckCaller
      * @param string $sRawResponse
      *
      * @throws oxException
+     *
      * @return oxOnlineLicenseCheckResponse
      */
     protected function _formResponse($sRawResponse)

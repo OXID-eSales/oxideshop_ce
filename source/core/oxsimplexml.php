@@ -108,13 +108,13 @@ class oxSimpleXml
 
         if (is_object( $mElement ) ) {
             $oChildNode = $oXml->addChild($sKey);
-            $this->addAttributes($oChildNode, $aAttributes);
+            $this->_addNodeAttributes($oChildNode, $aAttributes);
             $this->_addSimpleXmlElement($oChildNode, $mElement);
         } elseif (is_array( $mElement) ) {
             $this->_addSimpleXmlElement($oXml, $mElement, $sKey);
         } else {
             $oChildNode = $oXml->addChild($sKey, $mElement);
-            $this->addAttributes($oChildNode, $aAttributes);
+            $this->_addNodeAttributes($oChildNode, $aAttributes);
         }
 
         return $oXml;
@@ -125,7 +125,7 @@ class oxSimpleXml
      * @param $aAttributes
      * @return SimpleXMLElement
      */
-    protected function addAttributes($oNode, $aAttributes)
+    protected function _addNodeAttributes($oNode, $aAttributes)
     {
         $aAttributes = (array) $aAttributes;
         foreach($aAttributes as $sKey => $sValue) {

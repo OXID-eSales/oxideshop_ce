@@ -45,30 +45,31 @@ class oxServersManager
     /**
      * Returns server based on server id.
      *
-     * @param string $sNodeId
+     * @param string $sServerId
+     *
      * @return oxApplicationServer
      */
-    public function getServer($sNodeId)
+    public function getServer( $sServerId)
     {
-        $aNodeData = $this->_getServerData($sNodeId);
-        return $this->_createServer($sNodeId, $aNodeData);
+        $aServerData = $this->_getServerData( $sServerId);
+        return $this->_createServer( $sServerId, $aServerData);
     }
 
     /**
      * Saves given server information to config.
      *
-     * @param oxApplicationServer $oNode
+     * @param oxApplicationServer $oServer
      */
-    public function saveServer($oNode)
+    public function saveServer($oServer)
     {
         $aServersData = $this->_getServersData();
-        $aServersData[$oNode->getId()] = array(
-            'id' => $oNode->getId(),
-            'timestamp' => $oNode->getTimestamp(),
-            'ip' => $oNode->getIp(),
-            'lastFrontendUsage' => $oNode->getLastFrontendUsage(),
-            'lastAdminUsage' => $oNode->getLastAdminUsage(),
-            'isValid' => $oNode->isValid()
+        $aServersData[$oServer->getId()] = array(
+            'id' => $oServer->getId(),
+            'timestamp' => $oServer->getTimestamp(),
+            'ip' => $oServer->getIp(),
+            'lastFrontendUsage' => $oServer->getLastFrontendUsage(),
+            'lastAdminUsage' => $oServer->getLastAdminUsage(),
+            'isValid' => $oServer->isValid()
         );
 
         oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aServersData);
@@ -87,13 +88,14 @@ class oxServersManager
     /**
      * Returns server information from configuration.
      *
-     * @param string $sId
+     * @param string $sServerId
+     *
      * @return array
      */
-    protected function _getServerData($sId)
+    protected function _getServerData( $sServerId)
     {
-        $aNodes = $this->_getServersData();
-        return array_key_exists($sId, $aNodes) ? $aNodes[$sId] : array();
+        $aServers = $this->_getServersData();
+        return array_key_exists( $sServerId, $aServers) ? $aServers[$sServerId] : array();
     }
 
     /**

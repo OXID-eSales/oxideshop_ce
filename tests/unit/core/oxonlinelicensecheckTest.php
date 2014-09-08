@@ -205,7 +205,6 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
 
     public function testNewSerialIsAddedToExistingSerials()
     {
-        $iAdminUsers = 25;
         $iSubShops = 5;
 
         $oConfig = $this->getMock('oxConfig', array('getMandateCount'));

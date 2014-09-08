@@ -204,4 +204,35 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $this->assertEquals($aServers, $oManager->getServers());
     }
 
+    public function testDeleteServer()
+    {
+        $aStoredData = array(
+            'serverNameHash1' => array(
+                'id' => 'serverNameHash1',
+                'timestamp' => 'timestampUpdated',
+                'ip' => '127.0.0.1',
+                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
+                'lastAdminUsage' => 'adminUsageTimestampUpdated',
+                'isValid' => false
+            ),
+            'serverNameHash2' => array(
+                'id' => 'serverNameHash2',
+                'timestamp' => 'timestampUpdated',
+                'ip' => '127.0.0.2',
+                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
+                'lastAdminUsage' => 'adminUsageTimestampUpdated',
+                'isValid' => true
+            ),
+        );
+
+        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
+
+        $this->assertSame( 2, count(oxRegistry::getConfig()->getConfigParam('aServersData')));
+
+        $oManager = new oxServersManager();
+        $oManager->deleteServer('serverNameHash1');
+
+        $this->assertSame( 1, count(oxRegistry::getConfig()->getConfigParam('aServersData')));
+    }
+
 }

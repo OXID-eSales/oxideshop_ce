@@ -150,4 +150,16 @@ class oxServersManager
         return $aServers;
     }
 
+    /**
+     * Removes server node information
+     *
+     * @param $sServerId
+     */
+    public function deleteServer($sServerId)
+    {
+        $aServersData = $this->_getServersData();
+        unset($aServersData[$sServerId]);
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aServersData);
+    }
+
 }

@@ -86,8 +86,7 @@ class oxSimpleXml
         $aElements = is_object($oInput) ? get_object_vars($oInput) : (array) $oInput;
 
         foreach ($aElements as $sKey => $mElement) {
-            $sKey = $sPreferredKey ? $sPreferredKey : $sKey;
-            $oXml = $this->_addChildNode($oXml, $sKey, $mElement);
+            $oXml = $this->_addChildNode($oXml, $sKey, $mElement, $sPreferredKey);
         }
 
         return $oXml;
@@ -99,24 +98,28 @@ class oxSimpleXml
      * @param SimpleXMLElement    $oXml
      * @param string              $sKey
      * @param string|array|object $mElement
+     * @param string $sPreferredKey
      *
      * @return SimpleXMLElement
      */
-    protected function _addChildNode($oXml, $sKey, $mElement)
+    protected function _addChildNode($oXml, $sKey, $mElement, $sPreferredKey = null)
     {
+        $aAttributes = array();
         if (is_array($mElement) && array_key_exists('attributes', $mElement) && is_array($mElement['attributes'])) {
             $aAttributes = $mElement['attributes'];
             $mElement = $mElement['value'];
         }
 
-        if (is_object($mElement)) {
-            $oChildNode = $oXml->addChild($sKey);
-            $this->_addNodeAttributes($oChildNode, $aAttributes);
-            $this->_addSimpleXmlElement($oChildNode, $mElement);
-        } elseif (is_array($mElement)) {
-            $this->_addSimpleXmlElement($oXml, $mElement, $sKey);
+        if (is_object($mElement) || is_array($mElement)) {
+            if (is_int(key($mElement))) {
+                $this->_addSimpleXmlElement($oXml, $mElement, $sKey);
+            } else {
+                $oChildNode = $oXml->addChild($sPreferredKey? $sPreferredKey : $sKey);
+                $this->_addNodeAttributes($oChildNode, $aAttributes);
+                $this->_addSimpleXmlElement($oChildNode, $mElement);
+            }
         } else {
-            $oChildNode = $oXml->addChild($sKey, $mElement);
+            $oChildNode = $oXml->addChild($sPreferredKey? $sPreferredKey : $sKey, $mElement);
             $this->_addNodeAttributes($oChildNode, $aAttributes);
         }
 

@@ -136,4 +136,25 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
 
         $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
     }
+
+    public function testObjectToXmlWithAssocArrayKeys()
+    {
+        $oXml = new oxSimpleXml();
+
+        $oTestObject = new oxStdClass();
+        $oTestObject->elements = array('element' => array(
+            array('key1' => 'value1', 'key2' => 'value2'),
+            array('key1' => 'value1', 'key2' => 'value2')
+        ));
+
+        $sTestResult = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+        $sTestResult .= "<testXml>";
+        $sTestResult .= "<elements>";
+        $sTestResult .= "<element><key1>value1</key1><key2>value2</key2></element>";
+        $sTestResult .= "<element><key1>value1</key1><key2>value2</key2></element>";
+        $sTestResult .= "</elements>";
+        $sTestResult .= "</testXml>\n";
+
+        $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
+    }
 }

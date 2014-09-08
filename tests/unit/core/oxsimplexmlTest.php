@@ -67,7 +67,7 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
         $sTestResult .= "<title>TestTitle</title>";
         $sTestResult .= "<modules>";
         $sTestResult .= "<module><id>id1</id><active>1</active></module>";
-        $sTestResult .= "<module><id>id2</id><active/></module>";
+        $sTestResult .= "<module><id>id2</id><active></active></module>";
         $sTestResult .= "</modules>";
         $sTestResult .= "</testXml>\n";
 

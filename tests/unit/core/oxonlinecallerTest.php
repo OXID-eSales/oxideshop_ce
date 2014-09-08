@@ -30,31 +30,40 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
     public function testCallWhenSucceedsAndAllValuesWereSet()
     {
         $oCurl = $this->_getMockedCurl();
-        $oCaller = new oxOnlineCaller($oCurl, $this->_getMockedEmailBuilder());
-        $sUrl = 'http://oxid-esales.com';
+        /** @var oxOnlineCaller $oCaller */
+        $oCaller = $this->getMockForAbstractClass('oxOnlineCaller',
+            array($oCurl, $this->_getMockedEmailBuilder(), new oxSimpleXml())
+        );
 
-        $this->assertSame('_testResult', $oCaller->call($sUrl, '_testXml'));
-        $this->assertSame($sUrl, $oCurl->getUrl());
-        $this->assertSame(array('xmlRequest' => '_testXml'), $oCurl->getParameters('xmlRequest'));
+        $oCaller->setWebServiceUrl('http://oxid-esales.com/');
+        $sResultXML = $this->_getResponseXML();
+
+        $this->assertSame('_testResult', $oCaller->call($this->_getRequest()));
+        $this->assertSame('http://oxid-esales.com/', $oCurl->getUrl());
+        $this->assertEquals(array('xmlRequest' => $sResultXML), $oCurl->getParameters('clusterId'));
     }
 
     public function testCallWhenSucceedsOnTheLastAllowedCall()
     {
-        $oCaller = new oxOnlineCaller($this->_getMockedCurl(), $this->_getMockedEmailBuilder());
-        $sUrl = 'http://oxid-esales.com';
+        /** @var oxOnlineCaller $oCaller */
+        $oCaller = $this->getMockForAbstractClass('oxOnlineCaller',
+            array($this->_getMockedCurl(), $this->_getMockedEmailBuilder(), new oxSimpleXml())
+        );
         oxRegistry::getConfig()->saveSystemConfigParameter('int','iFailedOnlineCallsCount', 4);
 
-        $this->assertSame('_testResult', $oCaller->call($sUrl, '_testXml'));
+        $this->assertSame('_testResult', $oCaller->call($this->_getRequest()));
         $this->assertSame(0, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
     public function testCallWhenFailsAndItsLastAllowedCall()
     {
-        $oCaller = new oxOnlineCaller($this->_getMockedCurlWhichThrowsException(), $this->_getMockedEmailBuilder());
-        $sUrl = 'http://oxid-esales.com';
+        /** @var oxOnlineCaller $oCaller */
+        $oCaller = $this->getMockForAbstractClass('oxOnlineCaller',
+            array($this->_getMockedCurlWhichThrowsException(), $this->_getMockedEmailBuilder(), new oxSimpleXml())
+        );
         oxRegistry::getConfig()->saveSystemConfigParameter('int','iFailedOnlineCallsCount', 4);
 
-        $this->assertNull($oCaller->call($sUrl, '_testXml'));
+        $this->assertNull($oCaller->call($this->_getRequest()));
         $this->assertSame(5, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
@@ -66,11 +75,13 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
         $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));
         $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
 
-        $oCaller = new oxOnlineCaller($this->_getMockedCurlWhichThrowsException(), $oEmailBuilder);
-        $sUrl = 'http://oxid-esales.com';
+        /** @var oxOnlineCaller $oCaller */
+        $oCaller = $this->getMockForAbstractClass('oxOnlineCaller',
+            array($this->_getMockedCurlWhichThrowsException(), $oEmailBuilder, new oxSimpleXml())
+        );
         oxRegistry::getConfig()->saveSystemConfigParameter('int','iFailedOnlineCallsCount', 5);
 
-        $oCaller->call($sUrl, '_testXml');
+        $oCaller->call($this->_getRequest());
         $this->assertSame(0, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
@@ -79,10 +90,10 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
      */
     private function _getMockedCurl()
     {
-        /** @var oxCurl $oCurl */
         $oCurl = $this->getMock('oxCurl', array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue('_testResult'));
 
+        /** @var oxCurl $oCurl */
         return $oCurl;
     }
 
@@ -107,5 +118,29 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
         $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
 
         return $oEmailBuilder;
+    }
+
+    /**
+     * @return oxOnlineRequest
+     */
+    private function _getRequest()
+    {
+        $oRequest = new oxOnlineRequest();
+        $oRequest->clusterId = '_testClusterId';
+        $oRequest->edition = '_testEdition';
+        $oRequest->version = '_testVersion';
+        $oRequest->shopUrl = '_testUrl';
+        return $oRequest;
+    }
+
+    /**
+     * @return string
+     */
+    private function _getResponseXML()
+    {
+        $sResultXML = '<?xml version="1.0" encoding="utf-8"?>
+<onlineRequest><clusterId>_testClusterId</clusterId><edition>_testEdition</edition><version>_testVersion</version><shopUrl>_testUrl</shopUrl><pVersion/><productId>eShop</productId></onlineRequest>
+';
+        return $sResultXML;
     }
 }

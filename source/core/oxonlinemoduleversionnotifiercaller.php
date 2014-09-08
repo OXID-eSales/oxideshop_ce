@@ -33,7 +33,7 @@
  *
  * @ignore   This class will not be included in documentation.
  */
-class oxOnlineModuleVersionNotifierCaller
+class oxOnlineModuleVersionNotifierCaller extends oxOnlineCaller
 {
 
     /**
@@ -43,24 +43,12 @@ class oxOnlineModuleVersionNotifierCaller
      */
     protected $_sWebServiceUrl = 'https://omvn.oxid-esales.com/check.php';
 
-    /** @var oxOnlineCaller */
-    private $_oCaller = null;
-
-
-    function __construct(oxOnlineCaller $oCaller)
-    {
-        $this->_oCaller = $oCaller;
-    }
-
     /**
-     * Get Online Module Version Notifier web service url.
+     * XML document tag name.
      *
-     * @return string
+     * @var string
      */
-    public function getWebServiceUrl()
-    {
-        return $this->_sWebServiceUrl;
-    }
+    protected $_sXMLDocumentName = 'omvnRequest';
 
     /**
      * Performs Web service request
@@ -69,19 +57,6 @@ class oxOnlineModuleVersionNotifierCaller
      */
     public function doRequest(oxOnlineModulesNotifierRequest $oRequest)
     {
-        /** @var oxSimpleXml $oXml */
-        $oXml = oxNew('oxSimpleXml');
-        $sXml = $oXml->objectToXml($oRequest, 'omvnRequest');
-
-        $oCaller = $this->_getOnlineCaller();
-        $oCaller->call($this->getWebServiceUrl(), $sXml);
-    }
-
-    /**
-     * @return oxOnlineCaller
-     */
-    public function _getOnlineCaller()
-    {
-        return $this->_oCaller;
+        $this->call($this->getWebServiceUrl(), $oRequest);
     }
 }

@@ -32,14 +32,14 @@
  */
 class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends OxidTestCase
 {
-    public function testRequestFormation()
+    public function testRequestFormationWithExistingSerials()
     {
         $oConfig = $this->getConfig();
 
         $oConfig->setConfigParam('aSerials', array('license_key'));
         $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
         $oConfig->setConfigParam('aServersData', array(
-            'server_id1' => array(
+            array(
                 'id' => 'server_id1',
                 'timestamp' => '1409919510',
                 'ip' => '127.0.0.1',
@@ -105,5 +105,83 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller, $oUserCounter);
 
         $oLicenseCheck->validateShopSerials();
+    }
+
+    public function testRequestFormationWithNewSerial()
+    {
+        $oConfig = $this->getConfig();
+
+        $oConfig->setConfigParam('aSerials', array('license_key'));
+        $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
+        $oConfig->setConfigParam('aServersData', array(
+            array(
+                'id' => 'server_id1',
+                'timestamp' => '1409919510',
+                'ip' => '127.0.0.1',
+                'lastFrontendUsage' => '1409919510',
+                'lastAdminUsage' => '1409919510',
+            )));
+
+        $sEdition = $oConfig->getEdition();
+        $sVersion = $oConfig->getVersion();
+        $sShopUrl = $oConfig->getShopUrl();
+        $sRevision = $oConfig->getRevision();
+        $iAdminUsers = 1;
+
+        $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
+        $sXml .= '<olcRequest>';
+        $sXml .=   '<pVersion>1.0</pVersion>';
+        $sXml .=   '<keys>';
+        $sXml .=   '<key>license_key</key>';
+        $sXml .=   '<key state="new">new_serial</key>';
+        $sXml .=   '</keys>';
+        if ($sRevision) {
+            $sXml .= "<revision>$sRevision</revision>";
+        } else {
+            $sXml .= '<revision/>';
+        }
+        $sXml .=   '<productSpecificInformation>';
+        $sXml .=     '<servers>';
+        $sXml .=       '<server>';
+        $sXml .=         '<id>server_id1</id>';
+        $sXml .=         '<timestamp>1409919510</timestamp>';
+        $sXml .=         '<ip>127.0.0.1</ip>';
+        $sXml .=         '<lastFrontendUsage>1409919510</lastFrontendUsage>';
+        $sXml .=         '<lastAdminUsage>1409919510</lastAdminUsage>';
+        $sXml .=       '</server>';
+        $sXml .=     '</servers>';
+        $sXml .=     '<counters>';
+        $sXml .=       '<counter>';
+        $sXml .=         '<name>admin users</name>';
+        $sXml .=         "<value>$iAdminUsers</value>";
+        $sXml .=       '</counter>';
+        $sXml .=       '<counter>';
+        $sXml .=         '<name>subShops</name>';
+        $sXml .=         '<value>1</value>';
+        $sXml .=       '</counter>';
+        $sXml .=     '</counters>';
+        $sXml .=   '</productSpecificInformation>';
+        $sXml .=   '<clusterId>generated_unique_cluster_id</clusterId>';
+        $sXml .=   "<edition>$sEdition</edition>";
+        $sXml .=   "<version>$sVersion</version>";
+        $sXml .=   "<shopUrl>$sShopUrl</shopUrl>";
+        $sXml .=   '<productId>eShop</productId>';
+        $sXml .= '</olcRequest>'."\n";
+
+        $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute'));
+        $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
+        $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
+        /** @var oxCurl $oCurl */
+
+        $oEmailBuilder = new oxOnlineServerEmailBuilder();
+        $oOnlineCaller = new oxOnlineCaller($oCurl, $oEmailBuilder);
+
+        $oSimpleXml = new oxSimpleXml();
+        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oOnlineCaller, $oSimpleXml);
+
+        $oUserCounter = new oxUserCounter();
+        $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller, $oUserCounter);
+
+        $oLicenseCheck->validateNewSerial('new_serial');
     }
 }

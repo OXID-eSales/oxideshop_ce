@@ -159,17 +159,17 @@ class oxServersManager
         $this->deleteInActiveServers();
 
         $aServers = $this->_getServersData();
+        $aValidServers = array();
 
-        foreach ($aServers as $sServerId => $aServer) {
+        foreach ($aServers as $aServer) {
             if ($aServer['isValid']) {
-                unset($aServers[$sServerId]['isValid']);
-                unset($aServers[$sServerId]['timestamp']);
-            } else {
-                unset($aServers[$sServerId]);
+                unset($aServer['isValid']);
+                unset($aServer['timestamp']);
+                $aValidServers[] = $aServer;
             }
         }
 
-        return $aServers;
+        return $aValidServers;
     }
 
     /**

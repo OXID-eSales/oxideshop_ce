@@ -198,7 +198,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         );
 
         $aServers = array(
-            'serverNameHash2' => array(
+            array(
                 'id' => 'serverNameHash2',
                 'ip' => '127.0.0.2',
                 'lastFrontendUsage' => 'frontendUsageTimestampUpdated',

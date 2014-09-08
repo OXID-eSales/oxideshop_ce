@@ -48,6 +48,7 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
                 'ip' => $sServerIp,
                 'lastFrontendUsage' => $sCurrentTime,
                 'lastAdminUsage' => '',
+                'isValid' => true,
             ),
         );
         $aExpectedAdminServersData = array(
@@ -57,6 +58,7 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
                 'ip' => $sServerIp,
                 'lastFrontendUsage' => '',
                 'lastAdminUsage' => $sCurrentTime,
+                'isValid' => true,
             ),
         );
 

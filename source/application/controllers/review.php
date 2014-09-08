@@ -180,6 +180,10 @@ class Review extends Details
      */
     public function saveReview()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         if ( ( $oRevUser = $this->getReviewUser() ) && $this->canAcceptFormData() ) {
 
             if ( ( $oActObject = $this->_getActiveObject() ) && ( $sType = $this->_getActiveType() ) ) {

@@ -187,6 +187,10 @@ class RecommList extends aList
      */
     public function saveReview()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         if ( $this->canAcceptFormData() &&
              ( $oRecommList = $this->getActiveRecommList() ) && ( $oUser = $this->getUser() ) ) {
 

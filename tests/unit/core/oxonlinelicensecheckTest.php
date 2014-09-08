@@ -202,6 +202,60 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oLicenseCheck->validateShopSerials();
     }
 
+    public function testNewSerialIsAddedToExistingSerials()
+    {
+        $iAdminUsers = 25;
+        $iSubShops = 5;
+        $aServers = array();
+
+        $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
+        $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
+        /** @var oxConfig $oConfig */
+        $oConfig->setConfigParam('aServersData', $aServers);
+        $this->setConfigParam('aServersData', $aServers);
+        oxRegistry::set('oxConfig', $oConfig);
+
+        $oRequest = new oxOnlineLicenseCheckRequest();
+        $oRequest->edition = oxRegistry::getConfig()->getEdition();
+        $oRequest->version = oxRegistry::getConfig()->getVersion();
+        $oRequest->revision = oxRegistry::getConfig()->getRevision();
+        $oRequest->shopUrl = oxRegistry::getConfig()->getShopUrl();
+        $oRequest->pVersion = '1.0';
+        $oRequest->productId = 'eShop';
+        $oRequest->keys = new stdClass();
+        $oRequest->keys->key = array('key1', 'key2', array('attributes' => array('state' => 'new'), 'value' => 'new_serial'));
+
+        $oServers = new stdClass();
+        $oServers->server = $aServers;
+        $oRequest->productSpecificInformation = new stdClass();
+        $oRequest->productSpecificInformation->servers = $oServers;
+
+        $oCounter = new stdClass();
+        $oCounter->name = 'admin users';
+        $oCounter->value = $iAdminUsers;
+
+        $oSubShops = new stdClass();
+        $oSubShops->name = 'subShops';
+        $oSubShops->value = $iSubShops;
+
+        $oCounters = new stdClass();
+        $oCounters->counter = array($oCounter, $oSubShops);
+        $oRequest->productSpecificInformation->counters = $oCounters;
+
+        $this->getConfig()->setConfigParam("aSerials", array('key1', 'key2'));
+
+        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
+        $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
+        /** @var oxOnlineLicenseCheckCaller $oUserCounter */
+
+        $oUserCounter = $this->getMock('oxUserCounter', array('getAdminCount'), array(), '', false);
+        $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue(25));
+        /** @var oxUserCounter $oUserCounter */
+
+        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller, $oUserCounter);
+        $oLicenseCheck->validateNewSerial('new_serial');
+    }
+
 
     public function testIsExceptionWhenExceptionWasThrown()
     {

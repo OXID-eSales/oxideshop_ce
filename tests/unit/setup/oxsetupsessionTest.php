@@ -54,7 +54,6 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
      */
     public function testValidateSession_newsession()
     {
-        $this->markTestSkippedUntil('2014-09-09', 'Temporary skip this test as it hangs.');
         $oSession = $this->_getSessionMock(array('setSessionParam', '_getNewSessionID'));
         $oSession->setNonPublicVar('_blNewSession', true);
         $oSession->expects( $this->at(0) )->method('setSessionParam')->with( $this->equalTo('setup_session'), $this->equalTo(true) );

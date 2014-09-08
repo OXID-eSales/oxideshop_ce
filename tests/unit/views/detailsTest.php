@@ -1537,7 +1537,7 @@ class Unit_Views_detailsTest extends OxidTestCase
 
         $oUtilsView = $this->getMock( 'oxUtilsView', array( 'getSmarty' ) );
         $oUtilsView->expects( $this->once() )->method( 'getSmarty' )->will( $this->returnValue( $oSmarty ) );
-        oxTestModules::addModuleObject( 'oxUtilsView', $oUtilsView );
+        oxRegistry::set('oxUtilsView', $oUtilsView);
 
         $oView = $this->getMock( $this->getProxyClassName( 'Details' ), array( 'getProduct', 'getViewConfig', 'getViewId' ) );
         $oView->expects( $this->once() )->method( 'getProduct' )->will( $this->returnValue( $oProduct ) );
@@ -1583,7 +1583,7 @@ class Unit_Views_detailsTest extends OxidTestCase
 
         $oUtilsView = $this->getMock( 'oxUtilsView', array( 'getSmarty' ) );
         $oUtilsView->expects( $this->once() )->method( 'getSmarty' )->will( $this->returnValue( $oSmarty ) );
-        oxTestModules::addModuleObject( 'oxUtilsView', $oUtilsView );
+        oxRegistry::set('oxUtilsView', $oUtilsView);
 
         $oView = $this->getMock( $this->getProxyClassName( 'Details' ), array( 'getProduct', 'getViewConfig', 'getViewId', 'getUser' ) );
         $oView->expects( $this->once() )->method( 'getProduct' )->will( $this->returnValue( $oProduct ) );

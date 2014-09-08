@@ -2536,4 +2536,42 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $this->assertEquals( 'testCustomTheme', $oViewConf->getActiveTheme() );
     }
 
+    public function testSetGetShopLogo()
+    {
+        $oView = new oxViewConfig();
+        $oView->setShopLogo("testlogo");
+        $this->assertEquals("testlogo", $oView->getShopLogo());
+    }
+
+    public function testSetGetShopLogo_FromConfig()
+    {
+        $oView = new oxViewConfig();
+        $this->getConfig()->setConfigParam("sShopLogo", 'logo');
+        $this->assertEquals("logo", $oView->getShopLogo());
+    }
+
+    public function testSetGetShopLogo_DefaultValue()
+    {
+        $oView = new oxViewConfig();
+
+        $sLogo = "logo.png";
+
+        $this->assertEquals($sLogo, $oView->getShopLogo());
+    }
+
+    /**
+     * Tests retrieve session challenge token from session.
+     */
+    public function testGetSessionChallengeToken()
+    {
+        $sToken = 'session_challenge_token';
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('getSessionChallengeToken'));
+        $oSession->expects($this->once())->method('getSessionChallengeToken')->will($this->returnValue($sToken));
+        oxRegistry::set('oxSession', $oSession);
+
+        $oViewConfig = new oxViewConfig();
+        $this->assertSame($sToken, $oViewConfig->getSessionChallengeToken());
+    }
 }

@@ -97,13 +97,29 @@ class oxOnlineLicenseCheck
     }
 
     /**
-     * @param oxOnlineLicenseCheckCaller $oCaller
      * @param oxUserCounter $oUserCounter
      */
-    public function __construct($oCaller, $oUserCounter)
+    public function setUserCounter( $oUserCounter )
+    {
+        $this->_oUserCounter = $oUserCounter;
+    }
+
+    /**
+     * @return oxUserCounter
+     */
+    public function getUserCounter()
+    {
+        return $this->_oUserCounter;
+    }
+
+
+
+    /**
+     * @param oxOnlineLicenseCheckCaller $oCaller
+     */
+    public function __construct($oCaller)
     {
         $this->_oCaller = $oCaller;
-        $this->_oUserCounter = $oUserCounter;
     }
 
     /**
@@ -262,8 +278,10 @@ class oxOnlineLicenseCheck
         }
 
         $oCounter = new stdClass();
-        $oCounter->name = 'admin users';
-        $oCounter->value = $oUserCounter->getAdminCount();
+        if(!is_null($this->getUserCounter()) ){
+            $oCounter->name = 'admin users';
+            $oCounter->value = $oUserCounter->getAdminCount();
+        }
 
         $oSubShops = new stdClass();
         $oSubShops->name = 'subShops';

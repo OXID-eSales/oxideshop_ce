@@ -187,7 +187,7 @@ class oxSystemEventHandler
     {
         $blNeedToSend = false;
 
-        if ($this->_getLastCheckTime() < $this->_getCurrentTime()) {
+        if ($this->_getNextCheckTime() < $this->_getCurrentTime()) {
             $blNeedToSend = true;
         }
 
@@ -199,7 +199,7 @@ class oxSystemEventHandler
      *
      * @return int
      */
-    private function _getLastCheckTime()
+    private function _getNextCheckTime()
     {
         return (int) $this->_getConfig()->getSystemConfigParameter('sOnlineLicenseCheckTime');
     }

@@ -67,8 +67,6 @@ class actions_order_ajax extends ajaxListComponent
 
     /**
      * Applies sorting for selection lists
-     *
-     * @return null
      */
     public function setSorting()
     {

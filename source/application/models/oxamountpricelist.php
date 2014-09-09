@@ -55,8 +55,6 @@ class oxAmountPriceList extends oxList
      * Article setter
      *
      * @param oxArticle $oArticle Article
-     *
-     * @return null
      */
     public function setArticle($oArticle)
     {
@@ -105,8 +103,6 @@ class oxAmountPriceList extends oxList
      * Load category list data
      *
      * @param oxArticle $oArticle Article
-     *
-     * @return null
      */
     public function load($oArticle)
     {

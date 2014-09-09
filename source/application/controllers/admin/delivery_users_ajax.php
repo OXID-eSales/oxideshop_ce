@@ -99,8 +99,6 @@ class delivery_users_ajax extends ajaxListComponent
 
     /**
      * Removes user from delivery configuration
-     *
-     * @return null
      */
     public function removeUserFromDel()
     {
@@ -118,8 +116,6 @@ class delivery_users_ajax extends ajaxListComponent
 
     /**
      * Adds user from delivery configuration
-     *
-     * @return null
      */
     public function addUserToDel()
     {

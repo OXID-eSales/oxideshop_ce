@@ -254,8 +254,6 @@ class oxInputValidator extends oxSuperCfg
      * @param oxUser $oUser            active user
      * @param array  $aBillingAddress  billing address
      * @param array  $aDeliveryAddress delivery address
-     *
-     * @return null
      */
     public function checkRequiredFields($oUser, $aBillingAddress, $aDeliveryAddress)
     {
@@ -314,8 +312,6 @@ class oxInputValidator extends oxSuperCfg
      * @param array  $aFieldValues field values
      *
      * @deprecated since v5.2 (2014-06-19); This logic was moved to oxRequiredFieldValidator and checkRequiredFields() method.
-     *
-     * @return null
      */
     public function checkRequiredArrayFields($oUser, $sFieldName, $aFieldValues)
     {
@@ -335,8 +331,6 @@ class oxInputValidator extends oxSuperCfg
      * @param oxUser $oUser       active user
      * @param array  $aInvAddress billing address info
      * @param array  $aDelAddress delivery address info
-     *
-     * @return null
      */
     public function checkCountries($oUser, $aInvAddress, $aDelAddress)
     {
@@ -382,7 +376,7 @@ class oxInputValidator extends oxSuperCfg
 
                 $oVatInValidator = $this->getCompanyVatInValidator($oCountry);
 
-                /** @var oxCompanyVatId $oVatIn */
+                /** @var oxCompanyVatIn $oVatIn */
                 $oVatIn = oxNew('oxCompanyVatIn', $aInvAddress['oxuser__oxustid']);
 
                 if (!$oVatInValidator->validate($oVatIn)) {
@@ -393,6 +387,11 @@ class oxInputValidator extends oxSuperCfg
                     return $this->_addValidationError("oxuser__oxustid", $oEx);
                 }
             }
+        } elseif ($aInvAddress['oxuser__oxustid'] &&  !$aInvAddress['oxuser__oxcompany']) {
+            /** @var oxInputException $oEx */
+            $oEx = oxNew( 'oxInputException' );
+            $oEx->setMessage(oxRegistry::getLang()->translateString('VAT_MESSAGE_COMPANY_MISSING'));
+            return $this->_addValidationError( "oxuser__oxcompany", $oEx );
         }
     }
 

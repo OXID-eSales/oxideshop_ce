@@ -100,8 +100,6 @@ class oxErpCsv extends oxERPBase
      * Before import event (abstract function)
      *
      * @param string $sType import type
-     *
-     * @return null
      */
     protected function _beforeExport($sType)
     {
@@ -111,8 +109,6 @@ class oxErpCsv extends oxERPBase
      * After import event (abstract function)
      *
      * @param string $sType import type
-     *
-     * @return null
      */
     protected function _afterExport($sType)
     {
@@ -122,8 +118,6 @@ class oxErpCsv extends oxERPBase
      * Import type getter (abstract function)
      *
      * @param array &$aData import data
-     *
-     * @return null
      */
     protected function _getImportType(&$aData)
     {
@@ -133,8 +127,6 @@ class oxErpCsv extends oxERPBase
      * Import mode getter (abstract function)
      *
      * @param array $aData import data
-     *
-     * @return null
      */
     protected function _getImportMode($aData)
     {
@@ -145,8 +137,6 @@ class oxErpCsv extends oxERPBase
      *
      * @param object $aData data to modify
      * @param object $oType type object
-     *
-     * @return null
      */
     protected function _modifyData($aData, $oType)
     {
@@ -156,8 +146,6 @@ class oxErpCsv extends oxERPBase
      * Session loader (abstract function)
      *
      * @param object $sSessionID session identifier
-     *
-     * @return null
      */
     public function loadSessionData($sSessionID)
     {
@@ -187,8 +175,6 @@ class oxErpCsv extends oxERPBase
 
     /**
      * Performs import action
-     *
-     * @return null
      */
     public function import()
     {
@@ -203,8 +189,6 @@ class oxErpCsv extends oxERPBase
 
     /**
      * Performs before import actions
-     *
-     * @return null
      */
     protected function _beforeImport()
     {
@@ -359,8 +343,6 @@ class oxErpCsv extends oxERPBase
      * Checks if id field is valid
      *
      * @param string $sID field check id
-     *
-     * @return null
      */
     protected function _checkIDField($sID)
     {
@@ -768,8 +750,6 @@ class oxErpCsv extends oxERPBase
     /** adds true to $_aImportedIds where key is given
      *
      * @param mixed $key - given key
-     *
-     * @return null
      */
     public function setImportedIds($key)
     {

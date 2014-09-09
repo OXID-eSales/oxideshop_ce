@@ -40,8 +40,6 @@ class oxShopList extends oxList
 
     /**
      * Loads all shops to list
-     *
-     * @return null
      */
     public function getAll()
     {

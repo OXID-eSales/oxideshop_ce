@@ -214,8 +214,6 @@ class Article_Variant extends oxAdminDetails
 
     /**
      * Saves all article variants at once.
-     *
-     * @return null
      */
     public function savevariants()
     {
@@ -245,8 +243,6 @@ class Article_Variant extends oxAdminDetails
 
     /**
      * Changes name of variant.
-     *
-     * @return null
      */
     public function changename()
     {

@@ -53,8 +53,6 @@ class deliveryset_rdfa extends payment_rdfa
 
     /**
      * Saves changed mapping configurations
-     *
-     * @return null
      */
     public function save()
     {

@@ -359,8 +359,6 @@ class oxCategory extends oxI18n implements oxIUrl
      * Sets an array of sub categories, also handles parent hasVisibleSubCats
      *
      * @param array $aCats array of categories
-     *
-     * @return null
      */
     public function setSubCats($aCats)
     {
@@ -382,8 +380,6 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @param oxCategory $oCat the category
      * @param string     $sKey (optional, default=null)  the key for that category, without a key, the category is just added to the array
-     *
-     * @return null
      */
     public function setSubCat($oCat, $sKey = null)
     {
@@ -415,8 +411,6 @@ class oxCategory extends oxI18n implements oxIUrl
      * Sets an array of content categories
      *
      * @param array $aContent array of content
-     *
-     * @return null
      */
     public function setContentCats($aContent)
     {
@@ -428,8 +422,6 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @param oxCategory $oContent the category
      * @param string     $sKey     optional, the key for that category, without a key, the category is just added to the array
-     *
-     * @return null
      */
     public function setContentCat($oContent, $sKey = null)
     {
@@ -471,8 +463,6 @@ class oxCategory extends oxI18n implements oxIUrl
      * sets the number or articles in category
      *
      * @param int $iNum category product count setter
-     *
-     * @return null
      */
     public function setNrOfArticles($iNum)
     {
@@ -504,8 +494,6 @@ class oxCategory extends oxI18n implements oxIUrl
      * sets the visibility of a category
      *
      * @param bool $blVisible category visibility status setter
-     *
-     * @return null
      */
     public function setIsVisible($blVisible)
     {
@@ -575,8 +563,6 @@ class oxCategory extends oxI18n implements oxIUrl
      * sets the url of the category
      *
      * @param string $sLink category url
-     *
-     * @return null
      */
     public function setLink($sLink)
     {
@@ -670,8 +656,6 @@ class oxCategory extends oxI18n implements oxIUrl
      * set the expanded state of the category
      *
      * @param bool $blExpanded expanded status setter
-     *
-     * @return null
      */
     public function setExpanded($blExpanded)
     {
@@ -710,8 +694,6 @@ class oxCategory extends oxI18n implements oxIUrl
      * sets the state of has visible sub categories for the category
      *
      * @param bool $blHasVisibleSubcats marker if category has visible subcategories
-     *
-     * @return null
      */
     public function setHasVisibleSubCats($blHasVisibleSubcats)
     {
@@ -769,8 +751,6 @@ class oxCategory extends oxI18n implements oxIUrl
      * Set parent category object for internal usage only.
      *
      * @param oxCategory $oCategory parent category object
-     *
-     * @return null
      */
     public function setParentCategory($oCategory)
     {

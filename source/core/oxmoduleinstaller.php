@@ -218,8 +218,6 @@ class oxModuleInstaller extends oxSuperCfg
      * Removes extension from modules array
      *
      * @param string $sModuleId Module id
-     *
-     * @return null
      */
     protected function _deleteModule($sModuleId)
     {
@@ -235,8 +233,6 @@ class oxModuleInstaller extends oxSuperCfg
      * Deactivates or activates oxBlocks of a module
      *
      * @param string $sModuleId Module id
-     *
-     * @return null
      */
     protected function _deleteBlock($sModuleId)
     {
@@ -249,8 +245,6 @@ class oxModuleInstaller extends oxSuperCfg
      * Add module template files to config for smarty.
      *
      * @param string $sModuleId Module id
-     *
-     * @return null
      */
     protected function _deleteTemplateFiles($sModuleId)
     {
@@ -264,8 +258,6 @@ class oxModuleInstaller extends oxSuperCfg
      * Add module files
      *
      * @param string $sModuleId Module id
-     *
-     * @return null
      */
     protected function _deleteModuleFiles($sModuleId)
     {
@@ -279,8 +271,6 @@ class oxModuleInstaller extends oxSuperCfg
      * Removes module events
      *
      * @param string $sModuleId Module id
-     *
-     * @return null
      */
     protected function _deleteModuleEvents($sModuleId)
     {
@@ -294,8 +284,6 @@ class oxModuleInstaller extends oxSuperCfg
      * Removes module versions
      *
      * @param string $sModuleId Module id
-     *
-     * @return null
      */
     protected function _deleteModuleVersions($sModuleId)
     {
@@ -375,8 +363,6 @@ class oxModuleInstaller extends oxSuperCfg
      *
      * @param array  $aModuleBlocks Module blocks array
      * @param string $sModuleId     Module id
-     *
-     * @return null
      */
     protected function _addTemplateBlocks($aModuleBlocks, $sModuleId)
     {
@@ -406,8 +392,6 @@ class oxModuleInstaller extends oxSuperCfg
      *
      * @param array  $aModuleFiles Module files array
      * @param string $sModuleId    Module id
-     *
-     * @return null
      */
     protected function _addModuleFiles($aModuleFiles, $sModuleId)
     {
@@ -425,8 +409,6 @@ class oxModuleInstaller extends oxSuperCfg
      *
      * @param array  $aModuleTemplates Module templates array
      * @param string $sModuleId        Module id
-     *
-     * @return null
      */
     protected function _addTemplateFiles($aModuleTemplates, $sModuleId)
     {
@@ -443,8 +425,6 @@ class oxModuleInstaller extends oxSuperCfg
      *
      * @param array  $aModuleSettings Module settings array
      * @param string $sModuleId       Module id
-     *
-     * @return null
      */
     protected function _addModuleSettings($aModuleSettings, $sModuleId)
     {
@@ -491,8 +471,6 @@ class oxModuleInstaller extends oxSuperCfg
      *
      * @param array  $aModuleEvents Module events
      * @param string $sModuleId     Module id
-     *
-     * @return null
      */
     protected function _addModuleEvents($aModuleEvents, $sModuleId)
     {
@@ -509,8 +487,6 @@ class oxModuleInstaller extends oxSuperCfg
      *
      * @param string $sModuleVersion Module version
      * @param string $sModuleId      Module id
-     *
-     * @return null
      */
     protected function _addModuleVersion($sModuleVersion, $sModuleId)
     {
@@ -527,8 +503,6 @@ class oxModuleInstaller extends oxSuperCfg
      *
      * @param string $sEvent    Event name
      * @param string $sModuleId Module Id
-     *
-     * @return null
      */
     protected function _callEvent($sEvent, $sModuleId)
     {
@@ -722,8 +696,6 @@ class oxModuleInstaller extends oxSuperCfg
      * @param string $sVariableName  config name
      * @param string $sVariableValue config value
      * @param string $sVariableType  config type
-     *
-     * @return null
      */
     protected function _saveToConfig($sVariableName, $sVariableValue, $sVariableType = 'aarr')
     {

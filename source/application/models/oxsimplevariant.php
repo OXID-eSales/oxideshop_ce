@@ -92,8 +92,6 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
      * detaillink, moredetaillink, etc).
      *
      * @param string $aRecord Array representing current field values
-     *
-     * @return null
      */
     public function assign($aRecord)
     {
@@ -190,8 +188,6 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
      *
      * @param oxPrice $oPrice Price object
      * @param object  $oCur   Currency object
-     *
-     * @return null
      */
     protected function _applyCurrency(oxPrice $oPrice, $oCur = null)
     {
@@ -206,8 +202,6 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
      * Applies discounts which should be applied in general case (for 0 amount)
      *
      * @param oxprice $oPrice Price object
-     *
-     * @return null
      */
     protected function _applyParentDiscounts($oPrice)
     {
@@ -220,8 +214,6 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
      * apply parent article VAT to given price
      *
      * @param oxPrice $oPrice price object
-     *
-     * @return null
      */
     protected function _applyParentVat($oPrice)
     {
@@ -261,8 +253,6 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
      * Sets parent article
      *
      * @param oxArticle $oParent Parent article
-     *
-     * @return null
      */
     public function setParent($oParent)
     {

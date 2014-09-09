@@ -43,8 +43,6 @@ class oxSimpleVariantList extends oxList
      * Sets parent variant
      *
      * @param oxArticle $oParent Parent article
-     *
-     * @return null
      */
     public function setParent($oParent)
     {

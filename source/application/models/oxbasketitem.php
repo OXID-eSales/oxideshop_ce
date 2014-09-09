@@ -240,8 +240,6 @@ class oxBasketItem extends oxSuperCfg
      * Set regular unit price
      *
      * @param oxPrice $oRegularUnitPrice regular price
-     *
-     * @return null
      */
     public function setRegularUnitPrice($oRegularUnitPrice)
     {
@@ -264,8 +262,6 @@ class oxBasketItem extends oxSuperCfg
      * @param bool   $blBundle   bundle
      *
      * @throws oxNoArticleException, oxOutOfStockException, oxArticleInputException
-     *
-     * @return null
      */
     public function init($sProductID, $dAmount, $aSel = null, $aPersParam = null, $blBundle = null)
     {
@@ -287,8 +283,6 @@ class oxBasketItem extends oxSuperCfg
      *  - oxbasketitem::setPersParams().
      *
      * @param oxorderarticle $oOrderArticle order article to load info from
-     *
-     * @return null
      */
     public function initFromOrderArticle($oOrderArticle)
     {
@@ -303,8 +297,6 @@ class oxBasketItem extends oxSuperCfg
      * Marks if item is discount bundle ( oxbasketitem::_blIsDiscountArticle )
      *
      * @param bool $blIsDiscountArticle if item is discount bundle
-     *
-     * @return null
      */
     public function setAsDiscountArticle($blIsDiscountArticle)
     {
@@ -315,8 +307,6 @@ class oxBasketItem extends oxSuperCfg
      * Sets stock control mode
      *
      * @param bool $blStatus stock control mode
-     *
-     * @return null
      */
     public function setStockCheckStatus($blStatus)
     {
@@ -343,8 +333,6 @@ class oxBasketItem extends oxSuperCfg
      *
      * @throws oxArticleInputException
      * @throws oxOutOfStockException
-     *
-     * @return null
      */
     public function setAmount($dAmount, $blOverride = true, $sItemKey = null)
     {
@@ -405,8 +393,6 @@ class oxBasketItem extends oxSuperCfg
      * Sets $this->_oPrice
      *
      * @param object $oPrice price
-     *
-     * @return null
      */
     public function setPrice($oPrice)
     {
@@ -694,8 +680,6 @@ class oxBasketItem extends oxSuperCfg
      * @param string $sProductId product id
      *
      * @throws oxNoArticleException exception
-     *
-     * @return null
      */
     protected function _setArticle($sProductId)
     {
@@ -734,8 +718,6 @@ class oxBasketItem extends oxSuperCfg
      *  - sNativeShopId  - article shop ID;
      *
      * @param oxorderarticle $oOrderArticle order article
-     *
-     * @return null
      */
     protected function _setFromOrderArticle($oOrderArticle)
     {
@@ -757,8 +739,6 @@ class oxBasketItem extends oxSuperCfg
      * Stores item select lists ( oxbasketitem::aSelList )
      *
      * @param array $aSelList item select lists
-     *
-     * @return null
      */
     protected function _setSelectList($aSelList)
     {
@@ -796,8 +776,6 @@ class oxBasketItem extends oxSuperCfg
      * Stores items persistent parameters ( oxbasketitem::_aPersistentParameters )
      *
      * @param array $aPersParam items persistent parameters
-     *
-     * @return null
      */
     public function setPersParams($aPersParam)
     {
@@ -808,8 +786,6 @@ class oxBasketItem extends oxSuperCfg
      * Marks if item is bundle ( oxbasketitem::blBundle )
      *
      * @param bool $blBundle if item is bundle
-     *
-     * @return null
      */
     public function setBundle($blBundle)
     {
@@ -820,8 +796,6 @@ class oxBasketItem extends oxSuperCfg
      * Used to set "skip discounts" status for basket item
      *
      * @param bool $blSkip set true to skip discounts
-     *
-     * @return null
      */
     public function setSkipDiscounts($blSkip)
     {
@@ -842,8 +816,6 @@ class oxBasketItem extends oxSuperCfg
      * Product wrapping paper id setter
      *
      * @param string $sWrapId wrapping paper id
-     *
-     * @return null
      */
     public function setWrapping($sWrapId)
     {
@@ -890,8 +862,6 @@ class oxBasketItem extends oxSuperCfg
      * Wish user id setter
      *
      * @param string $sWishId user id
-     *
-     * @return null
      */
     public function setWishId($sWishId)
     {
@@ -902,8 +872,6 @@ class oxBasketItem extends oxSuperCfg
      * Wish article Id setter
      *
      * @param string $sArticleId wish article id
-     *
-     * @return null
      */
     public function setWishArticleId($sArticleId)
     {
@@ -995,8 +963,6 @@ class oxBasketItem extends oxSuperCfg
      * Set language Id, reload basket content on language change.
      *
      * @param integer $iLanguageId language id
-     *
-     * @return null
      */
     public function setLanguageId($iLanguageId)
     {

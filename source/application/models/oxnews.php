@@ -140,8 +140,6 @@ class oxNews extends oxI18n
 
     /**
      * Updates object information in DB.
-     *
-     * @return null
      */
     protected function _update()
     {

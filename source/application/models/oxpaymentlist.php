@@ -48,8 +48,6 @@ class oxPaymentList extends oxList
      * Home country setter
      *
      * @param string $sHomeCountry country id
-     *
-     * @return null
      */
     public function setHomeCountry($sHomeCountry)
     {
@@ -155,8 +153,6 @@ class oxPaymentList extends oxList
     /**
      * Loads an object including all payments which are not mapped to a
      * predefined GoodRelations payment method.
-     *
-     * @return null
      */
     public function loadNonRDFaPaymentList()
     {

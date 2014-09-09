@@ -143,8 +143,6 @@ class Order_List extends oxAdminList
 
     /**
      * Cancels order and its order articles
-     *
-     * @return null
      */
     public function storno()
     {

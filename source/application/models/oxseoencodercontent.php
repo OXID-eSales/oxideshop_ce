@@ -105,8 +105,6 @@ class oxSeoEncoderContent extends oxSeoEncoder
      * deletes content seo entries
      *
      * @param string $sId content ids
-     *
-     * @return null
      */
     public function onDeleteContent($sId)
     {

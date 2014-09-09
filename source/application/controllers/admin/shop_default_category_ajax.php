@@ -56,8 +56,6 @@ class shop_default_category_ajax extends ajaxListComponent
 
     /**
      * Removing article from corssselling list
-     *
-     * @return null
      */
     public function unassignCat()
     {
@@ -71,8 +69,6 @@ class shop_default_category_ajax extends ajaxListComponent
 
     /**
      * Adding article to corssselling list
-     *
-     * @return null
      */
     public function assignCat()
     {

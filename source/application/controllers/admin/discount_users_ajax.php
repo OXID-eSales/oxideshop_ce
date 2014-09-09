@@ -101,8 +101,6 @@ class discount_users_ajax extends ajaxListComponent
 
     /**
      * Removes user from discount config
-     *
-     * @return null
      */
     public function removeDiscUser()
     {
@@ -122,8 +120,6 @@ class discount_users_ajax extends ajaxListComponent
 
     /**
      * Adds user to discount config
-     *
-     * @return null
      */
     public function addDiscUser()
     {

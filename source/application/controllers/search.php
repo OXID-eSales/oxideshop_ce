@@ -227,8 +227,6 @@ class Search extends oxUBase
     /**
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
-     *
-     * @return null
      */
     protected function _processListArticles()
     {

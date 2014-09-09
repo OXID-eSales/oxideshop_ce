@@ -78,8 +78,6 @@ class discount_main_ajax extends ajaxListComponent
 
     /**
      * Removes chosen user group (groups) from delivery list
-     *
-     * @return null
      */
     public function removeDiscCountry()
     {
@@ -99,8 +97,6 @@ class discount_main_ajax extends ajaxListComponent
 
     /**
      * Adds chosen user group (groups) to delivery list
-     *
-     * @return null
      */
     public function addDiscCountry()
     {

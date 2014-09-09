@@ -82,8 +82,6 @@ class payment_main_ajax extends ajaxListComponent
 
     /**
      * Removes group of users that may pay using selected method(s).
-     *
-     * @return null
      */
     public function removePayGroup()
     {
@@ -101,8 +99,6 @@ class payment_main_ajax extends ajaxListComponent
 
     /**
      * Adds group of users that may pay using selected method(s).
-     *
-     * @return null
      */
     public function addPayGroup()
     {

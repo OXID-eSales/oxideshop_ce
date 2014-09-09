@@ -248,8 +248,6 @@ class oxModuleList extends oxSuperCfg
 
     /**
      * Removes extension metadata from shop.
-     *
-     * @return null
      */
     public function cleanup()
     {
@@ -382,8 +380,6 @@ class oxModuleList extends oxSuperCfg
      * Removes extension by given modules ids.
      *
      * @param array $aModuleIds Modules ids which must be deleted from config.
-     *
-     * @return null
      */
     protected function _removeExtensions($aModuleIds)
     {
@@ -403,8 +399,6 @@ class oxModuleList extends oxSuperCfg
      * Removes extension from disabled modules array
      *
      * @param array $aDeletedExtIds Deleted extension id's of array
-     *
-     * @return null
      */
     protected function _removeFromDisabledModulesArray($aDeletedExtIds)
     {
@@ -418,8 +412,6 @@ class oxModuleList extends oxSuperCfg
      * Removes extension from modules paths array
      *
      * @param array $aDeletedModule deleted extensions ID's
-     *
-     * @return null
      */
     protected function _removeFromModulesPathsArray($aDeletedModule)
     {
@@ -438,8 +430,6 @@ class oxModuleList extends oxSuperCfg
      * Removes extension from modules versions array
      *
      * @param array $aDeletedModule deleted extensions ID's
-     *
-     * @return null
      */
     protected function _removeFromModulesVersionsArray($aDeletedModule)
     {
@@ -458,8 +448,6 @@ class oxModuleList extends oxSuperCfg
      * Removes extension from modules events array
      *
      * @param array $aDeletedModule deleted extensions ID's
-     *
-     * @return null
      */
     protected function _removeFromModulesEventsArray($aDeletedModule)
     {
@@ -478,8 +466,6 @@ class oxModuleList extends oxSuperCfg
      * Removes extension from modules files array
      *
      * @param array $aDeletedModule deleted extensions ID's
-     *
-     * @return null
      */
     protected function _removeFromModulesFilesArray($aDeletedModule)
     {
@@ -498,8 +484,6 @@ class oxModuleList extends oxSuperCfg
      * Removes extension from modules templates array
      *
      * @param array $aDeletedModule deleted extensions ID's
-     *
-     * @return null
      */
     protected function _removeFromModulesTemplatesArray($aDeletedModule)
     {
@@ -712,8 +696,6 @@ class oxModuleList extends oxSuperCfg
      *
      * @param string $sModuleId   Module ID
      * @param string $sModulePath Module path
-     *
-     * @return null
      */
     protected function _saveModulePath($sModuleId, $sModulePath)
     {

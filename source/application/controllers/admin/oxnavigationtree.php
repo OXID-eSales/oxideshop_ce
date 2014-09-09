@@ -56,8 +56,6 @@ class OxNavigationTree extends oxSuperCfg
      * @param object $oDom         dom object
      * @param string $sParentXPath parent xpath
      * @param string $sChildXPath  child xpath from parent
-     *
-     * @return null
      */
     protected function _cleanEmptyParents($oDom, $sParentXPath, $sChildXPath)
     {
@@ -77,8 +75,6 @@ class OxNavigationTree extends oxSuperCfg
      * Adds links to xml nodes to resolve paths
      *
      * @param DomDocument $oDom where to add links
-     *
-     * @return null
      */
     protected function _addLinks($oDom)
     {
@@ -106,8 +102,6 @@ class OxNavigationTree extends oxSuperCfg
      *
      * @param string      $sMenuFile which file to load
      * @param DomDocument $oDom      where to load
-     *
-     * @return null
      */
     protected function _loadFromFile($sMenuFile, $oDom)
     {
@@ -144,8 +138,6 @@ class OxNavigationTree extends oxSuperCfg
      * Adds to element DynTabs
      *
      * @param object $oDom dom element to add links
-     *
-     * @return null
      */
     protected function _addDynLinks($oDom)
     {
@@ -217,8 +209,6 @@ class OxNavigationTree extends oxSuperCfg
      * add session parameters to local urls
      *
      * @param object $oDom dom element to add links
-     *
-     * @return null
      */
     protected function _sessionizeLocalUrls($oDom)
     {
@@ -240,8 +230,6 @@ class OxNavigationTree extends oxSuperCfg
      * Removes form tree elements whitch doesn't have requred user rights
      *
      * @param object $oDom DOMDocument
-     *
-     * @return null
      */
     protected function _checkRights($oDom)
     {
@@ -273,8 +261,6 @@ class OxNavigationTree extends oxSuperCfg
      * Removes form tree elements whitch doesn't have requred groups
      *
      * @param DOMDocument $oDom document to check group
-     *
-     * @return null
      */
     protected function _checkGroups($oDom)
     {
@@ -330,8 +316,6 @@ class OxNavigationTree extends oxSuperCfg
      *
      * @param object $oDomElemTo   DOMElement
      * @param object $oDomElemFrom DOMElement
-     *
-     * @return null
      */
     protected function _copyAttributes($oDomElemTo, $oDomElemFrom)
     {
@@ -348,8 +332,6 @@ class OxNavigationTree extends oxSuperCfg
      * @param object $oXPathTo     node path
      * @param object $oDomDocTo    node to append child
      * @param string $sQueryStart  node query
-     *
-     * @return null
      */
     protected function _mergeNodes($oDomElemTo, $oDomElemFrom, $oXPathTo, $oDomDocTo, $sQueryStart)
     {
@@ -386,8 +368,6 @@ class OxNavigationTree extends oxSuperCfg
      *
      * @param DomDocument $oDomNew what to merge
      * @param DomDocument $oDom    where to merge
-     *
-     * @return null
      */
     protected function _merge($oDomNew, $oDom)
     {
@@ -704,8 +684,6 @@ class OxNavigationTree extends oxSuperCfg
      * Marks passed node as active
      *
      * @param string $sNodeId node id
-     *
-     * @return null
      */
     public function markNodeActive($sNodeId)
     {

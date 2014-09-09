@@ -44,8 +44,6 @@ class oxOutOfStockException extends oxArticleException
      * Sets the amount of the article remaining in stock.
      *
      * @param integer $iRemainingAmount Articles remaining in stock
-     *
-     * @return null
      */
     public function setRemainingAmount($iRemainingAmount)
     {
@@ -66,8 +64,6 @@ class oxOutOfStockException extends oxArticleException
      * Sets the basket index for the article
      *
      * @param string $sBasketIndex Basket index for the faulty article
-     *
-     * @return null
      */
     public function setBasketIndex($sBasketIndex)
     {
@@ -123,8 +119,6 @@ class oxOutOfStockException extends oxArticleException
      * any view (except basket).
      *
      * @param string $sDestination name of the view variable
-     *
-     * @return null
      */
     public function setDestination($sDestination)
     {

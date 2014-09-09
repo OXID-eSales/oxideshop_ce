@@ -74,8 +74,6 @@ class deliveryset_groups_ajax extends ajaxListComponent
 
     /**
      * Removes user group from delivery sets config
-     *
-     * @return null
      */
     public function removeGroupFromSet()
     {
@@ -93,8 +91,6 @@ class deliveryset_groups_ajax extends ajaxListComponent
 
     /**
      * Adds user group to delivery sets config
-     *
-     * @return null
      */
     public function addGroupToSet()
     {

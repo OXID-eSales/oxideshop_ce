@@ -113,8 +113,6 @@ class vendor_main_ajax extends ajaxListComponent
 
     /**
      * Removes article from Vendor
-     *
-     * @return null
      */
     public function removeVendor()
     {
@@ -135,8 +133,6 @@ class vendor_main_ajax extends ajaxListComponent
 
     /**
      * Adds article to Vendor config
-     *
-     * @return null
      */
     public function addVendor()
     {

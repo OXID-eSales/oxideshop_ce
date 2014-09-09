@@ -118,8 +118,6 @@ class VoucherSerie_Export extends VoucherSerie_Main
 
     /**
      * Performs Voucherserie export to export file.
-     *
-     * @return null
      */
     public function download()
     {
@@ -138,8 +136,6 @@ class VoucherSerie_Export extends VoucherSerie_Main
 
     /**
      * Does Export
-     *
-     * @return null
      */
     public function run()
     {
@@ -215,8 +211,6 @@ class VoucherSerie_Export extends VoucherSerie_Main
      * writes one line into open export file
      *
      * @param string $sLine exported line
-     *
-     * @return null
      */
     public function write($sLine)
     {

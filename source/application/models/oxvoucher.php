@@ -110,8 +110,6 @@ class oxVoucher extends oxBase
      * @param string $sOrderId  order id
      * @param string $sUserId   user id
      * @param double $dDiscount used discount
-     *
-     * @return null
      */
     public function markAsUsed($sOrderId, $sUserId, $dDiscount)
     {
@@ -127,8 +125,6 @@ class oxVoucher extends oxBase
 
     /**
      * mark voucher as reserved
-     *
-     * @return null
      */
     public function markAsReserved()
     {
@@ -144,8 +140,6 @@ class oxVoucher extends oxBase
 
     /**
      * un mark as reserved
-     *
-     * @return null
      */
     public function unMarkAsReserved()
     {

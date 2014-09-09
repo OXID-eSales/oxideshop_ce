@@ -113,8 +113,6 @@ if (!function_exists("getGdVersion")) {
 if (!function_exists("includeImageUtils")) {
     /**
      * Includes image utils
-     *
-     * @return null
      */
     function includeImageUtils()
     {
@@ -626,8 +624,6 @@ class oxDynImgGenerator
      * Deletes lock file
      *
      * @param string $sSource source file which should be locked
-     *
-     * @return null
      */
     protected function _unlock($sSource)
     {
@@ -692,8 +688,6 @@ class oxDynImgGenerator
      * Creates and outputs requested image. If source file was not found -
      * tries to render related "nopic.jpg". If "nopic.jpg" is not available -
      * sends 404 header to browser
-     *
-     * @return null
      */
     public function outputImage()
     {
@@ -737,8 +731,6 @@ class oxDynImgGenerator
      * Custom header setter
      *
      * @param string $sHeader header
-     *
-     * @return null
      */
     protected function _setHeader($sHeader)
     {

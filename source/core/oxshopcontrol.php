@@ -111,8 +111,6 @@ class oxShopControl extends oxSuperCfg
      * @param string $sFunction   Function name
      * @param array  $aParams     Parameters array
      * @param array  $aViewsChain Array of views names that should be initialized also
-     *
-     * @return null
      */
     public function start($sClass = null, $sFunction = null, $aParams = null, $aViewsChain = null)
     {
@@ -160,8 +158,6 @@ class oxShopControl extends oxSuperCfg
      *
      * @param string $sClass Name of class
      * @param string $sFnc   Name of executed class method
-     *
-     * @return null
      */
     protected function _log($sClass, $sFnc)
     {
@@ -198,8 +194,6 @@ class oxShopControl extends oxSuperCfg
     // OXID : add timing
     /**
      * Starts resource monitor
-     *
-     * @return null
      */
     protected function _startMonitor()
     {
@@ -215,8 +209,6 @@ class oxShopControl extends oxSuperCfg
      * @param bool  $blIsCached Is content cached
      * @param bool  $sViewID    View ID
      * @param array $aViewData  View data
-     *
-     * @return null
      */
     protected function _stopMonitor($blIsCache = false, $blIsCached = false, $sViewID = null, $aViewData = array())
     {
@@ -317,8 +309,6 @@ class oxShopControl extends oxSuperCfg
      * @param string $sFunction   Name of function
      * @param array  $aParams     Parameters array
      * @param array  $aViewsChain Array of views names that should be initialized also
-     *
-     * @return null
      */
     protected function _process($sClass, $sFunction, $aParams = null, $aViewsChain = null)
     {

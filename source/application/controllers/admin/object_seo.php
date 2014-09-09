@@ -170,8 +170,6 @@ class Object_Seo extends oxAdminDetails
 
     /**
      * Returns alternative seo entry id
-     *
-     * @return null
      */
     protected function _getAltSeoEntryId()
     {

@@ -137,8 +137,6 @@ class Review extends Details
 
     /**
      * Executes parent::init(), Loads user chosen product object (with all data).
-     *
-     * @return null
      */
     public function init()
     {
@@ -189,8 +187,6 @@ class Review extends Details
 
     /**
      * Saves user review text (oxreview object)
-     *
-     * @return null
      */
     public function saveReview()
     {

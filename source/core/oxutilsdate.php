@@ -466,8 +466,6 @@ class oxUtilsDate extends oxSuperCfg
      * @param string $sLocalDateFormat input format
      * @param string $sLocalTimeFormat local format
      * @param bool   $blOnlyDate       marker to format only date field (no time)
-     *
-     * @return null
      */
     protected function _setDefaultDateTimeValue($oObject, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate)
     {
@@ -495,8 +493,6 @@ class oxUtilsDate extends oxSuperCfg
      * @param string $sDateFormat  date format
      * @param array  $aDFields     days
      * @param array  $aDateMatches new date as array (month, year)
-     *
-     * @return null
      */
     protected function _setDate($oObject, $sDateFormat, $aDFields, $aDateMatches)
     {
@@ -526,8 +522,6 @@ class oxUtilsDate extends oxSuperCfg
      * @param array  $aTimeMatches new time
      * @param array  $aTFields     defines the time fields
      * @param array  $aDFields     defines the date fields
-     *
-     * @return null
      */
     protected function _formatCorrectTimeValue($oObject, $sDateFormat, $sTimeFormat, $aDateMatches, $aTimeMatches, $aTFields, $aDFields)
     {

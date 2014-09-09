@@ -167,8 +167,6 @@ class Content_Main extends oxAdminDetails
 
     /**
      * Saves content data to different language (eg. english).
-     *
-     * @return null
      */
     public function saveinnlang()
     {

@@ -169,9 +169,6 @@ class GenImport_Main extends oxAdminDetails
 
     /**
      * Deletes uploaded csv file from temp directory
-     *
-     * @return null
-     *
      */
     protected function _deleteCsvFile()
     {
@@ -232,8 +229,6 @@ class GenImport_Main extends oxAdminDetails
 
     /**
      * Resets CSV parameters stored in session
-     *
-     * @return null
      */
     protected function _resetUploadedCsvData()
     {
@@ -312,8 +307,6 @@ class GenImport_Main extends oxAdminDetails
      * Checks if any error occured during import and displays them
      *
      * @param object $oErpImport Import object
-     *
-     * @return null
      */
     protected function _checkImportErrors($oErpImport)
     {

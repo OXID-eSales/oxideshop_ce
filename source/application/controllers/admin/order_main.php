@@ -139,8 +139,6 @@ class Order_Main extends oxAdminDetails
 
     /**
      * Sends order.
-     *
-     * @return null
      */
     public function sendorder()
     {
@@ -165,8 +163,6 @@ class Order_Main extends oxAdminDetails
 
     /**
      * Sends download links.
-     *
-     * @return null
      */
     public function senddownloadlinks()
     {
@@ -180,8 +176,6 @@ class Order_Main extends oxAdminDetails
 
     /**
      * Resets order shipping date.
-     *
-     * @return null
      */
     public function resetorder()
     {

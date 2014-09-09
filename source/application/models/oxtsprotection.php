@@ -70,8 +70,6 @@ class oxTsProtection extends oxSuperCfg
      * Set VAT
      *
      * @param float $dVat - vat
-     *
-     * @return null
      */
     public function setVat($dVat)
     {

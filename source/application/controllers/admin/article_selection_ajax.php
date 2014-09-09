@@ -80,8 +80,6 @@ class article_selection_ajax extends ajaxListComponent
 
     /**
      * Removes article selection lists.
-     *
-     * @return null
      */
     public function removeSel()
     {
@@ -99,8 +97,6 @@ class article_selection_ajax extends ajaxListComponent
 
     /**
      * Adds selection lists to article.
-     *
-     * @return null
      */
     public function addSel()
     {

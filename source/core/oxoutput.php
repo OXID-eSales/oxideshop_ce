@@ -72,8 +72,6 @@ class oxOutput extends oxSuperCfg
      * Search engine mode setter
      *
      * @param bool $blOn search engine mode
-     *
-     * @return null
      */
     public function setIsSearchEngine($blOn)
     {
@@ -151,8 +149,6 @@ class oxOutput extends oxSuperCfg
      * This function is called from index.php
      *
      * @param object &$oEmail email object
-     *
-     * @return null
      */
     public function processEmail(& $oEmail)
     {
@@ -166,8 +162,6 @@ class oxOutput extends oxSuperCfg
      * set page charset
      *
      * @param string $sCharset charset to send with headers
-     *
-     * @return null
      */
     public function setCharset($sCharset)
     {
@@ -178,8 +172,6 @@ class oxOutput extends oxSuperCfg
      * set page output format
      *
      * @param string $sFormat html or json
-     *
-     * @return null
      */
     public function setOutputFormat($sFormat)
     {
@@ -191,8 +183,6 @@ class oxOutput extends oxSuperCfg
      *
      * @param string $sName  output name (used in json mode)
      * @param string $output output text/data
-     *
-     * @return null
      */
     public function output($sName, $output)
     {
@@ -209,8 +199,6 @@ class oxOutput extends oxSuperCfg
 
     /**
      * flush pending output
-     *
-     * @return null
      */
     public function flushOutput()
     {
@@ -226,8 +214,6 @@ class oxOutput extends oxSuperCfg
 
     /**
      * send page headers (content type, charset)
-     *
-     * @return null
      */
     public function sendHeaders()
     {

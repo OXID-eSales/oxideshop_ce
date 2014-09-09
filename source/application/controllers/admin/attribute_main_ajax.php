@@ -123,8 +123,6 @@ class attribute_main_ajax extends ajaxListComponent
 
     /**
      * Removes article from Attribute list
-     *
-     * @return null
      */
     public function removeAttrArticle()
     {
@@ -144,8 +142,6 @@ class attribute_main_ajax extends ajaxListComponent
 
     /**
      * Adds article to Attribute list
-     *
-     * @return null
      */
     public function addAttrArticle()
     {

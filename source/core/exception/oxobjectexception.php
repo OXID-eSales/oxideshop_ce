@@ -40,8 +40,6 @@ class oxObjectException extends oxException
      * Sets the object which caused the exception.
      *
      * @param object $oObject exception object
-     *
-     * @return null
      */
     public function setObject($oObject)
     {

@@ -131,8 +131,6 @@ class Article_Main extends oxAdminDetails
 
     /**
      * Saves changes of article parameters.
-     *
-     * @return null
      */
     public function save()
     {
@@ -322,8 +320,6 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sCatID Category id
      * @param string $sOXID  Article id
-     *
-     * @return null
      */
     public function addToCategory($sCatID, $sOXID)
     {
@@ -347,8 +343,6 @@ class Article_Main extends oxAdminDetails
      * @param string $sOldId    old product id (default null)
      * @param string $sNewId    new product id (default null)
      * @param string $sParentId product parent id
-     *
-     * @return null
      */
     public function copyArticle($sOldId = null, $sNewId = null, $sParentId = null)
     {
@@ -451,8 +445,6 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
-     *
-     * @return null
      */
     protected function _copyCategories($sOldId, $sNewId)
     {
@@ -484,8 +476,6 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
-     *
-     * @return null
      */
     protected function _copyAttributes($sOldId, $sNewId)
     {
@@ -513,8 +503,6 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
-     *
-     * @return null
      */
     protected function _copyFiles($sOldId, $sNewId)
     {
@@ -544,8 +532,6 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
-     *
-     * @return null
      */
     protected function _copySelectlists($sOldId, $sNewId)
     {
@@ -569,8 +555,6 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
-     *
-     * @return null
      */
     protected function _copyCrossseling($sOldId, $sNewId)
     {
@@ -594,8 +578,6 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
-     *
-     * @return null
      */
     protected function _copyAccessoires($sOldId, $sNewId)
     {
@@ -619,8 +601,6 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
-     *
-     * @return null
      */
     protected function _copyStaffelpreis($sOldId, $sNewId)
     {
@@ -643,8 +623,6 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
-     *
-     * @return null
      */
     protected function _copyArtExtends($sOldId, $sNewId)
     {
@@ -658,8 +636,6 @@ class Article_Main extends oxAdminDetails
 
     /**
      * Saves article parameters in different language.
-     *
-     * @return null
      */
     public function saveinnlang()
     {
@@ -684,8 +660,6 @@ class Article_Main extends oxAdminDetails
      *
      * @param object $oArticle       article object
      * @param object $oParentArticle article parent object
-     *
-     * @return null
      */
     protected function _formJumpList($oArticle, $oParentArticle)
     {

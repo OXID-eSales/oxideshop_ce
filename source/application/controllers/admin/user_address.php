@@ -113,8 +113,6 @@ class User_Address extends oxAdminDetails
 
     /**
      * Deletes user addressing information.
-     *
-     * @return null
      */
     public function delAddress()
     {

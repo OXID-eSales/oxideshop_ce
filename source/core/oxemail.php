@@ -345,8 +345,6 @@ class oxEmail extends PHPMailer
      * oxConfig instance setter
      *
      * @param oxConfig $oConfig config object
-     *
-     * @return null
      */
     public function setConfig($oConfig)
     {
@@ -1439,8 +1437,6 @@ class oxEmail extends PHPMailer
      * @param string $sDynImageDir    Path to Dyn images
      * @param string $sAbsImageDir    Absolute path to images
      * @param string $sAbsDynImageDir Absolute path to Dyn images
-     *
-     * @return null
      */
     protected function _includeImages($sImageDir = null, $sImageDirNoSSL = null, $sDynImageDir = null, $sAbsImageDir = null, $sAbsDynImageDir = null)
     {
@@ -1512,8 +1508,6 @@ class oxEmail extends PHPMailer
      * Sets mail subject
      *
      * @param string $sSubject mail subject
-     *
-     * @return null
      */
     public function setSubject($sSubject = null)
     {
@@ -1539,8 +1533,6 @@ class oxEmail extends PHPMailer
      *
      * @param string $sBody      mail body
      * @param bool   $blClearSid clear sid in mail body
-     *
-     * @return null
      */
     public function setBody($sBody = null, $blClearSid = true)
     {
@@ -1567,8 +1559,6 @@ class oxEmail extends PHPMailer
      *
      * @param string $sAltBody   mail subject
      * @param bool   $blClearSid clear sid in mail body (default value is true)
-     *
-     * @return null
      */
     public function setAltBody($sAltBody = null, $blClearSid = true)
     {
@@ -1597,8 +1587,6 @@ class oxEmail extends PHPMailer
      *
      * @param string $sAddress recipient email address
      * @param string $sName    recipient name
-     *
-     * @return null
      */
     public function setRecipient($sAddress = null, $sName = null)
     {
@@ -1643,8 +1631,6 @@ class oxEmail extends PHPMailer
      *
      * @param string $sEmail email address
      * @param string $sName  user name
-     *
-     * @return null
      */
     public function setReplyTo($sEmail = null, $sName = null)
     {
@@ -1672,8 +1658,6 @@ class oxEmail extends PHPMailer
 
     /**
      * Clears all recipients assigned in the ReplyTo array.  Returns void.
-     *
-     * @return null
      */
     public function clearReplyTos()
     {
@@ -1686,8 +1670,6 @@ class oxEmail extends PHPMailer
      *
      * @param string $sFromAddress email address
      * @param string $sFromName    user name
-     *
-     * @return null
      */
     public function setFrom($sFromAddress, $sFromName = null)
     {
@@ -1728,8 +1710,6 @@ class oxEmail extends PHPMailer
      * If $sCharSet is not defined, sets charset from translation file.
      *
      * @param string $sCharSet email charset
-     *
-     * @return null
      */
     public function setCharSet($sCharSet = null)
     {
@@ -1745,8 +1725,6 @@ class oxEmail extends PHPMailer
      * Sets mail mailer. Set to send mail via smtp, mail() or sendmail.
      *
      * @param string $sMailer email mailer
-     *
-     * @return null
      */
     public function setMailer($sMailer = null)
     {
@@ -1767,8 +1745,6 @@ class oxEmail extends PHPMailer
      * Sets smtp host.
      *
      * @param string $sHost smtp host
-     *
-     * @return null
      */
     public function setHost($sHost = null)
     {
@@ -1802,8 +1778,6 @@ class oxEmail extends PHPMailer
      * Sets use inline images. If true, images will be embedded into mail.
      *
      * @param bool $blUseImages embed or not images into mail
-     *
-     * @return null
      */
     public function setUseInlineImages($blUseImages = null)
     {
@@ -1986,8 +1960,6 @@ class oxEmail extends PHPMailer
 
     /**
      * Clears mailer settings (AllRecipients, ReplyTos, Attachments, Errors)
-     *
-     * @return null
      */
     protected function _clearMailer()
     {
@@ -2057,8 +2029,6 @@ class oxEmail extends PHPMailer
      *
      * @param string $sUserName     smtp user
      * @param oxShop $sUserPassword smtp password
-     *
-     * @return null
      */
     protected function _setSmtpAuthInfo($sUserName = null, $sUserPassword = null)
     {
@@ -2071,8 +2041,6 @@ class oxEmail extends PHPMailer
      * Sets SMTP class debugging on or off
      *
      * @param bool $blDebug show debug info or not
-     *
-     * @return null
      */
     protected function _setSmtpDebug($blDebug = null)
     {
@@ -2081,8 +2049,6 @@ class oxEmail extends PHPMailer
 
     /**
      * Sets path to PHPMailer plugins
-     *
-     * @return null
      */
     protected function _setMailerPluginDir()
     {
@@ -2092,8 +2058,6 @@ class oxEmail extends PHPMailer
     /**
      * Process email body and alt body thought oxOutput.
      * Calls oxOutput::processEmail() on class instance.
-     *
-     * @return null
      */
     protected function _makeOutputProcessing()
     {
@@ -2177,8 +2141,6 @@ class oxEmail extends PHPMailer
      * Set shop object
      *
      * @param oxShop $oShop shop object
-     *
-     * @return null
      */
     public function setShop($oShop)
     {
@@ -2222,8 +2184,6 @@ class oxEmail extends PHPMailer
      *
      * @param string $sKey   key value
      * @param object $sValue item value
-     *
-     * @return null
      */
     public function setViewData($sKey, $sValue)
     {
@@ -2258,8 +2218,6 @@ class oxEmail extends PHPMailer
      * Set user to view data
      *
      * @param oxUser $oUser user object
-     *
-     * @return null
      */
     public function setUser($oUser)
     {

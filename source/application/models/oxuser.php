@@ -196,8 +196,6 @@ class oxUser extends oxBase
      * Sets mall user status
      *
      * @param bool $blOn mall users is on or off
-     *
-     * @return null
      */
     public function setMallUsersStatus($blOn = false)
     {
@@ -377,8 +375,6 @@ class oxUser extends oxBase
      * Selected user address setter
      *
      * @param string $sAddressId selected address id
-     *
-     * @return null
      */
     public function setSelectedAddressId($sAddressId)
     {
@@ -898,8 +894,6 @@ class oxUser extends oxBase
      * Removes user from passed user group.
      *
      * @param string $sGroupID group id
-     *
-     * @return null
      */
     public function removeFromGroup($sGroupID = null)
     {
@@ -921,8 +915,6 @@ class oxUser extends oxBase
      *
      * @param object $oBasket  Shopping basket object
      * @param int    $iSuccess order success status
-     *
-     * @return null
      */
     public function onOrderExecute($oBasket, $iSuccess)
     {
@@ -1064,8 +1056,6 @@ class oxUser extends oxBase
      * oxInputValidation calls
      *
      * @throws oxUserException, oxInputException
-     *
-     * @return null
      */
     public function checkValues($sLogin, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
     {
@@ -1218,8 +1208,6 @@ class oxUser extends oxBase
      * creates new address entry or updates existing
      *
      * @param array $aDelAddress address data array
-     *
-     * @return null
      */
     protected function _assignAddress($aDelAddress)
     {
@@ -1558,8 +1546,6 @@ class oxUser extends oxBase
      * @param string $sShopSelect Shop select
      *
      * @throws $oEx if user is wrong
-     *
-     * @return null
      */
     protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect)
     {
@@ -1820,8 +1806,6 @@ class oxUser extends oxBase
      * according to users country information
      *
      * @param string $sCountryId users country id
-     *
-     * @return null
      */
     protected function _setAutoGroups($sCountryId)
     {
@@ -1884,8 +1868,6 @@ class oxUser extends oxBase
      * Generates or resets and saves users update key
      *
      * @param bool $blReset marker to reset update info
-     *
-     * @return null
      */
     public function setUpdateKey($blReset = false)
     {
@@ -1997,8 +1979,6 @@ class oxUser extends oxBase
      * Sets new password for user ( save is not called)
      *
      * @param string $sPassword password
-     *
-     * @return null
      */
     public function setPassword($sPassword = null)
     {
@@ -2143,8 +2123,6 @@ class oxUser extends oxBase
 
     /**
      * Writes terms acceptance info to db
-     *
-     * @return null
      */
     public function acceptTerms()
     {
@@ -2229,8 +2207,6 @@ class oxUser extends oxBase
      * Updating invitations statistics
      *
      * @param array $aRecEmail array of recipients emails
-     *
-     * @return null
      */
     public function updateInvitationStatistics($aRecEmail)
     {

@@ -105,8 +105,6 @@ class discount_item_ajax extends ajaxListComponent
 
     /**
      * Removes selected article (articles) from discount list
-     *
-     * @return null
      */
     public function removeDiscArt()
     {
@@ -120,8 +118,6 @@ class discount_item_ajax extends ajaxListComponent
 
     /**
      * Adds selected article (articles) to discount list
-     *
-     * @return null
      */
     public function addDiscArt()
     {

@@ -168,8 +168,6 @@
 
         /**
          * Resets users count
-         *
-         * @return null
          */
         public function resetUserCount()
         {
@@ -191,8 +189,6 @@
          * Overrides parent method to pass referred id
          *
          * @param string $sNode referred id
-         *
-         * @return null
          */
         protected function _setupNavigation($sNode)
         {
@@ -218,8 +214,6 @@
 
         /**
          * Does nothing, called in derived template
-         *
-         * @return null
          */
         public function getListSorting()
         {

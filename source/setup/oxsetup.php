@@ -318,8 +318,6 @@ class OxSetup extends oxSetupCore
      * Current setup step title setter
      *
      * @param string $sTitle title
-     *
-     * @return null
      */
     public function setTitle($sTitle)
     {
@@ -340,8 +338,6 @@ class OxSetup extends oxSetupCore
      * Sets installation process status message
      *
      * @param string $sMsg status message
-     *
-     * @return null
      */
     public function setMessage($sMsg)
     {
@@ -379,8 +375,6 @@ class OxSetup extends oxSetupCore
      * Current setup step setter
      *
      * @param int $iStep current setup step index
-     *
-     * @return null
      */
     public function setNextStep($iStep)
     {
@@ -608,8 +602,6 @@ class OxSetupSession extends oxSetupCore
 
     /**
      * Start session
-     *
-     * @return null
      */
     protected function _startSession()
     {
@@ -680,8 +672,6 @@ class OxSetupSession extends oxSetupCore
      * Sets current session ID
      *
      * @param string $sSid session ID
-     *
-     * @return null
      */
     public function setSid($sSid)
     {
@@ -770,8 +760,6 @@ class OxSetupSession extends oxSetupCore
      *
      * @param string $sParamName  parameter name
      * @param mixed  $sParamValue parameter value
-     *
-     * @return null
      */
     public function setSessionParam($sParamName, $sParamValue)
     {
@@ -844,8 +832,6 @@ class OxSetupDb extends oxSetupCore
      * Testing if no error occurs while creating views
      *
      * @throws Exception exception is thrown if error occured during view creation
-     *
-     * @return null
      */
     public function testCreateView()
     {
@@ -875,8 +861,6 @@ class OxSetupDb extends oxSetupCore
      * Executes queries stored in passed file
      *
      * @param string $sFilename file name where queries are stored
-     *
-     * @return null
      */
     public function queryFile($sFilename)
     {
@@ -969,8 +953,6 @@ class OxSetupDb extends oxSetupCore
      * @param object $sDbName database name
      *
      * @throws Exception exception is thrown if database creation failed
-     *
-     * @return null
      */
     public function createDb($sDbName)
     {
@@ -986,8 +968,6 @@ class OxSetupDb extends oxSetupCore
      * Saves shop settings.
      *
      * @param array $aParams parameters to save to db
-     *
-     * @return null
      */
     public function saveShopSettings($aParams)
     {
@@ -1069,8 +1049,6 @@ class OxSetupDb extends oxSetupCore
 
     /**
      * Converts config table values to utf8
-     *
-     * @return null
      */
     public function convertConfigTableToUtf()
     {
@@ -1164,8 +1142,6 @@ class OxSetupDb extends oxSetupCore
      * Sets various connection collation parameters
      *
      * @param int $iUtfMode utf8 mode
-     *
-     * @return null
      */
     public function setMySqlCollation($iUtfMode)
     {
@@ -1187,8 +1163,6 @@ class OxSetupDb extends oxSetupCore
      * Writes utf mode config parameter to db
      *
      * @param int $iUtfMode utf mode
-     *
-     * @return null
      */
     public function writeUtfMode($iUtfMode)
     {
@@ -1204,8 +1178,6 @@ class OxSetupDb extends oxSetupCore
      *
      * @param string $sLoginName admin user login name
      * @param string $sPassword  admin user login password
-     *
-     * @return null
      */
     public function writeAdminLoginData($sLoginName, $sPassword)
     {
@@ -1377,8 +1349,6 @@ class OxSetupUtils extends oxSetupCore
      * @param string $sPath path or file to checl
      *
      * @throws Exception exception is thrown if file does not exist, is not writable or its mode cannot be changed
-     *
-     * @return null
      */
     public function checkFileOrDirectory($sPath)
     {
@@ -1471,8 +1441,6 @@ class OxSetupUtils extends oxSetupCore
      * Performs various path checks
      *
      * @param array $aParams initial path parameters
-     *
-     * @return null
      */
     public function checkPaths($aParams)
     {
@@ -1543,8 +1511,6 @@ class OxSetupUtils extends oxSetupCore
      * @param array $aParams paths parameters
      *
      * @throws Exception exception is thrown is file cant be open for reading or can not be written
-     *
-     * @return null
      */
     public function updateConfigFile($aParams)
     {
@@ -1586,8 +1552,6 @@ class OxSetupUtils extends oxSetupCore
      *
      * @param array  $aParams    various setup parameters
      * @param string $sSubFolder in case you need to update non default, but e.g. admin file, you must add its folder
-     *
-     * @return null
      */
     public function updateHtaccessFile($aParams, $sSubFolder = "")
     {
@@ -1697,8 +1661,6 @@ class OxSetupUtils extends oxSetupCore
      * @param string $sValue      value of the cookie
      * @param int    $iExpireDate time the cookie expires
      * @param string $sPath       path on the server in which the cookie will be available on.
-     *
-     * @return null
      */
     public function setCookie($sName, $sValue, $iExpireDate, $sPath)
     {
@@ -1799,8 +1761,6 @@ class oxSetupView extends oxSetupCore
      * Displayes current setup step template
      *
      * @param string $sTemplate name of template to display
-     *
-     * @return null
      */
     public function display($sTemplate)
     {
@@ -1823,8 +1783,6 @@ class oxSetupView extends oxSetupCore
      * Sets current page title id
      *
      * @param string $sTitleId title id
-     *
-     * @return null
      */
     public function setTitle($sTitleId)
     {
@@ -1846,8 +1804,6 @@ class oxSetupView extends oxSetupCore
      *
      * @param string $sMessage   message to write to view
      * @param bool   $blOverride if TRUE cleanups previously defined messages [optional]
-     *
-     * @return null
      */
     public function setMessage($sMessage, $blOverride = false)
     {
@@ -1892,8 +1848,6 @@ class oxSetupView extends oxSetupCore
      *
      * @param string $sName  parameter name
      * @param mixed  $sValue parameter value
-     *
-     * @return null
      */
     public function setViewParam($sName, $sValue)
     {
@@ -2514,8 +2468,6 @@ class oxSetupDispatcher extends oxSetupCore
 
     /**
      * Executes current controller action
-     *
-     * @return null
      */
     public function run()
     {
@@ -2569,8 +2521,6 @@ class oxSetupAps extends oxSetupCore
      * Setup execution handler
      *
      * @param string $sCommand command
-     *
-     * @return null
      */
     public function execute($sCommand)
     {
@@ -2595,8 +2545,6 @@ class oxSetupAps extends oxSetupCore
 
     /**
      * Performs application installation process
-     *
-     * @return null
      */
     public function install()
     {
@@ -2753,8 +2701,6 @@ class oxSetupAps extends oxSetupCore
 
     /**
      * Shop configuration script
-     *
-     * @return null
      */
     public function configure()
     {
@@ -2820,8 +2766,6 @@ class oxSetupAps extends oxSetupCore
 
     /**
      * Shop upgrade script
-     *
-     * @return null
      */
     public function upgrade()
     {

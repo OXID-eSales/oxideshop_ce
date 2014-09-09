@@ -71,8 +71,6 @@ class oxVendorList extends oxList
      * Enables/disables vendor article count calculation
      *
      * @param bool $blShowVendorArticleCnt to show article count or not
-     *
-     * @return null
      */
     public function setShowVendorArticleCnt($blShowVendorArticleCnt = false)
     {
@@ -81,8 +79,6 @@ class oxVendorList extends oxList
 
     /**
      * Loads simple vendor list
-     *
-     * @return null
      */
     public function loadVendorList()
     {
@@ -108,8 +104,6 @@ class oxVendorList extends oxList
      * @param string $sLinkTarget  Name of class, responsible for category rendering
      * @param string $sActCat      Active category
      * @param string $sShopHomeUrl base shop url ($myConfig->getShopHomeURL())
-     *
-     * @return null
      */
     public function buildVendorTree($sLinkTarget, $sActCat, $sShopHomeUrl)
     {
@@ -167,8 +161,6 @@ class oxVendorList extends oxList
      * Adds category specific fields to vendor object
      *
      * @param object $oVendor vendor object
-     *
-     * @return null
      */
     protected function _addCategoryFields($oVendor)
     {
@@ -185,8 +177,6 @@ class oxVendorList extends oxList
      * Sets active (open) vendor object
      *
      * @param oxvendor $oVendor active vendor
-     *
-     * @return null
      */
     public function setClickVendor($oVendor)
     {
@@ -205,8 +195,6 @@ class oxVendorList extends oxList
 
     /**
      * Processes vendor category URLs
-     *
-     * @return null
      */
     protected function _seoSetVendorData()
     {

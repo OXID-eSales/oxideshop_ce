@@ -51,8 +51,6 @@ class Tools_List extends oxAdminList
 
     /**
      * Method performs user passed SQL query
-     *
-     * @return null
      */
     public function performsql()
     {

@@ -71,8 +71,6 @@ class ForgotPwd extends oxUBase
      *
      * Template variables:
      * <b>sendForgotMail</b>
-     *
-     * @return null
      */
     public function forgotPassword()
     {

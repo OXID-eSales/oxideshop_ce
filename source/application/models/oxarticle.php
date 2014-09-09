@@ -505,8 +505,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param string $sName  name of parameter to set
      * @param mixed  $sValue parameter value
-     *
-     * @return null
      */
     public function __set($sName, $sValue)
     {
@@ -688,8 +686,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Assign condition setter. In case article assignment is skipped ($_blSkipAssign = true), it does not perform additional
      *
      * @param bool $blSkipAssign Whether to skip assign process for the article
-     *
-     * @return null
      */
     public function setSkipAssign($blSkipAssign)
     {
@@ -698,8 +694,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Disables article price loading. Should be called before assign(), or load()
-     *
-     * @return null
      */
     public function disablePriceLoad()
     {
@@ -708,8 +702,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Enable article price loading, if disabled.
-     *
-     * @return null
      */
     public function enablePriceLoad()
     {
@@ -730,8 +722,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Sets item key used with oxuserbasket
      *
      * @param string $sItemKey Item key
-     *
-     * @return null
      */
     public function setItemKey($sItemKey)
     {
@@ -742,8 +732,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Disables/enables variant loading
      *
      * @param bool $blLoadVariants skip variant loading or not
-     *
-     * @return null
      */
     public function setNoVariantLoading($blLoadVariants)
     {
@@ -788,8 +776,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Set if article is inluded in comparison list
      *
      * @param bool $blOnList Whether is article on the list
-     *
-     * @return null
      */
     public function setOnComparisonList($blOnList)
     {
@@ -800,8 +786,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * A setter for $_blLoadParentData (whether article parent info should be laoded fully) class variable
      *
      * @param bool $blLoadParentData Whether to load parent data
-     *
-     * @return null
      */
     public function setLoadParentData($blLoadParentData)
     {
@@ -1127,8 +1111,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Calculates and saves product rating average
      *
      * @param integer $iRating new rating value
-     *
-     * @return null
      */
     public function addToRatingAverage($iRating)
     {
@@ -1148,8 +1130,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Set product rating average
      *
      * @param integer $iRating new rating value
-     *
-     * @return null
      */
     public function setRatingAverage($iRating)
     {
@@ -1160,8 +1140,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Set product rating count
      *
      * @param integer $iRatingCnt new rating count
-     *
-     * @return null
      */
     public function setRatingCount($iRatingCnt)
     {
@@ -1913,8 +1891,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Sets the current oxPrice object
      *
      * @param oxPrice $oPrice the new price object
-     *
-     * @return null
      */
     public function setPrice(oxPrice $oPrice)
     {
@@ -1993,8 +1969,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * sets article user
      *
      * @param oxUser $oUser user to set
-     *
-     * @return null
      */
     public function setArticleUser($oUser)
     {
@@ -2174,8 +2148,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Changes article variant to parent article
-     *
-     * @return null
      */
     public function resetParent()
     {
@@ -2500,8 +2472,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param string $sAddParams additional parameters which needs to be added to product url
      * @param int    $iLang      language id
-     *
-     * @return null
      */
     public function appendLink($sAddParams, $iLang = null)
     {
@@ -2582,8 +2552,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Resets details link
      *
      * @param int $iType type of link to load
-     *
-     * @return null
      */
     public function setLinkType($iType)
     {
@@ -2609,8 +2577,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param string $sAddParams additional parameters which needs to be added to product url
      * @param int    $iLang      language id
-     *
-     * @return null
      */
     public function appendStdLink($sAddParams, $iLang = null)
     {
@@ -2835,8 +2801,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Resets oxremindactive status.
      * If remindActive status is 2, reminder is already sent.
-     *
-     * @return null
      */
     public function resetRemindStatus()
     {
@@ -2885,8 +2849,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Sets product state - buyable or not
      *
      * @param bool $blBuyable state - buyable or not (default false)
-     *
-     * @return null
      */
     public function setBuyableState($blBuyable = false)
     {
@@ -3000,8 +2962,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * apply article and article use
      *
      * @param oxPrice $oPrice target price
-     *
-     * @return null
      */
     public function applyVats(oxPrice $oPrice)
     {
@@ -3012,8 +2972,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Applies discounts which should be applied in general case (for 0 amount)
      *
      * @param oxprice $oPrice Price object
-     *
-     * @return null
      */
     public function applyDiscountsForVariant($oPrice)
     {
@@ -3056,8 +3014,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Updates article variants oxremindactive field, as variants inherit this setting from parent
-     *
-     * @return null
      */
     public function updateVariantsRemind()
     {
@@ -3630,8 +3586,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Removes object data fields (oxarticles__oxtimestamp, oxarticles__oxparentid, oxarticles__oxinsert).
-     *
-     * @return null
      */
     protected function _skipSaveFields()
     {
@@ -3852,8 +3806,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param oxPrice $oPrice Price object
      * @param double  $dVat   VAT percent
-     *
-     * @return null
      */
     protected function _applyVAT(oxPrice $oPrice, $dVat)
     {
@@ -3870,8 +3822,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param oxPrice $oPrice Price object
      * @param object  $oCur   Currency object
-     *
-     * @return null
      */
     protected function _applyCurrency(oxPrice $oPrice, $oCur = null)
     {
@@ -4231,8 +4181,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * if we have variants then depending on config option the parent may be non buyable
-     *
-     * @return null
      */
     protected function _assignNotBuyableParent()
     {
@@ -4246,8 +4194,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Assigns stock status to article
-     *
-     * @return null
      */
     protected function _assignStock()
     {
@@ -4468,8 +4414,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Deletes variant records
      *
      * @param string $sOXID Article ID
-     *
-     * @return null
      */
     protected function _deleteVariantRecords($sOXID)
     {
@@ -4491,8 +4435,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Delete pics
-     *
-     * @return null
      */
     protected function _deletePics()
     {
@@ -4521,8 +4463,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * @param string $sOxid           object to reset id ID
      * @param string $sVendorId       Vendor ID
      * @param string $sManufacturerId Manufacturer ID
-     *
-     * @return null
      */
     protected function _onChangeResetCounts($sOxid, $sVendorId = null, $sManufacturerId = null)
     {
@@ -4547,8 +4487,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Updates article stock. This method is supposed to be called on article change trigger.
      *
      * @param string $sParentID product parent id
-     *
-     * @return null
      */
     protected function _onChangeUpdateStock($sParentID)
     {
@@ -4587,8 +4525,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Resets article count cache when stock value is zero and article goes offline.
      *
      * @param string $sOxid product id
-     *
-     * @return null
      */
     protected function _onChangeStockResetCount($sOxid)
     {
@@ -4606,8 +4542,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Updates variant count. This method is supposed to be called on article change trigger.
      *
      * @param string $sParentID Parent ID
-     *
-     * @return null
      */
     protected function _onChangeUpdateVarCount($sParentID)
     {
@@ -4626,8 +4560,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Updates variant min price. This method is supposed to be called on article change trigger.
      *
      * @param string $sParentId Parent ID
-     *
-     * @return null
      */
     protected function _setVarMinMaxPrice($sParentId)
     {

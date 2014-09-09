@@ -136,8 +136,6 @@ class oxSeoEncoderVendor extends oxSeoEncoder
      * Deletes Vendor seo entry
      *
      * @param oxvendor $oVendor Vendor object
-     *
-     * @return null
      */
     public function onDeleteVendor($oVendor)
     {

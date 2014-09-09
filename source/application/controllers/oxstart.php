@@ -39,9 +39,6 @@ class oxStart extends oxUBase
             return;
         }
 
-        $oProcessor = $this->_getServerProcessor();
-        $oProcessor->process();
-
         $oSystemEventHandler = $this->_getSystemEventHandler();
         $oSystemEventHandler->onShopStart();
     }
@@ -74,8 +71,6 @@ class oxStart extends oxUBase
 
     /**
      * Creates and starts session object, sets default currency.
-     *
-     * @return null
      */
     public function pageStart()
     {
@@ -88,8 +83,6 @@ class oxStart extends oxUBase
 
     /**
      * Finalizes the script.
-     *
-     * @return null
      */
     public function pageClose()
     {
@@ -111,15 +104,6 @@ class oxStart extends oxUBase
     public function getErrorNumber()
     {
         return oxRegistry::getConfig()->getRequestParameter('errornr');
-    }
-
-    /**
-     * @return oxServerProcessor
-     */
-    protected function _getServerProcessor()
-    {
-        /** @var oxServerProcessor $oProcessor */
-        return oxNew('oxServerProcessor');
     }
 
     /**

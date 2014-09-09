@@ -168,8 +168,6 @@ class oxAddress extends oxBase
 
     /**
      * Sets address state as selected
-     *
-     * @return null
      */
     public function setSelected()
     {

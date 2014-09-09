@@ -174,8 +174,6 @@ class Language_List extends oxAdminList
      * to default value in all tables.
      *
      * @param string $iLangId language ID
-     *
-     * @return null
      */
     protected function _resetMultiLangDbFields($iLangId)
     {

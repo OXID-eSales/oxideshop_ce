@@ -355,8 +355,6 @@ class oxViewConfig extends oxSuperCfg
      *
      * @param oxshop $oShop     shop object
      * @param array  $aViewData view data array
-     *
-     * @return null
      */
     public function setViewShop($oShop, $aViewData)
     {
@@ -1474,8 +1472,6 @@ class oxViewConfig extends oxSuperCfg
      * Sets shop logo
      *
      * @param string $sLogo shop logo image file name
-     *
-     * @return null
      */
     public function setShopLogo($sLogo)
     {

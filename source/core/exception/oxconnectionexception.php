@@ -48,8 +48,6 @@ class oxConnectionException extends oxException
      * Enter address of the external server which caused the exception
      *
      * @param string $sAdress Externalserver address
-     *
-     * @return null
      */
     public function setAdress($sAdress)
     {
@@ -70,8 +68,6 @@ class oxConnectionException extends oxException
      * Sets the connection error returned by the connect function
      *
      * @param string $sConnError connection error
-     *
-     * @return null
      */
     public function setConnectionError($sConnError)
     {

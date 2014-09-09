@@ -91,8 +91,6 @@ class oxVoucherSerie extends oxBase
 
     /**
      * Removes user groups relations.
-     *
-     * @return null
      */
     public function unsetUserGroups()
     {
@@ -103,8 +101,6 @@ class oxVoucherSerie extends oxBase
 
     /**
      * Removes product or dategory relations.
-     *
-     * @return null
      */
     public function unsetDiscountRelations()
     {
@@ -129,8 +125,6 @@ class oxVoucherSerie extends oxBase
 
     /**
      * Deletes assigned voucher list.
-     *
-     * @return null
      */
     public function deleteVoucherList()
     {

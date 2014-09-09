@@ -37,8 +37,6 @@ class oxLanguageException extends oxException
      * sets the language constant which is missing
      *
      * @param string $sLangConstant language constant
-     *
-     * @return null
      */
     public function setLangConstant($sLangConstant)
     {

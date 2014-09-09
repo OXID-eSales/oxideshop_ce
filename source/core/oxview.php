@@ -184,8 +184,6 @@ class oxView extends oxSuperCfg
 
     /**
      * Initiates all components stored, executes oxView::addGlobalParams.
-     *
-     * @return null
      */
     public function init()
     {
@@ -202,8 +200,6 @@ class oxView extends oxSuperCfg
      * Add parameters to controllers
      *
      * @param array $aParams view parameters array.
-     *
-     * @return null
      */
     public function setViewParameters($aParams = null)
     {
@@ -228,8 +224,6 @@ class oxView extends oxSuperCfg
      * Set cache sign to enable/disable use of cache
      *
      * @param bool $blIsCallForCache cache sign to enable/disable use of cache
-     *
-     * @return null
      */
     public function setIsCallForCache($blIsCallForCache = null)
     {
@@ -301,8 +295,6 @@ class oxView extends oxSuperCfg
      *
      * @param string $sPara  name of parameter to pass
      * @param string $sValue value of parameter
-     *
-     * @return null
      */
     public function addTplParam($sPara, $sValue)
     {
@@ -354,8 +346,6 @@ class oxView extends oxSuperCfg
      * Sets current view template file name
      *
      * @param string $sTemplate template name
-     *
-     * @return null
      */
     public function setTemplateName($sTemplate)
     {
@@ -366,8 +356,6 @@ class oxView extends oxSuperCfg
      * Current view class name setter.
      *
      * @param string $sClassName current view class name
-     *
-     * @return null
      */
     public function setClassName($sClassName)
     {
@@ -388,8 +376,6 @@ class oxView extends oxSuperCfg
      * Set current view action function name
      *
      * @param string $sFncName action function name
-     *
-     * @return null
      */
     public function setFncName($sFncName)
     {
@@ -410,8 +396,6 @@ class oxView extends oxSuperCfg
      * Set array of data that is passed to template engine - array( "varName" => "varValue")
      *
      * @param array $aViewData array of data that is passed to template engine
-     *
-     * @return null
      */
     public function setViewData($aViewData = null)
     {
@@ -446,8 +430,6 @@ class oxView extends oxSuperCfg
      * Set location of a executed class file
      *
      * @param string $sClassLocation location of a executed class file
-     *
-     * @return null
      */
     public function setClassLocation($sClassLocation = null)
     {
@@ -468,8 +450,6 @@ class oxView extends oxSuperCfg
      * Set name of running class method
      *
      * @param string $sThisAction name of running class method
-     *
-     * @return null
      */
     public function setThisAction($sThisAction = null)
     {
@@ -490,8 +470,6 @@ class oxView extends oxSuperCfg
      * Set parent object. If this is a component we will have our parent view here.
      *
      * @param object $oParent parent object
-     *
-     * @return null
      */
     public function setParent($oParent = null)
     {
@@ -512,8 +490,6 @@ class oxView extends oxSuperCfg
      * Set flag if this object is a component or not
      *
      * @param bool $blIsComponent flag if this object is a component
-     *
-     * @return null
      */
     public function setIsComponent($blIsComponent = null)
     {
@@ -847,8 +823,6 @@ class oxView extends oxSuperCfg
      * Sets if to show newsletter
      *
      * @param bool $blShow if TRUE - newsletter subscription box will be shown
-     *
-     * @return null
      */
     public function setShowNewsletter($blShow)
     {
@@ -877,8 +851,6 @@ class oxView extends oxSuperCfg
      * @param string $sLogo shop logo url
      *
      * @deprecated since v5.1.0 (2013-09-23); Use oxViewConfig::setShopLogo().
-     *
-     * @return null
      */
     public function setShopLogo($sLogo)
     {
@@ -913,8 +885,6 @@ class oxView extends oxSuperCfg
      * Active category setter
      *
      * @param oxCategory $oCategory active category
-     *
-     * @return null
      */
     public function setActCategory($oCategory)
     {
@@ -939,8 +909,6 @@ class oxView extends oxSuperCfg
      * Category ID setter
      *
      * @param string $sCategoryId Id of category to cache
-     *
-     * @return null
      */
     public function setCategoryId($sCategoryId)
     {
@@ -949,8 +917,6 @@ class oxView extends oxSuperCfg
 
     /**
      * Returns a name of the view variable containing the error/exception messages
-     *
-     * @return null
      */
     public function getErrorDestination()
     {

@@ -143,8 +143,6 @@ class oxContentList extends oxList
      * Load category list data
      *
      * @param integer $iType - type of content
-     *
-     * @return null
      */
     protected function _load($iType)
     {
@@ -157,8 +155,6 @@ class oxContentList extends oxList
 
     /**
      * Load category list data.
-     *
-     * @return null
      */
     public function loadServices()
     {

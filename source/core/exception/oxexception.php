@@ -64,8 +64,6 @@ class oxException extends Exception
      * Set log file path/name
      *
      * @param string $sFile File name
-     *
-     * @return null
      */
     public function setLogFileName($sFile)
     {
@@ -86,8 +84,6 @@ class oxException extends Exception
      * Sets the exception message
      *
      * @param string $sMessage exception message
-     *
-     * @return null
      */
     public function setMessage($sMessage)
     {
@@ -96,8 +92,6 @@ class oxException extends Exception
 
     /**
      * To define that the exception was caught in renderer
-     *
-     * @return null
      */
     public function setRenderer()
     {
@@ -116,8 +110,6 @@ class oxException extends Exception
 
     /**
      * To define that the exception was not caught (only in oxexceptionhandler)
-     *
-     * @return null
      */
     public function setNotCaught()
     {
@@ -136,8 +128,6 @@ class oxException extends Exception
 
     /**
      * Prints exception in file EXCEPTION_LOG.txt
-     *
-     * @return null
      */
     public function debugOut()
     {
@@ -196,8 +186,6 @@ class oxException extends Exception
      * Defines a name of the view variable containing the messages
      *
      * @param string $sDestination name of the view variable
-     *
-     * @return null
      */
     public function setDestination($sDestination)
     {

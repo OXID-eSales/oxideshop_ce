@@ -35,8 +35,6 @@ class oxUserAddressList extends oxList
      * Selects and loads all address for particular user.
      *
      * @param string $sUserId user id
-     *
-     * @return null
      */
     public function load($sUserId)
     {

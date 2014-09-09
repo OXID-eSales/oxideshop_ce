@@ -77,8 +77,6 @@ class delivery_groups_ajax extends ajaxListComponent
 
     /**
      * Removes user group from delivery configuration
-     *
-     * @return null
      */
     public function removeGroupFromDel()
     {
@@ -96,8 +94,6 @@ class delivery_groups_ajax extends ajaxListComponent
 
     /**
      * Adds user group to delivery configuration
-     *
-     * @return null
      */
     public function addGroupToDel()
     {

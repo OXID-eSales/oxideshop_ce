@@ -107,8 +107,6 @@ class oxDiscountList extends oxList
 
     /**
      * Used to force discount list reload
-     *
-     * @return null
      */
     public function forceReload()
     {

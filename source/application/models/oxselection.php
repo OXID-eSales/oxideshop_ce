@@ -117,8 +117,6 @@ class oxSelection
      * Sets selection active/inactive
      *
      * @param bool $blActive selection state TRUE/FALSE
-     *
-     * @return null
      */
     public function setActiveState($blActive)
     {
@@ -129,8 +127,6 @@ class oxSelection
      * Sets selection disabled/enables
      *
      * @param bool $blDisabled selection state TRUE/FALSE
-     *
-     * @return null
      */
     public function setDisabled($blDisabled)
     {

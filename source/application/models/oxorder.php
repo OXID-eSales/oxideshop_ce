@@ -366,8 +366,6 @@ class oxOrder extends oxBase
      * Order article list setter
      *
      * @param oxOrderArticleList $oOrderArticleList
-     *
-     * @return null
      */
     public function setOrderArticleList($oOrderArticleList)
     {
@@ -621,8 +619,6 @@ class oxOrder extends oxBase
      * Updates order transaction status. Faster than saving whole object
      *
      * @param string $sStatus order transaction status
-     *
-     * @return null
      */
     protected function _setOrderStatus($sStatus)
     {
@@ -654,8 +650,6 @@ class oxOrder extends oxBase
 
     /**
      * Reset Vat info
-     *
-     * @return null
      */
     protected function _resetVats()
     {
@@ -672,8 +666,6 @@ class oxOrder extends oxBase
      * and creates oxOrderArticle objects and assigns to them basket articles.
      *
      * @param oxBasket $oBasket Shopping basket object
-     *
-     * @return null
      */
     protected function _loadFromBasket(oxBasket $oBasket)
     {
@@ -782,8 +774,6 @@ class oxOrder extends oxBase
      * Assigns to new oxorder object customer delivery and shipping info
      *
      * @param object $oUser user object
-     *
-     * @return null
      */
     protected function _setUser($oUser)
     {
@@ -831,8 +821,6 @@ class oxOrder extends oxBase
      * Assigns wrapping VAT and card price + card message info
      *
      * @param oxBasket $oBasket basket object
-     *
-     * @return null
      */
     protected function _setWrapping(oxBasket $oBasket)
     {
@@ -862,8 +850,6 @@ class oxOrder extends oxBase
      * Updates quantity of sold articles (oxarticle::updateSoldAmount()).
      *
      * @param array $aArticleList article list
-     *
-     * @return null
      */
     protected function _setOrderArticles($aArticleList)
     {
@@ -1074,8 +1060,6 @@ class oxOrder extends oxBase
 
     /**
      * Assigns oxfolder as new
-     *
-     * @return null
      */
     protected function _setFolder()
     {
@@ -1089,8 +1073,6 @@ class oxOrder extends oxBase
      *
      * @param array  $aArticleList basket products
      * @param object $oUser        user object
-     *
-     * @return null
      */
     protected function _updateWishlist($aArticleList, $oUser)
     {
@@ -1129,8 +1111,6 @@ class oxOrder extends oxBase
      *
      * @param array  $aArticleList array of basket products
      * @param oxuser $oUser        basket user object
-     *
-     * @return null
      */
     protected function _updateNoticeList($aArticleList, $oUser)
     {
@@ -1153,8 +1133,6 @@ class oxOrder extends oxBase
 
     /**
      * Updates order date to current date
-     *
-     * @return null
      */
     protected function _updateOrderDate()
     {
@@ -1171,8 +1149,6 @@ class oxOrder extends oxBase
      *
      * @param oxBasket $oBasket basket object
      * @param oxUser   $oUser   user object
-     *
-     * @return null
      */
     protected function _markVouchers($oBasket, $oUser)
     {
@@ -1244,8 +1220,6 @@ class oxOrder extends oxBase
      * @param object $oBasket basket object
      *
      * @throws oxOutOfStockException exception
-     *
-     * @return null
      */
     public function validateStock($oBasket)
     {
@@ -1397,8 +1371,6 @@ class oxOrder extends oxBase
      * @param array $aNewArticles article list of new order
      *
      * @throws Exception
-     *
-     * @return null
      */
     public function recalculateOrder($aNewArticles = array())
     {
@@ -1515,8 +1487,6 @@ class oxOrder extends oxBase
      * Order is not recalculated automatically, to do this oxOrder::recalculateOrder() must be called ;
      *
      * @param string $sDeliveryId new delivery id
-     *
-     * @return null
      */
     public function setDelivery($sDeliveryId)
     {
@@ -1565,8 +1535,6 @@ class oxOrder extends oxBase
      * Fake entries, pdf is generated in modules.. myorder.
      *
      * @param mixed $oPdf pdf object
-     *
-     * @return null
      */
     public function pdfFooter($oPdf)
     {
@@ -1576,8 +1544,6 @@ class oxOrder extends oxBase
      * Fake entries, pdf is generated in modules.. myorder.
      *
      * @param mixed $oPdf pdf object
-     *
-     * @return null
      */
     public function pdfHeaderplus($oPdf)
     {
@@ -1587,8 +1553,6 @@ class oxOrder extends oxBase
      * Fake entries, pdf is generated in modules.. myorder.
      *
      * @param mixed $oPdf pdf object
-     *
-     * @return null
      */
     public function pdfHeader($oPdf)
     {
@@ -1599,8 +1563,6 @@ class oxOrder extends oxBase
      *
      * @param string $sFilename file name
      * @param int    $iSelLang  selected language
-     *
-     * @return null
      */
     public function genPdf($sFilename, $iSelLang = 0)
     {
@@ -1910,8 +1872,6 @@ class oxOrder extends oxBase
      *
      * @param oxbasket $oBasket   basket to add articles
      * @param array    $aArticles article array
-     *
-     * @return null
      */
     protected function _addArticlesToBasket($oBasket, $aArticles)
     {
@@ -2003,8 +1963,6 @@ class oxOrder extends oxBase
      * Tells to keep old or reload delivery costs while recalculating order
      *
      * @param bool $blReload reload state marker
-     *
-     * @return null
      */
     public function reloadDelivery($blReload)
     {
@@ -2015,8 +1973,6 @@ class oxOrder extends oxBase
      * Tells to keep old or reload discount while recalculating order
      *
      * @param bool $blReload reload state marker
-     *
-     * @return null
      */
     public function reloadDiscount($blReload)
     {
@@ -2025,8 +1981,6 @@ class oxOrder extends oxBase
 
     /**
      * Performs order cancel process
-     *
-     * @return null
      */
     public function cancelOrder()
     {
@@ -2213,8 +2167,6 @@ class oxOrder extends oxBase
      * Assigns Trusted Shops Protection product id and costs
      *
      * @param oxBasket $oBasket basket object
-     *
-     * @return null
      */
     protected function _setTsProtection(oxBasket $oBasket)
     {

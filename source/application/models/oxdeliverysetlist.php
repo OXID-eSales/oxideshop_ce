@@ -70,8 +70,6 @@ class oxDeliverySetList extends oxList
      * Home country setter
      *
      * @param string $sHomeCountry home country id
-     *
-     * @return null
      */
     public function setHomeCountry($sHomeCountry)
     {
@@ -302,8 +300,6 @@ class oxDeliverySetList extends oxList
      * Set current user object
      *
      * @param oxUser $oUser user object
-     *
-     * @return null
      */
     public function setUser($oUser)
     {
@@ -313,8 +309,6 @@ class oxDeliverySetList extends oxList
     /**
      * Loads an object including all delivery sets which are not mapped to a
      * predefined GoodRelations delivery method.
-     *
-     * @return null
      */
     public function loadNonRDFaDeliverySetList()
     {
@@ -328,8 +322,6 @@ class oxDeliverySetList extends oxList
      * predefined GoodRelations delivery method.
      *
      * @param string $sDelId delivery set id
-     *
-     * @return null
      */
     public function loadRDFaDeliverySetList($sDelId = null)
     {

@@ -182,8 +182,6 @@ class Order_Article extends oxAdminDetails
 
     /**
      * Adds article to order list.
-     *
-     * @return null
      */
     public function addThisArticle()
     {
@@ -208,8 +206,6 @@ class Order_Article extends oxAdminDetails
 
     /**
      * Removes article from order list.
-     *
-     * @return null
      */
     public function deleteThisArticle()
     {
@@ -234,8 +230,6 @@ class Order_Article extends oxAdminDetails
 
     /**
      * Cancels order item
-     *
-     * @return null
      */
     public function storno()
     {
@@ -274,8 +268,6 @@ class Order_Article extends oxAdminDetails
 
     /**
      * Updates order articles stock and recalculates order
-     *
-     * @return null
      */
     public function updateOrder()
     {

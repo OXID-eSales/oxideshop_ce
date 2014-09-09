@@ -214,8 +214,6 @@ class Article_Stock extends oxAdminDetails
 
     /**
      * Updates all amount prices for article at once
-     *
-     * @return null
      */
     public function updateprices()
     {
@@ -231,8 +229,6 @@ class Article_Stock extends oxAdminDetails
 
     /**
      * Adds amount price to article
-     *
-     * @return null
      */
     public function deleteprice()
     {

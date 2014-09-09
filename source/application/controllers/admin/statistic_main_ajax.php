@@ -152,8 +152,6 @@
 
         /**
          * Removes selected report(s) from generating list.
-         *
-         * @return null
          */
         public function removeReportFromList()
         {
@@ -188,8 +186,6 @@
 
         /**
          * Adds selected report(s) to generating list.
-         *
-         * @return null
          */
         public function addReportToList()
         {

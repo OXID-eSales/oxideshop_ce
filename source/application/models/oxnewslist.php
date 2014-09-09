@@ -114,8 +114,6 @@ class oxNewslist extends oxList
      * News list user setter
      *
      * @param oxuser $oUser user object
-     *
-     * @return null
      */
     public function setUser($oUser)
     {

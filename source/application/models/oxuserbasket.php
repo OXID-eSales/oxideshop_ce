@@ -93,8 +93,6 @@ class oxUserBasket extends oxBase
     /**
      * Sets basket as newly created. This usually means that it is not
      * yet stored in DB and will only be stored if some item is added
-     *
-     * @return null
      */
     public function setIsNewBasket()
     {

@@ -54,8 +54,6 @@ class oxExceptionHandler
      * Set the debug level
      *
      * @param int $iDebug debug level (0== no debug)
-     *
-     * @return null
      */
     public function setIDebug($iDebug)
     {
@@ -66,8 +64,6 @@ class oxExceptionHandler
      * Set log file path/name
      *
      * @param string $sFile file name
-     *
-     * @return null
      */
     public function setLogFileName($sFile)
     {

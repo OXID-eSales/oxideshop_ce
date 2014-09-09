@@ -75,8 +75,6 @@ class discount_groups_ajax extends ajaxListComponent
 
     /**
      * Removes user group from discount config
-     *
-     * @return null
      */
     public function removeDiscGroup()
     {
@@ -96,8 +94,6 @@ class discount_groups_ajax extends ajaxListComponent
 
     /**
      * Adds user group to discount config
-     *
-     * @return null
      */
     public function addDiscGroup()
     {

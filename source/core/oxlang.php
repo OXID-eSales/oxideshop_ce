@@ -596,8 +596,6 @@ class oxLang extends oxSuperCfg
      * Set base shop language
      *
      * @param int $iLang Language id
-     *
-     * @return null
      */
     public function setBaseLanguage($iLang = null)
     {

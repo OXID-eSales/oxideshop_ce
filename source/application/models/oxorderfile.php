@@ -55,8 +55,6 @@ class oxOrderFile extends oxBase
 
     /**
      * reset order files downloadcount and / or expration times
-     *
-     * @return null
      */
     public function reset()
     {
@@ -78,8 +76,6 @@ class oxOrderFile extends oxBase
      * set order id
      *
      * @param string $sOrderId - order id
-     *
-     * @return null
      */
     public function setOrderId($sOrderId)
     {
@@ -90,8 +86,6 @@ class oxOrderFile extends oxBase
      * set order article id
      *
      * @param string $sOrderArticleId - order article id
-     *
-     * @return null
      */
     public function setOrderArticleId($sOrderArticleId)
     {
@@ -102,8 +96,6 @@ class oxOrderFile extends oxBase
      * set shop id
      *
      * @param string $sShopId - shop id
-     *
-     * @return null
      */
     public function setShopId($sShopId)
     {
@@ -118,8 +110,6 @@ class oxOrderFile extends oxBase
      * @param int    $iMaxDownloadCounts      max download count
      * @param int    $iExpirationTime         main download time after order in times
      * @param int    $iExpirationDownloadTime download time after first download in hours
-     *
-     * @return null
      */
     public function setFile($sFileName, $sFileId, $iMaxDownloadCounts, $iExpirationTime, $iExpirationDownloadTime)
     {

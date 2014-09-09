@@ -207,8 +207,6 @@ class Account_Recommlist extends Account
      * Set active recommlist
      *
      * @param object $oRecommList Recommendation list
-     *
-     * @return null
      */
     public function setActiveRecommList($oRecommList)
     {

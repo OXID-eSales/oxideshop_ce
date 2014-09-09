@@ -116,8 +116,6 @@ if (!class_exists("report_top_viewed_products")) {
 
         /**
          * Current week top viewed products report
-         *
-         * @return null
          */
         public function graph1()
         {

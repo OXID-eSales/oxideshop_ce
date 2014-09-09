@@ -252,8 +252,6 @@ class Language_Main extends oxAdminDetails
      *
      * @param string $sOldId old ID
      * @param string $sNewId new ID
-     *
-     * @return null
      */
     protected function _updateAbbervation($sOldId, $sNewId)
     {
@@ -279,8 +277,6 @@ class Language_Main extends oxAdminDetails
     /**
      * Sort languages, languages parameters, urls, ssl urls arrays according
      * base land ID
-     *
-     * @return null
      */
     protected function _sortLangArraysByBaseId()
     {
@@ -329,8 +325,6 @@ class Language_Main extends oxAdminDetails
      * Sets default language base ID to config var 'sDefaultLang'
      *
      * @param string $sOxId language abbervation
-     *
-     * @return null
      */
     protected function _setDefaultLang($sOxId)
     {
@@ -370,8 +364,6 @@ class Language_Main extends oxAdminDetails
      * If not - displays warning
      *
      * @param string $sOxId language abbervation
-     *
-     * @return null
      */
     protected function _checkLangTranslations($sOxId)
     {

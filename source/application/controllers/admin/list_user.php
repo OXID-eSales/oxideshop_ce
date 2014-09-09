@@ -39,8 +39,6 @@ class List_User extends User_List
     /**
      * Sets SQL query parameters (such as sorting),
      * executes parent method parent::Init().
-     *
-     * @return null
      */
     public function init()
     {

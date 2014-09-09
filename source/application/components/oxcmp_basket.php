@@ -64,8 +64,6 @@ class oxcmp_basket extends oxView
 
     /**
      * Initiates component.
-     *
-     * @return null
      */
     public function init()
     {
@@ -386,8 +384,6 @@ class oxcmp_basket extends oxView
      * @param string $sCallName    name of action ('tobasket', 'changebasket')
      * @param array  $aProductInfo data which comes from request when you press button "to basket"
      * @param array  $aBasketInfo  array returned by oxbasket::getBasketSummary()
-     *
-     * @return null
      */
     protected function _setLastCall($sCallName, $aProductInfo, $aBasketInfo)
     {
@@ -398,8 +394,6 @@ class oxcmp_basket extends oxView
      * Setting last call function name (data used by econda)
      *
      * @param string $sCallName name of action ('tobasket', 'changebasket')
-     *
-     * @return null
      */
     protected function _setLastCallFnc($sCallName)
     {

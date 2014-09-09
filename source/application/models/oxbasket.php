@@ -330,8 +330,6 @@ class oxBasket extends oxSuperCfg
      * Set netto calculation mode
      *
      * @param bool $blNettoMode - true in netto; false - turn off
-     *
-     * @return null
      */
     public function setCalculationModeNetto($blNettoMode = true)
     {
@@ -362,8 +360,6 @@ class oxBasket extends oxSuperCfg
      * Set basket netto sum
      *
      * @param decimal $dNettoSum sum of basket in netto mode
-     *
-     * @return null
      */
     public function setNettoSum($dNettoSum)
     {
@@ -374,8 +370,6 @@ class oxBasket extends oxSuperCfg
      * Set basket brutto sum
      *
      * @param decimal $dBruttoSum sum of basket in brutto mode
-     *
-     * @return null
      */
     public function setBruttoSum($dBruttoSum)
     {
@@ -398,8 +392,6 @@ class oxBasket extends oxSuperCfg
      * @param string $sOldKey old key
      * @param string $sNewKey new key to place in old one's place
      * @param mixed  $value   (optional)
-     *
-     * @return null
      */
     protected function _changeBasketItemKey($sOldKey, $sNewKey, $value = null)
     {
@@ -561,8 +553,6 @@ class oxBasket extends oxSuperCfg
      * Sets stock control mode
      *
      * @param bool $blCheck stock control mode
-     *
-     * @return null
      */
     public function setStockCheckMode($blCheck)
     {
@@ -605,8 +595,6 @@ class oxBasket extends oxSuperCfg
      * Removes item from basket
      *
      * @param string $sItemKey basket item key
-     *
-     * @return null
      */
     public function removeItem($sItemKey)
     {
@@ -630,8 +618,6 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Unsets bundled basket items from basket contents array
-     *
-     * @return null
      */
     protected function _clearBundles()
     {
@@ -741,8 +727,6 @@ class oxBasket extends oxSuperCfg
     /**
      * Iterates through basket contents and adds bundles to items + adds
      * global basket bundles
-     *
-     * @return null
      */
     protected function _addBundles()
     {
@@ -784,8 +768,6 @@ class oxBasket extends oxSuperCfg
      * Adds bundles to basket
      *
      * @param array $aBundles added bundle articles
-     *
-     * @return null
      */
     protected function _addBundlesToBasket($aBundles)
     {
@@ -805,8 +787,6 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Iterates through basket items and calculates its prices and discounts
-     *
-     * @return null
      */
     protected function _calcItemsPrice()
     {
@@ -869,8 +849,6 @@ class oxBasket extends oxSuperCfg
      * Sets discount calculation mode
      *
      * @param bool $blCalcDiscounts calculate discounts or not
-     *
-     * @return null
      */
     public function setDiscountCalcMode($blCalcDiscounts)
     {
@@ -980,8 +958,6 @@ class oxBasket extends oxSuperCfg
      * Basket user setter
      *
      * @param oxuser $oUser Basket user
-     *
-     * @return null
      */
     public function setBasketUser($oUser)
     {
@@ -1035,9 +1011,6 @@ class oxBasket extends oxSuperCfg
     //P
     /**
      * Performs final sum calculation and rounding.
-     *
-     * @return null
-     *
      */
     protected function _calcTotalPrice()
     {
@@ -1090,8 +1063,6 @@ class oxBasket extends oxSuperCfg
      * Voucher discount setter
      *
      * @param double $dDiscount voucher discount value
-     *
-     * @return null
      */
     public function setVoucherDiscount($dDiscount)
     {
@@ -1102,8 +1073,6 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Calculates voucher discount
-     *
-     * @return null
      */
     protected function _calcVoucherDiscount()
     {
@@ -1177,9 +1146,6 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Performs netto price and VATs calculations including discounts and vouchers.
-     *
-     * @return null
-     *
      */
     protected function _applyDiscounts()
     {
@@ -1241,8 +1207,6 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Loads basket discounts and calculates discount values.
-     *
-     * @return null
      */
     protected function _calcBasketDiscount()
     {
@@ -1306,8 +1270,6 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Calculates total basket discount value.
-     *
-     * @return null
      */
     protected function _calcBasketTotalDiscount()
     {
@@ -1443,8 +1405,6 @@ class oxBasket extends oxSuperCfg
      *
      * @param string $sCostName additional costs
      * @param object $oPrice    oxPrice
-     *
-     * @return null
      */
     public function setCost($sCostName, $oPrice = null)
     {
@@ -1544,8 +1504,6 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Notifies basket that recalculation is needed
-     *
-     * @return null
      */
     public function onUpdate()
     {
@@ -1554,8 +1512,6 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Marks basket as up-to-date
-     *
-     * @return null
      */
     public function afterUpdate()
     {
@@ -1639,8 +1595,6 @@ class oxBasket extends oxSuperCfg
      * (oxvoucher::MarkAsReserved())
      *
      * @param string $sVoucherId voucher ID
-     *
-     * @return null
      */
     public function addVoucher($sVoucherId)
     {
@@ -1679,8 +1633,6 @@ class oxBasket extends oxSuperCfg
      * Removes voucher from basket and unreserved it.
      *
      * @param string $sVoucherId removable voucher ID
-     *
-     * @return null
      */
     public function removeVoucher($sVoucherId)
     {
@@ -1701,8 +1653,6 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Resets user related information kept in basket object
-     *
-     * @return null
      */
     public function resetUserInfo()
     {
@@ -1712,8 +1662,6 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Formatting discounts
-     *
-     * @return null
      */
     protected function formatDiscount()
     {
@@ -1795,8 +1743,6 @@ class oxBasket extends oxSuperCfg
      * Cleans up saved basket data. This method usually is initiated by
      * oxbasket::deleteBasket() method which cleans up basket data when
      * user completes order.
-     *
-     * @return null
      */
     protected function _deleteSavedBasket()
     {
@@ -1853,8 +1799,6 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Deletes user basket object from session
-     *
-     * @return null
      */
     public function deleteBasket()
     {
@@ -1873,8 +1817,6 @@ class oxBasket extends oxSuperCfg
      * Set basket payment ID
      *
      * @param string $sPaymentId payment id
-     *
-     * @return null
      */
     public function setPayment($sPaymentId = null)
     {
@@ -1899,8 +1841,6 @@ class oxBasket extends oxSuperCfg
      * Set basket shipping set ID
      *
      * @param string $sShippingSetId delivery set id
-     *
-     * @return null
      */
     public function setShipping($sShippingSetId = null)
     {
@@ -1912,8 +1852,6 @@ class oxBasket extends oxSuperCfg
      * Set basket shipping price
      *
      * @param string $oShippingPrice delivery costs
-     *
-     * @return null
      */
     public function setDeliveryPrice($oShippingPrice = null)
     {
@@ -2053,8 +1991,6 @@ class oxBasket extends oxSuperCfg
      * Basket order ID setter
      *
      * @param string $sId unique id for basket order
-     *
-     * @return null
      */
     public function setOrderId($sId)
     {
@@ -2167,8 +2103,6 @@ class oxBasket extends oxSuperCfg
      * Gift card message setter
      *
      * @param string $sMessage gift card message
-     *
-     * @return null
      */
     public function setCardMessage($sMessage)
     {
@@ -2189,8 +2123,6 @@ class oxBasket extends oxSuperCfg
      * Gift card ID setter
      *
      * @param string $sCardId gift card id
-     *
-     * @return null
      */
     public function setCardId($sCardId)
     {
@@ -2266,8 +2198,6 @@ class oxBasket extends oxSuperCfg
      * Set basket currency
      *
      * @param object $oCurrency currency object
-     *
-     * @return null
      */
     public function setBasketCurrency($oCurrency)
     {
@@ -2292,8 +2222,6 @@ class oxBasket extends oxSuperCfg
      * Set skip or not vouchers availability checking
      *
      * @param bool $blSkipChecking skip or not vouchers checking
-     *
-     * @return null
      */
     public function setSkipVouchersChecking($blSkipChecking = null)
     {
@@ -2314,8 +2242,6 @@ class oxBasket extends oxSuperCfg
      * Used to set "skip discounts" status for basket
      *
      * @param bool $blSkip set true to skip discounts
-     *
-     * @return null
      */
     public function setSkipDiscounts($blSkip)
     {
@@ -2744,8 +2670,6 @@ class oxBasket extends oxSuperCfg
      * Sets total discount value
      *
      * @param double $dDiscount new total discount value
-     *
-     * @return null
      */
     public function setTotalDiscount($dDiscount)
     {
@@ -2959,8 +2883,6 @@ class oxBasket extends oxSuperCfg
      * Set active basket root category
      *
      * @param string $sRoot Root category id
-     *
-     * @return null
      */
     public function setBasketRootCatId($sRoot)
     {
@@ -2981,8 +2903,6 @@ class oxBasket extends oxSuperCfg
      * Sets category change warn state
      *
      * @param bool $blShow to show warning or not
-     *
-     * @return null
      */
     public function setCatChangeWarningState($blShow)
     {
@@ -3003,8 +2923,6 @@ class oxBasket extends oxSuperCfg
      * Trusted shops protection product ID setter
      *
      * @param string $sProductId product id
-     *
-     * @return null
      */
     public function setTsProductId($sProductId)
     {
@@ -3133,8 +3051,6 @@ class oxBasket extends oxSuperCfg
      * @param bool   $blOverride       marker to acumulate passed amount or renew (default false)
      * @param bool   $blBundle         marker if product is bundle or not (default false)
      * @param string $sOldBasketItemId id if old basket item if to change it
-     *
-     * @return null
      */
     protected function _addedNewItem($sProductID, $dAmount, $aSel, $aPersParam, $blOverride, $blBundle, $sOldBasketItemId)
     {
@@ -3146,8 +3062,6 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Resets new basket item addition state on unserialization
-     *
-     * @return null
      */
     public function __wakeUp()
     {

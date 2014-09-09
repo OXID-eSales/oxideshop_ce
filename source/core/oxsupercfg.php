@@ -241,8 +241,6 @@ class oxSuperCfg
      * Admin mode setter
      *
      * @param bool $blAdmin admin mode
-     *
-     * @return null
      */
     public function setAdminMode($blAdmin)
     {

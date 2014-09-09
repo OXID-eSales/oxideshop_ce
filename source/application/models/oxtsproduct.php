@@ -110,8 +110,6 @@ class oxTsProduct extends oxSuperCfg
      * set protection vat
      *
      * @param float $dVat - vat
-     *
-     * @return null
      */
     public function setVat($dVat)
     {
@@ -132,8 +130,6 @@ class oxTsProduct extends oxSuperCfg
      * Sets id of TS protection product
      *
      * @param string $sTsId TS product id
-     *
-     * @return null
      */
     public function setTsId($sTsId)
     {

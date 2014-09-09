@@ -185,8 +185,6 @@ class dyn_trusted extends Shop_Config
 
     /**
      * Saves payment Id returned from trusted shops
-     *
-     * @return null
      */
     protected function _saveTsPaymentId()
     {

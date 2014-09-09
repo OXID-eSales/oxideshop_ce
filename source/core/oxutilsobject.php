@@ -368,8 +368,6 @@ class oxUtilsObject
      * Disables module, adds to aDisabledModules config.
      *
      * @param array $sModule Module name
-     *
-     * @return null
      */
     protected function _disableModule($sModule)
     {
@@ -510,8 +508,6 @@ class oxUtilsObject
      *
      * @param string $sModuleVarName Configuration array name
      * @param array  $aValues        Module name values
-     *
-     * @return null
      */
     public function setModuleVar($sModuleVarName, $aValues)
     {

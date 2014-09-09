@@ -77,8 +77,6 @@ class oxUserBasketItem extends oxBase
      * Variant parent "buyable" status setter
      *
      * @param bool $blBuyable parent "buyable" status
-     *
-     * @return null
      */
     public function setVariantParentBuyable($blBuyable = false)
     {
@@ -174,8 +172,6 @@ class oxUserBasketItem extends oxBase
      * Basket item selection list setter
      *
      * @param array $aSelList selection list
-     *
-     * @return null
      */
     public function setSelList($aSelList)
     {
@@ -200,8 +196,6 @@ class oxUserBasketItem extends oxBase
      * Basket item persistent parameters setter
      *
      * @param string $sPersParams persistent parameters
-     *
-     * @return null
      */
     public function setPersParams($sPersParams)
     {

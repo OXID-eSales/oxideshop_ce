@@ -189,8 +189,6 @@ class oxPriceList
      * Add an oxPrice object to prices array
      *
      * @param oxprice $oPrice oxprice object
-     *
-     * @return null
      */
     public function addToPriceList($oPrice)
     {

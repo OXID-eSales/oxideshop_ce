@@ -257,8 +257,6 @@ class oxUtilsCount extends oxSuperCfg
      * Resets category (all categories) article count
      *
      * @param string $sCatId Category/vendor/manufacturer ID
-     *
-     * @return null
      */
     public function resetCatArticleCount($sCatId = null)
     {
@@ -279,8 +277,6 @@ class oxUtilsCount extends oxSuperCfg
      * Resets price categories article count
      *
      * @param int $iPrice article price
-     *
-     * @return null
      */
     public function resetPriceCatArticleCount($iPrice)
     {
@@ -333,8 +329,6 @@ class oxUtilsCount extends oxSuperCfg
      * Resets vendor (all vendors) article count
      *
      * @param string $sVendorId Category/vendor ID
-     *
-     * @return null
      */
     public function resetVendorArticleCount($sVendorId = null)
     {
@@ -355,8 +349,6 @@ class oxUtilsCount extends oxSuperCfg
      * Resets Manufacturer (all Manufacturers) article count
      *
      * @param string $sManufacturerId Category/Manufacturer ID
-     *
-     * @return null
      */
     public function resetManufacturerArticleCount($sManufacturerId = null)
     {
@@ -403,8 +395,6 @@ class oxUtilsCount extends oxSuperCfg
      * Writes category data into cache
      *
      * @param array $aCache A cacheable data
-     *
-     * @return null
      */
     protected function _setCatCache($aCache)
     {
@@ -416,8 +406,6 @@ class oxUtilsCount extends oxSuperCfg
      * Writes vendor data into cache
      *
      * @param array $aCache A cacheable data
-     *
-     * @return null
      */
     protected function _setVendorCache($aCache)
     {
@@ -429,8 +417,6 @@ class oxUtilsCount extends oxSuperCfg
      * Writes Manufacturer data into cache
      *
      * @param array $aCache A cacheable data
-     *
-     * @return null
      */
     protected function _setManufacturerCache($aCache)
     {

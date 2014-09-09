@@ -124,8 +124,6 @@ class Shop_Config extends oxAdminDetails
 
     /**
      * Saves shop configuration variables
-     *
-     * @return null
      */
     public function saveConfVars()
     {

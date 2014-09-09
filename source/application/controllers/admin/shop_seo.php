@@ -69,8 +69,6 @@ class Shop_Seo extends Shop_Config
      * Loads and sets active url info to view
      *
      * @param int $iShopId active shop id
-     *
-     * @return null
      */
     protected function _loadActiveUrl($iShopId)
     {
@@ -168,8 +166,6 @@ class Shop_Seo extends Shop_Config
 
     /**
      * Resetting SEO ids
-     *
-     * @return null
      */
     public function dropSeoIds()
     {
@@ -178,8 +174,6 @@ class Shop_Seo extends Shop_Config
 
     /**
      * Deletes static url
-     *
-     * @return null
      */
     public function deleteStaticUrl()
     {

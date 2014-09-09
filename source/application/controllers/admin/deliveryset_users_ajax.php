@@ -102,8 +102,6 @@ class deliveryset_users_ajax extends ajaxListComponent
 
     /**
      * Removes users for delivery sets config
-     *
-     * @return null
      */
     public function removeUserFromSet()
     {
@@ -121,8 +119,6 @@ class deliveryset_users_ajax extends ajaxListComponent
 
     /**
      * Adds users for delivery sets config
-     *
-     * @return null
      */
     public function addUserToSet()
     {

@@ -50,8 +50,6 @@ if (!class_exists("report_user_per_group")) {
 
         /**
          * Collects and renders user per group report data
-         *
-         * @return null
          */
         public function user_per_group()
         {

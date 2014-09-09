@@ -81,8 +81,6 @@ class payment_country_ajax extends ajaxListComponent
 
     /**
      * Adds chosen user group (groups) to delivery list
-     *
-     * @return null
      */
     public function addPayCountry()
     {
@@ -107,8 +105,6 @@ class payment_country_ajax extends ajaxListComponent
 
     /**
      * Removes chosen user group (groups) from delivery list
-     *
-     * @return null
      */
     public function removePayCountry()
     {

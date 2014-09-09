@@ -197,8 +197,6 @@ class oxBase extends oxSuperCfg
      * Setting use skip fields or not
      *
      * @param bool $blUseSkipSaveFields - true or false
-     *
-     * @return null
      */
     public function setUseSkipSaveFields($blUseSkipSaveFields)
     {
@@ -236,8 +234,6 @@ class oxBase extends oxSuperCfg
      *
      * @param string $sName  name value
      * @param mixed  $sValue value
-     *
-     * @return null
      */
     public function __set($sName, $sValue)
     {
@@ -357,8 +353,6 @@ class oxBase extends oxSuperCfg
 
     /**
      * Magic function invoked on object cloning. Basically takes care about cloning properly DB fields.
-     *
-     * @return null
      */
     public function __clone()
     {
@@ -376,8 +370,6 @@ class oxBase extends oxSuperCfg
      * Clone this object - similar to Copy Constructor.
      *
      * @param object $oObject Object to copy
-     *
-     * @return null
      */
     public function oxClone($oObject)
     {
@@ -396,8 +388,6 @@ class oxBase extends oxSuperCfg
      *
      * @param string $sTableName       Name of DB object table
      * @param bool   $blForceAllFields Forces initialisation of all fields overriding lazy loading functionality
-     *
-     * @return null
      */
     public function init($sTableName = null, $blForceAllFields = false)
     {
@@ -505,8 +495,6 @@ class oxBase extends oxSuperCfg
      * Sets original object shop ID
      *
      * @param int $iShopId New shop ID
-     *
-     * @return null
      */
     public function setShopId($iShopId)
     {
@@ -559,8 +547,6 @@ class oxBase extends oxSuperCfg
      *
      * @param string $sCacheKey  cache  key
      * @param bool   $blOverride marker to force override cache key
-     *
-     * @return null
      */
     public function modifyCacheKey($sCacheKey, $blOverride = false)
     {
@@ -573,8 +559,6 @@ class oxBase extends oxSuperCfg
 
     /**
      * Disables lazy loading mechanism and init object fully
-     *
-     * @return null
      */
     public function disableLazyLoading()
     {
@@ -598,8 +582,6 @@ class oxBase extends oxSuperCfg
      * Returns true in case the item represented by this object is derived from parent shop
      *
      * @param bool $blVal if derived
-     *
-     * @return null
      */
     public function setIsDerived($blVal)
     {
@@ -907,8 +889,6 @@ class oxBase extends oxSuperCfg
      * If you make any update to the database record manually you should also call beforeUpdate() from your script.
      *
      * @param string $sOXID Object ID(default null). Pass the ID in case object is not loaded.
-     *
-     * @return null
      */
     public function beforeUpdate($sOXID = null)
     {
@@ -921,8 +901,6 @@ class oxBase extends oxSuperCfg
      *
      * @param int    $iAction Action identifier.
      * @param string $sOXID   Object ID(default null). Pass the ID in case object is not loaded.
-     *
-     * @return null
      */
     public function onChange($iAction = null, $sOXID = null)
     {
@@ -931,8 +909,6 @@ class oxBase extends oxSuperCfg
 
     /**
      * Sets item as list element
-     *
-     * @return null
      */
     public function setInList()
     {
@@ -1031,8 +1007,6 @@ class oxBase extends oxSuperCfg
      * Either by trying to load from cache or by calling $this->_getNonCachedFieldNames
      *
      * @param bool $blForceFullStructure Set to true if you want to load full structure in any case.
-     *
-     * @return null
      */
     protected function _initDataStructure($blForceFullStructure = false)
     {
@@ -1469,8 +1443,6 @@ class oxBase extends oxSuperCfg
      * Set object readonly
      *
      * @param bool $blReadOnly readonly flag
-     *
-     * @return null
      */
     public function setReadOnly($blReadOnly)
     {

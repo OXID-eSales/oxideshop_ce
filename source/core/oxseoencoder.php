@@ -163,8 +163,6 @@ class oxSeoEncoder extends oxSuperCfg
      * @param int    $iLang   object language
      * @param string $sType   object type (if you pass real object - type is not necessary)
      * @param string $sNewId  new object id, mostly used for static url updates (optional)
-     *
-     * @return null
      */
     protected function _copyToHistory($sId, $iShopId, $iLang, $sType = null, $sNewId = null)
     {
@@ -861,8 +859,6 @@ class oxSeoEncoder extends oxSuperCfg
      * Sets SEO separator
      *
      * @param string $sSeparator SEO seperator
-     *
-     * @return null
      */
     public function setSeparator($sSeparator = null)
     {
@@ -876,8 +872,6 @@ class oxSeoEncoder extends oxSuperCfg
      * Sets SEO prefix
      *
      * @param string $sPrefix SEO prefix
-     *
-     * @return null
      */
     public function setPrefix($sPrefix)
     {
@@ -892,8 +886,6 @@ class oxSeoEncoder extends oxSuperCfg
      * sets seo id length
      *
      * @param string $iIdlength id length
-     *
-     * @return null
      */
     public function setIdLength($iIdlength = null)
     {
@@ -907,8 +899,6 @@ class oxSeoEncoder extends oxSuperCfg
      * These words are appended by seo prefix if they are the initial uri segment
      *
      * @param array $aReservedWords reserved words
-     *
-     * @return null
      */
     public function setReservedWords($aReservedWords)
     {
@@ -924,8 +914,6 @@ class oxSeoEncoder extends oxSuperCfg
      * @param int    $iExpStat expiration status: 1 - standard expiration
      * @param int    $iLang    active language (optiona;)
      * @param string $sParams  additional params
-     *
-     * @return null
      */
     public function markAsExpired($sId, $iShopId = null, $iExpStat = 1, $iLang = null, $sParams = null)
     {
@@ -1067,8 +1055,6 @@ class oxSeoEncoder extends oxSuperCfg
      * Method copies static urls from base shop to newly created
      *
      * @param int $iShopId new created shop id
-     *
-     * @return null
      */
     public function copyStaticUrls($iShopId)
     {
@@ -1132,8 +1118,6 @@ class oxSeoEncoder extends oxSuperCfg
      * @param string $sParams      additional seo params. optional (mostly used for db indexing)
      * @param bool   $blExclude    exclude language prefix while building seo url
      * @param string $sAltObjectId alternative object id used while saving meta info (used to override object id when saving tags related info)
-     *
-     * @return null
      */
     public function addSeoEntry($sObjectId, $iShopId, $iLang, $sStdUrl, $sSeoUrl, $sType, $blFixed = 1, $sKeywords = '', $sDescription = '', $sParams = '', $blExclude = false, $sAltObjectId = null)
     {
@@ -1170,8 +1154,6 @@ class oxSeoEncoder extends oxSuperCfg
      *
      * @param string $sObjectId object id
      * @param int    $iLang     language id
-     *
-     * @return null
      */
     protected function _getAltUri($sObjectId, $iLang)
     {
@@ -1184,8 +1166,6 @@ class oxSeoEncoder extends oxSuperCfg
      * @param int    $iShopId   shop id
      * @param int    $iLang     objects language
      * @param string $sType     object type
-     *
-     * @return null
      */
     public function deleteSeoEntry($sObjectId, $iShopId, $iLang, $sType)
     {

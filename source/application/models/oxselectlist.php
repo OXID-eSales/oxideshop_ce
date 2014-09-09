@@ -121,8 +121,6 @@ class oxSelectlist extends oxI18n implements oxISelectList
      * VAT setter
      *
      * @param float $dVat product VAT
-     *
-     * @return null
      */
     public function setVat($dVat)
     {
@@ -190,8 +188,6 @@ class oxSelectlist extends oxI18n implements oxISelectList
      * Activates given by index selection
      *
      * @param int $iIdx selection index
-     *
-     * @return null
      */
     public function setActiveSelectionByIndex($iIdx)
     {

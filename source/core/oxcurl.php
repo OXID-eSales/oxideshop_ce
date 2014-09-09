@@ -105,8 +105,6 @@ class oxCurl
      * @param string $sUrl URL to call.
      *
      * @throws oxException if url is not valid
-     *
-     * @return null
      */
     public function setUrl($sUrl)
     {
@@ -179,8 +177,6 @@ class oxCurl
      * Sets host.
      *
      * @param string $sHost
-     *
-     * @return null
      */
     public function setHost($sHost)
     {
@@ -201,8 +197,6 @@ class oxCurl
      * Set header.
      *
      * @param array $aHeader
-     *
-     * @return null
      */
     public function setHeader($aHeader = null)
     {
@@ -238,8 +232,6 @@ class oxCurl
      * Set method to send (POST/GET)
      *
      * @param string $sMethod method to send (POST/GET)
-     *
-     * @return null
      */
     public function setMethod($sMethod)
     {
@@ -263,8 +255,6 @@ class oxCurl
      * @param string $sValue curl option value to set.
      *
      * @throws oxException on curl errors
-     *
-     * @return null
      */
     public function setOption($sName, $sValue)
     {
@@ -411,8 +401,6 @@ class oxCurl
 
     /**
      * Wrapper function to be mocked for testing.
-     *
-     * @return null
      */
     protected function _close()
     {

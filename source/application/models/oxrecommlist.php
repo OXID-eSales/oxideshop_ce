@@ -285,8 +285,6 @@ class oxRecommList extends oxBase implements oxIUrl
      *
      * @param oxList $oRecommList recommendation list
      * @param array  $aIds        article ids
-     *
-     * @return null
      */
     protected function _loadFirstArticles(oxList $oRecommList, $aIds)
     {
@@ -394,8 +392,6 @@ class oxRecommList extends oxBase implements oxIUrl
      * Calculates and saves product rating average
      *
      * @param integer $iRating new rating value
-     *
-     * @return null
      */
     public function addToRatingAverage($iRating)
     {
@@ -506,8 +502,6 @@ class oxRecommList extends oxBase implements oxIUrl
      * set sql filter for article loading
      *
      * @param string $sArticlesFilter article filter
-     *
-     * @return null
      */
     public function setArticlesFilter($sArticlesFilter)
     {

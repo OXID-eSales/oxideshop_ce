@@ -295,8 +295,6 @@ class oxAdminDetails extends oxAdminView
 
     /**
      * Resets number of articles in current shop categories
-     *
-     * @return null
      */
     public function resetNrOfCatArticles()
     {
@@ -306,8 +304,6 @@ class oxAdminDetails extends oxAdminView
 
     /**
      * Resets number of articles in current shop vendors
-     *
-     * @return null
      */
     public function resetNrOfVendorArticles()
     {
@@ -317,8 +313,6 @@ class oxAdminDetails extends oxAdminView
 
     /**
      * Resets number of articles in current shop manufacturers
-     *
-     * @return null
      */
     public function resetNrOfManufacturerArticles()
     {
@@ -411,8 +405,6 @@ class oxAdminDetails extends oxAdminView
 
     /**
      * Updates object folder parameters
-     *
-     * @return null
      */
     public function changeFolder()
     {
@@ -434,8 +426,6 @@ class oxAdminDetails extends oxAdminView
      * Sets-up navigation parameters
      *
      * @param string $sNode active view id
-     *
-     * @return null
      */
     protected function _setupNavigation($sNode)
     {
@@ -456,8 +446,6 @@ class oxAdminDetails extends oxAdminView
      * Resets count of vendor/manufacturer category items
      *
      * @param string $aIds array to reset type => id
-     *
-     * @return null
      */
     protected function _resetCounts($aIds)
     {

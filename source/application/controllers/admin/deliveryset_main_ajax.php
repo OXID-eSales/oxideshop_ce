@@ -76,8 +76,6 @@ class deliveryset_main_ajax extends ajaxListComponent
 
     /**
      * Remove this delivery cost from these sets
-     *
-     * @return null
      */
     public function removeFromSet()
     {
@@ -95,8 +93,6 @@ class deliveryset_main_ajax extends ajaxListComponent
 
     /**
      * Adds this delivery cost to these sets
-     *
-     * @return null
      */
     public function addToSet()
     {

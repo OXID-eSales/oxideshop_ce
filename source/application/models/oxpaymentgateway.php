@@ -63,8 +63,6 @@ class oxPaymentGateway extends oxSuperCfg
      * Sets payment parameters.
      *
      * @param object $oUserpayment User payment object
-     *
-     * @return null
      */
     public function setPaymentParams($oUserpayment)
     {

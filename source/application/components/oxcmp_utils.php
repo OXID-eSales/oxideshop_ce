@@ -203,8 +203,6 @@ class oxcmp_utils extends oxView
      * @param string $sProductId product id
      * @param double $dAmount    product amount
      * @param array  $aSel       product selection list
-     *
-     * @return null
      */
     protected function _toList($sListType, $sProductId, $dAmount, $aSel)
     {

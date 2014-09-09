@@ -254,8 +254,6 @@ class Account_Wishlist extends Account
      * Wishlist data setter
      *
      * @param object $oData suggest data object
-     *
-     * @return null
      */
     public function setEnteredData($oData)
     {

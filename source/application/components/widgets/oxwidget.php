@@ -47,8 +47,6 @@ class oxWidget extends oxUBase
     /**
      * Sets self::$_aCollectedComponentNames to null, as views and widgets
      * controllers loads different components and calls parent::init()
-     *
-     * @return null
      */
     public function init()
     {
@@ -76,8 +74,6 @@ class oxWidget extends oxUBase
     /**
      * In widgets we do not need to parse seo and do any work related to that
      * Shop main control is responsible for that, and that has to be done once
-     *
-     * @return null|void
      */
     protected function _processRequest()
     {

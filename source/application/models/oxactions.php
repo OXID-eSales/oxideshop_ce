@@ -47,8 +47,6 @@ class oxActions extends oxI18n
      * Adds an article to this actions
      *
      * @param string $sOxId id of the article to be added
-     *
-     * @return null
      */
     public function addArticle($sOxId)
     {
@@ -141,8 +139,6 @@ class oxActions extends oxI18n
 
     /**
      * start the promotion NOW!
-     *
-     * @return null
      */
     public function start()
     {
@@ -160,8 +156,6 @@ class oxActions extends oxI18n
 
     /**
      * stop the promotion NOW!
-     *
-     * @return null
      */
     public function stop()
     {

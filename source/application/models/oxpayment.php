@@ -127,8 +127,6 @@ class oxPayment extends oxI18n
      * Payment VAT config setter
      *
      * @param bool $blOnTop Payment vat config
-     *
-     * @return null
      */
     public function setPaymentVatOnTop($blOnTop)
     {
@@ -162,8 +160,6 @@ class oxPayment extends oxI18n
      * sets the dyn values
      *
      * @param array $aDynValues the array of dy values
-     *
-     * @return null
      */
     public function setDynValues($aDynValues)
     {
@@ -175,8 +171,6 @@ class oxPayment extends oxI18n
      *
      * @param mixed $oKey the key
      * @param mixed $oVal the value
-     *
-     * @return null
      */
     public function setDynValue($oKey, $oVal)
     {
@@ -299,8 +293,6 @@ class oxPayment extends oxI18n
      * Returns price object for current payment applied on basket
      *
      * @param oxUserBasket $oBasket session basket
-     *
-     * @return null
      */
     public function calculate($oBasket)
     {

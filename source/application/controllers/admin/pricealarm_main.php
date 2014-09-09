@@ -119,8 +119,6 @@ class PriceAlarm_Main extends oxAdminDetails
 
     /**
      * Sending email to selected customer
-     *
-     * @return null
      */
     public function send()
     {

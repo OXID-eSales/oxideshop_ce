@@ -182,8 +182,6 @@ class oxUtilsFile extends oxSuperCfg
      *
      * @param string $sSourceDir Source directory
      * @param string $sTargetDir Target directory
-     *
-     * @return null
      */
     public function copyDir($sSourceDir, $sTargetDir)
     {

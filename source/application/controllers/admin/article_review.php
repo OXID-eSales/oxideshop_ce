@@ -139,8 +139,6 @@ class Article_Review extends oxAdminDetails
 
     /**
      * Deletes selected article review information.
-     *
-     * @return null
      */
     public function delete()
     {

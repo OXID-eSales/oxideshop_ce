@@ -421,8 +421,6 @@ class oxContent extends oxI18n implements oxIUrl
      * Set type of content.
      *
      * @param string $sValue type value
-     *
-     * @return null
      */
     public function setType($sValue)
     {
@@ -443,8 +441,6 @@ class oxContent extends oxI18n implements oxIUrl
      * Set title of content
      *
      * @param string $sValue title value
-     *
-     * @return null
      */
     public function setTitle($sValue)
     {

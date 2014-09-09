@@ -114,8 +114,6 @@ if (!class_exists("report_top_clicked_categories")) {
 
         /**
          * Current week top viewed categories report
-         *
-         * @return null
          */
         public function graph1()
         {

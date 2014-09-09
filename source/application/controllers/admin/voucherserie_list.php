@@ -45,8 +45,6 @@ class VoucherSerie_List extends oxAdminList
 
     /**
      * Deletes selected Voucherserie.
-     *
-     * @return null
      */
     public function deleteEntry()
     {

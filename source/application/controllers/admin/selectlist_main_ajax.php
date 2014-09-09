@@ -111,8 +111,6 @@ class selectlist_main_ajax extends ajaxListComponent
 
     /**
      * Removes article from Selection list
-     *
-     * @return null
      */
     public function removeArtFromSel()
     {
@@ -134,8 +132,6 @@ class selectlist_main_ajax extends ajaxListComponent
 
     /**
      * Adds article to Selection list
-     *
-     * @return null
      */
     public function addArtToSel()
     {

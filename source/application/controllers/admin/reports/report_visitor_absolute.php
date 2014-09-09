@@ -64,8 +64,6 @@ if (!class_exists("report_visitor_absolute")) {
 
         /**
          * Collects and renders visitor/month report data
-         *
-         * @return null
          */
         public function visitor_month()
         {
@@ -198,8 +196,6 @@ if (!class_exists("report_visitor_absolute")) {
 
         /**
          * Collects and renders visitor/week report data
-         *
-         * @return null
          */
         public function visitor_week()
         {

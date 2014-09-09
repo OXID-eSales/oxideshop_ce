@@ -75,8 +75,6 @@ class voucherserie_groups_ajax extends ajaxListComponent
 
     /**
      * Removes selected user group(s) from Voucher serie list.
-     *
-     * @return null
      */
     public function removeGroupFromVoucher()
     {
@@ -94,8 +92,6 @@ class voucherserie_groups_ajax extends ajaxListComponent
 
     /**
      * Adds selected user group(s) to Voucher serie list.
-     *
-     * @return null
      */
     public function addGroupToVoucher()
     {

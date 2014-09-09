@@ -120,8 +120,6 @@ class VoucherSerie_Main extends DynExportBase
 
     /**
      * Overriding parent function, doing nothing..
-     *
-     * @return null
      */
     public function prepareExport()
     {
@@ -148,8 +146,6 @@ class VoucherSerie_Main extends DynExportBase
 
     /**
      * Prepares Export
-     *
-     * @return null
      */
     public function start()
     {

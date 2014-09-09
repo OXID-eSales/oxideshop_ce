@@ -256,8 +256,6 @@ class Details extends oxUBase
      * Processes product by setting link type and in case list type is search adds search parameters to details link
      *
      * @param object $oProduct product to process
-     *
-     * @return null
      */
     protected function _processProduct($oProduct)
     {
@@ -402,8 +400,6 @@ class Details extends oxUBase
 
     /**
      * Saves user ratings and review text (oxReview object)
-     *
-     * @return null
      */
     public function saveReview()
     {
@@ -565,8 +561,6 @@ class Details extends oxUBase
 
     /**
      * Cancels tags editing mode
-     *
-     * @return null
      */
     public function cancelTags()
     {
@@ -661,8 +655,6 @@ class Details extends oxUBase
 
     /**
      * Runs additional checks for article.
-     *
-     * @return null
      */
     protected function _additionalChecksForArticle()
     {
@@ -994,8 +986,6 @@ class Details extends oxUBase
      * Returns search title setter
      *
      * @param string $sTitle search title
-     *
-     * @return null
      */
     public function setSearchTitle($sTitle)
     {

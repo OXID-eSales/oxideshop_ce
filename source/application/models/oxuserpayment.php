@@ -195,8 +195,6 @@ class oxUserPayment extends oxBase
      * Set store or not credit card information in db
      *
      * @param bool $blStoreCreditCardInfo store or not credit card info
-     *
-     * @return null
      */
     public function setStoreCreditCardInfo($blStoreCreditCardInfo)
     {
@@ -264,8 +262,6 @@ class oxUserPayment extends oxBase
      * sets the dyn values
      *
      * @param array $aDynValues the array of dy values
-     *
-     * @return null
      */
     public function setDynValues($aDynValues)
     {

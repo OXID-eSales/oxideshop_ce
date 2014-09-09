@@ -88,8 +88,6 @@ class oxDeliveryList extends oxList
      * Home country setter
      *
      * @param string $sHomeCountry home country id
-     *
-     * @return null
      */
     public function setHomeCountry($sHomeCountry)
     {
@@ -356,8 +354,6 @@ class oxDeliveryList extends oxList
      * Set current user object
      *
      * @param oxUser $oUser user object
-     *
-     * @return null
      */
     public function setUser($oUser)
     {
@@ -369,8 +365,6 @@ class oxDeliveryList extends oxList
      * getting deliveries list in getDeliveryList()
      *
      * @param bool $blCollectFittingDeliveriesSets collect deliveries sets or not
-     *
-     * @return null
      */
     public function setCollectFittingDeliveriesSets($blCollectFittingDeliveriesSets = false)
     {
@@ -381,8 +375,6 @@ class oxDeliveryList extends oxList
      * Load oxDeliveryList for product
      *
      * @param object $oProduct oxArticle object
-     *
-     * @return null
      */
     public function loadDeliveryListForProduct($oProduct)
     {

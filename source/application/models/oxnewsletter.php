@@ -151,8 +151,6 @@
          *
          * @param string $sUserid          User ID or OBJECT
          * @param bool   $blPerfLoadAktion perform option load actions
-         *
-         * @return null
          */
         public function prepare($sUserid, $blPerfLoadAktion = false)
         {
@@ -189,8 +187,6 @@
          * this user, generates HTML and plaintext format newsletters.
          *
          * @param bool $blPerfLoadAktion perform option load actions
-         *
-         * @return null
          */
         protected function _setParams($blPerfLoadAktion = false)
         {
@@ -223,8 +219,6 @@
          * Creates oxuser object (user ID passed to method),
          *
          * @param string $sUserid User ID or OBJECT
-         *
-         * @return null
          */
         protected function _setUser($sUserid)
         {
@@ -244,8 +238,6 @@
          *
          * @param oxview $oView            view object to store view data
          * @param bool   $blPerfLoadAktion perform option load actions
-         *
-         * @return null
          */
         protected function _assignProducts($oView, $blPerfLoadAktion = false)
         {

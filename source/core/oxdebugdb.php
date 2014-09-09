@@ -290,8 +290,6 @@ class oxDebugDb
      * logs warnings to file
      *
      * @param array $aWarnings warnings
-     *
-     * @return null
      */
     protected function _logToFile($aWarnings)
     {

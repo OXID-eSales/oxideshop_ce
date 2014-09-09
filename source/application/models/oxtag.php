@@ -114,8 +114,6 @@ class oxTag extends oxSuperCfg
      *
      * @param string $sTag      Tag value
      * @param bool   $blPrepare if false, no checks will be done when setting
-     *
-     * @return null
      */
     public function set($sTag, $blPrepare = true)
     {

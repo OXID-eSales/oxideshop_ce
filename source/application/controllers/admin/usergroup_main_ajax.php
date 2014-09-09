@@ -98,8 +98,6 @@ class usergroup_main_ajax extends ajaxListComponent
 
     /**
      * Removes User from group
-     *
-     * @return null
      */
     public function removeUserFromUGroup()
     {
@@ -118,8 +116,6 @@ class usergroup_main_ajax extends ajaxListComponent
 
     /**
      * Adds User to group
-     *
-     * @return null
      */
     public function addUserToUGroup()
     {

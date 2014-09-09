@@ -129,9 +129,9 @@ class article_bundle_ajax extends ajaxListComponent
      */
     public function addArticleBundle()
     {
-        $sQuotedChosenArt = oxRegistry::getConfig()->getRequestParameter('oxbundleid');
-        $sQuotedOxId = oxRegistry::getConfig()->getRequestParameter('oxid');
         $oDb = oxDb::getDb();
+        $sQuotedChosenArt = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxbundleid'));
+        $sQuotedOxId = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxid'));
 
         $sQ = "update oxarticles set oxarticles.oxbundleid =  {$sQuotedChosenArt} " .
               "where oxarticles.oxid  =  {$sQuotedOxId} ";

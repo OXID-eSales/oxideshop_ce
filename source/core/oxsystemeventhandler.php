@@ -218,9 +218,10 @@ class oxSystemEventHandler
         $sHourToCheck = $this->_getCheckTime();
         $aHourToCheck = explode(':', $sHourToCheck);
 
-        $sNextCheckTime = new DateTime('tomorrow');
+        $sNextCheckTime = $this->_getDateManager('tomorrow');
         $sNextCheckTime->setTime($aHourToCheck[0], $aHourToCheck[1], $aHourToCheck[2]);
-        $this->_getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseNextCheckTime', $sNextCheckTime->getTimestamp());
+        $iNextCheckTime = $sNextCheckTime->getTimestamp();
+        $this->_getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseNextCheckTime', $iNextCheckTime);
     }
 
     /**
@@ -251,10 +252,23 @@ class oxSystemEventHandler
      */
     private function _getCurrentTime()
     {
+        /** @var oxUtilsDate $oUtilsDate */
         $oUtilsDate = oxRegistry::get('oxUtilsDate');
         $iCurrentTime = $oUtilsDate->getTime();
 
         return $iCurrentTime;
+    }
+
+    /**
+     * @param string $sTime
+     *
+     * @return DateTime
+     */
+    private function _getDateManager($sTime)
+    {
+        /** @var oxUtilsDate $oUtilsDate */
+        $oUtilsDate = oxRegistry::get('oxUtilsDate');
+        return $oUtilsDate->getDateManager($sTime);
     }
 
     /**

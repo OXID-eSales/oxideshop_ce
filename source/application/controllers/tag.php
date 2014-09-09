@@ -325,8 +325,11 @@ class Tag extends aList
         $aPaths = array();
         $aCatPath = array();
 
-        $aCatPath['title'] = oxRegistry::getLang()->translateString('TAGS', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aCatPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=tags');
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $sSelfLink = $this->getViewConfig()->getSelfLink();
+
+        $aCatPath['title'] = oxRegistry::getLang()->translateString('TAGS', $iBaseLanguage, false);
+        $aCatPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=tags');
         $aPaths[] = $aCatPath;
 
         $aCatPath['title'] = $this->getTitle();
@@ -335,5 +338,4 @@ class Tag extends aList
 
         return $aPaths;
     }
-
 }

@@ -90,9 +90,17 @@ class Account_Password extends Account
             switch ($oExcp->getMessage()) {
                 case 'ERROR_MESSAGE_INPUT_EMPTYPASS':
                 case 'ERROR_MESSAGE_PASSWORD_TOO_SHORT':
-                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_TOO_SHORT', false, true);
+                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay(
+                        'ERROR_MESSAGE_PASSWORD_TOO_SHORT',
+                        false,
+                        true
+                    );
                 default:
-                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH', false, true);
+                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay(
+                        'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH',
+                        false,
+                        true
+                    );
             }
         }
         

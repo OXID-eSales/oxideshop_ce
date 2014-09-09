@@ -216,24 +216,32 @@ class Account_Wishlist extends Account
     {
         $aParams = oxRegistry::getConfig()->getRequestParameter('editval', true);
         if (is_array($aParams)) {
-
+            $oUtilsView = oxRegistry::get("oxUtilsView");
             $oParams = ( object ) $aParams;
             $this->setEnteredData(( object ) oxRegistry::getConfig()->getRequestParameter('editval'));
 
             if (!isset($aParams['rec_name']) || !isset($aParams['rec_email']) ||
                 !$aParams['rec_name'] || !$aParams['rec_email']
             ) {
-                return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY', false, true);
+                return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY', false, true);
             } else {
 
                 if ($oUser = $this->getUser()) {
-                    $oParams->send_email = $oUser->oxuser__oxusername->value;
-                    $oParams->send_name = $oUser->oxuser__oxfname->getRawValue() . ' ' . $oUser->oxuser__oxlname->getRawValue();
-                    $oParams->send_id = $oUser->getId();
+                    $sFirstName = 'oxuser__oxfname';
+                    $sLastName = 'oxuser__oxlname';
+                    $sSendName = 'send_name';
+                    $sSendEmail = 'send_email';
+                    $sUserNameField = 'oxuser__oxusername';
+                    $sSendName = 'send_name';
+                    $sSendId = 'send_id';
+
+                    $oParams->$sSendEmail = $oUser->$sUserNameField->value;
+                    $oParams->$sSendName = $oUser->$sFirstName->getRawValue() . ' ' . $oUser->$sLastName->getRawValue();
+                    $oParams->$sSendId = $oUser->getId();
 
                     $this->_blEmailSent = oxNew('oxemail')->sendWishlistMail($oParams);
                     if (!$this->_blEmailSent) {
-                        return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL', false, true);
+                        return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL', false, true);
                     }
                 }
             }
@@ -254,6 +262,8 @@ class Account_Wishlist extends Account
      * Wishlist data setter
      *
      * @param object $oData suggest data object
+     *
+     * @return null
      */
     public function setEnteredData($oData)
     {
@@ -339,11 +349,14 @@ class Account_Wishlist extends Account
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $sSelfLink = $this->getViewConfig()->getSelfLink();
+
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_GIFT_REGISTRY', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_GIFT_REGISTRY', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

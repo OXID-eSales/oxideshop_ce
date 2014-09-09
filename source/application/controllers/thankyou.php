@@ -103,6 +103,8 @@ class Thankyou extends oxUBase
      * (thankyou::_oBasket = oxsession::getBasket()) then destroys
      * it (oxsession::delBasket()), unsets user session ID, if
      * this user didn't entered password while ordering.
+     *
+     * @return null
      */
     public function init()
     {
@@ -333,8 +335,9 @@ class Thankyou extends oxUBase
         $aPath = array();
 
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('ORDER_COMPLETED', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = $this->getLink();
+        $iLang = oxRegistry::getLang()->getBaseLanguage();
+        $aPath['title'] = oxRegistry::getLang()->translateString('ORDER_COMPLETED', $iLang, false);
+        $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

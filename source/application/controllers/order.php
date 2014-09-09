@@ -137,6 +137,8 @@ class order extends oxUBase
      * Loads basket oxsession::getBasket(), sets $this->oBasket->blCalcNeeded = true to
      * recalculate, sets back basket to session oxsession::setBasket(), executes
      * parent::init().
+     *
+     * @return null
      */
     public function init()
     {
@@ -224,7 +226,8 @@ class order extends oxUBase
 
         /* @deprecated since v5.1.6 (2014-05-28); Not used anymore */
         $oConfig = $this->getConfig();
-        if ($oConfig->getRequestParameter('ord_custinfo') !== null && !$oConfig->getRequestParameter('ord_custinfo') && $this->isConfirmCustInfoActive()) {
+        $sOrderCustomerInfo = $oConfig->getRequestParameter('ord_custinfo');
+        if ($sOrderCustomerInfo !== null && !$sOrderCustomerInfo && $this->isConfirmCustInfoActive()) {
             $this->_blConfirmCustInfoError = 1;
 
             return;
@@ -243,7 +246,7 @@ class order extends oxUBase
             try {
                 $oOrder = oxNew('oxorder');
 
-                // finalizing ordering process (validating, storing order into DB, executing payment, setting status ...)
+                //finalizing ordering process (validating, storing order into DB, executing payment, setting status ...)
                 $iSuccess = $oOrder->finalizeOrder($oBasket, $oUser);
 
                 // performing special actions after user finishes order (assignment to special user groups)
@@ -495,7 +498,8 @@ class order extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('ORDER_COMPLETED', oxRegistry::getLang()->getBaseLanguage(), false);
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aPath['title'] = oxRegistry::getLang()->translateString('ORDER_COMPLETED', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;
@@ -613,11 +617,13 @@ class order extends oxUBase
         if ($oConfig->getConfigParam('blEnableIntangibleProdAgreement')) {
             $oBasket = $this->getBasket();
 
-            if ($blValid && $oBasket->hasArticlesWithDownloadableAgreement() && !$oConfig->getRequestParameter('oxdownloadableproductsagreement')) {
+            $blDownloadableProductsAgreement = $oConfig->getRequestParameter('oxdownloadableproductsagreement');
+            if ($blValid && $oBasket->hasArticlesWithDownloadableAgreement() && !$blDownloadableProductsAgreement) {
                 $blValid = false;
             }
 
-            if ($blValid && $oBasket->hasArticlesWithIntangibleAgreement() && !$oConfig->getRequestParameter('oxserviceproductsagreement')) {
+            $blServiceProductsAgreement = $oConfig->getRequestParameter('oxserviceproductsagreement');
+            if ($blValid && $oBasket->hasArticlesWithIntangibleAgreement() && !$blServiceProductsAgreement) {
                 $blValid = false;
             }
         }

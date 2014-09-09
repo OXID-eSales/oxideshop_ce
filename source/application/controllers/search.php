@@ -155,16 +155,18 @@ class Search extends oxUBase
         $myConfig = $this->getConfig();
 
         // #1184M - special char search
-        $sSearchParamForQuery = oxRegistry::getConfig()->getRequestParameter('searchparam', true);
+        $oConfig = oxRegistry::getConfig();
+        $sSearchParamForQuery = $oConfig->getRequestParameter('searchparam', true);
 
         // searching in category ?
-        $sInitialSearchCat = $this->_sSearchCatId = rawurldecode(oxRegistry::getConfig()->getRequestParameter('searchcnid'));
+        $sInitialSearchCat = $this->_sSearchCatId = rawurldecode($oConfig->getRequestParameter('searchcnid'));
 
         // searching in vendor #671
-        $sInitialSearchVendor = rawurldecode(oxRegistry::getConfig()->getRequestParameter('searchvendor'));
+        $sInitialSearchVendor = rawurldecode($oConfig->getRequestParameter('searchvendor'));
 
         // searching in Manufacturer #671
-        $sInitialSearchManufacturer = $this->_sSearchManufacturer = rawurldecode(oxRegistry::getConfig()->getRequestParameter('searchmanufacturer'));
+        $sManufacturerParameter = $oConfig->getRequestParameter('searchmanufacturer');
+        $sInitialSearchManufacturer = $this->_sSearchManufacturer = rawurldecode($sManufacturerParameter);
 
         $this->_blEmptySearch = false;
         if (!$sSearchParamForQuery && !$sInitialSearchCat && !$sInitialSearchVendor && !$sInitialSearchManufacturer) {
@@ -181,8 +183,15 @@ class Search extends oxUBase
         }
 
         // searching ..
+        /** @var oxSearch $oSearchHandler */
         $oSearchHandler = oxNew('oxsearch');
-        $oSearchList = $oSearchHandler->getSearchArticles($sSearchParamForQuery, $sInitialSearchCat, $sInitialSearchVendor, $sInitialSearchManufacturer, $this->getSortingSql($this->getSortIdent()));
+        $oSearchList = $oSearchHandler->getSearchArticles(
+            $sSearchParamForQuery,
+            $sInitialSearchCat,
+            $sInitialSearchVendor,
+            $sInitialSearchManufacturer,
+            $this->getSortingSql($this->getSortIdent())
+        );
 
         // list of found articles
         $this->_aArticleList = $oSearchList;
@@ -190,7 +199,12 @@ class Search extends oxUBase
 
         // skip count calculation if no articles in list found
         if ($oSearchList->count()) {
-            $this->_iAllArtCnt = $oSearchHandler->getSearchArticleCount($sSearchParamForQuery, $sInitialSearchCat, $sInitialSearchVendor, $sInitialSearchManufacturer);
+            $this->_iAllArtCnt = $oSearchHandler->getSearchArticleCount(
+                $sSearchParamForQuery,
+                $sInitialSearchCat,
+                $sInitialSearchVendor,
+                $sInitialSearchManufacturer
+            );
         }
 
         $iNrofCatArticles = (int) $myConfig->getConfigParam('iNrofCatArticles');
@@ -215,7 +229,9 @@ class Search extends oxUBase
             $sCnid = $oConfig->getRequestParameter('searchcnid', true);
             $sVendor = $oConfig->getRequestParameter('searchvendor', true);
             $sManufacturer = $oConfig->getRequestParameter('searchmanufacturer', true);
-            $this->addRssFeed($oRss->getSearchArticlesTitle($sSearch, $sCnid, $sVendor, $sManufacturer), $oRss->getSearchArticlesUrl($sSearch, $sCnid, $sVendor, $sManufacturer), 'searchArticles');
+            $sSearchArticlesTitle = $oRss->getSearchArticlesTitle($sSearch, $sCnid, $sVendor, $sManufacturer);
+            $sSearchArticlesUrl = $oRss->getSearchArticlesUrl($sSearch, $sCnid, $sVendor, $sManufacturer);
+            $this->addRssFeed($sSearchArticlesTitle, $sSearchArticlesUrl, 'searchArticles');
         }
 
         // processing list articles
@@ -227,6 +243,8 @@ class Search extends oxUBase
     /**
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
+     *
+     * @return null
      */
     protected function _processListArticles()
     {
@@ -410,7 +428,8 @@ class Search extends oxUBase
             $this->_sSearchManufacturer = false;
             if ($this->_isSearchClass()) {
                 // searching in Manufacturer #671
-                $this->_sSearchManufacturer = rawurldecode($this->getConfig()->getRequestParameter('searchmanufacturer'));
+                $sManufacturerParameter = $this->getConfig()->getRequestParameter('searchmanufacturer');
+                $this->_sSearchManufacturer = rawurldecode($sManufacturerParameter);
             }
         }
 
@@ -453,7 +472,8 @@ class Search extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('SEARCH', oxRegistry::getLang()->getBaseLanguage(), false);
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aPath['title'] = oxRegistry::getLang()->translateString('SEARCH', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -499,7 +519,8 @@ class Search extends oxUBase
     {
         $sTitle = '';
         $sTitle .= $this->getArticleCount();
-        $sTitle .= ' ' . oxRegistry::getLang()->translateString('HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false);
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $sTitle .= ' ' . oxRegistry::getLang()->translateString('HITS_FOR', $iBaseLanguage, false);
         $sTitle .= ' "' . $this->getSearchParamForHtml() . '"';
 
         return $sTitle;

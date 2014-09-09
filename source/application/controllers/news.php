@@ -100,7 +100,11 @@ class News extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false) . ' ' . $this->getConfig()->getActiveShop()->oxshops__oxname->value;
+        $oLang = oxRegistry::getLang();
+        $iBaseLanguage = $oLang->getBaseLanguage();
+        $sTranslatedString = $oLang->translateString('LATEST_NEWS_AND_UPDATES_AT', $iBaseLanguage, false);
+
+        $aPath['title'] = $sTranslatedString . ' ' . $this->getConfig()->getActiveShop()->oxshops__oxname->value;
         $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;
@@ -130,6 +134,10 @@ class News extends oxUBase
      */
     public function getTitle()
     {
-        return oxRegistry::getLang()->translateString('LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false) . ' ' . $this->getConfig()->getActiveShop()->oxshops__oxname->value;
+        $oLang = oxRegistry::getLang();
+        $iBaseLanguage = $oLang->getBaseLanguage();
+        $sTranslatedString = $oLang->translateString('LATEST_NEWS_AND_UPDATES_AT', $iBaseLanguage, false);
+
+        return $sTranslatedString . ' ' . $this->getConfig()->getActiveShop()->oxshops__oxname->value;
     }
 }

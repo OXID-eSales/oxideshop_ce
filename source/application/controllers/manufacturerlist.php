@@ -262,7 +262,8 @@ class ManufacturerList extends aList
         if ($this->_aArticleList === null) {
             $this->_aArticleList = array();
             if (($oManufacturerTree = $this->getManufacturerTree())) {
-                if (($oManufacturer = $this->getActManufacturer()) && ($oManufacturer->getId() != 'root') && $oManufacturer->getIsVisible()) {
+                $oManufacturer = $this->getActManufacturer();
+                if ($oManufacturer && ($oManufacturer->getId() != 'root') && $oManufacturer->getIsVisible()) {
                     list($aArticleList, $iAllArtCnt) = $this->_loadArticles($oManufacturer);
                     if ($iAllArtCnt) {
                         $this->_aArticleList = $aArticleList;

@@ -124,8 +124,13 @@ class RecommList extends aList
             }
 
             if ($myConfig->getConfigParam('bl_rssRecommListArts')) {
+                /** @var oxRssFeed $oRss */
                 $oRss = oxNew('oxrssfeed');
-                $this->addRssFeed($oRss->getRecommListArticlesTitle($oActiveRecommList), $oRss->getRecommListArticlesUrl($this->_oActiveRecommList), 'recommlistarts');
+                $this->addRssFeed(
+                    $oRss->getRecommListArticlesTitle($oActiveRecommList),
+                    $oRss->getRecommListArticlesUrl($this->_oActiveRecommList),
+                    'recommlistarts'
+                );
             }
 
         } else {
@@ -194,6 +199,8 @@ class RecommList extends aList
 
     /**
      * Saves user ratings and review text (oxreview object)
+     *
+     * @return null
      */
     public function saveReview()
     {
@@ -263,7 +270,10 @@ class RecommList extends aList
                 $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
                 $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
-                $this->_aArticleList = $oActiveRecommList->getArticles($iNrofCatArticles * $iActPage, $iNrofCatArticles);
+                $this->_aArticleList = $oActiveRecommList->getArticles(
+                    $iNrofCatArticles * $iActPage,
+                    $iNrofCatArticles
+                );
 
                 if ($this->_aArticleList && $this->_aArticleList->count()) {
                     foreach ($this->_aArticleList as $oItem) {
@@ -334,7 +344,8 @@ class RecommList extends aList
             $this->_blRate = false;
             if ($this->isReviewActive() && ($oActiveRecommList = $this->getActiveRecommList())) {
                 $oRating = oxNew('oxrating');
-                $this->_blRate = $oRating->allowRating(oxRegistry::getSession()->getVariable('usr'), 'oxrecommlist', $oActiveRecommList->getId());
+                $sUserVariable = oxRegistry::getSession()->getVariable('usr');
+                $this->_blRate = $oRating->allowRating($sUserVariable, 'oxrecommlist', $oActiveRecommList->getId());
             }
         }
 
@@ -428,7 +439,8 @@ class RecommList extends aList
         $aPath[0]->oxcategories__oxtitle = new oxField($oLang->translateString('RECOMMLIST'));
 
         if ($sSearchParam = $this->getRecommSearch()) {
-            $sUrl = $this->getConfig()->getShopHomeURL() . "cl=recommlist&amp;searchrecomm=" . rawurlencode($sSearchParam);
+            $shopHomeURL = $this->getConfig()->getShopHomeURL();
+            $sUrl = $shopHomeURL . "cl=recommlist&amp;searchrecomm=" . rawurlencode($sSearchParam);
             $sTitle = $oLang->translateString('RECOMMLIST_SEARCH') . ' "' . $sSearchParam . '"';
 
             $aPath[1] = oxNew("oxcategory");
@@ -545,7 +557,8 @@ class RecommList extends aList
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('LISTMANIA', oxRegistry::getLang()->getBaseLanguage(), false);
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aPath['title'] = oxRegistry::getLang()->translateString('LISTMANIA', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -560,12 +573,17 @@ class RecommList extends aList
     public function getTitle()
     {
         if ($aActiveList = $this->getActiveRecommList()) {
-            $sTitle = $aActiveList->oxrecommlists__oxtitle->value . ' (' . oxRegistry::getLang()->translateString('LIST_BY', oxRegistry::getLang()->getBaseLanguage(), false) . ' ' . $aActiveList->oxrecommlists__oxauthor->value . ')';
+            $oLang = oxRegistry::getLang();
+            $sTranslatedString = $oLang->translateString('LIST_BY', $oLang->getBaseLanguage(), false);
+            $sTitleField = 'oxrecommlists__oxtitle';
+            $sAuthorField = 'oxrecommlists__oxauthor';
+            $sTitle = $aActiveList->$sTitleField->value . ' (' . $sTranslatedString . ' ' .
+                      $aActiveList->$sAuthorField->value . ')';
         } else {
-            $sTitle = $this->getArticleCount() . ' ' . oxRegistry::getLang()->translateString('HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false) . ' "' . $this->getSearchForHtml() . '"';
+            $sTranslatedString = $oLang->translateString('HITS_FOR', $oLang->getBaseLanguage(), false);
+            $sTitle = $this->getArticleCount() . ' ' . $sTranslatedString . ' "' . $this->getSearchForHtml() . '"';
         }
 
         return $sTitle;
     }
-
 }

@@ -94,7 +94,8 @@ class Rss extends oxUBase
         }
 
         // return rss xml, no further processing
-        oxRegistry::getUtils()->setHeader("Content-Type: text/xml; charset=" . oxRegistry::getLang()->translateString("charset"));
+        $sCharset = oxRegistry::getLang()->translateString("charset");
+        oxRegistry::getUtils()->setHeader("Content-Type: text/xml; charset=" . $sCharset);
         oxRegistry::getUtils()->showMessageAndExit(
             $this->_processOutput(
                 $oSmarty->fetch($this->_sThisTemplate, $this->getViewId())
@@ -171,7 +172,12 @@ class Rss extends oxUBase
     public function searcharts()
     {
         if ($this->getConfig()->getConfigParam('bl_rssSearch')) {
-            $this->_getRssFeed()->loadSearchArticles(oxRegistry::getConfig()->getRequestParameter('searchparam', true), oxRegistry::getConfig()->getRequestParameter('searchcnid'), oxRegistry::getConfig()->getRequestParameter('searchvendor'), oxRegistry::getConfig()->getRequestParameter('searchmanufacturer'));
+            $sSearchParameter = oxRegistry::getConfig()->getRequestParameter('searchparam', true);
+            $sCatId = oxRegistry::getConfig()->getRequestParameter('searchcnid');
+            $sVendorId = oxRegistry::getConfig()->getRequestParameter('searchvendor');
+            $sManufacturerId = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer');
+
+            $this->_getRssFeed()->loadSearchArticles($sSearchParameter, $sCatId, $sVendorId, $sManufacturerId);
         } else {
             error_404_handler();
         }

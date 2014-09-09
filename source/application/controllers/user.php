@@ -104,7 +104,9 @@ class User extends oxUBase
             }
 
             $oBasket = $this->getSession()->getBasket();
-            if ($this->_blIsOrderStep && $myConfig->getConfigParam('blPsBasketReservationEnabled') && (!$oBasket || ($oBasket && !$oBasket->getProductsCount()))) {
+            $blPsBasketReservationsEnabled = $myConfig->getConfigParam('blPsBasketReservationEnabled');
+            if ($this->_blIsOrderStep && $blPsBasketReservationsEnabled &&
+                (!$oBasket || ($oBasket && !$oBasket->getProductsCount()))) {
                 oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=basket', true, 302);
             }
         }
@@ -159,6 +161,7 @@ class User extends oxUBase
      */
     public function getOrderRemark()
     {
+        $oConfig = oxRegistry::getConfig();
         if ($this->_sOrderRemark === null) {
             $sOrderRemark = false;
             // if already connected, we can use the session
@@ -166,10 +169,10 @@ class User extends oxUBase
                 $sOrderRemark = oxRegistry::getSession()->getVariable('ordrem');
             } else {
                 // not connected so nowhere to save, we're gonna use what we get from post
-                $sOrderRemark = oxRegistry::getConfig()->getRequestParameter('order_remark', true);
+                $sOrderRemark = $oConfig->getRequestParameter('order_remark', true);
             }
 
-            $this->_sOrderRemark = $sOrderRemark ? oxRegistry::getConfig()->checkParamSpecialChars($sOrderRemark) : false;
+            $this->_sOrderRemark = $sOrderRemark ? $oConfig->checkParamSpecialChars($sOrderRemark) : false;
         }
 
         return $this->_sOrderRemark;
@@ -212,6 +215,8 @@ class User extends oxUBase
 
     /**
      * Fills user form with date taken from Facebook
+     *
+     * @return null
      */
     protected function _fillFormWithFacebookData()
     {
@@ -259,7 +264,8 @@ class User extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('ADDRESS', oxRegistry::getLang()->getBaseLanguage(), false);
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aPath['title'] = oxRegistry::getLang()->translateString('ADDRESS', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;

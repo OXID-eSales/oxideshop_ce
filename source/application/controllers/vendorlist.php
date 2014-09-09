@@ -445,8 +445,13 @@ class VendorList extends aList
     public function getVendorTree()
     {
         if ($this->_getVendorId() && $this->_oVendorTree === null) {
+            /** @var oxVendorList $oVendorTree */
             $oVendorTree = oxNew('oxVendorList');
-            $oVendorTree->buildVendorTree('vendorlist', $this->getActVendor()->getId(), $this->getConfig()->getShopHomeURL());
+            $oVendorTree->buildVendorTree(
+                'vendorlist',
+                $this->getActVendor()->getId(),
+                $this->getConfig()->getShopHomeURL()
+            );
             $this->_oVendorTree = $oVendorTree;
         }
 
@@ -457,6 +462,8 @@ class VendorList extends aList
      * Vendor tree setter
      *
      * @param oxVendorList $oVendorTree vendor tree
+     *
+     * @return null
      */
     public function setVendorTree($oVendorTree)
     {

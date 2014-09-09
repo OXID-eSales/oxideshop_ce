@@ -194,7 +194,8 @@ class Account_Recommlist extends Account
             ) {
 
                 $oRecommList = oxNew('oxrecommlist');
-                if (($oRecommList->load($sRecommId)) && $oUser->getId() === $oRecommList->oxrecommlists__oxuserid->value) {
+                $sUserIdField = 'oxrecommlists__oxuserid';
+                if (($oRecommList->load($sRecommId)) && $oUser->getId() === $oRecommList->$sUserIdField->value) {
                     $this->_oActRecommList = $oRecommList;
                 }
             }
@@ -207,6 +208,8 @@ class Account_Recommlist extends Account
      * Set active recommlist
      *
      * @param object $oRecommList Recommendation list
+     *
+     * @return null
      */
     public function setActiveRecommList($oRecommList)
     {
@@ -330,11 +333,13 @@ class Account_Recommlist extends Account
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $sSelfLink = $this->getViewConfig()->getSelfLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('LISTMANIA', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['title'] = oxRegistry::getLang()->translateString('LISTMANIA', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

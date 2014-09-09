@@ -80,7 +80,8 @@ class Wishlist extends oxUBase
         if ($this->_oWishUser === null) {
             $this->_oWishUser = false;
 
-            $sUserId = oxRegistry::getConfig()->getRequestParameter('wishid') ? oxRegistry::getConfig()->getRequestParameter('wishid') : oxRegistry::getSession()->getVariable('wishid');
+            $sWishIdParameter = oxRegistry::getConfig()->getRequestParameter('wishid');
+            $sUserId = $sWishIdParameter ? $sWishIdParameter : oxRegistry::getSession()->getVariable('wishid');
             if ($sUserId) {
                 $oUser = oxNew('oxuser');
                 if ($oUser->load($sUserId)) {
@@ -131,7 +132,6 @@ class Wishlist extends oxUBase
      * Template variables:
      * <b>wish_result</b>, <b>search</b>
      *
-     * @return bool
      */
     public function searchForWishList()
     {
@@ -178,7 +178,8 @@ class Wishlist extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false);
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aPath['title'] = oxRegistry::getLang()->translateString('PUBLIC_GIFT_REGISTRIES', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -192,10 +193,15 @@ class Wishlist extends oxUBase
      */
     public function getTitle()
     {
+        $oLang = oxRegistry::getLang();
         if ($oUser = $this->getWishUser()) {
-            $sTitle = oxRegistry::getLang()->translateString('GIFT_REGISTRY_OF_3', oxRegistry::getLang()->getBaseLanguage(), false) . ' ' . $oUser->oxuser__oxfname->value . ' ' . $oUser->oxuser__oxlname->value;
+            $sTranslatedString = $oLang->translateString('GIFT_REGISTRY_OF_3', $oLang->getBaseLanguage(), false);
+            $sFirstnameField = 'oxuser__oxfname';
+            $sLastnameField = 'oxuser__oxlname';
+
+            $sTitle = $sTranslatedString . ' ' . $oUser->$sFirstnameField->value . ' ' . $oUser->$sLastnameField->value;
         } else {
-            $sTitle = oxRegistry::getLang()->translateString('PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false);
+            $sTitle = $oLang->translateString('PUBLIC_GIFT_REGISTRIES', $oLang->getBaseLanguage(), false);
         }
 
         return $sTitle;

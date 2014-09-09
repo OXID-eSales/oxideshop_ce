@@ -256,6 +256,8 @@ class Details extends oxUBase
      * Processes product by setting link type and in case list type is search adds search parameters to details link
      *
      * @param object $oProduct product to process
+     *
+     * @return null
      */
     protected function _processProduct($oProduct)
     {
@@ -328,7 +330,9 @@ class Details extends oxUBase
 
                 if ($myConfig->getConfigParam('bl_rssRecommLists') && $this->getSimilarRecommListIds()) {
                     $oRss = oxNew('oxRssFeed');
-                    $this->addRssFeed($oRss->getRecommListsTitle($oProduct), $oRss->getRecommListsUrl($oProduct), 'recommlists');
+                    $sTitle = $oRss->getRecommListsTitle($oProduct);
+                    $sUrl = $oRss->getRecommListsUrl($oProduct);
+                    $this->addRssFeed($sTitle, $sUrl, 'recommlists');
                 }
 
                 return $this->_sThisTemplate;
@@ -400,6 +404,8 @@ class Details extends oxUBase
 
     /**
      * Saves user ratings and review text (oxReview object)
+     *
+     * @return null
      */
     public function saveReview()
     {
@@ -550,17 +556,22 @@ class Details extends oxUBase
 
         // for ajax call
         if ($this->getConfig()->getRequestParameter('blAjax', true)) {
-            oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . oxRegistry::getLang()->translateString('charset'));
+            $sCharset = oxRegistry::getLang()->translateString('charset');
+            oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . $sCharset);
             $oActView = oxNew('oxubase');
             $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
             $oSmarty->assign('oView', $this);
             $oSmarty->assign('oViewConf', $this->getViewConfig());
-            oxRegistry::getUtils()->showMessageAndExit($oSmarty->fetch('page/details/inc/editTags.tpl', $this->getViewId()));
+            oxRegistry::getUtils()->showMessageAndExit(
+                $oSmarty->fetch('page/details/inc/editTags.tpl', $this->getViewId())
+            );
         }
     }
 
     /**
      * Cancels tags editing mode
+     *
+     * @return null
      */
     public function cancelTags()
     {
@@ -572,12 +583,15 @@ class Details extends oxUBase
 
         // for ajax call
         if (oxRegistry::getConfig()->getRequestParameter('blAjax', true)) {
-            oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . oxRegistry::getLang()->translateString('charset'));
+            $sCharset = oxRegistry::getLang()->translateString('charset');
+            oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . $sCharset);
             $oActView = oxNew('oxubase');
             $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
             $oSmarty->assign('oView', $this);
             $oSmarty->assign('oViewConf', $this->getViewConfig());
-            oxRegistry::getUtils()->showMessageAndExit($oSmarty->fetch('page/details/inc/tags.tpl', $this->getViewId()));
+            oxRegistry::getUtils()->showMessageAndExit(
+                $oSmarty->fetch('page/details/inc/tags.tpl', $this->getViewId())
+            );
         }
     }
 
@@ -639,7 +653,8 @@ class Details extends oxUBase
                 $oUtils->showMessageAndExit('');
             }
 
-            $aVariantSelections = $this->_oProduct->getVariantSelections($this->getConfig()->getRequestParameter("varselid"));
+            $sVarSelIdParameter = $this->getConfig()->getRequestParameter("varselid");
+            $aVariantSelections = $this->_oProduct->getVariantSelections($sVarSelIdParameter);
             if ($aVariantSelections && $aVariantSelections['oActiveVariant'] && $aVariantSelections['blPerfectFit']) {
                 $this->_oProduct = $aVariantSelections['oActiveVariant'];
             }
@@ -655,6 +670,8 @@ class Details extends oxUBase
 
     /**
      * Runs additional checks for article.
+     *
+     * @return null
      */
     protected function _additionalChecksForArticle()
     {
@@ -986,6 +1003,8 @@ class Details extends oxUBase
      * Returns search title setter
      *
      * @param string $sTitle search title
+     *
+     * @return null
      */
     public function setSearchTitle($sTitle)
     {
@@ -1029,8 +1048,13 @@ class Details extends oxUBase
     {
         if ($oProduct = $this->getProduct()) {
             $sTag = $this->getTag();
+            $sTitleField = 'oxarticles__oxtitle';
+            $sVarSelField = 'oxarticles__oxvarselect';
 
-            return $oProduct->oxarticles__oxtitle->value . ($oProduct->oxarticles__oxvarselect->value ? ' ' . $oProduct->oxarticles__oxvarselect->value : '') . (!empty($sTag) ? ' - ' . $sTag : '');
+            $sVarSelValue = $oProduct->$sVarSelField->value ? ' ' . $oProduct->$sVarSelField->value : '';
+            $sTagValue = !empty($sTag) ? ' - ' . $sTag : '';
+
+            return $oProduct->$sTitleField->value . $sVarSelValue . $sTagValue;
         }
     }
     
@@ -1209,11 +1233,13 @@ class Details extends oxUBase
     {
         // finding parent
         $oProduct = $this->getProduct();
-        if (($oParent = $this->_getParentProduct($oProduct->oxarticles__oxparentid->value))) {
-            return $oParent->getVariantSelections($this->getConfig()->getRequestParameter("varselid"), $oProduct->getId());
+        $sVarSelParameter = $this->getConfig()->getRequestParameter("varselid");
+        $sParentIdField = 'oxarticles__oxparentid';
+        if (($oParent = $this->_getParentProduct($oProduct->$sParentIdField->value))) {
+            return $oParent->getVariantSelections($sVarSelParameter, $oProduct->getId());
         }
 
-        return $oProduct->getVariantSelections($this->getConfig()->getRequestParameter("varselid"));
+        return $oProduct->getVariantSelections($sVarSelParameter);
     }
 
     /**
@@ -1568,7 +1594,8 @@ class Details extends oxUBase
     {
         $aPaths = array();
         $aCatPath = array();
-        $aCatPath['title'] = oxRegistry::getLang()->translateString('LISTMANIA', oxRegistry::getLang()->getBaseLanguage(), false);
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aCatPath['title'] = oxRegistry::getLang()->translateString('LISTMANIA', $iBaseLanguage, false);
         $aPaths[] = $aCatPath;
 
         return $aPaths;
@@ -1585,13 +1612,17 @@ class Details extends oxUBase
 
         $aCatPath = array();
 
-        $aCatPath['title'] = oxRegistry::getLang()->translateString('TAGS', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aCatPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=tags');
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $sSelfLink = $this->getViewConfig()->getSelfLink();
+
+        $aCatPath['title'] = oxRegistry::getLang()->translateString('TAGS', $iBaseLanguage, false);
+        $aCatPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=tags');
         $aPaths[] = $aCatPath;
 
+        $sSearchTagParameter = oxRegistry::getConfig()->getRequestParameter('searchtag');
         $oStr = getStr();
-        $aCatPath['title'] = $oStr->ucfirst(oxRegistry::getConfig()->getRequestParameter('searchtag'));
-        $aCatPath['link'] = oxRegistry::get("oxSeoEncoderTag")->getTagUrl(oxRegistry::getConfig()->getRequestParameter('searchtag'));
+        $aCatPath['title'] = $oStr->ucfirst($sSearchTagParameter);
+        $aCatPath['link'] = oxRegistry::get("oxSeoEncoderTag")->getTagUrl($sSearchTagParameter);
         $aPaths[] = $aCatPath;
 
         return $aPaths;
@@ -1607,8 +1638,14 @@ class Details extends oxUBase
         $aPaths = array();
         $aCatPath = array();
 
-        $aCatPath['title'] = sprintf(oxRegistry::getLang()->translateString('SEARCH_RESULT', oxRegistry::getLang()->getBaseLanguage(), false), $this->getSearchParamForHtml());
-        $aCatPath['link'] = $this->getViewConfig()->getSelfLink() . 'stoken=' . oxRegistry::getSession()->getVariable('sess_stoken') . "&amp;cl=search&amp;searchparam=" . $this->getSearchParamForHtml();
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $sTranslatedString = oxRegistry::getLang()->translateString('SEARCH_RESULT', $iBaseLanguage, false);
+        $sSelfLink = $this->getViewConfig()->getSelfLink();
+        $sSessionToken = oxRegistry::getSession()->getVariable('sess_stoken');
+
+        $aCatPath['title'] = sprintf($sTranslatedString, $this->getSearchParamForHtml());
+        $aCatPath['link'] = $sSelfLink . 'stoken=' . $sSessionToken . "&amp;cl=search&amp;".
+                            "searchparam=" . $this->getSearchParamForHtml();
 
         $aPaths[] = $aCatPath;
 

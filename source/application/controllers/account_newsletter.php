@@ -128,11 +128,14 @@ class Account_Newsletter extends Account
         $aPaths = array();
         $aPath = array();
         $oUtils = oxRegistry::get("oxUtilsUrl");
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $sSelfLink = $this->getViewConfig()->getSelfLink();
+
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('NEWSLETTER_SETTINGS', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['title'] = oxRegistry::getLang()->translateString('NEWSLETTER_SETTINGS', $iBaseLanguage, false);
         $aPath['link'] = $oUtils->cleanUrl($this->getLink(), array('fnc'));
         $aPaths[] = $aPath;    
         

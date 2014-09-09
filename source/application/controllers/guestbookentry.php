@@ -55,31 +55,31 @@ class GuestbookEntry extends GuestBook
         $sUserId = oxRegistry::getSession()->getVariable('usr');
 
         // guest book`s entry is validated
-        if (!$sUserId) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_LOGIN_TO_WRITE_ENTRY');
-
+        if ( !$sUserId ) {
+            $sErrorMessage = 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_LOGIN_TO_WRITE_ENTRY';
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($sErrorMessage);
             //return to same page
             return;
         }
 
-        if (!$sShopId) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_UNDEFINED_SHOP');
-
+        if ( !$sShopId ) {
+            $sErrorMessage = 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_UNDEFINED_SHOP';
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($sErrorMessage);
             return 'guestbookentry';
         }
 
         // empty entries validation
-        if ('' == $sReviewText) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_REVIEW_CONTAINS_NO_TEXT');
-
+        if ( '' == $sReviewText ) {
+            $sErrorMessage = 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_REVIEW_CONTAINS_NO_TEXT';
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($sErrorMessage);
             return 'guestbookentry';
         }
 
         // flood protection
-        $oEntrie = oxNew('oxgbentry');
-        if ($oEntrie->floodProtection($sShopId, $sUserId)) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_MAXIMUM_NUMBER_EXCEEDED');
-
+        $oEntrie = oxNew( 'oxgbentry' );
+        if ( $oEntrie->floodProtection( $sShopId, $sUserId ) ) {
+            $sErrorMessage = 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_MAXIMUM_NUMBER_EXCEEDED';
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($sErrorMessage);
             return 'guestbookentry';
         }
 

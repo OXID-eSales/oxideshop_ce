@@ -135,6 +135,8 @@ class Payment extends oxUBase
 
     /**
      * Executes parent method parent::init().
+     *
+     * @return null
      */
     public function init()
     {
@@ -166,7 +168,8 @@ class Payment extends oxUBase
         //if it happens that you are not in SSL
         //then forcing to HTTPS
 
-        //but first checking maybe there were redirection already to prevent infinite redirections due to possible buggy ssl detection on server
+        //but first checking maybe there were redirection already to prevent infinite redirections
+        //due to possible buggy ssl detection on server
         $blAlreadyRedirected = oxRegistry::getConfig()->getRequestParameter('sslredirect') == 'forced';
 
         if ($this->getIsOrderStep()) {
@@ -174,8 +177,9 @@ class Payment extends oxUBase
             //additional check if we really really have a user now
             //and the basket is not empty
             $oBasket = $this->getSession()->getBasket();
-            if ($myConfig->getConfigParam('blPsBasketReservationEnabled') && (!$oBasket || ($oBasket && !$oBasket->getProductsCount()))) {
-                oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=basket', true, 302);
+            $blPsBasketReservationEnabled = $myConfig->getConfigParam('blPsBasketReservationEnabled');
+            if ($blPsBasketReservationEnabled && (!$oBasket || ($oBasket && !$oBasket->getProductsCount()))) {
+                oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() .'cl=basket', true, 302);
             }
 
             $oUser = $this->getUser();
@@ -186,10 +190,15 @@ class Payment extends oxUBase
             }
         }
 
-        if ($myConfig->getCurrentShopURL() != $myConfig->getSSLShopURL() && !$blAlreadyRedirected && !oxRegistry::getConfig()->getRequestParameter('fnc')) {
-            $sPayError = oxRegistry::getConfig()->getRequestParameter('payerror') ? 'payerror=' . oxRegistry::getConfig()->getRequestParameter('payerror') : '';
-            $sPayErrorText = oxRegistry::getConfig()->getRequestParameter('payerrortext') ? 'payerrortext=' . oxRegistry::getConfig()->getRequestParameter('payerrortext') : '';
-            $sRedirectURL = $myConfig->getShopSecureHomeURL() . 'sslredirect=forced&cl=payment&' . $sPayError . "&" . $sPayErrorText;
+        $sFncParameter = oxRegistry::getConfig()->getRequestParameter('fnc');
+        if ($myConfig->getCurrentShopURL() != $myConfig->getSSLShopURL() && !$blAlreadyRedirected && !$sFncParameter) {
+            $sPayErrorParameter = oxRegistry::getConfig()->getRequestParameter('payerror');
+            $sPayErrorTextParameter = oxRegistry::getConfig()->getRequestParameter('payerrortext');
+            $shopSecureHomeURL = $myConfig->getShopSecureHomeURL();
+
+            $sPayError = $sPayErrorParameter ?'payerror='.$sPayErrorParameter:'';
+            $sPayErrorText = $sPayErrorTextParameter ?'payerrortext='.$sPayErrorTextParameter:'';
+            $sRedirectURL = $shopSecureHomeURL .'sslredirect=forced&cl=payment&'.$sPayError."&".$sPayErrorText;
             oxRegistry::getUtils()->redirect($sRedirectURL, true, 302);
         }
 
@@ -208,6 +217,8 @@ class Payment extends oxUBase
      * Set default empty payment. If config param 'blOtherCountryOrder' is on,
      * tries to set 'oxempty' payment to aViewData['oxemptypayment'].
      * On error sets aViewData['payerror'] to -2
+     *
+     * @return null
      */
     protected function _setDefaultEmptyPayment()
     {
@@ -227,6 +238,8 @@ class Payment extends oxUBase
 
     /**
      * Unsets payment errors from session
+     *
+     * @return null
      */
     protected function _unsetPaymentErrors()
     {
@@ -251,6 +264,8 @@ class Payment extends oxUBase
     /**
      * Changes shipping set to chosen one. Sets basket status to not up-to-date, which later
      * forces to recalculate it
+     *
+     * @return null
      */
     public function changeshipping()
     {
@@ -371,7 +386,8 @@ class Payment extends oxUBase
             $oBasket = $this->getSession()->getBasket();
 
             // load sets, active set, and active set payment list
-            list($aAllSets, $sActShipSet, $aPaymentList) = oxRegistry::get("oxDeliverySetList")->getDeliverySetData($sActShipSet, $this->getUser(), $oBasket);
+            list($aAllSets, $sActShipSet, $aPaymentList) =
+                oxRegistry::get("oxDeliverySetList")->getDeliverySetData($sActShipSet, $this->getUser(), $oBasket);
 
             $oBasket->setShipping($sActShipSet);
 
@@ -426,6 +442,8 @@ class Payment extends oxUBase
      *
      * @param array    &$aPaymentList payments array
      * @param oxBasket $oBasket       basket object
+     *
+     * @return null
      */
     protected function _setValues(& $aPaymentList, $oBasket = null)
     {
@@ -521,6 +539,8 @@ class Payment extends oxUBase
     /**
      * Assign debit note payment values to view data. Loads user debit note payment
      * if available and assigns payment data to $this->_aDynValue
+     *
+     * @return null
      */
     protected function _assignDebitNoteParams()
     {
@@ -528,7 +548,8 @@ class Payment extends oxUBase
         $oUserPayment = oxNew('oxuserpayment');
         //such info available ?
         if ($oUserPayment->getPaymentByPaymentType($this->getUser(), 'oxiddebitnote')) {
-            $aAddPaymentData = oxRegistry::getUtils()->assignValuesFromText($oUserPayment->oxuserpayments__oxvalue->value);
+            $sUserPaymentField = 'oxuserpayments__oxvalue';
+            $aAddPaymentData = oxRegistry::getUtils()->assignValuesFromText($oUserPayment->$sUserPaymentField->value);
 
             //checking if some of values is allready set in session - leave it
             foreach ($aAddPaymentData as $oData) {
@@ -757,7 +778,8 @@ class Payment extends oxUBase
         $aPath = array();
 
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('PAY', oxRegistry::getLang()->getBaseLanguage(), false);
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aPath['title'] = oxRegistry::getLang()->translateString('PAY', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;
@@ -774,5 +796,4 @@ class Payment extends oxUBase
     {
         return $this->getConfig()->getConfigParam('blShowVATForPayCharge');
     }
-
 }

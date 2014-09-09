@@ -152,6 +152,8 @@ class oxcmp_categories extends oxView
      * Category tree loader
      *
      * @param string $sActCat active category id
+     *
+     * @return null
      */
     protected function _loadCategoryTree($sActCat)
     {
@@ -172,13 +174,16 @@ class oxcmp_categories extends oxView
      * Manufacturer tree loader
      *
      * @param string $sActManufacturer active Manufacturer id
+     *
+     * @return null
      */
     protected function _loadManufacturerTree($sActManufacturer)
     {
         $myConfig = $this->getConfig();
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
             $oManufacturerTree = oxNew('oxmanufacturerlist');
-            $oManufacturerTree->buildManufacturerTree('manufacturerlist', $sActManufacturer, $myConfig->getShopHomeURL());
+            $shopHomeURL = $myConfig->getShopHomeURL();
+            $oManufacturerTree->buildManufacturerTree('manufacturerlist', $sActManufacturer, $shopHomeURL);
 
             $oParentView = $this->getParent();
 
@@ -299,6 +304,8 @@ class oxcmp_categories extends oxView
      * Setter of category tree
      *
      * @param oxCategoryList $oCategoryTree category list
+     *
+     * @return null
      */
     public function setCategoryTree($oCategoryTree)
     {
@@ -309,6 +316,8 @@ class oxcmp_categories extends oxView
      * Setter of manufacturer tree
      *
      * @param oxManufacturerList $oManufacturerTree manufacturer list
+     *
+     * @return null
      */
     public function setManufacturerTree($oManufacturerTree)
     {

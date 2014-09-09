@@ -92,6 +92,8 @@ class oxcmp_user extends oxView
      *
      * Session variable:
      * <b>usr_err</b>
+     *
+     * @return null
      */
     public function init()
     {
@@ -125,6 +127,8 @@ class oxcmp_user extends oxView
      * In case any condition is not satisfied redirects user to:
      *  (1) login page;
      *  (2) terms agreement page;
+     *
+     * @return null
      */
     protected function _checkPsState()
     {
@@ -162,7 +166,8 @@ class oxcmp_user extends oxView
 
         // this user is blocked, deny him
         if ($oUser->inGroup('oxidblocked')) {
-            oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=content&tpl=user_blocked.tpl', true, 302);
+            $sUrl = $myConfig->getShopHomeURL() . 'cl=content&tpl=user_blocked.tpl';
+            oxRegistry::getUtils()->redirect($sUrl, true, 302);
         }
 
         // TODO: move this to a proper place
@@ -245,7 +250,8 @@ class oxcmp_user extends oxView
 
         // this user is blocked, deny him
         if ($oUser->inGroup('oxidblocked')) {
-            oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=content&tpl=user_blocked.tpl', true, 302);
+            $sUrl = $myConfig->getShopHomeURL() . 'cl=content&tpl=user_blocked.tpl';
+            oxRegistry::getUtils()->redirect($sUrl, true, 302);
         }
 
         // recalc basket
@@ -260,6 +266,8 @@ class oxcmp_user extends oxView
     /**
      * Executes oxcmp_user::login() method. After loggin user will not be
      * redirected to user or payment screens.
+     *
+     * @return null
      */
     public function login_noredirect()
     {
@@ -290,6 +298,8 @@ class oxcmp_user extends oxView
     /**
      * Executes oxcmp_user::login() and updates logged in user Facebook User ID (if user was
      * connected using Facebook Connect)
+     *
+     * @return null
      */
     public function login_updateFbId()
     {
@@ -308,6 +318,8 @@ class oxcmp_user extends oxView
      * oxcmp_user::logout is called. Currently it unsets such
      * session parameters as user chosen payment id, delivery
      * address id, active delivery set.
+     *
+     * @return null
      */
     protected function _afterLogout()
     {
@@ -472,12 +484,15 @@ class oxcmp_user extends oxView
             // assigning to newsletter
             $blOptin = oxRegistry::getConfig()->getRequestParameter('blnewssubscribed');
             if ($blOptin && $iSubscriptionStatus == 1) {
-                // if user was assigned to newsletter and is creating account with newsletter checked, don't require confirm
+                // if user was assigned to newsletter
+                // and is creating account with newsletter checked,
+                // don't require confirm
                 $oUser->getNewsSubscription()->setOptInStatus(1);
                 $oUser->addToGroup('oxidnewsletter');
                 $this->_blNewsSubscriptionStatus = 1;
             } else {
-                $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $this->getConfig()->getConfigParam('blOrderOptInEmail'));
+                $blOrderOptInEmailParam = $this->getConfig()->getConfigParam('blOrderOptInEmail');
+                $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $blOrderOptInEmailParam);
             }
 
             $oUser->addToGroup('oxidnotyetordered');
@@ -620,8 +635,10 @@ class oxcmp_user extends oxView
                 $blOptin = $oUser->getNewsSubscription()->getOptInStatus();
             }
             // check if email address changed, if so, force check news subscription settings.
-            $blForceCheckOptIn = ($aInvAdress['oxuser__oxusername'] !== null && $aInvAdress['oxuser__oxusername'] !== $sUserName);
-            $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $this->getConfig()->getConfigParam('blOrderOptInEmail'), $blForceCheckOptIn);
+            $sBillingUsername = $aInvAdress['oxuser__oxusername'];
+            $blForceCheckOptIn = ($sBillingUsername !== null && $sBillingUsername !== $sUserName);
+            $blEmailParam = $this->getConfig()->getConfigParam('blOrderOptInEmail');
+            $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $blEmailParam, $blForceCheckOptIn);
 
         } catch (oxUserException $oEx) { // errors in input
             // marking error code
@@ -667,7 +684,11 @@ class oxcmp_user extends oxView
     protected function _getDelAddressData()
     {
         // if user company name, user name and additional info has special chars
-        $aDelAdress = $aDeladr = (oxRegistry::getConfig()->getRequestParameter('blshowshipaddress') || oxRegistry::getSession()->getVariable('blshowshipaddress')) ? oxRegistry::getConfig()->getRequestParameter('deladr', true) : array();
+        $blShowShipAddressParameter = oxRegistry::getConfig()->getRequestParameter('blshowshipaddress');
+        $blShowShipAddressVariable = oxRegistry::getSession()->getVariable('blshowshipaddress');
+        $sDeliveryAddressParameter = oxRegistry::getConfig()->getRequestParameter('deladr', true);
+        $aDeladr = ($blShowShipAddressParameter || $blShowShipAddressVariable) ? $sDeliveryAddressParameter : array();
+        $aDelAdress = $aDeladr;
 
         if (is_array($aDeladr)) {
             // checking if data is filled
@@ -720,6 +741,8 @@ class oxcmp_user extends oxView
      * Sets user login state
      *
      * @param int $iStatus login state (USER_LOGIN_SUCCESS/USER_LOGIN_FAIL/USER_LOGOUT)
+     *
+     * @return null
      */
     public function setLoginStatus($iStatus)
     {
@@ -741,6 +764,8 @@ class oxcmp_user extends oxView
 
     /**
      * Sets invitor id to session from URL
+     *
+     * @return null
      */
     public function getInvitor()
     {
@@ -753,6 +778,8 @@ class oxcmp_user extends oxView
 
     /**
      * sets from URL invitor id
+     *
+     * @return null
      */
     public function setRecipient()
     {

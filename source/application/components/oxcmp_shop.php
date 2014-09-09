@@ -49,7 +49,10 @@ class oxcmp_shop extends oxView
 
         // is shop active?
         $oShop = $myConfig->getActiveShop();
-        if (!$oShop->oxshops__oxactive->value && 'oxstart' != $myConfig->getActiveView()->getClassName() && !$this->isAdmin()) {
+        $sActiveField = 'oxshops__oxactive';
+        $sClassName = $myConfig->getActiveView()->getClassName();
+
+        if (!$oShop->$sActiveField->value && 'oxstart' != $sClassName && !$this->isAdmin()) {
             // redirect to offline if there is no active shop
             oxRegistry::getUtils()->redirectOffline();
         }

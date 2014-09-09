@@ -253,11 +253,11 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupDb::saveDynPagesSettings()
+     * Testing oxSetupDb::saveShopSettings()
      *
      * @return null
      */
-    public function testSaveDynPagesSettings()
+    public function testSaveShopSettings()
     {
         $oUtils = $this->getMock("oxSetupUtils", array("generateUid"));
         $oUtils->expects($this->any())->method("generateUid")->will($this->returnValue("testid"));
@@ -291,7 +291,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $oDb->expects($this->at($iAt++))->method("execSql");
         $oDb->expects($this->at($iAt++))->method("execSql");
         $oDb->expects($this->at($iAt++))->method("execSql")->will($this->returnValue(false));
-        $oDb->saveDynPagesSettings(array());
+        $oDb->saveShopSettings(array());
     }
 
 

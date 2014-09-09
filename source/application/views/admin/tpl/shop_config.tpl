@@ -1055,7 +1055,6 @@ function showInvitations()
                 </dd>
                 <div class="spacer"></div>
             </dl>
-            [{/if}]
 
             <dl>
                 <dt>

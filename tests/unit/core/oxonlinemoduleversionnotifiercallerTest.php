@@ -20,6 +20,11 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Class Unit_Core_oxOnlineModuleVersionNotifierCallerTest
+ *
+ * @covers oxOnlineModuleVersionNotifierCaller
+ */
 class Unit_Core_oxOnlineModuleVersionNotifierCallerTest extends OxidTestCase
 {
     public function testGetWebServiceUrl()
@@ -37,12 +42,15 @@ class Unit_Core_oxOnlineModuleVersionNotifierCallerTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('sClusterId', 'generated_unique_cluster_id');
 
-        $oCaller = $this->getMock('oxOnlineCaller', array('call'), array(),'',false);
-        $oCaller->expects($this->any())
-            ->method('call')
-            ->with($this->equalTo('https://omvn.oxid-esales.com/check.php'), $this->equalTo($this->_getExpectedXml()));
+        $oCurl = $this->getMock('oxCurl', array('execute', 'setParameters'));
+        $oCurl->expects($this->once())->method('execute');
+        $oCurl->expects($this->once())->method('setParameters') ->with($this->equalTo(array('xmlRequest' => $this->_getExpectedXml())));
+        /** @var oxCurl $oCurl */
 
-        $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCaller);
+        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
+        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
+
+        $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
         $oNotifier->doRequest($this->_getRequest());
     }
 

@@ -123,7 +123,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $oSystemEventHandler->onShopStart();
     }
 
-    public function testOnShopStartSetWhenToSendInformationForFirstTime()
+    public function testOnShopStartSetWhenToSendInformationForFirstTimeCorrectFormat()
     {
         $oSystemEventHandler = new oxSystemEventHandler();
 
@@ -142,14 +142,14 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
     /**
      * @param string $sCheckTime
      *
-     * @depends testOnShopStartSetWhenToSendInformationForFirstTime
+     * @depends testOnShopStartSetWhenToSendInformationForFirstTimeCorrectFormat
      */
-    public function testInformationSendTimeHasCorrectFormat($sCheckTime)
+    public function testInformationSendTimeIsBetweenCorrectHours($sCheckTime)
     {
         $aHourToCheck = explode(':', $sCheckTime);
         $iHour = $aHourToCheck[0];
-        $this->assertTrue($iHour < 23);
-        $this->assertTrue($iHour > 8);
+        $this->assertTrue($iHour < 23, 'Get hour: '. $iHour);
+        $this->assertTrue($iHour > 8, 'Get hour: '. $iHour);
     }
 
     public function testOnShopStartDoNotChangeWhenToSendInformation()

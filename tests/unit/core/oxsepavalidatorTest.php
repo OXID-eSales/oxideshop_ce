@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ) . '/unit/OxidTestCase.php';
-require_once realpath( "." ) . '/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * oxSepaValidator test class
@@ -33,6 +33,7 @@ require_once realpath( "." ) . '/unit/test_config.inc.php';
  */
 class Unit_Core_oxSepaValidatorTest extends OxidTestCase
 {
+
     /**
      * Test case to check getting IBAN registry records
      */
@@ -42,7 +43,7 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
 
         $aIBANRegistry = $oSepaValidator->getIBANCodeLengths();
 
-        $this->assertNotNull( $aIBANRegistry['DE'], "IBAN length for SEPA country (DE) must be not null" );
+        $this->assertNotNull($aIBANRegistry['DE'], "IBAN length for SEPA country (DE) must be not null");
     }
 
     /**
@@ -53,7 +54,7 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
     {
         $oSepaValidator = new oxSepaValidator();
 
-        $this->assertTrue( $oSepaValidator->isValidIBAN( "MT84MALT011000012345MTLCAST001S" ), "IBAN must be valid" );
+        $this->assertTrue($oSepaValidator->isValidIBAN("MT84MALT011000012345MTLCAST001S"), "IBAN must be valid");
     }
 
     /**
@@ -64,28 +65,28 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
     {
         $oSepaValidator = new oxSepaValidator();
 
-        $this->assertFalse( $oSepaValidator->isValidIBAN( "NX9386011117947" ), "IBAN must be not valid" );
+        $this->assertFalse($oSepaValidator->isValidIBAN("NX9386011117947"), "IBAN must be not valid");
     }
 
     /**
      * Test case to check BIC validation
      *
      */
-    public function testIsValidBIC_validBIC_true( )
+    public function testIsValidBIC_validBIC_true()
     {
         $oSepaValidator = new oxSepaValidator();
 
-        $this->assertTrue( $oSepaValidator->isValidBIC( "ASPKAT2L" ), "BIC must be valid" );
+        $this->assertTrue($oSepaValidator->isValidBIC("ASPKAT2L"), "BIC must be valid");
     }
 
     /**
      * Test case to check BIC validation
      *
      */
-    public function testIsValidBIC_invalidBIC_false( )
+    public function testIsValidBIC_invalidBIC_false()
     {
         $oSepaValidator = new oxSepaValidator();
 
-        $this->assertFalse( $oSepaValidator->isValidBIC( "AAAACCX" ), "BIC must be not valid" );
+        $this->assertFalse($oSepaValidator->isValidBIC("AAAACCX"), "BIC must be not valid");
     }
 }

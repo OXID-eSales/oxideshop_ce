@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxfileexceptionTest extends OxidTestCase
 {
@@ -39,8 +39,8 @@ class Unit_Core_oxfileexceptionTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_oTestObject = oxNew( 'oxFileException', $this->_sMsg);
-        $this->assertEquals('oxFileException', get_class($this->_oTestObject) );
+        $this->_oTestObject = oxNew('oxFileException', $this->_sMsg);
+        $this->assertEquals('oxFileException', get_class($this->_oTestObject));
         $this->_oTestObject->setFileName($this->_sFileName);
         $this->_oTestObject->setFileError($this->_sFileError);
     }
@@ -59,10 +59,10 @@ class Unit_Core_oxfileexceptionTest extends OxidTestCase
     public function testGetString()
     {
         $sStringOut = $this->_oTestObject->getString();
-        $this->assertContains($this->_sMsg, $sStringOut);        // Message
-        $this->assertContains('oxFileException', $sStringOut);   // Exception class name
-        $this->assertContains($this->_sFileName, $sStringOut);   // File name
-        $this->assertContains($this->_sFileError, $sStringOut);  // File error
+        $this->assertContains($this->_sMsg, $sStringOut); // Message
+        $this->assertContains('oxFileException', $sStringOut); // Exception class name
+        $this->assertContains($this->_sFileName, $sStringOut); // File name
+        $this->assertContains($this->_sFileError, $sStringOut); // File error
     }
 
     public function testGetValues()

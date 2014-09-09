@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for GenExport_Main class
  */
 class Unit_Admin_GenExportMainTest extends OxidTestCase
 {
+
     /**
      * GenExport_Main::Render() test case
      *
@@ -37,6 +38,6 @@ class Unit_Admin_GenExportMainTest extends OxidTestCase
     {
         // testing..
         $oView = new GenExport_Main();
-        $this->assertEquals( 'dyn_exportdefault.tpl', $oView->render() );
+        $this->assertEquals('dyn_exportdefault.tpl', $oView->render());
     }
 }

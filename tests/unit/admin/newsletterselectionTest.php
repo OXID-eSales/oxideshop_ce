@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,119 +18,121 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
+     */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-
-/**
- * Tests for Newsletter_Selection class
- */
-class Unit_Admin_NewsletterSelectionTest extends OxidTestCase
-{
-    private $_oNewsSub = null;
+    require_once realpath(".") . '/unit/OxidTestCase.php';
+    require_once realpath(".") . '/unit/test_config.inc.php';
 
     /**
-     * Initialize the fixture.
-     *
-     * @return null
+     * Tests for Newsletter_Selection class
      */
-    protected function setUp()
+    class Unit_Admin_NewsletterSelectionTest extends OxidTestCase
     {
-        parent::setUp();
-        $oDB = oxDb::getDb();
 
-        $sInsert = "INSERT INTO `oxnewsletter` VALUES ( 'newstest', 'oxbaseshop', 'Test', 'TestHTML', 'TestPlain', 'TestSubject', NOW() )";
-        $oDB->Execute( $sInsert );
+        private $_oNewsSub = null;
 
-        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test', 'oxbaseshop', '_testUserId', 'oxidnewcustomer', NOW() )";
-        $oDB->Execute( $sInsert );
+        /**
+         * Initialize the fixture.
+         *
+         * @return null
+         */
+        protected function setUp()
+        {
+            parent::setUp();
+            $oDB = oxDb::getDb();
 
-        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test2', 'oxbaseshop', 'newstest', 'oxidnewcustomer', NOW() )";
-        $oDB->Execute( $sInsert );
+            $sInsert = "INSERT INTO `oxnewsletter` VALUES ( 'newstest', 'oxbaseshop', 'Test', 'TestHTML', 'TestPlain', 'TestSubject', NOW() )";
+            $oDB->Execute($sInsert);
 
-        $this->_oNewsSub = oxNew( "oxnewssubscribed" );
-        $this->_oNewsSub->setId('_testNewsSubscrId');
-        $this->_oNewsSub->oxnewssubscribed__oxuserid = new oxField('_testUserId', oxField::T_RAW);
-        $this->_oNewsSub->oxnewssubscribed__oxemail = new oxField('useremail@useremail.nl', oxField::T_RAW);
-        $this->_oNewsSub->oxnewssubscribed__oxdboptin = new oxField('1', oxField::T_RAW);
-        $this->_oNewsSub->oxnewssubscribed__oxunsubscribed = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
-        $this->_oNewsSub->save();
+            $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test', 'oxbaseshop', '_testUserId', 'oxidnewcustomer', NOW() )";
+            $oDB->Execute($sInsert);
 
-    }
+            $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test2', 'oxbaseshop', 'newstest', 'oxidnewcustomer', NOW() )";
+            $oDB->Execute($sInsert);
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        $oDB = oxDb::getDb();
-        $sDelete = "delete from oxnewsletter where oxid='newstest'";
-        $oDB->Execute( $sDelete);
+            $this->_oNewsSub = oxNew("oxnewssubscribed");
+            $this->_oNewsSub->setId('_testNewsSubscrId');
+            $this->_oNewsSub->oxnewssubscribed__oxuserid = new oxField('_testUserId', oxField::T_RAW);
+            $this->_oNewsSub->oxnewssubscribed__oxemail = new oxField('useremail@useremail.nl', oxField::T_RAW);
+            $this->_oNewsSub->oxnewssubscribed__oxdboptin = new oxField('1', oxField::T_RAW);
+            $this->_oNewsSub->oxnewssubscribed__oxunsubscribed = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
+            $this->_oNewsSub->save();
 
-        $sDelete = "delete from oxobject2group where oxobjectid='newstest' or oxobjectid='_testUserId'";
-        $oDB->Execute( $sDelete);
-        $this->_oNewsSub->delete( '_testNewsSubscrId');
-        parent::tearDown();
-    }
-
-    /**
-     * Testing newsletter selection render (#FS1694)
-     *
-     * @return null
-     */
-    public function testRender()
-    {
-        modConfig::setRequestParameter( "oxid", 'newstest');
-        $oNewsletter = $this->getProxyClass( "Newsletter_selection" );
-        $this->assertEquals( 'newsletter_selection.tpl', $oNewsletter->render() );
-        $aViewData = $oNewsletter->getNonPublicVar( '_aViewData' );
-
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-    }
-
-    /**
-     * Testing newsletter selection render, if user is not added to group
-     * (#FS1694)
-     *
-     * @return null
-     */
-    public function testGetUserCount()
-    {
-        modConfig::setRequestParameter( "iStart", 0);
-        modConfig::setRequestParameter( "oxid", 'newstest');
-        $oNewsletter = new Newsletter_selection();
-        $this->assertEquals( 1, $oNewsletter->getUserCount() );
-
-        $oDB = oxDb::getDb();
-        $sDelete = "delete from oxobject2group where oxobjectid='_testUserId'";
-        $oDB->Execute( $sDelete);
-        modConfig::setRequestParameter( "iStart", 0);
-        modConfig::setRequestParameter( "oxid", 'newstest');
-        $oNewsletter = new Newsletter_selection();
-        $this->assertEquals( 0, $oNewsletter->getUserCount() );
-    }
-
-    /**
-     * Newsletter_Selection::Save() test case
-     *
-     * @return null
-     */
-    public function testSave()
-    {
-        // testing..
-        oxTestModules::addFunction( 'oxnewsletter', 'save', '{ throw new Exception( "save" ); }');
-
-        // testing..
-        try {
-            $oView = new Newsletter_Selection();
-            $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Newsletter_Plain::save()" );
-            return;
         }
-        $this->fail( "error in Newsletter_Selection::save()" );
+
+        /**
+         * Tear down the fixture.
+         *
+         * @return null
+         */
+        protected function tearDown()
+        {
+            $oDB = oxDb::getDb();
+            $sDelete = "delete from oxnewsletter where oxid='newstest'";
+            $oDB->Execute($sDelete);
+
+            $sDelete = "delete from oxobject2group where oxobjectid='newstest' or oxobjectid='_testUserId'";
+            $oDB->Execute($sDelete);
+            $this->_oNewsSub->delete('_testNewsSubscrId');
+            parent::tearDown();
+        }
+
+        /**
+         * Testing newsletter selection render (#FS1694)
+         *
+         * @return null
+         */
+        public function testRender()
+        {
+            modConfig::setRequestParameter("oxid", 'newstest');
+            $oNewsletter = $this->getProxyClass("Newsletter_selection");
+            $this->assertEquals('newsletter_selection.tpl', $oNewsletter->render());
+            $aViewData = $oNewsletter->getNonPublicVar('_aViewData');
+
+            $this->assertTrue(isset($aViewData['edit']));
+        }
+
+        /**
+         * Testing newsletter selection render, if user is not added to group
+         * (#FS1694)
+         *
+         * @return null
+         */
+        public function testGetUserCount()
+        {
+            modConfig::setRequestParameter("iStart", 0);
+            modConfig::setRequestParameter("oxid", 'newstest');
+            $oNewsletter = new Newsletter_selection();
+            $this->assertEquals(1, $oNewsletter->getUserCount());
+
+            $oDB = oxDb::getDb();
+            $sDelete = "delete from oxobject2group where oxobjectid='_testUserId'";
+            $oDB->Execute($sDelete);
+            modConfig::setRequestParameter("iStart", 0);
+            modConfig::setRequestParameter("oxid", 'newstest');
+            $oNewsletter = new Newsletter_selection();
+            $this->assertEquals(0, $oNewsletter->getUserCount());
+        }
+
+        /**
+         * Newsletter_Selection::Save() test case
+         *
+         * @return null
+         */
+        public function testSave()
+        {
+            // testing..
+            oxTestModules::addFunction('oxnewsletter', 'save', '{ throw new Exception( "save" ); }');
+
+            // testing..
+            try {
+                $oView = new Newsletter_Selection();
+                $oView->save();
+            } catch (Exception $oExcp) {
+                $this->assertEquals("save", $oExcp->getMessage(), "error in Newsletter_Plain::save()");
+
+                return;
+            }
+            $this->fail("error in Newsletter_Selection::save()");
+        }
     }
-}

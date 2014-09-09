@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxModuleMetadataAgainstShopValidatorTest extends OxidTestCase
 {
+
     public function testValidateWhenMetadataHasNoExtensionsAndNoFiles()
     {
         $oModuleStub = $this->getMock('oxModule', array('getExtensions', 'getFiles'));
@@ -135,7 +136,7 @@ class Unit_Core_oxModuleMetadataAgainstShopValidatorTest extends OxidTestCase
         $aFilesShop = array('module_class2' => 'vendor/module/path/module_class2.php');
 
         return array(
-            array($aExtendedModule, $aExtendedShop, $aFilesModule, $aFilesShop ),
+            array($aExtendedModule, $aExtendedShop, $aFilesModule, $aFilesShop),
         );
     }
 

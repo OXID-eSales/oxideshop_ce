@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 
 /**
@@ -29,6 +29,7 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
  */
 class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
 {
+
     /**
      * Initialize the fixture.
      *
@@ -59,15 +60,15 @@ class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
     {
         $sOxid = '_testOxid';
         $sSynchoxid = '_testOxid';
-        $this->setRequestParam( "oxid", $sOxid );
-        $this->setRequestParam( "synchoxid", $sSynchoxid );
-        $sArticleTable = getViewName( "oxarticles" );
-        $sO2CView = getViewName( "oxobject2category" );
+        $this->setRequestParam("oxid", $sOxid);
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $sArticleTable = getViewName("oxarticles");
+        $sO2CView = getViewName("oxobject2category");
 
-        $oView = oxNew( 'discount_articles_ajax' );
-        $sQuery  = "from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
+        $oView = oxNew('discount_articles_ajax');
+        $sQuery = "from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testOxid' and oxobject2discount.oxtype = 'oxarticles'";
-        $this->assertEquals( $sQuery, trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -79,17 +80,17 @@ class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
     {
         $sOxid = '_testOxid';
         $sSynchoxid = '_testSynchoxid';
-        $this->setRequestParam( "oxid", $sOxid );
-        $this->setRequestParam( "synchoxid", $sSynchoxid );
-        $sArticleTable = getViewName( "oxarticles" );
-        $sO2CView = getViewName( "oxobject2category" );
+        $this->setRequestParam("oxid", $sOxid);
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $sArticleTable = getViewName("oxarticles");
+        $sO2CView = getViewName("oxobject2category");
 
-        $oView = oxNew( 'discount_articles_ajax' );
-        $sQuery  = "from $sO2CView left join $sArticleTable on  $sArticleTable.oxid=$sO2CView.oxobjectid ";
+        $oView = oxNew('discount_articles_ajax');
+        $sQuery = "from $sO2CView left join $sArticleTable on  $sArticleTable.oxid=$sO2CView.oxobjectid ";
         $sQuery .= " where $sO2CView.oxcatnid = '_testOxid' and $sArticleTable.oxid is not null  and ";
         $sQuery .= " $sArticleTable.oxid not in (  select $sArticleTable.oxid from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxarticles'  )";
-        $this->assertEquals( $sQuery, trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -100,14 +101,14 @@ class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testSynchoxid';
-        $this->setRequestParam( "synchoxid", $sSynchoxid );
-        $sArticleTable = getViewName( "oxarticles" );
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $sArticleTable = getViewName("oxarticles");
 
-        $oView = oxNew( 'discount_articles_ajax' );
-        $sQuery  = "from $sArticleTable where 1 and $sArticleTable.oxparentid = ''  and ";
+        $oView = oxNew('discount_articles_ajax');
+        $sQuery = "from $sArticleTable where 1 and $sArticleTable.oxparentid = ''  and ";
         $sQuery .= " $sArticleTable.oxid not in (  select $sArticleTable.oxid from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxarticles'  )";
-        $this->assertEquals( $sQuery, trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -117,12 +118,12 @@ class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
      */
     public function testRemoveDiscArt()
     {
-        $oView = $this->getMock( "discount_articles_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testO2DRemove1', '_testO2DRemove2' ) ) );
-        $this->assertEquals( 3, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'" ) );
+        $oView = $this->getMock("discount_articles_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testO2DRemove1', '_testO2DRemove2')));
+        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
         $oView->removeDiscArt();
-        $this->assertEquals( 1, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'" ) );
+        $this->assertEquals(1, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
     }
 
     /**
@@ -133,14 +134,14 @@ class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
     public function testRemoveDiscArtAll()
     {
         $sOxid = '_testDiscount';
-        $this->setRequestParam( "oxid", $sOxid );
-        $this->setRequestParam( "all", true );
+        $this->setRequestParam("oxid", $sOxid);
+        $this->setRequestParam("all", true);
 
-        $this->assertEquals( 3, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'" ) );
+        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
-        $oView = oxNew( 'discount_articles_ajax' );
+        $oView = oxNew('discount_articles_ajax');
         $oView->removeDiscArt();
-        $this->assertEquals( 0, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'" ) );
+        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
     }
 
     /**
@@ -151,13 +152,13 @@ class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
     public function testAddDiscArt()
     {
         $sSynchoxid = '_testDiscount';
-        $this->setRequestParam( "synchoxid", $sSynchoxid );
-        $oView = $this->getMock( "discount_articles_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testArticleAdd1', '_testArticleAdd2' ) ) );
-        $this->assertEquals( 3, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'" ) );
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $oView = $this->getMock("discount_articles_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticleAdd1', '_testArticleAdd2')));
+        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
         $oView->addDiscArt();
-        $this->assertEquals( 5, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'" ) );
+        $this->assertEquals(5, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
     }
 
     /**
@@ -168,17 +169,17 @@ class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
     public function testAddDiscArtAll()
     {
         $sSynchoxid = '_testDiscountNew';
-        $this->setRequestParam( "synchoxid", $sSynchoxid );
-        $this->setRequestParam( "all", true );
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $this->setRequestParam("all", true);
 
-        $iCount = oxDb::getDb()->getOne( "select count(oxid) from oxarticles where oxparentid = ''" );
+        $iCount = oxDb::getDb()->getOne("select count(oxid) from oxarticles where oxparentid = ''");
 
-        $oView = oxNew( 'discount_articles_ajax' );
-        $this->assertGreaterThan( 0, $iCount );
-        $this->assertEquals( 0, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'" ) );
+        $oView = oxNew('discount_articles_ajax');
+        $this->assertGreaterThan(0, $iCount);
+        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
 
         $oView->addDiscArt();
-        $this->assertEquals( $iCount, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'" ) );
+        $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
     }
 
 }

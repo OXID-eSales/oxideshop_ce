@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,69 +18,71 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
-
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-
-/**
- * Tests for Newsletter_Main class
- */
-class Unit_Admin_NewsletterMainTest extends OxidTestCase
-{
-    /**
-     * Newsletter_Main::Render() test case
-     *
-     * @return null
      */
-    public function testRender()
-    {
-        modConfig::setRequestParameter( "oxid", "testId" );
 
-        // testing..
-        $oView = new Newsletter_Main();
-        $this->assertEquals( 'newsletter_main.tpl', $oView->render() );
-        $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxnewsletter );
-    }
+    require_once realpath(".") . '/unit/OxidTestCase.php';
+    require_once realpath(".") . '/unit/test_config.inc.php';
 
     /**
-     * Statistic_Main::Render() test case
-     *
-     * @return null
+     * Tests for Newsletter_Main class
      */
-    public function testRenderNoRealObjectId()
+    class Unit_Admin_NewsletterMainTest extends OxidTestCase
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
 
-        // testing..
-        $oView = new Newsletter_Main();
-        $sTpl = $oView->render();
-        $this->assertEquals( 'newsletter_main.tpl', $sTpl );
-        $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
-    }
+        /**
+         * Newsletter_Main::Render() test case
+         *
+         * @return null
+         */
+        public function testRender()
+        {
+            modConfig::setRequestParameter("oxid", "testId");
 
-    /**
-     * Newsletter_Main::Save() test case
-     *
-     * @return null
-     */
-    public function testSave()
-    {
-        // testing..
-        oxTestModules::addFunction( 'oxnewsletter', 'save', '{ throw new Exception( "save" ); }');
-
-        // testing..
-        try {
+            // testing..
             $oView = new Newsletter_Main();
-            $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Newsletter_Main::save()" );
-            return;
+            $this->assertEquals('newsletter_main.tpl', $oView->render());
+            $aViewData = $oView->getViewData();
+            $this->assertTrue(isset($aViewData['edit']));
+            $this->assertTrue($aViewData['edit'] instanceof oxnewsletter);
         }
-        $this->fail( "error in Newsletter_Main::save()" );
+
+        /**
+         * Statistic_Main::Render() test case
+         *
+         * @return null
+         */
+        public function testRenderNoRealObjectId()
+        {
+            modConfig::setRequestParameter("oxid", "-1");
+
+            // testing..
+            $oView = new Newsletter_Main();
+            $sTpl = $oView->render();
+            $this->assertEquals('newsletter_main.tpl', $sTpl);
+            $aViewData = $oView->getViewData();
+            $this->assertTrue(isset($aViewData['oxid']));
+            $this->assertEquals("-1", $aViewData['oxid']);
+        }
+
+        /**
+         * Newsletter_Main::Save() test case
+         *
+         * @return null
+         */
+        public function testSave()
+        {
+            // testing..
+            oxTestModules::addFunction('oxnewsletter', 'save', '{ throw new Exception( "save" ); }');
+
+            // testing..
+            try {
+                $oView = new Newsletter_Main();
+                $oView->save();
+            } catch (Exception $oExcp) {
+                $this->assertEquals("save", $oExcp->getMessage(), "error in Newsletter_Main::save()");
+
+                return;
+            }
+            $this->fail("error in Newsletter_Main::save()");
+        }
     }
-}

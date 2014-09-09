@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Category_Order class
  */
 class Unit_Admin_CategoryOrderTest extends OxidTestCase
 {
+
     /**
      * Category_Order::Render() test case
      *
@@ -35,8 +36,8 @@ class Unit_Admin_CategoryOrderTest extends OxidTestCase
      */
     public function testRender()
     {
-        oxTestModules::addFunction( "oxcategory", "isDerived", "{return true;}" );
-        modConfig::setRequestParameter( "oxid", "testId" );
+        oxTestModules::addFunction("oxcategory", "isDerived", "{return true;}");
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Category_Order();
@@ -44,9 +45,9 @@ class Unit_Admin_CategoryOrderTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue( $aViewData["edit"] instanceof oxCategory );
+        $this->assertTrue($aViewData["edit"] instanceof oxCategory);
 
-        $this->assertEquals( 'category_order.tpl', $sTplName );
+        $this->assertEquals('category_order.tpl', $sTplName);
     }
 
 }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing links class
  */
 class Unit_Views_linksTest extends OxidTestCase
 {
+
     /**
      * Test get link list.
      *
@@ -35,9 +36,9 @@ class Unit_Views_linksTest extends OxidTestCase
      */
     public function testGetLinksList()
     {
-        $oLinks = $this->getProxyClass( 'links' );
+        $oLinks = $this->getProxyClass('links');
         $oLink = $oLinks->getLinksList()->current();
-        $this->assertEquals( 'http://www.oxid-esales.com', $oLink->oxlinks__oxurl->value );
+        $this->assertEquals('http://www.oxid-esales.com', $oLink->oxlinks__oxurl->value);
     }
 
     /**
@@ -47,15 +48,15 @@ class Unit_Views_linksTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oLinks    = new Links();
-        $aResult  = array();
+        $oLinks = new Links();
+        $aResult = array();
         $aResults = array();
 
-        $aResult["title"] = oxRegistry::getLang()->translateString( 'LINKS', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aResult["link"]  = $oLinks->getLink();
+        $aResult["title"] = oxRegistry::getLang()->translateString('LINKS', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aResult["link"] = $oLinks->getLink();
 
         $aResults[] = $aResult;
 
-        $this->assertEquals( $aResults, $oLinks->getBreadCrumb() );
+        $this->assertEquals($aResults, $oLinks->getBreadCrumb());
     }
 }

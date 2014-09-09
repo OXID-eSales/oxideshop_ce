@@ -20,20 +20,20 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxutilsstringTest extends OxidTestCase
 {
 
     public function testPrepareCSVField()
     {
-          $this->assertEquals('"blafoo;wurst;suppe"', oxRegistry::get("oxUtilsString")->prepareCSVField("blafoo;wurst;suppe"));
-          $this->assertEquals('"bl""afoo;wurst;suppe"', oxRegistry::get("oxUtilsString")->prepareCSVField("bl\"afoo;wurst;suppe"));
-          $this->assertEquals('"blafoo;wu"";rst;suppe"', oxRegistry::get("oxUtilsString")->prepareCSVField("blafoo;wu\";rst;suppe"));
-          $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareCSVField(""));
-          $this->assertEquals('""""', oxRegistry::get("oxUtilsString")->prepareCSVField("\""));
-          $this->assertEquals('";"', oxRegistry::get("oxUtilsString")->prepareCSVField(";"));
+        $this->assertEquals('"blafoo;wurst;suppe"', oxRegistry::get("oxUtilsString")->prepareCSVField("blafoo;wurst;suppe"));
+        $this->assertEquals('"bl""afoo;wurst;suppe"', oxRegistry::get("oxUtilsString")->prepareCSVField("bl\"afoo;wurst;suppe"));
+        $this->assertEquals('"blafoo;wu"";rst;suppe"', oxRegistry::get("oxUtilsString")->prepareCSVField("blafoo;wu\";rst;suppe"));
+        $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareCSVField(""));
+        $this->assertEquals('""""', oxRegistry::get("oxUtilsString")->prepareCSVField("\""));
+        $this->assertEquals('";"', oxRegistry::get("oxUtilsString")->prepareCSVField(";"));
     }
 
     public function testMinimizeTruncateString()
@@ -52,9 +52,9 @@ class Unit_Core_oxutilsstringTest extends OxidTestCase
 
     public function testPrepareStrForSearch()
     {
-           $this->assertEquals(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', oxRegistry::get("oxUtilsString")->prepareStrForSearch(' ä ö ü Ä Ö Ü ß &amp;'));
-           $this->assertEquals(' h&auml;user', oxRegistry::get("oxUtilsString")->prepareStrForSearch(' häuser'));
-           $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareStrForSearch('qwertz'));
-           $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareStrforSearch(''));
+        $this->assertEquals(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', oxRegistry::get("oxUtilsString")->prepareStrForSearch(' ä ö ü Ä Ö Ü ß &amp;'));
+        $this->assertEquals(' h&auml;user', oxRegistry::get("oxUtilsString")->prepareStrForSearch(' häuser'));
+        $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareStrForSearch('qwertz'));
+        $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareStrforSearch(''));
     }
 }

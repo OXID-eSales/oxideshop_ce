@@ -20,15 +20,16 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once getShopBasePath().'/setup/oxsetup.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
+require_once getShopBasePath() . '/setup/oxsetup.php';
 
 /**
  * oxSetupCoreTest tests
  */
 class Unit_Setup_oxSetupCoreTest extends OxidTestCase
 {
+
     /**
      * Test get instance.
      *
@@ -37,6 +38,6 @@ class Unit_Setup_oxSetupCoreTest extends OxidTestCase
     public function testGetInstance()
     {
         $oSetupCore = new oxSetupCore();
-        $this->assertTrue( $oSetupCore->getInstance( "oxSetupCore" ) instanceof oxSetupCore );
+        $this->assertTrue($oSetupCore->getInstance("oxSetupCore") instanceof oxSetupCore);
     }
 }

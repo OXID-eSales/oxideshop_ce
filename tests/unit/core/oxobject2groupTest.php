@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxobject2groupTest extends OxidTestCase
 {
+
     private $_oGroup = null;
     private $_sObjID = null;
 
@@ -56,14 +57,14 @@ class Unit_Core_oxobject2groupTest extends OxidTestCase
     protected function tearDown()
     {
         $oDB = oxDb::getDb();
-        $sDelete = "delete from oxnews where oxid='".$this->_sObjID."'";
-        $oDB->Execute( $sDelete);
+        $sDelete = "delete from oxnews where oxid='" . $this->_sObjID . "'";
+        $oDB->Execute($sDelete);
 
-        $sDelete = "delete from oxobject2group where oxobjectid='".$this->_sObjID."'";
-        $oDB->Execute( $sDelete);
+        $sDelete = "delete from oxobject2group where oxobjectid='" . $this->_sObjID . "'";
+        $oDB->Execute($sDelete);
 
         $sDelete = "delete from oxobject2group where oxobjectid='1111'";
-        $oDB->Execute( $sDelete);
+        $oDB->Execute($sDelete);
 
         parent::tearDown();
     }
@@ -72,7 +73,7 @@ class Unit_Core_oxobject2groupTest extends OxidTestCase
     {
         $sSelect = "select 1 from oxobject2group where oxobjectid='{$this->_sObjID}'";
 
-        $this->assertEquals( '1', oxDb::getDb()->getOne( $sSelect ) );
+        $this->assertEquals('1', oxDb::getDb()->getOne($sSelect));
     }
 
     public function testSaveNew()
@@ -81,7 +82,7 @@ class Unit_Core_oxobject2groupTest extends OxidTestCase
         $this->_oGroup->oxobject2group__oxobjectid = new oxField("1111", oxField::T_RAW);
         $this->_oGroup->oxobject2group__oxgroupsid = new oxField("oxidnewcustomer", oxField::T_RAW);
 
-        $this->assertNotNull( $this->_oGroup->Save() );
+        $this->assertNotNull($this->_oGroup->Save());
     }
 
     public function testSaveIfAlreadyExists()
@@ -95,6 +96,6 @@ class Unit_Core_oxobject2groupTest extends OxidTestCase
         $oGroup->oxobject2group__oxobjectid = new oxField($this->_sObjID, oxField::T_RAW);
         $oGroup->oxobject2group__oxgroupsid = new oxField("oxidnewcustomer", oxField::T_RAW);
 
-        $this->assertNull( $oGroup->Save() );
+        $this->assertNull($oGroup->Save());
     }
 }

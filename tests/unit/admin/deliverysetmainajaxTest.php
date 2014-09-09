@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 
 /**
@@ -29,8 +29,9 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
  */
 class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
 {
+
     protected $_sDeliveryView = 'oxv_oxdelivery_1_de';
-    
+
     /**
      * Initialize the fixture.
      *
@@ -39,7 +40,7 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        
+
         $this->addToDatabase("insert into oxdel2delset set oxid='_testDeliverysetMain1', oxdelsetid='_testObjectId'", 'oxdel2delset');
         $this->addToDatabase("insert into oxdel2delset set oxid='_testDeliverysetMain2', oxdelsetid='_testObjectId'", 'oxdel2delset');
         //for delete all
@@ -52,19 +53,19 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
         $this->addTeardownSql("delete from oxdel2delset where oxid like '%_testDelivery%'");
         $this->addTeardownSql("delete from oxdelivery where oxid like '%_testMain%'");
 
-            $this->setDeliveryViewTable( 'oxv_oxdelivery_de' );
+            $this->setDeliveryViewTable('oxv_oxdelivery_de');
     }
-    
-    public function setDeliveryViewTable( $sParam )
+
+    public function setDeliveryViewTable($sParam)
     {
         $this->_sDeliveryView = $sParam;
     }
-    
+
     public function getDeliveryViewTable()
     {
         return $this->_sDeliveryView;
     }
-    
+
     /**
      * DeliverysetMainAjax::_getQuery() test case
      *
@@ -72,10 +73,10 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
      */
     public function testGetQuery()
     {
-        $oView = oxNew( 'deliveryset_main_ajax' );
-        $this->assertEquals( "from ".$this->getDeliveryViewTable()." where 1" , trim( $oView->UNITgetQuery() ) );
+        $oView = oxNew('deliveryset_main_ajax');
+        $this->assertEquals("from " . $this->getDeliveryViewTable() . " where 1", trim($oView->UNITgetQuery()));
     }
-    
+
     /**
      * DeliverysetMainAjax::_getQuery() test case
      *
@@ -84,12 +85,12 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
-        
-        $oView = oxNew( 'deliveryset_main_ajax' );
-        $this->assertEquals( "from ".$this->getDeliveryViewTable()." where 1 and ".$this->getDeliveryViewTable().".oxid not in ( select ".$this->getDeliveryViewTable().".oxid from ".$this->getDeliveryViewTable()." left join oxdel2delset on oxdel2delset.oxdelid=".$this->getDeliveryViewTable().".oxid where oxdel2delset.oxdelsetid = '".$sSynchoxid."' )", trim( $oView->UNITgetQuery() ) );
+        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+
+        $oView = oxNew('deliveryset_main_ajax');
+        $this->assertEquals("from " . $this->getDeliveryViewTable() . " where 1 and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )", trim($oView->UNITgetQuery()));
     }
-    
+
     /**
      * DeliverysetMainAjax::_getQuery() test case
      *
@@ -98,12 +99,12 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
-        
-        $oView = oxNew( 'deliveryset_main_ajax' );
-        $this->assertEquals( "from ".$this->getDeliveryViewTable()." left join oxdel2delset on oxdel2delset.oxdelid=".$this->getDeliveryViewTable().".oxid where oxdel2delset.oxdelsetid = '".$sOxid."'", trim( $oView->UNITgetQuery() ) );
+        $this->getConfig()->setRequestParameter("oxid", $sOxid);
+
+        $oView = oxNew('deliveryset_main_ajax');
+        $this->assertEquals("from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sOxid . "'", trim($oView->UNITgetQuery()));
     }
-    
+
     /**
      * DeliverysetMainAjax::_getQuery() test case
      *
@@ -113,13 +114,13 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
-        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
-        
-        $oView = oxNew( 'deliveryset_main_ajax' );
-        $this->assertEquals( "from ".$this->getDeliveryViewTable()." left join oxdel2delset on oxdel2delset.oxdelid=".$this->getDeliveryViewTable().".oxid where oxdel2delset.oxdelsetid = '".$sOxid."'and ".$this->getDeliveryViewTable().".oxid not in ( select ".$this->getDeliveryViewTable().".oxid from ".$this->getDeliveryViewTable()." left join oxdel2delset on oxdel2delset.oxdelid=".$this->getDeliveryViewTable().".oxid where oxdel2delset.oxdelsetid = '".$sSynchoxid."' )", trim( $oView->UNITgetQuery() ) );
+        $this->getConfig()->setRequestParameter("oxid", $sOxid);
+        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+
+        $oView = oxNew('deliveryset_main_ajax');
+        $this->assertEquals("from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sOxid . "'and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )", trim($oView->UNITgetQuery()));
     }
-    
+
     /**
      * DeliverysetMainAjax::removeFromSet() test case
      *
@@ -127,15 +128,15 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
      */
     public function testRemoveFromSet()
     {
-        $oView = $this->getMock( "deliveryset_main_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testDeliverysetMain1', '_testDeliverysetMain2' ) ) );
-        
+        $oView = $this->getMock("deliveryset_main_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testDeliverysetMain1', '_testDeliverysetMain2')));
+
         $sSql = "select count(oxid) from oxdel2delset where oxid in ('_testDeliverysetMain1', '_testDeliverysetMain2')";
-        $this->assertEquals( 2, oxDb::getDb()->getOne( $sSql ) );
+        $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
         $oView->removeFromSet();
-        $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
+        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
     }
-    
+
     /**
      * DeliverysetMainAjax::removeFromSet() test case
      *
@@ -144,17 +145,17 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     public function testRemoveFromSetAll()
     {
         $sOxid = '_testDeliverysetMainRemoveAll';
-        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
-        $this->getConfig()->setRequestParameter( "all", true );
-        
-        $sSql = "select count(oxdel2delset.oxid) from ".$this->getDeliveryViewTable()." left join oxdel2delset on oxdel2delset.oxdelid=".$this->getDeliveryViewTable().".oxid where oxdel2delset.oxdelsetid = '".$sOxid."'";
-        
-        $oView = oxNew( 'deliveryset_main_ajax' );
-        $this->assertEquals( 2, oxDb::getDb()->getOne( $sSql ) );
+        $this->getConfig()->setRequestParameter("oxid", $sOxid);
+        $this->getConfig()->setRequestParameter("all", true);
+
+        $sSql = "select count(oxdel2delset.oxid) from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sOxid . "'";
+
+        $oView = oxNew('deliveryset_main_ajax');
+        $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
         $oView->removeFromSet();
-        $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
+        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
     }
-    
+
     /**
      * DeliverysetMainAjax::addToSet() test case
      *
@@ -163,18 +164,18 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     public function testAddToset()
     {
         $sSynchoxid = '_testActionAddMain';
-        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
-        
+        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+
         $sSql = "select count(oxid) from oxdel2delset where oxdelsetid='$sSynchoxid'";
-        $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
-        
-        $oView = $this->getMock( "deliveryset_main_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testActionAdd1', '_testActionAdd2' ) ) );
-        
+        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
+
+        $oView = $this->getMock("deliveryset_main_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testActionAdd1', '_testActionAdd2')));
+
         $oView->addToSet();
-        $this->assertEquals( 2, oxDb::getDb()->getOne( $sSql ) );
+        $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
     }
-    
+
     /**
      * DeliverysetMainAjax::addToSet() test case
      *
@@ -183,19 +184,19 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     public function testAddToSetAll()
     {
         $sSynchoxid = '_testActionAddMainAll';
-        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
-        $this->getConfig()->setRequestParameter( "all", true );
-        
+        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->getConfig()->setRequestParameter("all", true);
+
         //count how much articles gets filtered
-        $iCount = oxDb::getDb()->getOne( "select count(".$this->getDeliveryViewTable().".oxid) from ".$this->getDeliveryViewTable()." where 1 and ".$this->getDeliveryViewTable().".oxid not in ( select ".$this->getDeliveryViewTable().".oxid from ".$this->getDeliveryViewTable()." left join oxdel2delset on oxdel2delset.oxdelid=".$this->getDeliveryViewTable().".oxid where oxdel2delset.oxdelsetid = '".$sSynchoxid."' )" );
-        
+        $iCount = oxDb::getDb()->getOne("select count(" . $this->getDeliveryViewTable() . ".oxid) from " . $this->getDeliveryViewTable() . " where 1 and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )");
+
         $sSql = "select count(oxid) from oxdel2delset where oxdelsetid='$sSynchoxid'";
-        $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
-        
-        $oView = $this->getMock( "deliveryset_main_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testActionAdd1', '_testActionAdd2' ) ) );
-        
+        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
+
+        $oView = $this->getMock("deliveryset_main_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testActionAdd1', '_testActionAdd2')));
+
         $oView->addToSet();
-        $this->assertEquals( $iCount, oxDb::getDb()->getOne( $sSql ) );
+        $this->assertEquals($iCount, oxDb::getDb()->getOne($sSql));
     }
 }

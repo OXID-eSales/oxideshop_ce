@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxremarkTest extends OxidTestCase
 {
+
     private $_oRemark = null;
 
     protected $_iNow = null;
@@ -38,13 +39,13 @@ class Unit_Core_oxremarkTest extends OxidTestCase
     {
         parent::setUp();
         $this->_iNow = time();
-        oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
-        oxRegistry::get("oxUtilsDate")->UNITSetTime( $this->_iNow );
+        oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
+        oxRegistry::get("oxUtilsDate")->UNITSetTime($this->_iNow);
 
         $this->_oRemark = new oxremark();
         $this->_oRemark->oxremark__oxtext = new oxField('Test', oxField::T_RAW);
         $this->_oRemark->save();
-        $this->_oRemark->load( $this->_oRemark->getId() );
+        $this->_oRemark->load($this->_oRemark->getId());
     }
 
     /**
@@ -62,44 +63,44 @@ class Unit_Core_oxremarkTest extends OxidTestCase
     public function testLoad()
     {
         $oRemark = new oxremark();
-        $oRemark->load( $this->_oRemark->oxremark__oxid->value );
+        $oRemark->load($this->_oRemark->oxremark__oxid->value);
 
         $sSendDate = 'd.m.Y H:i:s';
-        if ( oxRegistry::getLang()->getBaseLanguage() == 1 ) {
+        if (oxRegistry::getLang()->getBaseLanguage() == 1) {
             $sSendDate = 'Y-m-d H:i:s';
         }
 
-        $this->assertEquals( date( $sSendDate, $this->_iNow ), $oRemark->oxremark__oxcreate->value );
+        $this->assertEquals(date($sSendDate, $this->_iNow), $oRemark->oxremark__oxcreate->value);
     }
 
     public function testUpdate()
     {
         $oRemark = new oxremark();
-        $oRemark->load( $this->_oRemark->getId() );
+        $oRemark->load($this->_oRemark->getId());
 
-        $oRemark->oxremark__oxtext = new oxField( "Test_remark", oxField::T_RAW );
-        $oRemark->oxremark__oxparentid = new oxField( "oxdefaultadmin", oxField::T_RAW );
+        $oRemark->oxremark__oxtext = new oxField("Test_remark", oxField::T_RAW);
+        $oRemark->oxremark__oxparentid = new oxField("oxdefaultadmin", oxField::T_RAW);
         $oRemark->save();
 
-        $this->assertEquals( $oRemark->oxremark__oxtext->value, 'Test_remark' );
-        $this->assertEquals( $oRemark->oxremark__oxcreate->value, $this->_oRemark->oxremark__oxcreate->value );
+        $this->assertEquals($oRemark->oxremark__oxtext->value, 'Test_remark');
+        $this->assertEquals($oRemark->oxremark__oxcreate->value, $this->_oRemark->oxremark__oxcreate->value);
     }
 
     public function testInsert()
     {
         $iNow = time();
 
-        oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
-        oxRegistry::get("oxUtilsDate")->UNITSetTime( $iNow );
+        oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
+        oxRegistry::get("oxUtilsDate")->UNITSetTime($iNow);
 
         $oRemark = new oxremark();
-        $oRemark->load( $this->_oRemark->oxremark__oxid->value );
+        $oRemark->load($this->_oRemark->oxremark__oxid->value);
         $oRemark->delete();
 
         $oRemark = new oxremark();
-        $oRemark->setId( $this->_oRemark->oxremark__oxid->value );
+        $oRemark->setId($this->_oRemark->oxremark__oxid->value);
         $oRemark->save();
 
-        $this->assertEquals( date( 'Y-m-d H:i:s', $iNow ), $oRemark->oxremark__oxcreate->value );
+        $this->assertEquals(date('Y-m-d H:i:s', $iNow), $oRemark->oxremark__oxcreate->value);
     }
 }

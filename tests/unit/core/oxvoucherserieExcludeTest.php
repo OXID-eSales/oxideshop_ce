@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing myvoucherserie class
@@ -67,15 +67,15 @@ class Unit_Core_oxvoucherserieExcludeTest extends OxidTestCase
         $this->addToDatabase($sInsertReleations, 'oxobject2discount');
     }
 
-    public function testDelete ()
+    public function testDelete()
     {
-        $oSerie=oxNew('oxvoucherserie');
+        $oSerie = oxNew('oxvoucherserie');
         $oSerie->load('test_s1');
 
         $oSerie->delete();
 
-        $iCountSeries    = oxDb::getDb()->getOne("SELECT count(*) FROM `oxvoucherseries`   WHERE `OXID`= 'test_s1';");
-        $iCountVouchers  = oxDb::getDb()->getOne("SELECT count(*) FROM `oxvouchers`        WHERE `OXID`= 'test_111';");
+        $iCountSeries = oxDb::getDb()->getOne("SELECT count(*) FROM `oxvoucherseries`   WHERE `OXID`= 'test_s1';");
+        $iCountVouchers = oxDb::getDb()->getOne("SELECT count(*) FROM `oxvouchers`        WHERE `OXID`= 'test_111';");
         $iCountRelations = oxDb::getDb()->getOne("SELECT count(*) FROM `oxobject2discount` WHERE `OXID`= 'test_r1';");
 
         $this->assertEquals(0, $iCountSeries);
@@ -84,4 +84,5 @@ class Unit_Core_oxvoucherserieExcludeTest extends OxidTestCase
     }
 
 }
+
 ?>

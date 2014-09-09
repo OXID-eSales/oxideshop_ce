@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Country class
  */
 class Unit_Admin_CountryTest extends OxidTestCase
 {
+
     /**
      * Country::Render() test case
      *
@@ -37,7 +38,7 @@ class Unit_Admin_CountryTest extends OxidTestCase
     {
         // testing..
         $oView = new Country();
-        $this->assertEquals( 'country.tpl', $oView->render() );
+        $this->assertEquals('country.tpl', $oView->render());
     }
 
 }

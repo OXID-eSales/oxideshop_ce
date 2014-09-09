@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxconnectionexceptionTest extends OxidTestCase
 {
+
     public function testSetGetAddress()
     {
         $sAddress = 'sServerAddress';
@@ -45,22 +46,22 @@ class Unit_Core_oxconnectionexceptionTest extends OxidTestCase
     public function testSetString()
     {
         $sMsg = 'Erik was here..';
-        $oTestObject = oxNew( 'oxConnectionException', $sMsg);
-        $this->assertEquals('oxConnectionException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxConnectionException', $sMsg);
+        $this->assertEquals('oxConnectionException', get_class($oTestObject));
         $sAddress = 'sServerAddress';
         $oTestObject->setAdress($sAddress);
         $sConnectionError = 'sSomeConnectionError';
         $oTestObject->setConnectionError($sConnectionError);
         $sStringOut = $oTestObject->getString();
-        $this->assertContains($sMsg, $sStringOut);                     // Message
-        $this->assertContains('oxConnectionException', $sStringOut);   // Exception class name
-        $this->assertContains($sAddress, $sStringOut);                 // Server Address
-        $this->assertContains($sConnectionError, $sStringOut);         // Connection error
+        $this->assertContains($sMsg, $sStringOut); // Message
+        $this->assertContains('oxConnectionException', $sStringOut); // Exception class name
+        $this->assertContains($sAddress, $sStringOut); // Server Address
+        $this->assertContains($sConnectionError, $sStringOut); // Connection error
     }
 
     public function testGetValues()
     {
-        $oTestObject = oxNew( 'oxConnectionException');
+        $oTestObject = oxNew('oxConnectionException');
         $sAddress = 'sServerAddress';
         $oTestObject->setAdress($sAddress);
         $sConnectionError = 'sSomeConnectionError';

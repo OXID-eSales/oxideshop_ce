@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for UserGroup_List class
  */
 class Unit_Admin_UserGroupListTest extends OxidTestCase
 {
+
     /**
      * UserGroup_List::Render() test case
      *
@@ -37,6 +38,6 @@ class Unit_Admin_UserGroupListTest extends OxidTestCase
     {
         // testing..
         $oView = new UserGroup_List();
-        $this->assertEquals( 'usergroup_list.tpl', $oView->render() );
+        $this->assertEquals('usergroup_list.tpl', $oView->render());
     }
 }

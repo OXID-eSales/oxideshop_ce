@@ -21,8 +21,11 @@
  */
 
 
-class oxNewDummyUserModule2 extends oxNewDummyUserModule2_parent {
-    public function test() {
+class oxNewDummyUserModule2 extends oxNewDummyUserModule2_parent
+{
+
+    public function test()
+    {
         return "oxNewDummyUserModule2";
     }
 }

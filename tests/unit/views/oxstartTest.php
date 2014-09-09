@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
- * Testing oxStart class
+ * Testing oxstart class
  */
-class Unit_Views_oxStartTest extends OxidTestCase
+class Unit_Views_oxstartTest extends OxidTestCase
 {
+
     public function testRenderNormal()
     {
         $oStart = new oxStart();
@@ -40,39 +41,52 @@ class Unit_Views_oxStartTest extends OxidTestCase
 
     public function testGetErrorNumber()
     {
-        $oStart = new oxStart();
-        $this->setRequestParam( 'errornr', 123 );
+        $oStart = $this->getProxyClass('oxstart');
+        $this->setRequestParam('errornr', 123);
 
-        $this->assertEquals( 123, $oStart->getErrorNumber() );
+        $this->assertEquals(123, $oStart->getErrorNumber());
     }
 
 
-    public function testPageCloseNoSession()
+    public function testPageCloseNoSess()
     {
-        $oStart = $this->getMock( 'oxStart', array('getSession') );
+        $oStart = $this->getMock('oxstart', array('getSession'));
         $oStart->expects($this->once())->method('getSession')->will($this->returnValue(null));
 
-        $oUtils = $this->getMock( 'oxUtils', array('commitFileCache') );
+        $oUtils = $this->getMock('oxUtils', array('commitFileCache'));
         $oUtils->expects($this->once())->method('commitFileCache')->will($this->returnValue(null));
 
         oxTestModules::addModuleObject('oxUtils', $oUtils);
-        $this->assertEquals( null, $oStart->pageClose() );
+        $this->assertEquals(null, $oStart->pageClose());
     }
 
 
     public function testPageClose()
     {
-        $oSession = $this->getMock( 'oxSession', array('freeze') );
-        $oSession->expects($this->once())->method('freeze')->will($this->returnValue(null));
+        $oSess = $this->getMock('stdclass', array('freeze'));
+        $oSess->expects($this->once())->method('freeze')->will($this->returnValue(null));
 
-        $oStart = $this->getMock( 'oxStart', array('getSession') );
-        $oStart->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oStart = $this->getMock('oxstart', array('getSession'));
+        $oStart->expects($this->once())->method('getSession')->will($this->returnValue($oSess));
 
-        $oUtils = $this->getMock( 'oxUtils', array('commitFileCache') );
+        $oUtils = $this->getMock('oxUtils', array('commitFileCache'));
         $oUtils->expects($this->once())->method('commitFileCache')->will($this->returnValue(null));
 
         oxTestModules::addModuleObject('oxUtils', $oUtils);
-        $this->assertEquals( null, $oStart->pageClose() );
+        $this->assertEquals(null, $oStart->pageClose());
+    }
+
+    public function testProcessingOfServerNodes()
+    {
+        /** @var oxServerProcessor $oProcessor */
+        $oProcessor = $this->getMock('oxServerProcessor');
+        $oProcessor->expects($this->once())->method('process')->will($this->returnValue(null));
+
+        $oStart = $this->getMock('oxStart', array('_getServerProcessor', 'pageStart'));
+        $oStart->expects($this->any())->method('_getServerProcessor')->will($this->returnValue($oProcessor));
+        $oStart->expects($this->any())->method('pageStart')->will($this->returnValue(null));
+
+        $oStart->appInit();
     }
 
     public function testAppInitOnShopStartEventCalled()
@@ -80,8 +94,13 @@ class Unit_Views_oxStartTest extends OxidTestCase
         $oSystemEventHandler = $this->getMock('oxSystemEventHandler');
         $oSystemEventHandler->expects($this->once())->method('onShopStart')->will($this->returnValue(null));
 
-        $oStart = $this->getMock('oxStart', array('_getSystemEventHandler'));
+        $oServerProcessor = $this->getMock('oxServerProcessor');
+        $oServerProcessor->expects($this->any())->method('process')->will($this->returnValue(null));
+
+        $oStart = $this->getMock('oxStart', array('_getSystemEventHandler', '_getServerProcessor', '_needValidateShop'));
         $oStart->expects($this->any())->method('_getSystemEventHandler')->will($this->returnValue($oSystemEventHandler));
+        $oStart->expects($this->any())->method('_getServerProcessor')->will($this->returnValue($oServerProcessor));
+        $oStart->expects($this->any())->method('_needValidateShop')->will($this->returnValue(false));
 
         $oStart->appInit();
     }

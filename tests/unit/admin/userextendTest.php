@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for User_Extend class
  */
 class Unit_Admin_UserExtendTest extends OxidTestCase
 {
+
     /**
      * User_Extend::Render() test case
      *
@@ -35,17 +36,17 @@ class Unit_Admin_UserExtendTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "oxdefaultadmin" );
+        modConfig::setRequestParameter("oxid", "oxdefaultadmin");
 
         // testing..
-        $oView = $this->getMock( "User_Extend", array( "_allowAdminEdit" ) );
-        $oView->expects( $this->once() )->method( '_allowAdminEdit' )->will( $this->returnValue( false ) );
-        $this->assertEquals( 'user_extend.tpl', $oView->render() );
+        $oView = $this->getMock("User_Extend", array("_allowAdminEdit"));
+        $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(false));
+        $this->assertEquals('user_extend.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxuser );
-        $this->assertTrue( isset( $aViewData['readonly'] ) );
-        $this->assertTrue( $aViewData['readonly'] );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxuser);
+        $this->assertTrue(isset($aViewData['readonly']));
+        $this->assertTrue($aViewData['readonly']);
     }
 
     /**
@@ -56,27 +57,28 @@ class Unit_Admin_UserExtendTest extends OxidTestCase
     public function testSave()
     {
         // testing..
-        oxTestModules::addFunction( 'oxuser', 'load', '{ return true; }');
-        oxTestModules::addFunction( 'oxuser', 'assign', '{ return true; }');
-        oxTestModules::addFunction( 'oxuser', 'save', '{ throw new Exception( "save" ); }');
+        oxTestModules::addFunction('oxuser', 'load', '{ return true; }');
+        oxTestModules::addFunction('oxuser', 'assign', '{ return true; }');
+        oxTestModules::addFunction('oxuser', 'save', '{ throw new Exception( "save" ); }');
 
-        oxTestModules::addFunction( 'oxnewssubscribed', 'loadFromUserId', '{ return true; }');
-        oxTestModules::addFunction( 'oxnewssubscribed', 'setOptInStatus', '{ return true; }');
-        oxTestModules::addFunction( 'oxnewssubscribed', 'setOptInEmailStatus', '{ return true; }');
+        oxTestModules::addFunction('oxnewssubscribed', 'loadFromUserId', '{ return true; }');
+        oxTestModules::addFunction('oxnewssubscribed', 'setOptInStatus', '{ return true; }');
+        oxTestModules::addFunction('oxnewssubscribed', 'setOptInEmailStatus', '{ return true; }');
 
-        modConfig::setRequestParameter( "oxid", "testId" );
-        modConfig::setRequestParameter( "editnews", "1" );
-        modConfig::setRequestParameter( "editval", array( "oxaddress__oxid" => "testOxId" ) );
+        modConfig::setRequestParameter("oxid", "testId");
+        modConfig::setRequestParameter("editnews", "1");
+        modConfig::setRequestParameter("editval", array("oxaddress__oxid" => "testOxId"));
 
         // testing..
         try {
-            $oView = $this->getMock( "User_Extend", array( "_allowAdminEdit") );
-            $oView->expects( $this->at( 0 ) )->method( '_allowAdminEdit' )->with( $this->equalTo( "testId" ) )->will( $this->returnValue( true ) );
+            $oView = $this->getMock("User_Extend", array("_allowAdminEdit"));
+            $oView->expects($this->at(0))->method('_allowAdminEdit')->with($this->equalTo("testId"))->will($this->returnValue(true));
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "Error in User_Extend::save()");
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "Error in User_Extend::save()");
+
             return;
         }
-        $this->fail( "Error in User_Extend::save()");
+        $this->fail("Error in User_Extend::save()");
     }
 }

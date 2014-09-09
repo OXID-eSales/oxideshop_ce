@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for dyn_interface class
  */
 class Unit_Admin_dyninterfaceTest extends OxidTestCase
 {
+
     /**
      * dyn_interface::GetViewId() test case
      *
@@ -36,6 +37,6 @@ class Unit_Admin_dyninterfaceTest extends OxidTestCase
     public function testGetViewId()
     {
         $oView = new dyn_interface();
-        $this->assertEquals( 'dyn_interface', $oView->getViewId() );
+        $this->assertEquals('dyn_interface', $oView->getViewId());
     }
 }

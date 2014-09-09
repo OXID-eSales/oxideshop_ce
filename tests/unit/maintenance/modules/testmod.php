@@ -5,7 +5,9 @@ if (class_exists('testmod')) {
 }
 
 // this is the place which calls autoload again (for testmod_parent)
-class testmod extends testmod_parent {
+class testmod extends testmod_parent
+{
+
     public function sayHi()
     {
         return "Hi!";

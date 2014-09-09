@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for VoucherSerie_Generate class
  */
 class Unit_Admin_VoucherSerieGenerateTest extends OxidTestCase
 {
+
     /**
      * Cleanup
      *
@@ -36,8 +37,8 @@ class Unit_Admin_VoucherSerieGenerateTest extends OxidTestCase
     public function tearDown()
     {
         // cleanup
-        $this->cleanUpTable( "oxvouchers" );
-        $this->cleanUpTable( "oxvoucherseries" );
+        $this->cleanUpTable("oxvouchers");
+        $this->cleanUpTable("oxvoucherseries");
 
         parent::tearDown();
     }
@@ -49,12 +50,12 @@ class Unit_Admin_VoucherSerieGenerateTest extends OxidTestCase
      */
     public function testNextTick()
     {
-        $oView = $this->getMock( "VoucherSerie_Generate", array( "generateVoucher" ) );
-        $oView->expects( $this->at( 0 ) )->method( 'generateVoucher' )->will( $this->returnValue( 0 ) );
-        $oView->expects( $this->at( 1 ) )->method( 'generateVoucher' )->will( $this->returnValue( 1 ) );
+        $oView = $this->getMock("VoucherSerie_Generate", array("generateVoucher"));
+        $oView->expects($this->at(0))->method('generateVoucher')->will($this->returnValue(0));
+        $oView->expects($this->at(1))->method('generateVoucher')->will($this->returnValue(1));
 
-        $this->assertFalse( $oView->nextTick( 1 ) );
-        $this->assertEquals( 1, $oView->nextTick( 1 ) );
+        $this->assertFalse($oView->nextTick(1));
+        $this->assertEquals(1, $oView->nextTick(1));
     }
 
     /**
@@ -64,37 +65,37 @@ class Unit_Admin_VoucherSerieGenerateTest extends OxidTestCase
      */
     public function testGenerateVoucher()
     {
-        modSession::getInstance()->setVar( "voucherAmount", 100 );
+        modSession::getInstance()->setVar("voucherAmount", 100);
 
-        $oSerie = $this->getMock( "oxVoucherSerie", array( "getId" ) );
-        $oSerie->expects( $this->exactly( 2 ) )->method( 'getId' )->will( $this->returnValue( "testId" ) );
+        $oSerie = $this->getMock("oxVoucherSerie", array("getId"));
+        $oSerie->expects($this->exactly(2))->method('getId')->will($this->returnValue("testId"));
 
-        $oView = $this->getMock( "VoucherSerie_Generate", array( "_getVoucherSerie" ) );
-        $oView->expects( $this->any() )->method( '_getVoucherSerie' )->will( $this->returnValue( $oSerie ) );
-        $this->assertEquals( 1, $oView->generateVoucher( 0 ) );
-        $this->assertEquals( 2, $oView->generateVoucher( 1 ) );
+        $oView = $this->getMock("VoucherSerie_Generate", array("_getVoucherSerie"));
+        $oView->expects($this->any())->method('_getVoucherSerie')->will($this->returnValue($oSerie));
+        $this->assertEquals(1, $oView->generateVoucher(0));
+        $this->assertEquals(2, $oView->generateVoucher(1));
     }
 
-        /**
+    /**
      * VoucherSerie_Generate::run() test case
      *
      * @return null
      */
     public function testRun()
     {
-        modConfig::setRequestParameter("iStart", 0 );
+        modConfig::setRequestParameter("iStart", 0);
 
         // first generation call
-        $oView = $this->getMock( "VoucherSerie_Generate", array( "nextTick", "stop" ) );
-        $oView->expects( $this->exactly( 100 ) )->method( 'nextTick' )->will( $this->returnValue( 1 ) );
-        $oView->expects( $this->never() )->method( 'stop' );
+        $oView = $this->getMock("VoucherSerie_Generate", array("nextTick", "stop"));
+        $oView->expects($this->exactly(100))->method('nextTick')->will($this->returnValue(1));
+        $oView->expects($this->never())->method('stop');
 
         $oView->run();
 
         // last generation call
-        $oView = $this->getMock( "VoucherSerie_Generate", array( "nextTick", "stop" ) );
-        $oView->expects( $this->once() )->method( 'nextTick' )->will( $this->returnValue( false ) );
-        $oView->expects( $this->once() )->method( 'stop' );
+        $oView = $this->getMock("VoucherSerie_Generate", array("nextTick", "stop"));
+        $oView->expects($this->once())->method('nextTick')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('stop');
 
         $oView->run();
     }

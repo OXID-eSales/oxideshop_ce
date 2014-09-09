@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for sysreq class
  */
 class Unit_Admin_sysreqTest extends OxidTestCase
 {
+
     /**
      * sysreq::Render() test case
      *
@@ -37,6 +38,6 @@ class Unit_Admin_sysreqTest extends OxidTestCase
     {
         // testing..
         $oView = new sysreq();
-        $this->assertEquals( 'sysreq.tpl', $oView->render() );
+        $this->assertEquals('sysreq.tpl', $oView->render());
     }
 }

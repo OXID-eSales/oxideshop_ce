@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Language_List class
  */
 class Unit_Admin_LanguageListTest extends OxidTestCase
 {
+
     /**
      * Language_List::DeleteEntry() test case
      *
@@ -35,32 +36,32 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
      */
     public function testDeleteEntry()
     {
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
-        modConfig::setRequestParameter( 'oxid', 1 );
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
+        modConfig::setRequestParameter('oxid', 1);
 
         $iCnt = 0;
 
-        $oConfig = $this->getMock( "oxconfig", array( "getConfigParam", "saveShopConfVar" ) );
+        $oConfig = $this->getMock("oxconfig", array("getConfigParam", "saveShopConfVar"));
 
 
-        $oConfig->expects( $this->at( $iCnt++ ) )->method( 'getConfigParam' )->with( $this->equalTo( 'aLanguageParams' ) )->will( $this->returnValue( array( 1 => array( 'baseId' => 1 ) ) ) );
-        $oConfig->expects( $this->at( $iCnt++ ) )->method( 'getConfigParam' )->with( $this->equalTo( 'aLanguages' ) )->will( $this->returnValue( array( 1 => 1 ) ) );
-        $oConfig->expects( $this->at( $iCnt++ ) )->method( 'getConfigParam' )->with( $this->equalTo( 'aLanguageURLs' ) )->will( $this->returnValue( array( 1 => 1 ) ) );
-        $oConfig->expects( $this->at( $iCnt++ ) )->method( 'getConfigParam' )->with( $this->equalTo( 'aLanguageSSLURLs' ) )->will( $this->returnValue( array( 1 => 1 ) ) );
-        $oConfig->expects( $this->at( $iCnt++ ) )->method( 'saveShopConfVar' )->with( $this->equalTo( 'aarr' ), $this->equalTo( 'aLanguageParams' ), $this->equalTo( array() ) );
-        $oConfig->expects( $this->at( $iCnt++ ) )->method( 'saveShopConfVar' )->with( $this->equalTo( 'aarr' ), $this->equalTo( 'aLanguages' ), $this->equalTo( array() ) );
-        $oConfig->expects( $this->at( $iCnt++ ) )->method( 'saveShopConfVar' )->with( $this->equalTo( 'arr' ), $this->equalTo( 'aLanguageURLs' ), $this->equalTo( array() ) );
-        $oConfig->expects( $this->at( $iCnt++ ) )->method( 'saveShopConfVar' )->with( $this->equalTo( 'arr' ), $this->equalTo( 'aLanguageSSLURLs' ), $this->equalTo( array() ) );
-        $oConfig->expects( $this->at( $iCnt++ ) )->method( 'getConfigParam' )->with( $this->equalTo( 'sDefaultLang' ) )->will( $this->returnValue( 1 ) );
-        $oConfig->expects( $this->at( $iCnt++ ) )->method( 'saveShopConfVar' )->with( $this->equalTo( 'str' ), $this->equalTo( 'sDefaultLang' ), $this->equalTo( 0 ) );
+        $oConfig->expects($this->at($iCnt++))->method('getConfigParam')->with($this->equalTo('aLanguageParams'))->will($this->returnValue(array(1 => array('baseId' => 1))));
+        $oConfig->expects($this->at($iCnt++))->method('getConfigParam')->with($this->equalTo('aLanguages'))->will($this->returnValue(array(1 => 1)));
+        $oConfig->expects($this->at($iCnt++))->method('getConfigParam')->with($this->equalTo('aLanguageURLs'))->will($this->returnValue(array(1 => 1)));
+        $oConfig->expects($this->at($iCnt++))->method('getConfigParam')->with($this->equalTo('aLanguageSSLURLs'))->will($this->returnValue(array(1 => 1)));
+        $oConfig->expects($this->at($iCnt++))->method('saveShopConfVar')->with($this->equalTo('aarr'), $this->equalTo('aLanguageParams'), $this->equalTo(array()));
+        $oConfig->expects($this->at($iCnt++))->method('saveShopConfVar')->with($this->equalTo('aarr'), $this->equalTo('aLanguages'), $this->equalTo(array()));
+        $oConfig->expects($this->at($iCnt++))->method('saveShopConfVar')->with($this->equalTo('arr'), $this->equalTo('aLanguageURLs'), $this->equalTo(array()));
+        $oConfig->expects($this->at($iCnt++))->method('saveShopConfVar')->with($this->equalTo('arr'), $this->equalTo('aLanguageSSLURLs'), $this->equalTo(array()));
+        $oConfig->expects($this->at($iCnt++))->method('getConfigParam')->with($this->equalTo('sDefaultLang'))->will($this->returnValue(1));
+        $oConfig->expects($this->at($iCnt++))->method('saveShopConfVar')->with($this->equalTo('str'), $this->equalTo('sDefaultLang'), $this->equalTo(0));
 
-        $aTasks = array( "getConfig" );
+        $aTasks = array("getConfig");
             $aTasks[] = "_resetMultiLangDbFields";
 
-        $oView = $this->getMock( "Language_List", $aTasks, array(), '', false );
-        $oView->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
+        $oView = $this->getMock("Language_List", $aTasks, array(), '', false);
+        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
 
-            $oView->expects( $this->once() )->method( '_resetMultiLangDbFields' )->with( $this->equalTo( 1 ) );
+            $oView->expects($this->once())->method('_resetMultiLangDbFields')->with($this->equalTo(1));
 
         $oView->deleteEntry();
     }
@@ -74,7 +75,7 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
     {
         // testing..
         $oView = new Language_List();
-        $this->assertEquals( 'language_list.tpl', $oView->render() );
+        $this->assertEquals('language_list.tpl', $oView->render());
     }
 
     /**
@@ -105,7 +106,7 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
         $oLang2->default = false;
 
         $oView = new Language_List();
-        $this->assertEquals( array( $oLang1, $oLang2 ), $oView->UNITgetLanguagesList() );
+        $this->assertEquals(array($oLang1, $oLang2), $oView->UNITgetLanguagesList());
     }
 
     /**
@@ -115,26 +116,26 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
      */
     public function testSortLanguagesCallback()
     {
-        $oView = $this->getProxyClass( "Language_List" );
+        $oView = $this->getProxyClass("Language_List");
 
         $oLang1 = new stdClass();
         $oLang1->sort = 'EN';
         $oLang2 = new stdClass();
         $oLang2->sort = 'DE';
-        $this->assertEquals( 1, $oView->UNITsortLanguagesCallback( $oLang1, $oLang2 ) );
+        $this->assertEquals(1, $oView->UNITsortLanguagesCallback($oLang1, $oLang2));
 
         $oLang1 = new stdClass();
         $oLang1->sort = 'DE';
         $oLang2 = new stdClass();
         $oLang2->sort = 'EN';
-        $this->assertEquals( -1, $oView->UNITsortLanguagesCallback( $oLang1, $oLang2 ) );
+        $this->assertEquals(-1, $oView->UNITsortLanguagesCallback($oLang1, $oLang2));
 
         $oLang1 = new stdClass();
         $oLang1->sort = 1;
         $oLang2 = new stdClass();
         $oLang2->sort = 2;
-        $oView->setNonPublicVar( "_sDefSortOrder", "desc" );
-        $this->assertEquals( 1, $oView->UNITsortLanguagesCallback( $oLang1, $oLang2 ) );
+        $oView->setNonPublicVar("_sDefSortOrder", "desc");
+        $this->assertEquals(1, $oView->UNITsortLanguagesCallback($oLang1, $oLang2));
     }
 
     /**
@@ -144,17 +145,18 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
      */
     public function testResetMultiLangDbFieldsExceptionThrownWhileResetting()
     {
-        oxTestModules::addFunction( 'oxDbMetaDataHandler', 'resetLanguage', '{ throw new Exception( "resetLanguage" ); }');
-        oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ throw new Exception( "addErrorToDisplay" ); }');
+        oxTestModules::addFunction('oxDbMetaDataHandler', 'resetLanguage', '{ throw new Exception( "resetLanguage" ); }');
+        oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ throw new Exception( "addErrorToDisplay" ); }');
 
         try {
             $oView = new Language_List();
-            $oView->UNITresetMultiLangDbFields( 3 );
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "addErrorToDisplay", $oExcp->getMessage(), "Error in Language_List::UNITresetMultiLangDbFields()" );
+            $oView->UNITresetMultiLangDbFields(3);
+        } catch (Exception $oExcp) {
+            $this->assertEquals("addErrorToDisplay", $oExcp->getMessage(), "Error in Language_List::UNITresetMultiLangDbFields()");
+
             return;
         }
-        $this->fail( "Error in Language_List::UNITresetMultiLangDbFields()" );
+        $this->fail("Error in Language_List::UNITresetMultiLangDbFields()");
     }
 
     /**
@@ -164,9 +166,9 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
      */
     public function testResetMultiLangDbFields()
     {
-        oxTestModules::addFunction( 'oxDbMetaDataHandler', 'resetLanguage', '{}');
+        oxTestModules::addFunction('oxDbMetaDataHandler', 'resetLanguage', '{}');
 
         $oView = new Language_List();
-        $this->assertNull( $oView->UNITresetMultiLangDbFields( 3 ) );
+        $this->assertNull($oView->UNITresetMultiLangDbFields(3));
     }
 }

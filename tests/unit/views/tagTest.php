@@ -20,33 +20,34 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing tag class
  */
 class Unit_Views_tagTest extends OxidTestCase
 {
+
     public function testSetItemSorting()
     {
         $oView = new tag();
-        $oView->setItemSorting( 'alist', "testSortBy", "testSortOrder" );
+        $oView->setItemSorting('alist', "testSortBy", "testSortOrder");
 
-        $aSorting = $this->getSession()->getVar( "aSorting" );
+        $aSorting = $this->getSession()->getVar("aSorting");
 
-        $this->assertNotNull( $aSorting );
-        $this->assertTrue( isset( $aSorting["alist"] ) );
-        $this->assertEquals( "testSortBy", $aSorting["alist"]["sortby"] );
-        $this->assertEquals( "testSortOrder", $aSorting["alist"]["sortdir"] );
+        $this->assertNotNull($aSorting);
+        $this->assertTrue(isset($aSorting["alist"]));
+        $this->assertEquals("testSortBy", $aSorting["alist"]["sortby"]);
+        $this->assertEquals("testSortOrder", $aSorting["alist"]["sortdir"]);
     }
 
     public function testRender()
     {
-        modConfig::setRequestParameter( "searchtag", "kuyichi" );
+        modConfig::setRequestParameter("searchtag", "kuyichi");
         $oView = new tag();
 
-        $this->assertEquals( "page/list/list.tpl", $oView->render() );
+        $this->assertEquals("page/list/list.tpl", $oView->render());
     }
 
     /**
@@ -54,36 +55,36 @@ class Unit_Views_tagTest extends OxidTestCase
      */
     public function testRender_noArticlesForTag()
     {
-        modConfig::setRequestParameter( "pgNr", 999 );
-        modConfig::setRequestParameter( "searchtag", "notexistingtag" );
+        modConfig::setRequestParameter("pgNr", 999);
+        modConfig::setRequestParameter("searchtag", "notexistingtag");
 
         $oView = new tag();
-        $this->assertEquals( "page/list/list.tpl", $oView->render() );
+        $this->assertEquals("page/list/list.tpl", $oView->render());
     }
 
     public function testGetAddUrlParams()
     {
-        modConfig::setRequestParameter( "searchtag", "testSearchTag" );
+        modConfig::setRequestParameter("searchtag", "testSearchTag");
 
         $oListView = new aList();
-        $sListViewParams  = $oListView->getAddUrlParams();
+        $sListViewParams = $oListView->getAddUrlParams();
         $sListViewParams .= "listtype=tag&amp;searchtag=testSearchTag";
 
         $oView = new tag();
-        $this->assertEquals( $sListViewParams, $oView->getAddUrlParams() );
+        $this->assertEquals($sListViewParams, $oView->getAddUrlParams());
     }
 
     public function testGetTitlePageSuffix()
     {
-        $oView = $this->getMock( "tag", array( "getActPage" ) );
-        $oView->expects( $this->once() )->method( 'getActPage')->will( $this->returnValue( 0 ) );
+        $oView = $this->getMock("tag", array("getActPage"));
+        $oView->expects($this->once())->method('getActPage')->will($this->returnValue(0));
 
-        $this->assertNull( $oView->getTitlePageSuffix() );
+        $this->assertNull($oView->getTitlePageSuffix());
 
-        $oView = $this->getMock( "tag", array( "getActPage" ) );
-        $oView->expects( $this->once() )->method( 'getActPage')->will( $this->returnValue( 1 ) );
+        $oView = $this->getMock("tag", array("getActPage"));
+        $oView->expects($this->once())->method('getActPage')->will($this->returnValue(1));
 
-        $this->assertEquals( oxRegistry::getLang()->translateString( 'PAGE' )." ". 2, $oView->getTitlePageSuffix() );
+        $this->assertEquals(oxRegistry::getLang()->translateString('PAGE') . " " . 2, $oView->getTitlePageSuffix());
     }
 
     public function testGetTreePath()
@@ -92,157 +93,157 @@ class Unit_Views_tagTest extends OxidTestCase
 
         $oStr = getStr();
 
-        $aPath[0] = oxNew( "oxcategory" );
-        $aPath[0]->setLink( false );
-        $aPath[0]->oxcategories__oxtitle = new oxField( oxRegistry::getLang()->translateString('TAGS') );
+        $aPath[0] = oxNew("oxcategory");
+        $aPath[0]->setLink(false);
+        $aPath[0]->oxcategories__oxtitle = new oxField(oxRegistry::getLang()->translateString('TAGS'));
 
-        $aPath[1] = oxNew( "oxcategory" );
-        $aPath[1]->setLink( false );
-        $aPath[1]->oxcategories__oxtitle = new oxField( $oStr->htmlspecialchars( $oStr->ucfirst( $sTag ) ) );
+        $aPath[1] = oxNew("oxcategory");
+        $aPath[1]->setLink(false);
+        $aPath[1]->oxcategories__oxtitle = new oxField($oStr->htmlspecialchars($oStr->ucfirst($sTag)));
 
-        $oView = $this->getMock( "tag", array( "getTag" ) );
-        $oView->expects( $this->once() )->method( 'getTag')->will( $this->returnValue( $sTag ) );
+        $oView = $this->getMock("tag", array("getTag"));
+        $oView->expects($this->once())->method('getTag')->will($this->returnValue($sTag));
 
-        $this->assertEquals( $aPath, $oView->getTreePath() );
+        $this->assertEquals($aPath, $oView->getTreePath());
     }
 
     public function testNoIndex()
     {
         $oTagView = new tag();
-        $this->assertTrue( 0 === $oTagView->noIndex() );
+        $this->assertTrue(0 === $oTagView->noIndex());
     }
 
     public function testGetCanonicalUrlForPageNumberTwo()
     {
-        $oTagView = $this->getMock( "tag", array( "getActPage", "_addPageNrParam", "generatePageNavigationUrl", "getTag" ) );
-        $oTagView->expects( $this->once() )->method( 'getActPage')->will( $this->returnValue( 1 ) );
-        $oTagView->expects( $this->once() )->method( 'generatePageNavigationUrl')->will( $this->returnValue( "testUrl" ) );
-        $oTagView->expects( $this->once() )->method( '_addPageNrParam')->with( $this->equalTo( "testUrl" ), $this->equalTo( 1 ) )->will( $this->returnValue( "testUrlWithPagePAram" ) );
-        $oTagView->expects( $this->never() )->method( 'getTag');
+        $oTagView = $this->getMock("tag", array("getActPage", "_addPageNrParam", "generatePageNavigationUrl", "getTag"));
+        $oTagView->expects($this->once())->method('getActPage')->will($this->returnValue(1));
+        $oTagView->expects($this->once())->method('generatePageNavigationUrl')->will($this->returnValue("testUrl"));
+        $oTagView->expects($this->once())->method('_addPageNrParam')->with($this->equalTo("testUrl"), $this->equalTo(1))->will($this->returnValue("testUrlWithPagePAram"));
+        $oTagView->expects($this->never())->method('getTag');
 
-        $this->assertEquals( "testUrlWithPagePAram", $oTagView->getCanonicalUrl() );
+        $this->assertEquals("testUrlWithPagePAram", $oTagView->getCanonicalUrl());
     }
 
     public function testGetCanonicalUrlForPageNumberOne()
     {
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
 
-        $oTagView = $this->getMock( "tag", array( "getActPage", "_addPageNrParam", "generatePageNavigationUrl", "getTag" ) );
-        $oTagView->expects( $this->never() )->method( 'generatePageNavigationUrl');
-        $oTagView->expects( $this->never() )->method( '_addPageNrParam');
-        $oTagView->expects( $this->once() )->method( 'getActPage')->will( $this->returnValue( 0 ) );
-        $oTagView->expects( $this->once() )->method( 'getTag')->will( $this->returnValue( 'testTag' ) );
+        $oTagView = $this->getMock("tag", array("getActPage", "_addPageNrParam", "generatePageNavigationUrl", "getTag"));
+        $oTagView->expects($this->never())->method('generatePageNavigationUrl');
+        $oTagView->expects($this->never())->method('_addPageNrParam');
+        $oTagView->expects($this->once())->method('getActPage')->will($this->returnValue(0));
+        $oTagView->expects($this->once())->method('getTag')->will($this->returnValue('testTag'));
 
-        $this->assertEquals( oxRegistry::get("oxSeoEncoderTag")->getTagUrl( 'testTag' ), $oTagView->getCanonicalUrl() );
+        $this->assertEquals(oxRegistry::get("oxSeoEncoderTag")->getTagUrl('testTag'), $oTagView->getCanonicalUrl());
     }
 
     public function testGeneratePageNavigationUrlSeo()
     {
-        oxTestModules::addFunction( "oxUtils", "seoIsActive", "{ return true; }" );
-        oxTestModules::addFunction( "oxSeoEncoderTag", "getTagUrl", "{ return 'sTagUrl'; }" );
+        oxTestModules::addFunction("oxUtils", "seoIsActive", "{ return true; }");
+        oxTestModules::addFunction("oxSeoEncoderTag", "getTagUrl", "{ return 'sTagUrl'; }");
 
-        $oTag = $this->getMock( 'tag', array( 'getTag' ) );
-        $oTag->expects( $this->once() )->method( 'getTag')->will( $this->returnValue( 'sTag' ) );
+        $oTag = $this->getMock('tag', array('getTag'));
+        $oTag->expects($this->once())->method('getTag')->will($this->returnValue('sTag'));
 
-        $this->assertEquals( 'sTagUrl', $oTag->generatePageNavigationUrl() );
+        $this->assertEquals('sTagUrl', $oTag->generatePageNavigationUrl());
     }
 
     public function testGeneratePageNavigationUrl()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        oxTestModules::addFunction( "oxUtils", "seoIsActive", "{ return false; }" );
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxUtils", "seoIsActive", "{ return false; }");
 
-        $oTag = $this->getMock( 'tag', array( 'getTag' ) );
-        $oTag->expects( $this->never() )->method( 'getTag');
+        $oTag = $this->getMock('tag', array('getTag'));
+        $oTag->expects($this->never())->method('getTag');
 
-        $sUrl = oxRegistry::getConfig()->getShopHomeURL().$oTag->UNITgetRequestParams( false );
-        $this->assertEquals( $sUrl, $oTag->generatePageNavigationUrl() );
+        $sUrl = oxRegistry::getConfig()->getShopHomeURL() . $oTag->UNITgetRequestParams(false);
+        $this->assertEquals($sUrl, $oTag->generatePageNavigationUrl());
     }
 
     public function testAddPageNrParamSeo()
     {
-        oxTestModules::addFunction( "oxUtils", "seoIsActive", "{ return true; }" );
-        oxTestModules::addFunction( "oxSeoEncoderTag", "getTagPageUrl", "{ return 'sTagPageUrl'; }" );
+        oxTestModules::addFunction("oxUtils", "seoIsActive", "{ return true; }");
+        oxTestModules::addFunction("oxSeoEncoderTag", "getTagPageUrl", "{ return 'sTagPageUrl'; }");
 
-        $oTag = $this->getMock( 'tag', array( 'getTag' ) );
-        $oTag->expects( $this->once() )->method( 'getTag')->will( $this->returnValue( 'sTag' ) );
+        $oTag = $this->getMock('tag', array('getTag'));
+        $oTag->expects($this->once())->method('getTag')->will($this->returnValue('sTag'));
 
-        $this->assertEquals( 'sTagPageUrl', $oTag->UNITaddPageNrParam( 'sUrl', 10 ) );
+        $this->assertEquals('sTagPageUrl', $oTag->UNITaddPageNrParam('sUrl', 10));
     }
 
     public function testAddPageNrParam()
     {
         $sUrl = 'sUrl?pgNr=10';
 
-        oxTestModules::addFunction( "oxUtils", "seoIsActive", "{ return false; }" );
+        oxTestModules::addFunction("oxUtils", "seoIsActive", "{ return false; }");
 
-        $oTag = $this->getMock( 'tag', array( 'getTag' ) );
-        $oTag->expects( $this->never() )->method( 'getTag');
+        $oTag = $this->getMock('tag', array('getTag'));
+        $oTag->expects($this->never())->method('getTag');
 
-        $this->assertEquals( $sUrl, $oTag->UNITaddPageNrParam( 'sUrl', 10 ) );
+        $this->assertEquals($sUrl, $oTag->UNITaddPageNrParam('sUrl', 10));
     }
 
     public function testGetProductLinkType()
     {
         $oTagView = new tag();
-        $this->assertEquals( OXARTICLE_LINKTYPE_TAG, $oTagView->UNITgetProductLinkType() );
+        $this->assertEquals(OXARTICLE_LINKTYPE_TAG, $oTagView->UNITgetProductLinkType());
     }
 
     public function testPrepareMetaKeyword()
     {
         $oArticle1 = new oxarticle();
-        $oArticle1->setId( 'oArticle1' );
-        $oArticle1->oxarticles__oxtitle = new oxField( 'testoxtitle1' );
+        $oArticle1->setId('oArticle1');
+        $oArticle1->oxarticles__oxtitle = new oxField('testoxtitle1');
 
         $oArticle2 = new oxarticle();
-        $oArticle2->setId( 'oArticle2' );
-        $oArticle2->oxarticles__oxtitle = new oxField( 'testoxtitle2' );
+        $oArticle2->setId('oArticle2');
+        $oArticle2->oxarticles__oxtitle = new oxField('testoxtitle2');
 
         $oArtList = new oxlist();
-        $oArtList->offsetSet( $oArticle1->getId(), $oArticle1 );
-        $oArtList->offsetSet( $oArticle2->getId(), $oArticle2 );
+        $oArtList->offsetSet($oArticle1->getId(), $oArticle1);
+        $oArtList->offsetSet($oArticle2->getId(), $oArticle2);
 
-        $oTagView = $this->getMock( 'tag', array( 'getArticleList' ) );
-        $oTagView->expects( $this->any() )->method( 'getArticleList')->will($this->returnValue( $oArtList ) );
-        $this->assertEquals( "testoxtitle1, testoxtitle2", $oTagView->getMetaKeywords() );
+        $oTagView = $this->getMock('tag', array('getArticleList'));
+        $oTagView->expects($this->any())->method('getArticleList')->will($this->returnValue($oArtList));
+        $this->assertEquals("testoxtitle1, testoxtitle2", $oTagView->getMetaKeywords());
     }
 
     public function testPrepareMetaDescription()
     {
         $oArticle1 = new oxarticle();
-        $oArticle1->setId( 'oArticle1' );
-        $oArticle1->oxarticles__oxtitle = new oxField( 'testoxtitle1' );
+        $oArticle1->setId('oArticle1');
+        $oArticle1->oxarticles__oxtitle = new oxField('testoxtitle1');
 
         $oArticle2 = new oxarticle();
-        $oArticle2->setId( 'oArticle2' );
-        $oArticle2->oxarticles__oxtitle = new oxField( 'testoxtitle2' );
+        $oArticle2->setId('oArticle2');
+        $oArticle2->oxarticles__oxtitle = new oxField('testoxtitle2');
 
         $oArtList = new oxlist();
-        $oArtList->offsetSet( $oArticle1->getId(), $oArticle1 );
-        $oArtList->offsetSet( $oArticle2->getId(), $oArticle2 );
+        $oArtList->offsetSet($oArticle1->getId(), $oArticle1);
+        $oArtList->offsetSet($oArticle2->getId(), $oArticle2);
 
-        $oTagView = $this->getMock( 'tag', array( 'getArticleList' ) );
-        $oTagView->expects( $this->any() )->method( 'getArticleList')->will($this->returnValue( $oArtList ) );
-        $this->assertEquals( "testoxtitle1, testoxtitle2", $oTagView->getMetaDescription() );
+        $oTagView = $this->getMock('tag', array('getArticleList'));
+        $oTagView->expects($this->any())->method('getArticleList')->will($this->returnValue($oArtList));
+        $this->assertEquals("testoxtitle1, testoxtitle2", $oTagView->getMetaDescription());
     }
 
 
     public function testGetArticleList()
     {
         $sTag = 'wanduhr';
-        modConfig::getInstance()->setConfigParam( 'iNrofCatArticles', 20 );
-        $oTag = $this->getProxyClass( 'tag' );
-        $oTag->setNonPublicVar( "_sTag", $sTag );
+        modConfig::getInstance()->setConfigParam('iNrofCatArticles', 20);
+        $oTag = $this->getProxyClass('tag');
+        $oTag->setNonPublicVar("_sTag", $sTag);
         $oArtList = $oTag->getArticleList();
-            $this->assertEquals( 3, $oArtList->count());
+            $this->assertEquals(3, $oArtList->count());
     }
 
     public function testGetTitle()
     {
         $sTag = "wanduhr";
-        $oTag = $this->getProxyClass( 'tag' );
-        $oTag->setNonPublicVar( "_sTag", $sTag );
-        $this->assertEquals( 'Wanduhr', $oTag->getTitle());
+        $oTag = $this->getProxyClass('tag');
+        $oTag->setNonPublicVar("_sTag", $sTag);
+        $this->assertEquals('Wanduhr', $oTag->getTitle());
     }
 
     /**
@@ -265,11 +266,11 @@ class Unit_Views_tagTest extends OxidTestCase
     {
         $oTag = new Tag();
 
-        $this->setRequestParam( 'searchtag', null );
-        $this->assertNull( $oTag->getTag() );
+        $this->setRequestParam('searchtag', null);
+        $this->assertNull($oTag->getTag());
 
-        $this->setRequestParam( 'searchtag', 'sometag' );
-        $this->assertEquals( 'sometag', $oTag->getTag() );
+        $this->setRequestParam('searchtag', 'sometag');
+        $this->assertEquals('sometag', $oTag->getTag());
     }
 
     /**
@@ -279,8 +280,8 @@ class Unit_Views_tagTest extends OxidTestCase
     {
         $oTag = new Tag();
 
-        $this->setRequestParam( 'searchtag', 'sometag<">' );
-        $this->assertEquals( 'sometag&lt;&quot;&gt;', $oTag->getTag() );
+        $this->setRequestParam('searchtag', 'sometag<">');
+        $this->assertEquals('sometag&lt;&quot;&gt;', $oTag->getTag());
     }
 
 }

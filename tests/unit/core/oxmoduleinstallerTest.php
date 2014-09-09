@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
 
 class Unit_Core_oxModuleInstallerTest extends OxidTestCase
 {
@@ -47,21 +47,21 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
     public function testActivate()
     {
         $aModulesBefore = array();
-        $aModulesAfter = array( 'oxtest' => 'testdir/mytest' );
+        $aModulesAfter = array('oxtest' => 'testdir/mytest');
 
-        $oModule = $this->getMock( 'oxModule', array( 'getId', 'getExtensions' ) );
-        $aExtends = array( 'oxtest' => 'testdir/mytest' );
-        $oModule->expects( $this->any() )->method( 'getId' )->will( $this->returnValue( 'test1' ) );
-        $oModule->expects( $this->any() )->method( 'getExtensions' )->will( $this->returnValue( $aExtends ) );
+        $oModule = $this->getMock('oxModule', array('getId', 'getExtensions'));
+        $aExtends = array('oxtest' => 'testdir/mytest');
+        $oModule->expects($this->any())->method('getId')->will($this->returnValue('test1'));
+        $oModule->expects($this->any())->method('getExtensions')->will($this->returnValue($aExtends));
 
         $oModuleInstaller = new oxModuleInstaller();
 
-        oxRegistry::getConfig()->setConfigParam( "aModules", $aModulesBefore );
+        oxRegistry::getConfig()->setConfigParam("aModules", $aModulesBefore);
 
-        $this->assertEquals( $aModulesBefore, oxRegistry::getConfig()->getConfigParam( "aModules" ) );
+        $this->assertEquals($aModulesBefore, oxRegistry::getConfig()->getConfigParam("aModules"));
 
-        $this->assertTrue( $oModuleInstaller->activate( $oModule ) );
-        $this->assertEquals( $aModulesAfter, oxRegistry::getConfig()->getConfigParam( "aModules" ) );
+        $this->assertTrue($oModuleInstaller->activate($oModule));
+        $this->assertEquals($aModulesAfter, oxRegistry::getConfig()->getConfigParam("aModules"));
     }
 
     /**
@@ -71,27 +71,27 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
      */
     public function testActivateActive()
     {
-        $aModulesBefore = array( 'oxtest' => 'test/mytest' );
-        $aModulesAfter = array( 'oxtest' => 'test/mytest' );
-        $aDisabledModulesBefore = array( 'test' );
+        $aModulesBefore = array('oxtest' => 'test/mytest');
+        $aModulesAfter = array('oxtest' => 'test/mytest');
+        $aDisabledModulesBefore = array('test');
         $aDisabledModulesAfter = array();
 
         $oModuleInstaller = new oxModuleInstaller();
 
-        $oModule = $this->getMock( 'oxModule', array( 'getId', 'getExtensions' ) );
-        $oModule->expects( $this->any() )->method( 'getId' )->will( $this->returnValue( 'test' ) );
-        $oModule->expects( $this->any() )->method( 'getExtensions' )->will( $this->returnValue( array( 'oxtest' => 'test/mytest' ) ) );
+        $oModule = $this->getMock('oxModule', array('getId', 'getExtensions'));
+        $oModule->expects($this->any())->method('getId')->will($this->returnValue('test'));
+        $oModule->expects($this->any())->method('getExtensions')->will($this->returnValue(array('oxtest' => 'test/mytest')));
 
-        oxRegistry::getConfig()->setConfigParam( "aModules", $aModulesBefore );
-        oxRegistry::getConfig()->setConfigParam( "aDisabledModules", $aDisabledModulesBefore );
+        oxRegistry::getConfig()->setConfigParam("aModules", $aModulesBefore);
+        oxRegistry::getConfig()->setConfigParam("aDisabledModules", $aDisabledModulesBefore);
 
-        $this->assertEquals( $aModulesBefore, $this->getConfig()->getConfigParam( "aModules" ) );
-        $this->assertEquals( $aDisabledModulesBefore, $this->getConfig()->getConfigParam( "aDisabledModules" ) );
+        $this->assertEquals($aModulesBefore, $this->getConfig()->getConfigParam("aModules"));
+        $this->assertEquals($aDisabledModulesBefore, $this->getConfig()->getConfigParam("aDisabledModules"));
 
-        $this->assertTrue( $oModuleInstaller->activate( $oModule ) );
+        $this->assertTrue($oModuleInstaller->activate($oModule));
 
-        $this->assertEquals( $aModulesAfter, $this->getConfig()->getConfigParam( "aModules" ) );
-        $this->assertEquals( $aDisabledModulesAfter, $this->getConfig()->getConfigParam( "aDisabledModules" ) );
+        $this->assertEquals($aModulesAfter, $this->getConfig()->getConfigParam("aModules"));
+        $this->assertEquals($aDisabledModulesAfter, $this->getConfig()->getConfigParam("aDisabledModules"));
     }
 
     /**
@@ -102,19 +102,19 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
     public function testActivateChain()
     {
         $aModulesBefore = array('oxtest' => 'test/mytest');
-        $aModulesAfter  = array('oxtest' => 'test/mytest&test1/mytest1');
+        $aModulesAfter = array('oxtest' => 'test/mytest&test1/mytest1');
 
-        $oModule = $this->getMock( 'oxModule', array( 'getId', 'getExtensions' ) );
-        $oModule->expects( $this->any() )->method( 'getId' )->will( $this->returnValue( 'test1' ) );
-        $oModule->expects( $this->any() )->method( 'getExtensions' )->will( $this->returnValue( array('oxtest' => 'test1/mytest1') ) );
+        $oModule = $this->getMock('oxModule', array('getId', 'getExtensions'));
+        $oModule->expects($this->any())->method('getId')->will($this->returnValue('test1'));
+        $oModule->expects($this->any())->method('getExtensions')->will($this->returnValue(array('oxtest' => 'test1/mytest1')));
 
         $oModuleInstaller = new oxModuleInstaller();
 
         oxRegistry::getConfig()->setConfigParam("aModules", $aModulesBefore);
-        $this->assertEquals($aModulesBefore, $this->getConfig()->getConfigParam("aModules") );
+        $this->assertEquals($aModulesBefore, $this->getConfig()->getConfigParam("aModules"));
 
-        $this->assertTrue( $oModuleInstaller->activate( $oModule ) );
-        $this->assertEquals($aModulesAfter, $this->getConfig()->getConfigParam("aModules") );
+        $this->assertTrue($oModuleInstaller->activate($oModule));
+        $this->assertEquals($aModulesAfter, $this->getConfig()->getConfigParam("aModules"));
     }
 
     /**
@@ -124,33 +124,33 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
      */
     public function testActivate_moduleDoNotExtend_activateSuccess()
     {
-        $oModule = $this->getProxyClass( 'oxmodule' );
+        $oModule = $this->getProxyClass('oxmodule');
         $sModuleId = 'oxtest';
         $aModule = array(
-            'id'    => $sModuleId,
-            'files' => array(
+            'id'     => $sModuleId,
+            'files'  => array(
                 'oxpsmyemptymodulemodule' => 'oxps/myemptymodule/core/oxpsmyemptymodulemodule.php',
             ),
-            'blocks'      => array(
-                array('template' => 'footer.tpl',             'block'=>'footer_main',         'file'=>'/application/views/blocks/myemptymodulefooter.tpl'),
+            'blocks' => array(
+                array('template' => 'footer.tpl', 'block' => 'footer_main', 'file' => '/application/views/blocks/myemptymodulefooter.tpl'),
             ),
         );
-        $oModule->setNonPublicVar( '_aModule', $aModule );
-        $oModule->setNonPublicVar( '_blMetadata', true );
+        $oModule->setNonPublicVar('_aModule', $aModule);
+        $oModule->setNonPublicVar('_blMetadata', true);
 
         $oModuleInstaller = new oxModuleInstaller();
 
-        $aDisabledModules = $this->getConfigParam( 'aDisabledModules' );
+        $aDisabledModules = $this->getConfigParam('aDisabledModules');
         $aDisabledModules[] = $sModuleId;
         $this->getConfig()->saveShopConfVar('arr', 'aDisabledModules', $aDisabledModules);
 
-        $this->assertFalse( $oModule->isActive(), 'Module should not be active before activating.' );
-        $this->assertTrue( $oModuleInstaller->activate( $oModule ), 'Module should activate successfully.' );
+        $this->assertFalse($oModule->isActive(), 'Module should not be active before activating.');
+        $this->assertTrue($oModuleInstaller->activate($oModule), 'Module should activate successfully.');
 
-        $aDisabledModules = $this->getConfigParam( 'aDisabledModules' );
-        $this->assertFalse( in_array( $sModuleId, $aDisabledModules ), 'Module should be removed from not active module list.' );
+        $aDisabledModules = $this->getConfigParam('aDisabledModules');
+        $this->assertFalse(in_array($sModuleId, $aDisabledModules), 'Module should be removed from not active module list.');
 
-        $this->assertTrue( $oModule->isActive(), 'Module should be active after activating.' );
+        $this->assertTrue($oModule->isActive(), 'Module should be active after activating.');
     }
 
     /**
@@ -161,7 +161,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
         $oModuleInstaller = new oxModuleInstaller();
 
         $aModules = array();
-        $aModulesArray  = array();
+        $aModulesArray = array();
         $this->assertEquals($aModules, $oModuleInstaller->buildModuleChains($aModulesArray));
     }
 
@@ -173,7 +173,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
         $oModuleInstaller = new oxModuleInstaller();
 
         $aModules = array('oxtest' => 'test/mytest');
-        $aModulesArray  = array('oxtest' => array('test/mytest'));
+        $aModulesArray = array('oxtest' => array('test/mytest'));
         $this->assertEquals($aModules, $oModuleInstaller->buildModuleChains($aModulesArray));
     }
 
@@ -185,7 +185,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
         $oModuleInstaller = new oxModuleInstaller();
 
         $aModules = array('oxtest' => 'test/mytest&test1/mytest1');
-        $aModulesArray  = array('oxtest' => array('test/mytest','test1/mytest1'));
+        $aModulesArray = array('oxtest' => array('test/mytest', 'test1/mytest1'));
         $this->assertEquals($aModules, $oModuleInstaller->buildModuleChains($aModulesArray));
     }
 
@@ -196,7 +196,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
      */
     public function testDeactivate_eventCalledBeforeDeactivating()
     {
-        $oModule =  $this->getMock('oxModule', array('getId'));
+        $oModule = $this->getMock('oxModule', array('getId'));
         $oModule->expects($this->any())->method('getId')->will($this->returnValue('test'));
 
         $oModuleInstaller = $this->getMock('oxModuleInstaller', array('_addToDisabledList', '_callEvent'));

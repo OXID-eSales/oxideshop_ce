@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Category_Seo class
  */
 class Unit_Admin_CategorySeoTest extends OxidTestCase
 {
+
     /**
      * Tear down the fixture.
      *
@@ -36,7 +37,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
     protected function tearDown()
     {
         $sQ = "delete from oxcategories where oxid like '_test%'";
-        oxDb::getDb()->execute( $sQ );
+        oxDb::getDb()->execute($sQ);
 
         parent::tearDown();
     }
@@ -50,7 +51,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
     {
         // testing..
         $oView = new Category_Seo();
-        $this->assertEquals( 'object_seo.tpl', $oView->render() );
+        $this->assertEquals('object_seo.tpl', $oView->render());
     }
 
     /**
@@ -62,7 +63,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
     {
         // testing..
         $oView = new Category_Seo();
-        $this->assertEquals( 'oxcategory', $oView->UNITgetType() );
+        $this->assertEquals('oxcategory', $oView->UNITgetType());
     }
 
     /**
@@ -72,20 +73,21 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction( 'oxcategory', 'load', '{ return true; }');
-        oxTestModules::addFunction( 'oxcategory', 'save', '{ return true; }');
-        oxTestModules::addFunction( 'oxSeoEncoderCategory', 'markRelatedAsExpired', '{ throw new Exception( "markRelatedAsExpired" ); }');
-        modConfig::setRequestParameter( "oxid", "testId" );
+        oxTestModules::addFunction('oxcategory', 'load', '{ return true; }');
+        oxTestModules::addFunction('oxcategory', 'save', '{ return true; }');
+        oxTestModules::addFunction('oxSeoEncoderCategory', 'markRelatedAsExpired', '{ throw new Exception( "markRelatedAsExpired" ); }');
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         try {
             $oView = new Category_Seo();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "markRelatedAsExpired", $oExcp->getMessage(), "Error in Category_Seo::Save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("markRelatedAsExpired", $oExcp->getMessage(), "Error in Category_Seo::Save()");
+
             return;
         }
-        $this->fail( "Error in Category_Seo::Save()" );
+        $this->fail("Error in Category_Seo::Save()");
     }
 
     /**
@@ -96,7 +98,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
     public function testGetEncoder()
     {
         $oView = new Category_Seo();
-        $this->assertTrue( $oView->UNITgetEncoder() instanceof oxSeoEncoderCategory );
+        $this->assertTrue($oView->UNITgetEncoder() instanceof oxSeoEncoderCategory);
     }
 
     /**
@@ -107,7 +109,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
     public function testIsSuffixSupported()
     {
         $oView = new Category_Seo();
-        $this->assertTrue( $oView->isSuffixSupported() );
+        $this->assertTrue($oView->isSuffixSupported());
     }
 
     /**
@@ -118,20 +120,20 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
     public function testIsEntrySuffixed()
     {
         $sQ1 = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`, oxshowsuffix) " .
-                "values ('_test1','test','oxbaseshop','1','4','test','','','','','1','10','50', '1')";
+               "values ('_test1','test','oxbaseshop','1','4','test','','','','','1','10','50', '1')";
 
         $sQ2 = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`, oxshowsuffix) " .
-                "values ('_test2','test','oxbaseshop','1','4','test','','','','','1','10','50', '0')";
+               "values ('_test2','test','oxbaseshop','1','4','test','','','','','1','10','50', '0')";
 
         $this->addToDatabase($sQ1, 'oxcategories');
         $this->addToDatabase($sQ2, 'oxcategories');
         $this->addTeardownSql("delete from oxcategories where oxid like '%_test%'");
 
-        $oView = $this->getMock( "Category_Seo", array( "getEditObjectId" ) );
-        $oView->expects( $this->at( 0 ) )->method( 'getEditObjectId' )->will( $this->returnValue( "_test1" ) );
-        $oView->expects( $this->at( 1 ) )->method( 'getEditObjectId' )->will( $this->returnValue( "_test2" ) );
-        $this->assertTrue( $oView->isEntrySuffixed() );
-        $this->assertFalse( $oView->isEntrySuffixed() );
+        $oView = $this->getMock("Category_Seo", array("getEditObjectId"));
+        $oView->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue("_test1"));
+        $oView->expects($this->at(1))->method('getEditObjectId')->will($this->returnValue("_test2"));
+        $this->assertTrue($oView->isEntrySuffixed());
+        $this->assertFalse($oView->isEntrySuffixed());
     }
 
     /**
@@ -142,17 +144,17 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
     public function testGetEntryUri()
     {
         $sQ1 = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`, oxshowsuffix) " .
-                "values ('_test1','test','oxbaseshop','1','4','test','','','','','1','10','50', '1')";
+               "values ('_test1','test','oxbaseshop','1','4','test','','','','','1','10','50', '1')";
         $this->addToDatabase($sQ1, 'oxcategories');
         $this->addTeardownSql("delete from oxcategories where oxid like '%_test%'");
 
-        $oEncoder = $this->getMock( "oxSeoEncoderCategory", array( "getCategoryUri" ) );
-        $oEncoder->expects( $this->once() )->method( 'getCategoryUri' )->will( $this->returnValue( "CategoryUri" ) );
+        $oEncoder = $this->getMock("oxSeoEncoderCategory", array("getCategoryUri"));
+        $oEncoder->expects($this->once())->method('getCategoryUri')->will($this->returnValue("CategoryUri"));
 
-        $oView = $this->getMock( "Category_Seo", array( "getEditObjectId", "_getEncoder" ) );
-        $oView->expects( $this->once() )->method( 'getEditObjectId' )->will( $this->returnValue( "_test1" ) );
-        $oView->expects( $this->once() )->method( '_getEncoder' )->will( $this->returnValue( $oEncoder ) );
-        $this->assertEquals( "CategoryUri", $oView->getEntryUri() );
+        $oView = $this->getMock("Category_Seo", array("getEditObjectId", "_getEncoder"));
+        $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue("_test1"));
+        $oView->expects($this->once())->method('_getEncoder')->will($this->returnValue($oEncoder));
+        $this->assertEquals("CategoryUri", $oView->getEntryUri());
     }
 
     /**
@@ -163,16 +165,16 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
     public function testGetStdUrl()
     {
         $sQ1 = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`, oxshowsuffix) " .
-                "values ('_test1','test','oxbaseshop','1','4','test','','','','','1','10','50', '1')";
+               "values ('_test1','test','oxbaseshop','1','4','test','','','','','1','10','50', '1')";
         $this->addToDatabase($sQ1, 'oxcategories');
         $this->addTeardownSql("delete from oxcategories where oxid like '%_test%'");
 
         $oCategory = new oxCategory();
-        $oCategory->load( "_test1" );
+        $oCategory->load("_test1");
 
-        $oView = $this->getMock( "Category_Seo", array( "getEditLang" ) );
-        $oView->expects( $this->once() )->method( 'getEditLang' )->will( $this->returnValue( 0 ) );
+        $oView = $this->getMock("Category_Seo", array("getEditLang"));
+        $oView->expects($this->once())->method('getEditLang')->will($this->returnValue(0));
 
-        $this->assertEquals( $oCategory->getBaseStdLink( 0, true, false ), $oView->UNITgetStdUrl( "_test1" ) );
+        $this->assertEquals($oCategory->getBaseStdLink(0, true, false), $oView->UNITgetStdUrl("_test1"));
     }
 }

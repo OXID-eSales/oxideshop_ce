@@ -20,10 +20,11 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ) . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
 
 class Unit_Core_OxConfigFileTest extends OxidTestCase
 {
+
     /**
      * Test for OxConfigFile::getVar() method
      */
@@ -77,7 +78,7 @@ class Unit_Core_OxConfigFileTest extends OxidTestCase
      */
     public function testGetVarsPublicOnly()
     {
-        $oConfigFile = new OxConfigFile( getShopBasePath() . "config.inc.php" );
+        $oConfigFile = new OxConfigFile(getShopBasePath() . "config.inc.php");
         $aVars = $oConfigFile->getVars();
         $this->assertArrayNotHasKey("_aConfVars", $aVars, "Internal var is wrongly returned");
     }
@@ -87,7 +88,7 @@ class Unit_Core_OxConfigFileTest extends OxidTestCase
      */
     public function testFileIsLoadedOnlyOnce()
     {
-        $oConfigFile = new OxConfigFile( getShopBasePath() . "config.inc.php" );
+        $oConfigFile = new OxConfigFile(getShopBasePath() . "config.inc.php");
 
         $sVar = $oConfigFile->getVar("sTsUser");
         $this->assertSame("oxid_esales", $sVar);
@@ -108,19 +109,19 @@ class Unit_Core_OxConfigFileTest extends OxidTestCase
      */
     public function testSetFile()
     {
-        $sDir = getTestsBasePath().'/unit/configtest';
-        if ( !is_dir($sDir) ) {
+        $sDir = getTestsBasePath() . '/unit/configtest';
+        if (!is_dir($sDir)) {
             mkdir($sDir);
         }
         $sCustConfig = $sDir . "/cust_config.inc.php";
-        $handle = fopen( $sCustConfig, "w+" );
+        $handle = fopen($sCustConfig, "w+");
         chmod($sCustConfig, 0777);
         $data = '<?php $this->custVar = test;';
-        fwrite( $handle, $data );
+        fwrite($handle, $data);
 
-        $oConfigFile = new oxConfigFile( getShopBasePath() . "config.inc.php" );
-        $oConfigFile->setFile( $sCustConfig );
-        $sVar = $oConfigFile->getVar( "custVar" );
+        $oConfigFile = new oxConfigFile(getShopBasePath() . "config.inc.php");
+        $oConfigFile->setFile($sCustConfig);
+        $sVar = $oConfigFile->getVar("custVar");
 
         $this->assertSame("test", $sVar);
     }

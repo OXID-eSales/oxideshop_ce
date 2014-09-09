@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxUtilsXmlTest extends OxidTestCase
 {
@@ -29,39 +29,41 @@ class Unit_Core_oxUtilsXmlTest extends OxidTestCase
     public function xmlProviderNoDomDocument()
     {
         return array(
-            array( '<?xml version="1.0" encoding="utf-8"?><message>ACK</message>', true ),
-            array( '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><message>ACK</message>', false ),
+            array('<?xml version="1.0" encoding="utf-8"?><message>ACK</message>', true),
+            array('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><message>ACK</message>', false),
         );
     }
 
     public function xmlProviderWithDomDocument()
     {
         $oDom = new DOMDocument();
+
         return array(
-            array( '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html>ACK</html>', $oDom, false ),
-            array( '<?xml version="1.0" encoding="utf-8"?><message>ACK</message>', $oDom, true ),
+            array('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html>ACK</html>', $oDom, false),
+            array('<?xml version="1.0" encoding="utf-8"?><message>ACK</message>', $oDom, true),
         );
     }
+
     /**
      * Check if loadXml returns valid XML or response
      *
      * @dataProvider xmlProviderNoDomDocument
      */
-    public function testLoadXmlNoDocument( $sXml, $blResult )
+    public function testLoadXmlNoDocument($sXml, $blResult)
     {
         $oUtilsXml = new oxUtilsXml();
-        $this->assertEquals( $blResult, $oUtilsXml->loadXml( $sXml ) != false );
+        $this->assertEquals($blResult, $oUtilsXml->loadXml($sXml) != false);
     }
 
     /**
      * Check for valid response when passing normal DOM document
      */
-    public function testLoadXmlWithDomDocumentInvalidXml(  )
+    public function testLoadXmlWithDomDocumentInvalidXml()
     {
         $oUtilsXml = new oxUtilsXml();
         $oDom = new DOMDocument();
         $sInValidXml = '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><message>ACK</message>';
-        $this->assertEquals( false, $oUtilsXml->loadXml( $sInValidXml, $oDom ) != false );
+        $this->assertEquals(false, $oUtilsXml->loadXml($sInValidXml, $oDom) != false);
     }
 
     /**
@@ -72,6 +74,6 @@ class Unit_Core_oxUtilsXmlTest extends OxidTestCase
         $oUtilsXml = new oxUtilsXml();
         $oDom = new DOMDocument();
         $sValidXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><ocl><message>ACK</message></ocl>";
-        $this->assertEquals( true, $oUtilsXml->loadXml( $sValidXml, $oDom ) != false );
+        $this->assertEquals(true, $oUtilsXml->loadXml($sValidXml, $oDom) != false);
     }
 }

@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Article_Variant class
@@ -37,16 +37,16 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", oxDb::getDb()->getOne( "select oxparentid from oxarticles where oxparentid != ''" ) );
+        modConfig::setRequestParameter("oxid", oxDb::getDb()->getOne("select oxparentid from oxarticles where oxparentid != ''"));
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
         $oView = new Article_Variant();
-        $this->assertEquals( 'article_variant.tpl', $oView->render() );
+        $this->assertEquals('article_variant.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue( $aViewData["edit"] instanceof oxArticle );
-        $this->assertTrue( $aViewData["mylist"] instanceof oxarticlelist );
+        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
+        $this->assertTrue($aViewData["mylist"] instanceof oxarticlelist);
     }
 
     /**
@@ -56,19 +56,19 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
      */
     public function testRenderVariant()
     {
-        modConfig::setRequestParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxarticles where oxparentid != ''" ) );
+        modConfig::setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxarticles where oxparentid != ''"));
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
         $oView = new Article_Variant();
-        $this->assertEquals( 'article_variant.tpl', $oView->render() );
+        $this->assertEquals('article_variant.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue( $aViewData["edit"] instanceof oxArticle );
-        $this->assertTrue( $aViewData["parentarticle"] instanceof oxArticle );
-        $this->assertEquals( 1, $aViewData["issubvariant"] );
-        $this->assertEquals( 1, $aViewData["readonly"] );
-        $this->assertTrue( $aViewData["mylist"] instanceof oxarticlelist );
+        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
+        $this->assertTrue($aViewData["parentarticle"] instanceof oxArticle);
+        $this->assertEquals(1, $aViewData["issubvariant"]);
+        $this->assertEquals(1, $aViewData["readonly"]);
+        $this->assertTrue($aViewData["mylist"] instanceof oxarticlelist);
     }
 
 
@@ -79,18 +79,19 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
      */
     public function testSavevariant()
     {
-        oxTestModules::addFunction( 'oxarticle', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::setRequestParameter( "voxid", "testid" );
-        modConfig::setRequestParameter( "oxid", "testid" );
+        oxTestModules::addFunction('oxarticle', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::setRequestParameter("voxid", "testid");
+        modConfig::setRequestParameter("oxid", "testid");
 
         try {
             $oView = new Article_Variant();
             $oView->savevariant();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Article_Variant::savevariant()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Variant::savevariant()");
+
             return;
         }
-        $this->fail( "error in Article_Variant::savevariant()" );
+        $this->fail("error in Article_Variant::savevariant()");
     }
 
     /**
@@ -100,17 +101,18 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
      */
     public function testSavevariantDefaultId()
     {
-        oxTestModules::addFunction( 'oxarticle', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::setRequestParameter( "voxid", "-1" );
+        oxTestModules::addFunction('oxarticle', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::setRequestParameter("voxid", "-1");
 
         try {
             $oView = new Article_Variant();
             $oView->savevariant();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Article_Variant::savevariant()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Variant::savevariant()");
+
             return;
         }
-        $this->fail( "error in Article_Variant::savevariant()" );
+        $this->fail("error in Article_Variant::savevariant()");
     }
 
     /**
@@ -120,13 +122,13 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
      */
     public function testSavevariants()
     {
-        modConfig::setRequestParameter( "editval", array( "oxid1" => "param1", "oxid2" => "param2" ) );
+        modConfig::setRequestParameter("editval", array("oxid1" => "param1", "oxid2" => "param2"));
 
         $aMethods[] = "savevariant";
 
-        $oView = $this->getMock( "Article_Variant", $aMethods );
-        $oView->expects( $this->at( 0 ) )->method( 'savevariant' )->with( $this->equalTo( "oxid1" ), $this->equalTo( "param1" ) );
-        $oView->expects( $this->at( 1 ) )->method( 'savevariant' )->with( $this->equalTo( "oxid2" ), $this->equalTo( "param2" ) );
+        $oView = $this->getMock("Article_Variant", $aMethods);
+        $oView->expects($this->at(0))->method('savevariant')->with($this->equalTo("oxid1"), $this->equalTo("param1"));
+        $oView->expects($this->at(1))->method('savevariant')->with($this->equalTo("oxid2"), $this->equalTo("param2"));
 
         $oView->savevariants();
     }
@@ -138,17 +140,18 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
      */
     public function testDeleteVariant()
     {
-        oxTestModules::addFunction( 'oxarticle', 'delete', '{ throw new Exception( "delete" ); }');
-        modConfig::setRequestParameter( "oxid", "testid" );
+        oxTestModules::addFunction('oxarticle', 'delete', '{ throw new Exception( "delete" ); }');
+        modConfig::setRequestParameter("oxid", "testid");
 
         try {
             $oView = new Article_Variant();
             $oView->deleteVariant();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "delete", $oExcp->getMessage(), "error in Article_Variant::deleteVariant()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("delete", $oExcp->getMessage(), "error in Article_Variant::deleteVariant()");
+
             return;
         }
-        $this->fail( "error in Article_Variant::deleteVariant()" );
+        $this->fail("error in Article_Variant::deleteVariant()");
     }
 
     /**
@@ -158,17 +161,18 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
      */
     public function testChangename()
     {
-        oxTestModules::addFunction( 'oxarticle', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::setRequestParameter( "oxid", "testid" );
+        oxTestModules::addFunction('oxarticle', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::setRequestParameter("oxid", "testid");
 
         try {
             $oView = new Article_Variant();
             $oView->changename();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Article_Variant::changename()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Variant::changename()");
+
             return;
         }
-        $this->fail( "error in Article_Variant::changename()" );
+        $this->fail("error in Article_Variant::changename()");
     }
 
     /**
@@ -180,17 +184,18 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return false; }');
         oxTestModules::addFunction('oxarticle', 'load', '{ return true; }');
-        oxTestModules::addFunction( 'oxVariantHandler', 'genVariantFromSell', '{ throw new Exception( "genVariantFromSell" ); }');
+        oxTestModules::addFunction('oxVariantHandler', 'genVariantFromSell', '{ throw new Exception( "genVariantFromSell" ); }');
 
-        modConfig::setRequestParameter( "allsel", "testsel" );
+        modConfig::setRequestParameter("allsel", "testsel");
 
         try {
             $oView = new Article_Variant();
             $oView->addsel();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "genVariantFromSell", $oExcp->getMessage(), "error in Article_Variant::addsel()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("genVariantFromSell", $oExcp->getMessage(), "error in Article_Variant::addsel()");
+
             return;
         }
-        $this->fail( "error in Article_Variant::addsel()" );
+        $this->fail("error in Article_Variant::addsel()");
     }
 }

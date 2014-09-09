@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Shop_Config class
  */
 class Unit_Admin_ModuleSortListTest extends OxidTestCase
 {
+
     /**
      * Module_SortList::Render() test case
      *
@@ -37,10 +38,10 @@ class Unit_Admin_ModuleSortListTest extends OxidTestCase
     {
         // testing..
         $oView = new Module_SortList();
-        $this->assertEquals( 'module_sortlist.tpl', $oView->render() );
+        $this->assertEquals('module_sortlist.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['aExtClasses'] ) );
-        $this->assertTrue( isset( $aViewData['aDisabledModules'] ) );
+        $this->assertTrue(isset($aViewData['aExtClasses']));
+        $this->assertTrue(isset($aViewData['aDisabledModules']));
     }
 
     /**
@@ -50,17 +51,17 @@ class Unit_Admin_ModuleSortListTest extends OxidTestCase
      */
     public function testSave()
     {
-        $json = json_encode(array( "oxarticle" => array("dir1/module1","dir2/module2") ));
-        $this->getConfig()->setRequestParameter( "aModules", $json );
-        $this->getConfig()->setAdminMode( true );
+        $json = json_encode(array("oxarticle" => array("dir1/module1", "dir2/module2")));
+        $this->getConfig()->setRequestParameter("aModules", $json);
+        $this->getConfig()->setAdminMode(true);
         // result data
-        $aModules = array( "oxarticle" => "dir1/module1&dir2/module2" );
+        $aModules = array("oxarticle" => "dir1/module1&dir2/module2");
 
-        $oConfig = $this->getMock( 'oxConfig', array('saveShopConfVar') );
-        $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aModules) );
+        $oConfig = $this->getMock('oxConfig', array('saveShopConfVar'));
+        $oConfig->expects($this->at(0))->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aModules));
 
-        $oView = $this->getMock( 'Module_SortList', array('getConfig'), array(), "", false );
-        $oView->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
+        $oView = $this->getMock('Module_SortList', array('getConfig'), array(), "", false);
+        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $oView->save();
     }
@@ -72,9 +73,9 @@ class Unit_Admin_ModuleSortListTest extends OxidTestCase
      */
     public function testRemove()
     {
-        $this->getConfig()->setRequestParameter( "noButton", true );
+        $this->getConfig()->setRequestParameter("noButton", true);
         $oView = new Module_SortList();
         $oView->remove();
-        $this->assertTrue( $this->getSession()->getVariable( "blSkipDeletedExtChecking") );
+        $this->assertTrue($this->getSession()->getVariable("blSkipDeletedExtChecking"));
     }
 }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Shop_Config class
  */
 class Unit_Admin_ModuleConfigTest extends OxidTestCase
 {
+
     /**
      * Shop_Config::Render() test case
      *
@@ -37,15 +38,15 @@ class Unit_Admin_ModuleConfigTest extends OxidTestCase
     {
         // testing..
         $oView = new Module_Config();
-        $this->assertEquals( 'module_config.tpl', $oView->render() );
+        $this->assertEquals('module_config.tpl', $oView->render());
     }
 
 
     public function testGetModuleForConfigVars()
     {
-        $oView = $this->getProxyClass( 'Module_Config' );
-        $oView->setNonPublicVar( "_sModuleId", "testModuleId" );
-        $this->assertEquals( 'module:testModuleId', $oView->UNITgetModuleForConfigVars() );
+        $oView = $this->getProxyClass('Module_Config');
+        $oView->setNonPublicVar("_sModuleId", "testModuleId");
+        $this->assertEquals('module:testModuleId', $oView->UNITgetModuleForConfigVars());
     }
 
     public function testSaveConfVars()

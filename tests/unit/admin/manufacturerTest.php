@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Manufacturer class
  */
 class Unit_Admin_ManufacturerTest extends OxidTestCase
 {
+
     /**
      * Manufacturer::Render() test case
      *
@@ -37,6 +38,6 @@ class Unit_Admin_ManufacturerTest extends OxidTestCase
     {
         // testing..
         $oView = new Manufacturer();
-        $this->assertEquals( 'manufacturer.tpl', $oView->render() );
+        $this->assertEquals('manufacturer.tpl', $oView->render());
     }
 }

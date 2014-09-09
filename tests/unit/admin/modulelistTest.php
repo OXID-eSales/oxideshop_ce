@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Shop_Config class
  */
 class Unit_Admin_ModuleListTest extends OxidTestCase
 {
+
     /**
      * Module_List::Render() test case
      *
@@ -36,7 +37,7 @@ class Unit_Admin_ModuleListTest extends OxidTestCase
     public function testRender()
     {
         $oView = new Module_List();
-        $this->assertEquals( 'module_list.tpl', $oView->render() );
+        $this->assertEquals('module_list.tpl', $oView->render());
 
             $aViewData = $oView->getViewData();
             $aModulesNames = array_keys($aViewData['mylist']);

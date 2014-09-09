@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxCurlTest extends OxidTestCase
 {
@@ -35,10 +35,10 @@ class Unit_Core_oxCurlTest extends OxidTestCase
         $sEndpointUrl = 'http://www.oxid-esales.com/index.php?anid=article';
 
         $oCurl = new oxCurl();
-        $oCurl->setUrl( $sEndpointUrl );
+        $oCurl->setUrl($sEndpointUrl);
         $sUrlToCall = $oCurl->getUrl();
 
-        $this->assertEquals( $sEndpointUrl, $sUrlToCall, 'Url should be same as provided from config.' );
+        $this->assertEquals($sEndpointUrl, $sUrlToCall, 'Url should be same as provided from config.');
     }
 
     /**
@@ -47,7 +47,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testGetUrl_notSet_null()
     {
         $oCurl = new oxCurl();
-        $this->assertNull( $oCurl->getUrl() );
+        $this->assertNull($oCurl->getUrl());
     }
 
     /**
@@ -56,9 +56,9 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testSetQuery_set_get()
     {
         $oCurl = new oxCurl();
-        $oCurl->setQuery( 'param1=value1&param2=values2' );
+        $oCurl->setQuery('param1=value1&param2=values2');
 
-        $this->assertEquals( 'param1=value1&param2=values2', $oCurl->getQuery() );
+        $this->assertEquals('param1=value1&param2=values2', $oCurl->getQuery());
     }
 
     /**
@@ -67,9 +67,9 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testGetQuery_setParameter_getQueryFromParameters()
     {
         $oCurl = new oxCurl();
-        $oCurl->setParameters( array( 'param1'=>'value1', 'param2' => 'values2' ) );
+        $oCurl->setParameters(array('param1' => 'value1', 'param2' => 'values2'));
 
-        $this->assertEquals( 'param1=value1&param2=values2', $oCurl->getQuery() );
+        $this->assertEquals('param1=value1&param2=values2', $oCurl->getQuery());
     }
 
     /**
@@ -78,11 +78,11 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testGetQuery_setParameterManyTimes_getQueryFromParameters()
     {
         $oCurl = new oxCurl();
-        $oCurl->setParameters( array( 'param1'=>'value1', 'param2' => 'values2' ) );
-        $this->assertEquals( 'param1=value1&param2=values2', $oCurl->getQuery() );
+        $oCurl->setParameters(array('param1' => 'value1', 'param2' => 'values2'));
+        $this->assertEquals('param1=value1&param2=values2', $oCurl->getQuery());
 
-        $oCurl->setParameters( array( 'param3'=>'value3', 'param4' => 'values4' ) );
-        $this->assertEquals( 'param3=value3&param4=values4', $oCurl->getQuery() );
+        $oCurl->setParameters(array('param3' => 'value3', 'param4' => 'values4'));
+        $this->assertEquals('param3=value3&param4=values4', $oCurl->getQuery());
 
     }
 
@@ -92,11 +92,11 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testGetQuery_setParameterNotUtf_getQueryFromParameters()
     {
         $oCurl = new oxCurl();
-        $oCurl->setParameters( array( 'param1' => 'Jäger', 'param2' => 'values2' ) );
+        $oCurl->setParameters(array('param1' => 'Jäger', 'param2' => 'values2'));
 
-        $aPramsUtf = array( 'param1' => 'Jäger', 'param2' => 'values2' );
+        $aPramsUtf = array('param1' => 'Jäger', 'param2' => 'values2');
 
-        $this->assertEquals( http_build_query($aPramsUtf), $oCurl->getQuery() );
+        $this->assertEquals(http_build_query($aPramsUtf), $oCurl->getQuery());
     }
 
     /**
@@ -105,7 +105,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testGetParameters_default_null()
     {
         $oCurl = new oxCurl();
-        $this->assertNull( $oCurl->getParameters() );
+        $this->assertNull($oCurl->getParameters());
     }
 
     /**
@@ -116,8 +116,8 @@ class Unit_Core_oxCurlTest extends OxidTestCase
         $aParameters = array('parameter' => 'value');
 
         $oCurl = new oxCurl();
-        $oCurl->setParameters( $aParameters );
-        $this->assertEquals( $aParameters, $oCurl->getParameters() );
+        $oCurl->setParameters($aParameters);
+        $this->assertEquals($aParameters, $oCurl->getParameters());
     }
 
     /**
@@ -126,9 +126,9 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testSetConnectionCharset_set_get()
     {
         $oCurl = new oxCurl();
-        $oCurl->setConnectionCharset( 'ISO-8859-1' );
+        $oCurl->setConnectionCharset('ISO-8859-1');
 
-        $this->assertEquals( 'ISO-8859-1', $oCurl->getConnectionCharset() );
+        $this->assertEquals('ISO-8859-1', $oCurl->getConnectionCharset());
     }
 
     /**
@@ -137,15 +137,16 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testGetConnectionCharset_notSet_UTF()
     {
         $oCurl = new oxCurl();
-        $this->assertEquals( 'UTF-8', $oCurl->getConnectionCharset() );
+        $this->assertEquals('UTF-8', $oCurl->getConnectionCharset());
     }
+
     /**
      * Checks if function returns null when nothing is set.
      */
     public function testGetHost_notSet_null()
     {
         $oCurl = new oxCurl();
-        $this->assertNull( $oCurl->getHost(), 'Default value must be null.' );
+        $this->assertNull($oCurl->getHost(), 'Default value must be null.');
     }
 
     /**
@@ -156,9 +157,9 @@ class Unit_Core_oxCurlTest extends OxidTestCase
         $sHost = 'someHost';
 
         $oCurl = new oxCurl();
-        $oCurl->setHost( $sHost );
+        $oCurl->setHost($sHost);
 
-        $this->assertEquals( $sHost, $oCurl->getHost(), 'Check if getter returns what is set in setter.' );
+        $this->assertEquals($sHost, $oCurl->getHost(), 'Check if getter returns what is set in setter.');
     }
 
     /**
@@ -170,13 +171,13 @@ class Unit_Core_oxCurlTest extends OxidTestCase
         $aExpectedHeader = array(
             'POST /cgi-bin/webscr HTTP/1.1',
             'Content-Type: application/x-www-form-urlencoded',
-            'Host: '. $sHost,
+            'Host: ' . $sHost,
             'Connection: close'
         );
         $oCurl = new oxCurl();
-        $oCurl->setHost( $sHost );
+        $oCurl->setHost($sHost);
 
-        $this->assertEquals( $aExpectedHeader, $oCurl->getHeader(), 'Header must be formed from set host.' );
+        $this->assertEquals($aExpectedHeader, $oCurl->getHeader(), 'Header must be formed from set host.');
     }
 
     /**
@@ -191,7 +192,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
         );
         $oCurl = new oxCurl();
 
-        $this->assertEquals( $aExpectedHeader, $oCurl->getHeader(), 'Header must be without host as host not set.' );
+        $this->assertEquals($aExpectedHeader, $oCurl->getHeader(), 'Header must be without host as host not set.');
     }
 
     /**
@@ -200,12 +201,12 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testGetHeader_headerSetAndHostSet_headerFromSet()
     {
         $sHost = 'someHost';
-        $aHeader = array( 'Test header' );
+        $aHeader = array('Test header');
         $oCurl = new oxCurl();
-        $oCurl->setHost( $sHost );
-        $oCurl->setHeader( $aHeader );
+        $oCurl->setHost($sHost);
+        $oCurl->setHeader($aHeader);
 
-        $this->assertEquals( $aHeader, $oCurl->getHeader(), 'Header must be same as set header.' );
+        $this->assertEquals($aHeader, $oCurl->getHeader(), 'Header must be same as set header.');
     }
 
     /**
@@ -213,11 +214,11 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testGetHeader_headerSetAndHostNotSet_headerWithoutHost()
     {
-        $aHeader = array( 'Test header' );
+        $aHeader = array('Test header');
         $oCurl = new oxCurl();
-        $oCurl->setHeader( $aHeader );
+        $oCurl->setHeader($aHeader);
 
-        $this->assertEquals( $aHeader, $oCurl->getHeader(), 'Header must be same as set header.' );
+        $this->assertEquals($aHeader, $oCurl->getHeader(), 'Header must be same as set header.');
     }
 
     /**
@@ -227,10 +228,10 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testSetOption()
     {
         $oCurl = new oxCurl();
-        $oCurl->setOption( 'CURLOPT_VERBOSE', 0 );
+        $oCurl->setOption('CURLOPT_VERBOSE', 0);
         $aOptions = $oCurl->getOptions();
-        $this->assertEquals( 2, count($aOptions) );
-        $this->assertEquals( 0, $aOptions['CURLOPT_VERBOSE'] );
+        $this->assertEquals(2, count($aOptions));
+        $this->assertEquals(0, $aOptions['CURLOPT_VERBOSE']);
     }
 
     /**
@@ -238,10 +239,10 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testSetOption_NotCurlOption()
     {
-        $this->setExpectedException( 'oxException' );
+        $this->setExpectedException('oxException');
 
         $oCurl = new oxCurl();
-        $oCurl->setOption( 'rParam1', "rValue1" );
+        $oCurl->setOption('rParam1', "rValue1");
     }
 
     /**
@@ -249,10 +250,10 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testSetOption_WrongOptionName()
     {
-        $this->setExpectedException( 'oxException' );
+        $this->setExpectedException('oxException');
 
         $oCurl = new oxCurl();
-        $oCurl->setOption( 'CURLOPT_WRONG', "rValue1" );
+        $oCurl->setOption('CURLOPT_WRONG', "rValue1");
     }
 
     /**
@@ -262,9 +263,9 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testSetGetMethod()
     {
         $oCurl = new oxCurl();
-        $oCurl->setMethod( 'POST' );
+        $oCurl->setMethod('POST');
 
-        $this->assertEquals( 'POST', $oCurl->getMethod() );
+        $this->assertEquals('POST', $oCurl->getMethod());
     }
 
     /**
@@ -272,17 +273,17 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testExecute_getResponseArray()
     {
-        $oCurl = $this->getMock( 'oxCurl', array( "_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions' ) );
-        $oCurl->expects( $this->any() )->method( '_setOpt' );
-        $oCurl->expects( $this->once() )->method( 'getHeader' );
-        $oCurl->expects( $this->once() )->method( 'getUrl' );
-        $oCurl->expects( $this->once() )->method( 'getQuery' );
-        $oCurl->expects( $this->once() )->method( 'getOptions' )->will( $this->returnValue( array('CURLOPT_VERBOSE' => 'rValue1') ) );
-        $oCurl->expects( $this->once() )->method( '_execute' )->will( $this->returnValue( 'rParam1=rValue1') );
-        $oCurl->expects( $this->once() )->method( '_getErrorNumber' )->will( $this->returnValue( false ) );
-        $oCurl->expects( $this->once() )->method( '_close' );
+        $oCurl = $this->getMock('oxCurl', array("_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
+        $oCurl->expects($this->any())->method('_setOpt');
+        $oCurl->expects($this->once())->method('getHeader');
+        $oCurl->expects($this->once())->method('getUrl');
+        $oCurl->expects($this->once())->method('getQuery');
+        $oCurl->expects($this->once())->method('getOptions')->will($this->returnValue(array('CURLOPT_VERBOSE' => 'rValue1')));
+        $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
+        $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(false));
+        $oCurl->expects($this->once())->method('_close');
 
-        $this->assertEquals( 'rParam1=rValue1', $oCurl->execute() );
+        $this->assertEquals('rParam1=rValue1', $oCurl->execute());
     }
 
     /**
@@ -290,18 +291,18 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testExecute_noAdditionalOptionsSetForGET()
     {
-        $oCurl = $this->getMock( 'oxCurl', array( "_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions' ) );
-        $oCurl->expects( $this->exactly(1) )->method( '_setOpt' );
-        $oCurl->expects( $this->once() )->method( 'getHeader' );
-        $oCurl->expects( $this->once() )->method( 'getUrl' );
-        $oCurl->expects( $this->never() )->method( 'getQuery' );
-        $oCurl->expects( $this->once() )->method( 'getOptions' )->will( $this->returnValue( array() ) );
-        $oCurl->expects( $this->once() )->method( '_execute' )->will( $this->returnValue( 'rParam1=rValue1') );
-        $oCurl->expects( $this->once() )->method( '_getErrorNumber' )->will( $this->returnValue( false ) );
-        $oCurl->expects( $this->once() )->method( '_close' );
+        $oCurl = $this->getMock('oxCurl', array("_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
+        $oCurl->expects($this->exactly(1))->method('_setOpt');
+        $oCurl->expects($this->once())->method('getHeader');
+        $oCurl->expects($this->once())->method('getUrl');
+        $oCurl->expects($this->never())->method('getQuery');
+        $oCurl->expects($this->once())->method('getOptions')->will($this->returnValue(array()));
+        $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
+        $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(false));
+        $oCurl->expects($this->once())->method('_close');
         $oCurl->setMethod('GET');
 
-        $this->assertEquals( 'rParam1=rValue1', $oCurl->execute() );
+        $this->assertEquals('rParam1=rValue1', $oCurl->execute());
     }
 
     /**
@@ -309,17 +310,17 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testExecute_noAdditionalOptionsSetForPOST()
     {
-        $oCurl = $this->getMock( 'oxCurl', array( "_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions' ) );
-        $oCurl->expects( $this->exactly(3) )->method( '_setOpt' );
-        $oCurl->expects( $this->once() )->method( 'getHeader' );
-        $oCurl->expects( $this->once() )->method( 'getUrl' );
-        $oCurl->expects( $this->once() )->method( 'getQuery' );
-        $oCurl->expects( $this->once() )->method( 'getOptions' )->will( $this->returnValue( array() ) );
-        $oCurl->expects( $this->once() )->method( '_execute' )->will( $this->returnValue( 'rParam1=rValue1') );
-        $oCurl->expects( $this->once() )->method( '_getErrorNumber' )->will( $this->returnValue( false ) );
-        $oCurl->expects( $this->once() )->method( '_close' );
+        $oCurl = $this->getMock('oxCurl', array("_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
+        $oCurl->expects($this->exactly(3))->method('_setOpt');
+        $oCurl->expects($this->once())->method('getHeader');
+        $oCurl->expects($this->once())->method('getUrl');
+        $oCurl->expects($this->once())->method('getQuery');
+        $oCurl->expects($this->once())->method('getOptions')->will($this->returnValue(array()));
+        $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
+        $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(false));
+        $oCurl->expects($this->once())->method('_close');
 
-        $this->assertEquals( 'rParam1=rValue1', $oCurl->execute() );
+        $this->assertEquals('rParam1=rValue1', $oCurl->execute());
     }
 
     /**
@@ -327,15 +328,15 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testExecute_curlError()
     {
-        $this->setExpectedException( 'oxException' );
-        $oCurl = $this->getMock( 'oxCurl', array( "_execute", '_setOptions', '_close', '_getErrorNumber' ) );
+        $this->setExpectedException('oxException');
+        $oCurl = $this->getMock('oxCurl', array("_execute", '_setOptions', '_close', '_getErrorNumber'));
 
-        $oCurl->expects( $this->any() )->method( '_setOptions' );
-        $oCurl->expects( $this->once() )->method( '_execute' )->will( $this->returnValue( 'rParam1=rValue1') );
-        $oCurl->expects( $this->once() )->method( '_getErrorNumber' )->will( $this->returnValue( 1 ) );
-        $oCurl->expects( $this->once() )->method( '_close' );
+        $oCurl->expects($this->any())->method('_setOptions');
+        $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
+        $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(1));
+        $oCurl->expects($this->once())->method('_close');
 
-        $this->assertEquals( 'rParam1=rValue1', $oCurl->execute() );
+        $this->assertEquals('rParam1=rValue1', $oCurl->execute());
     }
 
     /**
@@ -343,7 +344,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testGetStatusCode()
     {
-        $oCurl = $this->getMock( 'oxCurl', array( "_execute" ) );
+        $oCurl = $this->getMock('oxCurl', array("_execute"));
 
         $this->assertSame(null, $oCurl->getStatusCode());
 
@@ -357,10 +358,10 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testGetWithoutParameters()
     {
-        $oCurl = oxNew( "oxCurl" );
-        $oCurl->setMethod( 'GET' );
-        $oCurl->setUrl( "http://www.google.com" );
-        $this->assertEquals( "http://www.google.com", $oCurl->getUrl() );
+        $oCurl = oxNew("oxCurl");
+        $oCurl->setMethod('GET');
+        $oCurl->setUrl("http://www.google.com");
+        $this->assertEquals("http://www.google.com", $oCurl->getUrl());
     }
 
     /**
@@ -370,8 +371,8 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     {
         $aParams = array(
             'emptyparam' => null,
-            'param1' => 'val1',
-            'param2' => array(
+            'param1'     => 'val1',
+            'param2'     => array(
                 'subparam1' => 'subval1',
                 'subparam2' => array(
                     'sub2param1' => 'subsubval1',
@@ -380,47 +381,47 @@ class Unit_Core_oxCurlTest extends OxidTestCase
             ),
         );
 
-        $oCurl = oxNew( "oxCurl" );
-        $oCurl->setMethod( 'GET' );
-        $oCurl->setUrl( "http://www.google.com" );
-        $oCurl->setParameters( $aParams );
-        $this->assertEquals( 'http://www.google.com?param1=val1&param2%5Bsubparam1%5D=subval1&param2%5Bsubparam2%5D%5Bsub2param1%5D=subsubval1', $oCurl->getUrl() );
+        $oCurl = oxNew("oxCurl");
+        $oCurl->setMethod('GET');
+        $oCurl->setUrl("http://www.google.com");
+        $oCurl->setParameters($aParams);
+        $this->assertEquals('http://www.google.com?param1=val1&param2%5Bsubparam1%5D=subval1&param2%5Bsubparam2%5D%5Bsub2param1%5D=subsubval1', $oCurl->getUrl());
     }
 
     public function testSimplePOSTCall()
     {
-        $oCurl = $this->getMock( 'oxCurl', array( "_execute", '_setOpt', '_close', '_getErrorNumber') );
-        $oCurl->expects( $this->once() )->method( '_execute' )->will( $this->returnValue( 'rParam1=rValue1') );
-        $oCurl->expects( $this->once() )->method( '_getErrorNumber' )->will( $this->returnValue( false ) );
-        $oCurl->expects( $this->once() )->method( '_close' );
-        $oCurl->expects( $this->exactly(5) )->method( '_setOpt' );
+        $oCurl = $this->getMock('oxCurl', array("_execute", '_setOpt', '_close', '_getErrorNumber'));
+        $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
+        $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(false));
+        $oCurl->expects($this->once())->method('_close');
+        $oCurl->expects($this->exactly(5))->method('_setOpt');
         $oCurl->setMethod('POST');
-        $oCurl->setUrl( "http://www.google.com");
-        $oCurl->setParameters(array( "param1" => "val1", "param2" => "val2" ));
+        $oCurl->setUrl("http://www.google.com");
+        $oCurl->setParameters(array("param1" => "val1", "param2" => "val2"));
 
-        $this->assertEquals( "http://www.google.com", $oCurl->getUrl() );
-        $this->assertEquals( "param1=val1&param2=val2", $oCurl->getQuery() );
-        $this->assertEquals( 'rParam1=rValue1', $oCurl->execute() );
-     }
+        $this->assertEquals("http://www.google.com", $oCurl->getUrl());
+        $this->assertEquals("param1=val1&param2=val2", $oCurl->getQuery());
+        $this->assertEquals('rParam1=rValue1', $oCurl->execute());
+    }
 
     public function testSimpleGETCall()
     {
-        $oCurl = $this->getMock( 'oxCurl', array( "_execute", '_setOpt', '_close', '_getErrorNumber') );
-        $oCurl->expects( $this->once() )->method( '_execute' )->will( $this->returnValue( 'rParam1=rValue1') );
-        $oCurl->expects( $this->once() )->method( '_getErrorNumber' )->will( $this->returnValue( false ) );
-        $oCurl->expects( $this->once() )->method( '_close' );
-        $oCurl->expects( $this->exactly(5) )->method( '_setOpt' );
+        $oCurl = $this->getMock('oxCurl', array("_execute", '_setOpt', '_close', '_getErrorNumber'));
+        $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
+        $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(false));
+        $oCurl->expects($this->once())->method('_close');
+        $oCurl->expects($this->exactly(5))->method('_setOpt');
         $oCurl->setMethod('GET');
         $oCurl->setOption('CURLOPT_HEADER', false);
         $oCurl->setOption('CURLOPT_NOBODY', false);
         $oCurl->setHeader(array("Header"));
-        $oCurl->setUrl( "http://www.google.com");
-        $oCurl->setParameters(array( "param1" => "val1", "param2" => "val2" ));
+        $oCurl->setUrl("http://www.google.com");
+        $oCurl->setParameters(array("param1" => "val1", "param2" => "val2"));
 
-        $this->assertEquals( "http://www.google.com?param1=val1&param2=val2", $oCurl->getUrl() );
-        $this->assertEquals( "param1=val1&param2=val2", $oCurl->getQuery() );
-        $this->assertEquals( 3, count($oCurl->getOptions()) );
-        $this->assertEquals( array("Header"), $oCurl->getHeader() );
-        $this->assertEquals( 'rParam1=rValue1', $oCurl->execute() );
+        $this->assertEquals("http://www.google.com?param1=val1&param2=val2", $oCurl->getUrl());
+        $this->assertEquals("param1=val1&param2=val2", $oCurl->getQuery());
+        $this->assertEquals(3, count($oCurl->getOptions()));
+        $this->assertEquals(array("Header"), $oCurl->getHeader());
+        $this->assertEquals('rParam1=rValue1', $oCurl->execute());
     }
 }

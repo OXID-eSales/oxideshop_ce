@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing oxRequiredFieldsValidator class.
@@ -64,6 +64,7 @@ class Unit_Core_oxRequiredFieldsValidatorTest extends OxidTestCase
     /**
      * @param $aFields
      * @param $aInvalidFields
+     *
      * @dataProvider providerValidateFields
      */
     public function testValidateFieldsWhenRequiredFieldsExists($aFields, $aInvalidFields, $blResult)
@@ -78,6 +79,7 @@ class Unit_Core_oxRequiredFieldsValidatorTest extends OxidTestCase
 
     /**
      * @param $aFields
+     *
      * @dataProvider providerValidateFields
      */
     public function testValidateFieldsWithNoRequiredFields($aFields)
@@ -91,6 +93,7 @@ class Unit_Core_oxRequiredFieldsValidatorTest extends OxidTestCase
     /**
      * @param array $aFields
      * @param array $aInvalidFields
+     *
      * @dataProvider providerValidateFields
      */
     public function testGetInvalidFields($aFields, $aInvalidFields)
@@ -106,13 +109,14 @@ class Unit_Core_oxRequiredFieldsValidatorTest extends OxidTestCase
 
     /**
      * @param $aData
+     *
      * @return oxBase
      */
     private function _createObject($aData)
     {
         $oObject = new oxBase();
         foreach ($aData as $sKey => $sValue) {
-            $sKey = "__".$sKey;
+            $sKey = "__" . $sKey;
             $oObject->$sKey = new oxField($sValue);
         }
 

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwManufacturerList class
  */
 class Unit_Components_Widgets_oxwManufacturerListTest extends OxidTestCase
 {
+
     /**
      * Testing oxwManufacturerList::render()
      *
@@ -36,7 +37,7 @@ class Unit_Components_Widgets_oxwManufacturerListTest extends OxidTestCase
     public function testRender()
     {
         $oManufacturerList = new oxwManufacturerList();
-        $this->assertEquals( 'widget/footer/manufacturerlist.tpl', $oManufacturerList->render() );
+        $this->assertEquals('widget/footer/manufacturerlist.tpl', $oManufacturerList->render());
     }
 
 }

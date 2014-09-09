@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing oxRequiredFieldValidator class.
@@ -50,7 +50,8 @@ class Unit_Core_oxRequiredFieldValidatorTest extends OxidTestCase
 
     /**
      * @param string $sString
-     * @param bool $blResult
+     * @param bool   $blResult
+     *
      * @dataProvider providerValidateFieldValue
      */
     public function testValidateFieldValue($sString, $blResult)

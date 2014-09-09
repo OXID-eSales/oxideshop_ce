@@ -24,19 +24,20 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
 {
+
     /**
      * Tests if module was activated.
      */
     public function testVersionNotify()
     {
         $oEnvironment = new Environment();
-        $oEnvironment->prepare( array( 'extending_1_class', 'extending_1_class_3_extensions', 'with_everything' ) );
+        $oEnvironment->prepare(array('extending_1_class', 'extending_1_class_3_extensions', 'with_everything'));
 
-        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'), array(),'',false);
-        $oCaller->expects($this->any())->method('doRequest')->with( $this->equalTo( $this->_getExpectedRequest() ) );
+        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'), array(), '', false);
+        $oCaller->expects($this->any())->method('doRequest')->with($this->equalTo($this->_getExpectedRequest()));
 
         $oModuleList = new oxModuleList();
-        $sModuleDir = realpath( dirname( __FILE__ ) ) . '/testData/modules';
+        $sModuleDir = realpath(dirname(__FILE__)) . '/testData/modules';
         $oModuleList->getModulesFromDir($sModuleDir);
 
         $oNotifier = new oxOnlineModuleVersionNotifier($oCaller, $oModuleList);
@@ -58,20 +59,20 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
         $modules->module = array();
 
         $aModulesInfo = array();
-        $aModulesInfo[] = array('id' => 'extending_1_class', 'version' => '1.0', 'activeInShop' => array($sShopUrl) );
-        $aModulesInfo[] = array('id' => 'extending_1_class_3_extensions', 'version' => '1.0', 'activeInShop' => array($sShopUrl) );
-        $aModulesInfo[] = array('id' => 'extending_3_blocks', 'version' => '1.0', 'activeInShop' => array() );
-        $aModulesInfo[] = array('id' => 'extending_3_classes', 'version' => '1.0', 'activeInShop' => array() );
-        $aModulesInfo[] = array('id' => 'extending_3_classes_with_1_extension', 'version' => '1.0', 'activeInShop' => array() );
-        $aModulesInfo[] = array('id' => 'no_extending', 'version' => '1.0', 'activeInShop' => array() );
-        $aModulesInfo[] = array('id' => 'with_1_extension', 'version' => '1.0', 'activeInShop' => array() );
-        $aModulesInfo[] = array('id' => 'with_2_files', 'version' => '1.0', 'activeInShop' => array() );
-        $aModulesInfo[] = array('id' => 'with_2_settings', 'version' => '1.0', 'activeInShop' => array() );
-        $aModulesInfo[] = array('id' => 'with_2_templates', 'version' => '1.0', 'activeInShop' => array() );
-        $aModulesInfo[] = array('id' => 'with_events', 'version' => '1.0', 'activeInShop' => array() );
-        $aModulesInfo[] = array('id' => 'with_everything', 'version' => '1.0', 'activeInShop' => array($sShopUrl) );
+        $aModulesInfo[] = array('id' => 'extending_1_class', 'version' => '1.0', 'activeInShop' => array($sShopUrl));
+        $aModulesInfo[] = array('id' => 'extending_1_class_3_extensions', 'version' => '1.0', 'activeInShop' => array($sShopUrl));
+        $aModulesInfo[] = array('id' => 'extending_3_blocks', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'extending_3_classes', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'extending_3_classes_with_1_extension', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'no_extending', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'with_1_extension', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'with_2_files', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'with_2_settings', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'with_2_templates', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'with_events', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'with_everything', 'version' => '1.0', 'activeInShop' => array($sShopUrl));
 
-        foreach ($aModulesInfo as $aModuleInfo){
+        foreach ($aModulesInfo as $aModuleInfo) {
             $module = new stdClass();
             $module->id = $aModuleInfo['id'];
             $module->version = $aModuleInfo['version'];

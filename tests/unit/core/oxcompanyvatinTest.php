@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 
 class Unit_Core_oxCompanyVatInTest extends OxidTestCase
@@ -42,7 +42,7 @@ class Unit_Core_oxCompanyVatInTest extends OxidTestCase
     /**
      * @dataProvider vatInProviderForCountryCode
      */
-    public function testGetVatInCountryCode( $sVatIn, $sExpectCode )
+    public function testGetVatInCountryCode($sVatIn, $sExpectCode)
     {
         $oVatIn = new oxCompanyVatIn($sVatIn);
         $this->assertSame($sExpectCode, $oVatIn->getCountryCode());
@@ -69,7 +69,7 @@ class Unit_Core_oxCompanyVatInTest extends OxidTestCase
     /**
      * @dataProvider vatInProviderForNumbers
      */
-    public function testGetVatInNumbers( $sVatIn, $sExpectCode )
+    public function testGetVatInNumbers($sVatIn, $sExpectCode)
     {
         $oVatIn = new oxCompanyVatIn($sVatIn);
         $this->assertSame($sExpectCode, $oVatIn->getNumbers());

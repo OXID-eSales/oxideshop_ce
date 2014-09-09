@@ -22,6 +22,7 @@
 
 /**
  * Class Unit_Core_oxServersClusterIdGeneratorTest
+ *
  * @covers oxServerNodesManager
  */
 class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
@@ -32,7 +33,7 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
         $oGenerator = new oxUniversallyUniqueIdGenerator();
 
         $aIds = array();
-        for ($i=0; $i<100; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $aIds[] = $oGenerator->generate();
         }
 
@@ -55,7 +56,7 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
         $oGenerator = new oxUniversallyUniqueIdGenerator();
 
         $aIds = array();
-        for ($i=0; $i<100; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $aIds[] = $oGenerator->generateV4();
         }
 
@@ -76,7 +77,7 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
         $oGenerator = new oxUniversallyUniqueIdGenerator($oChecker);
 
         $aIds = array();
-        for ($i=0; $i<100; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $aIds[] = $oGenerator->generateV4();
         }
 
@@ -102,8 +103,8 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
         $oGenerator = new oxUniversallyUniqueIdGenerator();
 
         $aIds = array();
-        for ($i=0; $i<100; $i++) {
-            $aIds[] = $oGenerator->generateV5('seed', 'salt'.$i);
+        for ($i = 0; $i < 100; $i++) {
+            $aIds[] = $oGenerator->generateV5('seed', 'salt' . $i);
         }
 
         $this->assertEquals(100, count(array_unique($aIds)));
@@ -117,8 +118,8 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
         $oGenerator = new oxUniversallyUniqueIdGenerator();
 
         $aIds = array();
-        for ($i=0; $i<100; $i++) {
-            $aIds[] = $oGenerator->generateV5('seed'.$i, 'salt');
+        for ($i = 0; $i < 100; $i++) {
+            $aIds[] = $oGenerator->generateV5('seed' . $i, 'salt');
         }
 
         $this->assertEquals(100, count(array_unique($aIds)));

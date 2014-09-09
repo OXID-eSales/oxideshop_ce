@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Wrapping_List class
  */
 class Unit_Admin_WrappingListTest extends OxidTestCase
 {
+
     /**
      * Wrapping_List::Render() test case
      *
@@ -41,10 +42,10 @@ class Unit_Admin_WrappingListTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertNull( $aViewData["allowSharedEdit"] );
-        $this->assertNull( $aViewData["malladmin"] );
-        $this->assertNull( $aViewData["updatelist"] );
+        $this->assertNull($aViewData["allowSharedEdit"]);
+        $this->assertNull($aViewData["malladmin"]);
+        $this->assertNull($aViewData["updatelist"]);
 
-        $this->assertEquals( 'wrapping_list.tpl', $sTplName );
+        $this->assertEquals('wrapping_list.tpl', $sTplName);
     }
 }

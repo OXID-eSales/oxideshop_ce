@@ -25,12 +25,6 @@
  */
 class Unit_Core_oxServersManagerTest extends OxidTestCase
 {
-    public function tearDown()
-    {
-        parent::tearDown();
-        $oUtilsDate = new oxUtilsDate();
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
-    }
 
     public function testGettingExistingServerByServerId()
     {
@@ -83,20 +77,17 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $oServer->setIp('127.0.0.1');
         $oServer->setLastFrontendUsage('frontendUsageTimestamp');
         $oServer->setLastAdminUsage('adminUsageTimestamp');
-        $oServer->setIsValid();
-
 
         $oServerList = new oxServersManager();
         $oServerList->saveServer($oServer);
 
         $aExpectedServerData = array(
             'serverNameHash1' => array(
-                'id' => 'serverNameHash1',
-                'timestamp' => 'timestamp',
-                'ip' => '127.0.0.1',
+                'id'                => 'serverNameHash1',
+                'timestamp'         => 'timestamp',
+                'ip'                => '127.0.0.1',
                 'lastFrontendUsage' => 'frontendUsageTimestamp',
-                'lastAdminUsage' => 'adminUsageTimestamp',
-                'isValid' => true
+                'lastAdminUsage'    => 'adminUsageTimestamp',
             ),
         );
         $this->assertEquals($aExpectedServerData, $this->getConfig()->getConfigParam('aServersData'));
@@ -104,18 +95,19 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
     public function testUpdatingServer()
     {
-        oxRegistry::getConfig()->setConfigParam('aServersData', array(
-            'serverNameHash1' => array(),
-            'serverNameHash2' => array(
-                'id' => 'serverNameHash2',
-                'timestamp' => 'timestamp',
-                'ip' => '127.0.0.1',
-                'lastFrontendUsage' => 'frontendUsageTimestamp',
-                'lastAdminUsage' => 'adminUsageTimestamp',
-                'isValid' => false
-            ),
-            'serverNameHash3' => array(),
-        ));
+        oxRegistry::getConfig()->setConfigParam(
+            'aServersData', array(
+                                 'serverNameHash1' => array(),
+                                 'serverNameHash2' => array(
+                                     'id'                => 'serverNameHash2',
+                                     'timestamp'         => 'timestamp',
+                                     'ip'                => '127.0.0.1',
+                                     'lastFrontendUsage' => 'frontendUsageTimestamp',
+                                     'lastAdminUsage'    => 'adminUsageTimestamp',
+                                 ),
+                                 'serverNameHash3' => array(),
+                            )
+        );
 
         $oServer = new oxApplicationServer();
         $oServer->setId('serverNameHash2');
@@ -123,7 +115,6 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $oServer->setIp('127.0.0.255');
         $oServer->setLastFrontendUsage('frontendUsageTimestampUpdated');
         $oServer->setLastAdminUsage('adminUsageTimestampUpdated');
-        $oServer->setIsValid();
 
         $oServerList = new oxServersManager();
         $oServerList->saveServer($oServer);
@@ -131,12 +122,11 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $aExpectedServerData = array(
             'serverNameHash1' => array(),
             'serverNameHash2' => array(
-                'id' => 'serverNameHash2',
-                'timestamp' => 'timestampUpdated',
-                'ip' => '127.0.0.255',
+                'id'                => 'serverNameHash2',
+                'timestamp'         => 'timestampUpdated',
+                'ip'                => '127.0.0.255',
                 'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => true
+                'lastAdminUsage'    => 'adminUsageTimestampUpdated',
             ),
             'serverNameHash3' => array(),
         );
@@ -145,9 +135,11 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
     public function testUpdatingEmptyServer()
     {
-        oxRegistry::getConfig()->setConfigParam('aServersData', array(
-            'serverNameHash1' => array(),
-        ));
+        oxRegistry::getConfig()->setConfigParam(
+            'aServersData', array(
+                                 'serverNameHash1' => array(),
+                            )
+        );
 
         $oServer = new oxApplicationServer();
         $oServer->setId('serverNameHash1');
@@ -155,233 +147,19 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $oServer->setIp('127.0.0.1');
         $oServer->setLastFrontendUsage('frontendUsageTimestampUpdated');
         $oServer->setLastAdminUsage('adminUsageTimestampUpdated');
-        $oServer->setIsValid(false);
 
         $oServerList = new oxServersManager();
         $oServerList->saveServer($oServer);
 
         $aExpectedServerData = array(
             'serverNameHash1' => array(
-                'id' => 'serverNameHash1',
-                'timestamp' => 'timestampUpdated',
-                'ip' => '127.0.0.1',
+                'id'                => 'serverNameHash1',
+                'timestamp'         => 'timestampUpdated',
+                'ip'                => '127.0.0.1',
                 'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => false
+                'lastAdminUsage'    => 'adminUsageTimestampUpdated',
             ),
         );
         $this->assertEquals($aExpectedServerData, $this->getConfig()->getConfigParam('aServersData'));
     }
-
-    public function testGetServerNodes()
-    {
-        $iCurrentTime = 1400000000;
-        $this->_prepareCurrentTime($iCurrentTime);
-
-        $aStoredData = array(
-            'serverNameHash1' => array(
-                'id' => 'serverNameHash1',
-                'timestamp' => $iCurrentTime,
-                'ip' => '127.0.0.1',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => false
-            ),
-            'serverNameHash2' => array(
-                'id' => 'serverNameHash2',
-                'timestamp' => $iCurrentTime,
-                'ip' => '127.0.0.2',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => true
-            ),
-        );
-
-        $aServers = array(
-            array(
-                'id' => 'serverNameHash2',
-                'ip' => '127.0.0.2',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-            ),
-        );
-
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
-
-        $oManager = new oxServersManager();
-
-        $this->assertEquals($aServers, $oManager->getServers());
-    }
-
-    public function testDeleteServer()
-    {
-        $aStoredData = array(
-            'serverNameHash1' => array(
-                'id' => 'serverNameHash1',
-                'timestamp' => 'timestampUpdated',
-                'ip' => '127.0.0.1',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => false
-            ),
-            'serverNameHash2' => array(
-                'id' => 'serverNameHash2',
-                'timestamp' => 'timestampUpdated',
-                'ip' => '127.0.0.2',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => true
-            ),
-        );
-
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
-
-        $this->assertSame( 2, count(oxRegistry::getConfig()->getConfigParam('aServersData')));
-
-        $oManager = new oxServersManager();
-        $oManager->deleteServer('serverNameHash1');
-
-        $this->assertSame( 1, count(oxRegistry::getConfig()->getConfigParam('aServersData')));
-    }
-
-    public function testMarkInactive()
-    {
-        $iCurrentTime = 1400000000;
-        $this->_prepareCurrentTime($iCurrentTime);
-
-        $aStoredData = array(
-            'serverNameHash1' => array(
-                'id' => 'serverNameHash1',
-                'timestamp' => $iCurrentTime-(11*3600),
-                'ip' => '127.0.0.1',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => true
-            ),
-            'serverNameHash2' => array(
-                'id' => 'serverNameHash2',
-                'timestamp' => $iCurrentTime-(25*3600),
-                'ip' => '127.0.0.2',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => true
-            ),
-        );
-
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
-
-        $oManager = new oxServersManager();
-        $oManager->markInActiveServers();
-
-        $this->assertSame( 1, count($oManager->getServers()));
-    }
-
-    public function testMarkInactiveNothingToMark()
-    {
-        $iCurrentTime = 1400000000;
-        $this->_prepareCurrentTime($iCurrentTime);
-
-        $aStoredData = array(
-            'serverNameHash1' => array(
-                'id' => 'serverNameHash1',
-                'timestamp' => $iCurrentTime-(11*3600),
-                'ip' => '127.0.0.1',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => true
-            ),
-            'serverNameHash2' => array(
-                'id' => 'serverNameHash2',
-                'timestamp' => $iCurrentTime-(15*3600),
-                'ip' => '127.0.0.2',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => true
-            ),
-        );
-
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
-
-        $oManager = new oxServersManager();
-        $oManager->markInActiveServers();
-
-        $this->assertSame( 2, count($oManager->getServers()));
-    }
-
-    public function testDeleteInactiveNoWhatToDelete()
-    {
-        $iCurrentTime = 1400000000;
-        $this->_prepareCurrentTime($iCurrentTime);
-
-        $aStoredData = array(
-            'serverNameHash1' => array(
-                'id' => 'serverNameHash1',
-                'timestamp' => $iCurrentTime-(11*3600),
-                'ip' => '127.0.0.1',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => true
-            ),
-            'serverNameHash2' => array(
-                'id' => 'serverNameHash2',
-                'timestamp' => $iCurrentTime-(25*3600),
-                'ip' => '127.0.0.2',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => false
-            ),
-        );
-
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
-
-        $oManager = new oxServersManager();
-        $oManager->deleteInActiveServers();
-
-        $this->assertSame( 2, count(oxRegistry::getConfig()->getConfigParam('aServersData')));
-    }
-
-    public function testDeleteInactive()
-    {
-        $iCurrentTime = 1400000000;
-        $this->_prepareCurrentTime($iCurrentTime);
-
-        $aStoredData = array(
-            'serverNameHash1' => array(
-                'id' => 'serverNameHash1',
-                'timestamp' => $iCurrentTime-(11*3600),
-                'ip' => '127.0.0.1',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => true
-            ),
-            'serverNameHash2' => array(
-                'id' => 'serverNameHash2',
-                'timestamp' => $iCurrentTime-(73*3600),
-                'ip' => '127.0.0.2',
-                'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
-                'lastAdminUsage' => 'adminUsageTimestampUpdated',
-                'isValid' => false
-            ),
-        );
-
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aStoredData);
-
-        $oManager = new oxServersManager();
-        $oManager->deleteInActiveServers();
-
-        $this->assertSame( 1, count(oxRegistry::getConfig()->getConfigParam('aServersData')));
-    }
-
-
-    /**
-     * @param int $iCurrentTime
-     */
-    private function _prepareCurrentTime($iCurrentTime)
-    {
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getTime'));
-        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($iCurrentTime));
-        /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
-    }
-
 }

@@ -20,52 +20,53 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing start class
  */
 class Unit_Views_startTest extends OxidTestCase
 {
+
     public function testgetTitleSuffix()
     {
         $oShop = new oxShop();
-        $oShop->oxshops__oxstarttitle = $this->getMock( 'oxField', array( '__get' ) );
-        $oShop->oxshops__oxstarttitle->expects( $this->once() )->method( '__get')->will( $this->returnValue( 'testsuffix' ) );
+        $oShop->oxshops__oxstarttitle = $this->getMock('oxField', array('__get'));
+        $oShop->oxshops__oxstarttitle->expects($this->once())->method('__get')->will($this->returnValue('testsuffix'));
 
-        $oConfig = $this->getMock( 'oxconfig', array( 'getActiveShop' ) );
-        $oConfig->expects( $this->once() )->method( 'getActiveShop')->will( $this->returnValue( $oShop ) );
+        $oConfig = $this->getMock('oxconfig', array('getActiveShop'));
+        $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
 
-        $oView = $this->getMock( 'start', array( 'getConfig' ) );
-        $oView->expects( $this->once() )->method( 'getConfig')->will( $this->returnValue( $oConfig ) );
-        $this->assertEquals( 'testsuffix', $oView->getTitleSuffix() );
+        $oView = $this->getMock('start', array('getConfig'));
+        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        $this->assertEquals('testsuffix', $oView->getTitleSuffix());
     }
 
     public function testGetCanonicalUrl()
     {
-        oxTestModules::addFunction( "oxutils", "seoIsActive", "{return true;}" );
+        oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
-        $oViewConfig = $this->getMock( "oxviewconfig", array( "getHomeLink" ) );
-        $oViewConfig->expects( $this->once() )->method( 'getHomeLink')->will( $this->returnValue( "testHomeLink" ));
+        $oViewConfig = $this->getMock("oxviewconfig", array("getHomeLink"));
+        $oViewConfig->expects($this->once())->method('getHomeLink')->will($this->returnValue("testHomeLink"));
 
-        $oView = $this->getMock( "start", array( "getViewConfig" ) );
-        $oView->expects( $this->once() )->method( 'getViewConfig')->will( $this->returnValue( $oViewConfig ));
+        $oView = $this->getMock("start", array("getViewConfig"));
+        $oView->expects($this->once())->method('getViewConfig')->will($this->returnValue($oViewConfig));
 
-        $this->assertEquals( 'testHomeLink', $oView->getCanonicalUrl() );
+        $this->assertEquals('testHomeLink', $oView->getCanonicalUrl());
     }
 
     public function testGetRealSeoCanonicalUrl()
     {
-        oxTestModules::addFunction( "oxutils", "seoIsActive", "{return true;}" );
+        oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         $oView = new start();
-        $this->assertEquals( oxRegistry::getConfig()->getConfigParam( "sShopURL" ), $oView->getCanonicalUrl() );
+        $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sShopURL"), $oView->getCanonicalUrl());
     }
 
     public function testGetArticleList()
     {
-        $oStart = $this->getProxyClass( 'start' );
+        $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getArticleList();
         $this->assertTrue($aList instanceof oxarticlelist);
@@ -74,7 +75,7 @@ class Unit_Views_startTest extends OxidTestCase
 
     public function testGetTopArticleList()
     {
-        $oStart = $this->getProxyClass( 'start' );
+        $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getTopArticleList();
         $this->assertTrue($aList instanceof oxarticlelist);
@@ -84,7 +85,7 @@ class Unit_Views_startTest extends OxidTestCase
 
     public function testGetNewestArticles()
     {
-        $oStart = $this->getProxyClass( 'start' );
+        $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getNewestArticles();
         $this->assertTrue($aList instanceof oxarticlelist);
@@ -93,7 +94,7 @@ class Unit_Views_startTest extends OxidTestCase
 
     public function testGetCatOfferArticle()
     {
-        $oStart = $this->getProxyClass( 'start' );
+        $oStart = $this->getProxyClass('start');
 
         $oArt = $oStart->getCatOfferArticle();
             $this->assertEquals('1126', $oArt->getId());
@@ -101,7 +102,7 @@ class Unit_Views_startTest extends OxidTestCase
 
     public function testGetCatOfferArticleList()
     {
-        $oStart = $this->getProxyClass( 'start' );
+        $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getCatOfferArticleList();
         $this->assertTrue($aList instanceof oxarticlelist);
@@ -110,16 +111,16 @@ class Unit_Views_startTest extends OxidTestCase
 
     public function testPrepareMetaKeyword()
     {
-        modConfig::getInstance()->setConfigParam( 'bl_perfLoadAktion', 1 );
+        modConfig::getInstance()->setConfigParam('bl_perfLoadAktion', 1);
 
-        $oArticle = $this->getMock( 'oxarticle', array( 'getLongDescription' ) );
-        $oArticle->expects( $this->once() )->method( 'getLongDescription')->will( $this->returnValue( new oxField( 'testlongdesc' ) ) );
+        $oArticle = $this->getMock('oxarticle', array('getLongDescription'));
+        $oArticle->expects($this->once())->method('getLongDescription')->will($this->returnValue(new oxField('testlongdesc')));
 
-        $oStart = $this->getMock( 'start', array( 'getFirstArticle' ) );
-        $oStart->expects( $this->once() )->method( 'getFirstArticle')->will( $this->returnValue( $oArticle ) );
+        $oStart = $this->getMock('start', array('getFirstArticle'));
+        $oStart->expects($this->once())->method('getFirstArticle')->will($this->returnValue($oArticle));
 
         $oView = new oxubase();
-        $this->assertEquals( $oView->UNITprepareMetaKeyword( 'testlongdesc' ), $oStart->UNITprepareMetaKeyword( null ) );
+        $this->assertEquals($oView->UNITprepareMetaKeyword('testlongdesc'), $oStart->UNITprepareMetaKeyword(null));
     }
 
     public function testViewMetaKeywords()
@@ -135,16 +136,16 @@ class Unit_Views_startTest extends OxidTestCase
 
     public function testPrepareMetaDescription()
     {
-        modConfig::getInstance()->setConfigParam( 'bl_perfLoadAktion', 1 );
+        modConfig::getInstance()->setConfigParam('bl_perfLoadAktion', 1);
 
-        $oArticle = $this->getMock( 'oxarticle', array( 'getLongDescription' ) );
-        $oArticle->expects( $this->once() )->method( 'getLongDescription')->will( $this->returnValue( new oxField( 'testlongdesc' ) ) );
+        $oArticle = $this->getMock('oxarticle', array('getLongDescription'));
+        $oArticle->expects($this->once())->method('getLongDescription')->will($this->returnValue(new oxField('testlongdesc')));
 
-        $oStart = $this->getMock( 'start', array( 'getFirstArticle' ) );
-        $oStart->expects( $this->once() )->method( 'getFirstArticle')->will( $this->returnValue( $oArticle ) );
+        $oStart = $this->getMock('start', array('getFirstArticle'));
+        $oStart->expects($this->once())->method('getFirstArticle')->will($this->returnValue($oArticle));
 
         $oView = new oxubase();
-        $this->assertEquals( $oView->UNITprepareMetaDescription( '- testlongdesc' ), $oStart->UNITprepareMetaDescription( null ) );
+        $this->assertEquals($oView->UNITprepareMetaDescription('- testlongdesc'), $oStart->UNITprepareMetaDescription(null));
     }
 
     public function testViewMetaDescritpion()
@@ -160,8 +161,8 @@ class Unit_Views_startTest extends OxidTestCase
 
     public function testGetBanners()
     {
-        $oArticleList = $this->getMock( 'oxActionList', array( 'loadBanners' ) );
-        $oArticleList->expects( $this->once() )->method( 'loadBanners' );
+        $oArticleList = $this->getMock('oxActionList', array('loadBanners'));
+        $oArticleList->expects($this->once())->method('loadBanners');
 
         oxTestModules::addModuleObject('oxActionList', $oArticleList);
 

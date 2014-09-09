@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for List_Review class
  */
 class Unit_Admin_ListReviewTest extends OxidTestCase
 {
+
     /**
      * Tear down the fixture.
      *
@@ -35,19 +36,19 @@ class Unit_Admin_ListReviewTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $this->cleanUpTable( 'oxlinks' );
-        $this->cleanUpTable( 'oxorder' );
-        $this->cleanUpTable( 'oxcontents' );
-        $this->cleanUpTable( 'oxobject2category' );
+        $this->cleanUpTable('oxlinks');
+        $this->cleanUpTable('oxorder');
+        $this->cleanUpTable('oxcontents');
+        $this->cleanUpTable('oxobject2category');
 
-        if ( isset( $_POST['oxid'] ) ) {
-            unset( $_POST['oxid'] );
+        if (isset($_POST['oxid'])) {
+            unset($_POST['oxid']);
         }
 
         modSession::getInstance()->cleanup();
 
         //
-        oxRegistry::getConfig()->setGlobalParameter( 'ListCoreTable', null );
+        oxRegistry::getConfig()->setGlobalParameter('ListCoreTable', null);
 
         parent::tearDown();
     }
@@ -59,12 +60,12 @@ class Unit_Admin_ListReviewTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oNavTree = $this->getMock( "oxnavigationtree", array( "getDomXml" ) );
-        $oNavTree->expects( $this->once() )->method( 'getDomXml' )->will( $this->returnValue( new DOMDocument ) );
+        $oNavTree = $this->getMock("oxnavigationtree", array("getDomXml"));
+        $oNavTree->expects($this->once())->method('getDomXml')->will($this->returnValue(new DOMDocument));
 
-        $oView = $this->getMock( "List_Review", array( "getNavigation" ));
-        $oView->expects( $this->at( $iCnt++ ) )->method( 'getNavigation' )->will( $this->returnValue( $oNavTree ) );
-        $this->assertEquals( "list_review.tpl", $oView->render() );
+        $oView = $this->getMock("List_Review", array("getNavigation"));
+        $oView->expects($this->at($iCnt++))->method('getNavigation')->will($this->returnValue($oNavTree));
+        $this->assertEquals("list_review.tpl", $oView->render());
     }
 
     /**
@@ -75,20 +76,20 @@ class Unit_Admin_ListReviewTest extends OxidTestCase
     public function testPrepareWhereQuery()
     {
         $oArtList = new Article_List();
-        $sSql = $oArtList->UNITbuildSelectString( new oxArticle() );
-        $sSql = $oArtList->UNITprepareWhereQuery( array(), $sSql );
+        $sSql = $oArtList->UNITbuildSelectString(new oxArticle());
+        $sSql = $oArtList->UNITprepareWhereQuery(array(), $sSql);
 
         // checking if exists string oxarticle.oxparentid = ''
-        $blCheckForParent = preg_match( "/\s+and\s+".getViewName( 'oxarticles' ).".oxparentid\s+=\s+''/", $sSql );
-        $this->assertTrue( (bool)$blCheckForParent );
+        $blCheckForParent = preg_match("/\s+and\s+" . getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
+        $this->assertTrue((bool) $blCheckForParent);
 
         $oList = new List_Review();
-        $sSql = $oList->UNITbuildSelectString( "" );
-        $sSql = $oList->UNITprepareWhereQuery( array(), $sSql );
+        $sSql = $oList->UNITbuildSelectString("");
+        $sSql = $oList->UNITprepareWhereQuery(array(), $sSql);
 
         // checking if not exists string oxarticle.oxparentid = ''
-        $blCheckForParent = preg_match( "/\s+and\s+".getViewName( 'oxarticles' ).".oxparentid\s+=\s+''/", $sSql );
-        $this->assertFalse( (bool)$blCheckForParent );
+        $blCheckForParent = preg_match("/\s+and\s+" . getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
+        $this->assertFalse((bool) $blCheckForParent);
     }
 
     /**
@@ -99,19 +100,19 @@ class Unit_Admin_ListReviewTest extends OxidTestCase
     public function testPrepareWhereQueryCase2()
     {
         $oArtList = new Article_List();
-        $sSql = $oArtList->UNITbuildSelectString( new oxArticle() );
-        $sSql = $oArtList->UNITprepareWhereQuery( array(), $sSql );
+        $sSql = $oArtList->UNITbuildSelectString(new oxArticle());
+        $sSql = $oArtList->UNITprepareWhereQuery(array(), $sSql);
 
         // checking if exists string oxarticle.oxparentid = ''
-        $blCheckForParent = preg_match( "/\s+and\s+".getViewName( 'oxarticles' ).".oxparentid\s+=\s+''/", $sSql );
-        $this->assertTrue( (bool)$blCheckForParent );
+        $blCheckForParent = preg_match("/\s+and\s+" . getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
+        $this->assertTrue((bool) $blCheckForParent);
 
         $oList = new List_Review();
-        $sSql = $oList->UNITbuildSelectString( "" );
-        $sSql = $oList->UNITprepareWhereQuery( array(), $sSql );
+        $sSql = $oList->UNITbuildSelectString("");
+        $sSql = $oList->UNITprepareWhereQuery(array(), $sSql);
 
         // checking if not exists string oxarticle.oxparentid = ''
-        $blCheckForParent = preg_match( "/\s+and\s+".getViewName( 'oxarticles' ).".oxparentid\s+=\s+''/", $sSql );
-        $this->assertFalse( (bool)$blCheckForParent );
+        $blCheckForParent = preg_match("/\s+and\s+" . getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
+        $this->assertFalse((bool) $blCheckForParent);
     }
 }

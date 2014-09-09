@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for News_Text class
  */
 class Unit_Admin_NewsTextTest extends OxidTestCase
 {
+
     /**
      * News_Text::Render() test case
      *
@@ -35,15 +36,15 @@ class Unit_Admin_NewsTextTest extends OxidTestCase
      */
     public function testRender()
     {
-        oxTestModules::addFunction( 'oxnews', 'isDerived', '{ return true; }');
-        modConfig::setRequestParameter( "oxid", "testId" );
+        oxTestModules::addFunction('oxnews', 'isDerived', '{ return true; }');
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new News_Text();
-        $this->assertEquals( 'news_text.tpl', $oView->render() );
+        $this->assertEquals('news_text.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxnews );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxnews);
     }
 
     /**
@@ -53,14 +54,14 @@ class Unit_Admin_NewsTextTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new News_Text();
-        $this->assertEquals( 'news_text.tpl', $oView->render() );
+        $this->assertEquals('news_text.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertTrue(isset($aViewData['oxid']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -71,18 +72,19 @@ class Unit_Admin_NewsTextTest extends OxidTestCase
     public function testSave()
     {
         // testing..
-        oxTestModules::addFunction( 'oxnews', 'isDerived', '{ return false; }');
-        oxTestModules::addFunction( 'oxnews', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxnews', 'isDerived', '{ return false; }');
+        oxTestModules::addFunction('oxnews', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new News_Text();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in News_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in News_Main::save()");
+
             return;
         }
-        $this->fail( "error in News_Main::save()" );
+        $this->fail("error in News_Main::save()");
     }
 }

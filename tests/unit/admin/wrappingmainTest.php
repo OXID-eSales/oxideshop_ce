@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Wrapping_Main class
  */
 class Unit_Admin_WrappingMainTest extends OxidTestCase
 {
+
     /**
      * Wrapping_Main::Render() test case
      *
@@ -35,16 +36,16 @@ class Unit_Admin_WrappingMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxwrapping" ) );
+        modConfig::setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxwrapping"));
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
         $oView = new Wrapping_Main();
-        $this->assertEquals( 'wrapping_main.tpl', $oView->render() );
+        $this->assertEquals('wrapping_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxwrapping );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxwrapping);
     }
 
     /**
@@ -54,15 +55,15 @@ class Unit_Admin_WrappingMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Wrapping_Main();
-        $this->assertEquals( 'wrapping_main.tpl', $oView->render() );
+        $this->assertEquals('wrapping_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertFalse( isset( $aViewData['edit'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertFalse(isset($aViewData['edit']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -72,17 +73,18 @@ class Unit_Admin_WrappingMainTest extends OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction( 'oxwrapping', 'save', '{ throw new Exception( "save" ); }');
+        oxTestModules::addFunction('oxwrapping', 'save', '{ throw new Exception( "save" ); }');
 
         // testing..
         try {
             $oView = new Wrapping_Main();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Wrapping_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Wrapping_Main::save()");
+
             return;
         }
-        $this->fail( "error in Wrapping_Main::save()" );
+        $this->fail("error in Wrapping_Main::save()");
     }
 
     /**
@@ -92,16 +94,17 @@ class Unit_Admin_WrappingMainTest extends OxidTestCase
      */
     public function testSaveinnlang()
     {
-        oxTestModules::addFunction( 'oxwrapping', 'save', '{ throw new Exception( "save" ); }');
+        oxTestModules::addFunction('oxwrapping', 'save', '{ throw new Exception( "save" ); }');
 
         // testing..
         try {
             $oView = new Wrapping_Main();
             $oView->saveinnlang();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Wrapping_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Wrapping_Main::save()");
+
             return;
         }
-        $this->fail( "error in Wrapping_Main::save()" );
+        $this->fail("error in Wrapping_Main::save()");
     }
 }

@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 
 /**
@@ -29,6 +29,7 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
  */
 class Unit_Admin_DiscountItemAjaxTest extends OxidTestCase
 {
+
     /**
      * Initialize the fixture.
      *
@@ -38,10 +39,10 @@ class Unit_Admin_DiscountItemAjaxTest extends OxidTestCase
     {
         parent::setUp();
 
-        oxDb::getDb()->execute( "insert into oxdiscount set oxid='_testO2DRemove1', oxitmartid = '_testObjectRemove1'" );
-        oxDb::getDb()->execute( "insert into oxdiscount set oxid='_testO2DRemove2', oxitmartid = '_testObjectRemove2'" );
-        oxDb::getDb()->execute( "insert into oxdiscount set oxid='_testO2DRemove3', oxitmartid = '_testObjectRemove3'" );
-        oxDb::getDb()->execute( "insert into oxdiscount set oxid='_testO2DRemove4', oxitmartid = ''" );
+        oxDb::getDb()->execute("insert into oxdiscount set oxid='_testO2DRemove1', oxitmartid = '_testObjectRemove1'");
+        oxDb::getDb()->execute("insert into oxdiscount set oxid='_testO2DRemove2', oxitmartid = '_testObjectRemove2'");
+        oxDb::getDb()->execute("insert into oxdiscount set oxid='_testO2DRemove3', oxitmartid = '_testObjectRemove3'");
+        oxDb::getDb()->execute("insert into oxdiscount set oxid='_testO2DRemove4', oxitmartid = ''");
     }
 
     /**
@@ -51,7 +52,7 @@ class Unit_Admin_DiscountItemAjaxTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDb()->execute( "delete from oxdiscount where oxid like '_test%'" );
+        oxDb::getDb()->execute("delete from oxdiscount where oxid like '_test%'");
 
         parent::tearDown();
     }
@@ -65,15 +66,15 @@ class Unit_Admin_DiscountItemAjaxTest extends OxidTestCase
     {
         $sOxid = '_testOxid';
         $sSynchoxid = '_testOxid';
-        $this->setRequestParam( "oxid", $sOxid );
-        $this->setRequestParam( "synchoxid", $sSynchoxid );
-        $sArticleTable = getViewName( "oxarticles" );
+        $this->setRequestParam("oxid", $sOxid);
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $sArticleTable = getViewName("oxarticles");
         $sDiscTable = getViewName('oxdiscount');
 
-        $oView = oxNew( 'discount_item_ajax' );
-        $sQuery  = "from $sDiscTable left join $sArticleTable on $sArticleTable.oxid=$sDiscTable.oxitmartid ";
+        $oView = oxNew('discount_item_ajax');
+        $sQuery = "from $sDiscTable left join $sArticleTable on $sArticleTable.oxid=$sDiscTable.oxitmartid ";
         $sQuery .= " where $sDiscTable.oxid = '_testOxid' and $sDiscTable.oxitmartid != ''";
-        $this->assertEquals( $sQuery, trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -85,18 +86,18 @@ class Unit_Admin_DiscountItemAjaxTest extends OxidTestCase
     {
         $sOxid = '_testOxid';
         $sSynchoxid = '_testSynchoxid';
-        $this->setRequestParam( "oxid", $sOxid );
-        $this->setRequestParam( "synchoxid", $sSynchoxid );
-        $sArticleTable = getViewName( "oxarticles" );
-        $sO2CView = getViewName( "oxobject2category" );
+        $this->setRequestParam("oxid", $sOxid);
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $sArticleTable = getViewName("oxarticles");
+        $sO2CView = getViewName("oxobject2category");
         $sDiscTable = getViewName('oxdiscount');
 
-        $oView = oxNew( 'discount_item_ajax' );
-        $sQuery  = "from $sO2CView left join $sArticleTable on  $sArticleTable.oxid=$sO2CView.oxobjectid ";
+        $oView = oxNew('discount_item_ajax');
+        $sQuery = "from $sO2CView left join $sArticleTable on  $sArticleTable.oxid=$sO2CView.oxobjectid ";
         $sQuery .= " where $sO2CView.oxcatnid = '_testOxid' and $sArticleTable.oxid is not null  and ";
         $sQuery .= " $sArticleTable.oxid not in (  select $sArticleTable.oxid from $sDiscTable, $sArticleTable where $sArticleTable.oxid=$sDiscTable.oxitmartid ";
         $sQuery .= " and $sDiscTable.oxid = '_testSynchoxid' )";
-        $this->assertEquals( $sQuery, trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -107,15 +108,15 @@ class Unit_Admin_DiscountItemAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testSynchoxid';
-        $this->setRequestParam( "synchoxid", $sSynchoxid );
-        $sArticleTable = getViewName( "oxarticles" );
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $sArticleTable = getViewName("oxarticles");
         $sDiscTable = getViewName('oxdiscount');
 
-        $oView = oxNew( 'discount_item_ajax' );
-        $sQuery  = "from $sArticleTable where 1 and $sArticleTable.oxparentid = ''  and ";
+        $oView = oxNew('discount_item_ajax');
+        $sQuery = "from $sArticleTable where 1 and $sArticleTable.oxparentid = ''  and ";
         $sQuery .= " $sArticleTable.oxid not in (  select $sArticleTable.oxid from $sDiscTable, $sArticleTable where $sArticleTable.oxid=$sDiscTable.oxitmartid ";
         $sQuery .= " and $sDiscTable.oxid = '_testSynchoxid' )";
-        $this->assertEquals( $sQuery, trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -125,13 +126,13 @@ class Unit_Admin_DiscountItemAjaxTest extends OxidTestCase
      */
     public function testRemoveDiscArt()
     {
-        $this->setRequestParam( "oxid", '_testO2DRemove1' );
-        $oView = $this->getMock( "discount_item_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testObjectRemove1', '_testObjectRemove2' ) ) );
-        $this->assertEquals( 3, oxDb::getDb()->getOne( "select count(oxid) from oxdiscount where oxid like '_test%' and oxitmartid != ''" ) );
+        $this->setRequestParam("oxid", '_testO2DRemove1');
+        $oView = $this->getMock("discount_item_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testObjectRemove1', '_testObjectRemove2')));
+        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxdiscount where oxid like '_test%' and oxitmartid != ''"));
 
         $oView->removeDiscArt();
-        $this->assertEquals( 2, oxDb::getDb()->getOne( "select count(oxid) from oxdiscount where oxid like '_test%' and oxitmartid != ''" ) );
+        $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxdiscount where oxid like '_test%' and oxitmartid != ''"));
     }
 
     /**
@@ -142,13 +143,13 @@ class Unit_Admin_DiscountItemAjaxTest extends OxidTestCase
     public function testAddDiscArt()
     {
         $sSynchoxid = '_testO2DRemove4';
-        $this->setRequestParam( "synchoxid", $sSynchoxid );
-        $oView = $this->getMock( "discount_item_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testArticleAdd1', '_testArticleAdd2' ) ) );
-        $this->assertEquals( 3, oxDb::getDb()->getOne( "select count(oxid) from oxdiscount where oxid like '_test%' and oxitmartid != ''" ) );
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $oView = $this->getMock("discount_item_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticleAdd1', '_testArticleAdd2')));
+        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxdiscount where oxid like '_test%' and oxitmartid != ''"));
 
         $oView->addDiscArt();
-        $this->assertEquals( 4, oxDb::getDb()->getOne( "select count(oxid) from oxdiscount where oxid like '_test%' and oxitmartid != ''" ) );
+        $this->assertEquals(4, oxDb::getDb()->getOne("select count(oxid) from oxdiscount where oxid like '_test%' and oxitmartid != ''"));
     }
 
     /**
@@ -158,24 +159,24 @@ class Unit_Admin_DiscountItemAjaxTest extends OxidTestCase
      */
     public function testGetQueryCols()
     {
-        $this->setRequestParam( "aCols", null );
-        $this->setConfigParam( 'blVariantsSelection', false );
+        $this->setRequestParam("aCols", null);
+        $this->setConfigParam('blVariantsSelection', false);
 
-        $aColNames = array(         // field , table,         visible, multilanguage, ident
-                            array( 'oxartnum', 'oxarticles', 1, 0, 0 ),
-                                        array( 'oxtitle',  'oxarticles', 1, 1, 0 ),
-                                        array( 'oxean',    'oxarticles', 1, 0, 0 ),
-                                        array( 'oxmpn',    'oxarticles', 0, 0, 0 ),
-                                        array( 'oxprice',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxstock',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxid',     'oxarticles', 0, 0, 1 )
-                    );
-        $sTableName = getViewName( "oxarticles" );
+        $aColNames = array( // field , table,         visible, multilanguage, ident
+            array('oxartnum', 'oxarticles', 1, 0, 0),
+            array('oxtitle', 'oxarticles', 1, 1, 0),
+            array('oxean', 'oxarticles', 1, 0, 0),
+            array('oxmpn', 'oxarticles', 0, 0, 0),
+            array('oxprice', 'oxarticles', 0, 0, 0),
+            array('oxstock', 'oxarticles', 0, 0, 0),
+            array('oxid', 'oxarticles', 0, 0, 1)
+        );
+        $sTableName = getViewName("oxarticles");
         $sQ = " $sTableName.oxartnum as _0, $sTableName.oxtitle as _1, $sTableName.oxean as _2, $sTableName.oxmpn as _3, $sTableName.oxprice as _4, $sTableName.oxstock as _5, $sTableName.oxid as _6 ";
 
-        $oComponent = $this->getMock( "discount_item_ajax", array( "_getColNames" ) );
-        $oComponent->expects( $this->any() )->method( '_getColNames' )->will( $this->returnValue( $aColNames ) );
-        $this->assertEquals( $sQ, $oComponent->UNITgetQueryCols() );
+        $oComponent = $this->getMock("discount_item_ajax", array("_getColNames"));
+        $oComponent->expects($this->any())->method('_getColNames')->will($this->returnValue($aColNames));
+        $this->assertEquals($sQ, $oComponent->UNITgetQueryCols());
     }
 
     /**
@@ -185,24 +186,24 @@ class Unit_Admin_DiscountItemAjaxTest extends OxidTestCase
      */
     public function testGetQueryColsWithVariants()
     {
-        $this->setRequestParam( "aCols", null );
-        $this->setConfigParam( 'blVariantsSelection', true );
+        $this->setRequestParam("aCols", null);
+        $this->setConfigParam('blVariantsSelection', true);
 
-        $aColNames = array(         // field , table,         visible, multilanguage, ident
-                            array( 'oxartnum', 'oxarticles', 1, 0, 0 ),
-                                        array( 'oxtitle',  'oxarticles', 1, 1, 0 ),
-                                        array( 'oxean',    'oxarticles', 1, 0, 0 ),
-                                        array( 'oxmpn',    'oxarticles', 0, 0, 0 ),
-                                        array( 'oxprice',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxstock',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxid',     'oxarticles', 0, 0, 1 )
-                    );
-        $sTableName = getViewName( "oxarticles" );
+        $aColNames = array( // field , table,         visible, multilanguage, ident
+            array('oxartnum', 'oxarticles', 1, 0, 0),
+            array('oxtitle', 'oxarticles', 1, 1, 0),
+            array('oxean', 'oxarticles', 1, 0, 0),
+            array('oxmpn', 'oxarticles', 0, 0, 0),
+            array('oxprice', 'oxarticles', 0, 0, 0),
+            array('oxstock', 'oxarticles', 0, 0, 0),
+            array('oxid', 'oxarticles', 0, 0, 1)
+        );
+        $sTableName = getViewName("oxarticles");
         $sQ = " $sTableName.oxartnum as _0,  IF( $sTableName.oxtitle != '', $sTableName.oxtitle, CONCAT((select oxart.oxtitle from $sTableName as oxart where oxart.oxid = $sTableName.oxparentid),', ',$sTableName.oxvarselect)) as _1, $sTableName.oxean as _2, $sTableName.oxmpn as _3, $sTableName.oxprice as _4, $sTableName.oxstock as _5, $sTableName.oxid as _6 ";
 
-        $oComponent = $this->getMock( "discount_item_ajax", array( "_getColNames" ) );
-        $oComponent->expects( $this->any() )->method( '_getColNames' )->will( $this->returnValue( $aColNames ) );
-        $this->assertEquals( $sQ, $oComponent->UNITgetQueryCols() );
+        $oComponent = $this->getMock("discount_item_ajax", array("_getColNames"));
+        $oComponent->expects($this->any())->method('_getColNames')->will($this->returnValue($aColNames));
+        $this->assertEquals($sQ, $oComponent->UNITgetQueryCols());
     }
 
 }

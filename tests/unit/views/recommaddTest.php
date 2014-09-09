@@ -20,26 +20,27 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Views_RecommAddTest extends OxidTestCase
 {
+
     /**
      * In case product uses alternative template, adding to list mania is impossible (#0001444)
      */
     public function testForUseCase()
     {
         $oProduct = new oxArticle();
-        $oProduct->load( "1126" );
+        $oProduct->load("1126");
         $oProduct->oxarticles__oxtemplate->value = 'details_persparam.tpl';
 
-        $oRecomm = $this->getMock( "recommadd", array( "getProduct" ) );
-        $oRecomm->expects( $this->any() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
+        $oRecomm = $this->getMock("recommadd", array("getProduct"));
+        $oRecomm->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oRecomm->init();
 
         $oBlankRecomm = new RecommAdd();
-        $this->assertEquals( $oBlankRecomm->getTemplateName(), $oRecomm->render() );
+        $this->assertEquals($oBlankRecomm->getTemplateName(), $oRecomm->render());
     }
 
     /**
@@ -47,12 +48,12 @@ class Unit_Views_RecommAddTest extends OxidTestCase
      */
     public function testGetRecommLists()
     {
-        $oUser = $this->getMock( 'oxUser', array( 'getUserRecommLists' ) );
-        $oUser->expects( $this->once() )->method( 'getUserRecommLists')->will( $this->returnValue( 'testRecommList' ) );
+        $oUser = $this->getMock('oxUser', array('getUserRecommLists'));
+        $oUser->expects($this->once())->method('getUserRecommLists')->will($this->returnValue('testRecommList'));
 
         $oRecomm = new RecommAdd();
-        $oRecomm->setUser( $oUser );
-        $this->assertEquals( 'testRecommList', $oRecomm->getRecommLists( 'test') );
+        $oRecomm->setUser($oUser);
+        $this->assertEquals('testRecommList', $oRecomm->getRecommLists('test'));
     }
 
     /**
@@ -61,12 +62,12 @@ class Unit_Views_RecommAddTest extends OxidTestCase
     public function testGetTitle()
     {
         $oProduct = new oxArticle();
-        $oProduct->oxarticles__oxtitle = new oxField( 'title' );
-        $oProduct->oxarticles__oxvarselect = new oxField( 'select' );
+        $oProduct->oxarticles__oxtitle = new oxField('title');
+        $oProduct->oxarticles__oxvarselect = new oxField('select');
 
-        $oView = $this->getMock( "RecommAdd", array('getProduct' ) );
-        $oView->expects($this->any())->method('getProduct')->will($this->returnValue( $oProduct ));
+        $oView = $this->getMock("RecommAdd", array('getProduct'));
+        $oView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
-        $this->assertEquals( 'title select', $oView->getTitle());
+        $this->assertEquals('title select', $oView->getTitle());
     }
 }

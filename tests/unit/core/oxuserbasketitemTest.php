@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class modOxArticle_oxUserBasketItem extends oxArticle
 {
+
     public function getClassVar($sName)
     {
         return $this->$sName;
@@ -38,6 +39,7 @@ class modOxArticle_oxUserBasketItem extends oxArticle
 
 class Unit_Core_oxuserbasketitemTest extends OxidTestCase
 {
+
     /**
      * Initialize the fixture.
      *
@@ -47,7 +49,7 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
     {
         parent::setUp();
         $oArticle = new oxarticle();
-        $oArticle->setId( 'xxx' );
+        $oArticle->setId('xxx');
         $oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('2000', oxField::T_RAW);
         $oArticle->oxarticles__oxvarselect = new oxField('yyy', oxField::T_RAW);
@@ -55,25 +57,25 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
         $oArticle->save();
 
         $oSel = new oxbase();
-        $oSel->init( 'oxselectlist' );
-        $oSel->setId( 'xxx' );
+        $oSel->init('oxselectlist');
+        $oSel->setId('xxx');
         $oSel->oxselectlist__oxvaldesc = new oxField('S, 10!P!10__@@M, 20!P!20__@@L, 30!P!30__@@', oxField::T_RAW);
         $oSel->save();
 
         $oSel = new oxbase();
-        $oSel->init( 'oxselectlist' );
-        $oSel->setId( 'yyy' );
+        $oSel->init('oxselectlist');
+        $oSel->setId('yyy');
         $oSel->oxselectlist__oxvaldesc = new oxField('R, 10!P!10%__@@G, 20!P!20%__@@B, 30!P!30%__@@', oxField::T_RAW);
         $oSel->save();
 
         $oO2Sel = new oxbase();
-        $oO2Sel->init( 'oxobject2selectlist' );
+        $oO2Sel->init('oxobject2selectlist');
         $oO2Sel->oxobject2selectlist__oxobjectid = new oxField('xxx', oxField::T_RAW);
         $oO2Sel->oxobject2selectlist__oxselnid = new oxField('xxx', oxField::T_RAW);
         $oO2Sel->save();
 
         $oO2Sel = new oxbase();
-        $oO2Sel->init( 'oxobject2selectlist' );
+        $oO2Sel->init('oxobject2selectlist');
         $oO2Sel->oxobject2selectlist__oxobjectid = new oxField('xxx', oxField::T_RAW);
         $oO2Sel->oxobject2selectlist__oxselnid = new oxField('yyy', oxField::T_RAW);
         $oO2Sel->save();
@@ -89,12 +91,12 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
         oxRemClassModule('modOxArticle_oxUserBasketItem');
 
         $oArticle = new oxarticle();
-        $oArticle->delete( 'xxx' );
+        $oArticle->delete('xxx');
 
         $oSel = new oxbase();
-        $oSel->init( 'oxselectlist' );
-        $oSel->delete( 'xxx' );
-        $oSel->delete( 'yyy' );
+        $oSel->init('oxselectlist');
+        $oSel->delete('xxx');
+        $oSel->delete('yyy');
 
         parent::tearDown();
     }
@@ -105,48 +107,48 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
 
         $sValue = '<script>alert("oxid");</script>';
 
-        $oUserBasketItem->UNITsetFieldData( 'oxuserbasketitems__oxsellist', $sValue );
-        $this->assertEquals( $sValue, $oUserBasketItem->oxuserbasketitems__oxsellist->value );
-        $oUserBasketItem->UNITsetFieldData( 'oxsellist', $sValue );
-        $this->assertEquals( $sValue, $oUserBasketItem->oxuserbasketitems__oxsellist->value );
-        $oUserBasketItem->UNITsetFieldData( 'oxuserbasketitems__oxtestfield', $sValue );
-        $this->assertEquals( htmlentities( $sValue, ENT_QUOTES, 'UTF-8'  ), $oUserBasketItem->oxuserbasketitems__oxtestfield->value );
-        $oUserBasketItem->UNITsetFieldData( 'oxuserbasketitems__oxtestfield', $sValue, oxField::T_RAW );
-        $this->assertEquals( $sValue, $oUserBasketItem->oxuserbasketitems__oxtestfield->value );
+        $oUserBasketItem->UNITsetFieldData('oxuserbasketitems__oxsellist', $sValue);
+        $this->assertEquals($sValue, $oUserBasketItem->oxuserbasketitems__oxsellist->value);
+        $oUserBasketItem->UNITsetFieldData('oxsellist', $sValue);
+        $this->assertEquals($sValue, $oUserBasketItem->oxuserbasketitems__oxsellist->value);
+        $oUserBasketItem->UNITsetFieldData('oxuserbasketitems__oxtestfield', $sValue);
+        $this->assertEquals(htmlentities($sValue, ENT_QUOTES, 'UTF-8'), $oUserBasketItem->oxuserbasketitems__oxtestfield->value);
+        $oUserBasketItem->UNITsetFieldData('oxuserbasketitems__oxtestfield', $sValue, oxField::T_RAW);
+        $this->assertEquals($sValue, $oUserBasketItem->oxuserbasketitems__oxtestfield->value);
     }
 
     public function testSelectionListSetterGetter()
     {
-        $aData = array( "t" );
+        $aData = array("t");
 
         $oUserBasketItem = new oxuserbasketitem();
 
         // no data for empty object
-        $this->assertNull( $oUserBasketItem->getSelList() );
+        $this->assertNull($oUserBasketItem->getSelList());
 
         // setting some list data
-        $oUserBasketItem->setSelList( $aData );
-        $this->assertEquals( $aData, $oUserBasketItem->getSelList() );
+        $oUserBasketItem->setSelList($aData);
+        $this->assertEquals($aData, $oUserBasketItem->getSelList());
 
         // chekcing direct value
-        $this->assertEquals( serialize( $aData ), $oUserBasketItem->oxuserbasketitems__oxsellist->value );
+        $this->assertEquals(serialize($aData), $oUserBasketItem->oxuserbasketitems__oxsellist->value);
     }
 
     public function testPersParamSetterGetter()
     {
-        $aData = array( "p" );
+        $aData = array("p");
 
         $oUserBasketItem = new oxuserbasketitem();
 
         // no data for empty object
-        $this->assertNull( $oUserBasketItem->getPersParams() );
+        $this->assertNull($oUserBasketItem->getPersParams());
 
         // setting some list data
-        $oUserBasketItem->setPersParams( $aData );
-        $this->assertEquals( $aData, $oUserBasketItem->getPersParams() );
+        $oUserBasketItem->setPersParams($aData);
+        $this->assertEquals($aData, $oUserBasketItem->getPersParams());
 
         // chekcing direct value
-        $this->assertEquals( serialize( $aData ), $oUserBasketItem->oxuserbasketitems__oxpersparam->value );
+        $this->assertEquals(serialize($aData), $oUserBasketItem->oxuserbasketitems__oxpersparam->value);
     }
 
     /**
@@ -154,24 +156,24 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
      */
     public function testSleep()
     {
-        $oBasketItem = $this->getProxyClass( 'oxuserbasketitem' );
+        $oBasketItem = $this->getProxyClass('oxuserbasketitem');
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('1126', oxField::T_RAW);
 
-        $oBasketArticle = $oBasketItem->getArticle( 'xxx' );
-        $oArticle = $oBasketItem->getNonPublicVar( '_oArticle' );
+        $oBasketArticle = $oBasketItem->getArticle('xxx');
+        $oArticle = $oBasketItem->getNonPublicVar('_oArticle');
 
         // testing if article is set
-        $this->assertNotNull( $oArticle );
+        $this->assertNotNull($oArticle);
 
         // testing if they are equals
-        $this->assertEquals( $oBasketArticle, $oArticle );
+        $this->assertEquals($oBasketArticle, $oArticle);
 
-        $sSerialized   = serialize( $oBasketItem );
-        $oUnserialized = unserialize( $sSerialized );
+        $sSerialized = serialize($oBasketItem);
+        $oUnserialized = unserialize($sSerialized);
 
         // testin if item is set
-        $oArticle = $oUnserialized->getNonPublicVar( '_oArticle' );
-        $this->assertNull( $oArticle );
+        $oArticle = $oUnserialized->getNonPublicVar('_oArticle');
+        $this->assertNull($oArticle);
     }
 
     /**
@@ -182,12 +184,13 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
     {
         $oBasketItem = new oxuserbasketitem();
         try {
-            $oBasketItem->getArticle( "" );
-        } catch ( oxArticleException $oEx ) {
-            $this->assertEquals( 'EXCEPTION_ARTICLE_NOPRODUCTID', $oEx->getMessage() );
+            $oBasketItem->getArticle("");
+        } catch (oxArticleException $oEx) {
+            $this->assertEquals('EXCEPTION_ARTICLE_NOPRODUCTID', $oEx->getMessage());
+
             return;
         }
-        $this->fail( 'failed testing article getter' );
+        $this->fail('failed testing article getter');
     }
 
     // trying to get non existing article
@@ -195,7 +198,7 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
     {
         $oBasketItem = new oxuserbasketitem();
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('nothing', oxField::T_RAW);
-        $this->assertFalse( $oBasketItem->getArticle( "xxx" ) );
+        $this->assertFalse($oBasketItem->getArticle("xxx"));
     }
 
     // testing if getter returns article we expect
@@ -206,80 +209,81 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
         $sProductId = "2000";
 
         $oBasketItem = new oxuserbasketitem();
-        $oBasketItem->setVariantParentBuyable( true );
+        $oBasketItem->setVariantParentBuyable(true);
         $oBasketItem->oxuserbasketitems__oxartid = new oxField($sProductId, oxField::T_RAW);
 
-        $oArticle = $oBasketItem->getArticle( "123" );
-        $this->assertTrue( $oArticle instanceof oxarticle );
-        $this->assertEquals( $oArticle->getItemKey(), "123" );
+        $oArticle = $oBasketItem->getArticle("123");
+        $this->assertTrue($oArticle instanceof oxarticle);
+        $this->assertEquals($oArticle->getItemKey(), "123");
 
         // if thi line one day will faile, probebly becaus these parameters are not public any more :)
         // removed due to #4178
         //$this->assertFalse( $oArticle->getClassVar('_blLoadVariants') );
     }
+
     // testing article title formatting - article has NO parent
     public function testGetArticleTitleFormatterArticleHasNoParent()
     {
         $oArticle = new oxi18n();
-        $oArticle->init( 'oxarticles' );
-        $oArticle->load( 'xxx' );
+        $oArticle->init('oxarticles');
+        $oArticle->load('xxx');
         $oArticle->oxarticles__oxparentid = new oxField(null, oxField::T_RAW);
         $oArticle->save();
 
         $oArticle = new oxarticle();
-        $oArticle->load( 'xxx' );
+        $oArticle->load('xxx');
 
         $oBasketItem = new oxuserbasketitem();
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('xxx', oxField::T_RAW);
-        $oArticle = $oBasketItem->getArticle( 'xxx' );
+        $oArticle = $oBasketItem->getArticle('xxx');
 
-        $this->assertEquals( 'xxx', $oArticle->oxarticles__oxtitle->value );
+        $this->assertEquals('xxx', $oArticle->oxarticles__oxtitle->value);
         $aSelectList = $oArticle->getDispSelList();
-        $this->assertFalse( isset( $aSelectList ) );
+        $this->assertFalse(isset($aSelectList));
     }
 
     public function testGetArticleSelectListTesting()
     {
-        modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
+        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', true);
 
-        $aTest = array( 0, 1 );
+        $aTest = array(0, 1);
 
         $oBasketItem = new oxuserbasketitem();
         $oBasketItem->oxuserbasketitems__oxartid = new oxField("xxx", oxField::T_RAW);
-        $oBasketItem->oxuserbasketitems__oxsellist = new oxField(serialize( array( 0, 1 ) ), oxField::T_RAW);
+        $oBasketItem->oxuserbasketitems__oxsellist = new oxField(serialize(array(0, 1)), oxField::T_RAW);
 
-        $oArticle = $oBasketItem->getArticle( "123" );
+        $oArticle = $oBasketItem->getArticle("123");
 
         $oR = new stdclass();
-        $oR->name     = 'R, 10';
+        $oR->name = 'R, 10';
         $oR->value = null;
         $oR->selected = 1;
 
         $oG = new stdclass();
-        $oG->name  = 'G, 20';
+        $oG->name = 'G, 20';
         $oG->value = null;
 
         $oB = new stdclass();
-        $oB->name  = 'B, 30';
+        $oB->name = 'B, 30';
         $oB->value = null;
 
         $oS = new stdclass();
-        $oS->name     = 'S, 10';
+        $oS->name = 'S, 10';
         $oS->value = null;
 
         $oM = new stdclass();
-        $oM->name  = 'M, 20';
+        $oM->name = 'M, 20';
         $oM->value = null;
         $oM->selected = 1;
 
         $oL = new stdclass();
-        $oL->name  = 'L, 30';
+        $oL->name = 'L, 30';
         $oL->value = null;
 
-        $aSel[] = array( $oR, $oG, $oB, 'name' => null );
-        $aSel[] = array( $oS, $oM, $oL, 'name' => null );
+        $aSel[] = array($oR, $oG, $oB, 'name' => null);
+        $aSel[] = array($oS, $oM, $oL, 'name' => null);
 
         // if this assertion will fail, probably due to protected variable
-        $this->assertEquals( $aSel, $oArticle->getDispSelList() );
+        $this->assertEquals($aSel, $oArticle->getDispSelList());
     }
 }

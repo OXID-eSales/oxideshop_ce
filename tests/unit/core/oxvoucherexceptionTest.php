@@ -20,16 +20,17 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxvoucherexceptionTest extends OxidTestCase
 {
+
     public function testSetGetVoucherNr()
     {
         $sVoucher = "a voucher nr.";
-        $oTestObject = oxNew( 'oxVoucherException');
-        $this->assertEquals('oxVoucherException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxVoucherException');
+        $this->assertEquals('oxVoucherException', get_class($oTestObject));
         $oTestObject->setVoucherNr($sVoucher);
         $this->assertEquals($sVoucher, $oTestObject->getVoucherNr());
     }
@@ -39,10 +40,10 @@ class Unit_Core_oxvoucherexceptionTest extends OxidTestCase
     {
         $sMsg = 'Erik was here..';
         $sVoucher = "a voucher nr.";
-        $oTestObject = oxNew( 'oxVoucherException', $sMsg);
-        $this->assertEquals('oxVoucherException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxVoucherException', $sMsg);
+        $this->assertEquals('oxVoucherException', get_class($oTestObject));
         $oTestObject->setVoucherNr($sVoucher);
-        $sStringOut = $oTestObject->getString();// (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
+        $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
         $this->assertContains($sMsg, $sStringOut);
         $this->assertContains('oxVoucherException', $sStringOut);
         $this->assertContains($sVoucher, $sStringOut);
@@ -50,7 +51,7 @@ class Unit_Core_oxvoucherexceptionTest extends OxidTestCase
 
     public function testGetValues()
     {
-        $oTestObject = oxNew( 'oxVoucherException');
+        $oTestObject = oxNew('oxVoucherException');
         $sVoucher = "a voucher nr.";
         $oTestObject->setVoucherNr($sVoucher);
         $aRes = $oTestObject->getValues();

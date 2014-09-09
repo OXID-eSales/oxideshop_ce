@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,25 +18,26 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
-
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-
-/**
- * Tests for Statistic class
- */
-class Unit_Admin_StatisticTest extends OxidTestCase
-{
-    /**
-     * Statistic::Render() test case
-     *
-     * @return null
      */
-    public function testRender()
+
+    require_once realpath(".") . '/unit/OxidTestCase.php';
+    require_once realpath(".") . '/unit/test_config.inc.php';
+
+    /**
+     * Tests for Statistic class
+     */
+    class Unit_Admin_StatisticTest extends OxidTestCase
     {
-        // testing..
-        $oView = new Statistic();
-        $this->assertEquals( 'statistic.tpl', $oView->render() );
+
+        /**
+         * Statistic::Render() test case
+         *
+         * @return null
+         */
+        public function testRender()
+        {
+            // testing..
+            $oView = new Statistic();
+            $this->assertEquals('statistic.tpl', $oView->render());
+        }
     }
-}

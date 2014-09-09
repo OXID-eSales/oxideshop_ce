@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Adminguestbook_Main class
  */
 class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
 {
+
     /**
      * Adminguestbook_Main::Render() test case
      *
@@ -35,7 +36,7 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "xxx" );
+        modConfig::setRequestParameter("oxid", "xxx");
         oxTestModules::addFunction('oxgbentry', 'save', '{ return true; }');
 
         // testing..
@@ -44,11 +45,11 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertNotNull( $aViewData["edit"] );
-        $this->assertTrue( $aViewData["edit"] instanceof oxgbentry );
-        $this->assertEquals( modConfig::getInstance()->getConfigParam( "blGBModerate" ), $aViewData["blShowActBox"] );
+        $this->assertNotNull($aViewData["edit"]);
+        $this->assertTrue($aViewData["edit"] instanceof oxgbentry);
+        $this->assertEquals(modConfig::getInstance()->getConfigParam("blGBModerate"), $aViewData["blShowActBox"]);
 
-        $this->assertEquals( 'adminguestbook_main.tpl', $sTplName );
+        $this->assertEquals('adminguestbook_main.tpl', $sTplName);
     }
 
     /**
@@ -58,8 +59,8 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
      */
     public function testRenderDefaultOxid()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
-        modConfig::setRequestParameter( "saved_oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
+        modConfig::setRequestParameter("saved_oxid", "-1");
 
         // testing..
         $oView = new Adminguestbook_Main();
@@ -67,12 +68,12 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertFalse( isset( $aViewData["edit"] ) );
-        $this->assertTrue( isset( $aViewData["oxid"] ) );
-        $this->assertEquals( "-1", $aViewData["oxid"] );
-        $this->assertEquals( modConfig::getInstance()->getConfigParam( "blGBModerate" ), $aViewData["blShowActBox"] );
+        $this->assertFalse(isset($aViewData["edit"]));
+        $this->assertTrue(isset($aViewData["oxid"]));
+        $this->assertEquals("-1", $aViewData["oxid"]);
+        $this->assertEquals(modConfig::getInstance()->getConfigParam("blGBModerate"), $aViewData["blShowActBox"]);
 
-        $this->assertEquals( 'adminguestbook_main.tpl', $sTplName );
+        $this->assertEquals('adminguestbook_main.tpl', $sTplName);
     }
 
     /**
@@ -85,15 +86,15 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
         oxTestModules::addFunction('oxgbentry', 'load', '{ return true; }');
         oxTestModules::addFunction('oxgbentry', 'save', '{ return true; }');
 
-        modConfig::setRequestParameter( "oxid", "xxx" );
-        modConfig::setRequestParameter( "editval", array( "xxx" ) );
+        modConfig::setRequestParameter("oxid", "xxx");
+        modConfig::setRequestParameter("editval", array("xxx"));
 
         $oView = new Adminguestbook_Main();
         $oView->save();
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData["updatelist"] ) );
-        $this->assertEquals( 1, $aViewData["updatelist"] );
+        $this->assertTrue(isset($aViewData["updatelist"]));
+        $this->assertEquals(1, $aViewData["updatelist"]);
     }
 
     /**
@@ -105,14 +106,14 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxgbentry', 'save', '{ $this->oxgbentries__oxid = new oxField( "testId" ); return true; }');
 
-        modConfig::setRequestParameter( "oxid", "-1" );
-        modConfig::setRequestParameter( "editval", array( "xxx" ) );
+        modConfig::setRequestParameter("oxid", "-1");
+        modConfig::setRequestParameter("editval", array("xxx"));
 
         $oView = new Adminguestbook_Main();
         $oView->save();
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData["updatelist"] ) );
-        $this->assertEquals( 1, $aViewData["updatelist"] );
+        $this->assertTrue(isset($aViewData["updatelist"]));
+        $this->assertEquals(1, $aViewData["updatelist"]);
     }
 }

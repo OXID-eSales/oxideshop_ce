@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ) . '/unit/OxidTestCase.php';
-require_once realpath( "." ) . '/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwReview class
  */
 class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
 {
+
     /**
      * Testing oxwReview::getReviewType()
      *
@@ -36,8 +37,8 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     public function testGetReviewTypeLowerCase()
     {
         $oReviewWidget = new oxwReview();
-        $oReviewWidget->setViewParameters( array( 'type' => 'testreviewtype' ) );
-        $this->assertEquals( 'testreviewtype', $oReviewWidget->getReviewType() );
+        $oReviewWidget->setViewParameters(array('type' => 'testreviewtype'));
+        $this->assertEquals('testreviewtype', $oReviewWidget->getReviewType());
     }
 
     /**
@@ -48,8 +49,8 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     public function testGetReviewTypeUpperCase()
     {
         $oReviewWidget = new oxwReview();
-        $oReviewWidget->setViewParameters( array( 'type' => 'TESTREVIEWTYPE' ) );
-        $this->assertEquals( 'testreviewtype', $oReviewWidget->getReviewType() );
+        $oReviewWidget->setViewParameters(array('type' => 'TESTREVIEWTYPE'));
+        $this->assertEquals('testreviewtype', $oReviewWidget->getReviewType());
     }
 
     /**
@@ -60,8 +61,8 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     public function testGetArticleId()
     {
         $oReviewWidget = new oxwReview();
-        $oReviewWidget->setViewParameters( array( 'aid' => 'testaid' ) );
-        $this->assertEquals( 'testaid', $oReviewWidget->getArticleId() );
+        $oReviewWidget->setViewParameters(array('aid' => 'testaid'));
+        $this->assertEquals('testaid', $oReviewWidget->getArticleId());
     }
 
     /**
@@ -72,8 +73,8 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     public function testGetArticleNId()
     {
         $oReviewWidget = new oxwReview();
-        $oReviewWidget->setViewParameters( array( 'anid' => 'testanid' ) );
-        $this->assertEquals( 'testanid', $oReviewWidget->getArticleNId() );
+        $oReviewWidget->setViewParameters(array('anid' => 'testanid'));
+        $this->assertEquals('testanid', $oReviewWidget->getArticleNId());
     }
 
     /**
@@ -84,8 +85,8 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     public function testGetRecommListId()
     {
         $oReviewWidget = new oxwReview();
-        $oReviewWidget->setViewParameters( array( 'recommid' => 'testrecommid' ) );
-        $this->assertEquals( 'testrecommid', $oReviewWidget->getRecommListId() );
+        $oReviewWidget->setViewParameters(array('recommid' => 'testrecommid'));
+        $this->assertEquals('testrecommid', $oReviewWidget->getRecommListId());
     }
 
     /**
@@ -96,8 +97,8 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     public function testCanRate()
     {
         $oReviewWidget = new oxwReview();
-        $oReviewWidget->setViewParameters( array( 'canrate' => 'testcanrate' ) );
-        $this->assertEquals( 'testcanrate', $oReviewWidget->canRate() );
+        $oReviewWidget->setViewParameters(array('canrate' => 'testcanrate'));
+        $this->assertEquals('testcanrate', $oReviewWidget->canRate());
     }
 
     /**
@@ -108,7 +109,7 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     public function testGetReviewUserHash()
     {
         $oReviewWidget = new oxwReview();
-        $oReviewWidget->setViewParameters( array( 'reviewuserhash' => 'testreviewuserhash' ) );
-        $this->assertEquals( 'testreviewuserhash', $oReviewWidget->getReviewUserHash() );
+        $oReviewWidget->setViewParameters(array('reviewuserhash' => 'testreviewuserhash'));
+        $this->assertEquals('testreviewuserhash', $oReviewWidget->getReviewUserHash());
     }
 }

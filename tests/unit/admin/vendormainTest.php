@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Vendor_Main class
  */
 class Unit_Admin_VendorMainTest extends OxidTestCase
 {
+
     /**
      * Vendor_Main::Render() test case
      *
@@ -35,15 +36,15 @@ class Unit_Admin_VendorMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = $this->getMock( "Vendor_Main", array( "_createCategoryTree" ) );
-        $oView->expects( $this->once() )->method( '_createCategoryTree');
-        $this->assertEquals( 'vendor_main.tpl', $oView->render() );
+        $oView = $this->getMock("Vendor_Main", array("_createCategoryTree"));
+        $oView->expects($this->once())->method('_createCategoryTree');
+        $this->assertEquals('vendor_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxvendor );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxvendor);
     }
 
     /**
@@ -53,15 +54,15 @@ class Unit_Admin_VendorMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Vendor_Main();
-        $this->assertEquals( 'vendor_main.tpl', $oView->render() );
+        $this->assertEquals('vendor_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertFalse( isset( $aViewData['edit'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertFalse(isset($aViewData['edit']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -71,22 +72,23 @@ class Unit_Admin_VendorMainTest extends OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction( 'oxvendor', 'save', '{ throw new Exception("save"); }' );
-        oxTestModules::addFunction( 'oxvendor', 'loadInLang', '{ return true; }' );
-        oxTestModules::addFunction( 'oxvendor', 'isDerived', '{ return false; }' );
-        oxTestModules::addFunction( 'oxvendor', 'setLanguage', '{ return true; }' );
-        oxTestModules::addFunction( 'oxvendor', 'assign', '{ return true; }' );
-        oxTestModules::addFunction( 'oxvendor', 'setLanguage', '{ return true; }' );
+        oxTestModules::addFunction('oxvendor', 'save', '{ throw new Exception("save"); }');
+        oxTestModules::addFunction('oxvendor', 'loadInLang', '{ return true; }');
+        oxTestModules::addFunction('oxvendor', 'isDerived', '{ return false; }');
+        oxTestModules::addFunction('oxvendor', 'setLanguage', '{ return true; }');
+        oxTestModules::addFunction('oxvendor', 'assign', '{ return true; }');
+        oxTestModules::addFunction('oxvendor', 'setLanguage', '{ return true; }');
 
         // testing..
         try {
             $oView = new Vendor_Main();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "Error in Vendor_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "Error in Vendor_Main::save()");
+
             return;
         }
-        $this->fail( "Error in Vendor_Main::save()" );
+        $this->fail("Error in Vendor_Main::save()");
     }
 
     /**
@@ -96,21 +98,22 @@ class Unit_Admin_VendorMainTest extends OxidTestCase
      */
     public function testSaveinnlang()
     {
-        oxTestModules::addFunction( 'oxvendor', 'save', '{ throw new Exception("save"); }' );
-        oxTestModules::addFunction( 'oxvendor', 'loadInLang', '{ return true; }' );
-        oxTestModules::addFunction( 'oxvendor', 'isDerived', '{ return false; }' );
-        oxTestModules::addFunction( 'oxvendor', 'setLanguage', '{ return true; }' );
-        oxTestModules::addFunction( 'oxvendor', 'assign', '{ return true; }' );
-        oxTestModules::addFunction( 'oxvendor', 'setLanguage', '{ return true; }' );
+        oxTestModules::addFunction('oxvendor', 'save', '{ throw new Exception("save"); }');
+        oxTestModules::addFunction('oxvendor', 'loadInLang', '{ return true; }');
+        oxTestModules::addFunction('oxvendor', 'isDerived', '{ return false; }');
+        oxTestModules::addFunction('oxvendor', 'setLanguage', '{ return true; }');
+        oxTestModules::addFunction('oxvendor', 'assign', '{ return true; }');
+        oxTestModules::addFunction('oxvendor', 'setLanguage', '{ return true; }');
 
         // testing..
         try {
             $oView = new Vendor_Main();
             $oView->saveinnlang();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "Error in Vendor_Main::saveinnlang()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "Error in Vendor_Main::saveinnlang()");
+
             return;
         }
-        $this->fail( "Error in Vendor_Main::saveinnlang()" );
+        $this->fail("Error in Vendor_Main::saveinnlang()");
     }
 }

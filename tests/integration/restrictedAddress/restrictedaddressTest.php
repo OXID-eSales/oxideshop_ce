@@ -20,49 +20,53 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
+require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
 
 
 class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
 {
+
     /**
      * DataProvider return shop URL list to call.
+     *
      * @return array
      */
     public function provider_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest()
     {
         $oConfig = $this->getConfig();
         $sShopUrl = $oConfig->getShopMainUrl();
+
         return array(
-            array( $sShopUrl .'?fnc=getShopVersion', $sShopUrl ),
-            array( $sShopUrl .'?fnc=getShopEdition', $sShopUrl ),
-            array( $sShopUrl .'?fnc=getRevision', $sShopUrl ),
-            array( $sShopUrl .'someSeoURL/?fnc=getRevision', $sShopUrl.'someSeoURL/' ),
-            array( $sShopUrl .'?fnc=getShopVersion&n2=v2', $sShopUrl ),
-            array( $sShopUrl .'?fnc=getShopEdition&n2=v2', $sShopUrl ),
-            array( $sShopUrl .'?fnc=getRevision&n2=v2', $sShopUrl ),
-            array( $sShopUrl .'someSeoURL/?fnc=getRevision&n2=v2', $sShopUrl.'someSeoURL/' ),
-            array( $sShopUrl .'?name=value&fnc=getShopVersion', $sShopUrl ),
-            array( $sShopUrl .'?name=value&fnc=getShopEdition', $sShopUrl ),
-            array( $sShopUrl .'?name=value&fnc=getRevision', $sShopUrl ),
-            array( $sShopUrl .'someSeoURL/?name=value&fnc=getRevision', $sShopUrl.'someSeoURL/' ),
-            array( $sShopUrl .'?name=value&fnc=getShopVersion&n2=v2', $sShopUrl ),
-            array( $sShopUrl .'?name=value&fnc=getShopEdition&n2=v2', $sShopUrl ),
-            array( $sShopUrl .'?name=value&fnc=getRevision&n2=v2', $sShopUrl ),
-            array( $sShopUrl .'someSeoURL/?name=value&fnc=getRevision&n2=v2', $sShopUrl.'someSeoURL/' ),
+            array($sShopUrl . '?fnc=getShopVersion', $sShopUrl),
+            array($sShopUrl . '?fnc=getShopEdition', $sShopUrl),
+            array($sShopUrl . '?fnc=getRevision', $sShopUrl),
+            array($sShopUrl . 'someSeoURL/?fnc=getRevision', $sShopUrl . 'someSeoURL/'),
+            array($sShopUrl . '?fnc=getShopVersion&n2=v2', $sShopUrl),
+            array($sShopUrl . '?fnc=getShopEdition&n2=v2', $sShopUrl),
+            array($sShopUrl . '?fnc=getRevision&n2=v2', $sShopUrl),
+            array($sShopUrl . 'someSeoURL/?fnc=getRevision&n2=v2', $sShopUrl . 'someSeoURL/'),
+            array($sShopUrl . '?name=value&fnc=getShopVersion', $sShopUrl),
+            array($sShopUrl . '?name=value&fnc=getShopEdition', $sShopUrl),
+            array($sShopUrl . '?name=value&fnc=getRevision', $sShopUrl),
+            array($sShopUrl . 'someSeoURL/?name=value&fnc=getRevision', $sShopUrl . 'someSeoURL/'),
+            array($sShopUrl . '?name=value&fnc=getShopVersion&n2=v2', $sShopUrl),
+            array($sShopUrl . '?name=value&fnc=getShopEdition&n2=v2', $sShopUrl),
+            array($sShopUrl . '?name=value&fnc=getRevision&n2=v2', $sShopUrl),
+            array($sShopUrl . 'someSeoURL/?name=value&fnc=getRevision&n2=v2', $sShopUrl . 'someSeoURL/'),
         );
     }
 
     /**
      * Fix for bug entry 0005569: Oxid leaks internal information to the outside when calling certain urls
+     *
      * @dataProvider provider_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest
      */
     public function test_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest($sForbiddenUrl, $sRedirectUrl)
     {
         $sResult = $this->callPage($sForbiddenUrl);
 
-        $sLocation = "Location: ". $sRedirectUrl ."\r\n";
-        $this->assertContains( $sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.' );
+        $sLocation = "Location: " . $sRedirectUrl . "\r\n";
+        $this->assertContains($sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.');
     }
 
     /**
@@ -72,8 +76,8 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
     {
         $sShopUrl = $this->getConfig()->getShopMainUrl();
         $sResult = $this->_getPageResult('/config.inc.php');
-        $sLocation = "Location: ". $sShopUrl ."index.php\r\n";
-        $this->assertContains( $sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.' );
+        $sLocation = "Location: " . $sShopUrl . "index.php\r\n";
+        $this->assertContains($sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.');
     }
 
     public function providerForbiddenFilesAccessibility()
@@ -98,7 +102,7 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
     {
         $sResultPage = $this->_getPageResult($sFilePath);
 
-        $this->assertContains('Forbidden', $sResultPage, 'User should see forbidden page message.' );
+        $this->assertContains('Forbidden', $sResultPage, 'User should see forbidden page message.');
     }
 
     public function providerCheckAllowedFilesAccessibility()
@@ -118,17 +122,18 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
     {
         $sResultPage = $this->_getPageResult($sFilePath);
 
-        $this->assertNotContains('Forbidden', $sResultPage, "User shouldn't see forbidden page message." );
+        $this->assertNotContains('Forbidden', $sResultPage, "User shouldn't see forbidden page message.");
     }
 
     /**
      * @param string $sShopUrl shop url to call.
+     *
      * @return string
      */
     private function callPage($sShopUrl)
     {
         $oCurl = new oxCurl();
-        $oCurl->setOption('CURLOPT_HEADER', TRUE);
+        $oCurl->setOption('CURLOPT_HEADER', true);
         $oCurl->setUrl($sShopUrl);
 
         return $oCurl->execute();
@@ -136,6 +141,7 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
 
     /**
      * @param $sFilePath
+     *
      * @return string
      */
     private function _getPageResult($sFilePath)

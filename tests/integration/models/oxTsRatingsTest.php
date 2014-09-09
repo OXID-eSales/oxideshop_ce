@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
+require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
 
 /**
  * oxArticle integration test
@@ -35,11 +35,11 @@ class Integration_Models_oxTsRatingsTest extends OxidTestCase
      */
     public function testInvalidCallToTrustedShops()
     {
-        $this->markTestSkippedUntil( '2014-02-07', 'Temporary skip test.' );
+        $this->markTestSkippedUntil('2014-02-07', 'Temporary skip test.');
         $oTsRatings = new oxTsRatings();
-        $oTsRatings->setTsId( 'xyz' );
-        $aResultExpected = array ( 'empty' => true );
-        $this->assertEquals( $aResultExpected, $oTsRatings->getRatings() );
+        $oTsRatings->setTsId('xyz');
+        $aResultExpected = array('empty' => true);
+        $this->assertEquals($aResultExpected, $oTsRatings->getRatings());
     }
 
     /**
@@ -49,17 +49,17 @@ class Integration_Models_oxTsRatingsTest extends OxidTestCase
      */
     public function testValidCallToTrustedShops()
     {
-        $this->markTestSkippedUntil( '2014-02-07', 'Temporary skip test.' );
+        $this->markTestSkippedUntil('2014-02-07', 'Temporary skip test.');
         $oTsRatings = new oxTsRatings();
-        $oTsRatings->setTsId( 'X2131CD55C9A453334E61CB2C593AC5AC' );
+        $oTsRatings->setTsId('X2131CD55C9A453334E61CB2C593AC5AC');
 
         $aResult = $oTsRatings->getRatings();
-        $blKeyEmptyExists = array_key_exists( 'empty', $aResult );
-        $blKeyMaxExists = array_key_exists( 'max', $aResult );
-        $blKeyResultExists = array_key_exists( 'result', $aResult );
-        $blKeyCountExists = array_key_exists( 'count', $aResult );
-        $blKeyShopNameExists = array_key_exists( 'shopName', $aResult );
-        $this->assertTrue( $blKeyCountExists && $blKeyEmptyExists && $blKeyMaxExists && $blKeyResultExists && $blKeyShopNameExists );
+        $blKeyEmptyExists = array_key_exists('empty', $aResult);
+        $blKeyMaxExists = array_key_exists('max', $aResult);
+        $blKeyResultExists = array_key_exists('result', $aResult);
+        $blKeyCountExists = array_key_exists('count', $aResult);
+        $blKeyShopNameExists = array_key_exists('shopName', $aResult);
+        $this->assertTrue($blKeyCountExists && $blKeyEmptyExists && $blKeyMaxExists && $blKeyResultExists && $blKeyShopNameExists);
     }
 
     /**
@@ -69,13 +69,13 @@ class Integration_Models_oxTsRatingsTest extends OxidTestCase
      */
     public function testGetTsRatings()
     {
-        $this->markTestSkippedUntil( '2014-02-07', 'Temporary skip test.' );
-        $oViewConf = $this->getMock( "oxViewConfig", array( "getTsId" ) );
-        $oViewConf->expects( $this->any() )->method( "getTsId" )->will( $this->returnValue( 'xyz' ) );
+        $this->markTestSkippedUntil('2014-02-07', 'Temporary skip test.');
+        $oViewConf = $this->getMock("oxViewConfig", array("getTsId"));
+        $oViewConf->expects($this->any())->method("getTsId")->will($this->returnValue('xyz'));
 
         $aTsRatings = $oViewConf->getTsRatings();
 
-        $this->assertArrayHasKey( 'empty', $aTsRatings );
-        $this->assertTrue( $aTsRatings['empty'] );
+        $this->assertArrayHasKey('empty', $aTsRatings);
+        $this->assertTrue($aTsRatings['empty']);
     }
 }

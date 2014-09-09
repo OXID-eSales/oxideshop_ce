@@ -20,12 +20,13 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ) . '/unit/OxidTestCase.php';
-require_once realpath( "." ) . '/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 require_once getShopBasePath() . '/setup/oxsetup.php';
 
 /**
  * Class Unit_Core_oxOnlineRequestTest
+ *
  * @covers oxOnlineRequest
  */
 class Unit_Core_oxOnlineRequestTest extends OxidTestCase
@@ -56,6 +57,7 @@ class Unit_Core_oxOnlineRequestTest extends OxidTestCase
         $oRequest = new oxOnlineRequest();
         $this->assertSame('generated_unique_cluster_id', $oRequest->clusterId);
     }
+
 
     public function testDefaultParametersSetOnConstruct()
     {

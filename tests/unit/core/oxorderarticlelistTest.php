@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxorderarticlelistTest extends OxidTestCase
 {
+
     protected $_oOrderArticle = null;
 
     /**
@@ -36,18 +37,18 @@ class Unit_Core_oxorderarticlelistTest extends OxidTestCase
     {
         parent::setUp();
         $this->_oOrderArticle = new oxorderarticle();
-        $this->_oOrderArticle->setId( '_testOrderArticleId' );
+        $this->_oOrderArticle->setId('_testOrderArticleId');
         $this->_oOrderArticle->oxorderarticles__oxartid = new oxField('_testArticleId', oxField::T_RAW);
         $this->_oOrderArticle->oxorderarticles__oxorderid = new oxField('_testOrderId', oxField::T_RAW);
         $this->_oOrderArticle->save();
 
         $oOrder = new oxorder();
-        $oOrder->setId( '_testOrderId' );
+        $oOrder->setId('_testOrderId');
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin', oxField::T_RAW);
         $oOrder->save();
 
         $oArticle = new oxarticle();
-        $oArticle->setId( '_testArticleId' );
+        $oArticle->setId('_testArticleId');
         $oArticle->oxarticles__oxtitle = new oxField('testArticleTitle', oxField::T_RAW);
         $oArticle->oxarticles__oxactive = new oxField('1', oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField('10', oxField::T_RAW);
@@ -63,9 +64,9 @@ class Unit_Core_oxorderarticlelistTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $this->cleanUpTable( 'oxorderarticles' );
-        $this->cleanUpTable( 'oxorder' );
-        $this->cleanUpTable( 'oxarticles' );
+        $this->cleanUpTable('oxorderarticles');
+        $this->cleanUpTable('oxorder');
+        $this->cleanUpTable('oxarticles');
 
         parent::tearDown();
     }
@@ -77,9 +78,9 @@ class Unit_Core_oxorderarticlelistTest extends OxidTestCase
     {
         $oOrderArticleList = new oxorderarticlelist();
         $oOrderArticleList->loadOrderArticlesForUser('oxdefaultadmin');
-        $this->assertEquals( 1, $oOrderArticleList->count());
+        $this->assertEquals(1, $oOrderArticleList->count());
         $oOrderArticle = $oOrderArticleList->current();
-        $this->assertEquals( '_testOrderArticleId', $oOrderArticle->getId());
+        $this->assertEquals('_testOrderArticleId', $oOrderArticle->getId());
     }
 
     /*

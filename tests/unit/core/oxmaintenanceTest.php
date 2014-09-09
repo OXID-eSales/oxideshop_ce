@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxMaintenanceTest extends OxidTestCase
 {
+
     /**
      * Test case for oxMaintenance::execute()
      *
@@ -32,12 +33,12 @@ class Unit_Core_oxMaintenanceTest extends OxidTestCase
      */
     public function testExecute()
     {
-        $oList = $this->getMock( 'oxArticleList', array( 'updateUpcomingPrices' ) );
-        $oList->expects( $this->once() )->method( 'updateUpcomingPrices' )->with( $this->equalTo( true ) );
+        $oList = $this->getMock('oxArticleList', array('updateUpcomingPrices'));
+        $oList->expects($this->once())->method('updateUpcomingPrices')->with($this->equalTo(true));
 
-        oxTestModules::addModuleObject( 'oxarticlelist', $oList );
+        oxTestModules::addModuleObject('oxarticlelist', $oList);
 
-        $oMaintenance = oxNew( "oxMaintenance" );
+        $oMaintenance = oxNew("oxMaintenance");
         $oMaintenance->execute();
     }
 }

@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,35 +18,36 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
-
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-
-class Unit_Core_oxstatisticTest extends OxidTestCase
-{
-    /**
-     * Testing if deletion removes all db records
      */
-    public function testSetGetReports()
+
+    require_once realpath(".") . '/unit/OxidTestCase.php';
+    require_once realpath(".") . '/unit/test_config.inc.php';
+
+    class Unit_Core_oxstatisticTest extends OxidTestCase
     {
-        $oStatistic = oxNew( "oxstatistic" );
-        $oStatistic->setReports("aaaa");
-        $this->assertEquals( "aaaa", $oStatistic->getReports() );
+
+        /**
+         * Testing if deletion removes all db records
+         */
+        public function testSetGetReports()
+        {
+            $oStatistic = oxNew("oxstatistic");
+            $oStatistic->setReports("aaaa");
+            $this->assertEquals("aaaa", $oStatistic->getReports());
+        }
+
+        /**
+         * Testing oxvalue field setter
+         */
+        public function testSetFieldData()
+        {
+            $sValue = '"\"&\'';
+
+            $oStatistic = oxNew("oxstatistic");
+            $oStatistic->UNITsetFieldData('oxvalue', $sValue);
+            $oStatistic->UNITsetFieldData('oxsomefield', $sValue);
+
+            $this->assertEquals($sValue, $oStatistic->oxstatistics__oxvalue->value);
+            $this->assertEquals(htmlentities($sValue, ENT_QUOTES), $oStatistic->oxstatistics__oxsomefield->value);
+        }
     }
-
-    /**
-     * Testing oxvalue field setter
-     */
-    public function testSetFieldData()
-    {
-        $sValue = '"\"&\'';
-
-        $oStatistic = oxNew( "oxstatistic" );
-         $oStatistic->UNITsetFieldData( 'oxvalue', $sValue );
-        $oStatistic->UNITsetFieldData( 'oxsomefield', $sValue );
-
-        $this->assertEquals( $sValue, $oStatistic->oxstatistics__oxvalue->value );
-        $this->assertEquals( htmlentities( $sValue, ENT_QUOTES ), $oStatistic->oxstatistics__oxsomefield->value );
-    }
-}

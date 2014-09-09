@@ -20,17 +20,19 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Shop_Config class
  */
 class Unit_Admin_ShopConfigTest extends OxidTestCase
 {
+
     public function setUp()
     {
-        modConfig::getInstance()->setAdminMode( true );
+        modConfig::getInstance()->setAdminMode(true);
+
         return parent::setUp();
     }
 
@@ -43,7 +45,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
     {
         // testing..
         $oView = new Shop_Config();
-        $this->assertEquals( 'shop_config.tpl', $oView->render() );
+        $this->assertEquals('shop_config.tpl', $oView->render());
     }
 
     /**
@@ -53,64 +55,64 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
      */
     public function testSaveConfVars()
     {
-        modConfig::getInstance()->setAdminMode( true );
-        modConfig::setRequestParameter( "oxid", "testId" );
-        modConfig::setRequestParameter( "confbools",   array( "varnamebool" => true ) );
-        modConfig::setRequestParameter( "confstrs",    array( "varnamestr"  => "string" ) );
-        modConfig::setRequestParameter( "confarrs",    array( "varnamearr"  => "a\nb\nc" ) );
-        modConfig::setRequestParameter( "confaarrs",   array( "varnameaarr" => "a => b\nc => d" ) );
-        modConfig::setRequestParameter( "confselects", array( "varnamesel"  => "a" ) );
+        modConfig::getInstance()->setAdminMode(true);
+        modConfig::setRequestParameter("oxid", "testId");
+        modConfig::setRequestParameter("confbools", array("varnamebool" => true));
+        modConfig::setRequestParameter("confstrs", array("varnamestr" => "string"));
+        modConfig::setRequestParameter("confarrs", array("varnamearr" => "a\nb\nc"));
+        modConfig::setRequestParameter("confaarrs", array("varnameaarr" => "a => b\nc => d"));
+        modConfig::setRequestParameter("confselects", array("varnamesel" => "a"));
 
         $aTasks[] = "getConfig";
         $aTasks[] = "_getModuleForConfigVars";
 
-        $oConfig = $this->getMock( "oxconfig", array( "saveShopConfVar" ) );
-        $oConfig->expects( $this->at( 0 ) )->method( 'saveShopConfVar' )
-                ->with(
-                        $this->equalTo( "bool" ),
-                        $this->equalTo( "varnamebool" ),
-                        $this->equalTo( true ),
-                        $this->equalTo( "testId" ),
-                        $this->equalTo( 'theme:mytheme' )
-                );
-        $oConfig->expects( $this->at( 1 ) )->method( 'saveShopConfVar' )
-                ->with(
-                        $this->equalTo( "str" ),
-                        $this->equalTo( "varnamestr" ),
-                        $this->equalTo( "string" ),
-                        $this->equalTo( "testId" ),
-                        $this->equalTo( 'theme:mytheme' )
-                );
-        $oConfig->expects( $this->at( 2 ) )->method( 'saveShopConfVar' )
-                ->with(
-                        $this->equalTo( "arr" ),
-                        $this->equalTo( "varnamearr" ),
-                        $this->equalTo( array( "a", "b", "c" ) ),
-                        $this->equalTo( "testId" ),
-                        $this->equalTo( 'theme:mytheme' )
-                );
-        $oConfig->expects( $this->at( 3 ) )->method( 'saveShopConfVar' )
-                ->with(
-                        $this->equalTo( "aarr" ),
-                        $this->equalTo( "varnameaarr" ),
-                        $this->equalTo( array( "a" => "b", "c" => "d" ) ),
-                        $this->equalTo( "testId" ),
-                        $this->equalTo( 'theme:mytheme' )
-                );
-        $oConfig->expects( $this->at( 4 ) )->method( 'saveShopConfVar' )
-                ->with(
-                        $this->equalTo( "select" ),
-                        $this->equalTo( "varnamesel" ),
-                        $this->equalTo( "a" ),
-                        $this->equalTo( "testId" ),
-                        $this->equalTo( 'theme:mytheme' )
-                );
+        $oConfig = $this->getMock("oxconfig", array("saveShopConfVar"));
+        $oConfig->expects($this->at(0))->method('saveShopConfVar')
+            ->with(
+                $this->equalTo("bool"),
+                $this->equalTo("varnamebool"),
+                $this->equalTo(true),
+                $this->equalTo("testId"),
+                $this->equalTo('theme:mytheme')
+            );
+        $oConfig->expects($this->at(1))->method('saveShopConfVar')
+            ->with(
+                $this->equalTo("str"),
+                $this->equalTo("varnamestr"),
+                $this->equalTo("string"),
+                $this->equalTo("testId"),
+                $this->equalTo('theme:mytheme')
+            );
+        $oConfig->expects($this->at(2))->method('saveShopConfVar')
+            ->with(
+                $this->equalTo("arr"),
+                $this->equalTo("varnamearr"),
+                $this->equalTo(array("a", "b", "c")),
+                $this->equalTo("testId"),
+                $this->equalTo('theme:mytheme')
+            );
+        $oConfig->expects($this->at(3))->method('saveShopConfVar')
+            ->with(
+                $this->equalTo("aarr"),
+                $this->equalTo("varnameaarr"),
+                $this->equalTo(array("a" => "b", "c" => "d")),
+                $this->equalTo("testId"),
+                $this->equalTo('theme:mytheme')
+            );
+        $oConfig->expects($this->at(4))->method('saveShopConfVar')
+            ->with(
+                $this->equalTo("select"),
+                $this->equalTo("varnamesel"),
+                $this->equalTo("a"),
+                $this->equalTo("testId"),
+                $this->equalTo('theme:mytheme')
+            );
 
         // testing..
-        $oView = $this->getMock( "Shop_Config", $aTasks, array(), '', false );
-        $oView->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-        $oView->expects( $this->once() )->method( '_getModuleForConfigVars' )
-                ->will( $this->returnValue( 'theme:mytheme' ) );
+        $oView = $this->getMock("Shop_Config", $aTasks, array(), '', false);
+        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        $oView->expects($this->once())->method('_getModuleForConfigVars')
+            ->will($this->returnValue('theme:mytheme'));
 
         $oView->saveConfVars();
     }
@@ -129,8 +131,8 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
      */
     public function testSave()
     {
-        $oView = $this->getMock( "Shop_Config", array( "saveConfVars" ) );
-        $oView->expects( $this->once() )->method( 'saveConfVars' );
+        $oView = $this->getMock("Shop_Config", array("saveConfVars"));
+        $oView->expects($this->once())->method('saveConfVars');
         $oView->save();
     }
 
@@ -142,11 +144,11 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
     public function testArrayToMultiline()
     {
         // defining parameters
-        $aInput = array( "a", "b", "c" );
+        $aInput = array("a", "b", "c");
 
         // testing..
         $oView = new Shop_Config();
-        $this->assertEquals( "a\nb\nc", $oView->UNITarrayToMultiline( $aInput ) );
+        $this->assertEquals("a\nb\nc", $oView->UNITarrayToMultiline($aInput));
     }
 
     /**
@@ -161,7 +163,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
 
         // testing..
         $oView = new Shop_Config();
-        $this->assertEquals( array( 0 => "a", 1 => "b", 3=> "c" ), $oView->UNITmultilineToArray( $sMultiline ) );
+        $this->assertEquals(array(0 => "a", 1 => "b", 3 => "c"), $oView->UNITmultilineToArray($sMultiline));
     }
 
     /**
@@ -172,11 +174,11 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
     public function testAarrayToMultiline()
     {
         // defining parameters
-        $aInput = array( "a" => "b", "c" => "d" );
+        $aInput = array("a" => "b", "c" => "d");
 
         // testing..
         $oView = new Shop_Config();
-        $this->assertEquals( "a => b\nc => d", $oView->UNITaarrayToMultiline( $aInput ) );
+        $this->assertEquals("a => b\nc => d", $oView->UNITaarrayToMultiline($aInput));
     }
 
     /**
@@ -191,7 +193,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
 
         // testing..
         $oView = new Shop_Config();
-        $this->assertEquals( array( "a" => "b", "c" => "d" ), $oView->UNITmultilineToAarray( $sMultiline ) );
+        $this->assertEquals(array("a" => "b", "c" => "d"), $oView->UNITmultilineToAarray($sMultiline));
     }
 
     /**

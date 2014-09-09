@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Country_List class
  */
 class Unit_Admin_CountryListTest extends OxidTestCase
 {
+
     /**
      * Country_List::DeleteEntry() test case
      *
@@ -35,19 +36,20 @@ class Unit_Admin_CountryListTest extends OxidTestCase
      */
     public function testDeleteEntry()
     {
-        oxTestModules::addFunction( 'oxcountry', 'delete', '{ throw new Exception("delete");}');
-        oxTestModules::addFunction( 'oxcountry', 'isDerived', '{ return false;}');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxcountry', 'delete', '{ throw new Exception("delete");}');
+        oxTestModules::addFunction('oxcountry', 'isDerived', '{ return false;}');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new Country_List();
             $oView->deleteEntry();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "delete", $oExcp->getMessage(), "Error in Country_List::DeleteEntry()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("delete", $oExcp->getMessage(), "Error in Country_List::DeleteEntry()");
+
             return;
         }
-        $this->fail( "Error in Country_List::DeleteEntry()" );
+        $this->fail("Error in Country_List::DeleteEntry()");
     }
 
     /**
@@ -58,11 +60,11 @@ class Unit_Admin_CountryListTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = $this->getProxyClass( "Country_List" );
-        $this->assertEquals( false, $oView->getNonPublicVar( "_blDesc" ) );
-        $this->assertEquals( array( 'oxcountry' => array( 'oxactive' => "asc" ) ), $oView->getListSorting() );
-        $this->assertEquals( "oxcountry", $oView->getNonPublicVar( "_sListClass" ) );
-        $this->assertEquals( 'country_list.tpl', $oView->render() );
+        $oView = $this->getProxyClass("Country_List");
+        $this->assertEquals(false, $oView->getNonPublicVar("_blDesc"));
+        $this->assertEquals(array('oxcountry' => array('oxactive' => "asc")), $oView->getListSorting());
+        $this->assertEquals("oxcountry", $oView->getNonPublicVar("_sListClass"));
+        $this->assertEquals('country_list.tpl', $oView->render());
     }
 
 }

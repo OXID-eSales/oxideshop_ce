@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once getShopBasePath().'/core/smarty/plugins/emos.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
+require_once getShopBasePath() . '/core/smarty/plugins/emos.php';
 
 /**
  * Exposes protected methods for EMOS class
@@ -32,6 +32,7 @@ require_once getShopBasePath().'/core/smarty/plugins/emos.php';
  */
 class EmosTest extends EMOS
 {
+
     /**
      * Returns protected property value
      *
@@ -49,9 +50,9 @@ class EmosTest extends EMOS
         return $this->_emos_ItemFormat($oItem);
     }
 
-    public function call_emos_DataFormat( $sStrPre )
+    public function call_emos_DataFormat($sStrPre)
     {
-        return $this->_emos_DataFormat( $sStrPre );
+        return $this->_emos_DataFormat($sStrPre);
     }
 
     public function call_prepareScript()
@@ -59,14 +60,14 @@ class EmosTest extends EMOS
         return $this->_prepareScript();
     }
 
-    public function call_setEmosECPageArray( $oItem, $sEvent )
+    public function call_setEmosECPageArray($oItem, $sEvent)
     {
-        return $this->_setEmosECPageArray( $oItem, $sEvent );
+        return $this->_setEmosECPageArray($oItem, $sEvent);
     }
 
-    public function call_setEmosBillingArray( $sBillingId, $sCustomerNr, $iTotal, $sCountry, $sCipt, $sCity, $sArrayName)
+    public function call_setEmosBillingArray($sBillingId, $sCustomerNr, $iTotal, $sCountry, $sCipt, $sCity, $sArrayName)
     {
-        return $this->_setEmosBillingArray( $sBillingId, $sCustomerNr, $iTotal, $sCountry, $sCipt, $sCity, $sArrayName );
+        return $this->_setEmosBillingArray($sBillingId, $sCustomerNr, $iTotal, $sCountry, $sCipt, $sCity, $sArrayName);
     }
 }
 
@@ -75,6 +76,7 @@ class EmosTest extends EMOS
  */
 class Unit_Maintenance_emosTest extends OxidTestCase
 {
+
     /**
      * Test constructor.
      *
@@ -82,10 +84,10 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testConstruct()
     {
-        $oEmos = new EmosTest( "xxx", "yyy" );
+        $oEmos = new EmosTest("xxx", "yyy");
 
-        $this->assertEquals( 'xxx', $oEmos->getProtected("_sPathToFile") );
-        $this->assertEquals( 'yyy', $oEmos->getProtected("_sScriptFileName" ));
+        $this->assertEquals('xxx', $oEmos->getProtected("_sPathToFile"));
+        $this->assertEquals('yyy', $oEmos->getProtected("_sScriptFileName"));
     }
 
     /**
@@ -96,22 +98,22 @@ class Unit_Maintenance_emosTest extends OxidTestCase
     public function testEmosItemFormat()
     {
         $oItem = new stdClass;
-        $oItem->productId    = 'prodid';
-        $oItem->productName  = 'prodname';
+        $oItem->productId = 'prodid';
+        $oItem->productName = 'prodname';
         $oItem->productGroup = 'prodgrp';
         $oItem->variant1 = 'var1';
         $oItem->variant2 = 'var2';
         $oItem->variant3 = 'var3';
 
-        $oEmos = $this->getMock( 'EmosTest', array( '_emos_DataFormat' ) );
-        $oEmos->expects( $this->at( 0 ) )->method( '_emos_DataFormat' )->with( $this->equalTo( 'prodid' ) )->will($this->returnValue( 'prodid' ) );
-        $oEmos->expects( $this->at( 1 ) )->method( '_emos_DataFormat' )->with( $this->equalTo( 'prodname' ) )->will($this->returnValue( 'prodname' ) );
-        $oEmos->expects( $this->at( 2 ) )->method( '_emos_DataFormat' )->with( $this->equalTo( 'prodgrp' ) )->will($this->returnValue( 'prodgrp' ) );
-        $oEmos->expects( $this->at( 3 ) )->method( '_emos_DataFormat' )->with( $this->equalTo( 'var1' ) )->will($this->returnValue( 'var1' ) );
-        $oEmos->expects( $this->at( 4 ) )->method( '_emos_DataFormat' )->with( $this->equalTo( 'var2' ) )->will($this->returnValue( 'var2' ) );
-        $oEmos->expects( $this->at( 5 ) )->method( '_emos_DataFormat' )->with( $this->equalTo( 'var3' ) )->will($this->returnValue( 'var3' ) );
+        $oEmos = $this->getMock('EmosTest', array('_emos_DataFormat'));
+        $oEmos->expects($this->at(0))->method('_emos_DataFormat')->with($this->equalTo('prodid'))->will($this->returnValue('prodid'));
+        $oEmos->expects($this->at(1))->method('_emos_DataFormat')->with($this->equalTo('prodname'))->will($this->returnValue('prodname'));
+        $oEmos->expects($this->at(2))->method('_emos_DataFormat')->with($this->equalTo('prodgrp'))->will($this->returnValue('prodgrp'));
+        $oEmos->expects($this->at(3))->method('_emos_DataFormat')->with($this->equalTo('var1'))->will($this->returnValue('var1'));
+        $oEmos->expects($this->at(4))->method('_emos_DataFormat')->with($this->equalTo('var2'))->will($this->returnValue('var2'));
+        $oEmos->expects($this->at(5))->method('_emos_DataFormat')->with($this->equalTo('var3'))->will($this->returnValue('var3'));
 
-        $this->assertEquals( $oItem, $oEmos->call_emos_ItemFormat( $oItem ) );
+        $this->assertEquals($oItem, $oEmos->call_emos_ItemFormat($oItem));
     }
 
     /**
@@ -125,7 +127,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
         $sStrPos = '&>ggg//';
 
         $oEmos = new EmosTest;
-        $this->assertEquals( $sStrPos, $oEmos->call_emos_DataFormat( $sStrPre ) );
+        $this->assertEquals($sStrPos, $oEmos->call_emos_DataFormat($sStrPre));
     }
 
     /**
@@ -136,11 +138,11 @@ class Unit_Maintenance_emosTest extends OxidTestCase
     public function testPrettyPrint()
     {
         $oEmos = new EmosTest();
-        $this->assertEquals( "", $oEmos->getProtected("_br") );
-        $this->assertEquals( "", $oEmos->getProtected("_tab") );
+        $this->assertEquals("", $oEmos->getProtected("_br"));
+        $this->assertEquals("", $oEmos->getProtected("_tab"));
         $oEmos->prettyPrint();
-        $this->assertEquals( "\n", $oEmos->getProtected("_br") );
-        $this->assertEquals( "\t", $oEmos->getProtected("_tab") );
+        $this->assertEquals("\n", $oEmos->getProtected("_br"));
+        $this->assertEquals("\t", $oEmos->getProtected("_tab"));
     }
 
     /**
@@ -150,14 +152,14 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testPrepareScript()
     {
-        $oEmos = new EmosTest( "xxx", "yyy" );
+        $oEmos = new EmosTest("xxx", "yyy");
         $oEmos->prettyPrint();
         $oEmos->call_prepareScript();
 
         $sRes = $oEmos->getProtected("_sIncScript");
         $sExpt = "<script type=\"text/javascript\" src=\"xxxyyy\"></script>\n";
 
-        $this->assertEquals( $sExpt, $sRes);
+        $this->assertEquals($sExpt, $sRes);
     }
 
     /**
@@ -167,7 +169,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testToString()
     {
-        $oEmos = new EMOS( "xxx", "yyy" );
+        $oEmos = new EMOS("xxx", "yyy");
         //$oEmos->appendPreScript( 'pre' );
         //$oEmos->appendPostScript( 'post' );
         //$oEmos->jsFormatPrescript = "__JSPreScript__";
@@ -176,7 +178,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
         //$sExpt = "pre<script type=\"text/javascript\">window.emosTrackVersion = 2;</script>\n<script type=\"text/javascript\" src=\"xxxyyy\"></script>\n<script type=\"text/javascript\"><!--\n\tvar emospro = {};\n\twindow.emosPropertiesEvent(emospro);\n//-->\n</script>\npost";
         $sExpt = "<script type=\"text/javascript\">window.emosTrackVersion = 2;</script>\n<script type=\"text/javascript\" src=\"xxxyyy\"></script>\n<script type=\"text/javascript\"><!--\n\tvar emospro = {};\n\twindow.emosPropertiesEvent(emospro);\n//-->\n</script>\n";
         $oEmos->prettyPrint();
-        $this->assertEquals( $sExpt, $oEmos->toString() );
+        $this->assertEquals($sExpt, $oEmos->toString());
     }
 
     /**
@@ -187,10 +189,10 @@ class Unit_Maintenance_emosTest extends OxidTestCase
     public function testSetEmosECPageArray()
     {
         $oItem = new EMOS_Item();
-        $oItem->productId     = 'productId';
-        $oItem->productName   = 'product Name';
-        $oItem->price         = 'price';
-        $oItem->productGroup  = 'product\Group';
+        $oItem->productId = 'productId';
+        $oItem->productName = 'product Name';
+        $oItem->price = 'price';
+        $oItem->productGroup = 'product\Group';
         $oItem->quantity = 'quantity';
         $oItem->variant1 = 'variant1';
         $oItem->variant2 = null;
@@ -199,7 +201,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
         $oSubj = $this->getProxyClass("EMOS");
         $oSubj->UNITsetEmosECPageArray($oItem, "testEvent");
         $aExpt = array(array("testEvent", 'productId', 'product Name', 'price', 'product\Group', 'quantity', 'variant1', '', 'variant3'));
-        $this->assertEquals( $aExpt, $oSubj->getNonPublicVar("_ecEvent"));
+        $this->assertEquals($aExpt, $oSubj->getNonPublicVar("_ecEvent"));
     }
 
     /**
@@ -246,12 +248,12 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddJsFormat()
     {
-       $oSubj = $this->getProxyClass("EMOS");
-       $sRes = $oSubj->UNITaddJsFormat("contents", '111');
-       $this->assertContains("emospro.contents = \"111\"", $sRes);
+        $oSubj = $this->getProxyClass("EMOS");
+        $sRes = $oSubj->UNITaddJsFormat("contents", '111');
+        $this->assertContains("emospro.contents = \"111\"", $sRes);
 
-       $sRes = $oSubj->UNITaddJsFormat("contents", 111, true);
-       $this->assertContains("emospro.contents = 111", $sRes);
+        $sRes = $oSubj->UNITaddJsFormat("contents", 111, true);
+        $this->assertContains("emospro.contents = 111", $sRes);
     }
 
     /**
@@ -261,12 +263,12 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddJsFormatArray()
     {
-       $oSubj = $this->getProxyClass("EMOS");
-       $sRes = $oSubj->UNITaddJsFormat("contents", array('111'));
-       $this->assertContains("emospro.contents = [\"111\"]", $sRes);
+        $oSubj = $this->getProxyClass("EMOS");
+        $sRes = $oSubj->UNITaddJsFormat("contents", array('111'));
+        $this->assertContains("emospro.contents = [\"111\"]", $sRes);
 
-       $sRes = $oSubj->UNITaddJsFormat("contents", array('111', '222'), true);
-       $this->assertContains("emospro.contents = [\"111\",\"222\"]", $sRes);
+        $sRes = $oSubj->UNITaddJsFormat("contents", array('111', '222'), true);
+        $this->assertContains("emospro.contents = [\"111\",\"222\"]", $sRes);
     }
 
     /**
@@ -276,12 +278,12 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddJsFormatNoQuotes()
     {
-       $oSubj = $this->getProxyClass("EMOS");
-       $sRes = $oSubj->UNITaddJsFormat("contents", 111);
-       $this->assertContains("emospro.contents = 111", $sRes);
+        $oSubj = $this->getProxyClass("EMOS");
+        $sRes = $oSubj->UNITaddJsFormat("contents", 111);
+        $this->assertContains("emospro.contents = 111", $sRes);
 
-       $sRes = $oSubj->UNITaddJsFormat("contents", array(111, 222), true);
-       $this->assertContains("emospro.contents = [111,222]", $sRes);
+        $sRes = $oSubj->UNITaddJsFormat("contents", array(111, 222), true);
+        $this->assertContains("emospro.contents = [111,222]", $sRes);
     }
 
     /**
@@ -291,9 +293,9 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddJsFormatEmpty()
     {
-       $oSubj = $this->getProxyClass("EMOS");
-       $sRes = $oSubj->UNITaddJsFormat("contents", null);
-       $this->assertNull($sRes);
+        $oSubj = $this->getProxyClass("EMOS");
+        $sRes = $oSubj->UNITaddJsFormat("contents", null);
+        $this->assertNull($sRes);
     }
 
 
@@ -304,12 +306,12 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddJsFormatZero()
     {
-       $oSubj = $this->getProxyClass("EMOS");
-       $sRes = $oSubj->UNITaddJsFormat("contents", '0');
-       $this->assertContains("emospro.contents = \"0\"", $sRes);
+        $oSubj = $this->getProxyClass("EMOS");
+        $sRes = $oSubj->UNITaddJsFormat("contents", '0');
+        $this->assertContains("emospro.contents = \"0\"", $sRes);
 
-       $sRes = $oSubj->UNITaddJsFormat("contents", 0);
-       $this->assertContains("emospro.contents = 0", $sRes);
+        $sRes = $oSubj->UNITaddJsFormat("contents", 0);
+        $this->assertContains("emospro.contents = 0", $sRes);
     }
 
     /**
@@ -319,9 +321,9 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddJsSpaceChar()
     {
-       $oSubj = $this->getProxyClass("EMOS");
-       $sRes = $oSubj->UNITaddJsFormat("contents", '0 0');
-       $this->assertContains("emospro.contents = \"0 0\"", $sRes);
+        $oSubj = $this->getProxyClass("EMOS");
+        $sRes = $oSubj->UNITaddJsFormat("contents", '0 0');
+        $this->assertContains("emospro.contents = \"0 0\"", $sRes);
     }
 
     /**
@@ -331,12 +333,12 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddContentRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oSubj->addContent("Test test");
-       $sRes = $oSubj->toString();
+        $oSubj->addContent("Test test");
+        $sRes = $oSubj->toString();
 
-       $this->assertContains("emospro.content = \"Test test\";", $sRes);
+        $this->assertContains("emospro.content = \"Test test\";", $sRes);
     }
 
     /**
@@ -346,12 +348,12 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddContactRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oSubj->addContact("Test test");
-       $sRes = $oSubj->toString();
+        $oSubj->addContact("Test test");
+        $sRes = $oSubj->toString();
 
-       $this->assertContains("emospro.scontact = \"Test test\";", $sRes);
+        $this->assertContains("emospro.scontact = \"Test test\";", $sRes);
     }
 
     /**
@@ -361,12 +363,12 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddCountryIdRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oSubj->addCountryId(15);
-       $sRes = $oSubj->toString();
+        $oSubj->addCountryId(15);
+        $sRes = $oSubj->toString();
 
-       $this->assertContains("emospro.countryid = 15;", $sRes);
+        $this->assertContains("emospro.countryid = 15;", $sRes);
     }
 
     /**
@@ -376,12 +378,12 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddPageIdRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oSubj->addPageId("123");
-       $sRes = $oSubj->toString();
+        $oSubj->addPageId("123");
+        $sRes = $oSubj->toString();
 
-       $this->assertContains("emospro.pageId = \"123\";", $sRes);
+        $this->assertContains("emospro.pageId = \"123\";", $sRes);
     }
 
     /**
@@ -391,11 +393,11 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddRegisterRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oSubj->addRegister("testUser", 1);
-       $sRes = $oSubj->toString();
-       $this->assertContains("emospro.register = [[\"33ef37db24f3a27fb520847dcd549e9f\",1]];", $sRes);
+        $oSubj->addRegister("testUser", 1);
+        $sRes = $oSubj->toString();
+        $this->assertContains("emospro.register = [[\"33ef37db24f3a27fb520847dcd549e9f\",1]];", $sRes);
     }
 
     /**
@@ -405,11 +407,11 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddLoginRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oSubj->addLogin("testUser", 1);
-       $sRes = $oSubj->toString();
-       $this->assertContains("emospro.login = [[\"33ef37db24f3a27fb520847dcd549e9f\",1]];", $sRes);
+        $oSubj->addLogin("testUser", 1);
+        $sRes = $oSubj->toString();
+        $this->assertContains("emospro.login = [[\"33ef37db24f3a27fb520847dcd549e9f\",1]];", $sRes);
     }
 
     /**
@@ -419,11 +421,11 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddSearchRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oSubj->addSearch("Test search", 15);
-       $sRes = $oSubj->toString();
-       $this->assertContains("emospro.search = [[\"Test search\",15]];", $sRes);
+        $oSubj->addSearch("Test search", 15);
+        $sRes = $oSubj->toString();
+        $this->assertContains("emospro.search = [[\"Test search\",15]];", $sRes);
     }
 
     /**
@@ -433,12 +435,12 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddSiteIdRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oSubj->addSiteId(1);
-       $sRes = $oSubj->toString();
+        $oSubj->addSiteId(1);
+        $sRes = $oSubj->toString();
 
-       $this->assertContains("emospro.siteid = 1;", $sRes);
+        $this->assertContains("emospro.siteid = 1;", $sRes);
     }
 
     /**
@@ -448,12 +450,12 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddDownloadRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oSubj->addDownload("testDownlod");
-       $sRes = $oSubj->toString();
+        $oSubj->addDownload("testDownlod");
+        $sRes = $oSubj->toString();
 
-       $this->assertContains('emospro.download = "testDownlod";', $sRes);
+        $this->assertContains('emospro.download = "testDownlod";', $sRes);
     }
 
     /**
@@ -463,23 +465,23 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddToBasketRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oItem = new EMOS_Item();
-       $oItem->productId = "123";
-       $oItem->productName = "Test product";
-       $oItem->price = 46.50;
-       $oItem->productGroup = "Test/Category/";
-       $oItem->quantity = 13;
-       $oItem->variant1 = "var1";
-       $oItem->variant2 = null;
-       $oItem->variant3 = "var3";
+        $oItem = new EMOS_Item();
+        $oItem->productId = "123";
+        $oItem->productName = "Test product";
+        $oItem->price = 46.50;
+        $oItem->productGroup = "Test/Category/";
+        $oItem->quantity = 13;
+        $oItem->variant1 = "var1";
+        $oItem->variant2 = null;
+        $oItem->variant3 = "var3";
 
-       $oSubj->addToBasket($oItem);
-       $sRes = $oSubj->toString();
+        $oSubj->addToBasket($oItem);
+        $sRes = $oSubj->toString();
 
-       $sExpt = 'emospro.ec_Event = [["c_add","123","Test product",46.5,"Test\/Category\/",13,"var1",null,"var3"]];';
-       $this->assertContains($sExpt, $sRes);
+        $sExpt = 'emospro.ec_Event = [["c_add","123","Test product",46.5,"Test\/Category\/",13,"var1",null,"var3"]];';
+        $this->assertContains($sExpt, $sRes);
     }
 
     /**
@@ -489,23 +491,23 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testRemoveFromBasketRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oItem = new EMOS_Item();
-       $oItem->productId = "123";
-       $oItem->productName = "Test product";
-       $oItem->price = 46.50;
-       $oItem->productGroup = "Test/Category/";
-       $oItem->quantity = 13;
-       $oItem->variant1 = "var1";
-       $oItem->variant2 = null;
-       $oItem->variant3 = "var3";
+        $oItem = new EMOS_Item();
+        $oItem->productId = "123";
+        $oItem->productName = "Test product";
+        $oItem->price = 46.50;
+        $oItem->productGroup = "Test/Category/";
+        $oItem->quantity = 13;
+        $oItem->variant1 = "var1";
+        $oItem->variant2 = null;
+        $oItem->variant3 = "var3";
 
-       $oSubj->removeFromBasket($oItem);
-       $sRes = $oSubj->toString();
+        $oSubj->removeFromBasket($oItem);
+        $sRes = $oSubj->toString();
 
-       $sExpt = 'emospro.ec_Event = [["c_rmv","123","Test product",46.5,"Test\/Category\/",13,"var1",null,"var3"]];';
-       $this->assertContains($sExpt, $sRes);
+        $sExpt = 'emospro.ec_Event = [["c_rmv","123","Test product",46.5,"Test\/Category\/",13,"var1",null,"var3"]];';
+        $this->assertContains($sExpt, $sRes);
     }
 
     /**
@@ -515,35 +517,35 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddEmosBasketPageArrayRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oItem1 = new EMOS_Item();
-       $oItem1->productId = "1";
-       $oItem1->productName = "Prod 1";
-       $oItem1->price = 46.50;
-       $oItem1->productGroup = "Test/Cat 1/";
-       $oItem1->quantity = 13;
-       $oItem1->variant1 = "var11";
-       $oItem1->variant2 = null;
-       $oItem1->variant3 = "var13";
+        $oItem1 = new EMOS_Item();
+        $oItem1->productId = "1";
+        $oItem1->productName = "Prod 1";
+        $oItem1->price = 46.50;
+        $oItem1->productGroup = "Test/Cat 1/";
+        $oItem1->quantity = 13;
+        $oItem1->variant1 = "var11";
+        $oItem1->variant2 = null;
+        $oItem1->variant3 = "var13";
 
-       $oItem2 = new EMOS_Item();
-       $oItem2->productId = "2";
-       $oItem2->productName = "Prod 2";
-       $oItem2->price = 46.51;
-       $oItem2->productGroup = "Test/Cat 2/";
-       $oItem2->quantity = 13;
-       $oItem2->variant1 = null;
-       $oItem2->variant2 = null;
-       $oItem2->variant3 = "var3";
+        $oItem2 = new EMOS_Item();
+        $oItem2->productId = "2";
+        $oItem2->productName = "Prod 2";
+        $oItem2->price = 46.51;
+        $oItem2->productGroup = "Test/Cat 2/";
+        $oItem2->quantity = 13;
+        $oItem2->variant1 = null;
+        $oItem2->variant2 = null;
+        $oItem2->variant3 = "var3";
 
-       $aBasket = array($oItem1, $oItem2);
+        $aBasket = array($oItem1, $oItem2);
 
-       $oSubj->addEmosBasketPageArray($aBasket);
-       $sRes = $oSubj->toString();
+        $oSubj->addEmosBasketPageArray($aBasket);
+        $sRes = $oSubj->toString();
 
-       $sExpt = 'emospro.ec_Event = [["buy","1","Prod 1",46.5,"Test\/Cat 1\/",13,"var11",null,"var13"],["buy","2","Prod 2",46.51,"Test\/Cat 2\/",13,null,null,"var3"]];';
-       $this->assertContains($sExpt, $sRes);
+        $sExpt = 'emospro.ec_Event = [["buy","1","Prod 1",46.5,"Test\/Cat 1\/",13,"var11",null,"var13"],["buy","2","Prod 2",46.51,"Test\/Cat 2\/",13,null,null,"var3"]];';
+        $this->assertContains($sExpt, $sRes);
     }
 
     /**
@@ -553,22 +555,22 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddDetailViewRefactored()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oItem = new EMOS_Item();
-       $oItem->productId = "123";
-       $oItem->productName = "Test product";
-       $oItem->price = 46.50;
-       $oItem->productGroup = "Test/Category/";
-       $oItem->quantity = 13;
-       $oItem->variant1 = "var1";
-       $oItem->variant2 = null;
-       $oItem->variant3 = "var3";
+        $oItem = new EMOS_Item();
+        $oItem->productId = "123";
+        $oItem->productName = "Test product";
+        $oItem->price = 46.50;
+        $oItem->productGroup = "Test/Category/";
+        $oItem->quantity = 13;
+        $oItem->variant1 = "var1";
+        $oItem->variant2 = null;
+        $oItem->variant3 = "var3";
 
-       $oSubj->addDetailView($oItem);
-       $sRes = $oSubj->toString();
-       $sExpt = 'emospro.ec_Event = [["view","123","Test product",46.5,"Test\/Category\/",13,"var1",null,"var3"]];';
-       $this->assertContains($sExpt, $sRes);
+        $oSubj->addDetailView($oItem);
+        $sRes = $oSubj->toString();
+        $sExpt = 'emospro.ec_Event = [["view","123","Test product",46.5,"Test\/Category\/",13,"var1",null,"var3"]];';
+        $this->assertContains($sExpt, $sRes);
     }
 
     /**
@@ -578,12 +580,12 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testJsEncodeString()
     {
-       $oSubj = $this->getProxyClass("EMOS");
+        $oSubj = $this->getProxyClass("EMOS");
 
-       $mInput = "Test";
-       $sExpt = '"Test"';
-       $sRes = $oSubj->UNITjsEncode($mInput);
-       $this->assertEquals($sExpt, $sRes);
+        $mInput = "Test";
+        $sExpt = '"Test"';
+        $sRes = $oSubj->UNITjsEncode($mInput);
+        $this->assertEquals($sExpt, $sRes);
     }
 
     /**
@@ -593,27 +595,27 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testJsEncodeStringSpecialChars()
     {
-       $oSubj = $this->getProxyClass("EMOS");
+        $oSubj = $this->getProxyClass("EMOS");
 
-       $mInput = "Test test";
-       $sExpt = '"Test test"';
-       $sRes = $oSubj->UNITjsEncode($mInput);
-       $this->assertEquals($sExpt, $sRes);
+        $mInput = "Test test";
+        $sExpt = '"Test test"';
+        $sRes = $oSubj->UNITjsEncode($mInput);
+        $this->assertEquals($sExpt, $sRes);
 
-       $mInput = "Test/test";
-       $sExpt = '"Test\/test"';
-       $sRes = $oSubj->UNITjsEncode($mInput);
-       $this->assertEquals($sExpt, $sRes);
+        $mInput = "Test/test";
+        $sExpt = '"Test\/test"';
+        $sRes = $oSubj->UNITjsEncode($mInput);
+        $this->assertEquals($sExpt, $sRes);
 
-       $mInput = "Test\"test";
-       $sExpt = '"Test\"test"';
-       $sRes = $oSubj->UNITjsEncode($mInput);
-       $this->assertEquals($sExpt, $sRes);
+        $mInput = "Test\"test";
+        $sExpt = '"Test\"test"';
+        $sRes = $oSubj->UNITjsEncode($mInput);
+        $this->assertEquals($sExpt, $sRes);
 
-       $mInput = "Test'test";
-       $sExpt = '"Test\'test"';
-       $sRes = $oSubj->UNITjsEncode($mInput);
-       $this->assertEquals($sExpt, $sRes);
+        $mInput = "Test'test";
+        $sExpt = '"Test\'test"';
+        $sRes = $oSubj->UNITjsEncode($mInput);
+        $this->assertEquals($sExpt, $sRes);
     }
 
     /**
@@ -623,13 +625,13 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testJsEncodeArray()
     {
-       $oSubj = $this->getProxyClass("EMOS");
+        $oSubj = $this->getProxyClass("EMOS");
 
-       $mInput = array("one", 2, 3 => "four", );
-       $sExpt = '{"0":"one","1":2,"3":"four"}';
-       $sRes = $oSubj->UNITjsEncode($mInput);
+        $mInput = array("one", 2, 3 => "four",);
+        $sExpt = '{"0":"one","1":2,"3":"four"}';
+        $sRes = $oSubj->UNITjsEncode($mInput);
 
-       $this->assertEquals($sExpt, $sRes);
+        $this->assertEquals($sExpt, $sRes);
     }
 
     /**
@@ -639,13 +641,13 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testJsEncodeArrayAssoc()
     {
-       $oSubj = $this->getProxyClass("EMOS");
+        $oSubj = $this->getProxyClass("EMOS");
 
-       $mInput = array("a" => "one", 2, "three" => "four");
-       $sExpt = '{"a":"one","0":2,"three":"four"}';
-       $sRes = $oSubj->UNITjsEncode($mInput);
+        $mInput = array("a" => "one", 2, "three" => "four");
+        $sExpt = '{"a":"one","0":2,"three":"four"}';
+        $sRes = $oSubj->UNITjsEncode($mInput);
 
-       $this->assertEquals($sExpt, $sRes);
+        $this->assertEquals($sExpt, $sRes);
     }
 
     /**
@@ -655,13 +657,13 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testJsEncodeArrayArray()
     {
-       $oSubj = $this->getProxyClass("EMOS");
+        $oSubj = $this->getProxyClass("EMOS");
 
-       $mInput = Array(array("one", 23), array("four five", 6), 7);
-       $sExpt = '[["one",23],["four five",6],7]';
-       $sRes = $oSubj->UNITjsEncode($mInput);
+        $mInput = Array(array("one", 23), array("four five", 6), 7);
+        $sExpt = '[["one",23],["four five",6],7]';
+        $sRes = $oSubj->UNITjsEncode($mInput);
 
-       $this->assertEquals($sExpt, $sRes);
+        $this->assertEquals($sExpt, $sRes);
     }
 
     /**
@@ -671,13 +673,13 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testJsEncodeNull()
     {
-       $oSubj = $this->getProxyClass("EMOS");
+        $oSubj = $this->getProxyClass("EMOS");
 
-       $mInput = NULL;
-       $sExpt = 'null';
-       $sRes = $oSubj->UNITjsEncode($mInput);
+        $mInput = null;
+        $sExpt = 'null';
+        $sRes = $oSubj->UNITjsEncode($mInput);
 
-       $this->assertEquals($sExpt, $sRes);
+        $this->assertEquals($sExpt, $sRes);
     }
 
     /**
@@ -704,24 +706,24 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testShowAddOnly()
     {
-       $oSubj = new EMOS();
+        $oSubj = new EMOS();
 
-       $oItem = new EMOS_Item();
-       $oItem->productId = "123";
-       $oItem->productName = "Test product";
-       $oItem->price = 46.50;
-       $oItem->productGroup = "Test/Category/";
-       $oItem->quantity = 13;
-       $oItem->variant1 = "var1";
-       $oItem->variant2 = null;
-       $oItem->variant3 = "var3";
+        $oItem = new EMOS_Item();
+        $oItem->productId = "123";
+        $oItem->productName = "Test product";
+        $oItem->price = 46.50;
+        $oItem->productGroup = "Test/Category/";
+        $oItem->quantity = 13;
+        $oItem->variant1 = "var1";
+        $oItem->variant2 = null;
+        $oItem->variant3 = "var3";
 
-       $oSubj->addDetailView($oItem);
-       $oSubj->addToBasket($oItem);
-       $sRes = $oSubj->toString();
+        $oSubj->addDetailView($oItem);
+        $oSubj->addToBasket($oItem);
+        $sRes = $oSubj->toString();
 
-       $sExpt = '["c_add","123","Test product",46.5,"Test\/Category\/",13,"var1",null,"var3"]';
-       $this->assertContains($sExpt, $sRes);
-       $this->assertNotContains("view", $sRes);
+        $sExpt = '["c_add","123","Test product",46.5,"Test\/Category\/",13,"var1",null,"var3"]';
+        $this->assertContains($sExpt, $sRes);
+        $this->assertNotContains("view", $sRes);
     }
 }

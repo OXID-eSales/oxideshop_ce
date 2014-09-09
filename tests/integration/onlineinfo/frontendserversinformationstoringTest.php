@@ -30,6 +30,7 @@
  */
 class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidTestCase
 {
+
     /** @var string server id. */
     private $_sServerId = '7da43ed884a1zd1d6035d4c1d630fc4e';
 
@@ -43,22 +44,20 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
         $sCurrentTime = time();
         $aExpectedFrontendServersData = array(
             $sServerId => array(
-                'id' => $sServerId,
-                'timestamp' => $sCurrentTime,
-                'ip' => $sServerIp,
+                'id'                => $sServerId,
+                'timestamp'         => $sCurrentTime,
+                'ip'                => $sServerIp,
                 'lastFrontendUsage' => $sCurrentTime,
-                'lastAdminUsage' => '',
-                'isValid' => true,
+                'lastAdminUsage'    => '',
             ),
         );
         $aExpectedAdminServersData = array(
             $sServerId => array(
-                'id' => $sServerId,
-                'timestamp' => $sCurrentTime,
-                'ip' => $sServerIp,
+                'id'                => $sServerId,
+                'timestamp'         => $sCurrentTime,
+                'ip'                => $sServerIp,
                 'lastFrontendUsage' => '',
-                'lastAdminUsage' => $sCurrentTime,
-                'isValid' => true,
+                'lastAdminUsage'    => $sCurrentTime,
             ),
         );
 
@@ -69,7 +68,7 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
     }
 
     /**
-     * @param bool $blIsAdmin
+     * @param bool  $blIsAdmin
      * @param array $aExpectedServersData
      *
      * @dataProvider providerFrontendServerFirstAccess
@@ -84,7 +83,7 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
 
         $this->getConfig()->saveShopConfVar('arr', 'aServersData', null);
 
-        $oServerProcessor = new oxServerProcessor(new oxServersManager(), new oxServerChecker(), $oUtilsServer, $oUtilsDate);
+        $oServerProcessor = new oxServerProcessor(null, null, $oUtilsServer, $oUtilsDate);
         $oServerProcessor->process();
         $aServersData = $this->getConfigParam('aServersData');
 
@@ -94,6 +93,7 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
     /**
      * @param $aExpectedServersData
      * @param $sServerId
+     *
      * @return oxUtilsDate
      */
     private function _createDateMock($aExpectedServersData, $sServerId)
@@ -107,6 +107,7 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
     /**
      * @param $sServerId
      * @param $sServerIp
+     *
      * @return oxUtilsServer
      */
     private function _createServerMock($sServerId, $sServerIp)

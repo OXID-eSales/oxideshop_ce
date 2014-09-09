@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for SelectList_Main class
  */
 class Unit_Admin_SelectListMainTest extends OxidTestCase
 {
+
     /**
      * SelectList_Main::Render() test case
      *
@@ -35,14 +36,14 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new SelectList_Main();
-        $this->assertEquals( 'selectlist_main.tpl', $oView->render() );
+        $this->assertEquals('selectlist_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxselectlist );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxselectlist);
     }
 
     /**
@@ -52,14 +53,14 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new SelectList_Main();
-        $this->assertEquals( 'selectlist_main.tpl', $oView->render() );
+        $this->assertEquals('selectlist_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertTrue(isset($aViewData['oxid']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -69,19 +70,20 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction( 'oxselectlist', 'save', '{ throw new Exception( "save" ); }');
-        oxTestModules::addFunction( 'oxselectlist', 'isDerived', '{ return false; }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxselectlist', 'save', '{ throw new Exception( "save" ); }');
+        oxTestModules::addFunction('oxselectlist', 'isDerived', '{ return false; }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new SelectList_Main();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in SelectList_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in SelectList_Main::save()");
+
             return;
         }
-        $this->fail( "error in SelectList_Main::save()" );
+        $this->fail("error in SelectList_Main::save()");
     }
 
     /**
@@ -91,19 +93,20 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testSaveinnlang()
     {
-        oxTestModules::addFunction( 'oxselectlist', 'save', '{ throw new Exception( "save" ); }');
-        oxTestModules::addFunction( 'oxselectlist', 'isDerived', '{ return false; }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxselectlist', 'save', '{ throw new Exception( "save" ); }');
+        oxTestModules::addFunction('oxselectlist', 'isDerived', '{ return false; }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new SelectList_Main();
             $oView->saveinnlang();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in SelectList_Main::saveinnlang()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in SelectList_Main::saveinnlang()");
+
             return;
         }
-        $this->fail( "error in SelectList_Main::saveinnlang()" );
+        $this->fail("error in SelectList_Main::saveinnlang()");
     }
 
     /**
@@ -113,17 +116,17 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testDelFields()
     {
-        oxTestModules::addFunction( 'oxselectlist', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction( 'oxselectlist', 'isDerived', '{ return false; }');
-        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass(); $oField1->name = "testField1";$oField2 = new stdClass(); $oField2->name = "testField2"; return array( $oField1, $oField2 ); }');
+        oxTestModules::addFunction('oxselectlist', 'loadInLang', '{ return true; }');
+        oxTestModules::addFunction('oxselectlist', 'isDerived', '{ return false; }');
+        oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass(); $oField1->name = "testField1";$oField2 = new stdClass(); $oField2->name = "testField2"; return array( $oField1, $oField2 ); }');
 
-        modConfig::setRequestParameter( "aFields", array( "testField1", "testField2" ) );
+        modConfig::setRequestParameter("aFields", array("testField1", "testField2"));
 
         // testing..
-        $oView = $this->getMock( "SelectList_Main", array( "parseFieldName", "save" ) );
-        $oView->expects( $this->at( 0 ) )->method( 'parseFieldName' )->will( $this->returnValue( "testField2" ) );
-        $oView->expects( $this->at( 1 ) )->method( 'parseFieldName' )->will( $this->returnValue( "testField1" ) );
-        $oView->expects( $this->at( 2 ) )->method( 'save' );
+        $oView = $this->getMock("SelectList_Main", array("parseFieldName", "save"));
+        $oView->expects($this->at(0))->method('parseFieldName')->will($this->returnValue("testField2"));
+        $oView->expects($this->at(1))->method('parseFieldName')->will($this->returnValue("testField1"));
+        $oView->expects($this->at(2))->method('save');
         $oView->delFields();
     }
 
@@ -134,13 +137,13 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testAddFieldNothingToAdd()
     {
-        modConfig::setRequestParameter( "sAddField", null );
-        oxTestModules::addFunction( 'oxselectlist', 'loadInLang', '{ return true; }');
+        modConfig::setRequestParameter("sAddField", null);
+        oxTestModules::addFunction('oxselectlist', 'loadInLang', '{ return true; }');
 
         // testing..
         $oView = new SelectList_Main();
-        $this->assertNull( $oView->addField() );
-        $this->assertEquals( -1, oxRegistry::getSession()->getVariable( "iErrorCode" ) );
+        $this->assertNull($oView->addField());
+        $this->assertEquals(-1, oxRegistry::getSession()->getVariable("iErrorCode"));
     }
 
     /**
@@ -150,18 +153,18 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testAddFieldRearangeFieldReturnsTrue()
     {
-        modConfig::setRequestParameter( "sAddField", "testField" );
-        modConfig::setRequestParameter( "aFields", array( "testField" ) );
-        modConfig::setRequestParameter( "sAddFieldPos", 1 );
+        modConfig::setRequestParameter("sAddField", "testField");
+        modConfig::setRequestParameter("aFields", array("testField"));
+        modConfig::setRequestParameter("sAddFieldPos", 1);
 
-        oxTestModules::addFunction( 'oxselectlist', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
+        oxTestModules::addFunction('oxselectlist', 'loadInLang', '{ return true; }');
+        oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
 
         // testing..
-        $oView = $this->getMock( "SelectList_Main", array( "_rearrangeFields", "save" ) );
-        $oView->expects( $this->once() )->method( '_rearrangeFields' )->will( $this->returnValue( true ) );
-        $oView->expects( $this->never() )->method( 'save' );
-        $this->assertNull( $oView->addField() );
+        $oView = $this->getMock("SelectList_Main", array("_rearrangeFields", "save"));
+        $oView->expects($this->once())->method('_rearrangeFields')->will($this->returnValue(true));
+        $oView->expects($this->never())->method('save');
+        $this->assertNull($oView->addField());
     }
 
     /**
@@ -171,18 +174,18 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testAddFieldRearangeField()
     {
-        modConfig::setRequestParameter( "sAddField", "testField" );
-        modConfig::setRequestParameter( "aFields", array( "testField" ) );
-        modConfig::setRequestParameter( "sAddFieldPos", 1 );
+        modConfig::setRequestParameter("sAddField", "testField");
+        modConfig::setRequestParameter("aFields", array("testField"));
+        modConfig::setRequestParameter("sAddFieldPos", 1);
 
-        oxTestModules::addFunction( 'oxselectlist', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
+        oxTestModules::addFunction('oxselectlist', 'loadInLang', '{ return true; }');
+        oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
 
         // testing..
-        $oView = $this->getMock( "SelectList_Main", array( "_rearrangeFields", "save" ) );
-        $oView->expects( $this->once() )->method( '_rearrangeFields' )->will( $this->returnValue( false ) );
-        $oView->expects( $this->once() )->method( 'save' );
-        $this->assertNull( $oView->addField() );
+        $oView = $this->getMock("SelectList_Main", array("_rearrangeFields", "save"));
+        $oView->expects($this->once())->method('_rearrangeFields')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('save');
+        $this->assertNull($oView->addField());
     }
 
     /**
@@ -192,12 +195,12 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testChangeFieldNothingToChange()
     {
-        modConfig::setRequestParameter( "sAddField", null );
+        modConfig::setRequestParameter("sAddField", null);
 
         // testing..
         $oView = new SelectList_Main();
-        $this->assertNull( $oView->changeField() );
-        $this->assertEquals( -1, oxRegistry::getSession()->getVariable( "iErrorCode" ) );
+        $this->assertNull($oView->changeField());
+        $this->assertEquals(-1, oxRegistry::getSession()->getVariable("iErrorCode"));
     }
 
     /**
@@ -207,18 +210,18 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testChangeFieldRearagneFieldsReturnsTrue()
     {
-        modConfig::setRequestParameter( "sAddField", "testField" );
-        modConfig::setRequestParameter( "aFields", array( "testField" ) );
-        modConfig::setRequestParameter( "sAddFieldPos", 1 );
+        modConfig::setRequestParameter("sAddField", "testField");
+        modConfig::setRequestParameter("aFields", array("testField"));
+        modConfig::setRequestParameter("sAddFieldPos", 1);
 
-        oxTestModules::addFunction( 'oxselectlist', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
+        oxTestModules::addFunction('oxselectlist', 'loadInLang', '{ return true; }');
+        oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
 
         // testing..
-        $oView = $this->getMock( "SelectList_Main", array( "parseFieldName", "_rearrangeFields", "save" ) );
-        $oView->expects( $this->once() )->method( 'parseFieldName' )->will( $this->returnValue( "testField1" ) );
-        $oView->expects( $this->once() )->method( '_rearrangeFields' )->will( $this->returnValue( true ) );
-        $oView->expects( $this->never() )->method( 'save' );
+        $oView = $this->getMock("SelectList_Main", array("parseFieldName", "_rearrangeFields", "save"));
+        $oView->expects($this->once())->method('parseFieldName')->will($this->returnValue("testField1"));
+        $oView->expects($this->once())->method('_rearrangeFields')->will($this->returnValue(true));
+        $oView->expects($this->never())->method('save');
         $oView->changeField();
     }
 
@@ -229,18 +232,18 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testChangeField()
     {
-        modConfig::setRequestParameter( "sAddField", "testField" );
-        modConfig::setRequestParameter( "aFields", array( "testField" ) );
-        modConfig::setRequestParameter( "sAddFieldPos", 1 );
+        modConfig::setRequestParameter("sAddField", "testField");
+        modConfig::setRequestParameter("aFields", array("testField"));
+        modConfig::setRequestParameter("sAddFieldPos", 1);
 
-        oxTestModules::addFunction( 'oxselectlist', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
+        oxTestModules::addFunction('oxselectlist', 'loadInLang', '{ return true; }');
+        oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
 
         // testing..
-        $oView = $this->getMock( "SelectList_Main", array( "parseFieldName", "_rearrangeFields", "save" ) );
-        $oView->expects( $this->once() )->method( 'parseFieldName' )->will( $this->returnValue( "testField1" ) );
-        $oView->expects( $this->once() )->method( '_rearrangeFields' )->will( $this->returnValue( false     ) );
-        $oView->expects( $this->once() )->method( 'save' );
+        $oView = $this->getMock("SelectList_Main", array("parseFieldName", "_rearrangeFields", "save"));
+        $oView->expects($this->once())->method('parseFieldName')->will($this->returnValue("testField1"));
+        $oView->expects($this->once())->method('_rearrangeFields')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('save');
         $oView->changeField();
     }
 
@@ -252,9 +255,9 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
     public function testRearrangeFieldsFieldArrayIsEmpty()
     {
         // defining parameters
-        $oView = $this->getProxyClass( "SelectList_Main" );
-        $oView->setNonPublicVar( "aFieldArray", null );
-        $this->assertTrue( $oView->UNITrearrangeFields( "test", 0 ) );
+        $oView = $this->getProxyClass("SelectList_Main");
+        $oView->setNonPublicVar("aFieldArray", null);
+        $this->assertTrue($oView->UNITrearrangeFields("test", 0));
     }
 
     /**
@@ -265,10 +268,10 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
     public function testRearrangeFieldsPosIsBelowZero()
     {
         // defining parameters
-        $oView = $this->getProxyClass( "SelectList_Main" );
-        $oView->setNonPublicVar( "aFieldArray", array( 1 ) );
-        $this->assertTrue( $oView->UNITrearrangeFields( "test", -1 ) );
-        $this->assertEquals( -2, oxRegistry::getSession()->getVariable( "iErrorCode" ) );
+        $oView = $this->getProxyClass("SelectList_Main");
+        $oView->setNonPublicVar("aFieldArray", array(1));
+        $this->assertTrue($oView->UNITrearrangeFields("test", -1));
+        $this->assertEquals(-2, oxRegistry::getSession()->getVariable("iErrorCode"));
     }
 
     /**
@@ -279,10 +282,10 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
     public function testRearrangeFieldsUnknownField()
     {
         // defining parameters
-        $oView = $this->getProxyClass( "SelectList_Main" );
-        $oView->setNonPublicVar( "aFieldArray", array( 1 ) );
-        $this->assertTrue( $oView->UNITrearrangeFields( "test", 1 ) );
-        $this->assertEquals( -2, oxRegistry::getSession()->getVariable( "iErrorCode" ) );
+        $oView = $this->getProxyClass("SelectList_Main");
+        $oView->setNonPublicVar("aFieldArray", array(1));
+        $this->assertTrue($oView->UNITrearrangeFields("test", 1));
+        $this->assertEquals(-2, oxRegistry::getSession()->getVariable("iErrorCode"));
     }
 
     /**
@@ -293,9 +296,9 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
     public function testRearrangeFieldsNoChangesWereMade()
     {
         // defining parameters
-        $oView = $this->getProxyClass( "SelectList_Main" );
-        $oView->setNonPublicVar( "aFieldArray", array( 1, 2 ) );
-        $this->assertFalse( $oView->UNITrearrangeFields( 1, 1 ) );
+        $oView = $this->getProxyClass("SelectList_Main");
+        $oView->setNonPublicVar("aFieldArray", array(1, 2));
+        $this->assertFalse($oView->UNITrearrangeFields(1, 1));
     }
 
     /**
@@ -306,9 +309,9 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
     public function testRearrangeFieldsCurrentPosIsLowerThatPassed()
     {
         // defining parameters
-        $oView = $this->getProxyClass( "SelectList_Main" );
-        $oView->setNonPublicVar( "aFieldArray", array( 1, 2, 3 ) );
-        $this->assertFalse( $oView->UNITrearrangeFields( 1, 2 ) );
+        $oView = $this->getProxyClass("SelectList_Main");
+        $oView->setNonPublicVar("aFieldArray", array(1, 2, 3));
+        $this->assertFalse($oView->UNITrearrangeFields(1, 2));
     }
 
     /**
@@ -319,9 +322,9 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
     public function testRearrangeFieldsCurrentPosIsHigherThatPassed()
     {
         // defining parameters
-        $oView = $this->getProxyClass( "SelectList_Main" );
-        $oView->setNonPublicVar( "aFieldArray", array( 1, 2, 3 ) );
-        $this->assertFalse( $oView->UNITrearrangeFields( 2, 0 ) );
+        $oView = $this->getProxyClass("SelectList_Main");
+        $oView->setNonPublicVar("aFieldArray", array(1, 2, 3));
+        $this->assertFalse($oView->UNITrearrangeFields(2, 0));
     }
 
 
@@ -333,6 +336,6 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
     public function testParseFieldName()
     {
         $oView = new SelectList_Main();
-        $this->assertEquals( "bbb", $oView->parseFieldName( "aaa__@@bbb") );
+        $this->assertEquals("bbb", $oView->parseFieldName("aaa__@@bbb"));
     }
 }

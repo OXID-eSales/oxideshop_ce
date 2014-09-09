@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Language class
  */
 class Unit_Admin_LanguageTest extends OxidTestCase
 {
+
     /**
      * Language::Render() test case
      *
@@ -37,6 +38,6 @@ class Unit_Admin_LanguageTest extends OxidTestCase
     {
         // testing..
         $oView = new Language();
-        $this->assertEquals( 'language.tpl', $oView->render() );
+        $this->assertEquals('language.tpl', $oView->render());
     }
 }

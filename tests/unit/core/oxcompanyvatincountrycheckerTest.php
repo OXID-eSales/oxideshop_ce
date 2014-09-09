@@ -20,25 +20,26 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 
 class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
 {
+
     public function testGetCountry_set()
     {
         $oChecker = new oxCompanyVatInCountryChecker();
         $oCountry = new oxCountry();
 
         $oChecker->setCountry($oCountry);
-        $this->assertSame($oCountry, $oChecker->getCountry() );
+        $this->assertSame($oCountry, $oChecker->getCountry());
     }
 
     public function testGetCountry_empty()
     {
         $oChecker = new oxCompanyVatInCountryChecker();
-        $this->assertNull( $oChecker->getCountry() );
+        $this->assertNull($oChecker->getCountry());
     }
 
     public function testValidate_countryNotSet()
@@ -46,22 +47,22 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
         $oChecker = new oxCompanyVatInCountryChecker();
         $oVatIn = new oxCompanyVatIn('DE1234');
 
-        $this->assertFalse( $oChecker->validate($oVatIn) );
+        $this->assertFalse($oChecker->validate($oVatIn));
     }
 
     /**
      * @dataProvider validateDataProvider
      */
-    public function testValidate( $sCountryCode, $sVatIn, $blExpectValidationResult )
+    public function testValidate($sCountryCode, $sVatIn, $blExpectValidationResult)
     {
         $oVatIn = new oxCompanyVatIn($sVatIn);
         $oCountry = new oxCountry();
-        $oCountry->oxcountry__oxvatinprefix = new oxField( $sCountryCode );
+        $oCountry->oxcountry__oxvatinprefix = new oxField($sCountryCode);
 
         $oChecker = new oxCompanyVatInCountryChecker();
         $oChecker->setCountry($oCountry);
 
-        $this->assertSame($blExpectValidationResult, $oChecker->validate($oVatIn) );
+        $this->assertSame($blExpectValidationResult, $oChecker->validate($oVatIn));
     }
 
     public function validateDataProvider()
@@ -86,14 +87,14 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
 
         $oChecker = new oxCompanyVatInCountryChecker();
         $oChecker->setCountry($oCountry);
-        $this->assertTrue( $oChecker->validate($oVatIn) );
+        $this->assertTrue($oChecker->validate($oVatIn));
     }
 
     public function testValidate_notValid_errorMessage()
     {
         $oVatIn = new oxCompanyVatIn('LT12345');
         $oCountry = new oxCountry();
-        $oCountry->oxcountry__oxvatinprefix = new oxField( 'DE' );
+        $oCountry->oxcountry__oxvatinprefix = new oxField('DE');
 
         $oChecker = new oxCompanyVatInCountryChecker();
         $oChecker->setCountry($oCountry);
@@ -106,7 +107,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
     {
         $oVatIn = new oxCompanyVatIn('LT12345');
         $oCountry = new oxCountry();
-        $oCountry->oxcountry__oxvatinprefix = new oxField( 1 );
+        $oCountry->oxcountry__oxvatinprefix = new oxField(1);
 
         $oChecker = new oxCompanyVatInCountryChecker();
         $oChecker->setCountry($oCountry);
@@ -119,7 +120,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
     {
         $oVatIn = new oxCompanyVatIn('LT12345');
         $oCountry = new oxCountry();
-        $oCountry->oxcountry__oxvatinprefix = new oxField( 'LT' );
+        $oCountry->oxcountry__oxvatinprefix = new oxField('LT');
 
         $oChecker = new oxCompanyVatInCountryChecker();
         $oChecker->setCountry($oCountry);

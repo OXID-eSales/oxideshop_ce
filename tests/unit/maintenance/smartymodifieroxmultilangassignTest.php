@@ -20,12 +20,13 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/modifier.oxmultilangassign.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'core/smarty/plugins/modifier.oxmultilangassign.php';
 
 class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
 {
+
     /**
      * Provides data to testSimpleAssignments
      *
@@ -34,9 +35,9 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
     public function provider()
     {
         return array(
-            array( 'FIRST_NAME', 0, 'Vorname' ),
-            array( 'FIRST_NAME', 1, 'First name' ),
-            array( 'VAT', 1, 'VAT' )
+            array('FIRST_NAME', 0, 'Vorname'),
+            array('FIRST_NAME', 1, 'First name'),
+            array('VAT', 1, 'VAT')
 
         );
     }
@@ -46,10 +47,10 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
      *
      * @dataProvider provider
      */
-    public function testSimpleAssignments( $sIndent, $iLang, $sResult)
+    public function testSimpleAssignments($sIndent, $iLang, $sResult)
     {
-        $this->setLanguage( $iLang );
-        $this->assertEquals( $sResult, smarty_modifier_oxmultilangassign( $sIndent ) );
+        $this->setLanguage($iLang);
+        $this->assertEquals($sResult, smarty_modifier_oxmultilangassign($sIndent));
     }
 
     /**
@@ -60,10 +61,10 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
     public function withArgumentsProvider()
     {
         return array(
-            array( 'MANUFACTURER_S', 0, 'Opel', '| Hersteller: Opel' ),
-            array( 'MANUFACTURER_S', 1, 'Opel', 'Manufacturer: Opel' ),
-            array( 'INVITE_TO_SHOP', 0, array( 'Admin', 'OXID Shop' ), 'Eine Einladung von Admin OXID Shop zu besuchen.' ),
-            array( 'INVITE_TO_SHOP', 1, array( 'Admin', 'OXID Shop' ), 'An invitation from Admin to visit OXID Shop' )
+            array('MANUFACTURER_S', 0, 'Opel', '| Hersteller: Opel'),
+            array('MANUFACTURER_S', 1, 'Opel', 'Manufacturer: Opel'),
+            array('INVITE_TO_SHOP', 0, array('Admin', 'OXID Shop'), 'Eine Einladung von Admin OXID Shop zu besuchen.'),
+            array('INVITE_TO_SHOP', 1, array('Admin', 'OXID Shop'), 'An invitation from Admin to visit OXID Shop')
         );
     }
 
@@ -72,10 +73,10 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
      *
      * @dataProvider withArgumentsProvider
      */
-    public function testAssignmentsWithArguments( $sIndent, $iLang, $aArgs, $sResult )
+    public function testAssignmentsWithArguments($sIndent, $iLang, $aArgs, $sResult)
     {
-        $this->setLanguage( $iLang );
-        $this->assertEquals( $sResult, smarty_modifier_oxmultilangassign( $sIndent, $aArgs ) );
+        $this->setLanguage($iLang);
+        $this->assertEquals($sResult, smarty_modifier_oxmultilangassign($sIndent, $aArgs));
     }
 
     /**
@@ -85,7 +86,7 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
      */
     public function missingTranslationProviderFrontend()
     {
-        return array (
+        return array(
             array(
                 true,
                 'MY_MISING_TRANSLATION',
@@ -102,18 +103,18 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
     /**
      * @dataProvider missingTranslationProviderFrontend
      */
-    public function testTranslateFrontend_isMissingTranslation( $isProductiveMode, $sIndent, $sTranslation)
+    public function testTranslateFrontend_isMissingTranslation($isProductiveMode, $sIndent, $sTranslation)
     {
-        $this->setAdminMode( false );
+        $this->setAdminMode(false);
         $oSmarty = new Smarty();
 
-        $this->setLanguage( 1 );
+        $this->setLanguage(1);
 
         $oShop = $this->getConfig()->getActiveShop();
-        $oShop->oxshops__oxproductive = new oxField( $isProductiveMode );
+        $oShop->oxshops__oxproductive = new oxField($isProductiveMode);
         $oShop->save();
 
-        $this->assertEquals( $sTranslation, smarty_modifier_oxmultilangassign( $sIndent, $oSmarty ) );
+        $this->assertEquals($sTranslation, smarty_modifier_oxmultilangassign($sIndent, $oSmarty));
     }
 
     /**
@@ -123,7 +124,7 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
      */
     public function missingTranslationProviderAdmin()
     {
-        return array (
+        return array(
             array(
                 'MY_MISING_TRANSLATION',
                 'ERROR: Translation for MY_MISING_TRANSLATION not found!',
@@ -134,13 +135,13 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
     /**
      * @dataProvider missingTranslationProviderAdmin
      */
-    public function testTranslateAdmin_isMissingTranslation( $sIdent, $sTranslation)
+    public function testTranslateAdmin_isMissingTranslation($sIdent, $sTranslation)
     {
         $oSmarty = new Smarty();
 
-        $this->setLanguage( 1 );
-        $this->setAdminMode( true );
+        $this->setLanguage(1);
+        $this->setAdminMode(true);
 
-        $this->assertEquals( $sTranslation, smarty_modifier_oxmultilangassign( $sIdent, $oSmarty ) );
+        $this->assertEquals($sTranslation, smarty_modifier_oxmultilangassign($sIdent, $oSmarty));
     }
 }

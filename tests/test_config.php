@@ -25,7 +25,7 @@
 // eShop base url (if null, tries to get it from config.inc.php file)
 $sShopUrl = null; //'http://eshop_url/';
 // eShop directory
-$sShopPath = realpath( '../source/' ).'/';
+$sShopPath = realpath('../source/') . '/';
 // eShop edition
 $sShopEdition = 'CE';
 

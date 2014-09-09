@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing oxselectlist class
  */
 class Unit_Core_oxselectlistTest extends OxidTestCase
 {
+
     /**
      * Initialize the fixture add some users.
      *
@@ -36,17 +37,17 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $myDB     = oxDb::getDB();
+        $myDB = oxDb::getDB();
         $myConfig = oxRegistry::getConfig();
 
         $sShopId = $myConfig->getBaseShopId();
         $sVal = '&amp;&test1, 10!P!10__@@test2, 10!P!10__@@test3, 10!P!10__@@';
 
-            $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("oxsellisttest", "'.$sShopId.'", "oxsellisttest", "oxsellisttest", "'.$sVal.'")';
+            $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("oxsellisttest", "' . $sShopId . '", "oxsellisttest", "oxsellisttest", "' . $sVal . '")';
         $this->addToDatabase($sQ, 'oxselectlist');
 
         $sQ = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("oxsellisttest", "oxsellisttest", "oxsellisttest", 1) ';
-        $myDB->Execute( $sQ );
+        $myDB->Execute($sQ);
     }
 
     /**
@@ -59,10 +60,10 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
         $myDB = oxDb::getDB();
 
         $sQ = 'delete from oxselectlist where oxid = "oxsellisttest" ';
-        $myDB->Execute( $sQ );
+        $myDB->Execute($sQ);
 
         $sQ = 'delete from oxobject2selectlist where oxselnid = "oxsellisttest" ';
-        $myDB->Execute( $sQ );
+        $myDB->Execute($sQ);
 
         parent::tearDown();
     }
@@ -75,59 +76,61 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
         $myDB = oxDb::getDB();
 
         $oSelList = new oxselectlist();
-        $oSelList->load( 'oxsellisttest' );
+        $oSelList->load('oxsellisttest');
         $oSelList->delete();
 
         $sQ = 'select count(*) from oxselectlist where oxid = "oxsellisttest" ';
-        if ( $myDB->getOne( $sQ ) )
-            $this->fail( 'records from oxselectlist are not deleted' );
+        if ($myDB->getOne($sQ)) {
+            $this->fail('records from oxselectlist are not deleted');
+        }
 
         $sQ = 'select count(*) from oxobject2selectlist where oxselnid = "oxsellisttest" ';
-        if ( $myDB->getOne( $sQ ) )
-            $this->fail( 'records from oxobject2selectlist are not deleted' );
+        if ($myDB->getOne($sQ)) {
+            $this->fail('records from oxobject2selectlist are not deleted');
+        }
     }
 
     public function testGetFieldList()
     {
         $aSelList[0] = new stdclass();
-        $aSelList[0]->name  = '&amp;amp;&amp;test1, 10';
+        $aSelList[0]->name = '&amp;amp;&amp;test1, 10';
         $aSelList[0]->value = null;
 
         $aSelList[1] = new stdclass();
-        $aSelList[1]->name  = 'test2, 10';
+        $aSelList[1]->name = 'test2, 10';
         $aSelList[1]->value = null;
 
         $aSelList[2] = new stdclass();
-        $aSelList[2]->name  = 'test3, 10';
+        $aSelList[2]->name = 'test3, 10';
         $aSelList[2]->value = null;
 
         $oSelList = new oxselectlist();
-        $oSelList->Load( 'oxsellisttest' );
+        $oSelList->Load('oxsellisttest');
 
         // checking loaded data
-        $this->assertEquals( $aSelList, $oSelList->getFieldList() );
+        $this->assertEquals($aSelList, $oSelList->getFieldList());
     }
 
     public function testAssignWithOtherLang()
     {
         $oSelectList = new oxselectlist();
-        $oSelectList->setLanguage( 1 );
-        $oSelectList->load( 'oxsellisttest' );
+        $oSelectList->setLanguage(1);
+        $oSelectList->load('oxsellisttest');
 
-        $aParams['oxtitle']   = 'Test_selectlist';
+        $aParams['oxtitle'] = 'Test_selectlist';
         $aParams['oxvaldesc'] = 'Test_1';
 
-        $oSelectList->assign( $aParams );
+        $oSelectList->assign($aParams);
         $oSelectList->save();
 
-        $this->assertEquals( $oSelectList->oxselectlist__oxvaldesc->value, 'Test_1' );
-        $this->assertEquals( $oSelectList->oxselectlist__oxtitle->value, 'Test_selectlist' );
+        $this->assertEquals($oSelectList->oxselectlist__oxvaldesc->value, 'Test_1');
+        $this->assertEquals($oSelectList->oxselectlist__oxtitle->value, 'Test_selectlist');
     }
 
     public function testDeleteNotExistingSelect()
     {
         $oSelectList = new oxselectlist();
-        $this->assertFalse( $oSelectList->delete( "111111" ) );
+        $this->assertFalse($oSelectList->delete("111111"));
     }
 
     /*
@@ -135,18 +138,18 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
      */
     public function testGetFieldListStripsTagsFromCurrency()
     {
-        modConfig::getInstance()->setRequestParameter( 'cur', 2 );
-        modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', 1 );
-        modConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', 1 );
+        modConfig::getInstance()->setRequestParameter('cur', 2);
+        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', 1);
+        modConfig::getInstance()->setConfigParam('bl_perfUseSelectlistPrice', 1);
 
         $oSelList = new oxselectlist();
-        $oSelList->load( 'oxsellisttest' );
+        $oSelList->load('oxsellisttest');
         $aSelList = $oSelList->getFieldList();
 
         // checking loaded data
-        $this->assertEquals( "&amp;amp;&amp;test1, 10 +14,33 CHF", $aSelList[0]->name );
-        $this->assertEquals( "test2, 10 +14,33 CHF", $aSelList[1]->name );
-        $this->assertEquals( "test3, 10 +14,33 CHF", $aSelList[2]->name );
+        $this->assertEquals("&amp;amp;&amp;test1, 10 +14,33 CHF", $aSelList[0]->name);
+        $this->assertEquals("test2, 10 +14,33 CHF", $aSelList[1]->name);
+        $this->assertEquals("test3, 10 +14,33 CHF", $aSelList[2]->name);
     }
 
     /**
@@ -156,22 +159,22 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
      */
     public function testSetActiveSelectionByIndex()
     {
-        $oSel0 = $this->getMock( "oxSelection", array( "setActiveState" ), array(), '', false   );
-        $oSel0->expects( $this->once() )->method( 'setActiveState' )->with( $this->equalTo( false ) );
+        $oSel0 = $this->getMock("oxSelection", array("setActiveState"), array(), '', false);
+        $oSel0->expects($this->once())->method('setActiveState')->with($this->equalTo(false));
 
-        $oSel1 = $this->getMock( "oxSelection", array( "setActiveState" ), array(), '', false  );
-        $oSel1->expects( $this->once() )->method( 'setActiveState' )->with( $this->equalTo( false ) );
+        $oSel1 = $this->getMock("oxSelection", array("setActiveState"), array(), '', false);
+        $oSel1->expects($this->once())->method('setActiveState')->with($this->equalTo(false));
 
-        $oSel2 = $this->getMock( "oxSelection", array( "setActiveState" ), array(), '', false  );
-        $oSel2->expects( $this->once() )->method( 'setActiveState' )->with( $this->equalTo( true ) );
+        $oSel2 = $this->getMock("oxSelection", array("setActiveState"), array(), '', false);
+        $oSel2->expects($this->once())->method('setActiveState')->with($this->equalTo(true));
 
-        $aSelections = array( $oSel0, $oSel1, $oSel2 );
+        $aSelections = array($oSel0, $oSel1, $oSel2);
 
-        $oSelectList = $this->getMock( "oxselectlist", array( "getSelections" ) );
-        $oSelectList->expects( $this->once() )->method( 'getSelections' )->will( $this->returnValue( $aSelections ) );
-        $oSelectList->setActiveSelectionByIndex( 2 );
+        $oSelectList = $this->getMock("oxselectlist", array("getSelections"));
+        $oSelectList->expects($this->once())->method('getSelections')->will($this->returnValue($aSelections));
+        $oSelectList->setActiveSelectionByIndex(2);
 
-        $this->assertEquals( $oSel2, $oSelectList->getActiveSelection() );
+        $this->assertEquals($oSel2, $oSelectList->getActiveSelection());
     }
 
     /**
@@ -181,11 +184,11 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
      */
     public function testGetActiveSelection()
     {
-        $aSelections = array( "oxSel0", "oxSel1", "oxSel2" );
+        $aSelections = array("oxSel0", "oxSel1", "oxSel2");
 
-        $oSelectList = $this->getMock( "oxselectlist", array( "getSelections" ) );
-        $oSelectList->expects( $this->once() )->method( 'getSelections' )->will( $this->returnValue( $aSelections ) );
-        $this->assertEquals( "oxSel0", $oSelectList->getActiveSelection() );
+        $oSelectList = $this->getMock("oxselectlist", array("getSelections"));
+        $oSelectList->expects($this->once())->method('getSelections')->will($this->returnValue($aSelections));
+        $this->assertEquals("oxSel0", $oSelectList->getActiveSelection());
     }
 
     /**
@@ -197,19 +200,19 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
     {
         // valdesc is not set
         $oSelectList = new oxselectlist();
-        $this->assertNull( $oSelectList->getSelections() );
+        $this->assertNull($oSelectList->getSelections());
 
-        modConfig::getInstance()->setRequestParameter( 'cur', 2 );
-        $aSelections = array( new oxSelection( "test1, 10", 0, false, true ),
-                              new oxSelection( "test2, 10", 1, false, false ),
-                              new oxSelection( "test3', 10", 2, false, false ),
-                             );
+        modConfig::getInstance()->setRequestParameter('cur', 2);
+        $aSelections = array(new oxSelection("test1, 10", 0, false, true),
+                             new oxSelection("test2, 10", 1, false, false),
+                             new oxSelection("test3', 10", 2, false, false),
+        );
 
         // valdesc is set
         $oSelectList = new oxselectlist();
-        $oSelectList->oxselectlist__oxvaldesc = new oxField( 'test1, 10!P!10__@@test2, 10!P!10__@@test3\', 10!P!10__@@' );
+        $oSelectList->oxselectlist__oxvaldesc = new oxField('test1, 10!P!10__@@test2, 10!P!10__@@test3\', 10!P!10__@@');
 
-        $this->assertEquals( $aSelections, $oSelectList->getSelections() );
+        $this->assertEquals($aSelections, $oSelectList->getSelections());
     }
 
     /**
@@ -220,8 +223,8 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
     public function testGetLabel()
     {
         $oSelectList = new oxselectlist();
-        $oSelectList->oxselectlist__oxtitle = new oxField( "test" );
-        $this->assertEquals( "test", $oSelectList->getLabel() );
+        $oSelectList->oxselectlist__oxtitle = new oxField("test");
+        $this->assertEquals("test", $oSelectList->getLabel());
 
     }
 
@@ -234,10 +237,10 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
     {
         // no VAT set
         $oSelectList = new oxselectlist();
-        $this->assertNull( $oSelectList->getVat() );
+        $this->assertNull($oSelectList->getVat());
 
         // setting and checking VAT
-        $oSelectList->setVat( 123 );
-        $this->assertEquals( 123, $oSelectList->getVat() );
+        $oSelectList->setVat(123);
+        $this->assertEquals(123, $oSelectList->getVat());
     }
 }

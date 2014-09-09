@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Delivery_Articles class
  */
 class Unit_Admin_DeliveryArticlesTest extends OxidTestCase
 {
+
     /**
      * Delivery_Articles::Render() test case
      *
@@ -35,16 +36,16 @@ class Unit_Admin_DeliveryArticlesTest extends OxidTestCase
      */
     public function testRender()
     {
-        oxTestModules::addFunction( "oxdelivery", "isDerived", "{return true;}" );
-        modConfig::setRequestParameter( "oxid", "testId" );
+        oxTestModules::addFunction("oxdelivery", "isDerived", "{return true;}");
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Delivery_Articles();
-        $this->assertEquals( 'delivery_articles.tpl', $oView->render() );
+        $this->assertEquals('delivery_articles.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxdelivery );
-        $this->assertTrue( isset( $aViewData['readonly'] ) );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxdelivery);
+        $this->assertTrue(isset($aViewData['readonly']));
     }
 
 }

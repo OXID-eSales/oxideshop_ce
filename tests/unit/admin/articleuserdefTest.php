@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Article_Userdef class
  */
 class Unit_Admin_ArticleUserdefTest extends OxidTestCase
 {
+
     /**
      * Article_Userdef::Render() test case
      *
@@ -35,12 +36,12 @@ class Unit_Admin_ArticleUserdefTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter("oxid", "testId");
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
         $oView = new Article_Userdef();
-        $this->assertEquals( 'article_userdef.tpl', $oView->render() );
+        $this->assertEquals('article_userdef.tpl', $oView->render());
     }
 
 }

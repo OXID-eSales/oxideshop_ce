@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxFileCollectorTest extends OxidTestCase
 {
@@ -33,14 +33,14 @@ class Unit_Core_oxFileCollectorTest extends OxidTestCase
     {
         //TODO check adding directories recursively
 
-        $oDirReader = oxNew( "oxFileCollector" );
-        $oDirReader->setBaseDirectory( oxRegistry::getConfig()->getConfigParam( "sShopDir") );
+        $oDirReader = oxNew("oxFileCollector");
+        $oDirReader->setBaseDirectory(oxRegistry::getConfig()->getConfigParam("sShopDir"));
 
-        $oDirReader->addDirectoryFiles( 'bin/', array( 'php', 'tpl' ) );
+        $oDirReader->addDirectoryFiles('bin/', array('php', 'tpl'));
         $aResultExistingPHP = $oDirReader->getFiles();
 
-        $this->assertEquals( 1, count( $aResultExistingPHP ) );
-        $this->assertContains( 'bin/cron.php', $aResultExistingPHP );
+        $this->assertEquals(1, count($aResultExistingPHP));
+        $this->assertContains('bin/cron.php', $aResultExistingPHP);
     }
 
     /**
@@ -48,16 +48,16 @@ class Unit_Core_oxFileCollectorTest extends OxidTestCase
      */
     public function testAddDirectoryFilesWithoutExtensions()
     {
-        $oDirReader = oxNew( "oxFileCollector" );
-        $oDirReader->setBaseDirectory( oxRegistry::getConfig()->getConfigParam( "sShopDir") );
+        $oDirReader = oxNew("oxFileCollector");
+        $oDirReader->setBaseDirectory(oxRegistry::getConfig()->getConfigParam("sShopDir"));
 
-        $oDirReader->addDirectoryFiles( 'bin/' );
+        $oDirReader->addDirectoryFiles('bin/');
         $aResultExistingAll = $oDirReader->getFiles();
 
-        $this->assertEquals( 3, count( $aResultExistingAll ) );
-        $this->assertContains( 'bin/.htaccess', $aResultExistingAll );
-        $this->assertContains( 'bin/cron.php',  $aResultExistingAll );
-        $this->assertContains( 'bin/log.txt',   $aResultExistingAll );
+        $this->assertEquals(3, count($aResultExistingAll));
+        $this->assertContains('bin/.htaccess', $aResultExistingAll);
+        $this->assertContains('bin/cron.php', $aResultExistingAll);
+        $this->assertContains('bin/log.txt', $aResultExistingAll);
 
     }
 
@@ -66,17 +66,17 @@ class Unit_Core_oxFileCollectorTest extends OxidTestCase
      */
     public function testAddFile()
     {
-        $oDirReader = oxNew( "oxFileCollector" );
-        $oDirReader->setBaseDirectory( oxRegistry::getConfig()->getConfigParam( "sShopDir") );
+        $oDirReader = oxNew("oxFileCollector");
+        $oDirReader->setBaseDirectory(oxRegistry::getConfig()->getConfigParam("sShopDir"));
 
-        $oDirReader->addFile( 'index.php' );
-        $oDirReader->addFile( 'bin/nofile.php' );
-        $oDirReader->addFile( 'bin/cron.php' );
+        $oDirReader->addFile('index.php');
+        $oDirReader->addFile('bin/nofile.php');
+        $oDirReader->addFile('bin/cron.php');
         $aResult = $oDirReader->getFiles();
 
-        $this->assertEquals( 2, count( $aResult ) );
-        $this->assertContains( 'bin/cron.php', $aResult );
-        $this->assertContains( 'index.php', $aResult );
+        $this->assertEquals(2, count($aResult));
+        $this->assertContains('bin/cron.php', $aResult);
+        $this->assertContains('index.php', $aResult);
     }
 
 }

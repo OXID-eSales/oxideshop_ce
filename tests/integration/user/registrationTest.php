@@ -24,6 +24,7 @@ require_once 'userTestCase.php';
 
 class Integration_User_registrationTest extends UserTestCase
 {
+
     /** @var bool */
     protected $_blSkipCustomTearDown = true;
 
@@ -72,17 +73,19 @@ class Integration_User_registrationTest extends UserTestCase
         $this->setRequestParam('passwordLength', $sUserPassword);
         $this->setRequestParam('userPasswordConfirm', $sUserPassword);
 
-        $this->setRequestParam('invadr',
+        $this->setRequestParam(
+            'invadr',
             array(
-                'oxuser__oxsal' => 'Mr',
-                'oxuser__oxfname' => 'SomeTestName',
-                'oxuser__oxlname' => 'SomeTestSurname',
-                'oxuser__oxstreet' => 'SomeTestStreet',
-                'oxuser__oxstreetnr' => '23',
-                'oxuser__oxzip' => '44444',
-                'oxuser__oxcity' => 'SomeTestCoty',
-                'oxuser__oxcountryid' => $sGermanyId
-            ));
+                 'oxuser__oxsal'       => 'Mr',
+                 'oxuser__oxfname'     => 'SomeTestName',
+                 'oxuser__oxlname'     => 'SomeTestSurname',
+                 'oxuser__oxstreet'    => 'SomeTestStreet',
+                 'oxuser__oxstreetnr'  => '23',
+                 'oxuser__oxzip'       => '44444',
+                 'oxuser__oxcity'      => 'SomeTestCoty',
+                 'oxuser__oxcountryid' => $sGermanyId
+            )
+        );
     }
 
     /**

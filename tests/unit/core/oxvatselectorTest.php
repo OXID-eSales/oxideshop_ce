@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * oxvatselector test
  */
 class Unit_Core_oxVatSelectorTest extends OxidTestCase
 {
+
     /**
      * Initialize the fixture.
      *
@@ -40,12 +41,12 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
             $sId = '2077';
         $sNewId = oxUtilsObject::getInstance()->generateUId();
 
-        $this->oArticle = oxNew( 'oxarticle' );
+        $this->oArticle = oxNew('oxarticle');
         $this->oArticle->disableLazyLoading();
-        $this->oArticle->Load( $sId );
+        $this->oArticle->Load($sId);
 
         // making copy
-        $this->oArticle->setId( $sNewId );
+        $this->oArticle->setId($sNewId);
         $this->oArticle->oxarticles__oxweight = new oxField(10, oxField::T_RAW);
         $this->oArticle->oxarticles__oxstock = new oxField(100, oxField::T_RAW);
         $this->oArticle->oxarticles__oxprice = new oxField(19, oxField::T_RAW);
@@ -57,23 +58,23 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
 
         $sNewId = oxUtilsObject::getInstance()->generateUId();
 
-        $this->oCategory = oxNew( 'oxbase' );
-        $this->oCategory->Init( 'oxcategories' );
-        $this->oCategory->Load( $sId );
+        $this->oCategory = oxNew('oxbase');
+        $this->oCategory->Init('oxcategories');
+        $this->oCategory->Load($sId);
 
         // making copy
-        $this->oCategory->setId( $sNewId );
+        $this->oCategory->setId($sNewId);
         $this->oCategory->save();
 
         // assigning article to category
-        $oO2Group = oxNew( 'oxobject2category' );
+        $oO2Group = oxNew('oxobject2category');
         $oO2Group->oxobject2category__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
         $oO2Group->oxobject2category__oxobjectid = new oxField($this->oArticle->getId(), oxField::T_RAW);
         $oO2Group->oxobject2category__oxcatnid = new oxField($this->oCategory->getId(), oxField::T_RAW);
         $oO2Group->save();
 
-        $this->dDefaultVAT = oxRegistry::getConfig()->getConfigParam( 'dDefaultVAT' );
-        oxRegistry::getConfig()->setConfigParam( 'dDefaultVAT', '99' );
+        $this->dDefaultVAT = oxRegistry::getConfig()->getConfigParam('dDefaultVAT');
+        oxRegistry::getConfig()->setConfigParam('dDefaultVAT', '99');
     }
 
     /**
@@ -84,10 +85,10 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
     protected function tearDown()
     {
         // deleting demo items
-        if ( $this->oArticle ) {
-           $this->oArticle->delete();
+        if ($this->oArticle) {
+            $this->oArticle->delete();
         }
-        if ( $this->oCategory ) {
+        if ($this->oCategory) {
             $this->oCategory->delete();
         }
 
@@ -103,8 +104,8 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
      */
     public function testGetUserVat()
     {
-        $oVatSelector = $this->getMock( 'oxVatSelector', array( '_getForeignCountryUserVat' ) );
-        $oVatSelector->expects($this->once())->method( '_getForeignCountryUserVat' )->will( $this->returnValue(66) );
+        $oVatSelector = $this->getMock('oxVatSelector', array('_getForeignCountryUserVat'));
+        $oVatSelector->expects($this->once())->method('_getForeignCountryUserVat')->will($this->returnValue(66));
 
         $oUser = new oxuser();
         $oUser->oxuser__oxcountryid = new oxField(null, oxField::T_RAW);
@@ -119,29 +120,29 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
             // expected here
         }
 
-        $aHome = oxRegistry::getConfig()->getConfigParam( 'aHomeCountry' );
+        $aHome = oxRegistry::getConfig()->getConfigParam('aHomeCountry');
         $oUser->oxuser__oxcountryid = new oxField($aHome[0], oxField::T_RAW);
         $this->assertFalse($oVatSelector->getUserVat($oUser, true));
 
         $oDb = oxDb::getDb();
         // foreigner
-        $oUser->oxuser__oxcountryid = new oxField($oDb->getOne('select oxid from oxcountry where oxid not in ("'.implode('","', $aHome).'")'), oxField::T_RAW);
+        $oUser->oxuser__oxcountryid = new oxField($oDb->getOne('select oxid from oxcountry where oxid not in ("' . implode('","', $aHome) . '")'), oxField::T_RAW);
         $this->assertEquals(66, $oVatSelector->getUserVat($oUser, true));
     }
 
     public function testGetForeignCountryUserVat()
     {
 
-        $oCountry1 = $this->getMock( 'oxCountry', array( 'isInEU' ) );
-        $oCountry1->expects($this->once())->method( 'isInEU' )->will( $this->returnValue(false) );
+        $oCountry1 = $this->getMock('oxCountry', array('isInEU'));
+        $oCountry1->expects($this->once())->method('isInEU')->will($this->returnValue(false));
 
         $oUser = new oxuser();
         $oVatSelector = $this->getProxyClass("oxVatSelector");
 
         $this->assertSame(0, $oVatSelector->UNITgetForeignCountryUserVat($oUser, $oCountry1));
 
-        $oCountry2 = $this->getMock( 'oxCountry', array('isInEU' ) );
-        $oCountry2->expects($this->exactly(2))->method( 'isInEU' )->will( $this->returnValue(true) );
+        $oCountry2 = $this->getMock('oxCountry', array('isInEU'));
+        $oCountry2->expects($this->exactly(2))->method('isInEU')->will($this->returnValue(true));
         $oUser->oxuser__oxustid = new oxField(0, oxField::T_RAW);
         $this->assertSame(false, $oVatSelector->UNITgetForeignCountryUserVat($oUser, $oCountry2));
         $oUser->oxuser__oxustid = new oxField("LTsff", oxField::T_RAW);
@@ -155,23 +156,23 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
     // article has custom VAT stored in oxarticle
     public function testFindArticleVatArticleHasCustomVat()
     {
-        $oVatSelector1 = $this->getMock( 'oxVatSelector', array( '_getVatForArticleCategory' ) );
-        $oVatSelector1->expects($this->once())->method( '_getVatForArticleCategory' )->will( $this->returnValue(69) );
+        $oVatSelector1 = $this->getMock('oxVatSelector', array('_getVatForArticleCategory'));
+        $oVatSelector1->expects($this->once())->method('_getVatForArticleCategory')->will($this->returnValue(69));
 
-        $oArticle1 = $this->getMock( 'oxarticle', array( 'getCustomVAT' ) );
-        $oArticle1->expects( $this->once() )->method( 'getCustomVAT' )->will( $this->returnValue( '66' ) );
+        $oArticle1 = $this->getMock('oxarticle', array('getCustomVAT'));
+        $oArticle1->expects($this->once())->method('getCustomVAT')->will($this->returnValue('66'));
 
-        $this->assertEquals( 66, $oVatSelector1->getArticleVat( $oArticle1 ) );
+        $this->assertEquals(66, $oVatSelector1->getArticleVat($oArticle1));
 
-        $oArticle2 = $this->getMock( 'oxarticle', array( 'getCustomVAT' ) );
-        $oArticle2->expects( $this->exactly(2) )->method( 'getCustomVAT' )->will( $this->returnValue( null ) );
+        $oArticle2 = $this->getMock('oxarticle', array('getCustomVAT'));
+        $oArticle2->expects($this->exactly(2))->method('getCustomVAT')->will($this->returnValue(null));
 
-        $this->assertEquals( 69, $oVatSelector1->getArticleVat( $oArticle2 ) );
+        $this->assertEquals(69, $oVatSelector1->getArticleVat($oArticle2));
 
-        $oVatSelector1 = $this->getMock( 'oxVatSelector', array( '_getVatForArticleCategory' ) );
-        $oVatSelector1->expects($this->once())->method( '_getVatForArticleCategory' )->will( $this->returnValue(false) );
+        $oVatSelector1 = $this->getMock('oxVatSelector', array('_getVatForArticleCategory'));
+        $oVatSelector1->expects($this->once())->method('_getVatForArticleCategory')->will($this->returnValue(false));
 
-        $this->assertEquals( 99, $oVatSelector1->getArticleVat( $oArticle2 ) );
+        $this->assertEquals(99, $oVatSelector1->getArticleVat($oArticle2));
 
 
     }
@@ -179,30 +180,30 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
     public function testGetVatForArticleCategory()
     {
         //make sure getCategories are never called
-        $oArticle1 = $this->getMock( 'oxarticle', array( 'getCategoryIds' ) );
-        $oArticle1->expects($this->never())->method( 'getCategoryIds' );
+        $oArticle1 = $this->getMock('oxarticle', array('getCategoryIds'));
+        $oArticle1->expects($this->never())->method('getCategoryIds');
 
         $oVatSelector = new oxVatSelector();
-        $this->assertFalse( $oVatSelector->UNITgetVatForArticleCategory( $oArticle1 ) );
+        $this->assertFalse($oVatSelector->UNITgetVatForArticleCategory($oArticle1));
 
-        $this->oCategory->oxcategories__oxvat = new oxField( 69, oxField::T_RAW );
+        $this->oCategory->oxcategories__oxvat = new oxField(69, oxField::T_RAW);
         $this->oCategory->save();
 
         $oVatSelector = new oxVatSelector();
-        $this->assertEquals( 69, $oVatSelector->UNITgetVatForArticleCategory( $this->oArticle ) );
+        $this->assertEquals(69, $oVatSelector->UNITgetVatForArticleCategory($this->oArticle));
 
-        $this->oCategory->oxcategories__oxvat = new oxField( null, oxField::T_RAW );
+        $this->oCategory->oxcategories__oxvat = new oxField(null, oxField::T_RAW);
         $this->oCategory->save();
 
         $oVatSelector = new oxVatSelector();
-        $this->assertFalse( $oVatSelector->UNITgetVatForArticleCategory( $this->oArticle ) );
+        $this->assertFalse($oVatSelector->UNITgetVatForArticleCategory($this->oArticle));
     }
 
     public function testGetVatForArticleCategoryArtWithoutCat()
     {
-        $oArticle1 = $this->getMock( 'oxarticle', array( 'getId' ) );
+        $oArticle1 = $this->getMock('oxarticle', array('getId'));
         //make sure getCategories are never called
-        $oArticle1->expects($this->once())->method( 'getId' )->will( $this->returnValue( '666' ) );
+        $oArticle1->expects($this->once())->method('getId')->will($this->returnValue('666'));
         $oVatSelector = $this->getProxyClass("oxVatSelector");
 
         $this->oCategory->oxcategories__oxvat = new oxField(69, oxField::T_RAW);
@@ -218,10 +219,10 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
      */
     public function testGetBasketItemVat()
     {
-        $oVatSelector = $this->getMock( 'oxVatSelector', array( 'getArticleVat' ) );
-        $oVatSelector->expects( $this->once() )->method( 'getArticleVat' )->will( $this->returnValue( 66 ) );
+        $oVatSelector = $this->getMock('oxVatSelector', array('getArticleVat'));
+        $oVatSelector->expects($this->once())->method('getArticleVat')->will($this->returnValue(66));
 
-        $this->assertEquals( 66, $oVatSelector->getBasketItemVat( $this->oArticle, null ) );
+        $this->assertEquals(66, $oVatSelector->getBasketItemVat($this->oArticle, null));
     }
 
     /**
@@ -229,12 +230,12 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
      */
     public function testGetArticleUserVat()
     {
-        $oVatSelector = $this->getMock( 'oxVatSelector', array( 'getUserVat' ) );
-        $oVatSelector->expects( $this->once() )->method( 'getUserVat' )->will( $this->returnValue( 66 ) );
-        $oArticle = $this->getMock( 'oxArticle', array( 'getArticleUser' ) );
-        $oArticle->expects( $this->once() )->method( 'getArticleUser' )->will( $this->returnValue( new oxuser() ) );
+        $oVatSelector = $this->getMock('oxVatSelector', array('getUserVat'));
+        $oVatSelector->expects($this->once())->method('getUserVat')->will($this->returnValue(66));
+        $oArticle = $this->getMock('oxArticle', array('getArticleUser'));
+        $oArticle->expects($this->once())->method('getArticleUser')->will($this->returnValue(new oxuser()));
 
-        $this->assertEquals( 66, $oVatSelector->getArticleUserVat( $oArticle ) );
+        $this->assertEquals(66, $oVatSelector->getArticleUserVat($oArticle));
     }
 
     /**
@@ -243,10 +244,10 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
     public function testGetArticleUserVatNoUser()
     {
         $oVatSelector = $this->getProxyClass("oxVatSelector");
-        $oArticle = $this->getMock( 'oxArticle', array( 'getArticleUser' ) );
-        $oArticle->expects( $this->once() )->method( 'getArticleUser' )->will( $this->returnValue( false ) );
+        $oArticle = $this->getMock('oxArticle', array('getArticleUser'));
+        $oArticle->expects($this->once())->method('getArticleUser')->will($this->returnValue(false));
 
-        $this->assertFalse( $oVatSelector->getArticleUserVat( $oArticle ) );
+        $this->assertFalse($oVatSelector->getArticleUserVat($oArticle));
     }
 
     /**
@@ -269,7 +270,7 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
 
         $oUser = $this->getMock("oxuser", array("getUserAddresses", "getSelectedAddressId"));
         $oUser->oxuser__oxcountryid = new oxField($sGermanyId);
-        $oUser->expects($this->exactly(1))->method("getUserAddresses")->will($this->returnValue($oAddressList) );
+        $oUser->expects($this->exactly(1))->method("getUserAddresses")->will($this->returnValue($oAddressList));
         $oUser->expects($this->exactly(1))->method("getSelectedAddressId")->will($this->returnValue('_testAddress'));
 
         //the option is ON
@@ -299,7 +300,7 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
 
         $oUser = $this->getMock("oxuser", array("getUserAddresses", "getSelectedAddressId"));
         $oUser->oxuser__oxcountryid = new oxField($sGermanyId);
-        $oUser->expects($this->exactly(1))->method("getUserAddresses")->will($this->returnValue($oAddressList) );
+        $oUser->expects($this->exactly(1))->method("getUserAddresses")->will($this->returnValue($oAddressList));
         $oUser->expects($this->exactly(1))->method("getSelectedAddressId")->will($this->returnValue(null));
 
         //the option is ON

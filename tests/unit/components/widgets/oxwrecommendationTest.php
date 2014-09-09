@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwRecomm class
  */
 class Unit_Components_Widgets_oxwRecommendationTest extends OxidTestCase
 {
+
     /**
      * Testing oxwRecomm::getSimilarRecommLists()
      *
@@ -36,10 +37,10 @@ class Unit_Components_Widgets_oxwRecommendationTest extends OxidTestCase
     public function testGetSimilarRecommLists_empty()
     {
         $aParams["aArticleIds"] = array();
-        $oRecomm= new oxwRecommendation();
-        $oRecomm->setViewParameters( $aParams );
+        $oRecomm = new oxwRecommendation();
+        $oRecomm->setViewParameters($aParams);
         $oRecommList = $oRecomm->getSimilarRecommLists();
-        $this->assertTrue( !isset( $oRecommList ), "Should be empty if no articles id given" );
+        $this->assertTrue(!isset($oRecommList), "Should be empty if no articles id given");
     }
 
     /**
@@ -49,16 +50,16 @@ class Unit_Components_Widgets_oxwRecommendationTest extends OxidTestCase
      */
     public function testGetSimilarRecommLists()
     {
-        $oRecommList = $this->getMock( "oxrecommlist", array( "getRecommListsByIds" ) );
-        $oRecommList->expects( $this->once() )->method( "getRecommListsByIds" )->with( $this->equalTo( array( "articleId" ) ) )->will( $this->returnValue( "oxRecommListMock" ) );
-        oxTestModules::addModuleObject( 'oxrecommlist', $oRecommList );
+        $oRecommList = $this->getMock("oxrecommlist", array("getRecommListsByIds"));
+        $oRecommList->expects($this->once())->method("getRecommListsByIds")->with($this->equalTo(array("articleId")))->will($this->returnValue("oxRecommListMock"));
+        oxTestModules::addModuleObject('oxrecommlist', $oRecommList);
 
-        $aParams["aArticleIds"] = array( "articleId" );
+        $aParams["aArticleIds"] = array("articleId");
 
-        $oRecomm= new oxwRecommendation();
-        $oRecomm->setViewParameters( $aParams );
+        $oRecomm = new oxwRecommendation();
+        $oRecomm->setViewParameters($aParams);
 
-        $this->assertEquals( "oxRecommListMock", $oRecomm->getSimilarRecommLists(), "Should try to create RecommList object." );
+        $this->assertEquals("oxRecommListMock", $oRecomm->getSimilarRecommLists(), "Should try to create RecommList object.");
     }
 
     /**
@@ -69,7 +70,7 @@ class Unit_Components_Widgets_oxwRecommendationTest extends OxidTestCase
     public function testGetRecommList()
     {
         $oRecommList = new oxwRecommendation();
-        $this->assertTrue( $oRecommList->getRecommList() instanceof recommlist );
+        $this->assertTrue($oRecommList->getRecommList() instanceof recommlist);
     }
 
 }

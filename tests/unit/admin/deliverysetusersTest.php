@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for DeliverySet_Users class
  */
 class Unit_Admin_DeliverySetUsersTest extends OxidTestCase
 {
+
     /**
      * DeliverySet_Users::Render() test case
      *
@@ -35,13 +36,13 @@ class Unit_Admin_DeliverySetUsersTest extends OxidTestCase
      */
     public function testRender()
     {
-        oxTestModules::addFunction( "oxdeliveryset", "isDerived", "{return true;}" );
-        modConfig::setRequestParameter( "oxid", "testId" );
+        oxTestModules::addFunction("oxdeliveryset", "isDerived", "{return true;}");
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new DeliverySet_Users();
-        $this->assertEquals( 'deliveryset_users.tpl', $oView->render() );
+        $this->assertEquals('deliveryset_users.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['readonly'] ) );
+        $this->assertTrue(isset($aViewData['readonly']));
     }
 }

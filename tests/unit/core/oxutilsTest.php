@@ -20,36 +20,38 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class testOxUtils extends oxUtils
 {
-    public function setNonPublicVar($name,$value)
+
+    public function setNonPublicVar($name, $value)
     {
         $this->$name = $value;
     }
 
-    public function getNonPublicVar($name,$value)
+    public function getNonPublicVar($name, $value)
     {
         $this->$name = $value;
     }
 
-    public function __call( $sMethod, $aArgs)
+    public function __call($sMethod, $aArgs)
     {
-            if ( substr( $sMethod, 0, 4) == "UNIT") {
-                $sMethod = str_replace( "UNIT", "_", $sMethod);
-            }
-            if ( method_exists( $this, $sMethod)) {
-                return call_user_func_array( array( & $this, $sMethod), $aArgs );
-            }
+        if (substr($sMethod, 0, 4) == "UNIT") {
+            $sMethod = str_replace("UNIT", "_", $sMethod);
+        }
+        if (method_exists($this, $sMethod)) {
+            return call_user_func_array(array(& $this, $sMethod), $aArgs);
+        }
 
-        throw new oxSystemComponentException( "Function '$sMethod' does not exist or is not accessible! (".__CLASS__.")".PHP_EOL);
+        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . __CLASS__ . ")" . PHP_EOL);
     }
 }
 
 class Unit_Core_oxutilsTest extends OxidTestCase
 {
+
     protected $_sTestLogFileName = null;
 
     /**
@@ -63,31 +65,31 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         clearstatcache();
         //removing test files from tmp dir
-        $sFilePath = oxRegistry::getConfig()->getConfigParam( 'sCompileDir' ) . "*testFileCache*.txt";
-        $aPathes   = glob( $sFilePath);
-        if ( is_array($aPathes) ) {
-            foreach ( $aPathes as $sFilename ) {
-                @unlink( $sFilename );
+        $sFilePath = oxRegistry::getConfig()->getConfigParam('sCompileDir') . "*testFileCache*.txt";
+        $aPathes = glob($sFilePath);
+        if (is_array($aPathes)) {
+            foreach ($aPathes as $sFilename) {
+                @unlink($sFilename);
             }
         }
 
-        if ( $this->_sTestLogFileName !== null ) {
-            unlink( $this->_sTestLogFileName );
+        if ($this->_sTestLogFileName !== null) {
+            unlink($this->_sTestLogFileName);
             $this->_sTestLogFileName = null;
         }
-        if ( file_exists( 'tmp_testCacheName' ) ) {
+        if (file_exists('tmp_testCacheName')) {
             unlink('tmp_testCacheName');
         }
 
         $oUtils = oxRegistry::getUtils();
         $sFileName = $oUtils->getCacheFilePath("testVal", false, 'php');
-        if ( file_exists( $sFileName ) ) {
-            unlink( $sFileName );
+        if (file_exists($sFileName)) {
+            unlink($sFileName);
         }
 
         $sFileName = $oUtils->getCacheFilePath('testCache1');
-        if ( file_exists( $sFileName ) ) {
-            unlink( $sFileName );
+        if (file_exists($sFileName)) {
+            unlink($sFileName);
         }
 
         parent::tearDown();
@@ -100,60 +102,60 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testExtractDomain()
     {
         $oUtils = new oxUtils();
-        $this->assertEquals( "oxid-esales.com", $oUtils->extractDomain( "www.oxid-esales.com" ) );
-        $this->assertEquals( "oxid-esales.com", $oUtils->extractDomain( "oxid-esales.com" ) );
-        $this->assertEquals( "127.0.0.1", $oUtils->extractDomain( "127.0.0.1" ) );
-        $this->assertEquals( "oxid-esales.com", $oUtils->extractDomain( "ssl.oxid-esales.com" ) );
-        $this->assertEquals( "oxid-esales", $oUtils->extractDomain( "oxid-esales" ) );
+        $this->assertEquals("oxid-esales.com", $oUtils->extractDomain("www.oxid-esales.com"));
+        $this->assertEquals("oxid-esales.com", $oUtils->extractDomain("oxid-esales.com"));
+        $this->assertEquals("127.0.0.1", $oUtils->extractDomain("127.0.0.1"));
+        $this->assertEquals("oxid-esales.com", $oUtils->extractDomain("ssl.oxid-esales.com"));
+        $this->assertEquals("oxid-esales", $oUtils->extractDomain("oxid-esales"));
     }
 
     public function testShowMessageAndExit()
     {
-        $oSession = $this->getMock( "oxSession", array( "freeze" ) );
-        $oSession->expects( $this->once() )->method( 'freeze');
+        $oSession = $this->getMock("oxSession", array("freeze"));
+        $oSession->expects($this->once())->method('freeze');
 
-        $oUtils = $this->getMock( "oxUtils", array( "getSession", "commitFileCache" ) );
-        $oUtils->expects( $this->once() )->method( 'getSession')->will( $this->returnValue( $oSession ) );
-        $oUtils->expects( $this->once() )->method( 'commitFileCache');
+        $oUtils = $this->getMock("oxUtils", array("getSession", "commitFileCache"));
+        $oUtils->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oUtils->expects($this->once())->method('commitFileCache');
 
-        $oUtils->showMessageAndExit( "" );
+        $oUtils->showMessageAndExit("");
     }
 
     public function testWriteToLog()
     {
-        $sLogMessage = $sLogFileName = md5( uniqid( rand(), true ) );
+        $sLogMessage = $sLogFileName = md5(uniqid(rand(), true));
 
         $oUtils = new oxUtils();
-        $oUtils->writeToLog( $sLogMessage, $sLogFileName );
+        $oUtils->writeToLog($sLogMessage, $sLogFileName);
 
-        $this->_sTestLogFileName = oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sLogFileName;
+        $this->_sTestLogFileName = oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sLogFileName;
 
         clearstatcache();
-        $this->assertTrue( file_exists( $this->_sTestLogFileName ) );
-        $this->assertEquals( $sLogMessage, file_get_contents( $this->_sTestLogFileName ) );
+        $this->assertTrue(file_exists($this->_sTestLogFileName));
+        $this->assertEquals($sLogMessage, file_get_contents($this->_sTestLogFileName));
     }
 
     public function testSetLangCache()
     {
-        $aLangCache = array( "ggg" => "bbb" );
+        $aLangCache = array("ggg" => "bbb");
         $sCacheName = 'tmp_testCacheName';
-        $sCache = "<?php\n\$aLangCache = ".var_export( $aLangCache, true ).";";
+        $sCache = "<?php\n\$aLangCache = " . var_export($aLangCache, true) . ";";
 
-        $oUtils = $this->getMock( 'oxutils', array( 'getCacheFilePath' ) );
-        $oUtils->expects( $this->once() )->method( 'getCacheFilePath')->with( $this->equalTo( $sCacheName ) )->will( $this->returnValue( "tmp_testCacheName" ) );
-        $oUtils->setLangCache( $sCacheName, $aLangCache );
+        $oUtils = $this->getMock('oxutils', array('getCacheFilePath'));
+        $oUtils->expects($this->once())->method('getCacheFilePath')->with($this->equalTo($sCacheName))->will($this->returnValue("tmp_testCacheName"));
+        $oUtils->setLangCache($sCacheName, $aLangCache);
     }
 
 
     public function testgetLangCache()
     {
         $sCacheName = time();
-        $aLangCache = array( "ggg" => "bbb" );
+        $aLangCache = array("ggg" => "bbb");
 
         $oUtils = new oxutils();
-        $oUtils->setLangCache( $sCacheName, $aLangCache );
+        $oUtils->setLangCache($sCacheName, $aLangCache);
 
-        $this->assertEquals( $aLangCache, $oUtils->getLangCache( $sCacheName ) );
+        $this->assertEquals($aLangCache, $oUtils->getLangCache($sCacheName));
     }
 
     /**
@@ -165,16 +167,16 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $oUtils = new oxutils();
 
         $oConfig = $oUtils->getConfig();
-        $oConfig->setConfigParam( 'aSeoModes', array( 'testshop' => array( 2 => false, 3 => true ) ) );
+        $oConfig->setConfigParam('aSeoModes', array('testshop' => array(2 => false, 3 => true)));
 
-        $this->assertTrue( $oUtils->seoIsActive() );
+        $this->assertTrue($oUtils->seoIsActive());
 
         // cache test
-        $this->assertTrue( $oUtils->seoIsActive( false, 'testshop', 2 ) );
-        $this->assertFalse( $oUtils->seoIsActive( true, 'testshop', 2 ) );
+        $this->assertTrue($oUtils->seoIsActive(false, 'testshop', 2));
+        $this->assertFalse($oUtils->seoIsActive(true, 'testshop', 2));
 
         // config test
-        $this->assertTrue( $oUtils->seoIsActive( true, 'testshop', 3 ) );
+        $this->assertTrue($oUtils->seoIsActive(true, 'testshop', 3));
     }
 
     public function testGetArrFldName()
@@ -188,10 +190,10 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function optionsAndValuesProvider()
     {
         return array(
-            array( true, true, 1),
-            array( true, false, 1.2),
-            array( false, true, 1.2),
-            array( false, false, 1),
+            array(true, true, 1),
+            array(true, false, 1.2),
+            array(false, true, 1.2),
+            array(false, false, 1),
         );
     }
 
@@ -201,55 +203,55 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      *
      * @dataProvider optionsAndValuesProvider
      */
-    public function testValueCalculationBasedOnOptions( $blEnterNetPrice, $blShowNetPrice, $iVatModifier )
+    public function testValueCalculationBasedOnOptions($blEnterNetPrice, $blShowNetPrice, $iVatModifier)
     {
         $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
-        modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
-        modConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', true );
+        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', true);
+        modConfig::getInstance()->setConfigParam('bl_perfUseSelectlistPrice', true);
 
-        modConfig::getInstance()->setConfigParam( 'blEnterNetPrice', $blEnterNetPrice );
-        modConfig::getInstance()->setConfigParam( 'blShowNetPrice', $blShowNetPrice );
+        modConfig::getInstance()->setConfigParam('blEnterNetPrice', $blEnterNetPrice);
+        modConfig::getInstance()->setConfigParam('blShowNetPrice', $blShowNetPrice);
 
         $sTestString = "one!P!99.5%__oneValue@@two!P!12,41__twoValue@@three!P!-5,99__threeValue@@Lagerort__Lager 1@@";
-        $aResult = oxRegistry::getUtils()->assignValuesFromText( $sTestString, 20 );
+        $aResult = oxRegistry::getUtils()->assignValuesFromText($sTestString, 20);
 
         $aShouldBe = array();
         $oObject = new stdClass();
         $oObject->price = '99.5';
         $oObject->priceUnit = '%';
         $oObject->fprice = '99.5%';
-        $oObject->name  = 'one +99.5%';
+        $oObject->name = 'one +99.5%';
         $oObject->value = 'oneValue';
         $aShouldBe[] = $oObject;
 
-        $dPrice = str_replace( '.', ',', $this->_alterPrice( 12.41, $iVatModifier, $blShowNetPrice, $blEnterNetPrice ) );
+        $dPrice = str_replace('.', ',', $this->_alterPrice(12.41, $iVatModifier, $blShowNetPrice, $blEnterNetPrice));
 
         $oObject = new stdClass();
-        $oObject->price  = '12.41';
+        $oObject->price = '12.41';
         $oObject->fprice = '12,41';
         $oObject->priceUnit = 'abs';
-        $oObject->name  = "two +$dPrice " . $oCurrency->sign;
+        $oObject->name = "two +$dPrice " . $oCurrency->sign;
         $oObject->value = 'twoValue';
         $aShouldBe[] = $oObject;
 
-        $dPrice = str_replace( '.', ',', $this->_alterPrice( 5.99, $iVatModifier, $blShowNetPrice, $blEnterNetPrice ) );
+        $dPrice = str_replace('.', ',', $this->_alterPrice(5.99, $iVatModifier, $blShowNetPrice, $blEnterNetPrice));
 
         $oObject = new stdClass();
-        $oObject->price  = '-5.99';
+        $oObject->price = '-5.99';
         $oObject->fprice = '-5,99';
         $oObject->priceUnit = 'abs';
-        $oObject->name  = "three -$dPrice " . $oCurrency->sign;
+        $oObject->name = "three -$dPrice " . $oCurrency->sign;
         $oObject->value = 'threeValue';
         $aShouldBe[] = $oObject;
 
         $oObject = new stdClass();
-        $oObject->name  = 'Lagerort';
+        $oObject->name = 'Lagerort';
         $oObject->value = 'Lager 1';
         $aShouldBe[] = $oObject;
 
-        $this->assertEquals( $aShouldBe, $aResult );
+        $this->assertEquals($aShouldBe, $aResult);
     }
 
     /**
@@ -257,15 +259,17 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      *
      *
      */
-    protected function _alterPrice( $dPrice, $iVatModifier, $blShowNetPrice, $blEnterNetPrice  )
+    protected function _alterPrice($dPrice, $iVatModifier, $blShowNetPrice, $blEnterNetPrice)
     {
-        if ( $blEnterNetPrice && !$blShowNetPrice ) {
+        if ($blEnterNetPrice && !$blShowNetPrice) {
             $dPrice *= $iVatModifier;
         } else {
             $dPrice /= $iVatModifier;
         }
-        return round( $dPrice, 2 );
+
+        return round($dPrice, 2);
     }
+
     /**
      * Check of full version processor
      */
@@ -274,43 +278,43 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
-        modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
-        modConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', true );
+        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', true);
+        modConfig::getInstance()->setConfigParam('bl_perfUseSelectlistPrice', true);
 
         $sTestString = "one!P!99.5%__oneValue@@two!P!12,41__twoValue@@three!P!-5,99__threeValue@@Lagerort__Lager 1@@";
-        $aResult = oxRegistry::getUtils()->assignValuesFromText( $sTestString );
+        $aResult = oxRegistry::getUtils()->assignValuesFromText($sTestString);
 
         $aShouldBe = array();
         $oObject = new stdClass();
         $oObject->price = '99.5';
         $oObject->priceUnit = '%';
         $oObject->fprice = '99.5%';
-        $oObject->name  = 'one +99.5%';
+        $oObject->name = 'one +99.5%';
         $oObject->value = 'oneValue';
         $aShouldBe[] = $oObject;
 
         $oObject = new stdClass();
-        $oObject->price  = '12.41';
+        $oObject->price = '12.41';
         $oObject->fprice = '12,41';
         $oObject->priceUnit = 'abs';
-        $oObject->name  = 'two +12,41 '.$oCurrency->sign;
+        $oObject->name = 'two +12,41 ' . $oCurrency->sign;
         $oObject->value = 'twoValue';
         $aShouldBe[] = $oObject;
 
         $oObject = new stdClass();
-        $oObject->price  = '-5.99';
+        $oObject->price = '-5.99';
         $oObject->fprice = '-5,99';
         $oObject->priceUnit = 'abs';
-        $oObject->name  = 'three -5,99 '.$oCurrency->sign;
+        $oObject->name = 'three -5,99 ' . $oCurrency->sign;
         $oObject->value = 'threeValue';
         $aShouldBe[] = $oObject;
 
         $oObject = new stdClass();
-        $oObject->name  = 'Lagerort';
+        $oObject->name = 'Lagerort';
         $oObject->value = 'Lager 1';
         $aShouldBe[] = $oObject;
 
-        $this->assertEquals( $aShouldBe, $aResult );
+        $this->assertEquals($aShouldBe, $aResult);
     }
 
     /**
@@ -321,27 +325,27 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
-        modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
-        modConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', true );
+        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', true);
+        modConfig::getInstance()->setConfigParam('bl_perfUseSelectlistPrice', true);
 
         $sTestString = "one__oneValue@@two!P!0.00__twoValue@@";
-        $aResult = oxRegistry::getUtils()->assignValuesFromText( $sTestString );
+        $aResult = oxRegistry::getUtils()->assignValuesFromText($sTestString);
 
         $aShouldBe = array();
         $oObject = new stdClass();
-        $oObject->name  = 'one';
+        $oObject->name = 'one';
         $oObject->value = 'oneValue';
         $aShouldBe[] = $oObject;
 
         $oObject = new stdClass();
-        $oObject->price  = '0.00';
+        $oObject->price = '0.00';
         $oObject->fprice = '0,00';
         $oObject->priceUnit = 'abs';
-        $oObject->name  = 'two';
+        $oObject->name = 'two';
         $oObject->value = 'twoValue';
         $aShouldBe[] = $oObject;
 
-        $this->assertEquals( $aShouldBe, $aResult );
+        $this->assertEquals($aShouldBe, $aResult);
     }
 
     /**
@@ -353,31 +357,31 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
-        modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
-        modConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', true );
-        modConfig::getInstance()->setConfigParam( 'blEnterNetPrice', true );
+        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', true);
+        modConfig::getInstance()->setConfigParam('bl_perfUseSelectlistPrice', true);
+        modConfig::getInstance()->setConfigParam('blEnterNetPrice', true);
 
         $sTestString = "one!P!99.5%__oneValue@@two!P!12,41__twoValue@@";
-        $aResult = oxRegistry::getUtils()->assignValuesFromText( $sTestString, 19);
+        $aResult = oxRegistry::getUtils()->assignValuesFromText($sTestString, 19);
 
         $aShouldBe = array();
         $oObject = new stdClass();
         $oObject->price = '99.5';
         $oObject->priceUnit = '%';
         $oObject->fprice = '99.5%';
-        $oObject->name  = 'one +99.5%';
+        $oObject->name = 'one +99.5%';
         $oObject->value = 'oneValue';
         $aShouldBe[] = $oObject;
 
         $oObject = new stdClass();
-        $oObject->price  = '12.41';
+        $oObject->price = '12.41';
         $oObject->fprice = '12,41';
         $oObject->priceUnit = 'abs';
-        $oObject->name  = 'two +14,77 '.$oCurrency->sign;
+        $oObject->name = 'two +14,77 ' . $oCurrency->sign;
         $oObject->value = 'twoValue';
         $aShouldBe[] = $oObject;
 
-        $this->assertEquals( $aShouldBe, $aResult );
+        $this->assertEquals($aShouldBe, $aResult);
     }
 
     /**
@@ -388,34 +392,34 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
-        modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', false );
-        modConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', false );
+        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', false);
+        modConfig::getInstance()->setConfigParam('bl_perfUseSelectlistPrice', false);
 
         $sTestString = "one!P!99.5%__oneValue@@two!P!12,41__twoValue@@three!P!-5,99__threeValue@@Lagerort__Lager 1@@";
-        $aResult = oxRegistry::getUtils()->assignValuesFromText( $sTestString );
+        $aResult = oxRegistry::getUtils()->assignValuesFromText($sTestString);
 
         $aShouldBe = array();
         $oObject = new stdClass();
-        $oObject->name  = 'one';
+        $oObject->name = 'one';
         $oObject->value = 'oneValue';
         $aShouldBe[] = $oObject;
 
         $oObject = new stdClass();
-        $oObject->name  = 'two';
+        $oObject->name = 'two';
         $oObject->value = 'twoValue';
         $aShouldBe[] = $oObject;
 
         $oObject = new stdClass();
-        $oObject->name  = 'three';
+        $oObject->name = 'three';
         $oObject->value = 'threeValue';
         $aShouldBe[] = $oObject;
 
         $oObject = new stdClass();
-        $oObject->name  = 'Lagerort';
+        $oObject->name = 'Lagerort';
         $oObject->value = 'Lager 1';
         $aShouldBe[] = $oObject;
 
-        $this->assertEquals( $aShouldBe, $aResult );
+        $this->assertEquals($aShouldBe, $aResult);
     }
 
     public function testAssignValuesToText()
@@ -435,11 +439,11 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $fFloat = oxRegistry::getUtils()->currency2Float("10.322,32", $oActCur);
         $this->assertEquals($fFloat, 10322.32);
         $fFloat = oxRegistry::getUtils()->currency2Float("10,322.32", $oActCur);
-        $this->assertEquals($fFloat, (float)"10.322.32");
+        $this->assertEquals($fFloat, (float) "10.322.32");
         $fFloat = oxRegistry::getUtils()->currency2Float("10 322,32", $oActCur);
-        $this->assertEquals($fFloat, (float)"10322.32");
+        $this->assertEquals($fFloat, (float) "10322.32");
         $fFloat = oxRegistry::getUtils()->currency2Float("10 322.32", $oActCur);
-        $this->assertEquals($fFloat, (float)"10322.32");
+        $this->assertEquals($fFloat, (float) "10322.32");
     }
 
     /**
@@ -472,14 +476,14 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         // cleaning ..
         $myConfig = oxRegistry::getConfig();
 
-        modConfig::getInstance()->setConfigParam( 'iDebug', 1 );
-        modConfig::getInstance()->setConfigParam( 'aRobots', array() );
+        modConfig::getInstance()->setConfigParam('iDebug', 1);
+        modConfig::getInstance()->setConfigParam('aRobots', array());
 
-        $oUtils = $this->getMock( 'oxUtils', array( 'isAdmin' ) );
-        $oUtils->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
+        $oUtils = $this->getMock('oxUtils', array('isAdmin'));
+        $oUtils->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
-        $this->assertFalse( $oUtils->isSearchEngine( 'xxx' ) );
-        $this->assertFalse( $oUtils->isSearchEngine( 'googlebot' ) );
+        $this->assertFalse($oUtils->isSearchEngine('xxx'));
+        $this->assertFalse($oUtils->isSearchEngine('googlebot'));
     }
 
     public function testIsSearchEngineNonAdminSE()
@@ -487,14 +491,14 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         // cleaning ..
         $myConfig = oxRegistry::getConfig();
 
-        modConfig::getInstance()->setConfigParam( 'iDebug', 0 );
-        modConfig::getInstance()->setConfigParam( 'aRobots', array('googlebot', 'xxx') );
+        modConfig::getInstance()->setConfigParam('iDebug', 0);
+        modConfig::getInstance()->setConfigParam('aRobots', array('googlebot', 'xxx'));
 
-        $oUtils = $this->getMock( 'oxUtils', array( 'isAdmin' ) );
-        $oUtils->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
+        $oUtils = $this->getMock('oxUtils', array('isAdmin'));
+        $oUtils->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
-        $this->assertTrue( $oUtils->isSearchEngine( 'googlebot' ) );
-        $this->assertTrue( $oUtils->isSearchEngine( 'xxx' ) );
+        $this->assertTrue($oUtils->isSearchEngine('googlebot'));
+        $this->assertTrue($oUtils->isSearchEngine('xxx'));
     }
 
     public function testIsSearchEngineAdminAndDebugOn()
@@ -502,14 +506,14 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         // cleaning ..
         $myConfig = oxRegistry::getConfig();
 
-        modConfig::getInstance()->setConfigParam( 'iDebug', 1 );
-        modConfig::getInstance()->setConfigParam( 'aRobots', array('googlebot', 'xxx') );
+        modConfig::getInstance()->setConfigParam('iDebug', 1);
+        modConfig::getInstance()->setConfigParam('aRobots', array('googlebot', 'xxx'));
 
-        $oUtils = $this->getMock( 'oxUtils', array( 'isAdmin' ) );
-        $oUtils->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
+        $oUtils = $this->getMock('oxUtils', array('isAdmin'));
+        $oUtils->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
 
-        $this->assertFalse( $oUtils->isSearchEngine( 'xxx' ) );
-        $this->assertFalse( $oUtils->isSearchEngine( 'googlebot' ) );
+        $this->assertFalse($oUtils->isSearchEngine('xxx'));
+        $this->assertFalse($oUtils->isSearchEngine('googlebot'));
     }
 
     public function testIsSearchEngineAdminAndDebugOff()
@@ -517,25 +521,25 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         // cleaning ..
         $myConfig = oxRegistry::getConfig();
 
-        modConfig::getInstance()->setConfigParam( 'iDebug', 1 );
-        modConfig::getInstance()->setConfigParam( 'aRobots', array('googlebot', 'xxx') );
+        modConfig::getInstance()->setConfigParam('iDebug', 1);
+        modConfig::getInstance()->setConfigParam('aRobots', array('googlebot', 'xxx'));
 
-        $oUtils = $this->getMock( 'oxUtils', array( 'isAdmin' ) );
-        $oUtils->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
+        $oUtils = $this->getMock('oxUtils', array('isAdmin'));
+        $oUtils->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
 
-        $this->assertFalse( $oUtils->isSearchEngine( 'googlebot' ) );
-        $this->assertFalse( $oUtils->isSearchEngine( 'xxx' ) );
+        $this->assertFalse($oUtils->isSearchEngine('googlebot'));
+        $this->assertFalse($oUtils->isSearchEngine('xxx'));
     }
 
     public function testIsValidEmail()
     {
-        $this->assertTrue( oxRegistry::getUtils()->isValidEmail( 'mathias.krieck@oxid-esales.com' ) );
-        $this->assertTrue( oxRegistry::getUtils()->isValidEmail( 'mytest@com.org' ) );
-        $this->assertFalse( oxRegistry::getUtils()->isValidEmail( '�mathias.krieck@oxid-esales.com' ) );
-        $this->assertFalse( oxRegistry::getUtils()->isValidEmail( 'my/test@com.org' ) );
-        $this->assertFalse( oxRegistry::getUtils()->isValidEmail( '@com.org' ) );
-        $this->assertFalse( oxRegistry::getUtils()->isValidEmail( 'mytestcom.org' ) );
-        $this->assertFalse( oxRegistry::getUtils()->isValidEmail( 'mytest@com' ) );
+        $this->assertTrue(oxRegistry::getUtils()->isValidEmail('mathias.krieck@oxid-esales.com'));
+        $this->assertTrue(oxRegistry::getUtils()->isValidEmail('mytest@com.org'));
+        $this->assertFalse(oxRegistry::getUtils()->isValidEmail('�mathias.krieck@oxid-esales.com'));
+        $this->assertFalse(oxRegistry::getUtils()->isValidEmail('my/test@com.org'));
+        $this->assertFalse(oxRegistry::getUtils()->isValidEmail('@com.org'));
+        $this->assertFalse(oxRegistry::getUtils()->isValidEmail('mytestcom.org'));
+        $this->assertFalse(oxRegistry::getUtils()->isValidEmail('mytest@com'));
     }
 
     public function testLoadAdminProfile()
@@ -588,39 +592,39 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     {
         $oUtils = new oxutils();
 
-        $sName    = "SomeName";
+        $sName = "SomeName";
         $mContent = "SomeContent";
-        $sKey     = "SomeKey";
+        $sKey = "SomeKey";
 
-        $oUtils->toStaticCache( $sName, $mContent );
-        $this->assertEquals( $mContent, $oUtils->fromStaticCache( $sName ) );
+        $oUtils->toStaticCache($sName, $mContent);
+        $this->assertEquals($mContent, $oUtils->fromStaticCache($sName));
 
-        $sName    = "SomeOtherName";
+        $sName = "SomeOtherName";
         $mContent = "SomeOtherContent";
-        $sKey     = "SomeOtherKey";
+        $sKey = "SomeOtherKey";
 
-        $oUtils->toStaticCache( $sName, $mContent, $sKey );
-        $aOut = $oUtils->fromStaticCache( $sName );
-        $this->assertEquals( $mContent, $aOut[$sKey] );
+        $oUtils->toStaticCache($sName, $mContent, $sKey);
+        $aOut = $oUtils->fromStaticCache($sName);
+        $this->assertEquals($mContent, $aOut[$sKey]);
 
         // testing non existing
-        $this->assertNull( $oUtils->fromStaticCache( time() ) );
+        $this->assertNull($oUtils->fromStaticCache(time()));
     }
 
     public function testCleanStaticCacheSpecific()
     {
         $oUtils = new oxutils();
 
-        $sName1    = "SomeName";
+        $sName1 = "SomeName";
         $mContent1 = "SomeContent";
-        $sKey1     = "SomeKey";
+        $sKey1 = "SomeKey";
 
-        $sName2    = "SomeName2";
+        $sName2 = "SomeName2";
         $mContent2 = "SomeContent2";
-        $sKey2     = "SomeKey2";
+        $sKey2 = "SomeKey2";
 
-        $oUtils->toStaticCache( $sName1, $mContent1 );
-        $oUtils->toStaticCache( $sName2, $mContent2 );
+        $oUtils->toStaticCache($sName1, $mContent1);
+        $oUtils->toStaticCache($sName2, $mContent2);
         $oUtils->cleanStaticCache($sName2);
 
         $this->assertEquals($mContent1, $oUtils->fromStaticCache($sName1));
@@ -633,16 +637,16 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         $oUtils = new oxutils();
 
-        $sName1    = "SomeName";
+        $sName1 = "SomeName";
         $mContent1 = "SomeContent";
-        $sKey1     = "SomeKey";
+        $sKey1 = "SomeKey";
 
-        $sName2    = "SomeName2";
+        $sName2 = "SomeName2";
         $mContent2 = "SomeContent2";
-        $sKey2     = "SomeKey2";
+        $sKey2 = "SomeKey2";
 
-        $oUtils->toStaticCache( $sName1, $mContent1 );
-        $oUtils->toStaticCache( $sName2, $mContent2 );
+        $oUtils->toStaticCache($sName1, $mContent1);
+        $oUtils->toStaticCache($sName2, $mContent2);
         $oUtils->cleanStaticCache();
 
         $this->assertEquals(null, $oUtils->fromStaticCache($sName1));
@@ -651,55 +655,55 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testToFileCacheFileCache()
     {
-        $sName  = "testFileCache";
+        $sName = "testFileCache";
         $sInput = "test_test_test";
 
         $oUtils = new oxutils();
-        $oUtils->toFileCache( $sName, $sInput);
-        $this->assertEquals( $sInput, $oUtils->fromFileCache( $sName ) );
+        $oUtils->toFileCache($sName, $sInput);
+        $this->assertEquals($sInput, $oUtils->fromFileCache($sName));
     }
 
     public function testToFileCacheFileCacheDoubleWrite1()
     {
-        $sName1  = "testFileCache";
-        $sName2  = "testFileCache2";
+        $sName1 = "testFileCache";
+        $sName2 = "testFileCache2";
         $sInput1 = "test_test_test";
         $sInput2 = "test_test";
 
         $oUtils = new oxutils();
-        $oUtils->toFileCache( $sName1, $sInput1);
-        $oUtils->toFileCache( $sName2, $sInput2);
-        $this->assertEquals( $sInput1, $oUtils->fromFileCache( $sName1 ) );
-        $this->assertEquals( $sInput2, $oUtils->fromFileCache( $sName2 ) );
+        $oUtils->toFileCache($sName1, $sInput1);
+        $oUtils->toFileCache($sName2, $sInput2);
+        $this->assertEquals($sInput1, $oUtils->fromFileCache($sName1));
+        $this->assertEquals($sInput2, $oUtils->fromFileCache($sName2));
     }
 
     public function testToFileCacheFileCacheDoubleWrite2()
     {
-        $sName1  = "testFileCache";
-        $sName2  = "testFileCache2";
+        $sName1 = "testFileCache";
+        $sName2 = "testFileCache2";
         $sInput1 = "test_test_test";
         $sInput2 = "test_test";
 
         $oUtils = new oxutils();
-        $oUtils->toFileCache( $sName1, $sInput1);
-        $this->assertEquals( $sInput1, $oUtils->fromFileCache( $sName1 ) );
-        $oUtils->toFileCache( $sName2, $sInput2);
-        $this->assertEquals( $sInput2, $oUtils->fromFileCache( $sName2 ) );
+        $oUtils->toFileCache($sName1, $sInput1);
+        $this->assertEquals($sInput1, $oUtils->fromFileCache($sName1));
+        $oUtils->toFileCache($sName2, $sInput2);
+        $this->assertEquals($sInput2, $oUtils->fromFileCache($sName2));
     }
 
     public function testToFileCacheFileCacheDoubleWrite3()
     {
-        $sName1  = "testFileCache1";
-        $sName2  = "testFileCache2";
+        $sName1 = "testFileCache1";
+        $sName2 = "testFileCache2";
         $sInput1 = "test_test_test";
         $sInput2 = "test_test";
 
         $oUtils = $this->getProxyClass('oxutils');
-        $oUtils->toFileCache( $sName1, $sInput1);
-        $oUtils->toFileCache( $sName2, $sInput2);
+        $oUtils->toFileCache($sName1, $sInput1);
+        $oUtils->toFileCache($sName2, $sInput2);
         $oUtils->commitFileCache();
-        $this->assertEquals( $sInput1, $oUtils->fromFileCache( $sName1 ) );
-        $this->assertEquals( $sInput2, $oUtils->fromFileCache( $sName2 ) );
+        $this->assertEquals($sInput1, $oUtils->fromFileCache($sName1));
+        $this->assertEquals($sInput2, $oUtils->fromFileCache($sName2));
     }
 
 
@@ -716,20 +720,20 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         $oUtils = oxRegistry::getUtils();
         for ($iMax = 0; $iMax < 10; $iMax++) {
-            $oUtils->toFileCache($sName."_".$iMax, $sInput."_".$iMax);
+            $oUtils->toFileCache($sName . "_" . $iMax, $sInput . "_" . $iMax);
         }
         $oUtils->commitFileCache();
 
         //checking if test files were written to temp dir
-        $sFilePath = $myConfig->getConfigParam( 'sCompileDir' ) . "/{$sCacheFilePrefix}_testFileCache*.txt";
-        $aPathes   = glob( $sFilePath);
-        $this->assertEquals( 10, count($aPathes), "Error writing test files to cache dir" );
+        $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_testFileCache*.txt";
+        $aPathes = glob($sFilePath);
+        $this->assertEquals(10, count($aPathes), "Error writing test files to cache dir");
 
         //actual test
-        $this->assertNull( $oUtils->oxResetFileCache());
+        $this->assertNull($oUtils->oxResetFileCache());
 
-        $sFilePath = $myConfig->getConfigParam( 'sCompileDir' ) . "/{$sCacheFilePrefix}_testFileCache*.txt";
-        $aPathes   = glob( $sFilePath);
+        $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_testFileCache*.txt";
+        $aPathes = glob($sFilePath);
         $this->assertTrue($aPathes == null);
     }
 
@@ -750,78 +754,78 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $oUtils->commitFileCache();
 
         //checking if test file were written to temp dir
-        $sFilePath = $myConfig->getConfigParam( 'sCompileDir' ) . "/{$sCacheFilePrefix}_fieldnames_testTest.txt";
+        $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_fieldnames_testTest.txt";
         clearstatcache();
-        $this->assertTrue( file_exists($sFilePath), "Error writing test files to cache dir" );
+        $this->assertTrue(file_exists($sFilePath), "Error writing test files to cache dir");
 
         for ($iMax = 0; $iMax < 10; $iMax++) {
-            $oUtils->toFileCache($sName."_".$iMax, $sInput."_".$iMax);
+            $oUtils->toFileCache($sName . "_" . $iMax, $sInput . "_" . $iMax);
         }
         $oUtils->commitFileCache();
 
         //checking if test files were written to temp dir
-        $sFilePath = $myConfig->getConfigParam( 'sCompileDir' ) . "/{$sCacheFilePrefix}_testFileCache*.txt";
-        $aPathes   = glob( $sFilePath);
-        $this->assertEquals( 10, count($aPathes), "Error writing test files to cache dir: ".count($aPathes) );
+        $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_testFileCache*.txt";
+        $aPathes = glob($sFilePath);
+        $this->assertEquals(10, count($aPathes), "Error writing test files to cache dir: " . count($aPathes));
 
         //actual test
-        $this->assertNull( $oUtils->oxResetFileCache());
+        $this->assertNull($oUtils->oxResetFileCache());
 
-        $sFilePath = $myConfig->getConfigParam( 'sCompileDir' ) . "/{$sCacheFilePrefix}_fieldnames_testTest.txt";
-        $aPathes   = glob( $sFilePath);
+        $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_fieldnames_testTest.txt";
+        $aPathes = glob($sFilePath);
 
-        @unlink( $aPathes[0] ); //deleting test cache file
-        $this->assertEquals( 1, count($aPathes) );
+        @unlink($aPathes[0]); //deleting test cache file
+        $this->assertEquals(1, count($aPathes));
     }
 
     public function testResetTemplateCache()
     {
         $myConfig = oxRegistry::getConfig();
 
-        $oUtils  = oxRegistry::getUtils();
+        $oUtils = oxRegistry::getUtils();
         $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty(true);
-        $sTmpDir = $myConfig->getConfigParam( 'sCompileDir' ) . "/smarty/";
+        $sTmpDir = $myConfig->getConfigParam('sCompileDir') . "/smarty/";
 
-        $aTemplates = array('message/success.tpl', 'message/notice.tpl','message/errors.tpl',);
+        $aTemplates = array('message/success.tpl', 'message/notice.tpl', 'message/errors.tpl',);
         foreach ($aTemplates as $sTpl) {
             $oSmarty->fetch($sTpl);
         }
 
         $sRemoveTemplate = basename(reset($aTemplates));
-        $sLeaveTemplate  = basename(array_pop($aTemplates));
+        $sLeaveTemplate = basename(array_pop($aTemplates));
 
         //checking if test files were written to temp dir
-        $this->assertEquals( 1, count(glob("{$sTmpDir}/*{$sRemoveTemplate}.php")), "File written ".$sRemoveTemplate );
-        $this->assertEquals( 1, count(glob("{$sTmpDir}/*{$sLeaveTemplate}.php")), "File written ".$sLeaveTemplate );
+        $this->assertEquals(1, count(glob("{$sTmpDir}/*{$sRemoveTemplate}.php")), "File written " . $sRemoveTemplate);
+        $this->assertEquals(1, count(glob("{$sTmpDir}/*{$sLeaveTemplate}.php")), "File written " . $sLeaveTemplate);
 
         //Remove templates
-        $this->assertNull( $oUtils->resetTemplateCache($aTemplates));
+        $this->assertNull($oUtils->resetTemplateCache($aTemplates));
 
-        $this->assertEquals( 0, count(glob("{$sTmpDir}/*{$sRemoveTemplate}.php")), "File removed ".$sRemoveTemplate );
-        $this->assertEquals( 1, count(glob("{$sTmpDir}/*{$sLeaveTemplate}.php")), "File left ".$sLeaveTemplate );
+        $this->assertEquals(0, count(glob("{$sTmpDir}/*{$sRemoveTemplate}.php")), "File removed " . $sRemoveTemplate);
+        $this->assertEquals(1, count(glob("{$sTmpDir}/*{$sLeaveTemplate}.php")), "File left " . $sLeaveTemplate);
     }
 
     public function testResetLanguageCache()
     {
         $myConfig = oxRegistry::getConfig();
 
-        $oUtils  = oxRegistry::getUtils();
+        $oUtils = oxRegistry::getUtils();
         $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty(true);
-        $sTmpDir = $myConfig->getConfigParam( 'sCompileDir' );
+        $sTmpDir = $myConfig->getConfigParam('sCompileDir');
 
-        $aFiles = array('langcache_1_a', 'langcache_1_b','langcache_1_c');
+        $aFiles = array('langcache_1_a', 'langcache_1_b', 'langcache_1_c');
         foreach ($aFiles as $sFile) {
-            $oUtils->setLangCache( $sFile, array($sFile) );
+            $oUtils->setLangCache($sFile, array($sFile));
         }
 
         foreach ($aFiles as $sFile) {
-            $this->assertEquals(array($sFile), $oUtils->getLangCache( $sFile));
+            $this->assertEquals(array($sFile), $oUtils->getLangCache($sFile));
         }
 
-        $this->assertNull( $oUtils->resetLanguageCache());
+        $this->assertNull($oUtils->resetLanguageCache());
 
         foreach ($aFiles as $sFile) {
-            $this->assertNull($oUtils->getLangCache( $sFile));
+            $this->assertNull($oUtils->getLangCache($sFile));
         }
 
     }
@@ -829,12 +833,12 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testGetRemoteCachePath()
     {
 
-        touch('misc/actions_main.inc.php', time(), time()) ;
+        touch('misc/actions_main.inc.php', time(), time());
         $this->assertEquals('misc/actions_main.inc.php', oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', 'misc/actions_main.inc.php'));
         //ensure that file is older than 24h
-        touch('misc/actions_main.inc.php', time() - 90000, time() - 90000) ;
+        touch('misc/actions_main.inc.php', time() - 90000, time() - 90000);
         $this->assertEquals('misc/actions_main.inc.php', oxRegistry::getUtils()->GetRemoteCachePath(oxRegistry::getConfig()->getShopURL(), 'misc/actions_main.inc.php'));
-        touch('misc/actions_main.inc.php', time() - 90000, time() - 90000) ;
+        touch('misc/actions_main.inc.php', time() - 90000, time() - 90000);
         $this->assertEquals('misc/actions_main.inc.php', oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', 'misc/actions_main.inc.php'));
         $this->assertEquals(false, oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', 'misc/blafoo.test'));
     }
@@ -843,17 +847,17 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     {
 
         $mySession = oxRegistry::getSession();
-        $backUpAuth = $mySession->getVariable( "auth");
+        $backUpAuth = $mySession->getVariable("auth");
 
-        $mySession->setVariable( "auth", "oxdefaultadmin");
+        $mySession->setVariable("auth", "oxdefaultadmin");
         $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
 
         //  self::$test_sql_used = null;
         modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 1;'));
 
-        $mySession->setVariable( "auth", "oxdefaultadmin");
+        $mySession->setVariable("auth", "oxdefaultadmin");
         $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
-        $mySession->setVariable( "auth", "blafooUser");
+        $mySession->setVariable("auth", "blafooUser");
 
 
         //self::$test_sql_used = null;
@@ -861,7 +865,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         $this->assertEquals(false, oxRegistry::getUtils()->checkAccessRights());
 
-        $mySession->setVariable( "auth", $backUpAuth);
+        $mySession->setVariable("auth", $backUpAuth);
         modDB::getInstance()->cleanup();
     }
 
@@ -869,12 +873,12 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     {
 
         $mySession = oxRegistry::getSession();
-        $backUpAuth = $mySession->getVariable( "auth");
+        $backUpAuth = $mySession->getVariable("auth");
 
         $e = null;
         try {
             modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 1;'));
-            $mySession->setVariable( "auth", "blafooUser");
+            $mySession->setVariable("auth", "blafooUser");
             $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
             modConfig::setRequestParameter('fnc', 'chshp');
             $this->assertEquals(false, oxRegistry::getUtils()->checkAccessRights());
@@ -906,7 +910,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         }
 
 
-        $mySession->setVariable( "auth", $backUpAuth);
+        $mySession->setVariable("auth", $backUpAuth);
         modDB::getInstance()->cleanup();
 
 
@@ -934,11 +938,11 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $aParams = array('string' => 'someString', 'bool1' => false, 'bool2' => true, 'int' => 1234, 'float' => 123.45, 'negfloat' => -123.45);
 
         $sReturnURL = "http://www.url.com?string=someString&bool1=&bool2=1&int=1234&float=123.45&negfloat=-123.45";
-        $this->assertEquals( $sReturnURL, $oUtils->UNITaddUrlParameters( $sURL, $aParams ) );
+        $this->assertEquals($sReturnURL, $oUtils->UNITaddUrlParameters($sURL, $aParams));
 
         $sURL = 'http://www.url.com/index.php?cl=aaa';
         $sReturnURL = "http://www.url.com/index.php?cl=aaa&string=someString&bool1=&bool2=1&int=1234&float=123.45&negfloat=-123.45";
-        $this->assertEquals( $sReturnURL, $oUtils->UNITaddUrlParameters( $sURL, $aParams ) );
+        $this->assertEquals($sReturnURL, $oUtils->UNITaddUrlParameters($sURL, $aParams));
 
     }
 
@@ -946,20 +950,20 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     {
         $oUtils = new oxUtils();
         $sFile = 'asdnasd/asdasd.asd.ad.ad.asd.gif';
-        $this->assertEquals('image/gif', $oUtils->oxMimeContentType( $sFile ) );
+        $this->assertEquals('image/gif', $oUtils->oxMimeContentType($sFile));
 
         $sFile = 'asdnasd/asdasd.asd.ad.ad.asd.jpeg';
-        $this->assertEquals('image/jpeg', $oUtils->oxMimeContentType( $sFile ) );
+        $this->assertEquals('image/jpeg', $oUtils->oxMimeContentType($sFile));
 
         $sFile = 'asdnasd/asdasd.asd.ad.ad.asd.jpg';
-        $this->assertEquals('image/jpeg', $oUtils->oxMimeContentType( $sFile ) );
+        $this->assertEquals('image/jpeg', $oUtils->oxMimeContentType($sFile));
 
         $sFile = 'asdnasd/asdasd.asd.ad.ad.asd.png';
-        $this->assertEquals('image/png', $oUtils->oxMimeContentType( $sFile ) );
+        $this->assertEquals('image/png', $oUtils->oxMimeContentType($sFile));
 
         $sFile = 'asdnasd/asdasd.asd.ad.ad.asdjpeg';
-        $this->assertEquals( false, $oUtils->oxMimeContentType( $sFile ) );
-        $this->assertEquals( false, $oUtils->oxMimeContentType( '' ) );
+        $this->assertEquals(false, $oUtils->oxMimeContentType($sFile));
+        $this->assertEquals(false, $oUtils->oxMimeContentType(''));
     }
 
     public function testStrManStrRem()
@@ -968,17 +972,17 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $sKey = "oxid987654321";
         $oUtils = new oxUtils();
 
-        $sCode = $oUtils->strMan( $sTests, $sKey );
-        $this->assertNotEquals( $sTests, $sCode );
+        $sCode = $oUtils->strMan($sTests, $sKey);
+        $this->assertNotEquals($sTests, $sCode);
 
-        $sCode = $oUtils->strRem( $sCode, $sKey );
-        $this->assertEquals( $sCode, $sTests );
+        $sCode = $oUtils->strRem($sCode, $sKey);
+        $this->assertEquals($sCode, $sTests);
 
-        $sCode = $oUtils->strMan( $sTests );
-        $this->assertNotEquals( $sTests, $sCode );
+        $sCode = $oUtils->strMan($sTests);
+        $this->assertNotEquals($sTests, $sCode);
 
-        $sCode = $oUtils->strRem( $sCode );
-        $this->assertEquals( $sTests, $sCode );
+        $sCode = $oUtils->strRem($sCode);
+        $this->assertEquals($sTests, $sCode);
     }
 
     public function testStrRot13()
@@ -1014,13 +1018,13 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testRedirect()
     {
-        $oSession = $this->getMock( 'oxsession', array( 'freeze' ) );
-        $oSession->expects( $this->once() )->method( 'freeze');
+        $oSession = $this->getMock('oxsession', array('freeze'));
+        $oSession->expects($this->once())->method('freeze');
 
-        $oUtils = $this->getMock( 'oxutils', array( '_simpleRedirect', 'getSession' ) );
-        $oUtils->expects( $this->once() )->method( '_simpleRedirect')->with( $this->equalTo( 'url?redirected=1' ) );
-        $oUtils->expects( $this->once() )->method( 'getSession')->will( $this->returnValue( $oSession ) );
-        $oUtils->redirect( 'url' );
+        $oUtils = $this->getMock('oxutils', array('_simpleRedirect', 'getSession'));
+        $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url?redirected=1'));
+        $oUtils->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oUtils->redirect('url');
     }
 
     public function providerRedirectCodes()
@@ -1034,8 +1038,9 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     }
 
     /**
-     * @param int $iCode header code
+     * @param int    $iCode   header code
      * @param string $sHeader formed expected header string
+     *
      * @dataProvider providerRedirectCodes
      */
     public function testRedirectCodes($iCode, $sHeader)
@@ -1052,36 +1057,36 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testReRedirect()
     {
-        modConfig::setRequestParameter( 'redirected', '1' );
+        modConfig::setRequestParameter('redirected', '1');
 
-        $oUtils = $this->getMock( 'oxutils', array( '_simpleRedirect', '_addUrlParameters', 'getSession' ) );
-        $oUtils->expects( $this->never() )->method( '_simpleRedirect');
-        $oUtils->expects( $this->never() )->method( '_addUrlParameters');
-        $oUtils->expects( $this->never() )->method( 'getSession');
-        $oUtils->redirect( 'url' );
+        $oUtils = $this->getMock('oxutils', array('_simpleRedirect', '_addUrlParameters', 'getSession'));
+        $oUtils->expects($this->never())->method('_simpleRedirect');
+        $oUtils->expects($this->never())->method('_addUrlParameters');
+        $oUtils->expects($this->never())->method('getSession');
+        $oUtils->redirect('url');
 
     }
 
     public function testRedirectWithEncodedEntities()
     {
-        $oUtils = $this->getMock( 'oxutils', array( '_simpleRedirect' ) );
-        $oUtils->expects( $this->once() )->method( '_simpleRedirect')->with( $this->equalTo( 'url?param1=1&param2=2&param3=3&redirected=1' ) );
-        $oUtils->redirect( 'url?param1=1&param2=2&amp;param3=3' );
+        $oUtils = $this->getMock('oxutils', array('_simpleRedirect'));
+        $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url?param1=1&param2=2&param3=3&redirected=1'));
+        $oUtils->redirect('url?param1=1&param2=2&amp;param3=3');
     }
 
     public function testFromFileCacheEmpty()
     {
         $oUtils = new oxutils();
-        $sCacheHit = $oUtils->fromFileCache( "notexistantkey");
-        $this->assertFalse( $sCacheHit === false);
-        $this->assertNull( $sCacheHit);
+        $sCacheHit = $oUtils->fromFileCache("notexistantkey");
+        $this->assertFalse($sCacheHit === false);
+        $this->assertNull($sCacheHit);
     }
 
     public function testCheckUrlEndingSlash()
     {
         $oUtils = new oxutils();
-        $this->assertEquals( "http://www.site.de/", $oUtils->checkUrlEndingSlash("http://www.site.de/") );
-        $this->assertEquals( "http://www.site.de/", $oUtils->checkUrlEndingSlash("http://www.site.de") );
+        $this->assertEquals("http://www.site.de/", $oUtils->checkUrlEndingSlash("http://www.site.de/"));
+        $this->assertEquals("http://www.site.de/", $oUtils->checkUrlEndingSlash("http://www.site.de"));
     }
 
     public function testCacheRaceConditions0Size()
@@ -1091,7 +1096,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         @unlink($sFileName);
         $oUtils->toFileCache('testCache1', 'teststs');
         $oUtils->commitFileCache();
-        $this->assertEquals( serialize( array( 'content' => 'teststs' ) ), file_get_contents($sFileName) );
+        $this->assertEquals(serialize(array('content' => 'teststs')), file_get_contents($sFileName));
         unlink($sFileName);
     }
 
@@ -1103,7 +1108,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $oUtils->toFileCache('testCache2', 'teststs');
         $oUtils->commitFileCache();
         $sFileContents = file_get_contents($sFileName);
-        $this->assertEquals(serialize( array( 'content' => 'teststs' ) ), $sFileContents);
+        $this->assertEquals(serialize(array('content' => 'teststs')), $sFileContents);
         unlink($sFileName);
     }
 
@@ -1118,9 +1123,10 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $oUtils1->commitFileCache();
         $oUtils2->commitFileCache();
         $sFileContents = file_get_contents($sFileName);
-        $this->assertEquals(serialize( array( 'content' => 'instance1111' ) ), $sFileContents);
+        $this->assertEquals(serialize(array('content' => 'instance1111')), $sFileContents);
         unlink($sFileName);
     }
+
     public function testCachingLockRelease()
     {
         clearstatcache();
@@ -1136,7 +1142,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         $oUtils1->commitFileCache();
         clearstatcache();
-        $this->assertEquals(serialize( array( 'content' => 'instance1111' ) ), file_get_contents($sFileName));
+        $this->assertEquals(serialize(array('content' => 'instance1111')), file_get_contents($sFileName));
         $this->assertNotEquals(0, filesize($sFileName));
 
         $oUtils2 = new oxutils();
@@ -1147,7 +1153,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         $oUtils2->commitFileCache();
         clearstatcache();
-        $this->assertEquals(serialize( array( 'content' => 'instance2222') ), file_get_contents($sFileName));
+        $this->assertEquals(serialize(array('content' => 'instance2222')), file_get_contents($sFileName));
         $this->assertNotEquals(0, filesize($sFileName));
 
         unlink($sFileName);
@@ -1158,24 +1164,24 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testCanPreview()
     {
-        modConfig::setRequestParameter( "preview", null );
+        modConfig::setRequestParameter("preview", null);
         $oUtils = new oxUtils();
-        $this->assertNull( $oUtils->canPreview() );
+        $this->assertNull($oUtils->canPreview());
 
-        modConfig::setRequestParameter( "preview", "132" );
-        oxTestModules::addFunction( 'oxUtilsServer', 'getOxCookie', '{ return "123"; }');
-        $this->assertFalse( $oUtils->canPreview() );
+        modConfig::setRequestParameter("preview", "132");
+        oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return "123"; }');
+        $this->assertFalse($oUtils->canPreview());
 
         $oUser = new oxUser();
-        $oUser->load( "oxdefaultadmin" );
+        $oUser->load("oxdefaultadmin");
 
-        $oUtils = $this->getMock( "oxUtils", array( "getUser" ) );
-        $oUtils->expects( $this->any() )->method("getUser")->will( $this->returnValue( $oUser ) );
+        $oUtils = $this->getMock("oxUtils", array("getUser"));
+        $oUtils->expects($this->any())->method("getUser")->will($this->returnValue($oUser));
 
-        modConfig::setRequestParameter( "preview", $oUtils->getPreviewId() );
-        oxTestModules::addFunction( 'oxUtilsServer', 'getOxCookie', '{ return "123"; }');
+        modConfig::setRequestParameter("preview", $oUtils->getPreviewId());
+        oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return "123"; }');
 
-        $this->assertTrue( $oUtils->canPreview() );
+        $this->assertTrue($oUtils->canPreview());
     }
 
     /**
@@ -1186,18 +1192,18 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testGetPreviewId()
     {
 
-        $sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie( 'admin_sid' );
-        $sCompare = md5( $sAdminSid . "testID" . "testPass" . "tesrRights" );
+        $sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie('admin_sid');
+        $sCompare = md5($sAdminSid . "testID" . "testPass" . "tesrRights");
 
-        $oUser = $this->getMock( "oxUser", array( "getId" ) );
-        $oUser->expects( $this->once() )->method("getId")->will( $this->returnValue( "testID" ) );
-        $oUser->oxuser__oxpassword = new oxField( "testPass" );
-        $oUser->oxuser__oxrights   = new oxField( "tesrRights" );
+        $oUser = $this->getMock("oxUser", array("getId"));
+        $oUser->expects($this->once())->method("getId")->will($this->returnValue("testID"));
+        $oUser->oxuser__oxpassword = new oxField("testPass");
+        $oUser->oxuser__oxrights = new oxField("tesrRights");
 
-        $oUtils = $this->getMock( "oxUtils", array( "getUser" ) );
-        $oUtils->expects( $this->once() )->method("getUser")->will( $this->returnValue( $oUser ) );
+        $oUtils = $this->getMock("oxUtils", array("getUser"));
+        $oUtils->expects($this->once())->method("getUser")->will($this->returnValue($oUser));
 
-        $this->assertEquals( $sCompare, $oUtils->getPreviewId() );
+        $this->assertEquals($sCompare, $oUtils->getPreviewId());
     }
 
     public function testHandlePageNotFoundError()
@@ -1240,10 +1246,10 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         $sFileName = oxRegistry::getUtils()->getCacheFilePath("testVal", false, 'php');
 
-        include( $sFileName );
+        include($sFileName);
 
         $this->assertEquals($_aCacheContents['content'], $sTestArray);
-        unlink( $sFileName );
+        unlink($sFileName);
     }
 
     /**
@@ -1271,10 +1277,10 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $sTestArray = array("testVal1", "key1" => "testVal2");
 
         $oUtils = oxRegistry::getUtils();
-        $oUtils->toPhpFileCache( "testVal", $sTestArray );
+        $oUtils->toPhpFileCache("testVal", $sTestArray);
         $oUtils->commitFileCache();
 
-        $this->assertEquals( $oUtils->fromPhpFileCache( "testVal" ), $sTestArray );
+        $this->assertEquals($oUtils->fromPhpFileCache("testVal"), $sTestArray);
     }
 
     /**
@@ -1285,10 +1291,10 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testGetCacheMetaSetCacheMeta()
     {
         $oUtils = new oxUtils();
-        $oUtils->setCacheMeta( "xxx", "yyy" );
+        $oUtils->setCacheMeta("xxx", "yyy");
 
-        $this->assertFalse( $oUtils->getCacheMeta( "yyy" ) );
-        $this->assertEquals( "yyy", $oUtils->getCacheMeta( "xxx" ) );
+        $this->assertFalse($oUtils->getCacheMeta("yyy"));
+        $this->assertEquals("yyy", $oUtils->getCacheMeta("xxx"));
     }
 
     /**
@@ -1299,17 +1305,17 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testReadFile()
     {
         $sFilePath = oxRegistry::getUtils()->getCacheFilePath("testVal", false, 'php');
-        if ( ( $hFile = @fopen( $sFilePath, "w" ) ) !== false ) {
-            fwrite( $hFile, serialize( "test" ) );
-            fclose( $hFile );
+        if (($hFile = @fopen($sFilePath, "w")) !== false) {
+            fwrite($hFile, serialize("test"));
+            fclose($hFile);
 
             $oUtils = new oxUtils();
-            $this->assertEquals( "test", $oUtils->UNITreadFile( $sFilePath ) );
+            $this->assertEquals("test", $oUtils->UNITreadFile($sFilePath));
 
             return;
         }
 
-        $this->markTestSkipped( "Unable to create file {$sFilePath}" );
+        $this->markTestSkipped("Unable to create file {$sFilePath}");
     }
 
     /**
@@ -1320,17 +1326,17 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testIncludeFile()
     {
         $sFilePath = oxRegistry::getUtils()->getCacheFilePath("testVal", false, 'php');
-        if ( ( $hFile = @fopen( $sFilePath, "w" ) ) !== false ) {
-            fwrite( $hFile, '<?php $_aCacheContents = "test123";' );
-            fclose( $hFile );
+        if (($hFile = @fopen($sFilePath, "w")) !== false) {
+            fwrite($hFile, '<?php $_aCacheContents = "test123";');
+            fclose($hFile);
 
             $oUtils = new oxUtils();
-            $this->assertEquals( "test123", $oUtils->UNITincludeFile( $sFilePath ) );
+            $this->assertEquals("test123", $oUtils->UNITincludeFile($sFilePath));
 
             return;
         }
 
-        $this->markTestSkipped( "Unable to create file {$sFilePath}" );
+        $this->markTestSkipped("Unable to create file {$sFilePath}");
     }
 
     /**
@@ -1340,12 +1346,12 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testProcessCache()
     {
-        $oUtils = $this->getMock( "oxutils", array( "getCacheMeta" ) );
-        $oUtils->expects( $this->at( 0 ) )->method( 'getCacheMeta')->will( $this->returnValue( false ) );
-        $oUtils->expects( $this->at( 1 ) )->method( 'getCacheMeta')->will( $this->returnValue( array( "serialize" => false ) ) );
+        $oUtils = $this->getMock("oxutils", array("getCacheMeta"));
+        $oUtils->expects($this->at(0))->method('getCacheMeta')->will($this->returnValue(false));
+        $oUtils->expects($this->at(1))->method('getCacheMeta')->will($this->returnValue(array("serialize" => false)));
 
-        $this->assertEquals( serialize( 123 ), $oUtils->UNITprocessCache( 123, 123 ) );
-        $this->assertNotEquals( serialize( 123 ), $oUtils->UNITprocessCache( 123, 123 ) );
+        $this->assertEquals(serialize(123), $oUtils->UNITprocessCache(123, 123));
+        $this->assertNotEquals(serialize(123), $oUtils->UNITprocessCache(123, 123));
     }
 
     /**
@@ -1353,16 +1359,16 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testGetTtlCachingInTime()
     {
-        $this->setTime( 10 );
+        $this->setTime(10);
 
         $oUtils = new oxUtils();
-        $oUtils->toFileCache( 'anykey', 'test', 10 );
+        $oUtils->toFileCache('anykey', 'test', 10);
         $oUtils->commitFileCache();
 
         $oUtils2 = new oxUtils();
 
-        $this->setTime( 15 );
-        $this->assertEquals( 'test' , $oUtils2->fromFileCache( 'anykey' ) );
+        $this->setTime(15);
+        $this->assertEquals('test', $oUtils2->fromFileCache('anykey'));
     }
 
     /**
@@ -1370,15 +1376,15 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testGetTtlCachingTooLate()
     {
-        $this->setTime( 10 );
+        $this->setTime(10);
         $oUtils = new oxUtils();
-        $oUtils->toFileCache( 'otherkey', 'test', 10 );
+        $oUtils->toFileCache('otherkey', 'test', 10);
         $oUtils->commitFileCache();
 
         $oUtils2 = new oxUtils();
 
-        $this->setTime( 145 );
-        $this->assertEquals( null , $oUtils2->fromFileCache( 'otherkey' ) );
+        $this->setTime(145);
+        $this->assertEquals(null, $oUtils2->fromFileCache('otherkey'));
 
     }
 }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Payment_Country class
  */
 class Unit_Admin_PaymentCountryTest extends OxidTestCase
 {
+
     /**
      * Payment_Country::Render() test case
      *
@@ -35,14 +36,14 @@ class Unit_Admin_PaymentCountryTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Payment_Country();
-        $this->assertEquals( 'payment_country.tpl', $oView->render() );
+        $this->assertEquals('payment_country.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxpayment );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxpayment);
     }
 
     /**
@@ -52,14 +53,14 @@ class Unit_Admin_PaymentCountryTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Payment_Country();
-        $this->assertEquals( 'payment_country.tpl', $oView->render() );
+        $this->assertEquals('payment_country.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertTrue(isset($aViewData['oxid']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -69,19 +70,20 @@ class Unit_Admin_PaymentCountryTest extends OxidTestCase
      */
     public function testAddcountry()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
-        modConfig::setRequestParameter( "allcountries", array( "testCountryId" ) );
-        oxTestModules::addFunction( 'oxbase', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::setRequestParameter("oxid", "testId");
+        modConfig::setRequestParameter("allcountries", array("testCountryId"));
+        oxTestModules::addFunction('oxbase', 'save', '{ throw new Exception( "save" ); }');
 
         // testing..
         try {
             $oView = new Payment_Country();
             $oView->addcountry();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "Error in Payment_Country::addcountry()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "Error in Payment_Country::addcountry()");
+
             return;
         }
-        $this->fail( "Error in Payment_Country::addcountry()" );
+        $this->fail("Error in Payment_Country::addcountry()");
     }
 
     /**
@@ -91,18 +93,19 @@ class Unit_Admin_PaymentCountryTest extends OxidTestCase
      */
     public function testRemovecountry()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
-        modConfig::setRequestParameter( "countries", array( "testCountryId" ) );
-        oxTestModules::addFunction( 'oxbase', 'delete', '{ throw new Exception( "delete" ); }');
+        modConfig::setRequestParameter("oxid", "testId");
+        modConfig::setRequestParameter("countries", array("testCountryId"));
+        oxTestModules::addFunction('oxbase', 'delete', '{ throw new Exception( "delete" ); }');
 
         // testing..
         try {
             $oView = new Payment_Country();
             $oView->removecountry();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "delete", $oExcp->getMessage(), "Error in Payment_Country::removecountry()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("delete", $oExcp->getMessage(), "Error in Payment_Country::removecountry()");
+
             return;
         }
-        $this->fail( "Error in Payment_Country::removecountry()" );
+        $this->fail("Error in Payment_Country::removecountry()");
     }
 }

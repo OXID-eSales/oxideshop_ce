@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for sysreq_main class
  */
 class Unit_Admin_sysreqmainTest extends OxidTestCase
 {
+
     /**
      * sysreq_main::Render() test case
      *
@@ -37,7 +38,7 @@ class Unit_Admin_sysreqmainTest extends OxidTestCase
     {
         // testing..
         $oView = new sysreq_main();
-        $this->assertEquals( 'sysreq_main.tpl', $oView->render() );
+        $this->assertEquals('sysreq_main.tpl', $oView->render());
     }
 
     /**
@@ -49,10 +50,10 @@ class Unit_Admin_sysreqmainTest extends OxidTestCase
     {
         // defining parameters
         $oView = new sysreq_main();
-        $this->assertEquals( 'pass', $oView->getModuleClass( 2 ) );
-        $this->assertEquals( 'pmin', $oView->getModuleClass( 1 ) );
-        $this->assertEquals( 'null', $oView->getModuleClass( -1 ) );
-        $this->assertEquals( 'fail', $oView->getModuleClass( 0 ) );
+        $this->assertEquals('pass', $oView->getModuleClass(2));
+        $this->assertEquals('pmin', $oView->getModuleClass(1));
+        $this->assertEquals('null', $oView->getModuleClass(-1));
+        $this->assertEquals('fail', $oView->getModuleClass(0));
     }
 
 
@@ -66,9 +67,9 @@ class Unit_Admin_sysreqmainTest extends OxidTestCase
         $sUrl = "http://www.oxidforge.org/wiki/Installation";
 
         $oSubj = new sysreq_main();
-        $this->assertEquals( $sUrl."#PHP_version_at_least_5.2.10", $oSubj->getReqInfoUrl( "php_version", false ) );
-        $this->assertEquals( $sUrl, $oSubj->getReqInfoUrl( "none", false ) );
-        $this->assertEquals( $sUrl."#Zend_Optimizer", $oSubj->getReqInfoUrl( "zend_optimizer", false ) );
+        $this->assertEquals($sUrl . "#PHP_version_at_least_5.2.10", $oSubj->getReqInfoUrl("php_version", false));
+        $this->assertEquals($sUrl, $oSubj->getReqInfoUrl("none", false));
+        $this->assertEquals($sUrl . "#Zend_Optimizer", $oSubj->getReqInfoUrl("zend_optimizer", false));
     }
 
 
@@ -81,6 +82,6 @@ class Unit_Admin_sysreqmainTest extends OxidTestCase
     {
         $oSubj = new sysreq_main();
         oxTestModules::addFunction('oxSysRequirements', 'getMissingTemplateBlocks', '{return "lalalax";}');
-        $this->assertEquals( 'lalalax', $oSubj->getMissingTemplateBlocks() );
+        $this->assertEquals('lalalax', $oSubj->getMissingTemplateBlocks());
     }
 }

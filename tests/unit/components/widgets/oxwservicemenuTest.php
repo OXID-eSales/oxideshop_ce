@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwServiceMenu class
  */
 class Unit_Components_Widgets_oxwServiceMenuTest extends OxidTestCase
 {
+
     /**
      * Testing oxwServiceMenu::getCompareItemsCnt()
      *
@@ -35,12 +36,12 @@ class Unit_Components_Widgets_oxwServiceMenuTest extends OxidTestCase
      */
     public function testGetCompareItemsCnt()
     {
-        $oCompare = $this->getMock( "compare", array( "getCompareItemsCnt" ) );
-        $oCompare->expects( $this->once() )->method( "getCompareItemsCnt" )->will( $this->returnValue( 10 ) );
-        oxTestModules::addModuleObject( 'compare', $oCompare );
+        $oCompare = $this->getMock("compare", array("getCompareItemsCnt"));
+        $oCompare->expects($this->once())->method("getCompareItemsCnt")->will($this->returnValue(10));
+        oxTestModules::addModuleObject('compare', $oCompare);
 
         $oServiceMenu = new oxwServiceMenu();
-        $this->assertEquals( 10, $oServiceMenu->getCompareItemsCnt() );
+        $this->assertEquals(10, $oServiceMenu->getCompareItemsCnt());
     }
 
     /**
@@ -50,13 +51,13 @@ class Unit_Components_Widgets_oxwServiceMenuTest extends OxidTestCase
      */
     public function testGetCompareItems()
     {
-        $aItems  = array( "testId1" => "testVal1", "testId2" => "testVal2", "testId3" => "testVal3" );
-        $oCompare = $this->getMock( "compare", array( "getCompareItems" ) );
-        $oCompare->expects( $this->once() )->method( "getCompareItems" )->will( $this->returnValue( $aItems ) );
-        oxTestModules::addModuleObject( 'compare', $oCompare );
+        $aItems = array("testId1" => "testVal1", "testId2" => "testVal2", "testId3" => "testVal3");
+        $oCompare = $this->getMock("compare", array("getCompareItems"));
+        $oCompare->expects($this->once())->method("getCompareItems")->will($this->returnValue($aItems));
+        oxTestModules::addModuleObject('compare', $oCompare);
 
         $oServiceMenu = new oxwServiceMenu();
-        $this->assertEquals( $aItems, $oServiceMenu->getCompareItems() );
+        $this->assertEquals($aItems, $oServiceMenu->getCompareItems());
     }
 
     /**
@@ -66,14 +67,14 @@ class Unit_Components_Widgets_oxwServiceMenuTest extends OxidTestCase
      */
     public function testGetCompareItemsInJson()
     {
-        $aItems  = array( "testId1" => "testVal1", "testId2" => "testVal2", "testId3" => "testVal3" );
+        $aItems = array("testId1" => "testVal1", "testId2" => "testVal2", "testId3" => "testVal3");
         $aResult = '{"testId1":"testVal1","testId2":"testVal2","testId3":"testVal3"}';
-        $oCompare = $this->getMock( "compare", array( "getCompareItems" ) );
-        $oCompare->expects( $this->once() )->method( "getCompareItems" )->will( $this->returnValue( $aItems ) );
-        oxTestModules::addModuleObject( 'compare', $oCompare );
+        $oCompare = $this->getMock("compare", array("getCompareItems"));
+        $oCompare->expects($this->once())->method("getCompareItems")->will($this->returnValue($aItems));
+        oxTestModules::addModuleObject('compare', $oCompare);
 
         $oServiceMenu = new oxwServiceMenu();
-        $this->assertEquals( $aResult, $oServiceMenu->getCompareItems( true ) );
+        $this->assertEquals($aResult, $oServiceMenu->getCompareItems(true));
     }
 
 }

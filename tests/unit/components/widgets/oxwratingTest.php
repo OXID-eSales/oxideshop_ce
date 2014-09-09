@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwCategoryTree class
  */
 class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
 {
+
     /**
      * Testing oxwRating::render()
      *
@@ -36,7 +37,7 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
     public function testRender()
     {
         $oRating = new oxwRating();
-        $this->assertEquals( 'widget/reviews/rating.tpl', $oRating->render() );
+        $this->assertEquals('widget/reviews/rating.tpl', $oRating->render());
     }
 
     /**
@@ -47,8 +48,8 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
     public function testGetRatingValue()
     {
         $oRating = new oxwRating();
-        $oRating->setViewParameters( array("dRatingValue" => 2.59) );
-        $this->assertEquals( 2.6, $oRating->getRatingValue() );
+        $oRating->setViewParameters(array("dRatingValue" => 2.59));
+        $this->assertEquals(2.6, $oRating->getRatingValue());
     }
 
     /**
@@ -59,8 +60,8 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
     public function testGetRatingCount()
     {
         $oRating = new oxwRating();
-        $oRating->setViewParameters( array("dRatingCount" => 6) );
-        $this->assertEquals( 6, $oRating->getRatingCount() );
+        $oRating->setViewParameters(array("dRatingCount" => 6));
+        $this->assertEquals(6, $oRating->getRatingCount());
     }
 
     /**
@@ -71,8 +72,8 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
     public function testCanRate()
     {
         $oRating = new oxwRating();
-        $oRating->setViewParameters( array("blCanRate" => true) );
-        $this->assertTrue( $oRating->canRate() );
+        $oRating->setViewParameters(array("blCanRate" => true));
+        $this->assertTrue($oRating->canRate());
     }
 
     /**
@@ -83,8 +84,8 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
     public function testGetArticleNId()
     {
         $oRating = new oxwRating();
-        $oRating->setViewParameters( array( 'anid' => 'testanid' ) );
-        $this->assertEquals( 'testanid', $oRating->getArticleNId() );
+        $oRating->setViewParameters(array('anid' => 'testanid'));
+        $this->assertEquals('testanid', $oRating->getArticleNId());
     }
 
     /**
@@ -95,8 +96,8 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
     public function testGetRateUrl_RateUrlParamSet_RateUrlValue()
     {
         $oRating = new oxwRating();
-        $oRating->setViewParameters( array( "sRateUrl" => "testUrl" ) );
-        $this->assertEquals( 'testUrl', $oRating->getRateUrl() );
+        $oRating->setViewParameters(array("sRateUrl" => "testUrl"));
+        $this->assertEquals('testUrl', $oRating->getRateUrl());
     }
 
     /**
@@ -107,7 +108,7 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
     public function testGetRateUrl_NoRateUrlParam_Null()
     {
         $oRating = new oxwRating();
-        $this->assertEquals( null, $oRating->getRateUrl() );
+        $this->assertEquals(null, $oRating->getRateUrl());
     }
 
 }

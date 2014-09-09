@@ -20,19 +20,20 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxcookieexceptionTest extends OxidTestCase
 {
+
     // We check on class name and message only - rest is not checked yet
     public function testGetString()
     {
         $sMsg = 'Erik was here..';
-        $oTestObject = oxNew( 'oxCookieException', $sMsg);
-        $this->assertEquals('oxCookieException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxCookieException', $sMsg);
+        $this->assertEquals('oxCookieException', get_class($oTestObject));
         $sStringOut = $oTestObject->getString();
-        $this->assertContains($sMsg, $sStringOut);                  // Message
-        $this->assertContains('oxCookieException', $sStringOut);   // Exception class name
+        $this->assertContains($sMsg, $sStringOut); // Message
+        $this->assertContains('oxCookieException', $sStringOut); // Exception class name
     }
 }

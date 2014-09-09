@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxthemeTest extends OxidTestCase
 {
+
     public function setup()
     {
         parent::setUp();
@@ -35,7 +36,7 @@ class Unit_Core_oxthemeTest extends OxidTestCase
         $oTheme = $this->getProxyClass('oxTheme');
         $this->assertTrue($oTheme->load('azure'));
 
-        foreach (array('id','title','description','thumbnail','version','author','active') as $key) {
+        foreach (array('id', 'title', 'description', 'thumbnail', 'version', 'author', 'active') as $key) {
             $this->assertNotNull($oTheme->getInfo($key));
         }
         $this->assertNull($oTheme->getInfo('asdasdasd'));
@@ -45,7 +46,7 @@ class Unit_Core_oxthemeTest extends OxidTestCase
     public function testGetList()
     {
         // Count themes in themes folder except admin
-        $iCount = count(glob(oxPATH."/application/views/*", GLOB_ONLYDIR)) - 1;
+        $iCount = count(glob(oxPATH . "/application/views/*", GLOB_ONLYDIR)) - 1;
 
         $aThemeList = $this->getProxyClass('oxTheme')->getList();
 
@@ -71,20 +72,20 @@ class Unit_Core_oxthemeTest extends OxidTestCase
     {
         $oConfig = $this->getMock('stdClass', array('saveShopConfVar'));
         $oConfig->expects($this->at(0))->method('saveShopConfVar')
-                ->with(
-                        $this->equalTo('str'),
-                        $this->equalTo('sTheme'),
-                        $this->equalTo('currentT')
-                        )
-                ->will($this->returnValue(null));
+            ->with(
+                $this->equalTo('str'),
+                $this->equalTo('sTheme'),
+                $this->equalTo('currentT')
+            )
+            ->will($this->returnValue(null));
 
         $oConfig->expects($this->at(1))->method('saveShopConfVar')
-                ->with(
-                        $this->equalTo('str'),
-                        $this->equalTo('sCustomTheme'),
-                        $this->equalTo('')
-                        )
-                ->will($this->returnValue(null));
+            ->with(
+                $this->equalTo('str'),
+                $this->equalTo('sCustomTheme'),
+                $this->equalTo('')
+            )
+            ->will($this->returnValue(null));
         $oTheme = $this->getMock('oxTheme', array('checkForActivationErrors', 'getConfig', 'getInfo'));
         $oTheme->expects($this->at(0))->method('checkForActivationErrors')->will($this->returnValue(false));
         $oTheme->expects($this->at(1))->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue(''));
@@ -98,20 +99,20 @@ class Unit_Core_oxthemeTest extends OxidTestCase
     {
         $oConfig = $this->getMock('stdClass', array('saveShopConfVar'));
         $oConfig->expects($this->at(0))->method('saveShopConfVar')
-                ->with(
-                        $this->equalTo('str'),
-                        $this->equalTo('sTheme'),
-                        $this->equalTo('parentT')
-                        )
-                ->will($this->returnValue(null));
+            ->with(
+                $this->equalTo('str'),
+                $this->equalTo('sTheme'),
+                $this->equalTo('parentT')
+            )
+            ->will($this->returnValue(null));
 
         $oConfig->expects($this->at(1))->method('saveShopConfVar')
-                ->with(
-                        $this->equalTo('str'),
-                        $this->equalTo('sCustomTheme'),
-                        $this->equalTo('currentT')
-                        )
-                ->will($this->returnValue(null));
+            ->with(
+                $this->equalTo('str'),
+                $this->equalTo('sCustomTheme'),
+                $this->equalTo('currentT')
+            )
+            ->will($this->returnValue(null));
         $oTheme = $this->getMock('oxTheme', array('checkForActivationErrors', 'getConfig', 'getInfo'));
         $oTheme->expects($this->at(0))->method('checkForActivationErrors')->will($this->returnValue(false));
         $oTheme->expects($this->at(1))->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue('parentT'));
@@ -125,10 +126,10 @@ class Unit_Core_oxthemeTest extends OxidTestCase
     {
         $oConfig = $this->getMock('stdClass', array('getConfigParam'));
         $oConfig->expects($this->at(0))->method('getConfigParam')
-                ->with(
-                        $this->equalTo('sCustomTheme')
-                        )
-                ->will($this->returnValue('custom'));
+            ->with(
+                $this->equalTo('sCustomTheme')
+            )
+            ->will($this->returnValue('custom'));
         $oTheme = $this->getMock('oxTheme', array('getConfig'));
         $oTheme->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
@@ -139,15 +140,15 @@ class Unit_Core_oxthemeTest extends OxidTestCase
     {
         $oConfig = $this->getMock('stdClass', array('getConfigParam'));
         $oConfig->expects($this->at(0))->method('getConfigParam')
-                ->with(
-                        $this->equalTo('sCustomTheme')
-                        )
-                ->will($this->returnValue(''));
+            ->with(
+                $this->equalTo('sCustomTheme')
+            )
+            ->will($this->returnValue(''));
         $oConfig->expects($this->at(1))->method('getConfigParam')
-                ->with(
-                        $this->equalTo('sTheme')
-                        )
-                ->will($this->returnValue('maint'));
+            ->with(
+                $this->equalTo('sTheme')
+            )
+            ->will($this->returnValue('maint'));
         $oTheme = $this->getMock('oxTheme', array('getConfig'));
         $oTheme->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
@@ -237,7 +238,7 @@ class Unit_Core_oxthemeTest extends OxidTestCase
     public function testGetId()
     {
         $oTheme = new oxTheme();
-        $oTheme->load( "azure" );
+        $oTheme->load("azure");
 
         $this->assertEquals('azure', $oTheme->getId());
     }

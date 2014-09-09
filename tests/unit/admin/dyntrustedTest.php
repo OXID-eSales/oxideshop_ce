@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for dyn_trusted class
  */
 class Unit_Admin_dyntrustedTest extends OxidTestCase
 {
+
     /**
      * dyn_trusted::Render() test case
      *
@@ -37,7 +38,7 @@ class Unit_Admin_dyntrustedTest extends OxidTestCase
     {
         // testing..
         $oView = new dyn_trusted();
-        $this->assertEquals( 'dyn_trusted.tpl', $oView->render() );
+        $this->assertEquals('dyn_trusted.tpl', $oView->render());
     }
 
     /**
@@ -47,15 +48,15 @@ class Unit_Admin_dyntrustedTest extends OxidTestCase
      */
     public function testSaveNothingToSave()
     {
-        modConfig::setRequestParameter( "aShopID_TrustedShops", array( "testValue" ) );
+        modConfig::setRequestParameter("aShopID_TrustedShops", array("testValue"));
 
-        $oView = $this->getMock( "dyn_trusted", array( "_checkTsId", "getConfig" ), array(), '', false );
-        $oView->expects( $this->once() )->method( '_checkTsId' );
-        $oView->expects( $this->never() )->method( 'getConfig' );
+        $oView = $this->getMock("dyn_trusted", array("_checkTsId", "getConfig"), array(), '', false);
+        $oView->expects($this->once())->method('_checkTsId');
+        $oView->expects($this->never())->method('getConfig');
 
         $oView->save();
-        $this->assertEquals( "1", $oView->getViewDataElement( "errorsaving" ) );
-        $this->assertNull( $oView->getViewDataElement( "aShopID_TrustedShops" ) );
+        $this->assertEquals("1", $oView->getViewDataElement("errorsaving"));
+        $this->assertNull($oView->getViewDataElement("aShopID_TrustedShops"));
     }
 
     /**
@@ -68,24 +69,24 @@ class Unit_Admin_dyntrustedTest extends OxidTestCase
         $oResults = new stdClass();
         $oResults->stateEnum = 'TEST';
         $oResults->typeEnum = 'EXCELLENCE';
-        modConfig::setRequestParameter( "aShopID_TrustedShops", array("test") );
-        modConfig::setRequestParameter( "aTsUser", 'testUser' );
-        modConfig::setRequestParameter( "aTsPassword", 'testPsw' );
-        modConfig::setRequestParameter( "tsSealActive", true );
-        modConfig::setRequestParameter( "tsTestMode", false );
+        modConfig::setRequestParameter("aShopID_TrustedShops", array("test"));
+        modConfig::setRequestParameter("aTsUser", 'testUser');
+        modConfig::setRequestParameter("aTsPassword", 'testPsw');
+        modConfig::setRequestParameter("tsSealActive", true);
+        modConfig::setRequestParameter("tsTestMode", false);
 
-        $oConfig = $this->getMock( "oxConfig", array( "getShopId", "saveShopConfVar" ) );
-        $oConfig->expects( $this->at(0) )->method( 'getShopId' )->will( $this->returnValue( "shopid" ) );
-        $oConfig->expects( $this->at(1) )->method( 'saveShopConfVar' )->with( $this->equalTo( "aarr" ), $this->equalTo( "iShopID_TrustedShops" ), $this->equalTo( array("test") ), $this->equalTo( "shopid" ) );
-        $oConfig->expects( $this->at(2) )->method( 'saveShopConfVar' )->with( $this->equalTo( "aarr" ), $this->equalTo( "aTsUser" ), $this->equalTo( 'testUser' ), $this->equalTo( "shopid" ) );
-        $oConfig->expects( $this->at(3) )->method( 'saveShopConfVar' )->with( $this->equalTo( "aarr" ), $this->equalTo( "aTsPassword" ), $this->equalTo( 'testPsw' ), $this->equalTo( "shopid" ) );
-        $oConfig->expects( $this->at(4) )->method( 'saveShopConfVar' )->with( $this->equalTo( "bool" ), $this->equalTo( "tsTestMode" ), $this->equalTo( false ), $this->equalTo( "shopid" ) );
-        $oConfig->expects( $this->at(5) )->method( 'saveShopConfVar' )->with( $this->equalTo( "bool" ), $this->equalTo( "tsSealActive" ), $this->equalTo( true ), $this->equalTo( "shopid" ) );
-        $oConfig->expects( $this->at(6) )->method( 'saveShopConfVar' )->with( $this->equalTo( "aarr" ), $this->equalTo( "tsSealType" ), $this->equalTo( array('EXCELLENCE') ), $this->equalTo( "shopid" ) );
+        $oConfig = $this->getMock("oxConfig", array("getShopId", "saveShopConfVar"));
+        $oConfig->expects($this->at(0))->method('getShopId')->will($this->returnValue("shopid"));
+        $oConfig->expects($this->at(1))->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("iShopID_TrustedShops"), $this->equalTo(array("test")), $this->equalTo("shopid"));
+        $oConfig->expects($this->at(2))->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aTsUser"), $this->equalTo('testUser'), $this->equalTo("shopid"));
+        $oConfig->expects($this->at(3))->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aTsPassword"), $this->equalTo('testPsw'), $this->equalTo("shopid"));
+        $oConfig->expects($this->at(4))->method('saveShopConfVar')->with($this->equalTo("bool"), $this->equalTo("tsTestMode"), $this->equalTo(false), $this->equalTo("shopid"));
+        $oConfig->expects($this->at(5))->method('saveShopConfVar')->with($this->equalTo("bool"), $this->equalTo("tsSealActive"), $this->equalTo(true), $this->equalTo("shopid"));
+        $oConfig->expects($this->at(6))->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("tsSealType"), $this->equalTo(array('EXCELLENCE')), $this->equalTo("shopid"));
 
-        $oView = $this->getMock( "dyn_trusted", array( "getConfig", "_checkTsId" ), array(), '', false );
-        $oView->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-        $oView->expects( $this->once() )->method( '_checkTsId' )->will( $this->returnValue( $oResults ) );
+        $oView = $this->getMock("dyn_trusted", array("getConfig", "_checkTsId"), array(), '', false);
+        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        $oView->expects($this->once())->method('_checkTsId')->will($this->returnValue($oResults));
 
         $oView->save();
     }
@@ -98,6 +99,6 @@ class Unit_Admin_dyntrustedTest extends OxidTestCase
     public function testGetViewId()
     {
         $oView = new dyn_trusted();
-        $this->assertEquals( 'dyn_interface', $oView->getViewId() );
+        $this->assertEquals('dyn_interface', $oView->getViewId());
     }
 }

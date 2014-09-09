@@ -24,6 +24,7 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleConfigsTest extends BaseModuleTestCase
 {
+
     public function providerModuleIsActive()
     {
         return array(
@@ -38,15 +39,15 @@ class Integration_Modules_ModuleConfigsTest extends BaseModuleTestCase
 
                 // Settings to be changed after first activation
                 array(
-                    array( 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'false'),
-                    array( 'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some different name'),
+                    array('name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'false'),
+                    array('name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some different name'),
                 ),
 
                 // environment asserts
                 array(
-                    'settings_values'        => array(
-                        array( 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => false),
-                        array( 'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some different name'),
+                    'settings_values' => array(
+                        array('name' => 'blCheckConfirm', 'type' => 'bool', 'value' => false),
+                        array('name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some different name'),
                     ),
                 ),
             ),
@@ -58,34 +59,34 @@ class Integration_Modules_ModuleConfigsTest extends BaseModuleTestCase
      *
      * @dataProvider providerModuleIsActive
      */
-    public function testModuleConfigs( $aInstallModules, $sModuleId, $aConfigsToChange, $aResultToAsserts )
+    public function testModuleConfigs($aInstallModules, $sModuleId, $aConfigsToChange, $aResultToAsserts)
     {
         $oEnvironment = new Environment();
-        $oEnvironment->prepare( $aInstallModules );
+        $oEnvironment->prepare($aInstallModules);
 
         $oModule = new oxModule();
-        $oModule->load( $sModuleId );
+        $oModule->load($sModuleId);
 
-        $this->_changeConfiguration( $sModuleId, $aConfigsToChange );
+        $this->_changeConfiguration($sModuleId, $aConfigsToChange);
 
         $this->_deactivateModule($oModule);
         $this->_activateModule($oModule);
 
-        $this->_runAsserts( $aResultToAsserts, $sModuleId );
+        $this->_runAsserts($aResultToAsserts, $sModuleId);
     }
 
     /**
      * @param $sModuleId
      * @param $aConfigsToChange
      */
-    private function _changeConfiguration( $sModuleId, $aConfigsToChange )
+    private function _changeConfiguration($sModuleId, $aConfigsToChange)
     {
         $oConfig = oxRegistry::getConfig();
-        foreach ( $aConfigsToChange as $aConfig ) {
-            $sConfigName = $aConfig[ 'name' ];
-            $sType       = $aConfig[ 'type' ];
-            $mValue      = $aConfig[ 'value' ];
-            $oConfig->saveShopConfVar( $sType, $sConfigName, $mValue, null, $sModuleId );
+        foreach ($aConfigsToChange as $aConfig) {
+            $sConfigName = $aConfig['name'];
+            $sType = $aConfig['type'];
+            $mValue = $aConfig['value'];
+            $oConfig->saveShopConfVar($sType, $sConfigName, $mValue, null, $sModuleId);
         }
     }
 }

@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Views_tplTest extends OxidTestCase
 {
+
     /**
      * Testing Tpl::render()
      *
@@ -32,9 +33,9 @@ class Unit_Views_tplTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "tpl", 'fulder/subfolder/test.tpl' );
+        modConfig::setRequestParameter("tpl", 'fulder/subfolder/test.tpl');
 
         $oView = new Tpl();
-        $this->assertEquals( 'custom/test.tpl', $oView->render() );
+        $this->assertEquals('custom/test.tpl', $oView->render());
     }
 }

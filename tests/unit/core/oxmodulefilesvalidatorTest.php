@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
 {
+
     /**
      * Module without any file is valid.
      */
@@ -86,12 +87,13 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         $sExtendFileName = 'class1';
         $sFileName = 'class2.php';
 
-        $sExtendFilePath = $this->createFile($sExtendFileName.'.php', $sFileContent);
+        $sExtendFilePath = $this->createFile($sExtendFileName . '.php', $sFileContent);
         $sFilesPath = $this->createFile($sFileName, $sFileContent);
         $sPathToModules = dirname($sFilesPath);
 
         $aExtendedFile = array('class1' => $sExtendFileName);
         $aFiles = array('class2' => $sFileName);
+
         return array(
             array($aExtendedFile, array(), $sPathToModules),
             array(array(), $aFiles, $sPathToModules),
@@ -128,10 +130,11 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
     {
         $aExtendedFileNotExist = array('class1' => 'vendor/module/path/class');
         $aFilesNotExist = array('class2' => 'vendor/module/path/class.php');
+
         return array(
             array($aExtendedFileNotExist, array(), array('extensions' => $aExtendedFileNotExist)),
             array(array(), $aFilesNotExist, array('files' => $aFilesNotExist)),
-            array($aExtendedFileNotExist, $aFilesNotExist, array( 'extensions' => $aExtendedFileNotExist, 'files' => $aFilesNotExist)),
+            array($aExtendedFileNotExist, $aFilesNotExist, array('extensions' => $aExtendedFileNotExist, 'files' => $aFilesNotExist)),
             array(array(), array(), array()),
         );
     }
@@ -181,7 +184,7 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
 
         $this->assertSame(
             array('extensions' =>
-                array('class2' => 'vendor/module/path/class2')
+                      array('class2' => 'vendor/module/path/class2')
             ), $oModuleFilesValidator->getMissingFiles()
         );
     }

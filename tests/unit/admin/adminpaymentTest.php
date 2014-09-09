@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Admin_Payment class
  */
 class Unit_Admin_AdminPaymentTest extends OxidTestCase
 {
+
     /**
      * Admin_Payment::Render() test case
      *
@@ -36,7 +37,7 @@ class Unit_Admin_AdminPaymentTest extends OxidTestCase
     public function testRender()
     {
         $oView = new Admin_Payment();
-        $this->assertEquals( 'admin_payment.tpl', $oView->render() );
+        $this->assertEquals('admin_payment.tpl', $oView->render());
     }
 
 }

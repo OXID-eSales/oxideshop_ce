@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
+require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
 
 /**
  * oxArticle integration test
@@ -44,37 +44,37 @@ class Integration_Article_ArticleTest extends OxidTestCase
 
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleParent');
-        $oProduct->oxarticles__oxshopid = new oxField( 1 );
+        $oProduct->oxarticles__oxshopid = new oxField(1);
         $oProduct->save();
 
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleChild1');
-        $oProduct->oxarticles__oxshopid = new oxField( 1 );
-        $oProduct->oxarticles__oxparentid = new oxField( '_testArticleParent' );
+        $oProduct->oxarticles__oxshopid = new oxField(1);
+        $oProduct->oxarticles__oxparentid = new oxField('_testArticleParent');
         $oProduct->save();
 
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleChild2');
-        $oProduct->oxarticles__oxshopid = new oxField( 1 );
-        $oProduct->oxarticles__oxparentid = new oxField( '_testArticleParent' );
+        $oProduct->oxarticles__oxshopid = new oxField(1);
+        $oProduct->oxarticles__oxparentid = new oxField('_testArticleParent');
         $oProduct->save();
 
         $oProduct = new oxArticle();
-        $oProduct->load( '_testArticleParent' );
-        foreach( $aParentFields as $sField ) {
+        $oProduct->load('_testArticleParent');
+        foreach ($aParentFields as $sField) {
             $oProduct->$sField = new oxField(1);
         }
         $oProduct->save();
 
         $oProductChild1 = new oxArticle();
-        $oProductChild1->load( '_testArticleChild1' );
+        $oProductChild1->load('_testArticleChild1');
 
         $oProductChild2 = new oxArticle();
-        $oProductChild2->load( '_testArticleChild2' );
+        $oProductChild2->load('_testArticleChild2');
 
-        foreach( $aParentFields as $sField ) {
-            $this->assertEquals(1, $oProductChild1->$sField->value );
-            $this->assertEquals(1, $oProductChild2->$sField->value );
+        foreach ($aParentFields as $sField) {
+            $this->assertEquals(1, $oProductChild1->$sField->value);
+            $this->assertEquals(1, $oProductChild2->$sField->value);
         }
     }
 
@@ -86,23 +86,23 @@ class Integration_Article_ArticleTest extends OxidTestCase
 
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleParent');
-        $oProduct->oxarticles__oxshopid = new oxField( 1 );
-        foreach( $aParentFields as $sField ) {
+        $oProduct->oxarticles__oxshopid = new oxField(1);
+        foreach ($aParentFields as $sField) {
             $oProduct->$sField = new oxField(1);
         }
         $oProduct->save();
 
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleChild');
-        $oProduct->oxarticles__oxshopid = new oxField( 1 );
-        $oProduct->oxarticles__oxparentid = new oxField( '_testArticleParent' );
+        $oProduct->oxarticles__oxshopid = new oxField(1);
+        $oProduct->oxarticles__oxparentid = new oxField('_testArticleParent');
         $oProduct->save();
 
         $oProductChild = new oxArticle();
-        $oProductChild->load( '_testArticleChild' );
+        $oProductChild->load('_testArticleChild');
 
-        foreach( $aParentFields as $sField ) {
-            $this->assertEquals(1, $oProductChild->$sField->value );
+        foreach ($aParentFields as $sField) {
+            $this->assertEquals(1, $oProductChild->$sField->value);
         }
     }
 
@@ -115,37 +115,37 @@ class Integration_Article_ArticleTest extends OxidTestCase
 
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleParent');
-        $oProduct->oxarticles__oxshopid = new oxField( 1 );
-        foreach( $aParentFields as $sField ) {
+        $oProduct->oxarticles__oxshopid = new oxField(1);
+        foreach ($aParentFields as $sField) {
             $oProduct->$sField = new oxField(1);
         }
         $oProduct->save();
 
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleChild');
-        $oProduct->oxarticles__oxshopid = new oxField( 1 );
-        $oProduct->oxarticles__oxparentid = new oxField( '_testArticleParent' );
+        $oProduct->oxarticles__oxshopid = new oxField(1);
+        $oProduct->oxarticles__oxparentid = new oxField('_testArticleParent');
         $oProduct->save();
 
         //values from parent
-        foreach( $aParentFields as $sField ) {
-            $this->assertEquals(1, $oProduct->$sField->value );
+        foreach ($aParentFields as $sField) {
+            $this->assertEquals(1, $oProduct->$sField->value);
         }
 
         // updating child
         $oProductChild = new oxArticle();
-        $oProductChild->load( '_testArticleChild' );
-        foreach( $aParentFields as $sField ) {
+        $oProductChild->load('_testArticleChild');
+        foreach ($aParentFields as $sField) {
             $oProductChild->$sField = new oxField(0);
         }
         $oProductChild->save();
 
         //values do not changed, from parent
         $oProductChild = new oxArticle();
-        $oProductChild->load( '_testArticleChild' );
+        $oProductChild->load('_testArticleChild');
 
-        foreach( $aParentFields as $sField ) {
-            $this->assertEquals(1, $oProductChild->$sField->value );
+        foreach ($aParentFields as $sField) {
+            $this->assertEquals(1, $oProductChild->$sField->value);
         }
     }
 

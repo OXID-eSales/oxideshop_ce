@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Shop_Main class
  */
 class Unit_Admin_ShopMainTest extends OxidTestCase
 {
+
     /**
      * Shop_Main::Render() test case
      *
@@ -38,8 +39,8 @@ class Unit_Admin_ShopMainTest extends OxidTestCase
         // testing..
         $oView = new Shop_Main();
 
-        modConfig::setRequestParameter( "oxid", oxRegistry::getConfig()->getBaseShopId() );
-        $this->assertEquals( 'shop_main.tpl', $oView->render() );
+        modConfig::setRequestParameter("oxid", oxRegistry::getConfig()->getBaseShopId());
+        $this->assertEquals('shop_main.tpl', $oView->render());
     }
 
     /**
@@ -50,17 +51,18 @@ class Unit_Admin_ShopMainTest extends OxidTestCase
     public function testSaveSuccess()
     {
         // testing..
-        oxTestModules::addFunction( 'oxshop', 'save', '{ throw new Exception( "save" ); }');
+        oxTestModules::addFunction('oxshop', 'save', '{ throw new Exception( "save" ); }');
 
         // testing..
         try {
             $oView = new Shop_Main();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Shop_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Shop_Main::save()");
+
             return;
         }
-        $this->fail( "error in Shop_Main::save()" );
+        $this->fail("error in Shop_Main::save()");
     }
 
 }

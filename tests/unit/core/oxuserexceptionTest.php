@@ -20,18 +20,19 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxuserexceptionTest extends OxidTestCase
 {
+
     // We check on class name (exception class) and message only - rest is not checked yet
     public function testGetString()
     {
         $sMsg = 'Erik was here..';
-        $oTestObject = oxNew( 'oxUserException', $sMsg);
-        $this->assertEquals('oxUserException', get_class($oTestObject) );
-        $sStringOut = $oTestObject->getString();// (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
+        $oTestObject = oxNew('oxUserException', $sMsg);
+        $this->assertEquals('oxUserException', get_class($oTestObject));
+        $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
         $this->assertContains($sMsg, $sStringOut);
         $this->assertContains('oxUserException', $sStringOut);
     }

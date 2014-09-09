@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Order_Article class
  */
 class Unit_Admin_OrderDownloadsTest extends OxidTestCase
 {
+
     /**
      * Initialize the fixture.
      *
@@ -38,27 +39,27 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
         parent::setUp();
         $myConfig = oxRegistry::getConfig();
 
-        modConfig::getInstance()->setConfigParam( 'blPerfNoBasketSaving', true );
+        modConfig::getInstance()->setConfigParam('blPerfNoBasketSaving', true);
 
         // adding test order
         $oOrder = new oxbase();
-        $oOrder->init( 'oxorder' );
-        $oOrder->setId( '_testOrder' );
-        $oOrder->oxorder__oxuserid = new oxField( 'oxdefaultadmin' );
+        $oOrder->init('oxorder');
+        $oOrder->setId('_testOrder');
+        $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->save();
 
         // adding test article
         $oArticle = new oxbase();
-        $oArticle->init( 'oxarticles' );
-        $oArticle->load( '1126' );
-        $oArticle->setId( '_testArticle' );
-        $oArticle->oxarticles__oxartnum = new oxField( '_testArticle' );
-        $oArticle->oxarticles__oxstock  = new oxField( 100 );
+        $oArticle->init('oxarticles');
+        $oArticle->load('1126');
+        $oArticle->setId('_testArticle');
+        $oArticle->oxarticles__oxartnum = new oxField('_testArticle');
+        $oArticle->oxarticles__oxstock = new oxField(100);
         $oArticle->save();
 
         //set order
-        $oOrder = oxNew( "oxOrder" );
-        $oOrder->setId( '_testOrderId1' );
+        $oOrder = oxNew("oxOrder");
+        $oOrder->setId('_testOrderId1');
         $oOrder->oxorder__oxshopid = new oxField($myConfig->getShopId(), oxField::T_RAW);
         $oOrder->oxorder__oxuserid = new oxField("_testUserId", oxField::T_RAW);
         $oOrder->oxorder__oxbillcountryid = new oxField('10', oxField::T_RAW);
@@ -78,7 +79,7 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDB()->execute( 'delete from oxorderfiles where oxid="_testOrderFile"' );
+        oxDb::getDB()->execute('delete from oxorderfiles where oxid="_testOrderFile"');
 
         parent::tearDown();
     }
@@ -90,16 +91,16 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
      */
     public function testGetEditObject()
     {
-        modConfig::setRequestParameter( "oxid", null );
+        modConfig::setRequestParameter("oxid", null);
 
         $oView = new Order_Downloads();
-        $this->assertNull( $oView->getEditObject() );
+        $this->assertNull($oView->getEditObject());
 
-        modConfig::setRequestParameter( "oxid", "_testOrderId1" );
+        modConfig::setRequestParameter("oxid", "_testOrderId1");
 
         $oView = new Order_Downloads();
         $oOrderFiles = $oView->getEditObject();
-        $this->assertTrue( $oOrderFiles instanceof oxorderfilelist );
+        $this->assertTrue($oOrderFiles instanceof oxorderfilelist);
     }
 
     /**
@@ -109,22 +110,24 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
      */
     public function testGetProductList()
     {
-        modConfig::setRequestParameter( "oxorderfileid", "_testOrderFile" );
-        oxDb::getDB()->execute( 'insert into oxorderfiles set oxid="_testOrderFile", oxfileid="fileId", oxmaxdownloadcount="10", oxlinkexpirationtime="24",
-                         oxdownloadexpirationtime="12", oxvaliduntil="2011-10-20 12:12:00", oxdownloadcount="2", oxfirstdownload="2011-10-10", oxlastdownload="2011-10-20"' );
+        modConfig::setRequestParameter("oxorderfileid", "_testOrderFile");
+        oxDb::getDB()->execute(
+            'insert into oxorderfiles set oxid="_testOrderFile", oxfileid="fileId", oxmaxdownloadcount="10", oxlinkexpirationtime="24",
+                                    oxdownloadexpirationtime="12", oxvaliduntil="2011-10-20 12:12:00", oxdownloadcount="2", oxfirstdownload="2011-10-10", oxlastdownload="2011-10-20"'
+        );
 
         $sNow = oxRegistry::get("oxUtilsDate")->getTime();
-        $sDate = date( 'Y-m-d H:i:s', $sNow );
+        $sDate = date('Y-m-d H:i:s', $sNow);
 
         $oView = new Order_Downloads();
         $oView->resetDownloadLink();
 
         $oOrderFile = new oxOrderFile();
-        $oOrderFile->load( "_testOrderFile" );
-        $this->assertEquals( '0', $oOrderFile->oxorderfiles__oxdownloadcount->value );
-        $this->assertTrue( $oOrderFile->oxorderfiles__oxvaliduntil->value >= $sDate );
-        $this->assertEquals( '0000-00-00 00:00:00', $oOrderFile->oxorderfiles__oxfirstdownload->value );
-        $this->assertEquals( '0000-00-00 00:00:00', $oOrderFile->oxorderfiles__oxlastdownload->value );
+        $oOrderFile->load("_testOrderFile");
+        $this->assertEquals('0', $oOrderFile->oxorderfiles__oxdownloadcount->value);
+        $this->assertTrue($oOrderFile->oxorderfiles__oxvaliduntil->value >= $sDate);
+        $this->assertEquals('0000-00-00 00:00:00', $oOrderFile->oxorderfiles__oxfirstdownload->value);
+        $this->assertEquals('0000-00-00 00:00:00', $oOrderFile->oxorderfiles__oxlastdownload->value);
 
     }
 

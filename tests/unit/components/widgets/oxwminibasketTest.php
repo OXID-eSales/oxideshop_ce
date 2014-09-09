@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwMiniBasket class
  */
 class Unit_Components_Widgets_oxwMiniBasketTest extends OxidTestCase
 {
+
 
     /**
      * Testing oxwMiniBasket::render()
@@ -37,6 +38,6 @@ class Unit_Components_Widgets_oxwMiniBasketTest extends OxidTestCase
     public function testRender()
     {
         $oWMiniBasket = new oxwMiniBasket();
-        $this->assertEquals( 'widget/header/minibasket.tpl', $oWMiniBasket->render() );
+        $this->assertEquals('widget/header/minibasket.tpl', $oWMiniBasket->render());
     }
 }

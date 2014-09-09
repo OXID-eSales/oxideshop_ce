@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxexceptionToDisplayTest extends OxidTestCase
 {
+
     public function testSetGetStackTrace()
     {
         $oTestObject = oxNew('oxExceptionToDisplay');
@@ -34,29 +35,29 @@ class Unit_Core_oxexceptionToDisplayTest extends OxidTestCase
 
     public function testSetGetValues()
     {
-        $oTestObject = oxNew( 'oxExceptionToDisplay' );
-        $oTestObject->setValues( array(1=>'test1', 2=>'test2') );
-        $this->assertEquals( 'test2', $oTestObject->getValue(2) );
+        $oTestObject = oxNew('oxExceptionToDisplay');
+        $oTestObject->setValues(array(1 => 'test1', 2 => 'test2'));
+        $this->assertEquals('test2', $oTestObject->getValue(2));
     }
 
     public function testAddGetValues()
     {
-        $oTestObject = oxNew( 'oxExceptionToDisplay' );
-        $oTestObject->setValues( array(1=>'test1', 2=>'test2') );
-        $oTestObject->addValue( 4, 'test4' );
-        $this->assertEquals( 'test4', $oTestObject->getValue(4) );
+        $oTestObject = oxNew('oxExceptionToDisplay');
+        $oTestObject->setValues(array(1 => 'test1', 2 => 'test2'));
+        $oTestObject->addValue(4, 'test4');
+        $this->assertEquals('test4', $oTestObject->getValue(4));
     }
 
     public function testSetGetExceptionType()
     {
-        $oTestObject = oxNew( 'oxExceptionToDisplay' );
-        $oTestObject->setExceptionType( 'test type' );
-        $this->assertEquals( 'test type', $oTestObject->getErrorClassType() );
+        $oTestObject = oxNew('oxExceptionToDisplay');
+        $oTestObject->setExceptionType('test type');
+        $this->assertEquals('test type', $oTestObject->getErrorClassType());
     }
 
     public function testSetDebug()
     {
-        $oTestObject = $this->getProxyClass( "oxExceptionToDisplay" );
+        $oTestObject = $this->getProxyClass("oxExceptionToDisplay");
         $oTestObject->setDebug(2);
         //nothing should happen in unittests
         $this->assertEquals(2, $oTestObject->getNonPublicVar('_blDebug'));
@@ -64,48 +65,48 @@ class Unit_Core_oxexceptionToDisplayTest extends OxidTestCase
 
     public function testSetGetMessage()
     {
-        $oTestObject = oxNew( 'oxExceptionToDisplay' );
-        $oTestObject->setMessage( "TEST_EXCEPTION" );
+        $oTestObject = oxNew('oxExceptionToDisplay');
+        $oTestObject->setMessage("TEST_EXCEPTION");
         //nothing should happen in unittests
-        $this->assertEquals( "TEST_EXCEPTION", $oTestObject->getOxMessage() );
+        $this->assertEquals("TEST_EXCEPTION", $oTestObject->getOxMessage());
     }
 
     public function testSetGetMessage_withStringArguments()
     {
-        $oTestObject = oxNew( 'oxExceptionToDisplay' );
+        $oTestObject = oxNew('oxExceptionToDisplay');
         $oTestObject->setMessageArgs(100, "200", "mineralinis");
-        $oTestObject->setMessage( "TEST %d ERROR %s STRING %s" );
+        $oTestObject->setMessage("TEST %d ERROR %s STRING %s");
 
-        $this->assertEquals( "TEST 100 ERROR 200 STRING mineralinis", $oTestObject->getOxMessage() );
+        $this->assertEquals("TEST 100 ERROR 200 STRING mineralinis", $oTestObject->getOxMessage());
     }
 
     public function testSetGetMessageIfDebugOn()
     {
-        $oTestObject = oxNew( 'oxExceptionToDisplay' );
-        $oTestObject->setMessage( "TEST_EXCEPTION" );
+        $oTestObject = oxNew('oxExceptionToDisplay');
+        $oTestObject->setMessage("TEST_EXCEPTION");
         $oTestObject->setDebug(1);
         //nothing should happen in unittests
-        $this->assertEquals( $oTestObject, $oTestObject->getOxMessage() );
+        $this->assertEquals($oTestObject, $oTestObject->getOxMessage());
     }
 
     public function testToString()
     {
-        oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return '.(time()-90).';}');
-        $oTestObject = oxNew( 'oxExceptionToDisplay' );
-        $oTestObject->setExceptionType( 'testType' );
+        oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . (time() - 90) . ';}');
+        $oTestObject = oxNew('oxExceptionToDisplay');
+        $oTestObject->setExceptionType('testType');
         $oTestObject->setStackTrace('testStackTrace');
-        $oTestObject->setValues( array(1=>'test1', 2=>'test2') );
-        $oTestObject->setMessage( "TEST_EXCEPTION" );
-        $sRet  = "testType (time: ". date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()) ."): TEST_EXCEPTION \n Stack Trace: testStackTrace\n";
+        $oTestObject->setValues(array(1 => 'test1', 2 => 'test2'));
+        $oTestObject->setMessage("TEST_EXCEPTION");
+        $sRet = "testType (time: " . date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()) . "): TEST_EXCEPTION \n Stack Trace: testStackTrace\n";
         $sRet .= "1 => test1\n";
         $sRet .= "2 => test2\n";
         //nothing should happen in unittests
-        $this->assertEquals( $sRet, $oTestObject->__toString() );
+        $this->assertEquals($sRet, $oTestObject->__toString());
     }
 
     public function testSetMessageArgs()
     {
-        $oTestObject = $this->getProxyClass( "oxExceptionToDisplay" );
+        $oTestObject = $this->getProxyClass("oxExceptionToDisplay");
         $oTestObject->setMessageArgs(100, "200", "testString");
 
         $this->assertEquals(array(100, "200", "testString"), $oTestObject->getNonPublicVar('_aMessageArgs'));

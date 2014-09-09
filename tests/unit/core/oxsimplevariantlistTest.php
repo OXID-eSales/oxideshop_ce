@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 //class should be named Unit_oxSimpleVariantListTest
 //but GAAAH IT DOES NOT WORK somehow, just because of the name??????
@@ -62,13 +62,13 @@ class Unit_Core_oxsimplevariantlistTest extends OxidTestCase
         $oParent->load($sArtId);
         $oVariantList = $oParent->getVariants();
 
-        $this->assertTrue( $oVariantList instanceof oxlist );
-        $this->assertTrue( $oVariantList->offsetExists( $sVariantId ) );
+        $this->assertTrue($oVariantList instanceof oxlist);
+        $this->assertTrue($oVariantList->offsetExists($sVariantId));
 
-        $oVariant = $oVariantList->offsetGet( $sVariantId );
-        $oVariant->oxarticles__oxprice = new oxField( 0 );
-        $oVariant->setPrice( null );
+        $oVariant = $oVariantList->offsetGet($sVariantId);
+        $oVariant->oxarticles__oxprice = new oxField(0);
+        $oVariant->setPrice(null);
 
-        $this->assertEquals( $sArtPrice, $oVariant->getPrice()->getBruttoPrice() );
+        $this->assertEquals($sArtPrice, $oVariant->getPrice()->getBruttoPrice());
     }
 }

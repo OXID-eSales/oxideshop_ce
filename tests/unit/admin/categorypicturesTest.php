@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Category_Pictures class
  */
 class Unit_Admin_CategoryPicturesTest extends OxidTestCase
 {
+
     /**
      * Category_Pictures::Render() test case
      *
@@ -41,9 +42,9 @@ class Unit_Admin_CategoryPicturesTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue( $aViewData["edit"] instanceof oxCategory );
+        $this->assertTrue($aViewData["edit"] instanceof oxCategory);
 
-        $this->assertEquals( 'category_pictures.tpl', $sTplName );
+        $this->assertEquals('category_pictures.tpl', $sTplName);
     }
 
 }

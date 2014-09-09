@@ -20,24 +20,25 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxexceptionTest extends OxidTestCase
 {
+
     // 1. testing constructor works .. ok, its a pseudo test ;-)
     public function testConstruct()
     {
-        $oTestObject = oxNew( 'oxException');
-        $this->assertEquals('oxException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxException');
+        $this->assertEquals('oxException', get_class($oTestObject));
     }
 
     // 2. testing constructor with message.
     public function testConstructWithMessage()
     {
         $sMsg = 'Erik was here..';
-        $oTestObject = oxNew( 'oxException', $sMsg);
-        $this->assertEquals('oxException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxException', $sMsg);
+        $this->assertEquals('oxException', get_class($oTestObject));
         $this->assertTrue($oTestObject->getMessage() === $sMsg);
     }
 
@@ -53,20 +54,21 @@ class Unit_Core_oxexceptionTest extends OxidTestCase
     {
         $sMsg = 'Erik was here..';
         $sFileName = 'oxexceptionsTest_test_debugOut.txt';
-        $oTestObject = oxNew( 'oxException', $sMsg);
+        $oTestObject = oxNew('oxException', $sMsg);
         $oTestObject->setLogFileName($sFileName);
-        $this->assertEquals('oxException', get_class($oTestObject) );
+        $this->assertEquals('oxException', get_class($oTestObject));
 
         try {
-            $oTestObject->debugOut(1);  // actuall test
+            $oTestObject->debugOut(1); // actuall test
         } catch (Exception $e) {
             // Lets try to delete an eventual left over file
-            unlink(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
+            unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
             $this->fail();
+
             return;
         }
-        $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
-        unlink(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
+        $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+        unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
         // we check on class name and message - rest is not checked yet
         $this->assertContains($sMsg, $sFile);
         $this->assertContains('oxException', $sFile);
@@ -80,20 +82,21 @@ class Unit_Core_oxexceptionTest extends OxidTestCase
     {
         $sMsg = 'Erik was here..';
         $sFileName = 'oxexceptionsTest_test_debugOut.txt';
-        $oTestObject = oxNew( 'oxException', $sMsg);
+        $oTestObject = oxNew('oxException', $sMsg);
         $oTestObject->setLogFileName($sFileName);
-        $this->assertEquals('oxException', get_class($oTestObject) );
+        $this->assertEquals('oxException', get_class($oTestObject));
 
         try {
-            $oTestObject->debugOut(0);  // actuall test
+            $oTestObject->debugOut(0); // actuall test
         } catch (Exception $e) {
             // Lets try to delete an eventual left over file
-            unlink(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
+            unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
             $this->fail();
+
             return;
         }
-        $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
-        unlink(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
+        $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+        unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
         // we check on class name and message - rest is not checked yet
         $this->assertContains($sMsg, $sFile);
         $this->assertContains('oxException', $sFile);
@@ -103,24 +106,24 @@ class Unit_Core_oxexceptionTest extends OxidTestCase
     public function testSetMessage()
     {
         $sMsg = 'Erik was here..';
-        $oTestObject = oxNew( 'oxException');
-        $this->assertEquals('oxException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxException');
+        $this->assertEquals('oxException', get_class($oTestObject));
         $oTestObject->setMessage($sMsg);
         $this->assertTrue($oTestObject->getMessage() === $sMsg);
     }
 
     public function testSetIsRenderer()
     {
-        $oTestObject = oxNew( 'oxException');
-        $this->assertEquals('oxException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxException');
+        $this->assertEquals('oxException', get_class($oTestObject));
         $oTestObject->setRenderer();
         $this->assertTrue($oTestObject->isRenderer());
     }
 
     public function testSetIsNotCaught()
     {
-        $oTestObject = oxNew( 'oxException');
-        $this->assertEquals('oxException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxException');
+        $this->assertEquals('oxException', get_class($oTestObject));
         $oTestObject->setNotCaught();
         $this->assertTrue($oTestObject->isNotCaught());
     }
@@ -129,18 +132,18 @@ class Unit_Core_oxexceptionTest extends OxidTestCase
     public function testGetString()
     {
         $sMsg = 'Erik was here..';
-        $oTestObject = oxNew( 'oxException', $sMsg);
-        $this->assertEquals('oxException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxException', $sMsg);
+        $this->assertEquals('oxException', get_class($oTestObject));
         $oTestObject->setRenderer();
         $oTestObject->setNotCaught();
-        $sStringOut = $oTestObject->getString();// (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
+        $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
         $this->assertContains($sMsg, $sStringOut);
         $this->assertContains('oxException', $sStringOut);
     }
 
     public function testGetValues()
     {
-        $oTestObject = oxNew( 'oxException');
+        $oTestObject = oxNew('oxException');
         $aRes = $oTestObject->getValues();
         $this->assertEquals(0, count($aRes));
     }

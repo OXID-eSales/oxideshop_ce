@@ -20,15 +20,16 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxobjectexceptionTest extends OxidTestCase
 {
+
     public function testSetGetObject()
     {
-        $oTestObject = oxNew( 'oxObjectException');
-        $this->assertEquals('oxObjectException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxObjectException');
+        $this->assertEquals('oxObjectException', get_class($oTestObject));
         $oObject = new stdClass();
         $oObject->sAtrib = "Atribute";
         $oTestObject->setObject($oObject);
@@ -39,11 +40,11 @@ class Unit_Core_oxobjectexceptionTest extends OxidTestCase
     public function testGetString()
     {
         $sMsg = 'Erik was here..';
-        $oTestObject = oxNew( 'oxObjectException', $sMsg);
-        $this->assertEquals('oxObjectException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxObjectException', $sMsg);
+        $this->assertEquals('oxObjectException', get_class($oTestObject));
         $oObject = new stdClass();
         $oTestObject->setObject($oObject);
-        $sStringOut = $oTestObject->getString();// (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
+        $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
         $this->assertContains($sMsg, $sStringOut);
         $this->assertContains('oxObjectException', $sStringOut);
         $this->assertContains(get_class($oObject), $sStringOut);

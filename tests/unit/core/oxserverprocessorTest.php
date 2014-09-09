@@ -25,6 +25,31 @@
  */
 class Unit_Core_oxServerProcessorTest extends OxidTestCase
 {
+
+    public function testConstructorCreatesDefaultObjectServerNodesManager()
+    {
+        $oServerProcessor = new oxServerProcessor();
+        $this->assertInstanceOf('oxServersManager', $oServerProcessor->UNITgetServerNodesManager());
+    }
+
+    public function testConstructorCreatesDefaultObjectServerNodeChecker()
+    {
+        $oServerProcessor = new oxServerProcessor();
+        $this->assertInstanceOf('oxServerChecker', $oServerProcessor->UNITgetServerNodeChecker());
+    }
+
+    public function testConstructorCreatesDefaultObjectUtilsServer()
+    {
+        $oServerProcessor = new oxServerProcessor();
+        $this->assertInstanceOf('oxUtilsServer', $oServerProcessor->UNITgetUtilsServer());
+    }
+
+    public function testConstructorCreatesDefaultObjectUtilsDate()
+    {
+        $oServerProcessor = new oxServerProcessor();
+        $this->assertInstanceOf('oxUtilsDate', $oServerProcessor->UNITgetUtilsDate());
+    }
+
     public function testNodeInformationNotUpdatedIfNotNeed0()
     {
         $oNode = $this->getMock('oxApplicationServer');
@@ -77,7 +102,6 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $oNode->setId($sServerId);
         $oNode->setIp($sIP);
         $oNode->setTimestamp($sCurrentTime);
-        $oNode->setIsValid();
 
         $oNodeFrontend = clone($oNode);
         $oNodeFrontend->setLastFrontendUsage($sCurrentTime);
@@ -92,11 +116,11 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
     }
 
     /**
-     * @param bool $blAdmin
+     * @param bool                $blAdmin
      * @param oxApplicationServer $oExpectedNode
-     * @param string $sServerId
-     * @param string $sCurrentTime
-     * @param string $sIP
+     * @param string              $sServerId
+     * @param string              $sCurrentTime
+     * @param string              $sIP
      *
      * @dataProvider providerNodeInformationUpdatedWhenNeed
      */

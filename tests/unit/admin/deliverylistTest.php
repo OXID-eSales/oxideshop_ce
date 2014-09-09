@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Delivery_List class
  */
 class Unit_Admin_DeliveryListTest extends OxidTestCase
 {
+
     /**
      * Delivery_List::Render() test case
      *
@@ -46,10 +47,10 @@ class Unit_Admin_DeliveryListTest extends OxidTestCase
 
         $oView->init();
 
-        $this->assertEquals( 'oxdelivery', $oView->getNonPublicVar( "_sListClass" ) );
-        $this->assertEquals( 'oxdeliverylist', $oView->getNonPublicVar( "_sListType" ) );
-        $this->assertEquals( array( "oxdelivery" => array( "oxsort" => "asc" ) ), $oView->getListSorting() );
-        $this->assertEquals( 'delivery_list.tpl', $oView->render() );
+        $this->assertEquals('oxdelivery', $oView->getNonPublicVar("_sListClass"));
+        $this->assertEquals('oxdeliverylist', $oView->getNonPublicVar("_sListType"));
+        $this->assertEquals(array("oxdelivery" => array("oxsort" => "asc")), $oView->getListSorting());
+        $this->assertEquals('delivery_list.tpl', $oView->render());
     }
 
 }

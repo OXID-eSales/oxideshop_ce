@@ -20,44 +20,45 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/function.oxid_include_widget.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'core/smarty/plugins/function.oxid_include_widget.php';
 
 class Unit_Maintenance_pluginSmartyoxIncludeWidgetTest extends OxidTestCase
 {
+
     public function testIncludeIfHTMLCachingIsOn()
     {
             return;
-        $oReverseProxyBackend = $this->getMock( "oxReverseProxyBackend", array( "isActive" ) );
-        $oReverseProxyBackend->expects( $this->any() )->method( "isActive" )->will( $this->returnValue( true ) );
+        $oReverseProxyBackend = $this->getMock("oxReverseProxyBackend", array("isActive"));
+        $oReverseProxyBackend->expects($this->any())->method("isActive")->will($this->returnValue(true));
 
-        oxRegistry::set( "oxReverseProxyBackend", $oReverseProxyBackend );
+        oxRegistry::set("oxReverseProxyBackend", $oReverseProxyBackend);
 
         $oSmarty = new smarty();
-        $sOutput = "<esi:include src='". $this->getConfig()->getWidgetUrl() ."blShowTags=1&amp;cl=oxwtagcloud'/>";
-        $this->assertEquals($sOutput, smarty_function_oxid_include_widget( array('cl' => 'oxwTagCloud', 'blShowTags' => 1 ), $oSmarty ) );
+        $sOutput = "<esi:include src='" . $this->getConfig()->getWidgetUrl() . "blShowTags=1&amp;cl=oxwtagcloud'/>";
+        $this->assertEquals($sOutput, smarty_function_oxid_include_widget(array('cl' => 'oxwTagCloud', 'blShowTags' => 1), $oSmarty));
 
-        oxRegistry::getLang()->setBaseLanguage( 1 );
-        $sOutput = "<esi:include src='". $this->getConfig()->getWidgetUrl() ."blShowTags=1&amp;cl=oxwtagcloud'/>";
-        $this->assertEquals($sOutput, smarty_function_oxid_include_widget( array('cl' => 'oxwTagCloud', 'blShowTags' => 1 ), $oSmarty ) );
+        oxRegistry::getLang()->setBaseLanguage(1);
+        $sOutput = "<esi:include src='" . $this->getConfig()->getWidgetUrl() . "blShowTags=1&amp;cl=oxwtagcloud'/>";
+        $this->assertEquals($sOutput, smarty_function_oxid_include_widget(array('cl' => 'oxwTagCloud', 'blShowTags' => 1), $oSmarty));
 
     }
 
     public function testIncludeWidget()
     {
-        $oReverseProxyBackend = $this->getMock( "oxReverseProxyBackend", array( "isActive" ), array(), '', false );
-        $oReverseProxyBackend->expects( $this->any() )->method( "isActive" )->will( $this->returnValue( false ) );
-        oxRegistry::set( "oxReverseProxyBackend", $oReverseProxyBackend );
+        $oReverseProxyBackend = $this->getMock("oxReverseProxyBackend", array("isActive"), array(), '', false);
+        $oReverseProxyBackend->expects($this->any())->method("isActive")->will($this->returnValue(false));
+        oxRegistry::set("oxReverseProxyBackend", $oReverseProxyBackend);
 
-        $oShopControl = $this->getMock( "oxWidgetControl", array( "start" ), array(), '', false );
-        $oShopControl->expects( $this->any() )->method( "start" )->will( $this->returnValue( 'html' ) );
+        $oShopControl = $this->getMock("oxWidgetControl", array("start"), array(), '', false);
+        $oShopControl->expects($this->any())->method("start")->will($this->returnValue('html'));
         oxTestModules::addModuleObject('oxWidgetControl', $oShopControl);
 
 
         $oSmarty = new Smarty();
         $this->assertEquals(
-            smarty_function_oxid_include_widget( array('cl' => 'oxwTagCloud', 'blShowTags' => 1 ), $oSmarty )
+            smarty_function_oxid_include_widget(array('cl' => 'oxwTagCloud', 'blShowTags' => 1), $oSmarty)
             , 'html'
         );
     }

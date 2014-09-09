@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Shop_Performance class
  */
 class Unit_Admin_ShopPerformanceTest extends OxidTestCase
 {
+
     /**
      * Shop_Performance::Render() test case
      *
@@ -37,6 +38,6 @@ class Unit_Admin_ShopPerformanceTest extends OxidTestCase
     {
         // testing..
         $oView = new Shop_Performance();
-        $this->assertEquals( 'shop_performance.tpl', $oView->render() );
+        $this->assertEquals('shop_performance.tpl', $oView->render());
     }
 }

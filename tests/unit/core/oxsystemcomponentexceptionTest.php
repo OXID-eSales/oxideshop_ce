@@ -20,16 +20,17 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxSystemComponentExceptionTest extends OxidTestCase
 {
+
     public function testSetGetComponent()
     {
         $sComponent = "a Component";
-        $oTestObject = oxNew( 'oxSystemComponentException');
-        $this->assertEquals('oxSystemComponentException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxSystemComponentException');
+        $this->assertEquals('oxSystemComponentException', get_class($oTestObject));
         $oTestObject->setComponent($sComponent);
         $this->assertEquals($sComponent, $oTestObject->getComponent());
     }
@@ -39,10 +40,10 @@ class Unit_Core_oxSystemComponentExceptionTest extends OxidTestCase
     {
         $sMsg = 'Erik was here..';
         $sComponent = "a Component";
-        $oTestObject = oxNew( 'oxSystemComponentException', $sMsg);
-        $this->assertEquals('oxSystemComponentException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxSystemComponentException', $sMsg);
+        $this->assertEquals('oxSystemComponentException', get_class($oTestObject));
         $oTestObject->setComponent($sComponent);
-        $sStringOut = $oTestObject->getString();// (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
+        $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
         $this->assertContains($sMsg, $sStringOut);
         $this->assertContains('oxSystemComponentException', $sStringOut);
         $this->assertContains($sComponent, $sStringOut);
@@ -50,7 +51,7 @@ class Unit_Core_oxSystemComponentExceptionTest extends OxidTestCase
 
     public function testGetValues()
     {
-        $oTestObject = oxNew( 'oxSystemComponentException');
+        $oTestObject = oxNew('oxSystemComponentException');
         $sComponent = "a Component";
         $oTestObject->setComponent($sComponent);
         $aRes = $oTestObject->getValues();

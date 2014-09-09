@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Category_List class
  */
 class Unit_Admin_CategoryListTest extends OxidTestCase
 {
+
     /**
      * Category_List::Init() test case
      *
@@ -45,7 +46,7 @@ class Unit_Admin_CategoryListTest extends OxidTestCase
         $oView->expects($this->any())->method('getSession')->will($this->returnValue($oSess));
 
         $oView->init();
-        $this->assertEquals( array( "oxcategories" => array( "oxrootid" => "desc", "oxleft" => "asc" ) ), $oView->getListSorting() );
+        $this->assertEquals(array("oxcategories" => array("oxrootid" => "desc", "oxleft" => "asc")), $oView->getListSorting());
     }
 
     /**
@@ -61,9 +62,9 @@ class Unit_Admin_CategoryListTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue( $aViewData["cattree"] instanceof oxCategoryList );
+        $this->assertTrue($aViewData["cattree"] instanceof oxCategoryList);
 
-        $this->assertEquals( 'category_list.tpl', $sTplName );
+        $this->assertEquals('category_list.tpl', $sTplName);
     }
 
 }

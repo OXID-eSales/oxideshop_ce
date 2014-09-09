@@ -20,16 +20,17 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxstdclassTest extends OxidTestCase
 {
+
     // 1. testing constructor works .. ok, its a pseudo test ;-)
     public function testConstruct()
     {
         try {
-            $oTestObject = oxNew( 'oxstdclass');
+            $oTestObject = oxNew('oxstdclass');
         } catch (Exception $e) {
             $this->fail();
         }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing User_Remark class
  */
 class Unit_Admin_UserRemarkTest extends OxidTestCase
 {
+
     /**
      * user_remark::render() test case
      *
@@ -36,17 +37,17 @@ class Unit_Admin_UserRemarkTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxRemark', 'load($sId)', '{$this->oxremark__oxtext = new oxField("text-$sId");$this->oxremark__oxheader = new oxField("header-$sId");}');
-        modConfig::setRequestParameter( "oxid", "testId" );
-        modConfig::setRequestParameter( "rem_oxid", "testId" );
+        modConfig::setRequestParameter("oxid", "testId");
+        modConfig::setRequestParameter("rem_oxid", "testId");
 
         $oView = new user_remark();
-        $this->assertEquals( "user_remark.tpl", $oView->render() );
+        $this->assertEquals("user_remark.tpl", $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxuser );
-        $this->assertTrue( $aViewData['allremark'] instanceof oxlist );
-        $this->assertEquals( 'text-testId', $aViewData['remarktext'] );
-        $this->assertEquals( 'header-testId', $aViewData['remarkheader'] );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxuser);
+        $this->assertTrue($aViewData['allremark'] instanceof oxlist);
+        $this->assertEquals('text-testId', $aViewData['remarktext']);
+        $this->assertEquals('header-testId', $aViewData['remarkheader']);
     }
 
     /**
@@ -56,22 +57,23 @@ class Unit_Admin_UserRemarkTest extends OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction( 'oxremark', 'load', '{ return true; }' );
-        oxTestModules::addFunction( 'oxremark', 'save', '{ throw new Exception( "save" ); }' );
+        oxTestModules::addFunction('oxremark', 'load', '{ return true; }');
+        oxTestModules::addFunction('oxremark', 'save', '{ throw new Exception( "save" ); }');
 
-        modConfig::setRequestParameter( 'oxid', 'oxdefaultadmin' );
-        modConfig::setRequestParameter( 'remarktext', 'test text' );
-        modConfig::setRequestParameter( 'remarkheader', 'test header' );
+        modConfig::setRequestParameter('oxid', 'oxdefaultadmin');
+        modConfig::setRequestParameter('remarktext', 'test text');
+        modConfig::setRequestParameter('remarkheader', 'test header');
 
         try {
             $oView = new user_remark();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "Error in user_remark::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "Error in user_remark::save()");
+
             return;
         }
 
-        $this->fail( "Error in user_remark::save()" );
+        $this->fail("Error in user_remark::save()");
     }
 
     /**
@@ -81,16 +83,17 @@ class Unit_Admin_UserRemarkTest extends OxidTestCase
      */
     public function testDelete()
     {
-        oxTestModules::addFunction( 'oxremark', 'delete', '{ throw new Exception( "delete" ); }' );
+        oxTestModules::addFunction('oxremark', 'delete', '{ throw new Exception( "delete" ); }');
 
         try {
             $oView = new user_remark();
             $oView->delete();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "delete", $oExcp->getMessage(), "Error in user_remark::delete()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("delete", $oExcp->getMessage(), "Error in user_remark::delete()");
+
             return;
         }
 
-        $this->fail( "Error in user_remark::delete()" );
+        $this->fail("Error in user_remark::delete()");
     }
 }

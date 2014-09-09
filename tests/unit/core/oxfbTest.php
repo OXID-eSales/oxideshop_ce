@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class _oxFb extends oxFb
 {
+
     protected function _setPersistentData($key, $value)
     {
         return parent::setPersistentData($key, $value);
@@ -48,6 +49,7 @@ class _oxFb extends oxFb
 
 class Unit_Core_oxfbTest extends OxidTestCase
 {
+
     private $_oxLinks;
 
     /**
@@ -70,61 +72,61 @@ class Unit_Core_oxfbTest extends OxidTestCase
         parent::tearDown();
     }
 
-   /**
-    * Testing method isConnected() - FB connect is disabled
-    */
+    /**
+     * Testing method isConnected() - FB connect is disabled
+     */
     public function testIsConnected_FbConnectIsDisabled()
     {
-        modConfig::getInstance()->setConfigParam( "bl_showFbConnect", false );
+        modConfig::getInstance()->setConfigParam("bl_showFbConnect", false);
 
-        $oFb = oxNew("oxFb" );
-        $this->assertFalse( $oFb->isConnected() );
+        $oFb = oxNew("oxFb");
+        $this->assertFalse($oFb->isConnected());
     }
 
-   /**
-    * Testing method isConnected() - FB connect is enabled
-    *
-    * @return null
-    */
+    /**
+     * Testing method isConnected() - FB connect is enabled
+     *
+     * @return null
+     */
     public function testIsConnected_FbConnectIsEnabled()
     {
-        modConfig::getInstance()->setConfigParam( "bl_showFbConnect", true );
+        modConfig::getInstance()->setConfigParam("bl_showFbConnect", true);
 
-        $oFb = $this->getMock( 'oxFb', array( 'getUser', 'api' ) );
-        $oFb->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( 1 ) );
+        $oFb = $this->getMock('oxFb', array('getUser', 'api'));
+        $oFb->expects($this->once())->method('getUser')->will($this->returnValue(1));
         $oFb->expects($this->once())->method('api')->will($this->returnValue(true));
 
-        $this->assertTrue( $oFb->isConnected() );
+        $this->assertTrue($oFb->isConnected());
     }
 
-   /**
-    * Testing method isConnected() - FB connect is enaabled but no FB session is active
-    *
-    * @return null
-    */
+    /**
+     * Testing method isConnected() - FB connect is enaabled but no FB session is active
+     *
+     * @return null
+     */
     public function testIsConnected_noFbSession_withUser()
     {
-        modConfig::getInstance()->setConfigParam( "bl_showFbConnect", true );
+        modConfig::getInstance()->setConfigParam("bl_showFbConnect", true);
 
-        $oFb = $this->getMock( 'oxFb', array( 'getUser' ) );
-        $oFb->expects( $this->once() )->method( 'getUser')->will($this->returnValue(10));
+        $oFb = $this->getMock('oxFb', array('getUser'));
+        $oFb->expects($this->once())->method('getUser')->will($this->returnValue(10));
 
-        $this->assertFalse( $oFb->isConnected() );
+        $this->assertFalse($oFb->isConnected());
     }
 
-   /**
-    * Testing method isConnected() - FB connect is enaabled but no FB user is active
-    *
-    * @return null
-    */
+    /**
+     * Testing method isConnected() - FB connect is enaabled but no FB user is active
+     *
+     * @return null
+     */
     public function testIsConnected_noFbUser()
     {
-        modConfig::getInstance()->setConfigParam( "bl_showFbConnect", true );
+        modConfig::getInstance()->setConfigParam("bl_showFbConnect", true);
 
-        $oFb = $this->getMock( 'oxFb', array( 'getUser' ) );
-        $oFb->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( null ) );
+        $oFb = $this->getMock('oxFb', array('getUser'));
+        $oFb->expects($this->once())->method('getUser')->will($this->returnValue(null));
 
-        $this->assertFalse( $oFb->isConnected() );
+        $this->assertFalse($oFb->isConnected());
     }
 
     /**

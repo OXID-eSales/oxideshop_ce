@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Admin_Order class
  */
 class Unit_Admin_AdminOrderTest extends OxidTestCase
 {
+
     /**
      * Admin_Order::Render() test case
      *
@@ -37,7 +38,7 @@ class Unit_Admin_AdminOrderTest extends OxidTestCase
     {
         // testing..
         $oView = new Admin_Order();
-        $this->assertEquals( 'order.tpl', $oView->render() );
+        $this->assertEquals('order.tpl', $oView->render());
     }
 
 }

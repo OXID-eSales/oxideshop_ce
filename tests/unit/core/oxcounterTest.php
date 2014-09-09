@@ -20,14 +20,16 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxcounterTest extends OxidTestCase
 {
+
     protected function tearDown()
     {
-        oxDb::getDb( "delete from oxcounters" );
+        oxDb::getDb("delete from oxcounters");
+
         return parent::tearDown();
     }
 
@@ -40,16 +42,16 @@ class Unit_Core_oxcounterTest extends OxidTestCase
     {
         $oCounter = new oxCounter();
 
-        $iNext1 = $oCounter->getNext( "test1" );
-        $this->assertEquals( ++$iNext1, $oCounter->getNext( "test1" ) );
-        $this->assertEquals( ++$iNext1, $oCounter->getNext( "test1" ) );
-        $this->assertEquals( ++$iNext1, $oCounter->getNext( "test1" ) );
+        $iNext1 = $oCounter->getNext("test1");
+        $this->assertEquals(++$iNext1, $oCounter->getNext("test1"));
+        $this->assertEquals(++$iNext1, $oCounter->getNext("test1"));
+        $this->assertEquals(++$iNext1, $oCounter->getNext("test1"));
 
-        $iNext2 = $oCounter->getNext( "test2" );
-        $this->assertNotEquals( $iNext2, $iNext1 );
-        $this->assertEquals( ++$iNext2, $oCounter->getNext( "test2" ) );
-        $this->assertEquals( ++$iNext2, $oCounter->getNext( "test2" ) );
-        $this->assertEquals( ++$iNext2, $oCounter->getNext( "test2" ) );
+        $iNext2 = $oCounter->getNext("test2");
+        $this->assertNotEquals($iNext2, $iNext1);
+        $this->assertEquals(++$iNext2, $oCounter->getNext("test2"));
+        $this->assertEquals(++$iNext2, $oCounter->getNext("test2"));
+        $this->assertEquals(++$iNext2, $oCounter->getNext("test2"));
     }
 
     /**
@@ -62,12 +64,12 @@ class Unit_Core_oxcounterTest extends OxidTestCase
 
         $oCounter = new oxCounter();
 
-        $this->assertEquals( 1, $oCounter->getNext( "test4" ) );
-        $oCounter->update( "test3", 3 );
-        $this->assertEquals( 4, $oCounter->getNext( "test3" ) );
-        $oCounter->update( "test3", 2);
-        $this->assertEquals( 5, $oCounter->getNext( "test3" ) );
-        $this->assertEquals( 2, $oCounter->getNext( "test4" ) );
+        $this->assertEquals(1, $oCounter->getNext("test4"));
+        $oCounter->update("test3", 3);
+        $this->assertEquals(4, $oCounter->getNext("test3"));
+        $oCounter->update("test3", 2);
+        $this->assertEquals(5, $oCounter->getNext("test3"));
+        $this->assertEquals(2, $oCounter->getNext("test4"));
 
     }
 }

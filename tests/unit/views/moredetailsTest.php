@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing moredetails class
  */
 class Unit_Views_moredetailsTest extends OxidTestCase
 {
+
     /**
      * Initialize the fixture.
      *
@@ -46,11 +47,11 @@ class Unit_Views_moredetailsTest extends OxidTestCase
      */
     public function testGetProductId()
     {
-        $oMoreDetails = $this->getProxyClass( 'moredetails' );
-        modConfig::setRequestParameter( 'anid', '2000' );
+        $oMoreDetails = $this->getProxyClass('moredetails');
+        modConfig::setRequestParameter('anid', '2000');
         $oMoreDetails->init();
 
-        $this->assertEquals( '2000', $oMoreDetails->getProductId() );
+        $this->assertEquals('2000', $oMoreDetails->getProductId());
     }
 
     /**
@@ -60,11 +61,11 @@ class Unit_Views_moredetailsTest extends OxidTestCase
      */
     public function testGetProduct()
     {
-        $oMoreDetails = $this->getProxyClass( 'moredetails' );
-        modConfig::setRequestParameter( 'anid', '2000' );
+        $oMoreDetails = $this->getProxyClass('moredetails');
+        modConfig::setRequestParameter('anid', '2000');
         $oMoreDetails->init();
 
-        $this->assertEquals( '2000', $oMoreDetails->getProduct()->getId() );
+        $this->assertEquals('2000', $oMoreDetails->getProduct()->getId());
     }
 
     /**
@@ -74,11 +75,11 @@ class Unit_Views_moredetailsTest extends OxidTestCase
      */
     public function testGetActPictureId()
     {
-        $oMoreDetails = $this->getProxyClass( 'moredetails' );
-        modConfig::setRequestParameter( 'anid', '096a1b0849d5ffa4dd48cd388902420b' );
+        $oMoreDetails = $this->getProxyClass('moredetails');
+        modConfig::setRequestParameter('anid', '096a1b0849d5ffa4dd48cd388902420b');
         $oMoreDetails->init();
 
-        $this->assertEquals( '1', $oMoreDetails->getActPictureId() );
+        $this->assertEquals('1', $oMoreDetails->getActPictureId());
     }
 
     /**
@@ -88,11 +89,11 @@ class Unit_Views_moredetailsTest extends OxidTestCase
      */
     public function testGetArtZoomPics()
     {
-        $oMoreDetails = $this->getProxyClass( 'moredetails' );
-        modConfig::setRequestParameter( 'anid', '096a1b0849d5ffa4dd48cd388902420b' );
+        $oMoreDetails = $this->getProxyClass('moredetails');
+        modConfig::setRequestParameter('anid', '096a1b0849d5ffa4dd48cd388902420b');
         $oMoreDetails->init();
         $aZoom = $oMoreDetails->getArtZoomPics();
 
-        $this->assertEquals( 'front_z1(1).jpg', basename($aZoom[1]['file']) );
+        $this->assertEquals('front_z1(1).jpg', basename($aZoom[1]['file']));
     }
 }

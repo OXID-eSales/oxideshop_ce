@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing oxmanufacturer class
  */
 class Unit_Core_oxmanufacturerTest extends OxidTestCase
 {
+
     /**
      * Tear down the fixture.
      *
@@ -47,7 +48,7 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
         oxTestModules::addFunction("oxSeoEncoderManufacturer", "getManufacturerPageUrl", "{return 'sManufacturerPageUrl';}");
 
         $oManufacturer = new oxManufacturer();
-        $this->assertEquals( "sManufacturerPageUrl", $oManufacturer->getBaseSeoLink( 0, 1 ) );
+        $this->assertEquals("sManufacturerPageUrl", $oManufacturer->getBaseSeoLink(0, 1));
     }
 
     public function testGetBaseSeoLink()
@@ -56,7 +57,7 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
         oxTestModules::addFunction("oxSeoEncoderManufacturer", "getManufacturerPageUrl", "{return 'sManufacturerPageUrl';}");
 
         $oManufacturer = new oxManufacturer();
-        $this->assertEquals( "sManufacturerUrl", $oManufacturer->getBaseSeoLink( 0 ) );
+        $this->assertEquals("sManufacturerUrl", $oManufacturer->getBaseSeoLink(0));
     }
 
     public function testGetBaseStdLink()
@@ -64,16 +65,16 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
         $iLang = 0;
 
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->setId( "testManufacturerId" );
+        $oManufacturer->setId("testManufacturerId");
 
-        $sTestUrl = oxRegistry::getConfig()->getShopHomeUrl( $iLang, false ) . 'cl=manufacturerlist&amp;mnid='.$oManufacturer->getId();
-        $this->assertEquals( $sTestUrl, $oManufacturer->getBaseStdLink( $iLang ) );
+        $sTestUrl = oxRegistry::getConfig()->getShopHomeUrl($iLang, false) . 'cl=manufacturerlist&amp;mnid=' . $oManufacturer->getId();
+        $this->assertEquals($sTestUrl, $oManufacturer->getBaseStdLink($iLang));
     }
 
     public function testGetContentCats()
     {
         $oManufacturer = new oxManufacturer();
-        $this->assertNull( $oManufacturer->getContentCats() );
+        $this->assertNull($oManufacturer->getContentCats());
     }
 
     public function testMagicGetter()
@@ -81,108 +82,108 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
         $oManufacturer = new oxManufacturer();
         $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.jpg');
 
-        $this->assertEquals( 'big_matsol_1_mico.jpg', basename( $oManufacturer->getIconUrl() ) );
+        $this->assertEquals('big_matsol_1_mico.jpg', basename($oManufacturer->getIconUrl()));
 
 
-        $oManufacturer = $this->getMock( 'oxManufacturer', array( 'getLink', 'getNrOfArticles', 'getIsVisible', 'getHasVisibleSubCats' ) );
+        $oManufacturer = $this->getMock('oxManufacturer', array('getLink', 'getNrOfArticles', 'getIsVisible', 'getHasVisibleSubCats'));
 
-        $oManufacturer->expects( $this->exactly( 4 ) )->method( 'getLink' )->will( $this->returnValue( 'Link' ) );
-        $oManufacturer->expects( $this->once() )->method( 'getNrOfArticles' )->will( $this->returnValue( 'NrOfArticles' ) );
-        $oManufacturer->expects( $this->once() )->method( 'getIsVisible' )->will( $this->returnValue( 'IsVisible' ) );
-        $oManufacturer->expects( $this->once() )->method( 'getHasVisibleSubCats' )->will( $this->returnValue( 'HasVisibleSubCats' ) );
+        $oManufacturer->expects($this->exactly(4))->method('getLink')->will($this->returnValue('Link'));
+        $oManufacturer->expects($this->once())->method('getNrOfArticles')->will($this->returnValue('NrOfArticles'));
+        $oManufacturer->expects($this->once())->method('getIsVisible')->will($this->returnValue('IsVisible'));
+        $oManufacturer->expects($this->once())->method('getHasVisibleSubCats')->will($this->returnValue('HasVisibleSubCats'));
 
-        $this->assertEquals( 'Link', $oManufacturer->oxurl );
-        $this->assertEquals( 'Link', $oManufacturer->openlink );
-        $this->assertEquals( 'Link', $oManufacturer->closelink );
-        $this->assertEquals( 'Link', $oManufacturer->link );
-        $this->assertEquals( 'NrOfArticles', $oManufacturer->iArtCnt );
-        $this->assertEquals( 'IsVisible', $oManufacturer->isVisible );
-        $this->assertEquals( 'HasVisibleSubCats', $oManufacturer->hasVisibleSubCats );
+        $this->assertEquals('Link', $oManufacturer->oxurl);
+        $this->assertEquals('Link', $oManufacturer->openlink);
+        $this->assertEquals('Link', $oManufacturer->closelink);
+        $this->assertEquals('Link', $oManufacturer->link);
+        $this->assertEquals('NrOfArticles', $oManufacturer->iArtCnt);
+        $this->assertEquals('IsVisible', $oManufacturer->isVisible);
+        $this->assertEquals('HasVisibleSubCats', $oManufacturer->hasVisibleSubCats);
     }
 
     public function testAssignWithoutArticleCnt()
     {
         $myConfig = oxRegistry::getConfig();
-        $myDB     = oxDb::getDB();
+        $myDB = oxDb::getDB();
 
-        $oManufacturer = oxNew( 'oxManufacturer' );
-        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "'.$myConfig->getShopID().'"';
-        $sManufacturerId = $myDB->getOne( $sQ );
-        $oManufacturer->setShowArticleCnt( false );
-        $oManufacturer->load( $sManufacturerId );
+        $oManufacturer = oxNew('oxManufacturer');
+        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sManufacturerId = $myDB->getOne($sQ);
+        $oManufacturer->setShowArticleCnt(false);
+        $oManufacturer->load($sManufacturerId);
 
         $iArticleCount = -1;
 
-        $this->assertEquals( $iArticleCount, $oManufacturer->oxmanufacturers__oxnrofarticles->value );
+        $this->assertEquals($iArticleCount, $oManufacturer->oxmanufacturers__oxnrofarticles->value);
     }
 
     public function testAssignWithArticleCnt()
     {
         $myConfig = oxRegistry::getConfig();
-        $myDB     = oxDb::getDB();
+        $myDB = oxDb::getDB();
 
-        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "'.$myConfig->getShopID().'"';
-        $sManufacturerId = $myDB->getOne( $sQ );
+        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sManufacturerId = $myDB->getOne($sQ);
 
         $sQ = "select count(*) from oxarticles where oxmanufacturerid = '$sManufacturerId' ";
-        $iCnt = $myDB->getOne( $sQ );
+        $iCnt = $myDB->getOne($sQ);
 
-        $oManufacturer = $this->getMock( 'oxManufacturer', array( 'isAdmin' ) );
-        $oManufacturer->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
-        $oManufacturer->setShowArticleCnt( true );
-        $oManufacturer->load( $sManufacturerId );
+        $oManufacturer = $this->getMock('oxManufacturer', array('isAdmin'));
+        $oManufacturer->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oManufacturer->setShowArticleCnt(true);
+        $oManufacturer->load($sManufacturerId);
 
 
-        $this->assertEquals( $oManufacturer->oxmanufacturers__oxnrofarticles->value, $oManufacturer->iArtCnt );
-        $this->assertEquals( $iCnt, $oManufacturer->iArtCnt );
+        $this->assertEquals($oManufacturer->oxmanufacturers__oxnrofarticles->value, $oManufacturer->iArtCnt);
+        $this->assertEquals($iCnt, $oManufacturer->iArtCnt);
     }
 
     public function testGetStdLink()
     {
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->setId( 'xxx' );
-        $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL().'cl=manufacturerlist&amp;mnid=xxx', $oManufacturer->getStdLink() );
+        $oManufacturer->setId('xxx');
+        $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx', $oManufacturer->getStdLink());
     }
 
     public function testGetLinkSeoDe()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         // fetching first Manufacturer from db
-        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "'.oxRegistry::getConfig()->getShopID().'"';
+        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . oxRegistry::getConfig()->getShopID() . '"';
 
         $myDB = oxDb::getDB();
-        $sManufacturerId = $myDB->getOne( $sQ );
+        $sManufacturerId = $myDB->getOne($sQ);
 
-        $sQ = 'select oxtitle from oxmanufacturers where oxmanufacturers.oxshopid = "'.oxRegistry::getConfig()->getShopID().'"';
-        $sManufacturerTitle = $myDB->getOne( $sQ );
+        $sQ = 'select oxtitle from oxmanufacturers where oxmanufacturers.oxshopid = "' . oxRegistry::getConfig()->getShopID() . '"';
+        $sManufacturerTitle = $myDB->getOne($sQ);
 
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->setLanguage( 0 );
-        $oManufacturer->load( $sManufacturerId );
+        $oManufacturer->setLanguage(0);
+        $oManufacturer->load($sManufacturerId);
 
-        $this->assertEquals( oxRegistry::getConfig()->getShopUrl().'Nach-Hersteller/'.str_replace( ' ', '-', $sManufacturerTitle ).'/', $oManufacturer->getLink() );
+        $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . 'Nach-Hersteller/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink());
     }
 
     public function testGetLinkSeoEng()
     {
         $myConfig = oxRegistry::getConfig();
         $myDB = oxDb::getDB();
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         // fetching first Manufacturer from db
-        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "'.$myConfig->getShopID().'"';
-        $sManufacturerId = $myDB->getOne( $sQ );
+        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sManufacturerId = $myDB->getOne($sQ);
 
-        $sQ = 'select oxtitle_1 from oxmanufacturers where oxmanufacturers.oxshopid = "'.$myConfig->getShopID().'"';
-        $sManufacturerTitle = $myDB->getOne( $sQ );
+        $sQ = 'select oxtitle_1 from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sManufacturerTitle = $myDB->getOne($sQ);
 
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->loadInLang( 1, $sManufacturerId );
+        $oManufacturer->loadInLang(1, $sManufacturerId);
 
-        $this->assertEquals( oxRegistry::getConfig()->getShopUrl().'en/By-Manufacturer/'.str_replace( ' ', '-', $sManufacturerTitle ).'/', $oManufacturer->getLink() );
+        $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . 'en/By-Manufacturer/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink());
     }
 
     public function testGetLink()
@@ -190,57 +191,57 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->setId( 'xxx' );
+        $oManufacturer->setId('xxx');
 
-        $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL().'cl=manufacturerlist&amp;mnid=xxx', $oManufacturer->getLink() );
+        $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx', $oManufacturer->getLink());
     }
 
     public function testGetStdLinkWithLangParam()
     {
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->setId( 'xxx' );
-        $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL().'cl=manufacturerlist&amp;mnid=xxx&amp;lang=1', $oManufacturer->getStdLink(1) );
+        $oManufacturer->setId('xxx');
+        $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx&amp;lang=1', $oManufacturer->getStdLink(1));
     }
 
     public function testGetLinkSeoDeWithLangParam()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         // fetching first Manufacturer from db
-        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "'.oxRegistry::getConfig()->getShopID().'"';
+        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . oxRegistry::getConfig()->getShopID() . '"';
 
         $myDB = oxDb::getDB();
-        $sManufacturerId = $myDB->getOne( $sQ );
+        $sManufacturerId = $myDB->getOne($sQ);
 
-        $sQ = 'select oxtitle from oxmanufacturers where oxmanufacturers.oxshopid = "'.oxRegistry::getConfig()->getShopID().'"';
-        $sManufacturerTitle = $myDB->getOne( $sQ );
+        $sQ = 'select oxtitle from oxmanufacturers where oxmanufacturers.oxshopid = "' . oxRegistry::getConfig()->getShopID() . '"';
+        $sManufacturerTitle = $myDB->getOne($sQ);
 
         $oManufacturer = new oxManufacturer();
         $oManufacturer->setLanguage(1);
-        $oManufacturer->load( $sManufacturerId );
+        $oManufacturer->load($sManufacturerId);
 
-        $this->assertEquals( oxRegistry::getConfig()->getShopUrl().'Nach-Hersteller/'.str_replace( ' ', '-', $sManufacturerTitle ).'/', $oManufacturer->getLink(0) );
+        $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . 'Nach-Hersteller/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink(0));
     }
 
     public function testGetLinkSeoEngWithLangParam()
     {
         $myConfig = oxRegistry::getConfig();
         $myDB = oxDb::getDB();
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         // fetching first Manufacturer from db
-        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "'.$myConfig->getShopID().'"';
-        $sManufacturerId = $myDB->getOne( $sQ );
+        $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sManufacturerId = $myDB->getOne($sQ);
 
-        $sQ = 'select oxtitle_1 from oxmanufacturers where oxmanufacturers.oxshopid = "'.$myConfig->getShopID().'"';
-        $sManufacturerTitle = $myDB->getOne( $sQ );
+        $sQ = 'select oxtitle_1 from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sManufacturerTitle = $myDB->getOne($sQ);
 
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->loadInLang( 0, $sManufacturerId );
+        $oManufacturer->loadInLang(0, $sManufacturerId);
 
-        $this->assertEquals( oxRegistry::getConfig()->getShopUrl().'en/By-Manufacturer/'.str_replace( ' ', '-', $sManufacturerTitle ).'/', $oManufacturer->getLink(1) );
+        $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . 'en/By-Manufacturer/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink(1));
     }
 
     public function testGetLinkWithLangParam()
@@ -248,9 +249,9 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->setId( 'xxx' );
+        $oManufacturer->setId('xxx');
 
-        $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL().'cl=manufacturerlist&amp;mnid=xxx&amp;lang=1', $oManufacturer->getLink(1) );
+        $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx&amp;lang=1', $oManufacturer->getLink(1));
     }
 
     public function testLoadRootManufacturer()
@@ -277,27 +278,27 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
     {
             $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
 
-        $oManufacturer = $this->getProxyClass( "oxManufacturer" );
-        $oManufacturer->setNonPublicVar( "_blShowArticleCnt", true );
+        $oManufacturer = $this->getProxyClass("oxManufacturer");
+        $oManufacturer->setNonPublicVar("_blShowArticleCnt", true);
         $oManufacturer->load($sManufacturerId);
 
-        $this->assertEquals(oxRegistry::get("oxUtilsCount")->getManufacturerArticleCount( $sManufacturerId ), $oManufacturer->getNrOfArticles());
+        $this->assertEquals(oxRegistry::get("oxUtilsCount")->getManufacturerArticleCount($sManufacturerId), $oManufacturer->getNrOfArticles());
     }
 
     public function testGetNrOfArticlesDonotShow()
     {
             $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
 
-        $oManufacturer = $this->getProxyClass( "oxManufacturer" );
+        $oManufacturer = $this->getProxyClass("oxManufacturer");
         $oManufacturer->load($sManufacturerId);
-        $oManufacturer->setNonPublicVar( "_blShowArticleCnt", false );
+        $oManufacturer->setNonPublicVar("_blShowArticleCnt", false);
 
         $this->assertEquals(-1, $oManufacturer->getNrOfArticles());
     }
 
     public function testSetGetIsVisible()
     {
-        $oManufacturer = $this->getProxyClass( "oxManufacturer" );
+        $oManufacturer = $this->getProxyClass("oxManufacturer");
         $oManufacturer->setIsVisible(true);
 
         $this->assertTrue($oManufacturer->getIsVisible());
@@ -305,7 +306,7 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
 
     public function testSetGetHasVisibleSubCats()
     {
-        $oManufacturer = $this->getProxyClass( "oxManufacturer" );
+        $oManufacturer = $this->getProxyClass("oxManufacturer");
         $oManufacturer->setHasVisibleSubCats(true);
 
         $this->assertTrue($oManufacturer->getHasVisibleSubCats());
@@ -313,7 +314,7 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
 
     public function testGetHasVisibleSubCatsNotSet()
     {
-        $oManufacturer = $this->getProxyClass( "oxManufacturer" );
+        $oManufacturer = $this->getProxyClass("oxManufacturer");
 
         $this->assertFalse($oManufacturer->getHasVisibleSubCats());
     }
@@ -322,9 +323,9 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
     public function testGetIconUrl()
     {
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->oxmanufacturers__oxicon = new oxField( 'big_matsol_1_mico.jpg' );
+        $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.jpg');
 
-        $this->assertEquals( 'big_matsol_1_mico.jpg', basename( $oManufacturer->getIconUrl() ) );
+        $this->assertEquals('big_matsol_1_mico.jpg', basename($oManufacturer->getIconUrl()));
     }
 
     /**
@@ -334,18 +335,18 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
      */
     public function testGetIconUrlAccordingToNewFilesStructure()
     {
-        $oConfig = $this->getMock( 'oxConfig', array( 'getConfigParam' ) );
-        $oConfig->expects( $this->at( 0 ) )->method( 'getConfigParam' )->with( 'sManufacturerIconsize' )->will( $this->returnValue( false ) );
-        $oConfig->expects( $this->at( 1 ) )->method( 'getConfigParam' )->with('sIconsize')->will( $this->returnValue( '87*87' ) );
+        $oConfig = $this->getMock('oxConfig', array('getConfigParam'));
+        $oConfig->expects($this->at(0))->method('getConfigParam')->with('sManufacturerIconsize')->will($this->returnValue(false));
+        $oConfig->expects($this->at(1))->method('getConfigParam')->with('sIconsize')->will($this->returnValue('87*87'));
 
-        $oManufacturer = $this->getMock( "oxManufacturer", array( "getConfig" ), array(), '', false );
-        $oManufacturer->expects( $this->exactly( 1 ) )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-        $oManufacturer->oxmanufacturers__oxicon = new oxField( 'big_matsol_1_mico.jpg' );
+        $oManufacturer = $this->getMock("oxManufacturer", array("getConfig"), array(), '', false);
+        $oManufacturer->expects($this->exactly(1))->method('getConfig')->will($this->returnValue($oConfig));
+        $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.jpg');
 
-        $sUrl  = oxRegistry::getConfig()->getOutUrl() . basename( oxRegistry::getConfig()->getPicturePath( "" ) );
+        $sUrl = oxRegistry::getConfig()->getOutUrl() . basename(oxRegistry::getConfig()->getPicturePath(""));
         $sUrl .= "/generated/manufacturer/icon/87_87_75/big_matsol_1_mico.jpg";
 
-        $this->assertEquals( $sUrl, $oManufacturer->getIconUrl() );
+        $this->assertEquals($sUrl, $oManufacturer->getIconUrl());
     }
 
     public function testDelete()
@@ -368,14 +369,14 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
     public function testGetStdLinkWithParams()
     {
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->setId( 'xxx' );
-        $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL().'cl=manufacturerlist&amp;mnid=xxx&amp;foo=bar', $oManufacturer->getStdLink(0, array('foo'=>'bar')) );
+        $oManufacturer->setId('xxx');
+        $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx&amp;foo=bar', $oManufacturer->getStdLink(0, array('foo' => 'bar')));
     }
 
     public function testGetThumbUrl()
     {
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->setId( 'xxx' );
+        $oManufacturer->setId('xxx');
 
         $this->assertFalse($oManufacturer->getThumbUrl());
     }
@@ -389,7 +390,7 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
     {
         $sTitle = "testtitle";
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->oxmanufacturers__oxtitle = new oxField( "testtitle" );
-        $this->assertEquals( $sTitle, $oManufacturer->getTitle() );
+        $oManufacturer->oxmanufacturers__oxtitle = new oxField("testtitle");
+        $this->assertEquals($sTitle, $oManufacturer->getTitle());
     }
 }

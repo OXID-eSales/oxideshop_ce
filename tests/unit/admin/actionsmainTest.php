@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Actions_Main class
  */
 class Unit_Admin_ActionsMainTest extends OxidTestCase
 {
+
     /**
      * Actions_Main::Render() test case
      *
@@ -35,7 +36,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        $this->setRequestParam( "oxid", -1 );
+        $this->setRequestParam("oxid", -1);
 
         // testing..
         $oView = new Actions_Main();
@@ -43,8 +44,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertEquals( '-1', $aViewData["oxid"] );
-        $this->assertEquals( "actions_main.tpl", $sTplName );
+        $this->assertEquals('-1', $aViewData["oxid"]);
+        $this->assertEquals("actions_main.tpl", $sTplName);
     }
 
     /**
@@ -54,17 +55,17 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testRenderWithExistingAction()
     {
-        $this->setRequestParam( "oxid", oxDb::getDb()->getOne( "select oxid from oxactions" ) );
+        $this->setRequestParam("oxid", oxDb::getDb()->getOne("select oxid from oxactions"));
 
         // testing..
-        $oView = $this->getMock( "Actions_Main", array( "_createCategoryTree" ) );
-        $oView->expects( $this->any() )->method( '_createCategoryTree' )->will( $this->returnValue( false ) );
+        $oView = $this->getMock("Actions_Main", array("_createCategoryTree"));
+        $oView->expects($this->any())->method('_createCategoryTree')->will($this->returnValue(false));
         $sTplName = $oView->render();
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertNotNull( $aViewData["edit"] );
-        $this->assertEquals( "actions_main.tpl", $sTplName );
+        $this->assertNotNull($aViewData["edit"]);
+        $this->assertEquals("actions_main.tpl", $sTplName);
     }
 
     /**
@@ -74,19 +75,19 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testRenderForCategory()
     {
-        $this->setRequestParam( "oxid", oxDb::getDb()->getOne( "select oxid from oxcategories" ) );
-        $this->setRequestParam( "aoc", 1 );
+        $this->setRequestParam("oxid", oxDb::getDb()->getOne("select oxid from oxcategories"));
+        $this->setRequestParam("aoc", 1);
 
         // testing..
         $oView = new Actions_Main();
         $sTplName = $oView->render();
 
-        $this->assertEquals( "popups/actions_main.tpl", $sTplName );
+        $this->assertEquals("popups/actions_main.tpl", $sTplName);
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertNotNull( $aViewData["edit"] );
-        $this->assertNotNull( $aViewData["oxajax"] );
-        $this->assertNotNull( $aViewData["artcattree"] );
+        $this->assertNotNull($aViewData["edit"]);
+        $this->assertNotNull($aViewData["oxajax"]);
+        $this->assertNotNull($aViewData["artcattree"]);
     }
 
     /**
@@ -96,32 +97,32 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testRenderForArticlePromotions()
     {
-        $sPromotion = oxDb::getDb()->getOne( "select oxid from oxactions" );
-        $this->setRequestParam( "oxid", $sPromotion );
-        $this->setRequestParam( "oxpromotionaoc", 'article' );
+        $sPromotion = oxDb::getDb()->getOne("select oxid from oxactions");
+        $this->setRequestParam("oxid", $sPromotion);
+        $this->setRequestParam("oxpromotionaoc", 'article');
 
         $oArticle = new oxarticle();
         $oArticle->oxarticles__oxartnum = new oxField("testArtNr");
         $oArticle->oxarticles__oxtitle = new oxField("testArtTitle");
 
-        $oPromotion = $this->getMock( "oxactions", array( "getBannerArticle" ) );
-        $oPromotion->expects( $this->once() )->method( 'getBannerArticle' )->will( $this->returnValue( $oArticle ) );
+        $oPromotion = $this->getMock("oxactions", array("getBannerArticle"));
+        $oPromotion->expects($this->once())->method('getBannerArticle')->will($this->returnValue($oArticle));
         $oPromotion->load($sPromotion);
 
         // testing..
-        $oView = $this->getMock( "Actions_Main", array( "getViewDataElement", "_createCategoryTree" ) );
-        $oView->expects( $this->once() )->method( 'getViewDataElement' )->will( $this->returnValue( $oPromotion ) );
-        $oView->expects( $this->once() )->method( '_createCategoryTree' );
+        $oView = $this->getMock("Actions_Main", array("getViewDataElement", "_createCategoryTree"));
+        $oView->expects($this->once())->method('getViewDataElement')->will($this->returnValue($oPromotion));
+        $oView->expects($this->once())->method('_createCategoryTree');
         $sTplName = $oView->render();
 
 
-        $this->assertEquals( "popups/actions_article.tpl", $sTplName );
+        $this->assertEquals("popups/actions_article.tpl", $sTplName);
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertNotNull( $aViewData["edit"] );
-        $this->assertNotNull( $aViewData["oxajax"] );
-        $this->assertEquals( "testArtNr", $aViewData["actionarticle_artnum"] );
-        $this->assertEquals( "testArtTitle", $aViewData["actionarticle_title"] );
+        $this->assertNotNull($aViewData["edit"]);
+        $this->assertNotNull($aViewData["oxajax"]);
+        $this->assertEquals("testArtNr", $aViewData["actionarticle_artnum"]);
+        $this->assertEquals("testArtTitle", $aViewData["actionarticle_title"]);
     }
 
     /**
@@ -131,27 +132,27 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testRenderForGroupPromotions()
     {
-        $sPromotion = oxDb::getDb()->getOne( "select oxid from oxactions" );
-        $this->setRequestParam( "oxid", $sPromotion );
-        $this->setRequestParam( "oxpromotionaoc", 'groups' );
+        $sPromotion = oxDb::getDb()->getOne("select oxid from oxactions");
+        $this->setRequestParam("oxid", $sPromotion);
+        $this->setRequestParam("oxpromotionaoc", 'groups');
 
         $oPromotion = new oxactions();
         $oPromotion->load($sPromotion);
 
         // testing..
-        $oView = $this->getMock( "Actions_Main", array( "getViewDataElement", "_createCategoryTree" ) );
-        $oView->expects( $this->once() )->method( 'getViewDataElement' )->will( $this->returnValue( $oPromotion ) );
-        $oView->expects( $this->never() )->method( '_createCategoryTree' );
+        $oView = $this->getMock("Actions_Main", array("getViewDataElement", "_createCategoryTree"));
+        $oView->expects($this->once())->method('getViewDataElement')->will($this->returnValue($oPromotion));
+        $oView->expects($this->never())->method('_createCategoryTree');
         $sTplName = $oView->render();
 
 
-        $this->assertEquals( "popups/actions_groups.tpl", $sTplName );
+        $this->assertEquals("popups/actions_groups.tpl", $sTplName);
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertNotNull( $aViewData["edit"] );
-        $this->assertNotNull( $aViewData["oxajax"] );
-        $this->assertNull( $aViewData["actionarticle_artnum"] );
-        $this->assertNull( $aViewData["actionarticle_title"] );
+        $this->assertNotNull($aViewData["edit"]);
+        $this->assertNotNull($aViewData["oxajax"]);
+        $this->assertNull($aViewData["actionarticle_artnum"]);
+        $this->assertNull($aViewData["actionarticle_title"]);
     }
 
     /**
@@ -161,25 +162,25 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testRenderForPromotionsEditor()
     {
-        $sPromotion = oxDb::getDb()->getOne( "select oxid from oxactions where oxtype=2" );
-        $this->setRequestParam( "oxid", $sPromotion );
-        $this->setRequestParam( "oxpromotionaoc", null );
+        $sPromotion = oxDb::getDb()->getOne("select oxid from oxactions where oxtype=2");
+        $this->setRequestParam("oxid", $sPromotion);
+        $this->setRequestParam("oxpromotionaoc", null);
 
         $oPromotion = new oxactions();
         $oPromotion->load($sPromotion);
 
         // testing..
-        $oView = $this->getMock( "Actions_Main", array( "getViewDataElement", "_generateTextEditor" ) );
-        $oView->expects( $this->once() )->method( 'getViewDataElement' )->will( $this->returnValue( $oPromotion ) );
-        $oView->expects( $this->once() )->method( '_generateTextEditor' )->will( $this->returnValue( "sHtmlEditor" ) );
+        $oView = $this->getMock("Actions_Main", array("getViewDataElement", "_generateTextEditor"));
+        $oView->expects($this->once())->method('getViewDataElement')->will($this->returnValue($oPromotion));
+        $oView->expects($this->once())->method('_generateTextEditor')->will($this->returnValue("sHtmlEditor"));
         $sTplName = $oView->render();
 
-        $this->assertEquals( "actions_main.tpl", $sTplName );
+        $this->assertEquals("actions_main.tpl", $sTplName);
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertNotNull( $aViewData["edit"] );
-        $this->assertNull( $aViewData["oxajax"] );
-        $this->assertEquals( "sHtmlEditor", $aViewData["editor"] );
+        $this->assertNotNull($aViewData["edit"]);
+        $this->assertNull($aViewData["oxajax"]);
+        $this->assertEquals("sHtmlEditor", $aViewData["editor"]);
     }
 
     /**
@@ -192,16 +193,16 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         oxTestModules::addFunction('oxactions', 'load', '{ return true; }');
         oxTestModules::addFunction('oxactions', 'save', '{ return true; }');
 
-        $this->setRequestParam( "oxid", "xxx" );
-        $this->setRequestParam( "editval", array( "xxx" ) );
-        $this->setConfigParam( "blAllowSharedEdit", true );
+        $this->setRequestParam("oxid", "xxx");
+        $this->setRequestParam("editval", array("xxx"));
+        $this->setConfigParam("blAllowSharedEdit", true);
 
         $oView = new Actions_Main();
         $oView->save();
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData["updatelist"] ) );
-        $this->assertEquals( 1, $aViewData["updatelist"] );
+        $this->assertTrue(isset($aViewData["updatelist"]));
+        $this->assertEquals(1, $aViewData["updatelist"]);
 
     }
 
@@ -212,8 +213,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testSaveinnlang()
     {
-        $oView = $this->getMock( "Actions_Main", array( "save" ) );
-        $oView->expects( $this->once() )->method( "save" );
+        $oView = $this->getMock("Actions_Main", array("save"));
+        $oView->expects($this->once())->method("save");
         $oView->saveinnlang();
     }
 
@@ -224,23 +225,23 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testPromotionsRender()
     {
-        $this->setRequestParam( "oxid", -1 );
-        $this->setRequestParam( "saved_oxid", -1 );
+        $this->setRequestParam("oxid", -1);
+        $this->setRequestParam("saved_oxid", -1);
 
         $oPromotion = new oxActions();
-        $oPromotion->oxactions__oxtype = new oxField( 2 );
+        $oPromotion->oxactions__oxtype = new oxField(2);
 
         // testing..
-        $oView = $this->getMock( "Actions_Main", array( "getViewDataElement", "_generateTextEditor" ) );
-        $oView->expects( $this->once() )->method( 'getViewDataElement' )->with( $this->equalTo( "edit") )->will( $this->returnValue( $oPromotion ));
-        $oView->expects( $this->once() )->method( '_generateTextEditor' )->with( $this->equalTo( "100%" ), $this->equalTo( 300 ), $this->equalTo( $oPromotion ), $this->equalTo( "oxactions__oxlongdesc" ), $this->equalTo( "details.tpl.css" ) );
+        $oView = $this->getMock("Actions_Main", array("getViewDataElement", "_generateTextEditor"));
+        $oView->expects($this->once())->method('getViewDataElement')->with($this->equalTo("edit"))->will($this->returnValue($oPromotion));
+        $oView->expects($this->once())->method('_generateTextEditor')->with($this->equalTo("100%"), $this->equalTo(300), $this->equalTo($oPromotion), $this->equalTo("oxactions__oxlongdesc"), $this->equalTo("details.tpl.css"));
 
         $sTplName = $oView->render();
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertEquals( '-1', $aViewData["oxid"] );
-        $this->assertEquals( "actions_main.tpl", $sTplName );
+        $this->assertEquals('-1', $aViewData["oxid"]);
+        $this->assertEquals("actions_main.tpl", $sTplName);
     }
 
     /**
@@ -253,17 +254,17 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         oxTestModules::addFunction('oxactions', 'load', '{ return true; }');
         oxTestModules::addFunction('oxactions', 'save', '{ return true; }');
 
-        $this->setRequestParam( "oxid", "xxx" );
-        $this->setRequestParam( "editval", array( "xxx" ) );
-        $this->setConfigParam( "blAllowSharedEdit", true );
+        $this->setRequestParam("oxid", "xxx");
+        $this->setRequestParam("editval", array("xxx"));
+        $this->setConfigParam("blAllowSharedEdit", true);
 
         $oView = new Actions_Main();
         $oView->save();
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData["updatelist"] ) );
-        $this->assertEquals( 1, $aViewData["updatelist"] );
-        $this->assertNull( oxRegistry::getSession()->getVariable( "saved_oxid" ) );
+        $this->assertTrue(isset($aViewData["updatelist"]));
+        $this->assertEquals(1, $aViewData["updatelist"]);
+        $this->assertNull(oxRegistry::getSession()->getVariable("saved_oxid"));
     }
 
     /**
@@ -277,16 +278,16 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         oxTestModules::addFunction('oxactions', 'save', '{ return true; }');
         oxTestModules::addFunction('oxactions', 'getId', '{ return "testId"; }');
 
-        $this->setRequestParam( "oxid", "-1" );
-        $this->setRequestParam( "editval", array( "xxx" ) );
-        $this->setConfigParam( "blAllowSharedEdit", true );
+        $this->setRequestParam("oxid", "-1");
+        $this->setRequestParam("editval", array("xxx"));
+        $this->setConfigParam("blAllowSharedEdit", true);
 
         $oView = new Actions_Main();
         $oView->save();
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData["updatelist"] ) );
-        $this->assertEquals( 1, $aViewData["updatelist"] );
+        $this->assertTrue(isset($aViewData["updatelist"]));
+        $this->assertEquals(1, $aViewData["updatelist"]);
     }
 
 }

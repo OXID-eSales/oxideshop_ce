@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for content class
  */
 class Unit_Views_clearcookiesTest extends OxidTestCase
 {
+
     protected $_oObj = null;
 
     /**
@@ -63,13 +64,13 @@ class Unit_Views_clearcookiesTest extends OxidTestCase
 
             $oView = new clearcookies();
 
-        $oUtilsServer = $this->getMock( 'oxUtilsServer', array( 'setOxCookie' ) );
-        $oUtilsServer->expects( $this->at(0) )->method( 'setOxCookie')->with( $this->equalTo( 'shop' ) );
-        $oUtilsServer->expects( $this->at(1) )->method( 'setOxCookie')->with( $this->equalTo( 'language' ) );
-        $oUtilsServer->expects( $this->at(2) )->method( 'setOxCookie')->with( $this->equalTo( 'displayedCookiesNotification' ) );
+        $oUtilsServer = $this->getMock('oxUtilsServer', array('setOxCookie'));
+        $oUtilsServer->expects($this->at(0))->method('setOxCookie')->with($this->equalTo('shop'));
+        $oUtilsServer->expects($this->at(1))->method('setOxCookie')->with($this->equalTo('language'));
+        $oUtilsServer->expects($this->at(2))->method('setOxCookie')->with($this->equalTo('displayedCookiesNotification'));
         oxRegistry::set('oxUtilsServer', $oUtilsServer);
 
-        $this->assertEquals( 'page/info/clearcookies.tpl', $oView->render() );
+        $this->assertEquals('page/info/clearcookies.tpl', $oView->render());
     }
 
     /**

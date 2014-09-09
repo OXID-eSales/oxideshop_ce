@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Dynscreen_Local class
  */
 class Unit_Admin_DynscreenLocalTest extends OxidTestCase
 {
+
     /**
      * Dynscreen_Local::Render() test case
      *
@@ -37,6 +38,6 @@ class Unit_Admin_DynscreenLocalTest extends OxidTestCase
     {
         // testing..
         $oView = new Dynscreen_Local();
-        $this->assertEquals( 'dynscreen_local.tpl', $oView->render() );
+        $this->assertEquals('dynscreen_local.tpl', $oView->render());
     }
 }

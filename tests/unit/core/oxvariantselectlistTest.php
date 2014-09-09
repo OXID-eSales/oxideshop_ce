@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxvariantselectlistTest extends OxidTestCase
 {
+
     /**
      * Testing constructor and setters
      *
@@ -32,30 +33,30 @@ class Unit_Core_oxvariantselectlistTest extends OxidTestCase
      */
     public function testConstructorAndSetters()
     {
-        $oSelectionList = new oxVariantSelectList( "test", 0 );
+        $oSelectionList = new oxVariantSelectList("test", 0);
 
         // initial state
-        $this->assertNull( $oSelectionList->getActiveSelection() );
-        $this->assertEquals( "test", $oSelectionList->getLabel() );
+        $this->assertNull($oSelectionList->getActiveSelection());
+        $this->assertEquals("test", $oSelectionList->getLabel());
 
         // adding variants
-        $oSelectionList->addVariant( "test1", "test1", true, false );
+        $oSelectionList->addVariant("test1", "test1", true, false);
 
         // checking various getters
-        $this->assertEquals( 1, count( $oSelectionList->getSelections() ) );
+        $this->assertEquals(1, count($oSelectionList->getSelections()));
 
         // adding variants
-        $oSelectionList->addVariant( "test1", "test1", false, true );
-        $oSelectionList->addVariant( "test2", "test2", false, true );
-        $oSelectionList->addVariant( "test2", "test2", true, false );
+        $oSelectionList->addVariant("test1", "test1", false, true);
+        $oSelectionList->addVariant("test2", "test2", false, true);
+        $oSelectionList->addVariant("test2", "test2", true, false);
 
         // checkign for active selection
         $oActiveSelection = $oSelectionList->getActiveSelection();
-        $this->assertNotNull( $oActiveSelection );
-        $this->assertEquals( "test2", $oActiveSelection->getName() );
-        $this->assertEquals( "test2", $oActiveSelection->getValue() );
+        $this->assertNotNull($oActiveSelection);
+        $this->assertEquals("test2", $oActiveSelection->getName());
+        $this->assertEquals("test2", $oActiveSelection->getValue());
 
         // checking various getters
-        $this->assertEquals( 2, count( $oSelectionList->getSelections() ) );
+        $this->assertEquals(2, count($oSelectionList->getSelections()));
     }
 }

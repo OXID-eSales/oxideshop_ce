@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Vendor class
  */
 class Unit_Admin_VendorTest extends OxidTestCase
 {
+
     /**
      * Vendor::Render() test case
      *
@@ -37,6 +38,6 @@ class Unit_Admin_VendorTest extends OxidTestCase
     {
         // testing..
         $oView = new Vendor();
-        $this->assertEquals( 'vendor.tpl', $oView->render() );
+        $this->assertEquals('vendor.tpl', $oView->render());
     }
 }

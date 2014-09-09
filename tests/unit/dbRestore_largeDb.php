@@ -28,12 +28,14 @@ class DbRestore
 
     /**
      * Temp directory, where to store database dump
+     *
      * @var string
      */
     private $_sTmpDir = '/tmp/';
 
     /**
      * Dump file path
+     *
      * @var string
      */
     private $_sTmpFilePath = null;
@@ -114,8 +116,10 @@ class DbRestore
         foreach ($aTables as $sTable) {
             if (!in_array($sTable, $aDumpTables)) {
                 $this->dropTable($sTable);
-            } else if ($aChecksum[$sTable] !== $aDumpChecksum[$sTable]) {
-                $this->restoreTable($sTable, false);
+            } else {
+                if ($aChecksum[$sTable] !== $aDumpChecksum[$sTable]) {
+                    $this->restoreTable($sTable, false);
+                }
             }
         }
 
@@ -129,7 +133,7 @@ class DbRestore
      * Restores table records
      *
      * @param string $sTable
-     * @param bool $blCheckChecksum
+     * @param bool   $blCheckChecksum
      */
     public function restoreTable($sTable, $blCheckChecksum = true)
     {
@@ -192,6 +196,7 @@ class DbRestore
      * Converts a string to UTF format.
      *
      * @param array|string $aTables
+     *
      * @return array
      */
     protected function _getTableChecksum($aTables)
@@ -224,6 +229,7 @@ class DbRestore
                 unset($aTables[$iKey]);
             }
         }
+
         return $aTables;
     }
 }

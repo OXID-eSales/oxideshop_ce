@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Admin_Guestbook class
  */
 class Unit_Admin_AdminGuestbookTest extends OxidTestCase
 {
+
     /**
      * Admin_Guestbook::Render() test case
      *
@@ -37,7 +38,7 @@ class Unit_Admin_AdminGuestbookTest extends OxidTestCase
     {
         // testing..
         $oView = new Admin_Guestbook();
-        $this->assertEquals( 'admin_guestbook.tpl', $oView->render() );
+        $this->assertEquals('admin_guestbook.tpl', $oView->render());
     }
 
 }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Dynscreen_List class
  */
 class Unit_Admin_DynscreenListTest extends OxidTestCase
 {
+
     /**
      * Dynscreen_List::Render() test case
      *
@@ -36,8 +37,8 @@ class Unit_Admin_DynscreenListTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = $this->getMock( "Dynscreen_List", array( "_setupNavigation" ) );
-        $oView->expects( $this->once() )->method( '_setupNavigation' );
-        $this->assertEquals( 'dynscreen_list.tpl', $oView->render() );
+        $oView = $this->getMock("Dynscreen_List", array("_setupNavigation"));
+        $oView->expects($this->once())->method('_setupNavigation');
+        $this->assertEquals('dynscreen_list.tpl', $oView->render());
     }
 }

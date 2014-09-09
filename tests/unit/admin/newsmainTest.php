@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for News_Main class
  */
 class Unit_Admin_NewsMainTest extends OxidTestCase
 {
+
     /**
      * News_Main::Render() test case
      *
@@ -35,14 +36,14 @@ class Unit_Admin_NewsMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new News_Main();
-        $this->assertEquals( 'news_main.tpl', $oView->render() );
+        $this->assertEquals('news_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxnews );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxnews);
     }
 
     /**
@@ -52,14 +53,14 @@ class Unit_Admin_NewsMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new News_Main();
-        $this->assertEquals( 'news_main.tpl', $oView->render() );
+        $this->assertEquals('news_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertTrue(isset($aViewData['oxid']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -70,18 +71,19 @@ class Unit_Admin_NewsMainTest extends OxidTestCase
     public function testSave()
     {
         // testing..
-        oxTestModules::addFunction( 'oxnews', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxnews', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new News_Main();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in News_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in News_Main::save()");
+
             return;
         }
-        $this->fail( "error in News_Main::save()" );
+        $this->fail("error in News_Main::save()");
     }
 
     /**
@@ -92,17 +94,18 @@ class Unit_Admin_NewsMainTest extends OxidTestCase
     public function testSaveinnlang()
     {
         // testing..
-        oxTestModules::addFunction( 'oxnews', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxnews', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new News_Main();
             $oView->saveinnlang();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in News_Main::saveinnlang()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in News_Main::saveinnlang()");
+
             return;
         }
-        $this->fail( "error in News_Main::saveinnlang()" );
+        $this->fail("error in News_Main::saveinnlang()");
     }
 }

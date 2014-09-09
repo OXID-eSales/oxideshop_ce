@@ -20,24 +20,25 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
 {
+
     /**
      * Testing MultiLangTables getter and setter
      */
     public function testSetGetMultiLangTables()
     {
-        $oValidator = oxNew( "oxShopViewValidator" );
-        $oValidator->setMultiLangTables( array( "table1", "table2" ) );
+        $oValidator = oxNew("oxShopViewValidator");
+        $oValidator->setMultiLangTables(array("table1", "table2"));
 
         $aList = $oValidator->getMultiLangTables();
 
-        $this->assertEquals( 2,  count( $aList ) );
-        $this->assertEquals( "table1",  $aList[0] );
-        $this->assertEquals( "table2",  $aList[1] );
+        $this->assertEquals(2, count($aList));
+        $this->assertEquals("table1", $aList[0]);
+        $this->assertEquals("table2", $aList[1]);
     }
 
     /**
@@ -45,14 +46,14 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
      */
     public function testSetGetMultiShopTables()
     {
-        $oValidator = oxNew( "oxShopViewValidator" );
-        $oValidator->setMultiShopTables( array( "table3", "table4" ) );
+        $oValidator = oxNew("oxShopViewValidator");
+        $oValidator->setMultiShopTables(array("table3", "table4"));
 
         $aList = $oValidator->getMultiShopTables();
 
-        $this->assertEquals( 2,  count( $aList ) );
-        $this->assertEquals( "table3",  $aList[0] );
-        $this->assertEquals( "table4",  $aList[1] );
+        $this->assertEquals(2, count($aList));
+        $this->assertEquals("table3", $aList[0]);
+        $this->assertEquals("table4", $aList[1]);
     }
 
     /**
@@ -60,14 +61,14 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
      */
     public function testSetGetLanguages()
     {
-        $oValidator = oxNew( "oxShopViewValidator" );
-        $oValidator->setLanguages( array( "de", "xx" ) );
+        $oValidator = oxNew("oxShopViewValidator");
+        $oValidator->setLanguages(array("de", "xx"));
 
         $aList = $oValidator->getLanguages();
 
-        $this->assertEquals( 2,  count( $aList ) );
-        $this->assertEquals( "de",  $aList[0] );
-        $this->assertEquals( "xx",  $aList[1] );
+        $this->assertEquals(2, count($aList));
+        $this->assertEquals("de", $aList[0]);
+        $this->assertEquals("xx", $aList[1]);
     }
 
     /**
@@ -75,14 +76,14 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
      */
     public function testSetGetAllShopLanguages()
     {
-        $oValidator = oxNew( "oxShopViewValidator" );
-        $oValidator->setAllShopLanguages( array( "de", "xx" ) );
+        $oValidator = oxNew("oxShopViewValidator");
+        $oValidator->setAllShopLanguages(array("de", "xx"));
 
         $aList = $oValidator->getAllShopLanguages();
 
-        $this->assertEquals( 2,  count( $aList ) );
-        $this->assertEquals( "de",  $aList[0] );
-        $this->assertEquals( "xx",  $aList[1] );
+        $this->assertEquals(2, count($aList));
+        $this->assertEquals("de", $aList[0]);
+        $this->assertEquals("xx", $aList[1]);
     }
 
     /**
@@ -90,10 +91,10 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
      */
     public function testSetGetShopId()
     {
-        $oValidator = oxNew( "oxShopViewValidator" );
-        $oValidator->setShopId( 100 );
+        $oValidator = oxNew("oxShopViewValidator");
+        $oValidator->setShopId(100);
 
-        $this->assertEquals( 100,  $oValidator->getShopId() );
+        $this->assertEquals(100, $oValidator->getShopId());
     }
 
     /**
@@ -104,26 +105,26 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
         $aAllShopViews = $this->_getShopViews();
 
         $aAllViews = $aAllShopViews['baseshop'];
-        $aAllShopLanguageIds = $aLanguageIds = array( 0 => 'de', 1 => 'en' );
+        $aAllShopLanguageIds = $aLanguageIds = array(0 => 'de', 1 => 'en');
 
 
-        $oValidator = $this->getMock( 'oxShopViewValidator', array( '_getAllViews', ) );
-        $oValidator->expects( $this->once() )->method( '_getAllViews' )->will( $this->returnValue( $aAllViews ) );
+        $oValidator = $this->getMock('oxShopViewValidator', array('_getAllViews',));
+        $oValidator->expects($this->once())->method('_getAllViews')->will($this->returnValue($aAllViews));
 
-        $oValidator->setShopId( 1 );
-        $oValidator->setLanguages( $aLanguageIds );
-        $oValidator->setAllShopLanguages( $aAllShopLanguageIds );
-        $oValidator->setMultiLangTables( array( 'oxartextends', 'oxarticles' ) );
-        $oValidator->setMultiShopTables( array( 'oxarticles' ) );
+        $oValidator->setShopId(1);
+        $oValidator->setLanguages($aLanguageIds);
+        $oValidator->setAllShopLanguages($aAllShopLanguageIds);
+        $oValidator->setMultiLangTables(array('oxartextends', 'oxarticles'));
+        $oValidator->setMultiShopTables(array('oxarticles'));
 
         $aResult = $oValidator->getInvalidViews();
 
 
-            $this->assertEquals( 3, count($aResult) );
-            $this->assertContains( 'oxv_oxartextends_lt', $aResult );
-            $this->assertContains( 'oxv_oxarticles_lt', $aResult );
+            $this->assertEquals(3, count($aResult));
+            $this->assertContains('oxv_oxartextends_lt', $aResult);
+            $this->assertContains('oxv_oxarticles_lt', $aResult);
 
-        $this->assertContains( 'oxv_oxarticles_ru', $aResult );
+        $this->assertContains('oxv_oxarticles_ru', $aResult);
     }
 
     /**
@@ -131,8 +132,8 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
      */
     private function _getShopViews()
     {
-        return array (
-            'baseshop' => array(
+        return array(
+            'baseshop'  => array(
                 'oxv_oxartextends',
                 'oxv_oxartextends_en',
                 'oxv_oxartextends_de',

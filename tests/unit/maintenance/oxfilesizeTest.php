@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once oxRegistry::getConfig()->getConfigParam( 'sCoreDir' ).'smarty/plugins/modifier.oxfilesize.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
+require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'smarty/plugins/modifier.oxfilesize.php';
 
 
 /**
@@ -30,6 +30,7 @@ require_once oxRegistry::getConfig()->getConfigParam( 'sCoreDir' ).'smarty/plugi
  */
 class Unit_Maintenance_oxfilesizeTest extends OxidTestCase
 {
+
     /**
      * Byte result test
      *
@@ -37,9 +38,9 @@ class Unit_Maintenance_oxfilesizeTest extends OxidTestCase
      */
     public function testOxFileSizeBytes()
     {
-         $iSize = 1023;
-         $sRes = smarty_modifier_oxfilesize($iSize);
-         $this->assertEquals("1023 B", $sRes);
+        $iSize = 1023;
+        $sRes = smarty_modifier_oxfilesize($iSize);
+        $this->assertEquals("1023 B", $sRes);
     }
 
     /**
@@ -49,9 +50,9 @@ class Unit_Maintenance_oxfilesizeTest extends OxidTestCase
      */
     public function testOxFileSizeKiloBytes()
     {
-         $iSize = 1025;
-         $sRes = smarty_modifier_oxfilesize($iSize);
-         $this->assertEquals("1.0 KB", $sRes);
+        $iSize = 1025;
+        $sRes = smarty_modifier_oxfilesize($iSize);
+        $this->assertEquals("1.0 KB", $sRes);
     }
 
     /**
@@ -61,10 +62,10 @@ class Unit_Maintenance_oxfilesizeTest extends OxidTestCase
      */
     public function testOxFileSizeMegaBytes()
     {
-         $iSize = 1024*1024*1.1;
-         $sRes = smarty_modifier_oxfilesize($iSize);
+        $iSize = 1024 * 1024 * 1.1;
+        $sRes = smarty_modifier_oxfilesize($iSize);
 
-         $this->assertEquals("1.1 MB", $sRes);
+        $this->assertEquals("1.1 MB", $sRes);
     }
 
     /**
@@ -74,10 +75,10 @@ class Unit_Maintenance_oxfilesizeTest extends OxidTestCase
      */
     public function testOxFileSizeGigaBytes()
     {
-         $iSize = 1024*1024*1024 * 1.3;
-         $sRes = smarty_modifier_oxfilesize($iSize);
+        $iSize = 1024 * 1024 * 1024 * 1.3;
+        $sRes = smarty_modifier_oxfilesize($iSize);
 
-         $this->assertEquals("1.3 GB", $sRes);
+        $this->assertEquals("1.3 GB", $sRes);
     }
 
 

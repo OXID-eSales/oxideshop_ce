@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Shop_Config class
  */
 class Unit_Admin_ThemeListTest extends OxidTestCase
 {
+
     /**
      * Theme_List::Render() test case
      *
@@ -37,15 +38,15 @@ class Unit_Admin_ThemeListTest extends OxidTestCase
     {
         // testing..
         $oView = new Theme_List();
-        $this->assertEquals( 'theme_list.tpl', $oView->render() );
+        $this->assertEquals('theme_list.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['mylist'] ) );
-        $this->assertTrue( is_array($aViewData['mylist']) );
+        $this->assertTrue(isset($aViewData['mylist']));
+        $this->assertTrue(is_array($aViewData['mylist']));
 
         // Count themes in themes folder except admin
-        $iThemesCount = count(glob(oxPATH."/application/views/*", GLOB_ONLYDIR)) - 1;
+        $iThemesCount = count(glob(oxPATH . "/application/views/*", GLOB_ONLYDIR)) - 1;
 
-        $this->assertEquals( $iThemesCount, count($aViewData['mylist']) );
+        $this->assertEquals($iThemesCount, count($aViewData['mylist']));
     }
 }

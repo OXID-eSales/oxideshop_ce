@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Category_Update class
  */
 class Unit_Admin_CategoryUpdateTest extends OxidTestCase
 {
+
     /**
      * Category_Update::GetCatListUpdateInfo() test case
      *
@@ -36,11 +37,11 @@ class Unit_Admin_CategoryUpdateTest extends OxidTestCase
     public function testGetCatListUpdateInfo()
     {
         // testing..
-        $oCategoryList = $this->getMock( "oxCategoryList", array( "getUpdateInfo" ) );
-        $oCategoryList->expects( $this->once() )->method( 'getUpdateInfo' );
+        $oCategoryList = $this->getMock("oxCategoryList", array("getUpdateInfo"));
+        $oCategoryList->expects($this->once())->method('getUpdateInfo');
 
-        $oView = $this->getMock( "Category_Update", array( "_getCategoryList" ) );
-        $oView->expects( $this->once() )->method( '_getCategoryList' )->will( $this->returnValue( $oCategoryList ) );
+        $oView = $this->getMock("Category_Update", array("_getCategoryList"));
+        $oView->expects($this->once())->method('_getCategoryList')->will($this->returnValue($oCategoryList));
         $oView->getCatListUpdateInfo();
     }
 
@@ -51,10 +52,10 @@ class Unit_Admin_CategoryUpdateTest extends OxidTestCase
      */
     public function testGetCategoryList()
     {
-        oxTestModules::addFunction( 'oxCategoryList', 'updateCategoryTree', '{}');
+        oxTestModules::addFunction('oxCategoryList', 'updateCategoryTree', '{}');
 
         $oView = new Category_Update();
-        $this->assertTrue( $oView->UNITgetCategoryList() instanceof oxCategoryList );
+        $this->assertTrue($oView->UNITgetCategoryList() instanceof oxCategoryList);
     }
 
     /**
@@ -66,6 +67,6 @@ class Unit_Admin_CategoryUpdateTest extends OxidTestCase
     {
         // testing..
         $oView = new Category_Update();
-        $this->assertEquals( 'category_update.tpl', $oView->render() );
+        $this->assertEquals('category_update.tpl', $oView->render());
     }
 }

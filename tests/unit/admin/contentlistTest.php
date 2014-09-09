@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Content_List class
  */
 class Unit_Admin_ContentListTest extends OxidTestCase
 {
+
     /**
      * Content_List::Render() test case
      *
@@ -35,16 +36,16 @@ class Unit_Admin_ContentListTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "folder", "sTestFolder" );
+        modConfig::setRequestParameter("folder", "sTestFolder");
 
         // testing..
         $oView = new Content_List();
         $sTplName = $oView->render();
         $aViewData = $oView->getViewData();
-        $this->assertEquals( oxRegistry::getConfig()->getConfigParam( 'afolder' ), $aViewData["CMSFOLDER_EMAILS"] );
-        $this->assertEquals( "sTestFolder", $aViewData["folder"] );
+        $this->assertEquals(oxRegistry::getConfig()->getConfigParam('afolder'), $aViewData["CMSFOLDER_EMAILS"]);
+        $this->assertEquals("sTestFolder", $aViewData["folder"]);
 
-        $this->assertEquals( 'content_list.tpl', $sTplName );
+        $this->assertEquals('content_list.tpl', $sTplName);
     }
 
     /**
@@ -54,15 +55,15 @@ class Unit_Admin_ContentListTest extends OxidTestCase
      */
     public function testPrepareWhereQueryUserDefinedFolder()
     {
-        modConfig::setRequestParameter( "folder", "testFolder" );
-        $sViewName = getviewName( "oxcontents" );
+        modConfig::setRequestParameter("folder", "testFolder");
+        $sViewName = getviewName("oxcontents");
 
         // defining parameters
         $oView = new Content_List();
-        $sResQ = $oView->UNITprepareWhereQuery( array(), "" );
+        $sResQ = $oView->UNITprepareWhereQuery(array(), "");
 
         $sQ .= " and {$sViewName}.oxfolder = 'testFolder'";
 
-        $this->assertEquals( $sQ, $sResQ );
+        $this->assertEquals($sQ, $sResQ);
     }
 }

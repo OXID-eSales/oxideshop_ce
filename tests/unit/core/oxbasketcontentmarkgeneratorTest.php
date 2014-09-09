@@ -20,48 +20,49 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 
 class Unit_Core_oxbasketcontentmarkgeneratorTest extends OxidTestCase
 {
+
     public function providerGetExplanationMarks()
     {
         $aResultDownloadable = array(
             'skippedDiscount' => null,
-            'downloadable' => '**',
-            'intangible' => null
+            'downloadable'    => '**',
+            'intangible'      => null
         );
 
         $aResultIntangible = array(
             'skippedDiscount' => null,
-            'downloadable' => null,
-            'intangible' => '**',
+            'downloadable'    => null,
+            'intangible'      => '**',
         );
 
         $aResultSkippedDiscount = array(
             'skippedDiscount' => '**',
-            'downloadable' => null,
-            'intangible' => null,
+            'downloadable'    => null,
+            'intangible'      => null,
         );
 
         $aResultDownloadableAndIntangible = array(
             'skippedDiscount' => null,
-            'downloadable' => '**',
-            'intangible' => '***'
+            'downloadable'    => '**',
+            'intangible'      => '***'
         );
 
         $aResultDownloadableIntangibleAndSkippedDiscount = array(
             'skippedDiscount' => '**',
-            'downloadable' => '***',
-            'intangible' => '****'
+            'downloadable'    => '***',
+            'intangible'      => '****'
         );
 
         $ResultEmptyArray = array(
-            'skippedDiscount' => null,
-            'downloadable' => null,
-            'intangible' => null,
+            'skippedDiscount'   => null,
+            'downloadable'      => null,
+            'intangible'        => null,
             'thisDoesNotExists' => null
         );
 
@@ -93,7 +94,7 @@ class Unit_Core_oxbasketcontentmarkgeneratorTest extends OxidTestCase
 
         $oExplanationMarks = new oxBasketContentMarkGenerator($oBasket);
 
-        foreach($aResult as $sMarkName => $sMark) {
+        foreach ($aResult as $sMarkName => $sMark) {
             $this->assertSame($sMark, $oExplanationMarks->getMark($sMarkName));
         }
     }

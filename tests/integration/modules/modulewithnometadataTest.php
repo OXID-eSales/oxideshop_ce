@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( dirname(__FILE__).'/../../' ) . '/unit/OxidTestCase.php';
+require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
 
 class Integration_Modules_ModuleWithNoMetadataTest extends OxidTestCase
 {
@@ -30,17 +30,17 @@ class Integration_Modules_ModuleWithNoMetadataTest extends OxidTestCase
      */
     public function testGetDisabledModules()
     {
-        $sShopDir = realpath( dirname( __FILE__ ) ) . '/testData/';
+        $sShopDir = realpath(dirname(__FILE__)) . '/testData/';
 
-        oxRegistry::getConfig()->setConfigParam( 'sShopDir', $sShopDir );
+        oxRegistry::getConfig()->setConfigParam('sShopDir', $sShopDir);
 
         $oModuleList = new oxModuleList();
 
         $this->assertEquals(array(), $oModuleList->getDisabledModules());
 
-        $oModuleList->getModulesFromDir( $sShopDir . 'modules/' );
+        $oModuleList->getModulesFromDir($sShopDir . 'modules/');
 
-        $this->assertFalse( in_array( null, $oModuleList->getDisabledModules() ), 'Module id with value null was found in disabled modules list' );
+        $this->assertFalse(in_array(null, $oModuleList->getDisabledModules()), 'Module id with value null was found in disabled modules list');
     }
 
 }

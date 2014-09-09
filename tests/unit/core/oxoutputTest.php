@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class oxUtils_Extended extends oxUtils
 {
+
     public function checkForSearchEngines($blIsSEOverride = -1)
     {
         return true;
@@ -33,15 +34,17 @@ class oxUtils_Extended extends oxUtils
 
 class oxOutput_Extended extends oxOutput
 {
-    public function _SIDCallBack( $aMatches )
+
+    public function _SIDCallBack($aMatches)
     {
-        return parent::_SIDCallBack($aMatches );
+        return parent::_SIDCallBack($aMatches);
     }
 }
 
 class oxConfigForUnit_oxoutputTest extends oxconfig
 {
-    public function getShopURL( $iLang = null, $blAdmin = null )
+
+    public function getShopURL($iLang = null, $blAdmin = null)
     {
         return 'www.test.com';
     }
@@ -80,8 +83,8 @@ class Unit_Core_oxoutputTest extends OxidTestCase
      */
     public function testProcess()
     {
-        $oOutput = oxNew( 'oxOutput' );
-        $this->assertEquals( 'someting', $oOutput->process( 'someting', 'something' ) );
+        $oOutput = oxNew('oxOutput');
+        $this->assertEquals('someting', $oOutput->process('someting', 'something'));
     }
 
     /**
@@ -89,10 +92,10 @@ class Unit_Core_oxoutputTest extends OxidTestCase
      */
     public function testProcessWithEuroSign()
     {
-        $oOutput = oxNew( 'oxOutput' );
-        oxRegistry::getConfig()->setConfigParam( 'blSkipEuroReplace', false );
-        modConfig::getInstance()->setConfigParam( 'iUtfMode', 0 );
-        $this->assertEquals( '&euro;someting', $oOutput->process( '山ometing', 'something' ) );
+        $oOutput = oxNew('oxOutput');
+        oxRegistry::getConfig()->setConfigParam('blSkipEuroReplace', false);
+        modConfig::getInstance()->setConfigParam('iUtfMode', 0);
+        $this->assertEquals('&euro;someting', $oOutput->process('山ometing', 'something'));
     }
 
     /**
@@ -100,10 +103,10 @@ class Unit_Core_oxoutputTest extends OxidTestCase
      */
     public function testProcessWithEuroSignInUtfMode()
     {
-        $oOutput = oxNew( 'oxOutput' );
-        oxRegistry::getConfig()->setConfigParam( 'blSkipEuroReplace', false );
-        modConfig::getInstance()->setConfigParam( 'iUtfMode', 1 );
-        $this->assertEquals( '山ometing', $oOutput->process( '山ometing', 'something' ) );
+        $oOutput = oxNew('oxOutput');
+        oxRegistry::getConfig()->setConfigParam('blSkipEuroReplace', false);
+        modConfig::getInstance()->setConfigParam('iUtfMode', 1);
+        $this->assertEquals('山ometing', $oOutput->process('山ometing', 'something'));
     }
 
     /**
@@ -111,11 +114,11 @@ class Unit_Core_oxoutputTest extends OxidTestCase
      */
     public function testProcessWithEuroSignWithDisabledReplace()
     {
-        $oOutput = oxNew( 'oxOutput' );
-        oxRegistry::getConfig()->setConfigParam( 'blSkipEuroReplace', true );
-        oxRegistry::getConfig()->setConfigParam( 'iUtfMode', 0 );
+        $oOutput = oxNew('oxOutput');
+        oxRegistry::getConfig()->setConfigParam('blSkipEuroReplace', true);
+        oxRegistry::getConfig()->setConfigParam('iUtfMode', 0);
 
-        $this->assertEquals( '山ometing', $oOutput->process( '山ometing', 'something' ) );
+        $this->assertEquals('山ometing', $oOutput->process('山ometing', 'something'));
     }
 
     public function testAddVersionTags()
@@ -130,12 +133,12 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $oOutput = new oxOutput();
         // should add tag only to first head item
         $sTest = "<head>foo</head>bar<head>test2</head>";
-        $sRes = $oOutput->addVersionTags( $sTest );
+        $sRes = $oOutput->addVersionTags($sTest);
         //reset value
         $myConfig->getActiveShop()->oxshops__oxversion = new oxField($sVersion, oxField::T_RAW);
 
             $this->assertNotEquals($sTest, $sRes);
-            $this->assertEquals( "<head>foo</head>\n  <!-- OXID eShop Community Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar<head>test2</head>", $sRes );
+            $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop Community Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar<head>test2</head>", $sRes);
 
 
     }
@@ -155,12 +158,12 @@ class Unit_Core_oxoutputTest extends OxidTestCase
 
         $oOutput = new oxOutput();
         $sTest = "<head>foo</Head>bar";
-        $sRes = $oOutput->addVersionTags( $sTest );
+        $sRes = $oOutput->addVersionTags($sTest);
         //reset value
         $myConfig->getActiveShop()->oxshops__oxversion = new oxField($sVersion, oxField::T_RAW);
 
             $this->assertNotEquals($sTest, $sRes);
-            $this->assertEquals( "<head>foo</head>\n  <!-- OXID eShop Community Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar", $sRes );
+            $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop Community Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar", $sRes);
 
 
 
@@ -171,8 +174,8 @@ class Unit_Core_oxoutputTest extends OxidTestCase
      */
     public function testProcessViewArray()
     {
-        $oOutput = oxNew( 'oxOutput' );
-        $this->assertEquals( array( 'something' ), $oOutput->processViewArray( array( 'something' ), 'something' ) );
+        $oOutput = oxNew('oxOutput');
+        $this->assertEquals(array('something'), $oOutput->processViewArray(array('something'), 'something'));
     }
 
     /**
@@ -180,12 +183,12 @@ class Unit_Core_oxoutputTest extends OxidTestCase
      */
     public function testProcessEmail()
     {
-        $oOutput = oxNew( 'oxOutput' );
+        $oOutput = oxNew('oxOutput');
         $oEmail = new oxEmail();
         $oEmail->email = 1;
         $oEmail2 = clone $oEmail;
-        $oOutput->processEmail( $oEmail );
-        $this->assertEquals( $oEmail2, $oEmail );
+        $oOutput->processEmail($oEmail);
+        $this->assertEquals($oEmail2, $oEmail);
     }
 
     public function testSetCharsetSetOutputFormatSendHeaders()
@@ -194,7 +197,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $oU->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: text/html; charset=asd'));
         oxTestModules::cleanUp();
         oxTestModules::addModuleObject('oxUtils', $oU);
-        $oOutput = oxNew( 'oxOutput' );
+        $oOutput = oxNew('oxOutput');
         $oOutput->setCharset('asd');
         $oOutput->sendHeaders();
 
@@ -203,7 +206,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $oU->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: application/json; charset=asdd'));
         oxTestModules::cleanUp();
         oxTestModules::addModuleObject('oxUtils', $oU);
-        $oOutput = oxNew( 'oxOutput' );
+        $oOutput = oxNew('oxOutput');
         $oOutput->setCharset('asdd');
         $oOutput->setOutputFormat(oxOutput::OUTPUT_FORMAT_JSON);
         $oOutput->sendHeaders();
@@ -213,7 +216,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $oU->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: text/html; charset=asdd'));
         oxTestModules::cleanUp();
         oxTestModules::addModuleObject('oxUtils', $oU);
-        $oOutput = oxNew( 'oxOutput' );
+        $oOutput = oxNew('oxOutput');
         $oOutput->setCharset('asdd');
         $oOutput->setOutputFormat(oxOutput::OUTPUT_FORMAT_HTML);
         $oOutput->sendHeaders();
@@ -221,7 +224,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
 
     public function testOutputFlushOutput()
     {
-        $oOutput = oxNew( 'oxOutput' );
+        $oOutput = oxNew('oxOutput');
         ob_start();
         $oOutput->output('asd', 'asasd');
         $this->assertEquals('asasd', ob_get_clean());
@@ -229,7 +232,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $oOutput->flushOutput();
         $this->assertEquals('', ob_get_clean());
 
-        $oOutput = oxNew( 'oxOutput' );
+        $oOutput = oxNew('oxOutput');
         $oOutput->setOutputFormat(oxOutput::OUTPUT_FORMAT_JSON);
         ob_start();
         $oOutput->output('asd', 'asasd');

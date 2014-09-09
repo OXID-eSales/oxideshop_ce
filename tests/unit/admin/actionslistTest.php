@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Actions_List class
  */
 class Unit_Admin_ActionsListTest extends OxidTestCase
 {
+
     /**
      * Actions_List::Render() test case
      *
@@ -36,13 +37,13 @@ class Unit_Admin_ActionsListTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = $this->getProxyClass( "Actions_List" );
+        $oView = $this->getProxyClass("Actions_List");
         $sTplName = $oView->render();
         $aViewData = $oView->getViewData();
 
-        $this->assertEquals( 'oxactions', $oView->getNonPublicVar( "_sListClass" ) );
-        $this->assertEquals( array( 'oxactions' => array( 'oxtitle' => 'asc' ) ), $oView->getListSorting() );
-        $this->assertEquals( 'actions_list.tpl', $sTplName );
+        $this->assertEquals('oxactions', $oView->getNonPublicVar("_sListClass"));
+        $this->assertEquals(array('oxactions' => array('oxtitle' => 'asc')), $oView->getListSorting());
+        $this->assertEquals('actions_list.tpl', $sTplName);
     }
 
     /**
@@ -52,17 +53,17 @@ class Unit_Admin_ActionsListTest extends OxidTestCase
      */
     public function testPromotionsRender()
     {
-        modConfig::setRequestParameter( "displaytype", "testType" );
+        modConfig::setRequestParameter("displaytype", "testType");
 
         // testing..
-        $oView = $this->getProxyClass( "Actions_List" );
+        $oView = $this->getProxyClass("Actions_List");
         $sTplName = $oView->render();
         $aViewData = $oView->getViewData();
 
-        $this->assertEquals( 'oxactions', $oView->getNonPublicVar( "_sListClass" ) );
-        $this->assertEquals( array( 'oxactions' => array( 'oxtitle' => 'asc' ) ), $oView->getListSorting() );
-        $this->assertEquals( 'testType', $aViewData['displaytype'] );
-        $this->assertEquals( 'actions_list.tpl', $sTplName );
+        $this->assertEquals('oxactions', $oView->getNonPublicVar("_sListClass"));
+        $this->assertEquals(array('oxactions' => array('oxtitle' => 'asc')), $oView->getListSorting());
+        $this->assertEquals('testType', $aViewData['displaytype']);
+        $this->assertEquals('actions_list.tpl', $sTplName);
     }
 
     /**
@@ -73,24 +74,24 @@ class Unit_Admin_ActionsListTest extends OxidTestCase
     public function testPrepareWhereQuery()
     {
         $iTime = time();
-        oxTestModules::addFunction('oxUtilsDate', 'getTime', '{ return '.$iTime.'; }');
-        $sTable = getViewName( "oxactions" );
-        $sNow   = date( 'Y-m-d H:i:s', $iTime );
+        oxTestModules::addFunction('oxUtilsDate', 'getTime', '{ return ' . $iTime . '; }');
+        $sTable = getViewName("oxactions");
+        $sNow = date('Y-m-d H:i:s', $iTime);
 
         $sAddQ = '';
 
         $oView = new Actions_List();
 
         $sQ = " and $sTable.oxactivefrom < '$sNow' and $sTable.oxactiveto > '$sNow' $sAddQ";
-        modConfig::setRequestParameter( 'displaytype', 1 );
-        $this->assertEquals( $sQ, $oView->UNITprepareWhereQuery( array(), "" ) );
+        modConfig::setRequestParameter('displaytype', 1);
+        $this->assertEquals($sQ, $oView->UNITprepareWhereQuery(array(), ""));
 
         $sQ = " and $sTable.oxactivefrom > '$sNow' $sAddQ";
-        modConfig::setRequestParameter( 'displaytype', 2 );
-        $this->assertEquals( $sQ, $oView->UNITprepareWhereQuery( array(), "" ) );
+        modConfig::setRequestParameter('displaytype', 2);
+        $this->assertEquals($sQ, $oView->UNITprepareWhereQuery(array(), ""));
 
         $sQ = " and $sTable.oxactiveto < '$sNow' and $sTable.oxactiveto != '0000-00-00 00:00:00' $sAddQ";
-        modConfig::setRequestParameter( 'displaytype', 3 );
-        $this->assertEquals( $sQ, $oView->UNITprepareWhereQuery( array(), "" ) );
+        modConfig::setRequestParameter('displaytype', 3);
+        $this->assertEquals($sQ, $oView->UNITprepareWhereQuery(array(), ""));
     }
 }

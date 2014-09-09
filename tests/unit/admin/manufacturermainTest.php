@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Manufacturer_Main class
  */
 class Unit_Admin_ManufacturerMainTest extends OxidTestCase
 {
+
     /**
      * Manufacturer_Main::Render() test case
      *
@@ -35,16 +36,16 @@ class Unit_Admin_ManufacturerMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
-        oxTestModules::addFunction( 'oxmanufacturer', 'isDerived', '{ return true; }');
+        modConfig::setRequestParameter("oxid", "testId");
+        oxTestModules::addFunction('oxmanufacturer', 'isDerived', '{ return true; }');
 
         // testing..
         $oView = new Manufacturer_Main();
-        $this->assertEquals( 'manufacturer_main.tpl', $oView->render() );
+        $this->assertEquals('manufacturer_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxmanufacturer );
-        $this->assertTrue( isset( $aViewData['readonly'] ) );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxmanufacturer);
+        $this->assertTrue(isset($aViewData['readonly']));
     }
 
     /**
@@ -54,14 +55,14 @@ class Unit_Admin_ManufacturerMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Manufacturer_Main();
-        $this->assertEquals( 'manufacturer_main.tpl', $oView->render() );
+        $this->assertEquals('manufacturer_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertTrue(isset($aViewData['oxid']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -72,18 +73,19 @@ class Unit_Admin_ManufacturerMainTest extends OxidTestCase
     public function testSave()
     {
         // testing..
-        oxTestModules::addFunction( 'oxmanufacturer', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxmanufacturer', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new Manufacturer_Main();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Manufacturer_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Manufacturer_Main::save()");
+
             return;
         }
-        $this->fail( "error in Manufacturer_Main::save()" );
+        $this->fail("error in Manufacturer_Main::save()");
     }
 
     /**
@@ -94,17 +96,18 @@ class Unit_Admin_ManufacturerMainTest extends OxidTestCase
     public function testSaveinnlang()
     {
         // testing..
-        oxTestModules::addFunction( 'oxmanufacturer', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxmanufacturer', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new Manufacturer_Main();
             $oView->saveinnlang();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Manufacturer_Main::saveinnlang()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Manufacturer_Main::saveinnlang()");
+
             return;
         }
-        $this->fail( "error in Manufacturer_Main::saveinnlang()" );
+        $this->fail("error in Manufacturer_Main::saveinnlang()");
     }
 }

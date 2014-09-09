@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
-require_once realpath( "." ).'/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
 
 /**
  * Test Trusted shop ratings acquisition from Trusted Shops website
@@ -41,9 +41,9 @@ class Unit_Views_oxTsRatingsTest extends OxidTestCase
     public function idProvider()
     {
         return array(
-            array ( 122, 122 ),
-            array ('xyz', 'xyz' ),
-            array ( null, null ),
+            array(122, 122),
+            array('xyz', 'xyz'),
+            array(null, null),
         );
     }
 
@@ -57,12 +57,12 @@ class Unit_Views_oxTsRatingsTest extends OxidTestCase
      *
      * @return null
      */
-    public function testGetTsId( $sId, $sExpected )
+    public function testGetTsId($sId, $sExpected)
     {
         $oTsRatings = new oxTsRatings();
-        $oTsRatings->setTsId( $sId );
+        $oTsRatings->setTsId($sId);
 
-        $this->assertEquals( $oTsRatings->getTsId(), $sExpected );
+        $this->assertEquals($oTsRatings->getTsId(), $sExpected);
     }
 
     /**
@@ -74,7 +74,7 @@ class Unit_Views_oxTsRatingsTest extends OxidTestCase
     {
         $oTsRatings = new oxTsRatings();
 
-        $this->assertEquals( $oTsRatings->getTsId(), null );
+        $this->assertEquals($oTsRatings->getTsId(), null);
     }
 
     /**
@@ -86,12 +86,12 @@ class Unit_Views_oxTsRatingsTest extends OxidTestCase
      */
     public function testGetRatingsValidId()
     {
-        $oTsRatings = $this->getMock( "oxTsRatings", array( "_executeCurl" ) );
-        $oTsRatings->expects( $this->any() )->method( "_executeCurl" )->will( $this->returnValue( $this->_getValidRespone() ) );
-        $oTsRatings->setTsId( 'xyz' );
+        $oTsRatings = $this->getMock("oxTsRatings", array("_executeCurl"));
+        $oTsRatings->expects($this->any())->method("_executeCurl")->will($this->returnValue($this->_getValidRespone()));
+        $oTsRatings->setTsId('xyz');
 
-        $aResultExpected = array ( 'empty' => false, 'result' => 4.89, 'max' => "5.00", 'count' => 9, 'shopName' => 'Trusted Shops DemoShop' );
-        $this->assertEquals( $aResultExpected, $oTsRatings->getRatings() );
+        $aResultExpected = array('empty' => false, 'result' => 4.89, 'max' => "5.00", 'count' => 9, 'shopName' => 'Trusted Shops DemoShop');
+        $this->assertEquals($aResultExpected, $oTsRatings->getRatings());
     }
 
     /**
@@ -102,12 +102,13 @@ class Unit_Views_oxTsRatingsTest extends OxidTestCase
     public function testGetRatingsInvalidId()
     {
         $sError = "error.";
-        $oTsRatings = $this->getMock( "oxTsRatings", array( "_executeCurl" ) );
-        $oTsRatings->expects( $this->any() )->method( "_executeCurl" )->will( $this->returnValue( $sError ) );
-        $oTsRatings->setTsId( 'xyz' );
-        $aResultExpected = array ( 'empty' => true );
-        $this->assertEquals( $aResultExpected, $oTsRatings->getRatings() );
+        $oTsRatings = $this->getMock("oxTsRatings", array("_executeCurl"));
+        $oTsRatings->expects($this->any())->method("_executeCurl")->will($this->returnValue($sError));
+        $oTsRatings->setTsId('xyz');
+        $aResultExpected = array('empty' => true);
+        $this->assertEquals($aResultExpected, $oTsRatings->getRatings());
     }
+
     /**
      * Trimmed response from a valid request
      *

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwCookieNote class
  */
 class Unit_Components_Widgets_oxwCookieNoteTest extends OxidTestCase
 {
+
     /**
      * Testing oxwCookieNote::render()
      *
@@ -36,7 +37,7 @@ class Unit_Components_Widgets_oxwCookieNoteTest extends OxidTestCase
     public function testRender()
     {
         $oCookieNote = new oxwCookieNote();
-        $this->assertEquals( 'widget/header/cookienote.tpl', $oCookieNote->render() );
+        $this->assertEquals('widget/header/cookienote.tpl', $oCookieNote->render());
     }
 
     /**
@@ -48,7 +49,7 @@ class Unit_Components_Widgets_oxwCookieNoteTest extends OxidTestCase
     {
         $this->setConfigParam("blShowCookiesNotification", true);
         $oCookieNote = new oxwCookieNote();
-        $this->assertTrue( $oCookieNote->isEnabled() );
+        $this->assertTrue($oCookieNote->isEnabled());
     }
 
     /**
@@ -60,7 +61,7 @@ class Unit_Components_Widgets_oxwCookieNoteTest extends OxidTestCase
     {
         $this->setConfigParam("blShowCookiesNotification", false);
         $oCookieNote = new oxwCookieNote();
-        $this->assertFalse( $oCookieNote->isEnabled() );
+        $this->assertFalse($oCookieNote->isEnabled());
     }
 
 }

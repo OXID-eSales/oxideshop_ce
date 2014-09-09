@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxlinksTest extends OxidTestCase
 {
+
     private $_oxLinks;
 
     /**
@@ -35,7 +36,7 @@ class Unit_Core_oxlinksTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_oxLinks = oxNew( "oxlinks", getViewName( 'oxlinks'));
+        $this->_oxLinks = oxNew("oxlinks", getViewName('oxlinks'));
         $this->_oxLinks->setId('testlink');
         $this->_oxLinks->oxlinks__oxurl = new oxField('http://www.oxid-esales.com', oxField::T_RAW);
         $this->_oxLinks->Save();
@@ -48,25 +49,27 @@ class Unit_Core_oxlinksTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $sDelete =  "delete from oxlinks where oxid='".$this->_oxLinks->getId()."'";
-        oxDb::getDb()->Execute( $sDelete );
+        $sDelete = "delete from oxlinks where oxid='" . $this->_oxLinks->getId() . "'";
+        oxDb::getDb()->Execute($sDelete);
         parent::tearDown();
     }
+
     /**
-    * tests save and load function
-    */
+     * tests save and load function
+     */
     public function testLoad()
     {
-        $oLink = oxNew("oxlinks", getViewName( 'oxlinks'));
+        $oLink = oxNew("oxlinks", getViewName('oxlinks'));
         $oLink->load($this->_oxLinks->getId());
         $this->assertEquals('http://www.oxid-esales.com', $oLink->oxlinks__oxurl->value);
     }
+
     /**
-    * tests save function with special chars
-    */
+     * tests save function with special chars
+     */
     public function testDescWithHtmlEntity()
     {
-        $oLink = oxNew("oxlinks", getViewName( 'oxlinks'));
+        $oLink = oxNew("oxlinks", getViewName('oxlinks'));
         $oLink->load($this->_oxLinks->getId());
         $oLink->oxlinks__oxurldesc = new oxField('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"äüßö', oxField::T_RAW);
         $this->_oxLinks->Save();

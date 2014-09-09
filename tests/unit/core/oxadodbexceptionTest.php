@@ -20,17 +20,18 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxadodbexceptionTest extends OxidTestCase
 {
+
     public function testConstructingOfMessage()
     {
         $sMessage = "mysql error: [200: MySQL Error] in CONNECT (param1, param2) with user root\n";
         $oConnection = new stdClass();
         $oConnection->username = 'root';
-        $oTestObject = oxNew( 'oxAdoDbException', 'mysql', 'CONNECT', 200, 'MySQL Error', 'param1', 'param2', $oConnection );
+        $oTestObject = oxNew('oxAdoDbException', 'mysql', 'CONNECT', 200, 'MySQL Error', 'param1', 'param2', $oConnection);
         $this->assertEquals($sMessage, $oTestObject->getMessage());
     }
 

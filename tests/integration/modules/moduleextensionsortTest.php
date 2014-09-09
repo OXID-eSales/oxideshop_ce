@@ -40,8 +40,8 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
 
                 // Reordered extensions
                 array(
-                    'oxorder'   => 'extending_3_classes_with_1_extension/mybaseclass&extending_1_class/myorder&'.
-                                   'extending_1_class_3_extensions/myorder1&extending_3_classes/myorder&'.
+                    'oxorder'   => 'extending_3_classes_with_1_extension/mybaseclass&extending_1_class/myorder&' .
+                                   'extending_1_class_3_extensions/myorder1&extending_3_classes/myorder&' .
                                    'extending_1_class_3_extensions/myorder3&extending_1_class_3_extensions/myorder2',
                     'oxarticle' => 'extending_3_classes/myarticle&extending_3_classes_with_1_extension/mybaseclass',
                     'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
@@ -59,9 +59,9 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
 
                 // Reordered extensions
                 array(
-                    'oxorder'   => 'extending_1_class_3_extensions/myorder2&'.
-                                   'extending_1_class_3_extensions/myorder1&'.
-                                   'extending_1_class_3_extensions/myorder3',
+                    'oxorder' => 'extending_1_class_3_extensions/myorder2&' .
+                                 'extending_1_class_3_extensions/myorder1&' .
+                                 'extending_1_class_3_extensions/myorder3',
                 ),
             )
         );
@@ -72,23 +72,24 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
      *
      * @dataProvider providerModuleReorderExtensions
      */
-    public function testIsActive( $aInstallModules, $sModule, $aReorderedExtensions )
+    public function testIsActive($aInstallModules, $sModule, $aReorderedExtensions)
     {
         $oEnvironment = new Environment();
-        $oEnvironment->prepare( $aInstallModules );
+        $oEnvironment->prepare($aInstallModules);
 
         // load reordered extensions
-        oxRegistry::getConfig()->setConfigParam( 'aModules', $aReorderedExtensions );
+        oxRegistry::getConfig()->setConfigParam('aModules', $aReorderedExtensions);
 //
         $oModule = new oxModule();
-        $oModule->load( $sModule );
+        $oModule->load($sModule);
 
         $this->_deactivateModule($oModule);
         $this->_activateModule($oModule);
 
-        $oValidator = new Validator( oxRegistry::getConfig() );
+        $oValidator = new Validator(oxRegistry::getConfig());
 
-        $this->assertTrue( $oValidator->checkExtensions( $aReorderedExtensions ), 'Extension order changed' );
+        $this->assertTrue($oValidator->checkExtensions($aReorderedExtensions), 'Extension order changed');
     }
+
 }
  

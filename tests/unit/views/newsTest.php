@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing news class.
  */
 class Unit_Views_newsTest extends OxidTestCase
 {
+
     public $aNews = array();
 
     /**
@@ -41,17 +42,17 @@ class Unit_Views_newsTest extends OxidTestCase
         // cleaning
         $this->aNews = array();
 
-        $this->aNews[0] = oxNew( 'oxbase' );
+        $this->aNews[0] = oxNew('oxbase');
         $this->aNews[0]->init('oxnews');
-        $this->aNews[0]->setId( 1 );
+        $this->aNews[0]->setId(1);
         $this->aNews[0]->oxnews__oxshortdesc = new oxField('Test 0', oxField::T_RAW);
         $this->aNews[0]->oxnews__oxactive = new oxField(1, oxField::T_RAW);
         $this->aNews[0]->oxnews__oxdate = new oxField('2007-01-01', oxField::T_RAW);
         $this->aNews[0]->save();
 
-        $this->aNews[1] = oxNew( 'oxbase' );
+        $this->aNews[1] = oxNew('oxbase');
         $this->aNews[1]->init('oxnews');
-        $this->aNews[1]->setId( 2 );
+        $this->aNews[1]->setId(2);
         $this->aNews[1]->oxnews__oxshortdesc = new oxField('Test 1', oxField::T_RAW);
         $this->aNews[1]->oxnews__oxactive = new oxField(1, oxField::T_RAW);
         $this->aNews[1]->oxnews__oxdate = new oxField('2007-01-02', oxField::T_RAW);
@@ -66,8 +67,9 @@ class Unit_Views_newsTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        foreach ( $this->aNews as $oNew )
+        foreach ($this->aNews as $oNew) {
             $oNew->delete();
+        }
         parent::tearDown();
     }
 
@@ -81,14 +83,14 @@ class Unit_Views_newsTest extends OxidTestCase
         $oNews = new news();
         $oNewsList = $oNews->getNews();
 
-        $this->assertEquals( 2, $oNewsList->count() );
+        $this->assertEquals(2, $oNewsList->count());
 
         $oItem = $oNewsList->current();
-        $this->assertEquals( 2, $oItem->getId() );
+        $this->assertEquals(2, $oItem->getId());
 
         $oNewsList->next();
         $oItem = $oNewsList->current();
-        $this->assertEquals( 1, $oItem->getId() );
+        $this->assertEquals(1, $oItem->getId());
     }
 
     public function testRender()
@@ -111,20 +113,20 @@ class Unit_Views_newsTest extends OxidTestCase
         $oShop->oxshops__oxname = new oxField('shop');
 
         $oConfig = $this->getMock("oxConfig", array('getActiveShop'));
-        $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue( $oShop ));
+        $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
         $oNews = $this->getMock("news", array('getConfig'));
-        $oNews->expects($this->any())->method('getConfig')->will($this->returnValue( $oConfig ));
+        $oNews->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $aResult  = array();
+        $aResult = array();
         $aResults = array();
 
-        $aResult["title"] = oxRegistry::getLang()->translateString( 'LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false ) . ' shop';
-        $aResult["link"]  = $oNews->getLink();
+        $aResult["title"] = oxRegistry::getLang()->translateString('LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false) . ' shop';
+        $aResult["link"] = $oNews->getLink();
 
         $aResults[] = $aResult;
 
-        $this->assertEquals( $aResults, $oNews->getBreadCrumb() );
+        $this->assertEquals($aResults, $oNews->getBreadCrumb());
     }
 
     /**
@@ -134,9 +136,9 @@ class Unit_Views_newsTest extends OxidTestCase
      */
     public function testGetPageNavigation()
     {
-        $oObj = $this->getMock( 'News', array( 'generatePageNavigation' ));
-        $oObj->expects( $this->any() )->method( 'generatePageNavigation')->will($this->returnValue( "aaa" ) );
-        $this->assertEquals( 'aaa', $oObj->getPageNavigation() );
+        $oObj = $this->getMock('News', array('generatePageNavigation'));
+        $oObj->expects($this->any())->method('generatePageNavigation')->will($this->returnValue("aaa"));
+        $this->assertEquals('aaa', $oObj->getPageNavigation());
     }
 
     /**
@@ -148,12 +150,12 @@ class Unit_Views_newsTest extends OxidTestCase
         $oShop->oxshops__oxname = new oxField('shop');
 
         $oConfig = $this->getMock("oxConfig", array('getActiveShop'));
-        $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue( $oShop ));
+        $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
         $oView = $this->getMock("news", array('getConfig'));
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue( $oConfig ));
+        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertEquals( oxRegistry::getLang()->translateString( 'LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false ) . ' shop', $oView->getTitle());
+        $this->assertEquals(oxRegistry::getLang()->translateString('LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false) . ' shop', $oView->getTitle());
     }
 
 }

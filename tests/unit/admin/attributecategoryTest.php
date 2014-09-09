@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Attribute_Category class
  */
 class Unit_Admin_AttributeCategoryTest extends OxidTestCase
 {
+
     /**
      * Attribute_Category::Render() test case
      *
@@ -35,13 +36,13 @@ class Unit_Admin_AttributeCategoryTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Attribute_Category();
-        $this->assertEquals( 'attribute_category.tpl', $oView->render() );
+        $this->assertEquals('attribute_category.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxattribute );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxattribute);
     }
 }

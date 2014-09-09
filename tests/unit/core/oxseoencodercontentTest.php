@@ -99,10 +99,10 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
         $oContent->oxcontents__oxtitle = new oxField('content title');
 
 
-        $sShopId   = oxRegistry::getConfig()->getBaseShopId();
-        $iLang     = 1;
+        $sShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iLang = 1;
         $sObjectId = $oContent->getId();
-        $sIdent    = md5(strtolower($sSeoUrl));;
+        $sIdent = md5(strtolower($sSeoUrl));;
         $sType = 'oxcontent';
 
         $sQ = "insert into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype)
@@ -111,7 +111,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
 
         $oEncoder = new oxSeoEncoderContent();
 
-        $sUrl    = oxRegistry::getConfig()->getShopUrl() . $sSeoUrl;
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . $sSeoUrl;
         $sSeoUrl = $oEncoder->getContentUrl($oContent);
 
         $this->assertEquals($sUrl, $sSeoUrl);
@@ -130,10 +130,10 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
         $oContent->oxcontents__oxtitle = new oxField('content title');
 
 
-        $sShopId   = oxRegistry::getConfig()->getBaseShopId();
-        $iLang     = 1;
+        $sShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iLang = 1;
         $sObjectId = $oContent->getId();
-        $sIdent    = md5(strtolower($sSeoUrl));;
+        $sIdent = md5(strtolower($sSeoUrl));;
         $sType = 'oxcontent';
 
         $sQ = "insert into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype)
@@ -142,7 +142,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
 
         $oEncoder = new oxSeoEncoderContent();
 
-        $sUrl    = oxRegistry::getConfig()->getShopUrl() . $sSeoUrl;
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . $sSeoUrl;
         $sSeoUrl = $oEncoder->getContentUrl($oContent, 1);
 
         $this->assertEquals($sUrl, $sSeoUrl);
@@ -164,7 +164,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
             $sUrl = $this->getConfig()->getShopUrl() . 'Geschenke/content-title/';
 
         $oEncoder = new oxSeoEncoderContent();
-        $sSeoUrl  = $oEncoder->getContentUrl($oContent);
+        $sSeoUrl = $oEncoder->getContentUrl($oContent);
 
         $this->assertEquals($sUrl, $sSeoUrl);
     }
@@ -202,7 +202,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
 
     public function testGetContentUriNotExistingSeqCheck()
     {
-        $oContent                      = $this->getMock('oxContent', array('getLanguage', 'getId', 'getBaseStdLink', 'loadInLang'));
+        $oContent = $this->getMock('oxContent', array('getLanguage', 'getId', 'getBaseStdLink', 'loadInLang'));
         $oContent->oxcontents__oxcatid = new oxField('xxx', oxField::T_RAW);
         $oContent->oxcontents__oxtitle = new oxField('content title', oxField::T_RAW);
         $oContent->expects($this->atLeastOnce())->method('getLanguage')->will($this->returnValue(0));
@@ -220,7 +220,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
 
     public function testGetContentUriNotExistingSeqCheckChangeLang()
     {
-        $oContent                      = $this->getMock('oxContent', array('getLanguage', 'getId', 'getBaseStdLink', 'loadInLang'));
+        $oContent = $this->getMock('oxContent', array('getLanguage', 'getId', 'getBaseStdLink', 'loadInLang'));
         $oContent->oxcontents__oxcatid = new oxField('xxx', oxField::T_RAW);
         $oContent->oxcontents__oxtitle = new oxField('content title', oxField::T_RAW);
         $oContent->expects($this->once())->method('getLanguage')->will($this->returnValue(1));
@@ -265,8 +265,8 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
     public function testonDeleteContent()
     {
         $sShopId = oxRegistry::getConfig()->getBaseShopId();
-        $oDb     = oxDb::getDb();
-        $sQ      = "insert into oxseo
+        $oDb = oxDb::getDb();
+        $sQ = "insert into oxseo
                    ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxfixed, oxexpired, oxparams )
                values
                    ( 'oid', '132', '{$sShopId}', '0', '', '', 'oxcontent', '0', '0', '' )";

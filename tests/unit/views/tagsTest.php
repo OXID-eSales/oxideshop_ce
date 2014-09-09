@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Views_tagsTest extends OxidTestCase
 {
+
     /**
      * Testing Tags::render()
      *
@@ -33,7 +34,7 @@ class Unit_Views_tagsTest extends OxidTestCase
     public function testRender()
     {
         $oView = new Tags();
-        $this->assertEquals( 'page/tags/tags.tpl', $oView->render() );
+        $this->assertEquals('page/tags/tags.tpl', $oView->render());
     }
 
     /**
@@ -44,7 +45,7 @@ class Unit_Views_tagsTest extends OxidTestCase
     public function testGetTagCloudManager()
     {
         $oView = new Tags();
-        $this->assertTrue( $oView->getTagCloudManager() instanceof oxTagCloud );
+        $this->assertTrue($oView->getTagCloudManager() instanceof oxTagCloud);
     }
 
     /**
@@ -55,7 +56,7 @@ class Unit_Views_tagsTest extends OxidTestCase
     public function testGetTitleSuffix()
     {
         $oView = new Tags();
-        $this->assertNull( $oView->getTitleSuffix() );
+        $this->assertNull($oView->getTitleSuffix());
     }
 
     /**
@@ -65,9 +66,9 @@ class Unit_Views_tagsTest extends OxidTestCase
      */
     public function testGetTitlePageSuffix()
     {
-        $oView = $this->getMock( "Tags", array( "getActPage" ) );
-        $oView->expects( $this->once() )->method( 'getActPage')->will( $this->returnValue( 1 ) );
-        $this->assertEquals( oxRegistry::getLang()->translateString( 'PAGE' )." ". 2, $oView->getTitlePageSuffix() );
+        $oView = $this->getMock("Tags", array("getActPage"));
+        $oView->expects($this->once())->method('getActPage')->will($this->returnValue(1));
+        $this->assertEquals(oxRegistry::getLang()->translateString('PAGE') . " " . 2, $oView->getTitlePageSuffix());
     }
 
     /**

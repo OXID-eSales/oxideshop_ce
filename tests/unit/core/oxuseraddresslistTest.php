@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxUserAddressListTest extends OxidTestCase
 {
+
     public $aList = array();
 
     const AUSTRIA_ID = 'a7c40f6320aeb2ec2.72885259';
@@ -71,7 +72,7 @@ class Unit_Core_oxUserAddressListTest extends OxidTestCase
      *
      * Fix for bug entry 4960: Address country title is saved into user session and doesn't get updated, when user switches languages
      *
-     * @param int $iLanguageId
+     * @param int    $iLanguageId
      * @param string $sCountryNameExpected
      *
      * @dataProvider providerLoadActiveAddress
@@ -79,7 +80,7 @@ class Unit_Core_oxUserAddressListTest extends OxidTestCase
     public function testLoadCheckCountryNamePerLanguage($iLanguageId, $sCountryNameExpected)
     {
         $sUserId = 'oxdefaultadmin';
-        oxRegistry::getLang()->setBaseLanguage( $iLanguageId, self::AUSTRIA_ID);
+        oxRegistry::getLang()->setBaseLanguage($iLanguageId, self::AUSTRIA_ID);
         $sAddressId = $this->_createAddress($sUserId, self::AUSTRIA_ID);
 
         $oAddressList = new oxUserAddressList;
@@ -109,23 +110,24 @@ class Unit_Core_oxUserAddressListTest extends OxidTestCase
      *
      * @param $sUserId
      * @param $sCountryId
+     *
      * @return string
      */
     private function _createAddress($sUserId, $sCountryId)
     {
-        $sOXID = '__testAddress'. $this->_iAddressCounter;
+        $sOXID = '__testAddress' . $this->_iAddressCounter;
         $this->_iAddressCounter++;
 
         $oSubj = new oxAddress();
         $oSubj->setId($sOXID);
-        $oSubj->oxaddress__oxuserid = new oxField( $sUserId );
+        $oSubj->oxaddress__oxuserid = new oxField($sUserId);
         // Set country Austria as this country has different name in english and germany.
-        $oSubj->oxaddress__oxcountryid = new oxField( $sCountryId );
-        $oSubj->oxaddress__oxfname = new oxField( 'Fname' );
-        $oSubj->oxaddress__oxlname = new oxField( 'Lname' );
-        $oSubj->oxaddress__oxstreet = new oxField( 'Street' );
-        $oSubj->oxaddress__oxstreetnr = new oxField( 'StreetNr' );
-        $oSubj->oxaddress__oxcity = new oxField( 'Kaunas' );
+        $oSubj->oxaddress__oxcountryid = new oxField($sCountryId);
+        $oSubj->oxaddress__oxfname = new oxField('Fname');
+        $oSubj->oxaddress__oxlname = new oxField('Lname');
+        $oSubj->oxaddress__oxstreet = new oxField('Street');
+        $oSubj->oxaddress__oxstreetnr = new oxField('StreetNr');
+        $oSubj->oxaddress__oxcity = new oxField('Kaunas');
         $oSubj->save();
 
         return $sOXID;

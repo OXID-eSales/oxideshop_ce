@@ -24,6 +24,7 @@
  * Class Unit_Core_oxOnlineLicenseCheckCallerTest
  *
  * @covers oxOnlineLicenseCheckCaller
+ * @covers oxOnlineCaller
  * @covers oxOnlineLicenseCheckRequest
  * @covers oxOnlineModulesNotifierRequest
  */

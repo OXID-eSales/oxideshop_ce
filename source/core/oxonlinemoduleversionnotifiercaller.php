@@ -35,20 +35,11 @@
  */
 class oxOnlineModuleVersionNotifierCaller extends oxOnlineCaller
 {
+    /** Online Module Version Notifier web service url. */
+    const WEB_SERVICE_URL = 'https://omvn.oxid-esales.com/check.php';
 
-    /**
-     * Online Module Version Notifier web service url.
-     *
-     * @var string
-     */
-    protected $_sServiceUrl = 'https://omvn.oxid-esales.com/check.php';
-
-    /**
-     * XML document tag name.
-     *
-     * @var string
-     */
-    protected $_sXMLDocumentName = 'omvnRequest';
+    /** XML document tag name. */
+    const XML_DOCUMENT_NAME = 'omvnRequest';
 
     /**
      * Performs Web service request
@@ -58,5 +49,21 @@ class oxOnlineModuleVersionNotifierCaller extends oxOnlineCaller
     public function doRequest(oxOnlineModulesNotifierRequest $oRequest)
     {
         $this->call($oRequest);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _getXMLDocumentName()
+    {
+        return self::XML_DOCUMENT_NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _getServiceUrl()
+    {
+        return self::WEB_SERVICE_URL;
     }
 }

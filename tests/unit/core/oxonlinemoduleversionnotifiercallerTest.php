@@ -24,21 +24,23 @@
  * Class Unit_Core_oxOnlineModuleVersionNotifierCallerTest
  *
  * @covers oxOnlineModuleVersionNotifierCaller
+ * @covers oxOnlineCaller
  */
 class Unit_Core_oxOnlineModuleVersionNotifierCallerTest extends OxidTestCase
 {
     public function testGetWebServiceUrl()
     {
         /** @var oxCurl $oCurl */
-        $oCurl = $this->getMock('oxCurl');
+        $oCurl = $this->getMock('oxCurl', array('execute'));
         /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
         $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
         $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
+        $oNotifier->call($this->_getRequest());
 
-        $this->assertSame('https://omvn.oxid-esales.com/check.php', $oNotifier->getWebServiceUrl());
+        $this->assertSame('https://omvn.oxid-esales.com/check.php', $oCurl->getUrl());
     }
 
-    public function testDoRequest()
+    public function testDoRequestAndCheckDocumentName()
     {
         $this->getConfig()->setConfigParam('sClusterId', 'generated_unique_cluster_id');
 

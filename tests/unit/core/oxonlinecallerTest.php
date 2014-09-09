@@ -27,31 +27,16 @@
  */
 class Unit_Core_oxOnlineCallerTest extends OxidTestCase
 {
-    public function testCallWhenSucceedsAndAllValuesWereSet()
-    {
-        $oCurl = $this->_getMockedCurl();
-        /** @var oxOnlineCaller $oCaller */
-        $oCaller = $this->getMockForAbstractClass('oxOnlineCaller',
-            array($oCurl, $this->_getMockedEmailBuilder(), new oxSimpleXml())
-        );
-
-        $oCaller->setWebServiceUrl('http://oxid-esales.com/');
-        $sResultXML = $this->_getResponseXML();
-
-        $this->assertSame('_testResult', $oCaller->call($this->_getRequest()));
-        $this->assertSame('http://oxid-esales.com/', $oCurl->getUrl());
-        $this->assertEquals(array('xmlRequest' => $sResultXML), $oCurl->getParameters('clusterId'));
-    }
-
     public function testCallWhenSucceedsOnTheLastAllowedCall()
     {
         /** @var oxOnlineCaller $oCaller */
         $oCaller = $this->getMockForAbstractClass('oxOnlineCaller',
-            array($this->_getMockedCurl(), $this->_getMockedEmailBuilder(), new oxSimpleXml())
+            array($this->_getMockedCurl(), $this->_getMockedEmailBuilder(), $this->_getMockedSimpleXML()),
+            '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
         );
         oxRegistry::getConfig()->saveSystemConfigParameter('int','iFailedOnlineCallsCount', 4);
+        $oCaller->call($this->_getRequest());
 
-        $this->assertSame('_testResult', $oCaller->call($this->_getRequest()));
         $this->assertSame(0, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
@@ -59,7 +44,8 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
     {
         /** @var oxOnlineCaller $oCaller */
         $oCaller = $this->getMockForAbstractClass('oxOnlineCaller',
-            array($this->_getMockedCurlWhichThrowsException(), $this->_getMockedEmailBuilder(), new oxSimpleXml())
+            array($this->_getMockedCurlWhichThrowsException(), $this->_getMockedEmailBuilder(), $this->_getMockedSimpleXML()),
+            '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
         );
         oxRegistry::getConfig()->saveSystemConfigParameter('int','iFailedOnlineCallsCount', 4);
 
@@ -75,10 +61,12 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
         $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));
         $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
 
-        /** @var oxOnlineCaller $oCaller */
         $oCaller = $this->getMockForAbstractClass('oxOnlineCaller',
-            array($this->_getMockedCurlWhichThrowsException(), $oEmailBuilder, new oxSimpleXml())
+            array($this->_getMockedCurlWhichThrowsException(), $oEmailBuilder, $this->_getMockedSimpleXML()),
+            '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
         );
+        $oCaller->expects($this->any())->method('_getXMLDocumentName')->will($this->returnValue('testXML'));
+        /** @var oxOnlineCaller $oCaller */
         oxRegistry::getConfig()->saveSystemConfigParameter('int','iFailedOnlineCallsCount', 5);
 
         $oCaller->call($this->_getRequest());
@@ -130,6 +118,7 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
         $oRequest->edition = '_testEdition';
         $oRequest->version = '_testVersion';
         $oRequest->shopUrl = '_testUrl';
+
         return $oRequest;
     }
 
@@ -142,5 +131,16 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
 <onlineRequest><clusterId>_testClusterId</clusterId><edition>_testEdition</edition><version>_testVersion</version><shopUrl>_testUrl</shopUrl><pVersion/><productId>eShop</productId></onlineRequest>
 ';
         return $sResultXML;
+    }
+
+    /**
+     * @return oxSimpleXml
+     */
+    private function _getMockedSimpleXML()
+    {
+        $oSimpleXML = $this->getMock('oxSimpleXml', array('objectToXml'));
+        $oSimpleXML->expects($this->any())->method('objectToXml')->will($this->returnValue('_someXML'));
+
+        return $oSimpleXML;
     }
 }

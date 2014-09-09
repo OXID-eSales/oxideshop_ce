@@ -10,6 +10,7 @@
  */
 abstract class oxOnlineCaller
 {
+
     const ALLOWED_HTTP_FAILED_CALLS_COUNT = 4;
 
     /**
@@ -38,9 +39,9 @@ abstract class oxOnlineCaller
     abstract protected function _getServiceUrl();
 
     /**
-     * @param oxCurl $oCurl
+     * @param oxCurl                     $oCurl
      * @param oxOnlineServerEmailBuilder $oEmailBuilder
-     * @param oxSimpleXml $oSimpleXml
+     * @param oxSimpleXml                $oSimpleXml
      */
     public function __construct(oxCurl $oCurl, oxOnlineServerEmailBuilder $oEmailBuilder, oxSimpleXml $oSimpleXml)
     {

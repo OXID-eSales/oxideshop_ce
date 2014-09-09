@@ -30,6 +30,7 @@
  */
 class oxOnlineLicenseCheckCaller extends oxOnlineCaller
 {
+
     /** Online License Key Check web service url. */
     const WEB_SERVICE_URL = 'https://olc.oxid-esales.com/check.php';
 

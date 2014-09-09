@@ -35,6 +35,7 @@
  */
 class oxOnlineModuleVersionNotifierCaller extends oxOnlineCaller
 {
+
     /** Online Module Version Notifier web service url. */
     const WEB_SERVICE_URL = 'https://omvn.oxid-esales.com/check.php';
 

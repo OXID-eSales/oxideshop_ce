@@ -84,7 +84,7 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
 
         $this->getConfig()->saveShopConfVar('arr', 'aServersData', null);
 
-        $oServerProcessor = new oxServerProcessor(null, null, $oUtilsServer, $oUtilsDate);
+        $oServerProcessor = new oxServerProcessor(new oxServersManager(), new oxServerChecker(), $oUtilsServer, $oUtilsDate);
         $oServerProcessor->process();
         $aServersData = $this->getConfigParam('aServersData');
 

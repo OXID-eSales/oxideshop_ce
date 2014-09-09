@@ -106,6 +106,22 @@ abstract class oxOnlineCaller
     }
 
     /**
+     * @return \oxCurl
+     */
+    protected function _getCurl()
+    {
+        return $this->_oCurl;
+    }
+
+    /**
+     * @return oxOnlineServerEmailBuilder
+     */
+    protected function _getEmailBuilder()
+    {
+        return $this->_oEmailBuilder;
+    }
+
+    /**
      * Executes CURL call with given parameters.
      *
      * @param string $sUrl
@@ -115,7 +131,7 @@ abstract class oxOnlineCaller
      */
     private function _executeCurlCall($sUrl, $sXml)
     {
-        $oCurl = $this->_oCurl;
+        $oCurl = $this->_getCurl();
         $oCurl->setMethod('POST');
         $oCurl->setUrl($sUrl);
         $oCurl->setParameters(array('xmlRequest' => $sXml));
@@ -131,7 +147,7 @@ abstract class oxOnlineCaller
      */
     private function _sendEmail($sBody)
     {
-        $oEmail = $this->_oEmailBuilder->build($sBody);
+        $oEmail = $this->_getEmailBuilder()->build($sBody);
         $oEmail->send();
     }
 

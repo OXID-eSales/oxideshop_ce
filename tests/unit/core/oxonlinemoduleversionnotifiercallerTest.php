@@ -20,10 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ) . '/unit/OxidTestCase.php';
-require_once realpath( "." ) . '/unit/test_config.inc.php';
-require_once getShopBasePath() . '/setup/oxsetup.php';
-
 class Unit_Core_oxOnlineModuleVersionNotifierCallerTest extends OxidTestCase
 {
     public function testGetWebServiceUrl()

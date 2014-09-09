@@ -278,7 +278,7 @@ class oxOnlineLicenseCheck
         $oCounter = new stdClass();
         if (!is_null($this->getUserCounter())) {
             $oCounter->name = 'admin users';
-            $oCounter->value = $oUserCounter->getAdminCount();
+            $oCounter->value = $oUserCounter->getActiveAdminCount();
         }
 
         $oSubShops = new stdClass();

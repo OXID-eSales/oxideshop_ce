@@ -77,30 +77,14 @@ class oxServerProcessor extends oxSuperCfg
      * @param oxUtilsServer    $oUtilsServer
      * @param oxUtilsDate      $oUtilsDate
      */
-    public function __construct(oxServersManager $oServerNodesManager = null,
-                                oxServerChecker $oServerNodeChecker = null,
-                                oxUtilsServer $oUtilsServer = null,
-                                oxUtilsDate $oUtilsDate = null)
+    public function __construct(oxServersManager $oServerNodesManager,
+                                oxServerChecker $oServerNodeChecker,
+                                oxUtilsServer $oUtilsServer,
+                                oxUtilsDate $oUtilsDate)
     {
-        if (is_null($oServerNodesManager)) {
-            /** @var oxServersManager $oServerNodesManager */
-            $oServerNodesManager = oxNew('oxServersManager');
-        }
         $this->_oServerNodesManager = $oServerNodesManager;
-
-        if (is_null($oServerNodeChecker)) {
-            $oServerNodeChecker = oxNew('oxServerChecker');
-        }
         $this->_oServerNodeChecker = $oServerNodeChecker;
-
-        if (is_null($oUtilsServer)) {
-            $oUtilsServer = oxNew('oxUtilsServer');
-        }
         $this->_oUtilsServer = $oUtilsServer;
-
-        if (is_null($oUtilsDate)) {
-            $oUtilsDate = oxRegistry::get('oxUtilsDate');
-        }
         $this->_oUtilsDate = $oUtilsDate;
     }
 
@@ -132,6 +116,7 @@ class oxServerProcessor extends oxSuperCfg
         $oNode->setId($sServerNodeId);
         $oNode->setIp($oUtilsServer->getServerIp());
         $oNode->setTimestamp($oUtilsDate->getTime());
+        $oNode->setIsValid();
         if ($this->isAdmin()) {
             $oNode->setLastAdminUsage($oUtilsDate->getTime());
         } else {

@@ -292,7 +292,19 @@ class oxSystemEventHandler
      */
     protected function _getServerProcessor()
     {
+        /** @var oxServersManager $oServerNodesManager */
+        $oServerNodesManager = oxNew('oxServersManager');
+
+        /** @var oxServerChecker $oServerNodeChecker */
+        $oServerNodeChecker = oxNew('oxServerChecker');
+
+        /** @var oxUtilsServer $oUtilsServer */
+        $oUtilsServer = oxNew('oxUtilsServer');
+
+        /** @var oxUtilsDate $oUtilsDate */
+        $oUtilsDate = oxRegistry::get('oxUtilsDate');
+
         /** @var oxServerProcessor $oProcessor */
-        return oxNew('oxServerProcessor');
+        return oxNew('oxServerProcessor', $oServerNodesManager, $oServerNodeChecker, $oUtilsServer, $oUtilsDate);
     }
 }

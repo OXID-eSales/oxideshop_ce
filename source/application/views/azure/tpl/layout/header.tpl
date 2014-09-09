@@ -21,11 +21,11 @@
 
     [{block name="layout_header_logo"}]
         [{assign var="sLogoImg" value=$oViewConf->getShopLogo()}]
-    [{/block}]
-    [{block name="layout_header_bottom"}]
         <a id="logo" href="[{$oViewConf->getHomeLink()}]" title="[{$oxcmp_shop->oxshops__oxtitleprefix->value}]"><img
                     src="[{$oViewConf->getImageUrl($sLogoImg)}]"
                     alt="[{$oxcmp_shop->oxshops__oxtitleprefix->value}]"></a>
+    [{/block}]
+    [{block name="layout_header_bottom"}]
         [{oxid_include_widget cl="oxwCategoryTree" cnid=$oView->getCategoryId() sWidgetType="header" _parent=$oView->getClassName() nocookie=1}]
 
         [{if $oxcmp_basket->getProductsCount()}]

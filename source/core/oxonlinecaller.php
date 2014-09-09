@@ -10,22 +10,7 @@
  */
 abstract class oxOnlineCaller
 {
-
     const ALLOWED_HTTP_FAILED_CALLS_COUNT = 4;
-
-    /**
-     * XML document tag name.
-     *
-     * @var string
-     */
-    protected $_sXMLDocumentName = 'onlineRequest';
-
-    /**
-     * Web service url.
-     *
-     * @var string
-     */
-    protected $_sServiceUrl;
 
     /**
      * @var oxCurl
@@ -43,6 +28,16 @@ abstract class oxOnlineCaller
     private $_oSimpleXml;
 
     /**
+     * @return string XML document tag name.
+     */
+    abstract protected function _getXMLDocumentName();
+
+    /**
+     * @return string Web service url.
+     */
+    abstract protected function _getServiceUrl();
+
+    /**
      * @param oxCurl $oCurl
      * @param oxOnlineServerEmailBuilder $oEmailBuilder
      * @param oxSimpleXml $oSimpleXml
@@ -52,26 +47,6 @@ abstract class oxOnlineCaller
         $this->_oCurl = $oCurl;
         $this->_oEmailBuilder = $oEmailBuilder;
         $this->_oSimpleXml = $oSimpleXml;
-    }
-
-    /**
-     * Get web service url.
-     *
-     * @return string
-     */
-    public function getWebServiceUrl()
-    {
-        return $this->_sServiceUrl;
-    }
-
-    /**
-     * Set web service url.
-     *
-     * @param string $sUrl
-     */
-    public function setWebServiceUrl($sUrl)
-    {
-        $this->_sServiceUrl = $sUrl;
     }
 
     /**
@@ -87,7 +62,7 @@ abstract class oxOnlineCaller
         $iFailedCallsCount = oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount');
         try {
             $sXml = $this->_formXMLRequest($oRequest);
-            $sOutputXml = $this->_executeCurlCall($this->getWebServiceUrl(), $sXml);
+            $sOutputXml = $this->_executeCurlCall($this->_getServiceUrl(), $sXml);
             $this->_resetFailedCallsCount($iFailedCallsCount);
         } catch (Exception $oEx) {
             if ($iFailedCallsCount > self::ALLOWED_HTTP_FAILED_CALLS_COUNT) {
@@ -119,7 +94,7 @@ abstract class oxOnlineCaller
      */
     protected function _formXMLRequest($oRequest)
     {
-        return $this->_getSimpleXml()->objectToXml($oRequest, $this->_sXMLDocumentName);
+        return $this->_getSimpleXml()->objectToXml($oRequest, $this->_getXMLDocumentName());
     }
 
     /**

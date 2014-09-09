@@ -30,34 +30,18 @@
  */
 class oxOnlineLicenseCheckCaller extends oxOnlineCaller
 {
+    /** Online License Key Check web service url. */
+    const WEB_SERVICE_URL = 'https://olc.oxid-esales.com/check.php';
 
-    /**
-     * Raw response message received from Online License Key Check web service.
-     *
-     * @var string
-     */
-    protected $_sRawResponseMessage = '';
-
-    /**
-     * Online License Key Check web service url.
-     *
-     * @var string
-     */
-    protected $_sServiceUrl = 'https://olc.oxid-esales.com/check.php';
+    /** XML document tag name. */
+    const XML_DOCUMENT_NAME = 'olcRequest';
 
     /**
      * Expected response element in the XML response message fom web service.
      *
      * @var string
      */
-    protected $_sResponseElement = 'olc';
-
-    /**
-     * XML document tag name.
-     *
-     * @var string
-     */
-    protected $_sXMLDocumentName = 'olcRequest';
+    private $_sResponseElement = 'olc';
 
     /**
      * Performs Web service request
@@ -128,5 +112,21 @@ class oxOnlineLicenseCheckCaller extends oxOnlineCaller
         }
 
         return $oResponse;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _getXMLDocumentName()
+    {
+        return self::XML_DOCUMENT_NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _getServiceUrl()
+    {
+        return self::WEB_SERVICE_URL;
     }
 }

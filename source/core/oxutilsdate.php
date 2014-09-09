@@ -616,25 +616,6 @@ class oxUtilsDate extends oxSuperCfg
     }
 
     /**
-     * Processes amd formats date / time.
-     *
-     * @param string $aTime    splitted time ( array( H, m, s ) )
-     * @param array  $aDate    splitted date ( array( Y, m, d ) )
-     * @param bool   $blGerman true if incoming string is in German format (dotted)
-     * @param string $sFormat  date format to produce
-     *
-     * @return string formatted string
-     */
-    protected function _processDate($aTime, $aDate, $blGerman, $sFormat)
-    {
-        if ($blGerman) {
-            return date($sFormat, mktime($aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[0], $aDate[2]));
-        } else {
-            return date($sFormat, mktime($aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[2], $aDate[0]));
-        }
-    }
-
-    /**
      * Checks if date string is empty date field. Empty string or string with
      * all date values equal to 0 is treated as empty.
      *
@@ -658,5 +639,23 @@ class oxUtilsDate extends oxSuperCfg
         return $blIsEmpty;
     }
 
+    /**
+     * Processes amd formats date / time.
+     *
+     * @param string $aTime    splitted time ( array( H, m, s ) )
+     * @param array  $aDate    splitted date ( array( Y, m, d ) )
+     * @param bool   $blGerman true if incoming string is in German format (dotted)
+     * @param string $sFormat  date format to produce
+     *
+     * @return string formatted string
+     */
+    protected function _processDate($aTime, $aDate, $blGerman, $sFormat)
+    {
+        if ($blGerman) {
+            return date($sFormat, mktime($aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[0], $aDate[2]));
+        } else {
+            return date($sFormat, mktime($aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[2], $aDate[0]));
+        }
+    }
 }
 

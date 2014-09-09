@@ -57,6 +57,6 @@ class oxOnlineModuleVersionNotifierCaller extends oxOnlineCaller
      */
     public function doRequest(oxOnlineModulesNotifierRequest $oRequest)
     {
-        $this->call($this->getWebServiceUrl(), $oRequest);
+        $this->call($oRequest);
     }
 }

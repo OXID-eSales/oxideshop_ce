@@ -148,8 +148,8 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
     {
         $aHourToCheck = explode(':', $sCheckTime);
         $iHour = $aHourToCheck[0];
-        $this->assertTrue($iHour < 23, 'Get hour: '. $iHour);
-        $this->assertTrue($iHour > 8, 'Get hour: '. $iHour);
+        $this->assertTrue($iHour < 24, 'Get hour: '. $iHour);
+        $this->assertTrue($iHour > 7, 'Get hour: '. $iHour);
     }
 
     public function testOnShopStartDoNotChangeWhenToSendInformation()

@@ -176,7 +176,7 @@
                     </td>
                     <td width="50%" valign="top">
                         <table border="0" cellspacing="0" cellpadding="2" width="300">
-                            [{if !$basket->getDiscounts() }]
+                            [{if !( $basket->getDiscounts() || ($oViewConf->getShowVouchers() && $basket->getVoucherDiscValue()) ) }]
                                 [{block name="email_html_order_owner_nodiscounttotalnet"}]
                                     <!-- netto price -->
                                     <tr valign="top">
@@ -225,9 +225,8 @@
                                         </td>
                                     </tr>
                                 [{/block}]
-                            [{/if}]
-                            <!-- applied discounts -->
-                            [{if $basket->getDiscounts()}]
+                                <!-- applied discounts -->
+                            [{else}]
 
                                 [{if $order->isNettoMode() }]
                                     [{block name="email_html_order_cust_discounttotalnet"}]
@@ -279,6 +278,25 @@
                                             </td>
                                         </tr>
                                     [{/foreach}]
+                                [{/block}]
+
+                                [{block name="email_html_order_owner_voucherdiscount"}]
+                                <!-- voucher discounts -->
+                                [{if $oViewConf->getShowVouchers() && $basket->getVoucherDiscValue() }]
+                                <tr valign="top">
+                                    <td style="padding: 5px; border-bottom: 2px solid #ccc;">
+                                        <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
+                                            [{oxmultilang ident="COUPON" suffix="COLON" }]
+                                        </p>
+                                    </td>
+                                    <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
+                                        <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
+                                            [{assign var="oVoucherDiscount" value=$basket->getVoucherDiscount()}]
+                                            [{oxprice price=$oVoucherDiscount->getBruttoPrice()*-1 currency=$currency}]
+                                        </p>
+                                    </td>
+                                </tr>
+                                [{/if}]
                                 [{/block}]
 
                                 [{if !$order->isNettoMode() }]
@@ -335,25 +353,6 @@
                                 [{/block}]
                                 [{/if}]
                             [{/if}]
-
-                            [{block name="email_html_order_owner_voucherdiscount"}]
-                                <!-- voucher discounts -->
-                                [{if $oViewConf->getShowVouchers() && $basket->getVoucherDiscValue() }]
-                                    <tr valign="top">
-                                        <td style="padding: 5px; border-bottom: 2px solid #ccc;">
-                                            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                [{oxmultilang ident="COUPON" suffix="COLON" }]
-                                            </p>
-                                        </td>
-                                        <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
-                                            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{assign var="oVoucherDiscount" value=$basket->getVoucherDiscount()}]
-                                        [{oxprice price=$oVoucherDiscount->getBruttoPrice()*-1 currency=$currency}]
-                                            </p>
-                                        </td>
-                                    </tr>
-                                [{/if}]
-                            [{/block}]
 
                             [{block name="email_html_order_owner_delcosts"}]
                             <!-- delivery costs -->

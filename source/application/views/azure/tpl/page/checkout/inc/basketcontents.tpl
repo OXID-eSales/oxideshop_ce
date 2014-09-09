@@ -303,7 +303,7 @@
             <div id="basketSummary" class="summary[{if $oViewConf->getActiveClassName() == 'order' }] orderSummary[{/if}]">
                 [{*  basket summary  *}]
                 <table>
-                    [{if !$oxcmp_basket->getDiscounts() }]
+                    [{if !( $oxcmp_basket->getDiscounts() || ($oViewConf->getShowVouchers() && $oxcmp_basket->getVoucherDiscValue())  )}]
                         [{block name="checkout_basketcontents_nodiscounttotalnet"}]
                             <tr>
                                 <th>[{ oxmultilang ident="TOTAL_NET" suffix="COLON" }]</th>
@@ -354,6 +354,21 @@
                             [{/foreach}]
                         [{/block}]
 
+                        [{block name="checkout_basketcontents_voucherdiscount"}]
+                            [{if $oViewConf->getShowVouchers() && $oxcmp_basket->getVoucherDiscValue() }]
+                                [{foreach from=$oxcmp_basket->getVouchers() item=sVoucher key=key name=Voucher}]
+                                    <tr class="couponData">
+                                        <th><span><strong>[{oxmultilang ident="COUPON"}]</strong>&nbsp;([{oxmultilang ident="NUMBER_2"}] [{$sVoucher->sVoucherNr}])</span>
+                                            [{if $editable }]
+                                                <a href="[{$oViewConf->getSelfLink()}]&amp;cl=basket&amp;fnc=removeVoucher&amp;voucherId=[{$sVoucher->sVoucherId}]&amp;CustomError=basket" class="removeFn" rel="nofollow">[{oxmultilang ident="REMOVE"}]</a>
+                                            [{/if}]
+                                        </th>
+                                        <td>[{oxprice price=$sVoucher->dVoucherdiscount*-1 currency=$currency}]</td>
+                                    </tr>
+                                [{/foreach}]
+                            [{/if}]
+                        [{/block}]
+
                         [{if !$oxcmp_basket->isPriceViewModeNetto() }]
                             [{block name="checkout_basketcontents_totalnet"}]
                                 <tr>
@@ -381,22 +396,6 @@
                             [{/block}]
                         [{/if}]
                     [{/if}]
-
-                    [{block name="checkout_basketcontents_voucherdiscount"}]
-                        [{if $oViewConf->getShowVouchers() && $oxcmp_basket->getVoucherDiscValue() }]
-                            [{foreach from=$oxcmp_basket->getVouchers() item=sVoucher key=key name=Voucher}]
-                                <tr class="couponData">
-                                    <th><span><strong>[{ oxmultilang ident="COUPON" }]</strong>&nbsp;([{ oxmultilang ident="NUMBER_2" }] [{ $sVoucher->sVoucherNr }])</span>
-                                    [{if $editable }]
-                                        <a href="[{$oViewConf->getSelfLink() }]&amp;cl=basket&amp;fnc=removeVoucher&amp;voucherId=[{ $sVoucher->sVoucherId }]&amp;CustomError=basket" class="removeFn" rel="nofollow">[{ oxmultilang ident="REMOVE" }]</a>
-                                    [{/if}]
-                                    </th>
-                                    <td><strong>[{oxprice price=$sVoucher->dVoucherdiscount*-1 currency=$currency}]</strong></td>
-                                </tr>
-                            [{/foreach}]
-                        [{/if}]
-                    [{/block}]
-
                     [{block name="checkout_basketcontents_delcosts"}]
                         [{assign var="deliveryCost" value=$oxcmp_basket->getDeliveryCost()}]
                         [{if $deliveryCost && ($oxcmp_basket->getBasketUser() || $oViewConf->isFunctionalityEnabled('blCalculateDelCostIfNotLoggedIn') ) }]

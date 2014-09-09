@@ -115,8 +115,8 @@ class article_bundle_ajax extends ajaxListComponent
      */
     public function removeArticleBundle()
     {
-        $sQuotedChosenArt = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxid'));
         $oDb = oxDb::getDb();
+        $sQuotedChosenArt = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxid'));
 
         $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid  =  {$$sQuotedChosenArt} ";
         $oDb->Execute($sQ);

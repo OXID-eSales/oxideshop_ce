@@ -114,6 +114,22 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
         $sCheckTime = $this->getConfigParam('sOnlineLicenseCheckTime');
         $this->assertNotNull($sCheckTime);
+        $this->assertRegExp('/\d{1,2}:\d{1,2}:\d{1,2}/', $sCheckTime);
+
+        return $sCheckTime;
+    }
+
+    /**
+     * @param string $sCheckTime
+     *
+     * @depends testOnShopStartSetWhenToSendInformationForFirstTime
+     */
+    public function testInformationSendTimeHasCorrectFormat($sCheckTime)
+    {
+        $aHourToCheck = explode(':', $sCheckTime);
+        $iHour = $aHourToCheck[0];
+        $this->assertTrue($iHour < 23);
+        $this->assertTrue($iHour > 8);
     }
 
     public function testOnShopStartDoNotChangeWhenToSendInformation()

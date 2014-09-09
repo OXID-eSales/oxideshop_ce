@@ -451,7 +451,7 @@ class Article_Main extends oxAdminDetails
                     $oArticle->$sArtNumField->value && $sFncParameter == 'copyArticle'
                 ) {
                     $sSelect = "select oxid from " . $oArticle->getCoreTableName() .
-                               "where oxartnum = " . $oDb->quote($oArticle->$sArtNumField->value) .
+                               " where oxartnum = " . $oDb->quote($oArticle->$sArtNumField->value) .
                                " and oxid != " . $oDb->quote($sNewId);
 
                     if ($oArticle->assignRecord($sSelect)) {
@@ -717,8 +717,8 @@ class Article_Main extends oxAdminDetails
     {
         $aJumpList = array();
         //fetching parent article variants
+        $sOxIdField = 'oxarticles__oxid';
         if (isset($oParentArticle)) {
-            $sOxIdField = 'oxarticles__oxid';
             $aJumpList[] = array($oParentArticle->$sOxIdField->value, $this->_getTitle($oParentArticle));
             $sEditLanguageParameter = oxRegistry::getConfig()->getRequestParameter("editlanguage");
             $oParentVariants = $oParentArticle->getAdminVariants($sEditLanguageParameter);

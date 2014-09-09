@@ -87,8 +87,8 @@ class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends Oxid
 
         $oLicenseCheck->validateShopSerials();
 
-        $this->assertTrue($oConfig->getConfigParam('blShopStopped'));
-        $this->assertEquals('unlc', $oConfig->getConfigParam('sShopVar'));
+        $this->assertFalse($oConfig->getConfigParam('blShopStopped'));
+        $this->assertNotEquals('unlc', $oConfig->getConfigParam('sShopVar'));
     }
 
     public function testRequestHandlingWithInvalidResponse()

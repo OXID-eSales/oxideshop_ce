@@ -63,14 +63,11 @@ class oxSystemEventHandler
             /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
             $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
 
-            /** @var oxOnlineCaller $oOnlineCaller */
-            $oOnlineCaller = oxNew('oxOnlineCaller', $oCurl, $oEmailBuilder);
-
             /** @var oxSimpleXml $oSimpleXml */
             $oSimpleXml = oxNew('oxSimpleXml');
 
             /** @var oxOnlineLicenseCheckCaller $oLicenseCaller */
-            $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oOnlineCaller, $oSimpleXml);
+            $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oCurl, $oEmailBuilder, $oSimpleXml);
 
             /** @var oxUserCounter $oUserCounter */
             $oUserCounter = oxNew('oxUserCounter');
@@ -113,11 +110,11 @@ class oxSystemEventHandler
             /** @var  oxOnlineServerEmailBuilder $oMailBuilder */
             $oMailBuilder = oxNew('oxOnlineServerEmailBuilder');
 
-            /** @var oxOnlineCaller $oOnlineCaller */
-            $oOnlineCaller = oxNew('oxOnlineCaller', $oCurl, $oMailBuilder);
+            /** @var oxSimpleXml $oSimpleXml */
+            $oSimpleXml = oxNew('oxSimpleXml');
 
             /** @var oxOnlineModuleVersionNotifierCaller $oOnlineModuleVersionNotifierCaller */
-            $oOnlineModuleVersionNotifierCaller = oxNew("oxOnlineModuleVersionNotifierCaller", $oOnlineCaller);
+            $oOnlineModuleVersionNotifierCaller = oxNew("oxOnlineModuleVersionNotifierCaller", $oCurl, $oMailBuilder, $oSimpleXml);
 
             /** @var oxModuleList $oModuleList */
             $oModuleList = oxNew('oxModuleList');

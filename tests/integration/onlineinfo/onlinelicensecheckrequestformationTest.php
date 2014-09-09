@@ -79,6 +79,10 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $sXml .=         "<value>$iAdminUsers</value>";
         $sXml .=       '</counter>';
         $sXml .=       '<counter>';
+        $sXml .=         '<name>active admin users</name>';
+        $sXml .=         "<value>$iAdminUsers</value>";
+        $sXml .=       '</counter>';
+        $sXml .=       '<counter>';
         $sXml .=         '<name>subShops</name>';
         $sXml .=         '<value>1</value>';
         $sXml .=       '</counter>';
@@ -156,6 +160,10 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $sXml .=     '<counters>';
         $sXml .=       '<counter>';
         $sXml .=         '<name>admin users</name>';
+        $sXml .=         "<value>$iAdminUsers</value>";
+        $sXml .=       '</counter>';
+        $sXml .=       '<counter>';
+        $sXml .=         '<name>active admin users</name>';
         $sXml .=         "<value>$iAdminUsers</value>";
         $sXml .=       '</counter>';
         $sXml .=       '<counter>';

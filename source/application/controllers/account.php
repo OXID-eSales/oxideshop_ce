@@ -331,8 +331,8 @@ class Account extends oxUBase
     {
         $aPaths = array();
         $aPath = array();
+        $oLang = oxRegistry::getLang();
         if ($oUser = $this->getUser()) {
-            $oLang = oxRegistry::getLang();
             $iBaseLanguage = $oLang->getBaseLanguage();
             $sUsernameField = 'oxuser__oxusername';
 

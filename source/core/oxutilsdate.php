@@ -640,6 +640,21 @@ class oxUtilsDate extends oxSuperCfg
     }
 
     /**
+     * Wrapper for PHP function DateTime
+     *
+     * @param string $sTime
+     * @param DateTimeZone $oTimeZone
+     *
+     * @return DateTime
+     *
+     * @link http://php.net/manual/en/datetime.construct.php
+     */
+    public function getDateManager($sTime = 'now', DateTimeZone $oTimeZone = null)
+    {
+        return new DateTime($sTime, $oTimeZone);
+    }
+
+    /**
      * Processes amd formats date / time.
      *
      * @param string $aTime    splitted time ( array( H, m, s ) )

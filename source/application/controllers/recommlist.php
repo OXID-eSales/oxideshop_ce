@@ -572,8 +572,8 @@ class RecommList extends aList
      */
     public function getTitle()
     {
+        $oLang = oxRegistry::getLang();
         if ($aActiveList = $this->getActiveRecommList()) {
-            $oLang = oxRegistry::getLang();
             $sTranslatedString = $oLang->translateString('LIST_BY', $oLang->getBaseLanguage(), false);
             $sTitleField = 'oxrecommlists__oxtitle';
             $sAuthorField = 'oxrecommlists__oxauthor';

@@ -242,8 +242,6 @@ class Suggest extends oxUBase
      * Suggest data setter
      *
      * @param object $oData suggest data object
-     *
-     * @return null
      */
     public function setSuggestData($oData)
     {

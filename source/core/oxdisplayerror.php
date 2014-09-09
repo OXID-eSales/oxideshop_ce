@@ -47,8 +47,6 @@ class oxDisplayError implements oxIDisplayError
      * stored the message
      *
      * @param string $sMessage message
-     *
-     * @return null
      */
     public function setMessage($sMessage)
     {

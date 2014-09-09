@@ -71,8 +71,6 @@ class oxManufacturerList extends oxList
      * Enables/disables manufacturer article count calculation
      *
      * @param bool $blShowManufacturerArticleCnt to show article count or not
-     *
-     * @return null
      */
     public function setShowManufacturerArticleCnt($blShowManufacturerArticleCnt = false)
     {
@@ -81,8 +79,6 @@ class oxManufacturerList extends oxList
 
     /**
      * Loads simple manufacturer list
-     *
-     * @return null
      */
     public function loadManufacturerList()
     {
@@ -109,8 +105,6 @@ class oxManufacturerList extends oxList
      * @param string $sLinkTarget  Name of class, responsible for category rendering
      * @param string $sActCat      Active category
      * @param string $sShopHomeUrl base shop url ($myConfig->getShopHomeURL())
-     *
-     * @return null
      */
     public function buildManufacturerTree($sLinkTarget, $sActCat, $sShopHomeUrl)
     {
@@ -166,8 +160,6 @@ class oxManufacturerList extends oxList
      * Adds category specific fields to manufacturer object
      *
      * @param object $oManufacturer manufacturer object
-     *
-     * @return null
      */
     protected function _addCategoryFields($oManufacturer)
     {
@@ -184,8 +176,6 @@ class oxManufacturerList extends oxList
      * Sets active (open) manufacturer object
      *
      * @param oxmanufacturer $oManufacturer active manufacturer
-     *
-     * @return null
      */
     public function setClickManufacturer($oManufacturer)
     {
@@ -204,8 +194,6 @@ class oxManufacturerList extends oxList
 
     /**
      * Processes manufacturer category URLs
-     *
-     * @return null
      */
     protected function _seoSetManufacturerData()
     {

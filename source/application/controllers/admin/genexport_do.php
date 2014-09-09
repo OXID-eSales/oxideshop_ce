@@ -85,8 +85,6 @@ class GenExport_Do extends DynExportBase
      * writes one line into open export file
      *
      * @param string $sLine exported line
-     *
-     * @return null
      */
     public function write($sLine)
     {

@@ -42,8 +42,6 @@ class oxCountryList extends oxList
      * Selects and loads all active countries
      *
      * @param integer $iLang language
-     *
-     * @return null
      */
     public function loadActiveCountries($iLang = null)
     {

@@ -158,8 +158,6 @@ class DynExportBase extends oxAdminDetails
 
     /**
      * Prepares and fill all data which all the dyn exports needs
-     *
-     * @return null
      */
     public function createMainExportView()
     {
@@ -177,8 +175,6 @@ class DynExportBase extends oxAdminDetails
 
     /**
      * Prepares Export
-     *
-     * @return null
      */
     public function start()
     {
@@ -203,8 +199,6 @@ class DynExportBase extends oxAdminDetails
      * Stops Export
      *
      * @param integer $iError error number
-     *
-     * @return null
      */
     public function stop($iError = 0)
     {
@@ -232,8 +226,6 @@ class DynExportBase extends oxAdminDetails
      * writes one line into open export file
      *
      * @param string $sLine exported line
-     *
-     * @return null
      */
     public function write($sLine)
     {
@@ -244,8 +236,6 @@ class DynExportBase extends oxAdminDetails
 
     /**
      * Does Export
-     *
-     * @return null
      */
     public function run()
     {
@@ -719,8 +709,6 @@ class DynExportBase extends oxAdminDetails
      * removes parent articles so that we only have variants itself
      *
      * @param string $sHeapTable table name
-     *
-     * @return null
      */
     protected function _removeParentArticles($sHeapTable)
     {
@@ -753,9 +741,6 @@ class DynExportBase extends oxAdminDetails
 
     /**
      * stores some info in session
-     *
-     * @return null
-     *
      */
     protected function _setSessionParams()
     {

@@ -70,8 +70,6 @@ class Article_Files extends oxAdminDetails
     /**
      * Saves editing article changes (oxisdownloadable)
      * and updates oxFile object which are associated with editing object
-     *
-     * @return null
      */
     public function save()
     {

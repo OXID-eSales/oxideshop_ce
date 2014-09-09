@@ -173,8 +173,6 @@ class oxBasketReservation extends oxSuperCfg
      * @param array $aBasketDiff basket difference array
      *
      * @see oxBasketReservation::_basketDifference
-     *
-     * @return null
      */
     protected function _reserveArticles($aBasketDiff)
     {
@@ -197,8 +195,6 @@ class oxBasketReservation extends oxSuperCfg
      * reserve given basket items
      *
      * @param oxBasket $oBasket basket object
-     *
-     * @return null
      */
     public function reserveBasket(oxBasket $oBasket)
     {
@@ -212,8 +208,6 @@ class oxBasketReservation extends oxSuperCfg
      *
      * @param string $sArticleId article id
      * @param double $dAmount    amount to use
-     *
-     * @return null
      */
     public function commitArticleReservation($sArticleId, $dAmount)
     {
@@ -237,8 +231,6 @@ class oxBasketReservation extends oxSuperCfg
      * return the reserved stock to article
      *
      * @param string $sArticleId article id
-     *
-     * @return null
      */
     public function discardArticleReservation($sArticleId)
     {
@@ -255,8 +247,6 @@ class oxBasketReservation extends oxSuperCfg
 
     /**
      * discard all reserved articles
-     *
-     * @return null
      */
     public function discardReservations()
     {
@@ -333,8 +323,6 @@ class oxBasketReservation extends oxSuperCfg
 
     /**
      * renews expiration timer to maximum value
-     *
-     * @return null
      */
     public function renewExpiration()
     {

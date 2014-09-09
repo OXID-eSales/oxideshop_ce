@@ -149,8 +149,6 @@ class oxField // extends oxSuperCfg
 
     /**
      * Converts to formatted db date
-     *
-     * @return null
      */
     public function convertToFormattedDbDate()
     {
@@ -159,8 +157,6 @@ class oxField // extends oxSuperCfg
 
     /**
      * Converts to pseudo html - new lines to <br /> tags
-     *
-     * @return null
      */
     public function convertToPseudoHtml()
     {
@@ -172,8 +168,6 @@ class oxField // extends oxSuperCfg
      *
      * @param mixed $value Field value
      * @param int   $type  Value type
-     *
-     * @return null
      */
     protected function _initValue($value = null, $type = self::T_TEXT)
     {
@@ -192,8 +186,6 @@ class oxField // extends oxSuperCfg
      *
      * @param mixed $value Field value
      * @param int   $type  Value type
-     *
-     * @return null
      */
     public function setValue($value = null, $type = self::T_TEXT)
     {

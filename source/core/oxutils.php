@@ -403,8 +403,6 @@ class oxUtils extends oxSuperCfg
      * @param string $sName    name of the content
      * @param mixed  $sContent the content
      * @param string $sKey     optional key, where to store the content
-     *
-     * @return null
      */
     public function toStaticCache($sName, $sContent, $sKey = null)
     {
@@ -436,8 +434,6 @@ class oxUtils extends oxSuperCfg
      * Cleans all or specific data from static cache
      *
      * @param string $sCacheName Cache name
-     *
-     * @return null
      */
     public function cleanStaticCache($sCacheName = null)
     {
@@ -502,8 +498,6 @@ class oxUtils extends oxSuperCfg
      *
      * @param string $sKey  meta data/cache key
      * @param array  $aMeta meta data array
-     *
-     * @return null
      */
     public function setCacheMeta($sKey, $aMeta)
     {
@@ -747,8 +741,6 @@ class oxUtils extends oxSuperCfg
      * Removes most files stored in cache (default 'tmp') folder. Some files
      * e.g. table files names description, are left. Excluded cache file name
      * patterns are defined in oxUtils::_sPermanentCachePattern parameter
-     *
-     * @return null
      */
     public function oxResetFileCache()
     {
@@ -766,8 +758,6 @@ class oxUtils extends oxSuperCfg
      * Removes smarty template cache for given templates
      *
      * @param array $aTemplates Template name array
-     *
-     * @return null
      */
     public function resetTemplateCache($aTemplates)
     {
@@ -795,8 +785,6 @@ class oxUtils extends oxSuperCfg
 
     /**
      * Removes language constant cache
-     *
-     * @return null
      */
     public function resetLanguageCache()
     {
@@ -813,8 +801,6 @@ class oxUtils extends oxSuperCfg
 
     /**
      * Removes admin menu cache
-     *
-     * @return null
      */
     public function resetMenuCache()
     {
@@ -1048,8 +1034,6 @@ class oxUtils extends oxSuperCfg
      *
      * @param string $sUrl        the URL to redirect to
      * @param string $sHeaderCode code to add to the header(e.g. "HTTP/1.1 301 Moved Permanently", or "HTTP/1.1 500 Internal Server Error"
-     *
-     * @return null
      */
     protected function _simpleRedirect($sUrl, $sHeaderCode)
     {
@@ -1148,8 +1132,6 @@ class oxUtils extends oxSuperCfg
      * set header sent to browser
      *
      * @param string $sHeader header to sent
-     *
-     * @return null
      */
     public function setHeader($sHeader)
     {
@@ -1305,8 +1287,6 @@ class oxUtils extends oxSuperCfg
      *
      * @param string $sText     Log message text
      * @param bool   $blNewline If true, writes message to new line (default false)
-     *
-     * @return null
      */
     public function logger($sText, $blNewline = false)
     {

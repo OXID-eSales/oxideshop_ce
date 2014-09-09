@@ -159,8 +159,6 @@ class oxSession extends oxSuperCfg
      * Sets session id
      *
      * @param string $sVal id value
-     *
-     * @return null
      */
     public function setId($sVal)
     {
@@ -171,8 +169,6 @@ class oxSession extends oxSuperCfg
      * Sets session param name
      *
      * @param string $sVal name value
-     *
-     * @return null
      */
     public function setName($sVal)
     {
@@ -201,8 +197,6 @@ class oxSession extends oxSuperCfg
 
     /**
      * Starts shop session, generates unique session ID, extracts user IP.
-     *
-     * @return null
      */
     public function start()
     {
@@ -302,8 +296,6 @@ class oxSession extends oxSuperCfg
 
     /**
      * initialize new session challenge token
-     *
-     * @return null
      */
     protected function _initNewSessionChallenge()
     {
@@ -349,8 +341,6 @@ class oxSession extends oxSuperCfg
 
     /**
      * Assigns new session ID, clean existing data except persistent.
-     *
-     * @return null
      */
     public function initNewSession()
     {
@@ -382,8 +372,6 @@ class oxSession extends oxSuperCfg
 
     /**
      * Regenerates session id
-     *
-     * @return null
      */
     public function regenerateSessionId()
     {
@@ -427,8 +415,6 @@ class oxSession extends oxSuperCfg
 
     /**
      * Ends the current session and store session data.
-     *
-     * @return null
      */
     public function freeze()
     {
@@ -440,8 +426,6 @@ class oxSession extends oxSuperCfg
 
     /**
      * Destroys all data registered to a session.
-     *
-     * @return null
      */
     public function destroy()
     {
@@ -657,8 +641,6 @@ class oxSession extends oxSuperCfg
      * Sets basket session object.
      *
      * @param object $oBasket basket object
-     *
-     * @return null
      */
     public function setBasket($oBasket)
     {
@@ -668,8 +650,6 @@ class oxSession extends oxSuperCfg
 
     /**
      * Deletes basket session object.
-     *
-     * @return null
      */
     public function delBasket()
     {

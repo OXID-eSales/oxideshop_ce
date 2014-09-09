@@ -205,8 +205,6 @@ class oxSeoEncoderCategory extends oxSeoEncoder
      * Marks related to category objects as expired
      *
      * @param oxCategory $oCategory Category object
-     *
-     * @return null
      */
     public function markRelatedAsExpired($oCategory)
     {
@@ -233,8 +231,6 @@ class oxSeoEncoderCategory extends oxSeoEncoder
      * deletes Category seo entries
      *
      * @param oxCategory $oCategory Category object
-     *
-     * @return null
      */
     public function onDeleteCategory($oCategory)
     {

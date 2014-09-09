@@ -92,8 +92,6 @@ class oxcmp_user extends oxView
      *
      * Session variable:
      * <b>usr_err</b>
-     *
-     * @return null
      */
     public function init()
     {
@@ -127,8 +125,6 @@ class oxcmp_user extends oxView
      * In case any condition is not satisfied redirects user to:
      *  (1) login page;
      *  (2) terms agreement page;
-     *
-     * @return null
      */
     protected function _checkPsState()
     {
@@ -264,8 +260,6 @@ class oxcmp_user extends oxView
     /**
      * Executes oxcmp_user::login() method. After loggin user will not be
      * redirected to user or payment screens.
-     *
-     * @return null
      */
     public function login_noredirect()
     {
@@ -296,8 +290,6 @@ class oxcmp_user extends oxView
     /**
      * Executes oxcmp_user::login() and updates logged in user Facebook User ID (if user was
      * connected using Facebook Connect)
-     *
-     * @return null
      */
     public function login_updateFbId()
     {
@@ -316,8 +308,6 @@ class oxcmp_user extends oxView
      * oxcmp_user::logout is called. Currently it unsets such
      * session parameters as user chosen payment id, delivery
      * address id, active delivery set.
-     *
-     * @return null
      */
     protected function _afterLogout()
     {
@@ -730,8 +720,6 @@ class oxcmp_user extends oxView
      * Sets user login state
      *
      * @param int $iStatus login state (USER_LOGIN_SUCCESS/USER_LOGIN_FAIL/USER_LOGOUT)
-     *
-     * @return null
      */
     public function setLoginStatus($iStatus)
     {
@@ -753,8 +741,6 @@ class oxcmp_user extends oxView
 
     /**
      * Sets invitor id to session from URL
-     *
-     * @return null
      */
     public function getInvitor()
     {
@@ -767,8 +753,6 @@ class oxcmp_user extends oxView
 
     /**
      * sets from URL invitor id
-     *
-     * @return null
      */
     public function setRecipient()
     {

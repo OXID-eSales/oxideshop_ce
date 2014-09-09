@@ -251,8 +251,6 @@ class oxAdminList extends oxAdminView
      * Calculates list items count
      *
      * @param string $sSql SQL query used co select list items
-     *
-     * @return null
      */
     protected function _calcListItemsCount($sSql)
     {
@@ -275,8 +273,6 @@ class oxAdminList extends oxAdminView
      * Set current list position
      *
      * @param string $sPage jump page string
-     *
-     * @return null
      */
     protected function _setCurrentListPosition($sPage = null)
     {
@@ -647,8 +643,6 @@ class oxAdminList extends oxAdminView
 
     /**
      * Set parameters needed for list navigation
-     *
-     * @return null
      */
     protected function _setListNavigationParams()
     {
@@ -733,8 +727,6 @@ class oxAdminList extends oxAdminView
      * Sets-up navigation parameters
      *
      * @param string $sNode active view id
-     *
-     * @return null
      */
     protected function _setupNavigation($sNode)
     {
@@ -820,8 +812,6 @@ class oxAdminList extends oxAdminView
 
     /**
      * Clear items list
-     *
-     * @return null
      */
     public function clearItemList()
     {

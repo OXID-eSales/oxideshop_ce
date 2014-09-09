@@ -82,8 +82,6 @@ class Payment_Country extends oxAdminDetails
 
     /**
      * Adds chosen user group (groups) to delivery list
-     *
-     * @return null
      */
     public function addcountry()
     {
@@ -103,8 +101,6 @@ class Payment_Country extends oxAdminDetails
 
     /**
      * Removes chosen user group (groups) from delivery list
-     *
-     * @return null
      */
     public function removecountry()
     {

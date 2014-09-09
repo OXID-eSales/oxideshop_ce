@@ -76,8 +76,6 @@ class newsletter_selection_ajax extends ajaxListComponent
 
     /**
      * Removes selected user group(s) from newsletter mailing group.
-     *
-     * @return null
      */
     public function removeGroupFromNewsletter()
     {
@@ -95,8 +93,6 @@ class newsletter_selection_ajax extends ajaxListComponent
 
     /**
      * Adds selected user group(s) to newsletter mailing group.
-     *
-     * @return null
      */
     public function addGroupToNewsletter()
     {

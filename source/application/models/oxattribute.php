@@ -99,8 +99,6 @@ class oxAttribute extends oxI18n
      *
      * @param array $aMDVariants article ids with selectionlist values
      * @param array $aSelTitle   selection list titles
-     *
-     * @return null
      */
     public function assignVarToAttribute($aMDVariants, $aSelTitle)
     {
@@ -210,8 +208,6 @@ class oxAttribute extends oxI18n
      * Set attribute title
      *
      * @param string $sTitle - attribute title
-     *
-     * @return null
      */
     public function setTitle($sTitle)
     {
@@ -232,8 +228,6 @@ class oxAttribute extends oxI18n
      * Add attribute value
      *
      * @param string $sValue - attribute value
-     *
-     * @return null
      */
     public function addValue($sValue)
     {
@@ -244,8 +238,6 @@ class oxAttribute extends oxI18n
      * Set attribute selected value
      *
      * @param string $sValue - attribute value
-     *
-     * @return null
      */
     public function setActiveValue($sValue)
     {

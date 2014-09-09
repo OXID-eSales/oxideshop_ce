@@ -72,7 +72,6 @@ function oxAutoload($sClass)
         if (file_exists($sFilename)) {
             if (!isset($aClassPaths[$sClass])) {
                 $aClassPaths[$sClass] = $sFilename;
-                //oxRegistry::getUtils()->toPhpFileCache("class_file_paths", $aClassPaths);
             }
             stopProfile("oxAutoload");
             include $sFilename;
@@ -97,7 +96,6 @@ function oxAutoload($sClass)
                     if (file_exists($sFilename)) {
                         if (!isset($aClassPaths[$sClass])) {
                             $aClassPaths[$sClass] = $sFilename;
-                            oxRegistry::getUtils()->toPhpFileCache("class_file_paths", $aClassPaths);
                         }
                         stopProfile("oxAutoload");
                         include $sFilename;
@@ -224,8 +222,6 @@ if (!function_exists('error_404_handler')) {
  *
  * @param int    $iErrorNr   error number
  * @param string $sErrorText error message
- *
- * @return null
  */
 function warningHandler($iErrorNr, $sErrorText)
 {
@@ -237,8 +233,6 @@ function warningHandler($iErrorNr, $sErrorText)
  *
  * @param mixed $mVar     variable
  * @param bool  $blToFile marker to write log info to file (must be true to log)
- *
- * @return null
  */
 function dumpVar($mVar, $blToFile = false)
 {
@@ -272,8 +266,6 @@ if (!function_exists('isSearchEngineUrl')) {
  * prints anything given into a file, for debugging
  *
  * @param mixed $mVar variable to debug
- *
- * @return null
  */
 function debug($mVar)
 {
@@ -306,8 +298,6 @@ if (!function_exists('startProfile')) {
      * Start profiling
      *
      * @param string $sProfileName name of profile
-     *
-     * @return null
      */
     function startProfile($sProfileName)
     {
@@ -329,8 +319,6 @@ if (!function_exists('stopProfile')) {
      * Stop profiling
      *
      * @param string $sProfileName name of profile
-     *
-     * @return null
      */
     function stopProfile($sProfileName)
     {
@@ -445,8 +433,6 @@ function ox_get_secure($sTplName, $oSmarty)
  *
  * @param string $sTplName not used here
  * @param object $oSmarty  not used here
- *
- * @return null
  */
 function ox_get_trusted($sTplName, $oSmarty)
 {

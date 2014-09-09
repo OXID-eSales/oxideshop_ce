@@ -121,8 +121,6 @@ class delivery_articles_ajax extends ajaxListComponent
 
     /**
      * Removes article from delivery configuration
-     *
-     * @return null
      */
     public function removeArtFromDel()
     {
@@ -141,8 +139,6 @@ class delivery_articles_ajax extends ajaxListComponent
 
     /**
      * Adds article to delivery configuration
-     *
-     * @return null
      */
     public function addArtToDel()
     {

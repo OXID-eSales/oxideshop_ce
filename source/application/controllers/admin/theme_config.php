@@ -86,8 +86,6 @@ class Theme_Config extends Shop_Config
 
     /**
      * Saves shop configuration variables
-     *
-     * @return null
      */
     public function saveConfVars()
     {

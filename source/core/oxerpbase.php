@@ -189,8 +189,6 @@ abstract class oxERPBase
      * @param array  $aArguments arguments
      *
      * @throws Exception not implemented
-     *
-     * @return null
      */
     public function __call($sMethod, $aArguments)
     {
@@ -269,8 +267,6 @@ abstract class oxERPBase
      * load session - should be called on init
      *
      * @param string $sSessionID session id
-     *
-     * @return null
      */
     public function loadSessionData($sSessionID)
     {
@@ -315,8 +311,6 @@ abstract class oxERPBase
      * @param int    $iCount         limit
      * @param string $sSortFieldName field name to sort by
      * @param string $sSortType      "asc" or "desc"
-     *
-     * @return null
      */
     public function exportType($sType, $sWhere = null, $iStart = null, $iCount = null, $sSortFieldName = null, $sSortType = null)
     {
@@ -327,8 +321,6 @@ abstract class oxERPBase
 
     /**
      * imports all data set up before
-     *
-     * @return null
      */
     public function import()
     {
@@ -370,8 +362,6 @@ abstract class oxERPBase
      * @param int    $iCount         limit
      * @param string $sSortFieldName field name to sort by
      * @param string $sSortType      "asc" or "desc"
-     *
-     * @return null
      */
     protected function _export($sType, $sWhere, $iStart = null, $iCount = null, $sSortFieldName = null, $sSortType = null)
     {
@@ -426,8 +416,6 @@ abstract class oxERPBase
      * Just used for developing
      *
      * @param string $sTable table name
-     *
-     * @return null
      */
     protected function _outputMappingArray($sTable)
     {
@@ -463,8 +451,6 @@ abstract class oxERPBase
 
     /**
      * Reset import counter, if retry is detected, only failed imports are repeated
-     *
-     * @return null
      */
     protected function _resetIdx()
     {
@@ -479,8 +465,6 @@ abstract class oxERPBase
 
     /**
      * Increase import counter, if retry is detected, only failed imports are repeated
-     *
-     * @return null
      */
     protected function _nextIdx()
     {
@@ -499,8 +483,6 @@ abstract class oxERPBase
      * @param oxErpType $oType   data type object
      * @param boolean   $blWrite check also for write access
      * @param string    $sOxid   check write access for this OXID
-     *
-     * @return null
      */
     protected function _checkAccess($oType, $blWrite, $sOxid = null)
     {
@@ -655,8 +637,6 @@ abstract class oxERPBase
      * @param string $sDbLayerVersion requested version
      *
      * @throws Exception on not supported version
-     *
-     * @return null
      */
     public static function setVersion($sDbLayerVersion = '')
     {

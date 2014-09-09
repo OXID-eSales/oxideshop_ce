@@ -41,8 +41,6 @@ class Dynscreen extends oxAdminList
      * Sets up navigation for current view
      *
      * @param string $sNode None name
-     *
-     * @return null
      */
     protected function _setupNavigation($sNode)
     {

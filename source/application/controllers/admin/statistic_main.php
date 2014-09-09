@@ -126,8 +126,6 @@
 
         /**
          * Performs report generation function (outputs Smarty generated HTML report).
-         *
-         * @return null
          */
         public function generate()
         {

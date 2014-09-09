@@ -158,8 +158,6 @@ class Actions_Main extends oxAdminDetails
 
     /**
      * Saves changed selected action parameters in different language.
-     *
-     * @return null
      */
     public function saveinnlang()
     {

@@ -54,8 +54,6 @@ class oxModule extends oxSuperCfg
      * Set passed module data
      *
      * @param array $aModule module data
-     *
-     * @return null
      */
     public function setModuleData($aModule)
     {

@@ -73,8 +73,6 @@ if (!class_exists('report_base')) {
          * Smarty object setter
          *
          * @param smarty $oSmarty smarty object
-         *
-         * @return null
          */
         public function setSmarty($oSmarty)
         {

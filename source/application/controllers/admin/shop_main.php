@@ -157,8 +157,6 @@ class Shop_Main extends oxAdminDetails
      * Copies base shop config variables to current
      *
      * @param oxshop $oShop new shop object
-     *
-     * @return null
      */
     protected function _copyConfigVars($oShop)
     {

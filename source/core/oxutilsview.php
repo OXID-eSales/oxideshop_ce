@@ -109,8 +109,6 @@ class oxUtilsView extends oxSuperCfg
      *
      * @param array &$aView  view data array
      * @param array $aErrors array of errors to pass to view
-     *
-     * @return null
      */
     public function passAllErrorsToView(&$aView, $aErrors)
     {
@@ -133,8 +131,6 @@ class oxUtilsView extends oxSuperCfg
      * @param bool      $blCustomDestination true if the exception shouldn't be displayed at the default position (default false)
      * @param string    $sCustomDestination  defines a name of the view variable containing the messages, overrides Parameter 'CustomError' ("default")
      * @param string    $sActiveController   defines a name of the controller, which should handle the error.
-     *
-     * @return null
      */
     public function addErrorToDisplay($oEr, $blFull = false, $blCustomDestination = false, $sCustomDestination = "", $sActiveController = "")
     {
@@ -266,8 +262,6 @@ class oxUtilsView extends oxSuperCfg
      * Templates directory setter
      *
      * @param string $sTplDir templates path
-     *
-     * @return null
      */
     public function setTemplateDir($sTplDir)
     {
@@ -337,8 +331,6 @@ class oxUtilsView extends oxSuperCfg
      * sets properties of smarty object
      *
      * @param object $oSmarty template processor object (smarty)
-     *
-     * @return null
      */
     protected function _fillCommonSmartyProperties($oSmarty)
     {
@@ -399,8 +391,6 @@ class oxUtilsView extends oxSuperCfg
      * sets compile check property to smarty object
      *
      * @param object $oSmarty template processor object (smarty)
-     *
-     * @return null
      */
     protected function _smartyCompileCheck($oSmarty)
     {

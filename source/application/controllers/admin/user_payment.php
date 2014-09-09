@@ -126,8 +126,6 @@ class User_Payment extends oxAdminDetails
 
     /**
      * Deletes selected user payment information.
-     *
-     * @return null
      */
     public function delPayment()
     {

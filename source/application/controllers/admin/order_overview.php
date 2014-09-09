@@ -139,8 +139,6 @@ class Order_Overview extends oxAdminDetails
      * Performs PDF export to user (outputs file to save).
      *
      * @deprecated since v5.2.0 (2014-03-27); Moved to invoicepdf module's InvoicepdfOrder_Overview class
-     *
-     * @return null
      */
     public function createPDF()
     {

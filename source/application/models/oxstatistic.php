@@ -44,8 +44,6 @@
          * Sets reports array to current statistics object
          *
          * @param array $aVal array of reports to set in current statistics object
-         *
-         * @return null
          */
         public function setReports($aVal)
         {

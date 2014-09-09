@@ -29,8 +29,6 @@ class oxMaintenance
 
     /**
      * Executes maintenance tasks. Currently calls oxArticleList::updateUpcomingPrices()
-     *
-     * @return null
      */
     public function execute()
     {

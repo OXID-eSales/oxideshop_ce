@@ -93,8 +93,6 @@ class oxTagCloud extends oxSuperCfg
      * Tag cloud mode setter (extended or not)
      *
      * @param bool $blExtended if true - extended cloud array will be returned
-     *
-     * @return null
      */
     public function setExtendedMode($blExtended)
     {
@@ -236,8 +234,6 @@ class oxTagCloud extends oxSuperCfg
      * Resets tag cache
      *
      * @param int $iLang preferred language [optional]
-     *
-     * @return null
      */
     public function resetTagCache($iLang = null)
     {
@@ -249,8 +245,6 @@ class oxTagCloud extends oxSuperCfg
 
     /**
      * Resets tag cache
-     *
-     * @return null
      */
     public function resetCache()
     {

@@ -59,8 +59,6 @@ class Shop_List extends oxAdminList
     /**
      * Sets SQL query parameters (such as sorting),
      * executes parent method parent::Init().
-     *
-     * @return null
      */
     public function init()
     {

@@ -96,8 +96,6 @@ class oxCategoryList extends oxList
      * Set how to load tree true - for full tree
      *
      * @param boolean $blForceFull - true to load full
-     *
-     * @return null
      */
     public function setLoadFull($blForceFull)
     {
@@ -118,8 +116,6 @@ class oxCategoryList extends oxList
      * Set tree level 1- load root or 2 - root and second level
      *
      * @param int $iForceLevel - level number
-     *
-     * @return null
      */
     public function setLoadLevel($iForceLevel)
     {
@@ -289,8 +285,6 @@ class oxCategoryList extends oxList
 
     /**
      * Load category list data
-     *
-     * @return null
      */
     public function load()
     {
@@ -307,8 +301,6 @@ class oxCategoryList extends oxList
      * adding content categories and building tree structure.
      *
      * @param string $sActCat Active category (default null)
-     *
-     * @return null
      */
     public function buildTree($sActCat)
     {
@@ -343,8 +335,6 @@ class oxCategoryList extends oxList
      * set full category object in tree
      *
      * @param string $sId category id
-     *
-     * @return null
      */
     protected function _ppLoadFullCategory($sId)
     {
@@ -361,8 +351,6 @@ class oxCategoryList extends oxList
 
     /**
      * Fetches raw categories and does postprocessing for adding depth information
-     *
-     * @return null
      */
     public function loadList()
     {
@@ -384,8 +372,6 @@ class oxCategoryList extends oxList
      * setter for shopID
      *
      * @param int $sShopID ShopID
-     *
-     * @return null
      */
     public function setShopID($sShopID)
     {
@@ -428,8 +414,6 @@ class oxCategoryList extends oxList
 
     /**
      * Category list postprocessing routine, responsible for removal of inactive of forbidden categories, and subcategories.
-     *
-     * @return null
      */
     protected function _ppRemoveInactiveCategories()
     {
@@ -492,8 +476,6 @@ class oxCategoryList extends oxList
 
     /**
      * Category list postprocessing routine, responsible adding of content categories
-     *
-     * @return null
      */
     protected function _ppAddContentCategories()
     {
@@ -511,8 +493,6 @@ class oxCategoryList extends oxList
 
     /**
      * Category list postprocessing routine, responsible building an sorting of hierarchical category tree
-     *
-     * @return null
      */
     protected function _ppBuildTree()
     {
@@ -534,8 +514,6 @@ class oxCategoryList extends oxList
     /**
      * Category list postprocessing routine, responsible for making flat category tree and adding depth information.
      * Requires reversed category list!
-     *
-     * @return null
      */
     protected function _ppAddDepthInformation()
     {
@@ -586,8 +564,6 @@ class oxCategoryList extends oxList
      *
      * @param bool   $blVerbose Set to true for output the update status for user,
      * @param string $sShopID   the shop id
-     *
-     * @return null
      */
     public function updateCategoryTree($blVerbose = true, $sShopID = null)
     {
@@ -630,8 +606,6 @@ class oxCategoryList extends oxList
      * @param string $oxRootId rootid of tree
      * @param bool   $isRoot   is the current node root?
      * @param string $thisRoot the id of the root
-     *
-     * @return null
      */
     protected function _updateNodes($oxRootId, $isRoot, $thisRoot)
     {

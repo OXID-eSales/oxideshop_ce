@@ -48,8 +48,6 @@ class oxArticleTagList extends oxI18n implements oxITagList
      * Sets article id
      *
      * @param string $sArticleId Article id
-     *
-     * @return null
      */
     public function setArticleId($sArticleId)
     {
@@ -231,8 +229,6 @@ class oxArticleTagList extends oxI18n implements oxITagList
 
     /**
      * Execute cache dependencies
-     *
-     * @return null
      */
     public function executeDependencyEvent()
     {
@@ -242,8 +238,6 @@ class oxArticleTagList extends oxI18n implements oxITagList
 
     /**
      * Execute cache dependencies
-     *
-     * @return null
      */
     protected function _updateTagDependency()
     {

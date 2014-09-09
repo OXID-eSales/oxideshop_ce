@@ -60,8 +60,6 @@ class oxModuleCache extends oxSuperCfg
 
     /**
      * Resets template, language and menu xml cache
-     *
-     * @return null
      */
     public function resetCache()
     {

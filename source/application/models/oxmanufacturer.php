@@ -122,8 +122,6 @@ class oxManufacturer extends oxI18n implements oxIUrl
      * Marker to load manufacturer article count info setter
      *
      * @param bool $blShowArticleCount Marker to load manufacturer article count
-     *
-     * @return null
      */
     public function setShowArticleCnt($blShowArticleCount = false)
     {
@@ -134,8 +132,6 @@ class oxManufacturer extends oxI18n implements oxIUrl
      * Assigns to $this object some base parameters/values.
      *
      * @param array $dbRecord parameters/values
-     *
-     * @return null
      */
     public function assign($dbRecord)
     {
@@ -297,8 +293,6 @@ class oxManufacturer extends oxI18n implements oxIUrl
      * sets the visibilty of a category
      *
      * @param bool $blVisible manufacturers visibility status setter
-     *
-     * @return null
      */
     public function setIsVisible($blVisible)
     {
@@ -323,8 +317,6 @@ class oxManufacturer extends oxI18n implements oxIUrl
      * sets the state of has visible sub manufacturers
      *
      * @param bool $blHasVisibleSubcats marker if manufacturer has visible subcategories
-     *
-     * @return null
      */
     public function setHasVisibleSubCats($blHasVisibleSubcats)
     {
@@ -333,8 +325,6 @@ class oxManufacturer extends oxI18n implements oxIUrl
 
     /**
      * Empty method, called in templates when manufacturer is used in same code like category
-     *
-     * @return null
      */
     public function getContentCats()
     {

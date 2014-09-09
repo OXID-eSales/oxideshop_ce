@@ -285,8 +285,6 @@ class oxDb
      * Setting up connection parameters - sql mode, encoding, logging etc
      *
      * @param ADOConnection $oDb database connection instance
-     *
-     * @return null
      */
     protected function _setUp($oDb)
     {
@@ -344,8 +342,6 @@ class oxDb
      * Notifying shop owner about connection problems
      *
      * @param ADOConnection $oDb database connection instance
-     *
-     * @return null
      */
     protected function _notifyConnectionErrors($oDb)
     {
@@ -385,8 +381,6 @@ class oxDb
      * or send notification message for shop owner
      *
      * @param ADOConnection $oDb database connection instance
-     *
-     * @return null
      */
     protected function _onConnectionError($oDb)
     {
@@ -519,8 +513,6 @@ class oxDb
 
     /**
      * Call to reset table description cache
-     *
-     * @return null
      */
     public function resetTblDescCache()
     {

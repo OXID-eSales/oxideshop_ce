@@ -37,8 +37,6 @@ class oxVoucherException extends oxException
      * Sets the voucher number as a string
      *
      * @param string $sVoucherNr voucher number
-     *
-     * @return null
      */
     public function setVoucherNr($sVoucherNr)
     {

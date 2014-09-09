@@ -91,8 +91,6 @@ class oxERPType
      * setter for the function prefix
      *
      * @param string $sNew new suffix
-     *
-     * @return null
      */
     public function setFunctionSuffix($sNew)
     {
@@ -103,8 +101,6 @@ class oxERPType
      * setter for field list
      *
      * @param array $aFieldList fields to set
-     *
-     * @return null
      */
     public function setFieldList($aFieldList)
     {
@@ -262,8 +258,6 @@ class oxERPType
      * @param array $aData fields to be written
      *
      * @throws Exception on now access
-     *
-     * @return null
      */
     public function checkCreateAccess($aData)
     {

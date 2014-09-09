@@ -112,8 +112,6 @@ class VoucherSerie_Generate extends VoucherSerie_Main
 
     /**
      * Runs voucher generation
-     *
-     * @return null
      */
     public function run()
     {

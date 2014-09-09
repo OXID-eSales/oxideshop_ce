@@ -122,8 +122,6 @@ class Compare extends oxUBase
 
     /**
      * moves current article to the left in compare items array
-     *
-     * @return null
      */
     public function moveLeft() //#777C
     {
@@ -161,8 +159,6 @@ class Compare extends oxUBase
 
     /**
      * moves current article to the right in compare items array
-     *
-     * @return null
      */
     public function moveRight() //#777C
     {
@@ -200,8 +196,6 @@ class Compare extends oxUBase
 
     /**
      * changes default template for compare in popup
-     *
-     * @return null
      */
     public function inPopup() // #777C
     {
@@ -259,8 +253,6 @@ class Compare extends oxUBase
      * Compare item $_aCompItems setter
      *
      * @param array $aItems compare items i new order
-     *
-     * @return null
      */
     public function setCompareItems($aItems)
     {
@@ -272,8 +264,6 @@ class Compare extends oxUBase
      *  $_iArticlesPerPage setter
      *
      * @param int $iNumber article count in compare page
-     *
-     * @return null
      */
     protected function _setArticlesPerPage($iNumber)
     {
@@ -282,8 +272,6 @@ class Compare extends oxUBase
 
     /**
      *  turn off paging
-     *
-     * @return null
      */
     public function setNoPaging()
     {

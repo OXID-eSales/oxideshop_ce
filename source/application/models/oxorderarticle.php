@@ -103,8 +103,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
      * Copies passed to method product into $this.
      *
      * @param object $oProduct product to copy
-     *
-     * @return null
      */
     public function copyThis($oProduct)
     {
@@ -131,8 +129,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
      * Assigns DB field values to object fields.
      *
      * @param string $dbRecord DB record
-     *
-     * @return null
      */
     public function assign($dbRecord)
     {
@@ -147,8 +143,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
      *
      * @param double $dAddAmount           amount which will be substracled from value in db
      * @param bool   $blAllowNegativeStock amount allow or not negative stock value
-     *
-     * @return null
      */
     public function updateArticleStock($dAddAmount, $blAllowNegativeStock = false)
     {
@@ -221,8 +215,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
      * Order persistent params setter
      *
      * @param array $aParams array of params
-     *
-     * @return null
      */
     public function setPersParams($aParams)
     {
@@ -315,8 +307,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
 
     /**
      * Sets article parameters to current object, so this object can be used for basket calculation
-     *
-     * @return null
      */
     protected function _setArticleParams()
     {
@@ -562,8 +552,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
      * Marks object as new order item (this marker useful when recalculating stocks after order recalculation)
      *
      * @param bool $blIsNew marker value - TRUE if this item is newy added to order
-     *
-     * @return null
      */
     public function setIsNewOrderItem($blIsNew)
     {
@@ -586,8 +574,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
      * to it
      *
      * @param int $iNewAmount new ordered items amount
-     *
-     * @return null
      */
     public function setNewAmount($iNewAmount)
     {
@@ -628,8 +614,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
     /**
      * Sets order article storno value to 1 and if stock control is on -
      * restores previous oxarticle stock state
-     *
-     * @return null
      */
     public function cancelOrderArticle()
     {

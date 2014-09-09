@@ -46,8 +46,6 @@ class oxFileException extends oxException
      *  Sets the file name of the file related to the exception
      *
      * @param string $sFileName file name
-     *
-     * @return null
      */
     public function setFileName($sFileName)
     {
@@ -68,8 +66,6 @@ class oxFileException extends oxException
      * sets the error returned by the file operation
      *
      * @param string $sFileError Error
-     *
-     * @return null
      */
     public function setFileError($sFileError)
     {

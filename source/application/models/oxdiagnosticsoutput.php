@@ -127,8 +127,6 @@ class oxDiagnosticsOutput
 
     /**
      * Sends generated file for download
-     *
-     * @return null
      */
     public function downloadResultFile($sOutputKey = null)
     {

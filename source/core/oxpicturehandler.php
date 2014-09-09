@@ -96,8 +96,6 @@ class oxPictureHandler extends oxSuperCfg
      * Deletes custom main icon, which name is specified in oxicon field.
      *
      * @param oxArticle $oObject article object
-     *
-     * @return null
      */
     public function deleteMainIcon($oObject)
     {
@@ -111,8 +109,6 @@ class oxPictureHandler extends oxSuperCfg
      * Deletes custom thumbnail, which name is specified in oxthumb field.
      *
      * @param oxArticle $oObject article object
-     *
-     * @return null
      */
     public function deleteThumbnail($oObject)
     {

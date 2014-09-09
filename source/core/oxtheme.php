@@ -68,8 +68,6 @@ class oxTheme extends oxSuperCfg
 
     /**
      * Set theme as active
-     *
-     * @return null
      */
     public function activate()
     {

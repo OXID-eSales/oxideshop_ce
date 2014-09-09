@@ -77,8 +77,6 @@ class oxTagSet extends oxSuperCfg implements Iterator
      *
      * @param string $sTags     article tag
      * @param bool   $blPrepare if false, separate tags will not be parsed and stored as is
-     *
-     * @return null
      */
     public function set($sTags, $blPrepare = true)
     {
@@ -152,8 +150,6 @@ class oxTagSet extends oxSuperCfg implements Iterator
 
     /**
      * Clears tags set
-     *
-     * @return null
      */
     public function clear()
     {

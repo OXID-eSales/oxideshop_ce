@@ -137,8 +137,6 @@ class order extends oxUBase
      * Loads basket oxsession::getBasket(), sets $this->oBasket->blCalcNeeded = true to
      * recalculate, sets back basket to session oxsession::setBasket(), executes
      * parent::init().
-     *
-     * @return null
      */
     public function init()
     {

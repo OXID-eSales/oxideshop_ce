@@ -38,8 +38,6 @@ class oxActionList extends oxList
      * Loads x last finished promotions
      *
      * @param int $iCount count to load
-     *
-     * @return null
      */
     public function loadFinishedByCount($iCount)
     {
@@ -58,8 +56,6 @@ class oxActionList extends oxList
      * Loads last finished promotions after given timespan
      *
      * @param int $iTimespan timespan to load
-     *
-     * @return null
      */
     public function loadFinishedByTimespan($iTimespan)
     {
@@ -75,8 +71,6 @@ class oxActionList extends oxList
 
     /**
      * Loads current promotions
-     *
-     * @return null
      */
     public function loadCurrent()
     {
@@ -93,8 +87,6 @@ class oxActionList extends oxList
      * Loads next not yet started promotions by cound
      *
      * @param int $iCount count to load
-     *
-     * @return null
      */
     public function loadFutureByCount($iCount)
     {
@@ -111,8 +103,6 @@ class oxActionList extends oxList
      * Loads next not yet started promotions before the given timespan
      *
      * @param int $iTimespan timespan to load
-     *
-     * @return null
      */
     public function loadFutureByTimespan($iTimespan)
     {
@@ -171,8 +161,6 @@ class oxActionList extends oxList
 
     /**
      * load active shop banner list
-     *
-     * @return null
      */
     public function loadBanners()
     {

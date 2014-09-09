@@ -96,8 +96,6 @@
          * Calculates list items count
          *
          * @param string $sSql SQL query used co select list items
-         *
-         * @return null
          */
         protected function _calcListItemsCount($sSql)
         {

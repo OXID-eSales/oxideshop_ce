@@ -144,8 +144,6 @@ class oxDelivery extends oxI18n
      * Delivery VAT config setter
      *
      * @param bool $blOnTop delivery vat config
-     *
-     * @return null
      */
     public function setDelVatOnTop($blOnTop)
     {
@@ -267,8 +265,6 @@ class oxDelivery extends oxI18n
      * Delivery price setter
      *
      * @param oxPrice $oPrice delivery price to set
-     *
-     * @return null
      */
     public function setDeliveryPrice($oPrice)
     {

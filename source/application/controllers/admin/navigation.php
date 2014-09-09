@@ -89,19 +89,23 @@ class Navigation extends oxAdminView
             // open history node ?
             $this->_aViewData["blOpenHistory"] = oxRegistry::getConfig()->getRequestParameter('openHistory');
         }
-        /** @var oxSimpleShopList $oShoplist */
-        $oShoplist = oxNew('oxSimpleShopList');
 
         $sWhere = '';
         $blisMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
+        /** @var oxShopList $oShoplist */
+        $oShoplist = oxNew('oxShopList');
         if (!$blisMallAdmin) {
             // we only allow to see our shop
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $sWhere = "oxid = '$sShopID'";
+            $iShopId = oxRegistry::getSession()->getVariable("actshop");
+            /** @var oxShop $oShop */
+            $oShop = oxNew('oxShop');
+            $oShop->load($iShopId);
+            $oShoplist->add($oShop);
+        } else {
+            $oShoplist->getIdTitleList();
         }
-        $aShopList = $oShoplist->getList($sWhere);
-        $this->_aViewData['shoplist'] = $aShopList;
 
+        $this->_aViewData['shoplist'] = $oShoplist;
         return $sItem;
     }
 
@@ -128,8 +132,6 @@ class Navigation extends oxAdminView
 
     /**
      * Destroy session, redirects to admin login and clears cache
-     *
-     * @return null
      */
     public function logout()
     {
@@ -158,8 +160,6 @@ class Navigation extends oxAdminView
 
     /**
      * Caches external url file locally, adds <base> tag with original url to load images and other links correcly
-     *
-     * @return null
      */
     public function exturl()
     {

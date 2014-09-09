@@ -638,8 +638,6 @@ class oxSeoEncoderArticle extends oxSeoEncoder
      * deletes article seo entries
      *
      * @param oxArticle $oArticle article to remove
-     *
-     * @return null
      */
     public function onDeleteArticle($oArticle)
     {

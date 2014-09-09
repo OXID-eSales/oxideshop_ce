@@ -249,7 +249,6 @@ class oxPDF extends TCPDF
      * @param string  $align  allows to center or align the text. Possible values are:<ul><li>L : left align</li><li>C : center</li><li>R : right align</li><li>'' : empty string : left for LTR or right for RTL</li></ul>
      *
      * @access public
-     * @return null
      * @uses   MultiCell()
      * @see    Multicell(), writeHTML()
      */
@@ -291,8 +290,6 @@ class oxPDF extends TCPDF
      *
      * @param object $tag  tag name
      * @param object $attr attributes
-     *
-     * @return null
      */
     public function OpenTag($tag, $attr)
     {
@@ -313,8 +310,6 @@ class oxPDF extends TCPDF
      * Closing tag
      *
      * @param object $tag tag name
-     *
-     * @return null
      */
     public function CloseTag($tag)
     {
@@ -332,8 +327,6 @@ class oxPDF extends TCPDF
      *
      * @param object $tag    tag name
      * @param object $enable enable style
-     *
-     * @return null
      */
     public function SetStyle($tag, $enable)
     {
@@ -352,8 +345,6 @@ class oxPDF extends TCPDF
      *
      * @param object $sURL  link url
      * @param object $sText link text
-     *
-     * @return null
      */
     public function PutLink($sURL, $sText)
     {
@@ -373,8 +364,6 @@ class oxPDF extends TCPDF
      * @param string $style    font style [optional]
      * @param string $size     font size [optional]
      * @param string $fontfile font file[optional]
-     *
-     * @return null
      */
     public function SetFont($family, $style = '', $size = 0, $fontfile = '')
     {

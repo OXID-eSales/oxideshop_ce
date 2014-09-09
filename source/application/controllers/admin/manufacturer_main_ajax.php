@@ -114,8 +114,6 @@ class manufacturer_main_ajax extends ajaxListComponent
 
     /**
      * Removes article from Manufacturer config
-     *
-     * @return null
      */
     public function removeManufacturer()
     {
@@ -138,8 +136,6 @@ class manufacturer_main_ajax extends ajaxListComponent
 
     /**
      * Adds article to Manufacturer config
-     *
-     * @return null
      */
     public function addManufacturer()
     {

@@ -85,8 +85,6 @@ class shop_rdfa extends Shop_Config
 
     /**
      * Submits shop main page to web search engines
-     *
-     * @return null
      */
     public function submitUrl()
     {

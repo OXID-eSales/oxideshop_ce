@@ -76,8 +76,6 @@ class deliveryset_payment_ajax extends ajaxListComponent
 
     /**
      * Remove these payments from this set
-     *
-     * @return null
      */
     public function removePayFromSet()
     {
@@ -95,8 +93,6 @@ class deliveryset_payment_ajax extends ajaxListComponent
 
     /**
      * Adds this payments to this set
-     *
-     * @return null
      */
     public function addPayToSet()
     {

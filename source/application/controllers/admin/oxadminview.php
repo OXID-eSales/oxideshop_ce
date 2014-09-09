@@ -153,8 +153,6 @@ class oxAdminView extends oxView
      * Sets some shop configuration parameters (such as language),
      * creates some list object (depends on subclass) and executes
      * parent method parent::Init().
-     *
-     * @return null
      */
     public function init()
     {
@@ -286,8 +284,6 @@ class oxAdminView extends oxView
      * Sets-up navigation parameters
      *
      * @param string $sNode active view id
-     *
-     * @return null
      */
     protected function _setupNavigation($sNode)
     {
@@ -317,8 +313,6 @@ class oxAdminView extends oxView
      * Store navigation history parameters to cookie
      *
      * @param string $sNode active view id
-     *
-     * @return null
      */
     protected function _addNavigationHistory($sNode)
     {
@@ -436,8 +430,6 @@ class oxAdminView extends oxView
      * Reset output cache
      *
      * @param bool $blForceReset if true, forces reset
-     *
-     * @return null
      */
     public function resetContentCache($blForceReset = null)
     {
@@ -457,8 +449,6 @@ class oxAdminView extends oxView
      *
      * @param string $sCounterType counter type
      * @param string $sValue       reset value
-     *
-     * @return null
      */
     public function resetCounter($sCounterType, $sValue = null)
     {
@@ -600,8 +590,6 @@ class oxAdminView extends oxView
      * Marks seo entires as expired, cleans up tag clouds cache
      *
      * @param string $sShopId Shop id
-     *
-     * @return null
      */
     public function resetSeoData($sShopId)
     {

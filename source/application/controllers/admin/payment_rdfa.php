@@ -59,8 +59,6 @@ class payment_rdfa extends oxAdminDetails
 
     /**
      * Saves changed mapping configurations
-     *
-     * @return null
      */
     public function save()
     {

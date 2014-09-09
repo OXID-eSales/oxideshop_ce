@@ -194,8 +194,6 @@ class Category_Main extends oxAdminDetails
 
     /**
      * Saves article category data to different language (eg. english).
-     *
-     * @return null
      */
     public function saveinnlang()
     {

@@ -75,8 +75,6 @@ class oxWrapping extends oxI18n
      * Wrapping Vat setter
      *
      * @param double $dVat vat
-     *
-     * @return null
      */
     public function setWrappingVat($dVat)
     {
@@ -87,8 +85,6 @@ class oxWrapping extends oxI18n
      * Wrapping VAT config setter
      *
      * @param bool $blOnTop wrapping vat config
-     *
-     * @return null
      */
     public function setWrappingVatOnTop($blOnTop)
     {

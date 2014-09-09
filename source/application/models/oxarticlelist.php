@@ -51,8 +51,6 @@ class oxArticleList extends oxList
      * Set Custom Sorting, simply an order by....
      *
      * @param string $sSorting Custom sorting
-     *
-     * @return null
      */
     public function setCustomSorting($sSorting)
     {
@@ -61,8 +59,6 @@ class oxArticleList extends oxList
 
     /**
      * Call enableSelectLists() for loading select lists in lst articles
-     *
-     * @return null
      */
     public function enableSelectLists()
     {
@@ -104,8 +100,6 @@ class oxArticleList extends oxList
      * Set history article id's to session or cookie
      *
      * @param array $aArticlesIds array history article ids
-     *
-     * @return null
      */
     public function setHistoryArticles($aArticlesIds)
     {
@@ -155,8 +149,6 @@ class oxArticleList extends oxList
      * sort this list by given order.
      *
      * @param array $aIds ordered ids
-     *
-     * @return null
      */
     public function sortByIds($aIds)
     {
@@ -248,8 +240,6 @@ class oxArticleList extends oxList
      * Load top 5 articles
      *
      * @param int $iLimit Select limit
-     *
-     * @return null
      */
     public function loadTop5Articles($iLimit = null)
     {
@@ -410,8 +400,6 @@ class oxArticleList extends oxList
      *
      * @param string $sCatId         Category tree ID
      * @param array  $aSessionFilter Like array ( catid => array( attrid => value,...))
-     *
-     * @return null
      */
     public function loadCategoryIds($sCatId, $aSessionFilter)
     {
@@ -476,8 +464,6 @@ class oxArticleList extends oxList
      *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
-     *
-     * @return null
      */
     public function loadRecommArticleIds($sRecommId, $sArticlesFilter)
     {
@@ -832,8 +818,6 @@ class oxArticleList extends oxList
      * Loads list of low stock state products
      *
      * @param array $aBasketContents product ids array
-     *
-     * @return null
      */
     public function loadStockRemindProducts($aBasketContents)
     {
@@ -957,8 +941,6 @@ class oxArticleList extends oxList
      * fills the list simply with keys of the oxid and the position as value for the given sql
      *
      * @param string $sSql SQL select
-     *
-     * @return null
      */
     protected function _createIdListFromSql($sSql)
     {

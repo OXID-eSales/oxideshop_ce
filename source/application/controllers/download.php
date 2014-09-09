@@ -30,8 +30,6 @@ class Download extends oxUBase
     /**
      * Prevents from loading any component as this controller
      * only returns file content if token is valid
-     *
-     * @return null
      */
     public function init()
     {

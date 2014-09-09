@@ -126,8 +126,6 @@ class oxErpGenImport extends oxErpCsv
 
     /**
      * Setting DB layer version to latest
-     *
-     * @return null
      */
     protected function _setDbLayerVersion()
     {
@@ -231,8 +229,6 @@ class oxErpGenImport extends oxErpCsv
      * Set import object type prefix
      *
      * @param string $sType import type prefix
-     *
-     * @return null
      */
     public function setImportTypePrefix($sType)
     {
@@ -293,8 +289,6 @@ class oxErpGenImport extends oxErpCsv
      * Set CSV file comumns names
      *
      * @param array $aCsvFields CSV fields
-     *
-     * @return null
      */
     public function setCsvFileFieldsOrder($aCsvFields)
     {
@@ -305,8 +299,6 @@ class oxErpGenImport extends oxErpCsv
      * Set if CSV file contains header row
      *
      * @param bool $blCsvContainsHeader has or not file header
-     *
-     * @return null
      */
     public function setCsvContainsHeader($blCsvContainsHeader)
     {

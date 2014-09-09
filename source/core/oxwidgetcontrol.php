@@ -61,8 +61,6 @@ class oxWidgetControl extends oxShopControl
      * @param string $sFunction   Function name
      * @param array  $aParams     Parameters array
      * @param array  $aViewsChain Array of views names that should be initialized also
-     *
-     * @return null
      */
     public function start($sClass = null, $sFunction = null, $aParams = null, $aViewsChain = null)
     {
@@ -93,8 +91,6 @@ class oxWidgetControl extends oxShopControl
 
     /**
      * Runs actions that should be performed at the controller finish.
-     *
-     * @return null
      */
     protected function _runLast()
     {

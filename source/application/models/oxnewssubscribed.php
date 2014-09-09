@@ -166,8 +166,6 @@ class oxNewsSubscribed extends oxBase
      * Newsletter subscription status setter
      *
      * @param int $iStatus subscription status
-     *
-     * @return null
      */
     public function setOptInStatus($iStatus)
     {
@@ -189,8 +187,6 @@ class oxNewsSubscribed extends oxBase
      * Newsletter subscription email sending status setter
      *
      * @param int $iStatus subscription status
-     *
-     * @return null
      */
     public function setOptInEmailStatus($iStatus)
     {

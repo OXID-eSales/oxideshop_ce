@@ -52,8 +52,6 @@ class oxVariantHandler extends oxSuperCfg
      * Sets internal variant name array from article list.
      *
      * @param oxList [string]oxArticle $oArticles Variant list as
-     *
-     * @return null
      */
     public function init($oArticles)
     {
@@ -94,8 +92,6 @@ class oxVariantHandler extends oxSuperCfg
      *
      * @param array  $aSels    ids of selection list
      * @param object $oArticle parent article
-     *
-     * @return null
      */
     public function genVariantFromSell($aSels, $oArticle)
     {
@@ -283,8 +279,6 @@ class oxVariantHandler extends oxSuperCfg
      *
      * @param string $sUpdate query for update variant name
      * @param string $sArtId  parent article id
-     *
-     * @return null
      */
     protected function _updateArticleVarName($sUpdate, $sArtId)
     {

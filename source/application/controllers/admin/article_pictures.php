@@ -222,8 +222,6 @@ class Article_Pictures extends oxAdminDetails
      * icon or thumb picture, leaves records untouched.
      *
      * @param oxArticle $oArticle article object
-     *
-     * @return null
      */
     protected function _cleanupCustomFields($oArticle)
     {

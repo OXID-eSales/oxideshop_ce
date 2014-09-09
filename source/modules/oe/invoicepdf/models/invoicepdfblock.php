@@ -115,8 +115,6 @@ class InvoicepdfBlock
      * @param string $sType   font type (Arial, Tahoma ...)
      * @param string $sWeight font weight ('', 'B', 'U' ...)
      * @param string $sSize   font size ('10', '8', '6' ...)
-     *
-     * @return null
      */
     public function font($sType, $sWeight, $sSize)
     {

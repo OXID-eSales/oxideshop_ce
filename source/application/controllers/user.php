@@ -212,8 +212,6 @@ class User extends oxUBase
 
     /**
      * Fills user form with date taken from Facebook
-     *
-     * @return null
      */
     protected function _fillFormWithFacebookData()
     {

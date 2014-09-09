@@ -41,8 +41,6 @@ class oxSystemComponentException extends oxException
      * Sets the component name which caused the exception as a string.
      *
      * @param string $sComponent name of component
-     *
-     * @return null
      */
     public function setComponent($sComponent)
     {

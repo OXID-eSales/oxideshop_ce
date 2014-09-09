@@ -39,8 +39,6 @@ class oxLegacyDb extends oxSuperCfg
      * Set connection
      *
      * @param object $oConnection Connection
-     *
-     * @return null
      */
     public function setConnection($oConnection)
     {
@@ -51,8 +49,6 @@ class oxLegacyDb extends oxSuperCfg
      * Set fetch mode to connection
      *
      * @param int $iFetchMode Fetch mode
-     *
-     * @return null
      */
     public function setFetchMode($iFetchMode)
     {
@@ -363,8 +359,6 @@ class oxLegacyDb extends oxSuperCfg
      * Calls Db UI method
      *
      * @param integer $iPollSecs poll seconds
-     *
-     * @return null
      */
     public function UI($iPollSecs = 5)
     {

@@ -342,8 +342,6 @@ class oxConfig extends oxSuperCfg
      *
      * @param string $sName  config parameter name
      * @param string $sValue config parameter value
-     *
-     * @return null
      */
     public function setConfigParam($sName, $sValue)
     {
@@ -356,8 +354,6 @@ class oxConfig extends oxSuperCfg
 
     /**
      * Parse SEO url parameters.
-     *
-     * @return null
      */
     protected function _processSeoCall()
     {
@@ -700,8 +696,6 @@ class oxConfig extends oxSuperCfg
      *
      * @param string $sName  name of parameter
      * @param mixed  $sValue value to store
-     *
-     * @return null
      */
     public function setGlobalParameter($sName, $sValue)
     {
@@ -814,8 +808,6 @@ class oxConfig extends oxSuperCfg
 
     /**
      * Checks if WEB session is SSL.
-     *
-     * @return null
      */
     protected function _checkSsl()
     {
@@ -1095,8 +1087,6 @@ class oxConfig extends oxSuperCfg
      * Sets the actual currency
      *
      * @param int $iCur 0 = EUR, 1 = GBP, 2 = CHF
-     *
-     * @return null
      */
     public function setActShopCurrency($iCur)
     {
@@ -1766,6 +1756,18 @@ class oxConfig extends oxSuperCfg
         return $sRev;
     }
 
+    /**
+     * Counts OXID mandates
+     *
+     * @return int
+     */
+    public function getMandateCount()
+    {
+        $iShopCount = 1;
+
+
+        return $iShopCount;
+    }
 
     /**
      * Checks if shop is MALL. Returns true on success.
@@ -1802,8 +1804,6 @@ class oxConfig extends oxSuperCfg
      * @param mixed  $sVarVal  Variable value (can be string, integer or array)
      * @param string $sShopId  Shop ID, default is current shop
      * @param string $sModule  Module name (empty for base options)
-     *
-     * @return null
      */
     public function saveShopConfVar($sVarType, $sVarName, $sVarVal, $sShopId = null, $sModule = '')
     {
@@ -2025,8 +2025,6 @@ class oxConfig extends oxSuperCfg
      * View object setter
      *
      * @param object $oView view object
-     *
-     * @return null
      */
     public function setActiveView($oView)
     {
@@ -2035,8 +2033,6 @@ class oxConfig extends oxSuperCfg
 
     /**
      * Drop last active view object
-     *
-     * @return null
      */
     public function dropLastActiveView()
     {

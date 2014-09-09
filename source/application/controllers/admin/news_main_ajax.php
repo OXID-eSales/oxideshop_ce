@@ -74,8 +74,6 @@ class news_main_ajax extends ajaxListComponent
 
     /**
      * Removes some user group from viewing some news.
-     *
-     * @return null
      */
     public function removeGroupFromNews()
     {
@@ -93,8 +91,6 @@ class news_main_ajax extends ajaxListComponent
 
     /**
      * Adds user group for viewing some news.
-     *
-     * @return null
      */
     public function addGroupToNews()
     {

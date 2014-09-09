@@ -253,8 +253,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      * copies a given array over the objects internal array (something like old $myList->aList = $aArray)
      *
      * @param array $aArray array of list items
-     *
-     * @return null
      */
     public function assign($aArray)
     {
@@ -375,6 +373,16 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
     }
 
     /**
+     * Sets base object for list.
+     *
+     * @param object $oObject Base object
+     */
+    public function setBaseObject($oObject)
+    {
+        $this->_oBaseObject = $oObject;
+    }
+
+    /**
      * Selects and SQL, creates objects and assign them
      *
      * @param string $sSql SQL select statement
@@ -402,17 +410,26 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
 
                 $this->_assignElement($oListObject, $rs->fields);
 
-                if ($oListObject->getId()) {
-                    $this->_aArray[$oListObject->getId()] = $oListObject;
-                } else {
-                    $this->_aArray[] = $oListObject;
-                }
+                $this->add($oListObject);
 
                 $rs->moveNext();
             }
         }
     }
 
+    /**
+     * Add an entry to object array.
+     *
+     * @param object $oObject Object to be added.
+     */
+    public function add($oObject)
+    {
+        if ($oObject->getId()) {
+            $this->_aArray[$oObject->getId()] = $oObject;
+        } else {
+            $this->_aArray[] = $oObject;
+        }
+    }
 
     /**
      * Assign data from array to list

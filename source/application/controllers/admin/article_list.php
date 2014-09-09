@@ -263,8 +263,6 @@ class Article_List extends oxAdminList
 
     /**
      * Deletes entry from the database
-     *
-     * @return null
      */
     public function deleteEntry()
     {

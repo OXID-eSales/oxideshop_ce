@@ -102,8 +102,6 @@ class oxPrice
 
     /**
      * Netto price mode setter
-     *
-     * @return null
      */
     public function setNettoPriceMode()
     {
@@ -112,8 +110,6 @@ class oxPrice
 
     /**
      * Brutto price mode setter
-     *
-     * @return null
      */
     public function setBruttoPriceMode()
     {
@@ -124,8 +120,6 @@ class oxPrice
      * Sets new VAT percent, and recalculates price.
      *
      * @param double $dVat vat percent
-     *
-     * @return null
      */
     public function setVat($dVat)
     {
@@ -141,8 +135,6 @@ class oxPrice
      * USE setVat() in usual case !!!
      *
      * @param double $newVat vat percent
-     *
-     * @return null
      */
     public function setUserVat($newVat)
     {
@@ -168,8 +160,6 @@ class oxPrice
      *
      * @param double $dPrice new price
      * @param double $dVat   VAT
-     *
-     * @return null
      */
     public function setPrice($dPrice, $dVat = null)
     {
@@ -247,8 +237,6 @@ class oxPrice
      * and recalculates price
      *
      * @param double $dValue percent to subtract from price
-     *
-     * @return null
      */
     public function subtractPercent($dValue)
     {
@@ -261,8 +249,6 @@ class oxPrice
      * and recalculates price
      *
      * @param double $dValue percent to add to price
-     *
-     * @return null
      */
     public function addPercent($dValue)
     {
@@ -273,8 +259,6 @@ class oxPrice
      * Adds another oxPrice object and recalculates current method.
      *
      * @param oxPrice $oPrice object
-     *
-     * @return null
      */
     public function addPrice(oxPrice $oPrice)
     {
@@ -290,8 +274,6 @@ class oxPrice
      * and recalculates price
      *
      * @param double $dValue value to add to price
-     *
-     * @return null
      */
     public function add($dValue)
     {
@@ -304,8 +286,6 @@ class oxPrice
      * and recalculates price
      *
      * @param double $dValue value to subtracts from price
-     *
-     * @return null
      */
     public function subtract($dValue)
     {
@@ -317,8 +297,6 @@ class oxPrice
      * and recalculates price
      *
      * @param double $dValue value for multiplying price
-     *
-     * @return null
      */
     public function multiply($dValue)
     {
@@ -331,8 +309,6 @@ class oxPrice
      * and recalculates price
      *
      * @param double $dValue value for dividing price
-     *
-     * @return null
      */
     public function divide($dValue)
     {
@@ -438,8 +414,6 @@ class oxPrice
      *
      * @param double $dValue discount value
      * @param string $sType  discount type: abs or %
-     *
-     * @return null
      */
     public function setDiscount($dValue, $sType)
     {
@@ -458,8 +432,6 @@ class oxPrice
 
     /**
      * Flush assigned discounts
-     *
-     * @return null
      */
     protected function _flushDiscounts()
     {
@@ -468,8 +440,6 @@ class oxPrice
 
     /**
      * Calculates price: affects discounts
-     *
-     * @return null
      */
     public function calculateDiscount()
     {

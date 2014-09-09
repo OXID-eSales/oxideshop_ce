@@ -136,8 +136,6 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
      * Deletes manufacturer seo entry
      *
      * @param oxmanufacturer $oManufacturer Manufacturer object
-     *
-     * @return null
      */
     public function onDeleteManufacturer($oManufacturer)
     {

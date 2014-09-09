@@ -44,8 +44,6 @@ class oxArticleException extends oxException
      * Sets the article number of the article which caused the exception
      *
      * @param string $sArticleNr Article who causes the exception
-     *
-     * @return null
      */
     public function setArticleNr($sArticleNr)
     {
@@ -66,8 +64,6 @@ class oxArticleException extends oxException
      * Sets the product id of the article which caused the exception
      *
      * @param string $sProductId id of product who causes the exception
-     *
-     * @return null
      */
     public function setProductId($sProductId)
     {

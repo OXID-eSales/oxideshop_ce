@@ -90,8 +90,6 @@ class oxVendor extends oxI18n implements oxIUrl
      * Marker to load vendor article count info setter
      *
      * @param bool $blShowArticleCount Marker to load vendor article count
-     *
-     * @return null
      */
     public function setShowArticleCnt($blShowArticleCount = false)
     {
@@ -102,8 +100,6 @@ class oxVendor extends oxI18n implements oxIUrl
      * Assigns to $this object some base parameters/values.
      *
      * @param array $dbRecord parameters/values
-     *
-     * @return null
      */
     public function assign($dbRecord)
     {
@@ -265,8 +261,6 @@ class oxVendor extends oxI18n implements oxIUrl
      * sets the visibilty of a category
      *
      * @param bool $blVisible vendors visibility status setter
-     *
-     * @return null
      */
     public function setIsVisible($blVisible)
     {
@@ -291,8 +285,6 @@ class oxVendor extends oxI18n implements oxIUrl
      * sets the state of has visible sub vendors
      *
      * @param bool $blHasVisibleSubcats marker if vendor has visible subcategories
-     *
-     * @return null
      */
     public function setHasVisibleSubCats($blHasVisibleSubcats)
     {
@@ -301,8 +293,6 @@ class oxVendor extends oxI18n implements oxIUrl
 
     /**
      * Empty method, called in templates when vendor is used in same code like category
-     *
-     * @return null
      */
     public function getContentCats()
     {

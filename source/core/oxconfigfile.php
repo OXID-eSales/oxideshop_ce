@@ -33,8 +33,6 @@ class OxConfigFile
      * this method is a subject to be changed.
      *
      * @param string $sFileName Configuration file name
-     *
-     * @return null
      */
     private function _loadVars($sFileName)
     {
@@ -72,8 +70,6 @@ class OxConfigFile
      *
      * @param string $sVarName Variable name
      * @param string $sValue   Variable value
-     *
-     * @return null
      */
     public function setVar($sVarName, $sValue)
     {
@@ -108,8 +104,6 @@ class OxConfigFile
      * Sets custom config file to include
      *
      * @param string $sFileName custom configuration file name
-     *
-     * @return null
      */
     public function setFile($sFileName)
     {

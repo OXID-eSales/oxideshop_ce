@@ -56,8 +56,6 @@ class Module_SortList extends oxAdminDetails
 
     /**
      * Saves updated aModules config var
-     *
-     * @return null
      */
     public function save()
     {

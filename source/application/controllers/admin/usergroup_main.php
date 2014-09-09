@@ -112,8 +112,6 @@ class UserGroup_Main extends oxAdminDetails
 
     /**
      * Saves changed selected group parameters in different language.
-     *
-     * @return null
      */
     public function saveinnlang()
     {

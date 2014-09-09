@@ -66,8 +66,6 @@ class oxExceptionToDisplay implements oxIDisplayError
      * Stack trace setter
      *
      * @param string $sStackTrace stack trace
-     *
-     * @return null
      */
     public function setStackTrace($sStackTrace)
     {
@@ -88,8 +86,6 @@ class oxExceptionToDisplay implements oxIDisplayError
      * Sets oxExceptionToDisplay::_aValues value
      *
      * @param array $aValues exception values to store
-     *
-     * @return null
      */
     public function setValues($aValues)
     {
@@ -101,8 +97,6 @@ class oxExceptionToDisplay implements oxIDisplayError
      *
      * @param string $sName  storage name
      * @param mixed  $sValue value to store
-     *
-     * @return null
      */
     public function addValue($sName, $sValue)
     {
@@ -113,8 +107,6 @@ class oxExceptionToDisplay implements oxIDisplayError
      * Exception type setter
      *
      * @param string $sType exception type
-     *
-     * @return null
      */
     public function setExceptionType($sType)
     {
@@ -147,8 +139,6 @@ class oxExceptionToDisplay implements oxIDisplayError
      * Exception debug mode setter
      *
      * @param bool $bl if TRUE debug mode on
-     *
-     * @return null
      */
     public function setDebug($bl)
     {
@@ -159,8 +149,6 @@ class oxExceptionToDisplay implements oxIDisplayError
      * Exception message setter
      *
      * @param string $sMessage exception message
-     *
-     * @return null
      */
     public function setMessage($sMessage)
     {
@@ -170,8 +158,6 @@ class oxExceptionToDisplay implements oxIDisplayError
     /**
      * Sets the exception message arguments used when
      * outputing message using sprintf().
-     *
-     * @return null
      */
     public function setMessageArgs()
     {

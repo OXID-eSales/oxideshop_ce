@@ -35,8 +35,6 @@ class ExceptionError extends oxUBase
 
     /**
      * Sets exception errros to template
-     *
-     * @return null
      */
     public function displayExceptionError()
     {

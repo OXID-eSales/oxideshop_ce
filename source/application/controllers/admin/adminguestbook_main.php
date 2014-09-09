@@ -62,8 +62,6 @@ class Adminguestbook_Main extends oxAdminDetails
 
     /**
      * Saves guestbook record changes.
-     *
-     * @return null
      */
     public function save()
     {

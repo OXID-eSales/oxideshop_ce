@@ -355,8 +355,6 @@ class oxDbMetaDataHandler extends oxSuperCfg
      * fields and fields indexes with next available language ID
      *
      * @param string $sTable table name
-     *
-     * @return null
      */
     public function addNewMultilangField($sTable)
     {
@@ -433,8 +431,6 @@ class oxDbMetaDataHandler extends oxSuperCfg
     /**
      * Add new language to database. Scans all tables and adds new
      * multi-language fields
-     *
-     * @return null
      */
     public function addNewLangToDb()
     {
@@ -484,8 +480,6 @@ class oxDbMetaDataHandler extends oxSuperCfg
      * Executes array of sql strings
      *
      * @param array $aSql SQL query array
-     *
-     * @return null
      */
     public function executeSql($aSql)
     {

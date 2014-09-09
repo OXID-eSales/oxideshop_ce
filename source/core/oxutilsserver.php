@@ -144,8 +144,6 @@ class oxUtilsServer extends oxSuperCfg
      * @param int    $iExpire expiration time
      * @param string $sPath   cookie path
      * @param string $sDomain cookie domain
-     *
-     * @return null
      */
     protected function _saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain)
     {
@@ -301,8 +299,6 @@ class oxUtilsServer extends oxSuperCfg
      * @param string  $sShopId   shop ID (default null)
      * @param integer $iTimeout  timeout value (default 31536000)
      * @param string  $sSalt     Salt for password encryption
-     *
-     * @return null
      */
     public function setUserCookie($sUser, $sPassword, $sShopId = null, $iTimeout = 31536000, $sSalt = 'ox')
     {
@@ -324,8 +320,6 @@ class oxUtilsServer extends oxSuperCfg
      * Deletes user cookie data
      *
      * @param string $sShopId shop ID (default null)
-     *
-     * @return null
      */
     public function deleteUserCookie($sShopId = null)
     {
@@ -468,7 +462,7 @@ class oxUtilsServer extends oxSuperCfg
      */
     public function getServerNodeId()
     {
-        return md5(php_uname());
+        return md5($this->getServerName() . $this->getServerIp());
     }
 
     /**
@@ -477,5 +471,15 @@ class oxUtilsServer extends oxSuperCfg
     public function getServerIp()
     {
         return $this->getServerVar('SERVER_ADDR');
+    }
+
+    /**
+     * Return server system parameter similar as unix uname.
+     *
+     * @return string
+     */
+    private function getServerName()
+    {
+        return php_uname();
     }
 }

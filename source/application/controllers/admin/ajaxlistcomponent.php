@@ -69,8 +69,6 @@ class ajaxListComponent extends oxSuperCfg
      * @param array $aColumns Array of DB table columns which are loaded from DB.
      *
      * @deprecated since v5.1.1 (2013.10.24); must be replaced with setColumns if needed
-     *
-     * @return null
      */
     public function init($aColumns = null)
     {
@@ -93,8 +91,6 @@ class ajaxListComponent extends oxSuperCfg
      * Sets columns array.
      *
      * @param array $aColumns columns array
-     *
-     * @return null
      */
     public function setColumns($aColumns)
     {
@@ -124,8 +120,6 @@ class ajaxListComponent extends oxSuperCfg
      * AJAX container name setter
      *
      * @param string $sName name of container
-     *
-     * @return null
      */
     public function setName($sName)
     {
@@ -170,8 +164,6 @@ class ajaxListComponent extends oxSuperCfg
      * AJAX call processor function
      *
      * @param string $sFunction name of action to execute (optional)
-     *
-     * @return null
      */
     public function processRequest($sFunction = null)
     {
@@ -531,8 +523,6 @@ class ajaxListComponent extends oxSuperCfg
      * Outputs JSON encoded data
      *
      * @param array $aData data to output
-     *
-     * @return null
      */
     protected function _outputResponse($aData)
     {
@@ -557,8 +547,6 @@ class ajaxListComponent extends oxSuperCfg
      * Echoes given string
      *
      * @param string $sOut string to echo
-     *
-     * @return null
      */
     protected function _output($sOut)
     {
@@ -659,8 +647,6 @@ class ajaxListComponent extends oxSuperCfg
 
     /**
      * Reset output cache
-     *
-     * @return null
      */
     public function resetContentCache()
     {
@@ -678,8 +664,6 @@ class ajaxListComponent extends oxSuperCfg
      *
      * @param string $sCounterType counter type
      * @param string $sValue       reset value
-     *
-     * @return null
      */
     public function resetCounter($sCounterType, $sValue = null)
     {

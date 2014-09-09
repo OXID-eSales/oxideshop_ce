@@ -70,8 +70,6 @@ class oxLocator extends oxSuperCfg
      *
      * @param oxarticle $oCurrArticle   current article
      * @param oxubase   $oLocatorTarget oxubase object
-     *
-     * @return null
      */
     public function setLocatorData($oCurrArticle, $oLocatorTarget)
     {
@@ -87,8 +85,6 @@ class oxLocator extends oxSuperCfg
      *
      * @param oxUBase   $oLocatorTarget view object
      * @param oxArticle $oCurrArticle   current article
-     *
-     * @return null
      */
     protected function _setListLocatorData($oLocatorTarget, $oCurrArticle)
     {
@@ -133,8 +129,6 @@ class oxLocator extends oxSuperCfg
      *
      * @param oxUBase   $oLocatorTarget oxUBase object
      * @param oxArticle $oCurrArticle   current article
-     *
-     * @return null
      */
     protected function _setVendorLocatorData($oLocatorTarget, $oCurrArticle)
     {
@@ -179,8 +173,6 @@ class oxLocator extends oxSuperCfg
      *
      * @param oxubase   $oLocatorTarget oxubase object
      * @param oxarticle $oCurrArticle   current article
-     *
-     * @return null
      */
     protected function _setManufacturerLocatorData($oLocatorTarget, $oCurrArticle)
     {
@@ -233,8 +225,6 @@ class oxLocator extends oxSuperCfg
      *
      * @param oxubase   $oLocatorTarget oxubase object
      * @param oxarticle $oCurrArticle   current article
-     *
-     * @return null
      */
     protected function _setSearchLocatorData($oLocatorTarget, $oCurrArticle)
     {
@@ -299,8 +289,6 @@ class oxLocator extends oxSuperCfg
      *
      * @param oxubase   $oLocatorTarget oxubase object
      * @param oxarticle $oCurrArticle   current article
-     *
-     * @return null
      */
     protected function _setTagLocatorData($oLocatorTarget, $oCurrArticle)
     {
@@ -355,8 +343,6 @@ class oxLocator extends oxSuperCfg
      *
      * @param oxubase   $oLocatorTarget oxubase object
      * @param oxarticle $oCurrArticle   current article
-     *
-     * @return null
      */
     protected function _setRecommlistLocatorData($oLocatorTarget, $oCurrArticle)
     {

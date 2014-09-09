@@ -33,7 +33,7 @@ class Unit_Core_oxUserCounterTest extends OxidTestCase
         $this->_createUserWithRights('_tesUser', true, 'user');
 
         $oCounter = new oxUserCounter();
-        $this->assertEquals(4, $oCounter->getActiveAdminCount());
+        $this->assertEquals(4, $oCounter->getAdminCount());
     }
 
     public function testCountingAdminsWhenInActiveAdminsExist()
@@ -47,7 +47,7 @@ class Unit_Core_oxUserCounterTest extends OxidTestCase
         $this->_createUserWithRights('_tesUser', true, 'user');
 
         $oCounter = new oxUserCounter();
-        $this->assertEquals(4, $oCounter->getActiveAdminCount());
+        $this->assertEquals(4, $oCounter->getAdminCount());
     }
 
     public function testCountingAdminsWhenNoAdminsExist()
@@ -58,7 +58,7 @@ class Unit_Core_oxUserCounterTest extends OxidTestCase
         $this->_createUserWithRights('_tesUser2', true, 'user');
 
         $oCounter = new oxUserCounter();
-        $this->assertEquals(0, $oCounter->getActiveAdminCount());
+        $this->assertEquals(0, $oCounter->getAdminCount());
     }
 
     public function testCountingActiveAdmins()

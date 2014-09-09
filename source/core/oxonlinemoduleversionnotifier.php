@@ -53,10 +53,8 @@ class oxOnlineModuleVersionNotifier
      */
     public function versionNotify()
     {
-        if ($this->_hasModules()) {
-            $oOMNCaller = $this->_getOnlineModuleNotifierCaller();
-            $oOMNCaller->doRequest($this->_formRequest());
-        }
+        $oOMNCaller = $this->_getOnlineModuleNotifierCaller();
+        $oOMNCaller->doRequest($this->_formRequest());
     }
 
     /**
@@ -123,15 +121,5 @@ class oxOnlineModuleVersionNotifier
         ksort($aModules);
 
         return $aModules;
-    }
-
-    /**
-     * Returns true if shop has modules.
-     *
-     * @return bool
-     */
-    protected function _hasModules()
-    {
-        return (is_array($this->_getModules()) && count($this->_getModules()));
     }
 }

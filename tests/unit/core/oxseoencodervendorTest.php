@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class modOxVendorForoxSeoEncoderVendorTest extends oxVendor
 {
+
     public static function reSetRootVendor()
     {
         self::$_aRootVendor = array();
@@ -36,6 +37,7 @@ class modOxVendorForoxSeoEncoderVendorTest extends oxVendor
  */
 class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
 {
+
     /**
      * Initialize the fixture.
      *
@@ -58,11 +60,11 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
     {
         modDB::getInstance()->cleanup();
         // deleting seo entries
-        oxDb::getDb()->execute( 'delete from oxseo where oxtype != "static"' );
-        oxDb::getDb()->execute( 'delete from oxobject2seodata' );
-        oxDb::getDb()->execute( 'delete from oxseohistory' );
+        oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');
+        oxDb::getDb()->execute('delete from oxobject2seodata');
+        oxDb::getDb()->execute('delete from oxseohistory');
 
-        $this->cleanUpTable( 'oxcategories' );
+        $this->cleanUpTable('oxcategories');
 
         parent::tearDown();
     }
@@ -70,8 +72,8 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
     public function __SaveToDbCreatesGoodMd5Callback($sSQL)
     {
         $this->aSQL[] = $sSQL;
-        if ($this->aRET && isset($this->aRET[count($this->aSQL)-1])) {
-            return $this->aRET[count($this->aSQL)-1];
+        if ($this->aRET && isset($this->aRET[count($this->aSQL) - 1])) {
+            return $this->aRET[count($this->aSQL) - 1];
         }
     }
 
@@ -84,67 +86,70 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxvendor", "loadInLang", "{ return true; }");
 
-        $oEncoder = $this->getMock( "oxSeoEncoderVendor", array( "getVendorUri" ) );
-        $oEncoder->expects( $this->once() )->method( 'getVendorUri' )->will( $this->returnValue( "vendorUri" ) );
+        $oEncoder = $this->getMock("oxSeoEncoderVendor", array("getVendorUri"));
+        $oEncoder->expects($this->once())->method('getVendorUri')->will($this->returnValue("vendorUri"));
 
-        $this->assertEquals( "vendorUri", $oEncoder->UNITgetAltUri( '1126', 0 ) );
+        $this->assertEquals("vendorUri", $oEncoder->UNITgetAltUri('1126', 0));
     }
 
     public function testGetVendorUrlExistingVendor()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
             $sVndId = '77442e37fdf34ccd3.94620745';
-            $sUrl   = oxRegistry::getConfig()->getShopUrl().'Nach-Lieferant/Bush/';
+            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'Nach-Lieferant/Bush/';
 
         $oVendor = new oxVendor();
-        $oVendor->load( $sVndId );
+        $oVendor->load($sVndId);
 
         $oEncoder = new oxSeoEncoderVendor();
-        $this->assertEquals( $sUrl, $oEncoder->getVendorUrl( $oVendor ) );
+        $this->assertEquals($sUrl, $oEncoder->getVendorUrl($oVendor));
     }
+
     public function testGetVendorUrlExistingVendorEng()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction('oxVendor', 'resetRootVendor', '{ self::$_aRootVendor = array() ; }');
-        $oVendor = oxNew( 'oxVendor' );
+        $oVendor = oxNew('oxVendor');
         $oVendor->resetRootVendor();
 
             $sVndId = '77442e37fdf34ccd3.94620745';
-            $sUrl   = oxRegistry::getConfig()->getShopUrl().'en/By-Distributor/Bush/';
+            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Distributor/Bush/';
 
         $oVendor = new oxVendor();
-        $oVendor->loadInLang( 1, $sVndId );
+        $oVendor->loadInLang(1, $sVndId);
 
         $oEncoder = new oxSeoEncoderVendor();
-        $this->assertEquals( $sUrl, $oEncoder->getVendorUrl( $oVendor ) );
+        $this->assertEquals($sUrl, $oEncoder->getVendorUrl($oVendor));
     }
+
     public function testGetVendorUrlExistingVendorWithLangParam()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
             $sVndId = '77442e37fdf34ccd3.94620745';
-            $sUrl   = oxRegistry::getConfig()->getShopUrl().'Nach-Lieferant/Bush/';
+            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'Nach-Lieferant/Bush/';
 
         $oVendor = new oxVendor();
-        $oVendor->loadInLang( 1, $sVndId );
+        $oVendor->loadInLang(1, $sVndId);
 
         $oEncoder = new oxSeoEncoderVendor();
-        $this->assertEquals( $sUrl, $oEncoder->getVendorUrl( $oVendor, 0 ) );
+        $this->assertEquals($sUrl, $oEncoder->getVendorUrl($oVendor, 0));
     }
+
     public function testGetVendorUrlExistingVendorEngWithLangParam()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction('oxVendor', 'resetRootVendor', '{ self::$_aRootVendor = array() ; }');
-        $oVendor = oxNew( 'oxVendor' );
+        $oVendor = oxNew('oxVendor');
         $oVendor->resetRootVendor();
 
             $sVndId = '77442e37fdf34ccd3.94620745';
-            $sUrl   = oxRegistry::getConfig()->getShopUrl().'en/By-Distributor/Bush/';
+            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Distributor/Bush/';
 
         $oVendor = new oxVendor();
-        $oVendor->loadInLang( 0, $sVndId );
+        $oVendor->loadInLang(0, $sVndId);
 
         $oEncoder = new oxSeoEncoderVendor();
-        $this->assertEquals( $sUrl, $oEncoder->getVendorUrl( $oVendor, 1 ) );
+        $this->assertEquals($sUrl, $oEncoder->getVendorUrl($oVendor, 1));
     }
 
     /**
@@ -153,61 +158,64 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
     public function testGetVendorUriExistingVendor()
     {
         $oVendor = new oxVendor();
-        $oVendor->setId( 'xxx' );
+        $oVendor->setId('xxx');
 
-        $oEncoder = $this->getMock( 'oxSeoEncoderVendor', array( '_loadFromDb', '_prepareTitle' ) );
-        $oEncoder->expects( $this->once() )->method('_loadFromDb')->with( $this->equalTo( 'oxvendor' ), $this->equalTo( 'xxx' ), $this->equalTo( $oVendor->getLanguage() ) )->will( $this->returnValue( 'seourl' ) );
-        $oEncoder->expects( $this->never() )->method( '_prepareTitle' );
-        $oEncoder->expects( $this->never() )->method( '_getUniqueSeoUrl' );
-        $oEncoder->expects( $this->never() )->method( '_saveToDb' );
+        $oEncoder = $this->getMock('oxSeoEncoderVendor', array('_loadFromDb', '_prepareTitle'));
+        $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('oxvendor'), $this->equalTo('xxx'), $this->equalTo($oVendor->getLanguage()))->will($this->returnValue('seourl'));
+        $oEncoder->expects($this->never())->method('_prepareTitle');
+        $oEncoder->expects($this->never())->method('_getUniqueSeoUrl');
+        $oEncoder->expects($this->never())->method('_saveToDb');
 
-        $sUrl    = 'seourl';
-        $sSeoUrl = $oEncoder->getVendorUri( $oVendor );
-        $this->assertEquals( $sUrl, $sSeoUrl );
+        $sUrl = 'seourl';
+        $sSeoUrl = $oEncoder->getVendorUri($oVendor);
+        $this->assertEquals($sUrl, $sSeoUrl);
     }
+
     public function testGetVendorUriRootVendor()
     {
         $oVendor = new oxVendor();
-        $oVendor->setId( 'root' );
+        $oVendor->setId('root');
         $oVendor->oxvendor__oxtitle = new oxField('root', oxField::T_RAW);
 
-        $oEncoder = $this->getMock( 'oxSeoEncoderVendor', array( '_saveToDb' ) );
-        $oEncoder->expects( $this->once() )->method('_saveToDb')->with( $this->equalTo( 'oxvendor' ), $this->equalTo( 'root' ), $this->equalTo( $oVendor->getStdLink() ), $this->equalTo( 'root/' ), $this->equalTo( $oVendor->getLanguage() ) );
+        $oEncoder = $this->getMock('oxSeoEncoderVendor', array('_saveToDb'));
+        $oEncoder->expects($this->once())->method('_saveToDb')->with($this->equalTo('oxvendor'), $this->equalTo('root'), $this->equalTo($oVendor->getStdLink()), $this->equalTo('root/'), $this->equalTo($oVendor->getLanguage()));
 
-        $sUrl    = 'root/';
-        $sSeoUrl = $oEncoder->getVendorUri( $oVendor );
-        $this->assertEquals( $sUrl, $sSeoUrl );
+        $sUrl = 'root/';
+        $sSeoUrl = $oEncoder->getVendorUri($oVendor);
+        $this->assertEquals($sUrl, $sSeoUrl);
     }
+
     public function testGetVendorUriRootVendorSecondLanguage()
     {
         $oVendor = new oxVendor();
-        $oVendor->setId( 'root' );
-        $oVendor->setLanguage( 1 );
+        $oVendor->setId('root');
+        $oVendor->setLanguage(1);
         $oVendor->oxvendor__oxtitle = new oxField('root', oxField::T_RAW);
 
-        $oEncoder = $this->getMock( 'oxSeoEncoderVendor', array( '_saveToDb' ) );
-        $oEncoder->expects( $this->once() )->method('_saveToDb')->with( $this->equalTo( 'oxvendor'), $this->equalTo( 'root' ), $this->equalTo( $oVendor->getBaseStdLink(1) ), $this->equalTo( 'en/root/' ), $this->equalTo( $oVendor->getLanguage() ) );
+        $oEncoder = $this->getMock('oxSeoEncoderVendor', array('_saveToDb'));
+        $oEncoder->expects($this->once())->method('_saveToDb')->with($this->equalTo('oxvendor'), $this->equalTo('root'), $this->equalTo($oVendor->getBaseStdLink(1)), $this->equalTo('en/root/'), $this->equalTo($oVendor->getLanguage()));
 
-        $sUrl    = 'en/root/';
-        $sSeoUrl = $oEncoder->getVendorUri( $oVendor );
-        $this->assertEquals( $sUrl, $sSeoUrl );
+        $sUrl = 'en/root/';
+        $sSeoUrl = $oEncoder->getVendorUri($oVendor);
+        $this->assertEquals($sUrl, $sSeoUrl);
     }
+
     public function testGetVendorUriNewVendor()
     {
         modOxVendorForoxSeoEncoderVendorTest::reSetRootVendor();
 
         $oVendor = new oxVendor();
-        $oVendor->setLanguage( 1 );
-        $oVendor->setId( 'xxx' );
+        $oVendor->setLanguage(1);
+        $oVendor->setId('xxx');
         $oVendor->oxvendor__oxtitle = new oxField('xxx', oxField::T_RAW);
 
-        $oEncoder = $this->getMock( 'oxSeoEncoderVendor', array( '_loadFromDb', '_saveToDb' ) );
-        $oEncoder->expects( $this->exactly( 2 ) )->method('_loadFromDb')->will( $this->returnValue( false ) );
+        $oEncoder = $this->getMock('oxSeoEncoderVendor', array('_loadFromDb', '_saveToDb'));
+        $oEncoder->expects($this->exactly(2))->method('_loadFromDb')->will($this->returnValue(false));
 
-        $sUrl    = 'en/By-Distributor/xxx/';
-        $sSeoUrl = $oEncoder->getVendorUri( $oVendor );
+        $sUrl = 'en/By-Distributor/xxx/';
+        $sSeoUrl = $oEncoder->getVendorUri($oVendor);
 
-        $this->assertEquals( $sUrl, $sSeoUrl );
+        $this->assertEquals($sUrl, $sSeoUrl);
     }
 
     /**
@@ -215,68 +223,71 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
      */
     public function testGetVendorPageUrl()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
             $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Distributor/Bush/101/';
             $sVndId = '77442e37fdf34ccd3.94620745';
 
         $oVendor = new oxVendor();
-        $oVendor->loadInLang( 1, $sVndId );
+        $oVendor->loadInLang(1, $sVndId);
 
         $oEncoder = new oxSeoEncoderVendor();
-        $this->assertEquals( $sUrl, $oEncoder->getVendorPageUrl( $oVendor, 100 ) );
+        $this->assertEquals($sUrl, $oEncoder->getVendorPageUrl($oVendor, 100));
     }
+
     public function testGetVendorPageUrlWithLangParam()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
             $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Distributor/Bush/101/';
             $sVndId = '77442e37fdf34ccd3.94620745';
 
         $oVendor = new oxVendor();
-        $oVendor->loadInLang( 0, $sVndId );
+        $oVendor->loadInLang(0, $sVndId);
 
         $oEncoder = new oxSeoEncoderVendor();
-        $this->assertEquals( $sUrl, $oEncoder->getVendorPageUrl( $oVendor, 100, 1 ) );
+        $this->assertEquals($sUrl, $oEncoder->getVendorPageUrl($oVendor, 100, 1));
     }
+
     public function testGetVendorUrl()
     {
-        $oVendor = $this->getMock( 'oxcategory', array( 'getLanguage' ) );
-        $oVendor->expects( $this->once() )->method('getLanguage')->will( $this->returnValue( 0 ) );
+        $oVendor = $this->getMock('oxcategory', array('getLanguage'));
+        $oVendor->expects($this->once())->method('getLanguage')->will($this->returnValue(0));
 
-        $oEncoder = $this->getMock( 'oxSeoEncoderVendor', array( '_getFullUrl', 'getVendorUri' ) );
-        $oEncoder->expects( $this->once() )->method('_getFullUrl')->will( $this->returnValue( 'seovndurl' ) );
-        $oEncoder->expects( $this->once() )->method('getVendorUri');
+        $oEncoder = $this->getMock('oxSeoEncoderVendor', array('_getFullUrl', 'getVendorUri'));
+        $oEncoder->expects($this->once())->method('_getFullUrl')->will($this->returnValue('seovndurl'));
+        $oEncoder->expects($this->once())->method('getVendorUri');
 
-        $this->assertEquals( 'seovndurl', $oEncoder->getVendorUrl( $oVendor ) );
+        $this->assertEquals('seovndurl', $oEncoder->getVendorUrl($oVendor));
     }
 
     public function testGetVendorUriExistingVendorWithLangParam()
     {
         $oVendor = new oxVendor();
         $oVendor->setLanguage(1);
-        $oVendor->setId( 'xxx' );
+        $oVendor->setId('xxx');
 
-        $oEncoder = $this->getMock( 'oxSeoEncoderVendor', array( '_loadFromDb', '_prepareTitle' ) );
-        $oEncoder->expects( $this->once() )->method('_loadFromDb')->with( $this->equalTo( 'oxvendor' ), $this->equalTo( 'xxx' ), $this->equalTo( 0 ) )->will( $this->returnValue( 'seourl' ) );
-        $oEncoder->expects( $this->never() )->method( '_prepareTitle' );
-        $oEncoder->expects( $this->never() )->method( '_getUniqueSeoUrl' );
-        $oEncoder->expects( $this->never() )->method( '_saveToDb' );
+        $oEncoder = $this->getMock('oxSeoEncoderVendor', array('_loadFromDb', '_prepareTitle'));
+        $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('oxvendor'), $this->equalTo('xxx'), $this->equalTo(0))->will($this->returnValue('seourl'));
+        $oEncoder->expects($this->never())->method('_prepareTitle');
+        $oEncoder->expects($this->never())->method('_getUniqueSeoUrl');
+        $oEncoder->expects($this->never())->method('_saveToDb');
 
-        $sUrl    = 'seourl';
-        $sSeoUrl = $oEncoder->getVendorUri( $oVendor, 0 );
-        $this->assertEquals( $sUrl, $sSeoUrl );
+        $sUrl = 'seourl';
+        $sSeoUrl = $oEncoder->getVendorUri($oVendor, 0);
+        $this->assertEquals($sUrl, $sSeoUrl);
     }
+
     public function testGetVendorUriRootVendorWithLangParam()
     {
         $oVendor = new oxVendor();
-        $oVendor->setId( 'root' );
+        $oVendor->setId('root');
         $oVendor->oxvendor__oxtitle = new oxField('root', oxField::T_RAW);
 
-        $oEncoder = $this->getMock( 'oxSeoEncoderVendor', array( '_saveToDb' ) );
-        $oEncoder->expects( $this->once() )->method('_saveToDb')->with( $this->equalTo( 'oxvendor' ), $this->equalTo( 'root' ), $this->equalTo( $oVendor->getBaseStdLink(1) ), $this->equalTo( 'en/By-Distributor/' ), $this->equalTo( 1 ) );
+        $oEncoder = $this->getMock('oxSeoEncoderVendor', array('_saveToDb'));
+        $oEncoder->expects($this->once())->method('_saveToDb')->with($this->equalTo('oxvendor'), $this->equalTo('root'), $this->equalTo($oVendor->getBaseStdLink(1)), $this->equalTo('en/By-Distributor/'), $this->equalTo(1));
 
-        $sUrl    = 'en/By-Distributor/';
-        $sSeoUrl = $oEncoder->getVendorUri( $oVendor, 1 );
-        $this->assertEquals( $sUrl, $sSeoUrl );
+        $sUrl = 'en/By-Distributor/';
+        $sSeoUrl = $oEncoder->getVendorUri($oVendor, 1);
+        $this->assertEquals($sUrl, $sSeoUrl);
     }
 
     public function testonDeleteVendor()
@@ -287,22 +298,22 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
                    ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxfixed, oxexpired, oxparams )
                values
                    ( 'oid', '132', '{$sShopId}', '0', '', '', 'oxvendor', '0', '0', '' )";
-        $oDb->execute( $sQ );
+        $oDb->execute($sQ);
 
         $sQ = "insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( 'oid', '{$sShopId}', '0' )";
-        $oDb->execute( $sQ );
+        $oDb->execute($sQ);
 
-        $this->assertTrue( (bool) $oDb->getOne( "select 1 from oxseo where oxobjectid = 'oid'" ) );
-        $this->assertTrue( (bool) $oDb->getOne( "select 1 from oxobject2seodata where oxobjectid = 'oid'" ) );
+        $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'oid'"));
+        $this->assertTrue((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'oid'"));
 
         $oObj = new oxbase();
         $oObj->setId('oid');
 
         $oEncoder = new oxSeoEncoderVendor();
-        $oEncoder->onDeleteVendor( $oObj );
+        $oEncoder->onDeleteVendor($oObj);
 
-        $this->assertFalse( (bool) $oDb->getOne( "select 1 from oxseo where oxobjectid = 'oid'" ) );
-        $this->assertFalse( (bool) $oDb->getOne( "select 1 from oxobject2seodata where oxobjectid = 'oid'" ) );
+        $this->assertFalse((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'oid'"));
+        $this->assertFalse((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'oid'"));
 
     }
 

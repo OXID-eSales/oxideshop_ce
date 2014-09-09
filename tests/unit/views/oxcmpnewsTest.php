@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * oxcmp_news tests
  */
 class Unit_Views_oxCmpNewsTest extends OxidTestCase
 {
+
     /**
      * Testing oxcmp_news::render()
      *
@@ -35,10 +36,10 @@ class Unit_Views_oxCmpNewsTest extends OxidTestCase
      */
     public function testRenderDisabledNavBars()
     {
-        modConfig::getInstance()->setConfigParam( "bl_perfLoadNews", false );
+        modConfig::getInstance()->setConfigParam("bl_perfLoadNews", false);
 
         $oCmp = new oxcmp_news();
-        $this->assertNull( $oCmp->render() );
+        $this->assertNull($oCmp->render());
     }
 
     /**
@@ -48,19 +49,19 @@ class Unit_Views_oxCmpNewsTest extends OxidTestCase
      */
     public function testRenderPerfLoadNewsOnlyStart()
     {
-        $oView = $this->getMock( "oxView", array( "getIsOrderStep", "getClassName" ) );
-        $oView->expects( $this->never() )->method('getIsOrderStep');
-        $oView->expects( $this->once() )->method('getClassName')->will( $this->returnValue( "test" ) );
+        $oView = $this->getMock("oxView", array("getIsOrderStep", "getClassName"));
+        $oView->expects($this->never())->method('getIsOrderStep');
+        $oView->expects($this->once())->method('getClassName')->will($this->returnValue("test"));
 
-        $oConfig = $this->getMock( "oxConfig", array( "getConfigParam", "getActiveView" ) );
-        $oConfig->expects( $this->at( 0 ) )->method('getActiveView')->will( $this->returnValue( $oView ) );
-        $oConfig->expects( $this->at( 1 ) )->method('getConfigParam')->with( $this->equalTo( "bl_perfLoadNews" ) )->will( $this->returnValue( true ) );
-        $oConfig->expects( $this->at( 2 ) )->method('getConfigParam')->with( $this->equalTo( "blDisableNavBars" ) )->will( $this->returnValue( false ) );
-        $oConfig->expects( $this->at( 3 ) )->method('getConfigParam')->with( $this->equalTo( "bl_perfLoadNewsOnlyStart" ) )->will( $this->returnValue( true ) );
+        $oConfig = $this->getMock("oxConfig", array("getConfigParam", "getActiveView"));
+        $oConfig->expects($this->at(0))->method('getActiveView')->will($this->returnValue($oView));
+        $oConfig->expects($this->at(1))->method('getConfigParam')->with($this->equalTo("bl_perfLoadNews"))->will($this->returnValue(true));
+        $oConfig->expects($this->at(2))->method('getConfigParam')->with($this->equalTo("blDisableNavBars"))->will($this->returnValue(false));
+        $oConfig->expects($this->at(3))->method('getConfigParam')->with($this->equalTo("bl_perfLoadNewsOnlyStart"))->will($this->returnValue(true));
 
-        $oCmp = $this->getMock( "oxcmp_news", array( "getConfig" ), array(), '', false );
-        $oCmp->expects( $this->once() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
-        $this->assertNull( $oCmp->render() );
+        $oCmp = $this->getMock("oxcmp_news", array("getConfig"), array(), '', false);
+        $oCmp->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        $this->assertNull($oCmp->render());
     }
 
     /**
@@ -70,12 +71,12 @@ class Unit_Views_oxCmpNewsTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::getInstance()->setConfigParam( "bl_perfLoadNews", true );
-        modConfig::getInstance()->setConfigParam( "blDisableNavBars", false );
-        modConfig::getInstance()->setConfigParam( "bl_perfLoadNewsOnlyStart", false );
+        modConfig::getInstance()->setConfigParam("bl_perfLoadNews", true);
+        modConfig::getInstance()->setConfigParam("blDisableNavBars", false);
+        modConfig::getInstance()->setConfigParam("bl_perfLoadNewsOnlyStart", false);
 
         $oCmp = new oxcmp_news();
-        $this->assertTrue( $oCmp->render() instanceof oxnewslist );
+        $this->assertTrue($oCmp->render() instanceof oxnewslist);
     }
 }
 

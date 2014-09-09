@@ -20,25 +20,26 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxstrTest extends OxidTestCase
 {
+
     public function testGetStrHandler()
     {
         $oStr = $this->getProxyClass('oxStr');
 
-        modConfig::getInstance()->setConfigParam( 'iUtfMode', 0 );
+        modConfig::getInstance()->setConfigParam('iUtfMode', 0);
         $this->assertFalse($oStr->UNITgetStrHandler() instanceof oxStrMb);
 
-        modConfig::getInstance()->setConfigParam( 'iUtfMode', 1 );
+        modConfig::getInstance()->setConfigParam('iUtfMode', 1);
         $this->assertTrue($oStr->UNITgetStrHandler() instanceof oxStrMb);
     }
 
     public function testGetStr()
     {
-        if ( modConfig::getInstance()->getConfigParam( 'iUtfMode') ) {
+        if (modConfig::getInstance()->getConfigParam('iUtfMode')) {
             $this->assertTrue(oxStr::getStr() instanceof oxStrMb);
         } else {
             $this->assertFalse(oxStr::getStr() instanceof oxStrMb);

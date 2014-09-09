@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxfieldTest extends OxidTestCase
 {
+
     public function test_construct()
     {
         $oField = new oxField('ssss<');
@@ -65,13 +66,13 @@ class Unit_Core_oxfieldTest extends OxidTestCase
 
         $sRawValue = '05.05.2008 10:02:02';
         $sValue = '05.05.2008 10:02:02';
-        if ( oxRegistry::getLang()->getBaseLanguage() == 1 ) {
+        if (oxRegistry::getLang()->getBaseLanguage() == 1) {
             $sRawValue = '2008-05-05 10:02:02';
             $sValue = '2008-05-05 10:02:02';
         }
 
-        $this->assertEquals( $sRawValue, $oField->rawValue);
-        $this->assertEquals( $sValue, $oField->value);
+        $this->assertEquals($sRawValue, $oField->rawValue);
+        $this->assertEquals($sValue, $oField->value);
     }
 
     public function testConvertToPseudoHtml()
@@ -114,6 +115,6 @@ class Unit_Core_oxfieldTest extends OxidTestCase
     public function testToString()
     {
         $oField = new oxField(451);
-        $this->assertSame("451", (string)$oField);
+        $this->assertSame("451", (string) $oField);
     }
 }

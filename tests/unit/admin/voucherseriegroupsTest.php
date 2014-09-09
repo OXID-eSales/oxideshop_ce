@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for VoucherSerie_Groups class
  */
 class Unit_Admin_VoucherSerieGroupsTest extends OxidTestCase
 {
+
     /**
      * VoucherSerie_Groups::Render() test case
      *
@@ -35,14 +36,14 @@ class Unit_Admin_VoucherSerieGroupsTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter("oxid", "testId");
         oxTestModules::addFunction('oxvoucherserie', 'isDerived', '{ return true; }');
 
         // testing..
         $oView = new VoucherSerie_Groups();
-        $this->assertEquals( 'voucherserie_groups.tpl', $oView->render() );
+        $this->assertEquals('voucherserie_groups.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxvoucherserie );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxvoucherserie);
     }
 }

@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxlanguageexceptionTest extends OxidTestCase
 {
@@ -38,8 +38,8 @@ class Unit_Core_oxlanguageexceptionTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_oTestObject = oxNew( 'oxLanguageException', $this->_sMsg);
-        $this->assertEquals('oxLanguageException', get_class($this->_oTestObject) );
+        $this->_oTestObject = oxNew('oxLanguageException', $this->_sMsg);
+        $this->assertEquals('oxLanguageException', get_class($this->_oTestObject));
         $this->_oTestObject->setLangConstant($this->_sLanguageConstant);
     }
 
@@ -52,9 +52,9 @@ class Unit_Core_oxlanguageexceptionTest extends OxidTestCase
     public function testGetString()
     {
         $sStringOut = $this->_oTestObject->getString();
-        $this->assertContains($this->_sMsg, $sStringOut);               // Message
-        $this->assertContains('oxLanguageException', $sStringOut);      // Exception class name
-        $this->assertContains($this->_sLanguageConstant, $sStringOut);  // Language constant
+        $this->assertContains($this->_sMsg, $sStringOut); // Message
+        $this->assertContains('oxLanguageException', $sStringOut); // Exception class name
+        $this->assertContains($this->_sLanguageConstant, $sStringOut); // Language constant
     }
 
     public function testGetValues()

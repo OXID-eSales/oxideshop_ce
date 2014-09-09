@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Shop_Main class
  */
 class Unit_Admin_ShopRDFaTest extends OxidTestCase
 {
+
     /**
      * Shop_RDFa::getContentList() test case
      *
@@ -35,10 +36,10 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
      */
     public function testGetContentList()
     {
-        modConfig::setRequestParameter( "oxid", oxRegistry::getConfig()->getShopId() );
+        modConfig::setRequestParameter("oxid", oxRegistry::getConfig()->getShopId());
 
         $oView = oxNew("Shop_RDFA");
-        $this->assertEquals( 4, $oView->getContentList()->count() );
+        $this->assertEquals(4, $oView->getContentList()->count());
     }
 
     /**
@@ -48,17 +49,17 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
      */
     public function testGetCustomers()
     {
-        $aCustomers = array( "Enduser" => 1,
-                             "Reseller" => 1,
-                             "Business" => 0,
-                             "PublicInstitution" => 1);
+        $aCustomers = array("Enduser"           => 1,
+                            "Reseller"          => 1,
+                            "Business"          => 0,
+                            "PublicInstitution" => 1);
 
         $oConf = modConfig::getInstance();
         $oConf->setConfigParam('aRDFaCustomers', array('Enduser', 'Reseller', 'PublicInstitution'));
 
         $oView = $this->getProxyClass('Shop_RDFA');
         $oView->setConfig($oConf);
-        $this->assertEquals( $aCustomers, $oView->getCustomers() );
+        $this->assertEquals($aCustomers, $oView->getCustomers());
     }
 
     /**
@@ -73,7 +74,7 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
 
         $oView = $this->getProxyClass('Shop_RDFA');
         $oView->setConfig($oConf);
-        $this->assertEquals( array(), $oView->getCustomers() );
+        $this->assertEquals(array(), $oView->getCustomers());
     }
 
     /**
@@ -83,13 +84,13 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
      */
     public function testSubmitUrl()
     {
-        modConfig::setRequestParameter('aSubmitUrl', array( "url" => "http://www.myshop.com", "email" => "test@email"));
+        modConfig::setRequestParameter('aSubmitUrl', array("url" => "http://www.myshop.com", "email" => "test@email"));
         $aHeaders = array(2 => "Return: True", 3 => "Return message: Success");
-        $oView = $this->getMock( 'Shop_RDFa', array( "getHttpResponseCode" ) );
-        $oView->expects( $this->any() )->method( 'getHttpResponseCode' )->will( $this->returnValue( $aHeaders ) );
+        $oView = $this->getMock('Shop_RDFa', array("getHttpResponseCode"));
+        $oView->expects($this->any())->method('getHttpResponseCode')->will($this->returnValue($aHeaders));
         $oView->submitUrl();
         $aViewData = $oView->getViewData();
-        $this->assertEquals( 'SHOP_RDFA_SUBMITED_SUCCESSFULLY', $aViewData["submitMessage"] );
+        $this->assertEquals('SHOP_RDFA_SUBMITED_SUCCESSFULLY', $aViewData["submitMessage"]);
     }
 
     /**
@@ -102,9 +103,9 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
         modConfig::setRequestParameter('aSubmitUrl', null);
         $oView = $this->getProxyClass('Shop_RDFA');
         $oView->submitUrl();
-        $aErr = oxRegistry::getSession()->getVariable( 'Errors' );
+        $aErr = oxRegistry::getSession()->getVariable('Errors');
         $oErr = unserialize($aErr['default'][0]);
-        $this->assertNotNull( $oErr->getOxMessage());
+        $this->assertNotNull($oErr->getOxMessage());
     }
 
     /**
@@ -114,14 +115,14 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
      */
     public function testSubmitUrlReturnFalse()
     {
-        modConfig::setRequestParameter('aSubmitUrl', array( "url" => "http://www.myshop.com"));
+        modConfig::setRequestParameter('aSubmitUrl', array("url" => "http://www.myshop.com"));
         $aHeaders = array(2 => "Return: False", 3 => "Return message: To many times submited");
-        $oView = $this->getMock( 'Shop_RDFa', array( "getHttpResponseCode" ) );
-        $oView->expects( $this->any() )->method( 'getHttpResponseCode' )->will( $this->returnValue( $aHeaders ) );
+        $oView = $this->getMock('Shop_RDFa', array("getHttpResponseCode"));
+        $oView->expects($this->any())->method('getHttpResponseCode')->will($this->returnValue($aHeaders));
         $oView->submitUrl();
-        $aErr = oxRegistry::getSession()->getVariable( 'Errors' );
+        $aErr = oxRegistry::getSession()->getVariable('Errors');
         $oErr = unserialize($aErr['default'][0]);
-        $this->assertEquals( 'To many times submited', $oErr->getOxMessage());
+        $this->assertEquals('To many times submited', $oErr->getOxMessage());
     }
 
 }

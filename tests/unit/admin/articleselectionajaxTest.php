@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Article_Rights_Visible_Ajax class
  */
 class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
 {
+
     protected $_sSelectListView = 'oxv_oxselectlist_1_de';
     
     /**
@@ -39,7 +40,7 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
     {
         parent::setUp();
         
-            $this->setSelectListViewTable( 'oxv_oxselectlist_de' );
+            $this->setSelectListViewTable('oxv_oxselectlist_de');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticle', oxparentid='_testArticlePArent', oxshopid='1', oxtitle='_testArticle'", 'oxarticles');
         $this->addToDatabase("replace into oxselectlist set oxid='_testSelectList', oxshopid='1', oxtitle='_testSelectList'", 'oxselectlist');
         $this->addTeardownSql("delete from oxarticles where oxid = '_testArticles'");
@@ -53,7 +54,7 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
         $this->addTeardownSql("delete from oxobject2selectlist where oxobjectid like '%_test%' or oxid = '_testOxid'");
     }
     
-    public function setSelectListViewTable( $sParam )
+    public function setSelectListViewTable($sParam)
     {
         $this->_sSelectListView = $sParam;
     }
@@ -70,8 +71,8 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
      */
     public function testGetQuery()
     {
-        $oView = oxNew( 'article_selection_ajax' );
-        $this->assertEquals( "from oxobject2selectlist left join ".$this->getSelectListViewTable()." on ".$this->getSelectListViewTable().".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = ''", trim( $oView->UNITgetQuery() ) );
+        $oView = oxNew('article_selection_ajax');
+        $this->assertEquals("from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . ".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = ''", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -82,10 +83,10 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testArticleSynchoxid';
-        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter("synchoxid", $sSynchoxid);
         
-        $oView = oxNew( 'article_selection_ajax' );
-        $this->assertEquals( "from ".$this->getSelectListViewTable()."  where ".$this->getSelectListViewTable().".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join ".$this->getSelectListViewTable()." on ".$this->getSelectListViewTable().".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '$sSynchoxid'  )", trim( $oView->UNITgetQuery() ) );
+        $oView = oxNew('article_selection_ajax');
+        $this->assertEquals("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . ".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '$sSynchoxid'  )", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -96,10 +97,10 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
     public function testGetQueryOxidParent()
     {
         $sOxid = '_testArticle';
-        modConfig::setRequestParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter("oxid", $sOxid);
         
-        $oView = oxNew( 'article_selection_ajax' );
-        $this->assertEquals( "from oxobject2selectlist left join ".$this->getSelectListViewTable()." on ".$this->getSelectListViewTable().".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '$sOxid' or oxobject2selectlist.oxobjectid = '_testArticlePArent'", trim( $oView->UNITgetQuery() ) );
+        $oView = oxNew('article_selection_ajax');
+        $this->assertEquals("from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . ".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '$sOxid' or oxobject2selectlist.oxobjectid = '_testArticlePArent'", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -110,12 +111,12 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxidOxid()
     {
         $sSynchoxid = '_testArticleSynchoxid';
-        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter("synchoxid", $sSynchoxid);
         $sOxid = '_testArticleOxid';
-        modConfig::setRequestParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter("oxid", $sOxid);
         
-        $oView = oxNew( 'article_selection_ajax' );
-        $this->assertEquals( "from ".$this->getSelectListViewTable()."  where ".$this->getSelectListViewTable().".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join ".$this->getSelectListViewTable()." on ".$this->getSelectListViewTable().".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '$sOxid'  )", trim( $oView->UNITgetQuery() ) );
+        $oView = oxNew('article_selection_ajax');
+        $this->assertEquals("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . ".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '$sOxid'  )", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -126,12 +127,12 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxidOxidparent()
     {
         $sSynchoxid = '_testArticleSynchoxid';
-        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter("synchoxid", $sSynchoxid);
         $sOxid = '_testArticle';
-        modConfig::setRequestParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter("oxid", $sOxid);
         
-        $oView = oxNew( 'article_selection_ajax' );
-        $this->assertEquals( "from ".$this->getSelectListViewTable()."  where ".$this->getSelectListViewTable().".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join ".$this->getSelectListViewTable()." on ".$this->getSelectListViewTable().".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '$sOxid' or oxobject2selectlist.oxobjectid = '_testArticlePArent'  )", trim( $oView->UNITgetQuery() ) );
+        $oView = oxNew('article_selection_ajax');
+        $this->assertEquals("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . ".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '$sOxid' or oxobject2selectlist.oxobjectid = '_testArticlePArent'  )", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -143,12 +144,12 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
     {
         $oDb = oxDb::getDb();
         
-        $oView = $this->getMock( "article_selection_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testOxid1', '_testOxid2' ) ) );
+        $oView = $this->getMock("article_selection_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testOxid1', '_testOxid2')));
         
-        $this->assertEquals( 2, $oDb->getOne( "select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'" ) );
+        $this->assertEquals(2, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
         $oView->removeSel();
-        $this->assertEquals( 0, $oDb->getOne( "select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'" ) );
+        $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
     }
     
     /**
@@ -160,13 +161,13 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
     {
         $oDb = oxDb::getDb();
         $sOxid = '_testRemove';
-        modConfig::setRequestParameter( "oxid", $sOxid );
-        modConfig::setRequestParameter( "all", true );
+        modConfig::setRequestParameter("oxid", $sOxid);
+        modConfig::setRequestParameter("all", true);
         
-        $this->assertEquals( 2, $oDb->getOne( "select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'" ) );
-        $oView = oxNew( 'article_selection_ajax' );
+        $this->assertEquals(2, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
+        $oView = oxNew('article_selection_ajax');
         $oView->removeSel();
-        $this->assertEquals( 0, $oDb->getOne( "select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'" ) );
+        $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
     }
     
     /**
@@ -179,14 +180,14 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
         $oDb = oxDb::getDb();
         
         $sSynchoxid = '_testAdd';
-        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter("synchoxid", $sSynchoxid);
         
-        $oView = $this->getMock( "article_selection_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testAdd1', '_testAdd2' ) ) );
+        $oView = $this->getMock("article_selection_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testAdd1', '_testAdd2')));
         
-        $this->assertEquals( 0, $oDb->getOne( "select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'" ) );
+        $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
         $oView->addSel();
-        $this->assertEquals( 2, $oDb->getOne( "select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'" ) );
+        $this->assertEquals(2, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
     }
     
     /**
@@ -199,19 +200,18 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
         $oDb = oxDb::getDb();
         
         $sSynchoxid = '_testAdd';
-        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
-        modConfig::setRequestParameter( "all", true );
+        modConfig::setRequestParameter("synchoxid", $sSynchoxid);
+        modConfig::setRequestParameter("all", true);
         
         
-            $iCount = $oDb->getOne( "select count(oxv_oxselectlist_de.oxid)  from oxv_oxselectlist_de  where oxv_oxselectlist_de.oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join oxv_oxselectlist_de on oxv_oxselectlist_de.oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '_testAdd'  )" );
+            $iCount = $oDb->getOne("select count(oxv_oxselectlist_de.oxid)  from oxv_oxselectlist_de  where oxv_oxselectlist_de.oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join oxv_oxselectlist_de on oxv_oxselectlist_de.oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '_testAdd'  )");
         
-        $this->assertGreaterThan( 0, $iCount );
-        $this->assertEquals( 0, $oDb->getOne( "select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'" ) );
-        $oView = oxNew( 'article_selection_ajax' );
+        $this->assertGreaterThan(0, $iCount);
+        $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
+        $oView = oxNew('article_selection_ajax');
         $oView->addSel();
-        $this->assertEquals( 1, $oDb->getOne( "select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'" ) );
+        $this->assertEquals(1, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
     }
     
-   
    
 }

@@ -22,6 +22,7 @@
 
 class UserTestCase extends OxidTestCase
 {
+
     /** @var string */
     protected $_sDefaultUserName = '_testUserName@oxid-esales.com';
 
@@ -50,8 +51,8 @@ class UserTestCase extends OxidTestCase
         $oUser->save();
 
         $oUserFromBase = new oxBase();
-        $oUserFromBase->init( 'oxuser' );
-        $oUserFromBase->load( $oUser->getId() );
+        $oUserFromBase->init('oxuser');
+        $oUserFromBase->load($oUser->getId());
         $oUserFromBase->oxuser__oxshopid = new oxField($iShopId, oxField::T_RAW);
         $oUserFromBase->oxuser__oxrights = new oxField($sRight, oxField::T_RAW);
         $oUserFromBase->save();

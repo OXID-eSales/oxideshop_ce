@@ -20,15 +20,16 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once getShopBasePath().'/setup/oxsetup.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
+require_once getShopBasePath() . '/setup/oxsetup.php';
 
 /**
  * oxSetupDispatcher tests
  */
 class Unit_Setup_oxSetupDispatcherTest extends OxidTestCase
 {
+
     /**
      * Testing oxSetupDispatcher::run()
      *
@@ -36,16 +37,16 @@ class Unit_Setup_oxSetupDispatcherTest extends OxidTestCase
      */
     public function testRun()
     {
-        $oView = $this->getMock( "oxSetupView", array( "display" ) );
-        $oView->expects( $this->once() )->method( "display" );
+        $oView = $this->getMock("oxSetupView", array("display"));
+        $oView->expects($this->once())->method("display");
 
-        $oController = $this->getMock( "oxSetupController", array( "getView", "testAction" ) );
-        $oController->expects( $this->once() )->method( "getView" )->will( $this->returnValue( $oView ) );
-        $oController->expects( $this->once() )->method( "testAction" );
+        $oController = $this->getMock("oxSetupController", array("getView", "testAction"));
+        $oController->expects($this->once())->method("getView")->will($this->returnValue($oView));
+        $oController->expects($this->once())->method("testAction");
 
-        $oDispatcher = $this->getMock( "oxSetupDispatcher", array( "_chooseCurrentAction", "getInstance" ) );
-        $oDispatcher->expects( $this->once() )->method( "_chooseCurrentAction" )->will( $this->returnValue( "testAction" ));
-        $oDispatcher->expects( $this->once() )->method( "getInstance" )->with( $this->equalTo( "oxSetupController" ) )->will( $this->returnValue( $oController ));
+        $oDispatcher = $this->getMock("oxSetupDispatcher", array("_chooseCurrentAction", "getInstance"));
+        $oDispatcher->expects($this->once())->method("_chooseCurrentAction")->will($this->returnValue("testAction"));
+        $oDispatcher->expects($this->once())->method("getInstance")->with($this->equalTo("oxSetupController"))->will($this->returnValue($oController));
         $oDispatcher->run();
     }
 
@@ -56,12 +57,12 @@ class Unit_Setup_oxSetupDispatcherTest extends OxidTestCase
      */
     public function testChooseCurrentAction()
     {
-        $oSetup = $this->getMock( "oxSetup", array( "getCurrentStep", "getSteps" ) );
-        $oSetup->expects( $this->once() )->method( "getCurrentStep" )->will( $this->returnValue( 1 ));
-        $oSetup->expects( $this->once() )->method( "getSteps" )->will( $this->returnValue( array( "step1" => 0, "step2" => 1 ) ));
+        $oSetup = $this->getMock("oxSetup", array("getCurrentStep", "getSteps"));
+        $oSetup->expects($this->once())->method("getCurrentStep")->will($this->returnValue(1));
+        $oSetup->expects($this->once())->method("getSteps")->will($this->returnValue(array("step1" => 0, "step2" => 1)));
 
-        $oDispatcher = $this->getMock( "oxSetupDispatcher", array( "getInstance" ) );
-        $oDispatcher->expects( $this->once() )->method( "getInstance" )->with( $this->equalTo( "oxSetup" ) )->will( $this->returnValue( $oSetup ));
-        $this->assertEquals( "step2", $oDispatcher->UNITchooseCurrentAction() );
+        $oDispatcher = $this->getMock("oxSetupDispatcher", array("getInstance"));
+        $oDispatcher->expects($this->once())->method("getInstance")->with($this->equalTo("oxSetup"))->will($this->returnValue($oSetup));
+        $this->assertEquals("step2", $oDispatcher->UNITchooseCurrentAction());
     }
 }

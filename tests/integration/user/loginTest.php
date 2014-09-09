@@ -24,6 +24,7 @@ require_once 'userTestCase.php';
 
 class Integration_User_loginTest extends UserTestCase
 {
+
     /**
      * Password encoded with old algorithm.
      *

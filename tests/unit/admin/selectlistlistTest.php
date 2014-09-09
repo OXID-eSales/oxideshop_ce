@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for SelectList_List class
  */
 class Unit_Admin_SelectListListTest extends OxidTestCase
 {
+
     /**
      * SelectList_List::Init() test case
      *
@@ -36,11 +37,11 @@ class Unit_Admin_SelectListListTest extends OxidTestCase
     public function testInit()
     {
         // testing..
-        $oView = $this->getMock( "SelectList_List", array( "_authorize" ));
-        $oView->expects( $this->any() )->method( '_authorize' )->will( $this->returnValue( true ) );
+        $oView = $this->getMock("SelectList_List", array("_authorize"));
+        $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
         $oView->init();
         $oView->render();
-        $this->assertEquals( array( 'oxselectlist' => array( "oxtitle" => "asc" ) ), $oView->getListSorting() );
+        $this->assertEquals(array('oxselectlist' => array("oxtitle" => "asc")), $oView->getListSorting());
     }
 
     /**
@@ -52,6 +53,6 @@ class Unit_Admin_SelectListListTest extends OxidTestCase
     {
         // testing..
         $oView = new SelectList_List();
-        $this->assertEquals( 'selectlist_list.tpl', $oView->render() );
+        $this->assertEquals('selectlist_list.tpl', $oView->render());
     }
 }

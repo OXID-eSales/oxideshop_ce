@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing oxVoucher class
  */
 class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 {
+
     /**
      * Initialize the fixture.
      *
@@ -159,7 +160,7 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 
             $sShopFields = "`OXSHOPID`";
             $sShopValues = "'oxbaseshop'";
-            $sShopId     = "'oxbaseshop'";
+            $sShopId = "'oxbaseshop'";
 
         $sInsertSeriesPart = "
         INSERT INTO `oxvoucherseries`
@@ -353,7 +354,6 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
         ('test_i84','test_o8','test_a4','5','200','200','0','0','40','40','40',$sShopId);";
 
 
-
         $this->addToDatabase($sInsertVouchers, 'oxvouchers');
         $this->addToDatabase($sInsertVoucherReleations, 'oxobject2discount');
         $this->addToDatabase($sInsertOrder, 'oxorder');
@@ -366,7 +366,7 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testIsProductVoucher ()
+    public function testIsProductVoucher()
     {
         // Regular
         $oVoucher = new oxVoucher();
@@ -397,7 +397,7 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testIsCategoryVoucher ()
+    public function testIsCategoryVoucher()
     {
         // Regular
         $oVoucher = new oxVoucher();
@@ -428,7 +428,7 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testGetDiscountValue_Regular ()
+    public function testGetDiscountValue_Regular()
     {
         $oVoucher = new oxVoucher();
         $oVoucher->load('test_000');
@@ -443,18 +443,16 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testGetProductDiscountValue_ThrowNoArticleException ()
+    public function testGetProductDiscountValue_ThrowNoArticleException()
     {
-        $oVoucher = $this->getMock( 'oxVoucher', array( 'isAdmin' ) );
-        $oVoucher->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
+        $oVoucher = $this->getMock('oxVoucher', array('isAdmin'));
+        $oVoucher->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oVoucher->load('test_111');
 
         // there are no items in basket matching this discount, expecting exception
         try {
             $oVoucher->getDiscountValue(100);
-        }
-        catch (oxVoucherException $oEx)
-        {
+        } catch (oxVoucherException $oEx) {
             $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOVOUCHER', $oEx->getMessage());
             $blException = true;
         }
@@ -469,18 +467,16 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testGetCategoryDiscountValue_ThrowNoArticleException ()
+    public function testGetCategoryDiscountValue_ThrowNoArticleException()
     {
-        $oVoucher = $this->getMock( 'oxVoucher', array( 'isAdmin' ) );
-        $oVoucher->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
+        $oVoucher = $this->getMock('oxVoucher', array('isAdmin'));
+        $oVoucher->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oVoucher->load('test_333');
 
         // there are no items in basket matching this discount, expecting exception
         try {
             $oVoucher->getDiscountValue(100);
-        }
-        catch (oxVoucherException $oEx)
-        {
+        } catch (oxVoucherException $oEx) {
             $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOVOUCHER', $oEx->getMessage());
             $blException = true;
         }
@@ -495,7 +491,7 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testGetProductDiscountValue_DoNotThrowNoArticleException ()
+    public function testGetProductDiscountValue_DoNotThrowNoArticleException()
     {
         $oVoucher = new oxVoucher();
         $oVoucher->load('test_111');
@@ -505,9 +501,7 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
         // there are no items in basket matching this discount, expecting exception
         try {
             $oVoucher->getDiscountValue(100);
-        }
-        catch (oxVoucherException $oEx)
-        {
+        } catch (oxVoucherException $oEx) {
             $this->fail('exception thrown');
         }
     }
@@ -517,7 +511,7 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testGetCategoryDiscountValue_DoNotThrowNoArticleException ()
+    public function testGetCategoryDiscountValue_DoNotThrowNoArticleException()
     {
         $oVoucher = new oxVoucher();
         $oVoucher->load('test_333');
@@ -527,9 +521,7 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
         // there are no items in basket matching this discount, expecting exception
         try {
             $oVoucher->getDiscountValue(100);
-        }
-        catch (oxVoucherException $oEx)
-        {
+        } catch (oxVoucherException $oEx) {
             $this->fail('exception thrown');
         }
     }
@@ -540,31 +532,31 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testGetSeriesDiscount ()
+    public function testGetSeriesDiscount()
     {
         $oVoucher = new oxVoucher();
         $oVoucher->load('test_222');
 
-        $oSeries    = $oVoucher->getSerie();
+        $oSeries = $oVoucher->getSerie();
         $oDiscount = $oVoucher->UNITgetSerieDiscount();
 
-        $sDiscountType = $oSeries->oxvoucherseries__oxdiscounttype->value=='percent'?'%':'abs';
+        $sDiscountType = $oSeries->oxvoucherseries__oxdiscounttype->value == 'percent' ? '%' : 'abs';
 
         $this->assertEquals($oSeries->getId(), $oDiscount->getId());
-        $this->assertEquals($oSeries->oxvoucherseries__oxshopid->value, $oDiscount->oxdiscount__oxshopid->value );
-        $this->assertEquals(true, $oDiscount->oxdiscount__oxactive->value );
-        $this->assertEquals($oSeries->oxvoucherseries__oxbegindate->value, $oDiscount->oxdiscount__oxactivefrom->value );
-        $this->assertEquals($oSeries->oxvoucherseries__oxenddate->value, $oDiscount->oxdiscount__oxactiveto->value );
-        $this->assertEquals($oSeries->oxvoucherseries__oxserienr->value, $oDiscount->oxdiscount__oxtitle->value );
-        $this->assertEquals(1, $oDiscount->oxdiscount__oxamount->value );
-        $this->assertEquals(MAX_64BIT_INTEGER, $oDiscount->oxdiscount__oxamountto->value );
-        $this->assertEquals(0, $oDiscount->oxdiscount__oxprice->value );
-        $this->assertEquals(MAX_64BIT_INTEGER, $oDiscount->oxdiscount__oxpriceto->value );
-        $this->assertEquals($sDiscountType, $oDiscount->oxdiscount__oxaddsumtype->value );
-        $this->assertEquals($oSeries->oxvoucherseries__oxdiscount->value, $oDiscount->oxdiscount__oxaddsum->value );
-        $this->assertEquals(null, $oDiscount->oxdiscount__oxitmartid->value );
-        $this->assertEquals(null, $oDiscount->oxdiscount__oxitmamount->value   );
-        $this->assertEquals(null, $oDiscount->oxdiscount__oxitmmultiple->value );
+        $this->assertEquals($oSeries->oxvoucherseries__oxshopid->value, $oDiscount->oxdiscount__oxshopid->value);
+        $this->assertEquals(true, $oDiscount->oxdiscount__oxactive->value);
+        $this->assertEquals($oSeries->oxvoucherseries__oxbegindate->value, $oDiscount->oxdiscount__oxactivefrom->value);
+        $this->assertEquals($oSeries->oxvoucherseries__oxenddate->value, $oDiscount->oxdiscount__oxactiveto->value);
+        $this->assertEquals($oSeries->oxvoucherseries__oxserienr->value, $oDiscount->oxdiscount__oxtitle->value);
+        $this->assertEquals(1, $oDiscount->oxdiscount__oxamount->value);
+        $this->assertEquals(MAX_64BIT_INTEGER, $oDiscount->oxdiscount__oxamountto->value);
+        $this->assertEquals(0, $oDiscount->oxdiscount__oxprice->value);
+        $this->assertEquals(MAX_64BIT_INTEGER, $oDiscount->oxdiscount__oxpriceto->value);
+        $this->assertEquals($sDiscountType, $oDiscount->oxdiscount__oxaddsumtype->value);
+        $this->assertEquals($oSeries->oxvoucherseries__oxdiscount->value, $oDiscount->oxdiscount__oxaddsum->value);
+        $this->assertEquals(null, $oDiscount->oxdiscount__oxitmartid->value);
+        $this->assertEquals(null, $oDiscount->oxdiscount__oxitmamount->value);
+        $this->assertEquals(null, $oDiscount->oxdiscount__oxitmmultiple->value);
 
         $this->assertEquals(20, $oDiscount->getAbsValue(100));
     }
@@ -574,15 +566,15 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSessionBasketCase_s1 ()
+    public function testSessionBasketCase_s1()
     {
         $oBasket = new oxBasket();
-        $oBasket->addToBasket( 'test_a0', 1 );
-        $oBasket->addToBasket( 'test_a1', 5 );
-        $oBasket->addToBasket( 'test_a2', 5 );
-        $oBasket->addToBasket( 'test_a3', 5 );
-        $oBasket->addToBasket( 'test_a4', 5 );
-        $oBasket->addToBasket( 'test_a5', 5 );
+        $oBasket->addToBasket('test_a0', 1);
+        $oBasket->addToBasket('test_a1', 5);
+        $oBasket->addToBasket('test_a2', 5);
+        $oBasket->addToBasket('test_a3', 5);
+        $oBasket->addToBasket('test_a4', 5);
+        $oBasket->addToBasket('test_a5', 5);
 
         $this->getSession()->setBasket($oBasket);
 
@@ -591,16 +583,16 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a1',
-                'price'   =>'10',
-                'discount'=>'10',
-                'amount'  =>'5'
+                'oxid'     => 'test_a1',
+                'price'    => '10',
+                'discount' => '10',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a2',
-                'price'   =>'20',
-                'discount'=>'10',
-                'amount'  =>'5'
+                'oxid'     => 'test_a2',
+                'price'    => '20',
+                'discount' => '10',
+                'amount'   => '5'
             )
         );
 
@@ -624,15 +616,15 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSessionBasketCase_s2 ()
+    public function testSessionBasketCase_s2()
     {
         $oBasket = new oxBasket();
-        $oBasket->addToBasket( 'test_a0', 1 );
-        $oBasket->addToBasket( 'test_a1', 5 );
-        $oBasket->addToBasket( 'test_a2', 5 );
-        $oBasket->addToBasket( 'test_a3', 5 );
-        $oBasket->addToBasket( 'test_a4', 5 );
-        $oBasket->addToBasket( 'test_a5', 5 );
+        $oBasket->addToBasket('test_a0', 1);
+        $oBasket->addToBasket('test_a1', 5);
+        $oBasket->addToBasket('test_a2', 5);
+        $oBasket->addToBasket('test_a3', 5);
+        $oBasket->addToBasket('test_a4', 5);
+        $oBasket->addToBasket('test_a5', 5);
 
         $this->getSession()->setBasket($oBasket);
 
@@ -640,17 +632,17 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
         $oVoucher->load('test_222');
 
         $aExpItems = array(
-             array(
-                'oxid'    =>'test_a1',
-                'price'   =>'10',
-                'discount'=>'20',
-                'amount'  =>'5'
+            array(
+                'oxid'     => 'test_a1',
+                'price'    => '10',
+                'discount' => '20',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a2',
-                'price'   =>'20',
-                'discount'=>'20',
-                'amount'  =>'5'
+                'oxid'     => 'test_a2',
+                'price'    => '20',
+                'discount' => '20',
+                'amount'   => '5'
             )
         );
 
@@ -674,15 +666,15 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSessionBasketCase_s3 ()
+    public function testSessionBasketCase_s3()
     {
         $oBasket = new oxBasket();
-        $oBasket->addToBasket( 'test_a0', 1 );
-        $oBasket->addToBasket( 'test_a1', 5 );
-        $oBasket->addToBasket( 'test_a2', 5 );
-        $oBasket->addToBasket( 'test_a3', 5 );
-        $oBasket->addToBasket( 'test_a4', 0 ); // XX
-        $oBasket->addToBasket( 'test_a5', 5 );
+        $oBasket->addToBasket('test_a0', 1);
+        $oBasket->addToBasket('test_a1', 5);
+        $oBasket->addToBasket('test_a2', 5);
+        $oBasket->addToBasket('test_a3', 5);
+        $oBasket->addToBasket('test_a4', 0); // XX
+        $oBasket->addToBasket('test_a5', 5);
 
         $this->getSession()->setBasket($oBasket);
 
@@ -690,17 +682,17 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
         $oVoucher->load('test_333');
 
         $aExpItems = array(
-             array(
-                'oxid'    =>'test_a3',
-                'price'   =>'30',
-                'discount'=>'30',
-                'amount'  =>'5'
+            array(
+                'oxid'     => 'test_a3',
+                'price'    => '30',
+                'discount' => '30',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a5',
-                'price'   =>'50',
-                'discount'=>'30',
-                'amount'  =>'5'
+                'oxid'     => 'test_a5',
+                'price'    => '50',
+                'discount' => '30',
+                'amount'   => '5'
             )
         );
 
@@ -724,15 +716,15 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSessionBasketCase_s4 ()
+    public function testSessionBasketCase_s4()
     {
         $oBasket = new oxBasket();
-        $oBasket->addToBasket( 'test_a0', 1 );
-        $oBasket->addToBasket( 'test_a1', 5 );
-        $oBasket->addToBasket( 'test_a2', 5 );
-        $oBasket->addToBasket( 'test_a3', 5 );
-        $oBasket->addToBasket( 'test_a4', 5 );
-        $oBasket->addToBasket( 'test_a5', 0 ); // XX
+        $oBasket->addToBasket('test_a0', 1);
+        $oBasket->addToBasket('test_a1', 5);
+        $oBasket->addToBasket('test_a2', 5);
+        $oBasket->addToBasket('test_a3', 5);
+        $oBasket->addToBasket('test_a4', 5);
+        $oBasket->addToBasket('test_a5', 0); // XX
 
         $this->getSession()->setBasket($oBasket);
 
@@ -741,16 +733,16 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a3',
-                'price'   =>'30',
-                'discount'=>'40',
-                'amount'  =>'5'
+                'oxid'     => 'test_a3',
+                'price'    => '30',
+                'discount' => '40',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a4',
-                'price'   =>'40',
-                'discount'=>'40',
-                'amount'  =>'5'
+                'oxid'     => 'test_a4',
+                'price'    => '40',
+                'discount' => '40',
+                'amount'   => '5'
             )
         );
 
@@ -774,15 +766,15 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSessionBasketCase_s5 ()
+    public function testSessionBasketCase_s5()
     {
         $oBasket = new oxBasket();
-        $oBasket->addToBasket( 'test_a0', 1 );
-        $oBasket->addToBasket( 'test_a1', 5 );
-        $oBasket->addToBasket( 'test_a2', 5 );
-        $oBasket->addToBasket( 'test_a3', 5 );
-        $oBasket->addToBasket( 'test_a4', 5 );
-        $oBasket->addToBasket( 'test_a5', 5 );
+        $oBasket->addToBasket('test_a0', 1);
+        $oBasket->addToBasket('test_a1', 5);
+        $oBasket->addToBasket('test_a2', 5);
+        $oBasket->addToBasket('test_a3', 5);
+        $oBasket->addToBasket('test_a4', 5);
+        $oBasket->addToBasket('test_a5', 5);
 
         $this->getSession()->setBasket($oBasket);
 
@@ -791,16 +783,16 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a1',
-                'price'   =>'10',
-                'discount'=>'1',
-                'amount'  =>'5'
+                'oxid'     => 'test_a1',
+                'price'    => '10',
+                'discount' => '1',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a2',
-                'price'   =>'20',
-                'discount'=>'2',
-                'amount'  =>'5'
+                'oxid'     => 'test_a2',
+                'price'    => '20',
+                'discount' => '2',
+                'amount'   => '5'
             )
         );
 
@@ -824,15 +816,15 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSessionBasketCase_s6 ()
+    public function testSessionBasketCase_s6()
     {
         $oBasket = new oxBasket();
-        $oBasket->addToBasket( 'test_a0', 1 );
-        $oBasket->addToBasket( 'test_a1', 5 );
-        $oBasket->addToBasket( 'test_a2', 5 );
-        $oBasket->addToBasket( 'test_a3', 5 );
-        $oBasket->addToBasket( 'test_a4', 5 );
-        $oBasket->addToBasket( 'test_a5', 5 );
+        $oBasket->addToBasket('test_a0', 1);
+        $oBasket->addToBasket('test_a1', 5);
+        $oBasket->addToBasket('test_a2', 5);
+        $oBasket->addToBasket('test_a3', 5);
+        $oBasket->addToBasket('test_a4', 5);
+        $oBasket->addToBasket('test_a5', 5);
 
         $this->getSession()->setBasket($oBasket);
 
@@ -841,16 +833,16 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a1',
-                'price'   =>'10',
-                'discount'=>'2',
-                'amount'  =>'5'
+                'oxid'     => 'test_a1',
+                'price'    => '10',
+                'discount' => '2',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a2',
-                'price'   =>'20',
-                'discount'=>'4',
-                'amount'  =>'5'
+                'oxid'     => 'test_a2',
+                'price'    => '20',
+                'discount' => '4',
+                'amount'   => '5'
             )
         );
 
@@ -874,15 +866,15 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSessionBasketCase_s7 ()
+    public function testSessionBasketCase_s7()
     {
         $oBasket = new oxBasket();
-        $oBasket->addToBasket( 'test_a0', 1 );
-        $oBasket->addToBasket( 'test_a1', 5 );
-        $oBasket->addToBasket( 'test_a2', 5 );
-        $oBasket->addToBasket( 'test_a3', 5 );
-        $oBasket->addToBasket( 'test_a4', 0 ); // XX
-        $oBasket->addToBasket( 'test_a5', 5 );
+        $oBasket->addToBasket('test_a0', 1);
+        $oBasket->addToBasket('test_a1', 5);
+        $oBasket->addToBasket('test_a2', 5);
+        $oBasket->addToBasket('test_a3', 5);
+        $oBasket->addToBasket('test_a4', 0); // XX
+        $oBasket->addToBasket('test_a5', 5);
 
         $this->getSession()->setBasket($oBasket);
 
@@ -891,16 +883,16 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a3',
-                'price'   =>'30',
-                'discount'=>'9',
-                'amount'  =>'5'
+                'oxid'     => 'test_a3',
+                'price'    => '30',
+                'discount' => '9',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a5',
-                'price'   =>'50',
-                'discount'=>'15',
-                'amount'  =>'5'
+                'oxid'     => 'test_a5',
+                'price'    => '50',
+                'discount' => '15',
+                'amount'   => '5'
             )
         );
 
@@ -924,15 +916,15 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSessionBasketCase_s8 ()
+    public function testSessionBasketCase_s8()
     {
         $oBasket = new oxBasket();
-        $oBasket->addToBasket( 'test_a0', 1 );
-        $oBasket->addToBasket( 'test_a1', 5 );
-        $oBasket->addToBasket( 'test_a2', 5 );
-        $oBasket->addToBasket( 'test_a3', 5 );
-        $oBasket->addToBasket( 'test_a4', 5 );
-        $oBasket->addToBasket( 'test_a5', 0 ); // XX
+        $oBasket->addToBasket('test_a0', 1);
+        $oBasket->addToBasket('test_a1', 5);
+        $oBasket->addToBasket('test_a2', 5);
+        $oBasket->addToBasket('test_a3', 5);
+        $oBasket->addToBasket('test_a4', 5);
+        $oBasket->addToBasket('test_a5', 0); // XX
 
         $this->getSession()->setBasket($oBasket);
 
@@ -941,16 +933,16 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a3',
-                'price'   =>'30',
-                'discount'=>'12',
-                'amount'  =>'5'
+                'oxid'     => 'test_a3',
+                'price'    => '30',
+                'discount' => '12',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a4',
-                'price'   =>'40',
-                'discount'=>'16',
-                'amount'  =>'5'
+                'oxid'     => 'test_a4',
+                'price'    => '40',
+                'discount' => '16',
+                'amount'   => '5'
             )
         );
 
@@ -974,15 +966,15 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSessionBasketCase_x1 ()
+    public function testSessionBasketCase_x1()
     {
         $oBasket = new oxBasket();
-        $oBasket->addToBasket( 'test_a0', 1 );
-        $oBasket->addToBasket( 'test_a1', 5 );
-        $oBasket->addToBasket( 'test_a2', 5 );
-        $oBasket->addToBasket( 'test_a3', 5 );
-        $oBasket->addToBasket( 'test_a4', 5 );
-        $oBasket->addToBasket( 'test_a5', 5 );
+        $oBasket->addToBasket('test_a0', 1);
+        $oBasket->addToBasket('test_a1', 5);
+        $oBasket->addToBasket('test_a2', 5);
+        $oBasket->addToBasket('test_a3', 5);
+        $oBasket->addToBasket('test_a4', 5);
+        $oBasket->addToBasket('test_a5', 5);
 
         $this->getSession()->setBasket($oBasket);
 
@@ -991,10 +983,10 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a5',
-                'price'   =>'50',
-                'discount'=>'1000',
-                'amount'  =>'5'
+                'oxid'     => 'test_a5',
+                'price'    => '50',
+                'discount' => '1000',
+                'amount'   => '5'
             )
         );
 
@@ -1013,15 +1005,15 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSessionBasketCase_x2 ()
+    public function testSessionBasketCase_x2()
     {
         $oBasket = new oxBasket();
-        $oBasket->addToBasket( 'test_a0', 1 );
-        $oBasket->addToBasket( 'test_a1', 5 );
-        $oBasket->addToBasket( 'test_a2', 5 );
-        $oBasket->addToBasket( 'test_a3', 5 );
-        $oBasket->addToBasket( 'test_a4', 5 );
-        $oBasket->addToBasket( 'test_a5', 5 );
+        $oBasket->addToBasket('test_a0', 1);
+        $oBasket->addToBasket('test_a1', 5);
+        $oBasket->addToBasket('test_a2', 5);
+        $oBasket->addToBasket('test_a3', 5);
+        $oBasket->addToBasket('test_a4', 5);
+        $oBasket->addToBasket('test_a5', 5);
 
         $this->getSession()->setBasket($oBasket);
 
@@ -1030,16 +1022,16 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a4',
-                'price'   =>'40',
-                'discount'=>'1000',
-                'amount'  =>'5'
+                'oxid'     => 'test_a4',
+                'price'    => '40',
+                'discount' => '1000',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a5',
-                'price'   =>'50',
-                'discount'=>'1000',
-                'amount'  =>'5'
+                'oxid'     => 'test_a5',
+                'price'    => '50',
+                'discount' => '1000',
+                'amount'   => '5'
             )
         );
 
@@ -1058,15 +1050,15 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSessionBasketCase_x3 ()
+    public function testSessionBasketCase_x3()
     {
         $oBasket = new oxBasket();
-        $oBasket->addToBasket( 'test_a0', 1 );
-        $oBasket->addToBasket( 'test_a1', 5 );
-        $oBasket->addToBasket( 'test_a2', 5 );
-        $oBasket->addToBasket( 'test_a3', 5 );
-        $oBasket->addToBasket( 'test_a4', 5 );
-        $oBasket->addToBasket( 'test_a5', 5 );
+        $oBasket->addToBasket('test_a0', 1);
+        $oBasket->addToBasket('test_a1', 5);
+        $oBasket->addToBasket('test_a2', 5);
+        $oBasket->addToBasket('test_a3', 5);
+        $oBasket->addToBasket('test_a4', 5);
+        $oBasket->addToBasket('test_a5', 5);
 
         $this->getSession()->setBasket($oBasket);
 
@@ -1075,10 +1067,10 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a5',
-                'price'   =>'50',
-                'discount'=>'1000',
-                'amount'  =>'5'
+                'oxid'     => 'test_a5',
+                'price'    => '50',
+                'discount' => '1000',
+                'amount'   => '5'
             )
         );
 
@@ -1097,23 +1089,23 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testOrderBasketCase_s1 ()
+    public function testOrderBasketCase_s1()
     {
         $oVoucher = new oxVoucher();
         $oVoucher->load('test_111111');
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a1',
-                'price'   =>'10',
-                'discount'=>'10',
-                'amount'  =>'5'
+                'oxid'     => 'test_a1',
+                'price'    => '10',
+                'discount' => '10',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a2',
-                'price'   =>'20',
-                'discount'=>'10',
-                'amount'  =>'5'
+                'oxid'     => 'test_a2',
+                'price'    => '20',
+                'discount' => '10',
+                'amount'   => '5'
             )
         );
 
@@ -1132,23 +1124,23 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testOrderBasketCase_s2 ()
+    public function testOrderBasketCase_s2()
     {
         $oVoucher = new oxVoucher();
         $oVoucher->load('test_222222');
 
         $aExpItems = array(
-             array(
-                'oxid'    =>'test_a1',
-                'price'   =>'10',
-                'discount'=>'20',
-                'amount'  =>'5'
+            array(
+                'oxid'     => 'test_a1',
+                'price'    => '10',
+                'discount' => '20',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a2',
-                'price'   =>'20',
-                'discount'=>'20',
-                'amount'  =>'5'
+                'oxid'     => 'test_a2',
+                'price'    => '20',
+                'discount' => '20',
+                'amount'   => '5'
             )
         );
 
@@ -1167,23 +1159,23 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testOrderBasketCase_s3 ()
+    public function testOrderBasketCase_s3()
     {
         $oVoucher = new oxVoucher();
         $oVoucher->load('test_333333');
 
         $aExpItems = array(
-             array(
-                'oxid'    =>'test_a3',
-                'price'   =>'30',
-                'discount'=>'30',
-                'amount'  =>'5'
+            array(
+                'oxid'     => 'test_a3',
+                'price'    => '30',
+                'discount' => '30',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a5',
-                'price'   =>'50',
-                'discount'=>'30',
-                'amount'  =>'5'
+                'oxid'     => 'test_a5',
+                'price'    => '50',
+                'discount' => '30',
+                'amount'   => '5'
             )
         );
 
@@ -1202,23 +1194,23 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testOrderBasketCase_s4 ()
+    public function testOrderBasketCase_s4()
     {
         $oVoucher = new oxVoucher();
         $oVoucher->load('test_444444');
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a3',
-                'price'   =>'30',
-                'discount'=>'40',
-                'amount'  =>'5'
+                'oxid'     => 'test_a3',
+                'price'    => '30',
+                'discount' => '40',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a4',
-                'price'   =>'40',
-                'discount'=>'40',
-                'amount'  =>'5'
+                'oxid'     => 'test_a4',
+                'price'    => '40',
+                'discount' => '40',
+                'amount'   => '5'
             )
         );
 
@@ -1237,23 +1229,23 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testOrderBasketCase_s5 ()
+    public function testOrderBasketCase_s5()
     {
         $oVoucher = new oxVoucher();
         $oVoucher->load('test_555555');
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a1',
-                'price'   =>'10',
-                'discount'=>'1',
-                'amount'  =>'5'
+                'oxid'     => 'test_a1',
+                'price'    => '10',
+                'discount' => '1',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a2',
-                'price'   =>'20',
-                'discount'=>'2',
-                'amount'  =>'5'
+                'oxid'     => 'test_a2',
+                'price'    => '20',
+                'discount' => '2',
+                'amount'   => '5'
             )
         );
 
@@ -1272,23 +1264,23 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testOrderBasketCase_s6 ()
+    public function testOrderBasketCase_s6()
     {
         $oVoucher = new oxVoucher();
         $oVoucher->load('test_666666');
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a1',
-                'price'   =>'10',
-                'discount'=>'2',
-                'amount'  =>'5'
+                'oxid'     => 'test_a1',
+                'price'    => '10',
+                'discount' => '2',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a2',
-                'price'   =>'20',
-                'discount'=>'4',
-                'amount'  =>'5'
+                'oxid'     => 'test_a2',
+                'price'    => '20',
+                'discount' => '4',
+                'amount'   => '5'
             )
         );
 
@@ -1307,23 +1299,23 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testOrderBasketCase_s7 ()
+    public function testOrderBasketCase_s7()
     {
         $oVoucher = new oxVoucher();
         $oVoucher->load('test_777777');
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a3',
-                'price'   =>'30',
-                'discount'=>'9',
-                'amount'  =>'5'
+                'oxid'     => 'test_a3',
+                'price'    => '30',
+                'discount' => '9',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a5',
-                'price'   =>'50',
-                'discount'=>'15',
-                'amount'  =>'5'
+                'oxid'     => 'test_a5',
+                'price'    => '50',
+                'discount' => '15',
+                'amount'   => '5'
             )
         );
 
@@ -1342,23 +1334,23 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
      *
      * @return null
      */
-    public function testOrderBasketCase_s8 ()
+    public function testOrderBasketCase_s8()
     {
         $oVoucher = new oxVoucher();
         $oVoucher->load('test_888888');
 
         $aExpItems = array(
             array(
-                'oxid'    =>'test_a3',
-                'price'   =>'30',
-                'discount'=>'12',
-                'amount'  =>'5'
+                'oxid'     => 'test_a3',
+                'price'    => '30',
+                'discount' => '12',
+                'amount'   => '5'
             ),
             array(
-                'oxid'    =>'test_a4',
-                'price'   =>'40',
-                'discount'=>'16',
-                'amount'  =>'5'
+                'oxid'     => 'test_a4',
+                'price'    => '40',
+                'discount' => '16',
+                'amount'   => '5'
             )
         );
 

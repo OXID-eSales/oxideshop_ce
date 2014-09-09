@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class modUtils_oxvendorlist extends oxutils
 {
+
     public function seoIsActive($blReset = false, $sShopId = null, $iActLang = null)
     {
         return true;
@@ -36,6 +37,7 @@ class modUtils_oxvendorlist extends oxutils
  */
 class Unit_Core_oxvendorlistTest extends OxidTestCase
 {
+
     /**
      * Tear down the fixture.
      *
@@ -53,58 +55,58 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
     /**
      * Test loading simple vendor list
      */
-/*    public function test_loadVendorList() {
-        $myUtils = oxRegistry::getUtils();
-        $myConfig= oxRegistry::getConfig();
-        $myDB    = oxDb::getDB();
+    /*    public function test_loadVendorList() {
+            $myUtils = oxRegistry::getUtils();
+            $myConfig= oxRegistry::getConfig();
+            $myDB    = oxDb::getDB();
 
-        $oVendorlist = oxNew( 'oxvendorlist' );
-        $oVendorlist->loadVendorList(true, true, true);
+            $oVendorlist = oxNew( 'oxvendorlist' );
+            $oVendorlist->loadVendorList(true, true, true);
 
-        $this->assertTrue((count($oVendorlist) > 0), "Vendors list not loaded");
+            $this->assertTrue((count($oVendorlist) > 0), "Vendors list not loaded");
 
-        // checking if vendros are the same
-        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "'.$myConfig->getShopID().'"';
-        $rs = $myDB->Execute( $sQ );
+            // checking if vendros are the same
+            $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "'.$myConfig->getShopID().'"';
+            $rs = $myDB->Execute( $sQ );
 
 
-        if ( $rs != false && $rs->RecordCount() > 0 ) {
-            while ( !$rs->EOF ) {
-                if ( !isset( $oVendorlist[ $rs->fields[0] ] ) )
-                    $this->fail('Not all vendors are loaded');
-                $rs->MoveNext();
+            if ( $rs != false && $rs->RecordCount() > 0 ) {
+                while ( !$rs->EOF ) {
+                    if ( !isset( $oVendorlist[ $rs->fields[0] ] ) )
+                        $this->fail('Not all vendors are loaded');
+                    $rs->MoveNext();
+                }
+            } else {
+                $this->fail('No records found in vendors table');
             }
-        } else {
-            $this->fail('No records found in vendors table');
-        }
 
-    }
-*/
+        }
+    */
     /**
      * Test loading simple vendor list by selected language
      */
     public function test_loadVendorListByLanguage()
     {
         $myUtils = oxRegistry::getUtils();
-        $myConfig= modConfig::getInstance();
-        $myDB    = oxDb::getDB();
+        $myConfig = modConfig::getInstance();
+        $myDB = oxDb::getDB();
 
         //modConfig::addClassVar("_iLanguageId","1"); //$oVendorlist->sLanguage = '1';
         //$myConfig->addClassFunction("getShopLanguage",create_function("","return 1;"));
-        oxRegistry::getLang()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage(1);
 
-        $oVendorlist = oxNew( 'oxvendorlist' );
+        $oVendorlist = oxNew('oxvendorlist');
 
         $oVendorlist->loadVendorList();
 
         $this->assertTrue((count($oVendorlist) > 0), "Vendors list not loaded");
 
         // checking if vendros are the same
-        $sQ = 'select oxid, oxtitle_1, oxshortdesc_1 from oxvendor where oxvendor.oxshopid = "'.$myConfig->getShopID().'"';
-        $rs = $myDB->Execute( $sQ );
+        $sQ = 'select oxid, oxtitle_1, oxshortdesc_1 from oxvendor where oxvendor.oxshopid = "' . $myConfig->getShopID() . '"';
+        $rs = $myDB->Execute($sQ);
 
-        if ( $rs != false && $rs->RecordCount() > 0 ) {
-            while ( !$rs->EOF ) {
+        if ($rs != false && $rs->RecordCount() > 0) {
+            while (!$rs->EOF) {
                 $this->assertEquals($rs->fields[1], $oVendorlist[$rs->fields[0]]->oxvendor__oxtitle->value);
                 $this->assertEquals($rs->fields[2], $oVendorlist[$rs->fields[0]]->oxvendor__oxshortdesc->value);
                 $rs->MoveNext();
@@ -121,15 +123,15 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
     {
         $myUtils = oxRegistry::getUtils();
 
-        modConfig::getInstance()->setConfigParam( 'bl_perfShowActionCatArticleCnt', true );
+        modConfig::getInstance()->setConfigParam('bl_perfShowActionCatArticleCnt', true);
 
-        $oVendorlist = oxNew( 'oxvendorlist' );
-        $oVendorlist->setShowVendorArticleCnt( true );
+        $oVendorlist = oxNew('oxvendorlist');
+        $oVendorlist->setShowVendorArticleCnt(true);
         $oVendorlist->loadVendorList();
 
         foreach ($oVendorlist as $sVndId => $value) {
             $iArtCount = $oVendorlist[$sVndId]->oxvendor__oxnrofarticles->value;
-            $this->assertTrue( ($iArtCount > 0), "Vendor articles were not counted" );
+            $this->assertTrue(($iArtCount > 0), "Vendor articles were not counted");
         }
     }
 
@@ -138,14 +140,14 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
      */
     public function test_BuildVendorTree()
     {
-        $myConfig= oxRegistry::getConfig();
-        $myDB    = oxDb::getDB();
+        $myConfig = oxRegistry::getConfig();
+        $myDB = oxDb::getDB();
 
         $oVendorlist = $this->getProxyClass("oxvendorList"); //oxNew('oxvendorlist', 'core');
 
         // get first vendor id
-        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "'.$myConfig->getShopID().' "';
-        $sFirstVendorId = $myDB->getOne( $sQ );
+        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "' . $myConfig->getShopID() . ' "';
+        $sFirstVendorId = $myDB->getOne($sQ);
 
         // build vendors and add first vendor to vendors tree path array
         $oVendorlist->buildVendorTree('vendorList', $sFirstVendorId, $myConfig->getShopHomeURL());
@@ -154,9 +156,9 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
         $aPath = $oVendorlist->getPath();
 
 
-        $this->assertNotNull( $oVendorlist->getClickVendor() );
-        $this->assertEquals( $sFirstVendorId, $oVendorlist->getClickVendor()->getId() );
-        $this->assertEquals( $aPath[0], $oVendorlist->getRootCat() );
+        $this->assertNotNull($oVendorlist->getClickVendor());
+        $this->assertEquals($sFirstVendorId, $oVendorlist->getClickVendor()->getId());
+        $this->assertEquals($aPath[0], $oVendorlist->getRootCat());
         $this->assertEquals('root', $aPath[0]->getId(), 'Not added root for vendor tree'); //oxvendor__oxid->value
 
         //check if first vendor was added to vendors tree path array
@@ -164,9 +166,9 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
 
         //check if category list fields was added for each vendor item
         foreach ($oVendorlist as $sVndId => $value) {
-           if (empty($oVendorlist[$sVndId]->oxcategories__oxid->value)) {
-                   $this->fail('Category list fields was not added for each vendor');
-           }
+            if (empty($oVendorlist[$sVndId]->oxcategories__oxid->value)) {
+                $this->fail('Category list fields was not added for each vendor');
+            }
         }
     }
 
@@ -182,17 +184,17 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
         $oVendorlist->loadVendorList();
         $oVendor = $oVendorlist->current();
 
-        $oVendorlist->UNITaddCategoryFields( $oVendor );
+        $oVendorlist->UNITaddCategoryFields($oVendor);
 
         // check if category specific fields was added to vendor object
-        $this->assertEquals( "v_".$oVendor->getId(), $oVendor->oxcategories__oxid->value );
-        $this->assertEquals( $oVendor->oxvendor__oxicon, $oVendor->oxcategories__oxicon );
-        $this->assertEquals( $oVendor->oxvendor__oxtitle, $oVendor->oxcategories__oxtitle );
-        $this->assertEquals( $oVendor->oxvendor__oxshortdesc, $oVendor->oxcategories__oxdesc );
-        $this->assertEquals( $myConfig->getShopHomeURL()."cl=vendorlist&amp;cnid={$oVendor->oxcategories__oxid->value}", $oVendor->getLink() );
+        $this->assertEquals("v_" . $oVendor->getId(), $oVendor->oxcategories__oxid->value);
+        $this->assertEquals($oVendor->oxvendor__oxicon, $oVendor->oxcategories__oxicon);
+        $this->assertEquals($oVendor->oxvendor__oxtitle, $oVendor->oxcategories__oxtitle);
+        $this->assertEquals($oVendor->oxvendor__oxshortdesc, $oVendor->oxcategories__oxdesc);
+        $this->assertEquals($myConfig->getShopHomeURL() . "cl=vendorlist&amp;cnid={$oVendor->oxcategories__oxid->value}", $oVendor->getLink());
 
-        $this->assertTrue( $oVendor->getIsVisible() );
-        $this->assertFalse( $oVendor->getHasVisibleSubCats() );
+        $this->assertTrue($oVendor->getIsVisible());
+        $this->assertFalse($oVendor->getHasVisibleSubCats());
     }
 
     /**
@@ -210,8 +212,8 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
         //check if SEO link was added for each vendor item
         foreach ($oVendorlist as $sVndId => $value) {
             $sVendorLink = $oVendorlist[$sVndId]->getLink();
-            if ( !$sVendorLink || strstr( $sVendorLink, 'index.php' ) !== false ) {
-                $this->fail( "SEO link was not added to vendor object ({$sVendorLink})");
+            if (!$sVendorLink || strstr($sVendorLink, 'index.php') !== false) {
+                $this->fail("SEO link was not added to vendor object ({$sVendorLink})");
             }
         }
 

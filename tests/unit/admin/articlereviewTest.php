@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Article_Review class
  */
 class Unit_Admin_ArticleReviewTest extends OxidTestCase
 {
+
     /**
      * Article_Review test setup
      *
@@ -40,10 +41,14 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
             $this->sTestId = '2077';
             $sVar = '8a142c4100e0b2f57.59530204';
 
-        oxDb::getDb()->Execute('replace into oxreviews (OXID, OXACTIVE, OXOBJECTID, OXTYPE, OXTEXT, OXUSERID, OXCREATE, OXLANG, OXRATING)
-            values ("_test_i1", 1, "'.$this->sTestId.'", "oxarticle", "aa", "'.oxADMIN_LOGIN.'", "0000-00-00 00:00:00", "0", "3")');
-        oxDb::getDb()->Execute('replace into oxreviews (OXID, OXACTIVE, OXOBJECTID, OXTYPE, OXTEXT, OXUSERID, OXCREATE, OXLANG, OXRATING)
-            values ("_test_i2", 1, "'.$sVar.'", "oxarticle", "aa", "'.oxADMIN_LOGIN.'", "0000-00-00 00:00:00", "0", "3")');
+        oxDb::getDb()->Execute(
+            'replace into oxreviews (OXID, OXACTIVE, OXOBJECTID, OXTYPE, OXTEXT, OXUSERID, OXCREATE, OXLANG, OXRATING)
+                        values ("_test_i1", 1, "' . $this->sTestId . '", "oxarticle", "aa", "' . oxADMIN_LOGIN . '", "0000-00-00 00:00:00", "0", "3")'
+        );
+        oxDb::getDb()->Execute(
+            'replace into oxreviews (OXID, OXACTIVE, OXOBJECTID, OXTYPE, OXTEXT, OXUSERID, OXCREATE, OXLANG, OXRATING)
+                        values ("_test_i2", 1, "' . $sVar . '", "oxarticle", "aa", "' . oxADMIN_LOGIN . '", "0000-00-00 00:00:00", "0", "3")'
+        );
     }
 
     /**
@@ -64,8 +69,8 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", $this->sTestId );
-        modConfig::setRequestParameter( "rev_oxid", "_test_i1" );
+        modConfig::setRequestParameter("oxid", $this->sTestId);
+        modConfig::setRequestParameter("rev_oxid", "_test_i1");
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
@@ -74,9 +79,9 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue( $aViewData["edit"] instanceof oxArticle );
+        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
 
-        $this->assertEquals( 'article_review.tpl', $sTplName );
+        $this->assertEquals('article_review.tpl', $sTplName);
     }
 
     /**
@@ -86,25 +91,25 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
      */
     public function testSave()
     {
-        $oReview  = oxNew( "oxreview" );
-        $oReview->setId( "_testReviewId" );
-        $oReview->oxreviews__oxactive = new oxField( 1 );
-        $oReview->oxreviews__oxobjectid = new oxField( "_testObjectId" );
-        $oReview->oxreviews__oxtype   = new oxField( "oxarticle" );
+        $oReview = oxNew("oxreview");
+        $oReview->setId("_testReviewId");
+        $oReview->oxreviews__oxactive = new oxField(1);
+        $oReview->oxreviews__oxobjectid = new oxField("_testObjectId");
+        $oReview->oxreviews__oxtype = new oxField("oxarticle");
         $oReview->save();
 
         $oDb = oxDb::getDb();
 
-        $this->assertTrue( (bool) $oDb->getOne( "select 1 from oxreviews where oxid = '_testReviewId'" ));
+        $this->assertTrue((bool) $oDb->getOne("select 1 from oxreviews where oxid = '_testReviewId'"));
 
-        modConfig::setRequestParameter( "rev_oxid", "_testReviewId" );
-        modConfig::setRequestParameter( "editval", array( 'oxreviews__oxtext' => 6, 'oxreviews__oxrating' => 6 ) );
-        modConfig::getInstance()->setConfigParam( "blGBModerate", "_testReviewId" );
+        modConfig::setRequestParameter("rev_oxid", "_testReviewId");
+        modConfig::setRequestParameter("editval", array('oxreviews__oxtext' => 6, 'oxreviews__oxrating' => 6));
+        modConfig::getInstance()->setConfigParam("blGBModerate", "_testReviewId");
 
         $oView = new Article_Review();
         $oView->save();
 
-        $this->assertTrue( (bool) $oDb->getOne( "select 1 from oxreviews where oxtext = '6' and oxrating = '6'" ));
+        $this->assertTrue((bool) $oDb->getOne("select 1 from oxreviews where oxtext = '6' and oxrating = '6'"));
     }
 
     /**
@@ -114,23 +119,23 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
      */
     public function testDelete()
     {
-        $oReview  = oxNew( "oxreview" );
-        $oReview->setId( "testReviewId" );
-        $oReview->oxreviews__oxactive = new oxField( 1 );
-        $oReview->oxreviews__oxobjectid = new oxField( "testObjectId" );
-        $oReview->oxreviews__oxtype   = new oxField( "oxarticle" );
+        $oReview = oxNew("oxreview");
+        $oReview->setId("testReviewId");
+        $oReview->oxreviews__oxactive = new oxField(1);
+        $oReview->oxreviews__oxobjectid = new oxField("testObjectId");
+        $oReview->oxreviews__oxtype = new oxField("oxarticle");
         $oReview->save();
 
         $oDb = oxDb::getDb();
 
-        $this->assertTrue( (bool) $oDb->getOne( "select 1 from oxreviews where oxid = 'testReviewId'" ));
-        modConfig::setRequestParameter( "rev_oxid", "testReviewId" );
+        $this->assertTrue((bool) $oDb->getOne("select 1 from oxreviews where oxid = 'testReviewId'"));
+        modConfig::setRequestParameter("rev_oxid", "testReviewId");
 
         $oView = new Article_Review();
 
         $oView->delete();
 
-        $this->assertFalse( (bool) $oDb->getOne( "select 1 from oxreviews where oxid = 'testReviewId'" ));
+        $this->assertFalse((bool) $oDb->getOne("select 1 from oxreviews where oxid = 'testReviewId'"));
     }
 
     /**

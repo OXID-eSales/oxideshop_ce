@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxGbEntryTest extends OxidTestCase
 {
@@ -56,7 +56,7 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
     protected function tearDown()
     {
         $this->_oObj->delete();
-        $this->cleanUpTable( 'oxgbentries' );
+        $this->cleanUpTable('oxgbentries');
         parent::tearDown();
     }
 
@@ -64,8 +64,8 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
     {
         $iTime = time();
 
-        oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
-        oxRegistry::get("oxUtilsDate")->UNITSetTime( $iTime );
+        oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
+        oxRegistry::get("oxUtilsDate")->UNITSetTime($iTime);
 
         $this->_oObj->delete();
 
@@ -73,7 +73,7 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
         $this->_oObj->oxgbentries__oxcreate = new oxField(null, oxField::T_RAW);
         $this->_oObj->save();
 
-        $this->assertEquals( date( 'Y-m-d H:i:s', $iTime ), $this->_oObj->oxgbentries__oxcreate->value );
+        $this->assertEquals(date('Y-m-d H:i:s', $iTime), $this->_oObj->oxgbentries__oxcreate->value);
     }
 
     public function testUpdate()
@@ -84,7 +84,7 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
         $this->_oObj->save();
 
         // comparing
-        $this->assertEquals( $sBefore, $this->_oObj->oxgbentries__oxcreate->value );
+        $this->assertEquals($sBefore, $this->_oObj->oxgbentries__oxcreate->value);
     }
 
     public function testUpdateWithSpecChar()
@@ -93,97 +93,98 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
         $this->_oObj->save();
 
         // comparing
-        $this->assertEquals( "test content\ntest content <br>", $this->_oObj->oxgbentries__oxcontent->value );
+        $this->assertEquals("test content\ntest content <br>", $this->_oObj->oxgbentries__oxcontent->value);
 
     }
 
     public function testAssignNoUserData()
     {
         $oObj = new oxGBEntry();
-        $oObj->load( $this->_oObj->getId() );
+        $oObj->load($this->_oObj->getId());
         $oObj->oxgbentries__oxuserid = new oxField('', oxField::T_RAW);
         $oObj->save();
 
         $oObj = new oxGBEntry();
-        $oObj->load( $this->_oObj->getId() );
-        $this->assertEquals( "test content\ntest content", $oObj->oxgbentries__oxcontent->value );
-        $this->assertFalse( isset( $oObj->oxuser__oxfname ) );
+        $oObj->load($this->_oObj->getId());
+        $this->assertEquals("test content\ntest content", $oObj->oxgbentries__oxcontent->value);
+        $this->assertFalse(isset($oObj->oxuser__oxfname));
     }
 
     public function testAssignWithUserData()
     {
         $oObj = new oxGBEntry();
-        $oObj->load( $this->_oObj->getId() );
+        $oObj->load($this->_oObj->getId());
 
-        $this->assertEquals( "test content\ntest content", $oObj->oxgbentries__oxcontent->value );
-        $this->assertTrue( isset( $oObj->oxuser__oxfname ) );
-        $this->assertEquals( "John", $oObj->oxuser__oxfname->value );
+        $this->assertEquals("test content\ntest content", $oObj->oxgbentries__oxcontent->value);
+        $this->assertTrue(isset($oObj->oxuser__oxfname));
+        $this->assertEquals("John", $oObj->oxuser__oxfname->value);
     }
 
     public function testGetAllEntries()
     {
         $myDB = oxDb::getDb();
-        $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","'.oxRegistry::getConfig()->getBaseShopId().'","oxdefaultadmin","AA test content")';
+        $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","' . oxRegistry::getConfig()->getBaseShopId() . '","oxdefaultadmin","AA test content")';
         $myDB->execute($sSql);
         $oObj = new oxGBEntry();
-        $aEntries = $oObj->getAllEntries( 0, 10, 'oxcontent' );
-        $this->assertEquals( 2, $aEntries->count() );
+        $aEntries = $oObj->getAllEntries(0, 10, 'oxcontent');
+        $this->assertEquals(2, $aEntries->count());
         $oEntry = $aEntries->current();
-        $this->assertEquals( "AA test content", $oEntry->oxgbentries__oxcontent->value );
+        $this->assertEquals("AA test content", $oEntry->oxgbentries__oxcontent->value);
     }
 
     public function testGetAllEntriesModerationOn()
     {
-        modConfig::getInstance()->setConfigParam( 'blGBModerate', 1);
+        modConfig::getInstance()->setConfigParam('blGBModerate', 1);
         $myDB = oxDb::getDb();
-        $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","'.oxRegistry::getConfig()->getBaseShopId().'","oxdefaultadmin","AA test content")';
+        $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","' . oxRegistry::getConfig()->getBaseShopId() . '","oxdefaultadmin","AA test content")';
         $myDB->execute($sSql);
         $oObj = new oxGBEntry();
-        $aEntries = $oObj->getAllEntries( 0, 10, null );
-        $this->assertEquals( 0, $aEntries->count() );
+        $aEntries = $oObj->getAllEntries(0, 10, null);
+        $this->assertEquals(0, $aEntries->count());
         $sSql = 'update oxgbentries set oxactive="1" where oxid="_test"';
         $myDB->execute($sSql);
-        $aEntries = $oObj->getAllEntries( 0, 10, null );
-        $this->assertEquals( 1, $aEntries->count() );
+        $aEntries = $oObj->getAllEntries(0, 10, null);
+        $this->assertEquals(1, $aEntries->count());
     }
 
     public function testGetEntryCount()
     {
         $oObj = new oxGBEntry();
         $iCnt = $oObj->getEntryCount();
-        $this->assertEquals( 1, $iCnt);
+        $this->assertEquals(1, $iCnt);
     }
+
     public function testGetEntryCountModerationOn()
     {
-        modConfig::getInstance()->setConfigParam( 'blGBModerate', 1);
+        modConfig::getInstance()->setConfigParam('blGBModerate', 1);
         $oObj = new oxGBEntry();
         $iCnt = $oObj->getEntryCount();
-        $this->assertEquals( 0, $iCnt);
+        $this->assertEquals(0, $iCnt);
         $this->_oObj->oxgbentries__oxactive = new oxField(1, oxField::T_RAW);
         $this->_oObj->save();
         $iCnt = $oObj->getEntryCount();
-        $this->assertEquals( 1, $iCnt);
+        $this->assertEquals(1, $iCnt);
     }
 
     public function testFloodProtectionIfAllow()
     {
         $oObj = new oxGBEntry();
         $myConfig = modConfig::getInstance();
-        $this->assertFalse( $oObj->floodProtection( $myConfig->getShopId(), 'oxdefaultadmin' ) );
+        $this->assertFalse($oObj->floodProtection($myConfig->getShopId(), 'oxdefaultadmin'));
     }
 
     public function testFloodProtectionMaxReached()
     {
         $oObj = new oxGBEntry();
         $myConfig = modConfig::getInstance();
-        $myConfig->setConfigParam( 'iMaxGBEntriesPerDay', 1 );
-        $this->assertTrue( $oObj->floodProtection( $myConfig->getShopId(), 'oxdefaultadmin' ) );
+        $myConfig->setConfigParam('iMaxGBEntriesPerDay', 1);
+        $this->assertTrue($oObj->floodProtection($myConfig->getShopId(), 'oxdefaultadmin'));
     }
 
     public function testFloodProtectionIfShopAndUserNotSet()
     {
         $oObj = new oxGBEntry();
-        $this->assertTrue( $oObj->floodProtection() );
+        $this->assertTrue($oObj->floodProtection());
     }
 
 
@@ -191,7 +192,7 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
     {
         $oObj = $this->getProxyClass('oxgbentry');
         $oObj->UNITsetFieldData("oxgbentries__oxcontent", "asd< as");
-        $this->assertEquals( 'asd&lt; as', $oObj->oxgbentries__oxcontent->value );
+        $this->assertEquals('asd&lt; as', $oObj->oxgbentries__oxcontent->value);
     }
 
 }

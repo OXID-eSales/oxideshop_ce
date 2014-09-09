@@ -21,10 +21,10 @@
  */
 
 require_once 'PHPUnit/Framework/TestSuite.php';
-error_reporting( (E_ALL ^ E_NOTICE) | E_STRICT );
+error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
 ini_set('display_errors', true);
 
-echo "=========\nrunning php version ".phpversion()."\n\n============\n";
+echo "=========\nrunning php version " . phpversion() . "\n\n============\n";
 
 require_once 'unit/test_config.inc.php';
 
@@ -33,6 +33,7 @@ require_once 'unit/test_config.inc.php';
  */
 class AllTestsIntegration extends PHPUnit_Framework_TestCase
 {
+
     /**
      * Test suite
      *
@@ -41,31 +42,31 @@ class AllTestsIntegration extends PHPUnit_Framework_TestCase
     static function suite()
     {
         chdir(dirname(__FILE__));
-        $oSuite = new PHPUnit_Framework_TestSuite( 'PHPUnit' );
+        $oSuite = new PHPUnit_Framework_TestSuite('PHPUnit');
         $sFilter = getenv("PREG_FILTER");
 
-        $aTestSuiteDirs = array( 'integration' );
-        $aTestDirs = array( 'cache', 'timestamp', 'price' );
+        $aTestSuiteDirs = array('integration');
+        $aTestDirs = array('cache', 'timestamp', 'price');
         $sTestFileNameEnd = 'Test.php';
 
-        foreach ($aTestDirs as $sDir ) {
+        foreach ($aTestDirs as $sDir) {
 
-            foreach ( $aTestSuiteDirs as $sTestSuiteDir ) {
+            foreach ($aTestSuiteDirs as $sTestSuiteDir) {
 
-                $sDir = rtrim( $sTestSuiteDir.'/'.$sDir, '/' );
+                $sDir = rtrim($sTestSuiteDir . '/' . $sDir, '/');
 
                 //adding UNIT Tests
                 echo "Adding unit tests from $sDir/*{$sTestFileNameEnd}\n";
-                foreach ( glob( "$sDir/*".$sTestFileNameEnd ) as $sFilename) {
+                foreach (glob("$sDir/*" . $sTestFileNameEnd) as $sFilename) {
 
                     if (!$sFilter || preg_match("&$sFilter&i", $sFilename)) {
-                        error_reporting( (E_ALL ^ E_NOTICE) | E_STRICT );
+                        error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
                         ini_set('display_errors', true);
                         include_once $sFilename;
-                        $sClassName = str_replace( array( "/", ".php" ), array( "_", "" ), $sFilename );
+                        $sClassName = str_replace(array("/", ".php"), array("_", ""), $sFilename);
 
-                        if ( class_exists( $sClassName ) ) {
-                            $oSuite->addTestSuite( $sClassName );
+                        if (class_exists($sClassName)) {
+                            $oSuite->addTestSuite($sClassName);
                         } else {
                             echo "\n\nWarning: class not found: $sClassName in $sFilename\n\n\n ";
                         }

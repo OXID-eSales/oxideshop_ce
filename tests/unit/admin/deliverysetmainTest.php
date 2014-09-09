@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for DeliverySet_Main class
  */
 class Unit_Admin_DeliverySetMainTest extends OxidTestCase
 {
+
     /**
      * DeliverySet_Main::Render() test case
      *
@@ -35,15 +36,15 @@ class Unit_Admin_DeliverySetMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        oxTestModules::addFunction( "oxdeliveryset", "isDerived", "{return true;}" );
-        modConfig::setRequestParameter( "oxid", "testId" );
+        oxTestModules::addFunction("oxdeliveryset", "isDerived", "{return true;}");
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new DeliverySet_Main();
-        $this->assertEquals( 'deliveryset_main.tpl', $oView->render() );
+        $this->assertEquals('deliveryset_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxdeliveryset );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxdeliveryset);
     }
 
     /**
@@ -53,14 +54,14 @@ class Unit_Admin_DeliverySetMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new DeliverySet_Main();
-        $this->assertEquals( 'deliveryset_main.tpl', $oView->render() );
+        $this->assertEquals('deliveryset_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertTrue(isset($aViewData['oxid']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -71,18 +72,19 @@ class Unit_Admin_DeliverySetMainTest extends OxidTestCase
     public function testSave()
     {
         // testing..
-        oxTestModules::addFunction( 'oxdeliveryset', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxdeliveryset', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new DeliverySet_Main();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in DeliverySet_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in DeliverySet_Main::save()");
+
             return;
         }
-        $this->fail( "error in DeliverySet_Main::save()" );
+        $this->fail("error in DeliverySet_Main::save()");
     }
 
     /**
@@ -92,18 +94,19 @@ class Unit_Admin_DeliverySetMainTest extends OxidTestCase
      */
     public function testSaveinnlang()
     {
-        oxTestModules::addFunction( 'oxdeliveryset', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxdeliveryset', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new DeliverySet_Main();
             $oView->saveinnlang();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in DeliverySet_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in DeliverySet_Main::save()");
+
             return;
         }
-        $this->fail( "error in DeliverySet_Main::save()" );
+        $this->fail("error in DeliverySet_Main::save()");
     }
 
 }

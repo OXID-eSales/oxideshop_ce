@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxPasswordSaltGeneratorTest extends OxidTestCase
 {
+
     public function providerOpenSslRandomBytesGeneratorAvailability()
     {
         return array(
@@ -52,8 +53,7 @@ class Unit_Core_oxPasswordSaltGeneratorTest extends OxidTestCase
         $oGenerator = new oxPasswordSaltGenerator($oOpenSSLFunctionalityChecker);
         $aSalts = array();
 
-        for($i=1; $i<=100; $i++)
-        {
+        for ($i = 1; $i <= 100; $i++) {
             $aSalts[] = $oGenerator->generate();
         }
 

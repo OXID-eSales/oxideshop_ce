@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Order_Address class
  */
 class Unit_Admin_OrderAddressTest extends OxidTestCase
 {
+
     /**
      * Order_Address::Render() test case
      *
@@ -35,14 +36,14 @@ class Unit_Admin_OrderAddressTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Order_Address();
-        $this->assertEquals( 'order_address.tpl', $oView->render() );
+        $this->assertEquals('order_address.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxorder );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxorder);
     }
 
     /**
@@ -52,14 +53,14 @@ class Unit_Admin_OrderAddressTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Order_Address();
-        $this->assertEquals( 'order_address.tpl', $oView->render() );
+        $this->assertEquals('order_address.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertTrue(isset($aViewData['oxid']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -70,18 +71,19 @@ class Unit_Admin_OrderAddressTest extends OxidTestCase
     public function testSave()
     {
         // testing..
-        oxTestModules::addFunction( 'oxorder', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxorder', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new Order_Address();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Order_Address::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Order_Address::save()");
+
             return;
         }
-        $this->fail( "error in Order_Address::save()" );
+        $this->fail("error in Order_Address::save()");
     }
 
     /**
@@ -91,44 +93,44 @@ class Unit_Admin_OrderAddressTest extends OxidTestCase
      */
     public function testProcessAddress()
     {
-        $aInData  = array(
-            "oxorder__oxid" => "7d090db46a124f48cb7e6836ceef3f66",
-            "oxorder__oxbillsal" => "MR",
-            "oxorder__oxbillfname" => "Marc",
-            "oxorder__oxbilllname" => "Muster",
-            "oxorder__oxbillemail" => "info@oxid-esales.com",
-            "oxorder__oxbillcompany" => "",
-            "oxorder__oxbillstreet" => "Hauptstr.",
-            "oxorder__oxbillstreetnr" => "13",
-            "oxorder__oxbillzip" => "79098",
-            "oxorder__oxbillcity" => "Freiburg",
-            "oxorder__oxbillustid" => "",
-            "oxorder__oxbilladdinfo" => "",
-            "oxorder__oxbillstateid" => "",
+        $aInData = array(
+            "oxorder__oxid"            => "7d090db46a124f48cb7e6836ceef3f66",
+            "oxorder__oxbillsal"       => "MR",
+            "oxorder__oxbillfname"     => "Marc",
+            "oxorder__oxbilllname"     => "Muster",
+            "oxorder__oxbillemail"     => "info@oxid-esales.com",
+            "oxorder__oxbillcompany"   => "",
+            "oxorder__oxbillstreet"    => "Hauptstr.",
+            "oxorder__oxbillstreetnr"  => "13",
+            "oxorder__oxbillzip"       => "79098",
+            "oxorder__oxbillcity"      => "Freiburg",
+            "oxorder__oxbillustid"     => "",
+            "oxorder__oxbilladdinfo"   => "",
+            "oxorder__oxbillstateid"   => "",
             "oxorder__oxbillcountryid" => "a7c40f631fc920687.20179984",
-            "oxorder__oxbillfon" => "",
-            "oxorder__oxbillfax" => "",
-            "oxorder__oxdelsal" => "MR",
-            "oxorder__oxdelfname" => "",
-            "oxorder__oxdellname" => "",
-            "oxorder__oxdelcompany" => "",
-            "oxorder__oxdelstreet" => "",
-            "oxorder__oxdelstreetnr" => "",
-            "oxorder__oxdelzip" => "",
-            "oxorder__oxdelcity" => "",
-            "oxorder__oxdeladdinfo" => "",
-            "oxorder__oxdelstateid" => "",
-            "oxorder__oxdelcountryid" => "",
-            "oxorder__oxdelfon" => "",
-            "oxorder__oxdelfax" => ""
+            "oxorder__oxbillfon"       => "",
+            "oxorder__oxbillfax"       => "",
+            "oxorder__oxdelsal"        => "MR",
+            "oxorder__oxdelfname"      => "",
+            "oxorder__oxdellname"      => "",
+            "oxorder__oxdelcompany"    => "",
+            "oxorder__oxdelstreet"     => "",
+            "oxorder__oxdelstreetnr"   => "",
+            "oxorder__oxdelzip"        => "",
+            "oxorder__oxdelcity"       => "",
+            "oxorder__oxdeladdinfo"    => "",
+            "oxorder__oxdelstateid"    => "",
+            "oxorder__oxdelcountryid"  => "",
+            "oxorder__oxdelfon"        => "",
+            "oxorder__oxdelfax"        => ""
         );
 
         $aOutData = $aInData;
         $aOutData["oxorder__oxdelsal"] = "";
 
         $oView = new Order_Address();
-        $aInData = $oView->UNITprocessAddress( $aInData, "oxorder__oxdel", array( "oxorder__oxdelsal" ) );
+        $aInData = $oView->UNITprocessAddress($aInData, "oxorder__oxdel", array("oxorder__oxdelsal"));
 
-        $this->assertEquals( $aOutData, $aInData );
+        $this->assertEquals($aOutData, $aInData);
     }
 }

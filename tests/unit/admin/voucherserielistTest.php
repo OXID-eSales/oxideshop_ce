@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for VoucherSerie_List class
  */
 class Unit_Admin_VoucherSerieListTest extends OxidTestCase
 {
+
     /**
      * VoucherSerie_List::DeleteEntry() test case
      *
@@ -37,8 +38,8 @@ class Unit_Admin_VoucherSerieListTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxUtilsServer", "getOxCookie", "{return array(1);}");
         oxTestModules::addFunction("oxUtils", "checkAccessRights", "{return true;}");
-        oxTestModules::addFunction( 'oxvoucherserie', 'load', '{ return true; }' );
-        oxTestModules::addFunction( 'oxvoucherserie', 'deleteVoucherList', '{ return true; }' );
+        oxTestModules::addFunction('oxvoucherserie', 'load', '{ return true; }');
+        oxTestModules::addFunction('oxvoucherserie', 'deleteVoucherList', '{ return true; }');
 
         $oSess = $this->getMock('oxsession', array('checkSessionChallenge'));
         $oSess->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
@@ -62,11 +63,11 @@ class Unit_Admin_VoucherSerieListTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertNull( $aViewData["allowSharedEdit"] );
-        $this->assertNull( $aViewData["malladmin"] );
-        $this->assertNull( $aViewData["updatelist"] );
-        $this->assertNull( $aViewData["sort"] );
+        $this->assertNull($aViewData["allowSharedEdit"]);
+        $this->assertNull($aViewData["malladmin"]);
+        $this->assertNull($aViewData["updatelist"]);
+        $this->assertNull($aViewData["sort"]);
 
-        $this->assertEquals( 'voucherserie_list.tpl', $sTplName );
+        $this->assertEquals('voucherserie_list.tpl', $sTplName);
     }
 }

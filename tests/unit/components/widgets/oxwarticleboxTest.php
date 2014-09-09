@@ -20,36 +20,37 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
-* Tests for oxwArticleBox class
-*/
+ * Tests for oxwArticleBox class
+ */
 class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
 {
+
     /**
      * Template view parameters data provider
      */
     public function _dpTemplateViewParams()
     {
         return array(
-            array( "product", "listitem_grid"    , "widget/product/listitem_grid.tpl"     ),
-            array( "product", "listitem_infogrid", "widget/product/listitem_infogrid.tpl" ),
-            array( "product", "listitem_line"    , "widget/product/listitem_line.tpl"     ),
-            array( "product", "boxproduct"       , "widget/product/boxproduct.tpl"        ),
-            array( "product", "bargainitem"      , "widget/product/bargainitem.tpl"       ),
+            array("product", "listitem_grid", "widget/product/listitem_grid.tpl"),
+            array("product", "listitem_infogrid", "widget/product/listitem_infogrid.tpl"),
+            array("product", "listitem_line", "widget/product/listitem_line.tpl"),
+            array("product", "boxproduct", "widget/product/boxproduct.tpl"),
+            array("product", "bargainitem", "widget/product/bargainitem.tpl"),
         );
     }
 
-   /**
-    * Test for rendering default template
-    */
+    /**
+     * Test for rendering default template
+     */
     public function testRender()
     {
         $oArticleBox = new oxwArticleBox();
 
-        $this->assertEquals( "widget/product/boxproduct.tpl", $oArticleBox->render(), "Default template should be loaded" );
+        $this->assertEquals("widget/product/boxproduct.tpl", $oArticleBox->render(), "Default template should be loaded");
     }
 
     /**
@@ -67,7 +68,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         );
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertEquals( $sExpected, $oArticleBox->render(), "Correct template should be loaded" );
+        $this->assertEquals($sExpected, $oArticleBox->render(), "Correct template should be loaded");
     }
 
     /**
@@ -84,7 +85,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         );
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertEquals( $sForcedTemplate, $oArticleBox->render(), "Correct template should be loaded" );
+        $this->assertEquals($sForcedTemplate, $oArticleBox->render(), "Correct template should be loaded");
     }
 
     /**
@@ -97,13 +98,13 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         $sId = "1126";
         $iLinkType = 4;
         $aViewParams = array(
-            "anid" => $sId,
+            "anid"      => $sId,
             "iLinkType" => $iLinkType,
         );
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertEquals( $sId, $oArticleBox->getProduct()->getId(), "Correct product should be loaded" );
-        $this->assertEquals( $iLinkType, $oArticleBox->getProduct()->getLinkType(), "Correct link type should be set" );
+        $this->assertEquals($sId, $oArticleBox->getProduct()->getId(), "Correct product should be loaded");
+        $this->assertEquals($iLinkType, $oArticleBox->getProduct()->getLinkType(), "Correct link type should be set");
     }
 
     /**
@@ -112,31 +113,32 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     public function testGetProductWithSearch()
     {
         $oArticleBox = new oxwArticleBox();
-        $this->setLanguage( 1 );
+        $this->setLanguage(1);
 
         $sId = "1126";
         $iLinkType = 4;
         $aViewParams = array(
-            "anid" => $sId,
+            "anid"      => $sId,
             "iLinkType" => $iLinkType,
         );
         $oArticleBox->setViewParameters($aViewParams);
         $sLinkUrl = $oArticleBox->getProduct()->getMainLink();
 
-        $oArticleBox->setParent( "search" );
-        $oConfig = $this->getMock( "oxConfig", array( 'getTopActiveView' ) );
+        $oArticleBox->setParent("search");
+        $oConfig = $this->getMock("oxConfig", array('getTopActiveView'));
         $oSearch = new Search();
-        $oConfig->expects( $this->any() )->method( 'getTopActiveView' )->will( $this->returnValue( $oSearch ) );
+        $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oSearch));
 
-        $oArticleBox->setConfig( $oConfig );
+        $oArticleBox->setConfig($oConfig);
         $sLinkUrl .= "?listtype=search&amp;searchparam=1126";
 
 
-        $this->setRequestParam( "searchparam", "1126" );
+        $this->setRequestParam("searchparam", "1126");
         // removing cached object
-        $oArticleBox->setProduct( null );
-        $this->assertEquals( $sLinkUrl, $oArticleBox->getProduct()->getMainLink(), "Correct product link with additional search parameters should be loaded" );
+        $oArticleBox->setProduct(null);
+        $this->assertEquals($sLinkUrl, $oArticleBox->getProduct()->getMainLink(), "Correct product link with additional search parameters should be loaded");
     }
+
     /**
      * Test for getting link
      */
@@ -153,7 +155,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         );
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertNotEquals( false, strpos( $oArticleBox->getLink(),"cl=alist" ) );
+        $this->assertNotEquals(false, strpos($oArticleBox->getLink(), "cl=alist"));
     }
 
     /**
@@ -172,7 +174,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         );
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertEquals( $aRSS, $oArticleBox->getRSSLinks(), "Should get RSS links' array" );
+        $this->assertEquals($aRSS, $oArticleBox->getRSSLinks(), "Should get RSS links' array");
     }
 
     /**
@@ -187,14 +189,14 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         );
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertEquals( array(), $oArticleBox->getRSSLinks(), "Should get array" );
+        $this->assertEquals(array(), $oArticleBox->getRSSLinks(), "Should get array");
 
         $aViewParams = array(
             "rsslinks" => "rsslink",
         );
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertEquals( null, $oArticleBox->getRSSLinks(), "Should get null" );
+        $this->assertEquals(null, $oArticleBox->getRSSLinks(), "Should get null");
     }
 
     /**
@@ -205,15 +207,15 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     public function _dpViewParameters()
     {
         return array(
-            array( "recommid"           , "Z8oRXLEnInxn", "getRecommId"         , "Recommendation list id"                  ),
-            array( "iIteration"         , "7"           , "getIteration"        , "Iteration number"                        ),
-            array( "iIndex"             , "3"           , "getIndex"           , "Test id"                                 ),
-            array( "owishid"            , "7g7eZ6hxUsad", "getWishId"           , "Wishlist id"                             ),
-            array( "showMainLink"       , false         , "getShowMainLink"     , "Condition if main link is showed"        ),
-            array( "blDisableToCart"    , true          , "getDisableToCart"    , "Condition if to cart button is showed"   ),
-            array( "toBasketFunction"   , "tobasket"    , "getToBasketFunction" , "toBasket function"                       ),
-            array( "removeFunction"     , "remove"      , "getRemoveFunction"   , "Remove function"                         ),
-            array( "altproduct"         , false         , "getAltProduct"       , "Condition if alternate product exists"   ),
+            array("recommid", "Z8oRXLEnInxn", "getRecommId", "Recommendation list id"),
+            array("iIteration", "7", "getIteration", "Iteration number"),
+            array("iIndex", "3", "getIndex", "Test id"),
+            array("owishid", "7g7eZ6hxUsad", "getWishId", "Wishlist id"),
+            array("showMainLink", false, "getShowMainLink", "Condition if main link is showed"),
+            array("blDisableToCart", true, "getDisableToCart", "Condition if to cart button is showed"),
+            array("toBasketFunction", "tobasket", "getToBasketFunction", "toBasket function"),
+            array("removeFunction", "remove", "getRemoveFunction", "Remove function"),
+            array("altproduct", false, "getAltProduct", "Condition if alternate product exists"),
         );
     }
 
@@ -229,7 +231,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         $aViewParams = array($sKey => $mxValue);
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertEquals( $mxValue, $oArticleBox->$sFunction(), $sMessage );
+        $this->assertEquals($mxValue, $oArticleBox->$sFunction(), $sMessage);
     }
 
     /**
@@ -239,20 +241,20 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     public function testGetActiveCategory_ParentControllerActiveCategoryIsSet_ReturnCategory()
     {
         $oCategory = new oxCategory();
-        $oCategory->load( '943a9ba3050e78b443c16e043ae60ef3' );
+        $oCategory->load('943a9ba3050e78b443c16e043ae60ef3');
 
         $oList = new aList();
-        $oList->setActiveCategory( $oCategory );
+        $oList->setActiveCategory($oCategory);
 
-        $oConfig = $this->getMock( 'oxConfig', array( 'getTopActiveView' ) );
-        $oConfig->expects( $this->any() )->method( 'getTopActiveView' )->will( $this->returnValue( $oList ) );
+        $oConfig = $this->getMock('oxConfig', array('getTopActiveView'));
+        $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oList));
 
-        $oArticleBox = $this->getMock( 'oxwArticleBox', array( 'getConfig' ) );
-        $oArticleBox->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
+        $oArticleBox = $this->getMock('oxwArticleBox', array('getConfig'));
+        $oArticleBox->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertTrue( $oArticleBox->getActiveCategory() instanceof oxCategory );
-        $this->assertEquals( '943a9ba3050e78b443c16e043ae60ef3', $oArticleBox->getActiveCategory()->getId() );
-        $this->assertEquals( 'Eco-Fashion', $oArticleBox->getActiveCategory()->getTitle() );
+        $this->assertTrue($oArticleBox->getActiveCategory() instanceof oxCategory);
+        $this->assertEquals('943a9ba3050e78b443c16e043ae60ef3', $oArticleBox->getActiveCategory()->getId());
+        $this->assertEquals('Eco-Fashion', $oArticleBox->getActiveCategory()->getTitle());
     }
 
     /**
@@ -264,16 +266,16 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         $oCategory = new oxCategory();
 
         $oList = new aList();
-        $oList->setActiveCategory( $oCategory );
+        $oList->setActiveCategory($oCategory);
 
-        $oConfig = $this->getMock( 'oxConfig', array( 'getTopActiveView' ) );
-        $oConfig->expects( $this->any() )->method( 'getTopActiveView' )->will( $this->returnValue( $oList ) );
+        $oConfig = $this->getMock('oxConfig', array('getTopActiveView'));
+        $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oList));
 
-        $oArticleBox = $this->getMock( 'oxwArticleBox', array( 'getConfig' ) );
-        $oArticleBox->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
+        $oArticleBox = $this->getMock('oxwArticleBox', array('getConfig'));
+        $oArticleBox->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertTrue( $oArticleBox->getActiveCategory() instanceof oxCategory );
-        $this->assertEquals( null, $oArticleBox->getActiveCategory()->getId() );
-        $this->assertEquals( null, $oArticleBox->getActiveCategory()->getTitle() );
+        $this->assertTrue($oArticleBox->getActiveCategory() instanceof oxCategory);
+        $this->assertEquals(null, $oArticleBox->getActiveCategory()->getId());
+        $this->assertEquals(null, $oArticleBox->getActiveCategory()->getTitle());
     }
 }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for PriceAlarm_List class
  */
 class Unit_Admin_PriceAlarmListTest extends OxidTestCase
 {
+
     /**
      * PriceAlarm_List::BuildSelectString() test case
      *
@@ -35,10 +36,10 @@ class Unit_Admin_PriceAlarmListTest extends OxidTestCase
      */
     public function testBuildSelectString()
     {
-        $sViewName = getViewName( "oxpricealarm" );
-        $sArtViewName = getViewName( "oxarticles" );
+        $sViewName = getViewName("oxpricealarm");
+        $sArtViewName = getViewName("oxarticles");
 
-        $sSql  = "select {$sViewName}.*, {$sArtViewName}.oxtitle AS articletitle, ";
+        $sSql = "select {$sViewName}.*, {$sArtViewName}.oxtitle AS articletitle, ";
         $sSql .= "oxuser.oxlname as userlname, oxuser.oxfname as userfname ";
         $sSql .= "from {$sViewName} ";
         $sSql .= "left join {$sArtViewName} on {$sArtViewName}.oxid = {$sViewName}.oxartid ";
@@ -46,7 +47,7 @@ class Unit_Admin_PriceAlarmListTest extends OxidTestCase
 
         // testing..
         $oView = new PriceAlarm_List();
-        $this->assertEquals( $sSql, $oView->UNITbuildSelectString( new stdClass() ) );
+        $this->assertEquals($sSql, $oView->UNITbuildSelectString(new stdClass()));
     }
 
     /**
@@ -57,7 +58,7 @@ class Unit_Admin_PriceAlarmListTest extends OxidTestCase
     public function testRender()
     {
         $oView = new PriceAlarm_List();
-        $this->assertEquals( 'pricealarm_list.tpl', $oView->render() );
+        $this->assertEquals('pricealarm_list.tpl', $oView->render());
     }
 
     /**
@@ -67,19 +68,19 @@ class Unit_Admin_PriceAlarmListTest extends OxidTestCase
      */
     public function testBuildWhere()
     {
-        modConfig::setRequestParameter( 'where', array( "oxpricealarm" => array( "oxprice" => 15 ), "oxarticles" => array( "oxprice" => 15 ) ) );
+        modConfig::setRequestParameter('where', array("oxpricealarm" => array("oxprice" => 15), "oxarticles" => array("oxprice" => 15)));
 
-        $sViewName = getViewName( "oxpricealarm" );
-        $sArtViewName = getViewName( "oxarticles" );
+        $sViewName = getViewName("oxpricealarm");
+        $sArtViewName = getViewName("oxarticles");
 
-        $aWhere[$sViewName.'.oxprice'] = '%15%';
-        $aWhere[$sArtViewName.'.oxprice'] = '%15%';
+        $aWhere[$sViewName . '.oxprice'] = '%15%';
+        $aWhere[$sArtViewName . '.oxprice'] = '%15%';
 
 
         // testing..
-        $oView = $this->getMock( "PriceAlarm_List", array( "_authorize" ) );
-        $oView->expects( $this->any() )->method( '_authorize' )->will( $this->returnValue( true ) );
+        $oView = $this->getMock("PriceAlarm_List", array("_authorize"));
+        $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
         $oView->init();
-        $this->assertEquals( $aWhere, $oView->buildWhere() );
+        $this->assertEquals($aWhere, $oView->buildWhere());
     }
 }

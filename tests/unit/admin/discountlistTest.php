@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Discount_List class
  */
 class Unit_Admin_DiscountListTest extends OxidTestCase
 {
+
     /**
      * Discount_List::Render() test case
      *
@@ -46,9 +47,9 @@ class Unit_Admin_DiscountListTest extends OxidTestCase
 
         $oView->init();
 
-        $this->assertEquals( "oxdiscount", $oView->getNonPublicVar( "_sListClass" ) );
-        $this->assertEquals( "oxdiscountlist", $oView->getNonPublicVar( "_sListType" ) );
-        $this->assertEquals( array('oxdiscount' => array( "oxtitle" => "asc" ) ), $oView->getListSorting() );
-        $this->assertEquals( 'discount_list.tpl', $oView->render() );
+        $this->assertEquals("oxdiscount", $oView->getNonPublicVar("_sListClass"));
+        $this->assertEquals("oxdiscountlist", $oView->getNonPublicVar("_sListType"));
+        $this->assertEquals(array('oxdiscount' => array("oxtitle" => "asc")), $oView->getListSorting());
+        $this->assertEquals('discount_list.tpl', $oView->render());
     }
 }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for VoucherSerie_Export class
  */
 class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
 {
+
     /**
      * Cleanup
      *
@@ -36,8 +37,8 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
     public function tearDown()
     {
         // cleanup
-        $this->cleanUpTable( "oxvouchers" );
-        $this->cleanUpTable( "oxvoucherseries" );
+        $this->cleanUpTable("oxvouchers");
+        $this->cleanUpTable("oxvoucherseries");
 
         parent::tearDown();
     }
@@ -51,21 +52,21 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
     {
         $myConfig = modConfig::getInstance();
 
-        $myConfig->setConfigParam( "sAdminSSLURL", "sAdminSSLURL" );
-        oxRegistry::get("oxUtilsUrl")->setAdminMode( true );
-        $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl( 'sAdminSSLURL/index.php' );
+        $myConfig->setConfigParam("sAdminSSLURL", "sAdminSSLURL");
+        oxRegistry::get("oxUtilsUrl")->setAdminMode(true);
+        $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl('sAdminSSLURL/index.php');
 
         // ssl
         $oView = new VoucherSerie_Export();
-        $this->assertEquals( $sUrl.'&amp;cl=voucherserie_export&amp;fnc=download', $oView->getDownloadUrl() );
+        $this->assertEquals($sUrl . '&amp;cl=voucherserie_export&amp;fnc=download', $oView->getDownloadUrl());
 
-        $myConfig->setConfigParam( "sAdminSSLURL", null );
-        $sUrl = $myConfig->getConfigParam( 'sShopURL' ). $myConfig->getConfigParam( 'sAdminDir' );
-        $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl( $sUrl.'/index.php' );
+        $myConfig->setConfigParam("sAdminSSLURL", null);
+        $sUrl = $myConfig->getConfigParam('sShopURL') . $myConfig->getConfigParam('sAdminDir');
+        $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl($sUrl . '/index.php');
 
         // non ssl
         $oView = new VoucherSerie_Export();
-        $this->assertEquals( $sUrl.'&amp;cl=voucherserie_export&amp;fnc=download', $oView->getDownloadUrl() );
+        $this->assertEquals($sUrl . '&amp;cl=voucherserie_export&amp;fnc=download', $oView->getDownloadUrl());
     }
 
     /**
@@ -78,7 +79,7 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
         $oView = new VoucherSerie_Export();
         $oView->UNITgetExportFileName();
 
-        $this->assertNotNull( oxRegistry::getSession()->getVariable( "sExportFileName" ) );
+        $this->assertNotNull(oxRegistry::getSession()->getVariable("sExportFileName"));
     }
 
     /**
@@ -88,10 +89,10 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
      */
     public function testGetExportFilePath()
     {
-        $oView = $this->getMock( "VoucherSerie_Export", array( "_getExportFileName") );
-        $oView->expects( $this->once() )->method( '_getExportFileName' )->will( $this->returnValue( "testName" ) );
+        $oView = $this->getMock("VoucherSerie_Export", array("_getExportFileName"));
+        $oView->expects($this->once())->method('_getExportFileName')->will($this->returnValue("testName"));
 
-        $this->assertEquals( oxRegistry::getConfig()->getConfigParam( 'sShopDir' ) . "/export/". "testName", $oView->UNITgetExportFilePath() );
+        $this->assertEquals(oxRegistry::getConfig()->getConfigParam('sShopDir') . "/export/" . "testName", $oView->UNITgetExportFilePath());
     }
 
     /**
@@ -102,21 +103,21 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
     public function testExportVouchers()
     {
         // test voucherserie
-        $oVoucherSerie = oxNew( "oxvoucherserie" );
-        $oVoucherSerie->setId( "_testvoucherserie" );
+        $oVoucherSerie = oxNew("oxvoucherserie");
+        $oVoucherSerie->setId("_testvoucherserie");
 
         // inserting test voucher
-        $oVoucher = oxNew( "oxbase" );
-        $oVoucher->init( "oxvouchers" );
-        $oVoucher->setId( "_testvoucher" );
-        $oVoucher->oxvouchers__oxvoucherserieid = new oxField( "_testvoucherserie" );
-        $oVoucher->oxvouchers__oxvouchernr = new oxField( "_testvoucher" );
+        $oVoucher = oxNew("oxbase");
+        $oVoucher->init("oxvouchers");
+        $oVoucher->setId("_testvoucher");
+        $oVoucher->oxvouchers__oxvoucherserieid = new oxField("_testvoucherserie");
+        $oVoucher->oxvouchers__oxvouchernr = new oxField("_testvoucher");
         $oVoucher->save();
 
-        $oView = $this->getMock( "VoucherSerie_Export", array( "write", "_getVoucherSerie" ) );
-        $oView->expects( $this->at( 0 ) )->method( '_getVoucherSerie' )->will( $this->returnValue( $oVoucherSerie ) );
-        $oView->expects( $this->at( 1 ) )->method( 'write' )->with( $this->equalTo( "Gutscheine" ) );
-        $oView->expects( $this->at( 2 ) )->method( 'write' )->with( $this->equalTo( "_testvoucher" ) );
-        $this->assertEquals( 1, $oView->exportVouchers( 0 ) );
+        $oView = $this->getMock("VoucherSerie_Export", array("write", "_getVoucherSerie"));
+        $oView->expects($this->at(0))->method('_getVoucherSerie')->will($this->returnValue($oVoucherSerie));
+        $oView->expects($this->at(1))->method('write')->with($this->equalTo("Gutscheine"));
+        $oView->expects($this->at(2))->method('write')->with($this->equalTo("_testvoucher"));
+        $this->assertEquals(1, $oView->exportVouchers(0));
     }
 }

@@ -21,13 +21,14 @@
  */
 
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing beta note class
  */
-class Unit_Core_oxwBetaNoteTest extends OxidTestCase {
+class Unit_Core_oxwBetaNoteTest extends OxidTestCase
+{
 
     /**
      * Initialize the fixture.
@@ -57,20 +58,21 @@ class Unit_Core_oxwBetaNoteTest extends OxidTestCase {
     public function linkProvider()
     {
         return array(
-            array( null, null ),
-            array( 'http://testlink', 'http://testlink' ),
-            array( '', '' )
+            array(null, null),
+            array('http://testlink', 'http://testlink'),
+            array('', '')
         );
     }
+
     /**
      * @dataProvider linkProvider
      */
-    public function testgetBetaNoteLink( $sValuetoSet, $sExpected )
+    public function testgetBetaNoteLink($sValuetoSet, $sExpected)
     {
         $oBetaNote = new oxwBetaNote();
 
-        $oBetaNote->setBetaNoteLink( $sValuetoSet );
+        $oBetaNote->setBetaNoteLink($sValuetoSet);
 
-        $this->assertEquals( $sExpected, $oBetaNote->getBetaNoteLink() );
+        $this->assertEquals($sExpected, $oBetaNote->getBetaNoteLink());
     }
 }

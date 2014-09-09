@@ -20,33 +20,35 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/modifier.oxnumberformat.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'core/smarty/plugins/modifier.oxnumberformat.php';
 
 class Unit_Maintenance_smartyModifierOxNumberFormatTest extends OxidTestCase
 {
+
     /**
      * Provides number format, number and expected value
      */
     public function Provider()
     {
         return array(
-            array( "EUR@ 1.00@ ,@ .@ EUR@ 2", 25000, '25.000,00' ),
-            array( "EUR@ 1.00@ ,@ .@ EUR@ 2", 25000.1584, '25.000,16' ),
-            array( "EUR@ 1.00@ ,@ .@ EUR@ 3", 25000.1584, '25.000,158' ),
-            array( "EUR@ 1.00@ ,@ .@ EUR@ 0", 25000000.5584, '25.000.001' ),
-            array( "EUR@ 1.00@ .@ ,@ EUR@ 2", 25000000.5584, '25,000,000.56' ),
+            array("EUR@ 1.00@ ,@ .@ EUR@ 2", 25000, '25.000,00'),
+            array("EUR@ 1.00@ ,@ .@ EUR@ 2", 25000.1584, '25.000,16'),
+            array("EUR@ 1.00@ ,@ .@ EUR@ 3", 25000.1584, '25.000,158'),
+            array("EUR@ 1.00@ ,@ .@ EUR@ 0", 25000000.5584, '25.000.001'),
+            array("EUR@ 1.00@ .@ ,@ EUR@ 2", 25000000.5584, '25,000,000.56'),
         );
     }
+
     /**
      * Tests how oxnumberformat modifier works
      *
      * @dataProvider Provider
      */
-    public function testNumberFormatDefaultFormat( $sFormat, $mValue, $sExpected )
+    public function testNumberFormatDefaultFormat($sFormat, $mValue, $sExpected)
     {
-        $this->assertEquals($sExpected , smarty_modifier_oxnumberformat( $sFormat, $mValue ) );
+        $this->assertEquals($sExpected, smarty_modifier_oxnumberformat($sFormat, $mValue));
     }
 
 }

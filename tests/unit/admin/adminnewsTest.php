@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Admin_News class
  */
 class Unit_Admin_AdminNewsTest extends OxidTestCase
 {
+
     /**
      * Admin_News::Render() test case
      *
@@ -36,6 +37,6 @@ class Unit_Admin_AdminNewsTest extends OxidTestCase
     public function testRender()
     {
         $oView = new Admin_News();
-        $this->assertEquals( 'admin_news.tpl', $oView->render() );
+        $this->assertEquals('admin_news.tpl', $oView->render());
     }
 }

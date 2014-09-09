@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Adminlinks_Main class
  */
 class Unit_Admin_AdminLinksMainTest extends OxidTestCase
 {
+
     /**
      * Adminlinks_Main::render() test case
      *
@@ -35,8 +36,8 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", -1 );
-        modConfig::setRequestParameter( "saved_oxid", -1 );
+        modConfig::setRequestParameter("oxid", -1);
+        modConfig::setRequestParameter("saved_oxid", -1);
 
         // testing..
         $oView = new Adminlinks_main();
@@ -44,8 +45,8 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertEquals( '-1', $aViewData["oxid"] );
-        $this->assertEquals( 'adminlinks_main.tpl', $sTplName );
+        $this->assertEquals('-1', $aViewData["oxid"]);
+        $this->assertEquals('adminlinks_main.tpl', $sTplName);
     }
 
     /**
@@ -55,7 +56,7 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
      */
     public function testRenderWithExistingLink()
     {
-        modConfig::setRequestParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxlinks" ) );
+        modConfig::setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxlinks"));
 
         // testing..
         $oView = new Adminlinks_main();
@@ -63,8 +64,8 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertNotNull( $aViewData["edit"] );
-        $this->assertEquals( "adminlinks_main.tpl", $sTplName );
+        $this->assertNotNull($aViewData["edit"]);
+        $this->assertEquals("adminlinks_main.tpl", $sTplName);
     }
 
     /**
@@ -78,15 +79,15 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
         oxTestModules::addFunction('oxgbentry', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction('oxgbentry', 'load', '{ return true; }');
 
-        modConfig::setRequestParameter( "oxid", "xxx" );
+        modConfig::setRequestParameter("oxid", "xxx");
 
         // testing..
         $oView = new Adminlinks_main();
         $oView->saveinnlang();
         $aViewData = $oView->getViewData();
 
-        $this->assertNotNull( $aViewData["updatelist"] );
-        $this->assertEquals( 1, $aViewData["updatelist"] );
+        $this->assertNotNull($aViewData["updatelist"]);
+        $this->assertEquals(1, $aViewData["updatelist"]);
 
     }
 
@@ -101,15 +102,15 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
         oxTestModules::addFunction('oxgbentry', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction('oxgbentry', 'load', '{ return true; }');
 
-        modConfig::setRequestParameter( "oxid", "xxx" );
+        modConfig::setRequestParameter("oxid", "xxx");
 
         // testing..
         $oView = new Adminlinks_main();
         $oView->save();
         $aViewData = $oView->getViewData();
 
-        $this->assertNotNull( $aViewData["updatelist"] );
-        $this->assertEquals( 1, $aViewData["updatelist"] );
+        $this->assertNotNull($aViewData["updatelist"]);
+        $this->assertEquals(1, $aViewData["updatelist"]);
     }
 
     /**
@@ -120,8 +121,8 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
     public function testGetTextEditor()
     {
         $oAdminDetails = new adminlinks_main();
-        $oEditor = $oAdminDetails->UNITgetTextEditor( 10, 10, new oxarticle, 'oxarticles__oxtitle' );
+        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle');
 
-            $this->assertFalse( $oEditor );
+            $this->assertFalse($oEditor);
     }
 }

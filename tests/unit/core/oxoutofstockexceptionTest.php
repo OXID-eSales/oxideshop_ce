@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxoutofstockexceptionTest extends OxidTestCase
 {
@@ -39,18 +39,18 @@ class Unit_Core_oxoutofstockexceptionTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_oTestObject = oxNew( 'oxOutOfStockException', $this->_sMsg);
-        $this->assertEquals('oxOutOfStockException', get_class($this->_oTestObject) );
+        $this->_oTestObject = oxNew('oxOutOfStockException', $this->_sMsg);
+        $this->assertEquals('oxOutOfStockException', get_class($this->_oTestObject));
         $this->_oTestObject->setRemainingAmount($this->_iAmount);
-        $this->_oTestObject->setBasketIndex( $this->_sBasketIndex );
+        $this->_oTestObject->setBasketIndex($this->_sBasketIndex);
     }
 
     public function testSetDestination()
     {
-        $this->assertEquals( $this->_sMsg, $this->_oTestObject->getMessage() );
+        $this->assertEquals($this->_sMsg, $this->_oTestObject->getMessage());
 
-        $this->_oTestObject->setDestination( null );
-        $this->assertEquals( $this->_sMsg . ": " .$this->_iAmount, $this->_oTestObject->getMessage() );
+        $this->_oTestObject->setDestination(null);
+        $this->assertEquals($this->_sMsg . ": " . $this->_iAmount, $this->_oTestObject->getMessage());
     }
 
     public function testSetGetRemainingAmount()
@@ -62,9 +62,9 @@ class Unit_Core_oxoutofstockexceptionTest extends OxidTestCase
     public function testGetString()
     {
         $sStringOut = $this->_oTestObject->getString();
-        $this->assertContains($this->_sMsg, $sStringOut);               // Message
-        $this->assertContains('oxOutOfStockException', $sStringOut);    // Exception class name
-        $this->assertContains((string)$this->_iAmount, $sStringOut);    // Amount remaining
+        $this->assertContains($this->_sMsg, $sStringOut); // Message
+        $this->assertContains('oxOutOfStockException', $sStringOut); // Exception class name
+        $this->assertContains((string) $this->_iAmount, $sStringOut); // Amount remaining
     }
 
     public function testGetValues()
@@ -72,7 +72,7 @@ class Unit_Core_oxoutofstockexceptionTest extends OxidTestCase
         $aRes = $this->_oTestObject->getValues();
         $this->assertArrayHasKey('remainingAmount', $aRes);
         $this->assertTrue($this->_iAmount === $aRes['remainingAmount']);
-        $this->assertTrue( $this->_sBasketIndex === $aRes['basketIndex'] );
+        $this->assertTrue($this->_sBasketIndex === $aRes['basketIndex']);
     }
 
 }

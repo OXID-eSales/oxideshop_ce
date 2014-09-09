@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for contact class
  */
 class Unit_Views_exceptionErrorTest extends OxidTestCase
 {
+
     /**
      * Test view render.
      *
@@ -35,8 +36,8 @@ class Unit_Views_exceptionErrorTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oErr = oxNew( 'exceptionError' );
-        $this->assertEquals( 'message/exception.tpl', $oErr->render() );
+        $oErr = oxNew('exceptionError');
+        $this->assertEquals('message/exception.tpl', $oErr->render());
     }
 
     /**
@@ -46,20 +47,20 @@ class Unit_Views_exceptionErrorTest extends OxidTestCase
      */
     public function testDisplayExceptionError()
     {
-       $sEx = "testText";
-       $aErrors = array( "default" => array( "aaa" => serialize( $sEx ) ) );
+        $sEx = "testText";
+        $aErrors = array("default" => array("aaa" => serialize($sEx)));
        
-       $oErr = $this->getMock( "exceptionError", array( "_getErrors", 'getViewData' ) );
-       $oErr->expects( $this->once() )->method( 'getViewData' )->will( $this->returnValue( array() ));
-       $oErr->expects( $this->once() )->method( '_getErrors' )->will( $this->returnValue( $aErrors ));
+        $oErr = $this->getMock("exceptionError", array("_getErrors", 'getViewData'));
+        $oErr->expects($this->once())->method('getViewData')->will($this->returnValue(array()));
+        $oErr->expects($this->once())->method('_getErrors')->will($this->returnValue($aErrors));
 
-       $oErr->displayExceptionError();
+        $oErr->displayExceptionError();
 
-       $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-       $aTplVars = $oSmarty->get_template_vars("Errors");
-       $oViewEx = $aTplVars["default"]["aaa"];
+        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+        $aTplVars = $oSmarty->get_template_vars("Errors");
+        $oViewEx = $aTplVars["default"]["aaa"];
 
-       $this->assertEquals( "testText", $sEx );
+        $this->assertEquals("testText", $sEx);
     }
 
     /**
@@ -69,16 +70,16 @@ class Unit_Views_exceptionErrorTest extends OxidTestCase
      */
     public function testDisplayExceptionError_resetsErrorsInSession()
     {
-       modSession::getInstance()->setVar( "Errors", "testValue" );
-       $this->assertEquals( "testValue", modSession::getInstance()->getVar( "Errors" ) );
+        modSession::getInstance()->setVar("Errors", "testValue");
+        $this->assertEquals("testValue", modSession::getInstance()->getVar("Errors"));
 
-       $oErr = $this->getMock( "exceptionError", array( "_getErrors", 'getViewData' ) );
-       $oErr->expects( $this->once() )->method( 'getViewData' )->will( $this->returnValue( array() ));
-       $oErr->expects( $this->once() )->method( '_getErrors' )->will( $this->returnValue( array() ));
+        $oErr = $this->getMock("exceptionError", array("_getErrors", 'getViewData'));
+        $oErr->expects($this->once())->method('getViewData')->will($this->returnValue(array()));
+        $oErr->expects($this->once())->method('_getErrors')->will($this->returnValue(array()));
 
-       $oErr->displayExceptionError();
+        $oErr->displayExceptionError();
 
-       $this->assertEquals( array(), modSession::getInstance()->getVar( "Errors" ) );
+        $this->assertEquals(array(), modSession::getInstance()->getVar("Errors"));
     }
 
     /**
@@ -88,9 +89,9 @@ class Unit_Views_exceptionErrorTest extends OxidTestCase
      */
     public function testGetErrors()
     {
-       modSession::getInstance()->setVar( "Errors", "testValue" );
+        modSession::getInstance()->setVar("Errors", "testValue");
 
-       $oErr = $this->getProxyClass ("exceptionError" );
-       $this->assertEquals( "testValue", $oErr->UNITgetErrors() );
+        $oErr = $this->getProxyClass("exceptionError");
+        $this->assertEquals("testValue", $oErr->UNITgetErrors());
     }
 }

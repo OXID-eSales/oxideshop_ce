@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * OxDiscountList tester
@@ -29,7 +29,7 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 class Unit_Core_oxDiscountlistTest extends OxidTestCase
 {
 
-    public $aDiscountIds    = array();
+    public $aDiscountIds = array();
     public $aDiscountArtIds = array();
     public $aTransparentDiscountArtIds = array();
 
@@ -40,16 +40,16 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxRemClassModule( 'modOxUtilsDate' );
-        $this->cleanUpTable( 'oxobject2discount' );
-        $this->cleanUpTable( 'oxcategories' );
+        oxRemClassModule('modOxUtilsDate');
+        $this->cleanUpTable('oxobject2discount');
+        $this->cleanUpTable('oxcategories');
         parent::tearDown();
     }
 
     // just SQL cleaner ..
-    protected function cleanSQL( $sQ )
+    protected function cleanSQL($sQ)
     {
-        return preg_replace( array( '/[^\w\'\:\-\.\*]/' ), '', $sQ );
+        return preg_replace(array('/[^\w\'\:\-\.\*]/'), '', $sQ);
     }
 
     /**
@@ -58,65 +58,65 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
     public function testGetDiscountListWithSomeWrongData()
     {
         $oUser = new oxUser();
-        $oUser->load( "oxdefaultadmin" );
+        $oUser->load("oxdefaultadmin");
 
         $oArticle = new oxArticle();
-        $oArticle->load( "1431" );
+        $oArticle->load("1431");
 
         $oBasket = new oxBasket();
-        $oBasket->addToBasket( "1431", 1 );
+        $oBasket->addToBasket("1431", 1);
         $oBasket->calculateBasket();
 
         $oDiscountList = new oxDiscountList();
-        $oDiscountList = $oDiscountList->getBasketItemDiscounts( $oArticle, $oBasket, $oUser );
-        $iListCOunt = count( $oDiscountList );
+        $oDiscountList = $oDiscountList->getBasketItemDiscounts($oArticle, $oBasket, $oUser);
+        $iListCOunt = count($oDiscountList);
 
         // list must contain at least one item
-        $this->assertTrue( $iListCOunt > 0 );
+        $this->assertTrue($iListCOunt > 0);
 
-        $oDiscount = current( $oDiscountList );
+        $oDiscount = current($oDiscountList);
 
         // adding garbage
         $oGarbage = new oxbase();
-        $oGarbage->init( "oxobject2discount" );
-        $oGarbage->setId( "_testoxobject2discount1" );
-        $oGarbage->oxobject2discount__oxdiscountid = new oxField( $oDiscount->getId() );
-        $oGarbage->oxobject2discount__oxobjectid   = new oxField( "yyy" );
-        $oGarbage->oxobject2discount__oxtype       = new oxField( "oxcountry" );
+        $oGarbage->init("oxobject2discount");
+        $oGarbage->setId("_testoxobject2discount1");
+        $oGarbage->oxobject2discount__oxdiscountid = new oxField($oDiscount->getId());
+        $oGarbage->oxobject2discount__oxobjectid = new oxField("yyy");
+        $oGarbage->oxobject2discount__oxtype = new oxField("oxcountry");
         $oGarbage->save();
 
         $oGarbage = new oxbase();
-        $oGarbage->init( "oxobject2discount" );
-        $oGarbage->setId( "_testoxobject2discount2" );
-        $oGarbage->oxobject2discount__oxdiscountid = new oxField( $oDiscount->getId() );
-        $oGarbage->oxobject2discount__oxobjectid   = new oxField( "yyy" );
-        $oGarbage->oxobject2discount__oxtype       = new oxField( "oxuser" );
+        $oGarbage->init("oxobject2discount");
+        $oGarbage->setId("_testoxobject2discount2");
+        $oGarbage->oxobject2discount__oxdiscountid = new oxField($oDiscount->getId());
+        $oGarbage->oxobject2discount__oxobjectid = new oxField("yyy");
+        $oGarbage->oxobject2discount__oxtype = new oxField("oxuser");
         $oGarbage->save();
 
         $oGarbage = new oxbase();
-        $oGarbage->init( "oxobject2discount" );
-        $oGarbage->setId( "_testoxobject2discount3" );
-        $oGarbage->oxobject2discount__oxdiscountid = new oxField( $oDiscount->getId() );
-        $oGarbage->oxobject2discount__oxobjectid   = new oxField( "yyy" );
-        $oGarbage->oxobject2discount__oxtype       = new oxField( "oxgroups" );
+        $oGarbage->init("oxobject2discount");
+        $oGarbage->setId("_testoxobject2discount3");
+        $oGarbage->oxobject2discount__oxdiscountid = new oxField($oDiscount->getId());
+        $oGarbage->oxobject2discount__oxobjectid = new oxField("yyy");
+        $oGarbage->oxobject2discount__oxtype = new oxField("oxgroups");
         $oGarbage->save();
 
         $oDiscountList = new oxDiscountList();
-        $oDiscountList = $oDiscountList->getBasketItemDiscounts( $oArticle, $oBasket, $oUser );
-        $iNewListCount = count( $oDiscountList );
+        $oDiscountList = $oDiscountList->getBasketItemDiscounts($oArticle, $oBasket, $oUser);
+        $iNewListCount = count($oDiscountList);
 
         // list must contain at least one item
-        $this->assertTrue( $iNewListCount > 0 );
-        $this->assertTrue( $iNewListCount === $iListCOunt );
+        $this->assertTrue($iNewListCount > 0);
+        $this->assertTrue($iNewListCount === $iListCOunt);
 
         $blFound = false;
-        foreach ( $oDiscountList as $oDisc ) {
-            if ( $oDiscount->getId() == $oDisc->getId() ) {
+        foreach ($oDiscountList as $oDisc) {
+            if ($oDiscount->getId() == $oDisc->getId()) {
                 $blFound = true;
                 break;
             }
         }
-        $this->assertTrue( $blFound, "Error, delivery set not found" );
+        $this->assertTrue($blFound, "Error, delivery set not found");
     }
 
     /**
@@ -125,13 +125,13 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
     // with user
     public function testGetList()
     {
-        $oUser = $this->getMock( 'oxuser', array( 'getId' ) );
-        $oUser->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( 'xxx' ) );
+        $oUser = $this->getMock('oxuser', array('getId'));
+        $oUser->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
 
-        $oList = $this->getMock( 'oxdiscountlist', array( 'selectString', '_getFilterSelect' ) );
-        $oList->expects( $this->once() )->method( 'selectString' );
-        $oList->expects( $this->once() )->method( '_getFilterSelect' );
-        $oList->UNITgetList( $oUser );
+        $oList = $this->getMock('oxdiscountlist', array('selectString', '_getFilterSelect'));
+        $oList->expects($this->once())->method('selectString');
+        $oList->expects($this->once())->method('_getFilterSelect');
+        $oList->UNITgetList($oUser);
     }
 
     // testing returned data
@@ -141,22 +141,27 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
         $oList->UNITgetList();
 
         // checking using demo data
-        $this->assertEquals( 1, $oList->count() );
-        $this->assertEquals( array( '4e542e4e8dd127836.00288451' ),
-                             array_keys( $oList->aList ) );
+        $this->assertEquals(1, $oList->count());
+        $this->assertEquals(
+            array('4e542e4e8dd127836.00288451'),
+            array_keys($oList->aList)
+        );
     }
+
     public function testGetListDataCheckAdminUser()
     {
         $oUser = new oxuser();
-        $oUser->load( 'oxdefaultadmin' );
+        $oUser->load('oxdefaultadmin');
 
         $oList = new oxdiscountlist();
-        $oList->UNITgetList( $oUser );
+        $oList->UNITgetList($oUser);
 
         // checking using demo data
-        $this->assertEquals( 1, $oList->count() );
-        $this->assertEquals( array( '4e542e4e8dd127836.00288451' ),
-                             array_keys( $oList->aList ) );
+        $this->assertEquals(1, $oList->count());
+        $this->assertEquals(
+            array('4e542e4e8dd127836.00288451'),
+            array_keys($oList->aList)
+        );
     }
 
     /**
@@ -166,16 +171,17 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
     public function testGetCountryIdNoUserExpectsConfigCountry()
     {
         $oList = new oxdiscountlist();
-        $this->assertNull( $oList->getCountryId( null ) );
+        $this->assertNull($oList->getCountryId(null));
     }
+
     // taking user country id
     public function testGetCountryIdAdminUser()
     {
         $oUser = new oxuser();
-        $oUser->load( 'oxdefaultadmin' );
+        $oUser->load('oxdefaultadmin');
 
         $oList = new oxdiscountlist();
-        $this->assertEquals( 'a7c40f631fc920687.20179984', $oList->getCountryId( $oUser ) );
+        $this->assertEquals('a7c40f631fc920687.20179984', $oList->getCountryId($oUser));
     }
 
     /**
@@ -185,16 +191,16 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
     public function testGetFilterSelectNoUser()
     {
         $iCurrTime = time();
-        oxTestModules::addFunction( "oxUtilsDate", "getTime", "{ return $iCurrTime; }");
-        $sUserTable    = getViewName( 'oxuser' );
-        $sGroupTable   = getViewName( 'oxgroups' );
-        $sCountryTable = getViewName( 'oxcountry' );
+        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        $sUserTable = getViewName('oxuser');
+        $sGroupTable = getViewName('oxgroups');
+        $sCountryTable = getViewName('oxcountry');
 
         $oList = new oxdiscountlist();
 
         // default oxConfig country check.
-        $sTable = getViewName( 'oxdiscount' );
-        $sQ = "select ".$oList->getBaseObject()->getSelectFields()." from $sTable where ( ( $sTable.oxactive = 1 or ( $sTable.oxactivefrom < '".date( 'Y-m-d H:i:s', $iCurrTime )."' and $sTable.oxactiveto > '".date( 'Y-m-d H:i:s', $iCurrTime )."')) ) and (
+        $sTable = getViewName('oxdiscount');
+        $sQ = "select " . $oList->getBaseObject()->getSelectFields() . " from $sTable where ( ( $sTable.oxactive = 1 or ( $sTable.oxactivefrom < '" . date('Y-m-d H:i:s', $iCurrTime) . "' and $sTable.oxactiveto > '" . date('Y-m-d H:i:s', $iCurrTime) . "')) ) and (
             select
                 if(EXISTS(select 1 from oxobject2discount, $sCountryTable where $sCountryTable.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxcountry' LIMIT 1),
                         0,
@@ -207,31 +213,33 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
                         1)
             )";
 
-        $this->assertEquals( $this->cleanSQL( $sQ ), $this->cleanSQL( $oList->UNITgetFilterSelect( null ) ) );
+        $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->UNITgetFilterSelect(null)));
     }
+
     // admin user
     public function testGetFilterSelectAdminUser()
     {
         oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
-        $sUserTable    = getViewName( 'oxuser' );
-        $sGroupTable   = getViewName( 'oxgroups' );
-        $sCountryTable = getViewName( 'oxcountry' );
+        $sUserTable = getViewName('oxuser');
+        $sGroupTable = getViewName('oxgroups');
+        $sCountryTable = getViewName('oxcountry');
 
         $oUser = new oxuser();
-        $oUser->load( 'oxdefaultadmin' );
+        $oUser->load('oxdefaultadmin');
 
         $sGroupIds = '';
-        foreach ( $oUser->getUserGroups() as $oGroup ) {
-            if ( $sGroupIds )
+        foreach ($oUser->getUserGroups() as $oGroup) {
+            if ($sGroupIds) {
                 $sGroupIds .= ', ';
-            $sGroupIds .= "'".$oGroup->getId()."'";
+            }
+            $sGroupIds .= "'" . $oGroup->getId() . "'";
         }
 
         $oList = new oxdiscountlist();
 
         // default oxConfig country check.
-        $sTable = getViewName( 'oxdiscount' );
-        $sQ = "select ".$oList->getBaseObject()->getSelectFields()." from $sTable where ".$oList->getBaseObject()->getSqlActiveSnippet()." and (
+        $sTable = getViewName('oxdiscount');
+        $sQ = "select " . $oList->getBaseObject()->getSelectFields() . " from $sTable where " . $oList->getBaseObject()->getSqlActiveSnippet() . " and (
             select
                 if(EXISTS(select 1 from oxobject2discount, $sCountryTable where $sCountryTable.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxcountry' LIMIT 1),
                         EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxcountry' and oxobject2discount.OXOBJECTID='a7c40f631fc920687.20179984'),
@@ -244,7 +252,7 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
                         1)
             )";
 
-        $this->assertEquals( $this->cleanSQL( $sQ ), $this->cleanSQL( $oList->UNITgetFilterSelect( $oUser ) ) );
+        $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->UNITgetFilterSelect($oUser)));
     }
 
     /**
@@ -257,31 +265,32 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
         $oArticle = new oxArticle();
         $oArticle->xxx = 'yyy';
 
-        $aDiscounts[0] = $this->getMock( 'oxdiscount', array( 'isForArticle', 'getId' ) );
-        $aDiscounts[0]->expects( $this->once() )->method( 'isForArticle' )->will( $this->returnValue( true ) );
-        $aDiscounts[0]->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( 'xxx' ) );
+        $aDiscounts[0] = $this->getMock('oxdiscount', array('isForArticle', 'getId'));
+        $aDiscounts[0]->expects($this->once())->method('isForArticle')->will($this->returnValue(true));
+        $aDiscounts[0]->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
 
-        $aDiscounts[1] = $this->getMock( 'oxdiscount', array( 'isForArticle', 'getId' ) );
-        $aDiscounts[1]->expects( $this->once() )->method( 'isForArticle' )->will( $this->returnValue( true ) );
-        $aDiscounts[1]->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( 'yyy' ) );
+        $aDiscounts[1] = $this->getMock('oxdiscount', array('isForArticle', 'getId'));
+        $aDiscounts[1]->expects($this->once())->method('isForArticle')->will($this->returnValue(true));
+        $aDiscounts[1]->expects($this->once())->method('getId')->will($this->returnValue('yyy'));
 
-        $aDiscounts[2] = $this->getMock( 'oxdiscount', array( 'isForArticle', 'getId' ) );
-        $aDiscounts[2]->expects( $this->once() )->method( 'isForArticle' )->will( $this->returnValue( false ) );
-        $aDiscounts[2]->expects( $this->never() )->method( 'getId' )->will( $this->returnValue( 'zzz' ) );
+        $aDiscounts[2] = $this->getMock('oxdiscount', array('isForArticle', 'getId'));
+        $aDiscounts[2]->expects($this->once())->method('isForArticle')->will($this->returnValue(false));
+        $aDiscounts[2]->expects($this->never())->method('getId')->will($this->returnValue('zzz'));
 
-        $aDiscounts[3] = $this->getMock( 'oxdiscount', array( 'isForArticle', 'getId' ) );
-        $aDiscounts[3]->expects( $this->once() )->method( 'isForArticle' )->will( $this->returnValue( false ) );
-        $aDiscounts[3]->expects( $this->never() )->method( 'getId' )->will( $this->returnValue( 'www' ) );
+        $aDiscounts[3] = $this->getMock('oxdiscount', array('isForArticle', 'getId'));
+        $aDiscounts[3]->expects($this->once())->method('isForArticle')->will($this->returnValue(false));
+        $aDiscounts[3]->expects($this->never())->method('getId')->will($this->returnValue('www'));
 
-        $oDList = $this->getMock( 'oxList', array( 'getArray' ) );
-        $oDList->expects( $this->once() )->method( 'getArray' )->will( $this->returnValue( $aDiscounts ) );
+        $oDList = $this->getMock('oxList', array('getArray'));
+        $oDList->expects($this->once())->method('getArray')->will($this->returnValue($aDiscounts));
 
-        $oList = $this->getMock( 'oxdiscountlist', array( '_getList' ) );
-        $oList->expects( $this->once() )->method( '_getList' )->will( $this->returnValue( $oDList ) );
+        $oList = $this->getMock('oxdiscountlist', array('_getList'));
+        $oList->expects($this->once())->method('_getList')->will($this->returnValue($oDList));
 
         // now proceeding to disocunt id check
-        $this->assertEquals( array( 'xxx' => $aDiscounts[0], 'yyy' => $aDiscounts[1] ), $oList->getArticleDiscounts( $oArticle ) );
+        $this->assertEquals(array('xxx' => $aDiscounts[0], 'yyy' => $aDiscounts[1]), $oList->getArticleDiscounts($oArticle));
     }
+
     // basket item
     public function testGetBasketItemDiscounts()
     {
@@ -293,41 +302,42 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
         $oBasket = new oxBasket();
         $oBasket->zzz = 'www';
 
-        $aDiscounts[0] = $this->getMock( 'oxdiscount', array( 'isForBasketItem', 'isForBasketAmount', 'getId' ) );
-        $aDiscounts[0]->expects( $this->once() )->method( 'isForBasketItem' )->will( $this->returnValue( true ) );
-        $aDiscounts[0]->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( 'xxx' ) );
-        $aDiscounts[0]->expects( $this->once() )->method( 'isForBasketAmount' )->will( $this->returnValue( true ) );
+        $aDiscounts[0] = $this->getMock('oxdiscount', array('isForBasketItem', 'isForBasketAmount', 'getId'));
+        $aDiscounts[0]->expects($this->once())->method('isForBasketItem')->will($this->returnValue(true));
+        $aDiscounts[0]->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
+        $aDiscounts[0]->expects($this->once())->method('isForBasketAmount')->will($this->returnValue(true));
 
-        $aDiscounts[1] = $this->getMock( 'oxdiscount', array( 'isForBasketItem', 'isForBasketAmount', 'getId' ) );
-        $aDiscounts[1]->expects( $this->once() )->method( 'isForBasketItem' )->will( $this->returnValue( true ) );
-        $aDiscounts[1]->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( 'yyy' ) );
-        $aDiscounts[1]->expects( $this->once() )->method( 'isForBasketAmount' )->will( $this->returnValue( true ) );
+        $aDiscounts[1] = $this->getMock('oxdiscount', array('isForBasketItem', 'isForBasketAmount', 'getId'));
+        $aDiscounts[1]->expects($this->once())->method('isForBasketItem')->will($this->returnValue(true));
+        $aDiscounts[1]->expects($this->once())->method('getId')->will($this->returnValue('yyy'));
+        $aDiscounts[1]->expects($this->once())->method('isForBasketAmount')->will($this->returnValue(true));
 
-        $aDiscounts[2] = $this->getMock( 'oxdiscount', array( 'isForBasketItem', 'isForBasketAmount', 'getId' ) );
-        $aDiscounts[2]->expects( $this->once() )->method( 'isForBasketItem' )->will( $this->returnValue( false ) );
-        $aDiscounts[2]->expects( $this->never() )->method( 'getId' )->will( $this->returnValue( 'zzz' ) );
-        $aDiscounts[2]->expects( $this->never() )->method( 'isForBasketAmount' );
+        $aDiscounts[2] = $this->getMock('oxdiscount', array('isForBasketItem', 'isForBasketAmount', 'getId'));
+        $aDiscounts[2]->expects($this->once())->method('isForBasketItem')->will($this->returnValue(false));
+        $aDiscounts[2]->expects($this->never())->method('getId')->will($this->returnValue('zzz'));
+        $aDiscounts[2]->expects($this->never())->method('isForBasketAmount');
 
-        $aDiscounts[3] = $this->getMock( 'oxdiscount', array( 'isForBasketItem', 'isForBasketAmount', 'getId' ) );
-        $aDiscounts[3]->expects( $this->once() )->method( 'isForBasketItem' )->will( $this->returnValue( false ) );
-        $aDiscounts[3]->expects( $this->never() )->method( 'getId' )->will( $this->returnValue( 'www' ) );
-        $aDiscounts[3]->expects( $this->never() )->method( 'isForBasketAmount' );
+        $aDiscounts[3] = $this->getMock('oxdiscount', array('isForBasketItem', 'isForBasketAmount', 'getId'));
+        $aDiscounts[3]->expects($this->once())->method('isForBasketItem')->will($this->returnValue(false));
+        $aDiscounts[3]->expects($this->never())->method('getId')->will($this->returnValue('www'));
+        $aDiscounts[3]->expects($this->never())->method('isForBasketAmount');
 
-        $aDiscounts[4] = $this->getMock( 'oxdiscount', array( 'isForBasketItem', 'isForBasketAmount', 'getId' ) );
-        $aDiscounts[4]->expects( $this->once() )->method( 'isForBasketItem' )->will( $this->returnValue( false ) );
-        $aDiscounts[4]->expects( $this->never() )->method( 'getId' )->will( $this->returnValue( 'www' ) );
+        $aDiscounts[4] = $this->getMock('oxdiscount', array('isForBasketItem', 'isForBasketAmount', 'getId'));
+        $aDiscounts[4]->expects($this->once())->method('isForBasketItem')->will($this->returnValue(false));
+        $aDiscounts[4]->expects($this->never())->method('getId')->will($this->returnValue('www'));
         $aDiscounts[4]->oxdiscount__oxaddsumtype = new oxField('itm', oxField::T_RAW);
-        $aDiscounts[4]->expects( $this->never() )->method( 'isForBasketAmount' );
+        $aDiscounts[4]->expects($this->never())->method('isForBasketAmount');
 
-        $oDList = $this->getMock( 'oxList', array( 'getArray' ) );
-        $oDList->expects( $this->once() )->method( 'getArray' )->will( $this->returnValue( $aDiscounts ) );
+        $oDList = $this->getMock('oxList', array('getArray'));
+        $oDList->expects($this->once())->method('getArray')->will($this->returnValue($aDiscounts));
 
-        $oList = $this->getMock( 'oxdiscountlist', array( '_getList' ) );
-        $oList->expects( $this->once() )->method( '_getList' )->will( $this->returnValue( $oDList ) );
+        $oList = $this->getMock('oxdiscountlist', array('_getList'));
+        $oList->expects($this->once())->method('_getList')->will($this->returnValue($oDList));
 
         // now proceeding to disocunt id check
-        $this->assertEquals( array( 'xxx' => $aDiscounts[0], 'yyy' => $aDiscounts[1] ), $oList->getBasketItemDiscounts( $oArticle, $oBasket ) );
+        $this->assertEquals(array('xxx' => $aDiscounts[0], 'yyy' => $aDiscounts[1]), $oList->getBasketItemDiscounts($oArticle, $oBasket));
     }
+
     // basket discounts
     public function testGetBasketDiscounts()
     {
@@ -335,31 +345,32 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
         $oBasket = new oxBasket();
         $oBasket->zzz = 'www';
 
-        $aDiscounts[0] = $this->getMock( 'oxdiscount', array( 'isForBasket', 'getId' ) );
-        $aDiscounts[0]->expects( $this->once() )->method( 'isForBasket' )->will( $this->returnValue( true ) );
-        $aDiscounts[0]->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( 'xxx' ) );
+        $aDiscounts[0] = $this->getMock('oxdiscount', array('isForBasket', 'getId'));
+        $aDiscounts[0]->expects($this->once())->method('isForBasket')->will($this->returnValue(true));
+        $aDiscounts[0]->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
 
-        $aDiscounts[1] = $this->getMock( 'oxdiscount', array( 'isForBasket', 'getId' ) );
-        $aDiscounts[1]->expects( $this->once() )->method( 'isForBasket' )->will( $this->returnValue( true ) );
-        $aDiscounts[1]->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( 'yyy' ) );
+        $aDiscounts[1] = $this->getMock('oxdiscount', array('isForBasket', 'getId'));
+        $aDiscounts[1]->expects($this->once())->method('isForBasket')->will($this->returnValue(true));
+        $aDiscounts[1]->expects($this->once())->method('getId')->will($this->returnValue('yyy'));
 
-        $aDiscounts[2] = $this->getMock( 'oxdiscount', array( 'isForBasket', 'getId' ) );
-        $aDiscounts[2]->expects( $this->once() )->method( 'isForBasket' )->will( $this->returnValue( false ) );
-        $aDiscounts[2]->expects( $this->never() )->method( 'getId' )->will( $this->returnValue( 'zzz' ) );
+        $aDiscounts[2] = $this->getMock('oxdiscount', array('isForBasket', 'getId'));
+        $aDiscounts[2]->expects($this->once())->method('isForBasket')->will($this->returnValue(false));
+        $aDiscounts[2]->expects($this->never())->method('getId')->will($this->returnValue('zzz'));
 
-        $aDiscounts[3] = $this->getMock( 'oxdiscount', array( 'isForBasket', 'getId' ) );
-        $aDiscounts[3]->expects( $this->once() )->method( 'isForBasket' )->will( $this->returnValue( false ) );
-        $aDiscounts[3]->expects( $this->never() )->method( 'getId' )->will( $this->returnValue( 'www' ) );
+        $aDiscounts[3] = $this->getMock('oxdiscount', array('isForBasket', 'getId'));
+        $aDiscounts[3]->expects($this->once())->method('isForBasket')->will($this->returnValue(false));
+        $aDiscounts[3]->expects($this->never())->method('getId')->will($this->returnValue('www'));
 
-        $oDList = $this->getMock( 'oxList', array( 'getArray' ) );
-        $oDList->expects( $this->once() )->method( 'getArray' )->will( $this->returnValue( $aDiscounts ) );
+        $oDList = $this->getMock('oxList', array('getArray'));
+        $oDList->expects($this->once())->method('getArray')->will($this->returnValue($aDiscounts));
 
-        $oList = $this->getMock( 'oxdiscountlist', array( '_getList' ) );
-        $oList->expects( $this->once() )->method( '_getList' )->will( $this->returnValue( $oDList ) );
+        $oList = $this->getMock('oxdiscountlist', array('_getList'));
+        $oList->expects($this->once())->method('_getList')->will($this->returnValue($oDList));
 
         // now proceeding to disocunt id check
-        $this->assertEquals( array( 'xxx' => $aDiscounts[0], 'yyy' => $aDiscounts[1] ), $oList->getBasketDiscounts( $oBasket ) );
+        $this->assertEquals(array('xxx' => $aDiscounts[0], 'yyy' => $aDiscounts[1]), $oList->getBasketDiscounts($oBasket));
     }
+
     // basket item
     public function testGetBasketItemBundleDiscounts()
     {
@@ -371,35 +382,36 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
         $oBasket = new oxBasket();
         $oBasket->zzz = 'www';
 
-        $aDiscounts[0] = $this->getMock( 'oxdiscount', array( 'isForBundleItem', 'isForBasketAmount', 'getId' ) );
-        $aDiscounts[0]->expects( $this->once() )->method( 'isForBundleItem' )->will( $this->returnValue( true ) );
-        $aDiscounts[0]->expects( $this->never() )->method( 'getId' );
-        $aDiscounts[0]->expects( $this->once() )->method( 'isForBasketAmount' )->will( $this->returnValue( false ) );
+        $aDiscounts[0] = $this->getMock('oxdiscount', array('isForBundleItem', 'isForBasketAmount', 'getId'));
+        $aDiscounts[0]->expects($this->once())->method('isForBundleItem')->will($this->returnValue(true));
+        $aDiscounts[0]->expects($this->never())->method('getId');
+        $aDiscounts[0]->expects($this->once())->method('isForBasketAmount')->will($this->returnValue(false));
 
-        $aDiscounts[1] = $this->getMock( 'oxdiscount', array( 'isForBundleItem', 'isForBasketAmount', 'getId' ) );
-        $aDiscounts[1]->expects( $this->once() )->method( 'isForBundleItem' )->will( $this->returnValue( true ) );
-        $aDiscounts[1]->expects( $this->once() )->method( 'isForBasketAmount' )->will( $this->returnValue( true ) );
-        $aDiscounts[1]->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( 'yyy' ) );
+        $aDiscounts[1] = $this->getMock('oxdiscount', array('isForBundleItem', 'isForBasketAmount', 'getId'));
+        $aDiscounts[1]->expects($this->once())->method('isForBundleItem')->will($this->returnValue(true));
+        $aDiscounts[1]->expects($this->once())->method('isForBasketAmount')->will($this->returnValue(true));
+        $aDiscounts[1]->expects($this->once())->method('getId')->will($this->returnValue('yyy'));
 
-        $aDiscounts[2] = $this->getMock( 'oxdiscount', array( 'isForBundleItem', 'isForBasketAmount', 'getId' ) );
-        $aDiscounts[2]->expects( $this->once() )->method( 'isForBundleItem' )->will( $this->returnValue( false ) );
-        $aDiscounts[2]->expects( $this->never() )->method( 'getId' )->will( $this->returnValue( 'zzz' ) );
-        $aDiscounts[2]->expects( $this->never() )->method( 'isForBasketAmount' );
+        $aDiscounts[2] = $this->getMock('oxdiscount', array('isForBundleItem', 'isForBasketAmount', 'getId'));
+        $aDiscounts[2]->expects($this->once())->method('isForBundleItem')->will($this->returnValue(false));
+        $aDiscounts[2]->expects($this->never())->method('getId')->will($this->returnValue('zzz'));
+        $aDiscounts[2]->expects($this->never())->method('isForBasketAmount');
 
-        $aDiscounts[3] = $this->getMock( 'oxdiscount', array( 'isForBundleItem', 'isForBasketAmount', 'getId' ) );
-        $aDiscounts[3]->expects( $this->once() )->method( 'isForBundleItem' )->will( $this->returnValue( false ) );
-        $aDiscounts[3]->expects( $this->never() )->method( 'getId' )->will( $this->returnValue( 'www' ) );
-        $aDiscounts[3]->expects( $this->never() )->method( 'isForBasketAmount' );
+        $aDiscounts[3] = $this->getMock('oxdiscount', array('isForBundleItem', 'isForBasketAmount', 'getId'));
+        $aDiscounts[3]->expects($this->once())->method('isForBundleItem')->will($this->returnValue(false));
+        $aDiscounts[3]->expects($this->never())->method('getId')->will($this->returnValue('www'));
+        $aDiscounts[3]->expects($this->never())->method('isForBasketAmount');
 
-        $oDList = $this->getMock( 'oxList', array( 'getArray' ) );
-        $oDList->expects( $this->once() )->method( 'getArray' )->will( $this->returnValue( $aDiscounts ) );
+        $oDList = $this->getMock('oxList', array('getArray'));
+        $oDList->expects($this->once())->method('getArray')->will($this->returnValue($aDiscounts));
 
-        $oList = $this->getMock( 'oxdiscountlist', array( '_getList' ) );
-        $oList->expects( $this->once() )->method( '_getList' )->will( $this->returnValue( $oDList ) );
+        $oList = $this->getMock('oxdiscountlist', array('_getList'));
+        $oList->expects($this->once())->method('_getList')->will($this->returnValue($oDList));
 
         // now proceeding to disocunt id check
-        $this->assertEquals( array( 'yyy' => $aDiscounts[1] ), $oList->getBasketItemBundleDiscounts( $oArticle, $oBasket ) );
+        $this->assertEquals(array('yyy' => $aDiscounts[1]), $oList->getBasketItemBundleDiscounts($oArticle, $oBasket));
     }
+
     // basket bundle
     public function testGetBasketBundleDiscounts()
     {
@@ -407,45 +419,45 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
         $oBasket = new oxBasket();
         $oBasket->zzz = 'www';
 
-        $aDiscounts[0] = $this->getMock( 'oxdiscount', array( 'isForBundleBasket', 'getId' ) );
-        $aDiscounts[0]->expects( $this->once() )->method( 'isForBundleBasket' )->will( $this->returnValue( true ) );
-        $aDiscounts[0]->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( 'xxx' ) );
+        $aDiscounts[0] = $this->getMock('oxdiscount', array('isForBundleBasket', 'getId'));
+        $aDiscounts[0]->expects($this->once())->method('isForBundleBasket')->will($this->returnValue(true));
+        $aDiscounts[0]->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
 
-        $aDiscounts[1] = $this->getMock( 'oxdiscount', array( 'isForBundleBasket', 'getId' ) );
-        $aDiscounts[1]->expects( $this->once() )->method( 'isForBundleBasket' )->will( $this->returnValue( true ) );
-        $aDiscounts[1]->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( 'yyy' ) );
+        $aDiscounts[1] = $this->getMock('oxdiscount', array('isForBundleBasket', 'getId'));
+        $aDiscounts[1]->expects($this->once())->method('isForBundleBasket')->will($this->returnValue(true));
+        $aDiscounts[1]->expects($this->once())->method('getId')->will($this->returnValue('yyy'));
 
-        $aDiscounts[2] = $this->getMock( 'oxdiscount', array( 'isForBundleBasket', 'getId' ) );
-        $aDiscounts[2]->expects( $this->once() )->method( 'isForBundleBasket' )->will( $this->returnValue( false ) );
-        $aDiscounts[2]->expects( $this->never() )->method( 'getId' )->will( $this->returnValue( 'zzz' ) );
+        $aDiscounts[2] = $this->getMock('oxdiscount', array('isForBundleBasket', 'getId'));
+        $aDiscounts[2]->expects($this->once())->method('isForBundleBasket')->will($this->returnValue(false));
+        $aDiscounts[2]->expects($this->never())->method('getId')->will($this->returnValue('zzz'));
 
-        $aDiscounts[3] = $this->getMock( 'oxdiscount', array( 'isForBundleBasket', 'getId' ) );
-        $aDiscounts[3]->expects( $this->once() )->method( 'isForBundleBasket' )->will( $this->returnValue( false ) );
-        $aDiscounts[3]->expects( $this->never() )->method( 'getId' )->will( $this->returnValue( 'www' ) );
+        $aDiscounts[3] = $this->getMock('oxdiscount', array('isForBundleBasket', 'getId'));
+        $aDiscounts[3]->expects($this->once())->method('isForBundleBasket')->will($this->returnValue(false));
+        $aDiscounts[3]->expects($this->never())->method('getId')->will($this->returnValue('www'));
 
-        $oDList = $this->getMock( 'oxList', array( 'getArray' ) );
-        $oDList->expects( $this->once() )->method( 'getArray' )->will( $this->returnValue( $aDiscounts ) );
+        $oDList = $this->getMock('oxList', array('getArray'));
+        $oDList->expects($this->once())->method('getArray')->will($this->returnValue($aDiscounts));
 
-        $oList = $this->getMock( 'oxdiscountlist', array( '_getList' ) );
-        $oList->expects( $this->once() )->method( '_getList' )->will( $this->returnValue( $oDList ) );
+        $oList = $this->getMock('oxdiscountlist', array('_getList'));
+        $oList->expects($this->once())->method('_getList')->will($this->returnValue($oDList));
 
         // now proceeding to disocunt id check
-        $this->assertEquals( array( 'xxx' => $aDiscounts[0], 'yyy' => $aDiscounts[1] ), $oList->getBasketBundleDiscounts( $oBasket ) );
+        $this->assertEquals(array('xxx' => $aDiscounts[0], 'yyy' => $aDiscounts[1]), $oList->getBasketBundleDiscounts($oBasket));
     }
 
     //tests forceReload setter
     public function testForceReload()
     {
-        $oList = $this->getProxyClass( 'oxDiscountList' );
-        $oList->forceReload( true );
-        $this->assertTrue( $oList->getNonPublicVar( '_blReload' ) );
+        $oList = $this->getProxyClass('oxDiscountList');
+        $oList->forceReload(true);
+        $this->assertTrue($oList->getNonPublicVar('_blReload'));
     }
 
     public function testHasSkipDiscountCategories()
     {
-           // making category
-        $oCategory = oxNew( 'oxcategory' );
-        $oCategory->setId( '_testCat' );
+        // making category
+        $oCategory = oxNew('oxcategory');
+        $oCategory->setId('_testCat');
         $oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
         $oCategory->oxcategories__oxrootid = new oxField('_testCat', oxField::T_RAW);
         $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
@@ -455,20 +467,20 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
         $oCategory->save();
 
         oxRegistry::get("oxDiscountList")->forceReload();
-        $this->assertTrue( oxRegistry::get("oxDiscountList")->hasSkipDiscountCategories() );
+        $this->assertTrue(oxRegistry::get("oxDiscountList")->hasSkipDiscountCategories());
 
         $oCategory->oxcategories__oxskipdiscounts = new oxField('0', oxField::T_RAW);
         $oCategory->save();
 
         oxRegistry::get("oxDiscountList")->forceReload();
-        $this->assertFalse( oxRegistry::get("oxDiscountList")->hasSkipDiscountCategories() );
+        $this->assertFalse(oxRegistry::get("oxDiscountList")->hasSkipDiscountCategories());
 
 
         $oCategory->oxcategories__oxskipdiscounts = new oxField('1', oxField::T_RAW);
         $oCategory->save();
 
         oxRegistry::get("oxDiscountList")->forceReload();
-        $this->assertTrue( oxRegistry::get("oxDiscountList")->hasSkipDiscountCategories() );
+        $this->assertTrue(oxRegistry::get("oxDiscountList")->hasSkipDiscountCategories());
     }
 
 

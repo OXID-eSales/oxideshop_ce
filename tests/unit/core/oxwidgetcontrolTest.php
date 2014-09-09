@@ -20,18 +20,19 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 
 class Unit_Core_oxWidgetControlTest extends OxidTestCase
 {
+
     protected function tearDown()
     {
         parent::tearDown();
 
-        oxDb::getDb()->execute( "delete from oxlogs" );
-         modDB::getInstance()->cleanup();
+        oxDb::getDb()->execute("delete from oxlogs");
+        modDB::getInstance()->cleanup();
     }
 
     /**
@@ -41,12 +42,12 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
      */
     public function testStart()
     {
-        $oControl = $this->getMock( "oxWidgetControl", array( "_runOnce", "_runLast", "_process" ), array(), '', false );
-        $oControl->expects( $this->once() )->method( '_runOnce' );
-        $oControl->expects( $this->once() )->method( '_runLast' );
-        $oControl->expects( $this->once() )->method( '_process' )->with( $this->equalTo( "start" ), $this->equalTo( "testFnc" ), $this->equalTo( "testParams" ), $this->equalTo( "testViewsChain" ) );
+        $oControl = $this->getMock("oxWidgetControl", array("_runOnce", "_runLast", "_process"), array(), '', false);
+        $oControl->expects($this->once())->method('_runOnce');
+        $oControl->expects($this->once())->method('_runLast');
+        $oControl->expects($this->once())->method('_process')->with($this->equalTo("start"), $this->equalTo("testFnc"), $this->equalTo("testParams"), $this->equalTo("testViewsChain"));
         $oControl->start("start", "testFnc", "testParams", "testViewsChain");
-     }
+    }
 
     /**
      * Testing oxShopControl::_runOnce()
@@ -58,25 +59,25 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
             return; // EE only
 
         // if _runOnce() will be executed, this param will be set to true
-        $this->setSessionParam( "blRunOnceExecuted", false );
+        $this->setSessionParam("blRunOnceExecuted", false);
 
-        $oReverseProxyBackend = $this->getMock( "stdClass", array( "isActive" ) );
-        $oReverseProxyBackend->expects( $this->any() )->method( 'isActive' )->will( $this->returnValue(true) );
+        $oReverseProxyBackend = $this->getMock("stdClass", array("isActive"));
+        $oReverseProxyBackend->expects($this->any())->method('isActive')->will($this->returnValue(true));
 
-        OxRegistry::set( "oxReverseProxyBackend", $oReverseProxyBackend );
+        OxRegistry::set("oxReverseProxyBackend", $oReverseProxyBackend);
 
-        $oConfig = $this->getMock( "oxConfig", array( "hasActiveViewsChain", "isProductiveMode" ) );
-        $oConfig->expects( $this->any() )->method( 'hasActiveViewsChain' )->will( $this->returnValue(false) );
-        $oConfig->expects( $this->any() )->method( 'isProductiveMode' )->will( $this->returnValue(true) );
+        $oConfig = $this->getMock("oxConfig", array("hasActiveViewsChain", "isProductiveMode"));
+        $oConfig->expects($this->any())->method('hasActiveViewsChain')->will($this->returnValue(false));
+        $oConfig->expects($this->any())->method('isProductiveMode')->will($this->returnValue(true));
 
-        $oControl = $this->getMock( "oxWidgetControl", array( "getConfig" ) );
-        $oControl->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue($oConfig) );
+        $oControl = $this->getMock("oxWidgetControl", array("getConfig"));
+        $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $oControl->blSkipForTest = true;
         $oControl->UNITrunOnce();
 
-        $this->assertEquals( true, $this->getSessionParam("blRunOnceExecuted") );
-     }
+        $this->assertEquals(true, $this->getSessionParam("blRunOnceExecuted"));
+    }
 
     /**
      * Testing oxShopControl::_runOnce()
@@ -88,24 +89,24 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
             return; // EE only
 
         // if _runOnce() will be executed, this param will be set to true
-        $this->setSessionParam( "blRunOnceExecuted", false );
+        $this->setSessionParam("blRunOnceExecuted", false);
 
-        $oReverseProxyBackend = $this->getMock( "stdClass", array( "isActive" ) );
-        $oReverseProxyBackend->expects( $this->any() )->method( 'isActive' )->will( $this->returnValue(false) );
+        $oReverseProxyBackend = $this->getMock("stdClass", array("isActive"));
+        $oReverseProxyBackend->expects($this->any())->method('isActive')->will($this->returnValue(false));
 
-        OxRegistry::set( "oxReverseProxyBackend", $oReverseProxyBackend );
+        OxRegistry::set("oxReverseProxyBackend", $oReverseProxyBackend);
 
-        $oConfig = $this->getMock( "oxConfig", array( "hasActiveViewsChain" ) );
-        $oConfig->expects( $this->any() )->method( 'hasActiveViewsChain' )->will( $this->returnValue(false) );
+        $oConfig = $this->getMock("oxConfig", array("hasActiveViewsChain"));
+        $oConfig->expects($this->any())->method('hasActiveViewsChain')->will($this->returnValue(false));
 
-        $oControl = $this->getMock( "oxWidgetControl", array( "getConfig" ) );
-        $oControl->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue($oConfig) );
+        $oControl = $this->getMock("oxWidgetControl", array("getConfig"));
+        $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $oControl->blSkipForTest = true;
         $oControl->UNITrunOnce();
 
-        $this->assertEquals( false, $this->getSessionParam("blRunOnceExecuted") );
-     }
+        $this->assertEquals(false, $this->getSessionParam("blRunOnceExecuted"));
+    }
 
     /**
      * Testing oxShopControl::_runOnce()
@@ -117,23 +118,23 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
             return; // EE only
 
         // if _runOnce() will be executed, this param will be set to true
-        $this->setSessionParam( "blRunOnceExecuted", false );
+        $this->setSessionParam("blRunOnceExecuted", false);
 
-        $oReverseProxyBackend = $this->getMock( "stdClass", array( "isActive" ) );
-        $oReverseProxyBackend->expects( $this->any() )->method( 'isActive' )->will( $this->returnValue(true) );
+        $oReverseProxyBackend = $this->getMock("stdClass", array("isActive"));
+        $oReverseProxyBackend->expects($this->any())->method('isActive')->will($this->returnValue(true));
 
-        OxRegistry::set( "oxReverseProxyBackend", $oReverseProxyBackend );
+        OxRegistry::set("oxReverseProxyBackend", $oReverseProxyBackend);
 
-        $oConfig = $this->getMock( "oxConfig", array( "hasActiveViewsChain" ) );
-        $oConfig->expects( $this->any() )->method( 'hasActiveViewsChain' )->will( $this->returnValue(true) );
+        $oConfig = $this->getMock("oxConfig", array("hasActiveViewsChain"));
+        $oConfig->expects($this->any())->method('hasActiveViewsChain')->will($this->returnValue(true));
 
-        $oControl = $this->getMock( "oxWidgetControl", array( "getConfig" ) );
-        $oControl->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue($oConfig) );
+        $oControl = $this->getMock("oxWidgetControl", array("getConfig"));
+        $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $oControl->blSkipForTest = true;
         $oControl->UNITrunOnce();
 
-        $this->assertEquals( false, $this->getSessionParam("blRunOnceExecuted") );
+        $this->assertEquals(false, $this->getSessionParam("blRunOnceExecuted"));
     }
 
     /**
@@ -143,22 +144,22 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
      */
     public function testRunLast()
     {
-        $oConfig = $this->getMock( "oxConfig", array( "hasActiveViewsChain" ) );
-        $oConfig->expects( $this->any() )->method( 'hasActiveViewsChain' )->will( $this->returnValue(true) );
+        $oConfig = $this->getMock("oxConfig", array("hasActiveViewsChain"));
+        $oConfig->expects($this->any())->method('hasActiveViewsChain')->will($this->returnValue(true));
 
-        $oConfig->setActiveView( "testView1" );
-        $oConfig->setActiveView( "testView2" );
+        $oConfig->setActiveView("testView1");
+        $oConfig->setActiveView("testView2");
 
-        $this->assertEquals( array("testView1", "testView2"),$oConfig->getActiveViewsList() );
+        $this->assertEquals(array("testView1", "testView2"), $oConfig->getActiveViewsList());
 
 
-        $oControl = $this->getMock( "oxWidgetControl", array( "getConfig" ) );
-        $oControl->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue($oConfig) );
+        $oControl = $this->getMock("oxWidgetControl", array("getConfig"));
+        $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $oControl->UNITrunLast();
 
-        $this->assertEquals( array("testView1"), $oConfig->getActiveViewsList() );
-        $this->assertEquals( "testView1", oxRegistry::get("oxUtilsView")->getSmarty()->get_template_vars("oView") );
+        $this->assertEquals(array("testView1"), $oConfig->getActiveViewsList());
+        $this->assertEquals("testView1", oxRegistry::get("oxUtilsView")->getSmarty()->get_template_vars("oView"));
     }
 
     /**
@@ -168,17 +169,17 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
      */
     public function testInitializeViewObject()
     {
-        $oControl = oxNew( "oxWidgetControl" );
-        $oView = $oControl->UNITinitializeViewObject("oxwCookieNote", "testFunction", array("testParam"=>"testValue"));
+        $oControl = oxNew("oxWidgetControl");
+        $oView = $oControl->UNITinitializeViewObject("oxwCookieNote", "testFunction", array("testParam" => "testValue"));
 
         //checking widget object
-        $this->assertEquals( "oxwCookieNote", $oView->getClassName() );
-        $this->assertEquals( "testFunction", $oView->getFncName() );
-        $this->assertEquals( "testValue", $oView->getViewParameter("testParam") );
+        $this->assertEquals("oxwCookieNote", $oView->getClassName());
+        $this->assertEquals("testFunction", $oView->getFncName());
+        $this->assertEquals("testValue", $oView->getViewParameter("testParam"));
 
         // checking active view object
-        $this->assertEquals( 1, count($oControl->getConfig()->getActiveViewsList()) );
-        $this->assertEquals( "oxwCookieNote", $oControl->getConfig()->getActiveView()->getClassName() );
+        $this->assertEquals(1, count($oControl->getConfig()->getActiveViewsList()));
+        $this->assertEquals("oxwCookieNote", $oControl->getConfig()->getActiveView()->getClassName());
     }
 
     /**
@@ -188,23 +189,23 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
      */
     public function testInitializeViewObject_hasViewChain()
     {
-        $oControl = oxNew( "oxWidgetControl" );
-        $oView = $oControl->UNITinitializeViewObject("oxwCookieNote", "testFunction", array("testParam"=>"testValue"), array("account", "oxubase") );
+        $oControl = oxNew("oxWidgetControl");
+        $oView = $oControl->UNITinitializeViewObject("oxwCookieNote", "testFunction", array("testParam" => "testValue"), array("account", "oxubase"));
 
         //checking widget object
-        $this->assertEquals( "oxwCookieNote", $oView->getClassName() );
-        $this->assertEquals( "testFunction", $oView->getFncName() );
-        $this->assertEquals( "testValue", $oView->getViewParameter("testParam") );
+        $this->assertEquals("oxwCookieNote", $oView->getClassName());
+        $this->assertEquals("testFunction", $oView->getFncName());
+        $this->assertEquals("testValue", $oView->getViewParameter("testParam"));
 
         // checking active view objects
         $aActiveViews = $oControl->getConfig()->getActiveViewsList();
 
-        $this->assertEquals( 3, count($aActiveViews) );
-        $this->assertEquals( "account",     $aActiveViews[0]->getClassName() );
-        $this->assertEquals( "oxUBase",     get_class($aActiveViews[1]) );
-        $this->assertEquals( "oxwCookieNote", $aActiveViews[2]->getClassName() );
+        $this->assertEquals(3, count($aActiveViews));
+        $this->assertEquals("account", $aActiveViews[0]->getClassName());
+        $this->assertEquals("oxUBase", get_class($aActiveViews[1]));
+        $this->assertEquals("oxwCookieNote", $aActiveViews[2]->getClassName());
 
-        $this->assertEquals( "oxwCookieNote", $oControl->getConfig()->getActiveView()->getClassName() );
+        $this->assertEquals("oxwCookieNote", $oControl->getConfig()->getActiveView()->getClassName());
     }
 
 }

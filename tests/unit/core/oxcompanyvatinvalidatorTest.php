@@ -20,18 +20,19 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 
 class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
 {
+
     public function testGetCountry_Construct()
     {
         $oCountry = new oxCountry();
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
-        $this->assertSame($oCountry, $oValidator->getCountry() );
+        $this->assertSame($oCountry, $oValidator->getCountry());
     }
 
     public function testGetCountry_set()
@@ -42,7 +43,7 @@ class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
         $oCountryOther = new oxCountry();
         $oValidator->setCountry($oCountryOther);
 
-        $this->assertSame($oCountryOther, $oValidator->getCountry() );
+        $this->assertSame($oCountryOther, $oValidator->getCountry());
     }
 
     public function testGetError_notSet()

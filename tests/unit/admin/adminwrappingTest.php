@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Admin_Wrapping class
  */
 class Unit_Admin_AdminWrappingTest extends OxidTestCase
 {
+
     /**
      * Admin_Wrapping::Render() test case
      *
@@ -37,7 +38,7 @@ class Unit_Admin_AdminWrappingTest extends OxidTestCase
     {
         // testing..
         $oView = new Admin_Wrapping();
-        $this->assertEquals( 'wrapping.tpl', $oView->render() );
+        $this->assertEquals('wrapping.tpl', $oView->render());
     }
 
 }

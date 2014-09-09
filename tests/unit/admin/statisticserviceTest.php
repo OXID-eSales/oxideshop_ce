@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,53 +18,54 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
-
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-
-/**
- * Tests for Statistic_Service class
- */
-class Unit_Admin_StatisticServiceTest extends OxidTestCase
-{
-    /**
-     * Statistic_Main::Render() test case
-     *
-     * @return null
      */
-    public function testRender()
-    {
-        // testing..
-        $oView = $this->getProxyClass( "Statistic_Service" );
 
-        $this->assertEquals( 'statistic_service.tpl', $oView->render() );
-        $aViewData = $oView->getViewData();
-        $this->assertTrue( isset($aViewData['iLogCount']) );
-    }
+    require_once realpath(".") . '/unit/OxidTestCase.php';
+    require_once realpath(".") . '/unit/test_config.inc.php';
 
     /**
-     * Statistic_Service::cleanup() test case
-     *
-     * @return null
+     * Tests for Statistic_Service class
      */
-    public function testCleanup()
+    class Unit_Admin_StatisticServiceTest extends OxidTestCase
     {
-        // testing..
-        $iTimeFrame = "62";
-        modConfig::setRequestParameter( "timeframe", $iTimeFrame );
-        $dNow = time();
-        $sInsertFrom = date( "Y-m-d H:i:s", mktime( date( "H", $dNow), date( "i", $dNow), date( "s", $dNow), date( "m", $dNow), date( "d", $dNow) - 186, date( "Y", $dNow)));
-        $sDeleteFrom = date( "Y-m-d H:i:s", mktime( date( "H", $dNow), date( "i", $dNow), date( "s", $dNow), date( "m", $dNow), date( "d", $dNow) - $iTimeFrame, date( "Y", $dNow)));
-        $oDb = oxDb::getDb();
-        $oDb->execute( "insert into oxlogs (oxtime) value (".$oDb->quote( $sInsertFrom ).")" );
-        $iCnt = $oDb->getOne( "select count(*) from oxlogs where oxtime < ".$oDb->quote( $sDeleteFrom ) );
 
-        $oView = new Statistic_Service();
-        $oView->cleanup();
+        /**
+         * Statistic_Main::Render() test case
+         *
+         * @return null
+         */
+        public function testRender()
+        {
+            // testing..
+            $oView = $this->getProxyClass("Statistic_Service");
 
-        $oDb = oxDb::getDb();
-        $iCnt = $oDb->getOne( "select count(*) from oxlogs where oxtime < ".$oDb->quote( $sDeleteFrom ) );
-        $this->assertEquals( 0, $iCnt );
+            $this->assertEquals('statistic_service.tpl', $oView->render());
+            $aViewData = $oView->getViewData();
+            $this->assertTrue(isset($aViewData['iLogCount']));
+        }
+
+        /**
+         * Statistic_Service::cleanup() test case
+         *
+         * @return null
+         */
+        public function testCleanup()
+        {
+            // testing..
+            $iTimeFrame = "62";
+            modConfig::setRequestParameter("timeframe", $iTimeFrame);
+            $dNow = time();
+            $sInsertFrom = date("Y-m-d H:i:s", mktime(date("H", $dNow), date("i", $dNow), date("s", $dNow), date("m", $dNow), date("d", $dNow) - 186, date("Y", $dNow)));
+            $sDeleteFrom = date("Y-m-d H:i:s", mktime(date("H", $dNow), date("i", $dNow), date("s", $dNow), date("m", $dNow), date("d", $dNow) - $iTimeFrame, date("Y", $dNow)));
+            $oDb = oxDb::getDb();
+            $oDb->execute("insert into oxlogs (oxtime) value (" . $oDb->quote($sInsertFrom) . ")");
+            $iCnt = $oDb->getOne("select count(*) from oxlogs where oxtime < " . $oDb->quote($sDeleteFrom));
+
+            $oView = new Statistic_Service();
+            $oView->cleanup();
+
+            $oDb = oxDb::getDb();
+            $iCnt = $oDb->getOne("select count(*) from oxlogs where oxtime < " . $oDb->quote($sDeleteFrom));
+            $this->assertEquals(0, $iCnt);
+        }
     }
-}

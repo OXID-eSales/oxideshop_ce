@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Manufacturer_List class
  */
 class Unit_Admin_ManufacturerListTest extends OxidTestCase
 {
+
     /**
      * Manufacturer_List::init() test case
      *
@@ -36,10 +37,10 @@ class Unit_Admin_ManufacturerListTest extends OxidTestCase
     public function testInit()
     {
         // testing..
-        $oView = $this->getMock( "Manufacturer_List", array( "_authorize" ) );
-        $oView->expects( $this->once() )->method( '_authorize' )->will( $this->returnValue( true ) );
+        $oView = $this->getMock("Manufacturer_List", array("_authorize"));
+        $oView->expects($this->once())->method('_authorize')->will($this->returnValue(true));
         $oView->init();
-        $this->assertEquals( "manufacturer_list.tpl", $oView->render() );
-        $this->assertEquals( array( 'oxmanufacturers' => array( "oxtitle" => "asc" )), $oView->getListSorting() );
+        $this->assertEquals("manufacturer_list.tpl", $oView->render());
+        $this->assertEquals(array('oxmanufacturers' => array("oxtitle" => "asc")), $oView->getListSorting());
     }
 }

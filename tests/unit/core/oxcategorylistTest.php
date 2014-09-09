@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Test oxCategoryList module
  */
 class testOxCategoryList extends oxCategoryList
 {
+
     protected $_testAdmin = false;
 
     /**
@@ -37,9 +38,9 @@ class testOxCategoryList extends oxCategoryList
      *
      * @return mixed
      */
-    public function getVar( $sName )
+    public function getVar($sName)
     {
-        return $this->{'_'.$sName};
+        return $this->{'_' . $sName};
     }
 
     /**
@@ -50,9 +51,9 @@ class testOxCategoryList extends oxCategoryList
      *
      * @return null
      */
-    public function setVar( $sName, $sValue )
+    public function setVar($sName, $sValue)
     {
-        $this->{'_'.$sName} = $sValue;
+        $this->{'_' . $sName} = $sValue;
     }
 
     /**
@@ -71,6 +72,7 @@ class testOxCategoryList extends oxCategoryList
  */
 class modContentList_oxcategorylist extends oxContentList
 {
+
     /**
      * Test loadCatMenues.
      *
@@ -78,12 +80,12 @@ class modContentList_oxcategorylist extends oxContentList
      */
     public function loadCatMenues()
     {
-            $sActCat  = '8a142c3e44ea4e714.31136811';
+            $sActCat = '8a142c3e44ea4e714.31136811';
 
 
-        $oContent1 = oxNew( 'Content' );
+        $oContent1 = oxNew('Content');
         $oContent2 = clone $oContent1;
-        $aResult = array( $sActCat => array($oContent1,$oContent2) );
+        $aResult = array($sActCat => array($oContent1, $oContent2));
         $this->assign($aResult);
     }
 }
@@ -93,6 +95,7 @@ class modContentList_oxcategorylist extends oxContentList
  */
 class Unit_Core_oxCategoryListTest extends OxidTestCase
 {
+
     protected $_oList = null;
     protected $_sNoCat;
     protected $_sActCat;
@@ -107,12 +110,12 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_oList  = oxNew( 'testOxCategoryList' );
+        $this->_oList = oxNew('testOxCategoryList');
         $this->_sNoCat = '_no_such_cat_';
 
-            $this->_sActCat  = '8a142c3e44ea4e714.31136811';
+            $this->_sActCat = '8a142c3e44ea4e714.31136811';
             $this->_sActRoot = '8a142c3e4143562a5.46426637';
-            $this->_aActPath = array($this->_sActRoot,$this->_sActCat);
+            $this->_aActPath = array($this->_sActRoot, $this->_sActCat);
 
 
         $this->testAdmin = false;
@@ -127,7 +130,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
     protected function tearDown()
     {
         $this->cleanUpTable('oxcategories');
-        oxRemClassModule( 'modContentList_oxcategorylist' );
+        oxRemClassModule('modContentList_oxcategorylist');
         parent::tearDown();
     }
 
@@ -339,25 +342,25 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
     public function test_getSqlSelectFieldsForTree()
     {
         $sExpect = 'tablex.oxid as oxid,'
-                           .' tablex.oxactive as oxactive,'
-                           .' tablex.oxhidden as oxhidden,'
-                           .' tablex.oxparentid as oxparentid,'
-                           .' tablex.oxdefsort as oxdefsort,'
-                           .' tablex.oxdefsortmode as oxdefsortmode,'
-                           .' tablex.oxleft as oxleft,'
-                           .' tablex.oxright as oxright,'
-                           .' tablex.oxrootid as oxrootid,'
-                           .' tablex.oxsort as oxsort,'
-                           .' tablex.oxtitle as oxtitle,'
-                           .' tablex.oxdesc as oxdesc,'
-                           .' tablex.oxpricefrom as oxpricefrom,'
-                           .' tablex.oxpriceto as oxpriceto,'
-                           .' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink,'
-                           .' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon,';
+                   . ' tablex.oxactive as oxactive,'
+                   . ' tablex.oxhidden as oxhidden,'
+                   . ' tablex.oxparentid as oxparentid,'
+                   . ' tablex.oxdefsort as oxdefsort,'
+                   . ' tablex.oxdefsortmode as oxdefsortmode,'
+                   . ' tablex.oxleft as oxleft,'
+                   . ' tablex.oxright as oxright,'
+                   . ' tablex.oxrootid as oxrootid,'
+                   . ' tablex.oxsort as oxsort,'
+                   . ' tablex.oxtitle as oxtitle,'
+                   . ' tablex.oxdesc as oxdesc,'
+                   . ' tablex.oxpricefrom as oxpricefrom,'
+                   . ' tablex.oxpriceto as oxpriceto,'
+                   . ' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink,'
+                   . ' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon,';
 
-           $sExpect .= 'not tablex.oxactive as oxppremove';
-           //
-           $oList = new oxCategoryList();
+            $sExpect .= 'not tablex.oxactive as oxppremove';
+            //
+            $oList = new oxCategoryList();
 
 
         $this->assertEquals($sExpect, $oList->UNITgetSqlSelectFieldsForTree('tablex'));
@@ -372,25 +375,25 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
     {
         oxRegistry::getLang()->setBaseLanguage(1);
         $sExpect = 'tablex.oxid as oxid,'
-                           .' tablex.oxactive as oxactive,'
-                           .' tablex.oxhidden as oxhidden,'
-                           .' tablex.oxparentid as oxparentid,'
-                           .' tablex.oxdefsort as oxdefsort,'
-                           .' tablex.oxdefsortmode as oxdefsortmode,'
-                           .' tablex.oxleft as oxleft,'
-                           .' tablex.oxright as oxright,'
-                           .' tablex.oxrootid as oxrootid,'
-                           .' tablex.oxsort as oxsort,'
-                           .' tablex.oxtitle as oxtitle,'
-                           .' tablex.oxdesc as oxdesc,'
-                           .' tablex.oxpricefrom as oxpricefrom,'
-                           .' tablex.oxpriceto as oxpriceto,'
-                           .' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink,'
-                           .' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon,';
+                   . ' tablex.oxactive as oxactive,'
+                   . ' tablex.oxhidden as oxhidden,'
+                   . ' tablex.oxparentid as oxparentid,'
+                   . ' tablex.oxdefsort as oxdefsort,'
+                   . ' tablex.oxdefsortmode as oxdefsortmode,'
+                   . ' tablex.oxleft as oxleft,'
+                   . ' tablex.oxright as oxright,'
+                   . ' tablex.oxrootid as oxrootid,'
+                   . ' tablex.oxsort as oxsort,'
+                   . ' tablex.oxtitle as oxtitle,'
+                   . ' tablex.oxdesc as oxdesc,'
+                   . ' tablex.oxpricefrom as oxpricefrom,'
+                   . ' tablex.oxpriceto as oxpriceto,'
+                   . ' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink,'
+                   . ' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon,';
 
-           $sExpect .= 'not tablex.oxactive as oxppremove';
-           //
-           $oList = new oxCategoryList();
+            $sExpect .= 'not tablex.oxactive as oxppremove';
+            //
+            $oList = new oxCategoryList();
 
 
         $this->assertEquals($sExpect, $oList->UNITgetSqlSelectFieldsForTree('tablex'));
@@ -406,8 +409,8 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
     {
         $oCat = new oxcategory();
         $oCat->oxcategories__oxrootid = new oxField('rootid');
-        $oCat->oxcategories__oxleft   = new oxField('151');
-        $oCat->oxcategories__oxright  = new oxField('959');
+        $oCat->oxcategories__oxleft = new oxField('151');
+        $oCat->oxcategories__oxright = new oxField('959');
 
         $oList = $this->getMock('oxCategoryList', array('_getSqlSelectFieldsForTree'));
         $oList->expects($this->once())->method('_getSqlSelectFieldsForTree')
@@ -539,7 +542,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         $aPath = $this->_oList->getPath();
         $aPathKeys = array_keys($aPath);
 
-        $this->assertEquals( array_keys($aPath), $this->_aActPath );
+        $this->assertEquals(array_keys($aPath), $this->_aActPath);
 
         foreach ($aPath as $oCat) {
             $this->assertEquals($oCat->getExpanded(), true);
@@ -628,7 +631,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
             $this->assertEquals($sId, $oCat->getId());
             $this->assertTrue($oCat->getHasVisibleSubcats());
             $this->assertTrue($oCat->getIsVisible());
-            $oCat = $oCat->getSubCat($this->_aActPath[$sNr+1]);
+            $oCat = $oCat->getSubCat($this->_aActPath[$sNr + 1]);
         }
     }
 
@@ -647,7 +650,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
 
         $this->_oList->selectString($this->_oList->UNITgetSelectString());
         $this->_oList[$this->_sActCat]->oxcategories__oxhidden = new oxField(true, oxField::T_RAW);
-        $this->_oList[$this->_sActCat]->setIsVisible( null );
+        $this->_oList[$this->_sActCat]->setIsVisible(null);
         $this->_oList->UNITppBuildTree();
 
         $oCat = $this->_oList[$this->_sActRoot];
@@ -660,7 +663,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
                 $this->assertTrue($oCat->getIsVisible());
             }
 
-            $oCat = $oCat->getSubCat($this->_aActPath[$sNr+1]);
+            $oCat = $oCat->getSubCat($this->_aActPath[$sNr + 1]);
         }
     }
 
@@ -713,7 +716,8 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         foreach ($this->_oList[$this->_sActRoot]->getSubCats() as $sId => $oCat) {
             $aCurSubOrder[] = $oCat->oxcategories__oxsort->value;
         }
-        $aExpSubOrder = $aCurSubOrder; asort($aExpSubOrder);
+        $aExpSubOrder = $aCurSubOrder;
+        asort($aExpSubOrder);
         $this->assertEquals(implode(',', $aExpSubOrder), implode(',', $aCurSubOrder));
     }
 
@@ -737,10 +741,10 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         //Check depth info
         $iDepth = 1;
         foreach ($this->_aActPath as $sId) {
-            $sPrefixExp = ($iDepth>1)?str_repeat('*', $iDepth-1).' ':'';
+            $sPrefixExp = ($iDepth > 1) ? str_repeat('*', $iDepth - 1) . ' ' : '';
             $iPrefixCur = substr($this->_oList[$sId]->oxcategories__oxtitle->value, 0, strlen($sPrefixStr));
             $this->assertEquals($sPrefixStr, $iPrefixCur);
-            $iDepth ++;
+            $iDepth++;
         }
     }
 
@@ -759,8 +763,8 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         $oCat->oxcategories__oxactive = new oxField(1);
         $oCat->oxcategories__oxtitle = new oxField("_test");
         $oCat->save();
-        $oCat2 = $this->getMock( 'oxCategory', array( 'getSubCats' ) );
-        $oCat2->expects( $this->any() )->method( 'getSubCats' )->will( $this->returnValue( array($oCat) ) );
+        $oCat2 = $this->getMock('oxCategory', array('getSubCats'));
+        $oCat2->expects($this->any())->method('getSubCats')->will($this->returnValue(array($oCat)));
         $oCat2->setId("_test2");
         $oCat2->oxcategories__oxparentid = new oxField("oxrootid");
         $oCat2->oxcategories__oxsort = new oxField(2);
@@ -772,7 +776,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         $sDepth = "";
         foreach ($aNewTree as $oCat) {
             $sDepth .= "-";
-            $this->assertEquals($sDepth." _test", $oCat->oxcategories__oxtitle->value);
+            $this->assertEquals($sDepth . " _test", $oCat->oxcategories__oxtitle->value);
         }
     }
 
@@ -786,15 +790,15 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
      */
     public function testBuildTree()
     {
-        $oCatList = $this->getMock( 'testOxCategoryList', array( 'load', '_ppRemoveInactiveCategories', '_ppAddPathInfo', '_ppAddContentCategories', '_ppBuildTree', '_ppLoadFullCategory' ) );
-        $oCatList->expects( $this->at(0) )->method( 'load' );
-        $oCatList->expects( $this->at(1) )->method( '_ppRemoveInactiveCategories' );
-        $oCatList->expects( $this->at(2) )->method( '_ppLoadFullCategory' );
-        $oCatList->expects( $this->at(3) )->method( '_ppAddPathInfo' );
-        $oCatList->expects( $this->at(4) )->method( '_ppAddContentCategories' );
-        $oCatList->expects( $this->at(5) )->method( '_ppBuildTree' );
+        $oCatList = $this->getMock('testOxCategoryList', array('load', '_ppRemoveInactiveCategories', '_ppAddPathInfo', '_ppAddContentCategories', '_ppBuildTree', '_ppLoadFullCategory'));
+        $oCatList->expects($this->at(0))->method('load');
+        $oCatList->expects($this->at(1))->method('_ppRemoveInactiveCategories');
+        $oCatList->expects($this->at(2))->method('_ppLoadFullCategory');
+        $oCatList->expects($this->at(3))->method('_ppAddPathInfo');
+        $oCatList->expects($this->at(4))->method('_ppAddContentCategories');
+        $oCatList->expects($this->at(5))->method('_ppBuildTree');
 
-        $oCatList->buildTree( $this->_sActCat, false, false);
+        $oCatList->buildTree($this->_sActCat, false, false);
 
         $this->assertEquals($this->_sActCat, $oCatList->getVar('sActCat'));
     }
@@ -818,10 +822,10 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         //Check depth info
         $iDepth = 1;
         foreach ($this->_aActPath as $sId) {
-            $sPrefixExp = ($iDepth>1)?str_repeat('*', $iDepth-1).' ':'';
+            $sPrefixExp = ($iDepth > 1) ? str_repeat('*', $iDepth - 1) . ' ' : '';
             $iPrefixCur = substr($this->_oList[$sId]->oxcategories__oxtitle->value, 0, strlen($sPrefixStr));
             $this->assertEquals($sPrefixStr, $iPrefixCur);
-            $iDepth ++;
+            $iDepth++;
         }
     }
 
@@ -832,9 +836,9 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
      */
     public function testSetShopId()
     {
-        $oCatList = $this->getProxyClass( "oxcategorylist" );
+        $oCatList = $this->getProxyClass("oxcategorylist");
         $oCatList->setShopID(3);
-        $this->assertEquals( 3, $oCatList->getNonPublicVar( '_sShopID' ) );
+        $this->assertEquals(3, $oCatList->getNonPublicVar('_sShopID'));
     }
 
     /**
@@ -844,9 +848,9 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
      */
     public function testGetClickCat()
     {
-        $oCatList = $this->getProxyClass( "oxcategorylist" );
-        $oCatList->setNonPublicVar("_aPath", array("aaa","bbb"));
-        $this->assertEquals( "bbb", $oCatList->getClickCat() );
+        $oCatList = $this->getProxyClass("oxcategorylist");
+        $oCatList->setNonPublicVar("_aPath", array("aaa", "bbb"));
+        $this->assertEquals("bbb", $oCatList->getClickCat());
     }
 
     /**
@@ -856,9 +860,9 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
      */
     public function testGetClickRoot()
     {
-        $oCatList = $this->getProxyClass( "oxcategorylist" );
-        $oCatList->setNonPublicVar("_aPath", array(2=>"aaa",1=>"bbb"));
-        $this->assertEquals( array(0=>"aaa"), $oCatList->getClickRoot() );
+        $oCatList = $this->getProxyClass("oxcategorylist");
+        $oCatList->setNonPublicVar("_aPath", array(2 => "aaa", 1 => "bbb"));
+        $this->assertEquals(array(0 => "aaa"), $oCatList->getClickRoot());
     }
 
     /**
@@ -868,22 +872,22 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
      */
     public function testUpdateCategoryTreeUpdateNodes()
     {
-        $oObj1 = oxNew( "oxCategory" );
+        $oObj1 = oxNew("oxCategory");
         $oObj1->setId("_test1");
         $oObj1->oxcategories__oxparentid = new oxField("oxrootid", oxField::T_RAW);
         $oObj1->oxcategories__oxtitle = new oxField("1-8|1-8", oxField::T_RAW);
         $oObj1->save(); // call insert
-        $oObj2 = oxNew( "oxCategory" );
+        $oObj2 = oxNew("oxCategory");
         $oObj2->setId("_test2");
         $oObj2->oxcategories__oxparentid = new oxField($oObj1->getId(), oxField::T_RAW);
         $oObj2->oxcategories__oxtitle = new oxField("2-5|4-7", oxField::T_RAW);
         $oObj2->save(); // call insert
-        $oObj3 = oxNew( "oxCategory" );
+        $oObj3 = oxNew("oxCategory");
         $oObj3->setId("_test3");
         $oObj3->oxcategories__oxparentid = new oxField($oObj1->getId(), oxField::T_RAW);
         $oObj3->oxcategories__oxtitle = new oxField("6-7|2-3", oxField::T_RAW);
         $oObj3->save(); // call insert
-        $oObj4 = oxNew( "oxCategory" );
+        $oObj4 = oxNew("oxCategory");
         $oObj4->setId("_test4");
         $oObj4->oxcategories__oxparentid = new oxField($oObj2->getId(), oxField::T_RAW);
         $oObj4->oxcategories__oxtitle = new oxField("3-4|5-6", oxField::T_RAW);
@@ -893,27 +897,29 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         // checking....
         $oDB = oxDb::getDb();
         $sSelect = "select oxtitle, oxleft, oxright from oxcategories where oxid like '_test%'";
-        $aData = $oDB->GetAll( $sSelect);
+        $aData = $oDB->GetAll($sSelect);
 
         // holding number - show if all tests for N bit set are OK
         $iTrue = 3;
         foreach ($aData as $aLine) {
             $r = $this->_checkData($aLine[0], $aLine[1], $aLine[2]);
-            if (!($r & 1) && ($iTrue & 1))
+            if (!($r & 1) && ($iTrue & 1)) {
                 $iTrue &= ~1;
-            if (!($r & 2) && ($iTrue & 2))
+            }
+            if (!($r & 2) && ($iTrue & 2)) {
                 $iTrue &= ~2;
+            }
         }
 
 
-        $aUpdateInfo = array (
-            '<b>Processing : Eco-Fashion</b>(943a9ba3050e78b443c16e043ae60ef3)<br>',
-            '<b>Processing : Geschenke</b>(8a142c3e4143562a5.46426637)<br>',
-             '<b>Processing : 1-8|1-8</b>(_test1)<br>',
-        );
+            $aUpdateInfo = array(
+                '<b>Processing : Eco-Fashion</b>(943a9ba3050e78b443c16e043ae60ef3)<br>',
+                '<b>Processing : Geschenke</b>(8a142c3e4143562a5.46426637)<br>',
+                '<b>Processing : 1-8|1-8</b>(_test1)<br>',
+            );
 
-        $this->assertTrue( $iTrue == 1 || $iTrue == 2 );
-        $this->assertEquals( $aUpdateInfo, $this->_oList->getUpdateInfo() );
+        $this->assertTrue($iTrue == 1 || $iTrue == 2);
+        $this->assertEquals($aUpdateInfo, $this->_oList->getUpdateInfo());
     }
 
     /**
@@ -932,6 +938,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         foreach ($a as $c) {
             $b[] = explode('-', $c);
         }
+
         return $b;
     }
 
@@ -950,10 +957,12 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         $g = 255;
         $i = 0;
         foreach ($a as $alr) {
-            if ($alr[0] != $l || $alr[1] != $r)
-                $g &= ~(1<<$i);
+            if ($alr[0] != $l || $alr[1] != $r) {
+                $g &= ~(1 << $i);
+            }
             $i++;
         }
+
         return $g;
     }
 
@@ -964,19 +973,19 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
     {
         $oCategoryList = new oxCategoryList();
         $oCategoryList->setLoadLevel(1);
-        $this->assertEquals( 1, $oCategoryList->getLoadLevel() );
+        $this->assertEquals(1, $oCategoryList->getLoadLevel());
 
         $oCategoryList->setLoadLevel(0);
-        $this->assertEquals( 0, $oCategoryList->getLoadLevel() );
+        $this->assertEquals(0, $oCategoryList->getLoadLevel());
 
         $oCategoryList->setLoadLevel(2);
-        $this->assertEquals( 2, $oCategoryList->getLoadLevel() );
+        $this->assertEquals(2, $oCategoryList->getLoadLevel());
 
         $oCategoryList->setLoadLevel(3);
-        $this->assertEquals( 2, $oCategoryList->getLoadLevel() );
+        $this->assertEquals(2, $oCategoryList->getLoadLevel());
 
         $oCategoryList->setLoadLevel(-1);
-        $this->assertEquals( 0, $oCategoryList->getLoadLevel() );
+        $this->assertEquals(0, $oCategoryList->getLoadLevel());
     }
 
     /**
@@ -987,12 +996,11 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         $oCategoryList = new oxCategoryList();
 
         $oCategoryList->setLoadFull(true);
-        $this->assertTrue( $oCategoryList->getLoadFull() );
+        $this->assertTrue($oCategoryList->getLoadFull());
 
         $oCategoryList->setLoadFull(false);
-        $this->assertFalse( $oCategoryList->getLoadFull() );
+        $this->assertFalse($oCategoryList->getLoadFull());
     }
-
 
 
 }

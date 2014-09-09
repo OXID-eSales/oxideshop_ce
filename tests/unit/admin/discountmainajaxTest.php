@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 
 /**
@@ -29,6 +29,7 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
  */
 class Unit_Admin_DiscountMainAjaxTest extends OxidTestCase
 {
+
     /**
      * Initialize the fixture.
      *
@@ -38,9 +39,9 @@ class Unit_Admin_DiscountMainAjaxTest extends OxidTestCase
     {
         parent::setUp();
 
-        oxDb::getDb()->execute( "insert into oxobject2discount set oxid='_testO2DRemove1', oxdiscountid='_testDiscount', oxobjectid = 'a7c40f631fc920687.20179984', oxtype = 'oxcountry'" );
-        oxDb::getDb()->execute( "insert into oxobject2discount set oxid='_testO2DRemove2', oxdiscountid='_testDiscount', oxobjectid = 'a7c40f6320aeb2ec2.72885259', oxtype = 'oxcountry'" );
-        oxDb::getDb()->execute( "insert into oxobject2discount set oxid='_testO2DRemove3', oxdiscountid='_testDiscount', oxobjectid = 'a7c40f6321c6f6109.43859248', oxtype = 'oxcountry'" );
+        oxDb::getDb()->execute("insert into oxobject2discount set oxid='_testO2DRemove1', oxdiscountid='_testDiscount', oxobjectid = 'a7c40f631fc920687.20179984', oxtype = 'oxcountry'");
+        oxDb::getDb()->execute("insert into oxobject2discount set oxid='_testO2DRemove2', oxdiscountid='_testDiscount', oxobjectid = 'a7c40f6320aeb2ec2.72885259', oxtype = 'oxcountry'");
+        oxDb::getDb()->execute("insert into oxobject2discount set oxid='_testO2DRemove3', oxdiscountid='_testDiscount', oxobjectid = 'a7c40f6321c6f6109.43859248', oxtype = 'oxcountry'");
     }
 
     /**
@@ -50,7 +51,7 @@ class Unit_Admin_DiscountMainAjaxTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDb()->execute( "delete from oxobject2discount where oxdiscountid like '_test%'" );
+        oxDb::getDb()->execute("delete from oxobject2discount where oxdiscountid like '_test%'");
 
         parent::tearDown();
     }
@@ -62,11 +63,11 @@ class Unit_Admin_DiscountMainAjaxTest extends OxidTestCase
      */
     public function testGetQuery()
     {
-        $sTable = getViewName( "oxcountry" );
+        $sTable = getViewName("oxcountry");
 
-        $oView = oxNew( 'discount_main_ajax' );
-        $sQuery  = "from $sTable where $sTable.oxactive = '1'";
-        $this->assertEquals( $sQuery, trim( $oView->UNITgetQuery() ) );
+        $oView = oxNew('discount_main_ajax');
+        $sQuery = "from $sTable where $sTable.oxactive = '1'";
+        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -77,13 +78,13 @@ class Unit_Admin_DiscountMainAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testOxid';
-        $this->setRequestParam( "oxid", $sOxid );
-        $sTable = getViewName( "oxcountry" );
+        $this->setRequestParam("oxid", $sOxid);
+        $sTable = getViewName("oxcountry");
 
-        $oView = oxNew( 'discount_main_ajax' );
-        $sQuery  = "from oxobject2discount, $sTable where $sTable.oxid=oxobject2discount.oxobjectid";
+        $oView = oxNew('discount_main_ajax');
+        $sQuery = "from oxobject2discount, $sTable where $sTable.oxid=oxobject2discount.oxobjectid";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testOxid' and oxobject2discount.oxtype = 'oxcountry'";
-        $this->assertEquals( $sQuery, trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -94,14 +95,14 @@ class Unit_Admin_DiscountMainAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testSynchoxid';
-        $this->setRequestParam( "synchoxid", $sSynchoxid );
-        $sTable = getViewName( "oxcountry" );
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $sTable = getViewName("oxcountry");
 
-        $oView = oxNew( 'discount_main_ajax' );
-        $sQuery  = "from $sTable where $sTable.oxactive = '1' and";
+        $oView = oxNew('discount_main_ajax');
+        $sQuery = "from $sTable where $sTable.oxactive = '1' and";
         $sQuery .= " $sTable.oxid not in ( select $sTable.oxid from oxobject2discount, $sTable where $sTable.oxid=oxobject2discount.oxobjectid";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxcountry' )";
-        $this->assertEquals( $sQuery, trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -111,12 +112,12 @@ class Unit_Admin_DiscountMainAjaxTest extends OxidTestCase
      */
     public function testRemoveDiscCountry()
     {
-        $oView = $this->getMock( "discount_main_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testO2DRemove1', '_testO2DRemove2' ) ) );
-        $this->assertEquals( 3, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'" ) );
+        $oView = $this->getMock("discount_main_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testO2DRemove1', '_testO2DRemove2')));
+        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
         $oView->removeDiscCountry();
-        $this->assertEquals( 1, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'" ) );
+        $this->assertEquals(1, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
     }
 
     /**
@@ -127,14 +128,14 @@ class Unit_Admin_DiscountMainAjaxTest extends OxidTestCase
     public function testRemoveDiscCountryAll()
     {
         $sOxid = '_testDiscount';
-        $this->setRequestParam( "oxid", $sOxid );
-        $this->setRequestParam( "all", true );
+        $this->setRequestParam("oxid", $sOxid);
+        $this->setRequestParam("all", true);
 
-        $this->assertEquals( 3, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'" ) );
+        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
-        $oView = oxNew( 'discount_main_ajax' );
+        $oView = oxNew('discount_main_ajax');
         $oView->removeDiscCountry();
-        $this->assertEquals( 0, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'" ) );
+        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
     }
 
     /**
@@ -145,13 +146,13 @@ class Unit_Admin_DiscountMainAjaxTest extends OxidTestCase
     public function testAddDiscCountry()
     {
         $sSynchoxid = '_testDiscount';
-        $this->setRequestParam( "synchoxid", $sSynchoxid );
-        $oView = $this->getMock( "discount_main_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( 'oxidmiddlecust', 'oxidgoodcust' ) ) );
-        $this->assertEquals( 3, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'" ) );
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $oView = $this->getMock("discount_main_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('oxidmiddlecust', 'oxidgoodcust')));
+        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
         $oView->addDiscCountry();
-        $this->assertEquals( 5, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'" ) );
+        $this->assertEquals(5, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
     }
 
     /**
@@ -162,17 +163,17 @@ class Unit_Admin_DiscountMainAjaxTest extends OxidTestCase
     public function testAddDiscCountryAll()
     {
         $sSynchoxid = '_testDiscountNew';
-        $this->setRequestParam( "synchoxid", $sSynchoxid );
-        $this->setRequestParam( "all", true );
+        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $this->setRequestParam("all", true);
 
-        $iCount = oxDb::getDb()->getOne( "select count(oxid) from oxcountry where oxactive='1'" );
+        $iCount = oxDb::getDb()->getOne("select count(oxid) from oxcountry where oxactive='1'");
 
-        $oView = oxNew( 'discount_main_ajax' );
-        $this->assertGreaterThan( 0, $iCount );
-        $this->assertEquals( 0, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'" ) );
+        $oView = oxNew('discount_main_ajax');
+        $this->assertGreaterThan(0, $iCount);
+        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
 
         $oView->addDiscCountry();
-        $this->assertEquals( $iCount, oxDb::getDb()->getOne( "select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'" ) );
+        $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
     }
 
 }

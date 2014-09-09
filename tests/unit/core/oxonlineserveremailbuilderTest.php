@@ -19,13 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
-require_once realpath( "." ).'/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
 
 /**
  * Class Unit_Core_oxOnlineServerEmailBuilderTest
  */
 class Unit_Core_oxOnlineServerEmailBuilderTest extends OxidTestCase
 {
+
     public function testBuildIfParametersWereSetCorrectly()
     {
         $sBody = '_testXML';
@@ -34,7 +35,7 @@ class Unit_Core_oxOnlineServerEmailBuilderTest extends OxidTestCase
         $aRecipient = $oExpirationEmail->getRecipient();
 
         $this->assertSame($sBody, $oExpirationEmail->getBody(), 'Email content is not as it should be.');
-        $this->assertSame('olc@oxid-esales.com', $aRecipient[0][0], 'Recipient email address is wrong.');
+        $this->assertSame('info@oxid-esales.com', $aRecipient[0][0], 'Recipient email address is wrong.');
         $this->assertSame(oxRegistry::getLang()->translateString('SUBJECT_UNABLE_TO_SEND_VIA_CURL', null, true), $oExpirationEmail->getSubject(), 'Subject is wrong.');
     }
 }

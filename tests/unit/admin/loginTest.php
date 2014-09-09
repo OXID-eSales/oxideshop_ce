@@ -20,18 +20,20 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing login class.
  */
 class Unit_Admin_loginTest extends OxidTestCase
 {
+
     public function setUp()
     {
-        modConfig::getInstance()->setAdminMode( true );
+        modConfig::getInstance()->setAdminMode(true);
         modSession::getInstance()->setVar("blIsAdmin", true);
+
         return parent::setUp();
     }
 
@@ -42,9 +44,9 @@ class Unit_Admin_loginTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $this->cleanUpTable( 'oxuser' );
-        oxDb::getDb()->execute( "delete from oxremark where oxparentid = '_testUserId'" );
-        oxDb::getDb()->execute( "delete from oxnewssubscribed where oxuserid = '_testUserId'" );
+        $this->cleanUpTable('oxuser');
+        oxDb::getDb()->execute("delete from oxremark where oxparentid = '_testUserId'");
+        oxDb::getDb()->execute("delete from oxnewssubscribed where oxuserid = '_testUserId'");
         parent::tearDown();
     }
 
@@ -54,29 +56,29 @@ class Unit_Admin_loginTest extends OxidTestCase
      *
      *  M#1386
      *
-     *  @return null
+     * @return null
      */
     public function testLogin()
     {
-        $oUser = oxNew( "oxUser" );
-        $oUser->setId( "_testUserId" );
-        $oUser->oxuser__oxactive = new oxField( "1" );
-        $oUser->oxuser__oxusername = new oxField( "&\"\'\\<>adminname", oxField::T_RAW );
-        $oUser->oxuser__oxshopid = new oxField( modConfig::getInstance()->getShopId() );
+        $oUser = oxNew("oxUser");
+        $oUser->setId("_testUserId");
+        $oUser->oxuser__oxactive = new oxField("1");
+        $oUser->oxuser__oxusername = new oxField("&\"\'\\<>adminname", oxField::T_RAW);
+        $oUser->oxuser__oxshopid = new oxField(modConfig::getInstance()->getShopId());
 
-        $oUser->setPassword( "&\"\'\\<>adminpsw" );
+        $oUser->setPassword("&\"\'\\<>adminpsw");
         $oUser->save();
 
-        oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ throw new oxException($aA[0]); }' );
-        oxTestModules::addFunction( 'oxUtilsServer', 'getOxCookie', '{ return array(\'test\'); }' );
+        oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ throw new oxException($aA[0]); }');
+        oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return array(\'test\'); }');
 
         $_SERVER['REQUEST_METHOD'] = "POST";
-        modConfig::setRequestParameter( "user", "&\"\'\\<>adminname" );
-        modConfig::setRequestParameter( "pwd", "&\"\'\\<>adminpsw" );
+        modConfig::setRequestParameter("user", "&\"\'\\<>adminname");
+        modConfig::setRequestParameter("pwd", "&\"\'\\<>adminpsw");
 
 
-        $oLogin = $this->getProxyClass( 'login' );
-        $this->assertEquals( "admin_start", $oLogin->checklogin() );
+        $oLogin = $this->getProxyClass('login');
+        $this->assertEquals("admin_start", $oLogin->checklogin());
     }
 
     /**
@@ -85,42 +87,42 @@ class Unit_Admin_loginTest extends OxidTestCase
      *
      *  M#3680
      *
-     *  @return null
+     * @return null
      */
     public function testLoginNotAdmin()
     {
-        $this->setExpectedException( 'oxException', 'LOGIN_ERROR' );
+        $this->setExpectedException('oxException', 'LOGIN_ERROR');
 
-        modConfig::getInstance()->setAdminMode( true );
+        modConfig::getInstance()->setAdminMode(true);
 
-        $oUser = oxNew( "oxUser" );
-        $oUser->setId( "_testUserId" );
-        $oUser->oxuser__oxactive = new oxField( "1" );
-        $oUser->oxuser__oxusername = new oxField( "&\"\'\\<>adminname", oxField::T_RAW );
-        $oUser->setPassword( "&\"\'\\<>adminpsw" );
+        $oUser = oxNew("oxUser");
+        $oUser->setId("_testUserId");
+        $oUser->oxuser__oxactive = new oxField("1");
+        $oUser->oxuser__oxusername = new oxField("&\"\'\\<>adminname", oxField::T_RAW);
+        $oUser->setPassword("&\"\'\\<>adminpsw");
         $oUser->save();
 
-        oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ throw new oxException($aA[0]); }' );
-        oxTestModules::addFunction( 'oxUtilsServer', 'getOxCookie', '{ return array(\'test\'); }' );
+        oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ throw new oxException($aA[0]); }');
+        oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return array(\'test\'); }');
 
         $_SERVER['REQUEST_METHOD'] = "POST";
-        modConfig::setRequestParameter( "user", "&\"\'\\<>adminname" );
-        modConfig::setRequestParameter( "pwd", "&\"\'\\<>adminpsw" );
+        modConfig::setRequestParameter("user", "&\"\'\\<>adminname");
+        modConfig::setRequestParameter("pwd", "&\"\'\\<>adminpsw");
 
-        $oLogin = $this->getProxyClass( 'login' );
-        $this->assertEquals( "admin_start", $oLogin->checklogin() );
+        $oLogin = $this->getProxyClass('login');
+        $this->assertEquals("admin_start", $oLogin->checklogin());
     }
 
     /**
      *  Check getting browser language abbervation
      *
-     *  @return null
+     * @return null
      */
     public function testGetBrowserLanguage()
     {
-        $oLogin = $this->getProxyClass( 'login' );
+        $oLogin = $this->getProxyClass('login');
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = "en-US,en;q=0.8,fr-ca;q=0.5,fr;q=0.3;";
-        $this->assertEquals( "en", $oLogin->UNITgetBrowserLanguage() );
+        $this->assertEquals("en", $oLogin->UNITgetBrowserLanguage());
     }
 
     /**
@@ -128,11 +130,11 @@ class Unit_Admin_loginTest extends OxidTestCase
      *  when selected lang ID is not setted to cookie. Selected lang
      *  should be selected by detected lang in browser.
      *
-     *  @return null
+     * @return null
      */
     public function testGetAvailableLanguages_withoutCookies_DE()
     {
-        oxTestModules::addFunction( 'oxUtilsServer', 'getOxCookie', '{ return null; }');
+        oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return null; }');
 
         $oLang = new stdClass();
         $oLang->id = 0;
@@ -156,10 +158,10 @@ class Unit_Admin_loginTest extends OxidTestCase
 
         $aLanguages[] = $oLang;
 
-        $oLogin = $this->getMock( 'login', array( '_getBrowserLanguage' ) );
-        $oLogin->expects( $this->once() )->method( '_getBrowserLanguage' )->will( $this->returnValue( 'de' ) );
+        $oLogin = $this->getMock('login', array('_getBrowserLanguage'));
+        $oLogin->expects($this->once())->method('_getBrowserLanguage')->will($this->returnValue('de'));
 
-        $this->assertEquals( $aLanguages, $oLogin->UNITgetAvailableLanguages() );
+        $this->assertEquals($aLanguages, $oLogin->UNITgetAvailableLanguages());
     }
 
     /**
@@ -167,7 +169,7 @@ class Unit_Admin_loginTest extends OxidTestCase
      *  when selected lang ID is not setted to cookie. Selected lang
      *  should be selected by detected lang in browser.
      *
-     *  @return null
+     * @return null
      */
     public function testGetAvailableLanguages_withoutCookies_EN()
     {
@@ -193,10 +195,10 @@ class Unit_Admin_loginTest extends OxidTestCase
 
         $aLanguages[] = $oLang;
 
-        $oLogin = $this->getMock( 'login', array( '_getBrowserLanguage' ) );
-        $oLogin->expects( $this->once() )->method( '_getBrowserLanguage' )->will( $this->returnValue( 'en' ) );
+        $oLogin = $this->getMock('login', array('_getBrowserLanguage'));
+        $oLogin->expects($this->once())->method('_getBrowserLanguage')->will($this->returnValue('en'));
 
-        $this->assertEquals( $aLanguages, $oLogin->UNITgetAvailableLanguages() );
+        $this->assertEquals($aLanguages, $oLogin->UNITgetAvailableLanguages());
     }
 
     /**
@@ -204,7 +206,7 @@ class Unit_Admin_loginTest extends OxidTestCase
      *  when selected lang ID is setted to cookie. Selected lang
      *  should be selected by detected lang id in cookie.
      *
-     *  @return null
+     * @return null
      */
     public function testGetAvailableLanguages_withCookies_DE()
     {
@@ -231,13 +233,13 @@ class Unit_Admin_loginTest extends OxidTestCase
         $aLanguages[] = $oLang;
 
         // browser lang does not affect selected lang when cookie is set
-        $oLogin = $this->getMock( 'login', array( '_getBrowserLanguage' ) );
-        $oLogin->expects( $this->once() )->method( '_getBrowserLanguage' )->will( $this->returnValue( 'en' ) );
+        $oLogin = $this->getMock('login', array('_getBrowserLanguage'));
+        $oLogin->expects($this->once())->method('_getBrowserLanguage')->will($this->returnValue('en'));
 
         // DE lang id
         $_COOKIE["oxidadminlanguage"] = 0;
         $aLangs = $oLogin->UNITgetAvailableLanguages();
-        $this->assertEquals( $aLanguages, $aLangs);
+        $this->assertEquals($aLanguages, $aLangs);
     }
 
     /**
@@ -248,7 +250,7 @@ class Unit_Admin_loginTest extends OxidTestCase
     public function testGetViewId()
     {
         $oView = new Login();
-        $this->assertEquals( strtolower( "Login" ), $oView->getViewId() );
+        $this->assertEquals(strtolower("Login"), $oView->getViewId());
     }
 
     /**
@@ -259,7 +261,7 @@ class Unit_Admin_loginTest extends OxidTestCase
     public function testAuthorize()
     {
         $oView = new Login();
-        $this->assertTrue( $oView->UNITauthorize() );
+        $this->assertTrue($oView->UNITauthorize());
     }
 
 
@@ -270,15 +272,15 @@ class Unit_Admin_loginTest extends OxidTestCase
      */
     public function testCheckloginSettingProfile()
     {
-        oxTestModules::addFunction( 'oxuser', 'login', '{ throw new oxConnectionException(); }');
-        oxTestModules::addFunction( 'oxUtils', 'logger', '{ return true; }');
+        oxTestModules::addFunction('oxuser', 'login', '{ throw new oxConnectionException(); }');
+        oxTestModules::addFunction('oxUtils', 'logger', '{ return true; }');
 
-        modConfig::setRequestParameter( 'profile', "testProfile" );
-        modSession::getInstance()->setVar( "aAdminProfiles", array( "testProfile" => array( "testValue" ) ) );
+        modConfig::setRequestParameter('profile', "testProfile");
+        modSession::getInstance()->setVar("aAdminProfiles", array("testProfile" => array("testValue")));
 
         $oView = new Login();
-        $this->assertEquals( "admin_start", $oView->checklogin() );
-        $this->assertEquals( array( "testValue" ), oxRegistry::getSession()->getVariable( "profile" ) );
+        $this->assertEquals("admin_start", $oView->checklogin());
+        $this->assertEquals(array("testValue"), oxRegistry::getSession()->getVariable("profile"));
     }
 
     /**
@@ -288,18 +290,18 @@ class Unit_Admin_loginTest extends OxidTestCase
      */
     public function testCheckloginUserException()
     {
-        oxTestModules::addFunction( 'oxuser', 'login', '{ throw new oxUserException(); }');
+        oxTestModules::addFunction('oxuser', 'login', '{ throw new oxUserException(); }');
 
         modConfig::setRequestParameter('user', '\'"<^%&*aaa>');
         modConfig::setRequestParameter('pwd', '<^%&*aaa>\'"');
         modConfig::setRequestParameter('profile', '<^%&*aaa>\'"');
-        modConfig::getInstance()->setAdminMode( true );
+        modConfig::getInstance()->setAdminMode(true);
         modSession::getInstance()->setVar("blIsAdmin", true);
-        $oView = $this->getMock( "Login", array( "addTplParam" ) );
-        $oView->expects( $this->at( 0 ) )->method( 'addTplParam' )->with( $this->equalTo( "user" ), $this->equalTo( '&#039;&quot;&lt;^%&amp;*aaa&gt;' ) );
-        $oView->expects( $this->at( 1 ) )->method( 'addTplParam' )->with( $this->equalTo( "pwd" ), $this->equalTo( '&lt;^%&amp;*aaa&gt;&#039;&quot;' ) );
-        $oView->expects( $this->at( 2 ) )->method( 'addTplParam' )->with( $this->equalTo( "profile" ), $this->equalTo( '&lt;^%&amp;*aaa&gt;&#039;&quot;' ) );
-        $this->assertNull( $oView->checklogin() );
+        $oView = $this->getMock("Login", array("addTplParam"));
+        $oView->expects($this->at(0))->method('addTplParam')->with($this->equalTo("user"), $this->equalTo('&#039;&quot;&lt;^%&amp;*aaa&gt;'));
+        $oView->expects($this->at(1))->method('addTplParam')->with($this->equalTo("pwd"), $this->equalTo('&lt;^%&amp;*aaa&gt;&#039;&quot;'));
+        $oView->expects($this->at(2))->method('addTplParam')->with($this->equalTo("profile"), $this->equalTo('&lt;^%&amp;*aaa&gt;&#039;&quot;'));
+        $this->assertNull($oView->checklogin());
     }
 
     /**
@@ -309,18 +311,18 @@ class Unit_Admin_loginTest extends OxidTestCase
      */
     public function testCheckloginCookieException()
     {
-        oxTestModules::addFunction( 'oxuser', 'login', '{ throw new oxCookieException(); }');
+        oxTestModules::addFunction('oxuser', 'login', '{ throw new oxCookieException(); }');
 
         modConfig::setRequestParameter('user', '\'"<^%&*aaa>');
         modConfig::setRequestParameter('pwd', '<^%&*aaa>\'"');
         modConfig::setRequestParameter('profile', '<^%&*aaa>\'"');
-        modConfig::getInstance()->setAdminMode( true );
+        modConfig::getInstance()->setAdminMode(true);
         modSession::getInstance()->setVar("blIsAdmin", true);
-        $oView = $this->getMock( "Login", array( "addTplParam" ) );
-        $oView->expects( $this->at( 0 ) )->method( 'addTplParam' )->with( $this->equalTo( "user" ), $this->equalTo( '&#039;&quot;&lt;^%&amp;*aaa&gt;' ) );
-        $oView->expects( $this->at( 1 ) )->method( 'addTplParam' )->with( $this->equalTo( "pwd" ), $this->equalTo( '&lt;^%&amp;*aaa&gt;&#039;&quot;' ) );
-        $oView->expects( $this->at( 2 ) )->method( 'addTplParam' )->with( $this->equalTo( "profile" ), $this->equalTo( '&lt;^%&amp;*aaa&gt;&#039;&quot;' ) );
-        $this->assertNull( $oView->checklogin() );
+        $oView = $this->getMock("Login", array("addTplParam"));
+        $oView->expects($this->at(0))->method('addTplParam')->with($this->equalTo("user"), $this->equalTo('&#039;&quot;&lt;^%&amp;*aaa&gt;'));
+        $oView->expects($this->at(1))->method('addTplParam')->with($this->equalTo("pwd"), $this->equalTo('&lt;^%&amp;*aaa&gt;&#039;&quot;'));
+        $oView->expects($this->at(2))->method('addTplParam')->with($this->equalTo("profile"), $this->equalTo('&lt;^%&amp;*aaa&gt;&#039;&quot;'));
+        $this->assertNull($oView->checklogin());
     }
 
     /**
@@ -333,20 +335,20 @@ class Unit_Admin_loginTest extends OxidTestCase
         $oLang = new stdClass();
         $oLang->blSelected = true;
 
-        $aLanguages = array( $oLang );
+        $aLanguages = array($oLang);
 
-        $oViewConfig = $this->getMock( "oxViewConfig", array( "setViewConfigParam" ) );
-        $oViewConfig->expects( $this->atLeastOnce() )->method( 'setViewConfigParam' );
+        $oViewConfig = $this->getMock("oxViewConfig", array("setViewConfigParam"));
+        $oViewConfig->expects($this->atLeastOnce())->method('setViewConfigParam');
 
-        $oConfig = $this->getMock( "oxConfig", array( "isDemoShop" ) );
-        $oConfig->expects( $this->atLeastOnce() )->method( 'isDemoShop' )->will( $this->returnValue( "true" ) );
+        $oConfig = $this->getMock("oxConfig", array("isDemoShop"));
+        $oConfig->expects($this->atLeastOnce())->method('isDemoShop')->will($this->returnValue("true"));
 
-        $oView = $this->getMock( "Login", array( "getConfig", "getViewConfig", "addTplParam", "_getAvailableLanguages" ), array(), '', false );
-        $oView->expects( $this->atLeastOnce() )->method( 'getViewConfig' )->will( $this->returnValue( $oViewConfig ) );
-        $oView->expects( $this->atLeastOnce() )->method( 'addTplParam' );
-        $oView->expects( $this->atLeastOnce() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-        $oView->expects( $this->once() )->method( '_getAvailableLanguages' )->will( $this->returnValue( $aLanguages ) );
+        $oView = $this->getMock("Login", array("getConfig", "getViewConfig", "addTplParam", "_getAvailableLanguages"), array(), '', false);
+        $oView->expects($this->atLeastOnce())->method('getViewConfig')->will($this->returnValue($oViewConfig));
+        $oView->expects($this->atLeastOnce())->method('addTplParam');
+        $oView->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
+        $oView->expects($this->once())->method('_getAvailableLanguages')->will($this->returnValue($aLanguages));
 
-        $this->assertEquals( "login.tpl", $oView->render() );
+        $this->assertEquals("login.tpl", $oView->render());
     }
 }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Admin_Pricealarm class
  */
 class Unit_Admin_AdminPricealarmTest extends OxidTestCase
 {
+
     /**
      * Admin_Pricealarm::Render() test case
      *
@@ -37,7 +38,7 @@ class Unit_Admin_AdminPricealarmTest extends OxidTestCase
     {
         // testing..
         $oView = new Admin_Pricealarm();
-        $this->assertEquals( 'admin_pricealarm.tpl', $oView->render() );
+        $this->assertEquals('admin_pricealarm.tpl', $oView->render());
     }
 
 }

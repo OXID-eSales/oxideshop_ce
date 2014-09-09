@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,32 +18,33 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
-
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-
-/**
- * Tests for News_Main class
- */
-class Unit_Admin_NewsletterPreviewTest extends OxidTestCase
-{
-    /**
-     * News_Main::Render() test case
-     *
-     * @return null
      */
-    public function testRender()
+
+    require_once realpath(".") . '/unit/OxidTestCase.php';
+    require_once realpath(".") . '/unit/test_config.inc.php';
+
+    /**
+     * Tests for News_Main class
+     */
+    class Unit_Admin_NewsletterPreviewTest extends OxidTestCase
     {
-        oxTestModules::addFunction( 'oxnewsletter', 'prepare', '{}');
-        modConfig::setRequestParameter( "oxid", "testId" );
 
-        // testing..
-        $oView = new Newsletter_Preview();
-        $this->assertEquals( 'newsletter_preview.tpl', $oView->render() );
-        $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxnewsletter );
+        /**
+         * News_Main::Render() test case
+         *
+         * @return null
+         */
+        public function testRender()
+        {
+            oxTestModules::addFunction('oxnewsletter', 'prepare', '{}');
+            modConfig::setRequestParameter("oxid", "testId");
+
+            // testing..
+            $oView = new Newsletter_Preview();
+            $this->assertEquals('newsletter_preview.tpl', $oView->render());
+            $aViewData = $oView->getViewData();
+            $this->assertTrue(isset($aViewData['edit']));
+            $this->assertTrue($aViewData['edit'] instanceof oxnewsletter);
+        }
+
     }
-
-}

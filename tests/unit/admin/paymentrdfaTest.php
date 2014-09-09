@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Shop_Main class
  */
 class Unit_Admin_PaymentRDFaTest extends OxidTestCase
 {
+
     /**
      * Tear down the fixture.
      *
@@ -35,7 +36,7 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $this->cleanUpTable( 'oxobject2payment' );
+        $this->cleanUpTable('oxobject2payment');
 
         parent::tearDown();
     }
@@ -48,7 +49,7 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
     public function testSave_deleteOldRecords()
     {
         $sTestID = '_test_recid';
-        modConfig::setRequestParameter( 'oxid', $sTestID );
+        modConfig::setRequestParameter('oxid', $sTestID);
 
         $oMapping = oxNew('oxbase');
         $oMapping->init('oxobject2payment');
@@ -61,18 +62,18 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
 
         $iExists = $oDB->GetOne(
             'SELECT 1 FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?'
-            ,array($sTestID, 'rdfapayment')
+            , array($sTestID, 'rdfapayment')
         );
-        $this->assertFalse( empty($iExists) );
+        $this->assertFalse(empty($iExists));
 
         $oView = oxNew('Payment_RDFa');
         $oView->save();
 
         $iExists = $oDB->GetOne(
             'SELECT 1 FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?'
-            ,array($sTestID, 'rdfapayment')
+            , array($sTestID, 'rdfapayment')
         );
-        $this->assertTrue( empty($iExists) );
+        $this->assertTrue(empty($iExists));
     }
 
     /**
@@ -84,13 +85,13 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
     {
         $sTestID = '_test_recid';
         $aObjIDs = array('_test_obj1', '_test_obj2');
-        modConfig::setRequestParameter( 'oxid', $sTestID );
-        modConfig::setRequestParameter( 'ardfapayments', $aObjIDs );
+        modConfig::setRequestParameter('oxid', $sTestID);
+        modConfig::setRequestParameter('ardfapayments', $aObjIDs);
         modConfig::setRequestParameter(
             'editval',
             array(
-                'oxobject2payment__oxpaymentid' => $sTestID,
-                'oxobject2payment__oxtype' => 'rdfapayment',
+                 'oxobject2payment__oxpaymentid' => $sTestID,
+                 'oxobject2payment__oxtype'      => 'rdfapayment',
             )
         );
 
@@ -101,11 +102,11 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
 
         $aCurrObjIDs = $oDB->GetCol(
             'SELECT oxobjectid FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?'
-            ,array($sTestID, 'rdfapayment')
+            , array($sTestID, 'rdfapayment')
         );
         sort($aObjIDs);
         sort($aCurrObjIDs);
-        $this->assertSame( $aObjIDs, $aCurrObjIDs );
+        $this->assertSame($aObjIDs, $aCurrObjIDs);
     }
 
     /**
@@ -119,23 +120,23 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
         $aExpResp = array();
 
         $oView = $this->getMock('Payment_RDFa', array('getAssignedRDFaPayments'));
-        $oView->expects( $this->once() )->method('getAssignedRDFaPayments')->will( $this->returnValue($aAssignedRDFaPayments) );
+        $oView->expects($this->once())->method('getAssignedRDFaPayments')->will($this->returnValue($aAssignedRDFaPayments));
         $aCurrResp = $oView->getAllRDFaPayments();
 
-        $this->assertTrue( is_array($aCurrResp), 'Array should be returned' );
-        $this->assertTrue( count($aCurrResp) > 0, 'Empty array returned' );
-        $this->assertTrue( current($aCurrResp) instanceof stdClass, 'Array elements should be of type stdClass' );
+        $this->assertTrue(is_array($aCurrResp), 'Array should be returned');
+        $this->assertTrue(count($aCurrResp) > 0, 'Empty array returned');
+        $this->assertTrue(current($aCurrResp) instanceof stdClass, 'Array elements should be of type stdClass');
 
         $blFound = false;
         foreach ($aCurrResp as $oItem) {
             foreach ($aAssignedRDFaPayments as $sAssignedName) {
                 if (strcasecmp($oItem->name, $sAssignedName) === 0) {
                     if ($oItem->checked !== true) {
-                        $this->fail('Item "'.$sAssignedName.'" should be set as active');
+                        $this->fail('Item "' . $sAssignedName . '" should be set as active');
                     }
                 } else {
                     if ($oItem->checked === true) {
-                        $this->fail('Item "'.$sAssignedName.'" should not be set as active');
+                        $this->fail('Item "' . $sAssignedName . '" should not be set as active');
                     }
                 }
             }
@@ -151,7 +152,7 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
     {
         $sTestID = '_test_recid';
         $aObjIDs = array('_test_obj1', '_test_obj2');
-        modConfig::setRequestParameter( 'oxid', $sTestID );
+        modConfig::setRequestParameter('oxid', $sTestID);
         $oView = oxNew('Payment_RDFa');
 
         $oDB = oxDb::getDb();

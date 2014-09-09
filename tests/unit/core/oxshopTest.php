@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxshopTest extends OxidTestCase
 {
+
 
     public function testStructure()
     {
@@ -41,31 +42,31 @@ class Unit_Core_oxshopTest extends OxidTestCase
     public function testIsProductiveMode_ProductiveMode()
     {
         $oShop = new oxShop();
-        $oShop->setId( 10 );
-        $oShop->oxshops__oxproductive = new oxField( true );
+        $oShop->setId(10);
+        $oShop->oxshops__oxproductive = new oxField(true);
         $oShop->oxshops__oxactive = new oxField(1);
         $oShop->oxshops__oxname = new oxField('Test shop');
         $oShop->save();
 
         $oShop = new oxShop();
-        $oShop->load( 10 );
+        $oShop->load(10);
 
-        $this->assertTrue( $oShop->isProductiveMode() );
+        $this->assertTrue($oShop->isProductiveMode());
     }
 
     public function testIsProductiveMode_nonProductiveMode()
     {
         $oShop = new oxShop();
-        $oShop->setId( 12 );
-        $oShop->oxshops__oxproductive = new oxField( false );
+        $oShop->setId(12);
+        $oShop->oxshops__oxproductive = new oxField(false);
         $oShop->oxshops__oxactive = new oxField(1);
         $oShop->oxshops__oxname = new oxField('Test shop');
         $oShop->save();
 
         $oShop = new oxShop();
-        $oShop->load( 12 );
+        $oShop->load(12);
 
-        $this->assertFalse( $oShop->isProductiveMode() );
+        $this->assertFalse($oShop->isProductiveMode());
     }
 
     /**
@@ -74,7 +75,7 @@ class Unit_Core_oxshopTest extends OxidTestCase
     public function makeViewQueryParamProvider()
     {
         $sFieldsMultilang = 'OXID, OXTITLE, OXTITLE_1';
-        $sFields          = 'OXID, OXTITLE';
+        $sFields = 'OXID, OXTITLE';
 
         $aMockedFunctionReturns = array(
             '_getViewSelectMultilang' => $sFieldsMultilang,

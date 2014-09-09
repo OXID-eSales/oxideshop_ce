@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * oxvatselector test
@@ -38,9 +38,9 @@ class Unit_Core_oxtsprotectionTest extends OxidTestCase
         $oTsProtection = oxNew('oxtsprotection');
         $oProduct = $oTsProtection->getTsProduct('TS080501_500_30_EUR');
 
-        $this->assertEquals( 'TS080501_500_30_EUR', $oProduct->getTsId() );
-        $this->assertEquals( 500, $oProduct->getAmount() );
-        $this->assertEquals( '0,82', $oProduct->getFPrice() );
+        $this->assertEquals('TS080501_500_30_EUR', $oProduct->getTsId());
+        $this->assertEquals(500, $oProduct->getAmount());
+        $this->assertEquals('0,82', $oProduct->getFPrice());
     }
 
     /**
@@ -53,9 +53,9 @@ class Unit_Core_oxtsprotectionTest extends OxidTestCase
         $oProducts = $oTsProtection->getTsProducts(50);
         $oProduct = current($oProducts);
 
-        $this->assertEquals( 'TS080501_500_30_EUR', $oProduct->getTsId() );
-        $this->assertEquals( 500, $oProduct->getAmount() );
-        $this->assertEquals( '0,82', $oProduct->getFPrice() );
+        $this->assertEquals('TS080501_500_30_EUR', $oProduct->getTsId());
+        $this->assertEquals(500, $oProduct->getAmount());
+        $this->assertEquals('0,82', $oProduct->getFPrice());
     }
 
     /**
@@ -67,7 +67,7 @@ class Unit_Core_oxtsprotectionTest extends OxidTestCase
         $oTsProtection = oxNew('oxtsprotection');
         $oProducts = $oTsProtection->getTsProducts(2000);
 
-        $this->assertEquals( 3, count($oProducts) );
+        $this->assertEquals(3, count($oProducts));
     }
 
     /**
@@ -79,10 +79,10 @@ class Unit_Core_oxtsprotectionTest extends OxidTestCase
         $sSoapUrl = 'https://www.trustedshops.de/ts/services/TsProtection?wsdl';
         $sFunction = 'checkCertificate';
         $iTrustedShopId = 'AAAA';
-        $oTsProtection = $this->getMock( "oxtsprotection", array( "executeSoap" ) );
-        $oTsProtection->expects( $this->any() )->method( 'executeSoap' )->with( $this->equalTo( $sSoapUrl ), $this->equalTo( $sFunction ), $this->equalTo( $iTrustedShopId ) )->will( $this->returnValue( true ) );
+        $oTsProtection = $this->getMock("oxtsprotection", array("executeSoap"));
+        $oTsProtection->expects($this->any())->method('executeSoap')->with($this->equalTo($sSoapUrl), $this->equalTo($sFunction), $this->equalTo($iTrustedShopId))->will($this->returnValue(true));
 
-        $this->assertTrue( $oTsProtection->checkCertificate($iTrustedShopId, false) );
+        $this->assertTrue($oTsProtection->checkCertificate($iTrustedShopId, false));
     }
 
     /**
@@ -94,7 +94,7 @@ class Unit_Core_oxtsprotectionTest extends OxidTestCase
         $oTsProtection = oxNew('oxtsprotection');
         $sId = $oTsProtection->UNITgetTsProductCurrId('TS080501_500_30_EUR', 'GBP');
 
-        $this->assertEquals( 'TS100629_500_30_GBP', $sId );
+        $this->assertEquals('TS100629_500_30_GBP', $sId);
     }
 
 }

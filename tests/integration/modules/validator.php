@@ -20,10 +20,11 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
+require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
 
 class Validator
 {
+
     /**
      * Config object.
      *
@@ -36,7 +37,7 @@ class Validator
      *
      * @param $_oConfig
      */
-    function __construct( $_oConfig )
+    function __construct($_oConfig)
     {
         $this->_oConfig = $_oConfig;
     }
@@ -55,105 +56,114 @@ class Validator
      * Asserts that module templates match expected templates
      *
      * @param $aExpectedTemplates
+     *
      * @return bool
      */
-    public function checkTemplates( $aExpectedTemplates )
+    public function checkTemplates($aExpectedTemplates)
     {
-        $aTemplatesToCheck = $this->getConfig()->getConfigParam( 'aModuleTemplates' );
-        $aTemplatesToCheck = is_null( $aTemplatesToCheck ) ? array() : $aTemplatesToCheck;
+        $aTemplatesToCheck = $this->getConfig()->getConfigParam('aModuleTemplates');
+        $aTemplatesToCheck = is_null($aTemplatesToCheck) ? array() : $aTemplatesToCheck;
 
-        return ( $aExpectedTemplates == $aTemplatesToCheck );
+        return ($aExpectedTemplates == $aTemplatesToCheck);
     }
 
     /**
      * Asserts that module blocks match expected blocks
      *
      * @param $aExpectedBlocks
+     *
      * @return bool
      */
-    public function checkBlocks( $aExpectedBlocks )
+    public function checkBlocks($aExpectedBlocks)
     {
         $oDb = oxDb::getDb();
         $sQuery = "select * from oxtplblocks where oxshopid = {$this->getConfig()->getShopId()}";
-        $aBlocksToCheck = $oDb->getAll( $sQuery );
+        $aBlocksToCheck = $oDb->getAll($sQuery);
 
-        $blParamsCountMatch = count( $aExpectedBlocks ) == count( $aBlocksToCheck );
+        $blParamsCountMatch = count($aExpectedBlocks) == count($aBlocksToCheck);
 
-        return $blParamsCountMatch && $this->_checkBlockValues( $aExpectedBlocks, $aBlocksToCheck);
+        return $blParamsCountMatch && $this->_checkBlockValues($aExpectedBlocks, $aBlocksToCheck);
     }
 
     /**
      * Asserts that module extensions match expected extensions
      *
      * @param $aExpectedExtensions
+     *
      * @return bool
      */
-    public function checkExtensions( $aExpectedExtensions )
+    public function checkExtensions($aExpectedExtensions)
     {
-        $aExtensionsToCheck = $this->getConfig()->getConfigParam( 'aModules' );
+        $aExtensionsToCheck = $this->getConfig()->getConfigParam('aModules');
 
-        return ( $aExpectedExtensions === $aExtensionsToCheck );
+        return ($aExpectedExtensions === $aExtensionsToCheck);
     }
 
     /**
      * Asserts that disabled module is in disabled modules list
      *
      * @param $aExpectedDisabledModules
+     *
      * @return bool
      */
-    public function checkDisabledModules( $aExpectedDisabledModules )
+    public function checkDisabledModules($aExpectedDisabledModules)
     {
-        $aDisabledModules = $this->getConfig()->getConfigParam( 'aDisabledModules' );
+        $aDisabledModules = $this->getConfig()->getConfigParam('aDisabledModules');
 
-        return ( $aExpectedDisabledModules == $aDisabledModules );
+        return ($aExpectedDisabledModules == $aDisabledModules);
     }
 
     /**
      * Asserts that module files match expected files
      *
      * @param $aExpectedFiles
+     *
      * @return bool
      */
-    public function checkFiles( $aExpectedFiles )
+    public function checkFiles($aExpectedFiles)
     {
-        $aModuleFilesToCheck = $this->getConfig()->getConfigParam( 'aModuleFiles' );
-        $aModuleFilesToCheck = is_null( $aModuleFilesToCheck ) ? array() : $aModuleFilesToCheck;
+        $aModuleFilesToCheck = $this->getConfig()->getConfigParam('aModuleFiles');
+        $aModuleFilesToCheck = is_null($aModuleFilesToCheck) ? array() : $aModuleFilesToCheck;
 
-        return ( $aExpectedFiles == $aModuleFilesToCheck );
+        return ($aExpectedFiles == $aModuleFilesToCheck);
     }
 
     /**
      * Asserts that module configs match expected configs
      *
      * @param $aExpectedConfigs
+     *
      * @return bool
      */
-    public function checkConfigAmount( $aExpectedConfigs )
+    public function checkConfigAmount($aExpectedConfigs)
     {
-        $oDb = oxDb::getDb(  );
+        $oDb = oxDb::getDb();
         $sQuery = "select c.oxvarname
                    from  oxconfig c inner join oxconfigdisplay d
                    on c.oxvarname = d.oxcfgvarname  and c.oxmodule = d.oxcfgmodule
                    where oxmodule like 'module:%' and c.oxshopid = {$this->getConfig()->getShopId()}";
-        $aConfigsToCheck = $oDb->getAll( $sQuery );
+        $aConfigsToCheck = $oDb->getAll($sQuery);
 
-        return ( count( $aExpectedConfigs ) == count( $aConfigsToCheck ) );
+        return (count($aExpectedConfigs) == count($aConfigsToCheck));
     }
 
     /**
      * Asserts that module configs match expected values.
+     *
      * @param array $aExpectedConfigs configs to check
+     *
      * @return bool
      */
-    public function checkConfigValues( $aExpectedConfigs )
+    public function checkConfigValues($aExpectedConfigs)
     {
         $oConfig = $this->getConfig();
-        foreach ( $aExpectedConfigs as $aExpectedConfig ) {
-            $oConfigValueInShop = $oConfig->getConfigParam( $aExpectedConfig[ 'name' ] );
-            if ( $oConfigValueInShop != $aExpectedConfig[ 'value' ] ) {
+        foreach ($aExpectedConfigs as $aExpectedConfig) {
+            $oConfigValueInShop = $oConfig->getConfigParam($aExpectedConfig['name']);
+            if ($oConfigValueInShop != $aExpectedConfig['value']) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -161,39 +171,42 @@ class Validator
      * Asserts that module version match expected version
      *
      * @param $aExpectedVersions
+     *
      * @return bool
      */
-    public function checkVersions( $aExpectedVersions )
+    public function checkVersions($aExpectedVersions)
     {
-        $aModuleVersionsToCheck = $this->getConfig()->getConfigParam( 'aModuleVersions' );
-        $aModuleVersionsToCheck = is_null( $aModuleVersionsToCheck ) ? array() : $aModuleVersionsToCheck;
+        $aModuleVersionsToCheck = $this->getConfig()->getConfigParam('aModuleVersions');
+        $aModuleVersionsToCheck = is_null($aModuleVersionsToCheck) ? array() : $aModuleVersionsToCheck;
 
-        return ( $aExpectedVersions == $aModuleVersionsToCheck );
+        return ($aExpectedVersions == $aModuleVersionsToCheck);
     }
 
     /**
      * Asserts that module version match expected version
      *
      * @param $aExpectedEvents
+     *
      * @return bool
      */
-    public function checkEvents( $aExpectedEvents )
+    public function checkEvents($aExpectedEvents)
     {
-        $aModuleEventsToCheck = $this->getConfig()->getConfigParam( 'aModuleEvents' );
-        $aModuleEventsToCheck = is_null( $aModuleEventsToCheck) ? array() : $aModuleEventsToCheck;
+        $aModuleEventsToCheck = $this->getConfig()->getConfigParam('aModuleEvents');
+        $aModuleEventsToCheck = is_null($aModuleEventsToCheck) ? array() : $aModuleEventsToCheck;
 
-        return ( $aExpectedEvents == $aModuleEventsToCheck );
+        return ($aExpectedEvents == $aModuleEventsToCheck);
     }
 
     /**
      * @param $aExpectedBlocks
      * @param $aBlocksToCheck
+     *
      * @return bool
      */
-    protected function _checkBlockValues( $aExpectedBlocks, $aBlocksToCheck )
+    protected function _checkBlockValues($aExpectedBlocks, $aBlocksToCheck)
     {
-        foreach ($aExpectedBlocks as $aValues ) {
-            if ( !$this->_matchingBlockExists( $aValues, $aBlocksToCheck ) ) {
+        foreach ($aExpectedBlocks as $aValues) {
+            if (!$this->_matchingBlockExists($aValues, $aBlocksToCheck)) {
                 return false;
             };
         }
@@ -204,31 +217,36 @@ class Validator
     /**
      * @param $aBlockValues
      * @param $aBlocks
+     *
      * @return bool
      */
-    protected function _matchingBlockExists( $aBlockValues, $aBlocks )
+    protected function _matchingBlockExists($aBlockValues, $aBlocks)
     {
-        foreach ( $aBlocks as $aBlock ) {
-            if ( !$this->_matchBlocks( $aBlockValues, $aBlock ) ) {
+        foreach ($aBlocks as $aBlock) {
+            if (!$this->_matchBlocks($aBlockValues, $aBlock)) {
                 continue;
             }
+
             return true;
         }
+
         return false;
     }
 
     /**
      * @param $aBlockValues
      * @param $aBlock
+     *
      * @return bool
      */
-    protected function _matchBlocks( $aBlockValues, $aBlock )
+    protected function _matchBlocks($aBlockValues, $aBlock)
     {
-        foreach ( $aBlockValues as $sValue ) {
-            if ( !in_array($sValue, $aBlock) ) {
+        foreach ($aBlockValues as $sValue) {
+            if (!in_array($sValue, $aBlock)) {
                 return false;
             }
         }
+
         return true;
     }
 }

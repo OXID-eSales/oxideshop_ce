@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Tools class
  */
 class Unit_Admin_ToolsTest extends OxidTestCase
 {
+
     /**
      * Tools::Render() test case
      *
@@ -37,7 +38,7 @@ class Unit_Admin_ToolsTest extends OxidTestCase
     {
         // testing..
         $oView = new Tools();
-        $this->assertEquals( 'tools.tpl', $oView->render() );
+        $this->assertEquals('tools.tpl', $oView->render());
     }
 
     /**
@@ -47,15 +48,15 @@ class Unit_Admin_ToolsTest extends OxidTestCase
      */
     public function testRenderDemoshop()
     {
-        oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{ return "Access denied !"; }');
+        oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ return "Access denied !"; }');
 
 
-        $oConfig = $this->getMock( "oxConfig", array( "isDemoShop" ) );
-        $oConfig->expects( $this->once() )->method( 'isDemoShop' )->will( $this->returnValue( true ) );
+        $oConfig = $this->getMock("oxConfig", array("isDemoShop"));
+        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
 
         // testing..
-        $oView = $this->getMock( "Tools", array( "getConfig" ), array(), '', false );
-        $oView->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-        $this->assertEquals( "Access denied !", $oView->render() );
+        $oView = $this->getMock("Tools", array("getConfig"), array(), '', false);
+        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        $this->assertEquals("Access denied !", $oView->render());
     }
 }

@@ -20,12 +20,13 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 
 class Unit_Core_oxreviewTest extends OxidTestCase
 {
+
     protected $_oReview = null;
     protected $_iNow = null;
     protected $_iReviewTime = 0;
@@ -39,10 +40,10 @@ class Unit_Core_oxreviewTest extends OxidTestCase
     {
         parent::setUp();
         $this->_iReviewTime = time();
-        oxTestModules::addFunction( "oxUtilsDate", "getTime", "{ return $this->_iReviewTime; }");
+        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $this->_iReviewTime; }");
 
         $this->_oReview = new oxreview();
-        $this->_oReview->setId( '_testId' );
+        $this->_oReview->setId('_testId');
         $this->_oReview->oxreviews__oxuserid = new oxField('oxdefaultadmin', oxField::T_RAW);
         $this->_oReview->oxreviews__oxtext = new oxField('deValue', oxField::T_RAW);
         $this->_oReview->oxreviews__oxlang = new oxField(0, oxField::T_RAW);
@@ -57,11 +58,11 @@ class Unit_Core_oxreviewTest extends OxidTestCase
     protected function tearDown()
     {
         $myDB = oxDb::getDB();
-        $sQ   = 'delete from oxuser where oxid="test"';
-        $myDB->Execute( $sQ );
-        $this->cleanUpTable( 'oxreviews' );
-        oxRemClassModule( 'modOxUtilsDate' );
-        oxRemClassModule( 'modoxCache' );
+        $sQ = 'delete from oxuser where oxid="test"';
+        $myDB->Execute($sQ);
+        $this->cleanUpTable('oxreviews');
+        oxRemClassModule('modOxUtilsDate');
+        oxRemClassModule('modoxCache');
 
         parent::tearDown();
     }
@@ -72,33 +73,33 @@ class Unit_Core_oxreviewTest extends OxidTestCase
     public function testAssignNonExisting()
     {
         $oReview = new oxreview();
-        $oReview->load( 'xxx' );
+        $oReview->load('xxx');
 
-        $this->assertFalse( isset( $oReview->oxuser__oxfname ) );
+        $this->assertFalse(isset($oReview->oxuser__oxfname));
     }
 
     public function testAssignExisting()
     {
         $oReview = new oxreview();
-        $oReview->load( '_testId' );
+        $oReview->load('_testId');
 
-        $this->assertTrue( isset( $oReview->oxuser__oxfname ) );
-        $this->assertEquals( 'John', $oReview->oxuser__oxfname->value );
+        $this->assertTrue(isset($oReview->oxuser__oxfname));
+        $this->assertEquals('John', $oReview->oxuser__oxfname->value);
     }
 
     public function testLoadDe()
     {
         $oReview = new oxreview();
-        $oReview->load( '_testId' );
+        $oReview->load('_testId');
 
-        $this->assertEquals( 'deValue', $oReview->oxreviews__oxtext->value );
+        $this->assertEquals('deValue', $oReview->oxreviews__oxtext->value);
 
-         $sCreate = date( 'd.m.Y H:i:s', $this->_iReviewTime );
-        if ( oxRegistry::getLang()->getBaseLanguage() == 1 ) {
-            $sCreate = date( 'Y-m-d H:i:s', $this->_iReviewTime );
+        $sCreate = date('d.m.Y H:i:s', $this->_iReviewTime);
+        if (oxRegistry::getLang()->getBaseLanguage() == 1) {
+            $sCreate = date('Y-m-d H:i:s', $this->_iReviewTime);
         }
 
-        $this->assertEquals( $sCreate, $oReview->oxreviews__oxcreate->value );
+        $this->assertEquals($sCreate, $oReview->oxreviews__oxcreate->value);
     }
 
     public function testUpdate()
@@ -109,15 +110,15 @@ class Unit_Core_oxreviewTest extends OxidTestCase
         $this->_oReview->Save();
 
         $oReview = new oxreview();
-        $oReview->load( '_testId' );
+        $oReview->load('_testId');
 
-        $sCreate = date( 'd.m.Y H:i:s', $iCurrTime );
-        if ( oxRegistry::getLang()->getBaseLanguage() == 1 ) {
-            $sCreate = date( 'Y-m-d H:i:s', $iCurrTime );
+        $sCreate = date('d.m.Y H:i:s', $iCurrTime);
+        if (oxRegistry::getLang()->getBaseLanguage() == 1) {
+            $sCreate = date('Y-m-d H:i:s', $iCurrTime);
         }
 
-        $this->assertEquals( 'deValue2', $oReview->oxreviews__oxtext->value );
-        $this->assertTrue( $sCreate >= $oReview->oxreviews__oxcreate->value );
+        $this->assertEquals('deValue2', $oReview->oxreviews__oxtext->value);
+        $this->assertTrue($sCreate >= $oReview->oxreviews__oxcreate->value);
     }
 
     public function testInsertAddsCreateDate()
@@ -125,19 +126,19 @@ class Unit_Core_oxreviewTest extends OxidTestCase
         $iCurrTime = time();
 
         $oReview = new oxreview();
-        $oReview->setId( '_testId2' );
+        $oReview->setId('_testId2');
         $oReview->oxreviews__oxtext = new oxField('deValue', oxField::T_RAW);
         $oReview->save();
 
         $oReview = new oxreview();
-        $oReview->load( '_testId2' );
+        $oReview->load('_testId2');
 
-        $sCreate = date( 'd.m.Y H:i:s', $iCurrTime );
-        if ( oxRegistry::getLang()->getBaseLanguage() == 1 ) {
-            $sCreate = date( 'Y-m-d H:i:s', $iCurrTime );
+        $sCreate = date('d.m.Y H:i:s', $iCurrTime);
+        if (oxRegistry::getLang()->getBaseLanguage() == 1) {
+            $sCreate = date('Y-m-d H:i:s', $iCurrTime);
         }
 
-        $this->assertTrue( $sCreate >= $oReview->oxreviews__oxcreate->value );
+        $this->assertTrue($sCreate >= $oReview->oxreviews__oxcreate->value);
     }
 
 
@@ -162,65 +163,65 @@ class Unit_Core_oxreviewTest extends OxidTestCase
     public function testLoadListNoIdsPassed()
     {
         $oRev = new oxreview();
-        $this->assertEquals( 0, $oRev->loadList( 'x', null )->count() );
+        $this->assertEquals(0, $oRev->loadList('x', null)->count());
     }
 
     public function testLoadListModerationTest()
     {
         // inserting few test records
         $oRev = new oxreview();
-        $oRev->setId( '_testrev1' );
-        $oRev->oxreviews__oxactive   = new oxField( 1 );
-        $oRev->oxreviews__oxobjectid = new oxField( 'xxx' );
-        $oRev->oxreviews__oxtype     = new oxField( 'oxarticle' );
-        $oRev->oxreviews__oxtext     = new oxField( 'revtext' );
+        $oRev->setId('_testrev1');
+        $oRev->oxreviews__oxactive = new oxField(1);
+        $oRev->oxreviews__oxobjectid = new oxField('xxx');
+        $oRev->oxreviews__oxtype = new oxField('oxarticle');
+        $oRev->oxreviews__oxtext = new oxField('revtext');
         $oRev->save();
 
         $oRev = new oxreview();
-        $oRev->setId( '_testrev2' );
-        $oRev->oxreviews__oxactive   = new oxField( 0 );
-        $oRev->oxreviews__oxobjectid = new oxField( 'xxx' );
-        $oRev->oxreviews__oxtype     = new oxField( 'oxarticle' );
-        $oRev->oxreviews__oxtext     = new oxField( 'revtext' );
+        $oRev->setId('_testrev2');
+        $oRev->oxreviews__oxactive = new oxField(0);
+        $oRev->oxreviews__oxobjectid = new oxField('xxx');
+        $oRev->oxreviews__oxtype = new oxField('oxarticle');
+        $oRev->oxreviews__oxtext = new oxField('revtext');
         $oRev->save();
 
         // moderation is OFF
-        modConfig::getInstance()->setConfigParam( 'blGBModerate', 0 );
+        modConfig::getInstance()->setConfigParam('blGBModerate', 0);
         $oRev = new oxreview();
-        $this->assertEquals( 2, $oRev->loadList( 'oxarticle', 'xxx' )->count() );
+        $this->assertEquals(2, $oRev->loadList('oxarticle', 'xxx')->count());
 
         // moderation is ON
-        modConfig::getInstance()->setConfigParam( 'blGBModerate', 1 );
-        $this->assertEquals( 1, $oRev->loadList( 'oxarticle', 'xxx' )->count() );
+        modConfig::getInstance()->setConfigParam('blGBModerate', 1);
+        $this->assertEquals(1, $oRev->loadList('oxarticle', 'xxx')->count());
     }
 
     public function testGetObjectIdAndType()
     {
         // inserting few test records
         $oRev = new oxreview();
-        $oRev->setId( 'id1' );
-        $oRev->oxreviews__oxactive   = new oxField( 1 );
-        $oRev->oxreviews__oxobjectid = new oxField( 'xx1' );
-        $oRev->oxreviews__oxtype     = new oxField( 'oxarticle' );
-        $oRev->oxreviews__oxtext     = new oxField( 'revtext' );
+        $oRev->setId('id1');
+        $oRev->oxreviews__oxactive = new oxField(1);
+        $oRev->oxreviews__oxobjectid = new oxField('xx1');
+        $oRev->oxreviews__oxtype = new oxField('oxarticle');
+        $oRev->oxreviews__oxtext = new oxField('revtext');
         $oRev->save();
 
         $oRev = new oxreview();
-        $oRev->setId( 'id2' );
-        $oRev->oxreviews__oxactive   = new oxField( 1 );
-        $oRev->oxreviews__oxobjectid = new oxField( 'xx2' );
-        $oRev->oxreviews__oxtype     = new oxField( 'oxrecommlist' );
-        $oRev->oxreviews__oxtext     = new oxField( 'revtext' );
+        $oRev->setId('id2');
+        $oRev->oxreviews__oxactive = new oxField(1);
+        $oRev->oxreviews__oxobjectid = new oxField('xx2');
+        $oRev->oxreviews__oxtype = new oxField('oxrecommlist');
+        $oRev->oxreviews__oxtext = new oxField('revtext');
         $oRev->save();
 
         $oRev = new oxreview();
-        $oRev->load( 'id1' );
-        $this->assertEquals( 'xx1', $oRev->getObjectId() );
-        $this->assertEquals( 'oxarticle', $oRev->getObjectType() );
+        $oRev->load('id1');
+        $this->assertEquals('xx1', $oRev->getObjectId());
+        $this->assertEquals('oxarticle', $oRev->getObjectType());
 
         $oRev = new oxreview();
-        $oRev->load( 'id2' );
-        $this->assertEquals( 'xx2', $oRev->getObjectId() );
-        $this->assertEquals( 'oxrecommlist', $oRev->getObjectType() );
+        $oRev->load('id2');
+        $this->assertEquals('xx2', $oRev->getObjectId());
+        $this->assertEquals('oxrecommlist', $oRev->getObjectType());
     }
 }

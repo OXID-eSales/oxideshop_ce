@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Account class
  */
 class Unit_Views_accountUserTest extends OxidTestCase
 {
+
     /**
      * Testing Account_User::render()
      *
@@ -35,9 +36,9 @@ class Unit_Views_accountUserTest extends OxidTestCase
      */
     public function testRenderNoUser()
     {
-        $oView = $this->getMock( "Account_User", array( "getUser" ) );
-        $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( false ) );
-        $this->assertEquals( 'page/account/login.tpl', $oView->render() );
+        $oView = $this->getMock("Account_User", array("getUser"));
+        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
+        $this->assertEquals('page/account/login.tpl', $oView->render());
     }
 
     /**
@@ -48,11 +49,11 @@ class Unit_Views_accountUserTest extends OxidTestCase
     public function testRender()
     {
         $oUser = new oxuser;
-        $oUser->oxuser__oxpassword = new oxField( "testPassword" );
+        $oUser->oxuser__oxpassword = new oxField("testPassword");
 
-        $oView = $this->getMock( "Account_User", array( "getUser" ) );
-        $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $this->assertEquals( 'page/account/user.tpl', $oView->render() );
+        $oView = $this->getMock("Account_User", array("getUser"));
+        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $this->assertEquals('page/account/user.tpl', $oView->render());
     }
 
     /**
@@ -76,10 +77,10 @@ class Unit_Views_accountUserTest extends OxidTestCase
     {
         $oAccUser = new Account_User();
         //check true
-        modSession::getInstance()->setVar( 'blshowshipaddress', true );
-        $this->assertTrue( $oAccUser->showShipAddress() );
+        modSession::getInstance()->setVar('blshowshipaddress', true);
+        $this->assertTrue($oAccUser->showShipAddress());
         //check false
-        modSession::getInstance()->setVar( 'blshowshipaddress', false );
-        $this->assertFalse( $oAccUser->showShipAddress() );
+        modSession::getInstance()->setVar('blshowshipaddress', false);
+        $this->assertFalse($oAccUser->showShipAddress());
     }
 }

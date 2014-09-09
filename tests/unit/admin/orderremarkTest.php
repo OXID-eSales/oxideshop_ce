@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing Order_Remark class
  */
 class Unit_Admin_OrderRemarkTest extends OxidTestCase
 {
+
     /**
      * Tear down the fixture.
      *
@@ -35,7 +36,7 @@ class Unit_Admin_OrderRemarkTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDB()->execute( 'delete from oxremark where oxtext = "test text"' );
+        oxDb::getDB()->execute('delete from oxremark where oxtext = "test text"');
         $this->cleanUpTable('oxorder');
         parent::tearDown();
     }
@@ -47,14 +48,14 @@ class Unit_Admin_OrderRemarkTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
-        modConfig::setRequestParameter( "rem_oxid", "testId" );
+        modConfig::setRequestParameter("oxid", "testId");
+        modConfig::setRequestParameter("rem_oxid", "testId");
 
         $oView = new order_remark();
-        $this->assertEquals( "order_remark.tpl", $oView->render() );
+        $this->assertEquals("order_remark.tpl", $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['allremark'] ) );
-        $this->assertTrue( $aViewData['allremark'] instanceof oxlist );
+        $this->assertTrue(isset($aViewData['allremark']));
+        $this->assertTrue($aViewData['allremark'] instanceof oxlist);
     }
 
     /**
@@ -64,19 +65,19 @@ class Unit_Admin_OrderRemarkTest extends OxidTestCase
      */
     public function testSave()
     {
-        modConfig::setRequestParameter( 'oxid', '_testOrder' );
-        modConfig::setRequestParameter( 'remarktext', 'test text' );
+        modConfig::setRequestParameter('oxid', '_testOrder');
+        modConfig::setRequestParameter('remarktext', 'test text');
         $oOrder = new oxbase();
-        $oOrder->init( 'oxorder' );
-        $oOrder->setId( '_testOrder' );
-        $oOrder->oxorder__oxuserid = new oxField( 'oxdefaultadmin' );
+        $oOrder->init('oxorder');
+        $oOrder->setId('_testOrder');
+        $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->save();
         $oView = new order_remark();
         $oView->save();
-        $oRemark = oxNew( "oxRemark" );
-        $oRemark->load( "_testRemark");
-        $this->assertEquals( 'r', oxDb::getDB()->getOne( 'select oxtype from oxremark where oxtext = "test text"' ) );
-        $this->assertEquals( 'oxdefaultadmin', oxDb::getDB()->getOne( 'select oxparentid from oxremark where oxtext = "test text"' ) );
+        $oRemark = oxNew("oxRemark");
+        $oRemark->load("_testRemark");
+        $this->assertEquals('r', oxDb::getDB()->getOne('select oxtype from oxremark where oxtext = "test text"'));
+        $this->assertEquals('oxdefaultadmin', oxDb::getDB()->getOne('select oxparentid from oxremark where oxtext = "test text"'));
     }
 
     /**
@@ -86,16 +87,17 @@ class Unit_Admin_OrderRemarkTest extends OxidTestCase
      */
     public function testDelete()
     {
-        oxTestModules::addFunction( 'oxRemark', 'delete', '{ throw new Exception( "delete" ); }');
+        oxTestModules::addFunction('oxRemark', 'delete', '{ throw new Exception( "delete" ); }');
 
         // testing..
         try {
             $oView = new order_remark();
             $oView->delete();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "delete", $oExcp->getMessage(), "Error in order_remark::delete()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("delete", $oExcp->getMessage(), "Error in order_remark::delete()");
+
             return;
         }
-        $this->fail( "Error in order_remark::delete()" );
+        $this->fail("Error in order_remark::delete()");
     }
 }

@@ -1,9 +1,10 @@
 <?php
-require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
-require_once realpath(dirname(__FILE__).'/../../') . '/integration/price/basketconstruct.php';
+require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
+require_once realpath(dirname(__FILE__) . '/../../') . '/integration/price/basketconstruct.php';
 
 class DataGenerator extends OxidTestCase
 {
+
     // Shop modes: brutto-brutto or netto-brutto
     private $blEnterNetPrice = true;
     private $blShowNetPrice = false;
@@ -37,10 +38,10 @@ class DataGenerator extends OxidTestCase
     private $iDisMinAddsum = 1;
     private $iDisMaxAddsum = 99;
     private $aDisTypes = array( 
-            "abs",
-             "%",
-            //"itm" 
-            );
+        "abs",
+        "%",
+        //"itm"
+    );
     private $iDisAmount = 1;
     private $iDisAmountTo = 9999999;
     private $iDisPrice = 1;
@@ -52,14 +53,14 @@ class DataGenerator extends OxidTestCase
     private $iWrapMaxPrice = 9.9;
     private $iWrapMaxNrArtsApply = 2;
     private $aWrapTypes = array( 
-            "WRAP", 
-            //"CARD" 
+        "WRAP",
+        //"CARD"
     );
 
     // Payment params
     private $iPayMinAddSum = 1;
     private $iPayMaxAddSum = 33;
-    private $aPayAddSumTypes = array( "%", "abs" );
+    private $aPayAddSumTypes = array("%", "abs");
     private $iPayFromAmount = 0;
     private $iPayToAmount = 1000000;
     private $iPayChecked = 1; 
@@ -67,12 +68,12 @@ class DataGenerator extends OxidTestCase
     // Delivery params
     private $iDelMinAddSum = 1;
     private $iDelMaxAddSum = 25;
-    private $aDelAddSumTypes = array( "abs", "%" );
+    private $aDelAddSumTypes = array("abs", "%");
     private $aDelTypes = array( 
-            //"a", // amount
-            //"s", // size
-            //"w", // weight
-            "p" // price
+        //"a", // amount
+        //"s", // size
+        //"w", // weight
+        "p" // price
     );
     private $iDelFinalize = 0;
     private $iDelParam = 0;
@@ -84,17 +85,17 @@ class DataGenerator extends OxidTestCase
     private $iVouNumber = 2;
     private $iVouSerieMinDiscount = 0.5;
     private $iVouSerieMaxDiscount = 75;
-    private $aVouSerieTypes = array (
-            'absolute',
-            'percent'
-            );
+    private $aVouSerieTypes = array(
+        'absolute',
+        'percent'
+    );
     private $iVouAllowSameSeries = 1;
     private $iVouAllowOtherSeries = 1;
     private $iVouAllowUseAnother = 1;
     
     // What additional costs to generate
-    private $aGenCosts = array ( 
-        array( "wrapping", 1 ), 
+    private $aGenCosts = array(
+        array("wrapping", 1),
         //array( "payment",  3 ), 
         //array( "delivery", 3 )
     );
@@ -103,17 +104,17 @@ class DataGenerator extends OxidTestCase
     
     protected function _cleanUpCalcDb()
     {
-        $this->_truncateTable( "oxarticles" );
-        $this->_truncateTable( "oxdiscount" );
-        $this->_truncateTable( "oxobject2discount" );
-        $this->_truncateTable( "oxwrapping" );
-        $this->_truncateTable( "oxdelivery" );
-        $this->_truncateTable( "oxdel2delset" );
-        $this->_truncateTable( "oxobject2payment" );
-        $this->_truncateTable( "oxvouchers" );
-        $this->_truncateTable( "oxvoucherseries" );
-        $this->_truncateTable( "oxobject2delivery" );
-        $this->_truncateTable( "oxdeliveryset" );
+        $this->_truncateTable("oxarticles");
+        $this->_truncateTable("oxdiscount");
+        $this->_truncateTable("oxobject2discount");
+        $this->_truncateTable("oxwrapping");
+        $this->_truncateTable("oxdelivery");
+        $this->_truncateTable("oxdel2delset");
+        $this->_truncateTable("oxobject2payment");
+        $this->_truncateTable("oxvouchers");
+        $this->_truncateTable("oxvoucherseries");
+        $this->_truncateTable("oxobject2delivery");
+        $this->_truncateTable("oxdeliveryset");
     }
     
     /**
@@ -132,12 +133,12 @@ class DataGenerator extends OxidTestCase
     
     /**
      * Create test case file
-
+     *
      * @param string $sFilename test case filename
      * 
      * @return file resource
      */
-    protected function _createFile( $sFilename )
+    protected function _createFile($sFilename)
     {
         return fopen($this->sFilepath . $sFilename, "w");
     }
@@ -145,18 +146,19 @@ class DataGenerator extends OxidTestCase
     /**
      * Writes data array to file with provided handle
      * 
-     * @param file resource to write $rHandle
+     * @param       file   resource to write $rHandle
      * @param array $aData of data needed to write
      * 
      * @return mixed
      */
-    protected function _writeToFile( $rHandle, $aData )
+    protected function _writeToFile($rHandle, $aData)
     {
         $sStart = "<?php\r";
         $sStart .= "\$aData = ";
-        $sData = var_export( $aData, true );
+        $sData = var_export($aData, true);
         $sEnd = ";";
-        return fwrite( $rHandle, $sStart.$sData.$sEnd );
+
+        return fwrite($rHandle, $sStart . $sData . $sEnd);
     }
     
     /**
@@ -166,16 +168,16 @@ class DataGenerator extends OxidTestCase
      */
     public function generate() 
     {
-        if ( !is_dir( $this->sFilepath ) ) {
-            mkdir( $this->sFilepath, '0777' );
+        if (!is_dir($this->sFilepath)) {
+            mkdir($this->sFilepath, '0777');
         }
         for ($i = 1; $i <= $this->iVariants; $i++) {
             parent::setUp();
             $this->_cleanUpCalcDb();
-            $aData = $this->_generateData( $i );
+            $aData = $this->_generateData($i);
             $sFilename = "{$this->sCaseName}{$i}.php";
-            $rHandle = $this->_createFile( $sFilename );
-            $this->_writeToFile( $rHandle, $aData );
+            $rHandle = $this->_createFile($sFilename);
+            $this->_writeToFile($rHandle, $aData);
             print("o-");
             parent::tearDown();
         }
@@ -183,10 +185,12 @@ class DataGenerator extends OxidTestCase
     
     /**
      * Data generator
+     *
      * @param integer $i variant number
+     *
      * @return array $aData of basket data and expectations 
      */
-    protected function _generateData( $i )
+    protected function _generateData($i)
     {
         $oUtil = oxUtilsObject::getInstance();
         // init result array
@@ -194,45 +198,45 @@ class DataGenerator extends OxidTestCase
         
         // new user gen data
         $aData['user'] = array(
-                'oxactive' => 1,
-                'oxusername' => $this->sCaseName . 'databomb_user_' . $i,
+            'oxactive'   => 1,
+            'oxusername' => $this->sCaseName . 'databomb_user_' . $i,
         );
         
         // get basket position count
-        $iRandArtCount = rand( $this->iBasketPosMin, $this->iBasketPosMax );
+        $iRandArtCount = rand($this->iBasketPosMin, $this->iBasketPosMax);
         // get different vat count
-        $iDiffVatCount = rand( $this->iDiffVatCountMin, $this->iDiffVatCountMax );
+        $iDiffVatCount = rand($this->iDiffVatCountMin, $this->iDiffVatCountMax);
         // get $iDiffVatCount vats from vat set
-        $aVats = array_rand( $this->_getVatSet(), $iDiffVatCount );
+        $aVats = array_rand($this->_getVatSet(), $iDiffVatCount);
         // create articles array
-        for ($i = 0; $i < $iRandArtCount; $i++ ) {
+        for ($i = 0; $i < $iRandArtCount; $i++) {
             $aArticle = array();
             $sUID = $oUtil->generateUId();
             $aArticle['oxid'] = $sUID;
-            $aArticle['oxprice'] = mt_rand( $this->dPriceFrom, $this->dPriceTo ) / 100;
+            $aArticle['oxprice'] = mt_rand($this->dPriceFrom, $this->dPriceTo) / 100;
             // check if got any special vat
-            if ( count( $aVats ) > 0 ) {
+            if (count($aVats) > 0) {
                 // check if got vat set vs single vat
-                if ( count( $aVats ) == 1 ) {
+                if (count($aVats) == 1) {
                     $aArticle['oxvat'] = $aVats;
                 } else {
-                    $aArticle['oxvat'] = $aVats[ array_rand( $aVats, 1 ) ];
+                    $aArticle['oxvat'] = $aVats[array_rand($aVats, 1)];
                 }
             }
-            $aArticle['amount'] = rand( $this->iAmountMin, $this->iAmountMax );
+            $aArticle['amount'] = rand($this->iAmountMin, $this->iAmountMax);
             $aData['articles'][$i] = $aArticle; 
         }
-        if ( $this->blGenDiscounts ) {
+        if ($this->blGenDiscounts) {
             // create discount array
-            $aData['discounts'] = $this->_generateDiscounts( $aData );
+            $aData['discounts'] = $this->_generateDiscounts($aData);
         }
-        if ( !empty( $this->aGenCosts ) ) {
+        if (!empty($this->aGenCosts)) {
             // create costs array
-            $aData['costs'] = $this->_generateCosts( $aData );
+            $aData['costs'] = $this->_generateCosts($aData);
         }
-        if ( $this->blGenVouchers ) {
+        if ($this->blGenVouchers) {
             // create voucher discounts
-            $aData['costs']['voucherserie'] = $this->_generateVouchers( $aData );
+            $aData['costs']['voucherserie'] = $this->_generateVouchers($aData);
         }
         // create options array
         $aData['options'] = array();
@@ -240,56 +244,59 @@ class DataGenerator extends OxidTestCase
         $aData['options']['config']['blShowNetPrice'] = $this->blShowNetPrice;
         $aData['options']['activeCurrencyRate'] = $this->activeCurrencyRate;
         // create expected array
-        $aData['expected'] = $this->_gatherExpectedData( $aData );
+        $aData['expected'] = $this->_gatherExpectedData($aData);
         
         return $aData;
     }
     
     /**
      * Generate vouchers
+     *
      * @param array $aData
      */
-    protected function _generateVouchers( $aData )
+    protected function _generateVouchers($aData)
     {
         $aVouchers = array();
-        for ( $i = 0; $i < $this->iVouseries; $i++ ) {
-            $aVouchers[$i]['oxdiscount'] = mt_rand( $this->iVouSerieMinDiscount, $this->iVouSerieMaxDiscount );
-            $aVouchers[$i]['oxdiscounttype'] = $this->aVouSerieTypes[ array_rand( $this->aVouSerieTypes, 1 ) ];
+        for ($i = 0; $i < $this->iVouseries; $i++) {
+            $aVouchers[$i]['oxdiscount'] = mt_rand($this->iVouSerieMinDiscount, $this->iVouSerieMaxDiscount);
+            $aVouchers[$i]['oxdiscounttype'] = $this->aVouSerieTypes[array_rand($this->aVouSerieTypes, 1)];
             $aVouchers[$i]['oxallowsameseries'] = $this->iVouAllowSameSeries;
             $aVouchers[$i]['oxallowotherseries'] = $this->iVouAllowOtherSeries;
             $aVouchers[$i]['oxallowuseanother'] = $this->iVouAllowUseAnother;
             $aVouchers[$i]['voucher_count'] = $this->iVouNumber;
         }
+
         return $aVouchers;
     }
     
     /**
      * Generate costs
+     *
      * @param array $aData
      */
-    protected function _generateCosts( $aData )
+    protected function _generateCosts($aData)
     {
         $aCosts = array();
-        foreach ( $this->aGenCosts as $aCostData ) {
-            switch( $aCostData[0] ) {
+        foreach ($this->aGenCosts as $aCostData) {
+            switch ($aCostData[0]) {
                 case 'wrapping':
                     $aCosts['wrapping'] = array();
-                    for ( $i = 0; $i < $aCostData[1]; $i++ ) {
+                    for ($i = 0; $i < $aCostData[1]; $i++) {
                         $aCost = array();
-                        $aCost['oxtype'] = $this->aWrapTypes[ array_rand( $this->aWrapTypes, 1 ) ];
-                        $aCost['oxprice'] = mt_rand( $this->iWrapMinPrice, $this->iWrapMaxPrice );
+                        $aCost['oxtype'] = $this->aWrapTypes[array_rand($this->aWrapTypes, 1)];
+                        $aCost['oxprice'] = mt_rand($this->iWrapMinPrice, $this->iWrapMaxPrice);
                         $aCost['oxactive'] = 1;
-                        if ( $this->iWrapMaxNrArtsApply > 0 ) {
+                        if ($this->iWrapMaxNrArtsApply > 0) {
                             $aCost['oxarticles'] = array();
-                            if ( $this->iWrapMaxNrArtsApply <= count( $aData['articles'] ) ) {
-                                $iRandCount = mt_rand( 1, $this->iWrapMaxNrArtsApply );
+                            if ($this->iWrapMaxNrArtsApply <= count($aData['articles'])) {
+                                $iRandCount = mt_rand(1, $this->iWrapMaxNrArtsApply);
                             } else {
-                                $iRandCount = mt_rand( 1, count( $aData['articles'] ) );
+                                $iRandCount = mt_rand(1, count($aData['articles']));
                             }
-                            $mxRand = array_rand( $aData['articles'], $iRandCount );
-                            $iMxRandCount = count( $mxRand );
-                            for ( $j = 0; $j < $iMxRandCount; $j++ ) {
-                                array_push( $aCost['oxarticles'], $aData['articles'][ $j ]['oxid'] );
+                            $mxRand = array_rand($aData['articles'], $iRandCount);
+                            $iMxRandCount = count($mxRand);
+                            for ($j = 0; $j < $iMxRandCount; $j++) {
+                                array_push($aCost['oxarticles'], $aData['articles'][$j]['oxid']);
                             }
                         }
                         $aCosts['wrapping'][$i] = $aCost;
@@ -297,10 +304,10 @@ class DataGenerator extends OxidTestCase
                     break;
                 case 'payment':
                     $aCosts['payment'] = array();
-                    for ( $i = 0; $i < $aCostData[1]; $i++ ) {
+                    for ($i = 0; $i < $aCostData[1]; $i++) {
                         $aCost = array();
-                        $aCost['oxaddsumtype'] = $this->aPayAddSumTypes[ array_rand( $this->aPayAddSumTypes, 1 ) ];
-                        $aCost['oxaddsum'] = mt_rand( $this->iPayMinAddSum, $this->iPayMaxAddSum );
+                        $aCost['oxaddsumtype'] = $this->aPayAddSumTypes[array_rand($this->aPayAddSumTypes, 1)];
+                        $aCost['oxaddsum'] = mt_rand($this->iPayMinAddSum, $this->iPayMaxAddSum);
                         $aCost['oxactive'] = 1;
                         $aCost['oxchecked'] = $this->iPayChecked;
                         $aCost['oxfromamount'] = $this->iPayFromAmount;
@@ -310,12 +317,12 @@ class DataGenerator extends OxidTestCase
                     break;
                 case 'delivery':
                     $aCosts['delivery'] = array();
-                    for ( $i = 0; $i < $aCostData[1]; $i++ ) {
+                    for ($i = 0; $i < $aCostData[1]; $i++) {
                         $aCost = array();
-                        $aCost['oxaddsumtype'] = $this->aDelAddSumTypes[ array_rand( $this->aDelAddSumTypes, 1 ) ];
-                        $aCost['oxaddsum'] = mt_rand( $this->iDelMinAddSum, $this->iDelMaxAddSum );
+                        $aCost['oxaddsumtype'] = $this->aDelAddSumTypes[array_rand($this->aDelAddSumTypes, 1)];
+                        $aCost['oxaddsum'] = mt_rand($this->iDelMinAddSum, $this->iDelMaxAddSum);
                         $aCost['oxactive'] = 1;
-                        $aCost['oxdeltype'] = $this->aDelTypes[ array_rand( $this->aDelTypes, 1 ) ];
+                        $aCost['oxdeltype'] = $this->aDelTypes[array_rand($this->aDelTypes, 1)];
                         $aCost['oxfinalize'] = $this->iDelFinalize;
                         $aCost['oxparam'] = $this->iDelParam;
                         $aCost['oxparamend'] = $this->iDelParamend;
@@ -327,75 +334,79 @@ class DataGenerator extends OxidTestCase
                     break;
             }
         }
+
         return $aCosts;
     }
     
     /**
      * Generate discounts
+     *
      * @param array $aData
      */
-    protected function _generateDiscounts( $aData )
+    protected function _generateDiscounts($aData)
     {
         $aDiscounts = array();
-        for( $i = 0; $i < $this->iDisVariants; $i++) {
-            $aDiscounts[$i]['oxaddsum']     = mt_rand( $this->iDisMinAddsum, $this->iDisMaxAddsum );
-            $aDiscounts[$i]['oxid']         = $this->sDisName . '_' . $i;
-            $aDiscounts[$i]['oxaddsumtype'] = $this->aDisTypes[ array_rand( $this->aDisTypes, 1 ) ];
-            $aDiscounts[$i]['oxamount']     = $this->iDisAmount;
-            $aDiscounts[$i]['oxamountto']   = $this->iDisAmountTo;
-            $aDiscounts[$i]['oxprice']      = $this->iDisPrice;
-            $aDiscounts[$i]['oxpriceto']    = $this->iDisPriceTo;
-            $aDiscounts[$i]['oxactive']     = 1;
-            if ( $this->iDisMaxNrArtsApply > 0 ) {
+        for ($i = 0; $i < $this->iDisVariants; $i++) {
+            $aDiscounts[$i]['oxaddsum'] = mt_rand($this->iDisMinAddsum, $this->iDisMaxAddsum);
+            $aDiscounts[$i]['oxid'] = $this->sDisName . '_' . $i;
+            $aDiscounts[$i]['oxaddsumtype'] = $this->aDisTypes[array_rand($this->aDisTypes, 1)];
+            $aDiscounts[$i]['oxamount'] = $this->iDisAmount;
+            $aDiscounts[$i]['oxamountto'] = $this->iDisAmountTo;
+            $aDiscounts[$i]['oxprice'] = $this->iDisPrice;
+            $aDiscounts[$i]['oxpriceto'] = $this->iDisPriceTo;
+            $aDiscounts[$i]['oxactive'] = 1;
+            if ($this->iDisMaxNrArtsApply > 0) {
                 $aDiscounts[$i]['oxarticles'] = array();
-                if ( $this->iDisMaxNrArtsApply <= count( $aData['articles'] ) ) {
-                    $iRandCount = mt_rand( 1, $this->iDisMaxNrArtsApply );
+                if ($this->iDisMaxNrArtsApply <= count($aData['articles'])) {
+                    $iRandCount = mt_rand(1, $this->iDisMaxNrArtsApply);
                 } else {
-                    $iRandCount = mt_rand( 1, count( $aData['articles'] ) );
+                    $iRandCount = mt_rand(1, count($aData['articles']));
                 }
-                $mxRand = array_rand( $aData['articles'], $iRandCount );
-                $iMxRandCount = count( $mxRand );
-                for ( $j = 0; $j < $iMxRandCount; $j++ ) {
-                    array_push( $aDiscounts[$i]['oxarticles'], $aData['articles'][ $j ]['oxid'] );
+                $mxRand = array_rand($aData['articles'], $iRandCount);
+                $iMxRandCount = count($mxRand);
+                for ($j = 0; $j < $iMxRandCount; $j++) {
+                    array_push($aDiscounts[$i]['oxarticles'], $aData['articles'][$j]['oxid']);
                 }                                
             }
         }
+
         return $aDiscounts;
     }
     
     /**
      * Gathering expectations
-     * @param array's of articles, discounts, costs, options
+     *
+     * @param array 's of articles, discounts, costs, options
      * 
      * @return array $aExpected of expected data
      */
-    protected function _gatherExpectedData( $aTestCase )
+    protected function _gatherExpectedData($aTestCase)
     {
         // load calculated basket
         $oBasketConstruct = new BasketConstruct();
-        $oBasket = $oBasketConstruct->calculateBasket( $aTestCase );
+        $oBasket = $oBasketConstruct->calculateBasket($aTestCase);
 
         // gathering data arrays
         $aExpected = array();
         // Basket item list
         $aBasketItemList = $oBasket->getContents();
-        if ( $aBasketItemList ) {
-            foreach ( $aBasketItemList as $iKey => $oBasketItem ) {
+        if ($aBasketItemList) {
+            foreach ($aBasketItemList as $iKey => $oBasketItem) {
                 $iArtId = $oBasketItem->getArticle()->getID();
-                $aExpected['articles'][$iArtId] = array ( $oBasketItem->getFUnitPrice(), $oBasketItem->getFTotalPrice() );
+                $aExpected['articles'][$iArtId] = array($oBasketItem->getFUnitPrice(), $oBasketItem->getFTotalPrice());
             }
         }
         // Basket total discounts
         $aProductDiscounts = $oBasket->getDiscounts();
-        if ( $aProductDiscounts ) {
-            foreach ( $aProductDiscounts as $oDiscount ) {
+        if ($aProductDiscounts) {
+            foreach ($aProductDiscounts as $oDiscount) {
                 $aExpected['totals']['discounts'][$oDiscount->sOXID] = $oDiscount->fDiscount;
             }
         }
         // VAT's
         $aProductVats = $oBasket->getProductVats();
-        if ( $aProductVats ) {
-            foreach ( $aProductVats as $sPercent => $sSum ) {
+        if ($aProductVats) {
+            foreach ($aProductVats as $sPercent => $sSum) {
                 $aExpected['totals']['vats'][$sPercent] = $sSum;
             }
         }
@@ -409,19 +420,20 @@ class DataGenerator extends OxidTestCase
         $aExpected['totals']['giftcard']['netto'] = $oBasket->getGiftCardCostNet();
         $aExpected['totals']['giftcard']['vat'] = $oBasket->getGiftCardCostVat();
         // Delivery costs
-        $aExpected['totals']['delivery']['brutto'] = number_format( round( $oBasket->getDeliveryCosts(), 2 ) , 2, ',', '.');
+        $aExpected['totals']['delivery']['brutto'] = number_format(round($oBasket->getDeliveryCosts(), 2), 2, ',', '.');
         $aExpected['totals']['delivery']['netto'] = $oBasket->getDelCostNet();
         $aExpected['totals']['delivery']['vat'] = $oBasket->getDelCostVat();
         // Payment costs
-        $aExpected['totals']['payment']['brutto'] = number_format( round( $oBasket->getPaymentCosts(), 2 ), 2, ',', '.');
+        $aExpected['totals']['payment']['brutto'] = number_format(round($oBasket->getPaymentCosts(), 2), 2, ',', '.');
         $aExpected['totals']['payment']['netto'] = $oBasket->getPayCostNet();
         $aExpected['totals']['payment']['vat'] = $oBasket->getPayCostVat();
         // Vouchers
-        $aExpected['totals']['voucher']['brutto'] = number_format( round( $oBasket->getVoucherDiscValue(), 2 ), 2, ',', '.');
+        $aExpected['totals']['voucher']['brutto'] = number_format(round($oBasket->getVoucherDiscValue(), 2), 2, ',', '.');
         // Total netto & brutto, grand total
         $aExpected['totals']['totalNetto'] = $oBasket->getProductsNetPrice();
         $aExpected['totals']['totalBrutto'] = $oBasket->getFProductsPrice();
         $aExpected['totals']['grandTotal'] = $oBasket->getFPrice();
+
         // Finished generating expectations
         return $aExpected;
     }
@@ -431,22 +443,24 @@ class DataGenerator extends OxidTestCase
      */
     protected function _generateSqlDump()
     {
-        $dbhost   = $this->getConfigParam( "dbHost" );
-        $dbuser   = $this->getConfigParam( "dbUser" );
-        $dbpwd    = $this->getConfigParam( "dbPwd" );
-        $dbname   = $this->getConfigParam( "dbName" );
+        $dbhost = $this->getConfigParam("dbHost");
+        $dbuser = $this->getConfigParam("dbUser");
+        $dbpwd = $this->getConfigParam("dbPwd");
+        $dbname = $this->getConfigParam("dbName");
         $dumpfile = "oxarticles.sql";
         passthru("/usr/bin/mysqldump --opt --host=$dbhost --user=$dbuser --password=$dbpwd $dbname oxarticles > $this->sFilepath/$dumpfile");
-        echo "$dumpfile "; passthru("tail -1 $this->sFilepath/$dumpfile");
+        echo "$dumpfile ";
+        passthru("tail -1 $this->sFilepath/$dumpfile");
     }
     
     
     /**
      * Truncates specified table
+     *
      * @param string $sTable table name
      */
-    protected function _truncateTable( $sTable )
+    protected function _truncateTable($sTable)
     {
-        return oxDb::getDb()->execute( "TRUNCATE {$sTable}" );
+        return oxDb::getDb()->execute("TRUNCATE {$sTable}");
     }
 }

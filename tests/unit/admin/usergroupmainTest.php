@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for UserGroup_Main class
  */
 class Unit_Admin_UserGroupMainTest extends OxidTestCase
 {
+
     /**
      * UserGroup_Main::Render() test case
      *
@@ -35,14 +36,14 @@ class Unit_Admin_UserGroupMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new UserGroup_Main();
-        $this->assertEquals( 'usergroup_main.tpl', $oView->render() );
+        $this->assertEquals('usergroup_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxgroups );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxgroups);
     }
 
     /**
@@ -52,15 +53,15 @@ class Unit_Admin_UserGroupMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new UserGroup_Main();
-        $this->assertEquals( 'usergroup_main.tpl', $oView->render() );
+        $this->assertEquals('usergroup_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertFalse( isset( $aViewData['edit'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertFalse(isset($aViewData['edit']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -70,21 +71,22 @@ class Unit_Admin_UserGroupMainTest extends OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction( 'oxgroups', 'load', '{ return true; }');
-        oxTestModules::addFunction( 'oxgroups', 'assign', '{ return true; }');
-        oxTestModules::addFunction( 'oxgroups', 'save', '{ throw new Exception( "save" ); }');
+        oxTestModules::addFunction('oxgroups', 'load', '{ return true; }');
+        oxTestModules::addFunction('oxgroups', 'assign', '{ return true; }');
+        oxTestModules::addFunction('oxgroups', 'save', '{ throw new Exception( "save" ); }');
 
-        modConfig::setRequestParameter( "oxid", "testId" );
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        modConfig::setRequestParameter("oxid", "testId");
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new UserGroup_Main();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "Error in UserGroup_Main::save()");
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "Error in UserGroup_Main::save()");
+
             return;
         }
-        $this->fail( "Error in UserGroup_Main::save()");
+        $this->fail("Error in UserGroup_Main::save()");
     }
 }

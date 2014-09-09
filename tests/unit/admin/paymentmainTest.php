@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Payment_Main class
  */
 class Unit_Admin_PaymentMainTest extends OxidTestCase
 {
+
     /**
      * Payment_Main::Render() test case
      *
@@ -35,14 +36,14 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Payment_Main();
-        $this->assertEquals( 'payment_main.tpl', $oView->render() );
+        $this->assertEquals('payment_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxpayment );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxpayment);
     }
 
     /**
@@ -52,14 +53,14 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new payment_main();
-        $this->assertEquals( 'payment_main.tpl', $oView->render() );
+        $this->assertEquals('payment_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertTrue(isset($aViewData['oxid']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -70,18 +71,19 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
     public function testSave()
     {
         // testing..
-        oxTestModules::addFunction( 'oxpayment', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxpayment', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new Payment_Main();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Payment_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Payment_Main::save()");
+
             return;
         }
-        $this->fail( "error in Payment_Main::save()" );
+        $this->fail("error in Payment_Main::save()");
     }
 
     /**
@@ -92,18 +94,19 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
     public function testSaveinnlang()
     {
         // testing..
-        oxTestModules::addFunction( 'oxpayment', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxpayment', 'save', '{ throw new Exception( "save" ); }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new Payment_Main();
             $oView->saveinnlang();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Payment_Main::saveinnlang()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Payment_Main::saveinnlang()");
+
             return;
         }
-        $this->fail( "error in Payment_Main::saveinnlang()" );
+        $this->fail("error in Payment_Main::saveinnlang()");
     }
 
     /**
@@ -113,14 +116,14 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
      */
     public function testDelFields()
     {
-        oxTestModules::addFunction( 'oxpayment', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ return array( "testField1", "testField2"); }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
-        modConfig::setRequestParameter( "aFields", array( "testField2" ) );
+        oxTestModules::addFunction('oxpayment', 'loadInLang', '{ return true; }');
+        oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ return array( "testField1", "testField2"); }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
+        modConfig::setRequestParameter("aFields", array("testField2"));
 
         // testing..
-        $oView = $this->getMock( "Payment_Main", array( "save" ) );
-        $oView->expects( $this->once() )->method( 'save' );
+        $oView = $this->getMock("Payment_Main", array("save"));
+        $oView->expects($this->once())->method('save');
         $oView->delFields();
     }
 
@@ -131,14 +134,14 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
      */
     public function testAddField()
     {
-        oxTestModules::addFunction( 'oxpayment', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ return array( "testField1", "testField2"); }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
-        modConfig::setRequestParameter( "aFields", array( "testField2" ) );
+        oxTestModules::addFunction('oxpayment', 'loadInLang', '{ return true; }');
+        oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ return array( "testField1", "testField2"); }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
+        modConfig::setRequestParameter("aFields", array("testField2"));
 
         // testing..
-        $oView = $this->getMock( "Payment_Main", array( "save" ) );
-        $oView->expects( $this->once() )->method( 'save' );
+        $oView = $this->getMock("Payment_Main", array("save"));
+        $oView->expects($this->once())->method('save');
         $oView->addField();
     }
 }

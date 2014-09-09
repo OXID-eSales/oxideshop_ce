@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Attribute_Main class
  */
 class Unit_Admin_AttributeMainTest extends OxidTestCase
 {
+
     /**
      * Attribute_Main::Render() test case
      *
@@ -35,15 +36,15 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        oxTestModules::addFunction( "oxattribute", "isDerived", "{return true;}" );
-        modConfig::setRequestParameter( "oxid", "testId" );
+        oxTestModules::addFunction("oxattribute", "isDerived", "{return true;}");
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Attribute_Main();
-        $this->assertEquals( 'attribute_main.tpl', $oView->render() );
+        $this->assertEquals('attribute_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxattribute );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxattribute);
     }
 
     /**
@@ -53,14 +54,14 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Attribute_Main();
-        $this->assertEquals( 'attribute_main.tpl', $oView->render() );
+        $this->assertEquals('attribute_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertTrue(isset($aViewData['oxid']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -70,17 +71,18 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction( 'oxattribute', 'save', '{ throw new Exception( "save" ); }');
+        oxTestModules::addFunction('oxattribute', 'save', '{ throw new Exception( "save" ); }');
 
         // testing..
         try {
             $oView = new Attribute_Main();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Attribute_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Attribute_Main::save()");
+
             return;
         }
-        $this->fail( "error in Attribute_Main::save()" );
+        $this->fail("error in Attribute_Main::save()");
     }
 
     /**
@@ -90,14 +92,14 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
      */
     public function testSaveDefaultOxid()
     {
-        oxTestModules::addFunction( 'oxattribute', 'save', '{ $this->oxattribute__oxid = new oxField("testId"); return true; }');
-        modConfig::setRequestParameter( "oxid", "-1" );
+        oxTestModules::addFunction('oxattribute', 'save', '{ $this->oxattribute__oxid = new oxField("testId"); return true; }');
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Attribute_Main();
         $oView->save();
 
-        $this->assertEquals( "1", $oView->getViewDataElement( "updatelist" ) );
+        $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
     }
 
     /**
@@ -107,17 +109,18 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
      */
     public function testSaveinnlang()
     {
-        oxTestModules::addFunction( 'oxattribute', 'save', '{ throw new Exception( "save" ); }');
+        oxTestModules::addFunction('oxattribute', 'save', '{ throw new Exception( "save" ); }');
 
         // testing..
         try {
             $oView = new Attribute_Main();
             $oView->saveinnlang();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Attribute_Main::Saveinnlang()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Attribute_Main::Saveinnlang()");
+
             return;
         }
-        $this->fail( "error in Attribute_Main::Saveinnlang()" );
+        $this->fail("error in Attribute_Main::Saveinnlang()");
     }
 
     /**
@@ -127,15 +130,15 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
      */
     public function testSaveinnlangDefaultOxid()
     {
-        oxTestModules::addFunction( 'oxattribute', 'save', '{ $this->oxattribute__oxid = new oxField("testId"); return true; }');
-        modConfig::setRequestParameter( "oxid", "-1" );
-        modConfig::setRequestParameter( "new_lang", "999" );
+        oxTestModules::addFunction('oxattribute', 'save', '{ $this->oxattribute__oxid = new oxField("testId"); return true; }');
+        modConfig::setRequestParameter("oxid", "-1");
+        modConfig::setRequestParameter("new_lang", "999");
 
         // testing..
         $oView = new Attribute_Main();
         $oView->saveinnlang();
 
-        $this->assertEquals( "1", $oView->getViewDataElement( "updatelist" ) );
-        $this->assertEquals( 999, oxRegistry::getConfig()->getRequestParameter( "new_lang" ) );
+        $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
+        $this->assertEquals(999, oxRegistry::getConfig()->getRequestParameter("new_lang"));
     }
 }

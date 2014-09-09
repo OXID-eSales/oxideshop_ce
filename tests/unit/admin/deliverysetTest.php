@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for DeliverySet class
  */
 class Unit_Admin_DeliverySetTest extends OxidTestCase
 {
+
     /**
      * DeliverySet::Render() test case
      *
@@ -37,6 +38,6 @@ class Unit_Admin_DeliverySetTest extends OxidTestCase
     {
         // testing..
         $oView = new DeliverySet();
-        $this->assertEquals( 'deliveryset.tpl', $oView->render() );
+        $this->assertEquals('deliveryset.tpl', $oView->render());
     }
 }

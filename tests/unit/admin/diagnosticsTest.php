@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Discount class
  */
 class Unit_Admin_DiagnosticsTest extends OxidTestCase
 {
+
     /**
      * Discount::Render() test case
      *
@@ -37,6 +38,6 @@ class Unit_Admin_DiagnosticsTest extends OxidTestCase
     {
         // testing..
         $oView = new Diagnostics();
-        $this->assertEquals( 'diagnostics.tpl', $oView->render() );
+        $this->assertEquals('diagnostics.tpl', $oView->render());
     }
 }

@@ -20,12 +20,13 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/modifier.colon.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'core/smarty/plugins/modifier.colon.php';
 
 class Unit_Maintenance_smartyModifierColonTest extends OxidTestCase
 {
+
     /**
      * provides data to testColons
      *
@@ -33,9 +34,9 @@ class Unit_Maintenance_smartyModifierColonTest extends OxidTestCase
      */
     public function provider()
     {
-        return array (
-            array( ':', 'Name:' ),  // normal colon
-            array( ' :', 'Name :' ) // french, for example, has space before colon
+        return array(
+            array(':', 'Name:'), // normal colon
+            array(' :', 'Name :') // french, for example, has space before colon
         );
     }
 
@@ -44,13 +45,13 @@ class Unit_Maintenance_smartyModifierColonTest extends OxidTestCase
      *
      * @dataProvider provider
      */
-    public function testColons( $sTranslation, $sResult )
+    public function testColons($sTranslation, $sResult)
     {
-        $oLang = $this->getMock( "oxLang", array( "translateString" ));
-        $oLang->expects( $this->any() )->method( "translateString" )->with( $this->equalTo( 'COLON' ) )->will( $this->returnValue( $sTranslation ) );
+        $oLang = $this->getMock("oxLang", array("translateString"));
+        $oLang->expects($this->any())->method("translateString")->with($this->equalTo('COLON'))->will($this->returnValue($sTranslation));
 
-        oxRegistry::set( 'oxLang', $oLang );
+        oxRegistry::set('oxLang', $oLang);
 
-        $this->assertEquals( $sResult, smarty_modifier_colon( 'Name' ) );
+        $this->assertEquals($sResult, smarty_modifier_colon('Name'));
     }
 }

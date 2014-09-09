@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 
 /**
@@ -39,16 +39,16 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     {
         parent::setUp();
         
-        oxDb::getDb()->execute( "insert into oxobject2payment set oxid='_testPayRemove1', oxobjectid='_testPayRemove'" );
-        oxDb::getDb()->execute( "insert into oxobject2payment set oxid='_testPayRemove2', oxobjectid='_testPayRemove'" );
+        oxDb::getDb()->execute("insert into oxobject2payment set oxid='_testPayRemove1', oxobjectid='_testPayRemove'");
+        oxDb::getDb()->execute("insert into oxobject2payment set oxid='_testPayRemove2', oxobjectid='_testPayRemove'");
 
-        oxDb::getDb()->execute( "insert into oxobject2payment set oxid='_testPayRemoveAll1', oxpaymentid='_testPayRemoveAll', oxobjectid='_testCountry1', oxtype = 'oxcountry'" );
-        oxDb::getDb()->execute( "insert into oxobject2payment set oxid='_testPayRemoveAll2', oxpaymentid='_testPayRemoveAll', oxobjectid='_testCountry2', oxtype = 'oxcountry'" );
-        oxDb::getDb()->execute( "insert into oxobject2payment set oxid='_testPayRemoveAll3', oxpaymentid='_testPayRemoveAll', oxobjectid='_testCountry3', oxtype = 'oxcountry'" );
+        oxDb::getDb()->execute("insert into oxobject2payment set oxid='_testPayRemoveAll1', oxpaymentid='_testPayRemoveAll', oxobjectid='_testCountry1', oxtype = 'oxcountry'");
+        oxDb::getDb()->execute("insert into oxobject2payment set oxid='_testPayRemoveAll2', oxpaymentid='_testPayRemoveAll', oxobjectid='_testCountry2', oxtype = 'oxcountry'");
+        oxDb::getDb()->execute("insert into oxobject2payment set oxid='_testPayRemoveAll3', oxpaymentid='_testPayRemoveAll', oxobjectid='_testCountry3', oxtype = 'oxcountry'");
         
-        oxDb::getDb()->execute( "insert into oxcountry set oxid='_testCountry1', oxtitle='_testCountry1', oxactive=1" );
-        oxDb::getDb()->execute( "insert into oxcountry set oxid='_testCountry2', oxtitle='_testCountry2', oxactive=1" );
-        oxDb::getDb()->execute( "insert into oxcountry set oxid='_testCountry3', oxtitle='_testCountry3', oxactive=1" );
+        oxDb::getDb()->execute("insert into oxcountry set oxid='_testCountry1', oxtitle='_testCountry1', oxactive=1");
+        oxDb::getDb()->execute("insert into oxcountry set oxid='_testCountry2', oxtitle='_testCountry2', oxactive=1");
+        oxDb::getDb()->execute("insert into oxcountry set oxid='_testCountry3', oxtitle='_testCountry3', oxactive=1");
     }
     
     /**
@@ -58,14 +58,14 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDb()->execute( "delete from oxobject2payment where oxobjectid='_testPayRemove'" );
-        oxDb::getDb()->execute( "delete from oxobject2payment where oxpaymentid='_testPayRemoveAll'" );
-        oxDb::getDb()->execute( "delete from oxobject2payment where oxpaymentid='_testPayAdd'" );
-        oxDb::getDb()->execute( "delete from oxobject2payment where oxpaymentid='_testPayAddAll'" );
+        oxDb::getDb()->execute("delete from oxobject2payment where oxobjectid='_testPayRemove'");
+        oxDb::getDb()->execute("delete from oxobject2payment where oxpaymentid='_testPayRemoveAll'");
+        oxDb::getDb()->execute("delete from oxobject2payment where oxpaymentid='_testPayAdd'");
+        oxDb::getDb()->execute("delete from oxobject2payment where oxpaymentid='_testPayAddAll'");
         
-        oxDb::getDb()->execute( "delete from oxcountry where oxid='_testCountry1'" );
-        oxDb::getDb()->execute( "delete from oxcountry where oxid='_testCountry2'" );
-        oxDb::getDb()->execute( "delete from oxcountry where oxid='_testCountry3'" );
+        oxDb::getDb()->execute("delete from oxcountry where oxid='_testCountry1'");
+        oxDb::getDb()->execute("delete from oxcountry where oxid='_testCountry2'");
+        oxDb::getDb()->execute("delete from oxcountry where oxid='_testCountry3'");
         
         parent::tearDown();
     }
@@ -77,8 +77,8 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
      */
     public function testGetQuery()
     {
-        $oView = oxNew( 'payment_country_ajax' );
-        $this->assertEquals( "from oxv_oxcountry_de where oxv_oxcountry_de.oxactive = '1'" , trim( $oView->UNITgetQuery() ) );
+        $oView = oxNew('payment_country_ajax');
+        $this->assertEquals("from oxv_oxcountry_de where oxv_oxcountry_de.oxactive = '1'", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -89,10 +89,10 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
         
-        $oView = oxNew( 'payment_country_ajax' );
-        $this->assertEquals( "from oxv_oxcountry_de where oxv_oxcountry_de.oxactive = '1' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '".$sSynchoxid."' and oxobject2payment.oxtype = 'oxcountry' )", trim( $oView->UNITgetQuery() ) );
+        $oView = oxNew('payment_country_ajax');
+        $this->assertEquals("from oxv_oxcountry_de where oxv_oxcountry_de.oxactive = '1' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '" . $sSynchoxid . "' and oxobject2payment.oxtype = 'oxcountry' )", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -103,10 +103,10 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter("oxid", $sOxid);
         
-        $oView = oxNew( 'payment_country_ajax' );
-        $this->assertEquals( "from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxv_oxcountry_de.oxactive = '1' and oxobject2payment.oxpaymentid = '".$sOxid."' and oxobject2payment.oxtype = 'oxcountry'", trim( $oView->UNITgetQuery() ) );
+        $oView = oxNew('payment_country_ajax');
+        $this->assertEquals("from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxv_oxcountry_de.oxactive = '1' and oxobject2payment.oxpaymentid = '" . $sOxid . "' and oxobject2payment.oxtype = 'oxcountry'", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -118,11 +118,11 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
-        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter("oxid", $sOxid);
+        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
         
-        $oView = oxNew( 'payment_country_ajax' );
-        $this->assertEquals( "from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxv_oxcountry_de.oxactive = '1' and oxobject2payment.oxpaymentid = '".$sOxid."' and oxobject2payment.oxtype = 'oxcountry' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '".$sSynchoxid."' and oxobject2payment.oxtype = 'oxcountry' )", trim( $oView->UNITgetQuery() ) );
+        $oView = oxNew('payment_country_ajax');
+        $this->assertEquals("from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxv_oxcountry_de.oxactive = '1' and oxobject2payment.oxpaymentid = '" . $sOxid . "' and oxobject2payment.oxtype = 'oxcountry' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '" . $sSynchoxid . "' and oxobject2payment.oxtype = 'oxcountry' )", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -132,13 +132,13 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
      */
     public function testRemovePayFromCountry()
     {
-        $oView = $this->getMock( "payment_country_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testPayRemove1', '_testPayRemove2' ) ) );
+        $oView = $this->getMock("payment_country_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayRemove1', '_testPayRemove2')));
         
         $sSql = "select count(oxid) from oxobject2payment where oxid in ('_testPayRemove1', '_testPayRemove2')";
-        $this->assertEquals( 2, oxDb::getDb()->getOne( $sSql ) );
+        $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
         $oView->removePayCountry();
-        $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
+        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
     }
     
     /**
@@ -149,14 +149,14 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     public function testRemovePayFromCountryAll()
     {
         $sOxid = '_testPayRemoveAll';
-        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
-        $this->getConfig()->setRequestParameter( "all", true );
+        $this->getConfig()->setRequestParameter("oxid", $sOxid);
+        $this->getConfig()->setRequestParameter("all", true);
         
-        $sSql = "select count(oxid) from oxobject2payment where oxpaymentid = '".$sOxid."'";
-        $oView = oxNew( 'payment_country_ajax' );
-        $this->assertEquals( 3, oxDb::getDb()->getOne( $sSql ) );
+        $sSql = "select count(oxid) from oxobject2payment where oxpaymentid = '" . $sOxid . "'";
+        $oView = oxNew('payment_country_ajax');
+        $this->assertEquals(3, oxDb::getDb()->getOne($sSql));
         $oView->removePayCountry();
-        $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
+        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
     }
     
     /**
@@ -167,16 +167,16 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     public function testAddPayToCountry()
     {
         $sSynchoxid = '_testPayAdd';
-        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
         
         $sSql = "select count(oxid) from oxobject2payment where oxpaymentid='$sSynchoxid'";
-        $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
+        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
         
-        $oView = $this->getMock( "payment_country_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testPayAdd1', '_testPayAdd2' ) ) );
+        $oView = $this->getMock("payment_country_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayAdd1', '_testPayAdd2')));
         
         $oView->addPayCountry();
-        $this->assertEquals( 2, oxDb::getDb()->getOne( $sSql ) );
+        $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
     }
     
     /**
@@ -187,19 +187,19 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     public function testAddPayToCountryAll()
     {
         $sSynchoxid = '_testPayAddAll';
-        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
-        $this->getConfig()->setRequestParameter( "all", true );
+        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->getConfig()->setRequestParameter("all", true);
         
         //count how much articles gets filtered
-        $iCount = oxDb::getDb()->getOne( "select count(oxv_oxcountry_de.oxid) from oxv_oxcountry_de where oxv_oxcountry_de.oxactive = '1' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '".$sSynchoxid."' and oxobject2payment.oxtype = 'oxcountry')" );
+        $iCount = oxDb::getDb()->getOne("select count(oxv_oxcountry_de.oxid) from oxv_oxcountry_de where oxv_oxcountry_de.oxactive = '1' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '" . $sSynchoxid . "' and oxobject2payment.oxtype = 'oxcountry')");
         
         $sSql = "select count(oxid) from oxobject2payment where oxpaymentid='$sSynchoxid'";
-        $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
+        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
         
-        $oView = $this->getMock( "payment_country_ajax", array( "_getActionIds" ) );
-        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testPayAdd1', '_testPayAdd2' ) ) );
+        $oView = $this->getMock("payment_country_ajax", array("_getActionIds"));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayAdd1', '_testPayAdd2')));
         
         $oView->addPayCountry();
-        $this->assertEquals( $iCount, oxDb::getDb()->getOne( $sSql ) );
+        $this->assertEquals($iCount, oxDb::getDb()->getOne($sSql));
     }
 }

@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxUtilsDateTest extends OxidTestCase
 {
@@ -35,28 +35,28 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
         $this->assertNull($oUtilsDate->formatDBDate(false));
         $this->assertNotNull($oUtilsDate->formatDBDate(true));
 
-        $aDates[] = array( "14.11.2008", "2008-11-14", false );
-        $aDates[] = array( "2007-07-20 12:02:07", "2007-07-20 12:02:07", true );
-        $aDates[] = array( "2007-07-20", "2007-07-20", true );
-        $aDates[] = array( "-", "0000-00-00", false );
-        $aDates[] = array( "-", "0000-00-00 00:00:00", false );
-        $aDates[] = array( "0000-00-00 00:00:00", "-", false );
-        $aDates[] = array( "19.08.2007", "19.08.2007", false );
-        $aDates[] = array( "2007-08-20", "20.08.2007", true );
-        $aDates[] = array( "19.08.2007 12:02:07", "19.08.2007 12:02:07", false );
-        $aDates[] = array( "2007-08-19 12:02:07", "19.08.2007 12:02:07", true );
-        $aDates[] = array( "2007-08-19", "19.08.2007", true );
-        $aDates[] = array( "2007-08-19 12:02:07", "19.08.2007 12:02:07", true );
-        $aDates[] = array( "22.03.2003 10:04:09", "20030322100409", false );
-        $aDates[] = array( "2003-03-22 10:04:09", "20030322100409", true );
-        $aDates[] = array( "22.03.2003", "20030322", false );
-        $aDates[] = array( "2003-03-22", "20030322", true );
-        $aDates[] = array( date( "d.m.Y" ), "simpleDateFormat", false );
-        $aDates[] = array( date( "Y-m-d" ), "simpleDateFormat", true );
+        $aDates[] = array("14.11.2008", "2008-11-14", false);
+        $aDates[] = array("2007-07-20 12:02:07", "2007-07-20 12:02:07", true);
+        $aDates[] = array("2007-07-20", "2007-07-20", true);
+        $aDates[] = array("-", "0000-00-00", false);
+        $aDates[] = array("-", "0000-00-00 00:00:00", false);
+        $aDates[] = array("0000-00-00 00:00:00", "-", false);
+        $aDates[] = array("19.08.2007", "19.08.2007", false);
+        $aDates[] = array("2007-08-20", "20.08.2007", true);
+        $aDates[] = array("19.08.2007 12:02:07", "19.08.2007 12:02:07", false);
+        $aDates[] = array("2007-08-19 12:02:07", "19.08.2007 12:02:07", true);
+        $aDates[] = array("2007-08-19", "19.08.2007", true);
+        $aDates[] = array("2007-08-19 12:02:07", "19.08.2007 12:02:07", true);
+        $aDates[] = array("22.03.2003 10:04:09", "20030322100409", false);
+        $aDates[] = array("2003-03-22 10:04:09", "20030322100409", true);
+        $aDates[] = array("22.03.2003", "20030322", false);
+        $aDates[] = array("2003-03-22", "20030322", true);
+        $aDates[] = array(date("d.m.Y"), "simpleDateFormat", false);
+        $aDates[] = array(date("Y-m-d"), "simpleDateFormat", true);
 
-        foreach ( $aDates as $aDate) {
-            list( $sResult, $sInput, $blForce ) = $aDate;
-            $this->assertEquals( $sResult, $oUtilsDate->formatDBDate( $sInput, $blForce ) );
+        foreach ($aDates as $aDate) {
+            list($sResult, $sInput, $blForce) = $aDate;
+            $this->assertEquals($sResult, $oUtilsDate->formatDBDate($sInput, $blForce));
         }
     }
 
@@ -82,7 +82,7 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
         $this->assertEquals(30, oxRegistry::get("oxUtilsDate")->getWeekNumber(1, $sTimeStamp));
 
         $sCurTimeStamp = time();
-        $iCurWeekNr = (int) strftime( '%U', $sCurTimeStamp);
+        $iCurWeekNr = (int) strftime('%U', $sCurTimeStamp);
         $this->assertEquals($iCurWeekNr, oxRegistry::get("oxUtilsDate")->getWeekNumber(1));
     }
 
@@ -91,9 +91,9 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
      */
     public function testGerman2English()
     {
-        $this->assertEquals( '2008-05-25', oxRegistry::get("oxUtilsDate")->german2English( '25.05.2008' ) );
-        $this->assertEquals( '2008-05', oxRegistry::get("oxUtilsDate")->german2English( '05.2008' ) );
-        $this->assertEquals( '08-05-25', oxRegistry::get("oxUtilsDate")->german2English( '25.05.08' ) );
+        $this->assertEquals('2008-05-25', oxRegistry::get("oxUtilsDate")->german2English('25.05.2008'));
+        $this->assertEquals('2008-05', oxRegistry::get("oxUtilsDate")->german2English('05.2008'));
+        $this->assertEquals('08-05-25', oxRegistry::get("oxUtilsDate")->german2English('25.05.08'));
     }
 
     /**
@@ -101,15 +101,15 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
      */
     public function testIsEmptyDate()
     {
-        $this->assertFalse( oxRegistry::get("oxUtilsDate")->isEmptyDate( '2008-05-08' ) );
-        $this->assertFalse( oxRegistry::get("oxUtilsDate")->isEmptyDate( '25.05.2008' ) );
-        $this->assertFalse( oxRegistry::get("oxUtilsDate")->isEmptyDate( '2008-06-18 00:00' ) );
-        $this->assertFalse( oxRegistry::get("oxUtilsDate")->isEmptyDate( '0000/00/00 00:01' ) );
-        $this->assertFalse( oxRegistry::get("oxUtilsDate")->isEmptyDate( 'Some Text' ) );
-        $this->assertTrue( oxRegistry::get("oxUtilsDate")->isEmptyDate( '' ) );
-        $this->assertTrue( oxRegistry::get("oxUtilsDate")->isEmptyDate( '0000-00-00' ) );
-        $this->assertTrue( oxRegistry::get("oxUtilsDate")->isEmptyDate( '0000/00/00' ) );
-        $this->assertTrue( oxRegistry::get("oxUtilsDate")->isEmptyDate( '0000-00-00 00:00:00' ) );
+        $this->assertFalse(oxRegistry::get("oxUtilsDate")->isEmptyDate('2008-05-08'));
+        $this->assertFalse(oxRegistry::get("oxUtilsDate")->isEmptyDate('25.05.2008'));
+        $this->assertFalse(oxRegistry::get("oxUtilsDate")->isEmptyDate('2008-06-18 00:00'));
+        $this->assertFalse(oxRegistry::get("oxUtilsDate")->isEmptyDate('0000/00/00 00:01'));
+        $this->assertFalse(oxRegistry::get("oxUtilsDate")->isEmptyDate('Some Text'));
+        $this->assertTrue(oxRegistry::get("oxUtilsDate")->isEmptyDate(''));
+        $this->assertTrue(oxRegistry::get("oxUtilsDate")->isEmptyDate('0000-00-00'));
+        $this->assertTrue(oxRegistry::get("oxUtilsDate")->isEmptyDate('0000/00/00'));
+        $this->assertTrue(oxRegistry::get("oxUtilsDate")->isEmptyDate('0000-00-00 00:00:00'));
     }
 
     /**
@@ -120,83 +120,86 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
     {
         $oObject = new oxField('xxx', oxField::T_RAW);
 
-        $sReturn = oxRegistry::get("oxUtilsDate")->convertDBDateTime( $oObject, false, false );
+        $sReturn = oxRegistry::get("oxUtilsDate")->convertDBDateTime($oObject, false, false);
 
-        $this->assertEquals( 'xxx', $sReturn );
+        $this->assertEquals('xxx', $sReturn);
     }
+
     public function testConvertDBDateTimeTimeNotFound()
     {
         $oObject = new oxField('2007-08-01', oxField::T_RAW);
 
-        $sReturn = oxRegistry::get("oxUtilsDate")->convertDBDateTime( $oObject, false, false );
+        $sReturn = oxRegistry::get("oxUtilsDate")->convertDBDateTime($oObject, false, false);
 
-        $this->assertEquals( '2007-08-01', $sReturn );
+        $this->assertEquals('2007-08-01', $sReturn);
     }
+
     // bunch of tests ...
     public function testConvertDBDateTime()
     {
-        $sZeroTimeStandard  = '0000-00-00 00:00:00';
-        $sZeroTimeMySQL     = '0000-00-00 00:00:00';
+        $sZeroTimeStandard = '0000-00-00 00:00:00';
+        $sZeroTimeMySQL = '0000-00-00 00:00:00';
         $sZeroFormattedDate = '0000-00-00';
 
-        $sDateTime          = '2007-08-01 11:56:25';
-        $sDateTimeStandard  = '2007-08-01 11:56:25';
-        $sDateTimeMySQL     = '2007-08-01 11:56:25';
+        $sDateTime = '2007-08-01 11:56:25';
+        $sDateTimeStandard = '2007-08-01 11:56:25';
+        $sDateTimeMySQL = '2007-08-01 11:56:25';
         $sDateFormattedDate = '2007-08-01';
 
         $sEURDateTime = '01.08.2007 11.56.25';
 
-        $sUSADateTimeAM         = '08/01/2007 11:56:25 AM';
+        $sUSADateTimeAM = '08/01/2007 11:56:25 AM';
         $sUSADateTimeAMExpected = '2007-08-01 11:56:25';
 
-        $sUSADateTimePM         = '08/01/2007 11:56:25 PM';
+        $sUSADateTimePM = '08/01/2007 11:56:25 PM';
         $sUSADateTimePMStandard = '2007-08-01 23:56:25';
-        $sUSADateTimePMMySQL    = '2007-08-01 23:56:25';
+        $sUSADateTimePMMySQL = '2007-08-01 23:56:25';
 
         // standard
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( "", $sZeroTimeStandard ) );
+        $this->assertTrue($this->_ConvertDBDateTimeTest("", $sZeroTimeStandard));
 
         // mySQL compatible
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( "", $sZeroTimeMySQL, true ) );
+        $this->assertTrue($this->_ConvertDBDateTimeTest("", $sZeroTimeMySQL, true));
 
         // format date
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( "", $sZeroFormattedDate, true, true ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( "", $sZeroFormattedDate, false, true ) );
+        $this->assertTrue($this->_ConvertDBDateTimeTest("", $sZeroFormattedDate, true, true));
+        $this->assertTrue($this->_ConvertDBDateTimeTest("", $sZeroFormattedDate, false, true));
 
         // ISO
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sDateTime, $sDateTimeStandard ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sDateTime, $sDateTimeMySQL, true ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sDateTime, $sDateFormattedDate, true, true ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sDateTime, $sDateFormattedDate, false, true ) );
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sDateTime, $sDateTimeStandard));
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sDateTime, $sDateTimeMySQL, true));
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sDateTime, $sDateFormattedDate, true, true));
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sDateTime, $sDateFormattedDate, false, true));
 
         // EUR
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sEURDateTime, $sDateTimeStandard ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sEURDateTime, $sDateTimeMySQL, true ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sEURDateTime, $sDateFormattedDate, true, true ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sEURDateTime, $sDateFormattedDate, false, true ) );
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sEURDateTime, $sDateTimeStandard));
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sEURDateTime, $sDateTimeMySQL, true));
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sEURDateTime, $sDateFormattedDate, true, true));
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sEURDateTime, $sDateFormattedDate, false, true));
 
         // USA pattern AM
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sUSADateTimeAM, $sDateTimeStandard ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sUSADateTimeAM, $sDateTimeMySQL, true ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sUSADateTimeAM, $sDateFormattedDate, true, true ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sUSADateTimeAM, $sDateFormattedDate, false, true ) );
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sUSADateTimeAM, $sDateTimeStandard));
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sUSADateTimeAM, $sDateTimeMySQL, true));
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sUSADateTimeAM, $sDateFormattedDate, true, true));
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sUSADateTimeAM, $sDateFormattedDate, false, true));
 
         // USA pattern PM
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sUSADateTimePM, $sUSADateTimePMStandard ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sUSADateTimePM, $sUSADateTimePMMySQL, true ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sUSADateTimePM, $sDateFormattedDate, true, true ) );
-        $this->assertTrue( $this->_ConvertDBDateTimeTest( $sUSADateTimePM, $sDateFormattedDate, false, true ) );
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sUSADateTimePM, $sUSADateTimePMStandard));
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sUSADateTimePM, $sUSADateTimePMMySQL, true));
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sUSADateTimePM, $sDateFormattedDate, true, true));
+        $this->assertTrue($this->_ConvertDBDateTimeTest($sUSADateTimePM, $sDateFormattedDate, false, true));
     }
 
     /**
      * _ConvertDBDateTimeTest
+     *
      * @param   string  datetime to be converted
      * @param   string  datetime expected after conversion
      * @param   bool    format as mysql compatible
      * @param   bool    format to date only
      * @param   bool    skip
      */
-    protected function _ConvertDBDateTimeTest($sInput = "", $sExpected = "", $blMysql = false, $blFormatDate = false )
+    protected function _ConvertDBDateTimeTest($sInput = "", $sExpected = "", $blMysql = false, $blFormatDate = false)
     {
         $oConvObject = new oxField();
         if (!empty($sInput)) {
@@ -204,11 +207,12 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
             $oConvObject->fldmax_length = strlen($sInput);
             $oConvObject->fldtype = "datetime";
         }
-        oxRegistry::get("oxUtilsDate")->convertDBDateTime( $oConvObject, $blMysql, $blFormatDate );
+        oxRegistry::get("oxUtilsDate")->convertDBDateTime($oConvObject, $blMysql, $blFormatDate);
         //echo "\nReturned: ->".$oConvObject->value."<-\nExpected: ->".$sExpected.'<-';
         if ($oConvObject->value == $sExpected) {
             return true;
         }
+
         return false;
     }
 
@@ -222,80 +226,81 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
     public function test_ConvertDBTimestamp()
     {
         $sDateTimeStamp = '20070801115625';
-        $sDateTime      = '2007-08-01 11:56:25';
+        $sDateTime = '2007-08-01 11:56:25';
 
         // input datetime expect timestamp
-        $this->assertTrue( $this->_ConvertDBTimestampTest( $sDateTime, $sDateTimeStamp, true ) );
+        $this->assertTrue($this->_ConvertDBTimestampTest($sDateTime, $sDateTimeStamp, true));
         // input timestamp expect datetime
-        $this->assertTrue( $this->_ConvertDBTimestampTest( $sDateTimeStamp, $sDateTime ) );
-
-        $sDateTimeStamp = '20070801115625';
-        $sEURDateTime   = '01.08.2007 11.56.25';
-        // input datetime expect timestamp
-        $this->assertTrue( $this->_ConvertDBTimestampTest( $sEURDateTime, $sDateTimeStamp, true ) );
-        // input timestamp expect datetime
-        $this->assertTrue( $this->_ConvertDBTimestampTest( $sDateTimeStamp, $sDateTime ) );
+        $this->assertTrue($this->_ConvertDBTimestampTest($sDateTimeStamp, $sDateTime));
 
         $sDateTimeStamp = '20070801115625';
-        $sUSADateTime   = '08/01/2007 11:56:25 AM';
+        $sEURDateTime = '01.08.2007 11.56.25';
         // input datetime expect timestamp
-        $this->assertTrue( $this->_ConvertDBTimestampTest( $sUSADateTime, $sDateTimeStamp, true ) );
+        $this->assertTrue($this->_ConvertDBTimestampTest($sEURDateTime, $sDateTimeStamp, true));
         // input timestamp expect datetime
-        $this->assertTrue( $this->_ConvertDBTimestampTest( $sDateTimeStamp, $sDateTime ) );
+        $this->assertTrue($this->_ConvertDBTimestampTest($sDateTimeStamp, $sDateTime));
+
+        $sDateTimeStamp = '20070801115625';
+        $sUSADateTime = '08/01/2007 11:56:25 AM';
+        // input datetime expect timestamp
+        $this->assertTrue($this->_ConvertDBTimestampTest($sUSADateTime, $sDateTimeStamp, true));
+        // input timestamp expect datetime
+        $this->assertTrue($this->_ConvertDBTimestampTest($sDateTimeStamp, $sDateTime));
 
         $sDateTimeStamp = '20070801235625';
-        $sUSADateTime   = '08/01/2007 11:56:25 PM';
+        $sUSADateTime = '08/01/2007 11:56:25 PM';
         // input datetime expect timestamp
-        $this->assertTrue( $this->_ConvertDBTimestampTest( $sUSADateTime, $sDateTimeStamp, true ) );
+        $this->assertTrue($this->_ConvertDBTimestampTest($sUSADateTime, $sDateTimeStamp, true));
         // input timestamp expect datetime
         $sDateTime = '2007-08-01 23:56:25';
-        $this->assertTrue( $this->_ConvertDBTimestampTest( $sDateTimeStamp, $sDateTime ) );
+        $this->assertTrue($this->_ConvertDBTimestampTest($sDateTimeStamp, $sDateTime));
 
         $sZeroTimeStamp = '00000000000000';
-        $sZeroDateTime  = '0000-00-00 00:00:00';
+        $sZeroDateTime = '0000-00-00 00:00:00';
         // input datetime expect timestamp
-        $this->assertTrue( $this->_ConvertDBTimestampTest( $sZeroDateTime, $sZeroTimeStamp, true ) );
+        $this->assertTrue($this->_ConvertDBTimestampTest($sZeroDateTime, $sZeroTimeStamp, true));
         // input timestamp expect datetime
         $sZeroTimeStamp = '19700101000000';
-        $sZeroDateTime  = '1970-01-01 00:00:00';
-        $this->assertTrue( $this->_ConvertDBTimestampTest( $sZeroTimeStamp, $sZeroDateTime ) );
+        $sZeroDateTime = '1970-01-01 00:00:00';
+        $this->assertTrue($this->_ConvertDBTimestampTest($sZeroTimeStamp, $sZeroDateTime));
 
         // 20070801-AS - timestamps works only for dates including 19011213205513
         $sZeroTimeStamp = '19111213205513';
-        $sZeroDateTime  = '1911-12-13 20:55:13';
-        $this->assertTrue( $this->_ConvertDBTimestampTest( $sZeroTimeStamp, $sZeroDateTime ) );
+        $sZeroDateTime = '1911-12-13 20:55:13';
+        $this->assertTrue($this->_ConvertDBTimestampTest($sZeroTimeStamp, $sZeroDateTime));
 
         // 20070801-AS - timestamps earlier than 19011213205513 return 1970-01-01 01:00:00
         $sZeroTimeStamp = '19711213205512';
-        $sZeroDateTime  = '1901-12-13 20:55:12';
-        $this->assertFalse( $this->_ConvertDBTimestampTest( $sZeroTimeStamp, $sZeroDateTime ) );
+        $sZeroDateTime = '1901-12-13 20:55:12';
+        $this->assertFalse($this->_ConvertDBTimestampTest($sZeroTimeStamp, $sZeroDateTime));
         // 20070801-AS - timestamps earlier than 19011213205513 return 1970-01-01 01:00:00 or differnt (depends on GMT + and - )
         $sZeroTimeStamp = '18710130105512';
-        if ( ( $iTimeStamp = mktime( 10, 55, 12, 1, 30, 1871 ) ) === false ) {
+        if (($iTimeStamp = mktime(10, 55, 12, 1, 30, 1871)) === false) {
             $iTimeStamp = 0;
         }
-        $sZeroDateTime  = date( "Y-m-d H:i:s", $iTimeStamp );
-        $this->assertTrue( $this->_ConvertDBTimestampTest( $sZeroTimeStamp, $sZeroDateTime ) );
+        $sZeroDateTime = date("Y-m-d H:i:s", $iTimeStamp);
+        $this->assertTrue($this->_ConvertDBTimestampTest($sZeroTimeStamp, $sZeroDateTime));
     }
 
     /**
      * _ConvertDBTimestampTest
+     *
      * @param   string  datetime/timestamp to be converted
      * @param   string  datetime/timestamp expected after conversion
      * @param   bool    if true convert to timestamp
      * @param   bool    skip
      */
-    protected function _ConvertDBTimestampTest( $sInput = "", $sExpected = "", $blToTimeStamp = false, $blSkip = false )
+    protected function _ConvertDBTimestampTest($sInput = "", $sExpected = "", $blToTimeStamp = false, $blSkip = false)
     {
         $myConfig = oxRegistry::getConfig();
 
         $oConvObject = new oxField();
-        if ( !empty( $sInput ) ) {
+        if (!empty($sInput)) {
             $oConvObject = new oxField($sInput, oxField::T_RAW);
         }
 
-        oxRegistry::get("oxUtilsDate")->convertDBTimestamp( $oConvObject, $blToTimeStamp );
-        if ( $oConvObject->value == $sExpected ) {
+        oxRegistry::get("oxUtilsDate")->convertDBTimestamp($oConvObject, $blToTimeStamp);
+        if ($oConvObject->value == $sExpected) {
             return true;
         }
 
@@ -318,42 +323,45 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
         $oObject = new oxField('xxx', oxField::T_RAW);
         $oObject->fldmax_length = 0;
 
-        $oxUtilsDate = $this->getProxyClass( 'oxUtilsDate' );
-        $oxUtilsDate->UNITsetDefaultFormatedValue( $oObject, 'xxx', 'ISO', 'ISO', false );
-        $this->assertEquals( 'xxx', $oObject->value );
-        $this->assertEquals( 0, $oObject->fldmax_length );
+        $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
+        $oxUtilsDate->UNITsetDefaultFormatedValue($oObject, 'xxx', 'ISO', 'ISO', false);
+        $this->assertEquals('xxx', $oObject->value);
+        $this->assertEquals(0, $oObject->fldmax_length);
     }
+
     // only date
     public function testSetDefaultFormatedValueOnlyDate()
     {
         $oObject = new oxField('', oxField::T_RAW);
         $oObject->fldmax_length = 0;
 
-        $oxUtilsDate = $this->getProxyClass( 'oxUtilsDate' );
-        $oxUtilsDate->UNITsetDefaultFormatedValue( $oObject, 'xxx', 'ISO', 'ISO', true );
-        $this->assertEquals( '0000-00-00', $oObject->value );
-        $this->assertEquals( strlen('0000-00-00'), $oObject->fldmax_length );
+        $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
+        $oxUtilsDate->UNITsetDefaultFormatedValue($oObject, 'xxx', 'ISO', 'ISO', true);
+        $this->assertEquals('0000-00-00', $oObject->value);
+        $this->assertEquals(strlen('0000-00-00'), $oObject->fldmax_length);
     }
+
     // full date
     public function testSetDefaultFormatedValueFullDate()
     {
         $oObject = new oxField('', oxField::T_RAW);
         $oObject->fldmax_length = 0;
 
-        $oxUtilsDate = $this->getProxyClass( 'oxUtilsDate' );
-        $oxUtilsDate->UNITsetDefaultFormatedValue( $oObject, '0000-00-00 00:00:00', 'ISO', 'ISO', false );
-        $this->assertEquals( '0000-00-00 00:00:00', $oObject->value );
-        $this->assertEquals( strlen('0000-00-00 00:00:00'), $oObject->fldmax_length );
+        $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
+        $oxUtilsDate->UNITsetDefaultFormatedValue($oObject, '0000-00-00 00:00:00', 'ISO', 'ISO', false);
+        $this->assertEquals('0000-00-00 00:00:00', $oObject->value);
+        $this->assertEquals(strlen('0000-00-00 00:00:00'), $oObject->fldmax_length);
     }
 
     /**
      * _ConvertDBDateTest
+     *
      * @param   string  date/timestamp to be converted
      * @param   string  date/timestamp expected after conversion
      * @param   bool    if true convert to timestamp
      * @param   bool    skip
      */
-    protected function _ConvertDBDateTest($sInput = "", $sExpected = "", $blToTimeStamp = false )
+    protected function _ConvertDBDateTest($sInput = "", $sExpected = "", $blToTimeStamp = false)
     {
         $oConvObject = new oxField();
         if (!empty($sInput)) {
@@ -364,6 +372,7 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
         if ($oConvObject->value == $sExpected) {
             return true;
         }
+
         return false;
     }
 
@@ -374,11 +383,11 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
     {
         $oObject = new stdclass();
 
-        $oxUtilsDate = $this->getProxyClass( 'oxUtilsDate' );
-        $oxUtilsDate->UNITsetDefaultDateTimeValue( $oObject, "ISO", "ISO", false );
+        $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
+        $oxUtilsDate->UNITsetDefaultDateTimeValue($oObject, "ISO", "ISO", false);
 
-        $this->assertEquals( "0000-00-00 00:00:00", $oObject->value );
-        $this->assertEquals( strlen( "0000-00-00 00:00:00" ), $oObject->fldmax_length );
+        $this->assertEquals("0000-00-00 00:00:00", $oObject->value);
+        $this->assertEquals(strlen("0000-00-00 00:00:00"), $oObject->fldmax_length);
     }
 
     /**
@@ -388,14 +397,14 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
     {
         $oObject = new stdclass();
 
-        $aDateMatches = array( 05, 14, 1981, );
-        $aDFields     = array( 0, 1, 2 );
+        $aDateMatches = array(05, 14, 1981,);
+        $aDFields = array(0, 1, 2);
 
-        $oxUtilsDate = $this->getProxyClass( 'oxUtilsDate' );
-        $oxUtilsDate->UNITsetDate( $oObject, "Y-m-d", $aDFields, $aDateMatches );
+        $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
+        $oxUtilsDate->UNITsetDate($oObject, "Y-m-d", $aDFields, $aDateMatches);
 
-        $this->assertEquals( "1981-05-14", $oObject->value );
-        $this->assertEquals( strlen( "1981-05-14" ), $oObject->fldmax_length );
+        $this->assertEquals("1981-05-14", $oObject->value);
+        $this->assertEquals(strlen("1981-05-14"), $oObject->fldmax_length);
     }
 
     /**
@@ -405,73 +414,26 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
     {
         $oObject = new stdclass();
 
-        $aDateMatches = array( 05, 14, 1981, );
-        $aDFields     = array( 0, 1, 2 );
+        $aDateMatches = array(05, 14, 1981,);
+        $aDFields = array(0, 1, 2);
 
-        $aTimeMatches = array( 12, 12, 12);
-        $aTFields     = array( 0, 1, 2 );
+        $aTimeMatches = array(12, 12, 12);
+        $aTFields = array(0, 1, 2);
 
-        $oxUtilsDate = $this->getProxyClass( 'oxUtilsDate' );
-        $oxUtilsDate->UNITformatCorrectTimeValue( $oObject, "Y-m-d", "H:i:s", $aDateMatches, $aTimeMatches, $aTFields, $aDFields);
+        $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
+        $oxUtilsDate->UNITformatCorrectTimeValue($oObject, "Y-m-d", "H:i:s", $aDateMatches, $aTimeMatches, $aTFields, $aDFields);
 
-        $this->assertEquals( "1981-05-14 12:12:12", $oObject->value );
-        $this->assertEquals( strlen( "1981-05-14 12:12:12" ), $oObject->fldmax_length );
+        $this->assertEquals("1981-05-14 12:12:12", $oObject->value);
+        $this->assertEquals(strlen("1981-05-14 12:12:12"), $oObject->fldmax_length);
     }
+
     /**
      *  Test static time value
      */
     public function testGetTime_static()
     {
-        $this->setTime( 157 );
-        $this->assertEquals( 157, $this->getTime() );
-        $this->assertEquals( 157, oxRegistry::get("oxUtilsDate")->getTime() );
-    }
-
-    public function testFormTimeNoTimeShift()
-    {
-        $this->setConfigParam('iServerTimeShift', null);
-
-        $oDateTime = new DateTime('tomorrow');
-        $iExpectedTimeStamp = $oDateTime->getTimestamp();
-
-        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formTime('tomorrow'), $iExpectedTimeStamp);
-    }
-
-    public function testFormTimeNoTimeShiftHourSet()
-    {
-        $this->setConfigParam('iServerTimeShift', null);
-
-        $oDateTime = new DateTime('tomorrow');
-        $oDateTime->setTime(17, 10, 15);
-        $iExpectedTimeStamp = $oDateTime->getTimestamp();
-
-        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
-
-    }
-
-    public function testFormTimeWithTimeShift()
-    {
-        $iTimeShiftHours = 2;
-        $iTimeShiftSeconds = $iTimeShiftHours * 3600;
-        $this->setConfigParam('iServerTimeShift', $iTimeShiftHours);
-
-        $oDateTime = new DateTime('tomorrow');
-        $iExpectedTimeStamp = $oDateTime->getTimestamp() + $iTimeShiftSeconds;
-
-        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formTime('tomorrow'), $iExpectedTimeStamp);
-    }
-
-    public function testFormTimeWithTimeShiftHourSet()
-    {
-        $iTimeShiftHours = 2;
-        $iTimeShiftSeconds = $iTimeShiftHours * 3600;
-        $this->setConfigParam('iServerTimeShift', $iTimeShiftHours);
-
-        $oDateTime = new DateTime('tomorrow');
-        $oDateTime->setTime(17, 10, 15);
-        $iExpectedTimeStamp = $oDateTime->getTimestamp() + $iTimeShiftSeconds;
-
-        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
-
+        $this->setTime(157);
+        $this->assertEquals(157, $this->getTime());
+        $this->assertEquals(157, oxRegistry::get("oxUtilsDate")->getTime());
     }
 }

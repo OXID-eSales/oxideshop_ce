@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
 {
+
     protected $_sMsg = 'TEST_EXCEPTION';
 
     public function testCallUnExistingMethod()
@@ -32,7 +33,7 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
         try {
             $oExcpHandler = new oxexceptionhandler();
             $oExcpHandler->__test__();
-        } catch ( oxSystemComponentException $oExcp ) {
+        } catch (oxSystemComponentException $oExcp) {
             return;
         }
         $this->fail('exception must be thrown');
@@ -51,7 +52,7 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
     {
         $sFileName = 'oxexceptionhandlerTest_NotRenderer.txt';
         $oExc = oxNew('oxexception', $this->_sMsg);
-        $oTestObject = oxNew('oxexceptionhandler', '1');  // iDebug = 1
+        $oTestObject = oxNew('oxexceptionhandler', '1'); // iDebug = 1
         $oTestObject->setLogFileName($sFileName);
 
         try {
@@ -59,17 +60,18 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
             $this->assertNotEquals($this->_sMsg, $sMsg);
         } catch (Exception $e) {
             // Lets try to delete an possible left over file
-            if (file_exists(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName)) {
-                unlink(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
+            if (file_exists(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
+                unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
             }
             $this->fail('handleUncaughtException() throws an exception.');
+
             return;
         }
-        if (!file_exists(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName)) {
-             $this->fail('No debug log file written');
+        if (!file_exists(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
+            $this->fail('No debug log file written');
         }
-        $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
-        unlink(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName); // delete file first as assert may return out this function
+        $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+        unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName); // delete file first as assert may return out this function
         // we check on class name and message - rest is not checked yet
         $this->assertContains($this->_sMsg, $sFile);
         $this->assertContains('oxException', $sFile);
@@ -91,6 +93,7 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
                 unlink($sFileName);
             }
             $this->fail('handleUncaughtException() throws an exception.');
+
             return;
         }
         if (file_exists($sFileName)) {
@@ -102,32 +105,33 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
     public function testExceptionHandlerNotRendererDebugNotOxidException()
     {
         $sFileName = 'oxexceptionhandlerTest_NotRenderer.txt';
-        $oTestObject = oxNew('oxexceptionhandler', '1');  // iDebug = 1
+        $oTestObject = oxNew('oxexceptionhandler', '1'); // iDebug = 1
         $oTestObject->setLogFileName($sFileName);
 
         try {
             throw new Exception("test exception");
-             // actuall test
+            // actuall test
         } catch (Exception $e) {
             $oTestObject->handleUncaughtException($e);
-            if (!file_exists(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName)) {
-                 $this->fail('No debug log file written');
+            if (!file_exists(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
+                $this->fail('No debug log file written');
             }
-            $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
-            unlink(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName); // delete file first as assert may return out this function
+            $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+            unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName); // delete file first as assert may return out this function
             $this->assertContains("test exception", $sFile);
             $this->assertContains('Exception', $sFile);
+
             return;
         }
-        if (file_exists(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName)) {
-            unlink(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
+        if (file_exists(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
+            unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
         }
         $this->fail('Test failed.');
     }
 
     public function testSetIDebug()
     {
-        $oTestObject = $this->getProxyClass( "oxexceptionhandler" );
+        $oTestObject = $this->getProxyClass("oxexceptionhandler");
         $oTestObject->setIDebug(2);
         //nothing should happen in unittests
         $this->assertEquals(2, $oTestObject->getNonPublicVar('_iDebug'));
@@ -135,18 +139,18 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
 
     public function testDealWithNoOxException()
     {
-        $oTestObject = $this->getProxyClass( "oxexceptionhandler" );
+        $oTestObject = $this->getProxyClass("oxexceptionhandler");
         $oTestObject->setIDebug(-1);
 
         $oTestUtils = $this->getMock("oxUtils", array("writeToLog", "showMessageAndExit", "getTime"));
         $oTestUtils->expects($this->once())->method("writeToLog");
         $oTestException = new Exception("testMsg");
 
-        oxTestModules::addModuleObject( 'oxUtils', $oTestUtils );
+        oxTestModules::addModuleObject('oxUtils', $oTestUtils);
 
         try {
             $oTestObject->UNITdealWithNoOxException($oTestException);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
 
         }
     }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * oxcmp_shop tests
  */
 class Unit_Views_oxCmpShopTest extends OxidTestCase
 {
+
     /**
      * Testing oxcmp_shop::render()
      *
@@ -35,25 +36,25 @@ class Unit_Views_oxCmpShopTest extends OxidTestCase
      */
     public function testRenderNoActiveShop()
     {
-        $sRedirUrl = oxRegistry::getConfig()->getShopMainUrl().'offline.html';
+        $sRedirUrl = oxRegistry::getConfig()->getShopMainUrl() . 'offline.html';
         $this->setExpectedException('oxException', $sRedirUrl);
 
-        $oView = $this->getMock( "oxView", array( "getClassName" ) );
-        $oView->expects( $this->once() )->method('getClassName')->will( $this->returnValue( "test" ) );
+        $oView = $this->getMock("oxView", array("getClassName"));
+        $oView->expects($this->once())->method('getClassName')->will($this->returnValue("test"));
 
         $oShop = new oxShop();
-        $oShop->oxshops__oxactive = new oxField( 0 );
+        $oShop->oxshops__oxactive = new oxField(0);
 
         oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');
 
-        $oConfig = $this->getMock( "oxConfig", array( "getConfigParam", "getActiveView", "getActiveShop" ) );
-        $oConfig->expects( $this->once() )->method('getActiveView')->will( $this->returnValue( $oView ) );
-        $oConfig->expects( $this->any() )->method('getConfigParam')->will( $this->returnValue( false ) );
-        $oConfig->expects( $this->once() )->method('getActiveShop')->will( $this->returnValue( $oShop ) );
+        $oConfig = $this->getMock("oxConfig", array("getConfigParam", "getActiveView", "getActiveShop"));
+        $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oView));
+        $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
+        $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
 
-        $oCmp = $this->getMock( "oxcmp_shop", array( "getConfig", "isAdmin" ), array(), '', false );
-        $oCmp->expects( $this->once() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
-        $oCmp->expects( $this->once() )->method('isAdmin')->will( $this->returnValue( false ) );
+        $oCmp = $this->getMock("oxcmp_shop", array("getConfig", "isAdmin"), array(), '', false);
+        $oCmp->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        $oCmp->expects($this->once())->method('isAdmin')->will($this->returnValue(false));
 
         $oCmp->render();
     }

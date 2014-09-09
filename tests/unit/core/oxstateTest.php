@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxstateTest extends OxidTestCase
 {
+
     public function testInit()
     {
         $oState = new oxState();
@@ -38,7 +39,7 @@ class Unit_Core_oxstateTest extends OxidTestCase
     public function testGetIdByCode()
     {
         $oState = new oxState();
-        $this->assertEquals( 'MB', $oState->getIdByCode( 'MB', '8f241f11095649d18.02676059' ) );
+        $this->assertEquals('MB', $oState->getIdByCode('MB', '8f241f11095649d18.02676059'));
     }
 
     /**
@@ -65,11 +66,11 @@ class Unit_Core_oxstateTest extends OxidTestCase
 
         return array(
             /*     ID          expected         message         */
-            array( $iStateId,  $sStateTitle,    $sMsgCorrect    ),
-            array( $sStateId,  $sAltStateTitle, $sMsgCorrect    ),
-            array( $sWrongId1, $sEmptyString,   $sMsgEmptyString),
-            array( $sWrongId2, $sEmptyString,   $sMsgEmptyString),
-            array( $sWrongId3, $sEmptyString,   $sMsgEmptyString)
+            array($iStateId, $sStateTitle, $sMsgCorrect),
+            array($sStateId, $sAltStateTitle, $sMsgCorrect),
+            array($sWrongId1, $sEmptyString, $sMsgEmptyString),
+            array($sWrongId2, $sEmptyString, $sMsgEmptyString),
+            array($sWrongId3, $sEmptyString, $sMsgEmptyString)
         );
     }
 
@@ -78,10 +79,10 @@ class Unit_Core_oxstateTest extends OxidTestCase
      *
      * @dataProvider providerStateIDs
      */
-    public function testGetTitleById( $sId, $sExpected, $sMsg )
+    public function testGetTitleById($sId, $sExpected, $sMsg)
     {
         $oState = new oxState();
-        $this->assertEquals( $sExpected, $oState->getTitleById( $sId ), $sMsg );
+        $this->assertEquals($sExpected, $oState->getTitleById($sId), $sMsg);
     }
 
 }

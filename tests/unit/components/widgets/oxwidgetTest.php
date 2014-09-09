@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwCategoryTree class
  */
 class Unit_Components_Widgets_oxWidgetTest extends OxidTestCase
 {
+
     /**
      * Testing oxWidget::init()
      *
@@ -39,8 +40,8 @@ class Unit_Components_Widgets_oxWidgetTest extends OxidTestCase
         $oWidget->init();
 
         $aComponents = $oWidget->getComponents();
-        $this->assertEquals( 1, count( $aComponents ) );
-        $this->assertEquals( "oxcmp_lang", $aComponents["oxcmp_lang"]->getThisAction() );
+        $this->assertEquals(1, count($aComponents));
+        $this->assertEquals("oxcmp_lang", $aComponents["oxcmp_lang"]->getThisAction());
     }
 
     /**
@@ -59,8 +60,8 @@ class Unit_Components_Widgets_oxWidgetTest extends OxidTestCase
         $oWidget->init();
 
         $aComponents = $oWidget->getComponents();
-        $this->assertEquals( 1, count( $aComponents ) );
-        $this->assertTrue( isset($aComponents["oxcmp_lang"]) );
+        $this->assertEquals(1, count($aComponents));
+        $this->assertTrue(isset($aComponents["oxcmp_lang"]));
     }
 
 }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Discount_Users class
  */
 class Unit_Admin_DiscountUsersTest extends OxidTestCase
 {
+
     /**
      * Discount_Users::Render() test case
      *
@@ -35,14 +36,14 @@ class Unit_Admin_DiscountUsersTest extends OxidTestCase
      */
     public function testRender()
     {
-        oxTestModules::addFunction( "oxdiscount", "isDerived", "{return true;}" );
-        modConfig::setRequestParameter( "oxid", "testId" );
+        oxTestModules::addFunction("oxdiscount", "isDerived", "{return true;}");
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Discount_Users();
-        $this->assertEquals( 'discount_users.tpl', $oView->render() );
+        $this->assertEquals('discount_users.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['allgroups2'] ) );
-        $this->assertTrue( isset( $aViewData['readonly'] ) );
+        $this->assertTrue(isset($aViewData['allgroups2']));
+        $this->assertTrue(isset($aViewData['readonly']));
     }
 }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for content class
  */
 class Unit_Views_creditsTest extends OxidTestCase
 {
+
     /**
      * Test case for Credits::_getSeoObjectId()
      *
@@ -36,7 +37,7 @@ class Unit_Views_creditsTest extends OxidTestCase
     public function testGetSeoObjectId()
     {
         $oView = new Credits();
-        $this->assertEquals( "oxcredits", $oView->UNITgetSeoObjectId() );
+        $this->assertEquals("oxcredits", $oView->UNITgetSeoObjectId());
     }
 
     /**
@@ -49,9 +50,9 @@ class Unit_Views_creditsTest extends OxidTestCase
         // default "oxcredits"
         $oView = new Credits();
         $oContent = $oView->getContent();
-        $this->assertTrue( $oContent instanceof oxcontent );
-        $this->assertEquals( "oxcredits", $oContent->oxcontents__oxloadid->value );
-        $this->assertNotEquals( "", $oContent->oxcontents__oxcontent->value  );
+        $this->assertTrue($oContent instanceof oxcontent);
+        $this->assertEquals("oxcredits", $oContent->oxcontents__oxloadid->value);
+        $this->assertNotEquals("", $oContent->oxcontents__oxcontent->value);
 
     }
 }

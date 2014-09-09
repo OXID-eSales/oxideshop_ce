@@ -34,13 +34,13 @@ class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
         $oConfig = oxRegistry::getConfig();
 
         $sState = $oConfig->getConfigParam('sTestActivateEvent');
-        $this->assertSame( null, $sState, 'No events should have been executed till now');
+        $this->assertSame(null, $sState, 'No events should have been executed till now');
 
         $oEnvironment = new Environment();
         $oEnvironment->prepare(array('with_events'));
 
         $sState = $oConfig->getConfigParam('sTestActivateEvent');
-        $this->assertEquals( "Activate", $sState, 'onActivate event was not called.');
+        $this->assertEquals("Activate", $sState, 'onActivate event was not called.');
     }
 
     /**
@@ -54,7 +54,7 @@ class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
         $oEnvironment->prepare(array('with_events'));
 
         $oModule = new oxModule();
-        $oModule->load( 'with_events' );
+        $oModule->load('with_events');
 
         $this->_deactivateModule($oModule);
         $oConfig->setConfigParam('sTestActivateEvent', '_removed_');
@@ -62,7 +62,7 @@ class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
         $this->_activateModule($oModule);
 
         $sState = $oConfig->getConfigParam('sTestActivateEvent');
-        $this->assertEquals( "Activate", $sState, 'onActivate event was not called on second activation.');
+        $this->assertEquals("Activate", $sState, 'onActivate event was not called on second activation.');
     }
 
     /**
@@ -73,17 +73,18 @@ class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
         $oConfig = oxRegistry::getConfig();
 
         $sState = $oConfig->getConfigParam('sTestDeactivateEvent');
-        $this->assertSame( null, $sState, 'No events should have been executed till now');
+        $this->assertSame(null, $sState, 'No events should have been executed till now');
 
         $oEnvironment = new Environment();
         $oEnvironment->prepare(array('with_events'));
 
         $oModule = new oxModule();
-        $oModule->load( 'with_events' );
+        $oModule->load('with_events');
 
         $this->_deactivateModule($oModule);
 
         $sState = $oConfig->getConfigParam('sTestDeactivateEvent');
-        $this->assertEquals( "Deactivate", $sState, 'onDeactivate event was not called.');
+        $this->assertEquals("Deactivate", $sState, 'onDeactivate event was not called.');
     }
 }
+ 

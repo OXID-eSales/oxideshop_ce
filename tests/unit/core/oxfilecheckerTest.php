@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxFileCheckerTest extends OxidTestCase
 {
@@ -31,10 +31,10 @@ class Unit_Core_oxFileCheckerTest extends OxidTestCase
      */
     public function testGetVersion()
     {
-        $oChecker = oxNew( "oxFileChecker" );
-        $oChecker->setVersion( "v123" );
+        $oChecker = oxNew("oxFileChecker");
+        $oChecker->setVersion("v123");
 
-        $this->assertEquals( "v123",  $oChecker->getVersion() );
+        $this->assertEquals("v123", $oChecker->getVersion());
     }
 
     /**
@@ -42,10 +42,10 @@ class Unit_Core_oxFileCheckerTest extends OxidTestCase
      */
     public function testGetEdition()
     {
-        $oChecker = oxNew( "oxFileChecker" );
-        $oChecker->setEdition( "e123" );
+        $oChecker = oxNew("oxFileChecker");
+        $oChecker->setEdition("e123");
 
-        $this->assertEquals( "e123",  $oChecker->getEdition() );
+        $this->assertEquals("e123", $oChecker->getEdition());
     }
 
     /**
@@ -53,10 +53,10 @@ class Unit_Core_oxFileCheckerTest extends OxidTestCase
      */
     public function testGetRevision()
     {
-        $oChecker = oxNew( "oxFileChecker" );
-        $oChecker->setRevision( "r123" );
+        $oChecker = oxNew("oxFileChecker");
+        $oChecker->setRevision("r123");
 
-        $this->assertEquals( "r123",  $oChecker->getRevision() );
+        $this->assertEquals("r123", $oChecker->getRevision());
     }
 
     /**
@@ -64,12 +64,11 @@ class Unit_Core_oxFileCheckerTest extends OxidTestCase
      */
     public function testGetBaseDirectory()
     {
-        $oChecker = oxNew( "oxFileChecker" );
-        $oChecker->setBaseDirectory( "somedir" );
+        $oChecker = oxNew("oxFileChecker");
+        $oChecker->setBaseDirectory("somedir");
 
-        $this->assertEquals( "somedir",  $oChecker->getBaseDirectory() );
+        $this->assertEquals("somedir", $oChecker->getBaseDirectory());
     }
-
 
 
 }

@@ -20,20 +20,22 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/function.oxscript.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'core/smarty/plugins/function.oxscript.php';
 
 class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
 {
+
     /**
      * Check for error if not existing file for include given.
+     *
      * @expectedException PHPUnit_Framework_Error
      */
     public function testSmartyFunctionOxScript_includeNotExist()
     {
         $oSmarty = new Smarty();
-        $this->assertEquals( '', smarty_function_oxscript( array( 'include' => 'somescript.js' ), $oSmarty ) );
+        $this->assertEquals('', smarty_function_oxscript(array('include' => 'somescript.js'), $oSmarty));
     }
 
     /**
@@ -42,11 +44,11 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
     public function testSmartyFunctionOxScript_includeExist()
     {
         $oSmarty = new Smarty();
-        $this->assertEquals( '', smarty_function_oxscript( array( 'include' => 'http://someurl/src/js/libs/jquery.min.js' ), $oSmarty ) );
+        $this->assertEquals('', smarty_function_oxscript(array('include' => 'http://someurl/src/js/libs/jquery.min.js'), $oSmarty));
 
-        $sOutput = '<script type="text/javascript" src="http://someurl/src/js/libs/jquery.min.js"></script>'."\n";
+        $sOutput = '<script type="text/javascript" src="http://someurl/src/js/libs/jquery.min.js"></script>' . "\n";
 
-        $this->assertEquals( $sOutput, smarty_function_oxscript( array( 'inWidget' => false ), $oSmarty ) );
+        $this->assertEquals($sOutput, smarty_function_oxscript(array('inWidget' => false), $oSmarty));
     }
 
     /**
@@ -55,15 +57,15 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
     public function testSmartyFunctionOxScript_widget_include()
     {
         $oSmarty = new Smarty();
-        $this->assertEquals( '', smarty_function_oxscript( array( 'include' => 'http://someurl/src/js/libs/jquery.min.js' ), $oSmarty ) );
+        $this->assertEquals('', smarty_function_oxscript(array('include' => 'http://someurl/src/js/libs/jquery.min.js'), $oSmarty));
 
-        $sOutput = '<script type="text/javascript">'. PHP_EOL
-                   .'window.addEventListener("load", function() {'. PHP_EOL
-                   .'WidgetsHandler.registerFile( "http://someurl/src/js/libs/jquery.min.js", "somewidget" );'. PHP_EOL
-                   .'}, false )'. PHP_EOL
-                   .'</script>'. PHP_EOL;
+        $sOutput = '<script type="text/javascript">' . PHP_EOL
+                   . 'window.addEventListener("load", function() {' . PHP_EOL
+                   . 'WidgetsHandler.registerFile( "http://someurl/src/js/libs/jquery.min.js", "somewidget" );' . PHP_EOL
+                   . '}, false )' . PHP_EOL
+                   . '</script>' . PHP_EOL;
 
-        $this->assertEquals( $sOutput, smarty_function_oxscript( array( 'widget' => 'somewidget', 'inWidget' => true ), $oSmarty ) );
+        $this->assertEquals($sOutput, smarty_function_oxscript(array('widget' => 'somewidget', 'inWidget' => true), $oSmarty));
     }
 
     /**
@@ -72,11 +74,11 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
     public function testSmartyFunctionOxScript_add()
     {
         $oSmarty = new Smarty();
-        $this->assertEquals( '', smarty_function_oxscript( array('add' => 'oxidadd'), $oSmarty ) );
+        $this->assertEquals('', smarty_function_oxscript(array('add' => 'oxidadd'), $oSmarty));
 
-        $sOutput = '<script type="text/javascript">'. PHP_EOL .'oxidadd'. PHP_EOL .'</script>'. PHP_EOL;
+        $sOutput = '<script type="text/javascript">' . PHP_EOL . 'oxidadd' . PHP_EOL . '</script>' . PHP_EOL;
 
-        $this->assertEquals( $sOutput, smarty_function_oxscript( array(), $oSmarty ) );
+        $this->assertEquals($sOutput, smarty_function_oxscript(array(), $oSmarty));
     }
 
     /**
@@ -85,27 +87,28 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
     public function addProvider()
     {
         return array(
-            array( 'oxidadd', 'oxidadd' ),
-            array( '"oxidadd"', '\"oxidadd\"' ),
-            array( "'oxidadd'", "'oxidadd'" ),
+            array('oxidadd', 'oxidadd'),
+            array('"oxidadd"', '\"oxidadd\"'),
+            array("'oxidadd'", "'oxidadd'"),
         );
     }
+
     /**
      * Check for oxscript add method in widget
      *
      * @dataProvider addProvider
      */
-    public function testSmartyFunctionOxScript_widget_add( $sScript, $sScriptOutput )
+    public function testSmartyFunctionOxScript_widget_add($sScript, $sScriptOutput)
     {
         $oSmarty = new Smarty();
-        $this->assertEquals( '', smarty_function_oxscript( array( 'add' => $sScript ), $oSmarty ) );
+        $this->assertEquals('', smarty_function_oxscript(array('add' => $sScript), $oSmarty));
 
-        $sOutput = '<script type="text/javascript">'. PHP_EOL
-                    .'window.addEventListener("load", function() {'. PHP_EOL
-                    .'WidgetsHandler.registerFunction( "'. $sScriptOutput .'", "somewidget");'. PHP_EOL
-                    .'}, false )'. PHP_EOL
-                    .'</script>'. PHP_EOL;
+        $sOutput = '<script type="text/javascript">' . PHP_EOL
+                   . 'window.addEventListener("load", function() {' . PHP_EOL
+                   . 'WidgetsHandler.registerFunction( "' . $sScriptOutput . '", "somewidget");' . PHP_EOL
+                   . '}, false )' . PHP_EOL
+                   . '</script>' . PHP_EOL;
 
-        $this->assertEquals( $sOutput, smarty_function_oxscript( array( 'widget' => 'somewidget', 'inWidget' => true ), $oSmarty ) );
+        $this->assertEquals($sOutput, smarty_function_oxscript(array('widget' => 'somewidget', 'inWidget' => true), $oSmarty));
     }
 }

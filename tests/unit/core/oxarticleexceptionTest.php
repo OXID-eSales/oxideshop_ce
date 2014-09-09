@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing oxArticleException class.
  */
 class Unit_Core_oxarticleexceptionTest extends OxidTestCase
 {
+
     /**
      * Contains a test object of oxarticleexception
      *
@@ -57,7 +58,7 @@ class Unit_Core_oxarticleexceptionTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_oTestObject = oxNew( 'oxArticleException', $this->_sMsg);
+        $this->_oTestObject = oxNew('oxArticleException', $this->_sMsg);
         $this->_oTestObject->setArticleNr($this->_sArticle);
         $this->_oTestObject->setProductId($this->_sArticle);
     }
@@ -69,11 +70,11 @@ class Unit_Core_oxarticleexceptionTest extends OxidTestCase
      */
     public function testSetProductIdGetProductId()
     {
-        $oTestObject = oxNew( 'oxArticleException', $this->_sMsg);
-        $this->assertNull( $oTestObject->getProductId() );
+        $oTestObject = oxNew('oxArticleException', $this->_sMsg);
+        $this->assertNull($oTestObject->getProductId());
 
-        $this->_oTestObject->setProductId( 'xxx' );
-        $this->assertEquals( 'xxx', $this->_oTestObject->getProductId() );
+        $this->_oTestObject->setProductId('xxx');
+        $this->assertEquals('xxx', $this->_oTestObject->getProductId());
     }
 
     /**
@@ -83,7 +84,7 @@ class Unit_Core_oxarticleexceptionTest extends OxidTestCase
      */
     public function testType()
     {
-        $this->assertEquals('oxArticleException', get_class($this->_oTestObject) );
+        $this->assertEquals('oxArticleException', get_class($this->_oTestObject));
     }
 
     /**
@@ -106,9 +107,9 @@ class Unit_Core_oxarticleexceptionTest extends OxidTestCase
     public function testSetString()
     {
         $sStringOut = $this->_oTestObject->getString();
-        $this->assertContains($this->_sMsg, $sStringOut);           // Message
-        $this->assertContains('oxArticleException', $sStringOut);   // Exception class name
-        $this->assertContains($this->_sArticle, $sStringOut);       // Article nr
+        $this->assertContains($this->_sMsg, $sStringOut); // Message
+        $this->assertContains('oxArticleException', $sStringOut); // Exception class name
+        $this->assertContains($this->_sArticle, $sStringOut); // Article nr
     }
 
     /**

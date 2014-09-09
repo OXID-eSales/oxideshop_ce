@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxdisplayerrorTest extends OxidTestCase
 {
+
     private $_oDisplayError;
 
     /**
@@ -35,7 +36,7 @@ class Unit_Core_oxdisplayerrorTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_oDisplayError = oxNew( 'oxDisplayError' );
+        $this->_oDisplayError = oxNew('oxDisplayError');
     }
 
     /**
@@ -54,9 +55,10 @@ class Unit_Core_oxdisplayerrorTest extends OxidTestCase
     {
         $this->assertNull($this->_oDisplayError->getErrorClassType());
     }
+
     /**
-    *tests if the value is always empty
-    */
+     *tests if the value is always empty
+     */
     public function testGetValue()
     {
         $this->assertEquals($this->_oDisplayError->getValue("whatever"), "");

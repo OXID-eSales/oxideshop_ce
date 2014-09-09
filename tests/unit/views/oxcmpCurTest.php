@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Views_oxcmpCurTest extends OxidTestCase
 {
+
     /**
      * Checking if basket currency object is updated initialising currency
      * (M:825, M:890)
@@ -33,17 +34,17 @@ class Unit_Views_oxcmpCurTest extends OxidTestCase
     {
         $oParentView = new oxUBase();
         $oCurView = new oxcmp_cur();
-        $oCurView->setParent( $oParentView );
+        $oCurView->setParent($oParentView);
 
         $oCur = $oCurView->getSession()->getBasket()->getBasketCurrency();
-        $this->assertEquals( 2, $oCur->decimal );
+        $this->assertEquals(2, $oCur->decimal);
 
         // changing decimal percision from 2 => 1
-        oxRegistry::getConfig()->setConfigParam( "modaCurrencies", array("EUR@ 1.00@ ,@ .@ ¤@ 1") );
+        oxRegistry::getConfig()->setConfigParam("modaCurrencies", array("EUR@ 1.00@ ,@ .@ ¤@ 1"));
         $oCurView->init();
 
         $oCur = $oCurView->getSession()->getBasket()->getBasketCurrency();
-        $this->assertEquals( 1, $oCur->decimal );
+        $this->assertEquals(1, $oCur->decimal);
     }
 }
 

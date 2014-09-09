@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,97 +18,109 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
-
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-
-class modOxNewsLetter extends oxNewsLetter
-{
-    public function getSmarty()
-    {
-        return $this->_oSmarty;
-    }
-    public function getUser()
-    {
-        return $this->_oUser;
-    }
-    public function getShop()
-    {
-        return $this->_oShop;
-    }
-}
-
-class modEmailOxNewsLetter extends oxEmail
-{
-    public $Timeout       = 2;
-    public function sendNewsletterMail( $oNews, $oUser, $sSubject = null )
-    {
-        return false;
-    }
-}
-
-class modEmailOxNewsLetter2 extends oxEmail
-{
-    public $Timeout       = 2;
-    public function sendNewsletterMail( $oNews, $oUser, $sSubject = null )
-    {
-        return true;
-    }
-}
-
-/*
- * Dummy class for newsletter subject test.
- *
- */
-class modEmailOxNewsLetterSubject extends oxEmail
-{
-    public $Timeout       = 2;
-    public function sendNewsletterMail( $oNews, $oUser, $sSubject = null )
-    {
-        throw new oxexception($sSubject);
-    }
-}
-
-class oxnewsletterForUnit_oxnewsletterTest extends oxnewsletter
-{
-    public function setNonPublicVar( $sVarName, $sVarValue )
-    {
-        $this->$sVarName = $sVarValue;
-    }
-    public function getNonPublicVar( $sVarName )
-    {
-        return $this->$sVarName;
-    }
-}
-
-class Unit_Core_oxnewsletterTest extends OxidTestCase
-{
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
      */
-    protected function setUp()
+
+    require_once realpath(".") . '/unit/OxidTestCase.php';
+    require_once realpath(".") . '/unit/test_config.inc.php';
+
+    class modOxNewsLetter extends oxNewsLetter
     {
-        parent::setUp();
 
-        $oDB = oxDb::getDb();
+        public function getSmarty()
+        {
+            return $this->_oSmarty;
+        }
 
-        $sInsert = "INSERT INTO `oxnewsletter` VALUES ( 'newstest', 'oxbaseshop', 'Test', 'TestHTML', 'TestPlain', 'TestSubject', NOW() )";
-        $oDB->Execute( $sInsert );
+        public function getUser()
+        {
+            return $this->_oUser;
+        }
 
-        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test', 'oxbaseshop', 'newstest', 'oxidnewcustomer', NOW() )";
-        $oDB->Execute( $sInsert );
+        public function getShop()
+        {
+            return $this->_oShop;
+        }
+    }
 
-        $sInsert = "INSERT INTO `oxorder` SET
+    class modEmailOxNewsLetter extends oxEmail
+    {
+
+        public $Timeout = 2;
+
+        public function sendNewsletterMail($oNews, $oUser, $sSubject = null)
+        {
+            return false;
+        }
+    }
+
+    class modEmailOxNewsLetter2 extends oxEmail
+    {
+
+        public $Timeout = 2;
+
+        public function sendNewsletterMail($oNews, $oUser, $sSubject = null)
+        {
+            return true;
+        }
+    }
+
+    /*
+     * Dummy class for newsletter subject test.
+     *
+     */
+    class modEmailOxNewsLetterSubject extends oxEmail
+    {
+
+        public $Timeout = 2;
+
+        public function sendNewsletterMail($oNews, $oUser, $sSubject = null)
+        {
+            throw new oxexception($sSubject);
+        }
+    }
+
+    class oxnewsletterForUnit_oxnewsletterTest extends oxnewsletter
+    {
+
+        public function setNonPublicVar($sVarName, $sVarValue)
+        {
+            $this->$sVarName = $sVarValue;
+        }
+
+        public function getNonPublicVar($sVarName)
+        {
+            return $this->$sVarName;
+        }
+    }
+
+    class Unit_Core_oxnewsletterTest extends OxidTestCase
+    {
+
+        /**
+         * Initialize the fixture.
+         *
+         * @return null
+         */
+        protected function setUp()
+        {
+            parent::setUp();
+
+            $oDB = oxDb::getDb();
+
+            $sInsert = "INSERT INTO `oxnewsletter` VALUES ( 'newstest', 'oxbaseshop', 'Test', 'TestHTML', 'TestPlain', 'TestSubject', NOW() )";
+            $oDB->Execute($sInsert);
+
+            $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test', 'oxbaseshop', 'newstest', 'oxidnewcustomer', NOW() )";
+            $oDB->Execute($sInsert);
+
+            $sInsert = "INSERT INTO `oxorder` SET
           `OXID` = '9a94569819f6c7368.72892345',
           `OXSHOPID` = 'oxbaseshop',
           `OXUSERID` = 'oxdefaultadmin',
           `OXORDERDATE` = '2006-11-26 13:59:34',
           `OXORDERNR` = '8',
           `OXBILLCOMPANY` = 'Ihr Firmenname',
-          `OXBILLEMAIL` = '".oxADMIN_LOGIN."',
+          `OXBILLEMAIL` = '" . oxADMIN_LOGIN . "',
           `OXBILLFNAME` = 'Hans',
           `OXBILLLNAME` = 'Mustermann',
           `OXBILLSTREET` = 'Musterstr.',
@@ -133,313 +145,319 @@ class Unit_Core_oxnewsletterTest extends OxidTestCase
           `OXINVOICENR` = 0,
           `OXDELTYPE` = 'oxidstandard'
         ";
-        $oDB->Execute( $sInsert );
+            $oDB->Execute($sInsert);
 
-        $sInsert = "INSERT INTO `oxorderarticles` VALUES ('9a9456981a6530fe2.51471234', '9a94569819f6c7368.72892345', 1, '2080', '2080', 'Eiswürfel HERZ', 'Das Original aus Filmen wie Eis am Stil & Co.', '', 68.88, 68.88, 0, 0, '', 79.9, 0, 89.9, '', '', '', '', '0/1964_th.jpg', '1/1964_p1.jpg', '2/nopic.jpg', '3/nopic.jpg', '4/nopic.jpg', '5/nopic.jpg', 0, 0, 0x303030302d30302d3030, 0x303030302d30302d3030, 0x323030352d30372d32382030303a30303a3030, 0, 0, 0, '', '', '', '', 1, '', '', '', 'oxbaseshop', 0 )";
-        $oDB->Execute( $sInsert );
+            $sInsert = "INSERT INTO `oxorderarticles` VALUES ('9a9456981a6530fe2.51471234', '9a94569819f6c7368.72892345', 1, '2080', '2080', 'Eiswürfel HERZ', 'Das Original aus Filmen wie Eis am Stil & Co.', '', 68.88, 68.88, 0, 0, '', 79.9, 0, 89.9, '', '', '', '', '0/1964_th.jpg', '1/1964_p1.jpg', '2/nopic.jpg', '3/nopic.jpg', '4/nopic.jpg', '5/nopic.jpg', 0, 0, 0x303030302d30302d3030, 0x303030302d30302d3030, 0x323030352d30372d32382030303a30303a3030, 0, 0, 0, '', '', '', '', 1, '', '', '', 'oxbaseshop', 0 )";
+            $oDB->Execute($sInsert);
 
-        $sInsert = "INSERT INTO `oxactions2article` VALUES ('d8842e3ca1c35e146.46512345', 'oxbaseshop', 'oxnewsletter', '1351', 0, NOW())";
-        $oDB->Execute( $sInsert );
+            $sInsert = "INSERT INTO `oxactions2article` VALUES ('d8842e3ca1c35e146.46512345', 'oxbaseshop', 'oxnewsletter', '1351', 0, NOW())";
+            $oDB->Execute($sInsert);
 
-        $sInsert = "INSERT INTO `oxactions2article` VALUES ('d8842e3ca27489886.81509876', 'oxbaseshop', 'oxnewsletter', '2000', 1, NOW())";
-        $oDB->Execute( $sInsert );
-    }
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        $oDB = oxDb::getDb();
-        $sDelete = "delete from oxnewsletter where oxid='newstest'";
-        $oDB->Execute( $sDelete);
-
-        $sDelete = "delete from oxobject2group where oxobjectid='newstest'";
-        $oDB->Execute( $sDelete);
-
-        $sDelete = "delete from oxorder where oxid = '9a94569819f6c7368.72892345'";
-        $oDB->Execute( $sDelete );
-
-        $sDelete = "delete from oxorderarticles where oxorderid = '9a94569819f6c7368.72892345'";
-        $oDB->Execute( $sDelete );
-
-        $sDelete = "delete from oxactions2article where oxactionid = 'oxnewsletter'";
-        $oDB->Execute( $sDelete );
-
-        $sDelete = "delete from oxuser where oxusername = 'test'";
-        $oDB->Execute( $sDelete );
-
-        $sDelete = "delete from oxnewssubscribed where oxuserid = 'test'";
-        $oDB->Execute( $sDelete );
-
-        $sSql = "update oxnewssubscribed set oxemailfailed = '0' where oxuserid = 'oxdefaultadmin' ";
-        $oDB->Execute( $sSql );
-
-        oxRemClassModule( 'modEmailOxNewsLetter' );
-        oxRemClassModule( 'modEmailOxNewsLetter2' );
-
-        parent::tearDown();
-    }
-
-    /**
-     * Testing if deletion removes all db records
-     */
-    public function testDelete()
-    {
-        $oTestNews = oxNew( "oxNewsLetter" );
-        $this->assertEquals( $oTestNews->delete( 'newstest' ), true );
-
-        $oDB = oxDb::getDb();
-
-        $sSelect = 'select * from oxobject2group where oxobjectid="newstest"';
-        $this->assertEquals( $oDB->getOne( $sSelect ), false );
-
-        $sSelect = 'select * from oxnewsletter where oxid="newstest"';
-        $this->assertEquals( $oDB->getOne( $sSelect ), false );
-    }
-
-    public function testDeleteLoadedNews()
-    {
-        $oTestNews = oxNew( "oxNewsLetter" );
-        $oTestNews->load( 'newstest' );
-        $this->assertEquals( $oTestNews->delete( 'newstest' ), true );
-
-        $oDB = oxDb::getDb();
-
-        $sSelect =  'select count(*) from oxobject2group ';
-        $sSelect .= 'where oxobjectid="newstest"';
-        $this->assertEquals( $oDB->getOne( $sSelect ), 0 );
-
-        $sSelect =  'select count(*) from oxnewsletter ';
-        $sSelect .= 'where oxid="newstest"';
-        $this->assertEquals( $oDB->getOne( $sSelect), 0 );
-    }
-
-    public function testDeleteNotExistingNewsletter()
-    {
-        $oTestNews = oxNew( "oxNewsLetter" );
-        $oTestNews->load( '111111' );
-        try {
-            $this->assertEquals( $oTestNews->delete(), true );
-        }
-        catch ( Exception $e ) {
-            return; // OK !
+            $sInsert = "INSERT INTO `oxactions2article` VALUES ('d8842e3ca27489886.81509876', 'oxbaseshop', 'oxnewsletter', '2000', 1, NOW())";
+            $oDB->Execute($sInsert);
         }
 
-        $this->fail();
-    }
+        /**
+         * Tear down the fixture.
+         *
+         * @return null
+         */
+        protected function tearDown()
+        {
+            $oDB = oxDb::getDb();
+            $sDelete = "delete from oxnewsletter where oxid='newstest'";
+            $oDB->Execute($sDelete);
 
-    public function test_setParams()
-    {
-        $myConfig = oxRegistry::getConfig();
+            $sDelete = "delete from oxobject2group where oxobjectid='newstest'";
+            $oDB->Execute($sDelete);
 
-        // preparing input
-        $oUser = new oxuser();
-        $oUser->load( 'oxdefaultadmin' );
+            $sDelete = "delete from oxorder where oxid = '9a94569819f6c7368.72892345'";
+            $oDB->Execute($sDelete);
 
-        $oTestNews = $this->getMock( 'oxnewsletterForUnit_oxnewsletterTest', array( '_assignProducts' ) );
-        $oTestNews->expects( $this->once() )->method( '_assignProducts' )->with( $this->isInstanceOf( 'oxUBase' ), $this->equalTo( true ) );
-        $oTestNews->load( 'newstest' );
-        $oTestNews->setNonPublicVar( '_oUser', $oUser );
+            $sDelete = "delete from oxorderarticles where oxorderid = '9a94569819f6c7368.72892345'";
+            $oDB->Execute($sDelete);
 
-        // executing
-        $oTestNews->UNITsetParams( true );
+            $sDelete = "delete from oxactions2article where oxactionid = 'oxnewsletter'";
+            $oDB->Execute($sDelete);
 
-        //testing
-        $this->assertEquals( $oTestNews->getPlainText(), 'TestPlain' );
-        $this->assertEquals( $oTestNews->getHtmlText(), 'TestHTML' );
-    }
+            $sDelete = "delete from oxuser where oxusername = 'test'";
+            $oDB->Execute($sDelete);
 
-    /**
-     * Testing newsletter groups getter
-     */
-    public function testGetGroups()
-    {
-        $oTestNews = $this->getProxyClass( 'oxNewsLetter' );
-        $oTestNews->load( 'newstest' );
-        $oGroups = $oTestNews->getGroups();
-        foreach ( $oGroups as $sInGroup ) {
-            if ( strpos( $sInGroup->getId(), 'oxidnewcustomer' ) == 0 )
-                $blGroup = true;
-        }
-        $this->assertEquals( $blGroup, true );
+            $sDelete = "delete from oxnewssubscribed where oxuserid = 'test'";
+            $oDB->Execute($sDelete);
 
-        // testing cache
-        $this->assertEquals( $oGroups, $oTestNews->getNonPublicVar('_oGroups') );
-    }
+            $sSql = "update oxnewssubscribed set oxemailfailed = '0' where oxuserid = 'oxdefaultadmin' ";
+            $oDB->Execute($sSql);
 
-    /**
-     * Testing newsletter groups getter
-     */
-    public function testGetGroupsIfGroupIsSet()
-    {
-        $oTestNews = $this->getProxyClass( 'oxNewsLetter' );
-        $oTestNews->load( 'newstest' );
-        $oGroup = oxNew('oxgroups');
-        $oGroup->load( 'oxidcustomer' );
-        $oTestNews->setNonPublicVar('_oGroups', array($oGroup));
-        $oGroups = $oTestNews->getGroups();
-        foreach ( $oGroups as $sInGroup ) {
-            if ( strpos( $sInGroup->getId(), 'oxidcustomer' ) == 0 )
-                $blGroup = true;
-        }
-        $this->assertEquals( $blGroup, true );
-    }
+            oxRemClassModule('modEmailOxNewsLetter');
+            oxRemClassModule('modEmailOxNewsLetter2');
 
-    /**
-     * Testing email preparer
-     */
-    public function testPrepare()
-    {
-        $oTestNews = $this->getMock( 'oxNewsLetter',
-                                     array( 'isAdmin',
-                                            'setAdminMode',
-                                            '_setUser',
-                                            '_setParams' )
-                                   );
-        $oTestNews->expects( $this->once() )->method( 'isAdmin' )->will( $this->returnValue( 'false' ) );
-        $oTestNews->expects( $this->exactly( 2 ) )->method( 'setAdminMode' );
-        $oTestNews->expects( $this->once() )->method( '_setUser' )->with( $this->equalTo( 'xxx' ) );
-        $oTestNews->expects( $this->once() )->method( '_setParams' )->with( $this->equalTo( false ) );
-
-        // testing
-        $oTestNews->prepare( 'xxx', false );
-    }
-
-    /**
-     * Testing user setter
-     */
-    // setting by id
-    public function testSetUserId()
-    {
-        $oTestNews = new modOxNewsLetter;
-        $oTestNews->UNITsetUser( 'oxdefaultadmin' );
-        $oUser = $oTestNews->getUser();
-        $this->assertEquals( $oUser->oxuser__oxid->value, 'oxdefaultadmin' );
-    }
-    // setting by object
-    public function testSetUserObject()
-    {
-        $oTestNews = new modOxNewsLetter;
-        $oUser = oxNew( "oxUser" );
-        $oUser->load( 'oxdefaultadmin' );
-        $oTestNews->UNITsetUser( $oUser );
-        $oNewsUser = $oTestNews->getUser();
-        $this->assertEquals( $oNewsUser->oxuser__oxid->value, 'oxdefaultadmin' );
-    }
-    // setting wrong id
-    public function testSetUserWrongId()
-    {
-        $oTestNews = new modOxNewsLetter;
-        $oTestNews->UNITsetUser( '123' );
-        $oUser = $oTestNews->getUser();
-        $this->assertEquals( $oUser->oxuser__oxid->value, null );
-    }
-
-    /**
-     * Testing smarty variables
-     */
-    public function testAssignProducts()
-    {
-        $myConfig = oxRegistry::getConfig();
-
-        $oView = oxNew( 'oxubase' );
-
-        $oUser = new oxuser();
-        $oUser->load( 'oxdefaultadmin' );
-
-        $oTestNews = $this->getProxyClass( 'oxnewsLetter' );
-        $oTestNews->setNonPublicVar( '_oUser', $oUser );
-        $oTestNews->UNITassignProducts( $oView, true );
-
-        $oArtList = $oView->getViewDataElement( 'articlelist' );
-
-        // testing passed data
-        $this->assertNotNull( $oArtList );
-        $this->assertEquals( 2, $oArtList->count() );
-
-        $oArtList = $oView->getViewDataElement( 'simlist' );
-
-        $this->assertNotNull( $oArtList );
-        $this->assertEquals( 2, $oArtList->count() );
-
-        $this->assertNotNull( $oView->getViewDataElement( 'simarticle0' ) );
-        $this->assertNotNull( $oView->getViewDataElement( 'simarticle1' ) );
-    }
-
-    public function testSendMail()
-    {
-        oxAddClassModule( 'modEmailOxNewsLetter2', 'oxEmail' );
-
-        $oTestNews = oxNew( "oxNewsLetter" );
-        if ( !$oTestNews->load( 'oxidnewsletter' ) )
-             $this->fail( 'can not load news' );
-
-        $oTestNews->UNITsetUser( 'oxdefaultadmin' );
-        $blMailWasSent = $oTestNews->send();
-        $this->assertTrue( $blMailWasSent );
-    }
-
-    /*
-     * oxNewsletter::send - Testing for correct subject value.
-     *
-     * @return null
-     */
-    public function testSendMail_Subject()
-    {
-        oxAddClassModule( 'modEmailOxNewsLetterSubject', 'oxEmail' );
-
-        $oTestNews = oxNew( "oxNewsLetter" );
-        if ( !$oTestNews->load( 'oxidnewsletter' ) )
-             $this->fail( 'can not load news' );
-
-		$oTestNews->oxnewsletter__oxsubject->value = "TestSubject";
-
-		$this->setExpectedException('oxException', "TestSubject");
-
-        $oTestNews->UNITsetUser( 'oxdefaultadmin' );
-        $blMailWasSent = $oTestNews->send();
-    }
-
-    public function testSendMailAndFail()
-    {
-        oxAddClassModule( 'modEmailOxNewsLetter', 'oxEmail' );
-
-        $oTestNews = oxNew( "oxNewsLetter" );
-        if ( !$oTestNews->load( 'oxidnewsletter' ) ) {
-             $this->fail( 'can not load news' );
+            parent::tearDown();
         }
 
-        $oTestNews->UNITsetUser( 'oxdefaultadmin' );
-        $blMailWasSent = $oTestNews->send();
-        $this->assertFalse( $blMailWasSent );
-    }
+        /**
+         * Testing if deletion removes all db records
+         */
+        public function testDelete()
+        {
+            $oTestNews = oxNew("oxNewsLetter");
+            $this->assertEquals($oTestNews->delete('newstest'), true);
 
-    /**
-     * Testing how newsletter is saved and loaded
-     */
-    public function testSetFieldData()
-    {
-        // keep all this formatted like it is now
-        $sHtmlData = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+            $oDB = oxDb::getDb();
+
+            $sSelect = 'select * from oxobject2group where oxobjectid="newstest"';
+            $this->assertEquals($oDB->getOne($sSelect), false);
+
+            $sSelect = 'select * from oxnewsletter where oxid="newstest"';
+            $this->assertEquals($oDB->getOne($sSelect), false);
+        }
+
+        public function testDeleteLoadedNews()
+        {
+            $oTestNews = oxNew("oxNewsLetter");
+            $oTestNews->load('newstest');
+            $this->assertEquals($oTestNews->delete('newstest'), true);
+
+            $oDB = oxDb::getDb();
+
+            $sSelect = 'select count(*) from oxobject2group ';
+            $sSelect .= 'where oxobjectid="newstest"';
+            $this->assertEquals($oDB->getOne($sSelect), 0);
+
+            $sSelect = 'select count(*) from oxnewsletter ';
+            $sSelect .= 'where oxid="newstest"';
+            $this->assertEquals($oDB->getOne($sSelect), 0);
+        }
+
+        public function testDeleteNotExistingNewsletter()
+        {
+            $oTestNews = oxNew("oxNewsLetter");
+            $oTestNews->load('111111');
+            try {
+                $this->assertEquals($oTestNews->delete(), true);
+            } catch (Exception $e) {
+                return; // OK !
+            }
+
+            $this->fail();
+        }
+
+        public function test_setParams()
+        {
+            $myConfig = oxRegistry::getConfig();
+
+            // preparing input
+            $oUser = new oxuser();
+            $oUser->load('oxdefaultadmin');
+
+            $oTestNews = $this->getMock('oxnewsletterForUnit_oxnewsletterTest', array('_assignProducts'));
+            $oTestNews->expects($this->once())->method('_assignProducts')->with($this->isInstanceOf('oxUBase'), $this->equalTo(true));
+            $oTestNews->load('newstest');
+            $oTestNews->setNonPublicVar('_oUser', $oUser);
+
+            // executing
+            $oTestNews->UNITsetParams(true);
+
+            //testing
+            $this->assertEquals($oTestNews->getPlainText(), 'TestPlain');
+            $this->assertEquals($oTestNews->getHtmlText(), 'TestHTML');
+        }
+
+        /**
+         * Testing newsletter groups getter
+         */
+        public function testGetGroups()
+        {
+            $oTestNews = $this->getProxyClass('oxNewsLetter');
+            $oTestNews->load('newstest');
+            $oGroups = $oTestNews->getGroups();
+            foreach ($oGroups as $sInGroup) {
+                if (strpos($sInGroup->getId(), 'oxidnewcustomer') == 0) {
+                    $blGroup = true;
+                }
+            }
+            $this->assertEquals($blGroup, true);
+
+            // testing cache
+            $this->assertEquals($oGroups, $oTestNews->getNonPublicVar('_oGroups'));
+        }
+
+        /**
+         * Testing newsletter groups getter
+         */
+        public function testGetGroupsIfGroupIsSet()
+        {
+            $oTestNews = $this->getProxyClass('oxNewsLetter');
+            $oTestNews->load('newstest');
+            $oGroup = oxNew('oxgroups');
+            $oGroup->load('oxidcustomer');
+            $oTestNews->setNonPublicVar('_oGroups', array($oGroup));
+            $oGroups = $oTestNews->getGroups();
+            foreach ($oGroups as $sInGroup) {
+                if (strpos($sInGroup->getId(), 'oxidcustomer') == 0) {
+                    $blGroup = true;
+                }
+            }
+            $this->assertEquals($blGroup, true);
+        }
+
+        /**
+         * Testing email preparer
+         */
+        public function testPrepare()
+        {
+            $oTestNews = $this->getMock(
+                'oxNewsLetter',
+                array('isAdmin',
+                      'setAdminMode',
+                      '_setUser',
+                      '_setParams')
+            );
+            $oTestNews->expects($this->once())->method('isAdmin')->will($this->returnValue('false'));
+            $oTestNews->expects($this->exactly(2))->method('setAdminMode');
+            $oTestNews->expects($this->once())->method('_setUser')->with($this->equalTo('xxx'));
+            $oTestNews->expects($this->once())->method('_setParams')->with($this->equalTo(false));
+
+            // testing
+            $oTestNews->prepare('xxx', false);
+        }
+
+        /**
+         * Testing user setter
+         */
+        // setting by id
+        public function testSetUserId()
+        {
+            $oTestNews = new modOxNewsLetter;
+            $oTestNews->UNITsetUser('oxdefaultadmin');
+            $oUser = $oTestNews->getUser();
+            $this->assertEquals($oUser->oxuser__oxid->value, 'oxdefaultadmin');
+        }
+
+        // setting by object
+        public function testSetUserObject()
+        {
+            $oTestNews = new modOxNewsLetter;
+            $oUser = oxNew("oxUser");
+            $oUser->load('oxdefaultadmin');
+            $oTestNews->UNITsetUser($oUser);
+            $oNewsUser = $oTestNews->getUser();
+            $this->assertEquals($oNewsUser->oxuser__oxid->value, 'oxdefaultadmin');
+        }
+
+        // setting wrong id
+        public function testSetUserWrongId()
+        {
+            $oTestNews = new modOxNewsLetter;
+            $oTestNews->UNITsetUser('123');
+            $oUser = $oTestNews->getUser();
+            $this->assertEquals($oUser->oxuser__oxid->value, null);
+        }
+
+        /**
+         * Testing smarty variables
+         */
+        public function testAssignProducts()
+        {
+            $myConfig = oxRegistry::getConfig();
+
+            $oView = oxNew('oxubase');
+
+            $oUser = new oxuser();
+            $oUser->load('oxdefaultadmin');
+
+            $oTestNews = $this->getProxyClass('oxnewsLetter');
+            $oTestNews->setNonPublicVar('_oUser', $oUser);
+            $oTestNews->UNITassignProducts($oView, true);
+
+            $oArtList = $oView->getViewDataElement('articlelist');
+
+            // testing passed data
+            $this->assertNotNull($oArtList);
+            $this->assertEquals(2, $oArtList->count());
+
+            $oArtList = $oView->getViewDataElement('simlist');
+
+            $this->assertNotNull($oArtList);
+            $this->assertEquals(2, $oArtList->count());
+
+            $this->assertNotNull($oView->getViewDataElement('simarticle0'));
+            $this->assertNotNull($oView->getViewDataElement('simarticle1'));
+        }
+
+        public function testSendMail()
+        {
+            oxAddClassModule('modEmailOxNewsLetter2', 'oxEmail');
+
+            $oTestNews = oxNew("oxNewsLetter");
+            if (!$oTestNews->load('oxidnewsletter')) {
+                $this->fail('can not load news');
+            }
+
+            $oTestNews->UNITsetUser('oxdefaultadmin');
+            $blMailWasSent = $oTestNews->send();
+            $this->assertTrue($blMailWasSent);
+        }
+
+        /*
+         * oxNewsletter::send - Testing for correct subject value.
+         *
+         * @return null
+         */
+        public function testSendMail_Subject()
+        {
+            oxAddClassModule('modEmailOxNewsLetterSubject', 'oxEmail');
+
+            $oTestNews = oxNew("oxNewsLetter");
+            if (!$oTestNews->load('oxidnewsletter')) {
+                $this->fail('can not load news');
+            }
+
+            $oTestNews->oxnewsletter__oxsubject->value = "TestSubject";
+
+            $this->setExpectedException('oxException', "TestSubject");
+
+            $oTestNews->UNITsetUser('oxdefaultadmin');
+            $blMailWasSent = $oTestNews->send();
+        }
+
+        public function testSendMailAndFail()
+        {
+            oxAddClassModule('modEmailOxNewsLetter', 'oxEmail');
+
+            $oTestNews = oxNew("oxNewsLetter");
+            if (!$oTestNews->load('oxidnewsletter')) {
+                $this->fail('can not load news');
+            }
+
+            $oTestNews->UNITsetUser('oxdefaultadmin');
+            $blMailWasSent = $oTestNews->send();
+            $this->assertFalse($blMailWasSent);
+        }
+
+        /**
+         * Testing how newsletter is saved and loaded
+         */
+        public function testSetFieldData()
+        {
+            // keep all this formatted like it is now
+            $sHtmlData = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <title>OXID eSales Newsletter</title>
 <style media="screen" type="text/css">';
-        $sHtmlData = str_replace("\r", "", $sHtmlData);
-        $sHtmlData = str_replace("\n", "\r\n", $sHtmlData);
-        $sPlainData = 'OXID eSales Newsletter
+            $sHtmlData = str_replace("\r", "", $sHtmlData);
+            $sHtmlData = str_replace("\n", "\r\n", $sHtmlData);
+            $sPlainData = 'OXID eSales Newsletter
 
 Hallo, [{ $myuser->oxuser__oxsal->value|oxmultilangsal }] [{ $myuser->oxuser__oxfname->getRawValue() }] [{ $myuser->oxuser__oxlname->getRawValue() }],';
-        $sPlainData = str_replace("\r", "", $sPlainData);
-        $sPlainData = str_replace("\n", "\r\n", $sPlainData);
+            $sPlainData = str_replace("\r", "", $sPlainData);
+            $sPlainData = str_replace("\n", "\r\n", $sPlainData);
 
-        $oNewsletter = oxNew( "oxNewsLetter" );
-        $oNewsletter->load( 'oxidnewsletter' );
+            $oNewsletter = oxNew("oxNewsLetter");
+            $oNewsletter->load('oxidnewsletter');
 
-        $this->assertEquals( $sHtmlData, substr( $oNewsletter->oxnewsletter__oxtemplate->value, 0, strlen($sHtmlData )));
-        $this->assertEquals( $sPlainData, substr( $oNewsletter->oxnewsletter__oxplaintemplate->value, 0, strlen($sPlainData )));
+            $this->assertEquals($sHtmlData, substr($oNewsletter->oxnewsletter__oxtemplate->value, 0, strlen($sHtmlData)));
+            $this->assertEquals($sPlainData, substr($oNewsletter->oxnewsletter__oxplaintemplate->value, 0, strlen($sPlainData)));
+        }
     }
-}

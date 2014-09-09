@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing thankyou class
  */
 class Unit_Views_thankyouTest extends OxidTestCase
 {
+
     /**
      * Tear down the fixture.
      *
@@ -46,12 +47,12 @@ class Unit_Views_thankyouTest extends OxidTestCase
 
         /** @var oxSession $mySession */
         $mySession = oxRegistry::getSession();
-        $oBasket = oxNew ('oxBasket');
+        $oBasket = oxNew('oxBasket');
         //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
-        $mySession->setBasket( $oBasket );
-        $oThankyou = $this->getProxyClass( 'thankyou' );
+        $mySession->setBasket($oBasket);
+        $oThankyou = $this->getProxyClass('thankyou');
         $oThankyou->init();
-        $this->assertEquals( $oBasket, $oThankyou->getBasket());
+        $this->assertEquals($oBasket, $oThankyou->getBasket());
     }
 
     /* removing as this function is deprecated as of #0003283
@@ -65,88 +66,88 @@ class Unit_Views_thankyouTest extends OxidTestCase
 
     public function testGetCurrencyCovIndex()
     {
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $this->assertEquals( 1, $oThankyou->getCurrencyCovIndex());
+        $oThankyou = $this->getProxyClass('thankyou');
+        $this->assertEquals(1, $oThankyou->getCurrencyCovIndex());
     }
 
     public function testGetIPaymentBasket()
     {
-        $oPrice = oxNew ('oxPrice');
+        $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(10.12);
-        $oBasket = $this->getMock( 'oxBasket', array( 'getPrice' ) );
-        $oBasket->expects( $this->once() )->method( 'getPrice')->will( $this->returnValue( $oPrice ) );
+        $oBasket = $this->getMock('oxBasket', array('getPrice'));
+        $oBasket->expects($this->once())->method('getPrice')->will($this->returnValue($oPrice));
 
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $oThankyou->setNonPublicVar( '_oBasket', $oBasket );
+        $oThankyou = $this->getProxyClass('thankyou');
+        $oThankyou->setNonPublicVar('_oBasket', $oBasket);
 
-        $this->assertEquals( 10.12*100, $oThankyou->getIPaymentBasket());
+        $this->assertEquals(10.12 * 100, $oThankyou->getIPaymentBasket());
     }
 
     public function testGetIPaymentAccount()
     {
-        modConfig::getInstance()->setConfigParam( 'iShopID_iPayment_Account', 'testAccount' );
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $this->assertEquals( 'testAccount', $oThankyou->getIPaymentAccount());
+        modConfig::getInstance()->setConfigParam('iShopID_iPayment_Account', 'testAccount');
+        $oThankyou = $this->getProxyClass('thankyou');
+        $this->assertEquals('testAccount', $oThankyou->getIPaymentAccount());
     }
 
     public function testGetIPaymentUser()
     {
-        modConfig::getInstance()->setConfigParam( 'iShopID_iPayment_User', 'testUser' );
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $this->assertEquals( 'testUser', $oThankyou->getIPaymentUser());
+        modConfig::getInstance()->setConfigParam('iShopID_iPayment_User', 'testUser');
+        $oThankyou = $this->getProxyClass('thankyou');
+        $this->assertEquals('testUser', $oThankyou->getIPaymentUser());
     }
 
     public function testGetIPaymentPassword()
     {
-        modConfig::getInstance()->setConfigParam( 'iShopID_iPayment_Passwort', 'testPasswort' );
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $this->assertEquals( 'testPasswort', $oThankyou->getIPaymentPassword());
+        modConfig::getInstance()->setConfigParam('iShopID_iPayment_Passwort', 'testPasswort');
+        $oThankyou = $this->getProxyClass('thankyou');
+        $this->assertEquals('testPasswort', $oThankyou->getIPaymentPassword());
     }
 
     public function testGetTrustedShopId()
     {
-        modConfig::getInstance()->setConfigParam( 'tsSealActive', 1);
-        modConfig::getInstance()->setConfigParam( 'tsSealType', array( 0 => 'CLASSIC'));
-        modConfig::getInstance()->setConfigParam( 'iShopID_TrustedShops', array ( 0 => 'XASASASASASASASASASASASASASASASAS' ) );
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $this->assertEquals( 'XASASASASASASASASASASASASASASASAS', $oThankyou->getTrustedShopId());
+        modConfig::getInstance()->setConfigParam('tsSealActive', 1);
+        modConfig::getInstance()->setConfigParam('tsSealType', array(0 => 'CLASSIC'));
+        modConfig::getInstance()->setConfigParam('iShopID_TrustedShops', array(0 => 'XASASASASASASASASASASASASASASASAS'));
+        $oThankyou = $this->getProxyClass('thankyou');
+        $this->assertEquals('XASASASASASASASASASASASASASASASAS', $oThankyou->getTrustedShopId());
     }
 
     public function testGetMailError()
     {
-        modConfig::setRequestParameter( 'mailerror', 'testShop' );
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $this->assertEquals( 'testShop', $oThankyou->getMailError());
+        modConfig::setRequestParameter('mailerror', 'testShop');
+        $oThankyou = $this->getProxyClass('thankyou');
+        $this->assertEquals('testShop', $oThankyou->getMailError());
     }
 
     public function testGetOrder()
     {
-        $myDB    = oxDb::getDb();
+        $myDB = oxDb::getDb();
         $sInsert = "Insert into oxorder (`oxid`, `oxordernr`) values ('_test', '158')";
         $myDB->Execute($sInsert);
 
-        $oBasket = $this->getMock( 'oxBasket', array( 'getOrderId' ) );
-        $oBasket->expects( $this->once() )->method( 'getOrderId')->will( $this->returnValue( '_test' ) );
+        $oBasket = $this->getMock('oxBasket', array('getOrderId'));
+        $oBasket->expects($this->once())->method('getOrderId')->will($this->returnValue('_test'));
 
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $oThankyou->setNonPublicVar( '_oBasket', $oBasket );
+        $oThankyou = $this->getProxyClass('thankyou');
+        $oThankyou->setNonPublicVar('_oBasket', $oBasket);
 
-        $this->assertEquals( '_test', $oThankyou->getOrder()->getId());
+        $this->assertEquals('_test', $oThankyou->getOrder()->getId());
     }
 
     public function testGetAlsoBoughtTheseProducts()
     {
         $this->oArticle = $this->getProxyClass('oxarticle');
         $this->oArticle->load('1126');
-        $oBasketItem = $this->getMock( 'oxBasketItem', array( 'getArticle' ) );
-        $oBasketItem->expects( $this->once() )->method( 'getArticle')->will( $this->returnValue( $this->oArticle ) );
+        $oBasketItem = $this->getMock('oxBasketItem', array('getArticle'));
+        $oBasketItem->expects($this->once())->method('getArticle')->will($this->returnValue($this->oArticle));
 
-        $oBasket = $this->getMock( 'oxBasket', array( 'getContents' ) );
-        $oBasket->expects( $this->once() )->method( 'getContents')->will( $this->returnValue( array($oBasketItem) ) );
+        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket->expects($this->once())->method('getContents')->will($this->returnValue(array($oBasketItem)));
 
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $oThankyou->setNonPublicVar( '_oBasket', $oBasket );
-        $this->assertNull( $oThankyou->getAlsoBoughtTheseProducts());
+        $oThankyou = $this->getProxyClass('thankyou');
+        $oThankyou->setNonPublicVar('_oBasket', $oBasket);
+        $this->assertNull($oThankyou->getAlsoBoughtTheseProducts());
     }
 
     /* removed as shopFinalStep function is deprecated as of #0003283
@@ -173,42 +174,42 @@ class Unit_Views_thankyouTest extends OxidTestCase
 
 
         $oBasketItem = $this->getProxyClass('oxbasketitem');
-        $oBasketItem->setNonPublicVar( '_sProductId', '_testArt' );
-        $oBasket = $this->getMock( 'oxBasket', array( 'getContents', 'getProductsCount', 'getOrderId' ) );
-        $oBasket->expects( $this->once() )->method( 'getContents')->will( $this->returnValue( array($oBasketItem) ) );
-        $oBasket->expects( $this->once() )->method( 'getProductsCount')->will( $this->returnValue( 1 ) );
-        $oBasket->expects( $this->once() )->method( 'getOrderId')->will( $this->returnValue( 1 ) );
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $oThankyou->setNonPublicVar( '_oBasket', $oBasket );
+        $oBasketItem->setNonPublicVar('_sProductId', '_testArt');
+        $oBasket = $this->getMock('oxBasket', array('getContents', 'getProductsCount', 'getOrderId'));
+        $oBasket->expects($this->once())->method('getContents')->will($this->returnValue(array($oBasketItem)));
+        $oBasket->expects($this->once())->method('getProductsCount')->will($this->returnValue(1));
+        $oBasket->expects($this->once())->method('getOrderId')->will($this->returnValue(1));
+        $oThankyou = $this->getProxyClass('thankyou');
+        $oThankyou->setNonPublicVar('_oBasket', $oBasket);
         $oThankyou->render();
     }
     
     // #2580: Checking if after order unregistered user contact data were deleted
     public function testRender_resetUnregisteredUser()
     {
-        $oUser = oxNew( "oxuser" );
-        $oUser->oxuser__oxpassword = new oxField( "" );
+        $oUser = oxNew("oxuser");
+        $oUser->oxuser__oxpassword = new oxField("");
         
-        $oBasket = $this->getMock( 'oxBasket', array( 'getProductsCount' ) );
-        $oBasket->expects( $this->once() )->method( 'getProductsCount')->will( $this->returnValue( 1 ) );
+        $oBasket = $this->getMock('oxBasket', array('getProductsCount'));
+        $oBasket->expects($this->once())->method('getProductsCount')->will($this->returnValue(1));
         
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $oThankyou->setNonPublicVar( '_oBasket', $oBasket );
-        $oThankyou->setUser( $oUser );
+        $oThankyou = $this->getProxyClass('thankyou');
+        $oThankyou->setNonPublicVar('_oBasket', $oBasket);
+        $oThankyou->setUser($oUser);
         
-        oxRegistry::getSession()->setVariable( "usr", "testValue1");
-        oxRegistry::getSession()->setVariable( "dynvalue", "testValue2");
+        oxRegistry::getSession()->setVariable("usr", "testValue1");
+        oxRegistry::getSession()->setVariable("dynvalue", "testValue2");
         
         $oThankyou->render();
         
-        $this->assertFalse( oxRegistry::getSession()->hasVariable( "usr" ) );
-        $this->assertFalse( oxRegistry::getSession()->hasVariable( "dynvalue" ) );
+        $this->assertFalse(oxRegistry::getSession()->hasVariable("usr"));
+        $this->assertFalse(oxRegistry::getSession()->hasVariable("dynvalue"));
     }
 
     public function testGetActionClassName()
     {
-        $oThankyou = $this->getProxyClass( 'thankyou' );
-        $this->assertEquals( 'start', $oThankyou->getActionClassName());
+        $oThankyou = $this->getProxyClass('thankyou');
+        $this->assertEquals('start', $oThankyou->getActionClassName());
     }
 
     /**
@@ -231,10 +232,10 @@ class Unit_Views_thankyouTest extends OxidTestCase
     public function testGetCountryISO3()
     {
         $oOrder = new oxOrder();
-        $oOrder->oxorder__oxbillcountryid = new oxField( 'a7c40f631fc920687.20179984' );
+        $oOrder->oxorder__oxbillcountryid = new oxField('a7c40f631fc920687.20179984');
         
-        $oTh = $this->getMock( 'thankyou', array('getOrder') );
-        $oTh->expects($this->any())->method('getOrder')->will( $this->returnValue( $oOrder ) );
+        $oTh = $this->getMock('thankyou', array('getOrder'));
+        $oTh->expects($this->any())->method('getOrder')->will($this->returnValue($oOrder));
 
         $this->assertEquals('DEU', $oTh->getCountryISO3());
     }

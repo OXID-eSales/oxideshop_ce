@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Account_downloads class
  */
 class Unit_Views_accountdownloadsTest extends OxidTestCase
 {
+
     /**
      * Testing Account_Downloads::getBreadCrumb()
      *
@@ -47,22 +48,22 @@ class Unit_Views_accountdownloadsTest extends OxidTestCase
      */
     public function testGetDownloadError()
     {
-        $this->setRequestParam( 'download_error', 'aaa' );
+        $this->setRequestParam('download_error', 'aaa');
 
         $oAccDownloads = new Account_Downloads();
 
-        $this->assertEquals('aaa', $oAccDownloads->getDownloadError() );
+        $this->assertEquals('aaa', $oAccDownloads->getDownloadError());
     }
 
-     /**
+    /**
      * Test get article list.
      *
      * @return null
      */
     public function testGetArticleList()
     {
-        $oUser = $this->getMock( 'oxUser', array( 'getId' ));
-        $oUser->expects( $this->any() )->method( 'getId')->will( $this->returnValue( "userId" ) );
+        $oUser = $this->getMock('oxUser', array('getId'));
+        $oUser->expects($this->any())->method('getId')->will($this->returnValue("userId"));
 
         $oFileOrder = oxNew("oxorderfile");
         $oFileOrder->oxorderfiles__oxorderarticleid = new oxField("testArtNr");
@@ -70,22 +71,22 @@ class Unit_Views_accountdownloadsTest extends OxidTestCase
         $oFileOrder->oxorderfiles__oxorderdate = new oxField("2011-11-11 11:11:11");
         $oFileOrder->oxorderfiles__oxarticletitle = new oxField("testArtTitle");
 
-        $oOrderFileList = $this->getMock( 'oxOrderFileList', array( 'loadUserFiles' ));
-        $oOrderFileList->expects( $this->any() )->method( 'loadUserFiles')->will( $this->returnValue( "orderfilelist" ) );
+        $oOrderFileList = $this->getMock('oxOrderFileList', array('loadUserFiles'));
+        $oOrderFileList->expects($this->any())->method('loadUserFiles')->will($this->returnValue("orderfilelist"));
         $oOrderFileList[] = $oFileOrder;
-        oxTestModules::addModuleObject( 'oxOrderFileList', $oOrderFileList );
+        oxTestModules::addModuleObject('oxOrderFileList', $oOrderFileList);
 
-        $oAccDownloads = $this->getMock( 'Account_Downloads', array( 'getUser' ));
-        $oAccDownloads->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
+        $oAccDownloads = $this->getMock('Account_Downloads', array('getUser'));
+        $oAccDownloads->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
         $aOrderFilesList = $oAccDownloads->getOrderFilesList();
-        $this->assertEquals( "testOrder", $aOrderFilesList["testArtNr"]["oxordernr"] );
-        $this->assertEquals( "2011-11-11 11:11", $aOrderFilesList["testArtNr"]["oxorderdate"] );
-        $this->assertEquals( "testArtTitle", $aOrderFilesList["testArtNr"]["oxarticletitle"] );
-        $this->assertTrue( $aOrderFilesList["testArtNr"]["oxorderfiles"][0] instanceof oxorderfile );
+        $this->assertEquals("testOrder", $aOrderFilesList["testArtNr"]["oxordernr"]);
+        $this->assertEquals("2011-11-11 11:11", $aOrderFilesList["testArtNr"]["oxorderdate"]);
+        $this->assertEquals("testArtTitle", $aOrderFilesList["testArtNr"]["oxarticletitle"]);
+        $this->assertTrue($aOrderFilesList["testArtNr"]["oxorderfiles"][0] instanceof oxorderfile);
     }
 
-     /**
+    /**
      * Test get article list.
      *
      * @return null
@@ -93,8 +94,8 @@ class Unit_Views_accountdownloadsTest extends OxidTestCase
     public function testGetArticleListIsSet()
     {
         $oAccDownloads = $this->getProxyClass('Account_Downloads');
-        $oAccDownloads->setNonPublicVar( '_oOrderFilesList', "testOrder" );
-        $this->assertEquals( "testOrder", $oAccDownloads->getOrderFilesList() );
+        $oAccDownloads->setNonPublicVar('_oOrderFilesList', "testOrder");
+        $this->assertEquals("testOrder", $oAccDownloads->getOrderFilesList());
     }
 
 }

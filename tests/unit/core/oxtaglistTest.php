@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxtaglistTest extends OxidTestCase
 {
@@ -32,12 +32,12 @@ class Unit_Core_oxtaglistTest extends OxidTestCase
     public function testLoadingAndGettingTagSet()
     {
         $oTagList = new oxTagList();
-        $this->assertTrue( $oTagList->loadList() );
+        $this->assertTrue($oTagList->loadList());
         $oTagSet = $oTagList->get();
         $aTags = $oTagSet->get();
 
-            $this->assertEquals( 209, count( $aTags ) );
-            $this->assertTrue( array_key_exists( "fee", $aTags ) );
+            $this->assertEquals(209, count($aTags));
+            $this->assertTrue(array_key_exists("fee", $aTags));
     }
 
     /**
@@ -48,9 +48,9 @@ class Unit_Core_oxtaglistTest extends OxidTestCase
         $oTagList = new oxTagList();
         $oTagList->addTag('testTag');
         $oTagSet = $oTagList->get();
-        $aExpResult = array( 'testtag' => new oxTag('testTag') );
+        $aExpResult = array('testtag' => new oxTag('testTag'));
 
-        $this->assertEquals( $aExpResult, $oTagSet->get() );
+        $this->assertEquals($aExpResult, $oTagSet->get());
     }
 
     /**
@@ -65,7 +65,7 @@ class Unit_Core_oxtaglistTest extends OxidTestCase
 
             $iExpt = 81;
 
-        $this->assertEquals( $iExpt, count( $oTagSet->get() ) );
+        $this->assertEquals($iExpt, count($oTagSet->get()));
     }
 
     /**
@@ -75,8 +75,8 @@ class Unit_Core_oxtaglistTest extends OxidTestCase
     {
         $oTagList = new oxTagList();
         $oTagList->setLanguage(1);
-        $this->assertEquals( 'tag_list_1', $oTagList->getCacheId() );
+        $this->assertEquals('tag_list_1', $oTagList->getCacheId());
         $oTagList->setLanguage(2);
-        $this->assertEquals( 'tag_list_2', $oTagList->getCacheId() );
+        $this->assertEquals('tag_list_2', $oTagList->getCacheId());
     }
 }

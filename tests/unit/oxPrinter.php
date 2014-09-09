@@ -28,6 +28,7 @@ require_once 'dbRestore.php';
 
 class oxPrinter extends PHPUnit_TextUI_ResultPrinter
 {
+
     private $_iDBChangeMode;
     private $_iDBChangeOutput;
     private $_blDBResetPerSuit;
@@ -39,7 +40,7 @@ class oxPrinter extends PHPUnit_TextUI_ResultPrinter
 
     public function __construct($_blDBResetPerTest = true, $_blDBResetPerSuit = true, $iDBChangeMode = MAINTENANCE_SINGLEROWS, $_iDBChangeOutput = MAINTENANCE_MODE_ONLYRESET, $blVerbose = false)
     {
-        parent::__construct ( null, (bool)$blVerbose );
+        parent::__construct(null, (bool) $blVerbose);
         $this->_iDBChangeMode = $iDBChangeMode;
         $this->_iDBChangeOutput = $_iDBChangeOutput;
         $this->_blDBResetPerTest = $_blDBResetPerTest;
@@ -51,24 +52,24 @@ class oxPrinter extends PHPUnit_TextUI_ResultPrinter
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         if ($this->verbose) {
-            echo "        ERROR: '" . $e->getMessage() . "'\n".$e->getTraceAsString();
+            echo "        ERROR: '" . $e->getMessage() . "'\n" . $e->getTraceAsString();
         }
-        parent::addError ( $test, $e, $time );
-        if ($this->_blDBResetPerTest && ! isset ( $test->blNoDbResetAfterTest )) {
-            $this->_oDbRestore->restoreDB ( $this->_iDBChangeMode, $this->_iDBChangeOutput );
-            echo ("|");
+        parent::addError($test, $e, $time);
+        if ($this->_blDBResetPerTest && !isset ($test->blNoDbResetAfterTest)) {
+            $this->_oDbRestore->restoreDB($this->_iDBChangeMode, $this->_iDBChangeOutput);
+            echo("|");
         }
     }
 
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         if ($this->verbose) {
-            echo "        FAIL: '" . $e->getMessage() . "'\n".$e->getTraceAsString();
+            echo "        FAIL: '" . $e->getMessage() . "'\n" . $e->getTraceAsString();
         }
-        parent::addFailure ( $test, $e, $time );
-        if ($this->_blDBResetPerTest && ! isset ( $test->blNoDbResetAfterTest )) {
-            $this->_oDbRestore->restoreDB ( $this->_iDBChangeMode, $this->_iDBChangeOutput );
-            echo ("|");
+        parent::addFailure($test, $e, $time);
+        if ($this->_blDBResetPerTest && !isset ($test->blNoDbResetAfterTest)) {
+            $this->_oDbRestore->restoreDB($this->_iDBChangeMode, $this->_iDBChangeOutput);
+            echo("|");
         }
     }
 
@@ -83,21 +84,21 @@ class oxPrinter extends PHPUnit_TextUI_ResultPrinter
             $this->_timeStats['max'] = $t;
             $this->_timeStats['slowest'] = $test->getName();
         }
-        $this->_timeStats['avg'] = ($t + $this->_timeStats['avg']*$this->_timeStats['cnt']) / (++$this->_timeStats['cnt']);
+        $this->_timeStats['avg'] = ($t + $this->_timeStats['avg'] * $this->_timeStats['cnt']) / (++$this->_timeStats['cnt']);
 
-        parent::endTest ( $test, $time );
-        if ($this->_blDBResetPerTest && ! isset ( $test->blNoDbResetAfterTest )) {
-            $this->_oDbRestore->restoreDB ( $this->_iDBChangeMode, $this->_iDBChangeOutput );
-            echo ("|");
+        parent::endTest($test, $time);
+        if ($this->_blDBResetPerTest && !isset ($test->blNoDbResetAfterTest)) {
+            $this->_oDbRestore->restoreDB($this->_iDBChangeMode, $this->_iDBChangeOutput);
+            echo("|");
         }
     }
 
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        parent::endTestSuite ( $suite );
+        parent::endTestSuite($suite);
         if ($this->_blDBResetPerSuit) {
-            $this->_oDbRestore->restoreDB ( $this->_iDBChangeMode, $this->_iDBChangeOutput );
-            echo ("|");
+            $this->_oDbRestore->restoreDB($this->_iDBChangeMode, $this->_iDBChangeOutput);
+            echo("|");
         }
 
         echo "\ntime stats: min {$this->_timeStats['min']}, max {$this->_timeStats['max']}, avg {$this->_timeStats['avg']}, slowest test: {$this->_timeStats['slowest']}|\n";
@@ -105,28 +106,29 @@ class oxPrinter extends PHPUnit_TextUI_ResultPrinter
 
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        echo ("\n\n" . $suite->getName () . "\n");
+        echo("\n\n" . $suite->getName() . "\n");
 
         $this->_timeStats = array('cnt' => 0, 'min' => 9999999, 'max' => 0, 'avg' => 0, 'startTime' => 0, 'slowest' => '_ERROR_');
 
-        parent::startTestSuite ( $suite );
+        parent::startTestSuite($suite);
     }
 
     /**
      * A test started.
      *
      * @param  PHPUnit_Framework_Test $test
+     *
      * @access public
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
         if ($this->verbose) {
-            echo "\n        " . $test->getName ();
+            echo "\n        " . $test->getName();
         }
 
         $this->_timeStats['startTime'] = microtime(true);
 
-        parent::startTest ( $test );
+        parent::startTest($test);
     }
 }
 

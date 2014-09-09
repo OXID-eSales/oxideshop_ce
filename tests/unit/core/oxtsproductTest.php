@@ -20,23 +20,24 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * oxvatselector test
  */
 class Unit_Core_oxtsproductTest extends OxidTestCase
 {
+
     /**
      * Tests oxTsProduct::getAmount()
      *
      */
     public function testGetAmount()
     {
-        $oSubj = new oxTsProduct() ;
+        $oSubj = new oxTsProduct();
         $oSubj->setTsId('TS080501_500_30_EUR');
-        $this->assertEquals( '500', $oSubj->getAmount() );
+        $this->assertEquals('500', $oSubj->getAmount());
     }
 
     /**
@@ -45,9 +46,9 @@ class Unit_Core_oxtsproductTest extends OxidTestCase
      */
     public function testGetFPrice()
     {
-        $oSubj = new oxTsProduct() ;
+        $oSubj = new oxTsProduct();
         $oSubj->setTsId('TS080501_500_30_EUR');
-        $this->assertEquals( '0,82', $oSubj->getFPrice() );
+        $this->assertEquals('0,82', $oSubj->getFPrice());
     }
 
     /**
@@ -58,7 +59,7 @@ class Unit_Core_oxtsproductTest extends OxidTestCase
     {
         $oSubj = new oxTsProduct();
         $oSubj->setTsId('TS080501_500_30_EUR');
-        $this->assertEquals( 'TS080501_500_30_EUR', $oSubj->getTsId() );
+        $this->assertEquals('TS080501_500_30_EUR', $oSubj->getTsId());
     }
 
     /**
@@ -67,7 +68,7 @@ class Unit_Core_oxtsproductTest extends OxidTestCase
      */
     public function testGetAllTsProducts()
     {
-        $oSubj = new oxTsProduct() ;
-        $this->assertEquals( 6, count($oSubj->getAllTsProducts()) );
+        $oSubj = new oxTsProduct();
+        $this->assertEquals(6, count($oSubj->getAllTsProducts()));
     }
 }

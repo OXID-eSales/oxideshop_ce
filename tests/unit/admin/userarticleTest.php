@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for User_Article class
  */
 class Unit_Admin_UserArticleTest extends OxidTestCase
 {
+
     /**
      * User_Article::Render() test case
      *
@@ -35,13 +36,13 @@ class Unit_Admin_UserArticleTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "oxdefaultadmin" );
+        modConfig::setRequestParameter("oxid", "oxdefaultadmin");
 
         // testing..
         $oView = new User_Article();
-        $this->assertEquals( 'user_article.tpl', $oView->render() );
+        $this->assertEquals('user_article.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oArticlelist'] ) );
-        $this->assertTrue( $aViewData['oArticlelist'] instanceof oxorderarticlelist );
+        $this->assertTrue(isset($aViewData['oArticlelist']));
+        $this->assertTrue($aViewData['oArticlelist'] instanceof oxorderarticlelist);
     }
 }

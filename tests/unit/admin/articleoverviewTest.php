@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Article_Overview class
  */
 class Unit_Admin_ArticleOverviewTest extends OxidTestCase
 {
+
     /**
      * Tear down
      *
@@ -36,7 +37,7 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
     protected function tearDown()
     {
         //
-        $this->cleanUpTable( "oxorderarticles" );
+        $this->cleanUpTable("oxorderarticles");
 
         parent::tearDown();
     }
@@ -49,15 +50,15 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
-        modConfig::setRequestParameter( "oxid", "1126" );
+        modConfig::setRequestParameter("oxid", "1126");
 
         $oBase = new oxbase();
-        $oBase->init( "oxorderarticles" );
-        $oBase->setId( "_testOrderArticleId");
-        $oBase->oxorderarticles__oxorderid = new oxField( "testOrderId" );
-        $oBase->oxorderarticles__oxamount  = new oxField( 1 );
-        $oBase->oxorderarticles__oxartid   = new oxField( "1126" );
-        $oBase->oxorderarticles__oxordershopid = new oxField( oxRegistry::getConfig()->getShopId() );
+        $oBase->init("oxorderarticles");
+        $oBase->setId("_testOrderArticleId");
+        $oBase->oxorderarticles__oxorderid = new oxField("testOrderId");
+        $oBase->oxorderarticles__oxamount = new oxField(1);
+        $oBase->oxorderarticles__oxartid = new oxField("1126");
+        $oBase->oxorderarticles__oxordershopid = new oxField(oxRegistry::getConfig()->getShopId());
         $oBase->save();
 
         // testing..
@@ -66,11 +67,11 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue( $aViewData["edit"] instanceof oxArticle );
-        $this->assertNull( $aViewData["afolder"] );
-        $this->assertNull( $aViewData["aSubclass"] );
+        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
+        $this->assertNull($aViewData["afolder"]);
+        $this->assertNull($aViewData["aSubclass"]);
 
-        $this->assertEquals( 'article_overview.tpl', $sTplName );
+        $this->assertEquals('article_overview.tpl', $sTplName);
     }
 
     /**
@@ -81,8 +82,8 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
     public function testRenderPArentBuyable()
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
-        modConfig::setRequestParameter( "oxid", "1126" );
-        modConfig::getInstance()->setConfigParam( "blVariantParentBuyable", true );
+        modConfig::setRequestParameter("oxid", "1126");
+        modConfig::getInstance()->setConfigParam("blVariantParentBuyable", true);
 
         // testing..
         $oView = new Article_Overview();
@@ -90,11 +91,11 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue( $aViewData["edit"] instanceof oxArticle );
-        $this->assertNull( $aViewData["afolder"] );
-        $this->assertNull( $aViewData["aSubclass"] );
+        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
+        $this->assertNull($aViewData["afolder"]);
+        $this->assertNull($aViewData["aSubclass"]);
 
-        $this->assertEquals( 'article_overview.tpl', $sTplName );
+        $this->assertEquals('article_overview.tpl', $sTplName);
     }
 
 }

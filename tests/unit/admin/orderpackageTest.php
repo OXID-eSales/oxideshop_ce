@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,29 +18,29 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
+     */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-
-/**
- * Testing Order_Remark class
- */
-class Unit_Admin_OrderPackageTest extends OxidTestCase
-{
+    require_once realpath(".") . '/unit/OxidTestCase.php';
+    require_once realpath(".") . '/unit/test_config.inc.php';
 
     /**
-     * Order_Package::Render() test case
-     *
-     * @return null
+     * Testing Order_Remark class
      */
-    public function testRender()
+    class Unit_Admin_OrderPackageTest extends OxidTestCase
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
 
-        $oView = new Order_Package();
-        $this->assertEquals( "order_package.tpl", $oView->render() );
-        $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['resultset'] ) );
+        /**
+         * Order_Package::Render() test case
+         *
+         * @return null
+         */
+        public function testRender()
+        {
+            modConfig::setRequestParameter("oxid", "testId");
+
+            $oView = new Order_Package();
+            $this->assertEquals("order_package.tpl", $oView->render());
+            $aViewData = $oView->getViewData();
+            $this->assertTrue(isset($aViewData['resultset']));
+        }
     }
-}

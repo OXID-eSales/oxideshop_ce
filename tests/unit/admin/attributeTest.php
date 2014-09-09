@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Attribute class
  */
 class Unit_Admin_AttributeTest extends OxidTestCase
 {
+
     /**
      * Attribute::Render() test case
      *
@@ -37,6 +38,6 @@ class Unit_Admin_AttributeTest extends OxidTestCase
     {
         // testing..
         $oView = new Attribute();
-        $this->assertEquals( 'attribute.tpl', $oView->render() );
+        $this->assertEquals('attribute.tpl', $oView->render());
     }
 }

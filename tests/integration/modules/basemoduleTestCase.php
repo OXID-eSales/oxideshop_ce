@@ -20,12 +20,13 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( dirname(__FILE__).'/../../' ) . '/unit/OxidTestCase.php';
-require_once realpath( dirname( __FILE__ ) ) . '/validator.php';
-require_once realpath( dirname(__FILE__) ) . '/environment.php';
+require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
+require_once realpath(dirname(__FILE__)) . '/validator.php';
+require_once realpath(dirname(__FILE__)) . '/environment.php';
 
 class BaseModuleTestCase extends OxidTestCase
 {
+
     /**
      * Tear down the fixture.
      */
@@ -40,7 +41,7 @@ class BaseModuleTestCase extends OxidTestCase
      * Activates module.
      *
      * @param oxModule $oModule
-     * @param string $sModuleId
+     * @param string   $sModuleId
      */
     protected function _activateModule($oModule, $sModuleId = null)
     {
@@ -48,9 +49,9 @@ class BaseModuleTestCase extends OxidTestCase
             $oModule->load($sModuleId);
         }
         /** @var oxModuleCache $oModuleCache */
-        $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+        $oModuleCache = oxNew('oxModuleCache', $oModule);
         /** @var oxModuleInstaller $oModuleInstaller */
-        $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
+        $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
 
         $oModuleInstaller->activate($oModule);
     }
@@ -59,7 +60,7 @@ class BaseModuleTestCase extends OxidTestCase
      * Deactivates module.
      *
      * @param oxModule $oModule
-     * @param string $sModuleId
+     * @param string   $sModuleId
      */
     protected function _deactivateModule($oModule, $sModuleId = null)
     {
@@ -67,9 +68,9 @@ class BaseModuleTestCase extends OxidTestCase
             $oModule->load($sModuleId);
         }
         /** @var oxModuleCache $oModuleCache */
-        $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+        $oModuleCache = oxNew('oxModuleCache', $oModule);
         /** @var oxModuleInstaller $oModuleInstaller */
-        $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
+        $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
 
         $oModuleInstaller->deactivate($oModule);
     }
@@ -79,47 +80,49 @@ class BaseModuleTestCase extends OxidTestCase
      *
      * @param $aExpectedResult
      */
-    protected function _runAsserts( $aExpectedResult )
+    protected function _runAsserts($aExpectedResult)
     {
         $oConfig = oxRegistry::getConfig();
 
-        $oValidator = new Validator( $oConfig );
+        $oValidator = new Validator($oConfig);
 
-        if( isset( $aExpectedResult['blocks'] ) ){
-            $this->assertTrue( $oValidator->checkBlocks( $aExpectedResult['blocks']), 'Blocks do not match expectations' );
+        if (isset($aExpectedResult['blocks'])) {
+            $this->assertTrue($oValidator->checkBlocks($aExpectedResult['blocks']), 'Blocks do not match expectations');
         }
 
-        if( isset( $aExpectedResult['extend'] ) ){
-            $this->assertTrue( $oValidator->checkExtensions( $aExpectedResult['extend']), 'Extensions do not match expectations' );
+        if (isset($aExpectedResult['extend'])) {
+            $this->assertTrue($oValidator->checkExtensions($aExpectedResult['extend']), 'Extensions do not match expectations');
         }
 
-        if( isset( $aExpectedResult['files'] ) ){
-            $this->assertTrue( $oValidator->checkFiles( $aExpectedResult['files']), 'Files do not match expectations' );
+        if (isset($aExpectedResult['files'])) {
+            $this->assertTrue($oValidator->checkFiles($aExpectedResult['files']), 'Files do not match expectations');
         }
 
-        if( isset( $aExpectedResult['events'] ) ){
-            $this->assertTrue( $oValidator->checkEvents( $aExpectedResult['events']), 'Events do not match expectations' );
+        if (isset($aExpectedResult['events'])) {
+            $this->assertTrue($oValidator->checkEvents($aExpectedResult['events']), 'Events do not match expectations');
         }
 
-        if( isset( $aExpectedResult['settings'] ) ){
-            $this->assertTrue( $oValidator->checkConfigAmount( $aExpectedResult['settings'] ), 'Configs do not match expectations' );
+        if (isset($aExpectedResult['settings'])) {
+            $this->assertTrue($oValidator->checkConfigAmount($aExpectedResult['settings']), 'Configs do not match expectations');
         }
 
-        if( isset( $aExpectedResult['versions'] ) ){
-            $this->assertTrue( $oValidator->checkVersions( $aExpectedResult['versions']), 'Versions do not match expectations' );
+        if (isset($aExpectedResult['versions'])) {
+            $this->assertTrue($oValidator->checkVersions($aExpectedResult['versions']), 'Versions do not match expectations');
         }
 
-        if( isset( $aExpectedResult['templates'] ) ){
-            $this->assertTrue( $oValidator->checkTemplates( $aExpectedResult['templates']), 'Templates do not match expectations' );
+        if (isset($aExpectedResult['templates'])) {
+            $this->assertTrue($oValidator->checkTemplates($aExpectedResult['templates']), 'Templates do not match expectations');
         }
 
-        if( isset( $aExpectedResult['disabledModules'] ) ){
-            $this->assertTrue( $oValidator->checkDisabledModules( $aExpectedResult['disabledModules'] ), 'Disabled modules do not match expectations' );
+        if (isset($aExpectedResult['disabledModules'])) {
+            $this->assertTrue($oValidator->checkDisabledModules($aExpectedResult['disabledModules']), 'Disabled modules do not match expectations');
         }
 
-        if ( isset( $aExpectedResult['settings_values'] ) ) {
-            $this->assertTrue( $oValidator->checkConfigValues( $aExpectedResult['settings_values'] )
-                , 'Config values does not match expectations' );
+        if (isset($aExpectedResult['settings_values'])) {
+            $this->assertTrue(
+                $oValidator->checkConfigValues($aExpectedResult['settings_values'])
+                , 'Config values does not match expectations'
+            );
         }
     }
 

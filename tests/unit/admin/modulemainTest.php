@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Shop_Config class
  */
 class Unit_Admin_ModuleMainTest extends OxidTestCase
 {
+
     /**
      * Theme_Main::Render() test case
      *
@@ -37,7 +38,7 @@ class Unit_Admin_ModuleMainTest extends OxidTestCase
     {
         // testing..
         $oView = new Module_Main();
-        $this->assertEquals( 'module_main.tpl', $oView->render() );
+        $this->assertEquals('module_main.tpl', $oView->render());
     }
 
 
@@ -48,13 +49,13 @@ class Unit_Admin_ModuleMainTest extends OxidTestCase
      */
     public function testRender_loadingObject()
     {
-            $oView = $this->getMock('Module_Main', array( 'getEditObjectId' ));
-            $oView->expects( $this->any() )->method( 'getEditObjectId' )->will( $this->returnValue( 'oe/invoicepdf' ) );
+            $oView = $this->getMock('Module_Main', array('getEditObjectId'));
+            $oView->expects($this->any())->method('getEditObjectId')->will($this->returnValue('oe/invoicepdf'));
             $oView->render();
 
             $aViewData = $oView->getViewData();
 
             $oModule = $aViewData['oModule'];
-            $this->assertEquals( "invoicepdf", $oModule->getInfo("id") );
+            $this->assertEquals("invoicepdf", $oModule->getInfo("id"));
     }
 }

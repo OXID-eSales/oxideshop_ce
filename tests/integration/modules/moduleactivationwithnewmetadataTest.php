@@ -43,21 +43,21 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
      *
      * @dataProvider providerModuleNewMetaData
      */
-    public function testModuleActivationWithNewMetaData( $aInstallModules, $sModule, $aMetaData, $aResultToAsserts )
+    public function testModuleActivationWithNewMetaData($aInstallModules, $sModule, $aMetaData, $aResultToAsserts)
     {
         $oEnvironment = new Environment();
-        $oEnvironment->prepare( $aInstallModules );
+        $oEnvironment->prepare($aInstallModules);
 
         $oModule = new oxModule();
-        $oModule->load( $sModule );
+        $oModule->load($sModule);
 
         $this->_deactivateModule($oModule);
 
-        $oModule->setModuleData( $aMetaData );
+        $oModule->setModuleData($aMetaData);
 
         $this->_activateModule($oModule);
 
-        $this->_runAsserts( $aResultToAsserts, $sModule );
+        $this->_runAsserts($aResultToAsserts, $sModule);
     }
 
 
@@ -81,50 +81,50 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
 
             // new metadata
             array(
-                'id'           => 'with_everything',
-                'title'        => 'Test extending 1 shop class',
-                'description'  => 'Module testing extending 1 shop class',
-                'thumbnail'    => 'picture.png',
-                'version'      => '1.0',
-                'author'       => 'OXID eSales AG',
-                'extend'       => array(
+                'id'          => 'with_everything',
+                'title'       => 'Test extending 1 shop class',
+                'description' => 'Module testing extending 1 shop class',
+                'thumbnail'   => 'picture.png',
+                'version'     => '1.0',
+                'author'      => 'OXID eSales AG',
+                'extend'      => array(
                     'oxarticle' => 'with_everything/myarticle',
-                    'oxorder' => array(
+                    'oxorder'   => array(
                         'with_everything/myorder1',
                         'with_everything/myorder2',
                     ),
-                    'oxuser' => 'with_everything/myuser',
+                    'oxuser'    => 'with_everything/myuser',
                 ),
-                'blocks' => array(
-                    array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
-                    array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
+                'blocks'      => array(
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
-                'events'       => array(
+                'events'      => array(
                     'onActivate'   => 'MyEvents::onActivate',
                     'onDeactivate' => 'MyEvents::onDeactivate'
                 ),
-                'templates' => array(
-                    'order_special.tpl'      => 'with_everything/views/admin/tpl/order_special.tpl',
-                    'user_connections.tpl'   => 'with_everything/views/tpl/user_connections.tpl',
+                'templates'   => array(
+                    'order_special.tpl'    => 'with_everything/views/admin/tpl/order_special.tpl',
+                    'user_connections.tpl' => 'with_everything/views/tpl/user_connections.tpl',
                 ),
-                'files' => array(
+                'files'       => array(
                     'myexception'  => 'with_everything/core/exception/myexception.php',
                     'myconnection' => 'with_everything/core/exception/myconnection.php',
                 ),
-                'settings' => array(
+                'settings'    => array(
                     array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                    array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
+                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
                 ),
             ),
 
             // environment asserts
             array(
                 'blocks'          => array(
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
-                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
                 'extend'          => array(
                     'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
@@ -140,13 +140,13 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                         'myexception'  => 'with_everything/core/exception/myexception.php',
                         'myconnection' => 'with_everything/core/exception/myconnection.php',
                     ),
-                    'with_events' => array(
-                        'myevents'  => 'with_events/files/myevents.php',
+                    'with_events'     => array(
+                        'myevents' => 'with_events/files/myevents.php',
                     ),
                 ),
                 'settings'        => array(
-                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
-                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
+                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
+                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
                 ),
                 'disabledModules' => array(),
                 'templates'       => array(
@@ -205,57 +205,57 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
 
             // new metadata
             array(
-                'id'           => 'with_everything',
-                'title'        => 'Test extending 1 shop class',
-                'description'  => 'Module testing extending 1 shop class',
-                'thumbnail'    => 'picture.png',
-                'version'      => '1.0',
-                'author'       => 'OXID eSales AG',
-                'extend'       => array(
+                'id'          => 'with_everything',
+                'title'       => 'Test extending 1 shop class',
+                'description' => 'Module testing extending 1 shop class',
+                'thumbnail'   => 'picture.png',
+                'version'     => '1.0',
+                'author'      => 'OXID eSales AG',
+                'extend'      => array(
                     'oxarticle' => 'with_everything/myarticle',
-                    'oxorder' => array(
+                    'oxorder'   => array(
                         'with_everything/myorder1',
                         'with_everything/myorder2',
                     ),
-                    'oxuser' => 'with_everything/myuser',
-                    'oxprice' => 'with_everything/myprice',
+                    'oxuser'    => 'with_everything/myuser',
+                    'oxprice'   => 'with_everything/myprice',
                 ),
-                'blocks' => array(
-                    array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
-                    array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
+                'blocks'      => array(
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
-                'events'       => array(
+                'events'      => array(
                     'onActivate'   => 'MyEvents::onActivate',
                     'onDeactivate' => 'MyEvents::onDeactivate'
                 ),
-                'templates' => array(
-                    'order_special.tpl'      => 'with_everything/views/admin/tpl/order_special.tpl',
-                    'user_connections.tpl'   => 'with_everything/views/tpl/user_connections.tpl',
+                'templates'   => array(
+                    'order_special.tpl'    => 'with_everything/views/admin/tpl/order_special.tpl',
+                    'user_connections.tpl' => 'with_everything/views/tpl/user_connections.tpl',
                 ),
-                'files' => array(
+                'files'       => array(
                     'myexception'  => 'with_everything/core/exception/myexception.php',
                     'myconnection' => 'with_everything/core/exception/myconnection.php',
                 ),
-                'settings' => array(
+                'settings'    => array(
                     array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                    array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
+                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
                 ),
             ),
 
             // environment asserts
             array(
                 'blocks'          => array(
-                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
                     'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
                     'oxarticle' => 'with_everything/myarticle',
                     'oxuser'    => 'with_everything/myuser',
-                    'oxprice'    => 'with_everything/myprice',
+                    'oxprice'   => 'with_everything/myprice',
                 ),
                 'files'           => array(
                     'with_2_files'    => array(
@@ -266,13 +266,13 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                         'myexception'  => 'with_everything/core/exception/myexception.php',
                         'myconnection' => 'with_everything/core/exception/myconnection.php',
                     ),
-                    'with_events' => array(
-                        'myevents'  => 'with_events/files/myevents.php',
+                    'with_events'     => array(
+                        'myevents' => 'with_events/files/myevents.php',
                     ),
                 ),
                 'settings'        => array(
-                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
-                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
+                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
+                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
                 ),
                 'disabledModules' => array(),
                 'templates'       => array(
@@ -331,47 +331,47 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
 
             // new metadata
             array(
-                'id'           => 'with_everything',
-                'title'        => 'Test extending 1 shop class',
-                'description'  => 'Module testing extending 1 shop class',
-                'thumbnail'    => 'picture.png',
-                'version'      => '1.0',
-                'author'       => 'OXID eSales AG',
-                'extend'       => array(
+                'id'          => 'with_everything',
+                'title'       => 'Test extending 1 shop class',
+                'description' => 'Module testing extending 1 shop class',
+                'thumbnail'   => 'picture.png',
+                'version'     => '1.0',
+                'author'      => 'OXID eSales AG',
+                'extend'      => array(
                     'oxarticle' => 'with_everything/myarticle',
-                    'oxorder' => array(
+                    'oxorder'   => array(
                         'with_everything/myorder1',
                         'with_everything/myorder2',
                     ),
-                    'oxuser' => 'with_everything/myuser',
-                    'oxprice' => 'with_everything/myprice',
+                    'oxuser'    => 'with_everything/myuser',
+                    'oxprice'   => 'with_everything/myprice',
                 ),
-                'events'       => array(
+                'events'      => array(
                     'onActivate'   => 'MyEvents::onActivate',
                     'onDeactivate' => 'MyEvents::onDeactivate'
                 ),
-                'files' => array(
+                'files'       => array(
                     'myexception'  => 'with_everything/core/exception/myexception.php',
                     'myconnection' => 'with_everything/core/exception/myconnection.php',
                 ),
-                'settings' => array(
+                'settings'    => array(
                     array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                    array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
+                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
                 ),
             ),
 
             // environment asserts
             array(
                 'blocks'          => array(
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
                     'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
                     'oxarticle' => 'with_everything/myarticle',
                     'oxuser'    => 'with_everything/myuser',
-                    'oxprice'    => 'with_everything/myprice',
+                    'oxprice'   => 'with_everything/myprice',
                 ),
                 'files'           => array(
                     'with_2_files'    => array(
@@ -382,13 +382,13 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                         'myexception'  => 'with_everything/core/exception/myexception.php',
                         'myconnection' => 'with_everything/core/exception/myconnection.php',
                     ),
-                    'with_events' => array(
-                        'myevents'  => 'with_events/files/myevents.php',
+                    'with_events'     => array(
+                        'myevents' => 'with_events/files/myevents.php',
                     ),
                 ),
                 'settings'        => array(
-                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
-                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
+                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
+                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
                 ),
                 'disabledModules' => array(),
                 'templates'       => array(
@@ -444,31 +444,31 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
 
             // new metadata
             array(
-                'id'           => 'with_everything',
-                'title'        => 'Test extending 1 shop class',
-                'description'  => 'Module testing extending 1 shop class',
-                'thumbnail'    => 'picture.png',
-                'version'      => '1.0',
-                'author'       => 'OXID eSales AG',
+                'id'          => 'with_everything',
+                'title'       => 'Test extending 1 shop class',
+                'description' => 'Module testing extending 1 shop class',
+                'thumbnail'   => 'picture.png',
+                'version'     => '1.0',
+                'author'      => 'OXID eSales AG',
             ),
 
             // environment asserts
             array(
                 'blocks'          => array(
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    'oxorder'   => 'extending_1_class/myorder',
+                    'oxorder' => 'extending_1_class/myorder',
                 ),
                 'files'           => array(
-                    'with_2_files'    => array(
+                    'with_2_files' => array(
                         'myexception'  => 'with_2_files/core/exception/myexception.php',
                         'myconnection' => 'with_2_files/core/exception/myconnection.php',
                     ),
-                    'with_events' => array(
-                        'myevents'  => 'with_events/files/myevents.php',
+                    'with_events'  => array(
+                        'myevents' => 'with_events/files/myevents.php',
                     ),
                 ),
                 'disabledModules' => array(),
@@ -495,7 +495,7 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                         'onActivate'   => 'MyEvents::onActivate',
                         'onDeactivate' => 'MyEvents::onDeactivate'
                     ),
-                    'with_everything' => null,
+                    'with_everything'    => null,
                 ),
             ),
         );
@@ -521,39 +521,39 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
 
             // new metadata
             array(
-                'id'           => 'with_everything',
-                'title'        => 'Test extending 1 shop class',
-                'description'  => 'Module testing extending 1 shop class',
-                'thumbnail'    => 'picture.png',
-                'version'      => '1.0',
-                'author'       => 'OXID eSales AG',
-                'extend'       => array(
+                'id'          => 'with_everything',
+                'title'       => 'Test extending 1 shop class',
+                'description' => 'Module testing extending 1 shop class',
+                'thumbnail'   => 'picture.png',
+                'version'     => '1.0',
+                'author'      => 'OXID eSales AG',
+                'extend'      => array(
                     'oxarticle' => 'with_everything/myarticle',
-                    'oxorder' => array(
+                    'oxorder'   => array(
                         'with_everything/myorder1',
                         'with_everything/myorder2',
                     ),
-                    'oxuser' => 'with_everything/myuser',
+                    'oxuser'    => 'with_everything/myuser',
                 ),
-                'blocks' => array(
-                    array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
-                    array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                'blocks'      => array(
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
-                'events'       => array(
+                'events'      => array(
                     'onActivate'   => 'MyEvents::onActivate',
                     'onDeactivate' => 'MyEvents::onDeactivate'
                 ),
-                'templates' => array(
-                    'order_special.tpl'      => 'with_everything/views/admin/tpl/order_special.tpl',
-                    'user_connections.tpl'   => 'with_everything/views/tpl/user_connections.tpl',
+                'templates'   => array(
+                    'order_special.tpl'    => 'with_everything/views/admin/tpl/order_special.tpl',
+                    'user_connections.tpl' => 'with_everything/views/tpl/user_connections.tpl',
                 ),
-                'files' => array(
+                'files'       => array(
                     'myexception'  => 'with_everything/core/exception/myexception.php',
                     'myconnection' => 'with_everything/core/exception/myconnection.php',
                 ),
-                'settings' => array(
+                'settings'    => array(
                     array('group' => 'my_checkconfirm_new', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                    array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
+                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
                     array('group' => 'my_new', 'name' => 'blCheck', 'type' => 'bool', 'value' => 'true'),
                 ),
             ),
@@ -561,11 +561,11 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
             // environment asserts
             array(
                 'blocks'          => array(
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
                     'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
@@ -581,19 +581,19 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                         'myexception'  => 'with_everything/core/exception/myexception.php',
                         'myconnection' => 'with_everything/core/exception/myconnection.php',
                     ),
-                    'with_events' => array(
-                        'myevents'  => 'with_events/files/myevents.php',
+                    'with_events'     => array(
+                        'myevents' => 'with_events/files/myevents.php',
                     ),
                 ),
                 'settings'        => array(
-                    array( 'group' => 'my_checkconfirm_new', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
-                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
-                    array( 'group' => 'my_new', 'name' => 'blCheck', 'type' => 'bool', 'value' => 'true' ),
+                    array('group' => 'my_checkconfirm_new', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
+                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
+                    array('group' => 'my_new', 'name' => 'blCheck', 'type' => 'bool', 'value' => 'true'),
                 ),
                 'settings_values' => array(
-                    array( 'group' => 'my_checkconfirm_new', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => true ),
-                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
-                    array( 'group' => 'my_new', 'name' => 'blCheck', 'type' => 'bool', 'value' => true ),
+                    array('group' => 'my_checkconfirm_new', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => true),
+                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
+                    array('group' => 'my_new', 'name' => 'blCheck', 'type' => 'bool', 'value' => true),
                 ),
                 'disabledModules' => array(),
                 'templates'       => array(
@@ -652,33 +652,33 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
 
             // new metadata
             array(
-                'id'           => 'with_everything',
-                'title'        => 'Test extending 1 shop class',
-                'description'  => 'Module testing extending 1 shop class',
-                'thumbnail'    => 'picture.png',
-                'version'      => '1.0',
-                'author'       => 'OXID eSales AG',
-                'extend'       => array(
+                'id'          => 'with_everything',
+                'title'       => 'Test extending 1 shop class',
+                'description' => 'Module testing extending 1 shop class',
+                'thumbnail'   => 'picture.png',
+                'version'     => '1.0',
+                'author'      => 'OXID eSales AG',
+                'extend'      => array(
                     'oxarticle' => 'with_everything/myarticle',
-                    'oxorder' => array(
+                    'oxorder'   => array(
                         'with_everything/myorder1',
                         'with_everything/myorder2',
                     ),
-                    'oxuser' => 'with_everything/myuser',
+                    'oxuser'    => 'with_everything/myuser',
                 ),
-                'blocks' => array(
-                    array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
-                    array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                'blocks'      => array(
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
-                'events'       => array(
+                'events'      => array(
                     'onActivate'   => 'MyEvents::onActivate',
                     'onDeactivate' => 'MyEvents::onDeactivate'
                 ),
-                'templates' => array(
-                    'order_special.tpl'      => 'with_everything/views/admin/tpl/order_special.tpl',
-                    'user_connections.tpl'   => 'with_everything/views/tpl/user_connections.tpl',
+                'templates'   => array(
+                    'order_special.tpl'    => 'with_everything/views/admin/tpl/order_special.tpl',
+                    'user_connections.tpl' => 'with_everything/views/tpl/user_connections.tpl',
                 ),
-                'files' => array(
+                'files'       => array(
                     'myexception'  => 'with_everything/core/exception/myexception.php',
                     'myconnection' => 'with_everything/core/exception/myconnection.php',
                 ),
@@ -687,11 +687,11 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
             // environment asserts
             array(
                 'blocks'          => array(
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
+                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
                     'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
@@ -707,13 +707,11 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                         'myexception'  => 'with_everything/core/exception/myexception.php',
                         'myconnection' => 'with_everything/core/exception/myconnection.php',
                     ),
-                    'with_events' => array(
-                        'myevents'  => 'with_events/files/myevents.php',
+                    'with_events'     => array(
+                        'myevents' => 'with_events/files/myevents.php',
                     ),
                 ),
-                'settings'        => array(
-
-                ),
+                'settings'        => array(),
                 'disabledModules' => array(),
                 'templates'       => array(
                     'with_2_templates' => array(

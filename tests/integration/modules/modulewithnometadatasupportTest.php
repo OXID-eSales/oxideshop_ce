@@ -24,6 +24,7 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTestCase
 {
+
     public function testModulesWithoutMetadataShouldBeAddToCleanup()
     {
         // modules to be activated during test preparation
@@ -32,18 +33,18 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         );
 
         $oEnvironment = new Environment();
-        $oEnvironment->prepare( $aInstallModules );
+        $oEnvironment->prepare($aInstallModules);
 
         //adding module without metadata
         $aModules = $this->getConfig()->getConfigParam('aModules');
         $aModules['oxClass'] = 'no_metadata/myClass';
 
-        $this->getConfig()->setConfigParam('aModules', $aModules );
+        $this->getConfig()->setConfigParam('aModules', $aModules);
 
         $oModuleList = new oxModuleList();
         $aGarbage = $oModuleList->getDeletedExtensions();
 
-        $this->assertSame(  array('no_metadata'=>array('files' => array('no_metadata/metadata.php'))), $aGarbage );
+        $this->assertSame(array('no_metadata' => array('files' => array('no_metadata/metadata.php'))), $aGarbage);
     }
 
     public function testModulesWithoutMetadataShouldBeAddToCleanupAllModulesWithMetadata()
@@ -54,12 +55,12 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         );
 
         $oEnvironment = new Environment();
-        $oEnvironment->prepare( $aInstallModules );
+        $oEnvironment->prepare($aInstallModules);
 
         $oModuleList = new oxModuleList();
         $aGarbage = $oModuleList->getDeletedExtensions();
 
-        $this->assertSame(  array(), $aGarbage );
+        $this->assertSame(array(), $aGarbage);
     }
 
     public function testModuleMissMatchMetadata()
@@ -71,7 +72,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         );
 
         $oEnvironment = new Environment();
-        $oEnvironment->prepare( $aInstallModules );
+        $oEnvironment->prepare($aInstallModules);
 
         $aModules = $this->getConfig()->getConfigParam('aModules');
         $aModules['oxClass'] = 'extending_1_class/myClass';
@@ -79,17 +80,17 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         $aModuleFiles = $this->getConfig()->getConfigParam('aModuleFiles');
         $aModuleFiles['with_2_files']['myconnection'] = 'with_2_files/core/exception/myconnectionwrong.php';
 
-        $this->getConfig()->setConfigParam('aModuleFiles', $aModuleFiles );
+        $this->getConfig()->setConfigParam('aModuleFiles', $aModuleFiles);
 
         $oModuleList = new oxModuleList();
         $aGarbage = $oModuleList->getDeletedExtensions();
 
         $aExpect = array(
-            'extending_1_class' => array('oxClass' =>'extending_1_class/myClass'),
-            'with_2_files' => array('myconnection' => 'with_2_files/core/exception/myconnectionwrong.php'),
+            'extending_1_class' => array('oxClass' => 'extending_1_class/myClass'),
+            'with_2_files'      => array('myconnection' => 'with_2_files/core/exception/myconnectionwrong.php'),
         );
 
-        $this->assertSame( $aExpect, $aGarbage );
+        $this->assertSame($aExpect, $aGarbage);
     }
 
     public function testModulesWithMissingFiles()
@@ -101,15 +102,15 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         );
 
         $oEnvironment = new Environment();
-        $oEnvironment->prepare( $aInstallModules );
+        $oEnvironment->prepare($aInstallModules);
 
         $oModuleList = new oxModuleList();
         $aGarbage = $oModuleList->getDeletedExtensions();
 
         $aExpect = array(
             'with_1_extension' => array(
-                'extensions' => array('oxarticle' =>'with_1_extension/mybaseclass')),
-            'with_2_files' => array(
+                'extensions' => array('oxarticle' => 'with_1_extension/mybaseclass')),
+            'with_2_files'     => array(
                 'files' => array(
                     'myexception'  => 'with_2_files/core/exception/myexception.php',
                     'myconnection' => 'with_2_files/core/exception/myconnection.php',
@@ -117,7 +118,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
             ),
         );
 
-        $this->assertSame( $aExpect, $aGarbage );
+        $this->assertSame($aExpect, $aGarbage);
     }
 }
  

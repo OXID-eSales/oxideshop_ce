@@ -20,16 +20,18 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Actions_List class
  */
 class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
 {
+
     protected $_sArticleView = 'oxv_oxarticles_1_de';
     protected $_sObject2CategoryView = 'oxv_oxobject2category_1';
+
     /**
      * Initialize the fixture.
      *
@@ -39,10 +41,10 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
     {
         parent::setUp();
         
-        oxDb::getDb()->execute( "insert into oxobject2action set oxid='_testId', oxactionid='_testActionDelete', oxobjectid='_testObject', oxclass='oxarticle'" );
+        oxDb::getDb()->execute("insert into oxobject2action set oxid='_testId', oxactionid='_testActionDelete', oxobjectid='_testObject', oxclass='oxarticle'");
         
-            $this->setArticleViewTable( 'oxv_oxarticles_de' );
-            $this->setObject2CategoryViewTable( 'oxobject2category' );
+            $this->setArticleViewTable('oxv_oxarticles_de');
+            $this->setObject2CategoryViewTable('oxobject2category');
     }
     
     /**
@@ -52,18 +54,18 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDB()->execute( "delete from oxobject2action where oxactionid='_testActionDelete'" );
-        oxDb::getDB()->execute( "delete from oxobject2action where oxactionid='_testActionSet'" );
+        oxDb::getDB()->execute("delete from oxobject2action where oxactionid='_testActionDelete'");
+        oxDb::getDB()->execute("delete from oxobject2action where oxactionid='_testActionSet'");
         
         parent::tearDown();
     }
     
-    public function setArticleViewTable( $sParam )
+    public function setArticleViewTable($sParam)
     {
         $this->_sArticleView = $sParam;
     }
     
-    public function setObject2CategoryViewTable( $sParam )
+    public function setObject2CategoryViewTable($sParam)
     {
         $this->_sObject2CategoryView = $sParam;
     }
@@ -85,12 +87,12 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     public function testRemoveActionArticle()
     {
-        modConfig::setRequestParameter( "oxid", '_testActionDelete' );
+        modConfig::setRequestParameter("oxid", '_testActionDelete');
         
-        $this->assertTrue( (bool) oxDb::getDb()->getOne( "select oxid from oxobject2action where oxactionid='_testActionDelete' limit 1" ) );
-        $oView = oxNew( 'actions_article_ajax' );
+        $this->assertTrue((bool) oxDb::getDb()->getOne("select oxid from oxobject2action where oxactionid='_testActionDelete' limit 1"));
+        $oView = oxNew('actions_article_ajax');
         $oView->removeactionarticle();
-        $this->assertFalse( (bool) oxDb::getDb()->getOne( "select oxid from oxobject2action where oxactionid='_testActionDelete' limit 1" ) );
+        $this->assertFalse((bool) oxDb::getDb()->getOne("select oxid from oxobject2action where oxactionid='_testActionDelete' limit 1"));
     }
     
     /**
@@ -100,12 +102,12 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     public function testSetActionArticle()
     {
-        modConfig::setRequestParameter( "oxid", '_testActionSet' );
-        modConfig::setRequestParameter( "oxarticleid", '_testObject' );
+        modConfig::setRequestParameter("oxid", '_testActionSet');
+        modConfig::setRequestParameter("oxarticleid", '_testObject');
         
-        $oView = oxNew( 'actions_article_ajax' );
+        $oView = oxNew('actions_article_ajax');
         $oView->setactionarticle();
-        $this->assertTrue( (bool) oxDb::getDb()->getOne( "select oxid from oxobject2action where oxactionid='_testActionSet' limit 1" ) );
+        $this->assertTrue((bool) oxDb::getDb()->getOne("select oxid from oxobject2action where oxactionid='_testActionSet' limit 1"));
     }
     
     /**
@@ -115,8 +117,8 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     public function testGetQuery()
     {        
-        $oView = oxNew( 'actions_article_ajax' );
-        $this->assertEquals( "from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxparentid = ''  and ".$this->getArticleViewTable().".oxid IS NOT NULL  and ".$this->getArticleViewTable().".oxid != ''", trim( $oView->UNITgetQuery() ) );        
+        $oView = oxNew('actions_article_ajax');
+        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != ''", trim($oView->UNITgetQuery()));
     }    
     
     /**
@@ -126,9 +128,9 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     public function testGetQueryVariantSelectionTrue()
     {        
-        modconfig::getInstance()->setConfigParam( "blVariantsSelection", true );
-        $oView = oxNew( 'actions_article_ajax' );
-        $this->assertEquals( "from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxid IS NOT NULL  and ".$this->getArticleViewTable().".oxid != ''", trim( $oView->UNITgetQuery() ) );
+        modconfig::getInstance()->setConfigParam("blVariantsSelection", true);
+        $oView = oxNew('actions_article_ajax');
+        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != ''", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -138,10 +140,10 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     public function testGetQuerySynchoxidTrue()
     {
-        modConfig::setRequestParameter( "oxid", 'oxid' );
-        modConfig::setRequestParameter( "synchoxid", true );
-        $oView = oxNew( 'actions_article_ajax' );
-        $this->assertEquals( "from ".$this->getObject2CategoryViewTable()." as oxobject2category left join ".$this->getArticleViewTable()." on  ".$this->getArticleViewTable().".oxid=oxobject2category.oxobjectid  where oxobject2category.oxcatnid = 'oxid'  and ".$this->getArticleViewTable().".oxid IS NOT NULL  and ".$this->getArticleViewTable().".oxid != '1'", trim( $oView->UNITgetQuery() ) );
+        modConfig::setRequestParameter("oxid", 'oxid');
+        modConfig::setRequestParameter("synchoxid", true);
+        $oView = oxNew('actions_article_ajax');
+        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " as oxobject2category left join " . $this->getArticleViewTable() . " on  " . $this->getArticleViewTable() . ".oxid=oxobject2category.oxobjectid  where oxobject2category.oxcatnid = 'oxid'  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != '1'", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -152,8 +154,8 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
     public function testAddFilter()
     {
         $sParam = 'param';
-        $oView = oxNew( 'actions_article_ajax' );
-        $this->assertEquals( $sParam, $oView->UNITaddFilter( $sParam ) );
+        $oView = oxNew('actions_article_ajax');
+        $this->assertEquals($sParam, $oView->UNITaddFilter($sParam));
     }
     
     /**
@@ -164,8 +166,8 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
     public function testAddFilterVariantSelectionTrue()
     {
         $sParam = 'param';
-        modconfig::getInstance()->setConfigParam( "blVariantsSelection", true );
-        $oView = oxNew( 'actions_article_ajax' );
-        $this->assertEquals( "$sParam group by ".$this->getArticleViewTable().".oxid", trim( $oView->UNITaddFilter( $sParam ) ) );
+        modconfig::getInstance()->setConfigParam("blVariantsSelection", true);
+        $oView = oxNew('actions_article_ajax');
+        $this->assertEquals("$sParam group by " . $this->getArticleViewTable() . ".oxid", trim($oView->UNITaddFilter($sParam)));
     }
 }

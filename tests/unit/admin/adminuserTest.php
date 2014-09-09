@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Admin_User class
  */
 class Unit_Admin_AdminUserTest extends OxidTestCase
 {
+
     /**
      * Admin_User::Render() test case
      *
@@ -37,7 +38,7 @@ class Unit_Admin_AdminUserTest extends OxidTestCase
     {
         // testing..
         $oView = new Admin_User();
-        $this->assertEquals( 'user.tpl', $oView->render() );
+        $this->assertEquals('user.tpl', $oView->render());
     }
 
 }

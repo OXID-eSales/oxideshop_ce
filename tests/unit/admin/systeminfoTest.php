@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for sysreq class
  */
 class Unit_Admin_systeminfoTest extends OxidTestCase
 {
+
     /**
      * sysreq::Render() test case
      *
@@ -35,11 +36,11 @@ class Unit_Admin_systeminfoTest extends OxidTestCase
      */
     public function testRender()
     {
-        oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{ return "Access denied !"; }');
-        oxTestModules::addFunction( 'oxuser', 'loadAdminUser', '{ $this->oxuser__oxrights = new oxField( "justadmin" ); }');
+        oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ return "Access denied !"; }');
+        oxTestModules::addFunction('oxuser', 'loadAdminUser', '{ $this->oxuser__oxrights = new oxField( "justadmin" ); }');
 
         // testing..
         $oView = new systeminfo();
-        $this->assertEquals( "Access denied !", $oView->render() );
+        $this->assertEquals("Access denied !", $oView->render());
     }
 }

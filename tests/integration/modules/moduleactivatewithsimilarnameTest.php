@@ -30,7 +30,7 @@ class Integration_Modules_ModuleActivateWithSimilarNameTest extends BaseModuleTe
         return array(
             $this->_caseActivateModuleFirstTime_OtherModuleWithSimilarNameIsDisabled_ExtensionsDoNotChange(),
             $this->_caseReactivateModule_OtherModuleWithSimilarNameIsDisabled_ExtensionsDoNotChange(),
-            );
+        );
     }
 
     /**
@@ -38,12 +38,12 @@ class Integration_Modules_ModuleActivateWithSimilarNameTest extends BaseModuleTe
      *
      * @dataProvider providerModuleReactivation
      */
-    public function testModuleActivateWithSimilarName( $aInstallModules, $sReactivateModule, $aResultToAssert )
+    public function testModuleActivateWithSimilarName($aInstallModules, $sReactivateModule, $aResultToAssert)
     {
         $oEnvironment = new Environment();
-        $oEnvironment->prepare( $aInstallModules );
+        $oEnvironment->prepare($aInstallModules);
 
-        foreach ( $aInstallModules as $sModule ){
+        foreach ($aInstallModules as $sModule) {
             $oModule = new oxModule();
             $this->_deactivateModule($oModule, $sModule);
         }
@@ -51,7 +51,7 @@ class Integration_Modules_ModuleActivateWithSimilarNameTest extends BaseModuleTe
         $oModule = new oxModule();
         $this->_activateModule($oModule, $sReactivateModule);
 
-        $this->_runAsserts( $aResultToAssert );
+        $this->_runAsserts($aResultToAssert);
     }
 
     /**
@@ -85,10 +85,10 @@ class Integration_Modules_ModuleActivateWithSimilarNameTest extends BaseModuleTe
                 ),
                 'templates'       => array(),
                 'versions'        => array(
-                    'with_1_extension'   => '1.0',
+                    'with_1_extension' => '1.0',
                 ),
                 'events'          => array(
-                    'with_1_extension'   => null,
+                    'with_1_extension' => null,
                 ),
             ),
         );
@@ -125,10 +125,10 @@ class Integration_Modules_ModuleActivateWithSimilarNameTest extends BaseModuleTe
                 ),
                 'templates'       => array(),
                 'versions'        => array(
-                    'with_1_extension'   => '1.0',
+                    'with_1_extension' => '1.0',
                 ),
                 'events'          => array(
-                    'with_1_extension'   => null,
+                    'with_1_extension' => null,
                 ),
             ),
         );

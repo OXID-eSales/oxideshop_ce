@@ -20,18 +20,19 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing oxgroups class
  */
 class Unit_Core_oxgroupsTest extends OxidTestCase
 {
-    protected $_aAdd = array( 'oxobject2delivery' => array( 'oxobjectid', '' ),
-                              'oxobject2discount' => array( 'oxobjectid', '' ),
-                              'oxobject2group'    => array( 'oxgroupsid', '' ),
-                              'oxobject2payment'  => array( 'oxobjectid', '' ) );
+
+    protected $_aAdd = array('oxobject2delivery' => array('oxobjectid', ''),
+                             'oxobject2discount' => array('oxobjectid', ''),
+                             'oxobject2group'    => array('oxgroupsid', ''),
+                             'oxobject2payment'  => array('oxobjectid', ''));
 
     /**
      * Initialize the fixture.
@@ -42,9 +43,9 @@ class Unit_Core_oxgroupsTest extends OxidTestCase
     {
         parent::setUp();
         $oGroup = new oxgroups();
-        $oGroup->setId( 'testgroup' );
-        $oGroup->oxgroups__oxtitle  = new oxfield( 'testgroup' );
-        $oGroup->oxgroups__oxactive = new oxfield( 1 );
+        $oGroup->setId('testgroup');
+        $oGroup->oxgroups__oxtitle = new oxfield('testgroup');
+        $oGroup->oxgroups__oxactive = new oxfield(1);
         $oGroup->save();
 
     }
@@ -57,54 +58,55 @@ class Unit_Core_oxgroupsTest extends OxidTestCase
     protected function tearDown()
     {
         $oGroup = new oxgroups();
-        $oGroup->delete( 'testgroup' );
-        $oGroup->delete( 'testgroup2' );
+        $oGroup->delete('testgroup');
+        $oGroup->delete('testgroup2');
         parent::tearDown();
     }
 
 
     public function testDelete()
     {
-        $myUtils  = oxRegistry::getUtils();
+        $myUtils = oxRegistry::getUtils();
         $myConfig = oxRegistry::getConfig();
-        $myDB     = oxDb::getDb();
+        $myDB = oxDb::getDb();
 
         // selecting count from DB
-        $oGroups = oxNew( 'oxgroups' );
-        $oGroups->Load( 'testgroup' );
+        $oGroups = oxNew('oxgroups');
+        $oGroups->Load('testgroup');
         $oGroups->delete();
 
         // checking of group is deleted from DB
         $sQ = "select * from oxgroups where oxid = '$sGroupId' ";
-        $iGroup = $myDB->getOne( $sQ );
+        $iGroup = $myDB->getOne($sQ);
 
-        if ( $iGroup > 0 )
+        if ($iGroup > 0) {
             $this->fail('item from oxgroups are not deleted');
+        }
 
         // checking related records
-        foreach ( $this->_aAdd as $sTable => $aField ) {
+        foreach ($this->_aAdd as $sTable => $aField) {
             $sField = $aField[0];
 
             $sQ = "select count(*) from $sTable where $sTable.$sField = '$sGroupId' ";
-            if ( $myDB->getOne( $sQ ) ) {
-                $this->fail( 'records from '.$sTable.' are not deleted' );
+            if ($myDB->getOne($sQ)) {
+                $this->fail('records from ' . $sTable . ' are not deleted');
             }
         }
 
             return;
         // EE only
 
-        $iOffset = ( int ) ( $oGroup->oxgroups__oxrrid->value / 31 );
-        $iBitMap = 1 << ( $oGroup->oxgroups__oxrrid->value % 31 );
+        $iOffset = ( int ) ($oGroup->oxgroups__oxrrid->value / 31);
+        $iBitMap = 1 << ($oGroup->oxgroups__oxrrid->value % 31);
 
-        $this->assertEquals( 0, $myDB->getOne( "select count(*) from oxobject2role where oxobjectid='testgroup'" ) );
-        $this->assertEquals( 0, $myDB->getOne( "select count(*) from oxobjectrights where oxoffset = $iOffset and oxgroupidx & $iBitMap " ) );
+        $this->assertEquals(0, $myDB->getOne("select count(*) from oxobject2role where oxobjectid='testgroup'"));
+        $this->assertEquals(0, $myDB->getOne("select count(*) from oxobjectrights where oxoffset = $iOffset and oxgroupidx & $iBitMap "));
     }
 
     public function testDeleteNoId()
     {
-        $oGroups = oxNew( 'oxgroups' );
-        $this->assertFalse( $oGroups->delete() );
+        $oGroups = oxNew('oxgroups');
+        $this->assertFalse($oGroups->delete());
     }
 
 

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ) . '/unit/OxidTestCase.php';
-require_once realpath( "." ) . '/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwInformation class
  */
 class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
 {
+
     /**
      * Test render of default template
      */
@@ -35,7 +36,7 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
     {
         $oInformation = new oxwInformation();
 
-        $this->assertEquals( 'widget/footer/info.tpl', $oInformation->render() );
+        $this->assertEquals('widget/footer/info.tpl', $oInformation->render());
     }
 
     /**
@@ -44,7 +45,7 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
     public function testGetServicesList_ChecksServicesCount()
     {
         $aServicesList = $this->_getServicesList();
-        $this->assertEquals( 6, count( $aServicesList ) );
+        $this->assertEquals(6, count($aServicesList));
     }
 
     /**

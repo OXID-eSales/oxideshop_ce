@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Tools_List class
  */
 class Unit_Admin_ToolsListTest extends OxidTestCase
 {
+
     /**
      * Tools_List::Performsql() test case
      *
@@ -36,12 +37,12 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
     public function testPerformsql()
     {
         // testing..
-        oxRegistry::getSession()->setVariable( 'auth', "oxdefaultadmin" );
+        oxRegistry::getSession()->setVariable('auth', "oxdefaultadmin");
         modConfig::setRequestParameter("updatesql", 'select * from oxvoucher');
 
         $oView = new Tools_List();
         $oView->performsql();
-        $this->assertTrue( isset($oView->aSQLs) );
+        $this->assertTrue(isset($oView->aSQLs));
     }
 
     /**
@@ -55,7 +56,7 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
         $_FILES['myfile']['name'] = array("test.txt");
 
         $oView = new Tools_List();
-        $this->assertNull( $oView->UNITprocessFiles() );
+        $this->assertNull($oView->UNITprocessFiles());
     }
 
     /**
@@ -71,8 +72,8 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
 
         // testing..
         $oView = new Tools_List();
-        $this->assertTrue( $oView->UNITprepareSQL( $sSQL, $iSQLlen) );
-        $this->assertTrue( isset($oView->aSQLs) );
+        $this->assertTrue($oView->UNITprepareSQL($sSQL, $iSQLlen));
+        $this->assertTrue(isset($oView->aSQLs));
     }
 
     /**
@@ -84,7 +85,7 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
     {
         // testing..
         $oView = new Tools_List();
-        $this->assertEquals( 'tools_list.tpl', $oView->render() );
+        $this->assertEquals('tools_list.tpl', $oView->render());
     }
 
     /**
@@ -94,13 +95,13 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
      */
     public function testUpdateViews()
     {
-        modSession::getInstance()->setVar( 'malladmin', true );
+        modSession::getInstance()->setVar('malladmin', true);
 
         $oView = new Tools_List();
         $oView->updateViews();
 
         // assert that updating was successful
         $aViewData = $oView->getViewData();
-        $this->assertTrue( $aViewData['blViewSuccess'] );
+        $this->assertTrue($aViewData['blViewSuccess']);
     }
 }

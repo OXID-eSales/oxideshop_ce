@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing oxvendor class
  */
 class Unit_Core_oxvendorTest extends OxidTestCase
 {
+
     //
     protected $_sVndIcon = "/vendor/icon/big_matsol_1_mico.jpg";
     protected $_sManIcon = "/manufacturer/icon/big_matsol_1_mico.jpg";
@@ -40,12 +41,12 @@ class Unit_Core_oxvendorTest extends OxidTestCase
     protected function setUp()
     {
         // test require icon for vendors
-        if ( $this->getName() == "testGetIconUrlNewPath"  || $this->getName() == "testGetIconUrl" ) {
+        if ($this->getName() == "testGetIconUrlNewPath" || $this->getName() == "testGetIconUrl") {
             $oConfig = $this->getConfig();
             $oConfig->init();
-            $sTarget = $oConfig->getPicturePath( "" ) . "master";
-            if ( file_exists( $sTarget . $this->_sManIcon ) ) {
-                copy( $sTarget . $this->_sManIcon, $sTarget . $this->_sVndIcon );
+            $sTarget = $oConfig->getPicturePath("") . "master";
+            if (file_exists($sTarget . $this->_sManIcon)) {
+                copy($sTarget . $this->_sManIcon, $sTarget . $this->_sVndIcon);
             }
         }
 
@@ -60,10 +61,10 @@ class Unit_Core_oxvendorTest extends OxidTestCase
     protected function tearDown()
     {
         // removing folder
-        if ( $this->getName() == "testGetIconUrlNewPath"  || $this->getName() == "testGetIconUrl" ) {
-            $sTarget = oxRegistry::getConfig()->getPicturePath( "" ) . "master";
-            if ( file_exists( $sTarget . $this->_sVndIcon ) ) {
-                unlink( $sTarget . $this->_sVndIcon );
+        if ($this->getName() == "testGetIconUrlNewPath" || $this->getName() == "testGetIconUrl") {
+            $sTarget = oxRegistry::getConfig()->getPicturePath("") . "master";
+            if (file_exists($sTarget . $this->_sVndIcon)) {
+                unlink($sTarget . $this->_sVndIcon);
             }
         }
 
@@ -79,7 +80,7 @@ class Unit_Core_oxvendorTest extends OxidTestCase
         oxTestModules::addFunction("oxSeoEncoderVendor", "getVendorPageUrl", "{return 'sVendorPageUrl';}");
 
         $oVendor = new oxvendor();
-        $this->assertEquals( "sVendorPageUrl", $oVendor->getBaseSeoLink( 0, 1 ) );
+        $this->assertEquals("sVendorPageUrl", $oVendor->getBaseSeoLink(0, 1));
     }
 
     public function testGetBaseSeoLink()
@@ -88,7 +89,7 @@ class Unit_Core_oxvendorTest extends OxidTestCase
         oxTestModules::addFunction("oxSeoEncoderVendor", "getVendorPageUrl", "{return 'sVendorPageUrl';}");
 
         $oVendor = new oxvendor();
-        $this->assertEquals( "sVendorUrl", $oVendor->getBaseSeoLink( 0 ) );
+        $this->assertEquals("sVendorUrl", $oVendor->getBaseSeoLink(0));
     }
 
     public function testGetBaseStdLink()
@@ -96,110 +97,110 @@ class Unit_Core_oxvendorTest extends OxidTestCase
         $iLang = 0;
 
         $oVendor = new oxvendor();
-        $oVendor->setId( "testVendorId" );
+        $oVendor->setId("testVendorId");
 
-        $sTestUrl = oxRegistry::getConfig()->getConfig()->getShopHomeUrl( $iLang, false ) . "cl=vendorlist&amp;cnid=v_".$oVendor->getId();
-        $this->assertEquals( $sTestUrl, $oVendor->getBaseStdLink( $iLang ) );
+        $sTestUrl = oxRegistry::getConfig()->getConfig()->getShopHomeUrl($iLang, false) . "cl=vendorlist&amp;cnid=v_" . $oVendor->getId();
+        $this->assertEquals($sTestUrl, $oVendor->getBaseStdLink($iLang));
     }
 
     public function testGetContentCats()
     {
         $oVendor = new oxvendor();
-        $this->assertNull( $oVendor->getContentCats() );
+        $this->assertNull($oVendor->getContentCats());
     }
 
     // #M366: Upload of manufacturer and categories icon does not work
     public function testGetIconUrl()
     {
-        $oVendor = $this->getProxyClass( "oxvendor" );
+        $oVendor = $this->getProxyClass("oxvendor");
         $oVendor->oxvendor__oxicon = new oxField('big_matsol_1_mico.jpg');
 
-        $this->assertEquals( 'big_matsol_1_mico.jpg', basename( $oVendor->getIconUrl() ) );
+        $this->assertEquals('big_matsol_1_mico.jpg', basename($oVendor->getIconUrl()));
     }
 
     public function testAssignWithoutArticleCnt()
     {
         $myConfig = oxRegistry::getConfig();
-        $myDB     = oxDb::getDB();
+        $myDB = oxDb::getDB();
 
-        $oVendor = oxNew( 'oxvendor' );
-        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "'.$myConfig->getShopID().'"';
-        $sVendorId = $myDB->getOne( $sQ );
-        $oVendor->setShowArticleCnt( false );
-        $oVendor->load( $sVendorId );
+        $oVendor = oxNew('oxvendor');
+        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sVendorId = $myDB->getOne($sQ);
+        $oVendor->setShowArticleCnt(false);
+        $oVendor->load($sVendorId);
 
         $iArticleCount = -1;
 
-        $this->assertEquals( $iArticleCount, $oVendor->oxvendor__oxnrofarticles->value );
+        $this->assertEquals($iArticleCount, $oVendor->oxvendor__oxnrofarticles->value);
     }
 
     public function testAssignWithArticleCnt()
     {
         $myConfig = oxRegistry::getConfig();
-        $myDB     = oxDb::getDB();
+        $myDB = oxDb::getDB();
 
-        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "'.$myConfig->getShopID().'"';
-        $sVendorId = $myDB->getOne( $sQ );
+        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sVendorId = $myDB->getOne($sQ);
 
         $sQ = "select count(*) from oxarticles where oxvendorid = '$sVendorId' ";
-        $iCnt = $myDB->getOne( $sQ );
+        $iCnt = $myDB->getOne($sQ);
 
-        $oVendor = $this->getMock( 'oxvendor', array( 'isAdmin' ) );
-        $oVendor->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
-        $oVendor->setShowArticleCnt( true );
-        $oVendor->load( $sVendorId );
+        $oVendor = $this->getMock('oxvendor', array('isAdmin'));
+        $oVendor->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oVendor->setShowArticleCnt(true);
+        $oVendor->load($sVendorId);
 
 
-        $this->assertEquals( $oVendor->oxvendor__oxnrofarticles->value, $oVendor->getNrOfArticles() );
-        $this->assertEquals( $iCnt, $oVendor->getNrOfArticles() );
+        $this->assertEquals($oVendor->oxvendor__oxnrofarticles->value, $oVendor->getNrOfArticles());
+        $this->assertEquals($iCnt, $oVendor->getNrOfArticles());
     }
 
     public function testGetStdLink()
     {
         $oVendor = new oxvendor();
-        $oVendor->setId( 'xxx' );
-        $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL().'cl=vendorlist&amp;cnid=v_xxx', $oVendor->getStdLink() );
+        $oVendor->setId('xxx');
+        $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx', $oVendor->getStdLink());
     }
 
     public function testGetLinkSeoDe()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         // fetching first vendor from db
-        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "'.oxRegistry::getConfig()->getShopID().'"';
+        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "' . oxRegistry::getConfig()->getShopID() . '"';
 
         $myDB = oxDb::getDB();
-        $sVendorId = $myDB->getOne( $sQ );
+        $sVendorId = $myDB->getOne($sQ);
 
-        $sQ = 'select oxtitle from oxvendor where oxvendor.oxshopid = "'.oxRegistry::getConfig()->getShopID().'"';
-        $sVendorTitle = $myDB->getOne( $sQ );
+        $sQ = 'select oxtitle from oxvendor where oxvendor.oxshopid = "' . oxRegistry::getConfig()->getShopID() . '"';
+        $sVendorTitle = $myDB->getOne($sQ);
 
         $oVendor = new oxvendor();
-        $oVendor->setLanguage( 0 );
-        $oVendor->load( $sVendorId );
+        $oVendor->setLanguage(0);
+        $oVendor->load($sVendorId);
 
-        $this->assertEquals( oxRegistry::getConfig()->getShopUrl().'Nach-Lieferant/'.str_replace( ' ', '-', $sVendorTitle ).'/', $oVendor->getLink() );
+        $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . 'Nach-Lieferant/' . str_replace(' ', '-', $sVendorTitle) . '/', $oVendor->getLink());
     }
 
     public function testGetLinkSeoEng()
     {
         $myConfig = oxRegistry::getConfig();
         $myDB = oxDb::getDB();
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         // fetching first vendor from db
-        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "'.$myConfig->getShopID().'"';
-        $sVendorId = $myDB->getOne( $sQ );
+        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sVendorId = $myDB->getOne($sQ);
 
-        $sQ = 'select oxtitle_1 from oxvendor where oxvendor.oxshopid = "'.$myConfig->getShopID().'"';
-        $sVendorTitle = $myDB->getOne( $sQ );
+        $sQ = 'select oxtitle_1 from oxvendor where oxvendor.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sVendorTitle = $myDB->getOne($sQ);
 
         $oVendor = new oxvendor();
-        $oVendor->loadInLang( 1, $sVendorId );
+        $oVendor->loadInLang(1, $sVendorId);
 
-        $this->assertEquals( oxRegistry::getConfig()->getShopUrl().'en/By-Distributor/'.str_replace( ' ', '-', $sVendorTitle ).'/', $oVendor->getLink() );
+        $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . 'en/By-Distributor/' . str_replace(' ', '-', $sVendorTitle) . '/', $oVendor->getLink());
     }
 
     public function testGetLink()
@@ -207,56 +208,56 @@ class Unit_Core_oxvendorTest extends OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
         $oVendor = new oxvendor();
-        $oVendor->setId( 'xxx' );
+        $oVendor->setId('xxx');
 
-        $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL().'cl=vendorlist&amp;cnid=v_xxx', $oVendor->getLink() );
+        $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx', $oVendor->getLink());
     }
 
     public function testGetStdLinkWithLangParam()
     {
         $oVendor = new oxvendor();
-        $oVendor->setId( 'xxx' );
-        $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL().'cl=vendorlist&amp;cnid=v_xxx&amp;lang=1', $oVendor->getStdLink(1) );
+        $oVendor->setId('xxx');
+        $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx&amp;lang=1', $oVendor->getStdLink(1));
     }
 
     public function testGetLinkSeoDeWithLangParam()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         // fetching first vendor from db
-        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "'.oxRegistry::getConfig()->getShopID().'"';
+        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "' . oxRegistry::getConfig()->getShopID() . '"';
 
         $myDB = oxDb::getDB();
-        $sVendorId = $myDB->getOne( $sQ );
+        $sVendorId = $myDB->getOne($sQ);
 
-        $sQ = 'select oxtitle from oxvendor where oxvendor.oxshopid = "'.oxRegistry::getConfig()->getShopID().'"';
-        $sVendorTitle = $myDB->getOne( $sQ );
+        $sQ = 'select oxtitle from oxvendor where oxvendor.oxshopid = "' . oxRegistry::getConfig()->getShopID() . '"';
+        $sVendorTitle = $myDB->getOne($sQ);
 
         $oVendor = new oxvendor();
         $oVendor->setLanguage(1);
-        $oVendor->load( $sVendorId );
+        $oVendor->load($sVendorId);
 
-        $this->assertEquals( oxRegistry::getConfig()->getShopUrl().'Nach-Lieferant/'.str_replace( ' ', '-', $sVendorTitle ).'/', $oVendor->getLink(0) );
+        $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . 'Nach-Lieferant/' . str_replace(' ', '-', $sVendorTitle) . '/', $oVendor->getLink(0));
     }
 
     public function testGetLinkSeoEngWithLangParam()
     {
         $myConfig = oxRegistry::getConfig();
         $myDB = oxDb::getDB();
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         // fetching first vendor from db
-        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "'.$myConfig->getShopID().'"';
-        $sVendorId = $myDB->getOne( $sQ );
+        $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sVendorId = $myDB->getOne($sQ);
 
-        $sQ = 'select oxtitle_1 from oxvendor where oxvendor.oxshopid = "'.$myConfig->getShopID().'"';
-        $sVendorTitle = $myDB->getOne( $sQ );
+        $sQ = 'select oxtitle_1 from oxvendor where oxvendor.oxshopid = "' . $myConfig->getShopID() . '"';
+        $sVendorTitle = $myDB->getOne($sQ);
 
         $oVendor = new oxvendor();
-        $oVendor->loadInLang( 0, $sVendorId );
+        $oVendor->loadInLang(0, $sVendorId);
 
-        $this->assertEquals( oxRegistry::getConfig()->getShopUrl().'en/By-Distributor/'.str_replace( ' ', '-', $sVendorTitle ).'/', $oVendor->getLink(1) );
+        $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . 'en/By-Distributor/' . str_replace(' ', '-', $sVendorTitle) . '/', $oVendor->getLink(1));
     }
 
     public function testGetLinkWithLangParam()
@@ -264,9 +265,9 @@ class Unit_Core_oxvendorTest extends OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
         $oVendor = new oxvendor();
-        $oVendor->setId( 'xxx' );
+        $oVendor->setId('xxx');
 
-        $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL().'cl=vendorlist&amp;cnid=v_xxx&amp;lang=1', $oVendor->getLink(1) );
+        $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx&amp;lang=1', $oVendor->getLink(1));
     }
 
     public function testLoadRootVendor()
@@ -293,27 +294,27 @@ class Unit_Core_oxvendorTest extends OxidTestCase
     {
             $sVendorId = '68342e2955d7401e6.18967838';
 
-        $oVendor = $this->getProxyClass( "oxvendor" );
-        $oVendor->setNonPublicVar( "_blShowArticleCnt", true );
+        $oVendor = $this->getProxyClass("oxvendor");
+        $oVendor->setNonPublicVar("_blShowArticleCnt", true);
         $oVendor->load($sVendorId);
 
-        $this->assertEquals(oxRegistry::get("oxUtilsCount")->getVendorArticleCount( $sVendorId ), $oVendor->getNrOfArticles());
+        $this->assertEquals(oxRegistry::get("oxUtilsCount")->getVendorArticleCount($sVendorId), $oVendor->getNrOfArticles());
     }
 
     public function testGetNrOfArticlesDonotShow()
     {
             $sVendorId = '68342e2955d7401e6.18967838';
 
-        $oVendor = $this->getProxyClass( "oxvendor" );
+        $oVendor = $this->getProxyClass("oxvendor");
         $oVendor->load($sVendorId);
-        $oVendor->setNonPublicVar( "_blShowArticleCnt", false );
+        $oVendor->setNonPublicVar("_blShowArticleCnt", false);
 
         $this->assertEquals(-1, $oVendor->getNrOfArticles());
     }
 
     public function testSetGetIsVisible()
     {
-        $oVendor = $this->getProxyClass( "oxvendor" );
+        $oVendor = $this->getProxyClass("oxvendor");
         $oVendor->setIsVisible(true);
 
         $this->assertTrue($oVendor->getIsVisible());
@@ -321,7 +322,7 @@ class Unit_Core_oxvendorTest extends OxidTestCase
 
     public function testSetGetHasVisibleSubCats()
     {
-        $oVendor = $this->getProxyClass( "oxvendor" );
+        $oVendor = $this->getProxyClass("oxvendor");
         $oVendor->setHasVisibleSubCats(true);
 
         $this->assertTrue($oVendor->getHasVisibleSubCats());
@@ -329,7 +330,7 @@ class Unit_Core_oxvendorTest extends OxidTestCase
 
     public function testGetHasVisibleSubCatsNotSet()
     {
-        $oVendor = $this->getProxyClass( "oxvendor" );
+        $oVendor = $this->getProxyClass("oxvendor");
 
         $this->assertFalse($oVendor->getHasVisibleSubCats());
     }
@@ -341,13 +342,13 @@ class Unit_Core_oxvendorTest extends OxidTestCase
      */
     public function testGetIconUrlNewPath()
     {
-        $oVendor = $this->getProxyClass( "oxvendor" );
+        $oVendor = $this->getProxyClass("oxvendor");
         $oVendor->oxvendor__oxicon = new oxField('big_matsol_1_mico.jpg');
 
-        $sUrl  = oxRegistry::getConfig()->getOutUrl() . basename( oxRegistry::getConfig()->getPicturePath( "" ) );
+        $sUrl = oxRegistry::getConfig()->getOutUrl() . basename(oxRegistry::getConfig()->getPicturePath(""));
         $sUrl .= "/generated/vendor/icon/100_100_75/big_matsol_1_mico.jpg";
 
-        $this->assertEquals( $sUrl, $oVendor->getIconUrl() );
+        $this->assertEquals($sUrl, $oVendor->getIconUrl());
     }
 
     public function testDelete()
@@ -366,17 +367,18 @@ class Unit_Core_oxvendorTest extends OxidTestCase
         $this->assertEquals(1, count(oxRegistry::get("oxSeoEncoderVendor")->onDelete));
         $this->assertSame($obj, oxRegistry::get("oxSeoEncoderVendor")->onDelete[0]);
     }
+
     public function testGetStdLinkWithParams()
     {
         $oVendor = new oxvendor();
-        $oVendor->setId( 'xxx' );
-        $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL().'cl=vendorlist&amp;cnid=v_xxx&amp;foo=bar&amp;lang=1', $oVendor->getStdLink(1, array('foo'=>'bar')) );
+        $oVendor->setId('xxx');
+        $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx&amp;foo=bar&amp;lang=1', $oVendor->getStdLink(1, array('foo' => 'bar')));
     }
 
     public function testGetThumbUrl()
     {
         $oVendor = new oxvendor();
-        $oVendor->setId( 'xxx' );
+        $oVendor->setId('xxx');
 
         $this->assertFalse($oVendor->getThumbUrl());
     }
@@ -390,7 +392,7 @@ class Unit_Core_oxvendorTest extends OxidTestCase
     {
         $sTitle = "testtitle";
         $oVendor = new oxvendor();
-        $oVendor->oxvendor__oxtitle = new oxField( "testtitle" );
-        $this->assertEquals( $sTitle, $oVendor->getTitle() );
+        $oVendor->oxvendor__oxtitle = new oxField("testtitle");
+        $this->assertEquals($sTitle, $oVendor->getTitle());
     }
 }

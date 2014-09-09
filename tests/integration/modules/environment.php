@@ -22,6 +22,7 @@
 
 class Environment
 {
+
     /**
      * Shop Id in which will be prepared environment.
      *
@@ -34,10 +35,10 @@ class Environment
      *
      * @param int $iShopId
      */
-    public function setShopId( $iShopId )
+    public function setShopId($iShopId)
     {
         $this->_iShopId = $iShopId;
-        oxRegistry::getConfig()->setShopId( $iShopId );
+        oxRegistry::getConfig()->setShopId($iShopId);
         $this->_loadShopParameters();
     }
 
@@ -48,27 +49,28 @@ class Environment
      */
     public function getShopId()
     {
-        return is_null( $this->_iShopId ) ? 1 : $this->_iShopId;
+        return is_null($this->_iShopId) ? 1 : $this->_iShopId;
     }
 
     /**
      * Loads and activates modules by given IDs.
      *
      * @param null $aModules
+     *
      * @throws Exception
      */
-    public function prepare( $aModules = null )
+    public function prepare($aModules = null)
     {
         $this->clean();
         $oConfig = oxRegistry::getConfig();
-        $oConfig->setShopId( $this->getShopId() );
-        $oConfig->setConfigParam( 'sShopDir', $this->_getPathToTestDataDirectory() );
+        $oConfig->setShopId($this->getShopId());
+        $oConfig->setConfigParam('sShopDir', $this->_getPathToTestDataDirectory());
 
-        if ( is_null( $aModules ) ) {
+        if (is_null($aModules)) {
             $aModules = $this->_getAllModules();
         }
 
-        $this->activateModules( $aModules );
+        $this->activateModules($aModules);
     }
 
     /**
@@ -77,40 +79,41 @@ class Environment
     public function clean()
     {
         $oConfig = oxRegistry::getConfig();
-        $oConfig->setConfigParam( 'aModules', null);
-        $oConfig->setConfigParam( 'aModuleTemplates', null);
-        $oConfig->setConfigParam( 'aDisabledModules', array() );
-        $oConfig->setConfigParam( 'aModuleFiles', null);
-        $oConfig->setConfigParam( 'aModuleVersions', null);
-        $oConfig->setConfigParam( 'aModuleEvents', null);
+        $oConfig->setConfigParam('aModules', null);
+        $oConfig->setConfigParam('aModuleTemplates', null);
+        $oConfig->setConfigParam('aDisabledModules', array());
+        $oConfig->setConfigParam('aModuleFiles', null);
+        $oConfig->setConfigParam('aModuleVersions', null);
+        $oConfig->setConfigParam('aModuleEvents', null);
 
         $oDb = oxDb::getDb();
-        $oDb->execute( "DELETE FROM `oxconfig` WHERE `oxmodule` LIKE 'module:%' OR `oxvarname` LIKE '%Module%'" );
-        $oDb->execute( 'TRUNCATE `oxconfigdisplay`' );
-        $oDb->execute( 'TRUNCATE `oxtplblocks`' );
+        $oDb->execute("DELETE FROM `oxconfig` WHERE `oxmodule` LIKE 'module:%' OR `oxvarname` LIKE '%Module%'");
+        $oDb->execute('TRUNCATE `oxconfigdisplay`');
+        $oDb->execute('TRUNCATE `oxtplblocks`');
     }
 
     /**
      * Activates given modules.
      *
      * @param $aModules
+     *
      * @throws Exception
      */
-    public function activateModules( $aModules )
+    public function activateModules($aModules)
     {
         $oModule = new oxModule();
-        foreach ( $aModules as $sModuleId ) {
-            if ($oModule->load( $sModuleId ) ) {
+        foreach ($aModules as $sModuleId) {
+            if ($oModule->load($sModuleId)) {
                 /** @var oxModuleCache $oModuleCache */
-                $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+                $oModuleCache = oxNew('oxModuleCache', $oModule);
                 /** @var oxModuleInstaller $oModuleInstaller */
-                $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
+                $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
 
-                if ( !$oModuleInstaller->activate($oModule) ) {
-                    throw new Exception( "Module $sModuleId was not activated." );
+                if (!$oModuleInstaller->activate($oModule)) {
+                    throw new Exception("Module $sModuleId was not activated.");
                 }
             } else {
-                throw new Exception( "Module $sModuleId was not activated." );
+                throw new Exception("Module $sModuleId was not activated.");
             }
 
         }
@@ -123,7 +126,7 @@ class Environment
      */
     private function _getPathToTestDataDirectory()
     {
-        return realpath( dirname( __FILE__ ) ) . '/testData/';
+        return realpath(dirname(__FILE__)) . '/testData/';
     }
 
     /**
@@ -133,7 +136,7 @@ class Environment
      */
     private function _getAllModules()
     {
-        $aModules = array_diff( scandir( $this->_getPathToTestDataDirectory() . 'modules' ), array( '..', '.' ) );
+        $aModules = array_diff(scandir($this->_getPathToTestDataDirectory() . 'modules'), array('..', '.'));
 
         return $aModules;
     }
@@ -146,8 +149,8 @@ class Environment
         $aParameters = array(
             'aModules', 'aModuleEvents', 'aModuleVersions', 'aModuleFiles', 'aDisabledModules', 'aModuleTemplates'
         );
-        foreach ( $aParameters as $sParameter ) {
-            oxRegistry::getConfig()->setConfigParam( $sParameter, $this->_getConfigValueFromDB( $sParameter ) );
+        foreach ($aParameters as $sParameter) {
+            oxRegistry::getConfig()->setConfigParam($sParameter, $this->_getConfigValueFromDB($sParameter));
         }
     }
 
@@ -155,9 +158,10 @@ class Environment
      * Returns config values from table oxconfig by field- oxvarname.
      *
      * @param $sVarName
+     *
      * @return array
      */
-    private function _getConfigValueFromDB( $sVarName )
+    private function _getConfigValueFromDB($sVarName)
     {
         $oDb = oxDb::getDb();
         $sQuery = "SELECT " . oxRegistry::getConfig()->getDecodeValueQuery() . "
@@ -165,8 +169,8 @@ class Environment
                    WHERE `OXVARNAME` = '{$sVarName}'
                    AND `OXSHOPID` = {$this->getShopId()}";
 
-        $sResult = $oDb->getOne( $sQuery );
-        $aExtensionsToCheck = $sResult ? unserialize( $sResult ) : array();
+        $sResult = $oDb->getOne($sQuery);
+        $aExtensionsToCheck = $sResult ? unserialize($sResult) : array();
 
         return $aExtensionsToCheck;
     }

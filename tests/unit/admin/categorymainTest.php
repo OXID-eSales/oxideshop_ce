@@ -108,8 +108,8 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
     public function testSaveActiveSet0()
     {
         $aParams = array("oxcategories__oxactive"   => 0,
-            "oxcategories__oxparentid" => "oxrootid",
-            "oxcategories__oxtitle"    => "Test category title for unit");
+                         "oxcategories__oxparentid" => "oxrootid",
+                         "oxcategories__oxtitle"    => "Test category title for unit");
         
         modConfig::setRequestParameter("oxid", -1);
         modConfig::setRequestParameter("editval", $aParams);
@@ -350,8 +350,8 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         $oView->setConfig($oConfig);
         $oView->deletePicture();
 
-        $aEx     = oxRegistry::getSession()->getVariable("Errors");
-        $oEx     = unserialize($aEx["default"][0]);
+        $aEx = oxRegistry::getSession()->getVariable("Errors");
+        $oEx = unserialize($aEx["default"][0]);
         $sExpMsg = oxRegistry::getLang()->translateString('CATEGORY_PICTURES_UPLOADISDISABLED');
 
         $this->assertFalse(empty($sExpMsg), 'no translation for CATEGORY_PICTURES_UPLOADISDISABLED');

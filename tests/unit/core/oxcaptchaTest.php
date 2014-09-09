@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxcaptchaTest extends OxidTestCase
 {
@@ -42,7 +42,7 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
      */
     public function testGetText()
     {
-        $this->assertNull( $this->_oCaptcha->getNonPublicVar('_sText'));
+        $this->assertNull($this->_oCaptcha->getNonPublicVar('_sText'));
         $sText = $this->_oCaptcha->getText();
         $this->assertEquals($sText, $this->_oCaptcha->getNonPublicVar('_sText'));
         $this->assertEquals(5, strlen($sText));
@@ -55,7 +55,7 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
      */
     public function testGetTextHash()
     {
-         $this->assertEquals('c4b961848aeff4d9b083fe15a56c9bd0', $this->_oCaptcha->getTextHash( "test1" ));
+        $this->assertEquals('c4b961848aeff4d9b083fe15a56c9bd0', $this->_oCaptcha->getTextHash("test1"));
     }
 
     /**
@@ -65,14 +65,14 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
      */
     public function testGetHashNoSession()
     {
-        $oSession = $this->getMock( "oxSession", array( "isSessionStarted" ) );
-        $oSession->expects( $this->once() )->method( 'isSessionStarted' )->will( $this->returnValue( false ) );
+        $oSession = $this->getMock("oxSession", array("isSessionStarted"));
+        $oSession->expects($this->once())->method('isSessionStarted')->will($this->returnValue(false));
 
-        $oCaptcha = $this->getMock( "oxCaptcha", array( "getSession" ) );
-        $oCaptcha->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oSession ) );
+        $oCaptcha = $this->getMock("oxCaptcha", array("getSession"));
+        $oCaptcha->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
-        $sHash = $oCaptcha->getHash( 'test' );
-        $this->assertEquals( oxDb::getDb()->getOne( "select LAST_INSERT_ID()", false, false ), $sHash );
+        $sHash = $oCaptcha->getHash('test');
+        $this->assertEquals(oxDb::getDb()->getOne("select LAST_INSERT_ID()", false, false), $sHash);
     }
 
     /**
@@ -83,18 +83,18 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
      */
     public function testGetHashSession()
     {
-        $oSession = $this->getMock( "oxSession", array( "isSessionStarted" ) );
-        $oSession->expects( $this->exactly(2) )->method( 'isSessionStarted' )->will( $this->returnValue( true ) );
+        $oSession = $this->getMock("oxSession", array("isSessionStarted"));
+        $oSession->expects($this->exactly(2))->method('isSessionStarted')->will($this->returnValue(true));
 
-        $oCaptcha = $this->getMock( "oxCaptcha", array( "getSession" ) );
-        $oCaptcha->expects( $this->exactly(2) )->method( 'getSession' )->will( $this->returnValue( $oSession ) );
-        $sHash1 = $oCaptcha->getHash( 'test1' );
-        $sHash2 = $oCaptcha->getHash( 'test2' );
+        $oCaptcha = $this->getMock("oxCaptcha", array("getSession"));
+        $oCaptcha->expects($this->exactly(2))->method('getSession')->will($this->returnValue($oSession));
+        $sHash1 = $oCaptcha->getHash('test1');
+        $sHash2 = $oCaptcha->getHash('test2');
 
-        $aCaptchaHash = oxRegistry::getSession()->getVariable( "aCaptchaHash" );
-        $this->assertNotNull( $aCaptchaHash );
-        $this->assertTrue( isset( $aCaptchaHash[$sHash1] ) );
-        $this->assertTrue( isset( $aCaptchaHash[$sHash2] ) );
+        $aCaptchaHash = oxRegistry::getSession()->getVariable("aCaptchaHash");
+        $this->assertNotNull($aCaptchaHash);
+        $this->assertTrue(isset($aCaptchaHash[$sHash1]));
+        $this->assertTrue(isset($aCaptchaHash[$sHash2]));
     }
 
     /**
@@ -105,7 +105,7 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
     public function testGetImageUrl()
     {
         $this->_oCaptcha->setNonPublicVar('_sText', 'test1');
-        $this->assertEquals(modConfig::getInstance()->getShopUrl()."core/utils/verificationimg.php?e_mac=ox_MB4FUUYlYlld", $this->_oCaptcha->getImageUrl());
+        $this->assertEquals(modConfig::getInstance()->getShopUrl() . "core/utils/verificationimg.php?e_mac=ox_MB4FUUYlYlld", $this->_oCaptcha->getImageUrl());
     }
 
     /**
@@ -136,16 +136,16 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
      */
     public function testDbPassCorrect()
     {
-        $oCaptcha = $this->getMock( "oxCaptcha", array( "_passFromSession" ) );
-        $oCaptcha->expects( $this->once() )->method( '_passFromSession' )->will( $this->returnValue( null ) );
+        $oCaptcha = $this->getMock("oxCaptcha", array("_passFromSession"));
+        $oCaptcha->expects($this->once())->method('_passFromSession')->will($this->returnValue(null));
 
         // reseting session
         $oSession = new oxSession();
-        $oCaptcha->setSession( $oSession );
+        $oCaptcha->setSession($oSession);
 
-        $oCaptcha->getHash( '3at8u' );
-        $sHash = oxDb::getDb()->getOne( "select LAST_INSERT_ID()", false, false );
-        $this->assertTrue( $oCaptcha->pass('3at8u', $sHash ) );
+        $oCaptcha->getHash('3at8u');
+        $sHash = oxDb::getDb()->getOne("select LAST_INSERT_ID()", false, false);
+        $this->assertTrue($oCaptcha->pass('3at8u', $sHash));
     }
 
     /**
@@ -155,10 +155,10 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
      */
     public function testDbPassFail()
     {
-        $oCaptcha = $this->getMock( "oxCaptcha", array( "_passFromSession" ) );
-        $oCaptcha->expects( $this->once() )->method( '_passFromSession' )->will( $this->returnValue( null ) );
+        $oCaptcha = $this->getMock("oxCaptcha", array("_passFromSession"));
+        $oCaptcha->expects($this->once())->method('_passFromSession')->will($this->returnValue(null));
 
-        $this->assertFalse( $oCaptcha->pass('3at8v', 'd9a470912b222133fb913da36c0f50d0' ) );
+        $this->assertFalse($oCaptcha->pass('3at8v', 'd9a470912b222133fb913da36c0f50d0'));
     }
 
     /**
@@ -176,20 +176,20 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
 
         $oCaptcha = new oxCaptcha();
         $aHash = array(
-            $sHash1 => array( $oCaptcha->getTextHash( $sMac1 ) => time() + 3600 ),
-            $sHash2 => array( $oCaptcha->getTextHash( $sMac2 ) => time() + 3600 )
+            $sHash1 => array($oCaptcha->getTextHash($sMac1) => time() + 3600),
+            $sHash2 => array($oCaptcha->getTextHash($sMac2) => time() + 3600)
         );
         $oSession = modSession::getInstance();
-        $oSession->setVar( "aCaptchaHash", $aHash );
+        $oSession->setVar("aCaptchaHash", $aHash);
 
-        $oCaptcha = $this->getMock( "oxCaptcha", array( "_passFromDb" ) );
-        $oCaptcha->expects( $this->never() )->method( '_passFromDb' );
+        $oCaptcha = $this->getMock("oxCaptcha", array("_passFromDb"));
+        $oCaptcha->expects($this->never())->method('_passFromDb');
 
-        $this->assertTrue( $oCaptcha->pass( $sMac1, $sHash1 ) );
-        $this->assertEquals( 1, count( $oSession->getVar( "aCaptchaHash" ) ) );
+        $this->assertTrue($oCaptcha->pass($sMac1, $sHash1));
+        $this->assertEquals(1, count($oSession->getVar("aCaptchaHash")));
 
-        $this->assertTrue( $oCaptcha->pass( $sMac2, $sHash2 ) );
-        $this->assertNull( $oSession->getVar( "aCaptchaHash" ) );
+        $this->assertTrue($oCaptcha->pass($sMac2, $sHash2));
+        $this->assertNull($oSession->getVar("aCaptchaHash"));
     }
     
     /**
@@ -199,11 +199,11 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
      */
     public function testSessionPassFail()
     {
-        modSession::getInstance()->setVar( "aCaptchaHash", array( "testHash" => array( "testTextHash" => 132 ) ) );
+        modSession::getInstance()->setVar("aCaptchaHash", array("testHash" => array("testTextHash" => 132)));
 
-        $oCaptcha = $this->getMock( "oxCaptcha", array( "_passFromDb" ) );
-        $oCaptcha->expects( $this->never() )->method( '_passFromDb' );
+        $oCaptcha = $this->getMock("oxCaptcha", array("_passFromDb"));
+        $oCaptcha->expects($this->never())->method('_passFromDb');
 
-        $this->assertFalse( $oCaptcha->pass( '3at8v', 'd9a470912b222133fb913da36c0f50d0' ) );
+        $this->assertFalse($oCaptcha->pass('3at8v', 'd9a470912b222133fb913da36c0f50d0'));
     }
 }

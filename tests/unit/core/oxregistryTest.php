@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
 
 /**
  * Test case for OxReg
@@ -104,15 +104,15 @@ class unit_core_OxRegistryTest extends OxidTestCase
     public function testGetKeys()
     {
         oxRegistry::set("testKey", "testVal");
-        $this->assertTrue( in_array( strtolower("testKey"), oxRegistry::getKeys()) );
+        $this->assertTrue(in_array(strtolower("testKey"), oxRegistry::getKeys()));
     }
 
 
     public function testUnset()
     {
         oxRegistry::set("testKey", "testVal");
-        $this->assertTrue( in_array( strtolower("testKey"), oxRegistry::getKeys()) );
+        $this->assertTrue(in_array(strtolower("testKey"), oxRegistry::getKeys()));
         oxRegistry::set("testKey", null);
-        $this->assertFalse( in_array( strtolower("testKey"), oxRegistry::getKeys()) );
+        $this->assertFalse(in_array(strtolower("testKey"), oxRegistry::getKeys()));
     }
 }

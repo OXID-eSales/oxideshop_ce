@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * testing oxattributelist class.
  */
 class Unit_Core_oxattributelistTest extends OxidTestCase
 {
+
     /**
      * Tear down the fixture.
      *
@@ -37,10 +38,10 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
     {
         $myDB = oxDb::getDB();
 
-        $myDB->Execute( 'delete from oxattribute where oxid = "test%" ');
-        $myDB->Execute( 'delete from oxobject2attribute where oxid = "test%" ');
+        $myDB->Execute('delete from oxattribute where oxid = "test%" ');
+        $myDB->Execute('delete from oxobject2attribute where oxid = "test%" ');
         
-        $myDB->Execute( "update oxattribute set oxdisplayinbasket = 0 where oxid = '8a142c3f0b9527634.96987022' " );
+        $myDB->Execute("update oxattribute set oxdisplayinbasket = 0 where oxid = '8a142c3f0b9527634.96987022' ");
         
         parent::tearDown();
     }
@@ -53,14 +54,14 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
     public function testLoadAttributesByIds()
     {
         $oAttrList = new oxAttributelist();
-        $aAttributes = $oAttrList->loadAttributesByIds( array('1672'));
+        $aAttributes = $oAttrList->loadAttributesByIds(array('1672'));
 
         $sSelect = "select oxattrid, oxvalue from oxobject2attribute where oxobjectid = '1672'";
         $rs = oxDb::getDB()->execute($sSelect);
-        $sSelect = "select oxtitle from oxattribute where oxid = '".$rs->fields[0]."'";
+        $sSelect = "select oxtitle from oxattribute where oxid = '" . $rs->fields[0] . "'";
         $sTitle = oxDb::getDB()->getOne($sSelect);
-        $this->assertEquals( $rs->fields[1], $aAttributes[$rs->fields[0]]->aProd['1672']->value);
-        $this->assertEquals( $sTitle, $aAttributes[$rs->fields[0]]->title);
+        $this->assertEquals($rs->fields[1], $aAttributes[$rs->fields[0]]->aProd['1672']->value);
+        $this->assertEquals($sTitle, $aAttributes[$rs->fields[0]]->title);
     }
 
     /**
@@ -72,14 +73,14 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
     {
         oxRegistry::getLang()->setBaseLanguage(1);
         $oAttrList = new oxAttributelist();
-        $aAttributes = $oAttrList->loadAttributesByIds( array('1672'));
+        $aAttributes = $oAttrList->loadAttributesByIds(array('1672'));
 
         $sSelect = "select oxattrid, oxvalue_1 from oxobject2attribute where oxobjectid = '1672'";
         $rs = oxDb::getDB()->execute($sSelect);
-        $sSelect = "select oxtitle_1 from oxattribute where oxid = '".$rs->fields[0]."'";
+        $sSelect = "select oxtitle_1 from oxattribute where oxid = '" . $rs->fields[0] . "'";
         $sTitle = oxDb::getDB()->getOne($sSelect);
-        $this->assertEquals( $rs->fields[1], $aAttributes[$rs->fields[0]]->aProd['1672']->value);
-        $this->assertEquals( $sTitle, $aAttributes[$rs->fields[0]]->title);
+        $this->assertEquals($rs->fields[1], $aAttributes[$rs->fields[0]]->aProd['1672']->value);
+        $this->assertEquals($sTitle, $aAttributes[$rs->fields[0]]->title);
     }
 
     /**
@@ -90,9 +91,9 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
     public function testLoadAttributesByIdsNoIds()
     {
         $oAttrList = new oxAttributelist();
-        $aAttributes = $oAttrList->loadAttributesByIds( null);
+        $aAttributes = $oAttrList->loadAttributesByIds(null);
 
-        $this->assertNull( $aAttributes);
+        $this->assertNull($aAttributes);
     }
 
     /**
@@ -109,10 +110,10 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         $sSelect = "select oxvalue from oxobject2attribute where oxattrid = '$sID' and oxobjectid = '$sArtID'";
         $sExpectedValue = oxDb::getDB()->getOne($sSelect);
         $sAttribValue = $oAttrList[$sID]->oxobject2attribute__oxvalue->value;
-        $this->assertEquals( $sExpectedValue, $sAttribValue);
+        $this->assertEquals($sExpectedValue, $sAttribValue);
     }
     
-	/**
+    /**
      * Test load attributes.
      *
      * @return null
@@ -121,7 +122,7 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
     {
         $oAttrList = new oxAttributelist();
         $oAttrList->loadAttributes('1672', '1351');
-        $this->assertEquals( 9, $oAttrList->count() );
+        $this->assertEquals(9, $oAttrList->count());
     }
     
     
@@ -141,8 +142,8 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         $oAttrList->loadAttributesDisplayableInBasket('1672', '1351');
         $sAttribValue = $oAttrList['8a142c3f0c0baa3f4.54955953']->oxattribute__oxvalue->rawValue;
         $sAttribParentValue = $oAttrList['d8842e3b7d4e7acb1.34583879']->oxattribute__oxvalue->rawValue;
-        $this->assertEquals( '25 cm', $sAttribValue );
-        $this->assertEquals( 'Granit', $sAttribParentValue );
+        $this->assertEquals('25 cm', $sAttribValue);
+        $this->assertEquals('Granit', $sAttribParentValue);
     }
     
     /**
@@ -154,7 +155,7 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
     {
         $oAttrList = new oxAttributelist();
         $oAttrList->loadAttributesDisplayableInBasket('1672');
-        $this->assertEquals( 0, count( $oAttrList ) );
+        $this->assertEquals(0, count($oAttrList));
         
     }
 
@@ -174,7 +175,7 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         $sSelect = "select oxvalue_1 from oxobject2attribute where oxattrid = '$sID' and oxobjectid = '$sArtID'";
         $sExpectedValue = oxDb::getDB()->getOne($sSelect);
         $sAttribValue = $oAttrList[$sID]->oxobject2attribute__oxvalue->value;
-        $this->assertEquals( $sExpectedValue, $sAttribValue);
+        $this->assertEquals($sExpectedValue, $sAttribValue);
     }
 
     /**
@@ -191,7 +192,7 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
             $sSql = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
             $myDB->execute($sSql);
 
-        $sArtId  = 'testArt';
+        $sArtId = 'testArt';
         $sSql = "insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values ('test3', '$sArtId', 'test3', '3'), ('test1', '$sArtId', 'test1', '1'), ('test2', '$sArtId', 'test2', '2')";
         $myDB->execute($sSql);
 
@@ -213,9 +214,9 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
     public function testLoadAttributesEmptyId()
     {
         $oAttrList = new oxAttributelist();
-        $oAttrList->loadAttributes( null);
+        $oAttrList->loadAttributes(null);
 
-        $this->assertEquals( 0, count($oAttrList));
+        $this->assertEquals(0, count($oAttrList));
     }
 
     public function testGetCategoryAttributes()
@@ -224,16 +225,16 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         $sAttributeId = '8a142c3e9cd961518.80299776';
 
         $myDB = oxDb::getDb();
-        $myDB->Execute('insert into oxcategory2attribute (oxid, oxobjectid, oxattrid, oxsort) values ("test3","'.$sCategoryId.'","'.$sAttributeId.'", "333")');
+        $myDB->Execute('insert into oxcategory2attribute (oxid, oxobjectid, oxattrid, oxsort) values ("test3","' . $sCategoryId . '","' . $sAttributeId . '", "333")');
 
 
-        $oAttrList = oxNew( "oxattributelist" );
-        $oAttrList->getCategoryAttributes( $sCategoryId, 1);
+        $oAttrList = oxNew("oxattributelist");
+        $oAttrList->getCategoryAttributes($sCategoryId, 1);
         $oAttribute = $oAttrList->offsetGet($sAttributeId);
 
 
-            $this->assertEquals( 1, $oAttrList->count() );
-            $this->assertEquals( 6, count($oAttribute->getValues()));
+            $this->assertEquals(1, $oAttrList->count());
+            $this->assertEquals(6, count($oAttribute->getValues()));
 
     }
 

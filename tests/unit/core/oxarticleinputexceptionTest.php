@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Testing oxArticleInputException class
  */
 class Unit_Core_oxarticleinputexceptionTest extends OxidTestCase
 {
+
     /**
      * Test set string.
      *
@@ -38,13 +39,13 @@ class Unit_Core_oxarticleinputexceptionTest extends OxidTestCase
     public function testGetString()
     {
         $sMsg = 'Erik was here..';
-        $oTestObject = oxNew( 'oxArticleInputException', $sMsg);
-        $this->assertEquals('oxArticleInputException', get_class($oTestObject) );
+        $oTestObject = oxNew('oxArticleInputException', $sMsg);
+        $this->assertEquals('oxArticleInputException', get_class($oTestObject));
         $sArticle = 'sArticleNumber';
         $oTestObject->setArticleNr($sArticle);
         $sStringOut = $oTestObject->getString();
-        $this->assertContains($sMsg, $sStringOut);                      // Message
-        $this->assertContains('oxArticleInputException', $sStringOut);  // Exception class name
-        $this->assertContains($sArticle, $sStringOut);                  // Article nr
+        $this->assertContains($sMsg, $sStringOut); // Message
+        $this->assertContains('oxArticleInputException', $sStringOut); // Exception class name
+        $this->assertContains($sArticle, $sStringOut); // Article nr
     }
 }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for AdminGuestbook_List class
  */
 class Unit_Admin_AdminGuestbookListTest extends OxidTestCase
 {
+
     /**
      * AdminGuestbook_List::Render() test case
      *
@@ -36,21 +37,21 @@ class Unit_Admin_AdminGuestbookListTest extends OxidTestCase
     public function testRender()
     {
         $oEntry = new GuestbookEntry();
-        $oEntry->oxgbentries__oxuserid = new oxField( "oxdefaultadmin" );
+        $oEntry->oxgbentries__oxuserid = new oxField("oxdefaultadmin");
 
         $oList = new oxList();
-        $oList->offsetSet( "testEntryId", $oEntry );
+        $oList->offsetSet("testEntryId", $oEntry);
 
         // testing..
-        $oView = $this->getMock( "AdminGuestbook_List", array( "getItemList" ) );
-        $oView->expects( $this->any() )->method( 'getItemList' )->will( $this->returnValue( $oList ) );
+        $oView = $this->getMock("AdminGuestbook_List", array("getItemList"));
+        $oView->expects($this->any())->method('getItemList')->will($this->returnValue($oList));
         $sTplName = $oView->render();
-        $this->assertEquals( 'adminguestbook_list.tpl', $sTplName );
+        $this->assertEquals('adminguestbook_list.tpl', $sTplName);
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue( $aViewData["mylist"] instanceof oxList );
-        $this->assertEquals( 1, $aViewData["mylist"]->count() );
+        $this->assertTrue($aViewData["mylist"] instanceof oxList);
+        $this->assertEquals(1, $aViewData["mylist"]->count());
 
     }
 

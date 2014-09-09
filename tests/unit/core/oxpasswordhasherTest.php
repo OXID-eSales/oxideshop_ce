@@ -22,15 +22,16 @@
 
 class Unit_Core_oxPasswordHasherTest extends OxidTestCase
 {
+
     public function testHash()
     {
         $sPassword = 'password';
         $sSalt = 'salt';
 
         $oHasher = $this->getMock('oxSha512Hasher');
-        $oHasher->expects($this->once())->method('hash')->with( $this->equalTo( $sPassword.$sSalt ));
+        $oHasher->expects($this->once())->method('hash')->with($this->equalTo($sPassword . $sSalt));
 
-        $oPasswordHasher = new oxPasswordHasher( $oHasher );
+        $oPasswordHasher = new oxPasswordHasher($oHasher);
 
         $oPasswordHasher->hash($sPassword, $sSalt);
     }

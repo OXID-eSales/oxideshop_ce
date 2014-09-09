@@ -20,13 +20,14 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Core_oxfunctionsTest extends OxidTestCase
 {
+
     protected $_sRequestMethod = null;
-    protected $_sRequestUri    = null;
+    protected $_sRequestUri = null;
 
     /**
      * Initialize the fixture.
@@ -38,7 +39,7 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
         parent::setUp();
         // backuping
         $this->sRequestMethod = $_SERVER["REQUEST_METHOD"];
-        $this->_sRequestUri   = $_SERVER['REQUEST_URI'];
+        $this->_sRequestUri = $_SERVER['REQUEST_URI'];
     }
 
     /**
@@ -50,7 +51,7 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
     {
         // restoring
         $_SERVER["REQUEST_METHOD"] = $this->_sRequestMethod;
-        $_SERVER['REQUEST_URI']    = $this->_sRequestUri;
+        $_SERVER['REQUEST_URI'] = $this->_sRequestUri;
         parent::tearDown();
     }
 
@@ -58,27 +59,27 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
     public function testGetRequestUrl()
     {
         $_SERVER["REQUEST_METHOD"] = 'GET';
-        $_SERVER['REQUEST_URI']    = $sUri = 'test.php?param1=value1&param2=value2';
+        $_SERVER['REQUEST_URI'] = $sUri = 'test.php?param1=value1&param2=value2';
 
-        $this->assertEquals( str_replace( array( '&', 'test.php' ), array( '&amp;', 'index.php' ), $sUri ), getRequestUrl() );
+        $this->assertEquals(str_replace(array('&', 'test.php'), array('&amp;', 'index.php'), $sUri), getRequestUrl());
     }
 
     // testing request uri getter
     public function testGetRequestUrlEmptyParams()
     {
         $_SERVER["REQUEST_METHOD"] = 'GET';
-        $_SERVER['REQUEST_URI']    = $sUri = '/shop/';
+        $_SERVER['REQUEST_URI'] = $sUri = '/shop/';
 
-        $this->assertNull( getRequestUrl() );
+        $this->assertNull(getRequestUrl());
     }
 
     // testing request uri getter
     public function testGetRequestUrlSubfolder()
     {
         $_SERVER["REQUEST_METHOD"] = 'GET';
-        $_SERVER['SCRIPT_URI']    = $sUri = '/shop/?cl=details';
+        $_SERVER['SCRIPT_URI'] = $sUri = '/shop/?cl=details';
 
-        $this->assertEquals( 'index.php?cl=details', getRequestUrl() );
+        $this->assertEquals('index.php?cl=details', getRequestUrl());
     }
 
     // testing request removing sid from link
@@ -86,29 +87,29 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
     {
         $_SERVER["REQUEST_METHOD"] = 'GET';
         $_SERVER['REQUEST_URI'] = 'test.php?param1=value1&sid=zzz&sysid=vvv&param2=ttt';
-        $this->assertEquals( 'index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', getRequestUrl() );
+        $this->assertEquals('index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', getRequestUrl());
 
         $_SERVER['REQUEST_URI'] = 'test.php?sid=zzz&param1=value1&sysid=vvv&param2=ttt';
-        $this->assertEquals( 'index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', getRequestUrl() );
+        $this->assertEquals('index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', getRequestUrl());
 
         $_SERVER['REQUEST_URI'] = 'test.php?param1=value1&sysid=vvv&param2=ttt&sid=zzz';
-        $this->assertEquals( 'index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', getRequestUrl() );
+        $this->assertEquals('index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', getRequestUrl());
     }
 
     public function test_isAdmin()
     {
-        $this->assertEquals( false, isAdmin() );
+        $this->assertEquals(false, isAdmin());
     }
 
     public function test_dumpVar()
     {
         $myConfig = oxRegistry::getConfig();
-        @unlink( $myConfig->getConfigParam('sCompileDir')."/vardump.txt" );
-        dumpVar( "bobo", true );
-        $file = file_get_contents( $myConfig->getConfigParam('sCompileDir')."/vardump.txt" );
-        $file = str_replace( "\r", "", $file );
-        @unlink( $myConfig->getConfigParam('sCompileDir')."/vardump.txt" );
-        $this->assertEquals( $file, "'bobo'", $file );
+        @unlink($myConfig->getConfigParam('sCompileDir') . "/vardump.txt");
+        dumpVar("bobo", true);
+        $file = file_get_contents($myConfig->getConfigParam('sCompileDir') . "/vardump.txt");
+        $file = str_replace("\r", "", $file);
+        @unlink($myConfig->getConfigParam('sCompileDir') . "/vardump.txt");
+        $this->assertEquals($file, "'bobo'", $file);
     }
 
     public function testIsSearchEngineUrl()
@@ -127,22 +128,22 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
         $oB = new stdClass();
         $oB->cnt = 10;
 
-        $this->assertTrue( cmpart( $oA, $oB ) == 0);
+        $this->assertTrue(cmpart($oA, $oB) == 0);
 
         $oA->cnt = 10;
         $oB->cnt = 20;
 
-        $this->assertTrue( cmpart( $oA, $oB ) == -1 );
+        $this->assertTrue(cmpart($oA, $oB) == -1);
     }
 
     public function testOxNew()
     {
-        $oNew = oxnew( 'oxarticle' );
-        $this->assertTrue( $oNew instanceof oxarticle );
+        $oNew = oxnew('oxarticle');
+        $this->assertTrue($oNew instanceof oxarticle);
 
         try {
-            $oNew = oxnew( 'oxxxx' );
-        } catch ( oxSystemComponentException $oExcp ) {
+            $oNew = oxnew('oxxxx');
+        } catch (oxSystemComponentException $oExcp) {
             return;
         }
         $this->fail('error testing oxnew()');
@@ -153,40 +154,41 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
         $fake = new stdClass;
         $fake->oxidcache = new oxField('test', oxField::T_RAW);
         $sRes = 'aa';
-        $this->assertEquals( true, ox_get_template('blah', $sRes, $fake));
-        $this->assertEquals( 'test', $sRes);
-        if (oxRegistry::getConfig()->isDemoShop())
-           $this->assertEquals($fake->security, true);
+        $this->assertEquals(true, ox_get_template('blah', $sRes, $fake));
+        $this->assertEquals('test', $sRes);
+        if (oxRegistry::getConfig()->isDemoShop()) {
+            $this->assertEquals($fake->security, true);
+        }
     }
 
     public function testOx_get_timestamp()
     {
         $fake = new stdClass;
-        $this->assertEquals( true, ox_get_timestamp('blah', $res, $fake));
-        $this->assertEquals( true, is_numeric($res));
-        $tm = time()-$res;
-        $this->assertEquals( true, ($tm >= 0) && ($tm < 2));
+        $this->assertEquals(true, ox_get_timestamp('blah', $res, $fake));
+        $this->assertEquals(true, is_numeric($res));
+        $tm = time() - $res;
+        $this->assertEquals(true, ($tm >= 0) && ($tm < 2));
         $fake->oxidtimecache = new oxField('test', oxField::T_RAW);
-        $this->assertEquals( true, ox_get_timestamp('blah', $res, $fake));
-        $this->assertEquals( 'test', $res);
+        $this->assertEquals(true, ox_get_timestamp('blah', $res, $fake));
+        $this->assertEquals('test', $res);
     }
 
     public function testOx_get_secure()
     {
         $o = null;
-        $this->assertEquals( true, ox_get_secure("s", $o));
+        $this->assertEquals(true, ox_get_secure("s", $o));
     }
 
     public function testOx_get_trusted()
     {
         $o = null;
         // in php void functions also return - null
-        $this->assertEquals( null, ox_get_trusted("s", $o));
+        $this->assertEquals(null, ox_get_trusted("s", $o));
     }
 
     public function testGetViewName()
     {
-            $this->assertEquals( 'xxx', getViewName( 'xxx', 'xxx' ) );
+            $this->assertEquals('xxx', getViewName('xxx', 'xxx'));
     }
 
     public function testError_404_handler()

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for DeliverySet_Payment class
  */
 class Unit_Admin_DeliverySetPaymentTest extends OxidTestCase
 {
+
     /**
      * DeliverySet_Payment::Render() test case
      *
@@ -35,16 +36,16 @@ class Unit_Admin_DeliverySetPaymentTest extends OxidTestCase
      */
     public function testRender()
     {
-        oxTestModules::addFunction( "oxdeliveryset", "isDerived", "{return true;}" );
-        modConfig::setRequestParameter( "oxid", "testId" );
+        oxTestModules::addFunction("oxdeliveryset", "isDerived", "{return true;}");
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new DeliverySet_Payment();
-        $this->assertEquals( 'deliveryset_payment.tpl', $oView->render() );
+        $this->assertEquals('deliveryset_payment.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( isset( $aViewData['readonly'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxdeliveryset );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue(isset($aViewData['readonly']));
+        $this->assertTrue($aViewData['edit'] instanceof oxdeliveryset);
     }
 
     /**
@@ -54,13 +55,13 @@ class Unit_Admin_DeliverySetPaymentTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new DeliverySet_Payment();
-        $this->assertEquals( 'deliveryset_payment.tpl', $oView->render() );
+        $this->assertEquals('deliveryset_payment.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertTrue(isset($aViewData['oxid']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 }

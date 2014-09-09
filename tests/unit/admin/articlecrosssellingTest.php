@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Article_Crossselling class
  */
 class Unit_Admin_ArticleCrosssellingTest extends OxidTestCase
 {
+
     /**
      * Article_Crossselling::Render() test case
      *
@@ -36,7 +37,7 @@ class Unit_Admin_ArticleCrosssellingTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
-        modConfig::setRequestParameter( "oxid", "1126" );
+        modConfig::setRequestParameter("oxid", "1126");
 
         // testing..
         $oView = new Article_Crossselling();
@@ -44,10 +45,10 @@ class Unit_Admin_ArticleCrosssellingTest extends OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue( $aViewData["edit"] instanceof oxArticle );
-        $this->assertTrue( $aViewData["readonly"] );
+        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
+        $this->assertTrue($aViewData["readonly"]);
 
-        $this->assertEquals( 'article_crossselling.tpl', $sTplName );
+        $this->assertEquals('article_crossselling.tpl', $sTplName);
 
     }
 }

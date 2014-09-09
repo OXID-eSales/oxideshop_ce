@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for VoucherSerie class
  */
 class Unit_Admin_VoucherSerieTest extends OxidTestCase
 {
+
     /**
      * VoucherSerie::Render() test case
      *
@@ -37,6 +38,6 @@ class Unit_Admin_VoucherSerieTest extends OxidTestCase
     {
         // testing..
         $oView = new VoucherSerie();
-        $this->assertEquals( 'voucherserie.tpl', $oView->render() );
+        $this->assertEquals('voucherserie.tpl', $oView->render());
     }
 }

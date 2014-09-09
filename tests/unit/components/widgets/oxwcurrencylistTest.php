@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwCurrencyList class
  */
 class Unit_Components_Widgets_oxwCurrencyListTest extends OxidTestCase
 {
+
     /**
      * Testing oxwCurrencyList::render()
      *
@@ -36,7 +37,7 @@ class Unit_Components_Widgets_oxwCurrencyListTest extends OxidTestCase
     public function testRender()
     {
         $oCurrencyList = new oxwCurrencyList();
-        $this->assertEquals( 'widget/header/currencies.tpl', $oCurrencyList->render() );
+        $this->assertEquals('widget/header/currencies.tpl', $oCurrencyList->render());
     }
 
 }

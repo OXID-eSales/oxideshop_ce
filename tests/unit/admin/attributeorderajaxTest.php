@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Attribute_Order_Ajax class
  */
 class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
 {
+
     protected $_sArticleView = 'oxv_oxarticles_1_de';    
     protected $_sObject2AttributeView = 'oxv_oxobject2attribute_de';
     protected $_sObject2CategoryView = 'oxv_oxobject2category_de';
@@ -42,8 +43,8 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
     {
         parent::setUp();
         
-        oxDb::getDb()->execute( "insert into oxcategory2attribute set oxid='_testOxid1', oxobjectid='_testObject', oxattrid='_testAttribute', oxsort='99'" );
-        oxDb::getDb()->execute( "insert into oxcategory2attribute set oxid='_testOxid2', oxobjectid='_testObject', oxattrid='_testAttribute', oxsort='99'" );
+        oxDb::getDb()->execute("insert into oxcategory2attribute set oxid='_testOxid1', oxobjectid='_testObject', oxattrid='_testAttribute', oxsort='99'");
+        oxDb::getDb()->execute("insert into oxcategory2attribute set oxid='_testOxid2', oxobjectid='_testObject', oxattrid='_testAttribute', oxsort='99'");
     }
     
     /**
@@ -53,7 +54,7 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDb()->execute( "delete from oxcategory2attribute where oxobjectid='_testObject'" );
+        oxDb::getDb()->execute("delete from oxcategory2attribute where oxobjectid='_testObject'");
         
         parent::tearDown();
     }
@@ -66,12 +67,12 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
     public function testGetQuery()
     {
         $sOxid = '_testOxid';        
-        modConfig::setRequestParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter("oxid", $sOxid);
         
-        $oView = oxNew( 'attribute_order_ajax' );
+        $oView = oxNew('attribute_order_ajax');
         
         
-            $this->assertEquals( "from oxv_oxattribute_de left join oxcategory2attribute on oxcategory2attribute.oxattrid = oxv_oxattribute_de.oxid where oxobjectid = '$sOxid'", trim( $oView->UNITgetQuery() ) );
+            $this->assertEquals("from oxv_oxattribute_de left join oxcategory2attribute on oxcategory2attribute.oxattrid = oxv_oxattribute_de.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -81,8 +82,8 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
      */
     public function testGetSorting()
     {
-        $oView = oxNew( 'attribute_order_ajax' );
-        $this->assertEquals( "order by oxcategory2attribute.oxsort", trim( $oView->UNITgetSorting() ) );
+        $oView = oxNew('attribute_order_ajax');
+        $this->assertEquals("order by oxcategory2attribute.oxsort", trim($oView->UNITgetSorting()));
     }
     
     /**
@@ -92,15 +93,15 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
      */
     public function testSetSorting()
     {
-        modconfig::getInstance()->setConfigParam( "iDebug", 1 );
+        modconfig::getInstance()->setConfigParam("iDebug", 1);
         
         
             $sViewTable = "oxv_oxattribute_de";
         
-        $aData = array( 'startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' =>array(), 'totalRecords' => 0);
+        $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
 
-        $oView = $this->getMock( "attribute_order_ajax", array( "_output" ) );
-        $oView->expects( $this->any() )->method( '_output')->with( $this->equalTo( json_encode( $aData ) ) );
+        $oView = $this->getMock("attribute_order_ajax", array("_output"));
+        $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
     }
     
@@ -112,20 +113,20 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
     public function testSetSortingOxid()
     {
         $sOxid = '_testObject';
-        modConfig::setRequestParameter( "oxid", $sOxid );
-        modconfig::getInstance()->setConfigParam( "iDebug", 1 );
-        modConfig::setRequestParameter( "sortoxid", 0 );
+        modConfig::setRequestParameter("oxid", $sOxid);
+        modconfig::getInstance()->setConfigParam("iDebug", 1);
+        modConfig::setRequestParameter("sortoxid", 0);
         
         
             $sViewTable = "oxv_oxattribute_de";
         
-        $aData = array( 'startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' =>array(), 'totalRecords' => 0);
+        $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
 
-        $oView = $this->getMock( "attribute_order_ajax", array( "_output" ) );
-        $oView->expects( $this->any() )->method( '_output')->with( $this->equalTo( json_encode( $aData ) ) );
+        $oView = $this->getMock("attribute_order_ajax", array("_output"));
+        $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
         
-        $this->assertEquals( 1, oxDb::getDb()->getOne( "select sum(oxsort) from oxcategory2attribute where oxobjectid='_testObject'" ) );
+        $this->assertEquals(1, oxDb::getDb()->getOne("select sum(oxsort) from oxcategory2attribute where oxobjectid='_testObject'"));
     }
     
 }

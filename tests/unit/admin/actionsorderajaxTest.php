@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Actions_Order_Ajax class
  */
 class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
 {
+
     /**
      * Initialize the fixture.
      *
@@ -56,11 +57,11 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
     public function testGetQuery()
     {
         $sOxid = '_testOrder';
-        modConfig::setRequestParameter( "oxid", $sOxid );
-        $oView = oxNew( 'actions_order_ajax' );
+        modConfig::setRequestParameter("oxid", $sOxid);
+        $oView = oxNew('actions_order_ajax');
         
         
-            $this->assertEquals( "from oxv_oxselectlist_de left join oxobject2selectlist on oxobject2selectlist.oxselnid = oxv_oxselectlist_de.oxid where oxobjectid = '$sOxid'", trim( $oView->UNITgetQuery() ) );
+            $this->assertEquals("from oxv_oxselectlist_de left join oxobject2selectlist on oxobject2selectlist.oxselnid = oxv_oxselectlist_de.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
     }
     
     /**
@@ -70,8 +71,8 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
      */
     public function testGetSorting()
     {        
-        $oView = oxNew( 'actions_order_ajax' );
-        $this->assertEquals( "order by oxobject2selectlist.oxsort", trim( $oView->UNITgetSorting() ) );
+        $oView = oxNew('actions_order_ajax');
+        $this->assertEquals("order by oxobject2selectlist.oxsort", trim($oView->UNITgetSorting()));
     }
     
     /**
@@ -81,15 +82,15 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
      */
     public function testSetSorting()
     {
-        modconfig::getInstance()->setConfigParam( "iDebug", 1 );
+        modconfig::getInstance()->setConfigParam("iDebug", 1);
         
         
             $sViewTable = "oxv_oxselectlist_de";
         
-        $aData = array( 'startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' =>array(), 'totalRecords' => 0);
+        $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' => array(), 'totalRecords' => 0);
 
-        $oView = $this->getMock( "actions_order_ajax", array( "_output" ) );
-        $oView->expects( $this->any() )->method( '_output')->with( $this->equalTo( json_encode( $aData ) ) );
+        $oView = $this->getMock("actions_order_ajax", array("_output"));
+        $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
     }
     
@@ -101,16 +102,16 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
     public function testSetSortingOxid()
     {
         $sOxid = '_testOrder';
-        modConfig::setRequestParameter( "oxid", $sOxid );
-        modconfig::getInstance()->setConfigParam( "iDebug", 1 );
+        modConfig::setRequestParameter("oxid", $sOxid);
+        modconfig::getInstance()->setConfigParam("iDebug", 1);
         
         
             $sViewTable = "oxv_oxselectlist_de";
         
-        $aData = array( 'startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' =>array(), 'totalRecords' => 0);
+        $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' => array(), 'totalRecords' => 0);
 
-        $oView = $this->getMock( "actions_order_ajax", array( "_output" ) );
-        $oView->expects( $this->any() )->method( '_output')->with( $this->equalTo( json_encode( $aData ) ) );
+        $oView = $this->getMock("actions_order_ajax", array("_output"));
+        $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
     }
     

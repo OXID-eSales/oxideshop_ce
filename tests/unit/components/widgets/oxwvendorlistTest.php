@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwVendorList class
  */
 class Unit_Components_Widgets_oxwVendorListTest extends OxidTestCase
 {
+
     /**
      * Testing oxwVendorList::render()
      *
@@ -36,7 +37,7 @@ class Unit_Components_Widgets_oxwVendorListTest extends OxidTestCase
     public function testRender()
     {
         $oVendorList = new oxwVendorList();
-        $this->assertEquals( 'widget/footer/vendorlist.tpl', $oVendorList->render() );
+        $this->assertEquals('widget/footer/vendorlist.tpl', $oVendorList->render());
     }
 
     /**
@@ -48,8 +49,8 @@ class Unit_Components_Widgets_oxwVendorListTest extends OxidTestCase
     {
         $oVendorList = new oxwVendorList();
         $oList = $oVendorList->getVendorlist();
-        $this->assertTrue( $oList instanceof oxvendorlist);
-        $this->assertEquals( 3, $oList->count() );
+        $this->assertTrue($oList instanceof oxvendorlist);
+        $this->assertEquals(3, $oList->count());
     }
 
 }

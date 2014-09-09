@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Maintenance_moduleSimilarClassTest extends OxidTestCase
 {
@@ -31,12 +31,12 @@ class Unit_Maintenance_moduleSimilarClassTest extends OxidTestCase
      */
     public function testModuleSimilarName()
     {
-        oxUtilsObject::getInstance()->setModuleVar( 'aModules', array('oxbasketitem'=>'testbasketitem', 'oxbasket'=>'testbasket') );
+        oxUtilsObject::getInstance()->setModuleVar('aModules', array('oxbasketitem' => 'testbasketitem', 'oxbasket' => 'testbasket'));
 
-        include_once dirname(__FILE__).'/modules/testbasket.php';
+        include_once dirname(__FILE__) . '/modules/testbasket.php';
 
         $oTestMod = oxNew('testbasket');
-        $this->assertEquals( "Hi!", $oTestMod->sayHi() );
+        $this->assertEquals("Hi!", $oTestMod->sayHi());
     }
 
     /**
@@ -45,8 +45,10 @@ class Unit_Maintenance_moduleSimilarClassTest extends OxidTestCase
     public function testModuleSimilarName_ClassNotExist()
     {
         $this->setExpectedException('oxSystemComponentException');
-        modConfig::getInstance()->setConfigParam('aModules', array(
-            'oxbasketitem' => 'test/testbasket'));
+        modConfig::getInstance()->setConfigParam(
+            'aModules', array(
+                             'oxbasketitem' => 'test/testbasket')
+        );
         $oBask = oxNew('testbaske');
     }
- }
+}

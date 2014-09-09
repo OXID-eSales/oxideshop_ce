@@ -24,7 +24,6 @@
  * Class Unit_Core_oxOnlineLicenseCheckCallerTest
  *
  * @covers oxOnlineLicenseCheckCaller
- * @covers oxOnlineCaller
  * @covers oxOnlineLicenseCheckRequest
  * @covers oxOnlineModulesNotifierRequest
  */
@@ -33,39 +32,35 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
 
     public function testIfCorrectRequestPassedToXmlFormatter()
     {
-        /** @var oxOnlineLicenseCheckRequest $oRequest */
-        $oRequest = $this->getMock('oxOnlineLicenseCheckRequest', array(), array(), '', false);
-
-        $oCurl = $this->getMock('oxCurl', array('execute'));
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->_getValidResponseXml()));
-        /** @var oxCurl $oCurl */
+        $oRequest = new oxOnlineLicenseCheckRequest();
+        $oRequest->keys = new stdClass();
+        $oRequest->keys->key = '_testKey';
 
         $oSimpleXml = $this->getMock('oxSimpleXml');
         $oSimpleXml->expects($this->atLeastOnce())->method('objectToXml')->with($oRequest, 'olcRequest');
         /** @var oxSimpleXml $oSimpleXml */
 
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
+        $oCallerStub = $this->getMock('oxOnlineCaller', array('call'), array(), '', false);
+        $oCallerStub->expects($this->once())->method('call')->will($this->returnValue($this->_getValidResponseXml()));
+        /** @var oxOnlineCaller $oCallerStub */
 
-        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCallerStub, $oSimpleXml);
         $oOnlineLicenseCaller->doRequest($oRequest);
     }
 
     public function testServiceCallWithCorrectRequest()
     {
+        $sWebServiceUrl = 'https://olc.oxid-esales.com/check.php';
+
         $oSimpleXml = $this->getMock('oxSimpleXml');
-        $oSimpleXml->expects($this->any())->method('objectToXml')->will($this->returnValue('formed_xml'));
+        $oSimpleXml->expects($this->atLeastOnce())->method('objectToXml')->will($this->returnValue('formed_xml'));
         /** @var oxSimpleXml $oSimpleXml */
 
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
+        $oCaller = $this->getMock('oxOnlineCaller', array('call'), array(), '', false);
+        $oCaller->expects($this->once())->method('call')->with($sWebServiceUrl, 'formed_xml')->will($this->returnValue($this->_getValidResponseXml()));
+        /** @var oxOnlineCaller $oCaller */
 
-        $oCurl = $this->getMock('oxCurl', array('execute', 'setParameters'));
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->_getValidResponseXml()));
-        $oCurl->expects($this->once())->method('setParameters')->with(array('xmlRequest' => 'formed_xml'));
-        /** @var oxCurl $oCurl */
-
-        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCaller, $oSimpleXml);
         $oRequest = new oxOnlineLicenseCheckRequest();
         $oOnlineLicenseCaller->doRequest($oRequest);
     }
@@ -92,18 +87,14 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
     {
         $this->setExpectedException('oxException', $sMessage);
 
-        $oCurl = $this->getMock('oxCurl', array('execute'));
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sResponseXml));
-        /** @var oxCurl $oCurl */
-
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));
-        $oEmailBuilder->expects($this->any())->method('build');
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
+        $oCaller = $this->getMock('oxOnlineCaller', array('call'), array(), '', false);
+        $oCaller->expects($this->once())->method('call')->will($this->returnValue($sResponseXml));
+        /** @var oxOnlineCaller $oCaller */
 
         $oSimpleXml = $this->getMock('oxSimpleXml');
         /** @var oxSimpleXml $oSimpleXml */
 
-        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCaller, $oSimpleXml);
         $oRequest = new oxOnlineLicenseCheckRequest();
         $oOnlineLicenseCaller->doRequest($oRequest);
     }
@@ -114,46 +105,17 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
         $oExpectedResponse->code = 0;
         $oExpectedResponse->message = 'ACK';
 
-        $oCurl = $this->getMock('oxCurl', array('execute'));
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->_getValidResponseXml()));
-        /** @var oxCurl $oCurl */
+        $oCaller = $this->getMock('oxOnlineCaller', array('call'), array(), '', false);
+        $oCaller->expects($this->once())->method('call')->will($this->returnValue($this->_getValidResponseXml()));
+        /** @var oxOnlineCaller $oCaller */
 
         $oSimpleXml = $this->getMock('oxSimpleXml');
         /** @var oxSimpleXml $oSimpleXml */
 
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));
-        $oEmailBuilder->expects($this->any())->method('build');
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
-
-        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCaller, $oSimpleXml);
         $oRequest = new oxOnlineLicenseCheckRequest();
 
         $this->assertEquals($oExpectedResponse, $oOnlineLicenseCaller->doRequest($oRequest));
-    }
-
-    public function testCheckIfKeyWasRemovedWhenSendEmail()
-    {
-        $oCurl = $this->getMock('oxCurl', array('execute'));
-        $oCurl->expects($this->any())->method('execute')->will($this->throwException(new Exception()));
-        /** @var oxCurl $oCurl */
-
-        $oEmail = $this->getMock('oxEmail', array('send'));
-        $oEmail->expects($this->any())->method('send');
-        /** @var oxEmail $oEmail */
-
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));
-        $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
-
-        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
-        $oRequest = new oxOnlineLicenseCheckRequest();
-        $oRequest->keys = '_testKeys';
-
-        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 5);
-        $this->setExpectedException('oxException', 'OLC_ERROR_RESPONSE_NOT_VALID');
-        $oOnlineLicenseCaller->doRequest($oRequest);
-
-        $this->assertEquals($oCurl->getParameters(), $oRequest->keys);
     }
 
     /**
@@ -161,11 +123,11 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
      */
     protected function _getValidResponseXml()
     {
-        $sResponse = '<?xml version="1.0" encoding="utf-8"?>'.PHP_EOL;
-        $sResponse.= '<olc>';
-        $sResponse.= '<code>0</code>';
-        $sResponse.= '<message>ACK</message>';
-        $sResponse.= '</olc>'.PHP_EOL;
+        $sResponse = '<?xml version="1.0" encoding="utf-8"?>' . PHP_EOL;
+        $sResponse .= '<olc>';
+        $sResponse .= '<code>0</code>';
+        $sResponse .= '<message>ACK</message>';
+        $sResponse .= '</olc>' . PHP_EOL;
 
         return $sResponse;
     }

@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Test adminView module.
  */
 class testAdminView extends oxAdminView
 {
+
     /**
      * Add posibility to cleanup static cache.
      *
@@ -44,6 +45,7 @@ class testAdminView extends oxAdminView
  */
 class Unit_Admin_oxAdminViewTest extends OxidTestCase
 {
+
     /**
      * Tear down the fixture.
      *
@@ -72,22 +74,22 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     public function testGetServiceProtocol()
     {
         // SSL on
-        $oConfig = $this->getMock( "oxconfig", array( "isSsl" ) );
-        $oConfig->expects( $this->once() )->method( 'isSsl' )->will( $this->returnValue( true ) );
+        $oConfig = $this->getMock("oxconfig", array("isSsl"));
+        $oConfig->expects($this->once())->method('isSsl')->will($this->returnValue(true));
 
-        $oAdminView = $this->getMock( "oxadminview", array( "getConfig" ), array(), '', false );
-        $oAdminView->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
+        $oAdminView = $this->getMock("oxadminview", array("getConfig"), array(), '', false);
+        $oAdminView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertEquals( "https", $oAdminView->UNITgetServiceProtocol() );
+        $this->assertEquals("https", $oAdminView->UNITgetServiceProtocol());
 
         // SSL off
-        $oConfig = $this->getMock( "oxconfig", array( "isSsl" ) );
-        $oConfig->expects( $this->once() )->method( 'isSsl' )->will( $this->returnValue( false ) );
+        $oConfig = $this->getMock("oxconfig", array("isSsl"));
+        $oConfig->expects($this->once())->method('isSsl')->will($this->returnValue(false));
 
-        $oAdminView = $this->getMock( "oxadminview", array( "getConfig" ), array(), '', false );
-        $oAdminView->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
+        $oAdminView = $this->getMock("oxadminview", array("getConfig"), array(), '', false);
+        $oAdminView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertEquals( "http", $oAdminView->UNITgetServiceProtocol() );
+        $this->assertEquals("http", $oAdminView->UNITgetServiceProtocol());
     }
 
     /**
@@ -102,24 +104,24 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
             $sPref = 'CE';
 
         // no lang abbr
-        $this->getProxyClass( "oxadminview" );
-        $oAdminView = $this->getMock( "oxadminviewPROXY", array( "_getServiceProtocol", "_getCountryByCode", "_getShopVersionNr" ), array(), '', false );
-        $oAdminView->expects( $this->any() )->method( '_getServiceProtocol' )->will( $this->returnValue( "testprotocol" ) );
-        $oAdminView->expects( $this->any() )->method( '_getCountryByCode' )->will( $this->returnValue( "testcountrycode" ) );
-        $oAdminView->expects( $this->any() )->method( '_getShopVersionNr' )->will( $this->returnValue( "testshopversion" ) );
+        $this->getProxyClass("oxadminview");
+        $oAdminView = $this->getMock("oxadminviewPROXY", array("_getServiceProtocol", "_getCountryByCode", "_getShopVersionNr"), array(), '', false);
+        $oAdminView->expects($this->any())->method('_getServiceProtocol')->will($this->returnValue("testprotocol"));
+        $oAdminView->expects($this->any())->method('_getCountryByCode')->will($this->returnValue("testcountrycode"));
+        $oAdminView->expects($this->any())->method('_getShopVersionNr')->will($this->returnValue("testshopversion"));
 
-        modSession::getInstance()->setVar( 'tpllanguage', 'de' );
+        modSession::getInstance()->setVar('tpllanguage', 'de');
 
         $sTestUrl = "testprotocol://admin.oxid-esales.com/$sPref/testshopversion/testcountrycode/de/";
-        $this->assertEquals( $sTestUrl, $oAdminView->getServiceUrl() );
+        $this->assertEquals($sTestUrl, $oAdminView->getServiceUrl());
 
-        $oAdminView->setNonPublicVar( '_sServiceUrl', null );
+        $oAdminView->setNonPublicVar('_sServiceUrl', null);
         $sTestUrl = "testprotocol://admin.oxid-esales.com/$sPref/testshopversion/testcountrycode/en/";
-        $this->assertEquals( $sTestUrl, $oAdminView->getServiceUrl('fr') );
+        $this->assertEquals($sTestUrl, $oAdminView->getServiceUrl('fr'));
 
-        $oAdminView->setNonPublicVar( '_sServiceUrl', null );
+        $oAdminView->setNonPublicVar('_sServiceUrl', null);
         $sTestUrl = "testprotocol://admin.oxid-esales.com/$sPref/testshopversion/testcountrycode/en/";
-        $this->assertEquals( $sTestUrl, $oAdminView->getServiceUrl( "en" ) );
+        $this->assertEquals($sTestUrl, $oAdminView->getServiceUrl("en"));
     }
 
     /**
@@ -131,7 +133,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'getPreviewId', '{ return "123"; }');
         $oAdminView = new oxadminview();
-        $this->assertEquals( "123", $oAdminView->getPreviewId() );
+        $this->assertEquals("123", $oAdminView->getPreviewId());
     }
 
     /**
@@ -141,11 +143,11 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testInit()
     {
-        $oAdminView = $this->getMock( 'oxadminview', array( '_authorize' ) );
-        $oAdminView->expects( $this->once() )->method( '_authorize' )->will( $this->returnValue( true ) );
+        $oAdminView = $this->getMock('oxadminview', array('_authorize'));
+        $oAdminView->expects($this->once())->method('_authorize')->will($this->returnValue(true));
         $oAdminView->init();
 
-            $this->assertEquals( oxRegistry::getSession()->getVariable( 'malladmin' ), $oAdminView->getViewDataElement( 'malladmin' ) );
+            $this->assertEquals(oxRegistry::getSession()->getVariable('malladmin'), $oAdminView->getViewDataElement('malladmin'));
     }
 
     /**
@@ -155,16 +157,16 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testSetupNavigation()
     {
-        $oNavigation = $this->getMock( 'oxnavigationtree', array( 'getListUrl', 'getEditUrl' ) );
-        $oNavigation->expects( $this->once() )->method( 'getListUrl' )->with( $this->equalTo( 'xxx' ) )->will( $this->returnValue( 'listurl' ) );
-        $oNavigation->expects( $this->once() )->method( 'getEditUrl' )->with( $this->equalTo( 'xxx' ) )->will( $this->returnValue( 'editurl' ) );
+        $oNavigation = $this->getMock('oxnavigationtree', array('getListUrl', 'getEditUrl'));
+        $oNavigation->expects($this->once())->method('getListUrl')->with($this->equalTo('xxx'))->will($this->returnValue('listurl'));
+        $oNavigation->expects($this->once())->method('getEditUrl')->with($this->equalTo('xxx'))->will($this->returnValue('editurl'));
 
-        $oAdminView = $this->getMock( 'oxadminview', array( 'getNavigation' ) );
-        $oAdminView->expects( $this->once() )->method( 'getNavigation' )->will( $this->returnValue( $oNavigation ) );
+        $oAdminView = $this->getMock('oxadminview', array('getNavigation'));
+        $oAdminView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
 
-        $oAdminView->UNITsetupNavigation( 'xxx' );
-        $this->assertEquals( 'listurl', $oAdminView->getViewDataElement( 'listurl' ) );
-        $this->assertEquals( 'editurl', $oAdminView->getViewDataElement( 'editurl' ) );
+        $oAdminView->UNITsetupNavigation('xxx');
+        $this->assertEquals('listurl', $oAdminView->getViewDataElement('listurl'));
+        $this->assertEquals('editurl', $oAdminView->getViewDataElement('editurl'));
     }
 
     /**
@@ -176,8 +178,9 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     {
 
         $oAdminView = new oxadminview();
-        $this->assertTrue( $oAdminView->UNITallowAdminEdit( 'xxx' ) );
+        $this->assertTrue($oAdminView->UNITallowAdminEdit('xxx'));
     }
+
 
 
 
@@ -189,13 +192,13 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testGetViewId()
     {
-        $oNavigation = $this->getMock( 'oxnavigationtree', array( 'getClassId' ) );
-        $oNavigation->expects( $this->once() )->method( 'getClassId' )->will( $this->returnValue( 'xxx' ) );
+        $oNavigation = $this->getMock('oxnavigationtree', array('getClassId'));
+        $oNavigation->expects($this->once())->method('getClassId')->will($this->returnValue('xxx'));
 
-        $oAdminView = $this->getMock( 'oxadminview', array( 'getNavigation' ) );
-        $oAdminView->expects( $this->once() )->method( 'getNavigation' )->will( $this->returnValue( $oNavigation ) );
+        $oAdminView = $this->getMock('oxadminview', array('getNavigation'));
+        $oAdminView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
 
-        $this->assertEquals( 'xxx', $oAdminView->getViewId() );
+        $this->assertEquals('xxx', $oAdminView->getViewId());
     }
 
     /**
@@ -205,16 +208,16 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testResetContentCached()
     {
-        $oAdminView = oxNew( 'oxAdminView' );
+        $oAdminView = oxNew('oxAdminView');
 
             oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
-        modConfig::getInstance()->setConfigParam( "blClearCacheOnLogout", null );
+        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", null);
 
-        $oAdminView = oxNew( 'oxAdminView' );
+        $oAdminView = oxNew('oxAdminView');
         $oAdminView->resetContentCache();
 
-        $this->assertEquals( 'resetDone', $_GET["testReset"] );
+        $this->assertEquals('resetDone', $_GET["testReset"]);
     }
 
     /**
@@ -224,16 +227,16 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testResetContentCachedWhenResetOnLogoutEnabled()
     {
-        $oAdminView = oxNew( 'oxAdminView' );
+        $oAdminView = oxNew('oxAdminView');
 
             oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
-        modConfig::getInstance()->setConfigParam( "blClearCacheOnLogout", 1 );
+        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", 1);
 
-        $oAdminView = oxNew( 'oxAdminView' );
+        $oAdminView = oxNew('oxAdminView');
         $oAdminView->resetContentCache();
 
-        $this->assertEquals( null, $_GET["testReset"] );
+        $this->assertEquals(null, $_GET["testReset"]);
     }
 
     /**
@@ -244,15 +247,15 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testResetContentCachedWhenResetOnLogoutEnabledAndForceResetIsOn()
     {
-        $oAdminView = oxNew( 'oxAdminView' );
+        $oAdminView = oxNew('oxAdminView');
 
             oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
-        modConfig::getInstance()->setConfigParam( "blClearCacheOnLogout", 1 );
+        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", 1);
 
-        $oAdminView->resetContentCache( true );
+        $oAdminView->resetContentCache(true);
 
-        $this->assertEquals( 'resetDone', $_GET["testReset"] );
+        $this->assertEquals('resetDone', $_GET["testReset"]);
     }
 
     /**
@@ -262,22 +265,22 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testResetCounter()
     {
-        modConfig::getInstance()->setConfigParam( "blClearCacheOnLogout", null );
+        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", null);
         oxTestModules::addFunction('oxUtilsCount', 'resetPriceCatArticleCount', '{ $_GET["testReset"]["priceCatCount"] = $aA[0]; }');
         oxTestModules::addFunction('oxUtilsCount', 'resetCatArticleCount', '{ $_GET["testReset"]["catCount"] = $aA[0]; }');
         oxTestModules::addFunction('oxUtilsCount', 'resetVendorArticleCount', '{ $_GET["testReset"]["vendorCount"] = $aA[0]; }');
         oxTestModules::addFunction('oxUtilsCount', 'resetManufacturerArticleCount', '{ $_GET["testReset"]["manufacturerCount"] = $aA[0]; }');
 
-        $oAdminView = oxNew( 'oxAdminView' );
-        $oAdminView->resetCounter( 'priceCatArticle', 'testValue' );
-        $oAdminView->resetCounter( 'catArticle', 'testValue' );
-        $oAdminView->resetCounter( 'vendorArticle', 'testValue' );
-        $oAdminView->resetCounter( 'manufacturerArticle', 'testValue' );
+        $oAdminView = oxNew('oxAdminView');
+        $oAdminView->resetCounter('priceCatArticle', 'testValue');
+        $oAdminView->resetCounter('catArticle', 'testValue');
+        $oAdminView->resetCounter('vendorArticle', 'testValue');
+        $oAdminView->resetCounter('manufacturerArticle', 'testValue');
 
-        $this->assertEquals( 'testValue', $_GET["testReset"]["priceCatCount"] );
-        $this->assertEquals( 'testValue', $_GET["testReset"]["catCount"] );
-        $this->assertEquals( 'testValue', $_GET["testReset"]["vendorCount"] );
-        $this->assertEquals( 'testValue', $_GET["testReset"]["manufacturerCount"] );
+        $this->assertEquals('testValue', $_GET["testReset"]["priceCatCount"]);
+        $this->assertEquals('testValue', $_GET["testReset"]["catCount"]);
+        $this->assertEquals('testValue', $_GET["testReset"]["vendorCount"]);
+        $this->assertEquals('testValue', $_GET["testReset"]["manufacturerCount"]);
     }
 
     /**
@@ -287,29 +290,29 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testResetCounterWhenResetOnLogoutEnabled()
     {
-        modConfig::getInstance()->setConfigParam( "blClearCacheOnLogout", 1 );
+        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", 1);
 
         oxTestModules::addFunction('oxUtilsCount', 'resetPriceCatArticleCount', '{ $_GET["testReset"]["priceCatCount"] = $aA[0]; }');
         oxTestModules::addFunction('oxUtilsCount', 'resetCatArticleCount', '{ $_GET["testReset"]["catCount"] = $aA[0]; }');
         oxTestModules::addFunction('oxUtilsCount', 'resetVendorArticleCount', '{ $_GET["testReset"]["vendorCount"] = $aA[0]; }');
         oxTestModules::addFunction('oxUtilsCount', 'resetManufacturerArticleCount', '{ $_GET["testReset"]["manufacturerCount"] = $aA[0]; }');
 
-        $oAdminView = oxNew( 'oxAdminView' );
-        $oAdminView->resetCounter( 'priceCatArticle', 'testValue' );
-        $oAdminView->resetCounter( 'catArticle', 'testValue' );
-        $oAdminView->resetCounter( 'vendorArticle', 'testValue' );
-        $oAdminView->resetCounter( 'manufacturerArticle', 'testValue' );
+        $oAdminView = oxNew('oxAdminView');
+        $oAdminView->resetCounter('priceCatArticle', 'testValue');
+        $oAdminView->resetCounter('catArticle', 'testValue');
+        $oAdminView->resetCounter('vendorArticle', 'testValue');
+        $oAdminView->resetCounter('manufacturerArticle', 'testValue');
 
-        $this->assertEquals( null, $_GET["testReset"]["priceCatCount"] );
-        $this->assertEquals( null, $_GET["testReset"]["catCount"] );
-        $this->assertEquals( null, $_GET["testReset"]["vendorCount"] );
-        $this->assertEquals( null, $_GET["testReset"]["manufacturerCount"] );
+        $this->assertEquals(null, $_GET["testReset"]["priceCatCount"]);
+        $this->assertEquals(null, $_GET["testReset"]["catCount"]);
+        $this->assertEquals(null, $_GET["testReset"]["vendorCount"]);
+        $this->assertEquals(null, $_GET["testReset"]["manufacturerCount"]);
     }
 
     public function testAddGlobalParamsAddsSid()
     {
-        $oUU = $this->getMock( 'oxUtilsUrl', array( 'processUrl' ) );
-        $oUU->expects( $this->any() )->method( 'processUrl' )->will( $this->returnValue( 'sess:url' ) );
+        $oUU = $this->getMock('oxUtilsUrl', array('processUrl'));
+        $oUU->expects($this->any())->method('processUrl')->will($this->returnValue('sess:url'));
         //modInstances::addMod('oxUtilsUrl', $oUU);
         oxTestModules::addModuleObject('oxUtilsUrl', $oUU);
 
@@ -317,8 +320,8 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
         $oAView->addGlobalParams();
         $oViewCfg = $oAView->getViewConfig();
 
-        $this->assertEquals( 'sess:url', $oViewCfg->getSelfLink() );
-        $this->assertEquals( 'sess:url', $oViewCfg->getAjaxLink() );
+        $this->assertEquals('sess:url', $oViewCfg->getSelfLink());
+        $this->assertEquals('sess:url', $oViewCfg->getAjaxLink());
 
     }
 
@@ -327,17 +330,17 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
         oxTestModules::addFunction('oxUtils', 'checkAccessRights', '{return true;}');
         oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{return array("asd");}');
 
-        $oSess = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
-        $oSess->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( true ) );
-        $oAView = $this->getMock( 'oxAdminView', array( 'getSession' ) );
-        $oAView->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oSess ) );
+        $oSess = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSess->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oAView = $this->getMock('oxAdminView', array('getSession'));
+        $oAView->expects($this->once())->method('getSession')->will($this->returnValue($oSess));
         $this->assertEquals(true, $oAView->UNITauthorize());
 
 
-        $oSess = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
-        $oSess->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( false ) );
-        $oAView = $this->getMock( 'oxAdminView', array( 'getSession' ) );
-        $oAView->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oSess ) );
+        $oSess = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSess->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(false));
+        $oAView = $this->getMock('oxAdminView', array('getSession'));
+        $oAView->expects($this->once())->method('getSession')->will($this->returnValue($oSess));
         $this->assertEquals(false, $oAView->UNITauthorize());
     }
 
@@ -364,7 +367,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     {
         $oLang = $this->getMock('oxLang', array('getLanguageIds'));
         $oLang->expects($this->any())->method('getLanguageIds')->will($this->returnValue(array('de')));
-        oxTestModules::addModuleObject( 'oxLang', $oLang );
+        oxTestModules::addModuleObject('oxLang', $oLang);
 
         $oSubj = new oxadminView();
         $sTestCode = "de";
@@ -379,11 +382,11 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     public function testGetCountryByCodeEnglishDefault()
     {
         //faking language array
-        $aLangArray = array("0"=>"en", "1" => "de");
+        $aLangArray = array("0" => "en", "1" => "de");
 
         $oLangMock = $this->getMock("oxLang", array("getLanguageIds"));
         $oLangMock->expects($this->atLeastOnce())->method("getLanguageIds")->will($this->returnValue($aLangArray));
-        oxTestModules::addModuleObject( 'oxLang', $oLangMock );
+        oxTestModules::addModuleObject('oxLang', $oLangMock);
 
         $oSubj = $this->getProxyClass("oxadminView");
         $sTestCode = "de";
@@ -397,23 +400,23 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testSetEditObjectIdGetEditObjectId()
     {
-        modConfig::setRequestParameter( "oxid", null );
-        modSession::getInstance()->setVar( "saved_oxid", "testSessId" );
+        modConfig::setRequestParameter("oxid", null);
+        modSession::getInstance()->setVar("saved_oxid", "testSessId");
 
         $oView = new oxAdminView();
-        $this->assertEquals( "testSessId", $oView->getEditObjectId() );
+        $this->assertEquals("testSessId", $oView->getEditObjectId());
 
-        modConfig::setRequestParameter( "oxid", "testRequestId" );
-        modSession::getInstance()->setVar( "saved_oxid", "testSessId" );
-
-        $oView = new oxAdminView();
-        $this->assertEquals( "testRequestId", $oView->getEditObjectId() );
-
-        modConfig::setRequestParameter( "oxid", "testRequestId" );
-        modSession::getInstance()->setVar( "saved_oxid", "testSessId" );
+        modConfig::setRequestParameter("oxid", "testRequestId");
+        modSession::getInstance()->setVar("saved_oxid", "testSessId");
 
         $oView = new oxAdminView();
-        $oView->setEditObjectId( "testSetId" );
-        $this->assertEquals( "testSetId", $oView->getEditObjectId() );
+        $this->assertEquals("testRequestId", $oView->getEditObjectId());
+
+        modConfig::setRequestParameter("oxid", "testRequestId");
+        modSession::getInstance()->setVar("saved_oxid", "testSessId");
+
+        $oView = new oxAdminView();
+        $oView->setEditObjectId("testSetId");
+        $this->assertEquals("testSetId", $oView->getEditObjectId());
     }
 }

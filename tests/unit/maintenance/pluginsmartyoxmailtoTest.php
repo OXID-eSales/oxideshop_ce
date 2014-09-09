@@ -20,34 +20,35 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/function.oxmailto.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
+require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'core/smarty/plugins/function.oxmailto.php';
 
 class Unit_Maintenance_pluginSmartyOxMailToTest extends OxidTestCase
 {
+
     public function testSmartyFunctionOxMailTo()
     {
         $aParams = array();
-        $aParams['encode']     = 'javascript';
-        $aParams['address']    = 'admin@myoxideshop.com';
-        $aParams['cc']         = 'cc@myoxideshop.com';
-        $aParams['bcc']        = 'bcc@myoxideshop.com';
+        $aParams['encode'] = 'javascript';
+        $aParams['address'] = 'admin@myoxideshop.com';
+        $aParams['cc'] = 'cc@myoxideshop.com';
+        $aParams['bcc'] = 'bcc@myoxideshop.com';
         $aParams['followupto'] = 'followupto@myoxideshop.com';
-        $aParams['subject']    = 'subject';
+        $aParams['subject'] = 'subject';
         $aParams['newsgroups'] = 'newsgroups';
-        $aParams['extra']      = 'extra';
-        $aParams['text']       = 'text';
+        $aParams['extra'] = 'extra';
+        $aParams['text'] = 'text';
 
         $oSmarty = new Smarty();
 
-        $sMailTo  = "admin@myoxideshop.com?cc=cc@myoxideshop.com&bcc=bcc@myoxideshop.com&followupto=followupto@myoxideshop.com";
+        $sMailTo = "admin@myoxideshop.com?cc=cc@myoxideshop.com&bcc=bcc@myoxideshop.com&followupto=followupto@myoxideshop.com";
         $sMailTo .= "&subject=subject&newsgroups=newsgroups";
 
-        $sString = 'document.write(\'<a href="mailto:'.$sMailTo.'" extra>text</a>\');';
-        $sEncodedString = "%".wordwrap( current( unpack( "H*", $sString ) ), 2, "%", true );
-        $sExpected = '<script type="text/javascript">eval(decodeURIComponent(\''.$sEncodedString.'\'))</script>';
+        $sString = 'document.write(\'<a href="mailto:' . $sMailTo . '" extra>text</a>\');';
+        $sEncodedString = "%" . wordwrap(current(unpack("H*", $sString)), 2, "%", true);
+        $sExpected = '<script type="text/javascript">eval(decodeURIComponent(\'' . $sEncodedString . '\'))</script>';
 
-        $this->assertEquals( $sExpected, smarty_function_oxmailto( $aParams, $oSmarty ) );
+        $this->assertEquals($sExpected, smarty_function_oxmailto($aParams, $oSmarty));
     }
 }

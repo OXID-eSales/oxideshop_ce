@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Delivery_Main class
  */
 class Unit_Admin_DeliveryMainTest extends OxidTestCase
 {
+
     /**
      * Delivery_Main::Render() test case
      *
@@ -35,15 +36,15 @@ class Unit_Admin_DeliveryMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        oxTestModules::addFunction( "oxdelivery", "isDerived", "{return true;}" );
-        modConfig::setRequestParameter( "oxid", "testId" );
+        oxTestModules::addFunction("oxdelivery", "isDerived", "{return true;}");
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Delivery_Main();
-        $this->assertEquals( 'delivery_main.tpl', $oView->render() );
+        $this->assertEquals('delivery_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxdelivery );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxdelivery);
     }
 
     /**
@@ -53,14 +54,14 @@ class Unit_Admin_DeliveryMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Delivery_Main();
-        $this->assertEquals( 'delivery_main.tpl', $oView->render() );
+        $this->assertEquals('delivery_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertTrue(isset($aViewData['oxid']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
 
     /**
@@ -70,19 +71,20 @@ class Unit_Admin_DeliveryMainTest extends OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction( 'oxdelivery', 'save', '{ throw new Exception( "save" ); }');
-        oxTestModules::addFunction( 'oxdelivery', 'isDerived', '{ return false; }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxdelivery', 'save', '{ throw new Exception( "save" ); }');
+        oxTestModules::addFunction('oxdelivery', 'isDerived', '{ return false; }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new Delivery_Main();
             $oView->save();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Delivery_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Delivery_Main::save()");
+
             return;
         }
-        $this->fail( "error in Delivery_Main::save()" );
+        $this->fail("error in Delivery_Main::save()");
     }
 
     /**
@@ -92,18 +94,19 @@ class Unit_Admin_DeliveryMainTest extends OxidTestCase
      */
     public function testSaveinnlang()
     {
-        oxTestModules::addFunction( 'oxdelivery', 'save', '{ throw new Exception( "save" ); }');
-        oxTestModules::addFunction( 'oxdelivery', 'isDerived', '{ return false; }');
-        modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
+        oxTestModules::addFunction('oxdelivery', 'save', '{ throw new Exception( "save" ); }');
+        oxTestModules::addFunction('oxdelivery', 'isDerived', '{ return false; }');
+        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
             $oView = new Delivery_Main();
             $oView->saveinnlang();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "save", $oExcp->getMessage(), "error in Delivery_Main::save()" );
+        } catch (Exception $oExcp) {
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Delivery_Main::save()");
+
             return;
         }
-        $this->fail( "error in Delivery_Main::save()" );
+        $this->fail("error in Delivery_Main::save()");
     }
 }

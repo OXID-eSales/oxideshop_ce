@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwTagCloud class
  */
 class Unit_Components_Widgets_oxwTagCloudTest extends OxidTestCase
 {
+
     /**
      * Testing oxwTagCloud::getTagCloudManager()
      *
@@ -36,7 +37,7 @@ class Unit_Components_Widgets_oxwTagCloudTest extends OxidTestCase
     public function testGetTagCloudManager()
     {
         $oTagCloud = new oxwTagCloud();
-        $this->assertTrue( $oTagCloud->getTagCloudManager() instanceof oxTagCloud );
+        $this->assertTrue($oTagCloud->getTagCloudManager() instanceof oxTagCloud);
     }
 
     /**
@@ -47,7 +48,7 @@ class Unit_Components_Widgets_oxwTagCloudTest extends OxidTestCase
     public function testRender()
     {
         $oTagCloud = new oxwTagCloud();
-        $this->assertEquals( 'widget/sidebar/tags.tpl', $oTagCloud->render() );
+        $this->assertEquals('widget/sidebar/tags.tpl', $oTagCloud->render());
     }
 
     /**
@@ -58,8 +59,8 @@ class Unit_Components_Widgets_oxwTagCloudTest extends OxidTestCase
     public function testDisplayInBox()
     {
         $oTagCloud = new oxwTagCloud();
-        $oTagCloud->setViewParameters( array("blShowBox" => 1) );
-        $this->assertTrue( $oTagCloud->displayInBox() );
+        $oTagCloud->setViewParameters(array("blShowBox" => 1));
+        $this->assertTrue($oTagCloud->displayInBox());
     }
 
     /**
@@ -70,7 +71,7 @@ class Unit_Components_Widgets_oxwTagCloudTest extends OxidTestCase
     public function testIsMoreTagsVisible()
     {
         $oTagCloud = new oxwTagCloud();
-        $this->assertTrue( $oTagCloud->isMoreTagsVisible() );
+        $this->assertTrue($oTagCloud->isMoreTagsVisible());
     }
 
 }

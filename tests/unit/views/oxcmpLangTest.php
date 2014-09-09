@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Language component test
@@ -29,6 +29,7 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 
 class Unit_Views_oxcmpLangTest extends OxidTestCase
 {
+
     /**
      * Initialize the fixture.
      *
@@ -75,8 +76,8 @@ class Unit_Views_oxcmpLangTest extends OxidTestCase
         $sExpLink0 = modConfig::getInstance()->getShopCurrentURL(0) . "cl=basket";
         $sExpLink1 = modConfig::getInstance()->getShopCurrentURL(0) . "cl=basket&amp;lang=1";
 
-        $this->assertEquals( $sExpLink0, $oLang[0]->link );
-        $this->assertEquals( $sExpLink1, $oLang[1]->link );
+        $this->assertEquals($sExpLink0, $oLang[0]->link);
+        $this->assertEquals($sExpLink1, $oLang[1]->link);
     }
 
     public function testInitSetLink()
@@ -95,8 +96,8 @@ class Unit_Views_oxcmpLangTest extends OxidTestCase
         $sExpLink0 = modConfig::getInstance()->getShopCurrentURL(0) . "cl=basket&amp;fnc=changebasket";
         $sExpLink1 = modConfig::getInstance()->getShopCurrentURL(0) . "cl=basket&amp;fnc=changebasket&amp;lang=1";
 
-        $this->assertEquals( $sExpLink0, $oLang[0]->link );
-        $this->assertEquals( $sExpLink1, $oLang[1]->link );
+        $this->assertEquals($sExpLink0, $oLang[0]->link);
+        $this->assertEquals($sExpLink1, $oLang[1]->link);
     }
 }
 

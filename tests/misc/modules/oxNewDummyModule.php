@@ -21,9 +21,15 @@
  */
 
 
-class oxNewDummyModule {
-    public function oxNewDummyModule() {}
-    public function test() {
+class oxNewDummyModule
+{
+
+    public function oxNewDummyModule()
+    {
+    }
+
+    public function test()
+    {
         return "oxNewDummyModule";
     }
 }

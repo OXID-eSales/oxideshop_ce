@@ -24,10 +24,11 @@ require_once 'PHPUnit/TextUI/Command.php';
 
 class OxidCommand extends PHPUnit_TextUI_Command
 {
-     public function __construct()
-     {
-          $this->longOptions['dbreset='] = 'dbResetHandler';
-     }
+
+    public function __construct()
+    {
+        $this->longOptions['dbreset='] = 'dbResetHandler';
+    }
 
     /**
      * @param boolean $exit
@@ -49,10 +50,10 @@ class OxidCommand extends PHPUnit_TextUI_Command
 
     protected function dbResetHandler($value)
     {
-       /* require_once 'unit/oxPrinter.php';
-        require_once 'unit/dbRestore.php';
-        $dbM = new DbRestore();
-        $dbM->dumpDB();*/
+        /* require_once 'unit/oxPrinter.php';
+         require_once 'unit/dbRestore.php';
+         $dbM = new DbRestore();
+         $dbM->dumpDB();*/
     }
 
 }

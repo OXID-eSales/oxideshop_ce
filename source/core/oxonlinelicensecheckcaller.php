@@ -75,6 +75,8 @@ class oxOnlineLicenseCheckCaller extends oxOnlineCaller
     }
 
     /**
+     * Removes serial keys from request and forms email body.
+     *
      * @param oxOnlineLicenseCheckRequest $oRequest
      *
      * @return string

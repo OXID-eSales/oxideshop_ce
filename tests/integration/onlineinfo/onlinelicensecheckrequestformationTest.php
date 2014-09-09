@@ -38,13 +38,15 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
 
         $oConfig->setConfigParam('aSerials', array('license_key'));
         $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
+        $iValidNodeTime =  oxRegistry::get("oxUtilsDate")->getTime();
         $oConfig->setConfigParam('aServersData', array(
-            array(
+            'server_id1' => array(
                 'id' => 'server_id1',
-                'timestamp' => '1409919510',
+                'timestamp' => $iValidNodeTime,
                 'ip' => '127.0.0.1',
-                'lastFrontendUsage' => '1409919510',
-                'lastAdminUsage' => '1409919510',
+                'lastFrontendUsage' => $iValidNodeTime,
+                'lastAdminUsage' => $iValidNodeTime,
+                'isValid' => true,
         )));
 
         $sEdition = $oConfig->getEdition();
@@ -66,10 +68,9 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $sXml .=     '<servers>';
         $sXml .=       '<server>';
         $sXml .=         '<id>server_id1</id>';
-        $sXml .=         '<timestamp>1409919510</timestamp>';
         $sXml .=         '<ip>127.0.0.1</ip>';
-        $sXml .=         '<lastFrontendUsage>1409919510</lastFrontendUsage>';
-        $sXml .=         '<lastAdminUsage>1409919510</lastAdminUsage>';
+        $sXml .=         "<lastFrontendUsage>$iValidNodeTime</lastFrontendUsage>";
+        $sXml .=         "<lastAdminUsage>$iValidNodeTime</lastAdminUsage>";
         $sXml .=       '</server>';
         $sXml .=     '</servers>';
         $sXml .=     '<counters>';
@@ -102,7 +103,10 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $oLicenseCaller = new oxOnlineLicenseCheckCaller($oOnlineCaller, $oSimpleXml);
 
         $oUserCounter = new oxUserCounter();
-        $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller, $oUserCounter);
+        $oServersManager = new oxServersManager();
+        $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller);
+        $oLicenseCheck->setUserCounter($oUserCounter);
+        $oLicenseCheck->setServersManager($oServersManager);
 
         $oLicenseCheck->validateShopSerials();
     }
@@ -113,13 +117,15 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
 
         $oConfig->setConfigParam('aSerials', array('license_key'));
         $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
+        $iValidNodeTime =  oxRegistry::get("oxUtilsDate")->getTime();
         $oConfig->setConfigParam('aServersData', array(
-            array(
+            'server_id1' => array(
                 'id' => 'server_id1',
-                'timestamp' => '1409919510',
+                'timestamp' => $iValidNodeTime,
                 'ip' => '127.0.0.1',
-                'lastFrontendUsage' => '1409919510',
-                'lastAdminUsage' => '1409919510',
+                'lastFrontendUsage' => $iValidNodeTime,
+                'lastAdminUsage' => $iValidNodeTime,
+                'isValid' => true,
             )));
 
         $sEdition = $oConfig->getEdition();
@@ -144,10 +150,9 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $sXml .=     '<servers>';
         $sXml .=       '<server>';
         $sXml .=         '<id>server_id1</id>';
-        $sXml .=         '<timestamp>1409919510</timestamp>';
         $sXml .=         '<ip>127.0.0.1</ip>';
-        $sXml .=         '<lastFrontendUsage>1409919510</lastFrontendUsage>';
-        $sXml .=         '<lastAdminUsage>1409919510</lastAdminUsage>';
+        $sXml .=         "<lastFrontendUsage>$iValidNodeTime</lastFrontendUsage>";
+        $sXml .=         "<lastAdminUsage>$iValidNodeTime</lastAdminUsage>";
         $sXml .=       '</server>';
         $sXml .=     '</servers>';
         $sXml .=     '<counters>';
@@ -180,7 +185,10 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $oLicenseCaller = new oxOnlineLicenseCheckCaller($oOnlineCaller, $oSimpleXml);
 
         $oUserCounter = new oxUserCounter();
-        $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller, $oUserCounter);
+        $oServersManager = new oxServersManager();
+        $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller);
+        $oLicenseCheck->setUserCounter($oUserCounter);
+        $oLicenseCheck->setServersManager($oServersManager);
 
         $oLicenseCheck->validateNewSerial('new_serial');
     }

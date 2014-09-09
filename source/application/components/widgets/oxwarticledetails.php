@@ -268,6 +268,8 @@ class oxwArticleDetails extends oxWidget
      * Processes product by setting link type and in case list type is search adds search parameters to details link
      *
      * @param object $oProduct product to process
+     *
+     * @return null
      */
     protected function _processProduct($oProduct)
     {
@@ -528,7 +530,8 @@ class oxwArticleDetails extends oxWidget
         if ($this->_aLastProducts === null) {
             //last seen products for #768CA
             $oProduct = $this->getProduct();
-            $sArtId = $oProduct->oxarticles__oxparentid->value ? $oProduct->oxarticles__oxparentid->value : $oProduct->getId();
+            $sParentIdField = 'oxarticles__oxparentid';
+            $sArtId = $oProduct->$sParentIdField->value ? $oProduct->$sParentIdField->value : $oProduct->getId();
 
             $oHistoryArtList = oxNew('oxArticleList');
             $oHistoryArtList->loadHistoryArticles($sArtId, $iCnt);
@@ -767,7 +770,8 @@ class oxwArticleDetails extends oxWidget
     {
         // #419 disabling price alarm if article has fixed price
         $oProduct = $this->getProduct();
-        if (isset($oProduct->oxarticles__oxblfixedprice->value) && $oProduct->oxarticles__oxblfixedprice->value) {
+        $sFixedPriceField = 'oxarticles__oxblfixedprice';
+        if (isset($oProduct->$sFixedPriceField->value) && $oProduct->$sFixedPriceField->value) {
             return 0;
         }
 
@@ -801,6 +805,8 @@ class oxwArticleDetails extends oxWidget
      * Returns search title setter
      *
      * @param string $sTitle search title
+     *
+     * @return null
      */
     public function setSearchTitle($sTitle)
     {
@@ -842,7 +848,8 @@ class oxwArticleDetails extends oxWidget
         if ($this->_dRatingValue === null) {
             $this->_dRatingValue = (double) 0;
             if ($this->isReviewActive() && ($oDetailsProduct = $this->getProduct())) {
-                $this->_dRatingValue = round($oDetailsProduct->getArticleRatingAverage($this->getConfig()->getConfigParam('blShowVariantReviews')), 1);
+                $blShowVariantsReviews = $this->getConfig()->getConfigParam('blShowVariantReviews');
+                $this->_dRatingValue = round($oDetailsProduct->getArticleRatingAverage($blShowVariantsReviews), 1);
             }
         }
 
@@ -869,7 +876,8 @@ class oxwArticleDetails extends oxWidget
         if ($this->_iRatingCnt === null) {
             $this->_iRatingCnt = false;
             if ($this->isReviewActive() && ($oDetailsProduct = $this->getProduct())) {
-                $this->_iRatingCnt = $oDetailsProduct->getArticleRatingCount($this->getConfig()->getConfigParam('blShowVariantReviews'));
+                $blShowVariantsReviews = $this->getConfig()->getConfigParam('blShowVariantReviews');
+                $this->_iRatingCnt = $oDetailsProduct->getArticleRatingCount($blShowVariantsReviews);
             }
         }
 
@@ -914,8 +922,10 @@ class oxwArticleDetails extends oxWidget
     {
         // finding parent
         $oProduct = $this->getProduct();
-        if (($oParent = $this->_getParentProduct($oProduct->oxarticles__oxparentid->value))) {
-            return $oParent->getVariantSelections(oxRegistry::getConfig()->getRequestParameter("varselid"), $oProduct->getId());
+        $sParentIdField = 'oxarticles__oxparentid';
+        if (($oParent = $this->_getParentProduct($oProduct->$sParentIdField->value))) {
+            $sVarSelId = oxRegistry::getConfig()->getRequestParameter("varselid");
+            return $oParent->getVariantSelections($sVarSelId, $oProduct->getId());
         }
 
         return $oProduct->getVariantSelections(oxRegistry::getConfig()->getRequestParameter("varselid"));
@@ -965,9 +975,10 @@ class oxwArticleDetails extends oxWidget
                     $myUtils->showMessageAndExit('');
                 }
 
-                $aVariantSelections = $this->_oProduct->getVariantSelections(oxRegistry::getConfig()->getRequestParameter("varselid"));
-                if ($aVariantSelections && $aVariantSelections['oActiveVariant'] && $aVariantSelections['blPerfectFit']) {
-                    $this->_oProduct = $aVariantSelections['oActiveVariant'];
+                $sVarSelId = oxRegistry::getConfig()->getRequestParameter("varselid");
+                $aVarSelections = $this->_oProduct->getVariantSelections($sVarSelId);
+                if ($aVarSelections && $aVarSelections['oActiveVariant'] && $aVarSelections['blPerfectFit']) {
+                    $this->_oProduct = $aVarSelections['oActiveVariant'];
                 }
             }
         }
@@ -1061,6 +1072,8 @@ class oxwArticleDetails extends oxWidget
      *
      * @param $myUtils
      * @param $myConfig
+     *
+     * @return null
      */
     protected function _additionalChecksForArticle($myUtils, $myConfig)
     {

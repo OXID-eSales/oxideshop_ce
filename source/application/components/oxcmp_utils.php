@@ -96,7 +96,8 @@ class oxcmp_utils extends oxView
             $aExport['oxdetaillink'] = $oProduct->getLink();
             $aExport['oxmoredetaillink'] = $oProduct->getMoreDetailLink();
             $aExport['tobasketlink'] = $oProduct->getToBasketLink();
-            $aExport['thumbnaillink'] = $myConfig->getPictureUrl(null, false, $myConfig->isSsl()) . "/" . $aExport['oxthumb'];
+            $sPictureUrl = $myConfig->getPictureUrl(null, false, $myConfig->isSsl());
+            $aExport['thumbnaillink'] = $sPictureUrl . "/" . $aExport['oxthumb'];
             $sOutput = serialize($aExport);
         }
 
@@ -112,11 +113,14 @@ class oxcmp_utils extends oxView
      * @param array  $aSel       (default null)
      * @param bool   $blOverride allow override
      * @param bool   $blBundle   bundled
-     *
-     * @return  void
      */
-    public function toCompareList($sProductId = null, $dAmount = null, $aSel = null, $blOverride = false, $blBundle = false)
-    {
+    public function toCompareList(
+        $sProductId = null,
+        $dAmount = null,
+        $aSel = null,
+        $blOverride = false,
+        $blBundle = false
+    ) {
         // only if enabled and not search engine..
         if ($this->getViewConfig()->getShowCompareList() && !oxRegistry::getUtils()->isSearchEngine()) {
 
@@ -203,6 +207,8 @@ class oxcmp_utils extends oxView
      * @param string $sProductId product id
      * @param double $dAmount    product amount
      * @param array  $aSel       product selection list
+     *
+     * @return null
      */
     protected function _toList($sListType, $sProductId, $dAmount, $aSel)
     {

@@ -81,7 +81,8 @@ class Article_Stock extends oxAdminDetails
 
             $oPriceList = oxNew("oxlist");
             $oPriceList->init('oxbase', "oxprice2article");
-            $sQ = "select * from oxprice2article where oxartid = '$soxId' and {$sShopSelect} and (oxamount > 0 or oxamountto > 0) order by oxamount ";
+            $sQ = "select * from oxprice2article where oxartid = '{$soxId}' " .
+                  "and {$sShopSelect} and (oxamount > 0 or oxamountto > 0) order by oxamount ";
             $oPriceList->selectstring($sQ);
 
             $this->_aViewData["amountprices"] = $oPriceList;
@@ -202,8 +203,9 @@ class Article_Stock extends oxAdminDetails
         // check if abs price is lower than base price
         $oArticle = oxNew("oxArticle");
         $oArticle->loadInLang($this->_iEditLang, $sOxArtId);
-
-        if (($aParams['price'] >= $oArticle->oxarticles__oxprice->value) && ($aParams['pricetype'] == 'oxprice2article__oxaddabs')) {
+        $sPriceField = 'oxarticles__oxprice';
+        if (($aParams['price'] >= $oArticle->$sPriceField->value) &&
+            ($aParams['pricetype'] == 'oxprice2article__oxaddabs')) {
             if (is_null($sOXID)) {
                 $sOXID = $oArticlePrice->getId();
             }
@@ -214,6 +216,8 @@ class Article_Stock extends oxAdminDetails
 
     /**
      * Updates all amount prices for article at once
+     *
+     * @return null
      */
     public function updateprices()
     {
@@ -229,6 +233,8 @@ class Article_Stock extends oxAdminDetails
 
     /**
      * Adds amount price to article
+     *
+     * @return null
      */
     public function deleteprice()
     {

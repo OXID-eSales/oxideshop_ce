@@ -110,7 +110,13 @@ class Actions_Main extends oxAdminDetails
                     }
                 } else {
                     if ($oPromotion->oxactions__oxtype->value == 2) {
-                        $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 300, $oPromotion, "oxactions__oxlongdesc", "details.tpl.css");
+                        $this->_aViewData["editor"] = $this->_generateTextEditor(
+                            "100%",
+                            300,
+                            $oPromotion,
+                            "oxactions__oxlongdesc",
+                            "details.tpl.css"
+                        );
                     }
                 }
             }
@@ -158,6 +164,8 @@ class Actions_Main extends oxAdminDetails
 
     /**
      * Saves changed selected action parameters in different language.
+     *
+     * @return null
      */
     public function saveinnlang()
     {

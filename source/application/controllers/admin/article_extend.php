@@ -86,10 +86,13 @@ class Article_Extend extends oxAdminDetails
             $myConfig = $this->getConfig();
 
             $sArticleTable = getViewName('oxarticles', $this->_iEditLang);
-            $sSelect = "select $sArticleTable.oxtitle, $sArticleTable.oxartnum, $sArticleTable.oxvarselect from $sArticleTable where 1 ";
+            $sSelect = "select {$sArticleTable}.oxtitle, {$sArticleTable}.oxartnum, {$sArticleTable}.oxvarselect " .
+                       "from {$sArticleTable} where 1 ";
             // #546
-            $sSelect .= $myConfig->getConfigParam('blVariantsSelection') ? '' : " and $sArticleTable.oxparentid = '' ";
-            $sSelect .= " and $sArticleTable.oxid = " . $oDB->quote($oArticle->oxarticles__oxbundleid->value);
+            $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
+            $sBundleIdField = 'oxarticles__oxbundleid';
+            $sSelect .= $blVariantsSelectionParameter ? '' : " and {$sArticleTable}.oxparentid = '' ";
+            $sSelect .= " and {$sArticleTable}.oxid = " . $oDB->quote($oArticle->$sBundleIdField->value);
 
             $rs = $oDB->Execute($sSelect);
             if ($rs != false && $rs->RecordCount() > 0) {
@@ -163,8 +166,10 @@ class Article_Extend extends oxAdminDetails
 
         $oArticle = oxNew("oxarticle");
         $oArticle->loadInLang($this->_iEditLang, $soxId);
-
-        if ($aParams['oxarticles__oxtprice'] != $oArticle->oxarticles__oxtprice->value && $aParams['oxarticles__oxtprice'] && $aParams['oxarticles__oxtprice'] <= $oArticle->oxarticles__oxprice->value) {
+        $sTPriceField = 'oxarticles__oxtprice';
+        $sPriceField = 'oxarticles__oxprice';
+        $dTPrice = $aParams['oxarticles__oxtprice'];
+        if ($dTPrice && $dTPrice != $oArticle->$sTPriceField->value && $dTPrice <= $oArticle->$sPriceField->value) {
             $this->_aViewData["errorsavingtprice"] = 1;
         }
 
@@ -246,6 +251,8 @@ class Article_Extend extends oxAdminDetails
 
     /**
      * Updates existing media descriptions
+     *
+     * @return null
      */
     public function updateMedia()
     {

@@ -69,8 +69,8 @@ class attribute_main_ajax extends ajaxListComponent
         $oDb = oxDb::getDb();
 
         $sArticleTable = $this->_getViewName('oxarticles');
-        $sO2CategoryView = $this->_getViewName('oxobject2category');
-        $sO2AttributeView = $this->_getViewName('oxobject2attribute');
+        $sOCatView = $this->_getViewName('oxobject2category');
+        $sOAttrView = $this->_getViewName('oxobject2attribute');
 
         $sDelId = oxRegistry::getConfig()->getRequestParameter('oxid');
         $sSynchDelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
@@ -82,16 +82,23 @@ class attribute_main_ajax extends ajaxListComponent
             $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? '' : " and $sArticleTable.oxparentid = '' ";
         } elseif ($sSynchDelId && $sDelId != $sSynchDelId) {
             // selected category ?
-            $sQAdd = " from $sO2CategoryView as oxobject2category left join $sArticleTable on ";
-            $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? " ( $sArticleTable.oxid=oxobject2category.oxobjectid or $sArticleTable.oxparentid=oxobject2category.oxobjectid)" : " $sArticleTable.oxid=oxobject2category.oxobjectid ";
-            $sQAdd .= " where oxobject2category.oxcatnid = " . $oDb->quote($sDelId) . " ";
+            $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
+            $sSqlIfTrue = " ( {$sArticleTable}.oxid=oxobject2category.oxobjectid " .
+                          "or {$sArticleTable}.oxparentid=oxobject2category.oxobjectid)";
+            $sSqlIfFalse = " {$sArticleTable}.oxid=oxobject2category.oxobjectid ";
+            $sVariantSelectionSql = $blVariantsSelectionParameter ? $sSqlIfTrue : $sSqlIfFalse;
+            $sQAdd = " from {$sOCatView} as oxobject2category left join {$sArticleTable} on {$sVariantSelectionSql}" .
+                     " where oxobject2category.oxcatnid = " . $oDb->quote($sDelId) . " ";
         } else {
-            $sQAdd = " from $sO2AttributeView left join $sArticleTable on $sArticleTable.oxid=$sO2AttributeView.oxobjectid ";
-            $sQAdd .= " where $sO2AttributeView.oxattrid = " . $oDb->quote($sDelId) . " and $sArticleTable.oxid is not null ";
+            $sQAdd = " from {$sOAttrView} left join {$sArticleTable} " .
+                     "on {$sArticleTable}.oxid={$sOAttrView}.oxobjectid " .
+                     "where {$sOAttrView}.oxattrid = " . $oDb->quote($sDelId) .
+                     " and {$sArticleTable}.oxid is not null ";
         }
 
         if ($sSynchDelId && $sSynchDelId != $sDelId) {
-            $sQAdd .= " and $sArticleTable.oxid not in ( select $sO2AttributeView.oxobjectid from $sO2AttributeView where $sO2AttributeView.oxattrid = " . $oDb->quote($sSynchDelId) . " ) ";
+            $sQAdd .= " and {$sArticleTable}.oxid not in ( select {$sOAttrView}.oxobjectid from {$sOAttrView} " .
+                      "where {$sOAttrView}.oxattrid = " . $oDb->quote($sSynchDelId) . " ) ";
         }
 
         return $sQAdd;
@@ -123,6 +130,8 @@ class attribute_main_ajax extends ajaxListComponent
 
     /**
      * Removes article from Attribute list
+     *
+     * @return null
      */
     public function removeAttrArticle()
     {
@@ -135,13 +144,16 @@ class attribute_main_ajax extends ajaxListComponent
             $sQ = parent::_addFilter("delete $sO2AttributeView.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
-            $sQ = "delete from oxobject2attribute where oxobject2attribute.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenCat)) . ") ";
+            $sChosenCategories = implode(", ", oxDb::getInstance()->quoteArray($aChosenCat));
+            $sQ = "delete from oxobject2attribute where oxobject2attribute.oxid in (" . $sChosenCategories . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }
 
     /**
      * Adds article to Attribute list
+     *
+     * @return null
      */
     public function addAttrArticle()
     {

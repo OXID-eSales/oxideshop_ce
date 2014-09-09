@@ -216,7 +216,8 @@ class article_extend_ajax extends ajaxListComponent
         // updating oxtime values
         $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$soxId} {$sSqlShopFilter} and oxid = (
                     select oxid from (
-                        select oxid from {$sO2CView} where oxobjectid = {$soxId} {$sSqlShopFilter} order by oxtime limit 1
+                        select oxid from {$sO2CView} where oxobjectid = {$soxId} {$sSqlShopFilter}
+                        order by oxtime limit 1
                     ) as _tmp
                 )";
         $oDb->execute($sQ);
@@ -241,7 +242,8 @@ class article_extend_ajax extends ajaxListComponent
         oxDb::getInstance()->getDb()->Execute($sQ);
 
         // set main category for active shop
-        $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$sQuotedOxId} and oxcatnid = {$sQuotedDefCat} {$sSqlShopFilter}";
+        $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$sQuotedOxId} " .
+              "and oxcatnid = {$sQuotedDefCat} {$sSqlShopFilter}";
         oxDb::getInstance()->getDb()->Execute($sQ);
         //echo "\n$sQ\n";
 

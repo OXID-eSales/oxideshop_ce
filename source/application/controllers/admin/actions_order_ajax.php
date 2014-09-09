@@ -74,7 +74,8 @@ class actions_order_ajax extends ajaxListComponent
     public function setSorting()
     {
         $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSelect = "select * from oxobject2selectlist where oxobjectid= " . oxDb::getDb()->quote($sSelId) . " order by oxsort";
+        $sQuotedSelectionId = oxDb::getDb()->quote($sSelId);
+        $sSelect = "select * from oxobject2selectlist where oxobjectid= {$sQuotedSelectionId} order by oxsort";
 
         $oList = oxNew("oxlist");
         $oList->init("oxbase", "oxobject2selectlist");

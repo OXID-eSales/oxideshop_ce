@@ -71,21 +71,27 @@ class article_accessories_ajax extends ajaxListComponent
         $oDb = oxDb::getDb();
 
         $sArticleTable = $this->_getViewName('oxarticles');
-        $sO2CView = $this->_getViewName('oxobject2category');
+        $sView = $this->_getViewName('oxobject2category');
 
         // category selected or not ?
         if (!$sSelId) {
-            $sQAdd = " from $sArticleTable where 1 ";
-            $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? '' : " and $sArticleTable.oxparentid = '' ";
+            $sQAdd = " from {$sArticleTable} where 1 ";
+            $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? '' : " and {$sArticleTable}.oxparentid = '' ";
         } else {
             // selected category ?
             if ($sSynchSelId && $sSelId != $sSynchSelId) {
-                $sQAdd = " from $sO2CView left join $sArticleTable on ";
-                $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? " ( $sArticleTable.oxid=$sO2CView.oxobjectid or $sArticleTable.oxparentid=$sO2CView.oxobjectid )" : " $sArticleTable.oxid=$sO2CView.oxobjectid ";
-                $sQAdd .= " where $sO2CView.oxcatnid = " . $oDb->quote($sSelId) . " ";
+                $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
+                $sSqlIfTrue = " ( {$sArticleTable}.oxid=$sView.oxobjectid " .
+                              "or {$sArticleTable}.oxparentid=$sView.oxobjectid )";
+                $sSqlIfFals = " {$sArticleTable}.oxid=$sView.oxobjectid ";
+                $sVariantSelectionSql = $blVariantsSelectionParameter ? $sSqlIfTrue : $sSqlIfFals;
+
+                $sQAdd = " from $sView left join {$sArticleTable} on {$sVariantSelectionSql}" .
+                         " where $sView.oxcatnid = " . $oDb->quote($sSelId) . " ";
             } else {
-                $sQAdd = " from oxaccessoire2article left join $sArticleTable on oxaccessoire2article.oxobjectid=$sArticleTable.oxid ";
-                $sQAdd .= " where oxaccessoire2article.oxarticlenid = " . $oDb->quote($sSelId) . " ";
+                $sQAdd = " from oxaccessoire2article left join {$sArticleTable} " .
+                         "on oxaccessoire2article.oxobjectid={$sArticleTable}.oxid " .
+                         " where oxaccessoire2article.oxarticlenid = " . $oDb->quote($sSelId) . " ";
             }
         }
 
@@ -93,12 +99,12 @@ class article_accessories_ajax extends ajaxListComponent
             // performance
             $sSubSelect .= " select oxaccessoire2article.oxobjectid from oxaccessoire2article ";
             $sSubSelect .= " where oxaccessoire2article.oxarticlenid = " . $oDb->quote($sSynchSelId) . " ";
-            $sQAdd .= " and $sArticleTable.oxid not in ( $sSubSelect ) ";
+            $sQAdd .= " and {$sArticleTable}.oxid not in ( $sSubSelect ) ";
         }
 
         // skipping self from list
         $sId = ($sSynchSelId) ? $sSynchSelId : $sSelId;
-        $sQAdd .= " and $sArticleTable.oxid != " . $oDb->quote($sId) . " ";
+        $sQAdd .= " and {$sArticleTable}.oxid != " . $oDb->quote($sId) . " ";
 
         // creating AJAX component
         return $sQAdd;
@@ -106,6 +112,8 @@ class article_accessories_ajax extends ajaxListComponent
 
     /**
      * Removing article form accessories article list
+     *
+     * @return null
      */
     public function removeArticleAcc()
     {
@@ -117,7 +125,8 @@ class article_accessories_ajax extends ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxaccessoire2article where oxaccessoire2article.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
+            $sChosenArticles = implode(", ", oxDb::getInstance()->quoteArray($aChosenArt));
+            $sQ = "delete from oxaccessoire2article where oxaccessoire2article.oxid in ({$sChosenArticles}) ";
             oxDb::getDb()->Execute($sQ);
         }
 
@@ -126,6 +135,8 @@ class article_accessories_ajax extends ajaxListComponent
 
     /**
      * Adding article to accessories article list
+     *
+     * @return null
      */
     public function addArticleAcc()
     {

@@ -67,7 +67,7 @@ class article_crossselling_ajax extends ajaxListComponent
     {
         $myConfig = $this->getConfig();
         $sArticleTable = $this->_getViewName('oxarticles');
-        $sO2CView = $this->_getViewName('oxobject2category');
+        $sView = $this->_getViewName('oxobject2category');
 
         $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
         $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
@@ -75,49 +75,62 @@ class article_crossselling_ajax extends ajaxListComponent
 
         // category selected or not ?
         if (!$sSelId) {
-            $sQAdd = " from $sArticleTable where 1 ";
-            $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? '' : " and $sArticleTable.oxparentid = '' ";
+            $sQAdd = " from {$sArticleTable} where 1 ";
+            $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? '' : " and {$sArticleTable}.oxparentid = '' ";
         } elseif ($sSynchSelId && $sSelId != $sSynchSelId) {
             // selected category ?
-            $sQAdd = " from $sO2CView as oxobject2category left join $sArticleTable on ";
-            $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? " ($sArticleTable.oxid=oxobject2category.oxobjectid or $sArticleTable.oxparentid=oxobject2category.oxobjectid)" : " $sArticleTable.oxid=oxobject2category.oxobjectid ";
-            $sQAdd .= " where oxobject2category.oxcatnid = " . $oDb->quote($sSelId) . " ";
+            $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
+            $sSqlIfTrue = " ({$sArticleTable}.oxid=oxobject2category.oxobjectid " .
+                          "or {$sArticleTable}.oxparentid=oxobject2category.oxobjectid)";
+            $sSqlIfFalse = " {$sArticleTable}.oxid=oxobject2category.oxobjectid ";
+            $sVariantsSelectionSnippet = $blVariantsSelectionParameter ? $sSqlIfTrue : $sSqlIfFalse;
+
+            $sQAdd = " from {$sView} as oxobject2category left join {$sArticleTable} on {$sVariantsSelectionSnippet}" .
+                     " where oxobject2category.oxcatnid = " . $oDb->quote($sSelId) . " ";
         } elseif ($myConfig->getConfigParam('blBidirectCross')) {
-            $sQAdd = " from oxobject2article ";
-            $sQAdd .= " inner join $sArticleTable on ( oxobject2article.oxobjectid = $sArticleTable.oxid ";
-            $sQAdd .= " or oxobject2article.oxarticlenid = $sArticleTable.oxid ) ";
-            $sQAdd .= " where ( oxobject2article.oxarticlenid = " . $oDb->quote($sSelId) . " or oxobject2article.oxobjectid = " . $oDb->quote($sSelId) . " ) ";
-            $sQAdd .= " and $sArticleTable.oxid != " . $oDb->quote($sSelId) . " ";
+            $sQAdd = " from oxobject2article " .
+                     " inner join {$sArticleTable} on ( oxobject2article.oxobjectid = {$sArticleTable}.oxid " .
+                     " or oxobject2article.oxarticlenid = {$sArticleTable}.oxid ) " .
+                     " where ( oxobject2article.oxarticlenid = " . $oDb->quote($sSelId) .
+                     " or oxobject2article.oxobjectid = " . $oDb->quote($sSelId) . " ) " .
+                     " and {$sArticleTable}.oxid != " . $oDb->quote($sSelId) . " ";
         } else {
-            $sQAdd = " from oxobject2article left join $sArticleTable on oxobject2article.oxobjectid=$sArticleTable.oxid ";
-            $sQAdd .= " where oxobject2article.oxarticlenid = " . $oDb->quote($sSelId) . " ";
+            $sQAdd = " from oxobject2article left join {$sArticleTable} " .
+                     "on oxobject2article.oxobjectid={$sArticleTable}.oxid " .
+                     " where oxobject2article.oxarticlenid = " . $oDb->quote($sSelId) . " ";
         }
 
         if ($sSynchSelId && $sSynchSelId != $sSelId) {
             if ($myConfig->getConfigParam('blBidirectCross')) {
-                $sSubSelect = "select $sArticleTable.oxid from oxobject2article left join $sArticleTable on (oxobject2article.oxobjectid=$sArticleTable.oxid or oxobject2article.oxarticlenid=$sArticleTable.oxid) ";
-                $sSubSelect .= "where (oxobject2article.oxarticlenid = " . $oDb->quote($sSynchSelId) . " or oxobject2article.oxobjectid = " . $oDb->quote($sSynchSelId) . " )";
+                $sSubSelect = "select {$sArticleTable}.oxid from oxobject2article " .
+                              "left join {$sArticleTable} on (oxobject2article.oxobjectid={$sArticleTable}.oxid " .
+                              "or oxobject2article.oxarticlenid={$sArticleTable}.oxid) " .
+                              "where (oxobject2article.oxarticlenid = " . $oDb->quote($sSynchSelId) .
+                              " or oxobject2article.oxobjectid = " . $oDb->quote($sSynchSelId) . " )";
             } else {
-                $sSubSelect = "select $sArticleTable.oxid from oxobject2article left join $sArticleTable on oxobject2article.oxobjectid=$sArticleTable.oxid ";
-                $sSubSelect .= "where oxobject2article.oxarticlenid = " . $oDb->quote($sSynchSelId) . " ";
+                $sSubSelect = "select {$sArticleTable}.oxid from oxobject2article " .
+                              "left join {$sArticleTable} on oxobject2article.oxobjectid={$sArticleTable}.oxid ";
+                              "where oxobject2article.oxarticlenid = " . $oDb->quote($sSynchSelId) . " ";
             }
 
-            $sSubSelect .= " and $sArticleTable.oxid IS NOT NULL ";
-            $sQAdd .= " and $sArticleTable.oxid not in ( $sSubSelect ) ";
+            $sSubSelect .= " and {$sArticleTable}.oxid IS NOT NULL ";
+            $sQAdd .= " and {$sArticleTable}.oxid not in ( $sSubSelect ) ";
         }
 
         // #1513C/#1826C - skip references, to not existing articles
-        $sQAdd .= " and $sArticleTable.oxid IS NOT NULL ";
+        $sQAdd .= " and {$sArticleTable}.oxid IS NOT NULL ";
 
         // skipping self from list
         $sId = ($sSynchSelId) ? $sSynchSelId : $sSelId;
-        $sQAdd .= " and $sArticleTable.oxid != " . $oDb->quote($sId) . " ";
+        $sQAdd .= " and {$sArticleTable}.oxid != " . $oDb->quote($sId) . " ";
 
         return $sQAdd;
     }
 
     /**
      * Removing article from corssselling list
+     *
+     * @return null
      */
     public function removeArticleCross()
     {
@@ -127,7 +140,8 @@ class article_crossselling_ajax extends ajaxListComponent
             $sQ = $this->_addFilter("delete oxobject2article.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2article where oxobject2article.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
+            $sChosenArticles = implode(", ", oxDb::getInstance()->quoteArray($aChosenArt));
+            $sQ = "delete from oxobject2article where oxobject2article.oxid in (" . $sChosenArticles . ") ";
             oxDb::getDb()->Execute($sQ);
         }
 
@@ -135,6 +149,8 @@ class article_crossselling_ajax extends ajaxListComponent
 
     /**
      * Adding article to corssselling list
+     *
+     * @return null
      */
     public function addArticleCross()
     {

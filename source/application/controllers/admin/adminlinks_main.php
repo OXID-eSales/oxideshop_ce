@@ -65,7 +65,13 @@ class Adminlinks_Main extends oxAdminDetails
         }
 
         // generate editor
-        $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 255, $oLinks, "oxlinks__oxurldesc", "links.tpl.css");
+        $this->_aViewData["editor"] = $this->_generateTextEditor(
+            "100%",
+            255,
+            $oLinks,
+            "oxlinks__oxurldesc",
+            "links.tpl.css"
+        );
 
         return "adminlinks_main.tpl";
     }

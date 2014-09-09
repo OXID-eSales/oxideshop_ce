@@ -59,15 +59,18 @@ class actions_groups_ajax extends ajaxListComponent
 
         // category selected or not ?
         if (!$sId) {
-            $sQAdd = " from $sGroupTable where 1 ";
+            $sQAdd = " from {$sGroupTable} where 1 ";
         } else {
-            $sQAdd .= " from oxobject2action, $sGroupTable where $sGroupTable.oxid=oxobject2action.oxobjectid ";
-            $sQAdd .= " and oxobject2action.oxactionid = " . $oDb->quote($sId) . " and oxobject2action.oxclass = 'oxgroups' ";
+            $sQAdd .= " from oxobject2action, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2action.oxobjectid " .
+                      " and oxobject2action.oxactionid = " . $oDb->quote($sId) .
+                      " and oxobject2action.oxclass = 'oxgroups' ";
         }
 
         if ($sSynchId && $sSynchId != $sId) {
-            $sQAdd .= " and $sGroupTable.oxid not in ( select $sGroupTable.oxid from oxobject2action, $sGroupTable where $sGroupTable.oxid=oxobject2action.oxobjectid ";
-            $sQAdd .= " and oxobject2action.oxactionid = " . $oDb->quote($sSynchId) . " and oxobject2action.oxclass = 'oxgroups' ) ";
+            $sQAdd .= " and {$sGroupTable}.oxid not in ( select {$sGroupTable}.oxid " .
+                      "from oxobject2action, {$sGroupTable} where $sGroupTable.oxid=oxobject2action.oxobjectid " .
+                      " and oxobject2action.oxactionid = " . $oDb->quote($sSynchId) .
+                      " and oxobject2action.oxclass = 'oxgroups' ) ";
         }
 
         return $sQAdd;
@@ -75,6 +78,8 @@ class actions_groups_ajax extends ajaxListComponent
 
     /**
      * Removes user group from promotion
+     *
+     * @return null
      */
     public function removePromotionGroup()
     {
@@ -83,13 +88,16 @@ class actions_groups_ajax extends ajaxListComponent
             $sQ = $this->_addFilter("delete oxobject2action.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2action where oxobject2action.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups)) . ") ";
+            $sRemoveGroups = implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups));
+            $sQ = "delete from oxobject2action where oxobject2action.oxid in (" . $sRemoveGroups . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }
 
     /**
      * Adds user group to promotion
+     *
+     * @return null
      */
     public function addPromotionGroup()
     {

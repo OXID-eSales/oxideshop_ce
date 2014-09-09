@@ -53,7 +53,8 @@ class User_Address extends oxAdminDetails
             $oUser->load($soxId);
 
             // load adress
-            $soxAddressId = isset($this->sSavedOxid) ? $this->sSavedOxid : oxRegistry::getConfig()->getRequestParameter("oxaddressid");
+            $sAddressIdParameter = oxRegistry::getConfig()->getRequestParameter("oxaddressid");
+            $soxAddressId = isset($this->sSavedOxid) ? $this->sSavedOxid : $sAddressIdParameter;
             if ($soxAddressId != "-1" && isset($soxAddressId)) {
                 $oAdress = oxNew("oxaddress");
                 $oAdress->load($soxAddressId);
@@ -113,6 +114,8 @@ class User_Address extends oxAdminDetails
 
     /**
      * Deletes user addressing information.
+     *
+     * @return null
      */
     public function delAddress()
     {

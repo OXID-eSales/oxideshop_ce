@@ -48,7 +48,9 @@ class Order_Remark extends oxAdminDetails
             // all remark
             $oRems = oxNew("oxlist");
             $oRems->init("oxremark");
-            $sSelect = "select * from oxremark where oxparentid=" . oxDb::getDb()->quote($oOrder->oxorder__oxuserid->value) . " order by oxcreate desc";
+            $sUserIdField = 'oxorder__oxuserid';
+            $sQuotedUserId = oxDb::getDb()->quote($oOrder->$sUserIdField->value);
+            $sSelect = "select * from oxremark where oxparentid=" . $sQuotedUserId . " order by oxcreate desc";
             $oRems->selectString($sSelect);
             foreach ($oRems as $key => $val) {
                 if ($val->oxremark__oxid->value == $sRemoxId) {
@@ -95,6 +97,8 @@ class Order_Remark extends oxAdminDetails
 
     /**
      * Deletes order history item.
+     *
+     * @return null
      */
     public function delete()
     {

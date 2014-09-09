@@ -62,22 +62,26 @@ class discount_categories_ajax extends ajaxListComponent
 
         // category selected or not ?
         if (!$sId) {
-            $sQAdd = " from $sCategoryTable";
+            $sQAdd = " from {$sCategoryTable}";
         } else {
-            $sQAdd = " from oxobject2discount, $sCategoryTable where $sCategoryTable.oxid=oxobject2discount.oxobjectid ";
-            $sQAdd .= " and oxobject2discount.oxdiscountid = " . $oDb->quote($sId) . " and oxobject2discount.oxtype = 'oxcategories' ";
+            $sQAdd = " from oxobject2discount, {$sCategoryTable} " .
+                     "where {$sCategoryTable}.oxid=oxobject2discount.oxobjectid " .
+                     " and oxobject2discount.oxdiscountid = " . $oDb->quote($sId) .
+                     " and oxobject2discount.oxtype = 'oxcategories' ";
         }
 
         if ($sSynchId && $sSynchId != $sId) {
             // performance
-            $sSubSelect = " select $sCategoryTable.oxid from oxobject2discount, $sCategoryTable where $sCategoryTable.oxid=oxobject2discount.oxobjectid ";
-            $sSubSelect .= " and oxobject2discount.oxdiscountid = " . $oDb->quote($sSynchId) . " and oxobject2discount.oxtype = 'oxcategories' ";
+            $sSubSelect = " select {$sCategoryTable}.oxid from oxobject2discount, {$sCategoryTable} " .
+                          "where {$sCategoryTable}.oxid=oxobject2discount.oxobjectid " .
+                          " and oxobject2discount.oxdiscountid = " . $oDb->quote($sSynchId) .
+                          " and oxobject2discount.oxtype = 'oxcategories' ";
             if (stristr($sQAdd, 'where') === false) {
                 $sQAdd .= ' where ';
             } else {
                 $sQAdd .= ' and ';
             }
-            $sQAdd .= " $sCategoryTable.oxid not in ( $sSubSelect ) ";
+            $sQAdd .= " {$sCategoryTable}.oxid not in ( $sSubSelect ) ";
         }
 
         return $sQAdd;
@@ -85,6 +89,8 @@ class discount_categories_ajax extends ajaxListComponent
 
     /**
      * Removes selected category (categories) from discount list
+     *
+     * @return null
      */
     public function removeDiscCat()
     {
@@ -98,13 +104,16 @@ class discount_categories_ajax extends ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif (is_array($aChosenCat)) {
-            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenCat)) . ") ";
+            $sChosenCategories = implode(", ", oxDb::getInstance()->quoteArray($aChosenCat));
+            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . $sChosenCategories . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }
 
     /**
      * Adds selected category (categories) to discount list
+     *
+     * @return null
      */
     public function addDiscCat()
     {

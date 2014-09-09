@@ -58,11 +58,14 @@ class article_attribute_ajax extends ajaxListComponent
         $sO2AViewName = $this->_getViewName('oxobject2attribute');
         if ($sArtId) {
             // all categories article is in
-            $sQAdd = " from $sO2AViewName left join $sAttrViewName on $sAttrViewName.oxid=$sO2AViewName.oxattrid ";
-            $sQAdd .= " where $sO2AViewName.oxobjectid = " . $oDb->quote($sArtId) . " ";
+            $sQAdd = " from {$sO2AViewName} left join {$sAttrViewName} " .
+                     "on {$sAttrViewName}.oxid={$sO2AViewName}.oxattrid " .
+                     " where {$sO2AViewName}.oxobjectid = " . $oDb->quote($sArtId) . " ";
         } else {
-            $sQAdd = " from $sAttrViewName where $sAttrViewName.oxid not in ( select $sO2AViewName.oxattrid from $sO2AViewName left join $sAttrViewName on $sAttrViewName.oxid=$sO2AViewName.oxattrid ";
-            $sQAdd .= " where $sO2AViewName.oxobjectid = " . $oDb->quote($sSynchArtId) . " ) ";
+            $sQAdd = " from {$sAttrViewName} where {$sAttrViewName}.oxid not in ( select {$sO2AViewName}.oxattrid " .
+                     "from {$sO2AViewName} left join {$sAttrViewName} " .
+                     "on {$sAttrViewName}.oxid={$sO2AViewName}.oxattrid " .
+                     " where {$sO2AViewName}.oxobjectid = " . $oDb->quote($sSynchArtId) . " ) ";
         }
 
         return $sQAdd;
@@ -70,6 +73,8 @@ class article_attribute_ajax extends ajaxListComponent
 
     /**
      * Removes article attributes.
+     *
+     * @return null
      */
     public function removeAttr()
     {
@@ -89,6 +94,8 @@ class article_attribute_ajax extends ajaxListComponent
 
     /**
      * Adds attributes to article.
+     *
+     * @return null
      */
     public function addAttr()
     {

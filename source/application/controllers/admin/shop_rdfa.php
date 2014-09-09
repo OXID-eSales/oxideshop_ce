@@ -58,8 +58,8 @@ class shop_rdfa extends Shop_Config
         $sTable = getViewName("oxcontents", $this->_iEditLang);
         $oContentList->selectString(
             "SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXTYPE = 0
-                                        AND OXLOADID IN ('oxagb', 'oxdeliveryinfo', 'oximpressum', 'oxrightofwithdrawal')
-                                        AND OXSHOPID = '" . oxRegistry::getConfig()->getRequestParameter("oxid") . "'"
+                                    AND OXLOADID IN ('oxagb', 'oxdeliveryinfo', 'oximpressum', 'oxrightofwithdrawal')
+                                    AND OXSHOPID = '" . oxRegistry::getConfig()->getRequestParameter("oxid") . "'"
         ); // $this->getEditObjectId()
         return $oContentList;
     }
@@ -85,6 +85,8 @@ class shop_rdfa extends Shop_Config
 
     /**
      * Submits shop main page to web search engines
+     *
+     * @return null
      */
     public function submitUrl()
     {

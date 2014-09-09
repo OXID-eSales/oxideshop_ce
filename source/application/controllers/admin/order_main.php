@@ -47,9 +47,14 @@ class Order_Main extends oxAdminDetails
 
 
             // paid ?
-            if ($oOrder->oxorder__oxpaid->value != "0000-00-00 00:00:00") {
+            $sOxPaidField = 'oxorder__oxpaid';
+            $sDelTypeField = 'oxorder__oxdeltype';
+
+            if ($oOrder->$sOxPaidField->value != "0000-00-00 00:00:00") {
                 $oOrder->blIsPaid = true;
-                $oOrder->oxorder__oxpaid = new oxField(oxRegistry::get("oxUtilsDate")->formatDBDate($oOrder->oxorder__oxpaid->value));
+                /** @var oxUtilsDate $oUtilsDate */
+                $oUtilsDate = oxRegistry::get("oxUtilsDate");
+                $oOrder->$sOxPaidField = new oxField($oUtilsDate->formatDBDate($oOrder->$sOxPaidField->value));
             }
 
 
@@ -58,7 +63,7 @@ class Order_Main extends oxAdminDetails
             $this->_aViewData["oShipSet"] = $oOrder->getShippingSetList();
 
 
-            if ($oOrder->oxorder__oxdeltype->value) {
+            if ($oOrder->$sDelTypeField->value) {
 
                 // order user
                 $oUser = oxNew('oxuser');
@@ -67,7 +72,10 @@ class Order_Main extends oxAdminDetails
                 // order sum in default currency
                 $dPrice = $oOrder->oxorder__oxtotalbrutsum->value / $oOrder->oxorder__oxcurrate->value;
 
-                $this->_aViewData["oPayments"] = oxRegistry::get("oxPaymentList")->getPaymentList($oOrder->oxorder__oxdeltype->value, $dPrice, $oUser);
+                /** @var oxPaymentList $oPaymentList */
+                $oPaymentList = oxRegistry::get("oxPaymentList");
+                $this->_aViewData["oPayments"] =
+                                        $oPaymentList->getPaymentList($oOrder->$sDelTypeField->value, $dPrice, $oUser);
             }
 
             // any voucher used ?
@@ -139,6 +147,8 @@ class Order_Main extends oxAdminDetails
 
     /**
      * Sends order.
+     *
+     * @return null
      */
     public function sendorder()
     {
@@ -163,6 +173,8 @@ class Order_Main extends oxAdminDetails
 
     /**
      * Sends download links.
+     *
+     * @return null
      */
     public function senddownloadlinks()
     {
@@ -176,6 +188,8 @@ class Order_Main extends oxAdminDetails
 
     /**
      * Resets order shipping date.
+     *
+     * @return null
      */
     public function resetorder()
     {

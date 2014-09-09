@@ -49,7 +49,8 @@ class PriceAlarm_Mail extends oxAdminDetails
         $sShopID = $myConfig->getShopId();
         //articles price in subshop and baseshop can be different
         $this->_aViewData['iAllCnt'] = 0;
-        $sQ = "select oxprice, oxartid from oxpricealarm where oxsended = '000-00-00 00:00:00' and oxshopid = '$sShopID' ";
+        $sQ = "select oxprice, oxartid from oxpricealarm" .
+              "where oxsended = '000-00-00 00:00:00' and oxshopid = '$sShopID' ";
         $rs = oxDb::getDb()->execute($sQ);
         if ($rs != false && $rs->recordCount() > 0) {
             $aSimpleCache = array();

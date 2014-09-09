@@ -53,7 +53,9 @@ class PriceAlarm_Send extends oxAdminList
         $iStart = oxRegistry::getConfig()->getRequestParameter("iStart");
         $iAllCnt = oxRegistry::getConfig()->getRequestParameter("iAllCnt");
             // #1140 R
-            $sSelect = "select oxpricealarm.oxid, oxpricealarm.oxemail, oxpricealarm.oxartid, oxpricealarm.oxprice from oxpricealarm, oxarticles where oxarticles.oxid = oxpricealarm.oxartid and oxpricealarm.oxsended = '0000-00-00 00:00:00'";
+            $sSelect = "select oxpricealarm.oxid, oxpricealarm.oxemail, oxpricealarm.oxartid, oxpricealarm.oxprice " .
+                       "from oxpricealarm, oxarticles where oxarticles.oxid = oxpricealarm.oxartid " .
+                       "and oxpricealarm.oxsended = '0000-00-00 00:00:00'";
             if (isset($iStart)) {
                 $rs = $oDB->SelectLimit($sSelect, $myConfig->getConfigParam('iCntofMails'), $iStart);
             } else {
@@ -67,7 +69,12 @@ class PriceAlarm_Send extends oxAdminList
                     $oArticle = oxNew("oxarticle");
                     $oArticle->load($rs->fields['oxid']);
                     if ($oArticle->getPrice()->getBruttoPrice() <= $rs->fields['oxprice']) {
-                        $this->sendeMail($rs->fields['oxemail'], $rs->fields['oxartid'], $rs->fields['oxid'], $rs->fields['oxprice']);
+                        $this->sendeMail(
+                            $rs->fields['oxemail'],
+                            $rs->fields['oxartid'],
+                            $rs->fields['oxid'],
+                            $rs->fields['oxprice']
+                        );
                         $iAllCntTmp++;
                     }
                     $rs->moveNext();
@@ -101,6 +108,8 @@ class PriceAlarm_Send extends oxAdminList
      * Overrides parent method to pass referred id
      *
      * @param string $sId class name
+     *
+     * @return null
      */
     protected function _setupNavigation($sId)
     {
@@ -114,6 +123,8 @@ class PriceAlarm_Send extends oxAdminList
      * @param string $sProductID    product id
      * @param string $sPricealarmID price alarm id
      * @param string $sBidPrice     bidded price
+     *
+     * @return null
      */
     public function sendeMail($sEMail, $sProductID, $sPricealarmID, $sBidPrice)
     {

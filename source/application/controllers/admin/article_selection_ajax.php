@@ -60,19 +60,22 @@ class article_selection_ajax extends ajaxListComponent
         $sSynchArtId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
         $sOxid = ($sArtId) ? $sArtId : $sSynchArtId;
-        $sQ = "select oxparentid from $sArtViewName where oxid = " . $oDb->quote($sOxid) . " and oxparentid != '' ";
-        $sQ .= "and (select count(oxobjectid) from oxobject2selectlist where oxobjectid = " . $oDb->quote($sOxid) . ") = 0";
+        $sQ = "select oxparentid from {$sArtViewName} where oxid = " . $oDb->quote($sOxid) . " and oxparentid != '' ";
+        $sQ .= "and (select count(oxobjectid) from oxobject2selectlist " .
+               "where oxobjectid = " . $oDb->quote($sOxid) . ") = 0";
         $sParentId = oxDb::getDb()->getOne($sQ, false, false);
 
         // all selectlists article is in
-        $sQAdd = " from oxobject2selectlist left join $sSLViewName on $sSLViewName.oxid=oxobject2selectlist.oxselnid ";
-        $sQAdd .= " where oxobject2selectlist.oxobjectid = " . $oDb->quote($sOxid) . " ";
+        $sQAdd = " from oxobject2selectlist left join {$sSLViewName} " .
+                 "on {$sSLViewName}.oxid=oxobject2selectlist.oxselnid  " .
+                 "where oxobject2selectlist.oxobjectid = " . $oDb->quote($sOxid) . " ";
         if ($sParentId) {
             $sQAdd .= "or oxobject2selectlist.oxobjectid = " . $oDb->quote($sParentId) . " ";
         }
         // all not assigned selectlists
         if ($sSynchArtId) {
-            $sQAdd = " from $sSLViewName  where $sSLViewName.oxid not in ( select oxobject2selectlist.oxselnid $sQAdd ) ";
+            $sQAdd = " from {$sSLViewName}  " .
+                     "where {$sSLViewName}.oxid not in ( select oxobject2selectlist.oxselnid {$sQAdd} ) ";
         }
 
         return $sQAdd;
@@ -80,6 +83,8 @@ class article_selection_ajax extends ajaxListComponent
 
     /**
      * Removes article selection lists.
+     *
+     * @return null
      */
     public function removeSel()
     {
@@ -89,7 +94,9 @@ class article_selection_ajax extends ajaxListComponent
             $sQ = $this->_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
+            $sChosenArticles = implode(", ", oxDb::getInstance()->quoteArray($aChosenArt));
+            $sQ = "delete from oxobject2selectlist " .
+                  "where oxobject2selectlist.oxid in (" . $sChosenArticles . ") ";
             oxDb::getDb()->Execute($sQ);
         }
 
@@ -97,6 +104,8 @@ class article_selection_ajax extends ajaxListComponent
 
     /**
      * Adds selection lists to article.
+     *
+     * @return null
      */
     public function addSel()
     {
@@ -114,9 +123,13 @@ class article_selection_ajax extends ajaxListComponent
             foreach ($aAddSel as $sAdd) {
                 $oNew = oxNew("oxbase");
                 $oNew->init("oxobject2selectlist");
-                $oNew->oxobject2selectlist__oxobjectid = new oxField($soxId);
-                $oNew->oxobject2selectlist__oxselnid = new oxField($sAdd);
-                $oNew->oxobject2selectlist__oxsort = new oxField(( int ) $oDb->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $oDb->quote($soxId) . " ", false, false));
+                $sObjectIdField = 'oxobject2selectlist__oxobjectid';
+                $sSelectetionIdField = 'oxobject2selectlist__oxselnid';
+                $sOxSortField = 'oxobject2selectlist__oxsort';
+                $oNew->$sObjectIdField = new oxField($soxId);
+                $oNew->$sSelectetionIdField = new oxField($sAdd);
+                $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$oDb->quote($soxId)} ";
+                $oNew->$sOxSortField = new oxField(( int ) $oDb->getOne($sSql, false, false));
                 $oNew->save();
             }
 

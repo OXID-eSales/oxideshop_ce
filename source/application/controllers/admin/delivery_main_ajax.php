@@ -61,15 +61,20 @@ class delivery_main_ajax extends ajaxListComponent
 
         // category selected or not ?
         if (!$sId) {
-            $sQAdd = " from $sCountryTable where $sCountryTable.oxactive = '1' ";
+            $sQAdd = " from {$sCountryTable} where {$sCountryTable}.oxactive = '1' ";
         } else {
-            $sQAdd = " from oxobject2delivery left join $sCountryTable on $sCountryTable.oxid=oxobject2delivery.oxobjectid ";
-            $sQAdd .= " where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sId) . " and oxobject2delivery.oxtype = 'oxcountry' ";
+            $sQAdd = " from oxobject2delivery left join {$sCountryTable} " .
+                     "on {$sCountryTable}.oxid=oxobject2delivery.oxobjectid " .
+                     " where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sId) .
+                     " and oxobject2delivery.oxtype = 'oxcountry' ";
         }
 
         if ($sSynchId && $sSynchId != $sId) {
-            $sQAdd .= " and $sCountryTable.oxid not in ( select $sCountryTable.oxid from oxobject2delivery left join $sCountryTable on $sCountryTable.oxid=oxobject2delivery.oxobjectid ";
-            $sQAdd .= " where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sSynchId) . " and oxobject2delivery.oxtype = 'oxcountry' ) ";
+            $sQAdd .= " and {$sCountryTable}.oxid not in ( select {$sCountryTable}.oxid " .
+                      "from oxobject2delivery left join {$sCountryTable} " .
+                      "on {$sCountryTable}.oxid=oxobject2delivery.oxobjectid " .
+                      " where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sSynchId) .
+                      " and oxobject2delivery.oxtype = 'oxcountry' ) ";
         }
 
         return $sQAdd;
@@ -77,6 +82,8 @@ class delivery_main_ajax extends ajaxListComponent
 
     /**
      * Removes chosen countries from delivery list
+     *
+     * @return null
      */
     public function removeCountryFromDel()
     {
@@ -94,6 +101,8 @@ class delivery_main_ajax extends ajaxListComponent
 
     /**
      * Adds chosen countries to delivery list
+     *
+     * @return null
      */
     public function addCountryToDel()
     {

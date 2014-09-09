@@ -61,22 +61,26 @@ class delivery_categories_ajax extends ajaxListComponent
 
         // category selected or not ?
         if (!$sDelId) {
-            $sQAdd = " from $sCatTable ";
+            $sQAdd = " from {$sCatTable} ";
         } else {
-            $sQAdd = " from oxobject2delivery left join $sCatTable on $sCatTable.oxid=oxobject2delivery.oxobjectid ";
-            $sQAdd .= " where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sDelId) . " and oxobject2delivery.oxtype = 'oxcategories' ";
+            $sQAdd = " from oxobject2delivery left join {$sCatTable} " .
+                     "on {$sCatTable}.oxid=oxobject2delivery.oxobjectid " .
+                     " where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sDelId) .
+                     " and oxobject2delivery.oxtype = 'oxcategories' ";
         }
 
         if ($sSynchDelId && $sSynchDelId != $sDelId) {
             // performance
-            $sSubSelect = " select $sCatTable.oxid from oxobject2delivery left join $sCatTable on $sCatTable.oxid=oxobject2delivery.oxobjectid ";
-            $sSubSelect .= " where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sSynchDelId) . " and oxobject2delivery.oxtype = 'oxcategories' ";
+            $sSubSelect = " select {$sCatTable}.oxid from oxobject2delivery left join {$sCatTable} " .
+                          "on {$sCatTable}.oxid=oxobject2delivery.oxobjectid " .
+                          " where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sSynchDelId) .
+                          " and oxobject2delivery.oxtype = 'oxcategories' ";
             if (stristr($sQAdd, 'where') === false) {
                 $sQAdd .= ' where ';
             } else {
                 $sQAdd .= ' and ';
             }
-            $sQAdd .= " $sCatTable.oxid not in ( $sSubSelect ) ";
+            $sQAdd .= " {$sCatTable}.oxid not in ( $sSubSelect ) ";
         }
 
         return $sQAdd;
@@ -84,6 +88,8 @@ class delivery_categories_ajax extends ajaxListComponent
 
     /**
      * Removes category from delivery configuration
+     *
+     * @return null
      */
     public function removeCatFromDel()
     {
@@ -96,13 +102,16 @@ class delivery_categories_ajax extends ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif (is_array($aChosenCat)) {
-            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenCat)) . ") ";
+            $sChosenCategoriess = implode(", ", oxDb::getInstance()->quoteArray($aChosenCat));
+            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . $sChosenCategoriess . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }
 
     /**
      * Adds category to delivery configuration
+     *
+     * @return null
      */
     public function addCatToDel()
     {

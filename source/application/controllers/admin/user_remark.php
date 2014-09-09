@@ -50,7 +50,8 @@ class User_Remark extends oxAdminDetails
             // all remark
             $oRems = oxNew("oxlist");
             $oRems->init("oxremark");
-            $sSelect = "select * from oxremark where oxparentid=" . oxDb::getDb()->quote($oUser->getId()) . " order by oxcreate desc";
+            $sQuotedUserId = oxDb::getDb()->quote($oUser->getId());
+            $sSelect = "select * from oxremark where oxparentid=" . $sQuotedUserId . " order by oxcreate desc";
             $oRems->selectString($sSelect);
             foreach ($oRems as $key => $val) {
                 if ($val->oxremark__oxid->value == $sRemoxId) {
@@ -96,6 +97,8 @@ class User_Remark extends oxAdminDetails
 
     /**
      * Deletes user actions history record.
+     *
+     * @return null
      */
     public function delete()
     {

@@ -62,15 +62,20 @@ class deliveryset_country_ajax extends ajaxListComponent
 
         // category selected or not ?
         if (!$sId) {
-            $sQAdd = " from $sCountryTable where $sCountryTable.oxactive = '1' ";
+            $sQAdd = " from {$sCountryTable} where {$sCountryTable}.oxactive = '1' ";
         } else {
-            $sQAdd = " from oxobject2delivery, $sCountryTable where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sId);
-            $sQAdd .= " and oxobject2delivery.oxobjectid = $sCountryTable.oxid and oxobject2delivery.oxtype = 'oxdelset' ";
+            $sQAdd = " from oxobject2delivery, {$sCountryTable} " .
+                     "where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sId) .
+                     " and oxobject2delivery.oxobjectid = {$sCountryTable}.oxid " .
+                     "and oxobject2delivery.oxtype = 'oxdelset' ";
         }
 
         if ($sSynchId && $sSynchId != $sId) {
-            $sQAdd .= "and $sCountryTable.oxid not in ( select $sCountryTable.oxid from oxobject2delivery, $sCountryTable where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sSynchId);
-            $sQAdd .= "and oxobject2delivery.oxobjectid = $sCountryTable.oxid and oxobject2delivery.oxtype = 'oxdelset' ) ";
+            $sQAdd .= "and {$sCountryTable}.oxid not in ( select {$sCountryTable}.oxid " .
+                      "from oxobject2delivery, {$sCountryTable} " .
+                      "where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sSynchId) .
+                      "and oxobject2delivery.oxobjectid = {$sCountryTable}.oxid " .
+                      "and oxobject2delivery.oxtype = 'oxdelset' ) ";
         }
 
         return $sQAdd;
@@ -78,6 +83,8 @@ class deliveryset_country_ajax extends ajaxListComponent
 
     /**
      * Removes chosen countries from delivery list
+     *
+     * @return null
      */
     public function removeCountryFromSet()
     {
@@ -89,13 +96,16 @@ class deliveryset_country_ajax extends ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif (is_array($aChosenCntr)) {
-            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenCntr)) . ") ";
+            $sChosenCountries = implode(", ", oxDb::getInstance()->quoteArray($aChosenCntr));
+            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . $sChosenCountries . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }
 
     /**
      * Adds chosen countries to delivery list
+     *
+     * @return null
      */
     public function addCountryToSet()
     {

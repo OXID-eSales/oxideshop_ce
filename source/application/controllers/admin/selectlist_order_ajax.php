@@ -50,7 +50,8 @@ class selectlist_order_ajax extends ajaxListComponent
         $sSelTable = $this->_getViewName('oxselectlist');
         $sArtId = oxRegistry::getConfig()->getRequestParameter('oxid');
 
-        $sQAdd = " from $sSelTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sSelTable.oxid where oxobjectid = '$sArtId' ";
+        $sQAdd = " from $sSelTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sSelTable.oxid " .
+                 "where oxobjectid = '$sArtId' ";
 
         return $sQAdd;
     }
@@ -67,6 +68,8 @@ class selectlist_order_ajax extends ajaxListComponent
 
     /**
      * Applies sorting for selection lists
+     *
+     * @return null
      */
     public function setSorting()
     {

@@ -48,7 +48,12 @@
             }
 
             // generate editor
-            $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 255, $oNewsletter, "oxnewsletter__oxtemplate");
+            $this->_aViewData["editor"] = $this->_generateTextEditor(
+                "100%",
+                255,
+                $oNewsletter,
+                "oxnewsletter__oxtemplate"
+            );
 
             return "newsletter_main.tpl";
         }

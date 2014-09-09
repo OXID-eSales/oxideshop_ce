@@ -37,19 +37,30 @@
         public function render()
         {
             parent::render();
-            $this->_aViewData['iLogCount'] = oxDb::getDb()->getOne("select count(*) from oxlogs where oxshopid = '" . $this->getConfig()->getShopId() . "'", false, false);
+            $sSql = "select count(*) from oxlogs where oxshopid = '" . $this->getConfig()->getShopId() . "'";
+            $this->_aViewData['iLogCount'] = oxDb::getDb()->getOne($sSql, false, false);
 
             return "statistic_service.tpl";
         }
 
         /**
          * Performs cleanup of statistic data for selected period.
+         *
+         * @return null
          */
         public function cleanup()
         {
             $iTimeFrame = oxRegistry::getConfig()->getRequestParameter("timeframe");
             $dNow = time();
-            $sDeleteFrom = date("Y-m-d H:i:s", mktime(date("H", $dNow), date("i", $dNow), date("s", $dNow), date("m", $dNow), date("d", $dNow) - $iTimeFrame, date("Y", $dNow)));
+            $iTimestamp = mktime(
+                date("H", $dNow),
+                date("i", $dNow),
+                date("s", $dNow),
+                date("m", $dNow),
+                date("d", $dNow) - $iTimeFrame,
+                date("Y", $dNow)
+            );
+            $sDeleteFrom = date("Y-m-d H:i:s", $iTimestamp);
 
             $oDb = oxDb::getDb();
             $oDb->Execute("delete from oxlogs where oxtime < " . $oDb->quote($sDeleteFrom));

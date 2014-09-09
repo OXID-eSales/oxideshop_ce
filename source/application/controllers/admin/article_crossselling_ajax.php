@@ -109,7 +109,7 @@ class article_crossselling_ajax extends ajaxListComponent
                               " or oxobject2article.oxobjectid = " . $oDb->quote($sSynchSelId) . " )";
             } else {
                 $sSubSelect = "select {$sArticleTable}.oxid from oxobject2article " .
-                              "left join {$sArticleTable} on oxobject2article.oxobjectid={$sArticleTable}.oxid ";
+                              "left join {$sArticleTable} on oxobject2article.oxobjectid={$sArticleTable}.oxid " .
                               "where oxobject2article.oxarticlenid = " . $oDb->quote($sSynchSelId) . " ";
             }
 

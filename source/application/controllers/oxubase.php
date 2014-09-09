@@ -2888,7 +2888,8 @@ class oxUBase extends oxView
         }
         $this->_blShowPromotions = false;
         if (oxNew('oxActionList')->areAnyActivePromotions()) {
-            $this->_blShowPromotions = (count($this->getPromoFinishedList()) + count($this->getPromoCurrentList()) + count($this->getPromoFutureList())) > 0;
+            $this->_blShowPromotions = (count($this->getPromoFinishedList()) + count($this->getPromoCurrentList()) +
+                                        count($this->getPromoFutureList())) > 0;
         }
 
         return $this->_blShowPromotions;

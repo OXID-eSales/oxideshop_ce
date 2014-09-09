@@ -86,7 +86,8 @@ class article_attribute_ajax extends ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2attribute where oxobject2attribute.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
+            $sChosenArticles = implode(", ", oxDb::getInstance()->quoteArray($aChosenArt));
+            $sQ = "delete from oxobject2attribute where oxobject2attribute.oxid in ({$sChosenArticles}) ";
             oxDb::getDb()->Execute($sQ);
         }
 
@@ -140,9 +141,11 @@ class article_attribute_ajax extends ajaxListComponent
 
 
             if (isset($sAttributeId) && ("" != $sAttributeId)) {
-                $sO2AViewName = $this->_getViewName("oxobject2attribute");
-                $sSelect = "select * from $sO2AViewName where $sO2AViewName.oxobjectid= " . $oDb->quote($oArticle->oxarticles__oxid->value) . " and
-                            $sO2AViewName.oxattrid= " . $oDb->quote($sAttributeId);
+                $sViewName = $this->_getViewName("oxobject2attribute");
+                $sOxIdField = 'oxarticles__oxid';
+                $sQuotedOxid = $oDb->quote($oArticle->$sOxIdField->value);
+                $sSelect = "select * from {$sViewName} where {$sViewName}.oxobjectid= {$sQuotedOxid} and
+                            {$sViewName}.oxattrid= " . $oDb->quote($sAttributeId);
                 $oO2A = oxNew("oxi18n");
                 $oO2A->setLanguage(oxRegistry::getConfig()->getRequestParameter('editlanguage'));
                 $oO2A->init("oxobject2attribute");

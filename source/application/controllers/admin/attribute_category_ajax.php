@@ -67,18 +67,23 @@ class attribute_category_ajax extends ajaxListComponent
 
         // category selected or not ?
         if (!$sDiscountId) {
-            $sQAdd = " from $sCatTable where $sCatTable.oxshopid = '" . $myConfig->getShopId() . "' ";
-            $sQAdd .= " and $sCatTable.oxactive = '1' ";
+            $sQAdd = " from {$sCatTable} where {$sCatTable}.oxshopid = '" . $myConfig->getShopId() . "' ";
+            $sQAdd .= " and {$sCatTable}.oxactive = '1' ";
         } else {
-            $sQAdd = " from $sCatTable left join oxcategory2attribute on $sCatTable.oxid=oxcategory2attribute.oxobjectid ";
-            $sQAdd .= " where oxcategory2attribute.oxattrid = " . $oDb->quote($sDiscountId) . " and $sCatTable.oxshopid = '" . $myConfig->getShopId() . "' ";
-            $sQAdd .= " and $sCatTable.oxactive = '1' ";
+            $sQAdd = " from {$sCatTable} left join oxcategory2attribute " .
+                     "on {$sCatTable}.oxid=oxcategory2attribute.oxobjectid " .
+                     " where oxcategory2attribute.oxattrid = " . $oDb->quote($sDiscountId) .
+                     " and {$sCatTable}.oxshopid = '" . $myConfig->getShopId() . "' " .
+                     " and {$sCatTable}.oxactive = '1' ";
         }
 
         if ($sSynchDiscountId && $sSynchDiscountId != $sDiscountId) {
-            $sQAdd .= " and $sCatTable.oxid not in ( select $sCatTable.oxid from $sCatTable left join oxcategory2attribute on $sCatTable.oxid=oxcategory2attribute.oxobjectid ";
-            $sQAdd .= " where oxcategory2attribute.oxattrid = " . $oDb->quote($sSynchDiscountId) . " and $sCatTable.oxshopid = '" . $myConfig->getShopId() . "' ";
-            $sQAdd .= " and $sCatTable.oxactive = '1' ) ";
+            $sQAdd .= " and {$sCatTable}.oxid not in ( select {$sCatTable}.oxid " .
+                      "from {$sCatTable} left join oxcategory2attribute " .
+                      "on {$sCatTable}.oxid=oxcategory2attribute.oxobjectid " .
+                      " where oxcategory2attribute.oxattrid = " . $oDb->quote($sSynchDiscountId) .
+                      " and {$sCatTable}.oxshopid = '" . $myConfig->getShopId() . "' " .
+                      " and {$sCatTable}.oxactive = '1' ) ";
         }
 
         return $sQAdd;
@@ -86,6 +91,8 @@ class attribute_category_ajax extends ajaxListComponent
 
     /**
      * Removes category from Attributes list
+     *
+     * @return null
      */
     public function removeCatFromAttr()
     {
@@ -97,7 +104,8 @@ class attribute_category_ajax extends ajaxListComponent
             $sQ = $this->_addFilter("delete oxcategory2attribute.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
-            $sQ = "delete from oxcategory2attribute where oxcategory2attribute.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenCat)) . ") ";
+            $sChosenCategories = implode(", ", oxDb::getInstance()->quoteArray($aChosenCat));
+            $sQ = "delete from oxcategory2attribute where oxcategory2attribute.oxid in (" . $sChosenCategories . ") ";
             oxDb::getDb()->Execute($sQ);
         }
 
@@ -108,6 +116,8 @@ class attribute_category_ajax extends ajaxListComponent
 
     /**
      * Adds category to Attributes list
+     *
+     * @return null
      */
     public function addCatToAttr()
     {
@@ -126,9 +136,14 @@ class attribute_category_ajax extends ajaxListComponent
             foreach ($aAddCategory as $sAdd) {
                 $oNewGroup = oxNew("oxbase");
                 $oNewGroup->init("oxcategory2attribute");
-                $oNewGroup->oxcategory2attribute__oxobjectid = new oxField($sAdd);
-                $oNewGroup->oxcategory2attribute__oxattrid = new oxField($oAttribute->oxattribute__oxid->value);
-                $oNewGroup->oxcategory2attribute__oxsort = new oxField(( int ) $oDb->getOne("select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ", false, false));
+                $sOxSortField = 'oxcategory2attribute__oxsort';
+                $sObjectIdField = 'oxcategory2attribute__oxobjectid';
+                $sAttributeIdField = 'oxcategory2attribute__oxattrid';
+                $sOxIdField = 'oxattribute__oxid';
+                $oNewGroup->$sObjectIdField = new oxField($sAdd);
+                $oNewGroup->$sAttributeIdField = new oxField($oAttribute->$sOxIdField->value);
+                $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ";
+                $oNewGroup->$sOxSortField = new oxField(( int ) $oDb->getOne($sSql, false, false));
                 $oNewGroup->save();
             }
         }

@@ -70,7 +70,7 @@ class actions_main_ajax extends ajaxListComponent
         $oDb = oxDb::getDb();
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
-        $sO2CView = $this->_getViewName('oxobject2category');
+        $sView = $this->_getViewName('oxobject2category');
 
         $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
         $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
@@ -84,19 +84,25 @@ class actions_main_ajax extends ajaxListComponent
             // selected category ?
             if ($sSynchSelId && $sSelId != $sSynchSelId) {
 
-                $sQAdd = " from $sO2CView left join $sArtTable on ";
-                $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? " ( $sArtTable.oxid=$sO2CView.oxobjectid or $sArtTable.oxparentid=$sO2CView.oxobjectid) " : " $sArtTable.oxid=$sO2CView.oxobjectid ";
-                $sQAdd .= " where $sO2CView.oxcatnid = " . $oDb->quote($sSelId);
+                $sQAdd = " from {$sView} left join $sArtTable on ";
+                $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
+                $sSqlIfTrue = " ( $sArtTable.oxid={$sView}.oxobjectid or $sArtTable.oxparentid={$sView}.oxobjectid) ";
+                $sSqlIfFalse = " $sArtTable.oxid={$sView}.oxobjectid ";
+                $sQAdd .= $blVariantsSelectionParameter ? $sSqlIfTrue : $sSqlIfFalse;
+                $sQAdd .= " where {$sView}.oxcatnid = " . $oDb->quote($sSelId);
             } else {
 
-                $sQAdd = " from $sArtTable left join oxactions2article on $sArtTable.oxid=oxactions2article.oxartid ";
-                $sQAdd .= " where oxactions2article.oxactionid = " . $oDb->quote($sSelId) . " and oxactions2article.oxshopid = '" . $myConfig->getShopID() . "' ";
+                $sQAdd = " from {$sArtTable} left join oxactions2article " .
+                         "on {$sArtTable}.oxid=oxactions2article.oxartid " .
+                         " where oxactions2article.oxactionid = " . $oDb->quote($sSelId) .
+                         " and oxactions2article.oxshopid = '" . $myConfig->getShopID() . "' ";
             }
         }
 
         if ($sSynchSelId && $sSynchSelId != $sSelId) {
-            $sQAdd .= " and $sArtTable.oxid not in ( select oxactions2article.oxartid from oxactions2article ";
-            $sQAdd .= " where oxactions2article.oxactionid = " . $oDb->quote($sSynchSelId) . " and oxactions2article.oxshopid = '" . $myConfig->getShopID() . "' ) ";
+            $sQAdd .= " and {$sArtTable}.oxid not in ( select oxactions2article.oxartid from oxactions2article " .
+                      " where oxactions2article.oxactionid = " . $oDb->quote($sSynchSelId) .
+                      " and oxactions2article.oxshopid = '" . $myConfig->getShopID() . "' ) ";
         }
 
         return $sQAdd;
@@ -134,7 +140,9 @@ class actions_main_ajax extends ajaxListComponent
      */
     protected function _getSorting()
     {
-        if (oxRegistry::getConfig()->getRequestParameter('oxid') && !oxRegistry::getConfig()->getRequestParameter('synchoxid')) {
+        $sOxIdParameter = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sSynchOxidParameter = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        if ($sOxIdParameter && !$sSynchOxidParameter) {
             return 'order by oxactions2article.oxsort ';
         }
 
@@ -143,6 +151,8 @@ class actions_main_ajax extends ajaxListComponent
 
     /**
      * Removes article from Promotions list
+     *
+     * @return null
      */
     public function removeArtFromAct()
     {
@@ -152,13 +162,16 @@ class actions_main_ajax extends ajaxListComponent
             $sQ = parent::_addFilter("delete oxactions2article.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxactions2article where oxactions2article.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
+            $sChosenArticles = implode(", ", oxDb::getInstance()->quoteArray($aChosenArt));
+            $sQ = "delete from oxactions2article where oxactions2article.oxid in (" . $sChosenArticles . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }
 
     /**
      * Adds article to Promotions list
+     *
+     * @return null
      */
     public function addArtToAct()
     {
@@ -173,9 +186,11 @@ class actions_main_ajax extends ajaxListComponent
 
         $oDb = oxDb::getDb();
         $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = "select max(oxactions2article.oxsort) from oxactions2article join $sArtTable on $sArtTable.oxid=oxactions2article.oxartid
-               where oxactions2article.oxactionid = " . $oDb->quote($soxId) . " and oxactions2article.oxshopid = '" . $myConfig->getShopId() . "'
-               and $sArtTable.oxid is not null";
+        $sQ = "select max(oxactions2article.oxsort) from oxactions2article join {$sArtTable} " .
+              "on {$sArtTable}.oxid=oxactions2article.oxartid " .
+              "where oxactions2article.oxactionid = " . $oDb->quote($soxId) .
+              " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
+              "'and $sArtTable.oxid is not null";
         $iSort = ((int) $oDb->getOne($sQ, false, false)) + 1;
 
         if ($soxId && $soxId != "-1" && is_array($aArticles)) {
@@ -194,6 +209,8 @@ class actions_main_ajax extends ajaxListComponent
 
     /**
      * Sets sorting position for current action article
+     *
+     * @return null
      */
     public function setSorting()
     {
@@ -201,7 +218,8 @@ class actions_main_ajax extends ajaxListComponent
         $sArtTable = $this->_getViewName('oxarticles');
         $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
         $sSelect = "select * from $sArtTable left join oxactions2article on $sArtTable.oxid=oxactions2article.oxartid ";
-        $sSelect .= "where oxactions2article.oxactionid = " . oxDb::getDb()->quote($sSelId) . " and oxactions2article.oxshopid = '" . $myConfig->getShopID() . "' " . $this->_getSorting();
+        $sSelect .= "where oxactions2article.oxactionid = " . oxDb::getDb()->quote($sSelId) .
+                    " and oxactions2article.oxshopid = '" . $myConfig->getShopID() . "' " . $this->_getSorting();
 
         $oList = oxNew("oxlist");
         $oList->init("oxbase", "oxactions2article");

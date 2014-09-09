@@ -66,20 +66,23 @@ class Article_Overview extends oxAdminDetails
                 $this->_aViewData["totalordercnt"] = $iTotalOrderCnt = (float) $oDB->getOne($sSelect);
 
                 // sold amount
-                $sSelect = "select sum(oxorderarticles.oxamount) from  oxorderarticles, oxorder ";
-                $sSelect .= "where (oxorder.oxpaid>0 or oxorder.oxsenddate > 0) and oxorderarticles.oxstorno != '1' and oxorderarticles.oxartid=" . $oDB->quote($soxId);
-                $sSelect .= "and oxorder.oxid =oxorderarticles.oxorderid";
-                $this->_aViewData["soldcnt"] = $iSoldCnt = (float) $oDB->getOne($sSelect);;
+                $sSelect = "select sum(oxorderarticles.oxamount) from  oxorderarticles, oxorder " .
+                           "where (oxorder.oxpaid>0 or oxorder.oxsenddate > 0) and oxorderarticles.oxstorno != '1' " .
+                           "and oxorderarticles.oxartid=" . $oDB->quote($soxId) .
+                           "and oxorder.oxid =oxorderarticles.oxorderid";
+                $this->_aViewData["soldcnt"] = $iSoldCnt = (float) $oDB->getOne($sSelect);
 
                 // canceled amount
-                $sSelect = "select sum(oxamount) from oxorderarticles where oxstorno = '1' and oxartid=" . $oDB->quote($soxId);
+                $sSelect = "select sum(oxamount) from oxorderarticles where oxstorno = '1' " .
+                           "and oxartid=" . $oDB->quote($soxId);
                 $this->_aViewData["canceledcnt"] = $iCanceledCnt = (float) $oDB->getOne($sSelect);
 
                 // not yet processed
                 $this->_aViewData["leftordercnt"] = $iTotalOrderCnt - $iSoldCnt - $iCanceledCnt;
 
                 // position in top ten
-                $sSelect = "select oxartid,sum(oxamount) as cnt from oxorderarticles group by oxartid order by cnt desc";
+                $sSelect = "select oxartid,sum(oxamount) as cnt from oxorderarticles " .
+                           "group by oxartid order by cnt desc";
 
             $rs = $oDB->execute($sSelect);
             $iTopPos = 0;

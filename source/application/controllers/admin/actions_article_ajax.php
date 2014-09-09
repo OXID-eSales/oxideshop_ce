@@ -59,7 +59,7 @@ class actions_article_ajax extends ajaxListComponent
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
         $sArticleTable = $this->_getViewName('oxarticles');
-        $sO2CView = $this->_getViewName('oxobject2category');
+        $sViewName = $this->_getViewName('oxobject2category');
 
         $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
         $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
@@ -71,9 +71,13 @@ class actions_article_ajax extends ajaxListComponent
         } else {
             // selected category ?
             if ($sSynchSelId) {
-                $sQAdd = " from $sO2CView as oxobject2category left join $sArticleTable on ";
-                $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? " ($sArticleTable.oxid=oxobject2category.oxobjectid or $sArticleTable.oxparentid=oxobject2category.oxobjectid)" : " $sArticleTable.oxid=oxobject2category.oxobjectid ";
-                $sQAdd .= " where oxobject2category.oxcatnid = " . $oDb->quote($sSelId) . " ";
+                $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
+                $sSqlIfTrue = " ({$sArticleTable}.oxid=oxobject2category.oxobjectid " .
+                              "or {$sArticleTable}.oxparentid=oxobject2category.oxobjectid)";
+                $sSqlIfFalse = " {$sArticleTable}.oxid=oxobject2category.oxobjectid ";
+                $sVariantSelection = $blVariantsSelectionParameter ? $sSqlIfTrue : $sSqlIfFalse;
+                $sQAdd = " from {$sViewName} as oxobject2category left join {$sArticleTable} on " . $sVariantSelection .
+                         " where oxobject2category.oxcatnid = " . $oDb->quote($sSelId) . " ";
             }
         }
         // #1513C/#1826C - skip references, to not existing articles
@@ -105,6 +109,8 @@ class actions_article_ajax extends ajaxListComponent
 
     /**
      * Removing article assignment
+     *
+     * @return null
      */
     public function removeActionArticle()
     {
@@ -122,6 +128,8 @@ class actions_article_ajax extends ajaxListComponent
 
     /**
      * Set article assignment
+     *
+     * @return null
      */
     public function setActionArticle()
     {

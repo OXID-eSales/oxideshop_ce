@@ -119,7 +119,8 @@ class Article_List extends oxAdminList
      */
     public function getSearchFields()
     {
-        $aSkipFields = array("oxblfixedprice", "oxvarselect", "oxamitemid", "oxamtaskid", "oxpixiexport", "oxpixiexported");
+        $aSkipFields = array("oxblfixedprice", "oxvarselect", "oxamitemid",
+                            "oxamtaskid", "oxpixiexport", "oxpixiexported");
         $oArticle = oxNew("oxarticle");
 
         return array_diff($oArticle->getFieldNames(), $aSkipFields);
@@ -224,8 +225,9 @@ class Article_List extends oxAdminList
                 // add category
                 case 'cat':
                     $oStr = getStr();
-                    $sO2CView = getViewName("oxobject2category");
-                    $sInsert = "from $sTable left join $sO2CView on $sTable.oxid = $sO2CView.oxobjectid where $sO2CView.oxcatnid = " . oxDb::getDb()->quote($sValue) . " and ";
+                    $sViewName = getViewName("oxobject2category");
+                    $sInsert = "from $sTable left join {$sViewName} on {$sTable}.oxid = {$sViewName}.oxobjectid " .
+                               "where {$sViewName}.oxcatnid = " . oxDb::getDb()->quote($sValue) . " and ";
                     $sQ = $oStr->preg_replace("/from\s+$sTable\s+where/i", $sInsert, $sQ);
                     break;
                 // add category
@@ -263,6 +265,8 @@ class Article_List extends oxAdminList
 
     /**
      * Deletes entry from the database
+     *
+     * @return null
      */
     public function deleteEntry()
     {

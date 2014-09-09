@@ -103,7 +103,13 @@ class Article_Main extends oxAdminDetails
             }
         }
 
-        $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 300, $oArticle, "oxarticles__oxlongdesc", "details.tpl.css");
+        $this->_aViewData["editor"] = $this->_generateTextEditor(
+            "100%",
+            300,
+            $oArticle,
+            "oxarticles__oxlongdesc",
+            "details.tpl.css"
+        );
         $this->_aViewData["blUseTimeCheck"] = $this->getConfig()->getConfigParam('blUseTimeCheck');
 
         return "article_main.tpl";
@@ -131,6 +137,8 @@ class Article_Main extends oxAdminDetails
 
     /**
      * Saves changes of article parameters.
+     *
+     * @return null
      */
     public function save()
     {
@@ -191,30 +199,37 @@ class Article_Main extends oxAdminDetails
 
 
             // #905A resetting article count in price categories if price has been changed
-            if (isset($aParams["oxarticles__oxprice"]) && $aParams["oxarticles__oxprice"] != $oArticle->oxarticles__oxprice->value) {
-                $this->resetCounter("priceCatArticle", $oArticle->oxarticles__oxprice->value);
+            $sOxIdField = 'oxarticles__oxid';
+            $sPriceField = 'oxarticles__oxprice';
+            $sActiveField = 'oxarticles__oxactive';
+            $sVendorField = 'oxarticles__oxvendorid';
+            $sManufacturerField = 'oxarticles__oxmanufacturerid';
+            if (isset($aParams[$sPriceField]) && $aParams[$sPriceField] != $oArticle->$sPriceField->value) {
+                $this->resetCounter("priceCatArticle", $oArticle->$sPriceField->value);
             }
 
             $aResetIds = array();
-            if (isset($aParams['oxarticles__oxactive']) && $aParams['oxarticles__oxactive'] != $oArticle->oxarticles__oxactive->value) {
+            if (isset($aParams[$sActiveField]) && $aParams[$sActiveField] != $oArticle->$sActiveField->value) {
                 //check categories
-                $this->_resetCategoriesCounter($oArticle->oxarticles__oxid->value);
+                $this->_resetCategoriesCounter($oArticle->$sOxIdField->value);
 
                 // vendors
-                $aResetIds['vendor'][$oArticle->oxarticles__oxvendorid->value] = 1;
-                $aResetIds['manufacturer'][$oArticle->oxarticles__oxmanufacturerid->value] = 1;
+                $aResetIds['vendor'][$oArticle->$sVendorField->value] = 1;
+                $aResetIds['manufacturer'][$oArticle->$sManufacturerField->value] = 1;
             }
 
             // vendors
-            if (isset($aParams['oxarticles__oxvendorid']) && $aParams['oxarticles__oxvendorid'] != $oArticle->oxarticles__oxvendorid->value) {
-                $aResetIds['vendor'][$aParams['oxarticles__oxvendorid']] = 1;
-                $aResetIds['vendor'][$oArticle->oxarticles__oxvendorid->value] = 1;
+            if (isset($aParams[$sVendorField]) && $aParams[$sVendorField] != $oArticle->$sVendorField->value) {
+                $aResetIds['vendor'][$aParams[$sVendorField]] = 1;
+                $aResetIds['vendor'][$oArticle->$sVendorField->value] = 1;
             }
 
             // manufacturers
-            if (isset($aParams['oxarticles__oxmanufacturerid']) && $aParams['oxarticles__oxmanufacturerid'] != $oArticle->oxarticles__oxmanufacturerid->value) {
-                $aResetIds['manufacturer'][$aParams['oxarticles__oxmanufacturerid']] = 1;
-                $aResetIds['manufacturer'][$oArticle->oxarticles__oxmanufacturerid->value] = 1;
+            if (isset($aParams[$sManufacturerField]) &&
+                $aParams[$sManufacturerField] != $oArticle->$sManufacturerField->value) {
+
+                $aResetIds['manufacturer'][$aParams[$sManufacturerField]] = 1;
+                $aResetIds['manufacturer'][$oArticle->$sManufacturerField->value] = 1;
             }
 
             // resetting counts
@@ -320,6 +335,8 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sCatID Category id
      * @param string $sOXID  Article id
+     *
+     * @return null
      */
     public function addToCategory($sCatID, $sOXID)
     {
@@ -343,6 +360,8 @@ class Article_Main extends oxAdminDetails
      * @param string $sOldId    old product id (default null)
      * @param string $sNewId    new product id (default null)
      * @param string $sParentId product parent id
+     *
+     * @return null
      */
     public function copyArticle($sOldId = null, $sNewId = null, $sParentId = null)
     {
@@ -426,11 +445,14 @@ class Article_Main extends oxAdminDetails
                 $this->setEditObjectId($oArticle->getId());
 
                 //article number handling, warns for artnum dublicates
+                $sFncParameter = oxRegistry::getConfig()->getRequestParameter('fnc');
+                $sArtNumField = 'oxarticles__oxartnum';
                 if ($myConfig->getConfigParam('blWarnOnSameArtNums') &&
-                    $oArticle->oxarticles__oxartnum->value && oxRegistry::getConfig()->getRequestParameter('fnc') == 'copyArticle'
+                    $oArticle->$sArtNumField->value && $sFncParameter == 'copyArticle'
                 ) {
-                    $sSelect = "select oxid from " . $oArticle->getCoreTableName() . "
-                                where oxartnum = " . $oDb->quote($oArticle->oxarticles__oxartnum->value) . " and oxid != " . $oDb->quote($sNewId);
+                    $sSelect = "select oxid from " . $oArticle->getCoreTableName() .
+                               "where oxartnum = " . $oDb->quote($oArticle->$sArtNumField->value) .
+                               " and oxid != " . $oDb->quote($sNewId);
 
                     if ($oArticle->assignRecord($sSelect)) {
                         $this->_aViewData["errorsavingatricle"] = 1;
@@ -445,6 +467,8 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     *
+     * @return null
      */
     protected function _copyCategories($sOldId, $sNewId)
     {
@@ -461,7 +485,10 @@ class Article_Main extends oxAdminDetails
                 $sTime = $oRs->fields[1];
 
 
-                    $oDb->execute("insert into oxobject2category (oxid, oxobjectid, oxcatnid, oxtime) VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($sNewId) . ", " . $oDb->quote($sCatId) . ", " . $oDb->quote($sTime) . ") ");
+                    $sSql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid, oxtime) " .
+                            "VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($sNewId) . ", " .
+                            $oDb->quote($sCatId) . ", " . $oDb->quote($sTime) . ") ";
+                    $oDb->execute($sSql);
 
                 $oRs->moveNext();
 
@@ -476,6 +503,8 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     *
+     * @return null
      */
     protected function _copyAttributes($sOldId, $sNewId)
     {
@@ -503,6 +532,8 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     *
+     * @return null
      */
     protected function _copyFiles($sOldId, $sNewId)
     {
@@ -532,6 +563,8 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     *
+     * @return null
      */
     protected function _copySelectlists($sOldId, $sNewId)
     {
@@ -544,7 +577,9 @@ class Article_Main extends oxAdminDetails
             while (!$oRs->EOF) {
                 $sUid = $myUtilsObject->generateUID();
                 $sId = $oRs->fields[0];
-                $oDb->execute("insert into oxobject2selectlist (oxid, oxobjectid, oxselnid) VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($sNewId) . ", " . $oDb->quote($sId) . ") ");
+                $sSql = "insert into oxobject2selectlist (oxid, oxobjectid, oxselnid) " .
+                        "VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($sNewId) . ", " . $oDb->quote($sId) . ") ";
+                $oDb->execute($sSql);
                 $oRs->moveNext();
             }
         }
@@ -555,6 +590,8 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     *
+     * @return null
      */
     protected function _copyCrossseling($sOldId, $sNewId)
     {
@@ -567,7 +604,9 @@ class Article_Main extends oxAdminDetails
             while (!$oRs->EOF) {
                 $sUid = $myUtilsObject->generateUID();
                 $sId = $oRs->fields[0];
-                $oDb->execute("insert into oxobject2article (oxid, oxobjectid, oxarticlenid) VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($sId) . ", " . $oDb->quote($sNewId) . " ) ");
+                $sSql = "insert into oxobject2article (oxid, oxobjectid, oxarticlenid) " .
+                       "VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($sId) . ", " . $oDb->quote($sNewId) . " ) ";
+                $oDb->execute($sSql);
                 $oRs->moveNext();
             }
         }
@@ -578,6 +617,8 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     *
+     * @return null
      */
     protected function _copyAccessoires($sOldId, $sNewId)
     {
@@ -590,7 +631,9 @@ class Article_Main extends oxAdminDetails
             while (!$oRs->EOF) {
                 $sUId = $myUtilsObject->generateUid();
                 $sId = $oRs->fields[0];
-                $oDb->execute("insert into oxaccessoire2article (oxid, oxobjectid, oxarticlenid) VALUES (" . $oDb->quote($sUId) . ", " . $oDb->quote($sId) . ", " . $oDb->quote($sNewId) . ") ");
+                $sSql = "insert into oxaccessoire2article (oxid, oxobjectid, oxarticlenid) " .
+                        "VALUES (" . $oDb->quote($sUId) . ", " . $oDb->quote($sId) . ", " . $oDb->quote($sNewId) . ") ";
+                $oDb->execute($sSql);
                 $oRs->moveNext();
             }
         }
@@ -601,13 +644,16 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     *
+     * @return null
      */
     protected function _copyStaffelpreis($sOldId, $sNewId)
     {
         $sShopId = $this->getConfig()->getShopId();
         $oPriceList = oxNew("oxlist");
         $oPriceList->init("oxbase", "oxprice2article");
-        $sQ = "select * from oxprice2article where oxartid = '$sOldId' and oxshopid = '$sShopId' and (oxamount > 0 or oxamountto > 0) order by oxamount ";
+        $sQ = "select * from oxprice2article where oxartid = '{$sOldId}' and oxshopid = '{$sShopId}' " .
+              "and (oxamount > 0 or oxamountto > 0) order by oxamount ";
         $oPriceList->selectString($sQ);
         if ($oPriceList->count()) {
             foreach ($oPriceList as $oItem) {
@@ -623,6 +669,8 @@ class Article_Main extends oxAdminDetails
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     *
+     * @return null
      */
     protected function _copyArtExtends($sOldId, $sNewId)
     {
@@ -636,6 +684,8 @@ class Article_Main extends oxAdminDetails
 
     /**
      * Saves article parameters in different language.
+     *
+     * @return null
      */
     public function saveinnlang()
     {
@@ -660,34 +710,38 @@ class Article_Main extends oxAdminDetails
      *
      * @param object $oArticle       article object
      * @param object $oParentArticle article parent object
+     *
+     * @return null
      */
     protected function _formJumpList($oArticle, $oParentArticle)
     {
         $aJumpList = array();
         //fetching parent article variants
         if (isset($oParentArticle)) {
-            $aJumpList[] = array($oParentArticle->oxarticles__oxid->value, $this->_getTitle($oParentArticle));
-            $oParentVariants = $oParentArticle->getAdminVariants(oxRegistry::getConfig()->getRequestParameter("editlanguage"));
+            $sOxIdField = 'oxarticles__oxid';
+            $aJumpList[] = array($oParentArticle->$sOxIdField->value, $this->_getTitle($oParentArticle));
+            $sEditLanguageParameter = oxRegistry::getConfig()->getRequestParameter("editlanguage");
+            $oParentVariants = $oParentArticle->getAdminVariants($sEditLanguageParameter);
             if ($oParentVariants->count()) {
                 foreach ($oParentVariants as $oVar) {
-                    $aJumpList[] = array($oVar->oxarticles__oxid->value, " - " . $this->_getTitle($oVar));
-                    if ($oVar->oxarticles__oxid->value == $oArticle->oxarticles__oxid->value) {
-                        $oVariants = $oArticle->getAdminVariants(oxRegistry::getConfig()->getRequestParameter("editlanguage"));
+                    $aJumpList[] = array($oVar->$sOxIdField->value, " - " . $this->_getTitle($oVar));
+                    if ($oVar->$sOxIdField->value == $oArticle->$sOxIdField->value) {
+                        $oVariants = $oArticle->getAdminVariants($sEditLanguageParameter);
                         if ($oVariants->count()) {
                             foreach ($oVariants as $oVVar) {
-                                $aJumpList[] = array($oVVar->oxarticles__oxid->value, " -- " . $this->_getTitle($oVVar));
+                                $aJumpList[] = array($oVVar->$sOxIdField->value, " -- " . $this->_getTitle($oVVar));
                             }
                         }
                     }
                 }
             }
         } else {
-            $aJumpList[] = array($oArticle->oxarticles__oxid->value, $this->_getTitle($oArticle));
+            $aJumpList[] = array($oArticle->$sOxIdField->value, $this->_getTitle($oArticle));
             //fetching this article variants data
             $oVariants = $oArticle->getAdminVariants(oxRegistry::getConfig()->getRequestParameter("editlanguage"));
             if ($oVariants && $oVariants->count())
                 foreach ($oVariants as $oVar) {
-                    $aJumpList[] = array($oVar->oxarticles__oxid->value, " - " . $this->_getTitle($oVar));
+                    $aJumpList[] = array($oVar->$sOxIdField->value, " - " . $this->_getTitle($oVar));
                 }
         }
         if (count($aJumpList) > 1)

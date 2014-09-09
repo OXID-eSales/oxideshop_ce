@@ -59,7 +59,7 @@ class article_bundle_ajax extends ajaxListComponent
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
         $sArticleTable = $this->_getViewName('oxarticles');
-        $sO2CView = $this->_getViewName('oxobject2category');
+        $sView = $this->_getViewName('oxobject2category');
 
         $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
         $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
@@ -71,9 +71,14 @@ class article_bundle_ajax extends ajaxListComponent
         } else {
             // selected category ?
             if ($sSynchSelId) {
-                $sQAdd = " from $sO2CView as oxobject2category left join $sArticleTable on ";
-                $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? " ($sArticleTable.oxid=oxobject2category.oxobjectid or $sArticleTable.oxparentid=oxobject2category.oxobjectid)" : " $sArticleTable.oxid=oxobject2category.oxobjectid ";
-                $sQAdd .= " where oxobject2category.oxcatnid = " . $oDb->quote($sSelId) . " ";
+                $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
+                $sSqlIfTrue = " ({$sArticleTable}.oxid=oxobject2category.oxobjectid " .
+                              "or {$sArticleTable}.oxparentid=oxobject2category.oxobjectid)";
+                $sSqlIfFalse = " $sArticleTable.oxid=oxobject2category.oxobjectid ";
+                $sVariantsSqlSnippet = $blVariantsSelectionParameter ? $sSqlIfTrue : $sSqlIfFalse;
+
+                $sQAdd = " from {$sView} as oxobject2category left join {$sArticleTable} on {$sVariantsSqlSnippet}" .
+                         " where oxobject2category.oxcatnid = " . $oDb->quote($sSelId) . " ";
             }
         }
         // #1513C/#1826C - skip references, to not existing articles
@@ -105,26 +110,31 @@ class article_bundle_ajax extends ajaxListComponent
 
     /**
      * Removing article from corssselling list
+     *
+     * @return null
      */
     public function removeArticleBundle()
     {
-        $aChosenArt = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sQuotedChosenArt = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxid'));
         $oDb = oxDb::getDb();
 
-        $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid  =  " . $oDb->quote($aChosenArt) . " ";
+        $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid  =  {$$sQuotedChosenArt} ";
         $oDb->Execute($sQ);
     }
 
     /**
      * Adding article to corssselling list
+     *
+     * @return null
      */
     public function addArticleBundle()
     {
-        $sChosenArt = oxRegistry::getConfig()->getRequestParameter('oxbundleid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sQuotedChosenArt = oxRegistry::getConfig()->getRequestParameter('oxbundleid');
+        $sQuotedOxId = oxRegistry::getConfig()->getRequestParameter('oxid');
         $oDb = oxDb::getDb();
 
-        $sQ = "update oxarticles set oxarticles.oxbundleid =  " . $oDb->quote($sChosenArt) . " where oxarticles.oxid  =  " . $oDb->quote($soxId) . " ";
+        $sQ = "update oxarticles set oxarticles.oxbundleid =  {$sQuotedChosenArt} " .
+              "where oxarticles.oxid  =  {$$sQuotedOxId} ";
         $oDb->Execute($sQ);
     }
 }

@@ -164,10 +164,12 @@ class Article_Seo extends Object_Seo
         $iLang = $this->getEditLang();
 
         // adding categories
-        $sO2CView = getViewName('oxobject2category');
+        $sView = getViewName('oxobject2category');
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
-        $sQ = "select oxobject2category.oxcatnid as oxid from $sO2CView as oxobject2category where oxobject2category.oxobjectid="
-              . $oDb->quote($oArticle->getId()) . " union " . $oArticle->getSqlForPriceCategories('oxid');
+        $sSqlForPriceCategories = $oArticle->getSqlForPriceCategories('oxid');
+        $sQuotesArticleId = $oDb->quote($oArticle->getId());
+        $sQ = "select oxobject2category.oxcatnid as oxid from {$sView} as oxobject2category " .
+              "where oxobject2category.oxobjectid=" . $sQuotesArticleId . " union " . $sSqlForPriceCategories;
 
         $oRs = $oDb->execute($sQ);
         if ($oRs != false && $oRs->recordCount() > 0) {
@@ -176,7 +178,9 @@ class Article_Seo extends Object_Seo
                 if ($oCat->loadInLang($iLang, current($oRs->fields))) {
                     if ($sMainCatId == $oCat->getId()) {
                         $sSuffix = oxRegistry::getLang()->translateString('(main category)', $this->getEditLang());
-                        $oCat->oxcategories__oxtitle = new oxField($oCat->oxcategories__oxtitle->getRawValue() . " " . $sSuffix, oxField::T_RAW);
+                        $sTitleField = 'oxcategories__oxtitle';
+                        $sTitle = $oCat->$sTitleField->getRawValue() . " " . $sSuffix;
+                        $oCat->$sTitleField = new oxField($sTitle, oxField::T_RAW);
                     }
                     $aCatList[] = $oCat;
                 }
@@ -307,8 +311,9 @@ class Article_Seo extends Object_Seo
     public function getActManufacturer()
     {
         $oManufacturer = oxNew('oxmanufacturer');
+        $blLoaded = $this->getActCatType() == 'oxmanufacturer' && $oManufacturer->load($this->getActCatId());
 
-        return ($this->getActCatType() == 'oxmanufacturer' && $oManufacturer->load($this->getActCatId())) ? $oManufacturer : null;
+        return ($blLoaded) ? $oManufacturer : null;
     }
 
     /**
@@ -466,7 +471,9 @@ class Article_Seo extends Object_Seo
                 break;
         }
 
-        return trim(oxRegistry::get("oxUtilsUrl")->appendUrl($oProduct->getBaseStdLink($iLang, true, false), $aParams), '&amp;');
+        $oUtilsUrl = oxRegistry::get("oxUtilsUrl");
+
+        return trim($oUtilsUrl->appendUrl($oProduct->getBaseStdLink($iLang, true, false), $aParams), '&amp;');
     }
 
     /**

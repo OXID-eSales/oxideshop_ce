@@ -72,8 +72,11 @@ class AdminGuestbook_List extends oxAdminList
             $oDb = oxDb::getDb();
             foreach ($oList as $oEntry) {
                 // preloading user info ..
-                if (isset($oEntry->oxgbentries__oxuserid) && $oEntry->oxgbentries__oxuserid->value) {
-                    $oEntry->oxuser__oxlname = new oxField($oDb->getOne("select oxlname from oxuser where oxid=" . $oDb->quote($oEntry->oxgbentries__oxuserid->value), false, false));
+                $sUserIdField = 'oxgbentries__oxuserid';
+                $sUserLastNameField = 'oxuser__oxlname';
+                if (isset($oEntry->$sUserIdField) && $oEntry->$sUserIdField->value) {
+                    $sSql = "select oxlname from oxuser where oxid=" . $oDb->quote($oEntry->$sUserIdField->value);
+                    $oEntry->$sUserLastNameField = new oxField($oDb->getOne($sSql, false, false));
                 }
             }
         }

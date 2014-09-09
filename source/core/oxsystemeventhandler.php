@@ -151,7 +151,7 @@ class oxSystemEventHandler
         $oProcessor = $this->_getServerProcessor();
         $oProcessor->process();
 
-        if ($this->_isSendingShopDataEnabled()) {
+        if ($this->_isSendingShopDataEnabled() && !oxRegistry::getUtils()->isSearchEngine()) {
             $this->_sendShopInformation();
         }
 

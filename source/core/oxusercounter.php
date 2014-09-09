@@ -35,9 +35,22 @@ class oxUserCounter
     {
         $oDb = oxDb::getDb();
 
-        $sQuery = "SELECT COUNT(1) FROM oxuser WHERE oxrights != 'user' AND oxactive = 1 ";
+        $sQuery = "SELECT COUNT(1) FROM oxuser WHERE oxrights != 'user'";
 
         return (int) $oDb->getOne($sQuery);
     }
 
+    /**
+     * Returns count of admins (mall and subshops). Only counts active admins.
+     *
+     * @return int
+     */
+    public function getActiveAdminCount()
+    {
+        $oDb = oxDb::getDb();
+
+        $sQuery = "SELECT COUNT(1) FROM oxuser WHERE oxrights != 'user' AND oxactive = 1 ";
+
+        return (int) $oDb->getOne($sQuery);
+    }
 }

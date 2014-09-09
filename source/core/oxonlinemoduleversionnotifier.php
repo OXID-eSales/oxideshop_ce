@@ -42,7 +42,7 @@ class oxOnlineModuleVersionNotifier
     /** @var oxModuleList */
     private $_oModuleList = null;
 
-    function __construct(oxOnlineModuleVersionNotifierCaller $oCaller, oxModuleList $oModuleList)
+    public function __construct(oxOnlineModuleVersionNotifierCaller $oCaller, oxModuleList $oModuleList)
     {
         $this->_oCaller = $oCaller;
         $this->_oModuleList = $oModuleList;
@@ -89,7 +89,7 @@ class oxOnlineModuleVersionNotifier
     /**
      * Send request message to Online Module Version Notifier web service.
      *
-     * @return oxOnlineModuleNotifierRequest
+     * @return oxOnlineModulesNotifierRequest
      */
     protected function _formRequest()
     {

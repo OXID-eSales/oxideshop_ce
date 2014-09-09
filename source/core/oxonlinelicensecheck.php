@@ -252,13 +252,13 @@ class oxOnlineLicenseCheck
     /**
      * Builds request object with required parameters.
      *
-     * @param array $aSerial
+     * @param array $aSerials
      *
      * @throws oxException
      *
      * @return oxOnlineLicenseCheckRequest
      */
-    protected function _formRequest($aSerial)
+    protected function _formRequest($aSerials)
     {
         $oConfig = oxRegistry::getConfig();
 
@@ -267,7 +267,7 @@ class oxOnlineLicenseCheck
 
         $oRequest->revision = $oConfig->getRevision();
 
-        $oRequest->keys = array('key' => $aSerial);
+        $oRequest->keys = array('key' => $aSerials);
 
         $oRequest->productSpecificInformation = new stdClass();
 

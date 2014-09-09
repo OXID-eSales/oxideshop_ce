@@ -25,6 +25,7 @@
  */
 class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 {
+
     /**
      * @return null|void
      */
@@ -45,7 +46,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
         /** @var oxOnlineModuleVersionNotifier $oModuleNotifier */
         $oModuleNotifier = $oModuleNotifierMock;
-        $oSystemEventHandler->setOnlineModuleVersionNotifier( $oModuleNotifier );
+        $oSystemEventHandler->setOnlineModuleVersionNotifier($oModuleNotifier);
 
         $oSystemEventHandler->onAdminLogin(1);
     }
@@ -60,7 +61,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
         /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
         $oOnlineLicenseCheck = $oOnlineLicenseCheckMock;
-        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+        $oSystemEventHandler->setOnlineLicenseCheck($oOnlineLicenseCheck);
 
         $oSystemEventHandler->onShopStart();
     }
@@ -80,7 +81,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
         /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
         $oOnlineLicenseCheck = $oOnlineLicenseCheckMock;
-        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+        $oSystemEventHandler->setOnlineLicenseCheck($oOnlineLicenseCheck);
 
         $oSystemEventHandler->onShopStart();
     }
@@ -98,7 +99,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
         /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
         $oOnlineLicenseCheck = $oOnlineLicenseCheckMock;
-        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+        $oSystemEventHandler->setOnlineLicenseCheck($oOnlineLicenseCheck);
 
         $oSystemEventHandler->onShopStart();
     }
@@ -128,7 +129,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
         $oOnlineLicenseCheck = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
-        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+        $oSystemEventHandler->setOnlineLicenseCheck($oOnlineLicenseCheck);
         $oSystemEventHandler->onShopStart();
 
         $sCheckTime = $this->getConfigParam('sOnlineLicenseCheckTime');
@@ -157,7 +158,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
         $oOnlineLicenseCheck = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
-        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+        $oSystemEventHandler->setOnlineLicenseCheck($oOnlineLicenseCheck);
 
         $oSystemEventHandler->onShopStart();
         $sCheckTime1 = $this->getConfigParam('sOnlineLicenseCheckTime');
@@ -172,8 +173,10 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
     {
         // 2014-05-13 19:53:20
         $iCurrentTime = 1400000000;
-        $iCheckHours = 17; $iCheckMinutes = 10; $iCheckSeconds = 15;
-        $sCheckTime = $iCheckHours .':'. $iCheckMinutes .':'. $iCheckSeconds;
+        $iCheckHours = 17;
+        $iCheckMinutes = 10;
+        $iCheckSeconds = 15;
+        $sCheckTime = $iCheckHours . ':' . $iCheckMinutes . ':' . $iCheckSeconds;
         $this->_prepareCurrentTime($iCurrentTime);
         $this->getConfig()->saveShopConfVar('str', 'sOnlineLicenseNextCheckTime', $iCurrentTime - (24 * 60 * 60));
         $this->getConfig()->saveShopConfVar('str', 'sOnlineLicenseCheckTime', $sCheckTime);
@@ -189,7 +192,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $oOnlineLicenseCheck = $oOnlineLicenseCheckMock;
 
         $oSystemEventHandler = new oxSystemEventHandler();
-        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+        $oSystemEventHandler->setOnlineLicenseCheck($oOnlineLicenseCheck);
 
         $oSystemEventHandler->onShopStart();
 
@@ -205,7 +208,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
     public function testOnShopStartSaveServerInformation()
     {
-        $oProcessor = $this->getMock('oxServerProcessor', array(), array(), '', false );
+        $oProcessor = $this->getMock('oxServerProcessor', array(), array(), '', false);
         $oProcessor->expects($this->once())->method('process');
 
         $oSystemEventHandler = $this->getMock('oxSystemEventHandler', array('_getServerProcessor', 'pageStart'));
@@ -225,7 +228,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $oOnlineLicenseCheck->expects($this->once())->method("validateShopSerials");
         /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
 
-        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+        $oSystemEventHandler->setOnlineLicenseCheck($oOnlineLicenseCheck);
 
         $oSystemEventHandler->onShopStart();
     }
@@ -241,10 +244,11 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $oOnlineLicenseCheck->expects($this->never())->method("validateShopSerials");
         /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
 
-        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+        $oSystemEventHandler->setOnlineLicenseCheck($oOnlineLicenseCheck);
 
         $oSystemEventHandler->onShopStart();
     }
+
 
 
     /**

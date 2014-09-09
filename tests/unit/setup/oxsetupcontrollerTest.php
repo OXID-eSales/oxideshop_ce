@@ -587,14 +587,14 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oLang = $this->getMock("oxSetupLang", array("getText"));
         $oLang->expects($this->atLeastOnce())->method("getText");
 
-        $oDb = $this->getMock("oxSetupDb", array("openDatabase", "execSql", "setMySqlCollation", "queryFile", "saveDynPagesSettings", "convertConfigTableToUtf", "testCreateView"));
+        $oDb = $this->getMock("oxSetupDb", array("openDatabase", "execSql", "setMySqlCollation", "queryFile", "saveShopSettings", "convertConfigTableToUtf", "testCreateView"));
         $oDb->expects($this->at(0))->method("openDatabase");
         $oDb->expects($this->at(1))->method("testCreateView");
         $oDb->expects($this->at(2))->method("execSql")->will($this->throwException(new Exception));
         $oDb->expects($this->at(3))->method("setMySqlCollation");
         $oDb->expects($this->at(4))->method("queryFile");
         $oDb->expects($this->at(5))->method("queryFile");
-        $oDb->expects($this->at(6))->method("saveDynPagesSettings");
+        $oDb->expects($this->at(6))->method("saveShopSettings");
         $oDb->expects($this->at(7))->method("queryFile");
         $oDb->expects($this->at(8))->method("setMySqlCollation");
         $oDb->expects($this->at(9))->method("convertConfigTableToUtf");

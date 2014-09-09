@@ -97,10 +97,8 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         /** @var oxCurl $oCurl */
 
         $oEmailBuilder = new oxOnlineServerEmailBuilder();
-        $oOnlineCaller = new oxOnlineCaller($oCurl, $oEmailBuilder);
-
         $oSimpleXml = new oxSimpleXml();
-        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oOnlineCaller, $oSimpleXml);
+        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
 
         $oUserCounter = new oxUserCounter();
         $oServersManager = new oxServersManager();
@@ -179,10 +177,9 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         /** @var oxCurl $oCurl */
 
         $oEmailBuilder = new oxOnlineServerEmailBuilder();
-        $oOnlineCaller = new oxOnlineCaller($oCurl, $oEmailBuilder);
 
         $oSimpleXml = new oxSimpleXml();
-        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oOnlineCaller, $oSimpleXml);
+        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
 
         $oUserCounter = new oxUserCounter();
         $oServersManager = new oxServersManager();

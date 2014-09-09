@@ -49,10 +49,9 @@ class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends Oxid
         /** @var oxCurl $oCurl */
 
         $oEmailBuilder = new oxOnlineServerEmailBuilder();
-        $oOnlineCaller = new oxOnlineCaller($oCurl, $oEmailBuilder);
 
         $oSimpleXml = new oxSimpleXml();
-        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oOnlineCaller, $oSimpleXml);
+        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
 
         $oUserCounter = new oxUserCounter();
         $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller, $oUserCounter);
@@ -80,10 +79,8 @@ class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends Oxid
         /** @var oxCurl $oCurl */
 
         $oEmailBuilder = new oxOnlineServerEmailBuilder();
-        $oOnlineCaller = new oxOnlineCaller($oCurl, $oEmailBuilder);
-
         $oSimpleXml = new oxSimpleXml();
-        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oOnlineCaller, $oSimpleXml);
+        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
 
         $oUserCounter = new oxUserCounter();
         $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller, $oUserCounter);
@@ -108,10 +105,8 @@ class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends Oxid
         /** @var oxCurl $oCurl */
 
         $oEmailBuilder = new oxOnlineServerEmailBuilder();
-        $oOnlineCaller = new oxOnlineCaller($oCurl, $oEmailBuilder);
-
         $oSimpleXml = new oxSimpleXml();
-        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oOnlineCaller, $oSimpleXml);
+        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
 
         $oUserCounter = new oxUserCounter();
         $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller, $oUserCounter);

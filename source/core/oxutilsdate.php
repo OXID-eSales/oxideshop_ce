@@ -568,6 +568,33 @@ class oxUtilsDate extends oxSuperCfg
     }
 
     /**
+     *
+     * @param string $sTime time to create timestamp.
+     * @param string $sTime2 hours, minutes and seconds to update created timestamp.
+     *
+     * @return int formed (modified according timezone) time
+     */
+    public function formTime($sTime = 'now', $sTime2 = null)
+    {
+        $oDate = new DateTime($sTime);
+
+        if ($sTime2) {
+            $aHourToCheck = explode(':', $sTime2);
+            $iHour = $aHourToCheck[0];
+            $iMinutes = $aHourToCheck[1];
+            $iSecond = $aHourToCheck[2];
+            $oDate->setTime($iHour, $iMinutes, $iSecond);
+        }
+
+        $iServerTimeShift = $this->getConfig()->getConfigParam('iServerTimeShift');
+        if (!$iServerTimeShift) {
+            return $oDate->getTimestamp();
+        }
+
+        return ($oDate->getTimestamp() + ((int) $iServerTimeShift * 3600));
+    }
+
+    /**
      * Returns number of the week according to numeration standards (configurable in admin):
      * %U - week number, starting with the first Sunday as the first day of the first week;
      * %W - week number, starting with the first Monday as the first day of the first week.
@@ -637,21 +664,6 @@ class oxUtilsDate extends oxSuperCfg
         }
 
         return $blIsEmpty;
-    }
-
-    /**
-     * Wrapper for PHP function DateTime
-     *
-     * @param string $sTime
-     * @param DateTimeZone $oTimeZone
-     *
-     * @return DateTime
-     *
-     * @link http://php.net/manual/en/datetime.construct.php
-     */
-    public function getDateManager($sTime = 'now', DateTimeZone $oTimeZone = null)
-    {
-        return new DateTime($sTime, $oTimeZone);
     }
 
     /**

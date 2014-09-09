@@ -28,9 +28,12 @@ class Unit_Core_oxOnlineModuleVersionNotifierCallerTest extends OxidTestCase
 {
     public function testGetWebServiceUrl()
     {
-        $oCaller = $this->getMock('oxOnlineCaller', array(), array(),'',false);
+        /** @var oxCurl $oCurl */
+        $oCurl = $this->getMock('oxCurl');
+        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
+        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
+        $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
 
-        $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCaller);
         $this->assertSame('https://omvn.oxid-esales.com/check.php', $oNotifier->getWebServiceUrl());
     }
 

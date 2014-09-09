@@ -118,7 +118,7 @@ class article_bundle_ajax extends ajaxListComponent
         $oDb = oxDb::getDb();
         $sQuotedChosenArt = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxid'));
 
-        $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid  =  {$$sQuotedChosenArt} ";
+        $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid  =  {$sQuotedChosenArt} ";
         $oDb->Execute($sQ);
     }
 
@@ -134,7 +134,7 @@ class article_bundle_ajax extends ajaxListComponent
         $oDb = oxDb::getDb();
 
         $sQ = "update oxarticles set oxarticles.oxbundleid =  {$sQuotedChosenArt} " .
-              "where oxarticles.oxid  =  {$$sQuotedOxId} ";
+              "where oxarticles.oxid  =  {$sQuotedOxId} ";
         $oDb->Execute($sQ);
     }
 }

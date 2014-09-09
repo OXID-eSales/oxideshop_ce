@@ -20,27 +20,67 @@
  * @version   OXID eShop CE
  */
 
-class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
+class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
 {
-
     public function testRequestFormation()
     {
+        $iAdminUsers = 25;
+        $iActiveAdminUsers = 10;
+        $iSubShops = 5;
+        $aServers = array('7da43ed884a1ad1d6035d4c1d630fc4e' => array(
+            'id' => '7da43ed884a1ad1d6035d4c1d630fc4e',
+            'timestamp' => '1409911182',
+            'ip' => null,
+            'lastFrontendUsage' => '1409911182',
+            'lastAdminUsage' => null,
+        ));
+        $aCounters = array(
+            array(
+                'name' => 'admin users',
+                'value' => $iAdminUsers,
+            ),
+            array(
+                'name' => 'active admin users',
+                'value' => $iActiveAdminUsers,
+            ),
+            array(
+                'name' => 'subShops',
+                'value' => $iSubShops,
+            )
+        );
+
+        $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
+        $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
+
+        /** @var oxConfig $oConfig */
+        oxRegistry::set('oxConfig', $oConfig);
+
         $oRequest = new oxOnlineLicenseCheckRequest();
-        $oRequest->edition = oxRegistry::getConfig()->getEdition();
-        $oRequest->version = oxRegistry::getConfig()->getVersion();
         $oRequest->revision = oxRegistry::getConfig()->getRevision();
-        $oRequest->shopUrl = oxRegistry::getConfig()->getShopUrl();
         $oRequest->pVersion = '1.0';
         $oRequest->productId = 'eShop';
-        $oRequest->keys = new stdClass();
-        $oRequest->keys->key = array('validSerial');
-        $oRequest->servers = new stdClass();
-        $oRequest->servers->server = oxRegistry::getConfig()->getConfigParam('aServersData');
+        $oRequest->keys = array('key' => array('validSerial'));
+        $oRequest->productSpecificInformation = new stdClass();
+        $oRequest->productSpecificInformation->servers = array('server' => $aServers);
+        $oRequest->productSpecificInformation->counters = array('counter' => $aCounters);
 
         $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
         $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
+        /** @var oxOnlineLicenseCheckCaller $oCaller */
+
+        $oUserCounter = $this->getMock('oxUserCounter', array('getAdminCount', 'getActiveAdminCount'), array(), '', false);
+        $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue($iAdminUsers));
+        $oUserCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($iActiveAdminUsers));
+        /** @var oxUserCounter $oUserCounter */
+
+        $oServersManager = $this->getMock('oxServersManager', array('getServers'), array(), '', false);
+        $oServersManager->expects($this->once())->method('getServers')->will($this->returnValue($aServers));
+        /** @var oxServersManager $oServersManager */
 
         $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
+        $oLicenseCheck->setServersManager($oServersManager);
+        $oLicenseCheck->setUserCounter($oUserCounter);
+
         $oLicenseCheck->validate('validSerial');
     }
 
@@ -84,6 +124,7 @@ class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
 
         $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
         $oCaller->expects($this->any())->method('doRequest')->will($this->returnValue($oResponse));
+        /** @var oxOnlineLicenseCheckCaller $oCaller */
 
         $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
 
@@ -104,6 +145,36 @@ class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
 
     public function testSerialsAreTakenFromConfigInShopSerialsValidation()
     {
+        $iAdminUsers = 25;
+        $iActiveAdminUsers = 10;
+        $iSubShops = 5;
+        $aServers = array('7da43ed884a1ad1d6035d4c1d630fc4e' => array(
+            'id' => '7da43ed884a1ad1d6035d4c1d630fc4e',
+            'timestamp' => '1409911182',
+            'ip' => null,
+            'lastFrontendUsage' => '1409911182',
+            'lastAdminUsage' => null,
+        ));
+        $aCounters = array(
+            array(
+                'name' => 'admin users',
+                'value' => $iAdminUsers,
+            ),
+            array(
+                'name' => 'active admin users',
+                'value' => $iActiveAdminUsers,
+            ),
+            array(
+                'name' => 'subShops',
+                'value' => $iSubShops,
+            )
+        );
+
+        $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
+        $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
+        /** @var oxConfig $oConfig */
+        oxRegistry::set('oxConfig', $oConfig);
+
         $oRequest = new oxOnlineLicenseCheckRequest();
         $oRequest->edition = oxRegistry::getConfig()->getEdition();
         $oRequest->version = oxRegistry::getConfig()->getVersion();
@@ -111,18 +182,70 @@ class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
         $oRequest->shopUrl = oxRegistry::getConfig()->getShopUrl();
         $oRequest->pVersion = '1.0';
         $oRequest->productId = 'eShop';
-        $oRequest->keys = new stdClass();
-        $oRequest->keys->key = array('key1', 'key2');
-        $oRequest->servers = new stdClass();
-        $oRequest->servers->server = oxRegistry::getConfig()->getConfigParam('aServersData');
+        $oRequest->keys = array('key' => array('key1', 'key2'));
+
+        $oRequest->productSpecificInformation = new stdClass();
+        $oRequest->productSpecificInformation->servers = array('server' => $aServers);
+        $oRequest->productSpecificInformation->counters = array('counter' => $aCounters);
 
         $this->getConfig()->setConfigParam("aSerials", array('key1', 'key2'));
 
         $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
         $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
+        /** @var oxOnlineLicenseCheckCaller $oUserCounter */
+
+        $oUserCounter = $this->getMock('oxUserCounter', array('getAdminCount', 'getActiveAdminCount'), array(), '', false);
+        $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue($iAdminUsers));
+        $oUserCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($iActiveAdminUsers));
+        /** @var oxUserCounter $oUserCounter */
+
+        $oServersManager = $this->getMock('oxServersManager', array('getServers'), array(), '', false);
+        $oServersManager->expects($this->once())->method('getServers')->will($this->returnValue($aServers));
+        /** @var oxServersManager $oServersManager */
+
 
         $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
+        $oLicenseCheck->setServersManager($oServersManager);
+        $oLicenseCheck->setUserCounter($oUserCounter);
         $oLicenseCheck->validateShopSerials();
+    }
+
+    public function testNewSerialIsAddedToExistingSerials()
+    {
+        $iSubShops = 5;
+        $aCounters = array(array(
+            'name' => 'subShops',
+            'value' => $iSubShops,
+        ));
+
+        $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
+        $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
+        /** @var oxConfig $oConfig */
+        $oConfig->setConfigParam('aServersData', array());
+        $this->setConfigParam('aServersData', array());
+        oxRegistry::set('oxConfig', $oConfig);
+
+        $oRequest = new oxOnlineLicenseCheckRequest();
+        $oRequest->edition = oxRegistry::getConfig()->getEdition();
+        $oRequest->version = oxRegistry::getConfig()->getVersion();
+        $oRequest->revision = oxRegistry::getConfig()->getRevision();
+        $oRequest->shopUrl = oxRegistry::getConfig()->getShopUrl();
+        $oRequest->pVersion = '1.0';
+        $oRequest->productId = 'eShop';
+        $aKeys = array('key1', 'key2', array('attributes' => array('state' => 'new'), 'value' => 'new_serial'));
+        $oRequest->keys = array('key' => $aKeys);
+
+        $oRequest->productSpecificInformation = new stdClass();
+        $oRequest->productSpecificInformation->counters = array('counter' => $aCounters);
+
+        $this->getConfig()->setConfigParam("aSerials", array('key1', 'key2'));
+
+        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
+        $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
+        /** @var oxOnlineLicenseCheckCaller $oUserCounter */
+
+        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
+        $oLicenseCheck->validateNewSerial('new_serial');
     }
 
 
@@ -130,6 +253,7 @@ class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
     {
         $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
         $oCaller->expects($this->any())->method('doRequest')->will($this->throwException(new oxException()));
+        /** @var oxOnlineLicenseCheckCaller $oUserCounter */
 
         $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
         $oLicenseCheck->validate('validSerial');
@@ -145,12 +269,13 @@ class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
 
         $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
         $oCaller->expects($this->any())->method('doRequest')->will($this->returnValue($oResponse));
+        /** @var oxOnlineLicenseCheckCaller $oUserCounter */
 
-        $oOlc = new oxOnlineLicenseCheck($oCaller);
+        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
 
         $this->setTime(10);
 
-        $oOlc->validate('validSerial');
+        $oLicenseCheck->validate('validSerial');
 
         $this->assertEquals(10, oxRegistry::getConfig()->getConfigParam('iOlcSuccess'));
     }

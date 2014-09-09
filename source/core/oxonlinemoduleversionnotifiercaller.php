@@ -41,7 +41,7 @@ class oxOnlineModuleVersionNotifierCaller extends oxOnlineCaller
      *
      * @var string
      */
-    protected $_sWebServiceUrl = 'https://omvn.oxid-esales.com/check.php';
+    protected $_sServiceUrl = 'https://omvn.oxid-esales.com/check.php';
 
     /**
      * XML document tag name.

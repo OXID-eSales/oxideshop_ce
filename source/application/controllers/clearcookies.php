@@ -51,6 +51,8 @@ class ClearCookies extends oxUBase
 
     /**
      * Clears all cookies
+     *
+     * @return null
      */
     protected function _removeCookies()
     {
@@ -76,7 +78,8 @@ class ClearCookies extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('INFO_ABOUT_COOKIES', oxRegistry::getLang()->getBaseLanguage(), false);
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aPath['title'] = oxRegistry::getLang()->translateString('INFO_ABOUT_COOKIES', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

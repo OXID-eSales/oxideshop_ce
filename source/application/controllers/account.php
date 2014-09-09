@@ -139,7 +139,8 @@ class Account extends oxUBase
 
         // is logged in ?
         $oUser = $this->getUser();
-        if (!$oUser || ($oUser && !$oUser->oxuser__oxpassword->value) ||
+        $sPasswordField = 'oxuser__oxpassword';
+        if (!$oUser || ($oUser && !$oUser->$sPasswordField->value) ||
             ($this->isEnabledPrivateSales() && $oUser && (!$oUser->isTermsAccepted() || $this->confirmTerms()))
         ) {
             $this->_sThisTemplate = $this->_getLoginTemplate();
@@ -229,7 +230,9 @@ class Account extends oxUBase
                 }
             }
 
-            return oxRegistry::getUtils()->redirect(oxRegistry::get("oxUtilsUrl")->processUrl($sRedirectUrl), true, 302);
+            /** @var oxUtilsUrl $oUtilsUrl */
+            $oUtilsUrl = oxRegistry::get("oxUtilsUrl");
+            return oxRegistry::getUtils()->redirect($oUtilsUrl->processUrl($sRedirectUrl), true, 302);
         }
     }
 
@@ -329,9 +332,14 @@ class Account extends oxUBase
         $aPaths = array();
         $aPath = array();
         if ($oUser = $this->getUser()) {
-            $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false) . " - " . $oUser->oxuser__oxusername->value;
+            $oLang = oxRegistry::getLang();
+            $iBaseLanguage = $oLang->getBaseLanguage();
+            $sUsernameField = 'oxuser__oxusername';
+
+            $aPath['title'] =
+                $oLang->translateString('MY_ACCOUNT', $iBaseLanguage, false) . " - " . $oUser->$sUsernameField->value;
         } else {
-            $aPath['title'] = oxRegistry::getLang()->translateString('LOGIN', oxRegistry::getLang()->getBaseLanguage(), false);
+            $aPath['title'] = $oLang->translateString('LOGIN', $iBaseLanguage, false);
         }
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
@@ -362,9 +370,11 @@ class Account extends oxUBase
         $sTitle = parent::getTitle();
 
         if ($this->getConfig()->getActiveView()->getClassName() == 'account') {
-            $sTitle = oxRegistry::getLang()->translateString('PAGE_TITLE_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
+            $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+            $sTitle = oxRegistry::getLang()->translateString('PAGE_TITLE_ACCOUNT', $iBaseLanguage, false);
             if ($oUser = $this->getUser()) {
-                $sTitle .= ' - "' . $oUser->oxuser__oxusername->value . '"';
+                $sUsername = 'oxuser__oxusername';
+                $sTitle .= ' - "' . $oUser->$sUsername->value . '"';
             }
         }
 

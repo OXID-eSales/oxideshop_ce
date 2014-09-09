@@ -201,7 +201,10 @@ class Basket extends oxUBase
      */
     public function showBackToShop()
     {
-        return ($this->getConfig()->getConfigParam('iNewBasketItemMessage') == 3 && oxRegistry::getSession()->getVariable('_backtoshop'));
+        $iNewBasketItemMessage = $this->getConfig()->getConfigParam('iNewBasketItemMessage');
+        $sBackToShop = oxRegistry::getSession()->getVariable('_backtoshop');
+
+        return ($iNewBasketItemMessage == 3 && $sBackToShop);
     }
 
     /**
@@ -358,8 +361,9 @@ class Basket extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('CART', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = $this->getLink();
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aPath['title'] = oxRegistry::getLang()->translateString('CART', $iBaseLanguage, false);
+        $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

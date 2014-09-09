@@ -246,6 +246,8 @@ class aList extends oxUBase
      * - redirecting to first page in case requested page does not exist
      * or
      * - displays 404 error if category has no products
+     *
+     * @return null
      */
     protected function _checkRequestedPage()
     {
@@ -259,6 +261,8 @@ class aList extends oxUBase
     /**
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
+     *
+     * @return null
      */
     protected function _processListArticles()
     {
@@ -333,6 +337,8 @@ class aList extends oxUBase
      *
      * Session variables:
      * <b>session_attrfilter</b>
+     *
+     * @return null
      */
     public function executefilter()
     {
@@ -970,9 +976,13 @@ class aList extends oxUBase
         if ($this->_sCatTitle === null) {
             $this->_sCatTitle = false;
             if ($this->getCategoryId() == 'oxmore') {
-                $this->_sCatTitle = oxRegistry::getLang()->translateString('CATEGORY_OVERVIEW', oxRegistry::getLang()->getBaseLanguage(), false);
+                $oLang = oxRegistry::getLang();
+                $iBaseLanguage = $oLang->getBaseLanguage();
+
+                $this->_sCatTitle = $oLang->translateString('CATEGORY_OVERVIEW', $iBaseLanguage, false);
             } elseif (($oCategory = $this->getActiveCategory())) {
-                $this->_sCatTitle = $oCategory->oxcategories__oxtitle->value;
+                $sTitleField = 'oxcategories__oxtitle';
+                $this->_sCatTitle = $oCategory->$sTitleField->value;
             }
         }
 

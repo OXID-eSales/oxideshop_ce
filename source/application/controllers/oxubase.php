@@ -577,6 +577,8 @@ class oxUBase extends oxView
      * If NOT, then tries to load alternative SEO url and if url is available -
      * redirects to it. If no alternative path was found - 404 header is emitted
      * and page is rendered
+     *
+     * @return null
      */
     protected function _processRequest()
     {
@@ -601,7 +603,7 @@ class oxUBase extends oxView
                     $oDb = oxDb::getDb();
                     $oDb->execute(
                         "replace oxseologs ( oxstdurl, oxident, oxshopid, oxlang )
-                                                           values ( " . $oDb->quote($sStdUrl) . ", '{$sIdent}', '{$sShopId}', '{$sLangId}' ) "
+                               values ( " . $oDb->quote($sStdUrl) . ", '{$sIdent}', '{$sShopId}', '{$sLangId}' ) "
                     );
                 }
             }
@@ -611,6 +613,8 @@ class oxUBase extends oxView
     /**
      * Calls self::_processRequest(), initializes components which needs to
      * be loaded, sets current list type, calls parent::init()
+     *
+     * @return null
      */
     public function init()
     {
@@ -700,6 +704,8 @@ class oxUBase extends oxView
      * Set array of component objects
      *
      * @param array $aComponents array of components objects
+     *
+     * @return null
      */
     public function setComponents($aComponents = null)
     {
@@ -734,6 +740,8 @@ class oxUBase extends oxView
      * Set flag if current view is an order view
      *
      * @param bool $blIsOrderStep flag if current view is an order view
+     *
+     * @return null
      */
     public function setIsOrderStep($blIsOrderStep = null)
     {
@@ -755,6 +763,8 @@ class oxUBase extends oxView
      * Active category setter
      *
      * @param oxCategory $oCategory active category
+     *
+     * @return null
      */
     public function setActiveCategory($oCategory)
     {
@@ -803,7 +813,8 @@ class oxUBase extends oxView
                 $this->_sListDisplayType = $this->getConfig()->getConfigParam('sDefaultListDisplayType');
             }
 
-            $this->_sListDisplayType = in_array(( string ) $this->_sListDisplayType, $this->_aListDisplayTypes) ? $this->_sListDisplayType : 'infogrid';
+            $this->_sListDisplayType = in_array(( string ) $this->_sListDisplayType, $this->_aListDisplayTypes) ?
+                                                                            $this->_sListDisplayType : 'infogrid';
 
             // writing to session
             if ($this->getConfig()->getRequestParameter('ldtype')) {
@@ -836,6 +847,8 @@ class oxUBase extends oxView
      * List type setter
      *
      * @param string $sType type of list
+     *
+     * @return null
      */
     public function setListType($sType)
     {
@@ -925,6 +938,8 @@ class oxUBase extends oxView
      * @param string $sTitle feed page title
      * @param string $sUrl   feed url
      * @param int    $key    feed number
+     *
+     * @return null
      */
     public function addRssFeed($sTitle, $sUrl, $key = null)
     {
@@ -997,8 +1012,8 @@ class oxUBase extends oxView
         $sSortBy = $oConfig->getRequestParameter($this->getSortOrderByParameterName());
         $sSortDir = $oConfig->getRequestParameter($this->getSortOrderParameterName());
 
-        if ($sSortBy && oxDb::getInstance()->isValidFieldName($sSortBy) &&
-            $sSortDir && oxRegistry::getUtils()->isValidAlpha($sSortDir) && in_array($oStr->strtolower($sSortDir), $aSortDirections)
+        if ($sSortBy && oxDb::getInstance()->isValidFieldName($sSortBy) && $sSortDir &&
+            oxRegistry::getUtils()->isValidAlpha($sSortDir) && in_array($oStr->strtolower($sSortDir), $aSortDirections)
         ) {
             $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);
         }
@@ -1221,6 +1236,8 @@ class oxUBase extends oxView
 
     /**
      * Forces output no index meta data for current view
+     *
+     * @return null
      */
     protected function _forceNoIndex()
     {
@@ -1265,6 +1282,8 @@ class oxUBase extends oxView
      * Header menu list setter
      *
      * @param array $aMenu menu list
+     *
+     * @return null
      */
     public function setMenueList($aMenu)
     {
@@ -1273,6 +1292,8 @@ class oxUBase extends oxView
 
     /**
      * Sets number of articles per page to config value
+     *
+     * @return null
      */
     protected function _setNrOfArtPerPage()
     {
@@ -1303,12 +1324,13 @@ class oxUBase extends oxView
 
         $oViewConf = $this->getViewConfig();
         //value from user input
+        $oSession = oxRegistry::getSession();
         if (($iNrofArticles = (int) oxRegistry::getConfig()->getRequestParameter('_artperpage'))) {
             // M45 Possibility to push any "Show articles per page" number parameter
             $iNrofCatArticles = (in_array($iNrofArticles, $aNrofCatArticles)) ? $iNrofArticles : $iNrofCatArticles;
             $oViewConf->setViewConfigParam('iartPerPage', $iNrofCatArticles);
-            oxRegistry::getSession()->setVariable('_artperpage', $iNrofCatArticles);
-        } elseif (($iSessArtPerPage = oxRegistry::getSession()->getVariable('_artperpage')) && is_numeric($iSessArtPerPage)) {
+            $oSession->setVariable('_artperpage', $iNrofCatArticles);
+        } elseif (($iSessArtPerPage = $oSession->getVariable('_artperpage')) && is_numeric($iSessArtPerPage)) {
             // M45 Possibility to push any "Show articles per page" number parameter
             $iNrofCatArticles = (in_array($iSessArtPerPage, $aNrofCatArticles)) ? $iSessArtPerPage : $iNrofCatArticles;
             $oViewConf->setViewConfigParam('iartPerPage', $iSessArtPerPage);
@@ -1323,6 +1345,8 @@ class oxUBase extends oxView
 
     /**
      * Override this function to return object it which is used to identify its seo meta info
+     *
+     * @return null
      */
     protected function _getSeoObjectId()
     {
@@ -1471,6 +1495,8 @@ class oxUBase extends oxView
      * @param string $sSortIdent sortable item id
      * @param string $sSortBy    sort field
      * @param string $sSortDir   sort direction (optional)
+     *
+     * @return null
      */
     public function setItemSorting($sSortIdent, $sSortBy, $sSortDir = null)
     {
@@ -1651,12 +1677,14 @@ class oxUBase extends oxView
                 $sUrl = $oDisplayObj->getLink($iLang);
             } else {
                 $oEncoder = oxRegistry::get("oxSeoEncoder");
-                $sUrl = $oEncoder->getStaticUrl($oConfig->getShopHomeURL($iLang) . $this->_getSeoRequestParams(), $iLang);
+                $sConstructedUrl = $oConfig->getShopHomeURL($iLang) . $this->_getSeoRequestParams();
+                $sUrl = $oEncoder->getStaticUrl($sConstructedUrl, $iLang);
             }
         }
 
         if (!$sUrl) {
-            $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl($oConfig->getShopCurrentURL($iLang) . $this->_getRequestParams(), true, null, $iLang);
+            $sConstructedUrl = $oConfig->getShopCurrentURL($iLang) . $this->_getRequestParams();
+            $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl($sConstructedUrl, true, null, $iLang);
         }
 
         return $sUrl;
@@ -1698,6 +1726,8 @@ class oxUBase extends oxView
     /**
      * Template variable getter. Returns search parameter for Html
      * So far this method is implemented in search (search.php) view.
+     *
+     * @return null
      */
     public function getSearchParamForHtml()
     {
@@ -1871,6 +1901,8 @@ class oxUBase extends oxView
      * Set sorting columns
      *
      * @param array $aSortColumns array of column names array('name1', 'name2',...)
+     *
+     * @return null
      */
     public function setSortColumns($aSortColumns)
     {
@@ -1907,7 +1939,7 @@ class oxUBase extends oxView
     /**
      * Template variable getter. Returns active recommendation lists
      *
-     * @return string
+     * @return oxRecommList
      */
     public function getActiveRecommList()
     {
@@ -1974,8 +2006,9 @@ class oxUBase extends oxView
      */
     public function getTitle()
     {
+        $oLang = oxRegistry::getLang();
         $sTranslationName = 'PAGE_TITLE_' . strtoupper($this->getConfig()->getActiveView()->getClassName());
-        $sTranslated = oxRegistry::getLang()->translateString($sTranslationName, oxRegistry::getLang()->getBaseLanguage(), false);
+        $sTranslated = $oLang->translateString($sTranslationName, oxRegistry::getLang()->getBaseLanguage(), false);
 
         return $sTranslationName == $sTranslated ? null : $sTranslated;
     }
@@ -2100,6 +2133,8 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns page navigation
+     *
+     * @return null
      */
     public function getPageNavigation()
     {
@@ -2245,6 +2280,8 @@ class oxUBase extends oxView
      * Sets view product
      *
      * @param oxArticle $oProduct view product object
+     *
+     * @return null
      */
     public function setViewProduct($oProduct)
     {
@@ -2295,7 +2332,8 @@ class oxUBase extends oxView
                 $sLink = $oSeoEncoderTag->getTagUrl($sTag, oxRegistry::getLang()->getBaseLanguage());
             }
 
-            $this->_oActTag->link = $sLink ? $sLink : $this->getConfig()->getShopHomeURL() . $oSeoEncoderTag->getStdTagUri($sTag, false);
+            $sConstructedUrl = $this->getConfig()->getShopHomeURL() . $oSeoEncoderTag->getStdTagUri($sTag, false);
+            $this->_oActTag->link = $sLink ? $sLink : $sConstructedUrl;
         }
 
         return $this->_oActTag;
@@ -2355,6 +2393,8 @@ class oxUBase extends oxView
      * Active vendor setter
      *
      * @param oxVendor $oVendor active vendor
+     *
+     * @return null
      */
     public function setActVendor($oVendor)
     {
@@ -2365,6 +2405,8 @@ class oxUBase extends oxView
      * Active Manufacturer setter
      *
      * @param oxManufacturer $oManufacturer active Manufacturer
+     *
+     * @return null
      */
     public function setActManufacturer($oManufacturer)
     {
@@ -2401,6 +2443,8 @@ class oxUBase extends oxView
      * Category list setter
      *
      * @param oxCategoryList $oCatTree category tree
+     *
+     * @return null
      */
     public function setCategoryTree($oCatTree)
     {
@@ -2421,6 +2465,8 @@ class oxUBase extends oxView
      * Manufacturer tree setter
      *
      * @param oxManufacturerList $oManufacturerTree Manufacturer tree
+     *
+     * @return null
      */
     public function setManufacturerTree($oManufacturerTree)
     {
@@ -2550,6 +2596,8 @@ class oxUBase extends oxView
 
     /**
      * Empty active product getter
+     *
+     * @return null
      */
     public function getProduct()
     {
@@ -2569,6 +2617,8 @@ class oxUBase extends oxView
      * Sets Manufacturer list for search
      *
      * @param array $aList manufacturer list
+     *
+     * @return null
      */
     public function setManufacturerlist($aList)
     {
@@ -2579,6 +2629,8 @@ class oxUBase extends oxView
      * Sets root vendor
      *
      * @param object $oVendor vendor object
+     *
+     * @return null
      */
     public function setRootVendor($oVendor)
     {
@@ -2599,6 +2651,8 @@ class oxUBase extends oxView
      * Sets root Manufacturer
      *
      * @param object $oManufacturer manufacturer object
+     *
+     * @return null
      */
     public function setRootManufacturer($oManufacturer)
     {
@@ -2881,6 +2935,8 @@ class oxUBase extends oxView
      * Sets if active root category was changed
      *
      * @param bool $blRootCatChanged root category changed
+     *
+     * @return null
      */
     public function setRootCatChanged($blRootCatChanged)
     {
@@ -2936,6 +2992,8 @@ class oxUBase extends oxView
      * Template variable setter. Sets user delivery address
      *
      * @param array $aDeliveryAddress delivery address
+     *
+     * @return null
      */
     public function setDeliveryAddress($aDeliveryAddress)
     {
@@ -2946,6 +3004,8 @@ class oxUBase extends oxView
      * Template variable setter. Sets user address
      *
      * @param array $aAddress user address
+     *
+     * @return null
      */
     public function setInvoiceAddress($aAddress)
     {
@@ -3090,7 +3150,9 @@ class oxUBase extends oxView
         $oUser = $this->getUser();
         $oConfig = $this->getConfig();
 
-        if ($oConfig->getConfigParam('blShowNetPrice') || $oConfig->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
+        $blShowNetPriceParameter = $oConfig->getConfigParam('blShowNetPrice');
+        $blPerfCalcVatOnlyForBasketOrderParameter = $oConfig->getConfigParam('bl_perfCalcVatOnlyForBasketOrder');
+        if ($blShowNetPriceParameter || $blPerfCalcVatOnlyForBasketOrderParameter) {
             $blResult = false;
         } elseif ($oUser && $oUser->isPriceViewModeNetto()) {
             $blResult = false;

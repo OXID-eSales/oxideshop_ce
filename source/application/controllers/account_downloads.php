@@ -57,11 +57,14 @@ class Account_Downloads extends Account
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . "cl=account");
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        /** @var oxSeoEncoder $oSeoEncoder */
+        $oSeoEncoder = oxRegistry::get("oxSeoEncoder");
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = $oSeoEncoder->getStaticUrl($this->getViewConfig()->getSelfLink() . "cl=account");
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_DOWNLOADS', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_DOWNLOADS', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -99,10 +102,14 @@ class Account_Downloads extends Account
         $oOrderArticles = array();
 
         foreach ($oOrderFileList as $oOrderFile) {
-            $sOrderArticleId = $oOrderFile->oxorderfiles__oxorderarticleid->value;
-            $oOrderArticles[$sOrderArticleId]['oxordernr'] = $oOrderFile->oxorderfiles__oxordernr->value;
-            $oOrderArticles[$sOrderArticleId]['oxorderdate'] = substr($oOrderFile->oxorderfiles__oxorderdate->value, 0, 16);
-            $oOrderArticles[$sOrderArticleId]['oxarticletitle'] = $oOrderFile->oxorderfiles__oxarticletitle->value;
+            $sOrderArticleIdField = 'oxorderfiles__oxorderarticleid';
+            $sOrderNumberField = 'oxorderfiles__oxordernr';
+            $sOrderDateField = 'oxorderfiles__oxorderdate';
+            $sOrderTitleField = 'oxorderfiles__oxarticletitle';
+            $sOrderArticleId = $oOrderFile->$sOrderArticleIdField->value;
+            $oOrderArticles[$sOrderArticleId]['oxordernr'] = $oOrderFile->$sOrderNumberField->value;
+            $oOrderArticles[$sOrderArticleId]['oxorderdate'] = substr($oOrderFile->$sOrderDateField->value, 0, 16);
+            $oOrderArticles[$sOrderArticleId]['oxarticletitle'] = $oOrderFile->$sOrderTitleField->value;
             $oOrderArticles[$sOrderArticleId]['oxorderfiles'][] = $oOrderFile;
         }
 

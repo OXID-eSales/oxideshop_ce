@@ -30,6 +30,8 @@ class Download extends oxUBase
     /**
      * Prevents from loading any component as this controller
      * only returns file content if token is valid
+     *
+     * @return null
      */
     public function init()
     {
@@ -53,7 +55,8 @@ class Download extends oxUBase
                 $oOrderFile = oxNew('oxOrderFile');
                 if ($oOrderFile->load($sFileOrderId)) {
                     $sFileId = $oOrderFile->getFileId();
-                    if ($sFileId && $oArticleFile->load($sFileId) && $oArticleFile->exist() && $oOrderFile->processOrderFile()) {
+                    $blLoadedAndExists = $oArticleFile->load($sFileId) && $oArticleFile->exist();
+                    if ($sFileId && $blLoadedAndExists && $oOrderFile->processOrderFile()) {
                         $oArticleFile->download();
                     } else {
                         $sError = "ERROR_MESSAGE_FILE_DOESNOT_EXIST";

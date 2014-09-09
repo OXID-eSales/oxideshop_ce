@@ -137,6 +137,8 @@ class Review extends Details
 
     /**
      * Executes parent::init(), Loads user chosen product object (with all data).
+     *
+     * @return null
      */
     public function init()
     {
@@ -187,6 +189,8 @@ class Review extends Details
 
     /**
      * Saves user review text (oxreview object)
+     *
+     * @return null
      */
     public function saveReview()
     {
@@ -343,7 +347,11 @@ class Review extends Details
             $this->_blRate = false;
             if (($oActObject = $this->_getActiveObject()) && ($oRevUser = $this->getReviewUser())) {
                 $oRating = oxNew('oxrating');
-                $this->_blRate = $oRating->allowRating($oRevUser->getId(), $this->_getActiveType(), $oActObject->getId());
+                $this->_blRate = $oRating->allowRating(
+                    $oRevUser->getId(),
+                    $this->_getActiveType(),
+                    $oActObject->getId()
+                );
             }
         }
 

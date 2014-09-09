@@ -71,6 +71,8 @@ class ForgotPwd extends oxUBase
      *
      * Template variables:
      * <b>sendForgotMail</b>
+     *
+     * @return null
      */
     public function forgotPassword()
     {
@@ -127,7 +129,9 @@ class ForgotPwd extends oxUBase
             return 'forgotpwd?success=1';
         } else {
             // expired reminder
-            return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_LINK_EXPIRED', false, true);
+            $oUtilsView = oxRegistry::get("oxUtilsView");
+
+            return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_LINK_EXPIRED', false, true);
         }
     }
 
@@ -195,13 +199,19 @@ class ForgotPwd extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('FORGOT_PASSWORD', oxRegistry::getLang()->getBaseLanguage(), false);
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aPath['title'] = oxRegistry::getLang()->translateString('FORGOT_PASSWORD', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;
     }
 
+    /**
+     * Get password reminder page title
+     *
+     * @return string
+     */
     public function getTitle()
     {
         $sTitle = 'FORGOT_PASSWORD';
@@ -214,5 +224,4 @@ class ForgotPwd extends oxUBase
 
         return oxRegistry::getLang()->translateString($sTitle, oxRegistry::getLang()->getBaseLanguage(), false);
     }
-
 }

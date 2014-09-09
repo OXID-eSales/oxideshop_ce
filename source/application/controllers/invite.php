@@ -230,6 +230,8 @@ class Invite extends oxUBase
      * Suggest data setter
      *
      * @param object $oData suggest data object
+     *
+     * @return null
      */
     public function setInviteData($oData)
     {
@@ -270,8 +272,9 @@ class Invite extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('INVITE_YOUR_FRIENDS', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = $this->getLink();
+        $iLang = oxRegistry::getLang()->getBaseLanguage();
+        $aPath['title'] = oxRegistry::getLang()->translateString('INVITE_YOUR_FRIENDS', $iLang, false);
+        $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

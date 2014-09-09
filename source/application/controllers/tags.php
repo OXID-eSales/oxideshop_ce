@@ -96,7 +96,8 @@ class Tags extends oxUBase
         $aPaths = array();
         $aCatPath = array();
 
-        $aCatPath['title'] = oxRegistry::getLang()->translateString('TAGS', oxRegistry::getLang()->getBaseLanguage(), false);
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aCatPath['title'] = oxRegistry::getLang()->translateString('TAGS', $iBaseLanguage, false);
         $aCatPath['link'] = $this->getLink();
         $aPaths[] = $aCatPath;
 

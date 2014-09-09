@@ -242,6 +242,8 @@ class Suggest extends oxUBase
      * Suggest data setter
      *
      * @param object $oData suggest data object
+     *
+     * @return null
      */
     public function setSuggestData($oData)
     {
@@ -305,12 +307,12 @@ class Suggest extends oxUBase
     {
         $aPaths = array();
         $aPath = array();
-        $aPath['title'] = oxRegistry::getLang()->translateString('RECOMMEND_PRODUCT', oxRegistry::getLang()->getBaseLanguage(), false);
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aPath['title'] = oxRegistry::getLang()->translateString('RECOMMEND_PRODUCT', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;
 
         return $aPaths;
     }
-
 }

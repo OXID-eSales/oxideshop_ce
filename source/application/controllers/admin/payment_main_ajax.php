@@ -58,10 +58,11 @@ class payment_main_ajax extends ajaxListComponent
 
         // category selected or not ?
         if (!$sGroupId) {
-            $sQAdd = " from $sGroupTable ";
+            $sQAdd = " from {$sGroupTable} ";
         } else {
-            $sQAdd = " from $sGroupTable, oxobject2group where ";
-            $sQAdd .= " oxobject2group.oxobjectid = " . $oDb->quote($sGroupId) . " and oxobject2group.oxgroupsid = $sGroupTable.oxid ";
+            $sQAdd = " from {$sGroupTable}, oxobject2group where ";
+            $sQAdd .= " oxobject2group.oxobjectid = " . $oDb->quote($sGroupId) .
+                      " and oxobject2group.oxgroupsid = {$sGroupTable}.oxid ";
         }
 
         if (!$sSynchGroupId) {
@@ -73,8 +74,9 @@ class payment_main_ajax extends ajaxListComponent
             } else {
                 $sQAdd .= 'and ';
             }
-            $sQAdd .= " $sGroupTable.oxid not in ( select $sGroupTable.oxid from $sGroupTable, oxobject2group where ";
-            $sQAdd .= " oxobject2group.oxobjectid = " . $oDb->quote($sSynchGroupId) . " and oxobject2group.oxgroupsid = $sGroupTable.oxid ) ";
+            $sQAdd .= " {$sGroupTable}.oxid not in ( select {$sGroupTable}.oxid from {$sGroupTable}, oxobject2group " .
+                      "where  oxobject2group.oxobjectid = " . $oDb->quote($sSynchGroupId) .
+                      " and oxobject2group.oxgroupsid = $sGroupTable.oxid ) ";
         }
 
         return $sQAdd;
@@ -82,6 +84,8 @@ class payment_main_ajax extends ajaxListComponent
 
     /**
      * Removes group of users that may pay using selected method(s).
+     *
+     * @return null
      */
     public function removePayGroup()
     {
@@ -92,13 +96,16 @@ class payment_main_ajax extends ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups)) . ") ";
+            $sRemoveGroups = implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups));
+            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . $sRemoveGroups . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }
 
     /**
      * Adds group of users that may pay using selected method(s).
+     *
+     * @return null
      */
     public function addPayGroup()
     {

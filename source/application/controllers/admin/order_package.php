@@ -42,7 +42,9 @@
 
             $aOrders = oxNew('oxlist');
             $aOrders->init('oxorder');
-            $aOrders->selectString("select * from oxorder where oxorder.oxsenddate = '0000-00-00 00:00:00' and oxorder.oxshopid = '" . $myConfig->getShopId() . "' order by oxorder.oxorderdate asc limit 5000");
+            $sSql = "select * from oxorder where oxorder.oxsenddate = '0000-00-00 00:00:00' and oxorder.oxshopid = '" .
+                    $myConfig->getShopId() . "' order by oxorder.oxorderdate asc limit 5000";
+            $aOrders->selectString($sSql);
 
             $this->_aViewData['resultset'] = $aOrders;
 

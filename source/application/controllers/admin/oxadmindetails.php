@@ -61,7 +61,8 @@ class oxAdminDetails extends oxAdminView
         } else {
 
                 $oShop = $this->_getEditShop(oxRegistry::getSession()->getVariable('actshop'));
-                //$sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $myConfig->getConfigParam( 'iAdminLanguage' ) . '/admin';
+                //$sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" .
+                //$myConfig->getConfigParam( 'iAdminLanguage' ) . '/admin';
                 $sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $iLang . '/admin';
         }
 
@@ -110,8 +111,10 @@ class oxAdminDetails extends oxAdminView
                 $this->_oEditor->urlFormat = 'preserve';
 
                 // document & image directory:
-                $this->_oEditor->documentDir = $this->_oEditor->imageDir = $myConfig->getPictureDir(false) . 'wysiwigpro/';
-                $this->_oEditor->documentURL = $this->_oEditor->imageURL = $myConfig->getPictureUrl(null, false) . 'wysiwigpro/';
+                $sPictureDir = $myConfig->getPictureDir(false) . 'wysiwigpro/';
+                $sPictureUrl = $myConfig->getPictureUrl(null, false) . 'wysiwigpro/';
+                $this->_oEditor->documentDir = $this->_oEditor->imageDir = $sPictureDir;
+                $this->_oEditor->documentURL = $this->_oEditor->imageURL = $sPictureUrl;
 
                 // enabling upload
                 $this->_oEditor->upload = true;
@@ -127,7 +130,8 @@ class oxAdminDetails extends oxAdminView
                 $this->_oEditor->allowedImageExtensions = '.jpg, .jpeg, .gif, .png';
 
                 // allowed document extensions
-                $this->_oEditor->allowedDocExtensions = '.html, .htm, .pdf, .doc, .rtf, .txt, .xl, .xls, .ppt, .pps, .zip, .tar, .swf, .wmv, .rm, .mov, .jpg, .jpeg, .gif, .png';
+                $this->_oEditor->allowedDocExtensions = '.html, .htm, .pdf, .doc, .rtf, .txt, .xl, .xls, .ppt, .pps, ' .
+                                                        '.zip, .tar, .swf, .wmv, .rm, .mov, .jpg, .jpeg, .gif, .png';
 
                 // set name
                 $this->_oEditor->name = $sField;
@@ -189,9 +193,11 @@ class oxAdminDetails extends oxAdminView
                 $this->_oEditor->loadPlugin('templateFilter');
                 $this->_oEditor->plugins['templateFilter']->protect('[{', '}]');
                 if ($myConfig->getConfigParam('bl_perfParseLongDescinSmarty')) {
-                    $this->_oEditor->plugins['templateFilter']->assign('[{$oViewConf->getCurrentHomeDir()}]', $myConfig->getShopURL());
-                    // note: in "[{ $" the space is needed for this parameter not to override previous call. see assign fnc of templateFilter
-                    $this->_oEditor->plugins['templateFilter']->assign('[{ $oViewConf->getCurrentHomeDir()}]', $myConfig->getSSLShopURL());
+                    $sCurrentHomeDir = '[{$oViewConf->getCurrentHomeDir()}]';
+                    $this->_oEditor->plugins['templateFilter']->assign($sCurrentHomeDir, $myConfig->getShopURL());
+                    // note: in "[{ $" the space is needed for this parameter not to override previous call.
+                    // see assign fnc of templateFilter
+                    $this->_oEditor->plugins['templateFilter']->assign($sCurrentHomeDir, $myConfig->getSSLShopURL());
                 }
             }
 
@@ -295,6 +301,8 @@ class oxAdminDetails extends oxAdminView
 
     /**
      * Resets number of articles in current shop categories
+     *
+     * @return null
      */
     public function resetNrOfCatArticles()
     {
@@ -304,6 +312,8 @@ class oxAdminDetails extends oxAdminView
 
     /**
      * Resets number of articles in current shop vendors
+     *
+     * @return null
      */
     public function resetNrOfVendorArticles()
     {
@@ -313,6 +323,8 @@ class oxAdminDetails extends oxAdminView
 
     /**
      * Resets number of articles in current shop manufacturers
+     *
+     * @return null
      */
     public function resetNrOfManufacturerArticles()
     {
@@ -405,6 +417,8 @@ class oxAdminDetails extends oxAdminView
 
     /**
      * Updates object folder parameters
+     *
+     * @return null
      */
     public function changeFolder()
     {
@@ -426,6 +440,8 @@ class oxAdminDetails extends oxAdminView
      * Sets-up navigation parameters
      *
      * @param string $sNode active view id
+     *
+     * @return null
      */
     protected function _setupNavigation($sNode)
     {
@@ -446,6 +462,8 @@ class oxAdminDetails extends oxAdminView
      * Resets count of vendor/manufacturer category items
      *
      * @param string $aIds array to reset type => id
+     *
+     * @return null
      */
     protected function _resetCounts($aIds)
     {

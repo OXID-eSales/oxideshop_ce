@@ -60,13 +60,18 @@ class deliveryset_groups_ajax extends ajaxListComponent
         if (!$sId) {
             $sQAdd = " from $sgroupTable where 1 ";
         } else {
-            $sQAdd = " from oxobject2delivery, $sgroupTable where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sId);
-            $sQAdd .= " and oxobject2delivery.oxobjectid = $sgroupTable.oxid and oxobject2delivery.oxtype = 'oxdelsetg' ";
+            $sQAdd = " from oxobject2delivery, {$sgroupTable} " .
+                     "where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sId) .
+                     " and oxobject2delivery.oxobjectid = {$sgroupTable}.oxid " .
+                     "and oxobject2delivery.oxtype = 'oxdelsetg' ";
         }
 
         if ($sSynchId && $sSynchId != $sId) {
-            $sQAdd .= " and $sgroupTable.oxid not in ( select $sgroupTable.oxid from oxobject2delivery, $sgroupTable where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sSynchId);
-            $sQAdd .= " and oxobject2delivery.oxobjectid = $sgroupTable.oxid and oxobject2delivery.oxtype = 'oxdelsetg' ) ";
+            $sQAdd .= " and {$sgroupTable}.oxid not in ( select {$sgroupTable}.oxid " .
+                      "from oxobject2delivery, {$sgroupTable} " .
+                      "where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sSynchId) .
+                      " and oxobject2delivery.oxobjectid = $sgroupTable.oxid " .
+                      "and oxobject2delivery.oxtype = 'oxdelsetg' ) ";
         }
 
         return $sQAdd;
@@ -74,6 +79,8 @@ class deliveryset_groups_ajax extends ajaxListComponent
 
     /**
      * Removes user group from delivery sets config
+     *
+     * @return null
      */
     public function removeGroupFromSet()
     {
@@ -84,13 +91,16 @@ class deliveryset_groups_ajax extends ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups)) . ") ";
+            $sRemoveGroups = implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups));
+            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . $sRemoveGroups . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }
 
     /**
      * Adds user group to delivery sets config
+     *
+     * @return null
      */
     public function addGroupToSet()
     {

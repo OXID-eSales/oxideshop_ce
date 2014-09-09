@@ -59,15 +59,18 @@ class discount_groups_ajax extends ajaxListComponent
 
         // category selected or not ?
         if (!$sId) {
-            $sQAdd = " from $sGroupTable where 1 ";
+            $sQAdd = " from {$sGroupTable} where 1 ";
         } else {
-            $sQAdd .= " from oxobject2discount, $sGroupTable where $sGroupTable.oxid=oxobject2discount.oxobjectid ";
-            $sQAdd .= " and oxobject2discount.oxdiscountid = " . $oDb->quote($sId) . " and oxobject2discount.oxtype = 'oxgroups' ";
+            $sQAdd .= " from oxobject2discount, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2discount.oxobjectid ";
+            $sQAdd .= " and oxobject2discount.oxdiscountid = " . $oDb->quote($sId) .
+                      " and oxobject2discount.oxtype = 'oxgroups' ";
         }
 
         if ($sSynchId && $sSynchId != $sId) {
-            $sQAdd .= " and $sGroupTable.oxid not in ( select $sGroupTable.oxid from oxobject2discount, $sGroupTable where $sGroupTable.oxid=oxobject2discount.oxobjectid ";
-            $sQAdd .= " and oxobject2discount.oxdiscountid = " . $oDb->quote($sSynchId) . " and oxobject2discount.oxtype = 'oxgroups' ) ";
+            $sQAdd .= " and {$sGroupTable}.oxid not in ( select {$sGroupTable}.oxid " .
+                      "from oxobject2discount, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2discount.oxobjectid " .
+                      " and oxobject2discount.oxdiscountid = " . $oDb->quote($sSynchId) .
+                      " and oxobject2discount.oxtype = 'oxgroups' ) ";
         }
 
         return $sQAdd;
@@ -75,6 +78,8 @@ class discount_groups_ajax extends ajaxListComponent
 
     /**
      * Removes user group from discount config
+     *
+     * @return null
      */
     public function removeDiscGroup()
     {
@@ -87,13 +92,16 @@ class discount_groups_ajax extends ajaxListComponent
             oxDb::getDb()->Execute($sQ);
 
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups)) . ") ";
+            $sRemoveGroups = implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups));
+            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . $sRemoveGroups . ") ";
             oxDb::getDb()->Execute($sQ);
         }
     }
 
     /**
      * Adds user group to discount config
+     *
+     * @return null
      */
     public function addDiscGroup()
     {

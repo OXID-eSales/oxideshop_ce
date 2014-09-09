@@ -55,8 +55,9 @@ class Order_Overview extends oxAdminDetails
             $this->_aViewData["giftCard"] = $oOrder->getGiftCard();
             $this->_aViewData["paymentType"] = $this->_getPaymentType($oOrder);
             $this->_aViewData["deliveryType"] = $oOrder->getDelSet();
-            if ($oOrder->oxorder__oxtsprotectcosts->value) {
-                $this->_aViewData["tsprotectcosts"] = $oLang->formatCurrency($oOrder->oxorder__oxtsprotectcosts->value, $oCur);
+            $sTsProtectsField = 'oxorder__oxtsprotectcosts';
+            if ($oOrder->$sTsProtectsField->value) {
+                $this->_aViewData["tsprotectcosts"] = $oLang->formatCurrency($oOrder->$sTsProtectsField->value, $oCur);
             }
         }
 
@@ -139,6 +140,8 @@ class Order_Overview extends oxAdminDetails
      * Performs PDF export to user (outputs file to save).
      *
      * @deprecated since v5.2.0 (2014-03-27); Moved to invoicepdf module's InvoicepdfOrder_Overview class
+     *
+     * @return null
      */
     public function createPDF()
     {

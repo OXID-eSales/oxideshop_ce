@@ -48,7 +48,8 @@ class attribute_order_ajax extends ajaxListComponent
         $sSelTable = $this->_getViewName('oxattribute');
         $sArtId = oxRegistry::getConfig()->getRequestParameter('oxid');
 
-        $sQAdd = " from $sSelTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sSelTable.oxid where oxobjectid = " . oxDb::getDb()->quote($sArtId) . " ";
+        $sQAdd = " from $sSelTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sSelTable.oxid " .
+                 "where oxobjectid = " . oxDb::getDb()->quote($sArtId) . " ";
 
         return $sQAdd;
     }
@@ -65,6 +66,8 @@ class attribute_order_ajax extends ajaxListComponent
 
     /**
      * Applies sorting for selection lists
+     *
+     * @return null
      */
     public function setSorting()
     {

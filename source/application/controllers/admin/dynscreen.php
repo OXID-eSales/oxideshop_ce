@@ -41,6 +41,8 @@ class Dynscreen extends oxAdminList
      * Sets up navigation for current view
      *
      * @param string $sNode None name
+     *
+     * @return null
      */
     protected function _setupNavigation($sNode)
     {
@@ -60,7 +62,10 @@ class Dynscreen extends oxAdminList
         $sEditUrl = $myAdminNavig->getEditUrl($sNode, $iActTab) . $sActTab;
         if (!getStr()->preg_match("/^http(s)?:\/\//", $sEditUrl)) {
             //internal link, adding path
-            $sEditUrl = oxRegistry::get("oxUtilsUrl")->appendParamSeparator($this->getViewConfig()->getViewConfigParam('selflink')) . $sEditUrl;
+            /** @var oxUtilsUrl $oUtilsUrl */
+            $oUtilsUrl = oxRegistry::get("oxUtilsUrl");
+            $sSelfLinkParameter = $this->getViewConfig()->getViewConfigParam('selflink');
+            $sEditUrl = $oUtilsUrl->appendParamSeparator($sSelfLinkParameter) . $sEditUrl;
         }
 
         $this->_aViewData['editurl'] = $sEditUrl;

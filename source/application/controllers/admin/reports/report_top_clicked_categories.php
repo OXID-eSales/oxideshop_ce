@@ -51,7 +51,10 @@ if (!class_exists("report_top_clicked_categories")) {
             $sTimeFrom = $oDb->quote(date("Y-m-d H:i:s", strtotime($oSmarty->_tpl_vars['time_from'])));
             $sTimeTo = $oDb->quote(date("Y-m-d H:i:s", strtotime($oSmarty->_tpl_vars['time_to'])));
 
-            $sSQL = "select count(*) as nrof, oxcategories.oxtitle from oxlogs, oxcategories where oxlogs.oxclass = 'alist' and oxlogs.oxcnid = oxcategories.oxid  and oxlogs.oxtime >= $sTimeFrom and oxlogs.oxtime <= $sTimeTo group by oxcategories.oxtitle order by nrof desc limit 0, 25";
+            $sSQL = "select count(*) as nrof, oxcategories.oxtitle from oxlogs, oxcategories " .
+                    "where oxlogs.oxclass = 'alist' and oxlogs.oxcnid = oxcategories.oxid  " .
+                    "and oxlogs.oxtime >= $sTimeFrom and oxlogs.oxtime <= $sTimeTo " .
+                    "group by oxcategories.oxtitle order by nrof desc limit 0, 25";
             $rs = $oDb->execute($sSQL);
             if ($rs != false && $rs->recordCount() > 0) {
                 while (!$rs->EOF) {
@@ -72,13 +75,15 @@ if (!class_exists("report_top_clicked_categories")) {
             $aPoints = array();
             $aPoints["0"] = 0;
             $aAligns["0"] = 'report_searchstrings_scale_aligns_left"';
+            $sAlignsCenterPart = 'report_searchstrings_scale_aligns_center" width="';
+            $sAlignsRightPart = 'report_searchstrings_scale_aligns_right" width="';
             $iTenth = strlen($iMax) - 1;
             if ($iTenth < 1) {
                 $iScaleMax = $iMax;
                 $aPoints["" . (round(($iMax / 2))) . ""] = $iMax / 2;
-                $aAligns["" . (round(($iMax / 2))) . ""] = 'report_searchstrings_scale_aligns_center" width="' . (720 / 3) . '"';
+                $aAligns["" . (round(($iMax / 2))) . ""] = $sAlignsCenterPart . (720 / 3) . '"';
                 $aPoints["" . $iMax . ""] = $iMax;
-                $aAligns["" . $iMax . ""] = 'report_searchstrings_scale_aligns_right" width="' . (720 / 3) . '"';
+                $aAligns["" . $iMax . ""] = $sAlignsRightPart . (720 / 3) . '"';
             } else {
                 $iDeg = bcpow(10, $iTenth);
                 //$iScaleMax = $iDeg * (round($iMax/$iDeg));
@@ -86,9 +91,9 @@ if (!class_exists("report_top_clicked_categories")) {
                 $ctr = 0;
                 for ($iCtr = 10; $iCtr > 0; $iCtr--) {
                     $aPoints["" . (round(($ctr))) . ""] = $ctr += $iScaleMax / 10;
-                    $aAligns["" . (round(($ctr))) . ""] = 'report_searchstrings_scale_aligns_center" width="' . (720 / 10) . '"';
+                    $aAligns["" . (round(($ctr))) . ""] = $sAlignsCenterPart . (720 / 10) . '"';
                 }
-                $aAligns["" . (round(($ctr))) . ""] = 'report_searchstrings_scale_aligns_right" width="' . (720 / 10) . '"';
+                $aAligns["" . (round(($ctr))) . ""] = $sAlignsRightPart . (720 / 10) . '"';
             }
 
             $aAligns["0"] .= ' width="' . (720 / count($aAligns)) . '"';
@@ -114,6 +119,8 @@ if (!class_exists("report_top_clicked_categories")) {
 
         /**
          * Current week top viewed categories report
+         *
+         * @return null
          */
         public function graph1()
         {
@@ -123,10 +130,13 @@ if (!class_exists("report_top_clicked_categories")) {
             $aDataX = array();
             $aDataY = array();
 
-            $sTimeFrom = $oDb->quote(date("Y-m-d H:i:s", strtotime(oxRegistry::getConfig()->getRequestParameter("time_from"))));
-            $sTimeTo = $oDb->quote(date("Y-m-d H:i:s", strtotime(oxRegistry::getConfig()->getRequestParameter("time_to"))));
+            $sTimeFromParameter = oxRegistry::getConfig()->getRequestParameter("time_from");
+            $sTimeToParameter = oxRegistry::getConfig()->getRequestParameter("time_to");
+            $sTimeFrom = $oDb->quote(date("Y-m-d H:i:s", strtotime($sTimeFromParameter)));
+            $sTimeTo = $oDb->quote(date("Y-m-d H:i:s", strtotime($sTimeToParameter)));
 
-            $sSQL = "select count(*) as nrof, oxparameter from oxlogs where oxclass = 'search' and oxtime >= $sTimeFrom and oxtime <= $sTimeTo group by oxparameter order by nrof desc";
+            $sSQL = "select count(*) as nrof, oxparameter from oxlogs where oxclass = 'search' " .
+                    "and oxtime >= $sTimeFrom and oxtime <= $sTimeTo group by oxparameter order by nrof desc";
             $rs = $oDb->execute($sSQL);
             if ($rs != false && $rs->recordCount() > 0) {
                 while (!$rs->EOF) {
@@ -164,7 +174,7 @@ if (!class_exists("report_top_clicked_categories")) {
             $graph->xaxis->setTickLabels($aDataY);
 
             // Set title and subtitle
-            $graph->title->set("Suchwörter");
+            $graph->title->set("Suchwï¿½rter");
 
             // Use built in font
             $graph->title->setFont(FF_FONT1, FS_BOLD);

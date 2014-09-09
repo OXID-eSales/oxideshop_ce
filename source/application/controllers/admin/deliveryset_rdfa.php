@@ -53,6 +53,8 @@ class deliveryset_rdfa extends payment_rdfa
 
     /**
      * Saves changed mapping configurations
+     *
+     * @return null
      */
     public function save()
     {
@@ -61,7 +63,9 @@ class deliveryset_rdfa extends payment_rdfa
 
         // Delete old mappings
         $oDb = oxDb::getDb();
-        $oDb->execute("DELETE FROM oxobject2delivery WHERE oxdeliveryid = '" . oxRegistry::getConfig()->getRequestParameter("oxid") . "' AND OXTYPE = 'rdfadeliveryset'");
+        $sOxIdParameter = oxRegistry::getConfig()->getRequestParameter("oxid");
+        $sSql = "DELETE FROM oxobject2delivery WHERE oxdeliveryid = '{$sOxIdParameter}' AND OXTYPE = 'rdfadeliveryset'";
+        $oDb->execute($sSql);
 
         // Save new mappings
         foreach ($aRDFaDeliveries as $sDelivery) {

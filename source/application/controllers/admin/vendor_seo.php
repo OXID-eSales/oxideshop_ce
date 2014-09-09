@@ -36,7 +36,9 @@ class Vendor_Seo extends Object_Seo
         $oVendor = oxNew('oxbase');
         $oVendor->init('oxvendor');
         if ($oVendor->load($this->getEditObjectId())) {
-            $oVendor->oxvendor__oxshowsuffix = new oxField((int) oxRegistry::getConfig()->getRequestParameter('blShowSuffix'));
+            $sShowSuffixField = 'oxvendor__oxshowsuffix';
+            $blShowSuffixParameter = oxRegistry::getConfig()->getRequestParameter('blShowSuffix');
+            $oVendor->$sShowSuffixField = new oxField((int) $blShowSuffixParameter);
             $oVendor->save();
         }
 

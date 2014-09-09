@@ -40,8 +40,9 @@ class PriceAlarm_Main extends oxAdminDetails
         $myConfig = $this->getConfig();
 
             // #1140 R - price must be checked from the object.
-            $sql = "select oxarticles.oxid, oxpricealarm.oxprice from oxpricealarm, oxarticles where oxarticles.oxid = oxpricealarm.oxartid and oxpricealarm.oxsended = '000-00-00 00:00:00'";
-            $rs = oxDb::getDb()->Execute($sql);
+            $sSql = "select oxarticles.oxid, oxpricealarm.oxprice from oxpricealarm, oxarticles " .
+                    "where oxarticles.oxid = oxpricealarm.oxartid and oxpricealarm.oxsended = '000-00-00 00:00:00'";
+            $rs = oxDb::getDb()->Execute($sSql);
             $iAllCnt = 0;
 
             if ($rs != false && $rs->recordCount() > 0) {
@@ -119,6 +120,8 @@ class PriceAlarm_Main extends oxAdminDetails
 
     /**
      * Sending email to selected customer
+     *
+     * @return null
      */
     public function send()
     {

@@ -48,32 +48,39 @@ if (!class_exists('report_canceled_orders')) {
             $sTimeTo = $oDb->quote(date("Y-m-d H:i:s", strtotime($oSmarty->_tpl_vars['time_to'])));
 
             // collects sessions what executed 'order' function
-            if ($oDb->getOne("select 1 from `oxlogs` where oxclass = 'order' and oxfnc = 'execute' and oxtime >= $sTimeFrom and oxtime <= $sTimeTo")) {
+            $sSql = "select 1 from `oxlogs` where oxclass = 'order' and
+                       oxfnc = 'execute' and oxtime >= $sTimeFrom and oxtime <= $sTimeTo";
+            if ($oDb->getOne($sSql)) {
                 return true;
             }
 
             // collects sessions what executed order class
-            if ($oDb->getOne("select 1 from `oxlogs` where oxclass = 'order' and oxtime >= $sTimeFrom and oxtime <= $sTimeTo")) {
+            $sSql = "select 1 from `oxlogs` where oxclass = 'order' and oxtime >= $sTimeFrom and oxtime <= $sTimeTo";
+            if ($oDb->getOne($sSql)) {
                 return true;
             }
 
             // collects sessions what executed payment class
-            if ($oDb->getOne("select 1 from `oxlogs` where oxclass = 'payment' and oxtime >= $sTimeFrom and oxtime <= $sTimeTo")) {
+            $sSql = "select 1 from `oxlogs` where oxclass = 'payment' and oxtime >= $sTimeFrom and oxtime <= $sTimeTo";
+            if ($oDb->getOne($sSql)) {
                 return true;
             }
 
             // collects sessions what executed 'user' class
-            if ($oDb->getOne("select 1 from `oxlogs` where oxclass = 'user' and oxtime >= $sTimeFrom and oxtime <= $sTimeTo")) {
+            $sSql = "select 1 from `oxlogs` where oxclass = 'user' and oxtime >= $sTimeFrom and oxtime <= $sTimeTo";
+            if ($oDb->getOne($sSql)) {
                 return true;
             }
 
             // collects sessions what executed 'tobasket' function
-            if ($oDb->getOne("select 1 from `oxlogs` where oxclass = 'basket' and oxtime >= $sTimeFrom and oxtime <= $sTimeTo")) {
+            $sSql = "select 1 from `oxlogs` where oxclass = 'basket' and oxtime >= $sTimeFrom and oxtime <= $sTimeTo";
+            if ($oDb->getOne($sSql)) {
                 return true;
             }
 
             // orders made
-            if ($oDb->getOne("select 1 from oxorder where oxorderdate >= $sTimeFrom and oxorderdate <= $sTimeTo")) {
+            $sSql = "select 1 from oxorder where oxorderdate >= $sTimeFrom and oxorderdate <= $sTimeTo";
+            if ($oDb->getOne($sSql)) {
                 return true;
             }
         }
@@ -104,12 +111,12 @@ if (!class_exists('report_canceled_orders')) {
          *
          * @param string $sQ         data query
          * @param array  $aTempOrder orders
-         * @param array  &$aDataX6   data to fill
+         * @param array  &$aData     data to fill (X6)
          * @param bool   $blMonth    if TRUE - for month, if FALSE - for week [true]
          *
          * @return array
          */
-        protected function _collectOrderSessions($sQ, $aTempOrder, &$aDataX6, $blMonth = true)
+        protected function _collectOrderSessions($sQ, $aTempOrder, &$aData, $blMonth = true)
         {
             // collects sessions what executed order class
             $aTempExecOrdersSessions = array();
@@ -120,9 +127,11 @@ if (!class_exists('report_canceled_orders')) {
                     if (!isset($aTempOrder[$rs->fields[1]])) {
                         $aTempExecOrdersSessions[$rs->fields[1]] = 1;
                         $sKey = strtotime($rs->fields[0]);
-                        $sKey = $blMonth ? date("m/Y", $sKey) : oxRegistry::get("oxUtilsDate")->getWeekNumber($iFirstWeekDay, $sKey);
-                        if (isset($aDataX6[$sKey])) {
-                            $aDataX6[$sKey]++;
+                        /** @var oxUtilsDate $oUtilsData */
+                        $oUtilsData = oxRegistry::get("oxUtilsDate");
+                        $sKey = $blMonth ? date("m/Y", $sKey) : $oUtilsData->getWeekNumber($iFirstWeekDay, $sKey);
+                        if (isset($aData[$sKey])) {
+                            $aData[$sKey]++;
                         }
 
                     }
@@ -144,8 +153,13 @@ if (!class_exists('report_canceled_orders')) {
          *
          * @return array
          */
-        protected function _collectPaymentSessions($sQ, $aTempOrder, $aTempExecOrdersSessions, &$aDataX2, $blMonth = true)
-        {
+        protected function _collectPaymentSessions(
+            $sQ,
+            $aTempOrder,
+            $aTempExecOrdersSessions,
+            &$aDataX2,
+            $blMonth = true
+        ) {
             $aTempPaymentSessions = array();
             $rs = oxDb::getDb()->execute($sQ);
             if ($rs != false && $rs->recordCount() > 0) {
@@ -281,6 +295,8 @@ if (!class_exists('report_canceled_orders')) {
 
         /**
          * Collects and renders visitor/month report data
+         *
+         * @return null
          */
         public function visitor_month()
         {
@@ -382,6 +398,8 @@ if (!class_exists('report_canceled_orders')) {
 
         /**
          * Collects and renders visitor/week report data
+         *
+         * @return null
          */
         public function visitor_week()
         {

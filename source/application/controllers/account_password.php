@@ -105,7 +105,10 @@ class Account_Password extends Account
         }
         
         if (!$sOldPass || !$oUser->isSamePassword($sOldPass)) {
-            return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_CURRENT_PASSWORD_INVALID', false, true);
+            /** @var oxUtilsView $oUtilsView */
+            $oUtilsView = oxRegistry::get("oxUtilsView");
+
+            return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_CURRENT_PASSWORD_INVALID', false, true);
         }
 
         // testing passed - changing password
@@ -137,11 +140,15 @@ class Account_Password extends Account
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
+        /** @var oxSeoEncoder $oSeoEncoder */
+        $oSeoEncoder = oxRegistry::get("oxSeoEncoder");
+        $oLang = oxRegistry::getLang();
+        $iBaseLanguage = $oLang->getBaseLanguage();
+        $aPath['title'] = $oLang->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = $oSeoEncoder->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('CHANGE_PASSWORD', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['title'] = $oLang->translateString('CHANGE_PASSWORD', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

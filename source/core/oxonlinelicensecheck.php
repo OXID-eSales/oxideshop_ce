@@ -261,7 +261,6 @@ class oxOnlineLicenseCheck
     protected function _formRequest($aSerial)
     {
         $oConfig = oxRegistry::getConfig();
-        $oUserCounter = $this->_getUserCounter();
 
         /** @var oxOnlineLicenseCheckRequest $oRequest */
         $oRequest = oxNew('oxOnlineLicenseCheckRequest');
@@ -270,29 +269,47 @@ class oxOnlineLicenseCheck
 
         $oRequest->keys = array('key' => $aSerial);
 
-        $oServers = new stdClass();
-        if (!is_null($this->getServersManager())) {
-            $oServers->server = $this->getServersManager()->getServers();
-        }
-
-        $oCounter = new stdClass();
-        if (!is_null($this->getUserCounter())) {
-            $oCounter->name = 'admin users';
-            $oCounter->value = $oUserCounter->getActiveAdminCount();
-        }
-
-        $oSubShops = new stdClass();
-        $oSubShops->name = 'subShops';
-        $oSubShops->value = $oConfig->getMandateCount();
-
-        $oCounters = new stdClass();
-        $oCounters->counter = array($oCounter, $oSubShops);
-
         $oRequest->productSpecificInformation = new stdClass();
-        $oRequest->productSpecificInformation->servers = $oServers;
-        $oRequest->productSpecificInformation->counters = $oCounters;
+
+        if (!is_null($this->getServersManager())) {
+            $aServers = $this->getServersManager()->getServers();
+            $oRequest->productSpecificInformation->servers = array('server' => $aServers);
+        }
+
+        $aCounters = $this->_formCounters();
+        if (!empty($aCounters)) {
+            $oRequest->productSpecificInformation->counters = array('counter' => $aCounters);
+        }
 
         return $oRequest;
+    }
+
+    /**
+     * @return array
+     */
+    protected function _formCounters()
+    {
+        $oUserCounter = $this->_getUserCounter();
+
+        $aCounters = array();
+
+        if (!is_null($this->getUserCounter())) {
+            $aCounters[] = array(
+                'name' => 'admin users',
+                'value' => $oUserCounter->getAdminCount(),
+            );
+            $aCounters[] = array(
+                'name' => 'active admin users',
+                'value' => $oUserCounter->getActiveAdminCount(),
+            );
+        }
+
+        $aCounters[] = array(
+            'name' => 'subShops',
+            'value' => oxRegistry::getConfig()->getMandateCount(),
+        );
+
+        return $aCounters;
     }
 
     /**

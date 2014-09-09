@@ -83,7 +83,7 @@ class oxOnlineLicenseCheck
     /**
      * @param oxServersManager $oServersManager
      */
-    public function setServersManager( $oServersManager )
+    public function setServersManager($oServersManager)
     {
         $this->_oServersManager = $oServersManager;
     }
@@ -99,7 +99,7 @@ class oxOnlineLicenseCheck
     /**
      * @param oxUserCounter $oUserCounter
      */
-    public function setUserCounter( $oUserCounter )
+    public function setUserCounter($oUserCounter)
     {
         $this->_oUserCounter = $oUserCounter;
     }
@@ -111,7 +111,6 @@ class oxOnlineLicenseCheck
     {
         return $this->_oUserCounter;
     }
-
 
 
     /**
@@ -179,7 +178,7 @@ class oxOnlineLicenseCheck
      */
     public function validate($aSerials)
     {
-        $aSerials = (array) $aSerials;
+        $aSerials = (array)$aSerials;
         $this->_setIsException(false);
 
         $blResult = false;
@@ -272,12 +271,12 @@ class oxOnlineLicenseCheck
         $oRequest->keys = array('key' => $aSerial);
 
         $oServers = new stdClass();
-        if(!is_null($this->getServersManager()) ){
+        if (!is_null($this->getServersManager())) {
             $oServers->server = $this->getServersManager()->getServers();
         }
 
         $oCounter = new stdClass();
-        if(!is_null($this->getUserCounter()) ){
+        if (!is_null($this->getUserCounter())) {
             $oCounter->name = 'admin users';
             $oCounter->value = $oUserCounter->getAdminCount();
         }

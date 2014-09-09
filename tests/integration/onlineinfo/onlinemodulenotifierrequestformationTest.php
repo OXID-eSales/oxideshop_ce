@@ -65,9 +65,8 @@ class Integration_OnlineInfo_OnlineModuleNotifierRequestFormationTest extends Ox
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
         /** @var oxCurl $oCurl */
 
-        $oMailBuilder = new oxOnlineServerEmailBuilder();
-        $oOnlineCaller = new oxOnlineCaller($oCurl, $oMailBuilder);
-        $oOnlineModuleVersionNotifierCaller = new oxOnlineModuleVersionNotifierCaller($oOnlineCaller);
+        $oEmailBuilder = new oxOnlineServerEmailBuilder();
+        $oOnlineModuleVersionNotifierCaller = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
 
         $oModule1 = new oxModule();
         $oModule1->setModuleData(array(

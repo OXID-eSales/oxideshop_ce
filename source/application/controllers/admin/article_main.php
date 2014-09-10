@@ -294,8 +294,6 @@ class Article_Main extends oxAdminDetails
      * Resets article categories counters
      *
      * @param string $sArticleId Article id
-     *
-     * @return void
      */
     protected function _resetCategoriesCounter($sArticleId)
     {

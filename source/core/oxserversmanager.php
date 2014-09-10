@@ -32,12 +32,12 @@ class oxServersManager
     /**
      * Time in seconds, server node information life time.
      */
-    CONST NODE_AVAILABILITY_CHECK_PERIOD = 86400;
+    const NODE_AVAILABILITY_CHECK_PERIOD = 86400;
 
     /**
      * Time in seconds, server node information life time.
      */
-    CONST INACTIVE_NODE_STORAGE_PERIOD = 259200;
+    const INACTIVE_NODE_STORAGE_PERIOD = 259200;
 
     /**
      * Servers data array.

@@ -166,7 +166,7 @@ class oxCurl
     /**
      * Return parameters to be added to call url.
      *
-     * return array
+     * @return array
      */
     public function getParameters()
     {

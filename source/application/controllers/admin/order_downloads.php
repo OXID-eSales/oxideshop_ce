@@ -70,8 +70,6 @@ class Order_Downloads extends oxAdminDetails
 
     /**
      * Returns editable order object
-     *
-     * @return oxorder
      */
     public function resetDownloadLink()
     {

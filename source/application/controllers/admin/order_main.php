@@ -89,8 +89,6 @@ class Order_Main extends oxAdminDetails
 
     /**
      * Saves main orders configuration parameters.
-     *
-     * @return string
      */
     public function save()
     {

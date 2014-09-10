@@ -135,10 +135,6 @@ require "_header.php"; ?>
     <input type="hidden" value="false" name="check_for_updates">
     <input type="checkbox" id="check_for_updates_ckbox" value="true" name="check_for_updates" valign="" style="vertical-align:middle; width:20px; height:22px;" >
     <?php $this->getText('STEP_1_CHECK_UPDATES'); ?>
-    <br>
-
-    <input checked type="checkbox" id="blSendShopDataToOxid" value="true" name="blSendShopDataToOxid" valign="" style="vertical-align:middle; width:20px; height:22px;" >
-    <?php $this->getText('STEP_2_SEND_SHOP_DATA_TO_OXID'); ?>
 
     <br><br>
     <?php $this->getText('STEP_1_TEXT'); ?>

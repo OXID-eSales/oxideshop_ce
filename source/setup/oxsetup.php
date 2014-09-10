@@ -722,12 +722,6 @@ class OxSetupSession extends oxSetupCore
         if (isset($iEula)) {
             $this->setSessionParam('eula', $iEula);
         }
-
-        // store anonymous information config
-        $blSendShopDataToOxid = $oUtils->getRequestVar("blSendShopDataToOxid", "post");
-        if (isset($blSendShopDataToOxid)) {
-            $this->setSessionParam('blSendShopDataToOxid', $blSendShopDataToOxid);
-        }
     }
 
     /**

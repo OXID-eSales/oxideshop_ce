@@ -34,7 +34,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         parent::setUp();
         $this->getConfig()->saveShopConfVar('str', 'sOnlineLicenseNextCheckTime', null);
         $this->getConfig()->saveShopConfVar('str', 'sOnlineLicenseCheckTime', null);
-        $this->getConfig()->setConfigParam('blSendShopDataToOxid', true);
+        $this->getConfig()->setConfigParam('blLoadDynContents', true);
     }
 
     public function testOnAdminLoginOnlineModuleVersionNotifier()
@@ -220,7 +220,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
     public function testShopInformationSendingWhenSendingIsAllowed()
     {
         $this->_prepareCurrentTime(1400000000);
-        $this->getConfig()->setConfigParam('blSendShopDataToOxid', true);
+        $this->getConfig()->setConfigParam('blLoadDynContents', true);
 
         $oSystemEventHandler = new oxSystemEventHandler();
 
@@ -236,7 +236,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
     public function testShopInformationSendingWhenSendingIsNotAllowedInCommunityEdition()
     {
         $this->_prepareCurrentTime(1400000000);
-        $this->getConfig()->setConfigParam('blSendShopDataToOxid', false);
+        $this->getConfig()->setConfigParam('blLoadDynContents', false);
 
         $oSystemEventHandler = new oxSystemEventHandler();
 

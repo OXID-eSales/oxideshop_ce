@@ -63,8 +63,6 @@ class Object_Seo extends oxAdminDetails
 
     /**
      * Saves selection list parameters changes.
-     *
-     * @return mixed
      */
     public function save()
     {
@@ -134,8 +132,6 @@ class Object_Seo extends oxAdminDetails
 
     /**
      * Returns url type
-     *
-     * @return string
      */
     protected function _getType()
     {
@@ -199,8 +195,6 @@ class Object_Seo extends oxAdminDetails
 
     /**
      * Returns current object type seo encoder object
-     *
-     * @return oxSeoEncoder
      */
     protected function _getEncoder()
     {
@@ -208,8 +202,6 @@ class Object_Seo extends oxAdminDetails
 
     /**
      * Returns seo uri
-     *
-     * @return string
      */
     public function getEntryUri()
     {

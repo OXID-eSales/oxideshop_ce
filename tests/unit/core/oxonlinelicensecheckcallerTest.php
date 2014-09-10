@@ -92,8 +92,9 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
     {
         $this->setExpectedException('oxException', $sMessage);
 
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock('oxCurl', array('execute', 'getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sResponseXml));
+        $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
         /** @var oxCurl $oCurl */
 
         $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));

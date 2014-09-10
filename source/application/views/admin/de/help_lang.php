@@ -144,11 +144,11 @@ $aLang =  array(
 
 'HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES'         => 'Wenn diese Einstellung aktiv ist, werden zusätzliche Informationen zu anderen OXID Produkten im Administrationsbereich angezeigt, z. B. zu OXID eFire. Welche Informationen geladen werden, hängt von der Region ab, die für den Shop gewählt wurde.',
 
-'HELP_SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID'     => '[TR]If this setting is checked, information about shop will be provided to oxid. This information will help to improve our services.',
+'HELP_SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID'     => 'Wurde diese Einstellung ausgewählt, werden Informationen an einen OXID Server gesendet. Diese Informationen über den OXID eShop dienen statistischen Zwecken und der Verbesserung unserer Services.',
 
 'HELP_SHOP_CONFIG_DELETERATINGLOGS'           => 'Wenn Benutzer einen Artikel bewerten, können Sie den Artikel nicht erneut bewerten. Hier können Sie einstellen, dass die Benutzer nach einer bestimmten Anzahl von Tagen den Artikel erneut bewerten können.',
 
-'HELP_SHOP_CONFIG_DISABLEONLINEVATIDCHECK'    => 'Die Online UST-ID Prüfung wird immer ausgeführt, wenn ein Kunde aus dem Ausland (aber innerhalb der EU) eine Umsatzsteuer-ID beim bestellen angibt. Wenn die UST-ID gültig ist, wird für die Bestellung keine Umsatzsteuer berechnet.<br>'.
+'HELP_SHOP_CONFIG_DISABLEONLINEVATIDCHECK'    => 'Die Online USt-ID Prüfung wird immer ausgeführt, wenn ein Kunde aus dem Ausland (aber innerhalb der EU) eine Umsatzsteuer-ID beim bestellen angibt. Wenn die UST-ID gültig ist, wird für die Bestellung keine Umsatzsteuer berechnet.<br>'.
                                                  'Wenn die Prüfung ausgeschaltet ist, wird immer die für das entsprechende Land eingestelle Umsatzsteuer berechnet.',
 
 'HELP_SHOP_CONFIG_ALTVATIDCHECKINTERFACEWSDL' => 'Hier können Sie eine alternative URL für die Online UST-ID Prüfung eingeben.',
@@ -622,7 +622,7 @@ $aLang =  array(
 'HELP_SHOP_CONFIG_VIEWNETPRICE'               => 'Im Shop werden Artikelpreise als Nettopreise angezeigt.',
 'HELP_SHOP_CONFIG_ENTERNETPRICE'              => 'Im Administrationsbereich müssen Artikelpreise als Nettopreise eingegeben werden.',
 
-'HELP_REVERSE_PROXY_GET_FRONTEND'             => '[tr]Überprüft, ob der Reverse Proxy für das Frontend verfügbar ist. Geprüft wird der Header der Startseite des Shops.<br>Test could fail because of different domains in admin and frontend and also because of different protocols for example admin uses https protocol and frontent uses http.',
+'HELP_REVERSE_PROXY_GET_FRONTEND'             => 'Überprüft, ob der Reverse Proxy für das Frontend verfügbar ist. Geprüft wird der Header der Startseite des Shops.<br>Der Test kann fehlschlagen, wenn verschiedene Domänen oder Protokolle (http/https) für den Administrationsbereich und den eigentlichen Shop verwendet werden.',
 'HELP_REVERSE_PROXY_GET_BACKEND'              => 'Der Administrationsbereich wird ohne Reverse Proxy angezeigt. Varnish Header konnte nicht empfangen werden.',
 
 'HELP_SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED' => 'Im Bestellprozess können nur IBAN und BIC angegeben werden. Die Eingabe von Kontonummer und BLZ ist nur möglich, wenn das Kontrollkästchen nicht aktiviert ist.',

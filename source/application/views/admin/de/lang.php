@@ -1227,7 +1227,7 @@ $aLang = array(
 'SHOP_CONFIG_RSSARTRECOMMLISTS'                            => 'Lieblingslisten (Übersicht)',
 'SHOP_CONFIG_RSSRECOMMLISTARTS'                            => 'Lieblingslisten (Artikel)',
 'SHOP_CONFIG_LOAD_DYNAMIC_PAGES'                           => 'Zusätzliche Informationen vom OXID Server laden',
-'SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID'                       => '[TR]Send shop information to oxid',
+'SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID'                       => 'Informationen über Installation und Systemumgebung zum OXID Server senden',
 'SHOP_CONFIG_CHECK_UPDATES'                                => 'Regelmäßig überprüfen, ob Aktualisierungen vorhanden sind',
 'SHOP_CONFIG_SELECTSHOPCOMPONENTS'                         => 'eShop Funktionen an/ausschalten',
 'SHOP_CONFIG_DISABLEONLINEVATIDCHECK'                      => 'Online UST-ID Prüfung deaktivieren',
@@ -2128,7 +2128,7 @@ $aLang = array(
 'OXDIAG_SERVERINFO_COMPONENT'       =>    'Komponente',
 'OXDIAG_CHKVERSION'                 =>    'Oxchkversion-Ausgabe',
 'OXDIAG_CHKVERS_FULLREP'            =>    'Vollst&auml;ndige Auswertung von <i>Oxchkversion</i> durchf&uuml;hlren',
-'SUBJECT_UNABLE_TO_SEND_VIA_CURL'  =>    '[tr]OXID eShop was unable to send servers information via CURL',
+'SUBJECT_UNABLE_TO_SEND_VIA_CURL'   =>    'Informationen können nicht via CURL an den OXID Server gesendet werden',
 
 //final note
 'OXDIAG_FINALNOTE'                  =>    'Ende der Auswertung',

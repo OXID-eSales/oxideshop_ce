@@ -60,8 +60,6 @@
 
         /**
          * Saves newsletter HTML format text.
-         *
-         * @return string
          */
         public function save()
         {

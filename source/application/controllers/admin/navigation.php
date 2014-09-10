@@ -111,8 +111,6 @@ class Navigation extends oxAdminView
 
     /**
      * Changing active shop
-     *
-     * @return string
      */
     public function chshp()
     {

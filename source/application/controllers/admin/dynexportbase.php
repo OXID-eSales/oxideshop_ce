@@ -291,8 +291,6 @@ class DynExportBase extends oxAdminDetails
      * Sets how many articles should be exported per tick
      *
      * @param int $iCount articles count per tick
-     *
-     * @return int
      */
     public function setExportPerTick($iCount)
     {

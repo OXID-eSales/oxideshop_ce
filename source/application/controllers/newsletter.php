@@ -83,8 +83,6 @@ class Newsletter extends oxUBase
      *
      * Template variables:
      * <b>aRegParams</b>
-     *
-     * @return bool
      */
     public function fill()
     {
@@ -181,8 +179,6 @@ class Newsletter extends oxUBase
      *
      * Template variables:
      * <b>success</b>
-     *
-     * @return null
      */
     public function addme()
     {
@@ -201,8 +197,6 @@ class Newsletter extends oxUBase
 
     /**
      * Loads user and removes him from newsletter group.
-     *
-     * @return null
      */
     public function removeme()
     {
@@ -220,8 +214,6 @@ class Newsletter extends oxUBase
 
     /**
      * simlink to function removeme bug fix #0002894
-     *
-     * @return null
      */
     public function rmvm()
     {

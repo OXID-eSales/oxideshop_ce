@@ -217,8 +217,6 @@ class Language_Main extends oxAdminDetails
      * Languages array setter
      *
      * @param array $aLangData languages parameters array
-     *
-     * @return array
      */
     protected function _setLanguages($aLangData)
     {

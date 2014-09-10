@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Interface oxIModuleValidator
+ */
 interface oxIModuleValidator
 {
 
@@ -31,4 +34,4 @@ interface oxIModuleValidator
      * @return bool
      */
     public function validate(oxModule $oModule);
-} 
+}

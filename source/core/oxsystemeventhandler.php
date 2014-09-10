@@ -165,7 +165,7 @@ class oxSystemEventHandler
     {
         $blSendData = true;
 
-            $blSendData = (bool) $this->_getConfig()->getConfigParam('blSendShopDataToOxid');
+            $blSendData = (bool) $this->_getConfig()->getConfigParam('blLoadDynContents');
 
         return $blSendData;
     }

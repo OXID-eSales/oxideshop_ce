@@ -441,8 +441,6 @@ class oxConfig extends oxSuperCfg
 
     /**
      * Loads vars from default config file
-     *
-     * @return null;
      */
     protected function _loadVarsFromFile()
     {
@@ -462,8 +460,6 @@ class oxConfig extends oxSuperCfg
 
     /**
      * Set important defaults.
-     *
-     * @return null;
      */
     protected function _setDefaults()
     {
@@ -514,8 +510,6 @@ class oxConfig extends oxSuperCfg
 
     /**
      * Loads vars from custom config file
-     *
-     * @return null;
      */
     protected function _loadCustomConfig()
     {
@@ -798,8 +792,6 @@ class oxConfig extends oxSuperCfg
      * Set is shop url
      *
      * @param bool $blIsSsl - state bool value
-     *
-     * @return string
      */
     public function setIsSsl($blIsSsl = false)
     {
@@ -2234,8 +2226,6 @@ class oxConfig extends oxSuperCfg
      * Redirect to start page and display the error
      *
      * @param oxException $oEx message to show on exit
-     *
-     * @return bool
      */
     protected function _handleCookieException($oEx)
     {

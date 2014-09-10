@@ -20,9 +20,6 @@
  * @version   OXID eShop CE
  */
 
-/**
- * @package core
- */
 class oxObject2Category extends oxBase
 {
 

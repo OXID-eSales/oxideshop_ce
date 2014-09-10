@@ -52,8 +52,6 @@
 
         /**
          * Saves newsletter text in plain text format.
-         *
-         * @return string
          */
         public function save()
         {

@@ -83,8 +83,6 @@ class Newsletter extends oxUBase
      *
      * Template variables:
      * <b>aRegParams</b>
-     *
-     * @return bool
      */
     public function fill()
     {

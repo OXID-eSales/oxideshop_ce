@@ -146,7 +146,7 @@ class oxApplicationServer
         return $this->_iLastFrontendUsage;
     }
 
-    public function setIsValid( $blValid=true )
+    public function setIsValid($blValid=true)
     {
         $this->_blIsValid = $blValid;
     }

@@ -351,8 +351,8 @@ class oxUtilsObject
                 foreach ($aClassChain as $sKey => $sModuleClass) {
                     if (strpos($sModuleClass, $sPath . "/") === 0) {
                         unset($aClassChain[$sKey]);
-                    } // If module consists of one file without own dir (getting module.php as id, instead of module)
-                    elseif (strpos($sPath, ".")) {
+                    } elseif (strpos($sPath, ".")) {
+                        // If module consists of one file without own dir (getting module.php as id, instead of module)
                         if (strpos($sPath, strtolower($sModuleClass)) === 0) {
                             unset($aClassChain[$sKey]);
                         }

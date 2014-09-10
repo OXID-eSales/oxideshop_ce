@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Class oxUserAddressList
+ */
 class oxUserAddressList extends oxList
 {
 

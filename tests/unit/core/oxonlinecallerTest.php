@@ -77,13 +77,32 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
         $this->assertSame(0, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
+    public function testCallWhenStatusCodeIndicatesError()
+    {
+        $oCurl = $this->getMock('oxCurl', array('execute', 'getStatusCode'));
+        $oCurl->expects($this->any())->method('execute')->will($this->returnValue('_testResult'));
+        $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(500));
+
+        /** @var oxOnlineCaller $oCaller */
+        $oCaller = $this->getMockForAbstractClass(
+            'oxOnlineCaller',
+            array($oCurl, $this->_getMockedEmailBuilder(), $this->_getMockedSimpleXML()),
+            '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
+        );
+        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
+        $oCaller->call($this->_getRequest());
+
+        $this->assertSame(5, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+    }
+
     /**
      * @return oxCurl
      */
     private function _getMockedCurl()
     {
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock('oxCurl', array('execute', 'getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue('_testResult'));
+        $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
 
         /** @var oxCurl $oCurl */
 

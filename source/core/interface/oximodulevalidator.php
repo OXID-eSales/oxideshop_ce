@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Interface oxIModuleValidator
+ */
 interface oxIModuleValidator
 {
 

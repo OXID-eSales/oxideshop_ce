@@ -34,4 +34,4 @@ interface oxIModuleValidator
      * @return bool
      */
     public function validate(oxModule $oModule);
-} 
+}

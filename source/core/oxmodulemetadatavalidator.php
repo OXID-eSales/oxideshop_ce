@@ -45,4 +45,4 @@ class oxModuleMetadataValidator implements oxIModuleValidator
 
         return file_exists($sMetadataPath);
     }
-} 
+}

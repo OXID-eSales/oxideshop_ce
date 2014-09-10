@@ -2859,8 +2859,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Sets selectlists of current product
      *
      * @param array $aSelList selectlist
-     *
-     * @return object
      */
     public function setSelectlist($aSelList)
     {
@@ -3838,8 +3836,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param string &$sAttribs Attribute selection snippet
      * @param int    &$iCnt     The number of selected attributes
-     *
-     * @return null;
      */
     protected function _getAttribsString(&$sAttributeSql, &$iCnt)
     {
@@ -4162,8 +4158,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Assigns parent field values to article
-     *
-     * @return null;
      */
     protected function _assignParentFieldValues()
     {
@@ -4265,8 +4259,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * assigns persistent param to article
-     *
-     * @return null;
      */
     protected function _assignPersistentParam()
     {
@@ -4279,8 +4271,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * assigns dynimagedir to article
-     *
-     * @return null;
      */
     protected function _assignDynImageDir()
     {
@@ -4296,8 +4286,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Adds a flag if article is on comparisonlist.
-     *
-     * @return null;
      */
     protected function _assignComparisonListFlag()
     {
@@ -4942,8 +4930,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Set parent field value to child - variants
-     *
-     * @return bool
      */
     protected function _assignParentDependFields()
     {

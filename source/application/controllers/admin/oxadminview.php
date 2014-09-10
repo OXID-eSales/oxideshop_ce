@@ -419,8 +419,6 @@ class oxAdminView extends oxView
 
     /**
      * Clears cache
-     *
-     * @return string
      */
     public function save()
     {
@@ -576,8 +574,6 @@ class oxAdminView extends oxView
 
     /**
      * Changing active shop
-     *
-     * @return string
      */
     public function chshp()
     {
@@ -634,8 +630,6 @@ class oxAdminView extends oxView
      * Sets editable object id
      *
      * @param string $sId object id
-     *
-     * @return string
      */
     public function setEditObjectId($sId)
     {

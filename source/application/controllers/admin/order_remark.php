@@ -75,8 +75,6 @@ class Order_Remark extends oxAdminDetails
 
     /**
      * Saves order history item text changes.
-     *
-     * @return string
      */
     public function save()
     {

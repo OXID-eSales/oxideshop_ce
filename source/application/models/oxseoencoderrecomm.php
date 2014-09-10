@@ -42,12 +42,11 @@ class oxSeoEncoderRecomm extends oxSeoEncoder
 
             // fetching part of base url
             $sSeoUrl = $this->_getStaticUri(
-                           $oRecomm->getBaseStdLink($iLang, false),
-                           $myConfig->getShopId(),
-                           $iLang
-                       )
-                       .
-                       $this->_prepareTitle($oRecomm->oxrecommlists__oxtitle->value, false, $iLang);
+                $oRecomm->getBaseStdLink($iLang, false),
+                $myConfig->getShopId(),
+                $iLang
+            )
+            . $this->_prepareTitle($oRecomm->oxrecommlists__oxtitle->value, false, $iLang);
 
             // creating unique
             $sSeoUrl = $this->_processSeoUrl($sSeoUrl, $oRecomm->getId(), $iLang);

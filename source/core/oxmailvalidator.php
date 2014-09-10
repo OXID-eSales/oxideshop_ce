@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Class oxMailValidator
+ */
 class oxMailValidator
 {
 
@@ -45,7 +48,7 @@ class oxMailValidator
     /**
      * Override mail validation rule.
      *
-     * @param string $sMailValidationRule
+     * @param string $sMailValidationRule mail validation rule
      */
     public function setMailValidationRule($sMailValidationRule)
     {

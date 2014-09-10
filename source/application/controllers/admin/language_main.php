@@ -493,4 +493,4 @@ class Language_Main extends oxAdminDetails
 
         return $blResult;
     }
-} 
+}

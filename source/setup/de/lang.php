@@ -125,7 +125,7 @@ $aLang = array(
 'BUTTON_PROCEED_INSTALL'                        => 'Setup beginnen',
 
 'STEP_2_TITLE'                                  => 'Lizenzbedingungen',
-'STEP_2_SEND_SHOP_DATA_TO_OXID'                 => 'Informationen über Installation und Systemumgebung zum OXID Server senden',
+'STEP_2_SEND_SHOP_DATA_TO_OXID'                 => 'Informationen zu statistischen Zwecken und zur Verbesserung unserer Services zum OXID Server senden.',
 'BUTTON_RADIO_LICENCE_ACCEPT'                   => 'Ich akzeptiere die Lizenzbestimmungen.',
 'BUTTON_RADIO_LICENCE_NOT_ACCEPT'               => 'Ich akzeptiere die Lizenzbestimmungen nicht.',
 'BUTTON_LICENCE'                                => 'Weiter',

@@ -54,8 +54,6 @@ class dyn_trusted_ratings extends Shop_Config
 
     /**
      * Saves changed shop configuration parameters.
-     *
-     * @return mixed
      */
     public function save()
     {

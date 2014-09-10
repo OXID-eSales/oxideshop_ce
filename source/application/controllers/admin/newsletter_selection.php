@@ -117,8 +117,6 @@
 
         /**
          * Saves newsletter selection changes.
-         *
-         * @return string
          */
         public function save()
         {

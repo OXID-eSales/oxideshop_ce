@@ -21,10 +21,10 @@
  */
 
 /**
+ * Manages object (users, discounts, deliveries...) assignment to groups.
  */
 class oxObject2Group extends oxBase
 {
-
     /**
      * Load the relation even if from other shop
      *
@@ -50,9 +50,10 @@ class oxObject2Group extends oxBase
     }
 
     /**
-     * extens the default save method
+     * Extends the default save method.
+     * Saves only if this kind of entry do not exists.
      *
-     * @return mixed
+     * @return bool
      */
     public function save()
     {

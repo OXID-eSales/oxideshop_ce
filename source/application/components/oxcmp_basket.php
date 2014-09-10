@@ -129,7 +129,8 @@ class oxcmp_basket extends oxView
      */
     public function tobasket($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false)
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        $oSession = oxRegistry::getSession();
+        if (!$oSession->isNewSession() && !$oSession->checkSessionChallenge()) {
             return;
         }
 

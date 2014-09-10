@@ -304,8 +304,6 @@ class aList extends oxUBase
 
     /**
      * Returns additional URL parameters which must be added to list products seo urls
-     *
-     * @return string
      */
     public function getAddSeoUrlParams()
     {

@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Article detailed information widget.
+ */
 class oxwArticleDetails extends oxWidget
 {
 
@@ -268,8 +271,6 @@ class oxwArticleDetails extends oxWidget
      * Processes product by setting link type and in case list type is search adds search parameters to details link
      *
      * @param object $oProduct product to process
-     *
-     * @return null
      */
     protected function _processProduct($oProduct)
     {
@@ -805,8 +806,6 @@ class oxwArticleDetails extends oxWidget
      * Returns search title setter
      *
      * @param string $sTitle search title
-     *
-     * @return null
      */
     public function setSearchTitle($sTitle)
     {
@@ -1072,8 +1071,6 @@ class oxwArticleDetails extends oxWidget
      *
      * @param $myUtils
      * @param $myConfig
-     *
-     * @return null
      */
     protected function _additionalChecksForArticle($myUtils, $myConfig)
     {

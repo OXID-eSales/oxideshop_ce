@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Manages Trusted Shops ratings.
+ */
 class oxTsRatings extends oxSuperCfg
 {
 

@@ -26,14 +26,17 @@
  */
 class GuestbookEntry extends GuestBook
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/guestbook/guestbookentry.tpl';
 
     /**
      * Guestbook form id, prevents double entry submit
+     *
      * @var string
      */
     protected $_sGbFormId = null;
@@ -51,41 +54,45 @@ class GuestbookEntry extends GuestBook
             return;
         }
 
-        $sReviewText = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'rvw_txt', true ) );
-        $sShopId     = $this->getConfig()->getShopId();
-        $sUserId     = oxRegistry::getSession()->getVariable( 'usr' );
+        $sReviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true));
+        $sShopId = $this->getConfig()->getShopId();
+        $sUserId = oxRegistry::getSession()->getVariable('usr');
 
         // guest book`s entry is validated
         if ( !$sUserId ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_LOGIN_TO_WRITE_ENTRY' );
+            $sErrorMessage = 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_LOGIN_TO_WRITE_ENTRY';
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($sErrorMessage);
             //return to same page
             return;
         }
 
         if ( !$sShopId ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_UNDEFINED_SHOP' );
+            $sErrorMessage = 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_UNDEFINED_SHOP';
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($sErrorMessage);
             return 'guestbookentry';
         }
 
         // empty entries validation
         if ( '' == $sReviewText ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_REVIEW_CONTAINS_NO_TEXT' );
+            $sErrorMessage = 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_REVIEW_CONTAINS_NO_TEXT';
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($sErrorMessage);
             return 'guestbookentry';
         }
 
         // flood protection
         $oEntrie = oxNew( 'oxgbentry' );
         if ( $oEntrie->floodProtection( $sShopId, $sUserId ) ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_MAXIMUM_NUMBER_EXCEEDED' );
+            $sErrorMessage = 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_MAXIMUM_NUMBER_EXCEEDED';
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($sErrorMessage);
             return 'guestbookentry';
         }
 
         // double click protection
-        if ( $this->canAcceptFormData() ) {
+        if ($this->canAcceptFormData()) {
             // here the guest book entry is saved
-            $oEntry = oxNew( 'oxgbentry' );
-            $oEntry->oxgbentries__oxshopid  = new oxField($sShopId);
-            $oEntry->oxgbentries__oxuserid  = new oxField($sUserId);
+            $oEntry = oxNew('oxgbentry');
+            $oEntry->oxgbentries__oxshopid = new oxField($sShopId);
+            $oEntry->oxgbentries__oxuserid = new oxField($sUserId);
             $oEntry->oxgbentries__oxcontent = new oxField($sReviewText);
             $oEntry->save();
         }

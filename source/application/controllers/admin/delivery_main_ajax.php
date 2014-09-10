@@ -82,8 +82,6 @@ class delivery_main_ajax extends ajaxListComponent
 
     /**
      * Removes chosen countries from delivery list
-     *
-     * @return null
      */
     public function removeCountryFromDel()
     {
@@ -101,8 +99,6 @@ class delivery_main_ajax extends ajaxListComponent
 
     /**
      * Adds chosen countries to delivery list
-     *
-     * @return null
      */
     public function addCountryToDel()
     {

@@ -246,8 +246,6 @@ class aList extends oxUBase
      * - redirecting to first page in case requested page does not exist
      * or
      * - displays 404 error if category has no products
-     *
-     * @return null
      */
     protected function _checkRequestedPage()
     {
@@ -261,8 +259,6 @@ class aList extends oxUBase
     /**
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
-     *
-     * @return null
      */
     protected function _processListArticles()
     {
@@ -337,8 +333,6 @@ class aList extends oxUBase
      *
      * Session variables:
      * <b>session_attrfilter</b>
-     *
-     * @return null
      */
     public function executefilter()
     {

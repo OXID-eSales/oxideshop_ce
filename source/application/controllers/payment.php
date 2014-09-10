@@ -135,8 +135,6 @@ class Payment extends oxUBase
 
     /**
      * Executes parent method parent::init().
-     *
-     * @return null
      */
     public function init()
     {
@@ -217,8 +215,6 @@ class Payment extends oxUBase
      * Set default empty payment. If config param 'blOtherCountryOrder' is on,
      * tries to set 'oxempty' payment to aViewData['oxemptypayment'].
      * On error sets aViewData['payerror'] to -2
-     *
-     * @return null
      */
     protected function _setDefaultEmptyPayment()
     {
@@ -238,8 +234,6 @@ class Payment extends oxUBase
 
     /**
      * Unsets payment errors from session
-     *
-     * @return null
      */
     protected function _unsetPaymentErrors()
     {
@@ -264,8 +258,6 @@ class Payment extends oxUBase
     /**
      * Changes shipping set to chosen one. Sets basket status to not up-to-date, which later
      * forces to recalculate it
-     *
-     * @return null
      */
     public function changeshipping()
     {
@@ -442,8 +434,6 @@ class Payment extends oxUBase
      *
      * @param array    &$aPaymentList payments array
      * @param oxBasket $oBasket       basket object
-     *
-     * @return null
      */
     protected function _setValues(& $aPaymentList, $oBasket = null)
     {
@@ -539,8 +529,6 @@ class Payment extends oxUBase
     /**
      * Assign debit note payment values to view data. Loads user debit note payment
      * if available and assigns payment data to $this->_aDynValue
-     *
-     * @return null
      */
     protected function _assignDebitNoteParams()
     {

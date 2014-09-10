@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for contact class
  */
 class Unit_Views_contactTest extends OxidTestCase
 {
+
     /**
      * Test view render.
      *
@@ -35,8 +36,8 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oContact = oxNew( 'Contact' );
-        $this->assertEquals( 'page/info/contact.tpl', $oContact->render() );
+        $oContact = oxNew('Contact');
+        $this->assertEquals('page/info/contact.tpl', $oContact->render());
     }
 
     /**
@@ -59,7 +60,7 @@ class Unit_Views_contactTest extends OxidTestCase
 
         //checking if warning was added to errors list
         $sErr = oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOVALIDEMAIL');
-        $aEx  = oxRegistry::getSession()->getVariable('Errors');
+        $aEx = oxRegistry::getSession()->getVariable('Errors');
         $oErr = unserialize($aEx['default'][0]);
 
         $this->assertEquals($sErr, $oErr->getOxMessage());
@@ -83,7 +84,7 @@ class Unit_Views_contactTest extends OxidTestCase
 
         //checking if warning was added to errors list
         $sErr = oxRegistry::getLang()->translateString('MESSAGE_WRONG_VERIFICATION_CODE');
-        $aEx  = oxRegistry::getSession()->getVariable('Errors');
+        $aEx = oxRegistry::getSession()->getVariable('Errors');
         $oErr = unserialize($aEx['default'][0]);
 
         $this->assertEquals($sErr, $oErr->getOxMessage());
@@ -108,7 +109,7 @@ class Unit_Views_contactTest extends OxidTestCase
 
         //checking if warning was added to errors list
         $sErr = oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS');
-        $aEx  = oxRegistry::getSession()->getVariable('Errors');
+        $aEx = oxRegistry::getSession()->getVariable('Errors');
         $oErr = unserialize($aEx['default'][0]);
 
         $this->assertEquals($sErr, $oErr->getOxMessage());
@@ -127,12 +128,12 @@ class Unit_Views_contactTest extends OxidTestCase
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
         $aParams['oxuser__oxfname'] = 'first name';
         $aParams['oxuser__oxlname'] = 'last name';
-        modConfig::setRequestParameter( 'editval', $aParams );
-        modConfig::setRequestParameter( 'c_subject', "testSubject" );
+        modConfig::setRequestParameter('editval', $aParams);
+        modConfig::setRequestParameter('c_subject', "testSubject");
         $oObj = $this->getProxyClass("Contact");
         $oObj->send();
 
-        $this->assertEquals( 1, $oObj->getNonPublicVar( '_blContactSendStatus' ) );
+        $this->assertEquals(1, $oObj->getNonPublicVar('_blContactSendStatus'));
     }
 
     /**
@@ -142,9 +143,9 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testGetUserData()
     {
-       modConfig::setRequestParameter( 'editval', 'testval' );
-       $oObj = $this->getProxyClass("Contact");
-       $this->assertEquals( 'testval', $oObj->getUserData() );
+        modConfig::setRequestParameter('editval', 'testval');
+        $oObj = $this->getProxyClass("Contact");
+        $this->assertEquals('testval', $oObj->getUserData());
     }
 
     /**
@@ -154,9 +155,9 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testGetContactSubject()
     {
-       modConfig::setRequestParameter( 'c_subject', 'testsubject' );
-       $oObj = $this->getProxyClass("Contact");
-       $this->assertEquals( 'testsubject', $oObj->getContactSubject() );
+        modConfig::setRequestParameter('c_subject', 'testsubject');
+        $oObj = $this->getProxyClass("Contact");
+        $this->assertEquals('testsubject', $oObj->getContactSubject());
     }
 
     /**
@@ -166,9 +167,9 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testGetContactMessage()
     {
-       modConfig::setRequestParameter( 'c_message', 'testmessage' );
-       $oObj = $this->getProxyClass("Contact");
-       $this->assertEquals( 'testmessage', $oObj->getContactMessage() );
+        modConfig::setRequestParameter('c_message', 'testmessage');
+        $oObj = $this->getProxyClass("Contact");
+        $this->assertEquals('testmessage', $oObj->getContactMessage());
     }
 
     /**
@@ -178,7 +179,7 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testGetCaptcha()
     {
-        $oObj = $this->getProxyClass( 'Contact' );
+        $oObj = $this->getProxyClass('Contact');
         $this->assertEquals(oxNew('oxCaptcha'), $oObj->getCaptcha());
     }
 
@@ -189,12 +190,12 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testGetContactSendStatus()
     {
-        $oObj = $this->getProxyClass( 'Contact' );
-        $oObj->setNonPublicVar( '_blContactSendStatus', true );
+        $oObj = $this->getProxyClass('Contact');
+        $oObj->setNonPublicVar('_blContactSendStatus', true);
         $this->assertTrue($oObj->getContactSendStatus());
     }
 
-     /**
+    /**
      * Testing Contact::getBreadCrumb()
      *
      * @return null
@@ -222,7 +223,7 @@ class Unit_Views_contactTest extends OxidTestCase
         modConfig::setRequestParameter("c_message", "message");
         modConfig::setRequestParameter("c_subject", "subject");
 
-        $oLang    = oxRegistry::getLang();
+        $oLang = oxRegistry::getLang();
         $sMessage = $oLang->translateString('MESSAGE_FROM') . " " . $oLang->translateString('MR') . " admin admin(info@oxid-esales.com)<br /><br />message";
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
@@ -287,11 +288,11 @@ class Unit_Views_contactTest extends OxidTestCase
         $oShop->oxshops__oxcompany = new oxField('shop');
 
         $oConfig = $this->getMock("oxConfig", array('getActiveShop'));
-        $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue( $oShop ));
+        $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
         $oView = $this->getMock("contact", array('getConfig'));
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue( $oConfig ));
+        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertEquals( 'shop', $oView->getTitle());
+        $this->assertEquals('shop', $oView->getTitle());
     }
 }

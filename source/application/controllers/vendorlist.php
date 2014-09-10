@@ -462,8 +462,6 @@ class VendorList extends aList
      * Vendor tree setter
      *
      * @param oxVendorList $oVendorTree vendor tree
-     *
-     * @return null
      */
     public function setVendorTree($oVendorTree)
     {

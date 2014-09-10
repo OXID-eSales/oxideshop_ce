@@ -83,8 +83,6 @@ class deliveryset_country_ajax extends ajaxListComponent
 
     /**
      * Removes chosen countries from delivery list
-     *
-     * @return null
      */
     public function removeCountryFromSet()
     {
@@ -104,8 +102,6 @@ class deliveryset_country_ajax extends ajaxListComponent
 
     /**
      * Adds chosen countries to delivery list
-     *
-     * @return null
      */
     public function addCountryToSet()
     {

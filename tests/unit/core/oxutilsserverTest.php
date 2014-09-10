@@ -356,4 +356,43 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
         $this->assertSame($sExpectedIP, $sServerIp);
     }
+
+    public function testGetServerNodeIdNotEmpty()
+    {
+        $oUtilsServer = new oxUtilsServer();
+        $sServerId = $oUtilsServer->getServerNodeId();
+
+        $this->assertNotEmpty($sServerId);
+
+        return $sServerId;
+    }
+
+    /**
+     * @depends testGetServerNodeIdNotEmpty
+     */
+    public function testGetServerNodeIdReturnSameValue($sServerId1)
+    {
+        $oUtilsServer = new oxUtilsServer();
+        $sServerId2 = $oUtilsServer->getServerNodeId();
+
+        $this->assertSame($sServerId1, $sServerId2);
+    }
+
+    /**
+     * @depends testGetServerNodeIdNotEmpty
+     */
+    public function testGetServerNodeIdReturnDifferentValueIfDifferentIp($sServerId1)
+    {
+        $sOldServerIp = $_SERVER['SERVER_ADDR'];
+
+        $sExpectedIP = '1.168.0.9';
+        $_SERVER['SERVER_ADDR'] = $sExpectedIP;
+
+        $oUtilsServer = new oxUtilsServer();
+        $sServerId2 = $oUtilsServer->getServerNodeId();
+
+        $_SERVER['SERVER_ADDR'] = $sOldServerIp;
+
+        $this->assertNotSame($sServerId1, $sServerId2);
+    }
 }

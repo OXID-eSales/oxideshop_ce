@@ -251,8 +251,6 @@ class Article_Extend extends oxAdminDetails
 
     /**
      * Updates existing media descriptions
-     *
-     * @return null
      */
     public function updateMedia()
     {

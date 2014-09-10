@@ -58,6 +58,14 @@ class oxApplicationServer
      */
     private $_iLastAdminUsage;
 
+
+    /**
+     * Flag - server is used or not
+     *
+     * @var bool
+     */
+    private $_blIsValid = false;
+
     /**
      * @param string $sId
      */
@@ -136,5 +144,18 @@ class oxApplicationServer
     public function getLastFrontendUsage()
     {
         return $this->_iLastFrontendUsage;
+    }
+
+    public function setIsValid( $blValid=true )
+    {
+        $this->_blIsValid = $blValid;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid()
+    {
+        return $this->_blIsValid;
     }
 }

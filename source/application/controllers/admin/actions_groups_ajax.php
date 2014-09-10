@@ -78,8 +78,6 @@ class actions_groups_ajax extends ajaxListComponent
 
     /**
      * Removes user group from promotion
-     *
-     * @return null
      */
     public function removePromotionGroup()
     {
@@ -96,8 +94,6 @@ class actions_groups_ajax extends ajaxListComponent
 
     /**
      * Adds user group to promotion
-     *
-     * @return null
      */
     public function addPromotionGroup()
     {

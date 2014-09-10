@@ -35,7 +35,7 @@ class Unit_Core_oxOnlineServerEmailBuilderTest extends OxidTestCase
         $aRecipient = $oExpirationEmail->getRecipient();
 
         $this->assertSame($sBody, $oExpirationEmail->getBody(), 'Email content is not as it should be.');
-        $this->assertSame('info@oxid-esales.com', $aRecipient[0][0], 'Recipient email address is wrong.');
+        $this->assertSame('olc@oxid-esales.com', $aRecipient[0][0], 'Recipient email address is wrong.');
         $this->assertSame(oxRegistry::getLang()->translateString('SUBJECT_UNABLE_TO_SEND_VIA_CURL', null, true), $oExpirationEmail->getSubject(), 'Subject is wrong.');
     }
 }

@@ -28,8 +28,10 @@
  */
 class Account_Newsletter extends Account
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/account/newsletter.tpl';
@@ -62,7 +64,7 @@ class Account_Newsletter extends Account
 
         // is logged in ?
         $oUser = $this->getUser();
-        if ( !$oUser ) {
+        if (!$oUser) {
             return $this->_sThisTemplate = $this->_sThisLoginTemplate;
         }
 
@@ -78,7 +80,7 @@ class Account_Newsletter extends Account
     public function isNewsletter()
     {
         $oUser = $this->getUser();
-        if ( !$oUser ) {
+        if (!$oUser) {
             return false;
         }
 
@@ -99,13 +101,13 @@ class Account_Newsletter extends Account
 
         // is logged in ?
         $oUser = $this->getUser();
-        if ( !$oUser ) {
+        if (!$oUser) {
             return false;
         }
 
-        $iStatus = $this->getConfig()->getRequestParameter( 'status' );
-        if ( $oUser->setNewsSubscription( $iStatus, $this->getConfig()->getConfigParam( 'blOrderOptInEmail' ) ) ) {
-            $this->_iSubscriptionStatus = ($iStatus == 0 && $iStatus !== null)? -1 : 1;
+        $iStatus = $this->getConfig()->getRequestParameter('status');
+        if ($oUser->setNewsSubscription($iStatus, $this->getConfig()->getConfigParam('blOrderOptInEmail'))) {
+            $this->_iSubscriptionStatus = ($iStatus == 0 && $iStatus !== null) ? -1 : 1;
         }
     }
 
@@ -130,12 +132,15 @@ class Account_Newsletter extends Account
         $aPaths = array();
         $aPath = array();
         $oUtils = oxRegistry::get("oxUtilsUrl");
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = oxRegistry::get("oxSeoEncoder")->getStaticUrl( $this->getViewConfig()->getSelfLink() . 'cl=account' );
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $sSelfLink = $this->getViewConfig()->getSelfLink();
+
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'NEWSLETTER_SETTINGS', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $oUtils->cleanUrl( $this->getLink(), array( 'fnc' ));
+        $aPath['title'] = oxRegistry::getLang()->translateString('NEWSLETTER_SETTINGS', $iBaseLanguage, false);
+        $aPath['link'] = $oUtils->cleanUrl($this->getLink(), array('fnc'));
         $aPaths[] = $aPath;    
         
         return $aPaths;

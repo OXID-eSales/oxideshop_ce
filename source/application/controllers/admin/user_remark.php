@@ -97,8 +97,6 @@ class User_Remark extends oxAdminDetails
 
     /**
      * Deletes user actions history record.
-     *
-     * @return null
      */
     public function delete()
     {

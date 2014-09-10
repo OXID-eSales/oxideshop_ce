@@ -109,8 +109,6 @@ class actions_article_ajax extends ajaxListComponent
 
     /**
      * Removing article assignment
-     *
-     * @return null
      */
     public function removeActionArticle()
     {
@@ -128,8 +126,6 @@ class actions_article_ajax extends ajaxListComponent
 
     /**
      * Set article assignment
-     *
-     * @return null
      */
     public function setActionArticle()
     {

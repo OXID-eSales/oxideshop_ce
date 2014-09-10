@@ -20,18 +20,20 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once getShopBasePath().'/setup/oxsetup.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
+require_once getShopBasePath() . '/setup/oxsetup.php';
 
 /**
  * oxSetupSession tests
  */
 class Unit_Setup_oxSetupSessionTest extends OxidTestCase
 {
+
     public function setUp()
     {
         session_cache_limiter(false);
+
         return parent::setUp();
     }
 
@@ -42,8 +44,9 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
      */
     protected function _getSessionMock($aMockFunctions = array())
     {
-        $aMockFunctions = array_merge($aMockFunctions, array( '_startSession', '_initSessionData' ));
-        $oSession = $this->getMock( $this->getProxyClassName('oxSetupSession'), $aMockFunctions );
+        $aMockFunctions = array_merge($aMockFunctions, array('_startSession', '_initSessionData'));
+        $oSession = $this->getMock($this->getProxyClassName('oxSetupSession'), $aMockFunctions);
+
         return $oSession;
     }
 
@@ -56,8 +59,8 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     {
         $oSession = $this->_getSessionMock(array('setSessionParam', '_getNewSessionID'));
         $oSession->setNonPublicVar('_blNewSession', true);
-        $oSession->expects( $this->at(0) )->method('setSessionParam')->with( $this->equalTo('setup_session'), $this->equalTo(true) );
-        $oSession->expects( $this->never() )->method('_getNewSessionID');
+        $oSession->expects($this->at(0))->method('setSessionParam')->with($this->equalTo('setup_session'), $this->equalTo(true));
+        $oSession->expects($this->never())->method('_getNewSessionID');
         $oSession->UNITvalidateSession();
     }
 
@@ -70,9 +73,9 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     {
         $oSession = $this->_getSessionMock(array('setSessionParam', 'getSessionParam', '_getNewSessionID'));
         $oSession->setNonPublicVar('_blNewSession', null);
-        $oSession->expects( $this->at(0) )->method('getSessionParam')->with( $this->equalTo('setup_session') )->will( $this->returnValue(null) );
-        $oSession->expects( $this->at(1) )->method('_getNewSessionID')->will( $this->returnValue('someSID') );
-        $oSession->expects( $this->at(2) )->method('setSessionParam')->with( $this->equalTo('setup_session'), $this->equalTo(true) );
+        $oSession->expects($this->at(0))->method('getSessionParam')->with($this->equalTo('setup_session'))->will($this->returnValue(null));
+        $oSession->expects($this->at(1))->method('_getNewSessionID')->will($this->returnValue('someSID'));
+        $oSession->expects($this->at(2))->method('setSessionParam')->with($this->equalTo('setup_session'), $this->equalTo(true));
         $oSession->UNITvalidateSession();
     }
 
@@ -85,9 +88,9 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     {
         $oSession = $this->_getSessionMock(array('setSessionParam', 'getSessionParam', '_getNewSessionID'));
         $oSession->setNonPublicVar('_blNewSession', null);
-        $oSession->expects( $this->at(0) )->method('getSessionParam')->with( $this->equalTo('setup_session') )->will( $this->returnValue(true) );
-        $oSession->expects( $this->never() )->method('_getNewSessionID');
-        $oSession->expects( $this->never() )->method('setSessionParam');
+        $oSession->expects($this->at(0))->method('getSessionParam')->with($this->equalTo('setup_session'))->will($this->returnValue(true));
+        $oSession->expects($this->never())->method('_getNewSessionID');
+        $oSession->expects($this->never())->method('setSessionParam');
         $oSession->UNITvalidateSession();
     }
 
@@ -125,7 +128,7 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     {
         $oSession = $this->_getSessionMock();
         $oSession->setNonPublicVar('_sSid', 'testSessionSID');
-        $this->assertSame( 'testSessionSID', $oSession->getSid() );
+        $this->assertSame('testSessionSID', $oSession->getSid());
     }
 
     /**
@@ -137,7 +140,7 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     {
         $oSession = $this->_getSessionMock();
         $oSession->setSid('testNewSessionSID');
-        $this->assertSame( 'testNewSessionSID', $oSession->getNonPublicVar( '_sSid' ) );
+        $this->assertSame('testNewSessionSID', $oSession->getNonPublicVar('_sSid'));
     }
 
     /**
@@ -149,10 +152,10 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     {
         $aParams = array('testKey' => 'testParam');
 
-        $oSession = $this->_getSessionMock( array('_getSessionData') );
-        $oSession->expects( $this->at(0) )->method('_getSessionData')->will( $this->returnValue($aParams) );
+        $oSession = $this->_getSessionMock(array('_getSessionData'));
+        $oSession->expects($this->at(0))->method('_getSessionData')->will($this->returnValue($aParams));
 
-        $this->assertSame( null, $oSession->getSessionParam( 'testBadKey' ), 'Incorrect not found response.' );
+        $this->assertSame(null, $oSession->getSessionParam('testBadKey'), 'Incorrect not found response.');
     }
 
     /**
@@ -164,9 +167,9 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     {
         $aParams = array('testKey' => 'testParam');
 
-        $oSession = $this->_getSessionMock( array('_getSessionData') );
-        $oSession->expects( $this->at(0) )->method('_getSessionData')->will( $this->returnValue($aParams) );
+        $oSession = $this->_getSessionMock(array('_getSessionData'));
+        $oSession->expects($this->at(0))->method('_getSessionData')->will($this->returnValue($aParams));
 
-        $this->assertSame( 'testParam', $oSession->getSessionParam( 'testKey' ), 'Incorrect found response.' );
+        $this->assertSame('testParam', $oSession->getSessionParam('testKey'), 'Incorrect found response.');
     }
 }

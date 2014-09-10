@@ -295,8 +295,6 @@ if (!class_exists('report_canceled_orders')) {
 
         /**
          * Collects and renders visitor/month report data
-         *
-         * @return null
          */
         public function visitor_month()
         {
@@ -398,8 +396,6 @@ if (!class_exists('report_canceled_orders')) {
 
         /**
          * Collects and renders visitor/week report data
-         *
-         * @return null
          */
         public function visitor_week()
         {

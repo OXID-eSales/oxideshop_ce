@@ -91,8 +91,6 @@ class attribute_category_ajax extends ajaxListComponent
 
     /**
      * Removes category from Attributes list
-     *
-     * @return null
      */
     public function removeCatFromAttr()
     {
@@ -116,8 +114,6 @@ class attribute_category_ajax extends ajaxListComponent
 
     /**
      * Adds category to Attributes list
-     *
-     * @return null
      */
     public function addCatToAttr()
     {

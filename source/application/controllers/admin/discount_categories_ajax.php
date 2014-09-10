@@ -89,8 +89,6 @@ class discount_categories_ajax extends ajaxListComponent
 
     /**
      * Removes selected category (categories) from discount list
-     *
-     * @return null
      */
     public function removeDiscCat()
     {
@@ -112,8 +110,6 @@ class discount_categories_ajax extends ajaxListComponent
 
     /**
      * Adds selected category (categories) to discount list
-     *
-     * @return null
      */
     public function addDiscCat()
     {

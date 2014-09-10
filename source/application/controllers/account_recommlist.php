@@ -28,6 +28,7 @@
  */
 class Account_Recommlist extends Account
 {
+
     /**
      * Current class template name.
      *
@@ -72,6 +73,7 @@ class Account_Recommlist extends Account
 
     /**
      * Page navigation
+     *
      * @var object
      */
     protected $_oPageNavigation = null;
@@ -89,19 +91,19 @@ class Account_Recommlist extends Account
         parent::render();
 
         // is logged in ?
-        if ( !( $oUser = $this->getUser() ) ) {
+        if (!($oUser = $this->getUser())) {
             return $this->_sThisTemplate = $this->_sThisLoginTemplate;
         }
 
-        $oLists   = $this->getRecommLists();
+        $oLists = $this->getRecommLists();
         $oActList = $this->getActiveRecommList();
 
         // list of found oxrecommlists
-        if ( !$oActList && $oLists->count() ) {
+        if (!$oActList && $oLists->count()) {
             $this->_iAllArtCnt = $oUser->getRecommListsCount();
-            $iNrofCatArticles = (int) $this->getConfig()->getConfigParam( 'iNrofCatArticles' );
+            $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
-            $this->_iCntPages  = round( $this->_iAllArtCnt / $iNrofCatArticles + 0.49 );
+            $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
         }
 
         return $this->_sThisTemplate;
@@ -117,7 +119,7 @@ class Account_Recommlist extends Account
         $aParams = parent::getNavigationParams();
 
         // adding recommendation list id to list product urls
-        if ( ( $oList = $this->getActiveRecommList() ) ) {
+        if (($oList = $this->getActiveRecommList())) {
             $aParams['recommid'] = $oList->getId();
         }
 
@@ -131,13 +133,14 @@ class Account_Recommlist extends Account
      */
     public function getRecommLists()
     {
-        if ( $this->_aUserRecommLists === null ) {
+        if ($this->_aUserRecommLists === null) {
             $this->_aUserRecommLists = false;
-            if ( ( $oUser = $this->getUser() ) ) {
+            if (($oUser = $this->getUser())) {
                 // recommendation list
                 $this->_aUserRecommLists = $oUser->getUserRecommLists();
             }
         }
+
         return $this->_aUserRecommLists;
     }
 
@@ -148,21 +151,21 @@ class Account_Recommlist extends Account
      */
     public function getArticleList()
     {
-        if ( $this->_oActRecommListArticles === null ) {
+        if ($this->_oActRecommListArticles === null) {
             $this->_oActRecommListArticles = false;
 
-            if ( ( $oRecommList = $this->getActiveRecommList() ) ) {
+            if (($oRecommList = $this->getActiveRecommList())) {
                 $oItemList = $oRecommList->getArticles();
 
-                if ( $oItemList->count() ) {
-                    foreach ( $oItemList as $key => $oItem ) {
-                        if ( !$oItem->isVisible() ) {
-                            $oRecommList->removeArticle( $oItem->getId() );
-                            $oItemList->offsetUnset( $key );
+                if ($oItemList->count()) {
+                    foreach ($oItemList as $key => $oItem) {
+                        if (!$oItem->isVisible()) {
+                            $oRecommList->removeArticle($oItem->getId());
+                            $oItemList->offsetUnset($key);
                             continue;
                         }
 
-                        $oItem->text = $oRecommList->getArtDescription( $oItem->getId() );
+                        $oItem->text = $oRecommList->getArtDescription($oItem->getId());
                     }
                     $this->_oActRecommListArticles = $oItemList;
                 }
@@ -183,14 +186,16 @@ class Account_Recommlist extends Account
             return false;
         }
 
-        if ( $this->_oActRecommList === null ) {
+        if ($this->_oActRecommList === null) {
             $this->_oActRecommList = false;
 
-            if ( ( $oUser = $this->getUser() ) &&
-                 ( $sRecommId = oxRegistry::getConfig()->getRequestParameter( 'recommid' ) )) {
+            if (($oUser = $this->getUser()) &&
+                ($sRecommId = oxRegistry::getConfig()->getRequestParameter('recommid'))
+            ) {
 
-                $oRecommList = oxNew( 'oxrecommlist' );
-                if ( ( $oRecommList->load( $sRecommId ) ) && $oUser->getId() === $oRecommList->oxrecommlists__oxuserid->value ) {
+                $oRecommList = oxNew('oxrecommlist');
+                $sUserIdField = 'oxrecommlists__oxuserid';
+                if (($oRecommList->load($sRecommId)) && $oUser->getId() === $oRecommList->$sUserIdField->value) {
                     $this->_oActRecommList = $oRecommList;
                 }
             }
@@ -203,10 +208,8 @@ class Account_Recommlist extends Account
      * Set active recommlist
      *
      * @param object $oRecommList Recommendation list
-     *
-     * @return null
      */
-    public function setActiveRecommList( $oRecommList )
+    public function setActiveRecommList($oRecommList)
     {
         $this->_oActRecommList = $oRecommList;
     }
@@ -226,30 +229,30 @@ class Account_Recommlist extends Account
             return;
         }
 
-        if ( ( $oUser = $this->getUser() ) ) {
-            if ( !( $oRecommList = $this->getActiveRecommList() ) ) {
-                $oRecommList = oxNew( 'oxrecommlist' );
-                $oRecommList->oxrecommlists__oxuserid = new oxField( $oUser->getId());
-                $oRecommList->oxrecommlists__oxshopid = new oxField( $this->getConfig()->getShopId() );
+        if (($oUser = $this->getUser())) {
+            if (!($oRecommList = $this->getActiveRecommList())) {
+                $oRecommList = oxNew('oxrecommlist');
+                $oRecommList->oxrecommlists__oxuserid = new oxField($oUser->getId());
+                $oRecommList->oxrecommlists__oxshopid = new oxField($this->getConfig()->getShopId());
             } else {
                 $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
             }
 
-            $sTitle  = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'recomm_title', true ) );
-            $sAuthor = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'recomm_author', true ) );
-            $sText   = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'recomm_desc', true ) );
+            $sTitle = trim(( string ) oxRegistry::getConfig()->getRequestParameter('recomm_title', true));
+            $sAuthor = trim(( string ) oxRegistry::getConfig()->getRequestParameter('recomm_author', true));
+            $sText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('recomm_desc', true));
 
-            $oRecommList->oxrecommlists__oxtitle  = new oxField( $sTitle );
-            $oRecommList->oxrecommlists__oxauthor = new oxField( $sAuthor );
-            $oRecommList->oxrecommlists__oxdesc   = new oxField( $sText );
+            $oRecommList->oxrecommlists__oxtitle = new oxField($sTitle);
+            $oRecommList->oxrecommlists__oxauthor = new oxField($sAuthor);
+            $oRecommList->oxrecommlists__oxdesc = new oxField($sText);
 
             try {
                 // marking entry as saved
                 $this->_blSavedEntry = (bool) $oRecommList->save();
-                $this->setActiveRecommList( $this->_blSavedEntry ? $oRecommList : false );
-            } catch (oxObjectException $oEx ) {
+                $this->setActiveRecommList($this->_blSavedEntry ? $oRecommList : false);
+            } catch (oxObjectException $oEx) {
                 //add to display at specific position
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx, false, true, 'user' );
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'user');
             }
         }
     }
@@ -280,10 +283,11 @@ class Account_Recommlist extends Account
         }
 
         // deleting on demand
-        if ( ( $sAction = oxRegistry::getConfig()->getRequestParameter( 'deleteList' ) ) &&
-             ( $oRecommList = $this->getActiveRecommList() ) ) {
+        if (($sAction = oxRegistry::getConfig()->getRequestParameter('deleteList')) &&
+            ($oRecommList = $this->getActiveRecommList())
+        ) {
             $oRecommList->delete();
-            $this->setActiveRecommList( false );
+            $this->setActiveRecommList(false);
         } else {
             $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
         }
@@ -304,9 +308,10 @@ class Account_Recommlist extends Account
             return;
         }
 
-        if ( ( $sArtId = oxRegistry::getConfig()->getRequestParameter( 'aid' ) ) &&
-             ( $oRecommList = $this->getActiveRecommList() ) ) {
-            $oRecommList->removeArticle( $sArtId );
+        if (($sArtId = oxRegistry::getConfig()->getRequestParameter('aid')) &&
+            ($oRecommList = $this->getActiveRecommList())
+        ) {
+            $oRecommList->removeArticle($sArtId);
         }
         $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
     }
@@ -318,12 +323,13 @@ class Account_Recommlist extends Account
      */
     public function getPageNavigation()
     {
-        if ( $this->_oPageNavigation === null ) {
+        if ($this->_oPageNavigation === null) {
             $this->_oPageNavigation = false;
-            if ( !$this->getActiveRecommlist() ) {
+            if (!$this->getActiveRecommlist()) {
                 $this->_oPageNavigation = $this->generatePageNavigation();
             }
         }
+
         return $this->_oPageNavigation;
     }
 
@@ -337,12 +343,14 @@ class Account_Recommlist extends Account
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = oxRegistry::get("oxSeoEncoder")->getStaticUrl( $this->getViewConfig()->getSelfLink() . 'cl=account' );
+        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $sSelfLink = $this->getViewConfig()->getSelfLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'LISTMANIA', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('LISTMANIA', $iBaseLanguage, false);
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

@@ -103,8 +103,6 @@ class Thankyou extends oxUBase
      * (thankyou::_oBasket = oxsession::getBasket()) then destroys
      * it (oxsession::delBasket()), unsets user session ID, if
      * this user didn't entered password while ordering.
-     *
-     * @return null
      */
     public function init()
     {

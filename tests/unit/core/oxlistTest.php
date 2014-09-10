@@ -474,4 +474,14 @@ class Unit_Core_oxlistTest extends OxidTestCase
         $this->assertEquals(1, $oList->current());
     }
 
+    /**
+     * Checks single element addition to oxList.
+     */
+    public function testAdd()
+    {
+        $oList = new oxList();
+        $oSample = new oxListObject('table');
+        $oList->add($oSample);
+        $this->assertEquals($oSample, $oList->current());
+    }
 }

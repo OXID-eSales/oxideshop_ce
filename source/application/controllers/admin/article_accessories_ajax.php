@@ -112,8 +112,6 @@ class article_accessories_ajax extends ajaxListComponent
 
     /**
      * Removing article form accessories article list
-     *
-     * @return null
      */
     public function removeArticleAcc()
     {
@@ -135,8 +133,6 @@ class article_accessories_ajax extends ajaxListComponent
 
     /**
      * Adding article to accessories article list
-     *
-     * @return null
      */
     public function addArticleAcc()
     {

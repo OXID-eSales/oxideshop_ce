@@ -64,6 +64,11 @@ abstract class oxOnlineCaller
         try {
             $sXml = $this->_formXMLRequest($oRequest);
             $sOutputXml = $this->_executeCurlCall($this->_getServiceUrl(), $sXml);
+            if ($this->_getCurl()->getStatusCode() != 200) {
+                /** @var oxException $oException */
+                $oException = oxNew('oxException');
+                throw $oException;
+            }
             $this->_resetFailedCallsCount($iFailedCallsCount);
         } catch (Exception $oEx) {
             if ($iFailedCallsCount > self::ALLOWED_HTTP_FAILED_CALLS_COUNT) {

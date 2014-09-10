@@ -20,11 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 class Unit_Views_suggestTest extends OxidTestCase
 {
+
     /**
      * Tear down the fixture.
      *
@@ -34,46 +35,46 @@ class Unit_Views_suggestTest extends OxidTestCase
     {
         $myDB = oxDb::getDB();
         $sDelete = 'delete from oxrecommlists where oxid like "testlist%" ';
-        $myDB->execute( $sDelete );
+        $myDB->execute($sDelete);
 
         $sDelete = 'delete from oxobject2list where oxlistid like "testlist%" ';
-        $myDB->execute( $sDelete );
+        $myDB->execute($sDelete);
 
         parent::tearDown();
     }
 
     public function testGetProduct()
     {
-        modConfig::setRequestParameter( 'anid', '2000' );
-        $oSuggest = $this->getProxyClass( "suggest" );
+        modConfig::setRequestParameter('anid', '2000');
+        $oSuggest = $this->getProxyClass("suggest");
 
-        $this->assertEquals( '2000', $oSuggest->getProduct()->getId() );
+        $this->assertEquals('2000', $oSuggest->getProduct()->getId());
     }
 
     public function testGetCrossSelling()
     {
-        $oSuggest = $this->getProxyClass( "suggest" );
+        $oSuggest = $this->getProxyClass("suggest");
         $oArticle = oxNew("oxarticle");
         $oArticle->load("1849");
-        $oSuggest->setNonPublicVar( "_oProduct", $oArticle );
+        $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oSuggest->getCrossSelling();
         $this->assertTrue($oList instanceof oxList);
         $iCount = 3;
             $iCount = 2;
-        $this->assertEquals( $iCount, $oList->count() );
+        $this->assertEquals($iCount, $oList->count());
     }
 
     public function testGetSimilarProducts()
     {
-        $oSuggest = $this->getProxyClass( "suggest" );
+        $oSuggest = $this->getProxyClass("suggest");
         $oArticle = oxNew("oxarticle");
         $oArticle->load("2000");
-        $oSuggest->setNonPublicVar( "_oProduct", $oArticle );
+        $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oSuggest->getSimilarProducts();
         $this->assertTrue($oList instanceof oxList);
         $iCount = 4;
             $iCount = 5;
-        $this->assertEquals( $iCount, count($oList) );
+        $this->assertEquals($iCount, count($oList));
     }
 
     public function testGetRecommList()
@@ -81,32 +82,27 @@ class Unit_Views_suggestTest extends OxidTestCase
         $myDB = oxDb::getDB();
         $sShopId = oxRegistry::getConfig()->getShopId();
         // adding article to recommendlist
-        $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "'.$sShopId.'" ) ';
-        $myDB->Execute( $sQ );
+        $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "' . $sShopId . '" ) ';
+        $myDB->Execute($sQ);
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testlist", "2000", "testlist", "test" ) ';
-        $myDB->Execute( $sQ );
+        $myDB->Execute($sQ);
 
-        $oSuggest = $this->getProxyClass( "suggest" );
+        $oSuggest = $this->getProxyClass("suggest");
         $oArticle = oxNew("oxarticle");
         $oArticle->load('2000');
-        $oSuggest->setNonPublicVar( "_oProduct", $oArticle );
+        $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $aLists = $oSuggest->getRecommList();
         $this->assertTrue($aLists instanceof oxList);
-        $this->assertTrue( $aLists instanceof oxList );
-        $this->assertEquals( 1, $aLists->count() );
-        $this->assertEquals( 'testlist', $aLists['testlist']->getId() );
-        $this->assertTrue( in_array( $aLists['testlist']->getFirstArticle()->getId(), array('2000') ) );
+        $this->assertTrue($aLists instanceof oxList);
+        $this->assertEquals(1, $aLists->count());
+        $this->assertEquals('testlist', $aLists['testlist']->getId());
+        $this->assertTrue(in_array($aLists['testlist']->getFirstArticle()->getId(), array('2000')));
     }
 
     public function testGetSuggestData()
     {
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
         modConfig::setRequestParameter('editval', array('name' => 'test', 'value' => 'testvalue'));
-
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
 
         /** @var Suggest $oSuggest */
         $oSuggest = $this->getProxyClass("suggest");
@@ -122,11 +118,6 @@ class Unit_Views_suggestTest extends OxidTestCase
     {
         modConfig::setRequestParameter('editval', array('name' => 'test', 'value' => 'testvalue'));
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
-
         /** @var Suggest $oSuggest */
         $oSuggest = $this->getProxyClass("suggest");
         $this->assertFalse($oSuggest->send());
@@ -134,23 +125,23 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testGetLink()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         $oCfg = oxRegistry::getConfig();
-        $oV = $this->getMock( 'suggest', array( '_getRequestParams', '_getSeoRequestParams' ) );
-        $oV->expects( $this->any() )->method( '_getRequestParams' )->will( $this->returnValue( 'cl=suggest' ) );
-        $oV->expects( $this->any() )->method( '_getSeoRequestParams' )->will( $this->returnValue( 'cl=suggest' ) );
+        $oV = $this->getMock('suggest', array('_getRequestParams', '_getSeoRequestParams'));
+        $oV->expects($this->any())->method('_getRequestParams')->will($this->returnValue('cl=suggest'));
+        $oV->expects($this->any())->method('_getSeoRequestParams')->will($this->returnValue('cl=suggest'));
 
             $sCnid = '8a142c3e60a535f16.78077188';
-        modConfig::setRequestParameter( 'anid', '2000' );
-        modConfig::setRequestParameter( 'cnid', $sCnid );
-        $this->assertEquals($oCfg->getShopURL( ).'empfehlen/?cnid='.$sCnid.'&amp;anid=2000', $oV->getLink());
-        $this->assertEquals($oCfg->getShopURL( ).'empfehlen/?cnid='.$sCnid.'&amp;anid=2000', $oV->getLink(0));
-        $this->assertEquals($oCfg->getShopURL( ).'en/recommend/?cnid='.$sCnid.'&amp;anid=2000', $oV->getLink(1));
+        modConfig::setRequestParameter('anid', '2000');
+        modConfig::setRequestParameter('cnid', $sCnid);
+        $this->assertEquals($oCfg->getShopURL() . 'empfehlen/?cnid=' . $sCnid . '&amp;anid=2000', $oV->getLink());
+        $this->assertEquals($oCfg->getShopURL() . 'empfehlen/?cnid=' . $sCnid . '&amp;anid=2000', $oV->getLink(0));
+        $this->assertEquals($oCfg->getShopURL() . 'en/recommend/?cnid=' . $sCnid . '&amp;anid=2000', $oV->getLink(1));
     }
 
     public function testGetCaptcha()
     {
-        $oSuggest = $this->getProxyClass( 'suggest' );
+        $oSuggest = $this->getProxyClass('suggest');
         $this->assertEquals(oxNew('oxCaptcha'), $oSuggest->getCaptcha());
     }
 
@@ -162,30 +153,25 @@ class Unit_Views_suggestTest extends OxidTestCase
      */
     public function testgetRecommListsIfOff()
     {
-        $oCfg = $this->getMock( "stdClass", array( "getShowListmania" ) );
-        $oCfg->expects( $this->once() )->method( 'getShowListmania')->will($this->returnValue( false ) );
+        $oCfg = $this->getMock("stdClass", array("getShowListmania"));
+        $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
-        $oSuggest = $this->getMock( "suggest", array( "getViewConfig", 'getArticleList' ) );
-        $oSuggest->expects( $this->once() )->method( 'getViewConfig')->will($this->returnValue( $oCfg ) );
-        $oSuggest->expects( $this->never() )->method( 'getArticleList');
+        $oSuggest = $this->getMock("suggest", array("getViewConfig", 'getArticleList'));
+        $oSuggest->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
+        $oSuggest->expects($this->never())->method('getArticleList');
 
         $this->assertSame(false, $oSuggest->getRecommList());
     }
 
     public function testRender()
     {
-        $oSuggest = $this->getProxyClass( "suggest" );
+        $oSuggest = $this->getProxyClass("suggest");
         $this->assertSame('page/info/suggest.tpl', $oSuggest->render());
     }
 
     public function testSendNoEditval()
     {
         modConfig::setRequestParameter('editval', null);
-
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
 
         /** @var Suggest $oSuggest */
         $oSuggest = oxnew('Suggest');
@@ -225,11 +211,6 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oSuggest = $this->getMock("suggest", array("getProduct", 'getCaptcha'));
         $oSuggest->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
         $oSuggest->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
-
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
 
         modConfig::setRequestParameter('searchparam', "searchparam&&A");
         modConfig::setRequestParameter('searchcnid', "searchcnid&&A");
@@ -278,11 +259,6 @@ class Unit_Views_suggestTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
-
         $this->assertEquals('', $oSuggest->send());
     }
 
@@ -293,15 +269,15 @@ class Unit_Views_suggestTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oSuggest = $this->getProxyClass( "suggest" );
+        $oSuggest = $this->getProxyClass("suggest");
         $aResults = array();
-        $aResult  = array();
+        $aResult = array();
 
-        $aResult["title"] = oxRegistry::getLang()->translateString( 'RECOMMEND_PRODUCT', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aResult["link"]  = $oSuggest->getLink();
+        $aResult["title"] = oxRegistry::getLang()->translateString('RECOMMEND_PRODUCT', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aResult["link"] = $oSuggest->getLink();
 
         $aResults[] = $aResult;
 
-        $this->assertEquals( $aResults, $oSuggest->getBreadCrumb() );
+        $this->assertEquals($aResults, $oSuggest->getBreadCrumb());
     }
 }

@@ -118,8 +118,6 @@ class Article_Review extends oxAdminDetails
 
     /**
      * Saves article review information changes.
-     *
-     * @return mixed
      */
     public function save()
     {

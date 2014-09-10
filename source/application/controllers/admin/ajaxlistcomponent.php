@@ -230,8 +230,8 @@ class ajaxListComponent extends oxSuperCfg
         $aColNames = $this->_getColNames();
         $aCols = array();
         foreach ($aColNames as $iKey => $aCol) {
-            if ($aCol[4]) // ident ?
-            {
+            // ident ?
+            if ($aCol[4]) {
                 $aCols[$iKey] = $aCol;
             }
         }
@@ -263,8 +263,8 @@ class ajaxListComponent extends oxSuperCfg
         // no user defined valid cols ? setting defauls ..
         if (!count($aVisibleCols)) {
             foreach ($aColNames as $sName => $aCol) {
-                if ($aCol[1] && !$aColNames[$sName][4]) // visible ?
-                {
+                // visible ?
+                if ($aCol[1] && !$aColNames[$sName][4]) {
                     $aVisibleCols[$sName] = $aCol;
                 }
             }

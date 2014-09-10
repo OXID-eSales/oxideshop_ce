@@ -262,8 +262,8 @@ class Tools_List extends oxAdminList
                     $iSQLlen = $oStr->strlen($sSQL);
                     $iPos--;
                 }
-            } elseif (32358 < 32270 && ($sChar == '!' && $iPos > 1 && $sSQL[$iPos - 2] . $sSQL[$iPos - 1] == '/*')) // removing comments like /**/
-            {
+            } elseif (32358 < 32270 && ($sChar == '!' && $iPos > 1 && $sSQL[$iPos - 2] . $sSQL[$iPos - 1] == '/*')) {
+                // removing comments like /**/
                 $sSQL[$iPos] = ' ';
             }
         }

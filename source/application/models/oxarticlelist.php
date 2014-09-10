@@ -118,8 +118,6 @@ class oxArticleList extends oxList
      *
      * @param string $sArtId Article ID
      * @param int    $iCnt   product count
-     *
-     * @return array
      */
     public function loadHistoryArticles($sArtId, $iCnt = 4)
     {
@@ -195,8 +193,6 @@ class oxArticleList extends oxList
      * Loads newest shops articles from DB.
      *
      * @param int $iLimit Select limit
-     *
-     * @return null;
      */
     public function loadNewestArticles($iLimit = null)
     {
@@ -450,8 +446,6 @@ class oxArticleList extends oxList
      *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
-     *
-     * @return integer total Count of Articles in this Category
      */
     public function loadRecommArticles($sRecommId, $sArticlesFilter = null)
     {
@@ -503,8 +497,6 @@ class oxArticleList extends oxList
      * @param string $sSearchCat          Search within category
      * @param string $sSearchVendor       Search within vendor
      * @param string $sSearchManufacturer Search within manufacturer
-     *
-     * @return null;
      */
     public function loadSearchIds($sSearchStr = '', $sSearchCat = '', $sSearchVendor = '', $sSearchManufacturer = '')
     {
@@ -565,8 +557,6 @@ class oxArticleList extends oxList
      *
      * @param float $dPriceFrom Starting price
      * @param float $dPriceTo   Max price
-     *
-     * @return null;
      */
     public function loadPriceIds($dPriceFrom, $dPriceTo)
     {
@@ -603,8 +593,6 @@ class oxArticleList extends oxList
      * Loads Products for specified vendor
      *
      * @param string $sVendorId Vendor id
-     *
-     * @return null;
      */
     public function loadVendorIDs($sVendorId)
     {
@@ -616,8 +604,6 @@ class oxArticleList extends oxList
      * Loads Products for specified Manufacturer
      *
      * @param string $sManufacturerId Manufacturer id
-     *
-     * @return null;
      */
     public function loadManufacturerIDs($sManufacturerId)
     {
@@ -1269,5 +1255,4 @@ class oxArticleList extends oxList
 
         return $blCan;
     }
-
 }

@@ -1228,8 +1228,8 @@ $aLang = array(
 'SHOP_CONFIG_RSSSEARCH'                                    => 'Search',
 'SHOP_CONFIG_RSSARTRECOMMLISTS'                            => 'Listmania (overview)',
 'SHOP_CONFIG_RSSRECOMMLISTARTS'                            => 'Listmania (products)',
-'SHOP_CONFIG_LOAD_DYNAMIC_PAGES'                           => 'Load additional Information from OXID server',
-'SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID'                       => '[TR]Send shop information to oxid',
+'SHOP_CONFIG_LOAD_DYNAMIC_PAGES'                           => 'Load additional information from OXID server',
+'SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID'                       => 'Send information about installation and system environment to OXID server',
 'SHOP_CONFIG_CHECK_UPDATES'                                => 'Check for available updates regularly',
 'SHOP_CONFIG_SELECTSHOPCOMPONENTS'                         => 'Select eShop components',
 'SHOP_CONFIG_DISABLEONLINEVATIDCHECK'                      => 'Disable online VAT ID check',
@@ -2126,7 +2126,7 @@ $aLang = array(
 'OXDIAG_SERVERINFO_COMPONENT'      =>    'Component',
 'OXDIAG_CHKVERSION'                =>    'Output of Version check',
 'OXDIAG_CHKVERS_FULLREP'           =>    'Run Version check for full report',
-'SUBJECT_UNABLE_TO_SEND_VIA_CURL'  =>    '[tr]OXID eShop was unable to send servers information via CURL',
+'SUBJECT_UNABLE_TO_SEND_VIA_CURL'  =>    'Information cannot be sent to OXID server via CURL',
 
 //final note
 'OXDIAG_FINALNOTE'                 =>    'End of analysis.',

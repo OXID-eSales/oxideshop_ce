@@ -142,9 +142,9 @@ $aLang =  array(
 
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'On the front page of your eShop the newest products are shown in <span class="filename_filepath_or_italic">Just arrived!</span>.  This setting determines how the newest products are calculated: by date of creation or by date of last change in admin/last order.',
 
-'HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES'         => 'If this setting is checked, additional information about other OXID products is shown in the menu, e.g. about OXID eFire. Which information is loaded depends on the market of your eShop.',
+'HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES'         => 'If this setting is checked, additional information about other OXID products is shown in the menu. Which information is loaded depends on the market of your eShop.',
 
-'HELP_SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID'     => '[TR]If this setting is checked, information about shop will be provided to oxid. This information will help to improve our services.',
+'HELP_SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID'     => 'When enabling this setting information will be sent to an OXID server. This information about the OXID eShop is for the statistics and the improvement of our services.',
 
 'HELP_SHOP_CONFIG_DELETERATINGLOGS'           => 'If users rate a product, they cannot rate the product again. Here you can set after how many days users are allowed to rate a product again. Leave empty to disable - products can be rated only once per user.',
 
@@ -619,7 +619,7 @@ $aLang =  array(
 'HELP_SHOP_CONFIG_VIEWNETPRICE'               => 'In frontend product prices are shown as net prices.',
 'HELP_SHOP_CONFIG_ENTERNETPRICE'              => 'In admin area product prices must be entered as net prices.',
 
-'HELP_REVERSE_PROXY_GET_FRONTEND'             => '[tr]Checks if Reverse Proxy is available for the frontend. Header of the shop\'s start page is verified.<br>Test could fail because of different domains in admin and frontend and also because of different protocols for example admin uses https protocol and frontent uses http.',
+'HELP_REVERSE_PROXY_GET_FRONTEND'             => 'Checks if Reverse Proxy is available for the frontend. Header of the shop\'s start page is verified.<br>The test could fail if different domains or protocols (http/https) are used for the admin panel and the store front.',
 'HELP_REVERSE_PROXY_GET_BACKEND'              => 'Admin area is displayed without Reverse Proxy. Varnish header could not be received.',
 
 'HELP_SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED' => 'Only IBAN and BIC can be entered during the checkout. Bank account number and the bank code can only be entered if this check box is not activated.',

@@ -142,7 +142,7 @@ $aLang =  array(
 
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'Auf der Startseite Ihres eShops werden die unter <span class="filename_filepath_or_italic">Frisch eingetroffen!</span> die neusten Artikel in Ihrem eShop angezeigt. Sie können die Artikel, die hier angezeigt werden, manuell einstellen oder automatisch berechnen lassen. Mit dieser Einstellung wählen Sie, wie die neusten Artikel berechnet werden sollen: Nach dem Datum, an dem die Artikel erstellt wurden, oder nach dem Datum der letzten Änderung im Administrationsbereich/der letzten Bestellung im Shop.',
 
-'HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES'         => 'Wenn diese Einstellung aktiv ist, werden zusätzliche Informationen zu anderen OXID Produkten im Administrationsbereich angezeigt, z. B. zu OXID eFire. Welche Informationen geladen werden, hängt von der Region ab, die für den Shop gewählt wurde.',
+'HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES'         => 'Aktivieren Sie diese Einstellung, um zusätzliche Produktinformationen im Administrationsbereich anzuzeigen und um technische Informationen zu statistischen Zwecken sowie zur Verbesserung unserer Service-Qualität an OXID-Server zu senden. Dabei werden keine geschäftsrelevanten Daten (Benutzer, Umsatz etc.) übermittelt.',
 
 'HELP_SHOP_CONFIG_DELETERATINGLOGS'           => 'Wenn Benutzer einen Artikel bewerten, können Sie den Artikel nicht erneut bewerten. Hier können Sie einstellen, dass die Benutzer nach einer bestimmten Anzahl von Tagen den Artikel erneut bewerten können.',
 

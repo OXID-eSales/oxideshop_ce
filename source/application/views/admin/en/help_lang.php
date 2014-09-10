@@ -142,7 +142,7 @@ $aLang =  array(
 
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'On the front page of your eShop the newest products are shown in <span class="filename_filepath_or_italic">Just arrived!</span>.  This setting determines how the newest products are calculated: by date of creation or by date of last change in admin/last order.',
 
-'HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES'         => 'If this setting is checked, additional information about other OXID products is shown in the menu. Which information is loaded depends on the market of your eShop.',
+'HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES'         => 'Activate this option for displaying additional product information at the administration panel and to transmit technical information to OXID servers for statistical purposes as well as for increasing our service quality. No business relevant data (users, orders etc) will be transmitted at any time.',
 
 'HELP_SHOP_CONFIG_DELETERATINGLOGS'           => 'If users rate a product, they cannot rate the product again. Here you can set after how many days users are allowed to rate a product again. Leave empty to disable - products can be rated only once per user.',
 

@@ -200,7 +200,7 @@ $aLang = array(
 'SELECT_SHOP_LANG'                              => 'Sprache für Shop',
 'SELECT_SHOP_LANG_HINT'                         => 'Aktivieren Sie weitere Sprachen im Administrationsbereich, falls gewünscht.',
 'SELECT_SETUP_LANG_SUBMIT'                      => 'Auswählen',
-'USE_DYNAMIC_PAGES'                             => 'Um Ihren Geschäftserfolg zu vergrößern, laden Sie weitere Informationen vom OXID Server nach. <br>Mehr Informationen in unseren ',
+'USE_DYNAMIC_PAGES'                             => 'Verbindung mit den OXID Servern erlauben. Mehr Informationen in unseren ',
 'PRIVACY_POLICY'                                => 'Datenschutzerläuterungen',
 
 'LOAD_DYN_CONTENT_NOTICE'                       => '<p>Wenn diese Option gesetzt ist, sehen Sie ein zusätzliches Menü im Administrationsbereich Ihres OXID eShop.</p><p>Über dieses Menü erhalten Sie weitere Informationen über eCommerce Services, wie z.B. Google Produktsuche oder econda.</p> <p>Sie können diese Einstellung im Administrationsbereich jederzeit wieder ändern.</p>',

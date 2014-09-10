@@ -56,7 +56,7 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
     /**
      * Check if all module extensions exists in shop information.
      *
-     * @param oxModule $oModule
+     * @param oxModule $oModule module object
      *
      * @return bool
      */
@@ -84,7 +84,7 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
     /**
      * Check if all module files exists in shop.
      *
-     * @param oxModule $oModule
+     * @param oxModule $oModule module object
      *
      * @return bool
      */
@@ -104,7 +104,7 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
     /**
      * Check if all module files exists by shop information.
      *
-     * @param oxModule $oModule
+     * @param oxModule $oModule module object
      *
      * @return bool
      */
@@ -116,7 +116,7 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
     /**
      * Check if all PHP files exists by shop information.
      *
-     * @param oxModule $oModule
+     * @param oxModule $oModule module object
      *
      * @return bool
      */

@@ -1227,7 +1227,6 @@ $aLang = array(
 'SHOP_CONFIG_RSSARTRECOMMLISTS'                            => 'Lieblingslisten (Übersicht)',
 'SHOP_CONFIG_RSSRECOMMLISTARTS'                            => 'Lieblingslisten (Artikel)',
 'SHOP_CONFIG_LOAD_DYNAMIC_PAGES'                           => 'Zusätzliche Informationen vom OXID Server laden',
-'SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID'                       => 'Informationen über Installation und Systemumgebung zum OXID Server senden',
 'SHOP_CONFIG_CHECK_UPDATES'                                => 'Regelmäßig überprüfen, ob Aktualisierungen vorhanden sind',
 'SHOP_CONFIG_SELECTSHOPCOMPONENTS'                         => 'eShop Funktionen an/ausschalten',
 'SHOP_CONFIG_DISABLEONLINEVATIDCHECK'                      => 'Online UST-ID Prüfung deaktivieren',

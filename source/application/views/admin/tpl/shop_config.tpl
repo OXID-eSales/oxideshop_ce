@@ -1046,18 +1046,6 @@ function showInvitations()
 
             <dl>
                 <dt>
-                    <input type=hidden name="confbools[blSendShopDataToOxid]" value="false">
-                    <input type=checkbox name="confbools[blSendShopDataToOxid]" value="true"  [{if ($confbools.blSendShopDataToOxid)}]checked[{/if}] [{ $readonly}]>
-                    [{ oxinputhelp ident="HELP_SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID" }]
-                </dt>
-                <dd>
-                    [{ oxmultilang ident="SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID" }]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
                     <input type=hidden name="confbools[blCheckForUpdates]" value="false">
                     <input type=checkbox name="confbools[blCheckForUpdates]" value="true"  [{if ($confbools.blCheckForUpdates)}]checked[{/if}] [{ $readonly}]>
                 </dt>

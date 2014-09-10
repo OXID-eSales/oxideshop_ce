@@ -144,8 +144,6 @@ $aLang =  array(
 
 'HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES'         => 'Wenn diese Einstellung aktiv ist, werden zusätzliche Informationen zu anderen OXID Produkten im Administrationsbereich angezeigt, z. B. zu OXID eFire. Welche Informationen geladen werden, hängt von der Region ab, die für den Shop gewählt wurde.',
 
-'HELP_SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID'     => 'Wurde diese Einstellung ausgewählt, werden Informationen an einen OXID Server gesendet. Diese Informationen über den OXID eShop dienen statistischen Zwecken und der Verbesserung unserer Services.',
-
 'HELP_SHOP_CONFIG_DELETERATINGLOGS'           => 'Wenn Benutzer einen Artikel bewerten, können Sie den Artikel nicht erneut bewerten. Hier können Sie einstellen, dass die Benutzer nach einer bestimmten Anzahl von Tagen den Artikel erneut bewerten können.',
 
 'HELP_SHOP_CONFIG_DISABLEONLINEVATIDCHECK'    => 'Die Online USt-ID Prüfung wird immer ausgeführt, wenn ein Kunde aus dem Ausland (aber innerhalb der EU) eine Umsatzsteuer-ID beim bestellen angibt. Wenn die UST-ID gültig ist, wird für die Bestellung keine Umsatzsteuer berechnet.<br>'.

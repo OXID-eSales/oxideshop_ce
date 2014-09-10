@@ -126,7 +126,6 @@ $aLang = array(
 'BUTTON_PROCEED_INSTALL'                        => 'Proceed with setup',
 
 'STEP_2_TITLE'                                  => 'License conditions',
-'STEP_2_SEND_SHOP_DATA_TO_OXID'                 => 'Send information for the statistics and the improvement of our services to OXID server.',
 'BUTTON_RADIO_LICENCE_ACCEPT'                   => 'I accept license conditions.',
 'BUTTON_RADIO_LICENCE_NOT_ACCEPT'               => 'I do not accept license conditions.',
 'BUTTON_LICENCE'                                => 'Continue',

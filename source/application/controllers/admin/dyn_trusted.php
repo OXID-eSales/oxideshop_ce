@@ -85,8 +85,6 @@ class dyn_trusted extends Shop_Config
 
     /**
      * Saves changed shop configuration parameters.
-     *
-     * @return mixed
      */
     public function save()
     {

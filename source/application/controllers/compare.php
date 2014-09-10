@@ -207,8 +207,6 @@ class Compare extends oxUBase
      * Articlelist count in comparison setter
      *
      * @param integer $iCount compare items count
-     *
-     * @return integer
      */
     public function setCompareItemsCnt($iCount)
     {

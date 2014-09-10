@@ -1017,8 +1017,6 @@ class Details extends oxUBase
      * active category path setter
      *
      * @param string $sActCatPath category tree path
-     *
-     * @return string
      */
     public function setCatTreePath($sActCatPath)
     {

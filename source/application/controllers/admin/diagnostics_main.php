@@ -299,8 +299,6 @@ class Diagnostics_Main extends oxAdminDetails
 
     /**
      * Downloads result of system file check
-     *
-     * @return string
      */
     public function downloadResultFile()
     {

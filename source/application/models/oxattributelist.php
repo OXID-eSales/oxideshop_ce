@@ -29,8 +29,6 @@ class oxAttributeList extends oxList
 
     /**
      * Class constructor
-     *
-     * @return null
      */
     public function __construct()
     {
@@ -99,8 +97,6 @@ class oxAttributeList extends oxList
      *
      * @param string $sArticleId article id
      * @param string $sParentId  article parent id
-     *
-     * @return null;
      */
     public function loadAttributes($sArticleId, $sParentId = null)
     {
@@ -131,9 +127,8 @@ class oxAttributeList extends oxList
     /**
      * Load displayable in baskte/order attributes by article Id
      *
-     * @param string $sArtId article ids
-     *
-     * @return null;
+     * @param string $sArtId    article ids
+     * @param string $sParentId parent id
      */
     public function loadAttributesDisplayableInBasket($sArtId, $sParentId = null)
     {
@@ -253,5 +248,4 @@ class oxAttributeList extends oxList
 
         return $aAttributes;
     }
-
 }

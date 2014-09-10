@@ -104,8 +104,6 @@ class Order_Address extends oxAdminDetails
 
     /**
      * Saves ordering address information.
-     *
-     * @return string
      */
     public function save()
     {

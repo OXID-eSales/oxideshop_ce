@@ -436,4 +436,79 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
         $this->assertEquals(157, $this->getTime());
         $this->assertEquals(157, oxRegistry::get("oxUtilsDate")->getTime());
     }
+
+    public function testFormTimeNoTimeShift()
+    {
+        $this->setConfigParam('iServerTimeShift', null);
+
+        $oDateTime = new DateTime('tomorrow');
+        $iExpectedTimeStamp = $oDateTime->getTimestamp();
+
+        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formTime('tomorrow'), $iExpectedTimeStamp);
+    }
+
+    public function testFormTimeNoTimeShiftHourSet()
+    {
+        $this->setConfigParam('iServerTimeShift', null);
+
+        $oDateTime = new DateTime('tomorrow');
+        $oDateTime->setTime(17, 10, 15);
+        $iExpectedTimeStamp = $oDateTime->getTimestamp();
+
+        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
+
+    }
+
+    public function testFormTimeWithTimeShift()
+    {
+        $iTimeShiftHours = 2;
+        $iTimeShiftSeconds = $iTimeShiftHours * 3600;
+        $this->setConfigParam('iServerTimeShift', $iTimeShiftHours);
+
+        $oDateTime = new DateTime('tomorrow');
+        $iExpectedTimeStamp = $oDateTime->getTimestamp() + $iTimeShiftSeconds;
+
+        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formTime('tomorrow'), $iExpectedTimeStamp);
+    }
+
+    public function testFormTimeWithTimeShiftHourSet()
+    {
+        $iTimeShiftHours = 2;
+        $iTimeShiftSeconds = $iTimeShiftHours * 3600;
+        $this->setConfigParam('iServerTimeShift', $iTimeShiftHours);
+
+        $oDateTime = new DateTime('tomorrow');
+        $oDateTime->setTime(17, 10, 15);
+        $iExpectedTimeStamp = $oDateTime->getTimestamp() + $iTimeShiftSeconds;
+
+        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
+
+    }
+
+    public function providerShiftServerTime()
+    {
+        return array(
+            array(2),
+            array(0),
+            array(null),
+        );
+    }
+
+    /**
+     * @dataProvider providerShiftServerTime
+     *
+     * @param int $iTimeShiftHours
+     */
+    public function testShiftServerTime($iTimeShiftHours)
+    {
+        $iTimeShiftSeconds = (int) $iTimeShiftHours * 3600;
+        $this->setConfigParam('iServerTimeShift', $iTimeShiftHours);
+
+        $iCurrentTime = time();
+        $iExpectedTimeStamp = $iCurrentTime + $iTimeShiftSeconds;
+
+        /** @var oxUtilsDate $oUtilsDate */
+        $oUtilsDate = oxRegistry::get("oxUtilsDate");
+        $this->assertSame($iExpectedTimeStamp, $oUtilsDate->shiftServerTime($iCurrentTime));
+    }
 }

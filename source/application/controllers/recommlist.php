@@ -199,6 +199,8 @@ class RecommList extends aList
 
     /**
      * Saves user ratings and review text (oxreview object)
+     *
+     * @return null
      */
     public function saveReview()
     {

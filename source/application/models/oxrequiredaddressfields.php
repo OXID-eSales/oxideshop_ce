@@ -83,6 +83,8 @@ class oxRequiredAddressFields
 
     /**
      * Returns required fields for user address validation.
+     *
+     * @return mixed
      */
     public function getBillingFields()
     {
@@ -93,6 +95,8 @@ class oxRequiredAddressFields
 
     /**
      * Returns required fields for delivery address validation.
+     *
+     * @return mixed
      */
     public function getDeliveryFields()
     {

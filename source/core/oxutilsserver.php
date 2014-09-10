@@ -467,6 +467,8 @@ class oxUtilsServer extends oxSuperCfg
 
     /**
      * Return local machine ip.
+     *
+     * @return string
      */
     public function getServerIp()
     {

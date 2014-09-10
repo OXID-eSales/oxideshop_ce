@@ -402,6 +402,8 @@ class Details extends oxUBase
 
     /**
      * Saves user ratings and review text (oxReview object)
+     *
+     * @return null
      */
     public function saveReview()
     {

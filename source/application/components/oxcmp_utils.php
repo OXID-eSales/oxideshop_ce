@@ -113,6 +113,8 @@ class oxcmp_utils extends oxView
      * @param array  $aSel       (default null)
      * @param bool   $blOverride allow override
      * @param bool   $blBundle   bundled
+     *
+     * @return null
      */
     public function toCompareList(
         $sProductId = null,

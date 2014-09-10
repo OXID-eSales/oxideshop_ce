@@ -52,7 +52,7 @@ class oxOnlineModuleVersionNotifierCaller extends oxOnlineCaller
     }
 
     /**
-     * {@inheritdoc}
+     * @return string XML document tag name.
      */
     protected function _getXMLDocumentName()
     {
@@ -60,7 +60,7 @@ class oxOnlineModuleVersionNotifierCaller extends oxOnlineCaller
     }
 
     /**
-     * {@inheritdoc}
+     * @return string Web service url.
      */
     protected function _getServiceUrl()
     {

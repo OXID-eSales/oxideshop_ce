@@ -187,6 +187,8 @@ class Review extends Details
 
     /**
      * Saves user review text (oxreview object)
+     *
+     * @return null
      */
     public function saveReview()
     {

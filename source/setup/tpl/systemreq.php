@@ -30,7 +30,7 @@ require "_header.php"; ?>
             <select name="setup_lang" onChange="document.getElementById('langSelectionForm').submit();" style="font-size: 11px;">
             <?php
             $aLanguages = $this->getViewParam( "aLanguages" );
-            foreach ( $aLanguages as $sLangId => $sLangTitle ) {
+            foreach ($aLanguages as $sLangId => $sLangTitle) {
                 ?>
                 <option value="<?php echo $sLangId; ?>" <?php if ( $this->getViewParam( "sSetupLang" ) == $sLangId ) echo 'selected'; ?>><?php echo $sLangTitle; ?></option>
                 <?php
@@ -52,9 +52,9 @@ require "_header.php"; ?>
     <ul class="req">
     <?php
     $aGroupModuleInfo = $this->getViewParam( "aGroupModuleInfo" );
-    foreach ( $aGroupModuleInfo as $sGroupName => $aGroupInfo ) {
+    foreach ($aGroupModuleInfo as $sGroupName => $aGroupInfo) {
         ?><li class="group"><?php echo $sGroupName; ?><ul><?php
-        foreach ( $aGroupInfo as $aModuleInfo ) {
+        foreach ($aGroupInfo as $aModuleInfo) {
             ?><li id="<?php echo $aModuleInfo['module']; ?>" class="<?php echo $aModuleInfo['class']; ?>"><?php
             if ( $aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null" ) {
                 ?><a href="<?php $this->getReqInfoUrl( $aModuleInfo['module'] ); ?>" target="_blank"><?php

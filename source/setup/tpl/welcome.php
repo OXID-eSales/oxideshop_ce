@@ -40,7 +40,7 @@ require "_header.php"; ?>
                         $sLocationLang = $this->getViewParam( "sLocationLang" );
 
                         if ( isset( $aLocations[$sSetupLang] ) ) {
-                            foreach ( $aLocations[$sSetupLang] as $sKey => $sValue ) {
+                            foreach ($aLocations[$sSetupLang] as $sKey => $sValue) {
                                 $sSelected = ( $sLocationLang !== null && $sLocationLang == $sKey ) ? 'selected' : '';
                                 ?><option value="<?php echo $sKey; ?>" <?php echo $sSelected; ?>><?php echo $sValue; ?></option><?php
                             }
@@ -84,7 +84,7 @@ require "_header.php"; ?>
                                 $sCountryLang = $this->getViewParam( "sCountryLang" );
 
                                 if ( isset( $aCountries[$sSetupLang] ) ) {
-                                    foreach ( $aCountries[$sSetupLang] as $sKey => $sValue ) {
+                                    foreach ($aCountries[$sSetupLang] as $sKey => $sValue) {
                                         $sSelected = ( $sCountryLang !== null && $sCountryLang == $sKey ) ? 'selected' : '';
                                         ?><option value="<?php echo $sKey; ?>" <?php echo $sSelected; ?>><?php echo $sValue; ?></option><?php
                                     }
@@ -111,7 +111,7 @@ require "_header.php"; ?>
                         <select name="sShopLang" style="font-size: 11px;">
                             <?php
                             $aLanguages = $this->getViewParam( "aLanguages" );
-                            foreach ( $aLanguages as $sLangId => $sLangTitle ) {
+                            foreach ($aLanguages as $sLangId => $sLangTitle) {
                                 ?>
                                 <option value="<?php echo $sLangId; ?>" <?php if ( $this->getViewParam( "sShopLang" ) == $sLangId ) echo 'selected'; ?>><?php echo $sLangTitle; ?></option>
                                 <?php

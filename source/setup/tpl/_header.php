@@ -128,7 +128,7 @@
     <div id="header">
         <?php
         $iCntr = 0;
-        foreach ( $this->getSetupSteps() as $iTab ) :
+        foreach ($this->getSetupSteps() as $iTab) :
             // only "real" steps
             if ( fmod( $iTab, 100 ) ) {
                 continue;
@@ -157,7 +157,7 @@
     <div id="body">
     <?php
     $aMessages = $this->getMessages();
-    foreach ( $this->getMessages() as $sMessage ) {
+    foreach ($this->getMessages() as $sMessage) {
         ?><br><b><?php echo $sMessage;?></b><?php
     }
     if ( count( $aMessages ) ) {

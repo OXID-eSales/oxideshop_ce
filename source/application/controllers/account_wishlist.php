@@ -306,8 +306,6 @@ class Account_Wishlist extends Account
     /**
      * Searches for wishlist of another user. Returns false if no
      * searching conditions set (no login name defined).
-     *
-     * @return bool
      */
     public function searchForWishList()
     {

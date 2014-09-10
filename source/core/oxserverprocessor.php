@@ -77,11 +77,12 @@ class oxServerProcessor extends oxSuperCfg
      * @param oxUtilsServer    $oUtilsServer
      * @param oxUtilsDate      $oUtilsDate
      */
-    public function __construct(oxServersManager $oServerNodesManager,
-                                oxServerChecker $oServerNodeChecker,
-                                oxUtilsServer $oUtilsServer,
-                                oxUtilsDate $oUtilsDate)
-    {
+    public function __construct(
+        oxServersManager $oServerNodesManager,
+        oxServerChecker $oServerNodeChecker,
+        oxUtilsServer $oUtilsServer,
+        oxUtilsDate $oUtilsDate
+    ) {
         $this->_oServerNodesManager = $oServerNodesManager;
         $this->_oServerNodeChecker = $oServerNodeChecker;
         $this->_oUtilsServer = $oUtilsServer;

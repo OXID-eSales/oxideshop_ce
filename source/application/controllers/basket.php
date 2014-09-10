@@ -333,8 +333,6 @@ class Basket extends oxUBase
      * gift message and chosen card ( takes from GET/POST/session;
      * oBasket::giftmessage, oBasket::chosencard). Then sets
      * basket back to session (oxSession::setBasket()).
-     *
-     * @return string
      */
     public function changeWrapping()
     {

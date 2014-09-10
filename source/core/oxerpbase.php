@@ -83,7 +83,7 @@ abstract class oxERPBase
      *
      * @return int $_iImportedRowCount
      */
-    public abstract function getImportedRowCount();
+    abstract public function getImportedRowCount();
 
     /** adds true to $_aImportedIds where key is given
      *
@@ -91,7 +91,7 @@ abstract class oxERPBase
      *
      * @return null
      */
-    public abstract function setImportedIds($key);
+    abstract public function setImportedIds($key);
 
     /**
      * _aStatistics getter
@@ -120,7 +120,7 @@ abstract class oxERPBase
      *
      * @return null
      */
-    protected abstract function _beforeExport($sType);
+    abstract protected function _beforeExport($sType);
 
     /**
      * hook after export
@@ -129,21 +129,21 @@ abstract class oxERPBase
      *
      * @return null
      */
-    protected abstract function _afterExport($sType);
+    abstract protected function _afterExport($sType);
 
     /**
      * hook before import
      *
      * @return null
      */
-    protected abstract function _beforeImport();
+    abstract protected function _beforeImport();
 
     /**
      * hook after import
      *
      * @return null
      */
-    protected abstract function _afterImport();
+    abstract protected function _afterImport();
 
     /**
      * import data getter
@@ -152,7 +152,7 @@ abstract class oxERPBase
      *
      * @return array
      */
-    public abstract function getImportData($iIdx = null);
+    abstract public function getImportData($iIdx = null);
 
     /**
      * retrieve import type
@@ -161,7 +161,7 @@ abstract class oxERPBase
      *
      * @return string
      */
-    protected abstract function _getImportType(&$aData);
+    abstract protected function _getImportType(&$aData);
 
     /**
      * retrieve import mode
@@ -170,7 +170,7 @@ abstract class oxERPBase
      *
      * @return string
      */
-    protected abstract function _getImportMode($aData);
+    abstract protected function _getImportMode($aData);
 
     /**
      * prepare data for import
@@ -180,7 +180,7 @@ abstract class oxERPBase
      *
      * @return array
      */
-    protected abstract function _modifyData($aData, $oType);
+    abstract protected function _modifyData($aData, $oType);
 
     /**
      * default fallback if some handler is missing

@@ -1463,8 +1463,6 @@ class oxBase extends oxSuperCfg
      * Adds additional field name to meta structure
      *
      * @param string $sName Field name
-     *
-     * @return null;
      */
     public function addFieldName($sName)
     {

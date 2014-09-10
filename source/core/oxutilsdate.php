@@ -553,12 +553,7 @@ class oxUtilsDate extends oxSuperCfg
      */
     public function getTime()
     {
-        $iServerTimeShift = $this->getConfig()->getConfigParam('iServerTimeShift');
-        if (!$iServerTimeShift) {
-            return time();
-        }
-
-        return (time() + ((int) $iServerTimeShift * 3600));
+        return $this->shiftServerTime(time());
     }
 
     /**
@@ -580,12 +575,23 @@ class oxUtilsDate extends oxSuperCfg
             $oDate->setTime($iHour, $iMinutes, $iSecond);
         }
 
-        $iServerTimeShift = $this->getConfig()->getConfigParam('iServerTimeShift');
-        if (!$iServerTimeShift) {
-            return $oDate->getTimestamp();
-        }
+        return $this->shiftServerTime($oDate->getTimestamp());
+    }
 
-        return ($oDate->getTimestamp() + ((int) $iServerTimeShift * 3600));
+    /**
+     * Shift time if needed by configured timezone.
+     *
+     * @param int $iTime
+     *
+     * @return int
+     */
+    public function shiftServerTime($iTime)
+    {
+        $iServerTimeShift = $this->getConfig()->getConfigParam('iServerTimeShift');
+        if ($iServerTimeShift) {
+            $iTime = $iTime + ((int) $iServerTimeShift * 3600);
+        }
+        return $iTime;
     }
 
     /**

@@ -109,8 +109,6 @@ class category_order_ajax extends ajaxListComponent
 
     /**
      * Removes article from list for sorting in category
-     *
-     * @return string
      */
     public function removeCatOrderArticle()
     {
@@ -141,8 +139,6 @@ class category_order_ajax extends ajaxListComponent
 
     /**
      * Adds article to list for sorting in category
-     *
-     * @return string
      */
     public function addCatOrderArticle()
     {

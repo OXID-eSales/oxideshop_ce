@@ -94,8 +94,6 @@ class Article_Stock extends oxAdminDetails
 
     /**
      * Saves article Inventori information changes.
-     *
-     * @return mixed
      */
     public function save()
     {

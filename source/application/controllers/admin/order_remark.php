@@ -75,8 +75,6 @@ class Order_Remark extends oxAdminDetails
 
     /**
      * Saves order history item text changes.
-     *
-     * @return string
      */
     public function save()
     {
@@ -97,8 +95,6 @@ class Order_Remark extends oxAdminDetails
 
     /**
      * Deletes order history item.
-     *
-     * @return null
      */
     public function delete()
     {

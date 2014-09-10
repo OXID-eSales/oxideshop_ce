@@ -34,9 +34,13 @@ require "_header.php"; ?>
                         foreach ($aLanguages as $sLangId => $sLangTitle) {
                             ?>
                             <option
-                                value="<?php echo $sLangId; ?>" <?php if ($this->getViewParam("sSetupLang") == $sLangId) {
-                                echo 'selected';
-                            } ?>><?php echo $sLangTitle; ?></option>
+                                value="<?php echo $sLangId; ?>"
+                                <?php
+                                if ($this->getViewParam("sSetupLang") == $sLangId) {
+                                    echo 'selected';
+                                }
+                                ?>><?php echo $sLangTitle; ?>
+                            </option>
                         <?php
                         }
                         ?>

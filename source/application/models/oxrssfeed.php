@@ -686,7 +686,7 @@ class oxRssFeed extends oxSuperCfg
         $oArtList = oxNew('oxsearch')->getSearchArticles($sSearch, $sCatId, $sVendorId, $sManufacturerId, oxNew('oxarticle')->getViewName() . '.oxtimestamp desc');
 
         $this->_loadData(
-        // dont use cache for search
+            // dont use cache for search
             null,
             //self::RSS_SEARCHARTS.md5($sSearch.$sCatId.$sVendorId),
             $this->getSearchArticlesTitle($sSearch, $sCatId, $sVendorId, $sManufacturerId),

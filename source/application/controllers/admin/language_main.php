@@ -30,7 +30,7 @@ class Language_Main extends oxAdminDetails
     /**
      * Current shop base languages
      *
-     * @var arrray
+     * @var array
      */
     protected $_aLangData = null;
 

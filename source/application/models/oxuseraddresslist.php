@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Class oxUserAddressList
+ */
 class oxUserAddressList extends oxList
 {
 
@@ -49,4 +52,4 @@ class oxUserAddressList extends oxList
                 WHERE oxaddress.oxuserid = " . oxDb::getDb()->quote($sUserId);
         $this->selectString($sSelect);
     }
-} 
+}

@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Article detailed information widget.
+ */
 class oxwArticleDetails extends oxWidget
 {
 

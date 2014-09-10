@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Manages product assignment to category.
+ */
 class oxObject2Category extends oxBase
 {
 

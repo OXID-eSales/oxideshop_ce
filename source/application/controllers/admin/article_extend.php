@@ -220,8 +220,6 @@ class Article_Extend extends oxAdminDetails
 
     /**
      * Deletes media url (with possible linked files)
-     *
-     * @return bool
      */
     public function deletemedia()
     {

@@ -105,9 +105,9 @@ class Manufacturer_Main extends oxAdminDetails
 
         $oManufacturer = oxNew("oxmanufacturer");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oManufacturer->loadInLang($this->_iEditLang, $soxId);
-        else {
+        } else {
             $aParams['oxmanufacturers__oxid'] = null;
         }
 
@@ -133,8 +133,9 @@ class Manufacturer_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        if (!isset($aParams['oxmanufacturers__oxactive']))
+        if (!isset($aParams['oxmanufacturers__oxactive'])) {
             $aParams['oxmanufacturers__oxactive'] = 0;
+        }
 
             // shopid
             $sShopID = oxRegistry::getSession()->getVariable("actshop");
@@ -142,9 +143,9 @@ class Manufacturer_Main extends oxAdminDetails
 
         $oManufacturer = oxNew("oxmanufacturer");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oManufacturer->loadInLang($this->_iEditLang, $soxId);
-        else {
+        } else {
             $aParams['oxmanufacturers__oxid'] = null;
         }
 

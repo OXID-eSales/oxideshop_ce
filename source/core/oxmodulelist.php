@@ -708,7 +708,7 @@ class oxModuleList extends oxSuperCfg
     /**
      * Returns module ids which have extensions.
      *
-     * @param $aData
+     * @param array $aData Data
      *
      * @return array
      */
@@ -729,7 +729,7 @@ class oxModuleList extends oxSuperCfg
     /**
      * Returns invalid extensions array by module id.
      *
-     * @param $sModuleId
+     * @param string $sModuleId Module id
      *
      * @return array
      */

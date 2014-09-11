@@ -46,7 +46,7 @@ class oxFileCollector
     /**
      * Setter for working directory
      *
-     * @param $sDir
+     * @param string $sDir Directory
      */
     public function setBaseDirectory($sDir)
     {

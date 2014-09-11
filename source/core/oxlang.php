@@ -1320,8 +1320,8 @@ class oxLang extends oxSuperCfg
     /**
      * Returns array of all config values of given paramName
      *
-     * @param $sParamName
-     * @param $sShopId
+     * @param string      $sParamName Parameter name
+     * @param string|null $sShopId    Shop id
      *
      * @return array
      */
@@ -1346,7 +1346,7 @@ class oxLang extends oxSuperCfg
     /**
      * gets language code array from aLanguageParams array
      *
-     * @param $aLanguageParams
+     * @param array $aLanguageParams Language parameters
      *
      * @return array
      */
@@ -1364,7 +1364,7 @@ class oxLang extends oxSuperCfg
     /**
      * gets language code array from aLanguages array
      *
-     * @param $aLanguages
+     * @param array $aLanguages Languages
      *
      * @return array
      */

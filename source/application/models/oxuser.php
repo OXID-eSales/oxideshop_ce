@@ -1004,15 +1004,15 @@ class oxUser extends oxBase
         // maximum nuber of days in month
         $iMaxDays = 31;
         switch ($iMonth) {
-            case 2 :
+            case 2:
                 if ($iMaxDays > 28) {
                     $iMaxDays = ($iYear % 4 == 0 && ($iYear % 100 != 0 || $iYear % 400 == 0)) ? 29 : 28;
                 }
                 break;
-            case 4  :
-            case 6  :
-            case 9  :
-            case 11 :
+            case 4:
+            case 6:
+            case 9:
+            case 11:
                 $iMaxDays = min(30, $iMaxDays);
                 break;
         }

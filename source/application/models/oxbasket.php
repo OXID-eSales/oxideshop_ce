@@ -1969,6 +1969,8 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Set basket total sum price object
+     *
+     * @param oxPrice $oPrice Price object
      */
     public function setPrice($oPrice)
     {

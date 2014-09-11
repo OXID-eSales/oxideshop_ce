@@ -1612,10 +1612,7 @@ class oxEmail extends PHPMailer
     }
 
     /**
-     * Clears all recipients assigned in the TO, CC and BCC
-     * array.  Returns void.
-     *
-     * @return void
+     * Clears all recipients assigned in the TO, CC and BCC array.
      */
     public function clearAllRecipients()
     {
@@ -1766,8 +1763,6 @@ class oxEmail extends PHPMailer
      * characters
      *
      * @param int $iWordWrap word wrap
-     *
-     * @return string
      */
     public function setMailWordWrap($iWordWrap = null)
     {
@@ -1976,8 +1971,6 @@ class oxEmail extends PHPMailer
      * Set mail From, FromName, SMTP values
      *
      * @param oxShop $oShop Shop object
-     *
-     * @return void
      */
     protected function _setMailParams($oShop = null)
     {
@@ -2092,8 +2085,6 @@ class oxEmail extends PHPMailer
 
     /**
      * Process view data array through oxOutput processor
-     *
-     * @return bool
      */
     protected function _processViewArray()
     {

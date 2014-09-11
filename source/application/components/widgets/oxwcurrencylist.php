@@ -42,5 +42,4 @@ class oxwCurrencyList extends oxWidget
      * @var string
      */
     protected $_sThisTemplate = 'widget/header/currencies.tpl';
-
 }

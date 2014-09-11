@@ -1111,5 +1111,4 @@ class oxwArticleDetails extends oxWidget
 
         return $aSorting;
     }
-
 }

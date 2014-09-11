@@ -83,8 +83,9 @@ class Wrapping_Main extends oxAdminDetails
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
         // checkbox handling
-        if (!isset($aParams['oxwrapping__oxactive']))
+        if (!isset($aParams['oxwrapping__oxactive'])) {
             $aParams['oxwrapping__oxactive'] = 0;
+        }
 
             // shopid
             $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
@@ -95,9 +96,10 @@ class Wrapping_Main extends oxAdminDetails
             $oWrapping->loadInLang($this->_iEditLang, $soxId);
                 // #1173M - not all pic are deleted, after article is removed
                 oxRegistry::get("oxUtilsPic")->overwritePic($oWrapping, 'oxwrapping', 'oxpic', 'WP', '0', $aParams, $this->getConfig()->getPictureDir(false));
-        } else
+        } else {
             $aParams['oxwrapping__oxid'] = null;
-        //$aParams = $oWrapping->ConvertNameArray2Idx( $aParams);
+            //$aParams = $oWrapping->ConvertNameArray2Idx( $aParams);
+        }
 
 
         $oWrapping->setLanguage(0);
@@ -122,18 +124,21 @@ class Wrapping_Main extends oxAdminDetails
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
         // checkbox handling
-        if (!isset($aParams['oxwrapping__oxactive']))
+        if (!isset($aParams['oxwrapping__oxactive'])) {
             $aParams['oxwrapping__oxactive'] = 0;
+        }
 
             // shopid
             $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
         $oWrapping = oxNew("oxwrapping");
-        if ($soxId != "-1")
+
+        if ($soxId != "-1") {
             $oWrapping->load($soxId);
-        else
+        } else {
             $aParams['oxwrapping__oxid'] = null;
-        //$aParams = $oWrapping->ConvertNameArray2Idx( $aParams);
+            //$aParams = $oWrapping->ConvertNameArray2Idx( $aParams);
+        }
 
 
         $oWrapping->setLanguage(0);

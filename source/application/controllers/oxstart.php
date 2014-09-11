@@ -113,5 +113,4 @@ class oxStart extends oxUBase
     {
         return oxNew('oxSystemEventHandler');
     }
-
 }

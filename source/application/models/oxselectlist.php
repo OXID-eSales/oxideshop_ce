@@ -203,6 +203,4 @@ class oxSelectlist extends oxI18n implements oxISelectList
         }
     }
 
-
-
 }

@@ -695,5 +695,4 @@ class oxUtilsObject
         $sFileName = $this->_getCacheFileName($sVarName, $sShopId);
         file_put_contents($sFileName, serialize($sValue), LOCK_EX);
     }
-
 }

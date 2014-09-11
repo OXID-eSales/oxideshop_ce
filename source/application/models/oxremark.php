@@ -83,5 +83,4 @@ class oxRemark extends oxBase
 
         return parent::_insert();
     }
-
 }

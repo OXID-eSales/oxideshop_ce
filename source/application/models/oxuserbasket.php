@@ -364,5 +364,4 @@ class oxUserBasket extends oxBase
 
         return $blIsVisible;
     }
-
 }

@@ -174,5 +174,4 @@ class oxReview extends oxBase
     }
 
 
-
 }

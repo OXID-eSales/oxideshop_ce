@@ -311,5 +311,4 @@ class oxSeoDecoder extends oxSuperCfg
 
         return $sParams;
     }
-
 }

@@ -363,5 +363,4 @@ class oxVendor extends oxI18n implements oxIUrl
         return $this->oxvendor__oxshortdesc->value;
     }
 
-
 }

@@ -237,5 +237,4 @@ class oxPriceList
     {
         return count($this->_aList);
     }
-
 }

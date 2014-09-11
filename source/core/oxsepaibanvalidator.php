@@ -293,5 +293,4 @@ class oxSepaIBANValidator
     {
         return is_numeric($iLength) && (int) preg_match("/\./", $iLength) !== 1;
     }
-
 }

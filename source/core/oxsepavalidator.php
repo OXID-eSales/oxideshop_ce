@@ -188,6 +188,4 @@ class oxSepaValidator
     {
         return $this->_aIBANCodeLengths;
     }
-
-
 }

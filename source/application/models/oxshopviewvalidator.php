@@ -258,5 +258,4 @@ class oxShopViewValidator
 
         return $aInvalidViews;
     }
-
 }

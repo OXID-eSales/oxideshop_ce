@@ -67,8 +67,6 @@ class Tags extends oxUBase
 
     /**
      * Returns SEO suffix for page title
-     *
-     * @return string
      */
     public function getTitleSuffix()
     {

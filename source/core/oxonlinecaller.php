@@ -49,16 +49,22 @@ abstract class oxOnlineCaller
     private $_oSimpleXml;
 
     /**
+     * Gets XML document name.
+     *
      * @return string XML document tag name.
      */
     abstract protected function _getXMLDocumentName();
 
     /**
+     * Gets service url.
+     *
      * @return string Web service url.
      */
     abstract protected function _getServiceUrl();
 
     /**
+     * Sets dependencies.
+     *
      * @param oxCurl                     $oCurl
      * @param oxOnlineServerEmailBuilder $oEmailBuilder
      * @param oxSimpleXml                $oSimpleXml
@@ -104,6 +110,8 @@ abstract class oxOnlineCaller
     }
 
     /**
+     * Forms email.
+     *
      * @param oxOnlineRequest $oRequest
      *
      * @return string
@@ -114,6 +122,8 @@ abstract class oxOnlineCaller
     }
 
     /**
+     * Forms XML request.
+     *
      * @param oxOnlineRequest $oRequest
      *
      * @return string
@@ -124,6 +134,8 @@ abstract class oxOnlineCaller
     }
 
     /**
+     * Gets simple XML.
+     *
      * @return oxSimpleXml
      */
     protected function _getSimpleXml()
@@ -132,6 +144,8 @@ abstract class oxOnlineCaller
     }
 
     /**
+     * Gets curl.
+     *
      * @return \oxCurl
      */
     protected function _getCurl()
@@ -140,6 +154,8 @@ abstract class oxOnlineCaller
     }
 
     /**
+     * Gets email builder.
+     *
      * @return oxOnlineServerEmailBuilder
      */
     protected function _getEmailBuilder()
@@ -190,6 +206,8 @@ abstract class oxOnlineCaller
     }
 
     /**
+     * increases failed calls count.
+     *
      * @param int $iFailedOnlineCallsCount
      */
     private function _increaseFailedCallsCount($iFailedOnlineCallsCount)

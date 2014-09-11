@@ -96,8 +96,6 @@ class User_Payment extends oxAdminDetails
 
     /**
      * Saves user payment settings.
-     *
-     * @return mixed
      */
     public function save()
     {

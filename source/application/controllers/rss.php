@@ -252,5 +252,4 @@ class Rss extends oxUBase
     {
         return $this->_getRssFeed()->getCacheTtl();
     }
-
 }

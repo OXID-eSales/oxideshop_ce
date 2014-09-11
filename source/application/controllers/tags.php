@@ -101,5 +101,4 @@ class Tags extends oxUBase
 
         return $aPaths;
     }
-
 }

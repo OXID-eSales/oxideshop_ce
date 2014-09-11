@@ -169,5 +169,4 @@ class Pricealarm extends oxUBase
     {
         return $this->_iPriceAlarmStatus;
     }
-
 }

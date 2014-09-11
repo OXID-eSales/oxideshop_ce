@@ -267,5 +267,4 @@ class User_Payment extends oxAdminDetails
 
         return $this->_oUserPayments;
     }
-
 }

@@ -192,5 +192,4 @@ class Shop_Main extends oxAdminDetails
             $myConfig->saveShopConfVar("bool", 'blMallInherit_' . strtolower($sMultishopTable), $sInheritAll, $oShop->oxshops__oxid->value);
         }
     }
-
 }

@@ -483,5 +483,4 @@ class VendorList extends aList
     {
         return null;
     }
-
 }

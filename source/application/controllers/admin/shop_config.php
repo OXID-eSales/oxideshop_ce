@@ -455,5 +455,4 @@ class Shop_Config extends oxAdminDetails
             return $sEditId;
         }
     }
-
 }

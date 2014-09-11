@@ -1366,6 +1366,33 @@ class oxViewConfig extends oxSuperCfg
     }
 
     /**
+     * Check if module is active.
+     * If versionFrom or|and versionTo is defined - also checks module versions.
+     *
+     * @param string $sModuleId module id.
+     * @param string $sVersionFrom module from version.
+     * @param string $sVersionTo module to version.
+     *
+     * @return  bool
+     */
+    public function isModuleActive( $sModuleId, $sVersionFrom = null, $sVersionTo = null )
+    {
+        $blModuleIsActive = false;
+
+        $aModules = $this->getConfig()->getConfigParam( 'aModules' );
+
+        if ( is_array( $aModules ) ) {
+            $blModuleIsActive = $this->_moduleExists( $sModuleId, $aModules );
+
+            if ( $blModuleIsActive ) {
+                $blModuleIsActive = $this->_isModuleEnabled( $sModuleId ) && $this->_isModuleVersionCorrect( $sModuleId, $sVersionFrom, $sVersionTo );
+            }
+        }
+
+        return $blModuleIsActive;
+    }
+
+    /**
      * return param value
      *
      * @param string $sName param name
@@ -1484,5 +1511,66 @@ class oxViewConfig extends oxSuperCfg
     public function getSessionChallengeToken()
     {
         return $this->getSession()->getSessionChallengeToken();
+    }
+
+    /**
+     * Checks if module exists.
+     *
+     * @param $sModuleId
+     * @param $aModules
+     * @return bool
+     */
+    private function _moduleExists( $sModuleId, $aModules )
+    {
+        $blModuleExists = false;
+        foreach ( $aModules as $sExtendPath ) {
+            if ( false !== strpos( $sExtendPath, '/' . $sModuleId . '/' ) ) {
+                $blModuleExists = true;
+                break;
+            }
+        }
+        return $blModuleExists;
+    }
+
+    /**
+     * Checks whether module is enabled.
+     *
+     * @param $sModuleId
+     * @return bool
+     */
+    private function _isModuleEnabled( $sModuleId )
+    {
+        $blModuleIsActive = false;
+
+        $aDisabledModules = $this->getConfig()->getConfigParam( 'aDisabledModules' );
+        if ( !( is_array( $aDisabledModules ) && in_array( $sModuleId, $aDisabledModules ) ) ) {
+            $blModuleIsActive = true;
+        }
+        return $blModuleIsActive;
+    }
+
+    /**
+     * Checks whether module version is between given range.
+     *
+     * @param $sModuleId
+     * @param $sVersionFrom
+     * @param $sVersionTo
+     * @return bool
+     */
+    private function _isModuleVersionCorrect( $sModuleId, $sVersionFrom, $sVersionTo )
+    {
+        $blModuleIsActive = true;
+
+        $aModuleVersions = $this->getConfig()->getConfigParam( 'aModuleVersions' );
+
+        if ( $sVersionFrom && !version_compare( $aModuleVersions[$sModuleId], $sVersionFrom, '>=' ) ) {
+            $blModuleIsActive = false;
+        }
+
+        if ( $blModuleIsActive && $sVersionTo && !version_compare( $aModuleVersions[$sModuleId], $sVersionTo, '<' ) ) {
+            $blModuleIsActive = false;
+        }
+
+        return $blModuleIsActive;
     }
 }

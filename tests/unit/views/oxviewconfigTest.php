@@ -2470,4 +2470,79 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $oViewConfig = new oxViewConfig();
         $this->assertSame($sToken, $oViewConfig->getSessionChallengeToken());
     }
+
+    /**
+     * Module data provider.
+     */
+    public function _dpIsModuleActive()
+    {
+        return array(
+            array( array( 'order' => 'oe/oepaypal/controllers/oepaypalorder' ), array(),                  'oepaypal', true ),
+            array( array( 'order' => 'oe/oepaypal/controllers/oepaypalorder' ), array( 0 => 'oepaypal' ), 'oepaypal', false ),
+            array( array(),                                                     array(),                  'oepaypal', false ),
+            array( array(),                                                     array( 0 => 'oepaypal' ), 'oepaypal', false ),
+        );
+    }
+
+    /**
+     * oxViewConfig::oePayPalIsModuleActive()
+     * @dataProvider _dpIsModuleActive
+     */
+    public function testIsModuleActive( $aModules, $aDisabledModules, $sModuleId, $blModuleIsActive )
+    {
+        $this->setConfigParam( 'aModules', $aModules );
+        $this->setConfigParam( 'aDisabledModules', $aDisabledModules );
+
+        $oViewConf = new oxViewConfig();
+        $blIsModuleActive = $oViewConf->isModuleActive( $sModuleId );
+
+        $this->assertEquals( $blModuleIsActive, $blIsModuleActive, "Module state is not as expected." );
+    }
+
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public function providerIsModuleActive_VersionCheck()
+    {
+        return array(
+            array( '1.8', null, true ),
+            array( '2.0', null, true ),
+            array( '2.1', null, false ),
+            array( '3.0', null, false ),
+            array( null, '1.8', false ),
+            array( null, '2.0', false ),
+            array( null,'2.1', true ),
+            array( null, '3.0', true ),
+            array( '1.8', '3.0', true ),
+            array( '1.0', '1.7', false ),
+            array( '2.1', '3.0', false ),
+        );
+    }
+
+    /**
+     * Testing isModuleAction version check
+     *
+     * @dataProvider providerIsModuleActive_VersionCheck
+     */
+    public function testIsModuleActive_VersionCheck( $sFrom, $sTo, $blModuleStateExpected )
+    {
+        $aModules = array(
+            'order' => 'oe/oepaypal/controllers/oepaypalorder',
+            'order2' => 'oe/oepaypal2/controllers/oepaypalorder',
+        );
+        $aModuleVersions = array(
+            'oepaypal' => '2.0',
+            'oepaypal2' => '5.0'
+        );
+        $this->setConfigParam( 'aModules', $aModules );
+        $this->setConfigParam( 'aDisabledModules', array() );
+        $this->setConfigParam( 'aModuleVersions', $aModuleVersions );
+
+        $oViewConf = new oxViewConfig();
+        $blIsModuleActive = $oViewConf->isModuleActive( 'oepaypal', $sFrom, $sTo );
+
+        $this->assertEquals( $blModuleStateExpected, $blIsModuleActive, "Module state is not from '$sFrom' to '$sTo'." );
+    }
 }

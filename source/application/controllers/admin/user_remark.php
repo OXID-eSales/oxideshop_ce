@@ -76,8 +76,6 @@ class User_Remark extends oxAdminDetails
 
     /**
      * Saves user history text changes.
-     *
-     * @return mixed
      */
     public function save()
     {

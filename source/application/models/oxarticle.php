@@ -2428,13 +2428,13 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @return null
      */
-    public function setArticleLongDesc($sDesc)
-    {
+            public function setArticleLongDesc($sDesc)
+            {
 
-        // setting current value
-        $this->_oLongDesc = new oxField($sDesc, oxField::T_RAW);
-        $this->oxarticles__oxlongdesc = new oxField($sDesc, oxField::T_RAW);
-    }
+                // setting current value
+                $this->_oLongDesc = new oxField($sDesc, oxField::T_RAW);
+                $this->oxarticles__oxlongdesc = new oxField($sDesc, oxField::T_RAW);
+            }
 
     /**
      * Loads and returns attribute list associated with this article

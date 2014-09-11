@@ -1027,8 +1027,6 @@ class oxUBase extends oxView
      * Set sorting column name
      *
      * @param string $sColumn - column name
-     *
-     * @return string
      */
     public function setListOrderBy($sColumn)
     {
@@ -1039,8 +1037,6 @@ class oxUBase extends oxView
      * Set sorting directions
      *
      * @param string $sDirection - direction desc / asc
-     *
-     * @return string
      */
     public function setListOrderDirection($sDirection)
     {
@@ -1197,8 +1193,6 @@ class oxUBase extends oxView
      * Active currency setter
      *
      * @param object $oCur corrency object
-     *
-     * @return object
      */
     public function setActCurrency($oCur)
     {
@@ -1535,8 +1529,6 @@ class oxUBase extends oxView
 
     /**
      * Returns title page suffix used in template in lists
-     *
-     * @return string
      */
     public function getTitlePageSuffix()
     {
@@ -1681,8 +1673,6 @@ class oxUBase extends oxView
 
     /**
      * Returns view object canonical url
-     *
-     * @return string
      */
     public function getCanonicalUrl()
     {
@@ -1883,8 +1873,6 @@ class oxUBase extends oxView
 
     /**
      * Returns if tags will be edit
-     *
-     * @return bool
      */
     public function getEditTags()
     {
@@ -1892,8 +1880,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns search string
-     *
-     * @return string
      */
     public function getRecommSearch()
     {
@@ -1901,8 +1887,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns payment id
-     *
-     * @return string
      */
     public function getPaymentList()
     {
@@ -1928,8 +1912,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns accessoires of article
-     *
-     * @return object
      */
     public function getAccessoires()
     {
@@ -1937,8 +1919,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns crosssellings
-     *
-     * @return object
      */
     public function getCrossSelling()
     {
@@ -1946,8 +1926,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns similar article list
-     *
-     * @return object
      */
     public function getSimilarProducts()
     {
@@ -1955,8 +1933,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns list of customer also bought thies products
-     *
-     * @return object
      */
     public function getAlsoBoughtTheseProducts()
     {
@@ -1964,8 +1940,6 @@ class oxUBase extends oxView
 
     /**
      * Return the active article id
-     *
-     * @return string | bool
      */
     public function getArticleId()
     {
@@ -2435,8 +2409,6 @@ class oxUBase extends oxView
 
     /**
      * Returns additional URL parameters which must be added to list products urls
-     *
-     * @return string
      */
     public function getAddUrlParams()
     {
@@ -2991,8 +2963,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns searched category id
-     *
-     * @return string
      */
     public function getSearchCatId()
     {
@@ -3000,8 +2970,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns searched vendor id
-     *
-     * @return string
      */
     public function getSearchVendor()
     {
@@ -3009,8 +2977,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns searched Manufacturer id
-     *
-     * @return string
      */
     public function getSearchManufacturer()
     {
@@ -3018,8 +2984,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns last seen products
-     *
-     * @return array
      */
     public function getLastProducts()
     {

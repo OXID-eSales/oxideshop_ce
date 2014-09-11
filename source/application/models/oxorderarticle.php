@@ -794,8 +794,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
      * Set article
      *
      * @param object $oArticle - article object
-     *
-     * @return void
      */
     public function setArticle($oArticle)
     {
@@ -821,8 +819,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
 
     /**
      * Set order files
-     *
-     * @return void
      */
     public function _setOrderFiles()
     {

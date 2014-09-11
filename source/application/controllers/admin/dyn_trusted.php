@@ -187,7 +187,7 @@ class dyn_trusted extends Shop_Config
     protected function _saveTsPaymentId()
     {
         $aPaymentIds = oxRegistry::getConfig()->getRequestParameter("paymentids");
-        
+
         if ($aPaymentIds) {
             foreach ($aPaymentIds as $sShopPayId => $sTsPayId) {
                 $aPayment = oxNew("oxpayment");

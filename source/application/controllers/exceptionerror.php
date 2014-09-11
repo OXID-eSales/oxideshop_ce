@@ -42,7 +42,7 @@ class ExceptionError extends oxUBase
 
         //add all exceptions to display
         $aErrors = $this->_getErrors();
-        
+
         if (is_array($aErrors) && count($aErrors)) {
             oxRegistry::get("oxUtilsView")->passAllErrorsToView($aViewData, $aErrors);
         }

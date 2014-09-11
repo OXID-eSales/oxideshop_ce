@@ -28,8 +28,8 @@ class selectlist_order_ajax extends ajaxListComponent
 
     /**
      * Columns array
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $_aColumns = array('container1' => array(
         array('oxtitle', 'oxselectlist', 1, 1, 0),

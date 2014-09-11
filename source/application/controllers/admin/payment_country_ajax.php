@@ -28,9 +28,9 @@ class payment_country_ajax extends ajaxListComponent
 
     /**
      * Columns array
-     * 
-     * @var array 
-     */    
+     *
+     * @var array
+     */
     protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
         array('oxtitle', 'oxcountry', 1, 1, 0),
         array('oxisoalpha2', 'oxcountry', 1, 0, 0),

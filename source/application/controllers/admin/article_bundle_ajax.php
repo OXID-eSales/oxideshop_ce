@@ -32,11 +32,11 @@ class article_bundle_ajax extends ajaxListComponent
      * @var bool
      */
     protected $_blAllowExtColumns = true;
-    
+
     /**
      * Columns array
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
         array('oxartnum', 'oxarticles', 1, 0, 0),

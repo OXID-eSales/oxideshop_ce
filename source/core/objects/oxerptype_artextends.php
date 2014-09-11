@@ -39,7 +39,7 @@ class oxERPType_Artextends extends oxERPType
         parent::__construct();
         $this->_sTableName = 'oxartextends';
     }
-    
+
     /**
      * prepares object for saving in shop
      * returns true if save can proceed further
@@ -106,5 +106,5 @@ class oxERPType_Artextends extends oxERPType
         }
 
         return false;
-    }    
+    }
 }

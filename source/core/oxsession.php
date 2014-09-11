@@ -601,7 +601,7 @@ class oxSession extends oxSuperCfg
 
             // init oxbasket through oxNew and not oxAutoload, Mantis-Bug #0004262
             $oEmptyBasket = oxNew('oxbasket');
-            
+
             $oBasket = ($sBasket && ($oBasket = unserialize($sBasket))) ? $oBasket : null;
 
             if (!$oBasket || (get_class($oBasket) !== get_class($oEmptyBasket))) {

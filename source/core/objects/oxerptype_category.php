@@ -57,7 +57,7 @@ class oxERPType_Category extends oxERPType
         if (!$aData['OXPARENTID']) {
             $aData['OXPARENTID'] = 'oxrootid';
         }
-        
+
         return $aData;
     }
 }

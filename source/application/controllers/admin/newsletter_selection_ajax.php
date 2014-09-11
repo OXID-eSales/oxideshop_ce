@@ -28,8 +28,8 @@ class newsletter_selection_ajax extends ajaxListComponent
 
     /**
      * Columns array
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $_aColumns = array('container1' => array( // field , table,  visible, multilanguage, ident
         array('oxtitle', 'oxgroups', 1, 0, 0),

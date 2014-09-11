@@ -198,10 +198,10 @@ class oxEmosAdapter extends oxSuperCfg
 
     /**
      * Checks whether shop is in utf, if not - iconv string for using with econda json_encode
-     * 
+     *
      * @param string $sContent
-     * 
-     * @return string 
+     *
+     * @return string
      */
     protected function _convertToUtf($sContent)
     {
@@ -294,7 +294,7 @@ class oxEmosAdapter extends oxSuperCfg
      *
      * @return string
      */
-    protected function _getEmosCatPath() 
+    protected function _getEmosCatPath()
     {
         // #4016: econda: json function returns null if title has an umlaut
         if ($this->_sEmosCatPath === null) {
@@ -341,7 +341,7 @@ class oxEmosAdapter extends oxSuperCfg
             }
         }
         $sCatPath = $this->_convertToUtf($sCatPath);
-        
+
         return $sCatPath;
     }
 

@@ -815,19 +815,19 @@ class oxVoucher extends oxBase
         }
         return parent::__get($sName);
     }
-    
+
     /**
      * Returns a configured value for voucher timeouts or a default
      * of 3 hours if not configured
-     * 
+     *
      * @return integer Seconds a voucher can stay in status reserved
-     */ 
-    protected function _getVoucherTimeout() 
+     */
+    protected function _getVoucherTimeout()
     {
         $iVoucherTimeout = intval(oxRegistry::getConfig()->getConfigParam('iVoucherTimeout')) ?
             intval(oxRegistry::getConfig()->getConfigParam('iVoucherTimeout')) :
             3 * 3600;
 
         return $iVoucherTimeout;
-    }    
+    }
 }

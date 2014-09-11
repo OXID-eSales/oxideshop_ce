@@ -77,7 +77,7 @@ class Vendor_Seo extends Object_Seo
             return (bool) $oVendor->oxvendor__oxshowsuffix->value;
         }
     }
-    
+
     /**
      * Returns url type
      *
@@ -87,7 +87,7 @@ class Vendor_Seo extends Object_Seo
     {
         return 'oxvendor';
     }
-    
+
     /**
      * Returns seo uri
      *

@@ -153,7 +153,7 @@ class oxVoucherSerie extends oxBase
 
         return $aStatus;
     }
-    
+
     /**
      * Get voucher status base on given date (if nothing was passed, current datetime will be used as a measure).
      *

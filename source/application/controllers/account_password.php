@@ -107,7 +107,7 @@ class Account_Password extends Account
                     );
             }
         }
-        
+
         if (!$sOldPass || !$oUser->isSamePassword($sOldPass)) {
             /** @var oxUtilsView $oUtilsView */
             $oUtilsView = oxRegistry::get("oxUtilsView");

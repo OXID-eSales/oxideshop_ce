@@ -35,7 +35,7 @@ class Content_Seo extends Object_Seo
     {
         return 'oxcontent';
     }
-    
+
     /**
      * Returns current object type seo encoder object
      *
@@ -45,7 +45,7 @@ class Content_Seo extends Object_Seo
     {
         return oxRegistry::get("oxSeoEncoderContent");
     }
-    
+
     /**
      * Returns seo uri
      *

@@ -114,7 +114,7 @@ class Module_Config extends Shop_Config
         );
         $aVarConstraints = array();
         $aGrouping = array();
-        
+
         $aDbVariables = $this->loadConfVars($oConfig->getShopId(), $this->_getModuleForConfigVars());
 
         if (is_array($aModuleSettings)) {
@@ -143,7 +143,7 @@ class Module_Config extends Shop_Config
                     $sDbType = $this->_getDbConfigTypeName($sType);
                     $sValue = $aDbVariables['vars'][$sDbType][$sName];
                 }
-                
+
                 $sGroup = $aValue["group"];
 
                 $sConstraints = "";

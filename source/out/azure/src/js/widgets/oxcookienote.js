@@ -40,21 +40,21 @@
             if ($.cookie('cookiesEnabledCheck')) {
                 $.cookie('cookiesEnabledCheck', null, -1);
 
-            if( !$.cookie("displayedCookiesNotification") ) {
-                $.cookie("displayedCookiesNotification", 1, { path: '/', expires: 30 });
+                if( !$.cookie("displayedCookiesNotification") ) {
+                    $.cookie("displayedCookiesNotification", 1, { path: '/', expires: 30 });
                     $('#cookieNote').show();
 
                     // need to add this even only if we decide to show cookie note
-            $(self.options.closeButton, self.element).click(
-                function(){
-                    self.element.fadeOut('slow').remove();
-                    return false;
-                }
-            );
+                    $(self.options.closeButton, self.element).click(
+                        function(){
+                            self.element.fadeOut('slow').remove();
+                            return false;
+                        }
+                    );
                 } else {
                     self.element.remove();
                     return false;
-        }
+                }
             }
         }
     };

@@ -28,8 +28,8 @@ class deliveryset_payment_ajax extends ajaxListComponent
 
     /**
      * Columns array
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
         array('oxdesc', 'oxpayments', 1, 1, 0),

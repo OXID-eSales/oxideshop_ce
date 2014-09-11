@@ -59,17 +59,17 @@ class Theme_Main extends oxAdminDetails
 
         return 'theme_main.tpl';
     }
-    
+
     /**
      * Check if theme config is in config file.
-     * 
+     *
      * @return bool
      */
     public function themeInConfigFile()
     {
         $blThemeSet = isset($this->getConfig()->sTheme);
         $blCustomThemeSet = isset($this->getConfig()->sCustomTheme);
-        
+
         if ($blThemeSet || $blCustomThemeSet) {
             return true;
         }

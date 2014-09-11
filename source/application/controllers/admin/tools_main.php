@@ -45,7 +45,7 @@ class Tools_Main extends oxAdminDetails
         $oAuthUser = oxNew('oxuser');
         $oAuthUser->loadAdminUser();
         $this->_aViewData["blIsMallAdmin"] = $oAuthUser->oxuser__oxrights->value == "malladmin";
-        
+
         $blShowUpdateViews = $this->getConfig()->getConfigParam('blShowUpdateViews');
         $this->_aViewData['showViewUpdate'] = (isset($blShowUpdateViews) && !$blShowUpdateViews) ? false : true;
 

@@ -28,8 +28,8 @@ class shop_default_category_ajax extends ajaxListComponent
 
     /**
      * Columns array
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
         array('oxtitle', 'oxcategories', 1, 1, 0),

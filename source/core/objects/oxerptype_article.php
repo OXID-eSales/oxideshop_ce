@@ -43,7 +43,7 @@ class oxErpArticle450 extends oxErpArticle450_parent
      *
      * @return null
      */
-    public function __set($sName, $sValue) 
+    public function __set($sName, $sValue)
     {
         if (strpos($sName, 'oxarticles__oxlongdesc') === 0) {
             if ($this->_blEmployMultilanguage) {
@@ -60,7 +60,7 @@ class oxErpArticle450 extends oxErpArticle450_parent
      *
      * @return null
      */
-    protected function _saveArtLongDesc() 
+    protected function _saveArtLongDesc()
     {
         if ($this->_blEmployMultilanguage) {
             return parent::_saveArtLongDesc();
@@ -171,7 +171,7 @@ class oxERPType_Article extends oxERPType
     protected function _postSaveObject($oShopObject, $aData)
     {
         $sOXID = $oShopObject->getId();
-        
+
         $oShopObject->onChange(null, $sOXID, $sOXID);
 
         // returning ID on success

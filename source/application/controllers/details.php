@@ -1059,7 +1059,7 @@ class Details extends oxUBase
             return $oProduct->$sTitleField->value . $sVarSelValue . $sTagValue;
         }
     }
-    
+
     /**
      * Template variable getter. Returns meta description
      *

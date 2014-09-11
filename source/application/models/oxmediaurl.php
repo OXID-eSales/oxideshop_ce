@@ -136,7 +136,7 @@ class oxMediaUrl extends oxI18n
     {
         $sUrl = $this->oxmediaurls__oxurl->value;
         $sDesc = $this->oxmediaurls__oxdesc->value;
-        
+
         if (strpos($sUrl, 'youtube.com')) {
             $sYoutubeUrl = str_replace("www.youtube.com/watch?v=", "www.youtube.com/embed/", $sUrl);
             $sYoutubeUrl = preg_replace('/&amp;/', '?', $sYoutubeUrl, 1);

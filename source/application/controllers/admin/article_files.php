@@ -129,7 +129,7 @@ class Article_Files extends oxAdminDetails
 
             return;
         }
-        
+
         $soxId = $this->getEditObjectId();
 
         $aParams = oxRegistry::getConfig()->getRequestParameter("newfile");
@@ -176,7 +176,7 @@ class Article_Files extends oxAdminDetails
 
             return;
         }
-        
+
         $sArticleId = $this->getEditObjectId();
         $sArticleFileId = oxRegistry::getConfig()->getRequestParameter('fileid');
         $oArticleFile = oxNew('oxFile');

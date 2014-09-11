@@ -125,7 +125,7 @@ class manufacturer_main_ajax extends ajaxListComponent
             $sArtTable = $this->_getViewName('oxarticles');
             $aRemoveArt = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
-        
+
         if (is_array($aRemoveArt) && !empty($aRemoveArt)) {
             $sSelect = "update oxarticles set oxmanufacturerid = null where oxid in ( " . implode(", ", oxDb::getInstance()->quoteArray($aRemoveArt)) . ") ";
             oxDb::getDb()->Execute($sSelect);

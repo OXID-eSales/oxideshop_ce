@@ -81,7 +81,7 @@ class oxERPType_User extends oxERPType
     public function checkWriteAccess($oObj, $aData = null)
     {
             return;
-        
+
         $myConfig = oxRegistry::getConfig();
 
         if (!$myConfig->getConfigParam('blMallUsers')) {

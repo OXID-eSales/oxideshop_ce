@@ -85,7 +85,7 @@ class article_accessories_ajax extends ajaxListComponent
                               "or {$sArticleTable}.oxparentid=$sView.oxobjectid )";
                 $sSqlIfFals = " {$sArticleTable}.oxid=$sView.oxobjectid ";
                 $sVariantSelectionSql = $blVariantsSelectionParameter ? $sSqlIfTrue : $sSqlIfFals;
-
+                
                 $sQAdd = " from $sView left join {$sArticleTable} on {$sVariantSelectionSql}" .
                          " where $sView.oxcatnid = " . $oDb->quote($sSelId) . " ";
             } else {

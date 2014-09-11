@@ -74,9 +74,9 @@ class Links extends oxUBase
         $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
         $aPath['title'] = oxRegistry::getLang()->translateString('LINKS', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
-        
+
         $aPaths[] = $aPath;
-        
+
         return $aPaths;
     }
 }

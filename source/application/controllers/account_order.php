@@ -154,7 +154,7 @@ class Account_Order extends Account
     public function getBreadCrumb()
     {
         $aPaths = array();
-        $aPath = array();        
+        $aPath = array();
         $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
 

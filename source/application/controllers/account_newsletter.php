@@ -141,8 +141,8 @@ class Account_Newsletter extends Account
 
         $aPath['title'] = oxRegistry::getLang()->translateString('NEWSLETTER_SETTINGS', $iBaseLanguage, false);
         $aPath['link'] = $oUtils->cleanUrl($this->getLink(), array('fnc'));
-        $aPaths[] = $aPath;    
-        
+        $aPaths[] = $aPath;
+
         return $aPaths;
     }
 }

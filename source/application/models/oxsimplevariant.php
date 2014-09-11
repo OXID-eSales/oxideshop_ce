@@ -226,8 +226,6 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
      * Price setter
      *
      * @param object $oPrice price object
-     *
-     * @return null;
      */
     public function setPrice($oPrice)
     {

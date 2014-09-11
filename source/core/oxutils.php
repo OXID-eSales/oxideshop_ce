@@ -450,8 +450,6 @@ class oxUtils extends oxSuperCfg
      *
      * @param string $sKey      Cache key
      * @param mixed  $mContents Cache contents. At this moment only simple array type is supported.
-     *
-     * @return null;
      */
     public function toPhpFileCache($sKey, $mContents)
     {
@@ -629,8 +627,6 @@ class oxUtils extends oxSuperCfg
     /**
      * Writes all cache contents to file at once. This method was introduced due to possible
      * race conditions. Cache is cleaned up after commit
-     *
-     * @return null;
      */
     public function commitFileCache()
     {
@@ -1415,8 +1411,6 @@ class oxUtils extends oxSuperCfg
      * handler for 404 (page not found) error
      *
      * @param string $sUrl url which was given, can be not specified in some cases
-     *
-     * @return void
      */
     public function handlePageNotFoundError($sUrl = '')
     {

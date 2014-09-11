@@ -117,7 +117,7 @@ class oxSysRequirements
      * @var array
      */
     protected $_aInfoMap = array(
-        "php_version"        => "PHP_version_at_least_5.2.10",
+        "php_version"        => "PHP_version_at_least_5.3.25",
         "lib_xml2"           => "LIB_XML2",
         "php_xml"            => "DOM",
         "open_ssl"           => "OpenSSL",
@@ -270,7 +270,7 @@ class oxSysRequirements
 
     /**
      * Version check for http://bugs.php.net/53632
-     * Assumme that PHP versions < 5.3.5 and < 5.2.17 may have this issue, so
+     * Assumme that PHP versions < 5.3.5 may have this issue, so
      * informing users about possible issues
      * PHP version 5.3.7 has security bug too.
      *
@@ -283,12 +283,10 @@ class oxSysRequirements
         }
 
         $iState = 1;
-        if (version_compare(PHP_VERSION, "5.3", ">=")) {
-            if (version_compare(PHP_VERSION, "5.3.5", ">=") && version_compare(PHP_VERSION, "5.3.7", "!=")) {
+        if (version_compare($this->getPhpVersion(), "5.3", ">=")) {
+            if (version_compare($this->getPhpVersion(), "5.3.5", ">=") && version_compare($this->getPhpVersion(), "5.3.7", "!=")) {
                 $iState = 2;
             }
-        } elseif (version_compare(PHP_VERSION, '5.2', ">=")) {
-            $iState = version_compare(PHP_VERSION, "5.2.17", ">=") ? 2 : $iState;
         }
 
         return $iState;
@@ -613,17 +611,26 @@ class oxSysRequirements
      */
     public function checkPhpVersion()
     {
-        if (version_compare(PHP_VERSION, '5.2', '<')) {
+        $sPhpVersion = $this->getPhpVersion();
+        if (version_compare($sPhpVersion, '5.3', '<')) {
             $iModStat = 0;
-        } elseif (version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.2.10', '<')) {
+        } elseif (version_compare($sPhpVersion, '5.3.0', '>=') && version_compare($sPhpVersion, '5.3.25', '<')) {
             $iModStat = 1;
-        } elseif (version_compare(PHP_VERSION, '5.2.10', '>=')) {
+        } elseif (version_compare($sPhpVersion, '5.3.25', '>=')) {
             $iModStat = 2;
         } else {
             $iModStat = 1;
         }
 
         return $iModStat;
+    }
+
+    /**
+     * @return float|string
+     */
+    public function getPhpVersion()
+    {
+        return PHP_VERSION;
     }
 
     /**

@@ -51,7 +51,7 @@ class oxVariantHandler extends oxSuperCfg
     /**
      * Sets internal variant name array from article list.
      *
-     * @param oxList [string]oxArticle $oArticles Variant list as
+     * @param array $oArticles Variant list
      */
     public function init($oArticles)
     {

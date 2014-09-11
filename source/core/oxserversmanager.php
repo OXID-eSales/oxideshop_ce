@@ -138,8 +138,8 @@ class oxServersManager
     /**
      *
      *
-     * @param $aData
-     * @param $sName
+     * @param array  $aData Data
+     * @param string $sName Name
      *
      * @return mixed
      */
@@ -175,7 +175,7 @@ class oxServersManager
     /**
      * Removes server node information
      *
-     * @param $sServerId
+     * @param string $sServerId Server id
      */
     public function deleteServer($sServerId)
     {
@@ -215,7 +215,7 @@ class oxServersManager
     }
 
     /**
-     * @param $aServersData
+     * @param array $aServersData Servers data
      */
     protected function _save($aServersData)
     {

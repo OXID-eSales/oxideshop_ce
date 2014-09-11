@@ -1516,8 +1516,8 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Checks if module exists.
      *
-     * @param $sModuleId
-     * @param $aModules
+     * @param string $sModuleId Module id
+     * @param array  $aModules  Modules
      * @return bool
      */
     private function _moduleExists($sModuleId, $aModules)
@@ -1535,7 +1535,7 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Checks whether module is enabled.
      *
-     * @param $sModuleId
+     * @param string $sModuleId Module id
      * @return bool
      */
     private function _isModuleEnabled($sModuleId)
@@ -1552,9 +1552,9 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Checks whether module version is between given range.
      *
-     * @param $sModuleId
-     * @param $sVersionFrom
-     * @param $sVersionTo
+     * @param string $sModuleId    Module id
+     * @param string $sVersionFrom Version from
+     * @param string $sVersionTo   Version to
      * @return bool
      */
     private function _isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo)

@@ -104,7 +104,7 @@ class oxSepaIBANValidator
     /**
      * Check if the total IBAN length is correct as per country. If not, the IBAN is invalid.
      *
-     * @param $sIBAN
+     * @param string $sIBAN IBAN
      *
      * @return bool
      */
@@ -119,7 +119,7 @@ class oxSepaIBANValidator
 
 
     /**
-     * @param $sIBAN
+     * @param string $sIBAN IBAN
      *
      * @return null
      */
@@ -137,7 +137,7 @@ class oxSepaIBANValidator
     /**
      * Checks if IBAN is valid according to checksum algorithm
      *
-     * @param $sIBAN
+     * @param string $sIBAN IBAN
      *
      * @return bool
      */
@@ -153,7 +153,7 @@ class oxSepaIBANValidator
     /**
      * Move the four initial characters to the end of the string.
      *
-     * @param $sIBAN
+     * @param string $sIBAN IBAN
      *
      * @return string
      */
@@ -171,7 +171,7 @@ class oxSepaIBANValidator
     /**
      * Replace each letter in the string with two digits, thereby expanding the string, where A = 10, B = 11, ..., Z = 35.
      *
-     * @param $sIBAN
+     * @param string $sIBAN IBAN
      *
      * @return string
      */
@@ -218,7 +218,7 @@ class oxSepaIBANValidator
     /**
      * Interpret the string as a decimal integer and compute the remainder of that number on division by 97.
      *
-     * @param $sIBAN
+     * @param string $sIBAN IBAN
      *
      * @return bool
      */
@@ -237,7 +237,7 @@ class oxSepaIBANValidator
     /**
      * Checks if Code length is non empty array
      *
-     * @param $aCodeLengths
+     * @param array $aCodeLengths Code lengths
      *
      * @return bool
      */
@@ -247,7 +247,7 @@ class oxSepaIBANValidator
     }
 
     /**
-     * @param $aCodeLengths
+     * @param array $aCodeLengths Code lengths
      *
      * @return bool
      */
@@ -273,7 +273,7 @@ class oxSepaIBANValidator
     /**
      * Checks if country code is valid
      *
-     * @param $sCountryAbbr
+     * @param string $sCountryAbbr Country abbreviation
      *
      * @return bool
      */
@@ -285,7 +285,7 @@ class oxSepaIBANValidator
     /**
      * Checks if value is numeric and does not contain whitespaces
      *
-     * @param $iLength
+     * @param integer $iLength Length
      *
      * @return bool
      */

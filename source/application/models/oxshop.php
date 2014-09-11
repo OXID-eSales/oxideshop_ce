@@ -107,7 +107,7 @@ class oxShop extends oxI18n
     /**
      * Add a query to query array
      *
-     * @param $sQuery
+     * @param string $sQuery Query
      */
     public function addQuery($sQuery)
     {

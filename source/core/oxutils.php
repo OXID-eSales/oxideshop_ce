@@ -1223,8 +1223,8 @@ class oxUtils extends oxSuperCfg
     /**
      * Prepares price depending what options are used(show as net, brutto, etc.) for displaying
      *
-     * @param $dPrice
-     * @param $dVat
+     * @param double $dPrice Price
+     * @param double $dVat   VAT
      *
      * @return float
      */

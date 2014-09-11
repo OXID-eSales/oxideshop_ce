@@ -64,7 +64,7 @@ class oxTsRatings extends oxSuperCfg
     /**
      * Sets trusted shop id
      *
-     * @param $sId
+     * @param string $sId Trusted shops id
      */
     public function setTsId($sId)
     {
@@ -74,7 +74,7 @@ class oxTsRatings extends oxSuperCfg
     /**
      * Executes curl request to trusted shops
      *
-     * @param $sUrl
+     * @param string $sUrl Trusted shops url
      *
      * @return string curl response text
      */

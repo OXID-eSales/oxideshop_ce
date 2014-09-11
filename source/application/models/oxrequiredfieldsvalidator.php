@@ -73,7 +73,7 @@ class oxRequiredFieldsValidator
     /**
      * Sets required fields array
      *
-     * @param $aFields
+     * @param array $aFields Fields
      */
     public function setRequiredFields($aFields)
     {

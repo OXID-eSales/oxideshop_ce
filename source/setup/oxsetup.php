@@ -1185,11 +1185,11 @@ class OxSetupDb extends oxSetupCore
     }
 
     /**
-     * @param $oUtils
-     * @param $sBaseShopId
-     * @param $aParams
-     * @param $oConfk
-     * @param $oSession
+     * @param oxSetupUtils   $oUtils      Setup utilities
+     * @param string         $sBaseShopId Shop id
+     * @param array          $aParams     Parameters
+     * @param Conf           $oConfk      Config key loader
+     * @param oxSetupSession $oSession    Setup session manager
      */
     private function _addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession)
     {

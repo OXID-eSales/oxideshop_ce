@@ -157,7 +157,7 @@ class oxVoucherSerie extends oxBase
     /**
      * Get voucher status base on given date (if nothing was passed, current datetime will be used as a measure).
      *
-     * @param string 
+     * @param string|null $sNow Date
      *
      * @return int
      */

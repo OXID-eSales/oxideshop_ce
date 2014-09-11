@@ -191,8 +191,9 @@ class Article_Main extends oxAdminDetails
             $sSelect = "select oxid from " . getViewName('oxarticles');
             $sSelect .= " where oxartnum = '" . $aParams['oxarticles__oxartnum'] . "'";
             $sSelect .= " and oxid != '" . $aParams['oxarticles__oxid'] . "'";
-            if ($oArticle->assignRecord($sSelect))
+            if ($oArticle->assignRecord($sSelect)) {
                 $this->_aViewData["errorsavingatricle"] = 1;
+            }
         }
 
 
@@ -711,13 +712,15 @@ class Article_Main extends oxAdminDetails
             $aJumpList[] = array($oArticle->$sOxIdField->value, $this->_getTitle($oArticle));
             //fetching this article variants data
             $oVariants = $oArticle->getAdminVariants(oxRegistry::getConfig()->getRequestParameter("editlanguage"));
-            if ($oVariants && $oVariants->count())
+            if ($oVariants && $oVariants->count()) {
                 foreach ($oVariants as $oVar) {
                     $aJumpList[] = array($oVar->$sOxIdField->value, " - " . $this->_getTitle($oVar));
                 }
+            }
         }
-        if (count($aJumpList) > 1)
+        if (count($aJumpList) > 1) {
             $this->_aViewData["thisvariantlist"] = $aJumpList;
+        }
     }
 
     /**

@@ -21,7 +21,7 @@
  */
 
 /**
- * Online license check request class
+ * Online license check request class used as entity.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
@@ -30,7 +30,6 @@
  */
 class oxOnlineLicenseCheckRequest extends oxOnlineRequest
 {
-
     /**
      * Web service protocol version.
      *
@@ -53,9 +52,10 @@ class oxOnlineLicenseCheckRequest extends oxOnlineRequest
     public $revision;
 
     /**
-     * Shop Servers information.
+     * Product related specific information
+     * like amount of sub shops and amount of admin users.
      *
-     * @var string
+     * @var object
      */
-    public $servers;
+    public $productSpecificInformation;
 }

@@ -21,7 +21,7 @@
  */
 
 /**
- * Performs Online Module Version Notifier check
+ * Class makes call to given URL address and sends request parameter.
  *
  * The Online Module Version Notification is used for checking if newer versions of modules are available.
  * Will be used by the upcoming online one click installer.

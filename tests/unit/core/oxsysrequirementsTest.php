@@ -454,4 +454,32 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
         $oSysReq->expects($this->once())->method('_getPhpIntSize')->will($this->returnValue(8));
         $this->assertEquals($iState, $oSysReq->checkBug53632());
     }
+
+    public function providerCheckPhpVersion()
+    {
+        return array(
+            array('5.2', 0),
+            array('5.2.3', 0),
+            array('5.3.0', 1),
+            array('5.3', 1),
+            array('5.3.25', 2),
+            array('5.4', 2),
+            array('5.4.2', 2),
+        );
+    }
+
+    /**
+     * @param $sVersion
+     * @param $iResult
+     *
+     * @dataProvider providerCheckPhpVersion
+     */
+    public function testCheckPhpVersion($sVersion, $iResult)
+    {
+        $oSysRequirements = $this->getMock('oxSysRequirements', array('getPhpVersion'));
+        $oSysRequirements->expects($this->once())->method('getPhpVersion')->will($this->returnValue($sVersion));
+        /** @var oxSysRequirements $oSysRequirements */
+
+        $this->assertSame($iResult, $oSysRequirements->checkPhpVersion());
+    }
 }

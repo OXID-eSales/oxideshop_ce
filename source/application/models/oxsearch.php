@@ -48,8 +48,6 @@ class oxSearch extends oxSuperCfg
      * Search language setter. If no param is passed, will be taken default shop language
      *
      * @param string $iLanguage string (default null)
-     *
-     * @return null;
      */
     public function setLanguage($iLanguage = null)
     {

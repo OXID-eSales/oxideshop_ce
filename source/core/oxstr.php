@@ -52,7 +52,7 @@ class oxStr
      *
      * @return object
      */
-    static public function getStr()
+    public static function getStr()
     {
         if (!isset(self::$_oHandler)) {
             //let's init now non-static instance of oxStr to get the instance of str handler

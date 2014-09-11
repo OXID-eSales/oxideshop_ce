@@ -365,5 +365,4 @@ class Account_Recommlist extends Account
     {
         return $this->_iAllArtCnt;
     }
-
 }

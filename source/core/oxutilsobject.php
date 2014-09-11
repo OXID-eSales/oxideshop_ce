@@ -104,8 +104,6 @@ class oxUtilsObject
      *
      * @param string $sClassName Class name expected to be later supplied over oxNew
      * @param object $oInstance  Instance object
-     *
-     * @return null;
      */
     public static function setClassInstance($sClassName, $oInstance)
     {
@@ -115,8 +113,6 @@ class oxUtilsObject
 
     /**
      * Resets previously set instances
-     *
-     * @return null;
      */
     public static function resetClassInstances()
     {
@@ -127,8 +123,6 @@ class oxUtilsObject
      * Resets previously set module information.
      *
      * @static
-     *
-     * @return null;
      */
     public static function resetModuleVars()
     {
@@ -690,8 +684,6 @@ class oxUtilsObject
      * @param string $sVarName          Variable name
      * @param string $sValue            Variable value.
      * @param bool   $blSubshopSpecific Indicates should cache be shop specific or not
-     *
-     * @return null;
      */
     protected function _setToCache($sVarName, $sValue, $blSubshopSpecific = true)
     {

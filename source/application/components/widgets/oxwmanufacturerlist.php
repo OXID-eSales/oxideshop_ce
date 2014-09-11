@@ -43,5 +43,4 @@ class oxwManufacturerList extends oxWidget
      * @var string
      */
     protected $_sThisTemplate = 'widget/footer/manufacturerlist.tpl';
-
 }

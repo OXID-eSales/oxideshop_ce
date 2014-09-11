@@ -50,5 +50,4 @@ class oxwVendorList extends oxWidget
 
         return $this->_aVendorlist;
     }
-
 }

@@ -237,5 +237,4 @@ class Payment_Main extends oxAdminDetails
             $this->save();
         }
     }
-
 }

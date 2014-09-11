@@ -72,5 +72,4 @@ class oxwCategoryTree extends oxWidget
     {
         return $this->getViewParameter("deepLevel");
     }
-
 }

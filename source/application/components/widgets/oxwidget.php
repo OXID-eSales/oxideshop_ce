@@ -78,5 +78,4 @@ class oxWidget extends oxUBase
     protected function _processRequest()
     {
     }
-
 }

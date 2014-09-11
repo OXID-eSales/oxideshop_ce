@@ -119,5 +119,4 @@ class payment_rdfa extends oxAdminDetails
 
         return $aRDFaPayments;
     }
-
 }

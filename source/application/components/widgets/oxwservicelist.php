@@ -34,5 +34,4 @@ class oxwServiceList extends oxWidget
      * @var string
      */
     protected $_sThisTemplate = 'widget/footer/services.tpl';
-
 }

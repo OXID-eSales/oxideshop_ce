@@ -42,5 +42,4 @@ class oxwLanguageList extends oxWidget
      * @var string
      */
     protected $_sThisTemplate = 'widget/header/languages.tpl';
-
 }

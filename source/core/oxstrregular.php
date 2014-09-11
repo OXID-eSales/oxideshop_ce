@@ -279,8 +279,8 @@ class oxStrRegular
 
     /**
      * Recodes and returns passed input:
-     *     if $blToHtmlEntities == true  ä -> &auml;
-     *     if $blToHtmlEntities == false &auml; -> ä
+     * if $blToHtmlEntities == true  ä -> &auml;
+     * if $blToHtmlEntities == false &auml; -> ä
      *
      * @param string $sInput           text to recode
      * @param bool   $blToHtmlEntities recode direction

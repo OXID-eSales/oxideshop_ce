@@ -99,8 +99,6 @@
 
         /**
          * Saves statistic parameters changes.
-         *
-         * @return mixed
          */
         public function save()
         {

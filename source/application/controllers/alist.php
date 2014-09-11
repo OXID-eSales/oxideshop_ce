@@ -801,9 +801,7 @@ class aList extends oxUBase
     public function getArticleList()
     {
         if ($this->_aArticleList === null) {
-            if ( /*$this->_isActCategory() &&*/
-            ($oCategory = $this->getActiveCategory())
-            ) {
+            if ($oCategory = $this->getActiveCategory()) {
                 $aArticleList = $this->_loadArticles($oCategory);
                 if (count($aArticleList)) {
                     $this->_aArticleList = $aArticleList;

@@ -1044,7 +1044,6 @@ class oxUtils extends oxSuperCfg
      * Redirects to shop offline page
      *
      * @param int $iHeaderCode header code, default 302
-     *
      */
     public function redirectOffline($iHeaderCode = 302)
     {

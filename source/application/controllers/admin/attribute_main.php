@@ -100,11 +100,12 @@ class Attribute_Main extends oxAdminDetails
             $aParams['oxattribute__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
         $oAttr = oxNew("oxattribute");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oAttr->loadInLang($this->_iEditLang, $soxId);
-        else
+        } else {
             $aParams['oxattribute__oxid'] = null;
-        //$aParams = $oAttr->ConvertNameArray2Idx( $aParams);
+            //$aParams = $oAttr->ConvertNameArray2Idx( $aParams);
+        }
 
 
         $oAttr->setLanguage(0);

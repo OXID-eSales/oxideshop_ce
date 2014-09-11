@@ -153,7 +153,7 @@ class oxShopViewValidator
     /**
      * Checks if given view name belongs to current subshop or is general view
      *
-     * @param $sViewName
+     * @param string $sViewName View name
      *
      * @return bool
      */
@@ -231,7 +231,7 @@ class oxShopViewValidator
     /**
      * Checks if view name is valid according to current config
      *
-     * @param $sViewName
+     * @param string $sViewName View name
      *
      * @return bool
      */

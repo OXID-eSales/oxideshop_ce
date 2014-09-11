@@ -652,7 +652,7 @@ class oxShopControl extends oxSuperCfg
     /**
      * Redirect to start page, in debug mode shows error message.
      *
-     * @param $oEx
+     * @param oxException $oEx Exception
      */
     protected function _handleCookieException($oEx)
     {
@@ -665,7 +665,7 @@ class oxShopControl extends oxSuperCfg
     /**
      * R&R handling -> redirect to error msg, also, can call _process again, specifying error handler view class.
      *
-     * @param $oEx
+     * @param oxException $oEx Exception
      */
     protected function _handleAccessRightsException($oEx)
     {

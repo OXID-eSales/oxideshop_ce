@@ -256,8 +256,8 @@ class oxwArticleBox extends oxWidget
     /**
      * Appends dyn params to url.
      *
-     * @param $sAddDynParams
-     * @param $oArticle oxArticle
+     * @param string    $sAddDynParams Dyn params
+     * @param oxArticle $oArticle      Article
      *
      * @return bool
      */
@@ -280,7 +280,7 @@ class oxwArticleBox extends oxWidget
     /**
      * Returns prepared article by id.
      *
-     * @param $sArticleId
+     * @param string $sArticleId Article id
      *
      * @return oxArticle
      */

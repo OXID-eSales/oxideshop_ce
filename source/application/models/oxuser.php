@@ -2263,9 +2263,9 @@ class oxUser extends oxBase
     }
 
     /**
-     * @param $sUser
-     * @param $sPassword
-     * @param $sShopID
+     * @param string $sUser     User
+     * @param string $sPassword Password
+     * @param string $sShopID   Shop id
      *
      * @throws object
      */

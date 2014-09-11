@@ -1067,8 +1067,8 @@ class oxwArticleDetails extends oxWidget
     /**
      * Runs additional checks for article.
      *
-     * @param $myUtils
-     * @param $myConfig
+     * @param oxUtils  $myUtils  General utils
+     * @param oxConfig $myConfig Main shop configuration
      */
     protected function _additionalChecksForArticle($myUtils, $myConfig)
     {

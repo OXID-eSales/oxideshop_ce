@@ -204,7 +204,7 @@ class oxOnlineLicenseCheck
     /**
      * Set error message.
      *
-     * @param $sErrorMessage string
+     * @param string $sErrorMessage Error message
      */
     protected function _setErrorMessage($sErrorMessage)
     {
@@ -222,7 +222,7 @@ class oxOnlineLicenseCheck
     /**
      * Performs a check of the response code and message.
      *
-     * @param $oResponse
+     * @param oxOnlineLicenseCheckResponse $oResponse Response
      *
      * @throws oxException
      *

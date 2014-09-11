@@ -335,5 +335,4 @@ class oxDeliverySetList extends oxList
         $sQ = "select $sTable.*, oxobject2delivery.oxobjectid from $sSubSql left join (select oxobject2delivery.* from oxobject2delivery where oxobject2delivery.oxtype = 'rdfadeliveryset' ) as oxobject2delivery on oxobject2delivery.oxdeliveryid=$sTable.oxid where " . $this->getBaseObject()->getSqlActiveSnippet() . " ";
         $this->selectString($sQ);
     }
-
 }

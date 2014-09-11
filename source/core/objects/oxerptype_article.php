@@ -95,7 +95,6 @@ class oxErpArticle450 extends oxErpArticle450_parent
 
         $oArtExt->save();
     }
-
 }
 
 $sArticleClass = 'oxErpArticle450';

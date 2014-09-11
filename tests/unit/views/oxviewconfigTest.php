@@ -2477,10 +2477,10 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function _dpIsModuleActive()
     {
         return array(
-            array( array( 'order' => 'oe/oepaypal/controllers/oepaypalorder' ), array(),                  'oepaypal', true ),
-            array( array( 'order' => 'oe/oepaypal/controllers/oepaypalorder' ), array( 0 => 'oepaypal' ), 'oepaypal', false ),
-            array( array(),                                                     array(),                  'oepaypal', false ),
-            array( array(),                                                     array( 0 => 'oepaypal' ), 'oepaypal', false ),
+            array(array('order' => 'oe/oepaypal/controllers/oepaypalorder'), array(), 'oepaypal', true),
+            array(array('order' => 'oe/oepaypal/controllers/oepaypalorder'), array(0 => 'oepaypal'), 'oepaypal', false),
+            array(array(), array(), 'oepaypal', false),
+            array(array(), array(0 => 'oepaypal'), 'oepaypal', false),
         );
     }
 
@@ -2488,15 +2488,15 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      * oxViewConfig::oePayPalIsModuleActive()
      * @dataProvider _dpIsModuleActive
      */
-    public function testIsModuleActive( $aModules, $aDisabledModules, $sModuleId, $blModuleIsActive )
+    public function testIsModuleActive($aModules, $aDisabledModules, $sModuleId, $blModuleIsActive)
     {
-        $this->setConfigParam( 'aModules', $aModules );
-        $this->setConfigParam( 'aDisabledModules', $aDisabledModules );
+        $this->setConfigParam('aModules', $aModules);
+        $this->setConfigParam('aDisabledModules', $aDisabledModules);
 
         $oViewConf = new oxViewConfig();
-        $blIsModuleActive = $oViewConf->isModuleActive( $sModuleId );
+        $blIsModuleActive = $oViewConf->isModuleActive($sModuleId);
 
-        $this->assertEquals( $blModuleIsActive, $blIsModuleActive, "Module state is not as expected." );
+        $this->assertEquals($blModuleIsActive, $blIsModuleActive, "Module state is not as expected.");
     }
 
     /**
@@ -2507,17 +2507,17 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function providerIsModuleActive_VersionCheck()
     {
         return array(
-            array( '1.8', null, true ),
-            array( '2.0', null, true ),
-            array( '2.1', null, false ),
-            array( '3.0', null, false ),
-            array( null, '1.8', false ),
-            array( null, '2.0', false ),
-            array( null,'2.1', true ),
-            array( null, '3.0', true ),
-            array( '1.8', '3.0', true ),
-            array( '1.0', '1.7', false ),
-            array( '2.1', '3.0', false ),
+            array('1.8', null, true),
+            array('2.0', null, true),
+            array('2.1', null, false),
+            array('3.0', null, false),
+            array(null, '1.8', false),
+            array(null, '2.0', false),
+            array(null, '2.1', true),
+            array(null, '3.0', true),
+            array('1.8', '3.0', true),
+            array('1.0', '1.7', false),
+            array('2.1', '3.0', false),
         );
     }
 
@@ -2526,7 +2526,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      *
      * @dataProvider providerIsModuleActive_VersionCheck
      */
-    public function testIsModuleActive_VersionCheck( $sFrom, $sTo, $blModuleStateExpected )
+    public function testIsModuleActive_VersionCheck($sFrom, $sTo, $blModuleStateExpected)
     {
         $aModules = array(
             'order' => 'oe/oepaypal/controllers/oepaypalorder',
@@ -2536,13 +2536,13 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
             'oepaypal' => '2.0',
             'oepaypal2' => '5.0'
         );
-        $this->setConfigParam( 'aModules', $aModules );
-        $this->setConfigParam( 'aDisabledModules', array() );
-        $this->setConfigParam( 'aModuleVersions', $aModuleVersions );
+        $this->setConfigParam('aModules', $aModules);
+        $this->setConfigParam('aDisabledModules', array());
+        $this->setConfigParam('aModuleVersions', $aModuleVersions);
 
         $oViewConf = new oxViewConfig();
-        $blIsModuleActive = $oViewConf->isModuleActive( 'oepaypal', $sFrom, $sTo );
+        $blIsModuleActive = $oViewConf->isModuleActive('oepaypal', $sFrom, $sTo);
 
-        $this->assertEquals( $blModuleStateExpected, $blIsModuleActive, "Module state is not from '$sFrom' to '$sTo'." );
+        $this->assertEquals($blModuleStateExpected, $blIsModuleActive, "Module state is not from '$sFrom' to '$sTo'.");
     }
 }

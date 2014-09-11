@@ -97,8 +97,6 @@ class Shop_Seo extends Shop_Config
 
     /**
      * Saves changed shop configuration parameters.
-     *
-     * @return mixed
      */
     public function save()
     {

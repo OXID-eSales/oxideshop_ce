@@ -2729,6 +2729,11 @@ class oxBasket extends oxSuperCfg
         return $dPrice;
     }
 
+    /**
+     * Gets total discount sum.
+     *
+     * @return float|int
+     */
     public function getTotalDiscountSum()
     {
         $dPrice = 0;

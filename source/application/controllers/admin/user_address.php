@@ -89,8 +89,6 @@ class User_Address extends oxAdminDetails
 
     /**
      * Saves user addressing information.
-     *
-     * @return mixed
      */
     public function save()
     {
@@ -114,8 +112,6 @@ class User_Address extends oxAdminDetails
 
     /**
      * Deletes user addressing information.
-     *
-     * @return null
      */
     public function delAddress()
     {

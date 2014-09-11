@@ -397,8 +397,10 @@ class oxAdminView extends oxView
         switch ($sParam) {
             case 'g':
                 $iMaxFileSize *= 1024;
+            // no break
             case 'm':
                 $iMaxFileSize *= 1024;
+            // no break
             case 'k':
                 $iMaxFileSize *= 1024;
         }

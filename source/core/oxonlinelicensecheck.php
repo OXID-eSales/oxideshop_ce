@@ -89,6 +89,8 @@ class oxOnlineLicenseCheck
     }
 
     /**
+     * Gets servers manager.
+     *
      * @return oxServersManager
      */
     public function getServersManager()
@@ -97,6 +99,8 @@ class oxOnlineLicenseCheck
     }
 
     /**
+     * Sets user counter.
+     *
      * @param oxUserCounter $oUserCounter
      */
     public function setUserCounter($oUserCounter)
@@ -105,6 +109,8 @@ class oxOnlineLicenseCheck
     }
 
     /**
+     * Gets user counter.
+     *
      * @return oxUserCounter
      */
     public function getUserCounter()
@@ -114,6 +120,8 @@ class oxOnlineLicenseCheck
 
 
     /**
+     * Sets dependencies.
+     *
      * @param oxOnlineLicenseCheckCaller $oCaller
      */
     public function __construct($oCaller)
@@ -212,6 +220,8 @@ class oxOnlineLicenseCheck
     }
 
     /**
+     * Gets caller.
+     *
      * @return oxOnlineLicenseCheckCaller
      */
     protected function _getCaller()
@@ -285,6 +295,8 @@ class oxOnlineLicenseCheck
     }
 
     /**
+     * Forms counters.
+     *
      * @return array
      */
     protected function _formCounters()
@@ -341,6 +353,8 @@ class oxOnlineLicenseCheck
     }
 
     /**
+     * Gets user counter.
+     *
      * @return oxUserCounter
      */
     protected function _getUserCounter()

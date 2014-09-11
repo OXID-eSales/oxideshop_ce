@@ -1213,6 +1213,8 @@ class oxLang extends oxSuperCfg
     }
 
     /**
+     * Gets browser language.
+     *
      * @return string
      */
     protected function _getBrowserLanguage()

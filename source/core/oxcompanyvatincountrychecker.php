@@ -60,6 +60,8 @@ class oxCompanyVatInCountryChecker extends oxCompanyVatInChecker implements oxIC
     }
 
     /**
+     * Validates.
+     *
      * @param oxCompanyVatIn $oVatIn
      *
      * @return bool

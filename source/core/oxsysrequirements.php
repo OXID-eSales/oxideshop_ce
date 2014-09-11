@@ -626,6 +626,8 @@ class oxSysRequirements
     }
 
     /**
+     * Gets PHP version.
+     *
      * @return float|string
      */
     public function getPhpVersion()

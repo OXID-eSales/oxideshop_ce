@@ -595,6 +595,8 @@ class oxModuleList extends oxSuperCfg
     }
 
     /**
+     * Gets module validator factory.
+     *
      * @return oxModuleValidatorFactory
      */
     public function getModuleValidatorFactory()

@@ -1185,6 +1185,8 @@ class OxSetupDb extends oxSetupCore
     }
 
     /**
+     * Adds config value if shop info should be set.
+     *
      * @param oxSetupUtils   $oUtils      Setup utilities
      * @param string         $sBaseShopId Shop id
      * @param array          $aParams     Parameters

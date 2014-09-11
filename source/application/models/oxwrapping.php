@@ -183,6 +183,8 @@ class oxWrapping extends oxI18n
     }
 
     /**
+     * Gets price.
+     *
      * @return double
      */
     public function getPrice()

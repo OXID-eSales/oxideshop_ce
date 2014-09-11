@@ -81,6 +81,8 @@ class oxOnlineLicenseCheck
     protected $_oServersManager = null;
 
     /**
+     * Sets servers manager.
+     *
      * @param oxServersManager $oServersManager
      */
     public function setServersManager($oServersManager)

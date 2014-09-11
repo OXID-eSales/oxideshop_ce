@@ -2610,6 +2610,8 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
+     * Gets gift card cost.
+     *
      * @return oxPrice
      */
     public function getGiftCardCost()

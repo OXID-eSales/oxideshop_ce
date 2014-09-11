@@ -242,8 +242,6 @@ class oxView extends oxSuperCfg
 
     /**
      * Returns view ID (currently it returns NULL)
-     *
-     * @return string
      */
     public function getViewId()
     {
@@ -513,8 +511,6 @@ class oxView extends oxSuperCfg
      * @param string $sFunction name of function to execute
      *
      * @throws oxSystemComponentException system component exception
-     *
-     * @return mixed
      */
     public function executeFunction($sFunction)
     {
@@ -548,8 +544,6 @@ class oxView extends oxSuperCfg
      * Input example: "view_name?param1=val1&param2=val2" => "cl=view_name&param1=val1&param2=val2"
      *
      * @param string $sNewAction new action params
-     *
-     * @return string
      */
     protected function _executeNewAction($sNewAction)
     {

@@ -228,7 +228,12 @@ class Diagnostics_Main extends oxAdminDetails
         $this->_aViewData['sResult'] = $sResult;
     }
 
-
+    /**
+     * Performs main system diagnostic.
+     * Shop and module details, database health, php parameters, server information
+     *
+     * @return array
+     */
     protected function _runBasicDiagnostics()
     {
         $aViewData = array();

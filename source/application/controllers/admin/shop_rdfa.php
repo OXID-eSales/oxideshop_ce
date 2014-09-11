@@ -112,7 +112,7 @@ class shop_rdfa extends Shop_Config
      *
      * @return array
      */
-    function getHttpResponseCode($sURL)
+    public function getHttpResponseCode($sURL)
     {
         return get_headers($sURL);
     }

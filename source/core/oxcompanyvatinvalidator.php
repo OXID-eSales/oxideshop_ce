@@ -90,7 +90,7 @@ class oxCompanyVatInValidator
      *
      * @param oxCountry $oCountry
      */
-    function __construct(oxCountry $oCountry)
+    public function __construct(oxCountry $oCountry)
     {
         $this->setCountry($oCountry);
     }

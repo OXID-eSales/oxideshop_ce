@@ -60,12 +60,19 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
     protected $_sWsdl = 'http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
 
     /**
-     * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
+     * Class constructor.
      */
     public function __construct()
     {
     }
 
+    /**
+     * Validates VAT.
+     *
+     * @param oxCompanyVatIn $oVatIn Company VAT identification number object.
+     *
+     * @return bool
+     */
     public function validate(oxCompanyVatIn $oVatIn)
     {
         $oCheckVat = new stdClass();

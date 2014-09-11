@@ -148,7 +148,7 @@ class oxImex extends oxBase
      *
      * @return string
      */
-    function interFormSimple($nValue)
+    public function interFormSimple($nValue)
     {
         $nValue = str_replace("\r", "", $nValue);
         $nValue = str_replace("\n", " ", $nValue);
@@ -166,7 +166,7 @@ class oxImex extends oxBase
      *
      * @return string
      */
-    function interForm($nValue, $oObj = null)
+    public function interForm($nValue, $oObj = null)
     { // thnx to Volker Dörk for this function and his help here
 
         // #387A skipping conversion for fields where info must be passed in original format
@@ -226,7 +226,7 @@ class oxImex extends oxBase
      *
      * @return string
      */
-    function internPrice($nPrice)
+    public function internPrice($nPrice)
     { // thnx to Volker Dörk for this function and his help here
         $nPrice = $this->interForm($nPrice);
         $nPrice = number_format((double) $nPrice, 2, '.', '');
@@ -242,7 +242,7 @@ class oxImex extends oxBase
      *
      * @return string
      */
-    function exportLexwareOrders($iFromOrderNr = "", $iToOrderNr = "")
+    public function exportLexwareOrders($iFromOrderNr = "", $iToOrderNr = "")
     {
         // thnx to Volker Dörk for this function and his help here
         $myConfig = $this->getConfig();

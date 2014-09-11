@@ -146,7 +146,10 @@ class oxApplicationServer
         return $this->_iLastFrontendUsage;
     }
 
-    public function setIsValid($blValid=true)
+    /**
+     * @param bool $blValid Flag to set if application server is valid
+     */
+    public function setIsValid($blValid = true)
     {
         $this->_blIsValid = $blValid;
     }

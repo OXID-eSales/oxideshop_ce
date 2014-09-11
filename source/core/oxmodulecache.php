@@ -37,7 +37,7 @@ class oxModuleCache extends oxSuperCfg
     /**
      * @param oxModule $_oModule
      */
-    function __construct(oxModule $_oModule)
+    public function __construct(oxModule $_oModule)
     {
         $this->_oModule = $_oModule;
     }

@@ -49,7 +49,7 @@ class oxwRecommendation extends oxWidget
      *
      * @return array
      */
-    function getSimilarRecommLists()
+    public function getSimilarRecommLists()
     {
         $aArticleIds = $this->getViewParameter("aArticleIds");
 
@@ -64,7 +64,7 @@ class oxwRecommendation extends oxWidget
      *
      * @return object
      */
-    function getRecommList()
+    public function getRecommList()
     {
         $oRecommList = oxNew('recommlist');
 

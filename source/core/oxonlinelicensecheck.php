@@ -332,6 +332,10 @@ class oxOnlineLicenseCheck
         $this->_blIsException = $blIsException;
     }
 
+    /**
+     * Starts grace period.
+     * Sets to config options.
+     */
     protected function _startGracePeriod()
     {
     }

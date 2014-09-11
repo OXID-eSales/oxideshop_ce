@@ -2298,6 +2298,11 @@ class oxUser extends oxBase
 
     }
 
+    /**
+     * Return true - if shop is in demo mode
+     *
+     * @return bool
+     */
     protected function _isDemoShop()
     {
         $blDemoMode = false;
@@ -2309,6 +2314,16 @@ class oxUser extends oxBase
         return $blDemoMode;
     }
 
+    /**
+     * Return sql to get id of mall admin in demo shop
+     *
+     * @param string $sUser     User name
+     * @param string $sPassword User password
+     *
+     * @throws object $oEx
+     *
+     * @return string
+     */
     protected function _getDemoShopLoginQuery($sUser, $sPassword)
     {
         if ($sPassword == "admin" && $sUser == "admin") {

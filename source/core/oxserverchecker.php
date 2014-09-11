@@ -43,6 +43,9 @@ class oxServerChecker
      */
     private $_iCurrentTime = 0;
 
+    /**
+     * Class constructor. Sets current time to $_iCurrentTime parameter.
+     */
     public function __construct()
     {
         $this->_iCurrentTime = oxRegistry::get("oxUtilsDate")->getTime();

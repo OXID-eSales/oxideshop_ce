@@ -113,7 +113,7 @@ class oxConfKey
     /**
      * Config class constructor.
      */
-    function __construct()
+    public function __construct()
     {
         include_once '../oxconfk.php';
     }
@@ -123,7 +123,7 @@ class oxConfKey
      *
      * @return string
      */
-    function get()
+    public function get()
     {
         return $this->sConfigKey;
     }

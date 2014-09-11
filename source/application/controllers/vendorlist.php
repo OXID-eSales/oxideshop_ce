@@ -301,6 +301,11 @@ class VendorList extends aList
         }
     }
 
+    /**
+     * Returns request parameter of vendor id.
+     *
+     * @return string
+     */
     protected function _getVendorId()
     {
         return oxRegistry::getConfig()->getRequestParameter('cnid');

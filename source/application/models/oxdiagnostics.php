@@ -84,7 +84,7 @@ class oxDiagnostics
     /**
      * Setter for list of files and folders to check
      *
-     * @param $aPathList array
+     * @param array $aPathList Path list.
      */
     public function setFileCheckerPathList($aPathList)
     {
@@ -104,7 +104,7 @@ class oxDiagnostics
     /**
      * Setter for extensions of files to check
      *
-     * @param $aExtList array
+     * @param array $aExtList List of extensions.
      */
     public function setFileCheckerExtensionList($aExtList)
     {
@@ -125,7 +125,7 @@ class oxDiagnostics
     /**
      * Version setter
      *
-     * @param $sVersion string
+     * @param string $sVersion Version.
      */
     public function setVersion($sVersion)
     {
@@ -147,7 +147,7 @@ class oxDiagnostics
     /**
      * Edition setter
      *
-     * @param $sEdition string
+     * @param string $sEdition Edition
      */
     public function setEdition($sEdition)
     {
@@ -169,7 +169,7 @@ class oxDiagnostics
     /**
      * Revision setter
      *
-     * @param $sRevision string
+     * @param string $sRevision revision.
      */
     public function setRevision($sRevision)
     {
@@ -192,7 +192,7 @@ class oxDiagnostics
     /**
      * ShopLink setter
      *
-     * @param $sShopLink string
+     * @param string $sShopLink Shop link.
      */
     public function setShopLink($sShopLink)
     {
@@ -412,7 +412,7 @@ class oxDiagnostics
     /**
      * Finds the list of system devices for given system type
      *
-     * @param $sSystemType
+     * @param string $sSystemType System type.
      *
      * @return string
      */

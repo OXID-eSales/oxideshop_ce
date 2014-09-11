@@ -2247,7 +2247,7 @@ class oxEmail extends PHPMailer
     /**
      * Performs search for "sid", removes it and adds shop id to string.
      *
-     * @param $sAltBody
+     * @param string $sAltBody Body.
      *
      * @return string
      */

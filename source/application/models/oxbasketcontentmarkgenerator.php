@@ -58,7 +58,7 @@ class oxBasketContentMarkGenerator
     /**
      * Returns explanation mark by given mark identification (skippedDiscount, downloadable, intangible).
      *
-     * @param $sMarkIdentification
+     * @param string $sMarkIdentification Mark identification.
      *
      * @return string
      */
@@ -86,7 +86,7 @@ class oxBasketContentMarkGenerator
     /**
      * Forms marks for articles.
      *
-     * @param $sCurrentMark
+     * @param string $sCurrentMark Current mark.
      *
      * @return array
      */

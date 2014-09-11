@@ -147,7 +147,7 @@ class Diagnostics_Main extends oxAdminDetails
     /**
      * Checks versions for list of oxid files
      *
-     * @param $aFileList array list of files to be checked
+     * @param array $aFileList array list of files to be checked
      *
      * @return null|object
      */
@@ -182,7 +182,7 @@ class Diagnostics_Main extends oxAdminDetails
     /**
      * Returns body of file check report
      *
-     * @param  $oFileCheckerResult mixed file checker result object
+     * @param oxFileCheckerResult $oFileCheckerResult mixed file checker result object
      *
      * @return string body of report
      */

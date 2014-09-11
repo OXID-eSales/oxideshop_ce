@@ -2207,7 +2207,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                     $blCheckActivePicId = false;
                 }
 
-            } else if ($blCheckActivePicId && $iActPicId <= $i) {
+            } elseif ($blCheckActivePicId && $iActPicId <= $i) {
                 // if picture is empty, setting active pic id to next
                 // picture
                 $iActPicId++;

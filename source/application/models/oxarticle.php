@@ -4936,7 +4936,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $sParent = $this->getParentArticle();
         if ($sParent) {
             foreach ($this->_getCopyParentFields() as $sField) {
-                $this->$sField = new oxField ($sParent->$sField->value);
+                $this->$sField = new oxField($sParent->$sField->value);
             }
         }
     }

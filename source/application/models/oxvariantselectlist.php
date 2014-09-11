@@ -86,8 +86,6 @@ class oxVariantSelectList implements oxISelectList
      * @param string $sValue     selection value
      * @param string $blDisabled selection state - disabled/enabled
      * @param string $blActive   selection state - active/inactive
-     *
-     * @return bool
      */
     public function addVariant($sName, $sValue, $blDisabled, $blActive)
     {

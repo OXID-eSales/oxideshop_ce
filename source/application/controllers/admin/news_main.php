@@ -101,8 +101,9 @@ class News_Main extends oxAdminDetails
             $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxnews__oxshopid'] = $sShopID;
         // creating fake object to save correct time value
-        if (!$aParams['oxnews__oxdate'])
+        if (!$aParams['oxnews__oxdate']) {
             $aParams['oxnews__oxdate'] = "";
+        }
 
         $oConvObject = new oxField();
         $oConvObject->fldmax_length = 0;
@@ -112,10 +113,11 @@ class News_Main extends oxAdminDetails
 
         $oNews = oxNew("oxnews");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oNews->loadInLang($this->_iEditLang, $soxId);
-        else
+        } else {
             $aParams['oxnews__oxid'] = null;
+        }
 
 
         //$aParams = $oNews->ConvertNameArray2Idx( $aParams);
@@ -139,8 +141,9 @@ class News_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
         // checkbox handling
-        if (!isset($aParams['oxnews__oxactive']))
+        if (!isset($aParams['oxnews__oxactive'])) {
             $aParams['oxnews__oxactive'] = 0;
+        }
 
         parent::save();
 
@@ -148,8 +151,9 @@ class News_Main extends oxAdminDetails
             $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxnews__oxshopid'] = $sShopID;
         // creating fake object to save correct time value
-        if (!$aParams['oxnews__oxdate'])
+        if (!$aParams['oxnews__oxdate']) {
             $aParams['oxnews__oxdate'] = "";
+        }
 
         $oConvObject = new oxField();
         $oConvObject->fldmax_length = 0;
@@ -159,10 +163,11 @@ class News_Main extends oxAdminDetails
 
         $oNews = oxNew("oxnews");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oNews->loadInLang($this->_iEditLang, $soxId);
-        else
+        } else {
             $aParams['oxnews__oxid'] = null;
+        }
 
 
         //$aParams = $oNews->ConvertNameArray2Idx( $aParams);

@@ -671,4 +671,3 @@ class oxERPType
         return $oShopObject->getId();
     }
 }
-

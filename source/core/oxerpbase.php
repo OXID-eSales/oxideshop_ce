@@ -679,4 +679,3 @@ abstract class oxERPBase
         throw new Exception("Plugin does not extend oxErpPluginBase class.");
     }
 }
-

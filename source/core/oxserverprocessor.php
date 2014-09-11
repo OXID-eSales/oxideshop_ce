@@ -40,6 +40,8 @@ class oxServerProcessor extends oxSuperCfg
     private $_oUtilsDate;
 
     /**
+     * Gets server node checker.
+     *
      * @return oxServerChecker
      */
     protected function _getServerNodeChecker()
@@ -48,6 +50,8 @@ class oxServerProcessor extends oxSuperCfg
     }
 
     /**
+     * Gets server node manager.
+     *
      * @return oxServersManager
      */
     protected function _getServerNodesManager()
@@ -56,6 +60,8 @@ class oxServerProcessor extends oxSuperCfg
     }
 
     /**
+     * Gets utils server.
+     *
      * @return oxUtilsServer
      */
     protected function _getUtilsServer()
@@ -64,6 +70,8 @@ class oxServerProcessor extends oxSuperCfg
     }
 
     /**
+     * Gets utils date.
+     *
      * @return oxUtilsDate
      */
     protected function _getUtilsDate()
@@ -72,6 +80,8 @@ class oxServerProcessor extends oxSuperCfg
     }
 
     /**
+     * Sets dependencies.
+     *
      * @param oxServersManager $oServerNodesManager
      * @param oxServerChecker  $oServerNodeChecker
      * @param oxUtilsServer    $oUtilsServer
@@ -106,6 +116,8 @@ class oxServerProcessor extends oxSuperCfg
     }
 
     /**
+     * Updates mode information.
+     *
      * @param oxApplicationServer $oNode
      */
     private function _updateNodeInformation($oNode)

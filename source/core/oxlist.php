@@ -104,8 +104,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @param mixed  $offset SPL array offset
      * @param oxBase $oBase  Array element
-     *
-     * @return null;
      */
     public function offsetSet($offset, $oBase)
     {
@@ -127,8 +125,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      * offsetUnset for SPL
      *
      * @param mixed $offset SPL array offset
-     *
-     * @return null;
      */
     public function offsetUnset($offset)
     {
@@ -152,8 +148,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
 
     /**
      * rewind for SPL
-     *
-     * @return null;
      */
     public function rewind()
     {
@@ -200,8 +194,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
 
     /**
      * next for SPL
-     *
-     * @return null;
      */
     public function next()
     {
@@ -236,8 +228,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
 
     /**
      * clears/destroys list contents
-     *
-     * @return null;
      */
     public function clear()
     {
@@ -345,8 +335,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @param string $sObjectName List item object type
      * @param string $sCoreTable  Db table name this list s selected from
-     *
-     * @return null;
      */
     public function init($sObjectName, $sCoreTable = null)
     {
@@ -386,8 +374,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      * Selects and SQL, creates objects and assign them
      *
      * @param string $sSql SQL select statement
-     *
-     * @return null;
      */
     public function selectString($sSql)
     {
@@ -435,8 +421,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      * Assign data from array to list
      *
      * @param array $aData data for list
-     *
-     * @return null;
      */
     public function assignArray($aData)
     {
@@ -463,8 +447,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @param integer $iStart   Start e.g. limit Start,xxxx
      * @param integer $iRecords Nr of Records e.g. limit xxx,Records
-     *
-     * @return null;
      */
     public function setSqlLimit($iStart, $iRecords)
     {
@@ -516,8 +498,6 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @param oxBase $oListObject List object (the one derived from oxBase)
      * @param array  $aDbFields   An array holding db field values (normally the result of oxDb::Execute())
-     *
-     * @return null;
      */
     protected function _assignElement($oListObject, $aDbFields)
     {

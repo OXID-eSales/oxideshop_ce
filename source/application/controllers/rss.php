@@ -74,8 +74,6 @@ class Rss extends oxUBase
      *
      * Template variables:
      * <b>rss</b>
-     *
-     * @return  string  $this->_sThisTemplate   current template file name
      */
     public function render()
     {
@@ -119,7 +117,6 @@ class Rss extends oxUBase
      * getTopShop loads top shop articles to rss
      *
      * @access public
-     * @return void
      */
     public function topshop()
     {
@@ -134,7 +131,6 @@ class Rss extends oxUBase
      * loads newest shop articles
      *
      * @access public
-     * @return void
      */
     public function newarts()
     {
@@ -149,7 +145,6 @@ class Rss extends oxUBase
      * loads category articles
      *
      * @access public
-     * @return void
      */
     public function catarts()
     {
@@ -167,7 +162,6 @@ class Rss extends oxUBase
      * loads search articles
      *
      * @access public
-     * @return void
      */
     public function searcharts()
     {
@@ -225,7 +219,6 @@ class Rss extends oxUBase
      * getBargain loads top shop articles to rss
      *
      * @access public
-     * @return void
      */
     public function bargain()
     {

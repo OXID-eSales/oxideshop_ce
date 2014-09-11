@@ -139,9 +139,9 @@ class Vendor_Main extends oxAdminDetails
 
         $oVendor = oxNew("oxvendor");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oVendor->loadInLang($this->_iEditLang, $soxId);
-        else {
+        } else {
             $aParams['oxvendor__oxid'] = null;
         }
 

@@ -186,7 +186,6 @@ class oxSeoDecoder extends oxSuperCfg
      * @param string $sPath    path
      *
      * @access public
-     * @return void
      */
     public function processSeoCall($sRequest = null, $sPath = null)
     {

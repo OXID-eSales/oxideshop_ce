@@ -44,8 +44,8 @@ $sDisabled = ($blMbStringOn > 1 && $blUnicodeSupport > 1) ? '' : 'disabled';
             </tr>
             <tr>
                 <td><?php $this->getText('STEP_3_DB_DATABSE_NAME'); ?>:</td>
-                <td>&nbsp;&nbsp;<input size="40" name="aDB[dbName]" class="editinput"
-                                       value="<?php echo($aDB['dbName']); ?>"><br>&nbsp;&nbsp;(<?php $this->getText('STEP_3_CREATE_DB_WHEN_NO_DB_FOUND'); ?>
+                <td>&nbsp;&nbsp;<input size="40" name="aDB[dbName]" class="editinput" value="<?php echo($aDB['dbName']); ?>"><br>
+                    &nbsp;&nbsp;(<?php $this->getText('STEP_3_CREATE_DB_WHEN_NO_DB_FOUND'); ?>
                     )
                 </td>
             </tr>

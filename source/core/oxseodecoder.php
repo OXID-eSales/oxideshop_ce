@@ -88,7 +88,7 @@ class oxSeoDecoder extends oxSuperCfg
         if (!$oRs->EOF) {
             // primary seo language changed ?
             $aRet = $this->parseStdUrl($oRs->fields['oxstdurl']);
-            $aRet['lang'] = $oRs->fields['oxlang'];;
+            $aRet['lang'] = $oRs->fields['oxlang'];
         }
 
         return $aRet;

@@ -67,7 +67,8 @@ require "_header.php"; ?>
             <ul><?php
             foreach ($aGroupInfo as $aModuleInfo) {
                 ?>
-                <li id="<?php echo $aModuleInfo['module']; ?>" class="<?php echo $aModuleInfo['class']; ?>"><?php
+                <li id="<?php echo $aModuleInfo['module']; ?>"
+                    class="<?php echo $aModuleInfo['class']; ?>"><?php
             if ($aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null") {
                 ?><a href="<?php $this->getReqInfoUrl($aModuleInfo['module']); ?>" target="_blank"><?php
             }
@@ -95,7 +96,9 @@ require "_header.php"; ?>
 <?php
 } else {
     ?><b><?php $this->getText('STEP_0_ERROR_TEXT'); ?></b><br>
-    <a target="_blank"
-       href="<?php $this->getText('STEP_0_ERROR_URL'); ?>"><?php $this->getText('STEP_0_ERROR_URL'); ?></a><?php
+    <a target="_blank" href="<?php $this->getText('STEP_0_ERROR_URL'); ?>">
+        <?php $this->getText('STEP_0_ERROR_URL'); ?>
+    </a>
+<?php
 }
 require "_footer.php";

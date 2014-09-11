@@ -151,5 +151,4 @@ class oxMediaUrl extends oxI18n
         return $sYoutubeHtml;
     }
 
-
 }

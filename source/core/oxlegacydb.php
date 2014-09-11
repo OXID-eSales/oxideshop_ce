@@ -374,5 +374,4 @@ class oxLegacyDb extends oxSuperCfg
     {
         return $this->getDb(false)->Insert_ID();
     }
-
 }

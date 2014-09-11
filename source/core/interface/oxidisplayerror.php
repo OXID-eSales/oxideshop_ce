@@ -50,5 +50,4 @@ interface oxIDisplayError
      * @return an additional value (string) by its name
      */
     public function getValue($sName);
-
 }

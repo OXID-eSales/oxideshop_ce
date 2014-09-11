@@ -113,5 +113,4 @@ class oxAmountPriceList extends oxList
 
         $this->assignArray($aData);
     }
-
 }

@@ -471,5 +471,4 @@ class oxFile extends oxBase
 
         return $iSize;
     }
-
 }

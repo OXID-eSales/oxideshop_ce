@@ -88,5 +88,4 @@ class oxERPType_User extends oxERPType
             parent::checkWriteAccess($oObj, $aData);
         }
     }
-
 }

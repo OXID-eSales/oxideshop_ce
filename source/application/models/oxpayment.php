@@ -485,5 +485,4 @@ class oxPayment extends oxI18n
     {
         return $this->_iPaymentError;
     }
-
 }

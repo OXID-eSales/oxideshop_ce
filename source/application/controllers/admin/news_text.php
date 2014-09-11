@@ -107,5 +107,4 @@ class News_Text extends oxAdminDetails
         // set oxid if inserted
         $this->setEditObjectId($oNews->getId());
     }
-
 }

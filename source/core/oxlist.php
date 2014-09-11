@@ -519,5 +519,4 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
 
         return $sFieldName;
     }
-
 }

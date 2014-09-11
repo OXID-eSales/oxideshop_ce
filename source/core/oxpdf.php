@@ -374,5 +374,4 @@ class oxPDF extends TCPDF
 
         parent::SetFont($family, $style, $size, $fontfile);
     }
-
 }

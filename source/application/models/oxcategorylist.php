@@ -659,5 +659,4 @@ class oxCategoryList extends oxList
         }
         return parent::__get($sName);
     }
-
 }

@@ -44,5 +44,4 @@ class oxERPType_ScalePrice extends oxERPType
             'OXID' => 'OXID'
         );
     }
-
 }

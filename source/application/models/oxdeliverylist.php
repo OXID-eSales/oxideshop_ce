@@ -399,5 +399,4 @@ class oxDeliveryList extends oxList
         }
         $this->selectString($sQ);
     }
-
 }

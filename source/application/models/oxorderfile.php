@@ -261,5 +261,4 @@ class oxOrderFile extends oxBase
     {
         return $this->oxorderfiles__oxfileid->value;
     }
-
 }

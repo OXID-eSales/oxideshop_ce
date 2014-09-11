@@ -469,5 +469,4 @@ class oxCurl
 
         return $mParam;
     }
-
 }

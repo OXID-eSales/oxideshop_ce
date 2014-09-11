@@ -404,5 +404,4 @@ class oxMdVariant extends oxSuperCfg
 
         return true;
     }
-
 }

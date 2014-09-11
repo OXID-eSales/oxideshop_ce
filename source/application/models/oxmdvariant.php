@@ -87,8 +87,6 @@ class oxMdVariant extends oxSuperCfg
      * Sets MD variant identifier
      *
      * @param string $sId New id
-     *
-     * @return null;
      */
     public function setId($sId)
     {
@@ -109,8 +107,6 @@ class oxMdVariant extends oxSuperCfg
      * Sets parent id
      *
      * @param string $sParentId Parent id
-     *
-     * @return null;
      */
     public function setParentId($sParentId)
     {
@@ -206,8 +202,6 @@ class oxMdVariant extends oxSuperCfg
      * Name setter
      *
      * @param string $sName New name
-     *
-     * @return null;
      */
     public function setName($sName)
     {

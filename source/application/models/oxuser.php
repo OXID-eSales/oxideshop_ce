@@ -487,7 +487,6 @@ class oxUser extends oxBase
             $this->_oPayments = oxNew('oxList');
             $this->_oPayments->init('oxUserPayment');
             $this->_oPayments->selectString($sSelect);
-
         }
 
         return $this->_oPayments;
@@ -1350,7 +1349,6 @@ class oxUser extends oxBase
 
             $sShopID = $oConfig->getShopId();
             $this->_dbLogin($sUser, $sPassword, $sShopID);
-
         }
 
 
@@ -1590,7 +1588,6 @@ class oxUser extends oxBase
                 // LDAP user is already in OXID DB, load it
                 $this->load($sOXID);
             }
-
         } else {
             /** @var oxUserException $oEx */
             $oEx = oxNew('oxUserException');
@@ -2249,7 +2246,6 @@ class oxUser extends oxBase
     {
 
         return (bool) $this->oxuser__oxpassword->value;
-
     }
 
     /**
@@ -2295,7 +2291,6 @@ class oxUser extends oxBase
                 $this->save();
             }
         }
-
     }
 
     /**

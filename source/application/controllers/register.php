@@ -192,6 +192,4 @@ class Register extends User
 
         return $aPaths;
     }
-
-
 }

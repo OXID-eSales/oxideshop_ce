@@ -92,5 +92,4 @@ class PriceAlarm_List extends oxAdminList
 
         return $this->_aWhere;
     }
-
 }

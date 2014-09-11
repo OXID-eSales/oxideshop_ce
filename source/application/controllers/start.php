@@ -400,5 +400,4 @@ class Start extends oxUBase
 
         return $oList;
     }
-
 }

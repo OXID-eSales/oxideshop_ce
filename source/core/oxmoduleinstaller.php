@@ -521,7 +521,7 @@ class oxModuleInstaller extends oxSuperCfg
     /**
      * Removes garbage ( module not used extensions ) from all installed extensions list
      *
-     * @param          $aInstalledExtensions
+     * @param array $aInstalledExtensions Installed extensions
      * @param oxModule $oModule
      *
      * @return array
@@ -546,8 +546,8 @@ class oxModuleInstaller extends oxSuperCfg
     /**
      * Returns extension which is no longer in metadata - garbage
      *
-     * @param $aModuleMetaDataExtensions  - extensions defined in metadata.
-     * @param $aModuleInstalledExtensions - extensions which are installed
+     * @param array $aModuleMetaDataExtensions  extensions defined in metadata.
+     * @param array $aModuleInstalledExtensions extensions which are installed
      *
      * @return array
      */
@@ -570,8 +570,8 @@ class oxModuleInstaller extends oxSuperCfg
     /**
      * Removes garbage - not exiting module extensions, returns clean array of installed extensions
      *
-     * @param $aInstalledExtensions - all installed extensions ( from all modules )
-     * @param $aGarbage             - extension which are not used and should be removed
+     * @param array $aInstalledExtensions all installed extensions ( from all modules )
+     * @param array $aGarbage             extension which are not used and should be removed
      *
      * @return array
      */
@@ -594,8 +594,8 @@ class oxModuleInstaller extends oxSuperCfg
     /**
      * Removes configs which are removed from module metadata
      *
-     * @param $aModuleSettings
-     * @param $sModuleId
+     * @param array  $aModuleSettings Module settings
+     * @param string $sModuleId       Module id
      */
     protected function _removeNotUsedSettings($aModuleSettings, $sModuleId)
     {
@@ -611,7 +611,7 @@ class oxModuleInstaller extends oxSuperCfg
     /**
      * Returns module configuration from database
      *
-     * @param $sModuleId
+     * @param string $sModuleId Module id
      *
      * @return array
      */
@@ -629,7 +629,7 @@ class oxModuleInstaller extends oxSuperCfg
     /**
      * Parses module config variable names to array from module settings
      *
-     * @param $aModuleSettings
+     * @param array $aModuleSettings Module settings
      *
      * @return array
      */
@@ -649,8 +649,8 @@ class oxModuleInstaller extends oxSuperCfg
     /**
      * Removes module configs from database
      *
-     * @param $sModuleId
-     * @param $aConfigsToRemove
+     * @param string $sModuleId        Module id
+     * @param array  $aConfigsToRemove Configs to remove
      */
     protected function _removeModuleConfigs($sModuleId, $aConfigsToRemove)
     {

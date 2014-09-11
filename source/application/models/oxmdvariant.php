@@ -126,7 +126,7 @@ class oxMdVariant extends oxSuperCfg
     /**
      * Sets MD subvariants
      *
-     * @param array [string]OxMdVariant $aSubvariants Subvariants
+     * @param oxMdVariant[] $aSubvariants Subvariants
      */
     public function setMdSubvariants($aSubvariants)
     {
@@ -309,7 +309,7 @@ class oxMdVariant extends oxSuperCfg
      * Inits MD variant by name. In case $aNames parameter has more than one element addNames recursively adds names for subvariants.
      *
      * @param string $sArtId Article ID
-     * @param        array   [int] $aNames Expected array of $sKey=>$sName pairs.
+     * @param array  $aNames Expected array of $sKey=>$sName pairs.
      * @param double $dPrice Price as double
      * @param string $sUrl   Article URL
      */

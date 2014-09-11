@@ -66,7 +66,7 @@ class oxFileCheckerResult
     /**
      * Setter for working directory
      *
-     * @param $blListAllFiles boolean
+     * @param boolean $blListAllFiles Whether to list all files
      */
     public function setListAllFiles($blListAllFiles)
     {
@@ -106,7 +106,7 @@ class oxFileCheckerResult
     /**
      * Methods saves result of one file check and returns updated summary array
      *
-     * @param $aResult
+     * @param array $aResult Result
      *
      * @return array
      */

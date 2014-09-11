@@ -96,7 +96,7 @@ class oxFileChecker
     /**
      * Setter for working directory
      *
-     * @param $sDir string
+     * @param string $sDir Directory
      */
     public function setBaseDirectory($sDir)
     {
@@ -118,7 +118,7 @@ class oxFileChecker
     /**
      * Version setter
      *
-     * @param $sVersion string
+     * @param string $sVersion Version
      */
     public function setVersion($sVersion)
     {
@@ -140,7 +140,7 @@ class oxFileChecker
     /**
      * Edition setter
      *
-     * @param $sEdition string
+     * @param string $sEdition Edition
      */
     public function setEdition($sEdition)
     {
@@ -162,7 +162,7 @@ class oxFileChecker
     /**
      * Revision setter
      *
-     * @param $sRevision string
+     * @param string $sRevision Revision
      */
     public function setRevision($sRevision)
     {
@@ -184,7 +184,7 @@ class oxFileChecker
     /**
      * Web service URL setter
      *
-     * @param $sRevision string
+     * @param string $sUrl Web service url.
      */
     public function setWebServiceUrl($sUrl)
     {
@@ -332,7 +332,7 @@ class oxFileChecker
      * This method gets the XML object for each file and checks the return values. The result will be saved in the
      * variable $sResultOutput.
      *
-     * @param $sFile
+     * @param string $sFile File
      *
      * @return mixed
      */

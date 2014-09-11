@@ -494,7 +494,7 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
-     * @param $aDebitInformation
+     * @param array $aDebitInformation Debit information
      *
      * @return bool|int
      */
@@ -521,7 +521,7 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
-     * @param $aDebitInfo
+     * @param array $aDebitInfo Debit info
      *
      * @return bool|int
      */
@@ -549,7 +549,7 @@ class oxInputValidator extends oxSuperCfg
     /**
      * If account number is shorter than 10, add zeros in front of number.
      *
-     * @param $aDebitInfo
+     * @param array $aDebitInfo Debit info
      *
      * @return array
      */
@@ -589,7 +589,7 @@ class oxInputValidator extends oxSuperCfg
     /**
      * Clean up spaces.
      *
-     * @param $aDebitInformation
+     * @param array $aDebitInformation Debit information
      *
      * @return mixed
      */
@@ -604,7 +604,7 @@ class oxInputValidator extends oxSuperCfg
     /**
      * Check if all need parameters entered
      *
-     * @param $aInvAddress
+     * @param array $aInvAddress Address
      *
      * @return bool
      */

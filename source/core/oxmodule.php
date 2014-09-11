@@ -377,8 +377,8 @@ class oxModule extends oxSuperCfg
     /**
      * Counts activated module extensions.
      *
-     * @param $aModuleExtensions
-     * @param $aInstalledExtensions
+     * @param array $aModuleExtensions    Module extensions
+     * @param array $aInstalledExtensions Installed extensions
      *
      * @return int
      */
@@ -403,7 +403,7 @@ class oxModule extends oxSuperCfg
     /**
      * Counts module extensions.
      *
-     * @param $aModuleExtensions
+     * @param array $aModuleExtensions Module extensions
      *
      * @return int
      */
@@ -441,7 +441,7 @@ class oxModule extends oxSuperCfg
     /**
      * Checks if module is in disabled list.
      *
-     * @param $sId
+     * @param string $sId Module id
      *
      * @return bool
      */

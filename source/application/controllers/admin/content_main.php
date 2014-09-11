@@ -134,10 +134,11 @@ class Content_Main extends oxAdminDetails
         }
 
         // special treatment
-        if ($aParams['oxcontents__oxtype'] == 0)
+        if ($aParams['oxcontents__oxtype'] == 0) {
             $aParams['oxcontents__oxsnippet'] = 1;
-        else
+        } else {
             $aParams['oxcontents__oxsnippet'] = 0;
+        }
 
         //Updates object folder parameters
         if ($aParams['oxcontents__oxfolder'] == 'CMSFOLDER_NONE') {
@@ -149,10 +150,11 @@ class Content_Main extends oxAdminDetails
             $aParams['oxcontents__oxshopid'] = $sShopID;
         $oContent = oxNew("oxcontent");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oContent->loadInLang($this->_iEditLang, $soxId);
-        else
+        } else {
             $aParams['oxcontents__oxid'] = null;
+        }
 
         //$aParams = $oContent->ConvertNameArray2Idx( $aParams);
 
@@ -182,8 +184,9 @@ class Content_Main extends oxAdminDetails
         }
 
         // checkbox handling
-        if (!isset($aParams['oxcontents__oxactive']))
+        if (!isset($aParams['oxcontents__oxactive'])) {
             $aParams['oxcontents__oxactive'] = 0;
+        }
 
             // shopid
             $sShopID = oxRegistry::getSession()->getVariable("actshop");
@@ -191,10 +194,11 @@ class Content_Main extends oxAdminDetails
 
         $oContent = oxNew("oxcontent");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oContent->loadInLang($this->_iEditLang, $soxId);
-        else
+        } else {
             $aParams['oxcontents__oxid'] = null;
+        }
 
         $oContent->setLanguage(0);
         $oContent->assign($aParams);

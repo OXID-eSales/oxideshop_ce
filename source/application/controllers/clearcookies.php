@@ -51,8 +51,6 @@ class ClearCookies extends oxUBase
 
     /**
      * Clears all cookies
-     *
-     * @return null
      */
     protected function _removeCookies()
     {
@@ -85,5 +83,4 @@ class ClearCookies extends oxUBase
 
         return $aPaths;
     }
-
 }

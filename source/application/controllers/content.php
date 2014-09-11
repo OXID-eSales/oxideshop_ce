@@ -552,5 +552,4 @@ class Content extends oxUBase
     {
         return oxRegistry::get("oxUtilsView")->parseThroughSmarty($this->getContent()->oxcontents__oxcontent->value, $this->getContent()->getId());
     }
-
 }

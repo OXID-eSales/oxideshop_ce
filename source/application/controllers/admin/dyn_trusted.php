@@ -198,5 +198,4 @@ class dyn_trusted extends Shop_Config
             }
         }
     }
-
 }

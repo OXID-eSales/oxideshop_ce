@@ -87,5 +87,4 @@ class Content_List extends oxAdminList
 
         return $sQ;
     }
-
 }

@@ -138,14 +138,21 @@ class Delivery_Main extends oxAdminDetails
         }
 
         // checkbox handling
-        if (!isset($aParams['oxdelivery__oxactive']))
+        if (!isset($aParams['oxdelivery__oxactive'])) {
             $aParams['oxdelivery__oxactive'] = 0;
-        if (!isset($aParams['oxdelivery__oxfixed']))
+        }
+
+        if (!isset($aParams['oxdelivery__oxfixed'])) {
             $aParams['oxdelivery__oxfixed'] = 0;
-        if (!isset($aParams['oxdelivery__oxfinalize']))
+        }
+
+        if (!isset($aParams['oxdelivery__oxfinalize'])) {
             $aParams['oxdelivery__oxfinalize'] = 0;
-        if (!isset($aParams['oxdelivery__oxsort']))
+        }
+
+        if (!isset($aParams['oxdelivery__oxsort'])) {
             $aParams['oxdelivery__oxsort'] = 9999;
+        }
 
 
         $oDelivery->setLanguage(0);

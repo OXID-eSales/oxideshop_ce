@@ -91,8 +91,6 @@ class oxTag extends oxSuperCfg
      * Sets maximum tag length
      *
      * @param int $iTagMaxLength Tag maximum length
-     *
-     * @return int
      */
     public function setMaxLength($iTagMaxLength)
     {
@@ -135,8 +133,6 @@ class oxTag extends oxSuperCfg
      * Sets tag size value
      *
      * @param int $iHitCount size of tag
-     *
-     * @return void
      */
     public function setHitCount($iHitCount)
     {
@@ -155,8 +151,6 @@ class oxTag extends oxSuperCfg
 
     /**
      * Increases tag size value
-     *
-     * @return void
      */
     public function increaseHitCount()
     {
@@ -196,8 +190,6 @@ class oxTag extends oxSuperCfg
      * Sets tag url. If nothing is passed, link is reset to null
      *
      * @param string $sTagLink formed tag link
-     *
-     * @return string
      */
     public function setLink($sTagLink = null)
     {
@@ -287,8 +279,6 @@ class oxTag extends oxSuperCfg
 
     /**
      * Adds dashes to too short tag words, so that they would be equal to minTagLength
-     *
-     * @return void
      */
     public function addUnderscores()
     {
@@ -306,8 +296,6 @@ class oxTag extends oxSuperCfg
 
     /**
      * Removes dashes from tag words.
-     *
-     * @return string
      */
     public function removeUnderscores()
     {

@@ -110,11 +110,13 @@ class oxDiagnosticsOutput
      */
     public function storeResult($sResult)
     {
-        $this->_oUtils->toFileCache($this->_sOutputKey, $sBody . $sResult);
+        $this->_oUtils->toFileCache($this->_sOutputKey, $sResult);
     }
 
     /**
      * Reads exported result file contents
+     *
+     * @param string $sOutputKey Output key.
      *
      * @return string
      */
@@ -127,6 +129,8 @@ class oxDiagnosticsOutput
 
     /**
      * Sends generated file for download
+     *
+     * @param string $sOutputKey Output key.
      */
     public function downloadResultFile($sOutputKey = null)
     {

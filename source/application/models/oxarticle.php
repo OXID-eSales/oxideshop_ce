@@ -1740,7 +1740,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function getManufacturer($blShopCheck = true)
     {
-        $oManufacturer = oxNew('oxmanufacturer');;
+        $oManufacturer = oxNew('oxmanufacturer');
         if (!($sManufacturerId = $this->getManufacturerId()) &&
             !$blShopCheck && $this->oxarticles__oxmanufacturerid->value
         ) {

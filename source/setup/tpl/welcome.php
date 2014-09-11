@@ -43,8 +43,11 @@ require "_header.php"; ?>
                                         foreach ($aLocations[$sSetupLang] as $sKey => $sValue) {
                                             $sSelected = ($sLocationLang !== null && $sLocationLang == $sKey) ? 'selected' : '';
                                             ?>
-                                            <option
-                                            value="<?php echo $sKey; ?>" <?php echo $sSelected; ?>><?php echo $sValue; ?></option><?php
+                                            <option value="<?php echo $sKey; ?>"
+                                                <?php echo $sSelected; ?>>
+                                                <?php echo $sValue; ?>
+                                            </option>
+                                        <?php
                                         }
                                     }
                                     ?>
@@ -106,8 +109,11 @@ require "_header.php"; ?>
                                         foreach ($aCountries[$sSetupLang] as $sKey => $sValue) {
                                             $sSelected = ($sCountryLang !== null && $sCountryLang == $sKey) ? 'selected' : '';
                                             ?>
-                                            <option
-                                            value="<?php echo $sKey; ?>" <?php echo $sSelected; ?>><?php echo $sValue; ?></option><?php
+                                            <option value="<?php echo $sKey; ?>"
+                                                <?php echo $sSelected; ?>>
+                                                <?php echo $sValue; ?>
+                                            </option>
+                                        <?php
                                         }
                                     }
                                     ?>

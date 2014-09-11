@@ -231,9 +231,9 @@
 
         <?php
         if (($iRedir2Step = $this->getNextSetupStep()) !== null) {
+            $sUrlParams = "istep={$iRedir2Step}&sid={$this->getSid()}";
             ?>
-            <meta http-equiv="refresh"
-                  content="3; URL=index.php?istep=<?php echo $iRedir2Step; ?>&sid=<?php $this->getSid(); ?>"><?php
+            <meta http-equiv="refresh" content="3; URL=index.php?<?php echo $sUrlParams; ?>"><?php
         }
         ?>
     </head>
@@ -241,7 +241,10 @@
 <body>
 
 <div id="page">
-    <a href="index.php?istep=<?php $this->getSetupStep('STEP_SYSTEMREQ'); ?>&sid=<?php $this->getSid(); ?>"><img
+<?php
+$sUrlParams = "istep={$this->getSetupStep('STEP_SYSTEMREQ')}&sid={$this->getSid()}";
+?>
+    <a href="index.php?<?php echo $sUrlParams; ?>"><img
             src="<?php echo $this->getImageDir(); ?>/setup_logo.png" alt="OXID eSales" hspace="5" vspace="5" border="0"></a>
     <div id="header">
         <?php
@@ -283,7 +286,8 @@ if (count($aMessages)) {
 }
 
 if (($iRedir2Step = $this->getNextSetupStep()) !== null) {
+    $sUrlParams = "istep={$iRedir2Step}&sid={$this->getSid()}";
     ?><br><br><?php $this->getText('HEADER_TEXT_SETUP_NOT_RUNS_AUTOMATICLY'); ?>
-    <a href="index.php?istep=<?php echo $iRedir2Step; ?>&sid=<?php $this->getSid(); ?>"
+    <a href="index.php?<?php echo $sUrlParams; ?>"
        id="continue"><b><?php $this->getText('HERE'); ?></b></a>.<br><br><?php
 }

@@ -175,7 +175,7 @@ if (!class_exists("Config")) {
          */
         public function __construct()
         {
-            include getInstallPath() . "config.inc.php";;
+            include getInstallPath() . "config.inc.php";
         }
     }
 }
@@ -1816,7 +1816,7 @@ class oxSetupView extends oxSetupCore
      */
     public function getText($sTextId, $blPrint = true)
     {
-        $sText = $this->getInstance("oxSetupLang")->getText($sTextId);;
+        $sText = $this->getInstance("oxSetupLang")->getText($sTextId);
 
         return $blPrint ? print($sText) : $sText;
     }

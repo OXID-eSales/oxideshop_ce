@@ -214,7 +214,7 @@ class oxShopViewValidator
             $this->_aValidShopViews = array();
 
             foreach ($aTables as $sTable) {
-                $this->_aValidShopViews[] = 'oxv_' . $sTable;;
+                $this->_aValidShopViews[] = 'oxv_' . $sTable;
 
                 if (in_array($sTable, $this->getMultiLangTables())) {
                     foreach ($this->getAllShopLanguages() as $sLang) {

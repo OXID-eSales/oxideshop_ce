@@ -207,7 +207,7 @@ $aLang =  array(
 
 'HELP_SHOP_MALL_MALLMODE'                     => 'Hier stellen Sie ein, was auf der Startseite dieses eShops angezeigt werden soll: '.
                                                  '<ul><li><span class="navipath_or_inputname">Shop-Auswahlseite</span>: Eine Seite wird angezeigt, auf der Kunden zwischen den verschiedenen Shops wählen können.</li>' .
-                                                 '<li><span class="navipath_or_inputname">Hauptschop anzeigen</span>: Die normale Startseite des Hauptshops wird angezeigt.</li></ul>',
+                                                 '<li><span class="navipath_or_inputname">Hauptshop anzeigen</span>: Die normale Startseite des Hauptshops wird angezeigt.</li></ul>',
 
 'HELP_SHOP_MALL_PRICEADDITION'                => 'Sie haben die Möglichkeit, auf alle Artikelpreise einen Aufschlag zu berechnen: Geben Sie den entsprechenden Aufschlag ein und wählen Sie in der Auswahlliste aus, ob er prozentual (<span class="userinput_or_code">%</span>) oder absolut (<span class="userinput_or_code">abs</span>) berechnet werden soll.',
 

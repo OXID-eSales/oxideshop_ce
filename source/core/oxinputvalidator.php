@@ -495,6 +495,8 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
+     * Validates debit note.
+     *
      * @param array $aDebitInformation Debit information
      *
      * @return bool|int
@@ -522,6 +524,8 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
+     * Validates old debit info.
+     *
      * @param array $aDebitInfo Debit info
      *
      * @return bool|int
@@ -570,6 +574,8 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
+     * Checks if all bank information is set.
+     *
      * @param array $aRequiredFields  fields must be set.
      * @param array $aBankInformation actual information.
      *
@@ -631,6 +637,8 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
+     * Gets VAT in validator.
+     *
      * @return oxOnlineVatIdCheck
      *
      * @deprecated since v5.2 (2014-07-28); This logic was moved to oxCompanyVatInValidator
@@ -645,7 +653,6 @@ class oxInputValidator extends oxSuperCfg
 
     /**
      * VATIN validator setter
-     *
      *
      * @param oxCompanyVatInValidator $oCompanyVatInValidator
      */

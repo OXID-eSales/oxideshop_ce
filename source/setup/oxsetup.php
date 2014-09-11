@@ -680,8 +680,6 @@ class OxSetupSession extends oxSetupCore
 
     /**
      * Initializes setup session data array
-     *
-     * @return array
      */
     protected function _initSessionData()
     {

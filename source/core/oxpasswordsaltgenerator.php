@@ -33,6 +33,8 @@ class oxPasswordSaltGenerator
     private $_openSSLFunctionalityChecker;
 
     /**
+     * Sets dependencies.
+     *
      * @param oxOpenSSLFunctionalityChecker $openSSLFunctionalityChecker
      */
     public function __construct(oxOpenSSLFunctionalityChecker $openSSLFunctionalityChecker)
@@ -58,6 +60,8 @@ class oxPasswordSaltGenerator
     }
 
     /**
+     * Gets open SSL functionality checker.
+     *
      * @return oxOpenSSLFunctionalityChecker
      */
     protected function _getOpenSSLFunctionalityChecker()
@@ -66,6 +70,8 @@ class oxPasswordSaltGenerator
     }
 
     /**
+     * Generates custom salt.
+     *
      * @return string
      */
     protected function _customSaltGenerator()

@@ -608,19 +608,19 @@ class oxSeoEncoderArticle extends oxSeoEncoder
 
         $sUri = null;
         switch ($iType) {
-            case OXARTICLE_LINKTYPE_VENDOR :
+            case OXARTICLE_LINKTYPE_VENDOR:
                 $sUri = $this->getArticleVendorUri($oArticle, $iLang);
                 break;
-            case OXARTICLE_LINKTYPE_MANUFACTURER :
+            case OXARTICLE_LINKTYPE_MANUFACTURER:
                 $sUri = $this->getArticleManufacturerUri($oArticle, $iLang);
                 break;
-            case OXARTICLE_LINKTYPE_TAG :
+            case OXARTICLE_LINKTYPE_TAG:
                 $sUri = $this->getArticleTagUri($oArticle, $iLang);
                 break;
-            case OXARTICLE_LINKTYPE_RECOMM :
+            case OXARTICLE_LINKTYPE_RECOMM:
                 $sUri = $this->getArticleRecommUri($oArticle, $iLang);
                 break;
-            case OXARTICLE_LINKTYPE_PRICECATEGORY : // goes price category urls to default (category urls)
+            case OXARTICLE_LINKTYPE_PRICECATEGORY: // goes price category urls to default (category urls)
             default:
                 $sUri = $this->getArticleUri($oArticle, $iLang);
                 break;

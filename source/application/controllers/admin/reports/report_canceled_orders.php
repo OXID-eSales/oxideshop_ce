@@ -224,8 +224,6 @@ if (!class_exists('report_canceled_orders')) {
          * @param array  $aTempUserSessions       user sessions
          * @param array  &$aDataX4                data to fill
          * @param bool   $blMonth                 if TRUE - for month, if FALSE - for week [true]
-         *
-         * @return array
          */
         protected function _collectToBasketSessions($sSql, $aTempOrder, $aTempExecOrdersSessions, $aTempPaymentSessions, $aTempUserSessions, &$aDataX4, $blMonth = true)
         {
@@ -251,8 +249,6 @@ if (!class_exists('report_canceled_orders')) {
          * @param string $sSql     data query
          * @param array  &$aDataX5 data to fill
          * @param bool   $blMonth  if TRUE - for month, if FALSE - for week [true]
-         *
-         * @return array
          */
         protected function _collectOrdersMade($sSql, &$aDataX5, $blMonth = true)
         {
@@ -275,8 +271,6 @@ if (!class_exists('report_canceled_orders')) {
          *
          * @param string $sQ       data query
          * @param array  &$aDataX5 data to fill
-         *
-         * @return array
          */
         protected function _collectOrdersMadeForVisitorWeek($sQ, &$aDataX5)
         {

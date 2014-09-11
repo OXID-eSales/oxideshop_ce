@@ -306,9 +306,9 @@ class oxUtils extends oxSuperCfg
      * User email validation function. Returns true if email is OK otherwise - false;
      * Syntax validation is performed only.
      *
-     * @deprecated since v4.9.0/v5.2.0 (2014-06-17); Use MailValidator::isValidEmail().
-     *
      * @param string $sEmail user email
+     *
+     * @deprecated since v4.9.0/v5.2.0 (2014-06-17); Use MailValidator::isValidEmail().
      *
      * @return bool
      */

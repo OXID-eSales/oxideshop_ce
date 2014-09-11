@@ -3774,9 +3774,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Collects and returns active/all variant ids of article.
      *
-     * @deprecated since v5.2.0 (2014-04-30); Naming was changed and the method was made to public. Now use function getVariantIds().
-     *
      * @param bool $blActiveVariants Parameter to load only active variants.
+     *                               *
+     * @deprecated since v5.2.0 (2014-04-30); Naming was changed and the method was made to public. Now use function getVariantIds().
      *
      * @return array
      */

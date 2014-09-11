@@ -47,8 +47,8 @@ class oxSimpleXml
     /**
      * Parses object structure to XML string
      *
-     * @param  object $oInput    Input object
-     * @param  string $sDocument Document name.
+     * @param object $oInput    Input object
+     * @param string $sDocument Document name.
      *
      * @return string
      */

@@ -31,15 +31,6 @@
 class oxOnlineRequest
 {
 
-    public function __construct()
-    {
-        $oConfig = oxRegistry::getConfig();
-        $this->clusterId = $this->_getClusterId();
-        $this->edition = $oConfig->getEdition();
-        $this->version = $oConfig->getVersion();
-        $this->shopUrl = $oConfig->getShopUrl();
-    }
-
     /**
      * OXID eShop servers cluster id.
      *
@@ -79,6 +70,18 @@ class oxOnlineRequest
      * @var string
      */
     public $productId = 'eShop';
+
+    /**
+     * Class constructor, initiates public class parameters.
+     */
+    public function __construct()
+    {
+        $oConfig = oxRegistry::getConfig();
+        $this->clusterId = $this->_getClusterId();
+        $this->edition = $oConfig->getEdition();
+        $this->version = $oConfig->getVersion();
+        $this->shopUrl = $oConfig->getShopUrl();
+    }
 
     /**
      * Returns cluster id.

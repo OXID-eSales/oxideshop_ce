@@ -41,6 +41,12 @@ class oxOnlineModuleVersionNotifier
     /** @var oxModuleList */
     private $_oModuleList = null;
 
+    /**
+     * Class constructor, initiates class parameters.
+     *
+     * @param oxOnlineModuleVersionNotifierCaller $oCaller     Online module version notifier caller object
+     * @param oxModuleList                        $oModuleList Module list object
+     */
     public function __construct(oxOnlineModuleVersionNotifierCaller $oCaller, oxModuleList $oModuleList)
     {
         $this->_oCaller = $oCaller;

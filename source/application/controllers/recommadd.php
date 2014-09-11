@@ -71,12 +71,15 @@ class RecommAdd extends Details
         return $this->_aUserRecommList;
     }
 
+    /**
+     * Returns the title of the product added to the recommendation list.
+     *
+     * @return string
+     */
     public function getTitle()
     {
         $oProduct = $this->getProduct();
 
         return $oProduct->oxarticles__oxtitle->value . ' ' . $oProduct->oxarticles__oxvarselect->value;
     }
-
-
 }

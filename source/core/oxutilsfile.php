@@ -501,7 +501,7 @@ class oxUtilsFile extends oxSuperCfg
      *
      * @return bool
      */
-    function checkFile($sFile)
+    public function checkFile($sFile)
     {
         $aCheckCache = oxRegistry::getSession()->getVariable("checkcache");
 
@@ -531,7 +531,7 @@ class oxUtilsFile extends oxSuperCfg
      *
      * @return boolean
      */
-    function urlValidate($sLink)
+    public function urlValidate($sLink)
     {
         $aUrlParts = @parse_url($sLink);
         $sHost = (isset($aUrlParts["host"]) && $aUrlParts["host"]) ? $aUrlParts["host"] : null;
@@ -669,7 +669,7 @@ class oxUtilsFile extends oxSuperCfg
      *
      * @return string
      */
-    function translateError($iError)
+    public function translateError($iError)
     {
         $message = '';
         // Translate only if translation exist

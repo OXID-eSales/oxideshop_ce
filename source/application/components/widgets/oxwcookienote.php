@@ -52,7 +52,7 @@ class oxwCookieNote extends oxWidget
      *
      * @return boolean
      */
-    function isEnabled()
+    public function isEnabled()
     {
         if ($this->getConfig()->getConfigParam('blShowCookiesNotification')) {
             return true;

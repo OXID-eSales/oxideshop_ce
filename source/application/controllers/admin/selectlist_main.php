@@ -371,7 +371,7 @@ class SelectList_Main extends oxAdminDetails
      *
      * @return string - name
      */
-    function parseFieldName($sInput)
+    public function parseFieldName($sInput)
     {
         $aInput = explode('__@@', $sInput, 3);
 

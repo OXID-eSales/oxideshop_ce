@@ -2536,6 +2536,11 @@ class oxBasket extends oxSuperCfg
         return false;
     }
 
+    /**
+     * Returns array of wrapping costs
+     *
+     * @return array
+     */
     public function getWrappingCost()
     {
         return $this->getCosts('oxwrapping');

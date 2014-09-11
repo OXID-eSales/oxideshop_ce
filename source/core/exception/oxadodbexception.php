@@ -28,8 +28,18 @@
  */
 class oxAdoDbException extends oxConnectionException
 {
-
-    function __construct($sDbDriver, $sFunction, $iErrorNr, $sErrorMsg, $sParam1, $sParam2, $oConnection)
+    /**
+     * Class constructor, initiates parent constructor (parent::oxBase()).
+     *
+     * @param string $sDbDriver   Database driver
+     * @param string $sFunction   The name of the calling function (in uppercase)
+     * @param int    $iErrorNr    The native error number from the database
+     * @param string $sErrorMsg   the native error message from the database
+     * @param string $sParam1     $sFunction specific parameter
+     * @param string $sParam2     $sFunction specific parameter
+     * @param string $oConnection Database connection object
+     */
+    public function __construct($sDbDriver, $sFunction, $iErrorNr, $sErrorMsg, $sParam1, $sParam2, $oConnection)
     {
         $sUser = $oConnection->username;
         $iErrorNr = is_numeric($iErrorNr) ? $iErrorNr : -1;

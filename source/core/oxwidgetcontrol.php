@@ -46,7 +46,7 @@ class oxWidgetControl extends oxShopControl
     /**
      * Create object and ensure that params have correct value.
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

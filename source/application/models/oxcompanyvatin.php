@@ -28,7 +28,7 @@ class oxCompanyVatIn
 {
 
     /**
-     * VATIN
+     * VAT identification number
      *
      * @var string
      */
@@ -39,7 +39,7 @@ class oxCompanyVatIn
      *
      * @param string $sCompanyVatNumber - company vat identification number.
      */
-    function __construct($sCompanyVatNumber)
+    public function __construct($sCompanyVatNumber)
     {
         $this->_sCompanyVatNumber = $sCompanyVatNumber;
     }

@@ -85,8 +85,6 @@ class shop_rdfa extends Shop_Config
 
     /**
      * Submits shop main page to web search engines
-     *
-     * @return null
      */
     public function submitUrl()
     {
@@ -114,7 +112,7 @@ class shop_rdfa extends Shop_Config
      *
      * @return array
      */
-    function getHttpResponseCode($sURL)
+    public function getHttpResponseCode($sURL)
     {
         return get_headers($sURL);
     }

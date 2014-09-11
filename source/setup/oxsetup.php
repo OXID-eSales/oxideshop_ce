@@ -883,7 +883,7 @@ class OxSetupDb extends oxSetupCore
      *
      * @return string
      */
-    function getDatabaseVersion()
+    public function getDatabaseVersion()
     {
         $rRecords = $this->execSql("SHOW VARIABLES LIKE 'version'");
         $aRow = mysql_fetch_row($rRecords);

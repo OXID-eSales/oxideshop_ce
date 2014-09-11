@@ -116,8 +116,6 @@ class oxTagList extends oxI18n implements oxITagList
      * Adds tag to list
      *
      * @param string $mTag tag as string or as oxTag object
-     *
-     * @return void
      */
     public function addTag($mTag)
     {

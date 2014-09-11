@@ -186,7 +186,7 @@ if (!class_exists("report_visitor_absolute")) {
             $bplot3->setLegend("Neukunden");
 
             // Create the grouped bar plot
-            $gbplot = new groupBarPlot (array($bplot, $bplot2, $bplot3));
+            $gbplot = new groupBarPlot(array($bplot, $bplot2, $bplot3));
             $graph->add($gbplot);
 
             // Finally output the  image
@@ -322,7 +322,7 @@ if (!class_exists("report_visitor_absolute")) {
             $bplot3->setLegend("Neukunden");
 
             // Create the grouped bar plot
-            $gbplot = new groupBarPlot (array($bplot, $bplot2, $bplot3));
+            $gbplot = new groupBarPlot(array($bplot, $bplot2, $bplot3));
             $graph->add($gbplot);
 
             // Finally output the  image

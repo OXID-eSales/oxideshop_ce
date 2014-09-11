@@ -96,8 +96,6 @@ class oxFile extends oxBase
      * Sets oxefile__oxstorehash with file hash and moves file to desired location
      *
      * @param int $sFileIndex File index
-     *
-     * @return void
      */
     public function processFile($sFileIndex)
     {
@@ -119,8 +117,6 @@ class oxFile extends oxBase
      * Checks if given file is valid upload file
      *
      * @param array $aFileInfo File info array
-     *
-     * @return void
      */
     protected function _checkArticleFile($aFileInfo)
     {

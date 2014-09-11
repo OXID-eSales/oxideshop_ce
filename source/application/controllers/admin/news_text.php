@@ -86,14 +86,15 @@ class News_Text extends oxAdminDetails
 
         $iNewsLang = oxRegistry::getConfig()->getRequestParameter("newslang");
 
-        if (!isset($iNewsLang))
+        if (!isset($iNewsLang)) {
             $iNewsLang = $this->_iEditLang;
+        }
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oNews->loadInLang($iNewsLang, $soxId);
-        else
+        } else {
             $aParams['oxnews__oxid'] = null;
-
+        }
 
 
         //$aParams = $oNews->ConvertNameArray2Idx( $aParams);

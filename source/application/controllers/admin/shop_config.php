@@ -153,8 +153,6 @@ class Shop_Config extends oxAdminDetails
 
     /**
      * Saves changed shop configuration parameters.
-     *
-     * @return mixed
      */
     public function save()
     {

@@ -153,8 +153,6 @@ class oxUtilsFile extends oxSuperCfg
      * Setter for param _iNewFilesCounter which counts how many new files added.
      *
      * @param integer $iNewFilesCounter New files count.
-     *
-     * @return void
      */
     protected function _setNewFilesCounter($iNewFilesCounter)
     {

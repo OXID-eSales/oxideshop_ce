@@ -67,7 +67,7 @@ class Unit_Admin_sysreqmainTest extends OxidTestCase
         $sUrl = "http://www.oxidforge.org/wiki/Installation";
 
         $oSubj = new sysreq_main();
-        $this->assertEquals($sUrl . "#PHP_version_at_least_5.2.10", $oSubj->getReqInfoUrl("php_version", false));
+        $this->assertEquals($sUrl . "#PHP_version_at_least_5.3.25", $oSubj->getReqInfoUrl("php_version", false));
         $this->assertEquals($sUrl, $oSubj->getReqInfoUrl("none", false));
         $this->assertEquals($sUrl . "#Zend_Optimizer", $oSubj->getReqInfoUrl("zend_optimizer", false));
     }

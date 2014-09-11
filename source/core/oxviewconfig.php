@@ -313,8 +313,6 @@ class oxViewConfig extends oxSuperCfg
      *
      * @param string $sName  name of parameter
      * @param mixed  $sValue parameter value
-     *
-     * @return mixed
      */
     public function setViewConfigParam($sName, $sValue)
     {

@@ -521,8 +521,8 @@ class oxModuleInstaller extends oxSuperCfg
     /**
      * Removes garbage ( module not used extensions ) from all installed extensions list
      *
-     * @param array $aInstalledExtensions Installed extensions
-     * @param oxModule $oModule
+     * @param array    $aInstalledExtensions Installed extensions
+     * @param oxModule $oModule              Module
      *
      * @return array
      */

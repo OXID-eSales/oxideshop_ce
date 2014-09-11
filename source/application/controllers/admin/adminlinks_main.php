@@ -92,17 +92,19 @@ class Adminlinks_Main extends oxAdminDetails
 
         // adds space to the end of URL description to keep new added links visible
         // if URL description left empty
-        if (isset($aParams['oxlinks__oxurldesc']) && strlen($aParams['oxlinks__oxurldesc']) == 0)
+        if (isset($aParams['oxlinks__oxurldesc']) && strlen($aParams['oxlinks__oxurldesc']) == 0) {
             $aParams['oxlinks__oxurldesc'] .= " ";
+        }
 
         if (!$aParams['oxlinks__oxinsert']) {
             // sets default (?) date format to output
             // else if possible - changes date format to system compatible
             $sDate = date(oxRegistry::getLang()->translateString("simpleDateFormat"));
-            if ($sDate == "simpleDateFormat")
+            if ($sDate == "simpleDateFormat") {
                 $aParams['oxlinks__oxinsert'] = date("Y-m-d");
-            else
+            } else {
                 $aParams['oxlinks__oxinsert'] = $sDate;
+            }
         }
 
         $iEditLanguage = oxRegistry::getConfig()->getRequestParameter("editlanguage");
@@ -139,8 +141,9 @@ class Adminlinks_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
         // checkbox handling
-        if (!isset($aParams['oxlinks__oxactive']))
+        if (!isset($aParams['oxlinks__oxactive'])) {
             $aParams['oxlinks__oxactive'] = 0;
+        }
 
             // shopid
             $sShopID = oxRegistry::getSession()->getVariable("actshop");
@@ -148,11 +151,12 @@ class Adminlinks_Main extends oxAdminDetails
         $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
         $iEditLanguage = oxRegistry::getConfig()->getRequestParameter("editlanguage");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oLinks->loadInLang($iEditLanguage, $soxId);
-        else
+        } else {
             $aParams['oxlinks__oxid'] = null;
-        //$aParams = $oLinks->ConvertNameArray2Idx( $aParams);
+            //$aParams = $oLinks->ConvertNameArray2Idx( $aParams);
+        }
 
 
 

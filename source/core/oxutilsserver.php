@@ -159,8 +159,6 @@ class oxUtilsServer extends oxSuperCfg
 
     /**
      * Stored all session cookie info to cookies
-     *
-     * @return mixed
      */
     public function loadSessionCookies()
     {

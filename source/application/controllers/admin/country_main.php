@@ -130,16 +130,19 @@ class Country_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        if (!isset($aParams['oxcountry__oxactive']))
+        if (!isset($aParams['oxcountry__oxactive'])) {
             $aParams['oxcountry__oxactive'] = 0;
+        }
 
         $oCountry = oxNew("oxcountry");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oCountry->loadInLang($this->_iEditLang, $soxId);
-        else
+        } else {
             $aParams['oxcountry__oxid'] = null;
-        //$aParams = $oCountry->ConvertNameArray2Idx( $aParams);
+            //$aParams = $oCountry->ConvertNameArray2Idx( $aParams);
+        }
+
         $oCountry->setLanguage(0);
         $oCountry->assign($aParams);
         $oCountry->setLanguage($this->_iEditLang);

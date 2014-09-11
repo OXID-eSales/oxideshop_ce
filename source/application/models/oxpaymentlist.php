@@ -166,8 +166,6 @@ class oxPaymentList extends oxList
      * predefined GoodRelations payment method.
      *
      * @param double $dPrice product price
-     *
-     * @return array
      */
     public function loadRDFaPaymentList($dPrice = null)
     {

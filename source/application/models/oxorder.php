@@ -1823,8 +1823,6 @@ class oxOrder extends oxBase
      * Set usage of separate orders numbering for different shops
      *
      * @param bool $blSeparateNumbering use or not separate orders numbering
-     *
-     * @return bool
      */
     public function setSeparateNumbering($blSeparateNumbering = null)
     {
@@ -1852,8 +1850,6 @@ class oxOrder extends oxBase
      *
      * @param oxBasket $oBasket        basket object
      * @param array    $aOrderArticles order articles
-     *
-     * @return oxBasket
      */
     protected function _addOrderArticlesToBasket($oBasket, $aOrderArticles)
     {

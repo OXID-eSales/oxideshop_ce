@@ -97,13 +97,16 @@ class DeliverySet_Main extends oxAdminDetails
             $aParams['oxdeliveryset__oxshopid'] = $sShopID;
         $oDelSet = oxNew("oxdeliveryset");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oDelSet->loadInLang($this->_iEditLang, $soxId);
-        else
+        } else {
             $aParams['oxdeliveryset__oxid'] = null;
+        }
+
         // checkbox handling
-        if (!isset($aParams['oxdeliveryset__oxactive']))
+        if (!isset($aParams['oxdeliveryset__oxactive'])) {
             $aParams['oxdeliveryset__oxactive'] = 0;
+        }
 
 
         //$aParams = $oDelSet->ConvertNameArray2Idx( $aParams);
@@ -127,19 +130,21 @@ class DeliverySet_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
         // checkbox handling
-        if (!isset($aParams['oxdeliveryset__oxactive']))
+        if (!isset($aParams['oxdeliveryset__oxactive'])) {
             $aParams['oxdeliveryset__oxactive'] = 0;
+        }
 
             // shopid
             $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxdeliveryset__oxshopid'] = $sShopID;
         $oDelSet = oxNew("oxdeliveryset");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oDelSet->loadInLang($this->_iEditLang, $soxId);
-        else
+        } else {
             $aParams['oxdeliveryset__oxid'] = null;
-        //$aParams = $oDelSet->ConvertNameArray2Idx( $aParams);
+            //$aParams = $oDelSet->ConvertNameArray2Idx( $aParams);
+        }
 
         $oDelSet->setLanguage(0);
         $oDelSet->assign($aParams);

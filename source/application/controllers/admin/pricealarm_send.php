@@ -95,9 +95,9 @@ class PriceAlarm_Send extends oxAdminList
         $this->_aViewData["actlang"] = oxRegistry::getLang()->getBaseLanguage();
 
         // end ?
-        if ($iStart < $iAllCnt)
+        if ($iStart < $iAllCnt) {
             $sPage = "pricealarm_send.tpl";
-        else {
+        } else {
             $sPage = "pricealarm_done.tpl";
         }
 

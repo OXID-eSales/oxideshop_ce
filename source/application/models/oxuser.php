@@ -168,6 +168,8 @@ class oxUser extends oxBase
     protected $_oStateObject = null;
 
     /**
+     * Gets state object.
+     *
      * @return oxState
      */
     protected function _getStateObject()
@@ -2259,6 +2261,8 @@ class oxUser extends oxBase
     }
 
     /**
+     * Initiates user login against data in DB.
+     *
      * @param string $sUser     User
      * @param string $sPassword Password
      * @param string $sShopID   Shop id

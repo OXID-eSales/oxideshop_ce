@@ -116,6 +116,8 @@ class oxOnlineLicenseCheckCaller extends oxOnlineCaller
     }
 
     /**
+     * Gets XML document name.
+     *
      * @return string XML document tag name.
      */
     protected function _getXMLDocumentName()
@@ -124,6 +126,8 @@ class oxOnlineLicenseCheckCaller extends oxOnlineCaller
     }
 
     /**
+     * Gets service url.
+     *
      * @return string Web service url.
      */
     protected function _getServiceUrl()

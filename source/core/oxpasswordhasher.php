@@ -32,6 +32,8 @@ class oxPasswordHasher
     private $_ohasher = null;
 
     /**
+     * Gets hasher.
+     *
      * @return oxHasher
      */
     protected function _getHasher()
@@ -40,6 +42,8 @@ class oxPasswordHasher
     }
 
     /**
+     * Sets dependencies.
+     *
      * @param oxHasher $oHasher hasher.
      */
     public function __construct($oHasher)

@@ -32,6 +32,8 @@ class oxUniversallyUniqueIdGenerator
     private $_openSSLChecker;
 
     /**
+     * Sets dependencies.
+     *
      * @param oxOpenSSLFunctionalityChecker $openSSLChecker
      */
     public function __construct(oxOpenSSLFunctionalityChecker $openSSLChecker = null)
@@ -98,6 +100,8 @@ class oxUniversallyUniqueIdGenerator
     }
 
     /**
+     * gets open SSL checker.
+     *
      * @return oxOpenSSLFunctionalityChecker
      */
     protected function _getOpenSSLChecker()

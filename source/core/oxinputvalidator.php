@@ -387,11 +387,12 @@ class oxInputValidator extends oxSuperCfg
                     return $this->_addValidationError("oxuser__oxustid", $oEx);
                 }
             }
-        } elseif ($aInvAddress['oxuser__oxustid'] &&  !$aInvAddress['oxuser__oxcompany']) {
+        } elseif ($aInvAddress['oxuser__oxustid'] && !$aInvAddress['oxuser__oxcompany']) {
             /** @var oxInputException $oEx */
-            $oEx = oxNew( 'oxInputException' );
+            $oEx = oxNew('oxInputException');
             $oEx->setMessage(oxRegistry::getLang()->translateString('VAT_MESSAGE_COMPANY_MISSING'));
-            return $this->_addValidationError( "oxuser__oxcompany", $oEx );
+
+            return $this->_addValidationError("oxuser__oxcompany", $oEx);
         }
     }
 
@@ -559,8 +560,8 @@ class oxInputValidator extends oxSuperCfg
 
         if ($oStr->strlen($aDebitInfo['lsktonr']) < 10) {
             $sNewNum = str_repeat(
-                '0', 10 - $oStr->strlen($aDebitInfo['lsktonr'])
-            ) . $aDebitInfo['lsktonr'];
+                           '0', 10 - $oStr->strlen($aDebitInfo['lsktonr'])
+                       ) . $aDebitInfo['lsktonr'];
             $aDebitInfo['lsktonr'] = $sNewNum;
         }
 

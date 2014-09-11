@@ -218,7 +218,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
         $sUrl = "http://www.oxidforge.org/wiki/Installation";
 
         $oSetupView = new oxsetupView();
-        $this->assertEquals($sUrl . "#PHP_version_at_least_5.2.10", $oSetupView->getReqInfoUrl("php_version", false));
+        $this->assertEquals($sUrl . "#PHP_version_at_least_5.3.25", $oSetupView->getReqInfoUrl("php_version", false));
         $this->assertEquals($sUrl, $oSetupView->getReqInfoUrl("none", false));
         $this->assertEquals($sUrl . "#Zend_Optimizer", $oSetupView->getReqInfoUrl("zend_optimizer", false));
     }

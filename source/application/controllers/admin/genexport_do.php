@@ -95,5 +95,4 @@ class GenExport_Do extends DynExportBase
 
         fwrite($this->fpFile, $sLine . "\r\n");
     }
-
 }

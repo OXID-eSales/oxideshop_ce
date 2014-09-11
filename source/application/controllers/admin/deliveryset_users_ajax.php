@@ -141,5 +141,4 @@ class deliveryset_users_ajax extends ajaxListComponent
             }
         }
     }
-
 }

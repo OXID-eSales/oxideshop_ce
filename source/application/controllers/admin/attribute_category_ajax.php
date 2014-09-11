@@ -147,5 +147,4 @@ class attribute_category_ajax extends ajaxListComponent
         $this->resetContentCache();
     }
 
-
 }

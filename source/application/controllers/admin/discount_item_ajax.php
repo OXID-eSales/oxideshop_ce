@@ -175,5 +175,4 @@ class discount_item_ajax extends ajaxListComponent
 
         return " $sQ ";
     }
-
 }

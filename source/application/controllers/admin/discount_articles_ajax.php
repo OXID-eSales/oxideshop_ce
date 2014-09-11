@@ -155,6 +155,4 @@ class discount_articles_ajax extends ajaxListComponent
             }
         }
     }
-
-
 }

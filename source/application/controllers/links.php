@@ -79,5 +79,4 @@ class Links extends oxUBase
         
         return $aPaths;
     }
-
 }

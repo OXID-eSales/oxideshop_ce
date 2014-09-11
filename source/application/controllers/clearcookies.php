@@ -83,5 +83,4 @@ class ClearCookies extends oxUBase
 
         return $aPaths;
     }
-
 }

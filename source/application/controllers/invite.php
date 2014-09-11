@@ -277,6 +277,4 @@ class Invite extends oxUBase
 
         return $aPaths;
     }
-
-
 }

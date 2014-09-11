@@ -238,5 +238,4 @@ class Article_Stock extends oxAdminDetails
         $sId = $oDb->quote($this->getEditObjectId());
         $oDb->execute("delete from oxprice2article where oxid = {$sPriceId} and oxartid = {$sId}");
     }
-
 }

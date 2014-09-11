@@ -46,8 +46,6 @@ class oxNewslist extends oxList
      *
      * @param integer $iFrom  number from which start selecting
      * @param integer $iLimit Limit of records to fetch from DB(default 0)
-     *
-     * @return array
      */
     public function loadNews($iFrom = 0, $iLimit = 10)
     {

@@ -95,9 +95,9 @@ class PriceAlarm_Send extends oxAdminList
         $this->_aViewData["actlang"] = oxRegistry::getLang()->getBaseLanguage();
 
         // end ?
-        if ($iStart < $iAllCnt)
+        if ($iStart < $iAllCnt) {
             $sPage = "pricealarm_send.tpl";
-        else {
+        } else {
             $sPage = "pricealarm_done.tpl";
         }
 
@@ -108,8 +108,6 @@ class PriceAlarm_Send extends oxAdminList
      * Overrides parent method to pass referred id
      *
      * @param string $sId class name
-     *
-     * @return null
      */
     protected function _setupNavigation($sId)
     {
@@ -123,8 +121,6 @@ class PriceAlarm_Send extends oxAdminList
      * @param string $sProductID    product id
      * @param string $sPricealarmID price alarm id
      * @param string $sBidPrice     bidded price
-     *
-     * @return null
      */
     public function sendeMail($sEMail, $sProductID, $sPricealarmID, $sBidPrice)
     {

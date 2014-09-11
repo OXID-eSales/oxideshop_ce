@@ -77,7 +77,7 @@ class oxOnlineLicenseCheck
     /** @var oxUserCounter */
     protected $_oUserCounter = null;
 
-    /** @var oxServerManager */
+    /** @var oxServersManager */
     protected $_oServersManager = null;
 
     /**
@@ -165,7 +165,7 @@ class oxOnlineLicenseCheck
     }
 
     /**
-     * Validates new serial.
+     * The Online shop license check for the new serial is performed. Returns check result.
      *
      * @param string $sSerial Serial to check.
      *
@@ -180,7 +180,7 @@ class oxOnlineLicenseCheck
     }
 
     /**
-     * The Online check is performed. Returns check result.
+     * The Online shop license check is performed. Returns check result.
      *
      * @param array $aSerials Serial keys to be checked.
      *
@@ -234,7 +234,7 @@ class oxOnlineLicenseCheck
     /**
      * Performs a check of the response code and message.
      *
-     * @param oxOnlineLicenseCheckResponse $oResponse Response
+     * @param oxOnlineLicenseCheckResponse $oResponse
      *
      * @throws oxException
      *
@@ -297,7 +297,7 @@ class oxOnlineLicenseCheck
     }
 
     /**
-     * Forms counters.
+     * Forms shop counters array for sending to OXID server.
      *
      * @return array
      */
@@ -327,7 +327,7 @@ class oxOnlineLicenseCheck
     }
 
     /**
-     * Registers the latest Successful Online License check
+     * Registers the latest Successful Online License check.
      */
     protected function _logSuccess()
     {
@@ -337,9 +337,9 @@ class oxOnlineLicenseCheck
     }
 
     /**
-     * Sets exception flag
+     * Sets exception flag.
      *
-     * @param bool $blIsException Exception flag
+     * @param bool $blIsException Exception flag.
      */
     protected function _setIsException($blIsException)
     {

@@ -139,7 +139,6 @@ class oxLang extends oxSuperCfg
      * resetBaseLanguage resets base language id cache
      *
      * @access public
-     * @return void
      */
     public function resetBaseLanguage()
     {

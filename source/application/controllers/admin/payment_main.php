@@ -110,16 +110,18 @@ class Payment_Main extends oxAdminDetails
         if (!isset($aParams['oxpayments__oxactive'])) {
             $aParams['oxpayments__oxactive'] = 0;
         }
-        if (!isset($aParams['oxpayments__oxchecked']))
+        if (!isset($aParams['oxpayments__oxchecked'])) {
             $aParams['oxpayments__oxchecked'] = 0;
+        }
 
         $oPayment = oxNew("oxpayment");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oPayment->loadInLang($this->_iEditLang, $soxId);
-        else
+        } else {
             $aParams['oxpayments__oxid'] = null;
-        //$aParams = $oPayment->ConvertNameArray2Idx( $aParams);
+            //$aParams = $oPayment->ConvertNameArray2Idx( $aParams);
+        }
 
         $oPayment->setLanguage(0);
         $oPayment->assign($aParams);
@@ -134,12 +136,15 @@ class Payment_Main extends oxAdminDetails
 
 
         //#708
-        if (!is_array($this->_aFieldArray))
+        if (!is_array($this->_aFieldArray)) {
             $this->_aFieldArray = oxRegistry::getUtils()->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value);
+        }
+
         // build value
         $sValdesc = "";
-        foreach ($this->_aFieldArray as $oField)
+        foreach ($this->_aFieldArray as $oField) {
             $sValdesc .= $oField->name . "__@@";
+        }
 
         $oPayment->oxpayments__oxvaldesc = new oxField($sValdesc, oxField::T_RAW);
         $oPayment->setLanguage($this->_iEditLang);
@@ -165,11 +170,12 @@ class Payment_Main extends oxAdminDetails
             $aParams['oxpayments__oxshopid'] = $sShopID;
         $oObj = oxNew("oxpayment");
 
-        if ($soxId != "-1")
+        if ($soxId != "-1") {
             $oObj->loadInLang($this->_iEditLang, $soxId);
-        else
+        } else {
             $aParams['oxpayments__oxid'] = null;
-        //$aParams = $oObj->ConvertNameArray2Idx( $aParams);
+            //$aParams = $oObj->ConvertNameArray2Idx( $aParams);
+        }
 
         $oObj->setLanguage(0);
         $oObj->assign($aParams);

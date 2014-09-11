@@ -35,6 +35,8 @@ class oxModuleCache extends oxSuperCfg
     protected $_oModule = null;
 
     /**
+     * Sets dependencies.
+     *
      * @param oxModule $_oModule
      */
     public function __construct(oxModule $_oModule)
@@ -43,6 +45,8 @@ class oxModuleCache extends oxSuperCfg
     }
 
     /**
+     * Sets module.
+     *
      * @param oxModule $oModule
      */
     public function setModule($oModule)
@@ -51,6 +55,8 @@ class oxModuleCache extends oxSuperCfg
     }
 
     /**
+     * Gets module.
+     *
      * @return oxModule
      */
     public function getModule()

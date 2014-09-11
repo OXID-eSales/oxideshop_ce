@@ -35,6 +35,8 @@ class oxModuleInstaller extends oxSuperCfg
     protected $_oModuleCache;
 
     /**
+     * Sets dependencies.
+     *
      * @param oxModuleCache $oxModuleCache
      */
     public function __construct(oxModuleCache $oxModuleCache = null)
@@ -43,6 +45,8 @@ class oxModuleInstaller extends oxSuperCfg
     }
 
     /**
+     * Sets module cache.
+     *
      * @param oxModuleCache $oModuleCache
      */
     public function setModuleCache($oModuleCache)
@@ -51,6 +55,8 @@ class oxModuleInstaller extends oxSuperCfg
     }
 
     /**
+     * Gets module cache.
+     *
      * @return oxModuleCache
      */
     public function getModuleCache()

@@ -494,5 +494,4 @@ class oxUtilsCount extends oxSuperCfg
 
         return $this->_sUserViewId;
     }
-
 }

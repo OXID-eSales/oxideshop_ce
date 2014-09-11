@@ -534,5 +534,4 @@ class oxUtilsView extends oxSuperCfg
 
         return $this->_aActiveModuleInfo;
     }
-
 }

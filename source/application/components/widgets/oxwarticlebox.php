@@ -303,5 +303,4 @@ class oxwArticleBox extends oxWidget
 
         return $oArticle;
     }
-
 }

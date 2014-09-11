@@ -464,5 +464,4 @@ class oxPrice
             $this->_flushDiscounts();
         }
     }
-
 }

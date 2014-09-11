@@ -1143,5 +1143,4 @@ class oxSession extends oxSuperCfg
         return $this->_blStarted;
     }
 
-
 }

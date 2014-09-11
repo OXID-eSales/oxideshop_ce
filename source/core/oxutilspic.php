@@ -262,5 +262,4 @@ class oxUtilsPic extends oxSuperCfg
 
         return $blSuccess;
     }
-
 }

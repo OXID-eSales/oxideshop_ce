@@ -1017,5 +1017,4 @@ class oxView extends oxSuperCfg
 
         return $sRet;
     }
-
 }

@@ -522,5 +522,4 @@ class oxRecommList extends oxBase implements oxIUrl
         return parent::save();
     }
 
-
 }

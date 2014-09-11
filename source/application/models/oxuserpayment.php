@@ -267,5 +267,4 @@ class oxUserPayment extends oxBase
     {
         $this->_aDynValues = $aDynValues;
     }
-
 }

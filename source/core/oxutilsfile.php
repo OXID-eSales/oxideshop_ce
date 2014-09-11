@@ -679,5 +679,4 @@ class oxUtilsFile extends oxSuperCfg
 
         return $message;
     }
-
 }

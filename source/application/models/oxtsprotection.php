@@ -293,5 +293,4 @@ class oxTsProtection extends oxSuperCfg
 
         return $sTsCurrId;
     }
-
 }

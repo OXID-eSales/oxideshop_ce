@@ -224,5 +224,4 @@ class oxVatSelector extends oxSuperCfg
 
         return $oUser->oxuser__oxcountryid->value;
     }
-
 }

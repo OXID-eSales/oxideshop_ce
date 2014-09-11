@@ -141,5 +141,4 @@ class oxRequiredFieldsValidator
     {
         $this->_aInvalidFields = $aFields;
     }
-
 }

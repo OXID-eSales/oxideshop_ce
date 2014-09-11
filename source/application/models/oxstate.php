@@ -76,5 +76,4 @@ class oxState extends oxI18n
 
         return (string) $sStateTitle;
     }
-
 }

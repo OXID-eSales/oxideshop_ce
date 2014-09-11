@@ -77,5 +77,4 @@ class oxStr
 
         return oxNew("oxStrRegular");
     }
-
 }

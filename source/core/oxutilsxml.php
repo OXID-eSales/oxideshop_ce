@@ -53,5 +53,4 @@ class oxUtilsXml extends oxSuperCfg
 
         return false;
     }
-
 }

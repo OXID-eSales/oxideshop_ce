@@ -66,5 +66,4 @@ class oxRequiredFieldValidator
 
         return $blValid;
     }
-
 }

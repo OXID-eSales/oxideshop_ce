@@ -904,6 +904,4 @@ class oxRssFeed extends oxSuperCfg
     {
         return self::CACHE_TTL;
     }
-
 }
-

@@ -74,12 +74,12 @@ require "_header.php"; ?>
                                     <input type="checkbox" id="use_dynamic_pages_ckbox" value="true"
                                            name="use_dynamic_pages" valign=""
                                            style="vertical-align:middle; width:20px; height:22px;<?php if ($sLocationLang === null) {
-                                               echo " display: none;"
+                                               echo " display: none;";
 } ?>">
                                 </td>
                                 <td id="use_dynamic_pages_desc"
                                     style="<?php if ($sLocationLang === null) {
-                                        echo "display: none;"
+                                        echo "display: none;";
 } ?>">
                                     <?php $this->getText('USE_DYNAMIC_PAGES'); ?><a
                                         href="<?php echo $sSetupLang; ?>/dyn_content_notice.php"

@@ -107,6 +107,8 @@ class oxStart extends oxUBase
     }
 
     /**
+     * Gets system event handler.
+     *
      * @return oxSystemEventHandler
      */
     protected function _getSystemEventHandler()

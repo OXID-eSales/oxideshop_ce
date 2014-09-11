@@ -29,6 +29,8 @@ class oxRequiredFieldValidator
 {
 
     /**
+     * Validates field value.
+     *
      * @param string $sFieldValue Field value
      *
      * @return bool

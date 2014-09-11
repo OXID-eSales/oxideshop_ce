@@ -250,6 +250,8 @@ class oxModule extends oxSuperCfg
     }
 
     /**
+     * Checks if has extend class.
+     *
      * @return bool
      */
     public function hasExtendClass()

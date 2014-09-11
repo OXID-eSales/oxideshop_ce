@@ -252,6 +252,11 @@ class oxOrderFile extends oxBase
         return false;
     }
 
+    /**
+     * Gets field id.
+     *
+     * @return mixed
+     */
     public function getFileId()
     {
         return $this->oxorderfiles__oxfileid->value;

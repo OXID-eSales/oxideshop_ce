@@ -594,7 +594,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
                 $this->updateArticleStock($iStockChange * -1, $this->getConfig()->getConfigParam('blAllowNegativeStock'));
 
                 // updating self
-                $this->oxorderarticles__oxamount = new oxField ($iNewAmount, oxField::T_RAW);
+                $this->oxorderarticles__oxamount = new oxField($iNewAmount, oxField::T_RAW);
                 $this->save();
             }
         }

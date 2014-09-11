@@ -523,6 +523,4 @@ class oxDiagnostics
 
         return $aResult['Value'];
     }
-
-
 }

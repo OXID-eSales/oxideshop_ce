@@ -60,5 +60,4 @@ class oxERPType_Category extends oxERPType
         
         return $aData;
     }
-
 }

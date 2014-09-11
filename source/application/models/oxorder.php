@@ -2335,5 +2335,4 @@ class oxOrder extends oxBase
 
         return $this->_sShipTrackUrl;
     }
-
 }

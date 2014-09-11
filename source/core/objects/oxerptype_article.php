@@ -195,5 +195,4 @@ class oxERPType_Article extends oxERPType
             return;
 
     }
-
 }

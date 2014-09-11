@@ -40,5 +40,4 @@ class oxERPType_Article2Action extends oxERPType
         $this->_sTableName = 'oxactions2article';
         $this->_blRestrictedByShopId = true;
     }
-
 }

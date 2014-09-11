@@ -147,5 +147,4 @@ class oxFileCollector
         }
         closedir($handle);
     }
-
 }

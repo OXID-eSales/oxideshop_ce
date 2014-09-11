@@ -187,5 +187,4 @@ class oxPaymentList extends oxList
             }
         }
     }
-
 }

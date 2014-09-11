@@ -246,5 +246,4 @@ class Object_Seo extends oxAdminDetails
     {
         return false;
     }
-
 }

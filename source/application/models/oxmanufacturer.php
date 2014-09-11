@@ -394,5 +394,4 @@ class oxManufacturer extends oxI18n implements oxIUrl
         return $this->oxmanufacturers__oxshortdesc->value;
     }
 
-
 }

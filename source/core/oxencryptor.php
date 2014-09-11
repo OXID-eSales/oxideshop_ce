@@ -62,5 +62,4 @@ class oxEncryptor
 
         return str_repeat($sKey, $iKeyLength);
     }
-
 }

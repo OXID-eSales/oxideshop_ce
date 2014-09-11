@@ -83,6 +83,4 @@ class oxCounter
 
         return $blResult;
     }
-
-
 }

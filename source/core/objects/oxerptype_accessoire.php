@@ -40,5 +40,4 @@ class oxERPType_Accessoire extends oxERPType
         
         $this->_sTableName = 'oxaccessoire2article';
     }
-
 }

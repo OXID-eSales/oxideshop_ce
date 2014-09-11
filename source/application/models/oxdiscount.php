@@ -525,5 +525,4 @@ class oxDiscount extends oxI18n
 
         return $oDb->getOne($sQ) ? true : false;
     }
-
 }

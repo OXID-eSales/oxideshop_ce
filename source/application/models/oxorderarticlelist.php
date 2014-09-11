@@ -58,5 +58,4 @@ class oxOrderArticleList extends oxList
         $this->selectString($sSelect);
 
     }
-
 }

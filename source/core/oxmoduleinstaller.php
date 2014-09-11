@@ -703,5 +703,4 @@ class oxModuleInstaller extends oxSuperCfg
         $oConfig->setConfigParam($sVariableName, $sVariableValue);
         $oConfig->saveShopConfVar($sVariableType, $sVariableName, $sVariableValue);
     }
-
 }

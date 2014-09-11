@@ -272,5 +272,4 @@ class oxActions extends oxI18n
         return $sUrl;
     }
 
-
 }

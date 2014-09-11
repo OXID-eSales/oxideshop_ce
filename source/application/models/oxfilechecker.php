@@ -434,5 +434,4 @@ class oxFileChecker
 
         return $oXML;
     }
-
 }

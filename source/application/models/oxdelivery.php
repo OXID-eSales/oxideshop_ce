@@ -607,5 +607,4 @@ class oxDelivery extends oxI18n
 
         return $dPrice;
     }
-
 }

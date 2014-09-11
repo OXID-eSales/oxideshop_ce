@@ -165,14 +165,15 @@ class Discount_Main extends oxAdminDetails
             $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxdiscount__oxshopid'] = $sShopID;
         $oAttr = oxNew("oxdiscount");
-        if ($sOxId != "-1")
+        if ($sOxId != "-1") {
             $oAttr->load($sOxId);
-        else {
+        } else {
             $aParams['oxdiscount__oxid'] = null;
         }
         // checkbox handling
-        if (!isset($aParams['oxdiscount__oxactive']))
+        if (!isset($aParams['oxdiscount__oxactive'])) {
             $aParams['oxdiscount__oxactive'] = 0;
+        }
 
 
         //$aParams = $oAttr->ConvertNameArray2Idx( $aParams);

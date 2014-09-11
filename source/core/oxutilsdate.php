@@ -557,8 +557,9 @@ class oxUtilsDate extends oxSuperCfg
     }
 
     /**
+     * Form time
      *
-     * @param string $sTime time to create timestamp.
+     * @param string $sTime  time to create timestamp.
      * @param string $sTime2 hours, minutes and seconds to update created timestamp.
      *
      * @return int formed (modified according timezone) time

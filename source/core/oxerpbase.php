@@ -35,8 +35,8 @@ abstract class oxERPBase
     const ERROR_ERP_VERSION_NOT_SUPPORTED_BY_SHOP = "ERROR: shop does not support requested ERP version.";
     const ERROR_SHOP_VERSION_NOT_SUPPORTED_BY_ERP = "ERROR: ERP does not support current shop version.";
 
-    static $MODE_IMPORT = "Import";
-    static $MODE_DELETE = "Delete";
+    public static $MODE_IMPORT = "Import";
+    public static $MODE_DELETE = "Delete";
 
     protected $_blInit = false;
     protected $_iLanguage = null;

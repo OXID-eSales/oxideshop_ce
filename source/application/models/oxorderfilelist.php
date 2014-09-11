@@ -38,8 +38,6 @@ class oxOrderFileList extends oxList
      * Returns orders
      *
      * @param string $sUserId - user id
-     *
-     * @return oxlist
      */
     public function loadUserFiles($sUserId)
     {
@@ -76,8 +74,6 @@ class oxOrderFileList extends oxList
      * Returns oxorderfiles list
      *
      * @param string $sOrderId - order id
-     *
-     * @return oxlist
      */
     public function loadOrderFiles($sOrderId)
     {

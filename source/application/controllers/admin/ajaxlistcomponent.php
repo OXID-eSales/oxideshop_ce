@@ -703,5 +703,4 @@ class ajaxListComponent extends oxSuperCfg
     protected function _resetContentCache()
     {
     }
-
 }

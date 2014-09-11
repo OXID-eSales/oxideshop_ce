@@ -69,6 +69,8 @@ class oxApplicationServer
     private $_blIsValid = false;
 
     /**
+     * Sets id.
+     *
      * @param string $sId
      */
     public function setId($sId)
@@ -77,6 +79,8 @@ class oxApplicationServer
     }
 
     /**
+     * Gets id
+     *
      * @return string
      */
     public function getId()
@@ -85,6 +89,8 @@ class oxApplicationServer
     }
 
     /**
+     * Sets ip.
+     *
      * @param string $sIp
      */
     public function setIp($sIp)
@@ -93,6 +99,8 @@ class oxApplicationServer
     }
 
     /**
+     * Gets ip.
+     *
      * @return string
      */
     public function getIp()
@@ -101,6 +109,8 @@ class oxApplicationServer
     }
 
     /**
+     * Sets timestamp.
+     *
      * @param int $iTimestamp
      */
     public function setTimestamp($iTimestamp)
@@ -109,6 +119,8 @@ class oxApplicationServer
     }
 
     /**
+     * Gets timestamp.
+     *
      * @return int
      */
     public function getTimestamp()
@@ -117,6 +129,8 @@ class oxApplicationServer
     }
 
     /**
+     * Sets last admin usage.
+     *
      * @param int|null $iLastAdminUsage
      */
     public function setLastAdminUsage($iLastAdminUsage)
@@ -125,6 +139,8 @@ class oxApplicationServer
     }
 
     /**
+     * Gets last admin usage.
+     *
      * @return int|null
      */
     public function getLastAdminUsage()
@@ -133,6 +149,8 @@ class oxApplicationServer
     }
 
     /**
+     * Sets last frontend usage.
+     *
      * @param int|null $iLastFrontendUsage Admin server flag which stores timestamp.
      */
     public function setLastFrontendUsage($iLastFrontendUsage)
@@ -141,6 +159,8 @@ class oxApplicationServer
     }
 
     /**
+     * Gets last frontend usage.
+     *
      * @return int|null Frontend server flag which stores timestamp.
      */
     public function getLastFrontendUsage()
@@ -149,6 +169,8 @@ class oxApplicationServer
     }
 
     /**
+     * Sets whether is valid.
+     *
      * @param bool $blValid Flag to set if application server is valid
      */
     public function setIsValid($blValid = true)
@@ -157,6 +179,8 @@ class oxApplicationServer
     }
 
     /**
+     * Checks if valid.
+     *
      * @return bool
      */
     public function isValid()

@@ -77,8 +77,9 @@ class oxAttribute extends oxI18n
         if (!$sOXID) {
             $sOXID = $this->getId();
         }
-        if (!$sOXID)
+        if (!$sOXID) {
             return false;
+        }
 
 
         // remove attributes from articles also

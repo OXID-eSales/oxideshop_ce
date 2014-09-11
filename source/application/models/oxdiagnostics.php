@@ -239,8 +239,8 @@ class oxDiagnostics
     /**
      * counts result Rows
      *
-     * @param string  $sTable ,
-     * @param boolean $blMode
+     * @param string  $sTable table
+     * @param boolean $blMode mode
      *
      * @return integer
      */

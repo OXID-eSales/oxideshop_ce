@@ -71,8 +71,6 @@ class oxI18n extends oxBase
      * Sets object language.
      *
      * @param string $iLang string (default null)
-     *
-     * @return null;
      */
     public function setLanguage($iLang = null)
     {
@@ -100,8 +98,6 @@ class oxI18n extends oxBase
      * This setter affects init() method so it should be called before init() is executed
      *
      * @param bool $blEmployMultilanguage New $this->_blEmployMultilanguage value
-     *
-     * @return null;
      */
     public function setEnableMultilang($blEmployMultilanguage)
     {
@@ -177,8 +173,6 @@ class oxI18n extends oxBase
      *
      * @param string $sCacheKey  kache  key
      * @param bool   $blOverride marker to force override cache key
-     *
-     * @return null;
      */
     public function modifyCacheKey($sCacheKey, $blOverride = false)
     {

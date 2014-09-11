@@ -1369,9 +1369,9 @@ class oxViewConfig extends oxSuperCfg
      * Check if module is active.
      * If versionFrom or|and versionTo is defined - also checks module versions.
      *
-     * @param string $sModuleId module id.
+     * @param string $sModuleId    module id.
      * @param string $sVersionFrom module from version.
-     * @param string $sVersionTo module to version.
+     * @param string $sVersionTo   module to version.
      *
      * @return  bool
      */

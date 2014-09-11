@@ -45,6 +45,8 @@ class oxShopViewValidator
     protected $_aValidShopViews = array();
 
     /**
+     * Sets multi language tables.
+     *
      * @param null $aMultiLangTables
      */
     public function setMultiLangTables($aMultiLangTables)
@@ -64,6 +66,8 @@ class oxShopViewValidator
 
 
     /**
+     * Sets multi shop tables.
+     *
      * @param array $aMultiShopTables
      */
     public function setMultiShopTables($aMultiShopTables)
@@ -92,6 +96,8 @@ class oxShopViewValidator
     }
 
     /**
+     * Gets languages.
+     *
      * @return array
      */
     public function getLanguages()
@@ -110,6 +116,8 @@ class oxShopViewValidator
     }
 
     /**
+     * Gets all shop languages.
+     *
      * @return array
      */
     public function getAllShopLanguages()
@@ -119,6 +127,8 @@ class oxShopViewValidator
 
 
     /**
+     * Sets shop id.
+     *
      * @param integer $iShopId
      */
     public function setShopId($iShopId)

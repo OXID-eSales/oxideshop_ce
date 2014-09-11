@@ -80,7 +80,7 @@ class oxSystemEventHandler
             $oOLC->setServersManager($oServerManager);
             $oOLC->setUserCounter($oUserCounter);
 
-            $this->setOnlineLicenseCheck( $oOLC );
+            $this->setOnlineLicenseCheck($oOLC);
         }
 
         return $this->_oOnlineLicenseCheck;
@@ -238,7 +238,7 @@ class oxSystemEventHandler
             $iMinuteToCheck = rand(0, 59);
             $iSecondToCheck = rand(0, 59);
 
-            $sCheckTime = $iHourToCheck .':'. $iMinuteToCheck .':'. $iSecondToCheck;
+            $sCheckTime = $iHourToCheck . ':' . $iMinuteToCheck . ':' . $iSecondToCheck;
             $this->_getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseCheckTime', $sCheckTime);
         }
 
@@ -304,6 +304,7 @@ class oxSystemEventHandler
         $oUtilsDate = oxRegistry::get('oxUtilsDate');
 
         /** @var oxServerProcessor $oProcessor */
+
         return oxNew('oxServerProcessor', $oServerNodesManager, $oServerNodeChecker, $oUtilsServer, $oUtilsDate);
     }
 }

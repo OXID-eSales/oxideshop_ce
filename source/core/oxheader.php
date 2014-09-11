@@ -34,8 +34,6 @@ class oxHeader
      * Sets header.
      *
      * @param string $sHeader header value.
-     *
-     * @return void
      */
     public function setHeader($sHeader)
     {
@@ -55,8 +53,6 @@ class oxHeader
 
     /**
      * Outputs HTTP header.
-     *
-     * @return void
      */
     public function sendHeader()
     {
@@ -71,8 +67,6 @@ class oxHeader
      * Set to not cacheable.
      *
      * @todo check browser for different no-cache signs.
-     *
-     * @return void
      */
     public function setNonCacheable()
     {

@@ -159,7 +159,7 @@ class oxUtilsUrl extends oxSuperCfg
      *
      * @param string $sUrl       url to append
      * @param array  $aAddParams parameters to append
-     * @param bool   $blFinalUrl
+     * @param bool   $blFinalUrl final url
      *
      * @return string
      */

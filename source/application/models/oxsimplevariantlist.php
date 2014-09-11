@@ -54,8 +54,6 @@ class oxSimpleVariantList extends oxList
      *
      * @param oxSimleVariant $oListObject Simple variant
      * @param array          $aDbFields   Array of available
-     *
-     * @return null;
      */
     protected function _assignElement($oListObject, $aDbFields)
     {

@@ -56,8 +56,10 @@ class SystemInfo extends oxAdminView
                 // security fix - we do not output dbname and dbpwd cause of demoshops
                 if ($name == "oDB" || $name == "dbUser" || $name == "dbPwd" ||
                     $name == "oSerial" || $name == "aSerials" || $name == "sSerialNr"
-                )
+                ) {
                     continue;
+                }
+
                 $value = var_export($value, true);
                 $value = str_replace("\n", "<br>", $value);
                 $aSystemInfo[$name] = $value;

@@ -104,11 +104,11 @@ $aLang = array(
 
 'STEP_0_ERROR_TEXT'                             => 'Ihr System erfüllt nicht alle nötigen Systemvoraussetzungen',
 'STEP_0_ERROR_URL'                              => 'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-neu-installieren/server-und-systemvoraussetzungen/systemvoraussetzungen-ce.html',
-'STEP_0_TEXT'                                   => '<ul class=\"req\">'.
-                                                   '<li class=\"pass\"> - Die Voraussetzung ist erfüllt.</li>'.
-                                                   '<li class=\"pmin\"> - Die Voraussetzung ist nicht oder nur teilweise erfüllt. Der OXID eShop funktioniert trotzdem und kann installiert werden.</li>'.
-                                                   '<li class=\"fail\"> - Die Voraussetzung ist nicht erfüllt. Der OXID eShop funktioniert nicht ohne diese Voraussetzung und kann nicht installiert werden.</li>'.
-                                                   '<li class=\"null\"> - Die Voraussetzung konnte nicht überprüft werden.'.
+'STEP_0_TEXT'                                   => '<ul class="req">'.
+                                                   '<li class="pass"> - Die Voraussetzung ist erfüllt.</li>'.
+                                                   '<li class="pmin"> - Die Voraussetzung ist nicht oder nur teilweise erfüllt. Der OXID eShop funktioniert trotzdem und kann installiert werden.</li>'.
+                                                   '<li class="fail"> - Die Voraussetzung ist nicht erfüllt. Der OXID eShop funktioniert nicht ohne diese Voraussetzung und kann nicht installiert werden.</li>'.
+                                                   '<li class="null"> - Die Voraussetzung konnte nicht überprüft werden.'.
                                                    '</ul>',
 'STEP_0_DESC'                                   => 'In diesem Schritt wird überprüft, ob Ihr System die Voraussetzungen erfüllt:',
 'STEP_0_TITLE'                                  => 'Systemvoraussetzungen überprüfen',

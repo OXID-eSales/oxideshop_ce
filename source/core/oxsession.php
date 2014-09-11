@@ -670,8 +670,6 @@ class oxSession extends oxSuperCfg
     /**
      * Forces starting session and skips checking if session is allowed to start
      * when calling oxSession::start();
-     *
-     * @return bool
      */
     public function setForceNewSession()
     {

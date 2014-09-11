@@ -113,8 +113,6 @@ class oxTagCloud extends oxSuperCfg
      * Sets oxITagList object
      *
      * @param oxITagList $oTagList Tag cloud set object, which implements oxITagList
-     *
-     * @return bool
      */
     public function setTagList(oxITagList $oTagList)
     {
@@ -135,8 +133,6 @@ class oxTagCloud extends oxSuperCfg
      * Sets tag cloud array
      *
      * @param array $aTagCloudArray tag cloud array
-     *
-     * @return void
      */
     public function setCloudArray($aTagCloudArray)
     {

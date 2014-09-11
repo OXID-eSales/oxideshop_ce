@@ -272,8 +272,6 @@ class oxManufacturer extends oxI18n implements oxIUrl
 
     /**
      * returns the sub category array
-     *
-     * @return array
      */
     public function getSubCats()
     {

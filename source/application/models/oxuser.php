@@ -1153,8 +1153,6 @@ class oxUser extends oxBase
      * @param array  $aDelAddress delivery address
      *
      * @throws oxUserException, oxInputException, oxConnectionException
-     *
-     * @return bool
      */
     public function changeUserData($sUser, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
     {

@@ -560,8 +560,9 @@ class oxInputValidator extends oxSuperCfg
 
         if ($oStr->strlen($aDebitInfo['lsktonr']) < 10) {
             $sNewNum = str_repeat(
-                           '0', 10 - $oStr->strlen($aDebitInfo['lsktonr'])
-                       ) . $aDebitInfo['lsktonr'];
+                '0',
+                10 - $oStr->strlen($aDebitInfo['lsktonr'])
+            ) . $aDebitInfo['lsktonr'];
             $aDebitInfo['lsktonr'] = $sNewNum;
         }
 

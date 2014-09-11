@@ -686,4 +686,3 @@ class oxUtilsDate extends oxSuperCfg
         }
     }
 }
-

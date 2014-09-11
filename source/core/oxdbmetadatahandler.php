@@ -531,4 +531,3 @@ class oxDbMetaDataHandler extends oxSuperCfg
         return $bSuccess;
     }
 }
-

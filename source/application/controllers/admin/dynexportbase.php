@@ -942,4 +942,3 @@ class DynExportBase extends oxAdminDetails
         return 'dyn_interface';
     }
 }
-

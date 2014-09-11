@@ -197,4 +197,3 @@ class oxTheme extends oxSuperCfg
         return $this->getInfo("id");
     }
 }
-

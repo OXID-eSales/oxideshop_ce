@@ -305,4 +305,3 @@ class oxSearch extends oxSuperCfg
         return $sSearch;
     }
 }
-

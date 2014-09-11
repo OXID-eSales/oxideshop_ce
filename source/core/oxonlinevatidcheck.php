@@ -90,9 +90,11 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
     /**
      * Parses error and throws exception for it
      *
+     * @param string $sErrorMsg error message
+     *
      * @deprecated since v5.2 (2014-07-28); This logic was moved to oxCompanyVatInValidator
      *
-     * @param string $sErrorMsg error message
+     * @throws oxConnectionException
      */
     protected function _parseError($sErrorMsg)
     {

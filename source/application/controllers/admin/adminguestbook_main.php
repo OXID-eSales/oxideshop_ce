@@ -92,5 +92,4 @@ class Adminguestbook_Main extends oxAdminDetails
         $oLinks->save();
         $this->setEditObjectId($oLinks->getId());
     }
-
 }

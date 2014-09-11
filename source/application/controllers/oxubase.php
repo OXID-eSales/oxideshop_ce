@@ -577,8 +577,6 @@ class oxUBase extends oxView
      * If NOT, then tries to load alternative SEO url and if url is available -
      * redirects to it. If no alternative path was found - 404 header is emitted
      * and page is rendered
-     *
-     * @return null
      */
     protected function _processRequest()
     {
@@ -613,8 +611,6 @@ class oxUBase extends oxView
     /**
      * Calls self::_processRequest(), initializes components which needs to
      * be loaded, sets current list type, calls parent::init()
-     *
-     * @return null
      */
     public function init()
     {
@@ -704,8 +700,6 @@ class oxUBase extends oxView
      * Set array of component objects
      *
      * @param array $aComponents array of components objects
-     *
-     * @return null
      */
     public function setComponents($aComponents = null)
     {
@@ -740,8 +734,6 @@ class oxUBase extends oxView
      * Set flag if current view is an order view
      *
      * @param bool $blIsOrderStep flag if current view is an order view
-     *
-     * @return null
      */
     public function setIsOrderStep($blIsOrderStep = null)
     {
@@ -763,8 +755,6 @@ class oxUBase extends oxView
      * Active category setter
      *
      * @param oxCategory $oCategory active category
-     *
-     * @return null
      */
     public function setActiveCategory($oCategory)
     {
@@ -847,8 +837,6 @@ class oxUBase extends oxView
      * List type setter
      *
      * @param string $sType type of list
-     *
-     * @return null
      */
     public function setListType($sType)
     {
@@ -938,8 +926,6 @@ class oxUBase extends oxView
      * @param string $sTitle feed page title
      * @param string $sUrl   feed url
      * @param int    $key    feed number
-     *
-     * @return null
      */
     public function addRssFeed($sTitle, $sUrl, $key = null)
     {
@@ -1041,8 +1027,6 @@ class oxUBase extends oxView
      * Set sorting column name
      *
      * @param string $sColumn - column name
-     *
-     * @return string
      */
     public function setListOrderBy($sColumn)
     {
@@ -1053,8 +1037,6 @@ class oxUBase extends oxView
      * Set sorting directions
      *
      * @param string $sDirection - direction desc / asc
-     *
-     * @return string
      */
     public function setListOrderDirection($sDirection)
     {
@@ -1211,8 +1193,6 @@ class oxUBase extends oxView
      * Active currency setter
      *
      * @param object $oCur corrency object
-     *
-     * @return object
      */
     public function setActCurrency($oCur)
     {
@@ -1236,8 +1216,6 @@ class oxUBase extends oxView
 
     /**
      * Forces output no index meta data for current view
-     *
-     * @return null
      */
     protected function _forceNoIndex()
     {
@@ -1282,8 +1260,6 @@ class oxUBase extends oxView
      * Header menu list setter
      *
      * @param array $aMenu menu list
-     *
-     * @return null
      */
     public function setMenueList($aMenu)
     {
@@ -1292,8 +1268,6 @@ class oxUBase extends oxView
 
     /**
      * Sets number of articles per page to config value
-     *
-     * @return null
      */
     protected function _setNrOfArtPerPage()
     {
@@ -1345,8 +1319,6 @@ class oxUBase extends oxView
 
     /**
      * Override this function to return object it which is used to identify its seo meta info
-     *
-     * @return null
      */
     protected function _getSeoObjectId()
     {
@@ -1495,8 +1467,6 @@ class oxUBase extends oxView
      * @param string $sSortIdent sortable item id
      * @param string $sSortBy    sort field
      * @param string $sSortDir   sort direction (optional)
-     *
-     * @return null
      */
     public function setItemSorting($sSortIdent, $sSortBy, $sSortDir = null)
     {
@@ -1559,8 +1529,6 @@ class oxUBase extends oxView
 
     /**
      * Returns title page suffix used in template in lists
-     *
-     * @return string
      */
     public function getTitlePageSuffix()
     {
@@ -1705,8 +1673,6 @@ class oxUBase extends oxView
 
     /**
      * Returns view object canonical url
-     *
-     * @return string
      */
     public function getCanonicalUrl()
     {
@@ -1726,8 +1692,6 @@ class oxUBase extends oxView
     /**
      * Template variable getter. Returns search parameter for Html
      * So far this method is implemented in search (search.php) view.
-     *
-     * @return null
      */
     public function getSearchParamForHtml()
     {
@@ -1901,8 +1865,6 @@ class oxUBase extends oxView
      * Set sorting columns
      *
      * @param array $aSortColumns array of column names array('name1', 'name2',...)
-     *
-     * @return null
      */
     public function setSortColumns($aSortColumns)
     {
@@ -1911,8 +1873,6 @@ class oxUBase extends oxView
 
     /**
      * Returns if tags will be edit
-     *
-     * @return bool
      */
     public function getEditTags()
     {
@@ -1920,8 +1880,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns search string
-     *
-     * @return string
      */
     public function getRecommSearch()
     {
@@ -1929,8 +1887,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns payment id
-     *
-     * @return string
      */
     public function getPaymentList()
     {
@@ -1956,8 +1912,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns accessoires of article
-     *
-     * @return object
      */
     public function getAccessoires()
     {
@@ -1965,8 +1919,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns crosssellings
-     *
-     * @return object
      */
     public function getCrossSelling()
     {
@@ -1974,8 +1926,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns similar article list
-     *
-     * @return object
      */
     public function getSimilarProducts()
     {
@@ -1983,8 +1933,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns list of customer also bought thies products
-     *
-     * @return object
      */
     public function getAlsoBoughtTheseProducts()
     {
@@ -1992,8 +1940,6 @@ class oxUBase extends oxView
 
     /**
      * Return the active article id
-     *
-     * @return string | bool
      */
     public function getArticleId()
     {
@@ -2133,8 +2079,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns page navigation
-     *
-     * @return null
      */
     public function getPageNavigation()
     {
@@ -2280,8 +2224,6 @@ class oxUBase extends oxView
      * Sets view product
      *
      * @param oxArticle $oProduct view product object
-     *
-     * @return null
      */
     public function setViewProduct($oProduct)
     {
@@ -2393,8 +2335,6 @@ class oxUBase extends oxView
      * Active vendor setter
      *
      * @param oxVendor $oVendor active vendor
-     *
-     * @return null
      */
     public function setActVendor($oVendor)
     {
@@ -2405,8 +2345,6 @@ class oxUBase extends oxView
      * Active Manufacturer setter
      *
      * @param oxManufacturer $oManufacturer active Manufacturer
-     *
-     * @return null
      */
     public function setActManufacturer($oManufacturer)
     {
@@ -2443,8 +2381,6 @@ class oxUBase extends oxView
      * Category list setter
      *
      * @param oxCategoryList $oCatTree category tree
-     *
-     * @return null
      */
     public function setCategoryTree($oCatTree)
     {
@@ -2465,8 +2401,6 @@ class oxUBase extends oxView
      * Manufacturer tree setter
      *
      * @param oxManufacturerList $oManufacturerTree Manufacturer tree
-     *
-     * @return null
      */
     public function setManufacturerTree($oManufacturerTree)
     {
@@ -2475,8 +2409,6 @@ class oxUBase extends oxView
 
     /**
      * Returns additional URL parameters which must be added to list products urls
-     *
-     * @return string
      */
     public function getAddUrlParams()
     {
@@ -2596,8 +2528,6 @@ class oxUBase extends oxView
 
     /**
      * Empty active product getter
-     *
-     * @return null
      */
     public function getProduct()
     {
@@ -2617,8 +2547,6 @@ class oxUBase extends oxView
      * Sets Manufacturer list for search
      *
      * @param array $aList manufacturer list
-     *
-     * @return null
      */
     public function setManufacturerlist($aList)
     {
@@ -2629,8 +2557,6 @@ class oxUBase extends oxView
      * Sets root vendor
      *
      * @param object $oVendor vendor object
-     *
-     * @return null
      */
     public function setRootVendor($oVendor)
     {
@@ -2651,8 +2577,6 @@ class oxUBase extends oxView
      * Sets root Manufacturer
      *
      * @param object $oManufacturer manufacturer object
-     *
-     * @return null
      */
     public function setRootManufacturer($oManufacturer)
     {
@@ -2936,8 +2860,6 @@ class oxUBase extends oxView
      * Sets if active root category was changed
      *
      * @param bool $blRootCatChanged root category changed
-     *
-     * @return null
      */
     public function setRootCatChanged($blRootCatChanged)
     {
@@ -2993,8 +2915,6 @@ class oxUBase extends oxView
      * Template variable setter. Sets user delivery address
      *
      * @param array $aDeliveryAddress delivery address
-     *
-     * @return null
      */
     public function setDeliveryAddress($aDeliveryAddress)
     {
@@ -3005,8 +2925,6 @@ class oxUBase extends oxView
      * Template variable setter. Sets user address
      *
      * @param array $aAddress user address
-     *
-     * @return null
      */
     public function setInvoiceAddress($aAddress)
     {
@@ -3045,8 +2963,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns searched category id
-     *
-     * @return string
      */
     public function getSearchCatId()
     {
@@ -3054,8 +2970,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns searched vendor id
-     *
-     * @return string
      */
     public function getSearchVendor()
     {
@@ -3063,8 +2977,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns searched Manufacturer id
-     *
-     * @return string
      */
     public function getSearchManufacturer()
     {
@@ -3072,8 +2984,6 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns last seen products
-     *
-     * @return array
      */
     public function getLastProducts()
     {

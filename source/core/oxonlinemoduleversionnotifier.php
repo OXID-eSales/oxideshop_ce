@@ -21,7 +21,7 @@
  */
 
 /**
- * Performs Online Module Version Notifier check
+ * Performs Online Module Version Notifier check.
  *
  * The Online Module Version Notification is used for checking if newer versions of modules are available.
  * Will be used by the upcoming online one click installer.

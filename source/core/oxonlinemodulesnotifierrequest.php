@@ -21,7 +21,7 @@
  */
 
 /**
- * Online module notifier request class
+ * Online module notifier request class and used as entity.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended

@@ -159,6 +159,8 @@ class oxSystemEventHandler
     }
 
     /**
+     * Checks if sending shop data is enabled.
+     *
      * @return bool
      */
     protected function _isSendingShopDataEnabled()
@@ -287,6 +289,8 @@ class oxSystemEventHandler
     }
 
     /**
+     * Gets server processor.
+     *
      * @return oxServerProcessor
      */
     protected function _getServerProcessor()

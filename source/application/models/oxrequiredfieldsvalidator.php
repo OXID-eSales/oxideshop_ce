@@ -50,6 +50,8 @@ class oxRequiredFieldsValidator
     private $_oFieldValidator = array();
 
     /**
+     * Sets dependencies.
+     *
      * @param oxRequiredFieldValidator $oFieldValidator
      */
     public function __construct($oFieldValidator = null)
@@ -101,6 +103,8 @@ class oxRequiredFieldsValidator
     }
 
     /**
+     * Gets invalid fields.
+     *
      * @return array
      */
     public function getInvalidFields()

@@ -44,6 +44,8 @@ class oxModuleFilesValidator implements oxIModuleValidator
     private $_sPathToModuleDirectory = null;
 
     /**
+     * Gets path to module directory.
+     *
      * @return string
      */
     public function getPathToModuleDirectory()
@@ -56,6 +58,8 @@ class oxModuleFilesValidator implements oxIModuleValidator
     }
 
     /**
+     * Sets path to module directory.
+     *
      * @param string $sPathToModuleDirectory
      */
     public function setPathToModuleDirectory($sPathToModuleDirectory)

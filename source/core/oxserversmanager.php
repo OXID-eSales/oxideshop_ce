@@ -136,7 +136,7 @@ class oxServersManager
     }
 
     /**
-     *
+     * Gets server parameter.
      *
      * @param array  $aData Data
      * @param string $sName Name
@@ -215,6 +215,8 @@ class oxServersManager
     }
 
     /**
+     * Saves servers data.
+     *
      * @param array $aServersData Servers data
      */
     protected function _save($aServersData)

@@ -119,6 +119,8 @@ class oxSepaIBANValidator
 
 
     /**
+     * Gets length for country.
+     *
      * @param string $sIBAN IBAN
      *
      * @return null
@@ -247,6 +249,8 @@ class oxSepaIBANValidator
     }
 
     /**
+     * Checks if each code length is valid.
+     *
      * @param array $aCodeLengths Code lengths
      *
      * @return bool

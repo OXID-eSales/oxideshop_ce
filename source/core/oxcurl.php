@@ -127,6 +127,8 @@ class oxCurl
 
     /**
      * Set query like "param1=value1&param2=values2.."
+     *
+     * @param string $sQuery Request query.
      */
     public function setQuery($sQuery)
     {

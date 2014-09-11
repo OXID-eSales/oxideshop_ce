@@ -119,6 +119,8 @@ class oxLang extends oxSuperCfg
 
     /**
      * Set translation state
+     *
+     * @param bool $blIsTranslated State is string translated or not. Default true.
      */
     public function setIsTranslated($blIsTranslated = true)
     {

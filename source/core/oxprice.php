@@ -84,6 +84,8 @@ class oxPrice
 
     /**
      * Netto price mode setter
+     *
+     * @param bool $blNetto State to set price to net mode (default true).
      */
     public function setNettoMode($blNetto = true)
     {

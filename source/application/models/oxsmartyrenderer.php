@@ -31,6 +31,9 @@ class oxSmartyRenderer
     /**
      * Template renderer
      *
+     * @param string $sTemplateName Template name.
+     * @param array  $aViewData     Array of view data (optional).
+     *
      * @return string
      */
     public function renderTemplate($sTemplateName, $aViewData = array())

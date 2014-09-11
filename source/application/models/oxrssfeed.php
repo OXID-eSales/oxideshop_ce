@@ -66,7 +66,6 @@ class oxRssFeed extends oxSuperCfg
      * _loadBaseChannel loads basic channel data
      *
      * @access protected
-     * @return void
      */
     protected function _loadBaseChannel()
     {
@@ -305,7 +304,6 @@ class oxRssFeed extends oxSuperCfg
      * @param string $sTargetUrl url of page rss represents
      *
      * @access protected
-     * @return void
      */
     protected function _loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null)
     {
@@ -670,8 +668,6 @@ class oxRssFeed extends oxSuperCfg
      * @param string $sManufacturerId Manufacturer id
      *
      * @access public
-     *
-     * @return void
      */
     public function loadSearchArticles($sSearch, $sCatId, $sVendorId, $sManufacturerId)
     {

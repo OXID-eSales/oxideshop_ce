@@ -21,7 +21,9 @@
  */
 
 /**
- * Standard class
+ * Standard class.
+ *
+ * @deprecated since v5.2.0 (2014-09-11); Use stdClass.
  */
 class oxStdClass
 {

@@ -98,7 +98,7 @@ class oxSimpleXml
      * @param SimpleXMLElement    $oXml
      * @param string              $sKey
      * @param string|array|object $mElement
-     * @param string $sPreferredKey
+     * @param string              $sPreferredKey
      *
      * @return SimpleXMLElement
      */

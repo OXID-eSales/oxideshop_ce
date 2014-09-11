@@ -856,7 +856,7 @@ class DynExportBase extends oxAdminDetails
                 }
 
                 // endless
-                for (; ;) {
+                while (true) {
                     if (!isset($aCatLvlCache[$sIdMax]->oxparentid) || $aCatLvlCache[$sIdMax]->oxparentid == "oxrootid") {
                         break;
                     }

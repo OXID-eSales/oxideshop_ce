@@ -37,8 +37,6 @@ class Tools_List extends oxAdminList
 
     /**
      * Performs full view update
-     *
-     * @return mixed
      */
     public function updateViews()
     {

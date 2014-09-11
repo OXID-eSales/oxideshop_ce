@@ -174,8 +174,6 @@ class oxDb
      * Sets configs object with method getVar() and properties needed for successful connection.
      *
      * @param object $oConfig configs.
-     *
-     * @return void
      */
     public static function setConfig($oConfig)
     {

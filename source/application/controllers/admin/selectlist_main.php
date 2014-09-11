@@ -95,8 +95,11 @@ class SelectList_Main extends oxAdminDetails
             }
 
             $iErr = oxRegistry::getSession()->getVariable("iErrorCode");
-            if (!$iErr)
+
+            if (!$iErr) {
                 $iErr = ERR_SUCCESS;
+            }
+
             $this->_aViewData["iErrorCode"] = $iErr;
             oxRegistry::getSession()->setVariable("iErrorCode", ERR_SUCCESS);
 
@@ -149,8 +152,9 @@ class SelectList_Main extends oxAdminDetails
             $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . $oField->name, oxField::T_RAW);
             if (isset($oField->price) && $oField->price) {
                 $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . "!P!" . trim(str_replace(",", ".", $oField->price)), oxField::T_RAW);
-                if ($oField->priceUnit == '%')
+                if ($oField->priceUnit == '%') {
                     $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . '%', oxField::T_RAW);
+                }
             }
             $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . "__@@", oxField::T_RAW);
         }
@@ -177,10 +181,11 @@ class SelectList_Main extends oxAdminDetails
             $aParams['oxselectlist__oxshopid'] = $sShopID;
         $oObj = oxNew("oxselectlist");
 
-        if ($sOxId != "-1")
+        if ($sOxId != "-1") {
             $oObj->loadInLang($this->_iEditLang, $sOxId);
-        else
+        } else {
             $aParams['oxselectlist__oxid'] = null;
+        }
 
 
         parent::save();

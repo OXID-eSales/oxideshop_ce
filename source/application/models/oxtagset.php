@@ -54,8 +54,6 @@ class oxTagSet extends oxSuperCfg implements Iterator
      * Sets tag separator
      *
      * @param string $sSeparator tags separator character
-     *
-     * @return mixed
      */
     public function setSeparator($sSeparator)
     {
@@ -109,8 +107,6 @@ class oxTagSet extends oxSuperCfg implements Iterator
      *
      * @param string $sTags     tags to add to list
      * @param bool   $blPrepare if false, separate tags will not be parsed and stored as is
-     *
-     * @return bool
      */
     public function add($sTags, $blPrepare = true)
     {
@@ -198,8 +194,6 @@ class oxTagSet extends oxSuperCfg implements Iterator
 
     /**
      * Sorts current tag set
-     *
-     * @return array
      */
     public function sort()
     {
@@ -209,8 +203,6 @@ class oxTagSet extends oxSuperCfg implements Iterator
 
     /**
      * Sorts current tag set
-     *
-     * @return array
      */
     public function sortByHitCount()
     {
@@ -229,8 +221,6 @@ class oxTagSet extends oxSuperCfg implements Iterator
 
     /**
      * Return the key of the current element
-     *
-     * @return void
      */
     public function next()
     {
@@ -259,8 +249,6 @@ class oxTagSet extends oxSuperCfg implements Iterator
 
     /**
      * Rewind the Iterator to the first element
-     *
-     * @return void
      */
     public function rewind()
     {

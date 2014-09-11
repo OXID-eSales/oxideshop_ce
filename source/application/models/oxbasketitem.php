@@ -327,9 +327,9 @@ class oxBasketItem extends oxSuperCfg
      * Sets item amount and weight which depends on amount
      * ( oxbasketitem::dAmount, oxbasketitem::dWeight )
      *
-     * @param double $dAmount
+     * @param double $dAmount    amount
      * @param bool   $blOverride Whether to override current amount.
-     * @param string $sItemKey
+     * @param string $sItemKey   item key
      *
      * @throws oxArticleInputException
      * @throws oxOutOfStockException

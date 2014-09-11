@@ -203,6 +203,8 @@ class oxModuleInstaller extends oxSuperCfg
 
     /**
      * Add module to disable list
+     *
+     * @param string $sModuleId Module id
      */
     protected function _addToDisabledList($sModuleId)
     {

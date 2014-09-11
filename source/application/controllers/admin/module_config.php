@@ -206,7 +206,7 @@ class Module_Config extends Shop_Config
     /**
      * Convert metadata type to DB type.
      *
-     * @param $sType
+     * @param string $sType Metadata type.
      *
      * @return string
      */

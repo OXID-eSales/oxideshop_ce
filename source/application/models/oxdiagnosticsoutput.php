@@ -62,7 +62,7 @@ class oxDiagnosticsOutput
     /**
      * OutputKey setter
      *
-     * @param $sOutputKey string
+     * @param string $sOutputKey Output key.
      */
     public function setOutputKey($sOutputKey)
     {
@@ -84,7 +84,7 @@ class oxDiagnosticsOutput
     /**
      * OutputFileName setter
      *
-     * @param $sOutputFileName string
+     * @param string $sOutputFileName Output file name.
      */
     public function setOutputFileName($sOutputFileName)
     {
@@ -106,7 +106,7 @@ class oxDiagnosticsOutput
     /**
      * Stores result file in file cache
      *
-     * @param $sResult
+     * @param string $sResult Result.
      */
     public function storeResult($sResult)
     {

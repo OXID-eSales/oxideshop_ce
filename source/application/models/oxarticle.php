@@ -3834,8 +3834,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * gets attribs string
      *
-     * @param string &$sAttribs Attribute selection snippet
-     * @param int    &$iCnt     The number of selected attributes
+     * @param string &$sAttributeSql Attribute selection snippet
+     * @param int    &$iCnt          The number of selected attributes
      */
     protected function _getAttribsString(&$sAttributeSql, &$iCnt)
     {

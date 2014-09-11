@@ -67,7 +67,7 @@ class oxCompanyVatIn
     /**
      * Removes spaces and symbols: '-',',','.' from string
      *
-     * @param $sValue - string
+     * @param string $sValue Value.
      *
      * @return string
      */

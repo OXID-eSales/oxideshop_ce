@@ -2162,8 +2162,8 @@ class oxConfig extends oxSuperCfg
      * Function returns shop url by given language.
      * #680 per language another URL
      *
-     * @param $iLang
-     * @param $blSSL
+     * @param integer $iLang Language id.
+     * @param bool    $blSSL Whether to use ssl.
      *
      * @return null|string
      */

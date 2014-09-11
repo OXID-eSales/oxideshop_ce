@@ -58,7 +58,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
     /**
      * Set language for pdf generation.
      *
-     * @param $iLang
+     * @param integer $iLang Language id.
      */
     public function setSelectedLang($iLang)
     {

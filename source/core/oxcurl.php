@@ -440,7 +440,7 @@ class oxCurl
     /**
      * Decodes html entities.
      *
-     * @param $aParams
+     * @param array $aParams Parameters.
      *
      * @return array
      */

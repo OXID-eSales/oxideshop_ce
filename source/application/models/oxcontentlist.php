@@ -178,7 +178,7 @@ class oxContentList extends oxList
     /**
      * Creates SQL by type.
      *
-     * @param $iType
+     * @param integer $iType type.
      *
      * @return string
      */

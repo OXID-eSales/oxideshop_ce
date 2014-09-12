@@ -407,7 +407,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Multidimensional variant tree structure
      *
-     * @var OxMdVariant
+     * @var oxMdVariant
      */
     protected $_oMdVariants = null;
 
@@ -3130,7 +3130,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns multidimensional variant structure
      *
-     * @return OxMdVariants
+     * @return oxMdVariant
      */
     public function getMdVariants()
     {
@@ -3145,6 +3145,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $oVariants = $this->getVariants();
         }
 
+        /** @var oxVariantHandler $oVariantHandler */
         $oVariantHandler = oxNew("oxVariantHandler");
         $this->_oMdVariants = $oVariantHandler->buildMdVariants($oVariants, $this->getId());
 
@@ -3154,7 +3155,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns first level variants from multidimensional variants list
      *
-     * @return OxMdVariants
+     * @return oxMdVariant
      */
     public function getMdSubvariants()
     {

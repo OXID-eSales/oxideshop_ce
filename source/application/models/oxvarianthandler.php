@@ -64,11 +64,11 @@ class oxVariantHandler extends oxSuperCfg
      * @param object $oVariants all article variants
      * @param string $sParentId parent article id
      *
-     * @return OxMdVariants
+     * @return oxMdVariant
      */
     public function buildMdVariants($oVariants, $sParentId)
     {
-        $oMdVariants = oxNew("OxMdVariant");
+        $oMdVariants = oxNew("oxMdVariant");
         $oMdVariants->setParentId($sParentId);
         $oMdVariants->setName("_parent_product_");
         foreach ($oVariants as $sKey => $oVariant) {

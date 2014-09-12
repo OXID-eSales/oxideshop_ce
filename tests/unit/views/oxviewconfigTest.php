@@ -2456,15 +2456,37 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     }
 
     /**
-     * Tests retrieve session challenge token from session.
+     * Data provider for test testGetSessionChallengeToken.
+     *
+     * @return array
      */
-    public function testGetSessionChallengeToken()
+    public function _dpGetSessionChallengeToken()
     {
-        $sToken = 'session_challenge_token';
+        return array(
+            array(false, 0, ''),
+            array(true, 1, 'session_challenge_token'),
+        );
+    }
 
+    /**
+     * /**
+     * Tests retrieve session challenge token from session.
+     *
+     * @dataProvider _dpGetSessionChallengeToken
+     *
+     * @param boolean $blIsSessionStarted                   is session started
+     * @param integer $iGetSessionChallengeTokenCalledTimes method getSessionChallengeToken expected to be called times
+     * @param string  $sToken                               Security token
+     */
+    public function testGetSessionChallengeToken($blIsSessionStarted, $iGetSessionChallengeTokenCalledTimes, $sToken)
+    {
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('getSessionChallengeToken'));
-        $oSession->expects($this->once())->method('getSessionChallengeToken')->will($this->returnValue($sToken));
+        $oSession = $this->getMock('oxSession', array('isSessionStarted', 'getSessionChallengeToken'));
+
+        $oSession->expects($this->once())->method('isSessionStarted')
+            ->will($this->returnValue($blIsSessionStarted));
+        $oSession->expects($this->exactly($iGetSessionChallengeTokenCalledTimes))->method('getSessionChallengeToken')
+            ->will($this->returnValue($sToken));
         oxRegistry::set('oxSession', $oSession);
 
         $oViewConfig = new oxViewConfig();

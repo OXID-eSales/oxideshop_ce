@@ -65,9 +65,9 @@ abstract class oxOnlineCaller
     /**
      * Sets dependencies.
      *
-     * @param oxCurl                     $oCurl
-     * @param oxOnlineServerEmailBuilder $oEmailBuilder
-     * @param oxSimpleXml                $oSimpleXml
+     * @param oxCurl                     $oCurl         Sends request to OXID servers.
+     * @param oxOnlineServerEmailBuilder $oEmailBuilder Forms email when OXID servers are unreachable.
+     * @param oxSimpleXml                $oSimpleXml    Forms XML from Request for sending to OXID servers.
      */
     public function __construct(oxCurl $oCurl, oxOnlineServerEmailBuilder $oEmailBuilder, oxSimpleXml $oSimpleXml)
     {
@@ -79,7 +79,7 @@ abstract class oxOnlineCaller
     /**
      * Makes curl call with given parameters to given url.
      *
-     * @param oxOnlineRequest $oRequest
+     * @param oxOnlineRequest $oRequest Information set in Request object will be sent to OXID servers.
      *
      * @return null|string In XML format.
      */
@@ -112,7 +112,7 @@ abstract class oxOnlineCaller
     /**
      * Forms email.
      *
-     * @param oxOnlineRequest $oRequest
+     * @param oxOnlineRequest $oRequest Request object from which email should be formed.
      *
      * @return string
      */
@@ -124,7 +124,7 @@ abstract class oxOnlineCaller
     /**
      * Forms XML request.
      *
-     * @param oxOnlineRequest $oRequest
+     * @param oxOnlineRequest $oRequest Request object from which server request should be formed.
      *
      * @return string
      */
@@ -166,8 +166,8 @@ abstract class oxOnlineCaller
     /**
      * Executes CURL call with given parameters.
      *
-     * @param string $sUrl
-     * @param string $sXml
+     * @param string $sUrl Server address to call to.
+     * @param string $sXml Data to send. Currently OXID servers only accept XML formatted data.
      *
      * @return string
      */
@@ -185,7 +185,7 @@ abstract class oxOnlineCaller
     /**
      * Sends an email with server information.
      *
-     * @param string $sBody
+     * @param string $sBody Mail content.
      */
     private function _sendEmail($sBody)
     {
@@ -196,7 +196,7 @@ abstract class oxOnlineCaller
     /**
      * Resets config parameter iFailedOnlineCallsCount if it's bigger than 0.
      *
-     * @param int $iFailedOnlineCallsCount
+     * @param int $iFailedOnlineCallsCount Amount of calls which previously failed.
      */
     private function _resetFailedCallsCount($iFailedOnlineCallsCount)
     {
@@ -208,7 +208,7 @@ abstract class oxOnlineCaller
     /**
      * increases failed calls count.
      *
-     * @param int $iFailedOnlineCallsCount
+     * @param int $iFailedOnlineCallsCount Amount of calls which previously failed.
      */
     private function _increaseFailedCallsCount($iFailedOnlineCallsCount)
     {

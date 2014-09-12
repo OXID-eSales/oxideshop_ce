@@ -76,7 +76,7 @@ class oxOnlineLicenseCheckCaller extends oxOnlineCaller
     /**
      * Parse response message received from Online License Key Check web service and save it to response object.
      *
-     * @param string $sRawResponse
+     * @param string $sRawResponse UnResponse from server
      *
      * @throws oxException
      *

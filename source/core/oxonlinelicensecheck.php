@@ -264,7 +264,7 @@ class oxOnlineLicenseCheck
     /**
      * Builds request object with required parameters.
      *
-     * @param array $aSerials
+     * @param array $aSerials Array of serials to add to request.
      *
      * @throws oxException
      *

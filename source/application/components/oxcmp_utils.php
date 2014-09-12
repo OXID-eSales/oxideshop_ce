@@ -111,7 +111,8 @@ class oxcmp_utils extends oxView
      */
     public function toCompareList( $sProductId = null, $dAmount = null, $aSel = null, $blOverride = false, $blBundle = false )
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        $oSession = oxRegistry::getSession();
+        if (!$oSession->isNewSession() && !$oSession->checkSessionChallenge()) {
             return;
         }
 

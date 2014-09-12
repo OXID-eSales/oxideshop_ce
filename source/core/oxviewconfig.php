@@ -1504,6 +1504,12 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getSessionChallengeToken()
     {
-        return $this->getSession()->getSessionChallengeToken();
+        if (oxRegistry::getSession()->isSessionStarted()) {
+            $sessionChallengeToken = $this->getSession()->getSessionChallengeToken();
+        } else {
+            $sessionChallengeToken = "";
+        }
+
+        return $sessionChallengeToken;
     }
 }

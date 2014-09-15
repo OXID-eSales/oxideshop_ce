@@ -151,8 +151,6 @@ class actions_main_ajax extends ajaxListComponent
 
     /**
      * Removes article from Promotions list
-     *
-     * @return null
      */
     public function removeArtFromAct()
     {
@@ -170,8 +168,6 @@ class actions_main_ajax extends ajaxListComponent
 
     /**
      * Adds article to Promotions list
-     *
-     * @return null
      */
     public function addArtToAct()
     {
@@ -209,8 +205,6 @@ class actions_main_ajax extends ajaxListComponent
 
     /**
      * Sets sorting position for current action article
-     *
-     * @return null
      */
     public function setSorting()
     {

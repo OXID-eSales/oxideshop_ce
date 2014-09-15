@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Account class
  */
 class Unit_Views_accountWishlistTest extends OxidTestCase
 {
+
     /**
      * Testing Account_Wishlist::render()
      *
@@ -35,9 +36,9 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testRenderNoUser()
     {
-        $oView = $this->getMock( "Account_Wishlist", array( "getUser" ) );
-        $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( false ) );
-        $this->assertEquals( 'page/account/login.tpl', $oView->render() );
+        $oView = $this->getMock("Account_Wishlist", array("getUser"));
+        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
+        $this->assertEquals('page/account/login.tpl', $oView->render());
     }
 
     /**
@@ -48,11 +49,11 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
     public function testRender()
     {
         $oUser = new oxuser;
-        $oUser->oxuser__oxpassword = new oxField( "testPassword" );
+        $oUser->oxuser__oxpassword = new oxField("testPassword");
 
-        $oView = $this->getMock( "Account_Wishlist", array( "getUser" ) );
-        $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $this->assertEquals( 'page/account/wishlist.tpl', $oView->render() );
+        $oView = $this->getMock("Account_Wishlist", array("getUser"));
+        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $this->assertEquals('page/account/wishlist.tpl', $oView->render());
     }
 
     /**
@@ -62,15 +63,15 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testShowSuggest()
     {
-        modConfig::setRequestParameter( "blshowsuggest", 0 );
+        modConfig::setRequestParameter("blshowsuggest", 0);
 
         $oView = new Account_Wishlist();
-        $this->assertFalse( $oView->showSuggest() );
+        $this->assertFalse($oView->showSuggest());
 
-        modConfig::setRequestParameter( "blshowsuggest", 1 );
+        modConfig::setRequestParameter("blshowsuggest", 1);
 
         $oView = new Account_Wishlist();
-        $this->assertTrue( $oView->showSuggest() );
+        $this->assertTrue($oView->showSuggest());
     }
 
     /**
@@ -80,9 +81,9 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testGetWishListNoUserNoWishlist()
     {
-        $oView = $this->getMock( "Account_Wishlist", array( "getUser" ) );
-        $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( false ) );
-        $this->assertFalse( $oView->getWishList() );
+        $oView = $this->getMock("Account_Wishlist", array("getUser"));
+        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
+        $this->assertFalse($oView->getWishList());
     }
 
 
@@ -93,15 +94,15 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testGetWishList()
     {
-        $oBasket = $this->getMock( "oxBasket", array( "isEmpty" ) );
-        $oBasket->expects( $this->any() )->method( 'isEmpty')->will( $this->returnValue( false ) );
+        $oBasket = $this->getMock("oxBasket", array("isEmpty"));
+        $oBasket->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
 
-        $oUser = $this->getMock( "oxUser", array( "getBasket" ) );
-        $oUser->expects( $this->any() )->method( 'getBasket')->with( $this->equalTo( "wishlist" ) )->will( $this->returnValue( $oBasket ) );
+        $oUser = $this->getMock("oxUser", array("getBasket"));
+        $oUser->expects($this->any())->method('getBasket')->with($this->equalTo("wishlist"))->will($this->returnValue($oBasket));
 
-        $oView = $this->getMock( "Account_Wishlist", array( "getUser" ) );
-        $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $this->assertSame( $oBasket, $oView->getWishList() );
+        $oView = $this->getMock("Account_Wishlist", array("getUser"));
+        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $this->assertSame($oBasket, $oView->getWishList());
     }
 
 
@@ -112,19 +113,19 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testGetWishList_basketIsEmpty()
     {
-        $oUserBasket = $this->getMock( "oxUserBasket", array( "isEmpty" ) );
-        $oUserBasket->expects( $this->once() )->method( 'isEmpty')->will( $this->returnValue( true ) );
-        $oUserBasket->setId( "testwishlist" );
+        $oUserBasket = $this->getMock("oxUserBasket", array("isEmpty"));
+        $oUserBasket->expects($this->once())->method('isEmpty')->will($this->returnValue(true));
+        $oUserBasket->setId("testwishlist");
 
-        $oUser = $this->getMock( "oxUser", array( "getBasket" ) );
-        $oUser->expects( $this->any() )->method( 'getBasket')->with( $this->equalTo( "wishlist" ) )->will( $this->returnValue( $oUserBasket ) );
+        $oUser = $this->getMock("oxUser", array("getBasket"));
+        $oUser->expects($this->any())->method('getBasket')->with($this->equalTo("wishlist"))->will($this->returnValue($oUserBasket));
 
-        $oView = $this->getMock( "Account_Wishlist", array( "getUser" ) );
-        $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
+        $oView = $this->getMock("Account_Wishlist", array("getUser"));
+        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
         $oWishList = $oView->getWishList();
 
-        $this->assertFalse( $oWishList );
+        $this->assertFalse($oWishList);
     }
 
 
@@ -135,9 +136,9 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testGetWishProductListNoWishList()
     {
-        $oView = $this->getMock( "Account_Wishlist", array( "getWishList" ) );
-        $oView->expects( $this->any() )->method( 'getWishList')->will( $this->returnValue( false ) );
-        $this->assertFalse( $oView->getWishProductList() );
+        $oView = $this->getMock("Account_Wishlist", array("getWishList"));
+        $oView->expects($this->any())->method('getWishList')->will($this->returnValue(false));
+        $this->assertFalse($oView->getWishProductList());
     }
 
     /**
@@ -147,12 +148,12 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testGetWishProductList()
     {
-        $oWishList = $this->getMock( "oxuserbasket", array( "getArticles" ) );
-        $oWishList->expects( $this->any() )->method( 'getArticles')->will( $this->returnValue( "testArticles" ) );
+        $oWishList = $this->getMock("oxuserbasket", array("getArticles"));
+        $oWishList->expects($this->any())->method('getArticles')->will($this->returnValue("testArticles"));
 
-        $oView = $this->getMock( "Account_Wishlist", array( "getWishList" ) );
-        $oView->expects( $this->any() )->method( 'getWishList')->will( $this->returnValue( $oWishList ) );
-        $this->assertEquals( "testArticles", $oView->getWishProductList() );
+        $oView = $this->getMock("Account_Wishlist", array("getWishList"));
+        $oView->expects($this->any())->method('getWishList')->will($this->returnValue($oWishList));
+        $this->assertEquals("testArticles", $oView->getWishProductList());
     }
 
     /**
@@ -163,17 +164,17 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
     public function testGetSimilarRecommListIds()
     {
         $sArrayKey = "articleId";
-        $aArrayKeys = array( $sArrayKey );
+        $aArrayKeys = array($sArrayKey);
 
         // Mock to get Id
-        $oSimilarProd = $this->getMock( "oxarticle", array( "getId" ) );
-        $oSimilarProd->expects( $this->once() )->method( "getId" )->will( $this->returnValue( $sArrayKey ) );
+        $oSimilarProd = $this->getMock("oxarticle", array("getId"));
+        $oSimilarProd->expects($this->once())->method("getId")->will($this->returnValue($sArrayKey));
 
-        $aWishProdList = array( $oSimilarProd );
+        $aWishProdList = array($oSimilarProd);
 
-        $oSearch = $this->getMock( "account_wishlist", array( "getWishProductList" ) );
-        $oSearch->expects( $this->once() )->method( "getWishProductList" )->will( $this->returnValue( $aWishProdList ) );
-        $this->assertEquals( $aArrayKeys, $oSearch->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of key from result of getWishProductList()" );
+        $oSearch = $this->getMock("account_wishlist", array("getWishProductList"));
+        $oSearch->expects($this->once())->method("getWishProductList")->will($this->returnValue($aWishProdList));
+        $this->assertEquals($aArrayKeys, $oSearch->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of key from result of getWishProductList()");
     }
 
     /**
@@ -268,14 +269,14 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testSearchForWishList()
     {
-        modConfig::setRequestParameter( 'search', "searchParam" );
-        oxTestModules::addFunction( 'oxuserlist', 'loadWishlistUsers', '{ $this->_aArray[0] = 1; }' );
+        modConfig::setRequestParameter('search', "searchParam");
+        oxTestModules::addFunction('oxuserlist', 'loadWishlistUsers', '{ $this->_aArray[0] = 1; }');
 
         $oView = new Account_Wishlist();
         $oView->searchForWishList();
 
-        $this->assertTrue( $oView->getWishListUsers() instanceof oxuserlist );
-        $this->assertEquals( "searchParam", $oView->getWishListSearchParam() );
+        $this->assertTrue($oView->getWishListUsers() instanceof oxuserlist);
+        $this->assertEquals("searchParam", $oView->getWishListSearchParam());
     }
 
     /**

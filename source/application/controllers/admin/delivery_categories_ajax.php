@@ -88,8 +88,6 @@ class delivery_categories_ajax extends ajaxListComponent
 
     /**
      * Removes category from delivery configuration
-     *
-     * @return null
      */
     public function removeCatFromDel()
     {
@@ -110,8 +108,6 @@ class delivery_categories_ajax extends ajaxListComponent
 
     /**
      * Adds category to delivery configuration
-     *
-     * @return null
      */
     public function addCatToDel()
     {

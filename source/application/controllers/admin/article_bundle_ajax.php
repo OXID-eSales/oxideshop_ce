@@ -110,8 +110,6 @@ class article_bundle_ajax extends ajaxListComponent
 
     /**
      * Removing article from corssselling list
-     *
-     * @return null
      */
     public function removeArticleBundle()
     {
@@ -124,8 +122,6 @@ class article_bundle_ajax extends ajaxListComponent
 
     /**
      * Adding article to corssselling list
-     *
-     * @return null
      */
     public function addArticleBundle()
     {

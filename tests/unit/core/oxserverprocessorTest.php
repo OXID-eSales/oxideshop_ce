@@ -25,41 +25,21 @@
  */
 class Unit_Core_oxServerProcessorTest extends OxidTestCase
 {
-
-    public function testNodeInformationNotUpdatedIfNotNeed0()
-    {
-        $oNode = $this->getMock('oxApplicationServer');
-
-        /** @var oxServersManager $oServerNodesManager */
-        $oServerNodesManager = $this->getMock('oxServersManager');
-        $oServerNodesManager->expects($this->any())->method('getServer')->will($this->returnValue($oNode));
-
-        /** @var oxServerChecker $oServerNodeChecker */
-        $oServerNodeChecker = $this->getMock('oxServerChecker');
-        // Test that check is called with object got from server node manager.
-        $oServerNodeChecker->expects($this->any())->method('check')->with($oNode)->will($this->returnValue(false));
-
-        $oUtilsServer = $this->getMock('oxUtilsServer');
-        $oUtilsDate = $this->getMock('oxUtilsDate');
-
-        $oServerNodesProcessor = new oxServerProcessor($oServerNodesManager, $oServerNodeChecker, $oUtilsServer, $oUtilsDate);
-        $oServerNodesProcessor->process();
-    }
-
     public function testNodeInformationNotUpdatedIfNotNeed()
     {
-        $oNode = $this->getMock('oxApplicationServer');
+        $oNode = new oxApplicationServer();
+        $oNode->setTimestamp(time());
 
         /** @var oxServersManager $oServerNodesManager */
         $oServerNodesManager = $this->getMock('oxServersManager');
         // Test that processor do not update node information if not needed.
         $oServerNodesManager->expects($this->never())->method('saveServer');
-        $oServerNodesManager->expects($this->any())->method('getServer')->will($this->returnValue($oNode));
+        $oServerNodesManager->expects($this->once())->method('getServer')->will($this->returnValue($oNode));
 
         /** @var oxServerChecker $oServerNodeChecker */
         $oServerNodeChecker = $this->getMock('oxServerChecker');
         // Test that check is called with object got from server node manager.
-        $oServerNodeChecker->expects($this->any())->method('check')->will($this->returnValue(true));
+        $oServerNodeChecker->expects($this->any())->method('check')->with($oNode)->will($this->returnValue(true));
 
         $oUtilsServer = $this->getMock('oxUtilsServer');
         $oUtilsDate = $this->getMock('oxUtilsDate');
@@ -106,6 +86,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $this->setAdminMode($blAdmin);
 
         $oNode = new oxApplicationServer();
+        $oNode->setTimestamp(time());
         /** @var oxServersManager $oServerNodesManager */
         $oServerNodesManager = $this->getMock('oxServersManager');
         // Test that node manager was called with correct values.
@@ -114,7 +95,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
 
         /** @var oxServerChecker $oServerNodeChecker */
         $oServerNodeChecker = $this->getMock('oxServerChecker');
-        $oServerNodeChecker->expects($this->any())->method('check')->will($this->returnValue(false));
+        $oServerNodeChecker->expects($this->once())->method('check')->with($oNode)->will($this->returnValue(false));
 
         $oUtilsServer = $this->getMock('oxUtilsServer');
         $oUtilsServer->expects($this->any())->method('getServerIp')->will($this->returnValue($sIP));

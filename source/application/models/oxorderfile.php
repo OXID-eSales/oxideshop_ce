@@ -45,7 +45,7 @@ class oxOrderFile extends oxBase
     /**
      * Initialises the instance
      *
-     * @return null
+     * @return oxOrderFile
      */
     public function __construct()
     {

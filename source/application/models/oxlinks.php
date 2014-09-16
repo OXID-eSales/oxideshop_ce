@@ -37,7 +37,7 @@ class oxLinks extends oxI18n
     /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
      *
-     * @return null
+     * @return oxLinks
      */
     public function __construct()
     {

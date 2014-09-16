@@ -53,16 +53,6 @@ class DbRestore
     private $_aChanges = array();
 
     /**
-     * Sets temp directory to xoCCTempDir if constant exists
-     */
-    public function __construct()
-    {
-        if (defined('oxCCTempDir')) {
-            $this->_sTmpDir = oxCCTempDir;
-        }
-    }
-
-    /**
      * Returns dump file path
      *
      * @return string

@@ -61,11 +61,7 @@ class DbRestore
     {
         if (is_null($this->_sTmpFilePath)) {
             $sDbName = oxRegistry::getConfig()->getConfigParam('dbName');
-            $this->_sTmpFilePath = $this->_sTmpDir . '/' . $sDbName . '_dbdump/';
-            if (!file_exists($this->_sTmpFilePath)) {
-                mkdir($this->_sTmpFilePath, 0777, true);
-                chmod($this->_sTmpFilePath, 0777);
-            }
+            $this->_sTmpFilePath = $this->_sTmpDir . '/' . $sDbName . '_';
         }
 
         return $this->_sTmpFilePath;

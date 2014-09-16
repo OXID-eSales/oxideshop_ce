@@ -814,7 +814,7 @@ $aLang = array(
 'LANGUAGE_ERROR_RESETING_MULTILANG_FIELDS'                 => 'Attention: Error occured while reseting multilanguage fields after language delete!',
 'LANGUAGE_DELETINGMAINLANG_WARNING'                        => 'Attention: you can\'t delete main language (with ID = 0)!',
 'LANGUAGE_ABBRCHANGEMAINLANG_WARNING'                      => 'Attention: you can\'t change abbreviation of main language (with ID = 0)!',
-'LANGUAGE_ALREADYEXISTS_ERROR'                             => 'Error: language with such abbervation already exists!',
+'LANGUAGE_ALREADYEXISTS_ERROR'                             => 'Error: a language with this abbreviation already exists!',
 'LANGUAGE_EMPTYLANGUAGENAME_ERROR'                         => 'Please enter language name!',
 'SETUP_DIRNOTDELETED_WARNING'                              => 'Please delete directory: setup!',
 'UPDATEAPP_DIRNOTDELETED_WARNING'                          => 'Please delete directory: updateApp!',

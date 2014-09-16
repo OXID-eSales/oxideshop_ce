@@ -37,20 +37,31 @@ define ('oxCCTempDir', oxPATH . '/oxCCTempDir/');
 if (!is_dir(oxCCTempDir)) {
     mkdir(oxCCTempDir, 0777, 1);
 } else {
-    function delTree( $dir, $rmBaseDir = false ) {
-        $files = array_diff( scandir( $dir ), array('.', '..') );
+    function delTree($dir, $rmBaseDir = false)
+    {
+        $files = array_diff(scandir($dir), array('.', '..'));
         foreach ($files as $file) {
-            ( is_dir( "$dir/$file" ) ) ? delTree( "$dir/$file", true ) : @unlink( "$dir/$file" );
+            (is_dir("$dir/$file")) ? delTree("$dir/$file", true) : @unlink("$dir/$file");
         }
-        if ( $rmBaseDir ) {
-            @rmdir( $dir );
+        if ($rmBaseDir) {
+            @rmdir($dir);
         }
     }
+
     delTree(oxCCTempDir);
 }
 
 
 require_once 'unit/test_config.inc.php';
+
+if (file_exists("unit/{$sDataBaseRestore}.php")) {
+    include_once "unit/{$sDataBaseRestore}.php";
+} else {
+    include_once "{$sDataBaseRestore}.php";
+}
+$oDbRestore = new DbRestore();
+$oDbRestore->dumpDB();
+
 require_once "unit/OxidTestCase.php";
 
 define('oxADMIN_LOGIN', oxDb::getDb()->getOne("select OXUSERNAME from oxuser where oxid='oxdefaultadmin'"));

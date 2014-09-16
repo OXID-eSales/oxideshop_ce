@@ -64,3 +64,6 @@ $sDemoDataFileName = "demodata_EE_2_{$sDomain}.sql";
 // make sure that path to browser executable is known for the system
 $sBrowserName = 'firefox';
 
+// Currently exists dbRestore and dbRestore_largeDb. dbRestore_largeDb tends to be faster, but it is not able to work with
+// external databases - this is why dbRestore is currently a default one.
+$sDataBaseRestore = "dbRestore";

@@ -45,16 +45,6 @@ function overrideGetShopBasePath($sPath)
 
 define('OX_BASE_PATH', isset($_sOverridenShopBasePath) ? $_sOverridenShopBasePath : oxPATH);
 
-/*
-function getShopBasePath()
-{
-    global $_sOverridenShopBasePath;
-    if (isset($_sOverridenShopBasePath)) {
-        return $_sOverridenShopBasePath;
-    }
-    return oxPATH;
-}*/
-
 function getTestsBasePath()
 {
     return realpath(dirname(__FILE__) . '/../');
@@ -121,21 +111,3 @@ require_once getShopBasePath() . 'core/oxsession.php';
 // DB managing class.
 //require_once( getShopBasePath() . 'core/adodb/drivers/adodb-mysql.inc.php');
 require_once getShopBasePath() . 'core/oxconfig.php';
-
-function initDbDump()
-{
-    static $done = false;
-    if ($done) {
-        throw new Exception("init already done");
-    }
-    if (file_exists('unit/dbRestore.php')) {
-        include_once 'unit/dbRestore.php';
-    } else {
-        include_once 'dbRestore.php';
-    }
-    $oDbRestore = new DbRestore();
-    $oDbRestore->dumpDB();
-    $done = true;
-}
-
-initDbDump();

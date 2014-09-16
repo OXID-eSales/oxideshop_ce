@@ -110,6 +110,7 @@ function _groupExp(el) {
 [{oxscript include="js/widgets/oxmoduleconfiguration.js"}]
 
 [{oxscript add="$('#moduleConfiguration').oxModuleConfiguration();" priority=10}]
+[{oxscript add="$.noConflict();" priority=10}]
 
 
 [{/block}]

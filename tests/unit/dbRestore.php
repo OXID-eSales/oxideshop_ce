@@ -114,7 +114,7 @@ class DbRestore
      * Sets database restoration mode.
      * Available modes: MAINTENANCE_SINGLEROWS, MAINTENANCE_WHOLETABLES.
      *
-     * @param int $iMode
+     * @param int $iMode Restoration mode.
      */
     public function setResetMode($iMode)
     {
@@ -135,7 +135,7 @@ class DbRestore
      * Sets result output mode.
      * Available modes: MAINTENANCE_MODE_ONLYRESET, MAINTENANCE_MODE_ONLYOUTPUT, MAINTENANCE_MODE_RESETANDOUTPUT.
      *
-     * @param int $iMode
+     * @param int $iMode Output mode.
      */
     public function setOutputMode($iMode)
     {

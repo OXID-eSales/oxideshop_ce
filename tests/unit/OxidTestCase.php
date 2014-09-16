@@ -22,16 +22,34 @@
 
 require_once 'test_config.inc.php';
 
+/**
+ * Class for creating stub objects.
+ */
 class OxidMockStubFunc implements PHPUnit_Framework_MockObject_Stub
 {
 
     private $_func;
 
+    /**
+     * Constructor
+     *
+     * @param string $sFunc
+     */
     public function __construct($sFunc)
     {
         $this->_func = $sFunc;
     }
 
+    /**
+     * Fakes the processing of the invocation $invocation by returning a
+     * specific value.
+     *
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     * The invocation which was mocked and matched by the current method
+     * and argument matchers.
+     *
+     * @return mixed
+     */
     public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         if (is_string($this->_func) && preg_match('/^\{.+\}$/', $this->_func)) {
@@ -44,15 +62,22 @@ class OxidMockStubFunc implements PHPUnit_Framework_MockObject_Stub
         }
     }
 
+    /**
+     * Returns user called function.
+     *
+     * @return string
+     */
     public function toString()
     {
         return 'call user-specified function ' . $this->_func;
     }
 }
 
+/**
+ * Base tests class. Most tests should extend this class.
+ */
 class OxidTestCase extends PHPUnit_Framework_TestCase
 {
-
     /** @var array Request parameters backup. */
     protected $_aBackup = array();
 
@@ -81,9 +106,9 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Running setUpBeforeTestSuite action.
      *
-     * @param  string $name
-     * @param  array  $data
-     * @param  string $dataName
+     * @param string $name
+     * @param array  $data
+     * @param string $dataName
      */
     public function __construct($name = null, array $data = array(), $dataName = '')
     {
@@ -137,6 +162,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Starts test.
+     *
      * @param PHPUnit_Framework_TestResult $result
      *
      * @return PHPUnit_Framework_TestResult
@@ -146,7 +173,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         $result = parent::run($result);
 
         oxTestModules::cleanUp();
-
         return $result;
     }
 
@@ -210,8 +236,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Set parameter to session object.
      *
-     * @param string $sParam parameter name.
-     * @param object $oVal   any parameter value, default null.
+     * @param string $sParam Parameter name.
+     * @param object $oVal   Any parameter value, default null.
      */
     public function setSessionParam($sParam, $oVal = null)
     {
@@ -233,8 +259,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Set parameter to config request object.
      *
-     * @param string $sParam parameter name.
-     * @param mixed  $mxVal  any parameter value, default null.
+     * @param string $sParam Parameter name.
+     * @param mixed  $mxVal  Any parameter value, default null.
      */
     public function setRequestParam($sParam, $mxVal = null)
     {
@@ -256,8 +282,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Set parameter to config object.
      *
-     * @param string $sParam parameter name.
-     * @param mixed  $mxVal  any parameter value, default null.
+     * @param string $sParam Parameter name.
+     * @param mixed  $mxVal  Any parameter value, default null.
      */
     public function setConfigParam($sParam, $mxVal = null)
     {
@@ -268,8 +294,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * Sets OXID shop admin mode.
      *
      * @param bool $blAdmin set to admin mode TRUE / FALSE.
-     *
-     * @return null
      */
     public function setAdminMode($blAdmin)
     {
@@ -291,20 +315,16 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * Sets OXID shop ID.
      *
      * @param string $sShopId set active shop ID.
-     *
-     * @return null
      */
     public function setShopId($sShopId)
     {
-        return $this->getConfig()->setShopId($sShopId);
+        $this->getConfig()->setShopId($sShopId);
     }
 
     /**
      * Set static time value for testing.
      *
      * @param int $oVal
-     *
-     * @return null
      */
     public function setTime($oVal = null)
     {
@@ -372,8 +392,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * Sets language
      *
      * @param int $iLangId
-     *
-     * @return null
      */
     public function setLanguage($iLangId)
     {
@@ -395,9 +413,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Sets template language
      *
-     * @param $iLangId
-     *
-     * @return null
+     * @param int $iLangId
      */
     public function setTplLanguage($iLangId)
     {
@@ -482,7 +498,10 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         } else {
             $aDate = strptime($sDate, '%Y-%m-%d');
             $ymd = sprintf(
-                '%04d-%02d-%02d 05:00:00', $aDate['tm_year'] + 1900, $aDate['tm_mon'] + 1, $aDate['tm_mday']
+                '%04d-%02d-%02d 05:00:00',
+                $aDate['tm_year'] + 1900,
+                $aDate['tm_mon'] + 1,
+                $aDate['tm_mday']
             );
             $oDate = new DateTime($ymd);
         }
@@ -556,7 +575,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Adds table to be cleaned on teardown
      *
-     * @param $sTable
+     * @param string $sTable
      */
     public function addTableForCleanup($sTable)
     {
@@ -626,8 +645,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Create proxy of given class. Proxy allows to test of protected class methods and to access non public members
      *
-     * @param string     $superClassName
-     * @param array|null $params parameters for contructor
+     * @param string $superClassName
+     * @param array  $params
      *
      * @deprecated
      *
@@ -668,10 +687,10 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Change to virtual file with vfstream when available.
      *
-     * @usage Create file from file name and file content to oxCCTempDir.
+     * @param string $sFileName
+     * @param string $sFileContent
      *
-     * @param $sFileName
-     * @param $sFileContent
+     * @usage Create file from file name and file content to oxCCTempDir.
      *
      * @return string path to file
      */
@@ -684,6 +703,11 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         return $sPathToFile;
     }
 
+    /**
+     * Returns database restorer object.
+     *
+     * @return DbRestore
+     */
     protected static function _getDbRestore()
     {
         if (is_null(self::$_oDbRestore)) {
@@ -707,8 +731,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Cleans up the registry
-     *
-     * @return null;
      */
     protected function _resetRegistry()
     {
@@ -740,7 +762,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * @param mixed $value
      *
      * @access protected
-     * @return void
+     *
+     * @return OxidMockStubFunc
      */
     protected function evalFunction($value)
     {

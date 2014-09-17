@@ -1,7 +1,7 @@
 [{capture append="oxidBlock_content"}]
     [{if $oView->getContactSendStatus() }]
         [{assign var="_statusMessage" value="THANK_YOU_MESSAGE"|oxmultilangassign:$oxcmp_shop->oxshops__oxname->value}]
-        [{include file="message/notice.tpl" statusMessage=$_statusMessage}]
+        [{include file="message/success.tpl" statusMessage=$_statusMessage}]
     [{/if}]
     <h1 class="pageHead">[{$oView->getTitle()}]</h1>
     <ul>

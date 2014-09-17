@@ -1,5 +1,5 @@
 <?php
-    /**
+/**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,26 +18,26 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
-     */
+ */
 
-    require_once realpath(".") . '/unit/OxidTestCase.php';
-    require_once realpath(".") . '/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
+
+/**
+ * Tests for News_List class
+ */
+class Unit_Admin_NewsletterListTest extends OxidTestCase
+{
 
     /**
-     * Tests for News_List class
+     * Testing render
+     *
+     * @return null
      */
-    class Unit_Admin_NewsletterListTest extends OxidTestCase
+    public function testRender()
     {
-
-        /**
-         * Testing render
-         *
-         * @return null
-         */
-        public function testRender()
-        {
-            // testing..
-            $oView = new Newsletter_List();
-            $this->assertEquals('newsletter_list.tpl', $oView->render());
-        }
+        // testing..
+        $oView = new Newsletter_List();
+        $this->assertEquals('newsletter_list.tpl', $oView->render());
     }
+}

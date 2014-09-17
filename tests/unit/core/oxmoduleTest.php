@@ -57,34 +57,34 @@ class Unit_Core_oxModuleTest extends OxidTestCase
      */
     public function testLoad()
     {
-            $aModule = array(
-                'id'          => 'invoicepdf',
-                'title'       => 'Invoice PDF',
-                'description' => 'Module to export invoice PDF files.',
-                'thumbnail'   => 'picture.png',
-                'version'     => '1.0',
-                'author'      => 'OXID eSales AG',
-                'extend'      => array(
-                    'oxorder'        => 'oe/invoicepdf/models/invoicepdfoxorder',
-                    'order_overview' => 'oe/invoicepdf/controllers/admin/invoicepdforder_overview'
+        $aModule = array(
+            'id'          => 'invoicepdf',
+            'title'       => 'Invoice PDF',
+            'description' => 'Module to export invoice PDF files.',
+            'thumbnail'   => 'picture.png',
+            'version'     => '1.0',
+            'author'      => 'OXID eSales AG',
+            'extend'      => array(
+                'oxorder'        => 'oe/invoicepdf/models/invoicepdfoxorder',
+                'order_overview' => 'oe/invoicepdf/controllers/admin/invoicepdforder_overview'
+            ),
+            'files'       => array(
+                'InvoicepdfBlock'          => 'oe/invoicepdf/models/invoicepdfblock.php',
+                'InvoicepdfArticleSummary' => 'oe/invoicepdf/models/invoicepdfarticlesummary.php'
+            ),
+            'blocks'      => array(
+                array(
+                    'template' => 'order_overview.tpl',
+                    'block'    => 'admin_order_overview_export',
+                    'file'     => 'views/admin/blocks/order_overview.tpl'
                 ),
-                'files'       => array(
-                    'InvoicepdfBlock'          => 'oe/invoicepdf/models/invoicepdfblock.php',
-                    'InvoicepdfArticleSummary' => 'oe/invoicepdf/models/invoicepdfarticlesummary.php'
-                ),
-                'blocks'      => array(
-                    array(
-                        'template' => 'order_overview.tpl',
-                        'block'    => 'admin_order_overview_export',
-                        'file'     => 'views/admin/blocks/order_overview.tpl'
-                    ),
-                ),
-                'active'      => true
-            );
+            ),
+            'active'      => true
+        );
 
-            $oModule = $this->getProxyClass('oxmodule');
-            $this->assertTrue($oModule->load('oe/invoicepdf'));
-            $this->assertEquals($aModule, $oModule->getNonPublicVar("_aModule"));
+        $oModule = $this->getProxyClass('oxmodule');
+        $this->assertTrue($oModule->load('oe/invoicepdf'));
+        $this->assertEquals($aModule, $oModule->getNonPublicVar("_aModule"));
     }
 
     /**
@@ -94,22 +94,22 @@ class Unit_Core_oxModuleTest extends OxidTestCase
      */
     public function testLoadNoExtend()
     {
-            $aModule = array(
-                'id'          => 'invoicepdf',
-                'title'       => 'Invoice PDF',
-                'description' => 'Module for making invoice PDF files.',
-                'thumbnail'   => 'picture.png',
-                'version'     => '1.0',
-                'author'      => 'OXID eSales AG',
-                'active'      => true,
-                'extend'      => array()
-            );
+        $aModule = array(
+            'id'          => 'invoicepdf',
+            'title'       => 'Invoice PDF',
+            'description' => 'Module for making invoice PDF files.',
+            'thumbnail'   => 'picture.png',
+            'version'     => '1.0',
+            'author'      => 'OXID eSales AG',
+            'active'      => true,
+            'extend'      => array()
+        );
 
-            /** @var oxmodule $oModule */
-            $oModule = $this->getProxyClass('oxmodule');
-            $oModule->setNonPublicVar("_aModule", $aModule);
-            $this->assertTrue($oModule->isActive());
-            $this->assertFalse($oModule->hasExtendClass());
+        /** @var oxmodule $oModule */
+        $oModule = $this->getProxyClass('oxmodule');
+        $oModule->setNonPublicVar("_aModule", $aModule);
+        $this->assertTrue($oModule->isActive());
+        $this->assertFalse($oModule->hasExtendClass());
     }
 
     /**

@@ -101,7 +101,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     {
 
 
-            $sPref = 'CE';
+        $sPref = 'CE';
 
         // no lang abbr
         $this->getProxyClass("oxadminview");
@@ -147,7 +147,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
         $oAdminView->expects($this->once())->method('_authorize')->will($this->returnValue(true));
         $oAdminView->init();
 
-            $this->assertEquals(oxRegistry::getSession()->getVariable('malladmin'), $oAdminView->getViewDataElement('malladmin'));
+        $this->assertEquals(oxRegistry::getSession()->getVariable('malladmin'), $oAdminView->getViewDataElement('malladmin'));
     }
 
     /**
@@ -210,7 +210,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     {
         $oAdminView = oxNew('oxAdminView');
 
-            oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
+        oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
         modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", null);
 
@@ -229,7 +229,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     {
         $oAdminView = oxNew('oxAdminView');
 
-            oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
+        oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
         modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", 1);
 
@@ -249,7 +249,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     {
         $oAdminView = oxNew('oxAdminView');
 
-            oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
+        oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
         modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", 1);
 

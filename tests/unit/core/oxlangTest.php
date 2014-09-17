@@ -146,12 +146,12 @@ class Unit_Core_oxLangTest extends OxidTestCase
         , $sPath . "views/azure/de/cust_lang.php"
         );
 
-            $aPathArray = array(
-                $sPath . "translations/de/lang.php"
-            , $sPath . "translations/de/translit_lang.php"
-            , $sPath . "views/azure/de/lang.php"
-            , $sPath . "views/azure/de/cust_lang.php"
-            );
+        $aPathArray = array(
+            $sPath . "translations/de/lang.php"
+        , $sPath . "translations/de/translit_lang.php"
+        , $sPath . "views/azure/de/lang.php"
+        , $sPath . "views/azure/de/cust_lang.php"
+        );
 
         $oLang = new oxLang();
         $this->assertEquals($aPathArray, $oLang->UNITgetLangFilesPathArray(0));
@@ -178,13 +178,13 @@ class Unit_Core_oxLangTest extends OxidTestCase
         , $sPath . "views/azure/de/cust_lang.php"
         );
 
-            $aPathArray = array(
-                $sPath . "translations/de/lang.php"
-            , $sPath . "translations/de/translit_lang.php"
-            , $sPath . "views/azure/de/lang.php"
-            , $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php"
-            , $sPath . "views/azure/de/cust_lang.php"
-            );
+        $aPathArray = array(
+            $sPath . "translations/de/lang.php"
+        , $sPath . "translations/de/translit_lang.php"
+        , $sPath . "views/azure/de/lang.php"
+        , $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php"
+        , $sPath . "views/azure/de/cust_lang.php"
+        );
 
         $aInfo = array('oxlangTestModule' => 'oxlangTestModule');
 
@@ -221,13 +221,13 @@ class Unit_Core_oxLangTest extends OxidTestCase
         , $sPath . "views/azure/de/cust_lang.php"
         );
 
-            $aPathArray = array(
-                $sPath . "translations/de/lang.php"
-            , $sPath . "translations/de/translit_lang.php"
-            , $sPath . "views/azure/de/lang.php"
-            , $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php"
-            , $sPath . "views/azure/de/cust_lang.php"
-            );
+        $aPathArray = array(
+            $sPath . "translations/de/lang.php"
+        , $sPath . "translations/de/translit_lang.php"
+        , $sPath . "views/azure/de/lang.php"
+        , $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php"
+        , $sPath . "views/azure/de/cust_lang.php"
+        );
 
         $aInfo = array('oxlangTestModule' => 'oxlangTestModule');
 
@@ -433,7 +433,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oLang = new oxlang();
 
         $sVersionPrefix = 'ee';
-            $sVersionPrefix = 'pe';
+        $sVersionPrefix = 'pe';
 
         $sVal = iconv('ISO-8859-15', 'UTF-8', "Zurück zum Shop");
         $myConfig = oxRegistry::getConfig();
@@ -1500,13 +1500,13 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $aTable = $oLang->getMultiLangTables();
 
 
-            $this->assertTrue(count($aTable) == 22);
+        $this->assertTrue(count($aTable) == 22);
 
         $this->getConfig()->setConfigParam('aMultiLangTables', array('table1', 'table2'));
 
         $aTable = $oLang->getMultiLangTables();
 
-            $this->assertTrue(count($aTable) == 24);
+        $this->assertTrue(count($aTable) == 24);
     }
 
     /**

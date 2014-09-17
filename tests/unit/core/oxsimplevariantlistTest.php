@@ -52,10 +52,10 @@ class Unit_Core_oxsimplevariantlistTest extends OxidTestCase
     //bug #441 test case for lists
     public function testParentPriceIsLoadedForVariant()
     {
-            $sArtId = '2077';
-            $sVariantId = '8a142c4100e0b2f57.59530204';
-            //adjust to demodata
-            $sArtPrice = 19;
+        $sArtId = '2077';
+        $sVariantId = '8a142c4100e0b2f57.59530204';
+        //adjust to demodata
+        $sArtPrice = 19;
 
         $oParent = $this->getProxyClass("oxArticle");
         $oParent->setInList();

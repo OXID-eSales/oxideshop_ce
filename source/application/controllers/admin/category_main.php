@@ -304,8 +304,8 @@ class Category_Main extends oxAdminDetails
             $aReqParams['oxcategories__oxvat'] = null;
         }
 
-            // shopId
-            $aReqParams['oxcategories__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
+        // shopId
+        $aReqParams['oxcategories__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
         if ($this->getEditObjectId() == "-1") {
             //#550A - if new category is made then is must be default activ

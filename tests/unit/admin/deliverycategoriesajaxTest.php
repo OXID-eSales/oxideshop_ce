@@ -48,10 +48,10 @@ class Unit_Admin_DeliveryCategoriesAjaxTest extends OxidTestCase
 
 
 
-            oxDb::getDb()->execute("insert into oxcategories set oxid='_testCategory1', oxshopid='oxbaseshop', oxtitle='_testCategory1'");
-            oxDb::getDb()->execute("insert into oxcategories set oxid='_testCategory2', oxshopid='oxbaseshop', oxtitle='_testCategory2'");
+        oxDb::getDb()->execute("insert into oxcategories set oxid='_testCategory1', oxshopid='oxbaseshop', oxtitle='_testCategory1'");
+        oxDb::getDb()->execute("insert into oxcategories set oxid='_testCategory2', oxshopid='oxbaseshop', oxtitle='_testCategory2'");
 
-            $this->setCategoriesViewTable('oxv_oxcategories_de');
+        $this->setCategoriesViewTable('oxv_oxcategories_de');
     }
 
     /**

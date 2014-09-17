@@ -165,8 +165,8 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue(1));
 
         // testing..
-            $oView = $this->getMock("Article_Stock", array("getConfig"), array(), '', false);
-            $oView->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
+        $oView = $this->getMock("Article_Stock", array("getConfig"), array(), '', false);
+        $oView->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
 
 
         $oView->addprice($sOXID, $aParams);
@@ -219,7 +219,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
         $oDb = oxDb::getDb();
         $oDb->execute("insert into oxprice2article set oxid='_testId', oxartid='_testArtId' ");
 
-            $oView = new Article_Stock();
+        $oView = new Article_Stock();
 
 
         modConfig::setRequestParameter('oxid', '_testArtId');
@@ -255,7 +255,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
         //expected shop id
         $sShopId = "oxbaseshop";
 
-            $oView = new Article_Stock();
+        $oView = new Article_Stock();
 
 
         //init db

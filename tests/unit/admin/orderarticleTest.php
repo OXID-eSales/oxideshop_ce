@@ -351,8 +351,8 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $this->assertEquals(0, $oList->count());
 
         // existing product
-            modConfig::setRequestParameter("sSearchArtNum", "2077");
-            $iCnt = 4;
+        modConfig::setRequestParameter("sSearchArtNum", "2077");
+        $iCnt = 4;
 
         $oView = new Order_Article();
         $oList = $oView->getProductList();

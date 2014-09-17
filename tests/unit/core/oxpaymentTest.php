@@ -301,7 +301,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
     /*
     public function testIsValidPayment_NoCreditCardCheckingIPayment()
     {
-            return; // EE only
+        return; // EE only
 
         $oPayment = $this->getMock( 'oxpayment', array( 'isIPayment' ) );
         $oPayment->expects( $this->once() )->method( 'isIPayment' )->will( $this->returnValue( true ) );
@@ -475,7 +475,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
     /*
     public function testLogIPayment()
     {
-            return; // EE only
+        return; // EE only
 
         $myConfig = oxRegistry::getConfig();
         $mySession = oxRegistry::getSession()->getId();
@@ -517,7 +517,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
     /*
     public function testLogIPaymentWhenLoggingIsOff()
     {
-            return; // EE only
+        return; // EE only
 
         $myConfig = oxRegistry::getConfig();
 

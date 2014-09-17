@@ -75,8 +75,8 @@ class Unit_Core_oxSeoEncoderTagTest extends OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         $sUrl = oxRegistry::getConfig()->getShopUrl(oxRegistry::getLang()->getBaseLanguage());
 
-            $sTag = "erste";
-            $sAltTag = "authentisches";
+        $sTag = "erste";
+        $sAltTag = "authentisches";
 
         $oSeoEncoderTag = new oxSeoEncoderTag();
         $this->assertEquals($sUrl . "tag/{$sTag}/16/", $oSeoEncoderTag->getTagPageUrl($sTag, 15));
@@ -106,7 +106,7 @@ class Unit_Core_oxSeoEncoderTagTest extends OxidTestCase
 
     public function testGetDynamicTagUriCreatingNew()
     {
-            $sTag = "zauber";
+        $sTag = "zauber";
 
         $sOxid = "1126";
 

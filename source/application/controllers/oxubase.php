@@ -664,7 +664,7 @@ class oxUBase extends oxView
         $iCur = (int) $oConfig->getShopCurrency();
 
 
-            $this->_sViewId = "ox|$iLang|$iCur";
+        $this->_sViewId = "ox|$iLang|$iCur";
 
         $this->_sViewId .= "|" . ((int) $this->_blForceNoIndex) . '|' . ((int) $this->isRootCatChanged());
 

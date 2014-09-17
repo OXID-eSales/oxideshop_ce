@@ -67,7 +67,7 @@ define ('OXID_VARNISH', getenv('OXID_VARNISH')? getenv('OXID_VARNISH') : $blVarn
             break;
     }
 
-    $sShopId = "oxbaseshop";
+$sShopId = "oxbaseshop";
 define ('oxSHOPID', $sShopId );
 
 define('isSUBSHOP', OXID_VERSION_EE && (oxSHOPID > 1));

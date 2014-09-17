@@ -72,7 +72,7 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
         $oView = oxNew('attribute_order_ajax');
 
 
-            $this->assertEquals("from oxv_oxattribute_de left join oxcategory2attribute on oxcategory2attribute.oxattrid = oxv_oxattribute_de.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from oxv_oxattribute_de left join oxcategory2attribute on oxcategory2attribute.oxattrid = oxv_oxattribute_de.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -96,7 +96,7 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
         modconfig::getInstance()->setConfigParam("iDebug", 1);
 
 
-            $sViewTable = "oxv_oxattribute_de";
+        $sViewTable = "oxv_oxattribute_de";
 
         $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
 
@@ -118,7 +118,7 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
         modConfig::setRequestParameter("sortoxid", 0);
 
 
-            $sViewTable = "oxv_oxattribute_de";
+        $sViewTable = "oxv_oxattribute_de";
 
         $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
 

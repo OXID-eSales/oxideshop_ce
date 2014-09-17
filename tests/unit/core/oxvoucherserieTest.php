@@ -132,7 +132,7 @@ class Unit_Core_oxvoucherserieTest extends OxidTestCase
                 $oNewVoucher->oxvouchers__oxallowuseanother = new oxField($oSerie->oxvoucherseries__oxallowuseanother->value, oxField::T_RAW);
                 $oNewVoucher->oxvouchers__oxreserver = new oxField((int) $blReserved, oxField::T_RAW);
 
-                    $oNewVoucher->oxvouchers__oxshopid = new oxField($oSerie->oxvoucherseries__oxshopid->value, oxField::T_RAW);
+                $oNewVoucher->oxvouchers__oxshopid = new oxField($oSerie->oxvoucherseries__oxshopid->value, oxField::T_RAW);
 
                 $oNewVoucher->save();
                 $blReserved = !$blReserved;

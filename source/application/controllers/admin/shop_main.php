@@ -107,7 +107,7 @@ class Shop_Main extends oxAdminDetails
         if ($soxId != "-1") {
             $oShop->loadInLang($iLang, $soxId);
         } else {
-                $aParams['oxshops__oxid'] = null;
+            $aParams['oxshops__oxid'] = null;
         }
 
         if ($aParams['oxshops__oxsmtp']) {

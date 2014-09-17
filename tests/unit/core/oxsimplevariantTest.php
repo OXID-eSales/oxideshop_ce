@@ -414,7 +414,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
           $oSubj = $this->getProxyClass("oxSimpleVariant");
           $oSubj->setId( "1126" );
 
-          $sLink = oxRegistry::getConfig()->getShopUrl()."Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
+      $sLink = oxRegistry::getConfig()->getShopUrl()."Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
 
 
           $this->assertEquals( $sLink, $oSubj->getLink() );
@@ -425,7 +425,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
           $oSubj = $this->getProxyClass("oxSimpleVariant");
           $oSubj->setId( "1126" );
 
-          $sLink = oxRegistry::getConfig()->getShopUrl()."en/Gifts/Bar-Equipment/Bar-Set-ABSINTH.html";
+      $sLink = oxRegistry::getConfig()->getShopUrl()."en/Gifts/Bar-Equipment/Bar-Set-ABSINTH.html";
 
 
           $this->assertEquals( $sLink, $oSubj->getLink(1) );

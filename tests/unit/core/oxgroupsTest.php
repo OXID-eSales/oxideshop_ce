@@ -93,7 +93,7 @@ class Unit_Core_oxgroupsTest extends OxidTestCase
             }
         }
 
-            return;
+        return;
         // EE only
 
         $iOffset = ( int ) ($oGroup->oxgroups__oxrrid->value / 31);

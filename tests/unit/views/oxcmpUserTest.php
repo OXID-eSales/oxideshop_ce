@@ -210,7 +210,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxUser", "logout", "{ return true;}");
 
-            $aMockFnc = array('_afterLogout', '_getLogoutLink', 'getParent');
+        $aMockFnc = array('_afterLogout', '_getLogoutLink', 'getParent');
 
         $oParent = $this->getMock('oxubase', array("isEnabledPrivateSales"));
         $oParent->expects($this->once())->method('isEnabledPrivateSales')->will($this->returnValue(true));
@@ -569,7 +569,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
 
         $oUser = $this->getMock('oxcmp_user', array('inGroup'));
         $oUser->expects($this->once())->method('inGroup')->will($this->returnValue(false));
-            $aMockFnc = array('getSession', "getLoginStatus");
+        $aMockFnc = array('getSession', "getLoginStatus");
         $oUserView = $this->getMock('oxcmp_user', $aMockFnc);
         $oUserView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
         $oUserView->expects($this->once())->method('getLoginStatus')->will($this->returnValue(1));
@@ -655,7 +655,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oParent = $this->getMock('oxubase', array("isEnabledPrivateSales"));
         $oParent->expects($this->once())->method('isEnabledPrivateSales')->will($this->returnValue(false));
 
-            $aMockFnc = array('_afterLogout', '_getLogoutLink', 'getParent');
+        $aMockFnc = array('_afterLogout', '_getLogoutLink', 'getParent');
 
         $oUserView = $this->getMock('oxcmp_user', $aMockFnc);
         $oUserView->expects($this->once())->method('_afterLogout');
@@ -915,7 +915,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oSession = $this->getMock('oxSession', array('getBasket', 'checkSessionChallenge'));
         $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-            $aMockFnc = array('getSession', 'getUser', '_getDelAddressData');
+        $aMockFnc = array('getSession', 'getUser', '_getDelAddressData');
         $this->getProxyClass("oxcmp_user");
         $oUserView = $this->getMock('oxcmp_userPROXY', $aMockFnc);
         $oUserView->expects($this->once())->method('_getDelAddressData')->will($this->returnValue(null));

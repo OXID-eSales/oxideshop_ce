@@ -553,7 +553,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testClearSidFromBody()
     {
-            $sShopId = 'oxbaseshop';
+        $sShopId = 'oxbaseshop';
 
         $oEmail = new oxEmail();
 
@@ -586,7 +586,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testClearSidFromAltBody()
     {
-            $sShopId = 'oxbaseshop';
+        $sShopId = 'oxbaseshop';
 
         $this->_oEmail->setAltBody('testAltBody index.php?bonusid=111&sid=123456789 blabla', true);
         $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->_oEmail->getAltBody());
@@ -946,7 +946,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testGetShopWithShopId()
     {
-            $iShopId = 'oxbaseshop';
+        $iShopId = 'oxbaseshop';
 
         $oShop = $this->_oEmail->UNITgetShop(null, $iShopId);
         $this->assertEquals($iShopId, $oShop->getShopId());
@@ -970,7 +970,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
         $this->_oEmail->setShop($this->_oShop);
 
-            $iShopId = 'oxbaseshop';
+        $iShopId = 'oxbaseshop';
 
         $oShop = $this->_oEmail->UNITgetShop(1, $iShopId);
         $this->assertEquals(1, $oShop->getLanguage());

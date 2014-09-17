@@ -96,7 +96,7 @@ class Unit_Views_searchTest extends OxidTestCase
         modConfig::setRequestParameter('searchparam', 'bar');
         $oSearch->init();
 
-            $this->assertEquals(8, $oSearch->getArticleList()->count());
+        $this->assertEquals(8, $oSearch->getArticleList()->count());
     }
 
     public function testGetSimilarRecommListIds()

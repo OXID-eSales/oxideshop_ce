@@ -463,7 +463,7 @@ class oxUtilsObject
      */
     public function getShopId()
     {
-            return 'oxbaseshop';
+        return 'oxbaseshop';
     }
 
     /**

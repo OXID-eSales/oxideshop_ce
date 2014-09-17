@@ -172,9 +172,9 @@ class Unit_Core_oxcontentTest extends OxidTestCase
         $oContent->save();
         $this->assertEquals($sUrl, $oContent->getStdLink());
 
-            $oContent->oxcontents__oxcatid = new oxField('8a142c3e44ea4e714.31136811');
-            $oContent->save();
-            $this->assertEquals($sUrl . '&amp;cnid=8a142c3e4143562a5.46426637', $oContent->getStdLink());
+        $oContent->oxcontents__oxcatid = new oxField('8a142c3e44ea4e714.31136811');
+        $oContent->save();
+        $this->assertEquals($sUrl . '&amp;cnid=8a142c3e4143562a5.46426637', $oContent->getStdLink());
 
     }
 
@@ -221,8 +221,8 @@ class Unit_Core_oxcontentTest extends OxidTestCase
         $oContent->oxcontents__oxcatid = new oxField('oxrootid');
         $this->assertEquals($sUrl, $oContent->getStdLink(0));
 
-            $oContent->oxcontents__oxcatid = new oxField('8a142c3e44ea4e714.31136811');
-            $this->assertEquals($sUrl . '&amp;cnid=8a142c3e4143562a5.46426637&amp;lang=1', $oContent->getStdLink(1));
+        $oContent->oxcontents__oxcatid = new oxField('8a142c3e44ea4e714.31136811');
+        $this->assertEquals($sUrl . '&amp;cnid=8a142c3e4143562a5.46426637&amp;lang=1', $oContent->getStdLink(1));
 
     }
 

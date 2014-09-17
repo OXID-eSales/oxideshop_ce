@@ -75,8 +75,8 @@ class Adminguestbook_Main extends oxAdminDetails
             $aParams['oxgbentries__oxactive'] = 0;
         }
 
-            // shopid
-            $aParams['oxgbentries__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
+        // shopid
+        $aParams['oxgbentries__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
         $oLinks = oxNew("oxgbentry");
         if ($soxId != "-1") {

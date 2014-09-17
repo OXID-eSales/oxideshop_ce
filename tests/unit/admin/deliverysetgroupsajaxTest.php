@@ -51,7 +51,7 @@ class Unit_Admin_DeliverysetGroupsAjaxTest extends OxidTestCase
         oxDb::getDb()->execute("insert into oxgroups set oxid='_testGroup1', oxtitle='_testGroup1'");
         oxDb::getDb()->execute("insert into oxgroups set oxid='_testgroup2', oxtitle='_testGroup2'");
 
-            $this->setShopIdTest('oxbaseshop');
+        $this->setShopIdTest('oxbaseshop');
     }
 
     /**

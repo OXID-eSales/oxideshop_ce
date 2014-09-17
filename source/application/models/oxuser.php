@@ -1079,7 +1079,7 @@ class oxUser extends oxBase
         $oInputValidator->checkCountries($this, $aInvAddress, $aDelAddress);
 
         // 6. vat id check.
-            $oInputValidator->checkVatId($this, $aInvAddress);
+        $oInputValidator->checkVatId($this, $aInvAddress);
 
 
         // throwing first validation error
@@ -2306,9 +2306,9 @@ class oxUser extends oxBase
     {
         $blDemoMode = false;
 
-            if ($this->getConfig()->isDemoShop()) {
-                $blDemoMode = true;
-            }
+        if ($this->getConfig()->isDemoShop()) {
+            $blDemoMode = true;
+        }
 
         return $blDemoMode;
     }

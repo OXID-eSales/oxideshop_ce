@@ -288,7 +288,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testDeleteThumbnailNoRights()
     {
-            return;
+        return;
 
         $oItem = $this->getMock("oxCategory", array("canUpdateField", 'canUpdate', 'isDerived'));
         $oItem->expects($this->once())->method('canUpdateField')->with($this->equalTo('oxthumb'))->will($this->returnValue(true));
@@ -314,7 +314,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testDeleteThumbnailDerived()
     {
-            return;
+        return;
 
         $oItem = $this->getMock("oxCategory", array("canUpdateField", 'canUpdate', 'isDerived'));
         $oItem->expects($this->once())->method('canUpdateField')->with($this->equalTo('oxthumb'))->will($this->returnValue(true));

@@ -56,12 +56,12 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
         $oConfig->expects($this->at($iCnt++))->method('saveShopConfVar')->with($this->equalTo('str'), $this->equalTo('sDefaultLang'), $this->equalTo(0));
 
         $aTasks = array("getConfig");
-            $aTasks[] = "_resetMultiLangDbFields";
+        $aTasks[] = "_resetMultiLangDbFields";
 
         $oView = $this->getMock("Language_List", $aTasks, array(), '', false);
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
 
-            $oView->expects($this->once())->method('_resetMultiLangDbFields')->with($this->equalTo(1));
+        $oView->expects($this->once())->method('_resetMultiLangDbFields')->with($this->equalTo(1));
 
         $oView->deleteEntry();
     }

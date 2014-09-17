@@ -145,9 +145,9 @@ class Content_Main extends oxAdminDetails
             $aParams['oxcontents__oxfolder'] = '';
         }
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxcontents__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxcontents__oxshopid'] = $sShopID;
         $oContent = oxNew("oxcontent");
 
         if ($soxId != "-1") {
@@ -188,9 +188,9 @@ class Content_Main extends oxAdminDetails
             $aParams['oxcontents__oxactive'] = 0;
         }
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxcontents__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxcontents__oxshopid'] = $sShopID;
 
         $oContent = oxNew("oxcontent");
 

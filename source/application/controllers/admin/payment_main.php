@@ -47,10 +47,10 @@ class Payment_Main extends oxAdminDetails
         // remove itm from list
         unset($this->_aViewData["sumtype"][2]);
 
-            // all usergroups
-            $oGroups = oxNew("oxlist");
-            $oGroups->init("oxgroups");
-            $oGroups->selectString("select * from " . getViewName("oxgroups", $this->_iEditLang));
+        // all usergroups
+        $oGroups = oxNew("oxlist");
+        $oGroups->init("oxgroups");
+        $oGroups->selectString("select * from " . getViewName("oxgroups", $this->_iEditLang));
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ($soxId != "-1" && isset($soxId)) {
@@ -165,9 +165,9 @@ class Payment_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxpayments__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxpayments__oxshopid'] = $sShopID;
         $oObj = oxNew("oxpayment");
 
         if ($soxId != "-1") {

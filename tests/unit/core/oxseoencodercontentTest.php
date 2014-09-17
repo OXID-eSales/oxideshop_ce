@@ -160,8 +160,8 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
         $oContent->setTitle('content title');
         $oContent->setType(2);
 
-            $oContent->setCategoryId('8a142c3e49b5a80c1.23676990 ');
-            $sUrl = $this->getConfig()->getShopUrl() . 'Geschenke/content-title/';
+        $oContent->setCategoryId('8a142c3e49b5a80c1.23676990 ');
+        $sUrl = $this->getConfig()->getShopUrl() . 'Geschenke/content-title/';
 
         $oEncoder = new oxSeoEncoderContent();
         $sSeoUrl = $oEncoder->getContentUrl($oContent);

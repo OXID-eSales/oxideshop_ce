@@ -43,8 +43,8 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
 
         oxDb::getDb()->execute("insert into oxobject2action set oxid='_testId', oxactionid='_testActionDelete', oxobjectid='_testObject', oxclass='oxarticle'");
 
-            $this->setArticleViewTable('oxv_oxarticles_de');
-            $this->setObject2CategoryViewTable('oxobject2category');
+        $this->setArticleViewTable('oxv_oxarticles_de');
+        $this->setObject2CategoryViewTable('oxobject2category');
     }
 
     /**

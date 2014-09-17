@@ -1324,7 +1324,7 @@ class oxUtils extends oxSuperCfg
     public function getCacheFilePath($sCacheName, $blPathOnly = false, $sExtension = 'txt')
     {
 
-            $sVersionPrefix = 'pe';
+        $sVersionPrefix = 'pe';
 
         $sPath = realpath($this->getConfig()->getConfigParam('sCompileDir'));
 

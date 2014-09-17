@@ -72,7 +72,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
                         "_copyCrossseling", "_copyAccessoires", "_copyStaffelpreis",
                         "_copyArtExtends");
 
-            $aTasks[] = "_resetCounts";
+        $aTasks[] = "_resetCounts";
 
 
         $oView = $this->getMock("Article_Main", $aTasks);
@@ -84,7 +84,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oView->expects($this->once())->method('_copyStaffelpreis');
         $oView->expects($this->once())->method('_copyArtExtends');
 
-            $oView->expects($this->once())->method('_resetCounts');
+        $oView->expects($this->once())->method('_resetCounts');
 
 
         $oDb = oxDb::getDb();
@@ -296,14 +296,14 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         try {
 
             $aTasks = array();
-                $aTasks[] = 'resetCounter';
-                $aTasks[] = '_resetCounts';
+            $aTasks[] = 'resetCounter';
+            $aTasks[] = '_resetCounts';
 
 
             $oView = $this->getMock("Article_Main", $aTasks);
 
-                $oView->expects($this->once())->method('resetCounter');
-                $oView->expects($this->once())->method('_resetCounts');
+            $oView->expects($this->once())->method('resetCounter');
+            $oView->expects($this->once())->method('_resetCounts');
 
 
             $oView->saveinnlang();

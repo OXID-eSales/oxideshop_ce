@@ -521,16 +521,16 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
         $oComponent->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
 
 
-            oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ throw new Exception( "oxResetFileCache" ); }');
-            // testing..
-            try {
-                $oComponent->resetContentCache();
-            } catch (Exception $oExcp) {
-                $this->assertEquals("oxResetFileCache", $oExcp->getMessage(), "error in ajaxListComponent::resetContentCache()");
+        oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ throw new Exception( "oxResetFileCache" ); }');
+        // testing..
+        try {
+            $oComponent->resetContentCache();
+        } catch (Exception $oExcp) {
+            $this->assertEquals("oxResetFileCache", $oExcp->getMessage(), "error in ajaxListComponent::resetContentCache()");
 
-                return;
-            }
-            $this->fail("error in ajaxListComponent::resetContentCache()");
+            return;
+        }
+        $this->fail("error in ajaxListComponent::resetContentCache()");
     }
 
     /**

@@ -49,11 +49,11 @@ class User_Main extends oxAdminDetails
         $oAuthUser->loadAdminUser();
         $blisMallAdmin = $oAuthUser->oxuser__oxrights->value == "malladmin";
 
-            // all usergroups
-            $sViewName = getViewName("oxgroups", $this->_iEditLang);
-            $oGroups = oxNew("oxlist");
-            $oGroups->init("oxgroups");
-            $oGroups->selectString("select * from {$sViewName} order by {$sViewName}.oxtitle");
+        // all usergroups
+        $sViewName = getViewName("oxgroups", $this->_iEditLang);
+        $oGroups = oxNew("oxlist");
+        $oGroups->init("oxgroups");
+        $oGroups->selectString("select * from {$sViewName} order by {$sViewName}.oxtitle");
 
         // User rights
         $aUserRights = array();
@@ -98,7 +98,7 @@ class User_Main extends oxAdminDetails
 
         $this->_aViewData["countrylist"] = $oCountryList;
 
-            $this->_aViewData["allgroups"] = $oGroups;
+        $this->_aViewData["allgroups"] = $oGroups;
 
         $this->_aViewData["rights"] = $aUserRights;
 

@@ -147,7 +147,7 @@ class oxContentList extends oxList
     protected function _load($iType)
     {
 
-            $aData = $this->_loadFromDb($iType);
+        $aData = $this->_loadFromDb($iType);
 
         $this->assignArray($aData);
     }

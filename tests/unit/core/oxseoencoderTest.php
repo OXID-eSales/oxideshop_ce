@@ -319,7 +319,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oDb = oxDb::getDb();
         $oDb->execute("delete from oxseohistory");
 
-            $sOxid = "8a142c3e4143562a5.46426637";
+        $sOxid = "8a142c3e4143562a5.46426637";
 
         $iShopId = oxRegistry::getConfig()->getShopId();
         $iLang = 0;
@@ -413,30 +413,30 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
         $sShopUrl = $oConfig->getShopUrl(0);
 
-            $sArticleId = "1964";
-            $sArticleSeoUrl = $sShopUrl . "Geschenke/Original-BUSH-Beach-Radio.html";
-            $sArticleVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Bush/Original-BUSH-Beach-Radio.html";
-            $sArticleManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";
-            $sArticlePriceCatSeoUrl = $sShopUrl . "Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
-            $sArticleTagSeoUrl = $sShopUrl . "tag/seiner/Original-BUSH-Beach-Radio.html";
+        $sArticleId = "1964";
+        $sArticleSeoUrl = $sShopUrl . "Geschenke/Original-BUSH-Beach-Radio.html";
+        $sArticleVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Bush/Original-BUSH-Beach-Radio.html";
+        $sArticleManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";
+        $sArticlePriceCatSeoUrl = $sShopUrl . "Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
+        $sArticleTagSeoUrl = $sShopUrl . "tag/seiner/Original-BUSH-Beach-Radio.html";
 
-            $sCategoryId = "8a142c3e4143562a5.46426637";
-            $sCategorySeoUrl = $sShopUrl . "Geschenke/";
+        $sCategoryId = "8a142c3e4143562a5.46426637";
+        $sCategorySeoUrl = $sShopUrl . "Geschenke/";
 
         $sContentId = "f41427a099a603773.44301043";
         $sContentSeoUrl = $sShopUrl . "Datenschutz/";
 
-            $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
-            $sManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Haller-Stahlwaren/";
+        $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
+        $sManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Haller-Stahlwaren/";
 
-            $sVendorId = "68342e2955d7401e6.18967838";
-            $sVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Haller-Stahlwaren/";
+        $sVendorId = "68342e2955d7401e6.18967838";
+        $sVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Haller-Stahlwaren/";
 
         $oCategory = new oxCategory();
         $oCategory->load($sCategoryId);
 
         $oView = $this->getMock("oxUBase", array("getTag", "getActiveCategory"));
-            $oView->expects($this->once())->method('getTag')->will($this->returnValue('seiner'));
+        $oView->expects($this->once())->method('getTag')->will($this->returnValue('seiner'));
         $oView->expects($this->at(0))->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oView->expects($this->at(1))->method('getActiveCategory')->will($this->returnValue($oPriceCategory));
 
@@ -473,8 +473,8 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $this->assertEquals($sManufacturerSeoUrl, $oManufacturer->getLink(0));
 
         $oTagEncoder = new oxSeoEncoderTag();
-            $sTag = "flaschen";
-            $sTagUrl = "tag/flaschen/";
+        $sTag = "flaschen";
+        $sTagUrl = "tag/flaschen/";
 
         $this->assertEquals($sShopUrl . "tag/bar-equipment/", $oTagEncoder->getTagUrl("bar equipment", 0));
         $this->assertEquals($sShopUrl . $sTagUrl, $oTagEncoder->getTagUrl($sTag, 0));
@@ -507,25 +507,25 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
         $sShopUrl = $oConfig->getShopUrl(0);
 
-            $sArticleId = "1964";
-            $sArticleSeoUrl = $sShopUrl . "en/Gifts/Original-BUSH-Beach-Radio.html";
-            $sArticleVendorSeoUrl = $sShopUrl . "en/By-Distributor/Bush/Original-BUSH-Beach-Radio.html";
-            $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Bush/Original-BUSH-Beach-Radio.html";
-            $sArticlePriceCatSeoUrl = $sShopUrl . "en/Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
-            $sArticleTagSeoUrl = $sShopUrl . "en/tag/original/Original-BUSH-Beach-Radio.html";
-            $sTag = "original";
+        $sArticleId = "1964";
+        $sArticleSeoUrl = $sShopUrl . "en/Gifts/Original-BUSH-Beach-Radio.html";
+        $sArticleVendorSeoUrl = $sShopUrl . "en/By-Distributor/Bush/Original-BUSH-Beach-Radio.html";
+        $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Bush/Original-BUSH-Beach-Radio.html";
+        $sArticlePriceCatSeoUrl = $sShopUrl . "en/Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
+        $sArticleTagSeoUrl = $sShopUrl . "en/tag/original/Original-BUSH-Beach-Radio.html";
+        $sTag = "original";
 
-            $sCategoryId = "8a142c3e4143562a5.46426637";
-            $sCategorySeoUrl = $sShopUrl . "en/Gifts/";
+        $sCategoryId = "8a142c3e4143562a5.46426637";
+        $sCategorySeoUrl = $sShopUrl . "en/Gifts/";
 
         $sContentId = "f41427a099a603773.44301043";
         $sContentSeoUrl = $sShopUrl . "en/Privacy-Policy/";
 
-            $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
-            $sManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Haller-Stahlwaren/";
+        $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
+        $sManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Haller-Stahlwaren/";
 
-            $sVendorId = "68342e2955d7401e6.18967838";
-            $sVendorSeoUrl = $sShopUrl . "en/By-Distributor/Haller-Stahlwaren/";
+        $sVendorId = "68342e2955d7401e6.18967838";
+        $sVendorSeoUrl = $sShopUrl . "en/By-Distributor/Haller-Stahlwaren/";
 
         $oCategory = new oxCategory();
         $oCategory->load($sCategoryId);
@@ -694,7 +694,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
         $oEncoder = new oxseoencoder();
 
-            $this->assertEquals('Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html', $oEncoder->fetchSeoUrl($sStdUrl));
+        $this->assertEquals('Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html', $oEncoder->fetchSeoUrl($sStdUrl));
     }
 
     public function testFetchSeoUrlNoAvailable()
@@ -843,7 +843,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oEncoder->getStaticUrl('xxx', 1, 1);
         // default params:
         $shop = '';
-            $shop = 'oxbaseshop';
+        $shop = 'oxbaseshop';
         $oEncoder = $this->getMock('oxSeoEncoder', array('_getStaticUri', '_getFullUrl'));
         $oEncoder->expects($this->once())->method('_getStaticUri')->with($this->equalTo('xxx'), $this->equalTo($shop), $this->equalTo(oxRegistry::getLang()->getEditLanguage()))->will($this->returnValue('seourl'));
         $oEncoder->expects($this->once())->method('_getFullUrl')->with($this->equalTo('seourl'))->will($this->returnValue('fullseourl'));
@@ -1024,7 +1024,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');
 
         $oArticle = new oxarticle();
-            $oArticle->load('1126');
+        $oArticle->load('1126');
         $oArticle->getLink();
 
         $oCat = $oArticle->getCategory();

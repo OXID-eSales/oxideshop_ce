@@ -95,8 +95,8 @@ class Unit_Core_oxSeoEncoderManufacturerTest extends OxidTestCase
     public function testGetManufacturerUrlExistingManufacturer()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-            $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'Nach-Hersteller/Bush/';
+        $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'Nach-Hersteller/Bush/';
 
         $oManufacturer = new oxManufacturer();
         $oManufacturer->load($sVndId);
@@ -112,8 +112,8 @@ class Unit_Core_oxSeoEncoderManufacturerTest extends OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->resetRootManufacturer();
 
-            $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/';
+        $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/';
 
         $oManufacturer = new oxManufacturer();
         $oManufacturer->loadInLang(1, $sVndId);
@@ -125,8 +125,8 @@ class Unit_Core_oxSeoEncoderManufacturerTest extends OxidTestCase
     public function testGetManufacturerUrlExistingManufacturerWithLangParam()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-            $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'Nach-Hersteller/Bush/';
+        $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'Nach-Hersteller/Bush/';
 
         $oManufacturer = new oxManufacturer();
         $oManufacturer->loadInLang(1, $sVndId);
@@ -142,8 +142,8 @@ class Unit_Core_oxSeoEncoderManufacturerTest extends OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->resetRootManufacturer();
 
-            $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/';
+        $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/';
 
         $oManufacturer = new oxManufacturer();
         $oManufacturer->loadInLang(0, $sVndId);
@@ -233,8 +233,8 @@ class Unit_Core_oxSeoEncoderManufacturerTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/101/';
-            $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/101/';
+        $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
 
         $oManufacturer = new oxManufacturer();
         $oManufacturer->loadInLang(1, $sVndId);
@@ -247,8 +247,8 @@ class Unit_Core_oxSeoEncoderManufacturerTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/101/';
-            $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/101/';
+        $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
 
         $oManufacturer = new oxManufacturer();
         $oManufacturer->loadInLang(0, $sVndId);

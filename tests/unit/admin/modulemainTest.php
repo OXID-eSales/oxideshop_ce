@@ -49,13 +49,13 @@ class Unit_Admin_ModuleMainTest extends OxidTestCase
      */
     public function testRender_loadingObject()
     {
-            $oView = $this->getMock('Module_Main', array('getEditObjectId'));
-            $oView->expects($this->any())->method('getEditObjectId')->will($this->returnValue('oe/invoicepdf'));
-            $oView->render();
+        $oView = $this->getMock('Module_Main', array('getEditObjectId'));
+        $oView->expects($this->any())->method('getEditObjectId')->will($this->returnValue('oe/invoicepdf'));
+        $oView->render();
 
-            $aViewData = $oView->getViewData();
+        $aViewData = $oView->getViewData();
 
-            $oModule = $aViewData['oModule'];
-            $this->assertEquals("invoicepdf", $oModule->getInfo("id"));
+        $oModule = $aViewData['oModule'];
+        $this->assertEquals("invoicepdf", $oModule->getInfo("id"));
     }
 }

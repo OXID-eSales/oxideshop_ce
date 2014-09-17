@@ -668,7 +668,7 @@ class oxBase extends oxSuperCfg
     {
         $blRet = false;
 
-            $rs = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->select($sSelect);
+        $rs = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->select($sSelect);
 
         if ($rs != false && $rs->recordCount() > 0) {
             $blRet = true;

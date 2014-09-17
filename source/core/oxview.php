@@ -985,7 +985,7 @@ class oxView extends oxSuperCfg
      */
     public function isMall()
     {
-            return false;
+        return false;
     }
 
     /**

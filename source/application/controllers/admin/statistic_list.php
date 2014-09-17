@@ -1,5 +1,5 @@
 <?php
-    /**
+/**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,27 +18,27 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
-     */
+ */
+
+/**
+ * Admin statistic list manager.
+ * Performs collection and managing (such as filtering or deleting) function.
+ * Admin Menu: Statistics -> Show.
+ */
+class Statistic_List extends oxAdminList
+{
 
     /**
-     * Admin statistic list manager.
-     * Performs collection and managing (such as filtering or deleting) function.
-     * Admin Menu: Statistics -> Show.
+     * Current class template name.
+     *
+     * @var string
      */
-    class Statistic_List extends oxAdminList
-    {
+    protected $_sThisTemplate = 'statistic_list.tpl';
 
-        /**
-         * Current class template name.
-         *
-         * @var string
-         */
-        protected $_sThisTemplate = 'statistic_list.tpl';
-
-        /**
-         * Name of chosen object class (default null).
-         *
-         * @var string
-         */
-        protected $_sListClass = 'oxstatistic';
-    }
+    /**
+     * Name of chosen object class (default null).
+     *
+     * @var string
+     */
+    protected $_sListClass = 'oxstatistic';
+}

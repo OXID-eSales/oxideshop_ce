@@ -39,18 +39,18 @@ class Shop extends oxAdminView
     {
         parent::render();
 
-            $sCurrentAdminShop = oxRegistry::getSession()->getVariable("currentadminshop");
+        $sCurrentAdminShop = oxRegistry::getSession()->getVariable("currentadminshop");
 
-            if (!$sCurrentAdminShop) {
-                if (oxRegistry::getSession()->getVariable("malladmin")) {
-                    $sCurrentAdminShop = "oxbaseshop";
-                } else {
-                    $sCurrentAdminShop = oxRegistry::getSession()->getVariable("actshop");
-                }
+        if (!$sCurrentAdminShop) {
+            if (oxRegistry::getSession()->getVariable("malladmin")) {
+                $sCurrentAdminShop = "oxbaseshop";
+            } else {
+                $sCurrentAdminShop = oxRegistry::getSession()->getVariable("actshop");
             }
+        }
 
-            $this->_aViewData["currentadminshop"] = $sCurrentAdminShop;
-            oxRegistry::getSession()->setVariable("currentadminshop", $sCurrentAdminShop);
+        $this->_aViewData["currentadminshop"] = $sCurrentAdminShop;
+        oxRegistry::getSession()->setVariable("currentadminshop", $sCurrentAdminShop);
 
 
         return "shop.tpl";

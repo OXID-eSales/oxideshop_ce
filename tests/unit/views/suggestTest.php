@@ -60,7 +60,7 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oList = $oSuggest->getCrossSelling();
         $this->assertTrue($oList instanceof oxList);
         $iCount = 3;
-            $iCount = 2;
+        $iCount = 2;
         $this->assertEquals($iCount, $oList->count());
     }
 
@@ -73,7 +73,7 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oList = $oSuggest->getSimilarProducts();
         $this->assertTrue($oList instanceof oxList);
         $iCount = 4;
-            $iCount = 5;
+        $iCount = 5;
         $this->assertEquals($iCount, count($oList));
     }
 
@@ -131,7 +131,7 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oV->expects($this->any())->method('_getRequestParams')->will($this->returnValue('cl=suggest'));
         $oV->expects($this->any())->method('_getSeoRequestParams')->will($this->returnValue('cl=suggest'));
 
-            $sCnid = '8a142c3e60a535f16.78077188';
+        $sCnid = '8a142c3e60a535f16.78077188';
         modConfig::setRequestParameter('anid', '2000');
         modConfig::setRequestParameter('cnid', $sCnid);
         $this->assertEquals($oCfg->getShopURL() . 'empfehlen/?cnid=' . $sCnid . '&amp;anid=2000', $oV->getLink());

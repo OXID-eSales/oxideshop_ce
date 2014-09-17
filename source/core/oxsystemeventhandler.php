@@ -167,7 +167,7 @@ class oxSystemEventHandler
     {
         $blSendData = true;
 
-            $blSendData = (bool) $this->_getConfig()->getConfigParam('blLoadDynContents');
+        $blSendData = (bool) $this->_getConfig()->getConfigParam('blLoadDynContents');
 
         return $blSendData;
     }

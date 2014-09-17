@@ -380,7 +380,7 @@ class Unit_Views_detailsTest extends OxidTestCase
 
         $aTags = $oDetails->getTags();
         $this->assertTrue(isset($aTags['coolen']));
-            $this->assertEquals(5, count($aTags));
+        $this->assertEquals(5, count($aTags));
     }
 
     /**
@@ -789,7 +789,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oList = $oDetails->getSimilarProducts();
         $this->assertTrue($oList instanceof oxarticlelist);
         $iCount = 4;
-            $iCount = 5;
+        $iCount = 5;
         $this->assertEquals($iCount, count($oList));
     }
 
@@ -808,7 +808,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->assertTrue($oList instanceof oxarticlelist);
 
         $iCount = 3;
-            $iCount = 2;
+        $iCount = 2;
         $this->assertEquals($iCount, $oList->count());
     }
 
@@ -906,7 +906,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oProduct->oxarticles__oxsearchkeys->value = 'testValue1 testValue2   testValue3 <br> ';
 
         //building category tree for category "Bar-eqipment"
-            $sCatId = '8a142c3e49b5a80c1.23676990';
+        $sCatId = '8a142c3e49b5a80c1.23676990';
 
         $oCategoryTree = oxNew('oxcategorylist');
         $oCategoryTree->buildTree($sCatId, false, false, false);
@@ -918,7 +918,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $sKeywords = $oProduct->oxarticles__oxtitle->value;
 
         //adding breadcrumb
-            $sKeywords .= ", Geschenke, Bar-Equipment";
+        $sKeywords .= ", Geschenke, Bar-Equipment";
 
         $oView = new oxubase();
         $sTestKeywords = $oView->UNITprepareMetaKeyword($sKeywords, true) . ", testvalue1, testvalue2, testvalue3";
@@ -1468,7 +1468,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $aFilters = array('test_cnid' => array(0 => 'test_filters'));
         $this->setSessionParam('session_attrfilter', $aFilters);
 
-            $sExpected = $sBaseViewId . '|test_anid|';
+        $sExpected = $sBaseViewId . '|test_anid|';
 
 
         $sResp = $oView->getViewId();

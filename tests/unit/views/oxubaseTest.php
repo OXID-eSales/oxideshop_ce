@@ -192,7 +192,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
     public function testGetActTagSeo()
     {
-            $sTag = "liebliche";
+        $sTag = "liebliche";
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
@@ -245,7 +245,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
     public function testGetActManufacturer()
     {
-            $sId = 'fe07958b49de225bd1dbc7594fb9a6b0';
+        $sId = 'fe07958b49de225bd1dbc7594fb9a6b0';
         $this->setRequestParam('mnid', $sId);
 
         $oUBase = new oxUBase();
@@ -266,7 +266,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
     public function testGetActVendor__()
     {
-            $sId = 'v_68342e2955d7401e6.18967838';
+        $sId = 'v_68342e2955d7401e6.18967838';
         $this->setRequestParam('cnid', $sId);
 
         $oUBase = new oxUBase();
@@ -336,13 +336,13 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $sShopURL = $myConfig->getShopUrl();
         $sShopID = $myConfig->getShopId();
 
-            $oView = new oxubase();
-            $sId = $oView->getViewId();
-            $this->assertEquals("ox|0|0|0|0", $oView->getViewId());
+        $oView = new oxubase();
+        $sId = $oView->getViewId();
+        $this->assertEquals("ox|0|0|0|0", $oView->getViewId());
 
-            // and caching
-            oxRegistry::getLang()->setBaseLanguage(1);
-            $this->assertEquals("ox|0|0|0|0", $oView->getViewId());
+        // and caching
+        oxRegistry::getLang()->setBaseLanguage(1);
+        $this->assertEquals("ox|0|0|0|0", $oView->getViewId());
     }
 
 
@@ -366,7 +366,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $sShopID = $myConfig->getShopId();
 
 
-            $this->assertEquals("ox|1|1|0|0", $sId);
+        $this->assertEquals("ox|1|1|0|0", $sId);
     }
 
     /*
@@ -384,7 +384,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $sShopID = $myConfig->getShopId();
 
 
-            $this->assertEquals("ox|0|0|0|0|ssl", $sId);
+        $this->assertEquals("ox|0|0|0|0|ssl", $sId);
     }
 
     public function testGetMetaDescriptionForStartView()
@@ -1109,9 +1109,9 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
         $oV = $this->getMock('oxubase', array('_getRequestParams', '_getSubject'));
         $oArt = new oxArticle();
-            $oArt->loadInLang(1, '1126');
-            $sExp = "Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
-            $sExpEng = "en/Gifts/Bar-Equipment/Bar-Set-ABSINTH.html";
+        $oArt->loadInLang(1, '1126');
+        $sExp = "Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
+        $sExpEng = "en/Gifts/Bar-Equipment/Bar-Set-ABSINTH.html";
 
         $oV->expects($this->any())->method('_getSubject')->will($this->returnValue($oArt));
 
@@ -1128,9 +1128,9 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $oV = $this->getMock('oxubase', array('_getRequestParams', '_getSubject'));
         $oArt = new oxArticle();
         $oArt->setLinkType(OXARTICLE_LINKTYPE_MANUFACTURER);
-            $oArt->loadInLang(1, '1964');
-            $sVndExp = "Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";
-            $sVndExpEng = "en/By-Manufacturer/Bush/Original-BUSH-Beach-Radio.html";
+        $oArt->loadInLang(1, '1964');
+        $sVndExp = "Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";
+        $sVndExpEng = "en/By-Manufacturer/Bush/Original-BUSH-Beach-Radio.html";
 
         $oV->expects($this->any())->method('_getSubject')->will($this->returnValue($oArt));
 
@@ -1580,7 +1580,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
         $oUBase->setNonPublicVar("_blTop5Action", true);
         $aList = $oUBase->getTop5ArticleList();
-            $this->assertEquals(4, $aList->count());
+        $this->assertEquals(4, $aList->count());
     }
 
     public function testGetTop5ArticleList_notDefaultCount()
@@ -1597,7 +1597,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
         $oUBase->setNonPublicVar("_blBargainAction", true);
         $aList = $oUBase->getBargainArticleList();
-            $this->assertEquals(4, $aList->count());
+        $this->assertEquals(4, $aList->count());
     }
 
     public function testGetNewsRealStatus()

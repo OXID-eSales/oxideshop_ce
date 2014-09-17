@@ -50,12 +50,12 @@ class Unit_Admin_DeliveryArticlesAjaxTest extends OxidTestCase
 
 
 
-            oxDb::getDb()->execute("insert into oxarticles set oxid='_testArticle1', oxshopid='oxbaseshop', oxtitle='_testArticle1'");
-            oxDb::getDb()->execute("insert into oxarticles set oxid='_testArticle2', oxshopid='oxbaseshop', oxtitle='_testArticle2'");
+        oxDb::getDb()->execute("insert into oxarticles set oxid='_testArticle1', oxshopid='oxbaseshop', oxtitle='_testArticle1'");
+        oxDb::getDb()->execute("insert into oxarticles set oxid='_testArticle2', oxshopid='oxbaseshop', oxtitle='_testArticle2'");
 
-            $this->setArticlesViewTable('oxv_oxarticles_de');
-            $this->setCategoriesViewTable('oxv_oxcategories_de');
-            $this->setObject2CategoryViewTable('oxobject2category');
+        $this->setArticlesViewTable('oxv_oxarticles_de');
+        $this->setCategoriesViewTable('oxv_oxcategories_de');
+        $this->setObject2CategoryViewTable('oxobject2category');
 
     }
 

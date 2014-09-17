@@ -423,8 +423,8 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
         $sDiscountId = '_' . uniqid(rand());
 
         // inserting test discount
-            $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
-                   values ( '{$sDiscountId}', '" . oxRegistry::getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'abs', '10' )";
+        $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
+               values ( '{$sDiscountId}', '" . oxRegistry::getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'abs', '10' )";
 
         $this->addToDatabase($sQ, 'oxdiscount');
 
@@ -468,8 +468,8 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
         $sDiscountId = '_' . uniqid(rand());
 
         // inserting test discount
-            $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxprice, oxaddsumtype, oxaddsum )
-                   values ( '{$sDiscountId}', '" . oxRegistry::getConfig()->getBaseShopId() . "', '1', 'Test', '0', '0', '1000', '500', 'abs', '10' )";
+        $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxprice, oxaddsumtype, oxaddsum )
+               values ( '{$sDiscountId}', '" . oxRegistry::getConfig()->getBaseShopId() . "', '1', 'Test', '0', '0', '1000', '500', 'abs', '10' )";
 
         $this->addToDatabase($sQ, 'oxdiscount');
 
@@ -1031,8 +1031,8 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
         $sDiscountId = '_' . uniqid(rand());
 
         // inserting test discount
-            $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
-                   values ( '{$sDiscountId}', '" . oxRegistry::getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'itm', '10' )";
+        $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
+               values ( '{$sDiscountId}', '" . oxRegistry::getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'itm', '10' )";
 
         $this->addToDatabase($sQ, 'oxdiscount');
 

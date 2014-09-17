@@ -44,8 +44,8 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
         $this->addToDatabase("replace into oxarticles set oxid='_testArticle1', oxshopid='1', oxtitle='_testArticle1'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticle2', oxshopid='1', oxtitle='_testArticle2'", 'oxarticles');
 
-            $this->setArticleViewTable('oxv_oxarticles_de');
-            $this->setObject2CategoryViewTable('oxobject2category');
+        $this->setArticleViewTable('oxv_oxarticles_de');
+        $this->setObject2CategoryViewTable('oxobject2category');
 
         oxDb::getDb()->execute("insert into oxaccessoire2article set oxid='_testArticle1', OXOBJECTID='_testArticle1', OXARTICLENID='_testArticleAccessories', OXSORT='9'");
         oxDb::getDb()->execute("insert into oxaccessoire2article set oxid='_testArticle2', OXOBJECTID='_testArticle2', OXARTICLENID='_testArticleAccessories', OXSORT='9'");

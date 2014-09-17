@@ -50,7 +50,7 @@ class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
         oxDb::getDb()->execute("insert into oxuser set oxid='_testUser1', oxusername='_testUser1'");
         oxDb::getDb()->execute("insert into oxuser set oxid='_testUser2', oxusername='_testUser2'");
 
-            $this->setShopIdTest('oxbaseshop');
+        $this->setShopIdTest('oxbaseshop');
     }
 
     /**

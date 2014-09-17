@@ -48,7 +48,7 @@ class Unit_Core_oxOnlineRequestTest extends OxidTestCase
 
     public function testClusterIdTakenFromBaseShopInsteadOfSubShop()
     {
-            return;
+    return;
         $oConfig = $this->getConfig();
         $oConfig->saveShopConfVar("str", 'sClusterId', 'generated_unique_cluster_id', 1);
 

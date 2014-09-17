@@ -175,8 +175,8 @@ class Article_Main extends oxAdminDetails
                 $aParams['oxarticles__oxstock'] = 0;
             }
 
-                // shopid
-                $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
+            // shopid
+            $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
             if (!isset($aParams['oxarticles__oxactive'])) {
                 $aParams['oxarticles__oxactive'] = 0;
@@ -197,42 +197,42 @@ class Article_Main extends oxAdminDetails
         }
 
 
-            // #905A resetting article count in price categories if price has been changed
-            $sOxIdField = 'oxarticles__oxid';
-            $sPriceField = 'oxarticles__oxprice';
-            $sActiveField = 'oxarticles__oxactive';
-            $sVendorField = 'oxarticles__oxvendorid';
-            $sManufacturerField = 'oxarticles__oxmanufacturerid';
-            if (isset($aParams[$sPriceField]) && $aParams[$sPriceField] != $oArticle->$sPriceField->value) {
-                $this->resetCounter("priceCatArticle", $oArticle->$sPriceField->value);
-            }
+        // #905A resetting article count in price categories if price has been changed
+        $sOxIdField = 'oxarticles__oxid';
+        $sPriceField = 'oxarticles__oxprice';
+        $sActiveField = 'oxarticles__oxactive';
+        $sVendorField = 'oxarticles__oxvendorid';
+        $sManufacturerField = 'oxarticles__oxmanufacturerid';
+        if (isset($aParams[$sPriceField]) && $aParams[$sPriceField] != $oArticle->$sPriceField->value) {
+            $this->resetCounter("priceCatArticle", $oArticle->$sPriceField->value);
+        }
 
-            $aResetIds = array();
-            if (isset($aParams[$sActiveField]) && $aParams[$sActiveField] != $oArticle->$sActiveField->value) {
-                //check categories
-                $this->_resetCategoriesCounter($oArticle->$sOxIdField->value);
-
-                // vendors
-                $aResetIds['vendor'][$oArticle->$sVendorField->value] = 1;
-                $aResetIds['manufacturer'][$oArticle->$sManufacturerField->value] = 1;
-            }
+        $aResetIds = array();
+        if (isset($aParams[$sActiveField]) && $aParams[$sActiveField] != $oArticle->$sActiveField->value) {
+            //check categories
+            $this->_resetCategoriesCounter($oArticle->$sOxIdField->value);
 
             // vendors
-            if (isset($aParams[$sVendorField]) && $aParams[$sVendorField] != $oArticle->$sVendorField->value) {
-                $aResetIds['vendor'][$aParams[$sVendorField]] = 1;
-                $aResetIds['vendor'][$oArticle->$sVendorField->value] = 1;
-            }
+            $aResetIds['vendor'][$oArticle->$sVendorField->value] = 1;
+            $aResetIds['manufacturer'][$oArticle->$sManufacturerField->value] = 1;
+        }
 
-            // manufacturers
-            if (isset($aParams[$sManufacturerField]) &&
-                $aParams[$sManufacturerField] != $oArticle->$sManufacturerField->value) {
+        // vendors
+        if (isset($aParams[$sVendorField]) && $aParams[$sVendorField] != $oArticle->$sVendorField->value) {
+            $aResetIds['vendor'][$aParams[$sVendorField]] = 1;
+            $aResetIds['vendor'][$oArticle->$sVendorField->value] = 1;
+        }
 
-                $aResetIds['manufacturer'][$aParams[$sManufacturerField]] = 1;
-                $aResetIds['manufacturer'][$oArticle->$sManufacturerField->value] = 1;
-            }
+        // manufacturers
+        if (isset($aParams[$sManufacturerField]) &&
+            $aParams[$sManufacturerField] != $oArticle->$sManufacturerField->value) {
 
-            // resetting counts
-            $this->_resetCounts($aResetIds);
+            $aResetIds['manufacturer'][$aParams[$sManufacturerField]] = 1;
+            $aResetIds['manufacturer'][$oArticle->$sManufacturerField->value] = 1;
+        }
+
+        // resetting counts
+        $this->_resetCounts($aResetIds);
 
         $oArticle->setLanguage(0);
 
@@ -345,8 +345,8 @@ class Article_Main extends oxAdminDetails
 
         $oNew->save();
 
-            // resetting amount of articles in category
-            $this->resetCounter("catArticle", $sCatID);
+        // resetting amount of articles in category
+        $this->resetCounter("catArticle", $sCatID);
     }
 
     /**
@@ -413,10 +413,10 @@ class Article_Main extends oxAdminDetails
             //files
             $this->_copyFiles($sOldId, $sNewId);
 
-                // resetting
-                $aResetIds['vendor'][$oArticle->oxarticles__oxvendorid->value] = 1;
-                $aResetIds['manufacturer'][$oArticle->oxarticles__oxmanufacturerid->value] = 1;
-                $this->_resetCounts($aResetIds);
+            // resetting
+            $aResetIds['vendor'][$oArticle->oxarticles__oxvendorid->value] = 1;
+            $aResetIds['manufacturer'][$oArticle->oxarticles__oxmanufacturerid->value] = 1;
+            $this->_resetCounts($aResetIds);
 
 
             $myUtilsObject = oxUtilsObject::getInstance();
@@ -476,15 +476,15 @@ class Article_Main extends oxAdminDetails
                 $sTime = $oRs->fields[1];
 
 
-                    $sSql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid, oxtime) " .
-                            "VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($sNewId) . ", " .
-                            $oDb->quote($sCatId) . ", " . $oDb->quote($sTime) . ") ";
-                    $oDb->execute($sSql);
+                $sSql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid, oxtime) " .
+                        "VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($sNewId) . ", " .
+                        $oDb->quote($sCatId) . ", " . $oDb->quote($sTime) . ") ";
+                $oDb->execute($sSql);
 
                 $oRs->moveNext();
 
-                    // resetting article count in category
-                    $this->resetCounter("catArticle", $sCatId);
+                // resetting article count in category
+                $this->resetCounter("catArticle", $sCatId);
             }
         }
     }

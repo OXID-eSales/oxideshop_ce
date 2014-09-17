@@ -53,7 +53,7 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
         $this->addTeardownSql("delete from oxdel2delset where oxid like '%_testDelivery%'");
         $this->addTeardownSql("delete from oxdelivery where oxid like '%_testMain%'");
 
-            $this->setDeliveryViewTable('oxv_oxdelivery_de');
+        $this->setDeliveryViewTable('oxv_oxdelivery_de');
     }
 
     public function setDeliveryViewTable($sParam)

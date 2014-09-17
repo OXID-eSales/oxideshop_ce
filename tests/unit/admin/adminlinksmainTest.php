@@ -123,6 +123,6 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
         $oAdminDetails = new adminlinks_main();
         $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle');
 
-            $this->assertFalse($oEditor);
+        $this->assertFalse($oEditor);
     }
 }

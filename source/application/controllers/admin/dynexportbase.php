@@ -687,10 +687,10 @@ class DynExportBase extends oxAdminDetails
             $sSelect .= $sCatAdd;
         }
 
-            if (!$sCatAdd) {
-                $sShopID = $this->getConfig()->getShopId();
-                $sSelect .= " and {$sArticleTable}.oxshopid = '$sShopID' ";
-            }
+        if (!$sCatAdd) {
+            $sShopID = $this->getConfig()->getShopId();
+            $sSelect .= " and {$sArticleTable}.oxshopid = '$sShopID' ";
+        }
 
         // add minimum stock value
         if ($this->getConfig()->getConfigParam('blUseStock') && ($dMinStock = oxRegistry::getConfig()->getRequestParameter("sExportMinStock"))) {

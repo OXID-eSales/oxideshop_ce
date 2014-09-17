@@ -29,7 +29,7 @@ class Unit_Maintenance_pluginSmartyoxIncludeWidgetTest extends OxidTestCase
 
     public function testIncludeIfHTMLCachingIsOn()
     {
-            return;
+        return;
         $oReverseProxyBackend = $this->getMock("oxReverseProxyBackend", array("isActive"));
         $oReverseProxyBackend->expects($this->any())->method("isActive")->will($this->returnValue(true));
 

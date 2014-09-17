@@ -51,7 +51,7 @@ class Unit_Admin_DeliverysetCountryAjaxTest extends OxidTestCase
         oxDb::getDb()->execute("insert into oxcountry set oxid='_testCountry1', oxtitle='_testCountry1'");
         oxDb::getDb()->execute("insert into oxcountry set oxid='_testCountry2', oxtitle='_testCountry2'");
 
-            $this->setShopIdTest('oxbaseshop');
+        $this->setShopIdTest('oxbaseshop');
     }
 
     /**

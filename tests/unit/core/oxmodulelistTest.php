@@ -873,6 +873,8 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
 
     public function testGetModuleFilesWhenFileWasNotSet()
     {
+        $this->getConfig()->setConfigParam('aModuleFiles', array());
+
         $oModuleList = new oxModuleList();
 
         $this->assertSame(array(), $oModuleList->getModuleFiles());

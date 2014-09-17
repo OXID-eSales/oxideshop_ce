@@ -769,7 +769,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testHasDemoKey()
     {
-        return;
+            return;
 
         $oConfig = $this->getMock("oxConfig", array("hasDemoKey"));
         $oConfig->expects($this->once())->method("hasDemoKey")->will($this->returnValue(true));
@@ -2566,5 +2566,11 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $blIsModuleActive = $oViewConf->isModuleActive('oepaypal', $sFrom, $sTo);
 
         $this->assertEquals($blModuleStateExpected, $blIsModuleActive, "Module state is not from '$sFrom' to '$sTo'.");
+    }
+
+    public function testGetEdition()
+    {
+        $oViewConfig = new oxViewConfig();
+        $this->assertEquals( $this->getConfig()->getEdition(), $oViewConfig->getEdition() );
     }
 }

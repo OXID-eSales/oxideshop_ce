@@ -1335,6 +1335,7 @@ class oxViewConfig extends oxSuperCfg
         if (file_exists($sFile) || is_dir($sFile)) {
             return $sFile;
         } else {
+            /** @var oxFileException $oEx */
             $oEx = oxNew("oxFileException", "Requested file not found for module $sModule ($sFile)");
             $oEx->debugOut();
             if (!$this->getConfig()->getConfigParam('iDebug')) {
@@ -1581,5 +1582,15 @@ class oxViewConfig extends oxSuperCfg
         }
 
         return $blModuleIsActive;
+    }
+
+    /**
+     * Return shop edition (EE|CE|PE)
+     *
+     * @return string
+     */
+    public function getEdition()
+    {
+        return $this->getConfig()->getEdition();
     }
 }

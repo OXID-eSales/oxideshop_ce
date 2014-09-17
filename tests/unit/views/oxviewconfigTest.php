@@ -2567,4 +2567,10 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
         $this->assertEquals($blModuleStateExpected, $blIsModuleActive, "Module state is not from '$sFrom' to '$sTo'.");
     }
+
+    public function testGetEdition()
+    {
+        $oViewConfig = new oxViewConfig();
+        $this->assertEquals( $this->getConfig()->getEdition(), $oViewConfig->getEdition() );
+    }
 }

@@ -69,7 +69,7 @@ class NodeElementTest extends ElementTest
     public function testHasClass()
     {
         $node = new NodeElement('input_tag', $this->session);
-
+        
         $this->session->getDriver()
             ->expects($this->exactly(6))
             ->method('getAttribute')

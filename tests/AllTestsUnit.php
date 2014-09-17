@@ -37,10 +37,10 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
         $sTestFileNameEnd = '*[^8]Test.php';
         if ( getenv('OXID_TEST_UTF8') ) {
             $sTestFileNameEnd = '*utf8Test.php';
-            }
+        }
 
         return $sTestFileNameEnd;
-        }
+    }
 
     /**
      * Forms test suite
@@ -58,15 +58,15 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
 
             if ( empty( $aTestFiles ) ) {
                 continue;
-                }
+            }
 
             echo "Adding unit tests from $sFilesSelector\n";
 
             $oSuite = self::_addFilesToSuite( $oSuite, $aTestFiles );
-                }
+        }
 
         return $oSuite;
-                    }
+    }
 
     /**
      * Adds files to test suite
@@ -82,21 +82,21 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
             $sFilter = getenv('PREG_FILTER');
             if ( !$sFilter || preg_match("&$sFilter&i", $sFilename) ) {
 
-                        include_once $sFilename;
-                        $sClassName = str_replace( array( "/", ".php" ), array( "_", "" ), $sFilename );
+                include_once $sFilename;
+                $sClassName = str_replace( array( "/", ".php" ), array( "_", "" ), $sFilename );
 
-                        if ( class_exists( $sClassName ) ) {
-                            $oSuite->addTestSuite( $sClassName );
-                        } else {
+                if ( class_exists( $sClassName ) ) {
+                    $oSuite->addTestSuite( $sClassName );
+                } else {
                     if ( !isset( $blThrowException ) || $blThrowException ) {
                         echo "\n\nFile with wrong class name found!: $sClassName in $sFilename";
                         exit();
-                        }
                     }
                 }
             }
-        return $oSuite;
         }
+        return $oSuite;
+    }
 
     /**
      * Returns array of directories, which should be tested
@@ -113,7 +113,7 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
             foreach ( explode(',', $sTestDirs ) as $sTestSuiteParts ) {
                 $aTestDirectories = array_merge( $aTestDirectories, self::_getSuiteDirectories( $sTestSuiteParts ) );
             }
-    }
+        }
 
         return  array_merge( $aTestDirectories, self::_getDirectoryTree( $aTestDirectories ) );
     }

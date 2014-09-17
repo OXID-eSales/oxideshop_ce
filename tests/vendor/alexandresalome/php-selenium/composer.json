@@ -3,7 +3,7 @@
     "description": "PHP Library for Selenium",
     "keywords": ["selenium"],
     "license": "MIT",
-
+    
     "authors": [
         {
             "name":      "Alexandre Salomé",

@@ -17,7 +17,7 @@
             <meta name="description" content="[{$oView->getMetaDescription()}]">
         [{/if}]
     [{/block}]
-    
+
     [{block name="head_meta_keywords"}]
         [{if $oView->getMetaKeywords()}]
             <meta name="keywords" content="[{$oView->getMetaKeywords()}]">
@@ -47,7 +47,7 @@
             <link rel="canonical" href="[{$canonical_url}]">
         [{/if}]
     [{/block}]
-    
+
     [{block name="head_link_favicon"}]
         <link rel="shortcut icon" href="[{$oViewConf->getImageUrl('favicon.ico')}]">
     [{/block}]
@@ -91,7 +91,7 @@
         [{foreach from=$oxidBlock_pagePopup item="_block"}]
             [{$_block}]
         [{/foreach}]
-    
+
         [{block name="base_js"}]
             [{oxscript include="js/libs/jquery.min.js" priority=1}]
             [{oxscript include="js/libs/cookie/jquery.cookie.js" priority=1}]
@@ -100,19 +100,19 @@
             [{oxscript include='js/libs/superfish/supersubs.js'}]
             [{oxscript include='js/libs/superfish/superfish.js'}]
         [{/block}]
-    
+
         [{if $oViewConf->isTplBlocksDebugMode()}]
             [{oxscript include="js/widgets/oxblockdebug.js"}]
             [{oxscript add="$( 'hr.debugBlocksStart' ).oxBlockDebug();"}]
         [{/if}]
-    
+
         [{oxscript}]
         [{oxid_include_dynamic file="widget/dynscript.tpl"}]
-    
+
         [{foreach from=$oxidBlock_pageScript item="_block"}]
             [{$_block}]
         [{/foreach}]
-    
+
         <!--[if (gte IE 6)&(lte IE 8)]>
             <script type="text/javascript" src="[{$oViewConf->getResourceUrl('js/libs/IE9.js')}]"></script>
         <![endif]-->

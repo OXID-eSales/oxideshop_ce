@@ -26,3 +26,4 @@ $browser->stop();
 $png = base64_decode(str_replace("\n", "", $data));
 file_put_contents('test.png', $png);
 echo "Screenshot is in file test.png\n";
+

@@ -40,27 +40,27 @@ class Unit_Admin_ArticleCrosssellingAjaxTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        
+
             $this->setArticleViewTable( 'oxv_oxarticles_de' );
             $this->setObject2CategoryViewTable( 'oxobject2category' );
             $this->setShopId( 'oxbaseshop' );
-            
+
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleCrossselling', oxshopid='".$this->getShopId()."', oxtitle='_testArticleCrossselling'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleCrosssellingAdd', oxshopid='".$this->getShopId()."', oxtitle='_testArticleCrosssellingAdd'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleCrosssellingAddAll', oxshopid='".$this->getShopId()."', oxtitle='_testArticleCrosssellingAddAll'", 'oxarticles');
-        
+
         oxDb::getDb()->execute( "insert into oxobject2article set oxid='_testCrosssellingOxid1', oxobjectid='_testCrosselling', oxarticlenid='_testArticleCrossselling'" );
         oxDb::getDb()->execute( "insert into oxobject2article set oxid='_testCrosssellingOxid2', oxobjectid='_testCrosselling', oxarticlenid='_testArticleCrossselling'" );
-        
+
         oxDb::getDb()->execute( "insert into oxobject2article set oxid='_testCrosssellingOxid3', oxobjectid='_testArticleCrossselling', oxarticlenid='_testCrosssellingRemoveAll'" );
         oxDb::getDb()->execute( "insert into oxobject2article set oxid='_testCrosssellingOxid4', oxobjectid='_testArticleCrossselling', oxarticlenid='_testCrosssellingRemoveAll'" );
-        
+
         $this->addTeardownSql("delete from oxarticles where oxid like '%_testArticleCrossselling%'");
         $this->addTeardownSql("delete from oxobject2article where oxobjectid like '%_testCrosselling%'");
         $this->addTeardownSql("delete from oxobject2article where oxarticlenid like '%_testArticleCrossselling%'");
         $this->addTeardownSql("delete from oxobject2article where oxobjectid like '%_testArticleCrossselling%'");
     }
-    
+
     public function setArticleViewTable( $sParam )
     {
         $this->_sArticleView = $sParam;

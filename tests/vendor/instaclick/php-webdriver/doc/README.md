@@ -122,7 +122,7 @@ The function's return value is exactly what is returned from the server as part 
 
         // GET /session/:sessionId
         $session->capabilities();
-
+        
 *   To find elements
 
         // POST /session/:sessionId/element

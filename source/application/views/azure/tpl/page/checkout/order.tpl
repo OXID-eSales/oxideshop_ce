@@ -45,9 +45,9 @@
                                     <input type="hidden" name="fnc" value="[{$oView->getExecuteFnc()}]">
                                     <input type="hidden" name="challenge" value="[{$challenge}]">
                                     <input type="hidden" name="sDeliveryAddressMD5" value="[{$oView->getDeliveryAddressMD5()}]">
-
+    
                                     [{include file="page/checkout/inc/agb.tpl"}]
-
+    
                                     <div class="lineBox clear">
                                         <a href="[{oxgetseourl ident=$oViewConf->getPaymentLink()}]" class="prevStep submitButton largeButton">[{oxmultilang ident="PREVIOUS_STEP"}]</a>
                                         <button type="submit" class="submitButton nextStep largeButton">[{oxmultilang ident="SUBMIT_ORDER"}]</button>

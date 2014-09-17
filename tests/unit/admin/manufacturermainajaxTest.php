@@ -39,22 +39,22 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        
+
             $this->setShopIdTest('oxbaseshop');
             $this->setArticleViewTable('oxv_oxarticles_de');
             $this->setObject2CategoryViewTable('oxobject2category');
-        
+
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle1', oxtitle='_testArticle1', oxmanufacturerid='_testRemove1'", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle2', oxtitle='_testArticle2', oxmanufacturerid='_testRemove2'", 'oxarticles');
-        
+
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle3', oxtitle='_testArticle3', oxmanufacturerid='_testRemoveAll'", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle4', oxtitle='_testArticle4', oxmanufacturerid='_testRemoveAll'", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle5', oxtitle='_testArticle5', oxmanufacturerid='_testRemoveAll'", 'oxarticles');
-            
+
         $this->addToDatabase("insert into oxmanufacturers set oxid='_testManufacturer1', oxtitle='_testManufacturer1'", 'oxmanufacturers');
         $this->addToDatabase("insert into oxmanufacturers set oxid='_testManufacturer2', oxtitle='_testManufacturer2'", 'oxmanufacturers');
     }
-    
+
     public function setArticleViewTable( $sParam )
     {
         $this->_sArticleView = $sParam;

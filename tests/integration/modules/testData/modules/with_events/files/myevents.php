@@ -33,4 +33,4 @@ class MyEvents {
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam('sTestDeactivateEvent', 'Deactivate');
     }
-}
+} 

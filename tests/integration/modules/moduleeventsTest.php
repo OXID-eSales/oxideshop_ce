@@ -87,3 +87,4 @@ class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
         $this->assertEquals( "Deactivate", $sState, 'onDeactivate event was not called.');
     }
 }
+ 

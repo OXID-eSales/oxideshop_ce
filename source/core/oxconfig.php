@@ -754,7 +754,7 @@ class oxConfig extends oxSuperCfg
             }
             $sValue = $newValue;
         } elseif (is_string($sValue)) {
-            $sValue = str_replace(
+            $sValue = str_replace( 
                 array('&', '<', '>', '"', "'", chr(0), '\\', "\n", "\r"),
                 array('&amp;', '&lt;', '&gt;', '&quot;', '&#039;', '', '&#092;', '&#10;', '&#13;'),
                 $sValue

@@ -59,7 +59,7 @@ class SauceRest
      * @param string $requestMethod HTTP request method
      * @param string $url           URL
      * @param mixed  $parameters    Parameters
-     *
+     * 
      * @return mixed
      *
      * @see http://saucelabs.com/docs/saucerest

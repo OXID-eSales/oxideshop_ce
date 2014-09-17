@@ -24,3 +24,4 @@ $browser
 echo "Page title: ".$browser->getTitle()."\n";
 
 $browser->stop();
+

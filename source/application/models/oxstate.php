@@ -45,7 +45,7 @@ class oxState extends oxI18n
     /**
      * Returns country id by code
      *
-     * @param string $sCode      country code
+     * @param string $sCode country code
      * @param string $sCountryId country id
      *
      * @return string

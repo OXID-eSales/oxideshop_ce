@@ -17,7 +17,7 @@ npm install -g zombie@0.12.15
 There are some compatibility issues with newer versions of zombie.js.
 Some are more or less PHP specific and kinda hard to resolve. If you
 want to be 100% on the safe side, please use __version 0.12.15 or
-lower__.
+lower__. 
 
 Versions > 0.12.15 and < 2.0.0 are almost compatible
 except for some edge cases.

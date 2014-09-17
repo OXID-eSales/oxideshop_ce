@@ -870,3 +870,4 @@ JS;
         return sprintf('pointers[%s]', $this->nativeRefs[$hash]);
     }
 }
+

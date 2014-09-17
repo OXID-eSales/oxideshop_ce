@@ -106,7 +106,7 @@ windowtitle = "Behat\Mink"
 doctitle = "Behat\Mink: browser emulators abstraction library for PHP"
 
 ; Specifies the header text to be placed at the top of each output file. The
-; header will be placed to the right of the upper navigation bar.
+; header will be placed to the right of the upper navigation bar. 
 
 header = "Behat\Mink"
 

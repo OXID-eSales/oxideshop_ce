@@ -135,3 +135,4 @@ class Integration_Modules_ModuleActivateWithSimilarNameTest extends BaseModuleTe
     }
 
 }
+ 

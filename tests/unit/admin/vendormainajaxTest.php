@@ -39,19 +39,19 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
         parent::setUp();
 
         $sShopId = 'oxbaseshop';
-
+        
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle1', oxshopid='{$sShopId}', oxtitle='testArticle1', oxvendorid='_testVendorId'", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle2', oxshopid='{$sShopId}', oxtitle='testArticle2', oxvendorid='_testVendorId'", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle3', oxshopid='{$sShopId}', oxtitle='testArticle3', oxvendorid=''", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle4', oxshopid='{$sShopId}', oxtitle='testArticle4', oxvendorid=''", 'oxarticles');
-        
+
         $this->addToDatabase("insert into oxobject2category set oxid='_testOxid1', oxobjectid='_testArticle1', oxcatnid='_testCat1'", 'oxobject2category');
         $this->addToDatabase("insert into oxobject2category set oxid='_testOxid2', oxobjectid='_testArticle1', oxcatnid='_testCat2'", 'oxobject2category');
 
         $this->addTeardownSql("delete from oxobject2category where oxid like '\_test%'");
         $this->addTeardownSql("delete from oxarticles where oxid like '\_test%'");
     }
-    
+
     public function getArticleViewTable()
     {
             return oxv_oxarticles_de;

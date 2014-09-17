@@ -51,15 +51,15 @@ class Unit_Admin_AttributeMainAjaxTest extends OxidTestCase
         $this->addToDatabase("replace into oxattribute set oxid='_testAttributeAddAll', oxtitle='_testAttributeAddAll'", 'oxattribute');
         $this->addTeardownSql("delete from oxarticles where oxid='_testArticleRemoveAll'");
         $this->addTeardownSql("delete from oxattribute where oxid like '%_testAttribute%'");
-
+        
         $this->addToDatabase("replace into oxobject2attribute set oxid='_testOxid1', oxobjectid='_testObjectRemove', oxattrid='_testRemove'", 'oxobject2attribute');
         $this->addToDatabase("replace into oxobject2attribute set oxid='_testOxid2', oxobjectid='_testObjectRemove', oxattrid='_testRemove'", 'oxobject2attribute');
-
+        
         $this->addToDatabase("replace into oxobject2attribute set oxid='_testOxid3', oxobjectid='_testArticleRemoveAll', oxattrid='_testRemoveAll'", 'oxobject2attribute');
         $this->addToDatabase("replace into oxobject2attribute set oxid='_testOxid4', oxobjectid='_testArticleRemoveAll', oxattrid='_testRemoveAll'", 'oxobject2attribute');
         $this->addTeardownSql("delete from oxobject2attribute where oxid  like '%_testOxid%'");
     }
-    
+
     public function setArticleViewTable( $sParam )
     {
         $this->_sArticleView = $sParam;

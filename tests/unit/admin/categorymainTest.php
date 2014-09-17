@@ -99,7 +99,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);
     }
-    
+
     /**
      * Category_Main::Save() test case when oxactive = 0
      *
@@ -110,13 +110,13 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         $aParams = array("oxcategories__oxactive"   => 0,
             "oxcategories__oxparentid" => "oxrootid",
             "oxcategories__oxtitle"    => "Test category title for unit");
-        
+
         modConfig::setRequestParameter("oxid", -1);
         modConfig::setRequestParameter("editval", $aParams);
-        
+
         $oView = new Category_Main();
         $oView->save();
-        
+
         $sActive = oxDb::getDb()->getOne("SELECT OXACTIVE FROM oxcategories WHERE OXTITLE='Test category title for unit'");
         $this->assertEquals(0, $sActive);
     }
@@ -134,7 +134,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         // testing..
         $oView = new Category_Main();
         $oView->save();
-                      
+
         $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
     }
 

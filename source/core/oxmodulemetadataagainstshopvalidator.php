@@ -122,4 +122,4 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
     {
         return true;
     }
-}
+} 

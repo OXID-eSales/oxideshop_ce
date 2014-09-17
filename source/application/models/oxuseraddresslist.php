@@ -50,4 +50,4 @@ class oxUserAddressList extends oxList
                 WHERE oxaddress.oxuserid = " . oxDb::getDb()->quote( $sUserId );
         $this->selectString( $sSelect );
     }
-}
+} 

@@ -6,3 +6,4 @@ Changelog
 
 - Fix methods ``captureScreenshot*``
 - More composer love (stability & dependencies)
+

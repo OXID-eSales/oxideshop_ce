@@ -45,13 +45,13 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
         //for delete all
         $this->addToDatabase("insert into oxdel2delset set oxid='_testDeliverysetMainDelAll1', oxdelsetid='_testDeliverysetMainRemoveAll', oxdelid='_testMain1'", 'oxdel2delset');
         $this->addToDatabase("insert into oxdel2delset set oxid='_testDeliverysetMainDelAll2', oxdelsetid='_testDeliverysetMainRemoveAll', oxdelid='_testMain2'", 'oxdel2delset');
-        
+
         $this->addToDatabase("insert into oxdelivery set oxid='_testMain1', oxtitle='_testMain1'", 'oxdelivery');
         $this->addToDatabase("insert into oxdelivery set oxid='_testMain2', oxtitle='_testMain2'", 'oxdelivery');
-        
+
         $this->addTeardownSql("delete from oxdel2delset where oxid like '%_testDelivery%'");
         $this->addTeardownSql("delete from oxdelivery where oxid like '%_testMain%'");
-        
+
             $this->setDeliveryViewTable( 'oxv_oxdelivery_de' );
     }
     

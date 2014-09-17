@@ -205,7 +205,7 @@ class Session
     /**
      * Capture a screenshot of the current window.
      *
-     * @return  string  screenshot of MIME type image/* depending
+     * @return  string  screenshot of MIME type image/* depending 
      *   on driver (e.g., image/png, image/jpeg)
      */
     public function getScreenshot()

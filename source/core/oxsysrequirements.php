@@ -867,7 +867,7 @@ class oxSysRequirements
         foreach ( $this->_aException as $sTable => $sColumn ) {
             $sSelect .= 'and ( TABLE_NAME != "'.$sTable.'" and COLUMN_NAME != "'.$sColumn.'" ) ';
         }
-
+        
         return $sSelect;
     }
 

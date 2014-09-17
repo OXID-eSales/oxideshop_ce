@@ -30,7 +30,7 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
 {
     protected $_sArticleView = 'oxv_oxarticles_1_de';
     protected $_sObject2CategoryView = 'oxv_oxobject2category_1';
-    
+
     /**
      * Initialize the fixture.
      *
@@ -39,16 +39,16 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        
+
         $this->addToDatabase("replace into oxarticles set oxid='_testArticle1', oxshopid='1', oxtitle='_testArticle1'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticle2', oxshopid='1', oxtitle='_testArticle2'", 'oxarticles');
-            
+
             $this->setArticleViewTable( 'oxv_oxarticles_de' );
             $this->setObject2CategoryViewTable( 'oxobject2category' );
-        
+
         oxDb::getDb()->execute( "insert into oxaccessoire2article set oxid='_testArticle1', OXOBJECTID='_testArticle1', OXARTICLENID='_testArticleAccessories', OXSORT='9'" );
         oxDb::getDb()->execute( "insert into oxaccessoire2article set oxid='_testArticle2', OXOBJECTID='_testArticle2', OXARTICLENID='_testArticleAccessories', OXSORT='9'" );
-        
+
         $this->addTeardownSql("delete from oxarticles where oxid like '%_testArt%'");
         $this->addTeardownSql("delete from oxaccessoire2article where oxarticlenid like '%_testArticle%'");
     }

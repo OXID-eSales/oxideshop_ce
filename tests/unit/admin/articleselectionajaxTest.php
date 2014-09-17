@@ -44,10 +44,10 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
         $this->addToDatabase("replace into oxselectlist set oxid='_testSelectList', oxshopid='1', oxtitle='_testSelectList'", 'oxselectlist');
         $this->addTeardownSql("delete from oxarticles where oxid = '_testArticles'");
         $this->addTeardownSql("delete from oxselectlist where oxid = '_testSelectList'");
-        
+
         $this->addToDatabase("replace into oxobject2article set oxid='_testOxid', oxobjectid='_testArtcle', oxarticlenid=''", 'oxobject2article');
         $this->addTeardownSql("delete from oxobject2article where oxid = '_testOxid'");
-        
+
         $this->addToDatabase("replace into oxobject2selectlist set oxid='_testOxid1', oxobjectid='_testRemove', oxselnid='_testRemove'", 'oxobject2selectlist');
         $this->addToDatabase("replace into oxobject2selectlist set oxid='_testOxid2', oxobjectid='_testRemove', oxselnid='_testRemove'", 'oxobject2selectlist');
         $this->addTeardownSql("delete from oxobject2selectlist where oxobjectid like '%_test%' or oxid = '_testOxid'");
@@ -204,7 +204,7 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
         
         
             $iCount = $oDb->getOne( "select count(oxv_oxselectlist_de.oxid)  from oxv_oxselectlist_de  where oxv_oxselectlist_de.oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join oxv_oxselectlist_de on oxv_oxselectlist_de.oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '_testAdd'  )" );
-        
+
         $this->assertGreaterThan( 0, $iCount );
         $this->assertEquals( 0, $oDb->getOne( "select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'" ) );
         $oView = oxNew( 'article_selection_ajax' );

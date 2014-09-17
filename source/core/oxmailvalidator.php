@@ -76,4 +76,4 @@ class oxMailValidator
 
         return $blValid;
     }
-}
+} 

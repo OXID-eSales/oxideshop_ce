@@ -284,7 +284,7 @@ class Tag extends aList
      * @param string $sMeta     category path
      * @param int    $iLength   max length of result, -1 for no truncation
      * @param bool   $blDescTag if true - performs additional dublicate cleaning
-     *
+     * 
      * @return  string  $sString    converted string
      */
     protected function _prepareMetaDescription( $sMeta, $iLength = 1024, $blDescTag = false )

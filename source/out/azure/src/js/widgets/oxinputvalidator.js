@@ -52,7 +52,7 @@
                     el      = self.element;
 
                 el.delegate("."+options.methodValidate, "blur", function() {
-                    var oTrigger = this; 
+                    var oTrigger = this;
                     // the element who caused the event
                     // adding a timeout to delay the callback from modifying the form
                     // this allows other events like CLICK to be called before the blur event

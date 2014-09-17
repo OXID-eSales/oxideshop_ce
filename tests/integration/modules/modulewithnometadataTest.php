@@ -44,3 +44,4 @@ class Integration_Modules_ModuleWithNoMetadataTest extends OxidTestCase
     }
 
 }
+ 

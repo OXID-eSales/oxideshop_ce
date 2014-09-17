@@ -34,4 +34,4 @@ class Unit_Core_oxPasswordHasherTest extends OxidTestCase
 
         $oPasswordHasher->hash($sPassword, $sSalt);
     }
-}
+} 

@@ -334,7 +334,6 @@ class oxConfig extends oxSuperCfg
         if (isset($this->$sName)) {
             return $this->$sName;
         }
-
     }
 
     /**
@@ -436,7 +435,6 @@ class oxConfig extends oxSuperCfg
         } catch (oxCookieException $oEx) {
             return $this->_handleCookieException($oEx);
         }
-
     }
 
     /**
@@ -824,7 +822,6 @@ class oxConfig extends oxSuperCfg
         ) {
             $this->setIsSsl(true);
         }
-
     }
 
 
@@ -1845,7 +1842,6 @@ class oxConfig extends oxSuperCfg
         $sQ = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
                values($sNewOXIDdQuoted, $sShopIdQuoted, $sModuleQuoted, $sVarNameQuoted, $sVarTypeQuoted, ENCODE( $sVarValueQuoted, $sConfigKeyQuoted) )";
         $oDb->execute($sQ);
-
 
 
     }

@@ -39,6 +39,8 @@ define('INSTALLSHOP', getenv('oxINSTALLSHOP') ? getenv('oxINSTALLSHOP') : $blIns
 define('SKIPSHOPSETUP', getenv('oxSKIPSHOPSETUP') ? getenv('oxSKIPSHOPSETUP') : $blSkipShopSetup);
 define('SKIPSHOPRESTORE', getenv('oxSKIPSHOPRESTORE') ? getenv('oxSKIPSHOPRESTORE') : $blSkipShopRestore);
 
+define('SHOPRESTORATIONCLASS', getenv('SHOPRESTORATIONCLASS') ? getenv('SHOPRESTORATIONCLASS') : $sDataBaseRestore);
+
 define('OXID_VERSION', getenv('OXID_VERSION') ? getenv('OXID_VERSION') : $sShopEdition);
 define('OXID_VARNISH', getenv('OXID_VARNISH') ? getenv('OXID_VARNISH') : $blVarnish);
 

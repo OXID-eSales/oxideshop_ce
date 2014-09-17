@@ -22,6 +22,12 @@
 
 require_once 'test_config.inc.php';
 
+if (defined('SHOPRESTORATIONCLASS') && file_exists(SHOPRESTORATIONCLASS.".php")) {
+    include_once SHOPRESTORATIONCLASS.".php";
+} else {
+    include_once "dbRestore.php";
+}
+
 /**
  * Class for creating stub objects.
  */
@@ -122,6 +128,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     public function setUpBeforeTestSuite()
     {
         if (!self::$_blSetupBeforeTestSuiteDone) {
+            $this->_createDataBaseDump();
+
             oxRegistry::getUtils()->commitFileCache();
 
             $oxLang = oxRegistry::getLang();
@@ -780,5 +788,11 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     protected function _2Utf($sVal)
     {
         return iconv("ISO-8859-1", "UTF-8", $sVal);
+    }
+
+    protected function _createDataBaseDump()
+    {
+        $oDbRestore = self::_getDbRestore();
+        $oDbRestore->dumpDB();
     }
 }

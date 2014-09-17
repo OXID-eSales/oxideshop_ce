@@ -53,15 +53,6 @@ if (!is_dir(oxCCTempDir)) {
 
 
 require_once 'unit/test_config.inc.php';
-
-if (file_exists("unit/{$sDataBaseRestore}.php")) {
-    include_once "unit/{$sDataBaseRestore}.php";
-} else {
-    include_once "{$sDataBaseRestore}.php";
-}
-$oDbRestore = new DbRestore();
-$oDbRestore->dumpDB();
-
 require_once "unit/OxidTestCase.php";
 
 define('oxADMIN_LOGIN', oxDb::getDb()->getOne("select OXUSERNAME from oxuser where oxid='oxdefaultadmin'"));

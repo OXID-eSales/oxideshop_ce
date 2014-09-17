@@ -73,8 +73,6 @@ class article_attribute_ajax extends ajaxListComponent
 
     /**
      * Removes article attributes.
-     *
-     * @return null
      */
     public function removeAttr()
     {
@@ -95,8 +93,6 @@ class article_attribute_ajax extends ajaxListComponent
 
     /**
      * Adds attributes to article.
-     *
-     * @return null
      */
     public function addAttr()
     {

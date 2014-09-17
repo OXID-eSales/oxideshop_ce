@@ -45,8 +45,6 @@
 
         /**
          * Performs cleanup of statistic data for selected period.
-         *
-         * @return null
          */
         public function cleanup()
         {

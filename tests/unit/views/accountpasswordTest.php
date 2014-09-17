@@ -223,7 +223,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oUser                     = new oxuser;
+        $oUser = new oxuser;
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
         /** @var Account_Password|PHPUnit_Framework_MockObject_MockObject $oView */
@@ -258,7 +258,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
         $this->setExpectedException('oxException', 'ChangePass user test');
 
         $sOldPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%_old';
-        $sPass    = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
+        $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
         modConfig::setRequestParameter('password_old', $sOldPass);
         modConfig::setRequestParameter('password_new', $sPass);
         modConfig::setRequestParameter('password_new_confirm', $sPass);

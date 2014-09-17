@@ -759,13 +759,13 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
      */
     public function testGetModulesFromDir()
     {
-        $sModulesDir = oxRegistry::getConfig()->getModulesDir();
+            $sModulesDir = oxRegistry::getConfig()->getModulesDir();
 
-        $oModuleList = new oxModuleList;
-        $aModules = $oModuleList->getModulesFromDir($sModulesDir);
+            $oModuleList = new oxModuleList;
+            $aModules = $oModuleList->getModulesFromDir($sModulesDir);
 
-        $oModule = $aModules["invoicepdf"];
-        $this->assertEquals("invoicepdf", $oModule->getId());
+            $oModule = $aModules["invoicepdf"];
+            $this->assertEquals("invoicepdf", $oModule->getId());
     }
 
     /**
@@ -775,11 +775,11 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
      */
     public function testIsVendorDir()
     {
-        $sModulesDir = oxRegistry::getConfig()->getModulesDir();
+            $sModulesDir = oxRegistry::getConfig()->getModulesDir();
 
-        $oModuleList = new oxModuleList;
+            $oModuleList = new oxModuleList;
 
-        $this->assertFalse($oModuleList->_isVendorDir($sModulesDir . "/invoicepdf"));
+            $this->assertFalse($oModuleList->_isVendorDir($sModulesDir . "/invoicepdf"));
     }
 
     public function testGetDeletedExtensionsForModuleWithNoMetadata()
@@ -873,6 +873,8 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
 
     public function testGetModuleFilesWhenFileWasNotSet()
     {
+        $this->getConfig()->setConfigParam('aModuleFiles', array());
+
         $oModuleList = new oxModuleList();
 
         $this->assertSame(array(), $oModuleList->getModuleFiles());

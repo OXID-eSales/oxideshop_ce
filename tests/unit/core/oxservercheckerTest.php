@@ -36,7 +36,7 @@ class Unit_Core_oxServerCheckerTest extends OxidTestCase
     public function providerCheckWhenNodeIsValid()
     {
         $iNodeCreationTime = 1400000000;
-        $iWhenNodeIsStillValid = $iNodeCreationTime + 22 * 60 * 60;
+        $iWhenNodeIsStillValid = $iNodeCreationTime + 11 * 60 * 60;
 
         return array(
             // When node time is the same as current time.
@@ -62,8 +62,8 @@ class Unit_Core_oxServerCheckerTest extends OxidTestCase
     public function providerCheckIfNodeIsNotValid()
     {
         $iNodeCreationTime = 1400000000;
-        $iExactTimeWhenNodeIsNotValid = $iNodeCreationTime + 23 * 60 * 60;
-        $iTimeWhenServerNodeIsNotValid = $iNodeCreationTime + 28 * 60 * 60;
+        $iExactTimeWhenNodeIsNotValid = $iNodeCreationTime + 12 * 60 * 60;
+        $iTimeWhenServerNodeIsNotValid = $iNodeCreationTime + 13 * 60 * 60;
         $iServerTimeIsSmallerThanNodeTime = $iNodeCreationTime - 1;
 
         return array(

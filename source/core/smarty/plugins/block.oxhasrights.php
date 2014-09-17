@@ -36,6 +36,6 @@
  */
 function smarty_block_oxhasrights( $params, $content, &$smarty, &$repeat )
 {
-        return $content;
+    return $content;
 
 }

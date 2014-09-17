@@ -968,11 +968,11 @@ class OxSetupDb extends oxSetupCore
 
         $oConfk = new Conf();
 
-            $sBaseOut = 'oxbaseshop';
-            // disabling usage of dynamic pages if shop country is international
-            if ($oSession->getSessionParam('location_lang') === null) {
-                $oSession->setSessionParam('use_dynamic_pages', 'false');
-            }
+        $sBaseOut = 'oxbaseshop';
+        // disabling usage of dynamic pages if shop country is international
+        if ($oSession->getSessionParam('location_lang') === null) {
+            $oSession->setSessionParam('use_dynamic_pages', 'false');
+        }
 
         $blUseDynPages = isset($aParams["use_dyn_pages"]) ? $aParams["use_dyn_pages"] : $oSession->getSessionParam('use_dynamic_pages');
         $sLocationLang = isset($aParams["location_lang"]) ? $aParams["location_lang"] : $oSession->getSessionParam('location_lang');
@@ -1195,13 +1195,13 @@ class OxSetupDb extends oxSetupCore
      */
     private function _addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession)
     {
-            $blSendShopDataToOxid = isset($aParams["blSendShopDataToOxid"]) ? $aParams["blSendShopDataToOxid"] : $oSession->getSessionParam('blSendShopDataToOxid');
+        $blSendShopDataToOxid = isset($aParams["blSendShopDataToOxid"]) ? $aParams["blSendShopDataToOxid"] : $oSession->getSessionParam('blSendShopDataToOxid');
 
-            $sID = $oUtils->generateUid();
-            $this->execSql(
-                "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values('$sID', '$sBaseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $oConfk->sConfigKey . "'))"
-            );
+        $sID = $oUtils->generateUid();
+        $this->execSql(
+            "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
+                             values('$sID', '$sBaseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $oConfk->sConfigKey . "'))"
+        );
     }
 }
 
@@ -2424,7 +2424,7 @@ class oxSetupController extends oxSetupCore
         }
 
 
-            $oSetup->setNextStep($oSetup->getStep('STEP_FINISH'));
+        $oSetup->setNextStep($oSetup->getStep('STEP_FINISH'));
 
         $oView->setMessage($oLang->getText('STEP_4_1_DATA_WAS_WRITTEN'));
         $oView->setViewParam("aPath", $aPath);

@@ -54,19 +54,19 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
 
     public function getArticleViewTable()
     {
-            return oxv_oxarticles_de;
+        return oxv_oxarticles_de;
 
     }
 
     public function getObject2CategoryViewTable()
     {
-            return "oxobject2category";
+        return "oxobject2category";
 
     }
 
     public function getShopId()
     {
-            return "oxbaseshop";
+        return "oxbaseshop";
 
     }
 

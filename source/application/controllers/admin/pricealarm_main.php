@@ -39,23 +39,23 @@ class PriceAlarm_Main extends oxAdminDetails
     {
         $myConfig = $this->getConfig();
 
-            // #1140 R - price must be checked from the object.
-            $sSql = "select oxarticles.oxid, oxpricealarm.oxprice from oxpricealarm, oxarticles " .
-                    "where oxarticles.oxid = oxpricealarm.oxartid and oxpricealarm.oxsended = '000-00-00 00:00:00'";
-            $rs = oxDb::getDb()->Execute($sSql);
-            $iAllCnt = 0;
+        // #1140 R - price must be checked from the object.
+        $sSql = "select oxarticles.oxid, oxpricealarm.oxprice from oxpricealarm, oxarticles " .
+                "where oxarticles.oxid = oxpricealarm.oxartid and oxpricealarm.oxsended = '000-00-00 00:00:00'";
+        $rs = oxDb::getDb()->Execute($sSql);
+        $iAllCnt = 0;
 
-            if ($rs != false && $rs->recordCount() > 0) {
-                while (!$rs->EOF) {
-                    $oArticle = oxNew("oxarticle");
-                    $oArticle->load($rs->fields[0]);
-                    if ($oArticle->getPrice()->getBruttoPrice() <= $rs->fields[1]) {
-                        $iAllCnt++;
-                    }
-                    $rs->moveNext();
+        if ($rs != false && $rs->recordCount() > 0) {
+            while (!$rs->EOF) {
+                $oArticle = oxNew("oxarticle");
+                $oArticle->load($rs->fields[0]);
+                if ($oArticle->getPrice()->getBruttoPrice() <= $rs->fields[1]) {
+                    $iAllCnt++;
                 }
+                $rs->moveNext();
             }
-            $this->_aViewData['iAllCnt'] = $iAllCnt;
+        }
+        $this->_aViewData['iAllCnt'] = $iAllCnt;
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ($soxId != "-1" && isset($soxId)) {

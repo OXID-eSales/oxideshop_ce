@@ -67,11 +67,11 @@ class Unit_Core_oxImexTest extends OxidTestCase
         $blFound = false;
         foreach ($aContents as $content) {
             if (strpos($content, '2000;Wanduhr ROBOT') === 0) {
-                    $this->assertEquals(
-                        '2000;Wanduhr ROBOT ;Stueck;0;2000;1,000;;;;;;;29.00;;;;;;;;;;;;;;0.00;;;;;;;;;'
-                        . ';;;;;;2;;;;;1; Wanduhr im coolen ROBOTER Look! Durchmesser: 40 cm Material: Glas '
-                        . 'Bezugshinweis: bei Interesse können Sie dieses Produkt bei www.desaster.com erwerben.;', $content
-                    );
+                $this->assertEquals(
+                    '2000;Wanduhr ROBOT ;Stueck;0;2000;1,000;;;;;;;29.00;;;;;;;;;;;;;;0.00;;;;;;;;;'
+                    . ';;;;;;2;;;;;1; Wanduhr im coolen ROBOTER Look! Durchmesser: 40 cm Material: Glas '
+                    . 'Bezugshinweis: bei Interesse können Sie dieses Produkt bei www.desaster.com erwerben.;', $content
+                );
                 $blFound = true;
                 break;
             }

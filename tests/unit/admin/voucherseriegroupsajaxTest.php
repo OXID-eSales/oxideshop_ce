@@ -39,7 +39,7 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
     {
         parent::setUp();
 
-            $sShopId = "oxbaseshop";
+        $sShopId = "oxbaseshop";
 
 
         oxDb::getDb()->execute("replace into oxobject2group set oxid='_testId1', oxshopid='$sShopId', oxobjectid='_testVoucherId1', oxgroupsid='_testGroupId1'");

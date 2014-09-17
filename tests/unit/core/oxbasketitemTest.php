@@ -111,7 +111,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-            $sId = '8a142c4100e0b2f57.59530204';
+        $sId = '8a142c4100e0b2f57.59530204';
 
         oxTestModules::addFunction('oxarticle', 'getLink( $iLang = null, $blMain = false  )', '{return "htpp://link_for_article/".$this->getId();}');
 
@@ -190,7 +190,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
      */
     public function testInitProductIsNotBuyable()
     {
-            $sProdId = "2077";
+        $sProdId = "2077";
 
         $oBasketItem = new oxbasketitem();
         try {
@@ -883,7 +883,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
         $this->assertEquals($this->oArticle->oxarticles__oxtitle->value . ", xxx", $oBasketItem->sTitle);
         $this->assertEquals('xxx', $oBasketItem->sVarSelect);
 
-            $this->assertEquals("2077_p1_ico.jpg", $oBasketItem->sIcon);
+        $this->assertEquals("2077_p1_ico.jpg", $oBasketItem->sIcon);
 
         $this->assertEquals($this->oArticle->getLink(), $oBasketItem->sLink);
         $this->assertEquals(oxRegistry::getConfig()->getBaseShopId(), $oBasketItem->sShopId);

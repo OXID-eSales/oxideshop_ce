@@ -80,7 +80,7 @@ class Unit_Views_startTest extends OxidTestCase
         $aList = $oStart->getTopArticleList();
         $this->assertTrue($aList instanceof oxarticlelist);
         $this->assertEquals(1, $aList->count());
-            $this->assertEquals("1849", $aList->current()->getId());
+        $this->assertEquals("1849", $aList->current()->getId());
     }
 
     public function testGetNewestArticles()
@@ -97,7 +97,7 @@ class Unit_Views_startTest extends OxidTestCase
         $oStart = $this->getProxyClass('start');
 
         $oArt = $oStart->getCatOfferArticle();
-            $this->assertEquals('1126', $oArt->getId());
+        $this->assertEquals('1126', $oArt->getId());
     }
 
     public function testGetCatOfferArticleList()

@@ -68,7 +68,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
      */
     protected function _getO2CTable()
     {
-            $sO2CTable = "oxobject2category";
+        $sO2CTable = "oxobject2category";
 
         return $sO2CTable;
     }
@@ -298,7 +298,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oTest = $this->getProxyClass('oxArticleList');
         $oTest->loadArticleCrossSell("1849");
         $iCount = 3;
-            $iCount = 2;
+        $iCount = 2;
         $this->assertEquals($iCount, $oTest->count());
     }
 
@@ -384,7 +384,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $this->assertEquals(count($oTest), 4);
 
         $aExpect = array(1126, 2036, 1876, 2080);
-            $aExpect = array(1126, 2036, 'd8842e3cbf9290351.59301740', 2080);
+        $aExpect = array(1126, 2036, 'd8842e3cbf9290351.59301740', 2080);
 
         foreach ($oTest as $oArticle) {
             $this->assertTrue(in_array($oArticle->oxarticles__oxid->value, $aExpect));
@@ -470,7 +470,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         //TODO: first fix categories then try to load attributes
         //$this->markTestIncomplete();
 
-            $sCatId = '8a142c3e60a535f16.78077188';
+        $sCatId = '8a142c3e60a535f16.78077188';
 
         $oTest = $this->getProxyClass('oxArticleList');
 
@@ -526,7 +526,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
      */
     public function testGetFilterSql()
     {
-            $sCatId = '8a142c3e60a535f16.78077188';
+        $sCatId = '8a142c3e60a535f16.78077188';
 
         $oTest = $this->getProxyClass('oxArticleList');
         $sRes = '';
@@ -1120,7 +1120,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $sQCount = "select count(*) from oxarticles where oxid in (select if(oxparentid='',oxid,oxparentid) as id from oxarticles where oxprice>0 and oxprice <= $iPrice2 group by id having min(oxprice)>=$iPrice1)";
         $sCount = $this->getDb()->getOne($sQCount);
 
-            $sCatId = '8a142c3e4143562a5.46426637';
+        $sCatId = '8a142c3e4143562a5.46426637';
 
 
         $oCategory = new oxCategory();
@@ -1495,7 +1495,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
     public function testLoadVendorArticles()
     {
         //testing over mock
-            $sVendorId = '68342e2955d7401e6.18967838';
+        $sVendorId = '68342e2955d7401e6.18967838';
 
 
         $oTest = $this->getMock('oxArticleList', array("selectString", "_getVendorSelect"));
@@ -1520,7 +1520,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
     public function testLoadManufacturerArticles()
     {
         //testing over mock
-            $sManId = 'fe07958b49de225bd1dbc7594fb9a6b0';
+        $sManId = 'fe07958b49de225bd1dbc7594fb9a6b0';
 
 
         $oTest = $this->getMock('oxArticleList', array("selectString", "_getManufacturerSelect"));
@@ -1724,7 +1724,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
     public function testLazyLoadFields1()
     {
         $sDate = '2006-07-05';
-            $sDate = '2005-07-28';
+        $sDate = '2005-07-28';
         $oTest = $this->getProxyClass("oxArticleList");
         $oTest->selectString("select oxid from oxarticles where oxid = '2000'");
         $this->assertEquals('2000', $oTest['2000']->getId());
@@ -1741,7 +1741,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
     public function testLazyLoadAllObjects1()
     {
         $sDate = '2006-07-05';
-            $sDate = '2005-07-28';
+        $sDate = '2005-07-28';
         $oTest = $this->getProxyClass("oxArticleList");
         $oTest->selectString("select oxid from oxarticles where oxid = '2000' or oxid = '1354'");
         $this->assertEquals('2000', $oTest['2000']->getId());
@@ -1877,7 +1877,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $this->setLanguage(1);
         $sView = getViewName('oxarticles', 1);
         $oTest->selectString("select * from $sView where oxid = '2080'");
-            $this->assertEquals("Champagne Pliers &amp; Bottle Opener", $oTest[2080]->oxarticles__oxtitle->value);
+        $this->assertEquals("Champagne Pliers &amp; Bottle Opener", $oTest[2080]->oxarticles__oxtitle->value);
     }
 
     /**
@@ -2005,7 +2005,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oTest = new oxArticleList();
         $oTest->loadTagArticles($sTag, 0);
         //print_r($oTest);
-            $this->assertEquals(3, count($oTest));
+        $this->assertEquals(3, count($oTest));
         $this->assertTrue(isset($oTest[2000]));
         $this->assertTrue(isset($oTest[1771]));
         $this->assertTrue(isset($oTest[1354]));
@@ -2050,9 +2050,9 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oTest->setCustomSorting('oxtitle desc');
         $oTest->loadTagArticles($sTag, 0);
         //print_r($oTest);
-            $aExpArrayKeys = array(1354, 2000, 1771);
-            $this->assertEquals(3, count($oTest));
-            $this->assertEquals($aExpArrayKeys, $oTest->ArrayKeys());
+        $aExpArrayKeys = array(1354, 2000, 1771);
+        $this->assertEquals(3, count($oTest));
+        $this->assertEquals($aExpArrayKeys, $oTest->ArrayKeys());
     }
 
     /**
@@ -2072,9 +2072,9 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
         $oTest->loadTagArticles($sTag, 0);
         //print_r($oTest);
-            $aExpArrayKeys = array(1354, 2000, 1771);
-            $this->assertEquals(3, count($oTest));
-            $this->assertEquals($aExpArrayKeys, $oTest->ArrayKeys());
+        $aExpArrayKeys = array(1354, 2000, 1771);
+        $this->assertEquals(3, count($oTest));
+        $this->assertEquals($aExpArrayKeys, $oTest->ArrayKeys());
     }
 
     /**
@@ -2113,7 +2113,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $sTag = "wanduhr";
 
 
-            $aExpIds = array(1354, 2000, 1771);
+        $aExpIds = array(1354, 2000, 1771);
 
         $oArtList = new oxArticleList();
         $oArtList->setCustomSorting('oxtitle desc');

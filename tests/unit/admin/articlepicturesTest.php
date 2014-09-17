@@ -66,7 +66,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         modConfig::getInstance()->setConfigParam('iPicCount', 0);
 
         $oView = $this->getMock("Article_Pictures", array("resetContentCache"));
-            $oView->expects($this->never())->method('resetContentCache');
+        $oView->expects($this->never())->method('resetContentCache');
 
         $iCnt = 7;
         modConfig::getInstance()->setConfigParam('iPicCount', $iCnt);
@@ -318,8 +318,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testDeleteMainIcon()
     {
-            $oArticle = $this->getMock("oxArticle", array('isDerived'));
-            $oArticle->expects($this->once())->method('isDerived')->will($this->returnValue(null));
+        $oArticle = $this->getMock("oxArticle", array('isDerived'));
+        $oArticle->expects($this->once())->method('isDerived')->will($this->returnValue(null));
 
         $oArticle->oxarticles__oxicon = new oxField("testIcon.jpg");
 
@@ -341,8 +341,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testDeleteThumbnail()
     {
-            $oArticle = $this->getMock("oxArticle", array('isDerived'));
-            $oArticle->expects($this->once())->method('isDerived')->will($this->returnValue(null));
+        $oArticle = $this->getMock("oxArticle", array('isDerived'));
+        $oArticle->expects($this->once())->method('isDerived')->will($this->returnValue(null));
 
         $oArticle->oxarticles__oxthumb = new oxField("testThumb.jpg");
 
@@ -364,8 +364,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testResetMasterPicture()
     {
-            $oArticle = $this->getMock("oxArticle", array('isDerived'));
-            $oArticle->expects($this->once())->method('isDerived')->will($this->returnValue(null));
+        $oArticle = $this->getMock("oxArticle", array('isDerived'));
+        $oArticle->expects($this->once())->method('isDerived')->will($this->returnValue(null));
 
         $oArticle->oxarticles__oxpic2 = new oxField("testPic2.jpg");
 
@@ -389,8 +389,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testResetMasterPicture_makesCleanupOnFields()
     {
-            $oArticle = $this->getMock("oxArticle", array('isDerived'));
-            $oArticle->expects($this->any())->method('isDerived')->will($this->returnValue(null));
+        $oArticle = $this->getMock("oxArticle", array('isDerived'));
+        $oArticle->expects($this->any())->method('isDerived')->will($this->returnValue(null));
 
         $oArticle->oxarticles__oxpic1 = new oxField("testPic1.jpg");
         $oArticle->oxarticles__oxpic2 = new oxField("testPic2.jpg");

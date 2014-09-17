@@ -189,8 +189,8 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
 
         $myDB = oxDb::getDB();
 
-            $sSql = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
-            $myDB->execute($sSql);
+        $sSql = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
+        $myDB->execute($sSql);
 
         $sArtId = 'testArt';
         $sSql = "insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values ('test3', '$sArtId', 'test3', '3'), ('test1', '$sArtId', 'test1', '1'), ('test2', '$sArtId', 'test2', '2')";
@@ -233,8 +233,8 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         $oAttribute = $oAttrList->offsetGet($sAttributeId);
 
 
-            $this->assertEquals(1, $oAttrList->count());
-            $this->assertEquals(6, count($oAttribute->getValues()));
+        $this->assertEquals(1, $oAttrList->count());
+        $this->assertEquals(6, count($oAttribute->getValues()));
 
     }
 

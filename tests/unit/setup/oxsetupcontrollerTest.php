@@ -917,7 +917,7 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oSetup->expects($this->once())->method("setNextStep");
 
 
-            $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_FINISH"));
+        $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_FINISH"));
 
         $iAt = 0;
         $oSession = $this->getMock("oxSetupSession", array("setSessionParam", "getSessionParam"), array(), '', null);

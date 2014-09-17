@@ -38,8 +38,8 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
     {
         parent::setUp();
 
-            $this->sTestId = '2077';
-            $sVar = '8a142c4100e0b2f57.59530204';
+        $this->sTestId = '2077';
+        $sVar = '8a142c4100e0b2f57.59530204';
 
         oxDb::getDb()->Execute(
             'replace into oxreviews (OXID, OXACTIVE, OXOBJECTID, OXTYPE, OXTEXT, OXUSERID, OXCREATE, OXLANG, OXRATING)

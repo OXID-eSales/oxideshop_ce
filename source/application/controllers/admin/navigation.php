@@ -247,7 +247,7 @@ class Navigation extends oxAdminView
      */
     protected function _checkVersion()
     {
-            $sVersion = 'CE';
+        $sVersion = 'CE';
 
         $sQuery = 'http://admin.oxid-esales.com/' . $sVersion . '/onlinecheck.php?getlatestversion';
         if ($sVersion = oxRegistry::get("oxUtilsFile")->readRemoteFileAsString($sQuery)) {

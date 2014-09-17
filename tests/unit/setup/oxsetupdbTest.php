@@ -265,8 +265,8 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $iAt = 0;
         $oSession = $this->getMock("oxSetupSession", array("setSessionParam", "getSessionParam"), array(), '', null);
 
-            $oSession->expects($this->at($iAt++))->method("getSessionParam")->with($this->equalTo("location_lang"))->will($this->returnValue(null));
-            $oSession->expects($this->at($iAt++))->method("setSessionParam")->with($this->equalTo("use_dynamic_pages"), $this->equalTo("false"));
+        $oSession->expects($this->at($iAt++))->method("getSessionParam")->with($this->equalTo("location_lang"))->will($this->returnValue(null));
+        $oSession->expects($this->at($iAt++))->method("setSessionParam")->with($this->equalTo("use_dynamic_pages"), $this->equalTo("false"));
 
         $oSession->expects($this->at($iAt++))->method("getSessionParam")->with($this->equalTo("use_dynamic_pages"));
         $oSession->expects($this->at($iAt++))->method("getSessionParam")->with($this->equalTo("location_lang"));

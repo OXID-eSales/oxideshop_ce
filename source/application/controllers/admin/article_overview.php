@@ -52,37 +52,37 @@ class Article_Overview extends oxAdminDetails
 
             $oDB = oxDb::getDb();
 
-                // variant handling
-                if ($oArticle->oxarticles__oxparentid->value) {
-                    $oParentArticle = oxNew("oxarticle");
-                    $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
-                    $this->_aViewData["parentarticle"] = $oParentArticle;
-                    $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;
-                }
+            // variant handling
+            if ($oArticle->oxarticles__oxparentid->value) {
+                $oParentArticle = oxNew("oxarticle");
+                $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
+                $this->_aViewData["parentarticle"] = $oParentArticle;
+                $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;
+            }
 
-                // ordered amount
-                $sSelect = "select sum(oxamount) from oxorderarticles ";
-                $sSelect .= "where oxartid=" . $oDB->quote($soxId);
-                $this->_aViewData["totalordercnt"] = $iTotalOrderCnt = (float) $oDB->getOne($sSelect);
+            // ordered amount
+            $sSelect = "select sum(oxamount) from oxorderarticles ";
+            $sSelect .= "where oxartid=" . $oDB->quote($soxId);
+            $this->_aViewData["totalordercnt"] = $iTotalOrderCnt = (float) $oDB->getOne($sSelect);
 
-                // sold amount
-                $sSelect = "select sum(oxorderarticles.oxamount) from  oxorderarticles, oxorder " .
-                           "where (oxorder.oxpaid>0 or oxorder.oxsenddate > 0) and oxorderarticles.oxstorno != '1' " .
-                           "and oxorderarticles.oxartid=" . $oDB->quote($soxId) .
-                           "and oxorder.oxid =oxorderarticles.oxorderid";
-                $this->_aViewData["soldcnt"] = $iSoldCnt = (float) $oDB->getOne($sSelect);
+            // sold amount
+            $sSelect = "select sum(oxorderarticles.oxamount) from  oxorderarticles, oxorder " .
+                       "where (oxorder.oxpaid>0 or oxorder.oxsenddate > 0) and oxorderarticles.oxstorno != '1' " .
+                       "and oxorderarticles.oxartid=" . $oDB->quote($soxId) .
+                       "and oxorder.oxid =oxorderarticles.oxorderid";
+            $this->_aViewData["soldcnt"] = $iSoldCnt = (float) $oDB->getOne($sSelect);
 
-                // canceled amount
-                $sSelect = "select sum(oxamount) from oxorderarticles where oxstorno = '1' " .
-                           "and oxartid=" . $oDB->quote($soxId);
-                $this->_aViewData["canceledcnt"] = $iCanceledCnt = (float) $oDB->getOne($sSelect);
+            // canceled amount
+            $sSelect = "select sum(oxamount) from oxorderarticles where oxstorno = '1' " .
+                       "and oxartid=" . $oDB->quote($soxId);
+            $this->_aViewData["canceledcnt"] = $iCanceledCnt = (float) $oDB->getOne($sSelect);
 
-                // not yet processed
-                $this->_aViewData["leftordercnt"] = $iTotalOrderCnt - $iSoldCnt - $iCanceledCnt;
+            // not yet processed
+            $this->_aViewData["leftordercnt"] = $iTotalOrderCnt - $iSoldCnt - $iCanceledCnt;
 
-                // position in top ten
-                $sSelect = "select oxartid,sum(oxamount) as cnt from oxorderarticles " .
-                           "group by oxartid order by cnt desc";
+            // position in top ten
+            $sSelect = "select oxartid,sum(oxamount) as cnt from oxorderarticles " .
+                       "group by oxartid order by cnt desc";
 
             $rs = $oDB->execute($sSelect);
             $iTopPos = 0;

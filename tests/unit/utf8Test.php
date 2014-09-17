@@ -82,7 +82,7 @@ class Unit_utf8Test extends OxidTestCase
         $this->cleanUpTable('oxwrapping');
 
 
-            $this->cleanUpTable('oxstatistics');
+        $this->cleanUpTable('oxstatistics');
 
         oxRegistry::getConfig()->setActiveView(null);
         parent::tearDown();
@@ -137,7 +137,7 @@ class Unit_utf8Test extends OxidTestCase
         $sShopId = $myConfig->getBaseShopId();
         $sVal = 'Опрос Žiniasklaidai Gästebuch!P!-5,99__Опрос Žiniasklaidai Gästebuch@@';
 
-            $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testSellisttest", "' . $sShopId . '", "Опрос Žiniasklaidai Gästebuch", "_testSellisttest", "' . $sVal . '")';
+        $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testSellisttest", "' . $sShopId . '", "Опрос Žiniasklaidai Gästebuch", "_testSellisttest", "' . $sVal . '")';
         $myDB->Execute($sQ);
 
         $sQ = 'insert into oxobject2selectlist (oxid, oxobjectid, oxselnid, oxsort) values ("_testSellisttest", "1651", "_testSellisttest", 1) ';

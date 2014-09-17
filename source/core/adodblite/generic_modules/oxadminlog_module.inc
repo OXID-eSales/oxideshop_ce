@@ -30,8 +30,8 @@ class oxadminlog_ADOConnection extends mysql_oxadminlog_EXTENDER
                 }
 
 
-                    $sQ = "insert into oxadminlog ( oxuserid, oxsql )
-                           values ( '{$sUserId}', " . $this->quote( $sSearch ) . " ) ";
+                $sQ = "insert into oxadminlog ( oxuserid, oxsql )
+                       values ( '{$sUserId}', " . $this->quote( $sSearch ) . " ) ";
 
                 // write information
                 parent::Execute( $sQ );

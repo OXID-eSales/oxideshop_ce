@@ -165,7 +165,7 @@ class oxCategoryList extends oxList
                       . " $sTable.oxicon as oxicon, $sTable.oxextlink as oxextlink,"
                       . " $sTable.oxthumb as oxthumb, $sTable.oxpromoicon as oxpromoicon";
 
-            $sFieldList .= ",not $sTable.oxactive as oxppremove";
+        $sFieldList .= ",not $sTable.oxactive as oxppremove";
 
 
         return $sFieldList;
@@ -289,7 +289,7 @@ class oxCategoryList extends oxList
     public function load()
     {
 
-            $aData = $this->_loadFromDb();
+        $aData = $this->_loadFromDb();
 
         $this->assignArray($aData);
     }

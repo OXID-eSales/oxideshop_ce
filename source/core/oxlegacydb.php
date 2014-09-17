@@ -66,7 +66,7 @@ class oxLegacyDb extends oxSuperCfg
     public function getDb($blType = true)
     {
 
-            return $this->_oDb;
+        return $this->_oDb;
     }
 
     /**

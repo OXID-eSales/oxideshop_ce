@@ -1,5 +1,5 @@
 <?php
-    /**
+/**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,24 +18,24 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
-     */
+ */
 
-    require_once realpath(".") . '/unit/OxidTestCase.php';
-    require_once realpath(".") . '/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
-    /**
-     * License key managing class.
-     */
-    class Unit_Core_oxSerialCeTest extends OxidTestCase
+/**
+ * License key managing class.
+ */
+class Unit_Core_oxSerialCeTest extends OxidTestCase
+{
+
+    //this test makes sure oxSerial class does not exist in CE edition
+    public function testOxSerialClassDoesNotExist()
     {
-
-        //this test makes sure oxSerial class does not exist in CE edition
-        public function testOxSerialClassDoesNotExist()
-        {
-            if (class_exists(oxSerial)) {
-                $this->fail("oxSerial class is not excluded from CE eddition!!");
-            }
-
-            return;
+        if (class_exists(oxSerial)) {
+            $this->fail("oxSerial class is not excluded from CE eddition!!");
         }
+
+        return;
     }
+}

@@ -102,9 +102,9 @@ class Article_Stock extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxarticles__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxarticles__oxshopid'] = $sShopID;
 
         $oArticle = oxNew("oxarticle");
         $oArticle->loadInLang($this->_iEditLang, $soxId);

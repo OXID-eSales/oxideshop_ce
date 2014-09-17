@@ -108,7 +108,7 @@ class Unit_Core_oxuserlistTest extends OxidTestCase
     {
         // selecting count from DB
 
-            $sQ = 'select count(*) from oxuser';
+        $sQ = 'select count(*) from oxuser';
 
         $iUserCount = oxDB::getDB()->getOne($sQ);
 

@@ -42,9 +42,9 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
     {
         parent::setUp();
 
-            $this->setShopIdTest('oxbaseshop');
-            $this->setArticleViewTable('oxv_oxarticles_de');
-            $this->setObject2CategoryViewTable('oxobject2category');
+        $this->setShopIdTest('oxbaseshop');
+        $this->setArticleViewTable('oxv_oxarticles_de');
+        $this->setObject2CategoryViewTable('oxobject2category');
 
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle1', oxtitle='_testArticle1', oxmanufacturerid='_testRemove1'", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle2', oxtitle='_testArticle2', oxmanufacturerid='_testRemove2'", 'oxarticles');

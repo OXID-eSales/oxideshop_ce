@@ -276,7 +276,7 @@ class Details extends oxUBase
             return $this->_sViewId;
         }
 
-            $sViewId = parent::getViewId() . '|' . $this->getConfig()->getRequestParameter('anid') . '|';
+        $sViewId = parent::getViewId() . '|' . $this->getConfig()->getRequestParameter('anid') . '|';
 
 
         return $this->_sViewId = $sViewId;

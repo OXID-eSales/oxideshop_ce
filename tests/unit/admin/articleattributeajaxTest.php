@@ -52,8 +52,8 @@ class Unit_Admin_ArticleAttributeAjaxTest extends OxidTestCase
         $this->addToDatabase("insert into oxarticles set oxid='_testAttributeArticle', oxshopid='1', oxtitle='_testAttributeArticle'", 'oxarticles');
         $this->addToDatabase("insert into oxattribute set oxid='_testAttributeSaveAttr', oxshopid=1, oxtitle='_testAttributeSaveAttrTitle'", 'oxattribute');
 
-            $this->setAttributeViewTable('oxv_oxattribute_de');
-            $this->setObject2AttributeViewTable('oxv_oxobject2attribute_de');
+        $this->setAttributeViewTable('oxv_oxattribute_de');
+        $this->setObject2AttributeViewTable('oxv_oxobject2attribute_de');
 
         oxDb::getDb()->execute("insert into oxobject2attribute set oxid='_testAttribute6', oxobjectid='_testAttributeArticle', oxattrid='_testAttributeSaveAttr', oxvalue='_testValue6', oxpos=0");
     }

@@ -143,11 +143,11 @@ class Unit_Core_oxtagTest extends OxidTestCase
         $oTag = new oxTag();
 
 
-            $oTag->set("zauber");
-            $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sShopURL") . "tag/zauber/", $oTag->getLink());
+        $oTag->set("zauber");
+        $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sShopURL") . "tag/zauber/", $oTag->getLink());
 
-            $oTag->set("testTag");
-            $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sShopURL") . "tag/testtag/", $oTag->getLink());
+        $oTag->set("testTag");
+        $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sShopURL") . "tag/testtag/", $oTag->getLink());
     }
 
     /**

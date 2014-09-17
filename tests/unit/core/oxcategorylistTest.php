@@ -80,7 +80,7 @@ class modContentList_oxcategorylist extends oxContentList
      */
     public function loadCatMenues()
     {
-            $sActCat = '8a142c3e44ea4e714.31136811';
+        $sActCat = '8a142c3e44ea4e714.31136811';
 
 
         $oContent1 = oxNew('Content');
@@ -113,9 +113,9 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         $this->_oList = oxNew('testOxCategoryList');
         $this->_sNoCat = '_no_such_cat_';
 
-            $this->_sActCat = '8a142c3e44ea4e714.31136811';
-            $this->_sActRoot = '8a142c3e4143562a5.46426637';
-            $this->_aActPath = array($this->_sActRoot, $this->_sActCat);
+        $this->_sActCat = '8a142c3e44ea4e714.31136811';
+        $this->_sActRoot = '8a142c3e4143562a5.46426637';
+        $this->_aActPath = array($this->_sActRoot, $this->_sActCat);
 
 
         $this->testAdmin = false;
@@ -209,7 +209,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         $sCurSnippet = $this->_oList->UNITgetDepthSqlSnippet($oCat);
 
         $sViewName = getViewName('oxcategories');
-            $sExpSnippet = " ( 0 or ($sViewName.oxparentid = '8a142c3e44ea4e714.31136811') ) ";
+        $sExpSnippet = " ( 0 or ($sViewName.oxparentid = '8a142c3e44ea4e714.31136811') ) ";
 
         $this->assertEquals($sExpSnippet, $sCurSnippet);
     }
@@ -306,7 +306,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
 
         $sCurSql = $this->_oList->UNITgetSelectString();
 
-            $sExpSql = "and oxcategories.oxshopid = '1'";
+        $sExpSql = "and oxcategories.oxshopid = '1'";
 
 
         $this->assertNotContains($sExpSql, $sCurSql);
@@ -328,7 +328,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         $sCurSql = $this->_oList->UNITgetSelectString();
 
         $sViewName = getViewName('oxcategories');
-            $sExpSql = ",not $sViewName.oxactive as oxppremove";
+        $sExpSql = ",not $sViewName.oxactive as oxppremove";
 
 
         $this->assertContains($sExpSql, $sCurSql);
@@ -358,9 +358,9 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
                    . ' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink,'
                    . ' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon,';
 
-            $sExpect .= 'not tablex.oxactive as oxppremove';
-            //
-            $oList = new oxCategoryList();
+        $sExpect .= 'not tablex.oxactive as oxppremove';
+        //
+        $oList = new oxCategoryList();
 
 
         $this->assertEquals($sExpect, $oList->UNITgetSqlSelectFieldsForTree('tablex'));
@@ -391,9 +391,9 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
                    . ' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink,'
                    . ' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon,';
 
-            $sExpect .= 'not tablex.oxactive as oxppremove';
-            //
-            $oList = new oxCategoryList();
+        $sExpect .= 'not tablex.oxactive as oxppremove';
+        //
+        $oList = new oxCategoryList();
 
 
         $this->assertEquals($sExpect, $oList->UNITgetSqlSelectFieldsForTree('tablex'));
@@ -912,11 +912,11 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         }
 
 
-            $aUpdateInfo = array(
-                '<b>Processing : Eco-Fashion</b>(943a9ba3050e78b443c16e043ae60ef3)<br>',
-                '<b>Processing : Geschenke</b>(8a142c3e4143562a5.46426637)<br>',
-                '<b>Processing : 1-8|1-8</b>(_test1)<br>',
-            );
+        $aUpdateInfo = array(
+            '<b>Processing : Eco-Fashion</b>(943a9ba3050e78b443c16e043ae60ef3)<br>',
+            '<b>Processing : Geschenke</b>(8a142c3e4143562a5.46426637)<br>',
+            '<b>Processing : 1-8|1-8</b>(_test1)<br>',
+        );
 
         $this->assertTrue($iTrue == 1 || $iTrue == 2);
         $this->assertEquals($aUpdateInfo, $this->_oList->getUpdateInfo());

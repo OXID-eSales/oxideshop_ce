@@ -188,7 +188,7 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
 
     public function testGetViewName()
     {
-            $this->assertEquals('xxx', getViewName('xxx', 'xxx'));
+        $this->assertEquals('xxx', getViewName('xxx', 'xxx'));
     }
 
     public function testError_404_handler()

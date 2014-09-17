@@ -62,7 +62,7 @@ class Unit_Views_clearcookiesTest extends OxidTestCase
         $_SERVER['HTTP_COOKIE'] = "shop=1";
 
 
-            $oView = new clearcookies();
+        $oView = new clearcookies();
 
         $oUtilsServer = $this->getMock('oxUtilsServer', array('setOxCookie'));
         $oUtilsServer->expects($this->at(0))->method('setOxCookie')->with($this->equalTo('shop'));

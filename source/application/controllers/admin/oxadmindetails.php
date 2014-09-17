@@ -60,10 +60,10 @@ class oxAdminDetails extends oxAdminView
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
         } else {
 
-                $oShop = $this->_getEditShop(oxRegistry::getSession()->getVariable('actshop'));
-                //$sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" .
-                //$myConfig->getConfigParam( 'iAdminLanguage' ) . '/admin';
-                $sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $iLang . '/admin';
+            $oShop = $this->_getEditShop(oxRegistry::getSession()->getVariable('actshop'));
+            //$sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" .
+            //$myConfig->getConfigParam( 'iAdminLanguage' ) . '/admin';
+            $sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $iLang . '/admin';
         }
 
         $this->_aViewData['sHelpURL'] = $sDir;

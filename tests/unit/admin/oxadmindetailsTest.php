@@ -203,7 +203,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
         $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, $oArticle, 'oxarticles__oxtitle');
 
-            $this->assertFalse($oEditor);
+        $this->assertFalse($oEditor);
     }
 
     /**
@@ -217,7 +217,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $oAdminDetails = new oxadmindetails();
         $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle', 'oxid_ie6.css');
 
-            $this->assertFalse($oEditor);
+        $this->assertFalse($oEditor);
 
         $sDefaultCss = "oxid.css";
 
@@ -236,7 +236,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $oAdminDetails = new oxadmindetails();
         $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle', 'basket.tpl.css');
 
-            $this->assertFalse($oEditor);
+        $this->assertFalse($oEditor);
 
         $sDefaultCss = "oxid.css";
 
@@ -276,7 +276,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $oAdminDetails = new oxadmindetails();
         $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle', 'basket.tpl.css');
 
-            $this->assertFalse($oEditor);
+        $this->assertFalse($oEditor);
 
     }
 
@@ -293,7 +293,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $oAdminDetails = new oxadmindetails();
         $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle', 'basket.tpl.css');
 
-            $this->assertFalse($oEditor);
+        $this->assertFalse($oEditor);
 
     }
 

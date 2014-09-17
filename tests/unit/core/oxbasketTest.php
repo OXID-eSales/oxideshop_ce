@@ -99,7 +99,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
 
         modConfig::getInstance()->setConfigParam('blPerfNoBasketSaving', true);
 
-            $sId = '2077';
+        $sId = '2077';
         $sNewId = oxUtilsObject::getInstance()->generateUId();
 
         oxTestModules::addFunction('oxarticle', 'getLink( $iLang = null, $blMain = false  )', '{return "htpp://link_for_article/".$this->getId();}');
@@ -398,7 +398,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         oxDb::getDb()->execute('delete from oxuserbasketitems');
 
         $sArtId = '1126';
-            $sCatId = '8a142c3e4143562a5.46426637';
+        $sCatId = '8a142c3e4143562a5.46426637';
 
         // creating select lists..
         $oSelList = new oxSelectlist;
@@ -1401,7 +1401,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oBasketItem2->init($oArticle->getId(), 1);
 
         $oBasket = $this->getMock('modForTestAddBundles', array('_addBundlesToBasket'));
-            $oBasket->expects($this->exactly(3))->method('_addBundlesToBasket');
+        $oBasket->expects($this->exactly(3))->method('_addBundlesToBasket');
 
         // testing
         $oBasket->setBasket(array($oBasketItem, $oBasketItem2));

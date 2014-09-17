@@ -182,7 +182,7 @@ class oxContent extends oxI18n implements oxIUrl
     public function loadByIdent($sLoadId)
     {
 
-            $aData = $this->_loadFromDb($sLoadId);
+        $aData = $this->_loadFromDb($sLoadId);
 
         if ($aData) {
             $this->assign($aData);

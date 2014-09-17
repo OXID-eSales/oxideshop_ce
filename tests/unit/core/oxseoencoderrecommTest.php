@@ -103,7 +103,7 @@ class Unit_Core_oxSeoEncoderRecommTest extends OxidTestCase
         $oRecomm->expects($this->any())->method('getBaseStdLink')->with($this->equalTo($iLang))->will($this->returnValue("testStdLink"));
         $oRecomm->oxrecommlists__oxtitle = new oxField("testTitle");
 
-            $sShopId = 'oxbaseshop';
+        $sShopId = 'oxbaseshop';
         $oEncoder = $this->getMock('oxSeoEncoderRecomm', array('_getStaticUri'));
         $oEncoder->expects($this->once())->method('_getStaticUri')
             ->with(
@@ -139,7 +139,7 @@ class Unit_Core_oxSeoEncoderRecommTest extends OxidTestCase
         $oRecomm->expects($this->any())->method('getBaseStdLink')->with($this->equalTo($iLang))->will($this->returnValue("testStdLink"));
         $oRecomm->oxrecommlists__oxtitle = new oxField("testTitle");
 
-            $sShopId = 'oxbaseshop';
+        $sShopId = 'oxbaseshop';
         $oEncoder = $this->getMock('oxSeoEncoderRecomm', array('_getStaticUri'));
         $oEncoder->expects($this->once())->method('_getStaticUri')
             ->with(

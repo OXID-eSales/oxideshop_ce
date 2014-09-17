@@ -43,10 +43,10 @@ class Unit_Admin_AttributeMainAjaxTest extends OxidTestCase
     {
         parent::setUp();
 
-            $this->setShopId('oxbaseshop');
-            $this->setArticleViewTable('oxv_oxarticles_de');
-            $this->setObject2AttributeViewTable('oxv_oxobject2attribute_de');
-            $this->setObject2CategoryViewTable('oxv_oxobject2category_de');
+        $this->setShopId('oxbaseshop');
+        $this->setArticleViewTable('oxv_oxarticles_de');
+        $this->setObject2AttributeViewTable('oxv_oxobject2attribute_de');
+        $this->setObject2CategoryViewTable('oxv_oxobject2category_de');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleRemoveAll', oxshopid='1', oxtitle='_testArticleRemoveAll'", 'oxarticles');
         $this->addToDatabase("replace into oxattribute set oxid='_testAttribute', oxtitle='_testAttribute'", 'oxattribute');
         $this->addToDatabase("replace into oxattribute set oxid='_testAttributeAddAll', oxtitle='_testAttributeAddAll'", 'oxattribute');

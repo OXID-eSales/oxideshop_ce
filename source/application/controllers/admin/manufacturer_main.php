@@ -99,9 +99,9 @@ class Manufacturer_Main extends oxAdminDetails
             $aParams['oxmanufacturers__oxactive'] = 0;
         }
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxmanufacturers__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxmanufacturers__oxshopid'] = $sShopID;
 
         $oManufacturer = oxNew("oxmanufacturer");
 
@@ -137,9 +137,9 @@ class Manufacturer_Main extends oxAdminDetails
             $aParams['oxmanufacturers__oxactive'] = 0;
         }
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxmanufacturers__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxmanufacturers__oxshopid'] = $sShopID;
 
         $oManufacturer = oxNew("oxmanufacturer");
 

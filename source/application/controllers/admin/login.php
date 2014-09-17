@@ -56,7 +56,7 @@ class Login extends oxAdminView
         $oBaseShop = oxNew("oxshop");
 
         $oBaseShop->load($myConfig->getBaseShopId());
-            $sVersion = $oBaseShop->oxshops__oxversion->value;
+        $sVersion = $oBaseShop->oxshops__oxversion->value;
 
         $this->getViewConfig()->setViewConfigParam('sShopVersion', $sVersion);
 

@@ -389,7 +389,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oEmosItem->productId = '1126';
         $oEmosItem->productName = 'Bar-Set ABSINTH';
         $oEmosItem->price = 34;
-            $oEmosItem->productGroup = 'Geschenke/Bar-Equipment/Bar-Set ABSINTH';
+        $oEmosItem->productGroup = 'Geschenke/Bar-Equipment/Bar-Set ABSINTH';
         $oEmosItem->quantity = 10;
         $oEmosItem->variant1 = 'NULL';
         $oEmosItem->variant2 = 'NULL';

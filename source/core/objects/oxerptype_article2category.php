@@ -45,6 +45,6 @@ class oxERPType_Article2Category extends oxERPType
             'OXSHOPID'   => 'OXSHOPID'
         );
 
-            unset($this->_aKeyFieldList['OXSHOPID']);
+        unset($this->_aKeyFieldList['OXSHOPID']);
     }
 }

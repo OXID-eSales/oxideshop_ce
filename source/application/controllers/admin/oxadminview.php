@@ -172,7 +172,7 @@ class oxAdminView extends oxView
 
         parent::init();
 
-            $this->_aViewData['malladmin'] = oxRegistry::getSession()->getVariable('malladmin');
+        $this->_aViewData['malladmin'] = oxRegistry::getSession()->getVariable('malladmin');
     }
 
     /**
@@ -242,7 +242,7 @@ class oxAdminView extends oxView
 
 
 
-                $sUrl = $sProtocol . '://admin.oxid-esales.com/CE/';
+            $sUrl = $sProtocol . '://admin.oxid-esales.com/CE/';
 
             $sCountry = $this->_getCountryByCode($this->getConfig()->getConfigParam('sShopCountry'));
 
@@ -438,7 +438,7 @@ class oxAdminView extends oxView
         if (!$blDeleteCacheOnLogout || $blForceReset) {
 
 
-                oxRegistry::getUtils()->oxResetFileCache();
+            oxRegistry::getUtils()->oxResetFileCache();
 
         }
     }

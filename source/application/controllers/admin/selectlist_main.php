@@ -126,9 +126,9 @@ class SelectList_Main extends oxAdminDetails
         $sOxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxselectlist__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxselectlist__oxshopid'] = $sShopID;
         $oAttr = oxNew("oxselectlist");
 
         if ($sOxId != "-1") {
@@ -176,9 +176,9 @@ class SelectList_Main extends oxAdminDetails
         $sOxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxselectlist__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxselectlist__oxshopid'] = $sShopID;
         $oObj = oxNew("oxselectlist");
 
         if ($sOxId != "-1") {

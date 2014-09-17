@@ -219,7 +219,7 @@ class Unit_Core_oxattributeTest extends OxidTestCase
      */
     public function testGetArticleIds()
     {
-            return; // EE only
+        return; // EE only
         $aArticles = $this->_oAttr->getArticleIds();
         $this->assertEquals(1, count($aArticles));
         $this->assertEquals('test_oxid', $aArticles[0]);

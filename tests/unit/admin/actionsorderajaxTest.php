@@ -61,7 +61,7 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
         $oView = oxNew('actions_order_ajax');
 
 
-            $this->assertEquals("from oxv_oxselectlist_de left join oxobject2selectlist on oxobject2selectlist.oxselnid = oxv_oxselectlist_de.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from oxv_oxselectlist_de left join oxobject2selectlist on oxobject2selectlist.oxselnid = oxv_oxselectlist_de.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -85,7 +85,7 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
         modconfig::getInstance()->setConfigParam("iDebug", 1);
 
 
-            $sViewTable = "oxv_oxselectlist_de";
+        $sViewTable = "oxv_oxselectlist_de";
 
         $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' => array(), 'totalRecords' => 0);
 
@@ -106,7 +106,7 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
         modconfig::getInstance()->setConfigParam("iDebug", 1);
 
 
-            $sViewTable = "oxv_oxselectlist_de";
+        $sViewTable = "oxv_oxselectlist_de";
 
         $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' => array(), 'totalRecords' => 0);
 

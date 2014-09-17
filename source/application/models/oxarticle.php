@@ -1068,7 +1068,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $this->_blNotBuyableParent = false;
 
 
-            $aData = $this->_loadFromDb($sOXID);
+        $aData = $this->_loadFromDb($sOXID);
 
         if ($aData) {
             $this->assign($aData);
@@ -1703,7 +1703,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     {
         $sVendorId = false;
         if ($this->oxarticles__oxvendorid->value) {
-                $sVendorId = $this->oxarticles__oxvendorid->value;
+            $sVendorId = $this->oxarticles__oxvendorid->value;
 
         }
 
@@ -1722,7 +1722,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $sManufacturerId = false;
         if ($this->oxarticles__oxmanufacturerid->value) {
 
-                $sManufacturerId = $this->oxarticles__oxmanufacturerid->value;
+            $sManufacturerId = $this->oxarticles__oxmanufacturerid->value;
 
         }
 

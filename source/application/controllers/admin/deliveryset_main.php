@@ -92,9 +92,9 @@ class DeliverySet_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxdeliveryset__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxdeliveryset__oxshopid'] = $sShopID;
         $oDelSet = oxNew("oxdeliveryset");
 
         if ($soxId != "-1") {
@@ -134,9 +134,9 @@ class DeliverySet_Main extends oxAdminDetails
             $aParams['oxdeliveryset__oxactive'] = 0;
         }
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxdeliveryset__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxdeliveryset__oxshopid'] = $sShopID;
         $oDelSet = oxNew("oxdeliveryset");
 
         if ($soxId != "-1") {

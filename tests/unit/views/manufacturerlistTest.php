@@ -79,7 +79,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
      */
     public function testRenderExistingManufacturer()
     {
-            $sActManufacturer = "9434afb379a46d6c141de9c9e5b94fcf";
+        $sActManufacturer = "9434afb379a46d6c141de9c9e5b94fcf";
 
         $oManufacturerTree = oxNew('oxmanufacturerlist');
         $oManufacturerTree->buildManufacturerTree('manufacturerlist', $sActManufacturer, oxRegistry::getConfig()->getShopHomeURL());
@@ -105,7 +105,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
         modConfig::setRequestParameter("pgNr", 999);
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new Exception('OK'); }");
 
-            $sActManufacturer = "9434afb379a46d6c141de9c9e5b94fcf";
+        $sActManufacturer = "9434afb379a46d6c141de9c9e5b94fcf";
 
         $oManufacturerTree = oxNew('oxmanufacturerlist');
         $oManufacturerTree->buildManufacturerTree('manufacturerlist', $sActManufacturer, oxRegistry::getConfig()->getShopHomeURL());
@@ -139,7 +139,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
         modConfig::setRequestParameter("pgNr", 999);
         oxTestModules::addFunction("oxUtils", "handlePageNotFoundError", "{ throw new Exception('OK'); }");
 
-            $sActManufacturer = "9434afb379a46d6c141de9c9e5b94fcf";
+        $sActManufacturer = "9434afb379a46d6c141de9c9e5b94fcf";
 
         $oManufacturerTree = oxNew('oxmanufacturerlist');
         $oManufacturerTree->buildManufacturerTree('manufacturerlist', $sActManufacturer, oxRegistry::getConfig()->getShopHomeURL());
@@ -341,7 +341,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     public function testGetArticleListAndCount()
     {
         //testing over mock
-            $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
+        $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
 
 
         modConfig::setRequestParameter('cnid', $sManufacturerId);
@@ -381,7 +381,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
      */
     public function testGetCatTitle()
     {
-            $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
+        $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
 
         $oManufacturer = new oxManufacturer();
         $oManufacturer->load($sManufacturerId);
@@ -400,7 +400,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
      */
     public function testGetActiveCategory()
     {
-            $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
+        $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
 
         $oManufacturer = new oxManufacturer();
         $oManufacturer->load($sManufacturerId);
@@ -448,7 +448,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
      */
     public function testGetTitleSuffix()
     {
-            $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
+        $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
 
         $oManufacturer = new oxManufacturer();
         $oManufacturer->load($sManufacturerId);

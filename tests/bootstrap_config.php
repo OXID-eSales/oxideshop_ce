@@ -27,47 +27,47 @@
 
 $sDir = dirname(__FILE__);
 
-require_once $sDir."/test_config.php";
+require_once $sDir . "/test_config.php";
 
-if ( file_exists( $sDir."/test_config.local.php" ) ) {
-    include_once $sDir."/test_config.local.php";
+if (file_exists($sDir . "/test_config.local.php")) {
+    include_once $sDir . "/test_config.local.php";
 }
 
-define( 'oxPATH', getenv('oxPATH')? getenv('oxPATH') : $sShopPath );
+define('oxPATH', getenv('oxPATH') ? getenv('oxPATH') : $sShopPath);
 
-define ( 'INSTALLSHOP', getenv('oxINSTALLSHOP')? getenv('oxINSTALLSHOP') : $blInstallShop );
-define ( 'SKIPSHOPSETUP', getenv('oxSKIPSHOPSETUP')? getenv('oxSKIPSHOPSETUP') : $blSkipShopSetup );
-define ( 'SKIPSHOPRESTORE', getenv('oxSKIPSHOPRESTORE')? getenv('oxSKIPSHOPRESTORE') : $blSkipShopRestore );
+define('INSTALLSHOP', getenv('oxINSTALLSHOP') ? getenv('oxINSTALLSHOP') : $blInstallShop);
+define('SKIPSHOPSETUP', getenv('oxSKIPSHOPSETUP') ? getenv('oxSKIPSHOPSETUP') : $blSkipShopSetup);
+define('SKIPSHOPRESTORE', getenv('oxSKIPSHOPRESTORE') ? getenv('oxSKIPSHOPRESTORE') : $blSkipShopRestore);
 
-define ( 'OXID_VERSION', getenv('OXID_VERSION')? getenv('OXID_VERSION') : $sShopEdition );
-define ('OXID_VARNISH', getenv('OXID_VARNISH')? getenv('OXID_VARNISH') : $blVarnish);
+define('OXID_VERSION', getenv('OXID_VERSION') ? getenv('OXID_VERSION') : $sShopEdition);
+define('OXID_VARNISH', getenv('OXID_VARNISH') ? getenv('OXID_VARNISH') : $blVarnish);
 
-    switch ( OXID_VERSION ) {
+    switch (OXID_VERSION) {
         case 'EE':
-            define('OXID_VERSION_EE', true );
+            define('OXID_VERSION_EE', true);
             define('OXID_VERSION_PE', false);
-            define('OXID_VERSION_PE_PE', false );
-            define('OXID_VERSION_PE_CE', false );
+            define('OXID_VERSION_PE_PE', false);
+            define('OXID_VERSION_PE_CE', false);
             break;
         case 'PE':
-            define('OXID_VERSION_EE',    false);
-            define('OXID_VERSION_PE',    true );
-            define('OXID_VERSION_PE_PE', true );
-            define('OXID_VERSION_PE_CE', false );
+            define('OXID_VERSION_EE', false);
+            define('OXID_VERSION_PE', true);
+            define('OXID_VERSION_PE_PE', true);
+            define('OXID_VERSION_PE_CE', false);
             break;
         case 'CE':
-            define('OXID_VERSION_EE',    false);
-            define('OXID_VERSION_PE',    true );
-            define('OXID_VERSION_PE_PE', false );
-            define('OXID_VERSION_PE_CE', true );
+            define('OXID_VERSION_EE', false);
+            define('OXID_VERSION_PE', true);
+            define('OXID_VERSION_PE_PE', false);
+            define('OXID_VERSION_PE_CE', true);
             break;
 
         default:
-            die('bad version--- : '."'".getenv('OXID_VERSION')."'");
+            die('bad version--- : ' . "'" . getenv('OXID_VERSION') . "'");
             break;
     }
 
     $sShopId = "oxbaseshop";
-define ('oxSHOPID', $sShopId );
+define('oxSHOPID', $sShopId);
 
 define('isSUBSHOP', OXID_VERSION_EE && (oxSHOPID > 1));

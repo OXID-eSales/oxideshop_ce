@@ -769,7 +769,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testHasDemoKey()
     {
-            return;
+        return;
 
         $oConfig = $this->getMock("oxConfig", array("hasDemoKey"));
         $oConfig->expects($this->once())->method("hasDemoKey")->will($this->returnValue(true));

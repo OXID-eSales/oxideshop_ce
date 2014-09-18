@@ -775,7 +775,7 @@ class oxConfig extends oxSuperCfg
             return $this->_iShopId;
         }
 
-            $this->setShopId($this->getBaseShopId());
+        $this->setShopId($this->getBaseShopId());
 
 
         $this->getSession()->setVariable('actshop', $this->_iShopId);
@@ -1675,7 +1675,7 @@ class oxConfig extends oxSuperCfg
      */
     public function getEdition()
     {
-            return "CE";
+        return "CE";
 
 
     }
@@ -1689,9 +1689,9 @@ class oxConfig extends oxSuperCfg
     {
         $sEdition = $this->getEdition();
 
-            if ($sEdition == "CE") {
-                return "Community Edition";
-            }
+        if ($sEdition == "CE") {
+            return "Community Edition";
+        }
 
 
 
@@ -1766,7 +1766,7 @@ class oxConfig extends oxSuperCfg
     public function isMall()
     {
 
-            return false;
+        return false;
     }
 
     /**
@@ -1945,7 +1945,7 @@ class oxConfig extends oxSuperCfg
     public function getBaseShopId()
     {
 
-            return 'oxbaseshop';
+        return 'oxbaseshop';
     }
 
     /**

@@ -233,14 +233,14 @@ class Unit_Core_oxrecommlistTest extends OxidTestCase
 
     public function testGetRecommListsSorting()
     {
-            $aArticles = array('1126', '1127', '1131', '1142');
-            $aExpectListOrder = array('testlist1', 'testlist2', 'testlist3');
-            $aExpectFirstArticleCases = array(
-                array('testlist1' => $aArticles[0], 'testlist2' => $aArticles[1], 'testlist3' => $aArticles[2]),
-                array('testlist1' => $aArticles[1], 'testlist2' => $aArticles[0], 'testlist3' => $aArticles[2]),
-                array('testlist1' => $aArticles[0], 'testlist2' => $aArticles[1], 'testlist3' => $aArticles[3]),
-                array('testlist1' => $aArticles[1], 'testlist2' => $aArticles[0], 'testlist3' => $aArticles[3]),
-            );
+        $aArticles = array('1126', '1127', '1131', '1142');
+        $aExpectListOrder = array('testlist1', 'testlist2', 'testlist3');
+        $aExpectFirstArticleCases = array(
+            array('testlist1' => $aArticles[0], 'testlist2' => $aArticles[1], 'testlist3' => $aArticles[2]),
+            array('testlist1' => $aArticles[1], 'testlist2' => $aArticles[0], 'testlist3' => $aArticles[2]),
+            array('testlist1' => $aArticles[0], 'testlist2' => $aArticles[1], 'testlist3' => $aArticles[3]),
+            array('testlist1' => $aArticles[1], 'testlist2' => $aArticles[0], 'testlist3' => $aArticles[3]),
+        );
 
         modConfig::getInstance()->setConfigParam('iNrofCrossellArticles', 3);
         $myDB = oxDb::getDB();

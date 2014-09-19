@@ -165,9 +165,9 @@ class aList extends oxUBase
             $sParentViewId = parent::getViewId();
 
             // shorten it
-                $this->_sViewId = md5(
-                    $sParentViewId . '|' . $sCatId . '|' . $iActPage . '|' . $iArtPerPage . '|' . $sListDisplayType
-                );
+            $this->_sViewId = md5(
+                $sParentViewId . '|' . $sCatId . '|' . $iActPage . '|' . $iArtPerPage . '|' . $sListDisplayType
+            );
 
         }
 

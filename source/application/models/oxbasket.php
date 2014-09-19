@@ -741,11 +741,11 @@ class oxBasket extends oxSuperCfg
                     continue;
                 }
 
-                    // adding item type bundles
-                    $aArtBundles = $this->_getArticleBundles($oBasketItem);
+                // adding item type bundles
+                $aArtBundles = $this->_getArticleBundles($oBasketItem);
 
-                    // adding bundles to basket
-                    $this->_addBundlesToBasket($aArtBundles);
+                // adding bundles to basket
+                $this->_addBundlesToBasket($aArtBundles);
             } catch (oxNoArticleException $oEx) {
                 $this->removeItem($key);
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);

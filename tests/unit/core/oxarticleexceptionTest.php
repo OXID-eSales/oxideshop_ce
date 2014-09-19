@@ -35,14 +35,14 @@ class Unit_Core_oxarticleexceptionTest extends OxidTestCase
      * @var object
      */
     private $_oTestObject = null;
-    
+
     /**
      * a mock message
      *
      * @var string
      */
     private $_sMsg = 'Erik was here..';
-    
+
     /**
      * a mock article number
      *

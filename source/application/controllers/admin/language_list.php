@@ -85,9 +85,9 @@ class Language_List extends oxAdminList
             $myConfig->saveShopConfVar('str', 'sDefaultLang', 0);
         }
 
-            // reseting all multilanguage DB fields with deleted lang id
-            // to default value
-            $this->_resetMultiLangDbFields($iBaseId);
+        // reseting all multilanguage DB fields with deleted lang id
+        // to default value
+        $this->_resetMultiLangDbFields($iBaseId);
     }
 
     /**

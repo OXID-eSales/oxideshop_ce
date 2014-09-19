@@ -56,7 +56,7 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
      */
     public function testRunOnce()
     {
-            return; // EE only
+        return; // EE only
 
         // if _runOnce() will be executed, this param will be set to true
         $this->setSessionParam("blRunOnceExecuted", false);
@@ -86,7 +86,7 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
      */
     public function testRunOnce_reverseProxyIsNotActive()
     {
-            return; // EE only
+        return; // EE only
 
         // if _runOnce() will be executed, this param will be set to true
         $this->setSessionParam("blRunOnceExecuted", false);
@@ -115,7 +115,7 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
      */
     public function testRunOnce_hasActiveViewsChain()
     {
-            return; // EE only
+        return; // EE only
 
         // if _runOnce() will be executed, this param will be set to true
         $this->setSessionParam("blRunOnceExecuted", false);

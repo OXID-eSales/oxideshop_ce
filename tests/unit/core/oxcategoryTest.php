@@ -331,12 +331,12 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         $this->assertEquals(0, $oObj->getNrOfArticles());
         modConfig::getInstance()->setConfigParam('bl_perfShowActionCatArticleCnt', true);
         $sCat = '30e44ab83fdee7564.23264141';
-            $sCat = '8a142c3e4143562a5.46426637';
+        $sCat = '8a142c3e4143562a5.46426637';
 
         $oObj->load($sCat);
         oxRegistry::get("oxUtilsCount")->resetCatArticleCount($oObj->getId());
 
-            $this->assertEquals(32, $oObj->getNrOfArticles());
+        $this->assertEquals(32, $oObj->getNrOfArticles());
     }
 
     public function testAssignCountArtForPriceCat()
@@ -351,7 +351,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
         oxRegistry::get("oxUtilsCount")->resetCatArticleCount($this->_oCategory->getId());
 
-            $this->assertEquals(24, $this->_oCategory->getNrOfArticles());
+        $this->assertEquals(24, $this->_oCategory->getNrOfArticles());
     }
 
     public function testDelete()
@@ -450,8 +450,8 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         // answer is simple - no. framework had restored recursive data to its former (valid) state.
         $sCatId1 = "30e44ab8593023055.23928895";
         $sCatId2 = "30e44ab83fdee7564.23264141";
-            $sCatId1 = "8a142c3e44ea4e714.31136811";
-            $sCatId2 = "8a142c3e4143562a5.46426637";
+        $sCatId1 = "8a142c3e44ea4e714.31136811";
+        $sCatId2 = "8a142c3e4143562a5.46426637";
         $this->_oCategoryB->oxcategories__oxparentid = new oxField($sCatId1, oxField::T_RAW);
 
         $this->_oCategoryB->save(); // call update
@@ -559,8 +559,8 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
         $oCategory = new oxcategory();
 
-            $oCategory->loadInLang(0, '8a142c3e60a535f16.78077188');
-            $sExp = "Geschenke/Wohnen/Uhren/";
+        $oCategory->loadInLang(0, '8a142c3e60a535f16.78077188');
+        $sExp = "Geschenke/Wohnen/Uhren/";
 
         $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . $sExp, $oCategory->getLink());
         //testing magic getter
@@ -574,8 +574,8 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
         $oCategory = new oxcategory();
 
-            $oCategory->loadInLang(1, '8a142c3e60a535f16.78077188');
-            $sExp = "en/Gifts/Living/Clocks/";
+        $oCategory->loadInLang(1, '8a142c3e60a535f16.78077188');
+        $sExp = "en/Gifts/Living/Clocks/";
 
         $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . $sExp, $oCategory->getLink());
     }
@@ -621,8 +621,8 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
         $oCategory = new oxcategory();
 
-            $oCategory->load('8a142c3e60a535f16.78077188');
-            $sExp = "Geschenke/Wohnen/Uhren/";
+        $oCategory->load('8a142c3e60a535f16.78077188');
+        $sExp = "Geschenke/Wohnen/Uhren/";
 
         $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . $sExp, $oCategory->getLink(0));
     }
@@ -634,8 +634,8 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
         $oCategory = new oxcategory();
 
-            $oCategory->loadInLang(1, '8a142c3e60a535f16.78077188');
-            $sExp = "Geschenke/Wohnen/Uhren/";
+        $oCategory->loadInLang(1, '8a142c3e60a535f16.78077188');
+        $sExp = "Geschenke/Wohnen/Uhren/";
 
         $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . $sExp, $oCategory->getLink(0));
     }
@@ -647,8 +647,8 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
         $oCategory = new oxcategory();
 
-            $oCategory->loadInLang(0, '8a142c3e60a535f16.78077188');
-            $sExp = "en/Gifts/Living/Clocks/";
+        $oCategory->loadInLang(0, '8a142c3e60a535f16.78077188');
+        $sExp = "en/Gifts/Living/Clocks/";
 
         $this->assertEquals(oxRegistry::getConfig()->getShopUrl() . $sExp, $oCategory->getLink(1));
     }
@@ -797,9 +797,9 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         modConfig::getInstance()->setConfigParam('bl_perfShowActionCatArticleCnt', false);
         modConfig::getInstance()->setConfigParam('blDontShowEmptyCategories', true);
         $oCategory = $this->getProxyClass("oxcategory");
-            $oCategory->load('8a142c3e60a535f16.78077188');
-            oxRegistry::get("oxUtilsCount")->resetCatArticleCount($oCategory->getId());
-            $this->assertEquals(6, $oCategory->getNrOfArticles());
+        $oCategory->load('8a142c3e60a535f16.78077188');
+        oxRegistry::get("oxUtilsCount")->resetCatArticleCount($oCategory->getId());
+        $this->assertEquals(6, $oCategory->getNrOfArticles());
     }
 
     public function testSetGetIsVisible()
@@ -885,7 +885,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
     {
         $sId = '30e44ab83b6e585c9.63147165';
 
-            $sId = '8a142c3e44ea4e714.31136811';
+        $sId = '8a142c3e44ea4e714.31136811';
 
         oxRegistry::getLang()->setBaseLanguage(0);
         $oCategory = new oxcategory();

@@ -114,7 +114,7 @@ class Unit_Core_oxshopTest extends OxidTestCase
     public function testGetMultishopTablesDefaultNotSet()
     {
         $oShop = new oxShop();
-            $this->assertEquals(array(), $oShop->getMultiShopTables());
+        $this->assertEquals(array(), $oShop->getMultiShopTables());
     }
 
 

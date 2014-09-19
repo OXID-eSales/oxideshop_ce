@@ -86,3 +86,4 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
         return $oRequest;
     }
 }
+ 

@@ -120,9 +120,9 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
         $aResult = $oValidator->getInvalidViews();
 
 
-            $this->assertEquals(3, count($aResult));
-            $this->assertContains('oxv_oxartextends_lt', $aResult);
-            $this->assertContains('oxv_oxarticles_lt', $aResult);
+        $this->assertEquals(3, count($aResult));
+        $this->assertContains('oxv_oxartextends_lt', $aResult);
+        $this->assertContains('oxv_oxarticles_lt', $aResult);
 
         $this->assertContains('oxv_oxarticles_ru', $aResult);
     }

@@ -109,7 +109,7 @@ class oxAmountPriceList extends oxList
         $this->setArticle($oArticle);
 
 
-            $aData = $this->_loadFromDb();
+        $aData = $this->_loadFromDb();
 
         $this->assignArray($aData);
     }

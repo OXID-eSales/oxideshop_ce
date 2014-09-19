@@ -137,8 +137,8 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         //reset value
         $myConfig->getActiveShop()->oxshops__oxversion = new oxField($sVersion, oxField::T_RAW);
 
-            $this->assertNotEquals($sTest, $sRes);
-            $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop Community Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar<head>test2</head>", $sRes);
+        $this->assertNotEquals($sTest, $sRes);
+        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop Community Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar<head>test2</head>", $sRes);
 
 
     }
@@ -162,8 +162,8 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         //reset value
         $myConfig->getActiveShop()->oxshops__oxversion = new oxField($sVersion, oxField::T_RAW);
 
-            $this->assertNotEquals($sTest, $sRes);
-            $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop Community Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar", $sRes);
+        $this->assertNotEquals($sTest, $sRes);
+        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop Community Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar", $sRes);
 
 
 

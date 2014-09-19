@@ -15,7 +15,7 @@ class DataGenerator extends OxidTestCase
     // Databomb folder path
     private $sFilepath = "integration/price/testcases/databomb/netto_brutto/";
     // Price in cents
-    private $dPriceFrom = 1; 
+    private $dPriceFrom = 1;
     private $dPriceTo = 100099;
     // Min basket positions
     private $iBasketPosMin = 1;
@@ -31,13 +31,13 @@ class DataGenerator extends OxidTestCase
     private $iAmountMax = 250;
     // Active currency rate
     private $activeCurrencyRate = 1;
-    
+
     // Discount params
     private $iDisVariants = 5;
     private $sDisName = "bombDiscount";
     private $iDisMinAddsum = 1;
     private $iDisMaxAddsum = 99;
-    private $aDisTypes = array( 
+    private $aDisTypes = array(
         "abs",
         "%",
         //"itm"
@@ -47,12 +47,12 @@ class DataGenerator extends OxidTestCase
     private $iDisPrice = 1;
     private $iDisPriceTo = 9999999;
     private $iDisMaxNrArtsApply = 15;
-    
+
     // Wrapping params
     private $iWrapMinPrice = 0.1;
     private $iWrapMaxPrice = 9.9;
     private $iWrapMaxNrArtsApply = 2;
-    private $aWrapTypes = array( 
+    private $aWrapTypes = array(
         "WRAP",
         //"CARD"
     );
@@ -63,13 +63,13 @@ class DataGenerator extends OxidTestCase
     private $aPayAddSumTypes = array("%", "abs");
     private $iPayFromAmount = 0;
     private $iPayToAmount = 1000000;
-    private $iPayChecked = 1; 
+    private $iPayChecked = 1;
 
     // Delivery params
     private $iDelMinAddSum = 1;
     private $iDelMaxAddSum = 25;
     private $aDelAddSumTypes = array("abs", "%");
-    private $aDelTypes = array( 
+    private $aDelTypes = array(
         //"a", // amount
         //"s", // size
         //"w", // weight
@@ -79,7 +79,7 @@ class DataGenerator extends OxidTestCase
     private $iDelParam = 0;
     private $iDelParamend = 999999999;
     private $iDelFixed = 0;
-    
+
     // Voucherseries params + voucher amount
     private $iVouseries = 1;
     private $iVouNumber = 2;
@@ -92,7 +92,7 @@ class DataGenerator extends OxidTestCase
     private $iVouAllowSameSeries = 1;
     private $iVouAllowOtherSeries = 1;
     private $iVouAllowUseAnother = 1;
-    
+
     // What additional costs to generate
     private $aGenCosts = array(
         array("wrapping", 1),
@@ -101,7 +101,7 @@ class DataGenerator extends OxidTestCase
     );
     private $blGenDiscounts = false;
     private $blGenVouchers = false;
-    
+
     protected function _cleanUpCalcDb()
     {
         $this->_truncateTable("oxarticles");
@@ -116,10 +116,10 @@ class DataGenerator extends OxidTestCase
         $this->_truncateTable("oxobject2delivery");
         $this->_truncateTable("oxdeliveryset");
     }
-    
+
     /**
      * Function to return vat set of world's vats
-     * 
+     *
      * @return array of different vats
      */
     protected function _getVatSet()
@@ -130,25 +130,25 @@ class DataGenerator extends OxidTestCase
             9, 8.5, 8, 7, 6, 6.5, 5.6, 5.5, 5, 4.8, 4.5, 4, 3.8, 3, 2.5, 2.1, 2, 1, 0
         );
     }
-    
+
     /**
      * Create test case file
      *
      * @param string $sFilename test case filename
-     * 
+     *
      * @return file resource
      */
     protected function _createFile($sFilename)
     {
         return fopen($this->sFilepath . $sFilename, "w");
     }
-    
+
     /**
      * Writes data array to file with provided handle
-     * 
+     *
      * @param       file   resource to write $rHandle
      * @param array $aData of data needed to write
-     * 
+     *
      * @return mixed
      */
     protected function _writeToFile($rHandle, $aData)
@@ -160,13 +160,13 @@ class DataGenerator extends OxidTestCase
 
         return fwrite($rHandle, $sStart . $sData . $sEnd);
     }
-    
+
     /**
      * Main generator startup function, calls other utilities
-     * 
+     *
      * @test
      */
-    public function generate() 
+    public function generate()
     {
         if (!is_dir($this->sFilepath)) {
             mkdir($this->sFilepath, '0777');
@@ -182,26 +182,26 @@ class DataGenerator extends OxidTestCase
             parent::tearDown();
         }
     }
-    
+
     /**
      * Data generator
      *
      * @param integer $i variant number
      *
-     * @return array $aData of basket data and expectations 
+     * @return array $aData of basket data and expectations
      */
     protected function _generateData($i)
     {
         $oUtil = oxUtilsObject::getInstance();
         // init result array
         $aData = array();
-        
+
         // new user gen data
         $aData['user'] = array(
             'oxactive'   => 1,
             'oxusername' => $this->sCaseName . 'databomb_user_' . $i,
         );
-        
+
         // get basket position count
         $iRandArtCount = rand($this->iBasketPosMin, $this->iBasketPosMax);
         // get different vat count
@@ -224,7 +224,7 @@ class DataGenerator extends OxidTestCase
                 }
             }
             $aArticle['amount'] = rand($this->iAmountMin, $this->iAmountMax);
-            $aData['articles'][$i] = $aArticle; 
+            $aData['articles'][$i] = $aArticle;
         }
         if ($this->blGenDiscounts) {
             // create discount array
@@ -245,10 +245,10 @@ class DataGenerator extends OxidTestCase
         $aData['options']['activeCurrencyRate'] = $this->activeCurrencyRate;
         // create expected array
         $aData['expected'] = $this->_gatherExpectedData($aData);
-        
+
         return $aData;
     }
-    
+
     /**
      * Generate vouchers
      *
@@ -268,7 +268,7 @@ class DataGenerator extends OxidTestCase
 
         return $aVouchers;
     }
-    
+
     /**
      * Generate costs
      *
@@ -337,7 +337,7 @@ class DataGenerator extends OxidTestCase
 
         return $aCosts;
     }
-    
+
     /**
      * Generate discounts
      *
@@ -366,18 +366,18 @@ class DataGenerator extends OxidTestCase
                 $iMxRandCount = count($mxRand);
                 for ($j = 0; $j < $iMxRandCount; $j++) {
                     array_push($aDiscounts[$i]['oxarticles'], $aData['articles'][$j]['oxid']);
-                }                                
+                }
             }
         }
 
         return $aDiscounts;
     }
-    
+
     /**
      * Gathering expectations
      *
      * @param array 's of articles, discounts, costs, options
-     * 
+     *
      * @return array $aExpected of expected data
      */
     protected function _gatherExpectedData($aTestCase)
@@ -437,7 +437,7 @@ class DataGenerator extends OxidTestCase
         // Finished generating expectations
         return $aExpected;
     }
-    
+
     /**
      * Generating sql dump of required tables (oxarticles)
      */
@@ -452,8 +452,8 @@ class DataGenerator extends OxidTestCase
         echo "$dumpfile ";
         passthru("tail -1 $this->sFilepath/$dumpfile");
     }
-    
-    
+
+
     /**
      * Truncates specified table
      *

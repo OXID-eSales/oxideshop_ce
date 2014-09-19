@@ -36,8 +36,8 @@ class Unit_Core_oxtaglistTest extends OxidTestCase
         $oTagSet = $oTagList->get();
         $aTags = $oTagSet->get();
 
-            $this->assertEquals(209, count($aTags));
-            $this->assertTrue(array_key_exists("fee", $aTags));
+        $this->assertEquals(209, count($aTags));
+        $this->assertTrue(array_key_exists("fee", $aTags));
     }
 
     /**
@@ -63,7 +63,7 @@ class Unit_Core_oxtaglistTest extends OxidTestCase
         $oTagList->loadList();
         $oTagSet = $oTagList->get();
 
-            $iExpt = 81;
+        $iExpt = 81;
 
         $this->assertEquals($iExpt, count($oTagSet->get()));
     }

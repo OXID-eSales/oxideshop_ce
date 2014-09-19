@@ -318,7 +318,7 @@ class Unit_Core_oxmediaurlTest extends OxidTestCase
         $sExpt = 'test2<br><iframe width="425" height="344" src="http://www.youtube.com/embed/ZN239G6aJZo" frameborder="0" allowfullscreen></iframe>';
         $this->assertEquals($sExpt, $oMediaUrl->UNITgetYoutubeHtml());
     }
-    
+
     public function testGetYoutubeHtmlWithParams()
     {
         $oMediaUrl = $this->getProxyClass('oxMediaUrl');
@@ -326,7 +326,7 @@ class Unit_Core_oxmediaurlTest extends OxidTestCase
         $sExpt = 'test5<br><iframe width="425" height="344" src="http://www.youtube.com/embed/GQ3AcPEPbH0?loop=1&amp;rel=0" frameborder="0" allowfullscreen></iframe>';
         $this->assertEquals($sExpt, $oMediaUrl->UNITgetYoutubeHtml());
     }
-    
+
     public function testNewYoutubePattern()
     {
         $oMediaUrl = $this->getProxyClass('oxMediaUrl');

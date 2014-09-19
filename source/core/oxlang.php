@@ -1286,7 +1286,7 @@ class oxLang extends oxSuperCfg
      */
     protected function _getLanguageIdsFromDatabase($iShopId = null)
     {
-            $aLanguages = $this->getLanguageIds();
+        $aLanguages = $this->getLanguageIds();
 
 
         return $aLanguages;

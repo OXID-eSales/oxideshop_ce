@@ -82,28 +82,28 @@ class Article_Extend extends oxAdminDetails
         }
 
 
-            $oDB = oxDb::getDB();
-            $myConfig = $this->getConfig();
+        $oDB = oxDb::getDB();
+        $myConfig = $this->getConfig();
 
-            $sArticleTable = getViewName('oxarticles', $this->_iEditLang);
-            $sSelect = "select {$sArticleTable}.oxtitle, {$sArticleTable}.oxartnum, {$sArticleTable}.oxvarselect " .
-                       "from {$sArticleTable} where 1 ";
-            // #546
-            $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
-            $sBundleIdField = 'oxarticles__oxbundleid';
-            $sSelect .= $blVariantsSelectionParameter ? '' : " and {$sArticleTable}.oxparentid = '' ";
-            $sSelect .= " and {$sArticleTable}.oxid = " . $oDB->quote($oArticle->$sBundleIdField->value);
+        $sArticleTable = getViewName('oxarticles', $this->_iEditLang);
+        $sSelect = "select {$sArticleTable}.oxtitle, {$sArticleTable}.oxartnum, {$sArticleTable}.oxvarselect " .
+                   "from {$sArticleTable} where 1 ";
+        // #546
+        $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
+        $sBundleIdField = 'oxarticles__oxbundleid';
+        $sSelect .= $blVariantsSelectionParameter ? '' : " and {$sArticleTable}.oxparentid = '' ";
+        $sSelect .= " and {$sArticleTable}.oxid = " . $oDB->quote($oArticle->$sBundleIdField->value);
 
-            $rs = $oDB->Execute($sSelect);
-            if ($rs != false && $rs->RecordCount() > 0) {
-                while (!$rs->EOF) {
-                    $sArtNum = new oxField($rs->fields[1]);
-                    $sArtTitle = new oxField($rs->fields[0] . " " . $rs->fields[2]);
-                    $rs->MoveNext();
-                }
+        $rs = $oDB->Execute($sSelect);
+        if ($rs != false && $rs->RecordCount() > 0) {
+            while (!$rs->EOF) {
+                $sArtNum = new oxField($rs->fields[1]);
+                $sArtTitle = new oxField($rs->fields[0] . " " . $rs->fields[2]);
+                $rs->MoveNext();
             }
-            $this->_aViewData['bundle_artnum'] = $sArtNum;
-            $this->_aViewData['bundle_title'] = $sArtTitle;
+        }
+        $this->_aViewData['bundle_artnum'] = $sArtNum;
+        $this->_aViewData['bundle_title'] = $sArtTitle;
 
 
         $iAoc = $this->getConfig()->getRequestParameter("aoc");

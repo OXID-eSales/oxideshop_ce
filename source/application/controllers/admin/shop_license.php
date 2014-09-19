@@ -76,7 +76,7 @@ class Shop_License extends Shop_Config
         $this->_aViewData["version"] = $myConfig->getVersion();
 
 
-            $this->_aViewData['aCurVersionInfo'] = $this->_fetchCurVersionInfo($this->_aVersionCheckLinks["CE"]);
+        $this->_aViewData['aCurVersionInfo'] = $this->_fetchCurVersionInfo($this->_aVersionCheckLinks["CE"]);
 
         if (!$this->_canUpdate()) {
             $this->_aViewData['readonly'] = true;

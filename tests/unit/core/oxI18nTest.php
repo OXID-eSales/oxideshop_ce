@@ -377,7 +377,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oObj->setLanguage(0);
 
 
-            $sExpRes = "oxid = '',oxshopid = '',oxtitle = '',oxpos = '9999',oxdisplayinbasket = '0'";
+        $sExpRes = "oxid = '',oxshopid = '',oxtitle = '',oxpos = '9999',oxdisplayinbasket = '0'";
 
         $this->assertEquals($sExpRes, $oObj->UNITgetUpdateFields());
 
@@ -391,7 +391,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $sTable = $oObj->getViewName();
 
 
-            $sExpRes = "`$sTable`.`oxid`, `$sTable`.`oxshopid`, `$sTable`.`oxtitle`, `$sTable`.`oxpos`, `$sTable`.`oxtimestamp`, `$sTable`.`oxdisplayinbasket`";
+        $sExpRes = "`$sTable`.`oxid`, `$sTable`.`oxshopid`, `$sTable`.`oxtitle`, `$sTable`.`oxpos`, `$sTable`.`oxtimestamp`, `$sTable`.`oxdisplayinbasket`";
 
         $this->assertEquals($sExpRes, $oObj->getSelectFields());
     }
@@ -403,7 +403,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oObj->setLanguage(1);
 
 
-            $sExpRes = "oxid = '',oxshopid = '',oxtitle_1 = '',oxpos = '9999',oxdisplayinbasket = '0'";
+        $sExpRes = "oxid = '',oxshopid = '',oxtitle_1 = '',oxpos = '9999',oxdisplayinbasket = '0'";
 
         $this->assertEquals($sExpRes, $oObj->UNITgetUpdateFields());
     }
@@ -416,7 +416,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $sTable = $oObj->getViewName();
 
 
-            $sExpRes = "`$sTable`.`oxid`, `$sTable`.`oxshopid`, `$sTable`.`oxtitle`, `$sTable`.`oxpos`, `$sTable`.`oxtimestamp`, `$sTable`.`oxdisplayinbasket`";
+        $sExpRes = "`$sTable`.`oxid`, `$sTable`.`oxshopid`, `$sTable`.`oxtitle`, `$sTable`.`oxpos`, `$sTable`.`oxtimestamp`, `$sTable`.`oxdisplayinbasket`";
 
         $this->assertEquals($sExpRes, $oObj->getSelectFields());
     }
@@ -429,7 +429,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oObj->setLanguage(1);
 
 
-            $sExpRes = "oxid = '',oxshopid = '',oxtitle = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxpos = '9999',oxdisplayinbasket = '0'";
+        $sExpRes = "oxid = '',oxshopid = '',oxtitle = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxpos = '9999',oxdisplayinbasket = '0'";
 
         $this->assertEquals($sExpRes, $oObj->UNITgetUpdateFields());
     }
@@ -443,7 +443,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $sTable = $oObj->getViewName();
 
 
-            $sExpRes = "`$sTable`.`oxid`, `$sTable`.`oxshopid`, `$sTable`.`oxtitle`, `$sTable`.`oxtitle_1`, `$sTable`.`oxtitle_2`, `$sTable`.`oxtitle_3`, `$sTable`.`oxpos`, `$sTable`.`oxtimestamp`, `$sTable`.`oxdisplayinbasket`";
+        $sExpRes = "`$sTable`.`oxid`, `$sTable`.`oxshopid`, `$sTable`.`oxtitle`, `$sTable`.`oxtitle_1`, `$sTable`.`oxtitle_2`, `$sTable`.`oxtitle_3`, `$sTable`.`oxpos`, `$sTable`.`oxtimestamp`, `$sTable`.`oxdisplayinbasket`";
 
         $this->assertEquals($sExpRes, $oObj->getSelectFields());
     }

@@ -42,10 +42,10 @@ class News_Main extends oxAdminDetails
 
         parent::render();
 
-            // all usergroups
-            $oGroups = oxNew("oxlist");
-            $oGroups->init("oxgroups");
-            $oGroups->selectString("select * from " . getViewName("oxgroups", $this->_iEditLang));
+        // all usergroups
+        $oGroups = oxNew("oxlist");
+        $oGroups->init("oxgroups");
+        $oGroups->selectString("select * from " . getViewName("oxgroups", $this->_iEditLang));
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ($soxId != "-1" && isset($soxId)) {
@@ -97,9 +97,9 @@ class News_Main extends oxAdminDetails
             $aParams['oxnews__oxactive'] = 0;
         }
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxnews__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxnews__oxshopid'] = $sShopID;
         // creating fake object to save correct time value
         if (!$aParams['oxnews__oxdate']) {
             $aParams['oxnews__oxdate'] = "";
@@ -147,9 +147,9 @@ class News_Main extends oxAdminDetails
 
         parent::save();
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxnews__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxnews__oxshopid'] = $sShopID;
         // creating fake object to save correct time value
         if (!$aParams['oxnews__oxdate']) {
             $aParams['oxnews__oxdate'] = "";

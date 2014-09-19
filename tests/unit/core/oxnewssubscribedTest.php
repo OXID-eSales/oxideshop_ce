@@ -83,7 +83,7 @@ class Unit_Core_oxnewssubscribedTest extends OxidTestCase
 
         $this->cleanUpTable('oxuser');
         $this->cleanUpTable('oxnewssubscribed');
-        
+
         parent::tearDown();
     }
 
@@ -312,7 +312,7 @@ class Unit_Core_oxnewssubscribedTest extends OxidTestCase
     /**
      * Check if return right result after subscribe and unsubscribe.
      */
-    function testWasUnsubscribed() 
+    function testWasUnsubscribed()
     {
         $oUser = $this->_oUser;
         $oNewsSubscribed = $this->_oNewsSub;

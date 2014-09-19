@@ -28,9 +28,9 @@ class testTempOut extends oxUBase
     {
         $myConfig = oxRegistry::getConfig();
         $mySession = oxRegistry::getSession();
-                
+
         parent::render();
-        
+
 
     }
 }

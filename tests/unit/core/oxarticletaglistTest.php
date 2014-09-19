@@ -45,8 +45,8 @@ class Unit_Core_oxarticletaglistTest extends OxidTestCase
         $oArticleTagList->load('1126');
         $aTags = $oArticleTagList->getArray();
 
-            $this->assertEquals(9, count($aTags));
-            $this->assertTrue(array_key_exists("fee", $aTags));
+        $this->assertEquals(9, count($aTags));
+        $this->assertTrue(array_key_exists("fee", $aTags));
     }
 
     /**
@@ -59,7 +59,7 @@ class Unit_Core_oxarticletaglistTest extends OxidTestCase
         $oArticleTagList->load('2000');
         $oTagSet = $oArticleTagList->get();
 
-            $iExpt = 1;
+        $iExpt = 1;
         $this->assertEquals($iExpt, count($oTagSet->get()));
     }
 
@@ -126,9 +126,9 @@ class Unit_Core_oxarticletaglistTest extends OxidTestCase
         $oTagList = $oArticleTagList->get();
         $aTags = $oTagList->get();
 
-            $this->assertEquals(11, count($aTags));
-            $this->assertTrue(array_key_exists("testtag1", $aTags));
-            $this->assertTrue(array_key_exists("a", $aTags));
+        $this->assertEquals(11, count($aTags));
+        $this->assertTrue(array_key_exists("testtag1", $aTags));
+        $this->assertTrue(array_key_exists("a", $aTags));
 
         $oArticleTagList->set($sOriginalTags);
         $this->assertTrue($oArticleTagList->save());
@@ -210,8 +210,8 @@ class Unit_Core_oxarticletaglistTest extends OxidTestCase
         $oTagSet = $oArticleTagList->get();
         $aTags = $oTagSet->get();
 
-            $this->assertEquals(9, count($aTags));
-            $this->assertTrue(array_key_exists('fee', $aTags));
+        $this->assertEquals(9, count($aTags));
+        $this->assertTrue(array_key_exists('fee', $aTags));
 
         oxRegistry::getConfig()->setConfigParam('blUseTimeCheck', $blParam);
         $oArticle->oxarticles__oxactive->value = 1;

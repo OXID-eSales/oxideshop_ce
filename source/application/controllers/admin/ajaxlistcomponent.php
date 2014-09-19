@@ -660,9 +660,9 @@ class ajaxListComponent extends oxSuperCfg
         $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
 
 
-            if (!$blDeleteCacheOnLogout) {
-                oxRegistry::getUtils()->oxResetFileCache();
-            }
+        if (!$blDeleteCacheOnLogout) {
+            oxRegistry::getUtils()->oxResetFileCache();
+        }
     }
 
     /**

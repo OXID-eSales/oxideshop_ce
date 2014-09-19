@@ -71,7 +71,7 @@ class Order_Overview extends oxAdminDetails
         $this->_aViewData["ordertotalsum"] = $oLang->formatCurrency($dSum, $oCur);
         $this->_aViewData["ordertotalcnt"] = $oOrder->getOrderCnt();
         $this->_aViewData["afolder"] = $myConfig->getConfigParam('aOrderfolder');
-            $this->_aViewData["alangs"] = $oLang->getLanguageNames();
+        $this->_aViewData["alangs"] = $oLang->getLanguageNames();
 
         $this->_aViewData["currency"] = $oCur;
 

@@ -29,11 +29,11 @@ require_once realpath(".") . '/unit/test_config.inc.php';
 class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
 {
 
-    protected $_sArticleView = 'oxv_oxarticles_1_de';    
+    protected $_sArticleView = 'oxv_oxarticles_1_de';
     protected $_sObject2AttributeView = 'oxv_oxobject2attribute_de';
     protected $_sObject2CategoryView = 'oxv_oxobject2category_de';
     protected $_sShopId = '1';
-    
+
     /**
      * Initialize the fixture.
      *
@@ -42,11 +42,11 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        
+
         oxDb::getDb()->execute("insert into oxcategory2attribute set oxid='_testOxid1', oxobjectid='_testObject', oxattrid='_testAttribute', oxsort='99'");
         oxDb::getDb()->execute("insert into oxcategory2attribute set oxid='_testOxid2', oxobjectid='_testObject', oxattrid='_testAttribute', oxsort='99'");
     }
-    
+
     /**
      * Tear down the fixture.
      *
@@ -55,10 +55,10 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
     protected function tearDown()
     {
         oxDb::getDb()->execute("delete from oxcategory2attribute where oxobjectid='_testObject'");
-        
+
         parent::tearDown();
     }
-        
+
     /**
      * AttributeOrderAjax::_getQuery() test case
      *
@@ -66,15 +66,15 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
      */
     public function testGetQuery()
     {
-        $sOxid = '_testOxid';        
+        $sOxid = '_testOxid';
         modConfig::setRequestParameter("oxid", $sOxid);
-        
+
         $oView = oxNew('attribute_order_ajax');
-        
-        
-            $this->assertEquals("from oxv_oxattribute_de left join oxcategory2attribute on oxcategory2attribute.oxattrid = oxv_oxattribute_de.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
+
+
+        $this->assertEquals("from oxv_oxattribute_de left join oxcategory2attribute on oxcategory2attribute.oxattrid = oxv_oxattribute_de.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
     }
-    
+
     /**
      * AttributeOrderAjax::_getSorting() test case
      *
@@ -85,7 +85,7 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
         $oView = oxNew('attribute_order_ajax');
         $this->assertEquals("order by oxcategory2attribute.oxsort", trim($oView->UNITgetSorting()));
     }
-    
+
     /**
      * AttributeOrderAjax::setSorting() test case
      *
@@ -94,17 +94,17 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
     public function testSetSorting()
     {
         modconfig::getInstance()->setConfigParam("iDebug", 1);
-        
-        
-            $sViewTable = "oxv_oxattribute_de";
-        
+
+
+        $sViewTable = "oxv_oxattribute_de";
+
         $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
 
         $oView = $this->getMock("attribute_order_ajax", array("_output"));
         $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
     }
-    
+
     /**
      * AttributeOrderAjax::setSorting() test case
      *
@@ -116,17 +116,17 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
         modConfig::setRequestParameter("oxid", $sOxid);
         modconfig::getInstance()->setConfigParam("iDebug", 1);
         modConfig::setRequestParameter("sortoxid", 0);
-        
-        
-            $sViewTable = "oxv_oxattribute_de";
-        
+
+
+        $sViewTable = "oxv_oxattribute_de";
+
         $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
 
         $oView = $this->getMock("attribute_order_ajax", array("_output"));
         $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
-        
+
         $this->assertEquals(1, oxDb::getDb()->getOne("select sum(oxsort) from oxcategory2attribute where oxobjectid='_testObject'"));
     }
-    
+
 }

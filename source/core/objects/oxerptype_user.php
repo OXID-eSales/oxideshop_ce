@@ -80,7 +80,7 @@ class oxERPType_User extends oxERPType
      */
     public function checkWriteAccess($oObj, $aData = null)
     {
-            return;
+        return;
 
         $myConfig = oxRegistry::getConfig();
 

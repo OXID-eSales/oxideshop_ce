@@ -191,7 +191,7 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
         $this->assertTrue($oCaptcha->pass($sMac2, $sHash2));
         $this->assertNull($oSession->getVar("aCaptchaHash"));
     }
-    
+
     /**
      * oxCaptcha::pass() test case
      *

@@ -37,7 +37,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
     protected function tearDown()
     {
         $this->cleanUpTable('oxprice2article');
-        
+
         parent::tearDown();
     }
 
@@ -111,7 +111,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
         }
         $this->fail("error in Article_Stock::save()");
     }
-    
+
     /**
      * Article_Stock::AddPrice() test case with passed params
      *
@@ -129,7 +129,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
         //set params passed to func
         $sOXID = "oxid";
         $aParams = array("oxprice2article__oxamountto" => 20, "pricetype" => "oxaddabs", "price" => 20);
-       
+
         // testing..
         try {
             $oView = new Article_Stock();
@@ -163,10 +163,10 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
 
         $oConfig = $this->getMock("oxConfig", array("getShopId"));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue(1));
-        
+
         // testing..
-            $oView = $this->getMock("Article_Stock", array("getConfig"), array(), '', false);
-            $oView->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
+        $oView = $this->getMock("Article_Stock", array("getConfig"), array(), '', false);
+        $oView->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
 
 
         $oView->addprice($sOXID, $aParams);
@@ -178,7 +178,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
         $oView->addprice($sOXID, $aParams);
         $this->assertEquals("100", $oDb->getOne("select oxamountto from oxprice2article where oxid='_testId'"));
     }
-    
+
     /**
      * Article_Stock::AddPrice() test case with passed params and saving in DB
      *
@@ -193,12 +193,12 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
                                                   "price"                       => 20))
         );
         $oDb = oxDb::getDb();
-    
+
         $oView = new Article_Stock();
-        
+
         $oView->updateprices();
         $this->assertFalse($oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
-      
+
         modConfig::setRequestParameter(
             "editval", array("oxprice2article__oxamountto" => 9,
                              "pricetype"                   => "oxaddabs",
@@ -206,7 +206,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
         );
         $oView->updateprices();
         $this->assertEquals("50", $oDb->getOne("select oxamountto from oxprice2article where oxid='_testId'"));
-                
+
     }
 
     /**
@@ -216,21 +216,21 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
      */
     public function testDeletePrice()
     {
-        $oDb = oxDb::getDb(); 
+        $oDb = oxDb::getDb();
         $oDb->execute("insert into oxprice2article set oxid='_testId', oxartid='_testArtId' ");
-        
-            $oView = new Article_Stock();
+
+        $oView = new Article_Stock();
 
 
         modConfig::setRequestParameter('oxid', '_testArtId');
         $oView->deleteprice();
         $this->assertEquals("1", $oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
-        
+
         modConfig::setRequestParameter('oxid', '');
         modConfig::setRequestParameter('priceid', '_testId');
         $oView->deleteprice();
         $this->assertEquals("1", $oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
-        
+
         modConfig::setRequestParameter('oxid', '_testArtId');
         modConfig::setRequestParameter('priceid', '_testId');
         $oView->deleteprice();
@@ -255,7 +255,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
         //expected shop id
         $sShopId = "oxbaseshop";
 
-            $oView = new Article_Stock();
+        $oView = new Article_Stock();
 
 
         //init db

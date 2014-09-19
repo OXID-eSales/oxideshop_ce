@@ -40,9 +40,9 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
 
         $myDB->Execute('delete from oxattribute where oxid = "test%" ');
         $myDB->Execute('delete from oxobject2attribute where oxid = "test%" ');
-        
+
         $myDB->Execute("update oxattribute set oxdisplayinbasket = 0 where oxid = '8a142c3f0b9527634.96987022' ");
-        
+
         parent::tearDown();
     }
 
@@ -112,7 +112,7 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         $sAttribValue = $oAttrList[$sID]->oxobject2attribute__oxvalue->value;
         $this->assertEquals($sExpectedValue, $sAttribValue);
     }
-    
+
     /**
      * Test load attributes.
      *
@@ -124,8 +124,8 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         $oAttrList->loadAttributes('1672', '1351');
         $this->assertEquals(9, $oAttrList->count());
     }
-    
-    
+
+
     /**
      * Test load displayable in basket/order attributes.
      *
@@ -145,7 +145,7 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         $this->assertEquals('25 cm', $sAttribValue);
         $this->assertEquals('Granit', $sAttribParentValue);
     }
-    
+
     /**
      * Test load displayable in basket/order attributes, when all are not displayable.
      *
@@ -156,7 +156,7 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         $oAttrList = new oxAttributelist();
         $oAttrList->loadAttributesDisplayableInBasket('1672');
         $this->assertEquals(0, count($oAttrList));
-        
+
     }
 
 
@@ -189,8 +189,8 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
 
         $myDB = oxDb::getDB();
 
-            $sSql = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
-            $myDB->execute($sSql);
+        $sSql = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
+        $myDB->execute($sSql);
 
         $sArtId = 'testArt';
         $sSql = "insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values ('test3', '$sArtId', 'test3', '3'), ('test1', '$sArtId', 'test1', '1'), ('test2', '$sArtId', 'test2', '2')";
@@ -233,8 +233,8 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         $oAttribute = $oAttrList->offsetGet($sAttributeId);
 
 
-            $this->assertEquals(1, $oAttrList->count());
-            $this->assertEquals(6, count($oAttribute->getValues()));
+        $this->assertEquals(1, $oAttrList->count());
+        $this->assertEquals(6, count($oAttribute->getValues()));
 
     }
 

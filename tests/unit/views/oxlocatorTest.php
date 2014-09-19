@@ -161,7 +161,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         // seo off
         modConfig::getInstance()->setConfigParam('blSeoMode', false);
 
-            modConfig::getInstance()->setConfigParam('iNrofCatArticles', 10);
+        modConfig::getInstance()->setConfigParam('iNrofCatArticles', 10);
 
         oxRegistry::getUtils()->seoIsActive(true);
 
@@ -173,9 +173,9 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sActCat = '30e44ab83fdee7564.23264141';
         $sPrevId = '1351';
         $sNextId = '1661';
-            $sActCat = '8a142c3e4143562a5.46426637';
-            $sPrevId = '1477';
-            $sNextId = '1672';
+        $sActCat = '8a142c3e4143562a5.46426637';
+        $sPrevId = '1477';
+        $sNextId = '1672';
 
         $oCategory = new oxcategory();
         $oCategory->load($sActCat);
@@ -194,9 +194,9 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         // testing
         $oLocator->UNITsetListLocatorData($oLocatorTarget, $oCurrArticle);
 
-            $this->assertEquals(9, $oCategory->iProductPos);
-            $this->assertEquals(32, $oCategory->iCntOfProd);
-            $iPgNr = 0;
+        $this->assertEquals(9, $oCategory->iProductPos);
+        $this->assertEquals(32, $oCategory->iCntOfProd);
+        $iPgNr = 0;
 
 
         $this->assertEquals($myConfig->getShopHomeUrl() . "cl=alist&amp;cnid={$sActCat}" . (($iPgNr) ? "&amp;pgNr={$iPgNr}" : ""), $oCategory->toListLink);
@@ -217,9 +217,9 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sActCat = '30e44ab83fdee7564.23264141';
         $sPrevId = '1351';
         $sNextId = '1661';
-            $sActCat = '8a142c3e4143562a5.46426637';
-            $sPrevId = '1477';
-            $sNextId = '1672';
+        $sActCat = '8a142c3e4143562a5.46426637';
+        $sPrevId = '1477';
+        $sNextId = '1672';
 
         $oCategory = new oxcategory();
         $oCategory->load($sActCat);
@@ -244,12 +244,12 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         $sShopUrl = oxRegistry::getConfig()->getShopUrl();
 
-            $this->assertEquals(9, $oCategory->iProductPos);
-            $this->assertEquals(32, $oCategory->iCntOfProd);
+        $this->assertEquals(9, $oCategory->iProductPos);
+        $this->assertEquals(32, $oCategory->iCntOfProd);
 
-            $sToListLink = $sShopUrl . 'Geschenke/9/';
-            $sNextProdLink = $sShopUrl . 'Geschenke/Wohnen/Uhren/Wanduhr-PHOTOFRAME.html';
-            $sPrevProdLink = $sShopUrl . 'Geschenke/Bar-Equipment/Champagnerverschluss-GOLF.html';
+        $sToListLink = $sShopUrl . 'Geschenke/9/';
+        $sNextProdLink = $sShopUrl . 'Geschenke/Wohnen/Uhren/Wanduhr-PHOTOFRAME.html';
+        $sPrevProdLink = $sShopUrl . 'Geschenke/Bar-Equipment/Champagnerverschluss-GOLF.html';
 
 
         $this->assertEquals($sToListLink, $oCategory->toListLink);
@@ -268,14 +268,14 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sArt = '1142';
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1477&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
         $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1131&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
-            $sArt = '1964';
-            $sPrevLink = '';
-            $sNextLink = '';
+        $sArt = '1964';
+        $sPrevLink = '';
+        $sNextLink = '';
         $oCurrArticle = $this->getMock('oxarticle', array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
 
         $sActCat = 'v_d2e44d9b31fcce448.08890330';
-            $sActCat = 'v_77442e37fdf34ccd3.94620745';
+        $sActCat = 'v_77442e37fdf34ccd3.94620745';
 
         $oVendor = new oxvendor();
         $oVendor->load(str_replace('v_', '', $sActCat));
@@ -292,8 +292,8 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocator->UNITsetVendorLocatorData($oLocatorTarget, $oCurrArticle);
 
 
-            $this->assertEquals(1, $oVendor->iProductPos);
-            $this->assertEquals(1, $oVendor->iCntOfProd);
+        $this->assertEquals(1, $oVendor->iProductPos);
+        $this->assertEquals(1, $oVendor->iCntOfProd);
 
         $this->assertEquals($myConfig->getShopHomeUrl() . "cl=vendorlist&amp;cnid={$sActCat}{$sPgNr}", $oVendor->toListLink);
         $this->assertEquals($sNextLink, $oVendor->nextProductLink);
@@ -310,15 +310,15 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sArt = '1142';
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1477&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
         $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1131&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
-            $sArt = '1964';
-            $sPrevLink = '';
-            $sNextLink = '';
+        $sArt = '1964';
+        $sPrevLink = '';
+        $sNextLink = '';
         $oCurrArticle = $this->getMock('oxarticle', array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
         $oCurrArticle->setLinkType(1);
 
         $sActCat = 'v_d2e44d9b31fcce448.08890330';
-            $sActCat = 'v_77442e37fdf34ccd3.94620745';
+        $sActCat = 'v_77442e37fdf34ccd3.94620745';
 
         $oVendor = new oxvendor();
         $oVendor->load(str_replace('v_', '', $sActCat));
@@ -337,11 +337,11 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sShopUrl = oxRegistry::getConfig()->getShopUrl();
 
 
-            $this->assertEquals(1, $oVendor->iProductPos);
-            $this->assertEquals(1, $oVendor->iCntOfProd);
-            $sToListLink = $sShopUrl . 'Nach-Lieferant/Bush/';
-            $sPrevProdLink = null;
-            $sNextProdLink = null;
+        $this->assertEquals(1, $oVendor->iProductPos);
+        $this->assertEquals(1, $oVendor->iCntOfProd);
+        $sToListLink = $sShopUrl . 'Nach-Lieferant/Bush/';
+        $sPrevProdLink = null;
+        $sNextProdLink = null;
 
         $this->assertEquals($sToListLink, $oVendor->toListLink);
         $this->assertEquals($sNextProdLink, $oVendor->nextProductLink);
@@ -359,14 +359,14 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sArt = '1142';
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1477&amp;listtype=manufacturer&amp;mnid=" . md5("d2e44d9b31fcce448.08890330");
         $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1131&amp;listtype=manufacturer&amp;mnid=" . md5("d2e44d9b31fcce448.08890330");
-            $sArt = '1964';
-            $sPrevLink = '';
-            $sNextLink = '';
+        $sArt = '1964';
+        $sPrevLink = '';
+        $sNextLink = '';
         $oCurrArticle = $this->getMock('oxarticle', array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
 
         $sActCat = md5('d2e44d9b31fcce448.08890330');
-            $sActCat = md5('77442e37fdf34ccd3.94620745');
+        $sActCat = md5('77442e37fdf34ccd3.94620745');
 
         $oManufacturer = new oxmanufacturer();
         $oManufacturer->load($sActCat);
@@ -384,8 +384,8 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocator->UNITsetManufacturerLocatorData($oLocatorTarget, $oCurrArticle);
 
 
-            $this->assertEquals(1, $oManufacturer->iProductPos);
-            $this->assertEquals(1, $oManufacturer->iCntOfProd);
+        $this->assertEquals(1, $oManufacturer->iProductPos);
+        $this->assertEquals(1, $oManufacturer->iCntOfProd);
 
         $this->assertEquals($myConfig->getShopHomeUrl() . "cl=manufacturerlist&amp;mnid={$sActCat}{$sPgNr}", $oManufacturer->toListLink);
         $this->assertEquals($sNextLink, $oManufacturer->nextProductLink);
@@ -402,15 +402,15 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sArt = '1142';
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1477&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
         $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1131&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
-            $sArt = '1964';
-            $sPrevLink = '';
-            $sNextLink = '';
+        $sArt = '1964';
+        $sPrevLink = '';
+        $sNextLink = '';
         $oCurrArticle = $this->getMock('oxarticle', array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
         $oCurrArticle->setLinkType(1);
 
         $sActCat = md5('d2e44d9b31fcce448.08890330');
-            $sActCat = md5('77442e37fdf34ccd3.94620745');
+        $sActCat = md5('77442e37fdf34ccd3.94620745');
 
         $oManufacturer = new oxmanufacturer();
         $oManufacturer->load($sActCat);
@@ -430,11 +430,11 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sShopUrl = oxRegistry::getConfig()->getShopUrl();
 
 
-            $this->assertEquals(1, $oManufacturer->iProductPos);
-            $this->assertEquals(1, $oManufacturer->iCntOfProd);
-            $sToListLink = $sShopUrl . 'Nach-Hersteller/Bush/';
-            $sPrevProdLink = null;
-            $sNextProdLink = null;
+        $this->assertEquals(1, $oManufacturer->iProductPos);
+        $this->assertEquals(1, $oManufacturer->iCntOfProd);
+        $sToListLink = $sShopUrl . 'Nach-Hersteller/Bush/';
+        $sPrevProdLink = null;
+        $sNextProdLink = null;
 
         $this->assertEquals($sToListLink, $oManufacturer->toListLink);
         $this->assertEquals($sNextProdLink, $oManufacturer->nextProductLink);
@@ -450,9 +450,9 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1651&amp;searchparam=Bier&amp;listtype=search";
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=2357&amp;searchparam=Bier&amp;listtype=search";
         $sArtId = '1889';
-            $sArtId = '1651';
-            $sPrevLink = '';
-            $sNextLink = '';
+        $sArtId = '1651';
+        $sPrevLink = '';
+        $sNextLink = '';
 
         $oCurrArticle = $this->getMock('oxarticle', array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArtId));
@@ -473,9 +473,9 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oSearch = $oLocatorTarget->getActSearch();
 
 
-            $this->assertEquals(1, $oSearch->iProductPos);
-            $this->assertEquals(1, $oSearch->iCntOfProd);
-            $sPgNr = '';
+        $this->assertEquals(1, $oSearch->iProductPos);
+        $this->assertEquals(1, $oSearch->iCntOfProd);
+        $sPgNr = '';
 
         $this->assertEquals($myConfig->getShopHomeUrl() . "cl=search{$sPgNr}&amp;searchparam=Bier&amp;listtype=search", $oSearch->toListLink);
         $this->assertEquals($sNextLink, $oSearch->nextProductLink);
@@ -494,10 +494,10 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sNextId = '1477';
 
         $sArt = '1142';
-            $sArt = '5065';
+        $sArt = '5065';
 
-            $sPrevId = '5064';
-            $sNextId = '5067';
+        $sPrevId = '5064';
+        $sNextId = '5067';
 
         $oCurrArticle = $this->getMock('oxarticle', array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
@@ -511,7 +511,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
         $sSearchVendor = 'd2e44d9b31fcce448.08890330';
-            $sSearchVendor = '68342e2955d7401e6.18967838';
+        $sSearchVendor = '68342e2955d7401e6.18967838';
         modConfig::setRequestParameter("searchparam", 'a');
         modConfig::setRequestParameter("searchvendor", $sSearchVendor);
         $oLocator = new testOxLocator();
@@ -522,9 +522,9 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oSearch = $oLocatorTarget->getActSearch();
 
 
-            $this->assertEquals(2, $oSearch->iProductPos);
-            $this->assertEquals(5, $oSearch->iCntOfProd);
-            $iPgNr = 1;
+        $this->assertEquals(2, $oSearch->iProductPos);
+        $this->assertEquals(5, $oSearch->iCntOfProd);
+        $iPgNr = 1;
 
         $this->assertEquals($myConfig->getShopHomeUrl() . "cl=search&amp;pgNr={$iPgNr}&amp;searchparam=a&amp;listtype=search&amp;searchvendor={$sSearchVendor}", $oSearch->toListLink);
         $this->assertEquals($myConfig->getShopHomeUrl() . "cl=details&amp;anid={$sNextId}&amp;searchparam=a&amp;listtype=search&amp;searchvendor={$sSearchVendor}", $oSearch->nextProductLink);
@@ -552,8 +552,8 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         $sSearchCat = '30e44ab841af13e46.42570689';
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=2357&amp;searchparam=Bier&amp;listtype=search&amp;searchcnid=$sSearchCat";
-            $sSearchCat = '8a142c3e4143562a5.46426637';
-            $sNextLink = '';
+        $sSearchCat = '8a142c3e4143562a5.46426637';
+        $sNextLink = '';
 
         modConfig::setRequestParameter("searchparam", 'Bier');
         modConfig::setRequestParameter("searchcnid", $sSearchCat);
@@ -565,8 +565,8 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oSearch = $oLocatorTarget->getActSearch();
 
 
-            $this->assertEquals(1, $oSearch->iProductPos);
-            $this->assertEquals(1, $oSearch->iCntOfProd);
+        $this->assertEquals(1, $oSearch->iProductPos);
+        $this->assertEquals(1, $oSearch->iCntOfProd);
 
         $this->assertEquals($myConfig->getShopHomeUrl() . "cl=search&amp;searchparam=Bier&amp;listtype=search&amp;searchcnid=$sSearchCat", $oSearch->toListLink);
         $this->assertEquals($sNextLink, $oSearch->nextProductLink);
@@ -599,10 +599,10 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oTag = $oLocatorTarget->getActTag();
 
 
-            $this->assertEquals(3, $oTag->iProductPos);
-            $this->assertEquals(3, $oTag->iCntOfProd);
-            $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1771&amp;searchtag=wanduhr&amp;listtype=tag";
-            $iPgNr = 2;
+        $this->assertEquals(3, $oTag->iProductPos);
+        $this->assertEquals(3, $oTag->iCntOfProd);
+        $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1771&amp;searchtag=wanduhr&amp;listtype=tag";
+        $iPgNr = 2;
 
         $this->assertEquals($myConfig->getShopHomeUrl() . "cl=tag&amp;searchtag=wanduhr&amp;pgNr={$iPgNr}", $oTag->toListLink);
         $this->assertEquals($sPrevLink, $oTag->prevProductLink);
@@ -707,7 +707,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oCurrArticle->expects($this->once())->method('getId')->will($this->returnValue('1651'));
 
         $sActCat = '30e44ab83fdee7564.23264141';
-            $sActCat = '8a142c3e4143562a5.46426637';
+        $sActCat = '8a142c3e4143562a5.46426637';
 
         $oLocator = new testOxLocator();
 
@@ -719,7 +719,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $this->assertEquals('1651', $oIdList['1651']);
 
 
-            $this->assertEquals(32, $oIdList->count());
+        $this->assertEquals(32, $oIdList->count());
     }
 
     public function testLoadIdsInListNonExistingArticle()
@@ -728,7 +728,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oCurrArticle->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
 
         $sActCat = '30e44ab83fdee7564.23264141';
-            $sActCat = '8a142c3e4143562a5.46426637';
+        $sActCat = '8a142c3e4143562a5.46426637';
 
         $oLocator = new testOxLocator();
 
@@ -740,7 +740,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $this->assertEquals('1651', $oIdList['1651']);
 
 
-            $this->assertEquals(32, $oIdList->count());
+        $this->assertEquals(32, $oIdList->count());
     }
 
     public function testLoadIdsInListForPriceCat()
@@ -762,7 +762,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oIdList = $oLocator->UNITloadIdsInList($oCategory, new oxarticle(), 'oxid');
         $this->assertEquals('1651', $oIdList['1651']);
 
-            $this->assertEquals(24, count($oIdList));
+        $this->assertEquals(24, count($oIdList));
     }
 
     public function testLoadIdsInListForPriceCatNonExistingArticle()
@@ -784,7 +784,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oIdList = $oLocator->UNITloadIdsInList($oCategory, new oxarticle(), 'oxid');
         $this->assertEquals('1651', $oIdList['1651']);
 
-            $this->assertEquals(24, count($oIdList));
+        $this->assertEquals(24, count($oIdList));
     }
 
     public function testGetPageNumber()

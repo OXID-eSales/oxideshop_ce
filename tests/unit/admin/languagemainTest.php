@@ -340,7 +340,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
         $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
 
         $oConfig = $this->getMock("oxConfig", array("getTranslationsDir"));
-       
+
         $oConfig->expects($this->once())->method("getTranslationsDir")->with($this->equalTo('lang.php'), oxRegistry::getLang()->getLanguageAbbr(1))->will($this->returnValue(""));
 
         $oView = $this->getMock("modLanguageMain", array("getConfig"), array(), '', false);

@@ -158,9 +158,9 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 
         */
 
-            $sShopFields = "`OXSHOPID`";
-            $sShopValues = "'oxbaseshop'";
-            $sShopId = "'oxbaseshop'";
+        $sShopFields = "`OXSHOPID`";
+        $sShopValues = "'oxbaseshop'";
+        $sShopId = "'oxbaseshop'";
 
         $sInsertSeriesPart = "
         INSERT INTO `oxvoucherseries`

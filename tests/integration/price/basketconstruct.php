@@ -18,7 +18,7 @@ class BasketConstruct
     {
         // getting config
         $oConfig = oxRegistry::getConfig();
-        
+
         // gather data from test case
         $aExpected = $aTestCase['expected'];
         $aArticles = $aTestCase['articles'];
@@ -61,15 +61,15 @@ class BasketConstruct
         // setup and login user for basket
         if (empty($aUser)) {
             $aUser = $this->_getDefaultUserData();
-        } 
+        }
         $oUser = $this->_createUser($aUser);
-        
+
         $this->oUser = $oUser;
         $oBasket->setBasketUser($oUser);
 
         // group setup
         $this->createGroup($aTestCase['group']);
-        
+
         // adding articles to basket      
         foreach ($aArtsForBasket as $aArt) {
             if (is_null($aArt['amount']) || ($aArt['amount']) == 0) {
@@ -81,7 +81,7 @@ class BasketConstruct
                 $oItem->setWrapping($aWrap[$aArt['id']]);
             }
         }
-        
+
         // try to add card
         $aWrap['card'] ? $oBasket->setCardId($aWrap['card']) : '';
 
@@ -111,7 +111,7 @@ class BasketConstruct
 
         // calculate basket
         $oBasket->calculateBasket();
-        
+
         return $oBasket;
     }
 
@@ -128,7 +128,7 @@ class BasketConstruct
 
         return $oUser;
     }
-    
+
     /**
      * Create categories with assigning articles
      *
@@ -150,9 +150,9 @@ class BasketConstruct
                     $this->createObj2Obj($aData, 'oxobject2category');
                 }
             }
-        }    
+        }
     }
-    
+
     /**
      * Creates articles
      *
@@ -348,7 +348,7 @@ class BasketConstruct
             return;
         }
         $aDel = array();
-        
+
         if (!empty($aDeliveryCosts['oxdeliveryset'])) {
             $aData = $aDeliveryCosts['oxdeliveryset'];
         } else {
@@ -357,7 +357,7 @@ class BasketConstruct
             );
         }
         $oDeliverySet = $this->createObj($aData, 'oxdeliveryset', 'oxdeliveryset');
-        
+
         foreach ($aDeliveryCosts as $iKey => $aDelivery) {
             $oDelivery = new oxDelivery();
             $oDelivery->save();
@@ -452,7 +452,7 @@ class BasketConstruct
 
         return $aVoucherIDs;
     }
-    
+
     protected function _getDefaultUserData()
     {
         $aUser = array(
@@ -480,19 +480,19 @@ class BasketConstruct
 
         return $aUser;
     }
-    
+
     /**
      * Getting articles
      *
      * @param array $aArts of article objects
      *
-     * @return created articles id's 
+     * @return created articles id's
      */
     public function getArticles($aArts)
     {
         return $this->_getArticles($aArts);
     }
-    
+
     /**
      * Set options
      *
@@ -514,7 +514,7 @@ class BasketConstruct
             $aCurrencies = $oConfig->getConfigParam("aCurrencies");
         }
     }
-    
+
     /**
      * Apply discounts
      *
@@ -558,7 +558,7 @@ class BasketConstruct
             $oObj->save();
         }
     }
-    
+
     /**
      * Create group and assign
      *
@@ -583,14 +583,14 @@ class BasketConstruct
             }
         }
     }
-    
+
     /**
      * Standard object creator
      *
      * @param array  $aData   data
      * @param string $sObject object name
      * @param string $sTable  table name
-     * 
+     *
      * @return object $oObj
      */
     public function createObj($aData, $sObject, $sTable)
@@ -612,7 +612,7 @@ class BasketConstruct
 
         return $oObj;
     }
-    
+
     /**
      * Create shop
      *
@@ -645,7 +645,7 @@ class BasketConstruct
 
         return $iActiveShopId;
     }
-    
+
     /**
      * Setting active shop
      *

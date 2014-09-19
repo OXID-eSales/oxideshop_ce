@@ -846,9 +846,9 @@ class oxSysRequirements
     public function checkMemoryLimit()
     {
         if ($sMemLimit = @ini_get('memory_limit')) {
-                // CE - PE at least to 14 MB. We recomend a memory_limit of 30MB.
-                $sDefLimit = '14M';
-                $sRecLimit = '30M';
+            // CE - PE at least to 14 MB. We recomend a memory_limit of 30MB.
+            $sDefLimit = '14M';
+            $sRecLimit = '30M';
 
 
             $iMemLimit = $this->_getBytes($sMemLimit);

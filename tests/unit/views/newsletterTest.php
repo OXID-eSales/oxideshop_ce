@@ -74,10 +74,10 @@ class Unit_Views_newsletterTest extends OxidTestCase
      */
     public function testGetTopStartArticlePE()
     {
-            $oTestNews = oxNew("NewsLetter");
-            $oArticleList = $oTestNews->getTopStartArticle();
+        $oTestNews = oxNew("NewsLetter");
+        $oArticleList = $oTestNews->getTopStartArticle();
 
-            $this->assertEquals('1849', $oArticleList->getId());
+        $this->assertEquals('1849', $oArticleList->getId());
     }
 
     /**
@@ -87,12 +87,12 @@ class Unit_Views_newsletterTest extends OxidTestCase
      */
     public function testGetTopStartActionArticlesPE()
     {
-            $oTestNews = oxNew("NewsLetter");
-            $oArticleList = $oTestNews->getTopStartActionArticles();
+        $oTestNews = oxNew("NewsLetter");
+        $oArticleList = $oTestNews->getTopStartActionArticles();
 
-            $this->assertEquals(1, count($oArticleList));
-            $this->assertEquals(89.9, $oArticleList[1849]->getPrice()->getBruttoPrice());
-            $this->assertEquals("Bar Butler 6 BOTTLES", $oArticleList[1849]->oxarticles__oxtitle->value);
+        $this->assertEquals(1, count($oArticleList));
+        $this->assertEquals(89.9, $oArticleList[1849]->getPrice()->getBruttoPrice());
+        $this->assertEquals("Bar Butler 6 BOTTLES", $oArticleList[1849]->oxarticles__oxtitle->value);
     }
 
     /**
@@ -445,7 +445,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $oErr = unserialize($aErrors['default'][0]);
         $this->assertEquals(oxRegistry::getLang()->translateString('MESSAGE_NOT_ABLE_TO_SEND_EMAIL'), $oErr->getOxMessage());
     }
-    
+
     /**
      * Testing newsLetter::getBreadCrumb()
      *

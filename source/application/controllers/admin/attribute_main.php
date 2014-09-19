@@ -96,8 +96,8 @@ class Attribute_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-            // shopid
-            $aParams['oxattribute__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
+        // shopid
+        $aParams['oxattribute__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
         $oAttr = oxNew("oxattribute");
 
         if ($soxId != "-1") {
@@ -129,8 +129,8 @@ class Attribute_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-            // shopid
-            $aParams['oxattribute__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
+        // shopid
+        $aParams['oxattribute__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
         $oAttr = oxNew("oxattribute");
 
         if ($soxId != "-1") {

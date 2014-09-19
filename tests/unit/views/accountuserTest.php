@@ -67,7 +67,7 @@ class Unit_Views_accountUserTest extends OxidTestCase
 
         $this->assertEquals(2, count($oAccUser->getBreadCrumb()));
     }
-    
+
     /**
      * Testing Account_User::showShipAddress()
      *

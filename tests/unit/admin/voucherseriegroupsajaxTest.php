@@ -39,9 +39,9 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
     {
         parent::setUp();
 
-            $sShopId = "oxbaseshop";
+        $sShopId = "oxbaseshop";
 
-        
+
         oxDb::getDb()->execute("replace into oxobject2group set oxid='_testId1', oxshopid='$sShopId', oxobjectid='_testVoucherId1', oxgroupsid='_testGroupId1'");
         oxDb::getDb()->execute("replace into oxobject2group set oxid='_testId2', oxshopid='$sShopId', oxobjectid='_testVoucherId1', oxgroupsid='_testGroupId2'");
 
@@ -50,7 +50,7 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
         oxDb::getDb()->execute("replace into oxgroups set oxid='_testGroupId3', oxactive=1, oxtitle='_testGroup3', oxtitle_1='_testGroup3_en'");
         oxDb::getDb()->execute("replace into oxgroups set oxid='_testGroupId4', oxactive=1, oxtitle='_testGroup4', oxtitle_1='_testGroup4_en'");
     }
-    
+
     /**
      * Tear down the fixture.
      *
@@ -84,7 +84,7 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
 
         $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
     }
-    
+
     /**
      * voucherserie_groups_ajax::removeGroupFromVoucher() test case
      *
@@ -204,5 +204,5 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
 
         $oView = oxNew('voucherserie_groups_ajax');
         $this->assertEquals($sResult, trim(preg_replace("/\s+/", " ", $oView->UNITgetQuery())));
-    }    
+    }
 }

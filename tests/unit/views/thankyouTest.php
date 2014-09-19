@@ -183,25 +183,25 @@ class Unit_Views_thankyouTest extends OxidTestCase
         $oThankyou->setNonPublicVar('_oBasket', $oBasket);
         $oThankyou->render();
     }
-    
+
     // #2580: Checking if after order unregistered user contact data were deleted
     public function testRender_resetUnregisteredUser()
     {
         $oUser = oxNew("oxuser");
         $oUser->oxuser__oxpassword = new oxField("");
-        
+
         $oBasket = $this->getMock('oxBasket', array('getProductsCount'));
         $oBasket->expects($this->once())->method('getProductsCount')->will($this->returnValue(1));
-        
+
         $oThankyou = $this->getProxyClass('thankyou');
         $oThankyou->setNonPublicVar('_oBasket', $oBasket);
         $oThankyou->setUser($oUser);
-        
+
         oxRegistry::getSession()->setVariable("usr", "testValue1");
         oxRegistry::getSession()->setVariable("dynvalue", "testValue2");
-        
+
         $oThankyou->render();
-        
+
         $this->assertFalse(oxRegistry::getSession()->hasVariable("usr"));
         $this->assertFalse(oxRegistry::getSession()->hasVariable("dynvalue"));
     }
@@ -223,7 +223,7 @@ class Unit_Views_thankyouTest extends OxidTestCase
 
         $this->assertEquals(1, count($oTh->getBreadCrumb()));
     }
-    
+
     /**
      * Testing Thankyou::getCountryISO3()
      *
@@ -233,7 +233,7 @@ class Unit_Views_thankyouTest extends OxidTestCase
     {
         $oOrder = new oxOrder();
         $oOrder->oxorder__oxbillcountryid = new oxField('a7c40f631fc920687.20179984');
-        
+
         $oTh = $this->getMock('thankyou', array('getOrder'));
         $oTh->expects($this->any())->method('getOrder')->will($this->returnValue($oOrder));
 

@@ -94,7 +94,7 @@ class oxNewsSubscribed extends oxBase
     {
         $oDb = oxDb::getDb();
         $sEmailAddressQuoted = $oDb->quote($sEmailAddress);
-            $sOxId = $oDb->getOne("select oxid from oxnewssubscribed where oxemail = {$sEmailAddressQuoted} ");
+        $sOxId = $oDb->getOne("select oxid from oxnewssubscribed where oxemail = {$sEmailAddressQuoted} ");
 
         return $this->load($sOxId);
     }

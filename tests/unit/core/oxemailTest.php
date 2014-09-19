@@ -553,7 +553,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testClearSidFromBody()
     {
-            $sShopId = 'oxbaseshop';
+        $sShopId = 'oxbaseshop';
 
         $oEmail = new oxEmail();
 
@@ -586,7 +586,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testClearSidFromAltBody()
     {
-            $sShopId = 'oxbaseshop';
+        $sShopId = 'oxbaseshop';
 
         $this->_oEmail->setAltBody('testAltBody index.php?bonusid=111&sid=123456789 blabla', true);
         $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->_oEmail->getAltBody());
@@ -946,7 +946,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testGetShopWithShopId()
     {
-            $iShopId = 'oxbaseshop';
+        $iShopId = 'oxbaseshop';
 
         $oShop = $this->_oEmail->UNITgetShop(null, $iShopId);
         $this->assertEquals($iShopId, $oShop->getShopId());
@@ -970,7 +970,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
         $this->_oEmail->setShop($this->_oShop);
 
-            $iShopId = 'oxbaseshop';
+        $iShopId = 'oxbaseshop';
 
         $oShop = $this->_oEmail->UNITgetShop(1, $iShopId);
         $this->assertEquals(1, $oShop->getLanguage());
@@ -1116,14 +1116,14 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
         $oSmartyMock = $this->getMock("Smarty", array("fetch"));
         $oSmartyMock->expects($this->any())->method("fetch")->will($this->returnValue(true));
-        
+
         $oEmail = $this->getMock("oxEmail", array("send", "_getSmarty"));
         $oEmail->expects($this->once())->method("send")->will($this->returnValue(true));
         $oEmail->expects($this->any())->method("_getSmarty")->will($this->returnValue($oSmartyMock));
-        
+
         // oxParams mock
         $oParams = $this->getMock("oxParams");
-        
+
         // oxProduct mock
         $oProduct = $this->getMock("oxProduct", array("getId", "getLanguage", "setLanguage", "load", "getLink"));
         $oProduct->expects($this->once())->method("getId")->will($this->returnValue(true));
@@ -1131,9 +1131,9 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $oProduct->expects($this->once())->method("setLanguage")->will($this->returnValue(true));
         $oProduct->expects($this->once())->method("load")->will($this->returnValue(true));
         $oProduct->expects($this->once())->method("getLink")->will($this->returnValue(true));
-        
+
         $oEmail->sendSuggestMail($oParams, $oProduct);
-    	
+
         //testing actual From field Value
         $this->assertEquals("info@myoxideshop.com", $oEmail->getFrom());
     }

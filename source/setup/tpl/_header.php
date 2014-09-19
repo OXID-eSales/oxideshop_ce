@@ -38,17 +38,17 @@
         }
     }
 
-    function update_dynpages_checkbox()
-    {
-        sValue = document.forms[0].location_lang.value;
-        if ( sValue == '' ) {
-            document.getElementById('use_dynamic_pages_ckbox').style.display = 'none';
-            document.getElementById('use_dynamic_pages_desc').style.display = 'none';
-        } else {
-            document.getElementById('use_dynamic_pages_ckbox').style.display = '';
-            document.getElementById('use_dynamic_pages_desc').style.display = '';
-        }
+function update_dynpages_checkbox()
+{
+    sValue = document.forms[0].location_lang.value;
+    if ( sValue == '' ) {
+        document.getElementById('use_dynamic_pages_ckbox').style.display = 'none';
+        document.getElementById('use_dynamic_pages_desc').style.display = 'none';
+    } else {
+        document.getElementById('use_dynamic_pages_ckbox').style.display = '';
+        document.getElementById('use_dynamic_pages_desc').style.display = '';
     }
+}
     /**
      * Replaces password type field into plain and vice versa
      */
@@ -78,8 +78,8 @@
     <?php
         $iTabWidth = 147;
         $iSepWidth = 3;
-            $iTabCount = 6;
-            $sHColor = '#ff3600';
+        $iTabCount = 6;
+        $sHColor = '#ff3600';
         $iDocWidth = ($iTabWidth + $iSepWidth)*$iTabCount;
     ?>
         body, p , form {margin:0; }

@@ -112,9 +112,9 @@ class Order_Address extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = (array) oxRegistry::getConfig()->getRequestParameter("editval");
 
-            //TODO check if shop id is realy necessary at this place.
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxorder__oxshopid'] = $sShopID;
+        //TODO check if shop id is realy necessary at this place.
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxorder__oxshopid'] = $sShopID;
 
         $oOrder = oxNew("oxorder");
         if ($soxId != "-1") {

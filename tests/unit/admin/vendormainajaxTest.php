@@ -44,29 +44,29 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle2', oxshopid='{$sShopId}', oxtitle='testArticle2', oxvendorid='_testVendorId'", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle3', oxshopid='{$sShopId}', oxtitle='testArticle3', oxvendorid=''", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle4', oxshopid='{$sShopId}', oxtitle='testArticle4', oxvendorid=''", 'oxarticles');
-        
+
         $this->addToDatabase("insert into oxobject2category set oxid='_testOxid1', oxobjectid='_testArticle1', oxcatnid='_testCat1'", 'oxobject2category');
         $this->addToDatabase("insert into oxobject2category set oxid='_testOxid2', oxobjectid='_testArticle1', oxcatnid='_testCat2'", 'oxobject2category');
 
         $this->addTeardownSql("delete from oxobject2category where oxid like '\_test%'");
         $this->addTeardownSql("delete from oxarticles where oxid like '\_test%'");
     }
-    
+
     public function getArticleViewTable()
     {
-            return oxv_oxarticles_de;
+        return oxv_oxarticles_de;
 
     }
-    
+
     public function getObject2CategoryViewTable()
     {
-            return "oxobject2category";
+        return "oxobject2category";
 
     }
 
     public function getShopId()
     {
-            return "oxbaseshop";
+        return "oxbaseshop";
 
     }
 
@@ -184,7 +184,7 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
         $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->UNITgetQuery())));
     }
 
-    
+
     /**
      * AttributeMainAjax::_addFilter() test case
      *
@@ -195,7 +195,7 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
         $oView = oxNew('vendor_main_ajax');
         $this->assertEquals("", trim($oView->UNITaddFilter('')));
     }
-    
+
     /**
      * AttributeMainAjax::_addFilter() test case
      *
@@ -204,11 +204,11 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
     public function testAddFilter_VariantsOff()
     {
         $this->setConfigParam("blVariantsSelection", false);
-        
+
         $oView = oxNew('vendor_main_ajax');
         $this->assertEquals("select * from oxarticles", trim($oView->UNITaddFilter('select * from oxarticles')));
     }
-    
+
     /**
      * AttributeMainAjax::_addFilter() test case
      *
@@ -221,7 +221,7 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
         $oView = oxNew('vendor_main_ajax');
         $this->assertEquals("select * from oxarticles group by " . $this->getArticleViewTable() . ".oxid", trim($oView->UNITaddFilter('select * from oxarticles')));
     }
-    
+
     /**
      * AttributeMainAjax::removeVendor() test case
      *

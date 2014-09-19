@@ -21,16 +21,16 @@
  */
 
     /** @name database information */
-        $this->dbHost = '<dbHost_ce>'; // database host name
-        $this->dbName = '<dbName_ce>'; // database name
-        $this->dbUser = '<dbUser_ce>'; // database user name
-        $this->dbPwd  = '<dbPwd_ce>'; // database user password
-        $this->dbType = 'mysql';
-        $this->sShopURL     = '<sShopURL_ce>'; // eShop base url, required
-        $this->sSSLShopURL  = null;            // eShop SSL url, optional
-        $this->sAdminSSLURL = null;            // eShop Admin SSL url, optional
-        $this->sShopDir     = '<sShopDir_ce>';
-        $this->sCompileDir  = '<sCompileDir_ce>';
+    $this->dbHost = '<dbHost_ce>'; // database host name
+    $this->dbName = '<dbName_ce>'; // database name
+    $this->dbUser = '<dbUser_ce>'; // database user name
+    $this->dbPwd  = '<dbPwd_ce>'; // database user password
+    $this->dbType = 'mysql';
+    $this->sShopURL     = '<sShopURL_ce>'; // eShop base url, required
+    $this->sSSLShopURL  = null;            // eShop SSL url, optional
+    $this->sAdminSSLURL = null;            // eShop Admin SSL url, optional
+    $this->sShopDir     = '<sShopDir_ce>';
+    $this->sCompileDir  = '<sCompileDir_ce>';
 
     // UTF-8 mode in shop 0 - off, 1 - on
     $this->iUtfMode  = '<iUtfMode>';

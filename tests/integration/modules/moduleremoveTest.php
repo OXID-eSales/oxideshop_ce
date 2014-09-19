@@ -208,3 +208,4 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
     }
 
 }
+ 

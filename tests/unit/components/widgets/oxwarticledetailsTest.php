@@ -495,7 +495,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $oCategory = $oDetails->getCategory();
 
-            $sCatId = "8a142c3e49b5a80c1.23676990";
+        $sCatId = "8a142c3e49b5a80c1.23676990";
 
         $this->assertNotNull($oCategory);
         $this->assertEquals($sCatId, $oCategory->getId());
@@ -617,7 +617,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
         $this->assertTrue($oList instanceof oxarticlelist);
 
         $iCount = 3;
-            $iCount = 2;
+        $iCount = 2;
         $this->assertEquals($iCount, $oList->count());
     }
 

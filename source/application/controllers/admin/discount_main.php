@@ -122,8 +122,8 @@ class Discount_Main extends oxAdminDetails
         $sOxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxdiscount__oxshopid'] = $sShopID;
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxdiscount__oxshopid'] = $sShopID;
 
         $oDiscount = oxNew("oxDiscount");
         if ($sOxId != "-1") {
@@ -161,9 +161,9 @@ class Discount_Main extends oxAdminDetails
         $sOxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxdiscount__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxdiscount__oxshopid'] = $sShopID;
         $oAttr = oxNew("oxdiscount");
         if ($sOxId != "-1") {
             $oAttr->load($sOxId);

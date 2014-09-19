@@ -141,7 +141,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         // copying
         $this->_iCurr = $this->getSession()->getVariable('currency');
 
-            return;
+        return;
 
         for ($i = 2; $i < 7; $i++) {
             $this->_aShops[$i] = oxNew('oxbase');
@@ -511,7 +511,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     {
         $oConfig = new oxConfig();
         $oConfig->init();
-            $this->assertEquals('oxbaseshop', $oConfig->getBaseShopId());
+        $this->assertEquals('oxbaseshop', $oConfig->getBaseShopId());
     }
 
     /**
@@ -521,7 +521,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     {
         $oConfig = new oxConfig();
         $oConfig->init();
-            $this->assertFalse($oConfig->isMall());
+        $this->assertFalse($oConfig->isMall());
     }
 
 
@@ -1184,7 +1184,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
         $sDir = $this->_getViewsPath($oConfig);
         if ($oConfig->getConfigParam('sTheme') != 'azure') {
-                $sDir .= 'de/tpl/';
+            $sDir .= 'de/tpl/';
         } else {
             $sDir .= 'tpl/';
         }
@@ -1210,7 +1210,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig->init();
 
         $sDir = $oConfig->getConfigParam('sShopURL') . $this->_getViewsPath($oConfig, null, false);
-            $sDir .= ($oConfig->getConfigParam('sTheme') != 'azure') ? 'de/tpl/' : 'tpl/';
+        $sDir .= ($oConfig->getConfigParam('sTheme') != 'azure') ? 'de/tpl/' : 'tpl/';
 
         $this->assertEquals($sDir, $oConfig->getTemplateUrl());
     }
@@ -1254,7 +1254,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig->init();
 
         $sDir = $this->_getViewsPath($oConfig);
-            $sDir .= ($oConfig->getConfigParam('sTheme') != 'azure') ? 'de/tpl/' : 'tpl/';
+        $sDir .= ($oConfig->getConfigParam('sTheme') != 'azure') ? 'de/tpl/' : 'tpl/';
         $sDir .= 'page/shop/start.tpl';
 
         $this->assertEquals($sDir, $oConfig->getTemplatePath('page/shop/start.tpl', false));
@@ -2008,7 +2008,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetFullEdition()
     {
         $sFEdition = $this->getConfig()->getFullEdition();
-            $this->assertEquals("Community Edition", $sFEdition);
+        $this->assertEquals("Community Edition", $sFEdition);
         $oConfig = $this->getMock('oxConfig', array('getEdition'));
         $oConfig->expects($this->any())->method('getEdition')->will($this->returnValue("Test Edition"));
         $this->assertEquals("Test Edition", $oConfig->getFullEdition());
@@ -2390,7 +2390,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testHasDemoKey()
     {
-            return;
+        return;
         // all modules off
         $oSerial = $this->getMock('oxSerial', array("isFlagEnabled"));
         $oSerial->expects($this->once())->method('isFlagEnabled')->will($this->returnValue(true));

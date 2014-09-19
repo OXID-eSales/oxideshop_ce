@@ -127,3 +127,4 @@ class BaseModuleTestCase extends OxidTestCase
     }
 
 }
+ 

@@ -676,10 +676,10 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $myConfig = oxRegistry::getConfig();
 
         // insert test article
-            $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
-                    values ('_testArticleId','" . $myConfig->getShopId() . "','testArticleTitle','2','20','119')";
-            $sInsert2 = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
-                    values ('_testArticleId2','" . $myConfig->getShopId() . "','testArticleTitle','2','20','119')";
+        $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
+                values ('_testArticleId','" . $myConfig->getShopId() . "','testArticleTitle','2','20','119')";
+        $sInsert2 = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
+                values ('_testArticleId2','" . $myConfig->getShopId() . "','testArticleTitle','2','20','119')";
 
         $this->addToDatabase($sInsert, 'oxarticles');
         $this->addToDatabase($sInsert2, 'oxarticles');
@@ -968,8 +968,8 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
         // insert test article 2
 
-            $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
-                    values ('_testArticleId3','" . $myConfig->getShopId() . "','testArticleTitle2','2','20','238')";
+        $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
+                values ('_testArticleId3','" . $myConfig->getShopId() . "','testArticleTitle2','2','20','238')";
 
         $this->addToDatabase($sInsert, 'oxarticles');
 
@@ -1509,8 +1509,8 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
         // insert test article
 
-            $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
-                        values ('_testArticleId','" . $myConfig->getShopId() . "','testArticleTitle','2','20','119')";
+        $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
+                    values ('_testArticleId','" . $myConfig->getShopId() . "','testArticleTitle','2','20','119')";
 
         $this->addToDatabase($sInsert, 'oxarticles');
 
@@ -2070,7 +2070,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
         //check if article info was copied to oxorderarticle
 
-            $this->assertEquals('14', $oOrderArticle->oxorderarticles__oxstock->value);
+        $this->assertEquals('14', $oOrderArticle->oxorderarticles__oxstock->value);
     }
 
     public function testSetOrderArticlesWithChoosenSelectList()
@@ -2234,7 +2234,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
     /*
     public function testGetGatewayIPayment()
     {
-            return; // EE only
+        return; // EE only
 
         $this->_insertTestOrder();
 
@@ -3386,7 +3386,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $oDiscount->oxdiscount__oxamountto = new oxField(9999);
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('itm');
         $oDiscount->oxdiscount__oxaddsum = new oxField(0);
-            $oDiscount->oxdiscount__oxitmartid = new oxField('1126');
+        $oDiscount->oxdiscount__oxitmartid = new oxField('1126');
         $oDiscount->oxdiscount__oxitmamount = new oxField(1);
         $oDiscount->oxdiscount__oxitmmultiple = new oxField(0);
         $oDiscount->save();

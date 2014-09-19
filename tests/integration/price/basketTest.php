@@ -32,7 +32,7 @@ class Integration_Price_BasketTest extends OxidTestCase
         parent::setUp();
         $this->_reset();
     }
-    
+
     /**
      * Tear down the fixture.
      */
@@ -41,7 +41,7 @@ class Integration_Price_BasketTest extends OxidTestCase
         $this->addTableForCleanup('oxobject2category');
         parent::tearDown();
     }
-    
+
     /**
      * Resets db tables, required configs
      */
@@ -67,7 +67,7 @@ class Integration_Price_BasketTest extends OxidTestCase
         $oConfig->setConfigParam("blShowVATForDelivery", true);
         $oConfig->setConfigParam("blShowVATForPayCharge", true);
     }
-    
+
     /**
      * Tests special basket calculations
      *
@@ -80,12 +80,12 @@ class Integration_Price_BasketTest extends OxidTestCase
         }
         // gathering data arrays
         $aExpected = $aTestCase['expected'];
-        
+
         //if not finished testing data skip test
         if (empty($aExpected)) {
             $this->markTestSkipped("skipping test case due invalid data provided");
         }
-        
+
         // load calculated basket from provided data
         $oBasketConstruct = new BasketConstruct();
         $oBasket = $oBasketConstruct->calculateBasket($aTestCase);
@@ -239,7 +239,7 @@ class Integration_Price_BasketTest extends OxidTestCase
         $this->assertEquals($aExpected['totals']['totalBrutto'], $oBasket->getFProductsPrice(), "Total Brutto");
         $this->assertEquals($aExpected['totals']['grandTotal'], $oBasket->getFPrice(), "Grand Total");
     }
-    
+
     /**
      * Basket startup data and expected calculations results
      */
@@ -247,7 +247,7 @@ class Integration_Price_BasketTest extends OxidTestCase
     {
         return $this->_getTestCases($this->_aTestCaseDirs, $this->_aTestCases);
     }
-    
+
     /**
      * Getting test cases from specified
      *

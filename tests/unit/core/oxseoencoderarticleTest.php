@@ -646,8 +646,8 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oSeoEncoderArticle = $this->getMock("oxSeoEncoderArticle", array("_getTag"));
 
-            $sTag = 'absinth';
-            $sTagUrl = "tag/{$sTag}/Bar-Set-ABSINTH.html";
+        $sTag = 'absinth';
+        $sTagUrl = "tag/{$sTag}/Bar-Set-ABSINTH.html";
 
         $oSeoEncoderArticle->expects($this->any())->method('_getTag')->will($this->returnValue($sTag));
 
@@ -768,8 +768,8 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = new oxarticle();
         $oArticle->setLanguage(1);
-            $sArtId = '1354';
-            $oxtitle = 'Wanduhr-SPIDER';
+        $sArtId = '1354';
+        $oxtitle = 'Wanduhr-SPIDER';
 
         $sSeoUri = 'Nach-Lieferant/' . str_replace(array(' ', '.', '+'), '-', $oVendor->oxvendor__oxtitle->value) . '/' . $oxtitle . '-oxid-test-article-var-select.html';
 
@@ -792,8 +792,8 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = new oxarticle();
         $oArticle->setLanguage(1);
-            $sArtId = '1354';
-            $oxtitle = 'Wanduhr-SPIDER';
+        $sArtId = '1354';
+        $oxtitle = 'Wanduhr-SPIDER';
 
         $sSeoUri = 'Nach-Hersteller/' . str_replace(array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value) . '/' . $oxtitle . '-oxid-test-article-var-select.html';
 
@@ -816,8 +816,8 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = new oxarticle();
         $oArticle->setLanguage(0);
-            $sArtId = '1354';
-            $oxtitle = 'Wall-Clock-SPIDER';
+        $sArtId = '1354';
+        $oxtitle = 'Wall-Clock-SPIDER';
 
         $sSeoUri = 'en/By-Distributor/' . str_replace(array(' ', '.', '+'), '-', $oVendor->oxvendor__oxtitle->value) . '/' . $oxtitle . '-oxid-test-article-var-select.html';
 
@@ -840,8 +840,8 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = new oxarticle();
         $oArticle->setLanguage(0);
-            $sArtId = '1354';
-            $oxtitle = 'Wall-Clock-SPIDER';
+        $sArtId = '1354';
+        $oxtitle = 'Wall-Clock-SPIDER';
 
         $sSeoUri = 'en/By-Manufacturer/' . str_replace(array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value) . '/' . $oxtitle . '-oxid-test-article-var-select.html';
 
@@ -1044,8 +1044,8 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = $this->getMock("oxarticle", array("inCategory"));
         $oArticle->expects($this->once())->method('inCategory')->will($this->returnValue(true));
-            $oArticle->load('8a142c410f55ed579.98106125');
-            $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . '/Tischlampe-SPHERE-rot.html';
+        $oArticle->load('8a142c410f55ed579.98106125');
+        $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . '/Tischlampe-SPHERE-rot.html';
 
         $oEncoder = $this->getMock('oxSeoEncoderArticle', array('_loadFromDb', "_getCategory"));
         $oEncoder->expects($this->once())->method('_getCategory')->will($this->returnValue($oCategory));
@@ -1066,8 +1066,8 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = $this->getMock("oxarticle", array("inCategory"));
         $oArticle->expects($this->once())->method('inCategory')->will($this->returnValue(true));
 
-            $oArticle->loadInLang(1, '8a142c410f55ed579.98106125');
-            $sUrl = "en/" . oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Table+Lamp+SPHERE+red.html";
+        $oArticle->loadInLang(1, '8a142c410f55ed579.98106125');
+        $sUrl = "en/" . oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Table+Lamp+SPHERE+red.html";
 
         $oEncoder = $this->getMock('modSeoEncoderArticle', array('_loadFromDb', "_getCategory"));
         $oEncoder->expects($this->once())->method('_getCategory')->will($this->returnValue($oCategory));
@@ -1088,8 +1088,8 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = $this->getMock("oxarticle", array("inCategory"));
         $oArticle->expects($this->once())->method('inCategory')->will($this->returnValue(true));
-            $oArticle->loadInLang(1, '8a142c410f55ed579.98106125');
-            $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . '/Tischlampe-SPHERE-rot.html';
+        $oArticle->loadInLang(1, '8a142c410f55ed579.98106125');
+        $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . '/Tischlampe-SPHERE-rot.html';
 
         $oEncoder = $this->getMock('oxSeoEncoderArticle', array('_loadFromDb', "_getCategory"));
         $oEncoder->expects($this->once())->method('_getCategory')->will($this->returnValue($oCategory));
@@ -1107,8 +1107,8 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = $this->getMock("oxarticle", array("inCategory"));
         $oArticle->expects($this->once())->method('inCategory')->will($this->returnValue(true));
-            $oArticle->loadInLang(0, '8a142c410f55ed579.98106125');
-            $sUrl = "en/" . oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Table+Lamp+SPHERE+red.html";
+        $oArticle->loadInLang(0, '8a142c410f55ed579.98106125');
+        $sUrl = "en/" . oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Table+Lamp+SPHERE+red.html";
 
         $oEncoder = $this->getMock('modSeoEncoderArticle', array('_loadFromDb', "_getCategory"));
         $oEncoder->expects($this->once())->method('_getCategory')->will($this->returnValue($oCategory));
@@ -1132,8 +1132,8 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
     {
         $oArticle = new oxarticle();
 
-            $oArticle->loadInLang(0, '1127');
-            $sExp = "Blinkende-Eiswuerfel-FLASH";
+        $oArticle->loadInLang(0, '1127');
+        $sExp = "Blinkende-Eiswuerfel-FLASH";
 
         $oEncoder = oxRegistry::get("oxSeoEncoderArticle");
         $oEncoder->setSeparator();
@@ -1147,7 +1147,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
      */
     public function testActicleIsSavedSeoUrlShouldStayTheSame()
     {
-            $sArtId = '1131';
+        $sArtId = '1131';
 
         $oArticle = new oxarticle();
         $oArticle->load($sArtId);

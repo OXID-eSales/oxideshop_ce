@@ -49,7 +49,7 @@ class Unit_Views_exceptionErrorTest extends OxidTestCase
     {
         $sEx = "testText";
         $aErrors = array("default" => array("aaa" => serialize($sEx)));
-       
+
         $oErr = $this->getMock("exceptionError", array("_getErrors", 'getViewData'));
         $oErr->expects($this->once())->method('getViewData')->will($this->returnValue(array()));
         $oErr->expects($this->once())->method('_getErrors')->will($this->returnValue($aErrors));

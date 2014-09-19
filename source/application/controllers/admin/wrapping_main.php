@@ -87,15 +87,15 @@ class Wrapping_Main extends oxAdminDetails
             $aParams['oxwrapping__oxactive'] = 0;
         }
 
-            // shopid
-            $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
+        // shopid
+        $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
         $oWrapping = oxNew("oxwrapping");
 
         if ($soxId != "-1") {
             $oWrapping->loadInLang($this->_iEditLang, $soxId);
-                // #1173M - not all pic are deleted, after article is removed
-                oxRegistry::get("oxUtilsPic")->overwritePic($oWrapping, 'oxwrapping', 'oxpic', 'WP', '0', $aParams, $this->getConfig()->getPictureDir(false));
+            // #1173M - not all pic are deleted, after article is removed
+            oxRegistry::get("oxUtilsPic")->overwritePic($oWrapping, 'oxwrapping', 'oxpic', 'WP', '0', $aParams, $this->getConfig()->getPictureDir(false));
         } else {
             $aParams['oxwrapping__oxid'] = null;
             //$aParams = $oWrapping->ConvertNameArray2Idx( $aParams);
@@ -128,8 +128,8 @@ class Wrapping_Main extends oxAdminDetails
             $aParams['oxwrapping__oxactive'] = 0;
         }
 
-            // shopid
-            $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
+        // shopid
+        $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
         $oWrapping = oxNew("oxwrapping");
 

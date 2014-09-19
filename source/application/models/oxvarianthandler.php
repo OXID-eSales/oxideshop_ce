@@ -259,9 +259,9 @@ class oxVariantHandler extends oxSuperCfg
         // checkbox handling
         $aParams['oxarticles__oxactive'] = 0;
 
-            // shopid
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $aParams['oxarticles__oxshopid'] = $sShopID;
+        // shopid
+        $sShopID = oxRegistry::getSession()->getVariable("actshop");
+        $aParams['oxarticles__oxshopid'] = $sShopID;
 
         // varianthandling
         $aParams['oxarticles__oxparentid'] = $sParentId;

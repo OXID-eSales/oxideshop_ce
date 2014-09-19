@@ -87,7 +87,7 @@ class Unit_Core_oxvoucherserieTest extends OxidTestCase
         }
 
         $this->_remAdditionalInfo();
-        
+
         $this->cleanUpTable('oxvouchers');
 
         parent::tearDown();
@@ -132,7 +132,7 @@ class Unit_Core_oxvoucherserieTest extends OxidTestCase
                 $oNewVoucher->oxvouchers__oxallowuseanother = new oxField($oSerie->oxvoucherseries__oxallowuseanother->value, oxField::T_RAW);
                 $oNewVoucher->oxvouchers__oxreserver = new oxField((int) $blReserved, oxField::T_RAW);
 
-                    $oNewVoucher->oxvouchers__oxshopid = new oxField($oSerie->oxvoucherseries__oxshopid->value, oxField::T_RAW);
+                $oNewVoucher->oxvouchers__oxshopid = new oxField($oSerie->oxvoucherseries__oxshopid->value, oxField::T_RAW);
 
                 $oNewVoucher->save();
                 $blReserved = !$blReserved;
@@ -378,7 +378,7 @@ class Unit_Core_oxvoucherserieTest extends OxidTestCase
             if (!$oSerie->Load($sOxid)) {
                 $this->fail('can not load oxvoucherserie');
             }
-            
+
             // Create new used voucher
             $oNewVoucher = oxNew("oxvoucher");
             $oNewVoucher->oxvouchers__oxvouchernr = new oxField('_test_' . $sOxid);
@@ -407,7 +407,7 @@ class Unit_Core_oxvoucherserieTest extends OxidTestCase
             if (!$oSerie->Load($sOxid)) {
                 $this->fail('can not load oxvoucherserie');
             }
-            
+
             // Create new used voucher
             $oNewVoucher = oxNew("oxvoucher");
             $oNewVoucher->oxvouchers__oxvouchernr = new oxField('_test_' . $sOxid);

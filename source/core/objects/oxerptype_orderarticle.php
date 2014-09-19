@@ -77,7 +77,7 @@ class oxERPType_OrderArticle extends oxERPType
      */
     public function checkWriteAccess($oObj, $aData = null)
     {
-            return;
+        return;
 
         if ($oObj->oxorderarticles__oxordershopid->value != oxRegistry::getConfig()->getShopId()) {
             throw new Exception(oxERPBase::$ERROR_USER_NO_RIGHTS);
@@ -97,10 +97,10 @@ class oxERPType_OrderArticle extends oxERPType
      */
     protected function _getSqlFieldName($sField, $iLanguage = 0, $iShopID = 1)
     {
-            switch ($sField) {
-                case 'OXORDERSHOPID':
-                    return "'1' as $sField";
-            }
+        switch ($sField) {
+            case 'OXORDERSHOPID':
+                return "'1' as $sField";
+        }
 
         return parent::_getSqlFieldName($sField, $iLanguage, $iShopID);
     }
@@ -126,9 +126,9 @@ class oxERPType_OrderArticle extends oxERPType
             $aData['OXPERSPARAM'] = serialize($aPersVals);
         }
 
-            if (isset($aData['OXORDERSHOPID'])) {
-                $aData['OXORDERSHOPID'] = 'oxbaseshop';
-            }
+        if (isset($aData['OXORDERSHOPID'])) {
+            $aData['OXORDERSHOPID'] = 'oxbaseshop';
+        }
 
         return $aData;
     }

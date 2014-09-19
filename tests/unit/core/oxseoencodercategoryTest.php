@@ -118,10 +118,10 @@ class Unit_Core_oxSeoEncoderCategoryTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-            $sCatId = '8a142c3e4143562a5.46426637';
-            $sSubCatId = '8a142c3e60a535f16.78077188';
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'Geschenke/';
-            $sSubUrl = oxRegistry::getConfig()->getShopUrl() . 'Geschenke/Wohnen/Uhren/';
+        $sCatId = '8a142c3e4143562a5.46426637';
+        $sSubCatId = '8a142c3e60a535f16.78077188';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'Geschenke/';
+        $sSubUrl = oxRegistry::getConfig()->getShopUrl() . 'Geschenke/Wohnen/Uhren/';
 
         $oSubCategory = new oxCategory();
         $oSubCategory->load($sSubCatId);
@@ -192,8 +192,8 @@ class Unit_Core_oxSeoEncoderCategoryTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-            $sCatId = '8a142c3e4d3253c95.46563530';
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'Geschenke/Fantasy/';
+        $sCatId = '8a142c3e4d3253c95.46563530';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'Geschenke/Fantasy/';
 
         $oCategory = new oxCategory();
         $oCategory->load($sCatId);
@@ -206,8 +206,8 @@ class Unit_Core_oxSeoEncoderCategoryTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-            $sCatId = '8a142c3e4d3253c95.46563530';
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/Gifts/Fantasy/';
+        $sCatId = '8a142c3e4d3253c95.46563530';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/Gifts/Fantasy/';
 
         $oCategory = new oxCategory();
         $oCategory->loadInLang(1, $sCatId);
@@ -223,8 +223,8 @@ class Unit_Core_oxSeoEncoderCategoryTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-            $sCatId = '8a142c3e4d3253c95.46563530';
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'Geschenke/Fantasy/';
+        $sCatId = '8a142c3e4d3253c95.46563530';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'Geschenke/Fantasy/';
 
         $oCategory = new oxCategory();
         $oCategory->loadInLang(1, $sCatId);
@@ -237,8 +237,8 @@ class Unit_Core_oxSeoEncoderCategoryTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-            $sCatId = '8a142c3e4d3253c95.46563530';
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/Gifts/Fantasy/';
+        $sCatId = '8a142c3e4d3253c95.46563530';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/Gifts/Fantasy/';
 
         $oCategory = new oxCategory();
         $oCategory->loadInLang(0, $sCatId);
@@ -270,9 +270,9 @@ class Unit_Core_oxSeoEncoderCategoryTest extends OxidTestCase
         $oCategory = oxNew( 'oxCategory' );
         $oSubCategory = oxNew( 'oxCategory' );
 
-            $oCategory->load( "8a142c3e49b5a80c1.23676990" );
-            $oSubCategory->load( "8a142c3e60a535f16.78077188" );
-            $sUrl = 'Geschenke_prepared_/unqBar-Equipment_prepared_/unqUhren_prepared_/unq';
+        $oCategory->load( "8a142c3e49b5a80c1.23676990" );
+        $oSubCategory->load( "8a142c3e60a535f16.78077188" );
+        $sUrl = 'Geschenke_prepared_/unqBar-Equipment_prepared_/unqUhren_prepared_/unq';
 
         $oCategory->setSubCat( $oSubCategory );
 
@@ -291,8 +291,8 @@ class Unit_Core_oxSeoEncoderCategoryTest extends OxidTestCase
         // setting parameters
         $oSubCategory = oxNew( 'oxCategory' );
 
-            $oSubCategory->load( "8a142c3e49b5a80c1.23676990" );
-            $sUrl = 'Geschenke_prepared_/unqBar-Equipment_prepared_/unq';
+        $oSubCategory->load( "8a142c3e49b5a80c1.23676990" );
+        $sUrl = 'Geschenke_prepared_/unqBar-Equipment_prepared_/unq';
 
         oxTestModules::addFunction('oxSeoEncoderCategory', '_loadFromDb', '{return false;}');
         oxTestModules::addFunction('oxSeoEncoderCategory', '_prepareTitle', '{return $aA[0]."_prepared_";}');
@@ -311,8 +311,8 @@ class Unit_Core_oxSeoEncoderCategoryTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/Gifts/Fantasy/23/';
-            $sCatId = '8a142c3e4d3253c95.46563530';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/Gifts/Fantasy/23/';
+        $sCatId = '8a142c3e4d3253c95.46563530';
 
         $oCategory = new oxCategory();
         $oCategory->loadInLang(1, $sCatId);
@@ -325,8 +325,8 @@ class Unit_Core_oxSeoEncoderCategoryTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/Gifts/Fantasy/23/';
-            $sCatId = '8a142c3e4d3253c95.46563530';
+        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/Gifts/Fantasy/23/';
+        $sCatId = '8a142c3e4d3253c95.46563530';
 
         $oCategory = new oxCategory();
         $oCategory->loadInLang(0, $sCatId);
@@ -340,8 +340,8 @@ class Unit_Core_oxSeoEncoderCategoryTest extends OxidTestCase
      */
     public function testMarkRelatedAsExpired()
     {
-            $sCat = '8a142c3e4143562a5.46426637';
-            $sSubCat = '8a142c3e44ea4e714.31136811';
+        $sCat = '8a142c3e4143562a5.46426637';
+        $sSubCat = '8a142c3e44ea4e714.31136811';
         $sArt = 'testArt';
 
         $o2c = new oxobject2category();
@@ -393,7 +393,7 @@ class Unit_Core_oxSeoEncoderCategoryTest extends OxidTestCase
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'obj_id'"));
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'obj_id'"));
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxtype = 'oxarticle' and oxparams = 'obj_id' "));
-        
+
         $oObj = new oxbase();
         $oObj->setId('obj_id');
 

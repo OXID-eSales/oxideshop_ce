@@ -166,13 +166,13 @@ class oxERPType
             }
         }
 
-            switch ($sField) {
-                case 'OXSHOPID':
-                case 'OXSHOPINCL':
-                    return "1 as $sField";
-                case 'OXSHOPEXCL':
-                    return "0 as $sField";
-            }
+        switch ($sField) {
+            case 'OXSHOPID':
+            case 'OXSHOPINCL':
+                return "1 as $sField";
+            case 'OXSHOPEXCL':
+                return "0 as $sField";
+        }
 
         return $sField;
     }
@@ -245,7 +245,7 @@ class oxERPType
      */
     public function checkWriteAccess($oObj, $aData = null)
     {
-            return;
+        return;
 
         if ($oObj->isDerived()) {
             throw new Exception(oxERPBase::$ERROR_USER_NO_RIGHTS);
@@ -557,9 +557,9 @@ class oxERPType
     protected function _preAssignObject($oShopObject, $aData, $blAllowCustomShopId)
     {
         /*
-            if (isset($aData['OXSHOPID'])) {
-                $aData['OXSHOPID'] = 'oxbaseshop';
-            }
+        if (isset($aData['OXSHOPID'])) {
+            $aData['OXSHOPID'] = 'oxbaseshop';
+        }
 
         */
 

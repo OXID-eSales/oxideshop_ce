@@ -241,7 +241,7 @@ class oxCategory extends oxI18n implements oxIUrl
     public function load($sOXID)
     {
 
-            $aData = $this->_loadFromDb($sOXID);
+        $aData = $this->_loadFromDb($sOXID);
 
         if ($aData) {
             $this->assign($aData);
@@ -812,9 +812,9 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function assignViewableRecord($sSelect)
     {
-            if ($this->assignRecord($sSelect)) {
-                return true;
-            }
+        if ($this->assignRecord($sSelect)) {
+            return true;
+        }
 
 
         return false;

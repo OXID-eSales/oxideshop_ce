@@ -717,7 +717,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
     {
         $sFullAdminDir = getShopBasePath() . '/application/views/admin';
 
-            $sMenuFile = '/menu_ce.xml';
+        $sMenuFile = '/menu_ce.xml';
 
         $sFile = $sFullAdminDir . $sMenuFile;
         if (!file_exists($sFile) && file_exists($sFullAdminDir . '/menu.xml')) {

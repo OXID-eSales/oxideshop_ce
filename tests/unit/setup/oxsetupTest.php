@@ -117,7 +117,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
     {
         $iCount = 11;
 
-            $iCount = 9;
+        $iCount = 9;
 
         $oSetup = new oxSetup();
         $this->assertEquals($iCount, count($oSetup->getSteps()));

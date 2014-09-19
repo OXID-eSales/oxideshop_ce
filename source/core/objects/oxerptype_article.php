@@ -191,7 +191,7 @@ class oxERPType_Article extends oxERPType
      */
     public function checkWriteAccess($oObj, $aData = null)
     {
-            return;
+        return;
 
     }
 }

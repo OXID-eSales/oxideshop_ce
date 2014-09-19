@@ -39,9 +39,9 @@ class Unit_Admin_DiscountUsersAjaxTest extends OxidTestCase
     {
         parent::setUp();
 
-            oxDb::getDb()->execute("insert into oxuser set oxid='_testUser1', oxusername='_testUserName1', oxshopid='oxbaseshop'");
-            oxDb::getDb()->execute("insert into oxuser set oxid='_testUser2', oxusername='_testUserName2', oxshopid='oxbaseshop'");
-            oxDb::getDb()->execute("insert into oxuser set oxid='_testUser3', oxusername='_testUserName3', oxshopid='oxbaseshop'");
+        oxDb::getDb()->execute("insert into oxuser set oxid='_testUser1', oxusername='_testUserName1', oxshopid='oxbaseshop'");
+        oxDb::getDb()->execute("insert into oxuser set oxid='_testUser2', oxusername='_testUserName2', oxshopid='oxbaseshop'");
+        oxDb::getDb()->execute("insert into oxuser set oxid='_testUser3', oxusername='_testUserName3', oxshopid='oxbaseshop'");
 
 
         oxDb::getDb()->execute("insert into oxobject2discount set oxid='_testO2DRemove1', oxdiscountid='_testDiscount', oxobjectid = '_testUser1', oxtype = 'oxuser'");

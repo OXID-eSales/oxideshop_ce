@@ -52,39 +52,39 @@ class PriceAlarm_Send extends oxAdminList
 
         $iStart = oxRegistry::getConfig()->getRequestParameter("iStart");
         $iAllCnt = oxRegistry::getConfig()->getRequestParameter("iAllCnt");
-            // #1140 R
-            $sSelect = "select oxpricealarm.oxid, oxpricealarm.oxemail, oxpricealarm.oxartid, oxpricealarm.oxprice " .
-                       "from oxpricealarm, oxarticles where oxarticles.oxid = oxpricealarm.oxartid " .
-                       "and oxpricealarm.oxsended = '0000-00-00 00:00:00'";
-            if (isset($iStart)) {
-                $rs = $oDB->SelectLimit($sSelect, $myConfig->getConfigParam('iCntofMails'), $iStart);
-            } else {
-                $rs = $oDB->Execute($sSelect);
-            }
+        // #1140 R
+        $sSelect = "select oxpricealarm.oxid, oxpricealarm.oxemail, oxpricealarm.oxartid, oxpricealarm.oxprice " .
+                   "from oxpricealarm, oxarticles where oxarticles.oxid = oxpricealarm.oxartid " .
+                   "and oxpricealarm.oxsended = '0000-00-00 00:00:00'";
+        if (isset($iStart)) {
+            $rs = $oDB->SelectLimit($sSelect, $myConfig->getConfigParam('iCntofMails'), $iStart);
+        } else {
+            $rs = $oDB->Execute($sSelect);
+        }
 
-            $iAllCntTmp = 0;
+        $iAllCntTmp = 0;
 
-            if ($rs != false && $rs->recordCount() > 0) {
-                while (!$rs->EOF) {
-                    $oArticle = oxNew("oxarticle");
-                    $oArticle->load($rs->fields['oxid']);
-                    if ($oArticle->getPrice()->getBruttoPrice() <= $rs->fields['oxprice']) {
-                        $this->sendeMail(
-                            $rs->fields['oxemail'],
-                            $rs->fields['oxartid'],
-                            $rs->fields['oxid'],
-                            $rs->fields['oxprice']
-                        );
-                        $iAllCntTmp++;
-                    }
-                    $rs->moveNext();
+        if ($rs != false && $rs->recordCount() > 0) {
+            while (!$rs->EOF) {
+                $oArticle = oxNew("oxarticle");
+                $oArticle->load($rs->fields['oxid']);
+                if ($oArticle->getPrice()->getBruttoPrice() <= $rs->fields['oxprice']) {
+                    $this->sendeMail(
+                        $rs->fields['oxemail'],
+                        $rs->fields['oxartid'],
+                        $rs->fields['oxid'],
+                        $rs->fields['oxprice']
+                    );
+                    $iAllCntTmp++;
                 }
+                $rs->moveNext();
             }
-            if (!isset($iStart)) {
-                // first call
-                $iStart = 0;
-                $iAllCnt = $iAllCntTmp;
-            }
+        }
+        if (!isset($iStart)) {
+            // first call
+            $iStart = 0;
+            $iAllCnt = $iAllCntTmp;
+        }
 
 
         // adavance mail pointer and set parameter

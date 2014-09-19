@@ -622,21 +622,6 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
-     * Compares country VAT identification number with it's prefix.
-     *
-     * @param array     $aInvAddress
-     * @param oxCountry $oCountry
-     *
-     * @deprecated since v5.2 (2014-07-28); This logic was moved to oxCompanyVatInValidator
-     *
-     * @return bool
-     */
-    private function _isVATIdentificationNumberInvalid($aInvAddress, $oCountry)
-    {
-        return (bool) strncmp($aInvAddress['oxuser__oxustid'], $oCountry->getVATIdentificationNumberPrefix(), 2);
-    }
-
-    /**
      * Gets VAT in validator.
      *
      * @return oxOnlineVatIdCheck

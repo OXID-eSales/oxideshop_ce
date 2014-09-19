@@ -659,7 +659,7 @@ class oxInputValidator extends oxSuperCfg
             /** @var oxCompanyVatInValidator $oVatInValidator */
             $oVatInValidator = oxNew('oxCompanyVatInValidator', $oCountry);
 
-            /** @var  oxCompanyVatInCompanyChecker $oValidator */
+            /** @var  oxCompanyVatInCountryChecker $oValidator */
             $oValidator = oxNew('oxCompanyVatInCountryChecker');
 
             $oVatInValidator->addChecker($oValidator);

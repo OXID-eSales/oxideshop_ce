@@ -23,7 +23,6 @@
 
 /**
  * Class for validating input
- *
  */
 class oxInputValidator extends oxSuperCfg
 {
@@ -637,9 +636,9 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
-     * VATIN validator setter
+     * VAT IN validator setter
      *
-     * @param oxCompanyVatInValidator $oCompanyVatInValidator
+     * @param oxCompanyVatInValidator $oCompanyVatInValidator validator
      */
     public function setCompanyVatInValidator($oCompanyVatInValidator)
     {
@@ -647,9 +646,9 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
-     * Return VATIN validator
+     * Return VAT IN validator
      *
-     * @param oxCountry $oCountry
+     * @param oxCountry $oCountry country according which VAT id should be checked
      *
      * @return oxCompanyVatInValidator
      */

@@ -98,18 +98,21 @@ class Unit_Views_accountNewsletterTest extends OxidTestCase
      */
     public function testSubscribeCustomStatus()
     {
-        $this->setRequestParam("status", true);
-
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
-        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
-        $oUser = $this->getMock("oxUser", array("setNewsSubscription"));
-        $oUser->expects($this->atLeastOnce())->method('setNewsSubscription')->will($this->returnValue(true));
+        $this->setRequestParam("status", true);
 
-        /** @var Account_Newsletter|PHPUnit_Framework_MockObject_MockObject $oView */
+        $oSubscription = $this->getMock("oxNewsSubscribed", array("setOptInStatus", "setOptInEmailStatus"));
+        $oSubscription->expects($this->once())->method('setOptInStatus')->with($this->equalTo(1));
+        $oSubscription->expects($this->once())->method('setOptInEmailStatus')->with($this->equalTo(0));
+
+        $oUser = $this->getMock("oxUser", array("addToGroup", "getNewsSubscription"));
+        $oUser->expects($this->atLeastOnce())->method('addToGroup')->with($this->equalTo('oxidnewsletter'));
+        $oUser->expects($this->atLeastOnce())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
+
         $oView = $this->getMock("Account_Newsletter", array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $this->assertNull($oView->subscribe());

@@ -478,43 +478,6 @@ class Unit_Views_detailsTest extends OxidTestCase
     }
 
     /**
-     * Test adding of tags and getting error with ajax enabled
-     *
-     * @return null
-     */
-    public function testAddTagsErrorAjax()
-    {
-        $this->setRequestParam('blAjax', true);
-        $this->setRequestParam('newTags', "admin,tag1,tag2,tag3,tag3,tag3");
-
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
-
-        $oArticle = new oxArticle();
-        $oArticle->setId("_testArt");
-
-        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
-        $oDetails = $this->getMock('details', array('getProduct'));
-        $oDetails->expects($this->any())
-            ->method('getProduct')
-            ->will($this->returnValue($oArticle));
-
-        $sResult = '{"tags":["tag1","tag2","tag3"],"invalid":["admin"],"inlist":[]}';
-
-        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
-        $oUtils = $this->getMock('oxUtils', array('showMessageAndExit'));
-        $oUtils->expects($this->any())
-            ->method('showMessageAndExit')
-            ->with($this->equalTo($sResult));
-
-        oxRegistry::set("oxUtils", $oUtils);
-
-        $oDetails->addTags();
-    }
-
-    /**
      * Test highlighting tags.
      * If tag does not exists, it should be created.
      *
@@ -1279,25 +1242,6 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oDetails->expects( $this->once() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
 
         $this->assertEquals( 'product title and varselect', $oDetails->getTitle() );
-    }
-
-    /**
-     * Test base view class title getter with searchtag.
-     *
-     * @return null
-     */
-    public function testGetTitleWithTag()
-    {
-        $this->setRequestParam( 'searchtag', 'someTag' );
-
-        $oProduct = new oxArticle();
-        $oProduct->oxarticles__oxtitle = new oxField( 'product title' );
-        $oProduct->oxarticles__oxvarselect = new oxField( 'and varselect' );
-
-        $oDetails = $this->getMock( 'details', array( 'getProduct' ) );
-        $oDetails->expects( $this->once() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
-
-        $this->assertEquals( 'product title and varselect - someTag', $oDetails->getTitle() );
     }
 
     /**

@@ -55,6 +55,14 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
     {
         parent::setUp();
         $this->aFiles = $_FILES;
+        $aTmpDirectories[] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "targetDir";
+        $aTmpDirectories[] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "sourceDir";
+
+        foreach ($aTmpDirectories as $sDirectory) {
+            if (is_dir(realpath($sDirectory))) {
+                oxRegistry::get('oxUtilsFile')->deleteDir($sDirectory);
+            }
+        }
     }
 
     /**

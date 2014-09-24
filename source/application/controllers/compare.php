@@ -288,7 +288,7 @@ class Compare extends oxUBase
         if ($this->_oArtList === null) {
             if (($aItems = $this->getCompareItems())) {
                 // counts how many pages
-                $oList = oxNew('oxarticlelist');
+                $oList = oxNew('oxArticleList');
                 $oList->loadIds(array_keys($aItems));
 
                 // cut page articles
@@ -314,8 +314,15 @@ class Compare extends oxUBase
         if ($this->_oAttributeList === null) {
             $this->_oAttributeList = false;
             if ($oArtList = $this->getCompArtList()) {
-                $oAttributeList = oxNew('oxattributelist');
-                $this->_oAttributeList = $oAttributeList->loadAttributesByIds(array_keys($oArtList));
+
+                $aProductIds = array_keys($oArtList);
+                foreach ($oArtList as $oArticle) {
+                    if ($oArticle->getParentId()) {
+                        $aProductIds[] = $oArticle->getParentId();
+                    }
+                }
+                $oAttributeList = oxNew('oxAttributeList');
+                $this->_oAttributeList = $oAttributeList->loadAttributesByIds($aProductIds);
             }
         }
 

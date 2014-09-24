@@ -89,13 +89,18 @@
                         <tr>
                             [{foreach key=iProdNr from=$articleList item=product}]
                             <td class="alignTop">
-                              <div id="cmpAttr_[{$smarty.foreach.CmpAttr.iteration}]_[{ $product->oxarticles__oxid->value }]">
-                                [{if $oAttrib->aProd.$iProdNr && $oAttrib->aProd.$iProdNr->value}]
-                                  [{ $oAttrib->aProd.$iProdNr->value }]
-                                [{else}]
-                                  -
-                                [{/if}]
-                              </div>
+                                <div id="cmpAttr_[{$smarty.foreach.CmpAttr.iteration}]_[{ $product->oxarticles__oxid->value }]">
+                                    [{if $oAttrib->aProd.$iProdNr && $oAttrib->aProd.$iProdNr->value}]
+                                        [{$oAttrib->aProd.$iProdNr->value}]
+                                    [{else}]
+                                        [{assign var="sParentId" value=$product->getParentId()}]
+                                        [{if $oAttrib->aProd.$sParentId && $oAttrib->aProd.$sParentId->value}]
+                                            [{$oAttrib->aProd.$sParentId->value}]
+                                        [{else}]
+                                            -
+                                        [{/if}]
+                                    [{/if}]
+                                </div>
                             </td>
                             [{/foreach}]
                         </tr>
@@ -105,7 +110,6 @@
             </td>
         </tr>
     </table>
-
 [{else}]
   [{ oxmultilang ident="MESSAGE_SELECT_AT_LEAST_ONE_PRODUCT" }]
 [{/if}]

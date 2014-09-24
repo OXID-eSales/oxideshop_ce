@@ -105,7 +105,7 @@ class Unit_Views_compareTest extends OxidTestCase
     /**
      * bug #0001566
      */
-    public function testMoveRightSkipsIfNoAnid()
+    public function testMoveRightSkipsIfNoAnId()
     {
         modConfig::setRequestParameter('aid', "");
 
@@ -155,7 +155,7 @@ class Unit_Views_compareTest extends OxidTestCase
     /**
      * Test for getCompareItems
      */
-    public function testSetCompareItemsgetCompareItems()
+    public function testSetCompareItemsGetCompareItems()
     {
         modSession::getInstance()->setVar('aFiltcompproducts', array("testItems1"));
         $oView = new compare();
@@ -210,13 +210,15 @@ class Unit_Views_compareTest extends OxidTestCase
     {
         $oCompare = $this->getProxyClass("compare");
         $oArticle = oxNew("oxArticle");
-        $oCompare->setNonPublicVar("_oArtList", array('1672' => $oArticle));
+        $oCompare->setNonPublicVar("_oArtList", array('1672' => $oArticle, '6b661dda79318ca64ca06e97e4fbcb0a' =>$oArticle));
         $aAttributes = $oCompare->getAttributeList();
 
         $sSelect = "select oxattrid, oxvalue from oxobject2attribute where oxobjectid = '1672'";
         $rs = oxDb::getDB()->execute($sSelect);
         $sSelect = "select oxtitle from oxattribute where oxid = '" . $rs->fields[0] . "'";
         $sTitle = oxDb::getDB()->getOne($sSelect);
+
+        $this->assertEquals(9, count($aAttributes));
 
         $this->assertEquals($rs->fields[1], $aAttributes[$rs->fields[0]]->aProd['1672']->value);
         $this->assertEquals($sTitle, $aAttributes[$rs->fields[0]]->title);
@@ -271,7 +273,6 @@ class Unit_Views_compareTest extends OxidTestCase
         $this->assertEquals(50, $oCompare->_getArticlesPerPage());
         $oCompare->UNITsetArticlesPerPage(-50);
         $this->assertEquals(-50, $oCompare->_getArticlesPerPage());
-
     }
 
     /**

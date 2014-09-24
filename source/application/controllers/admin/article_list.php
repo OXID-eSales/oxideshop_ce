@@ -136,9 +136,7 @@ class Article_List extends oxAdminList
      */
     public function getCategoryList($sType, $sValue)
     {
-        $myConfig = $this->getConfig();
-
-        // parent categorie tree
+        /** @var oxCategoryList $oCatTree parent categorie tree */
         $oCatTree = oxNew("oxCategoryList");
         $oCatTree->loadList();
         if ($sType === 'cat') {

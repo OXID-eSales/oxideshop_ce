@@ -6333,12 +6333,23 @@ class Unit_Core_oxarticleTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSetLoadParentData()
+    public function testGetLoadParentDataDefault()
     {
-        $oArticle = $this->getProxyClass( "oxarticle" );
-        $oArticle->setLoadParentData( true );
+        $oArticle = new oxArticle();
+        $this->assertFalse($oArticle->getLoadParentData());
+    }
 
-        $this->assertTrue( $oArticle->getNonPublicVar( "_blLoadParentData" ) );
+    /**
+     * Test set load parent data.
+     *
+     * @return null
+     */
+    public function testGetSetLoadParentDataTrue()
+    {
+        $oArticle = new oxArticle();
+        $oArticle->setLoadParentData(true);
+
+        $this->assertTrue($oArticle->getLoadParentData());
     }
 
     /**

@@ -2503,5 +2503,19 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $this->assertEquals( $sLogo, $oView->getShopLogo() );
     }
 
+    /**
+     * Tests retrieve session challenge token from session.
+     */
+    public function testGetSessionChallengeToken()
+    {
+        $sToken = 'session_challenge_token';
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('getSessionChallengeToken'));
+        $oSession->expects($this->once())->method('getSessionChallengeToken')->will($this->returnValue($sToken));
+        oxRegistry::set('oxSession', $oSession);
+
+        $oViewConfig = new oxViewConfig();
+        $this->assertSame($sToken, $oViewConfig->getSessionChallengeToken());
+    }
 }

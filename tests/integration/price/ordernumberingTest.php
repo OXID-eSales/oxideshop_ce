@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -17,13 +16,15 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
 require_once realpath(dirname(__FILE__)) . '/basketconstruct.php';
 
+/**
+ * Class Integration_Price_OrderNumberingTest
+ */
 class Integration_Price_OrderNumberingTest extends OxidTestCase
 {
 

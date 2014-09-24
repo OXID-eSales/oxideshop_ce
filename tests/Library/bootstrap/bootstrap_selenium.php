@@ -75,11 +75,6 @@ if (getenv('OXID_LOCALE') == 'international') {
 }
 
 if (INSTALLSHOP) {
-    $oFileCopier = new oxFileCopier();
-    $oFileCopier->copyFiles(TESTS_DIRECTORY . 'acceptance/testData/', oxPATH);
-}
-
-if (INSTALLSHOP) {
     $oCurl = new oxTestCurl();
     $oCurl->setUrl(shopURL . '/Services/_db.php');
     $oCurl->setParameters(array(
@@ -92,7 +87,10 @@ if (INSTALLSHOP) {
 
 $oServiceCaller = new oxServiceCaller();
 
-if (!ADD_TEST_DATA && !$sModule) {
+if (ADD_TEST_DATA && !$sModule) {
+    $oFileCopier = new oxFileCopier();
+    $oFileCopier->copyFiles(TESTS_DIRECTORY . 'acceptance/testData/', oxPATH);
+
     $sFileName = "acceptance/demodata_PE.sql";
     $oServiceCaller->setParameter('importSql', '@'.$sFileName);
     $oServiceCaller->callService('ShopPreparation', 1);

@@ -41,7 +41,7 @@ define('RESTORE_SHOP_AFTER_TEST_SUITE', getenv('oxSKIPSHOPRESTORE') ? !getenv('o
 define('RESTORE_SHOP_AFTER_TEST', getenv('oxSKIPSHOPRESTORE') ? !getenv('oxSKIPSHOPRESTORE') : $blRestoreShopAfterTest);
 
 define('SHOPRESTORATIONCLASS', getenv('SHOPRESTORATIONCLASS') ? getenv('SHOPRESTORATIONCLASS') : $sDataBaseRestore);
-define('COPYSERVICESTOSHOP', getenv('COPYSERVICESTOSHOP') ? getenv('SHOPRESTORATIONCLASS') : $blCopyServicesToShop);
+define('COPY_SERVICES_TO_SHOP', getenv('COPY_SERVICES_TO_SHOP') ? getenv('COPY_SERVICES_TO_SHOP') : $blCopyServicesToShop);
 
 define('OXID_VERSION', getenv('OXID_VERSION') ? getenv('OXID_VERSION') : $sShopEdition);
 define('TEST_SHOP_SERIAL', getenv('TEST_SHOP_SERIAL') ? getenv('TEST_SHOP_SERIAL') : $sShopSerial);

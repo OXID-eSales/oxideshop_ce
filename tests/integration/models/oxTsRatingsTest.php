@@ -20,8 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
-
 /**
  * oxArticle integration test
  */

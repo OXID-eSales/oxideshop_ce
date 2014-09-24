@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
+
 require_once realpath(dirname(__FILE__)) . '/validator.php';
 require_once realpath(dirname(__FILE__)) . '/environment.php';
 

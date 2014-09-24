@@ -20,8 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
-
 /**
  * Integration test testing corect timestamp setting on update and insert in all tables
  * directly from sql query or with object save() call

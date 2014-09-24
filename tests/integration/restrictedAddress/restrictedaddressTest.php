@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
-
-
+/**
+ * Class Integration_RestrictedAddress_RestrictedAddressTest
+ */
 class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
 {
 

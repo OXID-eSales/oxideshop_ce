@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/unit/OxidTestCase.php';
+
 
 class Integration_Modules_ModuleWithNoMetadataTest extends OxidTestCase
 {

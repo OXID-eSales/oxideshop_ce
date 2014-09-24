@@ -768,6 +768,16 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
+     * Getter for do we load parent data
+     *
+     * @return bool
+     */
+    public function getLoadParentData()
+    {
+        return $this->_blLoadParentData;
+    }
+
+    /**
      * Set _blSkipAbPrice value. If is set to true, then "From price" is not calculated for this object.
      *
      * @param bool $blSkipAbPrice Whether to skip "From" price loading

@@ -200,7 +200,10 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
     public function testGetOrderArticle()
     {
         $oOrderArticle = new oxOrderArticle();
-        $this->assertTrue( $oOrderArticle->UNITgetOrderArticle( "1126" ) instanceof oxarticle );
+
+        $oArticle = $oOrderArticle->UNITgetOrderArticle("1126");
+        $this->assertTrue($oArticle instanceof oxarticle);
+        $this->assertTrue($oArticle->getLoadParentData());
     }
 
     public function testGetSelectLists()

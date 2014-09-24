@@ -28,6 +28,8 @@ $sShopUrl = null; //'http://eshop_url/';
 $sShopPath = realpath('../source/') . '/';
 // eShop edition
 $sShopEdition = 'CE';
+// For PE and EE editions shop serial has to be specified for shop installer to work.
+$sShopSerial = '';
 
 // eShop encoding
 $blUtf8 = false;
@@ -36,13 +38,15 @@ $blVarnish = false;
 // Whether to run subshop tests
 $blIsSubShop = false;
 
-// If set to true, copies testData to eShop and resets the database.
+// If set to true, copies testData to eShop and prepares shop database for testing. Shop still must be installed before running tests.
 $blInstallShop = false;
+// If set to true, services are copied to shop.
+$blCopyServicesToShop = true;
 // Whether to skip addition of default demo data (used when testing modules)
 $blSkipShopSetup = false;
 // Whether to skip restoring of shop data after running tests. If this is set to true, shop will be left
 // at a state, at which test was completed (either failed or passed).
-$blSkipShopRestore = false;
+$blSkipShopRestore = true;
 
 // If specified, runs tests for this module
 $sModule = false;

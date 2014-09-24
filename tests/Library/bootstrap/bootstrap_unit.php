@@ -32,7 +32,7 @@ if (INSTALLSHOP) {
     $sResponse = $oCurl->execute();
 }
 
-require_once 'unit/test_config.inc.php';
+require_once TEST_LIBRARY_PATH . '/test_config.inc.php';
 require_once "unit/OxidTestCase.php";
 
 define('oxADMIN_LOGIN', oxDb::getDb()->getOne("select OXUSERNAME from oxuser where oxid='oxdefaultadmin'"));

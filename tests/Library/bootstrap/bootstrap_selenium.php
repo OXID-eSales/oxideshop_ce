@@ -20,35 +20,7 @@
  * @version   OXID eShop CE
  */
 
-/**
- * Returns shop path.
- *
- * @return string
- */
-function getShopBasePath()
-{
-    return oxPATH;
-}
-
-require_once 'unit/test_utils.php';
-require_once getShopBasePath() . 'core/oxfunctions.php';
-
-// Get db instance.
-$oConfigFile = new oxConfigFile(getShopBasePath() . "config.inc.php");
-
-oxRegistry::set("OxConfigFile", $oConfigFile);
-oxRegistry::set("oxConfig", new oxConfig());
-
-$oDb = new oxDb();
-$oDb->setConfig($oConfigFile);
-$oLegacyDb = $oDb->getDb();
-OxRegistry::set('OxDb', $oLegacyDb);
-
-oxRegistry::getConfig();
-require_once getShopBasePath() . 'core/oxutils.php';
-require_once getShopBasePath() . 'core/adodblite/adodb.inc.php';
-require_once getShopBasePath() . 'core/oxsession.php';
-require_once getShopBasePath() . 'core/oxconfig.php';
+require_once TEST_LIBRARY_PATH . '/test_config.inc.php';
 
 require_once 'acceptance/library/oxTestCase.php';
 require_once TEST_LIBRARY_PATH.'vendor/autoload.php';

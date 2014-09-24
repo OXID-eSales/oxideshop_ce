@@ -155,6 +155,7 @@ class oxcmp_categories extends oxView
      */
     protected function _loadCategoryTree($sActCat)
     {
+        /** @var oxCategoryList $oCategoryTree */
         $oCategoryTree = oxNew('oxCategoryList');
         $oCategoryTree->buildTree($sActCat);
 

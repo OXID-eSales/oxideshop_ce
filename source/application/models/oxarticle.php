@@ -792,6 +792,16 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $this->_blLoadParentData = $blLoadParentData;
     }
 
+    /**
+     * Getter for do we load parent data
+     *
+     * @return bool
+     */
+    public function getLoadParentData()
+    {
+        return $this->_blLoadParentData;
+    }
+
 
     /**
      * Returns true if the field is multilanguage

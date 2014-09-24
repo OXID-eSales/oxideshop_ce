@@ -373,6 +373,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
 
             $sArticleId = $sArticleId ? $sArticleId : $this->getProductId();
             $oArticle = oxNew("oxArticle");
+            $oArticle->setLoadParentData(true);
             if ($oArticle->load($sArticleId)) {
                 $this->_oOrderArticle = $oArticle;
             }
@@ -474,6 +475,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
     public function getBasketPrice($dAmount, $aSelList, $oBasket)
     {
         $oArticle = $this->_getOrderArticle();
+
         if ($oArticle) {
             return $oArticle->getBasketPrice($dAmount, $aSelList, $oBasket);
         } else {

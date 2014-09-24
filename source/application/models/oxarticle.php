@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -790,6 +790,16 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     public function setLoadParentData($blLoadParentData)
     {
         $this->_blLoadParentData = $blLoadParentData;
+    }
+
+    /**
+     * Getter for do we load parent data
+     *
+     * @return bool
+     */
+    public function getLoadParentData()
+    {
+        return $this->_blLoadParentData;
     }
 
 

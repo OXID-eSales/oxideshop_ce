@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -373,6 +373,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
 
             $sArticleId = $sArticleId ? $sArticleId : $this->getProductId();
             $oArticle = oxNew("oxArticle");
+            $oArticle->setLoadParentData(true);
             if ($oArticle->load($sArticleId)) {
                 $this->_oOrderArticle = $oArticle;
             }
@@ -474,6 +475,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
     public function getBasketPrice($dAmount, $aSelList, $oBasket)
     {
         $oArticle = $this->_getOrderArticle();
+
         if ($oArticle) {
             return $oArticle->getBasketPrice($dAmount, $aSelList, $oBasket);
         } else {

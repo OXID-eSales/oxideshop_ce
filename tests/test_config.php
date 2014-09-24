@@ -46,7 +46,7 @@ $blCopyServicesToShop = true;
 $blSkipShopSetup = false;
 // Whether to skip restoring of shop data after running tests. If this is set to true, shop will be left
 // at a state, at which test was completed (either failed or passed).
-$blSkipShopRestore = true;
+$blSkipShopRestore = false;
 
 // If specified, runs tests for this module
 $sModule = false;

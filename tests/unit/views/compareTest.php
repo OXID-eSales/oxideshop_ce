@@ -36,7 +36,7 @@ class Unit_Views_compareTest extends OxidTestCase
         parent::setUp();
         $myDB = oxDb::getDB();
         $sShopId = oxRegistry::getConfig()->getShopId();
-        // adding article to recommendlist
+        // adding article to recommend list
         $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "' . $sShopId . '" ) ';
         $myDB->Execute($sQ);
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testlist", "2000", "testlist", "test" ) ';
@@ -157,7 +157,7 @@ class Unit_Views_compareTest extends OxidTestCase
      */
     public function testSetCompareItemsGetCompareItems()
     {
-        modSession::getInstance()->setVar('aFiltcompproducts', array("testItems1"));
+        $this->getSession()->setVar('aFiltcompproducts', array("testItems1"));
         $oView = new compare();
         $this->assertEquals(array("testItems1"), $oView->getCompareItems());
 

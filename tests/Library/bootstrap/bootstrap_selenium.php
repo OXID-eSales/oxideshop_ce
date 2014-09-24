@@ -92,7 +92,7 @@ if (INSTALLSHOP) {
 
 $oServiceCaller = new oxServiceCaller();
 
-if (!SKIPSHOPSETUP && !$sModule) {
+if (!ADD_TEST_DATA && !$sModule) {
     $sFileName = "acceptance/demodata_PE.sql";
     $oServiceCaller->setParameter('importSql', '@'.$sFileName);
     $oServiceCaller->callService('ShopPreparation', 1);

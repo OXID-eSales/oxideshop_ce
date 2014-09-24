@@ -38,15 +38,18 @@ $blVarnish = false;
 // Whether to run subshop tests
 $blIsSubShop = false;
 
-// If set to true, copies testData to eShop and prepares shop database for testing. Shop still must be installed before running tests.
-$blInstallShop = false;
-// If set to true, services are copied to shop.
+// Whether to copy services to shop. If services are already in shop directory, this can be set to false.
 $blCopyServicesToShop = true;
-// Whether to skip addition of default demo data (used when testing modules)
-$blSkipShopSetup = false;
-// Whether to skip restoring of shop data after running tests. If this is set to true, shop will be left
+// Whether to prepare shop database for testing. Shop config.ing.php file must be correct.
+$blInstallShop = false;
+
+// Whether to add tests data to shop. Can be used when $blInstallShop is set to false and test data is already added.
+$blAddTestData = true;
+// Whether to restore shop data after running all tests. If this is set to false, shop will be left with tests data added on it.
+$blRestoreShopAfterTestSuite = false;
+// Whether to restore shop data after test. If this is set to false, shop will be left
 // at a state, at which test was completed (either failed or passed).
-$blSkipShopRestore = false;
+$blRestoreShopAfterTest = true;
 
 // If specified, runs tests for this module
 $sModule = false;

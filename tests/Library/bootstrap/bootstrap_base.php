@@ -59,20 +59,20 @@ if (COPYSERVICESTOSHOP) {
     $oFileCopier->copyFiles(TEST_LIBRARY_PATH.'/Services', oxPATH.'/Services', true);
 }
 
-if (!SKIPSHOPRESTORE) {
+if (!RESTORE_SHOP_AFTER_TEST_SUITE) {
     // dumping original database
     $oServiceCaller = new oxServiceCaller();
     $oServiceCaller->setParameter('dumpDB', true);
     $oServiceCaller->setParameter('dump-prefix', 'orig_db_dump');
     try {
         $oServiceCaller->callService('ShopPreparation', 1);
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         define('SKIPSHOPRESTORE_ERROR', true);
     }
 }
 
 register_shutdown_function(function () {
-    if (!SKIPSHOPRESTORE && !defined('SKIPSHOPRESTORE_ERROR')) {
+    if (!RESTORE_SHOP_AFTER_TEST_SUITE && !defined('SKIPSHOPRESTORE_ERROR')) {
         $oServiceCaller = new oxServiceCaller();
         $oServiceCaller->setParameter('restoreDB', true);
         $oServiceCaller->setParameter('dump-prefix', 'orig_db_dump');

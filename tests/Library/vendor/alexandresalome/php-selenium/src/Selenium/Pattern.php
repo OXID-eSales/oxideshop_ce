@@ -23,7 +23,7 @@ class Pattern
      *
      * @return string The selenium pattern
      */
-    static public function glob($pattern)
+    public static function glob($pattern)
     {
         return 'glob:'.$pattern;
     }
@@ -35,7 +35,7 @@ class Pattern
      *
      * @return string The selenium pattern
      */
-    static public function regexp($regexp)
+    public static function regexp($regexp)
     {
         return 'regexp:'.$regexp;
     }
@@ -47,7 +47,7 @@ class Pattern
      *
      * @return string The selenium pattern
      */
-    static public function exact($string)
+    public static function exact($string)
     {
         return 'exact:'.$string;
     }

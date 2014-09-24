@@ -19,7 +19,7 @@ class BaseBrowser
     /**
      * Driver to the server
      *
-     * @var Selenium\Driver
+     * @var Driver
      */
     protected $driver;
 
@@ -38,10 +38,11 @@ class BaseBrowser
     protected $type;
 
     /**
-     * Instanciates a browser.
+     * Instantiates a browser.
      *
-     * @param Selenium\Driver $driver    Driver of the browser
-     * @param string          $startPage The start page of the browser
+     * @param Driver $driver    Driver of the browser
+     * @param string $startPage The start page of the browser
+     * @param string $type
      */
     public function __construct(Driver $driver, $startPage, $type = '*firefox')
     {
@@ -53,7 +54,7 @@ class BaseBrowser
     /**
      * Starts the browser on the server.
      *
-     * @return Selenium\Browser Fluid interface
+     * @return Browser Fluid interface
      */
     public function start()
     {
@@ -65,7 +66,7 @@ class BaseBrowser
     /**
      * Stops the browser on the server.
      *
-     * @return Selenium\Browser Fluid interface
+     * @return Browser Fluid interface
      */
     public function stop()
     {

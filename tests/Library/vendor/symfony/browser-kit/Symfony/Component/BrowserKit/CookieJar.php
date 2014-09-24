@@ -55,7 +55,25 @@ class CookieJar
         $this->flushExpiredCookies();
 
         if (!empty($domain)) {
-            return isset($this->cookieJar[$domain][$path][$name]) ? $this->cookieJar[$domain][$path][$name] : null;
+            foreach ($this->cookieJar as $cookieDomain => $pathCookies) {
+                if ($cookieDomain) {
+                    $cookieDomain = '.'.ltrim($cookieDomain, '.');
+                    if ($cookieDomain != substr('.'.$domain, -strlen($cookieDomain))) {
+                        continue;
+                    }
+                }
+
+                foreach ($pathCookies as $cookiePath => $namedCookies) {
+                    if ($cookiePath != substr($path, 0, strlen($cookiePath))) {
+                        continue;
+                    }
+                    if (isset($namedCookies[$name])) {
+                        return $namedCookies[$name];
+                    }
+                }
+            }
+
+            return;
         }
 
         // avoid relying on this behavior that is mainly here for BC reasons
@@ -64,8 +82,6 @@ class CookieJar
                 return $cookies[$path][$name];
             }
         }
-
-        return null;
     }
 
     /**
@@ -183,7 +199,7 @@ class CookieJar
      * Returns not yet expired cookie values for the given URI.
      *
      * @param string  $uri             A URI
-     * @param Boolean $returnsRawValue Returns raw value or urldecoded value
+     * @param bool    $returnsRawValue Returns raw value or urldecoded value
      *
      * @return array An array of cookie values
      */

@@ -22,7 +22,7 @@ use Symfony\Component\DomCrawler\Crawler;
 class XmlLoader
 {
     /**
-     * @var Selenium\Specification\Specification
+     * @var Specification
      */
     protected $specification;
 
@@ -60,9 +60,9 @@ class XmlLoader
     /**
      * Returns a method in the current specification from a DOMNode
      *
-     * @param DOMNode $node A DOMNode
+     * @param \DOMNode $node A DOMNode
      *
-     * @return Selenium\Specification\Method
+     * @return Method
      */
     public function getMethod(\DOMNode $node)
     {
@@ -110,9 +110,9 @@ class XmlLoader
     }
 
     /**
-     * Get return informations (type, description) from a DOMNode
+     * Get return information (type, description) from a DOMNode
      *
-     * @param DOMNode $node The DOMNode to parse
+     * @param \DOMNode $node The DOMNode to parse
      *
      * @return array First element is the type, second the description
      */
@@ -129,9 +129,9 @@ class XmlLoader
     /**
      * Get a parameter model object from a DOMNode
      *
-     * @param DOMNode $node A DOMNode to convert to specification parameter
+     * @param \DOMNode $node A DOMNode to convert to specification parameter
      *
-     * @return Selenium\Specification\Parameter The parameter model object
+     * @return Parameter The parameter model object
      */
     protected function getParameter(\DOMNode $node)
     {
@@ -146,7 +146,7 @@ class XmlLoader
     /**
      * Get the inner content of a DOMNode.
      *
-     * @param DOMNode $node A DOMNode instance
+     * @param \DOMNode $node A DOMNode instance
      *
      * @return string The inner content
      */

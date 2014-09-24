@@ -16,7 +16,6 @@ use Symfony\Component\Finder\Iterator;
 use Symfony\Component\Finder\Shell\Shell;
 use Symfony\Component\Finder\Expression\Expression;
 use Symfony\Component\Finder\Shell\Command;
-use Symfony\Component\Finder\Iterator\SortableIterator;
 use Symfony\Component\Finder\Comparator\NumberComparator;
 use Symfony\Component\Finder\Comparator\DateComparator;
 
@@ -148,7 +147,7 @@ abstract class AbstractFindAdapter extends AbstractAdapter
     /**
      * @param Command  $command
      * @param string[] $names
-     * @param Boolean  $not
+     * @param bool     $not
      */
     private function buildNamesFiltering(Command $command, array $names, $not = false)
     {
@@ -196,7 +195,7 @@ abstract class AbstractFindAdapter extends AbstractAdapter
      * @param Command  $command
      * @param string   $dir
      * @param string[] $paths
-     * @param Boolean  $not
+     * @param bool     $not
      */
     private function buildPathsFiltering(Command $command, $dir, array $paths, $not = false)
     {
@@ -256,6 +255,7 @@ abstract class AbstractFindAdapter extends AbstractAdapter
                 case '!=':
                     $command->add('-size -'.$size->getTarget().'c');
                     $command->add('-size +'.$size->getTarget().'c');
+                    break;
                 case '<':
                 default:
                     $command->add('-size -'.$size->getTarget().'c');
@@ -321,7 +321,7 @@ abstract class AbstractFindAdapter extends AbstractAdapter
     /**
      * @param Command $command
      * @param array   $contains
-     * @param Boolean $not
+     * @param bool    $not
      */
     abstract protected function buildContentFiltering(Command $command, array $contains, $not = false);
 }

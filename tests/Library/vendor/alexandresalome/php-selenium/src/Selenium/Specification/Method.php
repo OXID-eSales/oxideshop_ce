@@ -86,7 +86,7 @@ class Method
     /**
      * Adds a parameter to the method.
      *
-     * @param Selenium\Specification\Parameter $parameter Parameter to add
+     * @param Parameter $parameter Parameter to add
      */
     public function addParameter(Parameter $parameter)
     {
@@ -162,7 +162,7 @@ class Method
     /**
      * Returns parameters of the method.
      *
-     * @return array An array of parameter objects
+     * @return Parameter[] An array of parameter objects
      */
     public function getParameters()
     {

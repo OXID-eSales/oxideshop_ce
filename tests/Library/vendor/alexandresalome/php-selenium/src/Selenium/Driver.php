@@ -38,7 +38,7 @@ class Driver
     protected $sessionId;
 
     /**
-     * Instanciates the driver.
+     * Instantiates the driver.
      *
      * @param string $url     The URL of the server
      * @param int    $timeout Timeout
@@ -106,7 +106,7 @@ class Driver
             throw new Exception("Unexpected response from Selenium server : ".$result);
         }
 
-        return substr($result, 3);
+        return strlen($result) > 3 ? substr($result, 3) : '';
     }
 
     /**
@@ -120,10 +120,38 @@ class Driver
      */
     public function getStringArray($command, $target = null, $value = null)
     {
-        $response = $this->getString($command, $target, $value);
-        $response = preg_replace('/\\\./', '', $response);
+        $string = $this->getString($command, $target, $value);
 
-        return explode(',', $response);
+        $result = array();
+
+        $length  = strlen($string);
+        $current = '';
+        $skip    = false;
+
+        for ($i = 0; $i < $length; $i++) {
+            if (true === $skip) {
+                $skip = false;
+                continue;
+            }
+
+            $char = $string[$i];
+
+            if ($char === '\\') {
+                $skip = true;
+
+                continue;
+            }
+
+            if ($char === ',') {
+                $result[] = $current;
+                $current = '';
+
+                continue;
+            }
+            $current .= $char;
+        }
+
+        return $result;
     }
 
     /**

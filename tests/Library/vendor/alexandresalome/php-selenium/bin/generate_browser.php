@@ -33,7 +33,7 @@ if (!isset($argv[1]) || !file_exists($argv[1])) {
 }
 
 $inputFile  = $argv[1];
-$outputFile = __DIR__.'/../src/Selenium/Browser.php';
+$outputFile = __DIR__.'/../src/Selenium/GeneratedBrowser.php';
 
 $specification = new Specification();
 $loader = new XmlLoader($specification);

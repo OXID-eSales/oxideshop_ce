@@ -29,7 +29,7 @@ use Guzzle\Http\Message\PostFile;
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
-    protected $history;
+    protected $historyPlugin;
     protected $mockPlugin;
 
     protected function getGuzzle()
@@ -88,6 +88,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $request = $this->historyPlugin->getLastRequest();
         $this->assertEquals('me', $request->getUsername());
         $this->assertEquals('**', $request->getPassword());
+    }
+
+    public function testResetsAuth()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+        $client->setAuth('me', '**');
+        $client->resetAuth();
+        $crawler = $client->request('GET', 'http://www.example.com/');
+        $request = $this->historyPlugin->getLastRequest();
+        $this->assertNull($request->getUsername());
+        $this->assertNull($request->getPassword());
     }
 
     public function testUsesCookies()

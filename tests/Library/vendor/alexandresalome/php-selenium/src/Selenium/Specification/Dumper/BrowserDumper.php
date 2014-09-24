@@ -11,7 +11,6 @@ namespace Selenium\Specification\Dumper;
 
 use Selenium\Specification\Specification;
 use Selenium\Specification\Method;
-use Selenium\Specification\Dumper\MethodBuilder;
 
 /**
  * Dumps the Selenium specification in a class file
@@ -23,15 +22,14 @@ class BrowserDumper
     /**
      * Specification of the client
      *
-     * @var Selenium\Specification\Specification
+     * @var Specification
      */
     protected $specification;
 
     /**
-     * Instanciates the dumper
+     * Instantiates the dumper
      *
-     * @param Selenium\Specification\Specification $specification The
-     * specification to dump
+     * @param Specification $specification The specification to dump
      */
     public function __construct(Specification $specification)
     {
@@ -65,12 +63,11 @@ namespace Selenium;
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
-class Browser extends BaseBrowser
+class GeneratedBrowser extends BaseBrowser
 {
 ';
 
-        foreach ($methods as $method)
-        {
+        foreach ($methods as $method) {
             $result .= $this->dumpMethod($method)."\n\n";
         }
 
@@ -83,7 +80,9 @@ class Browser extends BaseBrowser
     /**
      * Dumps a method.
      *
-     * @param Selenium\Specification\Method $method Specification of a method
+     * @param Method $method Specification of a method
+     *
+     * @return string
      */
     protected function dumpMethod(Method $method)
     {
@@ -101,7 +100,7 @@ class Browser extends BaseBrowser
         $signature = implode(', ', $signature);
 
         if ($method->isAction()) {
-            $documentation .= '@return Selenium\Browser Fluid interface';
+            $documentation .= '@return \Selenium\Browser Fluid interface';
 
             $body  = '$this->driver->action("'.$method->getName().'"'. ($signature ? ', '.$signature : '') . ');'."\n";
             $body .= "\n";
@@ -109,7 +108,6 @@ class Browser extends BaseBrowser
 
         } else {
             $returnType = $method->getReturnType();
-            $documentation .= '@return '.$returnType.' '.$method->getReturnDescription();
 
             if ($returnType === 'boolean') {
                 $getMethod = 'getBoolean';
@@ -119,7 +117,14 @@ class Browser extends BaseBrowser
                 $getMethod = 'getStringArray';
             } elseif ($returnType === 'number') {
                 $getMethod = 'getNumber';
+                $returnType = 'integer';
+
+                if (0 === strpos($method->getReturnDescription(), 'of ')) {
+                    $returnType .= ' number';
+                }
             }
+
+            $documentation .= '@return '.$returnType.' '.$method->getReturnDescription();
 
             $body = 'return $this->driver->'.$getMethod.'("'.$method->getName().'"'.($signature ? ', '.$signature : '').');';
         }

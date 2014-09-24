@@ -17,7 +17,6 @@ use Symfony\Component\BrowserKit\Response;
 use Guzzle\Http\Exception\CurlException;
 use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Message\Response as GuzzleResponse;
-use Guzzle\Http\Message\Header as GuzzleHeader;
 use Guzzle\Http\ClientInterface as GuzzleClientInterface;
 use Guzzle\Http\Client as GuzzleClient;
 use Guzzle\Http\Message\EntityEnclosingRequestInterface;
@@ -60,6 +59,11 @@ class Client extends BaseClient
         return $this;
     }
 
+    public function removeHeader($name)
+    {
+        unset($this->headers[$name]);
+    }
+
     public function setAuth($user, $password = '', $type = CURLAUTH_BASIC)
     {
         $this->auth = array(
@@ -67,6 +71,13 @@ class Client extends BaseClient
             'password' => $password,
             'type'     => $type
         );
+
+        return $this;
+    }
+
+    public function resetAuth()
+    {
+        $this->auth = null;
 
         return $this;
     }
@@ -113,7 +124,7 @@ class Client extends BaseClient
             $guzzleRequest->addCookie($name, $value);
         }
 
-        if ('POST' == $request->getMethod()) {
+        if ('POST' == $request->getMethod() || 'PUT' == $request->getMethod()) {
             $this->addPostFiles($guzzleRequest, $request->getFiles());
         }
 
@@ -169,14 +180,7 @@ class Client extends BaseClient
 
     protected function createResponse(GuzzleResponse $response)
     {
-        $headers = $response->getHeaders()->getAll();
-        $headers = array_map(function ($header) {
-            if ($header instanceof GuzzleHeader) {
-                return $header->toArray();
-            }
-
-            return $header;
-        }, $headers);
+        $headers = $response->getHeaders()->toArray();
 
         return new Response($response->getBody(true), $response->getStatusCode(), $headers);
     }

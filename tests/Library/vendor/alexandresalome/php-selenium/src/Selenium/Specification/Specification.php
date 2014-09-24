@@ -19,14 +19,14 @@ class Specification
     /**
      * Collection of specified methods
      *
-     * @var array
+     * @var Method[]
      */
     protected $methods = array();
 
     /**
      * Adds a method to the specification.
      *
-     * @param Selenium\Specification\Method Method to add
+     * @param Method Method to add
      */
     public function addMethod(Method $method)
     {
@@ -36,7 +36,7 @@ class Specification
     /**
      * Returns all the methods in the specification.
      *
-     * @return array An array of Selenium\Specification\Method objects
+     * @return Method[] An array of Selenium\Specification\Method objects
      */
     public function getMethods()
     {

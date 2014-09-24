@@ -23,7 +23,7 @@ class Locator
      *
      * @return string The locator string
      */
-    static public function IdOrName($idOrName)
+    public static function IdOrName($idOrName)
     {
         return 'identifier='.$idOrName;
     }
@@ -35,7 +35,7 @@ class Locator
      *
      * @return string The locator string
      */
-    static public function id($id)
+    public static function id($id)
     {
         return 'id='.$id;
     }
@@ -49,7 +49,7 @@ class Locator
      *
      * @return string The locator string
      */
-    static public function name($name, $valuePattern = null, $index = null)
+    public static function name($name, $valuePattern = null, $index = null)
     {
         $result = 'name='.$name;
 
@@ -71,7 +71,7 @@ class Locator
      *
      * @return string The locator string
      */
-    static public function javascriptDom($expression)
+    public static function javascriptDom($expression)
     {
         return 'dom='.$expression;
     }
@@ -83,11 +83,10 @@ class Locator
      *
      * @return string The locator string
      */
-    static public function xpath($xpath)
+    public static function xpath($xpath)
     {
         return 'xpath='.$xpath;
     }
-
 
     /**
      * Creates locator for a link using a pattern.
@@ -96,11 +95,10 @@ class Locator
      *
      * @return string The locator string
      */
-    static public function linkContaining($pattern)
+    public static function linkContaining($pattern)
     {
         return 'link='.$pattern;
     }
-
 
     /**
      * Creates locator with CSS selector
@@ -109,7 +107,7 @@ class Locator
      *
      * @return string The locator string
      */
-    static public function css($css)
+    public static function css($css)
     {
         return 'css='.$css;
     }

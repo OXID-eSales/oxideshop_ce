@@ -31,7 +31,7 @@ class Parameter
     protected $description;
 
     /**
-     * Instanciates the parameter.
+     * Instantiates the parameter.
      *
      * @param string $name Name of the parameter
      */
@@ -53,7 +53,7 @@ class Parameter
     /**
      * Defines the parameter description.
      *
-     * @param string The parameter description
+     * @param string $description The parameter description
      */
     public function setDescription($description)
     {

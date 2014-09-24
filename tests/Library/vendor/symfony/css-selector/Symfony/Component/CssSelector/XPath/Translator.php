@@ -17,7 +17,6 @@ use Symfony\Component\CssSelector\Node\NodeInterface;
 use Symfony\Component\CssSelector\Node\SelectorNode;
 use Symfony\Component\CssSelector\Parser\Parser;
 use Symfony\Component\CssSelector\Parser\ParserInterface;
-use Symfony\Component\CssSelector\XPath\Extension;
 
 /**
  * XPath expression translator interface.
@@ -77,7 +76,7 @@ class Translator implements TranslatorInterface
         $this->mainParser = $parser ?: new Parser();
 
         $this
-            ->registerExtension(new Extension\NodeExtension($this))
+            ->registerExtension(new Extension\NodeExtension())
             ->registerExtension(new Extension\CombinationExtension())
             ->registerExtension(new Extension\FunctionExtension())
             ->registerExtension(new Extension\PseudoClassExtension())
@@ -208,7 +207,7 @@ class Translator implements TranslatorInterface
             throw new ExpressionErrorException(sprintf('Node "%s" not supported.', $node->getNodeName()));
         }
 
-        return call_user_func($this->nodeTranslators[$node->getNodeName()], $node);
+        return call_user_func($this->nodeTranslators[$node->getNodeName()], $node, $this);
     }
 
     /**

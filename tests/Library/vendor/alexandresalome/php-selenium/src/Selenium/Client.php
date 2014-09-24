@@ -40,7 +40,7 @@ class Client
     protected $browserClass = 'Selenium\Browser';
 
     /**
-     * Instanciates the client.
+     * Instantiates the client.
      *
      * @param string $host    Host of the server
      * @param int    $port    Port of the server
@@ -69,7 +69,7 @@ class Client
      * @param string $startPage The URL of the website to test
      * @param string $type      Type of browser, for Selenium
      *
-     * @return Selenium\Browser A browser instance
+     * @return Browser A browser instance
      */
     public function getBrowser($startPage, $type = '*firefox')
     {

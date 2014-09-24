@@ -3,7 +3,6 @@
 namespace Guzzle\Http;
 
 use Guzzle\Common\Exception\InvalidArgumentException;
-use Guzzle\Parser\ParserRegistry;
 
 /**
  * Parses and generates URLs based on URL parts. In favor of performance, URL parts are not validated.
@@ -45,7 +44,7 @@ class Url
             $parts['query'] = QueryString::fromString($parts['query']);
         }
 
-        return new self($parts['scheme'], $parts['host'], $parts['user'],
+        return new static($parts['scheme'], $parts['host'], $parts['user'],
             $parts['pass'], $parts['port'], $parts['path'], $parts['query'],
             $parts['fragment']);
     }
@@ -161,6 +160,8 @@ class Url
      */
     public function getParts()
     {
+        $query = (string) $this->query;
+
         return array(
             'scheme' => $this->scheme,
             'user' => $this->username,
@@ -168,7 +169,7 @@ class Url
             'host' => $this->host,
             'port' => $this->port,
             'path' => $this->getPath(),
-            'query' => (string) $this->query ?: null,
+            'query' => $query !== '' ? $query : null,
             'fragment' => $this->fragment,
         );
     }
@@ -212,6 +213,12 @@ class Url
      */
     public function setScheme($scheme)
     {
+        if ($this->scheme == 'http' && $this->port == 80) {
+            $this->port = null;
+        } elseif ($this->scheme == 'https' && $this->port == 443) {
+            $this->port = null;
+        }
+
         $this->scheme = $scheme;
 
         return $this;
@@ -311,7 +318,7 @@ class Url
     }
 
     /**
-     * Add a relative path to the currently set path
+     * Add a relative path to the currently set path.
      *
      * @param string $relativePath Relative path to add
      *
@@ -319,16 +326,15 @@ class Url
      */
     public function addPath($relativePath)
     {
-        if (!$relativePath || $relativePath == '/') {
-            return $this;
+        if ($relativePath != '/' && is_string($relativePath) && strlen($relativePath) > 0) {
+            // Add a leading slash if needed
+            if ($relativePath[0] != '/') {
+                $relativePath = '/' . $relativePath;
+            }
+            $this->setPath(str_replace('//', '/', $this->path . $relativePath));
         }
 
-        // Add a leading slash if needed
-        if ($relativePath[0] != '/') {
-            $relativePath = '/' . $relativePath;
-        }
-
-        return $this->setPath(str_replace('//', '/', $this->getPath() . $relativePath));
+        return $this;
     }
 
     /**
@@ -468,13 +474,18 @@ class Url
     /**
      * Combine the URL with another URL. Follows the rules specific in RFC 3986 section 5.4.
      *
-     * @param string $url Relative URL to combine with
-     *
+     * @param string $url           Relative URL to combine with
+     * @param bool   $strictRfc3986 Set to true to use strict RFC 3986 compliance when merging paths. When first
+     *                              released, Guzzle used an incorrect algorithm for combining relative URL paths. In
+     *                              order to not break users, we introduced this flag to allow the merging of URLs based
+     *                              on strict RFC 3986 section 5.4.1. This means that "http://a.com/foo/baz" merged with
+     *                              "bar" would become "http://a.com/foo/bar". When this value is set to false, it would
+     *                              become "http://a.com/foo/baz/bar".
      * @return Url
      * @throws InvalidArgumentException
      * @link http://tools.ietf.org/html/rfc3986#section-5.4
      */
-    public function combine($url)
+    public function combine($url, $strictRfc3986 = false)
     {
         $url = self::factory($url);
 
@@ -503,6 +514,7 @@ class Url
             $this->username = $url->getUsername();
             $this->password = $url->getPassword();
             $this->path = $url->getPath();
+            $this->query = $url->getQuery();
             $this->fragment = $url->getFragment();
             return $this;
         }
@@ -512,20 +524,31 @@ class Url
 
         if (!$path) {
             if (count($query)) {
-                $this->query = $query;
+                $this->addQuery($query, $strictRfc3986);
             }
         } else {
             if ($path[0] == '/') {
                 $this->path = $path;
+            } elseif ($strictRfc3986) {
+                $this->path .= '/../' . $path;
             } else {
                 $this->path .= '/' . $path;
             }
             $this->normalizePath();
-            $this->query = $query;
+            $this->addQuery($query, $strictRfc3986);
         }
 
         $this->fragment = $url->getFragment();
 
         return $this;
+    }
+
+    private function addQuery(QueryString $new, $strictRfc386)
+    {
+        if (!$strictRfc386) {
+            $new->merge($this->query);
+        }
+
+        $this->query = $new;
     }
 }

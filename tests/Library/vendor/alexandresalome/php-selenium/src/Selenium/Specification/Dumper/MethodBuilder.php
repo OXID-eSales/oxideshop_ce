@@ -49,7 +49,7 @@ class MethodBuilder
      *
      * @param string $documentation A documentation text
      *
-     * @return Selenium\Specification\Dumper\MethodBuilder Fluid interface
+     * @return MethodBuilder Fluid interface
      */
     public function setDocumentation($documentation)
     {
@@ -63,7 +63,7 @@ class MethodBuilder
      *
      * @param string $name A method name
      *
-     * @return Selenium\Specification\Dumper\MethodBuilder Fluid interface
+     * @return MethodBuilder Fluid interface
      */
     public function setName($name)
     {
@@ -77,7 +77,7 @@ class MethodBuilder
      *
      * @param string $body A body
      *
-     * @return Selenium\Specification\Dumper\MethodBuilder Fluid interface
+     * @return MethodBuilder Fluid interface
      */
     public function setBody($body)
     {
@@ -91,7 +91,7 @@ class MethodBuilder
      *
      * @param string $parameter A parameter name (without the '$')
      *
-     * @return Selenium\Specification\Dumper\MethodBuilder Fluid interface
+     * @return MethodBuilder Fluid interface
      */
     public function addParameter($parameter)
     {
@@ -119,6 +119,9 @@ class MethodBuilder
         $code .= '    {'."\n";
         $code .= '        '.str_replace("\n", "\n        ", $this->body)."\n";
         $code .= '    }';
+
+        // Trim trailing whitespaces
+        $code = preg_replace('/[ ]+$/m', '', $code);
 
         return $code;
     }

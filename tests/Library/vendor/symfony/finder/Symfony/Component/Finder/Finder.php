@@ -90,11 +90,11 @@ class Finder implements \IteratorAggregate, \Countable
      * Registers a finder engine implementation.
      *
      * @param AdapterInterface $adapter  An adapter instance
-     * @param integer          $priority Highest is selected first
+     * @param int              $priority Highest is selected first
      *
      * @return Finder The current Finder instance
      */
-    public function addAdapter(Adapter\AdapterInterface $adapter, $priority = 0)
+    public function addAdapter(AdapterInterface $adapter, $priority = 0)
     {
         $this->adapters[$adapter->getName()] = array(
             'adapter'  => $adapter,
@@ -157,7 +157,7 @@ class Finder implements \IteratorAggregate, \Countable
      */
     public function getAdapters()
     {
-        return array_values(array_map(function(array $adapter) {
+        return array_values(array_map(function (array $adapter) {
             return $adapter['adapter'];
         }, $this->adapters));
     }
@@ -415,7 +415,7 @@ class Finder implements \IteratorAggregate, \Countable
     /**
      * Excludes "hidden" directories and files (starting with a dot).
      *
-     * @param Boolean $ignoreDotFiles Whether to exclude "hidden" files or not
+     * @param bool    $ignoreDotFiles Whether to exclude "hidden" files or not
      *
      * @return Finder The current Finder instance
      *
@@ -437,7 +437,7 @@ class Finder implements \IteratorAggregate, \Countable
     /**
      * Forces the finder to ignore version control directories.
      *
-     * @param Boolean $ignoreVCS Whether to exclude VCS files or not
+     * @param bool    $ignoreVCS Whether to exclude VCS files or not
      *
      * @return Finder The current Finder instance
      *
@@ -632,13 +632,13 @@ class Finder implements \IteratorAggregate, \Countable
      *
      * By default, scanning unreadable directories content throws an AccessDeniedException.
      *
-     * @param boolean $ignore
+     * @param bool    $ignore
      *
      * @return Finder The current Finder instance
      */
     public function ignoreUnreadableDirs($ignore = true)
     {
-        $this->ignoreUnreadableDirs = (Boolean) $ignore;
+        $this->ignoreUnreadableDirs = (bool) $ignore;
 
         return $this;
     }
@@ -661,7 +661,7 @@ class Finder implements \IteratorAggregate, \Countable
         foreach ((array) $dirs as $dir) {
             if (is_dir($dir)) {
                 $resolvedDirs[] = $dir;
-            } elseif ($glob = glob($dir, GLOB_ONLYDIR)) {
+            } elseif ($glob = glob($dir, GLOB_BRACE | GLOB_ONLYDIR)) {
                 $resolvedDirs = array_merge($resolvedDirs, $glob);
             } else {
                 throw new \InvalidArgumentException(sprintf('The "%s" directory does not exist.', $dir));

@@ -1496,4 +1496,14 @@ class oxViewConfig extends oxSuperCfg
     {
         $this->_sShopLogo = $sLogo;
     }
+
+    /**
+     * retrieve session challenge token from session
+     *
+     * @return string
+     */
+    public function getSessionChallengeToken()
+    {
+        return $this->getSession()->getSessionChallengeToken();
+    }
 }

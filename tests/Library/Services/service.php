@@ -27,7 +27,7 @@ require_once dirname(__FILE__) . "/../bootstrap.php";
 require_once 'ServiceCaller.php';
 require_once 'ShopServiceInterface.php';
 
-define('LIBRARY_PATH', dirname(__FILE__).'/Library');
+define('LIBRARY_PATH', dirname(__FILE__).'/Library/');
 define('TEMP_PATH', dirname(__FILE__).'/temp/');
 define('SHOP_PATH', dirname(__FILE__) . '/../');
 

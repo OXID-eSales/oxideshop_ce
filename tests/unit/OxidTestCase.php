@@ -22,10 +22,10 @@
 
 require_once 'test_config.inc.php';
 
-if (defined('SHOPRESTORATIONCLASS') && file_exists(SHOPRESTORATIONCLASS.".php")) {
-    include_once SHOPRESTORATIONCLASS.".php";
+if (defined('SHOPRESTORATIONCLASS') && file_exists(TEST_LIBRARY_PATH . SHOPRESTORATIONCLASS.".php")) {
+    include_once TEST_LIBRARY_PATH . SHOPRESTORATIONCLASS.".php";
 } else {
-    include_once "dbRestore.php";
+    include_once TEST_LIBRARY_PATH . "dbRestore.php";
 }
 
 /**

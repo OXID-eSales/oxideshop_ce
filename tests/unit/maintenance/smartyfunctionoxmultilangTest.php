@@ -16,11 +16,10 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-require_once realpath(".") . '/unit/OxidTestCase.php';
-require_once realpath(".") . '/unit/test_config.inc.php';
+
 require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'core/smarty/plugins/function.oxmultilang.php';
 
 class Unit_Maintenance_smartyFunctionOxMultiLangTest extends OxidTestCase

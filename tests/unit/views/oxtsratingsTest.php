@@ -16,10 +16,9 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-require_once realpath(".") . '/unit/OxidTestCase.php';
 
 /**
  * Test Trusted shop ratings acquisition from Trusted Shops website

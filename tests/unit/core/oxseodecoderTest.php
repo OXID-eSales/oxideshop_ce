@@ -20,9 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(".") . '/unit/OxidTestCase.php';
-require_once realpath(".") . '/unit/test_config.inc.php';
-
 class modSeoEncoder_for_Unit_Core_oxSeoDecoderTest extends oxSeoEncoder
 {
 

@@ -20,8 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(".") . '/unit/OxidTestCase.php';
-require_once realpath(".") . '/unit/test_config.inc.php';
 require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'smarty/plugins/modifier.oxfilesize.php';
 
 

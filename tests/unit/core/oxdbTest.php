@@ -20,10 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(".") . '/unit/OxidTestCase.php';
-require_once realpath(".") . '/unit/test_config.inc.php';
-
-
 /**
  * Test private methods with mock.
  * oxDb do not extend oxSuperConfig so do not have magic getter for private methods.

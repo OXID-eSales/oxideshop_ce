@@ -20,9 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(".") . '/unit/OxidTestCase.php';
-require_once realpath(".") . '/unit/test_config.inc.php';
-
 /**
  * test for situation:
  * module class is registered for oxnew but was not yet instantialized

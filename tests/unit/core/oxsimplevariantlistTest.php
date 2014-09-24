@@ -20,9 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(".") . '/unit/OxidTestCase.php';
-require_once realpath(".") . '/unit/test_config.inc.php';
-
 //class should be named Unit_oxSimpleVariantListTest
 //but GAAAH IT DOES NOT WORK somehow, just because of the name??????
 //T2009-04-20

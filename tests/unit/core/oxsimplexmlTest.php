@@ -20,8 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(".") . '/unit/OxidTestCase.php';
-
 /**
  * Testing oxXml class.
  */

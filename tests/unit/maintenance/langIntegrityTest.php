@@ -20,9 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(".") . '/unit/OxidTestCase.php';
-require_once realpath(".") . '/unit/test_config.inc.php';
-
 /**
  * Tests language files and templates for missing constants.
  * Slower tests at the end.

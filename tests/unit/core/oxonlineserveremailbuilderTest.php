@@ -19,7 +19,6 @@
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
-require_once realpath(".") . '/unit/OxidTestCase.php';
 
 /**
  * Class Unit_Core_oxOnlineServerEmailBuilderTest

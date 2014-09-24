@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
 */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
-
+/**
+* Class InvoicepdfOrder_Overview_parent
+*/
 class InvoicepdfOrder_Overview_parent extends Order_Overview {}
 
 require_once getShopBasePath() . 'modules/oe/invoicepdf/controllers/admin/invoicepdforder_overview.php' ;

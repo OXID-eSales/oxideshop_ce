@@ -20,10 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(".") . '/unit/OxidTestCase.php';
-require_once realpath(".") . '/unit/test_config.inc.php';
-
-
 /**
  * Tests for Discount_Users_Ajax class
  */

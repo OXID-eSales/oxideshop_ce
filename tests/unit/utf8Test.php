@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-require_once 'unit/OxidTestCase.php';
-require_once 'unit/test_config.inc.php';
-
+/**
+ * Class Unit_utf8Test
+ */
 class Unit_utf8Test extends OxidTestCase
 {
 

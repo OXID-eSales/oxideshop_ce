@@ -20,9 +20,6 @@
  * @version   OXID eShop CE
  */
 
-
-require_once realpath(".") . '/unit/OxidTestCase.php';
-
 class testOxLocator extends oxLocator
 {
 

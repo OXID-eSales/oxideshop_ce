@@ -24,15 +24,12 @@ require_once realpath(".") . '/unit/OxidTestCase.php';
 require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
- * Tests for compate class
+ * Tests for compare class
  */
 class Unit_Views_compareTest extends OxidTestCase
 {
-
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
@@ -48,8 +45,6 @@ class Unit_Views_compareTest extends OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -66,8 +61,6 @@ class Unit_Views_compareTest extends OxidTestCase
 
     /**
      * compare::moveLeft() test case
-     *
-     * @return null
      */
     public function testMoveLeft()
     {
@@ -96,8 +89,6 @@ class Unit_Views_compareTest extends OxidTestCase
 
     /**
      * compare::moveRight() test case
-     *
-     * @return null
      */
     public function testMoveRight()
     {
@@ -126,8 +117,6 @@ class Unit_Views_compareTest extends OxidTestCase
 
     /**
      * compare::render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -139,8 +128,6 @@ class Unit_Views_compareTest extends OxidTestCase
 
     /**
      * compare::render() & compare::inPopup() test case
-     *
-     * @return null
      */
     public function testRenderInPopup()
     {
@@ -153,8 +140,6 @@ class Unit_Views_compareTest extends OxidTestCase
 
     /**
      * compare::getOrderCnt() test case
-     *
-     * @return null
      */
     public function testGetOrderCnt()
     {
@@ -167,6 +152,9 @@ class Unit_Views_compareTest extends OxidTestCase
         $this->assertEquals(999, $oView->getOrderCnt());
     }
 
+    /**
+     * Test for getCompareItems
+     */
     public function testSetCompareItemsgetCompareItems()
     {
         modSession::getInstance()->setVar('aFiltcompproducts', array("testItems1"));
@@ -181,8 +169,6 @@ class Unit_Views_compareTest extends OxidTestCase
 
     /**
      * Test get compare article list.
-     *
-     * @return null
      */
     public function testGetCompArtList()
     {
@@ -196,8 +182,6 @@ class Unit_Views_compareTest extends OxidTestCase
 
     /**
      * Test get compare article count.
-     *
-     * @return null
      */
     public function testGetCompareItemsCnt()
     {
@@ -207,6 +191,9 @@ class Unit_Views_compareTest extends OxidTestCase
         $this->assertEquals(2, $oCompare->getCompareItemsCnt());
     }
 
+    /**
+     * Test for getCompareItemsCnt
+     */
     public function testGetSetCompareItemsCnt()
     {
         $oView = $this->getProxyClass('compare');
@@ -222,7 +209,7 @@ class Unit_Views_compareTest extends OxidTestCase
     public function testGetAttributeList()
     {
         $oCompare = $this->getProxyClass("compare");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oCompare->setNonPublicVar("_oArtList", array('1672' => $oArticle));
         $aAttributes = $oCompare->getAttributeList();
 
@@ -230,14 +217,13 @@ class Unit_Views_compareTest extends OxidTestCase
         $rs = oxDb::getDB()->execute($sSelect);
         $sSelect = "select oxtitle from oxattribute where oxid = '" . $rs->fields[0] . "'";
         $sTitle = oxDb::getDB()->getOne($sSelect);
+
         $this->assertEquals($rs->fields[1], $aAttributes[$rs->fields[0]]->aProd['1672']->value);
         $this->assertEquals($sTitle, $aAttributes[$rs->fields[0]]->title);
     }
 
     /**
      * Test get ids for similar recommendation list.
-     *
-     * @return null
      */
     public function testGetSimilarRecommListIds()
     {
@@ -252,8 +238,6 @@ class Unit_Views_compareTest extends OxidTestCase
 
     /**
      * Test get page navigation.
-     *
-     * @return null
      */
     public function testGetPageNavigation()
     {
@@ -264,8 +248,6 @@ class Unit_Views_compareTest extends OxidTestCase
 
     /**
      * Test paging off
-     *
-     * @return null
      */
     public function testSetNoPaging()
     {
@@ -277,8 +259,6 @@ class Unit_Views_compareTest extends OxidTestCase
 
     /**
      * Test number of item in compare list
-     *
-     * @return null
      */
     public function testSetArticlesPerPage()
     {
@@ -294,6 +274,9 @@ class Unit_Views_compareTest extends OxidTestCase
 
     }
 
+    /**
+     * Bred crumb test
+     */
     public function testGetBreadCrumb()
     {
         $oCompare = new Compare();
@@ -330,6 +313,5 @@ class Unit_Views_compareTest extends OxidTestCase
         $this->assertArrayHasKey("1127", $oResList);
 
     }
-
 
 }

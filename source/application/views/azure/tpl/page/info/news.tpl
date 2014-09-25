@@ -11,7 +11,7 @@
                     <h3>
                         <span>[{$oNewsEntry->oxnews__oxdate->value|date_format:"%d.%m.%Y"}] - </span> [{$oNewsEntry->oxnews__oxshortdesc->value}]
                     </h3>
-                    [{$oNewsEntry->getLongDesc() force=1}]
+                    [{$oNewsEntry->getLongDesc()}]
                 </div>
             [{/if}]
         [{/foreach}]

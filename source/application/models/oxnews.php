@@ -195,7 +195,9 @@ class oxNews extends oxI18n
      */
     public function getLongDesc()
     {
-        return oxRegistry::get("oxUtilsView")->parseThroughSmarty( $this->oxnews__oxlongdesc->getRawValue(), $this->getId().$this->getLanguage() );
+        /** @var oxUtilsView $oUtilsView */
+        $oUtilsView = oxRegistry::get("oxUtilsView");
+        return $oUtilsView->parseThroughSmarty( $this->oxnews__oxlongdesc->getRawValue(), $this->getId().$this->getLanguage(), null, true );
     }
 
 }

@@ -98,6 +98,24 @@ class Unit_Core_oxnewsTest extends OxidTestCase
     }
 
     /**
+     * getLongDesc() test case
+     * test returned long description with smarty tags when template regeneration is disabled
+     * and template is saved twice.
+     *
+     * @return null
+     */
+    public function testGetLongDescTagsWhenTemplateAlreadyGeneratedAndRegenerationDisabled()
+    {
+        $this->getConfig()->setConfigParam('blCheckTemplates', false);
+
+        $oNews = oxNew( 'oxnews' );
+        $oNews->oxnews__oxlongdesc = new oxField( "[{* *}]generated" );
+        $oNews->getLongDesc();
+        $oNews->oxnews__oxlongdesc = new oxField( "[{* *}]regenerated" );
+        $this->assertEquals('regenerated', $oNews->getLongDesc());
+    }
+
+    /**
      * Testing multilanguage and date
      */
     public function testAssign()

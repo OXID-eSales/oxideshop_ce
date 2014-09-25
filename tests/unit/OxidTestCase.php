@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once 'test_config.inc.php';
+require_once TEST_LIBRARY_PATH . 'test_config.inc.php';
 
 if (defined('SHOPRESTORATIONCLASS') && file_exists(TEST_LIBRARY_PATH . SHOPRESTORATIONCLASS.".php")) {
     include_once TEST_LIBRARY_PATH . SHOPRESTORATIONCLASS.".php";

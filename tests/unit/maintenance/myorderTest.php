@@ -508,6 +508,32 @@ class Unit_Maintenance_myorderTest extends OxidTestCase
     }
 
     /**
+     * Testing method _setWrappingInfo
+     *
+     * @return null
+     */
+    public function testPdfArticleSummary_setWrappingInfo_WithGiftCardOnly()
+    {
+        $oMyOrder = $this->_getTestMyOrder();
+        $oMyOrder->oxorder__oxwrapvat = new oxField('0', oxField::T_RAW);
+        $oMyOrder->oxorder__oxwrapcost = new oxField('0', oxField::T_RAW);
+        $oMyOrder->oxorder__oxgiftcardvat = new oxField('19', oxField::T_RAW);
+        $oMyOrder->oxorder__oxgiftcardcost = new oxField('8', oxField::T_RAW);
+
+        $oPdf = new testPdfClass;
+        $oPdfArtSum = new myOrder_PdfArticleSummary( $oMyOrder, $oPdf );
+
+        $iStartPos = 1;
+        $oPdfArtSum->setWrappingInfo( $iStartPos );
+
+        $aCache = $oPdfArtSum->getVar('_aCache');
+
+        //checking values
+        $this->assertEquals( 'GIFTCARD_COSTS ORDER_OVERVIEW_PDF_BRUTTO', $aCache[0]->aParams[2] );
+        $this->assertEquals( '8,00 EUR', trim($aCache[1]->aParams[2]) );
+    }
+
+    /**
      * Testing method _setPaymentInfo
      *
      * @return null

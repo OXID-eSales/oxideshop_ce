@@ -524,7 +524,9 @@ class Content extends oxUBase
      */
     public function getParsedContent()
     {
-        return oxRegistry::get("oxUtilsView")->parseThroughSmarty( $this->getContent()->oxcontents__oxcontent->value, $this->getContent()->getId() );
+        /** @var oxUtilsView $oUtilsView */
+        $oUtilsView = oxRegistry::get("oxUtilsView");
+        return $oUtilsView->parseThroughSmarty( $this->getContent()->oxcontents__oxcontent->value, $this->getContent()->getId(), null, true );
     }
 
 }

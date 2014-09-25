@@ -41,7 +41,8 @@ class contentTest_oxUtilsView extends oxUtilsView
  */
 class Unit_Views_contentTest extends OxidTestCase
 {
-
+    
+    /** @var oxContent  */
     protected $_oObj = null;
 
     /**
@@ -705,6 +706,31 @@ class Unit_Views_contentTest extends OxidTestCase
         modConfig::setRequestParameter('oxcid', $oSecond->getId());
         $oContent = new content();
 
-        $this->assertEquals('ADSSSSSSSS', $oContent->getParsedContent(), 'Content not as in second page. If result ABSSSSSSSS than it is ame as in first page, so used wrong smarty cache file.');
+        $this->assertEquals( 'ADSSSSSSSS', $oContent->getParsedContent(), 'Content not as in second page. If result ABSSSSSSSS than it is ame as in first page, so used wrong smarty cache file.' );
+    }
+    
+    /**
+     * getParsedContent() test case
+     * test returned parsed content with smarty tags when template regeneration is disabled
+     * and template is saved twice.
+     *
+     * @return null
+     */
+    public function testGetParsedContentTagsWhenTemplateAlreadyGeneratedAndRegenerationDisabled()
+    {
+        $this->getConfig()->setConfigParam('blCheckTemplates', false);
+
+        $this->_oObj->oxcontents__oxcontent = new oxField("[{* *}]generated", oxField::T_RAW);
+        $this->_oObj->save();
+        $this->getConfig()->setParameter('oxcid', $this->_oObj->getId());
+
+        $oContent = oxNew('content');
+        $oContent->getParsedContent();
+
+        $this->_oObj->oxcontents__oxcontent = new oxField("[{* *}]regenerated", oxField::T_RAW);
+        $this->_oObj->save();
+
+        $oContent = oxNew('content');
+        $this->assertEquals('regenerated', $oContent->getParsedContent());
     }
 }

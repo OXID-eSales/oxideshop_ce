@@ -305,6 +305,24 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         $this->assertEquals('aazz', $oObj3->getLongDesc() );
     }
 
+    /**
+     * getLongDesc() test case
+     * test returned long description with smarty tags when template regeneration is disabled
+     * and template is saved twice.
+     *
+     * @return null
+     */
+    public function testGetLongDescTagsWhenTemplateAlreadyGeneratedAndRegenerationDisabled()
+    {
+        $this->getConfig()->setConfigParam('blCheckTemplates', false);
+
+        $oCategory = oxNew( 'oxcategory' );
+        $oCategory->oxcategories__oxlongdesc = new oxField( "[{* *}]generated" );
+        $oCategory->getLongDesc();
+        $oCategory->oxcategories__oxlongdesc = new oxField( "[{* *}]regenerated" );
+        $this->assertEquals('regenerated', $oCategory->getLongDesc());
+    }
+
     public function testAssignParseLongDescInList()
     {
         oxAddClassModule('oxcategoryTest_oxUtilsView', 'oxUtilsView');

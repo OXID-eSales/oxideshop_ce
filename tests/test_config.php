@@ -41,7 +41,7 @@ $blIsSubShop = false;
 // Whether to copy services to shop. If services are already in shop directory, this can be set to false.
 $blCopyServicesToShop = true;
 // Whether to prepare shop database for testing. Shop config.ing.php file must be correct.
-$blInstallShop = false;
+$blInstallShop = true;
 
 // Whether to add tests data to shop. Can be used when $blInstallShop is set to false and test data is already added.
 $blAddTestData = true;
@@ -73,4 +73,4 @@ $sBrowserName = 'firefox';
 
 // Currently exists dbRestore and dbRestore_largeDb. dbRestore_largeDb tends to be faster, but it is not able to work with
 // external databases - this is why dbRestore is currently a default one.
-$sDataBaseRestore = "dbRestore";
+$sDataBaseRestore = "dbRestore_largeDb";

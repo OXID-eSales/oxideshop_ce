@@ -249,8 +249,7 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
      */
     protected function _setWrappingInfo(&$iStartPos)
     {
-        if ($this->_oData->oxorder__oxwrapcost->value) {
-            $sAddString = '';
+        if ($this->_oData->oxorder__oxwrapcost->value || $this->_oData->oxorder__oxgiftcardcost->value) {
             $oLang = oxRegistry::getLang();
             $oConfig = oxRegistry::getConfig();
 
@@ -272,7 +271,6 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
                     $this->text(195 - $this->_oPdf->getStringWidth($sWrapCostVAT), $iStartPos, $sWrapCostVAT);
                     // $iStartPos++;
                 }
-
 
                 if ($this->_oData->oxorder__oxgiftcardcost->value) {
                     // wrapping netto
@@ -298,11 +296,11 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
                 }
 
             } else {
-                $iStartPos += 4;
+                $sAddString = ' ' . $this->_oData->translate('ORDER_OVERVIEW_PDF_BRUTTO');
 
                 if ($this->_oData->oxorder__oxwrapcost->value) {
+                    $iStartPos += 4;
                     // wrapping cost
-                    $sAddString = ' ' . $this->_oData->translate('ORDER_OVERVIEW_PDF_BRUTTO');
                     $sWrapCost = $oLang->formatCurrency($this->_oData->oxorder__oxwrapcost->value, $this->_oData->getCurrency()) . ' ' . $this->_oData->getCurrency()->name;
                     $this->text(45, $iStartPos, $this->_oData->translate('WRAPPING_COSTS' /*'ORDER_OVERVIEW_PDF_WRAPPING'*/) . $sAddString);
                     $this->text(195 - $this->_oPdf->getStringWidth($sWrapCost), $iStartPos, $sWrapCost);
@@ -317,9 +315,7 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
                     $this->text(195 - $this->_oPdf->getStringWidth($sWrapCost), $iStartPos, $sWrapCost);
                     $iStartPos++;
                 }
-
             }
-
         }
     }
 

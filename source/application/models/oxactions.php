@@ -202,7 +202,7 @@ class oxActions extends oxI18n
      */
     public function getLongDesc()
     {
-        return oxRegistry::get("oxUtilsView")->parseThroughSmarty( $this->oxactions__oxlongdesc->getRawValue(), $this->getId().$this->getLanguage() );
+        return oxRegistry::get("oxUtilsView")->parseThroughSmarty( $this->oxactions__oxlongdesc->getRawValue(), $this->getId().$this->getLanguage(), null, true );
     }
 
     /**

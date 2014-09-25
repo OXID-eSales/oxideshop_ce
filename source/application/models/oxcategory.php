@@ -1098,7 +1098,9 @@ class oxCategory extends oxI18n implements oxIUrl
     public function getLongDesc()
     {
         if (isset($this->oxcategories__oxlongdesc) && $this->oxcategories__oxlongdesc instanceof oxField) {
-            return oxRegistry::get("oxUtilsView")->parseThroughSmarty($this->oxcategories__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage());
+            /** @var oxUtilsView $oUtilsView */
+            $oUtilsView = oxRegistry::get("oxUtilsView");
+            return oxRegistry::get("oxUtilsView")->parseThroughSmarty($this->oxcategories__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
         }
     }
 

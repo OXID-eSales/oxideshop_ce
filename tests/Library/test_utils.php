@@ -469,9 +469,6 @@ abstract class modOXID
         $oConfig->setUser(null);
         $oConfig->setAdminMode(null);
 
-        if (defined('OXID_VERSION_EE') && OXID_VERSION_EE) :
-            $oConfig->setRights(null);
-        endif;
         oxTestModules::cleanAllModules();
     }
 

@@ -26,16 +26,12 @@
 $sShopUrl = null; //'http://eshop_url/';
 // eShop directory
 $sShopPath = realpath('../source/') . '/';
-// eShop edition
-$sShopEdition = 'CE';
 // For PE and EE editions shop serial has to be specified for shop installer to work.
 $sShopSerial = '';
 
-// eShop encoding
-$blUtf8 = false;
 // Run tests with varnish on
 $blVarnish = false;
-// Whether to run subshop tests
+// Whether to run subshop tests. Currently only used when running selenium tests.
 $blIsSubShop = false;
 
 // Whether to copy services to shop. If services are already in shop directory, this can be set to false.

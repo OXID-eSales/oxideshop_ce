@@ -43,36 +43,11 @@ define('RESTORE_SHOP_AFTER_TEST', getenv('oxSKIPSHOPRESTORE') ? !getenv('oxSKIPS
 define('SHOPRESTORATIONCLASS', getenv('SHOPRESTORATIONCLASS') ? getenv('SHOPRESTORATIONCLASS') : $sDataBaseRestore);
 define('COPY_SERVICES_TO_SHOP', getenv('COPY_SERVICES_TO_SHOP') ? getenv('COPY_SERVICES_TO_SHOP') : $blCopyServicesToShop);
 
-define('OXID_VERSION', getenv('OXID_VERSION') ? getenv('OXID_VERSION') : $sShopEdition);
+define('OXID_VERSION', getenv('OXID_VERSION')); // only used for deploy test. If not set - package version is not checked.
 define('TEST_SHOP_SERIAL', getenv('TEST_SHOP_SERIAL') ? getenv('TEST_SHOP_SERIAL') : $sShopSerial);
 define('OXID_VARNISH', getenv('OXID_VARNISH') ? getenv('OXID_VARNISH') : $blVarnish);
 
-    switch (OXID_VERSION) {
-        case 'EE':
-            define('OXID_VERSION_EE', true);
-            define('OXID_VERSION_PE', false);
-            define('OXID_VERSION_PE_PE', false);
-            define('OXID_VERSION_PE_CE', false);
-            break;
-        case 'PE':
-            define('OXID_VERSION_EE', false);
-            define('OXID_VERSION_PE', true);
-            define('OXID_VERSION_PE_PE', true);
-            define('OXID_VERSION_PE_CE', false);
-            break;
-        case 'CE':
-            define('OXID_VERSION_EE', false);
-            define('OXID_VERSION_PE', true);
-            define('OXID_VERSION_PE_PE', false);
-            define('OXID_VERSION_PE_CE', true);
-            break;
-
-        default:
-            die('bad version--- : ' . "'" . getenv('OXID_VERSION') . "'");
-            break;
-    }
-    $sSuffix = '';
-    define('OXID_VERSION_SUFIX', $sSuffix);
+    define('OXID_VERSION_SUFIX', '');
 
 if (!defined('oxPATH')) {
     die('Path to tested shop (oxPATH) is not defined');
@@ -89,6 +64,7 @@ if (!$sShopUrl) {
 }
 define('shopURL', rtrim($sShopUrl, '/').'/');
 
-define('isSUBSHOP', OXID_VERSION_EE && (oxSHOPID > 1));
+$blIsSubShop = false;
+define('isSUBSHOP', $blIsSubShop);
 
 define('oxCCTempDir', oxPATH . '/oxCCTempDir/');

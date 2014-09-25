@@ -399,8 +399,7 @@ class PdfArticleSummary extends PdfBlock
      */
     protected function _setWrappingInfo( &$iStartPos )
     {
-        if ( $this->_oData->oxorder__oxwrapcost->value ) {
-            $sAddString = '';
+        if ( $this->_oData->oxorder__oxwrapcost->value || $this->_oData->oxorder__oxgiftcardcost->value ) {
             $oLang = oxRegistry::getLang();
             $oConfig = oxRegistry::getConfig();
 
@@ -422,7 +421,6 @@ class PdfArticleSummary extends PdfBlock
                     $this->text( 195 - $this->_oPdf->getStringWidth( $sWrapCostVAT ), $iStartPos, $sWrapCostVAT );
                    // $iStartPos++;
                 }
-
 
                 if ($this->_oData->oxorder__oxgiftcardcost->value) {
                     // wrapping netto
@@ -448,11 +446,11 @@ class PdfArticleSummary extends PdfBlock
                 }
 
             } else {
-                $iStartPos += 4;
+                $sAddString = ' '.$this->_oData->translate( 'ORDER_OVERVIEW_PDF_BRUTTO' );
 
                 if ($this->_oData->oxorder__oxwrapcost->value) {
+                    $iStartPos += 4;
                     // wrapping cost
-                    $sAddString = ' '.$this->_oData->translate( 'ORDER_OVERVIEW_PDF_BRUTTO' );
                     $sWrapCost = $oLang->formatCurrency( $this->_oData->oxorder__oxwrapcost->value, $this->_oData->getCurrency() ).' '.$this->_oData->getCurrency()->name;
                     $this->text( 45, $iStartPos, $this->_oData->translate( 'WRAPPING_COSTS'/*'ORDER_OVERVIEW_PDF_WRAPPING'*/ ).$sAddString );
                     $this->text( 195 - $this->_oPdf->getStringWidth( $sWrapCost ), $iStartPos, $sWrapCost );
@@ -461,15 +459,13 @@ class PdfArticleSummary extends PdfBlock
 
                 if ($this->_oData->oxorder__oxgiftcardcost->value) {
                     $iStartPos += 4;
-                // gift card cost
+                    // gift card cost
                     $sWrapCost = $oLang->formatCurrency( $this->_oData->oxorder__oxgiftcardcost->value, $this->_oData->getCurrency() ).' '.$this->_oData->getCurrency()->name;
                     $this->text( 45, $iStartPos, $this->_oData->translate( 'GIFTCARD_COSTS' ).$sAddString );
                     $this->text( 195 - $this->_oPdf->getStringWidth( $sWrapCost ), $iStartPos, $sWrapCost );
                     $iStartPos++;
                 }
-
             }
-
         }
     }
 

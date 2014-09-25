@@ -41,7 +41,7 @@ $blIsSubShop = false;
 // Whether to copy services to shop. If services are already in shop directory, this can be set to false.
 $blCopyServicesToShop = true;
 // Whether to prepare shop database for testing. Shop config.ing.php file must be correct.
-$blInstallShop = true;
+$blInstallShop = false;
 
 // Whether to add tests data to shop. Can be used when $blInstallShop is set to false and test data is already added.
 $blAddTestData = true;
@@ -50,9 +50,6 @@ $blRestoreShopAfterTestSuite = false;
 // Whether to restore shop data after test. If this is set to false, shop will be left
 // at a state, at which test was completed (either failed or passed).
 $blRestoreShopAfterTest = true;
-
-// If specified, runs tests for this module
-$sModule = false;
 
 // Selenium server IP address
 $sSeleniumServerIp = "127.0.0.1";
@@ -73,4 +70,4 @@ $sBrowserName = 'firefox';
 
 // Currently exists dbRestore and dbRestore_largeDb. dbRestore_largeDb tends to be faster, but it is not able to work with
 // external databases - this is why dbRestore is currently a default one.
-$sDataBaseRestore = "dbRestore_largeDb";
+$sDataBaseRestore = "dbRestore";

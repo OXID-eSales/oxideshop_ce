@@ -40,8 +40,6 @@ if (SELENIUM_SCREENSHOTS_PATH && !is_dir(SELENIUM_SCREENSHOTS_PATH)) {
 
 if (getenv('OXID_LOCALE') == 'international') {
     define('oxTESTSUITEDIR', 'acceptanceInternational');
-} elseif (getenv('OXID_TEST_EFIRE') ? getenv('OXID_TEST_EFIRE') : $sModule) {
-    define('oxTESTSUITEDIR', 'acceptanceEfire');
 } else {
     define('oxTESTSUITEDIR', 'acceptance');
 }
@@ -59,7 +57,7 @@ if (INSTALLSHOP) {
 
 $oServiceCaller = new oxServiceCaller();
 
-if (ADD_TEST_DATA && !$sModule) {
+if (ADD_TEST_DATA) {
     $oFileCopier = new oxFileCopier();
     $oFileCopier->copyFiles(TESTS_DIRECTORY . 'acceptance/testData/', oxPATH);
 
@@ -67,15 +65,6 @@ if (ADD_TEST_DATA && !$sModule) {
     $oServiceCaller->setParameter('importSql', '@'.$sFileName);
     $oServiceCaller->callService('ShopPreparation', 1);
 
-}
-
-if ($sModule) {
-    $sFileName = oxTESTSUITEDIR . '/' . $sModule . "/demodata_PE.sql";
-    if (file_exists($sFileName)) {
-        $oServiceCaller->setParameter('importSql', '@'.$sFileName);
-        $oServiceCaller->callService('ShopPreparation', 1);
-    }
-    putenv("TEST_FILE_FILTER=$sModule");
 }
 
 // dumping database for selenium tests

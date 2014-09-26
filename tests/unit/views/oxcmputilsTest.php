@@ -133,12 +133,6 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
         $oParentView->expects( $this->once() )->method('getViewProduct')->will( $this->returnValue( $oProduct ) );
         $oParentView->expects( $this->once() )->method('getViewProductList')->will( $this->returnValue( array( $oProduct ) ) );
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('isNewSession', 'checkSessionChallenge'));
-        $oSession->expects($this->once())->method('isNewSession')->will($this->returnValue(false));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
-
         /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
         $oCmp = $this->getMock("oxcmp_utils", array("getParent"));
         $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
@@ -166,12 +160,6 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
         $oParentView = $this->getMock( "oxView", array( "getViewProduct", "getViewProductList" ) );
         $oParentView->expects( $this->once() )->method('getViewProduct')->will( $this->returnValue( $oProduct ) );
         $oParentView->expects( $this->once() )->method('getViewProductList')->will( $this->returnValue( array( $oProduct ) ) );
-
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('isNewSession', 'checkSessionChallenge'));
-        $oSession->expects($this->once())->method('isNewSession')->will($this->returnValue(false));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
 
         /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
         $oCmp = $this->getMock("oxcmp_utils", array("getParent"));

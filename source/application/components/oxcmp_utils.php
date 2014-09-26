@@ -113,11 +113,6 @@ class oxcmp_utils extends oxView
      */
     public function toCompareList( $sProductId = null, $dAmount = null, $aSel = null, $blOverride = false, $blBundle = false )
     {
-        $oSession = oxRegistry::getSession();
-        if (!$oSession->isNewSession() && !$oSession->checkSessionChallenge()) {
-            return;
-        }
-
         // only if enabled and not search engine..
         if ( $this->getViewConfig()->getShowCompareList() && !oxRegistry::getUtils()->isSearchEngine() ) {
 

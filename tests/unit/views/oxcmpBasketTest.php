@@ -32,12 +32,6 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
         $o = $this->getMock('oxcmp_basket', array('_getItems'));
         $o->expects($this->once())->method('_getItems')->will($this->returnValue(false));
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('isNewSession', 'checkSessionChallenge'));
-        $oSession->expects($this->exactly(2))->method('isNewSession')->will($this->returnValue(false));
-        $oSession->expects($this->exactly(2))->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
-
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{return true;}');
         $this->assertSame(null, $o->tobasket());
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{return false;}');
@@ -55,12 +49,6 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
                 'basketitemid' => ''
             )
         );
-
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('isNewSession', 'checkSessionChallenge'));
-        $oSession->expects($this->once())->method('isNewSession')->will($this->returnValue(false));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
 
         /** @var oxBasketItem|PHPUnit_Framework_MockObject_MockObject $oBItem */
         $oBItem = $this->getMock('oxBasketItem', array('getTitle', 'getProductId', 'getAmount', 'getdBundledAmount'));
@@ -102,12 +90,6 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
                 'basketitemid' => ''
             )
         );
-
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('isNewSession', 'checkSessionChallenge'));
-        $oSession->expects($this->once())->method('isNewSession')->will($this->returnValue(false));
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
 
         /** @var oxBasketItem|PHPUnit_Framework_MockObject_MockObject $oBItem */
         $oBItem = $this->getMock('oxBasketItem', array('getTitle', 'getProductId', 'getAmount', 'getdBundledAmount'));

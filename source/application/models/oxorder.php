@@ -533,6 +533,12 @@ class oxOrder extends oxBase
             }
         }
 
+        if ( !$this->oxorder__oxordernr->value ) {
+            $this->_setNumber();
+        } else {
+            oxNew( 'oxCounter' )->update( $this->_getCounterIdent(), $this->oxorder__oxordernr->value );
+        }
+
         // executing TS protection
         if ( !$blRecalculatingOrder && $oBasket->getTsProductId()) {
             $blRet = $this->_executeTsProtection( $oBasket );
@@ -544,12 +550,6 @@ class oxOrder extends oxBase
         // deleting remark info only when order is finished
         oxSession::deleteVar( 'ordrem' );
         oxSession::deleteVar( 'stsprotection' );
-
-        if ( !$this->oxorder__oxordernr->value ) {
-            $this->_setNumber();
-        } else {
-            oxNew( 'oxCounter' )->update( $this->_getCounterIdent(), $this->oxorder__oxordernr->value );
-        }
 
         //#4005: Order creation time is not updated when order processing is complete
         if ( !$blRecalculatingOrder ) {
@@ -2171,12 +2171,11 @@ class oxOrder extends oxBase
     }
 
     /**
-     * Executes Trusted shops protection order. On failure -
-     * deletes order and returns error code or 6.
+     * Executes Trusted shops protection order.
      *
      * @param oxBasket $oBasket basket object
      *
-     * @return mixed
+     * @return bool
      */
     protected function _executeTsProtection( oxBasket $oBasket )
     {
@@ -2189,13 +2188,12 @@ class oxOrder extends oxBase
         $aValues['shopOrderID'] = $this->oxorder__oxordernr->value;
         $aValues['orderDate'] = $this->oxorder__oxorderdate->value;
         $sPaymentId = $oBasket->getPaymentId();
+
+        /** @var oxTsProtection $oTsProtection */
         $oTsProtection = oxNew('oxtsprotection');
-        $blRes = $oTsProtection->requestForTsProtection( $aValues, $sPaymentId );
-        /*if ( !$blRes ) {
-            $this->delete();
-            return self::ORDER_STATE_INVALIDTSPROTECTION;
-        }*/
-        return true; // everything fine
+        $oTsProtection->requestForTsProtection( $aValues, $sPaymentId );
+
+        return true;
     }
 
     /**

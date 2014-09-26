@@ -31,7 +31,6 @@ $sShopUrl = getenv('SELENIUM_TARGET')? getenv('SELENIUM_TARGET') : $sShopUrl;
 
 define ( 'SELENIUM_SCREENSHOTS_PATH', getenv('SELENIUM_SCREENSHOTS_PATH')? getenv('SELENIUM_SCREENSHOTS_PATH') : $sSeleniumScreenShotsPath );
 define ( 'SELENIUM_SCREENSHOTS_URL', getenv('SELENIUM_SCREENSHOTS_URL')? getenv('SELENIUM_SCREENSHOTS_URL') : $sSeleniumScreenShotsUrl );
-define ('DEMO_DATA_FILE', getenv('DEMO_DATA_FILE')? getenv('DEMO_DATA_FILE') : $sDemoDataFileName);
 
 if (SELENIUM_SCREENSHOTS_PATH && !is_dir(SELENIUM_SCREENSHOTS_PATH)) {
     mkdir(SELENIUM_SCREENSHOTS_PATH, 0777, 1);

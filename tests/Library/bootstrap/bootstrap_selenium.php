@@ -22,7 +22,6 @@
 
 require_once TEST_LIBRARY_PATH . '/test_config.inc.php';
 
-require_once 'acceptance/library/oxTestCase.php';
 require_once TEST_LIBRARY_PATH.'vendor/autoload.php';
 
 define('hostUrl', getenv('SELENIUM_SERVER')? getenv('SELENIUM_SERVER') : $sSeleniumServerIp );
@@ -54,20 +53,3 @@ if (INSTALLSHOP) {
         ));
     $sResponse = $oCurl->execute();
 }
-
-$oServiceCaller = new oxServiceCaller();
-
-if (ADD_TEST_DATA) {
-    $oFileCopier = new oxFileCopier();
-    $oFileCopier->copyFiles(TESTS_DIRECTORY . 'acceptance/testData/', oxPATH);
-
-    $sFileName = "acceptance/demodata_PE.sql";
-    $oServiceCaller->setParameter('importSql', '@'.$sFileName);
-    $oServiceCaller->callService('ShopPreparation', 1);
-
-}
-
-// dumping database for selenium tests
-$oServiceCaller->setParameter('dumpDB', true);
-$oServiceCaller->setParameter('dump-prefix', 'reset_suite_db_dump');
-$oServiceCaller->callService('ShopPreparation', 1);

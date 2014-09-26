@@ -80,8 +80,7 @@ class AllTestsRunner extends PHPUnit_Framework_TestCase
             if (!$sFilter || preg_match("&$sFilter&i", $sFilename)) {
 
                 include_once $sFilename;
-                $sClassName = str_replace(array("/", ".php"), array("_", ""), $sFilename);
-
+                $sClassName = static::_formClassNameFromFileName($sFilename);
                 if (class_exists($sClassName)) {
                     $oSuite->addTestSuite($sClassName);
                 } else {
@@ -94,6 +93,18 @@ class AllTestsRunner extends PHPUnit_Framework_TestCase
         }
 
         return $oSuite;
+    }
+
+    /**
+     * Forms class name from file name.
+     *
+     * @param string $sFilename
+     *
+     * @return string
+     */
+    protected static function _formClassNameFromFileName($sFilename)
+    {
+        return str_replace(array("/", ".php"), array("_", ""), $sFilename);
     }
 
     /**

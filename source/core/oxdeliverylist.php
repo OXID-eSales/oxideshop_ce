@@ -274,6 +274,9 @@ class oxDeliveryList extends oxList
         $aSkipDeliveries = array();
         $aDelSetList = oxDeliverySetList::getInstance()->getDeliverySetList( $oUser, $sDelCountry, $sDelSet );
 
+        // Fix Bug 0004385: aDeliveries sums up
+        $this->_aDeliveries = array();
+
         // must choose right delivery set to use its delivery list
         foreach ( $aDelSetList as $sDeliverySetId => $oDeliverySet ) {
 

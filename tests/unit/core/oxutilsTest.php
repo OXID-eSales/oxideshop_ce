@@ -1385,6 +1385,64 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         $this->setTime(145);
         $this->assertEquals(null, $oUtils2->fromFileCache('otherkey'));
+    }
 
+    /**
+     * Bug fix 0005811: Selectlist prices are displayed wrong under certain circumstances
+     */
+    public function testPreparePriceForUserWithChangedBehaviourWhenBruttoMode()
+    {
+        $this->setConfigParam('blShowNetPrice', false);
+
+        // Mocking not necessary method for testing method to be called. Leaving mock empty would stub all class methods.
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
+        $oUtils = $this->getMock('oxUtils', array('_getArticleUser'));
+        $this->assertSame(10, $oUtils->_preparePrice(10, 10));
+    }
+
+    /**
+     * Bug fix 0005811: Selectlist prices are displayed wrong under certain circumstances
+     */
+    public function testPreparePriceForUserWithChangedBehaviourWhenNettoMode()
+    {
+        $this->setConfigParam('blShowNetPrice', true);
+        // Mocking not necessary method for testing method to be called. Leaving mock empty would stub all class methods.
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
+        $oUtils = $this->getMock('oxUtils', array('_getArticleUser'));
+        $this->assertSame(9.09, $oUtils->_preparePrice(10, 10));
+    }
+
+    /**
+     * Bug fix 0005811: Selectlist prices are displayed wrong under certain circumstances
+     */
+    public function testPreparePriceForUserWithChangedBehaviourWhenNettoModeButUserBruttoMode()
+    {
+        $this->setConfigParam('blShowNetPrice', true);
+
+        $oUser = $this->getMock('oxUser', array('isPriceViewModeNetto'));
+        $oUser->expects($this->any())->method('isPriceViewModeNetto')->will($this->returnValue(false));
+
+        // Mocking not necessary method for testing method to be called. Leaving mock empty would stub all class methods.
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
+        $oUtils = $this->getMock('oxUtils', array('_getArticleUser'));
+        $oUtils->expects($this->atLeastOnce())->method('_getArticleUser')->will($this->returnValue($oUser));
+        $this->assertSame(10, $oUtils->_preparePrice(10, 10));
+    }
+
+    /**
+     * Bug fix 0005811: Selectlist prices are displayed wrong under certain circumstances
+     */
+    public function testPreparePriceForUserWithChangedBehaviourWhenBruttoModeButUserNettoMode()
+    {
+        $this->setConfigParam('blShowNetPrice', false);
+
+        $oUser = $this->getMock('oxUser', array('isPriceViewModeNetto'));
+        $oUser->expects($this->any())->method('isPriceViewModeNetto')->will($this->returnValue(true));
+
+        // Mocking not necessary method for testing method to be called. Leaving mock empty would stub all class methods.
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
+        $oUtils = $this->getMock('oxUtils', array('_getArticleUser'));
+        $oUtils->expects($this->atLeastOnce())->method('_getArticleUser')->will($this->returnValue($oUser));
+        $this->assertSame(9.09, $oUtils->_preparePrice(10, 10));
     }
 }

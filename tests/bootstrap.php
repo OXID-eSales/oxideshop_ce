@@ -53,6 +53,7 @@ require_once TEST_LIBRARY_PATH."bootstrap/bootstrap_base.php";
 switch($sTestType) {
     case 'acceptance':
     case 'selenium':
+    case 'javascript':
         include_once TEST_LIBRARY_PATH."bootstrap/bootstrap_selenium.php";
         break;
     default:

@@ -23,20 +23,8 @@ class AllTestsRunner extends PHPUnit_Framework_TestCase
     /** @var array Default test suites */
     protected static $_aTestSuites = array();
 
-    /**
-     * Returns test files filter
-     *
-     * @return string
-     */
-    public static function getTestFileFilter()
-    {
-        $sTestFileNameEnd = '*[^8]Test.php';
-        if (getenv('OXID_TEST_UTF8')) {
-            $sTestFileNameEnd = '*utf8Test.php';
-        }
-
-        return $sTestFileNameEnd;
-    }
+    /** @var array Run these tests before any other */
+    protected static $_aPriorityTests = array();
 
     /**
      * Forms test suite
@@ -48,8 +36,11 @@ class AllTestsRunner extends PHPUnit_Framework_TestCase
         $aTestDirectories = static::_getTestDirectories();
 
         $oSuite = new PHPUnit_Framework_TestSuite('PHPUnit');
+
+        static::_addPriorityTests($oSuite, static::$_aPriorityTests, $aTestDirectories);
+
         foreach ($aTestDirectories as $sDirectory) {
-            $sFilesSelector = "$sDirectory/" . static::getTestFileFilter();
+            $sFilesSelector = "$sDirectory/" . static::_getTestFileFilter();
             $aTestFiles = glob($sFilesSelector);
 
             if (empty($aTestFiles)) {
@@ -58,6 +49,7 @@ class AllTestsRunner extends PHPUnit_Framework_TestCase
 
             echo "Adding unit tests from $sFilesSelector\n";
 
+            $aTestFiles = array_diff($aTestFiles, static::$_aPriorityTests);
             $oSuite = static::_addFilesToSuite($oSuite, $aTestFiles);
         }
 
@@ -65,46 +57,24 @@ class AllTestsRunner extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Adds files to test suite
+     * Adds tests with highest priority.
      *
      * @param PHPUnit_Framework_TestSuite $oSuite
-     * @param array                       $aTestFiles
-     *
-     * @return PHPUnit_Framework_TestSuite
+     * @param array                       $aPriorityTests
+     * @param array                       $aTestDirectories
      */
-    protected static function _addFilesToSuite($oSuite, $aTestFiles)
+    public static function _addPriorityTests($oSuite, $aPriorityTests, $aTestDirectories)
     {
-        foreach ($aTestFiles as $sFilename) {
-
-            $sFilter = getenv('PREG_FILTER');
-            if (!$sFilter || preg_match("&$sFilter&i", $sFilename)) {
-
-                include_once $sFilename;
-                $sClassName = static::_formClassNameFromFileName($sFilename);
-                if (class_exists($sClassName)) {
-                    $oSuite->addTestSuite($sClassName);
-                } else {
-                    if (!isset($blThrowException) || $blThrowException) {
-                        echo "\n\nFile with wrong class name found!: $sClassName in $sFilename";
-                        exit();
-                    }
+        if (!empty(static::$_aPriorityTests)) {
+            $aTestsToInclude = array();
+            foreach ($aPriorityTests as $sTestFile) {
+                $sFolder = dirname($sTestFile);
+                if (array_search($sFolder, $aTestDirectories) !== false) {
+                    $aTestsToInclude[] = $sTestFile;
                 }
             }
+            static::_addFilesToSuite($oSuite, $aTestsToInclude);
         }
-
-        return $oSuite;
-    }
-
-    /**
-     * Forms class name from file name.
-     *
-     * @param string $sFilename
-     *
-     * @return string
-     */
-    protected static function _formClassNameFromFileName($sFilename)
-    {
-        return str_replace(array("/", ".php"), array("_", ""), $sFilename);
     }
 
     /**
@@ -173,4 +143,61 @@ class AllTestsRunner extends PHPUnit_Framework_TestCase
         return $aTree;
     }
 
+    /**
+     * Returns test files filter
+     *
+     * @return string
+     */
+    protected static function _getTestFileFilter()
+    {
+        $sTestFileNameEnd = '*[^8]Test.php';
+        if (getenv('OXID_TEST_UTF8')) {
+            $sTestFileNameEnd = '*utf8Test.php';
+        }
+
+        return $sTestFileNameEnd;
+    }
+
+    /**
+     * Adds files to test suite
+     *
+     * @param PHPUnit_Framework_TestSuite $oSuite
+     * @param array                       $aTestFiles
+     *
+     * @return PHPUnit_Framework_TestSuite
+     */
+    protected static function _addFilesToSuite($oSuite, $aTestFiles)
+    {
+        foreach ($aTestFiles as $sFilename) {
+
+            $sFilter = getenv('PREG_FILTER');
+            if (!$sFilter || preg_match("&$sFilter&i", $sFilename)) {
+
+                include_once $sFilename;
+                $sClassName = static::_formClassNameFromFileName($sFilename);
+                if (class_exists($sClassName)) {
+                    $oSuite->addTestSuite($sClassName);
+                } else {
+                    if (!isset($blThrowException) || $blThrowException) {
+                        echo "\n\nFile with wrong class name found!: $sClassName in $sFilename";
+                        exit();
+                    }
+                }
+            }
+        }
+
+        return $oSuite;
+    }
+
+    /**
+     * Forms class name from file name.
+     *
+     * @param string $sFilename
+     *
+     * @return string
+     */
+    protected static function _formClassNameFromFileName($sFilename)
+    {
+        return str_replace(array("/", ".php"), array("_", ""), $sFilename);
+    }
 }

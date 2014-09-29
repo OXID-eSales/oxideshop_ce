@@ -1259,7 +1259,7 @@ class oxUtils extends oxSuperCfg
      */
     protected function _preparePrice( $dPrice, $dVat )
     {
-        $blCalculationModeNetto = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
+        $blCalculationModeNetto = $this->_isPriceViewModeNetto();
 
         $oCurrency = $this->getConfig()->getActShopCurrencyObject();
 
@@ -1269,8 +1269,40 @@ class oxUtils extends oxSuperCfg
         } elseif ( !$blCalculationModeNetto && $blEnterNetPrice ) {
             $dPrice = round( oxPrice::netto2Brutto( $dPrice, $dVat ), $oCurrency->decimal );
         }
+
         return $dPrice;
     }
+
+    /**
+     * Checks and return true if price view mode is netto.
+     *
+     * @return bool
+     */
+    protected function _isPriceViewModeNetto()
+    {
+        $blResult = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
+        $oUser = $this->_getArticleUser();
+        if ($oUser) {
+            $blResult = $oUser->isPriceViewModeNetto();
+        }
+
+        return $blResult;
+    }
+
+    /**
+     * Return article user.
+     *
+     * @return oxUser
+     */
+    protected function _getArticleUser()
+    {
+        if ($this->_oUser) {
+            return $this->_oUser;
+        }
+
+        return $this->getUser();
+    }
+
     /**
      * returns manually set mime types
      *

@@ -12,7 +12,7 @@ $oShopInstaller = new ShopInstaller();
 
 $sShopTestingSerial = array_key_exists('serial', $_REQUEST)? $_REQUEST['serial'] : false;
 $blAddDemoData = array_key_exists('addDemoData', $_REQUEST) ? $_REQUEST['addDemoData'] : true;
-$blInternationalShop = array_key_exists('international', $_REQUEST) ? $_REQUEST['international'] : true;
+$blInternationalShop = array_key_exists('international', $_REQUEST) ? $_REQUEST['international'] : false;
 $blTurnOnVarnish = (bool)$oShopInstaller->turnOnVarnish || $_REQUEST['RP'] || $_REQUEST['turnOnVarnish'];
 $sTestSqlLocalFile = array_key_exists('importSql', $_REQUEST) ? $_REQUEST['importSql'] : false;
 $sTestSqlRemoteFile = array_key_exists('importSql', $_FILES) ? $_FILES['importSql'] : false;

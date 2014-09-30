@@ -105,6 +105,14 @@ class ShopInstaller
     }
 
     /**
+     * Convert shop to international.
+     */
+    public function convertToInternational()
+    {
+        $this->importFileToDatabase(SHOP_PATH . 'setup/sql' . OXID_VERSION_SUFIX . '/' . 'en.sql');
+    }
+
+    /**
      * Inserts missing configuration parameters
      */
     public function setConfigurationParameters()

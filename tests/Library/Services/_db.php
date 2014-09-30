@@ -12,6 +12,7 @@ $oShopInstaller = new ShopInstaller();
 
 $sShopTestingSerial = array_key_exists('serial', $_REQUEST)? $_REQUEST['serial'] : false;
 $blAddDemoData = array_key_exists('addDemoData', $_REQUEST) ? $_REQUEST['addDemoData'] : true;
+$blInternationalShop = array_key_exists('international', $_REQUEST) ? $_REQUEST['international'] : true;
 $blTurnOnVarnish = (bool)$oShopInstaller->turnOnVarnish || $_REQUEST['RP'] || $_REQUEST['turnOnVarnish'];
 $sTestSqlLocalFile = array_key_exists('importSql', $_REQUEST) ? $_REQUEST['importSql'] : false;
 $sTestSqlRemoteFile = array_key_exists('importSql', $_FILES) ? $_FILES['importSql'] : false;
@@ -36,6 +37,9 @@ if (!$sTestSqlLocalFile && $_REQUEST['test']) {
     <li>drop and recreate database: <?=$oShopInstaller->dbName?> <?php $oShopInstaller->setupDatabase(); ?></li>
     <?php if ($blAddDemoData) : ?>
         <li>Insert demo data <?php $oShopInstaller->insertDemoData()?></li>
+    <?php endif; ?>
+    <?php if ($blInternationalShop) : ?>
+        <li>Convert shop to International <?php $oShopInstaller->convertToInternational();?></li>
     <?php endif; ?>
     <?php if ($sTestSqlLocalFile) : ?>
         <li>Insert test data <?php $oShopInstaller->importFileToDatabase($sTestSqlLocalFile)?></li>

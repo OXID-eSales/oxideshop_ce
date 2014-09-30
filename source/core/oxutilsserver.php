@@ -57,11 +57,11 @@ class oxUtilsServer extends oxSuperCfg
      * @param string $sDomain     The domain that the cookie is available.
      * @param bool   $blToSession is true, records cookie information to session
      * @param bool   $blSecure    if true, transfer cookie only via SSL
-     * @param bool   $blHttponly  if true, only accessible via HTTP
+     * @param bool   $blHttpOnly  if true, only accessible via HTTP
      *
      * @return bool
      */
-    public function setOxCookie($sName, $sValue = "", $iExpire = 0, $sPath = '/', $sDomain = null, $blToSession = true, $blSecure = false, $blHttponly = true)
+    public function setOxCookie($sName, $sValue = "", $iExpire = 0, $sPath = '/', $sDomain = null, $blToSession = true, $blSecure = false, $blHttpOnly = true)
     {
         //TODO: since setcookie takes more than just 4 params..
         // would be nice to have it sending through https only, if in https mode
@@ -84,7 +84,7 @@ class oxUtilsServer extends oxSuperCfg
             $this->_getCookiePath($sPath),
             $this->_getCookieDomain($sDomain),
             $blSecure,
-            $blHttponly
+            $blHttpOnly
         );
     }
 

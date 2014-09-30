@@ -61,7 +61,7 @@ class oxUtilsServer extends oxSuperCfg
      *
      * @return bool
      */
-    public function setOxCookie( $sName, $sValue = "", $iExpire = 0, $sPath = '/', $sDomain = null, $blToSession = true, $blSecure = false, $blHttponly = true)
+    public function setOxCookie($sName, $sValue = "", $iExpire = 0, $sPath = '/', $sDomain = null, $blToSession = true, $blSecure = false, $blHttponly = true)
     {
         //TODO: since setcookie takes more than just 4 params..
         // would be nice to have it sending through https only, if in https mode

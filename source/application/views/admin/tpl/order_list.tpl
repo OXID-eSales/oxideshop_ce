@@ -136,7 +136,7 @@ window.onload = function ()
                 [{if !$readonly}]
                     <a href="Javascript:top.oxid.admin.deleteThis('[{ $listitem->oxorder__oxid->value }]');" class="delete" id="del.[{$_cnt}]" [{include file="help.tpl" helpid=item_delete}]></a>
                     <a href="Javascript:StornoThisArticle('[{ $listitem->oxorder__oxid->value }]');" class="pause" id="pau.[{$_cnt}]" [{include file="help.tpl" helpid=item_storno}]></a>
-                [{/if}]</td>
+                [{/if}]
             </td>
         [{/block}]
     </tr>

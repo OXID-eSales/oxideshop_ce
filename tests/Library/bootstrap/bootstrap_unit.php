@@ -28,6 +28,7 @@ if (INSTALLSHOP) {
         'addDemoData' => 0,
         'turnOnVarnish' => OXID_VARNISH,
         'importSql' => TESTS_DIRECTORY . 'testsql/testdata'.OXID_VERSION_SUFIX.'.sql',
+        'setupPath' => SHOP_SETUP_PATH,
     ));
     $sResponse = $oCurl->execute();
 }

@@ -49,6 +49,7 @@ if (INSTALLSHOP) {
             'serial' => TEST_SHOP_SERIAL,
             'addDemoData' => 1,
             'turnOnVarnish' => OXID_VARNISH,
+            'setupPath' => SHOP_SETUP_PATH,
         ));
     $sResponse = $oCurl->execute();
 }

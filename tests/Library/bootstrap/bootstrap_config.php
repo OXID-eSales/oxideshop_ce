@@ -39,6 +39,7 @@ define('INSTALLSHOP', getenv('oxINSTALLSHOP') ? getenv('oxINSTALLSHOP') : $blIns
 define('ADD_TEST_DATA', getenv('oxSKIPSHOPSETUP') ? !getenv('oxSKIPSHOPSETUP') : $blAddTestData);
 define('RESTORE_SHOP_AFTER_TEST_SUITE', getenv('oxSKIPSHOPRESTORE') ? !getenv('oxSKIPSHOPRESTORE') : $blRestoreShopAfterTestSuite);
 define('RESTORE_SHOP_AFTER_TEST', getenv('oxSKIPSHOPRESTORE') ? !getenv('oxSKIPSHOPRESTORE') : $blRestoreShopAfterTest);
+define('SHOP_SETUP_PATH', getenv('SHOP_SETUP_PATH') ? !getenv('SHOP_SETUP_PATH') : $sShopSetupPath);
 
 define('SHOPRESTORATIONCLASS', getenv('SHOPRESTORATIONCLASS') ? getenv('SHOPRESTORATIONCLASS') : $sDataBaseRestore);
 define('COPY_SERVICES_TO_SHOP', getenv('COPY_SERVICES_TO_SHOP') ? getenv('COPY_SERVICES_TO_SHOP') : $blCopyServicesToShop);

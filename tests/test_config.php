@@ -41,7 +41,8 @@ $blInstallShop = false;
 
 // eShop setup directory. After setting up the shop setup directory will be deleted.
 // For shop installation to work during tests run, where to find this directory must be specified.
-$sShopSetupPath = $sShopPath.'/setup/';
+// Uses shop/directory/setup/ if not set.
+$sShopSetupPath = null;
 // Whether to add tests data to shop. Can be used when $blInstallShop is set to false and test data is already added.
 $blAddTestData = true;
 // Whether to restore shop data after running all tests. If this is set to false, shop will be left with tests data added on it.

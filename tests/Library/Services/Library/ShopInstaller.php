@@ -32,6 +32,9 @@ class ShopInstaller
     /** @var resource  */
     private $_oDb = null;
 
+    /** @var string Shop setup directory path */
+    private $_sSetupDirectory = null;
+
     /**
      * Includes configuration files.
      */
@@ -43,6 +46,16 @@ class ShopInstaller
         if (!defined('OXID_VERSION_SUFIX')) {
             define('OXID_VERSION_SUFIX', '');
         }
+    }
+
+    /**
+     * Sets shop setup directory.
+     *
+     * @param string $sSetupPath Path to setup files to use instead of shop ones.
+     */
+    public function setSetupDirectory($sSetupPath)
+    {
+        $this->_sSetupDirectory = $sSetupPath;
     }
 
     /**
@@ -93,7 +106,8 @@ class ShopInstaller
         $this->query('drop database `' . $this->dbName . '`');
         $this->query('create database `' . $this->dbName . '` collate ' . $this->getCharsetMode() . '_general_ci');
 
-        $this->importFileToDatabase(SHOP_PATH . 'setup/sql' . OXID_VERSION_SUFIX . '/' . 'database.sql');
+        $sSetupPath = $this->getSetupDirectory();
+        $this->importFileToDatabase($sSetupPath . '/sql' . OXID_VERSION_SUFIX . '/' . 'database.sql');
     }
 
     /**
@@ -101,7 +115,8 @@ class ShopInstaller
      */
     public function insertDemoData()
     {
-        $this->importFileToDatabase(SHOP_PATH . 'setup/sql' . OXID_VERSION_SUFIX . '/' . 'demodata.sql');
+        $sSetupPath = $this->getSetupDirectory();
+        $this->importFileToDatabase($sSetupPath . '/sql' . OXID_VERSION_SUFIX . '/' . 'demodata.sql');
     }
 
     /**
@@ -109,7 +124,8 @@ class ShopInstaller
      */
     public function convertToInternational()
     {
-        $this->importFileToDatabase(SHOP_PATH . 'setup/sql' . OXID_VERSION_SUFIX . '/' . 'en.sql');
+        $sSetupPath = $this->getSetupDirectory();
+        $this->importFileToDatabase($sSetupPath . '/sql' . OXID_VERSION_SUFIX . '/' . 'en.sql');
     }
 
     /**
@@ -326,5 +342,19 @@ class ShopInstaller
             return $input;
         }
         return $output;
+    }
+
+    /**
+     * Returns shop setup directory.
+     *
+     * @return string
+     */
+    protected function getSetupDirectory()
+    {
+        if ($this->_sSetupDirectory === null) {
+            $this->_sSetupDirectory = SHOP_PATH . '/setup';
+        }
+
+        return $this->_sSetupDirectory;
     }
 }

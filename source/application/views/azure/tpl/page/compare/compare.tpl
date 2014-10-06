@@ -53,7 +53,7 @@
                                     </div>
                                 [{/if}]
 
-                                [{oxid_include_widget cl="oxwArticleBox" _parent=$oView->getClassName() iLinkType=$product->getLinkType() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() _object=$product anid=$product->getId() altproduct=$altproduct iIndex=$smarty.foreach.comparelist.iteration sWidgetType=product sListType=compareitem inlist=$product->isInList() skipESIforUser=1}]
+                                [{oxid_include_widget cl="oxwArticleBox" _parent=$oView->getClassName() iLinkType=$product->getLinkType() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() _object=$product anid=$product->getId() altproduct=$altproduct iIndex=$smarty.foreach.comparelist.iteration sWidgetType=product sListType=compareitem inlist=$product->isInList() isVatIncluded=$oView->isVatIncluded() skipESIforUser=1}]
                             </td>
                             [{/foreach}]
                         </tr>

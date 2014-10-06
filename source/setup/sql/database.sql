@@ -936,7 +936,7 @@ INSERT INTO `oxcountry` (`OXID`, `OXACTIVE`, `OXTITLE`, `OXISOALPHA2`, `OXISOALP
 ('8f241f11095ea6249.81474246', 0, 'Mayotte', 'YT', 'MYT', '175', 'YT', 9999, 'Rest Welt', '', 'Mayotte', '', '', 'Rest World', '', '', '', '', '', 0),
 ('8f241f11095ebf3a6.86388577', 0, 'Mexiko', 'MX', 'MEX', '484', 'MX', 9999, 'Rest Welt', '', 'Mexico', '', '', 'Rest World', '', '', '', '', '', 0),
 ('8f241f11095ed4902.49276197', 0, 'Mikronesien, Föderierte Staaten von', 'FM', 'FSM', '583', 'FM', 9999, 'Rest Welt', '', 'Micronesia, Federated States Of', '', '', 'Rest World', '', '', '', '', '', 0),
-('8f241f11095ee9923.85175653', 0, 'Moldau', 'MD', 'MDA', '498', 'MD', 9999, 'Rest Europa', '', 'Moldova', '', '', 'Rest Europe', '', '', '', '', '', 0),
+('8f241f11095ee9923.85175653', 0, 'Moldawien', 'MD', 'MDA', '498', 'MD', 9999, 'Rest Europa', '', 'Moldova', '', '', 'Rest Europe', '', '', '', '', '', 0),
 ('8f241f11095f00d65.30318330', 0, 'Monaco', 'MC', 'MCO', '492', 'MC', 9999, 'Europa', '', 'Monaco', '', '', 'Europe', '', '', '', '', '', 0),
 ('8f241f11095f160c9.41059441', 0, 'Mongolei', 'MN', 'MNG', '496', 'MN', 9999, 'Rest Welt', '', 'Mongolia', '', '', 'Rest World', '', '', '', '', '', 0),
 ('8f241f11095f314f5.05830324', 0, 'Montserrat', 'MS', 'MSR', '500', 'MS', 9999, 'Rest Welt', '', 'Montserrat', '', '', 'Rest World', '', '', '', '', '', 0),

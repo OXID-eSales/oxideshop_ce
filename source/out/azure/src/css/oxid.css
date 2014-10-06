@@ -3070,11 +3070,11 @@ a.next {
     margin-top: 20px;
 }
 
-.checkoutCollumns .row {
+.checkoutColumns .row {
     margin-bottom: 20px;
 }
 
-.checkoutCollumns .collumn {
+.checkoutColumns .column {
     width: 50%;
     float: left;
 }
@@ -3790,7 +3790,7 @@ dl.review .param {
     color: #757C83;
 }
 /* --- Account billing / shipping addresses ------ */
-.addressCollumns .collumn {
+.addressColumns .column {
     float: left;
     width: 50%;
 }

@@ -12,8 +12,8 @@
                 <input type="hidden" name="CustomError" value='user'>
                 <input type="hidden" name="blshowshipaddress" value="1">
             </div>
-            <div class="addressCollumns clear">
-                <div class="collumn">
+            <div class="addressColumns clear">
+                <div class="column">
                     [{block name="user_billing_address"}]
                         [{block name="user_billing_address_head"}]
                             <h3 class="blockHead">
@@ -37,7 +37,7 @@
                         [{/block}]
                     [{/block}]
                 </div>
-                <div class="collumn">
+                <div class="column">
                     [{block name="user_shipping_address"}]
                         [{block name="user_shipping_address_head"}]
                             <h3 id="addShippingAddress" class="blockHead">

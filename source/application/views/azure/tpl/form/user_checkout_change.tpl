@@ -17,8 +17,8 @@
                     <button id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{oxmultilang ident="CONTINUE_TO_NEXT_STEP"}]</button>
                 </div>
             [{/block}]
-            <div class="checkoutCollumns clear">
-                <div class="collumn">
+            <div class="checkoutColumns clear">
+                <div class="column">
                     [{block name="user_checkout_billing"}]
                         [{block name="user_checkout_billing_head"}]
                             <h3 class="blockHead">
@@ -44,7 +44,7 @@
                         [{/block}]
                     [{/block}]
                 </div>
-                <div class="collumn">
+                <div class="column">
                     [{block name="user_checkout_shipping"}]
                         [{block name="user_checkout_shipping_head"}]
                             <h3 class="blockHead">[{oxmultilang ident="SHIPPING_ADDRESS"}]

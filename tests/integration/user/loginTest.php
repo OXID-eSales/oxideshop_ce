@@ -59,6 +59,22 @@ class Integration_User_loginTest extends UserTestCase
     public function testLoginWithOldPassword()
     {
         $oUser = $this->_createUser($this->_sDefaultUserName, $this->_sOldEncodedPassword, $this->_sOldSalt);
+
+        $this->_login($this->_sDefaultUserName, $this->_sDefaultUserPassword);
+
+        $oUser->load($oUser->getId());
+
+        $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
+        $this->assertNotSame($this->_sOldEncodedPassword, $oUser->oxuser__oxpassword->value, 'Old and new passwords must not match.');
+        $this->assertNotSame($this->_sOldSalt, $oUser->oxuser__oxpasssalt->value, 'Old and new salt must not match.');
+    }
+
+    /**
+     * Tries to login with old password from different subshop, makes sure there are no crashes
+     */
+    public function testLoginWithOldPasswordMultishop()
+    {
+        $oUser = $this->_createUser($this->_sDefaultUserName, $this->_sOldEncodedPassword, $this->_sOldSalt);
         $this->_login($this->_sDefaultUserName, $this->_sDefaultUserPassword);
 
         $oUser->load($oUser->getId());

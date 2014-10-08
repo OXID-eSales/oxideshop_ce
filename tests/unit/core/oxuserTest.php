@@ -1403,6 +1403,23 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $this->assertEquals(true, $oUser->exists());
     }
 
+    /**
+     * Testing #5901 case
+     */
+    public function testExistsInOtherSubshops()
+    {
+        $oUser = new oxUser();
+        $oUser->load('oxdefaultadmin');
+        $oUser->oxuser__oxrights = new oxField("");
+        $oUser->oxuser__oxshopid = new oxField("2");
+        $oUser->oxuser__oxusername = new oxField("differentName");
+
+        oxRegistry::getConfig()->setShopId(2);
+
+        $this->assertTrue($oUser->exists());
+
+    }
+
 
     /**
      * Checking amount of created orders

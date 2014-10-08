@@ -527,21 +527,13 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
     public function testGetPasswordHash()
     {
-        $oUser1 = new oxuser();
-        $oUser1->oxuser__oxpassword = new oxField( "******" );
+        $oUser1 = new oxUser();
+        $oUser1->oxuser__oxpassword = new oxField( 'passwordHash' );
 
-        $oUser2 = new oxuser();
-        $oUser2->oxuser__oxpassword = new oxField( str_repeat( "*", 32 ) );
+        $this->assertEquals( 'passwordHash', $oUser1->getPasswordHash() );
 
-        $oUser3 = new oxuser();
-
-        $sHash = $oUser1->getPasswordHash();
-        $this->assertEquals( MD5( "******" . oxDb::getDb()->getOne( "select UNHEX( '{$oUser1->oxuser__oxpasssalt->value}' )" ) ), $sHash );
-
-        $sHash = $oUser2->getPasswordHash();
-        $this->assertEquals( str_repeat( "*", 32 ), $sHash );
-
-        $this->assertNull( $oUser3->getPasswordHash() );
+        $oUser2 = new oxUser();
+        $this->assertNull( $oUser2->getPasswordHash() );
     }
 
 
@@ -1588,6 +1580,23 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser   = oxNew( 'oxuser' );
         $oUser->load( $sUserID );
         $this->assertEquals( true, $oUser->exists() );
+    }
+
+    /**
+     * Testing #5901 case
+     */
+    public function testExistsInOtherSubshops()
+    {
+        $oUser = new oxUser();
+        $oUser->load('oxdefaultadmin');
+        $oUser->oxuser__oxrights = new oxField("");
+        $oUser->oxuser__oxshopid = new oxField("2");
+        $oUser->oxuser__oxusername = new oxField("differentName");
+
+        oxRegistry::getConfig()->setShopId(2);
+
+        $this->assertTrue($oUser->exists());
+
     }
 
 

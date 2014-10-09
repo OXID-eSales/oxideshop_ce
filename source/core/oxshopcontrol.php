@@ -680,6 +680,7 @@ class oxShopControl extends oxSuperCfg
             header( "HTTP/1.1 500 Internal Server Error");
             header( "Location: offline.html");
             header( "Connection: close");
+            exit (1);
         }
     }
 

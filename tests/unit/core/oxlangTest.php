@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -20,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
  */
+
 class Unit_Core_oxLangTest extends OxidTestCase
 {
 
@@ -136,18 +136,18 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $sPath = oxRegistry::getConfig()->getAppDir();
 
         $aPathArray = array(
-            $sPath . "translations/de/lang.php",
-            $sPath . "translations/de/translit_lang.php",
-            $sPath . "views/azure/de/lang.php",
-            $sPath . "views/azure/1/de/lang.php",
-            $sPath . "views/azure/de/cust_lang.php"
+            $sPath . "translations/de/lang.php"
+        , $sPath . "translations/de/translit_lang.php"
+        , $sPath . "views/azure/de/lang.php"
+        , $sPath . "views/azure/1/de/lang.php"
+        , $sPath . "views/azure/de/cust_lang.php"
         );
 
         $aPathArray = array(
-            $sPath . "translations/de/lang.php",
-            $sPath . "translations/de/translit_lang.php",
-            $sPath . "views/azure/de/lang.php",
-            $sPath . "views/azure/de/cust_lang.php"
+            $sPath . "translations/de/lang.php"
+        , $sPath . "translations/de/translit_lang.php"
+        , $sPath . "views/azure/de/lang.php"
+        , $sPath . "views/azure/de/cust_lang.php"
         );
 
         $oLang = new oxLang();
@@ -167,20 +167,20 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $sPath = oxRegistry::getConfig()->getAppDir();
         $sShopPath = oxRegistry::getConfig()->getConfigParam('sShopDir');
         $aPathArray = array(
-            $sPath . "translations/de/lang.php",
-            $sPath . "translations/de/translit_lang.php",
-            $sPath . "views/azure/de/lang.php",
-            $sPath . "views/azure/1/de/lang.php",
-            $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php",
-            $sPath . "views/azure/de/cust_lang.php"
+            $sPath . "translations/de/lang.php"
+        , $sPath . "translations/de/translit_lang.php"
+        , $sPath . "views/azure/de/lang.php"
+        , $sPath . "views/azure/1/de/lang.php"
+        , $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php"
+        , $sPath . "views/azure/de/cust_lang.php"
         );
 
         $aPathArray = array(
-            $sPath . "translations/de/lang.php",
-            $sPath . "translations/de/translit_lang.php",
-            $sPath . "views/azure/de/lang.php",
-            $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php",
-            $sPath . "views/azure/de/cust_lang.php"
+            $sPath . "translations/de/lang.php"
+        , $sPath . "translations/de/translit_lang.php"
+        , $sPath . "views/azure/de/lang.php"
+        , $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php"
+        , $sPath . "views/azure/de/cust_lang.php"
         );
 
         $aInfo = array('oxlangTestModule' => 'oxlangTestModule');
@@ -199,9 +199,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangFilesPathForModulesWithApplicationFolder()
     {
-        $sFilePath = oxRegistry::getConfig()->getConfigParam(
-                'sShopDir'
-            ) . 'modules/oxlangTestModule/application/translations/de/';
+        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . 'modules/oxlangTestModule/application/translations/de/';
 
         if (!is_dir($sFilePath)) {
             mkdir($sFilePath, 0755, true);
@@ -212,20 +210,20 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $sPath = oxRegistry::getConfig()->getAppDir();
         $sShopPath = oxRegistry::getConfig()->getConfigParam('sShopDir');
         $aPathArray = array(
-            $sPath . "translations/de/lang.php",
-            $sPath . "translations/de/translit_lang.php",
-            $sPath . "views/azure/de/lang.php",
-            $sPath . "views/azure/1/de/lang.php",
-            $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php",
-            $sPath . "views/azure/de/cust_lang.php"
+            $sPath . "translations/de/lang.php"
+        , $sPath . "translations/de/translit_lang.php"
+        , $sPath . "views/azure/de/lang.php"
+        , $sPath . "views/azure/1/de/lang.php"
+        , $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php"
+        , $sPath . "views/azure/de/cust_lang.php"
         );
 
         $aPathArray = array(
-            $sPath . "translations/de/lang.php",
-            $sPath . "translations/de/translit_lang.php",
-            $sPath . "views/azure/de/lang.php",
-            $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php",
-            $sPath . "views/azure/de/cust_lang.php"
+            $sPath . "translations/de/lang.php"
+        , $sPath . "translations/de/translit_lang.php"
+        , $sPath . "views/azure/de/lang.php"
+        , $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php"
+        , $sPath . "views/azure/de/cust_lang.php"
         );
 
         $aInfo = array('oxlangTestModule' => 'oxlangTestModule');
@@ -273,10 +271,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $aResult = $oLang->UNITgetAdminLangFilesPathArray(0);
 
         foreach ($aPathArray as $sPath) {
-            $this->assertTrue(
-                array_search($sPath, $aResult) !== false,
-                "Language file '$sPath' was not found as registered"
-            );
+            $this->assertTrue(array_search($sPath, $aResult) !== false, "Language file '$sPath' was not found as registered");
         }
 
         unlink($sShopPath . "modules/oxlangTestModule/views/admin/de/test1_lang.php");
@@ -290,16 +285,12 @@ class Unit_Core_oxLangTest extends OxidTestCase
     public function testGetLangFileCacheName()
     {
         $myConfig = oxRegistry::getConfig();
-        $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam(
-                'sTheme'
-            ) . '_default';
+        $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . '_default';
 
         $oLang = new oxLang();
         $this->assertEquals($sCacheName, $oLang->UNITgetLangFileCacheName(true, 1));
 
-        $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam(
-                'sTheme'
-            ) . '_9fe20164bd4aeab975137aae7f30a1ce';
+        $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . '_9fe20164bd4aeab975137aae7f30a1ce';
         $this->assertEquals($sCacheName, $oLang->UNITgetLangFileCacheName(true, 1, array('asdasd', 'dasasd')));
 
     }
@@ -313,22 +304,12 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         //writing a test lang file
         $sFilePath = oxRegistry::getConfig()->getConfigParam('sCompileDir');
-        file_put_contents(
-            $sFilePath . "/baselang$sFilePrefix.txt",
-            '<?php $aSeoReplaceChars = array("t1" => "r1", "t2" => "r2", "t3" => "r3"); $aLang = array( "charset" => "baseCharset", "TESTKEY" => "baseVal");'
-        );
-        file_put_contents(
-            $sFilePath . "/testlang$sFilePrefix.txt",
-            '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "testCharset", "TESTKEY" => "testVal");'
-        );
+        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "r1", "t2" => "r2", "t3" => "r3"); $aLang = array( "charset" => "baseCharset", "TESTKEY" => "baseVal");');
+        file_put_contents($sFilePath . "/testlang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "testCharset", "TESTKEY" => "testVal");');
 
         $aLangFilesPath = array($sFilePath . "/baselang$sFilePrefix.txt", $sFilePath . "/testlang$sFilePrefix.txt");
 
-        $aResult = array(
-            "charset" => "baseCharset",
-            "TESTKEY" => "testVal",
-            '_aSeoReplaceChars' => array("t1" => "overide1", "t2" => "r2", "t3" => "r3")
-        );
+        $aResult = array("charset" => "baseCharset", "TESTKEY" => "testVal", '_aSeoReplaceChars' => array("t1" => "overide1", "t2" => "r2", "t3" => "r3"));
 
         $oLang = $this->getMock("oxlang", array("_getLangFilesPathArray", "_recodeLangArray"));
         $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
@@ -347,40 +328,23 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         //writing a test lang file
         $sFilePath = oxRegistry::getConfig()->getConfigParam('sCompileDir');
-        file_put_contents(
-            $sFilePath . "/baselang$sFilePrefix.txt",
-            '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "baseCharset", "TESTKEY" => "baseVal");'
-        );
-        file_put_contents(
-            $sFilePath . "/testlang$sFilePrefix.txt",
-            '<?php $aLang = array( "charset" => "testCharset", "TESTKEY" => "testVal");'
-        );
+        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "baseCharset", "TESTKEY" => "baseVal");');
+        file_put_contents($sFilePath . "/testlang$sFilePrefix.txt", '<?php $aLang = array( "charset" => "testCharset", "TESTKEY" => "testVal");');
 
         $aLangFilesPath = array($sFilePath . "/baselang$sFilePrefix.txt", $sFilePath . "/testlang$sFilePrefix.txt");
 
-        $aResult = array(
-            "charset" => "UTF-8",
-            "TESTKEY" => "testVal",
-            '_aSeoReplaceChars' => array("t1" => "overide1")
-        );
+        $aResult = array("charset" => "UTF-8", "TESTKEY" => "testVal", '_aSeoReplaceChars' => array("t1" => "overide1"));
 
         $oConfig = $this->getMock("oxConfig", array("isUtf"));
         $oConfig->expects($this->any())->method('isUtf')->will($this->returnValue(true));
 
-        $oLang = $this->getMock(
-            "oxlang",
-            array('_getLangFileCacheName', "_getLangFilesPathArray", "_recodeLangArray", "getConfig")
-        );
+        $oLang = $this->getMock("oxlang", array('_getLangFileCacheName', "_getLangFilesPathArray", "_recodeLangArray", "getConfig"));
         $oLang->expects($this->at(0))->method('getConfig')->will($this->returnValue($oConfig));
         $oLang->expects($this->at(1))->method('_getLangFileCacheName')->will($this->returnValue(false));
         $oLang->expects($this->at(2))->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
-        $oLang->expects($this->at(3))->method('_recodeLangArray')->will(
-            $this->returnValue(array("charset" => "UTF-8", "TESTKEY" => "baseVal"))
-        );
+        $oLang->expects($this->at(3))->method('_recodeLangArray')->will($this->returnValue(array("charset" => "UTF-8", "TESTKEY" => "baseVal")));
         $oLang->expects($this->at(4))->method('_recodeLangArray')->will($this->returnValue(array("t1" => "overide1")));
-        $oLang->expects($this->at(5))->method('_recodeLangArray')->will(
-            $this->returnValue(array("charset" => "UTF-8", "TESTKEY" => "testVal"))
-        );
+        $oLang->expects($this->at(5))->method('_recodeLangArray')->will($this->returnValue(array("charset" => "UTF-8", "TESTKEY" => "testVal")));
         $oLangFilesData = $oLang->UNITgetLanguageFileData(false, 0);
 
         $this->assertEquals($aResult, $oLangFilesData);
@@ -398,17 +362,16 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
 
         file_put_contents(
-            $sFilePath . "/baselang$sFilePrefix.txt",
-            '<?php
+            $sFilePath . "/baselang$sFilePrefix.txt", '<?php
             $aSeoReplaceChars = array(
-                "ï¿½" => "ae",
-                "ï¿½" => "oe",
-                "ï¿½" => "ss",
+                "ä" => "ae",
+                "ö" => "oe",
+                "ß" => "ss",
                 "x" => "z",
             );
             $aLang = array(
                 "charset" => "ISO-8859-15",
-                "TESTKEY" => "bï¿½seVï¿½l"
+                "TESTKEY" => "bäseVäl"
             );'
         );
 
@@ -416,7 +379,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
             $sFilePath . "/testlang$sFilePrefix.txt", '<?php
             $aLang = array(
                 "charset" => "ISO-8859-15",
-                "TESTKEY" => "testVï¿½l"
+                "TESTKEY" => "testVäl"
             );'
         );
 
@@ -425,12 +388,12 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $aResult = array(
             "charset" => "UTF-8",
             '_aSeoReplaceChars' => array(
-                iconv('ISO-8859-15', 'UTF-8', "ï¿½") => "ae",
-                iconv('ISO-8859-15', 'UTF-8', "ï¿½") => "oe",
-                iconv('ISO-8859-15', 'UTF-8', "ï¿½") => "ss",
+                iconv('ISO-8859-15', 'UTF-8', "ä") => "ae",
+                iconv('ISO-8859-15', 'UTF-8', "ö") => "oe",
+                iconv('ISO-8859-15', 'UTF-8', "ß") => "ss",
                 "x"                                => "z",
             ),
-            "TESTKEY" => iconv('ISO-8859-15', 'UTF-8', "testVï¿½l")
+            "TESTKEY" => iconv('ISO-8859-15', 'UTF-8', "testVäl")
         );
 
         $oConfig = $this->getMock("oxConfig", array("isUtf"));
@@ -453,7 +416,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testRecodeLangArray()
     {
-        $aLang['ACCOUNT_MAIN_BACKTOSHOP'] = "Zurï¿½ck zum Shop";
+        $aLang['ACCOUNT_MAIN_BACKTOSHOP'] = "Zurück zum Shop";
         $aRecoded['ACCOUNT_MAIN_BACKTOSHOP'] = iconv('ISO-8859-15', 'UTF-8', $aLang['ACCOUNT_MAIN_BACKTOSHOP']);
 
         $oLang = new oxLang();
@@ -469,7 +432,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $sVersionPrefix = 'ee';
         $sVersionPrefix = 'pe';
 
-        $sVal = iconv('ISO-8859-15', 'UTF-8', "Zurï¿½ck zum Shop");
+        $sVal = iconv('ISO-8859-15', 'UTF-8', "Zurück zum Shop");
         $myConfig = oxRegistry::getConfig();
         $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . '_default';
 
@@ -515,7 +478,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $this->assertEquals('blafoowashere123', $oLang->translateString("blafoowashere123"));
         $this->assertEquals('', $oLang->translateString(""));
-        $this->assertEquals('\/ï¿½[]~ï¿½#-', $oLang->translateString("\/ï¿½[]~ï¿½#-"));
+        $this->assertEquals('\/ß[]~ä#-', $oLang->translateString("\/ß[]~ä#-"));
     }
 
     // in non amdin mode
@@ -527,7 +490,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $this->assertEquals('blafoowashere123', $oLang->translateString("blafoowashere123"));
         $this->assertEquals('', $oLang->translateString(""));
-        $this->assertEquals('\/ï¿½[]~ï¿½#-', $oLang->translateString("\/ï¿½[]~ï¿½#-"));
+        $this->assertEquals('\/ß[]~ä#-', $oLang->translateString("\/ß[]~ä#-"));
     }
 
     public function testFormatCurrency()
@@ -1761,50 +1724,5 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oLang = new oxLang();
         $oLang->translateString('HOME');
         $this->assertTrue($oLang->isTranslated());
-    }
-
-    /**
-     * Test if BUG #5775 is fixed
-     * "oxLang::processUrl" did not append the language parameter to the URL if it was the same as the shops default language
-     */
-    public function testProcessUrlAppendsLanguageParameterOnDefaultLanguageAndDifferentBrowserLanguage()
-    {
-        $aLanguages = array(
-            'de' => 'Deutsch',
-            'en' => 'English',
-        );
-
-        $aLanguageParams = array(
-            'de' => array('baseId' => 0, 'abbr' => 'de', 'active' => true),
-            'en' => array('baseId' => 1, 'abbr' => 'en', 'active' => true),
-        );
-
-        $this->getConfig()->saveShopConfVar('aarr', 'aLanguages', $aLanguages);
-        $this->getConfig()->saveShopConfVar('aarr', 'aLanguageParams', $aLanguageParams);
-        $this->getConfig()->setConfigParam('aLanguages', $aLanguages);
-        $this->getConfig()->setConfigParam('aLanguageParams', $aLanguageParams);
-
-        $oLang = $this->getMock('oxLang', array('_getBrowserLanguage'));
-        $oLang->expects($this->any())->method('_getBrowserLanguage')->will(
-            $this->returnValue("en")
-        );
-
-        // Fake language selection to shop default language
-        $oLang->setBaseLanguage(0);
-
-        $config = $this->getConfig();
-        $shopURL = $config->getShopHomeUrl();
-        $processURL = $shopURL . "cl=account&amp;";
-        $expectingURL = $shopURL . "cl=account&amp;lang=0&amp;";
-
-        $processedURL = $oLang->processUrl($processURL);
-
-        //var_dump( $processURL, $processedURL, $expectingURL, $oLang->getBaseLanguage() );
-
-        $this->assertEquals(
-            $expectingURL,
-            $processedURL,
-            "Processed URL does not contain default Shop Language as paramater."
-        );
     }
 }

@@ -364,14 +364,14 @@ class Unit_Core_oxLangTest extends OxidTestCase
         file_put_contents(
             $sFilePath . "/baselang$sFilePrefix.txt", '<?php
             $aSeoReplaceChars = array(
-                "ä" => "ae",
-                "ö" => "oe",
-                "ß" => "ss",
+                "ï¿½" => "ae",
+                "ï¿½" => "oe",
+                "ï¿½" => "ss",
                 "x" => "z",
             );
             $aLang = array(
                 "charset" => "ISO-8859-15",
-                "TESTKEY" => "bäseVäl"
+                "TESTKEY" => "bï¿½seVï¿½l"
             );'
         );
 
@@ -379,7 +379,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
             $sFilePath . "/testlang$sFilePrefix.txt", '<?php
             $aLang = array(
                 "charset" => "ISO-8859-15",
-                "TESTKEY" => "testVäl"
+                "TESTKEY" => "testVï¿½l"
             );'
         );
 
@@ -388,12 +388,12 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $aResult = array(
             "charset" => "UTF-8",
             '_aSeoReplaceChars' => array(
-                iconv('ISO-8859-15', 'UTF-8', "ä") => "ae",
-                iconv('ISO-8859-15', 'UTF-8', "ö") => "oe",
-                iconv('ISO-8859-15', 'UTF-8', "ß") => "ss",
+                iconv('ISO-8859-15', 'UTF-8', "ï¿½") => "ae",
+                iconv('ISO-8859-15', 'UTF-8', "ï¿½") => "oe",
+                iconv('ISO-8859-15', 'UTF-8', "ï¿½") => "ss",
                 "x"                                => "z",
             ),
-            "TESTKEY" => iconv('ISO-8859-15', 'UTF-8', "testVäl")
+            "TESTKEY" => iconv('ISO-8859-15', 'UTF-8', "testVï¿½l")
         );
 
         $oConfig = $this->getMock("oxConfig", array("isUtf"));
@@ -416,7 +416,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testRecodeLangArray()
     {
-        $aLang['ACCOUNT_MAIN_BACKTOSHOP'] = "Zurück zum Shop";
+        $aLang['ACCOUNT_MAIN_BACKTOSHOP'] = "Zurï¿½ck zum Shop";
         $aRecoded['ACCOUNT_MAIN_BACKTOSHOP'] = iconv('ISO-8859-15', 'UTF-8', $aLang['ACCOUNT_MAIN_BACKTOSHOP']);
 
         $oLang = new oxLang();
@@ -432,7 +432,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $sVersionPrefix = 'ee';
         $sVersionPrefix = 'pe';
 
-        $sVal = iconv('ISO-8859-15', 'UTF-8', "Zurück zum Shop");
+        $sVal = iconv('ISO-8859-15', 'UTF-8', "Zurï¿½ck zum Shop");
         $myConfig = oxRegistry::getConfig();
         $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . '_default';
 
@@ -478,7 +478,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $this->assertEquals('blafoowashere123', $oLang->translateString("blafoowashere123"));
         $this->assertEquals('', $oLang->translateString(""));
-        $this->assertEquals('\/ß[]~ä#-', $oLang->translateString("\/ß[]~ä#-"));
+        $this->assertEquals('\/ï¿½[]~ï¿½#-', $oLang->translateString("\/ï¿½[]~ï¿½#-"));
     }
 
     // in non amdin mode
@@ -490,7 +490,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $this->assertEquals('blafoowashere123', $oLang->translateString("blafoowashere123"));
         $this->assertEquals('', $oLang->translateString(""));
-        $this->assertEquals('\/ß[]~ä#-', $oLang->translateString("\/ß[]~ä#-"));
+        $this->assertEquals('\/ï¿½[]~ï¿½#-', $oLang->translateString("\/ï¿½[]~ï¿½#-"));
     }
 
     public function testFormatCurrency()
@@ -1724,5 +1724,50 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oLang = new oxLang();
         $oLang->translateString('HOME');
         $this->assertTrue($oLang->isTranslated());
+    }
+
+    /**
+     * Test if BUG #5775 is fixed
+     * "oxLang::processUrl" did not append the language parameter to the URL if it was the same as the shops default language
+     */
+    public function testProcessUrlAppendsLanguageParameterOnDefaultLanguageAndDifferentBrowserLanguage()
+    {
+        $aLanguages = array(
+            'de' => 'Deutsch',
+            'en' => 'English',
+        );
+
+        $aLanguageParams = array(
+            'de' => array('baseId' => 0, 'abbr' => 'de', 'active' => true),
+            'en' => array('baseId' => 1, 'abbr' => 'en', 'active' => true),
+        );
+
+        $this->getConfig()->saveShopConfVar('aarr', 'aLanguages', $aLanguages);
+        $this->getConfig()->saveShopConfVar('aarr', 'aLanguageParams', $aLanguageParams);
+        $this->getConfig()->setConfigParam('aLanguages', $aLanguages);
+        $this->getConfig()->setConfigParam('aLanguageParams', $aLanguageParams);
+
+        $oLang = $this->getMock('oxLang', array('_getBrowserLanguage'));
+        $oLang->expects($this->any())->method('_getBrowserLanguage')->will(
+            $this->returnValue("en")
+        );
+
+        // Fake language selection to shop default language
+        $oLang->setBaseLanguage(0);
+
+        $config = $this->getConfig();
+        $shopURL = $config->getShopHomeUrl();
+        $processURL = $shopURL . "cl=account&amp;";
+        $expectingURL = $shopURL . "cl=account&amp;lang=0&amp;";
+
+        $processedURL = $oLang->processUrl($processURL);
+
+        //var_dump( $processURL, $processedURL, $expectingURL, $oLang->getBaseLanguage() );
+
+        $this->assertEquals(
+            $expectingURL,
+            $processedURL,
+            "Processed URL does not contain default Shop Language as paramater."
+        );
     }
 }

@@ -22,20 +22,20 @@
                     <button id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{oxmultilang ident="CONTINUE_TO_NEXT_STEP"}]</button>
                 </div>
             [{/block}]
-            <div class="checkoutCollumns clear">
+            <div class="checkoutColumns clear">
                 <div class="row">
                     <h3 class="blockHead">[{oxmultilang ident="NOTREGISTERED_ACCOUNTINFO"}]</h3>
                     <ul class="form">
                         [{include file="form/fieldset/user_noaccount.tpl"}]
                     </ul>
                 </div>
-                <div class="collumn">
+                <div class="column">
                     <h3 class="blockHead">[{oxmultilang ident="BILLING_ADDRESS"}]</h3>
                     <ul class="form">
                         [{include file="form/fieldset/user_billing.tpl" noFormSubmit=true blOrderRemark=true}]
                     </ul>
                 </div>
-                <div class="collumn">
+                <div class="column">
                     <h3 class="blockHead">[{oxmultilang ident="SHIPPING_ADDRESS"}]</h3>
 
                     <p>

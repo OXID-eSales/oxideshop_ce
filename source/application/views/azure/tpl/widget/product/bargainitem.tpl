@@ -18,32 +18,34 @@
                             [{ oxmultilang ident="REDUCED_FROM_2" }] <del>[{oxprice price=$_product->getTPrice() currency=$oView->getActCurrency()}]</del>
                         </span>
                     [{/if}]
-                    [{if $_product->getPrice()}]
-                        [{assign var="sFrom" value=""}]
-                        [{assign var="oPrice" value=$_product->getPrice()}]
-                        [{if $_product->isParentNotBuyable() }]
-                            [{assign var="oPrice" value=$_product->getVarMinPrice()}]
-                            [{if $_product->isRangePrice() }]
-                                [{assign var="sFrom" value="PRICE_FROM"|oxmultilangassign}]
+                    [{block name="widget_product_bargainitem_price_value"}]
+                        [{if $_product->getPrice()}]
+                            [{assign var="sFrom" value=""}]
+                            [{assign var="oPrice" value=$_product->getPrice()}]
+                            [{if $_product->isParentNotBuyable() }]
+                                [{assign var="oPrice" value=$_product->getVarMinPrice()}]
+                                [{if $_product->isRangePrice() }]
+                                    [{assign var="sFrom" value="PRICE_FROM"|oxmultilangassign}]
+                                [{/if}]
                             [{/if}]
+                            <span class="priceValue">[{$sFrom}] [{oxprice price=$oPrice currency=$oView->getActCurrency()}]
+                            [{if $oView->isVatIncluded() }]
+                                [{if !( $_product->getVariantsCount() || $_product->hasMdVariants() || ($oViewConf->showSelectListsInList()&&$_product->getSelections(1)) )}]*[{/if}]
+                            [{/if}]
+                            </span>
                         [{/if}]
-                        <span class="priceValue">[{$sFrom}] [{oxprice price=$oPrice currency=$oView->getActCurrency()}]
-                        [{if $oView->isVatIncluded() }]
-                            [{if !( $_product->getVariantsCount() || $_product->hasMdVariants() || ($oViewConf->showSelectListsInList()&&$_product->getSelections(1)) )}]*[{/if}]
+                        [{if $_product->getUnitPrice()}]
+                            <span class="pricePerUnit">
+                                [{$_product->getUnitQuantity()}] [{$_product->getUnitName()}] | [{oxprice price=$_product->getUnitPrice() currency=$oView->getActCurrency()}]/[{$_product->getUnitName()}]
+                            </span>
                         [{/if}]
-                        </span>
-                    [{/if}]
-                    [{if $_product->getUnitPrice()}]
-                        <span class="pricePerUnit">
-                            [{$_product->getUnitQuantity()}] [{$_product->getUnitName()}] | [{oxprice price=$_product->getUnitPrice() currency=$oView->getActCurrency()}]/[{$_product->getUnitName()}]
-                        </span>
-                    [{/if}]
-                    [{block name="widget_product_bargainitem_tobasket"}]
-                        [{if !( $_product->getVariantsCount() || $_product->hasMdVariants() || ($oViewConf->showSelectListsInList() && $_product->getSelections(1)) )}]
-                            <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=start" params="fnc=tobasket&amp;aid=`$_product->oxarticles__oxid->value`&amp;am=1"}]" class="toCart button" title="[{oxmultilang ident="TO_CART" }]">[{oxmultilang ident="TO_CART" }]</a>
-                        [{else}]
-                            <a href="[{$_product->getMainLink()}]" class="toCart button">[{ oxmultilang ident="MORE_INFO" }]</a>
-                        [{/if}]
+                        [{block name="widget_product_bargainitem_tobasket"}]
+                            [{if !( $_product->getVariantsCount() || $_product->hasMdVariants() || ($oViewConf->showSelectListsInList() && $_product->getSelections(1)) )}]
+                                <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=start" params="fnc=tobasket&amp;aid=`$_product->oxarticles__oxid->value`&amp;am=1"}]" class="toCart button" title="[{oxmultilang ident="TO_CART" }]">[{oxmultilang ident="TO_CART" }]</a>
+                            [{else}]
+                                <a href="[{$_product->getMainLink()}]" class="toCart button">[{ oxmultilang ident="MORE_INFO" }]</a>
+                            [{/if}]
+                        [{/block}]
                     [{/block}]
                 [{/oxhasrights}]
             </div>

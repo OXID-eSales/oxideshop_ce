@@ -652,30 +652,14 @@ class oxUser extends oxBase
      */
     public function exists($sOXID = null)
     {
+
+        //#5901 if physical record exists return true unconditionally
+        if (parent::exists($sOXID)) {
+            return true;
+        }
+
+        //additional username check
         $oDb = oxDb::getDb();
-        if (!$sOXID) {
-            $sOXID = $this->getId();
-        }
-
-        $sShopSelect = '';
-        if (!$this->_blMallUsers && $this->oxuser__oxrights->value != 'malladmin') {
-            $sShopSelect = ' AND oxshopid = "' . $this->getConfig()->getShopId() . '" ';
-        }
-
-        //#4543 Query optimisation by splitting it into two, might need an logics optimisation as well
-        if ($sOXID) {
-            $sSelect = 'SELECT oxid FROM ' . $this->getViewName() . '
-                    WHERE ( oxid = ' . $oDb->quote($sOXID) . ' ) ';
-            $sSelect .= $sShopSelect;
-
-            if (($sOxid = $oDb->getOne($sSelect, false, false))) {
-                // update - set oxid
-                $this->setId($sOxid);
-
-                return true;
-            }
-        }
-
         $sSelect = 'SELECT oxid FROM ' . $this->getViewName() . '
                     WHERE ( oxusername = ' . $oDb->quote($this->oxuser__oxusername->value) . ' ) ';
         $sSelect .= $sShopSelect;

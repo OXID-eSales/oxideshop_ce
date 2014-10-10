@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
 */
 
+require_once realpath( "." ).'/unit/OxidTestCase.php';
+require_once realpath( "." ).'/unit/test_config.inc.php';
+
 /**
 * InvoicepdfOxOrder parrent chain class.
 */
@@ -511,14 +514,14 @@ public function testInvoicepdfArticleSummary_setWrappingInfo()
  */
 public function testPdfArticleSummary_setWrappingInfo_WithGiftCardOnly()
 {
-    $oMyOrder = $this->_getTestInvoicepdfOxOrder();
+    $oMyOrder = $this->_getTestMyOrder();
     $oMyOrder->oxorder__oxwrapvat = new oxField('0', oxField::T_RAW);
     $oMyOrder->oxorder__oxwrapcost = new oxField('0', oxField::T_RAW);
     $oMyOrder->oxorder__oxgiftcardvat = new oxField('19', oxField::T_RAW);
     $oMyOrder->oxorder__oxgiftcardcost = new oxField('8', oxField::T_RAW);
 
     $oPdf = new testPdfClass;
-    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oMyOrder, $oPdf );
+    $oPdfArtSum = new myOrder_PdfArticleSummary( $oMyOrder, $oPdf );
 
     $iStartPos = 1;
     $oPdfArtSum->setWrappingInfo( $iStartPos );

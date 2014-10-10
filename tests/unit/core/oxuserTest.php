@@ -1417,8 +1417,32 @@ class Unit_Core_oxUserTest extends OxidTestCase
         oxRegistry::getConfig()->setShopId(2);
 
         $this->assertTrue($oUser->exists());
-
     }
+
+    /**
+     * Testing existing username
+     * (same as subscribing to newsletter logics)
+     */
+    public function testExistsUsername()
+    {
+        $oUser = new oxUser();
+        $oUser->oxuser__oxusername = new oxField("admin", oxField::T_RAW);
+        $this->assertTrue($oUser->exists());
+    }
+
+    /**
+     * Testing existing username in different subshop
+     * (same as subscribing to newsletter logics)
+     */
+    public function testExistsUsernameMultishop()
+    {
+        oxRegistry::getConfig()->setShopId(2);
+        $oUser = new oxUser();
+        $oUser->oxuser__oxusername = new oxField("admin", oxField::T_RAW);
+
+        $this->assertFalse($oUser->exists());
+    }
+
 
 
     /**

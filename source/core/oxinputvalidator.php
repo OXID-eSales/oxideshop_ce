@@ -170,7 +170,7 @@ class oxInputValidator extends oxSuperCfg
         }
 
         if ($oUser->checkIfEmailExists($sLogin)) {
-            //if exists then we do now allow to do that
+            //if exists then we do not allow to do that
             $oEx = oxNew('oxUserException');
             $oEx->setMessage(sprintf(oxRegistry::getLang()->translateString('ERROR_MESSAGE_USER_USEREXISTS'), $sLogin));
 

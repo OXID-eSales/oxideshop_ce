@@ -367,7 +367,7 @@ class oxCategoryList extends oxList
         startProfile('buildCategoryList');
 
         $this->setLoadFull(true);
-        $this->selectString($this->_getSelectString(false));
+        $this->selectString($this->_getSelectString(false, null, 'oxparentid, oxsort, oxtitle'));
 
         // build tree structure
         $this->_ppBuildTree();

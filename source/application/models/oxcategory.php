@@ -1100,7 +1100,7 @@ class oxCategory extends oxI18n implements oxIUrl
         if (isset($this->oxcategories__oxlongdesc) && $this->oxcategories__oxlongdesc instanceof oxField) {
             /** @var oxUtilsView $oUtilsView */
             $oUtilsView = oxRegistry::get("oxUtilsView");
-            return $oUtilsView->parseThroughSmarty($this->oxcategories__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
+            return oxRegistry::get("oxUtilsView")->parseThroughSmarty($this->oxcategories__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
         }
     }
 

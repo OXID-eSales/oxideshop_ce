@@ -37,7 +37,7 @@ $blIsSubShop = false;
 // Whether to copy services to shop. If services are already in shop directory, this can be set to false.
 $blCopyServicesToShop = true;
 // Whether to prepare shop database for testing. Shop config.ing.php file must be correct.
-$blInstallShop = false;
+$blInstallShop = true;
 
 // eShop setup directory. After setting up the shop setup directory will be deleted.
 // For shop installation to work during tests run, where to find this directory must be specified.

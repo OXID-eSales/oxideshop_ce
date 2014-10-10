@@ -250,28 +250,30 @@
             <div class="tobasketFunction clear">
                 [{block name="details_productmain_price"}]
                     [{oxhasrights ident="SHOWARTICLEPRICE"}]
-                        [{if $oDetailsProduct->getPrice()}]
-                            <label id="productPrice" class="price">
-                                [{assign var="sFrom" value=""}]
-                                [{assign var="oPrice" value=$oDetailsProduct->getPrice()}]
-                                [{if $oDetailsProduct->isParentNotBuyable() }]
-                                    [{assign var="oPrice" value=$oDetailsProduct->getVarMinPrice()}]
-                                    [{if $oDetailsProduct->isRangePrice() }]
-                                        [{assign var="sFrom" value="PRICE_FROM"|oxmultilangassign}]
+                        [{block name="details_productmain_price_value"}]
+                            [{if $oDetailsProduct->getPrice()}]
+                                <label id="productPrice" class="price">
+                                    [{assign var="sFrom" value=""}]
+                                    [{assign var="oPrice" value=$oDetailsProduct->getPrice()}]
+                                    [{if $oDetailsProduct->isParentNotBuyable() }]
+                                        [{assign var="oPrice" value=$oDetailsProduct->getVarMinPrice()}]
+                                        [{if $oDetailsProduct->isRangePrice() }]
+                                            [{assign var="sFrom" value="PRICE_FROM"|oxmultilangassign}]
+                                        [{/if}]
                                     [{/if}]
-                                [{/if}]
-                                <strong >
-                                    <span>[{$sFrom}] [{oxprice price=$oPrice currency=$currency}]</span>
-                                    [{if $oView->isVatIncluded() }]
-                                    <span>*</span>
-                                    [{/if}]
-                                </strong>
-                            </label>
-                        [{/if}]
-                        [{oxscript include="js/widgets/oxamountpriceselect.js" priority=10 }]
-                        [{if $oDetailsProduct->loadAmountPriceInfo()}]
-                            [{include file="page/details/inc/priceinfo.tpl"}]
-                        [{/if}]
+                                    <strong >
+                                        <span>[{$sFrom}] [{oxprice price=$oPrice currency=$currency}]</span>
+                                        [{if $oView->isVatIncluded() }]
+                                        <span>*</span>
+                                        [{/if}]
+                                    </strong>
+                                </label>
+                            [{/if}]
+                            [{oxscript include="js/widgets/oxamountpriceselect.js" priority=10 }]
+                            [{if $oDetailsProduct->loadAmountPriceInfo()}]
+                                [{include file="page/details/inc/priceinfo.tpl"}]
+                            [{/if}]
+                        [{/block}]
                     [{/oxhasrights}]
                 [{/block}]
 

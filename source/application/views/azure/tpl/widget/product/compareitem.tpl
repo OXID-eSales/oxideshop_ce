@@ -89,24 +89,28 @@
                 [{/if}]
             [{/oxhasrights}]
             <div class="tobasketFunction clear">
-                [{oxhasrights ident="SHOWARTICLEPRICE"}]
-                    [{assign var="sFrom" value=""}]
-                    [{assign var="oPrice" value=$product->getPrice()}]
-                    [{if $product->isParentNotBuyable() }]
-                        [{assign var="oPrice" value=$product->getVarMinPrice()}]
-                        [{if $product->isRangePrice() }]
-                            [{assign var="sFrom" value="PRICE_FROM"|oxmultilangassign}]
+                [{block name="widget_product_compareitem_price"}]
+                    [{oxhasrights ident="SHOWARTICLEPRICE"}]
+                        [{block name="widget_product_compareitem_price_value"}]
+                            [{assign var="sFrom" value=""}]
+                            [{assign var="oPrice" value=$product->getPrice()}]
+                            [{if $product->isParentNotBuyable() }]
+                                [{assign var="oPrice" value=$product->getVarMinPrice()}]
+                                [{if $product->isRangePrice() }]
+                                    [{assign var="sFrom" value="PRICE_FROM"|oxmultilangassign}]
+                                [{/if}]
+                            [{/if}]
+                            <label id="productPrice_[{$iIndex}]" class="price">
+                                <strong>[{$sFrom}] [{oxprice price=$oPrice currency=$oView->getActCurrency()}] [{if $blShowToBasket && $oView->isVatIncluded() }]*[{/if}]</strong>
+                            </label>
+                        [{/block}]
+                        [{if $product->loadAmountPriceInfo()}]
+                            [{oxscript include="js/widgets/oxamountpriceselect.js" priority=10 }]
+                            [{include file="page/details/inc/priceinfo.tpl" oDetailsProduct=$product}]
                         [{/if}]
-                    [{/if}]
-                    <label id="productPrice_[{$iIndex}]" class="price">
-                        <strong>[{$sFrom}] [{oxprice price=$oPrice currency=$oView->getActCurrency()}] [{if $blShowToBasket }]*[{/if}]</strong>
-                    </label>
-                    [{if $product->loadAmountPriceInfo()}]
-                        [{oxscript include="js/widgets/oxamountpriceselect.js" priority=10 }]
-                        [{include file="page/details/inc/priceinfo.tpl" oDetailsProduct=$product}]
-                    [{/if}]
 
-                [{/oxhasrights}]
+                    [{/oxhasrights}]
+                [{/block}]
                 [{if $blShowToBasket }]
                     [{oxhasrights ident="TOBASKET"}]
                         <p class="fn clear">

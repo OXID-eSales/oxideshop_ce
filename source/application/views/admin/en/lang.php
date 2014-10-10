@@ -1460,12 +1460,12 @@ $aLang = array(
 'TOOLTIPS_NEWNEWSLETTER'                                   => 'New Newsletter Sample',
 'TOOLTIPS_NEWSHOP'                                         => 'Create New Shop',
 'TOOLTIPS_NEWUSERGROUP'                                    => 'Create New User Group',
-'TOOLTIPS_NEWCATEGORY'                                     => 'Create New Cateogry',
+'TOOLTIPS_NEWCATEGORY'                                     => 'Create New Category',
 'TOOLTIPS_NEWCOUNTRY'                                      => 'Create New Country',
 'TOOLTIPS_NEWLANGUAGE'                                     => 'Create New Language',
 'TOOLTIPS_NEWWRAPPING'                                     => 'Create New Wrapping',
 'TOOLTIPS_NEWCONTENT'                                      => 'Create New Content',
-'TOOLTIPS_NEWMALLCAT'                                      => 'Create New Mall Cateogry',
+'TOOLTIPS_NEWMALLCAT'                                      => 'Create New Mall Category',
 'TOOLTIPS_NEWARTICLE'                                      => 'Create New Product',
 'TOOLTIPS_NEWITEMS'                                        => 'Create new Attribute',
 'TOOLTIPS_NEWVAR1'                                         => 'New',
@@ -2051,6 +2051,7 @@ $aLang = array(
 'BUTTON_DOWNLOAD'                                          => 'Download',
 'MESSAGE_FOR_NEWLY_CREATED_USER_GROUPS'                    => 'If a user accesses the shop via a certain URL, which contains the ID of a user group, and then registers or logs into the shop, he will then be automatically assigned to the user group corresponding to the user group id contained in the original URL.<br> If you want to disable this behaviour for a user group, please navigate to Master settings->Core settings->System->Other settings and add the user group id to the "Prohibited User Groups for dynamic User Group assignment using DGR URL param" list.',
 
+'SHOP_LICENSE_ERROR_GRACE_EXPIRED'                         => 'The license key of your OXID eShop expired. Please contact the Technical Support.',
 );
 
 /*

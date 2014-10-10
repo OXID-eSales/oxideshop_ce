@@ -154,6 +154,23 @@ class Login extends oxAdminView
     }
 
     /**
+     * Checks if shop is licensed and valid.
+     * Returns the result
+     *
+     * @return bool
+     */
+    public function isShopValid()
+    {
+        $blValid = true;
+        $oSerial = $this->getConfig()->getSerial();
+        if (!$oSerial->isShopValid()) {
+            $blValid = false;
+        }
+
+        return $blValid;
+    }
+
+    /**
      * authorization
      *
      * @return boolean

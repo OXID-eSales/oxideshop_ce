@@ -191,8 +191,3 @@
      * Do not disable module if class from extension path does not exist.
      */
     $this->blDoNotDisableModuleOnError = false;
-    
-    /** 
-     * Enable temporarily in case you can't access the backend due to broken views 
-     */
-    $this->blSkipViewUsage = false;

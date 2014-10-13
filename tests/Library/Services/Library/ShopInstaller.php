@@ -243,7 +243,7 @@ class ShopInstaller
 
         $command = 'mysql -h' . $this->dbHost . ' -u' . $this->dbUser . ' -p' . $this->dbPwd . ' ' . $this->dbName;
         $command .= ' --default-character-set=' . $this->getCharsetMode();
-        $command .= ' < ' . $sFile;
+        $command .= ' < ' . "'$sFile'";
 
         passthru($command);
     }

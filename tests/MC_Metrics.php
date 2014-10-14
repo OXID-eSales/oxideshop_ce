@@ -23,18 +23,18 @@ class Metrics
      * Variable store loaded xml file
      * @var null|SimpleXMLElement
      */
-    protected $_oMetrics    = null;
+    protected $_oMetrics = null;
 
     /**
      * To store stats for classes
      * @var array
      */
-    protected $_aStats      = array();
+    protected $_aStats = array();
     /**
      * Variable to store total of CCN
      * @var int
      */
-    protected $_iTotalCnn   = 0;
+    protected $_iTotalCnn = 0;
 
     /**
      * Variable to store total value of Crap index
@@ -110,8 +110,8 @@ class Metrics
             foreach ( $this->_oMetrics->package as $oPackage ) {
                 $this->_readClassMetricsPerPackage( $oPackage );
             }
-                }
-            }
+        }
+    }
 
     /**
      * To read metrics existing per package class
@@ -136,7 +136,7 @@ class Metrics
 
         foreach ( $oClass as $oFunction ) {
             $this->_readFunctionMetrics( $sClass, $oFunction );
-    }
+        }
 
         $iLocSum = $this->_aStats[$sClass]['sum']['locExecutable'];
 
@@ -188,7 +188,7 @@ class Metrics
         $this->_iTotalNPath = 0;
         $this->_iTotalLLOC  = 0;
         $this->_aStats      = array();
-                        }
+    }
 
     /**
      * To check metrics file exist or not
@@ -198,7 +198,7 @@ class Metrics
     public function isExistingMetricsFile()
     {
         return $this->_blFileExist;
-                }
+    }
 
     /**
      * To append total CCN for needed class
@@ -210,10 +210,10 @@ class Metrics
     {
         if ( !isset($this->_aStats[$sClassName]['sum']['cnn']) ) {
             $this->_aStats[$sClassName]['sum']['cnn'] = 0;
-                }
+        }
 
         $this->_aStats[$sClassName]['sum']['cnn'] += $iCNN;
-            }
+    }
 
     /**
      * To append to total ccn
@@ -223,7 +223,7 @@ class Metrics
     public function appendTotalCCN($iCCN)
     {
         $this->_iTotalCnn += $iCCN;
-        }
+    }
 
     /**
      * To get global ccn
@@ -306,7 +306,7 @@ class Metrics
 
     /**
      * To append class total logical lines of code
- *
+     *
      * @param string $sClassName name of class
      * @param int $iTotalLLOC number of logical code lines
      */
@@ -520,7 +520,7 @@ class Metrics
 
     /**
      * To get average of Crap index
- *
+     *
      * @return float
      */
     public function getTotalAverageCrapIndex()
@@ -539,9 +539,9 @@ class Metrics
 
     /**
      * To get classes stats
- *
+     *
      * @return array
- */
+     */
     public function getClassesStats()
     {
         return $this->_aStats;

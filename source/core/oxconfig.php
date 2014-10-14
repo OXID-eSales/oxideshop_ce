@@ -16,9 +16,8 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 //max integer
@@ -431,43 +430,24 @@ class oxConfig extends oxSuperCfg
             //starting up the session
             $this->getSession()->start();
 
-        } catch ( oxConnectionException $oEx ) {
 
-            $oEx->debugOut();
-            if ( defined( 'OXID_PHP_UNIT' ) ) {
-                return false;
-            } elseif ( 0 != $this->iDebug ) {
-                oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
-            } else {
-                header( "HTTP/1.1 500 Internal Server Error");
-                header( "Location: offline.html");
-                header( "Connection: close");
+            // Admin handling
+            $this->setConfigParam( 'blAdmin', isAdmin() );
+
+            if ( defined('OX_ADMIN_DIR') ) {
+                $this->setConfigParam( 'sAdminDir', OX_ADMIN_DIR );
             }
+
+            $this->_loadVarsFromFile();
+
+            //application initialization
+            $this->_oStart = new oxStart();
+            $this->_oStart->appInit();
+        } catch ( oxConnectionException $oEx ) {
+            return $this->_handleDbConnectionException( $oEx );
         } catch ( oxCookieException $oEx ) {
-
-            $this->_processSeoCall();
-
-            //starting up the session
-            $this->getSession()->start();
-
-            // redirect to start page and display the error
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
-            oxRegistry::getUtils()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
+            return $this->_handleCookieException( $oEx );
         }
-
-
-        // Admin handling
-        $this->setConfigParam( 'blAdmin', isAdmin() );
-
-        if ( defined('OX_ADMIN_DIR') ) {
-            $this->setConfigParam( 'sAdminDir', OX_ADMIN_DIR );
-        }
-
-        $this->_loadVarsFromFile();
-
-        //application initialization
-        $this->_oStart = new oxStart();
-        $this->_oStart->appInit();
     }
 
     /**
@@ -822,8 +802,8 @@ class oxConfig extends oxSuperCfg
             }
             $sValue = $newValue;
         } elseif ( is_string( $sValue ) ) {
-            $sValue = str_replace( array( '&',     '<',    '>',    '"',      "'",      chr(0), '\\' ),
-                                   array( '&amp;', '&lt;', '&gt;', '&quot;', '&#039;', '',     '&#092;' ),
+            $sValue = str_replace( array( '&',     '<',    '>',    '"',      "'",      chr(0), '\\', "\n", "\r" ),
+                                   array( '&amp;', '&lt;', '&gt;', '&quot;', '&#039;', '', '&#092;', '&#10;', '&#13;' ),
                                    $sValue );
         }
         return $sValue;
@@ -956,33 +936,27 @@ class oxConfig extends oxSuperCfg
      * Returns config sShopURL or sMallShopURL if secondary shop
      *
      * @param int  $iLang   language
-     * @param bool $blAdmin if admin
+     * @param bool $blAdmin if set true, function returns shop url without checking language/subshops for different url.
      *
      * @return string
      */
-    public function getShopUrl( $iLang = null, $blAdmin = null )
+    public function getShopUrl($iLang = null, $blAdmin = null)
     {
-        $blAdmin = isset( $blAdmin ) ? $blAdmin : $this->isAdmin();
-        if ( $blAdmin ) {
-            return $this->getConfigParam( 'sShopURL' );
+        $sUrl = null;
+        $blAdmin = isset($blAdmin) ? $blAdmin : $this->isAdmin();
+
+        if (!$blAdmin) {
+            $sUrl = $this->getShopUrlByLanguage($iLang);
+            if (!$sUrl) {
+                $sUrl = $this->getMallShopUrl();
+            }
         }
 
-        // #680 per language another URL
-        $iLang = isset( $iLang ) ? $iLang : oxRegistry::getLang()->getBaseLanguage();
-        $aLanguageURLs = $this->getConfigParam( 'aLanguageURLs' );
-        if ( isset( $iLang ) && isset( $aLanguageURLs[$iLang] ) && !empty( $aLanguageURLs[$iLang] ) ) {
-            $aLanguageURLs[$iLang] = oxRegistry::getUtils()->checkUrlEndingSlash( $aLanguageURLs[$iLang] );
-            return $aLanguageURLs[$iLang];
+        if (!$sUrl) {
+            $sUrl = $this->getConfigParam('sShopURL');
         }
 
-        //normal section
-        $sMallShopURL = $this->getConfigParam( 'sMallShopURL' );
-        if ( $sMallShopURL ) {
-            $sMallShopURL = oxRegistry::getUtils()->checkUrlEndingSlash( $sMallShopURL );
-            return $sMallShopURL;
-        }
-
-        return $this->getConfigParam( 'sShopURL' );
+        return $sUrl;
     }
 
     /**
@@ -992,33 +966,32 @@ class oxConfig extends oxSuperCfg
      *
      * @return string
      */
-    public function getSslShopUrl( $iLang = null )
+    public function getSslShopUrl($iLang = null)
     {
-        // #680 per language another URL
-        $iLang = isset( $iLang ) ? $iLang : oxRegistry::getLang()->getBaseLanguage();
-        $aLanguageSSLURLs = $this->getConfigParam( 'aLanguageSSLURLs' );
-        if ( isset( $iLang ) && isset( $aLanguageSSLURLs[$iLang] ) && !empty( $aLanguageSSLURLs[$iLang] ) ) {
-            $aLanguageSSLURLs[$iLang] = oxRegistry::getUtils()->checkUrlEndingSlash( $aLanguageSSLURLs[$iLang] );
-            return $aLanguageSSLURLs[$iLang];
+        $sUrl = null;
+
+        if(!$sUrl) {
+            $sUrl = $this->getShopUrlByLanguage($iLang, true);
         }
 
-        //mall mode
-        if ( ( $sMallSSLShopURL = $this->getConfigParam( 'sMallSSLShopURL' ) ) ) {
-            $sMallSSLShopURL = oxRegistry::getUtils()->checkUrlEndingSlash( $sMallSSLShopURL );
-            return $sMallSSLShopURL;
+        if(!$sUrl) {
+            $sUrl = $this->getMallShopUrl(true);
         }
 
-        if ( ( $sMallShopURL = $this->getConfigParam( 'sMallShopURL' ) ) ) {
-            $sMallShopURL = oxRegistry::getUtils()->checkUrlEndingSlash( $sMallShopURL );
-            return $sMallShopURL;
+        if(!$sUrl) {
+            $sUrl = $this->getMallShopUrl();
         }
 
         //normal section
-        if ( ( $sSSLShopURL = $this->getConfigParam( 'sSSLShopURL' ) ) ) {
-            return $sSSLShopURL;
+        if (!$sUrl) {
+            $sUrl = $this->getConfigParam('sSSLShopURL');
         }
 
-        return $this->getShopUrl( $iLang );
+        if (!$sUrl) {
+            $sUrl = $this->getShopUrl($iLang);
+        }
+
+        return $sUrl;
     }
 
     /**
@@ -1101,7 +1074,9 @@ class oxConfig extends oxSuperCfg
      */
     public function getWidgetUrl( $iLang = null, $blAdmin = null )
     {
-        return oxRegistry::get("oxUtilsUrl")->processUrl($this->getShopUrl( $iLang, $blAdmin).'widget.php', false );
+        $sUrl = $this->isSsl() ? $this->getSslShopUrl($iLang) : $this->getShopUrl($iLang, $blAdmin);
+
+        return oxRegistry::get('oxUtilsUrl')->processUrl($sUrl.'widget.php', false);
     }
 
     /**
@@ -2172,21 +2147,9 @@ class oxConfig extends oxSuperCfg
     /**
      * Get parsed modules
      *
-     * @deprecated since v5.1.2 (2013-12-10); Naming changed use function getModulesWithExtendedClass().
-     *
      * @return array
      */
     public function getAllModules()
-    {
-        return $this->getModulesWithExtendedClass();
-    }
-
-    /**
-     * Get parsed modules
-     *
-     * @return array
-     */
-    public function getModulesWithExtendedClass()
     {
         return $this->parseModuleChains($this->getConfigParam('aModules'));
     }
@@ -2226,4 +2189,85 @@ class oxConfig extends oxSuperCfg
         return oxDb::getDb()->getCol( "SELECT `oxid` FROM `oxshops`" );
     }
 
+    /**
+     * Function returns shop url by given language.
+     * #680 per language another URL
+     *
+     * @param $iLang
+     * @param $blSSL
+     *
+     * @return null|string
+     */
+    public function getShopUrlByLanguage($iLang, $blSSL = false)
+    {
+        $sLanguageUrl = null;
+        $sConfigParameter = $blSSL ? 'aLanguageSSLURLs' : 'aLanguageURLs';
+        $iLang = isset($iLang) ? $iLang : oxRegistry::getLang()->getBaseLanguage();
+        $aLanguageURLs = $this->getConfigParam($sConfigParameter);
+        if (isset($iLang) && isset($aLanguageURLs[$iLang]) && !empty($aLanguageURLs[$iLang])) {
+            $aLanguageURLs[$iLang] = oxRegistry::getUtils()->checkUrlEndingSlash($aLanguageURLs[$iLang]);
+            $sLanguageUrl = $aLanguageURLs[$iLang];
+        }
+
+        return $sLanguageUrl;
+    }
+
+    /**
+     * Function returns mall shop url.
+     *
+     * @param bool $blSSL
+     *
+     * @return null|string
+     */
+    public function getMallShopUrl($blSSL = false)
+    {
+        $sUrl = null;
+        $sConfigParameter = $blSSL ? 'sMallSSLShopURL' : 'sMallShopURL';
+        $sMallShopURL = $this->getConfigParam($sConfigParameter);
+        if ($sMallShopURL) {
+            $sMallShopURL = oxRegistry::getUtils()->checkUrlEndingSlash($sMallShopURL);
+            $sUrl = $sMallShopURL;
+        }
+
+        return $sUrl;
+    }
+
+    /**
+     * Shows exception message if debug mode is enabled, redirects otherwise.
+     *
+     * @param oxException $oEx message to show on exit
+     * @return bool
+     */
+    protected function _handleDbConnectionException( $oEx )
+    {
+        $oEx->debugOut();
+        if ( defined( 'OXID_PHP_UNIT' ) ) {
+            return false;
+        } elseif ( 0 != $this->iDebug ) {
+            oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
+        } else {
+            header( "HTTP/1.1 500 Internal Server Error");
+            header( "Location: offline.html");
+            header( "Connection: close");
+            exit(1);
+        }
+    }
+
+    /**
+     * Redirect to start page and display the error
+     *
+     * @param oxException $oEx message to show on exit
+     * @return bool
+     */
+    protected function _handleCookieException( $oEx )
+    {
+        $this->_processSeoCall();
+
+        //starting up the session
+        $this->getSession()->start();
+
+        // redirect to start page and display the error
+        oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
+        oxRegistry::getUtils()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
+    }
 }

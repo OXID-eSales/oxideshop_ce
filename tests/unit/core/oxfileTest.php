@@ -1,25 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id: oxfileTest.php 26841 2010-03-25 13:58:15Z arvydas $
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -27,11 +25,8 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 
 class Unit_Core_oxfileTest extends OxidTestCase
 {
-
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
@@ -43,11 +38,14 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
+        $sFilePath = $this->getTestFilePath();
+        if ( !empty( $sFilePath ) && file_exists( $sFilePath ) ) {
+            unlink( $sFilePath );
+        }
+
         oxDb::getDb()->getOne("TRUNCATE TABLE `oxfiles`");
         $this->cleanUpTable( 'oxorder' );
         $this->cleanUpTable( 'oxorderarticles' );
@@ -57,20 +55,14 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
      /**
      * Test for oxFiles::StartDownload()
-     *
-     * @return null
      */
     public function testDownload()
     {
-        $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'/out/downloads/test.jpg';
+        $sFilePath = $this->getConfig()->getConfigParam('sShopDir').'/out/downloads/test.jpg';
         file_put_contents( $sFilePath, 'test jpg file' );
 
         $oFile = $this->getMock( 'oxFile', array( 'getStoreLocation'));
-        $oFile->expects( $this->once() )->method( 'getStoreLocation' )->will( $this->returnValue( $sFilePath ) );
-/*
-        $oUtilsFile = $this->getMock( 'oxUtilsFile', array( 'getMimeType'));
-        $oUtilsFile->expects( $this->once() )->method( 'getMimeType' );
-        oxTestModules::addModuleObject( 'oxUtilsFile', $oUtilsFile );*/
+        $oFile->expects( $this->any() )->method( 'getStoreLocation' )->will( $this->returnValue( $sFilePath ) );
 
         $oUtils = $this->getMock( 'oxUtils', array( 'setHeader'));
         $oUtils->expects( $this->any() )->method( 'setHeader' );
@@ -81,8 +73,6 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::getStoreLocation()
-     *
-     * @return null
      */
     public function testGetStoreLocation()
     {
@@ -95,12 +85,10 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::getStoreLocation()
-     *
-     * @return null
      */
     public function testGetStoreLocationUnixFullPath()
     {
-       oxConfig::getInstance()->setConfigParam( 'sDownloadsDir', '/fullPath' );
+        $this->getConfig()->setConfigParam( 'sDownloadsDir', '/fullPath' );
 
         $oFile = $this->getMock( 'oxFile', array( '_getFileLocation'));
         $oFile->expects( $this->once() )->method( '_getFileLocation' )->will( $this->returnValue( 'fileName' ) );
@@ -110,12 +98,10 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::getStoreLocation()
-     *
-     * @return null
      */
     public function testGetStoreLocationRelativePath()
     {
-        oxConfig::getInstance()->setConfigParam( 'sDownloadsDir', 'relativePath' );
+        $this->getConfig()->setConfigParam( 'sDownloadsDir', 'relativePath' );
 
         $oFile = $this->getMock( 'oxFile', array( '_getFileLocation'));
         $oFile->expects( $this->once() )->method( '_getFileLocation' )->will( $this->returnValue( 'fileName' ) );
@@ -125,8 +111,6 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::getStoreLocation()
-     *
-     * @return null
      */
     public function testGetStoreLocationNotSet()
     {
@@ -139,14 +123,11 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::delete()
-     *
-     * @return null
      */
     public function testDelete()
     {
         $oDb = oxDb::getDb();
 
-        // $aQ[] = "insert into oxfiles (oxid, OXARTID, OXFILENAME, OXSTOREHASH) values ('testId1','_testProd1','testFile','testFileH')";
         $aQ[] = "insert into oxfiles (oxid, OXARTID, OXFILENAME, OXSTOREHASH) values ('testId2','_testProd1','testFile','testFileH')";
         $aQ[] = "insert into oxfiles (oxid, OXARTID, OXFILENAME, OXSTOREHASH) values ('testId3','_testProd2','testFile1','testFileH1')";
 
@@ -154,11 +135,11 @@ class Unit_Core_oxfileTest extends OxidTestCase
             $oDb->execute( $sQ );
         }
 
-        if( !is_dir(oxConfig::getInstance()->getConfigParam('sShopDir').'/out/downloads/te') ){
-            mkdir( oxConfig::getInstance()->getConfigParam('sShopDir').'/out/downloads/te', 0755);
+        if( !is_dir($this->getConfig()->getConfigParam('sShopDir').'/out/downloads/te') ){
+            mkdir( $this->getConfig()->getConfigParam('sShopDir').'/out/downloads/te', 0755);
         }
 
-        $sFilePath1 = oxConfig::getInstance()->getConfigParam('sShopDir').'/out/downloads/te/testFileH';
+        $sFilePath1 = $this->getConfig()->getConfigParam('sShopDir').'/out/downloads/te/testFileH';
         file_put_contents( $sFilePath1, 'test jpg file' );
 
         $oFile = new oxFile();
@@ -180,12 +161,10 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::processFile()
-     *
-     * @return null
      */
     public function testProcessFileUploadOK()
     {
-        $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'out/downloads/testFile';
+        $sFilePath = $this->getTestFilePath();
         file_put_contents( $sFilePath, 'test jpg file' );
 
         $sFileHah = md5_file( $sFilePath );
@@ -207,16 +186,11 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::processFile()
-     *
-     * @return null
      */
     public function testProcessFileUploadBad()
     {
-
-        $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'out/downloads/testFile';
+        $sFilePath = $this->getTestFilePath();
         file_put_contents( $sFilePath, 'test jpg file' );
-
-        $sFileHah = md5_file( $sFilePath );
 
         $aFileInfo = array('tmp_name' => $sFilePath, 'name' => 'testFile');
 
@@ -230,8 +204,8 @@ class Unit_Core_oxfileTest extends OxidTestCase
         // testing..
         try {
             $oFile->processFile('aa');
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( "EXCEPTION_COULDNOTWRITETOFILE", $oExcp->getMessage(), "error in oxFiles::processFile()" );
+        } catch ( Exception $oException ) {
+            $this->assertEquals( "EXCEPTION_COULDNOTWRITETOFILE", $oException->getMessage(), "error in oxFiles::processFile()" );
             return;
         }
         $this->fail( "error in oxFiles::processFile()" );
@@ -240,8 +214,6 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::hasValidDownloads()
-     *
-     * @return null
      */
     public function testHasValidDownloads()
     {
@@ -276,8 +248,6 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::hasValidDownloads()
-     *
-     * @return null
      */
     public function testHasValidDownloadsFalse()
     {
@@ -307,12 +277,10 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::getMaxDownloadCount()
-     *
-     * @return null
      */
     public function testGetGlobalMaxDownloadsCount()
     {
-        modConfig::getInstance()->setConfigParam( "iMaxDownloadsCount", 2 );
+        $this->getConfig()->setConfigParam( "iMaxDownloadsCount", 2 );
         $oFile = new oxFile();
         $oFile->oxfiles__oxmaxdownloads = new oxField(-1);
         $this->assertEquals( 2, $oFile->getMaxDownloadsCount() );
@@ -320,12 +288,10 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::getMaxDownloadCount()
-     *
-     * @return null
      */
     public function testGetMaxDownloadsCount()
     {
-        modConfig::getInstance()->setConfigParam( "iMaxDownloadsCount", 2 );
+        $this->getConfig()->setConfigParam( "iMaxDownloadsCount", 2 );
         $oFile = new oxFile();
         $oFile->oxfiles__oxmaxdownloads = new oxField(0);
         $this->assertEquals( 0, $oFile->getMaxDownloadsCount() );
@@ -333,12 +299,10 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::getMaxUnregisteredDownloadCount()
-     *
-     * @return null
      */
     public function testGetGlobalMaxUnregisteredDownloadsCount()
     {
-        modConfig::getInstance()->setConfigParam( "iMaxDownloadsCountUnregistered", 2 );
+        $this->getConfig()->setConfigParam( "iMaxDownloadsCountUnregistered", 2 );
         $oFile = new oxFile();
         $oFile->oxfiles__oxmaxunregdownloads = new oxField(-1);
         $this->assertEquals( 2, $oFile->getMaxUnregisteredDownloadsCount() );
@@ -346,12 +310,10 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::getMaxUnregisteredDownloadCount()
-     *
-     * @return null
      */
     public function testGetMaxUnregisteredDownloadsCount()
     {
-        modConfig::getInstance()->setConfigParam( "iMaxDownloadsCountUnregistered", 2 );
+        $this->getConfig()->setConfigParam( "iMaxDownloadsCountUnregistered", 2 );
         $oFile = new oxFile();
         $oFile->oxfiles__oxmaxunregdownloads = new oxField(0);
         $this->assertEquals( 0, $oFile->getMaxUnregisteredDownloadsCount() );
@@ -359,12 +321,10 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::getLinkExpirationTime()
-     *
-     * @return null
      */
     public function testGetGlobalLinkExpirationTime()
     {
-        modConfig::getInstance()->setConfigParam( "iLinkExpirationTime", 2 );
+        $this->getConfig()->setConfigParam( "iLinkExpirationTime", 2 );
         $oFile = new oxFile();
         $oFile->oxfiles__oxlinkexptime = new oxField(-1);
         $this->assertEquals( 2, $oFile->getLinkExpirationTime() );
@@ -372,12 +332,10 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::getLinkExpirationTime()
-     *
-     * @return null
      */
     public function testGetLinkExpirationTime()
     {
-        modConfig::getInstance()->setConfigParam( "iLinkExpirationTime", 2 );
+        $this->getConfig()->setConfigParam( "iLinkExpirationTime", 2 );
         $oFile = new oxFile();
         $oFile->oxfiles__oxlinkexptime = new oxField(0);
         $this->assertEquals( 0, $oFile->getLinkExpirationTime() );
@@ -385,12 +343,10 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::getDownloadExpirationTime()
-     *
-     * @return null
      */
     public function testGetGlobalDownloadExpirationTime()
     {
-        modConfig::getInstance()->setConfigParam( "iDownloadExpirationTime", 2 );
+        $this->getConfig()->setConfigParam( "iDownloadExpirationTime", 2 );
         $oFile = new oxFile();
         $oFile->oxfiles__oxdownloadexptime = new oxField(-1);
         $this->assertEquals( 2, $oFile->getDownloadExpirationTime() );
@@ -398,15 +354,22 @@ class Unit_Core_oxfileTest extends OxidTestCase
 
     /**
      * Test for oxFiles::getDownloadExpirationTime()
-     *
-     * @return null
      */
     public function testGetDownloadExpirationTime()
     {
-        modConfig::getInstance()->setConfigParam( "iDownloadExpirationTime", 2 );
+        $this->getConfig()->setConfigParam( "iDownloadExpirationTime", 2 );
         $oFile = new oxFile();
         $oFile->oxfiles__oxdownloadexptime = new oxField(0);
         $this->assertEquals( 0, $oFile->getDownloadExpirationTime() );
     }
 
+    /**
+     * Get path to test file.
+     *
+     * @return string
+     */
+    protected function getTestFilePath()
+    {
+        return $this->getConfig()->getConfigParam('sShopDir') . 'out/downloads/testFile';
+    }
 }

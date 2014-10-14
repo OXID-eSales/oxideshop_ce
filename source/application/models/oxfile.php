@@ -1,25 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id: oxfile.php 39347 2011-10-13 08:45:52Z linas.kukulskis $
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 /**
@@ -247,7 +245,6 @@ class oxFile extends oxBase
      */
     protected function _uploadFile( $sSource, $sTarget )
     {
-        $blDone = false;
         $blDone = move_uploaded_file( $sSource, $sTarget );
 
         if ( $blDone ) {
@@ -277,17 +274,17 @@ class oxFile extends oxBase
     /**
      * Deletes oxFile record from DB, removes orphan files.
      *
-     * @param string $sOXID default null
+     * @param string $sOxId default null
      *
      * @return bool
      */
-    public function delete( $sOXID = null )
+    public function delete( $sOxId = null )
     {
-        $sOXID = $sOXID ? $sOXID : $this->getId();
+        $sOxId = $sOxId ? $sOxId : $this->getId();
 
-        $this->load($sOXID);
+        $this->load($sOxId);
         // if record cannot be delete, abort deletion
-        if ($blDeleted = parent::delete( $sOXID ) ) {
+        if ($blDeleted = parent::delete( $sOxId ) ) {
             $this->_deleteFile( );
         }
 
@@ -328,8 +325,6 @@ class oxFile extends oxBase
 
     /**
      * Supplies the downloadable file for client and exits
-     *
-     * @return null
      */
     public function download()
     {
@@ -337,22 +332,30 @@ class oxFile extends oxBase
         $sFileName = $this->_getFilenameForUrl();
         $sFileLocations = $this->getStoreLocation();
 
-        if (!file_exists($sFileLocations)) {
+        if (  !$this->exist() ) {
             throw new oxException( 'EXCEPTION_NOFILE' );
         }
-
-        $iFilesize = filesize($sFileLocations);
 
         $oUtils->setHeader("Pragma: public");
         $oUtils->setHeader("Expires: 0");
         $oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0, private");
         $oUtils->setHeader('Content-Disposition: attachment;filename=' . $sFileName);
         $oUtils->setHeader("Content-Type: application/octet-stream");
-        if ($iFilesize) {
-            $oUtils->setHeader("Content-Length: " . $iFilesize);
+        if ( $iFileSize = $this->getSize() ) {
+            $oUtils->setHeader("Content-Length: " . $iFileSize);
         }
         readfile( $sFileLocations );
         $oUtils->showMessageAndExit( null );
+    }
+
+    /**
+     * Check if file exist
+     *
+     * @return bool
+     */
+    public function exist()
+    {
+        return file_exists( $this->getStoreLocation() );
     }
 
     /**
@@ -454,10 +457,9 @@ class oxFile extends oxBase
      */
     public function getSize()
     {
-        $iSize = null;
-        $sFilename = $this->getStoreLocation();
-        if ( file_exists( $sFilename ) ) {
-            $iSize = filesize( $sFilename );
+        $iSize = 0;
+        if ( $this->exist() ) {
+            $iSize = filesize( $this->getStoreLocation() );
         }
         return $iSize;
     }

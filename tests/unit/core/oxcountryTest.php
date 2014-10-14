@@ -1,24 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -133,9 +132,9 @@ class Unit_Core_oxCountryTest extends OxidTestCase
         $oSubj->load('8f241f11096877ac0.98748826');
         $aStates = $oSubj->getStates();
         $aKeys = $aStates->arrayKeys();
-        $this->assertEquals('14', $aKeys[0]);
-        $this->assertEquals('73', $aKeys[6]);
-        $this->assertEquals('72', $aKeys[61]);
+        $this->assertEquals('AL', $aKeys[0]);
+        $this->assertEquals('AA', $aKeys[6]);
+        $this->assertEquals('WY', $aKeys[61]);
     }
 
 
@@ -149,7 +148,7 @@ class Unit_Core_oxCountryTest extends OxidTestCase
         $oSubj = new oxCountry();
         $oSubj->load('8f241f11095649d18.02676059');
         $aStates = $oSubj->getStates();
-        $this->assertEquals('Manitoba', $aStates['3']->oxstates__oxtitle->value);
+        $this->assertEquals('Manitoba', $aStates['MB']->oxstates__oxtitle->value);
     }
 
     /**
@@ -161,5 +160,30 @@ class Unit_Core_oxCountryTest extends OxidTestCase
     {
         $oSubj = new oxCountry();
         $this->assertEquals('a7c40f631fc920687.20179984', $oSubj->getIdByCode('DE'));
+    }
+
+    public function providerGetVatIdentificationNumberPrefix()
+    {
+        return array(
+            array('a7c40f631fc920687.20179984', 'DE' ),
+            // Exceptional country
+            array( 'a7c40f633114e8fc6.25257477', 'EL' ),
+        );
+    }
+
+    /**
+     * Checks if returned vat identification number was returned correctly.
+     *
+     * @param $sCountryId
+     * @param $sPrefix
+     *
+     * @dataProvider providerGetVatIdentificationNumberPrefix
+     */
+    public function testGetVatIdentificationNumberPrefix( $sCountryId, $sPrefix )
+    {
+        $oCountry = new oxCountry();
+        $oCountry->load( $sCountryId );
+
+        $this->assertEquals( $sPrefix, $oCountry->getVATIdentificationNumberPrefix() );
     }
 }

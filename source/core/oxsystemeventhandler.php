@@ -16,10 +16,8 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id: OxSystemEventHandler
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 /**
@@ -28,33 +26,34 @@
 class OxSystemEventHandler
 {
     /**
-     * @Var oxOnlineLicenseCheck
+     * @Var oxOnlineModuleVersionNotifier
      */
-    private $_oOLC = null;
+    private $_oOMVN = null;
+
 
     /**
-     * OLC dependency setter
+     * OMVN dependency setter
      *
-     * @param oxOnlineLicenseCheck $oOLC
+     * @param oxOnlineModuleVersionNotifier $oOLC
      */
-    public function setOLC($oOLC)
+    public function setOMVN($oOMVN)
     {
-        $this->_oOLC = $oOLC;
+        $this->_oOMVN = $oOMVN;
     }
 
     /**
-     * OLC dependency getter
+     * OMVN dependency getter
      *
-     * @return oxOnlineLicenseCheck
+     * @return oxOnlineModuleVersionNotifier
      */
-    public function getOLC()
+    public function getOMVN()
     {
-        if (!$this->_oOLC) {
-            $oOlc = oxNew("oxOnlineLicenseCheck");
-            $this->setOLC( $oOlc );
+        if (!$this->_oOMVN) {
+            $oOMVN = oxNew("oxOnlineModuleVersionNotifier");
+            $this->setOMVN( $oOMVN );
         }
 
-        return $this->_oOLC;
+        return $this->_oOMVN;
     }
 
     /**
@@ -69,8 +68,7 @@ class OxSystemEventHandler
         //Will be used by the upcoming online one click installer.
         //Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
         try {
-            $oOMVN = oxNew("oxOnlineModuleVersionNotifier");
-            $oOMVN->versionNotify();
+            $this->getOMVN()->versionNotify();
         } catch (Exception $o) { }
     }
 }

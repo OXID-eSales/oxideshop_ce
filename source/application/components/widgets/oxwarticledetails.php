@@ -1,27 +1,30 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id: oxwarticledetails.php 56456 13.7.12 11.20Z tadas.rimkus $
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
+/**
+ * Class oxwArticleDetails
+ *
+ * Article details widget is detailed and defined here
+ */
 class oxwArticleDetails extends oxWidget
 {
     /**
@@ -930,6 +933,8 @@ class oxwArticleDetails extends oxWidget
 
     /**
      * Set item sorting for widget based of retrieved parameters
+     *
+     * @return null
      */
     protected function _setSortingParameters()
     {
@@ -959,7 +964,7 @@ class oxwArticleDetails extends oxWidget
 
         if ( !$sCatId && $oProduct->getCategory() ) {
             $oCategory = $oProduct->getCategory();
-        }else {
+        } else {
             $oCategory->load( $sCatId );
         }
         $this->_setSortingParameters();
@@ -1007,8 +1012,8 @@ class oxwArticleDetails extends oxWidget
     /**
      * Runs additional checks for article.
      *
-     * @param $myUtils
-     * @param $myConfig
+     * @param object $myUtils  - my utilities
+     * @param object $myConfig - my config
      *
      * @return null
      */
@@ -1041,14 +1046,10 @@ class oxwArticleDetails extends oxWidget
     public function getDefaultSorting()
     {
         $aSorting = parent::getDefaultSorting();
-
         $oCategory = $this->getActiveCategory();
 
-        if ( $this->getListType() != 'search' && $oCategory && $oCategory instanceof oxCategory ) {
-
-            if ( $sDefaultSorting = $oCategory->getDefaultSorting() ) {
-                $sArticleTable = getViewName( 'oxarticles' );
-                $sSortBy  = $sArticleTable.'.'.$sDefaultSorting;
+        if ( $this->getListType() != 'search' &&  $oCategory && $oCategory instanceof oxCategory ) {
+            if ( $sSortBy = $oCategory->getDefaultSorting() ) {
                 $sSortDir = ( $oCategory->getDefaultSortingMode() ) ? "desc" : "asc";
                 $aSorting = array ( 'sortby' => $sSortBy, 'sortdir' => $sSortDir );
             }

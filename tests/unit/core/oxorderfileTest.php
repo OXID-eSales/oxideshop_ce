@@ -1,50 +1,43 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id: oxorderfileTest.php 26841 2010-03-25 13:58:15Z arvydas $
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-class Unit_Core_oxorderfileTest extends OxidTestCase
+class Unit_Core_oxOrderFileTest extends OxidTestCase
 {
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
-        $myDB = oxDb::getDB();
-        $myDB->execute( 'delete from oxorderfiles ' );
+        oxDb::getDB()->execute( 'delete from `oxorderfiles` ' );
 
         parent::tearDown();
     }
 
      /**
-     * Test Orderfiles setters
-     *
-     * @return null
+     * Test oxOrderFile setters
      */
     public function testSetOrderFile()
     {
@@ -60,12 +53,13 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
         $oOrderFile = new oxOrderFile();
         $oOrderFile->load( $id );
 
-        $sDate = date( 'Y-m-d', oxUtilsDate::getInstance()->getTime() + 24*3600 );
+        $sDate = date( 'Y-m-d', oxRegistry::get('oxUtilsDate')->getTime() + 24*3600 );
 
         $this->assertEquals( 'orderId', $oOrderFile->oxorderfiles__oxorderid->value );
         $this->assertEquals( 'orderArticleId', $oOrderFile->oxorderfiles__oxorderarticleid->value );
         $this->assertEquals( 'fileName', $oOrderFile->oxorderfiles__oxfilename->value );
         $this->assertEquals( 'fileId', $oOrderFile->oxorderfiles__oxfileid->value );
+        $this->assertEquals( 'fileId', $oOrderFile->getFileId() );
         $this->assertEquals( '1', $oOrderFile->oxorderfiles__oxshopid->value );
         $this->assertEquals( '10', $oOrderFile->oxorderfiles__oxmaxdownloadcount->value );
         $this->assertEquals( '12', $oOrderFile->oxorderfiles__oxdownloadexpirationtime->value );
@@ -75,9 +69,7 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
     }
 
     /**
-     * Test Orderfiles reset
-     *
-     * @return null
+     * Test oxOrderFile isValid
      */
     public function testIsValid()
     {
@@ -91,9 +83,7 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
     }
 
     /**
-     * Test Orderfiles reset
-     *
-     * @return null
+     * Test oxOrderFile isNotValid
      */
     public function testIsNotValid()
     {
@@ -107,9 +97,7 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
     }
 
     /**
-     * Test Orderfiles reset
-     *
-     * @return null
+     * Test oxOrderFile reset
      */
     public function testReset()
     {
@@ -143,26 +131,24 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
         $this->assertEquals( '2011-10-20 00:00:00', $oOrderFile->oxorderfiles__oxlastdownload->value );
         $this->assertEquals( "2011-10-20 12:12:00", $oOrderFile->oxorderfiles__oxvaliduntil->value);
 
-        $iTime = oxUtilsDate::getInstance()->getTime();
+        $iTime = oxRegistry::get('oxUtilsDate')->getTime();
         $sDate = date( 'Y-m-d H:i:s', $iTime + 24 * 3600 );
 
         $oOrderFile->reset();
         $oOrderFile->save();
 
-        $oOrderFileReseted = new oxOrderFile();
-        $oOrderFileReseted->load( $id );
+        $oOrderFileReset = new oxOrderFile();
+        $oOrderFileReset->load( $id );
 
-        $this->assertEquals( '0', $oOrderFileReseted->oxorderfiles__oxdownloadcount->value );
-        $this->assertTrue( $oOrderFileReseted->oxorderfiles__oxvaliduntil->value >= $sDate);
-        $this->assertEquals( '0000-00-00 00:00:00', $oOrderFileReseted->oxorderfiles__oxfirstdownload->value );
-        $this->assertEquals( '0000-00-00 00:00:00', $oOrderFileReseted->oxorderfiles__oxlastdownload->value );
+        $this->assertEquals( '0', $oOrderFileReset->oxorderfiles__oxdownloadcount->value );
+        $this->assertTrue( $oOrderFileReset->oxorderfiles__oxvaliduntil->value >= $sDate);
+        $this->assertEquals( '0000-00-00 00:00:00', $oOrderFileReset->oxorderfiles__oxfirstdownload->value );
+        $this->assertEquals( '0000-00-00 00:00:00', $oOrderFileReset->oxorderfiles__oxlastdownload->value );
 
     }
 
      /**
-     * Test valid until date geter
-     *
-     * @return null
+     * Test valid until date getter
      */
     public function testGetValidUntil()
     {
@@ -179,9 +165,7 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
     }
 
     /**
-     * Test valid until date geter
-     *
-     * @return null
+     * Test valid until date getter
      */
     public function testGetLeftDownloadCount()
     {
@@ -199,9 +183,7 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
     }
 
     /**
-     * Test valid until date geter
-     *
-     * @return null
+     * Test valid until date getter
      */
     public function testGetLeftDownloadCountNegative()
     {
@@ -219,11 +201,9 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
     }
 
     /**
-     * Test Orderfiles processOrderFile
-     *
-     * @return null
+     * Test oxOrderFile processOrderFile
      */
-    public function testProcessOrderFileFisrtDownload()
+    public function testProcessOrderFileFirstDownload()
     {
         $oOrderFileNew = new oxOrderFile();
         $oOrderFileNew->setId( '_orderFileId' );
@@ -233,7 +213,7 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
         $oOrderFileNew->setFile('fileName', 'fileId', '10', '24', '12');
         $oOrderFileNew->save();
 
-        $sFirstDate = date( 'Y-m-d H:i:s' );
+        $sNowDate = date( 'Y-m-d H:i:s' );
 
         $sNow = oxRegistry::get("oxUtilsDate")->getTime();
         $sDate = date( 'Y-m-d H:i:s', $sNow );
@@ -256,9 +236,7 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
     }
 
     /**
-     * Test Orderfiles processOrderFile
-     *
-     * @return null
+     * Test oxOrderFile processOrderFile
      */
     public function testProcessOrderFile()
     {
@@ -274,7 +252,6 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
         $oOrderFileNew->save();
 
         $sLastDate = date( 'Y-m-d H:i:s' );
-        $sDate = date( 'Y-m-d H:i:s', mktime( date("H") + 12, date("i"), 0, date("m"), date("d"), date("Y")) );
         $oOrderFile = new oxOrderFile();
         $oOrderFile->load( '_orderFileId' );
         $sFileId = $oOrderFile->processOrderFile();
@@ -290,5 +267,4 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
         $this->assertEquals( '2011-10-10 00:00:00', $oOrderFile->oxorderfiles__oxfirstdownload->value );
         $this->assertTrue( $oOrderFile->oxorderfiles__oxlastdownload->value >= $sLastDate );
     }
-
 }

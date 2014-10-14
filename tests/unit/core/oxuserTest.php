@@ -1,25 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id: oxuserTest.php 31889 2010-12-16 13:26:53Z rimvydas.paskevicius $
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -170,8 +168,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $myDB = oxDb::getDB();
-
         $oActUser = new oxuser();
         if ( $oActUser->loadActiveUser() ) {
             $oActUser->logout();
@@ -180,15 +176,10 @@ class Unit_Core_oxuserTest extends OxidTestCase
         oxSession::setVar( 'usr', null );
         oxSession::setVar( 'auth', null );
 
-        $myDB->execute( 'delete from oxuser where oxusername="aaa@bbb.lt" ' );
-        $myDB->execute( 'delete from oxconfig where oxshopid != "'.oxConfig::getInstance()->getBaseShopId().'" ' );
-        $myDB->execute( 'delete from oxaddress where oxid like "test%" ' );
-        $myDB->execute( 'delete from oxacceptedterms' );
-        $myDB->execute( 'delete from oxinvitations' );
-
         // resetting globally admin mode
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->setAdminMode( null );
+        oxSession::deleteVar('deladrid');
 
         // removing email wrapper module
         oxRemClassModule( 'oxuserTest_oxnewssubscribed' );
@@ -198,60 +189,24 @@ class Unit_Core_oxuserTest extends OxidTestCase
         oxRemClassModule( 'Unit_oxuserTest_oxUtilsServer2' );
         oxRemClassModule( 'oxuserTestEmail' );
 
+        $oGroup = new oxgroups();
+        $oGroup->delete( '_testGroup' );
+
+        $oGroup = new oxgroups();
+        $oGroup->delete( '_testGroup' );
+
         $oUser = oxNew( 'oxuser' );
 
         // removing users
         foreach ( $this->_aUsers as $aShopUsers ) {
             foreach ( $aShopUsers as $sUserId ) {
-
                 $oUser->delete( $sUserId );
-
-                $sOrderID = $myDB->getOne( 'select oxid from oxorder where oxuserid = "'.$sUserId.'" ' );
-
-                $sDelete = 'delete from oxorder where oxid = "'.$sOrderID.'" ';
-                $myDB->Execute( $sDelete );
-
-                $sDelete = 'delete from oxorderarticles where oxorderid = "'.$sOrderID.'" ';
-                $myDB->Execute( $sDelete );
-
-                $sDelete = 'delete from oxuserpayments where oxuserpayments.oxuserid = "'.$sUserId.'" or oxuserid like "test%@oxid-esales.com"';
-                $myDB->Execute( $sDelete );
-
-                $sDelete = 'delete from oxobject2group where oxid = "'.$sUserId.'" or oxobjectid="'.$sUserId.'"';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxaddress where oxuserid = "'.$sUserId.'" ';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxnewssubscribed where oxemail = "aaa@bbb.lt" ';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxrecommlists where oxid = "test" ';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxobject2list where oxid = "test" ';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxremark where oxparentid = "'.$sUserId.'" ';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxuserbaskets where oxid = "'.$sUserId.'" ';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxuserbasketitems where oxbasketid = "'.$sUserId.'" ';
-                $myDB->execute( $sDelete );
             }
-
-            $this->cleanUpTable( 'oxobject2group' );
         }
 
-        oxSession::deleteVar('deladrid');
-
-        $oGroup = new oxgroups();
-        $oGroup->delete( '_testGroup' );
-
-        $oGroup = new oxgroups();
-        $oGroup->delete( '_testGroup' );
+        // restore database
+        $oDbRestore = self::_getDbRestore();
+        $oDbRestore->restoreDB();
 
         parent::tearDown();
     }
@@ -278,7 +233,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $aActives = array( '0', '1' );
         $aRights  = array( 'user', 'malladmin' );
         $sTable   = getViewName( 'oxuser' );
-        //$iLastCustNr = ( int ) $myDB->getOne( 'select max( oxcustnr ) from '.$sTable ) + 1;
+        $iLastCustNr = 0;//( int ) $myDB->getOne( 'select max( oxcustnr ) from '.$sTable ) + 1;
         $sCountryId  = $myDB->getOne( 'select oxid from oxcountry where oxactive = "1"' );
 
         for ( $iCnt = 0; $iCnt < 5; $iCnt++ ) {
@@ -366,8 +321,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser->load( $sUserId );
 
         $sShopID = $oUser->getShopId();
-
-        $sArticleID = $myDB->getOne( "select oxid from oxarticles where oxshopid='{$sShopID}' order by rand()" );
 
         // adding some more orders..
         for ( $i = 0; $i < 21; $i++ ) {
@@ -572,37 +525,15 @@ class Unit_Core_oxuserTest extends OxidTestCase
         }
     }
 
-    public function testPrepareSaltDecodeSalt()
-    {
-        $sSalt = '123456789';
-
-        $oUser = new oxuser();
-        $this->assertEquals( $sSalt, $oUser->decodeSalt( $oUser->prepareSalt( $sSalt ) ) );
-    }
-
     public function testGetPasswordHash()
     {
-        $oUser1 = new oxuser();
-        $oUser1->oxuser__oxpassword = new oxField( "******" );
+        $oUser1 = new oxUser();
+        $oUser1->oxuser__oxpassword = new oxField( 'passwordHash' );
 
-        $oUser2 = new oxuser();
-        $oUser2->oxuser__oxpassword = new oxField( oxUtils::getInstance()->strMan( "******" ) );
+        $this->assertEquals( 'passwordHash', $oUser1->getPasswordHash() );
 
-        $oUser3 = new oxuser();
-        $oUser3->oxuser__oxpassword = new oxField( str_repeat( "*", 32 ) );
-
-        $oUser5 = new oxuser();
-
-        $sHash = $oUser1->getPasswordHash();
-        $this->assertEquals( MD5( "******" . oxDb::getDb()->getOne( "select UNHEX( '{$oUser1->oxuser__oxpasssalt->value}' )" ) ), $sHash );
-
-        $sHash = $oUser2->getPasswordHash();
-        $this->assertEquals( MD5( "******" . oxDb::getDb()->getOne( "select UNHEX( '{$oUser2->oxuser__oxpasssalt->value}' )" ) ), $sHash );
-
-        $sHash = $oUser3->getPasswordHash();
-        $this->assertEquals( str_repeat( "*", 32 ), $sHash );
-
-        $this->assertNull( $oUser5->getPasswordHash() );
+        $oUser2 = new oxUser();
+        $this->assertNull( $oUser2->getPasswordHash() );
     }
 
 
@@ -686,10 +617,10 @@ class Unit_Core_oxuserTest extends OxidTestCase
     {
         $sPassword = 'xxx';
         $sSalt = 'yyy';
-        $sEncPass = md5( $sPassword . $sSalt );
+        $sEncPass = hash('sha512', $sPassword . $sSalt);
 
-        $oUser = new oxuser();
-        $this->assertEquals( $sEncPass, $oUser->encodePassword( $sPassword, oxDb::getDb()->getOne( "select HEX( 'yyy' )" ) ) );
+        $oUser = new oxUser();
+        $this->assertEquals( $sEncPass, $oUser->encodePassword( $sPassword, $sSalt ) );
     }
 
     public function testGetUpdateId()
@@ -2478,7 +2409,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $aHome = oxConfig::getInstance()->getConfigParam( 'aHomeCountry' );
 
         try {
-            $oUser->UNITcheckVatId( array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => $aHome[0]) );
+            $oUser->UNITcheckVatId( array('oxuser__oxustid' => 'DE123', 'oxuser__oxcountryid' => $aHome[0]) );
         } catch ( Exception $oException ) {
             $this->fail( "while trying to check home country business user with vat id" );
         }
@@ -2791,6 +2722,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testGetUserNotAdmin()
     {
+        $this->markTestSkipped('skip for user login');
         oxAddClassModule( 'Unit_oxuserTest_oxUtilsServer2', 'oxutilsserver' );
         $sShopId = oxConfig::getInstance()->getShopId();
 
@@ -2997,42 +2929,35 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
 
     /**
-     * oxuser::login() and oxuser::logout() test
+     * oxUser::login() and oxUser::logout() test for demo shop
      */
-    public function testLogin_Logout_Admin()
+    public function testLogin_Logout_AdminDemoShop()
     {
+        $oConfig = $this->getConfig();
+
         oxAddClassModule( 'Unit_oxuserTest_oxUtilsServer', 'oxutilsserver' );
-        modConfig::getInstance()->setConfigParam( 'blDemoShop', 1 );
+        $oConfig->setConfigParam( 'blDemoShop', 1 );
+        $oConfig->setAdminMode( true );
 
-        $myConfig = oxConfig::getInstance();
-        $myConfig->setAdminMode( true );
-
-        $oUser = $this->getMock( 'oxuser', array( 'isAdmin' ));
-        $oUser->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( true ) );
-
-        // note: due to demoshop mode, use admin/admin here
+        $oUser = new oxUser();
+        // demo shop login data: admin/admin here
         $oUser->login( "admin", "admin" );
 
-        $this->assertEquals( oxSession::getVar( 'auth' ), 'oxdefaultadmin' );
+        $this->assertNotNull( $this->getSessionParam('auth') );
 
-        // 'usr' var should not be set here
-        $this->assertNull( oxSession::getVar('usr') );
+        // 'usr' var should not be set here in admin
+        $this->assertNull( $this->getSessionParam('usr') );
 
         $oUser = $oUser->getUser();
 
+        $this->assertNotNull( $oUser );
+        $this->assertNotNull( $oUser->getId() );
 
-        if ( $oUser ) {
-            $this->assertNotNull( $oUser );
-            $this->assertEquals( 'oxdefaultadmin', $oUser->getId() );
+        $oUser->logout();
+        $this->assertNull( $this->getSessionParam('usr') );
+        $this->assertNull( $this->getSessionParam('auth') );
+        $this->assertFalse( $oUser->getUser() );
 
-            $oUser->logout();
-
-            $this->assertNull( oxSession::getVar( 'usr' ) );
-            $this->assertNull( oxSession::getVar( 'auth' ) );
-            $this->assertFalse( $oUser->getUser() );
-        } else {
-            $this->fail( 'User not loaded' );
-        }
     }
 
     /**
@@ -3525,32 +3450,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
 
 
-    /**
-     * Testing getLoginQuery to return correct shop select sql for admin
-     *
-     * @return null
-     */
-    public function testGetLoginQueryShopSelectAdmin()
-    {
-        $sShopID   = "shopid";
-        $oDb       = oxDb::getDb();
-        $oUser = new oxUser();
-        // case if mall users set to true should not change shopselect
-        modConfig::getInstance()->setConfigParam( "blMallUsers", true );
-        $blAdmin = true;
-
-        $sWhat = "oxid";
-
-        $sShopSelect = " and ( oxrights != 'user' ) ";
-
-        $sLoginQuery  = "select {$sWhat} from oxuser where oxuser.oxactive = 1 and  ";
-        $sLoginQuery .= "oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( oxADMIN_PASSWD ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
-        $sLoginQuery .= "oxuser.oxusername = " . $oDb->quote( oxADMIN_LOGIN ) . " ";
-        $sLoginQuery .= "$sShopSelect ";
-
-        $this->assertEquals( $sLoginQuery, $oUser->UNITgetLoginQuery( oxADMIN_LOGIN, oxADMIN_PASSWD, $sShopID, $blAdmin ) );
-    }
-
     public function testGetWishListId()
     {
         $oBasketItem = $this->getMock( 'oxBasketItem', array( 'getWishId' ) );
@@ -3593,55 +3492,13 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
 
     /**
-     * Test case for oxUSer::_getLoginQuery()
-     *
-     * @return null
-     */
-    public function testGetLoginQuery()
-    {
-        $sUser     = "user";
-        $sPassword = "password";
-        $sShopID   = "shopid";
-        $blAdmin   = false;
-        $oDb       = oxDb::getDb();
-
-        $sWhat = "oxid";
-
-        $oUser = new oxUser();
-
-        $sQ  = "select {$sWhat} from oxuser where oxuser.oxactive = 1 and  ";
-        $sQ .= "oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
-        $sQ .= "oxuser.oxusername = " . $oDb->quote( $sUser ) . " ";
-        $sQ .= "$sShopSelect ";
-
-        $this->assertEquals( $sQ, $oUser->UNITgetLoginQuery( $sUser, $sPassword, $sShopID, $blAdmin ) );
-
-        // numeric customer id
-        $sQ  = "select {$sWhat} from oxuser where oxuser.oxactive = 1 and  ";
-        $sQ .= "oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
-        $sQ .= "oxuser.oxcustnr = 1  ";
-        $sQ .= "$sShopSelect ";
-
-        $this->assertEquals( $sQ, $oUser->UNITgetLoginQuery( 1, $sPassword, $sShopID, $blAdmin ) );
-
-        // admin
-        //
-
-        $sQ  = "select {$sWhat} from oxuser where oxuser.oxactive = 1 and  ";
-        $sQ .= "oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
-        $sQ .= "oxuser.oxusername = " . $oDb->quote( $sUser ) . " ";
-        $sQ .= " and ( oxrights != 'user' )  ";
-        $this->assertEquals( $sQ, $oUser->UNITgetLoginQuery( $sUser, $sPassword, $sShopID, true ) );
-
-    }
-
-    /**
      * Test case for oxUSer::_getLoginQuery() - demoshop + admin mode
      *
      * @return null
      */
     public function testGetLoginQuery_demoShopAdminMode()
     {
+        $this->markTestSkipped('replace with integration test');
         // demoshop + admin
 
             $oConfig = $this->getMock( "oxConfig", array( "isDemoShop" ) );
@@ -3663,6 +3520,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testGetLoginQuery_demoShopAdminMode_InvalidLogin()
     {
+        $this->markTestSkipped('replace with integration');
         // demoshop + admin
 
             $oConfig = $this->getMock( "oxConfig", array( "isDemoShop" ) );
@@ -3682,6 +3540,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testGetLoginQuery_stagingMode()
     {
+        $this->markTestSkipped('repalce with integration');
     }
 
     /**
@@ -3691,6 +3550,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testGetLoginQuery_stagingMode_InvalidLogin()
     {
+        $this->markTestSkipped('replace with integrations');
     }
 
     /**

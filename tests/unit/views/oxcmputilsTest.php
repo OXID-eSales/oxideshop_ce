@@ -1,25 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id: oxcmpCurTest.php 25505 2010-02-02 02:12:13Z alfonsas $
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -135,9 +133,10 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
         $oParentView->expects( $this->once() )->method('getViewProduct')->will( $this->returnValue( $oProduct ) );
         $oParentView->expects( $this->once() )->method('getViewProductList')->will( $this->returnValue( array( $oProduct ) ) );
 
-        $oCmp = $this->getMock( "oxcmp_utils", array( "getParent" ) );
-        $oCmp->expects( $this->once() )->method('getParent')->will( $this->returnValue( $oParentView ) );
-        $oCmp->toCompareList( "1126" );
+        /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
+        $oCmp = $this->getMock("oxcmp_utils", array("getParent"));
+        $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
+        $oCmp->toCompareList("1126");
     }
 
     /**
@@ -162,9 +161,10 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
         $oParentView->expects( $this->once() )->method('getViewProduct')->will( $this->returnValue( $oProduct ) );
         $oParentView->expects( $this->once() )->method('getViewProductList')->will( $this->returnValue( array( $oProduct ) ) );
 
-        $oCmp = $this->getMock( "oxcmp_utils", array( "getParent" ) );
-        $oCmp->expects( $this->once() )->method('getParent')->will( $this->returnValue( $oParentView ) );
-        $oCmp->toCompareList( "1126" );
+        /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
+        $oCmp = $this->getMock("oxcmp_utils", array("getParent"));
+        $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
+        $oCmp->toCompareList("1126");
     }
 
     /**
@@ -174,9 +174,15 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testToNoticeList()
     {
-        $oCmp = $this->getMock( "oxcmp_utils", array( "_toList" ) );
-        $oCmp->expects( $this->once() )->method('_toList')->with( $this->equalTo( 'noticelist' ), $this->equalTo( '1126' ), $this->equalTo( 999 ), $this->equalTo( 'sel' ) );
-        $oCmp->toNoticeList( '1126', 999, 'sel' );
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
+        /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
+        $oCmp = $this->getMock("oxcmp_utils", array("_toList"));
+        $oCmp->expects($this->once())->method('_toList')->with($this->equalTo('noticelist'), $this->equalTo('1126'), $this->equalTo(999), $this->equalTo('sel'));
+        $oCmp->toNoticeList('1126', 999, 'sel');
     }
 
     /**
@@ -186,7 +192,12 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testToWishList()
     {
-        modConfig::getInstance()->setConfigParam( "bl_showWishlist", false );
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->exactly(2))->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
+        modConfig::getInstance()->setConfigParam("bl_showWishlist", false);
 
         $oCmp = $this->getMock( "oxcmp_utils", array( "_toList" ) );
         $oCmp->expects( $this->never() )->method('_toList');

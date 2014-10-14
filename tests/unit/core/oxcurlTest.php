@@ -1,24 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -71,6 +70,20 @@ class Unit_Core_oxCurlTest extends OxidTestCase
         $oCurl->setParameters( array( 'param1'=>'value1', 'param2' => 'values2' ) );
 
         $this->assertEquals( 'param1=value1&param2=values2', $oCurl->getQuery() );
+    }
+
+    /**
+     * Test oxCurl::getQuery()
+     */
+    public function testGetQuery_setParameterManyTimes_getQueryFromParameters()
+    {
+        $oCurl = new oxCurl();
+        $oCurl->setParameters( array( 'param1'=>'value1', 'param2' => 'values2' ) );
+        $this->assertEquals( 'param1=value1&param2=values2', $oCurl->getQuery() );
+
+        $oCurl->setParameters( array( 'param3'=>'value3', 'param4' => 'values4' ) );
+        $this->assertEquals( 'param3=value3&param4=values4', $oCurl->getQuery() );
+
     }
 
     /**
@@ -326,6 +339,20 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     }
 
     /**
+     * Test oxCurl::getStatusCode()
+     */
+    public function testGetStatusCode()
+    {
+        $oCurl = $this->getMock( 'oxCurl', array( "_execute" ) );
+
+        $this->assertSame(null, $oCurl->getStatusCode());
+
+        $oCurl->execute();
+
+        $this->assertSame(0, $oCurl->getStatusCode());
+    }
+
+    /**
      * Test oxCurl::getUrl()
      */
     public function testGetWithoutParameters()
@@ -339,14 +366,25 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     /**
      * Test oxCurl::getUrl()
      */
-    public function testGetUrl()
+    public function testGetUrl_WithMultiDimensionalArray()
     {
+        $aParams = array(
+            'emptyparam' => null,
+            'param1' => 'val1',
+            'param2' => array(
+                'subparam1' => 'subval1',
+                'subparam2' => array(
+                    'sub2param1' => 'subsubval1',
+                    'emptyparam' => null
+                ),
+            ),
+        );
+
         $oCurl = oxNew( "oxCurl" );
         $oCurl->setMethod( 'GET' );
         $oCurl->setUrl( "http://www.google.com" );
-        $oCurl->setParameters( array( "param1" => "val1", "param2" => "val2" ) );
-
-        $this->assertEquals( "http://www.google.com?param1=val1&param2=val2", $oCurl->getUrl() );
+        $oCurl->setParameters( $aParams );
+        $this->assertEquals( 'http://www.google.com?param1=val1&param2%5Bsubparam1%5D=subval1&param2%5Bsubparam2%5D%5Bsub2param1%5D=subsubval1', $oCurl->getUrl() );
     }
 
     public function testSimplePOSTCall()

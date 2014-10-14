@@ -1,7 +1,7 @@
 [{capture append="oxidBlock_content"}]
 
     [{block name="checkout_order_errors"}]
-        [{if $oView->isConfirmAGBActive() && $oView->isConfirmAGBError() == 1}]
+        [{if $oView->isConfirmAGBError() == 1}]
             [{include file="message/error.tpl" statusMessage="READ_AND_CONFIRM_TERMS"|oxmultilangassign}]
         [{/if}]
         [{assign var="iError" value=$oView->getAddressError()}]
@@ -24,7 +24,7 @@
         [{block name="checkout_order_details"}]
             [{if !$oxcmp_basket->getProductsCount()}]
                 [{block name="checkout_order_emptyshippingcart"}]
-                <div class="status corners error">[{oxmultilang ident="BASKET_EMPTY"}]</div>
+                    <div class="status corners error">[{oxmultilang ident="BASKET_EMPTY"}]</div>
                 [{/block}]
             [{else}]
                 [{assign var="currency" value=$oView->getActCurrency()}]
@@ -35,49 +35,25 @@
                     [{/block}]
                 [{else}]
 
-                    <div id="orderAgbTop">
-                        <form action="[{$oViewConf->getSslSelfLink()}]" method="post" id="orderConfirmAgbTop">
-                            [{$oViewConf->getHiddenSid()}]
-                            [{$oViewConf->getNavFormParams()}]
-                            <input type="hidden" name="cl" value="order">
-                            <input type="hidden" name="fnc" value="[{$oView->getExecuteFnc()}]">
-                            <input type="hidden" name="challenge" value="[{$challenge}]">
-                            <input type="hidden" name="sDeliveryAddressMD5" value="[{$oView->getDeliveryAddressMD5()}]">
-                            <div class="agb">
-                                [{if $oView->isActive('PsLogin')}]
-                                    <input type="hidden" name="ord_agb" value="1">
-                                [{else}]
-                                    [{if $oView->isConfirmAGBActive()}]
-                                        [{oxifcontent ident="oxrighttocancellegend" object="oContent"}]
-                                            <h3 class="section">
-                                                <strong>[{$oContent->oxcontents__oxtitle->value}]</strong>
-                                            </h3>
-                                            <input type="hidden" name="ord_agb" value="0">
-                                            <input id="checkAgbTop" class="checkbox" type="checkbox" name="ord_agb" value="1">
-                                            [{$oContent->oxcontents__oxcontent->value}]
-                                        [{/oxifcontent}]
-                                    [{else}]
-                                        [{oxifcontent ident="oxrighttocancellegend2" object="oContent"}]
-                                            <h3 class="section">
-                                                <strong>[{$oContent->oxcontents__oxtitle->value}]</strong>
-                                            </h3>
-                                            <input type="hidden" name="ord_agb" value="1">
-                                            [{$oContent->oxcontents__oxcontent->value}]
-                                        [{/oxifcontent}]
-                                    [{/if}]
-                                [{/if}]
-                            </div>
+                    [{if $oView->showOrderButtonOnTop()}]
+                        <div id="orderAgbTop">
+                            <form action="[{$oViewConf->getSslSelfLink()}]" method="post" id="orderConfirmAgbTop">
+                                [{$oViewConf->getHiddenSid()}]
+                                [{$oViewConf->getNavFormParams()}]
+                                <input type="hidden" name="cl" value="order">
+                                <input type="hidden" name="fnc" value="[{$oView->getExecuteFnc()}]">
+                                <input type="hidden" name="challenge" value="[{$challenge}]">
+                                <input type="hidden" name="sDeliveryAddressMD5" value="[{$oView->getDeliveryAddressMD5()}]">
 
-                            [{oxscript add="$('#checkAgbTop').click(function(){ $('input[name=ord_agb]').val(parseInt($('input[name=ord_agb]').val())^1);});"}]
+                                [{include file="page/checkout/inc/agb.tpl"}]
 
-                            [{if $oView->showOrderButtonOnTop()}]
                                 <div class="lineBox clear">
                                     <a href="[{oxgetseourl ident=$oViewConf->getPaymentLink()}]" class="prevStep submitButton largeButton">[{oxmultilang ident="PREVIOUS_STEP"}]</a>
                                     <button type="submit" class="submitButton nextStep largeButton">[{oxmultilang ident="SUBMIT_ORDER"}]</button>
                                 </div>
-                            [{/if}]
-                        </form>
-                    </div>
+                            </form>
+                        </div>
+                    [{/if}]
                 [{/if}]
 
                 [{block name="checkout_order_vouchers"}]
@@ -179,17 +155,14 @@
                     </form>
                 </div>
 
+                <div class="lineBox clear">
                 [{block name="order_basket"}]
-                    <div class="lineBox">
-                        [{include file="page/checkout/inc/basketcontents.tpl" editable=false}]
-                    </div>
+                    [{include file="page/checkout/inc/basketcontents.tpl" editable=false}]
                 [{/block}]
 
                 [{if $oView->isLowOrderPrice()}]
                     [{block name="checkout_order_loworderprice_bottom"}]
-                        <div class="lineBox clear">
-                            <div>[{oxmultilang ident="MIN_ORDER_PRICE"}] [{$oView->getMinOrderPrice()}] [{$currency->sign}]</div>
-                        </div>
+                        <div>[{oxmultilang ident="MIN_ORDER_PRICE"}] [{$oView->getMinOrderPrice()}] [{$currency->sign}]</div>
                     [{/block}]
                 [{else}]
                     [{block name="checkout_order_btn_confirm_bottom"}]
@@ -201,19 +174,10 @@
                             <input type="hidden" name="challenge" value="[{$challenge}]">
                             <input type="hidden" name="sDeliveryAddressMD5" value="[{$oView->getDeliveryAddressMD5()}]">
 
-                            <div class="agb">
-                                [{if $oView->isActive('PsLogin')}]
-                                    <input type="hidden" name="ord_agb" value="1">
-                                [{else}]
-                                    [{if $oView->isConfirmAGBActive()}]
-                                            <input type="hidden" name="ord_agb" value="0">
-                                    [{/if}]
-                                [{/if}]
-                            </div>
-
                             [{if $oViewConf->isFunctionalityEnabled("blShowTSInternationalFeesMessage")}]
                             [{oxifcontent ident="oxtsinternationalfees" object="oTSIFContent"}]
-                                <div class="lineBox clear">
+                                    <hr/>
+                                    <div class="clear">
                                         <span class="title">[{$oTSIFContent->oxcontents__oxcontent->value}]</span>
                                     </div>
                                 [{/oxifcontent}]
@@ -221,22 +185,31 @@
 
                             [{if $payment->oxpayments__oxid->value eq "oxidcashondel" && $oViewConf->isFunctionalityEnabled("blShowTSCODMessage")}]
                                 [{oxifcontent ident="oxtscodmessage" object="oTSCODContent"}]
-                                    <div class="lineBox clear">
+                                    <hr/>
+                                    <div class="clear">
                                         <span class="title">[{$oTSCODContent->oxcontents__oxcontent->value}]</span>
                                 </div>
                             [{/oxifcontent}]
                             [{/if}]
+                            <hr/>
 
-                            <div class="lineBox clear">
-                                <a href="[{oxgetseourl ident=$oViewConf->getPaymentLink()}]" class="prevStep submitButton largeButton">[{oxmultilang ident="PREVIOUS_STEP"}]</a>
-                                <button type="submit" class="submitButton nextStep largeButton">[{oxmultilang ident="SUBMIT_ORDER"}]</button>
-                            </div>
+                            [{if !$oView->showOrderButtonOnTop()}]
+                                [{include file="page/checkout/inc/agb.tpl"}]
+                                <hr/>
+                            [{else}]
+                                [{include file="page/checkout/inc/agb.tpl" hideButtons=true}]
+                            [{/if}]
+
+                            <a href="[{oxgetseourl ident=$oViewConf->getPaymentLink()}]" class="prevStep submitButton largeButton">[{oxmultilang ident="PREVIOUS_STEP"}]</a>
+                            <button type="submit" class="submitButton nextStep largeButton">[{oxmultilang ident="SUBMIT_ORDER"}]</button>
                         </form>
                     [{/block}]
                 [{/if}]
+                </div>
             [{/if}]
         [{/block}]
     [{/block}]
+
     [{insert name="oxid_tracker" title=$template_title}]
 [{/capture}]
 

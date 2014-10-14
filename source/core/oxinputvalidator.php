@@ -1,25 +1,24 @@
 <?php
 
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 /**
@@ -392,13 +391,13 @@ class oxInputValidator extends oxSuperCfg
                 // no country
                 return;
             }
-            $oCountry = oxNew('oxcountry');
-            if ( $oCountry->load( $sCountryId ) && $oCountry->isForeignCountry() && $oCountry->isInEU() ) {
+            $oCountry = oxNew('oxCountry');
 
-                    if ( strncmp( $aInvAddress['oxuser__oxustid'], $oCountry->oxcountry__oxisoalpha2->value, 2 ) ) {
+            if ( $oCountry->load( $sCountryId ) && $oCountry->isInEU() ) {
+
+                    if ( strncmp( $aInvAddress['oxuser__oxustid'], $oCountry->getVATIdentificationNumberPrefix(), 2 ) ) {
                         $oEx = oxNew( 'oxInputException' );
                         $oEx->setMessage( 'VAT_MESSAGE_ID_NOT_VALID' );
-
                         return $this->_addValidationError( "oxuser__oxustid", $oEx );
                     }
 
@@ -588,5 +587,28 @@ class oxInputValidator extends oxSuperCfg
         $aDebitInformation['lsktonr'] = str_replace( ' ', '', $aDebitInformation['lsktonr'] );
 
         return $aDebitInformation;
+    }
+
+    /**
+     * Compares country VAT identification number with it's prefix.
+     *
+     * @param array $aInvAddress
+     * @param oxCountry $oCountry
+     *
+     * @return bool
+     */
+    private function _isVATIdentificationNumberInvalid( $aInvAddress, $oCountry )
+    {
+        return (bool) strncmp( $aInvAddress['oxuser__oxustid'], $oCountry->getVATIdentificationNumberPrefix(), 2 );
+    }
+
+    /**
+     * @return oxOnlineVatIdCheck
+     */
+    protected function _getVatIdValidator()
+    {
+        $oVatCheck = oxNew( 'oxOnlineVatIdCheck' );
+
+        return $oVatCheck;
     }
 }

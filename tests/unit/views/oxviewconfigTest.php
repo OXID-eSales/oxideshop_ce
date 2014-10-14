@@ -1,24 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -63,22 +62,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals( 123, $oViewConf->getTsId() );
-    }
-
-    /**
-     * oxViewConfig::getTsRatings test case
-     *
-     * @return null
-     */
-    public function testGetTsRatings()
-    {
-        $oViewConf = $this->getMock( "oxViewConfig", array( "getTsId" ) );
-        $oViewConf->expects( $this->any() )->method( "getTsId" )->will( $this->returnValue( 'xyz' ) );
-
-        $aTsRatings = $oViewConf->getTsRatings();
-
-        $this->assertArrayHasKey( 'empty', $aTsRatings );
-        $this->assertTrue( $aTsRatings['empty'] );
     }
 
     /**
@@ -2520,5 +2503,41 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $this->assertEquals( $sLogo, $oView->getShopLogo() );
     }
 
+    /**
+     * Data provider for test testGetSessionChallengeToken.
+     *
+     * @return array
+     */
+    public function _dpGetSessionChallengeToken()
+    {
+        return array(
+            array(false, 0, ''),
+            array(true, 1, 'session_challenge_token'),
+        );
+    }
 
+    /**
+     * /**
+     * Tests retrieve session challenge token from session.
+     *
+     * @dataProvider _dpGetSessionChallengeToken
+     *
+     * @param boolean $blIsSessionStarted                   is session started
+     * @param integer $iGetSessionChallengeTokenCalledTimes method getSessionChallengeToken expected to be called times
+     * @param string  $sToken                               Security token
+     */
+    public function testGetSessionChallengeToken($blIsSessionStarted, $iGetSessionChallengeTokenCalledTimes, $sToken)
+    {
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('isSessionStarted', 'getSessionChallengeToken'));
+
+        $oSession->expects($this->once())->method('isSessionStarted')
+            ->will($this->returnValue($blIsSessionStarted));
+        $oSession->expects($this->exactly($iGetSessionChallengeTokenCalledTimes))->method('getSessionChallengeToken')
+            ->will($this->returnValue($sToken));
+        oxRegistry::set('oxSession', $oSession);
+
+        $oViewConfig = new oxViewConfig();
+        $this->assertSame($sToken, $oViewConfig->getSessionChallengeToken());
+    }
 }

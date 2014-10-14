@@ -1,25 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id: accountTest.php 25505 2010-02-02 02:12:13Z alfonsas $
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -190,6 +188,11 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
         modConfig::setParameter( "editval", $aParams );
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }' );
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         $oView = new Account_Wishlist();
         $this->assertEquals( "addErrorToDisplay", $oView->sendWishList() );
         $this->assertEquals( ( object ) $aParams, $oView->getEnteredData() );
@@ -204,9 +207,6 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
     {
         $aParams = array( "rec_name" => "someVal1", "rec_email" => "someVal2" );
         $oObj = ( object ) $aParams;
-        //$oObj->send_email = "testName";
-        //$oObj->send_name  = "testFName testLName";
-        //$oObj->send_id    = "testId";
 
         modConfig::setParameter( "editval", $aParams );
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }' );
@@ -218,11 +218,18 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
         $oUser->oxuser__oxfname    = new oxField( "testFName" );
         $oUser->oxuser__oxlname    = new oxField( "testLName" );
 
-        $oView = $this->getMock( "Account_Wishlist", array( "getUser" ) );
-        $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $this->assertEquals( "addErrorToDisplay", $oView->sendWishList() );
-        $this->assertEquals( $oObj, $oView->getEnteredData() );
-        $this->assertFalse( $oView->isWishListEmailSent() );
+        /** @var Account_Wishlist|PHPUnit_Framework_MockObject_MockObject $oView */
+        $oView = $this->getMock("Account_Wishlist", array("getUser"));
+        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
+        $this->assertEquals("addErrorToDisplay", $oView->sendWishList());
+        $this->assertEquals($oObj, $oView->getEnteredData());
+        $this->assertFalse($oView->isWishListEmailSent());
     }
 
     /**
@@ -237,8 +244,14 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
         $oBasket = $this->getMock( "oxBasket", array( "save" ) );
         $oBasket->expects( $this->once() )->method( 'save');
 
-        $oUser = $this->getMock( "oxUser", array( "getBasket" ) );
-        $oUser->expects( $this->once() )->method( 'getBasket')->with( $this->equalTo( "wishlist" ) )->will( $this->returnValue( $oBasket ) );
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
+        $oUser = $this->getMock("oxUser", array("getBasket"));
+        $oUser->expects($this->once())->method('getBasket')->with($this->equalTo("wishlist"))->will($this->returnValue($oBasket));
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         $oView = $this->getMock( "Account_Wishlist", array( "getUser" ) );
         $oView->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( $oUser ) );

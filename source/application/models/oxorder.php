@@ -1,24 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 /**
@@ -350,13 +349,13 @@ class oxOrder extends oxBase
     /**
      * Order article list setter
      *
-     * @param object $aOrderArticleList order article list
+     * @param oxOrderArticleList $oOrderArticleList
      *
      * @return null
      */
-    public function setOrderArticleList( $aOrderArticleList )
+    public function setOrderArticleList( $oOrderArticleList )
     {
-        $this->_oArticles = $aOrderArticleList;
+        $this->_oArticles = $oOrderArticleList;
     }
 
     /**
@@ -534,6 +533,12 @@ class oxOrder extends oxBase
             }
         }
 
+        if ( !$this->oxorder__oxordernr->value ) {
+            $this->_setNumber();
+        } else {
+            oxNew( 'oxCounter' )->update( $this->_getCounterIdent(), $this->oxorder__oxordernr->value );
+        }
+
         // executing TS protection
         if ( !$blRecalculatingOrder && $oBasket->getTsProductId()) {
             $blRet = $this->_executeTsProtection( $oBasket );
@@ -545,12 +550,6 @@ class oxOrder extends oxBase
         // deleting remark info only when order is finished
         oxSession::deleteVar( 'ordrem' );
         oxSession::deleteVar( 'stsprotection' );
-
-        if ( !$this->oxorder__oxordernr->value ) {
-            $this->_setNumber();
-        } else {
-            oxNew( 'oxCounter' )->update( $this->_getCounterIdent(), $this->oxorder__oxordernr->value );
-        }
 
         //#4005: Order creation time is not updated when order processing is complete
         if ( !$blRecalculatingOrder ) {
@@ -2172,12 +2171,11 @@ class oxOrder extends oxBase
     }
 
     /**
-     * Executes Trusted shops protection order. On failure -
-     * deletes order and returns error code or 6.
+     * Executes Trusted shops protection order.
      *
      * @param oxBasket $oBasket basket object
      *
-     * @return mixed
+     * @return bool
      */
     protected function _executeTsProtection( oxBasket $oBasket )
     {
@@ -2190,13 +2188,12 @@ class oxOrder extends oxBase
         $aValues['shopOrderID'] = $this->oxorder__oxordernr->value;
         $aValues['orderDate'] = $this->oxorder__oxorderdate->value;
         $sPaymentId = $oBasket->getPaymentId();
+
+        /** @var oxTsProtection $oTsProtection */
         $oTsProtection = oxNew('oxtsprotection');
-        $blRes = $oTsProtection->requestForTsProtection( $aValues, $sPaymentId );
-        /*if ( !$blRes ) {
-            $this->delete();
-            return self::ORDER_STATE_INVALIDTSPROTECTION;
-        }*/
-        return true; // everything fine
+        $oTsProtection->requestForTsProtection( $aValues, $sPaymentId );
+
+        return true;
     }
 
     /**

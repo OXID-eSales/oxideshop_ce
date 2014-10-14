@@ -28,8 +28,8 @@ First off, you have to fork the repository OXID-eSales/oxideshop_ce to your list
 
 You will find three branches now in youraccount/oxideshop_ce:
 
-* <b>b-5.1-ce</b>, presently our main branch on this repo, is the <b>maintenance branch</b> for the present major version. Only bug fixes here, no new features, no DB changes, no template changes if possible.
-* <b>b-dev-ce</b> is the so called <b>feature branch</b>: All new features will be developed here as well as bug fixes for the next major version.
+* <b>b-dev-ce</b>, presently our main branch on this repo, is the so called <b>feature branch</b>: All new features will be developed here as well as bug fixes for the next major version.
+* <b>b-5.1-ce</b> is the <b>maintenance branch</b> for the present major version. Only bug fixes here, no new features, no DB changes, no template changes if possible.
 * <b>b-5.0-ce</b> appears as the so called <b>legacy branch</b>: fixes for bugs with higher priority only.
 
 In general, contributions can be taken over for all branches. Bug fixes committed to only one branch will be pushed to the other branches manually. Of course you can also consider to commit e.g. bug fixes to more than one branche.
@@ -56,6 +56,13 @@ Also, please provide PHP Unit tests for your code.
 
 When sending your pull request, please provide a clear, meaningful and detailed information about what your code is about and what it will do, best including a screen shot if possible.
 If you want to discuss your contribution and your code before committing it, please go to the dev-general mailing list: http://lists.oxidforge.org/mailman/listinfo/dev-general.
+
+How to use the issue tracker here at GitHub:
+* Issue entries on GitHub containing a pull request are welcome.
+* When entering a bug as an issue on GitHub without providing a pull request for it, you'll be gently but certainly pointed to the bug tracker at https://bugs.oxid-esales.com.
+* If this bug is already open in bug tracker, the GitHub issue will be closed with an appropriate comment.
+* If this bug is not entered at the official bug tracker yet, we'll ask if the reporter wants to open it himself. If he denies or doesn't answer in a certain time, we'll enter this bug by ourselves.
+
 
 Useful links:<br>
 Project home page - http://www.oxid-esales.com<br>

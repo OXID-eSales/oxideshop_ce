@@ -19,7 +19,9 @@
 <input type="hidden" name="fnc" value="">
 <input type="hidden" name="oxid" value="[{ $oxid }]">
 <input type="hidden" name="editval[oxgroups__oxid]" value="[{ $oxid }]">
-
+[{if $oxid == "-1"}]
+    <div class="messagebox">[{ oxmultilang ident="MESSAGE_FOR_NEWLY_CREATED_USER_GROUPS" }]</div>
+[{/if}]
 <table cellspacing="0" cellpadding="0" border="0" width="98%">
 <tr>
 
@@ -36,6 +38,16 @@
                 [{ oxinputhelp ident="HELP_GENERAL_ACTIVE" }]
                 </td>
             </tr>
+            [{if $oxid != "-1"}]
+            <tr>
+                <td class="edittext" width="70">
+                    [{ oxmultilang ident="USERGROUP_ID" }]
+                </td>
+                <td class="edittext">
+                    [{$edit->oxgroups__oxid->value}]
+                </td>
+            </tr>
+            [{/if}]
             <tr>
                 <td class="edittext" width="100">
                 [{ oxmultilang ident="GENERAL_NAME" }]

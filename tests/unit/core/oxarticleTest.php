@@ -1,32 +1,28 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-if ( !defined( 'OX_IS_ADMIN' ) ) {
-    define( 'OX_IS_ADMIN', false );
-}
 
 
 /**
@@ -145,7 +141,7 @@ class modUtilsObject_oxarticle extends oxUtilsObject
 /**
  * Testing oxArticle class.
  */
-class oxArticleTest extends OxidTestCase
+class Unit_Core_oxArticleTest extends OxidTestCase
 {
     /**
      * Test case for #0003393: getSqlActiveSnippet(true) does not force core table usage
@@ -191,6 +187,10 @@ class oxArticleTest extends OxidTestCase
      */
     protected function setUp()
     {
+        if ( !defined( 'OX_IS_ADMIN' ) ) {
+            define( 'OX_IS_ADMIN', false );
+        }
+
         parent::setUp();
 
         $this->cleanUpTable( 'oxobject2category' );
@@ -2094,6 +2094,24 @@ class oxArticleTest extends OxidTestCase
 
         $this->assertEquals( 27.5, $oArticle->getPrice(6)->getBruttoPrice() );
 
+    }
+
+    /**
+     * Test if works correctly when skipping discounts.
+     *
+     * Fix for bug entry 0005641: Fatal Error after activating oxskipdiscounts
+     *
+     * @return null
+     */
+    public function testLoadAmountPriceInfo_skipDiscounts_noErrorThrown()
+    {
+        _oxArticle::resetAmountPrice();
+        $oArticle = $this->getMock( 'oxArticle', array( 'skipDiscounts' ) );
+        $oArticle->expects( $this->any() )->method( 'skipDiscounts')->will( $this->returnValue( true ) );
+        $oArticle->load('1651');
+        $oAmPriceList = $oArticle->loadAmountPriceInfo();
+
+        $this->assertEquals( 0, count( $oAmPriceList ) );
     }
 
     /**
@@ -5534,27 +5552,41 @@ class oxArticleTest extends OxidTestCase
      * Test assign parent field value - when variant has his own thumbnail, icon
      * and zoom picture.
      *
+     * #5165 defines that no parent image values should be loaded in case variant has at least one picture
+     *
      * @return null
      */
     public function testAssignParentFieldValue_variantHasOwnMasterImage()
     {
         $oParentArticle = new oxArticle();
-        $oParentArticle->oxarticles__oxicon  = new oxField('parent_ico.jpg', oxField::T_RAW);
+        $oParentArticle->oxarticles__oxid     = new oxField('parentArt', oxField::T_RAW);
+        $oParentArticle->oxarticles__oxicon   = new oxField('parent_icon.jpg', oxField::T_RAW);
         $oParentArticle->oxarticles__oxthumb = new oxField('parent_thumb.jpg', oxField::T_RAW);
-        $oParentArticle->oxarticles__oxzoom1 = new oxField('parent_zoom1.jpg', oxField::T_RAW);
+        $oParentArticle->oxarticles__oxpic1   = new oxField('parent_pic1.jpg', oxField::T_RAW);
+        $oParentArticle->oxarticles__oxpic2   = new oxField('parent_pic2.jpg', oxField::T_RAW);
+        $oParentArticle->oxarticles__oxtitle  = new oxField('testArt', oxField::T_RAW);
 
         $oVarArticle = $this->getMock('oxarticle', array( 'getParentArticle', '_hasMasterImage' ) );
+        $oVarArticle->init( null, true);
         $oVarArticle->expects( $this->any() )->method( 'getParentArticle' )->will( $this->returnValue( $oParentArticle ) );
         $oVarArticle->expects( $this->any() )->method( '_hasMasterImage' )->will( $this->returnValue( true ) );
 
-        $oVarArticle->oxarticles__oxpic1  = new oxField('30-360-back_p1_z_f_th_665.jpg', oxField::T_RAW);
+        $oVarArticle->oxarticles__oxparentid = new oxField('parentArt', oxField::T_RAW);
+        $oVarArticle->oxarticles__oxpic1     = new oxField('variant_pic1.jpg', oxField::T_RAW);
+        $oVarArticle->oxarticles__oxicon     = new oxField('variant_icon.jpg', oxField::T_RAW);
 
-        $oVarArticle->UNITassignParentFieldValue( "oxicon" );
-        $this->assertEquals( "30-360-back_p1_z_f_th_665.jpg", basename( $oVarArticle->getIconUrl() ) );
+        $oVarArticle->UNITassignParentFieldValues();
 
-        $oVarArticle->UNITassignParentFieldValue( "oxthumb" );
-        $this->assertEquals( "30-360-back_p1_z_f_th_665.jpg", basename( $oVarArticle->getThumbnailUrl() ) ) ;
+        //check if some values are really assigned from parent and our test makes sense
+        $this->assertEquals( "testArt", $oVarArticle->oxarticles__oxtitle->value );
 
+        //specific variant picture value is taken
+        $this->assertEquals( "variant_icon.jpg", $oVarArticle->oxarticles__oxicon->value );
+        $this->assertEquals( "variant_pic1.jpg", $oVarArticle->oxarticles__oxpic1->value );
+
+        //parent values are not loaded
+        $this->assertEquals( "", $oVarArticle->oxarticles__oxthumb->value );
+        $this->assertEquals( "", $oVarArticle->oxarticles__oxpic2->value ) ;
     }
 
     /**
@@ -6302,12 +6334,23 @@ class oxArticleTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSetLoadParentData()
+    public function testGetLoadParentDataDefault()
     {
-        $oArticle = $this->getProxyClass( "oxarticle" );
-        $oArticle->setLoadParentData( true );
+        $oArticle = new oxArticle();
+        $this->assertFalse($oArticle->getLoadParentData());
+    }
 
-        $this->assertTrue( $oArticle->getNonPublicVar( "_blLoadParentData" ) );
+    /**
+     * Test set load parent data.
+     *
+     * @return null
+     */
+    public function testGetSetLoadParentDataTrue()
+    {
+        $oArticle = new oxArticle();
+        $oArticle->setLoadParentData(true);
+
+        $this->assertTrue($oArticle->getLoadParentData());
     }
 
     /**
@@ -6584,6 +6627,14 @@ class oxArticleTest extends OxidTestCase
         $oA2C->oxobject2category__oxobjectid = new oxField( $testAid );
         $oA2C->oxobject2category__oxcatnid = new oxField( $testCatId );
         $oA2C->setId( $testAid );
+        $oA2C->save();
+
+        // assigning articles to category
+        $oA2C = new oxbase();
+        $oA2C->init( 'oxobject2category' );
+        $oA2C->oxobject2category__oxobjectid = new oxField( $testParentid );
+        $oA2C->oxobject2category__oxcatnid = new oxField( $testCatId );
+        $oA2C->setId( $testParentid );
         $oA2C->save();
 
         $this->assertEquals( array( $testCatId ), $oArticle->getCategoryIds( false, true) );
@@ -7274,4 +7325,84 @@ class oxArticleTest extends OxidTestCase
         $this->assertEquals( 39, $oArticle->getVariantsCount() );
     }
 
+    /**
+     * @return array
+     */
+    public function providerHasAgreement()
+    {
+        return array(
+            array(1, 1, true),
+            array(0, 1, false),
+            array(1, 0, false),
+            array(0, 0, false)
+        );
+    }
+
+    /**
+     * @param $iIsIntangible
+     * @param $iShowCustomAgreement
+     * @param $blResult
+     *
+     * @dataProvider providerHasAgreement
+     */
+    public function testHasIntangibleAgreement($iIsIntangible, $iShowCustomAgreement, $blResult)
+    {
+        $oProduct = $this->_getArticleWithCustomisedAgreement($iShowCustomAgreement);
+        $oProduct->oxarticles__oxnonmaterial = new oxField($iIsIntangible);
+
+        $this->assertSame($blResult, $oProduct->hasIntangibleAgreement());
+    }
+
+    /**
+     */
+    public function testHasIntangibleAgreementWithBothIntagibleAndDownloadableArticle()
+    {
+        $oProduct = $this->_getArticleWithCustomisedAgreement(true);
+        $oProduct->oxarticles__oxnonmaterial = new oxField(true);
+        $oProduct->oxarticles__oxisdownloadable = new oxField(true);
+
+        $this->assertSame(false, $oProduct->hasIntangibleAgreement());
+    }
+
+    /**
+     * @param $iIsDownloadable
+     * @param $iShowCustomAgreement
+     * @param $blResult
+     *
+     * @dataProvider providerHasAgreement
+     */
+    public function testHasDownloadableAgreement($iIsDownloadable, $iShowCustomAgreement, $blResult)
+    {
+        $oProduct = $this->_getArticleWithCustomisedAgreement($iShowCustomAgreement);
+        $oProduct->oxarticles__oxisdownloadable = new oxField($iIsDownloadable);
+
+        $this->assertSame($blResult, $oProduct->hasDownloadableAgreement());
+    }
+
+    /**
+     */
+    public function testHasDownloadableAgreementWithBothIntagibleAndDownloadableArticle()
+    {
+        $oProduct = $this->_getArticleWithCustomisedAgreement(true);
+        $oProduct->oxarticles__oxnonmaterial = new oxField(true);
+        $oProduct->oxarticles__oxisdownloadable = new oxField(true);
+
+        $this->assertSame(true, $oProduct->hasDownloadableAgreement());
+    }
+
+    /**
+     * Returns article with set custom agreement field.
+     *
+     * @param $iShowCustomAgreement
+     *
+     * @return oxArticle
+     */
+    private function _getArticleWithCustomisedAgreement($iShowCustomAgreement)
+    {
+        $oProduct = new oxArticle();
+        $oProduct->setId('_testArticle');
+        $oProduct->oxarticles__oxshowcustomagreement = new oxField($iShowCustomAgreement);
+
+        return $oProduct;
+    }
 }

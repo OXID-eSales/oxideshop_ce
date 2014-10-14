@@ -1,24 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   views
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 /**
@@ -387,6 +386,10 @@ class Details extends oxUBase
      */
     public function saveReview()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         if ( $this->canAcceptFormData() &&
              ( $oUser = $this->getUser() ) && ( $oProduct = $this->getProduct() ) ) {
 
@@ -428,6 +431,10 @@ class Details extends oxUBase
      */
     public function addToRecomm()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         if (!$this->getViewConfig()->getShowListmania()) {
             return;
         }
@@ -450,6 +457,10 @@ class Details extends oxUBase
      */
     public function addTags()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         $sTags  = $this->getConfig()->getRequestParameter('newTags', true );
         $sHighTag  = $this->getConfig()->getRequestParameter( 'highTags', true );
         if ( !$sTags && !$sHighTag) {
@@ -1017,7 +1028,7 @@ class Details extends oxUBase
      */
     public function getTag()
     {
-        return oxConfig::getParameter("searchtag", 1);
+        return oxConfig::getParameter("searchtag");
     }
 
     /**
@@ -1446,9 +1457,7 @@ class Details extends oxUBase
         $oCategory = $this->getActiveCategory();
 
         if ( $this->getListType() != 'search' &&  $oCategory && $oCategory instanceof oxCategory ) {
-            if ( $sDefaultSorting = $oCategory->getDefaultSorting() ) {
-                $sArticleTable = getViewName( 'oxarticles' );
-                $sSortBy  = $sArticleTable.'.'.$sDefaultSorting;
+            if ( $sSortBy = $oCategory->getDefaultSorting() ) {
                 $sSortDir = ( $oCategory->getDefaultSortingMode() ) ? "desc" : "asc";
                 $aSorting = array ( 'sortby' => $sSortBy, 'sortdir' => $sSortDir );
             }

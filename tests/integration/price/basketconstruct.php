@@ -231,9 +231,9 @@ class BasketConstruct
                     foreach ( $mxValue as $iId ) {
                         $aData = array(
                             'oxid' =>  $oDiscount->getId() . "_" . $iId,
-                                'oxdiscountid' => $oDiscount->getId(),
+                            'oxdiscountid' => $oDiscount->getId(),
                             'oxobjectid' => $iId,
-                                'oxtype' => $sKey
+                            'oxtype' => $sKey
                         );
                         $this->createObj2Obj( $aData, "oxobject2discount" );
                     }
@@ -478,7 +478,7 @@ class BasketConstruct
     {
         $this->_setDiscounts( $aDiscounts );
     }
-    
+
     /**
      * Create categories
      * @param array $aCategories of categories data
@@ -576,9 +576,15 @@ class BasketConstruct
                 $sField = "oxshops__" . $sKey;
                 $aParams[$sField] = $sValue;
             }
+
             $oShop = oxNew( "oxshop" );
             $oShop->assign( $aParams );
             $oShop->save();
+
+            $oConfig = new oxConfig();
+            $oConfig->setShopId( $oShop->getId() );
+            $oConfig->saveShopConfVar( 'aarr', 'aLanguages', array( 'de' => 'Deutch', 'en' => 'English' ) );
+
             $oShop->generateViews();
             if ( $aData[$i]['activeshop'] ) {
                 $iActiveShopId = $oShop->getId();

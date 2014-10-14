@@ -1,31 +1,29 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id: smartyfunctionoxmultilangTest.php 56456 2013-03-08 14:54:00Z tadas.rimkus $
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 require_once oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/function.oxmultilang.php';
 
-class smartyFunctionoxmultilangTest extends OxidTestCase
+class Unit_Maintenance_smartyFunctionOxMultiLangTest extends OxidTestCase
 {
 
     /**
@@ -35,8 +33,10 @@ class smartyFunctionoxmultilangTest extends OxidTestCase
      */
     public function provider() {
         return array (
-            array( 'FIRST_NAME', 'First name', 1),
-            array( 'FIRST_NAME', 'Vorname', 0)
+            array( 'FIRST_NAME', 'First name', 1, false),
+            array( 'FIRST_NAME', 'Vorname', 0, false),
+            array( 'GENERAL_SAVE', 'Save', 1, true),
+            array( 'GENERAL_SAVE', 'Speichern', 0, true),
         );
     }
 
@@ -45,10 +45,10 @@ class smartyFunctionoxmultilangTest extends OxidTestCase
      *
      * @dataProvider provider
      */
-    public function testSingleAssignment( $sIndent, $sTranslation, $iLang ) {
+    public function testSingleAssignment( $sIndent, $sTranslation, $iLang , $blAdmin ) {
         $oSmarty = new Smarty();
-
         $this->setLanguage( $iLang );
+        $this->setAdminMode( $blAdmin );
         $this->assertEquals( $sTranslation, smarty_function_oxmultilang( array( 'ident' => $sIndent ), $oSmarty ) );
     }
 
@@ -74,13 +74,11 @@ class smartyFunctionoxmultilangTest extends OxidTestCase
     public function testAssignmentPlusSuffix( $sIndent, $sTranslation, $iLang, $sSuffixIndent )
     {
         $oSmarty = new Smarty();
-
         $this->setLanguage( $iLang );
         $this->assertEquals( $sTranslation, smarty_function_oxmultilang( array( 'ident' => $sIndent, 'suffix' => $sSuffixIndent ), $oSmarty ) );
     }
 
     /**
-     *
      * Returns data with alternative translations for testAlternativeAssignments
      *
      * @return array
@@ -89,23 +87,11 @@ class smartyFunctionoxmultilangTest extends OxidTestCase
     {
         return array (
             array(
-                array( 'ident' => 'FIRST_NAME', 'suffix' => 'COLON' ),
-                'First name:', 1),
-            array(
-                array( 'ident' => 'FIRST_NAME_WRONG_NOALTERNATIVE', 'suffix' => 'COLON' ),
-                'FIRST_NAME_WRONG_NOALTERNATIVE:', 0),
-            array(
                 array( 'ident' => 'FIRST_NAME_WRONG_HAS_ALTERNATIVE', 'alternative' => 'Alternative translation', 'suffix' => '!' ),
                 'Alternative translation!', 1), // we can actually add any string at the end
             array(
                 array( 'ident' => 'FIRST_NAME_WRONG_HAS_ALTERNATIVE_NO_SUFFIX', 'alternative' => 'Vorname:'  ),
                 'Vorname:', 0),
-            array(
-                array( 'ident' => 'VAT_PLUS_PERCENT_AMOUNT', 'args' => '19'  ),
-                'plus VAT 19% Amount', 1),
-            array(
-                array( 'ident' => 'VAT_PLUS_PERCENT_AMOUNT', 'args' => 0  ),
-                'plus VAT 0% Amount', 1)
         );
     }
 
@@ -121,4 +107,95 @@ class smartyFunctionoxmultilangTest extends OxidTestCase
         $this->setLanguage( $iLang );
         $this->assertEquals( $sTranslation, smarty_function_oxmultilang( $aArgs, $oSmarty ) );
     }
+
+
+    /**
+     * testTranslateFrontend_isMissingTranslation data provider
+     *
+     * @return array
+     */
+    public function missingTranslationProviderFrontend()
+    {
+        return array (
+            array(
+                true,
+                array( 'ident' => 'MY_MISING_TRANSLATION' ),
+                'MY_MISING_TRANSLATION',
+            ),
+            array(
+                false,
+                array( 'ident' => 'MY_MISING_TRANSLATION' ),
+                'MY_MISING_TRANSLATION',
+            ),
+            array(
+                true,
+                array( 'ident' => 'MY_MISING_TRANSLATION', 'noerror' => true ),
+                'MY_MISING_TRANSLATION',
+            ),
+            array(
+                false,
+                array( 'ident' => 'MY_MISING_TRANSLATION', 'noerror' => true ),
+                'MY_MISING_TRANSLATION',
+            ),
+            array(
+                false,
+                array( 'ident' => 'MY_MISING_TRANSLATION', 'noerror' => false ),
+                'MY_MISING_TRANSLATION',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider missingTranslationProviderFrontend
+     */
+    public function testTranslateFrontend_isMissingTranslation( $isProductiveMode, $aArgs, $sTranslation)
+    {
+        $this->setAdminMode( false );
+        $oSmarty = new Smarty();
+
+        $this->setLanguage( 1 );
+
+        $oShop = $this->getConfig()->getActiveShop();
+        $oShop->oxshops__oxproductive = new oxField( $isProductiveMode );
+        $oShop->save();
+
+        $this->assertEquals( $sTranslation, smarty_function_oxmultilang( $aArgs, $oSmarty ) );
+    }
+
+    /**
+     * testTranslateAdmin_isMissingTranslation data provider
+     *
+     * @return array
+     */
+    public function missingTranslationProviderAdmin()
+    {
+        return array (
+            array(
+                array( 'ident' => 'MY_MISING_TRANSLATION' ),
+                'ERROR: Translation for MY_MISING_TRANSLATION not found!',
+            ),
+            array(
+                array( 'ident' => 'MY_MISING_TRANSLATION', 'noerror' => true ),
+                'MY_MISING_TRANSLATION',
+            ),
+            array(
+                array( 'ident' => 'MY_MISING_TRANSLATION', 'noerror' => false ),
+                'ERROR: Translation for MY_MISING_TRANSLATION not found!',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider missingTranslationProviderAdmin
+     */
+    public function testTranslateAdmin_isMissingTranslation( $aArgs, $sTranslation)
+    {
+        $oSmarty = new Smarty();
+
+        $this->setLanguage( 1 );
+        $this->setAdminMode( true );
+
+        $this->assertEquals( $sTranslation, smarty_function_oxmultilang( $aArgs, $oSmarty ) );
+    }
+
 }

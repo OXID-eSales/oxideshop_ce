@@ -1,25 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id$
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -201,14 +199,14 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testInit()
     {
-        $myConfig = oxConfig::getInstance();
-        $myConfig->setConfigParam( 'bl_perfCalcVatOnlyForBasketOrder', true );
+        $oConfig = oxConfig::getInstance();
+        $oConfig->setConfigParam( 'bl_perfCalcVatOnlyForBasketOrder', true );
 
         $oOrder = oxNew( "order" );
         $oOrder->init();
 
         //test reseting to false config var bl_perfCalcVatOnlyForBasketOrder
-        $this->assertEquals( false, $myConfig->getConfigParam('bl_perfCalcVatOnlyForBasketOrder') );
+        $this->assertEquals( false, $oConfig->getConfigParam('bl_perfCalcVatOnlyForBasketOrder') );
 
         //test template var
         $this->assertEquals("page/checkout/order.tpl", $oOrder->getTemplateName());
@@ -223,7 +221,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testInitForcesBasketRecalculation()
     {
-        $myConfig  = oxConfig::getInstance();
+        $oConfig  = oxConfig::getInstance();
         $mySession = oxSession::getInstance();
 
         $oBasket = $this->getMock('oxBasket', array('onUpdate'));
@@ -231,7 +229,7 @@ class Unit_Views_orderTest extends OxidTestCase
                      ->method('onUpdate');
 
         //basket name in session will be "basket"
-        $myConfig->setConfigParam( 'blMallSharedBasket', 1 );
+        $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
 
         //setting basket to session
         $mySession->setBasket( $oBasket );
@@ -249,11 +247,11 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testRenderWhenNoBasketExist()
     {
-        $myConfig  = oxConfig::getInstance();
+        $oConfig  = oxConfig::getInstance();
         $mySession = oxSession::getInstance();;
 
         //basket name in session will be "basket"
-        $myConfig->setConfigParam( 'blMallSharedBasket', 1 );
+        $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
 
         //no basket, no user
         $mySession->setBasket( null );
@@ -265,7 +263,7 @@ class Unit_Views_orderTest extends OxidTestCase
         try {
             $oOrder->render();
         } catch (Exception $e) {
-            $this->assertEquals( $myConfig->getShopHomeURL(), $e->getMessage() );
+            $this->assertEquals( $oConfig->getShopHomeURL(), $e->getMessage() );
         }
     }
 
@@ -329,11 +327,11 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testRenderWhenBasketIsEmpty()
     {
-        $myConfig  = oxConfig::getInstance();
+        $oConfig  = oxConfig::getInstance();
         $mySession = oxSession::getInstance();;
 
         //basket name in session will be "basket"
-        $myConfig->setConfigParam( 'blMallSharedBasket', 1 );
+        $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
 
         $oBasket = oxNew( 'oxBasket' );
         $mySession->setBasket( $oBasket );
@@ -345,7 +343,7 @@ class Unit_Views_orderTest extends OxidTestCase
         try {
             $oOrder->render();
         } catch (Exception $e) {
-            $this->assertEquals( $myConfig->getShopHomeURL(), $e->getMessage() );
+            $this->assertEquals( $oConfig->getShopHomeURL(), $e->getMessage() );
         }
     }
 
@@ -357,11 +355,11 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testRenderWhenPaymentIsEmpty()
     {
-        $myConfig  = oxConfig::getInstance();
+        $oConfig  = oxConfig::getInstance();
         $mySession = oxSession::getInstance();
 
         //basket name in session will be "basket"
-        $myConfig->setConfigParam( 'blMallSharedBasket', 1 );
+        $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
 
         $oBasket = $this->getProxyClass( "oxBasket" );
         $oBasket->setNonPublicVar( '_iProductsCnt', 5 );
@@ -375,7 +373,7 @@ class Unit_Views_orderTest extends OxidTestCase
         try {
             $oOrder->render();
         } catch (Exception $e) {
-            $this->assertEquals( $myConfig->getShopHomeURL().'&cl=payment', $e->getMessage() );
+            $this->assertEquals( $oConfig->getShopHomeURL().'&cl=payment', $e->getMessage() );
         }
     }
 
@@ -389,12 +387,12 @@ class Unit_Views_orderTest extends OxidTestCase
         oxAddClassModule( 'modOxUtilsObject_order', 'oxutilsobject' );
         oxAddClassModule( 'modOxPayment_order', 'oxpayment' );
 
-        $myConfig  = oxConfig::getInstance();
+        $oConfig  = oxConfig::getInstance();
         $mySession = oxSession::getInstance();
 
         //basket name in session will be "basket"
-        $myConfig->setConfigParam( 'blMallSharedBasket', 1 );
-        $myConfig->setConfigParam( 'iMinOrderPrice', false );
+        $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
+        $oConfig->setConfigParam( 'iMinOrderPrice', false );
 
         $oPrice = oxNew( 'oxPrice' );
         $oPrice->setPrice( 100, 19 );
@@ -416,8 +414,8 @@ class Unit_Views_orderTest extends OxidTestCase
         oxSession::setVar( 'ordrem', 'testRemark' );
 
         //setting some config data
-        $myConfig->setConfigParam( 'blConfirmAGB', '1' );
-        $myConfig->setConfigParam( 'blConfirmCustInfo', '1' );
+        $oConfig->setConfigParam( 'blConfirmAGB', '1' );
+        $oConfig->setConfigParam( 'blConfirmCustInfo', '1' );
 
         $oOrder = $this->getProxyClass("order");
 
@@ -445,19 +443,18 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testExecuteWithoutAGB()
     {
-        $myConfig  = oxConfig::getInstance();
-        $mySession = oxSession::getInstance();;
+        $oConfig  = oxConfig::getInstance();
 
-        $myConfig->setConfigParam( 'blConfirmAGB', 1 );
+        $oConfig->setConfigParam( 'blConfirmAGB', 1 );
         modConfig::setParameter( 'ord_agb', null );
 
-        $myConfig->setConfigParam( 'blConfirmCustInfo', 1 );
+        $oConfig->setConfigParam( 'blConfirmCustInfo', 1 );
         modConfig::setParameter( 'ord_custinfo', 1 );
 
         $oS = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
         $oS->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( true ) );
         $oO = $this->getMock('order', array('getSession'));
-        $oO->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oS ) );
+        $oO->expects( $this->any() )->method( 'getSession' )->will( $this->returnValue( $oS ) );
 
         $this->assertNull( $oO->execute() );
 
@@ -471,19 +468,18 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testExecuteWithoutCustInfo()
     {
-        $myConfig  = oxConfig::getInstance();
-        $mySession = oxSession::getInstance();;
+        $oConfig  = oxConfig::getInstance();
 
-        $myConfig->setConfigParam( 'blConfirmAGB', 1 );
+        $oConfig->setConfigParam( 'blConfirmAGB', 1 );
         modConfig::setParameter( 'ord_agb', 1 );
 
-        $myConfig->setConfigParam( 'blConfirmCustInfo', 1 );
+        $oConfig->setConfigParam( 'blConfirmCustInfo', 1 );
         // test new tpl, when option (ord_custinfo) was removed
         modConfig::setParameter( 'ord_custinfo', null );
         $oS = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
         $oS->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( true ) );
         $oOrder = $this->getMock('order', array('getSession'));
-        $oOrder->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oS ) );
+        $oOrder->expects( $this->any() )->method( 'getSession' )->will( $this->returnValue( $oS ) );
 
         $this->assertEquals( 'user', $oOrder->execute() );
         // test former tpl. If ord_custinfo is not confirmed
@@ -492,7 +488,7 @@ class Unit_Views_orderTest extends OxidTestCase
         $oS = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
         $oS->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( true ) );
         $oOrder = $this->getMock('order', array('getSession'));
-        $oOrder->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oS ) );
+        $oOrder->expects( $this->any() )->method( 'getSession' )->will( $this->returnValue( $oS ) );
 
         $this->assertNull( $oOrder->execute() );
         $this->assertEquals( 1, $oOrder->isConfirmCustInfoError() );
@@ -505,16 +501,16 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testExecute()
     {
-        $myConfig  = oxConfig::getInstance();
+        $oConfig  = oxConfig::getInstance();
 
         oxAddClassModule( 'modOxOrder_order', 'oxorder' );
 
         //basket name in session will be "basket"
-        $myConfig->setConfigParam( 'blMallSharedBasket', 1 );
+        $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
 
         //order rules checking
-        $myConfig->setConfigParam( 'blConfirmAGB', 0 );
-        $myConfig->setConfigParam( 'blConfirmCustInfo', 0 );
+        $oConfig->setConfigParam( 'blConfirmAGB', 0 );
+        $oConfig->setConfigParam( 'blConfirmCustInfo', 0 );
 
         //setting active user
         oxSession::setVar( 'usr', '_testUserId' );
@@ -554,15 +550,14 @@ class Unit_Views_orderTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{throw $aA[0];}');
 
-        $myConfig  = oxConfig::getInstance();
-        $mySession = oxSession::getInstance();;
+        $oConfig  = oxConfig::getInstance();
 
         //basket name in session will be "basket"
-        $myConfig->setConfigParam( 'blMallSharedBasket', 1 );
+        $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
 
         //order rules checking
-        $myConfig->setConfigParam( 'blConfirmAGB', 0 );
-        $myConfig->setConfigParam( 'blConfirmCustInfo', 0 );
+        $oConfig->setConfigParam( 'blConfirmAGB', 0 );
+        $oConfig->setConfigParam( 'blConfirmCustInfo', 0 );
 
         $oPrice = oxNew( 'oxPrice' );
         $oPrice->setPrice( 100, 19 );
@@ -582,7 +577,7 @@ class Unit_Views_orderTest extends OxidTestCase
         $oBasket->expects( $this->once() )->method( "getContents" )->will( $this->returnValue( array( 'xxx' => $oBasketItem ) ) );
 
         $oSession = $this->getMock( "oxsession", array( "getBasket", 'checkSessionChallenge' ) );
-        $oSession->expects( $this->once() )->method( "getBasket" )->will( $this->returnValue( $oBasket ) );
+        $oSession->expects( $this->any() )->method( "getBasket" )->will( $this->returnValue( $oBasket ) );
         $oSession->expects( $this->once() )->method( "checkSessionChallenge" )->will( $this->returnValue( true ) );
 
         $oUser = new oxUser();
@@ -612,16 +607,16 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testExecuteOnSuccessMarksUser()
     {
-        $myConfig  = oxConfig::getInstance();
+        $oConfig  = oxConfig::getInstance();
 
         oxAddClassModule( 'modOxOrder_order', 'oxorder' );
 
         //basket name in session will be "basket"
-        $myConfig->setConfigParam( 'blMallSharedBasket', 1 );
+        $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
 
         //order rules checking
-        $myConfig->setConfigParam( 'blConfirmAGB', 0 );
-        $myConfig->setConfigParam( 'blConfirmCustInfo', 0 );
+        $oConfig->setConfigParam( 'blConfirmAGB', 0 );
+        $oConfig->setConfigParam( 'blConfirmCustInfo', 0 );
 
         //setting basket info
         $oBasket = $this->getProxyClass( 'oxBasket' );
@@ -726,9 +721,9 @@ class Unit_Views_orderTest extends OxidTestCase
         oxTestModules::addFunction('oxpayment', 'isValidPayment', '{return true;}');
 
         //basket name in session will be "basket"
-        $myConfig = oxConfig::getInstance();
-        $myConfig->setConfigParam( 'blMallSharedBasket', 1 );
-        $myConfig->setConfigParam( 'iMinOrderPrice', false );
+        $oConfig = oxConfig::getInstance();
+        $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
+        $oConfig->setConfigParam( 'iMinOrderPrice', false );
 
         $oBasket = oxNew ('oxBasket');
         $oBasket->setPayment( 'oxidcashondel' );
@@ -897,15 +892,69 @@ class Unit_Views_orderTest extends OxidTestCase
         $oS = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
         $oS->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( true ) );
         $oOrder = $this->getMock('order', array('getSession'));
-        $oOrder->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oS ) );
+        $oOrder->expects( $this->any() )->method( 'getSession' )->will( $this->returnValue( $oS ) );
 
-        $myConfig  = oxConfig::getInstance();
+        $oConfig  = oxConfig::getInstance();
 
-        $myConfig->setConfigParam( 'blConfirmAGB', 1 );
+        $oConfig->setConfigParam( 'blConfirmAGB', 1 );
         modConfig::setParameter( 'ord_agb', null );
 
-        $myConfig->setConfigParam( 'blConfirmCustInfo', 1 );
+        $oConfig->setConfigParam( 'blConfirmCustInfo', 1 );
         modConfig::setParameter( 'ord_custinfo', 1 );
+        $oOrder->execute();
+        $this->assertEquals( 1, $oOrder->isConfirmAGBError() );
+    }
+
+    /**
+     * Test is confirm AGB error.
+     *
+     * @return null
+     */
+    public function testIsConfirmAGBErrorWhenBasketHasIntangibleProducts()
+    {
+        $oSession = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
+        $oSession->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( true ) );
+
+        $oBasket = $this->getMock('oxBasket', array('hasArticlesWithIntangibleAgreement'));
+        $oBasket->expects( $this->any() )->method( 'hasArticlesWithIntangibleAgreement' )->will( $this->returnValue( true ) );
+
+        $oOrder = $this->getMock('order', array('getSession', 'getBasket'));
+        $oOrder->expects( $this->any() )->method( 'getSession' )->will( $this->returnValue( $oSession ) );
+        $oOrder->expects( $this->any() )->method( 'getBasket' )->will( $this->returnValue( $oBasket ) );
+
+        $oConfig  = oxConfig::getInstance();
+
+        $oConfig->setConfigParam( 'blConfirmAGB', 0 );
+        $oConfig->setConfigParam( 'blEnableIntangibleProdAgreement', 1 );
+        modConfig::setParameter( 'oxdownloadableproductsagreement', null );
+
+        $oOrder->execute();
+        $this->assertEquals( 1, $oOrder->isConfirmAGBError() );
+    }
+
+    /**
+     * Test is confirm AGB error.
+     *
+     * @return null
+     */
+    public function testIsConfirmAGBErrorWhenBasketHasDownloadableProducts()
+    {
+        $oSession = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
+        $oSession->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( true ) );
+
+        $oBasket = $this->getMock('oxBasket', array('hasArticlesWithDownloadableAgreement'));
+        $oBasket->expects( $this->any() )->method( 'hasArticlesWithDownloadableAgreement' )->will( $this->returnValue( true ) );
+
+        $oOrder = $this->getMock('order', array('getSession', 'getBasket'));
+        $oOrder->expects( $this->any() )->method( 'getSession' )->will( $this->returnValue( $oSession ) );
+        $oOrder->expects( $this->any() )->method( 'getBasket' )->will( $this->returnValue( $oBasket ) );
+
+        $oConfig  = oxConfig::getInstance();
+
+        $oConfig->setConfigParam( 'blConfirmAGB', 0 );
+        $oConfig->setConfigParam( 'blEnableIntangibleProdAgreement', 1 );
+        modConfig::setParameter( 'oxdownloadableproductsagreement', null );
+
         $oOrder->execute();
         $this->assertEquals( 1, $oOrder->isConfirmAGBError() );
     }

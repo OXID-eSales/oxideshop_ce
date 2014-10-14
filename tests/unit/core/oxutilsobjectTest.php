@@ -1,25 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id$
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -81,9 +79,17 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
     {
         oxRemClassModule('modOxUtilsObject_oxUtilsObject');
 
+        $oConfigFile = new OxConfigFile( OX_BASE_PATH . "config.inc.php" );
+        OxRegistry::set( "OxConfigFile", $oConfigFile );
+
 
         $oArticle = new oxarticle();
         $oArticle->delete( 'testArticle' );
+
+        $sFilePath = $this->getTestFilePath();
+        if ( !empty( $sFilePath ) && file_exists( $sFilePath ) ) {
+            unlink( $sFilePath );
+        }
 
         parent::tearDown();
     }
@@ -104,7 +110,6 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
 
     public function testOxNew()
     {
-        $myConfig = oxConfig::getInstance();
         // 20070808-AS - check known classnames
         $oArticle = oxNew( 'oxarticle' );
         $oArticle = oxNew( 'oxarticle', array( 'aaa' => 'bbb' ) );
@@ -318,5 +323,83 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
     {
         $oSubj = $this->getProxyClass("oxUtilsObject");
         $this->assertContains("tmp", $oSubj->UNITgetCacheDir() );
+    }
+
+    public function testGetClassName_classExist_moduleClassReturn()
+    {
+        $sClassName = 'oxorder';
+        $sClassNameWhichExtends = $sClassNameExpect = 'oemodulenameoxorder';
+        $oUtilsObject = $this->_prepareFakeModule( $sClassName, $sClassNameWhichExtends );
+
+        $this->assertSame( $sClassNameExpect, $oUtilsObject->getClassName( $sClassName ) );
+    }
+
+    public function testGetClassName_classNotExist_originalClassReturn()
+    {
+        $sClassName = $sClassNameExpect = 'oxorder';
+        $sClassNameWhichExtends = 'oemodulenameoxorder_different2';
+        $oUtilsObject = $this->_prepareFakeModule( $sClassName, $sClassNameWhichExtends );
+
+        $this->assertSame( $sClassNameExpect, $oUtilsObject->getClassName( $sClassName ) );
+    }
+
+    public function testGetClassName_classNotExistDoDisableModuleOnError_originalClassReturn()
+    {
+        $this->_setConfigFileParam( 'blDoNotDisableModuleOnError', false );
+
+        $sClassName = $sClassNameExpect = 'oxorder';
+        $sClassNameWhichExtends = 'oemodulenameoxorder_different3';
+        $oUtilsObject = $this->_prepareFakeModule( $sClassName, $sClassNameWhichExtends );
+
+        $this->assertSame( $sClassNameExpect, $oUtilsObject->getClassName( $sClassName ) );
+    }
+
+    public function testGetClassName_classNotExistDoNotDisableModuleOnError_errorThrow()
+    {
+        $this->_setConfigFileParam( 'blDoNotDisableModuleOnError', true );
+
+        $sClassName = 'oxorder';
+        $sClassNameWhichExtends = 'oemodulenameoxorder_different4';
+        $oUtilsObject = $this->_prepareFakeModule( $sClassName, $sClassNameWhichExtends );
+
+        try {
+            $oUtilsObject->getClassName( $sClassName );
+        } catch( Exception $e ) {
+            $this->assertEquals( 'EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND', $e->getMessage(), 'Exception message wrong.' );
+            return;
+        }
+
+        $this->fail( 'Should throw exception as class does not exist and config parameter set to not disable module on error' );
+    }
+
+    private function _setConfigFileParam( $sParamName, $sParamValue )
+    {
+        $oConfigFile = new OxConfigFile( OX_BASE_PATH . "config.inc.php" );
+        $oConfigFile->$sParamName = $sParamValue;
+        OxRegistry::set( "OxConfigFile", $oConfigFile );
+    }
+
+    private function _prepareFakeModule( $sClassToExtend, $sClassNameWhichExtends )
+    {
+        $aModulesArray = array(
+            $sClassToExtend => $sClassNameWhichExtends,
+        );
+
+        $oUtilsObject = new oxUtilsObject();
+        $oUtilsObject->setModuleVar( 'aModules', $aModulesArray );
+
+        $sFilePath = $this->getTestFilePath();
+        file_put_contents( $sFilePath, '<?php class oemodulenameoxorder_different extends oemodulenameoxorder_parent {}' );
+
+        return $oUtilsObject;
+    }
+
+    /**
+     * Get path to test file.
+     * @return string
+     */
+    private function getTestFilePath()
+    {
+        return $this->getConfig()->getConfigParam('sShopDir') . 'modules/oemodulenameoxorder.php';
     }
 }

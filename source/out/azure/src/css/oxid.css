@@ -5312,4 +5312,15 @@ a.downloadableFile.pending {
 }
 .hidden {
     display: none;
+}#orderConfirmAgbBottom hr {
+    border: none;
+    background-color: #ECEFF0;
+    height: 5px;
+    margin: 10px 0;
+}
+.agbConfirmation {
+    margin-bottom: 5px;
+}
+.agbConfirmation .checkbox{
+    vertical-align: text-bottom;
 }

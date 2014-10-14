@@ -1,24 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 /**
@@ -91,27 +90,11 @@ class oxCurl
     protected $_aOptions = array('CURLOPT_RETURNTRANSFER' => 1);
 
     /**
-     * Sets resource
+     * Request HTTP status call code.
      *
-     * @param resource $rCurl curl.
+     * @var string | null
      */
-    protected function _setResource( $rCurl )
-    {
-        $this->_rCurl = $rCurl;
-        }
-
-    /**
-     * Returns curl resource
-     *
-     * @return resource
-     */
-    protected function _getResource()
-    {
-        if ( is_null( $this->_rCurl ) ) {
-            $this->_setResource( curl_init() );
-        }
-        return $this->_rCurl;
-    }
+    protected $_sStatusCode = null;
 
     /**
      * Sets url to call
@@ -143,18 +126,8 @@ class oxCurl
     /**
      * Set query like "param1=value1&param2=values2.."
      */
-    public function setQuery( $sQuery = null )
+    public function setQuery( $sQuery  )
     {
-        if ( is_null($sQuery) ) {
-            $sQuery = "";
-            if ($aParams = $this->getParameters()) {
-                $aParams = array_filter( $aParams );
-                $aParams = array_map(array($this, '_htmlDecode'), $aParams);
-
-                $sQuery = http_build_query( $aParams, "", "&" );
-            }
-        }
-
         $this->_sQuery = $sQuery;
     }
 
@@ -166,7 +139,12 @@ class oxCurl
     public function getQuery()
     {
         if ( is_null( $this->_sQuery ) ) {
-            $this->setQuery();
+            $sQuery = "";
+            if ( $aParams = $this->getParameters() ) {
+                $aParams = $this->_prepareQueryParameters( $aParams );
+                $sQuery = http_build_query( $aParams, "", "&" );
+            }
+            $this->setQuery($sQuery);
         }
 
         return $this->_sQuery;
@@ -179,6 +157,7 @@ class oxCurl
      */
     public function setParameters( $aParameters )
     {
+        $this->setQuery( null );
         $this->_aParameters = $aParameters;
     }
 
@@ -319,6 +298,8 @@ class oxCurl
         $this->_setOptions();
 
         $sResponse = $this->_execute();
+        $this->_saveStatusCode();
+
         $iCurlErrorNumber = $this->_getErrorNumber();
 
         $this->_close();
@@ -334,6 +315,59 @@ class oxCurl
         }
 
         return $sResponse;
+    }
+
+    /**
+     * Set connection charset
+     *
+     * @param string $sCharset charset
+     */
+    public function setConnectionCharset( $sCharset )
+    {
+        $this->_sConnectionCharset = $sCharset;
+    }
+
+    /**
+     * Return connection charset
+     *
+     * @return string
+     */
+    public function getConnectionCharset()
+    {
+        return $this->_sConnectionCharset;
+    }
+
+    /**
+     * Return HTTP status code.
+     *
+     * @return int HTTP status code.
+     */
+    public function getStatusCode()
+    {
+        return $this->_sStatusCode;
+    }
+
+    /**
+     * Sets resource
+     *
+     * @param resource $rCurl curl.
+     */
+    protected function _setResource( $rCurl )
+    {
+        $this->_rCurl = $rCurl;
+    }
+
+    /**
+     * Returns curl resource
+     *
+     * @return resource
+     */
+    protected function _getResource()
+    {
+        if ( is_null( $this->_rCurl ) ) {
+            $this->_setResource( curl_init() );
+        }
+        return $this->_rCurl;
     }
 
     /**
@@ -402,37 +436,43 @@ class oxCurl
     }
 
     /**
-     * Decode (if needed) html entity
-     *
-     * @param string $sString query
-     *
-     * @return string
+     * Sets current request HTTP status code.
      */
-    protected function _htmlDecode( $sString )
+    protected function _saveStatusCode()
     {
-        $sString = html_entity_decode( stripslashes( $sString ), ENT_QUOTES, $this->getConnectionCharset() );
-
-        return $sString;
+        $this->_sStatusCode = curl_getinfo($this->_getResource(), CURLINFO_HTTP_CODE);
     }
 
     /**
-     * Set connection charset
+     * Clears empty values from array and decodes html entities.
      *
-     * @param string $sCharset charset
+     * @param $aParams
+     * @return array
      */
-    public function setConnectionCharset( $sCharset )
+    protected function _prepareQueryParameters( $aParams )
     {
-        $this->_sConnectionCharset = $sCharset;
+        $aParams = array_filter( $aParams );
+        $aParams = array_map( array( $this, '_htmlDecode' ), $aParams );
+
+        return $aParams;
     }
 
     /**
-     * Return connection charset
+     * Decode (if needed) html entity.
+     *
+     * @param mixed $mParam query
      *
      * @return string
      */
-    public function getConnectionCharset()
+    protected function _htmlDecode( $mParam )
     {
-        return $this->_sConnectionCharset;
+        if ( is_array( $mParam ) ) {
+            $mParam = $this->_prepareQueryParameters( $mParam );
+        } else {
+            $mParam = html_entity_decode( stripslashes( $mParam ), ENT_QUOTES, $this->getConnectionCharset() );
+        }
+
+        return $mParam;
     }
 
 }

@@ -17,7 +17,7 @@
  *  2. Delivery + 
  *  3. TS -
  * Short description: 
- * Neto-Neto mode. Additiona products Neto-Neto. Testing trusted shop . If product total price is >2500ï¿½, then is used trusted shop with parameters:
+ * Neto-Neto mode. Additiona products Neto-Neto. Testing trusted shop . If product total price is >2500€, then is used trusted shop with parameters:
  * "netto" => "2.47", "amount" => "1500" ,. 
  */
 $aData = array(

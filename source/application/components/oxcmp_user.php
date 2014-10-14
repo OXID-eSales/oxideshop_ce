@@ -1,24 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   views
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 // defining login/logout states
@@ -81,6 +80,35 @@ class oxcmp_user extends oxView
                                         'oxwServiceMenu',
                                         );
     /**
+     * Active login value
+     *
+     * @var bool
+     */
+    protected $_blActiveLogin = false;
+
+    /**
+     * Sets active login value
+     *
+     * @param boolean $blActiveLogin active login value
+     *
+     * @return null
+     */
+    protected function _setActiveLogin( $blActiveLogin )
+    {
+        $this->_blActiveLogin = $blActiveLogin;
+    }
+
+    /**
+     * Returns active login value
+     *
+     * @return bool
+     */
+    protected function _getActiveLogin()
+    {
+        return $this->_blActiveLogin;
+    }
+
+    /**
      * Sets oxcmp_oxuser::blIsComponent = true, fetches user error
      * code and sets it to default - 0. Executes parent::init().
      *
@@ -107,6 +135,12 @@ class oxcmp_user extends oxView
             $this->setRecipient();
         }
 
+        // dyn_group feature: if you specify a groupid in URL the user
+        // will automatically be added to this group later
+        if ( $sDynGoup = oxConfig::getParameter( 'dgr' ) ) {
+            oxSession::setVar( 'dgr', $sDynGoup );
+        }
+
         parent::init();
     }
 
@@ -125,12 +159,6 @@ class oxcmp_user extends oxView
         $this->_checkPsState();
 
         parent::render();
-
-        // dyn_group feature: if you specify a groupid in URL the user
-        // will automatically be added to this group later
-        if ( $sDynGoup = oxConfig::getParameter( 'dgr' ) ) {
-            oxSession::setVar( 'dgr', $sDynGoup );
-        }
 
         return $this->getUser();
     }
@@ -443,6 +471,7 @@ class oxcmp_user extends oxView
     public function createUser()
     {
         $blActiveLogin = $this->getParent()->isEnabledPrivateSales();
+        $this->_setActiveLogin( $blActiveLogin );
 
         $myConfig = $this->getConfig();
         if ( $blActiveLogin && !oxConfig::getParameter( 'ord_agb' ) && $myConfig->getConfigParam( 'blConfirmAGB' ) ) {
@@ -522,35 +551,21 @@ class oxcmp_user extends oxView
             return false;
         }
 
-        if ( !$blActiveLogin ) {
-
-                oxSession::setVar( 'usr', $oUser->getId() );
-                $this->_afterLogin( $oUser );
-
-
-            // order remark
-            //V #427: order remark for new users
-            $sOrderRemark = oxConfig::getParameter( 'order_remark', true );
-            if ( $sOrderRemark ) {
-                oxSession::setVar( 'ordrem', $sOrderRemark );
-            }
-        }
+        $this->_setOrderRemark( $oUser );
 
         // send register eMail
         //TODO: move into user
-        if ( (int) oxConfig::getParameter( 'option' ) == 3 ) {
-            $oxEMail = oxNew( 'oxemail' );
-            if ( $blActiveLogin ) {
-                $oxEMail->sendRegisterConfirmEmail( $oUser );
-            } else {
-                $oxEMail->sendRegisterEmail( $oUser );
-            }
-        }
+        $this->_sendRegistrationEmail( $oUser );
 
         // new registered
         $this->_blIsNewUser = true;
 
-        return 'payment';
+        $sAction = 'payment?new_user=1&success=1';
+        if ($this->_blNewsSubscriptionStatus !== null && !$this->_blNewsSubscriptionStatus) {
+            $sAction = 'payment?new_user=1&success=1&newslettererror=4';
+        }
+
+        return $sAction;
     }
 
     /**
@@ -752,6 +767,51 @@ class oxcmp_user extends oxView
         $sRe = oxSession::getVar( 're' );
         if ( !$sRe && ( $sReNew = oxConfig::getParameter( 're' ) ) ) {
             oxSession::setVar( 're', $sReNew );
+        }
+    }
+
+    /**
+     * Sets order remark session variable if active login is true
+     *
+     * @param object $oUser user object
+     *
+     * @return null
+     */
+    public function _setOrderRemark( $oUser )
+    {
+        $blActiveLogin = $this->_getActiveLogin();
+        if ( !$blActiveLogin ) {
+
+            oxRegistry::getSession()->setVariable( 'usr', $oUser->getId() );
+            $this->_afterLogin( $oUser );
+
+
+            // order remark
+            //V #427: order remark for new users
+            $sOrderRemark = oxRegistry::getConfig()->getRequestParameter( 'order_remark', true );
+            if ( $sOrderRemark ) {
+                oxRegistry::getSession()->setVariable( 'ordrem', $sOrderRemark );
+            }
+        }
+    }
+
+    /**
+     * Sends registration email if option parameter is set to 3
+     *
+     * @param object $oUser user object
+     *
+     * @return false
+     */
+    public function _sendRegistrationEmail( $oUser )
+    {
+        $blActiveLogin = $this->_getActiveLogin();
+        if ( (int) oxRegistry::getConfig()->getRequestParameter( 'option' ) == 3 ) {
+            $oxEMail = oxNew( 'oxemail' );
+            if ( $blActiveLogin ) {
+                $oxEMail->sendRegisterConfirmEmail( $oUser );
+            } else {
+                $oxEMail->sendRegisterEmail( $oUser );
+            }
         }
     }
 }

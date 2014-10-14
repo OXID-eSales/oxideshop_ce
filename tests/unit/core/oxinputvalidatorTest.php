@@ -1,24 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -367,12 +366,12 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     {
         $oUser = oxNew( "oxUser" );
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError', '_getVatIdValidator'));
         $oValidator->expects($this->never())->method('_addValidationError');
 
-        $aHome = oxConfig::getInstance()->getConfigParam( 'aHomeCountry' );
 
-        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => $aHome[0]) );
+        $aHome = $this->getConfig()->getConfigParam( 'aHomeCountry' );
+        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 'DE123', 'oxuser__oxcountryid' => $aHome[0]) );
     }
 
     /**
@@ -434,6 +433,22 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $sForeignCountryId = "a7c40f6320aeb2ec2.72885259"; //Austria
 
         $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 'AT123', 'oxuser__oxcountryid' => $sForeignCountryId ) );
+    }
+
+    /**
+     * Greece has different VAT identification number, test checks this exception.
+     * Test for bug #4212
+     */
+    public function testCheckVatId_ExceptionForGreece()
+    {
+        $oUser = oxNew( 'oxUser' );
+
+        $oValidator = $this->getMock( 'oxinputvalidator', array( '_addValidationError' ) );
+        $oValidator->expects( $this->never() )->method( '_addValidationError' );
+
+        $sCountryId = 'a7c40f633114e8fc6.25257477'; //Greece
+
+        $oValidator->checkVatId( $oUser, array( 'oxuser__oxustid' => 'EL123', 'oxuser__oxcountryid' => $sCountryId ) );
     }
 
 

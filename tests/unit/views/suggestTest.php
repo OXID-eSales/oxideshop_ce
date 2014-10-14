@@ -1,25 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id$
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -103,8 +101,10 @@ class Unit_Views_suggestTest extends OxidTestCase
     public function testGetSuggestData()
     {
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
-        modConfig::setParameter( 'editval', array( 'name'=>'test', 'value'=>'testvalue' ) );
-        $oSuggest = $this->getProxyClass( "suggest" );
+        modConfig::setParameter('editval', array('name' => 'test', 'value' => 'testvalue'));
+
+        /** @var Suggest $oSuggest */
+        $oSuggest = $this->getProxyClass("suggest");
         $oSuggest->send();
         $oParam = $oSuggest->getSuggestData();
 
@@ -114,9 +114,11 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testSendSuggestWithoutCaptcha()
     {
-        modConfig::setParameter( 'editval', array( 'name'=>'test', 'value'=>'testvalue' ) );
-        $oSuggest = $this->getProxyClass( "suggest" );
-        $this->assertFalse( $oSuggest->send() );
+        modConfig::setParameter('editval', array('name' => 'test', 'value' => 'testvalue'));
+
+        /** @var Suggest $oSuggest */
+        $oSuggest = $this->getProxyClass("suggest");
+        $this->assertFalse($oSuggest->send());
     }
 
     public function testGetLink()
@@ -168,7 +170,10 @@ class Unit_Views_suggestTest extends OxidTestCase
     public function testSendNoEditval()
     {
         modConfig::setParameter('editval', null);
-        $this->assertSame(null, oxnew('suggest')->send());
+
+        /** @var Suggest $oSuggest */
+        $oSuggest = oxnew('Suggest');
+        $this->assertSame(null, $oSuggest->send());
     }
 
     public function testSendPass()
@@ -204,11 +209,11 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oSuggest->expects( $this->once() )->method( 'getProduct')->will($this->returnValue( $oProduct ) );
         $oSuggest->expects( $this->once() )->method( 'getCaptcha')->will($this->returnValue( $oCaptcha ) );
 
-        modConfig::setParameter( 'searchparam', "searchparam&&A" );
-        modConfig::setParameter( 'searchcnid', "searchcnid&&A" );
-        modConfig::setParameter( 'searchvendor', "searchvendor&&A" );
-        modConfig::setParameter( 'searchmanufacturer', "searchmanufacturer&&A" );
-        modConfig::setParameter( 'listtype', "listtype&&A" );
+        modConfig::setParameter('searchparam', "searchparam&&A");
+        modConfig::setParameter('searchcnid', "searchcnid&&A");
+        modConfig::setParameter('searchvendor', "searchvendor&&A");
+        modConfig::setParameter('searchmanufacturer', "searchmanufacturer&&A");
+        modConfig::setParameter('listtype', "listtype&&A");
 
         $sExpected = 'details?anid=XProduct&searchparam=searchparam%26%26A&searchcnid=searchcnid&amp;&amp;A&searchvendor=searchvendor&amp;&amp;A&searchmanufacturer=searchmanufacturer&amp;&amp;A&listtype=listtype&amp;&amp;A';
         $this->assertEquals( $sExpected ,$oSuggest->send() );

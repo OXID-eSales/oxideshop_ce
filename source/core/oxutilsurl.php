@@ -1,25 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id: oxutils.php 23456 2009-10-21 14:49:35Z sarunas $
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 /**
@@ -228,25 +226,30 @@ class oxUtilsUrl extends oxSuperCfg
      */
     public function processUrl( $sUrl, $blFinalUrl = true, $aParams = null, $iLang = null )
     {
-        $aAddParams = $this->getAddUrlParams();
-        if ( is_array($aParams) && count( $aParams ) ) {
-            $aAddParams = array_merge( $aAddParams, $aParams );
-        }
+        $aParams = is_array($aParams)? $aParams : array();
 
-        $ret = oxRegistry::getSession()->processUrl(
-            oxRegistry::getLang()->processUrl(
-                $this->appendUrl(
+        $sUrlHost = @parse_url($sUrl, PHP_URL_HOST);
+        $sShopHost = @parse_url($this->getConfig()->getShopUrl(), PHP_URL_HOST);
+        $isCurrentShop = is_null($sUrlHost) || $sShopHost == $sUrlHost;
+
+        if ( $isCurrentShop ) {
+            $aParams = array_merge($this->getAddUrlParams(), $aParams);
+        }
+        $sUrl = $this->appendUrl( $sUrl, $aParams );
+
+        if ( $isCurrentShop ) {
+            $sUrl = oxRegistry::getSession()->processUrl(
+                oxRegistry::getLang()->processUrl(
                     $sUrl,
-                    $aAddParams
-                ),
-                $iLang
-            )
-        );
+                    $iLang
+                )
+            );
+        }
 
         if ($blFinalUrl) {
-            $ret = getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $ret);
+            $sUrl = getStr()->preg_replace('/(\?|&(amp;)?)+$/', '', $sUrl);
         }
-        return $ret;
+        return $sUrl;
     }
 
     /**

@@ -1,30 +1,27 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id: actionslistTest.php 25334 2010-01-22 07:14:37Z alfonsas $
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once getShopBasePath().'/admin/oxajax.php';
 
 /**
  * Tests for ajaxListComponent class
@@ -322,7 +319,12 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetFilter()
     {
-        modConfig::setParameter( 'aFilter', array( "_0" => "a", "_1" => "b", "_2" => "" ) );
+        modConfig::setParameter('aFilter', array(
+            "_0" => "a",
+            "_1" => "b",
+            "_2" => "",
+            "_3" => "0"
+        ));
 
         $aColNames = array(         // field , table,         visible, multilanguage, ident
                             array( 'oxartnum', 'oxarticles', 1, 0, 0 ),
@@ -334,7 +336,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
                             array( 'oxid',     'oxarticles', 0, 0, 1 )
                     );
         $sTableName = getViewName( "oxarticles" );
-        $sQ = "$sTableName.oxartnum like 'a%'  and $sTableName.oxtitle like 'b%' ";
+        $sQ = "$sTableName.oxartnum like 'a%'  and $sTableName.oxtitle like 'b%'  and $sTableName.oxmpn like '0%' ";
 
         $oConfig = $this->getMock( "oxConfig", array( "isUtf" ) );
         $oConfig->expects( $this->any() )->method( 'isUtf' )->will( $this->returnValue( false ) );

@@ -16,9 +16,8 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 /**
@@ -37,7 +36,7 @@ class oxSimpleXml
     protected function _addSimpleXmlElement($oXml, $oInput)
     {
         if (is_object( $oInput )) {
-        $aObjectVars = get_object_vars( $oInput );
+            $aObjectVars = get_object_vars( $oInput );
         } elseif (is_array($oInput) ) {
             $aObjectVars = $oInput;
         } else {
@@ -56,8 +55,8 @@ class oxSimpleXml
                         $oChildNode = $oXml->addChild($sKey);
                         $this->_addSimpleXmlElement($oChildNode, $oSubValue);
                     } else {
-                    $oXml->addChild($sKey, $oSubValue);
-                }
+                        $oXml->addChild($sKey, $oSubValue);
+                    }
                 }
             } else {
                 //assume $oVar is string

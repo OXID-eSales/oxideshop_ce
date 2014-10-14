@@ -1,24 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   admin
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 /**
@@ -44,7 +43,8 @@ class Login extends oxAdminView
      * @return string
      */
     public function render()
-    {   $myConfig = $this->getConfig();
+    {
+        $oConfig = $this->getConfig();
 
         //resets user once on this screen.
         $oUser = oxNew( "oxuser" );
@@ -52,21 +52,21 @@ class Login extends oxAdminView
 
         oxView::render();
 
-        //if( $myConfig->blDemoMode)
+        //if( $oConfig->blDemoMode)
         $oBaseShop = oxNew( "oxshop" );
 
-        $oBaseShop->load( $myConfig->getBaseShopId());
+        $oBaseShop->load( $oConfig->getBaseShopId());
             $sVersion = $oBaseShop->oxshops__oxversion->value;
 
         $this->getViewConfig()->setViewConfigParam( 'sShopVersion', $sVersion );
 
-        if ( $myConfig->isDemoShop() ) {
+        if ( $oConfig->isDemoShop() ) {
             // demo
             $this->addTplParam( "user", "admin");
             $this->addTplParam( "pwd", "admin");
         }
         //#533 user profile
-        $this->addTplParam( "profiles", oxRegistry::getUtils()->loadAdminProfile( $myConfig->getConfigParam( 'aInterfaceProfiles' ) ) );
+        $this->addTplParam( "profiles", oxRegistry::getUtils()->loadAdminProfile( $oConfig->getConfigParam( 'aInterfaceProfiles' ) ) );
 
         $aLanguages = $this->_getAvailableLanguages();
         $this->addTplParam( "aLanguages", $aLanguages );
@@ -179,6 +179,7 @@ class Login extends oxAdminView
     {
         return strtolower( get_class( $this ) );
     }
+
 
     /**
      * Get available admin interface languages

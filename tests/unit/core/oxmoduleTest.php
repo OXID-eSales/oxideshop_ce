@@ -1,25 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id: oxcaptchaTest.php 26841 2010-03-25 13:58:15Z arvydas $
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -52,7 +50,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::load() test case
+     * oxModule::load() test case
      *
      * @return null
      */
@@ -73,11 +71,11 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
             $oModule = $this->getProxyClass( 'oxmodule' );
             $this->assertTrue( $oModule->load( 'oe/invoicepdf' ) );
-            $this->assertEquals( $oModule->getNonPublicVar( "_aModule" ), $aModule );
+            $this->assertEquals( $aModule, $oModule->getNonPublicVar( "_aModule" ) );
     }
 
     /**
-     * oxmodule::load() test case, no extend
+     * oxModule::load() test case, no extend
      *
      * @return null
      */
@@ -101,7 +99,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::load() test case
+     * oxModule::load() test case
      *
      * @return null
      */
@@ -112,7 +110,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::load() test legacy modules loading from "aLegacyModules" config option
+     * oxModule::load() test legacy modules loading from "aLegacyModules" config option
      *
      * @return null
      */
@@ -131,18 +129,18 @@ class Unit_Core_oxModuleTest extends OxidTestCase
                 'extend'       => array ('oxnews' => 'testModule/testModuleClass')
             );
 
-            modConfig::getInstance()->setConfigParam("aLegacyModules", $aLegacyModules);
+            $this->getConfig()->setConfigParam("aLegacyModules", $aLegacyModules);
 
             $oModule = $this->getProxyClass( 'oxmodule' );
             $this->assertTrue( $oModule->load( 'functions.php' ) );
             $this->assertTrue( $oModule->isLegacy() );
             $this->assertTrue( $oModule->isRegistered() );
 
-            $this->assertEquals( $oModule->getNonPublicVar( "_aModule" ), $aModule );
+            $this->assertEquals( $aModule, $oModule->getNonPublicVar( "_aModule" ) );
     }
 
     /**
-     * oxmodule::load() test legacy modules load - module info is not in config
+     * oxModule::load() test legacy modules load - module info is not in config
      *
      * @return null
      */
@@ -160,11 +158,11 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             $this->assertTrue( $oModule->isLegacy() );
             $this->assertFalse( $oModule->isRegistered() );
 
-            $this->assertEquals( $oModule->getNonPublicVar( "_aModule" ), $aModule );
+            $this->assertEquals( $aModule, $oModule->getNonPublicVar( "_aModule" ) );
     }
 
     /**
-     * oxmodule::load() testing loading module from standalone file (not a directory)
+     * oxModule::load() testing loading module from standalone file (not a directory)
      *
      * @return null
      */
@@ -187,7 +185,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::loadByDir()
+     * oxModule::loadByDir()
      *
      * @return null
      */
@@ -205,7 +203,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::getInfo() test case
+     * oxModule::getInfo() test case
      *
      * @return null
      */
@@ -224,7 +222,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::getInfo() test case - selecting multilanguage value
+     * oxModule::getInfo() test case - selecting multi language value
      *
      * @return null
      */
@@ -247,14 +245,14 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::isActive() test case, empty
+     * oxModule::isActive() test case, empty
      *
      * @return null
      */
     public function testIsActiveEmpty()
     {
         $aModules = array();
-        modConfig::getInstance()->setConfigParam( "aModules", $aModules );
+        $this->getConfig()->setConfigParam( "aModules", $aModules );
 
         $oModule = $this->getProxyClass('oxmodule');
         $aExtend = array('extend' => array());
@@ -264,14 +262,14 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::isActive() test case, active
+     * oxModule::isActive() test case, active
      *
      * @return null
      */
     public function testIsActiveActive()
     {
         $aModules = array('oxtest' => 'test/mytest');
-        modConfig::getInstance()->setConfigParam( "aModules", $aModules );
+        $this->getConfig()->setConfigParam( "aModules", $aModules );
 
         $oModule = $this->getProxyClass('oxmodule');
         $aExtend  = array('id' => 'test', 'extend' => array('oxtest' => 'test/mytest'));
@@ -281,14 +279,14 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::isActive() test case, active in chain
+     * oxModule::isActive() test case, active in chain
      *
      * @return null
      */
     public function testIsActiveActiveChain()
     {
         $aModules = array('oxtest' => 'test/mytest&test2/mytest2');
-        modConfig::getInstance()->setConfigParam( "aModules", $aModules );
+        $this->getConfig()->setConfigParam( "aModules", $aModules );
 
         $oModule = $this->getProxyClass('oxmodule');
         $aExtend  = array('extend' => array('oxtest' => 'test/mytest'), 'id' => 'test');
@@ -297,7 +295,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertTrue($oModule->isActive());
     }
     /**
-     * oxmodule::isActive() test case, inactive
+     * oxModule::isActive() test case, inactive
      *
      * @return null
      */
@@ -311,14 +309,14 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::isActive() test case, inactive in chain
+     * oxModule::isActive() test case, inactive in chain
      *
      * @return null
      */
     public function testIsActiveInactiveChain()
     {
         $aModules = array('oxtest' => 'test1/mytest1&test2/mytest2');
-        modConfig::getInstance()->setConfigParam( "aModules", $aModules );
+        $this->getConfig()->setConfigParam( "aModules", $aModules );
 
         $oModule = $this->getProxyClass('oxmodule');
         $aExtend  = array('extend' => array('oxtest' => 'test/mytest'), 'id' => 'test');
@@ -328,14 +326,14 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::isActive() test case, deactivated
+     * oxModule::isActive() test case, deactivated
      *
      * @return null
      */
     public function testIsActiveDeactivated()
     {
         $aDisabledModules = array('test');
-        modConfig::getInstance()->setConfigParam( "aDisabledModules", $aDisabledModules );
+        $this->getConfig()->setConfigParam( "aDisabledModules", $aDisabledModules );
 
         $oModule = $this->getProxyClass('oxmodule');
         $aModule  = array('id' => 'test');
@@ -345,14 +343,14 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::isActive() test case, not deactivated in chain
+     * oxModule::isActive() test case, not deactivated in chain
      *
      * @return null
      */
     public function testIsActiveDeactivatedChain()
     {
         $aDisabledModules = array('mytest1', 'test', 'test2');
-        modConfig::getInstance()->setConfigParam( "aDisabledModules", $aDisabledModules );
+        $this->getConfig()->setConfigParam( "aDisabledModules", $aDisabledModules );
 
         $oModule = $this->getProxyClass('oxmodule');
         $aModule  = array('id' => 'test');
@@ -362,7 +360,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::isActive() test case, active
+     * oxModule::isActive() test case, active
      *
      * @return null
      */
@@ -375,8 +373,100 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertFalse($oModule->isActive());
     }
 
+    public function providerIsActive_shopClassExtendedByMoreThanOneClass()
+    {
+        return array(
+            // Module active
+            array(
+                array(
+                    'oxtest1' =>  array(
+                        'module1/module1mytest0',
+                        'test1/__testmytest1',
+                        'test1/__testmytest2'
+                    )
+                ),
+                array(
+                'id' => '__test',
+                'extend' => array(
+                    'oxtest1' => array(
+                        'test1/__testmytest1', 'test1/__testmytest2'
+                    )
+                )
+            ),
+                true
+            ),
+            // Module inactive, because one of extensions missing in activated extensions array
+            array(
+                array(
+                    'oxtest1' =>  array(
+                        'module1/module1mytest0',
+                        'test1/__testmytest1',
+                        'test1/__testmytest2'
+                    )
+                ),
+                array(
+                    'id' => '__test',
+                    'extend' => array(
+                        'oxtest1' => array(
+                            'test1/__testmytest1',
+                            'test1/__testmytest2',
+                            'test1/__testmytest3'
+                        )
+                    )
+                ),
+                false
+            ),
+            // Module inactive, because there is no extension in activated extensions array
+            array(
+                array(
+                    'oxtest1' =>  array(
+                        'module1/module1mytest0',
+                    )
+                ),
+                array(
+                'id' => '__test',
+                'extend' => array(
+                    'oxtest1' => array(
+                        'test1/__testmytest1', 'test1/__testmytest2'
+                    )
+                )
+            ),
+                false
+            ),
+        );
+    }
+
     /**
-     * oxmodule::isExtended() test case,
+     * Test for bug #4424
+     * Checks if possible to extend one shop class with more than one module classes.
+     *
+     * @dataProvider providerIsActive_shopClassExtendedByMoreThanOneClass
+     */
+    public function testIsActive_shopClassExtendedByMoreThanOneClass( $aAlreadyActivatedModule, $aModuleToActivate, $blResult )
+    {
+        $oModuleHandler = $this->getMock( 'oxModule', array( 'getAllModules' ) );
+        $oModuleHandler->expects( $this->once() )->method( 'getAllModules')->will( $this->returnValue( $aAlreadyActivatedModule ) );
+        $oModuleHandler->setModuleData( $aModuleToActivate );
+
+        $this->assertSame( $blResult, $oModuleHandler->isActive(), 'Module extends shop class, so methods should return true.' );
+    }
+
+    /**
+     * Test for bug #5656
+     * Checks if call order of protected methods is correct
+     *
+     */
+    public function testDeactivate_eventCalledBeforeDeactivating()
+    {
+        $oModuleHandler = $this->getMock('oxModule', array('_addToDisabledList', '_callEvent'));
+        $oModuleHandler->expects($this->at(0))->method('_callEvent')->with();
+        $oModuleHandler->expects($this->at(1))->method('_addToDisabledList')->with();
+
+        $oModuleHandler->deactivate('test');
+    }
+
+    /**
+     * oxModule::isExtended() test case,
      *
      * @return null
      */
@@ -391,7 +481,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::isExtended() test case,
+     * oxModule::isExtended() test case,
      *
      * @return null
      */
@@ -406,7 +496,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::isExtended() test case,no metadata
+     * oxModule::isExtended() test case,no metadata
      *
      * @return null
      */
@@ -421,11 +511,11 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::isExtended() test case, no metadata
+     * oxModule::isExtended() test case, no metadata
      *
      * @return null
      */
-    public function testIsExtendedYeNoMeadatas()
+    public function testIsExtendedYesNoMetadata()
     {
         $oModule = $this->getProxyClass('oxmodule');
         $aExtend  = array('extend' => array('oxtest1' => 'test1/mytest1',));
@@ -469,30 +559,30 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::activate() test case, empty array
+     * oxModule::activate() test case, empty array
      *
      * @return null
      */
     public function testActivate()
     {
         $aModulesBefore = array();
-        $aModulesAfter  = array('oxtest' => 'testdir/mytest');
+        $aModulesAfter  = array( 'oxtest' => 'testdir/mytest' );
 
-        $oModule = $this->getProxyClass('oxmodule');
-        $aExtend  = array('extend' => array('oxtest' => 'testdir/mytest'), 'id' => 'test', 'dir' => 'testdir');
+        $oModule = $this->getProxyClass( 'oxmodule' );
+        $aExtend  = array( 'extend' => array( 'oxtest' => 'testdir/mytest' ), 'id' => 'test', 'dir' => 'testdir' );
         $oModule->setNonPublicVar( "_aModule", $aExtend );
 
         //odConfig::getInstance()->setConfigParam( "aModules", $aModulesBefore );
         oxRegistry::getConfig()->setConfigParam( "aModules", $aModulesBefore );
 
-        $this->assertEquals($aModulesBefore, modConfig::getInstance()->getConfigParam("aModules") );
+        $this->assertEquals( $aModulesBefore, $this->getConfig()->getConfigParam( "aModules" ) );
 
-        $this->assertTrue($oModule->activate());
-        $this->assertEquals($aModulesAfter, modConfig::getInstance()->getConfigParam("aModules") );
+        $this->assertTrue( $oModule->activate() );
+        $this->assertEquals( $aModulesAfter, $this->getConfig()->getConfigParam( "aModules" ) );
     }
 
     /**
-     * oxmodule::activate() test case, already activated
+     * oxModule::activate() test case, already activated
      *
      * @return null
      */
@@ -507,21 +597,19 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $aExtend = array('extend' => array('oxtest' => 'test/mytest'), 'id' => 'test');
         $oModule->setNonPublicVar( "_aModule", $aExtend );
 
-        //modConfig::getInstance()->setConfigParam( "aModules", $aModulesBefore );
-        //modConfig::getInstance()->setConfigParam( "aDisabledModules", $aDisabledModulesBefore );
         oxRegistry::getConfig()->setConfigParam( "aModules", $aModulesBefore);
         oxRegistry::getConfig()->setConfigParam( "aDisabledModules", $aDisabledModulesBefore );
 
-        $this->assertEquals($aModulesBefore, modConfig::getInstance()->getConfigParam("aModules") );
-        $this->assertEquals($aDisabledModulesBefore, modConfig::getInstance()->getConfigParam("aDisabledModules") );
+        $this->assertEquals($aModulesBefore, $this->getConfig()->getConfigParam("aModules") );
+        $this->assertEquals($aDisabledModulesBefore, $this->getConfig()->getConfigParam("aDisabledModules") );
 
         $this->assertTrue($oModule->activate());
-        $this->assertEquals($aModulesAfter, modConfig::getInstance()->getConfigParam("aModules") );
-        $this->assertEquals($aDisabledModulesAfter, modConfig::getInstance()->getConfigParam("aDisabledModules") );
+        $this->assertEquals($aModulesAfter, $this->getConfig()->getConfigParam("aModules") );
+        $this->assertEquals($aDisabledModulesAfter, $this->getConfig()->getConfigParam("aDisabledModules") );
     }
 
     /**
-     * oxmodule::activate() test case, append to chain
+     * oxModule::activate() test case, append to chain
      *
      * @return null
      */
@@ -534,12 +622,11 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $aExtend  = array('extend' => array('oxtest' => 'test1/mytest1'));
         $oModule->setNonPublicVar( "_aModule", $aExtend );
 
-        //modConfig::getInstance()->setConfigParam( "aModules", $aModulesBefore );
         oxRegistry::getConfig()->setConfigParam("aModules", $aModulesBefore);
-        $this->assertEquals($aModulesBefore, modConfig::getInstance()->getConfigParam("aModules") );
+        $this->assertEquals($aModulesBefore, $this->getConfig()->getConfigParam("aModules") );
 
         $this->assertTrue($oModule->activate());
-        $this->assertEquals($aModulesAfter, modConfig::getInstance()->getConfigParam("aModules") );
+        $this->assertEquals($aModulesAfter, $this->getConfig()->getConfigParam("aModules") );
     }
 
     /**
@@ -577,7 +664,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::deactivate() test case, empty array
+     * oxModule::deactivate() test case, empty array
      *
      * @return null
      */
@@ -597,7 +684,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::deactivate() test case, when disabling two identical modules
+     * oxModule::deactivate() test case, when disabling two identical modules
      *
      * @return null
      */
@@ -617,13 +704,11 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::buildModuleChains() test case, empty
-     *
-     * @return null
+     * oxModule::buildModuleChains() test case, empty
      */
     public function testBuildModuleChainsEmpty()
     {
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
 
         $aModules = array();
         $aModulesArray  = array();
@@ -631,13 +716,11 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::buildModuleChains() test case, single
-     *
-     * @return null
+     * oxModule::buildModuleChains() test case, single
      */
     public function testBuildModuleChainsSingle()
     {
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
 
         $aModules = array('oxtest' => 'test/mytest');
         $aModulesArray  = array('oxtest' => array('test/mytest'));
@@ -645,13 +728,11 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::buildModuleChains() test case
-     *
-     * @return null
+     * oxModule::buildModuleChains() test case
      */
     public function testBuildModuleChains()
     {
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
 
         $aModules = array('oxtest' => 'test/mytest&test1/mytest1');
         $aModulesArray  = array('oxtest' => array('test/mytest','test1/mytest1'));
@@ -659,13 +740,11 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::mergeModuleArrays() test case, empty
-     *
-     * @return null
+     * oxModule::mergeModuleArrays() test case, empty
      */
     public function testMergeModuleArraysEmpty()
     {
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule =new oxModule();
 
         $aAllModules = array();
         $aAddModules = array();
@@ -673,13 +752,11 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::mergeModuleArrays() test case, add single
-     *
-     * @return null
+     * oxModule::mergeModuleArrays() test case, add single
      */
     public function testMergeModuleArraysAddSingle()
     {
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
         $aAllModules = array();
         $aAddModules = array('oxtest' => 'test/mytest');
         $aMrgModules = array('oxtest' => array('test/mytest'));
@@ -687,89 +764,79 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::mergeModuleArrays() test case, add
-     *
-     * @return null
+     * oxModule::mergeModuleArrays() test case, add
      */
     public function testMergeModuleArraysAdd()
     {
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
         $aAllModules = array();
         $aAddModules = array('oxtest' => array('test/mytest'));
         $this->assertEquals($aAddModules, $oModule->mergeModuleArrays($aAllModules, $aAddModules));
     }
 
     /**
-     * oxmodule::mergeModuleArrays() test case, existing
-     *
-     * @return null
+     * oxModule::mergeModuleArrays() test case, existing
      */
     public function testMergeModuleArraysExisting()
     {
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
         $aAllModules = array('oxtest' => array('test/mytest'));
         $aAddModules = array('oxtest' => array('test/mytest'));
         $this->assertEquals($aAllModules, $oModule->mergeModuleArrays($aAllModules, $aAddModules));
     }
 
     /**
-     * oxmodule::mergeModuleArrays() test case, appenf
-     *
-     * @return null
+     * oxModule::mergeModuleArrays() test case, append
      */
     public function testMergeModuleArraysAppend()
     {
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
         $aAllModules = array('oxtest' => array('test/mytest'));
         $aAddModules = array('oxtest' => array('test1/mytest1'));
         $aMrgModules = array('oxtest' => array('test/mytest','test1/mytest1'));
+
         $this->assertEquals($aMrgModules, $oModule->mergeModuleArrays($aAllModules, $aAddModules));
     }
 
     /**
-     * oxmodule::mergeModuleArrays() test case, add and append
-     *
-     * @return null
+     * oxModule::mergeModuleArrays() test case, add and append
      */
     public function testMergeModuleArraysAddAndAppend()
     {
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
         $aAllModules = array('oxtest' => array('test/mytest'));
         $aAddModules = array('oxtest' => array('test1/mytest1'), 'oxtest2' => array('test2/mytest2'));
         $aMrgModules = array('oxtest' => array('test/mytest','test1/mytest1'), 'oxtest2' => array('test2/mytest2'));
+
         $this->assertEquals($aMrgModules, $oModule->mergeModuleArrays($aAllModules, $aAddModules));
     }
 
     /**
-     * oxmodule::filterModuleArrays() test case, empty
-     *
-     * @return null
+     * oxModule::filterModuleArrays() test case, empty
      */
     public function testFilterModuleArrayEmpty()
     {
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
         $aModules = array('oxtest' => array('test/mytest','test1/mytest1'));
         $aExtend  = array();
         $this->assertEquals($aExtend, $oModule->filterModuleArray($aModules, 'notRegisteredExtension'));
     }
 
     /**
-     * oxmodule::filterModuleArrays() test case, single
-     *
-     * @return null
+     * oxModule::filterModuleArrays() test case, single
      */
     public function testFilterModuleArraySingle()
     {
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
+
         $aModules = array('oxtest' => array('test/mytest','test1/mytest1'));
         $aExtend  = array('oxtest' => array('test/mytest'));
+
         $this->assertEquals($aExtend, $oModule->filterModuleArray($aModules, 'test'));
     }
 
-     /**
-     * oxmodule::getLegacyModules() test case
-     *
-     * @return null
+    /**
+     * oxModule::getLegacyModules() test case
      */
     public function testGetLegacyModules()
     {
@@ -778,17 +845,15 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'extend'       => array ('oxnews' => 'testModule/testModuleClass')
         );
 
-        modConfig::getInstance()->setConfigParam( "aLegacyModules", $aLegacyModules );
+        $this->getConfig()->setConfigParam( "aLegacyModules", $aLegacyModules );
 
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
 
         $this->assertEquals( $aLegacyModules, $oModule->getLegacyModules() );
     }
 
-     /**
-     * oxmodule::getDisabledModules() test case
-     *
-     * @return null
+    /**
+     * oxModule::getDisabledModules() test case
      */
     public function testGetDisabledModules()
     {
@@ -797,17 +862,15 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'testExt2'
         );
 
-        modConfig::getInstance()->setConfigParam( "aDisabledModules", $aDisabledModules );
+       $this->getConfig()->setConfigParam( "aDisabledModules", $aDisabledModules );
 
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
 
         $this->assertEquals( $aDisabledModules, $oModule->getDisabledModules() );
     }
 
-     /**
-     * oxmodule::getDisabledModules() test case
-     *
-     * @return null
+    /**
+     * oxModule::getModulePaths() test case
      */
     public function testGetModulePaths()
     {
@@ -816,15 +879,15 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'testExt2' => 'testExt2'
         );
 
-        modConfig::getInstance()->setConfigParam( "aModulePaths", $aModulePaths );
+        $this->getConfig()->setConfigParam( "aModulePaths", $aModulePaths );
 
-        $oModule = $this->getProxyClass('oxmodule');
+        $oModule = new oxModule();
 
         $this->assertEquals( $aModulePaths, $oModule->getModulePaths() );
     }
 
-     /**
-     * oxmodule::testGetModuleFullPaths() test case
+    /**
+     * oxModule::testGetModuleFullPaths() test case
      *
      * @return null
      */
@@ -834,24 +897,24 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
         $oConfig = $this->getMock('oxconfig', array('getModulesDir'));
         $oConfig->expects( $this->any() )
-                ->method( 'getModulesDir' )
-                ->will($this->returnValue( "/var/path/to/modules/" ));
+            ->method( 'getModulesDir' )
+            ->will($this->returnValue( "/var/path/to/modules/" ));
 
         $oModule = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
         $oModule->expects( $this->any() )
-                ->method( 'getModulePath' )
-                ->with( $this->equalTo($sModId) )
-                ->will( $this->returnValue( "oe/module/" ) );
+            ->method( 'getModulePath' )
+            ->with( $this->equalTo($sModId) )
+            ->will( $this->returnValue( "oe/module/" ) );
 
         $oModule->expects( $this->any() )
-                ->method( 'getConfig' )
-                ->will( $this->returnValue( $oConfig ) );
+            ->method( 'getConfig' )
+            ->will( $this->returnValue( $oConfig ) );
 
         $this->assertEquals( "/var/path/to/modules/oe/module/", $oModule->getModuleFullPath( $sModId ) );
     }
 
     /**
-     * oxmodule::testGetModuleFullPaths() test case
+     * oxModule::testGetModuleFullPaths() test case
      *
      * @return null
      */
@@ -877,10 +940,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertEquals( false, $oModule->getModuleFullPath( $sModId ) );
     }
 
-     /**
-     * oxmodule::getId() test case
-     *
-     * @return null
+    /**
+     * oxModule::getId() test case
      */
     public function testGetId()
     {
@@ -888,14 +949,39 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'id'  => 'testModuleId'
         );
 
-        $oModule = $this->getProxyClass('oxmodule');
-        $oModule->setNonPublicVar( "_aModule", $aModule );
+        $oModule = new oxModule;
+        $oModule->setModuleData($aModule);
 
         $this->assertEquals( 'testModuleId', $oModule->getId() );
     }
 
-     /**
-     * oxmodule::hasMetadata() test case
+    public function testGetExtensions_hasExtensions_array()
+    {
+        $aModule = array(
+            'id'  => 'testModuleId',
+            'extend' => array( 'class' => 'vendor/module/path/class' )
+        );
+
+        $oModule = new oxModule;
+        $oModule->setModuleData( $aModule );
+
+        $this->assertEquals( array( 'class' => 'vendor/module/path/class' ) , $oModule->getExtensions() );
+    }
+
+    public function testGetExtensions_hasNoExtensions_emptyArray()
+    {
+        $aModule = array(
+            'id'  => 'testModuleId'
+        );
+
+        $oModule = new oxModule;
+        $oModule->setModuleData( $aModule );
+
+        $this->assertEquals( array() , $oModule->getExtensions() );
+    }
+
+    /**
+     * oxModule::hasMetadata() test case
      *
      * @return null
      */
@@ -909,8 +995,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertTrue( $oModule->hasMetadata() );
     }
 
-     /**
-     * oxmodule::isFile() test case
+    /**
+     * oxModule::isFile() test case
      *
      * @return null
      */
@@ -924,8 +1010,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertTrue( $oModule->isFile() );
     }
 
-     /**
-     * oxmodule::isLegacy() test case
+    /**
+     * oxModule::isLegacy() test case
      *
      * @return null
      */
@@ -940,8 +1026,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
 
-     /**
-     * oxmodule::isRegistered() test case
+    /**
+     * oxModule::isRegistered() test case
      *
      * @return null
      */
@@ -956,8 +1042,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
 
-     /**
-     * oxmodule::getTitle() test case
+    /**
+     * oxModule::getTitle() test case
      *
      * @return null
      */
@@ -970,8 +1056,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertEquals( "testTitle", $oModule->getTitle() );
     }
 
-     /**
-     * oxmodule::getDescription() test case
+    /**
+     * oxModule::getDescription() test case
      *
      * @return null
      */
@@ -985,7 +1071,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::_changeBlockStatus() test case
+     * oxModule::_changeBlockStatus() test case
      *
      * @return null
      */
@@ -1008,7 +1094,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::_addTemplateBlocks() test case
+     * oxModule::_addTemplateBlocks() test case
      *
      * @return null
      */
@@ -1045,7 +1131,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::_hasInstalledTemplateBlocks() test case
+     * oxModule::_hasInstalledTemplateBlocks() test case
      *
      * @return null
      */
@@ -1055,7 +1141,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $oDb     = oxDb::getDb();
 
         $sSql = "INSERT INTO `oxtplblocks` (`OXID`, `OXACTIVE`, `OXSHOPID`, `OXTEMPLATE`, `OXBLOCKNAME`, `OXPOS`, `OXFILE`, `OXMODULE`) ".
-                "VALUES ('_testId', 1, '$sShopId', 'testTemplate.tpl', 'testBlockName', '1', 'testFile.tpl', 'testModuleId1')";
+            "VALUES ('_testId', 1, '$sShopId', 'testTemplate.tpl', 'testBlockName', '1', 'testFile.tpl', 'testModuleId1')";
 
         $oDb->execute( $sSql );
 
@@ -1066,7 +1152,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::_addModuleFiles() test case
+     * oxModule::_addModuleFiles() test case
      *
      * @return null
      */
@@ -1090,7 +1176,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::_addModuleVersion() test case
+     * oxModule::_addModuleVersion() test case
      *
      * @return null
      */
@@ -1111,7 +1197,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::_addTemplateFiles() test case
+     * oxModule::_addTemplateFiles() test case
      *
      * @return null
      */
@@ -1134,9 +1220,9 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::_addModuleSettings() test case
-	 * 
-	 * related to @ticket 4255
+     * oxModule::_addModuleSettings() test case
+     *
+     * related to @ticket 4255
      *
      * @return null
      */
@@ -1178,8 +1264,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     {
         $aDisabledModules = array('test1');
         $aModulePaths     = array("invoicepdf2" => "oe/invoicepdf2", "invoicepdf" => "oe/invoicepdf");
-        modConfig::getInstance()->setConfigParam( "aDisabledModules", $aDisabledModules );
-        modConfig::getInstance()->setConfigParam( "aModulePaths", $aModulePaths );
+        $this->getConfig()->setConfigParam( "aDisabledModules", $aDisabledModules );
+        $this->getConfig()->setConfigParam( "aModulePaths", $aModulePaths );
         $sModule = "oe/invoicepdf2/myorder";
 
         $oModule = $this->getProxyClass('oxmodule');
@@ -1191,8 +1277,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     {
         $aDisabledModules = array('test1');
         $aModulePaths     = array("invoicepdf2" => "oe/invoicepdf2");
-        modConfig::getInstance()->setConfigParam( "aDisabledModules", $aDisabledModules );
-        modConfig::getInstance()->setConfigParam( "aModulePaths", $aModulePaths );
+        $this->getConfig()->setConfigParam( "aDisabledModules", $aDisabledModules );
+        $this->getConfig()->setConfigParam( "aModulePaths", $aModulePaths );
         $sModule = "invoicepdf/myorder";
 
         $oModule = $this->getProxyClass('oxmodule');
@@ -1204,8 +1290,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     {
         $aDisabledModules = array('test1');
         $aModulePaths     = array("invoicepdf2" => "oe/invoicepdf2");
-        modConfig::getInstance()->setConfigParam( "aDisabledModules", $aDisabledModules );
-        modConfig::getInstance()->setConfigParam( "aModulePaths", $aModulePaths );
+        $this->getConfig()->setConfigParam( "aDisabledModules", $aDisabledModules );
+        $this->getConfig()->setConfigParam( "aModulePaths", $aModulePaths );
         $sModule = "myorder";
 
         $oModule = $this->getProxyClass('oxmodule');
@@ -1215,16 +1301,16 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
     public function testSaveLegacyModule()
     {
-        // prepearing test data
+        // preparing test data
         $aExtendedClasses = array("oxarticle => dir1/module1");
         $moduleId         = "dir1_module1";
         $moduleName       = "module1";
-        modConfig::getInstance()->setConfigParam( "aLegacyModules", null );
+        $this->getConfig()->setConfigParam( "aLegacyModules", null );
 
         // result data
         $aLegacyModules = array( "dir1_module1" => array( "id" => "dir1_module1",
-                                                          "title" => "module1",
-                                                          "extend" => array("oxarticle" => "dir1/module1")) );
+            "title" => "module1",
+            "extend" => array("oxarticle" => "dir1/module1")) );
 
         $oConfig = $this->getMock( 'oxConfig', array('saveShopConfVar') );
         $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aLegacyModules"), $this->equalTo($aLegacyModules) );
@@ -1238,12 +1324,12 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
     public function testUpdateModuleIds()
     {
-        // prepearing test data
+        // preparing test data
         $aTestModulePaths     = array( "dir1/module1" => "dir1/module1", "dir2/module2" => "dir2/module2" );
         $aTestDisabledModules = array( "dir2/module2", "dir4/module4" );
 
-        modConfig::getInstance()->setConfigParam( "aModulePaths", $aTestModulePaths );
-        modConfig::getInstance()->setConfigParam( "aDisabledModules", $aTestDisabledModules );
+        $this->getConfig()->setConfigParam( "aModulePaths", $aTestModulePaths );
+        $this->getConfig()->setConfigParam( "aDisabledModules", $aTestDisabledModules );
 
         // result data
         $aModulePaths     = array( "dir1/module1" => "dir1/module1", "dir2Module" => "dir2/module2" );
@@ -1258,4 +1344,193 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
         $oModule->updateModuleIds( "dir2/module2", "dir2Module" );
     }
+
+    public function testDeactivation_ModuleWithBlocks_BlocksRemoved()
+    {
+        $sShopId = $this->getConfig()->getShopId();
+        $oDb = oxDb::getDb();
+
+        $sSql = "INSERT INTO `oxtplblocks` (`OXID`, `OXACTIVE`, `OXSHOPID`, `OXTEMPLATE`, `OXBLOCKNAME`, `OXPOS`, `OXFILE`, `OXMODULE`)
+                         VALUES ('testoxid', 1, '{$sShopId}', 'tpl', 'block', '1', 'file', 'testModule')";
+
+        $oDb->execute( $sSql );
+
+        $oModule = new oxModule();
+        $oModule->deactivate('testModule');
+        $blRes = $oDb->getOne( "SELECT 1 FROM `oxtplblocks` WHERE `oxmodule` = 'testModule' AND `oxshopid` = '$sShopId' LIMIT 1" );
+
+        $this->assertNotEquals( 1, $blRes );
+
+    }
+
+    public function testActivation_ModuleWithExtensions_RemovedUnused()
+    {
+        //setting installed data
+        $aModules = array(
+            'article'    => array('test/testArticleOther/application/controllers/test_testModule_oxarticle', 'oe/invoicepdf/application/controllers/test_testModule_oxarticle' ),
+            'oxother'    => array('test/testOther/application/controllers/test_testModule_oxarticle'),
+            'basket'    => array('oe/invoicepdf/application/controllers/test_testModule_oxarticle'),
+            'category'    => array('oe/invoicepdf/application/controllers/test_testModule_oxcategory1', 'oe/invoicepdf/application/controllers/test_testModule_oxcategory2' ),
+            'oxorder'    => array('oe/invoicepdf/application/controllers/test_testModule_oxorder'),
+            'oxnew' => array( 'oe/invoicepdf/file1', 'oe/invoicepdf/file2'),
+
+        );
+
+        $aModule = array();
+        $aModule['id'] = 'invoicepdf';
+        $aModule['extend'] = array(
+            'oxarticle'    => 'oe/invoicepdf/application/controllers/test_testModule_oxarticle',
+            'oxorder'    => 'oe/invoicepdf/application/controllers/test_testModule_oxorder',
+            'oxnew' => array( 'oe/invoicepdf/file1', 'oe/invoicepdf/file2' ),
+        );
+
+
+        $aSavedModule = array(
+            'article' => 'test/testArticleOther/application/controllers/test_testModule_oxarticle',
+            'oxother'    => 'test/testOther/application/controllers/test_testModule_oxarticle',
+            'oxarticle'    => 'oe/invoicepdf/application/controllers/test_testModule_oxarticle',
+            'oxorder'    => 'oe/invoicepdf/application/controllers/test_testModule_oxorder',
+            'oxnew' => 'oe/invoicepdf/file1&oe/invoicepdf/file2',
+        );
+
+        $oConfig = $this->getMock( 'oxConfig', array( 'saveShopConfVar' ) );
+        $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aSavedModule) );
+
+        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getAllModules', 'getModulePath', 'getId'), array(), "", false );
+
+        $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
+        $oModule->expects( $this->any() )->method('getModulePath')->will( $this->returnValue( 'oe/invoicepdf/' ) );
+        $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( 'invoicepdf' ) );
+        $oModule->expects( $this->any() )->method('getAllModules')->will( $this->returnValue( $aModules ) );
+        $oModule->setModuleData($aModule);
+
+        $oModule->activate();
+    }
+
+    public function testActivation_ModuleWithoutExtensions_OldModuleExtendsGetRemoved()
+    {
+        //setting installed data
+        $aModules = array(
+            'article'   => array(
+                'test/testArticleOther/application/controllers/test_testModule_oxarticle',
+                'oe/invoicepdf/application/controllers/test_testModule_oxarticle'
+            ),
+            'oxother'   => array('test/testOther/application/controllers/test_testModule_oxarticle'),
+            'oxarticle' => array('oe/invoicepdf/application/controllers/test_testModule_oxarticle'),
+            'oxorder'   => array('oe/invoicepdf/application/controllers/test_testModule_oxorder'),
+        );
+
+        $aModule = array();
+        $aModule['id'] = 'invoicepdf';
+        $aModule['extend'] = array();
+
+        $aSavedModule = array(
+            'article'   => 'test/testArticleOther/application/controllers/test_testModule_oxarticle',
+            'oxother'   => 'test/testOther/application/controllers/test_testModule_oxarticle',
+        );
+
+        $oConfig = $this->getMock( 'oxConfig', array( 'saveShopConfVar' ) );
+        $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aSavedModule) );
+
+        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getAllModules', 'getModulePath', 'getId', 'hasMetadata'), array(), "", false );
+        $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
+        $oModule->expects( $this->any() )->method('getModulePath')->will( $this->returnValue( 'oe/invoicepdf/' ) );
+        $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( 'invoicepdf' ) );
+        $oModule->expects( $this->any() )->method('hasMetadata')->will( $this->returnValue( true ) );
+        $oModule->expects( $this->any() )->method('getAllModules')->will( $this->returnValue( $aModules ) );
+        $oModule->setModuleData( $aModule );
+
+        $this->assertTrue( $oModule->activate() );
+    }
+
+    public function testActivation_ModuleWithExtensions_NothingRemoved()
+    {
+        //setting installed data
+        $aModules = array(
+            'article'   => array(
+                'test/testArticleOther/application/controllers/test_testModule_oxarticle',
+                'oe/invoicepdf/application/controllers/test_testModule_oxarticle'
+            ),
+            'oxother'   => array('test/testOther/application/controllers/test_testModule_oxarticle'),
+            'oxarticle' => array('oe/invoicepdf/application/controllers/test_testModule_oxarticle'),
+            'oxorder'   => array('oe/invoicepdf/application/controllers/test_testModule_oxorder'),
+        );
+
+        $aModule = array();
+        $aModule['id'] = 'invoicepdf';
+        $aModule['extend'] = array(
+            'article'   => 'oe/invoicepdf/application/controllers/test_testModule_oxarticle',
+            'oxarticle' => 'oe/invoicepdf/application/controllers/test_testModule_oxarticle',
+            'oxorder'   => 'oe/invoicepdf/application/controllers/test_testModule_oxorder'
+        );
+
+        $aSavedModule = array(
+            'article'   => 'test/testArticleOther/application/controllers/test_testModule_oxarticle'.'&'
+                           .'oe/invoicepdf/application/controllers/test_testModule_oxarticle',
+            'oxother'   => 'test/testOther/application/controllers/test_testModule_oxarticle',
+            'oxarticle' => 'oe/invoicepdf/application/controllers/test_testModule_oxarticle',
+            'oxorder'   => 'oe/invoicepdf/application/controllers/test_testModule_oxorder'
+        );
+
+        $oConfig = $this->getMock( 'oxConfig', array( 'saveShopConfVar' ) );
+        $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aSavedModule) );
+
+        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getAllModules', 'getModulePath', 'getId'), array(), "", false );
+        $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
+        $oModule->expects( $this->any() )->method('getModulePath')->will( $this->returnValue( 'oe/invoicepdf/' ) );
+        $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( 'invoicepdf' ) );
+        $oModule->expects( $this->any() )->method('getAllModules')->will( $this->returnValue( $aModules ) );
+        $oModule->setModuleData($aModule);
+
+        $this->assertTrue( $oModule->activate() );
+    }
+
+    public function testActivation_ModuleWithFewExtensionsForSameClass_NothingRemoved()
+    {
+        //setting installed data
+        $aModules = array(
+            'article'   => array(
+                'test/testArticleOther/application/controllers/test_testModule_oxarticle',
+                'oe/invoicepdf/application/controllers/test_testModule_oxarticle'
+            ),
+            'oxother'   => array('test/testOther/application/controllers/test_testModule_oxarticle'),
+            'oxarticle' => array(
+                'test/testOther/application/controllers/test_testModule_oxarticle',
+                'oe/invoicepdf/application/controllers/test_testModule_oxarticle',
+            ),
+            'oxorder'   => array('oe/invoicepdf/application/controllers/test_testModule_oxorder'),
+        );
+
+        $aModule = array();
+        $aModule['id'] = 'invoicepdf';
+        $aModule['extend'] = array(
+            'oxarticle' => array(
+                'oe/invoicepdf/application/controllers/test_testModule_oxarticle',
+                'oe/invoicepdf/application/controllers/test_testModule_oxarticle2'
+            ),
+            'oxorder'   => 'oe/invoicepdf/application/controllers/test_testModule_oxorder'
+        );
+
+        $aSavedModule = array(
+            'article'   => 'test/testArticleOther/application/controllers/test_testModule_oxarticle',
+            'oxother'   => 'test/testOther/application/controllers/test_testModule_oxarticle',
+            'oxarticle' => 'test/testOther/application/controllers/test_testModule_oxarticle'.'&'
+                           .'oe/invoicepdf/application/controllers/test_testModule_oxarticle'.'&'
+                           .'oe/invoicepdf/application/controllers/test_testModule_oxarticle2',
+            'oxorder'   => 'oe/invoicepdf/application/controllers/test_testModule_oxorder'
+        );
+
+        $oConfig = $this->getMock( 'oxConfig', array( 'saveShopConfVar' ) );
+        $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aSavedModule) );
+
+        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getAllModules', 'getModulePath', 'getId'), array(), "", false );
+        $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
+        $oModule->expects( $this->any() )->method('getModulePath')->will( $this->returnValue( 'oe/invoicepdf/' ) );
+        $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( 'invoicepdf' ) );
+        $oModule->expects( $this->any() )->method('getAllModules')->will( $this->returnValue( $aModules ) );
+        $oModule->setModuleData($aModule);
+
+        $this->assertTrue( $oModule->activate() );
+    }
+
 }

@@ -1,24 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   modules
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 /**
@@ -400,8 +399,7 @@ class PdfArticleSummary extends PdfBlock
      */
     protected function _setWrappingInfo( &$iStartPos )
     {
-        if ( $this->_oData->oxorder__oxwrapcost->value ) {
-            $sAddString = '';
+        if ( $this->_oData->oxorder__oxwrapcost->value || $this->_oData->oxorder__oxgiftcardcost->value ) {
             $oLang = oxRegistry::getLang();
             $oConfig = oxRegistry::getConfig();
 
@@ -423,7 +421,6 @@ class PdfArticleSummary extends PdfBlock
                     $this->text( 195 - $this->_oPdf->getStringWidth( $sWrapCostVAT ), $iStartPos, $sWrapCostVAT );
                    // $iStartPos++;
                 }
-
 
                 if ($this->_oData->oxorder__oxgiftcardcost->value) {
                     // wrapping netto
@@ -449,11 +446,11 @@ class PdfArticleSummary extends PdfBlock
                 }
 
             } else {
-                $iStartPos += 4;
+                $sAddString = ' '.$this->_oData->translate( 'ORDER_OVERVIEW_PDF_BRUTTO' );
 
                 if ($this->_oData->oxorder__oxwrapcost->value) {
+                    $iStartPos += 4;
                     // wrapping cost
-                    $sAddString = ' '.$this->_oData->translate( 'ORDER_OVERVIEW_PDF_BRUTTO' );
                     $sWrapCost = $oLang->formatCurrency( $this->_oData->oxorder__oxwrapcost->value, $this->_oData->getCurrency() ).' '.$this->_oData->getCurrency()->name;
                     $this->text( 45, $iStartPos, $this->_oData->translate( 'WRAPPING_COSTS'/*'ORDER_OVERVIEW_PDF_WRAPPING'*/ ).$sAddString );
                     $this->text( 195 - $this->_oPdf->getStringWidth( $sWrapCost ), $iStartPos, $sWrapCost );
@@ -462,15 +459,13 @@ class PdfArticleSummary extends PdfBlock
 
                 if ($this->_oData->oxorder__oxgiftcardcost->value) {
                     $iStartPos += 4;
-                // gift card cost
+                    // gift card cost
                     $sWrapCost = $oLang->formatCurrency( $this->_oData->oxorder__oxgiftcardcost->value, $this->_oData->getCurrency() ).' '.$this->_oData->getCurrency()->name;
                     $this->text( 45, $iStartPos, $this->_oData->translate( 'GIFTCARD_COSTS' ).$sAddString );
                     $this->text( 195 - $this->_oPdf->getStringWidth( $sWrapCost ), $iStartPos, $sWrapCost );
                     $iStartPos++;
                 }
-
             }
-
         }
     }
 
@@ -865,7 +860,7 @@ class MyOrder extends MyOrder_parent
         }
         // setting invoice date
         if ( $this->oxorder__oxbilldate->value == '0000-00-00' ) {
-            $this->oxorder__oxbilldate->setValue( date( 'd.m.Y', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ), date( 'Y' ) ) ) );
+            $this->oxorder__oxbilldate->setValue( date( 'Y-m-d', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ), date( 'Y' ) ) ) );
             $blIsNewOrder = 1;
         }
         // saving order if new number or date

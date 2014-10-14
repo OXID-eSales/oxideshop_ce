@@ -1,25 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   views
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id$
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 /**
@@ -220,6 +218,10 @@ class Account_Recommlist extends Account
      */
     public function saveRecommList()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         if (!$this->getViewConfig()->getShowListmania()) {
             return;
         }
@@ -233,9 +235,9 @@ class Account_Recommlist extends Account
                 $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
             }
 
-            $sTitle  = trim( ( string ) oxConfig::getParameter( 'recomm_title', 1 ) );
-            $sAuthor = trim( ( string ) oxConfig::getParameter( 'recomm_author', 1 ) );
-            $sText   = trim( ( string ) oxConfig::getParameter( 'recomm_desc', 1 ) );
+            $sTitle  = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'recomm_title', true ) );
+            $sAuthor = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'recomm_author', true ) );
+            $sText   = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'recomm_desc', true ) );
 
             $oRecommList->oxrecommlists__oxtitle  = new oxField( $sTitle );
             $oRecommList->oxrecommlists__oxauthor = new oxField( $sAuthor );
@@ -269,6 +271,10 @@ class Account_Recommlist extends Account
      */
     public function editList()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         if (!$this->getViewConfig()->getShowListmania()) {
             return;
         }
@@ -290,6 +296,10 @@ class Account_Recommlist extends Account
      */
     public function removeArticle()
     {
+        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+            return;
+        }
+
         if (!$this->getViewConfig()->getShowListmania()) {
             return;
         }

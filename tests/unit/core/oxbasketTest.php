@@ -1,25 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
- * @version   SVN: $Id$
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -4538,6 +4536,132 @@ class Unit_Core_oxbasketTest extends OxidTestCase
 
         // checking amounts
         $this->assertEquals( 44, $oSummary->dArticleDiscountablePrice );
+    }
+
+    /**
+     * @return array
+     */
+    public function providerHasArticlesWithIntangibleAgreement()
+    {
+        $aEmptyBasket = array();
+
+        $aBasketWithOneIntangibleArticle = array(
+            $this->createBasketItemForArticleAgreementTests(true, false, true),
+        );
+
+        $aBasketWithOneIntangibleAndOtherArticles = array(
+            $this->createBasketItemForArticleAgreementTests(false, false, false),
+            $this->createBasketItemForArticleAgreementTests(true, false, true),
+        );
+
+        $aBasketWithOneIntangibleAndDownloadableArticles = array(
+            $this->createBasketItemForArticleAgreementTests(false, true, true),
+            $this->createBasketItemForArticleAgreementTests(true, false, true),
+        );
+
+        $aBasketWithOtherArticles = array(
+            $this->createBasketItemForArticleAgreementTests(false, false, false),
+            $this->createBasketItemForArticleAgreementTests(false, true, true),
+        );
+
+        $aBasketWithIntangibleWithoutShowingAgreement = array(
+            $this->createBasketItemForArticleAgreementTests(true, false, false),
+        );
+
+        return array(
+            array($aEmptyBasket, false),
+            array($aBasketWithOneIntangibleArticle, true),
+            array($aBasketWithOneIntangibleAndOtherArticles, true),
+            array($aBasketWithOneIntangibleAndDownloadableArticles, true),
+            array($aBasketWithOtherArticles, false),
+            array($aBasketWithIntangibleWithoutShowingAgreement, false),
+        );
+    }
+
+    /**
+     * @param array $aBasketContents
+     * @param bool  $blResult
+     * @dataProvider providerHasArticlesWithIntangibleAgreement
+     */
+    public function testHasArticlesWithIntangibleAgreementWhenArticleExists($aBasketContents, $blResult)
+    {
+        $oBasket = $this->getProxyClass("oxbasket");
+        $oBasket->setNonPublicVar("_aBasketContents", $aBasketContents);
+        $this->assertSame($blResult, $oBasket->hasArticlesWithIntangibleAgreement());
+    }
+
+    /**
+     * @return array
+     */
+    public function providerHasArticlesWithDownloadableAgreement()
+    {
+        $aEmptyBasket = array();
+
+        $aBasketWithOneDownloadableArticle = array(
+            $this->createBasketItemForArticleAgreementTests(false, true, true),
+        );
+
+        $aBasketWithOneDownloadableAndOtherArticles = array(
+            $this->createBasketItemForArticleAgreementTests(false, false, false),
+            $this->createBasketItemForArticleAgreementTests(false, true, true),
+        );
+
+        $aBasketWithOneIntangibleAndDownloadableArticles = array(
+            $this->createBasketItemForArticleAgreementTests(false, true, true),
+            $this->createBasketItemForArticleAgreementTests(true, false, true),
+        );
+
+        $aBasketWithOtherArticles = array(
+            $this->createBasketItemForArticleAgreementTests(false, false, false),
+            $this->createBasketItemForArticleAgreementTests(true, false, true),
+        );
+
+        $aBasketWithDownloadableArticleWithoutShowingAgreement = array(
+            $this->createBasketItemForArticleAgreementTests(true, false, false),
+        );
+
+        return array(
+            array($aEmptyBasket, false),
+            array($aBasketWithOneDownloadableArticle, true),
+            array($aBasketWithOneDownloadableAndOtherArticles, true),
+            array($aBasketWithOneIntangibleAndDownloadableArticles, true),
+            array($aBasketWithOtherArticles, false),
+            array($aBasketWithDownloadableArticleWithoutShowingAgreement, false),
+        );
+    }
+
+    /**
+     * @param array $aBasketContents
+     * @param bool  $blResult
+     * @dataProvider providerHasArticlesWithDownloadableAgreement
+     */
+    public function testHasArticlesWithDownloadableAgreement($aBasketContents, $blResult)
+    {
+        $oBasket = $this->getProxyClass("oxbasket");
+        $oBasket->setNonPublicVar("_aBasketContents", $aBasketContents);
+        $this->assertSame($blResult, $oBasket->hasArticlesWithDownloadableAgreement());
+    }
+
+    /**
+     * Creates and returns basket item object based on given options
+     *
+     * @param bool $blIntangible
+     * @param bool $blDownloadable
+     * @param bool $blShowCustomAgreement
+     * @return oxBasketItem
+     */
+    private function createBasketItemForArticleAgreementTests($blIntangible, $blDownloadable, $blShowCustomAgreement)
+    {
+        $oArticle = new oxArticle();
+        $oArticle->load('_testArt');
+        $oArticle->oxarticles__oxnonmaterial = new oxField($blIntangible);
+        $oArticle->oxarticles__oxisdownloadable = new oxField($blDownloadable);
+        $oArticle->oxarticles__oxshowcustomagreement = new oxField($blShowCustomAgreement);
+
+        $oOrderArticle = $this->getMock('oxorderarticle', array('getArticle'));
+        $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($oArticle));
+
+        return $oOrderArticle;
     }
 
 }

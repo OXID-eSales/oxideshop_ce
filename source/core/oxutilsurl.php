@@ -292,9 +292,6 @@ class oxUtilsUrl extends oxSuperCfg
             $blCurrent = true;
         } else {
             $aHosts = $this->_getHosts();
-            if (is_null($aHosts)) {
-                $aHosts = array($this->_getShopHostName());
-            }
 
             foreach ($aHosts as $sHost) {
                 if ($sHost === $sUrlHost) {
@@ -442,6 +439,22 @@ class oxUtilsUrl extends oxSuperCfg
         return $aParams;
     }
 
+    /**
+     * Extracts host from given url and appends $aHosts with it
+     *
+     * @param string $sUrl    url to extract
+     * @param array  &$aHosts hosts array
+     *
+     * @return null
+     */
+    protected function _addHost($sUrl, &$aHosts)
+    {
+        if ($sUrl && ($sHost = @parse_url($sUrl, PHP_URL_HOST))) {
+            if (!in_array($sHost, $aHosts)) {
+                $aHosts[] = $sHost;
+            }
+        }
+    }
 
     /**
      * Collects and returns current shop hosts array.
@@ -450,6 +463,26 @@ class oxUtilsUrl extends oxSuperCfg
      */
     protected function _getHosts()
     {
+        if ($this->_aHosts === null) {
+            $this->_aHosts = array();
+            $oConfig = $this->getConfig();
+
+            // mall (ssl) url
+            $this->_addHost($oConfig->getConfigParam('sMallShopURL'), $this->_aHosts);
+            $this->_addHost($oConfig->getConfigParam('sMallSSLShopURL'), $this->_aHosts);
+
+            // language url
+            $this->_addHost($oConfig->getConfigParam('aLanguageURLs'), $this->_aHosts);
+            $this->_addHost($oConfig->getConfigParam('aLanguageSSLURLs'), $this->_aHosts);
+
+            // current url
+            $this->_addHost($oConfig->getShopUrl(), $this->_aHosts);
+            $this->_addHost($oConfig->getSslShopUrl(), $this->_aHosts);
+
+            if ($this->isAdmin()) {
+                $this->_addHost($oConfig->getConfigParam('sAdminSSLURL'), $this->_aHosts);
+            }
+        }
 
         return $this->_aHosts;
     }
@@ -476,15 +509,5 @@ class oxUtilsUrl extends oxSuperCfg
         }
 
         return $sSeparator;
-    }
-
-    /**
-     * Returns shop host name.
-     *
-     * @return string
-     */
-    private function _getShopHostName()
-    {
-        return @parse_url($this->getConfig()->getShopUrl(), PHP_URL_HOST);
     }
 }

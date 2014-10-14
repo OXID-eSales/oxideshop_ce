@@ -46,6 +46,10 @@ class Login extends oxAdminView
     {
         $myConfig = $this->getConfig();
 
+        // automatically redirect to SSL login
+        if (!$myConfig->isSsl() && strpos($myConfig->getConfigParam('sAdminSSLURL'), 'https://') === 0)
+            oxRegistry::getUtils()->redirect($myConfig->getConfigParam('sAdminSSLURL'), false, 302);
+
         //resets user once on this screen.
         $oUser = oxNew("oxuser");
         $oUser->logout();

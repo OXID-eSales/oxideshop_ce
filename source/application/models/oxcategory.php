@@ -887,6 +887,8 @@ class oxCategory extends oxI18n implements oxIUrl
     protected function _update()
     {
 
+        $this->_setUpdateSeoOnFieldChange('oxtitle');
+
         $oDb = oxDb::getDb();
         $sOldParentID = $oDb->getOne("select oxparentid from oxcategories where oxid = " . $oDb->quote($this->getId()), false, false);
 
@@ -1100,7 +1102,7 @@ class oxCategory extends oxI18n implements oxIUrl
         if (isset($this->oxcategories__oxlongdesc) && $this->oxcategories__oxlongdesc instanceof oxField) {
             /** @var oxUtilsView $oUtilsView */
             $oUtilsView = oxRegistry::get("oxUtilsView");
-            return oxRegistry::get("oxUtilsView")->parseThroughSmarty($this->oxcategories__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
+            return $oUtilsView->parseThroughSmarty($this->oxcategories__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
         }
     }
 

@@ -78,16 +78,36 @@ class Object_Seo extends oxAdminDetails
                 $aSeoData['oxfixed'] = 0;
             }
 
-            $oEncoder = $this->_getEncoder();
+            $sParams = $this->_getAdditionalParams($aSeoData);
 
+            $oEncoder = $this->_getEncoder();
             // marking self and page links as expired
-            $oEncoder->markAsExpired( $sOxid, $iShopId, 1, $iLang );
+            $oEncoder->markAsExpired($sOxid, $iShopId, 1, $iLang, $sParams);
 
             // saving
             $oEncoder->addSeoEntry( $sOxid, $iShopId, $iLang, $this->_getStdUrl( $sOxid ),
                                     $aSeoData['oxseourl'], $this->_getSeoEntryType(), $aSeoData['oxfixed'],
                                     trim( $aSeoData['oxkeywords'] ), trim( $aSeoData['oxdescription'] ), $this->processParam( $aSeoData['oxparams'] ), true, $this->_getAltSeoEntryId() );
         }
+    }
+
+    /**
+     * Gets additional params from aSeoData['oxparams'] if it is set.
+     *
+     * @param array $aSeoData Seo data array
+     *
+     * @return null|string
+     */
+    protected function _getAdditionalParams($aSeoData)
+    {
+        $sParams = null;
+        if (isset($aSeoData['oxparams'])) {
+            if (preg_match('/([a-z]*#)?(?<objectseo>[a-z0-9]+)(#[0-9])?/i', $aSeoData['oxparams'], $aMatches)) {
+                $sQuotedObjectSeoId = oxDb::getDb()->quote($aMatches['objectseo']);
+                $sParams = "oxparams = {$sQuotedObjectSeoId}";
+            }
+        }
+        return $sParams;
     }
 
     /**

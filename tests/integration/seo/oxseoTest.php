@@ -349,8 +349,9 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             oxDb::getDb()->execute($sQ);
         }
         $sParam = key($aCategories);
+        var_dump($sParam);
         $sQ = "replace into oxseo (`OXOBJECTID`,`OXIDENT`,`OXSHOPID`,`OXLANG`,`OXSEOURL`,`OXTYPE`,`OXFIXED`,`OXPARAMS`) " .
-               "values ('_testid','_testIndent3','{$this->_getShopId()}','0','this/there/then.html','oxarticle','0','{$sParam}')";
+               "values ('_testid','_testid','{$this->_getShopId()}','0','this/there/then.html','oxarticle','0','{$sParam}')";
 
         oxDb::getDb()->execute($sQ);
     }
@@ -366,8 +367,8 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $sAdditionalInsertValue = '';
 
         foreach ($aCategoryIds as $sId => $sTime) {
-            $sQ = "Insert into oxcategories (`OXID`,{$sAdditionalInsertField}`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
-                   "values ('{$sId}',1,'{$sId}',{$sAdditionalInsertValue}'1','4','testCategory1','','','','','1','10','50')";
+            $sQ = "Insert into oxcategories (`OXID`,{$sAdditionalInsertField}`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`) " .
+                   "values ('{$sId}',1,'{$sId}',{$sAdditionalInsertValue}'1','4','testCategory1','','','','','1')";
 
             oxDb::getDb()->execute($sQ);
         }
@@ -378,8 +379,8 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
      */
     protected function _addArticle()
     {
-        $sQ = "Insert into oxarticles (oxid, oxshopid, oxtitle, oxprice)
-                values ('_testid', '{$this->_getShopId()}', '_testArticle', '125')";
+        $sQ = "Insert into oxarticles (oxid, oxshopincl, oxshopid, oxtitle, oxprice)
+                values ('_testid', '{$this->_getShopId()}', '{$this->_getShopId()}', '_testArticle', '125')";
         oxDb::getDb()->execute($sQ);
     }
 

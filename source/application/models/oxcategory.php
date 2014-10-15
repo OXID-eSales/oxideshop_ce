@@ -887,6 +887,8 @@ class oxCategory extends oxI18n implements oxIUrl
     protected function _update()
     {
 
+        $this->_setUpdateSeoOnFieldChange('oxtitle');
+
         $oDb = oxDb::getDb();
         $sOldParentID = $oDb->getOne("select oxparentid from oxcategories where oxid = " . $oDb->quote($this->getId()), false, false);
 

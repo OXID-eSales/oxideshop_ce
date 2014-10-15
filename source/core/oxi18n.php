@@ -352,6 +352,20 @@ class oxI18n extends oxBase
     }
 
     /**
+     * Checks whether certain field has changed, and sets update seo flag if needed.
+     * It can only set the value to false, so it allows for multiple calls to the method,
+     * and if atleast one requires seo update, other checks won't override that.
+     * Will try to get multilang table name for relevant field check.
+     *
+     * @param string $sField Field name that will be checked
+     */
+    protected function _setUpdateSeoOnFieldChange($sField)
+    {
+        parent::_setUpdateSeoOnFieldChange($this->getUpdateSqlFieldName($sField));
+    }
+
+
+    /**
      * return update fields SQL part
      *
      * @param string $sTable              table name to be updated
@@ -463,7 +477,7 @@ class oxI18n extends oxBase
 
         // currently only multilanguage objects are SEO
         // if current object is managed by SEO and SEO is ON
-        if ( $blRet && $this->_blIsSeoObject && $this->isAdmin() ) {
+        if ( $blRet && $this->_blIsSeoObject && $this->getUpdateSeo() && $this->isAdmin() ) {
             // marks all object db entries as expired
             oxRegistry::get("oxSeoEncoder")->markAsExpired( $this->getId(), null, 1, $this->getLanguage() );
         }

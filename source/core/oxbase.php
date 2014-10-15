@@ -143,6 +143,13 @@ class oxBase extends oxSuperCfg
     protected $_blIsSeoObject = false;
 
     /**
+     * Flag allowing seo update for certain objects
+     *
+     * @var bool
+     */
+    protected $_blUpdateSeo = true;
+
+    /**
      * Read only for object
      *
      * @var bool
@@ -380,6 +387,49 @@ class oxBase extends oxSuperCfg
                 $this->$name = clone $oObject->$name;
             } else {
                 $this->$name = $oObject->$name;
+            }
+        }
+    }
+
+    /**
+     * Returns update seo flag
+     *
+     * @return boolean
+     */
+    public function getUpdateSeo()
+    {
+        return $this->_blUpdateSeo;
+    }
+
+    /**
+     * Sets update seo flag
+     *
+     * @param boolean $blUpdateSeo
+     */
+    public function setUpdateSeo($blUpdateSeo)
+    {
+        $this->_blUpdateSeo = $blUpdateSeo;
+    }
+
+    /**
+     * Checks whether certain field has changed, and sets update seo flag if needed.
+     * It can only set the value to false, so it allows for multiple calls to the method,
+     * and if atleast one requires seo update, other checks won't override that.
+     *
+     * @param string $sField Field name that will be checked
+     */
+    protected function _setUpdateSeoOnFieldChange($sField)
+    {
+        if ($this->getId() && in_array($sField, $this->getFieldNames())) {
+            $oDb = oxDb::getDb();
+            $sTableName = $this->getCoreTableName();
+            $sQuotedOxid = $oDb->quote($this->getId());
+            $sTitle = $oDb->getOne("select `{$sField}` from `{$sTableName}` where `oxid` = {$sQuotedOxid}");
+            $sFieldValue = "{$sTableName}__{$sField}";
+            $sCurrentTitle = $this->$sFieldValue->value;
+
+            if ($sTitle == $sCurrentTitle) {
+                $this->setUpdateSeo(false);
             }
         }
     }

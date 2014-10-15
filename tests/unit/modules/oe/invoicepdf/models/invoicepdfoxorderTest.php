@@ -521,7 +521,7 @@ public function testPdfArticleSummary_setWrappingInfo_WithGiftCardOnly()
     $oMyOrder->oxorder__oxgiftcardcost = new oxField('8', oxField::T_RAW);
 
     $oPdf = new testPdfClass;
-    $oPdfArtSum = new myOrder_PdfArticleSummary( $oMyOrder, $oPdf );
+    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oMyOrder, $oPdf );
 
     $iStartPos = 1;
     $oPdfArtSum->setWrappingInfo( $iStartPos );

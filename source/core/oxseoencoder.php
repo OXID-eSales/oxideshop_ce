@@ -931,7 +931,7 @@ class oxSeoEncoder extends oxSuperCfg
         $oDb = oxDb::getDb();
         $sWhere  = $sId ? "where oxobjectid =  " . $oDb->quote( $sId ) : '';
         $sWhere .= isset( $iShopId ) ? ( $sWhere ? " and oxshopid = ". $oDb->quote( $iShopId ) : "where oxshopid = ". $oDb->quote( $iShopId ) ) : '';
-        $sWhere .= $iLang ? ( $sWhere ? " and oxlang = '{$iLang}'" : "where oxlang = '{$iLang}'" ) : '';
+        $sWhere .= !is_null($iLang) ? ( $sWhere ? " and oxlang = '{$iLang}'" : "where oxlang = '{$iLang}'" ) : '';
         $sWhere .= $sParams ? ( $sWhere ? " and {$sParams}" : "where {$sParams}" ) : '';
 
         $sQ = "update oxseo set oxexpired =  " . $oDb->quote( $iExpStat ) . " $sWhere ";

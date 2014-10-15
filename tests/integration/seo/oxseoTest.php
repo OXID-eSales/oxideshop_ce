@@ -362,9 +362,12 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
      */
     protected function _addCategories(array $aCategoryIds)
     {
+        $sAdditionalInsertField = '';
+        $sAdditionalInsertValue = '';
+
         foreach ($aCategoryIds as $sId => $sTime) {
-            $sQ = "Insert into oxcategories (`OXID`,`OXSHOPINCL`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
-                   "values ('{$sId}',1,'{$sId}','{$this->_getShopId()}','1','4','testCategory1','','','','','1','10','50')";
+            $sQ = "Insert into oxcategories (`OXID`,{$sAdditionalInsertField}`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
+                   "values ('{$sId}',1,'{$sId}',{$sAdditionalInsertValue}'1','4','testCategory1','','','','','1','10','50')";
 
             oxDb::getDb()->execute($sQ);
         }

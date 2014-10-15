@@ -178,6 +178,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function run(PHPUnit_Framework_TestResult $result = null)
     {
+        $this->_removeBlacklistedClassesFromCodeCoverage($result);
         $result = parent::run($result);
 
         oxTestModules::cleanUp();
@@ -794,5 +795,48 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     {
         $oDbRestore = self::_getDbRestore();
         $oDbRestore->dumpDB();
+    }
+
+    /**
+     * Creates stub object from given class
+     *
+     * @param string $sClass       Class name
+     * @param array  $aMethods     Assoc array with method => value
+     * @param array  $aTestMethods Array with test methods for mocking
+     *
+     * @return mixed
+     */
+    protected function _createStub($sClass, $aMethods, $aTestMethods = array())
+    {
+        $aMockedMethods = array_unique(array_merge(array_keys($aMethods), $aTestMethods));
+
+        $oObject = $this->getMock($sClass, $aMockedMethods, array(), '', false);
+
+        foreach ($aMethods as $sMethod => $sValue) {
+            if (!in_array($sMethod, $aTestMethods)) {
+                $oObject->expects($this->any())
+                    ->method($sMethod)
+                    ->will($this->returnValue($sValue));
+            }
+        }
+
+        return $oObject;
+    }
+
+    /**
+     * Removes blacklisted classes from code coverage report, as this is only fixed in PHPUnit 4.0.
+     *
+     * @param PHPUnit_Framework_TestResult $result
+     */
+    private function _removeBlacklistedClassesFromCodeCoverage($result)
+    {
+        if ($result->getCollectCodeCoverageInformation()) {
+            $oCoverage = $result->getCodeCoverage();
+            $oFilter = $oCoverage->filter();
+            $aBlacklist = $oFilter->getBlacklist();
+            foreach ($aBlacklist as $sFile) {
+                $oFilter->removeFileFromWhitelist($sFile);
+            }
+        }
     }
 }

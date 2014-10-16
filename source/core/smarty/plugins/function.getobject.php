@@ -28,7 +28,7 @@
  * Type: function
  * Name: getobject
  * Purpose: Output core class object
- * add [{getobject type="oxarticle" ident="abc123" field="oxtitle" assign="oProduct"}] where you want to display content
+ * add [{ getobject type="oxarticle" ident="abc123" field="oxtitle" assign="oProduct" lang=1 }] where you want to display content
  * -------------------------------------------------------------
  *
  * @param $params
@@ -39,10 +39,12 @@
  */
 function smarty_function_getobject( $params, &$smarty )
 {
+    $iLang = oxRegistry::getLang()->getBaseLanguage();
     $sIdent = isset( $params['ident'] ) ? (string)$params['ident'] : '';
     $sType = isset( $params['type'] ) ? (string)$params['type'] : '';
     $sField = isset( $params['field'] ) ? (string)$params['field'] : '';
     $sAssign = isset( $params['assign'] ) ? (string)$params['assign'] : '';
+    $iLang = isset( $params['lang'] ) ? (int)$params['lang'] : $iLang;
     $mRet = null;
 
     if($sType == "")
@@ -51,7 +53,7 @@ function smarty_function_getobject( $params, &$smarty )
     }
 
     $oObject = oxNew($sType);
-    if($sIdent != "" && $oObject->Load($sIdent) == false)
+    if($sIdent != "" && $oObject->loadInLang($iLang, $sIdent) == false)
     {
         throw new Exception("Couldn't load ident: $sIdent");
     }

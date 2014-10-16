@@ -116,6 +116,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oArticle = new oxArticle();
         $oArticle->setAdminMode(true);
         $oArticle->load('testa');
+        $oArticle->oxarticles__oxtitle = new oxField('new title');
         $oArticle->save();
     }
 

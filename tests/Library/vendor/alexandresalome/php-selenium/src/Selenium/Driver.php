@@ -122,36 +122,12 @@ class Driver
     {
         $string = $this->getString($command, $target, $value);
 
-        $result = array();
-
-        $length  = strlen($string);
-        $current = '';
-        $skip    = false;
-
-        for ($i = 0; $i < $length; $i++) {
-            if (true === $skip) {
-                $skip = false;
-                continue;
-            }
-
-            $char = $string[$i];
-
-            if ($char === '\\') {
-                $skip = true;
-
-                continue;
-            }
-
-            if ($char === ',') {
-                $result[] = $current;
-                $current = '';
-
-                continue;
-            }
-            $current .= $char;
+        $results = preg_split('/(?<!\\\),/', $string);
+        foreach ($results as &$result) {
+            $result = str_replace('\,', ',', $result);
         }
 
-        return $result;
+        return $results;
     }
 
     /**

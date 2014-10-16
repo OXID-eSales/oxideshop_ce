@@ -379,8 +379,10 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
      */
     protected function _addArticle()
     {
-        $sQ = "Insert into oxarticles (oxid, oxshopincl, oxshopid, oxtitle, oxprice)
-                values ('_testid', '{$this->_getShopId()}', '{$this->_getShopId()}', '_testArticle', '125')";
+        $sAdditionalInsertField = '';
+        $sAdditionalInsertValue = '';
+        $sQ = "Insert into oxarticles (oxid, {$sAdditionalInsertField} oxshopid, oxtitle, oxprice)
+                values ('_testid', {$sAdditionalInsertValue} '{$this->_getShopId()}', '_testArticle', '125')";
         oxDb::getDb()->execute($sQ);
     }
 

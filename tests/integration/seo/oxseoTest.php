@@ -346,13 +346,13 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             $sQ = "replace into oxseo (`OXOBJECTID`,`OXIDENT`,`OXSHOPID`,`OXLANG`,`OXSEOURL`,`OXTYPE`,`OXFIXED`,`OXPARAMS`) " .
                    "values ('{$sCategoryId}','{$sCategoryId}','{$this->_getShopId()}','0','this/there/','oxcategory','0','')";
 
-            oxDb::getDb()->execute($sQ);
+            $this->addToDatabase($sQ, 'oxseo');
         }
         $sParam = key($aCategories);
         $sQ = "replace into oxseo (`OXOBJECTID`,`OXIDENT`,`OXSHOPID`,`OXLANG`,`OXSEOURL`,`OXTYPE`,`OXFIXED`,`OXPARAMS`) " .
                "values ('_testid','_testIndent3','{$this->_getShopId()}','0','this/there/then.html','oxarticle','0','{$sParam}')";
 
-        oxDb::getDb()->execute($sQ);
+        $this->addToDatabase($sQ, 'oxseo');
     }
 
     /**
@@ -362,14 +362,13 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
      */
     protected function _addCategories(array $aCategoryIds)
     {
-        $sAdditionalInsertField = '';
-        $sAdditionalInsertValue = '';
+
 
         foreach ($aCategoryIds as $sId => $sTime) {
-            $sQ = "Insert into oxcategories (`OXID`,{$sAdditionalInsertField}`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
-                   "values ('{$sId}',1,'{$sId}',{$sAdditionalInsertValue}'1','4','testCategory1','','','','','1','10','50')";
+            $sQ = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
+                   "values ('{$sId}',1,'{$sId}','1','4','testCategory1','','','','','1','10','50')";
 
-            oxDb::getDb()->execute($sQ);
+            $this->addToDatabase($sQ, 'oxcategories');
         }
     }
 
@@ -380,7 +379,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
     {
         $sQ = "Insert into oxarticles (oxid, oxshopid, oxtitle, oxprice)
                 values ('_testid', '{$this->_getShopId()}', '_testArticle', '125')";
-        oxDb::getDb()->execute($sQ);
+        $this->addToDatabase($sQ, 'oxarticles');
     }
 
     /**

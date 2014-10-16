@@ -39,19 +39,19 @@
  */
 function smarty_function_getobject( $params, &$smarty )
 {
-    $sIdent  = isset( $params['ident'] ) ? $params['ident'] : '';
-    $sType   = isset( $params['type'] ) ? $params['type'] : '';
-    $sField  = isset( $params['field'] ) ? $params['field'] : '';
-    $sAssign = isset( $params['assign'] ) ? $params['assign'] : '';
-
+    $sIdent = isset( $params['ident'] ) ? (string)$params['ident'] : '';
+    $sType = isset( $params['type'] ) ? (string)$params['type'] : '';
+    $sField = isset( $params['field'] ) ? (string)$params['field'] : '';
+    $sAssign = isset( $params['assign'] ) ? (string)$params['assign'] : '';
     $mRet = null;
-    if(false == $sType) {
+
+    if($sType == "")
+    {
         throw new Exception('You need to define an object type! Use type="myClass".');
     }
 
     $oObject = oxNew($sType);
-
-    if(empty($sIdent) == false && $oObject->Load($sIdent) == false)
+    if($sIdent != "" && $oObject->Load($sIdent) == false)
     {
         throw new Exception("Couldn't load ident: $sIdent");
     }

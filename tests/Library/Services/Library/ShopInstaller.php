@@ -234,15 +234,18 @@ class ShopInstaller
     /**
      * Imports file data to database.
      *
-     * @param string $sFile Path to file.
+     * @param string $sFile                   Path to file.
+     * @param bool   $blSetDefaultCharsetMode Whether to change default charset of mysql when importing file.
      */
-    public function importFileToDatabase($sFile)
+    public function importFileToDatabase($sFile, $blSetDefaultCharsetMode = false)
     {
         $oDB = $this->getDb();
         mysql_select_db($this->dbName, $oDB);
 
         $command = 'mysql -h' . $this->dbHost . ' -u' . $this->dbUser . ' -p' . $this->dbPwd . ' ' . $this->dbName;
-        $command .= ' --default-character-set=' . $this->getCharsetMode();
+        if ($blSetDefaultCharsetMode) {
+            $command .= ' --default-character-set=' . $this->getCharsetMode();
+        }
         $command .= ' < ' . "'$sFile'";
 
         passthru($command);

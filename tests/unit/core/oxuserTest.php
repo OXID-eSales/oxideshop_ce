@@ -527,16 +527,15 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
     public function testGetPasswordHash()
     {
-        $oUser1 = new oxuser();
-        $oUser1->oxuser__oxpassword = new oxField( "******" );
+        $oUser1 = new oxUser();
+        $oUser1->oxuser__oxpassword = new oxField( 'passwordHash' );
 
         $oUser2 = new oxuser();
         $oUser2->oxuser__oxpassword = new oxField( str_repeat( "*", 32 ) );
 
         $oUser3 = new oxuser();
 
-        $sHash = $oUser1->getPasswordHash();
-        $this->assertEquals( MD5( "******" . oxDb::getDb()->getOne( "select UNHEX( '{$oUser1->oxuser__oxpasssalt->value}' )" ) ), $sHash );
+        $this->assertEquals( 'passwordHash', $oUser1->getPasswordHash() );
 
         $sHash = $oUser2->getPasswordHash();
         $this->assertEquals( str_repeat( "*", 32 ), $sHash );

@@ -25,7 +25,6 @@
  * Performs user managing function, as assigning to groups, updating
  * information, deletion and other.
  *
- * @package model
  */
 class oxUser extends oxBase
 {
@@ -244,10 +243,10 @@ class oxUser extends oxBase
 
                 // no subscription defined yet - creating one
                 $this->_oNewsSubscription->oxnewssubscribed__oxuserid = new oxField($this->getId(), oxField::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxemail  = new oxField($this->oxuser__oxusername->value, oxField::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxsal    = new oxField($this->oxuser__oxsal->value, oxField::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxfname  = new oxField($this->oxuser__oxfname->value, oxField::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxlname  = new oxField($this->oxuser__oxlname->value, oxField::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxemail = new oxField($this->oxuser__oxusername->value, oxField::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxsal = new oxField($this->oxuser__oxsal->value, oxField::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxfname = new oxField($this->oxuser__oxfname->value, oxField::T_RAW);
+                $this->_oNewsSubscription->oxnewssubscribed__oxlname = new oxField($this->oxuser__oxlname->value, oxField::T_RAW);
             }
         }
 
@@ -639,35 +638,25 @@ class oxUser extends oxBase
     public function exists( $sOXID = null )
     {
         $oDb = oxDb::getDb();
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             $sOXID = $this->getId();
         }
 
-        $sShopSelect = '';
-        if ( !$this->_blMallUsers && $this->oxuser__oxrights->value != 'malladmin') {
-            $sShopSelect = ' AND oxshopid = "'.$this->getConfig()->getShopId().'" ';
+        //#5901 if physical record exists return true unconditionally
+        if (parent::exists($sOXID)) {
+            return true;
         }
 
-        //#4543 Query optimisation by splitting it into two, might need an logics optimisation as well
-        if ( $sOXID ) {
-            $sSelect = 'SELECT oxid FROM '.$this->getViewName().'
-                    WHERE ( oxid = '.$oDb->quote( $sOXID ).' ) ';
-            $sSelect .= $sShopSelect;
-
-            if ( ( $sOxid = $oDb->getOne( $sSelect, false, false ) ) ) {
-                // update - set oxid
-                $this->setId( $sOxid );
-                return true;
-            }
-        }
-
-        $sSelect = 'SELECT oxid FROM '.$this->getViewName().'
-                    WHERE ( oxusername = '.$oDb->quote( $this->oxuser__oxusername->value).' ) ';
+        //additional username check
+        $oDb = oxDb::getDb();
+        $sSelect = 'SELECT oxid FROM ' . $this->getViewName() . '
+                    WHERE ( oxusername = ' . $oDb->quote($this->oxuser__oxusername->value) . ' ) ';
         $sSelect .= $sShopSelect;
 
-        if ( ( $sOxid = $oDb->getOne( $sSelect, false, false ) ) ) {
-             // update - set oxid
-            $this->setId( $sOxid );
+        if (($sOxid = $oDb->getOne($sSelect, false, false))) {
+            // update - set oxid
+            $this->setId($sOxid);
+
             return true;
         }
         return false;

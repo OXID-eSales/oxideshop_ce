@@ -535,7 +535,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         $oUser3 = new oxuser();
 
-        $this->assertEquals( 'passwordHash', $oUser1->getPasswordHash() );
+        $this->assertNotEquals( 'passwordHash', $oUser1->getPasswordHash() );
 
         $sHash = $oUser2->getPasswordHash();
         $this->assertEquals( str_repeat( "*", 32 ), $sHash );

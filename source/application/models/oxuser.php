@@ -2198,6 +2198,9 @@ class oxUser extends oxBase
     {
         $sHash = null;
         if ( $this->oxuser__oxpassword->value ) {
+            if ( strlen( $this->oxuser__oxpassword->value ) < 32 ) {
+                $this->setPassword( $this->oxuser__oxpassword->value );
+            }
             $sHash = $this->oxuser__oxpassword->value;
         }
         return $sHash;

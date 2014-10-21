@@ -4338,6 +4338,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _update()
     {
 
+        $this->setUpdateSeo(true);
         $this->_setUpdateSeoOnFieldChange('oxtitle');
 
         $this->_skipSaveFields();

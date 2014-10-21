@@ -118,7 +118,10 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function __construct($name = null, array $data = array(), $dataName = '')
     {
-        $this->setUpBeforeTestSuite();
+        if (!self::$_blSetupBeforeTestSuiteDone) {
+            $this->setUpBeforeTestSuite();
+            self::$_blSetupBeforeTestSuiteDone = true;
+        }
         parent::__construct($name, $data, $dataName);
     }
 
@@ -127,18 +130,15 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function setUpBeforeTestSuite()
     {
-        if (!self::$_blSetupBeforeTestSuiteDone) {
-            $this->_createDataBaseDump();
+        $this->_backupDatabase();
 
-            oxRegistry::getUtils()->commitFileCache();
+        oxRegistry::getUtils()->commitFileCache();
 
-            $oxLang = oxRegistry::getLang();
-            $oxLang->resetBaseLanguage();
+        $oxLang = oxRegistry::getLang();
+        $oxLang->resetBaseLanguage();
 
-            $this->_createRegistryCache();
-
-            self::$_blSetupBeforeTestSuiteDone = true;
-        }
+        $this->_backupRegistry();
+        $this->_backupRequestVariables();
     }
 
     /**
@@ -148,12 +148,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->_aBackup['_SERVER'] = $_SERVER;
-        $this->_aBackup['_POST'] = $_POST;
-        $this->_aBackup['_GET'] = $_GET;
-        $this->_aBackup['_SESSION'] = $_SESSION;
-        $this->_aBackup['_COOKIE'] = $_COOKIE;
-
         parent::setUp();
         error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
         ini_set('display_errors', true);
@@ -186,35 +180,35 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Executed after test is down
+     * Executed after test is down.
+     * Cleans up database only if test does not have dependencies.
+     * If test does have dependencies, any value instead of null should be returned.
      */
     protected function tearDown()
     {
-        $this->cleanUpDatabase();
-        modDb::getInstance()->modAttach(modDb::getInstance()->getRealInstance());
-        oxTestsStaticCleaner::clean('oxUtilsObject', '_aInstanceCache');
-        oxTestsStaticCleaner::clean('oxArticle', '_aLoadedParents');
+        if ($this->getResult() === null) {
+            $this->cleanUpDatabase();
 
-        modInstances::cleanup();
-        oxTestModules::cleanUp();
-        modOxid::globalCleanup();
-        modDB::getInstance()->cleanup();
+            modDb::getInstance()->modAttach(modDb::getInstance()->getRealInstance());
+            oxTestsStaticCleaner::clean('oxUtilsObject', '_aInstanceCache');
+            oxTestsStaticCleaner::clean('oxArticle', '_aLoadedParents');
 
-        $this->getSession()->cleanup();
-        $this->getConfig()->cleanup();
+            modInstances::cleanup();
+            oxTestModules::cleanUp();
+            modOxid::globalCleanup();
+            modDB::getInstance()->cleanup();
 
-        $_SERVER = $this->_aBackup['_SERVER'];
-        $_POST = $this->_aBackup['_POST'];
-        $_GET = $this->_aBackup['_GET'];
-        $_SESSION = $this->_aBackup['_SESSION'];
-        $_COOKIE = $this->_aBackup['_COOKIE'];
+            $this->getSession()->cleanup();
+            $this->getConfig()->cleanup();
 
-        $this->_resetRegistry();
+            $this->_resetRequestVariables();
+            $this->_resetRegistry();
 
-        oxUtilsObject::resetClassInstances();
-        oxUtilsObject::resetModuleVars();
+            oxUtilsObject::resetClassInstances();
+            oxUtilsObject::resetModuleVars();
 
-        parent::tearDown();
+            parent::tearDown();
+        }
     }
 
     /**
@@ -353,7 +347,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Returns session object
      *
-     * @return modSession
+     * @return oxSession
      */
     public static function getSession()
     {
@@ -729,7 +723,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Creates registry clone
      */
-    protected function _createRegistryCache()
+    protected function _backupRegistry()
     {
         self::$_aRegistryCache = array();
         foreach (oxRegistry::getKeys() as $class) {
@@ -791,7 +785,10 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         return iconv("ISO-8859-1", "UTF-8", $sVal);
     }
 
-    protected function _createDataBaseDump()
+    /**
+     * Backs up database for later restorations.
+     */
+    protected function _backupDatabase()
     {
         $oDbRestore = self::_getDbRestore();
         $oDbRestore->dumpDB();
@@ -821,6 +818,30 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         }
 
         return $oObject;
+    }
+
+    /**
+     * Backs up global request variables for reverting them back after test run.
+     */
+    protected function _backupRequestVariables()
+    {
+        $this->_aBackup['_SERVER'] = $_SERVER;
+        $this->_aBackup['_POST'] = $_POST;
+        $this->_aBackup['_GET'] = $_GET;
+        $this->_aBackup['_SESSION'] = $_SESSION;
+        $this->_aBackup['_COOKIE'] = $_COOKIE;
+    }
+
+    /**
+     * Sets global request variables to backed up ones after every test run.
+     */
+    protected function _resetRequestVariables()
+    {
+        $_SERVER = $this->_aBackup['_SERVER'];
+        $_POST = $this->_aBackup['_POST'];
+        $_GET = $this->_aBackup['_GET'];
+        $_SESSION = $this->_aBackup['_SESSION'];
+        $_COOKIE = $this->_aBackup['_COOKIE'];
     }
 
     /**

@@ -511,14 +511,14 @@ public function testInvoicepdfArticleSummary_setWrappingInfo()
  */
 public function testPdfArticleSummary_setWrappingInfo_WithGiftCardOnly()
 {
-    $oMyOrder = $this->_getTestMyOrder();
+    $oMyOrder = $this->_getTestInvoicepdfOxOrder();
     $oMyOrder->oxorder__oxwrapvat = new oxField('0', oxField::T_RAW);
     $oMyOrder->oxorder__oxwrapcost = new oxField('0', oxField::T_RAW);
     $oMyOrder->oxorder__oxgiftcardvat = new oxField('19', oxField::T_RAW);
     $oMyOrder->oxorder__oxgiftcardcost = new oxField('8', oxField::T_RAW);
 
     $oPdf = new testPdfClass;
-    $oPdfArtSum = new myOrder_PdfArticleSummary( $oMyOrder, $oPdf );
+    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oMyOrder, $oPdf );
 
     $iStartPos = 1;
     $oPdfArtSum->setWrappingInfo( $iStartPos );

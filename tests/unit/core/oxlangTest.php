@@ -1752,11 +1752,13 @@ class Unit_Core_oxLangTest extends OxidTestCase
             $this->returnValue("en")
         );
 
-        // Fake language selection to shop default language
+        // Set default language to german
+        $this->getConfig()->setConfigParam('sDefaultLang',0);
+
+        // Fake language selection in frontend to shop default language
         $oLang->setBaseLanguage(0);
 
-        $config = $this->getConfig();
-        $shopURL = $config->getShopHomeUrl();
+        $shopURL = $this->getConfig()->getShopHomeUrl();
         $processURL = $shopURL . "cl=account&amp;";
         $expectingURL = $shopURL . "cl=account&amp;lang=0&amp;";
 

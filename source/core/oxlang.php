@@ -1102,7 +1102,9 @@ class oxLang extends oxSuperCfg
 
         if (!$this->isAdmin()) {
             $sParam = $this->getUrlLang($iLang);
-            if (!$oStr->preg_match('/(\?|&(amp;)?)lang=[0-9]+/', $sUrl) && ($iLang != $iDefaultLang || $iDefaultLang != $iBrowserLanguage)) {
+            if (!$oStr->preg_match('/(\?|&(amp;)?)lang=[0-9]+/', $sUrl) &&
+                ($iLang != $iDefaultLang || $iDefaultLang!= $iBrowserLanguage)
+            ) {
                 if ($sUrl) {
                     if ($oStr->strpos($sUrl, '?') === false) {
                         $sUrl .= "?";

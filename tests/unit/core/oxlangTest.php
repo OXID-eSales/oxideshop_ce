@@ -1762,8 +1762,6 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $processedURL = $oLang->processUrl($processURL);
 
-        //var_dump( $processURL, $processedURL, $expectingURL, $oLang->getBaseLanguage() );
-
         $this->assertEquals(
             $expectingURL,
             $processedURL,

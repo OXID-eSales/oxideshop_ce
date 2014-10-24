@@ -1,0 +1,32 @@
+{
+    "name": "oxid/eshop_ce",
+    "description": "oxideshop_ce",
+    "repositories": {
+        "packagist.org": {
+            "type": "composer",
+            "url": "packagist.org"
+        },
+        "packagist": {
+            "type": "composer",
+            "url": "packagist.renzel.net"
+        }
+    },
+    "require": {
+        "oxidcookbook/ocb_cleartmp": "dev-master",
+        "acirtautas/oxid-module-internals": "dev-master"
+    },
+    "extra": {
+        "installer-paths": {
+            "htdocs/modules/{$name}": ["type:oxid-module"],
+            "htdocs/application/views/{$name}": ["type:oxid-theme"],
+            "htdocs/out/{$name}": ["type:oxid-out"]
+        }
+    },
+    "authors": [
+        {
+            "name": "Robin Lehrmann",
+            "email": "role@vkf-renzel.de"
+        }
+    ],
+    "minimum-stability": "dev"
+}

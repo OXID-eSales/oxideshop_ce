@@ -48,3 +48,5 @@ logs/*
 
 /source/out/pictures/promo/*
 !/source/out/pictures/promo/dir.txt
+
+/vendor/

@@ -17,9 +17,9 @@
     },
     "extra": {
         "installer-paths": {
-            "htdocs/modules/{$name}": ["type:oxid-module"],
-            "htdocs/application/views/{$name}": ["type:oxid-theme"],
-            "htdocs/out/{$name}": ["type:oxid-out"]
+            "source/modules/{$name}": ["type:oxid-module"],
+            "source/application/views/{$name}": ["type:oxid-theme"],
+            "source/out/{$name}": ["type:oxid-out"]
         }
     },
     "authors": [

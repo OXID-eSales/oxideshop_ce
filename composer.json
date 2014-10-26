@@ -5,10 +5,6 @@
         "packagist.org": {
             "type": "composer",
             "url": "packagist.org"
-        },
-        "packagist": {
-            "type": "composer",
-            "url": "packagist.renzel.net"
         }
     },
     "require": {
@@ -25,7 +21,7 @@
     "authors": [
         {
             "name": "Robin Lehrmann",
-            "email": "role@vkf-renzel.de"
+            "email": "role@snow-hamster.de"
         }
     ],
     "minimum-stability": "dev"

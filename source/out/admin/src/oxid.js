@@ -97,7 +97,7 @@ var oxid = {
             return '';
         },
 
-        changeEditBar : function( sLocation, sPos )
+        changeEditBar : function( sLocation, sPos, sFunction)
         {
             var oSearch = top.basefrm.list.document.getElementById( "search" );
             oSearch.actedit.value = sPos;
@@ -105,6 +105,7 @@ var oxid = {
 
             var oTransfer = top.basefrm.edit.document.getElementById( "transfer" );
             oTransfer.cl.value = sLocation;
+            oTransfer.fnc.value = sFunction || "";
 
             //forcing edit frame to reload after submit
             top.forceReloadingEditFrame();

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5fc9ab6b140b48ad967772e949ff844e",
+    "hash": "35e8d5bf6702ea5372a95899ee55251a",
     "packages": [
         {
             "name": "acirtautas/oxid-module-internals",

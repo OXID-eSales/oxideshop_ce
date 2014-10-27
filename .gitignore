@@ -1,6 +1,11 @@
 .idea
-logs/*
-!logs/.gitkeep
+
+/bin/*
+!/bin/cron.php
+!/bin/.htaccess
+
+/logs/*
+!/logs/.gitkeep
 
 /tmp/*
 !/tmp/.htaccess
@@ -49,4 +54,4 @@ logs/*
 /out/pictures/promo/*
 !/out/pictures/promo/dir.txt
 
-/vendor/
+/libs/

@@ -1,5 +1,9 @@
 {
     "name": "oxid/eshop_ce",
+    "config": {
+        "vendor-dir": "libs",
+        "bin-dir": "bin"
+    },
     "description": "oxideshop_ce",
     "type": "oxid-shop",
     "require": {

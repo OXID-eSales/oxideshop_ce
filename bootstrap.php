@@ -36,6 +36,11 @@ if (!defined('OX_BASE_PATH')) {
 // custom functions file
 require_once OX_BASE_PATH . 'modules/functions.php';
 
+// composer autoload file
+if (is_file(OX_BASE_PATH . 'libs/autoload.php')) {
+    require_once OX_BASE_PATH . 'libs/autoload.php';
+}
+
 // Generic utility method file including autoloading definition
 require_once OX_BASE_PATH . 'core/oxfunctions.php';
 

@@ -10,18 +10,7 @@
     "require-dev": {
         "oxid/eshoptests": "dev-master"
     },
-    "extra": {
-        "installer-paths": {
-            "source/modules/{$name}": ["type:oxid-module"],
-            "source/application/views/{$name}": ["type:oxid-theme"],
-            "source/out/{$name}": ["type:oxid-out"]
-        }
-    },
-    "authors": [
-        {
-            "name": "Robin Lehrmann",
-            "email": "robin@snow-hamster.de"
-        }
-    ],
+    "keywords": ["oxid"],
+    "homepage": "https://www.oxid-esales.com",
     "minimum-stability": "dev"
 }

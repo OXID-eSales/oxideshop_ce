@@ -10,6 +10,9 @@
 /tmp/*
 !/tmp/.htaccess
 
+/application/views/*
+!/application/views/admin
+
 /export/*
 !/export/index.html
 
@@ -20,6 +23,11 @@
 
 /modules/*
 !/functions.php
+
+/out/*
+!/out/admin
+!/out/downloads
+!/out/pictures
 
 /out/downloads/uploads/*
 !/out/downloads/uploads/dir.txt

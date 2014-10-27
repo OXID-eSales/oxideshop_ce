@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "35e8d5bf6702ea5372a95899ee55251a",
+    "hash": "d5102ccb0a0a85181d69e49e1be2aeb5",
     "packages": [
         {
             "name": "acirtautas/oxid-module-internals",
@@ -126,6 +126,31 @@
             "time": "2014-10-25 22:13:47"
         },
         {
+            "name": "oe/invoicepdf",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robinlehrmann/oe-invoicepdf.git",
+                "reference": "d454ec432a654e8f1ec31752abdf3ed260016366"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robinlehrmann/oe-invoicepdf/zipball/d454ec432a654e8f1ec31752abdf3ed260016366",
+                "reference": "d454ec432a654e8f1ec31752abdf3ed260016366",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "oxid-module",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "description": "Module to export invoice PDF files.",
+            "time": "2014-10-27 19:06:53"
+        },
+        {
             "name": "oxidcookbook/ocb_cleartmp",
             "version": "dev-master",
             "source": {
@@ -185,6 +210,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "oe/invoicepdf": 20,
         "composer/installers": 20,
         "oxidcookbook/ocb_cleartmp": 20,
         "acirtautas/oxid-module-internals": 20,

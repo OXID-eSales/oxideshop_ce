@@ -23,3 +23,36 @@
 /**
  * Add custom functions here.
  */
+
+// Premature loading of oxfunctions
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'oxfunctions.php';
+
+if (!function_exists('module_enabled_count')) {
+
+    /**
+     * Get count of shops where module is enabled
+     *
+     * @param $sModuleId
+     *
+     * @return int
+     */
+    function module_enabled_count($sModuleId)
+    {
+        $aModuleIds = array_keys(oxRegistry::getConfig()->getConfigParam('aModulePaths'));
+        if (!in_array($sModuleId, $aModuleIds)) {
+            return 0;
+        }
+
+        $aConfigs = oxSpecificShopConfig::getAll();
+        $iCount = 0;
+
+        foreach ($aConfigs as $oConfig) {
+            $aEnabledModules = array_diff($aModuleIds, $oConfig->getConfigParam('aDisabledModules'));
+            if (in_array($sModuleId, $aEnabledModules)) {
+                $iCount++;
+            }
+        }
+
+        return $iCount;
+    }
+}

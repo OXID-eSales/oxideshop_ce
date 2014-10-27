@@ -7,6 +7,9 @@
         "oxidcookbook/ocb_cleartmp": "dev-master",
         "acirtautas/oxid-module-internals": "dev-master"
     },
+    "require-dev": {
+        "oxid/eshoptests": "dev-master"
+    },
     "extra": {
         "installer-paths": {
             "source/modules/{$name}": ["type:oxid-module"],

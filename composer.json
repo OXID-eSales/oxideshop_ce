@@ -1,13 +1,9 @@
 {
     "name": "oxid/eshop_ce",
     "description": "oxideshop_ce",
-    "repositories": {
-        "packagist.org": {
-            "type": "composer",
-            "url": "packagist.org"
-        }
-    },
+    "type": "oxid-shop",
     "require": {
+	"composer/installers": "dev-master",
         "oxidcookbook/ocb_cleartmp": "dev-master",
         "acirtautas/oxid-module-internals": "dev-master"
     },

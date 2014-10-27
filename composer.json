@@ -7,6 +7,7 @@
     "description": "oxideshop_ce",
     "type": "oxid-shop",
     "require": {
+        "oe/invoicepdf": "dev-master",
 	"composer/installers": "dev-master",
         "oxidcookbook/ocb_cleartmp": "dev-master",
         "acirtautas/oxid-module-internals": "dev-master"

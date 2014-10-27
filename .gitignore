@@ -19,7 +19,6 @@
 !/log/.htaccess
 
 /modules/*
-!/modules/oe
 !/functions.php
 
 /out/downloads/uploads/*

@@ -1,0 +1,196 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "5fc9ab6b140b48ad967772e949ff844e",
+    "packages": [
+        {
+            "name": "acirtautas/oxid-module-internals",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/acirtautas/oxid-module-internals.git",
+                "reference": "325a70634885b2f821f8c793ec80a151422a9105"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/acirtautas/oxid-module-internals/zipball/325a70634885b2f821f8c793ec80a151422a9105",
+                "reference": "325a70634885b2f821f8c793ec80a151422a9105",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "oxid-module",
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Alfonsas Cirtautas"
+                }
+            ],
+            "description": "OXID eShop module system helper tools",
+            "time": "2014-10-15 20:28:09"
+        },
+        {
+            "name": "composer/installers",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/installers.git",
+                "reference": "27697a73b7a68b4a834e45fe560bea23ec3b3435"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/installers/zipball/27697a73b7a68b4a834e45fe560bea23ec3b3435",
+                "reference": "27697a73b7a68b4a834e45fe560bea23ec3b3435",
+                "shasum": ""
+            },
+            "replace": {
+                "roundcube/plugin-installer": "*",
+                "shama/baton": "*"
+            },
+            "require-dev": {
+                "composer/composer": "1.0.*@dev",
+                "phpunit/phpunit": "4.1.*"
+            },
+            "type": "composer-installer",
+            "extra": {
+                "class": "Composer\\Installers\\Installer",
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Composer\\Installers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kyle Robinson Young",
+                    "email": "kyle@dontkry.com",
+                    "homepage": "https://github.com/shama"
+                }
+            ],
+            "description": "A multi-framework Composer library installer",
+            "homepage": "http://composer.github.com/installers/",
+            "keywords": [
+                "Craft",
+                "Dolibarr",
+                "Hurad",
+                "MODX Evo",
+                "OXID",
+                "Thelia",
+                "WolfCMS",
+                "agl",
+                "annotatecms",
+                "bitrix",
+                "cakephp",
+                "chef",
+                "codeigniter",
+                "concrete5",
+                "croogo",
+                "drupal",
+                "elgg",
+                "fuelphp",
+                "grav",
+                "installer",
+                "joomla",
+                "kohana",
+                "laravel",
+                "lithium",
+                "magento",
+                "mako",
+                "mediawiki",
+                "modulework",
+                "moodle",
+                "phpbb",
+                "piwik",
+                "ppi",
+                "puppet",
+                "roundcube",
+                "shopware",
+                "silverstripe",
+                "symfony",
+                "typo3",
+                "wordpress",
+                "zend",
+                "zikula"
+            ],
+            "time": "2014-10-25 22:13:47"
+        },
+        {
+            "name": "oxidcookbook/ocb_cleartmp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OXIDCookbook/ocb_cleartmp.git",
+                "reference": "a6179c6dfcab78253654f68b8f750b60e16d00a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OXIDCookbook/ocb_cleartmp/zipball/a6179c6dfcab78253654f68b8f750b60e16d00a8",
+                "reference": "a6179c6dfcab78253654f68b8f750b60e16d00a8",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "oxid-module",
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Clear the tmp directory from the backend.",
+            "time": "2014-10-13 13:43:45"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "oxid/eshoptests",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robinlehrmann/oxideshop_ce-tests.git",
+                "reference": "e4a1cba77294a325bc7b0aaa136c55bfc6df3411"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robinlehrmann/oxideshop_ce-tests/zipball/e4a1cba77294a325bc7b0aaa136c55bfc6df3411",
+                "reference": "e4a1cba77294a325bc7b0aaa136c55bfc6df3411",
+                "shasum": ""
+            },
+            "require-dev": {
+                "behat/mink": "~1.5.0",
+                "behat/mink-goutte-driver": "*",
+                "behat/mink-sahi-driver": "*",
+                "behat/mink-selenium-driver": "*",
+                "behat/mink-selenium2-driver": "*",
+                "behat/mink-zombie-driver": "*",
+                "phpunit/phpunit": "~3.7"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "OXID eShop tests package",
+            "homepage": "https://www.oxid-esales.com",
+            "keywords": [
+                "OXID"
+            ],
+            "time": "2014-10-27 17:55:06"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "composer/installers": 20,
+        "oxidcookbook/ocb_cleartmp": 20,
+        "acirtautas/oxid-module-internals": 20,
+        "oxid/eshoptests": 20
+    },
+    "prefer-stable": false,
+    "platform": [],
+    "platform-dev": []
+}

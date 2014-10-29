@@ -1725,4 +1725,49 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oLang->translateString('HOME');
         $this->assertTrue($oLang->isTranslated());
     }
+
+    /**
+     * Test if BUG #5775 is fixed
+     * "oxLang::processUrl" did not append the language parameter to the URL if it was the same as the shops default language
+     */
+    public function testProcessUrlAppendsLanguageParameterOnDefaultLanguageAndDifferentBrowserLanguage()
+    {
+        $aLanguages = array(
+            'de' => 'Deutsch',
+            'en' => 'English',
+        );
+
+        $aLanguageParams = array(
+            'de' => array('baseId' => 0, 'abbr' => 'de', 'active' => true),
+            'en' => array('baseId' => 1, 'abbr' => 'en', 'active' => true),
+        );
+
+        $this->getConfig()->saveShopConfVar('aarr', 'aLanguages', $aLanguages);
+        $this->getConfig()->saveShopConfVar('aarr', 'aLanguageParams', $aLanguageParams);
+        $this->getConfig()->setConfigParam('aLanguages', $aLanguages);
+        $this->getConfig()->setConfigParam('aLanguageParams', $aLanguageParams);
+
+        $oLang = $this->getMock('oxLang', array('_getBrowserLanguage'));
+        $oLang->expects($this->any())->method('_getBrowserLanguage')->will(
+            $this->returnValue("en")
+        );
+
+        // Set default language to german
+        $this->getConfig()->setConfigParam('sDefaultLang',0);
+
+        // Fake language selection in frontend to shop default language
+        $oLang->setBaseLanguage(0);
+
+        $shopURL = $this->getConfig()->getShopHomeUrl();
+        $processURL = $shopURL . "cl=account&amp;";
+        $expectingURL = $shopURL . "cl=account&amp;lang=0&amp;";
+
+        $processedURL = $oLang->processUrl($processURL);
+
+        $this->assertEquals(
+            $expectingURL,
+            $processedURL,
+            "Processed URL does not contain default Shop Language as paramater."
+        );
+    }
 }

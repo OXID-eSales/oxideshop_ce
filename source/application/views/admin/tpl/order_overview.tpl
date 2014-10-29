@@ -236,8 +236,10 @@
         </td>
         <td valign="top" class="edittext">
             [{if $edit }]
-            [{block name="admin_order_overview_info"}]
+            [{block name="admin_order_overview_order_number"}]
                 <b>[{ oxmultilang ident="GENERAL_ORDERNUM" }]: </b>[{ $edit->oxorder__oxordernr->value }]<br>
+            [{/block}]
+            [{block name="admin_order_overview_customer_number"}]
                 [{assign var="user" value=$edit->getOrderUser() }]
                 <b>[{ oxmultilang ident="CUSTOMERNUM" }]: </b>[{ $user->oxuser__oxcustnr->value }]<br>
             [{/block}]

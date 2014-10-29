@@ -75,7 +75,7 @@ function changeFnc( fncName )
                 [{ oxinputhelp ident="HELP_GENERAL_ENDDATE" }]
                 </td>
             </tr>
-            [{block name="admin_voucherserie_main_type_row"}]
+            [{block name="admin_voucherserie_main_form_discount_type"}]
                 <tr>
                     <td class="edittext">
                     [{ oxmultilang ident="VOUCHERSERIE_MAIN_DISCOUNT" }]

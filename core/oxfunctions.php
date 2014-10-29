@@ -114,6 +114,7 @@ function oxAutoload($sClass)
     if (!in_array($sClass, $aTriedClasses) && is_array($aModules = oxUtilsObject::getInstance()->getModuleVar('aModules'))) {
 
         $myUtilsObject = oxUtilsObject::getInstance();
+        $sClass = preg_quote ($sClass, '/');
         foreach ($aModules as $sParentName => $sModuleName) {
             // looking for module parent class
             if (preg_match('/\b' . $sClass . '($|\&)/i', $sModuleName)) {

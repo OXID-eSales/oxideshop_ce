@@ -96,6 +96,9 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /** @var DbRestore Database restorer object */
     protected static $_oDbRestore = null;
 
+    /** @var oxTestModuleLoader Module loader. */
+    protected static $_oModuleLoader = null;
+
     /** @var array multishop tables used in shop */
     protected $_aMultiShopTables = array(
         'oxarticles', 'oxcategories', 'oxattribute', 'oxdelivery',
@@ -130,6 +133,12 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function setUpBeforeTestSuite()
     {
+        if (MODULES_PATH) {
+            $oTestModuleLoader = $this->_getModuleLoader();
+            $oTestModuleLoader->loadModules(explode(',', MODULES_PATH));
+            $oTestModuleLoader->setModuleInformation();
+        }
+
         $this->_backupDatabase();
 
         oxRegistry::getUtils()->commitFileCache();
@@ -159,6 +168,12 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
 
         oxRegistry::getUtils()->cleanStaticCache();
+
+        if (MODULES_PATH) {
+            $oTestModuleLoader = $this->_getModuleLoader();
+            $oTestModuleLoader->setModuleInformation();
+        }
+
         error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
         ini_set('display_errors', true);
     }
@@ -718,6 +733,20 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         }
 
         return self::$_oDbRestore;
+    }
+
+    /**
+     * Returns database restorer object.
+     *
+     * @return oxTestModuleLoader
+     */
+    protected static function _getModuleLoader()
+    {
+        if (is_null(self::$_oModuleLoader)) {
+            self::$_oModuleLoader = new oxTestModuleLoader();
+        }
+
+        return self::$_oModuleLoader;
     }
 
     /**

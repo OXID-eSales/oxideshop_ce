@@ -51,6 +51,12 @@ $blRestoreShopAfterTestSuite = false;
 // at a state, at which test was completed (either failed or passed).
 $blRestoreShopAfterTest = true;
 
+// When testing module, add module information here. Otherwise leave all as null.
+// All module files has to be in shop's module directory.
+// Module path in shop, e.g. if module is in 'shop/modules/oe/mymodule' directory, value here should be 'oe/mymodule'.
+// Multiple modules can be specified separated by comma: 'oe/module1,module2,tt/module3'.
+$sModulesPath = 'oe/oevattbe';
+
 // Selenium server IP address
 $sSeleniumServerIp = "127.0.0.1";
 // Folder where to save selenium screen shots. If not specified, screenshots will not be taken.

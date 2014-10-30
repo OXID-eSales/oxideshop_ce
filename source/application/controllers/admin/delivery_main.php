@@ -202,22 +202,22 @@ class Delivery_Main extends oxAdminDetails
 
         $aDelTypes = array();
         $oType = new stdClass();
-        $oType->sType     = "a";      // amount
-        $oType->sDesc    = $oLang->translateString( "amount", $iLang );
+        $oType->sType = "a";      // amount
+        $oType->sDesc = $oLang->translateString("amount", $iLang);
         $aDelTypes['a'] = $oType;
         $oType = new stdClass();
-        $oType->sType     = "s";      // Size
-        $oType->sDesc    = $oLang->translateString( "size", $iLang );
+        $oType->sType = "s";      // Size
+        $oType->sDesc = $oLang->translateString("size", $iLang);
         $aDelTypes['s'] = $oType;
         $oType = new stdClass();
-        $oType->sType     = "w";      // Weight
-        $oType->sDesc    = $oLang->translateString( "weight", $iLang );
+        $oType->sType = "w";      // Weight
+        $oType->sDesc = $oLang->translateString("weight", $iLang);
         $aDelTypes['w'] = $oType;
         $oType = new stdClass();
-        $oType->sType     = "p";      // Price
-        $oType->sDesc    = $oLang->translateString( "price", $iLang );
+        $oType->sType = "p";      // Price
+        $oType->sDesc = $oLang->translateString("price", $iLang);
         $aDelTypes['p'] = $oType;
+
         return $aDelTypes;
     }
-
 }

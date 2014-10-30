@@ -107,28 +107,28 @@ class Unit_Admin_DeliveryMainTest extends OxidTestCase
         $this->fail("error in Delivery_Main::save()");
     }
 
-	/**
-	 * Delivery_Main::getDeliveryTypes() test case
-	 *
-	 * @return null
-	 */
-	public function testGetDeliveryTypes()
-	{
-		$oView = new Delivery_Main();
-		$aDelTypes = $oView->getDeliveryTypes();
+    /**
+     * Delivery_Main::getDeliveryTypes() test case
+     *
+     * @return null
+     */
+    public function testGetDeliveryTypes()
+    {
+        $oView = new Delivery_Main();
+        $aDelTypes = $oView->getDeliveryTypes();
 
-		$oLang = oxRegistry::getLang();
-		$iLang = $oLang->getTplLanguage();
+        $oLang = oxRegistry::getLang();
+        $iLang = $oLang->getTplLanguage();
 
-		$oType = new stdClass();
-		$oType->sType     = "t";      // test
-		$oType->sDesc    = $oLang->translateString( "test", $iLang );
-		$aDelTypes['t'] = $oType;
+        $oType = new stdClass();
+        $oType->sType = "t";      // test
+        $oType->sDesc = $oLang->translateString("test", $iLang);
+        $aDelTypes['t'] = $oType;
 
-		$this->assertInternalType('array', $aDelTypes);
-		$aDelTypeKeys = array('a', 's', 'w', 'p', 't');
-		foreach($aDelTypeKeys as $sDelTypeKey) {
-			$this->assertArrayHasKey($sDelTypeKey, $aDelTypes);
-		}
-	}
+        $this->assertInternalType('array', $aDelTypes);
+        $aDelTypeKeys = array('a', 's', 'w', 'p', 't');
+        foreach ($aDelTypeKeys as $sDelTypeKey) {
+            $this->assertArrayHasKey($sDelTypeKey, $aDelTypes);
+        }
+    }
 }

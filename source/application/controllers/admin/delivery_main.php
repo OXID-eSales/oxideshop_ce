@@ -48,23 +48,7 @@ class Delivery_Main extends oxAdminDetails
         unset($this->_aViewData["sumtype"][2]);
 
         // Deliverytypes
-        $aDelTypes = array();
-        $oType = new stdClass();
-        $oType->sType = "a"; // amount
-        $oType->sDesc = $oLang->translateString("amount", $iLang);
-        $aDelTypes['a'] = $oType;
-        $oType = new stdClass();
-        $oType->sType = "s"; // Size
-        $oType->sDesc = $oLang->translateString("size", $iLang);
-        $aDelTypes['s'] = $oType;
-        $oType = new stdClass();
-        $oType->sType = "w"; // Weight
-        $oType->sDesc = $oLang->translateString("weight", $iLang);
-        $aDelTypes['w'] = $oType;
-        $oType = new stdClass();
-        $oType->sType = "p"; // Price
-        $oType->sDesc = $oLang->translateString("price", $iLang);
-        $aDelTypes['p'] = $oType;
+        $aDelTypes = $this->getDeliveryTypes();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ($soxId != "-1" && isset($soxId)) {
@@ -205,4 +189,35 @@ class Delivery_Main extends oxAdminDetails
         // set oxid if inserted
         $this->setEditObjectId($oDelivery->getId());
     }
+
+    /**
+     * returns delivery types
+     *
+     * @return array
+     */
+    public function getDeliveryTypes()
+    {
+        $oLang = oxRegistry::getLang();
+        $iLang = $oLang->getTplLanguage();
+
+        $aDelTypes = array();
+        $oType = new stdClass();
+        $oType->sType     = "a";      // amount
+        $oType->sDesc    = $oLang->translateString( "amount", $iLang );
+        $aDelTypes['a'] = $oType;
+        $oType = new stdClass();
+        $oType->sType     = "s";      // Size
+        $oType->sDesc    = $oLang->translateString( "size", $iLang );
+        $aDelTypes['s'] = $oType;
+        $oType = new stdClass();
+        $oType->sType     = "w";      // Weight
+        $oType->sDesc    = $oLang->translateString( "weight", $iLang );
+        $aDelTypes['w'] = $oType;
+        $oType = new stdClass();
+        $oType->sType     = "p";      // Price
+        $oType->sDesc    = $oLang->translateString( "price", $iLang );
+        $aDelTypes['p'] = $oType;
+        return $aDelTypes;
+    }
+
 }

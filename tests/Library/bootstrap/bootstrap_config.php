@@ -44,6 +44,7 @@ if (!$sShopSetupPath) {
     $sShopSetupPath = oxPATH . 'setup/';
 }
 define('SHOP_SETUP_PATH', getenv('SHOP_SETUP_PATH') ? getenv('SHOP_SETUP_PATH') : $sShopSetupPath);
+define('MODULES_PATH', getenv('MODULES_PATH') ? getenv('MODULES_PATH') : $sModulesPath);
 
 define('SHOPRESTORATIONCLASS', getenv('SHOPRESTORATIONCLASS') ? getenv('SHOPRESTORATIONCLASS') : $sDataBaseRestore);
 define('COPY_SERVICES_TO_SHOP', getenv('COPY_SERVICES_TO_SHOP') !== false ? (bool) getenv('COPY_SERVICES_TO_SHOP') : $blCopyServicesToShop);

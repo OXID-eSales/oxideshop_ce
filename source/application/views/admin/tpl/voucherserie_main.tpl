@@ -75,19 +75,21 @@ function changeFnc( fncName )
                 [{ oxinputhelp ident="HELP_GENERAL_ENDDATE" }]
                 </td>
             </tr>
-            <tr>
-                <td class="edittext">
-                [{ oxmultilang ident="VOUCHERSERIE_MAIN_DISCOUNT" }]
-                </td>
-                <td class="edittext">
-                <input class="editinput" type="text" size="15" name="editval[oxvoucherseries__oxdiscount]" value="[{$edit->oxvoucherseries__oxdiscount->value}]" onClick="this.select()" [{ $readonly }]>
-                <select class="editinput" name="editval[oxvoucherseries__oxdiscounttype]" [{ $readonly }]>
-                    <option value="absolute" [{ if $edit->oxvoucherseries__oxdiscounttype->value == "absolute"}]selected[{/if}]>abs</option>
-                    <option value="percent" [{ if $edit->oxvoucherseries__oxdiscounttype->value == "percent"}]selected[{/if}]>%</option>
-                </select>
-                [{ oxinputhelp ident="HELP_VOUCHERSERIE_MAIN_DISCOUNT" }]
-                </td>
-            </tr>
+            [{block name="admin_voucherserie_main_form_discount_type"}]
+                <tr>
+                    <td class="edittext">
+                    [{ oxmultilang ident="VOUCHERSERIE_MAIN_DISCOUNT" }]
+                    </td>
+                    <td class="edittext">
+                    <input class="editinput" type="text" size="15" name="editval[oxvoucherseries__oxdiscount]" value="[{$edit->oxvoucherseries__oxdiscount->value}]" onClick="this.select()" [{ $readonly }]>
+                    <select class="editinput" name="editval[oxvoucherseries__oxdiscounttype]" [{ $readonly }]>
+                        <option value="absolute" [{ if $edit->oxvoucherseries__oxdiscounttype->value == "absolute"}]selected[{/if}]>abs</option>
+                        <option value="percent" [{ if $edit->oxvoucherseries__oxdiscounttype->value == "percent"}]selected[{/if}]>%</option>
+                    </select>
+                    [{ oxinputhelp ident="HELP_VOUCHERSERIE_MAIN_DISCOUNT" }]
+                    </td>
+                </tr>
+            [{/block}]
             <tr>
                 <td class="edittext">
                 [{ oxmultilang ident="VOUCHERSERIE_MAIN_MINORDERPRICE" }]

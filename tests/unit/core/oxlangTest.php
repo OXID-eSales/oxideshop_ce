@@ -1728,7 +1728,8 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     /**
      * Test if BUG #5775 is fixed
-     * "oxLang::processUrl" did not append the language parameter to the URL if it was the same as the shops default language
+     * "oxLang::processUrl" did not append the language parameter to the URL
+     * if it was the same as the shops default language
      */
     public function testProcessUrlAppendsLanguageParameterOnDefaultLanguageAndDifferentBrowserLanguage()
     {
@@ -1753,7 +1754,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         );
 
         // Set default language to german
-        $this->getConfig()->setConfigParam('sDefaultLang',0);
+        $this->getConfig()->setConfigParam('sDefaultLang', 0);
 
         // Fake language selection in frontend to shop default language
         $oLang->setBaseLanguage(0);
@@ -1767,7 +1768,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $this->assertEquals(
             $expectingURL,
             $processedURL,
-            "Processed URL does not contain default Shop Language as paramater."
+            "Processed URL does not contain default Shop Language as parameter."
         );
     }
 }

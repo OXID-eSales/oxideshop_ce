@@ -13,7 +13,7 @@ window.onload = function ()
 //-->
 </script>
 
-[{ if $readonly }]
+[{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
 [{else}]
     [{assign var="readonly" value=""}]

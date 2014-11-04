@@ -779,6 +779,10 @@ class oxBasket extends oxSuperCfg
                     }
                 } catch (oxArticleException $oEx) {
                     // caught and ignored
+                    if ($oEx instanceof oxOutOfStockException && $oEx->getRemainingAmount() > 0) {
+                        $sItemId = $this->getItemKey($sBundleId, null, null, true);
+                        $this->_aBasketContents[$sItemId]->setAsDiscountArticle( true );
+                    }
                 }
             }
         }

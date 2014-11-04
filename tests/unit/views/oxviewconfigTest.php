@@ -176,7 +176,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      *
      * @return array
      */
-    public function testGetHomeLink_dataProvider()
+    public function testGetHomeLinkDataProvider()
     {
         $sShopUrl = $this->getConfig()->getShopUrl();
 
@@ -202,7 +202,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      * @param int    $iDefaultBrowserLanguage default browser language
      * @param string $sExpectedUrl            expected URL
      *
-     * @dataProvider testGetHomeLink_dataProvider
+     * @dataProvider testGetHomeLinkDataProvider
      */
     public function testGetHomeLink($iDefaultShopLanguage, $iDefaultBrowserLanguage, $sExpectedUrl)
     {

@@ -139,13 +139,13 @@ class Article_Variant extends oxAdminDetails
             $oArticle->loadInLang($this->_iEditLang, $sOXID);
         }
 
-        if (!$this->_isAnythingChanged($oArticle, $aParams)) {
-            return;
-        }
-
         // checkbox handling
         if (!isset($aParams['oxarticles__oxactive'])) {
             $aParams['oxarticles__oxactive'] = 0;
+        }
+
+        if (!$this->_isAnythingChanged($oArticle, $aParams)) {
+            return;
         }
 
         $oArticle->setLanguage(0);

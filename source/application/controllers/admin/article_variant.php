@@ -140,7 +140,7 @@ class Article_Variant extends oxAdminDetails
         }
 
         // checkbox handling
-        if (!isset($aParams['oxarticles__oxactive'])) {
+        if (is_array($aParams) && !isset($aParams['oxarticles__oxactive'])) {
             $aParams['oxarticles__oxactive'] = 0;
         }
 

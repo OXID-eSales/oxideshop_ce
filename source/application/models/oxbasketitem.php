@@ -996,7 +996,13 @@ class oxBasketItem extends oxSuperCfg
 
         // #0003777: reload content on language change
         if ($iOldLang !== null && $iOldLang != $iLanguageId) {
-            $this->_setArticle($this->getProductId());
+            try {
+                $this->_setArticle($this->getProductId());
+            } catch (oxNoArticleException $oEx) {
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            } catch (oxArticleInputException $oEx) {
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            }
         }
     }
 }

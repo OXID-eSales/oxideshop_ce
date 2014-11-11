@@ -36,7 +36,7 @@ class oxOnlineModulesNotifierRequest extends oxOnlineRequest
      *
      * @var string
      */
-    public $pVersion = '1.0';
+    public $pVersion = '1.1';
 
     /**
      * Modules array.

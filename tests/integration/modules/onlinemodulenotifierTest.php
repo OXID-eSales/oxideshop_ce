@@ -52,7 +52,7 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
         $oRequest->edition = $this->getConfig()->getEdition();
         $oRequest->version = $this->getConfig()->getVersion();
         $oRequest->shopUrl = $sShopUrl;
-        $oRequest->pVersion = '1.0';
+        $oRequest->pVersion = '1.1';
         $oRequest->productId = 'eShop';
 
         $modules = new stdClass();
@@ -86,4 +86,3 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
         return $oRequest;
     }
 }
- 

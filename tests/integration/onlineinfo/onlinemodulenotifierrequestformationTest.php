@@ -40,7 +40,7 @@ class Integration_OnlineInfo_OnlineModuleNotifierRequestFormationTest extends Ox
 
         $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
         $sXml .= '<omvnRequest>';
-        $sXml .=   '<pVersion>1.0</pVersion>';
+        $sXml .=   '<pVersion>1.1</pVersion>';
         $sXml .=   '<modules>';
         $sXml .=     '<module>';
         $sXml .=       '<id>moduleId1</id>';

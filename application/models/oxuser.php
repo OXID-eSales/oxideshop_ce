@@ -652,8 +652,12 @@ class oxUser extends oxBase
      */
     public function exists($sOXID = null)
     {
+        if (!$sOXID) {
+            $sOXID = $this->getId();
+        }
         //#5901 if physical record exists return true unconditionally
         if (parent::exists($sOXID)) {
+            $this->setId($sOXID);
             return true;
         }
 

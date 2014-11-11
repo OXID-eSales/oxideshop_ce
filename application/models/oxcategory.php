@@ -887,6 +887,7 @@ class oxCategory extends oxI18n implements oxIUrl
     protected function _update()
     {
 
+        $this->setUpdateSeo(true);
         $this->_setUpdateSeoOnFieldChange('oxtitle');
 
         $oDb = oxDb::getDb();

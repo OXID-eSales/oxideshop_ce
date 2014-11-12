@@ -444,8 +444,6 @@ class oxUtilsUrl extends oxSuperCfg
      *
      * @param string $sUrl    url to extract
      * @param array  &$aHosts hosts array
-     *
-     * @return null
      */
     protected function _addHost($sUrl, &$aHosts)
     {
@@ -453,6 +451,21 @@ class oxUtilsUrl extends oxSuperCfg
             if (!in_array($sHost, $aHosts)) {
                 $aHosts[] = $sHost;
             }
+        }
+    }
+    
+    /**
+     * Appends language urls to $aHosts.
+     *
+     * @param array $aLanguageUrls array of language urls to extract
+     * @param array &$aHosts       hosts array
+     */
+    protected function _addLanguageHost($aLanguageUrls, & $aHosts)
+    {
+        $iLanguageId = oxRegistry::getLang()->getBaseLanguage();
+
+        if (isset($aLanguageUrls[$iLanguageId])) {
+            $this->_addHost($aLanguageUrls[$iLanguageId], $aHosts);
         }
     }
 
@@ -467,20 +480,17 @@ class oxUtilsUrl extends oxSuperCfg
             $this->_aHosts = array();
             $oConfig = $this->getConfig();
 
-            // mall (ssl) url
-            $this->_addHost($oConfig->getConfigParam('sMallShopURL'), $this->_aHosts);
-            $this->_addHost($oConfig->getConfigParam('sMallSSLShopURL'), $this->_aHosts);
 
             // language url
-            $this->_addHost($oConfig->getConfigParam('aLanguageURLs'), $this->_aHosts);
-            $this->_addHost($oConfig->getConfigParam('aLanguageSSLURLs'), $this->_aHosts);
+            $this->_addLanguageHost($oConfig->getConfigParam('aLanguageURLs'), $this->_aHosts);
+            $this->_addLanguageHost($oConfig->getConfigParam('aLanguageSSLURLs'), $this->_aHosts);
 
             // current url
-            $this->_addHost($oConfig->getShopUrl(), $this->_aHosts);
-            $this->_addHost($oConfig->getSslShopUrl(), $this->_aHosts);
+            $this->_addHost($oConfig->getConfigParam("sShopURL"), $this->_aHosts);
+            $this->_addHost($oConfig->getConfigParam("sSSLShopURL"), $this->_aHosts);
 
             if ($this->isAdmin()) {
-                $this->_addHost($oConfig->getConfigParam('sAdminSSLURL'), $this->_aHosts);
+                $this->_addHost($oConfig->getConfigParam("sAdminSSLURL"), $this->_aHosts);
             }
         }
 

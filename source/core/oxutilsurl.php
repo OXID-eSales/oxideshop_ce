@@ -443,6 +443,35 @@ class oxUtilsUrl extends oxSuperCfg
         return $aParams;
     }
 
+    /**
+     * Extracts host from given url and appends $aHosts with it.
+     *
+     * @param string $sUrl    url to extract
+     * @param array  &$aHosts hosts array
+     */
+    protected function _addHost($sUrl, & $aHosts)
+    {
+        if ($sUrl && ($sHost = @parse_url($sUrl, PHP_URL_HOST))) {
+            if (!in_array($sHost, $aHosts)) {
+                $aHosts[] = $sHost;
+            }
+        }
+    }
+
+    /**
+     * Appends language urls to $aHosts.
+     *
+     * @param array $aLanguageUrls array of language urls to extract
+     * @param array &$aHosts       hosts array
+     */
+    protected function _addLanguageHost($aLanguageUrls, & $aHosts)
+    {
+        $iLanguageId = oxRegistry::getLang()->getBaseLanguage();
+
+        if (isset($aLanguageUrls[$iLanguageId])) {
+            $this->_addHost($aLanguageUrls[$iLanguageId], $aHosts);
+        }
+    }
 
     /**
      * Collects and returns current shop hosts array.

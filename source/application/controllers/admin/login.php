@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -45,6 +45,10 @@ class Login extends oxAdminView
     public function render()
     {
         $myConfig = $this->getConfig();
+
+        // automatically redirect to SSL login
+        if (!$myConfig->isSsl() && strpos($myConfig->getConfigParam('sAdminSSLURL'), 'https://') === 0)
+            oxRegistry::getUtils()->redirect($myConfig->getConfigParam('sAdminSSLURL'), false, 302);
 
         //resets user once on this screen.
         $oUser = oxNew("oxuser");

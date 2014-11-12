@@ -150,15 +150,77 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->assertEquals('sdf', oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf'));
     }
 
-    public function testAppendUrl()
+    public function providerAppendUrl()
     {
-        $sTestUrl = '';
-        $aBaseUrlParams = array( "param1" => "value1", "param2" => "value2" );
-
-        $oUtils = new oxUtilsUrl();
-        $this->assertEquals( '?param1=value1&amp;param2=value2&amp;', $oUtils->appendUrl( $sTestUrl, $aBaseUrlParams ) );
+        return array(
+            array('testUrl', array(), 'testUrl?'),
+            array('testUrl', array('p1' => 'v1', 'p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2&amp;'),
+            array('testUrl?', array(), 'testUrl?'),
+            array('testUrl?', array('p1' => 'v1', 'p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2&amp;'),
+            array('testUrl?p1=v1', array('p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2&amp;'),
+            array('testUrl?p1=v1&amp;', array('p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2&amp;'),
+            array('testUrl?p1=v1&amp;', array(), 'testUrl?p1=v1&amp;'),
+            array('testUrl?p1=v1&amp;', array('p1' => 'v1'), 'testUrl?p1=v1&amp;'),
+        );
     }
 
+    /**
+     * @param string $sUrl
+     * @param array  $aParams
+     * @param string $sExtectedUrl
+     *
+     * @dataProvider providerAppendUrl
+     */
+    public function testAppendUrl($sUrl, $aParams, $sExtectedUrl)
+    {
+        $oUtils = new oxUtilsUrl();
+        $this->assertEquals($sExtectedUrl, $oUtils->appendUrl($sUrl, $aParams));
+    }
+
+    public function providerAppendUrlWithFinalUrlForming()
+    {
+        return array(
+            array('testUrl', array(), 'testUrl'),
+            array('testUrl', array('p1' => 'v1', 'p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2'),
+            array('testUrl?p1=v1', array('p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2'),
+        );
+    }
+
+    /**
+     * @param string $sUrl
+     * @param array  $aParams
+     * @param string $sExtectedUrl
+     *
+     * @dataProvider providerAppendUrlWithFinalUrlForming
+     */
+    public function testAppendUrlWithFinalUrlForming($sUrl, $aParams, $sExtectedUrl)
+    {
+        $oUtils = new oxUtilsUrl();
+        $this->assertEquals($sExtectedUrl, $oUtils->appendUrl($sUrl, $aParams, true));
+    }
+
+    public function providerAddBaseUrl()
+    {
+        $sShopUrl = $this->getConfig()->getSslShopUrl();
+
+        return array(
+            array('http://external-url', 'http://external-url'),
+            array('local-url', $sShopUrl . 'local-url'),
+            array('?param1=value=1', $sShopUrl . '?param1=value=1'),
+            array($sShopUrl, $sShopUrl),
+            array($sShopUrl . '?param1=value1', $sShopUrl . '?param1=value1')
+        );
+    }
+
+    /**
+     * @dataProvider providerAddBaseUrl
+     */
+    public function testAddBaseUrl($sUrl, $sExpectedUrl)
+    {
+        $oUtils = new oxUtilsUrl();
+
+        $this->assertEquals($sExpectedUrl, $oUtils->addShopHost($sUrl));
+    }
 
     public function testProcessUrlWithParametersAdded()
     {
@@ -348,6 +410,114 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         oxTestModules::addModuleObject( 'oxUtilsServer', $oUtilsServer );
 
         $this->assertEquals( $sResult, $oUtils->getCurrentUrl() );
+    }
+
+    public function providerIsCurrentShopHost()
+    {
+        $sShopUrl = $this->getConfig()->getShopUrl();
+
+        return array(
+            array('', true),
+            array('relative-url', true),
+            array($sShopUrl, true),
+            array($sShopUrl . '?param=value', true),
+            array('http://external-host.com', false),
+            array('https://external-host.com', false),
+            array('http://external-host.com?param=value', false),
+        );
+    }
+
+    /**
+     * @dataProvider providerIsCurrentShopHost
+     */
+    public function testIsCurrentShopHost($sUrl, $blResult)
+    {
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame($blResult, $oUtils->isCurrentShopHost($sUrl));
+    }
+
+    public function testIsCurrentShopHostWithMallShopURL()
+    {
+            return;
+
+        $this->getConfig()->setConfigParam("sMallShopURL", 'http://shopHost');
+        $this->getConfig()->setConfigParam("sShopURL", '');
+        $this->getConfig()->setConfigParam("aLanguageURLs", array());
+
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame(true, $oUtils->isCurrentShopHost('http://shopHost'));
+    }
+
+    public function testIsCurrentShopHostWithMallSslShopURL()
+    {
+            return;
+        $this->getConfig()->setConfigParam("sMallShopURL", 'http://shopHost');
+        $this->getConfig()->setConfigParam("sMallSSLShopURL", 'https://shopHost');
+        $this->getConfig()->setConfigParam("sShopURL", '');
+        $this->getConfig()->setConfigParam("aLanguageURLs", array());
+
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame(true, $oUtils->isCurrentShopHost('https://shopHost'));
+    }
+
+    public function testIsCurrentShopHostWithShopURL()
+    {
+        $this->getConfig()->setConfigParam("sMallShopURL", '');
+        $this->getConfig()->setConfigParam("sShopURL", 'http://shopHost');
+        $this->getConfig()->setConfigParam("aLanguageURLs", array());
+
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame(true, $oUtils->isCurrentShopHost('http://shopHost'));
+    }
+
+    public function testIsCurrentShopHostWithSslShopURL()
+    {
+        $this->getConfig()->setConfigParam("sMallShopURL", '');
+        $this->getConfig()->setConfigParam("sShopURL", 'http://shopHost');
+        $this->getConfig()->setConfigParam("sSSLShopURL", 'https://shopHost');
+        $this->getConfig()->setConfigParam("aLanguageURLs", array());
+
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame(true, $oUtils->isCurrentShopHost('https://shopHost'));
+    }
+
+    public function testIsCurrentShopHostWithLanguageURLs()
+    {
+        $this->setLanguage(1);
+
+        $this->getConfig()->setConfigParam("sMallShopURL", '');
+        $this->getConfig()->setConfigParam("sShopURL", '');
+        $this->getConfig()->setConfigParam("aLanguageURLs", array(0 => 'http://german.shopHost', 1 => 'http://english.shopHost'));
+
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame(true, $oUtils->isCurrentShopHost('http://english.shopHost'));
+        $this->assertSame(false, $oUtils->isCurrentShopHost('http://german.shopHost'));
+    }
+
+    public function testIsCurrentShopHostWithSslLanguageURLs()
+    {
+        $this->setLanguage(1);
+
+        $this->getConfig()->setConfigParam("sMallShopURL", '');
+        $this->getConfig()->setConfigParam("sShopURL", '');
+        $this->getConfig()->setConfigParam("aLanguageURLs", array(0 => 'http://german.shopHost', 1 => 'http://english.shopHost'));
+        $this->getConfig()->setConfigParam("aLanguageSSLURLs", array(0 => 'https://german.shopHost.de', 1 => 'https://english.shopHost.en'));
+
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame(true, $oUtils->isCurrentShopHost('https://english.shopHost.en'));
+        $this->assertSame(false, $oUtils->isCurrentShopHost('https://german.shopHost.de'));
+    }
+
+    public function testIsCurrentShopHostWithSslAdminURL()
+    {
+        $this->getConfig()->setConfigParam("sMallShopURL", '');
+        $this->getConfig()->setConfigParam("sShopURL", '');
+        $this->getConfig()->setConfigParam("aLanguageURLs", array());
+        $this->getConfig()->setConfigParam("sAdminSSLURL", 'https://adminHost');
+
+        $oUtils = $this->getMock("oxUtilsUrl", array('isAdmin'));
+        $oUtils->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
+        $this->assertSame(true, $oUtils->isCurrentShopHost('https://adminHost'));
     }
 
     /**

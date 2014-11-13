@@ -480,6 +480,7 @@ class oxUtilsUrl extends oxSuperCfg
             $this->_aHosts = array();
             $oConfig = $this->getConfig();
 
+            $this->_addMallHosts($this->_aHosts);
 
             // language url
             $this->_addLanguageHost($oConfig->getConfigParam('aLanguageURLs'), $this->_aHosts);
@@ -495,6 +496,15 @@ class oxUtilsUrl extends oxSuperCfg
         }
 
         return $this->_aHosts;
+    }
+
+    /**
+     * Appends shop mall urls to $aHosts.
+     *
+     * @param array &$aHosts hosts array
+     */
+    protected function _addMallHosts(& $aHosts)
+    {
     }
 
     /**

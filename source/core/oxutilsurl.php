@@ -480,25 +480,35 @@ class oxUtilsUrl extends oxSuperCfg
      */
     protected function _getHosts()
     {
-            if ($this->_aHosts === null) {
-                $this->_aHosts = array();
-                $oConfig = $this->getConfig();
+        if ($this->_aHosts === null) {
+            $this->_aHosts = array();
+            $oConfig = $this->getConfig();
 
+            $this->_addMallHosts($this->_aHosts);
 
-                // language url
-                $this->_addLanguageHost($oConfig->getConfigParam('aLanguageURLs'), $this->_aHosts);
-                $this->_addLanguageHost($oConfig->getConfigParam('aLanguageSSLURLs'), $this->_aHosts);
+            // language url
+            $this->_addLanguageHost($oConfig->getConfigParam('aLanguageURLs'), $this->_aHosts);
+            $this->_addLanguageHost($oConfig->getConfigParam('aLanguageSSLURLs'), $this->_aHosts);
 
-                // current url
-                $this->_addHost($oConfig->getConfigParam("sShopURL"), $this->_aHosts);
-                $this->_addHost($oConfig->getConfigParam("sSSLShopURL"), $this->_aHosts);
+            // current url
+            $this->_addHost($oConfig->getConfigParam("sShopURL"), $this->_aHosts);
+            $this->_addHost($oConfig->getConfigParam("sSSLShopURL"), $this->_aHosts);
 
-                if ($this->isAdmin()) {
-                    $this->_addHost($oConfig->getConfigParam("sAdminSSLURL"), $this->_aHosts);
-                }
+            if ($this->isAdmin()) {
+                $this->_addHost($oConfig->getConfigParam("sAdminSSLURL"), $this->_aHosts);
             }
+        }
 
         return $this->_aHosts;
+    }
+
+    /**
+     * Appends shop mall urls to $aHosts.
+     *
+     * @param array &$aHosts hosts array
+     */
+    protected function _addMallHosts(& $aHosts)
+    {
     }
 
     /**

@@ -405,7 +405,7 @@ class oxUtilsServer extends oxSuperCfg
     {
         // Missing protocol, cannot proceed, assuming true.
         if (!$sURL || (strpos($sURL, "http") !== 0)) {
-            return true;
+            return false;
         }
 
         $sServerHost = $this->getServerVar('HTTP_HOST');

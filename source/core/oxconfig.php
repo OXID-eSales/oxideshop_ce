@@ -848,11 +848,6 @@ class oxConfig extends oxSuperCfg
      */
     public function isCurrentUrl($sURL)
     {
-        // Missing protocol, cannot proceed, assuming true.
-        if (!$sURL || (strpos($sURL, "http") !== 0)) {
-            return true;
-        }
-
         return oxRegistry::get("oxUtilsServer")->isCurrentUrl($sURL);
     }
 

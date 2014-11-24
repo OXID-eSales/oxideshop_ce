@@ -403,7 +403,7 @@ class oxUtilsServer extends oxSuperCfg
      */
     public function isCurrentUrl($sURL)
     {
-        // Missing protocol, cannot proceed, assuming true.
+        // Missing protocol, cannot proceed, assuming false.
         if (!$sURL || (strpos($sURL, "http") !== 0)) {
             return false;
         }

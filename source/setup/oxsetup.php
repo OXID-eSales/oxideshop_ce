@@ -2332,9 +2332,13 @@ class oxSetupController extends oxSetupCore
     {
         $oView = $this->getView();
 
+        /** @var oxSetup $oSetup */
         $oSetup = $this->getInstance("oxSetup");
+        /** @var oxSetupSession $oSession */
         $oSession = $this->getInstance("oxSetupSession");
+        /** @var oxSetupLang $oLang */
         $oLang = $this->getInstance("oxSetupLang");
+        /** @var oxSetupUtils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
 
         $oView->setTitle('STEP_4_1_TITLE');

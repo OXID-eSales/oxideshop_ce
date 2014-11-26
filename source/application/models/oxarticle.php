@@ -3809,7 +3809,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     {
         startProfile(__FUNCTION__);
         $oPrice->setVAT($dVat);
-        if (($dVat = oxRegistry::get("oxVatSelector")->getArticleUserVat($this)) !== false) {
+        /** @var oxVatSelector $oVatSelector */
+        $oVatSelector = oxRegistry::get("oxVatSelector");
+        if (($dVat = $oVatSelector->getArticleUserVat($this)) !== false) {
             $oPrice->setUserVat($dVat);
         }
         stopProfile(__FUNCTION__);

@@ -600,10 +600,11 @@ class oxDynImgGenerator
 
         // creating lock file
         $this->_hLockHandle = @fopen($this->_getLockName($sSource), "w");
-        if ($this->_hLockHandle) {
+        if (is_resource($this->_hLockHandle)) {
             if (!($blLocked = flock($this->_hLockHandle, LOCK_EX))) {
                 // on failure - closing
-                fclose($rHandle);
+                fclose($this->_hLockHandle);
+                $this->_hLockHandle = null;
             }
         }
 
@@ -627,9 +628,10 @@ class oxDynImgGenerator
      */
     protected function _unlock($sSource)
     {
-        if ($this->_hLockHandle) {
+        if (is_resource($this->_hLockHandle)) {
             flock($this->_hLockHandle, LOCK_UN);
             fclose($this->_hLockHandle);
+            $this->_hLockHandle = null;
             unlink($this->_getLockName($sSource));
         }
     }

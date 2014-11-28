@@ -35,6 +35,7 @@ class Oxid
      */
     public static function run()
     {
+        /** @var oxShopControl $oShopControl */
         $oShopControl = oxNew('oxShopControl');
 
         return $oShopControl->start();
@@ -49,6 +50,7 @@ class Oxid
      */
     public static function runWidget()
     {
+        /** @var oxWidgetControl $oWidgetControl */
         $oWidgetControl = oxNew('oxWidgetControl');
 
         return $oWidgetControl->start();

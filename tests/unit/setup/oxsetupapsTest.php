@@ -62,7 +62,7 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
     public function testInstall()
     {
         $iAt = 0;
-        $oUtils = $this->getMock("oxSetupUtils", array("getEnvVar", "checkPaths", "updateConfigFile", "updateHtaccessFile"));
+        $oUtils = $this->getMock("oxSetupUtils", array("getEnvVar", "updateConfigFile", "updateHtaccessFile"));
         $oUtils->expects($this->at($iAt++))->method("getEnvVar")->with($this->equalTo("DB_main_PORT"))->will($this->returnValue("testPort"));
         $oUtils->expects($this->at($iAt++))->method("getEnvVar")->with($this->equalTo("DB_main_HOST"))->will($this->returnValue("testHost"));
         $oUtils->expects($this->at($iAt++))->method("getEnvVar")->with($this->equalTo("DB_main_LOGIN"))->will($this->returnValue("testLogin"));
@@ -80,7 +80,6 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
         $oUtils->expects($this->at($iAt++))->method("getEnvVar")->with($this->equalTo("SETTINGS_use_dynamic_pages"))->will($this->returnValue("testUseDynPages"));
         $oUtils->expects($this->at($iAt++))->method("getEnvVar")->with($this->equalTo("SETTINGS_admin_user_name"))->will($this->returnValue("testAdminUserName"));
         $oUtils->expects($this->at($iAt++))->method("getEnvVar")->with($this->equalTo("SETTINGS_admin_user_password"))->will($this->returnValue("testAdminUserPass"));
-        $oUtils->expects($this->at($iAt++))->method("checkPaths");
         $oUtils->expects($this->at($iAt++))->method("updateConfigFile");
         $oUtils->expects($this->at($iAt++))->method("updateHtaccessFile");
 

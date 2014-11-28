@@ -696,7 +696,7 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oLang->expects($this->atLeastOnce())->method("getText")->with($this->equalTo("ERROR_PASSWORD_TOO_SHORT"));
 
         $iAt = 0;
-        $oUtils = $this->getMock("oxSetupUtils", array("getRequestVar", "preparePath", "checkPaths", "extractRewriteBase"));
+        $oUtils = $this->getMock("oxSetupUtils", array("getRequestVar", "preparePath", "extractRewriteBase"));
         $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aPath"), $this->equalTo("post"))->will($this->returnValue(array("sShopURL" => "sShopURL", "sShopDir" => "sShopDir", "sCompileDir" => "sCompileDir")));
         $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aSetupConfig"), $this->equalTo("post"))->will($this->returnValue(array("blDelSetupDir" => 1)));
         $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aAdminData"), $this->equalTo("post"))->will($this->returnValue(array("sLoginName" => "sLoginName", "sPassword" => "sPass", "sPasswordConfirm" => "sPassword")));
@@ -785,7 +785,7 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oLang->expects($this->atLeastOnce())->method("getText")->with($this->equalTo("ERROR_PASSWORDS_DO_NOT_MATCH"));
 
         $iAt = 0;
-        $oUtils = $this->getMock("oxSetupUtils", array("getRequestVar", "preparePath", "checkPaths", "extractRewriteBase"));
+        $oUtils = $this->getMock("oxSetupUtils", array("getRequestVar", "preparePath", "extractRewriteBase"));
         $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aPath"), $this->equalTo("post"))->will($this->returnValue(array("sShopURL" => "sShopURL", "sShopDir" => "sShopDir", "sCompileDir" => "sCompileDir")));
         $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aSetupConfig"), $this->equalTo("post"))->will($this->returnValue(array("blDelSetupDir" => 1)));
         $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aAdminData"), $this->equalTo("post"))->will($this->returnValue(array("sLoginName" => "sLoginName", "sPassword" => "sPasswor", "sPasswordConfirm" => "sPassword")));
@@ -801,49 +801,6 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupSession"))->will($this->returnValue($oSession));
         $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupLang"))->will($this->returnValue($oLang));
         $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupUtils"))->will($this->returnValue($oUtils));
-        $this->assertEquals("default.php", $oController->dirsWrite());
-    }
-
-    /**
-     * Testing oxSetupController::dirsWrite()
-     *
-     * @return null
-     */
-    public function testDirsWriteChecksPathsFails()
-    {
-        $iAt = 0;
-        $oView = $this->getMock("oxSetupView", array("setTitle", "setMessage"));
-        $oView->expects($this->at($iAt++))->method("setTitle")->with($this->equalTo("STEP_4_1_TITLE"));
-        $oView->expects($this->at($iAt++))->method("setMessage");
-
-        $iAt = 0;
-        $oSession = $this->getMock("oxSetupSession", array("setSessionParam"), array(), '', null);
-        $oSession->expects($this->at($iAt++))->method("setSessionParam")->with($this->equalTo("aPath"));
-        $oSession->expects($this->at($iAt++))->method("setSessionParam")->with($this->equalTo("aSetupConfig"));
-
-        $iAt = 0;
-        $oUtils = $this->getMock("oxSetupUtils", array("getRequestVar", "preparePath", "checkPaths", "extractRewriteBase", "isValidEmail"));
-        $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aPath"), $this->equalTo("post"))->will($this->returnValue(array("sShopURL" => "sShopURL", "sShopDir" => "sShopDir", "sCompileDir" => "sCompileDir")));
-        $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aSetupConfig"), $this->equalTo("post"))->will($this->returnValue(array("blDelSetupDir" => 1)));
-        $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aAdminData"), $this->equalTo("post"))->will($this->returnValue(array("sLoginName" => "sLoginName", "sPassword" => "sPassword", "sPasswordConfirm" => "sPassword")));
-        $oUtils->expects($this->at($iAt++))->method("preparePath")->with($this->equalTo("sShopURL"))->will($this->returnValue("sShopURL"));
-        $oUtils->expects($this->at($iAt++))->method("preparePath")->with($this->equalTo("sShopDir"))->will($this->returnValue("sShopDir"));
-        $oUtils->expects($this->at($iAt++))->method("preparePath")->with($this->equalTo("sCompileDir"))->will($this->returnValue("sCompileDir"));
-        $oUtils->expects($this->at($iAt++))->method("extractRewriteBase")->with($this->equalTo("sShopURL"))->will($this->returnValue("sRewriteBase"));
-        $oUtils->expects($this->at($iAt++))->method("isValidEmail")->will($this->returnValue(true));
-        $oUtils->expects($this->at($iAt++))->method("checkPaths")->will($this->throwException(new Exception));
-
-        $oDb = $this->getMock("oxSetupDb", array("writeAdminLoginData"));
-        $oDb->expects($this->once())->method("writeAdminLoginData");
-
-        $iAt = 0;
-        $oController = $this->getMock("oxSetupController", array("getView", "getInstance"));
-        $oController->expects($this->at($iAt++))->method("getView")->will($this->returnValue($oView));
-        $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetup")); //->will( $this->returnValue( $oSetup ) );
-        $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupSession"))->will($this->returnValue($oSession));
-        $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupLang")); //->will( $this->returnValue( $oLang ) );
-        $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupUtils"))->will($this->returnValue($oUtils));
-        $oController->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupDb"))->will($this->returnValue($oDb));
         $this->assertEquals("default.php", $oController->dirsWrite());
     }
 
@@ -871,7 +828,7 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oSession->expects($this->at($iAt++))->method("getSessionParam")->with($this->equalTo("aDB"))->will($this->returnValue(array()));
 
         $iAt = 0;
-        $oUtils = $this->getMock("oxSetupUtils", array("getRequestVar", "preparePath", "checkPaths", "updateConfigFile", "extractRewriteBase", "isValidEmail"));
+        $oUtils = $this->getMock("oxSetupUtils", array("getRequestVar", "preparePath", "updateConfigFile", "extractRewriteBase", "isValidEmail"));
         $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aPath"), $this->equalTo("post"))->will($this->returnValue(array("sShopURL" => "sShopURL", "sShopDir" => "sShopDir", "sCompileDir" => "sCompileDir")));
         $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aSetupConfig"), $this->equalTo("post"))->will($this->returnValue(array("blDelSetupDir" => 1)));
         $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aAdminData"), $this->equalTo("post"))->will($this->returnValue(array("sLoginName" => "sLoginName", "sPassword" => "sPassword", "sPasswordConfirm" => "sPassword")));
@@ -880,7 +837,6 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oUtils->expects($this->at($iAt++))->method("preparePath")->with($this->equalTo("sCompileDir"))->will($this->returnValue("sCompileDir"));
         $oUtils->expects($this->at($iAt++))->method("extractRewriteBase")->with($this->equalTo("sShopURL"))->will($this->returnValue("sRewriteBase"));
         $oUtils->expects($this->at($iAt++))->method("isValidEmail")->will($this->returnValue(true));
-        $oUtils->expects($this->at($iAt++))->method("checkPaths");
         $oUtils->expects($this->at($iAt++))->method("updateConfigFile")->will($this->throwException(new Exception));
 
         $oDb = $this->getMock("oxSetupDb", array("writeAdminLoginData"));
@@ -928,7 +884,7 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oLang->expects($this->atLeastOnce())->method("getText");
 
         $iAt = 0;
-        $oUtils = $this->getMock("oxSetupUtils", array("getRequestVar", "preparePath", "checkPaths", "updateConfigFile", "extractRewriteBase", "updateHtaccessFile", "isValidEmail"));
+        $oUtils = $this->getMock("oxSetupUtils", array("getRequestVar", "preparePath", "updateConfigFile", "extractRewriteBase", "updateHtaccessFile", "isValidEmail"));
         $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aPath"), $this->equalTo("post"))->will($this->returnValue(array("sShopURL" => "sShopURL", "sShopDir" => "sShopDir", "sCompileDir" => "sCompileDir")));
         $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aSetupConfig"), $this->equalTo("post"))->will($this->returnValue(array("blDelSetupDir" => 1)));
         $oUtils->expects($this->at($iAt++))->method("getRequestVar")->with($this->equalTo("aAdminData"), $this->equalTo("post"))->will($this->returnValue(array("sLoginName" => "sLoginName", "sPassword" => "sPassword", "sPasswordConfirm" => "sPassword")));
@@ -937,7 +893,6 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oUtils->expects($this->at($iAt++))->method("preparePath")->with($this->equalTo("sCompileDir"))->will($this->returnValue("sCompileDir"));
         $oUtils->expects($this->at($iAt++))->method("extractRewriteBase")->with($this->equalTo("sShopURL"))->will($this->returnValue("sRewriteBase"));
         $oUtils->expects($this->at($iAt++))->method("isValidEmail")->will($this->returnValue(true));
-        $oUtils->expects($this->at($iAt++))->method("checkPaths");
         $oUtils->expects($this->at($iAt++))->method("updateConfigFile");
         $oUtils->expects($this->at($iAt++))->method("updateHtaccessFile");
 

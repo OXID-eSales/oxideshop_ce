@@ -1338,33 +1338,6 @@ class OxSetupUtils extends oxSetupCore
     }
 
     /**
-     * Checks if given path (file or folder) exists, is writable and changes its mode to 0755
-     *
-     * @param string $sPath path or file to checl
-     *
-     * @throws Exception exception is thrown if file does not exist, is not writable or its mode cannot be changed
-     */
-    public function checkFileOrDirectory($sPath)
-    {
-        $oLang = $this->getInstance("oxSetupLang");
-        $oSetup = $this->getInstance("oxSetup");
-
-        if (!file_exists($sPath)) {
-            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
-            throw new Exception(sprintf($oLang->getText('ERROR_NOT_AVAILABLE'), $sPath));
-        }
-        if (!is_writable($sPath) || !is_readable($sPath)) {
-            // try to set permissions and check again
-            @chmod($sPath, getDefaultFileMode());
-            clearstatcache();
-        }
-        if (!is_writable($sPath) || !is_readable($sPath)) {
-            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
-            throw new Exception(sprintf($oLang->getText('ERROR_NOT_WRITABLE'), $sPath));
-        }
-    }
-
-    /**
      * Extracts install path
      *
      * @param string $aPath path info array
@@ -1417,86 +1390,6 @@ class OxSetupUtils extends oxSetupCore
         $aParams['sShopURL'] = ltrim($this->_extractPath(explode("/", $sFilepath)), "/");
 
         return $aParams;
-    }
-
-    /**
-     * Returns base picture dir path
-     *
-     * @return string
-     */
-    public function getBasePictureDir()
-    {
-        $sBasePic = 'out/pictures';
-
-        return $sBasePic;
-    }
-
-    /**
-     * Performs various path checks
-     *
-     * @param array $aParams initial path parameters
-     */
-    public function checkPaths($aParams)
-    {
-        $sBasePic = $this->getBasePictureDir();
-        $aPaths = array(
-            $aParams['sShopDir'] . "/config.inc.php",
-            $aParams['sShopDir'] . "/log",
-            $aParams['sCompileDir'],
-
-            // promo & media
-            $aParams['sShopDir'] . "/$sBasePic/promo",
-            $aParams['sShopDir'] . "/$sBasePic/media", // @deprecated, use out/media instead
-            $aParams['sShopDir'] . "/out/media",
-
-            // Master
-            // product required paths
-            $aParams['sShopDir'] . "/$sBasePic/master/product/1",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/2",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/3",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/4",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/5",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/6",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/7",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/8",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/9",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/10",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/11",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/12",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/icon",
-            $aParams['sShopDir'] . "/$sBasePic/master/product/thumb",
-            // category required paths
-            $aParams['sShopDir'] . "/$sBasePic/master/category/icon",
-            $aParams['sShopDir'] . "/$sBasePic/master/category/promo_icon",
-            $aParams['sShopDir'] . "/$sBasePic/master/category/thumb",
-            // manufacturer required paths
-            $aParams['sShopDir'] . "/$sBasePic/master/manufacturer/icon",
-            // vendor required paths
-            $aParams['sShopDir'] . "/$sBasePic/master/vendor/icon",
-            // wrapping required paths
-            $aParams['sShopDir'] . "/$sBasePic/master/wrapping",
-
-            // Generated
-            // product required paths
-            $aParams['sShopDir'] . "/$sBasePic/generated/product/1",
-            $aParams['sShopDir'] . "/$sBasePic/generated/product/2",
-            $aParams['sShopDir'] . "/$sBasePic/generated/product/3",
-            $aParams['sShopDir'] . "/$sBasePic/generated/product/4",
-            $aParams['sShopDir'] . "/$sBasePic/generated/product/5",
-            $aParams['sShopDir'] . "/$sBasePic/generated/product/6",
-            $aParams['sShopDir'] . "/$sBasePic/generated/product/icon",
-            $aParams['sShopDir'] . "/$sBasePic/generated/product/thumb",
-            // category required paths
-            $aParams['sShopDir'] . "/$sBasePic/generated/category/icon",
-            $aParams['sShopDir'] . "/$sBasePic/generated/category/promo_icon",
-            $aParams['sShopDir'] . "/$sBasePic/generated/category/thumb",
-            // manufacturer required paths
-            $aParams['sShopDir'] . "/$sBasePic/generated/manufacturer/icon",
-        );
-
-        foreach ($aPaths as $sPath) {
-            $this->checkFileOrDirectory($sPath);
-        }
     }
 
     /**
@@ -2401,7 +2294,6 @@ class oxSetupController extends oxSetupCore
         try {
             // creating admin user
             $this->getInstance("oxSetupDb")->writeAdminLoginData($aAdminData['sLoginName'], $aAdminData['sPassword']);
-            $oUtils->checkPaths($aPath);
         } catch (Exception $oExcp) {
             $oView->setMessage($oExcp->getMessage());
 
@@ -2639,9 +2531,6 @@ class oxSetupAps extends oxSetupCore
 
         // updating admin user
         $oDb->writeAdminLoginData($oUtils->getEnvVar("SETTINGS_admin_user_name"), $oUtils->getEnvVar("SETTINGS_admin_user_password"));
-
-        // testing install paths
-        $oUtils->checkPaths($aParams);
 
         // updating config file
         $oUtils->updateConfigFile($aParams);

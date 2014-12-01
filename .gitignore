@@ -61,4 +61,5 @@
 /out/pictures/promo/*
 !/out/pictures/promo/dir.txt
 
-/libs/
+/vendor/
+/composer.lock

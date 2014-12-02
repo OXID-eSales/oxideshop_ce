@@ -101,14 +101,14 @@ class oxEmail extends PHPMailer
      *
      * @var string
      */
-    protected $_sSenedNowTemplate = "email/html/ordershipped.tpl";
+    protected $_sShippedNowTemplate = "email/html/ordershipped.tpl";
 
     /**
      * Send order notification plain mail template
      *
      * @var string
      */
-    protected $_sSenedNowTemplatePlain = "email/plain/ordershipped.tpl";
+    protected $_sShippedNowTemplatePlain = "email/plain/ordershipped.tpl";
 
     /**
      * Send ordered download links mail template
@@ -1077,8 +1077,8 @@ class oxEmail extends PHPMailer
         $oSmarty->security_settings['INCLUDE_ANY'] = true;
         // force non admin to get correct paths (tpl, img)
         $myConfig->setAdminMode(false);
-        $this->setBody($oSmarty->fetch($this->_sSenedNowTemplate));
-        $this->setAltBody($oSmarty->fetch($this->_sSenedNowTemplatePlain));
+        $this->setBody($oSmarty->fetch($this->_sShippedNowTemplate));
+        $this->setAltBody($oSmarty->fetch($this->_sShippedNowTemplatePlain));
         $myConfig->setAdminMode(true);
         $oLang->setTplLanguage($iOldTplLang);
         $oLang->setBaseLanguage($iOldBaseLang);

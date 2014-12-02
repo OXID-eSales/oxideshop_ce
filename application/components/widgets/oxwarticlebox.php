@@ -47,7 +47,7 @@ class oxwArticleBox extends oxWidget
     /**
      * Current article
      *
-     * @var null
+     * @var oxArticle|null
      */
     protected $_oArticle = null;
 
@@ -149,7 +149,7 @@ class oxwArticleBox extends oxWidget
     }
 
     /**
-     * Returns wishlist id
+     * Returns wish list id
      *
      * @return string
      */

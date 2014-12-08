@@ -105,7 +105,9 @@ var oxid = {
 
             var oTransfer = top.basefrm.edit.document.getElementById( "transfer" );
             oTransfer.cl.value = sLocation;
-            oTransfer.fnc.value = sFunction || "";
+            if (sFunction) {
+                oTransfer.fnc.value = sFunction;
+            }
 
             //forcing edit frame to reload after submit
             top.forceReloadingEditFrame();

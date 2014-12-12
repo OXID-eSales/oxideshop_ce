@@ -28,13 +28,25 @@ class Unit_Views_searchTest extends OxidTestCase
 
     public function testIsEmptySearch()
     {
-        oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
-
-        $oSearch = $this->getProxyClass('search');
+        $oSearch = new search();
         $oSearch->init();
 
         $this->assertTrue($oSearch->isEmptySearch());
     }
+
+    /**
+    * Test for bug #5995
+    */
+    public function testIsEmptySearchWithSpace()
+    {
+        $this->getConfig()->setRequestParameter('searchparam', ' ');
+
+        $oSearch = new search();
+        $oSearch->init();
+
+        $this->assertTrue($oSearch->isEmptySearch());
+    }
+
 
     /**
      * search::_processListArticles() when seo is off
@@ -90,10 +102,9 @@ class Unit_Views_searchTest extends OxidTestCase
 
     public function testGetArticleList()
     {
-        oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
+        $this->getConfig()->setRequestParameter('searchparam', 'bar');
 
-        $oSearch = $this->getProxyClass('search');
-        modConfig::setRequestParameter('searchparam', 'bar');
+        $oSearch = new search();
         $oSearch->init();
 
         $this->assertEquals(8, $oSearch->getArticleList()->count());

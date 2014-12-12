@@ -146,7 +146,7 @@ class Thankyou extends oxUBase
         // loading order sometimes needed in template
         if ($this->_oBasket->getOrderId()) {
             // owners stock reminder
-            $oEmail = oxNew('oxemail');
+            $oEmail = oxNew('oxEmail');
             $oEmail->sendStockReminder($this->_oBasket->getContents());
         }
 
@@ -167,7 +167,7 @@ class Thankyou extends oxUBase
     }
 
     /**
-     * Template variable getter. Returns list of customer also bought thies products
+     * Template variable getter. Returns list of customer also bought these products
      *
      * @return object
      */
@@ -278,7 +278,7 @@ class Thankyou extends oxUBase
     }
 
     /**
-     * Template variable getter. Returns mail error
+     * Template variable getter. Returns order
      *
      * @return oxOrder
      */
@@ -304,7 +304,7 @@ class Thankyou extends oxUBase
     {
         $oOrder = $this->getOrder();
         if ($oOrder) {
-            $oCountry = oxNew('oxcountry');
+            $oCountry = oxNew('oxCountry');
             $oCountry->load($oOrder->oxorder__oxbillcountryid->value);
 
             return $oCountry->oxcountry__oxisoalpha3->value;

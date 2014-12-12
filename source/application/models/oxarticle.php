@@ -83,7 +83,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected $_dVarMinPrice = null;
 
     /**
-     * cached article variant min price
+     * cached article variant max price
      *
      * @var double | null
      */

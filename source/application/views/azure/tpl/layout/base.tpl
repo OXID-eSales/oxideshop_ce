@@ -28,7 +28,7 @@
         [{if $oViewConf->getFbAppId()}]
             <meta property="og:site_name" content="[{$oViewConf->getBaseDir()}]">
             <meta property="fb:app_id" content="[{$oViewConf->getFbAppId()}]">
-            <meta property="og:title" content="[{$_sMetaTitlePrefix}][{if $_sMetaTitlePrefix && $_sMetaTitle}] | [{/if}][{$_sMetaTitle|strip_tags}][{if $_sMetaTitleSuffix && ($_sMetaTitlePrefix || $_sMetaTitle)}] | [{/if}][{$_sMetaTitleSuffix}] [{if $_sMetaTitlePageSuffix}] | [{$_sMetaTitlePageSuffix}] [{/if}]">
+            <meta property="og:title" content="[{$oView->getPageTitle()}]">
             [{if $oViewConf->getActiveClassName() == 'details'}]
                 <meta property="og:type" content="product">
                 <meta property="og:image" content="[{$oView->getActPicture()}]">

@@ -39,7 +39,7 @@
 [{ oxmultilang ident="YOUR_TEAM" args=$shop->oxshops__oxname->getRawValue()}]
 [{/block}]
 
-[{block name="email_html_ordershipped_shipmenttrackingurl"}]
+[{block name="email_plain_ordershipped_shipmenttrackingurl"}]
 [{if $order->getShipmentTrackingUrl()}][{ oxmultilang ident="SHIPMENT_TRACKING" suffix="COLON" }] [{ $order->getShipmentTrackingUrl()}][{/if}]
 [{/block}]
 

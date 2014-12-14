@@ -156,7 +156,7 @@ class Search extends oxUBase
 
         // #1184M - special char search
         $oConfig = oxRegistry::getConfig();
-        $sSearchParamForQuery = $oConfig->getRequestParameter('searchparam', true);
+        $sSearchParamForQuery = trim($oConfig->getRequestParameter('searchparam', true));
 
         // searching in category ?
         $sInitialSearchCat = $this->_sSearchCatId = rawurldecode($oConfig->getRequestParameter('searchcnid'));

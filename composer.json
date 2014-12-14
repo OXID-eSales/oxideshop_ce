@@ -1,0 +1,13 @@
+{
+    "name": "oxid/eshop_ce",
+    "config": {
+        "bin-dir": "bin"
+    },
+    "description": "oxideshop_ce",
+    "require": {},
+    "require-dev": {
+        "oxid/eshoptests": "dev-master"
+    },
+    "keywords": ["oxid"],
+    "homepage": "https://www.oxid-esales.com"
+}

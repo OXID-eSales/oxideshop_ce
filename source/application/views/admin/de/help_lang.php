@@ -290,10 +290,10 @@ $aLang =  array(
 
 
 'HELP_SHOP_MAIN_PRODUCTIVE'                   => 'Für Installation, Konfiguration, Anpassung der Templates und Modul-Debugging sollte der Shop nicht im Produktivmodus sein. Sobald der Produktivmodus aktiviert ist, wird das Cache Handling und das Error Reporting für den Livebetrieb des Shops optimiert.<br>' .
-                                                 '<span class="warning_or_important_hint">Aktivieren Sie diese Einstellung, bevor ihr eShop öffentlich zugänglich gemacht wird.</span><br>' .
+                                                 '<span class="warning_or_important_hint">Aktivieren Sie diese Einstellung, bevor Ihr eShop öffentlich zugänglich gemacht wird.</span><br>' .
                                                  'Weitere wichtige Hinweise für den Livegang des OXID eShop finden Sie in unserer <a href="http://wiki.oxidforge.org/Tutorials/Check_vor_dem_Livegang" target="_blank">OXIDforge</a>.',
 
-'HELP_SHOP_MAIN_ACTIVE'                       => 'Mit <span class="navipath_or_inputname">Aktiv</span> können Sie ihren kompletten eShop ein- und ausschalten. Wenn ihr eShop ausgeschaltet ist, wird Ihren Kunden eine Meldung angezeigt, dass der eShop vorübergehend offline ist. Das kann für Wartungsarbeiten am eShop nützlich sein.',
+'HELP_SHOP_MAIN_ACTIVE'                       => 'Mit <span class="navipath_or_inputname">Aktiv</span> können Sie Ihren kompletten eShop ein- und ausschalten. Wenn Ihr eShop ausgeschaltet ist, wird Ihren Kunden eine Meldung angezeigt, dass der eShop vorübergehend offline ist. Das kann für Wartungsarbeiten am eShop nützlich sein.',
 
 'HELP_SHOP_MAIN_INFOEMAIL'                    => 'An diese E-Mail Adresse werden E-Mails gesendet, wenn die Benutzer E-Mails über das Kontaktformular senden.',
 
@@ -497,7 +497,7 @@ $aLang =  array(
 
 'HELP_GENIMPORT_FIRSTCOLHEADER'               => 'Aktivieren Sie diese Einstellung, falls in der ersten Zeile der CSV-Datei die Datenbank-Spalten stehen, zu denen die Daten zugeordnet werden sollen. Dann wird die Zuordnung der Daten zu den entsprechenden Datenbank-Spalten automatisch vorgenommen.',
 
-'HELP_GENIMPORT_REPEATIMPORT'                 => 'Wenn Sie diese Einstellung aktivieren, wird nach erfolgreichem Import automatisch wieder Schritt 1 angezeigt, damit sie den nächsten Import machen können.',
+'HELP_GENIMPORT_REPEATIMPORT'                 => 'Wenn Sie diese Einstellung aktivieren, wird nach erfolgreichem Import automatisch wieder Schritt 1 angezeigt, damit Sie den nächsten Import machen können.',
 
 'HELP_LANGUAGE_DEFAULT'                       => 'Die Standardsprache wird verwendet, wenn OXID eShop die zu verwendete Sprache nicht anderweitig ermitteln kann: Die gewünschte Sprache ist nicht in der URL angegeben, kann nicht über den Browser ermittelt werden und ist nicht in der aktuellen Session gespeichert. Die Standardsprache kann deaktiviert, aber nicht gelöscht werden.',
 
@@ -512,7 +512,7 @@ $aLang =  array(
 'HELP_PAYMENT_MAIN_SELECTED'                  => 'Mit <span class="navipath_or_inputname">Ausgewählt</span> können Sie bestimmen, welche Zahlungsart als Standard ausgewählt sein soll, wenn Benutzer im dritten Bestellschritt zwischen verschiedenen Zahlungsarten wählen können.',
 
 'HELP_PAYMENT_MAIN_AMOUNT'                    => 'Mit <span class="navipath_or_inputname">Einkaufswert</span> können Sie einstellen, dass die Zahlungsart nur für bestimmte Einkaufswerte gültig ist. Mit den Feldern <span class="navipath_or_inputname">von</span> und <span class="navipath_or_inputname">bis</span> können Sie den Bereich einstellen.<br>' .
-                                                    'Wenn die Zahlungsart für jeden Einkaufswert gültig sein soll, müssen Sie eine Bedingung eingeben, die immer gültig ist: Geben sie in das Feld <span class="navipath_or_inputname">von</span> <span class="userinput_or_code">0</span> ein, in das Feld <span class="navipath_or_inputname">bis</span> <span class="userinput_or_code">999999999</span>.',
+                                                    'Wenn die Zahlungsart für jeden Einkaufswert gültig sein soll, müssen Sie eine Bedingung eingeben, die immer gültig ist: Geben Sie in das Feld <span class="navipath_or_inputname">von</span> <span class="userinput_or_code">0</span> ein, in das Feld <span class="navipath_or_inputname">bis</span> <span class="userinput_or_code">999999999</span>.',
 
 'HELP_PAYMENT_MAIN_ADDPRICE'                  => 'Bei <span class="navipath_or_inputname">Preisauf-/abschlag</span> wird der Preis für die Zahlungsart eingegeben. Die Preise können auf zwei verschiedene Arten angegeben werden:' .
                                                  '<ul>' .
@@ -571,7 +571,7 @@ $aLang =  array(
 
 'HELP_VOUCHERSERIE_MAIN_VOUCHERNUM'           => 'Hier können Sie eine Gutscheinnummer eingeben. Diese wird verwendet wenn, Sie neue Gutscheine anlegen. Wenn Sie mehrere Gutscheine anlegen, erhalten alle Gutscheine die gleiche Nummer.',
 
-'HELP_VOUCHERSERIE_MAIN_CALCULATEONCE'        => 'Wenn sie produkt- oder kategoriebezogene Gutscheine benutzen, deaktivieren sie diese Option, damit der Gutschein für jedes Produkt einer Warenkorbposition berechnet wird. Aktivieren sie diese Option, wenn der Gutschein auf die gesamte Warenkorbposition angewendet werden soll.',
+'HELP_VOUCHERSERIE_MAIN_CALCULATEONCE'        => 'Wenn sie produkt- oder kategoriebezogene Gutscheine benutzen, deaktivieren Sie diese Option, damit der Gutschein für jedes Produkt einer Warenkorbposition berechnet wird. Aktivieren sie diese Option, wenn der Gutschein auf die gesamte Warenkorbposition angewendet werden soll.',
 
 'HELP_WRAPPING_MAIN_PICTURE'                  => 'Bei <span class="navipath_or_inputname">Bild</span> und <span class="navipath_or_inputname">Bild hochladen</span> können Sie ein Bild für die Geschenkverpackung hochladen. Wählen Sie bei <span class="navipath_or_inputname">Bild hochladen</span> das Bild aus, das Sie hochladen möchten. Wenn Sie auf Speichern klicken, wird das Bild hochgeladen. Nachdem das Bild hochgeladen ist, wird der Dateiname des Bildes in <span class="navipath_or_inputname">Bild</span> angezeigt.',
 

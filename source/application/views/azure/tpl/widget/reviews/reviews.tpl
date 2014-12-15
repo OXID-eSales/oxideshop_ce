@@ -4,7 +4,8 @@
 [{oxscript add="$( '#writeNewReview' ).oxReview();"}]
 <div id="review">
     [{block name="widget_reviews_form"}]
-        [{if $oxcmp_user}]
+        [{assign var="sReviewUserHash" value=$oView->getReviewUserHash()}]
+        [{if $oxcmp_user || $sReviewUserHash}]
             <form action="[{$oViewConf->getSelfActionLink()}]" method="post" id="rating">
                 <div id="writeReview">
                     [{if $oView->canRate()}]
@@ -33,7 +34,6 @@
                         <input type="hidden" name="recommid" value="[{$oView->getRecommListId()}]">
                     [{/if}]
 
-                    [{assign var="sReviewUserHash" value=$oView->getReviewUserHash()}]
                     [{if $sReviewUserHash}]
                         <input type="hidden" name="reviewuserhash" value="[{$sReviewUserHash}]">
                     [{/if}]

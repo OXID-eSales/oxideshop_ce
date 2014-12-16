@@ -50,7 +50,7 @@ class oxStr
     /**
      * Static method initializing new string handler or returning the existing one.
      *
-     * @return object
+     * @return oxStr
      */
     public static function getStr()
     {
@@ -67,7 +67,7 @@ class oxStr
      * to be possible to call this method statically ( oxStr::getStr() ), yet leaving the
      * possibility to extend it in modules by overriding _getStrHandler() method.
      *
-     * @return object
+     * @return oxStrMb
      */
     protected function _getStrHandler()
     {

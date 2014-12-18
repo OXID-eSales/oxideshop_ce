@@ -209,7 +209,7 @@ class oxVatSelector extends oxSuperCfg
      *
      * @return string
      */
-    protected function _getVatCountry(oxUser $oUser = null)
+    protected function _getVatCountry(oxUser $oUser)
     {
         $blUseShippingCountry = $this->getConfig()->getConfigParam("blShippingCountryVat");
 

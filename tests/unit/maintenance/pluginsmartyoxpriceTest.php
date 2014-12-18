@@ -39,7 +39,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
         return array(
             array(new oxPrice(12.12), $oEURCurrency, '12,12 EUR'),
             array(new oxPrice(0.12), $oEURCurrency, '0,12 EUR'),
-            array(new oxPrice(120012.1), $oUSDCurrency, 'USD 120,012.100'),
+            array(new oxPrice(120012.1), $oUSDCurrency, 'USD120,012.100'),
             array(new oxPrice(1278), $oEURCurrency, '1.278,00 EUR'),
             array(new oxPrice(1992.45), $oEmptyCurrency, '1.992,45'),
             array(new oxPrice(1992.45), null, '1.992,45'),
@@ -81,7 +81,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
             array(12.12, $oEURCurrencyZero, '12 EUR'),
             array(0.12, $oEURCurrency, '0,12 EUR'),
             array(0.12, $oEURCurrencyZero, '0 EUR'),
-            array(120012.1, $oUSDCurrency, 'USD 120,012.100'),
+            array(120012.1, $oUSDCurrency, 'USD120,012.100'),
             array(1278, $oEURCurrency, '1.278,00 EUR'),
             array(1278, $oEURCurrencyZero, '1.278 EUR'),
             array(1992.45, $oEmptyCurrency, '1.992,45'),
@@ -124,7 +124,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
             array(null, $oUSDCurrency, ''),
             array(0, $oEURCurrency, '0,00 EUR'),
             array(0, $oEURCurrencyZero, '0 EUR'),
-            array(0, $oUSDCurrency, 'USD 0.000'),
+            array(0, $oUSDCurrency, 'USD0.000'),
             array(0, $oEmptyCurrency, ''),
             array(0, null, ''),
         );

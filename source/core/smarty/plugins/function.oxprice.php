@@ -60,7 +60,7 @@ function smarty_function_oxprice( $params, &$smarty )
         if ( is_numeric( $sPrice ) ) {
             if ( (float) $sPrice > 0 || $sCurrencySign  ) {
                 $sPrice = number_format( $sPrice, $iDecimals, $sDecimalsSeparator, $sThousandSeparator );
-                $sOutput = ( isset($sSide) && $sSide == 'Front' ) ? $sCurrencySign . ' ' . $sPrice : $sPrice . ' ' . $sCurrencySign;
+                $sOutput = ( isset($sSide) && $sSide == 'Front' ) ? $sCurrencySign . $sPrice : $sPrice . ' ' . $sCurrencySign;
             }
 
             $sOutput = trim($sOutput);

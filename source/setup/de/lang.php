@@ -75,7 +75,7 @@ $aLang = array(
 
 'MOD_MOD_REWRITE'                               => 'Apache mod_rewrite Modul',
 'MOD_SERVER_PERMISSIONS'                        => 'Dateizugriffsrechte',
-'MOD_ALLOW_URL_FOPEN'                           => 'allow_url_fopen oder fsockopen auf Port 80',
+'MOD_ALLOW_URL_FOPEN'                           => 'allow_url_fopen und fsockopen auf Port 80',
 'MOD_PHP4_COMPAT'                               => 'Zend Kompatibilitätsmodus muss ausgeschaltet sein',
 'MOD_PHP_VERSION'                               => 'PHP mindestens Version 5.3.25',
 'MOD_REQUEST_URI'                               => 'REQUEST_URI vorhanden',

@@ -425,7 +425,7 @@ class oxUtilsServer extends oxSuperCfg
      * Check if URL is same as used for request.
      *
      * @param string $sURL        URL to check if is same as request.
-     * @param string $sServerHost request URL.
+     * @param string $sServerHost request host.
      *
      * @return bool true if $sURL is equal to current page URL
      */

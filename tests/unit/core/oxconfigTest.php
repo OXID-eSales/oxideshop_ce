@@ -1447,90 +1447,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertEquals(0, $oConfig->getShopCurrency());
     }
 
-
-    /**
-     * Testing URL checker
-     */
-    // by passing empty URL it returns false
-    public function testIsCurrentUrlNoUrl()
-    {
-        $oConfig = new oxConfig();
-        $oConfig->init();
-        $this->assertTrue($oConfig->isCurrentUrl(''));
-    }
-
-    public function testIsCurrentUrlRandomUrl()
-    {
-        $sUrl = 'http://www.example.com/example/example.php';
-        $oConfig = new oxConfig();
-        $oConfig->init();
-        $this->assertFalse($oConfig->isCurrentUrl($sUrl));
-    }
-
-    public function testIsCurrentUrlPassingCurrent()
-    {
-        $oConfig = new oxConfig();
-        $oConfig->init();
-        $sUrl = $oConfig->getConfigParam('sShopURL') . '/example.php';
-        $this->assertFalse($oConfig->isCurrentUrl($sUrl));
-    }
-
-    public function testIsCurrentUrlNoProtocol()
-    {
-        $oConfig = new oxConfig();
-        $oConfig->init();
-        $sUrl = 'www.example.com';
-        $this->assertTrue($oConfig->isCurrentUrl($sUrl));
-    }
-
-    public function testIsCurrentUrlBadProtocol()
-    {
-        $oConfig = new oxConfig();
-        $oConfig->init();
-        $sUrl = 'ftp://www.example.com';
-        $this->assertTrue($oConfig->isCurrentUrl($sUrl));
-    }
-
-    public function testIsCurrentUrlBugFixTest()
-    {
-        $sUrl = 'http://www.example.com.ru';
-        $oConfig = new oxConfig();
-        $oConfig->init();
-        $_SERVER['HTTP_HOST'] = 'http://www.example.com';
-        $_SERVER['SCRIPT_NAME'] = '';
-        $this->assertfalse($oConfig->isCurrentUrl($sUrl));
-
-        $sUrl = 'http://www.example.com';
-        $oConfig = new oxConfig();
-        $oConfig->init();
-        $_SERVER['HTTP_HOST'] = 'http://www.example.com.ru';
-        $_SERVER['SCRIPT_NAME'] = '';
-        $this->assertfalse($oConfig->isCurrentUrl($sUrl));
-
-        //#4010: force_sid added in https to every link
-        $sUrl = 'https://www.example.com.ru';
-        $oConfig = new oxConfig();
-        $oConfig->init();
-        $_SERVER['HTTP_HOST'] = 'www.example.com.ru';
-        $_SERVER['SCRIPT_NAME'] = '';
-        $this->assertTrue($oConfig->isCurrentUrl($sUrl));
-    }
-
-    /**
-     * Bug fix 0005685: Varnish issues on balanced system
-     * Force sid is added on each link if proxy is in between client and Shop server.
-     */
-    public function testIsCurrentUrlWithLoadBalancer()
-    {
-        $sUrl = 'https://www.example.com.ru';
-        $oConfig = new oxConfig();
-        $oConfig->init();
-        $_SERVER['HTTP_HOST'] = 'www.loadbalancer.de';
-        $_SERVER['SCRIPT_NAME'] = '';
-        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'www.example.com.ru';
-        $this->assertTrue($oConfig->isCurrentUrl($sUrl));
-    }
-
     /**
      * Testing getImageDir getter
      */
@@ -2629,7 +2545,28 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         } else {
             $this->assertEquals($sValue, $oConfig->getSystemConfigParameter($sName));
         }
+    }
 
+    /**
+     * Mock oxUtilsServer to see that oxConfig::isCurrentUrl return same result.
+     */
+    public function testIsCurrentUrlIsWrapperForOxUtilsServer()
+    {
+        $sURLToCheck = 'some url which does not matter as we check against mock';
+
+        /** @var oxUtilsServer|PHPUnit_Framework_MockObject_MockObject $oUtilsServer */
+        $oUtilsServer = $this->getMock('oxUtilsServer');
+        $oUtilsServer->expects($this->any())->method('isCurrentUrl')->will($this->returnValue(true));
+        oxRegistry::set('oxUtilsServer', $oUtilsServer);
+
+        $this->assertTrue($this->getConfig()->isCurrentUrl($sURLToCheck));
+
+        /** @var oxUtilsServer|PHPUnit_Framework_MockObject_MockObject $oUtilsServer */
+        $oUtilsServer = $this->getMock('oxUtilsServer');
+        $oUtilsServer->expects($this->any())->method('isCurrentUrl')->will($this->returnValue(false));
+        oxRegistry::set('oxUtilsServer', $oUtilsServer);
+
+        $this->assertFalse($this->getConfig()->isCurrentUrl($sURLToCheck));
     }
 
     /**

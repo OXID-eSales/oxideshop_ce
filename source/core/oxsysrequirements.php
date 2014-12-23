@@ -846,10 +846,8 @@ class oxSysRequirements
     public function checkMemoryLimit()
     {
         if ($sMemLimit = @ini_get('memory_limit')) {
-            // CE - PE at least to 14 MB. We recomend a memory_limit of 30MB.
-            $sDefLimit = '14M';
-            $sRecLimit = '30M';
-
+            $sDefLimit = $this->_getMinimumMemoryLimit();
+            $sRecLimit = $this->_getRecommendMemoryLimit();
 
             $iMemLimit = $this->_getBytes($sMemLimit);
             $iModStat = ($iMemLimit >= $this->_getBytes($sDefLimit)) ? 1 : 0;
@@ -1151,5 +1149,29 @@ class oxSysRequirements
         $sStatus = (strtolower((string) @ini_get('session.auto_start')));
 
         return in_array($sStatus, array('on', '1')) ? 0 : 2;
+    }
+
+    /**
+     * Return minimum memory limit by edition.
+     *
+     * @return string
+     */
+    protected function _getMinimumMemoryLimit()
+    {
+        $sDefLimit = '14M';
+
+        return $sDefLimit;
+    }
+
+    /**
+     * Return recommend memory limit by edition.
+     *
+     * @return string
+     */
+    protected function _getRecommendMemoryLimit()
+    {
+        $sRecLimit = '30M';
+
+        return $sRecLimit;
     }
 }

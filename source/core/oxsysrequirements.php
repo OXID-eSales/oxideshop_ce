@@ -841,17 +841,30 @@ class oxSysRequirements
     /**
      * Checks memory limit.
      *
+     * @param string $sMemLimit memory limit to compare with requirements
+     *
      * @return integer
      */
-    public function checkMemoryLimit()
+    public function checkMemoryLimit($sMemLimit = null)
     {
-        if ($sMemLimit = @ini_get('memory_limit')) {
+        if ($sMemLimit === null) {
+            $sMemLimit = @ini_get('memory_limit');
+        }
+
+        if ($sMemLimit) {
             $sDefLimit = $this->_getMinimumMemoryLimit();
             $sRecLimit = $this->_getRecommendMemoryLimit();
 
             $iMemLimit = $this->_getBytes($sMemLimit);
-            $iModStat = ($iMemLimit >= $this->_getBytes($sDefLimit)) ? 1 : 0;
-            $iModStat = $iModStat ? (($iMemLimit >= $this->_getBytes($sRecLimit)) ? 2 : $iModStat) : $iModStat;
+
+            if($iMemLimit === '-1') {
+                // -1 is equivalent to no memory limit
+                $iModStat = 2;
+            }
+            else {
+                $iModStat = ($iMemLimit >= $this->_getBytes($sDefLimit)) ? 1 : 0;
+                $iModStat = $iModStat ? (($iMemLimit >= $this->_getBytes($sRecLimit)) ? 2 : $iModStat) : $iModStat;
+            }
 
         } else {
             $iModStat = -1;

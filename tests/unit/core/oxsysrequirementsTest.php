@@ -481,47 +481,18 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
     }
 
     /**
-     * Provides different server configuration to check memory limit.
-     *
-     * @return array
-     */
-    public function providerCheckMemoryLimit()
-    {
-        if (OXID_VERSION_PE) :
-            $aMemoryLimitsWithExpectedSystemHealth = array(
-                array('8M', 0),
-                array('14M', 1),
-                array('30M', 2),
-                array('-1', 2),
-            );
-        endif;
-        if (OXID_VERSION_EE) :
-            $aMemoryLimitsWithExpectedSystemHealth = array(
-                array('8M', 0),
-                array('32M', 1),
-                array('60M', 2),
-                array('-1', 2),
-            );
-        endif;
-
-        return $aMemoryLimitsWithExpectedSystemHealth;
-    }
-
-    /**
      * Testing oxSysRequirements::checkMemoryLimit()
      * contains assertion for bug #5083
      *
-     * @param string $sMemoryLimit    how much memory allocated.
-     * @param int    $iExpectedResult if fits system requirements.
-     *
-     * @dataProvider providerCheckMemoryLimit
-     *
      * @return null
      */
-    public function testCheckMemoryLimit($sMemoryLimit, $iExpectedResult)
+    public function testCheckMemoryLimit()
     {
-        /** @var oxSysRequirements $oSysReq */
-        $oSysReq = oxNew('oxSysRequirements');
-        $this->assertEquals($iExpectedResult, $oSysReq->checkMemoryLimit($sMemoryLimit));
+        $oSysReq = new oxSysRequirements();
+
+        $this->assertEquals(0, $oSysReq->checkMemoryLimit('8M'));
+        $this->assertEquals(1, $oSysReq->checkMemoryLimit('14M'));
+        $this->assertEquals(2, $oSysReq->checkMemoryLimit('30M'));
+        $this->assertEquals(2, $oSysReq->checkMemoryLimit('-1'));
     }
 }

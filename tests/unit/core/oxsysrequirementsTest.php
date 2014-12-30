@@ -487,12 +487,22 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
      */
     public function providerCheckMemoryLimit()
     {
-        $aMemoryLimitsWithExpectedSystemHealth = array(
-            array('8M', 0),
-            array('14M', 1),
-            array('30M', 2),
-            array('-1', 2),
-        );
+        if (OXID_VERSION_PE) :
+            $aMemoryLimitsWithExpectedSystemHealth = array(
+                array('8M', 0),
+                array('14M', 1),
+                array('30M', 2),
+                array('-1', 2),
+            );
+        endif;
+        if (OXID_VERSION_EE) :
+            $aMemoryLimitsWithExpectedSystemHealth = array(
+                array('8M', 0),
+                array('32M', 1),
+                array('60M', 2),
+                array('-1', 2),
+            );
+        endif;
 
         return $aMemoryLimitsWithExpectedSystemHealth;
     }

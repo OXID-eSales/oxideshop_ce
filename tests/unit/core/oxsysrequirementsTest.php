@@ -479,4 +479,20 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
 
         $this->assertSame($iResult, $oSysRequirements->checkPhpVersion());
     }
+
+    /**
+     * Testing oxSysRequirements::checkMemoryLimit()
+     * contains assertion for bug #5083
+     *
+     * @return null
+     */
+    public function testCheckMemoryLimit()
+    {
+        $oSysReq = new oxSysRequirements();
+
+        $this->assertEquals(0, $oSysReq->checkMemoryLimit('8M'));
+        $this->assertEquals(1, $oSysReq->checkMemoryLimit('14M'));
+        $this->assertEquals(2, $oSysReq->checkMemoryLimit('30M'));
+        $this->assertEquals(2, $oSysReq->checkMemoryLimit('-1'));
+    }
 }

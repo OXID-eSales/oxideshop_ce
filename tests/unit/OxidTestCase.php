@@ -245,7 +245,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         $oDbRestore = self::_getDbRestore();
         $oDbRestore->restoreDB();
 
-        if (function_exists('memory_get_usage')) {
+        if (function_exists('memory_get_usage') && !getenv('TRAVIS_ERROR_LEVEL')) {
             echo "\n" . round(memory_get_usage(1) / 1024 / 1024) . 'M (' . round(memory_get_peak_usage(1) / 1024 / 1024) . 'M)' . "\n";
         }
     }

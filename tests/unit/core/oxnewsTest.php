@@ -174,7 +174,10 @@ class Unit_Core_oxnewsTest extends OxidTestCase
      */
     public function testIsInGroup()
     {
-        $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        }
+
         $e = null;
         try {
             $oTestNews = oxNew('oxnews');
@@ -182,7 +185,11 @@ class Unit_Core_oxnewsTest extends OxidTestCase
             $this->assertTrue($oTestNews->inGroup('oxidnewcustomer'));
         } catch (Exception $e) {
         }
-        error_reporting($iErrorReporting);
+
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            error_reporting($iErrorReporting);
+        }
+
         if ($e) {
             throw $e;
         }
@@ -193,7 +200,10 @@ class Unit_Core_oxnewsTest extends OxidTestCase
      */
     public function testIsNotInGroup()
     {
-        $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        }
+
         $e = null;
         try {
             $oTestNews = oxNew('oxnews');
@@ -201,7 +211,11 @@ class Unit_Core_oxnewsTest extends OxidTestCase
             $this->assertFalse($oTestNews->inGroup('xxx'));
         } catch (Exception $e) {
         }
-        error_reporting($iErrorReporting);
+
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            error_reporting($iErrorReporting);
+        }
+
         if ($e) {
             throw $e;
         }
@@ -212,7 +226,10 @@ class Unit_Core_oxnewsTest extends OxidTestCase
      */
     public function testInsert()
     {
-        $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        }
+
         $e = null;
         try {
             $oTestNews = oxNew('oxnews');
@@ -228,7 +245,10 @@ class Unit_Core_oxnewsTest extends OxidTestCase
         } catch (Exception $e) {
         }
 
-        error_reporting($iErrorReporting);
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            error_reporting($iErrorReporting);
+        }
+
         if ($e) {
             throw $e;
         }
@@ -239,7 +259,10 @@ class Unit_Core_oxnewsTest extends OxidTestCase
      */
     public function testInsert_dateIsZero()
     {
-        $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        }
+
         $e = null;
         try {
             $oTestNews = oxNew('oxnews');
@@ -255,7 +278,10 @@ class Unit_Core_oxnewsTest extends OxidTestCase
         } catch (Exception $e) {
         }
 
-        error_reporting($iErrorReporting);
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            error_reporting($iErrorReporting);
+        }
+
         if ($e) {
             throw $e;
         }
@@ -266,7 +292,10 @@ class Unit_Core_oxnewsTest extends OxidTestCase
      */
     public function testInsert_dateNotEntered()
     {
-        $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        }
+
         $e = null;
         try {
             $oTestNews = oxNew('oxnews');
@@ -281,7 +310,9 @@ class Unit_Core_oxnewsTest extends OxidTestCase
         } catch (Exception $e) {
         }
 
-        error_reporting($iErrorReporting);
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            error_reporting($iErrorReporting);
+        }
     }
 
     /**

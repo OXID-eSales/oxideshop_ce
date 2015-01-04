@@ -205,7 +205,9 @@ class oxTestModules
             $sCode = " \$arg = func_get_args(); return call_user_func_array($func, \$arg);";
         }
 
-        $iErrorReportinc = error_reporting(E_ALL ^ E_NOTICE);
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            $iErrorReportinc = error_reporting(E_ALL ^ E_NOTICE);
+        }
 
         $aFncParams = array();
         if (strpos($fncName, '(') !== false) {
@@ -264,7 +266,9 @@ class oxTestModules
         eval ("class $name extends $last { function $fncName { $sCode }}");
         oxAddClassModule($name, $class);
 
-        error_reporting($iErrorReportinc);
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            error_reporting($iErrorReportinc);
+        }
 
         self::$_addedmods[$class][] = $name;
 

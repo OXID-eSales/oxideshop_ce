@@ -20,9 +20,11 @@
  * @version   OXID eShop CE
  */
 
-// DO NOT TOUCH THIS _ INSTEAD FIX NOTICES - DODGER
-error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
-ini_set('display_errors', true);
+if (!getenv('TRAVIS_ERROR_LEVEL')) {
+    // DO NOT TOUCH THIS _ INSTEAD FIX NOTICES - DODGER
+    error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
+    ini_set('display_errors', true);
+}
 
 define ('OXID_PHP_UNIT', true);
 

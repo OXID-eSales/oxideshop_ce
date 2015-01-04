@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -245,7 +245,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         $oDbRestore = self::_getDbRestore();
         $oDbRestore->restoreDB();
 
-        if (function_exists('memory_get_usage') && !getenv('TRAVIS_ERROR_LEVEL')) {
+        if (function_exists('memory_get_usage')) {
             echo "\n" . round(memory_get_usage(1) / 1024 / 1024) . 'M (' . round(memory_get_peak_usage(1) / 1024 / 1024) . 'M)' . "\n";
         }
     }

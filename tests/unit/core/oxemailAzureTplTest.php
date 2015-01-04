@@ -1027,7 +1027,10 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendPriceAlarmNotification()
     {
-        $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        }
+
         $e = null;
 
         try {
@@ -1068,7 +1071,10 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         } catch (Exception $e) {
         }
 
-        error_reporting($iErrorReporting);
+        if (!getenv('TRAVIS_ERROR_LEVEL')) {
+            error_reporting($iErrorReporting);
+        }
+
         if ($e) {
             throw $e;
         }

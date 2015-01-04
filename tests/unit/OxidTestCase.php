@@ -158,7 +158,13 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
+
+        if (getenv('TRAVIS_ERROR_LEVEL')) {
+            error_reporting((int)getenv('TRAVIS_ERROR_LEVEL'));
+        } else {
+            error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
+        }
+
         ini_set('display_errors', true);
 
         $this->getConfig();
@@ -174,7 +180,12 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
             $oTestModuleLoader->setModuleInformation();
         }
 
-        error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
+        if (getenv('TRAVIS_ERROR_LEVEL')) {
+            error_reporting((int)getenv('TRAVIS_ERROR_LEVEL'));
+        } else {
+            error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
+        }
+
         ini_set('display_errors', true);
     }
 

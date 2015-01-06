@@ -572,7 +572,7 @@ class Emos
         $sStr = trim( $sStr );
 
         //2007-05-10 replace translated &nbsp; with spaces
-        $nbsp = chr(0xa0);
+        $nbsp = "\xc2\xa0"; // now compatible with UTF-8
         $sStr = str_replace( $nbsp, " ", $sStr );
         $sStr = str_replace( "\"", "", $sStr );
         $sStr = str_replace( "'", "", $sStr );

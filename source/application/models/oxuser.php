@@ -1282,16 +1282,15 @@ class oxUser extends oxBase
 
         $sUserSelect = "oxuser.oxusername = " . $oDb->quote($sUser);
 
-        $sSalt = $oDb->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  " . $sUserSelect);
-
-        $sPassSelect = " oxuser.oxpassword = " . $oDb->quote($this->encodePassword($sPassword, $sSalt));
         $sShopSelect = "";
-
-
         // admin view: can only login with higher than 'user' rights
         if ($blAdmin) {
             $sShopSelect = " and ( oxrights != 'user' ) ";
         }
+
+        $sSalt = $oDb->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  " . $sUserSelect . $sShopSelect);
+
+        $sPassSelect = " oxuser.oxpassword = " . $oDb->quote($this->encodePassword($sPassword, $sSalt));
 
         $sSelect = "select `oxid` from oxuser where oxuser.oxactive = 1 and {$sPassSelect} and {$sUserSelect} {$sShopSelect} ";
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -87,6 +87,8 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
 {
 
     protected $_sOxId = null;
+
+    /** @var oxBasketItem $_oBasketItem */
     protected $_oBasketItem = null;
     public $aArticleIds = array();
     public $aCategoryIds = array();
@@ -704,6 +706,28 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
     }
 
     /*
+     * Testing getDeliveryAmount() - weight related Once per Product in Order
+     */
+    public function testGetDeliveryAmountCalcByWeightPerOrderProduct()
+    {
+        /** @var oxDelivery $oDelivery delivery by weight. */
+        $oDelivery = oxNew('oxdelivery');
+        $oDelivery->oxdelivery__oxdeltype = new oxField('w', oxField::T_RAW);
+        $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
+
+        /** @var oxOrderArticle|PHPUnit_Framework_MockObject_MockObject $oOrderArticle */
+        $oOrderArticle = $this->getMock('oxOrderArticle', array(), array(), '', false);
+        $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oBasketItem->getArticle()));
+        $oOrderArticle->expects($this->any())->method('isOrderArticle')->will($this->returnValue(true));
+
+        /** @var oxBasketItem $oBasketItem|PHPUnit_Framework_MockObject_MockObject */
+        $oBasketItem = $this->getMock('oxBasketItem', array(), array(), '', false);
+        $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($oOrderArticle));
+
+        $this->assertEquals(5, $oDelivery->getDeliveryAmount($oBasketItem));
+    }
+
+    /*
      * Testing getDeliveryAmount() - size related
      */
     public function testGetDeliveryAmountCalcBySize()
@@ -726,6 +750,28 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
         $oDelivery->oxdelivery__oxdeltype = new oxField('s', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
         $this->assertEquals(48, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+    }
+
+    /*
+     * Testing getDeliveryAmount() - size related Once per Product in Order
+     */
+    public function testGetDeliveryAmountCalcBySizePerOrderProduct()
+    {
+        /** @var oxDelivery $oDelivery delivery by size. */
+        $oDelivery = oxNew('oxdelivery');
+        $oDelivery->oxdelivery__oxdeltype = new oxField('s', oxField::T_RAW);
+        $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
+
+        /** @var oxOrderArticle|PHPUnit_Framework_MockObject_MockObject $oOrderArticle */
+        $oOrderArticle = $this->getMock('oxOrderArticle', array(), array(), '', false);
+        $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oBasketItem->getArticle()));
+        $oOrderArticle->expects($this->any())->method('isOrderArticle')->will($this->returnValue(true));
+
+        /** @var oxBasketItem $oBasketItem|PHPUnit_Framework_MockObject_MockObject */
+        $oBasketItem = $this->getMock('oxBasketItem', array(), array(), '', false);
+        $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($oOrderArticle));
+
+        $this->assertEquals(48, $oDelivery->getDeliveryAmount($oBasketItem));
     }
 
     /*

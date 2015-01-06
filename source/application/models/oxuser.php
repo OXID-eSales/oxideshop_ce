@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -1230,7 +1230,10 @@ class oxUser extends oxBase
     }
 
     /**
-     * Builds and returns user login query
+     * Builds and returns user login query.
+     *
+     * MD5 encoding is used in legacy eShop versions.
+     * We still allow to perform the login for users registered in the previous eshop versions.
      *
      * @param string $sUser     login name
      * @param string $sPassword login password

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 /**
@@ -150,7 +150,7 @@ class Navigation extends oxAdminView
 
         //reseting content cache if needed
         if ($myConfig->getConfigParam('blClearCacheOnLogout')) {
-            $this->resetContentCache();
+            $this->resetContentCache(true);
         }
 
         oxRegistry::getUtils()->redirect('index.php', true, 302);

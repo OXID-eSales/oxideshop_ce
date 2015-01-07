@@ -703,7 +703,8 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
     }
 
     /*
-     * Testing getDeliveryAmount() - weight related Once per Product in Order
+     * Testing getDeliveryAmount() - weight related Once per Product in Order.
+     * Test case for bug entry 0005942: Delivery cost rule with 'size' break tab in order administration.
      */
     public function testGetDeliveryAmountCalcByWeightPerOrderProduct()
     {
@@ -750,7 +751,8 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
     }
 
     /*
-     * Testing getDeliveryAmount() - size related Once per Product in Order
+     * Testing getDeliveryAmount() - size related Once per Product in Order.
+     * Test case for bug entry 0005942: Delivery cost rule with 'size' break tab in order administration.
      */
     public function testGetDeliveryAmountCalcBySizePerOrderProduct()
     {

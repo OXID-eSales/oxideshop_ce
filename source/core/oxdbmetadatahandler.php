@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -55,7 +55,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
     /**
      *  Get table fields
      *
-     * @param string $sTableName table name
+     * @param string $sTableName  table name
      *
      * @return array
      */
@@ -334,7 +334,9 @@ class oxDbMetaDataHandler extends oxSuperCfg
     {
         $sLangTable = getLangTableName($sTable, $iLang);
 
-        $aFields = array_merge($this->getFields($sTable), $this->getFields($sLangTable));
+        $aBaseFields = $this->getFields($sTable);
+        $aLangFields = $this->getFields($sLangTable);
+        $aFields = array_merge($aLangFields, $aBaseFields);
         $aSingleLangFields = array();
 
         foreach ($aFields as $sFieldName => $sField) {

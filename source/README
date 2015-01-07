@@ -1,6 +1,6 @@
 Thank you for using the OXID eShop!
 
-This software is written in PHP + MySQL and runs platform independent on Apache webservers.
+This software is written in PHP + MySQL and runs platform independent on Apache web servers.
 You can check the system requirements here (dependent from your edition): 
 http://www.oxid-esales.com/en/products/facts/oxid-eshop-enterprise-edition/system-requirements.html
 http://www.oxid-esales.com/en/products/facts/oxid-eshop-professional-edition/system-requirements.html
@@ -12,8 +12,11 @@ Installation:
 - create a blank database
 - point your browser to http://www.yourshop.com and follow the instructions of the installation script
 
-See more detailled installation instructions in our manual:
+See more detailed installation instructions in our manual:
 http://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation.html
+
+List of 3rd party licenses:
+http://wiki.oxidforge.org/Tutorials/List_of_3rd_party_licenses
 
 In case of any difficulties feel free to visit our community support forums at
 http://forum.oxid-esales.com/?langid=1

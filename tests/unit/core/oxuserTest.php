@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -178,19 +178,23 @@ class Unit_Core_oxUserTest extends OxidTestCase
      * @param string $sUserName
      * @param int    $iActive
      * @param string $sRights either user or malladmin
+     * @param int    $sShopId User shop ID
      *
      * @return oxUser
      */
-    protected function createUser($sUserName = null, $iActive = 1, $sRights = 'user')
+    protected function createUser($sUserName = null, $iActive = 1, $sRights = 'user', $sShopId = null)
     {
         $oUtils = oxRegistry::getUtils();
         $oDb = $this->getDb();
 
         $iLastNr = count($this->_aUsers) + 1;
-        $sShopID = $this->getConfig()->getShopId();
+
+        if (is_null($sShopId)) {
+            $sShopId = $this->getConfig()->getShopId();
+        }
 
         $oUser = new oxUser();
-        $oUser->oxuser__oxshopid = new oxField($sShopID, oxField::T_RAW);
+        $oUser->oxuser__oxshopid = new oxField($sShopId, oxField::T_RAW);
         $oUser->oxuser__oxactive = new oxField($iActive, oxField::T_RAW);
         $oUser->oxuser__oxrights = new oxField($sRights, oxField::T_RAW);
 
@@ -206,10 +210,10 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
         // loading user groups
         $sGroupId = $oDb->getOne('select oxid from oxgroups order by rand() ');
-        $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . $sUserId . '", "' . $sShopID . '", "' . $sUserId . '", "' . $sGroupId . '" )';
+        $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . $sUserId . '", "' . $sShopId . '", "' . $sUserId . '", "' . $sGroupId . '" )';
         $oDb->Execute($sQ);
 
-        $sQ = 'insert into oxorder ( oxid, oxshopid, oxuserid, oxorderdate ) values ( "' . $sId . '", "' . $sShopID . '", "' . $sUserId . '", "' . date('Y-m-d  H:i:s', time() + 3600) . '" ) ';
+        $sQ = 'insert into oxorder ( oxid, oxshopid, oxuserid, oxorderdate ) values ( "' . $sId . '", "' . $sShopId . '", "' . $sUserId . '", "' . date('Y-m-d  H:i:s', time() + 3600) . '" ) ';
         $oDb->Execute($sQ);
 
         // adding article to order

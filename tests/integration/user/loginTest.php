@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -24,34 +24,6 @@ require_once 'userTestCase.php';
 
 class Integration_User_loginTest extends UserTestCase
 {
-
-    /**
-     * Password encoded with old algorithm.
-     *
-     * @var string
-     */
-    private $_sOldEncodedPassword = '4bb11fbb0c6bf332517a7ec397e49f1c';
-
-    /**
-     * Salt generated with old algorithm.
-     *
-     * @var string
-     */
-    private $_sOldSalt = '3262383936333839303439393466346533653733366533346137326666393632';
-
-    /**
-     * Password encoded with new algorithm.
-     *
-     * @var string
-     */
-    private $_sNewEncodedPassword = 'b016e37ac8ec71449b475e84a941e3c39a27fb8f0710d4b47d6116ad6a6afcaa0c17006a4c01ffc67f3db95772fe001584cb4ce7e5bacd74198c24d1851841d5';
-
-    /**
-     * Salt generated with new algorithm.
-     *
-     * @var string
-     */
-    private $_sNewSalt = '56784f8ffc657fff84915b93e12a626e';
 
     /**
      * Tries to login with password which is generated with old algorithm

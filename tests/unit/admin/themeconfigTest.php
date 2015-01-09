@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -80,24 +80,25 @@ class Unit_Admin_ThemeConfigTest extends OxidTestCase
         $oConfig = $this->getMock('oxConfig', array('getShopId', 'getRequestParameter', 'saveShopConfVar'));
         $oConfig->expects($this->atLeastOnce())->method('getShopId')->will($this->returnValue($iShopId));
         $oConfig->expects($this->atLeastOnce())->method('getRequestParameter')->will($this->returnValue($aParams));
-        $oConfig->expects($this->at(2))->method('saveShopConfVar')->with(
+        $oConfig->expects($this->at(3))->method('saveShopConfVar')->with(
             'bool', $sName, $sValue, $iShopId, 'theme:' . $sThemeName
         )->will($this->returnValue(true));
-        $oConfig->expects($this->at(4))->method('saveShopConfVar')->with(
+        $oConfig->expects($this->at(5))->method('saveShopConfVar')->with(
             'str', $sName, $sValue, $iShopId, 'theme:' . $sThemeName
         )->will($this->returnValue(true));
-        $oConfig->expects($this->at(6))->method('saveShopConfVar')->with(
+        $oConfig->expects($this->at(7))->method('saveShopConfVar')->with(
             'arr', $sName, $sValue, $iShopId, 'theme:' . $sThemeName
         )->will($this->returnValue(true));
-        $oConfig->expects($this->at(8))->method('saveShopConfVar')->with(
+        $oConfig->expects($this->at(9))->method('saveShopConfVar')->with(
             'aarr', $sName, $sValue, $iShopId, 'theme:' . $sThemeName
         )->will($this->returnValue(true));
-        $oConfig->expects($this->at(10))->method('saveShopConfVar')->with(
+        $oConfig->expects($this->at(11))->method('saveShopConfVar')->with(
             'select', $sName, $sValue, $iShopId, 'theme:' . $sThemeName
         )->will($this->returnValue(true));
-        $oConfig->expects($this->at(12))->method('saveShopConfVar')->with(
+        $oConfig->expects($this->at(13))->method('saveShopConfVar')->with(
             'num', $sName, $sValue, $iShopId, 'theme:' . $sThemeName
         )->will($this->returnValue(true));
+
 
         $oTheme_Config = $this->getMock(
             'Theme_Config', array('getConfig', 'getEditObjectId', '_serializeConfVar')

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -71,6 +71,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
 
         $aTasks[] = "_resetCounts";
 
+        $aTasks[] = "resetContentCache";
 
         $oView = $this->getMock("Article_Main", $aTasks);
         $oView->expects($this->once())->method('_copyCategories');
@@ -83,6 +84,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
 
         $oView->expects($this->once())->method('_resetCounts');
 
+        $oView->expects($this->once())->method('resetContentCache');
 
         $oDb = oxDb::getDb();
         $sProdId = $oDb->getOne("select oxid from oxarticles where oxparentid !=''");
@@ -296,12 +298,14 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
             $aTasks[] = 'resetCounter';
             $aTasks[] = '_resetCounts';
 
+            $aTasks[] = 'resetContentCache';
 
             $oView = $this->getMock("Article_Main", $aTasks);
 
             $oView->expects($this->once())->method('resetCounter');
             $oView->expects($this->once())->method('_resetCounts');
 
+            $oView->expects($this->once())->method('resetContentCache');
 
             $oView->saveinnlang();
         } catch (Exception $oExcp) {

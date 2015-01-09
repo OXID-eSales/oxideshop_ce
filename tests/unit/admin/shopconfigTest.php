@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -61,6 +61,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
         modConfig::setRequestParameter("confselects", array("varnamesel" => "a"));
 
         $aTasks[] = "getConfig";
+        $aTasks[] = "resetContentCache";
         $aTasks[] = "_getModuleForConfigVars";
 
         $oConfig = $this->getMock("oxconfig", array("saveShopConfVar"));
@@ -108,6 +109,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
         // testing..
         $oView = $this->getMock("Shop_Config", $aTasks, array(), '', false);
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        $oView->expects($this->once())->method('resetContentCache');
         $oView->expects($this->once())->method('_getModuleForConfigVars')
             ->will($this->returnValue('theme:mytheme'));
 

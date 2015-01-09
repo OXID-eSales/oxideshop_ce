@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -141,6 +141,7 @@ class Article_Stock extends oxAdminDetails
     {
         $myConfig = $this->getConfig();
 
+        $this->resetContentCache();
 
         $sOxArtId = $this->getEditObjectId();
 
@@ -232,6 +233,7 @@ class Article_Stock extends oxAdminDetails
      */
     public function deleteprice()
     {
+        $this->resetContentCache();
 
         $oDb = oxDb::getDb();
         $sPriceId = $oDb->quote(oxRegistry::getConfig()->getRequestParameter("priceid"));

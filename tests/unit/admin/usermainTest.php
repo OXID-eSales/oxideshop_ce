@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -82,10 +82,11 @@ class Unit_Admin_UserMainTest extends OxidTestCase
         oxTestModules::addFunction('oxuser', 'assign', '{ return true; }');
         oxTestModules::addFunction('oxuser', 'getId', '{ return "testId"; }');
 
-        $aTasks = array("_allowAdminEdit");
+        $aTasks = array("_allowAdminEdit", "resetContentCache");
 
         $oView = $this->getMock("User_Main", $aTasks);
         $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(true));
+        $oView->expects($this->once())->method('resetContentCache');
         $oView->save();
 
         $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
@@ -107,10 +108,11 @@ class Unit_Admin_UserMainTest extends OxidTestCase
         oxTestModules::addFunction('oxuser', 'assign', '{ return true; }');
         oxTestModules::addFunction('oxuser', 'getId', '{ return "testId"; }');
 
-        $aTasks = array("_allowAdminEdit");
+        $aTasks = array("_allowAdminEdit", "resetContentCache");
 
         $oView = $this->getMock("User_Main", $aTasks);
         $oView->expects($this->atLeastOnce())->method('_allowAdminEdit')->will($this->returnValue(true));
+        $oView->expects($this->once())->method('resetContentCache');
         $oView->save();
         $oView->render();
 
@@ -129,10 +131,11 @@ class Unit_Admin_UserMainTest extends OxidTestCase
         oxTestModules::addFunction('oxuser', 'setPassword', '{ return true; }');
         oxTestModules::addFunction('oxuser', 'checkIfEmailExists', '{ return true; }');
 
-        $aTasks = array("_allowAdminEdit");
+        $aTasks = array("_allowAdminEdit", "resetContentCache");
 
         $oView = $this->getMock("User_Main", $aTasks);
         $oView->expects($this->atLeastOnce())->method('_allowAdminEdit')->will($this->returnValue(true));
+        $oView->expects($this->once())->method('resetContentCache');
         $oView->save();
         $oView->render();
 

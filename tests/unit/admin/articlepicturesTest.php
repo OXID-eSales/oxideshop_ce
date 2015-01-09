@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -63,7 +63,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         modConfig::getInstance()->setConfigParam('iPicCount', 0);
 
         $oView = $this->getMock("Article_Pictures", array("resetContentCache"));
-        $oView->expects($this->never())->method('resetContentCache');
+        $oView->expects($this->once())->method('resetContentCache');
 
         $iCnt = 7;
         modConfig::getInstance()->setConfigParam('iPicCount', $iCnt);

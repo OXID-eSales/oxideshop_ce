@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -225,6 +225,7 @@ class Article_Variant extends oxAdminDetails
             }
         }
 
+        $this->resetContentCache();
     }
 
     /**
@@ -235,6 +236,7 @@ class Article_Variant extends oxAdminDetails
     public function deleteVariant()
     {
 
+        $this->resetContentCache();
 
         $soxId = oxRegistry::getConfig()->getRequestParameter("voxid");
         $oDelete = oxNew("oxarticle");
@@ -249,6 +251,7 @@ class Article_Variant extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
+        $this->resetContentCache();
 
         // shopid
         $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
@@ -278,6 +281,7 @@ class Article_Variant extends oxAdminDetails
         if ($oArticle->load($this->getEditObjectId())) {
 
 
+            $this->resetContentCache();
 
             if ($aSels = oxRegistry::getConfig()->getRequestParameter("allsel")) {
                 $oVariantHandler = oxNew("oxVariantHandler");

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -106,7 +106,8 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
         modConfig::setRequestParameter("editval", array('oxreviews__oxtext' => 6, 'oxreviews__oxrating' => 6));
         modConfig::getInstance()->setConfigParam("blGBModerate", "_testReviewId");
 
-        $oView = new Article_Review();
+        $oView = $this->getMock("Article_Review", array("resetContentCache"));
+        $oView->expects($this->once())->method('resetContentCache');
         $oView->save();
 
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxreviews where oxtext = '6' and oxrating = '6'"));
@@ -131,7 +132,8 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxreviews where oxid = 'testReviewId'"));
         modConfig::setRequestParameter("rev_oxid", "testReviewId");
 
-        $oView = new Article_Review();
+        $oView = $this->getMock("Article_Review", array("resetContentCache"));
+        $oView->expects($this->once())->method('resetContentCache');
 
         $oView->delete();
 

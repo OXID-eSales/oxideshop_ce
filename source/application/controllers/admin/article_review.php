@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -140,6 +140,7 @@ class Article_Review extends oxAdminDetails
      */
     public function delete()
     {
+        $this->resetContentCache();
 
         $sRevoxId = oxRegistry::getConfig()->getRequestParameter("rev_oxid");
         $oReview = oxNew("oxreview");

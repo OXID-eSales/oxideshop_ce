@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -109,11 +109,14 @@ class Unit_Admin_ShopSeoTest extends OxidTestCase
 
         modConfig::setRequestParameter('aStaticUrl', array("staticUrl"));
 
-        $aTasks = array("saveConfVars");
+        $aTasks = array("saveConfVars", "resetContentCache");
 
         // testing..
         try {
             $oView = $this->getMock("Shop_Seo", $aTasks);
+            foreach ($aTasks as $sMethodName) {
+                $oView->expects($this->any())->method($sMethodName);
+            }
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("encodeStaticUrls", $oExcp->getMessage(), "Error in Shop_Seo::save()");

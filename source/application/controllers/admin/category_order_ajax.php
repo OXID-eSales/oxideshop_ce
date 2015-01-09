@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -185,6 +185,7 @@ class category_order_ajax extends ajaxListComponent
         $sId = oxRegistry::getConfig()->getRequestParameter("oxid");
         if ($oCategory->load($sId)) {
 
+            $this->resetContentCache();
 
             $aNewOrder = oxRegistry::getSession()->getVariable("neworder_sess");
             if (is_array($aNewOrder) && count($aNewOrder)) {

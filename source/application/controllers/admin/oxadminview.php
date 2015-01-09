@@ -437,7 +437,7 @@ class oxAdminView extends oxView
         $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
 
         if (!$blDeleteCacheOnLogout || $blForceReset) {
-            $this->_resetCache();
+            $this->_resetCaches();
 
             oxRegistry::getUtils()->oxResetFileCache();
 
@@ -645,7 +645,7 @@ class oxAdminView extends oxView
      *
      * @edition EE
      */
-    private function _resetCache()
+    private function _resetCaches()
     {
     }
 }

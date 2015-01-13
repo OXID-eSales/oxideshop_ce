@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -26,26 +26,36 @@
 $sShopUrl = null; //'http://eshop_url/';
 // eShop directory
 $sShopPath = realpath('../source/') . '/';
-// eShop edition
-$sShopEdition = 'CE';
+// For PE and EE editions shop serial has to be specified for shop installer to work.
+$sShopSerial = '';
 
-// eShop encoding
-$blUtf8 = false;
 // Run tests with varnish on
 $blVarnish = false;
-// Whether to run subshop tests
+// Whether to run subshop tests. Currently only used when running selenium tests.
 $blIsSubShop = false;
 
-// If set to true, copies testData to eShop and resets the database.
-$blInstallShop = false;
-// Whether to skip addition of default demo data (used when testing modules)
-$blSkipShopSetup = false;
-// Whether to skip restoring of shop data after running tests. If this is set to true, shop will be left
-// at a state, at which test was completed (either failed or passed).
-$blSkipShopRestore = false;
+// Whether to copy services to shop. If services are already in shop directory, this can be set to false.
+$blCopyServicesToShop = true;
+// Whether to prepare shop database for testing. Shop config.ing.php file must be correct.
+$blInstallShop = true;
 
-// If specified, runs tests for this module
-$sModule = false;
+// eShop setup directory. After setting up the shop setup directory will be deleted.
+// For shop installation to work during tests run, where to find this directory must be specified.
+// Uses shop/directory/setup/ if not set.
+$sShopSetupPath = null;
+// Whether to add tests data to shop. Can be used when $blInstallShop is set to false and test data is already added.
+$blAddTestData = true;
+// Whether to restore shop data after running all tests. If this is set to false, shop will be left with tests data added on it.
+$blRestoreShopAfterTestSuite = false;
+// Whether to restore shop data after test. If this is set to false, shop will be left
+// at a state, at which test was completed (either failed or passed).
+$blRestoreShopAfterTest = true;
+
+// When testing module, add module information here. Otherwise leave all as null.
+// All module files has to be in shop's module directory.
+// Module path in shop, e.g. if module is in 'shop/modules/oe/mymodule' directory, value here should be 'oe/mymodule'.
+// Multiple modules can be specified separated by comma: 'oe/module1,module2,tt/module3'.
+$sModulesPath = null;
 
 // Selenium server IP address
 $sSeleniumServerIp = "127.0.0.1";
@@ -54,13 +64,11 @@ $sSeleniumScreenShotsPath = null; //$sShopPath . '/selenium_screenshots/';
 // Url, where selenium screen shots should be available.
 $sSeleniumScreenShotsUrl = null; //$sShopUrl . '/selenium_screenshots/';
 
-// What are we testing, 'admin' or 'frontend'. demodata_EE_2_{domain}.sql is used by default.
-// For custom file, rename whole $sDemoDataFileName
-$sDomain = 'admin';
-$sDemoDataFileName = "demodata_EE_2_{$sDomain}.sql";
-
 // Browser name which will be used for testing.
 // Possible values: *iexplore, *iehta, *firefox, *chrome, *piiexplore, *pifirefox, *safari, *opera
 // make sure that path to browser executable is known for the system
 $sBrowserName = 'firefox';
 
+// Currently exists dbRestore and dbRestore_largeDb. dbRestore_largeDb tends to be faster, but it is not able to work with
+// external databases - this is why dbRestore is currently a default one.
+$sDataBaseRestore = "dbRestore";

@@ -16,22 +16,46 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
-require_once 'test_config.inc.php';
+require_once TEST_LIBRARY_PATH . 'test_config.inc.php';
 
+if (defined('SHOPRESTORATIONCLASS') && file_exists(TEST_LIBRARY_PATH . SHOPRESTORATIONCLASS.".php")) {
+    include_once TEST_LIBRARY_PATH . SHOPRESTORATIONCLASS.".php";
+} else {
+    include_once TEST_LIBRARY_PATH . "dbRestore.php";
+}
+
+/**
+ * Class for creating stub objects.
+ */
 class OxidMockStubFunc implements PHPUnit_Framework_MockObject_Stub
 {
 
     private $_func;
 
+    /**
+     * Constructor
+     *
+     * @param string $sFunc
+     */
     public function __construct($sFunc)
     {
         $this->_func = $sFunc;
     }
 
+    /**
+     * Fakes the processing of the invocation $invocation by returning a
+     * specific value.
+     *
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     * The invocation which was mocked and matched by the current method
+     * and argument matchers.
+     *
+     * @return mixed
+     */
     public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         if (is_string($this->_func) && preg_match('/^\{.+\}$/', $this->_func)) {
@@ -44,15 +68,22 @@ class OxidMockStubFunc implements PHPUnit_Framework_MockObject_Stub
         }
     }
 
+    /**
+     * Returns user called function.
+     *
+     * @return string
+     */
     public function toString()
     {
         return 'call user-specified function ' . $this->_func;
     }
 }
 
+/**
+ * Base tests class. Most tests should extend this class.
+ */
 class OxidTestCase extends PHPUnit_Framework_TestCase
 {
-
     /** @var array Request parameters backup. */
     protected $_aBackup = array();
 
@@ -64,6 +95,9 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
 
     /** @var DbRestore Database restorer object */
     protected static $_oDbRestore = null;
+
+    /** @var oxTestModuleLoader Module loader. */
+    protected static $_oModuleLoader = null;
 
     /** @var array multishop tables used in shop */
     protected $_aMultiShopTables = array(
@@ -81,13 +115,16 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Running setUpBeforeTestSuite action.
      *
-     * @param  string $name
-     * @param  array  $data
-     * @param  string $dataName
+     * @param string $name
+     * @param array  $data
+     * @param string $dataName
      */
     public function __construct($name = null, array $data = array(), $dataName = '')
     {
-        $this->setUpBeforeTestSuite();
+        if (!self::$_blSetupBeforeTestSuiteDone) {
+            $this->setUpBeforeTestSuite();
+            self::$_blSetupBeforeTestSuiteDone = true;
+        }
         parent::__construct($name, $data, $dataName);
     }
 
@@ -96,16 +133,21 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function setUpBeforeTestSuite()
     {
-        if (!self::$_blSetupBeforeTestSuiteDone) {
-            oxRegistry::getUtils()->commitFileCache();
-
-            $oxLang = oxRegistry::getLang();
-            $oxLang->resetBaseLanguage();
-
-            $this->_createRegistryCache();
-
-            self::$_blSetupBeforeTestSuiteDone = true;
+        if (MODULES_PATH) {
+            $oTestModuleLoader = $this->_getModuleLoader();
+            $oTestModuleLoader->loadModules(explode(',', MODULES_PATH));
+            $oTestModuleLoader->setModuleInformation();
         }
+
+        $this->_backupDatabase();
+
+        oxRegistry::getUtils()->commitFileCache();
+
+        $oxLang = oxRegistry::getLang();
+        $oxLang->resetBaseLanguage();
+
+        $this->_backupRegistry();
+        $this->_backupRequestVariables();
     }
 
     /**
@@ -115,12 +157,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->_aBackup['_SERVER'] = $_SERVER;
-        $this->_aBackup['_POST'] = $_POST;
-        $this->_aBackup['_GET'] = $_GET;
-        $this->_aBackup['_SESSION'] = $_SESSION;
-        $this->_aBackup['_COOKIE'] = $_COOKIE;
-
         parent::setUp();
         error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
         ini_set('display_errors', true);
@@ -132,54 +168,62 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
 
         oxRegistry::getUtils()->cleanStaticCache();
+
+        if (MODULES_PATH) {
+            $oTestModuleLoader = $this->_getModuleLoader();
+            $oTestModuleLoader->setModuleInformation();
+        }
+
         error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
         ini_set('display_errors', true);
     }
 
     /**
+     * Starts test.
+     *
      * @param PHPUnit_Framework_TestResult $result
      *
      * @return PHPUnit_Framework_TestResult
      */
     public function run(PHPUnit_Framework_TestResult $result = null)
     {
+        $this->_removeBlacklistedClassesFromCodeCoverage($result);
         $result = parent::run($result);
 
         oxTestModules::cleanUp();
-
         return $result;
     }
 
     /**
-     * Executed after test is down
+     * Executed after test is down.
+     * Cleans up database only if test does not have dependencies.
+     * If test does have dependencies, any value instead of null should be returned.
      */
     protected function tearDown()
     {
-        $this->cleanUpDatabase();
-        modDb::getInstance()->modAttach(modDb::getInstance()->getRealInstance());
-        oxTestsStaticCleaner::clean('oxUtilsObject', '_aInstanceCache');
-        oxTestsStaticCleaner::clean('oxArticle', '_aLoadedParents');
+        if ($this->getResult() === null) {
+            $this->cleanUpDatabase();
 
-        modInstances::cleanup();
-        oxTestModules::cleanUp();
-        modOxid::globalCleanup();
-        modDB::getInstance()->cleanup();
+            modDb::getInstance()->modAttach(modDb::getInstance()->getRealInstance());
+            oxTestsStaticCleaner::clean('oxUtilsObject', '_aInstanceCache');
+            oxTestsStaticCleaner::clean('oxArticle', '_aLoadedParents');
 
-        $this->getSession()->cleanup();
-        $this->getConfig()->cleanup();
+            modInstances::cleanup();
+            oxTestModules::cleanUp();
+            modOxid::globalCleanup();
+            modDB::getInstance()->cleanup();
 
-        $_SERVER = $this->_aBackup['_SERVER'];
-        $_POST = $this->_aBackup['_POST'];
-        $_GET = $this->_aBackup['_GET'];
-        $_SESSION = $this->_aBackup['_SESSION'];
-        $_COOKIE = $this->_aBackup['_COOKIE'];
+            $this->getSession()->cleanup();
+            $this->getConfig()->cleanup();
 
-        $this->_resetRegistry();
+            $this->_resetRequestVariables();
+            $this->_resetRegistry();
 
-        oxUtilsObject::resetClassInstances();
-        oxUtilsObject::resetModuleVars();
+            oxUtilsObject::resetClassInstances();
+            oxUtilsObject::resetModuleVars();
 
-        parent::tearDown();
+            parent::tearDown();
+        }
     }
 
     /**
@@ -210,8 +254,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Set parameter to session object.
      *
-     * @param string $sParam parameter name.
-     * @param object $oVal   any parameter value, default null.
+     * @param string $sParam Parameter name.
+     * @param object $oVal   Any parameter value, default null.
      */
     public function setSessionParam($sParam, $oVal = null)
     {
@@ -233,8 +277,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Set parameter to config request object.
      *
-     * @param string $sParam parameter name.
-     * @param mixed  $mxVal  any parameter value, default null.
+     * @param string $sParam Parameter name.
+     * @param mixed  $mxVal  Any parameter value, default null.
      */
     public function setRequestParam($sParam, $mxVal = null)
     {
@@ -256,8 +300,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Set parameter to config object.
      *
-     * @param string $sParam parameter name.
-     * @param mixed  $mxVal  any parameter value, default null.
+     * @param string $sParam Parameter name.
+     * @param mixed  $mxVal  Any parameter value, default null.
      */
     public function setConfigParam($sParam, $mxVal = null)
     {
@@ -268,8 +312,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * Sets OXID shop admin mode.
      *
      * @param bool $blAdmin set to admin mode TRUE / FALSE.
-     *
-     * @return null
      */
     public function setAdminMode($blAdmin)
     {
@@ -291,20 +333,16 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * Sets OXID shop ID.
      *
      * @param string $sShopId set active shop ID.
-     *
-     * @return null
      */
     public function setShopId($sShopId)
     {
-        return $this->getConfig()->setShopId($sShopId);
+        $this->getConfig()->setShopId($sShopId);
     }
 
     /**
      * Set static time value for testing.
      *
      * @param int $oVal
-     *
-     * @return null
      */
     public function setTime($oVal = null)
     {
@@ -324,7 +362,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Returns session object
      *
-     * @return modSession
+     * @return oxSession
      */
     public static function getSession()
     {
@@ -372,8 +410,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * Sets language
      *
      * @param int $iLangId
-     *
-     * @return null
      */
     public function setLanguage($iLangId)
     {
@@ -395,9 +431,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Sets template language
      *
-     * @param $iLangId
-     *
-     * @return null
+     * @param int $iLangId
      */
     public function setTplLanguage($iLangId)
     {
@@ -482,7 +516,10 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         } else {
             $aDate = strptime($sDate, '%Y-%m-%d');
             $ymd = sprintf(
-                '%04d-%02d-%02d 05:00:00', $aDate['tm_year'] + 1900, $aDate['tm_mon'] + 1, $aDate['tm_mday']
+                '%04d-%02d-%02d 05:00:00',
+                $aDate['tm_year'] + 1900,
+                $aDate['tm_mon'] + 1,
+                $aDate['tm_mday']
             );
             $oDate = new DateTime($ymd);
         }
@@ -556,7 +593,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Adds table to be cleaned on teardown
      *
-     * @param $sTable
+     * @param string $sTable
      */
     public function addTableForCleanup($sTable)
     {
@@ -626,8 +663,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Create proxy of given class. Proxy allows to test of protected class methods and to access non public members
      *
-     * @param string     $superClassName
-     * @param array|null $params parameters for contructor
+     * @param string $superClassName
+     * @param array  $params
      *
      * @deprecated
      *
@@ -668,10 +705,10 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Change to virtual file with vfstream when available.
      *
-     * @usage Create file from file name and file content to oxCCTempDir.
+     * @param string $sFileName
+     * @param string $sFileContent
      *
-     * @param $sFileName
-     * @param $sFileContent
+     * @usage Create file from file name and file content to oxCCTempDir.
      *
      * @return string path to file
      */
@@ -684,6 +721,11 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         return $sPathToFile;
     }
 
+    /**
+     * Returns database restorer object.
+     *
+     * @return DbRestore
+     */
     protected static function _getDbRestore()
     {
         if (is_null(self::$_oDbRestore)) {
@@ -694,9 +736,23 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Returns database restorer object.
+     *
+     * @return oxTestModuleLoader
+     */
+    protected static function _getModuleLoader()
+    {
+        if (is_null(self::$_oModuleLoader)) {
+            self::$_oModuleLoader = new oxTestModuleLoader();
+        }
+
+        return self::$_oModuleLoader;
+    }
+
+    /**
      * Creates registry clone
      */
-    protected function _createRegistryCache()
+    protected function _backupRegistry()
     {
         self::$_aRegistryCache = array();
         foreach (oxRegistry::getKeys() as $class) {
@@ -707,8 +763,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Cleans up the registry
-     *
-     * @return null;
      */
     protected function _resetRegistry()
     {
@@ -740,7 +794,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * @param mixed $value
      *
      * @access protected
-     * @return void
+     *
+     * @return OxidMockStubFunc
      */
     protected function evalFunction($value)
     {
@@ -757,5 +812,81 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     protected function _2Utf($sVal)
     {
         return iconv("ISO-8859-1", "UTF-8", $sVal);
+    }
+
+    /**
+     * Backs up database for later restorations.
+     */
+    protected function _backupDatabase()
+    {
+        $oDbRestore = self::_getDbRestore();
+        $oDbRestore->dumpDB();
+    }
+
+    /**
+     * Creates stub object from given class
+     *
+     * @param string $sClass       Class name
+     * @param array  $aMethods     Assoc array with method => value
+     * @param array  $aTestMethods Array with test methods for mocking
+     *
+     * @return mixed
+     */
+    protected function _createStub($sClass, $aMethods, $aTestMethods = array())
+    {
+        $aMockedMethods = array_unique(array_merge(array_keys($aMethods), $aTestMethods));
+
+        $oObject = $this->getMock($sClass, $aMockedMethods, array(), '', false);
+
+        foreach ($aMethods as $sMethod => $sValue) {
+            if (!in_array($sMethod, $aTestMethods)) {
+                $oObject->expects($this->any())
+                    ->method($sMethod)
+                    ->will($this->returnValue($sValue));
+            }
+        }
+
+        return $oObject;
+    }
+
+    /**
+     * Backs up global request variables for reverting them back after test run.
+     */
+    protected function _backupRequestVariables()
+    {
+        $this->_aBackup['_SERVER'] = $_SERVER;
+        $this->_aBackup['_POST'] = $_POST;
+        $this->_aBackup['_GET'] = $_GET;
+        $this->_aBackup['_SESSION'] = $_SESSION;
+        $this->_aBackup['_COOKIE'] = $_COOKIE;
+    }
+
+    /**
+     * Sets global request variables to backed up ones after every test run.
+     */
+    protected function _resetRequestVariables()
+    {
+        $_SERVER = $this->_aBackup['_SERVER'];
+        $_POST = $this->_aBackup['_POST'];
+        $_GET = $this->_aBackup['_GET'];
+        $_SESSION = $this->_aBackup['_SESSION'];
+        $_COOKIE = $this->_aBackup['_COOKIE'];
+    }
+
+    /**
+     * Removes blacklisted classes from code coverage report, as this is only fixed in PHPUnit 4.0.
+     *
+     * @param PHPUnit_Framework_TestResult $result
+     */
+    private function _removeBlacklistedClassesFromCodeCoverage($result)
+    {
+        if ($result->getCollectCodeCoverageInformation()) {
+            $oCoverage = $result->getCodeCoverage();
+            $oFilter = $oCoverage->filter();
+            $aBlacklist = $oFilter->getBlacklist();
+            foreach ($aBlacklist as $sFile) {
+                $oFilter->removeFileFromWhitelist($sFile);
+            }
+        }
     }
 }

@@ -124,6 +124,7 @@ class oxTestCurl
         if ($this->getMethod() == "GET" && $this->getQuery()) {
             $this->_sUrl = $this->_sUrl . "?" . $this->getQuery();
         }
+
         return $this->_sUrl;
     }
 
@@ -263,20 +264,14 @@ class oxTestCurl
      * @param string $sName  curl option name to set value to.
      * @param string $sValue curl option value to set.
      *
-     * @throws oxException on curl errors
+     * @throws Exception on curl errors
      *
      * @return null
      */
     public function setOption( $sName, $sValue )
     {
         if (strpos( $sName, 'CURLOPT_' ) !== 0 || !defined($sConstant = strtoupper($sName))) {
-            /**
-             * @var oxException $oException
-             */
-            $oException = oxNew( 'oxException' );
-            $oLang = oxRegistry::getLang();
-            $oException->setMessage( sprintf( $oLang->translateString( 'EXCEPTION_NOT_VALID_CURL_CONSTANT', $oLang->getTplLanguage() ), $sName ) );
-            throw $oException;
+            throw new Exception("Failed to set CURL option '$sName' with value '$sValue'");
         }
 
         $this->_aOptions[$sName] = $sValue;
@@ -295,7 +290,7 @@ class oxTestCurl
     /**
      * Executes curl call and returns response data as associative array.
      *
-     * @throws oxException on curl errors
+     * @throws Exception on curl errors
      *
      * @return string
      */
@@ -311,13 +306,7 @@ class oxTestCurl
         $this->_close();
 
         if ( $iCurlErrorNumber ) {
-            /**
-             * @var oxException $oException
-             */
-            $oException = oxNew( 'oxException' );
-            $oLang = oxRegistry::getLang();
-            $oException->setMessage( sprintf( $oLang->translateString( 'EXCEPTION_CURL_ERROR', $oLang->getTplLanguage() ), $iCurlErrorNumber ) );
-            throw $oException;
+            throw new Exception("Failed to execute CURL call with message: $sResponse ($iCurlErrorNumber)");
         }
 
         return $sResponse;

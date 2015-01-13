@@ -20,6 +20,18 @@
  * @version   OXID eShop CE
  */
 
+if (INSTALLSHOP) {
+    $oCurl = new oxTestCurl();
+    $oCurl->setUrl(shopURL . '/Services/_db.php');
+    $oCurl->setParameters(array(
+        'serial' => TEST_SHOP_SERIAL,
+        'addDemoData' => 1,
+        'turnOnVarnish' => OXID_VARNISH,
+        'setupPath' => SHOP_SETUP_PATH,
+    ));
+    $sResponse = $oCurl->execute();
+}
+
 require_once TEST_LIBRARY_PATH . '/test_config.inc.php';
 
 require_once TEST_LIBRARY_PATH.'vendor/autoload.php';
@@ -40,16 +52,4 @@ if (getenv('OXID_LOCALE') == 'international') {
     define('oxTESTSUITEDIR', 'acceptanceInternational');
 } else {
     define('oxTESTSUITEDIR', 'acceptance');
-}
-
-if (INSTALLSHOP) {
-    $oCurl = new oxTestCurl();
-    $oCurl->setUrl(shopURL . '/Services/_db.php');
-    $oCurl->setParameters(array(
-            'serial' => TEST_SHOP_SERIAL,
-            'addDemoData' => 1,
-            'turnOnVarnish' => OXID_VARNISH,
-            'setupPath' => SHOP_SETUP_PATH,
-        ));
-    $sResponse = $oCurl->execute();
 }

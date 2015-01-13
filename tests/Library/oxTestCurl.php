@@ -405,14 +405,31 @@ class oxTestCurl
                 $aPartResult = $this->_formParamsForPost($mParam, $sKey);
                 foreach ($aPartResult as $sKey2 => $mVal2) {
                     $sKey2 = $sParentKey? $sParentKey."$sKey2" : $sKey2;
-                    $aResult[$sKey2] = $mVal2;
+                    $aResult[$sKey2] = $this->_getPostParamValue($mVal2);
                 }
             } else {
                 $sKey = $sParentKey? $sParentKey."[$sKey]" : $sKey;
-                $aResult[$sKey] = $mParam;
+                $aResult[$sKey] = $this->_getPostParamValue($mParam);
             }
         }
         return $aResult;
+    }
+
+    /**
+     * PHP 5.5 introduced a CurlFile object that deprecates the old @filename syntax
+     * See: https://wiki.php.net/rfc/curl-file-upload
+     *
+     * @param string $sValue
+     *
+     * @return mixed
+     */
+    protected function _getPostParamValue($sValue)
+    {
+        if (strpos($sValue, '@') === 0 && function_exists('curl_file_create')) {
+            $sValue = curl_file_create(substr($sValue, 1));
+        }
+
+        return $sValue;
     }
 
     /**
@@ -444,7 +461,7 @@ class oxTestCurl
      */
     protected function _setOpt( $sName, $sValue )
     {
-        curl_setopt( $this->_getResource(), $sName, $sValue );
+        curl_setopt($this->_getResource(), $sName, $sValue);
     }
 
     /**

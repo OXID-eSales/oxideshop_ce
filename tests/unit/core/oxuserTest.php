@@ -83,7 +83,7 @@ class Unit_oxuserTest_oxUtilsServer2 extends oxUtilsServer
      */
     protected $_aCookieVars = array();
 
-    public function setOxCookie($sVar, $sVal = "", $iExpire = 0, $sPath = '/', $sDomain = null, $blToSession = true, $blSecure = false)
+    public function setOxCookie($sVar, $sVal = "", $iExpire = 0, $sPath = '/', $sDomain = null, $blToSession = true, $blSecure = false, $blHttpOnly = true)
     {
         //unsetting cookie
         if (!isset($sVar) && !isset($sVal)) {

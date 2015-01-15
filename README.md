@@ -14,56 +14,6 @@ OXID eShop is just e-commerce software for agencies with deadlines :-)
 ![Image alt](frontend.png)
 
 
-###Getting involved
-
-OXID eShop is available under two different licenses, GPLv3 and a commercial license.
-
-That's why, before contributing for the first time, you must send the filled form "OXID eSales Contributor Agreement" 
-(http://wiki.oxidforge.org/File:Oxid_esales_ca_v151.pdf) to community@oxid-esales.com. You can find more 
-information about it on the FAQ page OXID Contribution and Contributor Agreement FAQ
-http://wiki.oxidforge.org/OXID_Contribution_and_Contributor_Agreement_FAQ
-
-Process:<br>
-First off, you have to fork the repository OXID-eSales/oxideshop_ce to your list of repositories. 
-
-You will find three branches now in youraccount/oxideshop_ce:
-
-* <b>b-dev-ce</b>, presently our main branch on this repo, is the so called <b>feature branch</b>: All new features will be developed here as well as bug fixes for the next major version.
-* <b>b-5.2-ce</b> is the <b>maintenance branch</b> for the present major version. Only bug fixes here, no new features, no DB changes, no template changes if possible.
-* <b>b-5.1-ce</b> appears as the so called <b>legacy branch</b>: fixes for bugs with higher priority only.
-
-In general, contributions can be taken over for all branches. Bug fixes committed to only one branch will be pushed to the other branches manually. Of course you can also consider to commit e.g. bug fixes to more than one branche.
-
-<b>Best practice</b>: 
-* please leave the the branch names as they are
-* if you want to fix a bug or develop a new feature, define an own branch in your repository off of one of the three branches above. Name it e.g. feature/foo or bug/bugname for better tracability
-* change whatever you want and push it back to the original branch (b-dev-ce). 
-
-For more information about this, please see:<br>
-http://codeinthehole.com/writing/pull-requests-and-other-good-practices-for-teams-using-github/
-
-Now you'll be asked for signing an OXID Contributor Agreement (this has to be done once). After that we can start checking your code. In every case, whether or not we could take your over your contribution, you'll be informed.
-
-![Image alt](git_contributor-activity.png)
-
-You will find technical help with Git and GitHub on this place:<br>
-https://help.github.com/
-
-Code quality:<br>
-We are still working on providing OXID specific code guidlines and tutorials to you. Until this, we propose to refer to 
-http://framework.zend.com/manual/1.12/en/coding-standard.coding-style.html
-Also, please provide PHP Unit tests for your code.
-
-When sending your pull request, please provide a clear, meaningful and detailed information about what your code is about and what it will do, best including a screen shot if possible.
-If you want to discuss your contribution and your code before committing it, please go to the dev-general mailing list: http://lists.oxidforge.org/mailman/listinfo/dev-general.
-
-How to use the issue tracker here at GitHub:
-* Issue entries on GitHub containing a pull request are welcome.
-* When entering a bug as an issue on GitHub without providing a pull request for it, you'll be gently but certainly pointed to the bug tracker at https://bugs.oxid-esales.com.
-* If this bug is already open in bug tracker, the GitHub issue will be closed with an appropriate comment.
-* If this bug is not entered at the official bug tracker yet, we'll ask if the reporter wants to open it himself. If he denies or doesn't answer in a certain time, we'll enter this bug by ourselves.
-
-
 Useful links:<br>
 Project home page - http://www.oxid-esales.com<br>
 Wiki - http://www.oxidforge.org<br>

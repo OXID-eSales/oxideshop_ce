@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -57,7 +57,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
 
         $oRequest = new oxOnlineLicenseCheckRequest();
         $oRequest->revision = oxRegistry::getConfig()->getRevision();
-        $oRequest->pVersion = '1.0';
+        $oRequest->pVersion = '1.1';
         $oRequest->productId = 'eShop';
         $oRequest->keys = array('key' => array('validSerial'));
         $oRequest->productSpecificInformation = new stdClass();
@@ -180,7 +180,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oRequest->version = oxRegistry::getConfig()->getVersion();
         $oRequest->revision = oxRegistry::getConfig()->getRevision();
         $oRequest->shopUrl = oxRegistry::getConfig()->getShopUrl();
-        $oRequest->pVersion = '1.0';
+        $oRequest->pVersion = '1.1';
         $oRequest->productId = 'eShop';
         $oRequest->keys = array('key' => array('key1', 'key2'));
 
@@ -230,7 +230,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $oRequest->version = oxRegistry::getConfig()->getVersion();
         $oRequest->revision = oxRegistry::getConfig()->getRevision();
         $oRequest->shopUrl = oxRegistry::getConfig()->getShopUrl();
-        $oRequest->pVersion = '1.0';
+        $oRequest->pVersion = '1.1';
         $oRequest->productId = 'eShop';
         $aKeys = array('key1', 'key2', array('attributes' => array('state' => 'new'), 'value' => 'new_serial'));
         $oRequest->keys = array('key' => $aKeys);

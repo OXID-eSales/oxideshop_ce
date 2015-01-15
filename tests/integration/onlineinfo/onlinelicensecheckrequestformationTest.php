@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -57,7 +57,7 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
 
         $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
         $sXml .= '<olcRequest>';
-        $sXml .=   '<pVersion>1.0</pVersion>';
+        $sXml .=   '<pVersion>1.1</pVersion>';
         $sXml .=   '<keys><key>license_key</key></keys>';
         if ($sRevision) {
             $sXml .= "<revision>$sRevision</revision>";
@@ -138,7 +138,7 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
 
         $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
         $sXml .= '<olcRequest>';
-        $sXml .=   '<pVersion>1.0</pVersion>';
+        $sXml .=   '<pVersion>1.1</pVersion>';
         $sXml .=   '<keys>';
         $sXml .=   '<key>license_key</key>';
         $sXml .=   '<key state="new">new_serial</key>';

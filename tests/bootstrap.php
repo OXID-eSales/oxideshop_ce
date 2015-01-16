@@ -50,9 +50,12 @@ if (empty($sTestType)) {
 require_once TEST_LIBRARY_PATH."bootstrap/bootstrap_config.php";
 require_once TEST_LIBRARY_PATH."bootstrap/bootstrap_base.php";
 
+if ($sTestType == 'selenium') {
+    $sTestType = 'acceptance';
+}
+
 switch($sTestType) {
     case 'acceptance':
-    case 'selenium':
     case 'javascript':
         include_once TEST_LIBRARY_PATH."bootstrap/bootstrap_selenium.php";
         break;

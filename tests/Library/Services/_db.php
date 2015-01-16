@@ -18,7 +18,9 @@ $sTestSqlLocalFile = array_key_exists('importSql', $_REQUEST) ? $_REQUEST['impor
 $sTestSqlRemoteFile = array_key_exists('importSql', $_FILES) ? $_FILES['importSql'] : false;
 $sSetupPath = array_key_exists('setupPath', $_REQUEST) ? $_REQUEST['setupPath'] : null;
 
-$oShopInstaller->setSetupDirectory($sSetupPath);
+if ($sSetupPath) {
+    $oShopInstaller->setSetupDirectory($sSetupPath);
+}
 
 if ($sTestSqlRemoteFile) {
     include_once 'Library/FileUploader.php';

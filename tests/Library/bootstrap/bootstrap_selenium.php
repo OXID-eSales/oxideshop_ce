@@ -34,7 +34,9 @@ if (INSTALLSHOP) {
 
 require_once TEST_LIBRARY_PATH . '/test_config.inc.php';
 
-require_once TEST_LIBRARY_PATH.'vendor/autoload.php';
+require_once TEST_LIBRARY_PATH . 'vendor/autoload.php';
+
+require_once TESTS_DIRECTORY . '/acceptance/oxTestCase.php';
 
 define('hostUrl', getenv('SELENIUM_SERVER')? getenv('SELENIUM_SERVER') : $sSeleniumServerIp );
 define('browserName', getenv('BROWSER_NAME')? getenv('BROWSER_NAME') : $sBrowserName );

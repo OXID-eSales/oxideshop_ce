@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -58,7 +58,11 @@ require_once OX_BASE_PATH . 'core/oxfunctions.php';
 // As in new bootstrap to get db instance.
 $oConfigFile = new OxConfigFile(OX_BASE_PATH . "config.inc.php");
 OxRegistry::set("OxConfigFile", $oConfigFile);
-oxRegistry::set("oxConfig", new oxConfig());
+if ($testType == 'acceptance') {
+    oxRegistry::set("oxConfig", oxNew('oxConfig'));
+} else {
+    oxRegistry::set("oxConfig", new oxConfig());
+}
 
 // As in new bootstrap to get db instance.
 $oDb = new oxDb();

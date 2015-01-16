@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  *
  * @link      http://www.oxid-esales.com
@@ -52,7 +52,6 @@ require_once TEST_LIBRARY_PATH."bootstrap/bootstrap_base.php";
 
 switch($sTestType) {
     case 'acceptance':
-    case 'selenium':
     case 'javascript':
         include_once TEST_LIBRARY_PATH."bootstrap/bootstrap_selenium.php";
         break;

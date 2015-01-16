@@ -41,9 +41,6 @@ define('ADD_TEST_DATA', getenv('oxSKIPSHOPSETUP') !== false ? (bool) !getenv('ox
 define('RESTORE_SHOP_AFTER_TEST_SUITE', getenv('oxSKIPSHOPRESTORE') !== false ? (bool) !getenv('oxSKIPSHOPRESTORE') : $blRestoreShopAfterTestSuite);
 define('RESTORE_SHOP_AFTER_TEST', getenv('oxSKIPSHOPRESTORE') !== false ? (bool) !getenv('oxSKIPSHOPRESTORE') : $blRestoreShopAfterTest);
 
-if (!$sShopSetupPath) {
-    $sShopSetupPath = oxPATH . 'setup/';
-}
 define('SHOP_SETUP_PATH', getenv('SHOP_SETUP_PATH') ? getenv('SHOP_SETUP_PATH') : $sShopSetupPath);
 define('MODULES_PATH', getenv('MODULES_PATH') ? getenv('MODULES_PATH') : $sModulesPath);
 

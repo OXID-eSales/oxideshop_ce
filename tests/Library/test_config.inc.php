@@ -59,6 +59,7 @@ require_once OX_BASE_PATH . 'core/oxfunctions.php';
 $oConfigFile = new OxConfigFile(OX_BASE_PATH . "config.inc.php");
 OxRegistry::set("OxConfigFile", $oConfigFile);
 if ($sTestType == 'acceptance') {
+    oxRegistry::set("oxConfig", new oxConfig());
     oxRegistry::set("oxConfig", oxNew('oxConfig'));
 } else {
     oxRegistry::set("oxConfig", new oxConfig());

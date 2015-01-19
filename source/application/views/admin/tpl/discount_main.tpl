@@ -114,9 +114,9 @@ function ChangeDiscountType(oObj)
                   <td class="edittext">
                     [{ oxmultilang ident="DISCOUNT_MAIN_EXTRA" }]
                   </td>
-                  <td class="edittext">
-                    [{block name="admin_discount_main_form_itm"}]
-                        <table>
+                  <td class="edittext"> 
+                    <table>
+                        [{block name="admin_discount_main_form_itm"}]
                           <tr>
                             <td>[{$oView->getItemDiscountProductTitle()}]</td>
                             <td>
@@ -134,9 +134,9 @@ function ChangeDiscountType(oObj)
                               <input type="hidden" name="editval[oxdiscount__oxitmmultiple]" value="0">
                               <input class="edittext" type="checkbox" name="editval[oxdiscount__oxitmmultiple]" value='1' [{if $edit->oxdiscount__oxitmmultiple->value == 1}]checked[{/if}] [{ $readonly }]>
                             </td>
-                          </tr>
-                        </table>
-                    [{/block}]
+                          </tr>   
+                        [{/block}]
+                    </table>
                   </td>
                 </tr>
             [{/block}]

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  *
  * @link http://www.oxid-esales.com
@@ -39,8 +39,9 @@ class oxFileCopier
     public function copyFiles($sSource, $sTarget, $blSetPermissions = false)
     {
         if (strpos($sTarget, ':') !== false && strpos($sTarget, '@') !== false) {
-            list($sServer, $sDirectory) = explode("/", $sSource, 2);
-            $this->_executeCommand("scp -rp ".escapeshellarg($sSource."/.")." ".escapeshellarg($sTarget));
+            list($sServer, $sDirectory) = explode(":", $sTarget, 2);
+	        $this->_executeCommand("ssh ".escapeshellarg($sServer)." mkdir ".escapeshellarg($sDirectory));
+            $this->_executeCommand("scp -rp ".escapeshellarg($sSource)." ".escapeshellarg($sTarget));
             if ($blSetPermissions) {
                 $this->_executeCommand("ssh ".escapeshellarg($sServer)." chmod 777 ".escapeshellarg('/'.$sDirectory));
             }
@@ -63,7 +64,7 @@ class oxFileCopier
      */
     private function _executeCommand($sCommand)
     {
-        $blResult = exec($sCommand, $sOutput, $iCode);
+        $blResult = @exec($sCommand, $sOutput, $iCode);
         $sOutput = implode("\n", $sOutput);
 
         if ($blResult === false) {

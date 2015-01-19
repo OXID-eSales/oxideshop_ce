@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  *
  * @link      http://www.oxid-esales.com
@@ -56,6 +56,7 @@ if (!is_dir(oxCCTempDir)) {
 
 if (COPY_SERVICES_TO_SHOP) {
     $oFileCopier = new oxFileCopier();
+    $sTarget = REMOTE_HOST ? REMOTE_HOST . '@' . oxPATH.'/Services' : oxPATH.'/Services';
     $oFileCopier->copyFiles(TEST_LIBRARY_PATH.'/Services', oxPATH.'/Services', true);
 }
 

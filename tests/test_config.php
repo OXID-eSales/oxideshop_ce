@@ -26,8 +26,9 @@
 $sShopUrl = null; //'http://eshop_url/';
 // eShop directory
 $sShopPath = realpath('../source/') . '/';
-// Remote host where to copy services.
-$sRemoteHost = null; // 'root@host_url.com'
+// If selenium tests are run on remote server, define server's directory.
+// This is only used to copy services to remote shop directory.
+$sRemoteDir = null; // 'root@host_url.com:/remote/directory/where/shop/is/stored'
 // For PE and EE editions shop serial has to be specified for shop installer to work.
 $sShopSerial = '';
 

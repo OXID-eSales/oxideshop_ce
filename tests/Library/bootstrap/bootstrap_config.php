@@ -34,7 +34,7 @@ define('OXID_PHP_UNIT', true);
 
 $sShopPath = getenv('oxPATH') ? getenv('oxPATH') : $sShopPath;
 define('oxPATH', rtrim($sShopPath, '/') . '/');
-define('REMOTE_HOST', getenv('REMOTE_HOST')? getenv('REMOTE_HOST') : $sRemoteHost);
+define('REMOTE_DIR', getenv('REMOTE_DIR')? getenv('REMOTE_DIR') : $sRemoteDir);
 
 define('INSTALLSHOP', getenv('oxINSTALLSHOP') !== false ? (bool) getenv('oxINSTALLSHOP') : $blInstallShop);
 define('ADD_TEST_DATA', getenv('oxSKIPSHOPSETUP') !== false ? (bool) !getenv('oxSKIPSHOPSETUP') : $blAddTestData);

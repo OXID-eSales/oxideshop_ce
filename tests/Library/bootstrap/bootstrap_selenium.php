@@ -36,7 +36,7 @@ $oServiceCaller = new oxServiceCaller();
 $oServiceCaller->setParameter('cl', 'oxConfig');
 $oServiceCaller->setParameter('fnc', 'getEdition');
 $edition = $oServiceCaller->callService('ShopObjectConstructor', 1);
-define("SHOP_EDITION", ($edition == 'EE') ? 'EE' : 'CE_PE');
+define("SHOP_EDITION", ($edition == 'EE') ? 'EE' : 'PE_CE');
 
 require_once TEST_LIBRARY_PATH . '/test_config.inc.php';
 

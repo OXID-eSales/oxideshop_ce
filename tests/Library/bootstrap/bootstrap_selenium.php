@@ -32,6 +32,12 @@ if (INSTALLSHOP) {
     $sResponse = $oCurl->execute();
 }
 
+$oServiceCaller = new oxServiceCaller();
+$oServiceCaller->setParameter('cl', 'oxConfig');
+$oServiceCaller->setParameter('fnc', 'getEdition');
+$edition = $oServiceCaller->callService('ShopObjectConstructor', 1);
+define("SHOP_EDITION", ($edition == 'EE') ? 'EE' : 'CE_PE');
+
 require_once TEST_LIBRARY_PATH . '/test_config.inc.php';
 
 require_once TEST_LIBRARY_PATH . 'vendor/autoload.php';

@@ -351,7 +351,7 @@ class oxInputValidator extends oxSuperCfg
                 $oEx = oxNew('oxUserException');
                 $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 
-                $this->_addValidationError("oxuser__oxpassword", $oEx);
+                $this->_addValidationError("oxuser__oxcountryid", $oEx);
             }
         }
     }

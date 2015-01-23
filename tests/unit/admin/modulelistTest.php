@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -25,7 +25,6 @@
  */
 class Unit_Admin_ModuleListTest extends OxidTestCase
 {
-
     /**
      * Module_List::Render() test case
      *
@@ -43,7 +42,8 @@ class Unit_Admin_ModuleListTest extends OxidTestCase
         } else {
             $this->assertSame('invoicepdf', $aModulesNames[0]);
             $this->assertSame('oethemeswitcher', $aModulesNames[1]);
-            $this->assertSame('oepaypal', $aModulesNames[2]);
+            $this->assertSame('oxpspaymorrow', $aModulesNames[2]);
+            $this->assertSame('oepaypal', $aModulesNames[3]);
         }
     }
 }

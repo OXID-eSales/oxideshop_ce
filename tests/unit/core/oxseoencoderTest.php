@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -87,6 +87,10 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
      */
     protected function setUp()
     {
+        oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');
+        oxDb::getDb()->execute('delete from oxobject2seodata');
+        oxDb::getDb()->execute('delete from oxseohistory');
+
         modSeoEncoder::clearCache();
 
         parent::setUp();
@@ -1775,5 +1779,74 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
         $this->assertTrue($oEncoder->UNITsaveInCache($sCacheIdent, $sCache, "any"));
         $this->assertEquals($sCache, $oEncoder->UNITloadFromCache($sCacheIdent, "any"));
+    }
+
+    public function testMoveSeoToHistory()
+    {
+        $oDb = oxDb::getDb();
+        $sCatId = "testCat1";
+        $sObjectId = "testObject";
+        $sSeoCountSelect = "select count(*) from oxseo where oxobjectid = '$sObjectId'";
+        $sSeoHistoryCountSelect = "select count(*) from oxseohistory where oxobjectid = '$sObjectId'";
+
+
+        $sSeoCountBefore = $oDb->getOne($sSeoCountSelect);
+        $sSeoHistoryCountBefore = $oDb->getOne($sSeoHistoryCountSelect);
+
+
+        $oEncoder = new oxSeoEncoder();
+        $oEncoder->addSeoEntry($sObjectId, 1, 0, "test.php?cl=testClass", "test/cat1/test.html", "testType", 0, "", "", $sCatId);
+        $oEncoder->addSeoEntry($sObjectId, 1, 1, "test.php?cl=testClass", "test/cat1/test1.html", "testType", 0, "", "", $sCatId);
+        $oEncoder->addSeoEntry($sObjectId, 2, 0, "test.php?cl=testClass", "test/cat1/test2.html", "testType", 0, "", "", $sCatId);
+
+        $sSeoCountAfterInsert = $oDb->getOne($sSeoCountSelect);
+        $sSeoHistoryCountAfterInsert = $oDb->getOne($sSeoHistoryCountSelect);
+
+        $oEncoder->moveSeoToHistory("testObject", $sCatId);
+
+        $sSeoCountAfterMove = $oDb->getOne($sSeoCountSelect);
+        $sSeoHistoryCountAfterMove = $oDb->getOne($sSeoHistoryCountSelect);
+
+        $this->assertEquals(0, $sSeoCountBefore);
+        $this->assertEquals(0, $sSeoHistoryCountBefore);
+        $this->assertEquals(3, $sSeoCountAfterInsert);
+        $this->assertEquals(0, $sSeoHistoryCountAfterInsert);
+        $this->assertEquals(0, $sSeoCountAfterMove);
+        $this->assertEquals(3, $sSeoHistoryCountAfterMove);
+    }
+
+    public function testMoveSeoToHistoryByShopId()
+    {
+        $oDb = oxDb::getDb();
+        $sCatId = "testCat1";
+        $sObjectId = "testObject";
+        $sSeoCountSelect = "select count(*) from oxseo where oxobjectid = '$sObjectId'";
+        $sSeoHistoryCountSelect = "select count(*) from oxseohistory where oxobjectid = '$sObjectId'";
+
+
+        $sSeoCountBefore = $oDb->getOne($sSeoCountSelect);
+        $sSeoHistoryCountBefore = $oDb->getOne($sSeoHistoryCountSelect);
+
+
+
+        $oEncoder = new oxSeoEncoder();
+        $oEncoder->addSeoEntry($sObjectId, 1, 0, "test.php?cl=testClass", "test/cat1/test.html", "testType", 0, "", "", $sCatId);
+        $oEncoder->addSeoEntry($sObjectId, 1, 1, "test.php?cl=testClass", "test/cat1/test1.html", "testType", 0, "", "", $sCatId);
+        $oEncoder->addSeoEntry($sObjectId, 2, 0, "test.php?cl=testClass", "test/cat1/test2.html", "testType", 0, "", "", $sCatId);
+
+        $sSeoCountAfterInsert = $oDb->getOne($sSeoCountSelect);
+        $sSeoHistoryCountAfterInsert = $oDb->getOne($sSeoHistoryCountSelect);
+
+        $oEncoder->moveSeoToHistory("testObject", $sCatId, 1);
+
+        $sSeoCountAfterMove = $oDb->getOne($sSeoCountSelect);
+        $sSeoHistoryCountAfterMove = $oDb->getOne($sSeoHistoryCountSelect);
+
+        $this->assertEquals(0, $sSeoCountBefore);
+        $this->assertEquals(0, $sSeoHistoryCountBefore);
+        $this->assertEquals(3, $sSeoCountAfterInsert);
+        $this->assertEquals(0, $sSeoHistoryCountAfterInsert);
+        $this->assertEquals(1, $sSeoCountAfterMove);
+        $this->assertEquals(2, $sSeoHistoryCountAfterMove);
     }
 }

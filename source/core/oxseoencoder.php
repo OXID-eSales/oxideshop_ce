@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -1242,5 +1242,36 @@ class oxSeoEncoder extends oxSuperCfg
         }
 
         return $sSeoUrl;
+    }
+
+    /**
+     * Moves SEO record to the SEO history table
+     *
+     * @param string $sObectId
+     * @param string $sParams
+     * @param string $sShopId
+     */
+    public function moveSeoToHistory($sObectId, $sParams, $sShopId = null)
+    {
+        $sObectId = oxDb::getDb()->quote($sObectId);
+        $sParams  = oxDb::getDb()->quote($sParams);
+        $sShopSelect = $sShopId?("and oxshopid=" . oxDb::getDb()->quote($sShopId)):"";
+
+        $sSeoHistoryInsertQ = "insert into oxseohistory (oxobjectid, oxident, oxshopid, oxlang)
+                                  select oxobjectid, oxident, oxshopid, oxlang
+                                      from oxseo
+                                      where oxobjectid = $sObectId and
+                                            oxparams = $sParams
+                                            $sShopSelect";
+
+        $sSeoDeleteQ = "delete from oxseo
+                          where oxobjectid = $sObectId and
+                                            oxparams = $sParams
+                                            $sShopSelect";
+
+        oxDb::getDb()->execute($sSeoHistoryInsertQ);
+        oxDb::getDb()->execute($sSeoDeleteQ);
+
+
     }
 }

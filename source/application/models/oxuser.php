@@ -949,6 +949,7 @@ class oxUser extends oxBase
     public function getBasket($sName)
     {
         if (!isset($this->_aBaskets[$sName])) {
+            /** @var oxUserBasket $oBasket */
             $oBasket = oxNew('oxuserbasket');
             $aWhere = array('oxuserbaskets.oxuserid' => $this->getId(), 'oxuserbaskets.oxtitle' => $sName);
 

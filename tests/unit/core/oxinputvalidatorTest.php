@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -415,6 +415,29 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $oValidator->checkCountries($oUser, array("oxuser__oxcountryid" => "xxx"), array("oxaddress__oxcountryid" => "yyy"));
 
         $this->assertTrue($oValidator->getFirstValidationError() instanceof oxUserException, "error in oxinputvalidator::checkCountries()");
+    }
+
+    /**
+     * Check if validation error key is correct
+     */
+    public function testCheckCountriesAddsCorrectKeyForValidationError()
+    {
+        $user = oxNew("oxUser");
+        $user->setId('testusr');
+
+        $validator = oxNew("oxinputvalidator");
+        $validator->checkCountries(
+            $user,
+            array("oxuser__oxcountryid" => "xxx"),
+            array("oxaddress__oxcountryid" => "yyy")
+        );
+
+        $fieldValidationErrors = $validator->getFieldValidationErrors();
+
+        $this->assertTrue(
+            array_key_exists('oxuser__oxcountryid', $fieldValidationErrors),
+            'Correct key must be set for the country validation error'
+        );
     }
 
     /**

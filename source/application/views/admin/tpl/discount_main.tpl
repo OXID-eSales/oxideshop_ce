@@ -114,26 +114,28 @@ function ChangeDiscountType(oObj)
                   <td class="edittext">
                     [{ oxmultilang ident="DISCOUNT_MAIN_EXTRA" }]
                   </td>
-                  <td class="edittext">
+                  <td class="edittext"> 
                     <table>
-                      <tr>
-                        <td>[{$oView->getItemDiscountProductTitle()}]</td>
-                        <td>
-                          <input [{ $readonly }] type="button" value="[{ oxmultilang ident="GENERAL_CHANGEPRODUCT" }]" class="edittext" onclick="JavaScript:showDialog('&cl=discount_main&aoc=2&oxid=[{ $oxid }]');">
-                          [{ oxinputhelp ident="HELP_DISCOUNT_MAIN_EXTRA" }]
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>[{ oxmultilang ident="DISCOUNT_MAIN_MULTIPLY_DISCOUNT_AMOUNT" }]</td>
-                        <td><input type="text" class="editinput" size="5" maxlength="[{$edit->oxdiscount__oxitmamount->fldmax_length}]" name="editval[oxdiscount__oxitmamount]" value="[{$edit->oxdiscount__oxitmamount->value}]" [{ $readonly }]></td>
-                      </tr>
-                      <tr>
-                        <td>[{ oxmultilang ident="DISCOUNT_MAIN_MULTIPLY_DISCOUNT_ARTICLES" }]</td>
-                        <td>
-                          <input type="hidden" name="editval[oxdiscount__oxitmmultiple]" value="0">
-                          <input class="edittext" type="checkbox" name="editval[oxdiscount__oxitmmultiple]" value='1' [{if $edit->oxdiscount__oxitmmultiple->value == 1}]checked[{/if}] [{ $readonly }]>
-                        </td>
-                      </tr>
+                        [{block name="admin_discount_main_form_itm"}]
+                          <tr>
+                            <td>[{$oView->getItemDiscountProductTitle()}]</td>
+                            <td>
+                              <input [{ $readonly }] type="button" value="[{ oxmultilang ident="GENERAL_CHANGEPRODUCT" }]" class="edittext" onclick="JavaScript:showDialog('&cl=discount_main&aoc=2&oxid=[{ $oxid }]');">
+                              [{ oxinputhelp ident="HELP_DISCOUNT_MAIN_EXTRA" }]
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>[{ oxmultilang ident="DISCOUNT_MAIN_MULTIPLY_DISCOUNT_AMOUNT" }]</td>
+                            <td><input type="text" class="editinput" size="5" maxlength="[{$edit->oxdiscount__oxitmamount->fldmax_length}]" name="editval[oxdiscount__oxitmamount]" value="[{$edit->oxdiscount__oxitmamount->value}]" [{ $readonly }]></td>
+                          </tr>
+                          <tr>
+                            <td>[{ oxmultilang ident="DISCOUNT_MAIN_MULTIPLY_DISCOUNT_ARTICLES" }]</td>
+                            <td>
+                              <input type="hidden" name="editval[oxdiscount__oxitmmultiple]" value="0">
+                              <input class="edittext" type="checkbox" name="editval[oxdiscount__oxitmmultiple]" value='1' [{if $edit->oxdiscount__oxitmmultiple->value == 1}]checked[{/if}] [{ $readonly }]>
+                            </td>
+                          </tr>   
+                        [{/block}]
                     </table>
                   </td>
                 </tr>

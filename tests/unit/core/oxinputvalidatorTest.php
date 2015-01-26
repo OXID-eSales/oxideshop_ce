@@ -422,14 +422,14 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckCountriesAddsCorrectKeyForValidationError()
     {
-        $user = oxNew("oxUser");
+        $user = oxNew('oxUser');
         $user->setId('testusr');
 
-        $validator = oxNew("oxinputvalidator");
+        $validator = oxNew('oxInputValidator');
         $validator->checkCountries(
             $user,
-            array("oxuser__oxcountryid" => "xxx"),
-            array("oxaddress__oxcountryid" => "yyy")
+            array('oxuser__oxcountryid' => 'xxx'),
+            array('oxaddress__oxcountryid' => 'yyy')
         );
 
         $fieldValidationErrors = $validator->getFieldValidationErrors();

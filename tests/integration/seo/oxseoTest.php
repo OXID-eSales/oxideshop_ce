@@ -333,6 +333,44 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
     }
 
     /**
+     * Test case for #4648 bug fix.
+     *
+     * Prerequisites:
+     * An article is assigned to a category.
+     *
+     * Test case:
+     * Category is removed.
+     *
+     * Expect:
+     * Old article seo URL should still work
+     */
+    public function testArticleSeoAfterCategoryIsRemoved()
+    {
+        $aCategories = array('_test3' => 0);
+        $this->_addCategories($aCategories);
+        $this->_addArticle();
+        $this->_addArticlesToCategories(array('_testid'), $aCategories);
+        $this->_addSeoEntries($aCategories);
+        $this->getConfig()->setAdminMode(true);
+
+        $sArticleSeo = 'this/there/then.html';
+        $sCurrentSeo = oxRegistry::getConfig()->getShopUrl() . $sArticleSeo;
+
+        $oArticle = new oxArticle();
+        $oArticle->load('_testid');
+        $this->assertEquals($sCurrentSeo, $oArticle->getLink());
+
+        //$oArticle->oxarticles__oxtitle = new oxField($oArticle->oxarticles__oxtitle . 'test');
+        //$oArticle->save();
+
+        $sRegeneratedExpectedArticle = oxRegistry::getConfig()->getShopUrl() . "this/there/testArticletest.html";
+        $oArticle = new oxArticle();
+        $oArticle->load('_testid');
+        $oArticle->getLink();
+        $this->assertEquals($sRegeneratedExpectedArticle, $oArticle->getLink());
+    }
+
+    /**
      * Adds seo urls
      *
      * @param array $aCategories array of categories to add seo for
@@ -359,8 +397,6 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
      */
     protected function _addCategories(array $aCategoryIds)
     {
-
-
         foreach ($aCategoryIds as $sId => $sTime) {
             $sQ = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
                    "values ('{$sId}',1,'{$sId}','1','4','testCategory1','','','','','1','10','50')";
@@ -376,7 +412,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
     {
         $sQ = "Insert into oxarticles (oxid, oxshopid, oxtitle, oxprice)
                 values ('_testid', '{$this->_getShopId()}', '_testArticle', '125')";
-        $this->addToDatabase($sQ, 'oxarticles');
+        $this->addToDatabase($sQ);
     }
 
     /**
@@ -387,7 +423,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
      */
     protected function _addArticlesToCategories(array $aArticles, array $aCategories)
     {
-        $myUtilsObject = oxUtilsObject::getInstance();
+        $myUtilsObject = oxRegistry::get("oxUtilsObject");
         foreach ($aArticles as $sArticle) {
             foreach ($aCategories as $sCategory => $iTime) {
                 /** @var oxBase $oNew */
@@ -400,6 +436,20 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
                 $oNew->save();
             }
         }
+    }
+
+    /**
+     * Remove products $aArticles from category $sCategory.
+     *
+     * @param array $sArticle  Article ID
+     * @param array $sCategory Category ID
+     */
+    protected function _removeArticleFromCategory($sArticle, $sCategory)
+    {
+        $sArticle = oxDb::getDb()->quote($sArticle);
+        $sCategory = oxDb::getDb()->quote($sCategory);
+        $sQ = "delete from oxobject2category where oxobjectid = $sArticle and oxcatnid = $sCategory ";
+        oxDb::getDb()->execute($sQ);
     }
 
     /**

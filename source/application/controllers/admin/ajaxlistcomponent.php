@@ -630,23 +630,10 @@ class ajaxListComponent extends oxSuperCfg
             $aArtIds = array($aArtIds);
         }
 
-        $blCleanCats = false;
-        if ($aCatIds) {
-            if (!is_array($aCatIds)) {
-                $aCatIds = array($aCatIds);
-            }
-            $blCleanCats = true;
-        }
-
         $sShopId = $this->getConfig()->getShopId();
         foreach ($aArtIds as $sArtId) {
             /** @var oxSeoEncoder $oSeoEncoder */
             oxRegistry::get("oxSeoEncoder")->markAsExpired($sArtId, $sShopId, 1, null, "oxtype='oxarticle'");
-            if ($blCleanCats) {
-                foreach($aCatIds as $sCatId) {
-                    oxRegistry::get("oxSeoEncoder")->moveSeoToHistory($sArtId, $sCatId, $sShopId, 'oxarticle');
-                }
-            }
         }
     }
 

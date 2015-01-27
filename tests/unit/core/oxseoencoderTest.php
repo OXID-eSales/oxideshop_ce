@@ -253,11 +253,11 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $iLang = 0;
         $sObjectId = 'testobject';
 
-        $sInKeywords = "Laufrï¿½der '\"";
-        $sInDescription = "Laufrï¿½der '\"";
+        $sInKeywords = "Laufräder '\"";
+        $sInDescription = "Laufräder '\"";
 
-        $sOutKeywords = "Laufrï¿½der &#039;&quot;";
-        $sOutDescription = "Laufrï¿½der &#039;&quot;";
+        $sOutKeywords = "Laufräder &#039;&quot;";
+        $sOutDescription = "Laufräder &#039;&quot;";
 
         $oEncoder = new oxSeoEncoder();
         $oEncoder->addSeoEntry($sObjectId, $iShopId, $iLang, 'stdurl', 'seourl', 'oxarticle', 0, $sInKeywords, $sInDescription);
@@ -1218,7 +1218,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
     public function testPrepareTitle()
     {
         $oEncoder = new modSeoEncoder();
-        $sTitleIn = '///AA keyword1 keyword2 ï¿½  ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½' . str_repeat(' a', 300);
+        $sTitleIn = '///AA keyword1 keyword2 ä  ö ü Ü Ä Ö ß' . str_repeat(' a', 300);
         $oEncoder->setSeparator();
         $sTitleOut = $oEncoder->p_prepareTitle($sTitleIn);
 
@@ -1694,9 +1694,9 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
     public function testEncodeString()
     {
-        $sString = '&quot;&lt;Flaschenï¿½ffner&#039;&amp;quot;';
+        $sString = '&quot;&lt;Flaschenöffner&#039;&amp;quot;';
         $sEncodedString = "\"<Flaschenoeffner'";
-        $sPartEncodedString = '"<Flaschenï¿½ffner\'';
+        $sPartEncodedString = '"<Flaschenöffner\'';
 
         $oEncoder = new oxSeoEncoder();
         $this->assertEquals($sEncodedString, $oEncoder->encodeString($sString));

@@ -1247,28 +1247,33 @@ class oxSeoEncoder extends oxSuperCfg
     /**
      * Moves SEO record to the SEO history table
      *
-     * @param string $sObectId
+     * @param string $sObjectId
      * @param string $sParams
      * @param string $sShopId
      */
-    public function moveSeoToHistory($sObectId, $sParams, $sShopId = null)
+    public function moveSeoToHistory($sObjectId, $sParams, $sShopId = null, $sType = '')
     {
-        $sObectId = oxDb::getDb()->quote($sObectId);
+        $sObjectId = oxDb::getDb()->quote($sObjectId);
         $sParams  = oxDb::getDb()->quote($sParams);
-        $sShopSelect = $sShopId?("and oxshopid=" . oxDb::getDb()->quote($sShopId)):"";
+        $sShopSelect = !is_null($sShopId)?("and oxshopid=" . oxDb::getDb()->quote($sShopId)):"";
+        $sTypeSelect = !is_null($sType)?("and oxtype=" . oxDb::getDb()->quote($sType)):"";
+
 
         $sSeoHistoryInsertQ = "insert into oxseohistory (oxobjectid, oxident, oxshopid, oxlang)
                                   select oxobjectid, oxident, oxshopid, oxlang
                                       from oxseo
-                                      where oxobjectid = $sObectId and
+                                      where oxobjectid = $sObjectId and
                                             oxparams = $sParams
-                                            $sShopSelect";
+                                            $sShopSelect
+                                            $sTypeSelect";
 
         $sSeoDeleteQ = "delete from oxseo
-                          where oxobjectid = $sObectId and
+                          where oxobjectid = $sObjectId and
                                             oxparams = $sParams
-                                            $sShopSelect";
+                                            $sShopSelect
+                                            $sTypeSelect";
 
+        file_put_contents("out.txt", "$sSeoHistoryInsertQ\n\n$sSeoDeleteQ\n\n");
         oxDb::getDb()->execute($sSeoHistoryInsertQ);
         oxDb::getDb()->execute($sSeoDeleteQ);
 

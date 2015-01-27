@@ -635,19 +635,17 @@ class ajaxListComponent extends oxSuperCfg
             if (!is_array($aCatIds)) {
                 $aCatIds = array($aCatIds);
             }
-            $sShopId = $this->getConfig()->getShopId();
-            $sCategoryIds = implode(",", oxDb::getInstance()->quoteArray($aCatIds));
-            $sQ = "delete from oxseo where oxtype='oxarticle' and oxobjectid='%s' and
-                   oxshopid='{$sShopId}' and oxparams in (" . $sCategoryIds . ")";
-            $oDb = oxDb::getDb();
             $blCleanCats = true;
         }
 
         $sShopId = $this->getConfig()->getShopId();
         foreach ($aArtIds as $sArtId) {
+            /** @var oxSeoEncoder $oSeoEncoder */
             oxRegistry::get("oxSeoEncoder")->markAsExpired($sArtId, $sShopId, 1, null, "oxtype='oxarticle'");
             if ($blCleanCats) {
-                $oDb->execute(sprintf($sQ, $sArtId));
+                foreach($aCatIds as $sCatId) {
+                    oxRegistry::get("oxSeoEncoder")->moveSeoToHistory($sArtId, $sCatId, $sShopId, 'oxarticle');
+                }
             }
         }
     }

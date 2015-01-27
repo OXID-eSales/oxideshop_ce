@@ -502,4 +502,36 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
     }
 
 
+
+    /**
+     * Check whether merging inside getSingleLangFields returns proper values
+     *
+     * @bug https://bugs.oxid-esales.com/view.php?id=5990
+     */
+    public function testGetSingleLangFieldsWith9thLanguage()
+    {
+        /** @var oxDbMetaDataHandler $oHandler */
+        $oHandler = $this->getMock('oxDbMetaDataHandler', array('getFields'));
+        $oHandler->expects($this->at(0))->method('getFields')->will($this->returnValue(
+            array(
+                'OXID' => 'oxarticles.OXID',
+                'OXVARNAME_1' => 'oxarticles.OXVARNAME_1',
+                'OXVARSELECT_1' => 'oxarticles.OXVARSELECT_1'
+            )
+        ));
+        $oHandler->expects($this->at(1))->method('getFields')->will($this->returnValue(
+            array(
+                'OXID' => 'oxarticles_set1.OXID',
+                'OXVARNAME_8' => 'oxarticles_set1.OXVARNAME_8',
+                'OXVARSELECT_8' =>'oxarticles_set1.OXVARSELECT_8'
+            )
+        ));
+        $aExpectedResult = array(
+            'OXID' => 'oxarticles.OXID',
+            'OXVARNAME' => 'oxarticles_set1.OXVARNAME_8',
+            'OXVARSELECT' =>'oxarticles_set1.OXVARSELECT_8'
+        );
+
+        $this->assertEquals($aExpectedResult, $oHandler->getSinglelangFields('oxarticles', 8));
+    }
 }

@@ -1244,39 +1244,4 @@ class oxSeoEncoder extends oxSuperCfg
         return $sSeoUrl;
     }
 
-    /**
-     * Moves SEO record to the SEO history table
-     *
-     * @param string $sObjectId
-     * @param string $sParams
-     * @param string $sShopId
-     */
-    public function moveSeoToHistory($sObjectId, $sParams, $sShopId = null, $sType = '')
-    {
-        $sObjectId = oxDb::getDb()->quote($sObjectId);
-        $sParams  = oxDb::getDb()->quote($sParams);
-        $sShopSelect = !is_null($sShopId)?("and oxshopid=" . oxDb::getDb()->quote($sShopId)):"";
-        $sTypeSelect = !is_null($sType)?("and oxtype=" . oxDb::getDb()->quote($sType)):"";
-
-
-        $sSeoHistoryInsertQ = "insert into oxseohistory (oxobjectid, oxident, oxshopid, oxlang)
-                                  select oxobjectid, oxident, oxshopid, oxlang
-                                      from oxseo
-                                      where oxobjectid = $sObjectId and
-                                            oxparams = $sParams
-                                            $sShopSelect
-                                            $sTypeSelect";
-
-        $sSeoDeleteQ = "delete from oxseo
-                          where oxobjectid = $sObjectId and
-                                            oxparams = $sParams
-                                            $sShopSelect
-                                            $sTypeSelect";
-
-        file_put_contents("out.txt", "$sSeoHistoryInsertQ\n\n$sSeoDeleteQ\n\n");
-        oxDb::getDb()->execute($sSeoHistoryInsertQ);
-        oxDb::getDb()->execute($sSeoDeleteQ);
-
-
-    }
 }

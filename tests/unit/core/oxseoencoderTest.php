@@ -253,11 +253,11 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $iLang = 0;
         $sObjectId = 'testobject';
 
-        $sInKeywords = "Laufräder '\"";
-        $sInDescription = "Laufräder '\"";
+        $sInKeywords = "Laufrï¿½der '\"";
+        $sInDescription = "Laufrï¿½der '\"";
 
-        $sOutKeywords = "Laufräder &#039;&quot;";
-        $sOutDescription = "Laufräder &#039;&quot;";
+        $sOutKeywords = "Laufrï¿½der &#039;&quot;";
+        $sOutDescription = "Laufrï¿½der &#039;&quot;";
 
         $oEncoder = new oxSeoEncoder();
         $oEncoder->addSeoEntry($sObjectId, $iShopId, $iLang, 'stdurl', 'seourl', 'oxarticle', 0, $sInKeywords, $sInDescription);
@@ -1218,7 +1218,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
     public function testPrepareTitle()
     {
         $oEncoder = new modSeoEncoder();
-        $sTitleIn = '///AA keyword1 keyword2 ä  ö ü Ü Ä Ö ß' . str_repeat(' a', 300);
+        $sTitleIn = '///AA keyword1 keyword2 ï¿½  ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½' . str_repeat(' a', 300);
         $oEncoder->setSeparator();
         $sTitleOut = $oEncoder->p_prepareTitle($sTitleIn);
 
@@ -1694,9 +1694,9 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
     public function testEncodeString()
     {
-        $sString = '&quot;&lt;Flaschenöffner&#039;&amp;quot;';
+        $sString = '&quot;&lt;Flaschenï¿½ffner&#039;&amp;quot;';
         $sEncodedString = "\"<Flaschenoeffner'";
-        $sPartEncodedString = '"<Flaschenöffner\'';
+        $sPartEncodedString = '"<Flaschenï¿½ffner\'';
 
         $oEncoder = new oxSeoEncoder();
         $this->assertEquals($sEncodedString, $oEncoder->encodeString($sString));
@@ -1779,74 +1779,5 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
         $this->assertTrue($oEncoder->UNITsaveInCache($sCacheIdent, $sCache, "any"));
         $this->assertEquals($sCache, $oEncoder->UNITloadFromCache($sCacheIdent, "any"));
-    }
-
-    public function testMoveSeoToHistory()
-    {
-        $oDb = oxDb::getDb();
-        $sCatId = "testCat1";
-        $sObjectId = "testObject";
-        $sSeoCountSelect = "select count(*) from oxseo where oxobjectid = '$sObjectId'";
-        $sSeoHistoryCountSelect = "select count(*) from oxseohistory where oxobjectid = '$sObjectId'";
-
-
-        $sSeoCountBefore = $oDb->getOne($sSeoCountSelect);
-        $sSeoHistoryCountBefore = $oDb->getOne($sSeoHistoryCountSelect);
-
-
-        $oEncoder = new oxSeoEncoder();
-        $oEncoder->addSeoEntry($sObjectId, 1, 0, "test.php?cl=testClass", "test/cat1/test.html", "testType", 0, "", "", $sCatId);
-        $oEncoder->addSeoEntry($sObjectId, 1, 1, "test.php?cl=testClass", "test/cat1/test1.html", "testType", 0, "", "", $sCatId);
-        $oEncoder->addSeoEntry($sObjectId, 2, 0, "test.php?cl=testClass", "test/cat1/test2.html", "testType", 0, "", "", $sCatId);
-
-        $sSeoCountAfterInsert = $oDb->getOne($sSeoCountSelect);
-        $sSeoHistoryCountAfterInsert = $oDb->getOne($sSeoHistoryCountSelect);
-
-        $oEncoder->moveSeoToHistory("testObject", $sCatId);
-
-        $sSeoCountAfterMove = $oDb->getOne($sSeoCountSelect);
-        $sSeoHistoryCountAfterMove = $oDb->getOne($sSeoHistoryCountSelect);
-
-        $this->assertEquals(0, $sSeoCountBefore);
-        $this->assertEquals(0, $sSeoHistoryCountBefore);
-        $this->assertEquals(3, $sSeoCountAfterInsert);
-        $this->assertEquals(0, $sSeoHistoryCountAfterInsert);
-        $this->assertEquals(0, $sSeoCountAfterMove);
-        $this->assertEquals(3, $sSeoHistoryCountAfterMove);
-    }
-
-    public function testMoveSeoToHistoryByShopId()
-    {
-        $oDb = oxDb::getDb();
-        $sCatId = "testCat1";
-        $sObjectId = "testObject";
-        $sSeoCountSelect = "select count(*) from oxseo where oxobjectid = '$sObjectId'";
-        $sSeoHistoryCountSelect = "select count(*) from oxseohistory where oxobjectid = '$sObjectId'";
-
-
-        $sSeoCountBefore = $oDb->getOne($sSeoCountSelect);
-        $sSeoHistoryCountBefore = $oDb->getOne($sSeoHistoryCountSelect);
-
-
-
-        $oEncoder = new oxSeoEncoder();
-        $oEncoder->addSeoEntry($sObjectId, 1, 0, "test.php?cl=testClass", "test/cat1/test.html", "testType", 0, "", "", $sCatId);
-        $oEncoder->addSeoEntry($sObjectId, 1, 1, "test.php?cl=testClass", "test/cat1/test1.html", "testType", 0, "", "", $sCatId);
-        $oEncoder->addSeoEntry($sObjectId, 2, 0, "test.php?cl=testClass", "test/cat1/test2.html", "testType", 0, "", "", $sCatId);
-
-        $sSeoCountAfterInsert = $oDb->getOne($sSeoCountSelect);
-        $sSeoHistoryCountAfterInsert = $oDb->getOne($sSeoHistoryCountSelect);
-
-        $oEncoder->moveSeoToHistory("testObject", $sCatId, 1);
-
-        $sSeoCountAfterMove = $oDb->getOne($sSeoCountSelect);
-        $sSeoHistoryCountAfterMove = $oDb->getOne($sSeoHistoryCountSelect);
-
-        $this->assertEquals(0, $sSeoCountBefore);
-        $this->assertEquals(0, $sSeoHistoryCountBefore);
-        $this->assertEquals(3, $sSeoCountAfterInsert);
-        $this->assertEquals(0, $sSeoHistoryCountAfterInsert);
-        $this->assertEquals(1, $sSeoCountAfterMove);
-        $this->assertEquals(2, $sSeoHistoryCountAfterMove);
     }
 }

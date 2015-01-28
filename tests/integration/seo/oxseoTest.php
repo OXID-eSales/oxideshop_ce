@@ -350,24 +350,24 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $this->_addCategories($aCategories);
         $this->_addArticle();
         $this->_addArticlesToCategories(array('_testid'), $aCategories);
-        $this->_addSeoEntries($aCategories);
-        $this->getConfig()->setAdminMode(true);
 
-        $sArticleSeo = 'this/there/then.html';
+        $sArticleSeo = 'this/there/testArticle.html';
         $sCurrentSeo = oxRegistry::getConfig()->getShopUrl() . $sArticleSeo;
 
         $oArticle = new oxArticle();
         $oArticle->load('_testid');
         $this->assertEquals($sCurrentSeo, $oArticle->getLink());
 
-        //$oArticle->oxarticles__oxtitle = new oxField($oArticle->oxarticles__oxtitle . 'test');
-        //$oArticle->save();
+        $oAlc = new ajaxListComponent();
+        //reset article URL
+        $oAlc->resetArtSeoUrl(array('_testid'), array('_test3'));
 
-        $sRegeneratedExpectedArticle = oxRegistry::getConfig()->getShopUrl() . "this/there/testArticletest.html";
-        $oArticle = new oxArticle();
-        $oArticle->load('_testid');
-        $oArticle->getLink();
-        $this->assertEquals($sRegeneratedExpectedArticle, $oArticle->getLink());
+        //check if old URL still active
+        $aExp = array("cl" => "details", "anid" => "_testid", "cnid" => "_test3", "lang" => 0);
+        /** @var oxSeoEncoder $oSeoDecoder */
+        $oSeoDecoder = oxRegistry::get('oxSeoDecoder');
+        $aDecoded = $oSeoDecoder->decodeUrl($sCurrentSeo);
+        $this->assertEquals($aExp, $aDecoded);
     }
 
     /**
@@ -412,7 +412,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
     {
         $sQ = "Insert into oxarticles (oxid, oxshopid, oxtitle, oxprice)
                 values ('_testid', '{$this->_getShopId()}', '_testArticle', '125')";
-        $this->addToDatabase($sQ);
+        $this->addToDatabase($sQ, 'oxarticles');
     }
 
     /**

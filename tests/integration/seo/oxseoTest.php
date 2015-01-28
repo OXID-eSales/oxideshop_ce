@@ -439,20 +439,6 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
     }
 
     /**
-     * Remove products $aArticles from category $sCategory.
-     *
-     * @param array $sArticle  Article ID
-     * @param array $sCategory Category ID
-     */
-    protected function _removeArticleFromCategory($sArticle, $sCategory)
-    {
-        $sArticle = oxDb::getDb()->quote($sArticle);
-        $sCategory = oxDb::getDb()->quote($sCategory);
-        $sQ = "delete from oxobject2category where oxobjectid = $sArticle and oxcatnid = $sCategory ";
-        oxDb::getDb()->execute($sQ);
-    }
-
-    /**
      * Gets shop id based on shop version
      *
      * @return string

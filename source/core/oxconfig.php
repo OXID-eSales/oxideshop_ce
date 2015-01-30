@@ -311,10 +311,11 @@ class oxConfig extends oxSuperCfg
      * Returns config parameter value if such parameter exists
      *
      * @param string $sName config parameter name
+     * @param mixed $sFallback fallback value if no config var is found default null
      *
      * @return mixed
      */
-    public function getConfigParam($sName)
+    public function getConfigParam($sName, $sFallback = null)
     {
         $this->init();
 
@@ -325,6 +326,8 @@ class oxConfig extends oxSuperCfg
         if (isset($this->$sName)) {
             return $this->$sName;
         }
+        
+        return $sFallback;
     }
 
     /**
@@ -616,12 +619,13 @@ class oxConfig extends oxSuperCfg
      * use $blRaw very carefully if you want to get unescaped
      * parameter.
      *
-     * @param string $sName Name of parameter
-     * @param bool   $blRaw Get unescaped parameter
+     * @param string $sName     Name of parameter
+     * @param bool   $blRaw     Get unescaped parameter
+     * @param strin  $sFallback fallback value if no config var is found default null
      *
      * @return mixed
      */
-    public function getRequestParameter($sName, $blRaw = false)
+    public function getRequestParameter($sName, $blRaw = false, $sFallback = null)
     {
         $sValue = null;
 
@@ -629,6 +633,8 @@ class oxConfig extends oxSuperCfg
             $sValue = $_POST[$sName];
         } elseif (isset($_GET[$sName])) {
             $sValue = $_GET[$sName];
+        } elseif (null !== $sFallback) {
+            $sValue = $sFallback;
         }
 
         // TODO: remove this after special chars concept implementation

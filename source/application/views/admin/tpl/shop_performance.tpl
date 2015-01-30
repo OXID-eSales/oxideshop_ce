@@ -121,6 +121,16 @@
            		[{ oxmultilang ident="SHOP_PERF_SEO_CACHE" }]
          	</td>
         	</tr>
+            <tr class="conftext[{cycle}]">
+                <td valign="top">
+                    <input type="hidden" name="confbools[blCheckSysReq]" value="true">
+                    <input type="checkbox" class="confinput" name="confbools[blCheckSysReq]" value="false"  [{if (!$confbools.blCheckSysReq)}]checked[{/if}] [{ $readonly }]>
+                    [{ oxinputhelp ident="HELP_SHOP_PERF_SYSREQ_CHECK" }]
+                </td>
+                <td valign="top" width="100%" >
+                    [{ oxmultilang ident="SHOP_PERF_SYSREQ_CHECK" }]
+                </td>
+            </tr>
         [{/block}]
     </table>
     <br>

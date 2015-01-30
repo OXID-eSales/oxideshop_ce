@@ -204,9 +204,15 @@ class Navigation extends oxAdminView
     { // #661
         $aMessage = array();
 
-        // check if system reguirements are ok
-        $oSysReq = new oxSysRequirements();
-        if (!$oSysReq->getSysReqStatus()) {
+        if ($this->getConfig()->getConfigParam('blCheckSysReq')) {
+            // check if system reguirements are ok
+            $oSysReq = new oxSysRequirements();
+            if (!$oSysReq->getSysReqStatus()) {
+                $aMessage['warning'] = oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE_INACTIVE');
+                $aMessage['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->getSession()->getSessionChallengeToken() . '" target="basefrm">';
+                $aMessage['warning'] .= oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
+            }
+        } else {
             $aMessage['warning'] = oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE');
             $aMessage['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->getSession()->getSessionChallengeToken() . '" target="basefrm">';
             $aMessage['warning'] .= oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
@@ -218,7 +224,6 @@ class Navigation extends oxAdminView
                 $aMessage['message'] .= $sVersionNotice;
             }
         }
-
 
         // check if setup dir is deleted
         if (file_exists($this->getConfig()->getConfigParam('sShopDir') . '/setup/index.php')) {

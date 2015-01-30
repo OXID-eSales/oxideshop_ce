@@ -848,8 +848,9 @@ $aLang = array(
 'FAVORITES_DESC'                                           => 'Beschreibung der Favoriten ...',
 'NAVIGATION_HISTORY'                                       => 'History',
 'NAVIGATION_SYSREQ_MESSAGE'                                => "Die Systemgesundheit dieses Shops ist gefährdet. Möglicherweise verhält sich Ihr OXID eShop in einigen Bereichen unerwartet. Bitte stellen Sie sicher, dass die Servereinstellungen korrekt vorgenommen werden. Unterstützung finden Sie in der ",
-'NAVIGATION_SYSREQ_MESSAGE2'                               => "Systemgesundheitsprüfung.",
-'NAVIGATION_SHOPFRONT'                                     => "Startseite des Shops",
+'NAVIGATION_SYSREQ_MESSAGE2'                               => 'Systemgesundheitsprüfung.',
+'NAVIGATION_SYSREQ_MESSAGE_INACTIVE'                       => 'Die System Gesundheitspr&uuml;fung ist auf der Startseite inaktiv. Sie k&ouml;nnen diese unter Grundeinstellungen -> Perform. aktivieren oder direkt aufrufen ',
+'NAVIGATION_SHOPFRONT'                                     => 'Startseite des Shops',
 
 'NEWSLETTER_DONE_NEWSSEND'                                 => 'Ihr Newsletter wurde versendet.',
 'NEWSLETTER_DONE_GOTONEWSLETTER'                           => 'gehen Sie zu Newsletter',
@@ -2000,6 +2001,7 @@ $aLang = array(
 'NEWSLETTER_SUBJECT'                                       => 'Betreff',
 
 'SHOP_PERF_SEO_CACHE'                                      => 'SEO Cache aktivieren',
+'SHOP_PERF_SYSREQ_CHECK'                                   => 'System Gesundheitspr&uuml;fung auf der Startseite des Admins aktivieren',
 'INFO_MODULES_MOVED_TO_EXTENSIONS'                         => 'Die Einstellungen für Themes und Module finden Sie im neuen Menü "Erweiterungen"',
 'EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE'               => 'Theme darf nicht in config.inc.php definiert sein',
 'EMAIL_PRICEALARM_CUSTOMER_PRICEALARMIN'                   => 'Preisalarm im ',

@@ -22,31 +22,33 @@
     [{/block}]
 
         <table border="0" cellspacing="0" cellpadding="0" width="100%">
-          <tr>
-            <td height="15" width="100" style="padding: 5px; border-bottom: 4px solid #ddd;">
-                <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0;"><b>[{oxmultilang ident="ORDER_NUMBER" }] [{ $order->oxorder__oxordernr->value }]</b></p>
-            </td>
-            <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="PRODUCT" }]</b></p>
-            </td>
-            <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="UNIT_PRICE" }]</b></p>
-            </td>
-            <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="QUANTITY" }]</b></p>
-            </td>
-            <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="VAT" }]</b></p>
-            </td>
-            <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="TOTAL" }]</b></p>
-            </td>
-            [{if $blShowReviewLink}]
-            <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="PRODUCT_REVIEW" }]</b></p>
-            </td>
-            [{/if}]
-          </tr>
+          [{block name="email_html_order_cust_ordermeta"}]
+              <tr>
+                <td height="15" width="100" style="padding: 5px; border-bottom: 4px solid #ddd;">
+                    <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0;"><b>[{oxmultilang ident="ORDER_NUMBER" }] [{ $order->oxorder__oxordernr->value }]</b></p>
+                </td>
+                <td style="padding: 5px; border-bottom: 4px solid #ddd;">
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="PRODUCT" }]</b></p>
+                </td>
+                <td style="padding: 5px; border-bottom: 4px solid #ddd;">
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="UNIT_PRICE" }]</b></p>
+                </td>
+                <td style="padding: 5px; border-bottom: 4px solid #ddd;">
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="QUANTITY" }]</b></p>
+                </td>
+                <td style="padding: 5px; border-bottom: 4px solid #ddd;">
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="VAT" }]</b></p>
+                </td>
+                <td style="padding: 5px; border-bottom: 4px solid #ddd;">
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="TOTAL" }]</b></p>
+                </td>
+                [{if $blShowReviewLink}]
+                <td style="padding: 5px; border-bottom: 4px solid #ddd;">
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="PRODUCT_REVIEW" }]</b></p>
+                </td>
+                [{/if}]
+              </tr>
+          [{/block}]
 
         [{assign var="basketitemlist" value=$basket->getBasketArticles() }]
 

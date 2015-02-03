@@ -16,7 +16,9 @@
 [{/if}]
 [{/block}]
 
+[{block name="email_plain_order_cust_ordermeta"}]
 [{ oxmultilang ident="ORDER_NUMBER" }] [{ $order->oxorder__oxordernr->value }]
+[{/block}]
 
 [{block name="email_plain_order_cust_voucherdiscount_top"}]
 [{if $oViewConf->getShowVouchers() }]

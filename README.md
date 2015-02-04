@@ -1,6 +1,8 @@
 OXID eShop
 ==========
 
+[![Build Status](https://travis-ci.org/OXID-eSales/oxideshop_ce.svg)](https://travis-ci.org/OXID-eSales/oxideshop_ce)
+
 This repository contains the sources of OXID eShop Community Edition.
 
 ###About OXID eShop:
@@ -12,6 +14,7 @@ and customized to individual requirements with the greatest of ease.
 OXID eShop is just e-commerce software for agencies with deadlines :-)
 
 ![Image alt](frontend.png)
+
 
 
 Useful links:<br>

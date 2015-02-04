@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/OXID-eSales/oxideshop_ce.svg)](https://travis-ci.org/OXID-eSales/oxideshop_ce)
-
 OXID eShop
 ==========
+
+[![Build Status](https://travis-ci.org/OXID-eSales/oxideshop_ce.svg)](https://travis-ci.org/OXID-eSales/oxideshop_ce)
 
 This repository contains the sources of OXID eShop Community Edition.
 

@@ -14,6 +14,7 @@ OXID eShop is just e-commerce software for agencies with deadlines :-)
 ![Image alt](frontend.png)
 
 
+
 Useful links:<br>
 Project home page - http://www.oxid-esales.com<br>
 Wiki - http://www.oxidforge.org<br>

@@ -93,6 +93,6 @@ class GenExport_Do extends DynExportBase
         $sLine = str_replace(array("\r\n", "\n"), "", $sLine);
         $sLine = str_replace("<br>", "\n", $sLine);
 
-        fwrite($this->fpFile, $sLine . "\r\n");
+        fwrite($this->fpFile, $sLine . "\n");
     }
 }

@@ -65,7 +65,7 @@ class oxDiscountList extends oxList
      * For iterating through the list, use getArray() on the list,
      * as iterating on object itself can cause concurrency problems.
      *
-     * @param object $oUser user object (optional)
+     * @param oxuser $oUser user object (optional)
      *
      * @return array
      */
@@ -116,7 +116,7 @@ class oxDiscountList extends oxList
     /**
      * Creates discount list filter SQL to load current state discount list
      *
-     * @param object $oUser user object
+     * @param oxuser $oUser user object
      *
      * @return string
      */
@@ -177,8 +177,8 @@ class oxDiscountList extends oxList
     /**
      * Returns array of discounts that can be globally (transparently) applied
      *
-     * @param object $oArticle article object
-     * @param object $oUser    oxuser object (optional)
+     * @param oxarticle $oArticle article object
+     * @param oxuser $oUser    oxuser object (optional)
      *
      * @return array
      */
@@ -198,9 +198,9 @@ class oxDiscountList extends oxList
     /**
      * Returns array of discounts that can be applied for individual basket item
      *
-     * @param mixed  $oArticle article object or article id (according to needs)
-     * @param object $oBasket  array of basket items containing article id, amount and price
-     * @param object $oUser    user object (optional)
+     * @param mixed    $oArticle article object or article id (according to needs)
+     * @param oxbasket $oBasket  array of basket items containing article id, amount and price
+     * @param oxuser   $oUser    user object (optional)
      *
      * @return array
      */
@@ -208,6 +208,7 @@ class oxDiscountList extends oxList
     {
         $aList = array();
         $aDiscList = $this->_getList($oUser)->getArray();
+        /** @var oxdiscount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForBasketItem($oArticle) && $oDiscount->isForBasketAmount($oBasket)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
@@ -220,8 +221,8 @@ class oxDiscountList extends oxList
     /**
      * Returns array of discounts that can be applied for whole basket
      *
-     * @param object $oBasket basket
-     * @param object $oUser   user object (optional)
+     * @param oxbasket $oBasket basket
+     * @param oxuser   $oUser   user object (optional)
      *
      * @return array
      */
@@ -229,6 +230,7 @@ class oxDiscountList extends oxList
     {
         $aList = array();
         $aDiscList = $this->_getList($oUser)->getArray();
+        /** @var oxdiscount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForBasket($oBasket)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
@@ -241,9 +243,9 @@ class oxDiscountList extends oxList
     /**
      * Returns array of bundle discounts that can be applied for whole basket
      *
-     * @param object $oArticle article object
-     * @param object $oBasket  basket
-     * @param object $oUser    user object (optional)
+     * @param oxarticle $oArticle article object
+     * @param oxbasket  $oBasket  basket
+     * @param oxuser    $oUser    user object (optional)
      *
      * @return array
      */
@@ -251,6 +253,7 @@ class oxDiscountList extends oxList
     {
         $aList = array();
         $aDiscList = $this->_getList($oUser)->getArray();
+        /** @var oxdiscount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForBundleItem($oArticle, $oBasket) && $oDiscount->isForBasketAmount($oBasket)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
@@ -272,6 +275,7 @@ class oxDiscountList extends oxList
     {
         $aList = array();
         $aDiscList = $this->_getList($oUser)->getArray();
+        /** @var oxdiscount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForBundleBasket($oBasket)) {
                 $aList[$oDiscount->getId()] = $oDiscount;

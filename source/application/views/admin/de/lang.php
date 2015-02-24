@@ -849,7 +849,7 @@ $aLang = array(
 'NAVIGATION_HISTORY'                                       => 'History',
 'NAVIGATION_SYSREQ_MESSAGE'                                => "Die Systemgesundheit dieses Shops ist gefährdet. Möglicherweise verhält sich Ihr OXID eShop in einigen Bereichen unerwartet. Bitte stellen Sie sicher, dass die Servereinstellungen korrekt vorgenommen werden. Unterstützung finden Sie in der ",
 'NAVIGATION_SYSREQ_MESSAGE2'                               => 'Systemgesundheitsprüfung.',
-'NAVIGATION_SYSREQ_MESSAGE_INACTIVE'                       => 'Meldungen zur Systemgesundheitsprüfung wurden deaktiviert. Sie können diese auf der Registerkarte Perform. unter Stammdaten -> Grundeinstellungen aktivieren.',
+'NAVIGATION_SYSREQ_MESSAGE_INACTIVE'                       => 'Die permanente Systemgesundheitsprüfung wurde deaktiviert. Sie können diese auf der Registerkarte Perform. unter Stammdaten -> Grundeinstellungen aktivieren. Um dennoch zu prüfen, klicken Sie bitte hier: ',
 'NAVIGATION_SHOPFRONT'                                     => 'Startseite des Shops',
 
 'NEWSLETTER_DONE_NEWSSEND'                                 => 'Ihr Newsletter wurde versendet.',

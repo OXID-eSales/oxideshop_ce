@@ -851,7 +851,7 @@ $aLang = array(
 'NAVIGATION_HISTORY'                                       => 'History',
 'NAVIGATION_SYSREQ_MESSAGE'                                => "System health check shows setup/server setup of this OXID eShop might be broken. Probably this OXID eShop behaves strange in some cases. Please fix this as soon as possible. Support for fixing find in ",
 'NAVIGATION_SYSREQ_MESSAGE2'                               => "system health check.",
-'NAVIGATION_SYSREQ_MESSAGE_INACTIVE'                       => "System health messages have been deactivated. You can re-activate them in the Perform. tab at Master settings -> Core settings.",
+'NAVIGATION_SYSREQ_MESSAGE_INACTIVE'                       => "The permanent system health check has been deactivated. You can re-activate it in the Perform. tab at Master settings -> Core settings. To check it anyway, please click on this link: ",
 'NAVIGATION_SHOPFRONT'                                     => "Shop's start page",
 
 'NEWSLETTER_DONE_NEWSSEND'                                 => 'Your Newsletter has been sent.',

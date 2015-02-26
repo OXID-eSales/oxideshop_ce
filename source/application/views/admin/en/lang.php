@@ -849,9 +849,9 @@ $aLang = array(
 'NAVIGATION_FAVORITES_EDIT'                                => '[ edit ]',
 'FAVORITES_DESC'                                           => 'favorites description ...',
 'NAVIGATION_HISTORY'                                       => 'History',
-'NAVIGATION_SYSREQ_MESSAGE'                                => "System healthcheck shows setup/server setup of this OXID eShop might be broken. Probably this OXID eShop behaves strange in some cases. Please fix this as soon as possible. Support for fixing find in ",
-'NAVIGATION_SYSREQ_MESSAGE2'                               => "system healthcheck.",
-'NAVIGATION_SYSREQ_MESSAGE_INACTIVE'                       => "system healthcheck is in dashboard inactive. You can activate it in Core Settings -> Perform. or click on this link ",
+'NAVIGATION_SYSREQ_MESSAGE'                                => "System health check shows setup/server setup of this OXID eShop might be broken. Probably this OXID eShop behaves strange in some cases. Please fix this as soon as possible. Support for fixing find in ",
+'NAVIGATION_SYSREQ_MESSAGE2'                               => "<b>system health check</b>.",
+'NAVIGATION_SYSREQ_MESSAGE_INACTIVE'                       => "The permanent system health check has been deactivated. You can re-activate it in the Perform. tab at Master settings -> Core settings. To check it anyway, please click on this link: ",
 'NAVIGATION_SHOPFRONT'                                     => "Shop's start page",
 
 'NEWSLETTER_DONE_NEWSSEND'                                 => 'Your Newsletter has been sent.',
@@ -2000,7 +2000,7 @@ $aLang = array(
 'NEWSLETTER_SUBJECT'                                       => 'Subject',
 
 'SHOP_PERF_SEO_CACHE'                                      => 'Enable SEO cache',
-'SHOP_PERF_SYSREQ_CHECK'                                   => 'Enable system health check on dashboard',
+'SHOP_PERF_SYSREQ_CHECK'                                   => 'Enable system health messages at the start page',
 'INFO_MODULES_MOVED_TO_EXTENSIONS'                         => 'Themes and modules handling moved to new menu "Extensions"',
 'EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE'               => 'Theme should not be defined in config.inc.php',
 'EMAIL_PRICEALARM_CUSTOMER_PRICEALARMIN'                      => 'Price Alert in ',

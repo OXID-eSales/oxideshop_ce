@@ -123,8 +123,8 @@
         	</tr>
             <tr class="conftext[{cycle}]">
                 <td valign="top">
-                    <input type="hidden" name="confbools[blCheckSysReq]" value="true">
-                    <input type="checkbox" class="confinput" name="confbools[blCheckSysReq]" value="false"  [{if (!$confbools.blCheckSysReq)}]checked[{/if}] [{ $readonly }]>
+                    <input type="hidden" name="confbools[blCheckSysReq]" value="false">
+                    <input type="checkbox" class="confinput" name="confbools[blCheckSysReq]" value="true"  [{if ($confbools.blCheckSysReq)}]checked[{/if}] [{ $readonly }]>
                     [{ oxinputhelp ident="HELP_SHOP_PERF_SYSREQ_CHECK" }]
                 </td>
                 <td valign="top" width="100%" >

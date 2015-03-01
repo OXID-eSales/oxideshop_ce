@@ -57,14 +57,12 @@ class User_List extends oxAdminList
     protected $_sThisTemplate = 'user_list.tpl';
 
     /**
-     * Sets SQL query parameters (such as sorting),
-     * executes parent method parent::Init().
+     * Executes parent::render(), sets blacklist and preventdelete flag
+     *
+     * @return null
      */
-    public function init()
+    public function render()
     {
-        parent::init();
-
-        // set mark for blacklists
         foreach ($this->getItemList() as $sId => $oUser) {
             if ($oUser->inGroup("oxidblacklist") || $oUser->inGroup("oxidblocked")) {
                 $oUser->blacklist = "1";
@@ -74,6 +72,8 @@ class User_List extends oxAdminList
                 $oUser->blPreventDelete = true;
             }
         }
+
+        return parent::render();
     }
 
     /**

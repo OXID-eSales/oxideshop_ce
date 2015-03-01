@@ -44,7 +44,7 @@ class Unit_Admin_UserListTest extends OxidTestCase
         $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
         $oView->expects($this->any())->method('getItemList')->will($this->returnValue(array($oUser1, $oUser2)));
         $oView->expects($this->any())->method('_allowAdminEdit')->will($this->returnValue(false));
-        $oView->init();
+        $oView->render();
 
         $this->assertTrue(isset($oUser1->blacklist));
         $this->assertEquals("1", $oUser1->blacklist);

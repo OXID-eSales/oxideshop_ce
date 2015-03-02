@@ -21,8 +21,9 @@ function popUp(evt,currElem)
     if (obj.nodeType == 3) // defeat Safari bug
         obj = obj.parentNode;
 
-    var x = getOffset(obj).left + obj.offsetWidth + 5;
-    var y = getOffset(obj).top;
+    var offset = getOffset(obj);
+    var x = offset.left + obj.offsetWidth + 5;
+    var y = offset.top;
     
     popUpWin.style.top = Math.max(2,y)+'px';
     popUpWin.style.left= Math.max(2,x)+'px';

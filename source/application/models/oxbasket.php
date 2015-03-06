@@ -806,7 +806,7 @@ class oxBasket extends oxSuperCfg
 
         $oDiscountList = oxRegistry::get("oxDiscountList");
 
-        /** @var \oxBasketitem $oBasketItem */
+        /** @var \oxBasketItem $oBasketItem */
         foreach ($this->_aBasketContents as $oBasketItem) {
             $this->_iProductsCnt++;
             $this->_dItemsCnt += $oBasketItem->getAmount();
@@ -1311,7 +1311,7 @@ class oxBasket extends oxSuperCfg
     {
         $oWrappingPrices = oxNew('oxPriceList');
 
-        /** @var \oxBasketitem $oBasketItem */
+        /** @var \oxBasketItem $oBasketItem */
         foreach ($this->_aBasketContents as $oBasketItem) {
 
             if (($oWrapping = $oBasketItem->getWrapping())) {
@@ -1549,7 +1549,7 @@ class oxBasket extends oxSuperCfg
         }
 
         $myConfig = $this->getConfig();
-        /** @var \oxBasketitem $oBasketItem */
+        /** @var \oxBasketItem $oBasketItem */
         foreach ($this->_aBasketContents as $oBasketItem) {
             if (!$oBasketItem->isBundle() && $oArticle = $oBasketItem->getArticle(false)) {
                 $aCatIds = $oArticle->getCategoryIds();
@@ -1738,7 +1738,7 @@ class oxBasket extends oxSuperCfg
                 $oSavedBasket->delete();
 
                 //then save
-                /** @var \oxBasketitem $oBasketItem */
+                /** @var \oxBasketItem $oBasketItem */
                 foreach ($this->_aBasketContents as $oBasketItem) {
                     // discount or bundled products will be added automatically if available
                     if (!$oBasketItem->isBundle() && !$oBasketItem->isDiscountArticle()) {
@@ -1904,7 +1904,7 @@ class oxBasket extends oxSuperCfg
     public function getBasketArticles()
     {
         $aBasketArticles = array();
-        /** @var \oxBasketitem $oBasketItem */
+        /** @var \oxBasketItem $oBasketItem */
         foreach ($this->_aBasketContents as $sItemKey => $oBasketItem) {
             try {
                 $oProduct = $oBasketItem->getArticle(true);

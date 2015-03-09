@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -253,6 +253,7 @@ class order extends oxUBase
                 // proceeding to next view
                 return $this->_getNextStep($iSuccess);
             } catch (oxOutOfStockException $oEx) {
+                $oEx->setDestination('basket');
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'basket');
             } catch (oxNoArticleException $oEx) {
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);

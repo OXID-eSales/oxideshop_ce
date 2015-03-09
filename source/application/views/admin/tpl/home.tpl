@@ -1,10 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    <title>[{ oxmultilang ident="MAIN_TITLE" }]</title>
-    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]main.css">
-    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors.css">
-    <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
+    [{block name="admin_home_head" }]
+        <title>[{ oxmultilang ident="MAIN_TITLE" }]</title>
+        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]main.css">
+        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
+    [{block}]
 </head>
 <body>
 
@@ -28,6 +30,8 @@
     </div>
     <hr>
 [{/if}]
+
+[{block name="admin_home_navigation_items" }]
 
     <table width="100%" height="84%">
     [{assign var="shMen" value=1}]
@@ -78,6 +82,8 @@
             </tr>
     [{/if}]
     [{/foreach}]
+[{/block}]
+
 [{if $oViewConf->blLoadDynContents && $oViewConf->sShopCountry}]
 
 <script>

@@ -1,1 +1,8 @@
+# Composer
+source/vendor/
+
+# Testing library
+source/test_config.yml
+
+# IDE
 .idea

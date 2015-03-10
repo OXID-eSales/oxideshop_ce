@@ -21,7 +21,13 @@
     "extra": {
         "incenteev-parameters": {
             "file": "test_config.yml",
-            "dist-file": "vendor/oxid-esales/testing_library/test_config.yml.dist"
+            "dist-file": "vendor/oxid-esales/testing_library/test_config.yml.dist",
+            "parameter-key": "mandatory_parameters",
+            "env-map": {
+              "shop_path": "SHOP_PATH",
+              "shop_tests_path": "SHOP_TESTS_PATH",
+              "modules_path": "MODULES_PATH"
+            }
         }
     }
 }

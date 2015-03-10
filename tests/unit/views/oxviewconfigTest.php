@@ -2558,9 +2558,16 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testIsModuleActive($aModules, $aDisabledModules, $sModuleId, $blModuleIsActive)
     {
+
+        $aModuleVersions = array(
+            'oepaypal' => '2.0',
+            'oepaypal2' => '5.0'
+        );
+
         $this->setConfigParam('aModules', $aModules);
         $this->setConfigParam('aDisabledModules', $aDisabledModules);
-
+        $this->setConfigParam('aModuleVersions', $aModuleVersions);
+        
         $oViewConf = new oxViewConfig();
         $blIsModuleActive = $oViewConf->isModuleActive($sModuleId);
 

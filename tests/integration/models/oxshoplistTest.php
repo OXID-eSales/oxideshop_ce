@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -38,6 +38,8 @@ class  Integration_Models_oxshoplistTest extends OxidTestCase
         for ($i = 2; $i < 5; $i++) {
             $this->addToDatabase("INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME) VALUES ($i, 1, 'Test Shop $i')", 'oxshops');
         }
+
+        $this->addTableForCleanup('oxshops');
     }
 
     /**

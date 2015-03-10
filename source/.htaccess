@@ -45,10 +45,11 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule (\.jpe?g|\.gif|\.png|\.svg)$ getimg.php
 
+    RewriteRule ^(vendor/) - [F,L,NC]
 </IfModule>
 
 # disabling log file access from outside
-<FilesMatch "(EXCEPTION_LOG\.txt|\.log|\.tpl|pkg\.rev|\.ini|pkg\.info|\.pem)$">
+<FilesMatch "(EXCEPTION_LOG\.txt|\.log|\.tpl|pkg\.rev|\.ini|pkg\.info|\.pem|composer\.json|composer\.lock|test_config\.yml)$">
     order allow,deny
     deny from all
 </FilesMatch>

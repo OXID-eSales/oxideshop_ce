@@ -1,4 +1,11 @@
 {
+    "name": "oxid-esales/eshop",
+    "description": "OXID eShop",
+    "version": "6.0.0",
+    "type": "project",
+    "keywords": ["oxid", "modules", "eShop"],
+    "homepage": "https://www.oxid-esales.com/en/home.html",
+    "license": "GPL-3.0",
     "repositories": {
         "oxid-esales/testing_library": {
             "type": "vcs",
@@ -18,6 +25,7 @@
         "incenteev/composer-parameter-handler": "~2.0"
     },
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"

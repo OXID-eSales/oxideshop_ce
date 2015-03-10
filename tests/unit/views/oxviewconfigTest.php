@@ -2559,7 +2559,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
 
         $aModuleVersions = array(
-            'oepaypal' => '2.0',
+            'oepaypal1' => '2.0',
             'oepaypal2' => '5.0'
         );
 

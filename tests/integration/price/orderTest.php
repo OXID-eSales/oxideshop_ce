@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -208,7 +208,7 @@ class Integration_Price_OrderTest extends OxidTestCase
      */
     protected function _getTestCases($sDir, $aTestCases = array())
     {
-        $sPath = "integration/price/" . $sDir . "/";
+        $sPath = __DIR__ . "/" . $sDir . "/";
         // load test cases
         $aGlobal = array();
         if (empty($aTestCases)) {

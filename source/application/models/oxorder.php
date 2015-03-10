@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -1243,6 +1243,7 @@ class oxOrder extends oxBase
                 $oEx->setMessage('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK');
                 $oEx->setArticleNr($oProd->oxarticles__oxartnum->value);
                 $oEx->setProductId($oProd->getId());
+                $oEx->setBasketIndex($key);
 
                 if (!is_numeric($iOnStock)) {
                     $iOnStock = 0;

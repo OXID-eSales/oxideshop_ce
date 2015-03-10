@@ -6,7 +6,7 @@
         }
     },
     "require-dev": {
-        "oxid-esales/testing_library": "prepare_for_packagist",
+        "oxid-esales/testing_library": "master",
         "incenteev/composer-parameter-handler": "~2.0"
     },
     "minimum-stability": "dev",

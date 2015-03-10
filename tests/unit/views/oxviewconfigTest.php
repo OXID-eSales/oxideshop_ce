@@ -2544,10 +2544,10 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function _dpIsModuleActive()
     {
         return array(
-            array(array('order' => 'oe/oepaypal/controllers/oepaypalorder'), array(), 'oepaypal', true),
-            array(array('order' => 'oe/oepaypal/controllers/oepaypalorder'), array(0 => 'oepaypal'), 'oepaypal', false),
-            array(array(), array(), 'oepaypal', false),
-            array(array(), array(0 => 'oepaypal'), 'oepaypal', false),
+            array(array('order' => 'oe/oepaypal/controllers/oepaypalorder'), array('oepaypal' => '2.0'), array(), 'oepaypal', true), // module activated
+            array(array('order' => 'oe/oepaypal/controllers/oepaypalorder'), array(), array(0 => 'oepaypal'), 'oepaypal', false),    // module disabled
+            array(array(), array(), array(), 'oepaypal', false),                                                                     // module never activated
+            array(array(), array('oepaypal' => '2.0'), array(0 => 'oepaypal'), 'oepaypal', false),                                   // module does not extend oxid-class and disabled
         );
     }
 
@@ -2555,13 +2555,8 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      * oxViewConfig::oePayPalIsModuleActive()
      * @dataProvider _dpIsModuleActive
      */
-    public function testIsModuleActive($aModules, $aDisabledModules, $sModuleId, $blModuleIsActive)
+    public function testIsModuleActive($aModules, $aModuleVersions, $aDisabledModules, $sModuleId, $blModuleIsActive)
     {
-
-        $aModuleVersions = array(
-            'oepaypal' => '2.0',
-            'oepaypal2' => '5.0'
-        );
 
         $this->setConfigParam('aModules', $aModules);
         $this->setConfigParam('aDisabledModules', $aDisabledModules);

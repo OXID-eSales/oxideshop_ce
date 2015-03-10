@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -89,21 +89,8 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         $this->_sAttributeC = '8a142c3ee0edb75d4.80743302';
         $this->_sAttributeB = '8a142c3f0a792c0c3.93013584';
         $this->_sCategory = '8a142c3e60a535f16.78077188';
-        $myDB = oxDb::getDb();
-        $myDB->Execute('insert into oxcategory2attribute (oxid, oxobjectid, oxattrid, oxsort) values ("test3","' . $this->_sCategory . '","' . $this->_sAttributeD . '", "333")');
-
-        /* $sOrigTestPicFile   = "1126_th.jpg";
-         $sOrigTestIconFile  = "1126_th.jpg";
-
-
-         $myConfig = oxRegistry::getConfig();
-         $sPicDir  = $myConfig->getPictureDir()."0/";
-         $sIconDir  = $myConfig->getPictureDir()."icon/";
-
-         copy( $sDir.$sOrigTestPicFile, $sDir.$sCloneTestPicFile );
-         copy( $sDir.$sOrigTestIconFile, $sDir.$sCloneTestIconFile );*/
-
-
+        $db = oxDb::getDb();
+        $db->Execute('insert into oxcategory2attribute (oxid, oxobjectid, oxattrid, oxsort) values ("test3","' . $this->_sCategory . '","' . $this->_sAttributeD . '", "333")');
     }
 
     /**
@@ -120,11 +107,11 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
     private function removeTestData()
     {
-        $myDB = oxDb::getDb();
+        $db = oxDb::getDb();
         $sDelete = "Delete from oxcategories where oxid like 'test%'";
-        $myDB->Execute($sDelete);
+        $db->Execute($sDelete);
         $sDelete = "Delete from oxcategory2attribute where oxid like 'test%' ";
-        $myDB->Execute($sDelete);
+        $db->Execute($sDelete);
 
         $this->cleanUpTable("oxattribute");
         $this->cleanUpTable("oxobject2attribute");

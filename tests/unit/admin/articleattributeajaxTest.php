@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -62,6 +62,11 @@ class Unit_Admin_ArticleAttributeAjaxTest extends OxidTestCase
      */
     protected function tearDown()
     {
+        oxDb::getDb()->execute( "delete from oxattribute where oxid='_testAttribute'" );
+
+        oxDb::getDb()->execute( "delete from oxarticles where oxid='_testAttributeArticle'" );
+        oxDb::getDb()->execute( "delete from oxattribute where oxid='_testAttributeSaveAttr'" );
+
         oxDb::getDb()->execute("delete from oxobject2attribute where oxid='_testAttribute1'");
         oxDb::getDb()->execute("delete from oxobject2attribute where oxid='_testAttribute2'");
         oxDb::getDb()->execute("delete from oxobject2attribute where oxid='_testAttribute3'");

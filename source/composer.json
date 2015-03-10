@@ -3,6 +3,14 @@
         "oxid-esales/testing_library": {
             "type": "vcs",
             "url": "https://github.com/OXID-eSales/testing_library.git"
+        },
+        "behat/mink-selenium-driver": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/MinkSeleniumDriver.git"
+        },
+        "alexandresalome/php-selenium": {
+          "type": "vcs",
+          "url": "https://github.com/OXID-eSales/PHP-Selenium.git"
         }
     },
     "require-dev": {

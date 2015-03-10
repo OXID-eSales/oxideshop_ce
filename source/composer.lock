@@ -617,12 +617,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "ff9691b5a88b9de08bf3f39c59b76415184f3ef7"
+                "reference": "e392da37efc4155b2811a2b6f1d5f5c57a9b69b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/ff9691b5a88b9de08bf3f39c59b76415184f3ef7",
-                "reference": "ff9691b5a88b9de08bf3f39c59b76415184f3ef7",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/e392da37efc4155b2811a2b6f1d5f5c57a9b69b8",
+                "reference": "e392da37efc4155b2811a2b6f1d5f5c57a9b69b8",
                 "shasum": ""
             },
             "require": {
@@ -679,7 +679,7 @@
             "support": {
                 "source": "https://github.com/OXID-eSales/testing_library/tree/master"
             },
-            "time": "2015-03-06 13:40:47"
+            "time": "2015-03-06 15:09:54"
         },
         {
             "name": "pdepend/pdepend",

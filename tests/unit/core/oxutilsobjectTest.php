@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -118,7 +118,7 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
         $this->assertTrue($oArticle instanceof oxarticle);
         $this->assertTrue(isset($oArticle->aaa));
         $this->assertEquals('bbb', $oArticle->aaa);
-        $sShopDir = "misc/";
+        $sShopDir = getTestsBasePath() . "misc/";
 
         modConfig::getInstance()->setConfigParam("sShopDir", $sShopDir);
         include_once $sShopDir . "/modules/oxNewDummyModule.php";

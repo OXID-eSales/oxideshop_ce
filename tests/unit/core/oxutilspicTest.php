@@ -316,7 +316,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
 
         $myUtils = new oxUtilsPic();
         $myConfig = oxRegistry::getConfig();
-        $sDir = "misc" . DIRECTORY_SEPARATOR;
+        $sDir = getTestsBasePath() . "misc" . DIRECTORY_SEPARATOR;
         $iWidth = 100;
         $iHeight = 48;
         if (!file_exists($sDir . $sTestImageFile)) {

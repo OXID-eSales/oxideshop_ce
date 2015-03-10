@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "34a1b2f14c859cb5a04cc23142c3320d",
+    "hash": "330b023bf045633244c48105122fdf07",
     "packages": [],
     "packages-dev": [
         {
@@ -212,16 +212,16 @@
         },
         {
             "name": "behat/mink-selenium-driver",
-            "version": "v1.1.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/OXID-eSales/MinkSeleniumDriver.git",
-                "reference": "faff4d8185b5c70191bd0a58d6d68de1bfd36856"
+                "url": "https://github.com/minkphp/MinkSeleniumDriver.git",
+                "reference": "a782b031cb8a94b449b9ccecdcd0e79206bbc882"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/MinkSeleniumDriver/zipball/faff4d8185b5c70191bd0a58d6d68de1bfd36856",
-                "reference": "faff4d8185b5c70191bd0a58d6d68de1bfd36856",
+                "url": "https://api.github.com/repos/minkphp/MinkSeleniumDriver/zipball/a782b031cb8a94b449b9ccecdcd0e79206bbc882",
+                "reference": "a782b031cb8a94b449b9ccecdcd0e79206bbc882",
                 "shasum": ""
             },
             "require": {
@@ -241,6 +241,7 @@
                     "Behat\\Mink\\Driver": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -260,10 +261,7 @@
                 "selenium",
                 "testing"
             ],
-            "support": {
-                "source": "https://github.com/OXID-eSales/MinkSeleniumDriver/tree/v1.1.1"
-            },
-            "time": "2015-02-26 14:51:41"
+            "time": "2013-04-13 23:50:14"
         },
         {
             "name": "fabpot/goutte",
@@ -619,12 +617,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "eb4f0f5c47a90f2ce5f958a237fc0fa9b989e44a"
+                "reference": "ff9691b5a88b9de08bf3f39c59b76415184f3ef7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/eb4f0f5c47a90f2ce5f958a237fc0fa9b989e44a",
-                "reference": "eb4f0f5c47a90f2ce5f958a237fc0fa9b989e44a",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/ff9691b5a88b9de08bf3f39c59b76415184f3ef7",
+                "reference": "ff9691b5a88b9de08bf3f39c59b76415184f3ef7",
                 "shasum": ""
             },
             "require": {
@@ -681,7 +679,7 @@
             "support": {
                 "source": "https://github.com/OXID-eSales/testing_library/tree/master"
             },
-            "time": "2015-03-05 16:37:50"
+            "time": "2015-03-06 13:40:47"
         },
         {
             "name": "pdepend/pdepend",

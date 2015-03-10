@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -422,17 +422,16 @@ class oxOrderArticle extends oxBase implements oxIArticle
                 $aArticleSelList = $oArticle->getSelectLists();
 
                 //formatting temporary list array from string
-                foreach ($aList as $sList) {
-                    if ($sList) {
+                if (count($aArticleSelList) > 0) {
+                    foreach ($aList as $sList) {
+                        if ($sList) {
+                            $aVal = explode(":", $sList);
+                            if (isset($aVal[0]) && isset($aVal[1])) {
+                                $sOrderArtListTitle = $oStr->strtolower(trim($aVal[0]));
+                                $sOrderArtSelValue = $oStr->strtolower(trim($aVal[1]));
 
-                        $aVal = explode(":", $sList);
-                        if (isset($aVal[0]) && isset($aVal[1])) {
-                            $sOrderArtListTitle = $oStr->strtolower(trim($aVal[0]));
-                            $sOrderArtSelValue = $oStr->strtolower(trim($aVal[1]));
-
-                            //checking article list for matches with article list stored in oxOrderItem
-                            $iSelListNum = 0;
-                            if (count($aArticleSelList) > 0) {
+                                //checking article list for matches with article list stored in oxOrderItem
+                                $iSelListNum = 0;
                                 foreach ($aArticleSelList as $aSelect) {
                                     //check if selects titles are equal
 

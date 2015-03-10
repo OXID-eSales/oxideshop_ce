@@ -20,6 +20,7 @@
  * @version   OXID eShop CE
  */
 
+require_once TESTING_LIBRARY_HELPERS_PATH . 'oxCacheHelper.php';
 
 class Unit_Core_oxreviewTest extends OxidTestCase
 {
@@ -59,7 +60,6 @@ class Unit_Core_oxreviewTest extends OxidTestCase
         $myDB->Execute($sQ);
         $this->cleanUpTable('oxreviews');
         oxRemClassModule('modOxUtilsDate');
-        oxRemClassModule('modoxCache');
 
         parent::tearDown();
     }

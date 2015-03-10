@@ -63,21 +63,6 @@ class modOxDelivery extends oxDelivery
         return $this->_blFreeShipping;
     }
 
-    public static function cleanProdList()
-    {
-        self::$_aProductList = array();
-    }
-
-}
-
-class modOxArticle_oxdelivery extends oxArticle
-{
-
-    public static function cleanSelList()
-    {
-        self::$_aSelList = array();
-        self::$_aArticleCats = array();
-    }
 }
 
 class Unit_Core_oxdeliveryTest extends OxidTestCase
@@ -157,8 +142,8 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
         $oPrice->setPrice(256, 0);
         $this->_oBasketItem->setPrice($oPrice);
 
-        modOxArticle_oxdelivery::cleanSelList();
-        modOxDelivery::cleanProdList();
+        oxArticleHelper::cleanup();
+        oxDeliveryHelper::cleanup();
     }
 
     /**

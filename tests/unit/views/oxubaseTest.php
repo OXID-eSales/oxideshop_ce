@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -27,34 +27,7 @@ if (!function_exists('getSeoProcType')) {
     }
 }
 
-class testOxViewComponent extends oxUBase
-{
-
-    public $initWasCalled = false;
-    public $setParentWasCalled = false;
-    public $setThisActionWasCalled = false;
-
-    public function init()
-    {
-        $this->initWasCalled = true;
-    }
-
-    public function setParent($oParam = null)
-    {
-        $this->setParentWasCalled = true;
-    }
-
-    public function setThisAction($oParam = null)
-    {
-        $this->setThisActionWasCalled = true;
-    }
-
-    public static function resetComponentNames()
-    {
-        self::$_aCollectedComponentNames = null;
-    }
-}
-
+require_once TESTING_LIBRARY_HELPERS_PATH . 'oxUBaseHelper.php';
 
 /**
  * Testing oxUBase class
@@ -72,7 +45,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     protected function setUp()
     {
-        testOxViewComponent::resetComponentNames();
+        oxUBaseHelper::resetComponentNames();
 
         // adding article to recommendList
         $sQ = 'replace into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "' . oxRegistry::getConfig()->getShopId() . '" ) ';
@@ -105,7 +78,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $oUBase = new oxUbase();
         $oUBase->getSession()->setBasket(null);
 
-        testOxViewComponent::resetComponentNames();
+        oxUBaseHelper::resetComponentNames();
 
         parent::tearDown();
     }

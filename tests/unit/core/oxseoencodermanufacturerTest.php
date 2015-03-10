@@ -16,18 +16,9 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-
-class modOxManufacturerForoxSeoEncoderManufacturerTest extends oxManufacturer
-{
-
-    public static function reSetRootManufacturer()
-    {
-        self::$_aRootManufacturer = array();
-    }
-}
 
 /**
  * Testing oxseoencodermanufacturer class
@@ -207,8 +198,6 @@ class Unit_Core_oxSeoEncoderManufacturerTest extends OxidTestCase
 
     public function testGetManufacturerUriNewManufacturer()
     {
-        modOxManufacturerForoxSeoEncoderManufacturerTest::reSetRootManufacturer();
-
         $oManufacturer = new oxManufacturer();
         $oManufacturer->setLanguage(1);
         $oManufacturer->setId('xxx');

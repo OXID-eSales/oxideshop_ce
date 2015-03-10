@@ -16,19 +16,11 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
-class modUtils_oxvendorlist extends oxutils
-{
-
-    public function seoIsActive($blReset = false, $sShopId = null, $iActLang = null)
-    {
-        return true;
-    }
-}
-
+require_once TESTING_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
 /**
  * Testing oxvendorlist class
  */
@@ -44,7 +36,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxVendor', 'cleanRootVendor', '{oxVendor::$_aRootVendor = array();}');
         oxNew('oxvendor')->cleanRootVendor();
-        oxRemClassModule('modUtils_oxvendorlist');
+        oxRemClassModule('oxUtilsHelper');
 
         parent::tearDown();
     }
@@ -199,7 +191,8 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
      */
     public function test_SEOsetVendorData()
     {
-        oxAddClassModule('modUtils_oxvendorlist', 'oxutils');
+        oxUtilsHelper::$sSeoIsActive = true;
+        oxAddClassModule('oxUtilsHelper', 'oxutils');
 
         $oVendorlist = $this->getProxyClass("oxvendorlist");
         $oVendorlist->loadVendorList();

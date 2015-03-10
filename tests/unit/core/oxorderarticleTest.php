@@ -16,23 +16,26 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
+/**
+ * Class Unit_Core_oxorderarticleTest
+ */
 class Unit_Core_oxorderarticleTest extends OxidTestCase
 {
 
+    /** @var oxOrderArticle orderArticle */
     protected $_oOrderArticle = null;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setup()
     {
         parent::setUp();
+
         $this->_oOrderArticle = new oxorderarticle();
         $this->_oOrderArticle->setId('_testOrderArticleId');
         $this->_oOrderArticle->oxorderarticles__oxartid = new oxField('_testArticleId', oxField::T_RAW);
@@ -51,14 +54,13 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
         $this->cleanUpTable('oxorderarticles');
+        $this->cleanUpTable('oxobject2selectlist');
         $this->cleanUpTable('oxarticles');
-        $oArticle = new oxArticle();
+
         parent::tearDown();
     }
 
@@ -114,7 +116,7 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
         $oOrderArticle->save();
     }
 
-    public function testCancelOrderArticleAllreadyCanceled()
+    public function testCancelOrderArticleAlreadyCanceled()
     {
         $oOrderArticle = $this->getMock("oxOrderArticle", array("save"));
         $oOrderArticle->expects($this->never())->method('save');

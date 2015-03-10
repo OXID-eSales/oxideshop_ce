@@ -20,14 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class fake_basket extends oxBasket
-{
-
-    public function iAmFake()
-    {
-        return true;
-    }
-}
+require_once TESTING_LIBRARY_HELPERS_PATH . 'oxBasketHelper.php';
 
 class Unit_oxsessionTest_oxUtilsServer extends oxUtilsServer
 {
@@ -1297,12 +1290,13 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testGetBasket_notWrongBasketInstance()
     {
-        $oFakeBasket = oxNew('fake_basket');
+        $oFakeBasket = oxNew('oxBasketHelper');
         $oSession = $this->getMock('oxsession', array('_getBasketName'));
         $oSession->expects($this->once())->method('_getBasketName')->will($this->returnValue(serialize($oFakeBasket)));
 
         $oSessionBasket = $oSession->getBasket();
-        $this->assertTrue($oSessionBasket instanceof oxbasket, "oSessionBasket is instance of oxbasket (found " . get_class($oSessionBasket) . ")");
+        $this->assertTrue($oSessionBasket instanceof oxBasket, "oSessionBasket is instance of oxBasket");
+        $this->assertFalse($oSessionBasket instanceof oxBasketHelper, "oSessionBasket is not instance of oxBasketHelper");
     }
 
     /**

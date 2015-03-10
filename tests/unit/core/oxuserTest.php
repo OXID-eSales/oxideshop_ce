@@ -20,19 +20,6 @@
  * @version   OXID eShop CE
  */
 
-/**
- * Mocks sendNewsletterDBOptInMail in oxEmail class.
- */
-class oxuserTestEmail extends oxemail
-{
-
-    public static $blSend = true;
-
-    public function sendNewsletterDBOptInMail($oUser, $sSubject = null)
-    {
-        return self::$blSend;
-    }
-}
 
 /**
  * Mocks loadFromUserID and loadFromEMail in oxNewsSubscribed class.
@@ -153,7 +140,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
         oxRemClassModule('oxuserTest_oxnewssubscribed');
         oxRemClassModule('Unit_oxuserTest_oxUtilsServer');
         oxRemClassModule('Unit_oxuserTest_oxUtilsServer2');
-        oxRemClassModule('oxuserTestEmail');
+        oxRemClassModule('oxEmailHelper');
 
         $oGroup = new oxgroups();
         $oGroup->delete('_testGroup');
@@ -2009,7 +1996,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
     public function testSetNewsSubscriptionSubscribesWithOptInEmail()
     {
-        oxAddClassModule('oxuserTestEmail', 'oxemail');
+        oxEmailHelper::$blRetValue = true;
+        oxAddClassModule('oxEmailHelper', 'oxemail');
 
         $oConfig = $this->getMock('oxconfig');
         $oConfig->setConfigParam('blOrderOptInEmail', true);
@@ -2057,7 +2045,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
     public function testSetNewsSubscriptionUnsubscribes()
     {
-        oxAddClassModule('oxuserTestEmail', 'oxemail');
+        oxEmailHelper::$blRetValue = true;
+        oxAddClassModule('oxEmailHelper', 'oxemail');
 
         $oConfig = $this->getMock('oxconfig');
 

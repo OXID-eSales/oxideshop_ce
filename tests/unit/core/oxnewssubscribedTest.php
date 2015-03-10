@@ -16,23 +16,11 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
-class modOxNewsSubscribedTest extends oxNewsSubscribed
-{
-
-    public function setWasSubscribed($blWasSubscribed)
-    {
-        $this->_blWasSubscribed = $blWasSubscribed;
-    }
-
-    public function getWasSubscribed()
-    {
-        return $this->_blWasSubscribed;
-    }
-}
+require_once TESTING_LIBRARY_HELPERS_PATH . 'oxNewsSubscribedHelper.php';
 
 class Unit_Core_oxnewssubscribedTest extends OxidTestCase
 {
@@ -99,7 +87,7 @@ class Unit_Core_oxnewssubscribedTest extends OxidTestCase
      */
     public function testLoadSetsWasSubscribed()
     {
-        $oNewsSubscribed = oxNew('modOxNewsSubscribedTest');
+        $oNewsSubscribed = oxNew('oxNewsSubscribedHelper');
         $oNewsSubscribed->load('_testNewsSubscrId');
         $this->assertTrue($oNewsSubscribed->getWasSubscribed());
     }
@@ -195,7 +183,7 @@ class Unit_Core_oxnewssubscribedTest extends OxidTestCase
      */
     public function testUpdateWasUnsubscribed()
     {
-        $oNewsSubscribed = oxNew('modOxNewsSubscribedTest');
+        $oNewsSubscribed = oxNew('oxNewsSubscribedHelper');
         $oNewsSubscribed->load('_testNewsSubscrId');
         $oNewsSubscribed->setWasSubscribed(false);
 

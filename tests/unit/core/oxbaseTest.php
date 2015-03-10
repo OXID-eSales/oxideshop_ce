@@ -16,10 +16,12 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
+
+require_once TESTING_LIBRARY_HELPERS_PATH . 'oxBaseHelper.php';
 
 /**
  * Test oxBase module
@@ -181,16 +183,6 @@ class _oxBase extends oxBase
     }
 
     /**
-     * Force _blDisableFieldCaching.
-     *
-     * @return null
-     */
-    public function enableFieldCaching()
-    {
-        oxBase::$_blDisableFieldCaching = array();
-    }
-
-    /**
      * Force getUpdateFieldValue.
      *
      * @param string $sFieldName fiels name
@@ -209,7 +201,6 @@ class _oxBase extends oxBase
  */
 class oxUtilsNoCaching extends oxUtils
 {
-
     /**
      * Force oxFileCache.
      *
@@ -624,8 +615,8 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $aFieldNames = array("oxid" => 0, "oxtitle" => 0, "oxshortdesc" => 0);
         $this->assertEquals($aFieldNames, $oBase->getClassVar("_aFieldNames"));
 
+        oxBaseHelper::cleanup();
         $oBase = new _oxBase();
-        $oBase->enableFieldCaching();
         $oBase->setClassVar("_sCoreTable", "oxarticles");
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->modifyCacheKey("lazyloadingtest1", true);

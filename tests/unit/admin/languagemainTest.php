@@ -16,29 +16,9 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-
-/**
- * Test Language_Main module
- */
-class modLanguageMain extends Language_Main
-{
-
-    /**
-     * Set any field value.
-     *
-     * @param string $sName  Field name
-     * @param string $sValue Field value
-     *
-     * @return null
-     */
-    public function setVar($sName, $sValue)
-    {
-        $this->$sName = $sValue;
-    }
-}
 
 /**
  * Tests for Language_Main class
@@ -279,11 +259,13 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
         $oConfig = $this->getMock("oxConfig", array("saveShopConfVar"));
         $oConfig->expects($this->at(0))->method('saveShopConfVar')->with($this->equalTo('str'), $this->equalTo('sDefaultLang'), $this->equalTo(1));
 
-        $oView = $this->getMock("modLanguageMain", array("getConfig"), array(), '', false);
+        $this->getProxyClass('Language_Main');
+        /** @var PHPUnit_Framework_MockObject_MockObject|Language_Main $oView */
+        $oView = $this->getMock("Language_MainProxy", array("getConfig"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
-        $oView->setVar('_aLangData', $aLangData);
+        $oView->setNonPublicVar('_aLangData', $aLangData);
 
-        $oView->UNITsetDefaultLang("en");
+        $oView->_setDefaultLang("en");
     }
 
     /**
@@ -315,11 +297,13 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
         $oConfig = $this->getMock("oxConfig", array("getTranslationsDir"));
         $oConfig->expects($this->once())->method("getTranslationsDir")->with($this->equalTo('lang.php'), oxRegistry::getLang()->getLanguageAbbr(1))->will($this->returnValue("dir/to/langfile"));
 
-        $oView = $this->getMock("modLanguageMain", array("getConfig"), array(), '', false);
+        $this->getProxyClass('Language_Main');
+        /** @var PHPUnit_Framework_MockObject_MockObject|Language_Main $oView */
+        $oView = $this->getMock("Language_MainProxy", array("getConfig"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
-        $oView->setVar('_aLangData', $aLangData);
+        $oView->setNonPublicVar('_aLangData', $aLangData);
 
-        $oView->UNITcheckLangTranslations("en");
+        $oView->_checkLangTranslations("en");
 
         //no errors should be added to session
         $aEx = oxRegistry::getSession()->getVariable("Errors");
@@ -340,11 +324,13 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
 
         $oConfig->expects($this->once())->method("getTranslationsDir")->with($this->equalTo('lang.php'), oxRegistry::getLang()->getLanguageAbbr(1))->will($this->returnValue(""));
 
-        $oView = $this->getMock("modLanguageMain", array("getConfig"), array(), '', false);
+        $this->getProxyClass('Language_Main');
+        /** @var PHPUnit_Framework_MockObject_MockObject|Language_Main $oView */
+        $oView = $this->getMock("Language_MainProxy", array("getConfig"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
-        $oView->setVar('_aLangData', $aLangData);
+        $oView->setNonPublicVar('_aLangData', $aLangData);
 
-        $oView->UNITcheckLangTranslations("en");
+        $oView->_checkLangTranslations("en");
 
         $aEx = oxRegistry::getSession()->getVariable("Errors");
         $oEx = unserialize($aEx["default"][0]);

@@ -16,26 +16,9 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-
-/**
- * Test adminView module.
- */
-class testAdminView extends oxAdminView
-{
-
-    /**
-     * Add posibility to cleanup static cache.
-     *
-     * @return null
-     */
-    public static function cleanup()
-    {
-        self::$_sAuthUserRights = null;
-    }
-}
 
 /**
  * Testing oxAdminView class
@@ -54,7 +37,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
         $myDB = oxDb::getDB();
         $myDB->execute("delete from oxseo where oxobjectid = '_testArt'");
         $myDB->execute("delete from oxnewssubscribed where oxuserid = '_testUser'");
-        testAdminView::cleanup();
+        oxArticleHelper::cleanup();
         modSession::getInstance()->cleanup();
 
         //resetting cached testing values

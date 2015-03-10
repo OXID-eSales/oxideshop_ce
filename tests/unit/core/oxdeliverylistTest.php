@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -41,15 +41,6 @@ class oxDeliveryListTestClass extends oxdeliverylist
     public function getPerfLoadDelivery()
     {
         return $this->_blPerfLoadDelivery;
-    }
-}
-
-class oxArticleForOxdeliverylistTest extends oxarticle
-{
-
-    public static function cleanup()
-    {
-        self::$_aArticleCats = array();
     }
 }
 
@@ -107,8 +98,6 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-
-        oxArticleForOxdeliverylistTest::cleanup();
 
         // set to load full deliveries list
         oxRegistry::getConfig()->setConfigParam('bl_perfLoadDelivery', true);
@@ -210,7 +199,8 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
             $oDel2Delset->oxdel2delset__oxdelsetid = new oxField($oDelSet->getId(), oxField::T_RAW);
             $oDel2Delset->save();
         }
-        oxArticleForOxdeliverylistTest::cleanup();
+
+        oxArticleHelper::cleanup();
     }
 
     /**

@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+require_once TESTING_LIBRARY_HELPERS_PATH . 'oxCategoryHelper.php';
+
 class oxcategoryTest_oxUtilsView extends oxUtilsView
 {
 
@@ -43,23 +45,6 @@ class oxcategoryForoxCategoryTest extends oxcategory
     }
 }
 
-/**
- * oxCategory extension class for easier access to static variables
- */
-class oxCategoryAttributeCacheTest extends oxCategory
-{
-
-    /**
-     * Sets the CACHE array for the oxCategory instance
-     * (without it you can't set values to the static variables)
-     *
-     * @param array $aCache
-     */
-    public function setAttributeCache($aCache = array())
-    {
-        self::$_aCatAttributes = $aCache;
-    }
-}
 
 class Unit_Core_oxCategoryTest extends OxidTestCase
 {
@@ -1039,8 +1024,8 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         $sCacheIndex = md5($sCacheId . serialize(oxRegistry::getSession()->getVariable('session_attrfilter')));
         $aCache = array($sCacheIndex => $sCacheResult);
 
-        $oCatAttributes = oxNew("oxCategoryAttributeCacheTest");
-        $oCatAttributes->setAttributeCache($aCache);
+        oxCategoryHelper::setAttributeCache($aCache);
+        $oCatAttributes = oxNew("oxCategory");
         $oCatAttributes->setId($sCacheId);
 
         $this->assertEquals($sCacheResult, $oCatAttributes->getAttributes());

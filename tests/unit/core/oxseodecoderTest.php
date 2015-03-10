@@ -16,31 +16,12 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
-class modSeoEncoder_for_Unit_Core_oxSeoDecoderTest extends oxSeoEncoder
-{
-
-    public static function clearCache()
-    {
-        self::$_aFixedCache = array();
-        self::$_sCacheKey = null;
-        self::$_aCache = null;
-    }
-}
-
 class Unit_Core_oxSeoDecoderTest extends OxidTestCase
 {
-
-    protected function setUp()
-    {
-        modSeoEncoder_for_Unit_Core_oxSeoDecoderTest::clearCache();
-
-        return parent::setUp();
-    }
-
     /**
      * Tear down the fixture.
      *
@@ -53,7 +34,6 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $oDb->execute('delete from oxseohistory');
 
         // restoring table structure
-        $blRemove = true;
         try {
 
             $sCustomColumn = $oDb->getOne("show columns from oxv_oxarticles_de where field = 'oxseoid'");

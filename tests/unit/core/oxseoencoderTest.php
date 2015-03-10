@@ -22,14 +22,6 @@
 
 class modSeoEncoder extends oxSeoEncoder
 {
-
-    public static function clearCache()
-    {
-        self::$_aFixedCache = array();
-        self::$_sCacheKey = null;
-        self::$_aCache = null;
-    }
-
     public function setProhibitedID($aProhibitedID)
     {
         $this->_aProhibitedID = $aProhibitedID;
@@ -91,8 +83,6 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         oxDb::getDb()->execute('delete from oxobject2seodata');
         oxDb::getDb()->execute('delete from oxseohistory');
 
-        modSeoEncoder::clearCache();
-
         parent::setUp();
 
         oxRegistry::get("oxSeoEncoder")->setPrefix('oxid');
@@ -108,8 +98,6 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        modSeoEncoder::clearCache();
-
         // deleting seo entries
         oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');
         oxDb::getDb()->execute('delete from oxobject2seodata');
@@ -1251,18 +1239,18 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
             $this->assertFalse($oEncoder->UNITisFixed('static', 'test', 0, 1));
             $oDb->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxexpired, oxfixed) values ("test", "test", 1, 0, "stdurl", "seourl", "static", 1, 1)');
 
-            modSeoEncoder::clearCache();
+            oxSeoEncoderHelper::cleanup();
 
             $oEncoder = new oxSeoEncoder();
             $this->assertTrue($oEncoder->UNITisFixed('static', 'test', 0, 1));
 
-            modSeoEncoder::clearCache();
+            oxSeoEncoderHelper::cleanup();
 
             $oEncoder = new oxSeoEncoder();
             $this->assertTrue($oEncoder->UNITisFixed('static', 'test', 0, 1, 0, 0));
             $oDb->Execute('delete from oxseo where oxident="test"');
 
-            modSeoEncoder::clearCache();
+            oxSeoEncoderHelper::cleanup();
 
             $oEncoder = new oxSeoEncoder();
             $this->assertFalse($oEncoder->UNITisFixed('static', 'test', 0, 1));
@@ -1733,7 +1721,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oEncoder->expects($this->never())->method('getConfig');
         $this->assertFalse($oEncoder->UNITgetCacheKey("any"));
 
-        modSeoEncoder::clearCache();
+        oxSeoEncoderHelper::cleanup();
 
         $sViewId = "viewId";
         $oView = $this->getMock('oxView', array('getViewId'));

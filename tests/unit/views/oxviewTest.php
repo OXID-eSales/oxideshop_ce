@@ -16,9 +16,11 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+
+require_once TESTING_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
 
 class modOxView extends oxView
 {
@@ -31,17 +33,6 @@ class modOxView extends oxView
     static public function reset()
     {
         self::$_blExecuted = false;
-    }
-}
-
-class oxUtilsRedirectForoxviewTest extends oxUtils
-{
-
-    public $sRedirectUrl = null;
-
-    public function redirect($sUrl, $blAddRedirectParam = true, $iHeaderCode = 301)
-    {
-        $this->sRedirectUrl = $sUrl;
     }
 }
 
@@ -328,7 +319,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     {
         $this->getSession()->setId('SID');
 
-        oxAddClassModule("oxUtilsRedirectForoxviewTest", "oxutils");
+        oxAddClassModule("oxUtilsHelper", "oxutils");
 
         $oConfig = $this->getMock('oxconfig', array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
         $oConfig->expects($this->at(0))->method('getConfigParam')->will($this->returnValue(false));
@@ -340,7 +331,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oView = $this->getMock('oxview', array('getConfig'));
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $sUrl = $oView->UNITexecuteNewAction("testAction");
-        $this->assertEquals('shopurl/index.php?cl=testAction&' . $this->getSession()->sid(), oxRegistry::getUtils()->sRedirectUrl);
+        $this->assertEquals('shopurl/index.php?cl=testAction&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
 
         $oConfig = $this->getMock('oxconfig', array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
         $oConfig->expects($this->at(0))->method('getConfigParam')->will($this->returnValue(false));
@@ -352,7 +343,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oView = $this->getMock('oxview', array('getConfig'));
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $sUrl = $oView->UNITexecuteNewAction("testAction?someparam=12");
-        $this->assertEquals("shopurl/index.php?cl=testAction&someparam=12&" . $this->getSession()->sid(), oxRegistry::getUtils()->sRedirectUrl);
+        $this->assertEquals("shopurl/index.php?cl=testAction&someparam=12&" . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
 
     }
 
@@ -360,7 +351,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     {
         $this->getSession()->setId('SID');
 
-        oxAddClassModule("oxUtilsRedirectForoxviewTest", "oxutils");
+        oxAddClassModule("oxUtilsHelper", "oxutils");
 
         $oConfig = $this->getMock('oxconfig', array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
         $oConfig->expects($this->at(0))->method('getConfigParam')->will($this->returnValue(false));
@@ -372,14 +363,14 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oView = $this->getMock('oxview', array('getConfig'));
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $sUrl = $oView->UNITexecuteNewAction("details?fnc=somefnc&anid=someanid");
-        $this->assertEquals('SSLshopurl/index.php?cl=details&fnc=somefnc&anid=someanid&' . $this->getSession()->sid(), oxRegistry::getUtils()->sRedirectUrl);
+        $this->assertEquals('SSLshopurl/index.php?cl=details&fnc=somefnc&anid=someanid&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
     }
 
     public function testExecuteNewActionSslIsAdmin()
     {
         $this->getSession()->setId('SID');
 
-        oxAddClassModule("oxUtilsRedirectForoxviewTest", "oxutils");
+        oxAddClassModule("oxUtilsHelper", "oxutils");
 
         $oConfig = $this->getMock('oxconfig', array('isSsl', 'getSslShopUrl', 'getShopUrl'));
         $oConfig->expects($this->once())->method('isSsl')->will($this->returnValue(true));
@@ -391,7 +382,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $oView->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
         $sUrl = $oView->UNITexecuteNewAction("details?fnc=somefnc&anid=someanid");
-        $this->assertEquals('SSLshopurl/admin/index.php?cl=details&fnc=somefnc&anid=someanid&' . $this->getSession()->sid(), oxRegistry::getUtils()->sRedirectUrl);
+        $this->assertEquals('SSLshopurl/admin/index.php?cl=details&fnc=somefnc&anid=someanid&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
     }
 
     /**

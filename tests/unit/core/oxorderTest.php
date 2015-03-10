@@ -16,38 +16,12 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
-/**
- * oxOrder test class
- */
-class ModOxEmail_oxOrder extends oxEmail
-{
 
-    public static $blRetValue = null;
-    public static $blSendToUserWasCalled = null;
-    public static $blSendToOwnerWasCalled = null;
-    public static $oUserOrder = null;
-    public static $oOwnerOrder = null;
-
-    public function sendOrderEMailToUser($oOrder, $sSubject = null)
-    {
-        self::$blSendToUserWasCalled = true;
-        self::$oUserOrder = $oOrder;
-
-        return self::$blRetValue;
-    }
-
-    public function sendOrderEMailToOwner($oOrder, $sSubject = null)
-    {
-        self::$blSendToOwnerWasCalled = true;
-        self::$oOwnerOrder = $oOrder;
-
-        return null;
-    }
-}
+require_once TESTING_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
 
 class modoxdeliverylist_oxorder extends oxdeliverylist
 {
@@ -61,15 +35,6 @@ class modoxdeliverylist_oxorder extends oxdeliverylist
         } else {
             return null;
         }
-    }
-}
-
-class modOxArticle_oxorderTest extends oxArticle
-{
-
-    public static function cleanSelList()
-    {
-        self::$_aSelList = array();
     }
 }
 
@@ -128,7 +93,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $oDb->execute("delete from oxuserbasketitems");
         $oDb->execute("delete from oxuserbaskets");
 
-        modOxArticle_oxorderTest::cleanSelList();
+        oxArticleHelper::cleanup();
 
         parent::tearDown();
     }
@@ -3188,8 +3153,8 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     public function testSendOrderByEmail()
     {
-        modoxemail_oxorder::$blRetValue = true;
-        oxAddClassModule('modoxemail_oxorder', 'oxemail');
+        oxEmailHelper::$blRetValue = true;
+        oxAddClassModule('oxEmailHelper', 'oxemail');
 
         $oUser = oxNew('oxUser');
         $oUser->setId('_testUserId');
@@ -3207,12 +3172,12 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $this->assertEquals(1, $iRes);
 
         //check if mail sending functions were called
-        $this->assertTrue(modoxemail_oxorder::$blSendToUserWasCalled);
-        $this->assertTrue(modoxemail_oxorder::$blSendToOwnerWasCalled);
+        $this->assertTrue(oxEmailHelper::$blSendToUserWasCalled);
+        $this->assertTrue(oxEmailHelper::$blSendToOwnerWasCalled);
 
         //checking if email functions were called with correct param
-        $this->assertEquals(modoxemail_oxorder::$oOwnerOrder, $oOrder);
-        $this->assertEquals(modoxemail_oxorder::$oUserOrder, $oOrder);
+        $this->assertEquals(oxEmailHelper::$oOwnerOrder, $oOrder);
+        $this->assertEquals(oxEmailHelper::$oUserOrder, $oOrder);
 
         //checking if oUser, oBasket, oPayment were attached to oOrder
         $this->assertEquals($oUser, $oOrder->getNonPublicVar('_oUser'));
@@ -3223,8 +3188,8 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     public function testSendOrderByEmailWhenMailingFails()
     {
-        modoxemail_oxorder::$blRetValue = false;
-        oxAddClassModule('modoxemail_oxorder', 'oxemail');
+        oxEmailHelper::$blRetValue = false;
+        oxAddClassModule('oxEmailHelper', 'oxemail');
 
         $oOrder = $this->getProxyClass("oxOrder");
 

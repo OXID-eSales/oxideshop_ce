@@ -16,9 +16,11 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
+
+require_once TESTING_LIBRARY_HELPERS_PATH . 'oxVoucherHelper.php';
 
 class modForTestAddBundles extends oxbasket
 {
@@ -39,45 +41,11 @@ class modForTestAddBundles extends oxbasket
     }
 }
 
-class modForTestAddVouchers extends oxvoucher
-{
-
-    public static $blCheckWasPerformed = false;
-
-    public function checkVoucherAvailability($aVouchers, $dPrice)
-    {
-        self::$blCheckWasPerformed = true;
-    }
-
-    public function checkBasketVoucherAvailability($aVouchers, $dPrice)
-    {
-        self::$blCheckWasPerformed = true;
-    }
-
-    public function checkUserAvailability($oUser)
-    {
-        self::$blCheckWasPerformed = true;
-    }
-
-    public function markAsReserved()
-    {
-        self::$blCheckWasPerformed = true;
-    }
-}
-
-class modOxArticle_oxbasket extends oxArticle
-{
-
-    public static function cleanSelList()
-    {
-        self::$_aSelList = array();
-    }
-}
-
 class Unit_Core_oxbasketTest extends OxidTestCase
 {
 
     public $oArticle = null;
+    public $oCategory = null;
     public $oSelList = null;
     public $aDiscounts = array();
     public $blPerfLoadSelectLists;
@@ -378,7 +346,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $this->addTableForCleanup('oxobject2selectlist');
         $this->addTableForCleanup('oxselectlist');
 
-        modOxArticle_oxbasket::cleanSelList();
+        oxArticleHelper::cleanup();
         oxRegistry::getConfig()->setConfigParam('bl_perfLoadSelectLists', $this->blPerfLoadSelectLists);
         parent::tearDown();
     }
@@ -1748,8 +1716,8 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     public function testCalcVoucherDiscountSkipChecking()
     {
 
-        oxAddClassModule('modForTestAddVouchers', 'oxvoucher');
-        modForTestAddVouchers::$blCheckWasPerformed = false;
+        oxAddClassModule('oxVoucherHelper', 'oxvoucher');
+        oxVoucherHelper::$blCheckWasPerformed = false;
 
         $oPrice = oxNew("oxPrice");
         $oPrice->setPrice(999);
@@ -1767,7 +1735,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oBasket->setSkipVouchersChecking(true);
         $oBasket->UNITcalcVoucherDiscount();
 
-        $this->assertFalse(modForTestAddVouchers::$blCheckWasPerformed);
+        $this->assertFalse(oxVoucherHelper::$blCheckWasPerformed);
     }
 
     /**
@@ -2173,8 +2141,8 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testAddVoucherSkipChecking()
     {
-        oxAddClassModule('modForTestAddVouchers', 'oxvoucher');
-        modForTestAddVouchers::$blCheckWasPerformed = false;
+        oxAddClassModule('oxVoucherHelper', 'oxvoucher');
+        oxVoucherHelper::$blCheckWasPerformed = false;
 
         $sVoucher = key($this->aVouchers);
         $oVoucher = $this->aVouchers[$sVoucher];
@@ -2190,7 +2158,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oBasket->setSkipVouchersChecking(true);
         $oBasket->addVoucher($sVoucher);
 
-        $this->assertFalse(modForTestAddVouchers::$blCheckWasPerformed);
+        $this->assertFalse(oxVoucherHelper::$blCheckWasPerformed);
     }
 
     /**

@@ -16,18 +16,9 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-
-class modOxVendorForoxSeoEncoderVendorTest extends oxVendor
-{
-
-    public static function reSetRootVendor()
-    {
-        self::$_aRootVendor = array();
-    }
-}
 
 /**
  * Testing oxseoencodervendor class
@@ -199,8 +190,6 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
 
     public function testGetVendorUriNewVendor()
     {
-        modOxVendorForoxSeoEncoderVendorTest::reSetRootVendor();
-
         $oVendor = new oxVendor();
         $oVendor->setLanguage(1);
         $oVendor->setId('xxx');

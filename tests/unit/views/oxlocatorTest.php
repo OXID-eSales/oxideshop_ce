@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -48,20 +48,6 @@ class testOxLocator extends oxLocator
     public function getLinkType()
     {
         return OXARTICLE_LINKTYPE_CATEGORY;
-    }
-}
-
-class modUtils extends oxUtils
-{
-
-    public function seoIsActive($blReset = false, $sShopId = null, $iActLang = null)
-    {
-        return true;
-    }
-
-    public function isSearchEngine($blReset = false, $sShopId = null, $iActLang = null)
-    {
-        return true;
     }
 }
 

@@ -16,133 +16,22 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
-/**
- * Test oxUtils module
- */
-class modUtils_oxarticlelist extends oxutils
-{
-
-    /**
-     * Force isSearchEngine.
-     *
-     * @param string $sClient Client
-     *
-     * @return boolean
-     */
-    public function isSearchEngine($sClient = null)
-    {
-        return true;
-    }
+if (!defined('OX_IS_ADMIN')) {
+    define('OX_IS_ADMIN', false);
 }
 
-/**
- * Test oxArticle module
- */
-class _oxArticle extends oxArticle
-{
-
-    public $iMaxSimilarForCacheReset = 100;
-
-    /**
-     * Constructor
-     *
-     * @param array $aParams Parameters
-     *
-     * @return null
-     */
-    public function __construct($aParams = null)
-    {
-        $this->resetVar();
-        parent::__construct($aParams);
-    }
-
-    /**
-     * Get private field value.
-     *
-     * @param string $sName Field name
-     *
-     * @return mixed
-     */
-    public function getVar($sName)
-    {
-        return $this->{'_' . $sName};
-    }
-
-    /**
-     * Set private field value.
-     *
-     * @param string $sName  Field name
-     * @param string $sValue Field value
-     *
-     * @return null
-     */
-    public function setVar($sName, $sValue)
-    {
-        $this->{'_' . $sName} = $sValue;
-    }
-
-    /**
-     * Clean private variable values.
-     *
-     * @return null
-     */
-    public function resetVar()
-    {
-        parent::$_aLoadedParents = null;
-        parent::$_aSelList = null;
-    }
-
-    /**
-     * Reset cached private variable values.
-     *
-     * @return null
-     */
-    public static function resetCache()
-    {
-        self::$_aArticleVendors = array();
-        self::$_aArticleManufacturers = array();
-    }
-
-    /**
-     * Reset cached private variable values.
-     *
-     * @return null
-     */
-    public static function resetAmountPrice()
-    {
-        parent::$_blHasAmountPrice = null;
-    }
-
-}
-
-/**
- * Test oxUtilsObject module.
- */
-class modUtilsObject_oxarticle extends oxUtilsObject
-{
-
-    /**
-     * Allways geneates given uid.
-     *
-     * @return string
-     */
-    public function generateUID()
-    {
-        return 'test';
-    }
-}
-
+require_once TESTING_LIBRARY_HELPERS_PATH . 'oxArticleHelper.php';
+require_once TESTING_LIBRARY_HELPERS_PATH . 'oxCacheHelper.php';
 
 /**
  * Testing oxArticle class.
  */
 class Unit_Core_oxArticleTest extends OxidTestCase
 {
-
     /**
      * A object of a test article 1
      *
@@ -164,20 +53,12 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     protected function setUp()
     {
-        if (!defined('OX_IS_ADMIN')) {
-            define('OX_IS_ADMIN', false);
-        }
-
         parent::setUp();
 
         $this->cleanUpTable('oxobject2category');
 
         modConfig::getInstance()->setConfigParam('blUseRightsRoles', 3);
         modConfig::getInstance()->setConfigParam('blUseTimeCheck', true);
-
-        if ($this->getName() == "testDeleteWithUnlimitedLanguages") {
-            $this->_insertTestLanguage();
-        }
     }
 
     /**
@@ -189,13 +70,11 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         modDb::getInstance()->cleanup();
         modConfig::getInstance();
-        _oxArticle::resetCache();
+        oxArticleHelper::resetCache();
 
         oxRegistry::getConfig()->setGlobalParameter('listtype', null);
 
-        oxRemClassModule('modCacheForArticleTest');
-        oxRemClassModule('modUtils_oxarticlelist');
-        oxRemClassModule('modUtilsObject_oxarticle');
+        oxRemClassModule('oxCacheHelper');
         $this->cleanUpTable('oxobject2attribute');
 
         // ensure modules detached
@@ -223,10 +102,6 @@ class Unit_Core_oxArticleTest extends OxidTestCase
 
 
         oxDb::getInstance()->resetTblDescCache();
-
-        if ($this->getName() == "testDeleteWithUnlimitedLanguages") {
-            $this->_deleteTestLanguage();
-        }
 
         parent::tearDown();
     }
@@ -2146,8 +2021,8 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testLoadAmountPriceInfo()
     {
-        _oxArticle::resetAmountPrice();
-        $oArticle = new _oxArticle();
+        oxArticleHelper::resetAmountPrice();
+        $oArticle = new oxArticleHelper();
         $oArticle->load('1651');
         $oArticle->setVar('blCalcPrice', true);
         $oAmPriceList = $oArticle->loadAmountPriceInfo();
@@ -2167,7 +2042,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testLoadAmountPriceInfo_skipDiscounts_noErrorThrown()
     {
-        _oxArticle::resetAmountPrice();
+        oxArticleHelper::resetAmountPrice();
         $oArticle = $this->getMock('oxArticle', array('skipDiscounts'));
         $oArticle->expects($this->any())->method('skipDiscounts')->will($this->returnValue(true));
         $oArticle->load('1651');
@@ -2183,7 +2058,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testLoadAmountPriceInfoDontCalcPrice()
     {
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->load('1651');
         $oArticle->setVar('blCalcPrice', false);
         $oAmPriceList = $oArticle->loadAmountPriceInfo();
@@ -2198,7 +2073,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testLoadAmountPriceInfoWithoutAmountPrice()
     {
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->load('2000');
         $oArticle->setVar('blCalcPrice', true);
         $oAmPriceList = $oArticle->loadAmountPriceInfo();
@@ -2221,7 +2096,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         oxDb::getDB()->execute($sSql);
         modConfig::getInstance()->setConfigParam('blVariantInheritAmountPrice', true);
 
-        $oVariant = new _oxArticle();
+        $oVariant = new oxArticleHelper();
         $oVariant->load('_testVar');
         $oVariant->setVar('blCalcPrice', true);
         $oAmPriceList = $oVariant->loadAmountPriceInfo();
@@ -3296,7 +3171,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oVariant->oxarticles__oxstock = new oxField(5, oxField::T_RAW);
         $oVariant->save();
 
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->disablePriceLoad($oArticle);
         $oArticle->load($oArticle->getId());
 
@@ -3310,7 +3185,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testGetPriceCallsGetBasePriceOnlyInNoCalcPrice()
     {
-        $oArticle = $this->getMock('_oxArticle', array('getBasePrice', '_applyCurrency'));
+        $oArticle = $this->getMock('oxArticleHelper', array('getBasePrice', '_applyCurrency'));
         $oArticle->expects($this->any())->method('getBasePrice')->will($this->returnValue(123));
         $oArticle->expects($this->never())->method('_applyCurrency');
 
@@ -3789,9 +3664,9 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', true);
         modConfig::getInstance()->setConfigParam('bl_perfUseSelectlistPrice', true);
 
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->load('1651');
-        $oArticle->resetVar();
+        $oArticle->cleanup();
         $this->assertEquals(4.01, $oArticle->UNITmodifySelectListPrice(10, array(0 => 0)));
     }
 
@@ -4629,10 +4504,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->oxarticles__oxthumb = new oxField('test.jpg', oxField::T_RAW);
         $oArticle->save();
 
-        $oVariant = new _oxArticle();
+        $oVariant = new oxArticleHelper();
         $oVariant->load('_testVar');
         $oVariant->oxarticles__oxthumb = new oxField('nopic.jpg', oxField::T_RAW);
-        $oVariant->resetVar();
+        $oVariant->cleanup();
         $oVariant->UNITassignParentFieldValues();
         $this->assertEquals($oArticle->oxarticles__oxvat->value, $oVariant->oxarticles__oxvat->value);
 
@@ -4653,10 +4528,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->oxarticles__oxfreeshipping = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxicon = new oxField('parent_ico.jpg', oxField::T_RAW);
         $oArticle->save();
-        $oVariant = new _oxArticle();
+        $oVariant = new oxArticleHelper();
         $oVariant->load('_testVar');
         $oVariant->oxarticles__oxicon = new oxField('variant_ico.jpg', oxField::T_RAW);
-        $oVariant->resetVar();
+        $oVariant->cleanup();
         $oVariant->UNITassignParentFieldValues();
         $this->assertEquals($oArticle->oxarticles__oxvat->value, $oVariant->oxarticles__oxvat->value);
         $this->assertNotEquals($oArticle->oxarticles__oxicon->value, $oVariant->oxarticles__oxicon->value);
@@ -4678,7 +4553,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->setArticleLongDesc('testLongDesc');
         $oArticle->save();
 
-        $oVariant = new _oxArticle();
+        $oVariant = new oxArticleHelper();
         $oVariant->load('_testVar');
         $this->assertEquals('testLongDesc', $oVariant->getLongDescription()->value);
     }
@@ -4775,7 +4650,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         modConfig::getInstance()->setConfigParam('sStockWarningLimit', 5);
         modConfig::getInstance()->setConfigParam('blVariantParentBuyable', false);
         $this->_createArticle('_testArt', '_testVar');
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->load('_testArt');
         $oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
         $oArticle->oxarticles__oxstockflag = new oxField(2, oxField::T_RAW);
@@ -4864,7 +4739,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testLazyLoadPictures()
     {
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->load("09646538b54bac72b4ccb92fb5e3649f");
         $oArticle->zz = true;
 
@@ -4886,7 +4761,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testLazyLoadPictureThumb()
     {
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->load("2000");
 
         $this->assertFalse(isset($oArticle->oxarticles__oxthumb));
@@ -4905,7 +4780,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testLazyLoadPictureIcon()
     {
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->load("2000");
 
         $this->assertFalse(isset($oArticle->oxarticles__oxicon));
@@ -4924,7 +4799,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testIsBuyablePlain()
     {
-        $oArticle = $this->getProxyClass('_oxArticle');
+        $oArticle = $this->getProxyClass('oxArticleHelper');
         $oArticle->setNonPublicVar("_blNotBuyable", false);
         $this->assertTrue($oArticle->isBuyable());
         $oArticle->setNonPublicVar("_blNotBuyable", true);
@@ -4941,7 +4816,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $sParentArticleId = 2077;
 
         modConfig::getInstance()->setConfigParam('blVariantParentBuyable', false);
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->load($sParentArticleId);
         $this->assertFalse($oArticle->isBuyable());
     }
@@ -4956,7 +4831,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $sParentArticleId = 2077;
 
         modConfig::getInstance()->setConfigParam('blVariantParentBuyable', true);
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->load($sParentArticleId);
         $this->assertTrue($oArticle->isBuyable());
     }
@@ -4971,12 +4846,12 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $this->_createArticle('_testArt', '_testVar');
 
         modConfig::getInstance()->setConfigParam('blUseStock', true);
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->load('_testArt');
         $oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
         $oArticle->oxarticles__oxstockflag = new oxField(3, oxField::T_RAW);
         $oArticle->save();
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->load('_testArt');
         $this->assertFalse($oArticle->isBuyable());
     }
@@ -5165,9 +5040,9 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $aShouldBe[0] = $aSelList;
         $aShouldBe[0]['name'] = '_testoxsellist';
 
-        $oArticle = new _oxArticle();
+        $oArticle = new oxArticleHelper();
         $oArticle->load('1651');
-        $oArticle->resetVar();
+        $oArticle->cleanup();
         $this->assertEquals($aShouldBe, $oArticle->getSelectLists());
     }
 
@@ -5252,10 +5127,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->oxarticles__oxfreeshipping = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxthumb = new oxField('test.jpg', oxField::T_RAW);
         $oArticle->save();
-        $oVariant = new _oxArticle();
+        $oVariant = new oxArticleHelper();
         $oVariant->load('_testVar');
         $oVariant->oxarticles__oxthumb = new oxField('nopic.jpg', oxField::T_RAW);
-        $oVariant->resetVar();
+        $oVariant->cleanup();
         $oVariant->UNITassignParentFieldValue('oxarticles__oxthumb');
         $this->assertEquals("test.jpg", $oVariant->oxarticles__oxthumb->value);
         $this->assertNotEquals($oArticle->oxarticles__oxid->value, $oVariant->oxarticles__oxid->value);
@@ -5273,9 +5148,9 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->oxarticles__oxunitname = new oxField('_UNIT_KG', oxField::T_TEXT);
         $oArticle->save();
 
-        $oVariant = new _oxArticle();
+        $oVariant = new oxArticleHelper();
         $oVariant->load('_testVar');
-        $oVariant->resetVar();
+        $oVariant->cleanup();
         $oVariant->UNITassignParentFieldValues();
         $this->assertEquals('3', $oVariant->oxarticles__oxunitquantity->value);
         $this->assertEquals('_UNIT_KG', $oVariant->oxarticles__oxunitname->value);
@@ -5293,11 +5168,11 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->oxarticles__oxunitname = new oxField('_UNIT_KG', oxField::T_TEXT);
         $oArticle->save();
 
-        $oVariant = new _oxArticle();
+        $oVariant = new oxArticleHelper();
         $oVariant->load('_testVar');
         $oVariant->oxarticles__oxunitquantity = new oxField('7', oxField::T_TEXT);
         $oVariant->oxarticles__oxunitname = new oxField('_UNIT_L', oxField::T_TEXT);
-        $oVariant->resetVar();
+        $oVariant->cleanup();
         $oVariant->UNITassignParentFieldValues();
         $this->assertEquals('7', $oVariant->oxarticles__oxunitquantity->value);
         $this->assertEquals('_UNIT_L', $oVariant->oxarticles__oxunitname->value);
@@ -5311,7 +5186,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     public function testAssignParentFieldValueIfPriceIsZero()
     {
         $this->_createArticle('_testArt', '_testVar');
-        $oVariant = new _oxArticle();
+        $oVariant = new oxArticleHelper();
         $oVariant->load('_testVar');
         $oVariant->oxarticles__oxprice = new oxField("0", oxField::T_RAW);
         $oVariant->UNITassignParentFieldValue('oxarticles__oxprice');
@@ -5427,7 +5302,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testAssignParentFieldValueIfPriceIsNotZero()
     {
-        $oArticle2 = new _oxArticle();
+        $oArticle2 = new oxArticleHelper();
         $oArticle2->load('_testVar');
         $oArticle2->oxarticles__oxprice = new oxField(10, oxField::T_RAW);
         $oArticle2->UNITassignParentFieldValue('oxarticles__oxprice');
@@ -5441,7 +5316,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testAssignParentFieldValueStringZeroValue()
     {
-        $oArticle2 = new _oxArticle();
+        $oArticle2 = new oxArticleHelper();
         $oArticle2->load('_testVar');
         $oArticle2->oxarticles__oxtitle = new oxField("0", oxField::T_RAW);
         $oArticle2->UNITassignParentFieldValue('oxarticles__oxtitle');
@@ -6319,7 +6194,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $sVarId = '8a142c4100e0b2f57.59530204';
         $sParentId = '2077';
         $sTitle = 'Tischlampe SPHERE';
-        $oArticle2 = new _oxArticle();
+        $oArticle2 = new oxArticleHelper();
         $oArticle2->load($sVarId);
         $oArticle2->UNITassignParentFieldValues();
         $this->assertEquals($sTitle, $oArticle2->oxarticles__oxtitle->value);
@@ -6927,6 +6802,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testDeleteWithUnlimitedLanguages()
     {
+        $this->_insertTestLanguage();
         $this->_createArticle('_testArt', '_testVar');
         modConfig::getInstance()->setConfigParam("iLangPerTable", 4);
 
@@ -6967,6 +6843,8 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         foreach ($aQ as $sQ) {
             $this->assertFalse($oDb->getOne($sQ));
         }
+
+        $this->_deleteTestLanguage();
     }
 
     public function testGetUnitName()
@@ -7050,7 +6928,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testHasAmountPriceEmpty()
     {
-        _oxArticle::resetAmountPrice();
+        oxArticleHelper::resetAmountPrice();
 
         oxDb::getDb()->execute('TRUNCATE TABLE `oxprice2article`');
 
@@ -7067,7 +6945,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testHasAmountPrice()
     {
-        _oxArticle::resetAmountPrice();
+        oxArticleHelper::resetAmountPrice();
 
         // assign scale price Amount 2-2 Price 11.95
         $oPrice2Prod = new oxBase();

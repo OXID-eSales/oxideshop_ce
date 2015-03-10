@@ -1,7 +1,6 @@
 {
     "name": "oxid-esales/eshop",
     "description": "OXID eShop",
-    "version": "6.0.0",
     "type": "project",
     "keywords": ["oxid", "modules", "eShop"],
     "homepage": "https://www.oxid-esales.com/en/home.html",

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4c242e3f9433dcc0d29112be6d9c17f3",
+    "hash": "664cedcfec447c2013f3c96e3f1d3055",
     "packages": [],
     "packages-dev": [
         {
@@ -617,12 +617,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "a11b67e0f3e6091ff5c76882fbd64d212fd368d8"
+                "reference": "4964f7644fa1aef843b6bccca7278a0f383953f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/a11b67e0f3e6091ff5c76882fbd64d212fd368d8",
-                "reference": "a11b67e0f3e6091ff5c76882fbd64d212fd368d8",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/4964f7644fa1aef843b6bccca7278a0f383953f4",
+                "reference": "4964f7644fa1aef843b6bccca7278a0f383953f4",
                 "shasum": ""
             },
             "require": {
@@ -677,9 +677,9 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/OXID-eSales/testing_library/tree/master"
+                "source": "https://github.com/OXID-eSales/testing_library/tree/v0.0.1"
             },
-            "time": "2015-03-09 07:32:24"
+            "time": "2015-03-09 09:33:10"
         },
         {
             "name": "pdepend/pdepend",

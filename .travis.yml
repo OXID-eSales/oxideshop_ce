@@ -10,7 +10,7 @@ php:
   - "5.6"
 
 # TRAVIS_ERROR_LEVEL = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_STRICT
-env: TRAVIS_ERROR_LEVEL=22519 oxINSTALLSHOP=0 oxSKIPSHOPSETUP=1 OXID_VERSION=CE OXID_EDITION=CE oxPATH="$TRAVIS_BUILD_DIR/source/"
+env: TRAVIS_ERROR_LEVEL=22519 INSTALL_SHOP=0 OX_BASE_PATH="$TRAVIS_BUILD_DIR/source/"
 
 services: mysql
 
@@ -48,5 +48,8 @@ before_script:
   - rsync -avz oxidlatest/out/pictures/ source/out/pictures/
   - cp oxidlatest/pkg.* source/
 
-script: cd tests && phpunit --verbose --bootstrap bootstrap.php AllTestsUnit
+  # composer initiation
+  - cd source && SHOP_PATH='' SHOP_TESTS_PATH='../tests' MODULES_PATH='' composer install
+
+script: vendor/bin/runtests
 

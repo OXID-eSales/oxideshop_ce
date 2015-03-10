@@ -1,0 +1,27 @@
+{
+    "repositories": {
+        "oxid-esales/testing_library": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/testing_library.git"
+        }
+    },
+    "require-dev": {
+        "oxid-esales/testing_library": "prepare_for_packagist",
+        "incenteev/composer-parameter-handler": "~2.0"
+    },
+    "minimum-stability": "dev",
+    "scripts": {
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+        ]
+    },
+    "extra": {
+        "incenteev-parameters": {
+            "file": "test_config.yml",
+            "dist-file": "vendor/oxid-esales/testing_library/test_config.yml.dist"
+        }
+    }
+}

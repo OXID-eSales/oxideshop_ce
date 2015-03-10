@@ -25,7 +25,6 @@ if (!defined('OX_IS_ADMIN')) {
 }
 
 require_once TESTING_LIBRARY_HELPERS_PATH . 'oxArticleHelper.php';
-require_once TESTING_LIBRARY_HELPERS_PATH . 'oxCacheHelper.php';
 
 /**
  * Testing oxArticle class.

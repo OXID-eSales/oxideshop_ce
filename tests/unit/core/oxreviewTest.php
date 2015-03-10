@@ -20,7 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once TESTING_LIBRARY_HELPERS_PATH . 'oxCacheHelper.php';
 
 class Unit_Core_oxreviewTest extends OxidTestCase
 {

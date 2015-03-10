@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -127,7 +127,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
 
     protected function _resizeImageTest($sTestImageFile, $sTestImageFileResized, $iWidth = 100, $iHeight = 48)
     {
-        $sDir = "misc" . DIRECTORY_SEPARATOR;
+        $sDir = getTestsBasePath() . "misc" . DIRECTORY_SEPARATOR;
         if (!file_exists($sDir . $sTestImageFile)) {
             $sMsg = "Failed to find the image file: " . $sDir . $sTestImageFile;
             $this->fail($sMsg);

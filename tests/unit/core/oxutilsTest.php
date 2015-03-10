@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -830,7 +830,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testGetRemoteCachePath()
     {
 
-        touch('misc/actions_main.inc.php', time(), time());
+        touch(getTestsBasePath().'misc/actions_main.inc.php', time(), time());
         $this->assertEquals('misc/actions_main.inc.php', oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', 'misc/actions_main.inc.php'));
         //ensure that file is older than 24h
         touch('misc/actions_main.inc.php', time() - 90000, time() - 90000);

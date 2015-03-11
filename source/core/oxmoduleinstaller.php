@@ -380,15 +380,34 @@ class oxModuleInstaller extends oxSuperCfg
         if (is_array($aModuleBlocks)) {
 
             foreach ($aModuleBlocks as $aValue) {
-                $sOxId = oxUtilsObject::getInstance()->generateUId();
+                $sOxId = MD5($aValue['template'] . $aValue['block'] . $sShopId . $sModuleId);
 
-                $sTemplate = $aValue["template"];
-                $iPosition = $aValue["position"] ? $aValue["position"] : 1;
-                $sBlock = $aValue["block"];
-                $sFile = $aValue["file"];
+                $sSqlTemplate = $oDb->quote($aValue["template"]);
+                $sSqlBlock = $oDb->quote($aValue["block"]);
+                $sSqlPosition =  (int) $aValue["position"] ? $aValue["position"] : 1;
+                $sSqlTemplateFile = $oDb->quote($aValue["file"]);
 
-                $sSql = "INSERT INTO `oxtplblocks` (`OXID`, `OXACTIVE`, `OXSHOPID`, `OXTEMPLATE`, `OXBLOCKNAME`, `OXPOS`, `OXFILE`, `OXMODULE`)
-                         VALUES ('{$sOxId}', 1, '{$sShopId}', " . $oDb->quote($sTemplate) . ", " . $oDb->quote($sBlock) . ", " . $oDb->quote($iPosition) . ", " . $oDb->quote($sFile) . ", '{$sModuleId}')";
+                $sSql = "INSERT INTO `oxtplblocks` (
+                        `OXID`,
+                        `OXACTIVE`,
+                        `OXSHOPID`,
+                        `OXTEMPLATE`,
+                        `OXBLOCKNAME`,
+                        `OXPOS`,
+                        `OXFILE`,
+                        `OXMODULE`
+                    ) VALUES (
+                        '{$sOxId}',
+                        1,
+                        '{$sShopId}',
+                        {$sSqlTemplate},
+                        {$sSqlBlock},
+                        {$sSqlPosition},
+                        {$sSqlTemplateFile},
+                        '{$sModuleId}'
+                    ) ON DUPLICATE KEY UPDATE
+                        `OXFILE` = VALUES(`OXFILE`),
+                        `OXPOS` = VALUES(`OXPOS`)";
 
                 $oDb->execute($sSql);
             }

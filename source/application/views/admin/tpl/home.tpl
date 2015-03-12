@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]main.css">
         <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors.css">
         <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
-    [{block}]
+    [{/block}]
 </head>
 <body>
 

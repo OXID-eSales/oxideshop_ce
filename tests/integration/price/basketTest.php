@@ -279,14 +279,14 @@ class Integration_Price_BasketTest extends OxidTestCase
         // load test cases
         $aGlobal = array();
         foreach ($aDir as $sDir) {
-            $sPath = "integration/price/" . $sDir . "/";
+            $sPath = __DIR__ ."/" . $sDir . "/";
             print("Scanning dir {$sPath}\r\n");
             if (empty($aTestCases)) {
                 $aFiles = glob($sPath . "*.php", GLOB_NOSORT);
                 if (empty($aFiles)) {
                     $aSubDirs = scandir($sPath);
                     foreach ($aSubDirs as $sSubDir) {
-                        $sPath = "integration/price/" . $sDir . "/" . $sSubDir . "/";
+                        $sPath = __DIR__ ."/" . $sDir . "/" . $sSubDir . "/";
                         $aFiles = array_merge($aFiles, glob($sPath . "*.php", GLOB_NOSORT));
                     }
                 }

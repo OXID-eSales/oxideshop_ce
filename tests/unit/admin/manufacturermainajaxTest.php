@@ -54,6 +54,26 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
         $this->addToDatabase("insert into oxmanufacturers set oxid='_testManufacturer2', oxtitle='_testManufacturer2'", 'oxmanufacturers');
     }
 
+    /**
+     * Tear down the fixture.
+     *
+     * @return null
+     */
+    protected function tearDown()
+    {
+        oxDb::getDb()->execute( "delete from oxarticles where oxid='_testArticle1'" );
+        oxDb::getDb()->execute( "delete from oxarticles where oxid='_testArticle2'" );
+
+        oxDb::getDb()->execute( "delete from oxarticles where oxid='_testArticle3'" );
+        oxDb::getDb()->execute( "delete from oxarticles where oxid='_testArticle4'" );
+        oxDb::getDb()->execute( "delete from oxarticles where oxid='_testArticle5'" );
+
+        oxDb::getDb()->execute( "delete from oxmanufacturers where oxid='_testManufacturer1'" );
+        oxDb::getDb()->execute( "delete from oxmanufacturers where oxid='_testManufacturer2'" );
+
+        parent::tearDown();
+    }
+
     public function setArticleViewTable($sParam)
     {
         $this->_sArticleView = $sParam;

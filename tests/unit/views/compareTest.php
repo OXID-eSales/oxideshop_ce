@@ -21,7 +21,7 @@
  */
 
 /**
- * Tests for compate class
+ * Tests for compare class
  */
 class Unit_Views_compareTest extends OxidTestCase
 {
@@ -36,7 +36,7 @@ class Unit_Views_compareTest extends OxidTestCase
         parent::setUp();
         $myDB = oxDb::getDB();
         $sShopId = oxRegistry::getConfig()->getShopId();
-        // adding article to recommendlist
+        // adding article to recommend list
         $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "' . $sShopId . '" ) ';
         $myDB->Execute($sQ);
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testlist", "2000", "testlist", "test" ) ';
@@ -111,7 +111,7 @@ class Unit_Views_compareTest extends OxidTestCase
     /**
      * bug #0001566
      */
-    public function testMoveRightSkipsIfNoAnid()
+    public function testMoveRightSkipsIfNoAnId()
     {
         modConfig::setRequestParameter('aid', "");
 
@@ -164,9 +164,12 @@ class Unit_Views_compareTest extends OxidTestCase
         $this->assertEquals(999, $oView->getOrderCnt());
     }
 
-    public function testSetCompareItemsgetCompareItems()
+    /**
+     * Test for getCompareItems
+     */
+    public function testSetCompareItemsGetCompareItems()
     {
-        modSession::getInstance()->setVar('aFiltcompproducts', array("testItems1"));
+        $this->getSession()->setVar('aFiltcompproducts', array("testItems1"));
         $oView = new compare();
         $this->assertEquals(array("testItems1"), $oView->getCompareItems());
 
@@ -204,6 +207,9 @@ class Unit_Views_compareTest extends OxidTestCase
         $this->assertEquals(2, $oCompare->getCompareItemsCnt());
     }
 
+    /**
+     * Test for getCompareItemsCnt
+     */
     public function testGetSetCompareItemsCnt()
     {
         $oView = $this->getProxyClass('compare');

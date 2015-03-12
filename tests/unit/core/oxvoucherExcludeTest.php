@@ -355,7 +355,32 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
         $this->addToDatabase($sInsertVoucherReleations, 'oxobject2discount');
         $this->addToDatabase($sInsertOrder, 'oxorder');
         $this->addToDatabase($sInsertOrderArticles, 'oxorderarticles');
+    }
 
+    /**
+     * Tear down the fixture.
+     *
+     * @return null
+     */
+    protected function tearDown()
+    {
+        $sDeleteSeries            = "DELETE FROM `oxvoucherseries`   WHERE `OXID` LIKE 'test_%';";
+        $sDeleteVouchers          = "DELETE FROM `oxvouchers`        WHERE `OXID` LIKE 'test_%';";
+        $sDeleteArticles          = "DELETE FROM `oxarticles`        WHERE `OXID` LIKE 'test_%';";
+        $sDeleteCategories        = "DELETE FROM `oxcategories`      WHERE `OXID` LIKE 'test_%';";
+        $sDeleteCategoryRelations = "DELETE FROM `oxobject2category` WHERE `OXID` LIKE 'test_%';";
+        $sDeleteVoucherRelations  = "DELETE FROM `oxobject2discount` WHERE `OXID` LIKE 'test_%';";
+        $sDeleteOrder             = "DELETE FROM `oxorder`           WHERE `OXID` LIKE 'test_%';";
+        $sDeleteOrderArticles     = "DELETE FROM `oxorderarticles`   WHERE `OXID` LIKE 'test_%';";
+
+        oxDb::getDb()->execute($sDeleteSeries);
+        oxDb::getDb()->execute($sDeleteVouchers);
+        oxDb::getDb()->execute($sDeleteArticles);
+        oxDb::getDb()->execute($sDeleteCategories);
+        oxDb::getDb()->execute($sDeleteCategoryRelations);
+        oxDb::getDb()->execute($sDeleteVoucherRelations);
+        oxDb::getDb()->execute($sDeleteOrder);
+        oxDb::getDb()->execute($sDeleteOrderArticles);
     }
 
     /**

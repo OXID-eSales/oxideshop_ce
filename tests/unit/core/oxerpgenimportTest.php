@@ -316,7 +316,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
         $oImport->setImportTypePrefix('U');
         $oImport->setCsvFileFieldsOrder(array("OXID", "OXACTIVE", "OXSHOPID", "OXUSERNAME", "OXFNAME", "OXLNAME"));
 
-        $oImport->doImport('misc/csvWithHeader.csv');
+        $oImport->doImport(getTestsBasePath().'misc/csvWithHeader.csv');
 
         $aTestData1 = array(array("_testId1", "1", "oxbaseshop", "userName1", "FirstName1", "LastName1"));
         $aTestData2 = array(array("_testId2", "1", "oxbaseshop", "userName2", "FirstName2", "LastName2"));
@@ -342,7 +342,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
         $oImport->setCsvFileFieldsOrder(array("OXID", "OXACTIVE", "OXSHOPID", "OXUSERNAME", "OXFNAME", "OXLNAME"));
 
         //checking if header line was not saved to DB
-        $oImport->doImport('misc/csvWithHeader.csv');
+        $oImport->doImport(getTestsBasePath().'misc/csvWithHeader.csv');
         $this->assertEquals(2, count($oImport->getStatistics()));
         $this->assertFalse(oxDb::getDb()->getOne("select OXID from oxuser where oxid='OXID'"));
 
@@ -362,7 +362,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
         $oImport->setCsvFileFieldsOrder(array("OXID", "OXACTIVE", "OXSHOPID", "OXUSERNAME", "OXFNAME", "OXLNAME"));
 
         //checking if first line from csv file was saved to DB
-        $oImport->doImport('misc/csvWithoutHeader.csv');
+        $oImport->doImport(getTestsBasePath().'misc/csvWithoutHeader.csv');
         $this->assertEquals('_testId1', oxDb::getDb()->getOne("select oxid from oxuser where oxid='_testId1'"));
     }
 

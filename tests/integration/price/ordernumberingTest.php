@@ -68,7 +68,7 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
      */
     protected function _getTestCases($sDir, $aTestCases = array())
     {
-        $sPath = "integration/price/" . $sDir . "/";
+        $sPath = __DIR__ ."/" . $sDir . "/";
         // load test cases
         $aGlobal = array();
         if (empty($aTestCases)) {

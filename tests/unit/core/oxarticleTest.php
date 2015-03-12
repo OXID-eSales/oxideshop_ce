@@ -20,23 +20,8 @@
  * @version   OXID eShop CE
  */
 
-/**
- * Test oxUtils module
- */
-class modUtils_oxarticlelist extends oxutils
-{
-
-    /**
-     * Force isSearchEngine.
-     *
-     * @param string $sClient Client
-     *
-     * @return boolean
-     */
-    public function isSearchEngine($sClient = null)
-    {
-        return true;
-    }
+if (!defined('OX_IS_ADMIN')) {
+    define('OX_IS_ADMIN', false);
 }
 
 /**
@@ -119,30 +104,12 @@ class _oxArticle extends oxArticle
 
 }
 
-/**
- * Test oxUtilsObject module.
- */
-class modUtilsObject_oxarticle extends oxUtilsObject
-{
-
-    /**
-     * Allways geneates given uid.
-     *
-     * @return string
-     */
-    public function generateUID()
-    {
-        return 'test';
-    }
-}
-
 
 /**
  * Testing oxArticle class.
  */
 class Unit_Core_oxArticleTest extends OxidTestCase
 {
-
     /**
      * A object of a test article 1
      *
@@ -164,20 +131,12 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     protected function setUp()
     {
-        if (!defined('OX_IS_ADMIN')) {
-            define('OX_IS_ADMIN', false);
-        }
-
         parent::setUp();
 
         $this->cleanUpTable('oxobject2category');
 
         modConfig::getInstance()->setConfigParam('blUseRightsRoles', 3);
         modConfig::getInstance()->setConfigParam('blUseTimeCheck', true);
-
-        if ($this->getName() == "testDeleteWithUnlimitedLanguages") {
-            $this->_insertTestLanguage();
-        }
     }
 
     /**
@@ -194,8 +153,6 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         oxRegistry::getConfig()->setGlobalParameter('listtype', null);
 
         oxRemClassModule('modCacheForArticleTest');
-        oxRemClassModule('modUtils_oxarticlelist');
-        oxRemClassModule('modUtilsObject_oxarticle');
         $this->cleanUpTable('oxobject2attribute');
 
         // ensure modules detached
@@ -223,10 +180,6 @@ class Unit_Core_oxArticleTest extends OxidTestCase
 
 
         oxDb::getInstance()->resetTblDescCache();
-
-        if ($this->getName() == "testDeleteWithUnlimitedLanguages") {
-            $this->_deleteTestLanguage();
-        }
 
         parent::tearDown();
     }
@@ -6916,6 +6869,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testDeleteWithUnlimitedLanguages()
     {
+        $this->_insertTestLanguage();
         $this->_createArticle('_testArt', '_testVar');
         modConfig::getInstance()->setConfigParam("iLangPerTable", 4);
 
@@ -6956,6 +6910,8 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         foreach ($aQ as $sQ) {
             $this->assertFalse($oDb->getOne($sQ));
         }
+
+        $this->_deleteTestLanguage();
     }
 
     public function testGetUnitName()

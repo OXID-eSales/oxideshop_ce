@@ -476,7 +476,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function getTeardownSqls()
     {
-        return $this->_aTeardownSqls;
+        return (array)$this->_aTeardownSqls;
     }
 
     /**
@@ -522,20 +522,9 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function markTestSkippedUntil($sDate, $sMessage = '')
     {
-        if (method_exists('DateTime', 'createFromFormat')) {
-            $oDate = DateTime::createFromFormat('Y-m-d', $sDate);
-        } else {
-            $aDate = strptime($sDate, '%Y-%m-%d');
-            $ymd = sprintf(
-                '%04d-%02d-%02d 05:00:00',
-                $aDate['tm_year'] + 1900,
-                $aDate['tm_mon'] + 1,
-                $aDate['tm_mday']
-            );
-            $oDate = new DateTime($ymd);
-        }
+        $oDate = DateTime::createFromFormat('Y-m-d', $sDate);
 
-        if (time() < ((int) $oDate->format('U'))) {
+        if (time() < ((int)$oDate->format('U'))) {
             $this->markTestSkipped($sMessage);
         }
     }
@@ -544,15 +533,14 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * Executes SQL and adds table to clean up after test.
      * For EE version elements are added to map table for specified shops.
      *
-     * @param string $sSql     Sql to be executed.
-     * @param string $sTable   Table name.
-     * @param array  $aShopIds List of shop IDs.
-     * @param null   $sMapId   Map ID.
+     * @param string    $sSql     Sql to be executed.
+     * @param string    $sTable   Table name.
+     * @param array|int $aShopIds List of shop IDs.
+     * @param null      $sMapId   Map ID.
      */
-    public function addToDatabase($sSql, $sTable, $aShopIds = null, $sMapId = null)
+    public function addToDatabase($sSql, $sTable, $aShopIds = 1, $sMapId = null)
     {
         oxDb::getDb()->execute($sSql);
-        $this->addTableForCleanup($sTable);
 
     }
 
@@ -562,19 +550,14 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function cleanUpDatabase()
     {
-        if ($aSqls = $this->getTeardownSqls()) {
-            if (!is_array($aSqls)) {
-                $aSqls = array($aSqls);
-            }
-            foreach ($aSqls as $sSql) {
-                oxDb::getDb()->execute($sSql);
+        if ($tearDownQueries = $this->getTeardownSqls()) {
+            foreach ($tearDownQueries as $query) {
+                oxDb::getDb()->execute($query);
             }
         }
+
         if ($aTablesForCleanup = $this->getTablesForCleanup()) {
-            $oDbRestore = self::_getDbRestore();
-            if (!is_array($aTablesForCleanup)) {
-                $aTablesForCleanup = array($aTablesForCleanup);
-            }
+            $oDbRestore = $this->_getDbRestore();
             foreach ($aTablesForCleanup as $sTable) {
                 $oDbRestore->restoreTable($sTable);
             }
@@ -598,7 +581,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function getTablesForCleanup()
     {
-        return $this->_aTableForCleanups;
+        return (array)$this->_aTableForCleanups;
     }
 
     /**
@@ -610,8 +593,10 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     {
         if (!in_array($sTable, $this->_aTableForCleanups)) {
             $this->_aTableForCleanups[] = $sTable;
+            if (OXID_VERSION_EE && in_array($sTable, $this->getMultiShopTables())) {
+                $this->_aTableForCleanups[] = "{$sTable}2shop";
+            }
         }
-
     }
 
     /**
@@ -624,10 +609,16 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     {
         $sCol = (!empty($sColName)) ? $sColName : 'oxid';
 
+        if (OXID_VERSION_EE && in_array($sTable, $this->getMultiShopTables())) {
+            // deletes all records from shop relations table
+            $sSql = "delete from `{$sTable}2shop`
+                where oxmapobjectid in (select oxmapid from `$sTable` where `$sCol` like '\_%')";
+            $this->getDb()->execute($sSql);
+        }
 
         //deletes allrecords where oxid or specified column name values starts with underscore(_)
         $sQ = "delete from `$sTable` where `$sCol` like '\_%' ";
-        $this->getDb()->Execute($sQ);
+        $this->getDb()->execute($sQ);
     }
 
     /**

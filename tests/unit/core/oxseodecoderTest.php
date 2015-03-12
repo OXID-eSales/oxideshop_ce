@@ -53,7 +53,6 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $oDb->execute('delete from oxseohistory');
 
         // restoring table structure
-        $blRemove = true;
         try {
 
             $sCustomColumn = $oDb->getOne("show columns from oxv_oxarticles_de where field = 'oxseoid'");

@@ -132,7 +132,7 @@ class testSession extends oxSession
      */
     static public function deleteVar($sVar)
     {
-        unset($this->_aSessionVars[$sVar]);
+        unset(self::$_aSessionVars[$sVar]);
     }
 
     /**

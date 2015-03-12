@@ -158,7 +158,6 @@ class Unit_utf8Test extends OxidTestCase
 
         $oArticle = new oxArticle();
         $oArticle->load('1651');
-        //$oArticle->resetVar();
         $this->assertEquals($aShouldBe, $oArticle->getSelectLists());
     }
 

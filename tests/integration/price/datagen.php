@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/integration/price/basketconstruct.php';
+require_once __DIR__ .'/basketconstruct.php';
 
 /**
  * Class DataGenerator
@@ -36,7 +36,7 @@ class DataGenerator extends OxidTestCase
     // Custom general name of test cases. Will produce files like RandomCase_x for each case.
     private $sCaseName = "nb_";
     // Databomb folder path
-    private $sFilepath = "integration/price/testcases/databomb/netto_brutto/";
+    private $sFilepath = "testcases/databomb/netto_brutto/";
     // Price in cents
     private $dPriceFrom = 1;
     private $dPriceTo = 100099;
@@ -124,6 +124,11 @@ class DataGenerator extends OxidTestCase
     );
     private $blGenDiscounts = false;
     private $blGenVouchers = false;
+
+    public function __construct()
+    {
+        $this->sFilepath = __DIR__ .'/'. $this->sFilepath;
+    }
 
     protected function _cleanUpCalcDb()
     {

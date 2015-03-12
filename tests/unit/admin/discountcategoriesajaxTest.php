@@ -45,6 +45,19 @@ class Unit_Admin_DiscountCategoriesAjaxTest extends OxidTestCase
     }
 
     /**
+     * Tear down the fixture.
+     *
+     * @return null
+     */
+    protected function tearDown()
+    {
+        $this->cleanUpTable('oxobject2discount');
+        $this->cleanUpTable('oxcategories');
+
+        parent::tearDown();
+    }
+
+    /**
      * DiscountCategoriesAjax::_getQuery() test case
      *
      * @return null

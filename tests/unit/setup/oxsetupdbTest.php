@@ -55,7 +55,9 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
     public function testExecSql()
     {
         $myConfig = oxRegistry::getConfig();
+        $reportingLevel = error_reporting((E_ALL ^ E_NOTICE ^ E_DEPRECATED) | E_STRICT);
         $rConnection = mysql_connect($myConfig->getConfigParam('dbHost'), $myConfig->getConfigParam('dbUser'), $myConfig->getConfigParam('dbPwd'));
+        error_reporting($reportingLevel);
 
         // bad connection
         $oDb = $this->getMock("OxSetupDb", array("getConnection"));
@@ -124,7 +126,9 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $sVersion = $aVersionInfo[0]["Value"];
 
         $myConfig = oxRegistry::getConfig();
+        $reportingLevel = error_reporting((E_ALL ^ E_NOTICE ^ E_DEPRECATED) | E_STRICT);
         $rConnection = mysql_connect($myConfig->getConfigParam('dbHost'), $myConfig->getConfigParam('dbUser'), $myConfig->getConfigParam('dbPwd'));
+        error_reporting($reportingLevel);
 
         $oDb = $this->getMock("OxSetupDb", array("getConnection"));
         $oDb->expects($this->once())->method("getConnection")->will($this->returnValue($rConnection));
@@ -377,9 +381,11 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
     {
         $oConfk = new Conf();
         $myConfig = oxRegistry::getConfig();
+        $reportingLevel = error_reporting((E_ALL ^ E_NOTICE ^ E_DEPRECATED) | E_STRICT);
         $rConnection = mysql_connect($myConfig->getConfigParam('dbHost'), $myConfig->getConfigParam('dbUser'), $myConfig->getConfigParam('dbPwd'));
         mysql_select_db($myConfig->getConfigParam('dbName'));
         $rResult = mysql_query("SELECT oxvarname, oxvartype, DECODE( oxvarvalue, '" . $oConfk->sConfigKey . "') AS oxvarvalue FROM oxconfig WHERE oxvartype IN ('str', 'arr', 'aarr')");
+        error_reporting($reportingLevel);
         $iConfRecordsCount = oxDb::getDb()->getOne("SELECT count(*) FROM oxconfig WHERE oxvartype IN ('str', 'arr', 'aarr')");
 
         $oUtils = $this->getMock("oxSetupUtils", array("convertToUtf8"));

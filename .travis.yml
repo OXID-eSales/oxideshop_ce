@@ -17,6 +17,7 @@ services: mysql
 before_install:
   - echo 'Europe/Berlin' | sudo tee /etc/timezone
   - sudo dpkg-reconfigure --frontend noninteractive tzdata
+  - sudo apt-get update
 
 before_script:
   # apache setup (http://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP)

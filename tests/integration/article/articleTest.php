@@ -32,6 +32,7 @@ class Integration_Article_ArticleTest extends OxidTestCase
     public function setUp()
     {
         parent::setUp();
+        $this->addTableForCleanup('oxarticles');
     }
 
     public function testArticleParentFieldsInChild_ParentUpdate_SetParentValueToChild()

@@ -49,7 +49,7 @@ define('OX_BASE_PATH', isset($_sOverridenShopBasePath) ? $_sOverridenShopBasePat
 
 function getTestsBasePath()
 {
-    return realpath(dirname(__FILE__) . '/../');
+    return realpath(dirname(__FILE__) . '/..').'/';
 }
 
 require_once 'test_utils.php';

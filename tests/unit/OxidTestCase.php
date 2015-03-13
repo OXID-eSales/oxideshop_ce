@@ -593,9 +593,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     {
         if (!in_array($sTable, $this->_aTableForCleanups)) {
             $this->_aTableForCleanups[] = $sTable;
-            if (OXID_VERSION_EE && in_array($sTable, $this->getMultiShopTables())) {
-                $this->_aTableForCleanups[] = "{$sTable}2shop";
-            }
         }
     }
 
@@ -609,12 +606,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     {
         $sCol = (!empty($sColName)) ? $sColName : 'oxid';
 
-        if (OXID_VERSION_EE && in_array($sTable, $this->getMultiShopTables())) {
-            // deletes all records from shop relations table
-            $sSql = "delete from `{$sTable}2shop`
-                where oxmapobjectid in (select oxmapid from `$sTable` where `$sCol` like '\_%')";
-            $this->getDb()->execute($sSql);
-        }
 
         //deletes allrecords where oxid or specified column name values starts with underscore(_)
         $sQ = "delete from `$sTable` where `$sCol` like '\_%' ";

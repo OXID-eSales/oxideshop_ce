@@ -39,3 +39,12 @@ We also kindly request to PHP Unit tests for your code.
 
 When sending your pull request, please provide a clear, meaningful and detailed information what your code is about and what it will do, best including a screen shot if possible.
 If you want to discuss your contribution and your code before committing it, please go to the dev-general mailing list: http://lists.oxidforge.org/mailman/listinfo/dev-general.
+
+Cloning:<br>
+
+To reduce the size of the repository, you can use shallow clone, which truncates history and can save up to more than 
+90% of disk space required for the full repository clone.  
+
+Example usage of shallow clone:
+
+`git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git`

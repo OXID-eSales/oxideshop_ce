@@ -24,6 +24,11 @@ function popUp(evt,currElem)
     var offset = getOffset(obj);
     var x = offset.left + obj.offsetWidth + 5;
     var y = offset.top;
+
+    // fix bug #6061
+    if((x + popUpWin.offsetWidth) > window.innerWidth) {
+        x = offset.left - popUpWin.offsetWidth - 5;
+    }
     
     popUpWin.style.top = Math.max(2,y)+'px';
     popUpWin.style.left= Math.max(2,x)+'px';

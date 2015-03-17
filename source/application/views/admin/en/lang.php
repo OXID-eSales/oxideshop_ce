@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -735,17 +735,6 @@ $aLang = array(
 'DYNSCREEN_LIST_SERVICE'                                   => 'Service Area',
 'EDITOR_PLAINTEXT_HINT'                                    => '<b>Note:</b> If you need to preserve text line breaks (e.g. plaintext e-mails), please use tab "html CODE" instead of "Design".',
 'ALTERNATIVE_IMAGE_SERVER_NOTE'                            => '<b>Note:</b> Alternative image server configuration detected, files will not be uploaded to remote location. Please take care about synchronization manually.',
-//eFire related contents will appear only for users located in Germany
-'EFIRE_USERNAME'                                           => 'Externer Transaktions Login (user name)',
-'EFIRE_PASSWORD'                                           => 'Externes Transaktions Passwort (password)',
-'EFIRE_DOWNLOADER'                                         => 'Downloader',
-'EFIRE_DOWNLOADER_ERROR'                                   => 'Error downloading shop connector: %s',
-'EFIRE_DOWNLOADER_SUCCESS'                                 => 'Shop connector downloaded successfully',
-'EFIRE_GETCONNECTOR'                                       => 'Once you are registered with OXID eFire you\'ll be able to download your personalized copy of the shop connector and install it directly to the right shop location.',
-'EFIRE_CONNECTORINSTRUCTION'                               => 'Please enter "Externer Transaktions Login" and "Externes Transaktions Passwort" that you previously have entered in OXID eFire options ("Einstellungen").',
-'EFIRE_SAVECREDENTIALS'                                    => 'Save your credentials for future use',
-'EFIRE_USERDETAILS'                                        => 'User',
-'EFIRE_USERPASSHASH'                                       => 'Password hash',
 'EXCEPTION_USER_NOVALIDLOGIN'                              => 'Wrong e-mail or password!',
 'EXCEPTION_USER_USEREXISTS'                                => 'This user allready exists!',
 'EXCEPTION_CONNECTION_NODB'                                => 'No connection to database!',
@@ -1634,7 +1623,6 @@ $aLang = array(
 'dyn_about'                                                => 'General',
 'dyn_interface'                                            => 'Interface',
 'dyn_technics'                                             => 'Technique',
-'dyn_efire'                                                => 'OXID eFire',
 'mxactions'                                                => 'Promotions',
 'mxarticles'                                               => 'Products',
 'mxattributes'                                             => 'Attributes',

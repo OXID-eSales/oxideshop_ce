@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -733,17 +733,6 @@ $aLang = array(
 'DYNSCREEN_LIST_SERVICE'                                   => 'Servicebereich',
 'EDITOR_PLAINTEXT_HINT'                                    => '<b>Anmerkung:</b> Wenn Sie Zeilenumbrüche unverändert übernehmen möchten (z. B. für plaintext E-Mail), dann benutzen Sie "Source" anstatt "Design".',
 'ALTERNATIVE_IMAGE_SERVER_NOTE'                            => '<b>Hinweis:</b> Der Shop ist konfiguriert, Artikelbilder von einem externen Server zu laden. Dateien werden aber nicht zu diesem Speicherort hochgeladen. Stellen Sie bitte die manuelle Synchronisation sicher.',
-//eFire related contents will appear only for users located in Germany
-'EFIRE_USERNAME'                                           => 'Externer Transaktions Login',
-'EFIRE_PASSWORD'                                           => 'Externes Transaktions Passwort',
-'EFIRE_DOWNLOADER'                                         => 'Downloader',
-'EFIRE_DOWNLOADER_ERROR'                                   => 'Fehler beim Herunterladen des OXID eFire Shop-Connectors: %s',
-'EFIRE_DOWNLOADER_SUCCESS'                                 => 'OXID eFire Shop-Connector erfolgreich geladen',
-'EFIRE_GETCONNECTOR'                                       => 'Sofern Sie sich bei OXID eFire registriert haben, laden Sie hier Ihren persönlichen Shop-Connector direkt in den Shop.',
-'EFIRE_CONNECTORINSTRUCTION'                               => 'Geben Sie dazu Ihren Externen Transaktions Login und das Externe Transaktions Passwort ein, wie in OXID eFire unter "Einstellungen" hinterlegt.',
-'EFIRE_SAVECREDENTIALS'                                    => 'Einstellungen für zukünftige Verbindungen zu OXID eFire speichern',
-'EFIRE_USERDETAILS'                                        => 'Benutzer',
-'EFIRE_USERPASSHASH'                                       => 'Passwort Prüfsumme (Hash)',
 'EXCEPTION_USER_NOVALIDLOGIN'                              => 'Falsche E-Mail oder Passwort!',
 'EXCEPTION_USER_USEREXISTS'                                => 'Dieser Benutzer existiert bereits!',
 'EXCEPTION_CONNECTION_NODB'                                => 'Keine Verbindung zur Datenbank möglich!',
@@ -1632,7 +1621,6 @@ $aLang = array(
 'dyn_about'                                                => 'Allgemein',
 'dyn_interface'                                            => 'Interface',
 'dyn_technics'                                             => 'Technik',
-'dyn_efire'                                                => 'OXID eFire',
 'mxactions'                                                => 'Aktionen verwalten',
 'mxarticles'                                               => 'Artikel',
 'mxattributes'                                             => 'Attribute',

@@ -419,17 +419,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
     }
 
 
-    public function testGetPasswordHash()
-    {
-        $oUser1 = new oxUser();
-        $oUser1->oxuser__oxpassword = new oxField('passwordHash');
-
-        $this->assertEquals('passwordHash', $oUser1->getPasswordHash());
-
-        $oUser2 = new oxUser();
-        $this->assertNull($oUser2->getPasswordHash());
-    }
-
     public function testisExpiredUpdateId()
     {
         $oUser = $this->createUser();

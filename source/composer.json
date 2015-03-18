@@ -16,11 +16,16 @@
         "alexandresalome/php-selenium": {
             "type": "vcs",
             "url": "https://github.com/OXID-eSales/PHP-Selenium.git"
+        },
+        "squizlabs/php_codesniffer": {
+            "type": "vcs",
+            "url": "https://github.com/squizlabs/PHP_CodeSniffer.git"
         }
     },
     "require-dev": {
         "oxid-esales/testing-library": "^0.0.1",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "incenteev/composer-parameter-handler": "~2.0",
+        "squizlabs/php_codesniffer": "dev-master#1cd2cf02"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

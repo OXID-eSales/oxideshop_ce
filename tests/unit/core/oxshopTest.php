@@ -23,6 +23,9 @@
 class Unit_Core_oxshopTest extends OxidTestCase
 {
 
+    protected $_aLangTables = array();
+
+
 
     public function testStructure()
     {
@@ -30,11 +33,6 @@ class Unit_Core_oxshopTest extends OxidTestCase
         $this->assertTrue($oShop instanceof oxi18n);
         $this->assertEquals('oxshops', $oShop->getCoreTableName());
     }
-
-    protected $_aLangTables = array();
-
-
-
 
     public function testIsProductiveMode_ProductiveMode()
     {

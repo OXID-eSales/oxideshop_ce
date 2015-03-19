@@ -29,7 +29,7 @@ class Unit_Core_oxSerialCeTest extends OxidTestCase
     //this test makes sure oxSerial class does not exist in CE edition
     public function testOxSerialClassDoesNotExist()
     {
-        if (class_exists(oxSerial)) {
+        if (class_exists('oxSerial')) {
             $this->fail("oxSerial class is not excluded from CE eddition!!");
         }
 

@@ -429,7 +429,6 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
       }*/
 
 
-
     /**
      * 0002030: Option "Calculate Product Price" does not work with variants.
      * Check if no price returned when unset Calculate Product Price.

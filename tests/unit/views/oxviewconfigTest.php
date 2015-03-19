@@ -1173,7 +1173,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     }
 
 
-
     /**
      * oxViewconfig::getBaseDir() test case
      *

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class UserTestCase extends OxidTestCase
+abstract class UserTestCase extends OxidTestCase
 {
 
     /**

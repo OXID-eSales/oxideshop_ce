@@ -1219,21 +1219,25 @@ class oxSeoEncoder extends oxSuperCfg
     /**
      * Searches for seo url in seo table. If not found - FALSE is returned
      *
-     * @param string $standardUrl
-     * @param int    $languageId
+     * @param string  $sStdUrl   standard url
+     * @param integer $iLanguage language
      *
-     * @return string|false
+     * @return mixed
      */
-    public function fetchSeoUrl($standardUrl, $languageId = null)
+    public function fetchSeoUrl($sStdUrl, $iLanguage = null)
     {
-        $database = oxDb::getDb();
-        $languageId = isset($languageId) ? ((int) $languageId) : oxRegistry::getLang()->getBaseLanguage();
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $iLanguage = isset($iLanguage) ? ((int) $iLanguage) : oxRegistry::getLang()->getBaseLanguage();
+        $sSeoUrl = false;
 
-        $shopId = $this->getConfig()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
 
-        $query = "SELECT `oxseourl` FROM `oxseo` WHERE `oxstdurl` = ? AND `oxlang` = ? AND `oxshopid` = ? LIMIT 1";
+        $sQ = "SELECT `oxseourl` FROM `oxseo` WHERE `oxstdurl` = " . $oDb->quote($sStdUrl) . " AND `oxlang` = '$iLanguage' AND `oxshopid` = '$sShopId' LIMIT 1";
+        if($sOxseourl = $oDb->getOne($sQ)) {
+            $sSeoUrl = $sOxseourl;
+        }
 
-        return $database->getOne($query, array($standardUrl, $languageId, $shopId));
+        return $sSeoUrl;
     }
 
 }

@@ -36,10 +36,10 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
     {
         $oConfig = $this->getConfig();
 
-        $oConfig->setConfigParam('aSerials', array('license_key'));
-        $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
+        $oConfig->saveShopConfVar('arr', 'aSerials', array('license_key'));
+        $oConfig->saveShopConfVar('arr', 'sClusterId', array('generated_unique_cluster_id'));
         $iValidNodeTime =  oxRegistry::get("oxUtilsDate")->getTime();
-        $oConfig->setConfigParam('aServersData', array(
+        $oConfig->saveShopConfVar('arr', 'aServersData', array(
             'server_id1' => array(
                 'id' => 'server_id1',
                 'timestamp' => $iValidNodeTime,
@@ -62,7 +62,7 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         if ($sRevision) {
             $sXml .= "<revision>$sRevision</revision>";
         } else {
-            $sXml .= '<revision/>';
+            $sXml .= '<revision></revision>';
         }
         $sXml .=   '<productSpecificInformation>';
         $sXml .=     '<servers>';
@@ -146,7 +146,7 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         if ($sRevision) {
             $sXml .= "<revision>$sRevision</revision>";
         } else {
-            $sXml .= '<revision/>';
+            $sXml .= '<revision></revision>';
         }
         $sXml .=   '<productSpecificInformation>';
         $sXml .=     '<servers>';

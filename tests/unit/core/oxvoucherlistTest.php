@@ -25,6 +25,7 @@
  */
 class Unit_Core_oxvoucherlistTest extends OxidTestCase
 {
+    const MAX_LOOP_AMOUNT = 4;
 
     protected $_sOxid = null;
 
@@ -41,7 +42,7 @@ class Unit_Core_oxvoucherlistTest extends OxidTestCase
         $this->_sOxid = uniqid('test');
 
         // creating 100 test vouchers
-        for ($i = 0; $i < MAX_LOOP_AMOUNT; $i++) {
+        for ($i = 0; $i < self::MAX_LOOP_AMOUNT; $i++) {
             $oNewVoucher = oxNew('oxvoucher');
             $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField($this->_sOxid, oxField::T_RAW);
             $oNewVoucher->oxvouchers__oxvouchernr = new oxField(uniqid('voucherNr' . $i), oxField::T_RAW);
@@ -69,11 +70,12 @@ class Unit_Core_oxvoucherlistTest extends OxidTestCase
 
     public function testLoadVoucherList()
     {
+
         $myUtils = oxRegistry::getUtils();
 
         $oVouchers = oxNew('oxvoucherlist');
         $oVouchers->selectString('select * from oxvouchers where oxvouchers.oxvoucherserieid = "' . $this->_sOxid . '"');
 
-        $this->assertEquals(MAX_LOOP_AMOUNT, $oVouchers->count());
+        $this->assertEquals(self::MAX_LOOP_AMOUNT, $oVouchers->count());
     }
 }

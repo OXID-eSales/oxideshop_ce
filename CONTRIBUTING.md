@@ -42,9 +42,9 @@ If you want to discuss your contribution and your code before committing it, ple
 
 Cloning:<br>
 
-To reduce the size of the repository, you can use shallow clone, which truncates history and can save up to more than 
-90% of disk space required for the full repository clone.  
+To reduce the size of the repository when cloning you can use a so called "shallow clone". 
+With it, the history will be truncated and can save more than 90% of the disk space and traffic in comparison to a full repository clone.
 
-Example usage of shallow clone:
+Here is an example of how to use a shallow clone:
 
 `git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git`

@@ -310,12 +310,12 @@ class oxConfig extends oxSuperCfg
     /**
      * Returns config parameter value if such parameter exists
      *
-     * @param string $sName config parameter name
-     * @param mixed $sFallback fallback value if no config var is found default null
+     * @param string $sName    config parameter name
+     * @param mixed  $sDefault default value if no config var is found default null
      *
      * @return mixed
      */
-    public function getConfigParam($sName, $sFallback = null)
+    public function getConfigParam($sName, $sDefault = null)
     {
         if (defined('OXID_PHP_UNIT')) {
             if (isset(modConfig::$unitMOD) && is_object(modConfig::$unitMOD)) {
@@ -329,14 +329,14 @@ class oxConfig extends oxSuperCfg
         $this->init();
 
         if (isset ($this->_aConfigParams[$sName])) {
-            return $this->_aConfigParams[$sName];
+            $sValue = $this->_aConfigParams[$sName];
+        } elseif (isset($this->$sName)) {
+            $sValue = $this->$sName;
+        } else {
+            $sValue = $sDefault;
         }
 
-        if (isset($this->$sName)) {
-            return $this->$sName;
-        }
-        
-        return $sFallback;
+        return $sValue;
     }
 
     /**
@@ -634,11 +634,10 @@ class oxConfig extends oxSuperCfg
      *
      * @param string $sName     Name of parameter
      * @param bool   $blRaw     Get unescaped parameter
-     * @param strin  $sFallback fallback value if no config var is found default null
      *
      * @return mixed
      */
-    public function getRequestParameter($sName, $blRaw = false, $sFallback = null)
+    public function getRequestParameter($sName, $blRaw = false)
     {
         if (defined('OXID_PHP_UNIT')) {
             if (isset(modConfig::$unitMOD) && is_object(modConfig::$unitMOD)) {
@@ -664,14 +663,33 @@ class oxConfig extends oxSuperCfg
             $sValue = $_POST[$sName];
         } elseif (isset($_GET[$sName])) {
             $sValue = $_GET[$sName];
-        } elseif (null !== $sFallback) {
-            $sValue = $sFallback;
         }
 
         // TODO: remove this after special chars concept implementation
         $blIsAdmin = $this->isAdmin() && $this->getSession()->getVariable("blIsAdmin");
         if ($sValue !== null && !$blIsAdmin && (!$blRaw || is_array($blRaw))) {
             $this->checkParamSpecialChars($sValue, $blRaw);
+        }
+
+        return $sValue;
+    }
+
+    /**
+     * Returns raw value of parameter stored in POST,GET.
+     *
+     * @param string $sName    Name of parameter
+     * @param string $sDefault Default value if no value provided
+     *
+     * @return mixed
+     */
+    public function getRequestRawParameter($sName, $sDefault = null)
+    {
+        if (isset($_POST[$sName])) {
+            $sValue = $_POST[$sName];
+        } elseif (isset($_GET[$sName])) {
+            $sValue = $_GET[$sName];
+        } else {
+            $sValue = $sDefault;
         }
 
         return $sValue;

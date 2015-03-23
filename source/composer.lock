@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "57dd418cc9957f293de71e679eb14d24",
+    "hash": "77c4cc298f6c8953d9e92b48412c1023",
     "packages": [],
     "packages-dev": [
         {
@@ -610,6 +610,39 @@
             ],
             "homepage": "http://vfs.bovigo.org/",
             "time": "2014-09-14 10:18:53"
+        },
+        {
+            "name": "oxid-esales/coding-standards",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OXID-eSales/coding_standards.git",
+                "reference": "39f779fa287cdb39e239bb63634153ce9fe8e29d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OXID-eSales/coding_standards/zipball/39f779fa287cdb39e239bb63634153ce9fe8e29d",
+                "reference": "39f779fa287cdb39e239bb63634153ce9fe8e29d",
+                "shasum": ""
+            },
+            "require": {
+                "squizlabs/php_codesniffer": "2.3.1"
+            },
+            "type": "library",
+            "license": [
+                "GPL-3.0"
+            ],
+            "description": "OXID eShop coding standards",
+            "homepage": "https://www.oxid-esales.com/en/home.html",
+            "keywords": [
+                "eShop",
+                "oxid",
+                "standards"
+            ],
+            "support": {
+                "source": "https://github.com/OXID-eSales/coding_standards/tree/v2.0.0"
+            },
+            "time": "2015-03-20 14:55:37"
         },
         {
             "name": "oxid-esales/testing-library",

@@ -17,15 +17,19 @@
             "type": "vcs",
             "url": "https://github.com/OXID-eSales/PHP-Selenium.git"
         },
+        "oxid-esales/coding-standards": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/coding_standards.git"
+        },
         "squizlabs/php_codesniffer": {
-          "type": "vcs",
-          "url": "https://github.com/OXID-eSales/PHP_CodeSniffer.git"
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/PHP_CodeSniffer.git"
         }
     },
     "require-dev": {
         "oxid-esales/testing-library": "^0.0.1",
-        "incenteev/composer-parameter-handler": "~2.0",
-        "squizlabs/php_codesniffer": "2.3.1"
+        "oxid-esales/coding-standards": "^2.0.0",
+        "incenteev/composer-parameter-handler": "~2.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

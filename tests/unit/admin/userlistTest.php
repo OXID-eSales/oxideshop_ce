@@ -82,6 +82,39 @@ class Unit_Admin_UserListTest extends OxidTestCase
     }
 
     /**
+     * User_List::DeleteEntry() should clean up static cache list before when deleting some value
+     *
+     * @return null
+     */
+    public function testDeleteEntryAfterGettingItems()
+    {
+        oxTestModules::addFunction('oxuser', 'isDerived', '{ return false; }');
+        oxTestModules::addFunction('oxuser', 'delete', '{ throw new Exception( "deleteEntry" ); }');
+
+        modConfig::setRequestParameter("oxid", "testId");
+
+        // testing..
+        try {
+            $oView = $this->getMock("User_List", array("_allowAdminEdit", "buildWhere"));
+            $oView->expects($this->any())->method('_allowAdminEdit')->will($this->returnValue(true));
+            $oView->getItemList();
+            $oView->deleteEntry();
+
+        } catch (Exception $oExcp) {
+            $this->assertEquals("deleteEntry", $oExcp->getMessage(), "Error in User_List::deleteEntry()");
+            try {
+                $oView->expects($this->any())->method('buildWhere')->will($this->throwException(new Exception("list was empty")));
+                $oView->getItemList();
+            } catch (Exception $oNewExcp) {
+                $this->assertEquals("list was empty", $oNewExcp->getMessage(), "Error in User_List::deleteEntry()");
+            }
+
+            return;
+        }
+        $this->fail("Error in User_List::deleteEntry()");
+    }
+
+    /**
      * User_List::PrepareWhereQuery() test case
      *
      * @return null

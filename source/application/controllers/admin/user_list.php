@@ -84,6 +84,7 @@ class User_List extends oxAdminList
     public function deleteEntry()
     {
         if ($this->_allowAdminEdit($this->getEditObjectId())) {
+            $this->_oList = null;
             return parent::deleteEntry();
         }
     }

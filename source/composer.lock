@@ -617,17 +617,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/coding_standards.git",
-                "reference": "39f779fa287cdb39e239bb63634153ce9fe8e29d"
+                "reference": "df286c92363312900eeb13c30733fc61c3f49c45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/coding_standards/zipball/39f779fa287cdb39e239bb63634153ce9fe8e29d",
-                "reference": "39f779fa287cdb39e239bb63634153ce9fe8e29d",
+                "url": "https://api.github.com/repos/OXID-eSales/coding_standards/zipball/df286c92363312900eeb13c30733fc61c3f49c45",
+                "reference": "df286c92363312900eeb13c30733fc61c3f49c45",
                 "shasum": ""
             },
             "require": {
                 "squizlabs/php_codesniffer": "2.3.1"
             },
+            "bin": [
+                "bin/phpcsoxid"
+            ],
             "type": "library",
             "license": [
                 "GPL-3.0"
@@ -642,7 +645,7 @@
             "support": {
                 "source": "https://github.com/OXID-eSales/coding_standards/tree/v2.0.0"
             },
-            "time": "2015-03-20 14:55:37"
+            "time": "2015-03-23 14:46:30"
         },
         {
             "name": "oxid-esales/testing-library",

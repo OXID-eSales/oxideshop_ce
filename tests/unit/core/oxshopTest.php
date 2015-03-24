@@ -27,6 +27,8 @@ class Unit_Core_oxshopTest extends OxidTestCase
 
 
 
+
+
     public function testStructure()
     {
         $oShop = new oxShop();

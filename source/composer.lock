@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "77c4cc298f6c8953d9e92b48412c1023",
+    "hash": "d3c7769e10dd9a91244ed1f99512a4d3",
     "packages": [],
     "packages-dev": [
         {
@@ -617,12 +617,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/coding_standards.git",
-                "reference": "df286c92363312900eeb13c30733fc61c3f49c45"
+                "reference": "d5560012e5a151a92489ef14e47015d747b70b0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/coding_standards/zipball/df286c92363312900eeb13c30733fc61c3f49c45",
-                "reference": "df286c92363312900eeb13c30733fc61c3f49c45",
+                "url": "https://api.github.com/repos/OXID-eSales/coding_standards/zipball/d5560012e5a151a92489ef14e47015d747b70b0b",
+                "reference": "d5560012e5a151a92489ef14e47015d747b70b0b",
                 "shasum": ""
             },
             "require": {
@@ -645,20 +645,20 @@
             "support": {
                 "source": "https://github.com/OXID-eSales/coding_standards/tree/v2.0.0"
             },
-            "time": "2015-03-23 14:46:30"
+            "time": "2015-03-24 09:28:16"
         },
         {
             "name": "oxid-esales/testing-library",
-            "version": "0.0.1",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "bab0cf1455911cdb1944230723772f86734f824f"
+                "reference": "c059ce110450ce76a7fb313dab666e581d651932"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/bab0cf1455911cdb1944230723772f86734f824f",
-                "reference": "bab0cf1455911cdb1944230723772f86734f824f",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/c059ce110450ce76a7fb313dab666e581d651932",
+                "reference": "c059ce110450ce76a7fb313dab666e581d651932",
                 "shasum": ""
             },
             "require": {
@@ -713,9 +713,9 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/OXID-eSales/testing_library/tree/v0.0.1"
+                "source": "https://github.com/OXID-eSales/testing_library/tree/v1.0.0"
             },
-            "time": "2015-03-13 14:08:56"
+            "time": "2015-03-24 09:51:40"
         },
         {
             "name": "pdepend/pdepend",

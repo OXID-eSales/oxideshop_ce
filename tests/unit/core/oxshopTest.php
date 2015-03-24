@@ -16,12 +16,15 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
 class Unit_Core_oxshopTest extends OxidTestCase
 {
+
+    protected $_aLangTables = array();
+
 
 
     public function testStructure()
@@ -30,11 +33,6 @@ class Unit_Core_oxshopTest extends OxidTestCase
         $this->assertTrue($oShop instanceof oxi18n);
         $this->assertEquals('oxshops', $oShop->getCoreTableName());
     }
-
-    protected $_aLangTables = array();
-
-
-
 
     public function testIsProductiveMode_ProductiveMode()
     {

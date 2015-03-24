@@ -710,6 +710,7 @@ class oxVoucher extends oxBase
      * @throws oxVoucherException exception
      *
      * @return double
+     * @deprecated
      */
     protected function _getProductDiscoutValue($dPrice)
     {

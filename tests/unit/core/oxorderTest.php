@@ -21,7 +21,7 @@
  */
 
 
-require_once TESTING_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
+require_once TEST_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
 
 class modoxdeliverylist_oxorder extends oxdeliverylist
 {

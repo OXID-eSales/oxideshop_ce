@@ -27,7 +27,7 @@ if (!function_exists('getSeoProcType')) {
     }
 }
 
-require_once TESTING_LIBRARY_HELPERS_PATH . 'oxUBaseHelper.php';
+require_once TEST_LIBRARY_HELPERS_PATH . 'oxUBaseHelper.php';
 
 /**
  * Testing oxUBase class

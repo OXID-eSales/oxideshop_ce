@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once TESTING_LIBRARY_HELPERS_PATH . 'oxCategoryHelper.php';
+require_once TEST_LIBRARY_HELPERS_PATH . 'oxCategoryHelper.php';
 
 class oxcategoryTest_oxUtilsView extends oxUtilsView
 {

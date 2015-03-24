@@ -21,7 +21,7 @@
  */
 
 
-require_once TESTING_LIBRARY_HELPERS_PATH . 'oxBaseHelper.php';
+require_once TEST_LIBRARY_HELPERS_PATH . 'oxBaseHelper.php';
 
 /**
  * Test oxBase module

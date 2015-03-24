@@ -24,7 +24,7 @@ if (!defined('OX_IS_ADMIN')) {
     define('OX_IS_ADMIN', false);
 }
 
-require_once TESTING_LIBRARY_HELPERS_PATH . 'oxArticleHelper.php';
+require_once TEST_LIBRARY_HELPERS_PATH . 'oxArticleHelper.php';
 
 /**
  * Testing oxArticle class.

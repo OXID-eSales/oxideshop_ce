@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once TESTING_LIBRARY_HELPERS_PATH . 'oxVoucherHelper.php';
+require_once TEST_LIBRARY_HELPERS_PATH . 'oxVoucherHelper.php';
 
 class modForTestAddBundles extends oxbasket
 {

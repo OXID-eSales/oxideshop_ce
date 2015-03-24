@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once TESTING_LIBRARY_HELPERS_PATH . 'oxNewsSubscribedHelper.php';
+require_once TEST_LIBRARY_HELPERS_PATH . 'oxNewsSubscribedHelper.php';
 
 class Unit_Core_oxnewssubscribedTest extends OxidTestCase
 {

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once TESTING_LIBRARY_HELPERS_PATH . 'oxBasketHelper.php';
+require_once TEST_LIBRARY_HELPERS_PATH . 'oxBasketHelper.php';
 
 class Unit_oxsessionTest_oxUtilsServer extends oxUtilsServer
 {
@@ -125,7 +125,7 @@ class testSession extends oxSession
      */
     static public function deleteVar($sVar)
     {
-        unset($this->_aSessionVars[$sVar]);
+        unset(self::$_aSessionVars[$sVar]);
     }
 
     /**

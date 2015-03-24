@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once TESTING_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
+require_once TEST_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
 
 class modOxView extends oxView
 {

@@ -23,7 +23,8 @@
         <blacklist>
             <directory suffix=".php">application/controllers/admin/reports/</directory>
             <directory suffix=".php">application/views/</directory>
-            <directory suffix=".php">core/phpdtaus/</directory>
+            <directory suffix=".php">core/smarty</directory>
+            <directory suffix=".php">core/wysiwigpro/</directory>
             <directory suffix=".php">core/jpgraph/</directory>
             <directory suffix=".php">core/adodblite/</directory>
             <directory suffix=".php">core/tcpdf/</directory>
@@ -34,6 +35,7 @@
             <directory suffix=".php">core/objects/</directory>
             <file>core/oxerpbase.php</file>
             <file>core/oxerpcsv.php</file>
+            <file>core/oxerpinterface.php</file>
             <exclude>
                 <file>core/smarty/plugins/block.oxhasrights.php</file>
                 <file>core/smarty/plugins/block.oxifcontent.php</file>

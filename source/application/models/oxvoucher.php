@@ -473,22 +473,24 @@ class oxVoucher extends oxBase
     }
 
     /**
-     * create oxVoucherSeries object of this voucher
+     * create oxVoucherSerie object of this voucher
      *
-     * @return oxVoucherSeries
+     * @throws oxObjectException
+     * 
+     * @return oxVoucherSerie
      */
     public function getSerie()
     {
         if ($this->_oSerie !== null) {
             return $this->_oSerie;
         }
-        $oSeries = oxNew('oxVoucherSerie');
-        if (!$oSeries->load($this->oxvouchers__oxvoucherserieid->value)) {
+        $oSerie = oxNew('oxVoucherSerie');
+        if (!$oSerie->load($this->oxvouchers__oxvoucherserieid->value)) {
             throw oxNew("oxObjectException");
         }
-        $this->_oSerie = $oSeries;
+        $this->_oSerie = $oSerie;
 
-        return $oSeries;
+        return $oSerie;
     }
 
     /**

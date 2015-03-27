@@ -11,7 +11,12 @@
         [{if $priceItem->oxprice2article__oxaddperc->value}]
             [{$priceItem->oxprice2article__oxaddperc->value}] % [{oxmultilang ident="DISCOUNT"}]
         [{else}]
-            [{$priceItem->fbrutprice}] [{$currency->sign}]
+            [{if $oxcmp_basket->isPriceViewModeNetto()}]
+                [{$priceItem->fnetprice}]
+            [{else}]
+                [{$priceItem->fbrutprice}]
+            [{/if}]
+            [{$currency->sign}]
         [{/if}]
         </span>
     </li>

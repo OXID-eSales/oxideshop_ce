@@ -3728,7 +3728,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // trying to find lowest price value
         foreach ($aAmPriceList as $sId => $oItem) {
 
-            $oItemPrice = $this->_getPriceObject();
+            $oItemPrice = $this->_getPriceObject(true);
             if ($oItem->oxprice2article__oxaddabs->value) {
 
                 $dBasePrice = $oItem->oxprice2article__oxaddabs->value;
@@ -3744,8 +3744,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 $oItemPrice->subtractPercent($oItem->oxprice2article__oxaddperc->value);
             }
 
-
-            $aAmPriceList[$sId]->fbrutprice = $oLang->formatCurrency($this->_getPriceForView($oItemPrice));
+            $aAmPriceList[$sId]->fbrutprice = $oLang->formatCurrency($oItemPrice->getBruttoPrice());
+            $aAmPriceList[$sId]->fnetprice = $oLang->formatCurrency($oItemPrice->getNettoPrice());
         }
 
         return $aAmPriceList;

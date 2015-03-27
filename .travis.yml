@@ -35,6 +35,8 @@ before_script:
   # database setup
   - sudo sed -e 's|utf8_unicode_ci|latin1_general_ci|g; s|utf8|latin1|g' --in-place /etc/mysql/my.cnf
   - sudo service mysql restart
+  - mysql -e 'CREATE SCHEMA `oxidehop_ce` DEFAULT CHARACTER SET latin1 COLLATE latin1_general_ci;'
+  - mysql --default-character-set=latin1 oxidehop_ce < source/setup/sql/database.sql
 
   # replace configuration values in config.inc.php
   - sed -i 's|<dbHost_ce>|localhost|; s|<dbName_ce>|oxidehop_ce|; s|<dbUser_ce>|root|; s|<dbPwd_ce>||; s|<sShopURL_ce>|http://localhost|; s|<sShopDir_ce>|'$TRAVIS_BUILD_DIR'/source|; s|<sCompileDir_ce>|'$TRAVIS_BUILD_DIR'/source/tmp|; s|<iUtfMode>|0|; s|$this->iDebug = 0|$this->iDebug = 1|' source/config.inc.php

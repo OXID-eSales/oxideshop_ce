@@ -3744,8 +3744,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 $oItemPrice->subtractPercent($oItem->oxprice2article__oxaddperc->value);
             }
 
-
-            $aAmPriceList[$sId]->fbrutprice = $oLang->formatCurrency($this->_getPriceForView($oItemPrice));
+            $aAmPriceList[$sId]->fbrutprice = $oLang->formatCurrency($oItemPrice->getBruttoPrice());
+            $aAmPriceList[$sId]->fnetprice = $oLang->formatCurrency($oItemPrice->getNettoPrice());
         }
 
         return $aAmPriceList;

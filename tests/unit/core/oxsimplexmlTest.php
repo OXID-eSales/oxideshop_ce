@@ -61,16 +61,19 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
         $oTestObject->modules = new oxStdClass();
         $oTestObject->modules->module = array($oModule1, $oModule2);
 
-        $sTestResult = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
-        $sTestResult .= "<testXml>";
-        $sTestResult .= "<title>TestTitle</title>";
-        $sTestResult .= "<modules>";
-        $sTestResult .= "<module><id>id1</id><active>1</active></module>";
-        $sTestResult .= "<module><id>id2</id><active></active></module>";
-        $sTestResult .= "</modules>";
-        $sTestResult .= "</testXml>\n";
+        $oExpectedXml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"utf-8\"?><testXml/>");
+        $oExpectedXml->addChild("title", "TestTitle");
+        $modules = $oExpectedXml->addChild("modules");
 
-        $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
+        $module = $modules->addChild("module");
+        $module->addChild('id', 'id1');
+        $module->addChild('active', '1');
+
+        $module = $modules->addChild("module");
+        $module->addChild('id', 'id2');
+        $module->addChild('active', '');
+
+        $this->assertEquals($oExpectedXml->asXML(), $oXml->objectToXml($oTestObject, "testXml"));
     }
 
     public function testXmlToObject()

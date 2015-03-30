@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -625,7 +625,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
 
             $aTransTbl = array_flip($aTransTbl) + array_flip($aReplace);
             $sValue = strtr($sValue, $aTransTbl);
-            $sValue = getStr()->preg_replace('/\&\#([0-9]+)\;/me', "chr('\\1')", $sValue);
+            $sValue = preg_replace_callback('/\&\#([0-9]+)\;/m', create_function('$matches', "return chr(\$matches[1]);") , $sValue);
         }
 
         return $sValue;

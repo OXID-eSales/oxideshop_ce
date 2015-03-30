@@ -625,7 +625,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
 
             $aTransTbl = array_flip($aTransTbl) + array_flip($aReplace);
             $sValue = strtr($sValue, $aTransTbl);
-            $sValue = preg_replace_callback('/\&\#([0-9]+)\;/m', create_function('$matches', "return chr(\$matches[1]);") , $sValue);
+            $sValue = getStr()->preg_replace_callback('/\&\#([0-9]+)\;/m', create_function('$matches', "return chr(\$matches[1]);") , $sValue);
         }
 
         return $sValue;

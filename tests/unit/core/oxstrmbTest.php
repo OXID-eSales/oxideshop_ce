@@ -26,12 +26,19 @@
 
 class Unit_Core_oxstrMbTest extends OxidTestCase
 {
-
+    /** @var string */
     protected $_sStrNeedle = "ö";
+
+    /** @var string */
     protected $_sStrHaystack = "Design Bau - auf zu neuen Höhen. Hö hö.";
+
+    /** @var string */
     protected $_sStrUpperCase = "HÖ HÖ";
+
+    /** @var string */
     protected $_sStrHtmlEntities = "HÖ HÖ <b>bold</b>&amp;";
 
+    /** @var oxStrMb */
     protected $_oSubj = null;
 
     public function setup()
@@ -154,6 +161,25 @@ class Unit_Core_oxstrMbTest extends OxidTestCase
         $this->assertEquals(
             $this->_2Utf("HÖ_HÖ"),
             $this->_oSubj->preg_replace(array('/ /', '|//+|'), '_', $this->_2Utf($this->_sStrUpperCase))
+        );
+    }
+
+
+    public function testPregReplaceCallback()
+    {
+        $callBack = create_function('$matches', 'return "_";');
+        $this->assertEquals(
+            $this->_2Utf("HÖ_HÖ"),
+            $this->_oSubj->preg_replace_callback('/ /', $callBack, $this->_2Utf($this->_sStrUpperCase))
+        );
+    }
+
+    public function testPregReplaceCallbackArray()
+    {
+        $callBack = create_function('$matches', 'return "_";');
+        $this->assertEquals(
+            $this->_2Utf("HÖ_HÖ"),
+            $this->_oSubj->preg_replace_callback(array('/ /', '|//+|'), $callBack, $this->_2Utf($this->_sStrUpperCase))
         );
     }
 

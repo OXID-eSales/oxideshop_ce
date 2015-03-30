@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -220,6 +220,30 @@ class oxStrMb
         }
 
         return preg_replace($aPattern, $sString, $sSubject, $iLimit, $iCount);
+    }
+
+    /**
+     * PHP preg_replace() function wrapper
+     *
+     * @param mixed    $pattern  pattern to search for, as a string
+     * @param callable $callback Callback function
+     * @param string   $subject  strings to search and replace
+     * @param int      $limit    maximum possible replacements
+     * @param int      $count    number of replacements done
+     *
+     * @return string
+     */
+    public function preg_replace_callback($pattern, callable $callback, $subject, $limit = -1, &$count = null)
+    {
+        if (is_array($pattern)) {
+            foreach ($pattern as &$item) {
+                $item = $item . 'u';
+            }
+        } else {
+            $pattern = $pattern . 'u';
+        }
+
+        return preg_replace_callback($pattern, $callback, $subject, $limit, $count);
     }
 
     /**

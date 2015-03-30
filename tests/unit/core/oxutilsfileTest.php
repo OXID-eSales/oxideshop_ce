@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -119,7 +119,9 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
         $oUtilsFile = new oxUtilsFile();
         $this->assertFalse($oUtilsFile->urlValidate("test"));
         $this->assertFalse($oUtilsFile->urlValidate("http://www.gggdddzzzfff.com"));
-        $this->assertTrue($oUtilsFile->urlValidate("http://localhost/?param=value"));
+
+        $shopUrl = $this->getTestConfig()->getShopUrl();
+        $this->assertTrue($oUtilsFile->urlValidate($shopUrl ."?param=value"));
     }
 
     public function testCheckFile()

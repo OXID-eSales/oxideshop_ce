@@ -95,6 +95,9 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $sXml .=   '<productId>eShop</productId>';
         $sXml .= '</olcRequest>'."\n";
 
+        // SimpleXML converts empty tags differently on different machines. This is used for unification.
+        $sXml = simplexml_load_string($sXml)->asXML();
+
         $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute'));
         $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
@@ -178,6 +181,9 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $sXml .=   "<shopUrl>$sShopUrl</shopUrl>";
         $sXml .=   '<productId>eShop</productId>';
         $sXml .= '</olcRequest>'."\n";
+
+        // SimpleXML converts empty tags differently on different machines. This is used for unification.
+        $sXml = simplexml_load_string($sXml)->asXML();
 
         $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute'));
         $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -69,6 +69,9 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
         $sTestResult .= "<module><id>id2</id><active></active></module>";
         $sTestResult .= "</modules>";
         $sTestResult .= "</testXml>\n";
+
+        // SimpleXML converts empty tags differently on different machines. This is used for unification.
+        $sTestResult = simplexml_load_string($sTestResult)->asXML();
 
         $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
     }

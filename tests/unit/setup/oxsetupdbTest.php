@@ -35,6 +35,8 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testExecSqlBadConnection()
     {
+        $this->getConfig()->setConfigParam("iDebug", -1);
+
         // bad connection
         $oDb = $this->getMock("OxSetupDb", array("getConnection"));
         $oDb->expects($this->any())->method("getConnection")->will($this->returnValue(null));

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -645,8 +645,9 @@ class oxVoucher extends oxBase
      *
      * @throws oxVoucherException exception
      *
+     * @deprecated on b-dev (2015-03-31); Use function _getGenericDiscountValue()
+     *
      * @return double
-     * @deprecated
      */
     protected function _getGenericDiscoutValue($dPrice)
     {
@@ -711,8 +712,9 @@ class oxVoucher extends oxBase
      *
      * @throws oxVoucherException exception
      *
+     * @deprecated on b-dev (2015-03-31); Use function _getProductDiscountValue()
+     *
      * @return double
-     * @deprecated
      */
     protected function _getProductDiscoutValue($dPrice)
     {
@@ -792,8 +794,9 @@ class oxVoucher extends oxBase
      *
      * @throws oxVoucherException exception
      *
+     * @deprecated on b-dev (2015-03-31); Use function _getCategoryDiscountValue()
+     *
      * @return double
-     * @deprecated
      */
     protected function _getCategoryDiscoutValue($dPrice)
     {

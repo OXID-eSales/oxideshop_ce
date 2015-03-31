@@ -1,8 +1,25 @@
+# Log
+/source/log/
+!/source/log/.htaccess
+!/source/log/oxdebugdb_skipped.sql
+
+# Export
+/source/export/
+!/source/export/.gitkeep
+
+# Temporary files
+/source/tmp/
+!/source/tmp/.htaccess
+
 # Composer
-source/vendor/
+/source/vendor/
 
 # Testing library
-source/test_config.yml
+/source/test_config.yml
+/source/Services/
 
 # IDE
-.idea
+/.idea/
+
+# OS
+.DS_Store

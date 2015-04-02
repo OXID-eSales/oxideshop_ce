@@ -257,7 +257,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * loaded amount prices
      *
-     * @var oxList
+     * @var oxAmountPriceList
      */
     protected $_oAmountPriceList = null;
 
@@ -509,6 +509,22 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     public function __set($sName, $sValue)
     {
         parent::__set($sName, $sValue);
+    }
+
+    /**
+     * @param oxAmountPriceList $amountPriceList
+     */
+    public function setAmountPriceList($amountPriceList)
+    {
+        $this->_oAmountPriceList = $amountPriceList;
+    }
+
+    /**
+     * @return oxAmountPriceList
+     */
+    protected function getAmountPriceList()
+    {
+        return $this->_oAmountPriceList;
     }
 
     /**
@@ -3728,6 +3744,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // trying to find lowest price value
         foreach ($aAmPriceList as $sId => $oItem) {
 
+            /** @var oxPrice $oItemPrice */
             $oItemPrice = $this->_getPriceObject();
             if ($oItem->oxprice2article__oxaddabs->value) {
 
@@ -4044,12 +4061,14 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Collecting assigned to article amount-price list
      *
-     * @return oxList
+     * @return oxAmountPriceList
      */
     protected function _getAmountPriceList()
     {
-        if ($this->_oAmountPriceList === null) {
-            $oAmPriceList = oxNew('oxAmountPricelist');
+        if ($this->getAmountPriceList() === null) {
+            /** @var oxAmountPriceList $oAmPriceList */
+            $oAmPriceList = oxNew('oxAmountPriceList');
+            $this->setAmountPriceList($oAmPriceList);
 
             if (!$this->skipDiscounts()) {
                 //collecting assigned to article amount-price list
@@ -4065,7 +4084,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
             }
 
-            $this->_oAmountPriceList = $oAmPriceList;
+            $this->setAmountPriceList($oAmPriceList);
         }
 
         return $this->_oAmountPriceList;
@@ -4656,6 +4675,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _getPriceObject($blCalculationModeNetto = null)
     {
+        /** @var oxPrice $oPrice */
         $oPrice = oxNew('oxPrice');
 
         if ($blCalculationModeNetto === null) {

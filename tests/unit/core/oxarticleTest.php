@@ -2103,6 +2103,25 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $this->assertEquals(1, count($oAmPriceList));
     }
 
+    public function testLoadAmountPriceInfoToGetBruttoAndNetto()
+    {
+        /** @var oxBase $item */
+        $item = oxNew('oxBase');
+
+        /** @var oxAmountPriceList $amountPriceList */
+        $amountPriceList = oxNew('oxAmountPriceList');
+        $amountPriceList->assign(array($item));
+
+        /** @var oxArticle|PHPUnit_Framework_TestCase $article */
+        $article = oxNew('oxArticle');
+        $article->setAmountPriceList($amountPriceList);
+        $article->oxarticles__oxprice = new oxField(10, oxField::T_RAW);
+        $priceList = $article->loadAmountPriceInfo();
+
+        $this->assertEquals('10,00', $priceList[0]->fbrutprice, 'Brut price was not loaded.');
+        $this->assertEquals('10,00', $priceList[0]->fnetprice, 'Net price was not loaded.');
+    }
+
     /**
      * Test get sql active snippet.
      *

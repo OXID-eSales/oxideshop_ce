@@ -4059,9 +4059,21 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Collecting assigned to article amount-price list
      *
+     * @deprecated on b-dev (2015-04-02); use buildAmountPriceList().
+     *
      * @return oxAmountPriceList
      */
     protected function _getAmountPriceList()
+    {
+        return $this->buildAmountPriceList();
+    }
+
+    /**
+     * Collecting assigned to article amount-price list.
+     *
+     * @return oxAmountPriceList
+     */
+    protected function buildAmountPriceList()
     {
         if ($this->getAmountPriceList() === null) {
             /** @var oxAmountPriceList $oAmPriceList */
@@ -4076,8 +4088,10 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 $oBasePrice = $this->_getGroupPrice();
                 foreach ($oAmPriceList as $oAmPrice) {
                     if ($oAmPrice->oxprice2article__oxaddperc->value) {
-                        $oAmPrice->oxprice2article__oxaddabs = new oxField(oxPrice::percent($oBasePrice,
-                            100 - $oAmPrice->oxprice2article__oxaddperc->value), oxField::T_RAW);
+                        $oAmPrice->oxprice2article__oxaddabs = new oxField(
+                            oxPrice::percent($oBasePrice, 100 - $oAmPrice->oxprice2article__oxaddperc->value),
+                            oxField::T_RAW
+                        );
                     }
                 }
             }

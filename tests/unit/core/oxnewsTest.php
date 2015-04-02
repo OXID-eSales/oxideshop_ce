@@ -174,25 +174,9 @@ class Unit_Core_oxnewsTest extends OxidTestCase
      */
     public function testIsInGroup()
     {
-        if (!getenv('TRAVIS_ERROR_LEVEL')) {
-            $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
-        }
-
-        $e = null;
-        try {
-            $oTestNews = oxNew('oxnews');
-            $oTestNews->load($this->_oNews->getId());
-            $this->assertTrue($oTestNews->inGroup('oxidnewcustomer'));
-        } catch (Exception $e) {
-        }
-
-        if (!getenv('TRAVIS_ERROR_LEVEL')) {
-            error_reporting($iErrorReporting);
-        }
-
-        if ($e) {
-            throw $e;
-        }
+        $oTestNews = oxNew('oxnews');
+        $oTestNews->load($this->_oNews->getId());
+        $this->assertTrue($oTestNews->inGroup('oxidnewcustomer'));
     }
 
     /**
@@ -200,25 +184,9 @@ class Unit_Core_oxnewsTest extends OxidTestCase
      */
     public function testIsNotInGroup()
     {
-        if (!getenv('TRAVIS_ERROR_LEVEL')) {
-            $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
-        }
-
-        $e = null;
-        try {
-            $oTestNews = oxNew('oxnews');
-            $oTestNews->load($this->_oNews->getId());
-            $this->assertFalse($oTestNews->inGroup('xxx'));
-        } catch (Exception $e) {
-        }
-
-        if (!getenv('TRAVIS_ERROR_LEVEL')) {
-            error_reporting($iErrorReporting);
-        }
-
-        if ($e) {
-            throw $e;
-        }
+        $oTestNews = oxNew('oxnews');
+        $oTestNews->load($this->_oNews->getId());
+        $this->assertFalse($oTestNews->inGroup('xxx'));
     }
 
     /**
@@ -226,32 +194,16 @@ class Unit_Core_oxnewsTest extends OxidTestCase
      */
     public function testInsert()
     {
-        if (!getenv('TRAVIS_ERROR_LEVEL')) {
-            $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        $oTestNews = oxNew('oxnews');
+        $oTestNews->oxnews__oxdate = new oxField("2009-05-17");
+        $oTestNews->UNITinsert();
+
+        $oNews = oxNew('oxnews');
+        if (!$oNews->load($oTestNews->getId())) {
+            $this->fail('insert failed');
         }
 
-        $e = null;
-        try {
-            $oTestNews = oxNew('oxnews');
-            $oTestNews->oxnews__oxdate = new oxField("2009-05-17");
-            $oTestNews->UNITinsert();
-
-            $oNews = oxNew('oxnews');
-            if (!$oNews->load($oTestNews->getId())) {
-                $this->fail('insert failed');
-            }
-
-            $this->assertEquals("17.05.2009", $oNews->oxnews__oxdate->value);
-        } catch (Exception $e) {
-        }
-
-        if (!getenv('TRAVIS_ERROR_LEVEL')) {
-            error_reporting($iErrorReporting);
-        }
-
-        if ($e) {
-            throw $e;
-        }
+        $this->assertEquals("17.05.2009", $oNews->oxnews__oxdate->value);
     }
 
     /**
@@ -259,32 +211,16 @@ class Unit_Core_oxnewsTest extends OxidTestCase
      */
     public function testInsert_dateIsZero()
     {
-        if (!getenv('TRAVIS_ERROR_LEVEL')) {
-            $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        $oTestNews = oxNew('oxnews');
+        $oTestNews->oxnews__oxdate = new oxField("0000-00-00");
+        $oTestNews->UNITinsert();
+
+        $oNews = oxNew('oxnews');
+        if (!$oNews->load($oTestNews->getId())) {
+            $this->fail('insert failed');
         }
 
-        $e = null;
-        try {
-            $oTestNews = oxNew('oxnews');
-            $oTestNews->oxnews__oxdate = new oxField("0000-00-00");
-            $oTestNews->UNITinsert();
-
-            $oNews = oxNew('oxnews');
-            if (!$oNews->load($oTestNews->getId())) {
-                $this->fail('insert failed');
-            }
-
-            $this->assertEquals(date("d.m.Y"), $oNews->oxnews__oxdate->value);
-        } catch (Exception $e) {
-        }
-
-        if (!getenv('TRAVIS_ERROR_LEVEL')) {
-            error_reporting($iErrorReporting);
-        }
-
-        if ($e) {
-            throw $e;
-        }
+        $this->assertEquals(date("d.m.Y"), $oNews->oxnews__oxdate->value);
     }
 
     /**
@@ -292,27 +228,15 @@ class Unit_Core_oxnewsTest extends OxidTestCase
      */
     public function testInsert_dateNotEntered()
     {
-        if (!getenv('TRAVIS_ERROR_LEVEL')) {
-            $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        $oTestNews = oxNew('oxnews');
+        $oTestNews->UNITinsert();
+
+        $oNews = oxNew('oxnews');
+        if (!$oNews->load($oTestNews->getId())) {
+            $this->fail('insert failed');
         }
 
-        $e = null;
-        try {
-            $oTestNews = oxNew('oxnews');
-            $oTestNews->UNITinsert();
-
-            $oNews = oxNew('oxnews');
-            if (!$oNews->load($oTestNews->getId())) {
-                $this->fail('insert failed');
-            }
-
-            $this->assertEquals(date("d.m.Y"), $oNews->oxnews__oxdate->value);
-        } catch (Exception $e) {
-        }
-
-        if (!getenv('TRAVIS_ERROR_LEVEL')) {
-            error_reporting($iErrorReporting);
-        }
+        $this->assertEquals(date("d.m.Y"), $oNews->oxnews__oxdate->value);
     }
 
     /**

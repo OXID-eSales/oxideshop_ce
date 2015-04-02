@@ -1027,56 +1027,37 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendPriceAlarmNotification()
     {
-        if (!getenv('TRAVIS_ERROR_LEVEL')) {
-            $iErrorReporting = error_reporting(E_ALL ^ E_NOTICE);
+        $aParams['email'] = 'username@useremail.nl';
+        $aParams['aid'] = '_testArticleId';
+
+        $oAlarm = oxNew("oxpricealarm");
+        $oAlarm->oxpricealarm__oxprice = new oxField('123', oxField::T_RAW);
+
+        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
+        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
+        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
+
+        $blRet = $oEmail->sendPriceAlarmNotification($aParams, $oAlarm);
+        $this->assertTrue($blRet, 'Price alarm mail was not sent to user');
+
+        // check mail fields
+        $aFields['sRecipient'] = 'orderemail@orderemail.nl';
+        $aFields['sRecipientName'] = 'testShopName';
+        $aFields['sSubject'] = oxRegistry::getLang()->translateString('PRICE_ALERT_FOR_PRODUCT', 0) . " testArticle";
+        $aFields['sFrom'] = 'username@useremail.nl';
+        $aFields['sReplyTo'] = 'username@useremail.nl';
+
+        // check mail fields
+        if (!$this->checkMailFields($aFields, $oEmail)) {
+            $this->fail('Incorect mail fields');
         }
 
-        $e = null;
+        //uncoment line to generate template for checking mail body
+        //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
-        try {
-            $oParams = new stdclass();
-
-            $aParams['email'] = 'username@useremail.nl';
-            $aParams['aid'] = '_testArticleId';
-
-            $oAlarm = oxNew("oxpricealarm");
-            $oAlarm->oxpricealarm__oxprice = new oxField('123', oxField::T_RAW);
-
-            $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
-            $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-            $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
-            $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
-
-            $blRet = $oEmail->sendPriceAlarmNotification($aParams, $oAlarm);
-            $this->assertTrue($blRet, 'Price alarm mail was not sent to user');
-
-            // check mail fields
-            $aFields['sRecipient'] = 'orderemail@orderemail.nl';
-            $aFields['sRecipientName'] = 'testShopName';
-            $aFields['sSubject'] = oxRegistry::getLang()->translateString('PRICE_ALERT_FOR_PRODUCT', 0) . " testArticle";
-            $aFields['sFrom'] = 'username@useremail.nl';
-            $aFields['sReplyTo'] = 'username@useremail.nl';
-
-            // check mail fields
-            if (!$this->checkMailFields($aFields, $oEmail)) {
-                $this->fail('Incorect mail fields');
-            }
-
-            //uncoment line to generate template for checking mail body
-            //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
-
-            if (!$this->checkMailBody('testSendPriceAlarmNotification', $oEmail->getBody())) {
-                $this->fail('Incorect mail body');
-            }
-        } catch (Exception $e) {
-        }
-
-        if (!getenv('TRAVIS_ERROR_LEVEL')) {
-            error_reporting($iErrorReporting);
-        }
-
-        if ($e) {
-            throw $e;
+        if (!$this->checkMailBody('testSendPriceAlarmNotification', $oEmail->getBody())) {
+            $this->fail('Incorect mail body');
         }
     }
 

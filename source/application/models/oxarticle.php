@@ -388,21 +388,25 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @var array
      */
-    protected $_aNonCopyParentFields = array('oxarticles__oxinsert',
-                                             'oxarticles__oxtimestamp',
-                                             'oxarticles__oxnid',
-                                             'oxarticles__oxid',
-                                             'oxarticles__oxparentid');
+    protected $_aNonCopyParentFields = array(
+        'oxarticles__oxinsert',
+        'oxarticles__oxtimestamp',
+        'oxarticles__oxnid',
+        'oxarticles__oxid',
+        'oxarticles__oxparentid'
+    );
 
     /**
      * Override certain parent fields to variant
      *
      * @var array
      */
-    protected $_aCopyParentField = array('oxarticles__oxnonmaterial',
-                                         'oxarticles__oxfreeshipping',
-                                         'oxarticles__oxisdownloadable',
-                                         'oxarticles__oxshowcustomagreement');
+    protected $_aCopyParentField = array(
+        'oxarticles__oxnonmaterial',
+        'oxarticles__oxfreeshipping',
+        'oxarticles__oxisdownloadable',
+        'oxarticles__oxshowcustomagreement'
+    );
 
     /**
      * Multidimensional variant tree structure
@@ -973,7 +977,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     public function isRangePrice()
     {
         if ($this->_blIsRangePrice === null) {
-
             $this->setRangePrice(false);
 
             if ($this->_hasAnyVariant()) {
@@ -1470,7 +1473,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $aVariantSelections = false;
             if ($this->oxarticles__oxvarcount->value) {
                 $oVariants = $this->getVariants(false);
-                $aVariantSelections = oxNew("oxVariantHandler")->buildVariantSelections($this->oxarticles__oxvarname->getRawValue(), $oVariants, $aFilterIds, $sActVariantId, $iLimit);
+                $aVariantSelections = oxNew("oxVariantHandler")->buildVariantSelections($this->oxarticles__oxvarname->getRawValue(),
+                    $oVariants, $aFilterIds, $sActVariantId, $iLimit);
 
                 if (!empty($oVariants) && empty($aVariantSelections['rawselections'])) {
                     $aVariantSelections = false;
@@ -1640,7 +1644,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 $oStr = getStr();
                 $sWhere = $oCategory->getSqlActiveSnippet();
                 $sSelect = $this->_generateSearchStr($sOXID);
-                $sSelect .= ($oStr->strstr($sSelect, 'where') ? ' and ' : ' where ') . $sWhere . " order by oxobject2category.oxtime limit 1";
+                $sSelect .= ($oStr->strstr($sSelect,
+                        'where') ? ' and ' : ' where ') . $sWhere . " order by oxobject2category.oxtime limit 1";
 
                 // category not found ?
                 if (!$oCategory->assignRecord($sSelect)) {
@@ -1747,7 +1752,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     {
         $sManufacturerId = false;
         if ($this->oxarticles__oxmanufacturerid->value) {
-
             $sManufacturerId = $this->oxarticles__oxmanufacturerid->value;
 
         }
@@ -1901,7 +1905,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         $this->_blSkipDiscounts = false;
         if (oxRegistry::get("oxDiscountList")->hasSkipDiscountCategories()) {
-
             $oDb = oxDb::getDb();
             $sO2CView = getViewName('oxobject2category', $this->getLanguage());
             $sViewName = getViewName('oxcategories', $this->getLanguage());
@@ -1966,7 +1969,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         // return cached result, since oPrice is created ONLY in this function [or function of EQUAL level]
         if ($dAmount != 1 || $this->_oPrice === null) {
-
             // module
             $dBasePrice = $this->getBasePrice($dAmount);
             $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat());
@@ -2232,7 +2234,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                     $sActPic = $sPicVal;
                     $blCheckActivePicId = false;
                 }
-
             } elseif ($blCheckActivePicId && $iActPicId <= $i) {
                 // if picture is empty, setting active pic id to next
                 // picture
@@ -2259,13 +2260,15 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
         }
 
-        $aPicGallery = array('ActPicID' => $iActPicId,
-                             'ActPic'   => $sActPic,
-                             'MorePics' => $blMorePic,
-                             'Pics'     => $aArtPics,
-                             'Icons'    => $aArtIcons,
-                             'ZoomPic'  => $blZoomPic,
-                             'ZoomPics' => $aZoomPics);
+        $aPicGallery = array(
+            'ActPicID' => $iActPicId,
+            'ActPic'   => $sActPic,
+            'MorePics' => $blMorePic,
+            'Pics'     => $aArtPics,
+            'Icons'    => $aArtIcons,
+            'ZoomPic'  => $blZoomPic,
+            'ZoomPics' => $aZoomPics
+        );
 
         return $aPicGallery;
     }
@@ -2713,7 +2716,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     public function getMoreDetailLink()
     {
         if ($this->_sMoreDetailLink == null) {
-
             // and assign special article values
             $this->_sMoreDetailLink = $this->getConfig()->getShopHomeURL() . 'cl=moredetails';
 
@@ -2908,7 +2910,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
             $sSize = $this->getConfig()->getConfigParam('aDetailImageSizes');
 
-            return oxRegistry::get("oxPictureHandler")->getProductPicUrl("product/{$iIndex}/", $sImgName, $sSize, 'oxpic' . $iIndex);
+            return oxRegistry::get("oxPictureHandler")
+                ->getProductPicUrl("product/{$iIndex}/", $sImgName, $sSize, 'oxpic' . $iIndex);
         }
     }
 
@@ -2978,7 +2981,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $sImgName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
             $sSize = $this->getConfig()->getConfigParam("sZoomImageSize");
 
-            return oxRegistry::get("oxPictureHandler")->getProductPicUrl("product/{$iIndex}/", $sImgName, $sSize, 'oxpic' . $iIndex);
+            return oxRegistry::get("oxPictureHandler")->getProductPicUrl("product/{$iIndex}/", $sImgName, $sSize,
+                'oxpic' . $iIndex);
         }
     }
 
@@ -3262,7 +3266,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $oArticleFiles->init("oxfile");
             $oArticleFiles->selectString($sQ);
             $this->_aArticleFiles = $oArticleFiles;
-
         }
 
         return $this->_aArticleFiles;
@@ -3331,13 +3334,13 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 if (isset($this->_aVariants[$sCacheKey])) {
                     return $this->_aVariants[$sCacheKey];
                 } else {
-                    $this->_aVariants[$sCacheKey] = & $oVariants;
+                    $this->_aVariants[$sCacheKey] = &$oVariants;
                 }
             } elseif (!$blRemoveNotOrderables) {
                 if (isset($this->_aVariantsWithNotOrderables[$sCacheKey])) {
                     return $this->_aVariantsWithNotOrderables[$sCacheKey];
                 } else {
-                    $this->_aVariantsWithNotOrderables[$sCacheKey] = & $oVariants;
+                    $this->_aVariantsWithNotOrderables[$sCacheKey] = &$oVariants;
                 }
             }
 
@@ -3712,7 +3715,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $myConfig = $this->getConfig();
         // #690
         if ($myConfig->getConfigParam('bl_perfLoadSelectLists') && $myConfig->getConfigParam('bl_perfUseSelectlistPrice')) {
-
             $aSelLists = $this->getSelectLists();
 
             foreach ($aSelLists as $key => $aSel) {
@@ -3743,17 +3745,14 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         // trying to find lowest price value
         foreach ($aAmPriceList as $sId => $oItem) {
-
             /** @var oxPrice $oItemPrice */
             $oItemPrice = $this->_getPriceObject();
             if ($oItem->oxprice2article__oxaddabs->value) {
-
                 $dBasePrice = $oItem->oxprice2article__oxaddabs->value;
                 $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat());
 
                 $oItemPrice->setPrice($dBasePrice);
                 $this->_calculatePrice($oItemPrice);
-
             } else {
                 $dBasePrice = $this->_getGroupPrice();
                 $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat());
@@ -3986,7 +3985,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             // adding article parent
             $sIn .= ", '{$this->oxarticles__oxparentid->value}' ";
             $sParentIdForVariants = $this->oxarticles__oxparentid->value;
-
         } else {
             $sParentIdForVariants = $this->getId();
         }
@@ -4078,10 +4076,10 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 $oBasePrice = $this->_getGroupPrice();
                 foreach ($oAmPriceList as $oAmPrice) {
                     if ($oAmPrice->oxprice2article__oxaddperc->value) {
-                        $oAmPrice->oxprice2article__oxaddabs = new oxField(oxPrice::percent($oBasePrice, 100 - $oAmPrice->oxprice2article__oxaddperc->value), oxField::T_RAW);
+                        $oAmPrice->oxprice2article__oxaddabs = new oxField(oxPrice::percent($oBasePrice,
+                            100 - $oAmPrice->oxprice2article__oxaddperc->value), oxField::T_RAW);
                     }
                 }
-
             }
 
             $this->setAmountPriceList($oAmPriceList);
@@ -4123,11 +4121,15 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         $sFieldName = strtolower($sFieldName);
 
-        if ($sFieldName == 'oxarticles__oxicon' && (strpos($mValue, "nopic_ico.jpg") !== false || strpos($mValue, "nopic.jpg") !== false)) {
+        if ($sFieldName == 'oxarticles__oxicon' && (strpos($mValue, "nopic_ico.jpg") !== false || strpos($mValue,
+                    "nopic.jpg") !== false)
+        ) {
             return true;
         }
 
-        if (strpos($mValue, "nopic.jpg") !== false && ($sFieldName == 'oxarticles__oxthumb' || substr($sFieldName, 0, 17) == 'oxarticles__oxpic' || substr($sFieldName, 0, 18) == 'oxarticles__oxzoom')) {
+        if (strpos($mValue, "nopic.jpg") !== false && ($sFieldName == 'oxarticles__oxthumb' || substr($sFieldName, 0,
+                    17) == 'oxarticles__oxpic' || substr($sFieldName, 0, 18) == 'oxarticles__oxzoom')
+        ) {
             return true;
         }
 
@@ -4183,7 +4185,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _isImageField($sFieldName)
     {
-        $blIsImageField = (stristr($sFieldName, '_oxthumb') || stristr($sFieldName, '_oxicon') || stristr($sFieldName, '_oxzoom') || stristr($sFieldName, '_oxpic'));
+        $blIsImageField = (stristr($sFieldName, '_oxthumb') || stristr($sFieldName, '_oxicon') || stristr($sFieldName,
+                '_oxzoom') || stristr($sFieldName, '_oxpic'));
 
         return $blIsImageField;
     }
@@ -4214,7 +4217,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             ($this->_blHasVariants || $this->oxarticles__oxvarstock->value || $this->oxarticles__oxvarcount->value)
         ) {
             $this->_blNotBuyableParent = true;
-
         }
     }
 
@@ -4557,7 +4559,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             ($this->oxarticles__oxstock->value + $this->oxarticles__oxvarstock->value) <= 0
         ) {
 
-            $this->_onChangeResetCounts($sOxid, $this->oxarticles__oxvendorid->value, $this->oxarticles__oxmanufacturerid->value);
+            $this->_onChangeResetCounts($sOxid, $this->oxarticles__oxvendorid->value,
+                $this->oxarticles__oxmanufacturerid->value);
         }
     }
 

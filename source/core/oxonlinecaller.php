@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -32,6 +32,9 @@ abstract class oxOnlineCaller
 {
 
     const ALLOWED_HTTP_FAILED_CALLS_COUNT = 4;
+
+    /** Amount of seconds for curl execution timeout. */
+    const CURL_EXECUTION_TIMEOUT = 5;
 
     /**
      * @var oxCurl
@@ -177,6 +180,10 @@ abstract class oxOnlineCaller
         $oCurl->setMethod('POST');
         $oCurl->setUrl($sUrl);
         $oCurl->setParameters(array('xmlRequest' => $sXml));
+        $oCurl->setOption(
+            oxCurl::EXECUTION_TIMEOUT_OPTION,
+            static::CURL_EXECUTION_TIMEOUT
+        );
         $sOutput = $oCurl->execute();
 
         return $sOutput;

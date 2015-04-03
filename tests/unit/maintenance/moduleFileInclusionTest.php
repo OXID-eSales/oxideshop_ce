@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -40,9 +40,6 @@ class Unit_Maintenance_moduleFileInclusionTest extends OxidTestCase
 
         $oTestMod = oxNew('testmod');
         $this->assertEquals("Hi!", $oTestMod->sayHi());
-
-        //the folowing line whoich acts as double declaration is not required after #4301 is fixed
-        oxUtilsObject::getInstance()->setModuleVar('aModules', array('oxarticle' => 'testmod'));
 
         $oTestArt = oxNew('oxarticle');
         $this->assertEquals("Hi!", $oTestArt->sayHi());

@@ -138,8 +138,6 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testAddGlobalParams()
     {
-        $myConfig = $this->getConfig();
-
         $oView = new oxView();
 
         $oView->addGlobalParams();

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -332,21 +332,21 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendBackupMailWithAttachment()
     {
-        $myConfig = oxRegistry::getConfig();
+        $fileToAttach = $this->createFile('alternativeFile.php', '');
+        $filesToAttach = array(basename($fileToAttach));
+        $filesToAttachDirectory = dirname($fileToAttach);
+        $emailAddress = 'username@useremail.nl';
+        $subject = 'testBackupMailSubject';
+        $message = 'testBackupMailMessage';
+        $status = array();
+        $errors = array();
 
-        $aAttFiles[] = basename(__FILE__);
-        $sAttPath = getTestsBasePath() . "/unit/core/";
-        $sEmailAdress = 'username@useremail.nl';
-        $sSubject = 'testBackupMailSubject';
-        $sMessage = 'testBackupMailMessage';
-        $aStatus = array();
-        $aError = array();
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        $email = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
+        $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
+        $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
-
-        $blRet = $oEmail->sendBackupMail($aAttFiles, $sAttPath, $sEmailAdress, $sSubject, $sMessage, $aStatus, $aError);
+        $blRet = $email->sendBackupMail($filesToAttach, $filesToAttachDirectory, $emailAddress, $subject, $message, $status, $errors);
         $this->assertTrue($blRet, 'Backup mail was not sent to shop owner');
     }
 
@@ -355,24 +355,24 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendBackupMailWithAttachmentStatusCode()
     {
-        $myConfig = oxRegistry::getConfig();
+        $fileToAttach = $this->createFile('alternativeFile.php', '');
+        $filesToAttach = array(basename($fileToAttach));
+        $filesToAttachDirectories = dirname($fileToAttach);
+        $emailAddress = 'username@useremail.nl';
+        $subject = 'testBackupMailSubject';
+        $message = 'testBackupMailMessage';
+        $status = array();
+        $errors = array();
 
-        $aAttFiles[] = basename(__FILE__);
-        $sAttPath = getTestsBasePath() . "/unit/core/";
-        $sEmailAdress = 'username@useremail.nl';
-        $sSubject = 'testBackupMailSubject';
-        $sMessage = 'testBackupMailMessage';
-        $aStatus = array();
-        $aError = array();
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        $email = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
+        $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
+        $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
-
-        $oEmail->sendBackupMail($aAttFiles, $sAttPath, $sEmailAdress, $sSubject, $sMessage, $aStatus, $aError);
+        $email->sendBackupMail($filesToAttach, $filesToAttachDirectories, $emailAddress, $subject, $message, $status, $errors);
 
         //check status code
-        $this->assertEquals(3, $aStatus[0], "Attachment was not icluded im mail");
+        $this->assertEquals(3, $status[0], "Attachment was not icluded im mail");
     }
 
     /*
@@ -381,28 +381,29 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendBackupMailWithWrongAttachmentGeneratesErrorCodes()
     {
-        $myConfig = oxRegistry::getConfig();
+        $fileToAttach = $this->createFile('alternativeFile.php', '');
+        $filesToAttach = array(basename($fileToAttach));
+        $filesToAttachDirectory = 'nosuchdir';
 
-        $aAttFiles[] = basename(__FILE__);
-        $sAttPath = 'nosuchdir';
-        $sEmailAdress = 'username@useremail.nl';
-        $sSubject = 'testBackupMailSubject';
-        $sMessage = 'testBackupMailMessage';
-        $aStatus = array();
-        $aError = array();
+        $emailAddress = 'username@useremail.nl';
+        $subject = 'testBackupMailSubject';
+        $message = 'testBackupMailMessage';
+        $status = array();
+        $errors = array();
 
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
         $oEmail->expects($this->never())->method('_sendMail');
         $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
 
-        $blRet = $oEmail->sendBackupMail($aAttFiles, $sAttPath, $sEmailAdress, $sSubject, $sMessage, $aStatus, $aError);
+        $blRet = $oEmail->sendBackupMail($filesToAttach, $filesToAttachDirectory, $emailAddress, $subject, $message, $status, $errors);
         $this->assertFalse($blRet, 'Bad backup mail was not sent to shop owner');
 
         // checking error codes
         // 4 - backup mail was not sent
         // 5 - file not found
-        $this->assertTrue((in_array(5, $aError[0])), "Wrong attachment was icluded in mail");
-        $this->assertTrue((in_array(4, $aError[1])), "Wrong attachment was was sent");
+        $this->assertTrue((in_array(5, $errors[0])), "Wrong attachment was icluded in mail");
+        $this->assertTrue((in_array(4, $errors[1])), "Wrong attachment was was sent");
     }
 
     /*

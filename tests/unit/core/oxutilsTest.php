@@ -829,20 +829,19 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testGetRemoteCachePath()
     {
-        $sTestsPath = getTestsBasePath();
-        touch($sTestsPath.'misc/actions_main.inc.php', time(), time());
-        $this->assertEquals($sTestsPath.'misc/actions_main.inc.php', oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', $sTestsPath.'misc/actions_main.inc.php'));
+        $tempFile = $this->createFile('actions_main.inc.php', '');
+        touch($tempFile, time(), time());
+        $this->assertEquals($tempFile, oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', $tempFile));
         //ensure that file is older than 24h
-        touch($sTestsPath.'misc/actions_main.inc.php', time() - 90000, time() - 90000);
-        $this->assertEquals($sTestsPath.'misc/actions_main.inc.php', oxRegistry::getUtils()->GetRemoteCachePath(oxRegistry::getConfig()->getShopURL(), $sTestsPath.'misc/actions_main.inc.php'));
-        touch($sTestsPath.'misc/actions_main.inc.php', time() - 90000, time() - 90000);
-        $this->assertEquals($sTestsPath.'misc/actions_main.inc.php', oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', $sTestsPath.'misc/actions_main.inc.php'));
+        touch($tempFile, time() - 90000, time() - 90000);
+        $this->assertEquals($tempFile, oxRegistry::getUtils()->GetRemoteCachePath(oxRegistry::getConfig()->getShopURL(), $tempFile));
+        touch($tempFile, time() - 90000, time() - 90000);
+        $this->assertEquals($tempFile, oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', $tempFile));
         $this->assertEquals(false, oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', 'misc/blafoo.test'));
     }
 
     public function testCheckAccessRights()
     {
-
         $mySession = oxRegistry::getSession();
         $backUpAuth = $mySession->getVariable("auth");
 

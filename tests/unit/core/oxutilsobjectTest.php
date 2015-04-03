@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+use org\bovigo\vfs\vfsStream;
+
 class modOxUtilsObject_oxUtilsObject extends oxUtilsObject
 {
 
@@ -79,8 +81,8 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
     {
         oxRemClassModule('modOxUtilsObject_oxUtilsObject');
 
-        $oConfigFile = new OxConfigFile(OX_BASE_PATH . "config.inc.php");
-        OxRegistry::set("OxConfigFile", $oConfigFile);
+        $oConfigFile = new oxConfigFile(OX_BASE_PATH . "config.inc.php");
+        oxRegistry::set("oxConfigFile", $oConfigFile);
 
 
         $oArticle = new oxarticle();
@@ -108,63 +110,131 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
         $this->assertTrue(oxNew('_oxutils_test', 1, 2, 3, 4) instanceof _oxutils_test);
     }
 
-    public function testOxNew()
+    public function testOxNewSettingParameters()
     {
-        // 20070808-AS - check known classnames
-        $oArticle = oxNew('oxarticle');
-        $oArticle = oxNew('oxarticle', array('aaa' => 'bbb'));
         $oArticle = oxNew('oxarticle', array('aaa' => 'bbb'));
 
         $this->assertTrue($oArticle instanceof oxarticle);
         $this->assertTrue(isset($oArticle->aaa));
         $this->assertEquals('bbb', $oArticle->aaa);
-        $sShopDir = getTestsBasePath() . "misc/";
+    }
 
-        modConfig::getInstance()->setConfigParam("sShopDir", $sShopDir);
-        include_once $sShopDir . "/modules/oxNewDummyModule.php";
+    public function testOxNewClassExtendingWhenClassesExists()
+    {
+        $structure = array(
+            'modules' => array(
+                'oxNewDummyModule.php' => '
+                <?php
+                class oxNewDummyModule {
+                    public function test() {
+                        return "oxNewDummyModule";
+                    }
+                }',
+
+                'oxNewDummyUserModule.php' => '
+                <?php
+                class oxNewDummyUserModule extends oxNewDummyUserModule_parent {
+                    public function test() {
+                        return "oxNewDummyUserModule";
+                    }
+                }',
+
+                'oxNewDummyUserModule2.php' => '
+                <?php
+                class oxNewDummyUserModule2 extends oxNewDummyUserModule2_parent {
+                    public function test() {
+                        return "oxNewDummyUserModule2";
+                    }
+                }',
+            )
+        );
+        vfsStream::setup('root', null, $structure);
+        $fakeShopDir = vfsStream::url('root');
 
         $aModules = array(strtolower('oxNewDummyModule') => 'oxNewDummyUserModule&oxNewDummyUserModule2');
-        modConfig::getInstance()->setConfigParam("aModules", $aModules);
-        oxUtilsObject::resetModuleVars();
+
+        include_once $fakeShopDir . "/modules/oxNewDummyModule.php";
+
+        $config = $this->getConfig();
+
+        oxRegistry::get("oxUtilsObject")->setModuleVar("aModules", $aModules);
+        $config->setConfigParam("aModules", $aModules);
+
+        $configFile = oxRegistry::get("oxConfigFile");
+        $realShopDir = $configFile->getVar('sShopDir');
+        $configFile->setVar('sShopDir', $fakeShopDir);
 
         $oNewDummyModule = oxNew("oxNewDummyModule");
+
+        $configFile->setVar('sShopDir', $realShopDir);
+
         $this->assertTrue($oNewDummyModule instanceof oxNewDummyModule);
-
-        //the following code should work uncommented after #4301 is fixed
-        /*
-        $oNewDummyUserModule = oxNew("oxNewDummyUserModule");
-        $this->assertTrue($oNewDummyModule instanceof $oNewDummyUserModule);
-        //$oNewDummyUserModule2 = modUtils_oxNew("oxNewDummyUserModule2");
-        $oNewDummyUserModule2 = oxNew("oxNewDummyUserModule2");
-        $this->assertTrue($oNewDummyModule instanceof $oNewDummyUserModule2);*/
-
-        //if extended class do not exists, shop should work #3371
-        $aModules = array(strtolower('oxNewDummyModule') => 'oxNewDummyUserModule&notExisting');
-        modConfig::getInstance()->setConfigParam("aModules", $aModules);
-        oxUtilsObject::resetModuleVars();
-
-        $oNewDummyModule = oxNew("oxNewDummyModule");
-        $this->assertTrue($oNewDummyModule instanceof oxNewDummyModule);
-
-        try {
-            // This code is expected to raise an exception ...
-            $oNewExc = oxNew("non_existing_class");
-            $this->fail('An expected oxSystemComponentException has not been raised.');
-        } catch (oxSystemComponentException $oEx) {
-            // Expected result if oxNew cannot create an object.
-            $this->assertEquals($oEx->getMessage(), 'EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
-        }
+        $this->assertTrue($oNewDummyModule instanceof oxNewDummyUserModule);
+        $this->assertTrue($oNewDummyModule instanceof oxNewDummyUserModule2);
     }
 
+    public function testOxNewClassExtendingWhenClassesDoesNotExists()
+    {
+        $structure = array(
+            'modules' => array(
+                'oxNewDummyModule.php' => '
+                <?php
+                class oxNewDummyModule {
+                    public function test() {
+                        return "oxNewDummyModule";
+                    }
+                }',
+
+                'oxNewDummyUserModule.php' => '
+                <?php
+                class oxNewDummyUserModule extends oxNewDummyUserModule_parent {
+                    public function test() {
+                        return "oxNewDummyUserModule";
+                    }
+                }',
+            )
+        );
+        vfsStream::setup('root', null, $structure);
+        $fakeShopDir = vfsStream::url('root');
+
+        $aModules = array(strtolower('oxNewDummyModule') => 'oxNewDummyUserModule&notExistingClass');
+
+        include_once $fakeShopDir . "/modules/oxNewDummyModule.php";
+
+        $config = $this->getConfig();
+
+        oxRegistry::get("oxUtilsObject")->setModuleVar("aModules", $aModules);
+        $config->setConfigParam("aModules", $aModules);
+
+        $configFile = oxRegistry::get("oxConfigFile");
+        $realShopDir = $configFile->getVar('sShopDir');
+        $configFile->setVar('sShopDir', $fakeShopDir);
+
+        $oNewDummyModule = oxNew("oxNewDummyModule");
+
+        $configFile->setVar('sShopDir', $realShopDir);
+
+        $this->assertTrue($oNewDummyModule instanceof oxNewDummyModule);
+        $this->assertTrue($oNewDummyModule instanceof oxNewDummyUserModule);
+        $this->assertFalse($oNewDummyModule instanceof oxNewDummyUserModule2);
+    }
+
+    public function testOxNewCreationOfNonExistingClass()
+    {
+        $this->setExpectedException('oxSystemComponentException', 'EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
+
+        oxNew("non_existing_class");
+    }
+
+    /**
+     * No real test possible, but at least generated ids should be different
+     */
     public function testGenerateUid()
     {
-        //no real test possible, but at least generated ids should be different
-        $id1 = oxUtilsObject::getInstance()->generateUid();
-        $id2 = oxUtilsObject::getInstance()->generateUid();
+        $id1 = oxRegistry::get('oxUtilsObject')->generateUid();
+        $id2 = oxRegistry::get('oxUtilsObject')->generateUid();
         $this->assertNotEquals($id1, $id2);
     }
-
-
 
 
     public function testResetInstanceCacheSingle()

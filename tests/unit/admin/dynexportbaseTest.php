@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -74,10 +74,6 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $sFile = getTestsBasePath() . "/misc/test.txt";
-        if (file_exists($sFile)) {
-            unlink($sFile);
-        }
         oxDb::getDb()->execute("drop TABLE if exists testdynexportbasetable");
 
         parent::tearDown();
@@ -138,10 +134,10 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testStart()
     {
-        // testing..
+        $testFile = $this->createFile('test.txt', '');
         $oView = $this->getMock("_DynExportBase", array("prepareExport"));
         $oView->expects($this->once())->method('prepareExport')->will($this->returnValue(5));
-        $oView->setVar('sFilePath', getTestsBasePath() . "/misc/test.txt");
+        $oView->setVar('sFilePath', $testFile);
         $oView->start();
         $this->assertEquals(0, $oView->getViewDataElement("refresh"));
         $this->assertEquals(0, $oView->getViewDataElement("iStart"));
@@ -187,15 +183,15 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testWrite()
     {
-        // defining parameters
+        $testFile = $this->createFile('test.txt', '');
         $sLine = 'TestExport';
 
-        // testing..
         $oView = new DynExportBase();
-        $oView->fpFile = @fopen(getTestsBasePath() . "/misc/test.txt", "w");
+        $oView->fpFile = @fopen($testFile, "w");
         $oView->write($sLine);
         fclose($oView->fpFile);
-        $sFileCont = file_get_contents(getTestsBasePath() . "/misc/test.txt", true);
+
+        $sFileCont = file_get_contents($testFile, true);
         $this->assertEquals($sLine . "\r\n", $sFileCont);
     }
 
@@ -208,11 +204,11 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
     {
         modConfig::setRequestParameter("iStart", 0);
         modConfig::setRequestParameter("aExportResultset", array("aaaaa"));
+        $testFile = $this->createFile('test.txt', '');
 
-        // testing..
         $oView = $this->getMock("_DynExportBase", array("nextTick"));
         $oView->expects($this->any())->method('nextTick')->will($this->returnValue(5));
-        $oView->setVar('sFilePath', getTestsBasePath() . "/misc/test.txt");
+        $oView->setVar('sFilePath', $testFile);
         $oView->setExportPerTick(30);
         $oView->run();
         $this->assertEquals(0, $oView->getViewDataElement("refresh"));
@@ -230,11 +226,11 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         modConfig::setRequestParameter("iStart", 0);
         modConfig::setRequestParameter("aExportResultset", array("aaaaa"));
         modConfig::getInstance()->setConfigParam("iExportNrofLines", 10);
+        $testFile = $this->createFile('test.txt', '');
 
-        // testing..
         $oView = $this->getMock("_DynExportBase", array("nextTick"));
         $oView->expects($this->any())->method('nextTick')->will($this->returnValue(5));
-        $oView->setVar('sFilePath', getTestsBasePath() . "/misc/test.txt");
+        $oView->setVar('sFilePath', $testFile);
         $oView->run();
         $this->assertEquals(0, $oView->getViewDataElement("refresh"));
         $this->assertEquals(10, $oView->getViewDataElement("iStart"));

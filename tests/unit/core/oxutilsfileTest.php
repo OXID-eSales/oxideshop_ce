@@ -167,33 +167,37 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
 
         $_FILES['myfile']['name'] = array('P1@oxarticles__oxpic1' => 'testname.gif');
         $_FILES['myfile']['tmp_name'] = array('P1@oxarticles__oxpic1' => 'testimagesource');
+        $_FILES['myfile']['error'] = array('P1@oxarticles__oxpic1' => 0);
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getPictureDir'));
-        $oConfig->expects($this->once())->method('getPictureDir')->will($this->returnValue(getTestsBasePath() . '/unit/out/pictures'));
+        $oConfig->expects($this->once())->method('getPictureDir')->will($this->returnValue('pictures_dir'));
 
+        /** @var oxUtilsFile|PHPUnit_Framework_MockObject_MockObject $oUtilsFile */
         $oUtilsFile = $this->getMock("oxUtilsFile", array("_moveImage"));
         $oUtilsFile->expects($this->once())->method('_moveImage')->will($this->returnValue(true));
 
         $oUtilsFile->setConfig($oConfig);
         $oUtilsFile->processFiles(new oxArticle());
-
     }
 
     public function testProcessNonImageFiles()
     {
         $_FILES['myfile']['name'] = array('FL@oxarticles__oxfile' => 'testname.pdf');
         $_FILES['myfile']['tmp_name'] = array('FL@oxarticles__oxfile' => 'testpdfsource');
+        $_FILES['myfile']['error'] = array('P1@oxarticles__oxpic1' => 0);
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getPictureDir'));
-        $oConfig->expects($this->once())->method('getPictureDir')->will($this->returnValue(getTestsBasePath() . '/unit/out/pictures'));
+        $oConfig->expects($this->once())->method('getPictureDir')->will($this->returnValue('pictures_dir'));
 
+        /** @var oxUtilsFile|PHPUnit_Framework_MockObject_MockObject $oUtilsFile */
         $oUtilsFile = $this->getMock("oxUtilsFile", array("_moveImage", "_copyFile"));
         $oUtilsFile->expects($this->once())->method('_moveImage')->will($this->returnValue(true));
-        $oUtilsFile->expects($this->never())->method('_copyFile'); //->will( $this->returnValue( true ) );
+        $oUtilsFile->expects($this->never())->method('_copyFile')->will($this->returnValue(false));
 
         $oUtilsFile->setConfig($oConfig);
         $oUtilsFile->processFiles();
-
     }
 
     public function testProcessFilesSkipBadFiles()
@@ -202,12 +206,16 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
 
         $_FILES['myfile']['name'] = array('testname.php5');
         $_FILES['myfile']['tmp_name'] = 'testname';
+
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('isDemoShop'));
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(false));
-        $oUF = oxRegistry::get("oxUtilsFile");
-        $oUF->setConfig($oConfig);
+
+        /** @var oxUtilsFile|PHPUnit_Framework_MockObject_MockObject $oUtilsFile */
+        $oUtilsFile = oxRegistry::get("oxUtilsFile");
+        $oUtilsFile->setConfig($oConfig);
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{throw new oxFileException("this is ok");}');
-        $oUF->processFiles();
+        $oUtilsFile->processFiles();
     }
 
     public function testProcessFilesAllowsOnlySomeFilesOnDemo()
@@ -460,9 +468,11 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
         $_FILES['myfile']['name'] = array('P1@oxarticles__oxpic1' => 'testname.gif', 'P1@oxarticles__oxpic2' => 'testname2.gif');
         $_FILES['myfile']['tmp_name'] = array('P1@oxarticles__oxpic1' => 'testimagesource', 'P1@oxarticles__oxpic2' => 'testimagesource2');
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getPictureDir'));
-        $oConfig->expects($this->any())->method('getPictureDir')->will($this->returnValue(getTestsBasePath() . '/unit/out/pictures'));
+        $oConfig->expects($this->any())->method('getPictureDir')->will($this->returnValue('pictures_dir'));
 
+        /** @var oxUtilsFile|PHPUnit_Framework_MockObject_MockObject $oUtilsFile */
         $oUtilsFile = $this->getMock("oxUtilsFile", array("_moveImage"));
         $oUtilsFile->expects($this->any())->method('_moveImage')->will($this->returnValue(true));
 

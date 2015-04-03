@@ -1937,8 +1937,25 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_level5()
     {
-        $sTestDir = getTestsBasePath() . '/unit/';
+        $structure = array(
+            'out' => array(
+                'test4' => array(
+                    '1' => array(
+                        'de' => array(
+                            'test1' => array(
+                                'text.txt' => ''
+                            )
+                        )
+                    )
+                )
+            )
+        );
+        $this->createFile('out/test4/1/de/test1/text.txt', '');
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createStructure($structure);
+        $sTestDir = $vfsStreamWrapper->getRootPath();
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
@@ -1951,8 +1968,21 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_delvel4()
     {
-        $sTestDir = getTestsBasePath() . '/unit/';
+        $structure = array(
+            'out' => array(
+                'test4' => array(
+                    '1' => array(
+                        'test2' => array(
+                            'text.txt' => ''
+                        )
+                    )
+                )
+            )
+        );
+        vfsStream::setup('root', null, $structure);
+        $sTestDir = vfsStream::url('root') .'/';
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
@@ -1965,8 +1995,21 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_level3()
     {
-        $sTestDir = getTestsBasePath() . '/unit/';
+        $structure = array(
+            'out' => array(
+                'test4' => array(
+                    'de' => array(
+                        'test2a' => array(
+                            'text.txt' => ''
+                        )
+                    )
+                )
+            )
+        );
+        vfsStream::setup('root', null, $structure);
+        $sTestDir = vfsStream::url('root') .'/';
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
@@ -1979,8 +2022,19 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_delvel2()
     {
-        $sTestDir = getTestsBasePath() . '/unit/';
+        $structure = array(
+            'out' => array(
+                'test4' => array(
+                    'test3' => array(
+                        'text.txt' => ''
+                    )
+                )
+            )
+        );
+        vfsStream::setup('root', null, $structure);
+        $sTestDir = vfsStream::url('root') .'/';
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
@@ -1993,8 +2047,17 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_delvel1()
     {
-        $sTestDir = getTestsBasePath() . '/unit/';
+        $structure = array(
+            'out' => array(
+                'test4' => array(
+                    'text.txt' => ''
+                )
+            )
+        );
+        vfsStream::setup('root', null, $structure);
+        $sTestDir = vfsStream::url('root') .'/';
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
@@ -2007,8 +2070,19 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_delvel0()
     {
-        $sTestDir = getTestsBasePath() . '/unit/';
+        $structure = array(
+            'out' => array(
+                'de' => array(
+                    'test5' => array(
+                        'text.txt' => ''
+                    )
+                )
+            )
+        );
+        vfsStream::setup('root', null, $structure);
+        $sTestDir = vfsStream::url('root') .'/';
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
@@ -2018,8 +2092,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $sDir = $oConfig->getDir('text.txt', 'test5', false, 0, 1, 'test4');
         $this->assertEquals($sOutDir . 'de/test5/text.txt', $sDir);
     }
-
-
 
 
     public function testGetOutDir()
@@ -2070,8 +2142,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig = new oxConfig();
         $oConfig->init();
 
-        $sDir = $oConfig->getConfigParam('sShopDir') . 'out/pictures/';
-
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
+        $sDir = $oConfig->getConfigParam('sShopDir') . "out/pictures$postfix/";
 
         $this->assertEquals($sDir, $oConfig->getPicturePath(null, false));
     }
@@ -2087,8 +2159,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $sMainURL = $oConfig->getConfigParam('sShopURL');
         $sMallURL = 'http://www.example.com/';
 
-        $sDir = 'out/pictures/';
-
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
+        $sDir = "out/pictures$postfix/";
 
         $oConfig->setConfigParam('sMallShopURL', $sMallURL);
 
@@ -2118,7 +2190,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig = new oxConfig();
         $oConfig->init();
         $oConfig->setConfigParam('blFormerTplSupport', true);
-        //$this->assertEquals( '', $oConfig->getPictureUrl( "test.gif", false) );
         $this->assertContains('nopic.jpg', $oConfig->getPictureUrl("test.gif", false));
     }
 
@@ -2140,8 +2211,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig->setConfigParam("sAltImageDir", false);
         $oConfig->setConfigParam("blFormerTplSupport", false);
 
-        $sNoPicUrl = $myConfig->getConfigParam("sShopURL") . "out/pictures/master/nopic.jpg";
-
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
+        $sNoPicUrl = $myConfig->getConfigParam("sShopURL") . "out/pictures$postfix/master/nopic.jpg";
 
         $this->assertEquals($sNoPicUrl, $oConfig->getPictureUrl("unknown.file", true));
     }
@@ -2194,10 +2265,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig->setConfigParam('blDemoShop', true);
         $this->assertTrue($oConfig->isDemoShop());
     }
-
-
-
-
 
     public function testUtfModeIsSet()
     {

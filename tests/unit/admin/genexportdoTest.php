@@ -83,21 +83,6 @@ class Unit_Admin_GenExportDoTest_smarty
  */
 class Unit_Admin_GenExportDoTest extends OxidTestCase
 {
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        $sFile = getTestsBasePath() . "/misc/test.txt";
-        if (file_exists($sFile)) {
-            unlink($sFile);
-        }
-        parent::tearDown();
-    }
-
     /**
      * GenExport_Do::NextTick() test case
      *
@@ -146,15 +131,14 @@ class Unit_Admin_GenExportDoTest extends OxidTestCase
      */
     public function testWrite()
     {
-        // defining parameters
         $sLine = 'TestExport';
+        $testFile = $this->createFile('test.txt', '');
 
-        // testing..
         $oView = new GenExport_Do();
-        $oView->fpFile = @fopen(getTestsBasePath() . "/misc/test.txt", "w");
+        $oView->fpFile = @fopen($testFile, "w");
         $oView->write($sLine);
         fclose($oView->fpFile);
-        $sFileCont = file_get_contents(getTestsBasePath() . "/misc/test.txt", true);
+        $sFileCont = file_get_contents($testFile, true);
         $this->assertEquals($sLine . "\n", $sFileCont);
     }
 

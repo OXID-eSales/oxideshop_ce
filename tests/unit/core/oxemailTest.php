@@ -137,32 +137,38 @@ class Unit_Core_oxemailTest extends OxidTestCase
     public function testIncludeImagesErrorTestCase()
     {
         oxTestModules::addFunction("oxUtilsObject", "generateUId", "{ return 'xxx'; }");
-        $myConfig = oxRegistry::getConfig();
+        $config = oxRegistry::getConfig();
 
         $oArticle = new oxarticle();
         $oArticle->load('1351');
         $sImgUrl = $oArticle->getThumbnailUrl();
         $iImgFile = basename($sImgUrl);
         $sTitle = $oArticle->oxarticles__oxtitle->value;
+        $imageDirectory = $config->getImageDir();
 
-        $sBody = '<img src="' . $myConfig->getImageDir() . 'stars.jpg" border="0" hspace="0" vspace="0" alt="stars" align="texttop">';
-        $sBody .= '<img src="' . $myConfig->getImageUrl() . 'logo.png" border="0" hspace="0" vspace="0" alt="logo" align="texttop">';
+        $imageGenerator = $this->getMock('oxDynImgGenerator', array('getImagePath'));
+        $imageGenerator->expects($this->any())->method('getImagePath')->will($this->returnValue($config->getPictureDir(false) .'generated/product/thumb/185_150_75/nopic.jpg'));
+        oxTestModules::addModuleObject('oxDynImgGenerator', $imageGenerator);
+
+        $sBody = '<img src="' . $imageDirectory . 'stars.jpg" border="0" hspace="0" vspace="0" alt="stars" align="texttop">';
+        $sBody .= '<img src="' . $config->getImageUrl() . 'logo.png" border="0" hspace="0" vspace="0" alt="logo" align="texttop">';
         $sBody .= '<img src="' . $sImgUrl . '" border="0" hspace="0" vspace="0" alt="' . $sTitle . '" align="texttop">';
 
         $sGenBody = '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="stars" align="texttop">';
         $sGenBody .= '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="logo" align="texttop">';
         $sGenBody .= '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="' . $sTitle . '" align="texttop">';
 
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
         $oEmail = $this->getMock('oxemail', array('getBody', 'addEmbeddedImage', 'setBody'));
         $oEmail->expects($this->once())->method('getBody')->will($this->returnValue($sBody));
-        $oEmail->expects($this->at(1))->method('addEmbeddedImage')->with($this->equalTo($myConfig->getImageDir() . 'stars.jpg'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
-        $oEmail->expects($this->at(2))->method('addEmbeddedImage')->with($this->equalTo($myConfig->getImageDir() . 'logo.png'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/png'))->will($this->returnValue(true));
-        $oEmail->expects($this->at(3))->method('addEmbeddedImage')->with($this->equalTo($myConfig->getPictureDir(false) . 'generated/product/thumb/185_150_75/' . $iImgFile), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
+        $oEmail->expects($this->at(1))->method('addEmbeddedImage')->with($this->equalTo($imageDirectory . 'stars.jpg'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
+        $oEmail->expects($this->at(2))->method('addEmbeddedImage')->with($this->equalTo($imageDirectory . 'logo.png'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/png'))->will($this->returnValue(true));
+        $oEmail->expects($this->at(3))->method('addEmbeddedImage')->with($this->equalTo($config->getPictureDir(false) . 'generated/product/thumb/185_150_75/' . $iImgFile), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
         $oEmail->expects($this->once())->method('setBody')->with($this->equalTo($sGenBody));
 
-        $oEmail->UNITincludeImages(
-            $myConfig->getImageDir(), $myConfig->getImageUrl(false), $myConfig->getPictureUrl(null),
-            $myConfig->getImageDir(), $myConfig->getPictureDir(false)
+        $oEmail->_includeImages(
+            $imageDirectory, $config->getImageUrl(false), $config->getPictureUrl(null),
+            $imageDirectory, $config->getPictureDir(false)
         );
     }
 

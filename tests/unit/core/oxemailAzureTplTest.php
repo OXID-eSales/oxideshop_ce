@@ -172,7 +172,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
     {
         $sUtf = (oxRegistry::getConfig()->isUtf()) ? '_utf8' : '';
 
-        $sPath = getTestsBasePath() . '/unit/email_templates/azure/' . $sFuncName . $sUtf . '.html';
+        $sPath = __DIR__ .'/../testData/email_templates/azure/' . $sFuncName . $sUtf . '.html';
         if (!($sExpectedBody = file_get_contents($sPath))) {
             return false;
         }
@@ -204,10 +204,9 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $sBody = str_replace($sShopUrl, $sExpectedShopUrl, $sBody);
 
         if ($blWriteToTestFile) {
-            file_put_contents(getTestsBasePath() . '/unit/email_templates/azure/' . $sFuncName . '_test_expecting.html', $sExpectedBody);
-            file_put_contents(getTestsBasePath() . '/unit/email_templates/azure/' . $sFuncName . '_test_result.html', $sBody);
+            file_put_contents(__DIR__ .'/../testData/email_templates/azure/' . $sFuncName . '_test_expecting.html', $sExpectedBody);
+            file_put_contents(__DIR__ .'/../testData/email_templates/azure/' . $sFuncName . '_test_result.html', $sBody);
         }
-
 
         $this->assertEquals(strtolower(trim($sExpectedBody)), strtolower(trim($sBody)), "Incorect mail body");
 
@@ -356,7 +355,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         }
 
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         if (!$this->checkMailBody('testSendOrderEmailToUser', $oEmail->getBody())) {
             $this->fail('Incorect mail body');
@@ -474,7 +473,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         }
 
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         if (!$this->checkMailBody('testSendOrderEMailToOwner', $oEmail->getBody())) {
             $this->fail('Incorect mail body');
@@ -573,7 +572,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         }
 
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         if (!$this->checkMailBody('testSendRegisterEMail', $oEmail->getBody())) {
             $this->fail('Incorect mail body');
@@ -611,7 +610,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         }
 
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         if (!$this->checkMailBody('testSendForgotPwdEmail', $oEmail->getBody())) {
             $this->fail('Incorect mail body');
@@ -698,7 +697,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
             $this->fail('Incorect mail fields');
 
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         if (!$this->checkMailBody('testSendNewsletterDBOptInMail', $oEmail->getBody()))
             $this->fail('Incorect mail body');
@@ -775,7 +774,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
             $this->fail('Incorect mail fields');
 
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         if (!$this->checkMailBody('testSendSuggestMail', $oEmail->getBody()))
             $this->fail('Incorect mail body');
@@ -841,7 +840,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
             $this->fail('Incorect mail fields');
 
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         if (!$this->checkMailBody('testSendNowMailSent', $oEmail->getBody())) {
             $this->fail('Incorect mail body');
@@ -894,7 +893,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
             $this->fail('Incorect mail fields');
 
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         if (!$this->checkMailBody('testSendDownloadLinksMail', $oEmail->getBody())) {
             $this->fail('Incorect mail body');
@@ -973,7 +972,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
             $this->fail('Incorect mail fields');
 
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         if (!$this->checkMailBody('testSendStockReminder', $oEmail->getBody()))
             $this->fail('Incorect mail body');
@@ -1015,7 +1014,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
             $this->fail('Incorect mail fields');
 
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         if (!$this->checkMailBody('testSendWishlistMail', $oEmail->getBody()))
             $this->fail('Incorect mail body');
@@ -1054,7 +1053,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         }
 
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         if (!$this->checkMailBody('testSendPriceAlarmNotification', $oEmail->getBody())) {
             $this->fail('Incorect mail body');

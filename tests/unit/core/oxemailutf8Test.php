@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -134,7 +134,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
 
         $sBody = $oEmail->getBody();
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         $oStr = oxStr::getStr();
 

@@ -127,7 +127,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
 
     protected function _resizeImageTest($sTestImageFile, $sTestImageFileResized, $iWidth = 100, $iHeight = 48)
     {
-        $sDir = getTestsBasePath() . "misc" . DIRECTORY_SEPARATOR;
+        $sDir = __DIR__ ."/../testData/misc" . DIRECTORY_SEPARATOR;
         if (!file_exists($sDir . $sTestImageFile)) {
             $sMsg = "Failed to find the image file: " . $sDir . $sTestImageFile;
             $this->fail($sMsg);
@@ -313,10 +313,8 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
 
     protected function _resizeGIFTest($sTestImageFile, $sTestImageFileResized, $gdver = 2)
     {
-
         $myUtils = new oxUtilsPic();
-        $myConfig = oxRegistry::getConfig();
-        $sDir = getTestsBasePath() . "misc" . DIRECTORY_SEPARATOR;
+        $sDir = __DIR__ ."/../testData/misc" . DIRECTORY_SEPARATOR;
         $iWidth = 100;
         $iHeight = 48;
         if (!file_exists($sDir . $sTestImageFile)) {

@@ -181,9 +181,8 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testGetTemplateOutput()
     {
-        modConfig::getInstance()->setConfigParam('iDebug', 0);
-        $sPath = getTestsBasePath();
-        $sTpl = $sPath . "/misc/testTempOut.tpl";
+        $this->getConfig()->setConfigParam('iDebug', 0);
+        $sTpl = __DIR__ ."/../testData//misc/testTempOut.tpl";
 
         $oView = new oxview();
         $oView->addTplParam('articletitle', 'xxx');

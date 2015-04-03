@@ -669,57 +669,89 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
     public function testGetModulePath()
     {
-        $sMdir = realpath((dirname(__FILE__) . '/../moduleTestBlock'));
+        $config = $this->getConfig();
+        $fakeShopDirectory = $this->createModuleStructure();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory . "/");
 
-        $myConfig = $this->getConfig();
-        $myConfig->setConfigParam("sShopDir", $sMdir . "/");
+        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        $viewConfig = $this->getMock('oxViewConfig', array('getConfig'));
+        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
-        $oVC = $this->getMock('oxViewConfig', array('getConfig'));
-        $oVC->expects($this->any())->method('getConfig')->will($this->returnValue($myConfig));
+        $this->assertEquals($fakeShopDirectory . "/modules/test1/out", $viewConfig->getModulePath('test1', 'out'));
+        $this->assertEquals($fakeShopDirectory . "/modules/test1/out/", $viewConfig->getModulePath('test1', '/out/'));
 
-        $this->assertEquals($sMdir . "/modules/test1/out", $oVC->getModulePath('test1', 'out'));
-        $this->assertEquals($sMdir . "/modules/test1/out/", $oVC->getModulePath('test1', '/out/'));
+        $this->assertEquals($fakeShopDirectory . "/modules/test1/out/blocks/test2.tpl", $viewConfig->getModulePath('test1', 'out/blocks/test2.tpl'));
+        $this->assertEquals($fakeShopDirectory . "/modules/test1/out/blocks/test2.tpl", $viewConfig->getModulePath('test1', '/out/blocks/test2.tpl'));
+    }
 
-        $this->assertEquals($sMdir . "/modules/test1/out/blocks/test2.tpl", $oVC->getModulePath('test1', 'out/blocks/test2.tpl'));
-        $this->assertEquals($sMdir . "/modules/test1/out/blocks/test2.tpl", $oVC->getModulePath('test1', '/out/blocks/test2.tpl'));
+    public function testGetModulePathExceptionThrownWhenPathNotFoundAndDebugEnabled()
+    {
+        $config = $this->getConfig();
+        $config->setConfigParam("iDebug", -1);
 
-        $this->getConfig()->setConfigParam("iDebug", false);
-        $this->assertEquals('', $oVC->getModulePath('test1', '/out/blocks/testWWW.tpl'));
-        // check exception throwing
-        try {
-            $this->getConfig()->setConfigParam("iDebug", true);
-            $oVC->getModulePath('test1', '/out/blocks/test1.tpl');
-            $this->fail("should have thrown");
-        } catch (oxFileException $e) {
-            $this->assertEquals("Requested file not found for module test1 (" . $sMdir . "/modules/test1/out/blocks/test1.tpl)", $e->getMessage());
-        }
+        $fakeShopDirectory = $this->createModuleStructure();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory);
+
+        $message = "Requested file not found for module test1 (" . $fakeShopDirectory . "modules/test1/out/blocks/non_existing_template.tpl)";
+        $this->setExpectedException('oxFileException', $message);
+
+        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        $viewConfig = $this->getMock('oxViewConfig', array('getConfig'));
+        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+
+        $viewConfig->getModulePath('test1', '/out/blocks/non_existing_template.tpl');
+    }
+
+    public function testGetModulePathExceptionThrownWhenPathNotFoundAndDebugDisabled()
+    {
+        $config = $this->getConfig();
+        $config->setConfigParam("iDebug", 0);
+
+        $fakeShopDirectory = $this->createModuleStructure();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory . "/");
+
+        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        $viewConfig = $this->getMock('oxViewConfig', array('getConfig'));
+        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+
+        $this->assertEquals('', $viewConfig->getModulePath('test1', '/out/blocks/non_existing_template.tpl'));
     }
 
     public function testGetModuleUrl()
     {
-        $sBaseUrl = $this->getConfig()->getCurrentShopUrl();
-        $sMdir = realpath((dirname(__FILE__) . '/../moduleTestBlock'));
+        $config = $this->getConfig();
+        $config->setConfigParam("iDebug", -1);
 
-        $myConfig = $this->getConfig();
-        $myConfig->setConfigParam("sShopDir", $sMdir . "/");
+        $fakeShopDirectory = $this->createModuleStructure();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory);
 
-        $oVC = $this->getMock('oxViewConfig', array('getConfig'));
-        $oVC->expects($this->any())->method('getConfig')->will($this->returnValue($myConfig));
+        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        $viewConfig = $this->getMock('oxViewConfig', array('getConfig'));
+        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
-        $this->assertEquals("{$sBaseUrl}modules/test1/out", $oVC->getModuleUrl('test1', 'out'));
-        $this->assertEquals("{$sBaseUrl}modules/test1/out/", $oVC->getModuleUrl('test1', '/out/'));
+        $baseUrl = $config->getCurrentShopUrl();
+        $this->assertEquals("{$baseUrl}modules/test1/out", $viewConfig->getModuleUrl('test1', 'out'));
+        $this->assertEquals("{$baseUrl}modules/test1/out/", $viewConfig->getModuleUrl('test1', '/out/'));
+        $this->assertEquals("{$baseUrl}modules/test1/out/blocks/test2.tpl", $viewConfig->getModuleUrl('test1', 'out/blocks/test2.tpl'));
+        $this->assertEquals("{$baseUrl}modules/test1/out/blocks/test2.tpl", $viewConfig->getModuleUrl('test1', '/out/blocks/test2.tpl'));
+    }
 
-        $this->assertEquals("{$sBaseUrl}modules/test1/out/blocks/test2.tpl", $oVC->getModuleUrl('test1', 'out/blocks/test2.tpl'));
-        $this->assertEquals("{$sBaseUrl}modules/test1/out/blocks/test2.tpl", $oVC->getModuleUrl('test1', '/out/blocks/test2.tpl'));
+    public function testGetModuleUrlExceptionThrownWhenPathNotFoundAndDebugEnabled()
+    {
+        $config = $this->getConfig();
+        $config->setConfigParam("iDebug", -1);
 
-        // check exception throwing
-        try {
-            $oVC->getModuleUrl('test1', '/out/blocks/test1.tpl');
-            $this->fail("should have thrown");
-        } catch (oxFileException $e) {
-            $sBaseUrl = $this->getConfig()->getConfigParam('sShopDir');
-            $this->assertEquals("Requested file not found for module test1 (" . $sMdir . "/modules/test1/out/blocks/test1.tpl)", $e->getMessage());
-        }
+        $fakeShopDirectory = $this->createModuleStructure();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory);
+
+        $message = "Requested file not found for module test1 (" . $fakeShopDirectory . "modules/test1/out/blocks/non_existing_template.tpl)";
+        $this->setExpectedException('oxFileException', $message);
+
+        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        $viewConfig = $this->getMock('oxViewConfig', array('getConfig'));
+        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+
+        $viewConfig->getModuleUrl('test1', '/out/blocks/non_existing_template.tpl');
     }
 
     public function testViewThemeParam()
@@ -2619,5 +2651,34 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $oViewConfig = new oxViewConfig();
         $this->assertEquals( $this->getConfig()->getEdition(), $oViewConfig->getEdition() );
+    }
+
+    /**
+     * Creates module structre for testing.
+     *
+     * @return string Path to modules root.
+     */
+    private function createModuleStructure()
+    {
+        $structure = array(
+            'modules' => array(
+                'test1' => array(
+                    'out' => array(
+                        'blocks' => array(
+                            'test2.tpl' => '*this is module test block*'
+                        ),
+                        'lang' => array(
+                            'de' => array(
+                                'test_lang.php' => ''
+                            )
+                        )
+                    )
+                )
+            )
+        );
+        $vfsStream = $this->getVfsStreamWrapper();
+        $vfsStream->createStructure($structure);
+
+        return $vfsStream->getRootPath();
     }
 }

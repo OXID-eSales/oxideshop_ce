@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -309,30 +309,26 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
      */
     public function testCheckTemplateBlock()
     {
-        $oCfg = $this->getMock('oxconfig', array('getTemplatePath'));
-        $oCfg->expects($this->at(0))->method('getTemplatePath')
-            ->with($this->equalTo('test0'), $this->equalTo(false))
-            ->will($this->returnValue(dirname(__FILE__) . '/../moduleTestBlock/testTpl_nonexisting.tpl'));
-        $oCfg->expects($this->at(1))->method('getTemplatePath')
-            ->with($this->equalTo('test0'), $this->equalTo(true))
-            ->will($this->returnValue(dirname(__FILE__) . '/../moduleTestBlock/testTpl_nonexisting.tpl'));
-        $oCfg->expects($this->at(2))->method('getTemplatePath')
-            ->with($this->equalTo('test1'), $this->equalTo(false))
-            ->will($this->returnValue(dirname(__FILE__) . '/../moduleTestBlock/testTpl.tpl'));
-        $oCfg->expects($this->at(3))->method('getTemplatePath')
-            ->with($this->equalTo('test1'), $this->equalTo(false))
-            ->will($this->returnValue(dirname(__FILE__) . '/../moduleTestBlock/testTpl.tpl'));
-        $oCfg->expects($this->at(4))->method('getTemplatePath')
-            ->with($this->equalTo('test1'), $this->equalTo(false))
-            ->will($this->returnValue(dirname(__FILE__) . '/../moduleTestBlock/testTpl.tpl'));
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        $config = $this->getMock('oxconfig', array('getTemplatePath'));
 
-        $oSR = $this->getMock('oxSysRequirements', array("getConfig"));
-        $oSR->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        $testTemplate = $this->createFile('checkTemplateBlock.tpl', '[{block name="block1"}][{/block}][{block name="block2"}][{/block}]');
 
-        $this->assertFalse($oSR->UNITcheckTemplateBlock('test0', 'nonimportanthere'));
-        $this->assertTrue($oSR->UNITcheckTemplateBlock('test1', 'block1'));
-        $this->assertTrue($oSR->UNITcheckTemplateBlock('test1', 'block2'));
-        $this->assertFalse($oSR->UNITcheckTemplateBlock('test1', 'block3'));
+        $map = array(
+            array('test0', false, dirname($testTemplate) . '/nonexistingfile.tpl'),
+            array('test0', true, dirname($testTemplate) . '/nonexistingblock.tpl'),
+            array('test1', false, $testTemplate),
+        );
+        $config->expects($this->any())->method('getTemplatePath')->will($this->returnValueMap($map));
+
+        /** @var oxSysRequirements|PHPUnit_Framework_MockObject_MockObject $systemRequirements */
+        $systemRequirements = $this->getMock('oxSysRequirements', array("getConfig"));
+        $systemRequirements->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+
+        $this->assertFalse($systemRequirements->UNITcheckTemplateBlock('test0', 'nonimportanthere'));
+        $this->assertTrue($systemRequirements->UNITcheckTemplateBlock('test1', 'block1'));
+        $this->assertTrue($systemRequirements->UNITcheckTemplateBlock('test1', 'block2'));
+        $this->assertFalse($systemRequirements->UNITcheckTemplateBlock('test1', 'block3'));
     }
 
     /**

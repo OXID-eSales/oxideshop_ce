@@ -20,8 +20,6 @@
  * @version   OXID eShop CE
  */
 
-use org\bovigo\vfs\vfsStream;
-
 class modOxUtilsObject_oxUtilsObject extends oxUtilsObject
 {
 
@@ -123,33 +121,14 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
     {
         $structure = array(
             'modules' => array(
-                'oxNewDummyModule.php' => '
-                <?php
-                class oxNewDummyModule {
-                    public function test() {
-                        return "oxNewDummyModule";
-                    }
-                }',
-
-                'oxNewDummyUserModule.php' => '
-                <?php
-                class oxNewDummyUserModule extends oxNewDummyUserModule_parent {
-                    public function test() {
-                        return "oxNewDummyUserModule";
-                    }
-                }',
-
-                'oxNewDummyUserModule2.php' => '
-                <?php
-                class oxNewDummyUserModule2 extends oxNewDummyUserModule2_parent {
-                    public function test() {
-                        return "oxNewDummyUserModule2";
-                    }
-                }',
+                'oxNewDummyModule.php' => '<?php class oxNewDummyModule {}',
+                'oxNewDummyUserModule.php' => '<?php class oxNewDummyUserModule extends oxNewDummyUserModule_parent {}',
+                'oxNewDummyUserModule2.php' => '<?php class oxNewDummyUserModule2 extends oxNewDummyUserModule2_parent {}',
             )
         );
-        vfsStream::setup('root', null, $structure);
-        $fakeShopDir = vfsStream::url('root');
+        $vfsStream = $this->getVfsStreamWrapper();
+        $vfsStream->createStructure($structure);
+        $fakeShopDir = $vfsStream->getRootPath();
 
         $aModules = array(strtolower('oxNewDummyModule') => 'oxNewDummyUserModule&oxNewDummyUserModule2');
 
@@ -177,25 +156,13 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
     {
         $structure = array(
             'modules' => array(
-                'oxNewDummyModule.php' => '
-                <?php
-                class oxNewDummyModule {
-                    public function test() {
-                        return "oxNewDummyModule";
-                    }
-                }',
-
-                'oxNewDummyUserModule.php' => '
-                <?php
-                class oxNewDummyUserModule extends oxNewDummyUserModule_parent {
-                    public function test() {
-                        return "oxNewDummyUserModule";
-                    }
-                }',
+                'oxNewDummyModule.php' => '<?php class oxNewDummyModule {}',
+                'oxNewDummyUserModule.php' => '<?php class oxNewDummyUserModule extends oxNewDummyUserModule_parent {}',
             )
         );
-        vfsStream::setup('root', null, $structure);
-        $fakeShopDir = vfsStream::url('root');
+        $vfsStream = $this->getVfsStreamWrapper();
+        $vfsStream->createStructure($structure);
+        $fakeShopDir = $vfsStream->getRootPath();
 
         $aModules = array(strtolower('oxNewDummyModule') => 'oxNewDummyUserModule&notExistingClass');
 

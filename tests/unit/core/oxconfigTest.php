@@ -168,11 +168,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
             oxRegistry::get("oxUtilsFile")->deleteDir($sDir);
         }
 
-        $sCustConfigPath = getShopBasePath() . "/cust_config.inc.php";
-        if (file_exists($sCustConfigPath)) {
-            unlink($sCustConfigPath);
-        }
-
         $this->cleanUpTable('oxconfig');
         parent::tearDown();
     }
@@ -1937,22 +1932,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_level5()
     {
-        $structure = array(
-            'out' => array(
-                'test4' => array(
-                    '1' => array(
-                        'de' => array(
-                            'test1' => array(
-                                'text.txt' => ''
-                            )
-                        )
-                    )
-                )
-            )
-        );
-        $this->createFile('out/test4/1/de/test1/text.txt', '');
         $vfsStreamWrapper = $this->getVfsStreamWrapper();
-        $vfsStreamWrapper->createStructure($structure);
+        $vfsStreamWrapper->createFile('out/test4/1/de/test1/text.txt', '');
         $sTestDir = $vfsStreamWrapper->getRootPath();
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
@@ -1968,19 +1949,9 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_delvel4()
     {
-        $structure = array(
-            'out' => array(
-                'test4' => array(
-                    '1' => array(
-                        'test2' => array(
-                            'text.txt' => ''
-                        )
-                    )
-                )
-            )
-        );
-        vfsStream::setup('root', null, $structure);
-        $sTestDir = vfsStream::url('root') .'/';
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('out/test4/1/test2/text.txt', '');
+        $sTestDir = $vfsStreamWrapper->getRootPath();
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
@@ -1995,19 +1966,9 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_level3()
     {
-        $structure = array(
-            'out' => array(
-                'test4' => array(
-                    'de' => array(
-                        'test2a' => array(
-                            'text.txt' => ''
-                        )
-                    )
-                )
-            )
-        );
-        vfsStream::setup('root', null, $structure);
-        $sTestDir = vfsStream::url('root') .'/';
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('out/test4/de/test2a/text.txt', '');
+        $sTestDir = $vfsStreamWrapper->getRootPath();
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
@@ -2022,17 +1983,9 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_delvel2()
     {
-        $structure = array(
-            'out' => array(
-                'test4' => array(
-                    'test3' => array(
-                        'text.txt' => ''
-                    )
-                )
-            )
-        );
-        vfsStream::setup('root', null, $structure);
-        $sTestDir = vfsStream::url('root') .'/';
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('out/test4/test3/text.txt', '');
+        $sTestDir = $vfsStreamWrapper->getRootPath();
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
@@ -2047,15 +2000,9 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_delvel1()
     {
-        $structure = array(
-            'out' => array(
-                'test4' => array(
-                    'text.txt' => ''
-                )
-            )
-        );
-        vfsStream::setup('root', null, $structure);
-        $sTestDir = vfsStream::url('root') .'/';
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('out/test4/text.txt', '');
+        $sTestDir = $vfsStreamWrapper->getRootPath();
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
@@ -2070,17 +2017,9 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_delvel0()
     {
-        $structure = array(
-            'out' => array(
-                'de' => array(
-                    'test5' => array(
-                        'text.txt' => ''
-                    )
-                )
-            )
-        );
-        vfsStream::setup('root', null, $structure);
-        $sTestDir = vfsStream::url('root') .'/';
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('out/de/test5/text.txt', '');
+        $sTestDir = $vfsStreamWrapper->getRootPath();
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
@@ -2440,20 +2379,24 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testLoadCustomConfig()
     {
-        $sDir = getShopBasePath();
-        $sCustConfig = $sDir . "/cust_config.inc.php";
+        $customConfigPath = getShopBasePath() . "/cust_config.inc.php";
 
-        $handle = fopen($sCustConfig, "w");
-        chmod($sCustConfig, 0777);
+        try {
+            $data = '<?php $this->custVar = test;';
+            file_put_contents($customConfigPath, $data);
 
-        $data = '<?php $this->custVar = test;';
-        fwrite($handle, $data);
+            /** @var oxConfig $oConfig */
+            $oConfig = $this->getProxyClass('oxconfig');
+            $oConfig->_loadVarsFromFile();
+            $sVar = $oConfig->getConfigParam("custVar");
 
-        $oConfig = $this->getProxyClass('oxconfig');
-        $oConfig->_loadVarsFromFile();
-        $sVar = $oConfig->getConfigParam("custVar");
+            $this->assertSame("test", $sVar);
+        } catch (Exception $e) {
+            @unlink($customConfigPath);
+            throw $e;
+        }
 
-        $this->assertSame("test", $sVar);
+        @unlink($customConfigPath);
     }
 
     /**

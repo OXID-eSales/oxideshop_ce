@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -493,27 +493,27 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testGetTemplateBlock()
     {
-        $sMdir = realpath((dirname(__FILE__) . '/../moduleTestBlock'));
+        $vfsStream = $this->getVfsStreamWrapper();
+        $vfsStream->createFile('modules/test1/out/blocks/test2.tpl', '*this is module test block*');
+        $fakeShopDirectory = $vfsStream->getRootPath();
 
-        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
-        $oCfg->expects($this->any())->method('getConfigParam')->with($this->equalTo('sShopDir'))->will($this->returnValue($sMdir));
-        $aInfo = array('test1' => 'test1', '__sModule__' => '__sModule__');
+        $config = $this->getConfig();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory);
 
-        $oUV = $this->getMock(
-            oxTestModules::publicize('oxUtilsView', '_getTemplateBlock'),
-            array('getConfig', '_getActiveModuleInfo')
-        );
-        $oUV->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
-        $oUV->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
+        $message = "Template block file (${fakeShopDirectory}/modules/__sModule__/out/blocks/__sFile__.tpl) not found for '__sModule__' module.";
+        $this->setExpectedException('oxException', $message);
 
-        $this->assertEquals('*this is module test block*', $oUV->p_getTemplateBlock('test1', 'test2'));
+        $moduleInfo = array('test1' => 'test1', '__sModule__' => '__sModule__');
 
-        try {
-            $oUV->p_getTemplateBlock('__sModule__', '__sFile__');
-            $this->fail("no exception");
-        } catch (oxException $oE) {
-            $this->assertEquals("Template block file (__basepath__/modules/__sModule__/out/blocks/__sFile__.tpl) not found for '__sModule__' module.", str_replace($sMdir, '__basepath__', $oE->getMessage()));
-        }
+        /** @var oxUtilsView|PHPUnit_Framework_MockObject_MockObject $utilsView */
+        $utilsView = $this->getMock('oxUtilsView', array('getConfig', '_getActiveModuleInfo'));
+
+        $utilsView->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($moduleInfo));
+
+        $this->assertEquals('*this is module test block*', $utilsView->_getTemplateBlock('test1', 'test2'));
+
+        $utilsView->_getTemplateBlock('__sModule__', '__sFile__');
     }
 
     /**

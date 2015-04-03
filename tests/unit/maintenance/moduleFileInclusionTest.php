@@ -34,14 +34,22 @@ class Unit_Maintenance_moduleFileInclusionTest extends OxidTestCase
      */
     public function testModuleInclusion()
     {
-        oxUtilsObject::getInstance()->setModuleVar('aModules', array('oxarticle' => 'testmod'));
+        $filePath = $this->createFile('testModuleInclusion.php', '<?php
+            class testModuleInclusion extends testModuleInclusion_parent {
+                public function sayHi() {
+                    return "Hi!";
+                }
+            }
+        ');
 
-        include_once dirname(__FILE__) . '/modules/testmod.php';
+        oxRegistry::get('oxUtilsObject')->setModuleVar('aModules', array('oxarticle' => 'testmoduleinclusion'));
 
-        $oTestMod = oxNew('testmod');
+        include_once $filePath;
+
+        $oTestMod = oxNew('testModuleInclusion');
         $this->assertEquals("Hi!", $oTestMod->sayHi());
 
-        $oTestArt = oxNew('oxarticle');
+        $oTestArt = oxNew('oxArticle');
         $this->assertEquals("Hi!", $oTestArt->sayHi());
     }
 
@@ -50,9 +58,19 @@ class Unit_Maintenance_moduleFileInclusionTest extends OxidTestCase
      */
     public function testMissingModuleInChain()
     {
-        oxUtilsObject::getInstance()->setModuleVar('aModules', array('oxarticle' => 'testmod2&testmod'));
+        $filePath = $this->createFile('testModuleInclusion.php', '<?php
+            class testModuleInclusion extends testModuleInclusion_parent {
+                public function sayHi() {
+                    return "Hi!";
+                }
+            }
+        ');
 
-        $oTestArt = oxNew('oxarticle');
+        oxRegistry::get('oxUtilsObject')->setModuleVar('aModules', array('oxarticle' => 'testmod2&testmoduleinclusion'));
+
+        include_once $filePath;
+
+        $oTestArt = oxNew('oxArticle');
         $this->assertEquals("Hi!", $oTestArt->sayHi());
     }
 }

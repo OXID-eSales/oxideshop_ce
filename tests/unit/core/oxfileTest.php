@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -39,11 +39,6 @@ class Unit_Core_oxfileTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $sFilePath = $this->getTestFilePath();
-        if (!empty($sFilePath) && file_exists($sFilePath)) {
-            unlink($sFilePath);
-        }
-
         oxDb::getDb()->getOne("TRUNCATE TABLE `oxfiles`");
         $this->cleanUpTable('oxorder');
         $this->cleanUpTable('oxorderarticles');
@@ -56,17 +51,25 @@ class Unit_Core_oxfileTest extends OxidTestCase
      */
     public function testDownload()
     {
-        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/downloads/test.jpg';
-        file_put_contents($sFilePath, 'test jpg file');
+        $sFilePath = $this->createFile('out/downloads/test.jpg', 'test jpg file');
 
+        /** @var oxFile|PHPUnit_Framework_MockObject_MockObject $oFile */
         $oFile = $this->getMock('oxFile', array('getStoreLocation'));
         $oFile->expects($this->any())->method('getStoreLocation')->will($this->returnValue($sFilePath));
 
-        $oUtils = $this->getMock('oxUtils', array('setHeader'));
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
+        $oUtils = $this->getMock('oxUtils', array('setHeader', 'showMessageAndExit'));
         $oUtils->expects($this->any())->method('setHeader');
+        $oUtils->expects($this->once())->method('showMessageAndExit');
         oxTestModules::addModuleObject('oxUtils', $oUtils);
 
+        ob_start();
         $oFile->download();
+
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertEquals('test jpg file', $content);
     }
 
     /**
@@ -125,7 +128,6 @@ class Unit_Core_oxfileTest extends OxidTestCase
     public function testDelete()
     {
         $oDb = oxDb::getDb();
-
         $aQ[] = "insert into oxfiles (oxid, OXARTID, OXFILENAME, OXSTOREHASH) values ('testId2','_testProd1','testFile','testFileH')";
         $aQ[] = "insert into oxfiles (oxid, OXARTID, OXFILENAME, OXSTOREHASH) values ('testId3','_testProd2','testFile1','testFileH1')";
 
@@ -133,23 +135,21 @@ class Unit_Core_oxfileTest extends OxidTestCase
             $oDb->execute($sQ);
         }
 
-        if (!is_dir($this->getConfig()->getConfigParam('sShopDir') . '/out/downloads/te')) {
-            mkdir($this->getConfig()->getConfigParam('sShopDir') . '/out/downloads/te', 0755);
-        }
+        $vfsStream = $this->getVfsStreamWrapper();
 
-        $sFilePath1 = $this->getConfig()->getConfigParam('sShopDir') . '/out/downloads/te/testFileH';
-        file_put_contents($sFilePath1, 'test jpg file');
+        $filePath = $vfsStream->createFile('out/downloads/te/testFileH', 'test jpg file');
+        $this->getConfig()->setConfigParam('sShopDir', $vfsStream->getRootPath());
 
         $oFile = new oxFile();
 
         $this->assertTrue($oFile->delete('testId1'));
-        $this->assertTrue(is_file($sFilePath1));
+        $this->assertTrue(is_file($filePath));
         $this->assertEquals(2, $oDb->getOne("SELECT COUNT(*) FROM `oxfiles`"));
 
         $oFile = new oxFile();
         $oFile->load('testId2');
         $this->assertTrue($oFile->delete());
-        $this->assertFalse(is_file($sFilePath1));
+        $this->assertFalse(is_file($filePath));
         $this->assertEquals(1, $oDb->getOne("SELECT COUNT(*) FROM `oxfiles`"));
 
         $oFile = new oxFile();
@@ -162,24 +162,23 @@ class Unit_Core_oxfileTest extends OxidTestCase
      */
     public function testProcessFileUploadOK()
     {
-        $sFilePath = $this->getTestFilePath();
-        file_put_contents($sFilePath, 'test jpg file');
+        $filePath = $this->createFile('out/downloads/testFile', 'test jpg file');
 
-        $sFileHah = md5_file($sFilePath);
+        $sFileHah = md5_file($filePath);
 
-        $aFileInfo = array('tmp_name' => $sFilePath, 'name' => 'testFile');
+        $aFileInfo = array('tmp_name' => $filePath, 'name' => 'testFile');
 
         $oConfig = $this->getMock('oxConfig', array('getUploadedFile'));
         $oConfig->expects($this->any())->method('getUploadedFile')->will($this->returnValue($aFileInfo));
 
-        $oFile = $this->getMock('oxFile', array('getConfig', '_uploadFile'), array(), '', false);
+        $oFile = $this->getMock('oxFile', array('getConfig', '_uploadFile', '_getHashedFileDir'), array(), '', false);
         $oFile->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oFile->expects($this->any())->method('_uploadFile')->will($this->returnValue(true));
+        $oFile->expects($this->any())->method('_getHashedFileDir')->will($this->returnValue('eb'));
 
         $oFile->processFile('aa');
 
         $this->assertEquals($sFileHah, $oFile->oxfiles__oxstorehash->value);
-
     }
 
     /**
@@ -187,28 +186,21 @@ class Unit_Core_oxfileTest extends OxidTestCase
      */
     public function testProcessFileUploadBad()
     {
-        $sFilePath = $this->getTestFilePath();
-        file_put_contents($sFilePath, 'test jpg file');
+        $this->setExpectedException('oxException', "EXCEPTION_COULDNOTWRITETOFILE");
 
-        $aFileInfo = array('tmp_name' => $sFilePath, 'name' => 'testFile');
+        $filePath = $this->createFile('out/downloads/testFile', 'test jpg file');
+
+        $aFileInfo = array('tmp_name' => $filePath, 'name' => 'testFile');
 
         $oConfig = $this->getMock('oxConfig', array('getUploadedFile'));
         $oConfig->expects($this->any())->method('getUploadedFile')->will($this->returnValue($aFileInfo));
 
-        $oFile = $this->getMock('oxFile', array('getConfig', '_uploadFile'), array(), '', false);
+        $oFile = $this->getMock('oxFile', array('getConfig', '_uploadFile', '_getHashedFileDir'), array(), '', false);
         $oFile->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oFile->expects($this->any())->method('_uploadFile')->will($this->returnValue(false));
+        $oFile->expects($this->any())->method('_getHashedFileDir')->will($this->returnValue('eb'));
 
-        // testing..
-        try {
-            $oFile->processFile('aa');
-        } catch (Exception $oException) {
-            $this->assertEquals("EXCEPTION_COULDNOTWRITETOFILE", $oException->getMessage(), "error in oxFiles::processFile()");
-
-            return;
-        }
-        $this->fail("error in oxFiles::processFile()");
-
+        $oFile->processFile('aa');
     }
 
     /**
@@ -216,8 +208,6 @@ class Unit_Core_oxfileTest extends OxidTestCase
      */
     public function testHasValidDownloads()
     {
-
-
         oxDb::getDB()->execute(
             'insert into oxorderfiles
                            set
@@ -362,15 +352,5 @@ class Unit_Core_oxfileTest extends OxidTestCase
         $oFile = new oxFile();
         $oFile->oxfiles__oxdownloadexptime = new oxField(0);
         $this->assertEquals(0, $oFile->getDownloadExpirationTime());
-    }
-
-    /**
-     * Get path to test file.
-     *
-     * @return string
-     */
-    protected function getTestFilePath()
-    {
-        return $this->getConfig()->getConfigParam('sShopDir') . 'out/downloads/testFile';
     }
 }

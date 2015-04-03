@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -712,17 +712,18 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
      */
     protected function _getDomXml()
     {
-        $sFullAdminDir = getShopBasePath() . '/application/views/admin';
+        $adminViewsDirectory = $this->getTestConfig()->getShopPath() .'/application/views/admin';
 
-        $sMenuFile = '/menu_ce.xml';
+        $edition = strtolower($this->getTestConfig()->getShopEdition());
+        $menuFile = "/menu_$edition.xml";
 
-        $sFile = $sFullAdminDir . $sMenuFile;
-        if (!file_exists($sFile) && file_exists($sFullAdminDir . '/menu.xml')) {
-            $sFile = $sFullAdminDir . '/menu.xml';
-        } elseif (file_exists($sFile) && !file_exists($sFullAdminDir . '/menu.xml')) {
-            // all ok
-        } else {
-            $this->fail("menu.xml not found");
+        $sFile = $adminViewsDirectory . $menuFile;
+        if (!file_exists($sFile)) {
+            if (file_exists($adminViewsDirectory . '/menu.xml')) {
+                $sFile = $adminViewsDirectory . '/menu.xml';
+            } else {
+                $this->fail("menu.xml not found");
+            }
         }
 
         $oDomFile = new DomDocument();

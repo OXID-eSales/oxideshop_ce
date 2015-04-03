@@ -829,13 +829,18 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testGetRemoteCachePath()
     {
-        $tempFile = $this->createFile('actions_main.inc.php', '');
-        touch($tempFile, time(), time());
+        $vfsStream = $this->getVfsStreamWrapper();
+        $file = \org\bovigo\vfs\vfsStream::newFile('actions_main.inc.php')->withContent('')->at($vfsStream->getRoot());
+        $tempFile = $vfsStream->getRootPath() .'actions_main.inc.php';
+
+        $file->lastModified(time());
         $this->assertEquals($tempFile, oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', $tempFile));
+
         //ensure that file is older than 24h
-        touch($tempFile, time() - 90000, time() - 90000);
+        $file->lastModified(time() - 90000);
         $this->assertEquals($tempFile, oxRegistry::getUtils()->GetRemoteCachePath(oxRegistry::getConfig()->getShopURL(), $tempFile));
-        touch($tempFile, time() - 90000, time() - 90000);
+
+        $file->lastModified(time() - 90000);
         $this->assertEquals($tempFile, oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', $tempFile));
         $this->assertEquals(false, oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', 'misc/blafoo.test'));
     }

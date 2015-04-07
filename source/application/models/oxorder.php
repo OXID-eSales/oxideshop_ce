@@ -1225,7 +1225,7 @@ class oxOrder extends oxBase
     {
         foreach ($oBasket->getContents() as $key => $oContent) {
             try {
-                $oProd = $oContent->getArticle(true);
+                $oProd = $oContent->getArticle(true, null, true);
             } catch (oxNoArticleException $oEx) {
                 $oBasket->removeItem($key);
                 throw $oEx;

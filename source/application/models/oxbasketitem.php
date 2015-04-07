@@ -425,7 +425,9 @@ class oxBasketItem extends oxSuperCfg
      * @param string $sProductId           product id
      * @param bool   $blDisableLazyLoading disable lazy loading
      *
-     * @throws oxArticleException, oxNoArticleException exception
+     * @throws oxArticleException exception in case of no current object product id is set
+     * @throws oxNoArticleException exception in case if product not exitst or not visible
+     * @throws oxArticleInputException exception if product is not buyable (stock and so on)
      *
      * @return oxArticle|oxOrderArticle
      */

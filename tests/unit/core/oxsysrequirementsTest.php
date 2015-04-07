@@ -35,7 +35,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
     {
         $oSysReq = new oxSysRequirements();
         $aRequiredModules = $oSysReq->getRequiredModules();
-        $sCnt = 25;
+            $sCnt = 25;
         if (isAdmin()) {
             $sCnt++;
         }
@@ -60,7 +60,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
         $this->assertEquals($sCnt, count($aSysInfo['php_extennsions']));
         $this->assertEquals(10, count($aSysInfo['php_config']));
         $sCnt = 4;
-        $sCnt = 2;
+            $sCnt = 2;
         if (isAdmin()) {
             $sCnt++;
         }
@@ -75,8 +75,10 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
      */
     public function testCheckServerPermissions()
     {
+        /** @var oxSysRequirements|PHPUnit_Framework_MockObject_MockObject $oSysReq */
         $oSysReq = $this->getMock('oxSysRequirements', array('isAdmin'));
         $oSysReq->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+
         $this->assertEquals(2, $oSysReq->checkServerPermissions());
     }
 
@@ -487,12 +489,12 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
      */
     public function providerCheckMemoryLimit()
     {
-        $aMemoryLimitsWithExpectedSystemHealth = array(
-            array('8M', 0),
-            array('14M', 1),
-            array('30M', 2),
-            array('-1', 2),
-        );
+            $aMemoryLimitsWithExpectedSystemHealth = array(
+                array('8M', 0),
+                array('14M', 1),
+                array('30M', 2),
+                array('-1', 2),
+            );
 
         return $aMemoryLimitsWithExpectedSystemHealth;
     }

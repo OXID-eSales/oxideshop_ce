@@ -992,6 +992,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oParams->send_name = 'testShopName';
         $oParams->send_id = '123456789';
 
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -1016,8 +1017,9 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         //uncoment line to generate template for checking mail body
         //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
-        if (!$this->checkMailBody('testSendWishlistMail', $oEmail->getBody()))
+        if (!$this->checkMailBody('testSendWishlistMail', $oEmail->getBody())) {
             $this->fail('Incorect mail body');
+        }
     }
 
 

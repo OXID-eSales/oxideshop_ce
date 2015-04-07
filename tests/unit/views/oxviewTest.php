@@ -370,16 +370,16 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
         oxAddClassModule("oxUtilsHelper", "oxutils");
 
-        $oConfig = $this->getMock('oxconfig', array('isSsl', 'getSslShopUrl', 'getShopUrl'));
-        $oConfig->expects($this->once())->method('isSsl')->will($this->returnValue(true));
-        $oConfig->expects($this->once())->method('getSslShopUrl')->will($this->returnValue('SSLshopurl/'));
-        $oConfig->expects($this->never())->method('getShopUrl');
-        $this->setConfigParam('sAdminDir', 'admin');
+        $config = $this->getMock('oxconfig', array('isSsl', 'getSslShopUrl', 'getShopUrl'));
+        $config->expects($this->once())->method('isSsl')->will($this->returnValue(true));
+        $config->expects($this->once())->method('getSslShopUrl')->will($this->returnValue('SSLshopurl/'));
+        $config->expects($this->never())->method('getShopUrl');
+        $config->setConfigParam('sAdminDir', 'admin');
 
         $oView = $this->getMock('oxview', array('getConfig', 'isAdmin'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($config));
         $oView->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
-        $sUrl = $oView->UNITexecuteNewAction("details?fnc=somefnc&anid=someanid");
+        $oView->UNITexecuteNewAction("details?fnc=somefnc&anid=someanid");
         $this->assertEquals('SSLshopurl/admin/index.php?cl=details&fnc=somefnc&anid=someanid&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
     }
 

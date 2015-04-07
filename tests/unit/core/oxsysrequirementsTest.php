@@ -75,8 +75,10 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
      */
     public function testCheckServerPermissions()
     {
+        /** @var oxSysRequirements|PHPUnit_Framework_MockObject_MockObject $oSysReq */
         $oSysReq = $this->getMock('oxSysRequirements', array('isAdmin'));
         $oSysReq->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+
         $this->assertEquals(2, $oSysReq->checkServerPermissions());
     }
 

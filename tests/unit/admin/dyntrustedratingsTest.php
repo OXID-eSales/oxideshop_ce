@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -52,10 +52,11 @@ class Unit_Admin_dyntrustedratingsTest extends OxidTestCase
         $this->setRequestParam("oxid", "testShopId");
         $sPkg = "OXID_ESALES";
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock("oxConfig", array("saveShopConfVar"));
         $oConfig->expects($this->at(0))->method('saveShopConfVar')->with($this->equalTo("arr"), $this->equalTo("aTsActiveLangIds"), $this->equalTo(array($sLangAbbr => true)), $this->equalTo("testShopId"));
-        $this->setConfigParam("sTsUser", "testUser");
-        $this->setConfigParam("sTsPass", "testPass");
+        $oConfig->setConfigParam("sTsUser", "testUser");
+        $oConfig->setConfigParam("sTsPass", "testPass");
 
         $oView = $this->getMock("dyn_trusted_ratings", array("getConfig", "_validateId"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));

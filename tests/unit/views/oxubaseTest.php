@@ -1493,16 +1493,16 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
         oxTestModules::addFunction("oxUtils", "redirect", "{ \$aArgs = func_get_args(); throw new exception( \$aArgs[0] ); }");
 
-        $oCfg = $this->getMock('oxconfig', array('isProductiveMode', 'getShopId'));
-        $oCfg->expects($this->any())->method('isProductiveMode')->will($this->returnValue(1));
-        $oCfg->expects($this->any())->method('getShopId')->will($this->returnValue(1));
-        $this->setConfigParam('blSeoLogging', 1);
+        $config = $this->getMock('oxconfig', array('isProductiveMode', 'getShopId'));
+        $config->expects($this->any())->method('isProductiveMode')->will($this->returnValue(1));
+        $config->expects($this->any())->method('getShopId')->will($this->returnValue(1));
+        $config->setConfigParam('blSeoLogging', 1);
 
         $oUBase = $this->getMock('oxubase', array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'getConfig'));
         $oUBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oUBase->expects($this->once())->method('_forceNoIndex');
-        $oUBase->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        $oUBase->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
         try {
             $oUBase->UNITprocessRequest();

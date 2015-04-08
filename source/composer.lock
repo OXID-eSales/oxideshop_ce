@@ -653,12 +653,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "073bfde88e4b672ead09249a6688d5c747ec427f"
+                "reference": "8775d2cabe1c8d910a4bb5c9b81d43fbc75800c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/073bfde88e4b672ead09249a6688d5c747ec427f",
-                "reference": "073bfde88e4b672ead09249a6688d5c747ec427f",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/8775d2cabe1c8d910a4bb5c9b81d43fbc75800c7",
+                "reference": "8775d2cabe1c8d910a4bb5c9b81d43fbc75800c7",
                 "shasum": ""
             },
             "require": {
@@ -672,6 +672,7 @@
                 "symfony/yaml": "~2.0"
             },
             "bin": [
+                "bin/reset-shop",
                 "bin/runmetrics",
                 "bin/runtests",
                 "bin/runtests-coverage",
@@ -715,7 +716,7 @@
             "support": {
                 "source": "https://github.com/OXID-eSales/testing_library/tree/v1.0.0-alpha2"
             },
-            "time": "2015-04-07 14:36:01"
+            "time": "2015-04-08 12:51:28"
         },
         {
             "name": "pdepend/pdepend",

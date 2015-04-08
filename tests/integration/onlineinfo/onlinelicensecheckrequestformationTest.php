@@ -49,6 +49,13 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
                 'isValid' => true,
         )));
 
+        // imitating package revision file
+        $vfsStream = $this->getVfsStreamWrapper();
+        $shopDir = "shopdir";
+        $vfsStream->createFile($shopDir . DIRECTORY_SEPARATOR . 'pkg.rev', 'somerevisionstring');
+        $fakeShopDir = $vfsStream->getRootPath() . $shopDir . DIRECTORY_SEPARATOR;
+        $oConfig->setConfigParam('sShopDir', $fakeShopDir);
+
         $sEdition = $oConfig->getEdition();
         $sVersion = $oConfig->getVersion();
         $sShopUrl = $oConfig->getShopUrl();
@@ -129,6 +136,13 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
                 'lastAdminUsage' => $iValidNodeTime,
                 'isValid' => true,
             )));
+
+        // imitating package revision file
+        $vfsStream = $this->getVfsStreamWrapper();
+        $shopDir = "shopdir";
+        $vfsStream->createFile($shopDir . DIRECTORY_SEPARATOR . 'pkg.rev', 'somerevisionstring');
+        $fakeShopDir = $vfsStream->getRootPath() . $shopDir . DIRECTORY_SEPARATOR;
+        $oConfig->setConfigParam('sShopDir', $fakeShopDir);
 
         $sEdition = $oConfig->getEdition();
         $sVersion = $oConfig->getVersion();

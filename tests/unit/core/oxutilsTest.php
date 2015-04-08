@@ -777,30 +777,30 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testResetTemplateCache()
     {
-        $myConfig = oxRegistry::getConfig();
-        $myConfig->setConfigParam('sCompileDir', $this->getTestConfig()->getTempDirectory());
+        $config = oxRegistry::getConfig();
+        $config->setConfigParam('sCompileDir', $this->getTestConfig()->getTempDirectory());
 
-        $oUtils = oxRegistry::getUtils();
-        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty(true);
-        $sTmpDir = $myConfig->getConfigParam('sCompileDir') . "/smarty/";
+        $utils = oxRegistry::getUtils();
+        $smarty = oxRegistry::get("oxUtilsView")->getSmarty(true);
+        $tmpDir = $config->getConfigParam('sCompileDir') . "/smarty/";
 
-        $aTemplates = array('message/success.tpl', 'message/notice.tpl', 'message/errors.tpl',);
-        foreach ($aTemplates as $sTpl) {
-            $oSmarty->fetch($sTpl);
+        $templates = array('message/success.tpl', 'message/notice.tpl', 'message/errors.tpl',);
+        foreach ($templates as $template) {
+            $smarty->fetch($template);
         }
 
-        $sRemoveTemplate = basename(reset($aTemplates));
-        $sLeaveTemplate = basename(array_pop($aTemplates));
+        $removeTemplate = basename(reset($templates));
+        $leaveTemplate = basename(array_pop($templates));
 
         //checking if test files were written to temp dir
-        $this->assertEquals(1, count(glob("{$sTmpDir}/*{$sRemoveTemplate}.php")), "File written " . $sRemoveTemplate);
-        $this->assertEquals(1, count(glob("{$sTmpDir}/*{$sLeaveTemplate}.php")), "File written " . $sLeaveTemplate);
+        $this->assertEquals(1, count(glob("{$tmpDir}/*{$removeTemplate}.php")), "File written " . $removeTemplate);
+        $this->assertEquals(1, count(glob("{$tmpDir}/*{$leaveTemplate}.php")), "File written " . $leaveTemplate);
 
         //Remove templates
-        $this->assertNull($oUtils->resetTemplateCache($aTemplates));
+        $this->assertNull($utils->resetTemplateCache($templates));
 
-        $this->assertEquals(0, count(glob("{$sTmpDir}/*{$sRemoveTemplate}.php")), "File removed " . $sRemoveTemplate);
-        $this->assertEquals(1, count(glob("{$sTmpDir}/*{$sLeaveTemplate}.php")), "File left " . $sLeaveTemplate);
+        $this->assertEquals(0, count(glob("{$tmpDir}/*{$removeTemplate}.php")), "File removed " . $removeTemplate);
+        $this->assertEquals(1, count(glob("{$tmpDir}/*{$leaveTemplate}.php")), "File left " . $leaveTemplate);
     }
 
     public function testResetLanguageCache()

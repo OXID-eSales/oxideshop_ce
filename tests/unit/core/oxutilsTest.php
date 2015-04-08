@@ -778,6 +778,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testResetTemplateCache()
     {
         $myConfig = oxRegistry::getConfig();
+        $myConfig->setConfigParam('sCompileDir', $this->getTestConfig()->getTempDirectory());
 
         $oUtils = oxRegistry::getUtils();
         $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty(true);

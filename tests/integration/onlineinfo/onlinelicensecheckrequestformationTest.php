@@ -32,6 +32,20 @@
  */
 class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends OxidTestCase
 {
+    /**
+     * imitating package revision file and return shop dir
+     *
+     * @return string path to virtual shop directory with pkg.rev file
+     */
+    private function mockPackageRevisionFile()
+    {
+        $vfsStream = $this->getVfsStreamWrapper();
+        $shopDir = "shopdir";
+        $vfsStream->createFile($shopDir . DIRECTORY_SEPARATOR . 'pkg.rev', 'somerevisionstring');
+        $fakeShopDir = $vfsStream->getRootPath() . $shopDir . DIRECTORY_SEPARATOR;
+        return $fakeShopDir;
+    }
+
     public function testRequestFormationWithExistingSerials()
     {
         $oConfig = $this->getConfig();
@@ -50,11 +64,7 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         )));
 
         // imitating package revision file
-        $vfsStream = $this->getVfsStreamWrapper();
-        $shopDir = "shopdir";
-        $vfsStream->createFile($shopDir . DIRECTORY_SEPARATOR . 'pkg.rev', 'somerevisionstring');
-        $fakeShopDir = $vfsStream->getRootPath() . $shopDir . DIRECTORY_SEPARATOR;
-        $oConfig->setConfigParam('sShopDir', $fakeShopDir);
+        $oConfig->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
 
         $sEdition = $oConfig->getEdition();
         $sVersion = $oConfig->getVersion();
@@ -138,11 +148,7 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
             )));
 
         // imitating package revision file
-        $vfsStream = $this->getVfsStreamWrapper();
-        $shopDir = "shopdir";
-        $vfsStream->createFile($shopDir . DIRECTORY_SEPARATOR . 'pkg.rev', 'somerevisionstring');
-        $fakeShopDir = $vfsStream->getRootPath() . $shopDir . DIRECTORY_SEPARATOR;
-        $oConfig->setConfigParam('sShopDir', $fakeShopDir);
+        $oConfig->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
 
         $sEdition = $oConfig->getEdition();
         $sVersion = $oConfig->getVersion();

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -603,9 +603,9 @@ class oxSysRequirements
 
     /**
      * Checks PHP version.
-     * < PHP 5.2.0 - red.
-     * PHP 5.2.0-5.2.9 - yellow.
-     * PHP 5.2.10 or higher - green.
+     * < PHP 5.3.0 - red.
+     * PHP 5.3.0-5.3.24 - yellow.
+     * PHP 5.3.25 or higher - green.
      *
      * @return integer
      */
@@ -1171,7 +1171,7 @@ class oxSysRequirements
      */
     protected function _getMinimumMemoryLimit()
     {
-        $sDefLimit = '14M';
+            $sDefLimit = '14M';
 
         return $sDefLimit;
     }
@@ -1183,7 +1183,7 @@ class oxSysRequirements
      */
     protected function _getRecommendMemoryLimit()
     {
-        $sRecLimit = '30M';
+            $sRecLimit = '30M';
 
         return $sRecLimit;
     }

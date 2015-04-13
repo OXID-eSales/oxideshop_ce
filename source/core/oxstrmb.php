@@ -233,7 +233,7 @@ class oxStrMb
      *
      * @return string
      */
-    public function preg_replace_callback($pattern, callable $callback, $subject, $limit = -1, &$count = null)
+    public function preg_replace_callback($pattern, $callback, $subject, $limit = -1, &$count = null)
     {
         if (is_array($pattern)) {
             foreach ($pattern as &$item) {

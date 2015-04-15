@@ -376,8 +376,8 @@ class aList extends oxUBase
         } else {
             $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
 
-            $sActCat = oxRegistry::getConfig()->getRequestParameter('cnid');
-            $this->_iAllArtCnt = $oArtList->loadCategoryArticles($sActCat, $aSessionFilter);
+            $sActCatId = $oCategory->getId();
+            $this->_iAllArtCnt = $oArtList->loadCategoryArticles($sActCatId, $aSessionFilter);
         }
 
         $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);

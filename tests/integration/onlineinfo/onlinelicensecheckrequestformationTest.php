@@ -49,6 +49,9 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
                 'isValid' => true,
         )));
 
+        // imitating package revision file
+        $oConfig->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
+
         $sEdition = $oConfig->getEdition();
         $sVersion = $oConfig->getVersion();
         $sShopUrl = $oConfig->getShopUrl();
@@ -59,11 +62,7 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $sXml .= '<olcRequest>';
         $sXml .=   '<pVersion>1.1</pVersion>';
         $sXml .=   '<keys><key>license_key</key></keys>';
-        if ($sRevision) {
-            $sXml .= "<revision>$sRevision</revision>";
-        } else {
-            $sXml .= '<revision></revision>';
-        }
+        $sXml .= "<revision>$sRevision</revision>";
         $sXml .=   '<productSpecificInformation>';
         $sXml .=     '<servers>';
         $sXml .=       '<server>';
@@ -130,6 +129,9 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
                 'isValid' => true,
             )));
 
+        // imitating package revision file
+        $oConfig->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
+
         $sEdition = $oConfig->getEdition();
         $sVersion = $oConfig->getVersion();
         $sShopUrl = $oConfig->getShopUrl();
@@ -143,11 +145,7 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $sXml .=   '<key>license_key</key>';
         $sXml .=   '<key state="new">new_serial</key>';
         $sXml .=   '</keys>';
-        if ($sRevision) {
-            $sXml .= "<revision>$sRevision</revision>";
-        } else {
-            $sXml .= '<revision></revision>';
-        }
+        $sXml .= "<revision>$sRevision</revision>";
         $sXml .=   '<productSpecificInformation>';
         $sXml .=     '<servers>';
         $sXml .=       '<server>';
@@ -196,5 +194,17 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $oLicenseCheck->setServersManager($oServersManager);
 
         $oLicenseCheck->validateNewSerial('new_serial');
+    }
+
+    /**
+     * imitating package revision file and return shop dir
+     *
+     * @return string path to virtual shop directory with pkg.rev file
+     */
+    private function mockPackageRevisionFile()
+    {
+        $shopDir = "shopdir";
+        $filePath = $this->createFile($shopDir . DIRECTORY_SEPARATOR . 'pkg.rev', 'somerevisionstring');
+        return dirname($filePath);
     }
 }

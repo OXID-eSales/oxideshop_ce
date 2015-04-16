@@ -1429,6 +1429,9 @@ class oxOrder extends oxBase
         // setting stock check mode
         $this->_oOrderBasket->setStockCheckMode($blStockCheck);
 
+        // set selected address in Session Variable
+        $this->getOrderUser()->setSelectedAddress();
+
         // setting virtual basket user
         $this->_oOrderBasket->setBasketUser($this->getOrderUser());
 

@@ -709,6 +709,11 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     {
         $sPathToFile = oxCCTempDir . '/' . $sFileName;
 
+        $sDirectory = dirname($sPathToFile);
+        if (!file_exists($sDirectory)) {
+            mkdir($sDirectory, 0777, true);
+        }
+
         file_put_contents($sPathToFile, $sFileContent);
 
         return $sPathToFile;

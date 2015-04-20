@@ -79,10 +79,6 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
         $oSysReq = $this->getMock('oxSysRequirements', array('isAdmin'));
         $oSysReq->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
-        $oVfsStreamWrapper = $this->getVfsStreamWrapper();
-        $oVfsStreamWrapper->createStructure(array('tmp_directory' => array()));
-        oxRegistry::getConfig()->setConfigParam('sCompileDir', $oVfsStreamWrapper->getRootPath().'tmp_directory');
-
         $this->assertEquals(2, $oSysReq->checkServerPermissions());
     }
 

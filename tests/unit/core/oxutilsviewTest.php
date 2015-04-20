@@ -658,7 +658,6 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     {
         $oUV = new oxUtilsView();
 
-
         $oVfsStreamWrapper = $this->getVfsStreamWrapper();
         $oVfsStreamWrapper->createStructure(array('tmp_directory' => array()));
         $compileDirectory = $oVfsStreamWrapper->getRootPath().'tmp_directory';

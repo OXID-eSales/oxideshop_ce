@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -751,10 +751,11 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oObj->setId("test_insert");
         $oObj->oxstates__oxtitle = new oxField('test_x');
 
-        $oDb = $this->getMock('stdclass', array('select', 'execute', 'quote', 'getOne', 'Insert_ID'));
+        $oDb = $this->getMock('oxLegacyDb', array('select', 'execute', 'quote', 'getOne', 'Insert_ID'));
         $oDb->expects($this->any())->method('select')->will($this->returnValue(false));
         $oDb->expects($this->any())->method('execute')->will($this->evalFunction('{Unit_Core_oxi18ntest::$aLoggedSqls[] = $args[0];return true;}'));
         $oDb->expects($this->any())->method('quote')->will($this->evalFunction('{return "\'".mysql_real_escape_string($args[0])."\'";}'));
+        $oDb->expects($this->any())->method('MetaColumns');
         $oDb->expects($this->any())->method('getOne');
 
         modDb::getInstance()->modAttach($oDb);

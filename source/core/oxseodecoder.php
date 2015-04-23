@@ -208,10 +208,10 @@ class oxSeoDecoder extends oxSuperCfg
                 oxRegistry::getLang()->resetBaseLanguage();
             } elseif (($sRedirectUrl = $this->_decodeOldUrl($sParams))) {
                 // in case SEO url was changed - redirecting to new location
-                oxRegistry::getUtils()->redirect($this->getConfig()->getShopURL() . $sRedirectUrl, false);
+                oxRegistry::getUtils()->redirect($this->getConfig()->getShopURL() . $sRedirectUrl, false, 301);
             } elseif (($sRedirectUrl = $this->_decodeSimpleUrl($sParams))) {
                 // old type II seo urls
-                oxRegistry::getUtils()->redirect($this->getConfig()->getShopURL() . $sRedirectUrl, false);
+                oxRegistry::getUtils()->redirect($this->getConfig()->getShopURL() . $sRedirectUrl, false, 301);
             } else {
                 oxRegistry::getSession()->start();
                 // unrecognized url

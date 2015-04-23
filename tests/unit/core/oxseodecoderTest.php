@@ -406,6 +406,30 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $this->fail('error running testProcessSeoCallUsingSeoHistory');
     }
 
+    /**
+     * Testing seo call processor using http status code 301 for redirects of seo history
+     * see https://bugs.oxid-esales.com/view.php?id=5471
+     */
+    public function testProcessSeoCallUsingStatus301ForRedirects()
+    {
+        $oUtils = $this->getMock('oxutils', array('redirect'));
+        $oUtils->expects($this->exactly(2))->method('redirect')->with($this->anything(), $this->anything(), $this->equalTo(301));
+
+        oxRegistry::set('oxUtils', $oUtils);
+
+        $oEncoder = $this->getMock('oxseodecoder', array('_getParams', 'decodeUrl', '_decodeOldUrl', '_decodeSimpleUrl'));
+        $oEncoder->expects($this->exactly(2))->method('_getParams')->will($this->returnValue('xxx'));
+        $oEncoder->expects($this->exactly(2))->method('decodeUrl')->will($this->returnValue(false));
+        $oEncoder->expects($this->at(2))->method('_decodeOldUrl')->will($this->returnValue('yyy'));
+
+        $oEncoder->processSeoCall();
+
+        $oEncoder->expects($this->at(2))->method('_decodeOldUrl')->will($this->returnValue(false));
+        $oEncoder->expects($this->once())->method('_decodeSimpleUrl')->will($this->returnValue('yyy'));
+
+        $oEncoder->processSeoCall();
+    }
+
     public function testGetSeoUrl()
     {
         $oDb = oxDb::getDb();

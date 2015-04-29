@@ -649,16 +649,16 @@
         },
         {
             "name": "oxid-esales/testing-library",
-            "version": "v1.0.0-alpha3",
+            "version": "v1.0.0-alpha4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "bcc1160612fe082d4edd2fd69ab29494895f50d4"
+                "reference": "bd9f935e940b7b41a47568b77f7c128c1ba5ba54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/bcc1160612fe082d4edd2fd69ab29494895f50d4",
-                "reference": "bcc1160612fe082d4edd2fd69ab29494895f50d4",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/bd9f935e940b7b41a47568b77f7c128c1ba5ba54",
+                "reference": "bd9f935e940b7b41a47568b77f7c128c1ba5ba54",
                 "shasum": ""
             },
             "require": {
@@ -686,7 +686,7 @@
                     "env-map": {
                         "shop_path": "SHOP_PATH",
                         "shop_tests_path": "SHOP_TESTS_PATH",
-                        "modules_path": "MODULES_PATH"
+                        "partial_module_paths": "PARTIAL_MODULE_PATHS"
                     }
                 }
             },
@@ -714,9 +714,9 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/OXID-eSales/testing_library/tree/v1.0.0-alpha3"
+                "source": "https://github.com/OXID-eSales/testing_library/tree/v1.0.0-alpha4"
             },
-            "time": "2015-04-16 09:39:31"
+            "time": "2015-04-27 08:08:21"
         },
         {
             "name": "pdepend/pdepend",

@@ -63,9 +63,9 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         clearstatcache();
         //removing test files from tmp dir
         $sFilePath = oxRegistry::getConfig()->getConfigParam('sCompileDir') . "*testFileCache*.txt";
-        $aPathes = glob($sFilePath);
-        if (is_array($aPathes)) {
-            foreach ($aPathes as $sFilename) {
+        $aPaths = glob($sFilePath);
+        if (is_array($aPaths)) {
+            foreach ($aPaths as $sFilename) {
                 @unlink($sFilename);
             }
         }
@@ -723,15 +723,15 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         //checking if test files were written to temp dir
         $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_testFileCache*.txt";
-        $aPathes = glob($sFilePath);
-        $this->assertEquals(10, count($aPathes), "Error writing test files to cache dir");
+        $aPaths = glob($sFilePath);
+        $this->assertEquals(10, count($aPaths), "Error writing test files to cache dir");
 
         //actual test
         $this->assertNull($oUtils->oxResetFileCache());
 
         $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_testFileCache*.txt";
-        $aPathes = glob($sFilePath);
-        $this->assertTrue($aPathes == null);
+        $aPaths = glob($sFilePath);
+        $this->assertTrue($aPaths == null);
     }
 
     public function testOxResetFileCacheSkipsTablesFieldNames()
@@ -762,17 +762,17 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         //checking if test files were written to temp dir
         $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_testFileCache*.txt";
-        $aPathes = glob($sFilePath);
-        $this->assertEquals(10, count($aPathes), "Error writing test files to cache dir: " . count($aPathes));
+        $aPaths = glob($sFilePath);
+        $this->assertEquals(10, count($aPaths), "Error writing test files to cache dir: " . count($aPaths));
 
         //actual test
         $this->assertNull($oUtils->oxResetFileCache());
 
         $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_fieldnames_testTest.txt";
-        $aPathes = glob($sFilePath);
+        $aPaths = glob($sFilePath);
 
-        @unlink($aPathes[0]); //deleting test cache file
-        $this->assertEquals(1, count($aPathes));
+        @unlink($aPaths[0]); //deleting test cache file
+        $this->assertEquals(1, count($aPaths));
     }
 
     public function testResetTemplateCache()

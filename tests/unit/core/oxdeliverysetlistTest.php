@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -543,18 +543,18 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
     }
 
     /**
-     * Testing results
+     * Testing results.
+     * No input, everything should be loaded according to config defaults.
      */
-    // no input, everything should be loaded accofding to config defaults
     public function testGetListTestingResultsNoInput()
     {
         $oList = new oxDeliverySetList();
         $oList->UNITgetList(null, null);
 
-        $this->assertEquals(
-            array('oxidstandard', '1b842e732a23255b1.91207750', '1b842e732a23255b1.91207751'),
-            array_keys($oList->aList)
-        );
+        $this->assertEquals(3, count($oList->aList));
+        $this->assertArrayHasKey('oxidstandard', $oList->aList);
+        $this->assertArrayHasKey('1b842e732a23255b1.91207750', $oList->aList);
+        $this->assertArrayHasKey('1b842e732a23255b1.91207751', $oList->aList);
     }
 
     // only country
@@ -563,10 +563,10 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
         $oList = new oxDeliverySetList();
         $oList->UNITgetList(null, 'a7c40f6320aeb2ec2.72885259'); // austria
 
-        $this->assertEquals(
-            array('oxidstandard', '1b842e732a23255b1.91207750', '1b842e732a23255b1.91207751'),
-            array_keys($oList->aList)
-        );
+        $this->assertEquals(3, count($oList->aList));
+        $this->assertArrayHasKey('oxidstandard', $oList->aList);
+        $this->assertArrayHasKey('1b842e732a23255b1.91207750', $oList->aList);
+        $this->assertArrayHasKey('1b842e732a23255b1.91207751', $oList->aList);
     }
 
     /**

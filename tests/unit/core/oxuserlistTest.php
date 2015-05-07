@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Core_oxuserlistTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->setId('user1');
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
-        $oUser->oxuser__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+        $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField('user1', oxField::T_RAW);
         $oUser->save();
 

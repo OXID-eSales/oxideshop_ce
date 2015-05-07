@@ -46,7 +46,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
      */
     /*    public function test_loadVendorList() {
             $myUtils = oxRegistry::getUtils();
-            $myConfig= oxRegistry::getConfig();
+            $myConfig= $this->getConfig();
             $myDB    = oxDb::getDB();
 
             $oVendorlist = oxNew( 'oxvendorlist' );
@@ -77,7 +77,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
     public function test_loadVendorListByLanguage()
     {
         $myUtils = oxRegistry::getUtils();
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
         $myDB = oxDb::getDB();
 
         //modConfig::addClassVar("_iLanguageId","1"); //$oVendorlist->sLanguage = '1';
@@ -112,7 +112,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
     {
         $myUtils = oxRegistry::getUtils();
 
-        modConfig::getInstance()->setConfigParam('bl_perfShowActionCatArticleCnt', true);
+        $this->getConfig()->setConfigParam('bl_perfShowActionCatArticleCnt', true);
 
         $oVendorlist = oxNew('oxvendorlist');
         $oVendorlist->setShowVendorArticleCnt(true);
@@ -129,7 +129,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
      */
     public function test_BuildVendorTree()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $myDB = oxDb::getDB();
 
         $oVendorlist = $this->getProxyClass("oxvendorList"); //oxNew('oxvendorlist', 'core');
@@ -167,7 +167,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
     public function test_addCategoryFields()
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oVendorlist = new oxvendorlist();
         $oVendorlist->loadVendorList();

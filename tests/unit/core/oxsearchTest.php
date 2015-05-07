@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
     {
         parent::setUp();
         $this->_oSearchHandler = oxNew('oxsearch');
-        modConfig::getInstance()->setConfigParam('blUseTimeCheck', true);
+        $this->getConfig()->setConfigParam('blUseTimeCheck', true);
         $this->cleanUpTable('oxarticles');
         $this->cleanUpTable('oxobject2category');
         $this->cleanUpTable('oxcategories');
@@ -282,10 +282,10 @@ class Unit_Core_oxsearchTest extends OxidTestCase
 
     public function testSearchWithParamInSecondPage()
     {
-        modConfig::setRequestParameter("pgNr", 1);
+        $this->setRequestParameter("pgNr", 1);
 
         $oSearch = new oxsearch();
-        modConfig::getInstance()->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
+        $this->getConfig()->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
         $oSearchList = $oSearch->getSearchArticles("a");
         $iAllArtCnt = $oSearch->getSearchArticleCount("a");
 
@@ -323,7 +323,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
 
         $oSearch = new oxsearch();
 
-        modConfig::getInstance()->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
+        $this->getConfig()->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
         $oSearchList = $oSearch->getSearchArticles("a", false, $sID);
         $iAllArtCnt = $oSearch->getSearchArticleCount("a", false, $sID);
 
@@ -360,7 +360,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
 
         $oSearch = new oxsearch();
 
-        modConfig::getInstance()->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
+        $this->getConfig()->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
         $oSearchList = $oSearch->getSearchArticles("a", false, false, $sID);
         $iAllArtCnt = $oSearch->getSearchArticleCount("a", false, false, $sID);
 
@@ -584,7 +584,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
         $iCurrTime = time();
         oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
 
-        modConfig::getInstance()->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
+        $this->getConfig()->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
 
         $sSearchDate = date('Y-m-d H:i:s', $iCurrTime);
 
@@ -631,7 +631,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
         $iCurrTime = time();
         oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
 
-        modConfig::getInstance()->setConfigParam('aSearchCols', array('oxtitle'));
+        $this->getConfig()->setConfigParam('aSearchCols', array('oxtitle'));
 
         $sSearchDate = date('Y-m-d H:i:s', $iCurrTime);
 
@@ -666,8 +666,8 @@ class Unit_Core_oxsearchTest extends OxidTestCase
     public function testGetSearchSelectWithSearchInLongDesc()
     {
         // forcing config
-        modConfig::getInstance()->setConfigParam('aSearchCols', array('oxlongdesc'));
-        modConfig::getInstance()->setConfigParam('blUseRightsRoles', 0);
+        $this->getConfig()->setConfigParam('aSearchCols', array('oxlongdesc'));
+        $this->getConfig()->setConfigParam('blUseRightsRoles', 0);
 
         $iCurrTime = time();
         oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
@@ -679,7 +679,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
         $sQ = "select `$sArticleTable`.`oxid`, $sArticleTable.oxtimestamp from $sArticleTable left join $sAETable on $sArticleTable.oxid=$sAETable.oxid where (  ( $sArticleTable.oxactive = 1 or ( $sArticleTable.oxactivefrom < '$sSearchDate' and
                $sArticleTable.oxactiveto > '$sSearchDate' ) )  and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock +
                $sArticleTable.oxvarstock ) > 0  )  ";
-        if (!modConfig::getInstance()->getConfigParam('blVariantParentBuyable')) {
+        if (!$this->getConfig()->getConfigParam('blVariantParentBuyable')) {
             $sTimeCheckQ = " or ( art.oxactivefrom < '$sSearchDate' and art.oxactiveto > '$sSearchDate' )";
             $sQ .= "and IF( $sTable.oxvarcount = 0, 1, ( select 1 from $sTable as art where art.oxparentid=$sTable.oxid and ( art.oxactive = 1 $sTimeCheckQ ) and ( art.oxstockflag != 2 or art.oxstock > 0 ) limit 1 ) ) ";
         }
@@ -700,8 +700,8 @@ class Unit_Core_oxsearchTest extends OxidTestCase
     public function testGetSearchSelectWithSearchInTags()
     {
         // forcing config
-        modConfig::getInstance()->setConfigParam('aSearchCols', array('oxtags'));
-        modConfig::getInstance()->setConfigParam('blUseRightsRoles', 0);
+        $this->getConfig()->setConfigParam('aSearchCols', array('oxtags'));
+        $this->getConfig()->setConfigParam('blUseRightsRoles', 0);
 
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
         oxRegistry::get("oxUtilsDate")->UNITSetTime(time());
@@ -716,7 +716,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
         $sQ = "select `$sArticleTable`.`oxid`, $sArticleTable.oxtimestamp from $sArticleTable LEFT JOIN $sAETable ON $sArticleTable.oxid=$sAETable.oxid where (  ( $sArticleTable.oxactive = 1 or ( $sArticleTable.oxactivefrom < '$sSearchDate' and
                $sArticleTable.oxactiveto > '$sSearchDate' ) )  and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock +
                $sArticleTable.oxvarstock ) > 0  )  ";
-        if (!modConfig::getInstance()->getConfigParam('blVariantParentBuyable')) {
+        if (!$this->getConfig()->getConfigParam('blVariantParentBuyable')) {
             //$sQ.= "and ( $sArticleTable.oxvarcount=0 or ( select count(art.oxid) from $sArticleTable as art
             //      where art.oxstockflag=2 and art.oxparentid=$sArticleTable.oxid and art.oxstock=0 ) < $sArticleTable.oxvarcount ) ";
             $sTimeCheckQ = " or ( art.oxactivefrom < '$sSearchDate' and art.oxactiveto > '$sSearchDate' )";
@@ -740,7 +740,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
     public function testGetWhereWithSearchIngLongDescSecondLanguage()
     {
         // forcing config
-        modConfig::getInstance()->setConfigParam('aSearchCols', array('oxlongdesc'));
+        $this->getConfig()->setConfigParam('aSearchCols', array('oxlongdesc'));
         $sAETable = $sTable = getViewName('oxartextends', 1);
 
         $sQ = " and ( (  $sAETable.oxlongdesc like '%xxx%' )  ) ";

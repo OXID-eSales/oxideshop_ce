@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -428,7 +428,7 @@ class Unit_Core_oxactionsTest extends OxidTestCase
     {
         $oPromo = new oxactions();
         $oPromo->oxactions__oxpic = new oxField("current_de.jpg");
-        $oConfig = modConfig::getInstance();
+        $oConfig = $this->getConfig();
 
         $this->assertEquals($oConfig->getPictureUrl("promo/") . "current_de.jpg", $oPromo->getBannerPictureUrl());
     }
@@ -439,7 +439,7 @@ class Unit_Core_oxactionsTest extends OxidTestCase
     public function testGetBannerPictureUrl_noPicture()
     {
         $oPromo = new oxactions();
-        $oConfig = modConfig::getInstance();
+        $oConfig = $this->getConfig();
 
         $this->assertNull($oPromo->getBannerPictureUrl());
     }
@@ -451,7 +451,7 @@ class Unit_Core_oxactionsTest extends OxidTestCase
     {
         $oPromo = new oxactions();
         $oPromo->oxactions__oxpic = new oxField("noSuchPic.jpg");
-        $this->assertEquals(modConfig::getInstance()->getPictureUrl("master/") . "nopic.jpg", $oPromo->getBannerPictureUrl());
+        $this->assertEquals($this->getConfig()->getPictureUrl("master/") . "nopic.jpg", $oPromo->getBannerPictureUrl());
     }
 
     /**

@@ -60,13 +60,13 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
     public function testSaveAdditionalTest()
     {
         oxTestModules::addFunction('oxarticle', 'save', '{ return true; }');
-        modConfig::getInstance()->setConfigParam('iPicCount', 0);
+        $this->getConfig()->setConfigParam('iPicCount', 0);
 
         $oView = $this->getMock("Article_Pictures", array("resetContentCache"));
         $oView->expects($this->once())->method('resetContentCache');
 
         $iCnt = 7;
-        modConfig::getInstance()->setConfigParam('iPicCount', $iCnt);
+        $this->getConfig()->setConfigParam('iPicCount', $iCnt);
 
         $oView->save();
     }
@@ -79,7 +79,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
-        modConfig::setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxarticles where oxparentid != ''"));
+        $this->setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxarticles where oxparentid != ''"));
 
         // testing..
         $oView = new Article_Pictures();
@@ -102,7 +102,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
     {
         return;
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $sAbsDynImageDir = $myConfig->getPictureDir(false);
         $sActShopId = $myConfig->getBaseShopId();
@@ -178,8 +178,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testDeletePicture_deletingIcon()
     {
-        modConfig::setRequestParameter("oxid", "_testArtId");
-        modConfig::setRequestParameter("masterPicIndex", "ICO");
+        $this->setRequestParameter("oxid", "_testArtId");
+        $this->setRequestParameter("masterPicIndex", "ICO");
 
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
@@ -202,8 +202,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testDeletePicture_deletingThumbnail()
     {
-        modConfig::setRequestParameter("oxid", "_testArtId");
-        modConfig::setRequestParameter("masterPicIndex", "TH");
+        $this->setRequestParameter("oxid", "_testArtId");
+        $this->setRequestParameter("masterPicIndex", "TH");
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
         $oArtPic = $this->getMock("Article_Pictures", array("_deleteMainIcon", "_deleteMasterPicture"));
@@ -225,8 +225,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testDeletePicture_deletingMasterPic()
     {
-        modConfig::setRequestParameter("oxid", "_testArtId");
-        modConfig::setRequestParameter("masterPicIndex", "2");
+        $this->setRequestParameter("oxid", "_testArtId");
+        $this->setRequestParameter("masterPicIndex", "2");
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
         $oArtPic = $this->getMock("Article_Pictures", array("_deleteMainIcon", "_deleteThumbnail"));
@@ -248,8 +248,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testDeletePicture_generatedPicsCounterReset()
     {
-        modConfig::setRequestParameter("oxid", "_testArtId");
-        modConfig::setRequestParameter("masterPicIndex", "2");
+        $this->setRequestParameter("oxid", "_testArtId");
+        $this->setRequestParameter("masterPicIndex", "2");
 
         $oArtPic = $this->getMock("Article_Pictures", array("_resetMasterPicture"));
         $oArtPic->expects($this->once())->method('_resetMasterPicture');
@@ -581,8 +581,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        modConfig::setRequestParameter('oxid', 'asdasdasd');
-        modConfig::setRequestParameter('editval', array('s' => 'test'));
+        $this->setRequestParameter('oxid', 'asdasdasd');
+        $this->setRequestParameter('editval', array('s' => 'test'));
         $oArtPic = $this->getProxyClass("Article_Pictures");
         $oArtPic->save();
     }

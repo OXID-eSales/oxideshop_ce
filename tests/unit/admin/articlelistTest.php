@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     {
         $sObjects = 'oxArticle';
 
-        modConfig::setRequestParameter('folder', $sObjects . 'TestFolderName');
+        $this->setRequestParameter('folder', $sObjects . 'TestFolderName');
 
         $oAdminList = $this->getMock('article_list', array("getItemList"));
         $oAdminList->expects($this->once())->method('getItemList')->will($this->returnValue(null));
@@ -51,10 +51,10 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
      */
     public function testRenderSelectingProductCategory()
     {
-        modConfig::getInstance()->setRequestParameter("where", array("oxarticles" => array("oxtitle" => "testValue")));
+        $this->setRequestParameter("where", array("oxarticles" => array("oxtitle" => "testValue")));
 
         $sCatId = oxDb::getDb()->getOne("select oxid from oxcategories");
-        modConfig::setRequestParameter("art_category", "cat@@" . $sCatId);
+        $this->setRequestParameter("art_category", "cat@@" . $sCatId);
         // testing..
         $oView = new Article_List();
         $this->assertEquals('article_list.tpl', $oView->render());
@@ -78,7 +78,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     public function testRenderSelectingProductManufacturer()
     {
         $sManId = oxDb::getDb()->getOne("select oxid from oxmanufacturers");
-        modConfig::setRequestParameter("art_category", "mnf@@" . $sManId);
+        $this->setRequestParameter("art_category", "mnf@@" . $sManId);
 
         // testing..
         $oView = $this->getMock("Article_List", array("getItemList"));
@@ -102,8 +102,8 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     public function testRenderSelectingProductVendor()
     {
         $sVndId = oxDb::getDb()->getOne("select oxid from oxvendor");
-        modConfig::setRequestParameter("art_category", "vnd@@" . $sVndId);
-        modConfig::getInstance()->setConfigParam("blSkipFormatConversion", false);
+        $this->setRequestParameter("art_category", "vnd@@" . $sVndId);
+        $this->getConfig()->setConfigParam("blSkipFormatConversion", false);
 
         $oArticle1 = new oxArticle();
         $oArticle1->oxarticles__oxtitle = new oxField("title1");
@@ -145,7 +145,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     {
         $sTable = getViewName("oxarticles");
         $sO2CView = getViewName("oxobject2category");
-        modConfig::setRequestParameter("art_category", "cat@@testCategory");
+        $this->setRequestParameter("art_category", "cat@@testCategory");
 
         $oProduct = new oxArticle();
         $sQ = $oProduct->buildSelectString(null);
@@ -163,7 +163,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     public function testBuildSelectStringManufacturer()
     {
         $sTable = getViewName("oxarticles");
-        modConfig::setRequestParameter("art_category", "mnf@@testManufacturer");
+        $this->setRequestParameter("art_category", "mnf@@testManufacturer");
 
         $oProduct = new oxArticle();
         $sQ = $oProduct->buildSelectString(null);
@@ -180,7 +180,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     public function testBuildSelectStringVendor()
     {
         $sTable = getViewName("oxarticles");
-        modConfig::setRequestParameter("art_category", "vnd@@testVendor");
+        $this->setRequestParameter("art_category", "vnd@@testVendor");
 
         $oProduct = new oxArticle();
         $sQ = $oProduct->buildSelectString(null);
@@ -196,7 +196,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
      */
     public function testBuildWhere()
     {
-        modConfig::setRequestParameter("folder", "testFolder");
+        $this->setRequestParameter("folder", "testFolder");
         $sViewName = getViewName('oxarticles');
 
         $oView = new Article_List();
@@ -229,7 +229,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         oxTestModules::addFunction('oxarticle', 'load', '{ return true; }');
         oxTestModules::addFunction('oxarticle', 'delete', '{ return true; }');
 
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         $oSess = $this->getMock('oxsession', array('checkSessionChallenge'));
         $oSess->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));

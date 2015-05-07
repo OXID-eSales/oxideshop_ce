@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Views_downloadTest extends OxidTestCase
      */
     public function testRender()
     {
-        $this->setRequestParam('sorderfileid', "_testOrderFile");
+        $this->setRequestParameter('sorderfileid', "_testOrderFile");
         $oOrderFile = $this->getMock('oxOrderFile', array('load', 'processOrderFile', 'getFileId'));
         $oOrderFile->expects($this->any())->method('load')->will($this->returnValue(true));
         $oOrderFile->expects($this->any())->method('processOrderFile')->will($this->returnValue('_fileId'));
@@ -82,7 +82,7 @@ class Unit_Views_downloadTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new exception( 'testDownload', 123 );}");
         oxTestModules::addFunction("oxFile", "download", "{ throw new exception( 'testDownload', 123 );}");
-        $this->setRequestParam('sorderfileid', "_testOrderFile");
+        $this->setRequestParameter('sorderfileid', "_testOrderFile");
         $oOrderFile = $this->getMock('oxOrderFile', array('load', 'processOrderFile'));
         $oOrderFile->expects($this->any())->method('load')->will($this->returnValue(true));
         $oOrderFile->expects($this->any())->method('processOrderFile')->will($this->returnValue('_fileId'));
@@ -111,7 +111,7 @@ class Unit_Views_downloadTest extends OxidTestCase
     public function testRenderFileDoesnotExists()
     {
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new exception( 'testDownload', 123 );}");
-        $this->setRequestParam('sorderfileid', "_testOrderFile");
+        $this->setRequestParameter('sorderfileid', "_testOrderFile");
         $oOrderFile = $this->getMock('oxOrderFile', array('load', 'processOrderFile'));
         $oOrderFile->expects($this->any())->method('load')->will($this->returnValue(true));
         $oOrderFile->expects($this->any())->method('processOrderFile')->will($this->returnValue('_fileId'));
@@ -137,7 +137,7 @@ class Unit_Views_downloadTest extends OxidTestCase
     public function testRenderFailedDownloadingFile()
     {
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new exception( 'testDownload', 123 );}");
-        $this->setRequestParam('sorderfileid', "_testOrderFile");
+        $this->setRequestParameter('sorderfileid', "_testOrderFile");
 
         $oOrderFile = $this->getMock('oxOrderFile', array('load', 'processOrderFile', 'getFileId'));
         $oOrderFile->expects($this->any())->method('load')->will($this->returnValue(true));
@@ -178,7 +178,7 @@ class Unit_Views_downloadTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxUtils", "redirect", "{ return;}");
 
-        $this->setRequestParam('sorderfileid', "_testOrderFile");
+        $this->setRequestParameter('sorderfileid', "_testOrderFile");
 
         $oOrderFile = $this->getMock('oxOrderFile', array('load', 'processOrderFile', 'getFileId'));
         $oOrderFile->expects($this->any())->method('load')->will($this->returnValue(true));

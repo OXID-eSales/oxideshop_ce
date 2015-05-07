@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
 */
 
@@ -115,7 +115,7 @@ protected function tearDown()
  */
 private function _insertTestOrder()
 {
-    $myConfig = oxRegistry::getConfig();
+    $myConfig = $this->getConfig();
 
     //set order
     $this->_oOrder = oxNew( "oxOrder" );
@@ -175,7 +175,7 @@ private function _insertTestOrderArticle( $iStorno = 0 )
 private function _insertTestArticle()
 {
     $oDB = oxDb::getDb();
-    $myConfig = oxRegistry::getConfig();
+    $myConfig = $this->getConfig();
 
     $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
                 values ('_testArticleId','".$myConfig->getShopId()."','testArticleTitle','2','20','119')";
@@ -456,7 +456,7 @@ public function testInvoicepdfArticleSummary_setVoucherInfo()
  */
 public function testInvoicepdfArticleSummary_setDeliveryInfo()
 {
-    modConfig::getInstance()->setConfigParam( 'blCalcVATForDelivery', 1 );
+    $this->getConfig()->setConfigParam( 'blCalcVATForDelivery', 1 );
     $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
 
     $oPdf = new testPdfClass;
@@ -791,7 +791,7 @@ public function testInvoicepdfOxOrder_genPdfDeliveryNote()
     $oInvoicepdfOxOrder->expects( $this->once() )->method( 'pdfFooter');
 
     $oInvoicepdfOxOrder->load('_testOrderId');
-    modConfig::setRequestParameter( 'pdftype', 'dnote' );
+    $this->setRequestParameter( 'pdftype', 'dnote' );
     $oInvoicepdfOxOrder->genPdf( 'testfilename', 1 );
 }
 
@@ -1060,7 +1060,7 @@ public function getPaymentDataProvider()
 public function testInvoicepdfOxOrder_getPaymentTerm($param, $expect)
 {
     $oInvoicepdfOxOrder = new InvoicepdfOxOrder();
-    oxRegistry::getConfig()->setConfigParam('iPaymentTerm', $param);
+    $this->getConfig()->setConfigParam('iPaymentTerm', $param);
 
     $this->assertEquals( $expect, $oInvoicepdfOxOrder->getPaymentTerm() );
 }

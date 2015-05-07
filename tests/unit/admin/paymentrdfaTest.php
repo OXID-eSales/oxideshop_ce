@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -46,7 +46,7 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
     public function testSave_deleteOldRecords()
     {
         $sTestID = '_test_recid';
-        modConfig::setRequestParameter('oxid', $sTestID);
+        $this->setRequestParameter('oxid', $sTestID);
 
         $oMapping = oxNew('oxbase');
         $oMapping->init('oxobject2payment');
@@ -82,9 +82,9 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
     {
         $sTestID = '_test_recid';
         $aObjIDs = array('_test_obj1', '_test_obj2');
-        modConfig::setRequestParameter('oxid', $sTestID);
-        modConfig::setRequestParameter('ardfapayments', $aObjIDs);
-        modConfig::setRequestParameter(
+        $this->setRequestParameter('oxid', $sTestID);
+        $this->setRequestParameter('ardfapayments', $aObjIDs);
+        $this->setRequestParameter(
             'editval',
             array(
                  'oxobject2payment__oxpaymentid' => $sTestID,
@@ -149,7 +149,7 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
     {
         $sTestID = '_test_recid';
         $aObjIDs = array('_test_obj1', '_test_obj2');
-        modConfig::setRequestParameter('oxid', $sTestID);
+        $this->setRequestParameter('oxid', $sTestID);
         $oView = oxNew('Payment_RDFa');
 
         $oDB = oxDb::getDb();

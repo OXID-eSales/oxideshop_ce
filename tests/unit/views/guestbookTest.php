@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -169,7 +169,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testSaveEntry_nouser()
     {
         $this->getSession()->setVar('usr', null);
-        $this->getConfig()->setRequestParameter('rvw_txt', '');
+        $this->setRequestParameter('rvw_txt', '');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getShopId'));
@@ -196,7 +196,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testSaveEntry_noshop()
     {
         $this->getSession()->setVar('usr', 'some_userid');
-        $this->getConfig()->setRequestParameter('rvw_txt', '');
+        $this->setRequestParameter('rvw_txt', '');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getShopId'));
@@ -223,7 +223,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testSaveEntry_noReview()
     {
         $this->getSession()->setVar('usr', 'some_userid');
-        $this->getConfig()->setRequestParameter('rvw_txt', '');
+        $this->setRequestParameter('rvw_txt', '');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getShopId'));
@@ -250,7 +250,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testSaveEntry_floodFailed()
     {
         $this->getSession()->setVar('usr', 'some_userid');
-        $this->getConfig()->setRequestParameter('rvw_txt', 'some review');
+        $this->setRequestParameter('rvw_txt', 'some review');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getShopId'));
@@ -277,7 +277,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testSaveEntry_saveCall()
     {
         $this->getSession()->setVar('usr', 'some_userid');
-        $this->getConfig()->setRequestParameter('rvw_txt', 'some review');
+        $this->setRequestParameter('rvw_txt', 'some review');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getShopId'));
@@ -304,7 +304,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testSaveEntry_nosavecall()
     {
         $this->getSession()->setVar('usr', 'some_userid');
-        $this->getConfig()->setRequestParameter('rvw_txt', 'some review');
+        $this->setRequestParameter('rvw_txt', 'some review');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getShopId'));

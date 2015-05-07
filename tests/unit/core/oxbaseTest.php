@@ -239,7 +239,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->cleanUpTable('oxnews');
         $this->cleanUpTable('oxorder');
 
-        modConfig::getInstance();
+        $this->getConfig();
         modSession::getInstance();
     }
 
@@ -407,8 +407,8 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
         $oBase = new oxBase();
 
-        $this->assertEquals(oxRegistry::getConfig()->getShopId(), $oBase->getShopId());
-        $this->assertNotEquals(0, oxRegistry::getConfig()->getShopID());
+        $this->assertEquals($this->getConfig()->getShopId(), $oBase->getShopId());
+        $this->assertNotEquals(0, $this->getConfig()->getShopID());
     }
 
     /**
@@ -1607,7 +1607,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function  testSaveIfNewInAdminDateTime()
     {
-        //oxRegistry::getConfig()->blAdmin = true;
+        //$this->getConfig()->blAdmin = true;
         $oBase = new _oxBase();
         $oBase->init('oxdiscount');
         $oBase->setId('_test');
@@ -1629,14 +1629,14 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     public function  testSaveIfNewInAdminDate()
     {
         $myDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
-        //oxRegistry::getConfig()->blAdmin = true;
+        //$this->getConfig()->blAdmin = true;
         $oBase = new _oxBase();
         $oBase->init('oxnews');
         $oBase->setId('_test');
         $oBase->oxnews__oxshortdesc = new oxField("oxbasetest", oxField::T_RAW);
         $oBase->oxnews__oxdate = new oxField("2007.07.07", oxField::T_RAW);
         $sResult = $oBase->save();
-        //oxRegistry::getConfig()->blAdmin = false;
+        //$this->getConfig()->blAdmin = false;
         $this->assertNotNull($sResult);
         $myDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $res = $myDB->Execute("select oxdate from oxnews where oxshortdesc='oxbasetest'");
@@ -1728,7 +1728,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         }
 
         //TODO: fix this iDebug
-        if (oxRegistry::getConfig()->getConfigParam('iDebug')) {
+        if ($this->getConfig()->getConfigParam('iDebug')) {
             $this->fail('Update exception not caught');
         }
     }

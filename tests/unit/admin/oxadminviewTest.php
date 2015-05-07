@@ -192,7 +192,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
 
         oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
-        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", null);
+        $this->getConfig()->setConfigParam("blClearCacheOnLogout", null);
 
         $oAdminView = oxNew('oxAdminView');
         $oAdminView->resetContentCache();
@@ -211,7 +211,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
 
         oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
-        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", 1);
+        $this->getConfig()->setConfigParam("blClearCacheOnLogout", 1);
 
         $oAdminView = oxNew('oxAdminView');
         $oAdminView->resetContentCache();
@@ -231,7 +231,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
 
         oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
-        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", 1);
+        $this->getConfig()->setConfigParam("blClearCacheOnLogout", 1);
 
         $oAdminView->resetContentCache(true);
 
@@ -245,7 +245,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testResetCounter()
     {
-        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", null);
+        $this->getConfig()->setConfigParam("blClearCacheOnLogout", null);
         oxTestModules::addFunction('oxUtilsCount', 'resetPriceCatArticleCount', '{ $_GET["testReset"]["priceCatCount"] = $aA[0]; }');
         oxTestModules::addFunction('oxUtilsCount', 'resetCatArticleCount', '{ $_GET["testReset"]["catCount"] = $aA[0]; }');
         oxTestModules::addFunction('oxUtilsCount', 'resetVendorArticleCount', '{ $_GET["testReset"]["vendorCount"] = $aA[0]; }');
@@ -270,7 +270,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testResetCounterWhenResetOnLogoutEnabled()
     {
-        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", 1);
+        $this->getConfig()->setConfigParam("blClearCacheOnLogout", 1);
 
         oxTestModules::addFunction('oxUtilsCount', 'resetPriceCatArticleCount', '{ $_GET["testReset"]["priceCatCount"] = $aA[0]; }');
         oxTestModules::addFunction('oxUtilsCount', 'resetCatArticleCount', '{ $_GET["testReset"]["catCount"] = $aA[0]; }');
@@ -380,19 +380,19 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testSetEditObjectIdGetEditObjectId()
     {
-        modConfig::setRequestParameter("oxid", null);
+        $this->setRequestParameter("oxid", null);
         modSession::getInstance()->setVar("saved_oxid", "testSessId");
 
         $oView = new oxAdminView();
         $this->assertEquals("testSessId", $oView->getEditObjectId());
 
-        modConfig::setRequestParameter("oxid", "testRequestId");
+        $this->setRequestParameter("oxid", "testRequestId");
         modSession::getInstance()->setVar("saved_oxid", "testSessId");
 
         $oView = new oxAdminView();
         $this->assertEquals("testRequestId", $oView->getEditObjectId());
 
-        modConfig::setRequestParameter("oxid", "testRequestId");
+        $this->setRequestParameter("oxid", "testRequestId");
         modSession::getInstance()->setVar("saved_oxid", "testSessId");
 
         $oView = new oxAdminView();

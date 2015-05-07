@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -84,7 +84,7 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     public function testRemoveActionArticle()
     {
-        modConfig::setRequestParameter("oxid", '_testActionDelete');
+        $this->setRequestParameter("oxid", '_testActionDelete');
 
         $this->assertTrue((bool) oxDb::getDb()->getOne("select oxid from oxobject2action where oxactionid='_testActionDelete' limit 1"));
         $oView = oxNew('actions_article_ajax');
@@ -99,8 +99,8 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     public function testSetActionArticle()
     {
-        modConfig::setRequestParameter("oxid", '_testActionSet');
-        modConfig::setRequestParameter("oxarticleid", '_testObject');
+        $this->setRequestParameter("oxid", '_testActionSet');
+        $this->setRequestParameter("oxarticleid", '_testObject');
 
         $oView = oxNew('actions_article_ajax');
         $oView->setactionarticle();
@@ -125,7 +125,7 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     public function testGetQueryVariantSelectionTrue()
     {
-        modconfig::getInstance()->setConfigParam("blVariantsSelection", true);
+        $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('actions_article_ajax');
         $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != ''", trim($oView->UNITgetQuery()));
     }
@@ -137,8 +137,8 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     public function testGetQuerySynchoxidTrue()
     {
-        modConfig::setRequestParameter("oxid", 'oxid');
-        modConfig::setRequestParameter("synchoxid", true);
+        $this->setRequestParameter("oxid", 'oxid');
+        $this->setRequestParameter("synchoxid", true);
         $oView = oxNew('actions_article_ajax');
         $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " as oxobject2category left join " . $this->getArticleViewTable() . " on  " . $this->getArticleViewTable() . ".oxid=oxobject2category.oxobjectid  where oxobject2category.oxcatnid = 'oxid'  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != '1'", trim($oView->UNITgetQuery()));
     }
@@ -163,7 +163,7 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
     public function testAddFilterVariantSelectionTrue()
     {
         $sParam = 'param';
-        modconfig::getInstance()->setConfigParam("blVariantsSelection", true);
+        $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('actions_article_ajax');
         $this->assertEquals("$sParam group by " . $this->getArticleViewTable() . ".oxid", trim($oView->UNITaddFilter($sParam)));
     }

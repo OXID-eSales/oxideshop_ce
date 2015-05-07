@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -65,15 +65,15 @@ class Integration_User_registrationTest extends UserTestCase
     {
         $sGermanyId = 'a7c40f631fc920687.20179984';
 
-        $this->setRequestParam('userLoginName', $sUserName);
-        $this->setRequestParam('lgn_usr', $sUserName);
+        $this->setRequestParameter('userLoginName', $sUserName);
+        $this->setRequestParameter('lgn_usr', $sUserName);
 
-        $this->setRequestParam('lgn_pwd', $sUserPassword);
-        $this->setRequestParam('lgn_pwd2', $sUserPassword);
-        $this->setRequestParam('passwordLength', $sUserPassword);
-        $this->setRequestParam('userPasswordConfirm', $sUserPassword);
+        $this->setRequestParameter('lgn_pwd', $sUserPassword);
+        $this->setRequestParameter('lgn_pwd2', $sUserPassword);
+        $this->setRequestParameter('passwordLength', $sUserPassword);
+        $this->setRequestParameter('userPasswordConfirm', $sUserPassword);
 
-        $this->setRequestParam(
+        $this->setRequestParameter(
             'invadr',
             array(
                  'oxuser__oxsal'       => 'Mr',

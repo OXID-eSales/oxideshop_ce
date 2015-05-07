@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -58,7 +58,7 @@ class Unit_Views_startTest extends OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         $oView = new start();
-        $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sShopURL"), $oView->getCanonicalUrl());
+        $this->assertEquals($this->getConfig()->getConfigParam("sShopURL"), $oView->getCanonicalUrl());
     }
 
     public function testGetArticleList()
@@ -108,7 +108,7 @@ class Unit_Views_startTest extends OxidTestCase
 
     public function testPrepareMetaKeyword()
     {
-        modConfig::getInstance()->setConfigParam('bl_perfLoadAktion', 1);
+        $this->getConfig()->setConfigParam('bl_perfLoadAktion', 1);
 
         $oArticle = $this->getMock('oxarticle', array('getLongDescription'));
         $oArticle->expects($this->once())->method('getLongDescription')->will($this->returnValue(new oxField('testlongdesc')));
@@ -133,7 +133,7 @@ class Unit_Views_startTest extends OxidTestCase
 
     public function testPrepareMetaDescription()
     {
-        modConfig::getInstance()->setConfigParam('bl_perfLoadAktion', 1);
+        $this->getConfig()->setConfigParam('bl_perfLoadAktion', 1);
 
         $oArticle = $this->getMock('oxarticle', array('getLongDescription'));
         $oArticle->expects($this->once())->method('getLongDescription')->will($this->returnValue(new oxField('testlongdesc')));

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -215,9 +215,9 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
     public function testGetTagCloudManagerAfterAddTags()
     {
         oxTestModules::addFunction('oxSeoEncoderTag', '_saveToDb', '{return null;}');
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-        $this->setRequestParam('newTags', "newTag");
+        $this->setRequestParameter('newTags', "newTag");
         $oArt = new oxarticle();
         $oArt->load('2000');
         $oArt->setId('_testArt');
@@ -248,22 +248,22 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
      */
     public function testGetLinkType()
     {
-        $this->setRequestParam('listtype', 'vendor');
+        $this->setRequestParameter('listtype', 'vendor');
         $oDetailsView = $this->getMock("oxwArticleDetails", array('getActiveCategory'));
         $oDetailsView->expects($this->never())->method('getActiveCategory');
         $this->assertEquals(OXARTICLE_LINKTYPE_VENDOR, $oDetailsView->getLinkType());
 
-        $this->setRequestParam('listtype', 'manufacturer');
+        $this->setRequestParameter('listtype', 'manufacturer');
         $oDetailsView = $this->getMock("oxwArticleDetails", array('getActiveCategory'));
         $oDetailsView->expects($this->never())->method('getActiveCategory');
         $this->assertEquals(OXARTICLE_LINKTYPE_MANUFACTURER, $oDetailsView->getLinkType());
 
-        $this->setRequestParam('listtype', 'tag');
+        $this->setRequestParameter('listtype', 'tag');
         $oDetailsView = $this->getMock("oxwArticleDetails", array('getActiveCategory'));
         $oDetailsView->expects($this->never())->method('getActiveCategory');
         $this->assertEquals(OXARTICLE_LINKTYPE_TAG, $oDetailsView->getLinkType());
 
-        $this->setRequestParam('listtype', null);
+        $this->setRequestParameter('listtype', null);
         $oDetailsView = $this->getMock("oxwArticleDetails", array('getActiveCategory'));
         $oDetailsView->expects($this->once())->method('getActiveCategory')->will($this->returnValue(null));
         $this->assertEquals(OXARTICLE_LINKTYPE_CATEGORY, $oDetailsView->getLinkType());
@@ -271,12 +271,12 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
         $oCategory = $this->getMock("oxcategory", array('isPriceCategory'));
         $oCategory->expects($this->once())->method('isPriceCategory')->will($this->returnValue(true));
 
-        $this->setRequestParam('listtype', "recommlist");
+        $this->setRequestParameter('listtype', "recommlist");
         $oDetailsView = $this->getMock("oxwArticleDetails", array('getActiveCategory'));
         $oDetailsView->expects($this->never())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $this->assertEquals(OXARTICLE_LINKTYPE_RECOMM, $oDetailsView->getLinkType());
 
-        $this->setRequestParam('listtype', null);
+        $this->setRequestParameter('listtype', null);
         $oDetailsView = $this->getMock("oxwArticleDetails", array('getActiveCategory'));
         $oDetailsView->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $this->assertEquals(OXARTICLE_LINKTYPE_PRICECATEGORY, $oDetailsView->getLinkType());
@@ -377,7 +377,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
      */
     public function testGetVariantList()
     {
-        $this->setRequestParam('anid', '2077');
+        $this->setRequestParameter('anid', '2077');
 
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $this->assertEquals(3, $oDetails->getVariantList()->count());
@@ -424,13 +424,13 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
     {
         $this->setSessionParam('aHistoryArticles', array('1771'));
 
-        $this->setRequestParam('anid', '1771');
+        $this->setRequestParameter('anid', '1771');
         $oDetails = new oxwArticleDetails();
         $oDetails->init();
         $oDetails->render();
         $oDetails->getLastProducts();
 
-        $this->setRequestParam('anid', '2000');
+        $this->setRequestParameter('anid', '2000');
         $oDetails = new oxwArticleDetails();
         $oDetails->init();
 
@@ -509,7 +509,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
 
         $oArticle = new oxarticle();
         $oArticle->load($sArtID);
-        $sActPic = oxRegistry::getConfig()->getPictureUrl(null) . "generated/product/1/380_340_75/" . basename($oArticle->oxarticles__oxpic1->value);
+        $sActPic = $this->getConfig()->getPictureUrl(null) . "generated/product/1/380_340_75/" . basename($oArticle->oxarticles__oxpic1->value);
 
         $oDetails = $this->getMock('oxwArticleDetails', array("getPicturesProduct"));
         $oDetails->expects($this->once())->method('getPicturesProduct')->will($this->returnValue($oArticle));
@@ -852,7 +852,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
 
     public function testGetPriceAlarmStatus()
     {
-        $this->setRequestParam('iPriceAlarmStatus', 514);
+        $this->setRequestParameter('iPriceAlarmStatus', 514);
         $oDetails = new oxwArticleDetails();
 
         $this->assertSame(514, $oDetails->getPriceAlarmStatus());
@@ -862,7 +862,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
     {
         $aParams = array();
         $aParams['price'] = '123.45';
-        $this->setRequestParam('pa', $aParams);
+        $this->setRequestParameter('pa', $aParams);
 
         $oView = $this->getProxyClass('oxwArticleDetails');
 
@@ -962,7 +962,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
         $oProduct = $this->getMock('oxarticle', array('isVisible'));
         $oProduct->expects($this->once())->method('isVisible')->will($this->returnValue(false));
 
-        $this->setRequestParam('anid', 'notexistingproductid');
+        $this->setRequestParameter('anid', 'notexistingproductid');
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new Exception( \$aA[0] ); }");
 
         try {
@@ -970,7 +970,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
             $oDetailsView->setNonPublicVar('_oProduct', $oProduct);
             $oDetailsView->getProduct();
         } catch (Exception $oExcp) {
-            $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL(), $oExcp->getMessage(), 'result does not match');
+            $this->assertEquals($this->getConfig()->getShopHomeURL(), $oExcp->getMessage(), 'result does not match');
 
             return;
         }
@@ -1025,7 +1025,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
      */
     public function testDefaultSorting_SortingDefinedCameFromSearch_doNotSort()
     {
-        $this->getConfig()->setRequestParameter('listtype', 'search');
+        $this->setRequestParameter('listtype', 'search');
         $oController = new oxwArticleDetails();
 
         $oCategory = $this->getMock('oxCategory', array('getDefaultSorting', 'getDefaultSortingMode'));

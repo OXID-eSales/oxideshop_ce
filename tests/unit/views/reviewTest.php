@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -31,9 +31,9 @@ class Unit_Views_reviewTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         $myDB = oxDb::getDB();
-        $sShopId = oxRegistry::getConfig()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
         // adding article to recommendlist
         $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "' . $sShopId . '" ) ';
         $myDB->Execute($sQ);
@@ -73,7 +73,7 @@ class Unit_Views_reviewTest extends OxidTestCase
      */
     public function testGetReviewUserHash()
     {
-        modConfig::setRequestParameter('reviewuserhash', 'testHash');
+        $this->setRequestParameter('reviewuserhash', 'testHash');
 
         $oView = new review();
         $this->assertEquals('testHash', $oView->getReviewUserHash());
@@ -100,7 +100,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testRender()
     {
-        modConfig::getInstance()->setConfigParam("bl_perfLoadReviews", true);
+        $this->getConfig()->setConfigParam("bl_perfLoadReviews", true);
 
         $oProduct = new oxArticle();
         $oProduct->load("1126");
@@ -125,7 +125,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testRender_NoUser()
     {
-        modConfig::getInstance()->setConfigParam("bl_perfLoadReviews", true);
+        $this->getConfig()->setConfigParam("bl_perfLoadReviews", true);
 
         $oProduct = new oxArticle();
         $oProduct->load("1126");
@@ -142,7 +142,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testRender_reviewDisabled()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $oConfig->setConfigParam("bl_perfLoadReviews", false);
 
         $oUtils = $this->getMock('oxUtils', array('redirect'));
@@ -218,9 +218,9 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testInit()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        modConfig::setRequestParameter('recommid', 'testRecommId');
-        modConfig::setRequestParameter('anid', '1126');
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        $this->setRequestParameter('recommid', 'testRecommId');
+        $this->setRequestParameter('anid', '1126');
 
         $oRecommList = new oxRecommList();
         $oRecommList->setId('testRecommId');
@@ -234,7 +234,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testInitNoRecommList()
     {
-        modConfig::setRequestParameter('recommid', 'testRecommId');
+        $this->setRequestParameter('recommid', 'testRecommId');
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new Exception( 'testInitNoRecommListException' ); }");
 
         $oReview = $this->getMock("review", array("getActiveRecommList"));
@@ -252,9 +252,9 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testSaveReview()
     {
-        modConfig::setRequestParameter('rvw_txt', 'review test');
-        modConfig::setRequestParameter('artrating', '4');
-        modConfig::setRequestParameter('anid', 'test');
+        $this->setRequestParameter('rvw_txt', 'review test');
+        $this->setRequestParameter('artrating', '4');
+        $this->setRequestParameter('anid', 'test');
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
@@ -302,9 +302,9 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testSaveReviewIfOnlyReviewIsSet()
     {
-        modConfig::setRequestParameter('rvw_txt', 'review test');
-        modConfig::setRequestParameter('artrating', null);
-        modConfig::setRequestParameter('anid', 'test');
+        $this->setRequestParameter('rvw_txt', 'review test');
+        $this->setRequestParameter('artrating', null);
+        $this->setRequestParameter('anid', 'test');
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
@@ -333,9 +333,9 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testSaveReviewIfWrongRating()
     {
-        modConfig::setRequestParameter('rvw_txt', 'review test');
-        modConfig::setRequestParameter('artrating', 6);
-        modConfig::setRequestParameter('anid', 'test');
+        $this->setRequestParameter('rvw_txt', 'review test');
+        $this->setRequestParameter('artrating', 6);
+        $this->setRequestParameter('anid', 'test');
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
@@ -364,9 +364,9 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testSaveReviewIfOnlyRatingIsSet()
     {
-        modConfig::setRequestParameter('rvw_txt', null);
-        modConfig::setRequestParameter('artrating', '4');
-        modConfig::setRequestParameter('anid', 'test');
+        $this->setRequestParameter('rvw_txt', null);
+        $this->setRequestParameter('artrating', '4');
+        $this->setRequestParameter('anid', 'test');
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
@@ -395,10 +395,10 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetDynUrlParams()
     {
-        modConfig::setRequestParameter('cnid', 'testcnid');
-        modConfig::setRequestParameter('anid', 'testanid');
-        modConfig::setRequestParameter('listtype', 'testlisttype');
-        modConfig::setRequestParameter('recommid', 'testrecommid');
+        $this->setRequestParameter('cnid', 'testcnid');
+        $this->setRequestParameter('anid', 'testanid');
+        $this->setRequestParameter('listtype', 'testlisttype');
+        $this->setRequestParameter('recommid', 'testrecommid');
 
         $oUbase = new oxUBase();
         $sDynParams = $oUbase->getDynUrlParams();
@@ -468,7 +468,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetProduct()
     {
-        modConfig::setRequestParameter('anid', '2000');
+        $this->setRequestParameter('anid', '2000');
         $oReview = new review();
 
         $this->assertEquals('2000', $oReview->getProduct()->getId());
@@ -522,7 +522,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetRecommList()
     {
-        modConfig::setRequestParameter('recommid', 'testlist');
+        $this->setRequestParameter('recommid', 'testlist');
         $oRevew = $this->getProxyClass("review");
         $oArticle = oxNew("oxarticle");
         $oArticle->load('2000');
@@ -535,9 +535,9 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetAdditionalParams()
     {
-        modConfig::setRequestParameter('searchparam', 'testsearchparam');
-        modConfig::setRequestParameter('recommid', 'testlist');
-        modConfig::setRequestParameter('reviewuserid', 'oxdefaultadmin');
+        $this->setRequestParameter('searchparam', 'testsearchparam');
+        $this->setRequestParameter('recommid', 'testlist');
+        $this->setRequestParameter('reviewuserid', 'oxdefaultadmin');
 
         $oUbase = new oxUBase();
         $sParams = $oUbase->getAdditionalParams();
@@ -552,8 +552,8 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetPageNavigation()
     {
-        modConfig::setRequestParameter('recommid', 'testlist');
-        modConfig::setRequestParameter('reviewuserid', 'oxdefaultadmin');
+        $this->setRequestParameter('recommid', 'testlist');
+        $this->setRequestParameter('reviewuserid', 'oxdefaultadmin');
         $oReview = $this->getMock('review', array('generatePageNavigation'));
         $oReview->expects($this->any())->method('generatePageNavigation')->will($this->returnValue("aaa"));
         $oReview->getActiveRecommList();

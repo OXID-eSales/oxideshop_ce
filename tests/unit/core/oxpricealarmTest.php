@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -107,7 +107,7 @@ class Unit_Core_oxpricealarmTest extends OxidTestCase
         $oAlarm->setId('testalarm');
         $oAlarm->oxpricealarm__oxcurrency = new oxField('EUR', oxField::T_RAW);
         $oAlarm->save();
-        $oThisCurr = modConfig::getInstance()->getCurrencyObject('EUR');
+        $oThisCurr = $this->getConfig()->getCurrencyObject('EUR');
         $oAlarm = new oxpricealarm();
         $oAlarm->load('testalarm');
         $this->assertEquals($oThisCurr, $oAlarm->getPriceAlarmCurrency());
@@ -118,8 +118,8 @@ class Unit_Core_oxpricealarmTest extends OxidTestCase
         $oAlarm = new oxpricealarm();
         $oAlarm->setId('testalarm');
         $oAlarm->save();
-        $oDefCurr = modConfig::getInstance()->getActShopCurrencyObject();
-        $oThisCurr = modConfig::getInstance()->getCurrencyObject($oDefCurr->name);
+        $oDefCurr = $this->getConfig()->getActShopCurrencyObject();
+        $oThisCurr = $this->getConfig()->getCurrencyObject($oDefCurr->name);
         $oAlarm = new oxpricealarm();
         $oAlarm->load('testalarm');
         $this->assertEquals($oThisCurr, $oAlarm->getPriceAlarmCurrency());

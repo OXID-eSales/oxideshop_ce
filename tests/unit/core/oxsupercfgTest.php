@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Core_oxsupercfgTest extends OxidTestCase
     {
         $oOxSuperCfg = new oxsupercfg();
         $oOxSuperCfg->setConfig(null);
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $this->assertEquals($oConfig, $oOxSuperCfg->getConfig());
 
         $myConfig = $this->getMock('oxConfig', array('getConfigParam'));
@@ -80,21 +80,6 @@ class Unit_Core_oxsupercfgTest extends OxidTestCase
     }
 
 
-
-
-
-    /**
-     * Test for bug #973
-     *
-     */
-    public function testModSessionAndModConfigAreDifferent()
-    {
-        $oCfg = new oxsupercfg();
-        $oCfg->setConfig(5);
-        $oCfg->setSession(3);
-        $this->assertEquals(5, $oCfg->getConfig());
-        $this->assertEquals(3, $oCfg->getSession());
-    }
 
 
 }

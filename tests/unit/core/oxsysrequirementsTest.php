@@ -145,7 +145,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
      */
     public function testGetShopHostInfoFromConfig()
     {
-        modConfig::getInstance()->setConfigParam('sShopURL', 'http://www.testshopurl.lt/testsubdir1/insideit2/');
+        $this->getConfig()->setConfigParam('sShopURL', 'http://www.testshopurl.lt/testsubdir1/insideit2/');
         $oSC = new oxSysRequirements();
         $this->assertEquals(
             array(
@@ -156,7 +156,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             ),
             $oSC->UNITgetShopHostInfoFromConfig()
         );
-        modConfig::getInstance()->setConfigParam('sShopURL', 'https://www.testshopurl.lt/testsubdir1/insideit2/');
+        $this->getConfig()->setConfigParam('sShopURL', 'https://www.testshopurl.lt/testsubdir1/insideit2/');
         $this->assertEquals(
             array(
                  'host' => 'www.testshopurl.lt',
@@ -166,7 +166,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             ),
             $oSC->UNITgetShopHostInfoFromConfig()
         );
-        modConfig::getInstance()->setConfigParam('sShopURL', 'https://51.1586.51.15:21/testsubdir1/insideit2/');
+        $this->getConfig()->setConfigParam('sShopURL', 'https://51.1586.51.15:21/testsubdir1/insideit2/');
         $this->assertEquals(
             array(
                  'host' => '51.1586.51.15',
@@ -176,7 +176,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             ),
             $oSC->UNITgetShopHostInfoFromConfig()
         );
-        modConfig::getInstance()->setConfigParam('sShopURL', '51.1586.51.15:21/testsubdir1/insideit2/');
+        $this->getConfig()->setConfigParam('sShopURL', '51.1586.51.15:21/testsubdir1/insideit2/');
         $this->assertEquals(
             array(
                  'host' => '51.1586.51.15',
@@ -196,7 +196,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
      */
     public function testGetShopSSLHostInfoFromConfig()
     {
-        modConfig::getInstance()->setConfigParam('sSSLShopURL', 'http://www.testshopurl.lt/testsubdir1/insideit2/');
+        $this->getConfig()->setConfigParam('sSSLShopURL', 'http://www.testshopurl.lt/testsubdir1/insideit2/');
         $oSC = new oxSysRequirements();
         $this->assertEquals(
             array(
@@ -207,7 +207,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             ),
             $oSC->UNITgetShopSSLHostInfoFromConfig()
         );
-        modConfig::getInstance()->setConfigParam('sSSLShopURL', 'https://www.testshopurl.lt/testsubdir1/insideit2/');
+        $this->getConfig()->setConfigParam('sSSLShopURL', 'https://www.testshopurl.lt/testsubdir1/insideit2/');
         $this->assertEquals(
             array(
                  'host' => 'www.testshopurl.lt',
@@ -217,7 +217,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             ),
             $oSC->UNITgetShopSSLHostInfoFromConfig()
         );
-        modConfig::getInstance()->setConfigParam('sSSLShopURL', 'https://51.1586.51.15:21/testsubdir1/insideit2/');
+        $this->getConfig()->setConfigParam('sSSLShopURL', 'https://51.1586.51.15:21/testsubdir1/insideit2/');
         $this->assertEquals(
             array(
                  'host' => '51.1586.51.15',
@@ -227,7 +227,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             ),
             $oSC->UNITgetShopSSLHostInfoFromConfig()
         );
-        modConfig::getInstance()->setConfigParam('sSSLShopURL', '51.1586.51.15:21/testsubdir1/insideit2/');
+        $this->getConfig()->setConfigParam('sSSLShopURL', '51.1586.51.15:21/testsubdir1/insideit2/');
         $this->assertEquals(
             array(
                  'host' => '51.1586.51.15',

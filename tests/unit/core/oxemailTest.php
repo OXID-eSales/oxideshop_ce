@@ -56,7 +56,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
 
         // set shop params for testing
         $this->_oShop = oxNew("oxshop");
-        $this->_oShop->load(oxRegistry::getConfig()->getShopId());
+        $this->_oShop->load($this->getConfig()->getShopId());
         $this->_oShop->oxshops__oxorderemail = new oxField('orderemail@orderemail.nl', oxField::T_RAW);
         $this->_oShop->oxshops__oxordersubject = new oxField('testOrderSubject', oxField::T_RAW);
         $this->_oShop->oxshops__oxsendednowsubject = new oxField('testSendedNowSubject', oxField::T_RAW);
@@ -76,7 +76,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $this->_oArticle->oxarticles__oxtitle = new oxField('testArticle', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxtitle_1 = new oxField('testArticle_EN', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxartnum = new oxField('123456789', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
+        $this->_oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
         $this->_oArticle->oxarticles__oxshortdesc = new oxField('testArticleDescription', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxprice = new oxField('256', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxremindactive = new oxField('1', oxField::T_RAW);
@@ -98,7 +98,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $oActShop = oxRegistry::getConfig()->getActiveShop();
+        $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(0);
         oxRegistry::getLang()->setBaseLanguage(0);
         $this->cleanUpTable('oxuser');
@@ -137,7 +137,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     public function testIncludeImagesErrorTestCase()
     {
         oxTestModules::addFunction("oxUtilsObject", "generateUId", "{ return 'xxx'; }");
-        $config = oxRegistry::getConfig();
+        $config = $this->getConfig();
 
         $oArticle = new oxarticle();
         $oArticle->load('1351');
@@ -268,7 +268,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendOrderEMailToOwnerAddsHistoryRecord()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $myDb = oxDb::getDb();
 
         $oPayment = new oxPayment();
@@ -307,7 +307,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendForgotPwdEmailToNotExistingUser()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
         $oEmail->expects($this->never())->method('_sendMail');
@@ -322,7 +322,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendForgotPwdEmailSendingFailed()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oEmail = $this->getMock('oxEmail', array("send", "_getShop"));
         $oEmail->expects($this->any())->method('send')->will($this->returnValue(false));
@@ -514,7 +514,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testIncludeImages()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $sImageDir = $myConfig->getImageDir();
 
         $oEmail = new oxEmail();
@@ -739,15 +739,15 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testGetUseInlineImagesFromConfig()
     {
-        modConfig::getInstance()->setConfigParam("blInlineImgEmail", true);
+        $this->getConfig()->setConfigParam("blInlineImgEmail", true);
         $oEmail = oxNew("oxemail");
         $this->assertTrue($oEmail->UNITgetUseInlineImages());
 
-        modConfig::getInstance()->setConfigParam("blInlineImgEmail", false);
+        $this->getConfig()->setConfigParam("blInlineImgEmail", false);
         $oEmail = oxNew("oxemail");
         $this->assertFalse($oEmail->UNITgetUseInlineImages());
 
-        modConfig::getInstance()->setConfigParam("blInlineImgEmail", true);
+        $this->getConfig()->setConfigParam("blInlineImgEmail", true);
         $oEmail = oxNew("oxemail");
         $this->assertTrue($oEmail->UNITgetUseInlineImages());
     }
@@ -766,7 +766,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testAddAttachment()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $sImageDir = $myConfig->getImageDir() . '/';
 
         $this->_oEmail->AddAttachment($sImageDir, 'barrcode.gif');
@@ -780,7 +780,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testClearAttachments()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $sImageDir = $myConfig->getImageDir() . '/';
 
         $this->_oEmail->AddAttachment($sImageDir, 'barrcode.gif');
@@ -941,7 +941,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testGetShopWhenShopIsNotSet()
     {
-        $this->assertEquals(oxRegistry::getConfig()->getActiveShop(), $this->_oEmail->UNITgetShop());
+        $this->assertEquals($this->getConfig()->getActiveShop(), $this->_oEmail->UNITgetShop());
     }
 
     /*
@@ -963,7 +963,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
         $oShop = $this->_oEmail->UNITgetShop(1);
         $this->assertEquals(1, $oShop->getLanguage());
-        $this->assertEquals(oxRegistry::getConfig()->getShopId(), $oShop->getShopId());
+        $this->assertEquals($this->getConfig()->getShopId(), $oShop->getShopId());
     }
 
     /*
@@ -1049,18 +1049,18 @@ class Unit_Core_oxemailTest extends OxidTestCase
 
     public function testGetNewsSubsLink()
     {
-        $sUrl = oxRegistry::getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0';
+        $sUrl = $this->getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0';
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX'));
-        $oActShop = oxRegistry::getConfig()->getActiveShop();
+        $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(1);
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX'));
     }
 
     public function testGetNewsSubsLinkWithConfirm()
     {
-        $sUrl = oxRegistry::getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0&amp;confirm=AAAA';
+        $sUrl = $this->getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0&amp;confirm=AAAA';
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX', 'AAAA'));
-        $oActShop = oxRegistry::getConfig()->getActiveShop();
+        $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(1);
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX', 'AAAA'));
     }

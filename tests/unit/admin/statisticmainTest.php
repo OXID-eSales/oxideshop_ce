@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -68,7 +68,7 @@ class Unit_Admin_StatisticMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        $this->setRequestParam("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Statistic_Main();
@@ -92,7 +92,7 @@ class Unit_Admin_StatisticMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        $this->setRequestParam("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Statistic_Main();
@@ -106,7 +106,7 @@ class Unit_Admin_StatisticMainTest extends OxidTestCase
     {
         // testing..
         $oView = new Statistic_Main();
-        $this->setRequestParam("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         $oStatMock = $this->getMock("oxstatistic", array("load", "getReports"));
         $oStatMock->expects($this->once())->method("load")->with("testId");
@@ -133,7 +133,7 @@ class Unit_Admin_StatisticMainTest extends OxidTestCase
      */
     public function testRenderPopup()
     {
-        $this->setRequestParam("aoc", true);
+        $this->setRequestParameter("aoc", true);
 
         $oStatMock = $this->getMock("statistic_main_ajax", array("getColumns"));
         $oStatMock->expects($this->once())->method("getColumns")->will($this->returnValue("testRes"));
@@ -157,12 +157,12 @@ class Unit_Admin_StatisticMainTest extends OxidTestCase
     {
         // testing..
         $oSubj = $this->getProxyClass("Statistic_Main");
-        $this->setRequestParam("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         $aTestParams = array();
         $aTestParams["testParam"] = "testValue";
 
-        $this->setRequestParam("editval", $aTestParams);
+        $this->setRequestParameter("editval", $aTestParams);
 
         $aTestParams["oxstatistics__oxshopid"] = $this->getConfig()->getBaseShopId();
 

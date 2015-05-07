@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -65,8 +65,8 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
 
     public function testGetValuePrice()
     {
-        oxRegistry::getConfig()->setConfigParam('bl_perfUseSelectlistPrice', 1);
-        oxRegistry::getConfig()->setConfigParam('bl_perfLoadSelectLists', 1);
+        $this->getConfig()->setConfigParam('bl_perfUseSelectlistPrice', 1);
+        $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', 1);
         $oValue = new stdClass();
         $oValue->price = '10';
         $oValue->fprice = '10,00';
@@ -123,7 +123,7 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
 
     public function testGenVariantFromSell()
     {
-        oxRegistry::getConfig()->setConfigParam('blUseMultidimensionVariants', 1);
+        $this->getConfig()->setConfigParam('blUseMultidimensionVariants', 1);
         $myDB = oxDb::getDB();
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 
@@ -150,7 +150,7 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
      */
     public function testGenVariantFromSellOxVarCountUpdated()
     {
-        oxRegistry::getConfig()->setConfigParam('blUseMultidimensionVariants', 1);
+        $this->getConfig()->setConfigParam('blUseMultidimensionVariants', 1);
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 
         $sShopId = 'oxbaseshop';
@@ -209,7 +209,7 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
      */
     public function testIsMdVariant()
     {
-        modConfig::getInstance()->setConfigParam("blUseMultidimensionVariants", true);
+        $this->getConfig()->setConfigParam("blUseMultidimensionVariants", true);
 
         $oArticle = new oxArticle();
         $oArticle->oxarticles__oxvarselect = new oxField(" value | value ");

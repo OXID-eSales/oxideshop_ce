@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Admin_DeliveryUsersTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction("oxdelivery", "isDerived", "{return true;}");
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Delivery_Users();

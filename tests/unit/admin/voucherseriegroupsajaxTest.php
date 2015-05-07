@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -68,8 +68,8 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
      */
     public function testRemoveGroupFromVoucher_allRecords()
     {
-        $this->setRequestParam("all", true);
-        $this->setRequestParam("oxid", "_testVoucherId1");
+        $this->setRequestParameter("all", true);
+        $this->setRequestParameter("oxid", "_testVoucherId1");
 
         $oDb = oxDb::getDb();
 
@@ -88,7 +88,7 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
      */
     public function testRemoveGroupFromVoucher_oneRecords()
     {
-        $this->setRequestParam("oxid", "_testVoucherId1");
+        $this->setRequestParameter("oxid", "_testVoucherId1");
 
         $oView = $this->getMock("voucherserie_groups_ajax", array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testId1')));
@@ -108,8 +108,8 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
      */
     public function testAddGroupToVoucher_allGroups()
     {
-        $this->setRequestParam("all", true);
-        $this->setRequestParam("synchoxid", "_testVoucherId1");
+        $this->setRequestParameter("all", true);
+        $this->setRequestParameter("synchoxid", "_testVoucherId1");
 
         oxDb::getDB()->execute("delete from oxobject2group where oxid like '\_test%'");
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
@@ -129,7 +129,7 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
      */
     public function testAddGroupToVoucher_someGroups()
     {
-        $this->setRequestParam("synchoxid", "_testVoucherId1");
+        $this->setRequestParameter("synchoxid", "_testVoucherId1");
 
         $oView = $this->getMock("voucherserie_groups_ajax", array("_getActionIds"));
         $oView->expects($this->once())->method('_getActionIds')->will($this->returnValue(array('_testGroupId3')));
@@ -161,7 +161,7 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testGroupGetQuerySynchoxid';
-        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $sResult = "from oxv_oxgroups_de where 1 and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where oxobject2group.oxobjectid = '$sSynchoxid' and oxv_oxgroups_de.oxid = oxobject2group.oxgroupsid )";
         $oView = oxNew('voucherserie_groups_ajax');
@@ -176,7 +176,7 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testGroupGetQuery';
-        $this->setRequestParam("oxid", $sOxid);
+        $this->setRequestParameter("oxid", $sOxid);
 
         $sResult = "from oxv_oxgroups_de, oxobject2group where oxobject2group.oxobjectid = '$sOxid' and oxv_oxgroups_de.oxid = oxobject2group.oxgroupsid";
         $oView = oxNew('voucherserie_groups_ajax');
@@ -192,8 +192,8 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
     {
         $sOxid = '_testGroupGetQuery';
         $sSynchoxid = '_testGroupGetQuerySynchoxid';
-        $this->setRequestParam("oxid", $sOxid);
-        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $sResult = "from oxv_oxgroups_de, oxobject2group where oxobject2group.oxobjectid = '$sOxid' and oxv_oxgroups_de.oxid = oxobject2group.oxgroupsid";
         $sResult .= " and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where oxobject2group.oxobjectid = '$sSynchoxid' and oxv_oxgroups_de.oxid = oxobject2group.oxgroupsid )";

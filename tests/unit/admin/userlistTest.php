@@ -66,7 +66,7 @@ class Unit_Admin_UserListTest extends OxidTestCase
         oxTestModules::addFunction('oxuser', 'isDerived', '{ return false; }');
         oxTestModules::addFunction('oxuser', 'delete', '{ throw new Exception( "deleteEntry" ); }');
 
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         try {
@@ -91,7 +91,7 @@ class Unit_Admin_UserListTest extends OxidTestCase
         oxTestModules::addFunction('oxuser', 'isDerived', '{ return false; }');
         oxTestModules::addFunction('oxuser', 'delete', '{ throw new Exception( "deleteEntry" ); }');
 
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         try {

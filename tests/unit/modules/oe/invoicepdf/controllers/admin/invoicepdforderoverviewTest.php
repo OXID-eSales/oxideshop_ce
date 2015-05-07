@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
 */
 
@@ -57,7 +57,7 @@ public function testCreatePDF()
     // writing test order
     $oOrder = oxNew( "oxorder" );
     $oOrder->setId( $soxId );
-    $oOrder->oxorder__oxshopid        = new oxField( oxRegistry::getConfig()->getBaseShopId() );
+    $oOrder->oxorder__oxshopid        = new oxField( $this->getConfig()->getBaseShopId() );
     $oOrder->oxorder__oxuserid        = new oxField( "oxdefaultadmin" );
     $oOrder->oxorder__oxbillcompany   = new oxField( "Ihr Firmenname" );
     $oOrder->oxorder__oxbillemail     = new oxField( oxADMIN_LOGIN );
@@ -82,7 +82,7 @@ public function testCreatePDF()
     $oOrder->oxorder__oxdeltype       = new oxField( "oxidstandard" );
     $oOrder->oxorder__oxordernr       = new oxField( 1 );
     $oOrder->save();
-    modConfig::setRequestParameter( "oxid", $soxId );
+    $this->setRequestParameter( "oxid", $soxId );
     oxTestModules::addFunction( 'oxUtils', 'setHeader', '{ if ( !isset( $this->_aHeaderData ) ) { $this->_aHeaderData = array();} $this->_aHeaderData[] = $aA[0]; }');
     oxTestModules::addFunction( 'oxUtils', 'getHeaders', '{ return $this->_aHeaderData; }');
     oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{ $this->_aHeaderData[] = "testExportData"; }');

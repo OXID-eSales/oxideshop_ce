@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Maintenance_pluginSmartyOxBlockTest extends OxidTestCase
         $oSmartyCompiler = new stdClass();
         $oSmartyCompiler->_current_file = 'testfile.tpl';
 
-        modConfig::getInstance()->setConfigParam('blDebugTemplateBlocks', false);
+        $this->getConfig()->setConfigParam('blDebugTemplateBlocks', false);
 
         $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
@@ -73,14 +73,14 @@ class Unit_Maintenance_pluginSmartyOxBlockTest extends OxidTestCase
                 ->with(
                         $this->equalTo('block tags mismatch (or there are more than 500 blocks in one file).'),
                         $this->equalTo(E_USER_ERROR),
-                        $this->equalTo(realpath(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/prefilter.oxblock.php')),
+                        $this->equalTo(realpath($this->getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/prefilter.oxblock.php')),
                         $this->greaterThan(75)
                 )
                 ->will($this->throwException(new oxException('ok')));
 
         $oSmartyCompiler->_current_file = 'testfile.tpl';
 
-        modConfig::getInstance()->setConfigParam('blDebugTemplateBlocks', false);
+        $this->getConfig()->setConfigParam('blDebugTemplateBlocks', false);
 
         $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
@@ -115,7 +115,7 @@ class Unit_Maintenance_pluginSmartyOxBlockTest extends OxidTestCase
         $oSmartyCompiler = new stdClass();
         $oSmartyCompiler->_current_file = 'testfile.tpl';
 
-        modConfig::getInstance()->setConfigParam('blDebugTemplateBlocks', true);
+        $this->getConfig()->setConfigParam('blDebugTemplateBlocks', true);
 
         $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
@@ -195,7 +195,7 @@ class Unit_Maintenance_pluginSmartyOxBlockTest extends OxidTestCase
         $oSmartyCompiler->_current_file = 'testfile.tpl';
         $oSmartyCompiler->_version = 'Smarty3z';
 
-        modConfig::getInstance()->setConfigParam('blDebugTemplateBlocks', false);
+        $this->getConfig()->setConfigParam('blDebugTemplateBlocks', false);
 
         $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
@@ -255,7 +255,7 @@ class Unit_Maintenance_pluginSmartyOxBlockTest extends OxidTestCase
         $oSmartyCompiler->_current_file = 'testfile.tpl';
         $oSmartyCompiler->_version = 'Smarty3z';
 
-        modConfig::getInstance()->setConfigParam('blDebugTemplateBlocks', false);
+        $this->getConfig()->setConfigParam('blDebugTemplateBlocks', false);
 
         $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
@@ -293,7 +293,7 @@ class Unit_Maintenance_pluginSmartyOxBlockTest extends OxidTestCase
         $oSmartyCompiler->_current_file = 'testfile.tpl';
         $oSmartyCompiler->_version = 'Smarty3z';
 
-        modConfig::getInstance()->setConfigParam('blDebugTemplateBlocks', true);
+        $this->getConfig()->setConfigParam('blDebugTemplateBlocks', true);
 
         $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')

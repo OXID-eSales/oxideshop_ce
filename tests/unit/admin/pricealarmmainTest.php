@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -55,7 +55,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         $this->tearDown();
         parent::setUp();
 
-        modConfig::getInstance()->setConfigParam('blEnterNetPrice', false);
+        $this->getConfig()->setConfigParam('blEnterNetPrice', false);
     }
 
     /**
@@ -81,7 +81,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         oxTestModules::addFunction('oxpricealarm', 'load', '{ $this->oxpricealarm__oxuserid = new oxField( "oxdefaultadmin" ); return true; }');
         oxTestModules::addFunction('oxUtilsView', 'getSmarty', '{ return new Unit_Admin_PriceAlarmMainTest_smarty(); }');
         oxTestModules::addFunction('oxarticle', 'load', '{ $this->oxarticles__oxparentid = new oxField( "parentid" ); $this->oxarticles__oxtitle = new oxField(""); return true; }');
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         $oEmail = $this->getMock('oxEmail', array("sendPricealarmToCustomer"));
         $oEmail->expects($this->once())->method('sendPricealarmToCustomer')->will($this->returnValue(true));
@@ -102,7 +102,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
      */
     public function testRender_countinPriceAlarmArticles()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
         $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
@@ -146,8 +146,8 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsView', 'getSmarty', '{ return new Unit_Admin_PriceAlarmMainTest_smarty(); }');
         oxTestModules::addFunction('oxarticle', 'load', '{ $this->oxarticles__oxparentid = new oxField( "parentid" ); $this->oxarticles__oxtitle = new oxField(""); return true; }');
 
-        modConfig::setRequestParameter("oxid", "testId");
-        modConfig::setRequestParameter("editval", array("oxpricealarm__oxlongdesc" => "test Mail Body"));
+        $this->setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("editval", array("oxpricealarm__oxlongdesc" => "test Mail Body"));
 
         // testing..
         $oView = new PriceAlarm_Main();
@@ -165,7 +165,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new PriceAlarm_Main();
@@ -182,7 +182,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
      */
     public function testSendNoOxidSet()
     {
-        modConfig::setRequestParameter("oxid", null);
+        $this->setRequestParameter("oxid", null);
 
         // testing..
         $oView = new PriceAlarm_Main();
@@ -198,7 +198,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
      */
     public function testSend()
     {
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
         oxTestModules::addFunction('oxpricealarm', 'load', '{ return true; }');
         oxTestModules::addFunction('oxpricealarm', 'save', '{ return true; }');
         oxTestModules::addFunction('oxemail', 'send', '{ return true; }');
@@ -230,7 +230,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
     public function testSend_parseThroughSmarty()
     {
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
                     values ('_testArticleId1','" . $myConfig->getShopId() . "','testArticleTitle','2','20','11')";
@@ -247,8 +247,8 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
 
         oxTestModules::addModuleObject("oxUtilsView", $oUtilsView);
 
-        modConfig::setRequestParameter("oxid", "_testAlarmId1");
-        modConfig::setRequestParameter("editval", array("oxpricealarm__oxlongdesc" => "test Mail Body"));
+        $this->setRequestParameter("oxid", "_testAlarmId1");
+        $this->setRequestParameter("editval", array("oxpricealarm__oxlongdesc" => "test Mail Body"));
 
         $oEmail = $this->getMock('oxEmail', array("sendPricealarmToCustomer"));
         $oEmail->expects($this->once())->method('sendPricealarmToCustomer')->will($this->returnValue(true));

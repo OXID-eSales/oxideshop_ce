@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -80,9 +80,8 @@ class Unit_Core_oxdebugdbTest extends OxidTestCase
     }
 
     /**
-     * oxdebugdb class is not used in normal eshop execution,
+     * oxDebugDb class is not used in normal eshop execution,
      * thus we check only getWarning() method results
-     *
      */
     public function testGetWarnings()
     {

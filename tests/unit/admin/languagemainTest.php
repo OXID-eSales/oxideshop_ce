@@ -69,8 +69,8 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
         $aDefaultLangData['urls'] = array(0 => "", 1 => "testBaseUrl");
         $aDefaultLangData['sslUrls'] = array(0 => "", 1 => "testBaseSslUrl");
 
-        modConfig::setRequestParameter("oxid", "en");
-        modConfig::setRequestParameter("editval", $aNewParams);
+        $this->setRequestParameter("oxid", "en");
+        $this->setRequestParameter("editval", $aNewParams);
 
 
         $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
@@ -113,8 +113,8 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
         $aNewParams['sort'] = 10;
         $aNewParams['desc'] = 'testFr';
 
-        modConfig::setRequestParameter("oxid", -1);
-        modConfig::setRequestParameter("editval", $aNewParams);
+        $this->setRequestParameter("oxid", -1);
+        $this->setRequestParameter("editval", $aNewParams);
 
         $oConfig = $this->getMock("oxConfig", array("saveShopConfVar"));
         $oConfig->expects($this->any())->method('saveShopConfVar')->will($this->returnValue(true));
@@ -439,8 +439,8 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
      */
     public function testValidateInput_langExists()
     {
-        modConfig::setRequestParameter("oxid", "-1");
-        modConfig::setRequestParameter("editval", array('abbr' => 'en'));
+        $this->setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("editval", array('abbr' => 'en'));
 
         $oMainLang = $this->getMock("Language_Main", array("_checkLangExists"));
         $oMainLang->expects($this->once())->method('_checkLangExists')->with($this->equalTo("en"))->will($this->returnValue(true));
@@ -461,8 +461,8 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
      */
     public function testValidateInput_emptyLangName()
     {
-        modConfig::setRequestParameter("oxid", "1");
-        modConfig::setRequestParameter("editval", array('abbr' => 'en', "desc" => ""));
+        $this->setRequestParameter("oxid", "1");
+        $this->setRequestParameter("editval", array('abbr' => 'en', "desc" => ""));
 
         $oMainLang = $this->getMock("Language_Main", array("_checkLangExists"));
         $oMainLang->expects($this->never())->method('_checkLangExists');
@@ -483,8 +483,8 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
      */
     public function testValidateInput_validInput()
     {
-        modConfig::setRequestParameter("oxid", "1");
-        modConfig::setRequestParameter("editval", array('abbr' => 'en', "desc" => "English"));
+        $this->setRequestParameter("oxid", "1");
+        $this->setRequestParameter("editval", array('abbr' => 'en', "desc" => "English"));
 
         $oMainLang = $this->getMock("Language_Main", array("_checkLangExists"));
         $oMainLang->expects($this->never())->method('_checkLangExists');

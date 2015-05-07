@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
         parent::setUp();
         $oContent = new oxContent();
         $oContent->oxcontents__oxtitle = new oxField('test', oxField::T_RAW);
-        $oContent->oxcontents__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
+        $oContent->oxcontents__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
         $oContent->oxcontents__oxloadid = new oxField('_testLoadId', oxField::T_RAW);
         $oContent->oxcontents__oxcontent = new oxField("testcontentDE&, &, !@#$%^&*%$$&@'.,;p\"ss", oxField::T_RAW);
         $oContent->oxcontents__oxactive = new oxField('1', oxField::T_RAW);
@@ -59,7 +59,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        //modConfig::getInstance()->setShopId($this->_sShopId );
+        //$this->getConfig()->setShopId($this->_sShopId );
 
         $this->_oContent->delete();
 
@@ -73,7 +73,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
      */
     public function testSaveAgb()
     {
-        $sShopId = oxRegistry::getConfig()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
 
         $oDb = oxDb::getDb();
         $oDb->execute("insert into oxacceptedterms (`OXUSERID`, `OXSHOPID`, `OXTERMVERSION`) values ('testuser', '{$sShopId}', '0')");
@@ -156,7 +156,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
 
     public function testGetStdLink()
     {
-        $sUrl = oxRegistry::getConfig()->getShopHomeURL() . "cl=content&amp;oxloadid=testLoadId&amp;oxcid=testts";
+        $sUrl = $this->getConfig()->getShopHomeURL() . "cl=content&amp;oxloadid=testLoadId&amp;oxcid=testts";
 
         $oContent = new oxContent();
         $oContent->setId('testts');
@@ -207,7 +207,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
 
     public function testGetStdLinkWithLangParam()
     {
-        $sUrl = oxRegistry::getConfig()->getShopHomeURL() . "cl=content&amp;oxloadid=testLoadId&amp;oxcid=testts";
+        $sUrl = $this->getConfig()->getShopHomeURL() . "cl=content&amp;oxloadid=testLoadId&amp;oxcid=testts";
         $oContent = new oxContent();
         $oContent->setId('testts');
         $oContent->oxcontents__oxloadid = new oxField('testLoadId');
@@ -265,7 +265,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
 
     public function testExpandedStatusGetter()
     {
-        modConfig::setRequestParameter('oxcid', 'xxx');
+        $this->setRequestParameter('oxcid', 'xxx');
 
         $oContent = new oxContent();
         $oContent->setId('xxx');
@@ -273,8 +273,8 @@ class Unit_Core_oxcontentTest extends OxidTestCase
         $this->assertTrue($oContent->expanded);
 
         // testing cache
-        modConfig::setRequestParameter('oxcid', null);
-        modConfig::setRequestParameter('oxloadid', 'xxx');
+        $this->setRequestParameter('oxcid', null);
+        $this->setRequestParameter('oxloadid', 'xxx');
         $oContent = new oxContent();
         $oContent->load('xxx');
         $this->assertTrue($oContent->getExpanded());

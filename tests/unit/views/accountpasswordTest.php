@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -132,7 +132,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testChangePasswordMissingOldPass()
     {
-        modConfig::setRequestParameter('password_old', null);
+        $this->setRequestParameter('password_old', null);
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "ACCOUNT_PASSWORD_ERRINCORRECTCURRENTPASSW"; }');
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
@@ -160,9 +160,9 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testChangePassword()
     {
-        modConfig::setRequestParameter('password_old', "oldpassword");
-        modConfig::setRequestParameter('password_new', "newpassword");
-        modConfig::setRequestParameter('password_new_confirm', "newpassword");
+        $this->setRequestParameter('password_old', "oldpassword");
+        $this->setRequestParameter('password_new', "newpassword");
+        $this->setRequestParameter('password_new_confirm', "newpassword");
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
@@ -256,9 +256,9 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
 
         $sOldPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%_old';
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
-        modConfig::setRequestParameter('password_old', $sOldPass);
-        modConfig::setRequestParameter('password_new', $sPass);
-        modConfig::setRequestParameter('password_new_confirm', $sPass);
+        $this->setRequestParameter('password_old', $sOldPass);
+        $this->setRequestParameter('password_new', $sPass);
+        $this->setRequestParameter('password_new_confirm', $sPass);
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));

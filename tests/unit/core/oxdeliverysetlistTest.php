@@ -111,7 +111,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
      */
     public function testForBugEntry0001615()
     {
-        oxRegistry::getConfig()->setActShopCurrency(2);
+        $this->getConfig()->setActShopCurrency(2);
         $this->cleanUpTable('oxaddress');
 
         $sShipSet = "oxidstandard";
@@ -203,8 +203,8 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
      */
     public function testGetDeliverySetListForTestCase()
     {
-        $iActShop = oxRegistry::getConfig()->getBaseShopId();
-        modConfig::getInstance()->setConfigParam("blVariantParentBuyable", 1);
+        $iActShop = $this->getConfig()->getBaseShopId();
+        $this->getConfig()->setConfigParam("blVariantParentBuyable", 1);
 
         /**
          * Preparing data
@@ -323,7 +323,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
         oxRegistry::getSession()->deleteVariable('deladrid');
 
         $oBasket = new oxBasket();
-        modConfig::getInstance()->setConfigParam('blAllowUnevenAmounts', true);
+        $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $oBasket->setBasketUser($oUser);
         $oBasket->addToBasket('1127', 1);
         $oBasket->calculateBasket();
@@ -767,7 +767,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
      */
     public function testGetDeliverySetData_usesBasketPriceWithoutPayment()
     {
-        $iActShop = oxRegistry::getConfig()->getBaseShopId();
+        $iActShop = $this->getConfig()->getBaseShopId();
 
         // Deliverycost 1
         $oDel1 = new oxDelivery();
@@ -810,7 +810,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
 
         $oUser = new oxuser();
         $oUser->load('oxdefaultadmin');
-        modConfig::setRequestParameter('deladrid', null);
+        $this->setRequestParameter('deladrid', null);
 
         $oBasket = $this->getMock('oxBasket', array('getPriceForPayment'));
         $oBasket->expects($this->once())->method('getPriceForPayment')->will($this->returnValue(100));

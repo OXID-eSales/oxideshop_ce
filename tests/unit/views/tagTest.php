@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -41,7 +41,7 @@ class Unit_Views_tagTest extends OxidTestCase
 
     public function testRender()
     {
-        modConfig::setRequestParameter("searchtag", "kuyichi");
+        $this->setRequestParameter("searchtag", "kuyichi");
         $oView = new tag();
 
         $this->assertEquals("page/list/list.tpl", $oView->render());
@@ -52,8 +52,8 @@ class Unit_Views_tagTest extends OxidTestCase
      */
     public function testRender_noArticlesForTag()
     {
-        modConfig::setRequestParameter("pgNr", 999);
-        modConfig::setRequestParameter("searchtag", "notexistingtag");
+        $this->setRequestParameter("pgNr", 999);
+        $this->setRequestParameter("searchtag", "notexistingtag");
 
         $oView = new tag();
         $this->assertEquals("page/list/list.tpl", $oView->render());
@@ -61,7 +61,7 @@ class Unit_Views_tagTest extends OxidTestCase
 
     public function testGetAddUrlParams()
     {
-        modConfig::setRequestParameter("searchtag", "testSearchTag");
+        $this->setRequestParameter("searchtag", "testSearchTag");
 
         $oListView = new aList();
         $sListViewParams = $oListView->getAddUrlParams();
@@ -147,13 +147,13 @@ class Unit_Views_tagTest extends OxidTestCase
 
     public function testGeneratePageNavigationUrl()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxUtils", "seoIsActive", "{ return false; }");
 
         $oTag = $this->getMock('tag', array('getTag'));
         $oTag->expects($this->never())->method('getTag');
 
-        $sUrl = oxRegistry::getConfig()->getShopHomeURL() . $oTag->UNITgetRequestParams(false);
+        $sUrl = $this->getConfig()->getShopHomeURL() . $oTag->UNITgetRequestParams(false);
         $this->assertEquals($sUrl, $oTag->generatePageNavigationUrl());
     }
 
@@ -228,7 +228,7 @@ class Unit_Views_tagTest extends OxidTestCase
     public function testGetArticleList()
     {
         $sTag = 'wanduhr';
-        modConfig::getInstance()->setConfigParam('iNrofCatArticles', 20);
+        $this->getConfig()->setConfigParam('iNrofCatArticles', 20);
         $oTag = $this->getProxyClass('tag');
         $oTag->setNonPublicVar("_sTag", $sTag);
         $oArtList = $oTag->getArticleList();
@@ -263,10 +263,10 @@ class Unit_Views_tagTest extends OxidTestCase
     {
         $oTag = new Tag();
 
-        $this->setRequestParam('searchtag', null);
+        $this->setRequestParameter('searchtag', null);
         $this->assertNull($oTag->getTag());
 
-        $this->setRequestParam('searchtag', 'sometag');
+        $this->setRequestParameter('searchtag', 'sometag');
         $this->assertEquals('sometag', $oTag->getTag());
     }
 
@@ -277,7 +277,7 @@ class Unit_Views_tagTest extends OxidTestCase
     {
         $oTag = new Tag();
 
-        $this->setRequestParam('searchtag', 'sometag<">');
+        $this->setRequestParameter('searchtag', 'sometag<">');
         $this->assertEquals('sometag&lt;&quot;&gt;', $oTag->getTag());
     }
 

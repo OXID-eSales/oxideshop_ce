@@ -1015,7 +1015,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetActTplName()
     {
-        $this->setRequestParam("tpl", 123);
+        $this->setRequestParameter("tpl", 123);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals(123, $oViewConf->getActTplName());
@@ -1028,7 +1028,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetActCurrency()
     {
-        $this->setRequestParam("cur", 1);
+        $this->setRequestParameter("cur", 1);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals(1, $oViewConf->getActCurrency());
@@ -1041,12 +1041,12 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetActContentLoadId()
     {
-        $this->setRequestParam("oxloadid", 123);
+        $this->setRequestParameter("oxloadid", 123);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals(123, $oViewConf->getActContentLoadId());
 
-        $this->setRequestParam("oxloadid", null);
+        $this->setRequestParameter("oxloadid", null);
         $oViewConf->setViewConfigParam('oxloadid', 234);
         $this->assertNull($oViewConf->getActContentLoadId());
     }
@@ -1077,7 +1077,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetActRecommendationId()
     {
-        $this->setRequestParam("recommid", 1);
+        $this->setRequestParameter("recommid", 1);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals(1, $oViewConf->getActRecommendationId());
@@ -1092,7 +1092,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetActCatId()
     {
         $iCat = 12345;
-        $this->setRequestParam("cnid", $iCat);
+        $this->setRequestParameter("cnid", $iCat);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals($iCat, $oViewConf->getActCatId());
@@ -1107,7 +1107,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetActArticleId()
     {
         $sArt = "12345";
-        $this->setRequestParam("anid", $sArt);
+        $this->setRequestParameter("anid", $sArt);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals($sArt, $oViewConf->getActArticleId());
@@ -1122,7 +1122,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetActSearchParam()
     {
         $sParam = "test=john";
-        $this->setRequestParam("searchparam", $sParam);
+        $this->setRequestParameter("searchparam", $sParam);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals($sParam, $oViewConf->getActSearchParam());
@@ -1137,7 +1137,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetActSearchTag()
     {
         $sTag = "test=john";
-        $this->setRequestParam("searchtag", $sTag);
+        $this->setRequestParameter("searchtag", $sTag);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals($sTag, $oViewConf->getActSearchTag());
@@ -1152,7 +1152,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetActListType()
     {
         $sType = "testType";
-        $this->setRequestParam("listtype", $sType);
+        $this->setRequestParameter("listtype", $sType);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals($sType, $oViewConf->getActListType());
@@ -1167,7 +1167,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetContentId()
     {
         $sOxcid = "testCID";
-        $this->setRequestParam("oxcid", $sOxcid);
+        $this->setRequestParameter("oxcid", $sOxcid);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals($sOxcid, $oViewConf->getContentId());
@@ -2551,23 +2551,24 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      *
      * @dataProvider _dpGetSessionChallengeToken
      *
-     * @param boolean $blIsSessionStarted                   is session started
-     * @param integer $iGetSessionChallengeTokenCalledTimes method getSessionChallengeToken expected to be called times
-     * @param string  $sToken                               Security token
+     * @param boolean $isSessionStarted Was session started.
+     * @param integer $callTimes method How many times getSessionChallengeToken is expected to be called.
+     * @param string  $token            Security token.
      */
-    public function testGetSessionChallengeToken($blIsSessionStarted, $iGetSessionChallengeTokenCalledTimes, $sToken)
+    public function testGetSessionChallengeToken($isSessionStarted, $callTimes, $token)
     {
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('isSessionStarted', 'getSessionChallengeToken'));
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $session */
+        $session = $this->getMock('oxSession', array('isSessionStarted', 'getSessionChallengeToken'));
 
-        $oSession->expects($this->once())->method('isSessionStarted')
-            ->will($this->returnValue($blIsSessionStarted));
-        $oSession->expects($this->exactly($iGetSessionChallengeTokenCalledTimes))->method('getSessionChallengeToken')
-            ->will($this->returnValue($sToken));
-        oxRegistry::set('oxSession', $oSession);
+        $session->expects($this->once())->method('isSessionStarted')->will($this->returnValue($isSessionStarted));
+        $session->expects($this->exactly($callTimes))->method('getSessionChallengeToken')->will($this->returnValue($token));
+        oxRegistry::set('oxSession', $session);
 
-        $oViewConfig = new oxViewConfig();
-        $this->assertSame($sToken, $oViewConfig->getSessionChallengeToken());
+        /** @var oxViewConfig $viewConfig */
+        $viewConfig = oxNew('oxViewConfig');
+        $viewConfig->setSession($session);
+
+        $this->assertSame($token, $viewConfig->getSessionChallengeToken());
     }
 
     /**

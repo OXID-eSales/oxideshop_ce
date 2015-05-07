@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -32,7 +32,7 @@ class Unit_Views_compareTest extends OxidTestCase
     {
         parent::setUp();
         $myDB = oxDb::getDB();
-        $sShopId = oxRegistry::getConfig()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
         // adding article to recommend list
         $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "' . $sShopId . '" ) ';
         $myDB->Execute($sQ);
@@ -61,7 +61,7 @@ class Unit_Views_compareTest extends OxidTestCase
      */
     public function testMoveLeft()
     {
-        modConfig::setRequestParameter('aid', "testId2");
+        $this->setRequestParameter('aid', "testId2");
         $aItems = array("testId1" => "testVal1", "testId2" => "testVal2", "testId3" => "testVal3");
         $aResult = array("testId1" => true, "testId2" => true, "testId3" => true);
 
@@ -76,7 +76,7 @@ class Unit_Views_compareTest extends OxidTestCase
      */
     public function testMoveLeftSkipsIfNoAnid()
     {
-        modConfig::setRequestParameter('aid', "");
+        $this->setRequestParameter('aid', "");
 
         $oView = $this->getMock("compare", array("getCompareItems", "setCompareItems"));
         $oView->expects($this->never())->method('getCompareItems');
@@ -89,7 +89,7 @@ class Unit_Views_compareTest extends OxidTestCase
      */
     public function testMoveRight()
     {
-        modConfig::setRequestParameter('aid', "testId2");
+        $this->setRequestParameter('aid', "testId2");
         $aItems = array("testId1" => "testVal1", "testId2" => "testVal2", "testId3" => "testVal3");
         $aResult = array("testId1" => true, "testId2" => true, "testId3" => true);
 
@@ -104,7 +104,7 @@ class Unit_Views_compareTest extends OxidTestCase
      */
     public function testMoveRightSkipsIfNoAnId()
     {
-        modConfig::setRequestParameter('aid', "");
+        $this->setRequestParameter('aid', "");
 
         $oView = $this->getMock("compare", array("getCompareItems", "setCompareItems"));
         $oView->expects($this->never())->method('getCompareItems');

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -57,18 +57,18 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
             $this->assertNotEquals($this->_sMsg, $sMsg);
         } catch (Exception $e) {
             // Lets try to delete an possible left over file
-            if (file_exists(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
-                unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+            if (file_exists($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
+                unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
             }
             $this->fail('handleUncaughtException() throws an exception.');
 
             return;
         }
-        if (!file_exists(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
+        if (!file_exists($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
             $this->fail('No debug log file written');
         }
-        $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
-        unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName); // delete file first as assert may return out this function
+        $sFile = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+        unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName); // delete file first as assert may return out this function
         // we check on class name and message - rest is not checked yet
         $this->assertContains($this->_sMsg, $sFile);
         $this->assertContains('oxException', $sFile);
@@ -110,18 +110,18 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
             // actuall test
         } catch (Exception $e) {
             $oTestObject->handleUncaughtException($e);
-            if (!file_exists(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
+            if (!file_exists($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
                 $this->fail('No debug log file written');
             }
-            $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
-            unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName); // delete file first as assert may return out this function
+            $sFile = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+            unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName); // delete file first as assert may return out this function
             $this->assertContains("test exception", $sFile);
             $this->assertContains('Exception', $sFile);
 
             return;
         }
-        if (file_exists(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
-            unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+        if (file_exists($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName)) {
+            unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
         }
         $this->fail('Test failed.');
     }

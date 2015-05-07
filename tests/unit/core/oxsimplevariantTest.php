@@ -46,7 +46,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
      */
     public function testGetASelectlist()
     {
-        modConfig::getInstance()->setConfigParam("bl_perfLoadSelectLists", true);
+        $this->getConfig()->setConfigParam("bl_perfLoadSelectLists", true);
 
         $oVariant = $this->getMock('oxSimpleVariant', array('getSelectLists'));
         $oVariant->expects($this->once())->method('getSelectLists')->will($this->returnValue("testSelLists"));
@@ -160,10 +160,10 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
         $oVariant->oxarticles__oxpricea = new oxField(0, oxField::T_RAW);
         $oVariant->oxarticles__oxprice->value = 15;
 
-        modConfig::getInstance()->setConfigParam('blOverrideZeroABCPrices', false);
+        $this->getConfig()->setConfigParam('blOverrideZeroABCPrices', false);
         $this->assertEquals(0, $oVariant->UNITgetGroupPrice());
 
-        modConfig::getInstance()->setConfigParam('blOverrideZeroABCPrices', true);
+        $this->getConfig()->setConfigParam('blOverrideZeroABCPrices', true);
         $oVariant->oxarticles__oxprice->value = 15;
         $this->assertEquals(15, $oVariant->UNITgetGroupPrice());
     }
@@ -250,7 +250,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
     public function testApplyParentVatCalcVatOnlyForBasketOrder()
     {
         $oPrice = new oxPrice();
-        modConfig::getInstance()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', true);
+        $this->getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', true);
 
         $oParent = $this->getMock('oxArticle', array('applyVats'));
         $oParent->expects($this->never())->method('applyVats');
@@ -336,12 +336,12 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
         $oSubj = $this->getProxyClass("oxSimpleVariant");
         $oCur = new StdClass;
         $oCur->rate = 2;
-        oxRegistry::getConfig()->setActShopCurrency(2);
+        $this->getConfig()->setActShopCurrency(2);
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(100);
         $oSubj->UNITapplyCurrency($oPrice);
         $this->assertEquals(143.26, $oPrice->getBruttoPrice());
-        oxRegistry::getConfig()->setActShopCurrency(0);
+        $this->getConfig()->setActShopCurrency(0);
     }
 
     public function testApplyCurrencyIfObjSet()
@@ -395,7 +395,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
           $oSubj = $this->getProxyClass("oxSimpleVariant");
           $oSubj->setId( "1126" );
 
-          $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL()."cl=details&amp;anid=1126", $oSubj->getStdLink() );
+          $this->assertEquals( $this->getConfig()->getShopHomeURL()."cl=details&amp;anid=1126", $oSubj->getStdLink() );
       }
 
       public function testGetLinkType_withoutParent()
@@ -411,7 +411,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
           $oSubj = $this->getProxyClass("oxSimpleVariant");
           $oSubj->setId( "1126" );
 
-      $sLink = oxRegistry::getConfig()->getShopUrl()."Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
+      $sLink = $this->getConfig()->getShopUrl()."Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
 
 
           $this->assertEquals( $sLink, $oSubj->getLink() );
@@ -422,7 +422,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
           $oSubj = $this->getProxyClass("oxSimpleVariant");
           $oSubj->setId( "1126" );
 
-      $sLink = oxRegistry::getConfig()->getShopUrl()."en/Gifts/Bar-Equipment/Bar-Set-ABSINTH.html";
+      $sLink = $this->getConfig()->getShopUrl()."en/Gifts/Bar-Equipment/Bar-Set-ABSINTH.html";
 
 
           $this->assertEquals( $sLink, $oSubj->getLink(1) );
@@ -435,7 +435,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
      */
     function testGetPriceNoPriceCalculate()
     {
-        oxRegistry::getConfig()->setConfigParam('bl_perfLoadPrice', false);
+        $this->getConfig()->setConfigParam('bl_perfLoadPrice', false);
 
         $oSubj = new oxSimpleVariant();
         $oSubj->setPrice(10);

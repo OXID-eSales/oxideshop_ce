@@ -38,10 +38,10 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
             array($this->_getMockedCurl(), $this->_getMockedEmailBuilder(), $this->_getMockedSimpleXML()),
             '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
         );
-        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
+        $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
         $oCaller->call($this->_getRequest());
 
-        $this->assertSame(0, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+        $this->assertSame(0, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
     public function testCallWhenFailsAndItsLastAllowedCall()
@@ -52,10 +52,10 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
             array($this->_getMockedCurlWhichThrowsException(), $this->_getMockedEmailBuilder(), $this->_getMockedSimpleXML()),
             '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
         );
-        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
+        $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
 
         $this->assertNull($oCaller->call($this->_getRequest()));
-        $this->assertSame(5, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+        $this->assertSame(5, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
     public function testCallWhenFailsAndThereAreNotAllowedCallsCount()
@@ -73,10 +73,10 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
         );
         $oCaller->expects($this->any())->method('_getXMLDocumentName')->will($this->returnValue('testXML'));
         /** @var oxOnlineCaller $oCaller */
-        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 5);
+        $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 5);
 
         $oCaller->call($this->_getRequest());
-        $this->assertSame(0, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+        $this->assertSame(0, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
     public function testCallWhenStatusCodeIndicatesError()
@@ -91,10 +91,10 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
             array($oCurl, $this->_getMockedEmailBuilder(), $this->_getMockedSimpleXML()),
             '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
         );
-        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
+        $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
         $oCaller->call($this->_getRequest());
 
-        $this->assertSame(5, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+        $this->assertSame(5, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
     /**

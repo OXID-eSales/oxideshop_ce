@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -35,7 +35,7 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
     {
         parent::setUp();
         $myDB = oxDb::getDB();
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $sShopId = $myConfig->getBaseShopId();
         $sVal = '&amp;&test1, 10!P!10__@@test2, 10!P!10__@@test3, 10!P!10__@@';
@@ -135,9 +135,9 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
      */
     public function testGetFieldListStripsTagsFromCurrency()
     {
-        modConfig::getInstance()->setRequestParameter('cur', 2);
-        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', 1);
-        modConfig::getInstance()->setConfigParam('bl_perfUseSelectlistPrice', 1);
+        $this->setRequestParameter('cur', 2);
+        $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', 1);
+        $this->getConfig()->setConfigParam('bl_perfUseSelectlistPrice', 1);
 
         $oSelList = new oxselectlist();
         $oSelList->load('oxsellisttest');
@@ -199,7 +199,7 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
         $oSelectList = new oxselectlist();
         $this->assertNull($oSelectList->getSelections());
 
-        modConfig::getInstance()->setRequestParameter('cur', 2);
+        $this->setRequestParameter('cur', 2);
         $aSelections = array(new oxSelection("test1, 10", 0, false, true),
                              new oxSelection("test2, 10", 1, false, false),
                              new oxSelection("test3', 10", 2, false, false),

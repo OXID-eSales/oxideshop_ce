@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -77,7 +77,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
     public function testDeleteCsvFile()
     {
         // creating file for test
-        $sFilePath = oxRegistry::getConfig()->getConfigParam("sCompileDir") . md5(time());
+        $sFilePath = $this->getConfig()->getConfigParam("sCompileDir") . md5(time());
         $rFile = fopen($sFilePath, "w");
         fclose($rFile);
 
@@ -98,7 +98,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetCsvFieldsNamesContainsNoHeader()
     {
-        $this->setRequestParam('blContainsHeader', false);
+        $this->setRequestParameter('blContainsHeader', false);
 
         $oView = $this->getMock("GenImport_Main", array("_getUploadedCsvFilePath", "_getCsvFirstRow"));
         $oView->expects($this->once())->method('_getUploadedCsvFilePath')->will($this->returnValue(false));
@@ -113,7 +113,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetCsvFieldsNamesContainsHeader()
     {
-        $this->setRequestParam('blContainsHeader', true);
+        $this->setRequestParameter('blContainsHeader', true);
 
         $oView = $this->getMock("GenImport_Main", array("_getUploadedCsvFilePath", "_getCsvFirstRow"));
         $oView->expects($this->once())->method('_getUploadedCsvFilePath')->will($this->returnValue(false));
@@ -129,7 +129,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
     public function testGetCsvFirstRow()
     {
         // creating file for test
-        $sFilePath = oxRegistry::getConfig()->getConfigParam("sCompileDir") . md5(time());
+        $sFilePath = $this->getConfig()->getConfigParam("sCompileDir") . md5(time());
         $rFile = fopen($sFilePath, "w");
         fwrite($rFile, "\"test1\";\"test2\";\"test3\"");
         fclose($rFile);
@@ -185,7 +185,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testCheckErrorsStep3EmptyCsvFields()
     {
-        $this->setRequestParam('aCsvFields', array());
+        $this->setRequestParameter('aCsvFields', array());
 
         // defining parameters
         $iNavStep = 3;
@@ -202,7 +202,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
     public function testCheckErrorsStep3()
     {
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{}');
-        $this->setRequestParam('aCsvFields', array("sTestField"));
+        $this->setRequestParameter('aCsvFields', array("sTestField"));
 
         // defining parameters
         $iNavStep = 3;
@@ -253,13 +253,13 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
         // testing..
         $oConfig = $this->getMock("oxConfig", array("getUploadedFile", "getConfigParam"));
         $oConfig->expects($this->once())->method('getUploadedFile')->will($this->returnValue(array("name" => $sFileName, "tmp_name" => rtrim(sys_get_temp_dir(), '/') . '/' . $sFileName)));
-        $oConfig->expects($this->once())->method('getConfigParam')->will($this->returnValue(oxRegistry::getConfig()->getConfigParam("sCompileDir")));
+        $oConfig->expects($this->once())->method('getConfigParam')->will($this->returnValue($this->getConfig()->getConfigParam("sCompileDir")));
 
         $oView = $this->getMock("GenImport_Main", array("getConfig"), array(), '', false);
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sCompileDir") . $sFileName, $oView->UNITgetUploadedCsvFilePath());
-        $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sCompileDir") . $sFileName, oxRegistry::getSession()->getVariable('sCsvFilePath'));
+        $this->assertEquals($this->getConfig()->getConfigParam("sCompileDir") . $sFileName, $oView->UNITgetUploadedCsvFilePath());
+        $this->assertEquals($this->getConfig()->getConfigParam("sCompileDir") . $sFileName, oxRegistry::getSession()->getVariable('sCsvFilePath'));
     }
 
     /**
@@ -297,7 +297,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
 
         // testing..
         $oView = new GenImport_Main();
-        $this->assertEquals(oxRegistry::getConfig()->getConfigParam('sGiCsvFieldTerminator'), $oView->UNITgetCsvFieldsTerminator());
+        $this->assertEquals($this->getConfig()->getConfigParam('sGiCsvFieldTerminator'), $oView->UNITgetCsvFieldsTerminator());
 
     }
 
@@ -312,6 +312,6 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
 
         // testing..
         $oView = new GenImport_Main();
-        $this->assertEquals(oxRegistry::getConfig()->getConfigParam('sGiCsvFieldEncloser'), $oView->UNITgetCsvFieldsEncolser());
+        $this->assertEquals($this->getConfig()->getConfigParam('sGiCsvFieldEncloser'), $oView->UNITgetCsvFieldsEncolser());
     }
 }

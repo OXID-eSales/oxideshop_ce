@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -47,7 +47,7 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
-        modConfig::setRequestParameter("oxid", "1126");
+        $this->setRequestParameter("oxid", "1126");
 
         $oBase = new oxbase();
         $oBase->init("oxorderarticles");
@@ -55,7 +55,7 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
         $oBase->oxorderarticles__oxorderid = new oxField("testOrderId");
         $oBase->oxorderarticles__oxamount = new oxField(1);
         $oBase->oxorderarticles__oxartid = new oxField("1126");
-        $oBase->oxorderarticles__oxordershopid = new oxField(oxRegistry::getConfig()->getShopId());
+        $oBase->oxorderarticles__oxordershopid = new oxField($this->getConfig()->getShopId());
         $oBase->save();
 
         // testing..
@@ -79,8 +79,8 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
     public function testRenderPArentBuyable()
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
-        modConfig::setRequestParameter("oxid", "1126");
-        modConfig::getInstance()->setConfigParam("blVariantParentBuyable", true);
+        $this->setRequestParameter("oxid", "1126");
+        $this->getConfig()->setConfigParam("blVariantParentBuyable", true);
 
         // testing..
         $oView = new Article_Overview();

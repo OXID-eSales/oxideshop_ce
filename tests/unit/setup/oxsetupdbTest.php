@@ -56,7 +56,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testExecSql()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $reportingLevel = error_reporting((E_ALL ^ E_NOTICE ^ E_DEPRECATED) | E_STRICT);
         $rConnection = mysql_connect($myConfig->getConfigParam('dbHost'), $myConfig->getConfigParam('dbUser'), $myConfig->getConfigParam('dbPwd'));
         error_reporting($reportingLevel);
@@ -127,7 +127,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $aVersionInfo = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll("SHOW VARIABLES LIKE 'version'");
         $sVersion = $aVersionInfo[0]["Value"];
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $reportingLevel = error_reporting((E_ALL ^ E_NOTICE ^ E_DEPRECATED) | E_STRICT);
         $rConnection = mysql_connect($myConfig->getConfigParam('dbHost'), $myConfig->getConfigParam('dbUser'), $myConfig->getConfigParam('dbPwd'));
         error_reporting($reportingLevel);
@@ -156,7 +156,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testOpenDatabaseConnectionImpossible()
     {
-        $aParams['dbHost'] = oxRegistry::getConfig()->getConfigParam('dbHost');
+        $aParams['dbHost'] = $this->getConfig()->getConfigParam('dbHost');
         $aParams['dbUser'] = $aParams['dbPwd'] = time();
 
         try {
@@ -175,7 +175,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testOpenDatabaseImpossibleToSelectGivenDatabase()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $aParams['dbHost'] = $myConfig->getConfigParam('dbHost');
         $aParams['dbUser'] = $myConfig->getConfigParam('dbUser');
         $aParams['dbPwd'] = $myConfig->getConfigParam('dbPwd');
@@ -197,7 +197,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testOpenDatabaseWrongDbVersion()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $aParams['dbHost'] = $myConfig->getConfigParam('dbHost');
         $aParams['dbUser'] = $myConfig->getConfigParam('dbUser');
         $aParams['dbPwd'] = $myConfig->getConfigParam('dbPwd');
@@ -220,7 +220,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testOpenDatabase()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $aParams['dbHost'] = $myConfig->getConfigParam('dbHost');
         $aParams['dbUser'] = $myConfig->getConfigParam('dbUser');
         $aParams['dbPwd'] = $myConfig->getConfigParam('dbPwd');
@@ -382,7 +382,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
     public function testConvertConfigTableToUtf()
     {
         $oConfk = new Conf();
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $reportingLevel = error_reporting((E_ALL ^ E_NOTICE ^ E_DEPRECATED) | E_STRICT);
         $rConnection = mysql_connect($myConfig->getConfigParam('dbHost'), $myConfig->getConfigParam('dbUser'), $myConfig->getConfigParam('dbPwd'));
         mysql_select_db($myConfig->getConfigParam('dbName'));

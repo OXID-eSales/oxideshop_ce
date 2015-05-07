@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Admin_PaymentCountryTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Payment_Country();
@@ -50,7 +50,7 @@ class Unit_Admin_PaymentCountryTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Payment_Country();
@@ -67,8 +67,8 @@ class Unit_Admin_PaymentCountryTest extends OxidTestCase
      */
     public function testAddcountry()
     {
-        modConfig::setRequestParameter("oxid", "testId");
-        modConfig::setRequestParameter("allcountries", array("testCountryId"));
+        $this->setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("allcountries", array("testCountryId"));
         oxTestModules::addFunction('oxbase', 'save', '{ throw new Exception( "save" ); }');
 
         // testing..
@@ -90,8 +90,8 @@ class Unit_Admin_PaymentCountryTest extends OxidTestCase
      */
     public function testRemovecountry()
     {
-        modConfig::setRequestParameter("oxid", "testId");
-        modConfig::setRequestParameter("countries", array("testCountryId"));
+        $this->setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("countries", array("testCountryId"));
         oxTestModules::addFunction('oxbase', 'delete', '{ throw new Exception( "delete" ); }');
 
         // testing..

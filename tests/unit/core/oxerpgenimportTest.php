@@ -379,14 +379,14 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testGetCsvFieldsTerminator()
     {
-        modConfig::getInstance()->setConfigParam('sGiCsvFieldTerminator', "");
-        modConfig::getInstance()->setConfigParam('sCSVSign', ",");
+        $this->getConfig()->setConfigParam('sGiCsvFieldTerminator', "");
+        $this->getConfig()->setConfigParam('sCSVSign', ",");
         $oImport = $this->getProxyClass("oxErpGenImport");
 
         $this->assertEquals(",", $oImport->UNITgetCsvFieldsTerminator());
 
-        modConfig::getInstance()->setConfigParam('sGiCsvFieldTerminator', ";");
-        modConfig::getInstance()->setConfigParam('sCSVSign', ",");
+        $this->getConfig()->setConfigParam('sGiCsvFieldTerminator', ";");
+        $this->getConfig()->setConfigParam('sCSVSign', ",");
         $oImport = $this->getProxyClass("oxErpGenImport");
 
         $this->assertEquals(";", $oImport->UNITgetCsvFieldsTerminator());
@@ -398,7 +398,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testGetCsvFieldsTerminatorDefault()
     {
-        modConfig::getInstance()->setConfigParam('sCSVSign', null);
+        $this->getConfig()->setConfigParam('sCSVSign', null);
         $oImport = $this->getProxyClass("oxErpGenImport");
 
         $this->assertEquals(';', $oImport->UNITgetCsvFieldsTerminator());
@@ -409,7 +409,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testGetCsvFieldsEncolser()
     {
-        modConfig::getInstance()->setConfigParam('sGiCsvFieldEncloser', "'");
+        $this->getConfig()->setConfigParam('sGiCsvFieldEncloser', "'");
         $oImport = $this->getProxyClass("oxErpGenImport");
 
         $this->assertEquals("'", $oImport->UNITgetCsvFieldsEncolser());
@@ -420,7 +420,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testGetCsvFieldsEncolserDefault()
     {
-        modConfig::getInstance()->setConfigParam('sGiCsvFieldEncloser', null);
+        $this->getConfig()->setConfigParam('sGiCsvFieldEncloser', null);
         $oImport = $this->getProxyClass("oxErpGenImport");
 
         $this->assertEquals('"', $oImport->UNITgetCsvFieldsEncolser());

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -60,12 +60,12 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testShowSuggest()
     {
-        modConfig::setRequestParameter("blshowsuggest", 0);
+        $this->setRequestParameter("blshowsuggest", 0);
 
         $oView = new Account_Wishlist();
         $this->assertFalse($oView->showSuggest());
 
-        modConfig::setRequestParameter("blshowsuggest", 1);
+        $this->setRequestParameter("blshowsuggest", 1);
 
         $oView = new Account_Wishlist();
         $this->assertTrue($oView->showSuggest());
@@ -183,7 +183,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
     {
         $aParams = array("someVar1" => "someVal1", "someVar2" => "someVal2");
 
-        modConfig::setRequestParameter("editval", $aParams);
+        $this->setRequestParameter("editval", $aParams);
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }');
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
@@ -206,7 +206,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
         $aParams = array("rec_name" => "someVal1", "rec_email" => "someVal2");
         $oObj = ( object ) $aParams;
 
-        modConfig::setRequestParameter("editval", $aParams);
+        $this->setRequestParameter("editval", $aParams);
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }');
         oxTestModules::addFunction('oxemail', 'sendWishlistMail', '{ return false; }');
 
@@ -238,7 +238,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testTogglePublic()
     {
-        modConfig::setRequestParameter("blpublic", 1);
+        $this->setRequestParameter("blpublic", 1);
 
         /** @var oxBasket|PHPUnit_Framework_MockObject_MockObject $oBasket */
         $oBasket = $this->getMock("oxBasket", array("save"));
@@ -266,7 +266,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testSearchForWishList()
     {
-        modConfig::setRequestParameter('search', "searchParam");
+        $this->setRequestParameter('search', "searchParam");
         oxTestModules::addFunction('oxuserlist', 'loadWishlistUsers', '{ $this->_aArray[0] = 1; }');
 
         $oView = new Account_Wishlist();

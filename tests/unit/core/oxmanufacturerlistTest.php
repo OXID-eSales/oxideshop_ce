@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -54,7 +54,7 @@ class Unit_Core_oxManufacturerlistTest extends OxidTestCase
      */
     /*    public function test_loadManufacturerList() {
             $myUtils = oxRegistry::getUtils();
-            $myConfig= oxRegistry::getConfig();
+            $myConfig= $this->getConfig();
             $myDB    = oxDb::getDB();
 
             $oManufacturerlist = oxNew( 'oxManufacturerlist' );
@@ -85,7 +85,7 @@ class Unit_Core_oxManufacturerlistTest extends OxidTestCase
     public function testLoadManufacturerListByLanguage()
     {
         $myUtils = oxRegistry::getUtils();
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
         $myDB = oxDb::getDB();
 
         //modConfig::addClassVar("_iLanguageId","1"); //$oManufacturerlist->sLanguage = '1';
@@ -121,7 +121,7 @@ class Unit_Core_oxManufacturerlistTest extends OxidTestCase
 
         $myUtils = oxRegistry::getUtils();
 
-        modConfig::getInstance()->setConfigParam('bl_perfShowActionCatArticleCnt', true);
+        $this->getConfig()->setConfigParam('bl_perfShowActionCatArticleCnt', true);
 
         $oManufacturerlist = oxNew('oxManufacturerlist');
         $oManufacturerlist->setShowManufacturerArticleCnt(true);
@@ -138,7 +138,7 @@ class Unit_Core_oxManufacturerlistTest extends OxidTestCase
      */
     public function testBuildManufacturerTree()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $myDB = oxDb::getDB();
 
         $oManufacturerlist = $this->getProxyClass("oxManufacturerList"); //oxNew('oxManufacturerlist', 'core');
@@ -176,7 +176,7 @@ class Unit_Core_oxManufacturerlistTest extends OxidTestCase
     public function testAddCategoryFields()
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oManufacturerlist = new oxManufacturerlist();
         $oManufacturerlist->loadManufacturerList();

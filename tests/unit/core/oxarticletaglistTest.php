@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -192,8 +192,8 @@ class Unit_Core_oxarticletaglistTest extends OxidTestCase
      */
     public function testGetTagsArticleTimeRange()
     {
-        $blParam = modConfig::getInstance()->getConfigParam('blUseTimeCheck');
-        modConfig::getInstance()->setConfigParam('blUseTimeCheck', 1);
+        $blParam = $this->getConfig()->getConfigParam('blUseTimeCheck');
+        $this->getConfig()->setConfigParam('blUseTimeCheck', 1);
 
         $oArticle = oxNew('oxarticle');
         $oArticle->load('1126');
@@ -210,7 +210,7 @@ class Unit_Core_oxarticletaglistTest extends OxidTestCase
         $this->assertEquals(9, count($aTags));
         $this->assertTrue(array_key_exists('fee', $aTags));
 
-        oxRegistry::getConfig()->setConfigParam('blUseTimeCheck', $blParam);
+        $this->getConfig()->setConfigParam('blUseTimeCheck', $blParam);
         $oArticle->oxarticles__oxactive->value = 1;
         $oArticle->oxarticles__oxactivefrom->value = '0000-00-00 00:00:00';
         $oArticle->oxarticles__oxactiveto->value = '0000-00-00 00:00:00';

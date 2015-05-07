@@ -57,16 +57,6 @@ class Unit_Admin_ThemeConfigTest extends OxidTestCase
      */
     public function testSaveConfVars()
     {
-        // Params from oxConfig as it is used in theme_config.
-//        $_aConfParams = array(
-//            "bool"   => 'confbools',
-//            "str"    => 'confstrs',
-//            "arr"    => 'confarrs',
-//            "aarr"   => 'confaarrs',
-//            "select" => 'confselects',
-//            "num"    => 'confnum',
-//        );
-
         $iShopId = 125;
         $sName = 'someName';
         $sValue = 'someValue';
@@ -74,36 +64,31 @@ class Unit_Admin_ThemeConfigTest extends OxidTestCase
 
         // Check if saveShopConfVar is called with correct values.
         $aParams = array($sName => $sValue);
-        $oConfig = $this->getMock('oxConfig', array('getShopId', 'getRequestParameter', 'saveShopConfVar'));
-        $oConfig->expects($this->atLeastOnce())->method('getShopId')->will($this->returnValue($iShopId));
-        $oConfig->expects($this->atLeastOnce())->method('getRequestParameter')->will($this->returnValue($aParams));
-        $oConfig->expects($this->at(3))->method('saveShopConfVar')->with(
-            'bool', $sName, $sValue, $iShopId, 'theme:' . $sThemeName
-        )->will($this->returnValue(true));
-        $oConfig->expects($this->at(5))->method('saveShopConfVar')->with(
-            'str', $sName, $sValue, $iShopId, 'theme:' . $sThemeName
-        )->will($this->returnValue(true));
-        $oConfig->expects($this->at(7))->method('saveShopConfVar')->with(
-            'arr', $sName, $sValue, $iShopId, 'theme:' . $sThemeName
-        )->will($this->returnValue(true));
-        $oConfig->expects($this->at(9))->method('saveShopConfVar')->with(
-            'aarr', $sName, $sValue, $iShopId, 'theme:' . $sThemeName
-        )->will($this->returnValue(true));
-        $oConfig->expects($this->at(11))->method('saveShopConfVar')->with(
-            'select', $sName, $sValue, $iShopId, 'theme:' . $sThemeName
-        )->will($this->returnValue(true));
-        $oConfig->expects($this->at(13))->method('saveShopConfVar')->with(
-            'num', $sName, $sValue, $iShopId, 'theme:' . $sThemeName
-        )->will($this->returnValue(true));
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
+        $oConfig = $this->getMock('oxConfig', array('getShopId', 'getRequestParameter', 'saveShopConfVar', '_loadVarsFromDb'));
+        $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue($iShopId));
+        $oConfig->expects($this->any())->method('getRequestParameter')->will($this->returnValue($aParams));
+        $oConfig->expects($this->any())->method('_loadVarsFromDb')->will($this->returnValue(true));
+        $oConfig->setConfigParam('blClearCacheOnLogout', true);
 
+        $valueMap = array(
+            array('bool', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
+            array('str', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
+            array('arr', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
+            array('aarr', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
+            array('select', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
+        );
+        $oConfig->expects($this->exactly(6))->method('saveShopConfVar')->will($this->returnValueMap($valueMap));
+
+        /** @var Theme_Config|PHPUnit_Framework_MockObject_MockObject $oTheme_Config */
         $oTheme_Config = $this->getMock(
-            'Theme_Config', array('getConfig', 'getEditObjectId', '_serializeConfVar')
+            'Theme_Config', array('getEditObjectId', '_serializeConfVar')
             , array(), '', false
         );
-        $oTheme_Config->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
         $oTheme_Config->expects($this->once())->method('getEditObjectId')->will($this->returnValue($sThemeName));
         $oTheme_Config->expects($this->atLeastOnce())->method('_serializeConfVar')->will($this->returnValue($sValue));
+        $oTheme_Config->setConfig($oConfig);
 
         $oTheme_Config->saveConfVars();
     }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new SelectList_Main();
@@ -50,7 +50,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new SelectList_Main();
@@ -69,7 +69,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxselectlist', 'save', '{ throw new Exception( "save" ); }');
         oxTestModules::addFunction('oxselectlist', 'isDerived', '{ return false; }');
-        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
+        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
@@ -92,7 +92,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxselectlist', 'save', '{ throw new Exception( "save" ); }');
         oxTestModules::addFunction('oxselectlist', 'isDerived', '{ return false; }');
-        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
+        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
@@ -117,7 +117,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         oxTestModules::addFunction('oxselectlist', 'isDerived', '{ return false; }');
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass(); $oField1->name = "testField1";$oField2 = new stdClass(); $oField2->name = "testField2"; return array( $oField1, $oField2 ); }');
 
-        modConfig::setRequestParameter("aFields", array("testField1", "testField2"));
+        $this->setRequestParameter("aFields", array("testField1", "testField2"));
 
         // testing..
         $oView = $this->getMock("SelectList_Main", array("parseFieldName", "save"));
@@ -134,7 +134,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testAddFieldNothingToAdd()
     {
-        modConfig::setRequestParameter("sAddField", null);
+        $this->setRequestParameter("sAddField", null);
         oxTestModules::addFunction('oxselectlist', 'loadInLang', '{ return true; }');
 
         // testing..
@@ -150,9 +150,9 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testAddFieldRearangeFieldReturnsTrue()
     {
-        modConfig::setRequestParameter("sAddField", "testField");
-        modConfig::setRequestParameter("aFields", array("testField"));
-        modConfig::setRequestParameter("sAddFieldPos", 1);
+        $this->setRequestParameter("sAddField", "testField");
+        $this->setRequestParameter("aFields", array("testField"));
+        $this->setRequestParameter("sAddFieldPos", 1);
 
         oxTestModules::addFunction('oxselectlist', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
@@ -171,9 +171,9 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testAddFieldRearangeField()
     {
-        modConfig::setRequestParameter("sAddField", "testField");
-        modConfig::setRequestParameter("aFields", array("testField"));
-        modConfig::setRequestParameter("sAddFieldPos", 1);
+        $this->setRequestParameter("sAddField", "testField");
+        $this->setRequestParameter("aFields", array("testField"));
+        $this->setRequestParameter("sAddFieldPos", 1);
 
         oxTestModules::addFunction('oxselectlist', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
@@ -192,7 +192,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testChangeFieldNothingToChange()
     {
-        modConfig::setRequestParameter("sAddField", null);
+        $this->setRequestParameter("sAddField", null);
 
         // testing..
         $oView = new SelectList_Main();
@@ -207,9 +207,9 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testChangeFieldRearagneFieldsReturnsTrue()
     {
-        modConfig::setRequestParameter("sAddField", "testField");
-        modConfig::setRequestParameter("aFields", array("testField"));
-        modConfig::setRequestParameter("sAddFieldPos", 1);
+        $this->setRequestParameter("sAddField", "testField");
+        $this->setRequestParameter("aFields", array("testField"));
+        $this->setRequestParameter("sAddFieldPos", 1);
 
         oxTestModules::addFunction('oxselectlist', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
@@ -229,9 +229,9 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testChangeField()
     {
-        modConfig::setRequestParameter("sAddField", "testField");
-        modConfig::setRequestParameter("aFields", array("testField"));
-        modConfig::setRequestParameter("sAddFieldPos", 1);
+        $this->setRequestParameter("sAddField", "testField");
+        $this->setRequestParameter("aFields", array("testField"));
+        $this->setRequestParameter("sAddFieldPos", 1);
 
         oxTestModules::addFunction('oxselectlist', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');

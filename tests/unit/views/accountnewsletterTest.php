@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -65,7 +65,7 @@ class Unit_Views_accountNewsletterTest extends OxidTestCase
      */
     public function testSubscribeNoStatusDefined()
     {
-        $this->setRequestParam("status", false);
+        $this->setRequestParameter("status", false);
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
@@ -96,7 +96,7 @@ class Unit_Views_accountNewsletterTest extends OxidTestCase
      */
     public function testSubscribeCustomStatus()
     {
-        $this->setRequestParam("status", true);
+        $this->setRequestParameter("status", true);
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));

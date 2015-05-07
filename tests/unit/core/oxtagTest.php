@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -135,16 +135,16 @@ class Unit_Core_oxtagTest extends OxidTestCase
      */
     public function testGetTagLinkSeoOn()
     {
-        modConfig::getInstance()->setConfigParam('blSeoMode', true);
+        $this->getConfig()->setConfigParam('blSeoMode', true);
 
         $oTag = new oxTag();
 
 
         $oTag->set("zauber");
-        $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sShopURL") . "tag/zauber/", $oTag->getLink());
+        $this->assertEquals($this->getConfig()->getConfigParam("sShopURL") . "tag/zauber/", $oTag->getLink());
 
         $oTag->set("testTag");
-        $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sShopURL") . "tag/testtag/", $oTag->getLink());
+        $this->assertEquals($this->getConfig()->getConfigParam("sShopURL") . "tag/testtag/", $oTag->getLink());
     }
 
     /**
@@ -154,12 +154,12 @@ class Unit_Core_oxtagTest extends OxidTestCase
      */
     public function testGetTagLinkSeoOff()
     {
-        modConfig::getInstance()->setConfigParam('blSeoMode', false);
+        $this->getConfig()->setConfigParam('blSeoMode', false);
 
         $oTag = new oxTag();
 
         $oTag->set("testTag");
-        $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sShopURL") . "index.php?cl=tag&amp;searchtag=testtag&amp;lang=0", $oTag->getLink());
+        $this->assertEquals($this->getConfig()->getConfigParam("sShopURL") . "index.php?cl=tag&amp;searchtag=testtag&amp;lang=0", $oTag->getLink());
     }
 
     /**

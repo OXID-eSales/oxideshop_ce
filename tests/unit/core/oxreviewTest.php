@@ -182,12 +182,12 @@ class Unit_Core_oxreviewTest extends OxidTestCase
         $oRev->save();
 
         // moderation is OFF
-        modConfig::getInstance()->setConfigParam('blGBModerate', 0);
+        $this->getConfig()->setConfigParam('blGBModerate', 0);
         $oRev = new oxreview();
         $this->assertEquals(2, $oRev->loadList('oxarticle', 'xxx')->count());
 
         // moderation is ON
-        modConfig::getInstance()->setConfigParam('blGBModerate', 1);
+        $this->getConfig()->setConfigParam('blGBModerate', 1);
         $this->assertEquals(1, $oRev->loadList('oxarticle', 'xxx')->count());
     }
 

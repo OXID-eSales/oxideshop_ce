@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -65,13 +65,13 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
 
         // assigning article to category
         $oO2Group = oxNew('oxobject2category');
-        $oO2Group->oxobject2category__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
+        $oO2Group->oxobject2category__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
         $oO2Group->oxobject2category__oxobjectid = new oxField($this->oArticle->getId(), oxField::T_RAW);
         $oO2Group->oxobject2category__oxcatnid = new oxField($this->oCategory->getId(), oxField::T_RAW);
         $oO2Group->save();
 
-        $this->dDefaultVAT = oxRegistry::getConfig()->getConfigParam('dDefaultVAT');
-        oxRegistry::getConfig()->setConfigParam('dDefaultVAT', '99');
+        $this->dDefaultVAT = $this->getConfig()->getConfigParam('dDefaultVAT');
+        $this->getConfig()->setConfigParam('dDefaultVAT', '99');
     }
 
     /**
@@ -117,7 +117,7 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
             // expected here
         }
 
-        $aHome = oxRegistry::getConfig()->getConfigParam('aHomeCountry');
+        $aHome = $this->getConfig()->getConfigParam('aHomeCountry');
         $oUser->oxuser__oxcountryid = new oxField($aHome[0], oxField::T_RAW);
         $this->assertFalse($oVatSelector->getUserVat($oUser, true));
 
@@ -271,7 +271,7 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
         $oUser->expects($this->exactly(1))->method("getSelectedAddressId")->will($this->returnValue('_testAddress'));
 
         //the option is ON
-        modConfig::getInstance()->setConfigParam("blShippingCountryVat", true);
+        $this->getConfig()->setConfigParam("blShippingCountryVat", true);
 
         $oVatSelector = $this->getProxyClass("oxVatSelector");
         $this->assertEquals($sSwitzerlandId, $oVatSelector->UNITgetVatCountry($oUser));
@@ -301,7 +301,7 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
         $oUser->expects($this->exactly(1))->method("getSelectedAddressId")->will($this->returnValue(null));
 
         //the option is ON
-        modConfig::getInstance()->setConfigParam("blShippingCountryVat", true);
+        $this->getConfig()->setConfigParam("blShippingCountryVat", true);
 
         $oVatSelector = $this->getProxyClass("oxVatSelector");
         $this->assertEquals($sGermanyId, $oVatSelector->UNITgetVatCountry($oUser));
@@ -331,7 +331,7 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
         $oUser->expects($this->never())->method("getSelectedAddressId");
 
         //the option is ON
-        modConfig::getInstance()->setConfigParam("blShippingCountryVat", false);
+        $this->getConfig()->setConfigParam("blShippingCountryVat", false);
 
         $oVatSelector = $this->getProxyClass("oxVatSelector");
         $this->assertEquals($sGermanyId, $oVatSelector->UNITgetVatCountry($oUser));

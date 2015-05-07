@@ -73,7 +73,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testValidateBasketAmountallowUneven()
     {
-        modConfig::getInstance()->setConfigParam('blAllowUnevenAmounts', true);
+        $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $this->assertEquals($this->_oValidator->validateBasketAmount('1.6'), 1.6);
     }
 
@@ -86,7 +86,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testValidateBasketAmountBadInput()
     {
         $iStat = 0;
-        modConfig::getInstance()->setConfigParam('blAllowUnevenAmounts', false);
+        $this->getConfig()->setConfigParam('blAllowUnevenAmounts', false);
         try {
             $this->_oValidator->validateBasketAmount(-1);
         } catch (oxArticleInputException $e) {
@@ -509,7 +509,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                                  'oxaddress__oxcountryid'
         );
 
-        modConfig::getInstance()->setConfigParam('aMustFillFields', $aMustFillFields);
+        $this->getConfig()->setConfigParam('aMustFillFields', $aMustFillFields);
 
         $aInvAdress = array();
         $aDelAdress = array();
@@ -549,7 +549,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     {
         $aMustFillFields = array('oxuser__oxfname', 'oxuser__oxbirthdate', 'oxaddress__oxlname');
 
-        modConfig::getInstance()->setConfigParam('aMustFillFields', $aMustFillFields);
+        $this->getConfig()->setConfigParam('aMustFillFields', $aMustFillFields);
 
         $aInvAdress = array('oxuser__oxfname' => 'xxx', 'oxuser__oxbirthdate' => array('year' => '123'));
         $aDelAdress = array('oxaddress__oxlname' => 'yyy');

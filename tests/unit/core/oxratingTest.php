@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -32,7 +32,7 @@ class Unit_Core_oxratingTest extends OxidTestCase
     {
         parent::setUp();
         $oDB = oxDb::getDb();
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $sDate = date('Y-m-d', oxRegistry::get("oxUtilsDate")->getTime() - 5 * 24 * 60 * 60);
         $sInsert = "INSERT INTO `oxratings` (`OXID` ,`OXSHOPID` ,`OXUSERID` ,`OXOBJECTID` ,`OXRATING` ,`OXTIMESTAMP` ,
                     `OXTYPE`) VALUES ('test', '" . $myConfig->getShopId() . "', 'oxdefaultadmin', '1651', '5', '$sDate', 'oxarticle')";
@@ -47,7 +47,7 @@ class Unit_Core_oxratingTest extends OxidTestCase
     protected function tearDown()
     {
         $oDB = oxDb::getDb();
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $sInsert = "DELETE from `oxratings` where OXID='test'";
         $oDB->Execute($sInsert);
 
@@ -57,7 +57,7 @@ class Unit_Core_oxratingTest extends OxidTestCase
     public function testAllowRating()
     {
         $oRating = oxNew('oxrating');
-        modConfig::getInstance()->setConfigParam('iRatingLogsTimeout', 0);
+        $this->getConfig()->setConfigParam('iRatingLogsTimeout', 0);
 
         $this->assertFalse($oRating->allowRating('oxdefaultadmin', 'oxarticle', '1651'));
         $this->assertTrue($oRating->allowRating('test', 'oxarticle', '1651'));
@@ -66,7 +66,7 @@ class Unit_Core_oxratingTest extends OxidTestCase
     public function testAllowRatingIfTimeout()
     {
         $oRating = oxNew('oxrating');
-        modConfig::getInstance()->setConfigParam('iRatingLogsTimeout', 1);
+        $this->getConfig()->setConfigParam('iRatingLogsTimeout', 1);
         $this->assertTrue($oRating->allowRating('oxdefaultadmin', 'oxarticle', '1651'));
     }
 

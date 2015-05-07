@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -191,7 +191,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
     public function testGetTplNameSetInRequest()
     {
-        modConfig::setRequestParameter('tpl', 'getTemplateName');
+        $this->setRequestParameter('tpl', 'getTemplateName');
 
         $oEmos = new oxEmosAdapter();
         $this->assertEquals('getTemplateName', $oEmos->UNITgetTplName());
@@ -260,7 +260,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('option', '1');
+        $this->setRequestParameter('option', '1');
 
         $oFormatter = $this->getMock('EMOS', array('addContent', 'addOrderProcess'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Shop/Kaufprozess/Kundendaten/OhneReg'));
@@ -277,7 +277,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('option', '2');
+        $this->setRequestParameter('option', '2');
 
         $oFormatter = $this->getMock('EMOS', array('addContent', 'addOrderProcess'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Shop/Kaufprozess/Kundendaten/BereitsKunde'));
@@ -294,7 +294,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('option', '3');
+        $this->setRequestParameter('option', '3');
 
         $oFormatter = $this->getMock('EMOS', array('addContent', 'addOrderProcess'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Shop/Kaufprozess/Kundendaten/NeuesKonto'));
@@ -326,8 +326,8 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('new_user', 1);
-        modConfig::setRequestParameter('success', 1);
+        $this->setRequestParameter('new_user', 1);
+        $this->setRequestParameter('success', 1);
         modSession::getInstance()->setVar('usr', 'oxdefaultadmin');
 
         $oFormatter = $this->getMock('EMOS', array('addContent', 'addOrderProcess', 'addRegister'));
@@ -346,8 +346,8 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('new_user', 1);
-        modConfig::setRequestParameter('newslettererror', -1);
+        $this->setRequestParameter('new_user', 1);
+        $this->setRequestParameter('newslettererror', -1);
 
         $oFormatter = $this->getMock('EMOS', array('addContent', 'addOrderProcess', 'addRegister'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Shop/Kaufprozess/Zahlungsoptionen'));
@@ -380,7 +380,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::getInstance()->setConfigParam('blPerfNoBasketSaving', true);
+        $this->getConfig()->setConfigParam('blPerfNoBasketSaving', true);
         modSession::getInstance()->setVar('usr', 'oxdefaultadmin');
 
         $oEmosItem = new EMOS_Item();
@@ -515,7 +515,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oMock->expects($this->any())->method('getArticleCount')->will($this->returnValue(100));
         $oSmarty->_tpl_vars['oView'] = $oMock;
 
-        modConfig::setRequestParameter('searchparam', 'searchParam');
+        $this->setRequestParameter('searchparam', 'searchParam');
 
         $oFormatter = $this->getMock('EMOS', array('addContent', 'addSearch'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Shop/Suche'));
@@ -688,7 +688,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('tpl', 'impressum.tpl');
+        $this->setRequestParameter('tpl', 'impressum.tpl');
 
         $oFormatter = $this->getMock('EMOS', array('addContent'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Info/Impressum'));
@@ -704,7 +704,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('tpl', 'agb.tpl');
+        $this->setRequestParameter('tpl', 'agb.tpl');
 
         $oFormatter = $this->getMock('EMOS', array('addContent'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Info/AGB'));
@@ -720,7 +720,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('tpl', 'order_info.tpl');
+        $this->setRequestParameter('tpl', 'order_info.tpl');
 
         $oFormatter = $this->getMock('EMOS', array('addContent'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Info/Bestellinfo'));
@@ -736,7 +736,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('tpl', 'delivery_info.tpl');
+        $this->setRequestParameter('tpl', 'delivery_info.tpl');
 
         $oFormatter = $this->getMock('EMOS', array('addContent'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Info/Versandinfo'));
@@ -752,7 +752,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('tpl', 'security_info.tpl');
+        $this->setRequestParameter('tpl', 'security_info.tpl');
 
         $oFormatter = $this->getMock('EMOS', array('addContent'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Info/Sicherheit'));
@@ -768,7 +768,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('tpl', 'default.tpl');
+        $this->setRequestParameter('tpl', 'default.tpl');
 
         $oFormatter = $this->getMock('EMOS', array('addContent'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Content/default'));
@@ -1091,7 +1091,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('newslettererror', -1);
+        $this->setRequestParameter('newslettererror', -1);
 
         $oFormatter = $this->getMock('EMOS', array('addContent', 'addRegister'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Service/Register'));
@@ -1108,7 +1108,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('success', 1);
+        $this->setRequestParameter('success', 1);
         modSession::getInstance()->setVar('usr', 'oxdefaultadmin');
 
         $oFormatter = $this->getMock('EMOS', array('addContent', 'addRegister'));
@@ -1126,7 +1126,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('lgn_usr', 'userlogin');
+        $this->setRequestParameter('lgn_usr', 'userlogin');
 
         $oFormatter = $this->getMock('EMOS', array('addLogin'));
         $oFormatter->expects($this->once())->method('addLogin')->with($this->equalTo('userlogin'), $this->equalTo(1));
@@ -1179,7 +1179,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modConfig::setRequestParameter('tpl', 'default.tpl');
+        $this->setRequestParameter('tpl', 'default.tpl');
 
         $oFormatter = $this->getMock('EMOS', array('addContent'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Content/default'));
@@ -1193,7 +1193,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
     public function testGetScriptPath()
     {
         $oEmos = new oxEmosAdapter();
-        $this->assertEquals(modConfig::getInstance()->getShopUrl() . 'modules/econda/out/', $oEmos->UNITgetScriptPath());
+        $this->assertEquals($this->getConfig()->getShopUrl() . 'modules/econda/out/', $oEmos->UNITgetScriptPath());
     }
 
     public function testGetCodeForToBasket()

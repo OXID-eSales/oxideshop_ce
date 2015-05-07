@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Core_oxrecommlistTest extends OxidTestCase
     {
         parent::setUp();
         $myDB = oxDb::getDB();
-        $sShopId = oxRegistry::getConfig()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
         // adding article to recommendlist
         $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "' . $sShopId . '" ) ';
         $myDB->Execute($sQ);
@@ -85,14 +85,14 @@ class Unit_Core_oxrecommlistTest extends OxidTestCase
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return false; }');
         $oRecomm = new oxRecommList();
         $oRecomm->setId('testrecommid');
-        $this->assertEquals(oxRegistry::getConfig()->getShopHomeUrl() . "cl=recommlist&amp;recommid=testrecommid", $oRecomm->getBaseStdLink(1));
+        $this->assertEquals($this->getConfig()->getShopHomeUrl() . "cl=recommlist&amp;recommid=testrecommid", $oRecomm->getBaseStdLink(1));
     }
 
     public function testGetStdLink()
     {
         $oRecomm = new oxRecommList();
         $oRecomm->setId("testId");
-        $this->assertEquals(oxRegistry::getConfig()->getShopHomeUrl() . "cl=recommlist&amp;recommid=testId&amp;param1=value1", $oRecomm->getStdLink(null, array('param1' => 'value1')));
+        $this->assertEquals($this->getConfig()->getShopHomeUrl() . "cl=recommlist&amp;recommid=testId&amp;param1=value1", $oRecomm->getStdLink(null, array('param1' => 'value1')));
     }
 
     /**
@@ -239,10 +239,10 @@ class Unit_Core_oxrecommlistTest extends OxidTestCase
             array('testlist1' => $aArticles[1], 'testlist2' => $aArticles[0], 'testlist3' => $aArticles[3]),
         );
 
-        modConfig::getInstance()->setConfigParam('iNrofCrossellArticles', 3);
+        $this->getConfig()->setConfigParam('iNrofCrossellArticles', 3);
         $myDB = oxDb::getDB();
-        $myDB->Execute('insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist1", "oxdefaultadmin", "oxtest", "oxtest", "' . oxRegistry::getConfig()->getShopId() . '" ) ');
-        $myDB->Execute('insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist3", "oxdefaultadmin", "oxtest", "oxtest", "' . oxRegistry::getConfig()->getShopId() . '" ) ');
+        $myDB->Execute('insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist1", "oxdefaultadmin", "oxtest", "oxtest", "' . $this->getConfig()->getShopId() . '" ) ');
+        $myDB->Execute('insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist3", "oxdefaultadmin", "oxtest", "oxtest", "' . $this->getConfig()->getShopId() . '" ) ');
 
         $myDB->Execute('insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testid1", "' . $aArticles[1] . '", "testlist1", "test" ) ');
         $myDB->Execute('insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testid2", "' . $aArticles[0] . '", "testlist1", "test" ) ');
@@ -376,10 +376,10 @@ class Unit_Core_oxrecommlistTest extends OxidTestCase
         $oRecomm->load('testlist');
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-        $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sShopURL") . 'Empfehlungslisten/oxtest/', $oRecomm->getLink());
+        $this->assertEquals($this->getConfig()->getConfigParam("sShopURL") . 'Empfehlungslisten/oxtest/', $oRecomm->getLink());
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
-        $this->assertEquals(oxRegistry::getConfig()->getShopHomeUrl() . 'cl=recommlist&amp;recommid=testlist', $oRecomm->getLink());
+        $this->assertEquals($this->getConfig()->getShopHomeUrl() . 'cl=recommlist&amp;recommid=testlist', $oRecomm->getLink());
     }
 
     public function testSetArticlesFilter()

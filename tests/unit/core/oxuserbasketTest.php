@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -252,7 +252,7 @@ class Unit_Core_oxuserbasketTest extends OxidTestCase
 
     public function testCreateItem()
     {
-        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', true);
+        $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', true);
 
         $sArtId = "2000";
 
@@ -268,7 +268,7 @@ class Unit_Core_oxuserbasketTest extends OxidTestCase
 
     public function testCreateItemWithSellist()
     {
-        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', true);
+        $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', true);
 
         $sArtId = "2000";
 

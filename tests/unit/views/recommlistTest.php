@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
     {
         parent::setUp();
         $myDB = oxDb::getDB();
-        $sShopId = oxRegistry::getConfig()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
         // adding article to recommendlist
         $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "' . $sShopId . '" ) ';
         $myDB->Execute($sQ);
@@ -44,7 +44,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testlist", "' . $this->sArticleID . '", "testlist", "test" ) ';
         $myDB->Execute($sQ);
 
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
     }
 
@@ -88,7 +88,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
      */
     public function testGetNavigationParams()
     {
-        modConfig::setRequestParameter("recommid", "paramValue");
+        $this->setRequestParameter("recommid", "paramValue");
 
         $oView = new RecommList();
         $aParams = $oView->getNavigationParams();
@@ -103,7 +103,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
      */
     public function testSaveReviewNoSessionUser()
     {
-        modConfig::setRequestParameter("recommlistrating", 3);
+        $this->setRequestParameter("recommlistrating", 3);
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
@@ -129,8 +129,8 @@ class Unit_Views_recommlistTest extends OxidTestCase
      */
     public function testSaveReview()
     {
-        modConfig::setRequestParameter("recommlistrating", 3);
-        modConfig::setRequestParameter("rvw_txt", "testRecommId");
+        $this->setRequestParameter("recommlistrating", 3);
+        $this->setRequestParameter("rvw_txt", "testRecommId");
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
@@ -218,7 +218,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
 
     public function testGetAddSeoUrlParams()
     {
-        modConfig::setRequestParameter("searchrecomm", "testSearchRecommParam");
+        $this->setRequestParameter("searchrecomm", "testSearchRecommParam");
 
         $oListView = new aList();
         $sTestParams = $oListView->getAddSeoUrlParams();
@@ -237,7 +237,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
         $aPath[0]->setLink(false);
         $aPath[0]->oxcategories__oxtitle = new oxField($oLang->translateString('RECOMMLIST'));
 
-        $sUrl = oxRegistry::getConfig()->getShopHomeURL() . "cl=recommlist&amp;searchrecomm=" . rawurlencode($sSearchparam);
+        $sUrl = $this->getConfig()->getShopHomeURL() . "cl=recommlist&amp;searchrecomm=" . rawurlencode($sSearchparam);
         $sTitle = $oLang->translateString('RECOMMLIST_SEARCH') . ' "' . $sSearchparam . '"';
 
         $aPath[1] = oxNew("oxcategory");
@@ -255,7 +255,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
      */
     public function testGetActiveRecommList()
     {
-        modConfig::setRequestParameter('recommid', 'testlist');
+        $this->setRequestParameter('recommid', 'testlist');
         $oRecomm = new RecommList();
         $oRecommList = $oRecomm->getActiveRecommList();
         $this->assertEquals('testlist', $oRecommList->getId());
@@ -263,7 +263,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
 
     public function testGetArticleList()
     {
-        modConfig::setRequestParameter('recommid', 'testlist');
+        $this->setRequestParameter('recommid', 'testlist');
         $oRecomm = $this->getProxyClass("recommlist");
         $oRecommtList = new oxRecommList();
         $oRecommtList->load('testlist');
@@ -366,21 +366,21 @@ class Unit_Views_recommlistTest extends OxidTestCase
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testlist3", "2000", "testlist2", "test" ) ';
         $myDB->Execute($sQ);
         $oRecomm = new RecommList();
-        modConfig::setRequestParameter('searchrecomm', 'test');
+        $this->setRequestParameter('searchrecomm', 'test');
         $aLists = $oRecomm->getRecommLists('test');
         $this->assertEquals(2, count($aLists));
     }
 
     public function testGetRecommSearch()
     {
-        modConfig::setRequestParameter('searchrecomm', 'test');
+        $this->setRequestParameter('searchrecomm', 'test');
         $oRecomm = new RecommList();
         $this->assertEquals('test', $oRecomm->getRecommSearch());
     }
 
     public function testGetRecommSearchSpecialChar()
     {
-        modConfig::setRequestParameter('searchrecomm', 'test"');
+        $this->setRequestParameter('searchrecomm', 'test"');
         $oRecomm = new RecommList();
         $this->assertEquals('test&quot;', $oRecomm->getRecommSearch());
     }
@@ -388,7 +388,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
     // #M43
     public function testGetRecommSearchForTwoWords()
     {
-        modConfig::setRequestParameter('searchrecomm', 'test search');
+        $this->setRequestParameter('searchrecomm', 'test search');
         $oRecomm = new RecommList();
         $this->assertEquals('test search', $oRecomm->getRecommSearch());
     }
@@ -417,7 +417,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
 
     public function testGetSearchForHtml()
     {
-        modConfig::setRequestParameter('searchrecomm', 'aaa');
+        $this->setRequestParameter('searchrecomm', 'aaa');
         $oRecomm = new RecommList();
         $this->assertEquals('aaa', $oRecomm->getSearchForHtml());
     }
@@ -433,7 +433,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
 
     public function testGetLinkActiveRecommListAvailable()
     {
-        modConfig::setRequestParameter('searchrecomm', 'aaa');
+        $this->setRequestParameter('searchrecomm', 'aaa');
 
         $oRecList = $this->getMock("oxrecommlist", array("getLink"));
         $oRecList->expects($this->once())->method('getLink')->will($this->returnValue("testRecommListUrl"));
@@ -447,7 +447,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
     public function testGetLinkActiveRecommListUnAvailable()
     {
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
-        modConfig::setRequestParameter('searchrecomm', 'aaa');
+        $this->setRequestParameter('searchrecomm', 'aaa');
 
         $oRecomm = $this->getMock("RecommList", array("getActiveRecommList"));
         $oRecomm->expects($this->atLeastOnce())->method('getActiveRecommList')->will($this->returnValue(false));

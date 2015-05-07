@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -127,7 +127,7 @@ class Unit_Admin_CategoryOrderAjaxTest extends OxidTestCase
         $sSynchoxid = '_testSynchoxid';
         $aOxid = array('_testOxid1', '_testOxid2');
         $this->setSessionParam("neworder_sess", $aOxid);
-        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
         $sO2CView = $this->getObject2CategoryViewTable();
         $sArticleTable = $this->getArticleViewTable();
 
@@ -146,7 +146,7 @@ class Unit_Admin_CategoryOrderAjaxTest extends OxidTestCase
     public function testGetSorting()
     {
         $sSynchoxid = '_testSynchoxid';
-        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
         $oView = oxNew('category_order_ajax');
         $this->assertEquals("order by _0 asc", trim($oView->UNITgetSorting()));
     }
@@ -173,7 +173,7 @@ class Unit_Admin_CategoryOrderAjaxTest extends OxidTestCase
     public function testSaveNewOrder()
     {
         $sOxid = '_testCategory';
-        $this->setRequestParam("oxid", $sOxid);
+        $this->setRequestParameter("oxid", $sOxid);
         $aOxid = array('_testOxid1', '_testOxid2');
         $this->setSessionParam("neworder_sess", $aOxid);
         $this->assertEquals(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid1'"));
@@ -195,7 +195,7 @@ class Unit_Admin_CategoryOrderAjaxTest extends OxidTestCase
     {
         $oDb = oxDb::getDb();
         $sOxid = '_testCategory';
-        $this->setRequestParam("oxid", $sOxid);
+        $this->setRequestParameter("oxid", $sOxid);
         $aOxid = array('_testOxid1', '_testOxid2');
         $this->setSessionParam("neworder_sess", $aOxid);
         // updating oxtime values

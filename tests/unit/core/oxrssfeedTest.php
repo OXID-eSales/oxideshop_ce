@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -104,10 +104,10 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         oxTestModules::publicize('oxrssfeed', '_getCacheId');
         $oRss = oxNew('oxrssfeed');
 
-        $this->assertEquals('asd_' . oxRegistry::getConfig()->getShopId() . '_4_0', $oRss->p_getCacheId('asd'));
+        $this->assertEquals('asd_' . $this->getConfig()->getShopId() . '_4_0', $oRss->p_getCacheId('asd'));
 
-        modConfig::setRequestParameter('currency', 1);
-        $this->assertEquals('asd_' . oxRegistry::getConfig()->getShopId() . '_4_1', $oRss->p_getCacheId('asd'));
+        $this->setRequestParameter('currency', 1);
+        $this->assertEquals('asd_' . $this->getConfig()->getShopId() . '_4_1', $oRss->p_getCacheId('asd'));
     }
 
     public function testLoadFromCache()
@@ -180,7 +180,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
     public function testGetArticleItems()
     {
         oxTestModules::addFunction('oxutilsurl', 'prepareUrlForNoSession', '{return $aA[0]."extra";}');
-        modConfig::getInstance()->setConfigParam("bl_perfParseLongDescinSmarty", false);
+        $this->getConfig()->setConfigParam("bl_perfParseLongDescinSmarty", false);
 
         $oCfg = $this->getMock('oxconfig', array('getActShopCurrencyObject'));
         $oActCur = new stdClass();
@@ -236,7 +236,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
     public function testGetArticleItemsDescriptionParsedWithSmarty()
     {
         oxTestModules::addFunction('oxutilsurl', 'prepareUrlForNoSession', '{return $aA[0]."extra";}');
-        modConfig::getInstance()->setConfigParam("bl_perfParseLongDescinSmarty", true);
+        $this->getConfig()->setConfigParam("bl_perfParseLongDescinSmarty", true);
 
         $oCfg = $this->getMock('oxconfig', array('getActShopCurrencyObject'));
         $oActCur = new stdClass();
@@ -292,7 +292,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
     public function testGetArticleItemsWithNoArticlePrice()
     {
         oxTestModules::addFunction('oxutilsurl', 'prepareUrlForNoSession', '{return $aA[0]."extra";}');
-        modConfig::getInstance()->setConfigParam("bl_perfParseLongDescinSmarty", false);
+        $this->getConfig()->setConfigParam("bl_perfParseLongDescinSmarty", false);
 
         $oActCur = new stdClass();
         $oActCur->decimal = 1;
@@ -352,7 +352,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
     public function testGetArticleItemsDiffCurrency()
     {
         oxTestModules::addFunction('oxutilsurl', 'prepareUrlForNoSession', '{return $aA[0]."extra";}');
-        modConfig::getInstance()->setConfigParam("bl_perfParseLongDescinSmarty", false);
+        $this->getConfig()->setConfigParam("bl_perfParseLongDescinSmarty", false);
 
         $oActCur = new stdClass();
         $oActCur->decimal = 1.47;
@@ -642,7 +642,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         oxTestModules::addFunction('oxrssfeed', 'getNewestArticlesUrl', '{ return "surl"; }');
         oxTestModules::addFunction('oxrssfeed', 'getNewestArticlesTitle', '{ return "dastitle"; }');
 
-        modConfig::getInstance()->setConfigParam('iRssItemsCount', 50);
+        $this->getConfig()->setConfigParam('iRssItemsCount', 50);
         oxTestModules::addFunction('oxarticlelist', 'loadNewestArticles', '{ $this->load = "loaded".$aA[0]; }');
         oxTestModules::addFunction('oxrssfeed', '_getArticleItems', '{ return $aA[0]->load; }');
 
@@ -717,7 +717,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oRss->loadCategoryArticles($oCat);
         $this->assertEquals(array('RSS_CatArtsajai'), $oRss->getChannel());
 
-        modConfig::getInstance()->setConfigParam('iRssItemsCount', 50);
+        $this->getConfig()->setConfigParam('iRssItemsCount', 50);
 
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
@@ -844,7 +844,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oRss = oxNew('oxrssfeed');
         $oRss->setConfig($oCfg);
 
-        modConfig::getInstance()->setConfigParam('iRssItemsCount', 50);
+        $this->getConfig()->setConfigParam('iRssItemsCount', 50);
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
 
@@ -884,7 +884,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         );
 
         $this->assertEquals($aChannel, $oRss->getChannel());
-        $this->assertEquals(50, modConfig::getInstance()->getConfigParam('iNrofCatArticles'));
+        $this->assertEquals(50, $this->getConfig()->getConfigParam('iNrofCatArticles'));
     }
 
     public function testGetRecommListItems()
@@ -947,7 +947,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oLang->setBaseLanguage(1);
         oxRegistry::set('oxLang', $oLang);
 
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', false);
         $oConfig->setConfigParam('sShopURL', 'http://myshop/');
 
@@ -969,7 +969,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oLang->setBaseLanguage(1);
         oxRegistry::set('oxLang', $oLang);
 
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', true);
         $oConfig->setConfigParam('sShopURL', 'http://myshop/');
 
@@ -996,7 +996,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oRss->loadRecommLists($oArt);
         $this->assertEquals(array('RSS_ARTRECOMMLISTSajai'), $oRss->getChannel());
 
-        modConfig::getInstance()->setConfigParam('iRssItemsCount', 50);
+        $this->getConfig()->setConfigParam('iRssItemsCount', 50);
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
 
@@ -1041,7 +1041,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $this->assertEquals(array('RSS_ARTRECOMMLISTSajai'), $oRss->getChannel());
 
 
-        modConfig::getInstance()->setConfigParam('iRssItemsCount', 50);
+        $this->getConfig()->setConfigParam('iRssItemsCount', 50);
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
 
@@ -1094,7 +1094,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oLang->setBaseLanguage(1);
         oxRegistry::set('oxLang', $oLang);
 
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', false);
         $oConfig->setConfigParam('sShopURL', 'http://myshop/');
 
@@ -1117,7 +1117,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oLang->setBaseLanguage(1);
         oxRegistry::set('oxLang', $oLang);
 
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', true);
         $oConfig->setConfigParam('sShopURL', 'http://myshop/');
 
@@ -1144,7 +1144,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oRss->loadRecommListArticles($oRecommList);
         $this->assertEquals(array('RSS_RECOMMLISTARTSajai'), $oRss->getChannel());
 
-        modConfig::getInstance()->setConfigParam('iRssItemsCount', 50);
+        $this->getConfig()->setConfigParam('iRssItemsCount', 50);
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
 

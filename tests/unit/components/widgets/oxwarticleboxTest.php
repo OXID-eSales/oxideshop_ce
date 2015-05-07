@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -130,7 +130,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         $sLinkUrl .= "?listtype=search&amp;searchparam=1126";
 
 
-        $this->setRequestParam("searchparam", "1126");
+        $this->setRequestParameter("searchparam", "1126");
         // removing cached object
         $oArticleBox->setProduct(null);
         $this->assertEquals($sLinkUrl, $oArticleBox->getProduct()->getMainLink(), "Correct product link with additional search parameters should be loaded");
@@ -144,7 +144,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         $oView = new aList();
         $oView->setClassName("alist");
 
-        oxRegistry::getConfig()->setActiveView($oView);
+        $this->getConfig()->setActiveView($oView);
 
         $oArticleBox = new oxwArticleBox();
         $aViewParams = array(

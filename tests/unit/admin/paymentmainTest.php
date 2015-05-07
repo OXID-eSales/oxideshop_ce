@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Payment_Main();
@@ -50,7 +50,7 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new payment_main();
@@ -69,7 +69,7 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
     {
         // testing..
         oxTestModules::addFunction('oxpayment', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
+        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
@@ -92,7 +92,7 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
     {
         // testing..
         oxTestModules::addFunction('oxpayment', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
+        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
@@ -115,8 +115,8 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxpayment', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ return array( "testField1", "testField2"); }');
-        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
-        modConfig::setRequestParameter("aFields", array("testField2"));
+        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
+        $this->setRequestParameter("aFields", array("testField2"));
 
         // testing..
         $oView = $this->getMock("Payment_Main", array("save"));
@@ -133,8 +133,8 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxpayment', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ return array( "testField1", "testField2"); }');
-        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
-        modConfig::setRequestParameter("aFields", array("testField2"));
+        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
+        $this->setRequestParameter("aFields", array("testField2"));
 
         // testing..
         $oView = $this->getMock("Payment_Main", array("save"));

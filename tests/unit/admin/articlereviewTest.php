@@ -66,8 +66,8 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", $this->sTestId);
-        modConfig::setRequestParameter("rev_oxid", "_test_i1");
+        $this->setRequestParameter("oxid", $this->sTestId);
+        $this->setRequestParameter("rev_oxid", "_test_i1");
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
@@ -99,9 +99,9 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
 
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxreviews where oxid = '_testReviewId'"));
 
-        modConfig::setRequestParameter("rev_oxid", "_testReviewId");
-        modConfig::setRequestParameter("editval", array('oxreviews__oxtext' => 6, 'oxreviews__oxrating' => 6));
-        modConfig::getInstance()->setConfigParam("blGBModerate", "_testReviewId");
+        $this->setRequestParameter("rev_oxid", "_testReviewId");
+        $this->setRequestParameter("editval", array('oxreviews__oxtext' => 6, 'oxreviews__oxrating' => 6));
+        $this->getConfig()->setConfigParam("blGBModerate", "_testReviewId");
 
         $oView = $this->getMock("Article_Review", array("resetContentCache"));
         $oView->expects($this->once())->method('resetContentCache');
@@ -127,7 +127,7 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
         $oDb = oxDb::getDb();
 
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxreviews where oxid = 'testReviewId'"));
-        modConfig::setRequestParameter("rev_oxid", "testReviewId");
+        $this->setRequestParameter("rev_oxid", "testReviewId");
 
         $oView = $this->getMock("Article_Review", array("resetContentCache"));
         $oView->expects($this->once())->method('resetContentCache');
@@ -148,9 +148,9 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
         $o = oxNew('article_review');
         $oA = new oxArticle();
         $oA->load($this->sTestId);
-        modConfig::getInstance()->setConfigParam('blShowVariantReviews', false);
+        $this->getConfig()->setConfigParam('blShowVariantReviews', false);
         $this->assertEquals(1, count($o->p_getReviewList($oA)));
-        modConfig::getInstance()->setConfigParam('blShowVariantReviews', true);
+        $this->getConfig()->setConfigParam('blShowVariantReviews', true);
         $this->assertEquals(2, count($o->p_getReviewList($oA)));
     }
 }

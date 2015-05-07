@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -133,7 +133,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
         $oWrapping->oxwrapping__oxactive_1 = new oxField(1);
         $oWrapping->save();
 
-        $this->_dDefaultVAT = oxRegistry::getConfig()->getConfigParam('dDefaultVAT');
+        $this->_dDefaultVAT = $this->getConfig()->getConfigParam('dDefaultVAT');
     }
 
     /**
@@ -143,8 +143,8 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $myConfig = oxRegistry::getConfig();
-        modConfig::getInstance()->setConfigParam('blEnterNetPrice', false);
+        $myConfig = $this->getConfig();
+        $this->getConfig()->setConfigParam('blEnterNetPrice', false);
 
         // card
         $oCard = oxNew('oxwrapping');
@@ -246,7 +246,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
 
     public function testGetWrapPriceVatOnTop()
     {
-        modConfig::getInstance()->setConfigParam('blWrappingVatOnTop', true);
+        $this->getConfig()->setConfigParam('blWrappingVatOnTop', true);
         $oWrap = oxNew('oxwrapping');
         if (!$oWrap->Load($this->_sWrapOxid)) {
             $this->fail('can not load wrapping');
@@ -255,7 +255,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
         $oWrap->setWrappingVat($this->_dDefaultVAT);
         $oWrapPrice = $oWrap->getWrappingPrice(2);
 
-        $dVat = 1 + oxRegistry::getConfig()->getConfigParam('dDefaultVAT') / 100;
+        $dVat = 1 + $this->getConfig()->getConfigParam('dDefaultVAT') / 100;
         $this->assertEquals(5.9 * $dVat, $oWrapPrice->getBruttoPrice(), '', 2);
         $this->assertEquals(5.9, $oWrapPrice->getNettoPrice());
         $this->assertEquals('7,02', oxRegistry::getLang()->formatCurrency($oWrapPrice->getBruttoPrice()));
@@ -283,7 +283,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
     public function testCalcFPriceInEUR()
     {
         $myUtils = oxRegistry::getUtils();
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $iTempCur = $myConfig->getActShopCurrencyObject()->id;
 
@@ -302,7 +302,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
 
     public function testCalcFPriceInGBP()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         // setting active currency to GBP
         $myConfig->setActShopCurrency(1);
@@ -318,7 +318,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
 
     public function testCalcFPriceInCHF()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $myUtils = oxRegistry::getUtils();
 
         $iTempCur = $myConfig->getActShopCurrencyObject()->id;
@@ -401,7 +401,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
         $this->assertNull($oWrap->getPictureUrl());
 
         $oWrap->load("a6840cc0ec80b3991.74884864");
-        $this->assertEquals(modConfig::getInstance()->getPictureUrl("master/wrapping/img_geschenkpapier_1_wp.gif", false, null, null, 1), $oWrap->getPictureUrl());
+        $this->assertEquals($this->getConfig()->getPictureUrl("master/wrapping/img_geschenkpapier_1_wp.gif", false, null, null, 1), $oWrap->getPictureUrl());
     }
 
     /**

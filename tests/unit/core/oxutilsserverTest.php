@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -30,7 +30,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxRegistry::getConfig()->setConfigParam("aTrustedIPs", array());
+        $this->getConfig()->setConfigParam("aTrustedIPs", array());
         parent::tearDown();
     }
 
@@ -147,7 +147,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
         $this->assertFalse($oUtilsServer->isTrustedClientIp());
 
         //
-        oxRegistry::getConfig()->setConfigParam("aTrustedIPs", array("xxx"));
+        $this->getConfig()->setConfigParam("aTrustedIPs", array("xxx"));
         $oUtilsServer = $this->getMock("oxUtilsServer", array("getRemoteAddress"));
         $oUtilsServer->expects($this->once())->method('getRemoteAddress')->will($this->returnValue("xxx"));
         $this->assertTrue($oUtilsServer->isTrustedClientIp());
@@ -155,8 +155,8 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
     public function testGetCookiePathWhenACookiePathsIsSetUp()
     {
-        $sShopId = oxRegistry::getConfig()->getShopId();
-        modConfig::getInstance()->setConfigParam("aCookiePaths", array($sShopId => 'somepath'));
+        $sShopId = $this->getConfig()->getShopId();
+        $this->getConfig()->setConfigParam("aCookiePaths", array($sShopId => 'somepath'));
 
         $oUtilsServer = new oxUtilsServer();
         $this->assertEquals('somepath', $oUtilsServer->UNITgetCookiePath(""));
@@ -164,8 +164,8 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
     public function testGetCookieDomainWhenACookieDomainsIsSetUp()
     {
-        $sShopId = oxRegistry::getConfig()->getShopId();
-        modConfig::getInstance()->setConfigParam("aCookieDomains", array($sShopId => 'somedomain'));
+        $sShopId = $this->getConfig()->getShopId();
+        $this->getConfig()->setConfigParam("aCookieDomains", array($sShopId => 'somedomain'));
 
         $oUtilsServer = new oxUtilsServer();
         $this->assertEquals('somedomain', $oUtilsServer->UNITgetCookieDomain(""));

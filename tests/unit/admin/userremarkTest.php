@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -34,8 +34,8 @@ class Unit_Admin_UserRemarkTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxRemark', 'load($sId)', '{$this->oxremark__oxtext = new oxField("text-$sId");$this->oxremark__oxheader = new oxField("header-$sId");}');
-        modConfig::setRequestParameter("oxid", "testId");
-        modConfig::setRequestParameter("rem_oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("rem_oxid", "testId");
 
         $oView = new user_remark();
         $this->assertEquals("user_remark.tpl", $oView->render());
@@ -57,9 +57,9 @@ class Unit_Admin_UserRemarkTest extends OxidTestCase
         oxTestModules::addFunction('oxremark', 'load', '{ return true; }');
         oxTestModules::addFunction('oxremark', 'save', '{ throw new Exception( "save" ); }');
 
-        modConfig::setRequestParameter('oxid', 'oxdefaultadmin');
-        modConfig::setRequestParameter('remarktext', 'test text');
-        modConfig::setRequestParameter('remarkheader', 'test header');
+        $this->setRequestParameter('oxid', 'oxdefaultadmin');
+        $this->setRequestParameter('remarktext', 'test text');
+        $this->setRequestParameter('remarkheader', 'test header');
 
         try {
             $oView = new user_remark();

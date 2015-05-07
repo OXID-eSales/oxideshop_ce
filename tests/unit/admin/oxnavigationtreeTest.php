@@ -39,14 +39,14 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         switch ($this->getName()) {
             case 'testCheckDynFileWrongFileContent' :
                 // creating wrong file
-                if ($rHandle = @fopen(oxRegistry::getConfig()->getConfigParam('sCompileDir') . "{$this->_sWrongDynfile}", 'w')) {
+                if ($rHandle = @fopen($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sWrongDynfile}", 'w')) {
                     fwrite($rHandle, 'some wrong content');
                     fclose($rHandle);
                 }
                 break;
             case 'testCheckDynFileFileIsValidXml' :
                 // creating valid file
-                if ($rHandle = @fopen(oxRegistry::getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}", 'w')) {
+                if ($rHandle = @fopen($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}", 'w')) {
                     fwrite($rHandle, '<?xml version="1.0" encoding="ISO-8859-15"?><OX>');
                     fclose($rHandle);
                 }
@@ -64,11 +64,11 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         // deleting test files
         switch ($this->getName()) {
             case 'testCheckDynFileWrongFileContent' :
-                @unlink(oxRegistry::getConfig()->getConfigParam('sCompileDir') . "{$this->_sWrongDynfile}");
+                @unlink($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sWrongDynfile}");
                 break;
             case 'testCheckDynFileFileIsValidXml' :
                 // creating valid file
-                @unlink(oxRegistry::getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}");
+                @unlink($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}");
                 break;
         }
         return parent::tearDown();
@@ -82,7 +82,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
     public function testAddDynLinks()
     {
         oxTestModules::addFunction("oxUtilsFile", "checkFile", "{ return true; }");
-        modConfig::getInstance()->setConfigParam('sAdminDir', "admin");
+        $this->getConfig()->setConfigParam('sAdminDir', "admin");
 
         $sXml = '<?xml version="1.0" encoding="ISO-8859-15"?>
                  <OXMENU type="dyn">
@@ -531,7 +531,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
      */
     public function testCheckDynFileFileDoesNotExist()
     {
-        $sFilePath = oxRegistry::getConfig()->getConfigParam('sCompileDir') . "xxx.file";
+        $sFilePath = $this->getConfig()->getConfigParam('sCompileDir') . "xxx.file";
         $oNavTree = new oxnavigationtree();
         $this->assertNull($oNavTree->UNITcheckDynFile($sFilePath));
 
@@ -545,7 +545,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
      */
     public function testCheckDynFileWrongFileContent()
     {
-        $sFilePath = oxRegistry::getConfig()->getConfigParam('sCompileDir') . "{$this->_sWrongDynfile}";
+        $sFilePath = $this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sWrongDynfile}";
         $oNavTree = new oxnavigationtree();
         $this->assertNull($oNavTree->UNITcheckDynFile($sFilePath));
     }
@@ -558,7 +558,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
      */
     public function testCheckDynFileFileIsValidXml()
     {
-        $sFilePath = oxRegistry::getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}";
+        $sFilePath = $this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}";
         $oNavTree = new oxnavigationtree();
         $this->assertEquals($sFilePath, $oNavTree->UNITcheckDynFile($sFilePath));
     }
@@ -772,7 +772,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
      */
     public function testGetClassIdTakesFromOriginalXml()
     {
-        modConfig::getInstance()->setConfigParam("blUseRightsRoles", true);
+        $this->getConfig()->setConfigParam("blUseRightsRoles", true);
 
         $oNavTree = $this->getMock('oxNavigationTree', array("isAdmin"));
         $oNavTree->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
@@ -800,7 +800,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
      */
     public function testGetAdminUrl1()
     {
-        modConfig::getInstance()->setConfigParam("sAdminSSLURL", "testAdminSslUrl");
+        $this->getConfig()->setConfigParam("sAdminSSLURL", "testAdminSslUrl");
 
         $oNavTree = new oxnavigationtree();
         $this->assertEquals("testAdminSslUrl/index.php?", $oNavTree->UNITgetAdminUrl());

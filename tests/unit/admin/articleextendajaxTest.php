@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -126,7 +126,7 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testOxid';
-        modConfig::setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('article_extend_ajax');
         $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxcatnid  where " . $this->getObject2CategoryViewTable() . ".oxobjectid = '$sOxid' and " . $this->getCategoriesViewTable() . ".oxid is not null", trim($oView->UNITgetQuery()));
@@ -140,7 +140,7 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testSynchoxid';
-        modConfig::setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('article_extend_ajax');
         $this->assertEquals("from " . $this->getCategoriesViewTable() . " where " . $this->getCategoriesViewTable() . ".oxid not in (  select " . $this->getCategoriesViewTable() . ".oxid from " . $this->getObject2CategoryViewTable() . " left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxcatnid  where " . $this->getObject2CategoryViewTable() . ".oxobjectid = '$sSynchoxid' and " . $this->getCategoriesViewTable() . ".oxid is not null ) and " . $this->getCategoriesViewTable() . ".oxpriceto = '0'", trim($oView->UNITgetQuery()));
@@ -172,7 +172,7 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
      */
     public function testGetDataFieldsOxid()
     {
-        modConfig::setRequestParameter("oxid", true);
+        $this->setRequestParameter("oxid", true);
         $aResult = array(array('_0' => '_testCategory',
                                '_1' => false,
                                '_3' => 0,
@@ -203,7 +203,7 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
      */
     public function testGetDataFieldsOxidFalse()
     {
-        modConfig::setRequestParameter("oxid", true);
+        $this->setRequestParameter("oxid", true);
         $oView = oxNew('article_extend_ajax');
         $this->assertEquals(array(array('FALSE' => 0, '_3' => 0)), $oView->UNITgetDataFields('select false'));
     }
@@ -216,7 +216,7 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
     public function testRemoveCat()
     {
         $sOxid = '_testObjectRemove';
-        modConfig::setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("oxid", $sOxid);
         $oView = $this->getMock("article_extend_ajax", array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testCategory1', '_testCategory2')));
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2category where oxobjectid='$sOxid'"));
@@ -233,8 +233,8 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
     public function testRemoveCatAll()
     {
         $sOxid = '_testObjectRemoveAll';
-        modConfig::setRequestParameter("oxid", $sOxid);
-        modConfig::setRequestParameter("all", true);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("all", true);
 
         $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2category where oxobjectid='$sOxid'"));
 
@@ -251,7 +251,7 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
     public function testAddCat()
     {
         $sSynchoxid = '_testObjectAdd';
-        modConfig::setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
         $oView = $this->getMock("article_extend_ajax", array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testCategoryAdd1', '_testCategoryAdd2')));
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2category where oxobjectid='$sSynchoxid'"));
@@ -268,8 +268,8 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
     public function testAddCatAll()
     {
         $sSynchoxid = '_testObjectAdd';
-        modConfig::setRequestParameter("synchoxid", $sSynchoxid);
-        modConfig::setRequestParameter("all", true);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("all", true);
 
 
         $iCount = oxDb::getDb()->getOne("select count(oxv_oxcategories_de.oxid)  from oxv_oxcategories_de where oxv_oxcategories_de.oxid not in (  select oxv_oxcategories_de.oxid from oxobject2category left join oxv_oxcategories_de on oxv_oxcategories_de.oxid=oxobject2category.oxcatnid  where oxobject2category.oxobjectid = '$sSynchoxid' and oxv_oxcategories_de.oxid is not null ) and oxv_oxcategories_de.oxpriceto = '0'");
@@ -313,8 +313,8 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
     {
         $sOxid = '_testObjectDefault';
         $sDefCat = '_testCategory1';
-        modConfig::setRequestParameter("oxid", $sOxid);
-        modConfig::setRequestParameter("defcat", $sDefCat);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("defcat", $sDefCat);
 
         $oView = oxNew('article_extend_ajax');
 

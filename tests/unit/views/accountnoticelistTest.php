@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -149,7 +149,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
     {
         $oAccNoticeList = new Account_Noticelist();
 
-        $this->getConfig()->setRequestParameter('anid', 'testId');
+        $this->setRequestParameter('anid', 'testId');
 
         $aParams = $oAccNoticeList->getNavigationParams();
 

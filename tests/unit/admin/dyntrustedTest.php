@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -45,7 +45,7 @@ class Unit_Admin_dyntrustedTest extends OxidTestCase
      */
     public function testSaveNothingToSave()
     {
-        modConfig::setRequestParameter("aShopID_TrustedShops", array("testValue"));
+        $this->setRequestParameter("aShopID_TrustedShops", array("testValue"));
 
         $oView = $this->getMock("dyn_trusted", array("_checkTsId", "getConfig"), array(), '', false);
         $oView->expects($this->once())->method('_checkTsId');
@@ -66,11 +66,11 @@ class Unit_Admin_dyntrustedTest extends OxidTestCase
         $oResults = new stdClass();
         $oResults->stateEnum = 'TEST';
         $oResults->typeEnum = 'EXCELLENCE';
-        modConfig::setRequestParameter("aShopID_TrustedShops", array("test"));
-        modConfig::setRequestParameter("aTsUser", 'testUser');
-        modConfig::setRequestParameter("aTsPassword", 'testPsw');
-        modConfig::setRequestParameter("tsSealActive", true);
-        modConfig::setRequestParameter("tsTestMode", false);
+        $this->setRequestParameter("aShopID_TrustedShops", array("test"));
+        $this->setRequestParameter("aTsUser", 'testUser');
+        $this->setRequestParameter("aTsPassword", 'testPsw');
+        $this->setRequestParameter("tsSealActive", true);
+        $this->setRequestParameter("tsTestMode", false);
 
         $oConfig = $this->getMock("oxConfig", array("getShopId", "saveShopConfVar"));
         $oConfig->expects($this->at(0))->method('getShopId')->will($this->returnValue("shopid"));

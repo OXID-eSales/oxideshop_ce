@@ -113,7 +113,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
             $oArticle->delete('_testArticle');
         }
 
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
 
         // restore..
         $cl = oxTestModules::addFunction('oxSeoEncoder', 'clean_aReservedEntryKeys', '{oxSeoEncoder::$_aReservedEntryKeys = null;}');
@@ -232,12 +232,12 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oContent = new oxContent();
         $oContent->setId("_testContent");
 
-        $this->assertEquals(oxRegistry::getConfig()->getShopUrl($iLang) . "_/", $oContent->getLink($iLang));
+        $this->assertEquals($this->getConfig()->getShopUrl($iLang) . "_/", $oContent->getLink($iLang));
     }
 
     public function testIfMetaDataIsEncodedCorrectlyWhileSaving()
     {
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iShopId = $this->getConfig()->getBaseShopId();
         $iLang = 0;
         $sObjectId = 'testobject';
 
@@ -258,7 +258,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
     {
         $oDb = oxDb::getDb();
 
-        $iShopId = oxRegistry::getConfig()->getShopId();
+        $iShopId = $this->getConfig()->getShopId();
         $iLang = 0;
         $sStdUrl = "index.php?cl=details&amp;anid={$sOxid}";
         $sType = "oxarticle";
@@ -310,7 +310,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
         $sOxid = "8a142c3e4143562a5.46426637";
 
-        $iShopId = oxRegistry::getConfig()->getShopId();
+        $iShopId = $this->getConfig()->getShopId();
         $iLang = 0;
         $sStdUrl = "index.php?cl=alist&amp;cnid={$sOxid}";
         $sType = "oxcategory";
@@ -352,7 +352,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
     public function testUpdateSeoUrlWithDifferentCharCases()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $oDb = oxDb::getDb();
 
         $iShopId = $oConfig->getShopId();
@@ -385,8 +385,8 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
     public function testLanguagePrefixForSeoUrlForDe()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $oConfig = oxRegistry::getConfig();
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        $oConfig = $this->getConfig();
 
         // inserting price category for test
         $oPriceCategory = new oxCategory();
@@ -477,8 +477,8 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
     public function testLanguagePrefixForSeoUrlForEn()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $oConfig = oxRegistry::getConfig();
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        $oConfig = $this->getConfig();
 
         // inserting price category for test
         $oPriceCategory = new oxCategory();
@@ -598,7 +598,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
     public function testSettingEmptyMetaDataWhileUpdatingObjectSeoInfo()
     {
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iShopId = $this->getConfig()->getBaseShopId();
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
         $oEncoder = new oxSeoEncoder();
@@ -717,11 +717,11 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
      */
     public function testGetDynamicUrlWhenLoadedExisting()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $sStdUrl = 'cl=stdcl';
         $sSeoUrl = 'en/dynseourl/';
-        $sShopId = oxRegistry::getConfig()->getBaseShopId();
+        $sShopId = $this->getConfig()->getBaseShopId();
         $iLang = 1;
         $sObjectId = md5(strtolower($sShopId . $sStdUrl));
         $sIdent = md5(strtolower($sSeoUrl));;
@@ -733,7 +733,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
         $oEncoder = new oxSeoEncoder();
 
-        $sUrl = oxRegistry::getConfig()->getShopUrl() . $sSeoUrl;
+        $sUrl = $this->getConfig()->getShopUrl() . $sSeoUrl;
         $sSeoUrl = $oEncoder->getDynamicUrl($sStdUrl, $sSeoUrl, $iLang);
 
         $this->assertEquals($sUrl, $sSeoUrl);
@@ -741,12 +741,12 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
     public function testGetDynamicUrlWhenLoadedExistingButDiffersFromGiven()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $sStdUrl = 'cl=stdcl';
         $sSeoUrl = 'dynseourl/';
 
-        $sShopId = oxRegistry::getConfig()->getBaseShopId();
+        $sShopId = $this->getConfig()->getBaseShopId();
         $iLang = 0;
         $sObjectId = md5(strtolower($sShopId . $sStdUrl));
         $sIdent = md5(strtolower('' . $sSeoUrl));
@@ -758,7 +758,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
         $oEncoder = new oxSeoEncoder();
 
-        $sUrl = oxRegistry::getConfig()->getShopUrl() . $sSeoUrl . 'addon/';
+        $sUrl = $this->getConfig()->getShopUrl() . $sSeoUrl . 'addon/';
         $sSeoUrl = $oEncoder->getDynamicUrl($sStdUrl, $sSeoUrl . 'addon/', $iLang);
 
         $this->assertEquals($sUrl, $sSeoUrl);
@@ -769,14 +769,14 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
     public function testGetDynamicUriExistingButDoesNotMatchPassed()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $iLang = 1;
         $sStdUrl = 'cl=stdcl';
         $sSeoUrl = 'en/dynseourl/';
         $oEncoder = new oxSeoEncoder();
 
-        $sUrl = oxRegistry::getConfig()->getShopUrl() . $sSeoUrl . 'addon/';
+        $sUrl = $this->getConfig()->getShopUrl() . $sSeoUrl . 'addon/';
         $sSeoUrl = $oEncoder->getDynamicUrl($sStdUrl, $sSeoUrl . 'addon/', $iLang);
 
         $this->assertEquals($sUrl, $sSeoUrl);
@@ -788,7 +788,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $sStdUrl = 'stdulr';
         $sSeoUrl = 'en/seourl';
         $iLang = 1;
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iShopId = $this->getConfig()->getBaseShopId();
         $sObjectId = md5(strtolower($iShopId . $sStdUrl));
 
         $oEncoder = $this->getMock('oxseoencoder', array('_trimUrl', 'getDynamicObjectId', '_prepareUri', '_loadFromDb', '_copyToHistory', '_processSeoUrl', '_saveToDb'));
@@ -808,7 +808,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $sStdUrl = 'stdulr';
         $sSeoUrl = 'en/seourl';
         $iLang = 1;
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iShopId = $this->getConfig()->getBaseShopId();
         $sObjectId = md5(strtolower($iShopId . $sStdUrl));
 
         $oEncoder = $this->getMock('oxseoencoder', array('_trimUrl', '_prepareUri', '_loadFromDb', '_copyToHistory', '_getUniqueSeoUrl', '_saveToDb'));
@@ -992,7 +992,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $iPreCnt = oxDb::getDb()->getOne('select count(oxobjectid) from oxseo where oxshopid = "1" ');
 
         $oEncoder = new oxSeoEncoder();
-        $oEncoder->copyStaticUrls(oxRegistry::getConfig()->getBaseShopId());
+        $oEncoder->copyStaticUrls($this->getConfig()->getBaseShopId());
 
         $this->assertEquals($iPreCnt, oxDb::getDb()->getOne('select count(oxobjectid) from oxseo where oxshopid = "1" '));
     }
@@ -1007,7 +1007,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         // preparing environment
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
         oxTestModules::addFunction("oxutils", "isSearchEngine", "{return false;}");
-        modConfig::getInstance()->setConfigParam('blSessionUseCookies', false);
+        $this->getConfig()->setConfigParam('blSessionUseCookies', false);
 
         // cleaning up
         oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');
@@ -1085,7 +1085,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
      */
     public function testSaveToDb_forExpiredLinksAndRootCateogoriesIds()
     {
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iShopId = $this->getConfig()->getBaseShopId();
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
         // seo urls
@@ -1371,7 +1371,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
     public function testTrimUrl()
     {
-        $sBaseUrl = modConfig::getInstance()->getConfigParam("sShopURL");
+        $sBaseUrl = $this->getConfig()->getConfigParam("sShopURL");
         $sSslUrl = str_replace("http:", "https:", $sBaseUrl);
 
         $oConfig = $this->getMock("oxStdClas", array("getShopURL", "getSslShopUrl", "getConfigParam"));
@@ -1435,7 +1435,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
     public function testGetUniqueSeoUrl()
     {
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iShopId = $this->getConfig()->getBaseShopId();
         $oDb = oxDb::getDb();
         $oEncoder = new oxseoencoder();
 
@@ -1465,7 +1465,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oDb = modDB::getInstance();
         $oDb->addClassFunction('GetOne', array($this, '__SaveToDbCreatesGoodMd5Callback'));
 
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iShopId = $this->getConfig()->getBaseShopId();
 
         $oE = oxNew('oxseoencoder');
         $this->aSQL = array();
@@ -1526,7 +1526,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
     public function testGetMetaData()
     {
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iShopId = $this->getConfig()->getBaseShopId();
         $oDb = oxDb::getDb();
         $oDb->execute("insert into oxobject2seodata (`oxobjectid`, `oxkeywords`, `oxshopid`, `oxlang`) values( 'xxx', 'yyy', '$iShopId', 0)");
 
@@ -1552,7 +1552,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oObject->setLanguage($iLang);
         $oObject->setId('yyy');
 
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iShopId = $this->getConfig()->getBaseShopId();
         $sParams = 'zzz';
 
         $sSeoUrl = 'seourl';
@@ -1582,7 +1582,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oObject->setLanguage(0);
         $oObject->setId('yyy');
 
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iShopId = $this->getConfig()->getBaseShopId();
         $sParams = 'zzz';
 
         $sSeoUrl = 'seourl';
@@ -1612,7 +1612,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oObject->setLanguage($iLang);
         $oObject->setId('yyy');
 
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iShopId = $this->getConfig()->getBaseShopId();
         $sParams = 'zzz';
 
         $sSeoUrl = 'seourl';

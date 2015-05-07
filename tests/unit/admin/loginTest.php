@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -28,7 +28,7 @@ class Unit_Admin_loginTest extends OxidTestCase
 
     public function setUp()
     {
-        modConfig::getInstance()->setAdminMode(true);
+        $this->setAdminMode(true);
         modSession::getInstance()->setVar("blIsAdmin", true);
 
         return parent::setUp();
@@ -61,7 +61,7 @@ class Unit_Admin_loginTest extends OxidTestCase
         $oUser->setId("_testUserId");
         $oUser->oxuser__oxactive = new oxField("1");
         $oUser->oxuser__oxusername = new oxField("&\"\'\\<>adminname", oxField::T_RAW);
-        $oUser->oxuser__oxshopid = new oxField(modConfig::getInstance()->getShopId());
+        $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getShopId());
 
         $oUser->setPassword("&\"\'\\<>adminpsw");
         $oUser->save();
@@ -70,8 +70,8 @@ class Unit_Admin_loginTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return array(\'test\'); }');
 
         $_SERVER['REQUEST_METHOD'] = "POST";
-        modConfig::setRequestParameter("user", "&\"\'\\<>adminname");
-        modConfig::setRequestParameter("pwd", "&\"\'\\<>adminpsw");
+        $this->setRequestParameter("user", "&\"\'\\<>adminname");
+        $this->setRequestParameter("pwd", "&\"\'\\<>adminpsw");
 
 
         $oLogin = $this->getProxyClass('login');
@@ -90,7 +90,7 @@ class Unit_Admin_loginTest extends OxidTestCase
     {
         $this->setExpectedException('oxException', 'LOGIN_ERROR');
 
-        modConfig::getInstance()->setAdminMode(true);
+        $this->setAdminMode(true);
 
         $oUser = oxNew("oxUser");
         $oUser->setId("_testUserId");
@@ -103,8 +103,8 @@ class Unit_Admin_loginTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return array(\'test\'); }');
 
         $_SERVER['REQUEST_METHOD'] = "POST";
-        modConfig::setRequestParameter("user", "&\"\'\\<>adminname");
-        modConfig::setRequestParameter("pwd", "&\"\'\\<>adminpsw");
+        $this->setRequestParameter("user", "&\"\'\\<>adminname");
+        $this->setRequestParameter("pwd", "&\"\'\\<>adminpsw");
 
         $oLogin = $this->getProxyClass('login');
         $this->assertEquals("admin_start", $oLogin->checklogin());
@@ -272,7 +272,7 @@ class Unit_Admin_loginTest extends OxidTestCase
         oxTestModules::addFunction('oxuser', 'login', '{ throw new oxConnectionException(); }');
         oxTestModules::addFunction('oxUtils', 'logger', '{ return true; }');
 
-        modConfig::setRequestParameter('profile', "testProfile");
+        $this->setRequestParameter('profile', "testProfile");
         modSession::getInstance()->setVar("aAdminProfiles", array("testProfile" => array("testValue")));
 
         $oView = new Login();
@@ -289,10 +289,10 @@ class Unit_Admin_loginTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxuser', 'login', '{ throw new oxUserException(); }');
 
-        modConfig::setRequestParameter('user', '\'"<^%&*aaa>');
-        modConfig::setRequestParameter('pwd', '<^%&*aaa>\'"');
-        modConfig::setRequestParameter('profile', '<^%&*aaa>\'"');
-        modConfig::getInstance()->setAdminMode(true);
+        $this->setRequestParameter('user', '\'"<^%&*aaa>');
+        $this->setRequestParameter('pwd', '<^%&*aaa>\'"');
+        $this->setRequestParameter('profile', '<^%&*aaa>\'"');
+        $this->setAdminMode(true);
         modSession::getInstance()->setVar("blIsAdmin", true);
         $oView = $this->getMock("Login", array("addTplParam"));
         $oView->expects($this->at(0))->method('addTplParam')->with($this->equalTo("user"), $this->equalTo('&#039;&quot;&lt;^%&amp;*aaa&gt;'));
@@ -310,10 +310,10 @@ class Unit_Admin_loginTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxuser', 'login', '{ throw new oxCookieException(); }');
 
-        modConfig::setRequestParameter('user', '\'"<^%&*aaa>');
-        modConfig::setRequestParameter('pwd', '<^%&*aaa>\'"');
-        modConfig::setRequestParameter('profile', '<^%&*aaa>\'"');
-        modConfig::getInstance()->setAdminMode(true);
+        $this->setRequestParameter('user', '\'"<^%&*aaa>');
+        $this->setRequestParameter('pwd', '<^%&*aaa>\'"');
+        $this->setRequestParameter('profile', '<^%&*aaa>\'"');
+        $this->setAdminMode(true);
         modSession::getInstance()->setVar("blIsAdmin", true);
         $oView = $this->getMock("Login", array("addTplParam"));
         $oView->expects($this->at(0))->method('addTplParam')->with($this->equalTo("user"), $this->equalTo('&#039;&quot;&lt;^%&amp;*aaa&gt;'));

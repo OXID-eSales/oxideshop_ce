@@ -100,7 +100,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         parent::setUp();
 
         // set to load full deliveries list
-        oxRegistry::getConfig()->setConfigParam('bl_perfLoadDelivery', true);
+        $this->getConfig()->setConfigParam('bl_perfLoadDelivery', true);
 
         oxAddClassModule('oxDeliveryListTestClass', 'oxdeliverylist');
 
@@ -143,7 +143,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oCategory->setId('_testCategoryId');
         $oCategory->oxcategories__oxtitle = new oxField('_testCategoryTitle', oxField::T_RAW);
         $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
-        $oCategory->oxcategories__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+        $oCategory->oxcategories__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oCategory->oxcategories__oxhidden = new oxField(0, oxField::T_RAW);
         $oCategory->oxcategories__oxdefsortmode = new oxField(0, oxField::T_RAW);
         $oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
@@ -169,7 +169,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
             $oO2Cat = oxNew('oxobject2category');
             $oO2Cat->setId('_testO2CatId' . $i);
             $oO2Cat->oxobject2category__oxobjectid = new oxField($oArticle->getId(), oxField::T_RAW);
-            $oO2Cat->oxobject2category__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
+            $oO2Cat->oxobject2category__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
             $oO2Cat->oxobject2category__oxcatnid = new oxField($oCategory->getId(), oxField::T_RAW);
 
             $oO2Cat->save();
@@ -308,7 +308,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         // test delivery
         $oDelivery = new oxDelivery();
         $oDelivery->setId('_testdelivery');
-        $oDelivery->oxdelivery__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+        $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsumtype = new oxField('abs', oxField::T_RAW);
@@ -324,7 +324,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oUser->load('oxdefaultadmin');
 
         $oBasket = new oxBasket();
-        modConfig::getInstance()->setConfigParam('blAllowUnevenAmounts', true);
+        $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $oBasket->setBasketUser($oUser);
         $oBasket->addToBasket('1354', 5);
         $oBasket->calculateBasket();

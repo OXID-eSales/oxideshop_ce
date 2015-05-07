@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -64,10 +64,10 @@ class Unit_Core_oxSeoEncoderRecommTest extends OxidTestCase
 
         $oEncoder = $this->getMock("oxSeoEncoderRecomm", array("_loadFromDb", "_getStaticUri", "_prepareTitle", "_processSeoUrl", "_saveToDb"));
         $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('dynamic'), $this->equalTo($oRecomm->getId()), $this->equalTo($iLang))->will($this->returnValue(false));
-        $oEncoder->expects($this->once())->method('_getStaticUri')->with($this->equalTo($oRecomm->getBaseStdLink($iLang)), $this->equalTo(oxRegistry::getConfig()->getShopId()), $this->equalTo($iLang))->will($this->returnValue("testShopUrl/"));
+        $oEncoder->expects($this->once())->method('_getStaticUri')->with($this->equalTo($oRecomm->getBaseStdLink($iLang)), $this->equalTo($this->getConfig()->getShopId()), $this->equalTo($iLang))->will($this->returnValue("testShopUrl/"));
         $oEncoder->expects($this->once())->method('_prepareTitle')->with($this->equalTo($oRecomm->oxrecommlists__oxtitle->value))->will($this->returnValue("testTitle"));
         $oEncoder->expects($this->once())->method('_processSeoUrl')->with($this->equalTo("testShopUrl/testTitle"), $this->equalTo($oRecomm->getId()), $this->equalTo($iLang))->will($this->returnValue("testSeoUrl"));
-        $oEncoder->expects($this->once())->method('_saveToDb')->with($this->equalTo('dynamic'), $this->equalTo($oRecomm->getId()), $this->equalTo($oRecomm->getStdLink($iLang)), $this->equalTo("testSeoUrl"), $this->equalTo($iLang), $this->equalTo(oxRegistry::getConfig()->getShopId()));
+        $oEncoder->expects($this->once())->method('_saveToDb')->with($this->equalTo('dynamic'), $this->equalTo($oRecomm->getId()), $this->equalTo($oRecomm->getStdLink($iLang)), $this->equalTo("testSeoUrl"), $this->equalTo($iLang), $this->equalTo($this->getConfig()->getShopId()));
 
         $this->assertEquals("testSeoUrl", $oEncoder->getRecommUri($oRecomm, $iLang));
     }
@@ -145,7 +145,7 @@ class Unit_Core_oxSeoEncoderRecommTest extends OxidTestCase
                 0
             )
             ->will($this->returnValue("recommstdlink/"));
-        $this->assertEquals(oxRegistry::getConfig()->getConfigParam("sShopURL") . "recommstdlink/testTitle/2/", $oEncoder->getRecommPageUrl($oRecomm, 1));
+        $this->assertEquals($this->getConfig()->getConfigParam("sShopURL") . "recommstdlink/testTitle/2/", $oEncoder->getRecommPageUrl($oRecomm, 1));
 
         // now checking if db is filled
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(*) from oxseo where oxobjectid='testRecommId' and oxtype='dynamic'"));

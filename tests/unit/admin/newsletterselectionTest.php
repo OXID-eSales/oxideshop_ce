@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -81,7 +81,7 @@ class Unit_Admin_NewsletterSelectionTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", 'newstest');
+        $this->setRequestParameter("oxid", 'newstest');
         $oNewsletter = $this->getProxyClass("Newsletter_selection");
         $this->assertEquals('newsletter_selection.tpl', $oNewsletter->render());
         $aViewData = $oNewsletter->getNonPublicVar('_aViewData');
@@ -97,16 +97,16 @@ class Unit_Admin_NewsletterSelectionTest extends OxidTestCase
      */
     public function testGetUserCount()
     {
-        modConfig::setRequestParameter("iStart", 0);
-        modConfig::setRequestParameter("oxid", 'newstest');
+        $this->setRequestParameter("iStart", 0);
+        $this->setRequestParameter("oxid", 'newstest');
         $oNewsletter = new Newsletter_selection();
         $this->assertEquals(1, $oNewsletter->getUserCount());
 
         $oDB = oxDb::getDb();
         $sDelete = "delete from oxobject2group where oxobjectid='_testUserId'";
         $oDB->Execute($sDelete);
-        modConfig::setRequestParameter("iStart", 0);
-        modConfig::setRequestParameter("oxid", 'newstest');
+        $this->setRequestParameter("iStart", 0);
+        $this->setRequestParameter("oxid", 'newstest');
         $oNewsletter = new Newsletter_selection();
         $this->assertEquals(0, $oNewsletter->getUserCount());
     }

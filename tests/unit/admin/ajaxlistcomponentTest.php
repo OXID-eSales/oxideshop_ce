@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -45,7 +45,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetActionIds()
     {
-        modConfig::setRequestParameter("_6", "testValue");
+        $this->setRequestParameter("_6", "testValue");
         $aColNames = array( // field , table,         visible, multilanguage, ident
             array('oxartnum', 'oxarticles', 1, 0, 0),
             array('oxtitle', 'oxarticles', 1, 1, 0),
@@ -152,7 +152,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetSortCol()
     {
-        modConfig::setRequestParameter('sort', "_1");
+        $this->setRequestParameter('sort', "_1");
 
         $oComponent = $this->getMock("ajaxListComponent", array("_getVisibleColNames"));
         $oComponent->expects($this->once())->method('_getVisibleColNames')->will($this->returnValue(array(0, 1)));
@@ -166,7 +166,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetColNamesNoComponentIdDefined()
     {
-        modConfig::setRequestParameter('cmpid', null);
+        $this->setRequestParameter('cmpid', null);
 
         $oComponent = new ajaxListComponent();
         $oComponent->init("testNames");
@@ -180,7 +180,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetColNames()
     {
-        modConfig::setRequestParameter('cmpid', "testCmpId");
+        $this->setRequestParameter('cmpid', "testCmpId");
 
         $oComponent = new ajaxListComponent();
         $oComponent->init(array("testCmpId" => "testNames"));
@@ -194,7 +194,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetIdentColNames()
     {
-        modConfig::setRequestParameter("_6", "testValue");
+        $this->setRequestParameter("_6", "testValue");
         $aColNames = array( // field , table,         visible, multilanguage, ident
             array('oxartnum', 'oxarticles', 1, 0, 0),
             array('oxtitle', 'oxarticles', 1, 1, 0),
@@ -217,7 +217,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetVisibleColNamesUserDefined()
     {
-        modConfig::setRequestParameter("aCols", array("_1", "_2"));
+        $this->setRequestParameter("aCols", array("_1", "_2"));
 
         $aColNames = array( // field , table,         visible, multilanguage, ident
             array('oxartnum', 'oxarticles', 1, 0, 0),
@@ -241,7 +241,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetVisibleColNames()
     {
-        modConfig::setRequestParameter("aCols", null);
+        $this->setRequestParameter("aCols", null);
 
         $aColNames = array( // field , table,         visible, multilanguage, ident
             array('oxartnum', 'oxarticles', 1, 0, 0),
@@ -267,7 +267,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetQueryCols()
     {
-        modConfig::setRequestParameter("aCols", null);
+        $this->setRequestParameter("aCols", null);
 
         $aColNames = array( // field , table,         visible, multilanguage, ident
             array('oxartnum', 'oxarticles', 1, 0, 0),
@@ -317,7 +317,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetFilter()
     {
-        modConfig::setRequestParameter(
+        $this->setRequestParameter(
             'aFilter', array(
                             "_0" => "a",
                             "_1" => "b",
@@ -387,7 +387,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetSortDir()
     {
-        modConfig::setRequestParameter('dir', "someDirection");
+        $this->setRequestParameter('dir', "someDirection");
 
         $oComponent = new ajaxListComponent();
         $this->assertEquals("asc", $oComponent->UNITgetSortDir());
@@ -400,7 +400,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetStartIndex()
     {
-        modConfig::setRequestParameter('startIndex', "someIndex");
+        $this->setRequestParameter('startIndex', "someIndex");
 
         $oComponent = new ajaxListComponent();
         $this->assertEquals((int) "someIndex", $oComponent->UNITgetStartIndex());

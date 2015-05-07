@@ -56,7 +56,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         oxRegistry::set('oxConfig', $oConfig);
 
         $oRequest = new oxOnlineLicenseCheckRequest();
-        $oRequest->revision = oxRegistry::getConfig()->getRevision();
+        $oRequest->revision = $this->getConfig()->getRevision();
         $oRequest->pVersion = '1.1';
         $oRequest->productId = 'eShop';
         $oRequest->keys = array('key' => array('validSerial'));
@@ -176,10 +176,10 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         oxRegistry::set('oxConfig', $oConfig);
 
         $oRequest = new oxOnlineLicenseCheckRequest();
-        $oRequest->edition = oxRegistry::getConfig()->getEdition();
-        $oRequest->version = oxRegistry::getConfig()->getVersion();
-        $oRequest->revision = oxRegistry::getConfig()->getRevision();
-        $oRequest->shopUrl = oxRegistry::getConfig()->getShopUrl();
+        $oRequest->edition = $this->getConfig()->getEdition();
+        $oRequest->version = $this->getConfig()->getVersion();
+        $oRequest->revision = $this->getConfig()->getRevision();
+        $oRequest->shopUrl = $this->getConfig()->getShopUrl();
         $oRequest->pVersion = '1.1';
         $oRequest->productId = 'eShop';
         $oRequest->keys = array('key' => array('key1', 'key2'));
@@ -226,10 +226,10 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         oxRegistry::set('oxConfig', $oConfig);
 
         $oRequest = new oxOnlineLicenseCheckRequest();
-        $oRequest->edition = oxRegistry::getConfig()->getEdition();
-        $oRequest->version = oxRegistry::getConfig()->getVersion();
-        $oRequest->revision = oxRegistry::getConfig()->getRevision();
-        $oRequest->shopUrl = oxRegistry::getConfig()->getShopUrl();
+        $oRequest->edition = $this->getConfig()->getEdition();
+        $oRequest->version = $this->getConfig()->getVersion();
+        $oRequest->revision = $this->getConfig()->getRevision();
+        $oRequest->shopUrl = $this->getConfig()->getShopUrl();
         $oRequest->pVersion = '1.1';
         $oRequest->productId = 'eShop';
         $aKeys = array('key1', 'key2', array('attributes' => array('state' => 'new'), 'value' => 'new_serial'));
@@ -277,6 +277,6 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
 
         $oLicenseCheck->validate('validSerial');
 
-        $this->assertEquals(10, oxRegistry::getConfig()->getConfigParam('iOlcSuccess'));
+        $this->assertEquals(10, $this->getConfig()->getConfigParam('iOlcSuccess'));
     }
 }

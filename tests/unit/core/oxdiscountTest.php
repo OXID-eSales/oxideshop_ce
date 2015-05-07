@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -416,12 +416,12 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
      */
     public function testIsForBasketItemForTestCase()
     {
-        modConfig::getInstance()->setConfigParam("blVariantParentBuyable", 1);
+        $this->getConfig()->setConfigParam("blVariantParentBuyable", 1);
         $sDiscountId = '_' . uniqid(rand());
 
         // inserting test discount
         $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
-               values ( '{$sDiscountId}', '" . oxRegistry::getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'abs', '10' )";
+               values ( '{$sDiscountId}', '" . $this->getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'abs', '10' )";
 
         $this->addToDatabase($sQ, 'oxdiscount');
 
@@ -461,12 +461,12 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
      */
     public function testIsForBasketItemForTestCase2()
     {
-        modConfig::getInstance()->setConfigParam("blVariantParentBuyable", 1);
+        $this->getConfig()->setConfigParam("blVariantParentBuyable", 1);
         $sDiscountId = '_' . uniqid(rand());
 
         // inserting test discount
         $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxprice, oxaddsumtype, oxaddsum )
-               values ( '{$sDiscountId}', '" . oxRegistry::getConfig()->getBaseShopId() . "', '1', 'Test', '0', '0', '1000', '500', 'abs', '10' )";
+               values ( '{$sDiscountId}', '" . $this->getConfig()->getBaseShopId() . "', '1', 'Test', '0', '0', '1000', '500', 'abs', '10' )";
 
         $this->addToDatabase($sQ, 'oxdiscount');
 
@@ -838,7 +838,7 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
      */
     public function testGetSimpleDiscount()
     {
-        $sShopId = oxRegistry::getConfig()->getBaseShopId();
+        $sShopId = $this->getConfig()->getBaseShopId();
         $myDB = oxDb::getDb();
         $sQ = 'insert into oxdiscount ';
         $sQ .= '(oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxprice, oxpriceto, oxaddsumtype, oxaddsum) values ';
@@ -956,7 +956,7 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
     {
 
         //setting default currency to another one
-        modConfig::getInstance()->setActShopCurrency(1);
+        $this->getConfig()->setActShopCurrency(1);
 
         //getting a real demo product becaues with mock it is not easy to make sure the price set is NOT in active currency
         $oArticle = new oxArticle();
@@ -1024,12 +1024,12 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
     public function testForCase2599()
     {
         // creating test discount
-        modConfig::getInstance()->setConfigParam("blVariantParentBuyable", 1);
+        $this->getConfig()->setConfigParam("blVariantParentBuyable", 1);
         $sDiscountId = '_' . uniqid(rand());
 
         // inserting test discount
         $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
-               values ( '{$sDiscountId}', '" . oxRegistry::getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'itm', '10' )";
+               values ( '{$sDiscountId}', '" . $this->getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'itm', '10' )";
 
         $this->addToDatabase($sQ, 'oxdiscount');
 

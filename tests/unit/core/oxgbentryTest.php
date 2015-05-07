@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
     {
         parent::setUp();
 
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
         $this->_oObj = new oxGBEntry();
         $this->_oObj->oxgbentries__oxuserid = new oxField('oxdefaultadmin', oxField::T_RAW);
         $this->_oObj->oxgbentries__oxcontent = new oxField("test content\ntest content", oxField::T_RAW);
@@ -120,7 +120,7 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
     public function testGetAllEntries()
     {
         $myDB = oxDb::getDb();
-        $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","' . oxRegistry::getConfig()->getBaseShopId() . '","oxdefaultadmin","AA test content")';
+        $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","' . $this->getConfig()->getBaseShopId() . '","oxdefaultadmin","AA test content")';
         $myDB->execute($sSql);
         $oObj = new oxGBEntry();
         $aEntries = $oObj->getAllEntries(0, 10, 'oxcontent');
@@ -131,9 +131,9 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
 
     public function testGetAllEntriesModerationOn()
     {
-        modConfig::getInstance()->setConfigParam('blGBModerate', 1);
+        $this->getConfig()->setConfigParam('blGBModerate', 1);
         $myDB = oxDb::getDb();
-        $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","' . oxRegistry::getConfig()->getBaseShopId() . '","oxdefaultadmin","AA test content")';
+        $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","' . $this->getConfig()->getBaseShopId() . '","oxdefaultadmin","AA test content")';
         $myDB->execute($sSql);
         $oObj = new oxGBEntry();
         $aEntries = $oObj->getAllEntries(0, 10, null);
@@ -153,7 +153,7 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
 
     public function testGetEntryCountModerationOn()
     {
-        modConfig::getInstance()->setConfigParam('blGBModerate', 1);
+        $this->getConfig()->setConfigParam('blGBModerate', 1);
         $oObj = new oxGBEntry();
         $iCnt = $oObj->getEntryCount();
         $this->assertEquals(0, $iCnt);
@@ -166,14 +166,14 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
     public function testFloodProtectionIfAllow()
     {
         $oObj = new oxGBEntry();
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
         $this->assertFalse($oObj->floodProtection($myConfig->getShopId(), 'oxdefaultadmin'));
     }
 
     public function testFloodProtectionMaxReached()
     {
         $oObj = new oxGBEntry();
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
         $myConfig->setConfigParam('iMaxGBEntriesPerDay', 1);
         $this->assertTrue($oObj->floodProtection($myConfig->getShopId(), 'oxdefaultadmin'));
     }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
 
     public function test_exportLexwareArticles()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         //$sFile = $myConfig->sShopDir.'/tmp/test.xpr';
         $sFile = oxregistry::get("oxConfigFile")->getVar("sCompileDir") . '/test.xpr';
         @unlink($sFile);
@@ -110,7 +110,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
 
     public function testExportLexwareOrders()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oOrder = new oxOrder();
         $oOrder->setId('_testOrder');
@@ -165,7 +165,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
         $oOrderArt->oxorderarticles__oxbrutprice = new oxField(34);
         $oOrderArt->save();
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oImex = new oxImex();
         $sResult = str_replace(array("\r", "   "), '', $oImex->exportLexwareOrders(9991, 9991));
@@ -184,7 +184,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
 
     public function testExportLexwareOrdersDiffCurrency()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oOrder = new oxOrder();
         $oOrder->setId('_testOrder');
@@ -241,7 +241,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
         $oOrderArt->oxorderarticles__oxbrutprice = new oxField(34);
         $oOrderArt->save();
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oImex = new oxImex();
         $sResult = str_replace(array("\r", "   "), '', $oImex->exportLexwareOrders(9991, 9991));
@@ -260,7 +260,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
 
     public function testExportLexwareOrders_setsCorrectCharset()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oOrder = new oxOrder();
         $oOrder->setId('_testOrder');
@@ -283,7 +283,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
      */
     public function testExportLexwareOrders_convertsAttributesSpecChars()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oOrder = new oxOrder();
         $oOrder->setId('_testOrder');

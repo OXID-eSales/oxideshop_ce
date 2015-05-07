@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -102,7 +102,7 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
     public function testGetImageUrl()
     {
         $this->_oCaptcha->setNonPublicVar('_sText', 'test1');
-        $this->assertEquals(modConfig::getInstance()->getShopUrl() . "core/utils/verificationimg.php?e_mac=ox_MB4FUUYlYlld", $this->_oCaptcha->getImageUrl());
+        $this->assertEquals($this->getConfig()->getShopUrl() . "core/utils/verificationimg.php?e_mac=ox_MB4FUUYlYlld", $this->_oCaptcha->getImageUrl());
     }
 
     /**
@@ -122,7 +122,7 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
      */
     public function testIsImageVisibleLowGD()
     {
-        modConfig::getInstance()->setConfigParam('iUseGDVersion', 0);
+        $this->getConfig()->setConfigParam('iUseGDVersion', 0);
         $this->assertFalse($this->_oCaptcha->isImageVisible());
     }
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -185,7 +185,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
      */
     public function testSave()
     {
-        modConfig::setRequestParameter("aSeoData", array("oxseourl" => "testSeoUrl", "oxkeywords" => " testKeywords ", "oxdescription" => " testDescription ", "oxparams" => "testParams", "oxfixed" => 0));
+        $this->setRequestParameter("aSeoData", array("oxseourl" => "testSeoUrl", "oxkeywords" => " testKeywords ", "oxdescription" => " testDescription ", "oxparams" => "testParams", "oxfixed" => 0));
 
         $oEncoder = $this->getMock("oxSeoEncoder", array("addSeoEntry"));
         $oEncoder->expects($this->once())->method("addSeoEntry")->with(
@@ -247,7 +247,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
      */
     public function isEntryFixed()
     {
-        $ShopId = oxRegistry::getConfig()->getShopId();
+        $ShopId = $this->getConfig()->getShopId();
         $iLang = 0;
         $sQ = "insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxfixed ) values
                                  ( 'objectid', 'ident', '{$ShopId}', '{$iLang}', 'stdurl', 'seourl', 'type', 1 )";

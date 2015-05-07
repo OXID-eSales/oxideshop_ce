@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -80,7 +80,7 @@ class Unit_Admin_VoucherSerieGenerateTest extends OxidTestCase
      */
     public function testRun()
     {
-        modConfig::setRequestParameter("iStart", 0);
+        $this->setRequestParameter("iStart", 0);
 
         // first generation call
         $oView = $this->getMock("VoucherSerie_Generate", array("nextTick", "stop"));

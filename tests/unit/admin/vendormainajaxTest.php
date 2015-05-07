@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -75,7 +75,7 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
     public function testGetQuery_selectingMainArticles()
     {
         $this->setConfigParam("blVariantsSelection", false);
-        $this->setRequestParam("synchoxid", "_testSyncOxId");
+        $this->setRequestParameter("synchoxid", "_testSyncOxId");
 
         $oView = oxNew('vendor_main_ajax');
         $sQuery = 'from ' . $this->getArticleViewTable() . ' where ' . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopId() . '" and 1 ';
@@ -107,8 +107,8 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
     public function testGetQuery_OxId_variantsOff()
     {
         $this->setConfigParam("blVariantsSelection", false);
-        $this->setRequestParam("oxid", "_testVendorId");
-        $this->setRequestParam("synchoxid", "_testSyncOxId");
+        $this->setRequestParameter("oxid", "_testVendorId");
+        $this->setRequestParameter("synchoxid", "_testSyncOxId");
 
         $oView = oxNew('vendor_main_ajax');
 
@@ -129,8 +129,8 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
     public function testGetQuery_OxId_variantsOn()
     {
         $this->setConfigParam("blVariantsSelection", true);
-        $this->setRequestParam("oxid", "_testVendorId");
-        $this->setRequestParam("synchoxid", "_testSyncOxId");
+        $this->setRequestParameter("oxid", "_testVendorId");
+        $this->setRequestParameter("synchoxid", "_testSyncOxId");
 
         $oView = oxNew('vendor_main_ajax');
 
@@ -150,8 +150,8 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
     public function testGetQuery_OxId_EqalTo_SyncId_variantsOff()
     {
         $this->setConfigParam("blVariantsSelection", false);
-        $this->setRequestParam("oxid", "_testVendorId");
-        $this->setRequestParam("synchoxid", "_testVendorId");
+        $this->setRequestParameter("oxid", "_testVendorId");
+        $this->setRequestParameter("synchoxid", "_testVendorId");
 
         $oView = oxNew('vendor_main_ajax');
 
@@ -170,8 +170,8 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
     public function testGetQuery_OxId_EqalTo_SyncId_variantsOn()
     {
         $this->setConfigParam("blVariantsSelection", true);
-        $this->setRequestParam("oxid", "_testVendorId");
-        $this->setRequestParam("synchoxid", "_testVendorId");
+        $this->setRequestParameter("oxid", "_testVendorId");
+        $this->setRequestParameter("synchoxid", "_testVendorId");
 
         $oView = oxNew('vendor_main_ajax');
 
@@ -226,7 +226,7 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
      */
     public function testRemoveVendor_oneArticle()
     {
-        $this->setRequestParam("oxid", "_testVendorId");
+        $this->setRequestParameter("oxid", "_testVendorId");
 
         $oView = $this->getMock("vendor_main_ajax", array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticle1')));
@@ -246,8 +246,8 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
      */
     public function testRemoveVendor_allArticles()
     {
-        $this->setRequestParam("all", true);
-        $this->setRequestParam("oxid", "_testVendorId");
+        $this->setRequestParameter("all", true);
+        $this->setRequestParameter("oxid", "_testVendorId");
 
         $oDb = oxDb::getDb();
         $this->assertEquals(2, $oDb->getOne("select count(oxid) from oxarticles where oxvendorid='_testVendorId' "));
@@ -265,7 +265,7 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
      */
     public function testRemoveVendor_resetingCounter()
     {
-        $this->setRequestParam("oxid", "_testVendorId");
+        $this->setRequestParameter("oxid", "_testVendorId");
 
         $oView = $this->getMock("vendor_main_ajax", array("_getActionIds", "resetCounter"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticle1')));
@@ -282,7 +282,7 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
      */
     public function testAddVendor_oneArticle()
     {
-        $this->setRequestParam("synchoxid", "_testVendorId");
+        $this->setRequestParameter("synchoxid", "_testVendorId");
 
         $oView = $this->getMock("vendor_main_ajax", array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticle3')));
@@ -301,8 +301,8 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
      */
     public function testAddVendor_allArticles()
     {
-        $this->setRequestParam("synchoxid", "_testVendorId");
-        $this->setRequestParam("all", true);
+        $this->setRequestParameter("synchoxid", "_testVendorId");
+        $this->setRequestParameter("all", true);
 
         $oView = $this->getMock("vendor_main_ajax", array("_getQuery"));
         $oView->expects($this->once())->method('_getQuery')->will($this->returnValue("from {$this->getArticleViewTable()} where oxid like '\_test%' and oxvendorid='' "));
@@ -322,7 +322,7 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
      */
     public function testAddVendor_resetingCounter()
     {
-        $this->setRequestParam("synchoxid", "_testVendorId");
+        $this->setRequestParameter("synchoxid", "_testVendorId");
 
         $oView = $this->getMock("vendor_main_ajax", array("_getActionIds", "resetCounter"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticle3')));

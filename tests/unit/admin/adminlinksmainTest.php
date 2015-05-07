@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,8 +33,8 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", -1);
-        modConfig::setRequestParameter("saved_oxid", -1);
+        $this->setRequestParameter("oxid", -1);
+        $this->setRequestParameter("saved_oxid", -1);
 
         // testing..
         $oView = new Adminlinks_main();
@@ -53,7 +53,7 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
      */
     public function testRenderWithExistingLink()
     {
-        modConfig::setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxlinks"));
+        $this->setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxlinks"));
 
         // testing..
         $oView = new Adminlinks_main();
@@ -76,7 +76,7 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
         oxTestModules::addFunction('oxgbentry', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction('oxgbentry', 'load', '{ return true; }');
 
-        modConfig::setRequestParameter("oxid", "xxx");
+        $this->setRequestParameter("oxid", "xxx");
 
         // testing..
         $oView = new Adminlinks_main();
@@ -99,7 +99,7 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
         oxTestModules::addFunction('oxgbentry', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction('oxgbentry', 'load', '{ return true; }');
 
-        modConfig::setRequestParameter("oxid", "xxx");
+        $this->setRequestParameter("oxid", "xxx");
 
         // testing..
         $oView = new Adminlinks_main();

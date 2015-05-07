@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -198,10 +198,10 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
             )->will($this->returnValue(null));
         $o->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
-        modConfig::setRequestParameter('bindex', 'b:bindex');
-        modConfig::setRequestParameter('am', 'b:am');
-        modConfig::setRequestParameter('sel', 'b:sel');
-        modConfig::setRequestParameter('persparam', 'b:persparam');
+        $this->setRequestParameter('bindex', 'b:bindex');
+        $this->setRequestParameter('am', 'b:am');
+        $this->setRequestParameter('sel', 'b:sel');
+        $this->setRequestParameter('persparam', 'b:persparam');
         $this->assertSame(null, $o->changebasket());
     }
 
@@ -218,10 +218,10 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
             )->will($this->returnValue(null));
         $o->expects($this->never())->method('getSession')->will($this->returnValue($oSession));
 
-        modConfig::setRequestParameter('aid', 'b:artid');
-        modConfig::setRequestParameter('am', 'b:am');
-        modConfig::setRequestParameter('sel', 'b:sel');
-        modConfig::setRequestParameter('persparam', 'b:persparam');
+        $this->setRequestParameter('aid', 'b:artid');
+        $this->setRequestParameter('am', 'b:am');
+        $this->setRequestParameter('sel', 'b:sel');
+        $this->setRequestParameter('persparam', 'b:persparam');
         $this->assertSame(null, $o->changebasket());
     }
 
@@ -240,12 +240,12 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
                      'searchrecomm', // search recomendation
                      'recommid' // recomm. list id
                  ) as $key) {
-            modConfig::setRequestParameter($key, 'value:' . $key . ":v");
+            $this->setRequestParameter($key, 'value:' . $key . ":v");
         }
 
-        modConfig::setRequestParameter('cl', 'cla');
-        modConfig::setRequestParameter('searchparam', 'search&&a');
-        modConfig::setRequestParameter('pgNr', 123);
+        $this->setRequestParameter('cl', 'cla');
+        $this->setRequestParameter('searchparam', 'search&&a');
+        $this->setRequestParameter('pgNr', 123);
 
 
         $oCfg = $this->getMock('stdclass', array('getConfigParam'));
@@ -258,13 +258,13 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
         $this->assertEquals('cla?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchtag=value:searchtag:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&pgNr=123&', $o->UNITgetRedirectUrl());
 
-        modConfig::setRequestParameter('cl', null);
-        modConfig::setRequestParameter('pgNr', 'a123');
+        $this->setRequestParameter('cl', null);
+        $this->setRequestParameter('pgNr', 'a123');
         $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchtag=value:searchtag:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->UNITgetRedirectUrl());
 
         $this->assertEquals(null, oxRegistry::getSession()->getVariable('_backtoshop'));
 
-        modConfig::setRequestParameter('pgNr', '0');
+        $this->setRequestParameter('pgNr', '0');
         $this->assertEquals('basket?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchtag=value:searchtag:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->UNITgetRedirectUrl());
         $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchtag=value:searchtag:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', oxRegistry::getSession()->getVariable('_backtoshop'));
     }
@@ -297,7 +297,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testGetItemsFromArgsRm()
     {
-        modConfig::setRequestParameter(
+        $this->setRequestParameter(
             'aproducts', array(
                               'abc' => array
                               (
@@ -310,7 +310,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
                               )
                          )
         );
-        modConfig::setRequestParameter('removeBtn', 1);
+        $this->setRequestParameter('removeBtn', 1);
         $o = new oxcmp_basket();
         $this->assertEquals(
             array(
@@ -330,12 +330,12 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testGetItemsFromRequest()
     {
-        modConfig::setRequestParameter('aid', 'b:artid');
-        modConfig::setRequestParameter('anid', 'b:artidn');
-        modConfig::setRequestParameter('am', 'b:am');
-        modConfig::setRequestParameter('sel', 'b:sel');
-        modConfig::setRequestParameter('persparam', array('details' => 'b:persparam'));
-        modConfig::setRequestParameter('bindex', 'bindex');
+        $this->setRequestParameter('aid', 'b:artid');
+        $this->setRequestParameter('anid', 'b:artidn');
+        $this->setRequestParameter('am', 'b:am');
+        $this->setRequestParameter('sel', 'b:sel');
+        $this->setRequestParameter('persparam', array('details' => 'b:persparam'));
+        $this->setRequestParameter('bindex', 'bindex');
 
         $o = new oxcmp_basket();
         $this->assertEquals(
@@ -354,7 +354,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
             $o->UNITgetItems()
         );
 
-        modConfig::setRequestParameter('persparam', 'b:persparam');
+        $this->setRequestParameter('persparam', 'b:persparam');
         $this->assertSame(
             array
             (
@@ -375,13 +375,13 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testGetItemsFromRequestRemoveBtn()
     {
-        modConfig::setRequestParameter('removeBtn', '1');
-        modConfig::setRequestParameter('aid', 'b:artid');
-        modConfig::setRequestParameter('anid', 'b:artidn');
-        modConfig::setRequestParameter('am', 'b:am');
-        modConfig::setRequestParameter('sel', 'b:sel');
-        modConfig::setRequestParameter('persparam', 'b:persparam');
-        modConfig::setRequestParameter('bindex', 'bindex');
+        $this->setRequestParameter('removeBtn', '1');
+        $this->setRequestParameter('aid', 'b:artid');
+        $this->setRequestParameter('anid', 'b:artidn');
+        $this->setRequestParameter('am', 'b:am');
+        $this->setRequestParameter('sel', 'b:sel');
+        $this->setRequestParameter('persparam', 'b:persparam');
+        $this->setRequestParameter('bindex', 'bindex');
 
         $o = new oxcmp_basket();
         $this->assertEquals(
@@ -721,7 +721,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
      */
     public function testIsRootCatChanged_clean()
     {
-        modConfig::getInstance()->setConfigParam("blBasketExcludeEnabled", true);
+        $this->getConfig()->setConfigParam("blBasketExcludeEnabled", true);
 
         $oCmp = oxNew('oxcmp_basket');
         $this->assertFalse($oCmp->isRootCatChanged());
@@ -734,7 +734,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
      */
     public function testIsRootCatChanged_unchanged_session()
     {
-        modConfig::getInstance()->setConfigParam("blBasketExcludeEnabled", true);
+        $this->getConfig()->setConfigParam("blBasketExcludeEnabled", true);
 
         $oCmp = oxNew('oxcmp_basket');
         $this->assertFalse($oCmp->isRootCatChanged());
@@ -765,7 +765,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testInitNormalShop()
     {
-        modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', false);
+        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
 
         $oS = $this->getMock('oxsession', array('getBasketReservations', 'getBasket'));
         $oS->expects($this->never())->method('getBasketReservations');
@@ -779,8 +779,8 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testInitReservationNotTimeouted()
     {
-        modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', true);
-        modConfig::getInstance()->setConfigParam('iBasketReservationCleanPerRequest', 320);
+        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
+        $this->getConfig()->setConfigParam('iBasketReservationCleanPerRequest', 320);
 
         $oBR = $this->getMock('stdclass', array('getTimeLeft', 'discardUnusedReservations'));
         $oBR->expects($this->once())->method('getTimeLeft')->will($this->returnValue(2));
@@ -799,9 +799,9 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testInitReservationTimeouted()
     {
-        modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', true);
+        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
         // also check the default (hardcoded) value is 200, if iBasketReservationCleanPerRequest is 0
-        modConfig::getInstance()->setConfigParam('iBasketReservationCleanPerRequest', 0);
+        $this->getConfig()->setConfigParam('iBasketReservationCleanPerRequest', 0);
 
         $oB = $this->getMock('stdclass', array('deleteBasket', 'getProductsCount'));
         $oB->expects($this->once())->method('deleteBasket')->will($this->returnValue(0));
@@ -830,7 +830,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testExecuteUserChoiceToBasket()
     {
-        $this->setRequestParam('tobasket', true);
+        $this->setRequestParameter('tobasket', true);
 
         $oCB = new oxcmp_basket();
         $this->assertEquals('basket', $oCB->executeuserchoice());

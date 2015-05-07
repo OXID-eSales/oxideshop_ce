@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -98,7 +98,7 @@ class Unit_Admin_DeliverysetPaymentAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_payment_ajax');
         $this->assertEquals("from oxv_oxpayments_de where 1 and oxv_oxpayments_de.oxid not in ( select oxv_oxpayments_de.oxid from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sSynchoxid . "'and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset' )", trim($oView->UNITgetQuery()));
@@ -112,7 +112,7 @@ class Unit_Admin_DeliverysetPaymentAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('deliveryset_payment_ajax');
         $this->assertEquals("from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sOxid . "' and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset'", trim($oView->UNITgetQuery()));
@@ -127,8 +127,8 @@ class Unit_Admin_DeliverysetPaymentAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_payment_ajax');
         $this->assertEquals("from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sOxid . "' and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset' and oxv_oxpayments_de.oxid not in ( select oxv_oxpayments_de.oxid from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sSynchoxid . "'and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset' )", trim($oView->UNITgetQuery()));
@@ -158,8 +158,8 @@ class Unit_Admin_DeliverysetPaymentAjaxTest extends OxidTestCase
     public function testRemovePayFromSetAll()
     {
         $sOxid = '_testDeliverysetPaymentRemoveAll';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
-        $this->getConfig()->setRequestParameter("all", true);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("all", true);
 
         $sSql = "select count(oxobject2payment.oxid) from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sOxid . "' and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset'";
         $oView = oxNew('deliveryset_payment_ajax');
@@ -176,7 +176,7 @@ class Unit_Admin_DeliverysetPaymentAjaxTest extends OxidTestCase
     public function testAddPayToset()
     {
         $sSynchoxid = '_testActionAddPayment';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $sSql = "select count(oxid) from oxobject2payment where oxobjectid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
@@ -196,8 +196,8 @@ class Unit_Admin_DeliverysetPaymentAjaxTest extends OxidTestCase
     public function testAddPayToSetAll()
     {
         $sSynchoxid = '_testActionAddPaymentAll';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
-        $this->getConfig()->setRequestParameter("all", true);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("all", true);
 
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(oxv_oxpayments_de.oxid) from oxv_oxpayments_de where 1 and oxv_oxpayments_de.oxid not in ( select oxv_oxpayments_de.oxid from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sSynchoxid . "'and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset' )");

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -80,7 +80,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteArticleMasterPicture()
     {
-        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
+        $sAbsImageDir = $this->getConfig()->getPictureDir(false);
 
         $aDelPics = array();
         $aDelPics[] = array("sField"    => "oxpic1",
@@ -121,7 +121,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteArticleMasterPicture_skipsMasterPicture()
     {
-        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
+        $sAbsImageDir = $this->getConfig()->getPictureDir(false);
 
         $aDelPics[0] = array("sField"    => "oxpic1",
                              "sDir"      => "generated/product/1/",
@@ -161,7 +161,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteArticleMasterPicture_skipsIfDefinedCustomFields()
     {
-        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
+        $sAbsImageDir = $this->getConfig()->getPictureDir(false);
 
         $aDelPics[0] = array("sField"    => "oxpic1",
                              "sDir"      => "generated/product/1/",
@@ -215,7 +215,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteArticleMasterPicture_emptyPic()
     {
-        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
+        $sAbsImageDir = $this->getConfig()->getPictureDir(false);
 
         //test article
         $oArticle = new oxArticle();
@@ -239,7 +239,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteArticleMasterPicture_usesBasename()
     {
-        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
+        $sAbsImageDir = $this->getConfig()->getPictureDir(false);
 
         $sField = "oxpic1";
         $sDir = "master/product/1/";
@@ -268,7 +268,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteMainIcon()
     {
-        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
+        $sAbsImageDir = $this->getConfig()->getPictureDir(false);
 
         $sField = "oxicon";
         $sDir = "master/product/icon/";
@@ -314,7 +314,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteThumbnail()
     {
-        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
+        $sAbsImageDir = $this->getConfig()->getPictureDir(false);
 
         $sField = "oxthumb";
         $sDir = "master/product/thumb/";
@@ -359,7 +359,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteZoomPicture_dbFieldExists()
     {
-        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
+        $sAbsImageDir = $this->getConfig()->getPictureDir(false);
         oxTestModules::addFunction('oxDbMetaDataHandler', 'fieldExists', '{ return true; }');
 
         $sField = "oxzoom2";
@@ -428,7 +428,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteZoomPicture_usingMasterImage()
     {
-        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
+        $sAbsImageDir = $this->getConfig()->getPictureDir(false);
         oxTestModules::addFunction('oxDbMetaDataHandler', 'fieldExists', '{ return false; }');
 
         $aDelPics[0] = array("sField"    => "oxpic2",
@@ -535,56 +535,60 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
 
     public function testGetAltImageUrlSslAltUrlIsSsl()
     {
-        modConfig::getInstance()->setConfigParam('sAltImageUrl', 'http://alt/image/url');
-        modConfig::getInstance()->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        $config = $this->getMock('oxConfig', array('isSsl'));
+        $config->expects($this->any())->method('isSsl')->will($this->returnValue(true));
 
-        $oCfg = $this->getMock('oxConfig', array('isSsl'));
-        $oCfg->expects($this->any())->method('isSsl')->will($this->returnValue(true));
+        $config->setConfigParam('sAltImageUrl', 'http://alt/image/url');
+        $config->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
 
-        $oPicHandler = $this->getMock('oxPictureHandler', array('getConfig'));
-        $oPicHandler->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
+        $oPicHandler = new oxPictureHandler();
+        $oPicHandler->setConfig($config);
 
         $this->assertEquals('https://ssl-alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg'));
     }
 
     public function testGetAltImageUrlSslAltUrlIsNotSsl()
     {
-        modConfig::getInstance()->setConfigParam('sAltImageUrl', 'http://alt/image/url');
-        modConfig::getInstance()->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        $config = $this->getMock('oxConfig', array('isSsl'));
+        $config->expects($this->any())->method('isSsl')->will($this->returnValue(false));
 
-        $oCfg = $this->getMock('oxConfig', array('isSsl'));
-        $oCfg->expects($this->any())->method('isSsl')->will($this->returnValue(false));
+        $config->setConfigParam('sAltImageUrl', 'http://alt/image/url');
+        $config->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
 
-        $oPicHandler = $this->getMock('oxPictureHandler', array('getConfig'));
-        $oPicHandler->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
+        $oPicHandler = new oxPictureHandler();
+        $oPicHandler->setConfig($config);
 
         $this->assertEquals('http://alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg'));
     }
 
     public function testGetAltImageUrlSslAltUrlForseSsl()
     {
-        modConfig::getInstance()->setConfigParam('sAltImageUrl', 'http://alt/image/url');
-        modConfig::getInstance()->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        $config = $this->getMock('oxConfig', array('isSsl'));
+        $config->expects($this->any())->method('isSsl')->will($this->returnValue(false));
 
-        $oCfg = $this->getMock('oxConfig', array('isSsl'));
-        $oCfg->expects($this->any())->method('isSsl')->will($this->returnValue(false));
+        $config->setConfigParam('sAltImageUrl', 'http://alt/image/url');
+        $config->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
 
-        $oPicHandler = $this->getMock('oxPictureHandler', array('getConfig'));
-        $oPicHandler->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
+        $oPicHandler = new oxPictureHandler();
+        $oPicHandler->setConfig($config);
 
         $this->assertEquals('https://ssl-alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg', true));
     }
 
     public function testGetAltImageUrlSslAltUrlForseNoSsl()
     {
-        modConfig::getInstance()->setConfigParam('sAltImageUrl', 'http://alt/image/url');
-        modConfig::getInstance()->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        $config = $this->getMock('oxConfig', array('isSsl'));
+        $config->expects($this->any())->method('isSsl')->will($this->returnValue(true));
 
-        $oCfg = $this->getMock('oxConfig', array('isSsl'));
-        $oCfg->expects($this->any())->method('isSsl')->will($this->returnValue(true));
+        $config->setConfigParam('sAltImageUrl', 'http://alt/image/url');
+        $config->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
 
-        $oPicHandler = $this->getMock('oxPictureHandler', array('getConfig'));
-        $oPicHandler->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
+        $oPicHandler = new oxPictureHandler();
+        $oPicHandler->setConfig($config);
 
         $this->assertEquals('http://alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg', false));
     }
@@ -643,7 +647,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testGetProductPicUrl()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $sSize = $oConfig->getConfigParam('aDetailImageSizes');
         $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/380_340_75/30-360-back_p1_z_f_th_665.jpg';
 
@@ -658,7 +662,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testGetProductPicUrlNopic()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $sSize = $oConfig->getConfigParam('aDetailImageSizes');
         $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/380_340_75/nopic.jpg';
 

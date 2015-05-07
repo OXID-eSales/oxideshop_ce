@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -50,7 +50,7 @@ class Unit_Admin_ActionsListTest extends OxidTestCase
      */
     public function testPromotionsRender()
     {
-        modConfig::setRequestParameter("displaytype", "testType");
+        $this->setRequestParameter("displaytype", "testType");
 
         // testing..
         $oView = $this->getProxyClass("Actions_List");
@@ -80,15 +80,15 @@ class Unit_Admin_ActionsListTest extends OxidTestCase
         $oView = new Actions_List();
 
         $sQ = " and $sTable.oxactivefrom < '$sNow' and $sTable.oxactiveto > '$sNow' $sAddQ";
-        modConfig::setRequestParameter('displaytype', 1);
+        $this->setRequestParameter('displaytype', 1);
         $this->assertEquals($sQ, $oView->UNITprepareWhereQuery(array(), ""));
 
         $sQ = " and $sTable.oxactivefrom > '$sNow' $sAddQ";
-        modConfig::setRequestParameter('displaytype', 2);
+        $this->setRequestParameter('displaytype', 2);
         $this->assertEquals($sQ, $oView->UNITprepareWhereQuery(array(), ""));
 
         $sQ = " and $sTable.oxactiveto < '$sNow' and $sTable.oxactiveto != '0000-00-00 00:00:00' $sAddQ";
-        modConfig::setRequestParameter('displaytype', 3);
+        $this->setRequestParameter('displaytype', 3);
         $this->assertEquals($sQ, $oView->UNITprepareWhereQuery(array(), ""));
     }
 }

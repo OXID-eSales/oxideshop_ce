@@ -47,9 +47,9 @@ class Unit_Admin_dyntrustedratingsTest extends OxidTestCase
     {
         $sLangAbbr = oxRegistry::getLang()->getLanguageAbbr();
 
-        $this->setRequestParam("confaarrs", array("aTsLangIds" => array($sLangAbbr => "testId")));
-        $this->setRequestParam("confbools", array("blTsWidget" => "true"));
-        $this->setRequestParam("oxid", "testShopId");
+        $this->setRequestParameter("confaarrs", array("aTsLangIds" => array($sLangAbbr => "testId")));
+        $this->setRequestParameter("confbools", array("blTsWidget" => "true"));
+        $this->setRequestParameter("oxid", "testShopId");
         $sPkg = "OXID_ESALES";
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
@@ -72,8 +72,8 @@ class Unit_Admin_dyntrustedratingsTest extends OxidTestCase
      */
     public function testGetServiceWsdl()
     {
-        modConfig::getInstance()->setConfigParam("aTsConfig", array("blTestMode" => false));
-        modConfig::getInstance()->setConfigParam("sTsServiceWsdl", "testWsdlUrl");
+        $this->getConfig()->setConfigParam("aTsConfig", array("blTestMode" => false));
+        $this->getConfig()->setConfigParam("sTsServiceWsdl", "testWsdlUrl");
 
         $oView = new dyn_trusted_ratings();
         $this->assertEquals("testWsdlUrl", $oView->UNITgetServiceWsdl());

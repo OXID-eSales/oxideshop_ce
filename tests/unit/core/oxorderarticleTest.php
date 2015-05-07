@@ -47,7 +47,7 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
         $oArticle->oxarticles__oxtitle = new oxField('testArticleTitle', oxField::T_RAW);
         $oArticle->oxarticles__oxactive = new oxField('1', oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField('10', oxField::T_RAW);
-        $oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
+        $oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
 
         $oArticle->save();
     }
@@ -66,8 +66,8 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
     public function testDelete()
     {
-        modConfig::getInstance()->setConfigParam("blUseStock", 1);
-        modConfig::getInstance()->setConfigParam("blAllowNegativeStock", 'xxx');
+        $this->getConfig()->setConfigParam("blUseStock", 1);
+        $this->getConfig()->setConfigParam("blAllowNegativeStock", 'xxx');
 
         $oOrderArticle = $this->getMock("oxorderarticle", array("updateArticleStock"));
         $oOrderArticle->expects($this->once())->method('updateArticleStock')->with($this->equalTo(999), 'xxx');
@@ -78,9 +78,9 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
     public function testSave()
     {
-        modConfig::getInstance()->setConfigParam("blUseStock", 1);
-        modConfig::getInstance()->setConfigParam("blAllowNegativeStock", 'xxx');
-        modConfig::getInstance()->setConfigParam("blPsBasketReservationEnabled", 0);
+        $this->getConfig()->setConfigParam("blUseStock", 1);
+        $this->getConfig()->setConfigParam("blAllowNegativeStock", 'xxx');
+        $this->getConfig()->setConfigParam("blPsBasketReservationEnabled", 0);
 
         $oOrderArticle = $this->getMock("oxorderarticle", array("updateArticleStock", "isNewOrderItem", "setIsNewOrderItem", '_setOrderFiles'));
         $oOrderArticle->expects($this->once())->method('updateArticleStock')->with($this->equalTo(-999), 'xxx');
@@ -95,9 +95,9 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
     public function testSaveReserved()
     {
-        modConfig::getInstance()->setConfigParam("blUseStock", 1);
-        modConfig::getInstance()->setConfigParam("blAllowNegativeStock", 'xxx');
-        modConfig::getInstance()->setConfigParam("blPsBasketReservationEnabled", 1);
+        $this->getConfig()->setConfigParam("blUseStock", 1);
+        $this->getConfig()->setConfigParam("blAllowNegativeStock", 'xxx');
+        $this->getConfig()->setConfigParam("blPsBasketReservationEnabled", 1);
 
         $oBR = $this->getMock('oxBasketReservation', array('commitArticleReservation'));
         $oBR->expects($this->once())->method('commitArticleReservation')->with($this->equalTo('asd'), $this->equalTo(20));
@@ -127,8 +127,8 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
     public function testCancelOrderArticle()
     {
-        modConfig::getInstance()->setConfigParam("blUseStock", 1);
-        modConfig::getInstance()->setConfigParam("blAllowNegativeStock", 1);
+        $this->getConfig()->setConfigParam("blUseStock", 1);
+        $this->getConfig()->setConfigParam("blAllowNegativeStock", 1);
 
         $oOrderArticle = $this->getMock("oxOrderArticle", array("save", "updateArticleStock"));
         $oOrderArticle->expects($this->once())->method('save')->will($this->returnValue(true));
@@ -305,7 +305,7 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
     public function testSetNewAmountArticleStockControl()
     {
-        modConfig::getInstance()->setConfigParam('blUseStock', true);
+        $this->getConfig()->setConfigParam('blUseStock', true);
 
         // preparing test env.
         $oArticle = new oxArticle();
@@ -326,7 +326,7 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
     public function testSetNewAmountArticleStockControlDerceasingOrderAmount()
     {
-        modConfig::getInstance()->setConfigParam('blUseStock', true);
+        $this->getConfig()->setConfigParam('blUseStock', true);
 
         // preparing test env.
         $oArticle = new oxArticle();
@@ -347,7 +347,7 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
     public function testSetNewAmountArticleStockControlDerceasingOrderAmountToZero()
     {
-        modConfig::getInstance()->setConfigParam('blUseStock', true);
+        $this->getConfig()->setConfigParam('blUseStock', true);
 
         // preparing test env.
         $oArticle = new oxArticle();
@@ -368,7 +368,7 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
     public function testSetNewAmountArticleStockControlDerceasingOrderAmountToBelowZero()
     {
-        modConfig::getInstance()->setConfigParam('blUseStock', true);
+        $this->getConfig()->setConfigParam('blUseStock', true);
 
         // preparing test env.
         $oArticle = new oxArticle();
@@ -558,7 +558,7 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
      */
     public function testUpdateArticleStockWithStockDisabled()
     {
-        modConfig::getInstance()->setConfigParam("blUseStock", 0);
+        $this->getConfig()->setConfigParam("blUseStock", 0);
         $this->_oOrderArticle->updateArticleStock(-3, false);
 
         $oArticle = oxNew("oxarticle");

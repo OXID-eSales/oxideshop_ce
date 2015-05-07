@@ -28,7 +28,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
 
     public function setUp()
     {
-        modConfig::getInstance()->setAdminMode(true);
+        $this->setAdminMode(true);
 
         return parent::setUp();
     }
@@ -52,13 +52,13 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
      */
     public function testSaveConfVars()
     {
-        modConfig::getInstance()->setAdminMode(true);
-        modConfig::setRequestParameter("oxid", "testId");
-        modConfig::setRequestParameter("confbools", array("varnamebool" => true));
-        modConfig::setRequestParameter("confstrs", array("varnamestr" => "string"));
-        modConfig::setRequestParameter("confarrs", array("varnamearr" => "a\nb\nc"));
-        modConfig::setRequestParameter("confaarrs", array("varnameaarr" => "a => b\nc => d"));
-        modConfig::setRequestParameter("confselects", array("varnamesel" => "a"));
+        $this->setAdminMode(true);
+        $this->setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("confbools", array("varnamebool" => true));
+        $this->setRequestParameter("confstrs", array("varnamestr" => "string"));
+        $this->setRequestParameter("confarrs", array("varnamearr" => "a\nb\nc"));
+        $this->setRequestParameter("confaarrs", array("varnameaarr" => "a => b\nc => d"));
+        $this->setRequestParameter("confselects", array("varnamesel" => "a"));
 
         $aTasks[] = "getConfig";
         $aTasks[] = "resetContentCache";
@@ -260,7 +260,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
     public function testLoadConfVars()
     {
         $oTest = new Shop_Config();
-        $aDbConfig = $oTest->loadConfVars(oxRegistry::getConfig()->getShopId(), '');
+        $aDbConfig = $oTest->loadConfVars($this->getConfig()->getShopId(), '');
 
         $this->assertEquals(
             array('vars', 'constraints', 'grouping'),

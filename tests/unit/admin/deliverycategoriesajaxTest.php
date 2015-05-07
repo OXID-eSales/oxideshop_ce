@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -102,7 +102,7 @@ class Unit_Admin_DeliveryCategoriesAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('delivery_categories_ajax');
         $this->assertEquals("from " . $this->getCategoriesViewTable() . "  where  " . $this->getCategoriesViewTable() . ".oxid not in (  select " . $this->getCategoriesViewTable() . ".oxid from oxobject2delivery left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxcategories'  )", trim($oView->UNITgetQuery()));
@@ -116,7 +116,7 @@ class Unit_Admin_DeliveryCategoriesAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('delivery_categories_ajax');
         $this->assertEquals("from oxobject2delivery left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = 'oxcategories'", trim($oView->UNITgetQuery()));
@@ -131,8 +131,8 @@ class Unit_Admin_DeliveryCategoriesAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('delivery_categories_ajax');
         $this->assertEquals("from oxobject2delivery left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = 'oxcategories'  and  " . $this->getCategoriesViewTable() . ".oxid not in (  select " . $this->getCategoriesViewTable() . ".oxid from oxobject2delivery left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxcategories'  )", trim($oView->UNITgetQuery()));
@@ -162,8 +162,8 @@ class Unit_Admin_DeliveryCategoriesAjaxTest extends OxidTestCase
     public function testRemoveCatFromDelAll()
     {
         $sOxid = '_testDeliveryCatRemoveAll';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
-        $this->getConfig()->setRequestParameter("all", true);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("all", true);
 
         $sSql = "select count(oxobject2delivery.oxid) from oxobject2delivery left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = 'oxcategories'";
         $oView = oxNew('delivery_categories_ajax');
@@ -180,7 +180,7 @@ class Unit_Admin_DeliveryCategoriesAjaxTest extends OxidTestCase
     public function testAddCatToDel()
     {
         $sSynchoxid = '_testActionAddCat';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
@@ -200,8 +200,8 @@ class Unit_Admin_DeliveryCategoriesAjaxTest extends OxidTestCase
     public function testAddCatToDelAll()
     {
         $sSynchoxid = '_testActionAddCatAll';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
-        $this->getConfig()->setRequestParameter("all", true);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("all", true);
 
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(" . $this->getCategoriesViewTable() . ".oxid) from " . $this->getCategoriesViewTable() . "  where  " . $this->getCategoriesViewTable() . ".oxid not in (  select " . $this->getCategoriesViewTable() . ".oxid from oxobject2delivery left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxcategories'  )");

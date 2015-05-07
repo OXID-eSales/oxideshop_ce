@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -55,7 +55,7 @@ class Unit_Views_thankyouTest extends OxidTestCase
     /* removing as this function is deprecated as of #0003283
     public function testShowFinalStep()
     {
-        modConfig::getInstance()->setConfigParam( 'blShowFinalStep', true );
+        $this->getConfig()->setConfigParam( 'blShowFinalStep', true );
         $oThankyou = $this->getProxyClass( 'thankyou' );
         $this->assertTrue( $oThankyou->showFinalStep());
     }
@@ -82,37 +82,37 @@ class Unit_Views_thankyouTest extends OxidTestCase
 
     public function testGetIPaymentAccount()
     {
-        modConfig::getInstance()->setConfigParam('iShopID_iPayment_Account', 'testAccount');
+        $this->getConfig()->setConfigParam('iShopID_iPayment_Account', 'testAccount');
         $oThankyou = $this->getProxyClass('thankyou');
         $this->assertEquals('testAccount', $oThankyou->getIPaymentAccount());
     }
 
     public function testGetIPaymentUser()
     {
-        modConfig::getInstance()->setConfigParam('iShopID_iPayment_User', 'testUser');
+        $this->getConfig()->setConfigParam('iShopID_iPayment_User', 'testUser');
         $oThankyou = $this->getProxyClass('thankyou');
         $this->assertEquals('testUser', $oThankyou->getIPaymentUser());
     }
 
     public function testGetIPaymentPassword()
     {
-        modConfig::getInstance()->setConfigParam('iShopID_iPayment_Passwort', 'testPasswort');
+        $this->getConfig()->setConfigParam('iShopID_iPayment_Passwort', 'testPasswort');
         $oThankyou = $this->getProxyClass('thankyou');
         $this->assertEquals('testPasswort', $oThankyou->getIPaymentPassword());
     }
 
     public function testGetTrustedShopId()
     {
-        modConfig::getInstance()->setConfigParam('tsSealActive', 1);
-        modConfig::getInstance()->setConfigParam('tsSealType', array(0 => 'CLASSIC'));
-        modConfig::getInstance()->setConfigParam('iShopID_TrustedShops', array(0 => 'XASASASASASASASASASASASASASASASAS'));
+        $this->getConfig()->setConfigParam('tsSealActive', 1);
+        $this->getConfig()->setConfigParam('tsSealType', array(0 => 'CLASSIC'));
+        $this->getConfig()->setConfigParam('iShopID_TrustedShops', array(0 => 'XASASASASASASASASASASASASASASASAS'));
         $oThankyou = $this->getProxyClass('thankyou');
         $this->assertEquals('XASASASASASASASASASASASASASASASAS', $oThankyou->getTrustedShopId());
     }
 
     public function testGetMailError()
     {
-        modConfig::setRequestParameter('mailerror', 'testShop');
+        $this->setRequestParameter('mailerror', 'testShop');
         $oThankyou = $this->getProxyClass('thankyou');
         $this->assertEquals('testShop', $oThankyou->getMailError());
     }
@@ -163,7 +163,7 @@ class Unit_Views_thankyouTest extends OxidTestCase
         $this->oArticle = $this->getProxyClass('oxarticle');
         $this->oArticle->setId('_testArt');
         $this->oArticle->oxarticles__oxprice = new oxField(15.5, oxField::T_RAW);
-        $this->oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+        $this->oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $this->oArticle->oxarticles__oxtitle = new oxField("test", oxField::T_RAW);
         $this->oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
         $this->oArticle->oxarticles__oxstockflag = new oxField(2, oxField::T_RAW);

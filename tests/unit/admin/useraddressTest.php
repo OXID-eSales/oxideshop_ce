@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,8 +33,8 @@ class Unit_Admin_UserAddressTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", "oxdefaultadmin");
-        modConfig::setRequestParameter("oxaddressid", "testaddressid");
+        $this->setRequestParameter("oxid", "oxdefaultadmin");
+        $this->setRequestParameter("oxaddressid", "testaddressid");
 
         // testing..
         $oView = $this->getMock("User_Address", array("_allowAdminEdit"));
@@ -62,8 +62,8 @@ class Unit_Admin_UserAddressTest extends OxidTestCase
         oxTestModules::addFunction('oxaddress', 'assign', '{ return true; }');
         oxTestModules::addFunction('oxaddress', 'save', '{ throw new Exception( "save" ); }');
 
-        modConfig::setRequestParameter("oxid", "testId");
-        modConfig::setRequestParameter("editval", array("oxaddress__oxid" => "testOxId"));
+        $this->setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("editval", array("oxaddress__oxid" => "testOxId"));
 
         // testing..
         try {
@@ -87,8 +87,8 @@ class Unit_Admin_UserAddressTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxaddress', 'delete', '{ return true; }');
 
-        modConfig::setRequestParameter("oxid", "testId");
-        modConfig::setRequestParameter("editval", array("oxaddress__oxid" => "testOxId"));
+        $this->setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("editval", array("oxaddress__oxid" => "testOxId"));
 
         // testing..
         $oView = $this->getMock("User_Address", array("_allowAdminEdit"));

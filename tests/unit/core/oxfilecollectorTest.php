@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -31,7 +31,7 @@ class Unit_Core_oxFileCollectorTest extends OxidTestCase
         //TODO check adding directories recursively
 
         $oDirReader = oxNew("oxFileCollector");
-        $oDirReader->setBaseDirectory(oxRegistry::getConfig()->getConfigParam("sShopDir"));
+        $oDirReader->setBaseDirectory($this->getConfig()->getConfigParam("sShopDir"));
 
         $oDirReader->addDirectoryFiles('bin/', array('php', 'tpl'));
         $aResultExistingPHP = $oDirReader->getFiles();
@@ -46,7 +46,7 @@ class Unit_Core_oxFileCollectorTest extends OxidTestCase
     public function testAddDirectoryFilesWithoutExtensions()
     {
         $oDirReader = oxNew("oxFileCollector");
-        $oDirReader->setBaseDirectory(oxRegistry::getConfig()->getConfigParam("sShopDir"));
+        $oDirReader->setBaseDirectory($this->getConfig()->getConfigParam("sShopDir"));
 
         $oDirReader->addDirectoryFiles('bin/');
         $aResultExistingAll = $oDirReader->getFiles();
@@ -64,7 +64,7 @@ class Unit_Core_oxFileCollectorTest extends OxidTestCase
     public function testAddFile()
     {
         $oDirReader = oxNew("oxFileCollector");
-        $oDirReader->setBaseDirectory(oxRegistry::getConfig()->getConfigParam("sShopDir"));
+        $oDirReader->setBaseDirectory($this->getConfig()->getConfigParam("sShopDir"));
 
         $oDirReader->addFile('index.php');
         $oDirReader->addFile('bin/nofile.php');

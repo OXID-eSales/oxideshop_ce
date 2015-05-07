@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -55,7 +55,7 @@ class Unit_Core_oxmediaurlTest extends OxidTestCase
     protected function tearDown()
     {
         $this->cleanUpTable('oxmediaurls');
-        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
+        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
         if (file_exists($sFilePath)) {
             unlink($sFilePath);
         }
@@ -192,7 +192,7 @@ class Unit_Core_oxmediaurlTest extends OxidTestCase
 
     public function testGetLink()
     {
-        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
+        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
         $oCfg = $this->getMock('oxConfig', array('isSsl', 'getShopUrl', 'getSslShopUrl'));
         $oCfg->expects($this->any())->method('isSsl')->will($this->returnValue(0));
@@ -272,7 +272,7 @@ class Unit_Core_oxmediaurlTest extends OxidTestCase
 
     public function testDeleteNonUploaded($sOXID = null)
     {
-        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
+        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
         $oMediaUrl = new oxMediaUrl();
         $oMediaUrl->load('_test3');
@@ -285,7 +285,7 @@ class Unit_Core_oxmediaurlTest extends OxidTestCase
 
     public function testDeleteUploaded($sOXID = null)
     {
-        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
+        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
         $oMediaUrl = new oxMediaUrl();
         $oMediaUrl->load('_test3');
@@ -297,12 +297,12 @@ class Unit_Core_oxmediaurlTest extends OxidTestCase
 
     public function testDeleteUploadedIfFullPathAdded($sOXID = null)
     {
-        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
+        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
         $oMediaUrl = new oxMediaUrl();
         $oMediaUrl->load('_test3');
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(true, oxField::T_RAW);
-        $oMediaUrl->oxmediaurls__oxurl = new oxField(modConfig::getInstance()->getShopUrl() . '/out/media/test.jpg', oxField::T_RAW);
+        $oMediaUrl->oxmediaurls__oxurl = new oxField($this->getConfig()->getShopUrl() . '/out/media/test.jpg', oxField::T_RAW);
         $this->assertTrue(file_exists($sFilePath));
         $oMediaUrl->delete();
         $this->assertFalse(file_exists($sFilePath));

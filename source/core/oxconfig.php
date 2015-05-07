@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -316,15 +316,6 @@ class oxConfig extends oxSuperCfg
      */
     public function getConfigParam($sName)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset(modConfig::$unitMOD) && is_object(modConfig::$unitMOD)) {
-                $sValue = modConfig::$unitMOD->getModConfigParam($sName);
-                if ($sValue !== null) {
-                    return $sValue;
-                }
-            }
-        }
-
         $this->init();
 
         if (isset ($this->_aConfigParams[$sName])) {
@@ -366,8 +357,6 @@ class oxConfig extends oxSuperCfg
      * Starts session manager
      *
      * @throws oxConnectionException
-     *
-     * @return null
      */
     public function init()
     {
@@ -389,8 +378,6 @@ class oxConfig extends oxSuperCfg
 
         try {
             $sShopID = $this->getShopId();
-
-
             $blConfigLoaded = $this->_loadVarsFromDb($sShopID);
             // loading shop config
             if (empty($sShopID) || !$blConfigLoaded) {
@@ -431,9 +418,9 @@ class oxConfig extends oxSuperCfg
             $this->_oStart = new oxStart();
             $this->_oStart->appInit();
         } catch (oxConnectionException $oEx) {
-            return $this->_handleDbConnectionException($oEx);
+            $this->_handleDbConnectionException($oEx);
         } catch (oxCookieException $oEx) {
-            return $this->_handleCookieException($oEx);
+            $this->_handleCookieException($oEx);
         }
     }
 
@@ -636,24 +623,6 @@ class oxConfig extends oxSuperCfg
      */
     public function getRequestParameter($sName, $blRaw = false)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset(modConfig::$unitMOD) && is_object(modConfig::$unitMOD)) {
-                try {
-                    $sValue = modConfig::getRequestParameter($sName, $blRaw);
-
-                    // TODO: remove this after special chars concept implementation
-                    $blIsAdmin = modConfig::getInstance()->isAdmin() || modSession::getInstance()->getVariable("blIsAdmin");
-                    if ($sValue !== null && !$blIsAdmin && (!$blRaw || is_array($blRaw))) {
-                        $this->checkParamSpecialChars($sValue, $blRaw);
-                    }
-
-                    return $sValue;
-                } catch (Exception $e) {
-                    // if exception is thrown, use default
-                }
-            }
-        }
-
         $sValue = null;
 
         if (isset($_POST[$sName])) {
@@ -674,7 +643,7 @@ class oxConfig extends oxSuperCfg
     /**
      * Returns uploaded file parameter
      *
-     * @param array $sParamName param name
+     * @param string $sParamName param name
      *
      * @return null
      */
@@ -1052,14 +1021,6 @@ class oxConfig extends oxSuperCfg
      */
     public function getActShopCurrencyObject()
     {
-        //caching currency as it does not change through the script
-        //but not for unit tests as ther it changes always
-        if (!defined('OXID_PHP_UNIT')) {
-            if (!is_null($this->_oActCurrencyObject)) {
-                return $this->_oActCurrencyObject;
-            }
-        }
-
         $iCur = $this->getShopCurrency();
         $aCurrencies = $this->getCurrencyArray();
         if (!isset($aCurrencies[$iCur])) {
@@ -1584,19 +1545,6 @@ class oxConfig extends oxSuperCfg
         $aConfCurrencies = $this->getConfigParam('aCurrencies');
         if (!is_array($aConfCurrencies)) {
             return array();
-        }
-
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset(modConfig::$unitMOD) && is_object(modConfig::$unitMOD)) {
-                try {
-                    $aAltCurrencies = modConfig::getInstance()->getConfigParam('modaCurrencies');
-                    if (isset($aAltCurrencies)) {
-                        $aConfCurrencies = $aAltCurrencies;
-                    }
-                } catch (Exception $e) {
-                    // if exception is thrown, use default
-                }
-            }
         }
 
         // processing currency configuration data
@@ -2204,9 +2152,7 @@ class oxConfig extends oxSuperCfg
     protected function _handleDbConnectionException($oEx)
     {
         $oEx->debugOut();
-        if (defined('OXID_PHP_UNIT')) {
-            return false;
-        } elseif (0 != $this->iDebug) {
+        if (0 != $this->getConfigParam('iDebug')) {
             oxRegistry::getUtils()->showMessageAndExit($oEx->getString());
         } else {
             header("HTTP/1.1 500 Internal Server Error");

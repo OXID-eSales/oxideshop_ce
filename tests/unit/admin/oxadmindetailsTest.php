@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -178,9 +178,9 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $oObject = new stdClass;
         $oObject->oField = new oxField('test [{$oViewConf->getCurrentHomeDir()}]');
 
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
         $myConfig->setConfigParam("bl_perfParseLongDescinSmarty", false);
-        $sUrl = modConfig::getInstance()->getCurrentShopURL();
+        $sUrl = $this->getConfig()->getCurrentShopURL();
 
         $oAdminDetails = new oxadmindetails();
         $this->assertEquals("test $sUrl", $oAdminDetails->UNITgetEditValue($oObject, 'oField'));
@@ -210,7 +210,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
      */
     public function testGetTextEditor_cssInclude()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $oAdminDetails = new oxadmindetails();
         $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle', 'oxid_ie6.css');
 
@@ -227,7 +227,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
      */
     public function testGetTextEditor_cssIncludeFormerTemplates()
     {
-        $oConfig = modConfig::getInstance();
+        $oConfig = $this->getConfig();
         $oConfig->setConfigParam("blFormerTplSupport", true);
 
         $oAdminDetails = new oxadmindetails();
@@ -306,9 +306,9 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $oListItem->oxcontents__oxloadid = new oxField("_testLoadId");
         $oListItem->save();
 
-        modConfig::setRequestParameter('oxid', '_testId');
-        modConfig::setRequestParameter('setfolder', 'neu');
-        modConfig::setRequestParameter('folderclass', 'oxcontent');
+        $this->setRequestParameter('oxid', '_testId');
+        $this->setRequestParameter('setfolder', 'neu');
+        $this->setRequestParameter('folderclass', 'oxcontent');
 
         $oAdminDetails = $this->getProxyClass('oxadmindetails');
         $oAdminDetails->setNonPublicVar('_oList', $oListItem);
@@ -331,9 +331,9 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $oListItem->oxcontents__oxfolder = new oxField('neu', oxField::T_RAW);
         $oListItem->save();
 
-        modConfig::setRequestParameter('oxid', '_testId');
-        modConfig::setRequestParameter('setfolder', 'CMSFOLDER_NONE');
-        modConfig::setRequestParameter('folderclass', 'oxcontent');
+        $this->setRequestParameter('oxid', '_testId');
+        $this->setRequestParameter('setfolder', 'CMSFOLDER_NONE');
+        $this->setRequestParameter('folderclass', 'oxcontent');
 
         $oAdminDetails = $this->getProxyClass('oxadmindetails');
 

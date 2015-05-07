@@ -121,7 +121,7 @@ class Unit_Admin_ArticleAttributeAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testArticleAttributeOxid';
-        modConfig::setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("oxid", $sOxid);
         $oView = oxNew('article_attribute_ajax');
         $this->assertEquals("from " . $this->getObject2AttributeViewTable() . " left join " . $this->getAttributeViewTable() . " on " . $this->getAttributeViewTable() . ".oxid=" . $this->getObject2AttributeViewTable() . ".oxattrid  where " . $this->getObject2AttributeViewTable() . ".oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
     }
@@ -149,8 +149,8 @@ class Unit_Admin_ArticleAttributeAjaxTest extends OxidTestCase
     public function testRemoveAttrAll()
     {
         $sOxid = '_testObjectId2';
-        modConfig::setRequestParameter("oxid", $sOxid);
-        modConfig::setRequestParameter("all", true);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("all", true);
         $oView = oxNew('article_attribute_ajax');
 
         $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='$sOxid'"));
@@ -167,7 +167,7 @@ class Unit_Admin_ArticleAttributeAjaxTest extends OxidTestCase
     {
         $oView = $this->getMock("article_attribute_ajax", array("_getActionIds"));
         $sSynchOxid = '_testObjectIdAdd1';
-        modConfig::setRequestParameter("synchoxid", $sSynchOxid);
+        $this->setRequestParameter("synchoxid", $sSynchOxid);
 
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testAttributeAdd1', '_testAttributeAdd2')));
 
@@ -184,8 +184,8 @@ class Unit_Admin_ArticleAttributeAjaxTest extends OxidTestCase
     public function testAddAttrAll()
     {
         $sSynchOxid = '_testObjectIdAdd1';
-        modConfig::setRequestParameter("synchoxid", $sSynchOxid);
-        modConfig::setRequestParameter("all", true);
+        $this->setRequestParameter("synchoxid", $sSynchOxid);
+        $this->setRequestParameter("all", true);
 
         $iCount = oxDb::getDb()->getOne("select count(oxid) from " . $this->getAttributeViewTable() . " where " . $this->getAttributeViewTable() . ".oxid not in ( select " . $this->getObject2AttributeViewTable() . ".oxattrid from " . $this->getObject2AttributeViewTable() . " left join " . $this->getAttributeViewTable() . " on " . $this->getAttributeViewTable() . ".oxid=" . $this->getObject2AttributeViewTable() . ".oxattrid  where " . $this->getObject2AttributeViewTable() . ".oxobjectid = '$sSynchOxid' )");
         $this->assertGreaterThan(0, $iCount);
@@ -206,9 +206,9 @@ class Unit_Admin_ArticleAttributeAjaxTest extends OxidTestCase
         $sAttrOxid = '_testAttributeSaveAttr';
         $sAttrValue = '_testAttrValue';
 
-        modConfig::setRequestParameter("oxid", $sOxid);
-        modConfig::setRequestParameter("attr_oxid", $sAttrOxid);
-        modConfig::setRequestParameter("attr_value", $sAttrValue);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("attr_oxid", $sAttrOxid);
+        $this->setRequestParameter("attr_value", $sAttrValue);
 
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxvalue='$sAttrValue'"));
 

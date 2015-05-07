@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
-        $sShopId = modConfig::getInstance()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
 
         $sView = getViewName('oxactions');
 
@@ -63,7 +63,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
         $sDateFrom = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() - 50);
-        $sShopId = modConfig::getInstance()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
 
         $sView = getViewName('oxactions');
 
@@ -87,7 +87,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
-        $sShopId = modConfig::getInstance()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
 
         $sView = getViewName('oxactions');
 
@@ -111,7 +111,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
-        $sShopId = modConfig::getInstance()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
 
         $sView = getViewName('oxactions');
 
@@ -136,7 +136,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $sFut = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() + 50));
         $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
-        $sShopId = modConfig::getInstance()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
 
         $sView = getViewName('oxactions');
 
@@ -220,7 +220,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
      */
     public function testAreAnyActivePromotions()
     {
-        $sShopId = modConfig::getInstance()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
         $sView = getViewName('oxactions');
         $sSql = "select 1 from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' limit 1";
         modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return $sql === "' . $sSql . '";'));
@@ -241,7 +241,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
-        $sShopId = modConfig::getInstance()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
 
         $sView = getViewName('oxactions');
         $oL = $this->getMock('oxActionList', array('selectString', '_getUserGroupFilter'));

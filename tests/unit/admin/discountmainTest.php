@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -46,7 +46,7 @@ class Unit_Admin_DiscountMainTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction("oxdiscount", "isDerived", "{return true;}");
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Discount_Main();
@@ -63,7 +63,7 @@ class Unit_Admin_DiscountMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Discount_Main();
@@ -82,7 +82,7 @@ class Unit_Admin_DiscountMainTest extends OxidTestCase
     {
         // testing..
         oxTestModules::addFunction('oxdiscount', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
+        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
@@ -105,7 +105,7 @@ class Unit_Admin_DiscountMainTest extends OxidTestCase
     {
         // testing..
         oxTestModules::addFunction('oxdiscount', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
+        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
@@ -132,7 +132,7 @@ class Unit_Admin_DiscountMainTest extends OxidTestCase
 
         $oTestDiscount = new oxdiscount();
         $oTestDiscount->setId("_testDiscountId");
-        $oTestDiscount->oxdiscount__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId());
+        $oTestDiscount->oxdiscount__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oTestDiscount->oxdiscount__oxactive = new oxField(1);
         $oTestDiscount->oxdiscount__oxtitle = new oxField("Test");
         $oTestDiscount->oxdiscount__oxamount = new oxField(1);
@@ -146,15 +146,15 @@ class Unit_Admin_DiscountMainTest extends OxidTestCase
         $oView = $this->getProxyClass("Discount_Main");
 
         $oView->setNonPublicVar("_iEditLang", 0);
-        modConfig::setRequestParameter("oxid", '-1');
+        $this->setRequestParameter("oxid", '-1');
         $this->assertEquals(" -- ", $oView->getItemDiscountProductTitle());
 
         $oView->setNonPublicVar("_iEditLang", 0);
-        modConfig::setRequestParameter("oxid", "_testDiscountId");
+        $this->setRequestParameter("oxid", "_testDiscountId");
         $this->assertEquals("$sId $sTitleDe", $oView->getItemDiscountProductTitle());
 
         $oView->setNonPublicVar("_iEditLang", 1);
-        modConfig::setRequestParameter("oxid", "_testDiscountId");
+        $this->setRequestParameter("oxid", "_testDiscountId");
         $this->assertEquals("$sId $sTitleEn", $oView->getItemDiscountProductTitle());
     }
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -47,7 +47,7 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
         parent::setUp();
         $oArticle = new oxarticle();
         $oArticle->setId('xxx');
-        $oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+        $oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('2000', oxField::T_RAW);
         $oArticle->oxarticles__oxvarselect = new oxField('yyy', oxField::T_RAW);
         $oArticle->oxarticles__oxtitle = new oxField('xxx', oxField::T_RAW);
@@ -241,7 +241,7 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
 
     public function testGetArticleSelectListTesting()
     {
-        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', true);
+        $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', true);
 
         $aTest = array(0, 1);
 

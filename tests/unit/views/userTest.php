@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -65,7 +65,7 @@ class Unit_Views_userTest extends OxidTestCase
         $sTable = getViewName('oxuser');
         $iLastCustNr = ( int ) $myDB->getOne('select max( oxcustnr ) from ' . $sTable) + 1;
         $this->_oUser = oxNew('oxuser');
-        $this->_oUser->oxuser__oxshopid = new oxField(modConfig::getInstance()->getShopId(), oxField::T_RAW);
+        $this->_oUser->oxuser__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
         $this->_oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
         $this->_oUser->oxuser__oxrights = new oxField('user', oxField::T_RAW);
         $this->_oUser->oxuser__oxusername = new oxField('test@oxid-esales.com', oxField::T_RAW);
@@ -80,28 +80,28 @@ class Unit_Views_userTest extends OxidTestCase
 
     public function testGetMustFillFields()
     {
-        modConfig::getInstance()->setConfigParam('aMustFillFields', array("bb" => "aa"));
+        $this->getConfig()->setConfigParam('aMustFillFields', array("bb" => "aa"));
         $oUserView = new user();
         $this->assertEquals(array("aa" => "bb"), $oUserView->getMustFillFields());
     }
 
     public function testGetShowNoRegOption()
     {
-        modConfig::getInstance()->setConfigParam('blOrderDisWithoutReg', true);
+        $this->getConfig()->setConfigParam('blOrderDisWithoutReg', true);
         $oUserView = new user();
         $this->assertFalse($oUserView->getShowNoRegOption());
     }
 
     public function testGetLoginOption()
     {
-        modConfig::setRequestParameter('option', 1);
+        $this->setRequestParameter('option', 1);
         $oUserView = new user();
         $this->assertEquals(1, $oUserView->getLoginOption());
     }
 
     public function testGetLoginOptionIfNotLogedIn()
     {
-        modConfig::setRequestParameter('option', 2);
+        $this->setRequestParameter('option', 2);
         $oUserView = new user();
         $this->assertEquals(0, $oUserView->getLoginOption());
     }
@@ -125,7 +125,7 @@ class Unit_Views_userTest extends OxidTestCase
     public function testGetOrderRemarkFromPost()
     {
         // gettin order remark from post (when not logged in)
-        modConfig::setRequestParameter('order_remark', 'test');
+        $this->setRequestParameter('order_remark', 'test');
 
         // get user returns false (not logged in)
         $oUserView = $this->getMock('user', array('getUser'));
@@ -147,7 +147,7 @@ class Unit_Views_userTest extends OxidTestCase
 
     public function testIsNewsSubscribed()
     {
-        modConfig::setRequestParameter('blnewssubscribed', null);
+        $this->setRequestParameter('blnewssubscribed', null);
         $oUserView = new user();
         $this->assertFalse($oUserView->isNewsSubscribed());
     }
@@ -189,7 +189,7 @@ class Unit_Views_userTest extends OxidTestCase
 
     public function testRenderDoesNotCleanReservationsIfOff()
     {
-        modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', false);
+        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
 
         $oS = $this->getMock('oxsession', array('getBasketReservations'));
         $oS->expects($this->never())->method('getBasketReservations');
@@ -202,7 +202,7 @@ class Unit_Views_userTest extends OxidTestCase
 
     public function testRenderDoesCleanReservationsIfOn()
     {
-        modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', true);
+        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
 
         $oR = $this->getMock('stdclass', array('renewExpiration'));
         $oR->expects($this->once())->method('renewExpiration')->will($this->evalFunction('{throw new Exception("call is ok");}'));
@@ -228,8 +228,8 @@ class Unit_Views_userTest extends OxidTestCase
         oxTestModules::addFunction('oxutils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new Exception($url);}');
         modInstances::addMod('oxutils', oxNew('oxutils'));
 
-        modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', true);
-        modConfig::setRequestParameter('sslredirect', 'forced');
+        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
+        $this->setRequestParameter('sslredirect', 'forced');
 
         $oR = $this->getMock('stdclass', array('renewExpiration'));
         $oR->expects($this->once())->method('renewExpiration')->will($this->returnValue(null));
@@ -247,7 +247,7 @@ class Unit_Views_userTest extends OxidTestCase
         try {
             $oO->render();
         } catch (Exception $e) {
-            $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL() . 'cl=basket', $e->getMessage());
+            $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=basket', $e->getMessage());
 
             return;
         }
@@ -262,7 +262,7 @@ class Unit_Views_userTest extends OxidTestCase
      */
     public function testRenderFillsFormWithFbUserData_FbConnectDisabled()
     {
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
         $myConfig->setConfigParam("bl_showFbConnect", false);
 
         $oView = $this->getMock("user", array("_fillFormWithFacebookData"));
@@ -278,7 +278,7 @@ class Unit_Views_userTest extends OxidTestCase
      */
     public function testRenderFillsFormWithFbUserData_FbConnectEnabledNoUser()
     {
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
         $myConfig->setConfigParam("bl_showFbConnect", true);
 
         $oView = $this->getMock("user", array("_fillFormWithFacebookData", "getUser"));
@@ -295,7 +295,7 @@ class Unit_Views_userTest extends OxidTestCase
      */
     public function testRenderFillsFormWithFbUserData_FbConnectEnabledUserConnected()
     {
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
         $myConfig->setConfigParam("bl_showFbConnect", true);
         $oUser = new oxUser();
 
@@ -349,7 +349,7 @@ class Unit_Views_userTest extends OxidTestCase
 
     public function testIsDownloadableProductWarning()
     {
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
         $myConfig->setConfigParam("blEnableDownloads", true);
 
         $oB = $this->getMock('oxbasket', array('hasDownloadableProducts'));
@@ -366,7 +366,7 @@ class Unit_Views_userTest extends OxidTestCase
 
     public function testISDownloadableProductWarningFalse()
     {
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
         $myConfig->setConfigParam("blEnableDownloads", true);
 
         $oS = $this->getMock('oxsession', array('getBasket'));
@@ -380,7 +380,7 @@ class Unit_Views_userTest extends OxidTestCase
 
     public function testIsDownloadableProductWarningFeatureOff()
     {
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
         $myConfig->setConfigParam("blEnableDownloads", false);
 
         $oB = new oxBasket();
@@ -423,6 +423,6 @@ class Unit_Views_userTest extends OxidTestCase
         $this->setConfigParam('blnewssubscribed', true);
 
         $oUser = new User();
-        $this->assertEquals(oxRegistry::getConfig()->getRequestParameter('blnewssubscribed'), $oUser->modifyBillAddress());
+        $this->assertEquals($this->getRequestParameter('blnewssubscribed'), $oUser->modifyBillAddress());
     }
 }

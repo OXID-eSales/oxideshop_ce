@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Views_oxcmpLangTest extends OxidTestCase
     {
         parent::setUp();
 
-        modConfig::getInstance();
+        $this->getConfig();
         modSession::getInstance();
         oxTestModules::addFunction('oxutils', 'setseoact', '{oxRegistry::getUtils()->_blSeoIsActive = $aA[0];}');
         oxNew('oxutils')->setseoact(false);
@@ -50,8 +50,6 @@ class Unit_Views_oxcmpLangTest extends OxidTestCase
     protected function tearDown()
     {
         oxRegistry::getUtils()->seoIsActive(true);
-        modConfig::getInstance()->cleanup();
-        modSession::getInstance()->cleanup();
         parent::tearDown();
 
     }
@@ -64,14 +62,14 @@ class Unit_Views_oxcmpLangTest extends OxidTestCase
         $oView = new oxubase();
         $oView->setClassName('basket');
         $oView->setFncName('addVoucher');
-        $oConfig = modConfig::getInstance();
+        $oConfig = $this->getConfig();
         $oConfig->setActiveView($oView);
         $oLangView->setParent($oView);
         $oLangView->setConfig($oConfig);
         $oLangView->init();
         $oLang = $oLangView->render();
-        $sExpLink0 = modConfig::getInstance()->getShopCurrentURL(0) . "cl=basket";
-        $sExpLink1 = modConfig::getInstance()->getShopCurrentURL(0) . "cl=basket&amp;lang=1";
+        $sExpLink0 = $this->getConfig()->getShopCurrentURL(0) . "cl=basket";
+        $sExpLink1 = $this->getConfig()->getShopCurrentURL(0) . "cl=basket&amp;lang=1";
 
         $this->assertEquals($sExpLink0, $oLang[0]->link);
         $this->assertEquals($sExpLink1, $oLang[1]->link);
@@ -84,14 +82,14 @@ class Unit_Views_oxcmpLangTest extends OxidTestCase
         $oView = new oxubase();
         $oView->setClassName('basket');
         $oView->setFncName('changebasket');
-        $oConfig = modConfig::getInstance();
+        $oConfig = $this->getConfig();
         $oConfig->setActiveView($oView);
         $oLangView->setParent($oView);
         $oLangView->setConfig($oConfig);
         $oLangView->init();
         $oLang = $oLangView->render();
-        $sExpLink0 = modConfig::getInstance()->getShopCurrentURL(0) . "cl=basket&amp;fnc=changebasket";
-        $sExpLink1 = modConfig::getInstance()->getShopCurrentURL(0) . "cl=basket&amp;fnc=changebasket&amp;lang=1";
+        $sExpLink0 = $this->getConfig()->getShopCurrentURL(0) . "cl=basket&amp;fnc=changebasket";
+        $sExpLink1 = $this->getConfig()->getShopCurrentURL(0) . "cl=basket&amp;fnc=changebasket&amp;lang=1";
 
         $this->assertEquals($sExpLink0, $oLang[0]->link);
         $this->assertEquals($sExpLink1, $oLang[1]->link);

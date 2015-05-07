@@ -304,7 +304,7 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
     public function testGetCacheFileName()
     {
         $oSubj = $this->getProxyClass("oxUtilsObject");
-        $sBaseShop = oxRegistry::getConfig()->getBaseShopId();
+        $sBaseShop = $this->getConfig()->getBaseShopId();
 
         $sExpt = "config." . $sBaseShop . ".testval.txt";
         $this->assertEquals($sExpt, basename($oSubj->UNITgetCacheFileName("testVal")));

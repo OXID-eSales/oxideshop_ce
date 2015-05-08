@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -1307,8 +1307,8 @@ class oxUBase extends oxView
         } elseif (($iSessArtPerPage = $oSession->getVariable('_artperpage')) && is_numeric($iSessArtPerPage)) {
             // M45 Possibility to push any "Show articles per page" number parameter
             $iNrofCatArticles = (in_array($iSessArtPerPage, $aNrofCatArticles)) ? $iSessArtPerPage : $iNrofCatArticles;
-            $oViewConf->setViewConfigParam('iartPerPage', $iSessArtPerPage);
-            $iNrofCatArticles = $iSessArtPerPage;
+            $oViewConf->setViewConfigParam('iartPerPage', $iNrofCatArticles);
+            $oSession->setVariable('_artperpage', $iNrofCatArticles);
         } else {
             $oViewConf->setViewConfigParam('iartPerPage', $iNrofCatArticles);
         }

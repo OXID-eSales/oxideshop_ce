@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -369,10 +369,7 @@ class oxUtils extends oxSuperCfg
         startProfile('fround');
 
         //cached currency precision, this saves about 1% of execution time
-        $iCurPrecision = null;
-        if (!defined('OXID_PHP_UNIT')) {
-            $iCurPrecision = $this->_iCurPrecision;
-        }
+        $iCurPrecision = $this->_iCurPrecision;
 
         if (is_null($iCurPrecision)) {
             if (!$oCur) {
@@ -1095,10 +1092,6 @@ class oxUtils extends oxSuperCfg
             //do nothing else to make sure the redirect takes place
         }
 
-        if (defined('OXID_PHP_UNIT')) {
-            return;
-        }
-
         $this->showMessageAndExit('');
     }
 
@@ -1114,10 +1107,6 @@ class oxUtils extends oxSuperCfg
     {
         $this->getSession()->freeze();
         $this->commitFileCache();
-
-        if (defined('OXID_PHP_UNIT')) {
-            return;
-        }
 
 
         exit($sMsg);

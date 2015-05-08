@@ -108,12 +108,18 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testShowMessageAndExit()
     {
+        // This Exception is used to avoid exit() in method showMessageAndExit, which would stop running tests.
+        $this->setExpectedException(
+            'Exception', 'Stop process before PHP exit() is called.'
+        );
         $oSession = $this->getMock("oxSession", array("freeze"));
         $oSession->expects($this->once())->method('freeze');
 
         $oUtils = $this->getMock("oxUtils", array("getSession", "commitFileCache"));
         $oUtils->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
-        $oUtils->expects($this->once())->method('commitFileCache');
+        $oUtils->expects($this->once())
+            ->method('commitFileCache')
+            ->will($this->throwException(new Exception('Stop process before PHP exit() is called.')));
 
         $oUtils->showMessageAndExit("");
     }
@@ -1021,7 +1027,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $oSession = $this->getMock('oxsession', array('freeze'));
         $oSession->expects($this->once())->method('freeze');
 
-        $oUtils = $this->getMock('oxutils', array('_simpleRedirect', 'getSession'));
+        $oUtils = $this->getMock('oxutils', array('_simpleRedirect', 'getSession', 'showMessageAndExit'));
         $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url?redirected=1'));
         $oUtils->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
         $oUtils->redirect('url');
@@ -1049,7 +1055,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $oSession->expects($this->any())->method('freeze');
 
         // test also any other to redirect only temporary
-        $oUtils = $this->getMock('oxutils', array('_simpleRedirect', 'getSession'));
+        $oUtils = $this->getMock('oxutils', array('_simpleRedirect', 'getSession', 'showMessageAndExit'));
         $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url'), $this->equalTo($sHeader));
         $oUtils->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
         $oUtils->redirect('url', false, $iCode);
@@ -1069,7 +1075,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testRedirectWithEncodedEntities()
     {
-        $oUtils = $this->getMock('oxutils', array('_simpleRedirect'));
+        $oUtils = $this->getMock('oxutils', array('_simpleRedirect', 'showMessageAndExit'));
         $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url?param1=1&param2=2&param3=3&redirected=1'));
         $oUtils->redirect('url?param1=1&param2=2&amp;param3=3');
     }

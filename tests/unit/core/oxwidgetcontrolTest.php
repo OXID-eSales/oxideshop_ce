@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -47,8 +47,6 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
 
     /**
      * Testing oxShopControl::_runOnce()
-     *
-     * @return null
      */
     public function testRunOnce()
     {
@@ -56,6 +54,9 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
 
         // if _runOnce() will be executed, this param will be set to true
         $this->setSessionParam("blRunOnceExecuted", false);
+
+        $oUtilsStub = $this->getMock('oxUtils', array('showMessageAndExit'));
+        oxRegistry::set('oxUtils', $oUtilsStub);
 
         $oReverseProxyBackend = $this->getMock("stdClass", array("isActive"));
         $oReverseProxyBackend->expects($this->any())->method('isActive')->will($this->returnValue(true));

@@ -481,26 +481,35 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $this->assertEquals('\/ß[]~ä#-', $oLang->translateString("\/ß[]~ä#-"));
     }
 
-    public function testFormatCurrency()
+    public function testFormatsCurrencyUsingDefaultValues()
     {
-        $oLang = new oxLang();
-
-        // using default curr
+        /** @var oxLang $oLang */
+        $oLang = oxNew('oxLang');
         $sFormatted = $oLang->formatCurrency(10322.324);
-        $this->assertEquals($sFormatted, '10.322,32');
 
-        // using default curr by passing it
+        $this->assertEquals($sFormatted, '10.322,32');
+    }
+
+    public function testFormatsCurrencyByPassingCurrencyObject()
+    {
+        /** @var oxLang $oLang */
+        $oLang = oxNew('oxLang');
         $oActCur = $this->getConfig()->getActShopCurrencyObject();
         $sFormatted = $oLang->formatCurrency(10322.324, $oActCur);
-        $this->assertEquals($sFormatted, '10.322,32');
 
-        // using simulated curr
+        $this->assertEquals($sFormatted, '10.322,32');
+    }
+
+    public function testFormatsCurrencyUsingSimulatedCurrencyObject()
+    {
+        /** @var oxLang $oLang */
+        $oLang = oxNew('oxLang');
         $oActCur = new stdClass();
         $oActCur->decimal = 3;
         $oActCur->dec = '~';
         $oActCur->thousand = '#';
-
         $sFormatted = $oLang->formatCurrency(10322.326, $oActCur);
+
         $this->assertEquals($sFormatted, "10#322~326");
     }
 

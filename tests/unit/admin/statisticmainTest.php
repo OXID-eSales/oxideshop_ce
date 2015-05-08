@@ -191,13 +191,16 @@ class Unit_Admin_StatisticMainTest extends OxidTestCase
 
         // Mock oxStatistics. oxStatistics method getReports will return array of files to generate report from.
         $sSomeClassName = 'oxSomeClass';
-        $aAllreports = array($sSomeClassName . '.php');
+        $aAllReports = array($sSomeClassName . '.php');
         $oStatistic = $this->getMock('oxStatistic', array('getReports', 'load'));
         // Id load with test id getReports() return corect value.
         $oStatistic->expects($this->once())->method('load')->with('_test_id');
-        $oStatistic->expects($this->once())->method('getReports')->will($this->returnValue($aAllreports));
+        $oStatistic->expects($this->once())->method('getReports')->will($this->returnValue($aAllReports));
         // Mock oxNew to return mocked oxStatistics
         oxTestModules::addModuleObject('oxstatistic', $oStatistic);
+
+        $oUtilsStub = $this->getMock('oxUtils', array('showMessageAndExit'));
+        oxRegistry::set('oxUtils', $oUtilsStub);
 
         // Mock some object to chek if it is called when returned from oxStatistics method getReports.
         $sTemplateName = 'somefile.tpl';

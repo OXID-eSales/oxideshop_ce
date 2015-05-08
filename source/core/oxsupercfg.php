@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -102,14 +102,6 @@ class oxSuperCfg
      */
     public function getConfig()
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset($this->unitCustModConf)) {
-                return $this->unitCustModConf;
-            }
-
-            return oxRegistry::getConfig();
-        }
-
         if (self::$_oConfig == null) {
             self::$_oConfig = oxRegistry::getConfig();
         }
@@ -126,12 +118,6 @@ class oxSuperCfg
      */
     public function setConfig($oConfig)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            $this->unitCustModConf = $oConfig;
-
-            return;
-        }
-
         self::$_oConfig = $oConfig;
     }
 
@@ -142,14 +128,6 @@ class oxSuperCfg
      */
     public function getSession()
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset($this->unitCustModSess)) {
-                return $this->unitCustModSess;
-            }
-
-            return oxRegistry::getSession();
-        }
-
         if (self::$_oSession == null) {
             self::$_oSession = oxRegistry::getSession();
         }
@@ -166,12 +144,6 @@ class oxSuperCfg
      */
     public function setSession($oSession)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            $this->unitCustModSess = $oSession;
-
-            return;
-        }
-
         self::$_oSession = $oSession;
     }
 
@@ -182,18 +154,6 @@ class oxSuperCfg
      */
     public function getUser()
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset($this->unitCustModUser)) {
-                return $this->unitCustModUser;
-            }
-            $oUser = oxNew('oxuser');
-            if ($oUser->loadActiveUser()) {
-                return $oUser;
-            }
-
-            return false;
-        }
-
         if (self::$_oActUser === null) {
             self::$_oActUser = false;
             $oUser = oxNew('oxuser');
@@ -214,12 +174,6 @@ class oxSuperCfg
      */
     public function setUser($oUser)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            $this->unitCustModUser = $oUser;
-
-            return;
-        }
-
         self::$_oActUser = $oUser;
     }
 

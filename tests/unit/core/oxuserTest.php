@@ -143,9 +143,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
         oxRemClassModule('Unit_oxuserTest_oxUtilsServer2');
         oxRemClassModule('oxEmailHelper');
 
-        $oGroup = new oxgroups();
-        $oGroup->delete('_testGroup');
-
         // removing users
         foreach ($this->_aUsers as $sUserId => $oUser) {
             /** @var oxUser $oUser */
@@ -1989,7 +1986,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
         oxEmailHelper::$blRetValue = true;
         oxAddClassModule('oxEmailHelper', 'oxemail');
 
-        $oConfig = $this->getMock('oxconfig');
+        $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blOrderOptInEmail', true);
 
         $oSubscription = $this->getMock('oxnewssubscribed', array('getOptInStatus', 'setOptInStatus'));
@@ -2013,7 +2010,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
         oxTestModules::addModuleObject("oxemail", $oEmail);
 
-        $oConfig = $this->getMock('oxconfig');
+        $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blOrderOptInEmail', true);
 
         $oSubscription = $this->getMock('oxnewssubscribed', array('getOptInStatus', 'setOptInStatus'));

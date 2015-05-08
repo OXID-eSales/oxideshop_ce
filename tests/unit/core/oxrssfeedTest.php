@@ -182,11 +182,8 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         oxTestModules::addFunction('oxutilsurl', 'prepareUrlForNoSession', '{return $aA[0]."extra";}');
         $this->getConfig()->setConfigParam("bl_perfParseLongDescinSmarty", false);
 
-        $oCfg = $this->getMock('oxconfig', array('getActShopCurrencyObject'));
-        $oActCur = new stdClass();
-        $oActCur->decimal = 1;
-        $oActCur->sign = 'EUR';
-        $oCfg->expects($this->any())->method('getActShopCurrencyObject')->will($this->returnValue($oActCur));
+        $oCfg = $this->getConfig();
+        $oCfg->setConfigParam('aCurrencies', array('EUR@1.00@.@.@EUR@1'));
         $oRss = oxNew('oxrssfeed');
         $oRss->setConfig($oCfg);
 
@@ -203,7 +200,6 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oLongDesc2 = new stdClass();
         $oLongDesc2->value = " &nbsp;<div>";
 
-        $oArt2 = oxNew('oxarticle');
         $oArt2 = $this->getMock('oxarticle', array("getLink", "getLongDescription"));
         $oArt2->expects($this->any())->method('getLink')->will($this->returnValue("artlink"));
         $oArt2->expects($this->any())->method('getLongDescription')->will($this->returnValue($oLongDesc2));
@@ -238,16 +234,10 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         oxTestModules::addFunction('oxutilsurl', 'prepareUrlForNoSession', '{return $aA[0]."extra";}');
         $this->getConfig()->setConfigParam("bl_perfParseLongDescinSmarty", true);
 
-        $oCfg = $this->getMock('oxconfig', array('getActShopCurrencyObject'));
-        $oActCur = new stdClass();
-        $oActCur->decimal = 1;
-        $oActCur->sign = 'EUR';
-        $oCfg->expects($this->any())->method('getActShopCurrencyObject')->will($this->returnValue($oActCur));
+        $oCfg = $this->getConfig();
+        $oCfg->setConfigParam('aCurrencies', array('EUR@1.00@.@.@EUR@1'));
         $oRss = oxNew('oxrssfeed');
         $oRss->setConfig($oCfg);
-
-        $oLongDesc = new stdClass();
-        $oLongDesc->value = "[{$desc}]";
 
         $oArt1 = $this->getMock('oxarticle', array("getLink", "getLongDesc"));
         $oArt1->expects($this->any())->method('getLink')->will($this->returnValue("artlink"));
@@ -256,10 +246,6 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oArt1->oxarticles__oxprice = new oxField(20);
         $oArt1->oxarticles__oxtimestamp = new oxField('2011-09-06 09:46:42');
 
-        $oLongDesc2 = new stdClass();
-        $oLongDesc2->value = "[{$desc}]";
-
-        $oArt2 = oxNew('oxarticle');
         $oArt2 = $this->getMock('oxarticle', array("getLink", "getLongDesc"));
         $oArt2->expects($this->any())->method('getLink')->will($this->returnValue("artlink"));
         $oArt2->expects($this->any())->method('getLongDesc')->will($this->returnValue(" &nbsp;<div>"));
@@ -360,8 +346,8 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oActCur->thousand = '.';
         $oActCur->sign = '<small>CHF</small>';
 
-        $oCfg = $this->getMock('oxconfig', array('getActShopCurrencyObject'));
-        $oCfg->expects($this->any())->method('getActShopCurrencyObject')->will($this->returnValue($oActCur));
+        $oCfg = $this->getConfig();
+        $oCfg->setConfigParam('aCurrencies', array('CHF@1.00@,@.@CHF@1'));
 
         $oRss = oxNew('oxrssfeed');
         $oRss->setConfig($oCfg);
@@ -840,9 +826,9 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
     public function testLoadSearchArticles()
     {
         oxTestModules::addFunction('oxrssfeed', '_getSearchParamsUrl', '{ return "klnk"; }');
-        $oCfg = $this->getMock('oxconfig', array('getActiveShop', 'getShopHomeUrl', 'getImageDir'));
+        $oConfig = $this->getConfig();
         $oRss = oxNew('oxrssfeed');
-        $oRss->setConfig($oCfg);
+        $oRss->setConfig($oConfig);
 
         $this->getConfig()->setConfigParam('iRssItemsCount', 50);
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');

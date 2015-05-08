@@ -521,11 +521,10 @@ class Unit_Core_oxsearchTest extends OxidTestCase
     // testing SQL "where" getter
     public function testGetWhereSearchColsAreNotDefinedInConfig()
     {
-        $sArticleTable = getViewName('oxarticles');
         $sFix = "";
 
-        $oConfig = $this->getMock('oxconfig', array('getConfigParam'));
-        $oConfig->expects($this->once())->method('getConfigParam')->will($this->returnValue('xxx'));
+        $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('aSearchCols', 'xxx');
 
         $sSearchString = 'asdasd';
 

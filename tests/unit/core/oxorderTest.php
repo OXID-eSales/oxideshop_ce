@@ -2224,11 +2224,11 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
         //$myConfig = $this->getMock( 'oxConfig', array('hasModule') );
         //$myConfig->expects( $this->any())->method('hasModule')->will($this->returnValue(true) );
-        $myConfig = $this->getMock('oxConfig');
-        $myConfig->setConfigParam('iPayment_blActive', false);
+        $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('iPayment_blActive', false);
 
         $oOrder = $this->getProxyClass("oxOrder");
-        $oOrder->setConfig($myConfig);
+        $oOrder->setConfig($oConfig);
         $oOrder->oxorder__oxpaymenttype = new oxField('_testPaymentId', oxField::T_RAW);
 
         $oPayment = oxNew('oxPayment');

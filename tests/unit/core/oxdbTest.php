@@ -63,7 +63,7 @@ class Unit_oxdbTest_config_2
             return true;
         }
 
-        return $this->getConfig()->getConfigParam($sParam);
+        return oxRegistry::getConfig()->getConfigParam($sParam);
     }
 }
 
@@ -99,6 +99,28 @@ class Unit_Core_oxdbTest extends OxidTestCase
         $this->assertEquals($iDebug, $oDb->_getConfigParam('_iDebug'), 'Debug should be same as set in setConfig()');
     }
 
+    public function testSetDbObject()
+    {
+        $oxDb = new oxDb();
+        $dbMock = $this->getDbObjectMock();
+
+        $oxDb->setDbObject($dbMock);
+
+        $realResult = $oxDb->getDb();
+        $this->assertEquals($dbMock, $realResult);
+    }
+
+    public function testGetDbObject()
+    {
+        $oxDb = new oxDb();
+        $dbMock = $this->getDbObjectMock();
+
+        $oxDb->setDbObject($dbMock);
+
+        $realResult = $oxDb->getDbObject();
+        $this->assertEquals($dbMock, $realResult);
+    }
+
     public function testQuoteArray()
     {
         $oDb = new oxDb();
@@ -113,7 +135,7 @@ class Unit_Core_oxdbTest extends OxidTestCase
         oxTestModules::addFunction('oxDb', 'cleanTblCache', '{oxDb::$_aTblDescCache = array();}');
         oxNew('oxDb')->cleanTblCache();
 
-        $myConfig = $this->getConfig();
+        $myConfig = oxRegistry::getConfig();
         $rs = oxDb::getDb()->Execute("show tables");
         $icount = 3;
         if ($rs != false && $rs->RecordCount() > 0) {
@@ -171,10 +193,10 @@ class Unit_Core_oxdbTest extends OxidTestCase
 
         $oDb = $this->getProxyClass('oxdb');
 
-        if ('mysql' == $this->getConfig()->getConfigParam("dbType")) {
+        if ('mysql' == oxRegistry::getConfig()->getConfigParam("dbType")) {
             $sEscapedChars = mysql_real_escape_string($sString, $oDb->UNITgetConnectionId());
         }
-        if ('mysqli' == $this->getConfig()->getConfigParam("dbType")) {
+        if ('mysqli' == oxRegistry::getConfig()->getConfigParam("dbType")) {
             $sEscapedChars = mysqli_real_escape_string($oDb->UNITgetConnectionId(), $sString);
         }
 

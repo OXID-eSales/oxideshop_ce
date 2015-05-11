@@ -75,7 +75,6 @@ class Unit_Core_oxactionsTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        modDb::getInstance()->cleanup();
         $this->_oAction->delete();
         $this->_oPromo->delete();
         //  oxNew('oxStr')->setH(null);

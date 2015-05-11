@@ -67,7 +67,6 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        modDb::getInstance()->cleanup();
         modConfig::getInstance();
         oxArticleHelper::resetCache();
 

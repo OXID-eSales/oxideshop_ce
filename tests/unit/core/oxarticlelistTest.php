@@ -527,7 +527,15 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
         $oTest = $this->getProxyClass('oxArticleList');
         $sRes = '';
-        modDB::getInstance()->addClassFunction('getAll', create_function('$s', '{throw new Exception($s);}'));
+
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->any())
+            ->method('getAll')
+            ->will($this->returnCallback(function ($s) {
+                throw new Exception($s);
+            }));
+        oxDb::setDbObject($dbMock);
+
         try {
             $oTest->UNITgetFilterSql($sCatId, array("8a142c3ee0edb75d4.80743302" => "Zeiger", "8a142c3e9cd961518.80299776" => "originell"));
         } catch (Exception $e) {
@@ -1540,15 +1548,16 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
      */
     public function testLoadHistoryArticlesSingleArticle()
     {
-        /** @var oxArticleList|PHPUnit_Framework_MockObject_MockObject $articleList */
-        $articleList = $this->getMock("oxArticleList", array('loadIds', 'sortByIds'));
-        $articleList->expects($this->any())->method("loadIds")->will($this->returnValue(true));
-        $articleList->expects($this->any())->method("sortByIds")->will($this->returnValue(true));
-        $articleList->loadHistoryArticles(1);
+        $this->getSession()->addClassFunction('getId', create_function('', 'return "ok";'));
 
-        $articleList->expects($this->once())->method('loadIds')->with(array())->will($this->returnValue(true));
-        $articleList->expects($this->once())->method("sortByIds")->will($this->returnValue(true));
-        $articleList->loadHistoryArticles(1);
+        $oTest = $this->getMock("oxArticleList", array('loadIds', 'sortByIds'));
+        $oTest->expects($this->any())->method("loadIds")->will($this->returnValue(true));
+        $oTest->expects($this->any())->method("sortByIds")->will($this->returnValue(true));
+        $oTest->loadHistoryArticles(1);
+
+        $oTest->expects($this->once())->method('loadIds')->with(array())->will($this->returnValue(true));
+        $oTest->expects($this->once())->method("sortByIds")->will($this->returnValue(true));
+        $oTest->loadHistoryArticles(1);
     }
 
     /**

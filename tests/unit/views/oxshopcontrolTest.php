@@ -47,11 +47,14 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
      */
     public function testStart()
     {
-        $this->setRequestParameter('cl', null);
-        $this->setRequestParameter('fnc', "testFnc");
-        $this->getSession()->setVariable('actshop', null);
+        modConfig::setRequestParameter('cl', null);
+        modConfig::setRequestParameter('fnc', "testFnc");
+        modSession::getInstance()->setVar('actshop', null);
         oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception("Error in testStart()"); }');
-        modDB::getInstance()->addClassFunction('getOne', create_function('$x', 'return 2;'));
+
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->any())->method('getOne')->will($this->returnValue(2));
+        oxDb::setDbObject($dbMock);
 
         $oConfig = $this->getMock("oxConfig", array("isMall", "getConfigParam", "getShopHomeUrl"));
         $oConfig->expects($this->at(0))->method('isMall')->will($this->returnValue(true));
@@ -67,7 +70,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oControl->expects($this->once())->method('_process')->with($this->equalTo("mallstart"), $this->equalTo("testFnc"));
         $oControl->start();
 
-        //$this->assertEquals( $this->getConfig()->getBaseShopId(), $this->getSession()->getVariable( "actshop" ) );
+        //$this->assertEquals( oxRegistry::getConfig()->getBaseShopId(), modSession::getInstance()->getVar( "actshop" ) );
     }
 
     /**
@@ -77,9 +80,9 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
      */
     public function testStartIsAdmin()
     {
-        $this->setRequestParameter('cl', null);
-        $this->setRequestParameter('fnc', "testFnc");
-        $this->getSession()->setVariable('actshop', null);
+        modConfig::setRequestParameter('cl', null);
+        modConfig::setRequestParameter('fnc', "testFnc");
+        modSession::getInstance()->setVar('actshop', null);
         oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception("Error in testStart()"); }');
         modDB::getInstance()->addClassFunction('getOne', create_function('$x', 'return 2;'));
 
@@ -94,7 +97,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oControl->expects($this->once())->method('_process')->with($this->equalTo("login"), $this->equalTo("testFnc"));
         $oControl->start();
 
-        //$this->assertEquals( $this->getConfig()->getBaseShopId(), $this->getSession()->getVariable( "actshop" ) );
+        //$this->assertEquals( oxRegistry::getConfig()->getBaseShopId(), modSession::getInstance()->getVar( "actshop" ) );
     }
 
     /**
@@ -154,8 +157,8 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         $this->setExpectedException('oxException', 'log debug');
 
-        $this->setRequestParameter('cl', 'testClass');
-        $this->setRequestParameter('fnc', 'testFnc');
+        modConfig::getInstance()->setRequestParameter('cl', 'testClass');
+        modConfig::setRequestParameter('fnc', 'testFnc');
 
         $oUtilsView = $this->getMock('oxUtilsView', array('addErrorToDisplay'), array(), '', false);
         $oUtilsView->expects($this->any())->method('addErrorToDisplay');
@@ -181,8 +184,8 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         $this->setExpectedException('oxException', 'log debug');
 
-        $this->setRequestParameter('cl', 'testClass');
-        $this->setRequestParameter('fnc', 'testFnc');
+        modConfig::getInstance()->setRequestParameter('cl', 'testClass');
+        modConfig::setRequestParameter('fnc', 'testFnc');
 
         $oMockEx = $this->getMock('oxException', array('debugOut'));
         $oMockEx->expects($this->once())->method('debugOut')->will($this->throwException(new oxException('log debug')));
@@ -203,7 +206,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
      */
     public function testStartCookieExceptionHandled()
     {
-        $this->getSession()->setVariable('actshop', null);
+        modSession::getInstance()->setVar('actshop', null);
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ throw new Exception("oxCookieException"); }');
 
         $oConfig = $this->getMock("oxStdClass", array("isMall", "getConfigParam", "getShopId", "getShopHomeUrl"));
@@ -294,10 +297,10 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $this->setSessionParam("actshop", "testshopid");
         $this->setSessionParam("usr", "testusr");
 
-        $this->setRequestParameter("cnid", "testcnid");
-        $this->setRequestParameter("aid", "testaid");
-        $this->setRequestParameter("tpl", "testtpl.tpl");
-        $this->setRequestParameter("searchparam", "testsearchparam");
+        $this->setRequestParam("cnid", "testcnid");
+        $this->setRequestParam("aid", "testaid");
+        $this->setRequestParam("tpl", "testtpl.tpl");
+        $this->setRequestParam("searchparam", "testsearchparam");
 
         $this->assertEquals(0, $oDb->getOne("select count(*) from oxlogs"));
 
@@ -352,8 +355,8 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
         oxTestModules::addFunction('oxUtils', 'setHeader', '{}');
 
-        $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/application/views/";
-        $sTplPath .= $this->getConfig()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
+        $sTplPath = modConfig::getInstance()->getConfigParam('sShopDir') . "/application/views/";
+        $sTplPath .= modConfig::getInstance()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
 
         $iAt = 0;
         $oConfig = $this->getMock("oxConfig", array("setActiveView", "getTemplatePath", "getConfigParam", "pageClose"));
@@ -390,10 +393,10 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
         oxTestModules::addFunction('oxUtils', 'setHeader', '{}');
 
-        $this->setRequestParameter('renderPartial', 'asd');
+        modConfig::setRequestParameter('renderPartial', 'asd');
 
-        $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/application/views/";
-        $sTplPath .= $this->getConfig()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
+        $sTplPath = modConfig::getInstance()->getConfigParam('sShopDir') . "/application/views/";
+        $sTplPath .= modConfig::getInstance()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
 
         $iAt = 0;
         $oConfig = $this->getMock("oxConfig", array("setActiveView", "getTemplatePath", "getConfigParam", "pageClose"));
@@ -432,10 +435,10 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
         oxTestModules::addFunction('oxUtils', 'setHeader', '{}');
 
-        $this->setRequestParameter('renderPartial', 'asd');
+        modConfig::setRequestParameter('renderPartial', 'asd');
 
-        $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/application/views/";
-        $sTplPath .= $this->getConfig()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
+        $sTplPath = modConfig::getInstance()->getConfigParam('sShopDir') . "/application/views/";
+        $sTplPath .= modConfig::getInstance()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
 
         $iAt = 0;
         $oConfig = $this->getMock("oxConfig", array("setActiveView", "getTemplatePath", "getConfigParam", "pageClose"));
@@ -497,8 +500,8 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
      */
     public function testStartMonitorStopMonitor()
     {
-        $this->getConfig()->setConfigParam("blUseContentCaching", true);
-        $this->getConfig()->setConfigParam("iDebug", 4);
+        modConfig::getInstance()->setConfigParam("blUseContentCaching", true);
+        modConfig::getInstance()->setConfigParam("iDebug", 4);
 
         $oOut = $this->getMock("oxOutput", array('output'));
         $oOut->expects($this->never())->method('output');

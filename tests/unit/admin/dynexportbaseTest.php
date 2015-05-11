@@ -86,7 +86,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testConstruct()
     {
-        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . "/export/dynexport.txt";
+        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . "/export/dynexport.txt";
 
         $oView = $this->getProxyClass("DynExportBase");
         $this->assertEquals($sFilePath, $oView->getNonPublicVar("_sFilePath"));
@@ -202,8 +202,8 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testRun()
     {
-        $this->setRequestParameter("iStart", 0);
-        $this->setRequestParameter("aExportResultset", array("aaaaa"));
+        modConfig::setRequestParameter("iStart", 0);
+        modConfig::setRequestParameter("aExportResultset", array("aaaaa"));
         $testFile = $this->createFile('test.txt', '');
 
         $oView = $this->getMock("_DynExportBase", array("nextTick"));
@@ -223,9 +223,9 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testRunWithDefaultConfigPerTickCount()
     {
-        $this->setRequestParameter("iStart", 0);
-        $this->setRequestParameter("aExportResultset", array("aaaaa"));
-        $this->getConfig()->setConfigParam("iExportNrofLines", 10);
+        modConfig::setRequestParameter("iStart", 0);
+        modConfig::setRequestParameter("aExportResultset", array("aaaaa"));
+        modConfig::getInstance()->setConfigParam("iExportNrofLines", 10);
         $testFile = $this->createFile('test.txt', '');
 
         $oView = $this->getMock("_DynExportBase", array("nextTick"));
@@ -247,12 +247,12 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $oView = new DynExportBase();
 
         // if not set yet, should take value from config
-        $this->getConfig()->setConfigParam("iExportNrofLines", 150);
+        modConfig::getInstance()->setConfigParam("iExportNrofLines", 150);
         $this->assertEquals(150, $oView->getExportPerTick());
 
         // if not set in config, should use default value
         $oView->setExportPerTick(null);
-        $this->getConfig()->setConfigParam("iExportNrofLines", 0);
+        modConfig::getInstance()->setConfigParam("iExportNrofLines", 0);
         $this->assertEquals($oView->iExportPerTick, $oView->getExportPerTick());
 
         // Should be able to set this value too
@@ -379,7 +379,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testPrepareExport()
     {
-        $this->setRequestParameter("acat", "testCatId");
+        modConfig::setRequestParameter("acat", "testCatId");
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{}');
 
         $oView = $this->getMock(
@@ -508,10 +508,10 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testInsertArticlesNoVariantsNoCategoryFilterNoSearchParamNoStockCheck()
     {
-        $this->getConfig()->setConfigParam("blExportVars", false);
-        $this->getConfig()->setConfigParam("blUseStock", false);
-        $this->setRequestParameter("search", false);
-        $this->setRequestParameter("sExportMinStock", false);
+        modConfig::getInstance()->setConfigParam("blExportVars", false);
+        modConfig::getInstance()->setConfigParam("blUseStock", false);
+        modConfig::setRequestParameter("search", false);
+        modConfig::setRequestParameter("sExportMinStock", false);
 
         $sHeapTable = "testdynexportbasetable";
         $sCatAdd = '';
@@ -538,10 +538,10 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testInsertArticles()
     {
-        $this->getConfig()->setConfigParam("blExportVars", true);
-        $this->getConfig()->setConfigParam("blUseStock", true);
-        $this->setRequestParameter("search", "bar");
-        $this->setRequestParameter("sExportMinStock", 1);
+        modConfig::getInstance()->setConfigParam("blExportVars", true);
+        modConfig::getInstance()->setConfigParam("blUseStock", true);
+        modConfig::setRequestParameter("search", "bar");
+        modConfig::setRequestParameter("sExportMinStock", 1);
 
         $oDb = oxDb::getDb();
         $sO2CView = getViewName('oxobject2category');
@@ -600,12 +600,12 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testSetSessionParams()
     {
-        $this->setRequestParameter("sExportDelCost", "123;");
-        $this->setRequestParameter("sExportMinPrice", "123;");
-        $this->setRequestParameter("sExportCampaign", "123;");
-        $this->setRequestParameter("blAppendCatToCampaign", "123");
+        modConfig::setRequestParameter("sExportDelCost", "123;");
+        modConfig::setRequestParameter("sExportMinPrice", "123;");
+        modConfig::setRequestParameter("sExportCampaign", "123;");
+        modConfig::setRequestParameter("blAppendCatToCampaign", "123");
         //#3611
-        $this->setRequestParameter("sExportCustomHeader", "testHeader");
+        modConfig::setRequestParameter("sExportCustomHeader", "testHeader");
 
         $oView = new DynExportBase();
         $oView->UNITsetSessionParams();
@@ -693,7 +693,14 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testInitArticleProductIsNotAwailable()
     {
-        modDb::getInstance()->addClassFunction('selectLimit', create_function('$s, $i, $c', 'throw new Exception($s.$i.$c);'));
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->any())
+            ->method('selectLimit')
+            ->will($this->returnCallback(function ($s, $i, $c) {
+                throw new Exception($s . $i . $c);
+            }));
+        oxDb::setDbObject($dbMock);
+
         $oView = new _DynExportBase();
         $blClose = true;
         try {
@@ -714,7 +721,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
     public function testInitArticle()
     {
         $blContinue = true;
-        $this->setRequestParameter("sExportMinPrice", "1");
+        modConfig::setRequestParameter("sExportMinPrice", "1");
         $sProdId = '8a142c4113f3b7aa3.13470399';
         $sParentId = '2077';
         $sTitle = 'violett';
@@ -743,8 +750,8 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
     public function testSetCampaignDetailLink()
     {
         // defining parameters
-        $this->setRequestParameter("sExportCampaign", "testCampaign");
-        $this->setRequestParameter("blAppendCatToCampaign", 1);
+        modConfig::setRequestParameter("sExportCampaign", "testCampaign");
+        modConfig::setRequestParameter("blAppendCatToCampaign", 1);
 
         $oArticle = $this->getMock("oxarticle", array("appendLink"));
         $oArticle->expects($this->at(0))->method('appendLink')->with($this->equalTo("campaign=testCampaign"));

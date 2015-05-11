@@ -339,17 +339,8 @@ class Unit_Core_oxactionsTest extends OxidTestCase
      */
     public function testGetBannerArticle_notAssigned()
     {
-        $oDb = $this->getMock('stdClass', array('getOne', 'quote'));
-
-        $oDb->expects($this->once())->method('quote')
-            ->with($this->equalTo('promoid'))
-            ->will($this->returnValue("'promoid'"));
-
-        $oDb->expects($this->once())->method('getOne')
-            ->with($this->equalTo('select oxobjectid from oxobject2action where oxactionid=\'promoid\' and oxclass="oxarticle"'))
-            ->will($this->returnValue(false));
-
-        modDb::getInstance()->modAttach($oDb);
+        $dbMock = $this->getBannerArticleMockWithSpecificReturn(false);
+        oxDb::setDbObject($dbMock);
 
         $oArticle = $this->getMock('stdclass', array('load'));
         $oArticle->expects($this->never())->method('load');
@@ -366,17 +357,8 @@ class Unit_Core_oxactionsTest extends OxidTestCase
      */
     public function testGetBannerArticle_notExisting()
     {
-        $oDb = $this->getMock('stdClass', array('getOne', 'quote'));
-
-        $oDb->expects($this->once())->method('quote')
-            ->with($this->equalTo('promoid'))
-            ->will($this->returnValue("'promoid'"));
-
-        $oDb->expects($this->once())->method('getOne')
-            ->with($this->equalTo('select oxobjectid from oxobject2action where oxactionid=\'promoid\' and oxclass="oxarticle"'))
-            ->will($this->returnValue('asdabsdbdsf'));
-
-        modDb::getInstance()->modAttach($oDb);
+        $dbMock = $this->getBannerArticleMockWithSpecificReturn('asdabsdbdsf');
+        oxDb::setDbObject($dbMock);
 
         $oArticle = $this->getMock('stdclass', array('load'));
         $oArticle->expects($this->once())->method('load')
@@ -395,17 +377,8 @@ class Unit_Core_oxactionsTest extends OxidTestCase
      */
     public function testGetBannerArticle_Existing()
     {
-        $oDb = $this->getMock('stdClass', array('getOne', 'quote'));
-
-        $oDb->expects($this->once())->method('quote')
-            ->with($this->equalTo('promoid'))
-            ->will($this->returnValue("'promoid'"));
-
-        $oDb->expects($this->once())->method('getOne')
-            ->with($this->equalTo('select oxobjectid from oxobject2action where oxactionid=\'promoid\' and oxclass="oxarticle"'))
-            ->will($this->returnValue('2000'));
-
-        modDb::getInstance()->modAttach($oDb);
+        $dbMock = $this->getBannerArticleMockWithSpecificReturn('2000');
+        oxDb::setDbObject($dbMock);
 
         $oArticle = $this->getMock('stdclass', array('load'));
         $oArticle->expects($this->once())->method('load')
@@ -422,13 +395,32 @@ class Unit_Core_oxactionsTest extends OxidTestCase
     }
 
     /**
+     * Helper function for testGetBannerArticle_notAssigned, testGetBannerArticle_notExisting, testGetBannerArticle_Existing
+     *
+     * @param $valueToReturn
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getBannerArticleMockWithSpecificReturn($valueToReturn)
+    {
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->any())
+            ->method('getOne')
+            ->with($this->equalTo('select oxobjectid from oxobject2action where oxactionid=\'promoid\' and oxclass="oxarticle"'))
+            ->will($this->returnValue($valueToReturn));
+
+        return $dbMock;
+    }
+
+
+    /**
      * test
      */
     public function testGetBannerPictureUrl()
     {
         $oPromo = new oxactions();
         $oPromo->oxactions__oxpic = new oxField("current_de.jpg");
-        $oConfig = $this->getConfig();
+        $oConfig = modConfig::getInstance();
 
         $this->assertEquals($oConfig->getPictureUrl("promo/") . "current_de.jpg", $oPromo->getBannerPictureUrl());
     }
@@ -439,7 +431,7 @@ class Unit_Core_oxactionsTest extends OxidTestCase
     public function testGetBannerPictureUrl_noPicture()
     {
         $oPromo = new oxactions();
-        $oConfig = $this->getConfig();
+        $oConfig = modConfig::getInstance();
 
         $this->assertNull($oPromo->getBannerPictureUrl());
     }
@@ -451,7 +443,7 @@ class Unit_Core_oxactionsTest extends OxidTestCase
     {
         $oPromo = new oxactions();
         $oPromo->oxactions__oxpic = new oxField("noSuchPic.jpg");
-        $this->assertEquals($this->getConfig()->getPictureUrl("master/") . "nopic.jpg", $oPromo->getBannerPictureUrl());
+        $this->assertEquals(modConfig::getInstance()->getPictureUrl("master/") . "nopic.jpg", $oPromo->getBannerPictureUrl());
     }
 
     /**

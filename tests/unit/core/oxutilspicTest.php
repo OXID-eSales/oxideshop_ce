@@ -36,7 +36,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
 
             case "testDeletePictureExisting":
 
-                $myConfig = $this->getConfig();
+                $myConfig = oxRegistry::getConfig();
 
                 // setup-> create a copy of a picture and delete this one for successful test
                 $sOrigTestPicFile = "detail1_z3_ico_th.jpg";
@@ -66,7 +66,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
 
             case "testDeletePictureExisting":
 
-                $myConfig = $this->getConfig();
+                $myConfig = oxRegistry::getConfig();
 
                 // setup-> create a copy of a picture and delete this one for successful test
                 $sCloneTestPicFile = "CC1672_th.jpg";
@@ -121,7 +121,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
         $this->assertTrue($this->_resizeImageTest($sTestImageFilePNG, $sTestImageFileResizedPNG, 21, 10));
 
         // checking if works with "gd 1"
-        $this->getConfig()->setConfigParam('iUseGDVersion', 1);
+        modConfig::getInstance()->setConfigParam('iUseGDVersion', 1);
         $this->assertTrue($this->_resizeImageTest($sTestImageFilePNG, $sTestImageFileResizedPNG, 21, 10));
     }
 
@@ -133,7 +133,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
             $this->fail($sMsg);
         }
         //actual test
-        if (!(oxRegistry::get("oxUtilsPic")->resizeImage($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight, $this->getConfig()->getConfigParam('iUseGDVersion'), false))) {
+        if (!(oxRegistry::get("oxUtilsPic")->resizeImage($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight, oxRegistry::getConfig()->getConfigParam('iUseGDVersion'), false))) {
             $this->fail("Failed to call resizeImage()");
         }
 
@@ -201,19 +201,22 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
     public function testDeletePictureExisting()
     {
         $oUtilsPic = new oxutilspic();
-        $this->assertTrue($oUtilsPic->UNITdeletePicture('CCdetail1_z3_ico_th.jpg', $this->getConfig()->getPictureDir(false) . "master/product/thumb/"));
+        $this->assertTrue($oUtilsPic->UNITdeletePicture('CCdetail1_z3_ico_th.jpg', oxRegistry::getConfig()->getPictureDir(false) . "master/product/thumb/"));
     }
 
     public function testIsPicDeletable()
     {
         $myUtils = new oxUtilsPic();
 
-        // testing
-        modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 1;'));
-        $this->assertTrue($myUtils->UNITisPicDeletable("testOK.jpg", "test", "file"));
+        //todo: fix consecutive
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->any())->method('getOne')->will($this->onConsecutiveCalls(1, 2));
+        oxDb::setDbObject($dbMock);
 
-        modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 2;'));
+        // testing
+        $this->assertTrue($myUtils->UNITisPicDeletable("testOK.jpg", "test", "file"));
         $this->assertFalse($myUtils->UNITisPicDeletable("testFail.jpg", "test", "file"));
+
         $this->assertFalse($myUtils->UNITisPicDeletable("nopic.jpg", "test", "file"));
     }
 

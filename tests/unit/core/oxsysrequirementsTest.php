@@ -145,7 +145,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
      */
     public function testGetShopHostInfoFromConfig()
     {
-        $this->getConfig()->setConfigParam('sShopURL', 'http://www.testshopurl.lt/testsubdir1/insideit2/');
+        modConfig::getInstance()->setConfigParam('sShopURL', 'http://www.testshopurl.lt/testsubdir1/insideit2/');
         $oSC = new oxSysRequirements();
         $this->assertEquals(
             array(
@@ -156,7 +156,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             ),
             $oSC->UNITgetShopHostInfoFromConfig()
         );
-        $this->getConfig()->setConfigParam('sShopURL', 'https://www.testshopurl.lt/testsubdir1/insideit2/');
+        modConfig::getInstance()->setConfigParam('sShopURL', 'https://www.testshopurl.lt/testsubdir1/insideit2/');
         $this->assertEquals(
             array(
                  'host' => 'www.testshopurl.lt',
@@ -166,7 +166,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             ),
             $oSC->UNITgetShopHostInfoFromConfig()
         );
-        $this->getConfig()->setConfigParam('sShopURL', 'https://51.1586.51.15:21/testsubdir1/insideit2/');
+        modConfig::getInstance()->setConfigParam('sShopURL', 'https://51.1586.51.15:21/testsubdir1/insideit2/');
         $this->assertEquals(
             array(
                  'host' => '51.1586.51.15',
@@ -176,7 +176,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             ),
             $oSC->UNITgetShopHostInfoFromConfig()
         );
-        $this->getConfig()->setConfigParam('sShopURL', '51.1586.51.15:21/testsubdir1/insideit2/');
+        modConfig::getInstance()->setConfigParam('sShopURL', '51.1586.51.15:21/testsubdir1/insideit2/');
         $this->assertEquals(
             array(
                  'host' => '51.1586.51.15',
@@ -196,7 +196,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
      */
     public function testGetShopSSLHostInfoFromConfig()
     {
-        $this->getConfig()->setConfigParam('sSSLShopURL', 'http://www.testshopurl.lt/testsubdir1/insideit2/');
+        modConfig::getInstance()->setConfigParam('sSSLShopURL', 'http://www.testshopurl.lt/testsubdir1/insideit2/');
         $oSC = new oxSysRequirements();
         $this->assertEquals(
             array(
@@ -207,7 +207,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             ),
             $oSC->UNITgetShopSSLHostInfoFromConfig()
         );
-        $this->getConfig()->setConfigParam('sSSLShopURL', 'https://www.testshopurl.lt/testsubdir1/insideit2/');
+        modConfig::getInstance()->setConfigParam('sSSLShopURL', 'https://www.testshopurl.lt/testsubdir1/insideit2/');
         $this->assertEquals(
             array(
                  'host' => 'www.testshopurl.lt',
@@ -217,7 +217,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             ),
             $oSC->UNITgetShopSSLHostInfoFromConfig()
         );
-        $this->getConfig()->setConfigParam('sSSLShopURL', 'https://51.1586.51.15:21/testsubdir1/insideit2/');
+        modConfig::getInstance()->setConfigParam('sSSLShopURL', 'https://51.1586.51.15:21/testsubdir1/insideit2/');
         $this->assertEquals(
             array(
                  'host' => '51.1586.51.15',
@@ -227,7 +227,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             ),
             $oSC->UNITgetShopSSLHostInfoFromConfig()
         );
-        $this->getConfig()->setConfigParam('sSSLShopURL', '51.1586.51.15:21/testsubdir1/insideit2/');
+        modConfig::getInstance()->setConfigParam('sSSLShopURL', '51.1586.51.15:21/testsubdir1/insideit2/');
         $this->assertEquals(
             array(
                  'host' => '51.1586.51.15',
@@ -354,14 +354,12 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             'OXMODULE'    => '_OXMODULE_',
         );
 
-        $oDb = $this->getMock('stdclass', array('execute', 'quote'));
-        $oDb->expects($this->exactly(1))->method('execute')
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->any())
+            ->method('execute')
             ->with($this->equalTo("select * from oxtplblocks where oxactive=1 and oxshopid='15'"))
             ->will($this->returnValue($oRs));
-        $oDb->expects($this->exactly(1))->method('quote')
-            ->with($this->equalTo(15))
-            ->will($this->returnValue("'15'"));
-        modDB::getInstance()->modAttach($oDb);
+        oxDb::setDbObject($dbMock);
 
         $oSR = $this->getMock('oxSysRequirements', array('_checkTemplateBlock'));
         $oSR->expects($this->exactly(1))->method('_checkTemplateBlock')
@@ -399,14 +397,12 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
             'OXMODULE'    => '_OXMODULE_',
         );
 
-        $oDb = $this->getMock('stdclass', array('execute', 'quote'));
-        $oDb->expects($this->exactly(1))->method('execute')
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->any())
+            ->method('execute')
             ->with($this->equalTo("select * from oxtplblocks where oxactive=1 and oxshopid='15'"))
             ->will($this->returnValue($oRs));
-        $oDb->expects($this->exactly(1))->method('quote')
-            ->with($this->equalTo(15))
-            ->will($this->returnValue("'15'"));
-        modDB::getInstance()->modAttach($oDb);
+        oxDb::setDbObject($dbMock);
 
         $oSR = $this->getMock('oxSysRequirements', array('_checkTemplateBlock'));
         $oSR->expects($this->exactly(1))->method('_checkTemplateBlock')

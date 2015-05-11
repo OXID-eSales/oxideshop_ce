@@ -36,7 +36,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = modConfig::getInstance()->getShopId();
 
         $sView = getViewName('oxactions');
 
@@ -63,7 +63,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
         $sDateFrom = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() - 50);
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = modConfig::getInstance()->getShopId();
 
         $sView = getViewName('oxactions');
 
@@ -87,7 +87,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = modConfig::getInstance()->getShopId();
 
         $sView = getViewName('oxactions');
 
@@ -111,7 +111,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = modConfig::getInstance()->getShopId();
 
         $sView = getViewName('oxactions');
 
@@ -136,7 +136,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $sFut = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() + 50));
         $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = modConfig::getInstance()->getShopId();
 
         $sView = getViewName('oxactions');
 
@@ -220,13 +220,20 @@ class Unit_Core_oxActionListTest extends OxidTestCase
      */
     public function testAreAnyActivePromotions()
     {
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = modConfig::getInstance()->getShopId();
         $sView = getViewName('oxactions');
         $sSql = "select 1 from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' limit 1";
-        modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return $sql === "' . $sSql . '";'));
+
+        //todo: fix consecutive
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->any())->method('getOne')->will($this->onConsecutiveCalls(
+            $this->returnCallback(create_function('$sql', 'return $sql === "' . $sSql . '";')),
+            $this->returnCallback(create_function('$sql', 'return $sql !== "' . $sSql . '";'))
+        ));
+        oxDb::setDbObject($dbMock);
+
         $oAL = new oxActionList();
         $this->assertTrue($oAL->areAnyActivePromotions());
-        modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return $sql !== "' . $sSql . '";'));
         $oAL = new oxActionList();
         $this->assertFalse($oAL->areAnyActivePromotions());
     }
@@ -241,7 +248,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = modConfig::getInstance()->getShopId();
 
         $sView = getViewName('oxactions');
         $oL = $this->getMock('oxActionList', array('selectString', '_getUserGroupFilter'));

@@ -481,6 +481,24 @@ class oxDb
     }
 
     /**
+     * Setter for database connection object
+     *
+     * @param $newDbObject
+     */
+    public static function setDbObject($newDbObject) {
+        self::$_oDB = $newDbObject;
+    }
+
+    /**
+     * Database connection object getter
+     *
+     * @return mixed
+     */
+    public static function getDbObject() {
+        return self::$_oDB;
+    }
+
+    /**
      * Quotes an array.
      *
      * @param array $aStrArray array of strings to quote

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -606,10 +606,6 @@ class oxLang extends oxSuperCfg
             $this->_iBaseLanguageId = (int) $iLang;
         }
 
-        if (defined('OXID_PHP_UNIT')) {
-            modSession::getInstance();
-        }
-
         oxRegistry::getSession()->setVariable('language', $iLang);
     }
 
@@ -628,10 +624,6 @@ class oxLang extends oxSuperCfg
             if (!isset($aLanguages[$this->_iTplLanguageId])) {
                 $this->_iTplLanguageId = key($aLanguages);
             }
-        }
-
-        if (defined('OXID_PHP_UNIT')) {
-            modSession::getInstance();
         }
 
         oxRegistry::getSession()->setVariable('tpllanguage', $this->_iTplLanguageId);

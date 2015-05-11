@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -74,10 +74,10 @@ class Unit_Views_accountUserTest extends OxidTestCase
     {
         $oAccUser = new Account_User();
         //check true
-        modSession::getInstance()->setVar('blshowshipaddress', true);
+        $this->getSession()->setVariable('blshowshipaddress', true);
         $this->assertTrue($oAccUser->showShipAddress());
         //check false
-        modSession::getInstance()->setVar('blshowshipaddress', false);
+        $this->getSession()->setVariable('blshowshipaddress', false);
         $this->assertFalse($oAccUser->showShipAddress());
     }
 }

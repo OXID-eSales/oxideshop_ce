@@ -34,7 +34,7 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
     public function testPerformsql()
     {
         // testing..
-        oxRegistry::getSession()->setVariable('auth', "oxdefaultadmin");
+        $this->getSession()->setVariable('auth', "oxdefaultadmin");
         $this->setRequestParameter("updatesql", 'select * from oxvoucher');
 
         $oView = new Tools_List();
@@ -92,7 +92,7 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
      */
     public function testUpdateViews()
     {
-        modSession::getInstance()->setVar('malladmin', true);
+        $this->getSession()->setVariable('malladmin', true);
 
         $oView = new Tools_List();
         $oView->updateViews();

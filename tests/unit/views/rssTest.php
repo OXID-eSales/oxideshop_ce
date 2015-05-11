@@ -45,11 +45,11 @@ class Unit_Views_rssTest extends OxidTestCase
         $oRss = oxNew('rss');
 
         $this->setRequestParameter('cur', 2);
-        modSession::getInstance()->setVar('currency', 4);
+        $this->getSession()->setVariable('currency', 4);
 
         $this->assertSame(null, $oRss->init());
 
-        $this->assertEquals(2, modSession::getInstance()->getVar('currency'));
+        $this->assertEquals(2, $this->getSession()->getVariable('currency'));
     }
 
     public function testGetRssFeed()

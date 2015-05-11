@@ -116,7 +116,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
         $this->setRequestParameter("favorites", array(0, 1, 2));
         $this->setRequestParameter("navReload", true);
         $this->setRequestParameter("openHistory", true);
-        modSession::getInstance()->setVar("navReload", "true");
+        $this->getSession()->setVariable("navReload", "true");
 
         $oDom = new stdClass();
         $oDom->documentElement = new stdClass();
@@ -153,10 +153,10 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'redirect', '{}');
 
-        modSession::getInstance()->setVar('usr', "testUsr");
-        modSession::getInstance()->setVar('auth', "testAuth");
-        modSession::getInstance()->setVar('dynvalue', "testDynValue");
-        modSession::getInstance()->setVar('paymentid', "testPaymentId");
+        $this->getSession()->setVariable('usr', "testUsr");
+        $this->getSession()->setVariable('auth', "testAuth");
+        $this->getSession()->setVariable('dynvalue', "testDynValue");
+        $this->getSession()->setVariable('paymentid', "testPaymentId");
 
         $oConfig = $this->getMock("oxConfig", array("getConfigParam"));
         $oConfig->expects($this->at(0))->method('getConfigParam')->with($this->equalTo("blAdodbSessionHandler"))->will($this->returnValue(false));

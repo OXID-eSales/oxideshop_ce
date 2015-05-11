@@ -36,7 +36,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         oxRegistry::getUtils()->oxResetFileCache();
 
         $this->getConfig();
-        modSession::getInstance();
+        $this->getSession();
     }
 
     /**
@@ -723,7 +723,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
     public function testGetTplLanguageInAdminMode()
     {
         //$this->setRequestParameter( 'tpllanguage', 1 );
-        modSession::getInstance()->setVar('tpllanguage', 1);
+        $this->getSession()->setVariable('tpllanguage', 1);
 
         $oLang = $this->getMock('oxLang', array('isAdmin', 'getBaseLanguage'));
         $oLang->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
@@ -737,7 +737,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetTplLanguageInAdmin()
     {
-        modSession::getInstance()->setVar('tpllanguage', 999);
+        $this->getSession()->setVariable('tpllanguage', 999);
 
         $oLang = $this->getMock('oxLang', array('isAdmin', 'setTplLanguage', 'getBaseLanguage'));
         $oLang->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
@@ -752,7 +752,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetTplLanguageNonAdmin()
     {
-        modSession::getInstance()->setVar('tpllanguage', 999);
+        $this->getSession()->setVariable('tpllanguage', 999);
 
         $oLang = $this->getMock('oxLang', array('isAdmin', 'setTplLanguage', 'getBaseLanguage'));
         $oLang->expects($this->once())->method('isAdmin')->will($this->returnValue(false));
@@ -768,7 +768,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
     public function testGetTplLanguageCaching()
     {
         //$this->setRequestParameter( 'tpllanguage', 1 );
-        modSession::getInstance()->setVar('tpllanguage', 1);
+        $this->getSession()->setVariable('tpllanguage', 1);
 
         $oLang = $this->getMock('oxLang', array('isAdmin', 'getBaseLanguage'));
         $oLang->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
@@ -1109,7 +1109,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oLang->setBaseLanguage(2);
 
         $this->assertEquals(2, $oLang->getBaseLanguage());
-        $this->assertEquals(2, modSession::getInstance()->getVar('language'));
+        $this->assertEquals(2, $this->getSession()->getVariable('language'));
     }
 
     public function testSetBaseLanguageWithoutParams()
@@ -1118,7 +1118,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oLang->expects($this->any())->method('getBaseLanguage')->will($this->returnValue(1));
         $oLang->setBaseLanguage();
 
-        $this->assertEquals(1, modSession::getInstance()->getVar('language'));
+        $this->assertEquals(1, $this->getSession()->getVariable('language'));
     }
 
     /**
@@ -1131,7 +1131,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oLang->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
         $oLang->expects($this->once())->method('getAdminTplLanguageArray')->will($this->returnValue(array(2 => 1)));
         $this->assertEquals(2, $oLang->setTplLanguage());
-        $this->assertEquals(2, modSession::getInstance()->getVar('tpllanguage'));
+        $this->assertEquals(2, $this->getSession()->getVariable('tpllanguage'));
     }
 
     /**
@@ -1144,7 +1144,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oLang->expects($this->once())->method('isAdmin')->will($this->returnValue(false));
         $oLang->expects($this->never())->method('getAdminTplLanguageArray');
         $this->assertEquals(777, $oLang->setTplLanguage());
-        $this->assertEquals(777, modSession::getInstance()->getVar('tpllanguage'));
+        $this->assertEquals(777, $this->getSession()->getVariable('tpllanguage'));
     }
 
     /**

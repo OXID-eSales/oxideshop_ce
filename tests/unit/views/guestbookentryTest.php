@@ -33,8 +33,8 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxRegistry::getSession()->setVariable("gbSessionFormId", null);
-        oxRegistry::getSession()->setVariable("Errors", null);
+        $this->getSession()->setVariable("gbSessionFormId", null);
+        $this->getSession()->setVariable("Errors", null);
         oxDb::getDB()->execute('delete from oxgbentries');
 
         parent::tearDown();
@@ -60,7 +60,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
      */
     public function testSaveEntryNoSessionUser()
     {
-        modSession::getInstance()->setVar('usr', null);
+        $this->getSession()->setVariable('usr', null);
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
         $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
@@ -85,7 +85,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
      */
     public function testSaveEntryNoShopId()
     {
-        modSession::getInstance()->setVar('usr', 'xxx');
+        $this->getSession()->setVariable('usr', 'xxx');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock("oxconfig", array("getShopId"));
@@ -117,7 +117,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
      */
     public function testSaveEntryNoReviewText()
     {
-        modSession::getInstance()->setVar('usr', 'xxx');
+        $this->getSession()->setVariable('usr', 'xxx');
         $this->setRequestParameter('rvw_txt', null);
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
@@ -145,7 +145,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxgbentry", "floodProtection", "{return true;}");
 
-        modSession::getInstance()->setVar('usr', 'xxx');
+        $this->getSession()->setVariable('usr', 'xxx');
         $this->setRequestParameter('rvw_txt', 'xxx');
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
@@ -171,8 +171,8 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
      */
     public function testSaveEntrySessionAndFormIdsDoesNotMatch()
     {
-        modSession::getInstance()->setVar('usr', 'xxx');
-        modSession::getInstance()->setVar('gbSessionFormId', 'xxx');
+        $this->getSession()->setVariable('usr', 'xxx');
+        $this->getSession()->setVariable('gbSessionFormId', 'xxx');
 
         $this->setRequestParameter('rvw_txt', 'xxx');
         $this->setRequestParameter('gbFormId', 'yyy');
@@ -195,8 +195,8 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
      */
     public function testSaveEntry()
     {
-        modSession::getInstance()->setVar('usr', 'xxx');
-        modSession::getInstance()->setVar('gbSessionFormId', 'xxx');
+        $this->getSession()->setVariable('usr', 'xxx');
+        $this->getSession()->setVariable('gbSessionFormId', 'xxx');
 
         $this->setRequestParameter('rvw_txt', 'xxx');
         $this->setRequestParameter('gbFormId', 'xxx');

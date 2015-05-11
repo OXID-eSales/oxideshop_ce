@@ -93,7 +93,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $this->setRequestParameter('su', 'testid');
         $oView = new oxcmp_user();
         $oView->getInvitor();
-        $this->assertEquals('testid', modSession::getInstance()->getVar('su'));
+        $this->assertEquals('testid', $this->getSession()->getVariable('su'));
     }
 
     /**
@@ -293,8 +293,8 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         oxTestModules::addFunction("oxuser", "changeUserData", "{ return true;}");
         oxTestModules::addFunction("oxuser", "setCreditPointsForRegistrant", "{ throw new Exception('setCreditPointsForRegistrant');}");
 
-        oxRegistry::getSession()->setVariable('su', 'testUser');
-        oxRegistry::getSession()->setVariable('re', 'testUser');
+        $this->getSession()->setVariable('su', 'testUser');
+        $this->getSession()->setVariable('re', 'testUser');
         $this->getConfig()->setConfigParam("blInvitationsEnabled", true);
 
         $oParent = $this->getMock('oxubase', array("isEnabledPrivateSales"));
@@ -618,10 +618,10 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testAfterLogout()
     {
-        oxRegistry::getSession()->setVariable('paymentid', 'test');
-        oxRegistry::getSession()->setVariable('sShipSet', 'test');
-        oxRegistry::getSession()->setVariable('deladrid', 'test');
-        oxRegistry::getSession()->setVariable('dynvalue', 'test');
+        $this->getSession()->setVariable('paymentid', 'test');
+        $this->getSession()->setVariable('sShipSet', 'test');
+        $this->getSession()->setVariable('deladrid', 'test');
+        $this->getSession()->setVariable('dynvalue', 'test');
         $oBasket = $this->getMock('oxBasket', array('onUpdate', 'resetUserInfo'));
         $oBasket->expects($this->once())->method('onUpdate');
         $oBasket->expects($this->once())->method('resetUserInfo');

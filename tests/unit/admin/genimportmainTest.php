@@ -149,8 +149,8 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testResetUploadedCsvData()
     {
-        $this->getSession()->setVar("sCsvFilePath", "sCsvFilePath");
-        $this->getSession()->setVar("blCsvContainsHeader", "blCsvContainsHeader");
+        $this->getSession()->setVariable("sCsvFilePath", "sCsvFilePath");
+        $this->getSession()->setVariable("blCsvContainsHeader", "blCsvContainsHeader");
 
         $oView = $this->getProxyClass("GenImport_Main");
         $oView->setNonPublicVar("_sCsvFilePath", "testPath");
@@ -218,7 +218,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetUploadedCsvFilePathDefinedAsClassParam()
     {
-        $this->getSession()->setVar("sCsvFilePath", null);
+        $this->getSession()->setVariable("sCsvFilePath", null);
 
         // testing..
         $oView = $this->getProxyClass("GenImport_Main");
@@ -233,7 +233,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetUploadedCsvFilePathDefinedAsSessionParam()
     {
-        $this->getSession()->setVar("sCsvFilePath", "sCsvFilePath");
+        $this->getSession()->setVariable("sCsvFilePath", "sCsvFilePath");
 
         // testing..
         $oView = $this->getProxyClass("GenImport_Main");
@@ -247,7 +247,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetUploadedCsvFilePath()
     {
-        $this->getSession()->setVar("sCsvFilePath", null);
+        $this->getSession()->setVariable("sCsvFilePath", null);
         $sFileName = md5(time());
 
         // testing..

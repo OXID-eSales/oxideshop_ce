@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -1540,16 +1540,15 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
      */
     public function testLoadHistoryArticlesSingleArticle()
     {
-        $this->getSession()->addClassFunction('getId', create_function('', 'return "ok";'));
+        /** @var oxArticleList|PHPUnit_Framework_MockObject_MockObject $articleList */
+        $articleList = $this->getMock("oxArticleList", array('loadIds', 'sortByIds'));
+        $articleList->expects($this->any())->method("loadIds")->will($this->returnValue(true));
+        $articleList->expects($this->any())->method("sortByIds")->will($this->returnValue(true));
+        $articleList->loadHistoryArticles(1);
 
-        $oTest = $this->getMock("oxArticleList", array('loadIds', 'sortByIds'));
-        $oTest->expects($this->any())->method("loadIds")->will($this->returnValue(true));
-        $oTest->expects($this->any())->method("sortByIds")->will($this->returnValue(true));
-        $oTest->loadHistoryArticles(1);
-
-        $oTest->expects($this->once())->method('loadIds')->with(array())->will($this->returnValue(true));
-        $oTest->expects($this->once())->method("sortByIds")->will($this->returnValue(true));
-        $oTest->loadHistoryArticles(1);
+        $articleList->expects($this->once())->method('loadIds')->with(array())->will($this->returnValue(true));
+        $articleList->expects($this->once())->method("sortByIds")->will($this->returnValue(true));
+        $articleList->loadHistoryArticles(1);
     }
 
     /**

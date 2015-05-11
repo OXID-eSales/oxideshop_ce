@@ -1799,7 +1799,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $dDiscountesNettoPrice = 95;
         $aProductVats = array('10' => '50', '5' => '25');
 
-        oxRegistry::getSession()->setVariable('ordrem', 'testValue');
+        $this->getSession()->setVariable('ordrem', 'testValue');
 
         $aMethods = array('getBruttoSum',
                           'getPrice',
@@ -2311,7 +2311,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
     public function testSetPaymentWithDynValues()
     {
         $aDynVal = array("kktype" => "visa", "kknumber" => "12345", "kkmonth" => "11", "kkyear" => "2008", "kkname" => "testName", "kkpruef" => "56789");
-        modSession::getInstance()->setVar('dynvalue', $aDynVal);
+        $this->getSession()->setVariable('dynvalue', $aDynVal);
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField();
@@ -2329,7 +2329,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $aDynVal = array("lsbankname" => "SekundesBakas", "lsblz" => "11122233", "lsktonr" => "AA11222200003333444455", "lsktoinhaber" => "aaaaabbbbb");
         $sValue = "lsbankname__SekundesBakas@@lsblz__11122233@@lsktonr__AA11222200003333444455@@lsktoinhaber__aaaaabbbbb@@";
 
-        modSession::getInstance()->setVar('dynvalue', $aDynVal);
+        $this->getSession()->setVariable('dynvalue', $aDynVal);
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField();
@@ -2339,7 +2339,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $this->assertEquals($sValue, $oUserpayment->oxuserpayments__oxvalue->value);
         $this->assertEquals(4, count($oUserpayment->aDynValues));
 
-        modSession::getInstance()->deleteVariable('dynvalue');
+        $this->getSession()->deleteVariable('dynvalue');
 
         $oUserpayment = $oOrder->UNITsetPayment('oxiddebitnote');
         $this->assertEquals($sValue, $oUserpayment->oxuserpayments__oxvalue->value);
@@ -3257,7 +3257,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
     {
         $sDyn = 'lsbankname__visa@@lsblz__12345@@lsktonr__56789@@lsktoinhaber__testName@@';
         $aDynVal = array("lsbankname" => "visa", "lsblz" => "12345", "lsktonr" => "56789", "lsktoinhaber" => "testName");
-        modSession::getInstance()->setVar('dynvalue', $aDynVal);
+        $this->getSession()->setVariable('dynvalue', $aDynVal);
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField();

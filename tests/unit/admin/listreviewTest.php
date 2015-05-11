@@ -42,9 +42,6 @@ class Unit_Admin_ListReviewTest extends OxidTestCase
             unset($_POST['oxid']);
         }
 
-        modSession::getInstance()->cleanup();
-
-        //
         $this->getConfig()->setGlobalParameter('ListCoreTable', null);
 
         parent::tearDown();

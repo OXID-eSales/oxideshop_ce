@@ -274,7 +274,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $this->getConfig()->setConfigParam('iDebug', 1);
         $this->setRequestParameter("sid", "testSid");
 
-        modSession::getInstance()->setVar('sessionagent', 'oldone');
+        $this->getSession()->setVariable('sessionagent', 'oldone');
 
         oxTestModules::addFunction("oxUtils", "isSearchEngine", "{return false;}");
         oxTestModules::addFunction("oxUtilsServer", "isTrustedClientIp", "{return false;}");
@@ -471,7 +471,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         oxTestModules::addFunction("oxUtils", "isSearchEngine", "{return false;}");
         oxTestModules::addFunction("oxUtilsServer", "getOxCookie", "{return false;}");
 
-        modSession::getInstance()->setVar('blSidNeeded', true);
+        $this->getSession()->setVariable('blSidNeeded', true);
 
         $oSession = $this->getMock('oxSession', array('isSessionStarted'));
         $oSession->expects($this->any())->method('isSessionStarted')->will($this->returnValue(true));
@@ -483,7 +483,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         oxTestModules::addFunction("oxUtils", "isSearchEngine", "{return false;}");
         oxTestModules::addFunction("oxUtilsServer", "getOxCookie", "{return false;}");
 
-        modSession::getInstance()->setVar('blSidNeeded', false);
+        $this->getSession()->setVariable('blSidNeeded', false);
         $this->setRequestParameter('fnc', 'tobasket');
 
         $oSession = $this->getMock('oxSession', array('isSessionStarted'));
@@ -497,7 +497,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         oxTestModules::addFunction("oxUtils", "isSearchEngine", "{return false;}");
         oxTestModules::addFunction("oxUtilsServer", "getOxCookie", "{return false;}");
 
-        modSession::getInstance()->setVar('blSidNeeded', false);
+        $this->getSession()->setVariable('blSidNeeded', false);
 
         $oSession = new oxsession();
         $this->assertFalse($oSession->isSidNeeded());
@@ -1111,7 +1111,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     }
 
     /**
-     * oxRegistry::getSession()->setVariable() test
+     * $this->getSession()->setVariable() test
      */
     function testSetHasGetVar()
     {
@@ -1342,11 +1342,11 @@ class Unit_Core_oxsessionTest extends OxidTestCase
 
     public function testGetSessionChallengeToken()
     {
-        modSession::getInstance()->setVar('sess_stoken', '');
+        $this->getSession()->setVariable('sess_stoken', '');
         $oSession = $this->getMock('oxSession', array('_initNewSessionChallenge'));
-        $oSession->expects($this->once())->method('_initNewSessionChallenge')->will($this->evalFunction('{modSession::getInstance()->setVar("sess_stoken", "newtok");}'));
+        $oSession->expects($this->once())->method('_initNewSessionChallenge')->will($this->evalFunction('{oxRegistry::getSession()->setVariable("sess_stoken", "newtok");}'));
         $this->assertEquals('newtok', $oSession->getSessionChallengeToken());
-        modSession::getInstance()->setVar('sess_stoken', 'asd541)$#sdf');
+        $this->getSession()->setVariable('sess_stoken', 'asd541)$#sdf');
         $this->assertEquals('asd541sdf', $oSession->getSessionChallengeToken());
     }
 
@@ -1370,17 +1370,17 @@ class Unit_Core_oxsessionTest extends OxidTestCase
 
     public function testInitNewSessionChallenge()
     {
-        modSession::getInstance()->setVar('sess_stoken', '');
+        $this->getSession()->setVariable('sess_stoken', '');
         $oSession = new oxSession();
-        $this->assertEquals('', modSession::getInstance()->getVar('sess_stoken'));
+        $this->assertEquals('', $this->getSession()->getVariable('sess_stoken'));
         $this->assertEquals('', $oSession->getRequestChallengeToken());
 
         $oSession->UNITinitNewSessionChallenge();
-        $s1 = modSession::getInstance()->getVar('sess_stoken');
+        $s1 = $this->getSession()->getVariable('sess_stoken');
         $this->assertNotEquals('', $s1);
 
         $oSession->UNITinitNewSessionChallenge();
-        $s2 = modSession::getInstance()->getVar('sess_stoken');
+        $s2 = $this->getSession()->getVariable('sess_stoken');
         $this->assertNotEquals('', $s2);
         $this->assertNotEquals($s1, $s2);
     }

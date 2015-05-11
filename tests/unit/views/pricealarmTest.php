@@ -101,7 +101,7 @@ class Unit_Views_pricealarmTest extends OxidTestCase
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
         oxTestModules::addFunction('oxEmail', 'sendPricealarmNotification', '{return 999;}');
 
-        modSession::getInstance()->setVar('usr', "testUserId");
+        $this->getSession()->setVariable('usr', "testUserId");
         $aParams["email"] = "goodemail@ladyGagaFans.lt";
         $aParams["aid"] = "_testArtId";
         $aParams["price"] = "10";
@@ -134,7 +134,7 @@ class Unit_Views_pricealarmTest extends OxidTestCase
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
         oxTestModules::addFunction('oxEmail', 'sendPricealarmNotification', '{return 999;}');
 
-        modSession::getInstance()->setVar('usr', "testUserId");
+        $this->getSession()->setVariable('usr', "testUserId");
         $aParams["email"] = "goodemail@ladyGagaFans.lt";
 
         oxRegistry::getLang()->setBaseLanguage(1);

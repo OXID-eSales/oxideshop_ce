@@ -646,13 +646,13 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $myConfig->setConfigParam('sDefaultListDisplayType', 'grid');
         $this->assertEquals($aNrofCatArticlesInGrid, $oViewCfg->getNrOfCatArticles());
 
-        $oSession->setVar("ldtype", "grid");
+        $oSession->setVariable("ldtype", "grid");
         $this->assertEquals($aNrofCatArticlesInGrid, $oViewCfg->getNrOfCatArticles());
 
-        $oSession->setVar("ldtype", "line");
+        $oSession->setVariable("ldtype", "line");
         $this->assertEquals($aNrofCatArticles, $oViewCfg->getNrOfCatArticles());
 
-        $oSession->setVar("ldtype", "infogrid");
+        $oSession->setVariable("ldtype", "infogrid");
         $this->assertEquals($aNrofCatArticles, $oViewCfg->getNrOfCatArticles());
     }
 

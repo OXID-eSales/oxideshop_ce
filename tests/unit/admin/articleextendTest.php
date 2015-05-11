@@ -203,7 +203,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         $oView->expects($this->any())->method('resetContentCache');
         $oView->save();
         // testing..
-        $aErr = $this->getSession()->getVar('Errors');
+        $aErr = $this->getSession()->getVariable('Errors');
         $oErr = unserialize($aErr['default'][0]);
         $this->assertEquals('ARTICLE_EXTEND_UPLOADISDISABLED', $oErr->getOxMessage());
     }

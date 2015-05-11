@@ -117,7 +117,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
         $aVal = array("key" => array("var1" => array("value" => "val1", "expire" => 123, "path" => "path1", "domain" => "domain1"),
                                      "var2" => array("value" => "val2", "expire" => 321, "path" => "path2", "domain" => "domain2")));
-        $this->assertEquals($aVal, modSession::getInstance()->getVar("aSessionCookies"));
+        $this->assertEquals($aVal, $this->getSession()->getVariable("aSessionCookies"));
     }
 
     /**
@@ -130,7 +130,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
         $aVal = array("key" => array("var1" => array("value" => "val1", "expire" => 123, "path" => "path1", "domain" => "domain1"),
                                      "var2" => array("value" => "val2", "expire" => 321, "path" => "path2", "domain" => "domain2")));
 
-        modSession::getInstance()->setVar('aSessionCookies', $aVal);
+        $this->getSession()->setVariable('aSessionCookies', $aVal);
 
         $oUtilsServer = $this->getMock("oxUtilsServer", array("_getSessionCookieKey", "setOxCookie"));
         $oUtilsServer->expects($this->at(0))->method('_getSessionCookieKey')->will($this->returnValue("key"));

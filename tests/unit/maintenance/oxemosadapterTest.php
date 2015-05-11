@@ -136,7 +136,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oEmosItem->variant3 = 'NULL';
 
         $aLastCall = array('changebasket' => array('1126' => array('oldam' => 15, 'am' => 5, 'aid' => '1126')));
-        modSession::getInstance()->setVar('aLastcall', $aLastCall);
+        $this->getSession()->setVariable('aLastcall', $aLastCall);
 
         $oFormatter = $this->getMock('EMOS', array('removeFromBasket', 'appendPreScript'));
         $oFormatter->expects($this->once())->method('removeFromBasket')->with($this->equalTo($oEmosItem));
@@ -328,7 +328,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
         $this->setRequestParameter('new_user', 1);
         $this->setRequestParameter('success', 1);
-        modSession::getInstance()->setVar('usr', 'oxdefaultadmin');
+        $this->getSession()->setVariable('usr', 'oxdefaultadmin');
 
         $oFormatter = $this->getMock('EMOS', array('addContent', 'addOrderProcess', 'addRegister'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Shop/Kaufprozess/Zahlungsoptionen'));
@@ -381,7 +381,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oSmarty = null;
 
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', true);
-        modSession::getInstance()->setVar('usr', 'oxdefaultadmin');
+        $this->getSession()->setVariable('usr', 'oxdefaultadmin');
 
         $oEmosItem = new EMOS_Item();
         $oEmosItem->productId = '1126';
@@ -434,7 +434,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        modSession::getInstance()->setVar('usr', 'oxdefaultadmin');
+        $this->getSession()->setVariable('usr', 'oxdefaultadmin');
 
         $oArticle = oxNew('oxarticle');
         $oArticle->setId('_testArt');
@@ -1109,7 +1109,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oSmarty = null;
 
         $this->setRequestParameter('success', 1);
-        modSession::getInstance()->setVar('usr', 'oxdefaultadmin');
+        $this->getSession()->setVariable('usr', 'oxdefaultadmin');
 
         $oFormatter = $this->getMock('EMOS', array('addContent', 'addRegister'));
         $oFormatter->expects($this->once())->method('addContent')->with($this->equalTo('Service/Register'));
@@ -1162,7 +1162,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oEmosItem->variant3 = 'NULL';
 
         $aLastCall = array('changebasket' => array('1126' => array('oldam' => 5, 'am' => 15, 'aid' => '1126')));
-        modSession::getInstance()->setVar('aLastcall', $aLastCall);
+        $this->getSession()->setVariable('aLastcall', $aLastCall);
 
         $oFormatter = $this->getMock('EMOS', array('addToBasket'));
         $oFormatter->expects($this->once())->method('addToBasket')->with($this->equalTo($oEmosItem));
@@ -1215,7 +1215,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oEmosItem->variant3 = 'NULL';
 
         $aLastCall = array('tobasket' => array('1126' => array('am' => 1)));
-        modSession::getInstance()->setVar('aLastcall', $aLastCall);
+        $this->getSession()->setVariable('aLastcall', $aLastCall);
 
         $oFormatter = $this->getMock('EMOS', array('addToBasket'));
         $oFormatter->expects($this->once())->method('addToBasket')->with($this->equalTo($oEmosItem));

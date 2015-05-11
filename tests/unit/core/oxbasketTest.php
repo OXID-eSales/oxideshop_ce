@@ -2410,7 +2410,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oBasket->setBasketUser($oUser);
 
         $this->getConfig()->setGlobalParameter('delcountryid', null);
-        modSession::getInstance()->setVar('deladrid', $this->oDelAdress->getId());
+        $this->getSession()->setVariable('deladrid', $this->oDelAdress->getId());
         $this->assertEquals('_xxx', $oBasket->UNITfindDelivCountry());
     }
 
@@ -2473,7 +2473,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     public function testSetPaymentAndGetPaymentId()
     {
         // testing if value is taken from request
-        modSession::getInstance()->setVar('paymentid', 'xxx');
+        $this->getSession()->setVariable('paymentid', 'xxx');
         $oBasket = new oxbasket();
         $this->assertEquals('xxx', $oBasket->getPaymentId());
 
@@ -2494,7 +2494,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $this->assertEquals('oxidstandard', $oBasket->getShippingId());
 
         // testing if value is taken from request
-        modSession::getInstance()->setVar('sShipSet', 'xxx');
+        $this->getSession()->setVariable('sShipSet', 'xxx');
         $oBasket = new oxbasket();
         $this->assertEquals('xxx', $oBasket->getShippingId());
 

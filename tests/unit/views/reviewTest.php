@@ -426,7 +426,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testCanRateForArticle()
     {
-        modSession::getInstance()->setVar('reviewuserid', 'oxdefaultadmin');
+        $this->getSession()->setVariable('reviewuserid', 'oxdefaultadmin');
 
         $oArticle = new oxArticle();
         $oArticle->load('2000');

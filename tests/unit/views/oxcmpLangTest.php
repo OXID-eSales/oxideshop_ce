@@ -37,7 +37,7 @@ class Unit_Views_oxcmpLangTest extends OxidTestCase
         parent::setUp();
 
         $this->getConfig();
-        modSession::getInstance();
+        $this->getSession();
         oxTestModules::addFunction('oxutils', 'setseoact', '{oxRegistry::getUtils()->_blSeoIsActive = $aA[0];}');
         oxNew('oxutils')->setseoact(false);
     }

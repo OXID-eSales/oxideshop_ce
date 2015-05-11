@@ -315,7 +315,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
 
     public function testCanRate()
     {
-        modSession::getInstance()->setVar('usr', 'oxdefaultadmin');
+        $this->getSession()->setVariable('usr', 'oxdefaultadmin');
         $oRecomm = $this->getProxyClass("recommlist");
         $oRecommtList = new oxRecommList();
         $oRecommtList->load('testlist');
@@ -331,7 +331,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
         $oRecommtList->oxrecommlists__oxratingcnt = new oxField(2, oxField::T_RAW);
         $oRecommtList->save();
 
-        modSession::getInstance()->setVar('usr', 'oxdefaultadmin');
+        $this->getSession()->setVariable('usr', 'oxdefaultadmin');
         $oRecomm = $this->getProxyClass("recommlist");
         $oRecomm->setNonPublicVar("_oActiveRecommList", $oRecommtList);
         $this->assertEquals(3.5, $oRecomm->getRatingValue());

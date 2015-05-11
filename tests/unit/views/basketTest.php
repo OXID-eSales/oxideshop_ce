@@ -124,7 +124,7 @@ class Unit_Views_basketTest extends OxidTestCase
         $o->expects($this->exactly(2))->method('getConfig')->will($this->returnValue($oConf));
 
         $this->assertEquals(false, $o->showBackToShop());
-        oxRegistry::getSession()->setVariable('_backtoshop', 1);
+        $this->getSession()->setVariable('_backtoshop', 1);
         $this->assertEquals(true, $o->showBackToShop());
     }
 
@@ -157,7 +157,7 @@ class Unit_Views_basketTest extends OxidTestCase
 
     public function testBackToShop()
     {
-        oxRegistry::getSession()->setVariable('_backtoshop', 'asd');
+        $this->getSession()->setVariable('_backtoshop', 'asd');
         $oConf = $this->getMock('stdclass', array('getConfigParam'));
         $oConf->expects($this->exactly(1))->method('getConfigParam')->with($this->equalTo('iNewBasketItemMessage'))->will($this->returnValue(2));
         $o = $this->getMock('Basket', array('getConfig'));
@@ -167,7 +167,7 @@ class Unit_Views_basketTest extends OxidTestCase
 
     public function testBackToShopShowPage()
     {
-        oxRegistry::getSession()->setVariable('_backtoshop', 'asd');
+        $this->getSession()->setVariable('_backtoshop', 'asd');
         $oConf = $this->getMock('stdclass', array('getConfigParam'));
         $oConf->expects($this->exactly(1))->method('getConfigParam')->with($this->equalTo('iNewBasketItemMessage'))->will($this->returnValue(3));
         $o = $this->getMock('Basket', array('getConfig'));
@@ -179,7 +179,7 @@ class Unit_Views_basketTest extends OxidTestCase
 
     public function testBackToShopShowPageNoPage()
     {
-        oxRegistry::getSession()->setVariable('_backtoshop', '');
+        $this->getSession()->setVariable('_backtoshop', '');
         $oConf = $this->getMock('stdclass', array('getConfigParam'));
         $oConf->expects($this->exactly(1))->method('getConfigParam')->with($this->equalTo('iNewBasketItemMessage'))->will($this->returnValue(3));
         $o = $this->getMock('Basket', array('getConfig'));

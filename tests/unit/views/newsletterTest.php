@@ -406,7 +406,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $this->assertEquals(oxRegistry::getLang()->translateString('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY'), $oErr->getOxMessage());
 
         //reseting errors
-        oxRegistry::getSession()->setVariable('Errors', null);
+        $this->getSession()->setVariable('Errors', null);
 
         // wrong email
         $aParams['oxuser__oxusername'] = 'aaaaaa@';

@@ -1736,7 +1736,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testGetListDisplayType_getVarFromRequest()
     {
-        $oSession = modSession::getInstance();
+        $oSession = $this->getSession();
 
         $this->setRequestParameter('ldtype', null);
         $this->setConfigParam('sDefaultListDisplayType', null);
@@ -1744,18 +1744,18 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->assertEquals('infogrid', $oSubj->getListDisplayType());
         $this->assertEquals(null, oxRegistry::getSession()->getVariable("ldtype"));
 
-        $oSession->setVar('ldtype', null);
+        $oSession->setVariable('ldtype', null);
         $this->setRequestParameter('ldtype', "line");
         $this->assertEquals('infogrid', $oSubj->getListDisplayType());
 
-        $oSession->setVar('ldtype', null);
+        $oSession->setVariable('ldtype', null);
         $this->setRequestParameter('ldtype', 'grid');
         $this->setConfigParam('sDefaultListDisplayType', null);
         $oSubj = new oxubase();
         $this->assertEquals('grid', $oSubj->getListDisplayType());
         $this->assertEquals('grid', oxRegistry::getSession()->getVariable("ldtype"));
 
-        $oSession->setVar('ldtype', null);
+        $oSession->setVariable('ldtype', null);
         $this->setRequestParameter('ldtype', null);
         $this->setConfigParam('sDefaultListDisplayType', 'line');
         $oSubj = new oxubase();
@@ -1763,7 +1763,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->assertEquals(null, oxRegistry::getSession()->getVariable("ldtype"));
 
         // non existing list display type
-        $oSession->setVar('ldtype', null);
+        $oSession->setVariable('ldtype', null);
         $this->setRequestParameter('ldtype', "test");
         $this->setConfigParam('sDefaultListDisplayType', null);
         $oSubj = new oxubase();
@@ -1778,21 +1778,21 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testGetListDisplayType_getVarFromSession()
     {
-        $oSession = modSession::getInstance();
+        $oSession = $this->getSession();
 
         $this->setRequestParameter('ldtype', null);
-        $oSession->setVar('ldtype', null);
+        $oSession->setVariable('ldtype', null);
         $this->setConfigParam('sDefaultListDisplayType', null);
         $oSubj = new oxubase();
         $this->assertEquals('infogrid', $oSubj->getListDisplayType());
         $this->assertEquals(null, oxRegistry::getSession()->getVariable("ldtype"));
 
         $this->setRequestParameter('ldtype', null);
-        $oSession->setVar('ldtype', "line");
+        $oSession->setVariable('ldtype', "line");
         $this->assertEquals('infogrid', $oSubj->getListDisplayType());
 
         $this->setRequestParameter('ldtype', null);
-        $oSession->setVar('ldtype', 'grid');
+        $oSession->setVariable('ldtype', 'grid');
         $this->setConfigParam('sDefaultListDisplayType', null);
         $oSubj = new oxubase();
         $this->assertEquals('grid', $oSubj->getListDisplayType());
@@ -1805,7 +1805,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
         // non existing list display type
         $this->setRequestParameter('ldtype', null);
-        $oSession->setVar('ldtype', "test");
+        $oSession->setVariable('ldtype', "test");
         $this->setConfigParam('sDefaultListDisplayType', null);
         $oSubj = new oxubase();
         $this->assertEquals('infogrid', $oSubj->getListDisplayType());

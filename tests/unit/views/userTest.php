@@ -139,7 +139,7 @@ class Unit_Views_userTest extends OxidTestCase
     public function testGetOrderRemarkFromSession()
     {
         // setting the variable
-        modSession::getInstance()->setVar('ordrem', "test");
+        $this->getSession()->setVariable('ordrem', "test");
         $oUserView = $this->getMock('user', array('getUser'));
         $oUserView->expects($this->once())->method('getUser')->will($this->returnValue(true));
         $this->assertEquals('test', $oUserView->getOrderRemark());
@@ -167,10 +167,10 @@ class Unit_Views_userTest extends OxidTestCase
     {
         $oUserView = new user();
 
-        modSession::getInstance()->setVar('blshowshipaddress', false);
+        $this->getSession()->setVariable('blshowshipaddress', false);
         $this->assertFalse($oUserView->showShipAddress());
 
-        modSession::getInstance()->setVar('blshowshipaddress', true);
+        $this->getSession()->setVariable('blshowshipaddress', true);
         $this->assertTrue($oUserView->showShipAddress());
 
     }

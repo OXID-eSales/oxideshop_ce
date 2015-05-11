@@ -106,7 +106,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
 
         $sAbsDynImageDir = $myConfig->getPictureDir(false);
         $sActShopId = $myConfig->getBaseShopId();
-        modSession::getInstance()->setVar("actshop", $sActShopId);
+        $this->getSession()->setVariable("actshop", $sActShopId);
 
         $aTestData[0][1] = 'oxarticles';
         $aTestData[0][2] = 'oxthumb';

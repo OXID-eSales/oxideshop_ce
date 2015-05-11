@@ -76,9 +76,6 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
             unset($_POST['oxid']);
         }
 
-        modSession::getInstance()->cleanup();
-
-        //
         $this->getConfig()->setGlobalParameter('ListCoreTable', null);
 
         parent::tearDown();
@@ -116,7 +113,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $this->assertEquals(10, $oAdminList->UNITgetViewListSize());
 
         // testing if cookie data is used
-        modSession::getInstance()->setVar('profile', array(1 => 500));
+        $this->getSession()->setVariable('profile', array(1 => 500));
         $oAdminList = new oxadminlist();
         $this->assertEquals(500, $oAdminList->UNITgetViewListSize());
     }

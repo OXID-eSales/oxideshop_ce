@@ -78,7 +78,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
         $oAdress->oxaddress__oxaddressuserid = new oxField($this->_oUser->getId(), oxField::T_RAW);
         $oAdress->oxaddress__oxcountryid = new oxField('a7c40f6323c4bfb36.59919433', oxField::T_RAW); //italien
         $oAdress->save();
-        oxRegistry::getSession()->setVariable('deladrid', '_testAddressId');
+        $this->getSession()->setVariable('deladrid', '_testAddressId');
         modOxDeliverySetList_paymentList::$dBasketPrice = null;
     }
 

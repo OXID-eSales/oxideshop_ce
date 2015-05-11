@@ -132,8 +132,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $oUser->setAdminMode(null);
         oxRegistry::getSession()->deleteVariable('deladrid');
 
-        oxRegistry::getSession()->setVariable('usr', null);
-        oxRegistry::getSession()->setVariable('auth', null);
+        $this->getSession()->setVariable('usr', null);
+        $this->getSession()->setVariable('auth', null);
 
         // resetting globally admin mode
 
@@ -302,8 +302,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $oDb->execute($sSql);
         $this->getConfig()->setConfigParam("dPointsForRegistration", 10);
         $this->getConfig()->setConfigParam("dPointsForInvitation", false);
-        $this->getSession()->setVar('su', 'oxdefaultadmin');
-        $this->getSession()->setVar('re', md5('oxemail'));
+        $this->getSession()->setVariable('su', 'oxdefaultadmin');
+        $this->getSession()->setVariable('re', md5('oxemail'));
 
         $oUser = $this->getMock("oxuser", array("save"));
         $oUser->expects($this->once())->method('save')->will($this->returnValue(true));
@@ -1091,7 +1091,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     // 2. user initial rights are malladmin
     public function testGetUserRightsInitialAdminRightsSessionUserIsAdmin()
     {
-        $this->getSession()->setVar("usr", "oxdefaultadmin");
+        $this->getSession()->setVariable("usr", "oxdefaultadmin");
 
         $oUser = new oxUser();
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
@@ -1101,7 +1101,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     // 3. user initial rights are "user"
     public function testGetUserRightsInitialAdminRightsSessionUserIsSimpleUser()
     {
-        $this->getSession()->setVar("usr", null);
+        $this->getSession()->setVariable("usr", null);
         $oUser = new oxUser();
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
         $this->assertEquals('user', $oUser->UNITgetUserRights());
@@ -1119,7 +1119,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $oUser->oxuser__oxrights = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
         $oUser->save();
 
-        $this->getSession()->setVar("usr", $oUser->oxuser__oxid->value);
+        $this->getSession()->setVariable("usr", $oUser->oxuser__oxid->value);
 
         $oUser = new oxUser();
         $oUser->oxuser__oxrights = new oxField($this->getConfig()->GetShopId(), oxField::T_RAW);
@@ -1486,7 +1486,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
         $sQ = 'select oxid from oxaddress where oxuserid = "' . $sUserId . '"';
         $sAddessId = $oDb->getOne($sQ);
-        oxRegistry::getSession()->setVariable('deladrid', $sAddessId);
+        $this->getSession()->setVariable('deladrid', $sAddessId);
 
         // loading user
         $oUser->load($sUserId);
@@ -1502,7 +1502,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
         $oUser = $this->createUser();
         $sUserId = $oUser->getId();
-        $this->getSession()->addClassFunction('getUser', create_function('', '$oUser = oxNew( "oxuser" ); $oUser->load( "' . $sUserId . '" ); return $oUser;'));
 
         // checking user country
         $sQ = 'select oxcountryid from oxuser where oxid = "' . $sUserId . '" ';
@@ -1514,7 +1513,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     {
         $oUser = $this->createUser();
         $sUsrCountry = $oUser->oxuser__oxcountryid->value;
-        $this->getSession()->setVar('usr', $oUser->getId());
+        $this->getSession()->setVariable('usr', $oUser->getId());
 
         // checking user country
         $oUser = new oxUser();
@@ -2354,8 +2353,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
 
-        oxRegistry::getSession()->setVariable('dynvalue', 'test');
-        oxRegistry::getSession()->setVariable('paymentid', 'test');
+        $this->getSession()->setVariable('dynvalue', 'test');
+        $this->getSession()->setVariable('paymentid', 'test');
 
         $oUser = $oUser->getUser();
 
@@ -2379,7 +2378,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     // trying to set empty address
     public function testAssignAddressNoAddressIsSet()
     {
-        oxRegistry::getSession()->setVariable('deladrid', 'xxx');
+        $this->getSession()->setVariable('deladrid', 'xxx');
         $aDelAddress = array();
 
         $oUser = new oxUser();
@@ -2463,7 +2462,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
         $oUser->UNITassignAddress($aDelAddress);
 
-        oxRegistry::getSession()->setVariable('oxaddressid', null);
+        $this->getSession()->setVariable('oxaddressid', null);
         $oAddress = $oUser->getSelectedAddress();
         $this->assertEquals('xxx', $oAddress->getId());
     }
@@ -2475,8 +2474,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
     {
         $oUser = $this->createUser();
 
-        oxRegistry::getSession()->setVariable('deladrid', null);
-        oxRegistry::getSession()->setVariable('oxaddressid', null);
+        $this->getSession()->setVariable('deladrid', null);
+        $this->getSession()->setVariable('oxaddressid', null);
         $oSelAddress = $oUser->getSelectedAddress();
         $oUser->oAddresses->rewind();
         $oAddress = $oUser->oAddresses->current();
@@ -2492,8 +2491,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
     {
         $oUser = $this->createUser();
 
-        oxRegistry::getSession()->setVariable('deladrid', null);
-        oxRegistry::getSession()->setVariable('oxaddressid', null);
+        $this->getSession()->setVariable('deladrid', null);
+        $this->getSession()->setVariable('oxaddressid', null);
 
         $oSelAddress = $oUser->getSelectedAddress($oUser->getId());
         $this->assertEquals('test_user1', $oSelAddress->getId());

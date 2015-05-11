@@ -50,7 +50,7 @@ class Unit_Core_oxbasketreservationTest extends OxidTestCase
      */
     public function testGetReservationsIdReturnInited()
     {
-        modSession::getInstance()->setVar('basketReservationToken', 'oldvarval');
+        $this->getSession()->setVariable('basketReservationToken', 'oldvarval');
 
         $oUO = $this->getMock('oxUtilsObject', array('generateUID'));
         $oUO->expects($this->never())->method('generateUID');

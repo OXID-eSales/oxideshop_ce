@@ -672,7 +672,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendNewsletterDBOptInMail()
     {
-        modSession::getInstance()->setId('xsessx');
+        $this->getSession()->setId('xsessx');
 
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages", "isSessionStarted"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));

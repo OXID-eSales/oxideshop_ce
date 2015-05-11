@@ -31,7 +31,7 @@ class Unit_Views_tagTest extends OxidTestCase
         $oView = new tag();
         $oView->setItemSorting('alist', "testSortBy", "testSortOrder");
 
-        $aSorting = $this->getSession()->getVar("aSorting");
+        $aSorting = $this->getSession()->getVariable("aSorting");
 
         $this->assertNotNull($aSorting);
         $this->assertTrue(isset($aSorting["alist"]));

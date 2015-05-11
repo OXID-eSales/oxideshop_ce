@@ -214,8 +214,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testOxArticleGetPersParam()
     {
         $aPersParam = array('_testArticle' => 'sėkme Литовские für');
-        modSession::getInstance()->setVar('persparam', $aPersParam);
-
+        $this->getSession()->setVariable('persparam', $aPersParam);
         $oArticle = new oxarticle();
         $oArticle->setId('_testArticle');
         $oArticle->UNITassignPersistentParam();
@@ -912,7 +911,7 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'agentūrų Литовские für';
         $aDynVal = array("kktype" => "visa", "kknumber" => "12345", "kkmonth" => "11", "kkyear" => "2008", "kkname" => $sValue, "kkpruef" => "56789");
-        oxRegistry::getSession()->setVariable('dynvalue', $aDynVal);
+        $this->getSession()->setVariable('dynvalue', $aDynVal);
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField();

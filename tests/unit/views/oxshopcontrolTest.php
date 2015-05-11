@@ -49,7 +49,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         $this->setRequestParameter('cl', null);
         $this->setRequestParameter('fnc', "testFnc");
-        modSession::getInstance()->setVar('actshop', null);
+        $this->getSession()->setVariable('actshop', null);
         oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception("Error in testStart()"); }');
         modDB::getInstance()->addClassFunction('getOne', create_function('$x', 'return 2;'));
 
@@ -67,7 +67,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oControl->expects($this->once())->method('_process')->with($this->equalTo("mallstart"), $this->equalTo("testFnc"));
         $oControl->start();
 
-        //$this->assertEquals( $this->getConfig()->getBaseShopId(), modSession::getInstance()->getVar( "actshop" ) );
+        //$this->assertEquals( $this->getConfig()->getBaseShopId(), $this->getSession()->getVariable( "actshop" ) );
     }
 
     /**
@@ -79,7 +79,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         $this->setRequestParameter('cl', null);
         $this->setRequestParameter('fnc', "testFnc");
-        modSession::getInstance()->setVar('actshop', null);
+        $this->getSession()->setVariable('actshop', null);
         oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception("Error in testStart()"); }');
         modDB::getInstance()->addClassFunction('getOne', create_function('$x', 'return 2;'));
 
@@ -94,7 +94,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oControl->expects($this->once())->method('_process')->with($this->equalTo("login"), $this->equalTo("testFnc"));
         $oControl->start();
 
-        //$this->assertEquals( $this->getConfig()->getBaseShopId(), modSession::getInstance()->getVar( "actshop" ) );
+        //$this->assertEquals( $this->getConfig()->getBaseShopId(), $this->getSession()->getVariable( "actshop" ) );
     }
 
     /**
@@ -203,7 +203,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
      */
     public function testStartCookieExceptionHandled()
     {
-        modSession::getInstance()->setVar('actshop', null);
+        $this->getSession()->setVariable('actshop', null);
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ throw new Exception("oxCookieException"); }');
 
         $oConfig = $this->getMock("oxStdClass", array("isMall", "getConfigParam", "getShopId", "getShopHomeUrl"));

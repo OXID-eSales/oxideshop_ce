@@ -268,8 +268,8 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
         $this->getConfig()->setConfigParam("bl_showCompareList", true);
         $this->getConfig()->setConfigParam("blDisableNavBars", false);
 
-        modSession::getInstance()->setVar('wishid', "testWishId");
-        modSession::getInstance()->setVar('aFiltcompproducts', array("1126"));
+        $this->getSession()->setVariable('wishid', "testWishId");
+        $this->getSession()->setVariable('aFiltcompproducts', array("1126"));
 
         oxTestModules::addFunction('oxuser', 'load', '{ return true; }');
 

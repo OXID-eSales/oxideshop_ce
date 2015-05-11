@@ -38,7 +38,6 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
         $myDB->execute("delete from oxseo where oxobjectid = '_testArt'");
         $myDB->execute("delete from oxnewssubscribed where oxuserid = '_testUser'");
         oxArticleHelper::cleanup();
-        modSession::getInstance()->cleanup();
 
         //resetting cached testing values
         $_GET["testReset"] = null;
@@ -90,7 +89,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
         $oAdminView->expects($this->any())->method('_getCountryByCode')->will($this->returnValue("testcountrycode"));
         $oAdminView->expects($this->any())->method('_getShopVersionNr')->will($this->returnValue("testshopversion"));
 
-        modSession::getInstance()->setVar('tpllanguage', 'de');
+        $this->getSession()->setVariable('tpllanguage', 'de');
 
         $sTestUrl = "testprotocol://admin.oxid-esales.com/$sPref/testshopversion/testcountrycode/de/";
         $this->assertEquals($sTestUrl, $oAdminView->getServiceUrl());
@@ -381,19 +380,19 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     public function testSetEditObjectIdGetEditObjectId()
     {
         $this->setRequestParameter("oxid", null);
-        modSession::getInstance()->setVar("saved_oxid", "testSessId");
+        $this->getSession()->setVariable("saved_oxid", "testSessId");
 
         $oView = new oxAdminView();
         $this->assertEquals("testSessId", $oView->getEditObjectId());
 
         $this->setRequestParameter("oxid", "testRequestId");
-        modSession::getInstance()->setVar("saved_oxid", "testSessId");
+        $this->getSession()->setVariable("saved_oxid", "testSessId");
 
         $oView = new oxAdminView();
         $this->assertEquals("testRequestId", $oView->getEditObjectId());
 
         $this->setRequestParameter("oxid", "testRequestId");
-        modSession::getInstance()->setVar("saved_oxid", "testSessId");
+        $this->getSession()->setVariable("saved_oxid", "testSessId");
 
         $oView = new oxAdminView();
         $oView->setEditObjectId("testSetId");

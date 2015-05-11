@@ -176,17 +176,17 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
             $sHash1 => array($oCaptcha->getTextHash($sMac1) => time() + 3600),
             $sHash2 => array($oCaptcha->getTextHash($sMac2) => time() + 3600)
         );
-        $oSession = modSession::getInstance();
-        $oSession->setVar("aCaptchaHash", $aHash);
+        $oSession = $this->getSession();
+        $oSession->setVariable("aCaptchaHash", $aHash);
 
         $oCaptcha = $this->getMock("oxCaptcha", array("_passFromDb"));
         $oCaptcha->expects($this->never())->method('_passFromDb');
 
         $this->assertTrue($oCaptcha->pass($sMac1, $sHash1));
-        $this->assertEquals(1, count($oSession->getVar("aCaptchaHash")));
+        $this->assertEquals(1, count($oSession->getVariable("aCaptchaHash")));
 
         $this->assertTrue($oCaptcha->pass($sMac2, $sHash2));
-        $this->assertNull($oSession->getVar("aCaptchaHash"));
+        $this->assertNull($oSession->getVariable("aCaptchaHash"));
     }
 
     /**
@@ -196,7 +196,7 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
      */
     public function testSessionPassFail()
     {
-        modSession::getInstance()->setVar("aCaptchaHash", array("testHash" => array("testTextHash" => 132)));
+        $this->getSession()->setVariable("aCaptchaHash", array("testHash" => array("testTextHash" => 132)));
 
         $oCaptcha = $this->getMock("oxCaptcha", array("_passFromDb"));
         $oCaptcha->expects($this->never())->method('_passFromDb');

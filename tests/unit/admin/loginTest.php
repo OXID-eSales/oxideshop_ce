@@ -29,7 +29,7 @@ class Unit_Admin_loginTest extends OxidTestCase
     public function setUp()
     {
         $this->setAdminMode(true);
-        modSession::getInstance()->setVar("blIsAdmin", true);
+        $this->getSession()->setVariable("blIsAdmin", true);
 
         return parent::setUp();
     }
@@ -273,7 +273,7 @@ class Unit_Admin_loginTest extends OxidTestCase
         oxTestModules::addFunction('oxUtils', 'logger', '{ return true; }');
 
         $this->setRequestParameter('profile', "testProfile");
-        modSession::getInstance()->setVar("aAdminProfiles", array("testProfile" => array("testValue")));
+        $this->getSession()->setVariable("aAdminProfiles", array("testProfile" => array("testValue")));
 
         $oView = new Login();
         $this->assertEquals("admin_start", $oView->checklogin());
@@ -293,7 +293,7 @@ class Unit_Admin_loginTest extends OxidTestCase
         $this->setRequestParameter('pwd', '<^%&*aaa>\'"');
         $this->setRequestParameter('profile', '<^%&*aaa>\'"');
         $this->setAdminMode(true);
-        modSession::getInstance()->setVar("blIsAdmin", true);
+        $this->getSession()->setVariable("blIsAdmin", true);
         $oView = $this->getMock("Login", array("addTplParam"));
         $oView->expects($this->at(0))->method('addTplParam')->with($this->equalTo("user"), $this->equalTo('&#039;&quot;&lt;^%&amp;*aaa&gt;'));
         $oView->expects($this->at(1))->method('addTplParam')->with($this->equalTo("pwd"), $this->equalTo('&lt;^%&amp;*aaa&gt;&#039;&quot;'));
@@ -314,7 +314,7 @@ class Unit_Admin_loginTest extends OxidTestCase
         $this->setRequestParameter('pwd', '<^%&*aaa>\'"');
         $this->setRequestParameter('profile', '<^%&*aaa>\'"');
         $this->setAdminMode(true);
-        modSession::getInstance()->setVar("blIsAdmin", true);
+        $this->getSession()->setVariable("blIsAdmin", true);
         $oView = $this->getMock("Login", array("addTplParam"));
         $oView->expects($this->at(0))->method('addTplParam')->with($this->equalTo("user"), $this->equalTo('&#039;&quot;&lt;^%&amp;*aaa&gt;'));
         $oView->expects($this->at(1))->method('addTplParam')->with($this->equalTo("pwd"), $this->equalTo('&lt;^%&amp;*aaa&gt;&#039;&quot;'));

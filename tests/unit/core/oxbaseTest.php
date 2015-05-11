@@ -240,7 +240,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->cleanUpTable('oxorder');
 
         $this->getConfig();
-        modSession::getInstance();
+        $this->getSession();
     }
 
     /**

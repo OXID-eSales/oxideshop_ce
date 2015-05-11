@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -216,19 +216,10 @@ class oxDb
      */
     public static function getInstance()
     {
-        // disable caching for test modules
-        if (defined('OXID_PHP_UNIT')) {
-            self::$_instance = modInstances::getMod(__CLASS__);
-        }
-
         if (!self::$_instance instanceof oxDb) {
 
             //do not use simple oxNew here as it goes to eternal cycle
             self::$_instance = new oxDb();
-
-            if (defined('OXID_PHP_UNIT')) {
-                modInstances::addMod(__CLASS__, self::$_instance);
-            }
         }
 
         return self::$_instance;
@@ -446,12 +437,6 @@ class oxDb
      */
     public static function getDb($iFetchMode = oxDb::FETCH_MODE_NUM)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset(modDB::$unitMOD) && is_object(modDB::$unitMOD)) {
-                return modDB::$unitMOD;
-            }
-        }
-
         if (self::$_oDB === null) {
 
             $oInst = self::getInstance();

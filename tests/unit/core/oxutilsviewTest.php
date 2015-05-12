@@ -332,19 +332,19 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     // demo mode
     public function testFillCommonSmartyPropertiesANDSmartyCompileCheckDemoShop()
     {
-        $this->getConfig()->setConfigParam('iDebug', 1);
-        $this->getConfig()->setConfigParam('blDemoShop', 1);
+        $config = oxNew('oxConfig');
 
-        $myConfig = $this->getConfig();
+        $config->setConfigParam('iDebug', 1);
+        $config->setConfigParam('blDemoShop', 1);
 
-        $sTplDir = $myConfig->getTemplateDir($myConfig->isAdmin());
+        $sTplDir = $config->getTemplateDir($config->isAdmin());
 
         $aTemplatesDir = array();
         if ($sTplDir) {
             $aTemplatesDir[] = $sTplDir;
         }
 
-        $sTplDir = $myConfig->getOutDir() . $myConfig->getConfigParam('sTheme') . "/tpl/";
+        $sTplDir = $config->getOutDir() . $config->getConfigParam('sTheme') . "/tpl/";
         if ($sTplDir && !in_array($sTplDir, $aTemplatesDir)) {
             $aTemplatesDir[] = $sTplDir;
         }
@@ -352,7 +352,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $oVfsStreamWrapper = $this->getVfsStreamWrapper();
         $oVfsStreamWrapper->createStructure(array('tmp_directory' => array()));
         $compileDirectory = $oVfsStreamWrapper->getRootPath().'tmp_directory';
-        $this->getConfig()->setConfigParam('sCompileDir', $compileDirectory);
+        $config->setConfigParam('sCompileDir', $compileDirectory);
 
         $aCheck = array('php_handling'      => 2,
                         'security'          => true,
@@ -363,7 +363,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                         'compile_dir'       => $compileDirectory . "/smarty/",
                         'cache_dir'         => $compileDirectory . "/smarty/",
                         'template_dir'      => $aTemplatesDir,
-                        'compile_id'        => md5($myConfig->getTemplateDir(false) . '__' . $myConfig->getShopId()),
+                        'compile_id'        => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
                         'debugging'         => true,
                         'compile_check'     => true,
                         'security_settings' => array(
@@ -417,6 +417,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
             ->with($this->equalTo('smarty_prefilter_oxblock'));
 
         $oUtilsView = new oxutilsview();
+        $oUtilsView->setConfig($config);
         $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
         $oUtilsView->UNITsmartyCompileCheck($oSmarty);
 
@@ -429,19 +430,19 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     // non demo mode
     public function testFillCommonSmartyPropertiesANDSmartyCompileCheck()
     {
-        $this->getConfig()->setConfigParam('iDebug', 1);
-        $this->getConfig()->setConfigParam('blDemoShop', 0);
+        $config = oxNew('oxConfig');
 
-        $myConfig = $this->getConfig();
+        $config->setConfigParam('iDebug', 1);
+        $config->setConfigParam('blDemoShop', 0);
 
-        $sTplDir = $myConfig->getTemplateDir($myConfig->isAdmin());
+        $sTplDir = $config->getTemplateDir($config->isAdmin());
 
         $aTemplatesDir = array();
         if ($sTplDir) {
             $aTemplatesDir[] = $sTplDir;
         }
 
-        $sTplDir = $myConfig->getOutDir() . $myConfig->getConfigParam('sTheme') . "/tpl/";
+        $sTplDir = $config->getOutDir() . $config->getConfigParam('sTheme') . "/tpl/";
         if ($sTplDir && !in_array($sTplDir, $aTemplatesDir)) {
             $aTemplatesDir[] = $sTplDir;
         }
@@ -449,18 +450,18 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $oVfsStreamWrapper = $this->getVfsStreamWrapper();
         $oVfsStreamWrapper->createStructure(array('tmp_directory' => array()));
         $compileDirectory = $oVfsStreamWrapper->getRootPath().'tmp_directory';
-        $this->getConfig()->setConfigParam('sCompileDir', $compileDirectory);
+        $config->setConfigParam('sCompileDir', $compileDirectory);
 
         $aCheck = array('php_handling'    => 2,
                         'security'        => false,
-                        'php_handling'    => (int) $myConfig->getConfigParam('iSmartyPhpHandling'),
+                        'php_handling'    => (int) $config->getConfigParam('iSmartyPhpHandling'),
                         'left_delimiter'  => '[{',
                         'right_delimiter' => '}]',
                         'caching'         => false,
                         'compile_dir'     => $compileDirectory . "/smarty/",
                         'cache_dir'       => $compileDirectory . "/smarty/",
                         'template_dir'    => $aTemplatesDir,
-                        'compile_id'      => md5($myConfig->getTemplateDir(false) . '__' . $myConfig->getShopId()),
+                        'compile_id'      => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
                         'debugging'       => true,
                         'compile_check'   => true);
 
@@ -469,6 +470,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $oSmarty->expects($this->once())->method('register_resource');
 
         $oUtilsView = new oxutilsview();
+        $oUtilsView->setConfig($config);
         $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
         $oUtilsView->UNITsmartyCompileCheck($oSmarty);
 
@@ -656,12 +658,15 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testGetSmartyDir()
     {
+        $config = oxNew('oxConfig');
+
         $oUV = new oxUtilsView();
+        $oUV->setConfig($config);
 
         $oVfsStreamWrapper = $this->getVfsStreamWrapper();
         $oVfsStreamWrapper->createStructure(array('tmp_directory' => array()));
         $compileDirectory = $oVfsStreamWrapper->getRootPath().'tmp_directory';
-        $this->getConfig()->setConfigParam('sCompileDir', $compileDirectory);
+        $config->setConfigParam('sCompileDir', $compileDirectory);
 
         $sExp = $compileDirectory . "/smarty/";
 

@@ -1402,10 +1402,6 @@ class oxOrder extends oxBase
         } catch (Exception $oE) {
             // if exception, rollBack everything
             oxDb::getDb()->rollbackTransaction();
-
-            if (defined('OXID_PHP_UNIT')) {
-                throw $oE;
-            }
         }
     }
 

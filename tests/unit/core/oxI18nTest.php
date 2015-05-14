@@ -269,8 +269,8 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $aLangParams['zb']['baseId'] = 3;
         $aLangParams['zb']['abbr'] = 'zb';
 
-        modConfig::getInstance()->setConfigParam('aLanguageParams', $aLangParams);
-        modConfig::getInstance()->setConfigParam('aLanguages', $aLang);
+        $this->getConfig()->setConfigParam('aLanguageParams', $aLangParams);
+        $this->getConfig()->setConfigParam('aLanguages', $aLang);
 
         $oObj = new _oxI18n();
         $oObj->init("oxwrapping");
@@ -283,7 +283,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
     public function testGetAvailableInLangsWithNotLoadedObject()
     {
         $aLang = array(0 => "Deutsch", 1 => "English", 2 => "Lithuanian", 3 => "ZuluBumBum");
-        modConfig::getInstance()->setConfigParam('aLanguages', $aLang);
+        $this->getConfig()->setConfigParam('aLanguages', $aLang);
 
         $oObj = new _oxI18n();
         $oObj->init("oxwrapping");
@@ -309,9 +309,9 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $aLangParams['zb']['baseId'] = 3;
         $aLangParams['zb']['abbr'] = 'zb';
 
-        modConfig::getInstance()->setConfigParam('aLanguageParams', $aLangParams);
-        modConfig::getInstance()->setConfigParam('aLanguages', $aLang);
-        modConfig::getInstance()->setConfigParam('aLanguages', $aLang);
+        $this->getConfig()->setConfigParam('aLanguageParams', $aLangParams);
+        $this->getConfig()->setConfigParam('aLanguages', $aLang);
+        $this->getConfig()->setConfigParam('aLanguages', $aLang);
 
         $oObj = new _oxI18n();
         $oObj->init("oxvouchers");
@@ -982,7 +982,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $sId = "_testRecordForTest";
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
-        modConfig::getInstance()->setConfigParam("iLangPerTable", 4);
+        $this->getConfig()->setConfigParam("iLangPerTable", 4);
         oxTestModules::addFunction("oxLang", "getLanguageIds", "{return array('0' => 'de', '1' => 'de', '2' => 'lt', '3' => 'ru', '4' => 'pl', '5' => 'cz');}");
 
         foreach ($this->_aLangTables as $sObjectType => $sTableName) {

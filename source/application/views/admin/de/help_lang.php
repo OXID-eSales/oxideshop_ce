@@ -591,7 +591,7 @@ $aLang =  array(
 
 'HELP_PROMOTIONS_BANNER_PICTUREANDLINK'       => 'Laden Sie ein Bild für den großen Startseitenbanner hoch und geben die URL für den Klick auf den Banner an. Falls ein Artikel zugeordnet wird, wird dessen URL automatisch als Banner-URL verwendet.',
 'HELP_SHOP_PERF_SEO_CACHE'                    => 'Aktivierter SEO Cache verbessert die Performance, benötigt aber sehr viel Speicherplatz im /tmp-Verzeichnis.',
-'HELP_SHOP_PERF_SYSREQ_CHECK'                 => 'Führt die Systemgesundheitsprüfung beim Aufruf des Administrationsbereichs aus und zeigt ggf. Meldungen an. In bestimmten Konstellationen kann sich das negativ auf die Performance des Administrationsbereichs auswirken.',
+
 'HELP_ALTERNATIVE_IMAGE_SERVER_NOTE'          => 'In der Konfigurationsdatei config.inc.php kann mit den Parametern <i>sAltImageUrl</i> und <i>sSSLAltImageUrl</i> eine URL zu einem externen Bilder-Server gesetzt werden. Dadurch werden alle Artikelbilder von diesem alternativen Server geladen. Alle hochgeladenen Dateien werden jedoch lokal gespeichert, so dass sie manuell oder per Script mit dem externen Server synchronisiert werden müssen.',
 
 'HELP_SHOP_RDFA_SUBMIT_URL'                   => 'Überträgt Ihre Shop URL zur GR-Notify-Seite. Dort wird die URL gespeichert und an Suchmaschinen und Endpunkte von Linked Open Commerce & Semantic Web weitergeleitet.',
@@ -614,7 +614,7 @@ $aLang =  array(
 'HELP_SHOP_RDFA_FNC'                          => 'Wählen Sie hier die geschäftliche Funktion der Artikel. Werden diese beispielsweise verkauft, vermietet oder repariert?',
 'HELP_SHOP_RDFA_COSTUMER'                     => 'Gibt den Kundentypen an, dem die Artikel des Shops gelten (Endverbraucher, Wiederverkäufer, Unternehmen/Gewerbe und/oder Öffentliche Einrichtungen).',
 'HELP_SHOP_RDFA_DURATION_OFFERINGS'           => 'Diese Eigenschaft kennzeichnet den Gültigkeitszeitraum von Artikeln, beispielsweise 1 Tag, 1 Woche oder 1 Monat.',
-
+'HELP_SHOP_PERF_SYSREQ_CHECK'                 => 'Führt die Systemgesundheitsprüfung beim Aufruf des Administrationsbereichs aus und zeigt ggf. Meldungen an. In bestimmten Konstellationen kann sich das negativ auf die Performance des Administrationsbereichs auswirken.',
 'HELP_SHOP_CONFIG_ADDITIONAL_SERVICE_VAT_CALCULATION_BIGGEST_NET'  => 'Für die Berechnung wird der MwSt.-Satz derjenigen Artikel verwendet, welche den größten Nettowert im Warenkorb ausmachen.',
 'HELP_SHOP_CONFIG_ADDITIONAL_SERVICE_VAT_CALCULATION_PROPORTIONAL' => 'Für die Berechnung wird der prozentuale Anteil der Artikel im Warenkorb mit gleichem MwSt.-Satz berücksichtigt.',
 'HELP_SHOP_CONFIG_VIEWNETPRICE'               => 'Im Shop werden Artikelpreise als Nettopreise angezeigt.',

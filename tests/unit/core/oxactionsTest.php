@@ -419,7 +419,7 @@ class Unit_Core_oxactionsTest extends OxidTestCase
     {
         $oPromo = new oxactions();
         $oPromo->oxactions__oxpic = new oxField("current_de.jpg");
-        $oConfig = modConfig::getInstance();
+        $oConfig = $this->getConfig();
 
         $this->assertEquals($oConfig->getPictureUrl("promo/") . "current_de.jpg", $oPromo->getBannerPictureUrl());
     }
@@ -430,7 +430,7 @@ class Unit_Core_oxactionsTest extends OxidTestCase
     public function testGetBannerPictureUrl_noPicture()
     {
         $oPromo = new oxactions();
-        $oConfig = modConfig::getInstance();
+        $oConfig = $this->getConfig();
 
         $this->assertNull($oPromo->getBannerPictureUrl());
     }
@@ -442,7 +442,7 @@ class Unit_Core_oxactionsTest extends OxidTestCase
     {
         $oPromo = new oxactions();
         $oPromo->oxactions__oxpic = new oxField("noSuchPic.jpg");
-        $this->assertEquals(modConfig::getInstance()->getPictureUrl("master/") . "nopic.jpg", $oPromo->getBannerPictureUrl());
+        $this->assertEquals($this->getConfig()->getPictureUrl("master/") . "nopic.jpg", $oPromo->getBannerPictureUrl());
     }
 
     /**

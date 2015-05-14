@@ -247,6 +247,11 @@ class oxOrder extends oxBase
     protected $_sShipTrackUrl = null;
 
     /**
+     * @var oxBasket
+     */
+    protected $_oOrderBasket = null;
+
+    /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
     public function __construct()
@@ -1404,8 +1409,6 @@ class oxOrder extends oxBase
             oxDb::getDb()->rollbackTransaction();
         }
     }
-
-    protected $_oOrderBasket = null;
 
     /**
      * Returns basket object filled up with discount, delivery, wrapping and all other info

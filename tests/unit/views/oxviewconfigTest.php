@@ -171,14 +171,63 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $this->assertEquals($this->getConfig()->getShopUrl() . 'en/home/', $oViewConfig->getHomeLink());
     }
 
-    public function testGetHomeLink_defaultLanguageEn()
+    /**
+     * Data provider for test case testGetHomeLink
+     *
+     * @return array
+     */
+    public function testGetHomeLinkDataProvider()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        oxTestModules::addFunction("oxLang", "getBaseLanguage", "{return 1;}");
-        $this->getConfig()->setConfigParam("sDefaultLang", 1);
+        $sShopUrl = $this->getConfig()->getShopUrl();
 
-        $oViewConfig = new oxviewconfig();
-        $this->assertEquals($this->getConfig()->getShopUrl(), $oViewConfig->getHomeLink());
+        $iLangDE = 0;
+        $iLangEN = 1;
+
+        // Parameters:
+        // - default shop language
+        // - default browser language
+        // - expected URL
+        return array(
+            array($iLangDE, $iLangDE, $sShopUrl),
+            array($iLangDE, $iLangEN, $sShopUrl . "index.php?lang=$iLangDE&amp;"),
+            array($iLangEN, $iLangDE, $sShopUrl . "index.php?lang=1&amp;"),
+            array($iLangEN, $iLangEN, $sShopUrl)
+        );
+    }
+
+    /**
+     * Test case for getting eShop home link in different default languages and browser default languages
+     *
+     * @param int    $iDefaultShopLanguage    default shop language
+     * @param int    $iDefaultBrowserLanguage default browser language
+     * @param string $sExpectedUrl            expected URL
+     *
+     * @dataProvider testGetHomeLinkDataProvider
+     */
+    public function testGetHomeLink($iDefaultShopLanguage, $iDefaultBrowserLanguage, $sExpectedUrl)
+    {
+        /** @var $oLang oxLang | PHPUnit_Framework_MockObject_MockObject */
+        $oLang = $this->getMock('oxLang', array('detectLanguageByBrowser'));
+        $oLang
+            ->expects($this->any())
+            ->method('detectLanguageByBrowser')
+            ->will($this->returnValue($iDefaultBrowserLanguage));
+
+        oxRegistry::set('oxLang', $oLang);
+
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+
+        $this->setLanguage($iDefaultShopLanguage);
+        $this->setConfigParam('sDefaultLang', $iDefaultShopLanguage);
+
+        $oViewConfig = oxNew('oxViewConfig');
+        $this->assertEquals(
+            $sExpectedUrl,
+            $oViewConfig->getHomeLink(),
+            "URL is correct
+            when default shop language is $iDefaultShopLanguage
+            and default browser language is $iDefaultBrowserLanguage"
+        );
     }
 
     public function testGetHomeLinkPe()
@@ -2512,7 +2561,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $this->setConfigParam('aModules', $aModules);
         $this->setConfigParam('aDisabledModules', $aDisabledModules);
         $this->setConfigParam('aModuleVersions', $aModuleVersions);
-        
+
         $oViewConf = new oxViewConfig();
         $blIsModuleActive = $oViewConf->isModuleActive($sModuleId);
 

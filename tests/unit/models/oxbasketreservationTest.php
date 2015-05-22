@@ -477,4 +477,26 @@ class Unit_Models_oxbasketreservationTest extends OxidTestCase
 
         $this->assertEquals(84887, $oUB->oxuserbaskets__oxupdate->value);
     }
+
+    /**
+     * Test the fix for ESDEV-2901 https://bugs.oxid-esales.com/view.php?id=6050,
+     * private sales stock change issue.
+     * There should be no basket reservations executed when shop is in admin mode.
+     */
+    public function testReservationsInAdminMode()
+    {
+        $basket = oxNew('oxBasket');
+
+        //standard mode
+        $this->getProxyClass('oxBasketReservation');
+        $basketReservation = $this->getMock('oxBasketReservationProxy', array('_reserveArticles'));
+        $basketReservation->expects($this->once())->method('_reserveArticles');
+        $basketReservation->reserveBasket($basket);
+
+        //admin mode
+        $basketReservation = $this->getMock('oxBasketReservationProxy', array('_reserveArticles'));
+        $basketReservation->expects($this->never())->method('_reserveArticles');
+        $basketReservation->setAdminMode(true);
+        $basketReservation->reserveBasket($basket);
+    }
 }

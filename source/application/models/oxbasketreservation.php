@@ -192,13 +192,15 @@ class oxBasketReservation extends oxSuperCfg
     }
 
     /**
-     * reserve given basket items
+     * reserve given basket items, only when not in admin mode
      *
      * @param oxBasket $oBasket basket object
      */
     public function reserveBasket(oxBasket $oBasket)
     {
-        $this->_reserveArticles($this->_basketDifference($oBasket));
+        if (!$this->isAdmin()) {
+            $this->_reserveArticles($this->_basketDifference($oBasket));
+        }
     }
 
     /**

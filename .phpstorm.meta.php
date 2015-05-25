@@ -284,7 +284,6 @@ namespace PHPSTORM_META {
             'GuestbookEntry' instanceof \GuestbookEntry,
             'Invite' instanceof \Invite,
             'Links' instanceof \Links,
-            'Mallstart' instanceof \Mallstart,
             'ManufacturerList' instanceof \ManufacturerList,
             'MoreDetails' instanceof \MoreDetails,
             'News' instanceof \News,
@@ -336,7 +335,6 @@ namespace PHPSTORM_META {
             'oxDeliverySetList' instanceof \oxDeliverySetList,
             'oxDiscount' instanceof \oxDiscount,
             'oxDiscountList' instanceof \oxDiscountList,
-            'oxField2Shop' instanceof \oxField2Shop,
             'oxFile' instanceof \oxFile,
             'oxGbEntry' instanceof \oxGbEntry,
             'oxGroups' instanceof \oxGroups,
@@ -364,8 +362,6 @@ namespace PHPSTORM_META {
             'oxRecommList' instanceof \oxRecommList,
             'oxRemark' instanceof \oxRemark,
             'oxReview' instanceof \oxReview,
-            'oxRights' instanceof \oxRights,
-            'oxRole' instanceof \oxRole,
             'oxRssFeed' instanceof \oxRssFeed,
             'oxSearch' instanceof \oxSearch,
             'oxSelectlist' instanceof \oxSelectlist,
@@ -410,13 +406,10 @@ namespace PHPSTORM_META {
             'oxSelection' instanceof \oxSelection,
             'oxShopViewValidator' instanceof \oxShopViewValidator,
             'oxSmartyRenderer' instanceof \oxSmartyRenderer,
-
-            // core/cache/connectors
-            'oxCacheBackend' instanceof \oxCacheBackend,
-            'oxReverseProxyHeader' instanceof \oxReverseProxyHeader,
+            'oxNewsletter' instanceof \oxNewsletter,
+            'oxStatistic' instanceof \oxStatistic,
 
             // core/exception
-            'oxAccessRightException' instanceof \oxAccessRightException,
             'oxAdoDbException' instanceof \oxAdoDbException,
             'oxArticleException' instanceof \oxArticleException,
             'oxArticleInputException' instanceof \oxArticleInputException,
@@ -439,13 +432,8 @@ namespace PHPSTORM_META {
             'Facebook' instanceof \Facebook,
 
             // core
-            'oxAdminRights' instanceof \oxAdminRights,
-            'oxArticle2ShopRelations' instanceof \oxArticle2ShopRelations,
             'oxBase' instanceof \oxBase,
-            'oxCache' instanceof \oxCache,
-            'oxCacheBackendDefault' instanceof \oxCacheBackendDefault,
             'oxCaptcha' instanceof \oxCaptcha,
-            'oxCategory2ShopRelations' instanceof \oxCategory2ShopRelations,
             'oxCompanyVatInCountryChecker' instanceof \oxCompanyVatInCountryChecker,
             'oxConfig' instanceof \oxConfig,
             'oxDbMetaDataHandler' instanceof \oxDbMetaDataHandler,
@@ -525,16 +513,16 @@ namespace PHPSTORM_META {
             'InvoicepdfOrder_Overview' instanceof \InvoicepdfOrder_Overview,
             'InvoicepdfArticleSummary' instanceof \InvoicepdfArticleSummary,
             'InvoicepdfOxOrder' instanceof \InvoicepdfOxOrder,
+
         ),
 
         \oxRegistry::get('') => array(
-            'oxCacheBackend' instanceof \oxCacheBackend,
-            'oxReverseProxyBackend' instanceof \oxReverseProxyBackend,
             'oxInputValidator' instanceof \oxInputValidator,
             'oxUtilsServer' instanceof \oxUtilsServer,
             'oxUtilsDate' instanceof \oxUtilsDate,
             'oxConfigFile' instanceof \oxConfigFile,
             'oxUtilsObject' instanceof \oxUtilsObject,
+
         )
     );
 }

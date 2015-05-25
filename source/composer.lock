@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "efe157d62f7850d2e355697282e2f44e",
@@ -653,12 +653,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "277d9251298d5920148a73e53682ef4298a3bc9f"
+                "reference": "f105b5316b0633c256174d42c30788ffb361c39d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/277d9251298d5920148a73e53682ef4298a3bc9f",
-                "reference": "277d9251298d5920148a73e53682ef4298a3bc9f",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/f105b5316b0633c256174d42c30788ffb361c39d",
+                "reference": "f105b5316b0633c256174d42c30788ffb361c39d",
                 "shasum": ""
             },
             "require": {
@@ -716,7 +716,7 @@
             "support": {
                 "source": "https://github.com/OXID-eSales/testing_library/tree/master"
             },
-            "time": "2015-05-14 14:04:46"
+            "time": "2015-05-25 13:25:53"
         },
         {
             "name": "pdepend/pdepend",

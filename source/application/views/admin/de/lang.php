@@ -1671,8 +1671,8 @@ $aLang = array(
 'mxshow'                                                   => 'ausgeben',
 'mxstat'                                                   => 'Statistiken',
 'mxerp'                                                    => 'ERP Schnittstelle',
-'mxberoles'                                                => 'Admin Rechte',
-'mxferoles'                                                => 'Shop Rechte',
+'mxberoles'                                                => 'Admin Rollen',
+'mxferoles'                                                => 'Shop Rollen',
 
 /* tabs */
 //  actions',

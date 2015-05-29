@@ -977,14 +977,23 @@ class oxConfig extends oxSuperCfg
      *
      * @param int  $iLang   language
      * @param bool $blAdmin if admin
+     * @param array $urlParameters parameters which should be added to URL.
      *
      * @return string
      */
-    public function getWidgetUrl($iLang = null, $blAdmin = null)
+    public function getWidgetUrl($iLang = null, $blAdmin = null, $urlParameters = array())
     {
+        $oxUtilsUrl = oxRegistry::get('oxUtilsUrl');
+
+        $lang = oxRegistry::getLang();
+        $urlLang = array($lang->getName() => $lang->getBaseLanguage());
         $sUrl = $this->isSsl() ? $this->getSslShopUrl($iLang) : $this->getShopUrl($iLang, $blAdmin);
 
-        return oxRegistry::get('oxUtilsUrl')->processUrl($sUrl . 'widget.php', false);
+        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl($sUrl . 'widget.php', false);
+        $sUrl = $oxUtilsUrl->appendUrl($sUrl, $urlParameters, true);
+        $sUrl = $oxUtilsUrl->appendUrl($sUrl, $urlLang, true);
+
+        return $sUrl;
     }
 
     /**

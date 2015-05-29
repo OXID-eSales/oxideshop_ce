@@ -1500,22 +1500,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     }
 
     /**
-     * Testing getShopHomeUrl for widget getter
-     */
-    public function testGetWidgetUrl()
-    {
-        $sUrl = $this->shopUrl . 'widget.php?';
-
-        $config = oxNew('oxConfig');
-        $config->setConfigParam('sShopURL', $this->shopUrl);
-        $config->init();
-
-        $this->setToRegistryOxUtilsUrlMock('widget.php');
-
-        $this->assertEquals($sUrl, $config->getWidgetUrl());
-    }
-
-    /**
      * Testing getShopHomeUrl getter
      */
     public function testGetShopHomeUrl()

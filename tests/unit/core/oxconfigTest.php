@@ -98,20 +98,6 @@ class modForTestGetImageDirNativeImagesIsSsl extends modForTestGetBaseTemplateDi
     }
 }
 
-class modForGetShopHomeUrl extends oxConfig
-{
-
-    public function getShopUrl($iLang = null, $blAdmin = null)
-    {
-        return 'http://www.example.com/';
-    }
-
-    public function getSslShopUrl($iLang = null)
-    {
-        return 'https://www.example.com/';
-    }
-}
-
 class modFortestGetShopTakingFromRequestNoMall extends oxConfig
 {
 
@@ -126,6 +112,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     protected $_iCurr = null;
     protected $_aShops = array();
+    private $shopUrl = 'http://www.example.com/';
 
     /**
      * Initialize the fixture.
@@ -1512,27 +1499,36 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertEquals($sDir, $oConfig->getImageUrl());
     }
 
+    /**
+     * Testing getShopHomeUrl for widget getter
+     */
+    public function testGetWidgetUrl()
+    {
+        $sUrl = $this->shopUrl . 'widget.php?';
+
+        $config = oxNew('oxConfig');
+        $config->setConfigParam('sShopURL', $this->shopUrl);
+        $config->init();
+
+        $this->setToRegistryOxUtilsUrlMock('widget.php');
+
+        $this->assertEquals($sUrl, $config->getWidgetUrl());
+    }
 
     /**
      * Testing getShopHomeUrl getter
      */
     public function testGetShopHomeUrl()
     {
-        $oConfig = new modForGetShopHomeUrl();
-        $oConfig->init();
-        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl('http://www.example.com/index.php', false);
-        $this->assertEquals($sUrl, $oConfig->getShopHomeUrl());
-    }
+        $sUrl = $this->shopUrl . 'index.php?';
 
-    /**
-     * Testing getShopHomeUrl getter
-     */
-    public function testGetWidgetUrl()
-    {
-        $oConfig = new modForGetShopHomeUrl();
+        $oConfig = oxNew('oxConfig');
+        $oConfig->setConfigParam('sShopURL', $this->shopUrl);
         $oConfig->init();
-        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl('http://www.example.com/widget.php', false);
-        $this->assertEquals($sUrl, $oConfig->getWidgetUrl());
+
+        $this->setToRegistryOxUtilsUrlMock('index.php');
+
+        $this->assertEquals($sUrl, $oConfig->getShopHomeUrl());
     }
 
     /**
@@ -1540,9 +1536,14 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testGetShopSecureHomeUrl()
     {
-        $oConfig = new modForGetShopHomeUrl();
+        $sUrl = $this->shopUrl . 'index.php?';
+
+        $oConfig = oxNew('oxConfig');
+        $oConfig->setConfigParam('sShopURL', $this->shopUrl);
         $oConfig->init();
-        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl('https://www.example.com/index.php', false);
+
+        $this->setToRegistryOxUtilsUrlMock('index.php');
+
         $this->assertEquals($sUrl, $oConfig->getShopSecureHomeUrl());
     }
 
@@ -2612,5 +2613,18 @@ class Unit_Core_oxconfigTest extends OxidTestCase
             array('int', 'iNum1', 0),
             array('int', 'iNum2', 4),
         );
+    }
+
+    /**
+     * @param string $entryPoint
+     */
+    private function setToRegistryOxUtilsUrlMock($entryPoint)
+    {
+        $utilsUrl = $this->getMock('oxUtilsUrl');
+        $utilsUrl->expects($this->atLeastOnce())
+            ->method('processUrl')
+            ->with($this->identicalTo($this->shopUrl . $entryPoint, false))
+            ->will($this->returnValue($this->shopUrl . $entryPoint . '?'));
+        oxRegistry::set('oxUtilsUrl', $utilsUrl);
     }
 }

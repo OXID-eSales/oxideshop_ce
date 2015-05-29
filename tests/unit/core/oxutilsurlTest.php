@@ -550,4 +550,95 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $oUtils = new oxUtilsUrl();
         $this->assertEquals($aExpected, $oUtils->stringToParamsArray($sString));
     }
+
+    public function providerGetsHostFromUrl()
+    {
+        return array(
+            array('testHost', 'testHost'),
+            array('testHost.de', 'testHost.de'),
+            array('testHost.de:8061', 'testHost.de'),
+            array('www.testHost.de', 'www.testHost.de'),
+            array('www.testHost.de:8061', 'www.testHost.de'),
+            array('http://www.testHost.de:8061', 'www.testHost.de'),
+            array('https://www.testHost.de:8061', 'www.testHost.de'),
+            array('https://127.0.0.1:8061', '127.0.0.1'),
+            array('https://www.testHost.de/sudirectory/', 'www.testHost.de'),
+            array('https://www.testHost.de:8061/sudirectory/', 'www.testHost.de'),
+            array('127.0.0.1', '127.0.0.1'),
+            array('https://127.0.0.1:8061', '127.0.0.1'),
+            array('2001:db8:0:1', '2001:db8:0:1'),
+            array('http://[2001:db8:0:1]:8061', '[2001:db8:0:1]'),
+        );
+    }
+
+    /**
+     * @param string $url
+     * @param string $host
+     *
+     * @dataProvider providerGetsHostFromUrl
+     */
+    public function testGetsActiveShopHost($url, $host)
+    {
+        $oConfig = $this->getMock('oxConfig');
+        $oConfig->expects($this->any())->method('getShopUrl')->will($this->returnValue($url));
+        oxRegistry::set('oxConfig', $oConfig);
+
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame($host, $oUtils->getActiveShopHost());
+    }
+
+    /**
+     * @return array
+     */
+    public function providerGetsActiveShopUrlPath()
+    {
+        return array(
+            array('http://test-oxid-shop.com/subdirectory/other_shop', '/subdirectory/other_shop'),
+            array('http://test-oxid-shop.com:6425/subdirectory/other_shop', '/subdirectory/other_shop'),
+            array('https://127.0.0.1:6425/subdirectory/other_shop', '/subdirectory/other_shop'),
+            array('https://127.0.0.1:6425', null),
+        );
+    }
+
+    /**
+     * @param string $url
+     * @param string|null $result
+     *
+     * @dataProvider providerGetsActiveShopUrlPath
+     */
+    public function testExtractsUrlPath($url, $result)
+    {
+        $utilsUrl = oxNew('oxUtilsUrl');
+
+        $this->assertSame($result, $utilsUrl->extractUrlPath($url));
+    }
+
+    /**
+     * @param string $url
+     * @param string|null $result
+     *
+     * @dataProvider providerGetsActiveShopUrlPath
+     */
+    public function testGetsActiveShopUrlPath($url, $result)
+    {
+        $oConfig = $this->getMock('oxConfig');
+        $oConfig->expects($this->any())->method('getShopUrl')->will($this->returnValue($url));
+        oxRegistry::set('oxConfig', $oConfig);
+
+        $utilsUrl = oxNew('oxUtilsUrl');
+
+        $this->assertSame($result, $utilsUrl->getActiveShopUrlPath());
+    }
+
+    /**
+     * @param string $url
+     * @param string $host
+     *
+     * @dataProvider providerGetsHostFromUrl
+     */
+    public function testExtractsHostFromUrl($url, $host)
+    {
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame($host, $oUtils->extractHost($url));
+    }
 }

@@ -277,6 +277,61 @@ class oxUtilsUrl extends oxSuperCfg
     }
 
     /**
+     * Method returns active shop host.
+     *
+     * @return string
+     */
+    public function getActiveShopHost()
+    {
+        $shopUrl = $this->getConfig()->getShopUrl();
+        return $this->extractHost($shopUrl);
+    }
+
+    /**
+     * Extract host from url.
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    public function extractHost($url)
+    {
+        $host = $url;
+        $sUrlHost = @parse_url($host, PHP_URL_HOST);
+        if (!is_null($sUrlHost)) {
+            $host = $sUrlHost;
+        }
+
+        return $host;
+    }
+
+    /**
+     * Method returns shop URL part - path.
+     *
+     * @return null|string
+     */
+    public function getActiveShopUrlPath()
+    {
+        $shopUrl = oxRegistry::getConfig()->getShopUrl();
+
+        return $this->extractUrlPath($shopUrl);
+    }
+
+    /**
+     * Method returns URL part - path.
+     *
+     * @param string $shopUrl
+     *
+     * @return string|null
+     */
+    public function extractUrlPath($shopUrl)
+    {
+        $urlPath = @parse_url($shopUrl, PHP_URL_PATH);
+
+        return $urlPath;
+    }
+
+    /**
      * Compares current URL to supplied string.
      *
      * @param string $sUrl
@@ -453,7 +508,7 @@ class oxUtilsUrl extends oxSuperCfg
             }
         }
     }
-    
+
     /**
      * Appends language urls to $aHosts.
      *

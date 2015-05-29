@@ -522,6 +522,7 @@ namespace PHPSTORM_META {
             'oxUtilsDate' instanceof \oxUtilsDate,
             'oxConfigFile' instanceof \oxConfigFile,
             'oxUtilsObject' instanceof \oxUtilsObject,
+            'oxUtilsUrl' instanceof \oxUtilsUrl,
 
         )
     );

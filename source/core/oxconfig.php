@@ -1383,7 +1383,7 @@ class oxConfig extends oxSuperCfg
      */
     public function getPictureUrl($sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null, $sDefPic = "master/nopic.jpg")
     {
-        if ($sAltUrl = oxRegistry::get("oxPictureHandler")->getAltImageUrl('/', $sFile, $blSSL)) {
+        if ($sAltUrl = oxRegistry::get("oxPictureHandler")->getAltImageUrl('', $sFile, $blSSL)) {
             return $sAltUrl;
         }
 

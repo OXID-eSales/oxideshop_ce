@@ -557,6 +557,8 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
             array('testHost', 'testHost'),
             array('testHost.de', 'testHost.de'),
             array('testHost.de:8061', 'testHost.de'),
+            array('testHost.de/subdirectory', 'testHost.de'),
+            array('testHost.de:8061/subdirectory', 'testHost.de'),
             array('www.testHost.de', 'www.testHost.de'),
             array('www.testHost.de:8061', 'www.testHost.de'),
             array('http://www.testHost.de:8061', 'www.testHost.de'),
@@ -566,8 +568,6 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
             array('https://www.testHost.de:8061/sudirectory/', 'www.testHost.de'),
             array('127.0.0.1', '127.0.0.1'),
             array('https://127.0.0.1:8061', '127.0.0.1'),
-            array('2001:db8:0:1', '2001:db8:0:1'),
-            array('http://[2001:db8:0:1]:8061', '[2001:db8:0:1]'),
         );
     }
 
@@ -597,6 +597,8 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
             array('http://test-oxid-shop.com:6425/subdirectory/other_shop', '/subdirectory/other_shop'),
             array('https://127.0.0.1:6425/subdirectory/other_shop', '/subdirectory/other_shop'),
             array('https://127.0.0.1:6425', null),
+            array('example.com/subdirectory/other_shop', '/subdirectory/other_shop'),
+            array('wrong url', null),
         );
     }
 

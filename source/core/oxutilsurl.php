@@ -297,7 +297,8 @@ class oxUtilsUrl extends oxSuperCfg
     public function extractHost($url)
     {
         $host = $url;
-        $sUrlHost = @parse_url($host, PHP_URL_HOST);
+        $sUrlHost = $this->parseUrlAndAppendSchema($host, PHP_URL_HOST);
+
         if (!is_null($sUrlHost)) {
             $host = $sUrlHost;
         }
@@ -326,7 +327,7 @@ class oxUtilsUrl extends oxSuperCfg
      */
     public function extractUrlPath($shopUrl)
     {
-        $urlPath = @parse_url($shopUrl, PHP_URL_PATH);
+        $urlPath = $this->parseUrlAndAppendSchema($shopUrl, PHP_URL_PATH);
 
         return $urlPath;
     }
@@ -357,6 +358,24 @@ class oxUtilsUrl extends oxSuperCfg
         }
 
         return $blCurrent;
+    }
+
+    /**
+     * Improved url parsing with parse_url as base and scheme checking improvement in url preprocessing
+     *
+     * @param string $url
+     * @param string $flag
+     * @param string $appendScheme Append this scheme to url if no scheme found
+     *
+     * @return string
+     */
+    private function parseUrlAndAppendSchema($url, $flag, $appendScheme = 'http')
+    {
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            $url = $appendScheme . '://' . $url;
+        }
+
+        return parse_url($url, $flag);
     }
 
     /**

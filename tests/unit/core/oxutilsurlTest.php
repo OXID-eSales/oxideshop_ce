@@ -155,20 +155,41 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
             array('testUrl?p1=v1&amp;', array('p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2&amp;'),
             array('testUrl?p1=v1&amp;', array(), 'testUrl?p1=v1&amp;'),
             array('testUrl?p1=v1&amp;', array('p1' => 'v1'), 'testUrl?p1=v1&amp;'),
+            array('testUrl?p1=v1', array('p1' => null), 'testUrl?p1=v1&amp;'),
         );
     }
 
     /**
      * @param string $sUrl
      * @param array  $aParams
-     * @param string $sExtectedUrl
+     * @param string $sExpectedUrl
      *
      * @dataProvider providerAppendUrl
      */
-    public function testAppendUrl($sUrl, $aParams, $sExtectedUrl)
+    public function testAppendUrl($sUrl, $aParams, $sExpectedUrl)
     {
         $oUtils = new oxUtilsUrl();
-        $this->assertEquals($sExtectedUrl, $oUtils->appendUrl($sUrl, $aParams));
+        $this->assertEquals($sExpectedUrl, $oUtils->appendUrl($sUrl, $aParams));
+    }
+
+    public function providerAppendUrlWithoutOverwriting()
+    {
+        return array(
+            array('testUrl?p1=v1', array('p1' => 'v11', 'p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2&amp;'),
+        );
+    }
+
+    /**
+     * @param string $sUrl
+     * @param array  $aParams
+     * @param string $sExpectedUrl
+     *
+     * @dataProvider providerAppendUrlWithoutOverwriting
+     */
+    public function testAppendUrlWithoutOverwriting($sUrl, $aParams, $sExpectedUrl)
+    {
+        $oUtils = new oxUtilsUrl();
+        $this->assertEquals($sExpectedUrl, $oUtils->appendUrl($sUrl, $aParams, false));
     }
 
     public function providerAppendUrlWithFinalUrlForming()
@@ -190,7 +211,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
     public function testAppendUrlWithFinalUrlForming($sUrl, $aParams, $sExtectedUrl)
     {
         $oUtils = new oxUtilsUrl();
-        $this->assertEquals($sExtectedUrl, $oUtils->appendUrl($sUrl, $aParams, true));
+        $this->assertEquals($sExtectedUrl, $oUtils->appendUrl($sUrl, $aParams, true, true));
     }
 
     public function providerAddBaseUrl()
@@ -642,5 +663,27 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
     {
         $oUtils = new oxUtilsUrl();
         $this->assertSame($host, $oUtils->extractHost($url));
+    }
+
+    public function providerGetUrlLanguageParameter()
+    {
+        return array(
+            array(0, array('lang' => 0)),
+            array(1, array('lang' => 1)),
+        );
+    }
+
+    /**
+     * @param int $languageId
+     * @param array $expectedLanguageUrlParameter
+     *
+     * @dataProvider providerGetUrlLanguageParameter
+     */
+    public function testGetUrlLanguageParameter($languageId, $expectedLanguageUrlParameter)
+    {
+        oxRegistry::getLang()->setBaseLanguage(0);
+
+        $utilsUrl = new oxUtilsUrl();
+        $this->assertSame($expectedLanguageUrlParameter, $utilsUrl->getUrlLanguageParameter($languageId));
     }
 }

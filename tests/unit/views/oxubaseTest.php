@@ -2352,7 +2352,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->getConfig()->setConfigParam("sShopURL", "testshop/");
         $this->setLanguage(1);
 
-        $this->assertEquals("testshop/widget.php?lang=1&amp;", $oView->getWidgetLink());
+        $this->assertEquals("testshop/widget.php?lang=1", $oView->getWidgetLink());
     }
 
     /**

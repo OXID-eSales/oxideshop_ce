@@ -1015,25 +1015,28 @@ class oxConfig extends oxSuperCfg
     /**
      * Returns widget start non SSL URL including widget.php and sid.
      *
-     * @param int  $iLang   language
-     * @param bool $blAdmin if admin
+     * @param int  $languageId   language
+     * @param bool $inAdmin if admin
      * @param array $urlParameters parameters which should be added to URL.
      *
      * @return string
      */
-    public function getWidgetUrl($iLang = null, $blAdmin = null, $urlParameters = array())
+    public function getWidgetUrl($languageId = null, $inAdmin = null, $urlParameters = array())
     {
-        $oxUtilsUrl = oxRegistry::get('oxUtilsUrl');
+        $utilsUrl = oxRegistry::get('oxUtilsUrl');
+        $widgetUrl = $this->isSsl() ? $this->getSslShopUrl($languageId) : $this->getShopUrl($languageId, $inAdmin);
+        $widgetUrl = $utilsUrl->processUrl($widgetUrl . 'widget.php', false);
 
-        $lang = oxRegistry::getLang();
-        $urlLang = array($lang->getName() => $lang->getBaseLanguage());
-        $sUrl = $this->isSsl() ? $this->getSslShopUrl($iLang) : $this->getShopUrl($iLang, $blAdmin);
+        if (!isset($languageId)) {
+            $language = oxRegistry::getLang();
+            $languageId = $language->getBaseLanguage();
+        }
+        $urlLang = $utilsUrl->getUrlLanguageParameter($languageId);
+        $widgetUrl = $utilsUrl->appendUrl($widgetUrl, $urlLang, true);
 
-        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl($sUrl . 'widget.php', false);
-        $sUrl = $oxUtilsUrl->appendUrl($sUrl, $urlParameters, true);
-        $sUrl = $oxUtilsUrl->appendUrl($sUrl, $urlLang, true);
+        $widgetUrl = $utilsUrl->appendUrl($widgetUrl, $urlParameters, true, true);
 
-        return $sUrl;
+        return $widgetUrl;
     }
 
     /**

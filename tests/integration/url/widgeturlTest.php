@@ -30,15 +30,19 @@ class Integration_Url_widgetUrlTest extends oxUnitTestCase
         $urlWithoutParams = $basicUrl . '?lang=0';
 
         $urlParameters = array('param1' => 'value1', 'param2' => 'value2');
-        $urlWithParams = $basicUrl . '?param1=value1&amp;param2=value2&amp;lang=0';
+        $urlWithParams = $basicUrl . '?lang=0&amp;param1=value1&amp;param2=value2';
 
         $urlLanguageParameters = array('lang' => '1', 'param1' => 'value1', 'param2' => 'value2');
         $urlWithLanguageParams = $basicUrl . '?lang=1&amp;param1=value1&amp;param2=value2';
+
+        $urlLeveledParameters = array('lang' => '1', 'param1' => array('value1', 'value2'));
+        $urlWithLeveledParameters = $basicUrl . '?lang=1&amp;param1%5B0%5D=value1&amp;param1%5B1%5D=value2';
 
         return array(
             array(array(), $urlWithoutParams),
             array($urlParameters, $urlWithParams),
             array($urlLanguageParameters, $urlWithLanguageParams),
+            array($urlLeveledParameters, $urlWithLeveledParameters),
         );
     }
 
@@ -50,7 +54,7 @@ class Integration_Url_widgetUrlTest extends oxUnitTestCase
      *
      * @dataProvider providerGetWidgetUrlAddParametersIdNeed
      */
-    public function testGetWidgetUrlAddParametersIdNeed($urlParameters, $sUrl)
+    public function testGetWidgetUrlWithParameters($urlParameters, $sUrl)
     {
         oxRegistry::getLang()->setBaseLanguage(0);
 
@@ -85,5 +89,31 @@ class Integration_Url_widgetUrlTest extends oxUnitTestCase
         $config->init();
 
         $this->assertEquals($this->shopUrl. 'widget.php?lang='. $iLang, $config->getWidgetUrl());
+    }
+
+    public function providerGetWidgetUrlAddCorrectLanguageWithParameter()
+    {
+        return array(
+            array(1),
+            array(2),
+        );
+    }
+
+    /**
+     * Testing getShopHomeUrl for widget getter
+     *
+     * @param int $iLang Shop basic language.
+     *
+     * @dataProvider providerGetWidgetUrlAddCorrectLanguage
+     */
+    public function testGetWidgetUrlAddCorrectLanguageWithParameter($iLang)
+    {
+        oxRegistry::getLang()->setBaseLanguage(1);
+
+        $config = oxNew('oxConfig');
+        $config->setConfigParam('sShopURL', $this->shopUrl);
+        $config->init();
+
+        $this->assertEquals($this->shopUrl. 'widget.php?lang='. $iLang, $config->getWidgetUrl($iLang));
     }
 }

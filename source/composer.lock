@@ -523,17 +523,16 @@
         },
         {
             "name": "incenteev/composer-parameter-handler",
-            "version": "v2.1.0",
-            "target-dir": "Incenteev/ParameterHandler",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Incenteev/ParameterHandler.git",
-                "reference": "143272a0a09c62616a3c8011fc165a10c6b35241"
+                "reference": "84a205fe80a46101607bafbc423019527893ddd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Incenteev/ParameterHandler/zipball/143272a0a09c62616a3c8011fc165a10c6b35241",
-                "reference": "143272a0a09c62616a3c8011fc165a10c6b35241",
+                "url": "https://api.github.com/repos/Incenteev/ParameterHandler/zipball/84a205fe80a46101607bafbc423019527893ddd0",
+                "reference": "84a205fe80a46101607bafbc423019527893ddd0",
                 "shasum": ""
             },
             "require": {
@@ -552,8 +551,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Incenteev\\ParameterHandler": ""
+                "psr-4": {
+                    "Incenteev\\ParameterHandler\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -571,7 +570,7 @@
             "keywords": [
                 "parameters management"
             ],
-            "time": "2013-12-07 10:10:39"
+            "time": "2015-06-03 08:27:03"
         },
         {
             "name": "mikey179/vfsStream",
@@ -653,12 +652,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "a18b5521d75cc6c1cf33f691c051ab5db5e8f5fb"
+                "reference": "8d13d7f8db5041727b18a3a7d784909e01776e6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/a18b5521d75cc6c1cf33f691c051ab5db5e8f5fb",
-                "reference": "a18b5521d75cc6c1cf33f691c051ab5db5e8f5fb",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/8d13d7f8db5041727b18a3a7d784909e01776e6b",
+                "reference": "8d13d7f8db5041727b18a3a7d784909e01776e6b",
                 "shasum": ""
             },
             "require": {
@@ -716,7 +715,7 @@
             "support": {
                 "source": "https://github.com/OXID-eSales/testing_library/tree/master"
             },
-            "time": "2015-06-02 06:19:34"
+            "time": "2015-06-05 08:53:44"
         },
         {
             "name": "pdepend/pdepend",

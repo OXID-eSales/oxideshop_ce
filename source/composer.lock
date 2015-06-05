@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "efe157d62f7850d2e355697282e2f44e",
@@ -652,12 +652,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "8d13d7f8db5041727b18a3a7d784909e01776e6b"
+                "reference": "ef653dbd152fb4d237d3a2903aee01c7f379b366"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/8d13d7f8db5041727b18a3a7d784909e01776e6b",
-                "reference": "8d13d7f8db5041727b18a3a7d784909e01776e6b",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/ef653dbd152fb4d237d3a2903aee01c7f379b366",
+                "reference": "ef653dbd152fb4d237d3a2903aee01c7f379b366",
                 "shasum": ""
             },
             "require": {
@@ -713,9 +713,9 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/OXID-eSales/testing_library/tree/master"
+                "source": "https://github.com/OXID-eSales/testing_library/tree/do_not_turn_off_browser_on_each_test"
             },
-            "time": "2015-06-05 08:53:44"
+            "time": "2015-06-05 11:53:51"
         },
         {
             "name": "pdepend/pdepend",

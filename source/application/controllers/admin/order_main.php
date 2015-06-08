@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -27,6 +27,15 @@
  */
 class Order_Main extends oxAdminDetails
 {
+    /**
+     * Whitelist of parameters whose change does not require a full order recalculation.
+     *
+     * @var array
+     */
+    protected $fieldsTriggerNoOrderRecalculation = array('oxorder__oxordernr',
+                                                         'oxorder__oxbillnr',
+                                                         'oxorder__oxtrackcode',
+                                                         'oxorder__oxpaid');
 
     /**
      * Executes parent method parent::render(), creates oxorder and
@@ -108,10 +117,23 @@ class Order_Main extends oxAdminDetails
             $aParams['oxorder__oxid'] = null;
         }
 
+        $needOrderRecalculate = false;
+        if (is_array($aParams)) {
+            foreach ($aParams as $parameter => $value) {
+                //parameter changes for not whitelisted parameters trigger order recalculation
+                $orderField = $oOrder->$parameter;
+                if ( ($value != $orderField->value) && !in_array($parameter, $this->fieldsTriggerNoOrderRecalculation) ) {
+                    $needOrderRecalculate = true;
+                    continue;
+                }
+            }
+        }
+
         //change payment
         $sPayId = oxRegistry::getConfig()->getRequestParameter("setPayment");
-        if ($sPayId != $oOrder->oxorder__oxpaymenttype->value) {
+        if (!empty($sPayId) && ($sPayId != $oOrder->oxorder__oxpaymenttype->value)) {
             $aParams['oxorder__oxpaymenttype'] = $sPayId;
+            $needOrderRecalculate = true;
         }
 
         $oOrder->assign($aParams);
@@ -122,22 +144,27 @@ class Order_Main extends oxAdminDetails
             $oPayment->load($oOrder->oxorder__oxpaymentid->value);
             $oPayment->oxuserpayments__oxvalue->setValue(oxRegistry::getUtils()->assignValuesToText($aDynvalues));
             $oPayment->save();
+            $needOrderRecalculate = true;
         }
         //change delivery set
         $sDelSetId = oxRegistry::getConfig()->getRequestParameter("setDelSet");
-        if ($sDelSetId != $oOrder->oxorder__oxdeltype->value) {
+        if (!empty($sDelSetId) && ($sDelSetId != $oOrder->oxorder__oxdeltype->value)) {
             $oOrder->oxorder__oxpaymenttype->setValue("oxempty");
             $oOrder->setDelivery($sDelSetId);
+            $needOrderRecalculate = true;
         } else {
             // keeps old delivery cost
             $oOrder->reloadDelivery(false);
         }
 
-        // keeps old discount
-        $oOrder->reloadDiscount(false);
-
-        $oOrder->recalculateOrder();
-
+        if ($needOrderRecalculate) {
+            // keeps old discount
+            $oOrder->reloadDiscount(false);
+            $oOrder->recalculateOrder();
+        } else {
+            //nothing changed in order that requires a full recalculation
+            $oOrder->save();
+        }
 
         // set oxid if inserted
         $this->setEditObjectId($oOrder->getId());

@@ -25,6 +25,14 @@
  */
 class Unit_Admin_OrderMainTest extends OxidTestCase
 {
+    /**
+     * tear down the test.
+     */
+    protected function tearDown()
+    {
+        $_POST = array();
+        parent::tearDown();
+    }
 
     /**
      * Order_Main::Render() test case
@@ -66,10 +74,47 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSave()
+    public function testSaveRecalculate()
     {
         //
-        oxTestModules::addFunction('oxorder', 'load', '{}');
+        if (OXID_VERSION_PE) {
+            oxTestModules::addFunction('oxorder', 'load', '{$this->oxorder__oxshopid = new oxField("oxbaseshop");}');
+        } else {
+            oxTestModules::addFunction('oxorder', 'load', '{}');
+        }
+        oxTestModules::addFunction('oxorder', 'save', '{}');
+        oxTestModules::addFunction('oxorder', 'assign', '{}');
+        oxTestModules::addFunction('oxorder', 'reloadDelivery', '{}');
+        oxTestModules::addFunction('oxorder', 'reloadDiscount', '{}');
+        oxTestModules::addFunction('oxorder', 'recalculateOrder', '{ throw new Exception( "recalculateOrder" ); }');
+
+        // testing..
+        try {
+            $_POST = array('editval' => array('oxorder__oxdiscount' => 10.0));
+            $oView = new Order_Main();
+            $oView->save();
+        } catch (Exception $oExcp) {
+            $this->assertEquals("recalculateOrder", $oExcp->getMessage(), "error in Order_Main::save()");
+
+            return;
+        }
+        $this->fail("error in Order_Main::save()");
+    }
+
+    /**
+     * Order_Main::Save() test case
+     *
+     * @return null
+     */
+    public function testSaveNoRecalculate()
+    {
+        //
+        if (OXID_VERSION_PE) {
+            oxTestModules::addFunction('oxorder', 'load', '{$this->oxorder__oxshopid = new oxField("oxbaseshop");}');
+        } else {
+            oxTestModules::addFunction('oxorder', 'load', '{}');
+        }
+        oxTestModules::addFunction('oxorder', 'save', '{ throw new Exception( "saveOrder" ); }');
         oxTestModules::addFunction('oxorder', 'assign', '{}');
         oxTestModules::addFunction('oxorder', 'reloadDelivery', '{}');
         oxTestModules::addFunction('oxorder', 'reloadDiscount', '{}');
@@ -80,12 +125,13 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
             $oView = new Order_Main();
             $oView->save();
         } catch (Exception $oExcp) {
-            $this->assertEquals("recalculateOrder", $oExcp->getMessage(), "error in Order_Main::save()");
+            $this->assertEquals("saveOrder", $oExcp->getMessage(), "error in Order_Main::save()");
 
             return;
         }
         $this->fail("error in Order_Main::save()");
     }
+
 
     /**
      * Order_Main::Sendorder() test case

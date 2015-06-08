@@ -470,6 +470,18 @@ class oxUser extends oxBase
     }
 
     /**
+     * Set $oSelectedAdress->getId() in "delarid" Session Variable
+     * to be used later on in Order recalculation
+     */
+
+    public function setSelectedAddress(){
+        $oSelectedAddress = $this->getSelectedAddress();
+        if ($oSelectedAddress){
+            oxRegistry::getSession()->setVariable("deladrid",$oSelectedAddress->getId());
+        }
+    }
+
+    /**
      * Returns user payment history list object
      *
      * @param string $sOXID object ID (default is null)

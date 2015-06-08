@@ -103,7 +103,7 @@ class oxUserBasketItem extends oxBase
 
         if ($this->_oArticle === null) {
 
-            $this->_oArticle = oxNew('oxarticle');
+            $this->_oArticle = oxNew('oxArticle');
 
             // performance
             /* removed due to #4178

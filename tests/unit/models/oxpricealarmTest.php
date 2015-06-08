@@ -94,7 +94,7 @@ class Unit_Models_oxpricealarmTest extends OxidTestCase
         $oAlarm->setId('testalarm');
         $oAlarm->oxpricealarm__oxartid = new oxField('1672', oxField::T_RAW);
         $oAlarm->save();
-        $oProduct = oxNew("oxarticle");
+        $oProduct = oxNew("oxArticle");
         $oProduct->load('1672');
         $oAlarm = new oxpricealarm();
         $oAlarm->load('testalarm');

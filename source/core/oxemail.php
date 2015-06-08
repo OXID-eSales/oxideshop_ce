@@ -1263,7 +1263,7 @@ class oxEmail extends PHPMailer
     {
         $blSend = false;
 
-        $oArticleList = oxNew("oxarticlelist");
+        $oArticleList = oxNew("oxArticleList");
         $oArticleList->loadStockRemindProducts($aBasketContents);
 
         // nothing to remind?
@@ -1350,7 +1350,7 @@ class oxEmail extends PHPMailer
 
         $iAlarmLang = $oAlarm->oxpricealarm__oxlang->value;
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         //$oArticle->setSkipAbPrice( true );
         $oArticle->loadInLang($iAlarmLang, $aParams['aid']);
         $oLang = oxRegistry::getLang();

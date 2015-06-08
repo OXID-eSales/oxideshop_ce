@@ -522,7 +522,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $oView = new DynExportBase();
         $this->assertTrue($oView->UNITinsertArticles($sHeapTable, $sCatAdd));
 
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $sArticleTable = $oArticle->getViewName();
         $sO2CView = getViewName('oxobject2category');
 
@@ -554,7 +554,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $oView = new DynExportBase();
         $this->assertTrue($oView->UNITinsertArticles($sHeapTable, $sCatAdd));
 
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $sArticleTable = $oArticle->getViewName();
 
         $sQ = "select count(*) from ( select {$sArticleTable}.oxid from {$sArticleTable}, {$sO2CView} as oxobject2category

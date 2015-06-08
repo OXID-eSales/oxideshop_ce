@@ -142,7 +142,7 @@ class Pricealarm extends oxUBase
         if ($this->_oArticle === null) {
             $this->_oArticle = false;
             $aParams = $this->_getParams();
-            $oArticle = oxNew('oxarticle');
+            $oArticle = oxNew('oxArticle');
             $oArticle->load($aParams['aid']);
             $this->_oArticle = $oArticle;
         }

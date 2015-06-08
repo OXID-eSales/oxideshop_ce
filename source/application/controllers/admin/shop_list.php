@@ -81,7 +81,7 @@ class Shop_List extends oxAdminList
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ($soxId != '-1' && isset($soxId)) {
             // load object
-            $oShop = oxNew('oxshop');
+            $oShop = oxNew('oxShop');
             if (!$oShop->load($soxId)) {
                 $soxId = $myConfig->getBaseShopId();
                 $oShop->load($soxId);

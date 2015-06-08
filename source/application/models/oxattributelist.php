@@ -169,7 +169,7 @@ class oxAttributeList extends oxList
     {
         $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
 
-        $oArtList = oxNew("oxarticlelist");
+        $oArtList = oxNew("oxArticleList");
         $oArtList->loadCategoryIDs($sCategoryId, $aSessionFilter);
 
         // Only if we have articles

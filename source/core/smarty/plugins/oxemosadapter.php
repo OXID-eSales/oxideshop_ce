@@ -620,7 +620,7 @@ class oxEmosAdapter extends oxSuperCfg
             switch ($sCallAction) {
                 case 'changebasket':
                     foreach ($aCallData as $sItemId => $aItemData) {
-                        $oProduct = oxNew('oxarticle');
+                        $oProduct = oxNew('oxArticle');
                         if ($aItemData['oldam'] > $aItemData['am'] && $oProduct->load($aItemData['aid'])) {
                             //ECONDA FIX always use the main category
                             //$sPath = $this->_getDeepestCategoryPath( $oProduct );
@@ -636,7 +636,7 @@ class oxEmosAdapter extends oxSuperCfg
                 case 'tobasket':
                     foreach ($aCallData as $sItemId => $aItemData) {
                         // ECONDA FIX if there is a "add to basket" in the artcle list view, we do not have a product ID here
-                        $oProduct = oxNew('oxarticle');
+                        $oProduct = oxNew('oxArticle');
                         if ($oProduct->load($sItemId)) {
                             //ECONDA FIX always use the main category
                             //$sPath = $this->_getDeepestCategoryPath( $oProduct );

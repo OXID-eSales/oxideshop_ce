@@ -198,7 +198,7 @@ class aList extends oxUBase
         if ('oxmore' == $myConfig->getRequestParameter('cnid')) {
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
-            $oCategory = oxNew('oxcategory');
+            $oCategory = oxNew('oxCategory');
             $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
             $this->setActiveCategory($oCategory);
 
@@ -364,7 +364,7 @@ class aList extends oxUBase
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
 
         // load only articles which we show on screen
-        $oArtList = oxNew('oxarticlelist');
+        $oArtList = oxNew('oxArticleList');
         $oArtList->setSqlLimit($iNrofCatArticles * $this->_getRequestPageNr(), $iNrofCatArticles);
         $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
@@ -989,7 +989,7 @@ class aList extends oxUBase
         if ($this->_aBargainArticleList === null) {
             $this->_aBargainArticleList = array();
             if ($this->getConfig()->getConfigParam('bl_perfLoadAktion') && $this->_isActCategory()) {
-                $oArtList = oxNew('oxarticlelist');
+                $oArtList = oxNew('oxArticleList');
                 $oArtList->loadActionArticles('OXBARGAIN');
                 if ($oArtList->count()) {
                     $this->_aBargainArticleList = $oArtList;

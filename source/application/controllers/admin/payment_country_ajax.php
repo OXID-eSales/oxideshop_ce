@@ -93,7 +93,7 @@ class payment_country_ajax extends ajaxListComponent
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
-                $oObject2Payment = oxNew('oxbase');
+                $oObject2Payment = oxNew('oxBase');
                 $oObject2Payment->init('oxobject2payment');
                 $oObject2Payment->oxobject2payment__oxpaymentid = new oxField($soxId);
                 $oObject2Payment->oxobject2payment__oxobjectid = new oxField($sChosenCntr);

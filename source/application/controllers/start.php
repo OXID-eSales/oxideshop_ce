@@ -226,7 +226,7 @@ class Start extends oxUBase
             $this->_aArticleList = array();
             if ($this->_getLoadActionsParam()) {
                 // start list
-                $oArtList = oxNew('oxarticlelist');
+                $oArtList = oxNew('oxArticleList');
                 $oArtList->loadActionArticles('OXSTART');
                 if ($oArtList->count()) {
                     $this->_aArticleList = $oArtList;
@@ -248,7 +248,7 @@ class Start extends oxUBase
             $this->_aTopArticleList = false;
             if ($this->_getLoadActionsParam()) {
                 // start list
-                $oArtList = oxNew('oxarticlelist');
+                $oArtList = oxNew('oxArticleList');
                 $oArtList->loadActionArticles('OXTOPSTART');
                 if ($oArtList->count()) {
                     $this->_aTopArticleList = $oArtList;
@@ -271,7 +271,7 @@ class Start extends oxUBase
             $this->_aNewArticleList = array();
             if ($this->_getLoadActionsParam()) {
                 // newest articles
-                $oArtList = oxNew('oxarticlelist');
+                $oArtList = oxNew('oxArticleList');
                 $oArtList->loadNewestArticles();
                 if ($oArtList->count()) {
                     $this->_aNewArticleList = $oArtList;
@@ -293,7 +293,7 @@ class Start extends oxUBase
             $this->_oFirstArticle = false;
             if ($this->_getLoadActionsParam()) {
                 // top articles ( big one )
-                $oArtList = oxNew('oxarticlelist');
+                $oArtList = oxNew('oxArticleList');
                 $oArtList->loadActionArticles('OXFIRSTSTART');
                 if ($oArtList->count()) {
                     $this->_oFirstArticle = $oArtList->current();
@@ -332,7 +332,7 @@ class Start extends oxUBase
             $this->_oCatOfferArtList = array();
             if ($this->_getLoadActionsParam()) {
                 // "category offer" articles
-                $oArtList = oxNew('oxarticlelist');
+                $oArtList = oxNew('oxArticleList');
                 $oArtList->loadActionArticles('OXCATOFFER');
                 if ($oArtList->count()) {
                     $this->_oCatOfferArtList = $oArtList;

@@ -780,7 +780,7 @@ class Unit_Views_detailsTest extends OxidTestCase
     public function testGetSimilarProducts()
     {
         $oDetails = $this->getProxyClass('details');
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("2000");
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oDetails->getSimilarProducts();
@@ -798,7 +798,7 @@ class Unit_Views_detailsTest extends OxidTestCase
     public function testGetCrossSelling()
     {
         $oDetails = $this->getProxyClass('details');
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("1849");
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oDetails->getCrossSelling();
@@ -898,7 +898,7 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testMetaKeywords()
     {
-        $oProduct = oxNew("oxarticle");
+        $oProduct = oxNew("oxArticle");
         $oProduct->load("1849");
         $oProduct->oxarticles__oxsearchkeys->value = 'testValue1 testValue2   testValue3 <br> ';
 
@@ -933,7 +933,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         oxTestModules::addFunction('oxSeoEncoderTag', '_saveToDb', '{return null;}');
         $oSubj = $this->getProxyClass('details');
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("1849");
         $oSubj->setNonPublicVar("_oProduct", $oArticle);
 
@@ -949,7 +949,7 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testMetaDescriptionWithLongDesc()
     {
-        $oProduct = oxNew("oxarticle");
+        $oProduct = oxNew("oxArticle");
         $oProduct->load("1849");
 
         $oDetails = $this->getMock('details', array('getProduct'));

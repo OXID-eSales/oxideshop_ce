@@ -164,7 +164,7 @@ class Article_Extend extends oxAdminDetails
         // default values
         $aParams = $this->addDefaultValues($aParams);
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->loadInLang($this->_iEditLang, $soxId);
         $sTPriceField = 'oxarticles__oxtprice';
         $sPriceField = 'oxarticles__oxprice';

@@ -121,7 +121,7 @@ class Article_List extends oxAdminList
     {
         $aSkipFields = array("oxblfixedprice", "oxvarselect", "oxamitemid",
                             "oxamtaskid", "oxpixiexport", "oxpixiexported");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
 
         return array_diff($oArticle->getFieldNames(), $aSkipFields);
     }
@@ -267,7 +267,7 @@ class Article_List extends oxAdminList
     public function deleteEntry()
     {
         $sOxId = $this->getEditObjectId();
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         if ($sOxId && $oArticle->load($sOxId)) {
             parent::deleteEntry();
         }

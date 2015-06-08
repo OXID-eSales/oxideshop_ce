@@ -166,7 +166,7 @@ class attribute_main_ajax extends ajaxListComponent
 
         if ($oAttribute->load($soxId) && is_array($aAddArticle)) {
             foreach ($aAddArticle as $sAdd) {
-                $oNewGroup = oxNew("oxbase");
+                $oNewGroup = oxNew("oxBase");
                 $oNewGroup->init("oxobject2attribute");
                 $oNewGroup->oxobject2attribute__oxobjectid = new oxField($sAdd);
                 $oNewGroup->oxobject2attribute__oxattrid = new oxField($oAttribute->oxattribute__oxid->value);

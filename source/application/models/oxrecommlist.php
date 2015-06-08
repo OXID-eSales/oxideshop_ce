@@ -82,7 +82,7 @@ class oxRecommList extends oxBase implements oxIUrl
             return $this->_oArticles;
         }
 
-        $this->_oArticles = oxNew('oxarticlelist');
+        $this->_oArticles = oxNew('oxArticleList');
 
         if ($iStart !== null && $iNrofArticles !== null) {
             $this->_oArticles->setSqlLimit($iStart, $iNrofArticles);
@@ -132,7 +132,7 @@ class oxRecommList extends oxBase implements oxIUrl
      */
     public function getFirstArticle()
     {
-        $oArtList = oxNew('oxarticlelist');
+        $oArtList = oxNew('oxArticleList');
         $oArtList->setSqlLimit(0, 1);
         $oArtList->loadRecommArticles($this->getId(), $this->_sArticlesFilter);
         $oArtList->rewind();
@@ -302,7 +302,7 @@ class oxRecommList extends oxBase implements oxIUrl
             }
             $sArticlesFilter = "$sNegateSql ORDER BY $sArtView.oxid in ( $sIds ) desc";
             $oRecomm->setArticlesFilter($sArticlesFilter);
-            $oArtList = oxNew('oxarticlelist');
+            $oArtList = oxNew('oxArticleList');
             $oArtList->setSqlLimit(0, 1);
             $oArtList->loadRecommArticles($oRecomm->getId(), $sArticlesFilter);
 

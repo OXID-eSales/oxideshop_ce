@@ -130,7 +130,7 @@ class attribute_category_ajax extends ajaxListComponent
         if ($oAttribute->load($soxId) && is_array($aAddCategory)) {
             $oDb = oxDb::getDb();
             foreach ($aAddCategory as $sAdd) {
-                $oNewGroup = oxNew("oxbase");
+                $oNewGroup = oxNew("oxBase");
                 $oNewGroup->init("oxcategory2attribute");
                 $sOxSortField = 'oxcategory2attribute__oxsort';
                 $sObjectIdField = 'oxcategory2attribute__oxobjectid';

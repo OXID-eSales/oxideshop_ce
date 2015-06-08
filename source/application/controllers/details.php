@@ -654,7 +654,7 @@ class Details extends oxUBase
             $sOxid = $this->getConfig()->getRequestParameter('anid');
 
             // object is not yet loaded
-            $this->_oProduct = oxNew('oxarticle');
+            $this->_oProduct = oxNew('oxArticle');
 
             if (!$this->_oProduct->load($sOxid)) {
                 $oUtils->redirect($oConfig->getShopHomeURL());

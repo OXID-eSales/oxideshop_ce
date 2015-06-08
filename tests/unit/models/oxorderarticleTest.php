@@ -546,7 +546,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
         $oDB->getOne("update oxarticles set oxtimestamp = '2005-03-24 14:33:53' where oxid = '_testArticleId'");
         $this->_oOrderArticle->updateArticleStock(-3, false);
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("_testArticleId");
 
         $this->assertEquals(7, $oArticle->oxarticles__oxstock->value);
@@ -561,7 +561,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
         $this->getConfig()->setConfigParam("blUseStock", 0);
         $this->_oOrderArticle->updateArticleStock(-3, false);
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("_testArticleId");
 
         $this->assertEquals(10, $oArticle->oxarticles__oxstock->value);
@@ -575,7 +575,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
     {
         $this->_oOrderArticle->updateArticleStock(-15, false);
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("_testArticleId");
 
         $this->assertEquals(0, $oArticle->oxarticles__oxstock->value);
@@ -588,7 +588,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
     {
         $this->_oOrderArticle->updateArticleStock(-15, true);
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("_testArticleId");
 
         $this->assertEquals(-5, $oArticle->oxarticles__oxstock->value);
@@ -601,7 +601,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
     {
         $this->_oOrderArticle->updateArticleStock(-3, false);
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("_testArticleId");
 
         $this->assertEquals(3, $oArticle->oxarticles__oxsoldamount->value);

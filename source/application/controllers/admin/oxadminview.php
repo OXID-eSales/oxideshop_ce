@@ -139,7 +139,7 @@ class oxAdminView extends oxView
         if (!$this->_oEditShop) {
             $this->_oEditShop = $this->getConfig()->getActiveShop();
             if ($this->_oEditShop->getId() != $sShopId) {
-                $oEditShop = oxNew('oxshop');
+                $oEditShop = oxNew('oxShop');
                 if ($oEditShop->load($sShopId)) {
                     $this->_oEditShop = $oEditShop;
                 }

@@ -42,10 +42,10 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $oArt = oxNew('oxarticle');
+        $oArt = oxNew('oxArticle');
         $oArt->delete('_testArtId');
 
-        $oArt = oxNew('oxarticle');
+        $oArt = oxNew('oxArticle');
         $oArt->delete('_testArtId2');
 
         $myDB = oxDb::getDB();

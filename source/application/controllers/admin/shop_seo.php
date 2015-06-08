@@ -46,7 +46,7 @@ class Shop_Seo extends Shop_Config
         $this->_aViewData['subjlang'] = $this->_iEditLang;
 
         // loading shop
-        $oShop = oxNew('oxshop');
+        $oShop = oxNew('oxShop');
         $oShop->loadInLang($this->_iEditLang, $this->_aViewData['edit']->getId());
         $this->_aViewData['edit'] = $oShop;
 
@@ -105,7 +105,7 @@ class Shop_Seo extends Shop_Config
         // saving config params
         $this->saveConfVars();
 
-        $oShop = oxNew('oxshop');
+        $oShop = oxNew('oxShop');
         if ($oShop->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
 
             //assigning values

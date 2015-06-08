@@ -120,7 +120,7 @@ class Article_Seo extends Object_Seo
         if ($this->_aSelectionList === null) {
             $this->_aSelectionList = array();
 
-            $oProduct = oxNew('oxarticle');
+            $oProduct = oxNew('oxArticle');
             $oProduct->load($this->getEditObjectId());
 
             if ($oCatList = $this->_getCategoryList($oProduct)) {
@@ -174,7 +174,7 @@ class Article_Seo extends Object_Seo
         $oRs = $oDb->execute($sQ);
         if ($oRs != false && $oRs->recordCount() > 0) {
             while (!$oRs->EOF) {
-                $oCat = oxNew('oxcategory');
+                $oCat = oxNew('oxCategory');
                 if ($oCat->loadInLang($iLang, current($oRs->fields))) {
                     if ($sMainCatId == $oCat->getId()) {
                         $sSuffix = oxRegistry::getLang()->translateString('(main category)', $this->getEditLang());
@@ -262,7 +262,7 @@ class Article_Seo extends Object_Seo
      */
     public function getActCategory()
     {
-        $oCat = oxNew('oxcategory');
+        $oCat = oxNew('oxCategory');
 
         return ($oCat->load($this->getActCatId())) ? $oCat : null;
     }
@@ -279,7 +279,7 @@ class Article_Seo extends Object_Seo
             $iLang = $this->getActCatLang();
             $sTagId = $this->getActCatId();
 
-            $oProduct = oxNew('oxarticle');
+            $oProduct = oxNew('oxArticle');
             $oProduct->loadInLang($iLang, $this->getEditObjectId());
 
             $aList = $this->_getTagList($oProduct, $iLang);
@@ -410,7 +410,7 @@ class Article_Seo extends Object_Seo
      */
     public function getEntryUri()
     {
-        $oProduct = oxNew('oxarticle');
+        $oProduct = oxNew('oxArticle');
         if ($oProduct->load($this->getEditObjectId())) {
             $oEncoder = $this->_getEncoder();
             switch ($this->getActCatType()) {
@@ -452,7 +452,7 @@ class Article_Seo extends Object_Seo
             $aParams["listtype"] = $sListType;
         }
 
-        $oProduct = oxNew('oxarticle');
+        $oProduct = oxNew('oxArticle');
         $oProduct->loadInLang($iLang, $sOxid);
 
         // adding vendor or manufacturer id

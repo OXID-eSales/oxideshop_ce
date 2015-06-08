@@ -99,7 +99,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
 
         // insert test articles
         for ($i = 1; $i <= 3; $i++) {
-            $oArticle = oxNew("oxarticle");
+            $oArticle = oxNew("oxArticle");
             $oArticle->setId('_testArticleId' . $i);
             $oArticle->oxarticles__oxtitle = new oxField('testArticle' . $i, oxField::T_RAW);
             $oArticle->oxarticles__oxartnum = new oxField(1000 + $i, oxField::T_RAW);
@@ -471,7 +471,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oDelivery->save();
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->load('_testDeliveryId');
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("_testArticleId1");
         $oArticle->oxarticles__oxfreeshipping = new oxField(true, oxField::T_RAW);
         $oArticle->save();
@@ -496,7 +496,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oBasket = $this->getProxyClass("oxbasket");
         $oBasket->setNonPublicVar("_aBasketContents", array($oBasketItem));
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("_testArticleId1");
         $oArticle->oxarticles__oxfreeshipping = new oxField(true, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
@@ -511,7 +511,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testGetArticlesWhenNoArticlesAreAssigned()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $this->assertEquals(0, count($oDelivery->getArticles()));
     }
 
@@ -520,7 +520,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testGetArticles()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->load($this->_sOxId);
 
         // Main check
@@ -536,7 +536,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testGetCategoriesWhenNoCatgoeriesAreAssigned()
     {
-        $oTestObject = oxNew('oxdelivery');
+        $oTestObject = oxNew('oxDelivery');
         $this->assertEquals(0, count($oTestObject->getCategories()));
     }
 
@@ -545,7 +545,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testGetCategories()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->load($this->_sOxId);
 
         $this->assertEquals(3, count($oDelivery->getCategories()));
@@ -560,7 +560,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testHasArticlesWhenNoArticlesAreAssigned()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $this->assertFalse($oDelivery->hasArticles());
     }
 
@@ -569,7 +569,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testHasArticles()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->load($this->_sOxId);
         $this->assertTrue($oDelivery->hasArticles());
     }
@@ -579,7 +579,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testHasCategoriesWhenNoCategoriesAreAssigned()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $this->assertFalse($oDelivery->hasCategories());
     }
 
@@ -588,7 +588,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testHasCategories()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->load($this->_sOxId);
         $this->assertTrue($oDelivery->hasCategories());
     }
@@ -600,7 +600,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     {
         $this->_oBasketItem->getArticle()->oxarticles__oxfreeshipping = new oxField(true);
 
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
 
         $this->assertEquals(0, $oDelivery->getDeliveryAmount($this->_oBasketItem));
@@ -625,7 +625,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oArt->oxarticles__oxstockflag = new oxField(2);
         $oArt->save();
 
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p');
 
         $this->assertEquals(0, $oDelivery->getDeliveryAmount($this->_oBasketItem));
@@ -634,7 +634,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         // non free shiping
         $oArt->oxarticles__oxfreeshipping = new oxField(false);
 
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p');
 
         $this->assertEquals(512, $oDelivery->getDeliveryAmount($this->_oBasketItem));
@@ -646,7 +646,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function test_getDeliveryAmountCalcByPrice()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
 
         // 256 x 2items
@@ -658,7 +658,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function test_getDeliveryAmountCalcByPricePerProduct()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
         $this->assertEquals(256, $oDelivery->getDeliveryAmount($this->_oBasketItem));
@@ -670,7 +670,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     public function testGetDeliveryAmountCalcByWeight()
     {
         // test for delivery by weight
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('w', oxField::T_RAW);
         $this->assertEquals(10, $oDelivery->getDeliveryAmount($this->_oBasketItem));
     }
@@ -681,7 +681,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     public function testGetDeliveryAmountCalcByWeightPerProduct()
     {
         // test for delivery by weight
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('w', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
         $this->assertEquals(5, $oDelivery->getDeliveryAmount($this->_oBasketItem));
@@ -694,7 +694,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     public function testGetDeliveryAmountCalcByWeightPerOrderProduct()
     {
         /** @var oxDelivery $oDelivery delivery by weight. */
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('w', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
 
@@ -716,7 +716,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     public function testGetDeliveryAmountCalcBySize()
     {
         // test for delivery by size
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('s', oxField::T_RAW);
 
         // 2*4*6 x 2items (length * width * height * items)
@@ -729,7 +729,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     public function testGetDeliveryAmountCalcBySizePerProduct()
     {
         // test for delivery by size
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('s', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
         $this->assertEquals(48, $oDelivery->getDeliveryAmount($this->_oBasketItem));
@@ -742,7 +742,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     public function testGetDeliveryAmountCalcBySizePerOrderProduct()
     {
         /** @var oxDelivery $oDelivery delivery by size. */
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('s', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
 
@@ -764,7 +764,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     public function testGetDeliveryAmountCalcByAmount()
     {
         // test for delivery by amount
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('a', oxField::T_RAW);
 
         $this->assertEquals(2, $oDelivery->getDeliveryAmount($this->_oBasketItem));
@@ -776,7 +776,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     public function testGetDeliveryAmountCalcByAmountPerProduct()
     {
         // test for delivery by amount
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('a', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
         $this->assertEquals(2, $oDelivery->getDeliveryAmount($this->_oBasketItem));
@@ -788,7 +788,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     public function testGetDeliveryAmountSetsAdditionalParams()
     {
         // test for delivery by amount
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
 
         $oDelivery->getDeliveryAmount($this->_oBasketItem);
@@ -803,7 +803,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     public function testGetDeliveryAmountSumsAdditionalParams()
     {
         // test for delivery by amount
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
 
         $aBasketContents[0] = $this->_oBasketItem;
@@ -839,7 +839,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $aBasketContents = array($this->_oBasketItem, $oBasketItem1, $oBasketItem2);
 
         // test for delivery by amount
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p');
 
         foreach ($aBasketContents as $oBasketItem) {
@@ -854,7 +854,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testGetDeliveryPriceIfFreeShipped()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxfixed = new oxField(0, oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsumtype = new oxField('abs', oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsum = new oxField('10', oxField::T_RAW);
@@ -870,7 +870,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testGetDeliveryPriceOncePerCart()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxfixed = new oxField(0, oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsumtype = new oxField('abs', oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsum = new oxField('10', oxField::T_RAW);
@@ -885,7 +885,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testGetDeliveryPriceOncePerProductOverall()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxfixed = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsumtype = new oxField('abs', oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsum = new oxField('10', oxField::T_RAW);
@@ -902,7 +902,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testGetDeliveryPriceOncePerProductInCart()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxfixed = new oxField(2, oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsumtype = new oxField('abs', oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsum = new oxField('10', oxField::T_RAW);
@@ -919,7 +919,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testGetDeliveryPriceOncePercentalCost()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxfixed = new oxField(2, oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsumtype = new oxField('%', oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsum = new oxField('20', oxField::T_RAW);
@@ -936,7 +936,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testGetDeliveryPriceSettingVat()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxfixed = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsumtype = new oxField('abs', oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsum = new oxField('10', oxField::T_RAW);
@@ -956,7 +956,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('blDeliveryVatOnTop', true);
 
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxfixed = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsumtype = new oxField('abs', oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsum = new oxField('50', oxField::T_RAW);
@@ -977,7 +977,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     public function testGetDeliveryPriceInSpecCurrency()
     {
         $this->getConfig()->setActShopCurrency(2);
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxfixed = new oxField(0, oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsumtype = new oxField('abs', oxField::T_RAW);
         $oDelivery->oxdelivery__oxaddsum = new oxField('10', oxField::T_RAW);
@@ -992,7 +992,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testDelete()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->delete($this->_sOxId);
 
         $sQ = "select oxdeliveryid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $this->_sOxId . "' ";
@@ -1003,7 +1003,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
 
     public function testDeleteWithoutId()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->load($this->_sOxId);
         $oDelivery->delete($this->_sOxId);
 
@@ -1015,7 +1015,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
 
     public function testDeleteNotLoaded()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->delete();
 
         $sQ = "select oxdeliveryid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $this->_sOxId . "' ";

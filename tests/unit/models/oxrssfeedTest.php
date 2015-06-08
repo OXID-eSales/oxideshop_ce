@@ -855,7 +855,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
 
         $oArtList = new oxArticleList();
         $oArt = new oxArticle();
-        $oArt->setId('loadedAABBCCDD' . oxNew('oxarticle')->getViewName() . '.oxtimestamp desc');
+        $oArt->setId('loadedAABBCCDD' . oxNew('oxArticle')->getViewName() . '.oxtimestamp desc');
         $oArtList->offsetSet('test_item', $oArt);
 
         $aChannel = array(
@@ -863,7 +863,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
                 '0' => null,
                 '1' => 'dastitle',
                 '2' => 'SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURERtr',
-                '3' => $oArtList, //'loadedAABBCCDD'.oxNew('oxarticle')->getViewName().'.oxtimestamp desc',
+                '3' => $oArtList, //'loadedAABBCCDD'.oxNew('oxArticle')->getViewName().'.oxtimestamp desc',
                 '4' => 'surl',
                 '5' => 'shopurl?cl=search&amp;klnk'
             )

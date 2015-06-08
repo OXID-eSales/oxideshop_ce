@@ -427,7 +427,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         foreach ($aArticles as $sArticle) {
             foreach ($aCategories as $sCategory => $iTime) {
                 /** @var oxBase $oNew */
-                $oNew = oxNew('oxbase');
+                $oNew = oxNew('oxBase');
                 $oNew->init('oxobject2category');
                 $oNew->oxobject2category__oxid       = new oxField($oNew->setId($myUtilsObject->generateUID()));
                 $oNew->oxobject2category__oxobjectid = new oxField($sArticle);

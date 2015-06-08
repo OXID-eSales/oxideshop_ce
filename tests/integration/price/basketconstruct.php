@@ -335,7 +335,7 @@ class BasketConstruct
         }
         $aWrap = array();
         foreach ($aWrappings as $aWrapping) {
-            $oCard = oxNew('oxbase');
+            $oCard = oxNew('oxBase');
             $oCard->init('oxwrapping');
             foreach ($aWrapping as $sKey => $mxValue) {
                 if (!is_array($mxValue)) {
@@ -452,7 +452,7 @@ class BasketConstruct
         }
         $aVoucherIDs = array();
         foreach ($aVoucherSeries as $aVoucherSerie) {
-            $oVoucherSerie = oxNew('oxbase');
+            $oVoucherSerie = oxNew('oxBase');
             $oVoucherSerie->init('oxvoucherseries');
             foreach ($aVoucherSerie as $sKey => $mxValue) {
                 $sField = "oxvoucherseries__" . $sKey;

@@ -565,7 +565,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
     {
         $sMainCatId = oxDb::getDb()->getOne("select oxcatnid from " . getViewName("oxobject2category") . " where oxobjectid = '1126' order by oxtime");
 
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
         $oCategory->load($sMainCatId);
 
         $oArticle = $this->getMock("oxarticle", array("getId", "getStdLink"));
@@ -591,7 +591,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
     {
         $sMainCatId = oxDb::getDb()->getOne("select oxcatnid from " . getViewName("oxobject2category") . " where oxobjectid = '1126' order by oxtime");
 
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
         $oCategory->load($sMainCatId);
 
         $oArticle = $this->getMock("oxarticle", array("getId", "getStdLink"));

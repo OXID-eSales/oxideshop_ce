@@ -146,7 +146,7 @@ class selectlist_main_ajax extends ajaxListComponent
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
             $oDb = oxDb::getDb();
             foreach ($aAddArticle as $sAdd) {
-                $oNewGroup = oxNew("oxbase");
+                $oNewGroup = oxNew("oxBase");
                 $oNewGroup->init("oxobject2selectlist");
                 $oNewGroup->oxobject2selectlist__oxobjectid = new oxField($sAdd);
                 $oNewGroup->oxobject2selectlist__oxselnid = new oxField($soxId);

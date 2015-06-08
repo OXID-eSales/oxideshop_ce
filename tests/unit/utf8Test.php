@@ -1261,14 +1261,14 @@ class Unit_utf8Test extends OxidTestCase
                          'oxshops__oxversion');
 
 
-        $oShop = oxNew('oxshop');
+        $oShop = oxNew('oxShop');
         $oShop->setId(5);
         foreach ($aFields as $sFieldName) {
             $oShop->{$sFieldName} = new oxField($sValue);
         }
         $oShop->save();
 
-        $oShop = oxNew('oxshop');
+        $oShop = oxNew('oxShop');
         $oShop->load(5);
 
         foreach ($aFields as $sFieldName) {

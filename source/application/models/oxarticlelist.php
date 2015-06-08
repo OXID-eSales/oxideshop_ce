@@ -293,7 +293,7 @@ class oxArticleList extends oxList
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();
 
-        $oBase = oxNew("oxactions");
+        $oBase = oxNew("oxActions");
         $sActiveSql = $oBase->getSqlActiveSnippet();
         $sViewName = $oBase->getViewName();
 
@@ -912,7 +912,7 @@ class oxArticleList extends oxList
             // recalculate oxvarminprice and oxvarmaxprice for parent
             if (is_array($aUpdatedArticleIds)) {
                 foreach ($aUpdatedArticleIds as $sArticleId) {
-                    $oArticle = oxNew('oxarticle');
+                    $oArticle = oxNew('oxArticle');
                     $oArticle->load($sArticleId);
                     $oArticle->onChange();
                 }

@@ -155,7 +155,7 @@ class oxVariantHandler extends oxSuperCfg
                 foreach ($oVariants as $oSimpleVariant) {
                     if (!$iCounter) {
                         //we just update the first variant
-                        $oVariant = oxNew("oxarticle");
+                        $oVariant = oxNew("oxArticle");
                         $oVariant->setEnableMultilang(false);
                         $oVariant->load($oSimpleVariant->oxarticles__oxid->value);
                         $oVariant->oxarticles__oxprice->setValue($oVariant->oxarticles__oxprice->value + $dPriceMod);

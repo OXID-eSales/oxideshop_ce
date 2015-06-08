@@ -124,7 +124,7 @@ class Account_Order extends Account
             $this->_aArticlesList = false;
             $oOrdersList = $this->getOrderList();
             if ($oOrdersList && $oOrdersList->count()) {
-                $this->_aArticlesList = oxNew('oxarticlelist');
+                $this->_aArticlesList = oxNew('oxArticleList');
                 $this->_aArticlesList->loadOrderArticles($oOrdersList);
             }
         }

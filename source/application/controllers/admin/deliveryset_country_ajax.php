@@ -116,7 +116,7 @@ class deliveryset_country_ajax extends ajaxListComponent
 
         if ($soxId && $soxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
-                $oObject2Delivery = oxNew('oxbase');
+                $oObject2Delivery = oxNew('oxBase');
                 $oObject2Delivery->init('oxobject2delivery');
                 $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($soxId);
                 $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sChosenCntr);

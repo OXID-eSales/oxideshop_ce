@@ -106,7 +106,7 @@ class article_attribute_ajax extends ajaxListComponent
 
         if ($soxId && $soxId != "-1" && is_array($aAddCat)) {
             foreach ($aAddCat as $sAdd) {
-                $oNew = oxNew("oxbase");
+                $oNew = oxNew("oxBase");
                 $oNew->init("oxobject2attribute");
                 $oNew->oxobject2attribute__oxobjectid = new oxField($soxId);
                 $oNew->oxobject2attribute__oxattrid = new oxField($sAdd);
@@ -133,7 +133,7 @@ class article_attribute_ajax extends ajaxListComponent
             $sAttributeValue = iconv('UTF-8', oxRegistry::getLang()->translateString("charset"), $sAttributeValue);
         }
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         if ($oArticle->load($soxId)) {
 
 

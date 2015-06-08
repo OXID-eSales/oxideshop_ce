@@ -422,7 +422,7 @@ class oxwArticleDetails extends oxWidget
      * Returns variant lists of current product
      * excludes currently viewed product
      *
-     * @return array
+     * @return array | oxSimpleVariantList | oxArticleList
      */
     public function getVariantListExceptCurrent()
     {
@@ -443,7 +443,7 @@ class oxwArticleDetails extends oxWidget
      * loading full list of variants,
      * if we are child and do not have any variants then let's load all parent variants as ours
      *
-     * @return null
+     * @return array | oxSimpleVariantList | oxArticleList
      */
     public function loadVariantInformation()
     {
@@ -483,7 +483,7 @@ class oxwArticleDetails extends oxWidget
     /**
      * Returns variant lists of current product
      *
-     * @return array
+     * @return array | oxsimplevariantlist | oxarticlelist
      */
     public function getVariantList()
     {
@@ -965,7 +965,7 @@ class oxwArticleDetails extends oxWidget
                 $sOxid = oxRegistry::getConfig()->getRequestParameter('anid');
 
                 // object is not yet loaded
-                $this->_oProduct = oxNew('oxarticle');
+                $this->_oProduct = oxNew('oxArticle');
 
                 if (!$this->_oProduct->load($sOxid)) {
                     $myUtils->redirect($myConfig->getShopHomeURL());

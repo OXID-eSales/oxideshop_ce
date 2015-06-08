@@ -33,7 +33,7 @@ class Unit_Models_oxnewsTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $oBaseNews = oxNew('oxbase');
+        $oBaseNews = oxNew('oxBase');
         $oBaseNews->init('oxnews');
         $oBaseNews->oxnews__oxshortdesc = new oxField('Test', oxField::T_RAW);
         $oBaseNews->oxnews__oxshortdesc_1 = new oxField('Test_news_1', oxField::T_RAW);

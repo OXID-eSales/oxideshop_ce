@@ -1915,7 +1915,7 @@ class oxConfig extends oxSuperCfg
             return $this->_oActShop;
         }
 
-        $this->_oActShop = oxNew('oxshop');
+        $this->_oActShop = oxNew('oxShop');
         $this->_oActShop->load($this->getShopId());
 
         return $this->_oActShop;

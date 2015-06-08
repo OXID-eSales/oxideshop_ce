@@ -48,7 +48,7 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
         $sTestID = '_test_recid';
         $this->setRequestParameter('oxid', $sTestID);
 
-        $oMapping = oxNew('oxbase');
+        $oMapping = oxNew('oxBase');
         $oMapping->init('oxobject2payment');
         $oMapping->oxobject2payment__oxpaymentid = new oxField($sTestID);
         $oMapping->oxobject2payment__oxobjectid = new oxField('test_del_objID');
@@ -157,7 +157,7 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
         $this->assertSame(array(), $oView->getAssignedRDFaPayments(), 'Should be empty array');
 
         foreach ($aObjIDs as $sObjID) {
-            $oMapping = oxNew('oxbase');
+            $oMapping = oxNew('oxBase');
             $oMapping->init('oxobject2payment');
             $oMapping->oxobject2payment__oxpaymentid = new oxField($sTestID);
             $oMapping->oxobject2payment__oxobjectid = new oxField($sObjID);

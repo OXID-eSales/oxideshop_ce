@@ -195,7 +195,7 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
         $blParam = $this->getConfig()->getConfigParam('blUseTimeCheck');
         $this->getConfig()->setConfigParam('blUseTimeCheck', 1);
 
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('1126');
         $oArticle->oxarticles__oxactive->value = 0;
         $oArticle->oxarticles__oxactivefrom->value = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() - 100);

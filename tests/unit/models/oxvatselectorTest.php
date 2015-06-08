@@ -38,7 +38,7 @@ class Unit_Models_oxVatSelectorTest extends OxidTestCase
         $sId = '2077';
         $sNewId = oxUtilsObject::getInstance()->generateUId();
 
-        $this->oArticle = oxNew('oxarticle');
+        $this->oArticle = oxNew('oxArticle');
         $this->oArticle->disableLazyLoading();
         $this->oArticle->Load($sId);
 
@@ -55,7 +55,7 @@ class Unit_Models_oxVatSelectorTest extends OxidTestCase
 
         $sNewId = oxUtilsObject::getInstance()->generateUId();
 
-        $this->oCategory = oxNew('oxbase');
+        $this->oCategory = oxNew('oxBase');
         $this->oCategory->Init('oxcategories');
         $this->oCategory->Load($sId);
 

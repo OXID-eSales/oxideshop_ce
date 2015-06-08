@@ -607,7 +607,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
     public function testGetCrossSelling()
     {
         $oDetails = $this->getProxyClass('oxwArticleDetails');
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("1849");
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oDetails->getCrossSelling();

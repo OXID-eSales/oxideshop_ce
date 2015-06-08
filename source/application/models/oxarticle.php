@@ -1251,7 +1251,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function getCrossSelling()
     {
-        $oCrosslist = oxNew("oxarticlelist");
+        $oCrosslist = oxNew("oxArticleList");
         $oCrosslist->loadArticleCrossSell($this->oxarticles__oxid->value);
         if ($oCrosslist->count()) {
             return $oCrosslist;
@@ -1272,7 +1272,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             return;
         }
 
-        $oAcclist = oxNew("oxarticlelist");
+        $oAcclist = oxNew("oxArticleList");
         $oAcclist->setSqlLimit(0, $myConfig->getConfigParam('iNrofCrossellArticles'));
         $oAcclist->loadArticleAccessoires($this->oxarticles__oxid->value);
 
@@ -1311,7 +1311,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
             $sSearch = $this->_generateSimListSearchStr($sArticleTable, $aList);
 
-            $oSimilarlist = oxNew('oxarticlelist');
+            $oSimilarlist = oxNew('oxArticleList');
             $oSimilarlist->setSqlLimit(0, $myConfig->getConfigParam('iNrofSimilarArticles'));
             $oSimilarlist->selectString($sSearch);
 
@@ -1335,7 +1335,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // selecting products that fits
         $sQ = $this->_generateSearchStrForCustomerBought();
 
-        $oArticles = oxNew('oxarticlelist');
+        $oArticles = oxNew('oxArticleList');
         $oArticles->setSqlLimit(0, $myConfig->getConfigParam('iNrofCustomerWhoArticles'));
         $oArticles->selectString($sQ);
         if ($oArticles->count()) {
@@ -1552,7 +1552,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
      * @param bool $blForceCoreTable      if true forces core table use, default is false [optional]
      *
-     * @return oxarticlelist
+     * @return oxArticleList
      */
     public function getFullVariants($blRemoveNotOrderables = true, $blForceCoreTable = null)
     {
@@ -1595,7 +1595,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function getAdminVariants($sLanguage = null)
     {
-        $oVariants = oxNew('oxarticlelist');
+        $oVariants = oxNew('oxArticleList');
         if (($sId = $this->getId())) {
 
             $oBaseObj = $oVariants->getBaseObject();
@@ -1628,7 +1628,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function getCategory()
     {
-        $oCategory = oxNew('oxcategory');
+        $oCategory = oxNew('oxCategory');
         $oCategory->setLanguage($this->getLanguage());
 
         // variant handling
@@ -3026,7 +3026,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if (($sParentId = $this->oxarticles__oxparentid->value)) {
             $sIndex = $sParentId . "_" . $this->getLanguage();
             if (!isset(self::$_aLoadedParents[$sIndex])) {
-                self::$_aLoadedParents[$sIndex] = oxNew('oxarticle');
+                self::$_aLoadedParents[$sIndex] = oxNew('oxArticle');
                 self::$_aLoadedParents[$sIndex]->_blLoadPrice = false;
                 self::$_aLoadedParents[$sIndex]->_blLoadVariants = false;
 
@@ -3352,7 +3352,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                     $oVariants->setParent($this);
                 } else {
                     //loading variants
-                    $oVariants = oxNew('oxarticlelist');
+                    $oVariants = oxNew('oxArticleList');
                     $oVariants->getBaseObject()->modifyCacheKey('_variants');
                 }
 

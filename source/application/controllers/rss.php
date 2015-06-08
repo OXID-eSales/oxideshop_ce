@@ -186,7 +186,7 @@ class Rss extends oxUBase
     public function recommlists()
     {
         if ($this->getViewConfig()->getShowListmania() && $this->getConfig()->getConfigParam('bl_rssRecommLists')) {
-            $oArticle = oxNew('oxarticle');
+            $oArticle = oxNew('oxArticle');
             if ($oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'))) {
                 $this->_getRssFeed()->loadRecommLists($oArticle);
 

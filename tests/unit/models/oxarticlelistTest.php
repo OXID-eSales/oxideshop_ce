@@ -193,7 +193,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
 
         $aTotalCnt = $this->getDb(2)->getAll($sSql);
 
-        $oList = oxNew("oxarticlelist");
+        $oList = oxNew("oxArticleList");
 
         foreach ($aTotalCnt as $aData) {
             $oList->loadActionArticles($aData['oxactionid']);
@@ -223,7 +223,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
 
         $aTotalCnt = $this->getDb(2)->getAll($sSql);
 
-        $oList = oxNew("oxarticlelist");
+        $oList = oxNew("oxArticleList");
 
         foreach ($aTotalCnt as $aData) {
             $this->assertArrayHasKey('oxactionid', $aData);
@@ -396,7 +396,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
      */
     public function testLoadArticleAccessoires()
     {
-        $oNewGroup = oxNew("oxbase");
+        $oNewGroup = oxNew("oxBase");
         $oNewGroup->init("oxaccessoire2article");
         $oNewGroup->oxaccessoire2article__oxobjectid = new oxField("1651", oxField::T_RAW);
         $oNewGroup->oxaccessoire2article__oxarticlenid = new oxField("test", oxField::T_RAW);
@@ -417,7 +417,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
     public function testLoadArticleAccessoiresNone()
     {
         $this->setConfigParam('bl_perfLoadAccessoires', 0);
-        $oNewGroup = oxNew("oxbase");
+        $oNewGroup = oxNew("oxBase");
         $oNewGroup->init("oxaccessoire2article");
         $oNewGroup->oxaccessoire2article__oxobjectid = new oxField("1651", oxField::T_RAW);
         $oNewGroup->oxaccessoire2article__oxarticlenid = new oxField("test", oxField::T_RAW);
@@ -2225,7 +2225,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $iTime = time();
 
         // adding 7 test articles
-        $oArticle1 = oxNew("oxarticle");
+        $oArticle1 = oxNew("oxArticle");
         $oArticle1->setId("_testProd1");
         $oArticle1->oxarticles__oxprice = new oxField(1);
         $oArticle1->oxarticles__oxpricea = new oxField(2);
@@ -2238,19 +2238,19 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $oArticle1->oxarticles__oxupdatepricetime = new oxField(date("Y-m-d H:i:s", $iTime - 3600));
         $this->assertTrue("_testProd1" === $oArticle1->save());
 
-        $oArticle11 = oxNew("oxarticle");
+        $oArticle11 = oxNew("oxArticle");
         $oArticle11->setId("_testProd1.1");
         $oArticle11->oxarticles__oxprice = new oxField(21);
         $oArticle11->oxarticles__oxparentid = new oxField("_testProd1");
         $this->assertTrue("_testProd1.1" === $oArticle11->save());
 
-        $oArticle12 = oxNew("oxarticle");
+        $oArticle12 = oxNew("oxArticle");
         $oArticle12->setId("_testProd1.2");
         $oArticle12->oxarticles__oxprice = new oxField(30);
         $oArticle12->oxarticles__oxparentid = new oxField("_testProd1");
         $this->assertTrue("_testProd1.2" === $oArticle12->save());
 
-        $oArticle2 = oxNew("oxarticle");
+        $oArticle2 = oxNew("oxArticle");
         $oArticle2->setId("_testProd2");
         $oArticle2->oxarticles__oxprice = new oxField(1);
         $oArticle2->oxarticles__oxpricea = new oxField(2);
@@ -2263,19 +2263,19 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $oArticle2->oxarticles__oxupdatepricetime = new oxField(date("Y-m-d H:i:s", $iTime));
         $this->assertTrue("_testProd2" === $oArticle2->save());
 
-        $oArticle21 = oxNew("oxarticle");
+        $oArticle21 = oxNew("oxArticle");
         $oArticle21->setId("_testProd2.1");
         $oArticle21->oxarticles__oxprice = new oxField(5);
         $oArticle21->oxarticles__oxparentid = new oxField("_testProd2");
         $this->assertTrue("_testProd2.1" === $oArticle21->save());
 
-        $oArticle22 = oxNew("oxarticle");
+        $oArticle22 = oxNew("oxArticle");
         $oArticle22->setId("_testProd2.2");
         $oArticle22->oxarticles__oxprice = new oxField(15);
         $oArticle22->oxarticles__oxparentid = new oxField("_testProd2");
         $this->assertTrue("_testProd2.2" === $oArticle22->save());
 
-        $oArticle3 = oxNew("oxarticle");
+        $oArticle3 = oxNew("oxArticle");
         $oArticle3->setId("_testProd3");
         $oArticle3->oxarticles__oxprice = new oxField(1);
         $oArticle3->oxarticles__oxpricea = new oxField(2);

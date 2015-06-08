@@ -64,7 +64,7 @@ class oxcmp_utils extends oxView
             $oProduct = oxNew('oxArticle');
             $oProduct->load($sId);
         } elseif ($myConfig->getConfigParam('bl_perfLoadAktion')) {
-            $oArtList = oxNew('oxarticlelist');
+            $oArtList = oxNew('oxArticleList');
             $oArtList->loadActionArticles('OXAFFILIATE');
             $oProduct = $oArtList->current();
         }

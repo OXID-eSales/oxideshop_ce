@@ -89,7 +89,7 @@ class Payment_Country extends oxAdminDetails
         $aChosenCntr = oxRegistry::getConfig()->getRequestParameter("allcountries");
         if (isset($sOxId) && $sOxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
-                $oObject2Payment = oxNew('oxbase');
+                $oObject2Payment = oxNew('oxBase');
                 $oObject2Payment->init('oxobject2payment');
                 $oObject2Payment->oxobject2payment__oxpaymentid = new oxField($sOxId);
                 $oObject2Payment->oxobject2payment__oxobjectid = new oxField($sChosenCntr);
@@ -108,7 +108,7 @@ class Payment_Country extends oxAdminDetails
         $aChosenCntr = oxRegistry::getConfig()->getRequestParameter("countries");
         if (isset($sOxId) && $sOxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
-                $oObject2Payment = oxNew('oxbase');
+                $oObject2Payment = oxNew('oxBase');
                 $oObject2Payment->init('oxobject2payment');
                 $oObject2Payment->delete($sChosenCntr);
             }

@@ -36,7 +36,7 @@ class Article_Userdef extends oxAdminDetails
     {
         parent::render();
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $this->_aViewData["edit"] = $oArticle;
 
         $soxId = $this->getEditObjectId();

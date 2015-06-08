@@ -110,7 +110,7 @@ class deliveryset_payment_ajax extends ajaxListComponent
                 // check if we have this entry already in
                 $sID = $oDb->getOne("select oxid from oxobject2payment where oxpaymentid = " . $oDb->quote($sChosenSet) . "  and oxobjectid = " . $oDb->quote($soxId) . " and oxtype = 'oxdelset'", false, false);
                 if (!isset($sID) || !$sID) {
-                    $oObject = oxNew('oxbase');
+                    $oObject = oxNew('oxBase');
                     $oObject->init('oxobject2payment');
                     $oObject->oxobject2payment__oxpaymentid = new oxField($sChosenSet);
                     $oObject->oxobject2payment__oxobjectid = new oxField($soxId);

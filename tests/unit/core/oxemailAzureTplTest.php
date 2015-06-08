@@ -78,7 +78,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         //$this->_oEmail->setShop( $this->_oShop );
 
         // insert test article
-        $this->_oArticle = oxNew("oxarticle");
+        $this->_oArticle = oxNew("oxArticle");
         $this->_oArticle->setId('_testArticleId');
         $this->_oArticle->oxarticles__oxtitle = new oxField('testArticle', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxartnum = new oxField('123456789', oxField::T_RAW);

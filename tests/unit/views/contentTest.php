@@ -598,7 +598,7 @@ class Unit_Views_contentTest extends OxidTestCase
      */
     public function testGetDeliveryChargeSpecs()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testDeliveryId');
         $oDelivery->oxdelivery__oxtitle = new oxField('_testDelivertTitle' . $i, oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
@@ -610,7 +610,7 @@ class Unit_Views_contentTest extends OxidTestCase
 
         $oDelivery->save();
 
-        $oDel2Delset = oxNew('oxbase');
+        $oDel2Delset = oxNew('oxBase');
         $oDel2Delset->init('oxdel2delset');
         $oDel2Delset->setId('_testDel2DelSetId');
         $oDel2Delset->oxdel2delset__oxdelid = new oxField($oDelivery->getId(), oxField::T_RAW);

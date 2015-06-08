@@ -200,7 +200,7 @@ class Unit_Views_oxcmpCategoriesTest extends OxidTestCase
 
         oxTestModules::addFunction('oxarticle', 'load($id)', '{$this->setId($id); return "lalala" == $id;}');
 
-        $oExpectArticle = oxNew('oxarticle');
+        $oExpectArticle = oxNew('oxArticle');
         $this->assertEquals(true, $oExpectArticle->load('lalala'));
 
         $oParent = $this->getMock('stdClass', array('getViewProduct', 'setViewProduct'));

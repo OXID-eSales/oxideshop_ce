@@ -104,7 +104,7 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
         $oVoucherSerie->setId("_testvoucherserie");
 
         // inserting test voucher
-        $oVoucher = oxNew("oxbase");
+        $oVoucher = oxNew("oxBase");
         $oVoucher->init("oxvouchers");
         $oVoucher->setId("_testvoucher");
         $oVoucher->oxvouchers__oxvoucherserieid = new oxField("_testvoucherserie");

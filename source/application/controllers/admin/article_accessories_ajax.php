@@ -136,7 +136,7 @@ class article_accessories_ajax extends ajaxListComponent
      */
     public function addArticleAcc()
     {
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
         $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
@@ -148,7 +148,7 @@ class article_accessories_ajax extends ajaxListComponent
 
         if ($oArticle->load($soxId) && $soxId && $soxId != "-1" && is_array($aChosenArt)) {
             foreach ($aChosenArt as $sChosenArt) {
-                $oNewGroup = oxNew("oxbase");
+                $oNewGroup = oxNew("oxBase");
                 $oNewGroup->init("oxaccessoire2article");
                 $oNewGroup->oxaccessoire2article__oxobjectid = new oxField($sChosenArt);
                 $oNewGroup->oxaccessoire2article__oxarticlenid = new oxField($oArticle->oxarticles__oxid->value);

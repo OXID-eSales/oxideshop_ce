@@ -192,7 +192,7 @@ class oxNewsletter extends oxBase
     {
         $myConfig = $this->getConfig();
 
-        $oShop = oxNew('oxshop');
+        $oShop = oxNew('oxShop');
         $oShop->load($myConfig->getShopId());
 
         $oView = oxNew('oxubase');
@@ -242,13 +242,13 @@ class oxNewsletter extends oxBase
     protected function _assignProducts($oView, $blPerfLoadAktion = false)
     {
         if ($blPerfLoadAktion) {
-            $oArtList = oxNew('oxarticlelist');
+            $oArtList = oxNew('oxArticleList');
             $oArtList->loadActionArticles('OXNEWSLETTER');
             $oView->addTplParam('articlelist', $oArtList);
         }
 
         if ($this->_oUser->getId()) {
-            $oArticle = oxNew('oxarticle');
+            $oArticle = oxNew('oxArticle');
             $sArticleTable = $oArticle->getViewName();
 
             // add products which fit to the last order of this user

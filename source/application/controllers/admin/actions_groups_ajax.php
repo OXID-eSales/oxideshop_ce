@@ -106,7 +106,7 @@ class actions_groups_ajax extends ajaxListComponent
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenGroup)) {
             foreach ($aChosenGroup as $sChosenGroup) {
-                $oObject2Promotion = oxNew("oxbase");
+                $oObject2Promotion = oxNew("oxBase");
                 $oObject2Promotion->init('oxobject2action');
                 $oObject2Promotion->oxobject2action__oxactionid = new oxField($soxId);
                 $oObject2Promotion->oxobject2action__oxobjectid = new oxField($sChosenGroup);

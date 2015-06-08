@@ -58,7 +58,7 @@ class oxImex extends oxBase
             $oDb->setFetchMode($oldMode);
 
             while (!$rs->EOF) {
-                $oArticle = oxNew("oxarticle");
+                $oArticle = oxNew("oxArticle");
                 $blAdmin = $this->isAdmin();
                 // TODO: this place could be optimized. please check what we can do.
                 $this->setAdminMode(false);

@@ -71,7 +71,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $this->_oShop->oxshops__oxforgotpwdsubject = new oxField('testUserFogotPwdSubject', oxField::T_RAW);
 
         // insert test article
-        $this->_oArticle = oxNew("oxarticle");
+        $this->_oArticle = oxNew("oxArticle");
         $this->_oArticle->setId('_testArticleId');
         $this->_oArticle->oxarticles__oxtitle = new oxField('testArticle', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxtitle_1 = new oxField('testArticle_EN', oxField::T_RAW);

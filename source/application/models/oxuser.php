@@ -794,7 +794,7 @@ class oxUser extends oxBase
         $sDeliveryCountry = '';
         $soxAddressId = oxRegistry::getSession()->getVariable('deladrid');
         if ($soxAddressId) {
-            $oDelAddress = oxNew('oxaddress');
+            $oDelAddress = oxNew('oxAddress');
             $oDelAddress->load($soxAddressId);
             $sDeliveryCountry = $oDelAddress->oxaddress__oxcountryid->value;
         } elseif ($this->getId()) {
@@ -1211,7 +1211,7 @@ class oxUser extends oxBase
             $sAddressId = $this->getConfig()->getRequestParameter('oxaddressid');
             $sAddressId = ($sAddressId === null || $sAddressId == -1 || $sAddressId == -2) ? null : $sAddressId;
 
-            $oAddress = oxNew('oxaddress');
+            $oAddress = oxNew('oxAddress');
             $oAddress->setId($sAddressId);
             $oAddress->load($sAddressId);
             $oAddress->assign($aDelAddress);

@@ -436,7 +436,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
         $this->getSession()->setVariable('usr', 'oxdefaultadmin');
 
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArt');
         $oArticle->oxarticles__oxstock = new oxField(0);
         $oArticle->oxarticles__oxstockflag = new oxField(2);

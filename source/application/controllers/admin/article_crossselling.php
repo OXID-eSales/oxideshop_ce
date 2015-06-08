@@ -40,7 +40,7 @@ class Article_Crossselling extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oArticle = oxNew('oxarticle');
+        $this->_aViewData['edit'] = $oArticle = oxNew('oxArticle');
 
         // crossselling
         $this->_createCategoryTree("artcattree");

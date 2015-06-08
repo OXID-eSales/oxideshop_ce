@@ -67,7 +67,7 @@ class deliveryset_rdfa extends payment_rdfa
 
         // Save new mappings
         foreach ($aRDFaDeliveries as $sDelivery) {
-            $oMapping = oxNew("oxbase");
+            $oMapping = oxNew("oxBase");
             $oMapping->init("oxobject2delivery");
             $oMapping->assign($aParams);
             $oMapping->oxobject2delivery__oxobjectid = new oxField($sDelivery);

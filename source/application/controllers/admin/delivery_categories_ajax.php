@@ -122,7 +122,7 @@ class delivery_categories_ajax extends ajaxListComponent
 
         if (isset($soxId) && $soxId != "-1" && isset($aChosenCat) && $aChosenCat) {
             foreach ($aChosenCat as $sChosenCat) {
-                $oObject2Delivery = oxNew('oxbase');
+                $oObject2Delivery = oxNew('oxBase');
                 $oObject2Delivery->init('oxobject2delivery');
                 $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($soxId);
                 $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sChosenCat);

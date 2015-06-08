@@ -159,10 +159,10 @@ class article_crossselling_ajax extends ajaxListComponent
             $aChosenArt = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         if ($oArticle->load($soxId) && $soxId && $soxId != "-1" && is_array($aChosenArt)) {
             foreach ($aChosenArt as $sAdd) {
-                $oNewGroup = oxNew('oxbase');
+                $oNewGroup = oxNew('oxBase');
                 $oNewGroup->init('oxobject2article');
                 $oNewGroup->oxobject2article__oxobjectid = new oxField($sAdd);
                 $oNewGroup->oxobject2article__oxarticlenid = new oxField($oArticle->oxarticles__oxid->value);

@@ -1571,7 +1571,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
     public function testAssignSimpleArticle()
     {
         $sArtID = '_testArt';
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load($sArtID);
         $oArticle->setSkipAssign(true);
         $oArticle->oxdetaillink = null;
@@ -1587,7 +1587,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
     public function testAssign()
     {
         $sArtID = '_testArt';
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load($sArtID);
         $dbRecord = array();
         $dbRecord['oxarticles__oxlongdesc'] = 'LongDesc';
@@ -1779,7 +1779,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
     {
         $oArticle = $this->_createArticle('_testArt');
 
-        $oNewGroup = oxNew("oxbase");
+        $oNewGroup = oxNew("oxBase");
         $oNewGroup->init("oxaccessoire2article");
         $oNewGroup->oxaccessoire2article__oxobjectid = new oxField("1651", oxField::T_RAW);
         $oNewGroup->oxaccessoire2article__oxarticlenid = new oxField('_testArt', oxField::T_RAW);
@@ -1823,7 +1823,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
     public function testGetCrossSellingLoadingIsNotAllowedSoEmptyListIsReturned()
     {
         $this->getConfig()->setConfigParam('bl_perfLoadCrossselling', false);
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("1849");
         $this->assertNull($oArticle->getCrossSelling());
     }
@@ -1835,7 +1835,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
      */
     public function testGetCrossSellingShouldReturnEmptyListBecauseOfNonExistingArticle()
     {
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load('_testArt');
         $this->assertNull($oArticle->getCrossSelling());
     }
@@ -1847,7 +1847,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
      */
     public function testGetCrossSelling()
     {
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("1849");
         $oList = $oArticle->getCrossSelling();
         $iCount = 3;
@@ -1867,7 +1867,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
     public function testGetBiCrossSelling()
     {
         $this->getConfig()->setConfigParam('blBidirectCross', true);
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("1849");
         $aAccess = $oArticle->getCrossSelling();
 
@@ -3068,7 +3068,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oArticle = $this->_createArticle('_testArt');
 
         // making category
-        $oCategory = oxNew('oxcategory');
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('_testCat');
         $oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
         $oCategory->oxcategories__oxrootid = new oxField('_testCat', oxField::T_RAW);
@@ -3114,7 +3114,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oArticle = $this->_createArticle('_testArt');
 
         // making category
-        $oCategory = oxNew('oxcategory');
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('_testCat');
         $oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
         $oCategory->oxcategories__oxrootid = new oxField('_testCat', oxField::T_RAW);
@@ -5120,7 +5120,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
     public function testGetParentArticle()
     {
         oxTestModules::addFunction('oxarticle', 'clearParentCache', '{self::$_aLoadedParents = array();}');
-        $oA = oxNew('oxarticle');
+        $oA = oxNew('oxArticle');
         $oA->clearParentCache();
 
         $oArticle = $this->_createArticle('_testArt');
@@ -6033,7 +6033,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
      */
     public function testGetSimilarProducts()
     {
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("2000");
         $oList = $oArticle->getSimilarProducts();
         $iCount = 4;
@@ -6074,7 +6074,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
      */
     public function testGetSimilarProductsNoAttribDontLoadSimilar()
     {
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("_testArt");
         $this->assertNull($oArticle->getSimilarProducts());
     }
@@ -6087,7 +6087,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
     public function testGetSimilarProductsNoAttrib()
     {
         $this->getConfig()->setConfigParam('bl_perfLoadSimilar', false);
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("2000");
         $this->assertNull($oArticle->getSimilarProducts());
     }
@@ -6102,7 +6102,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
     public function testGetSimilarProductsIf100Percent()
     {
         $this->getConfig()->setConfigParam('iAttributesPercent', 100);
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("2000");
         $oList = $oArticle->getSimilarProducts();
         $iCount = 4;
@@ -6117,7 +6117,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
      */
     public function testLongDescSaving_savesRawValue()
     {
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         if ($oArticle->load('test_SubshopFields_savesRawValue')) {
             $oArticle->delete();
         }
@@ -6126,28 +6126,28 @@ class Unit_Models_oxArticleTest extends OxidTestCase
 
 
         // insert article
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->assign(array('OXID' => 'test_SubshopFields_savesRawValue'));
         $oArticle->setArticleLongDesc('lalaal&!<b><');
         $oArticle->save();
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $this->assertTrue($oArticle->load('test_SubshopFields_savesRawValue'));
         $this->assertEquals('lalaal&!<b><', $oArticle->getLongDescription()->getRawValue());
 
         // lang 1
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->setLanguage(1);
         $oArticle->assign(array('OXID' => 'test_SubshopFields_savesRawValue'));
         $oArticle->setArticleLongDesc('lalaal&!<b><a');
         $oArticle->save();
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $this->assertTrue($oArticle->loadInLang(1, 'test_SubshopFields_savesRawValue'));
         $this->assertEquals('lalaal&!<b><a', $oArticle->getLongDescription()->getRawValue());
 
         // back in 0 lang
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->setLanguage(0);
         $this->assertTrue($oArticle->load('test_SubshopFields_savesRawValue'));
         $this->assertEquals('lalaal&!<b><', $oArticle->getLongDescription()->getRawValue());
@@ -6161,7 +6161,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
     public function testLongDescSavingIfMultilingualIsFalse()
     {
         // insert article
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->setEnableMultilang(false);
         $oArticle->setId("_testArt");
 

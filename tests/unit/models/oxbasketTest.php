@@ -69,7 +69,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
 
         oxTestModules::addFunction('oxarticle', 'getLink( $iLang = null, $blMain = false  )', '{return "htpp://link_for_article/".$this->getId();}');
 
-        $this->oArticle = oxNew('oxarticle');
+        $this->oArticle = oxNew('oxArticle');
         //$this->oArticle->disableLazyLoading();
         $this->oArticle->Load($sId);
 
@@ -83,7 +83,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
 
         // making category
         $sCatId = oxUtilsObject::getInstance()->generateUId();
-        $this->oCategory = oxNew('oxcategory');
+        $this->oCategory = oxNew('oxCategory');
         $this->oCategory->setId($sCatId);
         $this->oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
         $this->oCategory->oxcategories__oxrootid = new oxField($sCatId, oxField::T_RAW);
@@ -107,7 +107,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->oSelList->save();
 
         // assigning select list
-        $oNewGroup = oxNew("oxbase");
+        $oNewGroup = oxNew("oxBase");
         $oNewGroup->init("oxobject2selectlist");
         $oNewGroup->oxobject2selectlist__oxobjectid = new oxField($this->oArticle->getId(), oxField::T_RAW);
         $oNewGroup->oxobject2selectlist__oxselnid = new oxField($this->oSelList->getId(), oxField::T_RAW);
@@ -115,7 +115,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oNewGroup->save();
 
         // few discounts
-        $this->aDiscounts[0] = oxNew("oxbase");
+        $this->aDiscounts[0] = oxNew("oxBase");
         $this->aDiscounts[0]->init("oxdiscount");
         $this->aDiscounts[0]->setId('testdiscount0');
         $this->aDiscounts[0]->oxdiscount__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
@@ -132,7 +132,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->aDiscounts[0]->oxdiscount__oxitmmultiple = new oxField(1, oxField::T_RAW);
         $this->aDiscounts[0]->save();
 
-        $this->aDiscounts[1] = oxNew("oxbase");
+        $this->aDiscounts[1] = oxNew("oxBase");
         $this->aDiscounts[1]->init("oxdiscount");
         $this->aDiscounts[1]->setId('testdiscount1');
         $this->aDiscounts[1]->oxdiscount__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
@@ -149,7 +149,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->aDiscounts[1]->oxdiscount__oxitmmultiple = new oxField(1, oxField::T_RAW);
         $this->aDiscounts[1]->save();
 
-        $this->aDiscounts[2] = oxNew("oxbase");
+        $this->aDiscounts[2] = oxNew("oxBase");
         $this->aDiscounts[2]->init("oxdiscount");
         $this->aDiscounts[2]->setId('testdiscount2');
         $this->aDiscounts[2]->oxdiscount__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
@@ -167,7 +167,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->aDiscounts[2]->save();
 
         // assigning discounts
-        $oDisc2Art = oxNew("oxbase");
+        $oDisc2Art = oxNew("oxBase");
         $oDisc2Art->init("oxobject2discount");
         $oDisc2Art->setId("_dsci1");
         $oDisc2Art->oxobject2discount__oxdiscountid = new oxField($this->aDiscounts[0]->getId(), oxField::T_RAW);
@@ -175,7 +175,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oDisc2Art->oxobject2discount__oxtype = new oxField('oxarticles', oxField::T_RAW);
         $oDisc2Art->save();
 
-        $oDisc2Art = oxNew("oxbase");
+        $oDisc2Art = oxNew("oxBase");
         $oDisc2Art->init("oxobject2discount");
         $oDisc2Art->setId("_dsci2");
         $oDisc2Art->oxobject2discount__oxdiscountid = new oxField($this->aDiscounts[1]->getId(), oxField::T_RAW);
@@ -185,14 +185,14 @@ class Unit_Models_oxbasketTest extends OxidTestCase
 
         // adding variant for article
         $sNewVarId = oxUtilsObject::getInstance()->generateUId();
-        $this->oVariant = oxNew('oxarticle');
+        $this->oVariant = oxNew('oxArticle');
         $this->oVariant->disableLazyLoading();
         $this->oVariant->Load($sNewId);
         $this->oVariant->setId($sNewVarId);
         $this->oVariant->oxarticles__oxparentid = new oxField($sNewId, oxField::T_RAW);
         $this->oVariant->save();
 
-        $this->oArticle = oxNew('oxarticle');
+        $this->oArticle = oxNew('oxArticle');
         $this->oArticle->disableLazyLoading();
         $this->oArticle->Load($sNewId);
 
@@ -218,7 +218,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         }
 
         // creating delivery address
-        $this->oDelAdress = oxNew('oxbase');
+        $this->oDelAdress = oxNew('oxBase');
         $this->oDelAdress->Init('oxaddress');
         $this->oDelAdress->oxaddress__oxcountryid = new oxField('_xxx', oxField::T_RAW);
         $this->oDelAdress->save();
@@ -1333,7 +1333,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testAddBundlesIfAssignedCategory()
     {
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticle');
         $oArticle->oxarticles__oxweight = new oxField(10, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(100, oxField::T_RAW);
@@ -1350,7 +1350,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->aDiscounts[2]->oxdiscount__oxitmmultiple = new oxField(0, oxField::T_RAW);
         $this->aDiscounts[2]->save();
 
-        $oDisc2Art = oxNew("oxbase");
+        $oDisc2Art = oxNew("oxBase");
         $oDisc2Art->init("oxobject2discount");
         $oDisc2Art->setId("_dsci3");
         $oDisc2Art->oxobject2discount__oxdiscountid = new oxField($this->aDiscounts[2]->getId(), oxField::T_RAW);
@@ -4065,7 +4065,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("blBasketExcludeEnabled", true);
 
-        $oBasket = oxNew('oxbasket');
+        $oBasket = oxNew('oxBasket');
         $this->assertFalse($oBasket->showCatChangeWarning());
 
         $oBasket->setCatChangeWarningState(true);
@@ -4092,7 +4092,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $sRootCatId = $oDb->getOne($sQ);
 
 
-        $oBasket = oxNew('oxbasket');
+        $oBasket = oxNew('oxBasket');
 
         // regular product
         $this->assertTrue($oBasket->UNITisProductInRootCategory($sProductId, $sRootCatId), "first fail");
@@ -4134,7 +4134,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
 
         $this->setRequestParameter('cnid', null);
 
-        $oBasket = oxNew('oxbasket');
+        $oBasket = oxNew('oxBasket');
         $this->assertTrue($oBasket->canAddProductToBasket("1126"));
     }
 
@@ -4151,7 +4151,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oCategory->load(oxDb::getDb()->getOne("select oxcatnid from oxobject2category where oxobjectid = '1126'"));
         $this->getConfig()->getActiveView()->setActiveCategory($oCategory);
 
-        $oBasket = oxNew('oxbasket');
+        $oBasket = oxNew('oxBasket');
         $this->assertTrue($oBasket->canAddProductToBasket("1126"));
     }
 
@@ -4168,7 +4168,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oCategory->load(oxDb::getDb()->getOne("select oxcatnid from oxobject2category where oxobjectid != '1126'"));
         $this->getConfig()->getActiveView()->setActiveCategory($oCategory);
 
-        $oBasket = oxNew('oxbasket');
+        $oBasket = oxNew('oxBasket');
         $this->assertTrue($oBasket->canAddProductToBasket("1126"));
     }
 
@@ -4183,7 +4183,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
 
         $this->setRequestParameter('cnid', oxDb::getDb()->getOne("select oxcatnid from oxobject2category where oxobjectid != '1126'"));
 
-        $oBasket = oxNew('oxbasket');
+        $oBasket = oxNew('oxBasket');
         $this->assertTrue($oBasket->canAddProductToBasket("1126"));
     }
 
@@ -4206,7 +4206,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $sProductId2 = $oDb->getOne("select oxobjectid from oxobject2category where oxcatnid = '{$sCatId}' and oxobjectid != '{$sProductId1}'");
         $sProductId3 = $oDb->getOne("select oxid from oxcategories where oxrootid != '{$sRootCatId}' ");
 
-        $oBasket = oxNew('oxbasket');
+        $oBasket = oxNew('oxBasket');
         $this->assertTrue($oBasket->canAddProductToBasket($sProductId1));
         $this->assertTrue($oBasket->canAddProductToBasket($sProductId2));
         $this->assertFalse($oBasket->canAddProductToBasket($sProductId3));
@@ -4408,7 +4408,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testHasDownloadableProductsException()
     {
-        $oOrderArticle = oxNew("oxbasketitem");
+        $oOrderArticle = oxNew("oxBasketItem");
         $oBasket = $this->getProxyClass("oxbasket");
         $oBasket->addtoBasket("1126", 5);
         try {

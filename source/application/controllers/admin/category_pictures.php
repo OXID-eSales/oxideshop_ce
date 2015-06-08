@@ -38,7 +38,7 @@ class Category_Pictures extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oCategory = oxNew('oxcategory');
+        $this->_aViewData['edit'] = $oCategory = oxNew('oxCategory');
 
         $soxId = $this->getEditObjectId();
         if ($soxId != '-1' && isset($soxId)) {

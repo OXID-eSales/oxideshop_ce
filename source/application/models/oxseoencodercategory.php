@@ -116,7 +116,7 @@ class oxSeoEncoderCategory extends oxSeoEncoder
 
                 if ($iLang != $oCat->getLanguage()) {
                     $sId = $oCat->getId();
-                    $oCat = oxNew('oxcategory');
+                    $oCat = oxNew('oxCategory');
                     $oCat->loadInLang($iLang, $sId);
                 }
 
@@ -257,7 +257,7 @@ class oxSeoEncoderCategory extends oxSeoEncoder
     protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
-        $oCat = oxNew("oxcategory");
+        $oCat = oxNew("oxCategory");
         if ($oCat->loadInLang($iLang, $sObjectId)) {
             $sSeoUrl = $this->getCategoryUri($oCat, $iLang);
         }

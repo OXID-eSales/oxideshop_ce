@@ -62,7 +62,7 @@ class PriceAlarm_Mail extends oxAdminDetails
                         $this->_aViewData['iAllCnt'] += 1;
                     }
                 } else {
-                    $oArticle = oxNew("oxarticle");
+                    $oArticle = oxNew("oxArticle");
                     if ($oArticle->load($sArtID)) {
                         $dArtPrice = $aSimpleCache[$sArtID] = $oArticle->getPrice()->getBruttoPrice();
                         if ($dArtPrice <= $sPrice) {

@@ -38,7 +38,7 @@ class Category_Text extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oCategory = oxNew('oxcategory');
+        $this->_aViewData['edit'] = $oCategory = oxNew('oxCategory');
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ($soxId != "-1" && isset($soxId)) {
@@ -81,7 +81,7 @@ class Category_Text extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
         $iCatLang = oxRegistry::getConfig()->getRequestParameter("catlang");
         $iCatLang = $iCatLang ? $iCatLang : 0;
 

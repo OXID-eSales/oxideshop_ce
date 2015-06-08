@@ -80,7 +80,7 @@ class oxSearch extends oxSuperCfg
         $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
-        $oArtList = oxNew('oxarticlelist');
+        $oArtList = oxNew('oxArticleList');
         $oArtList->setSqlLimit($iNrofCatArticles * $this->iActPage, $iNrofCatArticles);
 
         $sSelect = $this->_getSearchSelect($sSearchParamForQuery, $sInitialSearchCat, $sInitialSearchVendor, $sInitialSearchManufacturer, $sSortBy);
@@ -134,7 +134,7 @@ class oxSearch extends oxSuperCfg
         // performance
         if ($sInitialSearchCat) {
             // lets search this category - is no such category - skip all other code
-            $oCategory = oxNew('oxcategory');
+            $oCategory = oxNew('oxCategory');
             $sCatTable = $oCategory->getViewName();
 
             $sQ = "select 1 from $sCatTable where $sCatTable.oxid = " . $oDb->quote($sInitialSearchCat) . " ";
@@ -179,7 +179,7 @@ class oxSearch extends oxSuperCfg
             return null;
         }
 
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $sArticleTable = $oArticle->getViewName();
         $sO2CView = getViewName('oxobject2category');
 
@@ -253,7 +253,7 @@ class oxSearch extends oxSuperCfg
             return '';
         }
 
-        $oTempArticle = oxNew('oxarticle');
+        $oTempArticle = oxNew('oxArticle');
         $sSearchSep = $myConfig->getConfigParam('blSearchUseAND') ? 'and ' : 'or ';
         $aSearch = explode(' ', $sSearchString);
         $sSearch = ' and ( ';

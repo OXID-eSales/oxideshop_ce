@@ -84,7 +84,7 @@ class Category_Seo extends Object_Seo
      */
     public function isEntrySuffixed()
     {
-        $oCategory = oxNew('oxcategory');
+        $oCategory = oxNew('oxCategory');
         if ($oCategory->load($this->getEditObjectId())) {
             return (bool) $oCategory->oxcategories__oxshowsuffix->value;
         }
@@ -97,7 +97,7 @@ class Category_Seo extends Object_Seo
      */
     public function getEntryUri()
     {
-        $oCategory = oxNew('oxcategory');
+        $oCategory = oxNew('oxCategory');
         if ($oCategory->load($this->getEditObjectId())) {
             return $this->_getEncoder()->getCategoryUri($oCategory, $this->getEditLang());
         }

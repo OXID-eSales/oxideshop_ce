@@ -42,7 +42,7 @@ class Category_Main extends oxAdminDetails
         parent::render();
 
         /** @var oxcategory $oCategory */
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
 
         $soxId = $this->getEditObjectId();
 
@@ -147,7 +147,7 @@ class Category_Main extends oxAdminDetails
         );
 
         /** @var oxCategory $oCategory */
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
 
         if ($soxId != "-1") {
             $this->resetCounter("catArticle", $soxId);

@@ -237,7 +237,7 @@ class Unit_Views_alistTest extends OxidTestCase
     {
         $this->setRequestParameter('cnid', 'oxmore');
 
-        $oMoreCat = oxNew('oxcategory');
+        $oMoreCat = oxNew('oxCategory');
         $oMoreCat->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
 
         $oListView = $this->getMock("aList", array('setActiveCategory'));
@@ -280,7 +280,7 @@ class Unit_Views_alistTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new Exception('OK'); }");
 
-        $oCat = oxNew('oxcategory');
+        $oCat = oxNew('oxCategory');
         $oCat->oxcategories__oxactive = new oxField(0, oxField::T_RAW);
 
         $oListView = $this->getMock("aList", array('getActiveCategory'));

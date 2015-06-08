@@ -1204,7 +1204,7 @@ class oxOrder extends oxBase
             $soxAddressId = oxRegistry::getSession()->getVariable('deladrid');
         }
         if ($soxAddressId) {
-            $oDelAdress = oxNew('oxaddress');
+            $oDelAdress = oxNew('oxAddress');
             $oDelAdress->load($soxAddressId);
 
             //get delivery country name from delivery country id

@@ -162,7 +162,7 @@ class Article_Main extends oxAdminDetails
             unset($aParams['oxarticles__oxparentid']);
         }
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->setLanguage($this->_iEditLang);
 
         if ($soxId != "-1") {
@@ -337,7 +337,7 @@ class Article_Main extends oxAdminDetails
     {
         $myConfig = $this->getConfig();
 
-        $oNew = oxNew("oxbase");
+        $oNew = oxNew("oxBase");
         $oNew->init("oxobject2category");
         $oNew->oxobject2category__oxtime = new oxField(0);
         $oNew->oxobject2category__oxobjectid = new oxField($sOXID);
@@ -363,7 +363,7 @@ class Article_Main extends oxAdminDetails
         $sOldId = $sOldId ? $sOldId : $this->getEditObjectId();
         $sNewId = $sNewId ? $sNewId : oxUtilsObject::getInstance()->generateUID();
 
-        $oArticle = oxNew('oxbase');
+        $oArticle = oxNew('oxBase');
         $oArticle->init('oxarticles');
         if ($oArticle->load($sOldId)) {
 
@@ -506,7 +506,7 @@ class Article_Main extends oxAdminDetails
         if ($oRs !== false && $oRs->recordCount() > 0) {
             while (!$oRs->EOF) {
                 // #1055A
-                $oAttr = oxNew("oxbase");
+                $oAttr = oxNew("oxBase");
                 $oAttr->init("oxobject2attribute");
                 $oAttr->load($oRs->fields[0]);
                 $oAttr->setId($myUtilsObject->generateUID());
@@ -652,7 +652,7 @@ class Article_Main extends oxAdminDetails
      */
     protected function _copyArtExtends($sOldId, $sNewId)
     {
-        $oExt = oxNew("oxbase");
+        $oExt = oxNew("oxBase");
         $oExt->init("oxartextends");
         $oExt->load($sOldId);
         $oExt->setId($sNewId);

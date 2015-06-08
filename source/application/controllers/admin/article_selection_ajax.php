@@ -117,7 +117,7 @@ class article_selection_ajax extends ajaxListComponent
         if ($soxId && $soxId != "-1" && is_array($aAddSel)) {
             $oDb = oxDb::getDb();
             foreach ($aAddSel as $sAdd) {
-                $oNew = oxNew("oxbase");
+                $oNew = oxNew("oxBase");
                 $oNew->init("oxobject2selectlist");
                 $sObjectIdField = 'oxobject2selectlist__oxobjectid';
                 $sSelectetionIdField = 'oxobject2selectlist__oxselnid';

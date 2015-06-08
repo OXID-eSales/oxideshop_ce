@@ -192,7 +192,7 @@ class actions_main_ajax extends ajaxListComponent
         if ($soxId && $soxId != "-1" && is_array($aArticles)) {
             $sShopId = $myConfig->getShopId();
             foreach ($aArticles as $sAdd) {
-                $oNewGroup = oxNew('oxbase');
+                $oNewGroup = oxNew('oxBase');
                 $oNewGroup->init('oxactions2article');
                 $oNewGroup->oxactions2article__oxshopid = new oxField($sShopId);
                 $oNewGroup->oxactions2article__oxactionid = new oxField($soxId);

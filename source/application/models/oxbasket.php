@@ -475,7 +475,7 @@ class oxBasket extends oxSuperCfg
 
         } else {
             //inserting new
-            $oBasketItem = oxNew('oxbasketitem');
+            $oBasketItem = oxNew('oxBasketItem');
             try {
                 $oBasketItem->setStockCheckStatus($this->getStockCheckMode());
                 $oBasketItem->init($sProductID, $dAmount, $aSel, $aPersParam, $blBundle);
@@ -534,7 +534,7 @@ class oxBasket extends oxSuperCfg
             $sItemId = $oOrderArticle->getId();
 
             //inserting new
-            $this->_aBasketContents[$sItemId] = oxNew('oxbasketitem');
+            $this->_aBasketContents[$sItemId] = oxNew('oxBasketItem');
             $this->_aBasketContents[$sItemId]->initFromOrderArticle($oOrderArticle);
             $this->_aBasketContents[$sItemId]->setWrapping($oOrderArticle->oxorderarticles__oxwrapid->value);
             $this->_aBasketContents[$sItemId]->setBundle($oOrderArticle->isBundle());

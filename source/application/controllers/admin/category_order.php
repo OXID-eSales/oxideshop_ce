@@ -38,7 +38,7 @@ class Category_Order extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oCategory = oxNew('oxcategory');
+        $this->_aViewData['edit'] = $oCategory = oxNew('oxCategory');
 
         // resetting
         oxRegistry::getSession()->setVariable('neworder_sess', null);

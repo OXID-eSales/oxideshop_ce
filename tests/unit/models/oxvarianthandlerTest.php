@@ -107,11 +107,11 @@ class Unit_Models_oxvarianthandlerTest extends OxidTestCase
         $aValues[1] = $oValue2;
         $aValues = array($aValues);
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load('2000');
 
         $oVariantHandler = oxNew("oxVariantHandler");
-        $aVar = $oVariantHandler->UNITassignValues($aValues, oxNew('oxarticlelist'), $oArticle, array('en', 'de'));
+        $aVar = $oVariantHandler->UNITassignValues($aValues, oxNew('oxArticleList'), $oArticle, array('en', 'de'));
         $oRez = $myDB->Execute("select oxvarselect, oxvarselect_1 from oxarticles where oxparentid = '2000'");
         while (!$oRez->EOF) {
             $oRez->fields = array_change_key_case($oRez->fields, CASE_LOWER);
@@ -132,7 +132,7 @@ class Unit_Models_oxvarianthandlerTest extends OxidTestCase
         $sSql = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', '$sShopId', 'oxsellisttest', 'oxsellisttest', '$sVal')";
         $this->addToDatabase($sSql, 'oxselectlist');
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load('2000');
         $oVariantHandler = oxNew("oxVariantHandler");
         $oVariantHandler->genVariantFromSell(array('_testSell'), $oArticle);
@@ -158,12 +158,12 @@ class Unit_Models_oxvarianthandlerTest extends OxidTestCase
         $sSql = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', '$sShopId', 'oxsellisttest', 'oxsellisttest', '$sVal')";
         $this->addToDatabase($sSql, 'oxselectlist');
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load('2000');
         $oVariantHandler = oxNew("oxVariantHandler");
         $oVariantHandler->genVariantFromSell(array('_testSell'), $oArticle);
 
-        $oArticle2 = oxNew("oxarticle");
+        $oArticle2 = oxNew("oxArticle");
         $oArticle2->load('2000');
         $this->assertEquals(3, $oArticle2->oxarticles__oxvarcount->value);
 
@@ -188,7 +188,7 @@ class Unit_Models_oxvarianthandlerTest extends OxidTestCase
         );
         $oVariantHandler = oxNew("oxVariantHandler");
         $sVariantId = $oVariantHandler->UNITcreateNewVariant($aParams, "_testArt");
-        $oVariant = oxNew("oxarticle");
+        $oVariant = oxNew("oxArticle");
         $oVariant->load($sVariantId);
         $this->assertEquals("_testVar", $sVariantId);
         $this->assertEquals("_testVar", $oVariant->oxarticles__oxvarselect->value);
@@ -197,7 +197,7 @@ class Unit_Models_oxvarianthandlerTest extends OxidTestCase
         $this->assertEquals("10", $oVariant->oxarticles__oxprice->value);
         $this->assertEquals("1", $oVariant->oxarticles__oxisconfigurable->value);
 
-        $oVariant = oxNew("oxarticle");
+        $oVariant = oxNew("oxArticle");
         $oVariant->loadInLang(1, $sVariantId);
         $this->assertEquals("_testVar_1", $oVariant->oxarticles__oxvarselect->value);
     }

@@ -181,7 +181,7 @@ class category_order_ajax extends ajaxListComponent
      */
     public function saveNewOrder()
     {
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
         $sId = oxRegistry::getConfig()->getRequestParameter("oxid");
         if ($oCategory->load($sId)) {
 
@@ -217,7 +217,7 @@ class category_order_ajax extends ajaxListComponent
      */
     public function remNewOrder()
     {
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
         $sId = oxRegistry::getConfig()->getRequestParameter("oxid");
         if ($oCategory->load($sId)) {
 

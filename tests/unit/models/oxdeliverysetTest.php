@@ -37,19 +37,19 @@ class Unit_Models_oxDeliverySetTest extends OxidTestCase
         $oDelSet->save();
 
         // generating relations
-        $oDel = oxNew('oxbase');
+        $oDel = oxNew('oxBase');
         $oDel->init('oxobject2payment');
         $oDel->setId('_testO2PayId');
         $oDel->oxobject2payment__oxobjectid = new oxField($oDelSet->getId(), oxField::T_RAW);
         $oDel->save();
 
-        $oDel = oxNew('oxbase');
+        $oDel = oxNew('oxBase');
         $oDel->Init('oxobject2delivery');
         $oDel->setId('_testO2DelId');
         $oDel->oxobject2delivery__oxdeliveryid = new oxField($oDelSet->getId(), oxField::T_RAW);
         $oDel->save();
 
-        $oDel = oxNew('oxbase');
+        $oDel = oxNew('oxBase');
         $oDel->Init('oxdel2delset');
         $oDel->setId('_testO2DelSetId');
         $oDel->oxdel2delset__oxdelsetid = new oxField($oDelSet->getId(), oxField::T_RAW);

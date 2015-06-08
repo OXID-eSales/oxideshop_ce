@@ -51,7 +51,7 @@ class Unit_Views_suggestTest extends OxidTestCase
     public function testGetCrossSelling()
     {
         $oSuggest = $this->getProxyClass("suggest");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("1849");
         $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oSuggest->getCrossSelling();
@@ -64,7 +64,7 @@ class Unit_Views_suggestTest extends OxidTestCase
     public function testGetSimilarProducts()
     {
         $oSuggest = $this->getProxyClass("suggest");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("2000");
         $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oSuggest->getSimilarProducts();
@@ -85,7 +85,7 @@ class Unit_Views_suggestTest extends OxidTestCase
         $myDB->Execute($sQ);
 
         $oSuggest = $this->getProxyClass("suggest");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load('2000');
         $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $aLists = $oSuggest->getRecommList();

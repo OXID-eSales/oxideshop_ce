@@ -81,7 +81,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
         $oBasketItem->expects($this->any())->method('getTitle')->will($this->returnValue("testarticle"));
 
         // insert test article
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->setId('_testArticleId');
         $oArticle->setId('_testArticleId');
         $oArticle->oxarticles__oxtitle = new oxField();

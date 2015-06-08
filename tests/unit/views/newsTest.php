@@ -39,7 +39,7 @@ class Unit_Views_newsTest extends OxidTestCase
         // cleaning
         $this->aNews = array();
 
-        $this->aNews[0] = oxNew('oxbase');
+        $this->aNews[0] = oxNew('oxBase');
         $this->aNews[0]->init('oxnews');
         $this->aNews[0]->setId(1);
         $this->aNews[0]->oxnews__oxshortdesc = new oxField('Test 0', oxField::T_RAW);
@@ -47,7 +47,7 @@ class Unit_Views_newsTest extends OxidTestCase
         $this->aNews[0]->oxnews__oxdate = new oxField('2007-01-01', oxField::T_RAW);
         $this->aNews[0]->save();
 
-        $this->aNews[1] = oxNew('oxbase');
+        $this->aNews[1] = oxNew('oxBase');
         $this->aNews[1]->init('oxnews');
         $this->aNews[1]->setId(2);
         $this->aNews[1]->oxnews__oxshortdesc = new oxField('Test 1', oxField::T_RAW);

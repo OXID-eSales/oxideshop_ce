@@ -358,7 +358,7 @@ class oxAdminDetails extends oxAdminView
         }
 
         // add first fake category for not assigned articles
-        $oRoot = oxNew('oxcategory');
+        $oRoot = oxNew('oxCategory');
         $oRoot->oxcategories__oxtitle = new oxField('--');
 
         $oCatTree->assign(array_merge(array('' => $oRoot), $oCatTree->getArray()));

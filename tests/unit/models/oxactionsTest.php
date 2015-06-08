@@ -155,7 +155,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
         $this->_oAction->delete();
 
         $sCheckOxid = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->GetOne("select oxid from oxactions2article where oxactionid = '" . $this->_oAction->getId() . "'");
-        $oAction = oxNew("oxactions");
+        $oAction = oxNew("oxActions");
         if ($sCheckOxid || $oAction->Load($this->sOxId)) {
             $this->fail("fail deleting");
         }

@@ -322,7 +322,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
 
         $oBasket = $this->getMock('oxbasket', array('getArtStockInBasket'));
         $oBasket->expects($this->any())->method('getArtStockInBasket')->with($this->equalTo($article->getId()), $this->equalTo('testItemKey'))->will($this->returnValue(1));
-        $oSession = oxNew('oxsession');
+        $oSession = oxNew('oxSession');
         $oSession->setBasket($oBasket);
         $oBasketItem = $this->getMock('oxbasketitem', array('getSession'));
         $oBasketItem->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
@@ -730,7 +730,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
         
         $oBasketItem = new oxbasketitem();
         $oBasketItem->init($article->getId(), 6);
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $oArticle->load($article->getId());
         $this->assertEquals($oArticle->getLink(), $oBasketItem->getLink());
     }

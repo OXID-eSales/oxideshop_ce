@@ -47,7 +47,7 @@ class PriceAlarm_Main extends oxAdminDetails
 
         if ($rs != false && $rs->recordCount() > 0) {
             while (!$rs->EOF) {
-                $oArticle = oxNew("oxarticle");
+                $oArticle = oxNew("oxArticle");
                 $oArticle->load($rs->fields[0]);
                 if ($oArticle->getPrice()->getBruttoPrice() <= $rs->fields[1]) {
                     $iAllCnt++;

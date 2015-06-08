@@ -163,7 +163,7 @@ class oxUserBasket extends oxBase
         $this->_aBasketItems = array();
 
         // loading basket items
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $sViewName = $oArticle->getViewName();
 
         $sSelect = "select oxuserbasketitems.* from oxuserbasketitems left join $sViewName on oxuserbasketitems.oxartid = $sViewName.oxid ";

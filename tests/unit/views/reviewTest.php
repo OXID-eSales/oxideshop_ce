@@ -498,7 +498,7 @@ class Unit_Views_reviewTest extends OxidTestCase
     public function testGetCrossSelling()
     {
         $oReview = $this->getProxyClass("review");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("1849");
         $oReview->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oReview->getCrossSelling();
@@ -511,7 +511,7 @@ class Unit_Views_reviewTest extends OxidTestCase
     public function testGetSimilarProducts()
     {
         $oReview = $this->getProxyClass("review");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("2000");
         $oReview->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oReview->getSimilarProducts();
@@ -524,7 +524,7 @@ class Unit_Views_reviewTest extends OxidTestCase
     {
         $this->setRequestParameter('recommid', 'testlist');
         $oRevew = $this->getProxyClass("review");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load('2000');
         $oRevew->setNonPublicVar("_oProduct", $oArticle);
         $aLists = $oRevew->getRecommList();

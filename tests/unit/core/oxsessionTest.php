@@ -1305,7 +1305,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testSetBasket_getBasket()
     {
-        $oBasket = oxNew('oxbasket');
+        $oBasket = oxNew('oxBasket');
         $this->assertNotNull($oBasket);
         $this->oSession->setBasket($oBasket);
 
@@ -1333,7 +1333,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
 
     function testGetRequestChallengeToken()
     {
-        $oSession = oxNew('oxsession');
+        $oSession = oxNew('oxSession');
         $this->setRequestParameter('stoken', 'asd');
         $this->assertEquals('asd', $oSession->getRequestChallengeToken());
         $this->setRequestParameter('stoken', 'asd#asd$$');

@@ -230,7 +230,7 @@ class Newsletter extends oxUBase
         if ($this->_oActionArticles === null) {
             $this->_oActionArticles = false;
             if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
-                $oArtList = oxNew('oxarticlelist');
+                $oArtList = oxNew('oxArticleList');
                 $oArtList->loadActionArticles('OXTOPSTART');
                 if ($oArtList->count()) {
                     $this->_oTopArticle = $oArtList->current();

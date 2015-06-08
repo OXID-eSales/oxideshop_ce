@@ -50,7 +50,7 @@ class Unit_Models_oxnewslistTest extends OxidTestCase
         $this->aNews[1]->oxnews__oxdate = new oxField('2007-01-02', oxField::T_RAW);
         $this->aNews[1]->save();
 
-        $oNewGroup = oxNew('oxbase');
+        $oNewGroup = oxNew('oxBase');
         $oNewGroup->init('oxobject2group', "core");
         $oNewGroup->oxobject2group__oxobjectid = new oxField($this->aNews[1]->getId(), oxField::T_RAW);
         $oNewGroup->oxobject2group__oxgroupsid = new oxField('oxidadmin', oxField::T_RAW);

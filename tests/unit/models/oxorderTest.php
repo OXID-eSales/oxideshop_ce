@@ -1594,7 +1594,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
      */
     public function testFinalizeOrderCallsAllRequiredMethods()
     {
-        $oBasket = oxNew('oxbasket');
+        $oBasket = oxNew('oxBasket');
 
         $aMethods = array('setId',
                           '_loadFromBasket',
@@ -1637,7 +1637,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
      */
     public function testFinalizeOrderFromRecalculateOrder()
     {
-        $oBasket = oxNew('oxbasket');
+        $oBasket = oxNew('oxBasket');
 
         $aMethods = array('_setUser',
                           '_loadFromBasket',
@@ -1669,7 +1669,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
      */
     public function testFinalizeOrderReturnsMailingStatusOnSuccess()
     {
-        $oBasket = oxNew('oxbasket');
+        $oBasket = oxNew('oxBasket');
 
         $aMethods = array('setId',
                           '_setUser',
@@ -1711,7 +1711,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
      */
     public function testFinalizeOrderReturnsErrorCodeOnPaymentFailure()
     {
-        $oBasket = oxNew('oxbasket');
+        $oBasket = oxNew('oxBasket');
 
         $aMethods = array('setId',
                           '_setUser',
@@ -2566,7 +2566,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
     {
         $this->setRequestParameter('deladrid', '_testDelAddrId');
 
-        $oDelAdress = oxNew('oxbase');
+        $oDelAdress = oxNew('oxBase');
         $oDelAdress->init('oxaddress');
         $oDelAdress->setId('_testDelAddrId');
         $oDelAdress->oxaddress__oxuserid = new oxField('_testUserId', oxField::T_RAW);

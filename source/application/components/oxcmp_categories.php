@@ -101,7 +101,7 @@ class oxcmp_categories extends oxView
             if (($oProduct = $oParentView->getViewProduct())) {
                 return $oProduct;
             } else {
-                $oProduct = oxNew('oxarticle');
+                $oProduct = oxNew('oxArticle');
                 if ($oProduct->load($sActProduct)) {
                     // storing for reuse
                     $oParentView->setViewProduct($oProduct);

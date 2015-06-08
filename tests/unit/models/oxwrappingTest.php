@@ -60,7 +60,7 @@ class Unit_Models_oxwrappingTest extends OxidTestCase
 
         // card
         // not active
-        $oCard = oxNew('oxbase');
+        $oCard = oxNew('oxBase');
         $oCard->init('oxwrapping');
         $oCard->setId('_testCard');
         $oCard->oxwrapping__oxname = new oxField('Test Card 1 DE', oxField::T_RAW);
@@ -72,7 +72,7 @@ class Unit_Models_oxwrappingTest extends OxidTestCase
         $oCard->save();
 
         // active
-        $oCard = oxNew('oxbase');
+        $oCard = oxNew('oxBase');
         $oCard->init('oxwrapping');
         $oCard->setId('_testCard2');
         $oCard->oxwrapping__oxname = new oxField('Test Card 1 DE', oxField::T_RAW);
@@ -85,7 +85,7 @@ class Unit_Models_oxwrappingTest extends OxidTestCase
         $this->_sCardOxid = $oCard->getId();
 
         // active and free
-        $oCard = oxNew('oxbase');
+        $oCard = oxNew('oxBase');
         $oCard->init('oxwrapping');
         $oCard->setId('_testCard3');
         $oCard->oxwrapping__oxname = new oxField('Test Card 1 DE', oxField::T_RAW);
@@ -97,7 +97,7 @@ class Unit_Models_oxwrappingTest extends OxidTestCase
 
         // wrapping
         // not active
-        $oWrapping = oxNew('oxbase');
+        $oWrapping = oxNew('oxBase');
         $oWrapping->init('oxwrapping');
         $oWrapping->setId('_testWrap');
         $oWrapping->oxwrapping__oxname = new oxField('Test Wrap 1 DE', oxField::T_RAW);
@@ -109,7 +109,7 @@ class Unit_Models_oxwrappingTest extends OxidTestCase
         $oWrapping->save();
 
         // active
-        $oWrapping = oxNew('oxbase');
+        $oWrapping = oxNew('oxBase');
         $oWrapping->init('oxwrapping');
         $oWrapping->setId('_testWrap2');
         $oWrapping->oxwrapping__oxname = new oxField('Test Wrap 1 DE', oxField::T_RAW);
@@ -123,7 +123,7 @@ class Unit_Models_oxwrappingTest extends OxidTestCase
         $this->_sWrapOxid = $oWrapping->getId();
 
         // active and free
-        $oWrapping = oxNew('oxbase');
+        $oWrapping = oxNew('oxBase');
         $oWrapping->init('oxwrapping');
         $oWrapping->setId('_testWrap3');
         $oWrapping->oxwrapping__oxname = new oxField('Test Wrap 1 DE', oxField::T_RAW);

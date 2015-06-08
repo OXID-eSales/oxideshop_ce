@@ -130,7 +130,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         return;
 
         for ($i = 2; $i < 7; $i++) {
-            $this->_aShops[$i] = oxNew('oxbase');
+            $this->_aShops[$i] = oxNew('oxBase');
             $this->_aShops[$i]->init('oxshops');
             $this->_aShops[$i]->setId($i);
             $this->_aShops[$i]->oxshop__oxactive = new oxField(1, oxField::T_RAW);

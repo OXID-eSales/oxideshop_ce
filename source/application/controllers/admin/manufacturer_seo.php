@@ -33,7 +33,7 @@ class Manufacturer_Seo extends Object_Seo
      */
     public function save()
     {
-        $oManufacturer = oxNew('oxbase');
+        $oManufacturer = oxNew('oxBase');
         $oManufacturer->init('oxmanufacturers');
         if ($oManufacturer->load($this->getEditObjectId())) {
             $sShowSuffixField = 'oxmanufacturers__oxshowsuffix';

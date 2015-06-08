@@ -243,7 +243,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
     public function testInsert()
     {
-        $oObj = oxNew("oxcategory");
+        $oObj = oxNew("oxCategory");
         $oObj->oxcategories__oxparentid = new oxField("oxrootid", oxField::T_RAW);
         $oObj->save();
         $this->assertEquals($oObj->getId(), $oObj->oxcategories__oxid->value);
@@ -252,7 +252,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $this->assertEquals(2, $oObj->oxcategories__oxright->value);
 
         // so.. this one is OK, check if it could be a parent
-        $oObj2 = oxNew("oxcategory");
+        $oObj2 = oxNew("oxCategory");
         $oObj2->oxcategories__oxparentid = new oxField($oObj->getId(), oxField::T_RAW);
         $oObj2->save();
         $this->assertEquals($oObj2->getId(), $oObj2->oxcategories__oxid->value);
@@ -261,7 +261,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $this->assertEquals($oObj->oxcategories__oxright->value + 1, $oObj2->oxcategories__oxright->value);
 
         // this one is OK too. did it update parent??
-        $oObj3 = oxNew("oxcategory");
+        $oObj3 = oxNew("oxCategory");
         $oObj3->load($oObj->getId());
         $this->assertEquals(1, $oObj3->oxcategories__oxleft->value);
         $this->assertEquals(4, $oObj3->oxcategories__oxright->value);
@@ -274,7 +274,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $this->_oCategory->oxcategories__oxlongdesc = new oxField('aa[{* smarty comment *}]zz', oxField::T_RAW);
         $this->_oCategory->setId('test33');
         $this->_oCategory->save();
-        $oObj3 = oxNew("oxcategory");
+        $oObj3 = oxNew("oxCategory");
         $oObj3->load($this->_oCategory->getId());
         $this->assertEquals('aazz', $oObj3->getLongDesc());
     }
@@ -305,7 +305,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $this->_oCategory->oxcategories__oxlongdesc = new oxField('aa[{* smarty comment *}]zz', oxField::T_RAW);
         $this->_oCategory->setId('test33');
         $this->_oCategory->save();
-        $oObj3 = oxNew("oxcategory");
+        $oObj3 = oxNew("oxCategory");
         $oObj3->setInList();
         $oObj3->load($this->_oCategory->getId());
         //NOT parsed
@@ -385,9 +385,9 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
     {
         //$this->getConfig()->addClassFunction( 'getShopLanguage', create_function( '', 'return 1;' ) );
         oxRegistry::getLang()->setBaseLanguage(1);
-        $oCat = oxNew("oxcategory");
+        $oCat = oxNew("oxCategory");
         $oCat->loadInLang(0, $this->_sCategory);
-        $oObj = oxNew("oxcategory");
+        $oObj = oxNew("oxCategory");
         $oCatBaseLang = $oObj->getCatInLang($oCat);
         //$this->getConfig()->cleanup();
         $oCat->oxcategories__oxtitle->value;

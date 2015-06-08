@@ -145,7 +145,7 @@ class discount_articles_ajax extends ajaxListComponent
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {
             foreach ($aChosenArt as $sChosenArt) {
-                $oObject2Discount = oxNew("oxbase");
+                $oObject2Discount = oxNew("oxBase");
                 $oObject2Discount->init('oxobject2discount');
                 $oObject2Discount->oxobject2discount__oxdiscountid = new oxField($soxId);
                 $oObject2Discount->oxobject2discount__oxobjectid = new oxField($sChosenArt);

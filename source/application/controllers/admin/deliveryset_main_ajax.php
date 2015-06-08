@@ -110,7 +110,7 @@ class deliveryset_main_ajax extends ajaxListComponent
                 // check if we have this entry already in
                 $sID = $oDb->getOne("select oxid from oxdel2delset where oxdelid =  " . $oDb->quote($sChosenSet) . " and oxdelsetid = " . $oDb->quote($soxId), false, false);
                 if (!isset($sID) || !$sID) {
-                    $oDel2delset = oxNew('oxbase');
+                    $oDel2delset = oxNew('oxBase');
                     $oDel2delset->init('oxdel2delset');
                     $oDel2delset->oxdel2delset__oxdelid = new oxField($sChosenSet);
                     $oDel2delset->oxdel2delset__oxdelsetid = new oxField($soxId);

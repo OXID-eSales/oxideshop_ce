@@ -113,7 +113,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $this->_oUser->save();
 
         //add user addres
-        $oAdress = oxNew('oxbase');
+        $oAdress = oxNew('oxBase');
         $oAdress->init('oxaddress');
         $oAdress->setId('_testAddressId');
         $oAdress->oxaddress__oxuserid = new oxField($this->_oUser->getId(), oxField::T_RAW);
@@ -123,7 +123,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $this->getSession()->setVariable('deladrid', '_testAddressId');
 
         //add user to group
-        $oO2Group = oxNew('oxbase');
+        $oO2Group = oxNew('oxBase');
         $oO2Group->init('oxobject2group');
         $oO2Group->setId('_testO2GId');
         $oO2Group->oxobject2group__oxobjectid = new oxField('_testUserId', oxField::T_RAW);
@@ -139,7 +139,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $this->_aDeliverySets[] = $oDelSet;
 
         // 1. creating category for test
-        $oCategory = oxNew('oxcategory');
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('_testCategoryId');
         $oCategory->oxcategories__oxtitle = new oxField('_testCategoryTitle', oxField::T_RAW);
         $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
@@ -153,7 +153,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
 
         //3. insert test articles
         for ($i = 1; $i <= 3; $i++) {
-            $oArticle = oxNew("oxarticle");
+            $oArticle = oxNew("oxArticle");
             $oArticle->setId('_testArticleId' . $i);
             $oArticle->oxarticles__oxtitle = new oxField('testArticle' . $i, oxField::T_RAW);
             $oArticle->oxarticles__oxartnum = new oxField(1000 + $i, oxField::T_RAW);
@@ -177,7 +177,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
 
         // some deliveries
         for ($i = 1; $i <= 3; $i++) {
-            $oDelivery = oxNew('oxdelivery');
+            $oDelivery = oxNew('oxDelivery');
             $oDelivery->setId('_testDeliveryId' . $i);
             $oDelivery->oxdelivery__oxtitle = new oxField('_testDelivertTitle' . $i, oxField::T_RAW);
             $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
@@ -192,7 +192,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
             $oDelivery->save();
             $this->_aDeliveries[] = $oDelivery;
 
-            $oDel2Delset = oxNew('oxbase');
+            $oDel2Delset = oxNew('oxBase');
             $oDel2Delset->init('oxdel2delset');
             $oDel2Delset->setId('_testDel2DelSetId' . $i);
             $oDel2Delset->oxdel2delset__oxdelid = new oxField($oDelivery->getId(), oxField::T_RAW);
@@ -388,7 +388,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
      */
     public function testGetListWithExistingUser()
     {
-        $oAdress = oxNew('oxbase');
+        $oAdress = oxNew('oxBase');
         $oAdress->init('oxaddress');
         $oAdress->load('_testAddressId');
         $oAdress->oxaddress__oxcountryid = new oxField('a7c40f631fc920687.20179984', oxField::T_RAW); //germany
@@ -672,7 +672,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
 
     public function testGetDeliveryListIfFinalixedDeliviery()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->load('_testDeliveryId2');
         $oDelivery->oxdelivery__oxfinalize = new oxField(1, oxField::T_RAW);
         $oDelivery->save();
@@ -739,7 +739,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
     public function testGetDeliveryListWithDeliveryArticlesThatAreInBasket()
     {
         // add article to delivery
-        $oObject2Delivery = oxNew('oxbase');
+        $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId('_testO2DelId1');
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId1', oxField::T_RAW);
@@ -787,7 +787,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $oArticle->save();
 
         // add article to delivery
-        $oObject2Delivery = oxNew('oxbase');
+        $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId('_testO2DelId1');
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId1', oxField::T_RAW);
@@ -829,7 +829,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
     public function testGetDeliveryListWithDeliveryArticlesThatAreNotInBasket()
     {
         // add article to delivery
-        $oObject2Delivery = oxNew('oxbase');
+        $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId('_testO2DelId1');
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId1', oxField::T_RAW);
@@ -871,7 +871,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
     public function testGetDeliveryListWithDeliveryCategories()
     {
         // add category to delivery
-        $oObject2Delivery = oxNew('oxbase');
+        $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId('_testO2DelId1');
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId1', oxField::T_RAW);
@@ -915,7 +915,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
     public function testGetDeliveryListWithDeliveryCategoryAndLoadOtherDelivForDiffArt()
     {
         // add category to delivery
-        $oObject2Delivery = oxNew('oxbase');
+        $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId('_testO2DelId1');
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId1', oxField::T_RAW);
@@ -973,7 +973,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $this->cleanUpTable('oxobject2category');
 
         // add category to delivery
-        $oObject2Delivery = oxNew('oxbase');
+        $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId('_testO2DelId1');
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId1', oxField::T_RAW);
@@ -1013,7 +1013,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
      */
     public function testGetDeliveryListAccordingAmount()
     {
-        $oDelivery = oxNew('oxdelivery');
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->load('_testDeliveryId1');
         $oDelivery->oxdelivery__oxparamend = new oxField(1024, oxField::T_RAW);
         $oDelivery->save();

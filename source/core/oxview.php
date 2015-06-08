@@ -866,7 +866,7 @@ class oxView extends oxSuperCfg
         if ($this->_oClickCat === null) {
 
             $this->_oClickCat = false;
-            $oCategory = oxNew('oxcategory');
+            $oCategory = oxNew('oxCategory');
             if ($oCategory->load($this->getCategoryId())) {
                 $this->_oClickCat = $oCategory;
             }

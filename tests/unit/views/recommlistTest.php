@@ -233,14 +233,14 @@ class Unit_Views_recommlistTest extends OxidTestCase
 
         $oLang = oxRegistry::getLang();
 
-        $aPath[0] = oxNew("oxcategory");
+        $aPath[0] = oxNew("oxCategory");
         $aPath[0]->setLink(false);
         $aPath[0]->oxcategories__oxtitle = new oxField($oLang->translateString('RECOMMLIST'));
 
         $sUrl = $this->getConfig()->getShopHomeURL() . "cl=recommlist&amp;searchrecomm=" . rawurlencode($sSearchparam);
         $sTitle = $oLang->translateString('RECOMMLIST_SEARCH') . ' "' . $sSearchparam . '"';
 
-        $aPath[1] = oxNew("oxcategory");
+        $aPath[1] = oxNew("oxCategory");
         $aPath[1]->setLink($sUrl);
         $aPath[1]->oxcategories__oxtitle = new oxField($sTitle);
 

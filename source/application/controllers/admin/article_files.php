@@ -58,7 +58,7 @@ class Article_Files extends oxAdminDetails
         $oArticle = $this->getArticle();
         // variant handling
         if ($oArticle->oxarticles__oxparentid->value) {
-            $oParentArticle = oxNew('oxarticle');
+            $oParentArticle = oxNew('oxArticle');
             $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
             $oArticle->oxarticles__oxisdownloadable = new oxField($oParentArticle->oxarticles__oxisdownloadable->value);
             $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;

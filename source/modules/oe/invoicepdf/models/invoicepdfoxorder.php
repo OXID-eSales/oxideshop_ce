@@ -77,7 +77,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
             return $this->_oActShop;
         }
 
-        $this->_oActShop = oxNew('oxshop');
+        $this->_oActShop = oxNew('oxShop');
         $this->_oActShop->load($this->getConfig()->getShopId());
 
         return $this->_oActShop;

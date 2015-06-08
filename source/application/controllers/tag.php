@@ -135,7 +135,7 @@ class Tag extends aList
         // load only articles which we show on screen
         $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
-        $oArtList = oxNew('oxarticlelist');
+        $oArtList = oxNew('oxArticleList');
         $oArtList->setSqlLimit($iNrofCatArticles * $this->_getRequestPageNr(), $iNrofCatArticles);
         $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
         // load the articles
@@ -260,11 +260,11 @@ class Tag extends aList
         if (($sTag = $this->getTag())) {
             $oStr = getStr();
 
-            $aPath[0] = oxNew("oxcategory");
+            $aPath[0] = oxNew("oxCategory");
             $aPath[0]->setLink(false);
             $aPath[0]->oxcategories__oxtitle = new oxField(oxRegistry::getLang()->translateString('TAGS'));
 
-            $aPath[1] = oxNew("oxcategory");
+            $aPath[1] = oxNew("oxCategory");
             $aPath[1]->setLink(false);
             $aPath[1]->oxcategories__oxtitle = new oxField($oStr->ucfirst($sTag));
 

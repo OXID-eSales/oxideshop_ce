@@ -736,7 +736,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         $oLocator = new testOxLocator();
 
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
         $oCategory->oxcategories__oxtitle = new oxField('test', oxField::T_RAW);
         $oCategory->oxcategories__oxpricefrom = new oxField(10, oxField::T_RAW);
         $oCategory->oxcategories__oxpriceto = new oxField(50, oxField::T_RAW);
@@ -758,7 +758,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         $oLocator = new testOxLocator();
 
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
         $oCategory->oxcategories__oxtitle = new oxField('test', oxField::T_RAW);
         $oCategory->oxcategories__oxpricefrom = new oxField(10, oxField::T_RAW);
         $oCategory->oxcategories__oxpriceto = new oxField(50, oxField::T_RAW);

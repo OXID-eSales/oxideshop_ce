@@ -535,7 +535,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
         $iProdId = oxDb::getDb()->getOne("select oxid from oxarticles");
         $iEditLang = oxRegistry::getLang()->getEditLanguage();
 
-        $oProduct = oxNew('oxarticle');
+        $oProduct = oxNew('oxArticle');
         $oProduct->load($iProdId);
         $aLangs = $oProduct->getAvailableInLangs();
 

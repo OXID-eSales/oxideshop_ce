@@ -822,7 +822,7 @@ class Unit_Views_orderTest extends OxidTestCase
     {
         $this->setRequestParameter('deladrid', '_testDelAddrId');
 
-        $oDelAdress = oxNew('oxbase');
+        $oDelAdress = oxNew('oxBase');
         $oDelAdress->init('oxaddress');
         $oDelAdress->setId('_testDelAddrId');
         $oDelAdress->oxaddress__oxuserid = new oxField('_testUserId', oxField::T_RAW);
@@ -1074,7 +1074,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testGetDeliveryAddressMD5()
     {
-        $oDelAddress = oxNew('oxaddress');
+        $oDelAddress = oxNew('oxAddress');
         $oDelAddress->init('oxaddress');
         $oDelAddress->setId('_testDelAddrId');
         $oDelAddress->oxaddress__oxcompany = new oxField("company");

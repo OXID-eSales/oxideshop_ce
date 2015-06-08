@@ -150,7 +150,7 @@ class ManufacturerList extends aList
         $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
 
-        $oArtList = oxNew('oxarticlelist');
+        $oArtList = oxNew('oxArticleList');
         $oArtList->setSqlLimit($iNrofCatArticles * $this->_getRequestPageNr(), $iNrofCatArticles);
         $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 

@@ -66,7 +66,7 @@ class PriceAlarm_Send extends oxAdminList
 
         if ($rs != false && $rs->recordCount() > 0) {
             while (!$rs->EOF) {
-                $oArticle = oxNew("oxarticle");
+                $oArticle = oxNew("oxArticle");
                 $oArticle->load($rs->fields['oxid']);
                 if ($oArticle->getPrice()->getBruttoPrice() <= $rs->fields['oxprice']) {
                     $this->sendeMail(

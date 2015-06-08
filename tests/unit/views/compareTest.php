@@ -170,7 +170,7 @@ class Unit_Views_compareTest extends OxidTestCase
     public function testGetCompArtList()
     {
         $oCompare = $this->getProxyClass("compare");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load('1672');
         $oCompare->setNonPublicVar("_aCompItems", array('1672' => $oArticle));
         $aArtList = $oCompare->getCompArtList();
@@ -183,7 +183,7 @@ class Unit_Views_compareTest extends OxidTestCase
     public function testGetCompareItemsCnt()
     {
         $oCompare = $this->getProxyClass("compare");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oCompare->setNonPublicVar("_aCompItems", array('1672' => $oArticle, '2000' => $oArticle));
         $this->assertEquals(2, $oCompare->getCompareItemsCnt());
     }

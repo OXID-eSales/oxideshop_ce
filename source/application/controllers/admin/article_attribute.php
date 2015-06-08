@@ -39,7 +39,7 @@ class Article_Attribute extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oArticle = oxNew('oxarticle');
+        $this->_aViewData['edit'] = $oArticle = oxNew('oxArticle');
 
         $soxId = $this->getEditObjectId();
         if ($soxId != "-1" && isset($soxId)) {

@@ -468,7 +468,7 @@ class oxERPType
         if ($sObjectName) {
             $oShopObject = oxNew($sObjectName);
         } else {
-            $oShopObject = oxNew('oxbase');
+            $oShopObject = oxNew('oxBase');
             $oShopObject->init($this->getTableName());
         }
 

@@ -90,11 +90,11 @@ class Unit_Views_tagTest extends OxidTestCase
 
         $oStr = getStr();
 
-        $aPath[0] = oxNew("oxcategory");
+        $aPath[0] = oxNew("oxCategory");
         $aPath[0]->setLink(false);
         $aPath[0]->oxcategories__oxtitle = new oxField(oxRegistry::getLang()->translateString('TAGS'));
 
-        $aPath[1] = oxNew("oxcategory");
+        $aPath[1] = oxNew("oxCategory");
         $aPath[1]->setLink(false);
         $aPath[1]->oxcategories__oxtitle = new oxField($oStr->htmlspecialchars($oStr->ucfirst($sTag)));
 

@@ -453,7 +453,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
     public function testHasSkipDiscountCategories()
     {
         // making category
-        $oCategory = oxNew('oxcategory');
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('_testCat');
         $oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
         $oCategory->oxcategories__oxrootid = new oxField('_testCat', oxField::T_RAW);

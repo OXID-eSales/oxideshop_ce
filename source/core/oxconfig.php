@@ -653,7 +653,7 @@ class oxConfig extends oxSuperCfg
         // TODO: remove this after special chars concept implementation
         $isAdmin = $this->isAdmin() && $this->getSession()->getVariable("blIsAdmin");
         if ($value !== null && !$isAdmin) {
-            $this->checkParamSpecialChars($value, true);
+            $this->checkParamSpecialChars($value);
         }
 
         return $value;

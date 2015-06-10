@@ -310,21 +310,24 @@ class oxConfig extends oxSuperCfg
     /**
      * Returns config parameter value if such parameter exists
      *
-     * @param string $sName config parameter name
+     * @param string $sName    config parameter name
+     * @param mixed  $sDefault default value if no config var is found default null
      *
      * @return mixed
      */
-    public function getConfigParam($sName)
+    public function getConfigParam($sName, $sDefault = null)
     {
         $this->init();
 
         if (isset ($this->_aConfigParams[$sName])) {
-            return $this->_aConfigParams[$sName];
+            $sValue = $this->_aConfigParams[$sName];
+        } elseif (isset($this->$sName)) {
+            $sValue = $this->$sName;
+        } else {
+            $sValue = $sDefault;
         }
 
-        if (isset($this->$sName)) {
-            return $this->$sName;
-        }
+        return $sValue;
     }
 
     /**
@@ -616,8 +619,8 @@ class oxConfig extends oxSuperCfg
      * use $blRaw very carefully if you want to get unescaped
      * parameter.
      *
-     * @param string $sName Name of parameter
-     * @param bool   $blRaw Get unescaped parameter
+     * @param string $sName     Name of parameter
+     * @param bool   $blRaw     Get unescaped parameter
      *
      * @return mixed
      */
@@ -635,6 +638,27 @@ class oxConfig extends oxSuperCfg
         $blIsAdmin = $this->isAdmin() && $this->getSession()->getVariable("blIsAdmin");
         if ($sValue !== null && !$blIsAdmin && (!$blRaw || is_array($blRaw))) {
             $this->checkParamSpecialChars($sValue, $blRaw);
+        }
+
+        return $sValue;
+    }
+
+    /**
+     * Returns raw value of parameter stored in POST,GET.
+     *
+     * @param string $sName    Name of parameter
+     * @param string $sDefault Default value if no value provided
+     *
+     * @return mixed
+     */
+    public function getRequestRawParameter($sName, $sDefault = null)
+    {
+        if (isset($_POST[$sName])) {
+            $sValue = $_POST[$sName];
+        } elseif (isset($_GET[$sName])) {
+            $sValue = $_GET[$sName];
+        } else {
+            $sValue = $sDefault;
         }
 
         return $sValue;

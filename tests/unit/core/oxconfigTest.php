@@ -341,6 +341,36 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertNull($oConfig->getConfigParam('xxx'));
     }
 
+    public function testGetConfigParamDefaultValueWhenConfigValueNotFound()
+    {
+        $oConfig = oxNew('oxConfig');
+
+        $this->assertSame('defaultValue', $oConfig->getConfigParam('nonExisting', 'defaultValue'));
+    }
+
+    public function testGetRequestRawParameterFromPost()
+    {
+        $oConfig = oxNew('oxConfig');
+        $_POST['postKey'] = 'testValue';
+
+        $this->assertSame('testValue', $oConfig->getRequestRawParameter('postKey'));
+    }
+
+    public function testGetRequestRawParameterFromGet()
+    {
+        $oConfig = oxNew('oxConfig');
+        $_GET['getKey'] = 'testValue';
+
+        $this->assertSame('testValue', $oConfig->getRequestRawParameter('getKey'));
+    }
+
+    public function testGetRequestRawParameterWhenRequestParametersNotFound()
+    {
+        $oConfig = oxNew('oxConfig');
+
+        $this->assertSame('defaultValue', $oConfig->getRequestRawParameter('nonExisting', 'defaultValue'));
+    }
+
     /**
      * Testing config parameters setter
      */

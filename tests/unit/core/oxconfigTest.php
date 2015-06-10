@@ -348,6 +348,28 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertSame('defaultValue', $oConfig->getConfigParam('nonExisting', 'defaultValue'));
     }
 
+    public function testGetRequestEscapedParameter()
+    {
+        $config = oxNew('oxConfig');
+        $_POST['postKey'] = '&test';
+
+        $this->assertSame('&amp;test', $config->getRequestEscapedParameter('postKey'));
+    }
+
+    public function testGetRequestEscapedParameterWhenParameterNotFound()
+    {
+        $config = oxNew('oxConfig');
+
+        $this->assertSame(null, $config->getRequestEscapedParameter('notExistingPostKey'));
+    }
+
+    public function testGetRequestEscapedParameterWhenParameterNotFoundAndDefaultValueIsProvided()
+    {
+        $config = oxNew('oxConfig');
+
+        $this->assertSame('defaultValue', $config->getRequestEscapedParameter('notExistingPostKey', 'defaultValue'));
+    }
+
     public function testGetRequestRawParameterFromPost()
     {
         $oConfig = oxNew('oxConfig');
@@ -1877,11 +1899,20 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $_FILES = $aBack;
     }
 
-    public function testGetRequestParameter()
+    public function testGetRequestParameterEscaped()
     {
-        $this->setRequestParameter('testval', '_testval');
+        $config = oxNew('oxConfig');
+        $_POST['testParameterKey'] = '&testValue';
 
-        $this->assertEquals('_testval', $this->getRequestParameter('testval'));
+        $this->assertEquals('&amp;testValue', $config->getRequestParameter('testParameterKey'));
+    }
+
+    public function testGetRequestParameterRaw()
+    {
+        $config = oxNew('oxConfig');
+        $_POST['testParameterKey'] = '&testValue';
+
+        $this->assertEquals('&testValue', $config->getRequestParameter('testParameterKey', true));
     }
 
     public function testGetEdition()

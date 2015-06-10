@@ -619,49 +619,65 @@ class oxConfig extends oxSuperCfg
      * use $blRaw very carefully if you want to get unescaped
      * parameter.
      *
-     * @param string $sName     Name of parameter
-     * @param bool   $blRaw     Get unescaped parameter
+     * @param string $name  Name of parameter.
+     * @param bool   $blRaw Get unescaped parameter.
+     *
+     * @deprecated on b-dev (2015-06-10);
+     * Use oxConfig::getRequestEscapedParameter() or oxConfig::getRequestRawParameter().
      *
      * @return mixed
      */
-    public function getRequestParameter($sName, $blRaw = false)
+    public function getRequestParameter($name, $blRaw = false)
     {
-        $sValue = null;
-
-        if (isset($_POST[$sName])) {
-            $sValue = $_POST[$sName];
-        } elseif (isset($_GET[$sName])) {
-            $sValue = $_GET[$sName];
-        }
-
-        // TODO: remove this after special chars concept implementation
-        $blIsAdmin = $this->isAdmin() && $this->getSession()->getVariable("blIsAdmin");
-        if ($sValue !== null && !$blIsAdmin && (!$blRaw || is_array($blRaw))) {
-            $this->checkParamSpecialChars($sValue, $blRaw);
+        if ($blRaw) {
+            $sValue = $this->getRequestRawParameter($name);
+        } else {
+            $sValue = $this->getRequestEscapedParameter($name);
         }
 
         return $sValue;
     }
 
     /**
-     * Returns raw value of parameter stored in POST,GET.
+     * Returns escaped value of parameter stored in POST,GET.
      *
-     * @param string $sName    Name of parameter
-     * @param string $sDefault Default value if no value provided
+     * @param string $name         Name of parameter.
+     * @param string $defaultValue Default value if no value provided.
      *
      * @return mixed
      */
-    public function getRequestRawParameter($sName, $sDefault = null)
+    public function getRequestEscapedParameter($name, $defaultValue = null)
     {
-        if (isset($_POST[$sName])) {
-            $sValue = $_POST[$sName];
-        } elseif (isset($_GET[$sName])) {
-            $sValue = $_GET[$sName];
-        } else {
-            $sValue = $sDefault;
+        $value = $this->getRequestRawParameter($name, $defaultValue);
+
+        // TODO: remove this after special chars concept implementation
+        $isAdmin = $this->isAdmin() && $this->getSession()->getVariable("blIsAdmin");
+        if ($value !== null && !$isAdmin) {
+            $this->checkParamSpecialChars($value, true);
         }
 
-        return $sValue;
+        return $value;
+    }
+
+    /**
+     * Returns raw value of parameter stored in POST,GET.
+     *
+     * @param string $name         Name of parameter.
+     * @param string $defaultValue Default value if no value provided.
+     *
+     * @return mixed
+     */
+    public function getRequestRawParameter($name, $defaultValue = null)
+    {
+        if (isset($_POST[$name])) {
+            $value = $_POST[$name];
+        } elseif (isset($_GET[$name])) {
+            $value = $_GET[$name];
+        } else {
+            $value = $defaultValue;
+        }
+
+        return $value;
     }
 
     /**

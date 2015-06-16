@@ -22,6 +22,19 @@
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
+use OxidEsales\Eshop\Core\LoggerFactory;
+
+if (!function_exists('createLoggerFactory')) {
+    /**
+     * Creates the root logger
+     * this method is used to make it possible to customize behavior by providing a custom
+     * createRootLogger function in modules/functions.php
+     * @return LoggerFactoryInterface 
+     */
+    function createLoggerFactory() {
+        return new \OxidEsales\Eshop\Core\MonologFactory();
+    }
+}
 
 if (!function_exists('registerComposerAutoload')) {
     /**

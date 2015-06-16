@@ -21,7 +21,7 @@
  */
 namespace Unit\Core;
 
-use \oxOnlineModuleVersionNotifier;
+use oxOnlineModuleVersionNotifier;
 
 class OnlineModuleVersionNotifierTest extends \OxidTestCase
 {
@@ -36,6 +36,7 @@ class OnlineModuleVersionNotifierTest extends \OxidTestCase
         $oModuleList->expects($this->any())->method('getList')->will($this->returnValue(array($oModule)));
 
         $oNotifier = new oxOnlineModuleVersionNotifier($oCaller, $oModuleList);
+        // does not yet use logger $oNotifier->setLogger(new \Psr\Log\NullLogger());
         $oNotifier->versionNotify();
     }
 }

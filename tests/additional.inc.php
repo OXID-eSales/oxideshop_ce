@@ -1,4 +1,7 @@
 <?php
+//do not use the default logger because we do not want to create an mock in each test case
+//and default logging would produce noise on STDERR and in log files
+\OxidEsales\Eshop\Core\Registry::set('Logger',new \Psr\Log\NullLogger());
 
 $serviceCaller = new \OxidEsales\TestingLibrary\ServiceCaller();
 $testConfig = new \OxidEsales\TestingLibrary\TestConfig();

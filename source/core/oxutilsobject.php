@@ -20,6 +20,7 @@
  * @version   OXID eShop CE
  */
 
+use Psr\Log\LoggerAwareInterface;
 /**
  * Object Factory implementation (oxNew() method is implemented in this class).
  *
@@ -192,6 +193,10 @@ class oxUtilsObject
         $oActionObject = $this->_getObject($sActionClassName, $iArgCnt, $aArgs);
         if ($blCacheObj && $oActionObject instanceof oxBase) {
             self::$_aInstanceCache[$sCacheKey] = clone $oActionObject;
+        }
+
+        if ($oActionObject instanceof LoggerAwareInterface) {
+            $oActionObject->setLogger(oxRegistry::get('oxLoggerFactory')->getLogger($sClassName));
         }
 
         return $oActionObject;

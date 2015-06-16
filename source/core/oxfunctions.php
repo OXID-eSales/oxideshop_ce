@@ -178,7 +178,7 @@ function getNamespaceClassDirs()
         //Namespace => array('subdirectory/in/shop/BasePath' => 'PSR0|PSR4' )
         //PSR0: the directory structure in this path will map to the full qualified class name
         //PSR4: the directory structure in this path will map to qualified class name without the prefix configured here
-        //e.g. 'Psr\Log' => array('core/log'=>'PSR0')
+        'Psr\Log' => array('core/psr3log'=>'PSR0')
     );
 }
 

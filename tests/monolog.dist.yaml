@@ -1,0 +1,8 @@
+loggers:
+    default: 
+        handlers:
+            - SilentTesting
+handlers:
+    SilentTesting:
+        type: 'Null'
+

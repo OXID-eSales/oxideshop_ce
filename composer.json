@@ -11,6 +11,7 @@
     "require": {
         "phpmailer/phpmailer": "^5.2.14",
         "smarty/smarty": "^2.6.30",
+        "keywan-ghadami/monolog-configuration": "^1.1.0",
         "oxid-esales/oxideshop-composer-plugin": "dev-master",
         "oxid-esales/flow-theme": "dev-master"
     },

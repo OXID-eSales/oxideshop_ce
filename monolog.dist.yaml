@@ -1,0 +1,28 @@
+# Monolog Configuration File
+# see https://github.com/keywan-ghadami-oxid/monolog-configuration/wiki
+# use monolog.yaml instead of monolog.dist.yaml
+# to protect it from beeing overridden by updates
+loggers:
+   default:
+      handlers: [stderr,LogFileOxid]
+      processors: [PsrLogMessageProcessor]
+      use_microseconds: true
+handlers:
+   stderr:
+       type: stream
+       file: 'php://stderr'
+       level: error
+   LogFileOxid:
+       type: stream
+       file: 'log/oxid.log'
+       level: info
+#### For legacy use if you need the EXCEPTION_LOG.txt 
+# you can uncomment the following 4 Lines and add EXCEPTION_LOG to the list of handlers in the default channel
+#   EXCEPTION_LOG:
+#       type: stream
+#       file: 'log/EXCEPTION_LOG.txt'
+#       level: error
+##
+processors:
+   PsrLogMessageProcessor:
+       class: PsrLogMessageProcessor

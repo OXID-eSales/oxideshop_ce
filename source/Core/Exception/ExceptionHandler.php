@@ -25,21 +25,16 @@ namespace OxidEsales\Eshop\Core\Exception;
 use oxRegistry;
 use Exception;
 use oxException;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * Exception handler, deals with all high level exceptions (caught in oxShopControl)
  */
-class ExceptionHandler
+class ExceptionHandler implements LoggerAwareInterface
 {
 
-    /**
-     * Log file path/name
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
-     *
-     * @var string
-     */
-    protected $_sFileName = 'EXCEPTION_LOG.txt';
+    use LoggerAwareTrait;
 
     /**
      * Shop debug
@@ -68,29 +63,6 @@ class ExceptionHandler
         $this->_iDebug = $iDebug;
     }
 
-    /**
-     * Set log file path/name
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
-     *
-     * @param string $sFile file name
-     */
-    public function setLogFileName($sFile)
-    {
-        $this->_sFileName = $sFile;
-    }
-
-    /**
-     * Get log file path/name
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
-     *
-     * @return string
-     */
-    public function getLogFileName()
-    {
-        return $this->_sFileName;
-    }
 
     /**
      * Uncaught exception handler, deals with uncaught exceptions (global)
@@ -107,9 +79,7 @@ class ExceptionHandler
 
             return; // Return straight away ! (in case of unit testing)
         }
-
-        $oEx->setLogFileName($this->_sFileName); // set common log file ...
-
+        
         $this->_uncaughtException($oEx); // Return straight away ! (in case of unit testing)
     }
 
@@ -127,18 +97,11 @@ class ExceptionHandler
         // general log entry for all exceptions here
         $oEx->debugOut();
 
-        if (defined('OXID_PHP_UNIT')) {
-            return $oEx->getString();
-        } elseif (0 != $this->_iDebug) {
+        if (0 != $this->_iDebug) {
             oxRegistry::getUtils()->showMessageAndExit($oEx->getString());
-        }
-
-        try {
+        } else {
             oxRegistry::getUtils()->redirectOffline(500);
-        } catch (Exception $oException) {
         }
-
-        exit();
     }
 
     /**
@@ -150,24 +113,14 @@ class ExceptionHandler
      */
     protected function _dealWithNoOxException($oEx)
     {
+        $sLogMsg = date('Y-m-d H:i:s') . $oEx . "\n---------------------------------------------\n";
+        $this->logger->error($sLogMsg);
+
         if (0 != $this->_iDebug) {
-            $sLogMsg = date('Y-m-d H:i:s') . $oEx . "\n---------------------------------------------\n";
-            //deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
-            oxRegistry::getUtils()->writeToLog($sLogMsg, $this->getLogFileName());
-            //end deprecated
-            if (defined('OXID_PHP_UNIT')) {
-                return;
-            } elseif (0 != $this->_iDebug) {
-                oxRegistry::getUtils()->showMessageAndExit($sLogMsg);
-            }
+            oxRegistry::getUtils()->showMessageAndExit($sLogMsg);
+        } else {
+           oxRegistry::getUtils()->redirectOffline(500);
         }
-
-        try {
-            oxRegistry::getUtils()->redirectOffline(500);
-        } catch (Exception $oException) {
-        }
-
-        exit();
     }
 
     /**
@@ -177,7 +130,7 @@ class ExceptionHandler
      * @param string $sMethod Methods name
      * @param array  $aArgs   Argument array
      *
-     * @throws oxSystemComponentException Throws an exception if the called method does not exist or is not accessible in current class
+     * @throws \oxSystemComponentException Throws an exception if the called method does not exist or is not accessible in current class
      *
      * @return string
      */

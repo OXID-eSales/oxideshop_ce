@@ -28,6 +28,8 @@ use oxSystemComponentException;
 use oxUtilsObject;
 use ReflectionClass;
 use ReflectionException;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Object Factory implementation (oxNew() method is implemented in this class).
@@ -80,6 +82,9 @@ class UtilsObject
 
     /** @var ShopIdCalculator */
     private $shopIdCalculator;
+   
+    /** @var LoggerInterface */
+    private $logger;
 
     /**
      * @param ClassNameProvider       $classNameProvider
@@ -88,6 +93,8 @@ class UtilsObject
      */
     public function __construct($classNameProvider = null, $moduleChainsGenerator = null, $shopIdCalculator = null)
     {
+        $this->logger = Registry::get('Logger');       
+        
         if (!$classNameProvider) {
             $classMapProvider = new ClassMapProvider(new EditionSelector());
             $classNameProvider = new ClassNameProvider($classMapProvider->getOverridableClassMap());
@@ -270,6 +277,13 @@ class UtilsObject
         }
 
         $object = $this->_getObject($realClassName, $argumentsCount, $arguments);
+
+        //setting the Logger by dependency injection because it's the PSR3 standard way and makes other objects independent
+        //of the architecture
+        if ($object instanceof LoggerAwareInterface) {
+            $object->setLogger($this->logger);
+        }
+
         if ($shouldUseCache && $object instanceof oxBase) {
             self::$_aInstanceCache[$cacheKey] = clone $object;
         }

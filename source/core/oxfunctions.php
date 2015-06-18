@@ -16,150 +16,9 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-
-/**
- * Includes $sClass class file
- *
- * @param string $sClass classname
- *
- * @return null
- */
-function oxAutoload($sClass)
-{
-    startProfile("oxAutoload");
-    $sClass = basename($sClass);
-    $sClass = strtolower($sClass);
-
-    static $sBasePath = null;
-    static $aClassDirs = null;
-
-    // preventing infinite loop
-    static $aTriedClasses = array();
-
-    //loading very base classes. We can do this as we know they exists,
-    //moreover even further method code could not execute without them
-    $sBaseClassLocation = null;
-    $aBaseClasses = array("oxutils", "oxsupercfg", "oxutilsobject");
-    if (in_array($sClass, $aBaseClasses)) {
-        $sFilename = getShopBasePath() . "core/" . $sClass . ".php";
-        include $sFilename;
-
-        return;
-    }
-
-    static $aClassPaths;
-
-    if (isset($aClassPaths[$sClass])) {
-        stopProfile("oxAutoload");
-        include $aClassPaths[$sClass];
-
-        return;
-    }
-
-    $sBasePath = getShopBasePath();
-
-
-    // initializing paths
-    if ($aClassDirs == null) {
-        $aClassDirs = getClassDirs($sBasePath);
-    }
-
-    foreach ($aClassDirs as $sDir) {
-        $sFilename = $sDir . $sClass . '.php';
-        if (file_exists($sFilename)) {
-            if (!isset($aClassPaths[$sClass])) {
-                $aClassPaths[$sClass] = $sFilename;
-            }
-            stopProfile("oxAutoload");
-            include $sFilename;
-
-            return;
-        }
-    }
-
-
-    // Files registered by modules
-    //$aModuleFiles = oxRegistry::getConfig()->getConfigParam( 'aModuleFiles' );
-    $aModuleFiles = oxUtilsObject::getInstance()->getModuleVar('aModuleFiles');
-    if (is_array($aModuleFiles)) {
-        $sBasePath = getShopBasePath();
-        $oModulelist = oxNew('oxmodulelist');
-        $aActiveModuleInfo = $oModulelist->getActiveModuleInfo();
-        if (is_array($aActiveModuleInfo)) {
-            foreach ($aModuleFiles as $sModuleId => $aModules) {
-                if (isset($aModules[$sClass]) && isset($aActiveModuleInfo[$sModuleId])) {
-                    $sPath = $aModules[$sClass];
-                    $sFilename = $sBasePath . 'modules/' . $sPath;
-                    if (file_exists($sFilename)) {
-                        if (!isset($aClassPaths[$sClass])) {
-                            $aClassPaths[$sClass] = $sFilename;
-                        }
-                        stopProfile("oxAutoload");
-                        include $sFilename;
-
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    // in case module parent class (*_parent) is required
-    $sClass = preg_replace('/_parent$/i', '', $sClass);
-
-    // special case
-    if (!in_array($sClass, $aTriedClasses) && is_array($aModules = oxUtilsObject::getInstance()->getModuleVar('aModules'))) {
-
-        $myUtilsObject = oxUtilsObject::getInstance();
-        $sClass = preg_quote ($sClass, '/');
-        foreach ($aModules as $sParentName => $sModuleName) {
-            // looking for module parent class
-            if (preg_match('/\b' . $sClass . '($|\&)/i', $sModuleName)) {
-                $myUtilsObject->getClassName($sParentName);
-                break;
-            }
-            $aTriedClasses[] = $sClass;
-        }
-    }
-
-    stopProfile("oxAutoload");
-}
-
-/**
- * Return array with classes paths.
- *
- * @param string $sBasePath path to shop base ddirectory.
- *
- * @return array
- */
-function getClassDirs($sBasePath)
-{
-    $aClassDirs = array($sBasePath . 'core/',
-                        $sBasePath . 'application/components/widgets/',
-                        $sBasePath . 'application/components/services/',
-                        $sBasePath . 'application/components/',
-                        $sBasePath . 'application/models/',
-                        $sBasePath . 'application/controllers/',
-                        $sBasePath . 'application/controllers/admin/',
-                        $sBasePath . 'application/controllers/admin/reports/',
-                        $sBasePath . 'views/',
-                        $sBasePath . 'core/exception/',
-                        $sBasePath . 'core/interface/',
-                        $sBasePath . 'core/cache/',
-                        $sBasePath . 'core/cache/connectors/',
-                        $sBasePath . 'core/wysiwigpro/',
-                        $sBasePath . 'admin/reports/',
-                        $sBasePath . 'admin/',
-                        $sBasePath . 'modules/',
-                        $sBasePath
-    );
-
-    return $aClassDirs;
-}
-
 
 if (!function_exists('registerShopAutoLoad')) {
     /**
@@ -167,7 +26,9 @@ if (!function_exists('registerShopAutoLoad')) {
      */
     function registerShopAutoLoad()
     {
-        spl_autoload_register("oxAutoload");
+        require_once getShopBasePath()."/core/oxautoloader.php";
+        $autoLoader = new oxAutoLoader();
+        spl_autoload_register(array($autoLoader, 'autoload'));
     }
 }
 
@@ -585,6 +446,11 @@ if (!function_exists('getRequestUrl')) {
         }
     }
 }
+
+//registering autoload handlers
+require_once getShopBasePath()."/core/oxautoloadernamespaced.php";
+$nameSpacedAutoLoader = new oxAutoLoaderNameSpaced(getShopBasePath());
+spl_autoload_register(array($nameSpacedAutoLoader, 'autoload'));
 
 registerComposerAutoLoad();
 registerShopAutoLoad();

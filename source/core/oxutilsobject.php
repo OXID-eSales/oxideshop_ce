@@ -76,6 +76,14 @@ class oxUtilsObject
      */
     private static $_instance = null;
 
+    /** @var array Class map for extended classes. */
+    private $classMap = array(
+        'EE' => array(
+        ),
+        'PE' => array(
+        )
+    );
+
     /**
      * Returns object instance
      *
@@ -277,7 +285,6 @@ class oxUtilsObject
     }
 
 
-
     /**
      * Returns name of class file, according to class name.
      *
@@ -287,21 +294,18 @@ class oxUtilsObject
      */
     public function getClassName($sClassName)
     {
-        //$aModules = $this->getConfig()->getConfigParam( 'aModules' );
         $aModules = $this->getModuleVar('aModules');
         $aClassChain = array();
-
+        $oldClassName = $sClassName;
+        $sClassName = $this->getNameSpacedClassName($sClassName);
 
         if (is_array($aModules)) {
 
-            $aModules = array_change_key_case($aModules);
+            $aOldModules = array_change_key_case($aModules);
 
-            if (array_key_exists($sClassName, $aModules)) {
-                //multiple inheritance implementation
-                //in case we have multiple modules:
-                //like oxoutput => sub/suboutput1&sub/suboutput2&sub/suboutput3
-                $aClassChain = explode("&", $aModules[$sClassName]);
-                $aClassChain = $this->_getActiveModuleChain($aClassChain);
+            if (array_key_exists($oldClassName, $aOldModules)) {
+                $aAllChain = explode("&", $aOldModules[$oldClassName]);
+                $aClassChain = array_merge_recursive($aClassChain, $this->_getActiveModuleChain($aAllChain));
             }
 
             if (count($aClassChain)) {
@@ -316,9 +320,24 @@ class oxUtilsObject
         }
 
         // check if there is a path, if yes, remove it
-        $sClassName = basename($sClassName);
-
+        if (strpos($sClassName, '/') !== false) {
+            $sClassName = basename($sClassName);
+        }
         return $sClassName;
+    }
+
+    /**
+     * @param $class
+     * @return mixed
+     */
+    private function getNameSpacedClassName($class)
+    {
+        $edition = OXID_VERSION_EE ? 'EE' : (OXID_VERSION_PE_PE ? 'PE' : 'CE');
+        if (array_key_exists($edition, $this->classMap) && array_key_exists($class, $this->classMap[$edition])) {
+            $class = $this->classMap[$edition][$class];
+        }
+
+        return $class;
     }
 
     /**
@@ -534,7 +553,6 @@ class oxUtilsObject
      */
     protected function _getShopUrlMap()
     {
-
         //get from static cache
         if (isset(self::$_aModuleVars["urlMap"])) {
             return self::$_aModuleVars["urlMap"];

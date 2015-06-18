@@ -76,13 +76,8 @@ class oxUtilsObject
      */
     private static $_instance = null;
 
-    /** @var array Class map for extended classes. */
-    private $classMap = array(
-        'EE' => array(
-        ),
-        'PE' => array(
-        )
-    );
+    /** @var array */
+    private $classMap;
 
     /**
      * Returns object instance
@@ -332,12 +327,37 @@ class oxUtilsObject
      */
     private function getNameSpacedClassName($class)
     {
-        $edition = OXID_VERSION_EE ? 'EE' : (OXID_VERSION_PE_PE ? 'PE' : 'CE');
-        if (array_key_exists($edition, $this->classMap) && array_key_exists($class, $this->classMap[$edition])) {
-            $class = $this->classMap[$edition][$class];
+        $classMap = $this->getExtendedClassMap();
+
+        if (array_key_exists($class, $classMap)) {
+            $class = $classMap[$class];
         }
 
         return $class;
+    }
+
+    /**
+     * Returns extended classes map
+     *
+     * @return array
+     */
+    private function getExtendedClassMap()
+    {
+        if (is_null($this->classMap)) {
+            $this->classMap = array();
+
+            if (OXID_VERSION_EE) {
+                $classMap = new \Oxid\Enterprise\ClassMap();
+                $this->classMap = $classMap->getMap();
+            }
+
+            if (OXID_VERSION_PE_PE) {
+                $classMap = new \Oxid\Professional\ClassMap();
+                $this->classMap = $classMap->getMap();
+            }
+        }
+
+        return $this->classMap;
     }
 
     /**

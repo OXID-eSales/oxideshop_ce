@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -88,11 +88,7 @@ class oxModuleInstaller extends oxSuperCfg
             $this->_addModuleVersion($oModule->getInfo("version"), $sModuleId);
             $this->_addModuleEvents($oModule->getInfo("events"), $sModuleId);
 
-            //resets cache
-            if ($this->getModuleCache()) {
-                $this->getModuleCache()->resetCache();
-
-            }
+            $this->resetCache();
 
             $this->_callEvent('onActivate', $oModule->getId());
 
@@ -128,10 +124,7 @@ class oxModuleInstaller extends oxSuperCfg
             $this->_deleteModuleEvents($sModuleId);
             $this->_deleteModuleVersions($sModuleId);
 
-            //resets cache
-            if ($this->getModuleCache()) {
-                $this->getModuleCache()->resetCache();
-            }
+            $this->resetCache();
 
             $blResult = true;
         }
@@ -710,5 +703,15 @@ class oxModuleInstaller extends oxSuperCfg
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam($sVariableName, $sVariableValue);
         $oConfig->saveShopConfVar($sVariableType, $sVariableName, $sVariableValue);
+    }
+
+    /**
+     * Resets modules cache.
+     */
+    protected function resetCache()
+    {
+        if ($this->getModuleCache()) {
+            $this->getModuleCache()->resetCache();
+        }
     }
 }

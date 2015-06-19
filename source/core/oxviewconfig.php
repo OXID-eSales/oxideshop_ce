@@ -1362,6 +1362,10 @@ class oxViewConfig extends oxSuperCfg
             rtrim($this->getConfig()->getCurrentShopUrl(false), '/'),
             $this->getModulePath($sModule, $sFile)
         );
+        
+		if (($this->getConfig()->getConfigParam('sAdminSSLURL') != null) && ($this->isAdmin())){
+			$sUrl = str_replace('http:','https:',$sUrl);
+		}
 
         return $sUrl;
     }

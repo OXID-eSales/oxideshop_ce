@@ -276,7 +276,7 @@ class oxUtilsUrl extends oxSuperCfg
         $sUrl = oxRegistry::getSession()->processUrl($sUrl);
 
         if ($blFinalUrl) {
-            $sUrl = getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sUrl);
+            $sUrl = $this->rightTrimAmp($sUrl);
         }
 
         return $sUrl;
@@ -400,7 +400,7 @@ class oxUtilsUrl extends oxSuperCfg
 
         $sUrl = $this->cleanUrlParams($sUrl);
 
-        return getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sUrl);
+        return $this->rightTrimAmp($sUrl);
     }
 
     /**
@@ -454,17 +454,7 @@ class oxUtilsUrl extends oxSuperCfg
      */
     public function appendParamSeparator($sUrl)
     {
-        /** @var oxStrRegular $oStr */
-        $oStr = getStr();
-        if ($oStr->preg_match('/(\?|&(amp;)?)$/i', $sUrl)) {
-            // it is already ok
-            return $sUrl;
-        }
-        if ($oStr->strpos($sUrl, '?') === false) {
-            return $sUrl . '?';
-        }
-
-        return $sUrl . '&amp;';
+        return $sUrl . $this->getUrlParametersSeparator($sUrl);
     }
 
     /**
@@ -605,25 +595,23 @@ class oxUtilsUrl extends oxSuperCfg
     /**
      * Returns url separator (?,&amp;) for adding new parameters.
      *
-     * @param string $sUrl
+     * @param string $url
      *
      * @return string
      */
-    private function _getUrlParametersSeparator($sUrl)
+    private function getUrlParametersSeparator($url)
     {
         /** @var oxStrRegular $oStr */
         $oStr = getStr();
 
-        $sSeparator = '';
-        if ($oStr->strpos($sUrl, '?') === false) {
-            $sSeparator = '?';
-        } else {
-            if ($sSeparator === '' && !$oStr->preg_match("/(\?|&(amp;)?)$/", $sUrl)) {
-                $sSeparator = '&amp;';
-            }
+        $urlSeparator = '&amp;';
+        if ($oStr->preg_match('/(\?|&(amp;)?)$/i', $url)) {
+            $urlSeparator = '';
+        } elseif ($oStr->strpos($url, '?') === false) {
+            $urlSeparator = '?';
         }
 
-        return $sSeparator;
+        return $urlSeparator;
     }
 
     /**
@@ -661,5 +649,17 @@ class oxUtilsUrl extends oxSuperCfg
             $newParameters = array_merge($currentUrlParameters, $newFilteredParameters);
         }
         return $newParameters;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return string
+     */
+    private function rightTrimAmp($url)
+    {
+        /** @var oxStrRegular $oStr */
+        $oStr = getStr();
+        return $oStr->preg_replace('/(\?|&(amp;)?)$/i', '', $url);
     }
 }

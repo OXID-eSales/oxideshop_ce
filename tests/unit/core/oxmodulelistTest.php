@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -612,7 +612,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
     public function testRemoveFromDatabase()
     {
         $oDb = oxDb::getDb();
-        $oConfig = new oxConfig();
+        $oConfig = $this->getConfig();
         $sShopId = $oConfig->getBaseShopId();
 
         $sQ1 = "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue,  oxmodule) values

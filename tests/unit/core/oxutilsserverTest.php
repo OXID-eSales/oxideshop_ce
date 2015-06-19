@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -400,7 +400,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
      */
     public function testIsCurrentUrlNoUrl()
     {
-        $oConfig = new oxConfig();
+        $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $this->assertTrue($oConfig->isCurrentUrl(''));
     }
@@ -408,14 +408,14 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
     public function testIsCurrentUrlRandomUrl()
     {
         $sUrl = 'http://www.example.com/example/example.php';
-        $oConfig = new oxConfig();
+        $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $this->assertFalse($oConfig->isCurrentUrl($sUrl));
     }
 
     public function testIsCurrentUrlPassingCurrent()
     {
-        $oConfig = new oxConfig();
+        $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $sUrl = $oConfig->getConfigParam('sShopURL') . '/example.php';
         $this->assertFalse($oConfig->isCurrentUrl($sUrl));
@@ -423,7 +423,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
     public function testIsCurrentUrlNoProtocol()
     {
-        $oConfig = new oxConfig();
+        $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $sUrl = 'www.example.com';
         $this->assertTrue($oConfig->isCurrentUrl($sUrl));
@@ -431,7 +431,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
     public function testIsCurrentUrlBadProtocol()
     {
-        $oConfig = new oxConfig();
+        $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $sUrl = 'ftp://www.example.com';
         $this->assertTrue($oConfig->isCurrentUrl($sUrl));
@@ -440,14 +440,14 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
     public function testIsCurrentUrlBugFixTest()
     {
         $sUrl = 'http://www.example.com.ru';
-        $oConfig = new oxConfig();
+        $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $_SERVER['HTTP_HOST'] = 'http://www.example.com';
         $_SERVER['SCRIPT_NAME'] = '';
         $this->assertfalse($oConfig->isCurrentUrl($sUrl));
 
         $sUrl = 'http://www.example.com';
-        $oConfig = new oxConfig();
+        $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $_SERVER['HTTP_HOST'] = 'http://www.example.com.ru';
         $_SERVER['SCRIPT_NAME'] = '';
@@ -455,7 +455,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
         //#4010: force_sid added in https to every link
         $sUrl = 'https://www.example.com.ru';
-        $oConfig = new oxConfig();
+        $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $_SERVER['HTTP_HOST'] = 'www.example.com.ru';
         $_SERVER['SCRIPT_NAME'] = '';
@@ -469,7 +469,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
     public function testIsCurrentUrlWithLoadBalancer()
     {
         $sUrl = 'https://www.example.com.ru';
-        $oConfig = new oxConfig();
+        $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $_SERVER['HTTP_HOST'] = 'www.loadbalancer.de';
         $_SERVER['SCRIPT_NAME'] = '';

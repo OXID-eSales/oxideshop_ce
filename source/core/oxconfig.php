@@ -161,7 +161,6 @@ class oxConfig extends oxSuperCfg
      */
     private $_oStart = null;
 
-
     /**
      * Active shop object.
      *
@@ -212,7 +211,6 @@ class oxConfig extends oxSuperCfg
      * @var int
      */
     protected $_iShopId = null;
-
 
     /**
      * Out dir name
@@ -401,12 +399,9 @@ class oxConfig extends oxSuperCfg
             // loading modules config
             $this->_loadVarsFromDb($sShopID, null, oxConfig::OXMODULE_MODULE_PREFIX);
 
+            $this->loadAdditionalConfiguration();
 
-            $this->_processSeoCall();
-
-            //starting up the session
-            $this->getSession()->start();
-
+            $this->initializeShop();
 
             // Admin handling
             $this->setConfigParam('blAdmin', isAdmin());
@@ -425,6 +420,24 @@ class oxConfig extends oxSuperCfg
         } catch (oxCookieException $oEx) {
             $this->_handleCookieException($oEx);
         }
+    }
+
+    /**
+     * Load any additional configuration on oxConfig::init.
+     *
+     * This method is used for overloading.
+     */
+    protected function loadAdditionalConfiguration()
+    {
+    }
+
+    /**
+     * Initializes main shop tasks - processing of SEO calls, starting of session.
+     */
+    protected function initializeShop()
+    {
+        $this->_processSeoCall();
+        $this->getSession()->start();
     }
 
     /**
@@ -762,15 +775,14 @@ class oxConfig extends oxSuperCfg
     /**
      * Active Shop id setter
      *
-     * @param string $sShopId shop id
+     * @param string $shopId shop id
      *
      * @return null
      */
-    public function setShopId($sShopId)
+    public function setShopId($shopId)
     {
-
-        $this->getSession()->setVariable('actshop', $sShopId);
-        $this->_iShopId = $sShopId;
+        $this->getSession()->setVariable('actshop', $shopId);
+        $this->_iShopId = $shopId;
     }
 
     /**
@@ -780,20 +792,22 @@ class oxConfig extends oxSuperCfg
      */
     public function getShopId()
     {
-        if ($this->_iShopId !== null) {
-            return $this->_iShopId;
+        if (is_null($this->_iShopId)) {
+            $this->setShopId($this->calculateActiveShopId());
         }
-
-        $this->setShopId($this->getBaseShopId());
-
-
-        $this->getSession()->setVariable('actshop', $this->_iShopId);
 
         return $this->_iShopId;
     }
 
-
-
+    /**
+     * Returns active shop id.
+     *
+     * @return string
+     */
+    protected function calculateActiveShopId()
+    {
+        return $this->getBaseShopId();
+    }
 
     /**
      * Set is shop url
@@ -1264,11 +1278,9 @@ class oxConfig extends oxSuperCfg
         }
 
         //test shop level ..
-        $sPath = "$sTheme/$iShop/$sDir/$sFile";
-        if (!$sReturn && !$blAdmin && is_readable($sAbsBase . $sPath)) {
-            $sReturn = $sBase . $sPath;
+        if (!$sReturn && !$blAdmin) {
+            $sReturn = $this->getShopLevelDir($sBase, $sAbsBase, $sFile, $sDir, $blAdmin, $iLang, $iShop, $sTheme, $blAbsolute, $blIgnoreCust);
         }
-
 
         //test theme language level ..
         $sPath = "$sTheme/$sLang/$sDir/$sFile";
@@ -1294,12 +1306,36 @@ class oxConfig extends oxSuperCfg
             $sReturn = $sBase . $sPath;
         }
 
-        if (!$sReturn) {
-            // TODO: implement logic to log missing paths
-        }
+        // TODO: implement logic to log missing paths
 
         // to cache
         oxRegistry::getUtils()->toStaticCache($sCacheKey, $sReturn);
+
+        return $sReturn;
+    }
+
+    /**
+     * @param $sBase
+     * @param $sAbsBase
+     * @param $sFile
+     * @param $sDir
+     * @param $blAdmin
+     * @param $iLang
+     * @param $iShop
+     * @param $sTheme
+     * @param $blAbsolute
+     * @param $blIgnoreCust
+     *
+     * @return bool|string
+     */
+    protected function getShopLevelDir($sBase, $sAbsBase, $sFile, $sDir, $blAdmin, $iLang, $iShop, $sTheme, $blAbsolute, $blIgnoreCust)
+    {
+        $sReturn = false;
+
+        $sPath = "$sTheme/$iShop/$sDir/$sFile";
+        if (is_readable($sAbsBase . $sPath)) {
+            $sReturn = $sBase . $sPath;
+        }
 
         return $sReturn;
     }
@@ -1663,8 +1699,6 @@ class oxConfig extends oxSuperCfg
         return $this->getConfigParam('blDemoShop');
     }
 
-
-
     /**
      * Returns OXID eShop edition
      *
@@ -1673,8 +1707,6 @@ class oxConfig extends oxSuperCfg
     public function getEdition()
     {
         return "CE";
-
-
     }
 
     /**
@@ -1685,12 +1717,9 @@ class oxConfig extends oxSuperCfg
     public function getFullEdition()
     {
         $sEdition = $this->getEdition();
-
         if ($sEdition == "CE") {
-            return "Community Edition";
+            $sEdition = "Community Edition";
         }
-
-
 
         return $sEdition;
     }
@@ -1749,10 +1778,7 @@ class oxConfig extends oxSuperCfg
      */
     public function getMandateCount()
     {
-        $iShopCount = 1;
-
-
-        return $iShopCount;
+        return 1;
     }
 
     /**
@@ -1762,7 +1788,6 @@ class oxConfig extends oxSuperCfg
      */
     public function isMall()
     {
-
         return false;
     }
 
@@ -1778,8 +1803,6 @@ class oxConfig extends oxSuperCfg
     public function detectVersion()
     {
     }
-
-
 
     /**
      * Updates or adds new shop configuration parameters to DB.
@@ -1838,10 +1861,7 @@ class oxConfig extends oxSuperCfg
         $sQ = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
                values($sNewOXIDdQuoted, $sShopIdQuoted, $sModuleQuoted, $sVarNameQuoted, $sVarTypeQuoted, ENCODE( $sVarValueQuoted, $sConfigKeyQuoted) )";
         $oDb->execute($sQ);
-
-
     }
-
 
     /**
      * Retrieves shop configuration parameters from DB.
@@ -1931,8 +1951,6 @@ class oxConfig extends oxSuperCfg
         return $blProductive;
     }
 
-
-
     /**
      * Function returns default shop ID
      *
@@ -1940,7 +1958,6 @@ class oxConfig extends oxSuperCfg
      */
     public function getBaseShopId()
     {
-
         return 'oxbaseshop';
     }
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -806,7 +806,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testShowSelectListsInListFalse()
     {
-        $oCfg = new oxConfig();
         $oVC = $this->getMock('oxviewconfig', array('showSelectLists'));
         $oVC->expects($this->once())->method('showSelectLists')->will($this->returnValue(false));
         $this->assertFalse($oVC->showSelectListsInList());

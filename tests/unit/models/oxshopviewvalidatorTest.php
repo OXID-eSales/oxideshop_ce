@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -104,7 +104,6 @@ class Unit_Models_oxShopViewValidatorTest extends OxidTestCase
         $aAllViews = $aAllShopViews['baseshop'];
         $aAllShopLanguageIds = $aLanguageIds = array(0 => 'de', 1 => 'en');
 
-
         $oValidator = $this->getMock('oxShopViewValidator', array('_getAllViews',));
         $oValidator->expects($this->once())->method('_getAllViews')->will($this->returnValue($aAllViews));
 
@@ -115,7 +114,6 @@ class Unit_Models_oxShopViewValidatorTest extends OxidTestCase
         $oValidator->setMultiShopTables(array('oxarticles'));
 
         $aResult = $oValidator->getInvalidViews();
-
 
         $this->assertEquals(3, count($aResult));
         $this->assertContains('oxv_oxartextends_lt', $aResult);

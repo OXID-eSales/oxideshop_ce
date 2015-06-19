@@ -16,10 +16,9 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
 
@@ -1944,9 +1943,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
 
     public function testSetWrapping()
     {
-        //$myConfig = $this->getMock( 'oxConfig', array('hasModule') );
-        //$myConfig->expects($this->any())->method( 'hasModule' )->will($this->returnValue( true ));
-        $myConfig = new oxConfig();
+        $myConfig = oxNew('oxConfig');
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(119, 19);

@@ -127,13 +127,12 @@ class oxDbMetaDataHandler extends oxSuperCfg
     public function getAllTables()
     {
         if (empty($this->_aTables)) {
-
             $aTables = oxDb::getDb()->getAll("show tables");
 
             foreach ($aTables as $aTableInfo) {
-                $sTableName = $aTableInfo[0];
-
-                $this->_aTables[] = $aTableInfo[0];
+                if ($this->validateTableName($aTableInfo[0])) {
+                    $this->_aTables[] = $aTableInfo[0];
+                }
             }
         }
 
@@ -602,5 +601,19 @@ class oxDbMetaDataHandler extends oxSuperCfg
         }
 
         $this->executeSql($sql);
+    }
+
+    /**
+     * Adds possibility to validate table names.
+     *
+     * This method is used for overloading.
+     *
+     * @param string $tableName
+     *
+     * @return bool
+     */
+    protected function validateTableName($tableName)
+    {
+        return true;
     }
 }

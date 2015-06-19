@@ -22,7 +22,6 @@
 
 class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
 {
-
     /**
      * Initialize the fixture.
      *
@@ -48,7 +47,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         parent::tearDown();
     }
 
-    /*
+    /**
      * Test table
      */
     protected function _createTestTable()
@@ -69,7 +68,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         oxDb::getDb()->execute($sSql);
     }
 
-    /*
+    /**
      * Test getting table fields list
      */
     public function testGetFields()
@@ -89,7 +88,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals($aFields, $aTableFields);
     }
 
-    /*
+    /**
      * Test if field name exists in given table
      */
     public function testFieldExists()
@@ -113,16 +112,17 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertTrue($oDbMeta->fieldExists("field2Name", "oxreviews"));
     }
 
-    /*
+    /**
      * Test getting all db tables list (except views)
      */
     public function testGetAllTables()
     {
+        if (!OXID_VERSION_PE) {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
         $aTables = oxDb::getDb()->getAll("show tables");
 
         foreach ($aTables as $aTableInfo) {
-            $sTableName = $aTableInfo[0];
-
             $aTablesList[] = $aTableInfo[0];
         }
 
@@ -131,7 +131,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals($aTablesList, $oDbMeta->getAllTables());
     }
 
-    /*
+    /**
      * Test if returned sql for creating new table set is correct
      */
     public function testGetCreateTableSetSql()
@@ -158,7 +158,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals($sTestSql, $oDbMeta->UNITgetCreateTableSetSql("oxcountry", 8), '', 0, 10, false, true);
     }
 
-    /*
+    /**
      * Test if returned sql for creating new field is correct
      */
     public function testGetAddFieldSql()
@@ -171,7 +171,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals($sTestSql, $oDbMeta->getAddFieldSql("oxcountry", "OXTITLE", "OXTITLE_4", "OXTITLE_3"), '', 0, 10, false, true);
     }
 
-    /*
+    /**
      * Test if returned sql for creating new field indexes is correct
      */
     public function testAddFieldIndexSql()
@@ -191,7 +191,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals($aTestSql, $oDbMeta->getAddFieldIndexSql("oxartextends", "OXTAGS", "OXTAGS_20", "oxartextends_set2"));
     }
 
-    /*
+    /**
      * Test getting current max lang base id
      */
     public function testGetCurrentMaxLangId()
@@ -201,7 +201,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals(3, $oDbMeta->getCurrentMaxLangId());
     }
 
-    /*
+    /**
      * Test getting next available base lang id
      */
     public function testGetNextLangId()
@@ -211,7 +211,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals(4, $oDbMeta->getNextLangId());
     }
 
-    /*
+    /**
      * Test getting multilang fields from selected table
      */
     public function testGetMultilangFields()
@@ -222,7 +222,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals($aRes, $oDbMeta->getMultilangFields("oxcountry"));
     }
 
-    /*
+    /**
      * Test getting multilang fields from selected table which does not has any
      * multilang field
      */
@@ -239,7 +239,6 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
      */
     public function testGetSingleLangFields()
     {
-        $oDbMeta = new oxDbMetaDataHandler;
         $aFields = array(
             'OXID'       => "OXID",
             'OXSHOPID_1' => "oxarticles.OXSHOPID_1",
@@ -254,13 +253,13 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
             'OXACTIVE',
         );
 
-        /** @var oxDbMetaDataHandler $oDbMeta */
+        /** @var oxDbMetaDataHandler|PHPUnit_Framework_MockObject_MockObject $oDbMeta */
         $oDbMeta = $this->getMock('oxDbMetaDataHandler', array('getFields'));
         $oDbMeta->expects($this->any())->method('getFields')->will($this->returnValue($aFields));
         $this->assertEquals($aExpectedFields, array_keys($oDbMeta->getSinglelangFields('oxarticles', 1)));
     }
 
-    /*
+    /**
      * Test if method collects sql for creating table new multilang fields
      */
     public function testAddNewMultilangFieldAlterTable()
@@ -269,6 +268,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXSHORTDESC_4` char(128) NOT NULL default ''  AFTER `OXSHORTDESC_3`";
         $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXLONGDESC_4` char(255) NOT NULL default ''  AFTER `OXLONGDESC_3`";
 
+        /** @var oxDbMetaDataHandler|PHPUnit_Framework_MockObject_MockObject $oDbMeta */
         $oDbMeta = $this->getMock('oxdbmetadatahandler', array('executeSql'));
 
         $oDbMeta->expects($this->once())->method('executeSql')->with($this->equalTo($aTestSql, 0, 10, false, true)); //case insensitive
@@ -276,7 +276,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $oDbMeta->addNewMultilangField("oxcountry");
     }
 
-    /*
+    /**
      * Test if method collects sql for creating table new multilang fields
      */
     public function testAddNewMultilangFieldCreateTable()
@@ -286,6 +286,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXSHORTDESC_8` char(128) NOT NULL DEFAULT '' ";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXLONGDESC_8` char(255) NOT NULL DEFAULT '' ";
 
+        /** @var oxDbMetaDataHandler|PHPUnit_Framework_MockObject_MockObject $oDbMeta */
         $oDbMeta = $this->getMock('oxdbmetadatahandler', array('executeSql', 'getCurrentMaxLangId'));
         $oDbMeta->expects($this->any())->method('getCurrentMaxLangId')->will($this->returnValue(7));
         $oDbMeta->expects($this->once())->method('executeSql')->with($this->equalTo($aTestSql, 0, 10, false, true)); //case insensitive
@@ -293,14 +294,14 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $oDbMeta->addNewMultilangField("oxcountry");
     }
 
-    /*
+    /**
      * Testing real db table update on adding new fields
      */
     public function testAddNewMultilangFieldUpdatesTable()
     {
         $this->_createTestTable();
 
-        $oDb = oxDb::getDb();
+        /** @var oxDbMetaDataHandler|PHPUnit_Framework_MockObject_MockObject $oDbMeta */
         $oDbMeta = $this->getMock('oxdbmetadatahandler', array('getCurrentMaxLangId'));
         $oDbMeta->expects($this->any())->method('getCurrentMaxLangId')->will($this->returnValue(1));
 
@@ -317,17 +318,17 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertTrue(in_array("OXLONGDESC_2", $aFileds));
     }
 
-    /*
+    /**
      * Testing real db table update on adding correct indexes
      */
     public function testAddNewMultilangFieldUpdatesTableIndexes()
     {
         $this->_createTestTable();
 
-        $oDb = oxDb::getDb();
         $oDbMeta = $this->getMock('oxdbmetadatahandler', array('getCurrentMaxLangId'));
         $oDbMeta->expects($this->any())->method('getCurrentMaxLangId')->will($this->returnValue(1));
 
+        /** @var oxDbMetaDataHandler|PHPUnit_Framework_MockObject_MockObject $oDbMeta */
         $oDbMeta->addNewMultilangField("testDbMetaDataHandler");
 
         $aIndexes = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll("show index from testDbMetaDataHandler");
@@ -354,21 +355,21 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals("FULLTEXT", $aIndexes[6]["Index_type"]);
     }
 
-    /*
+    /**
      * Testing real db table update on adding correct indexes
      */
     public function testAddNewMultilangFieldAddsTable()
     {
         $this->_createTestTable();
 
-        $oDb = oxDb::getDb();
+        /** @var oxDbMetaDataHandler|PHPUnit_Framework_MockObject_MockObject $oDbMeta */
         $oDbMeta = $this->getMock('oxdbmetadatahandler', array('getCurrentMaxLangId'));
         $oDbMeta->expects($this->any())->method('getCurrentMaxLangId')->will($this->returnValue(8));
 
         $oDbMeta->addNewMultilangField("testDbMetaDataHandler");
     }
 
-    /*
+    /**
      * Test if method call another method which creates sql's with correct params
      */
     public function testAddNewLangToDb()
@@ -376,8 +377,6 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $aTables = oxDb::getDb()->getAll("show tables");
 
         foreach ($aTables as $aTableInfo) {
-            $sTableName = $aTableInfo[0];
-
             $aTablesList[] = $aTableInfo[0];
         }
 
@@ -391,8 +390,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $oDbMeta->addNewLangToDb();
     }
 
-
-    /*
+    /**
      * Test method executes sql's array
      */
     public function testExecuteSql()
@@ -408,7 +406,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals(1, $oDb->getOne("select 1 from oxactions where oxid='_testId2' and oxtitle = 'testValue2' "));
     }
 
-    /*
+    /**
      * Test if nothing is executed if param is not an array
      */
     public function testExecuteSqlWhenParamIsNotSql()
@@ -422,7 +420,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertFalse($oDb->getOne("select 1 from oxactions where oxid='_testId1' and oxtitle = 'testValue1' "));
     }
 
-    /*
+    /**
      * Testing reseting multilangual fields
      */
     public function testResetMultilangFields()
@@ -452,7 +450,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals("", $aRes[0]["OXLONGDESC_1"]);
     }
 
-    /*
+    /**
      * Testing reseting multilangual fields when language ID is zero
      */
     public function testResetMultilangFields_skipsResetingWhenIdIsZero()
@@ -478,7 +476,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals("bbb", $aRes[0]["OXLONGDESC"]);
     }
 
-    /*
+    /**
      * Testing if method calls method "resetMultilangFields" with correct params
      */
     public function testResetLanguage()
@@ -491,7 +489,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $oDbMeta->resetLanguage(1, "testDbMetaDataHandler");
     }
 
-    /*
+    /**
      * Testing if method does nothing then language id = 0
      */
     public function testResetLanguage_zeroId()
@@ -503,7 +501,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $oDbMeta->resetLanguage(0, "testDbMetaDataHandler");
     }
 
-    /*
+    /**
      * Testing if method skips tables that does not requires reset (oxcountry)
      */
     public function testResetLanguage_skipTables()
@@ -514,8 +512,6 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
 
         $oDbMeta->resetLanguage(1, "testDbMetaDataHandler");
     }
-
-
 
     /**
      * Check whether merging inside getSingleLangFields returns proper values

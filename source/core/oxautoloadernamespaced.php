@@ -39,8 +39,8 @@ class oxAutoloaderNameSpaced
      */
     public function autoload($class)
     {
-        if (strpos($class, 'Oxid\\') !== false) {
-            $class = substr($class, 5);
+        if (strpos($class, 'OxidEsales\\') !== false) {
+            $class = substr($class, 11);
             $class = str_replace('\\', '/', $class);
 
             require_once $this->shopPath.'/Edition/'.$class.'.php';

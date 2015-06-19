@@ -347,12 +347,12 @@ class oxUtilsObject
             $this->classMap = array();
 
             if (OXID_VERSION_EE) {
-                $classMap = new \Oxid\Enterprise\ClassMap();
+                $classMap = new \OxidEsales\Enterprise\ClassMap();
                 $this->classMap = $classMap->getMap();
             }
 
             if (OXID_VERSION_PE_PE) {
-                $classMap = new \Oxid\Professional\ClassMap();
+                $classMap = new \OxidEsales\Professional\ClassMap();
                 $this->classMap = $classMap->getMap();
             }
         }

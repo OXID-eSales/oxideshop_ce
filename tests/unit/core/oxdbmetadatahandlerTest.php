@@ -374,13 +374,18 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
      */
     public function testAddNewLangToDb()
     {
+        if (!OXID_VERSION_PE) {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
         $aTables = oxDb::getDb()->getAll("show tables");
 
+        $aTablesList = array();
         foreach ($aTables as $aTableInfo) {
             $aTablesList[] = $aTableInfo[0];
         }
 
-        $oDbMeta = $this->getMock('oxdbmetadatahandler', array('addNewMultilangField'));
+        /** @var oxDbMetaDataHandler|PHPUnit_Framework_MockObject_MockObject $oDbMeta */
+        $oDbMeta = $this->getMock('oxDbMetaDataHandler', array('addNewMultilangField'));
 
         $iIndex = 0;
         foreach ($aTablesList as $sTableName) {

@@ -1844,7 +1844,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetFullEdition()
     {
-        if (!OXID_VERSION_PE) {
+        if (!OXID_VERSION_PE_CE) {
             $this->markTestSkipped('This test is for Community edition only.');
         }
 

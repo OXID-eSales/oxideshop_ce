@@ -27,7 +27,7 @@
         }
     },
     "require-dev": {
-        "oxid-esales/testing-library": "dev-master",
+        "oxid-esales/testing-library": "dev-edition_tags_removal",
         "oxid-esales/coding-standards": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0"
     },

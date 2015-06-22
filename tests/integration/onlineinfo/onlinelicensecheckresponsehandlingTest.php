@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -48,13 +48,13 @@ class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends Oxid
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sXml));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = new oxOnlineServerEmailBuilder();
+        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
 
-        $oSimpleXml = new oxSimpleXml();
-        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
+        $oSimpleXml = oxNew('oxSimpleXml');
+        $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oCurl, $oEmailBuilder, $oSimpleXml);
 
-        $oUserCounter = new oxUserCounter();
-        $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller, $oUserCounter);
+        $oUserCounter = oxNew('oxUserCounter');
+        $oLicenseCheck = oxNew('oxOnlineLicenseCheck', $oLicenseCaller, $oUserCounter);
 
         $oLicenseCheck->validateShopSerials();
 
@@ -78,12 +78,12 @@ class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends Oxid
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sXml));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = new oxOnlineServerEmailBuilder();
-        $oSimpleXml = new oxSimpleXml();
-        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
+        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oSimpleXml = oxNew('oxSimpleXml');
+        $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oCurl, $oEmailBuilder, $oSimpleXml);
 
-        $oUserCounter = new oxUserCounter();
-        $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller, $oUserCounter);
+        $oUserCounter = oxNew('oxUserCounter');
+        $oLicenseCheck = oxNew('oxOnlineLicenseCheck', $oLicenseCaller, $oUserCounter);
 
         $oLicenseCheck->validateShopSerials();
 
@@ -104,12 +104,12 @@ class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends Oxid
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sXml));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = new oxOnlineServerEmailBuilder();
-        $oSimpleXml = new oxSimpleXml();
-        $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
+        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oSimpleXml = oxNew('oxSimpleXml');
+        $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oCurl, $oEmailBuilder, $oSimpleXml);
 
-        $oUserCounter = new oxUserCounter();
-        $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller, $oUserCounter);
+        $oUserCounter = oxNew('oxUserCounter');
+        $oLicenseCheck = oxNew('oxOnlineLicenseCheck', $oLicenseCaller, $oUserCounter);
 
         $oLicenseCheck->validateShopSerials();
 

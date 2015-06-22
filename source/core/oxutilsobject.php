@@ -344,17 +344,19 @@ class oxUtilsObject
     private function getExtendedClassMap()
     {
         if (is_null($this->classMap)) {
-            $this->classMap = array();
+            $map = array();
+
+            if (OXID_VERSION_EE || OXID_VERSION_PE_PE) {
+                $classMap = new \OxidEsales\Professional\ClassMap();
+                $map = $classMap->getMap();
+            }
 
             if (OXID_VERSION_EE) {
                 $classMap = new \OxidEsales\Enterprise\ClassMap();
-                $this->classMap = $classMap->getMap();
+                $map = array_merge($map, $classMap->getMap());
             }
 
-            if (OXID_VERSION_PE_PE) {
-                $classMap = new \OxidEsales\Professional\ClassMap();
-                $this->classMap = $classMap->getMap();
-            }
+            $this->classMap = $map;
         }
 
         return $this->classMap;

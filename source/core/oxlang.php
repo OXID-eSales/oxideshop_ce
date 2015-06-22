@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -671,8 +671,6 @@ class oxLang extends oxSuperCfg
         $sAppDir = $oConfig->getAppDir();
         $sLang = oxRegistry::getLang()->getLanguageAbbr($iLang);
         $sTheme = $oConfig->getConfigParam("sTheme");
-        $sCustomTheme = $oConfig->getConfigParam("sCustomTheme");
-        $sShopId = $oConfig->getShopId();
         $aModulePaths = $this->_getActiveModuleInfo();
 
         //get generic lang files
@@ -689,15 +687,7 @@ class oxLang extends oxSuperCfg
             $aLangFiles = $this->_appendLangFile($aLangFiles, $sThemePath);
         }
 
-        //get custom theme lang files
-        if ($sCustomTheme) {
-            $sCustPath = $sAppDir . 'views/' . $sCustomTheme . '/' . $sLang;
-            $aLangFiles[] = $sCustPath . "/lang.php";
-            $aLangFiles = $this->_appendLangFile($aLangFiles, $sCustPath);
-        }
-
-
-        // custom theme shop languages
+        $aLangFiles = array_merge($aLangFiles, $this->getCustomThemeLanguageFiles($iLang));
 
         // modules language files
         $aLangFiles = $this->_appendModuleLangFiles($aLangFiles, $aModulePaths, $sLang);
@@ -706,6 +696,30 @@ class oxLang extends oxSuperCfg
         $aLangFiles = $this->_appendCustomLangFiles($aLangFiles, $sLang);
 
         return count($aLangFiles) ? $aLangFiles : false;
+    }
+
+    /**
+     * Returns custom theme language files.
+     *
+     * @param int $iLang active language
+     *
+     * @return array
+     */
+    protected function getCustomThemeLanguageFiles($iLang)
+    {
+        $oConfig = $this->getConfig();
+        $sCustomTheme = $oConfig->getConfigParam("sCustomTheme");
+        $sAppDir = $oConfig->getAppDir();
+        $sLang = oxRegistry::getLang()->getLanguageAbbr($iLang);
+        $aLangFiles = array();
+
+        if ($sCustomTheme) {
+            $sCustPath = $sAppDir . 'views/' . $sCustomTheme . '/' . $sLang;
+            $aLangFiles[] = $sCustPath . "/lang.php";
+            $aLangFiles = $this->_appendLangFile($aLangFiles, $sCustPath);
+        }
+
+        return $aLangFiles;
     }
 
     /**
@@ -1150,7 +1164,6 @@ class oxLang extends oxSuperCfg
                          "oxvendor", "oxmanufacturers", "oxmediaurls",
                          "oxstates");
 
-
         $aMultiLangTables = $this->getConfig()->getConfigParam('aMultiLangTables');
 
         if (is_array($aMultiLangTables)) {
@@ -1282,10 +1295,7 @@ class oxLang extends oxSuperCfg
      */
     protected function _getLanguageIdsFromDatabase($iShopId = null)
     {
-        $aLanguages = $this->getLanguageIds();
-
-
-        return $aLanguages;
+        return $this->getLanguageIds();
     }
 
     /**

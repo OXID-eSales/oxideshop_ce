@@ -34,9 +34,6 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         // cleanup
         oxRegistry::getUtils()->oxResetFileCache();
-
-        $this->getConfig();
-        $this->getSession();
     }
 
     /**
@@ -67,7 +64,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $myConfig = $this->getConfig();
 
         $iDefL = $myConfig->getConfigParam('sDefaultLang');
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $this->assertEquals("url", $oLang->processUrl("url", $iDefL));
         $this->assertEquals("url?lang=9&amp;", $oLang->processUrl("url", 9));
         $this->assertEquals("url?lang=9&amp;", $oLang->processUrl("url?", 9));
@@ -87,7 +84,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetName()
     {
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $this->assertEquals("lang", $oLang->getName());
     }
 
@@ -121,29 +118,27 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangFilesPathArrayCustom()
     {
+        if (!OXID_VERSION_PE) {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
         $sPath = $this->getConfig()->getAppDir();
 
         $aPathArray = array(
-            $sPath . "translations/de/lang.php"
-        , $sPath . "translations/de/translit_lang.php"
-        , $sPath . "views/azure/de/lang.php"
-        , $sPath . "views/azure/1/de/lang.php"
-        , $sPath . "views/azure/de/cust_lang.php"
+            $sPath . "translations/de/lang.php",
+            $sPath . "translations/de/translit_lang.php",
+            $sPath . "views/azure/de/lang.php",
+            $sPath . "views/azure/de/cust_lang.php"
         );
 
-        $aPathArray = array(
-            $sPath . "translations/de/lang.php"
-        , $sPath . "translations/de/translit_lang.php"
-        , $sPath . "views/azure/de/lang.php"
-        , $sPath . "views/azure/de/cust_lang.php"
-        );
-
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $this->assertEquals($aPathArray, $oLang->UNITgetLangFilesPathArray(0));
     }
 
     public function testGetLangFilesPathForModules()
     {
+        if (!OXID_VERSION_PE) {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . 'modules/oxlangTestModule/translations/de/';
 
         if (!is_dir($sFilePath)) {
@@ -155,20 +150,11 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $sPath = $this->getConfig()->getAppDir();
         $sShopPath = $this->getConfig()->getConfigParam('sShopDir');
         $aPathArray = array(
-            $sPath . "translations/de/lang.php"
-        , $sPath . "translations/de/translit_lang.php"
-        , $sPath . "views/azure/de/lang.php"
-        , $sPath . "views/azure/1/de/lang.php"
-        , $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php"
-        , $sPath . "views/azure/de/cust_lang.php"
-        );
-
-        $aPathArray = array(
-            $sPath . "translations/de/lang.php"
-        , $sPath . "translations/de/translit_lang.php"
-        , $sPath . "views/azure/de/lang.php"
-        , $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php"
-        , $sPath . "views/azure/de/cust_lang.php"
+            $sPath . "translations/de/lang.php",
+            $sPath . "translations/de/translit_lang.php",
+            $sPath . "views/azure/de/lang.php",
+            $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php",
+            $sPath . "views/azure/de/cust_lang.php"
         );
 
         $aInfo = array('oxlangTestModule' => 'oxlangTestModule');
@@ -186,6 +172,9 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangFilesPathForModulesWithApplicationFolder()
     {
+        if (!OXID_VERSION_PE) {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . 'modules/oxlangTestModule/application/translations/de/';
 
         if (!is_dir($sFilePath)) {
@@ -197,20 +186,11 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $sPath = $this->getConfig()->getAppDir();
         $sShopPath = $this->getConfig()->getConfigParam('sShopDir');
         $aPathArray = array(
-            $sPath . "translations/de/lang.php"
-        , $sPath . "translations/de/translit_lang.php"
-        , $sPath . "views/azure/de/lang.php"
-        , $sPath . "views/azure/1/de/lang.php"
-        , $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php"
-        , $sPath . "views/azure/de/cust_lang.php"
-        );
-
-        $aPathArray = array(
-            $sPath . "translations/de/lang.php"
-        , $sPath . "translations/de/translit_lang.php"
-        , $sPath . "views/azure/de/lang.php"
-        , $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php"
-        , $sPath . "views/azure/de/cust_lang.php"
+            $sPath . "translations/de/lang.php",
+            $sPath . "translations/de/translit_lang.php",
+            $sPath . "views/azure/de/lang.php",
+            $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php",
+            $sPath . "views/azure/de/cust_lang.php"
         );
 
         $aInfo = array('oxlangTestModule' => 'oxlangTestModule');
@@ -224,12 +204,14 @@ class Unit_Core_oxLangTest extends OxidTestCase
         rmdir($sShopPath . "modules/oxlangTestModule/application/translations/de/");
         rmdir($sShopPath . "modules/oxlangTestModule/application/translations/");
         rmdir($sShopPath . "modules/oxlangTestModule/application/");
-
     }
 
 
     public function testGetLangFilesPathForAdmin()
     {
+        if (!OXID_VERSION_PE) {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . 'modules/oxlangTestModule/views/admin/de/';
 
         if (!is_dir($sFilePath)) {
@@ -274,7 +256,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $myConfig = $this->getConfig();
         $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . '_default';
 
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $this->assertEquals($sCacheName, $oLang->UNITgetLangFileCacheName(true, 1));
 
         $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . '_9fe20164bd4aeab975137aae7f30a1ce';
@@ -431,7 +413,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $aLang['ACCOUNT_MAIN_BACKTOSHOP'] = "Zurück zum Shop";
         $aRecoded['ACCOUNT_MAIN_BACKTOSHOP'] = iconv('ISO-8859-15', 'UTF-8', $aLang['ACCOUNT_MAIN_BACKTOSHOP']);
 
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $aResult = $oLang->UNITrecodeLangArray($aLang, 'ISO-8859-15');
         $this->assertNotEquals($aLang, $aResult);
         $this->assertEquals($aRecoded, $aResult);
@@ -439,10 +421,9 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testTranslateStringWithGeneratedLangFile()
     {
-        $oLang = new oxlang();
+        $oLang = oxNew('oxLang');
 
-        $sVersionPrefix = 'ee';
-        $sVersionPrefix = 'pe';
+        $sVersionPrefix = $this->getTestConfig()->getShopEdition() == "EE" ? 'ee' : 'pe';
 
         $sVal = iconv('ISO-8859-15', 'UTF-8', "Zurück zum Shop");
         $myConfig = $this->getConfig();
@@ -498,7 +479,6 @@ class Unit_Core_oxLangTest extends OxidTestCase
     {
         $oLang = $this->getMock('oxlang', array('isAdmin'));
         $oLang->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-
 
         $this->assertEquals('blafoowashere123', $oLang->translateString("blafoowashere123"));
         $this->assertEquals('', $oLang->translateString(""));
@@ -561,7 +541,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
     // passing language ids
     public function testGetLanguageTagPassedLang()
     {
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $this->assertEquals('', $oLang->getLanguageTag(0));
         $this->assertEquals('_1', $oLang->getLanguageTag(1));
     }
@@ -569,7 +549,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
     public function testResetBaseLanguage()
     {
         $this->setRequestParameter('lang', '1');
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
 
         $this->assertEquals(1, $oLang->getBaseLanguage());
         $this->setRequestParameter('lang', '0');
@@ -596,7 +576,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $this->setRequestParameter('changelang', null);
         $this->setRequestParameter('lang', 1);
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
 
         $this->assertEquals(1, $oLang->getBaseLanguage());
 
@@ -604,7 +584,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $this->setRequestParameter('lang', null);
         $this->setRequestParameter('tpllanguage', null);
         $this->setRequestParameter('language', 1);
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
 
         $this->assertEquals(1, $oLang->getBaseLanguage());
 
@@ -612,7 +592,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $this->setRequestParameter('lang', null);
         $this->setRequestParameter('tpllanguage', null);
         $this->setRequestParameter('language', null);
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
 
         $this->getConfig()->setConfigParam('sDefaultLang', 1);
 
@@ -625,7 +605,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
     public function testGetBaseLanguagePassingNotExistingShouldBeFixed()
     {
         $this->setRequestParameter('changelang', 'xxx');
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
 
         $this->assertEquals(0, $oLang->getBaseLanguage());
     }
@@ -644,7 +624,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $this->setRequestParameter('lang', null);
         $this->setRequestParameter('tpllanguage', 1);
 
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
 
         $this->assertEquals(0, $oLang->getBaseLanguage());
     }
@@ -960,7 +940,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $aLangArray = array($oDe, $oEng);
 
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $this->assertEquals($aLangArray, $oLang->getLanguageArray(0, true, true));
     }
 
@@ -1003,7 +983,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $aLangArray = array(0 => $oDe, 2 => $oRus);
 
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
 
         $this->assertEquals($aLangArray, $oLang->getLanguageArray(2));
     }
@@ -1031,7 +1011,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $aLangParams["de"]["active"] = false;
         $aLangParams = $oConfig->setConfigParam('aLanguageParams', $aLangParams);
 
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $aLanguages = $oLang->getLanguageArray(1, true);
         $this->assertEquals($aLangArray, $aLanguages);
 
@@ -1129,7 +1109,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testSetBaseLanguage()
     {
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $oLang->setBaseLanguage(2);
 
         $this->assertEquals(2, $oLang->getBaseLanguage());
@@ -1176,7 +1156,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testValidateLanguage()
     {
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
 
         $this->assertEquals(1, $oLang->validateLanguage(1));
         $this->assertEquals(0, $oLang->validateLanguage(3));
@@ -1280,7 +1260,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $this->getConfig()->setConfigParam('aLanguageParams', $aLangParams);
 
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $aKeys = array(0, 3, 1);
 
         $this->assertEquals($aKeys, array_keys($oLang->getLanguageArray()));
@@ -1505,7 +1485,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         oxTestModules::addFunction("oxUtils", "getLangCache", "{}");
         oxTestModules::addFunction("oxUtils", "setLangCache", "{}");
 
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $aMapData = $oLang->UNITgetLanguageMap(1);
 
         $this->assertTrue(count($aMapData) > 0);
@@ -1513,16 +1493,14 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetMultiLangTables()
     {
-        $oLang = new oxLang();
+
+        $oLang = oxNew('oxLang');
         $aTable = $oLang->getMultiLangTables();
-
-
         $this->assertTrue(count($aTable) == 22);
 
         $this->getConfig()->setConfigParam('aMultiLangTables', array('table1', 'table2'));
 
         $aTable = $oLang->getMultiLangTables();
-
         $this->assertTrue(count($aTable) == 24);
     }
 
@@ -1556,7 +1534,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
                            "B_1_4" => "1_4"
         );
 
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
 
         // initial check..
         $this->assertEquals($aResData1, $oLang->UNITcollectSimilar($aData, "A_1_"));
@@ -1574,7 +1552,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetSimilarByKey()
     {
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
 
         // non admin
         $aRes = $oLang->getSimilarByKey("DETAILS_VPE_MESSAGE", 0, false);
@@ -1672,7 +1650,6 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $aAssertLanguageIds = array(0 => 'de', 1 => 'ru', 3 => 'en');
 
-
         /** @var oxLang $oLang */
         $oLang = oxNew('oxLang');
         $aAllShopLanguageIds = $oLang->getAllShopLanguageIds();
@@ -1706,34 +1683,34 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testIsTranslatedDefaultValue()
     {
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $this->assertTrue($oLang->isTranslated());
     }
 
     public function testIsTranslatedSetTrue()
     {
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $oLang->setIsTranslated();
         $this->assertTrue($oLang->isTranslated());
     }
 
     public function testIsTranslatedSetFalse()
     {
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $oLang->setIsTranslated(false);
         $this->assertFalse($oLang->isTranslated());
     }
 
     public function testIsTranslatedInTranslationActionTranslationNotFound()
     {
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $oLang->translateString('NOT_EXISTING_KEY');
         $this->assertFalse($oLang->isTranslated());
     }
 
     public function testIsTranslatedInTranslationActionTranslationFound()
     {
-        $oLang = new oxLang();
+        $oLang = oxNew('oxLang');
         $oLang->translateString('HOME');
         $this->assertTrue($oLang->isTranslated());
     }

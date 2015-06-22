@@ -16,14 +16,13 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 /**
  * Includes PHP mailer class.
  */
 require oxRegistry::getConfig()->getConfigParam('sCoreDir') . "/phpmailer/class.phpmailer.php";
-
 
 /**
  * Mailing manager.
@@ -571,84 +570,94 @@ class oxEmail extends PHPMailer
      * Sets mailer additional settings and sends ordering mail to shop owner.
      * Returns true on success.
      *
-     * @param oxOrder $oOrder   Order object
-     * @param string  $sSubject user defined subject [optional]
+     * @param oxOrder $order   Order object
+     * @param string  $subject user defined subject [optional]
      *
      * @return bool
      */
-    public function sendOrderEmailToOwner($oOrder, $sSubject = null)
+    public function sendOrderEmailToOwner($order, $subject = null)
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
 
-        $oShop = $this->_getShop();
+        $shop = $this->_getShop();
 
         // cleanup
         $this->_clearMailer();
 
         // add user defined stuff if there is any
-        $oOrder = $this->_addUserInfoOrderEMail($oOrder);
+        $order = $this->_addUserInfoOrderEMail($order);
 
-        $oUser = $oOrder->getOrderUser();
-        $this->setUser($oUser);
+        $user = $order->getOrderUser();
+        $this->setUser($user);
 
         // send confirmation to shop owner
         // send not pretending from order user, as different email domain rise spam filters
-        $this->setFrom($oShop->oxshops__oxowneremail->value);
+        $this->setFrom($shop->oxshops__oxowneremail->value);
 
-        $oLang = oxRegistry::getLang();
-        $iOrderLang = $oLang->getObjectTplLanguage();
+        $language = oxRegistry::getLang();
+        $orderLanguage = $language->getObjectTplLanguage();
 
         // if running shop language is different from admin lang. set in config
         // we have to load shop in config language
-        if ($oShop->getLanguage() != $iOrderLang) {
-            $oShop = $this->_getShop($iOrderLang);
+        if ($shop->getLanguage() != $orderLanguage) {
+            $shop = $this->_getShop($orderLanguage);
         }
 
-        $this->setSmtp($oShop);
+        $this->setSmtp($shop);
 
         // create messages
-        $oSmarty = $this->_getSmarty();
-        $this->setViewData("order", $oOrder);
+        $smarty = $this->_getSmarty();
+        $this->setViewData("order", $order);
 
         // Process view data array through oxoutput processor
         $this->_processViewArray();
 
-        $this->setBody($oSmarty->fetch($myConfig->getTemplatePath($this->_sOrderOwnerTemplate, false)));
-        $this->setAltBody($oSmarty->fetch($myConfig->getTemplatePath($this->_sOrderOwnerPlainTemplate, false)));
+        $this->setBody($smarty->fetch($config->getTemplatePath($this->_sOrderOwnerTemplate, false)));
+        $this->setAltBody($smarty->fetch($config->getTemplatePath($this->_sOrderOwnerPlainTemplate, false)));
 
         //Sets subject to email
         // #586A
-        if ($sSubject === null) {
-            if ($oSmarty->template_exists($this->_sOrderOwnerSubjectTemplate)) {
-                $sSubject = $oSmarty->fetch($this->_sOrderOwnerSubjectTemplate);
+        if ($subject === null) {
+            if ($smarty->template_exists($this->_sOrderOwnerSubjectTemplate)) {
+                $subject = $smarty->fetch($this->_sOrderOwnerSubjectTemplate);
             } else {
-                $sSubject = $oShop->oxshops__oxordersubject->getRawValue() . " (#" . $oOrder->oxorder__oxordernr->value . ")";
+                $subject = $shop->oxshops__oxordersubject->getRawValue() . " (#" . $order->oxorder__oxordernr->value . ")";
             }
         }
 
-        $this->setSubject($sSubject);
-        $this->setRecipient($oShop->oxshops__oxowneremail->value, $oLang->translateString("order"));
+        $this->setSubject($subject);
+        $this->setRecipient($shop->oxshops__oxowneremail->value, $language->translateString("order"));
 
-        if ($oUser->oxuser__oxusername->value != "admin") {
-            $sFullName = $oUser->oxuser__oxfname->getRawValue() . " " . $oUser->oxuser__oxlname->getRawValue();
-            $this->setReplyTo($oUser->oxuser__oxusername->value, $sFullName);
+        if ($user->oxuser__oxusername->value != "admin") {
+            $fullName = $user->oxuser__oxfname->getRawValue() . " " . $user->oxuser__oxlname->getRawValue();
+            $this->setReplyTo($user->oxuser__oxusername->value, $fullName);
         }
 
-        $blSuccess = $this->send();
+        $result = $this->send();
 
-        // add user history
-        $oRemark = oxNew("oxremark");
-        $oRemark->oxremark__oxtext = new oxField($this->getAltBody(), oxField::T_RAW);
-        $oRemark->oxremark__oxparentid = new oxField($oUser->getId(), oxField::T_RAW);
-        $oRemark->oxremark__oxtype = new oxField("o", oxField::T_RAW);
-        $oRemark->save();
+        $this->onOrderEmailToOwnerSent($user, $order);
 
-
-        if ($myConfig->getConfigParam('iDebug') == 6) {
+        if ($config->getConfigParam('iDebug') == 6) {
             oxRegistry::getUtils()->showMessageAndExit("");
         }
 
-        return $blSuccess;
+        return $result;
+    }
+
+    /**
+     * Method is called when order email is sent to owner.
+     *
+     * @param oxUser $user
+     * @param oxOrder $order
+     */
+    protected function onOrderEmailToOwnerSent($user, $order)
+    {
+        // add user history
+        $remark = oxNew("oxRemark");
+        $remark->oxremark__oxtext = new oxField($this->getAltBody(), oxField::T_RAW);
+        $remark->oxremark__oxparentid = new oxField($user->getId(), oxField::T_RAW);
+        $remark->oxremark__oxtype = new oxField("o", oxField::T_RAW);
+        $remark->save();
     }
 
     /**
@@ -907,7 +916,6 @@ class oxEmail extends PHPMailer
 
         return $this->send();
     }
-
 
     /**
      * Sets mailer additional settings and sends "SuggestMail" mail to user.

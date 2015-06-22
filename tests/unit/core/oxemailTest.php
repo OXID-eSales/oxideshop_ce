@@ -322,8 +322,6 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendForgotPwdEmailSendingFailed()
     {
-        $myConfig = $this->getConfig();
-
         $oEmail = $this->getMock('oxEmail', array("send", "_getShop"));
         $oEmail->expects($this->any())->method('send')->will($this->returnValue(false));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -331,7 +329,6 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $blRet = $oEmail->SendForgotPwdEmail('username@useremail.nl');
         $this->assertEquals(-1, $blRet);
     }
-
 
     /*
      * Test sending backup mail to shop owner with attachment
@@ -556,7 +553,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testClearSidFromBody()
     {
-        $sShopId = 'oxbaseshop';
+        $sShopId = $this->getConfig()->getBaseShopId();
 
         $oEmail = new oxEmail();
 
@@ -589,7 +586,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testClearSidFromAltBody()
     {
-        $sShopId = 'oxbaseshop';
+        $sShopId = $this->getConfig()->getBaseShopId();
 
         $this->_oEmail->setAltBody('testAltBody index.php?bonusid=111&sid=123456789 blabla', true);
         $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->_oEmail->getAltBody());
@@ -949,10 +946,10 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testGetShopWithShopId()
     {
-        $iShopId = 'oxbaseshop';
+        $sShopId = $this->getConfig()->getBaseShopId();
 
-        $oShop = $this->_oEmail->UNITgetShop(null, $iShopId);
-        $this->assertEquals($iShopId, $oShop->getShopId());
+        $oShop = $this->_oEmail->UNITgetShop(null, $sShopId);
+        $this->assertEquals($sShopId, $oShop->getShopId());
         $this->assertEquals(oxRegistry::getLang()->getBaseLanguage(), $oShop->getLanguage());
     }
 
@@ -973,11 +970,11 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
         $this->_oEmail->setShop($this->_oShop);
 
-        $iShopId = 'oxbaseshop';
+        $sShopId = $this->getConfig()->getBaseShopId();
 
-        $oShop = $this->_oEmail->UNITgetShop(1, $iShopId);
+        $oShop = $this->_oEmail->UNITgetShop(1, $sShopId);
         $this->assertEquals(1, $oShop->getLanguage());
-        $this->assertEquals($iShopId, $oShop->getShopId());
+        $this->assertEquals($sShopId, $oShop->getShopId());
         $this->assertEquals($this->_oShop, $this->_oEmail->UNITgetShop());
     }
 

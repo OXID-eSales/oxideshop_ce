@@ -30,7 +30,7 @@
  * @covers oxUserCounter
  * @covers oxOnlineLicenseCheck
  */
-class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends OxidTestCase
+class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
 {
     public function testRequestHandlingWithPositiveResponse()
     {
@@ -61,9 +61,9 @@ class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends Oxid
         $this->assertFalse($oConfig->getConfigParam('blShopStopped'));
         $this->assertEquals('', $oConfig->getConfigParam('sShopVar'));
     }
-
     public function testRequestHandlingWithNegativeResponse()
     {
+
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam('blShopStopped', false);
         $oConfig->setConfigParam('sShopVar', '');
@@ -87,8 +87,8 @@ class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends Oxid
 
         $oLicenseCheck->validateShopSerials();
 
-    $this->assertFalse($oConfig->getConfigParam('blShopStopped'));
-    $this->assertNotEquals('unlc', $oConfig->getConfigParam('sShopVar'));
+        $this->assertFalse($oConfig->getConfigParam('blShopStopped'));
+        $this->assertNotEquals('unlc', $oConfig->getConfigParam('sShopVar'));
     }
 
     public function testRequestHandlingWithInvalidResponse()

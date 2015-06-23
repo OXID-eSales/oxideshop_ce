@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -134,10 +134,9 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         //reset value
         $myConfig->getActiveShop()->oxshops__oxversion = new oxField($sVersion, oxField::T_RAW);
 
+        $editionName = $this->getEditionName();
         $this->assertNotEquals($sTest, $sRes);
-        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop Community Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar<head>test2</head>", $sRes);
-
-
+        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop ". $editionName ." Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar<head>test2</head>", $sRes);
     }
 
     /**
@@ -159,11 +158,9 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         //reset value
         $myConfig->getActiveShop()->oxshops__oxversion = new oxField($sVersion, oxField::T_RAW);
 
+        $editionName = $this->getEditionName();
         $this->assertNotEquals($sTest, $sRes);
-        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop Community Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar", $sRes);
-
-
-
+        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop ". $editionName ." Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar", $sRes);
     }
 
     /**
@@ -238,4 +235,16 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $oOutput->flushOutput();
         $this->assertEquals('{"asd":"asasd"}', ob_get_clean());
     }
+
+    private function getEditionName()
+    {
+        $editionName = '';
+
+        $editionName = 'Community';
+
+
+
+        return $editionName;
+    }
+
 }

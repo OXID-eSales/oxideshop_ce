@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -118,6 +118,7 @@ class oxOutput extends oxSuperCfg
         $aVersion = explode('.', $sVersion);
         $sMajorVersion = reset($aVersion);
 
+        $sShopMode = $this->getShopMode();
 
         // Replacing only once per page
         $sSearch = "</head>";
@@ -226,5 +227,16 @@ class oxOutput extends oxSuperCfg
                 oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . $this->_sCharset);
                 break;
         }
+    }
+
+    /**
+     * Forms Shop mode name.
+     *
+     * @return string
+     */
+    protected function getShopMode()
+    {
+        $sShopMode = '';
+        return $sShopMode;
     }
 }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -234,7 +234,7 @@ class BasketConstruct
         $iOxId = $oObject->getId();
         $sObjectTable = $oObject->getCoreTableName();
 
-        /** @var oxElement2ShopRelations $oElement2ShopRelations */
+        /** @var OxidEsales\Enterprise\Core\Element2ShopRelations $oElement2ShopRelations */
         $oElement2ShopRelations = oxNew('oxElement2ShopRelations', $sObjectTable);
         $oElement2ShopRelations->setShopIds($aShops);
         $oElement2ShopRelations->addToShop($iOxId);

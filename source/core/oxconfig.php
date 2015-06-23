@@ -793,20 +793,16 @@ class oxConfig extends oxSuperCfg
     public function getShopId()
     {
         if (is_null($this->_iShopId)) {
-            $this->setShopId($this->calculateActiveShopId());
+            $shopId = $this->calculateActiveShopId();
+            $this->setShopId($shopId);
+
+            if (!$this->_isValidShopId($shopId)) {
+                $shopId = $this->getBaseShopId();
+            }
+            $this->setShopId($shopId);
         }
 
         return $this->_iShopId;
-    }
-
-    /**
-     * Returns active shop id.
-     *
-     * @return string
-     */
-    protected function calculateActiveShopId()
-    {
-        return $this->getBaseShopId();
     }
 
     /**
@@ -2269,5 +2265,27 @@ class oxConfig extends oxSuperCfg
     public function getSystemConfigParameter($sParameterName)
     {
         return $this->getShopConfVar($sParameterName, $this->getBaseShopId());
+    }
+
+    /**
+     * Returns whether given shop id is valid.
+     *
+     * @param string $shopId
+     *
+     * @return bool
+     */
+    protected function _isValidShopId($shopId)
+    {
+        return !empty($shopId);
+    }
+
+    /**
+     * Returns active shop id.
+     *
+     * @return string
+     */
+    protected function calculateActiveShopId()
+    {
+        return $this->getBaseShopId();
     }
 }

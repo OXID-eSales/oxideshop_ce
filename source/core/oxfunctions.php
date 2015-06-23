@@ -26,7 +26,7 @@ if (!function_exists('registerShopAutoLoad')) {
      */
     function registerShopAutoLoad()
     {
-        require_once getShopBasePath()."/core/oxautoloader.php";
+        require_once __DIR__ . "/oxautoloader.php";
         $autoLoader = new oxAutoLoader();
         spl_autoload_register(array($autoLoader, 'autoload'));
     }
@@ -448,7 +448,7 @@ if (!function_exists('getRequestUrl')) {
 }
 
 //registering autoload handlers
-require_once getShopBasePath()."/core/oxautoloadernamespaced.php";
+require_once __DIR__ . "/oxautoloadernamespaced.php";
 $nameSpacedAutoLoader = new oxAutoLoaderNameSpaced(getShopBasePath());
 spl_autoload_register(array($nameSpacedAutoLoader, 'autoload'));
 

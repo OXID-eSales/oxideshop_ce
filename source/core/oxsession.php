@@ -309,8 +309,7 @@ class oxSession extends oxSuperCfg
      */
     protected function _sessionStart()
     {
-        $blSetNoCache = true;
-        if ($blSetNoCache) {
+        if ($this->needToSetHeaders()) {
             //enforcing no caching when session is started
             session_cache_limiter('nocache');
 
@@ -323,6 +322,8 @@ class oxSession extends oxSuperCfg
                 session_cache_limiter(false);
                 header("Cache-Control: no-store, private, must-revalidate, proxy-revalidate, post-check=0, pre-check=0, max-age=0, s-maxage=0");
             }
+        } else {
+            session_cache_limiter(false);
         }
 
         // Including database session managing class if needed.
@@ -517,7 +518,7 @@ class oxSession extends oxSuperCfg
             if ($sRet) {
                 $sRet .= '&amp;';
             }
-            $sRet .= 'stoken=' . $this->getSessionChallengeToken();
+            $sRet .= 'stoken=' . $this->getSessionChallengeToken() . $this->getShopUrlId();
         }
 
         return $sRet;
@@ -712,12 +713,10 @@ class oxSession extends oxSuperCfg
      */
     public function processUrl($sUrl)
     {
-        $blSid = $this->isSidNeeded($sUrl);
-
-        if ($blSid) {
-            $sSid = $this->sid($blSid);
-
+        if ($this->isSidNeeded($sUrl)) {
+            $sSid = $this->sid(true);
             if ($sSid) {
+                $this->sidToUrlEvent();
 
                 $oStr = getStr();
                 $aUrlParts = explode('#', $sUrl);
@@ -1098,4 +1097,37 @@ class oxSession extends oxSuperCfg
         return $this->_blStarted;
     }
 
+    /**
+     * Return Shop IR parameter for Url.
+     *
+     * @overload This method is used for overloading.
+     *
+     * @return string
+     */
+    protected function getShopUrlId()
+    {
+        return '';
+    }
+
+    /**
+     * Decide if need to set session headers to browser.
+     *
+     * @overload This method is used for overloading.
+     *
+     * @return bool
+     */
+    protected function needToSetHeaders()
+    {
+        return true;
+    }
+
+    /**
+     * Place to hook when SID is added to URL.
+     *
+     * @overload This method is used for overloading.
+     */
+    protected function sidToUrlEvent()
+    {
+        //
+    }
 }

@@ -1153,9 +1153,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $oSession->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oSession->UNITsetSessionId('testSid');
 
-        $sRet = 'stoken=stok';
-
-        $this->assertEquals($sRet, $oSession->sid());
+        $this->assertEquals('stoken=stok', $oSession->sid());
     }
 
     /**
@@ -1659,4 +1657,9 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $this->assertFalse($blRes);
     }
 
+    public function testIfSetHeader()
+    {
+        $oSession = oxNew('oxsession');
+        $this->assertTrue($oSession->needToSetHeaders());
+    }
 }

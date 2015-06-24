@@ -396,6 +396,8 @@ class oxDelivery extends oxI18n
                             if (!$blForBasket) {
                                 $iAmount += $iArtAmount;
                             }
+                            //HR#5650 product might be in multiple rule categories, counting it once is enough
+                            break;
                         }
                     }
 

@@ -236,7 +236,6 @@ class oxOutput extends oxSuperCfg
      */
     protected function getShopMode()
     {
-        $sShopMode = '';
-        return $sShopMode;
+        return '';
     }
 }

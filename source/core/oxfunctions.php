@@ -375,37 +375,16 @@ if (!function_exists('getViewName')) {
     /**
      * Return the view name of the given table if a view exists, otherwise the table name itself
      *
-     * @param string $sTable  table name
-     * @param int    $iLangId language id [optional]
-     * @param string $sShopId shop id, otherwise config->myshopid is used [optional]
+     * @param string $table  table name
+     * @param int    $languageId language id [optional]
+     * @param string $shopId shop id, otherwise config->myshopid is used [optional]
      *
      * @return string
      */
-    function getViewName($sTable, $iLangId = null, $sShopId = null)
+    function getViewName($table, $languageId = null, $shopId = null)
     {
-        $myConfig = oxRegistry::getConfig();
-
-        //This config option should only be used in emergency case.
-        //Originally it was planned for the case when admin area is not reached due to the broken views.
-        if (!$myConfig->getConfigParam('blSkipViewUsage')) {
-            $sViewSfx = '';
-
-
-            $blIsMultiLang = in_array($sTable, oxRegistry::getLang()->getMultiLangTables());
-            if ($iLangId != -1 && $blIsMultiLang) {
-                $oLang = oxRegistry::getLang();
-                $iLangId = $iLangId !== null ? $iLangId : oxRegistry::getLang()->getBaseLanguage();
-                $sAbbr = $oLang->getLanguageAbbr($iLangId);
-                $sViewSfx .= "_{$sAbbr}";
-            }
-
-            if ($sViewSfx || (($iLangId == -1 || $sShopId == -1) && $blIsMultiLang)) {
-                return "oxv_{$sTable}{$sViewSfx}";
-            }
-
-        }
-
-        return $sTable;
+        $viewNameGenerator = oxRegistry::get('oxTableViewNameGenerator');
+        return $viewNameGenerator->getViewName($table, $languageId, $shopId);
     }
 }
 

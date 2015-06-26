@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -165,11 +165,9 @@ class oxSystemEventHandler
      */
     protected function _isSendingShopDataEnabled()
     {
-        $blSendData = true;
+        $isSendingShopDataEnabled = (bool) $this->_getConfig()->getConfigParam('blLoadDynContents');
 
-        $blSendData = (bool) $this->_getConfig()->getConfigParam('blLoadDynContents');
-
-        return $blSendData;
+        return $isSendingShopDataEnabled;
     }
 
     /**
@@ -262,19 +260,13 @@ class oxSystemEventHandler
     }
 
     /**
-     * Check if shop valid.
-     * Redirect offline if not valid.
-     */
-    private function _validateOffline()
-    {
-    }
-
-    /**
-     * Performance - run these checks only each 5 times statistically.
+     * Check if shop valid and do related actions
      *
-     * @return bool
+     * @overload This method is used for overloading.
+     *
+     * @return void
      */
-    private function _needValidateShop()
+    protected function _validateOffline()
     {
     }
 

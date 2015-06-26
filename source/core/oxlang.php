@@ -701,16 +701,16 @@ class oxLang extends oxSuperCfg
     /**
      * Returns custom theme language files.
      *
-     * @param int $iLang active language
+     * @param int $language active language
      *
      * @return array
      */
-    protected function getCustomThemeLanguageFiles($iLang)
+    protected function getCustomThemeLanguageFiles($language)
     {
         $oConfig = $this->getConfig();
         $sCustomTheme = $oConfig->getConfigParam("sCustomTheme");
         $sAppDir = $oConfig->getAppDir();
-        $sLang = oxRegistry::getLang()->getLanguageAbbr($iLang);
+        $sLang = oxRegistry::getLang()->getLanguageAbbr($language);
         $aLangFiles = array();
 
         if ($sCustomTheme) {
@@ -1289,11 +1289,11 @@ class oxLang extends oxSuperCfg
     /**
      * Gets language Ids for given shopId or for all subshops
      *
-     * @param null $iShopId
+     * @param null $shopId
      *
      * @return array
      */
-    protected function _getLanguageIdsFromDatabase($iShopId = null)
+    protected function _getLanguageIdsFromDatabase($shopId = null)
     {
         return $this->getLanguageIds();
     }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -804,7 +804,6 @@ class oxUtils extends oxSuperCfg
                 }
             }
         }
-
     }
 
     /**
@@ -1135,11 +1134,17 @@ class oxUtils extends oxSuperCfg
      */
     public function showMessageAndExit($sMsg)
     {
+        $this->prepareToExit();
+        exit($sMsg);
+    }
+
+    /**
+     * helper with commands to run before exit action
+     */
+    protected function prepareToExit()
+    {
         $this->getSession()->freeze();
         $this->commitFileCache();
-
-
-        exit($sMsg);
     }
 
     /**
@@ -1364,6 +1369,8 @@ class oxUtils extends oxSuperCfg
     /**
      * Returns full path (including file name) to cache file
      *
+     * @todo: test
+     *
      * @param string $sCacheName cache file name
      * @param bool   $blPathOnly if TRUE, name parameter will be ignored and only cache folder will be returned (default FALSE)
      * @param string $sExtension cache file extension
@@ -1372,8 +1379,7 @@ class oxUtils extends oxSuperCfg
      */
     public function getCacheFilePath($sCacheName, $blPathOnly = false, $sExtension = 'txt')
     {
-
-        $sVersionPrefix = 'pe';
+        $versionPrefix = $this->getEditionCacheFilePrefix();
 
         $sPath = realpath($this->getConfig()->getConfigParam('sCompileDir'));
 
@@ -1381,7 +1387,16 @@ class oxUtils extends oxSuperCfg
             return false;
         }
 
-        return $blPathOnly ? "{$sPath}/" : "{$sPath}/ox{$sVersionPrefix}c_{$sCacheName}." . $sExtension;
+        return $blPathOnly ? "{$sPath}/" : "{$sPath}/ox{$versionPrefix}c_{$sCacheName}." . $sExtension;
+    }
+
+    /**
+     * Get current edition prefix
+     * @return string
+     */
+    public function getEditionCacheFilePrefix()
+    {
+        return '';
     }
 
     /**

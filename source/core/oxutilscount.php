@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -488,10 +488,19 @@ class oxUtilsCount extends oxSuperCfg
         }
 
         // loading R&R data from session
-        $aRRIdx = null;
-
-        $this->_sUserViewId = md5($this->getConfig()->getShopID() . oxRegistry::getLang()->getLanguageTag() . serialize($aRRIdx) . (int) $this->isAdmin());
+        $userSessionGroups = $this->getCurrentUserSessionGroups();
+        $this->_sUserViewId = md5($this->getConfig()->getShopID() . oxRegistry::getLang()->getLanguageTag() . serialize($userSessionGroups) . (int) $this->isAdmin());
 
         return $this->_sUserViewId;
+    }
+
+    /**
+     * Get current user groups
+     *
+     * @return array|null
+     */
+    protected function getCurrentUserSessionGroups()
+    {
+        return null;
     }
 }

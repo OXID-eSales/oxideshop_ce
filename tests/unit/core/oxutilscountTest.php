@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -56,7 +56,6 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
         $this->getConfig()->setGlobalParameter('aLocalVendorCache', null);
         oxRegistry::getUtils()->toFileCache('aLocalVendorCache', '');
         oxRegistry::getUtils()->toFileCache('aLocalCatCache', '');
-
     }
 
     protected function tearDown()
@@ -71,7 +70,6 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
 
         oxRegistry::getUtils()->oxResetFileCache();
 
-
         // deleting test articles
         $oArticle = new oxarticle;
         $oArticle->delete('testarticle1');
@@ -85,6 +83,7 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
 
     public function testSetPriceCatArticleCountWhenPriceFrom0To1AndDbContainsProductWhichPriceIs0()
     {
+
         $oArticle = new oxArticle();
         $oArticle->setId("_testArticle");
         $oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getBaseShopId());
@@ -94,18 +93,17 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
 
         $oUtilsCount = new oxUtilsCount();
 
-
         $this->assertEquals(5, $oUtilsCount->setPriceCatArticleCount(array(), 'xxx', 'xxx', 0, 1));
     }
 
     public function testGetCatArticleCount()
     {
+
         $this->assertEquals('0', oxRegistry::get("oxUtilsCount")->GetCatArticleCount('', true));
-        $sCatID = '8a142c3e60a535f16.78077188';
-        $sResult = oxDb::getDb()->getOne("SELECT count(*) FROM `oxobject2category` WHERE OXCATNID = '$sCatID'");
-        $this->assertEquals($sResult, oxRegistry::get("oxUtilsCount")->GetCatArticleCount($sCatID, true));
+
         oxRegistry::getUtils()->oxResetFileCache();
         $this->assertEquals('0', oxRegistry::get("oxUtilsCount")->GetCatArticleCount('', true));
+
         $sCatID = '8a142c3e60a535f16.78077188';
         $sResult = oxDb::getDb()->getOne("SELECT count(*) FROM `oxobject2category` WHERE OXCATNID = '$sCatID'");
         $this->assertEquals($sResult, oxRegistry::get("oxUtilsCount")->GetCatArticleCount($sCatID, true));
@@ -113,7 +111,6 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
 
     public function testGetPriceCatArticleCount()
     {
-
         $myUtilsTest = new oxutilscount();
 
         $aCache = $myUtilsTest->UNITgetCatCache();
@@ -139,19 +136,17 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
 
     public function testGetVendorArticleCount()
     {
+
         $myUtilsTest = new oxutilscount();
 
         $aCache = $myUtilsTest->UNITgetVendorCache();
-
 
         $sRet = oxRegistry::get("oxUtilsCount")->setVendorArticleCount($aCache, '77442e37fdf34ccd3.94620745', $myUtilsTest->UNITgetUserViewId(), true);
         $sCount = oxRegistry::get("oxUtilsCount")->getVendorArticleCount('77442e37fdf34ccd3.94620745', true, true);
 
         $this->assertEquals($sRet, $sCount);
-        //to make sure there is no null == null test
         $this->assertTrue($sRet > 0);
     }
-
 
     // testing if vendor cache is loaded automatically
     public function testGetVendorArticleCountCacheRefreshTest()
@@ -168,16 +163,15 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
 
     public function testGetManufacturerArticleCount()
     {
+
         $myUtilsTest = new oxutilscount();
 
         $aCache = $myUtilsTest->UNITgetManufacturerCache();
-
 
         $sRet = oxRegistry::get("oxUtilsCount")->setManufacturerArticleCount($aCache, 'ee4948794e28d488cf1c8101e716a3f4', $myUtilsTest->UNITgetUserViewId(), true);
         $sCount = oxRegistry::get("oxUtilsCount")->getManufacturerArticleCount('ee4948794e28d488cf1c8101e716a3f4', true, true);
 
         $this->assertEquals($sRet, $sCount);
-        //to make sure there is no null == null test
         $this->assertTrue($sRet > 0);
     }
 
@@ -196,32 +190,29 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
 
     public function testSetCatArticleCount()
     {
+
         $myUtilsTest = new oxutilscount();
-
-
         $sRetSet = oxRegistry::get("oxUtilsCount")->setCatArticleCount(array(), '8a142c3e44ea4e714.31136811', $myUtilsTest->UNITgetUserViewId(), true);
         $sRetGet = oxRegistry::get("oxUtilsCount")->getCatArticleCount('8a142c3e44ea4e714.31136811', true);
 
         $this->assertEquals($sRetSet, $sRetGet);
-
-
         $this->assertEquals($sRetSet, 4);
     }
 
     public function testSetPriceCatArticleCount()
     {
+
         $myUtilsTest = new oxutilscount();
 
         $sRetSet = oxRegistry::get("oxUtilsCount")->setPriceCatArticleCount(array(), '30e44ab8338d7bf06.79655612', $myUtilsTest->UNITgetUserViewId(), 10, 100);
         $sRetGet = oxRegistry::get("oxUtilsCount")->getPriceCatArticleCount('30e44ab8338d7bf06.79655612', 10, 100, true);
         $this->assertEquals($sRetSet, $sRetGet);
-
-
         $this->assertEquals(35, $sRetSet);
     }
 
     public function testSetVendorArticleCount()
     {
+
         $myUtilsTest = new oxutilscount();
         $aCache = null;
         $sCatId = 'root';
@@ -230,7 +221,6 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
         // always return 0 if $sCatId ='root'
         $this->assertEquals(oxRegistry::get("oxUtilsCount")->setVendorArticleCount($aCache, $sCatId, $sActIdent, true), 0);
         oxRegistry::getUtils()->oxResetFileCache();
-
 
         $aCache = $myUtilsTest->UNITgetVendorCache();
         $sVendorID = '77442e37fdf34ccd3.94620745'; //Hersteller 2 from Demodata
@@ -335,9 +325,9 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
         $this->assertEquals(2, $iCount);
     }
 
-
     public function testSetManufacturerArticleCount()
     {
+
         $myUtilsTest = new oxutilscount();
         $aCache = null;
         $sCatId = 'root';
@@ -347,12 +337,10 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
         $this->assertEquals(oxRegistry::get("oxUtilsCount")->setManufacturerArticleCount($aCache, $sCatId, $sActIdent, true), 0);
         oxRegistry::getUtils()->oxResetFileCache();
 
-
         $aCache = $myUtilsTest->UNITgetManufacturerCache();
         $sManufacturerID = 'ee4948794e28d488cf1c8101e716a3f4'; //Hersteller 2 from Demodata
         $sCatId = $sManufacturerID;
         $sActIdent = $myUtilsTest->UNITgetUserViewId();
-        //echo "\n->".setManufacturerArticleCount($aCache, $sCatId, $sActIdent)."<-";
         $this->assertEquals(oxRegistry::get("oxUtilsCount")->setManufacturerArticleCount($aCache, $sCatId, $sActIdent, true), 1);
     }
 
@@ -574,9 +562,9 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
         $this->assertEquals($sExpected, $myUtilsTest->UNITgetUserViewId());
     }
 
-
     public function testZeroArtManufaturerCache()
     {
+
         $myUtilsTest = $this->getMock('oxutilscount', array('_setManufacturerCache'));
         $myUtilsTest->expects($this->once())->method('_setManufacturerCache')->with(
             $this->equalTo(

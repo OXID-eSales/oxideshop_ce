@@ -61,7 +61,7 @@ class oxModuleUtilsObject extends oxUtilsObject
 
     public function getActiveModuleChain($aClassChain)
     {
-        return parent::_getActiveModuleChain($aClassChain);
+        return parent::getActiveModuleChain($aClassChain);
     }
 
 }
@@ -128,7 +128,7 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
 
         $config = $this->getConfig();
 
-        oxRegistry::get("oxUtilsObject")->setModuleVar("aModules", $aModules);
+        oxUtilsObject::getInstance()->setModuleVar("aModules", $aModules);
         $config->setConfigParam("aModules", $aModules);
 
         $configFile = oxRegistry::get("oxConfigFile");
@@ -162,7 +162,7 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
 
         $config = $this->getConfig();
 
-        oxRegistry::get("oxUtilsObject")->setModuleVar("aModules", $aModules);
+        oxUtilsObject::getInstance()->setModuleVar("aModules", $aModules);
         $config->setConfigParam("aModules", $aModules);
 
         $configFile = oxRegistry::get("oxConfigFile");
@@ -190,8 +190,8 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
      */
     public function testGenerateUid()
     {
-        $id1 = oxRegistry::get('oxUtilsObject')->generateUid();
-        $id2 = oxRegistry::get('oxUtilsObject')->generateUid();
+        $id1 = oxUtilsObject::getInstance()->generateUid();
+        $id2 = oxUtilsObject::getInstance()->generateUid();
         $this->assertNotEquals($id1, $id2);
     }
 

@@ -28,12 +28,6 @@
  */
 class oxUtilsObject
 {
-
-    /**
-     * Cache file prefix
-     */
-    const CACHE_FILE_PREFIX = "config";
-
     /**
      * Cache class names
      *
@@ -56,13 +50,6 @@ class oxUtilsObject
     protected static $_aInstanceCache = array();
 
     /**
-     * Module information variables
-     *
-     * @var array
-     */
-    protected static $_aModuleVars = array();
-
-    /**
      * Class instance array
      *
      * @var array
@@ -76,8 +63,40 @@ class oxUtilsObject
      */
     private static $_instance = null;
 
-    /** @var array */
-    private $classMap;
+    /** @var oxEditionCodeHandler */
+    private $editionCodeHandler;
+
+    /** @var oxModuleChainsGenerator */
+    private $moduleChainsGenerator;
+
+    /** @var oxShopIdCalculator */
+    private $shopIdCalculator;
+
+    /**
+     * @param oxEditionCodeHandler    $editionCodeHandler
+     * @param oxModuleChainsGenerator $moduleChainsGenerator
+     * @param oxShopIdCalculator      $shopIdCalculator
+     */
+    public function __construct($editionCodeHandler = null, $moduleChainsGenerator = null, $shopIdCalculator = null)
+    {
+        if (!$editionCodeHandler) {
+            $editionCodeHandler = new oxEditionCodeHandler();
+        }
+        $this->editionCodeHandler = $editionCodeHandler;
+
+        $moduleVariablesCache = new oxModuleVariablesCache();
+        if (!$shopIdCalculator) {
+            $shopIdCalculator = new oxShopIdCalculator($moduleVariablesCache);
+        }
+        $this->shopIdCalculator = $shopIdCalculator;
+        $moduleVariablesCache->setShopIdCalculator($shopIdCalculator);
+
+        if (!$moduleChainsGenerator) {
+            $moduleVariablesLocator = new oxModuleVariablesLocator($moduleVariablesCache, $shopIdCalculator);
+            $moduleChainsGenerator = new oxModuleChainsGenerator($moduleVariablesLocator);
+        }
+        $this->moduleChainsGenerator = $moduleChainsGenerator;
+    }
 
     /**
      * Returns object instance
@@ -92,10 +111,17 @@ class oxUtilsObject
         }
 
         if (!self::$_instance instanceof oxUtilsObject) {
-
             // allow modules
             $oUtilsObject = new oxUtilsObject();
-            self::$_instance = $oUtilsObject->oxNew('oxUtilsObject');
+
+            $editionCodeHandler = $oUtilsObject->oxNew('oxEditionCodeHandler');
+            $moduleVariablesCache = $oUtilsObject->oxNew('oxModuleVariablesCache');
+            $shopIdCalculator = $oUtilsObject->oxNew('oxShopIdCalculator', $moduleVariablesCache);
+            $moduleVariablesCache->setShopIdCalculator($shopIdCalculator);
+            $moduleVariablesLocator = $oUtilsObject->oxNew('oxModuleVariablesLocator', $moduleVariablesCache, $shopIdCalculator);
+            $moduleChainsGenerator = $oUtilsObject->oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
+
+            self::$_instance = $oUtilsObject->oxNew('oxUtilsObject', $editionCodeHandler, $moduleChainsGenerator, $shopIdCalculator);
         }
 
         return self::$_instance;
@@ -123,31 +149,38 @@ class oxUtilsObject
     }
 
     /**
-     * Resets previously set module information.
+     * Resets instance cache
      *
-     * @static
+     * @param string $sClassName class name in the cache
+     *
+     * @return null;
      */
-    public static function resetModuleVars()
+    public function resetInstanceCache($sClassName = null)
     {
-        self::$_aModuleVars = array();
+        if ($sClassName && isset(self::$_aInstanceCache[$sClassName])) {
+            unset(self::$_aInstanceCache[$sClassName]);
 
-        $sMask = oxRegistry::get("oxConfigFile")->getVar("sCompileDir") . "/" . self::CACHE_FILE_PREFIX . ".*.txt";
-        $aFiles = glob($sMask);
-        if (is_array($aFiles)) {
-            foreach ($aFiles as $sFile) {
-                if (is_file($sFile)) {
-                    @unlink($sFile);
-                }
+            return;
+        }
+
+        //looping due to possible memory "leak".
+        if (is_array(self::$_aInstanceCache)) {
+            foreach (self::$_aInstanceCache as $sKey => $oInstance) {
+                unset(self::$_aInstanceCache[$sKey]);
             }
         }
+
+        self::$_aInstanceCache = array();
     }
 
-    /**
-     * @param array $classMap
-     */
-    public function setClassMap($classMap)
+    public function getModuleVar($sModuleVarName)
     {
-        $this->classMap = $classMap;
+        return $this->getModuleChainsGenerator()->getModuleVariablesLocator()->getModuleVar($sModuleVarName);
+    }
+
+    public function setModuleVar($sModuleVarName, $aValues)
+    {
+        $this->getModuleChainsGenerator()->getModuleVariablesLocator()->setModuleVar($sModuleVarName, $aValues);
     }
 
     /**
@@ -252,31 +285,6 @@ class oxUtilsObject
     }
 
     /**
-     * Resets instance cache
-     *
-     * @param string $sClassName class name in the cache
-     *
-     * @return null;
-     */
-    public function resetInstanceCache($sClassName = null)
-    {
-        if ($sClassName && isset(self::$_aInstanceCache[$sClassName])) {
-            unset(self::$_aInstanceCache[$sClassName]);
-
-            return;
-        }
-
-        //looping due to possible memory "leak".
-        if (is_array(self::$_aInstanceCache)) {
-            foreach (self::$_aInstanceCache as $sKey => $oInstance) {
-                unset(self::$_aInstanceCache[$sKey]);
-            }
-        }
-
-        self::$_aInstanceCache = array();
-    }
-
-    /**
      * Returns generated unique ID.
      *
      * @return string
@@ -291,42 +299,19 @@ class oxUtilsObject
     /**
      * Returns name of class file, according to class name.
      *
-     * @param string $sClassName Class name
+     * @param string $classAlias Class name
      *
      * @return string
      */
-    public function getClassName($sClassName)
+    public function getClassName($classAlias)
     {
-        $aModules = $this->getModuleVar('aModules');
-        $aClassChain = array();
-        $oldClassName = $sClassName;
-        $sClassName = $this->getNameSpacedClassName($sClassName);
+        $editionCodeHandler = new oxEditionCodeHandler();
 
-        if (is_array($aModules)) {
+        $class = $editionCodeHandler->getRealClassName($classAlias);
 
-            $aOldModules = array_change_key_case($aModules);
+        $class = $this->getModuleChainsGenerator()->createClassChain($class, $classAlias);
 
-            if (array_key_exists($oldClassName, $aOldModules)) {
-                $aAllChain = explode("&", $aOldModules[$oldClassName]);
-                $aClassChain = array_merge_recursive($aClassChain, $this->_getActiveModuleChain($aAllChain));
-            }
-
-            if (count($aClassChain)) {
-                $sParent = $sClassName;
-
-                //security: just preventing string termination
-                $sParent = str_replace(chr(0), '', $sParent);
-
-                //building middle classes if needed
-                $sClassName = $this->_makeSafeModuleClassParents($aClassChain, $sParent);
-            }
-        }
-
-        // check if there is a path, if yes, remove it
-        if (strpos($sClassName, '/') !== false) {
-            $sClassName = basename($sClassName);
-        }
-        return $sClassName;
+        return $class;
     }
 
     /**
@@ -338,431 +323,65 @@ class oxUtilsObject
      */
     public function getClassAliasName($className)
     {
-        if (substr($className, 0, 1) !== '\\') {
-            $className = '\\' . $className;
-        }
-
-        $classAlias = array_search($className, $this->getExtendedClassMap());
-        if ($classAlias === false) {
-            $classAlias = null;
-        }
-
-        return $classAlias;
+        return $this->getEditionCodeHandler()->getClassAliasName($className);
     }
-
+    
     /**
-     * @param $class
-     * @return mixed
-     */
-    private function getNameSpacedClassName($class)
-    {
-        $classMap = $this->getExtendedClassMap();
-
-        if (array_key_exists($class, $classMap)) {
-            $class = $classMap[$class];
-        }
-
-        return $class;
-    }
-
-    /**
-     * Returns extended classes map
+     * Returns shop id.
      *
-     * @return array
-     */
-    private function getExtendedClassMap()
-    {
-        if (is_null($this->classMap)) {
-            $map = array();
-
-            if (OXID_VERSION_EE || OXID_VERSION_PE_PE) {
-                $classMap = new \OxidEsales\Professional\ClassMap();
-                $map = $classMap->getMap();
-            }
-
-            if (OXID_VERSION_EE) {
-                $classMap = new \OxidEsales\Enterprise\ClassMap();
-                $map = array_merge($map, $classMap->getMap());
-            }
-
-            $this->setClassMap($map);
-        }
-
-        return $this->classMap;
-    }
-
-    /**
-     * Checks if module is disabled, added to aDisabledModules config.
-     *
-     * @param array $aClassChain Module names
-     *
-     * @return array
-     */
-    protected function _getActiveModuleChain($aClassChain)
-    {
-        $aDisabledModules = $this->getModuleVar('aDisabledModules');
-        $aModulePaths = $this->getModuleVar('aModulePaths');
-
-        if (is_array($aDisabledModules) && count($aDisabledModules) > 0) {
-            foreach ($aDisabledModules as $sId) {
-                $sPath = $sId;
-                if (is_array($aModulePaths) && array_key_exists($sId, $aModulePaths)) {
-                    $sPath = $aModulePaths[$sId];
-                    if (!isset($sPath)) {
-                        $sPath = $sId;
-                    }
-                }
-                foreach ($aClassChain as $sKey => $sModuleClass) {
-                    if (strpos($sModuleClass, $sPath . "/") === 0) {
-                        unset($aClassChain[$sKey]);
-                    } elseif (strpos($sPath, ".")) {
-                        // If module consists of one file without own dir (getting module.php as id, instead of module)
-                        if (strpos($sPath, strtolower($sModuleClass)) === 0) {
-                            unset($aClassChain[$sKey]);
-                        }
-                    }
-                }
-            }
-        }
-
-        return $aClassChain;
-    }
-
-    /**
-     * Disables module, adds to aDisabledModules config.
-     *
-     * @param array $sModule Module name
-     */
-    protected function _disableModule($sModule)
-    {
-        /** @var oxModule $oModule */
-        $oModule = oxNew("oxModule");
-        $sModuleId = $oModule->getIdByPath($sModule);
-        $oModule->load($sModuleId);
-
-        /** @var oxModuleCache $oModuleCache */
-        $oModuleCache = oxNew('oxModuleCache', $oModule);
-        /** @var oxModuleInstaller $oModuleInstaller */
-        $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
-
-        $oModuleInstaller->deactivate($oModule);
-
-    }
-
-    /**
-     * Creates middle classes if needed.
-     *
-     * @param array  $aClassChain Module names
-     * @param string $sBaseModule Oxid base class
-     *
-     * @throws oxSystemComponentException missing system component exception
-     *
-     * @return string
-     */
-    protected function _makeSafeModuleClassParents($aClassChain, $sBaseModule)
-    {
-        $sParent = $sBaseModule;
-        $sClassName = $sBaseModule;
-
-        //building middle classes if needed
-        foreach ($aClassChain as $sModule) {
-            //creating middle classes
-            //e.g. class suboutput1_parent extends oxoutput {}
-            //     class suboutput2_parent extends suboutput1 {}
-            //$sModuleClass = $this->getClassName($sModule);
-
-            //security: just preventing string termination
-            $sModule = str_replace(chr(0), '', $sModule);
-
-            //get parent and module class names from sub/suboutput2
-            $sModuleClass = basename($sModule);
-
-            if (!class_exists($sModuleClass, false)) {
-                $sParentClass = basename($sParent);
-                $sModuleParentClass = $sModuleClass . "_parent";
-
-                //initializing middle class
-                if (!class_exists($sModuleParentClass, false)) {
-                    // If possible using alias instead if eval (since php 5.3).
-                    if (function_exists('class_alias')) {
-                        class_alias($sParentClass, $sModuleParentClass);
-                    } else {
-                        eval("abstract class $sModuleParentClass extends $sParentClass {}");
-                    }
-                }
-                $sParentPath = oxRegistry::get("oxConfigFile")->getVar("sShopDir") . "/modules/" . $sModule . ".php";
-
-                //including original file
-                if (file_exists($sParentPath)) {
-                    include_once $sParentPath;
-                } elseif (!class_exists($sModuleClass)) {
-                    // special case is when oxconfig class is extended: we cant call "_disableModule" as it requires valid config object
-                    // but we can't create it as module class extending it does not exist. So we will use orginal oxConfig object instead.
-                    if ($sParentClass == "oxconfig") {
-                        $oConfig = $this->_getObject("oxconfig", 0, null);
-                        oxRegistry::set("oxconfig", $oConfig);
-                    }
-
-                    // disable module if extended class is not found
-                    $blDisableModuleOnError = !oxRegistry::get("oxConfigFile")->getVar("blDoNotDisableModuleOnError");
-                    if ($blDisableModuleOnError) {
-                        $this->_disableModule($sModule);
-                    } else {
-                        //to avoid problems with unitest and only throw a exception if class does not exists MAFI
-                        /** @var oxSystemComponentException $oEx */
-                        $oEx = oxNew("oxSystemComponentException");
-                        $oEx->setMessage("EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND");
-                        $oEx->setComponent($sModuleClass);
-                        throw $oEx;
-                    }
-                    continue;
-                }
-            }
-            $sParent = $sModule;
-            $sClassName = $sModule;
-        }
-
-        //returning the last module from the chain
-        return $sClassName;
-    }
-
-    /**
-     * Returns active shop id. This method works independently from other classes.
+     * @deprecated use oxConfig::getShopId() or oxShopIdCalculator::getShopId instead.
      *
      * @return string
      */
     public function getShopId()
     {
-        return 'oxbaseshop';
+        return $this->getShopIdCalculator()->getShopId();
     }
 
     /**
-     * Retrieves module configuration variable for the base shop.
-     * Currently getModuleVar() is expected to be called with one of the values: aModules | aDisabledModules | aModulePaths
-     * This method is independent from oxConfig functionality.
+     * Resets module variables cache.
      *
-     * @param string $sModuleVarName Configuration array name
-     *
-     * @return array
+     * @deprecated use oxModuleVariablesLocator::resetModuleVars instead.
      */
-    public function getModuleVar($sModuleVarName)
+    public static function resetModuleVars()
     {
-        //static cache
-        if (isset(self::$_aModuleVars[$sModuleVarName])) {
-            return self::$_aModuleVars[$sModuleVarName];
-        }
-
-        //first try to get it from cache
-        //we do not use any of our cache APIs, as we want to prevent any class dependencies here
-        $aValue = $this->_getFromCache($sModuleVarName);
-
-        if (is_null($aValue)) {
-            $aValue = $this->_getModuleVarFromDB($sModuleVarName);
-            $this->_setToCache($sModuleVarName, $aValue);
-        }
-
-        //static cache
-        self::$_aModuleVars[$sModuleVarName] = $aValue;
-
-        return $aValue;
+        oxModuleVariablesLocator::resetModuleVariables();
     }
 
     /**
-     * Sets module information variable. The variable is set statically and is not saved for future.
+     * Disables module
      *
-     * @param string $sModuleVarName Configuration array name
-     * @param array  $aValues        Module name values
+     * @param string $sModule
+     *
+     * @deprecated use oxModuleChainsGenerator::disableModule instead.
      */
-    public function setModuleVar($sModuleVarName, $aValues)
+    protected function _disableModule($sModule)
     {
-        if (is_null($aValues)) {
-            self::$_aModuleVars = null;
-        } else {
-            self::$_aModuleVars[$sModuleVarName] = $aValues;
-        }
-
-        $this->_setToCache($sModuleVarName, $aValues);
+        $this->getModuleChainsGenerator()->disableModule($sModule);
     }
 
     /**
-     * Returns configuration key. This method is independent from oxConfig functionality.
-     *
-     * @return string
+     * @return oxEditionCodeHandler
      */
-    protected function _getConfKey()
+    protected function getEditionCodeHandler()
     {
-        $sFileName = dirname(__FILE__) . "/oxconfk.php";
-        $sCfgFile = new oxConfigFile($sFileName);
-
-        return $sCfgFile->getVar("sConfigKey");
+        return $this->editionCodeHandler;
     }
 
     /**
-     * Returns shop url to id map from config.
-     *
-     * @return array
+     * @return oxModuleChainsGenerator
      */
-    protected function _getShopUrlMap()
+    protected function getModuleChainsGenerator()
     {
-        //get from static cache
-        if (isset(self::$_aModuleVars["urlMap"])) {
-            return self::$_aModuleVars["urlMap"];
-        }
-
-        //get from file cache
-        $aMap = $this->_getFromCache("urlMap", false);
-        if (!is_null($aMap)) {
-            self::$_aModuleVars["urlMap"] = $aMap;
-
-            return $aMap;
-        }
-
-        $aMap = array();
-
-        $oDb = oxDb::getDb();
-        $sConfKey = $this->_getConfKey();
-
-        $sSelect = "SELECT oxshopid, oxvarname, DECODE( oxvarvalue , " . $oDb->quote($sConfKey) . " ) as oxvarvalue " .
-                   "FROM oxconfig WHERE oxvarname in ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')";
-
-        $oRs = $oDb->select($sSelect, false, false);
-
-        if ($oRs && $oRs->recordCount() > 0) {
-            while (!$oRs->EOF) {
-                $iShp = (int) $oRs->fields[0];
-                $sVar = $oRs->fields[1];
-                $sURL = $oRs->fields[2];
-
-                if ($sVar == 'aLanguageURLs') {
-                    $aUrls = unserialize($sURL);
-                    if (is_array($aUrls) && count($aUrls)) {
-                        $aUrls = array_filter($aUrls);
-                        $aUrls = array_fill_keys($aUrls, $iShp);
-                        $aMap = array_merge($aMap, $aUrls);
-                    }
-                } elseif ($sURL) {
-                    $aMap[$sURL] = $iShp;
-                }
-
-                $oRs->moveNext();
-            }
-        }
-
-        //save to cache
-        $this->_setToCache("urlMap", $aMap, false);
-        self::$_aModuleVars["urlMap"] = $aMap;
-
-        return $aMap;
+        return $this->moduleChainsGenerator;
     }
 
     /**
-     * Gets cache directory
-     *
-     * @return string
+     * @return oxShopIdCalculator
      */
-    protected function _getCacheDir()
+    protected function getShopIdCalculator()
     {
-        $sDir = oxRegistry::get("oxConfigFile")->getVar("sCompileDir");
-
-        return $sDir;
-    }
-
-    /**
-     * Returns module file cache name.
-     *
-     * @param string $sModuleVarName Module variable name
-     * @param int    $sShopId        Shop id
-     *
-     * @return string
-     */
-    protected function _getCacheFileName($sModuleVarName, $sShopId = null)
-    {
-        if (is_null($sShopId)) {
-            $sShopId = $this->getShopId();
-        }
-
-        $sDir = $this->_getCacheDir();
-        $sVar = strtolower(basename($sModuleVarName));
-        $sShop = strtolower(basename($sShopId));
-
-        $sFileName = $sDir . "/" . self::CACHE_FILE_PREFIX . "." . $sShop . '.' . $sVar . ".txt";
-
-        return $sFileName;
-    }
-
-    /**
-     * Returns shop module variable value directly from database.
-     *
-     * @param string $sModuleVarName Module variable name
-     *
-     * @return string
-     */
-    protected function _getModuleVarFromDB($sModuleVarName)
-    {
-        $oDb = oxDb::getDb();
-
-        $sShopId = $this->getShopId();
-        $sConfKey = $this->_getConfKey();
-
-        $sSelect = "SELECT DECODE( oxvarvalue , " . $oDb->quote($sConfKey) . " ) FROM oxconfig " .
-                   "WHERE oxvarname = " . $oDb->quote($sModuleVarName) . " AND oxshopid = " . $oDb->quote($sShopId);
-
-        $sModuleVarName = $oDb->getOne($sSelect, false, false);
-
-        $sModuleVarName = unserialize($sModuleVarName);
-
-        return $sModuleVarName;
-    }
-
-    /**
-     * Returns shop module variable value from cache.
-     * This method is independent from oxConfig class and does not use database.
-     *
-     * @param string $sModuleVarName    Module variable name
-     * @param bool   $blSubshopSpecific Indicates should cache be shop specific or not
-     *
-     * @return string
-     */
-    protected function _getFromCache($sModuleVarName, $blSubshopSpecific = true)
-    {
-        $sShopId = null;
-        if (!$blSubshopSpecific) {
-            $sShopId = "all";
-        }
-
-        $sFileName = $this->_getCacheFileName($sModuleVarName, $sShopId);
-        $sValue = null;
-        if (is_readable($sFileName)) {
-            $sValue = file_get_contents($sFileName);
-            if ($sValue == serialize(false)) {
-                return false;
-            }
-
-            $sValue = unserialize($sValue);
-            if ($sValue === false) {
-                $sValue = null;
-            }
-        }
-
-        return $sValue;
-    }
-
-    /**
-     * Writes shop module variable information to cache.
-     *
-     * @param string $sVarName          Variable name
-     * @param string $sValue            Variable value.
-     * @param bool   $blSubshopSpecific Indicates should cache be shop specific or not
-     */
-    protected function _setToCache($sVarName, $sValue, $blSubshopSpecific = true)
-    {
-        $sShopId = null;
-        if (!$blSubshopSpecific) {
-            $sShopId = "all";
-        }
-
-        $sFileName = $this->_getCacheFileName($sVarName, $sShopId);
-        file_put_contents($sFileName, serialize($sValue), LOCK_EX);
+        return $this->shopIdCalculator;
     }
 
     /**

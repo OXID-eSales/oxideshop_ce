@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -388,15 +388,14 @@ class oxUtilsView extends oxSuperCfg
     }
 
     /**
-     * sets compile check property to smarty object
+     * Sets compile check property to smarty object.
      *
      * @param object $oSmarty template processor object (smarty)
      */
     protected function _smartyCompileCheck($oSmarty)
     {
-        $myConfig = $this->getConfig();
-        $oSmarty->compile_check = $myConfig->getConfigParam('blCheckTemplates');
-
+        $config = $this->getConfig();
+        $oSmarty->compile_check = $config->getConfigParam('blCheckTemplates');
     }
 
     /**

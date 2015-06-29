@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -48,9 +48,7 @@ class oxUtilsUrl extends oxSuperCfg
      */
     public function getBaseAddUrlParams()
     {
-        $aAddUrlParams = array();
-
-        return $aAddUrlParams;
+        return array();
     }
 
     /**
@@ -118,7 +116,6 @@ class oxUtilsUrl extends oxSuperCfg
             }
         }
 
-
         return $sUrl;
     }
 
@@ -140,7 +137,6 @@ class oxUtilsUrl extends oxSuperCfg
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[a-z0-9\._]+&?(amp;)?/i', '\1', $sUrl);
         $sUrl = $oStr->preg_replace('/(&amp;|\?)$/', '', $sUrl);
         $sSep = ($oStr->strpos($sUrl, '?') === false) ? '?' : '&amp;';
-
 
         if (!oxRegistry::getUtils()->seoIsActive()) {
             // non seo url has no language identifier..
@@ -393,7 +389,6 @@ class oxUtilsUrl extends oxSuperCfg
      */
     public function processSeoUrl($sUrl)
     {
-
         if (!$this->isAdmin()) {
             $sUrl = $this->getSession()->processUrl($this->appendUrl($sUrl, $this->getAddUrlParams()));
         }
@@ -584,9 +579,11 @@ class oxUtilsUrl extends oxSuperCfg
     }
 
     /**
-     * Appends shop mall urls to $aHosts.
+     * Appends shop mall urls to $aHosts if needed
      *
      * @param array &$aHosts hosts array
+     *
+     * @return void
      */
     protected function _addMallHosts(& $aHosts)
     {

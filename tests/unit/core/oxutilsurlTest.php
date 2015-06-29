@@ -16,29 +16,12 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
 class Unit_Core_oxUtilsUrlTest extends OxidTestCase
 {
-
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-
-        parent::tearDown();
-    }
-
     /**
      * oxUtilsUrl::prepareCanonicalUrl() test case
      *
@@ -46,13 +29,12 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
      */
     public function testPrepareCanonicalUrl()
     {
+
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{return false;}');
         $this->getConfig()->setConfigParam("sDefaultLang", 9);
         $iLang = oxRegistry::getLang()->getBaseLanguage();
 
         $sExpUrl = "shop.com/index.php?param1=value1&amp;bonusid=111";
-
-
         $sExpUrl .= "&amp;lang={$iLang}";
 
         $oUtils = new oxUtilsUrl();
@@ -71,14 +53,12 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->assertEquals("http://www.myoxideshop.com/index.php?param2=value2", $oUtils->cleanUrl("http://www.myoxideshop.com/index.php?param1=value1&param2=value2", array("param1")));
     }
 
-
     public function testGetBaseAddUrlParamsPE()
     {
 
         $oUtils = new oxUtilsUrl();
         $this->assertEquals(array(), $oUtils->getBaseAddUrlParams());
     }
-
 
     public function testGetAddUrlParams()
     {
@@ -108,37 +88,35 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
 
     public function testPrepareUrlForNoSession()
     {
+
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{return false;}');
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 3;}');
 
-        $sShopId = '';
+        $this->assertEquals('sdf?lang=1', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=111&lang=1'));
+        $this->assertEquals('sdf?a&lang=1', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=111&a&lang=1'));
+        $this->assertEquals('sdf?a&amp;lang=1', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=111&a&amp;lang=1'));
+        $this->assertEquals('sdf?a&&amp;lang=3', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=111&a&'));
+        $this->assertEquals('sdf?lang=3', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf'));
 
-        $this->assertEquals('sdf?lang=1' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=111&lang=1'));
-        $this->assertEquals('sdf?a&lang=1' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=111&a&lang=1'));
-        $this->assertEquals('sdf?a&amp;lang=1' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=111&a&amp;lang=1'));
-        $this->assertEquals('sdf?a&&amp;lang=3' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=111&a&'));
-        $this->assertEquals('sdf?lang=3' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf'));
-
-        $sShopId = '';
+        // even after setting some shop id, it must be working
         $this->getConfig()->setShopId(5);
-
-        $this->assertEquals('sdf?lang=3' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=asd'));
-        $this->assertEquals('sdf?lang=2' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=das&lang=2'));
+        $this->assertEquals('sdf?lang=3', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=asd'));
+        $this->assertEquals('sdf?lang=2', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=das&lang=2'));
         $this->assertEquals('sdf?lang=2&shp=3', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?lang=2&sid=fs&amp;shp=3'));
         $this->assertEquals('sdf?shp=2&amp;lang=2', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?shp=2&amp;lang=2'));
         $this->assertEquals('sdf?shp=2&amp;lang=3', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?shp=2'));
 
-        $this->assertEquals('sdf?lang=1' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?force_sid=111&lang=1'));
-        $this->assertEquals('sdf?a&lang=1' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?force_sid=111&a&lang=1'));
-        $this->assertEquals('sdf?a&amp;lang=1' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?force_sid=111&a&amp;lang=1'));
-        $this->assertEquals('sdf?a&&amp;lang=3' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?force_sid=111&a&'));
+        $this->assertEquals('sdf?lang=1', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?force_sid=111&lang=1'));
+        $this->assertEquals('sdf?a&lang=1', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?force_sid=111&a&lang=1'));
+        $this->assertEquals('sdf?a&amp;lang=1', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?force_sid=111&a&amp;lang=1'));
+        $this->assertEquals('sdf?a&&amp;lang=3', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?force_sid=111&a&'));
 
-        $this->assertEquals('sdf?bonusid=111&amp;lang=3' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?bonusid=111'));
-        $this->assertEquals('sdf?a=1&bonusid=111&amp;lang=3' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?a=1&bonusid=111'));
-        $this->assertEquals('sdf?a=1&amp;bonusid=111&amp;lang=3' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?a=1&amp;bonusid=111&amp;force_admin_sid=111'));
+        $this->assertEquals('sdf?bonusid=111&amp;lang=3', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?bonusid=111'));
+        $this->assertEquals('sdf?a=1&bonusid=111&amp;lang=3', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?a=1&bonusid=111'));
+        $this->assertEquals('sdf?a=1&amp;bonusid=111&amp;lang=3', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?a=1&amp;bonusid=111&amp;force_admin_sid=111'));
 
         $this->setRequestParameter('currency', 2);
-        $this->assertEquals('sdf?lang=3&amp;cur=2' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf'));
+        $this->assertEquals('sdf?lang=3&amp;cur=2', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf'));
 
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{return true;}');
         $this->assertEquals('sdf', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf'));
@@ -382,7 +360,6 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->assertEquals($sUrl, $oUtils->processSeoUrl($sUrl));
     }
 
-
     // non admin
     // - if needed - must be added shop id, session identifier etc..
     public function testProcessSeoUrlNonAdmin()
@@ -395,7 +372,6 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $oUtils = $this->getMock("oxUtilsUrl", array("isAdmin"));
         $oUtils->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $this->assertEquals($sUrl, $oUtils->processSeoUrl($sUrl));
-
     }
 
     public function testGetCurrentUrl_dataProvider()
@@ -456,30 +432,6 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
     {
         $oUtils = new oxUtilsUrl();
         $this->assertSame($blResult, $oUtils->isCurrentShopHost($sUrl));
-    }
-
-    public function testIsCurrentShopHostWithMallShopURL()
-    {
-        return;
-
-        $this->getConfig()->setConfigParam("sMallShopURL", 'http://shopHost');
-        $this->getConfig()->setConfigParam("sShopURL", '');
-        $this->getConfig()->setConfigParam("aLanguageURLs", array());
-
-        $oUtils = new oxUtilsUrl();
-        $this->assertSame(true, $oUtils->isCurrentShopHost('http://shopHost'));
-    }
-
-    public function testIsCurrentShopHostWithMallSslShopURL()
-    {
-        return;
-        $this->getConfig()->setConfigParam("sMallShopURL", 'http://shopHost');
-        $this->getConfig()->setConfigParam("sMallSSLShopURL", 'https://shopHost');
-        $this->getConfig()->setConfigParam("sShopURL", '');
-        $this->getConfig()->setConfigParam("aLanguageURLs", array());
-
-        $oUtils = new oxUtilsUrl();
-        $this->assertSame(true, $oUtils->isCurrentShopHost('https://shopHost'));
     }
 
     public function testIsCurrentShopHostWithShopURL()

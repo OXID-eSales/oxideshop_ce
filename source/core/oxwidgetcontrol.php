@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -27,8 +27,6 @@
  */
 class oxWidgetControl extends oxShopControl
 {
-
-
     /**
      * Skip handler set for widget as it already set in oxShopControl.
      *
@@ -42,14 +40,6 @@ class oxWidgetControl extends oxShopControl
      * @var bool
      */
     protected $_blMainTasksExecuted = true;
-
-    /**
-     * Create object and ensure that params have correct value.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * Main shop widget manager. Sets needed parameters and calls parent::start method.
@@ -74,19 +64,6 @@ class oxWidgetControl extends oxShopControl
 
         //perform tasks that should be done at the end of widget processing
         $this->_runLast();
-    }
-
-    /**
-     * This function is only executed one time here we perform checks if we
-     * only need once per session. There is no need to execute it if there
-     * is views chain as parent view already executed it.
-     *
-     * @return null
-     */
-    protected function _runOnce()
-    {
-
-        return;
     }
 
     /**

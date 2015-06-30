@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -43,95 +43,6 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
         $oControl->expects($this->once())->method('_runLast');
         $oControl->expects($this->once())->method('_process')->with($this->equalTo("start"), $this->equalTo("testFnc"), $this->equalTo("testParams"), $this->equalTo("testViewsChain"));
         $oControl->start("start", "testFnc", "testParams", "testViewsChain");
-    }
-
-    /**
-     * Testing oxShopControl::_runOnce()
-     */
-    public function testRunOnce()
-    {
-        return; // EE only
-
-        // if _runOnce() will be executed, this param will be set to true
-        $this->setSessionParam("blRunOnceExecuted", false);
-
-        $oUtilsStub = $this->getMock('oxUtils', array('showMessageAndExit'));
-        oxRegistry::set('oxUtils', $oUtilsStub);
-
-        $oReverseProxyBackend = $this->getMock("stdClass", array("isActive"));
-        $oReverseProxyBackend->expects($this->any())->method('isActive')->will($this->returnValue(true));
-
-        OxRegistry::set("oxReverseProxyBackend", $oReverseProxyBackend);
-
-        $oConfig = $this->getMock("oxConfig", array("hasActiveViewsChain", "isProductiveMode"));
-        $oConfig->expects($this->any())->method('hasActiveViewsChain')->will($this->returnValue(false));
-        $oConfig->expects($this->any())->method('isProductiveMode')->will($this->returnValue(true));
-
-        $oControl = $this->getMock("oxWidgetControl", array("getConfig"));
-        $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
-
-        $oControl->blSkipForTest = true;
-        $oControl->UNITrunOnce();
-
-        $this->assertEquals(true, $this->getSessionParam("blRunOnceExecuted"));
-    }
-
-    /**
-     * Testing oxShopControl::_runOnce()
-     *
-     * @return null
-     */
-    public function testRunOnce_reverseProxyIsNotActive()
-    {
-        return; // EE only
-
-        // if _runOnce() will be executed, this param will be set to true
-        $this->setSessionParam("blRunOnceExecuted", false);
-
-        $oReverseProxyBackend = $this->getMock("stdClass", array("isActive"));
-        $oReverseProxyBackend->expects($this->any())->method('isActive')->will($this->returnValue(false));
-
-        OxRegistry::set("oxReverseProxyBackend", $oReverseProxyBackend);
-
-        $oConfig = $this->getMock("oxConfig", array("hasActiveViewsChain"));
-        $oConfig->expects($this->any())->method('hasActiveViewsChain')->will($this->returnValue(false));
-
-        $oControl = $this->getMock("oxWidgetControl", array("getConfig"));
-        $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
-
-        $oControl->blSkipForTest = true;
-        $oControl->UNITrunOnce();
-
-        $this->assertEquals(false, $this->getSessionParam("blRunOnceExecuted"));
-    }
-
-    /**
-     * Testing oxShopControl::_runOnce()
-     *
-     * @return null
-     */
-    public function testRunOnce_hasActiveViewsChain()
-    {
-        return; // EE only
-
-        // if _runOnce() will be executed, this param will be set to true
-        $this->setSessionParam("blRunOnceExecuted", false);
-
-        $oReverseProxyBackend = $this->getMock("stdClass", array("isActive"));
-        $oReverseProxyBackend->expects($this->any())->method('isActive')->will($this->returnValue(true));
-
-        OxRegistry::set("oxReverseProxyBackend", $oReverseProxyBackend);
-
-        $oConfig = $this->getMock("oxConfig", array("hasActiveViewsChain"));
-        $oConfig->expects($this->any())->method('hasActiveViewsChain')->will($this->returnValue(true));
-
-        $oControl = $this->getMock("oxWidgetControl", array("getConfig"));
-        $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
-
-        $oControl->blSkipForTest = true;
-        $oControl->UNITrunOnce();
-
-        $this->assertEquals(false, $this->getSessionParam("blRunOnceExecuted"));
     }
 
     /**

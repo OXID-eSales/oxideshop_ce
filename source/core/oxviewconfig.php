@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -92,18 +92,12 @@ class oxViewConfig extends oxSuperCfg
     public function getHomeLink()
     {
         if (($sValue = $this->getViewConfigParam('homeLink')) === null) {
-            $myConfig = $this->getConfig();
-            $myUtils = oxRegistry::getUtils();
-            $oLang = oxRegistry::getLang();
-            $iLang = $oLang->getBaseLanguage();
-
             $sValue = null;
 
-            $blAddStartCl = $myUtils->seoIsActive() && ($iLang != $myConfig->getConfigParam('sDefaultLang'));
-
-
+            $blAddStartCl = $this->isStartClassRequired();
             if ($blAddStartCl) {
-                $sValue = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getSelfLink() . 'cl=start', $iLang);
+                $baseLanguage = oxRegistry::getLang()->getBaseLanguage();
+                $sValue = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getSelfLink() . 'cl=start', $baseLanguage);
                 $sValue = oxRegistry::get("oxUtilsUrl")->appendUrl(
                     $sValue,
                     oxRegistry::get("oxUtilsUrl")->getBaseAddUrlParams()
@@ -119,6 +113,22 @@ class oxViewConfig extends oxSuperCfg
         }
 
         return $sValue;
+    }
+
+    /**
+     * Check if some shop selection page must be shown
+     *
+     * @return bool
+     */
+    protected function isStartClassRequired()
+    {
+        $baseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $shopConfig = $this->getConfig();
+        $isSeoActive = oxRegistry::getUtils()->seoIsActive();
+
+        $isStartRequired = $isSeoActive && ($baseLanguage != $shopConfig->getConfigParam('sDefaultLang'));
+
+        return $isStartRequired;
     }
 
     /**
@@ -392,11 +402,22 @@ class oxViewConfig extends oxSuperCfg
                 $sValue .= "\n{$sLang}";
             }
 
+            $sValue .= $this->getAdditionalRequestParameters();
 
             $this->setViewConfigParam('hiddensid', $sValue);
         }
 
         return $sValue;
+    }
+
+    /**
+     * If any hidden parameters needed for sending with request
+     *
+     * @return string
+     */
+    protected function getAdditionalRequestParameters()
+    {
+        return '';
     }
 
     /**
@@ -719,7 +740,6 @@ class oxViewConfig extends oxSuperCfg
 
         return $sValue;
     }
-
 
     /**
      * Returns visitor ip address
@@ -1432,8 +1452,6 @@ class oxViewConfig extends oxSuperCfg
     {
         return $this->showSelectLists() && (bool) $this->getConfig()->getConfigParam('bl_perfLoadSelectListsInAList');
     }
-
-
 
     /**
      * Checks if alternative image server is configured.

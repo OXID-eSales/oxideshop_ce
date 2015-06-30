@@ -36,17 +36,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     );
 
     /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-
-        parent::tearDown();
-    }
-
-    /**
      * oxViewconfig::getTsId() test case
      *
      * @return null
@@ -236,76 +225,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         $oViewConfig = new oxviewconfig();
         $this->assertEquals($this->getConfig()->getShopURL(), $oViewConfig->getHomeLink());
-    }
-
-
-
-
-
-    // just testing if fields are present ..
-    public function testIfAllDefaultDataIsSet()
-    {
-        $this->setConfigParam('listtype', null);
-
-        $myConfig = $this->getConfig();
-        $myConfig->setActiveView(null);
-        $aParams = array();
-        $aParams['sid'] = $this->getSession()->getId();
-        $sLang = oxRegistry::getLang()->getFormLang();
-        //$aParams['hiddensid']    = $this->getSession()->hiddenSid().( ( $sLang ) ? "\n{$sLang}" : "" );
-        //$aParams['selflink']     = $myConfig->getShopHomeURL();
-        //$aParams['sslselflink']  = $myConfig->getShopSecureHomeURL();
-        //$aParams['basedir']      = $myConfig->getShopURL();
-        //$aParams['coreutilsdir'] = $myConfig->getCoreUtilsURL();
-        /*
-        $aParams['selfactionlink'] = $myConfig->getShopCurrentURL();
-        $aParams['currenthomedir'] = $myConfig->getCurrentShopURL();
-        $aParams['basketlink']     = $myConfig->getShopHomeURL() . 'cl=basket';
-        $aParams['orderlink']      = $myConfig->getShopSecureHomeUrl() . 'cl=user';
-        $aParams['paymentlink']    = $myConfig->getShopSecureHomeUrl() . 'cl=payment';
-        $aParams['exeorderlink']   = $myConfig->getShopSecureHomeUrl() . 'cl=order&amp;fnc=execute';
-        $aParams['orderconfirmlink'] = $myConfig->getShopSecureHomeUrl() . 'cl=order';
-        $aParams['basetpldir']       = $myConfig->getBaseTemplateDir( false );
-        $aParams['templatedir']      = $myConfig->getTemplateDir( false );
-        $aParams['urltemplatedir'] = $myConfig->getTemplateUrl( false );
-        $aParams['imagedir']       = $myConfig->getImageUrl();
-        $aParams['nossl_imagedir'] = $aParams['nosslimagedir'] = $myConfig->getNoSSLImageDir( false );
-        $aParams['dimagedir']      = $myConfig->getDynImageDir();
-        $aParams['admindir']       = $myConfig->getConfigParam( 'sAdminDir' );
-        $aParams['id']             = $myConfig->getShopId();
-        $aParams['isssl']          = $myConfig->isSsl();
-        $aParams['ip']             = oxRegistry::get("oxUtilsServer")->getRemoteAddress();
-        $aParams['popupident']     = md5( $myConfig->getShopURL() );
-        $aParams['artperpageform'] = $myConfig->getShopCurrentURL();
-        $aParams['buyableparent']  = $aParams['isbuyableparent'] = $myConfig->getConfigParam( 'blVariantParentBuyable' );
-        $aParams['blshowbirthdayfields'] = $myConfig->getConfigParam( 'blShowBirthdayFields' );
-        $aParams['anrofcatarticles']  = $myConfig->getConfigParam( 'aNrofCatArticles' );
-        $aParams['blautosearchoncat'] = $myConfig->getConfigParam( 'blAutoSearchOnCat' );
-        $aParams['cnid'] = $aParams['actcatid'] = null;
-        $aParams['cl']   = $this->getConfig()->getActiveView()->getClassName();
-        $aParams['tpl']  = null;
-        $aParams['lang'] = oxRegistry::getLang()->getBaseLanguage();
-        $aParams['helplink']   = $myConfig->getShopCurrentURL()."cl=help&amp;page=";
-        $aParams['logoutlink'] = $myConfig->getShopHomeURL()."cl=".$this->getConfig()->getActiveView()->getClassName()."&amp;fnc=logout&amp;redirect=1";
-        $aParams['iartPerPage']   = '';
-        $sListType = $this->getConfig()->getGlobalParameter( 'listtype' );
-        $aParams['navurlparams']  = $sListType ? "&amp;listtype=$sListType" : '';
-        $aParams['navformparams'] = $sListType ? "<input type=\"hidden\" name=\"listtype\" value=\"$sListType\">\n" : '';
-        $aParams['blstockondefaultmessage']  = $this->getConfig()->getConfigParam( 'blStockOnDefaultMessage' );
-        $aParams['blstockoffdefaultmessage'] = $this->getConfig()->getConfigParam( 'blStockOffDefaultMessage' );
-        $aParams['sShopVersion'] = '';
-        $aParams['ajaxlink']     = '';
-        $aParams['ismultishop']  = false;
-        $aParams['sServiceUrl']  = '';
-
-
-        $oViewConf = new oxViewConfig();
-        foreach ( $aParams as $sVarName => $sVarValue ) {
-            $sFncName = "get$sVarName";
-            $sResult  = $oViewConf->$sFncName();
-            $this->assertEquals( $sVarValue, $sResult, "'$sVarName' does not match ($sVarValue != $sResult)" );
-        }
-        */
     }
 
     /**
@@ -842,23 +761,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     }
 
     /**
-     * Checks if shop licenze is in staging mode
-     */
-    public function testHasDemoKey()
-    {
-        return;
-
-        $oConfig = $this->getMock("oxConfig", array("hasDemoKey"));
-        $oConfig->expects($this->once())->method("hasDemoKey")->will($this->returnValue(true));
-
-        $oViewConfig = $this->getMock('oxViewConfig', array('getConfig'));
-        $oViewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
-
-        $this->assertTrue($oViewConfig->hasDemoKey());
-    }
-
-
-    /**
      * Testing getSelfLink()
      */
     public function testGetSelfLink()
@@ -1251,7 +1153,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
         $this->assertEquals($sSidNew, $oViewConf->getHiddenSid());
     }
-
 
     /**
      * oxViewconfig::getBaseDir() test case
@@ -1870,7 +1771,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
         $this->assertEquals($sTest, $oViewConf->isSsl());
     }
-
 
     /**
      * oxViewconfig::getRemoteAddress() test case

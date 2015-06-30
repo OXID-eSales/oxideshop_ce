@@ -422,8 +422,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
     public function testTranslateStringWithGeneratedLangFile()
     {
         $oLang = oxNew('oxLang');
-
-        $sVersionPrefix = $this->getTestConfig()->getShopEdition() == "EE" ? 'ee' : 'pe';
+        $sVersionPrefix = oxNew('oxUtils')->getEditionCacheFilePrefix();
 
         $sVal = iconv('ISO-8859-15', 'UTF-8', "Zurück zum Shop");
         $myConfig = $this->getConfig();

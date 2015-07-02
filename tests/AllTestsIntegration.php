@@ -16,11 +16,10 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
-require_once 'PHPUnit/Framework/TestSuite.php';
 error_reporting( (E_ALL ^ E_NOTICE) | E_STRICT );
 ini_set('display_errors', true);
 

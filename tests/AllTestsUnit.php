@@ -11,8 +11,6 @@
  * @version   SVN: $Id: $
  */
 
-require_once 'PHPUnit/Framework/TestSuite.php';
-
 echo "=========\nrunning php version ".phpversion()."\n\n============\n";
 
 /**

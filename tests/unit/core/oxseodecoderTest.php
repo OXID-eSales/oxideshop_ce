@@ -33,12 +33,23 @@ class modSeoEncoder_for_Unit_Core_oxSeoDecoderTest extends oxSeoEncoder
 
 class Unit_Core_oxSeoDecoderTest extends OxidTestCase
 {
+    /**
+     * There's a test setting a mocked oxUtils object
+     * into registry. Keep the old object and copy it
+     * back at test tearDown.
+     */
+    protected $oxUtilsFromRegistry = null;
 
+    /**
+     * Set up fixture.
+     */
     protected function setUp()
     {
         modSeoEncoder_for_Unit_Core_oxSeoDecoderTest::clearCache();
 
-        return parent::setUp();
+        parent::setUp();
+
+        $this->oxUtilsFromRegistry = oxRegistry::get('oxUtils');
     }
 
     /**
@@ -68,6 +79,8 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         } catch (Exception $oEx) {
             // avoiding exceptions while removing columns ..
         }
+        oxRegistry::set('oxUtils', $this->oxUtilsFromRegistry);
+
         parent::tearDown();
     }
 
@@ -409,25 +422,48 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
     /**
      * Testing seo call processor using http status code 301 for redirects of seo history
      * see https://bugs.oxid-esales.com/view.php?id=5471
+     * We test processing a changed url.
+     *
      */
-    public function testProcessSeoCallUsingStatus301ForRedirects()
+    public function testProcessSeoCallUsingStatus301ForRedirectsOldUrl()
     {
-        $oUtils = $this->getMock('oxutils', array('redirect'));
-        $oUtils->expects($this->exactly(2))->method('redirect')->with($this->anything(), $this->anything(), $this->equalTo(301));
+        $encoder = $this->getMock('oxseodecoder', array('_getParams', 'decodeUrl', '_decodeOldUrl', '_decodeSimpleUrl'));
+        $shopUrl = $encoder->getConfig()->getShopURL();
+        $parameters = 'en/Kiteboarding/Kites/Kite-CORE-GTS.html';
+        $decodedOldUrlPart = 'en/Something/else/entirely.html';
+        $redirectOldUrl = rtrim($shopUrl, '/') . '/' . $decodedOldUrlPart;
+        $encoder->expects($this->once())->method('_getParams')->will($this->returnValue($parameters));
+        $encoder->expects($this->once())->method('decodeUrl')->will($this->returnValue(null));
+        $encoder->expects($this->once())->method('_decodeOldUrl')->with($this->equalTo($parameters))->will($this->returnValue($decodedOldUrlPart));
+        $utils = $this->getMock('oxutils', array('redirect'));
+        $utils->expects($this->once())->method('redirect')->with($this->equalTo($redirectOldUrl), $this->equalTo(false), $this->equalTo(301));
+        oxRegistry::set('oxUtils', $utils);
+        //call simulates decoding of a changed url
+        $encoder->processSeoCall();
+    }
 
-        oxRegistry::set('oxUtils', $oUtils);
-
-        $oEncoder = $this->getMock('oxseodecoder', array('_getParams', 'decodeUrl', '_decodeOldUrl', '_decodeSimpleUrl'));
-        $oEncoder->expects($this->exactly(2))->method('_getParams')->will($this->returnValue('xxx'));
-        $oEncoder->expects($this->exactly(2))->method('decodeUrl')->will($this->returnValue(false));
-        $oEncoder->expects($this->at(2))->method('_decodeOldUrl')->will($this->returnValue('yyy'));
-
-        $oEncoder->processSeoCall();
-
-        $oEncoder->expects($this->at(2))->method('_decodeOldUrl')->will($this->returnValue(false));
-        $oEncoder->expects($this->once())->method('_decodeSimpleUrl')->will($this->returnValue('yyy'));
-
-        $oEncoder->processSeoCall();
+    /**
+     * Testing seo call processor using http status code 301 for redirects of seo history
+     * see https://bugs.oxid-esales.com/view.php?id=5471
+     * We test processing a simple url.
+     *
+     */
+    public function testProcessSeoCallUsingStatus301ForRedirectsSimpleUrl()
+    {
+        $encoder = $this->getMock('oxseodecoder', array('_getParams', 'decodeUrl', '_decodeOldUrl', '_decodeSimpleUrl'));
+        $shopUrl = $encoder->getConfig()->getShopURL();
+        $parameters = 'en/Kiteboarding/Kites/Kite-CORE-GTS.html';
+        $decodedSimpleUrlPart = 'en/Something/really/simple.html';
+        $redirectSimpleUrl = rtrim($shopUrl, '/') . '/' . $decodedSimpleUrlPart;
+        $encoder->expects($this->once())->method('_getParams')->will($this->returnValue($parameters));
+        $encoder->expects($this->once())->method('decodeUrl')->will($this->returnValue(null));
+        $encoder->expects($this->once())->method('_decodeOldUrl')->with($this->equalTo($parameters))->will($this->returnValue(null));
+        $encoder->expects($this->once())->method('_decodeSimpleUrl')->with($this->equalTo($parameters))->will($this->returnValue($decodedSimpleUrlPart));
+        $utils = $this->getMock('oxutils', array('redirect'));
+        $utils->expects($this->once())->method('redirect')->with($this->equalTo($redirectSimpleUrl), $this->equalTo(false), $this->equalTo(301));
+        oxRegistry::set('oxUtils', $utils);
+        //call simulates decoding of an old style (simple) url
+        $encoder->processSeoCall();
     }
 
     public function testGetSeoUrl()

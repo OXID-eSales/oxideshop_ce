@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -192,13 +192,15 @@ class oxBasketReservation extends oxSuperCfg
     }
 
     /**
-     * reserve given basket items
+     * reserve given basket items, only when not in admin mode
      *
      * @param oxBasket $oBasket basket object
      */
     public function reserveBasket(oxBasket $oBasket)
     {
-        $this->_reserveArticles($this->_basketDifference($oBasket));
+        if (!$this->isAdmin()) {
+            $this->_reserveArticles($this->_basketDifference($oBasket));
+        }
     }
 
     /**

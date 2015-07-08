@@ -83,7 +83,6 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
         oxRegistry::getSession()->delBasket();
         oxRegistry::getSession()->deleteVariable('_newitem');
         oxRegistry::getSession()->setVariable('sess_challenge', $this->originalSessionChallenge);
-        $_POST = array();
 
         parent::tearDown();
     }
@@ -166,7 +165,8 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
 
         //simulate changes in admin order_main
         $editValues['oxorder__oxid'] = $this->testOrderId;
-        $_POST = array('editval' => $editValues, 'setDelSet' => 'oxidstandard');
+        $this->setRequestParam('editval', $editValues);
+        $this->setRequestParam('setDelSet', 'oxidstandard');
         $orderMain->save();
 
         //NOTE: we do not see that the order was recalculated here and no way to mock oxorder without more changes in oder_main.php
@@ -239,7 +239,7 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
             'oxorder__oxtrackcode' => '',
             'oxorder__oxdelcost'   => '0'
         );
-        $_POST = array('editval' => $editValues);
+        $this->setRequestParam('editval', $editValues);
         $orderMain->save();
 
         //NOTE: we do not see that the order was recalculated here so this is only implicitly tested.
@@ -321,7 +321,7 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
             'oxorder__oxtrackcode' => '',
             'oxorder__oxdelcost'   => '0'
         );
-        $_POST = array('editval' => $editValues);
+        $this->setRequestParam('editval', $editValues);
         $orderMain->save();
 
         $order = oxNew('oxOrder');
@@ -403,7 +403,8 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
             'oxorder__oxtrackcode' => '',
             'oxorder__oxdelcost'   => '0'
         );
-        $_POST = array('editval' => $editValues, 'setDelSet' => 'oxidnew');
+        $this->setRequestParam('editval', $editValues);
+        $this->setRequestParam('setDelSet', 'oxidnew');
         $orderMain->save();
 
         $order = oxNew('oxOrder');

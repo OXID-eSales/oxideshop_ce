@@ -90,7 +90,7 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
 
         // testing..
         try {
-            $_POST = array('editval' => array('oxorder__oxdiscount' => 10.0));
+            $this->setRequestParam('editval', array('oxorder__oxdiscount' => 10.0));
             $oView = new Order_Main();
             $oView->save();
         } catch (Exception $oExcp) {

@@ -83,6 +83,7 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
         oxRegistry::getSession()->delBasket();
         oxRegistry::getSession()->deleteVariable('_newitem');
         oxRegistry::getSession()->setVariable('sess_challenge', $this->originalSessionChallenge);
+        $_POST = array();
 
         parent::tearDown();
     }
@@ -165,8 +166,7 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
 
         //simulate changes in admin order_main
         $editValues['oxorder__oxid'] = $this->testOrderId;
-        $this->setRequestParam('editval', $editValues);
-        $this->setRequestParam('setDelSet', 'oxidstandard');
+        $_POST = array('editval' => $editValues, 'setDelSet' => 'oxidstandard');
         $orderMain->save();
 
         //NOTE: we do not see that the order was recalculated here and no way to mock oxorder without more changes in oder_main.php
@@ -239,7 +239,7 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
             'oxorder__oxtrackcode' => '',
             'oxorder__oxdelcost'   => '0'
         );
-        $this->setRequestParam('editval', $editValues);
+        $_POST = array('editval' => $editValues);
         $orderMain->save();
 
         //NOTE: we do not see that the order was recalculated here so this is only implicitly tested.
@@ -321,7 +321,7 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
             'oxorder__oxtrackcode' => '',
             'oxorder__oxdelcost'   => '0'
         );
-        $this->setRequestParam('editval', $editValues);
+        $_POST = array('editval' => $editValues);
         $orderMain->save();
 
         $order = oxNew('oxOrder');
@@ -403,8 +403,7 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
             'oxorder__oxtrackcode' => '',
             'oxorder__oxdelcost'   => '0'
         );
-        $this->setRequestParam('editval', $editValues);
-        $this->setRequestParam('setDelSet', 'oxidnew');
+        $_POST = array('editval' => $editValues, 'setDelSet' => 'oxidnew');
         $orderMain->save();
 
         $order = oxNew('oxOrder');

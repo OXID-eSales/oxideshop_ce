@@ -452,11 +452,15 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
      */
     private function createOrder()
     {
-        $this->testOrderId = substr_replace( oxUtilsObject::getInstance()->generateUId(), '_', 0, 1 );
-        $order = $this->getMock('oxOrder', array('validateDeliveryAddress'));
-        $order->setId($this->testOrderId);
+        $order = $this->getMock('oxOrder', array('validateDeliveryAddress', '_sendOrderByEmail'));
+        // sending order by email is always successful for tests
+        $order->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(1));
         //mocked to circumvent delivery address change md5 check from requestParameter
         $order->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(0));
+
+        $this->testOrderId = substr_replace( oxUtilsObject::getInstance()->generateUId(), '_', 0, 1 );
+        $order->setId($this->testOrderId);
+
         return $order;
     }
 

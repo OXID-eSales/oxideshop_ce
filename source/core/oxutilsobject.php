@@ -155,7 +155,11 @@ class oxUtilsObject
         array_shift($aArgs);
         $iArgCnt = count($aArgs);
         $blCacheObj = $iArgCnt < 2;
-        $sClassName = strtolower($sClassName);
+
+        // Case insensitive for class names in root namespace to be backward compatible
+        if(! strpos($sClassName,'\\',1)) {
+            $sClassName = strtolower($sClassName);
+        }
 
         if (isset(self::$_aClassInstances[$sClassName])) {
             return self::$_aClassInstances[$sClassName];

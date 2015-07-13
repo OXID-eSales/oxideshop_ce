@@ -236,7 +236,12 @@ class oxPayment extends oxI18n
 
         // products brutto price
         if (!$iRules || ($iRules & self::PAYMENT_ADDSUMRULE_ALLGOODS)) {
-            $dBasketPrice += $oBasket->getProductsPrice()->getSum($oBasket->isCalculationModeNetto());
+            if ($this->oxpayments__oxaddsum->value < 0) {
+                // if there is a discount for payment take it only for discountable products
+                $dBasketPrice += $oBasket->getDiscountProductsPrice()->getSum($oBasket->isCalculationModeNetto());
+            } else {
+                $dBasketPrice += $oBasket->getProductsPrice()->getSum($oBasket->isCalculationModeNetto());
+            }
         }
 
         // discounts

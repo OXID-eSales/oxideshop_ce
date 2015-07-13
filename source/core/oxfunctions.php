@@ -30,24 +30,24 @@
 function oxAutoload($sClass)
 {
     startProfile("oxAutoload");
-    $sClass = basename($sClass);
-    $sClass = strtolower($sClass);
-
-    static $sBasePath = null;
-    static $aClassDirs = null;
 
     // preventing infinite loop
     static $aTriedClasses = array();
 
-    //loading very base classes. We can do this as we know they exists,
-    //moreover even further method code could not execute without them
-    $sBaseClassLocation = null;
-    $aBaseClasses = array("oxutils", "oxsupercfg", "oxutilsobject");
-    if (in_array($sClass, $aBaseClasses)) {
-        $sFilename = getShopBasePath() . "core/" . $sClass . ".php";
-        include $sFilename;
+    $blNamespaceUsed = strpos($sClass,'\\',1);
+    if(! $blNamespaceUsed) {
+        $sClass = basename($sClass);
+        $sClass = strtolower($sClass);
 
-        return;
+        //loading very base classes. We can do this as we know they exists,
+        //moreover even further method code could not execute without them
+        $aBaseClasses = array("oxutils", "oxsupercfg", "oxutilsobject");
+        if (in_array($sClass, $aBaseClasses)) {
+            $sFilename = getShopBasePath() . "core/" . $sClass . ".php";
+            include $sFilename;
+
+            return;
+        }
     }
 
     static $aClassPaths;
@@ -59,8 +59,52 @@ function oxAutoload($sClass)
         return;
     }
 
+    static $sBasePath = null;
     $sBasePath = getShopBasePath();
 
+    // following block adds namespace support
+    if($blNamespaceUsed) {
+        $aNamespaceClassDirs = getNamespaceClassDirs();
+
+        $sNamespacePrefix = $sClass;
+        $sDirectorySeparator = '/';
+        $sNameSpaceSeparator = '\\';
+        $sClassAsPath =  str_replace($sNameSpaceSeparator, $sDirectorySeparator, $sClass);
+
+        while (false !== $pos = strrpos($sNamespacePrefix, $sNameSpaceSeparator)) {
+
+            $sNamespacePrefix = substr($sClass, 0, $pos);
+            $sRelativeClassWithoutPrefix = substr($sClassAsPath, $pos + 1);
+
+            $aPrefixDirs = $aNamespaceClassDirs[$sNamespacePrefix];
+            if($aPrefixDirs) {
+                // search in all directories configured for this namespace prefix
+                foreach ($aPrefixDirs as $sPrefixDir => $psr0OrPsr4) {
+                    // if PSR0 the path to the class inside the directory will include the prefix
+                    $sRelativeClass = NULL;
+                    if($psr0OrPsr4 === 'PSR0') {
+                        $sRelativeClass = $sClassAsPath;
+                    } else {
+                        $sRelativeClass = $sRelativeClassWithoutPrefix;
+                    }
+                    $sFilename = $sBasePath
+                        . $sPrefixDir . $sDirectorySeparator . $sRelativeClass . '.php';
+
+                    if (file_exists($sFilename)) {
+                        $aClassPaths[$sClass] = $sFilename;
+                        stopProfile("oxAutoload");
+                        include $sFilename;
+
+                        return;
+                    }
+                }
+            }
+        }
+
+        return;
+    }
+
+    static $aClassDirs = null;
 
     // initializing paths
     if ($aClassDirs == null) {
@@ -127,6 +171,17 @@ function oxAutoload($sClass)
 
     stopProfile("oxAutoload");
 }
+
+function getNamespaceClassDirs()
+{
+    return array(
+        //Namespace => array('subdirectory/in/shop/BasePath' => 'PSR0|PSR4' )
+        //PSR0: the directory structure in this path will map to the full qualified class name
+        //PSR4: the directory structure in this path will map to qualified class name without the prefix configured here
+        'Psr\Log' => array('core/psr3log'=>'PSR0')
+    );
+}
+
 
 /**
  * Return array with classes paths.

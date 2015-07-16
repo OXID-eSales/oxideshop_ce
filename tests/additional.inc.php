@@ -1,6 +1,6 @@
 <?php
 
-$serviceCaller = new oxServiceCaller();
+$serviceCaller = new \OxidEsales\TestingLibrary\ServiceCaller();
 $serviceCaller->setParameter('importSql', '@'. __DIR__ .'/testsql/testdata' .OXID_VERSION_SUFIX . '.sql');
 $serviceCaller->callService('ShopPreparation', 1);
 

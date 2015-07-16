@@ -16,9 +16,11 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 /**
  * Tests for Account class
@@ -37,6 +39,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
         $aArrayKeys = array($sArrayKey);
         $aNoticeProdList = array($sArrayKey => "zyyy");
 
+        /** @var Account_Noticelist|MockObject $oSearch */
         $oSearch = $this->getMock("account_noticelist", array("getNoticeProductList"));
         $oSearch->expects($this->once())->method("getNoticeProductList")->will($this->returnValue($aNoticeProdList));
         $this->assertEquals(
@@ -53,6 +56,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
      */
     public function testGetSimilarProductsEmptyProductList()
     {
+        /** @var Account_Noticelist|MockObject $oView */
         $oView = $this->getMock("Account_Noticelist", array("getNoticeProductList"));
         $oView->expects($this->any())->method('getNoticeProductList')->will($this->returnValue(array()));
         $this->assertNull($oView->getSimilarProducts());
@@ -68,6 +72,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
         $oProduct = $this->getMock("oxArticleList", array("getSimilarProducts"));
         $oProduct->expects($this->any())->method('getSimilarProducts')->will($this->returnValue("testSimilarProducts"));
 
+        /** @var Account_Noticelist|MockObject $oView */
         $oView = $this->getMock("Account_Noticelist", array("getNoticeProductList"));
         $oView->expects($this->any())->method('getNoticeProductList')->will($this->returnValue(array($oProduct)));
         $this->assertEquals("testSimilarProducts", $oView->getSimilarProducts());
@@ -80,6 +85,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
      */
     public function testGetNoticeProductListNoSessionUser()
     {
+        /** @var Account_Noticelist|MockObject $oView */
         $oView = $this->getMock("Account_Noticelist", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $this->assertNull($oView->getNoticeProductList());
@@ -98,6 +104,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
         $oUser = $this->getMock("oxUser", array("getBasket"));
         $oUser->expects($this->once())->method('getBasket')->with($this->equalTo("noticelist"))->will($this->returnValue($oBasket));
 
+        /** @var Account_Noticelist|MockObject $oView */
         $oView = $this->getMock("Account_Noticelist", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $this->assertEquals("articles", $oView->getNoticeProductList());
@@ -110,6 +117,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
      */
     public function testRenderNoUser()
     {
+        /** @var Account_Noticelist|MockObject $oView */
         $oView = $this->getMock("Account_Noticelist", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $this->assertEquals('page/account/login.tpl', $oView->render());
@@ -125,6 +133,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
         $oUser = new oxuser;
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
+        /** @var Account_Noticelist|MockObject $oView */
         $oView = $this->getMock("Account_Noticelist", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $this->assertEquals('page/account/noticelist.tpl', $oView->render());
@@ -137,7 +146,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oAccNoticeList = new Account_Noticelist();
+        $oAccNoticeList = oxNew('Account_Noticelist');
 
         $this->assertEquals(2, count($oAccNoticeList->getBreadCrumb()));
     }
@@ -147,7 +156,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
      */
     public function testGetNavigationParams()
     {
-        $oAccNoticeList = new Account_Noticelist();
+        $oAccNoticeList = oxNew('Account_Noticelist');
 
         $this->setRequestParameter('anid', 'testId');
 
@@ -155,5 +164,4 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
 
         $this->assertEquals('testId', $aParams['anid'], "Should have correct anid navigation parameter");
     }
-
 }

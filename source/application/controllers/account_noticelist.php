@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -29,7 +29,6 @@
  */
 class Account_Noticelist extends Account
 {
-
     /**
      * Current class template name.
      *
@@ -93,22 +92,6 @@ class Account_Noticelist extends Account
         }
 
         return $this->_sThisTemplate;
-    }
-
-    /**
-     * Returns array from parent::getNavigationParams(). If current request
-     * contains "sourcecl" and "anid" parameters - appends array with this
-     * data. Array is used to fill forms and append shop urls with actual
-     * state parameters
-     *
-     * @return array
-     */
-    public function getNavigationParams()
-    {
-        $aParams = parent::getNavigationParams();
-
-
-        return $aParams;
     }
 
     /**

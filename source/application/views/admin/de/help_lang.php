@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -295,11 +295,11 @@ $aLang =  array(
 
 'HELP_SHOP_MAIN_ACTIVE'                       => 'Mit <span class="navipath_or_inputname">Aktiv</span> können Sie ihren kompletten eShop ein- und ausschalten. Wenn ihr eShop ausgeschaltet ist, wird Ihren Kunden eine Meldung angezeigt, dass der eShop vorübergehend offline ist. Das kann für Wartungsarbeiten am eShop nützlich sein.',
 
-'HELP_SHOP_MAIN_INFOEMAIL'                    => 'An diese E-Mail Adresse werden E-Mails gesendet, wenn die Benutzer E-Mails über das Kontaktformular senden.',
+'HELP_SHOP_MAIN_INFOEMAIL'                    => 'An diese E-Mail-Adresse werden E-Mails gesendet, wenn Benutzer das Kontaktformular verwenden.',
 
-'HELP_SHOP_MAIN_ORDEREMAIL'                   => 'Wenn Benutzer bestellen, erhalten sie eine E-Mail, in der die Bestellung nochmals zusammengefasst ist. Wenn die Benutzer auf diese E-Mail antworten, wird die Antwort an die <span class="navipath_or_inputname">Bestell E-Mail Reply</span> gesendet.',
+'HELP_SHOP_MAIN_ORDEREMAIL'                   => 'Wenn Benutzer bestellen, erhalten diese eine Bestellbestätigung per E-Mail. Antwortet ein Benutzer auf diese E-Mail, wird die Antwort an die angegebene  Mailadresse gesendet.',
 
-'HELP_SHOP_MAIN_OWNEREMAIL'                   => 'Wenn Benutzer bestellen, wird an Sie als eShop-Administrator eine E-Mail gesendet, dass eine Bestellung im eShop gemacht wurde. Diese E-Mails werden an <span class="navipath_or_inputname">Bestellungen an</span> gesendet.',
+'HELP_SHOP_MAIN_OWNEREMAIL'                   => 'Wenn Benutzer bestellen, wird eine E-Mail an den eShop-Administrator gesendet. Die E-Mail über die eingegangene Bestellung geht an die angegebene Mailadresse.',
 
 'HELP_SHOP_MAIN_SMTPSERVER'                   => 'Die SMTP-Daten müssen eingegeben werden, damit der eShop E-Mails, beispielsweise die Bestellbestätigung, versenden kann.',
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -1089,7 +1089,7 @@ $aLang = array(
 'SHOP_CACHE_ENABLE_CACHE'                                  => 'Are you sure you want to enable it?',
 'SHOP_MALL_SHOPURL'                                        => 'Shop URL',
 'SHOP_MALL_SHOPSSLSHOPURL'                                 => 'Shop SSL URL',
-'SHOP_MALL_NATIVEIMAGES'                                   => 'Load "out" directory from active shop',
+'SHOP_MALL_NATIVEIMAGES'                                   => 'Load /out directory from active shop',
 'SHOP_MALL_NOSTARTSITE'                                    => 'Show main shop front page',
 'SHOP_MALL_STARTSITE'                                      => 'Show shop selector',
 'SHOP_MALL_MALLMODE'                                       => 'Start page type',

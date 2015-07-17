@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -48,7 +48,6 @@ class Unit_Views_clearcookiesTest extends OxidTestCase
         parent::tearDown();
     }
 
-
     /**
      * Test view render.
      *
@@ -58,8 +57,7 @@ class Unit_Views_clearcookiesTest extends OxidTestCase
     {
         $_SERVER['HTTP_COOKIE'] = "shop=1";
 
-
-        $oView = new clearcookies();
+        $oView = oxNew('ClearCookies');
 
         $oUtilsServer = $this->getMock('oxUtilsServer', array('setOxCookie'));
         $oUtilsServer->expects($this->at(0))->method('setOxCookie')->with($this->equalTo('shop'));
@@ -77,7 +75,7 @@ class Unit_Views_clearcookiesTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oView = new clearcookies();
+        $oView = oxNew('ClearCookies');
         $this->assertEquals(1, count($oView->getBreadCrumb()));
     }
 }

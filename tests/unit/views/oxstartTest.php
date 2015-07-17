@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -34,16 +34,13 @@ class Unit_Views_oxStartTest extends OxidTestCase
         $this->assertEquals('message/err_unknown.tpl', $sRes);
     }
 
-
-
     public function testGetErrorNumber()
     {
-        $oStart = new oxStart();
+        $oStart = oxNew('oxStart');
         $this->setRequestParameter('errornr', 123);
 
         $this->assertEquals(123, $oStart->getErrorNumber());
     }
-
 
     public function testPageCloseNoSession()
     {
@@ -56,7 +53,6 @@ class Unit_Views_oxStartTest extends OxidTestCase
         oxTestModules::addModuleObject('oxUtils', $oUtils);
         $this->assertEquals(null, $oStart->pageClose());
     }
-
 
     public function testPageClose()
     {

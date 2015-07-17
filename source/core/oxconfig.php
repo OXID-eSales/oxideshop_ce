@@ -413,7 +413,7 @@ class oxConfig extends oxSuperCfg
             $this->_loadVarsFromFile();
 
             //application initialization
-            $this->_oStart = new oxStart();
+            $this->_oStart = oxNew('oxStart');
             $this->_oStart->appInit();
         } catch (oxConnectionException $oEx) {
             $this->_handleDbConnectionException($oEx);

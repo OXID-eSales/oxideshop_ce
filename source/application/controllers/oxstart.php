@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,7 +25,6 @@
  */
 class oxStart extends oxUBase
 {
-
     /**
      * Initializes globals and environment vars
      *
@@ -52,18 +51,11 @@ class oxStart extends oxUBase
     {
         parent::render();
 
-        $sErrorNo = oxRegistry::getConfig()->getRequestParameter('execerror');
+        $errorNumber = oxRegistry::getConfig()->getRequestParameter('execerror');
+        $templates = $this->getErrorTemplates();
 
-        $sTemplate = '';
-
-
-
-        if ($sErrorNo == 'unknown') {
-            $sTemplate = 'message/err_unknown.tpl';
-        }
-
-        if ($sTemplate) {
-            return $sTemplate;
+        if (array_key_exists($errorNumber, $templates)) {
+            return $templates[$errorNumber];
         } else {
             return 'message/err_unknown.tpl';
         }
@@ -74,11 +66,10 @@ class oxStart extends oxUBase
      */
     public function pageStart()
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
 
-
-        $myConfig->setConfigParam('iMaxMandates', $myConfig->getConfigParam('IMS'));
-        $myConfig->setConfigParam('iMaxArticles', $myConfig->getConfigParam('IMA'));
+        $config->setConfigParam('iMaxMandates', $config->getConfigParam('IMS'));
+        $config->setConfigParam('iMaxArticles', $config->getConfigParam('IMA'));
     }
 
     /**
@@ -104,6 +95,18 @@ class oxStart extends oxUBase
     public function getErrorNumber()
     {
         return oxRegistry::getConfig()->getRequestParameter('errornr');
+    }
+
+    /**
+     * Returns which template should be used for specific error.
+     *
+     * @return array
+     */
+    protected function getErrorTemplates()
+    {
+        return array(
+            'unknown' => 'message/err_unknown.tpl',
+        );
     }
 
     /**

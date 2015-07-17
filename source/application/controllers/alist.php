@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -188,40 +188,40 @@ class aList extends oxUBase
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
 
-        $oCategory = null;
-        $blContinue = true;
+        $category = null;
+        $continue = true;
         $this->_blIsCat = false;
 
         // A. checking for fake "more" category
-        if ('oxmore' == $myConfig->getRequestParameter('cnid')) {
+        if ('oxmore' == $config->getRequestParameter('cnid')) {
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
-            $oCategory = oxNew('oxCategory');
-            $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
-            $this->setActiveCategory($oCategory);
+            $category = oxNew('oxCategory');
+            $category->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
+            $this->setActiveCategory($category);
 
             $this->_blShowTagCloud = true;
 
-        } elseif (($oCategory = $this->getActiveCategory())) {
-            $blContinue = ( bool ) $oCategory->oxcategories__oxactive->value;
+        } elseif (($category = $this->getActiveCategory())) {
+            $continue = ( bool ) $category->oxcategories__oxactive->value;
             $this->_blIsCat = true;
             $this->_blBargainAction = true;
         }
 
 
         // category is inactive ?
-        if (!$blContinue || !$oCategory) {
-            oxRegistry::getUtils()->redirect($myConfig->getShopURL() . 'index.php', true, 302);
+        if (!$continue || !$category) {
+            oxRegistry::getUtils()->redirect($config->getShopURL() . 'index.php', true, 302);
         }
 
-        $oCat = $this->getActiveCategory();
-        if ($oCat && $myConfig->getConfigParam('bl_rssCategories')) {
+        $activeCategory = $this->getActiveCategory();
+        if ($activeCategory && $config->getConfigParam('bl_rssCategories')) {
             $oRss = oxNew('oxrssfeed');
             $this->addRssFeed(
-                $oRss->getCategoryArticlesTitle($oCat),
-                $oRss->getCategoryArticlesUrl($oCat),
+                $oRss->getCategoryArticlesTitle($activeCategory),
+                $oRss->getCategoryArticlesUrl($activeCategory),
                 'activeCategory'
             );
         }

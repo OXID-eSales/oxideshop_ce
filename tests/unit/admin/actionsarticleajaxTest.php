@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,10 +25,6 @@
  */
 class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
 {
-
-    protected $_sArticleView = 'oxv_oxarticles_1_de';
-    protected $_sObject2CategoryView = 'oxv_oxobject2category_1';
-
     /**
      * Initialize the fixture.
      *
@@ -39,9 +35,6 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
         parent::setUp();
 
         oxDb::getDb()->execute("insert into oxobject2action set oxid='_testId', oxactionid='_testActionDelete', oxobjectid='_testObject', oxclass='oxarticle'");
-
-        $this->setArticleViewTable('oxv_oxarticles_de');
-        $this->setObject2CategoryViewTable('oxobject2category');
     }
 
     /**
@@ -55,26 +48,6 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
         oxDb::getDB()->execute("delete from oxobject2action where oxactionid='_testActionSet'");
 
         parent::tearDown();
-    }
-
-    public function setArticleViewTable($sParam)
-    {
-        $this->_sArticleView = $sParam;
-    }
-
-    public function setObject2CategoryViewTable($sParam)
-    {
-        $this->_sObject2CategoryView = $sParam;
-    }
-
-    public function getArticleViewTable()
-    {
-        return $this->_sArticleView;
-    }
-
-    public function getObject2CategoryViewTable()
-    {
-        return $this->_sObject2CategoryView;
     }
 
     /**
@@ -166,5 +139,15 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('actions_article_ajax');
         $this->assertEquals("$sParam group by " . $this->getArticleViewTable() . ".oxid", trim($oView->UNITaddFilter($sParam)));
+    }
+
+    private function getArticleViewTable()
+    {
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxarticles_1_de' : 'oxv_oxarticles_de';
+    }
+
+    private function getObject2CategoryViewTable()
+    {
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxobject2category_1' : 'oxobject2category';
     }
 }

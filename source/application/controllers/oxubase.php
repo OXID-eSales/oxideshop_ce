@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -655,22 +655,33 @@ class oxUBase extends oxView
      */
     public function getViewId()
     {
-        if ($this->_sViewId) {
+        if (isset($this->_sViewId)) {
             return $this->_sViewId;
         }
 
+        return $this->_sViewId = $this->generateViewId();
+    }
+
+    /**
+     * Generates current view id.
+     *
+     * @return string
+     */
+    protected function generateViewId()
+    {
         $oConfig = $this->getConfig();
         $iLang = oxRegistry::getLang()->getBaseLanguage();
         $iCur = (int) $oConfig->getShopCurrency();
+        $viewId = '';
 
 
-        $this->_sViewId = "ox|$iLang|$iCur";
+        $viewId = "ox|$iLang|$iCur";
 
-        $this->_sViewId .= "|" . ((int) $this->_blForceNoIndex) . '|' . ((int) $this->isRootCatChanged());
+        $viewId .= "|" . ((int) $this->_blForceNoIndex) . '|' . ((int) $this->isRootCatChanged());
 
         // #0004798: SSL should be included in viewId
         if ($oConfig->isSsl()) {
-            $this->_sViewId .= "|ssl";
+            $viewId .= "|ssl";
         }
 
         // #0002866: external global viewID addition
@@ -678,11 +689,11 @@ class oxUBase extends oxView
             $oExtViewId = customGetViewId();
 
             if ($oExtViewId !== null) {
-                $this->_sViewId .= '|' . md5(serialize($oExtViewId));
+                $viewId .= '|' . md5(serialize($oExtViewId));
             }
         }
 
-        return $this->_sViewId;
+        return $viewId;
     }
 
 

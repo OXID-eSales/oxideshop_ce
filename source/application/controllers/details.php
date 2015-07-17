@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -266,22 +266,14 @@ class Details extends oxUBase
     }
 
     /**
-     * Returns prefix ID used by template engine.
+     * Generates current view id.
      *
-     * @return  string  $this->_sViewID view id
+     * @return string
      */
-    public function getViewId()
+    protected function generateViewId()
     {
-        if (isset($this->_sViewId)) {
-            return $this->_sViewId;
-        }
-
-        $sViewId = parent::getViewId() . '|' . $this->getConfig()->getRequestParameter('anid') . '|';
-
-
-        return $this->_sViewId = $sViewId;
+        return parent::generateViewId() . '|' . $this->getConfig()->getRequestParameter('anid') . '|';
     }
-
 
     /**
      * If possible loads additional article info (oxArticle::getCrossSelling(),
@@ -1389,7 +1381,6 @@ class Details extends oxUBase
 
         return false;
     }
-
 
     /**
      * Gets accepted payment methods

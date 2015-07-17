@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -98,7 +98,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", $sPromotion);
         $this->setRequestParameter("oxpromotionaoc", 'article');
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxarticle');
         $oArticle->oxarticles__oxartnum = new oxField("testArtNr");
         $oArticle->oxarticles__oxtitle = new oxField("testArtTitle");
 
@@ -133,7 +133,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", $sPromotion);
         $this->setRequestParameter("oxpromotionaoc", 'groups');
 
-        $oPromotion = new oxactions();
+        $oPromotion = oxNew('oxActions');
         $oPromotion->load($sPromotion);
 
         // testing..
@@ -163,7 +163,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", $sPromotion);
         $this->setRequestParameter("oxpromotionaoc", null);
 
-        $oPromotion = new oxactions();
+        $oPromotion = oxNew('oxActions');
         $oPromotion->load($sPromotion);
 
         // testing..
@@ -187,8 +187,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction('oxactions', 'load', '{ return true; }');
-        oxTestModules::addFunction('oxactions', 'save', '{ return true; }');
+        oxTestModules::addFunction('oxActions', 'load', '{ return true; }');
+        oxTestModules::addFunction('oxActions', 'save', '{ return true; }');
 
         $this->setRequestParameter("oxid", "xxx");
         $this->setRequestParameter("editval", array("xxx"));
@@ -225,7 +225,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", -1);
         $this->setRequestParameter("saved_oxid", -1);
 
-        $oPromotion = new oxActions();
+        $oPromotion = oxNew('oxActions');
         $oPromotion->oxactions__oxtype = new oxField(2);
 
         // testing..
@@ -248,8 +248,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testPromotionsSave()
     {
-        oxTestModules::addFunction('oxactions', 'load', '{ return true; }');
-        oxTestModules::addFunction('oxactions', 'save', '{ return true; }');
+        oxTestModules::addFunction('oxActions', 'load', '{ return true; }');
+        oxTestModules::addFunction('oxActions', 'save', '{ return true; }');
 
         $this->setRequestParameter("oxid", "xxx");
         $this->setRequestParameter("editval", array("xxx"));
@@ -271,9 +271,9 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testSaveInsertingNewPromo()
     {
-        oxTestModules::addFunction('oxactions', 'load', '{ return true; }');
-        oxTestModules::addFunction('oxactions', 'save', '{ return true; }');
-        oxTestModules::addFunction('oxactions', 'getId', '{ return "testId"; }');
+        oxTestModules::addFunction('oxActions', 'load', '{ return true; }');
+        oxTestModules::addFunction('oxActions', 'save', '{ return true; }');
+        oxTestModules::addFunction('oxActions', 'getId', '{ return "testId"; }');
 
         $this->setRequestParameter("oxid", "-1");
         $this->setRequestParameter("editval", array("xxx"));

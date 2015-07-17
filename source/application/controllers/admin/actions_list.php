@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -79,7 +79,7 @@ class Actions_List extends oxAdminList
         $sDisplayType = (int) oxRegistry::getConfig()->getRequestParameter('displaytype');
         $sTable = getViewName("oxactions");
 
-        //searchong for empty oxfolder fields
+        // searching for empty oxfolder fields
         if ($sDisplayType) {
 
             $sNow = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
@@ -96,7 +96,6 @@ class Actions_List extends oxAdminList
                     break;
             }
         }
-
 
         return $sQ;
     }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -125,7 +125,6 @@ class Actions_Main extends oxAdminDetails
         return "actions_main.tpl";
     }
 
-
     /**
      * Saves Promotions
      *
@@ -133,9 +132,6 @@ class Actions_Main extends oxAdminDetails
      */
     public function save()
     {
-        $myConfig = $this->getConfig();
-
-
         parent::save();
 
         $soxId = $this->getEditObjectId();

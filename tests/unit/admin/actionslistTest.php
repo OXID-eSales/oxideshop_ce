@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -52,7 +52,6 @@ class Unit_Admin_ActionsListTest extends OxidTestCase
     {
         $this->setRequestParameter("displaytype", "testType");
 
-        // testing..
         $oView = $this->getProxyClass("Actions_List");
         $sTplName = $oView->render();
         $aViewData = $oView->getViewData();
@@ -70,24 +69,25 @@ class Unit_Admin_ActionsListTest extends OxidTestCase
      */
     public function testPrepareWhereQuery()
     {
+        if (OXID_VERSION_EE) {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
         $iTime = time();
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{ return ' . $iTime . '; }');
         $sTable = getViewName("oxactions");
         $sNow = date('Y-m-d H:i:s', $iTime);
 
-        $sAddQ = '';
+        $oView = oxNew('Actions_List');
 
-        $oView = new Actions_List();
-
-        $sQ = " and $sTable.oxactivefrom < '$sNow' and $sTable.oxactiveto > '$sNow' $sAddQ";
+        $sQ = " and $sTable.oxactivefrom < '$sNow' and $sTable.oxactiveto > '$sNow' ";
         $this->setRequestParameter('displaytype', 1);
         $this->assertEquals($sQ, $oView->UNITprepareWhereQuery(array(), ""));
 
-        $sQ = " and $sTable.oxactivefrom > '$sNow' $sAddQ";
+        $sQ = " and $sTable.oxactivefrom > '$sNow' ";
         $this->setRequestParameter('displaytype', 2);
         $this->assertEquals($sQ, $oView->UNITprepareWhereQuery(array(), ""));
 
-        $sQ = " and $sTable.oxactiveto < '$sNow' and $sTable.oxactiveto != '0000-00-00 00:00:00' $sAddQ";
+        $sQ = " and $sTable.oxactiveto < '$sNow' and $sTable.oxactiveto != '0000-00-00 00:00:00' ";
         $this->setRequestParameter('displaytype', 3);
         $this->assertEquals($sQ, $oView->UNITprepareWhereQuery(array(), ""));
     }

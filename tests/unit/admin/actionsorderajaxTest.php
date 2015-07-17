@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,27 +25,6 @@
  */
 class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
 {
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-    }
-
     /**
      * ActionsOrderAjax::_getQuery() test case
      *
@@ -57,8 +36,9 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
         $oView = oxNew('actions_order_ajax');
 
+        $sViewTable = $this->getSelectListViewTable();
 
-        $this->assertEquals("from oxv_oxselectlist_de left join oxobject2selectlist on oxobject2selectlist.oxselnid = oxv_oxselectlist_de.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -81,10 +61,8 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("iDebug", 1);
 
-
-        $sViewTable = "oxv_oxselectlist_de";
-
-        $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' => array(), 'totalRecords' => 0);
+        $sViewTable = $this->getSelectListViewTable();
+        $aData = array('startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' => array(), 'totalRecords' => 0);
 
         $oView = $this->getMock("actions_order_ajax", array("_output"));
         $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
@@ -102,9 +80,7 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
         $this->getConfig()->setConfigParam("iDebug", 1);
 
-
-        $sViewTable = "oxv_oxselectlist_de";
-
+        $sViewTable = $this->getSelectListViewTable();
         $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' => array(), 'totalRecords' => 0);
 
         $oView = $this->getMock("actions_order_ajax", array("_output"));
@@ -112,5 +88,8 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
         $oView->setsorting();
     }
 
-
+    public function getSelectListViewTable()
+    {
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxselectlist_1_de' : 'oxv_oxselectlist_de';
+    }
 }

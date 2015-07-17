@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class actions_main_ajax extends ajaxListComponent
     /**
      * Columns array
      *
-     * @var aray
+     * @var array
      */
     protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
         array('oxartnum', 'oxarticles', 1, 0, 0),
@@ -155,7 +155,7 @@ class actions_main_ajax extends ajaxListComponent
     public function removeArtFromAct()
     {
         $aChosenArt = $this->_getActionIds('oxactions2article.oxid');
-        $sOxid = oxRegistry::getConfig()->getRequestParameter('oxid');
+
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sQ = parent::_addFilter("delete oxactions2article.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -168,6 +168,8 @@ class actions_main_ajax extends ajaxListComponent
 
     /**
      * Adds article to Promotions list
+     *
+     * @return bool Whether any article was added to action.
      */
     public function addArtToAct()
     {
@@ -189,6 +191,7 @@ class actions_main_ajax extends ajaxListComponent
               "'and $sArtTable.oxid is not null";
         $iSort = ((int) $oDb->getOne($sQ, false, false)) + 1;
 
+        $articleAdded = false;
         if ($soxId && $soxId != "-1" && is_array($aArticles)) {
             $sShopId = $myConfig->getShopId();
             foreach ($aArticles as $sAdd) {
@@ -200,7 +203,10 @@ class actions_main_ajax extends ajaxListComponent
                 $oNewGroup->oxactions2article__oxsort = new oxField($iSort++);
                 $oNewGroup->save();
             }
+            $articleAdded = true;
         }
+
+        return $articleAdded;
     }
 
     /**
@@ -257,6 +263,5 @@ class actions_main_ajax extends ajaxListComponent
         $sCountQ = 'select count( * ) ' . $sQAdd;
 
         $this->_outputResponse($this->_getData($sCountQ, $sQ));
-
     }
 }

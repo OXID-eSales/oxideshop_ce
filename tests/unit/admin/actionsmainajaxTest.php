@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -26,11 +26,6 @@
 class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
 {
 
-    protected $_sArticleView = 'oxv_oxarticles_1_de';
-    protected $_sObject2CategoryView = 'oxv_oxobject2category_1';
-    protected $_sShopId = '1';
-
-
     /**
      * Initialize the fixture.
      *
@@ -38,10 +33,6 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
      */
     protected function setUp()
     {
-        $this->setArticleViewTable('oxv_oxarticles_de');
-        $this->setObject2CategoryViewTable('oxobject2category');
-        $this->setShopIdTest('oxbaseshop');
-
         $this->addToDatabase("replace into oxarticles set oxid='_testArticle1', oxshopid='" . $this->getShopIdTest() . "', oxtitle='_testArticle1'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticle2', oxshopid='" . $this->getShopIdTest() . "', oxtitle='_testArticle2'", 'oxarticles');
 
@@ -52,36 +43,6 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
 
         $this->addTeardownSql("delete from oxarticles where oxid like '%_testArt%'");
         $this->addTeardownSql("delete from oxactions2article where oxactionid like '%_testActionAdd%'");
-    }
-
-    public function setArticleViewTable($sParam)
-    {
-        $this->_sArticleView = $sParam;
-    }
-
-    public function setObject2CategoryViewTable($sParam)
-    {
-        $this->_sObject2CategoryView = $sParam;
-    }
-
-    public function setShopIdTest($sParam)
-    {
-        $this->_sShopId = $sParam;
-    }
-
-    public function getArticleViewTable()
-    {
-        return $this->_sArticleView;
-    }
-
-    public function getObject2CategoryViewTable()
-    {
-        return $this->_sObject2CategoryView;
-    }
-
-    public function getShopIdTest()
-    {
-        return $this->_sShopId;
     }
 
     /**
@@ -349,5 +310,20 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
         $oView = $this->getMock("actions_main_ajax", array("_output"));
         $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
+    }
+
+    public function getArticleViewTable()
+    {
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxarticles_1_de' : 'oxv_oxarticles_de';
+    }
+
+    public function getObject2CategoryViewTable()
+    {
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxobject2category_1' : 'oxobject2category';
+    }
+
+    public function getShopIdTest()
+    {
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
     }
 }

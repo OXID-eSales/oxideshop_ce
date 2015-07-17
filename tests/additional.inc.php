@@ -5,10 +5,10 @@ if (OXID_VERSION_PE_CE) {
     $serviceCaller->setParameter('importSql', '@'. __DIR__ .'/Fixtures/testdata.sql');
 }
 if (OXID_VERSION_PE_PE) {
-    $serviceCaller->setParameter('importSql', realpath('../source/Edition/Professional/Tests/Fixtures/testdata.sql'));
+    $serviceCaller->setParameter('importSql', '@' . realpath('../source/Edition/Professional/Tests/Fixtures/testdata.sql'));
 }
 if (OXID_VERSION_EE) {
-    $serviceCaller->setParameter('importSql', realpath('../source/Edition/Enterprise/Tests/Fixtures/testdata.sql'));
+    $serviceCaller->setParameter('importSql', '@' . realpath('../source/Edition/Enterprise/Tests/Fixtures/testdata.sql'));
 }
 $serviceCaller->callService('ShopPreparation', 1);
 

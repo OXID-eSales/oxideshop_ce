@@ -148,30 +148,23 @@ class aList extends oxUBase
      */
     protected $_aSimilarRecommListIds = null;
 
-
     /**
      * Generates (if not generated yet) and returns view ID (for
      * template engine caching).
      *
      * @return string   $this->_sViewId view id
      */
-    public function getViewId()
+    protected function generateViewId()
     {
-        if (!isset($this->_sViewId)) {
-            $sCatId = oxRegistry::getConfig()->getRequestParameter('cnid');
-            $iActPage = $this->getActPage();
-            $iArtPerPage = oxRegistry::getSession()->getVariable('_artperpage');
-            $sListDisplayType = $this->_getListDisplayType();
-            $sParentViewId = parent::getViewId();
+        $sCatId = oxRegistry::getConfig()->getRequestParameter('cnid');
+        $iActPage = $this->getActPage();
+        $iArtPerPage = oxRegistry::getSession()->getVariable('_artperpage');
+        $sListDisplayType = $this->_getListDisplayType();
+        $sParentViewId = parent::generateViewId();
 
-            // shorten it
-            $this->_sViewId = md5(
-                $sParentViewId . '|' . $sCatId . '|' . $iActPage . '|' . $iArtPerPage . '|' . $sListDisplayType
-            );
-
-        }
-
-        return $this->_sViewId;
+        return md5(
+            $sParentViewId . '|' . $sCatId . '|' . $iActPage . '|' . $iArtPerPage . '|' . $sListDisplayType
+        );
     }
 
     /**
@@ -190,29 +183,10 @@ class aList extends oxUBase
     {
         $config = $this->getConfig();
 
-        $category = null;
-        $continue = true;
-        $this->_blIsCat = false;
+        $category = $this->getCategoryToRender();
 
-        // A. checking for fake "more" category
-        if ('oxmore' == $config->getRequestParameter('cnid')) {
-            // overriding some standard value and parameters
-            $this->_sThisTemplate = $this->_sThisMoreTemplate;
-            $category = oxNew('oxCategory');
-            $category->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
-            $this->setActiveCategory($category);
-
-            $this->_blShowTagCloud = true;
-
-        } elseif (($category = $this->getActiveCategory())) {
-            $continue = ( bool ) $category->oxcategories__oxactive->value;
-            $this->_blIsCat = true;
-            $this->_blBargainAction = true;
-        }
-
-
-        // category is inactive ?
-        if (!$continue || !$category) {
+        $isCategoryActive = $category && (bool) $category->oxcategories__oxactive->value;
+        if (!$isCategoryActive) {
             oxRegistry::getUtils()->redirect($config->getShopURL() . 'index.php', true, 302);
         }
 
@@ -239,6 +213,36 @@ class aList extends oxUBase
         $this->_processListArticles();
 
         return $this->getTemplateName();
+    }
+
+    /**
+     * Returns category, which should be rendered.
+     * In case of 'more categories' page is viewed, sets 'more categories' template,
+     * sets empty category as active category and returns it.
+     *
+     * @return oxCategory
+     */
+    protected function getCategoryToRender()
+    {
+        $config = $this->getConfig();
+
+        $this->_blIsCat = false;
+
+        // A. checking for fake "more" category
+        if ('oxmore' == $config->getRequestParameter('cnid')) {
+            // overriding some standard value and parameters
+            $this->_sThisTemplate = $this->_sThisMoreTemplate;
+            $category = oxNew('oxCategory');
+            $category->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
+            $this->setActiveCategory($category);
+
+            $this->_blShowTagCloud = true;
+        } elseif (($category = $this->getActiveCategory())) {
+            $this->_blIsCat = true;
+            $this->_blBargainAction = true;
+        }
+
+        return $category;
     }
 
     /**

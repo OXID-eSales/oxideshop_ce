@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -49,9 +49,9 @@ class Unit_Views_alistTest extends OxidTestCase
         $this->setRequestParameter("pgNr", 999);
         $this->setConfigParam('blSeoMode', false);
 
-        $oView = new aList();
+        $oView = oxNew('aList');
 
-        $oUBaseView = new oxUBase();
+        $oUBaseView = oxNew('oxUBase');
         $sTestParams = $oUBaseView->getAddUrlParams();
         $sTestParams .= ($sTestParams ? '&amp;' : '') . "pgNr=999";
 
@@ -65,7 +65,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetAddSeoUrlParams()
     {
-        $oView = new alist();
+        $oView = oxNew('AList');
         $this->assertNull($oView->getAddSeoUrlParams());
     }
 
@@ -94,10 +94,13 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetMetaDescription()
     {
-        $sCatId = '8a142c3e60a535f16.78077188';
-        $sPrefix = "Wohnen - Uhren. OXID eShop 4";
+        $sCatId = "6b6b64bdcf7c25e92191b1120974af4e";
 
-        $oCategory = new oxCategory();
+        // Demo data is different in EE and CE
+        $shopVersion = $this->getTestConfig()->getShopEdition() == 'EE' ? 5 : 4;
+        $sPrefix = "Woman - Jackets. OXID eShop $shopVersion";
+
+        $oCategory = oxNew('oxCategory');
         $oCategory->load($sCatId);
 
         $oView = $this->getMock("alist", array("getActPage", "getActiveCategory"));
@@ -173,7 +176,7 @@ class Unit_Views_alistTest extends OxidTestCase
     public function testNoIndex()
     {
         // regular category
-        $oListView = new alist();
+        $oListView = oxNew('AList');
         $this->assertEquals(0, $oListView->noIndex());
     }
 
@@ -254,14 +257,14 @@ class Unit_Views_alistTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxarticlelist", "loadPriceArticles", "{ throw new Exception( \$aA[0] . \$aA[1] ); }");
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxcategory');
         $oCategory->oxcategories__oxpricefrom = $this->getMock('oxField', array('__get'));
         $oCategory->oxcategories__oxpricefrom->expects($this->exactly(2))->method('__get')->will($this->returnValue(10));
         $oCategory->oxcategories__oxpriceto = $this->getMock('oxField', array('__get'));
         $oCategory->oxcategories__oxpriceto->expects($this->once())->method('__get')->will($this->returnValue(100));
 
         try {
-            $oListView = new aList();
+            $oListView = oxNew('aList');
             $oListView->UNITloadArticles($oCategory);
         } catch (Exception $oExcp) {
             $this->assertEquals('10100', $oExcp->getMessage());
@@ -365,7 +368,7 @@ class Unit_Views_alistTest extends OxidTestCase
         $this->setRequestParameter('cnid', 'somecategory');
         $this->setSessionParam('session_attrfilter', null);
 
-        $oListView = new aList();
+        $oListView = oxNew('aList');
         $oListView->executefilter();
 
         $this->assertEquals(array('somecategory' => array('0' => 'somefilter')), $this->getSessionParam('session_attrfilter'));
@@ -391,11 +394,11 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetTitleSuffix()
     {
-        $oCat = new oxcategory();
+        $oCat = oxNew('oxcategory');
         $oCat->oxcategories__oxshowsuffix = $this->getMock('oxfield', array('__get'));
         $oCat->oxcategories__oxshowsuffix->expects($this->once())->method('__get')->will($this->returnValue(true));
 
-        $oShop = new oxshop();
+        $oShop = oxNew('oxshop');
         $oShop->oxshops__oxtitlesuffix = $this->getMock('oxfield', array('__get'));
         $oShop->oxshops__oxtitlesuffix->expects($this->once())->method('__get')->will($this->returnValue('testsuffix'));
 
@@ -416,9 +419,9 @@ class Unit_Views_alistTest extends OxidTestCase
      */
 //    public function testGetDefaultSorting()
 //    {
-//        //$oList = new aList();
+//        //$oList = oxNew('aList');
 //
-//        $oCat = new oxcategory();
+//        $oCat = oxNew('oxcategory');
 //        $sArticleTable = getViewName( 'oxarticles' );
 //        $aSorting = array( 'sortby' => $sArticleTable.'.'.'oxid', 'sortdir' => 'asc' );
 //
@@ -437,7 +440,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetDefaultSortingUndefinedSorting()
     {
-        $oController = new aList();
+        $oController = oxNew('aList');
 
         $oCategory = $this->getMock('oxCategory', array('getDefaultSorting'));
         $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue(''));
@@ -453,7 +456,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetDefaultSortingDefinedSorting()
     {
-        $oController = new aList();
+        $oController = oxNew('aList');
 
         $oCategory = $this->getMock('oxCategory', array('getDefaultSorting'));
         $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
@@ -470,7 +473,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testDefaultSortingWhenSortingModeIsUndefined()
     {
-        $oController = new aList();
+        $oController = oxNew('aList');
 
         $oCategory = $this->getMock('oxCategory', array('getDefaultSorting', 'getDefaultSortingMode'));
         $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
@@ -489,7 +492,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testDefaultSortingWhenSortingModeIsAsc()
     {
-        $oController = new aList();
+        $oController = oxNew('aList');
 
         $oCategory = $this->getMock('oxCategory', array('getDefaultSorting', 'getDefaultSortingMode'));
         $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
@@ -508,7 +511,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testDefaultSortingWhenSortingModeIsDesc()
     {
-        $oController = new aList();
+        $oController = oxNew('aList');
 
         $oCategory = $this->getMock('oxCategory', array('getDefaultSorting', 'getDefaultSortingMode'));
         $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
@@ -548,7 +551,7 @@ class Unit_Views_alistTest extends OxidTestCase
         $oListView = $this->getMock('alist', array('getActiveCategory'));
         $oListView->expects($this->once())->method('getActiveCategory')->will($this->returnValue(null));
 
-        $oView = new oxubase();
+        $oView = oxNew('oxubase');
         $this->assertEquals($oView->generatePageNavigationUrl(), $oListView->generatePageNavigationUrl());
     }
 
@@ -559,12 +562,15 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetViewIdPE()
     {
+        if (!OXID_VERSION_PE) {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
 
         $this->setRequestParameter('cnid', 'xxx');
         $this->setSessionParam('_artperpage', '100');
         $this->setSessionParam('ldtype', 'grid');
 
-        $oView = new oxUBase();
+        $oView = oxNew('oxUBase');
         $sViewId = md5($oView->getViewId() . '|xxx|999|100|grid');
 
         $oListView = $this->getMock('alist', array('getActPage'));
@@ -572,21 +578,20 @@ class Unit_Views_alistTest extends OxidTestCase
         $this->assertEquals($sViewId, $oListView->getViewId());
     }
 
-
-
     /**
      * Test view id getter when list type is not in session
      */
     public function testGetViewId_ListTypeNotInSession_ReturnsViewIdWithDefaultListTypeIncluded()
     {
+        if (!OXID_VERSION_PE) {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
         $this->setRequestParameter('cnid', 'xxx');
         $this->setSessionParam('_artperpage', '100');
         $this->setSessionParam('session_attrfilter', array('xxx' => array('0' => array('100'))));
 
-
-        $oView = new oxUBase();
+        $oView = oxNew('oxUBase');
         $sListType = $this->getConfig()->getConfigParam('sDefaultListDisplayType');
-
 
         $sViewId = md5($oView->getViewId() . '|xxx|999|100|' . $sListType);
 
@@ -602,7 +607,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetCatPathString()
     {
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxcategory');
         $oCategory->oxcategories__oxtitle = $this->getMock('oxField', array('__get'));
         $oCategory->oxcategories__oxtitle->expects($this->any())->method('__get')->will($this->returnValue('testTitle'));
 
@@ -621,15 +626,15 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testCollectMetaDescription()
     {
-        $oActCat = new oxcategory();
+        $oActCat = oxNew('oxcategory');
         $oActCat->oxcategories__oxlongdesc = $this->getMock('oxField', array('__get'));
         $oActCat->oxcategories__oxlongdesc->expects($this->once())->method('__get')->will($this->returnValue(''));
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxtitle = $this->getMock('oxField', array('__get'));
         $oArticle->oxarticles__oxtitle->expects($this->exactly(2))->method('__get')->will($this->returnValue('testtitle'));
 
-        $oArtList = new oxlist();
+        $oArtList = oxNew('oxlist');
         $oArtList->offsetSet(0, $oArticle);
         $oArtList->offsetSet(1, $oArticle);
 
@@ -642,7 +647,7 @@ class Unit_Views_alistTest extends OxidTestCase
 
         $sMeta = 'sCatPathString - testtitle, testtitle';
 
-        $oView = new oxubase();
+        $oView = oxNew('oxubase');
         $this->assertEquals($oView->UNITprepareMetaDescription($sMeta), $oListView->UNITcollectMetaDescription(false));
     }
 
@@ -657,7 +662,7 @@ class Unit_Views_alistTest extends OxidTestCase
         $oArticle = $this->getMock('oxarticle', array('getLongDescription'));
         $oArticle->expects($this->exactly(2))->method('getLongDescription')->will($this->returnValue($oLongDesc));
 
-        $oArtList = new oxlist();
+        $oArtList = oxNew('oxlist');
         $oArtList->offsetSet(0, $oArticle);
         $oArtList->offsetSet(1, $oArticle);
 
@@ -682,7 +687,7 @@ class Unit_Views_alistTest extends OxidTestCase
         $oArticle = $this->getMock('oxarticle', array('getLongDescription'));
         $oArticle->expects($this->exactly(1))->method('getLongDescription')->will($this->returnValue($oLongDesc));
 
-        $oArtList = new oxlist();
+        $oArtList = oxNew('oxlist');
         $oArtList->offsetSet(0, $oArticle);
 
         $sCatPathString = 'sCatPathString';
@@ -702,7 +707,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetTemplateName()
     {
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxcategory');
         $oCategory->oxcategories__oxtemplate = new oxfield('test.tpl');
 
         // default template name
@@ -730,8 +735,8 @@ class Unit_Views_alistTest extends OxidTestCase
     {
         $this->setConfigParam('blSeoMode', true);
 
-        $oCategory = new oxcategory();
-        $oCategory->load('30e44ab83159266c7.83602558');
+        $oCategory = oxNew('oxcategory');
+        $oCategory->load('6b6b64bdcf7c25e92191b1120974af4e');
         $sUrl = $oCategory->getLink();
 
         $oListView = $this->getMock('alist', array('getActiveCategory'));
@@ -748,8 +753,9 @@ class Unit_Views_alistTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-        $oCategory = new oxcategory();
-        $oCategory->load('30e44ab83159266c7.83602558');
+        $oCategory = oxNew('oxcategory');
+        $oCategory->load('6b6b64bdcf7c25e92191b1120974af4e');
+
         $sUrl = $oCategory->getLink();
 
         $oListView = $this->getMock('alist', array('getActiveCategory'));
@@ -764,8 +770,8 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testAddPageNrParamSeoOff()
     {
-        $oCategory = new oxcategory();
-        $oCategory->load('30e44ab83159266c7.83602558');
+        $oCategory = oxNew('oxcategory');
+        $oCategory->load('6b6b64bdcf7c25e92191b1120974af4e');
         $sUrl = $oCategory->getStdLink();
 
         $oListView = $this->getMock('alist', array('getActiveCategory'));
@@ -781,16 +787,16 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testPrepareMetaKeyword()
     {
-        $aSubCats[0] = new oxcategory();
+        $aSubCats[0] = oxNew('oxcategory');
         $aSubCats[0]->oxcategories__oxtitle = new oxField('sub_category_1');
 
-        $aSubCats[1] = new oxcategory();
+        $aSubCats[1] = oxNew('oxcategory');
         $aSubCats[1]->oxcategories__oxtitle = new oxField('Nada fedia nada');
 
-        $oParentCategory = new oxcategory();
+        $oParentCategory = oxNew('oxcategory');
         $oParentCategory->oxcategories__oxtitle = new oxField('parent_category');
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxcategory');
         $oCategory->oxcategories__oxtitle = new oxField('current_category');
         $oCategory->oxcategories__oxparentid = new oxField('parentCategoryId');
 
@@ -817,10 +823,10 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testPrepareMetaDescription()
     {
-        $oParentCategory = new oxcategory();
+        $oParentCategory = oxNew('oxcategory');
         $oParentCategory->oxcategories__oxtitle = new oxField('<span>parent</span> <style type="text/css">p {color:blue;}</style>category');
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxcategory');
         $oCategory->oxcategories__oxtitle = new oxField('category');
         $oCategory->oxcategories__oxparentid = new oxField('parentcategory');
 
@@ -829,11 +835,12 @@ class Unit_Views_alistTest extends OxidTestCase
         $oListView = $this->getMock("alist", array('getActiveCategory'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCategory));
 
-        $sExpect = 'parent category - category. OXID eShop 4';
+        $shopVersion = $this->getTestConfig()->getShopEdition() == 'EE' ? 5 : 4;
+        $sExpect = "parent category - category. OXID eShop $shopVersion";
         //expected string changed due to #2776
         $this->assertEquals(
             $sExpect,
-            $oListView->UNITprepareMetaDescription($aCatPath, 1024, false)
+            $oListView->UNITprepareMetaDescription(null, 1024, false)
         );
     }
 
@@ -844,8 +851,8 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetAttributes()
     {
-        $oAttrList = new oxAttributeList();
-        $oAttr = new oxAttribute();
+        $oAttrList = oxNew('oxAttributeList');
+        $oAttr = oxNew('oxAttribute');
         $oAttrList->offsetSet(1, $oAttr);
 
         $oCategory = $this->getMock('oxCategory', array('getAttributes'));
@@ -893,17 +900,12 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetArticleList()
     {
-        $sCatId = '30e44ab83b6e585c9.63147165';
-        $iExptCount = 4;
-        $sCatId = '8a142c3e49b5a80c1.23676990';
-        $iExptCount = 10;
-
         $oObj = $this->getProxyClass("alist");
-        $this->setRequestParameter('cnid', $sCatId);
+        $this->setRequestParameter('cnid', '943173edecf6d6870a0f357b8ac84d32');
         $this->setConfigParam('iNrofCatArticles', 10);
         $oObj->render();
 
-        $this->assertEquals($iExptCount, $oObj->getArticleList()->count());
+        $this->assertEquals(2, $oObj->getArticleList()->count());
     }
 
     /**
@@ -959,18 +961,13 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetTitle()
     {
-        $sCatId = '30e44ab83b6e585c9.63147165';
-        $iExptName = 'Wohnen';
-        $sCatId = '8a142c3e49b5a80c1.23676990';
-        $iExptName = 'Bar-Equipment';
-
-        $oCat = new oxcategory();
-        $oCat->load($sCatId);
+        $oCat = oxNew('oxCategory');
+        $oCat->load('943173edecf6d6870a0f357b8ac84d32');
 
         $oListView = $this->getMock("alist", array('getActiveCategory'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCat));
 
-        $this->assertEquals($iExptName, $oListView->getTitle());
+        $this->assertEquals('Men', $oListView->getTitle());
 
     }
 
@@ -998,7 +995,8 @@ class Unit_Views_alistTest extends OxidTestCase
         $oObj->setNonPublicVar("_blIsCat", true);
 
         $aList = $oObj->getBargainArticleList();
-        $this->assertEquals(4, $aList->count());
+        $count = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 4;
+        $this->assertEquals($count, $aList->count());
     }
 
     /**
@@ -1008,13 +1006,11 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testMetaKeywordsGetter()
     {
-
-
-        $sCatId = '8a142c3e44ea4e714.31136811';
+        $sCatId = '943173edecf6d6870a0f357b8ac84d32';
 
         $this->setRequestParameter('cnid', $sCatId);
 
-        $oSubj = $this->getMock('alist', array('_prepareMetaKeyword'));
+        $oSubj = $this->getMock('AList', array('_prepareMetaKeyword'));
         $oSubj->expects($this->any())->method('_prepareMetaKeyword')->will($this->returnValue("aaa"));
 
         $oSubj->setCategoryId($sCatId);
@@ -1032,11 +1028,11 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testViewMetaKeywords()
     {
-
-        $sCatId = '8a142c3e44ea4e714.31136811';
+        $sCatId = '943173edecf6d6870a0f357b8ac84d32';
 
         $this->setRequestParameter('cnid', $sCatId);
 
+        /** @var alist|PHPUnit_Framework_MockObject_MockObject $oSubj */
         $oSubj = $this->getMock('alist', array('_prepareMetaKeyword'));
         $oSubj->expects($this->any())->method('_prepareMetaKeyword')->will($this->returnValue("aaa"));
 
@@ -1044,7 +1040,7 @@ class Unit_Views_alistTest extends OxidTestCase
         $oSubj->render();
 
         $oSubj->render();
-        $sMetaKeywords = $oSubj->getMetaKeywords();
+        $oSubj->getMetaKeywords();
         $this->assertEquals("aaa", $oSubj->getMetaKeywords());
     }
 
@@ -1055,7 +1051,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetActiveCategory()
     {
-        $oArticleList = new aList();
+        $oArticleList = oxNew('aList');
         $oArticleList->setActiveCategory('aaa');
         $this->assertEquals('aaa', $oArticleList->getActiveCategory());
     }

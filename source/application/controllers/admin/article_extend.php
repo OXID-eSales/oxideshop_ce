@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -47,64 +47,65 @@ class Article_Extend extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oArticle = oxNew('oxArticle');
+        $this->_aViewData['edit'] = $article = oxNew('oxArticle');
 
-        $soxId = $this->getEditObjectId();
+        $oxId = $this->getEditObjectId();
 
         $this->_createCategoryTree("artcattree");
 
         // all categories
-        if (isset($soxId) && $soxId != "-1") {
+        if (isset($oxId) && $oxId != "-1") {
             // load object
-            $oArticle->loadInLang($this->_iEditLang, $soxId);
+            $article->loadInLang($this->_iEditLang, $oxId);
 
+            $article = $this->updateArticle($article);
 
             // load object in other languages
-            $oOtherLang = $oArticle->getAvailableInLangs();
-            if (!isset($oOtherLang[$this->_iEditLang])) {
-                $oArticle->loadInLang(key($oOtherLang), $soxId);
+            $otherLang = $article->getAvailableInLangs();
+            if (!isset($otherLang[$this->_iEditLang])) {
+                $article->loadInLang(key($otherLang), $oxId);
             }
 
-            foreach ($oOtherLang as $id => $language) {
-                $oLang = new stdClass();
-                $oLang->sLangDesc = $language;
-                $oLang->selected = ($id == $this->_iEditLang);
-                $this->_aViewData["otherlang"][$id] = clone $oLang;
+            foreach ($otherLang as $id => $language) {
+                $lang = new stdClass();
+                $lang->sLangDesc = $language;
+                $lang->selected = ($id == $this->_iEditLang);
+                $this->_aViewData["otherlang"][$id] = clone $lang;
             }
 
             // variant handling
-            if ($oArticle->oxarticles__oxparentid->value) {
-                $oParentArticle = oxNew('oxArticle');
-                $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
-                $this->_aViewData["parentarticle"] = $oParentArticle;
-                $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;
+            if ($article->oxarticles__oxparentid->value) {
+                $parentArticle = oxNew('oxArticle');
+                $parentArticle->load($article->oxarticles__oxparentid->value);
+                $this->_aViewData["parentarticle"] = $parentArticle;
+                $this->_aViewData["oxparentid"] = $article->oxarticles__oxparentid->value;
             }
         }
 
+        if ($this->getConfig()->getEdition() !== 'EE') {
+            $oDB = oxDb::getDB();
+            $myConfig = $this->getConfig();
 
-        $oDB = oxDb::getDB();
-        $myConfig = $this->getConfig();
+            $sArticleTable = getViewName('oxarticles', $this->_iEditLang);
+            $sSelect = "select {$sArticleTable}.oxtitle, {$sArticleTable}.oxartnum, {$sArticleTable}.oxvarselect " .
+                "from {$sArticleTable} where 1 ";
+            // #546
+            $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
+            $sBundleIdField = 'oxarticles__oxbundleid';
+            $sSelect .= $blVariantsSelectionParameter ? '' : " and {$sArticleTable}.oxparentid = '' ";
+            $sSelect .= " and {$sArticleTable}.oxid = " . $oDB->quote($article->$sBundleIdField->value);
 
-        $sArticleTable = getViewName('oxarticles', $this->_iEditLang);
-        $sSelect = "select {$sArticleTable}.oxtitle, {$sArticleTable}.oxartnum, {$sArticleTable}.oxvarselect " .
-                   "from {$sArticleTable} where 1 ";
-        // #546
-        $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
-        $sBundleIdField = 'oxarticles__oxbundleid';
-        $sSelect .= $blVariantsSelectionParameter ? '' : " and {$sArticleTable}.oxparentid = '' ";
-        $sSelect .= " and {$sArticleTable}.oxid = " . $oDB->quote($oArticle->$sBundleIdField->value);
-
-        $rs = $oDB->Execute($sSelect);
-        if ($rs != false && $rs->RecordCount() > 0) {
-            while (!$rs->EOF) {
-                $sArtNum = new oxField($rs->fields[1]);
-                $sArtTitle = new oxField($rs->fields[0] . " " . $rs->fields[2]);
-                $rs->MoveNext();
+            $rs = $oDB->Execute($sSelect);
+            if ($rs != false && $rs->RecordCount() > 0) {
+                while (!$rs->EOF) {
+                    $sArtNum = new oxField($rs->fields[1]);
+                    $sArtTitle = new oxField($rs->fields[0] . " " . $rs->fields[2]);
+                    $rs->MoveNext();
+                }
             }
+            $this->_aViewData['bundle_artnum'] = $sArtNum;
+            $this->_aViewData['bundle_title'] = $sArtTitle;
         }
-        $this->_aViewData['bundle_artnum'] = $sArtNum;
-        $this->_aViewData['bundle_title'] = $sArtTitle;
-
 
         $iAoc = $this->getConfig()->getRequestParameter("aoc");
         if ($iAoc == 1) {
@@ -120,7 +121,7 @@ class Article_Extend extends oxAdminDetails
         }
 
         //load media files
-        $this->_aViewData['aMediaUrls'] = $oArticle->getMediaUrls();
+        $this->_aViewData['aMediaUrls'] = $article->getMediaUrls();
 
         return "article_extend.tpl";
     }
@@ -278,5 +279,17 @@ class Article_Extend extends oxAdminDetails
         }
 
         return $this->_aUnitsArray;
+    }
+
+    /**
+     * Method used to overload and update article.
+     *
+     * @param \oxArticle $article
+     *
+     * @return \oxArticle
+     */
+    protected function updateArticle($article)
+    {
+        return $article;
     }
 }

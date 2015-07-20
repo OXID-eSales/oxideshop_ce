@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -75,10 +75,7 @@ class Adminguestbook_Main extends oxAdminDetails
             $aParams['oxgbentries__oxactive'] = 0;
         }
 
-        // shopid
-        $aParams['oxgbentries__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
-
-        $oLinks = oxNew("oxgbentry");
+        $oLinks = $this->getGuestbookEntryObject();
         if ($soxId != "-1") {
             $oLinks->load($soxId);
         } else {
@@ -88,8 +85,32 @@ class Adminguestbook_Main extends oxAdminDetails
             $aParams['oxgbentries__oxuserid'] = oxRegistry::getSession()->getVariable('auth');
         }
 
+        $aParams = $this->appendAdditionalParametersForSave($aParams);
+
         $oLinks->assign($aParams);
         $oLinks->save();
         $this->setEditObjectId($oLinks->getId());
+    }
+
+    /**
+     * Getter of oxgbentry object
+     *
+     * @return \oxGbEntry
+     */
+    public function getGuestbookEntryObject()
+    {
+        return oxNew('oxGbEntry');
+    }
+
+    /**
+     * Add additional parameters for saving on oxgbentry save
+     *
+     * @param array $parameters
+     *
+     * @return array
+     */
+    protected function appendAdditionalParametersForSave($parameters)
+    {
+        return $parameters;
     }
 }

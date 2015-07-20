@@ -105,6 +105,24 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
      *
      * @return null
      */
+    public function testStartWithLoggedInAdminAndNoControllerSpecified()
+    {
+        $this->setRequestParameter('cl', null);
+        $this->setRequestParameter('fnc', 'testFnc');
+        $this->getSession()->setVariable('auth', true);
+
+        $oControl = $this->getMock("oxShopControl", array("_runOnce", "isAdmin", "_process"), array(), '', false);
+        $oControl->expects($this->once())->method('_runOnce');
+        $oControl->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
+        $oControl->expects($this->once())->method('_process')->with($this->equalTo("admin_start"), $this->equalTo("testFnc"));
+        $oControl->start();
+    }
+
+    /**
+     * Testing oxShopControl::start()
+     *
+     * @return null
+     */
     public function testStartSystemComponentExceptionHandled_NotDebugMode()
     {
         oxRegistry::get("OxConfigFile")->setVar('iDebug', 0);

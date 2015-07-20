@@ -156,8 +156,7 @@ class article_extend_ajax extends ajaxListComponent
     public function addCat()
     {
         $myConfig = $this->getConfig();
-        $oDb = oxDb::getDb();
-        $aAddCat = $this->_getActionIds('oxcategories.oxid');
+        $categoriesToAdd = $this->_getActionIds('oxcategories.oxid');
         $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
         $sShopID = $myConfig->getShopId();
         $sO2CView = $this->_getViewName('oxobject2category');
@@ -165,15 +164,15 @@ class article_extend_ajax extends ajaxListComponent
         // adding
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sCategoriesTable = $this->_getViewName('oxcategories');
-            $aAddCat = $this->_getAll($this->_addFilter("select $sCategoriesTable.oxid " . $this->_getQuery()));
+            $categoriesToAdd = $this->_getAll($this->_addFilter("select $sCategoriesTable.oxid " . $this->_getQuery()));
         }
 
-        if (isset($aAddCat) && is_array($aAddCat)) {
+        if (isset($categoriesToAdd) && is_array($categoriesToAdd)) {
             $oDb = oxDb::getDb();
 
             $oNew = oxNew('oxobject2category');
 
-            foreach ($aAddCat as $sAdd) {
+            foreach ($categoriesToAdd as $sAdd) {
                 // check, if it's already in, then don't add it again
                 $sSelect = "select 1 from " . $sO2CView . " as oxobject2category where oxobject2category.oxcatnid= "
                            . $oDb->quote($sAdd) . " and oxobject2category.oxobjectid = " . $oDb->quote($soxId) . " ";
@@ -193,7 +192,7 @@ class article_extend_ajax extends ajaxListComponent
 
             $this->resetArtSeoUrl($soxId);
             $this->resetContentCache();
-
+            $this->onAddingCategories($categoriesToAdd);
         }
     }
 
@@ -207,11 +206,11 @@ class article_extend_ajax extends ajaxListComponent
         $oDb = oxDb::getDb();
         $sO2CView = $this->_getViewName('oxobject2category');
         $soxId = $oDb->quote($soxId);
-        $sSqlShopFilter = "";
+        $sqlShopFilter = $this->onUpdatingOxTimeGetQueryToEmbed();
         // updating oxtime values
-        $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$soxId} {$sSqlShopFilter} and oxid = (
+        $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$soxId} {$sqlShopFilter} and oxid = (
                     select oxid from (
-                        select oxid from {$sO2CView} where oxobjectid = {$soxId} {$sSqlShopFilter}
+                        select oxid from {$sO2CView} where oxobjectid = {$soxId} {$sqlShopFilter}
                         order by oxtime limit 1
                     ) as _tmp
                 )";
@@ -230,15 +229,15 @@ class article_extend_ajax extends ajaxListComponent
         $sQuotedOxId = $oDb->quote($soxId);
         $sQuotedDefCat = $oDb->quote($sDefCat);
 
-        $sSqlShopFilter = "";
+        $sqlShopFilter = $this->onSettingCategoryAsDefaultGetQueryToEmbed();
 
         // #0003650: increment all product references independent to active shop
-        $sQ = "update oxobject2category set oxtime = oxtime + 10 where oxobjectid = {$sQuotedOxId} {$sSqlShopFilter}";
+        $sQ = "update oxobject2category set oxtime = oxtime + 10 where oxobjectid = {$sQuotedOxId} {$sqlShopFilter}";
         oxDb::getInstance()->getDb()->Execute($sQ);
 
         // set main category for active shop
         $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$sQuotedOxId} " .
-              "and oxcatnid = {$sQuotedDefCat} {$sSqlShopFilter}";
+              "and oxcatnid = {$sQuotedDefCat} {$sqlShopFilter}";
         oxDb::getInstance()->getDb()->Execute($sQ);
         //echo "\n$sQ\n";
 
@@ -262,10 +261,39 @@ class article_extend_ajax extends ajaxListComponent
     /**
      * Method is used for overloading to do additional actions.
      *
-     * @param array $categoriesToRemove
+     * @param array  $categoriesToRemove
      * @param string $oxId
      */
     protected function onRemovingCategoriesAdditionalActions($categoriesToRemove, $oxId)
     {
+    }
+
+    /**
+     * Method is used for overloading.
+     *
+     * @param array $categories
+     */
+    protected function onAddingCategories($categories)
+    {
+    }
+
+    /**
+     * Method is used for overloading to insert additional query condition.
+     *
+     * @return string
+     */
+    protected function onUpdatingOxTimeGetQueryToEmbed()
+    {
+        return '';
+    }
+
+    /**
+     * Method is used for overloading to insert additional query condition.
+     *
+     * @return string
+     */
+    protected function onSettingCategoryAsDefaultGetQueryToEmbed()
+    {
+        return '';
     }
 }

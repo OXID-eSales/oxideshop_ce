@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -39,13 +39,17 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
     {
         parent::setUp();
 
-        $this->setCategoriesViewTable('oxv_oxcategories_de');
-        $this->setObject2CategoryViewTable('oxobject2category');
-        $this->setShopIdTest('oxbaseshop');
+        if ($this->getConfig()->getEdition() !== 'EE') {
+            $this->setCategoriesViewTable('oxv_oxcategories_de');
+            $this->setObject2CategoryViewTable('oxobject2category');
+            $this->setShopIdTest('oxbaseshop');
 
-        $this->addToDatabase("insert into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='" . $this->getShopIdTest() . "'", 'oxcategories');
-        $this->addToDatabase("insert into oxobject2category set oxid='_testObject2Category', oxcatnid='_testCategory', oxobjectid = '_testObject'", 'oxobject2category');
-
+            $this->addToDatabase("insert into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='" . $this->getShopIdTest() . "'", 'oxcategories');
+            $this->addToDatabase("insert into oxobject2category set oxid='_testObject2Category', oxcatnid='_testCategory', oxobjectid = '_testObject'", 'oxobject2category');
+        } else {
+            $this->addToDatabase("insert into oxcategories set oxid='_testCategory', oxtitle='_testCategory'", 'oxcategories');
+            $this->addToDatabase("insert into oxobject2category set oxid='_testObject2Category', oxshopid='" . $this->getShopIdTest() . "', oxcatnid='_testCategory', oxobjectid = '_testObject'", 'oxobject2category');
+        }
 
         $this->addToDatabase("insert into oxcategories set oxid='_testCategory1', oxtitle='_testCategory1', oxshopid='" . $this->getShopIdTest() . "'", 'oxcategories');
         $this->addToDatabase("insert into oxcategories set oxid='_testCategory2', oxtitle='_testCategory2', oxshopid='" . $this->getShopIdTest() . "'", 'oxcategories');
@@ -271,8 +275,11 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->setRequestParameter("all", true);
 
-
-        $iCount = oxDb::getDb()->getOne("select count(oxv_oxcategories_de.oxid)  from oxv_oxcategories_de where oxv_oxcategories_de.oxid not in (  select oxv_oxcategories_de.oxid from oxobject2category left join oxv_oxcategories_de on oxv_oxcategories_de.oxid=oxobject2category.oxcatnid  where oxobject2category.oxobjectid = '$sSynchoxid' and oxv_oxcategories_de.oxid is not null ) and oxv_oxcategories_de.oxpriceto = '0'");
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $iCount = oxDb::getDb()->getOne("select count(oxv_oxcategories_1_de.oxid)  from oxv_oxcategories_1_de where oxv_oxcategories_1_de.oxid not in (  select oxv_oxcategories_1_de.oxid from oxv_oxobject2category_1 left join oxv_oxcategories_1_de on oxv_oxcategories_1_de.oxid=oxv_oxobject2category_1.oxcatnid  where oxv_oxobject2category_1.oxobjectid = '$sSynchoxid' and oxv_oxcategories_1_de.oxid is not null ) and oxv_oxcategories_1_de.oxpriceto = '0'");
+        } else {
+            $iCount = oxDb::getDb()->getOne("select count(oxv_oxcategories_de.oxid)  from oxv_oxcategories_de where oxv_oxcategories_de.oxid not in (  select oxv_oxcategories_de.oxid from oxobject2category left join oxv_oxcategories_de on oxv_oxcategories_de.oxid=oxobject2category.oxcatnid  where oxobject2category.oxobjectid = '$sSynchoxid' and oxv_oxcategories_de.oxid is not null ) and oxv_oxcategories_de.oxpriceto = '0'");
+        }
 
         $oView = oxNew('article_extend_ajax');
         $this->assertGreaterThan(0, $iCount);

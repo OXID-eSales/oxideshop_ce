@@ -86,36 +86,34 @@ class article_extend_ajax extends ajaxListComponent
      */
     protected function _getDataFields($sQ)
     {
-        $aDataFields = parent::_getDataFields($sQ);
-        if (oxRegistry::getConfig()->getRequestParameter('oxid') && is_array($aDataFields) && count($aDataFields)) {
-
+        $dataFields = parent::_getDataFields($sQ);
+        if (oxRegistry::getConfig()->getRequestParameter('oxid') && is_array($dataFields) && count($dataFields)) {
             // looking for smallest time value to mark record as main category ..
-            $iMinPos = null;
-            $iMinVal = null;
-            reset($aDataFields);
-            while (list($iPos, $aField) = each($aDataFields)) {
-
+            $minimalPosition = null;
+            $minimalValue = null;
+            reset($dataFields);
+            while (list($position, $fields) = each($dataFields)) {
                 // already set ?
-                if ($aField['_3'] == '0') {
-                    $iMinPos = null;
+                if ($fields['_3'] == '0') {
+                    $minimalPosition = null;
                     break;
                 }
 
-                if (!$iMinVal) {
-                    $iMinVal = $aField['_3'];
-                    $iMinPos = $iPos;
-                } elseif ($iMinVal > $aField['_3']) {
-                    $iMinPos = $iPos;
+                if (!$minimalValue) {
+                    $minimalValue = $fields['_3'];
+                    $minimalPosition = $position;
+                } elseif ($minimalValue > $fields['_3']) {
+                    $minimalPosition = $position;
                 }
             }
 
             // setting primary category
-            if (isset($iMinPos)) {
-                $aDataFields[$iMinPos]['_3'] = '0';
+            if (isset($minimalPosition)) {
+                $dataFields[$minimalPosition]['_3'] = '0';
             }
         }
 
-        return $aDataFields;
+        return $dataFields;
     }
 
     /**
@@ -123,33 +121,33 @@ class article_extend_ajax extends ajaxListComponent
      */
     public function removeCat()
     {
-        $aRemoveCat = $this->_getActionIds('oxcategories.oxid');
+        $categoriesToRemove = $this->_getActionIds('oxcategories.oxid');
 
-        $soxId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $oDb = oxDb::getDb();
+        $oxId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $dataBase = oxDb::getDb();
 
         // adding
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
-            $sCategoriesTable = $this->_getViewName('oxcategories');
-            $aRemoveCat = $this->_getAll($this->_addFilter("select {$sCategoriesTable}.oxid " . $this->_getQuery()));
+            $categoriesTable = $this->_getViewName('oxcategories');
+            $categoriesToRemove = $this->_getAll($this->_addFilter("select {$categoriesTable}.oxid " . $this->_getQuery()));
         }
 
         // removing all
-        if (is_array($aRemoveCat) && count($aRemoveCat)) {
+        if (is_array($categoriesToRemove) && count($categoriesToRemove)) {
             $query = "delete from oxobject2category where oxobject2category.oxobjectid= "
-                  . oxDb::getDb()->quote($soxId) . " and ";
+                  . oxDb::getDb()->quote($oxId) . " and ";
             $query = $this->onRemovingCategoriesUpdateQuery($query);
-            $query .= " oxcatnid in (" . implode(', ', oxDb::getInstance()->quoteArray($aRemoveCat)) . ')';
-            $oDb->Execute($query);
+            $query .= " oxcatnid in (" . implode(', ', oxDb::getInstance()->quoteArray($categoriesToRemove)) . ')';
+            $dataBase->Execute($query);
 
             // updating oxtime values
-            $this->_updateOxTime($soxId);
+            $this->_updateOxTime($oxId);
         }
 
-        $this->resetArtSeoUrl($soxId, $aRemoveCat);
+        $this->resetArtSeoUrl($oxId, $categoriesToRemove);
         $this->resetContentCache();
 
-        $this->onRemovingCategoriesAdditionalActions($aRemoveCat, $soxId);
+        $this->onRemovingCategoriesAdditionalActions($categoriesToRemove, $oxId);
     }
 
     /**
@@ -171,11 +169,9 @@ class article_extend_ajax extends ajaxListComponent
         }
 
         if (isset($aAddCat) && is_array($aAddCat)) {
-
             $oDb = oxDb::getDb();
 
             $oNew = oxNew('oxobject2category');
-            $myUtilsObj = oxUtilsObject::getInstance();
 
             foreach ($aAddCat as $sAdd) {
                 // check, if it's already in, then don't add it again

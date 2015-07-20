@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -32,17 +32,16 @@ class Unit_Admin_ArticleCrosssellingAjaxTest extends OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
         parent::setUp();
 
-        $this->setArticleViewTable('oxv_oxarticles_de');
-        $this->setObject2CategoryViewTable('oxobject2category');
-        $this->setShopId('oxbaseshop');
-
+        if ($this->getConfig()->getEdition() !== 'EE') {
+            $this->setArticleViewTable('oxv_oxarticles_de');
+            $this->setObject2CategoryViewTable('oxobject2category');
+            $this->setShopId('oxbaseshop');
+        }
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleCrossselling', oxshopid='" . $this->getShopId() . "', oxtitle='_testArticleCrossselling'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleCrosssellingAdd', oxshopid='" . $this->getShopId() . "', oxtitle='_testArticleCrosssellingAdd'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleCrosssellingAddAll', oxshopid='" . $this->getShopId() . "', oxtitle='_testArticleCrosssellingAddAll'", 'oxarticles');
@@ -90,9 +89,7 @@ class Unit_Admin_ArticleCrosssellingAjaxTest extends OxidTestCase
     }
 
     /**
-     * ArticleCrosssellingAjax::_getQuery() test case
-     *
-     * @return null
+     * ArticleCrosssellingAjax::_getQuery() test case.
      */
     public function testGetQuery()
     {
@@ -101,9 +98,7 @@ class Unit_Admin_ArticleCrosssellingAjaxTest extends OxidTestCase
     }
 
     /**
-     * ArticleCrosssellingAjax::_getQuery() test case
-     *
-     * @return null
+     * ArticleCrosssellingAjax::_getQuery() test case.
      */
     public function testGetQuerySynchoxid()
     {
@@ -115,9 +110,7 @@ class Unit_Admin_ArticleCrosssellingAjaxTest extends OxidTestCase
     }
 
     /**
-     * ArticleCrosssellingAjax::_getQuery() test case
-     *
-     * @return null
+     * ArticleCrosssellingAjax::_getQuery() test case.
      */
     public function testGetQuerySynchoxidOxid()
     {
@@ -131,9 +124,7 @@ class Unit_Admin_ArticleCrosssellingAjaxTest extends OxidTestCase
     }
 
     /**
-     * ArticleCrosssellingAjax::_getQuery() test case
-     *
-     * @return null
+     * ArticleCrosssellingAjax::_getQuery() test case.
      */
     public function testGetQueryOxidBidirectCross()
     {
@@ -146,9 +137,7 @@ class Unit_Admin_ArticleCrosssellingAjaxTest extends OxidTestCase
     }
 
     /**
-     * ArticleCrosssellingAjax::_getQuery() test case
-     *
-     * @return null
+     * ArticleCrosssellingAjax::_getQuery() test case.
      */
     public function testGetQueryOxid()
     {
@@ -160,9 +149,7 @@ class Unit_Admin_ArticleCrosssellingAjaxTest extends OxidTestCase
     }
 
     /**
-     * ArticleCrosssellingAjax::_getQuery() test case
-     *
-     * @return null
+     * ArticleCrosssellingAjax::_getQuery() test case.
      */
     public function testGetQuerySynchoxidBidirectCross()
     {
@@ -175,9 +162,7 @@ class Unit_Admin_ArticleCrosssellingAjaxTest extends OxidTestCase
     }
 
     /**
-     * ArticleCrosssellingAjax::removeArticleCross() test case
-     *
-     * @return null
+     * ArticleCrosssellingAjax::removeArticleCross() test case.
      */
     public function testRemoveArticleCross()
     {
@@ -190,9 +175,7 @@ class Unit_Admin_ArticleCrosssellingAjaxTest extends OxidTestCase
     }
 
     /**
-     * ArticleCrosssellingAjax::removeArticleCross() test case
-     *
-     * @return null
+     * ArticleCrosssellingAjax::removeArticleCross() test case.
      */
     public function testRemoveArticleCrossAll()
     {
@@ -209,9 +192,7 @@ class Unit_Admin_ArticleCrosssellingAjaxTest extends OxidTestCase
     }
 
     /**
-     * ArticleCrosssellingAjax::addArticleCross() test case
-     *
-     * @return null
+     * ArticleCrosssellingAjax::addArticleCross() test case.
      */
     public function testAddArticleCross()
     {
@@ -228,9 +209,7 @@ class Unit_Admin_ArticleCrosssellingAjaxTest extends OxidTestCase
     }
 
     /**
-     * ArticleCrosssellingAjax::addArticleCross() test case
-     *
-     * @return null
+     * ArticleCrosssellingAjax::addArticleCross() test case.
      */
     public function testAddArticleCrossAll()
     {

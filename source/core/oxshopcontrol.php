@@ -712,8 +712,13 @@ class oxShopControl extends oxSuperCfg
         $sClass = oxRegistry::getConfig()->getRequestParameter('cl');
 
         if (!$sClass) {
-            $sClass = $this->isAdmin() ? 'login' : $this->_getFrontendStartController();
-            oxRegistry::getSession()->setVariable('cl', $sClass);
+            $oSession = oxRegistry::getSession();
+            if($this->isAdmin()){
+                $sClass = $oSession->getVariable("auth") ? 'admin_start' : 'login';
+            }else{
+                $sClass = $this->_getFrontendStartController();
+            }
+            $oSession->setVariable('cl', $sClass);
         }
 
         return $sClass;

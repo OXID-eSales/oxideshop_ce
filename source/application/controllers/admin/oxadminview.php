@@ -160,7 +160,7 @@ class oxAdminView extends oxView
 
         // authorization check
         if (!$this->_authorize()) {
-            oxRegistry::getUtils()->redirect('index.php', true, 302);
+            oxRegistry::getUtils()->redirect('index.php?cl=login', true, 302);
             exit;
         }
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -123,11 +123,9 @@ class article_extend_ajax extends ajaxListComponent
      */
     public function removeCat()
     {
-        $myConfig = $this->getConfig();
         $aRemoveCat = $this->_getActionIds('oxcategories.oxid');
 
         $soxId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sShopID = $myConfig->getShopId();
         $oDb = oxDb::getDb();
 
         // adding
@@ -138,11 +136,11 @@ class article_extend_ajax extends ajaxListComponent
 
         // removing all
         if (is_array($aRemoveCat) && count($aRemoveCat)) {
-
-            $sQ = "delete from oxobject2category where oxobject2category.oxobjectid= "
+            $query = "delete from oxobject2category where oxobject2category.oxobjectid= "
                   . oxDb::getDb()->quote($soxId) . " and ";
-            $sQ .= " oxcatnid in (" . implode(', ', oxDb::getInstance()->quoteArray($aRemoveCat)) . ')';
-            $oDb->Execute($sQ);
+            $query = $this->onRemovingCategoriesUpdateQuery($query);
+            $query .= " oxcatnid in (" . implode(', ', oxDb::getInstance()->quoteArray($aRemoveCat)) . ')';
+            $oDb->Execute($query);
 
             // updating oxtime values
             $this->_updateOxTime($soxId);
@@ -151,6 +149,7 @@ class article_extend_ajax extends ajaxListComponent
         $this->resetArtSeoUrl($soxId, $aRemoveCat);
         $this->resetContentCache();
 
+        $this->onRemovingCategoriesAdditionalActions($aRemoveCat, $soxId);
     }
 
     /**
@@ -250,5 +249,27 @@ class article_extend_ajax extends ajaxListComponent
         // #0003366: invalidate article SEO for all shops
         oxRegistry::get("oxSeoEncoder")->markAsExpired($soxId, null, 1, null, "oxtype='oxarticle'");
         $this->resetContentCache();
+    }
+
+    /**
+     * Method used for overloading and embed query.
+     *
+     * @param string $query
+     *
+     * @return string
+     */
+    protected function onRemovingCategoriesUpdateQuery($query)
+    {
+        return $query;
+    }
+
+    /**
+     * Method is used for overloading to do additional actions.
+     *
+     * @param array $categoriesToRemove
+     * @param string $oxId
+     */
+    protected function onRemovingCategoriesAdditionalActions($categoriesToRemove, $oxId)
+    {
     }
 }

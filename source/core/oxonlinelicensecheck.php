@@ -349,12 +349,9 @@ class oxOnlineLicenseCheck
     /**
      * Starts grace period.
      * Sets to config options.
-     *
-     * @overload This method is used for overloading.
      */
     protected function _startGracePeriod()
     {
-        //
     }
 
     /**

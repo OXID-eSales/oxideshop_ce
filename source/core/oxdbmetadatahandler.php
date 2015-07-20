@@ -606,8 +606,6 @@ class oxDbMetaDataHandler extends oxSuperCfg
     /**
      * Adds possibility to validate table names.
      *
-     * This method is used for overloading.
-     *
      * @param string $tableName
      *
      * @return bool

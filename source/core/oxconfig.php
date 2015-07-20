@@ -424,8 +424,6 @@ class oxConfig extends oxSuperCfg
 
     /**
      * Load any additional configuration on oxConfig::init.
-     *
-     * This method is used for overloading.
      */
     protected function loadAdditionalConfiguration()
     {

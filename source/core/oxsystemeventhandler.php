@@ -260,11 +260,7 @@ class oxSystemEventHandler
     }
 
     /**
-     * Check if shop valid and do related actions
-     *
-     * @overload This method is used for overloading.
-     *
-     * @return void
+     * Check if shop valid and do related actions.
      */
     protected function _validateOffline()
     {

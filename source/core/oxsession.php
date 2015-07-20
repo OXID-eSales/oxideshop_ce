@@ -1100,8 +1100,6 @@ class oxSession extends oxSuperCfg
     /**
      * Return Shop IR parameter for Url.
      *
-     * @overload This method is used for overloading.
-     *
      * @return string
      */
     protected function getShopUrlId()
@@ -1112,8 +1110,6 @@ class oxSession extends oxSuperCfg
     /**
      * Decide if need to set session headers to browser.
      *
-     * @overload This method is used for overloading.
-     *
      * @return bool
      */
     protected function needToSetHeaders()
@@ -1123,11 +1119,8 @@ class oxSession extends oxSuperCfg
 
     /**
      * Place to hook when SID is added to URL.
-     *
-     * @overload This method is used for overloading.
      */
     protected function sidToUrlEvent()
     {
-        //
     }
 }

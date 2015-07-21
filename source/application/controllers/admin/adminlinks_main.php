@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -52,6 +52,11 @@ class Adminlinks_Main extends oxAdminDetails
                 $oLinks->loadInLang(key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oLinks;
+
+            //Disable editing for derived items
+            if ($oLinks->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
 
             // remove already created languages
             $this->_aViewData["posslang"] = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
@@ -114,6 +119,10 @@ class Adminlinks_Main extends oxAdminDetails
             //$oLinks->load( $soxId );
             $oLinks->loadInLang($iEditLanguage, $soxId);
 
+            //Disable editing for derived items
+            if ($oLinks->isDerived()) {
+                return;
+            }
         } else {
             $aParams['oxlinks__oxid'] = null;
         }
@@ -145,9 +154,6 @@ class Adminlinks_Main extends oxAdminDetails
             $aParams['oxlinks__oxactive'] = 0;
         }
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxlinks__oxshopid'] = $sShopID;
         $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
         $iEditLanguage = oxRegistry::getConfig()->getRequestParameter("editlanguage");
 
@@ -158,7 +164,10 @@ class Adminlinks_Main extends oxAdminDetails
             //$aParams = $oLinks->ConvertNameArray2Idx( $aParams);
         }
 
-
+        //Disable editing for derived items
+        if ($oLinks->isDerived()) {
+            return;
+        }
 
         $oLinks->setLanguage(0);
         $oLinks->assign($aParams);

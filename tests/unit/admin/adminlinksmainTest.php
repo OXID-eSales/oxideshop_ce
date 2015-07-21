@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -117,6 +117,10 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
      */
     public function testGetTextEditor()
     {
+        if (!OXID_VERSION_PE_CE) {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
         $oAdminDetails = new adminlinks_main();
         $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle');
 

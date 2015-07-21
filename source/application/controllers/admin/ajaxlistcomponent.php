@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -163,14 +163,12 @@ class ajaxListComponent extends oxSuperCfg
     /**
      * AJAX call processor function
      *
-     * @param string $sFunction name of action to execute (optional)
+     * @param string $function name of action to execute (optional)
      */
-    public function processRequest($sFunction = null)
+    public function processRequest($function = null)
     {
-        if ($sFunction) {
-            $this->$sFunction();
-
-
+        if ($function) {
+            $this->$function();
         } else {
             $sQAdd = $this->_getQuery();
 
@@ -684,18 +682,16 @@ class ajaxListComponent extends oxSuperCfg
     }
 
     /**
-     * Resets cache.
+     * Resets content cache.
      */
     protected function _resetContentCache()
     {
     }
 
     /**
-     * Resets caches
-     *
-     * @edition EE
+     * Resets output caches
      */
-    private function _resetCaches()
+    protected function _resetCaches()
     {
     }
 }

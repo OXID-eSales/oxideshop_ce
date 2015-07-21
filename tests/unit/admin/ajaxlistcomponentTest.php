@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -511,12 +511,15 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testResetContentCache()
     {
+        if (OXID_VERSION_EE) {
+            $this->markTestSkipped('This test is for Community/Professional edition only.');
+        }
+
         $oConfig = $this->getMock("oxConfig", array("getConfigParam"));
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
 
         $oComponent = $this->getMock("ajaxListComponent", array("getConfig"));
         $oComponent->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
-
 
         oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ throw new Exception( "oxResetFileCache" ); }');
         // testing..

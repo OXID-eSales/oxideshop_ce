@@ -1232,13 +1232,9 @@ class oxSeoEncoder extends oxSuperCfg
 
         $sShopId = $this->getConfig()->getShopId();
 
-        $sQ = "SELECT `oxseourl`, `oxlang` FROM `oxseo` WHERE `oxstdurl` = " . $oDb->quote($sStdUrl) . " AND `oxlang` = '$iLanguage' AND `oxshopid` = '$sShopId' LIMIT 1";
-
-        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $oRs = $oDb->select($sQ);
-
-        if (!$oRs->EOF) {
-            $sSeoUrl = $oRs->fields['oxseourl'];
+        $sQ = "SELECT `oxseourl` FROM `oxseo` WHERE `oxstdurl` = " . $oDb->quote($sStdUrl) . " AND `oxlang` = '$iLanguage' AND `oxshopid` = '$sShopId' LIMIT 1";
+        if($sOxseourl = $oDb->getOne($sQ)) {
+            $sSeoUrl = $sOxseourl;
         }
 
         return $sSeoUrl;

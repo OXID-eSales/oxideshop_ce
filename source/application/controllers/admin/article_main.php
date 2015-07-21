@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -61,10 +61,8 @@ class Article_Main extends oxAdminDetails
         }
 
         if ($sOxId && $sOxId != "-1") {
-
             // load object
-            $oArticle->loadInLang($this->_iEditLang, $sOxId);
-
+            $this->loadLanguage($oArticle, $sOxId);
 
             // load object in other languages
             $oOtherLang = $oArticle->getAvailableInLangs();
@@ -175,9 +173,6 @@ class Article_Main extends oxAdminDetails
                 $aParams['oxarticles__oxstock'] = 0;
             }
 
-            // shopid
-            $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
-
             if (!isset($aParams['oxarticles__oxactive'])) {
                 $aParams['oxarticles__oxactive'] = 0;
             }
@@ -196,46 +191,7 @@ class Article_Main extends oxAdminDetails
             }
         }
 
-
-        // #905A resetting article count in price categories if price has been changed
-        $sOxIdField = 'oxarticles__oxid';
-        $sPriceField = 'oxarticles__oxprice';
-        $sActiveField = 'oxarticles__oxactive';
-        $sVendorField = 'oxarticles__oxvendorid';
-        $sManufacturerField = 'oxarticles__oxmanufacturerid';
-        if (isset($aParams[$sPriceField]) && $aParams[$sPriceField] != $oArticle->$sPriceField->value) {
-            $this->resetCounter("priceCatArticle", $oArticle->$sPriceField->value);
-        }
-
-        $aResetIds = array();
-        if (isset($aParams[$sActiveField]) && $aParams[$sActiveField] != $oArticle->$sActiveField->value) {
-            //check categories
-            $this->_resetCategoriesCounter($oArticle->$sOxIdField->value);
-
-            // vendors
-            $aResetIds['vendor'][$oArticle->$sVendorField->value] = 1;
-            $aResetIds['manufacturer'][$oArticle->$sManufacturerField->value] = 1;
-        }
-
-        // vendors
-        if (isset($aParams[$sVendorField]) && $aParams[$sVendorField] != $oArticle->$sVendorField->value) {
-            $aResetIds['vendor'][$aParams[$sVendorField]] = 1;
-            $aResetIds['vendor'][$oArticle->$sVendorField->value] = 1;
-        }
-
-        // manufacturers
-        if (isset($aParams[$sManufacturerField]) &&
-            $aParams[$sManufacturerField] != $oArticle->$sManufacturerField->value) {
-
-            $aResetIds['manufacturer'][$aParams[$sManufacturerField]] = 1;
-            $aResetIds['manufacturer'][$oArticle->$sManufacturerField->value] = 1;
-        }
-
-        // resetting counts
-        $this->_resetCounts($aResetIds);
-
         $oArticle->setLanguage(0);
-
         //triming spaces from article title (M:876)
         if (isset($aParams['oxarticles__oxtitle'])) {
             $aParams['oxarticles__oxtitle'] = trim($aParams['oxarticles__oxtitle']);
@@ -335,18 +291,15 @@ class Article_Main extends oxAdminDetails
      */
     public function addToCategory($sCatID, $sOXID)
     {
-        $myConfig = $this->getConfig();
+        $base = oxNew("oxBase");
+        $base->init("oxobject2category");
+        $base->oxobject2category__oxtime = new oxField(0);
+        $base->oxobject2category__oxobjectid = new oxField($sOXID);
+        $base->oxobject2category__oxcatnid = new oxField($sCatID);
 
-        $oNew = oxNew("oxBase");
-        $oNew->init("oxobject2category");
-        $oNew->oxobject2category__oxtime = new oxField(0);
-        $oNew->oxobject2category__oxobjectid = new oxField($sOXID);
-        $oNew->oxobject2category__oxcatnid = new oxField($sCatID);
+        $base = $this->onAddingToCategoryUpdate($base);
 
-        $oNew->save();
-
-        // resetting amount of articles in category
-        $this->resetCounter("catArticle", $sCatID);
+        $base->save();
     }
 
     /**
@@ -413,11 +366,6 @@ class Article_Main extends oxAdminDetails
             //files
             $this->_copyFiles($sOldId, $sNewId);
 
-            // resetting
-            $aResetIds['vendor'][$oArticle->oxarticles__oxvendorid->value] = 1;
-            $aResetIds['manufacturer'][$oArticle->oxarticles__oxmanufacturerid->value] = 1;
-            $this->_resetCounts($aResetIds);
-
             $this->resetContentCache();
 
             $myUtilsObject = oxUtilsObject::getInstance();
@@ -460,9 +408,9 @@ class Article_Main extends oxAdminDetails
      * Copying category assignments
      *
      * @param string $sOldId Id from old article
-     * @param string $sNewId Id from new article
+     * @param string $newArticleId Id from new article
      */
-    protected function _copyCategories($sOldId, $sNewId)
+    protected function _copyCategories($sOldId, $newArticleId)
     {
         $myUtilsObject = oxUtilsObject::getInstance();
         $oDb = oxDb::getDb();
@@ -472,20 +420,12 @@ class Article_Main extends oxAdminDetails
         $oRs = $oDb->execute($sQ);
         if ($oRs !== false && $oRs->recordCount() > 0) {
             while (!$oRs->EOF) {
-                $sUid = $myUtilsObject->generateUid();
+                $uniqueId = $myUtilsObject->generateUid();
                 $sCatId = $oRs->fields[0];
                 $sTime = $oRs->fields[1];
-
-
-                $sSql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid, oxtime) " .
-                        "VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($sNewId) . ", " .
-                        $oDb->quote($sCatId) . ", " . $oDb->quote($sTime) . ") ";
+                $sSql = $this->formQueryForCopyingToCategory($newArticleId, $uniqueId, $sCatId, $sTime);
                 $oDb->execute($sSql);
-
                 $oRs->moveNext();
-
-                // resetting article count in category
-                $this->resetCounter("catArticle", $sCatId);
             }
         }
     }
@@ -659,7 +599,6 @@ class Article_Main extends oxAdminDetails
         $oExt->save();
     }
 
-
     /**
      * Saves article parameters in different language.
      */
@@ -778,5 +717,44 @@ class Article_Main extends oxAdminDetails
         $oManufacturerList->loadManufacturerList();
 
         return $oManufacturerList;
+    }
+
+    /**
+     * Loads language.
+     *
+     * @param oxArticle $oArticle
+     * @param string    $sOxId
+     */
+    protected function loadLanguage($oArticle, $sOxId)
+    {
+        $oArticle->loadInLang($this->_iEditLang, $sOxId);
+    }
+
+    /**
+     * Forms query which is used for adding article to category.
+     *
+     * @param string $newArticleId
+     * @param string $sUid
+     * @param string $sCatId
+     * @param string $sTime
+     *
+     * @return string
+     */
+    protected function formQueryForCopyingToCategory($newArticleId, $sUid, $sCatId, $sTime)
+    {
+        $oDb = oxDb::getDb();
+        $sql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid, oxtime) " .
+            "VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($newArticleId) . ", " .
+            $oDb->quote($sCatId) . ", " . $oDb->quote($sTime) . ") ";
+
+        return $sql;
+    }
+
+    /**
+     * @param oxBase $base
+     */
+    protected function onAddingToCategoryUpdate($base)
+    {
+        return $base;
     }
 }

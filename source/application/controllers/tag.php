@@ -126,23 +126,23 @@ class Tag extends aList
     /**
      * Loads and returns article list according active tag.
      *
-     * @param object $oCategory category object
+     * @param oxCategory $category category object
      *
-     * @return array
+     * @return oxArticleList
      */
-    protected function _loadArticles($oCategory)
+    protected function _loadArticles($category)
     {
         // load only articles which we show on screen
-        $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
-        $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
-        $oArtList = oxNew('oxArticleList');
-        $oArtList->setSqlLimit($iNrofCatArticles * $this->_getRequestPageNr(), $iNrofCatArticles);
-        $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
+        $numberOfCategoryArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+        $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
+        $articleList = oxNew('oxArticleList');
+        $articleList->setSqlLimit($numberOfCategoryArticles * $this->_getRequestPageNr(), $numberOfCategoryArticles);
+        $articleList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
         // load the articles
-        $this->_iAllArtCnt = $oArtList->loadTagArticles($this->getTag(), oxRegistry::getLang()->getBaseLanguage());
-        $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
+        $this->_iAllArtCnt = $articleList->loadTagArticles($this->getTag(), oxRegistry::getLang()->getBaseLanguage());
+        $this->_iCntPages = round($this->_iAllArtCnt / $numberOfCategoryArticles + 0.49);
 
-        return $oArtList;
+        return $articleList;
     }
 
     /**

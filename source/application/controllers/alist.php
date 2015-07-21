@@ -352,37 +352,37 @@ class aList extends oxUBase
     /**
      * Loads and returns article list of active category.
      *
-     * @param string $oCategory category object
+     * @param oxCategory $category category object
      *
-     * @return array
+     * @return oxArticleList
      */
-    protected function _loadArticles($oCategory)
+    protected function _loadArticles($category)
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
 
-        $iNrofCatArticles = (int) $myConfig->getConfigParam('iNrofCatArticles');
-        $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
+        $numberOfCategoryArticles = (int) $config->getConfigParam('iNrofCatArticles');
+        $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
 
         // load only articles which we show on screen
-        $oArtList = oxNew('oxArticleList');
-        $oArtList->setSqlLimit($iNrofCatArticles * $this->_getRequestPageNr(), $iNrofCatArticles);
-        $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
+        $articleList = oxNew('oxArticleList');
+        $articleList->setSqlLimit($numberOfCategoryArticles * $this->_getRequestPageNr(), $numberOfCategoryArticles);
+        $articleList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
-        if ($oCategory->isPriceCategory()) {
-            $dPriceFrom = $oCategory->oxcategories__oxpricefrom->value;
-            $dPriceTo = $oCategory->oxcategories__oxpriceto->value;
+        if ($category->isPriceCategory()) {
+            $priceFrom = $category->oxcategories__oxpricefrom->value;
+            $priceTo = $category->oxcategories__oxpriceto->value;
 
-            $this->_iAllArtCnt = $oArtList->loadPriceArticles($dPriceFrom, $dPriceTo, $oCategory);
+            $this->_iAllArtCnt = $articleList->loadPriceArticles($priceFrom, $priceTo, $category);
         } else {
-            $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
+            $sessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
 
-            $sActCatId = $oCategory->getId();
-            $this->_iAllArtCnt = $oArtList->loadCategoryArticles($sActCatId, $aSessionFilter);
+            $activeCategoryId = $category->getId();
+            $this->_iAllArtCnt = $articleList->loadCategoryArticles($activeCategoryId, $sessionFilter);
         }
 
-        $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
+        $this->_iCntPages = round($this->_iAllArtCnt / $numberOfCategoryArticles + 0.49);
 
-        return $oArtList;
+        return $articleList;
     }
 
     /**

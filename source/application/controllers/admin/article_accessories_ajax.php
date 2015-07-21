@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -127,8 +127,6 @@ class article_accessories_ajax extends ajaxListComponent
             $sQ = "delete from oxaccessoire2article where oxaccessoire2article.oxid in ({$sChosenArticles}) ";
             oxDb::getDb()->Execute($sQ);
         }
-
-
     }
 
     /**
@@ -156,6 +154,16 @@ class article_accessories_ajax extends ajaxListComponent
                 $oNewGroup->save();
             }
 
+            $this->onArticleAccessoryRelationChange($oArticle);
         }
+    }
+
+    /**
+     * Method is used to bind to accessory addition to article action.
+     *
+     * @param oxArticle $article
+     */
+    protected function onArticleAccessoryRelationChange($article)
+    {
     }
 }

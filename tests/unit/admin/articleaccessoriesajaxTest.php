@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -26,10 +26,7 @@
 class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
 {
 
-    protected $_sArticleView = 'oxv_oxarticles_1_de';
-    protected $_sObject2CategoryView = 'oxv_oxobject2category_1';
-
-    /**
+   /**
      * Initialize the fixture.
      *
      * @return null
@@ -41,9 +38,6 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
         $this->addToDatabase("replace into oxarticles set oxid='_testArticle1', oxshopid='1', oxtitle='_testArticle1'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticle2', oxshopid='1', oxtitle='_testArticle2'", 'oxarticles');
 
-        $this->setArticleViewTable('oxv_oxarticles_de');
-        $this->setObject2CategoryViewTable('oxobject2category');
-
         oxDb::getDb()->execute("insert into oxaccessoire2article set oxid='_testArticle1', OXOBJECTID='_testArticle1', OXARTICLENID='_testArticleAccessories', OXSORT='9'");
         oxDb::getDb()->execute("insert into oxaccessoire2article set oxid='_testArticle2', OXOBJECTID='_testArticle2', OXARTICLENID='_testArticleAccessories', OXSORT='9'");
 
@@ -51,26 +45,15 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
         $this->addTeardownSql("delete from oxaccessoire2article where oxarticlenid like '%_testArticle%'");
     }
 
-    public function setArticleViewTable($sParam)
-    {
-        $this->_sArticleView = $sParam;
-    }
-
-    public function setObject2CategoryViewTable($sParam)
-    {
-        $this->_sObject2CategoryView = $sParam;
-    }
-
     public function getArticleViewTable()
     {
-        return $this->_sArticleView;
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxarticles_1_de' : 'oxv_oxarticles_de';
     }
 
     public function getObject2CategoryViewTable()
     {
-        return $this->_sObject2CategoryView;
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxobject2category_1' : 'oxobject2category';
     }
-
 
     /**
      * ArticleAccessoriesAjax::_getQuery() test case

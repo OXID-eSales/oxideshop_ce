@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -89,6 +89,7 @@ class article_attribute_ajax extends ajaxListComponent
             oxDb::getDb()->Execute($sQ);
         }
 
+        $this->onArticleAttributeRelationChange($sOxid);
     }
 
     /**
@@ -113,6 +114,7 @@ class article_attribute_ajax extends ajaxListComponent
                 $oNew->save();
             }
 
+            $this->onArticleAttributeRelationChange($soxId);
         }
     }
 
@@ -123,35 +125,56 @@ class article_attribute_ajax extends ajaxListComponent
      */
     public function saveAttributeValue()
     {
-        $oDb = oxDb::getDb();
+        $database = oxDb::getDb();
         $this->resetContentCache();
 
-        $soxId = oxRegistry::getConfig()->getRequestParameter("oxid");
-        $sAttributeId = oxRegistry::getConfig()->getRequestParameter("attr_oxid");
-        $sAttributeValue = oxRegistry::getConfig()->getRequestParameter("attr_value");
+        $articleId = oxRegistry::getConfig()->getRequestParameter("oxid");
+        $attributeId = oxRegistry::getConfig()->getRequestParameter("attr_oxid");
+        $attributeValue = oxRegistry::getConfig()->getRequestParameter("attr_value");
         if (!$this->getConfig()->isUtf()) {
-            $sAttributeValue = iconv('UTF-8', oxRegistry::getLang()->translateString("charset"), $sAttributeValue);
+            $attributeValue = iconv('UTF-8', oxRegistry::getLang()->translateString("charset"), $attributeValue);
         }
 
-        $oArticle = oxNew("oxArticle");
-        if ($oArticle->load($soxId)) {
+        $article = oxNew("oxArticle");
+        if ($article->load($articleId)) {
 
-
-            if (isset($sAttributeId) && ("" != $sAttributeId)) {
-                $sViewName = $this->_getViewName("oxobject2attribute");
-                $sOxIdField = 'oxarticles__oxid';
-                $sQuotedOxid = $oDb->quote($oArticle->$sOxIdField->value);
-                $sSelect = "select * from {$sViewName} where {$sViewName}.oxobjectid= {$sQuotedOxid} and
-                            {$sViewName}.oxattrid= " . $oDb->quote($sAttributeId);
-                $oO2A = oxNew("oxi18n");
-                $oO2A->setLanguage(oxRegistry::getConfig()->getRequestParameter('editlanguage'));
-                $oO2A->init("oxobject2attribute");
-                if ($oO2A->assignRecord($sSelect)) {
-                    $oO2A->oxobject2attribute__oxvalue->setValue($sAttributeValue);
-                    $oO2A->save();
-                }
+            if ($article->isDerived()) {
+                return;
             }
 
+            $this->onAttributeValueChange($article);
+
+            if (isset($attributeId) && ("" != $attributeId)) {
+                $viewName = $this->_getViewName("oxobject2attribute");
+                $quotedArticleId = $database->quote($article->oxarticles__oxid->value);
+                $select = "select * from {$viewName} where {$viewName}.oxobjectid= {$quotedArticleId} and
+                            {$viewName}.oxattrid= " . $database->quote($attributeId);
+                $objectToAttribute = oxNew("oxi18n");
+                $objectToAttribute->setLanguage(oxRegistry::getConfig()->getRequestParameter('editlanguage'));
+                $objectToAttribute->init("oxobject2attribute");
+                if ($objectToAttribute->assignRecord($select)) {
+                    $objectToAttribute->oxobject2attribute__oxvalue->setValue($attributeValue);
+                    $objectToAttribute->save();
+                }
+            }
         }
+    }
+
+    /**
+     * Method is used to bind to attribute and article relation change action.
+     *
+     * @param string $articleId
+     */
+    protected function onArticleAttributeRelationChange($articleId)
+    {
+    }
+
+    /**
+     * Method is used to bind to attribute value change.
+     *
+     * @param oxArticle $article
+     */
+    protected function onAttributeValueChange($article)
+    {
     }
 }

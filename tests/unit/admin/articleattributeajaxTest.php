@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,10 +25,6 @@
  */
 class Unit_Admin_ArticleAttributeAjaxTest extends OxidTestCase
 {
-
-    protected $_sAttributeView = 'oxv_oxattribute_1_de';
-    protected $_sObject2AttributeView = 'oxv_oxobject2attribute_de';
-
     /**
      * Initialize the fixture.
      *
@@ -48,9 +44,6 @@ class Unit_Admin_ArticleAttributeAjaxTest extends OxidTestCase
         $this->addToDatabase("insert into oxattribute set oxid='_testAttribute', oxshopid=1, oxtitle='_testAttributeTitle'", 'oxattribute');
         $this->addToDatabase("insert into oxarticles set oxid='_testAttributeArticle', oxshopid='1', oxtitle='_testAttributeArticle'", 'oxarticles');
         $this->addToDatabase("insert into oxattribute set oxid='_testAttributeSaveAttr', oxshopid=1, oxtitle='_testAttributeSaveAttrTitle'", 'oxattribute');
-
-        $this->setAttributeViewTable('oxv_oxattribute_de');
-        $this->setObject2AttributeViewTable('oxv_oxobject2attribute_de');
 
         oxDb::getDb()->execute("insert into oxobject2attribute set oxid='_testAttribute6', oxobjectid='_testAttributeArticle', oxattrid='_testAttributeSaveAttr', oxvalue='_testValue6', oxpos=0");
     }
@@ -81,26 +74,15 @@ class Unit_Admin_ArticleAttributeAjaxTest extends OxidTestCase
         parent::tearDown();
     }
 
-    public function setAttributeViewTable($sParam)
-    {
-        $this->_sAttributeView = $sParam;
-    }
-
-    public function setObject2AttributeViewTable($sParam)
-    {
-        $this->_sObject2AttributeView = $sParam;
-    }
-
     public function getAttributeViewTable()
     {
-        return $this->_sAttributeView;
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxattribute_1_de' : 'oxv_oxattribute_de';
     }
 
     public function getObject2AttributeViewTable()
     {
-        return $this->_sObject2AttributeView;
+        return 'oxv_oxobject2attribute_de';
     }
-
 
     /**
      * ArticleAttributeAjax::_getQuery() test case

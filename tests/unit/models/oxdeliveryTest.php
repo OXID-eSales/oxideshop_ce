@@ -1050,14 +1050,14 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
 
     public function testIsForArticle()
     {
-        $oDelivery = $this->getMock('modOxDelivery', array('_checkDeliveryAmount'));
+        $oDelivery = $this->getMock('modOxDelivery', array('_checkDeliveryAmount', 'getCalculationRule'));
         $oDelivery->expects($this->once())->method('_checkDeliveryAmount')->will($this->returnValue(true));
+        $calculateMoreThanOncePerCartRule = 123;
+        $oDelivery->expects($this->any())->method('getCalculationRule')->will($this->returnValue($calculateMoreThanOncePerCartRule));
         $oDelivery->load('_testDeliveryId');
         $oDelivery->setblFreeShipping(false);
         $blReturn = $oDelivery->UNITisForArticle($this->_oBasketItem, 2);
 
-        $this->assertEquals(2, $oDelivery->getiItemCnt());
-        $this->assertEquals(1, $oDelivery->getiProdCnt());
         $this->assertTrue($blReturn);
     }
 

@@ -563,6 +563,141 @@ class Integration_models_oxDeliveryShippingCostCalcuationTest extends OxidTestCa
     }
 
     /**
+     * Data provider for testDeliveryCostRulesWithCategoryAssigned.
+     */
+    public function providerDeliveryCostRulesWithArticleAssigned()
+    {
+        $data = array();
+
+        //add 10 EUR if basket value is between 0 and 100 EUR, once per cart, stopping further rules
+        $data['once_per_cart'][0]['rules'][0] = array(
+            'oxtitle'      => 'first',
+            'oxactive'     => 1,
+            'oxactivefrom' => '0000-00-00 00:00:00',
+            'oxactiveto'   => '0000-00-00 00:00:00',
+            'oxaddsumtype' => 'abs',
+            'oxaddsum'     => '10',
+            'oxdeltype'    => 'p',
+            'oxparam'      => '0',
+            'oxparamend'   => '100',
+            'oxfixed'      => oxDelivery::CALCULATION_RULE_ONCE_PER_CART,
+            'oxsort'       => 100,
+            'oxfinalize'   => 1
+        );
+
+        //add 20 EUR if basket value is between 200 and 600 EUR (what happens at 100 sharp?), once per cart,
+        //stopping further rules
+        $data['once_per_cart'][0]['rules'][1] = array(
+            'oxtitle'      => 'second',
+            'oxactive'     => 1,
+            'oxactivefrom' => '0000-00-00 00:00:00',
+            'oxactiveto'   => '0000-00-00 00:00:00',
+            'oxaddsumtype' => 'abs',
+            'oxaddsum'     => '20',
+            'oxdeltype'    => 'p',
+            'oxparam'      => '200',
+            'oxparamend'   => '600',
+            'oxfixed'      => oxDelivery::CALCULATION_RULE_ONCE_PER_CART,
+            'oxsort'       => 200,
+            'oxfinalize'   => 1
+        );
+
+        //add 30 EUR if basket value is between 0 and 600 EUR, once per cart,
+        //stopping further rules
+        $data['once_per_cart'][0]['rules'][2] = array(
+            'oxtitle'      => 'third',
+            'oxactive'     => 1,
+            'oxactivefrom' => '0000-00-00 00:00:00',
+            'oxactiveto'   => '0000-00-00 00:00:00',
+            'oxaddsumtype' => 'abs',
+            'oxaddsum'     => '30',
+            'oxdeltype'    => 'p',
+            'oxparam'      => '0',
+            'oxparamend'   => '600',
+            'oxfixed'      => oxDelivery::CALCULATION_RULE_ONCE_PER_CART,
+            'oxsort'       => 300,
+            'oxfinalize'   => 1
+        );
+
+        //amount of articles to purchase
+        $data['once_per_cart'][0]['buyamount'] = 10;
+
+        //what do we expect as result for shippings costs?
+        $data['once_per_cart'][0]['expected_delivery_costs'] = 10.0;
+
+        //which rule should fit the basket
+        $data['once_per_cart'][0]['fits'] = array('first', 'third');
+
+        $data['once_per_product'][0]                        = $data['once_per_cart'][0];
+        $data['once_per_product'][0]['rules'][0]['oxfixed'] = 1;
+        $data['once_per_product'][0]['rules'][1]['oxfixed'] = 1;
+        $data['once_per_product'][0]['rules'][2]['oxfixed'] = 1;
+
+        return $data;
+    }
+
+    /**
+     * Test if shop matches the delivery cost rules as expected.
+     * Three categories are assigned to each delivery rule in this set,
+     * the basket content fits all three. All rules are set to finalize.
+     * 'once_per_cart'    => Rule is to be applied once per cart.
+     *                       NOTE: test breaks cause article amount is added up for each matching category.
+     *                             Testing $blUser && !$blForBasket && _checkDeliveryAmount fails cause
+     *                             the delivery amount is wrong (thrice as much in our example).
+     * 'once_per_product' => Rule is to be applied once per product.
+     *                       As amounts gets piled up for multiple category matches, second rule fits as well
+     *                       although it should not.
+     *
+     * @dataProvider providerDeliveryCostRulesWithArticleAssigned
+     */
+    public function testDeliveryCostRulesWithArticleAssigned($data)
+    {
+        $testArticleId = $this->insertArticle();
+        $user          = $this->insertUser();
+
+        $deliveryIds = array();
+        foreach ($data['rules'] as $rule) {
+            $deliveryId    = $this->createRule($rule)->getId();
+            $deliveryIds[] = $deliveryId;
+            $this->attachObject2Delivery($deliveryId, $testArticleId, 'oxarticles');
+        }
+        $deliverySetId = $this->createDeliverySet($deliveryIds);
+
+        $basket = oxNew('oxBasket');
+        $this->assertEquals(0, $basket->getBasketSummary()->iArticleCount);
+
+        $basket->addToBasket($testArticleId, $data['buyamount']);
+        $basket->setPayment('oxidinvoice');
+        $basket->setBasketUser($user);
+        $basket->setShipping($deliverySetId);
+        $basket->calculateBasket();
+
+        foreach ($deliveryIds as $deliveryId) {
+            $delivery = oxNew('oxDelivery');
+            $delivery->load($deliveryId);
+
+            if (in_array($delivery->oxdelivery__oxtitle->value, $data['fits'])) {
+                $this->assertTrue($delivery->isForBasket($basket), $delivery->oxdelivery__oxtitle->value);
+            } else {
+                $this->assertFalse($delivery->isForBasket($basket), $delivery->oxdelivery__oxtitle->value);
+            }
+        }
+
+        $deliveryList = oxRegistry::get("oxDeliveryList")->getDeliveryList($basket, $user, $user->getActiveCountry(),
+            $deliverySetId);
+        $this->assertTrue(0 < count($deliveryList));
+
+        $hasDeliveries = oxRegistry::get("oxDeliveryList")->hasDeliveries($basket, $user, $user->getActiveCountry(),
+            $deliverySetId);
+        $this->assertTrue($hasDeliveries);
+
+        $deliveryCost = $basket->getDeliveryCost()->getPrice();
+        $this->assertSame($data['expected_delivery_costs'], $deliveryCost);
+    }
+
+
+
+    /**
      * Make a copy of article and variant for testing.
      *
      * @return oxArticle

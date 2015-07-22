@@ -62,7 +62,7 @@ class Article_Main extends oxAdminDetails
 
         if ($sOxId && $sOxId != "-1") {
             // load object
-            $this->loadLanguage($oArticle, $sOxId);
+            $oArticle = $this->updateArticle($oArticle, $sOxId);
 
             // load object in other languages
             $oOtherLang = $oArticle->getAvailableInLangs();
@@ -720,14 +720,18 @@ class Article_Main extends oxAdminDetails
     }
 
     /**
-     * Loads language.
+     * Loads language for article.
      *
      * @param oxArticle $oArticle
      * @param string    $sOxId
+     *
+     * @return oxArticle
      */
-    protected function loadLanguage($oArticle, $sOxId)
+    protected function updateArticle($oArticle, $sOxId)
     {
         $oArticle->loadInLang($this->_iEditLang, $sOxId);
+
+        return $oArticle;
     }
 
     /**

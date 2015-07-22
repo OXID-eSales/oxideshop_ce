@@ -69,8 +69,6 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
                         "_copyCrossseling", "_copyAccessoires", "_copyStaffelpreis",
                         "_copyArtExtends");
 
-        $aTasks[] = "_resetCounts";
-
         $aTasks[] = "resetContentCache";
 
         $oView = $this->getMock("Article_Main", $aTasks);
@@ -81,8 +79,6 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oView->expects($this->once())->method('_copyAccessoires');
         $oView->expects($this->once())->method('_copyStaffelpreis');
         $oView->expects($this->once())->method('_copyArtExtends');
-
-        $oView->expects($this->once())->method('_resetCounts');
 
         $oView->expects($this->once())->method('resetContentCache');
 
@@ -293,16 +289,9 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         // testing..
         try {
 
-            $aTasks = array();
-            $aTasks[] = 'resetCounter';
-            $aTasks[] = '_resetCounts';
-
             $aTasks[] = 'resetContentCache';
 
             $oView = $this->getMock("Article_Main", $aTasks);
-
-            $oView->expects($this->once())->method('resetCounter');
-            $oView->expects($this->once())->method('_resetCounts');
 
             $oView->expects($this->once())->method('resetContentCache');
 
@@ -644,5 +633,4 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $iCount = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne("select count(*) from oxobject2category where OXCATNID = '_testCategory1' AND OXOBJECTID = '_testArticle1'");
         $this->assertEquals(1, $iCount, "expected only one entry in oxobject2category, but got {$iCount}.");
     }
-
 }

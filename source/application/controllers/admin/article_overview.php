@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -45,34 +45,20 @@ class Article_Overview extends oxAdminDetails
 
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
+            $oDB = $this->getDatabase();
+            
             // load object
-            $oArticle->loadInLang(oxRegistry::getConfig()->getRequestParameter("editlanguage"), $soxId);
+            $this->updateArticle($oArticle, $soxId);
 
-            $oDB = oxDb::getDb();
+            $sShopID = $myConfig->getShopID();
 
-            // variant handling
-            if ($oArticle->oxarticles__oxparentid->value) {
-                $oParentArticle = oxNew("oxArticle");
-                $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
-                $this->_aViewData["parentarticle"] = $oParentArticle;
-                $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;
-            }
-
-            // ordered amount
-            $sSelect = "select sum(oxamount) from oxorderarticles ";
-            $sSelect .= "where oxartid=" . $oDB->quote($soxId);
+            $sSelect = $this->formOrderAmountQuery($soxId);
             $this->_aViewData["totalordercnt"] = $iTotalOrderCnt = (float) $oDB->getOne($sSelect);
 
-            // sold amount
-            $sSelect = "select sum(oxorderarticles.oxamount) from  oxorderarticles, oxorder " .
-                       "where (oxorder.oxpaid>0 or oxorder.oxsenddate > 0) and oxorderarticles.oxstorno != '1' " .
-                       "and oxorderarticles.oxartid=" . $oDB->quote($soxId) .
-                       "and oxorder.oxid =oxorderarticles.oxorderid";
+            $sSelect = $this->formSoldOutAmountQuery($soxId);
             $this->_aViewData["soldcnt"] = $iSoldCnt = (float) $oDB->getOne($sSelect);
 
-            // canceled amount
-            $sSelect = "select sum(oxamount) from oxorderarticles where oxstorno = '1' " .
-                       "and oxartid=" . $oDB->quote($soxId);
+            $sSelect = $this->formCanceledAmountQuery($soxId);
             $this->_aViewData["canceledcnt"] = $iCanceledCnt = (float) $oDB->getOne($sSelect);
 
             // not yet processed
@@ -80,7 +66,7 @@ class Article_Overview extends oxAdminDetails
 
             // position in top ten
             $sSelect = "select oxartid,sum(oxamount) as cnt from oxorderarticles " .
-                       "group by oxartid order by cnt desc";
+                       "where oxordershopid = '{$sShopID}' group by oxartid order by cnt desc";
 
             $rs = $oDB->execute($sSelect);
             $iTopPos = 0;
@@ -105,4 +91,73 @@ class Article_Overview extends oxAdminDetails
         return "article_overview.tpl";
     }
 
+    /**
+     * @return oxLegacyDb
+     */
+    protected function getDatabase()
+    {
+        return oxDb::getDb();
+    }
+
+    /**
+     * Forms query to get total order count.
+     *
+     * @param string $oxId
+     *
+     * @return string
+     */
+    protected function formOrderAmountQuery($oxId)
+    {
+        $query = "select sum(oxamount) from oxorderarticles ";
+        $query .= "where oxartid=" . $this->getDatabase()->quote($oxId);
+
+        return $query;
+    }
+
+    /**
+     * Forms query to get sold out amount count.
+     *
+     * @param string $oxId
+     *
+     * @return string
+     */
+    protected function formSoldOutAmountQuery($oxId)
+    {
+        $query = "select sum(oxorderarticles.oxamount) from  oxorderarticles, oxorder " .
+            "where (oxorder.oxpaid>0 or oxorder.oxsenddate > 0) and oxorderarticles.oxstorno != '1' " .
+            "and oxorderarticles.oxartid=" . $this->getDatabase()->quote($oxId) .
+            "and oxorder.oxid =oxorderarticles.oxorderid";
+
+        return $query;
+    }
+
+    /**
+     * Forms query to get canceled amount count.
+     *
+     * @param string $soxId
+     *
+     * @return string
+     */
+    protected function formCanceledAmountQuery($soxId)
+    {
+        $query = "select sum(oxamount) from oxorderarticles where oxstorno = '1' " .
+            "and oxartid=" . $this->getDatabase()->quote($soxId);
+
+        return $query;
+    }
+
+    /**
+     * Loads language for article object.
+     *
+     * @param oxArticle $article
+     * @param string    $oxId
+     *
+     * @return oxArticle
+     */
+    protected function updateArticle($article, $oxId)
+    {
+        $article->loadInLang(oxRegistry::getConfig()->getRequestParameter("editlanguage"), $oxId);
+
+        return $article;
+    }
 }

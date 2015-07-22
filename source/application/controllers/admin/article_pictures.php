@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -28,7 +28,6 @@
  */
 class Article_Pictures extends oxAdminDetails
 {
-
     /**
      * Loads article information - pictures, passes data to Smarty
      * engine, returns name of template file "article_pictures.tpl".
@@ -45,6 +44,7 @@ class Article_Pictures extends oxAdminDetails
         if (isset($soxId) && $soxId != "-1") {
             // load object
             $oArticle->load($soxId);
+            $oArticle = $this->updateArticle($oArticle);
 
             // variant handling
             if ($oArticle->oxarticles__oxparentid->value) {
@@ -146,13 +146,10 @@ class Article_Pictures extends oxAdminDetails
      * @param oxArticle $oArticle       article object
      * @param int       $iIndex         master picture index
      * @param bool      $blDeleteMaster if TRUE - deletes and unsets master image file
-     *
-     * @return null
      */
     protected function _resetMasterPicture($oArticle, $iIndex, $blDeleteMaster = false)
     {
-        if ($oArticle->{"oxarticles__oxpic" . $iIndex}->value) {
-
+        if ($this->canResetMasterPicture($oArticle, $iIndex)) {
             if (!$oArticle->isDerived()) {
                 $oPicHandler = oxRegistry::get("oxPictureHandler");
                 $oPicHandler->deleteArticleMasterPicture($oArticle, $iIndex, $blDeleteMaster);
@@ -178,13 +175,10 @@ class Article_Pictures extends oxAdminDetails
      * Deletes main icon file
      *
      * @param oxArticle $oArticle article object
-     *
-     * @return null
      */
     protected function _deleteMainIcon($oArticle)
     {
-        if ($oArticle->oxarticles__oxicon->value) {
-
+        if ($this->canDeleteMainIcon($oArticle)) {
             if (!$oArticle->isDerived()) {
                 $oPicHandler = oxRegistry::get("oxPictureHandler");
                 $oPicHandler->deleteMainIcon($oArticle);
@@ -199,13 +193,10 @@ class Article_Pictures extends oxAdminDetails
      * Deletes thumbnail file
      *
      * @param oxArticle $oArticle article object
-     *
-     * @return null
      */
     protected function _deleteThumbnail($oArticle)
     {
-        if ($oArticle->oxarticles__oxthumb->value) {
-
+        if ($this->canDeleteThumbnail($oArticle)) {
             if (!$oArticle->isDerived()) {
                 $oPicHandler = oxRegistry::get("oxPictureHandler");
                 $oPicHandler->deleteThumbnail($oArticle);
@@ -224,8 +215,6 @@ class Article_Pictures extends oxAdminDetails
      */
     protected function _cleanupCustomFields($oArticle)
     {
-        $myConfig = $this->getConfig();
-
         $sIcon = $oArticle->oxarticles__oxicon->value;
         $sThumb = $oArticle->oxarticles__oxthumb->value;
 
@@ -236,5 +225,54 @@ class Article_Pictures extends oxAdminDetails
         if ($sThumb == "nopic.jpg") {
             $oArticle->oxarticles__oxthumb = new oxField();
         }
+    }
+
+    /**
+     * Method is used for overloading to update article object.
+     *
+     * @param oxArticle $oArticle
+     *
+     * @return oxArticle
+     */
+    protected function updateArticle($oArticle)
+    {
+        return $oArticle;
+    }
+
+    /**
+     * Checks if possible to reset master picture.
+     *
+     * @param oxArticle $oArticle
+     * @param int       $masterPictureIndex
+     *
+     * @return bool
+     */
+    protected function canResetMasterPicture($oArticle, $masterPictureIndex)
+    {
+        return (bool) $oArticle->{"oxarticles__oxpic" . $masterPictureIndex}->value;
+    }
+
+    /**
+     * Checks if possible to delete main icon of article.
+     *
+     * @param oxArticle $oArticle
+     *
+     * @return bool
+     */
+    protected function canDeleteMainIcon($oArticle)
+    {
+        return (bool) $oArticle->oxarticles__oxicon->value;
+    }
+
+    /**
+     * Checks if possible to delete thumbnail of article.
+     *
+     * @param oxArticle $oArticle
+     *
+     * @return bool
+     */
+    protected function canDeleteThumbnail($oArticle)
+    {
+        return (bool) $oArticle->oxarticles__oxthumb->value;
     }
 }

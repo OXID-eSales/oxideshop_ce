@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -28,7 +28,6 @@
  */
 class Article_Review extends oxAdminDetails
 {
-
     /**
      * Loads selected article review information, returns name of template
      * file "article_review.tpl".
@@ -37,41 +36,46 @@ class Article_Review extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
 
         parent::render();
 
-        $this->_aViewData["edit"] = $oArticle = oxNew("oxArticle");
+        $article = oxNew("oxArticle");
+        $this->_aViewData["edit"] = $article;
 
-        $soxId = $this->getEditObjectId();
-        $sRevoxId = oxRegistry::getConfig()->getRequestParameter('rev_oxid');
-        if (isset($soxId) && $soxId != "-1") {
+        $articleId = $this->getEditObjectId();
+        $reviewId = oxRegistry::getConfig()->getRequestParameter('rev_oxid');
+        if (isset($articleId) && $articleId != "-1") {
 
             // load object
-            $oArticle->load($soxId);
+            $article->load($articleId);
 
-            $oRevs = $this->_getReviewList($oArticle);
+            if ($article->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
 
-            foreach ($oRevs as $oRev) {
-                if ($oRev->oxreviews__oxid->value == $sRevoxId) {
-                    $oRev->selected = 1;
+            $reviewList = $this->_getReviewList($article);
+
+            foreach ($reviewList as $review) {
+                if ($review->oxreviews__oxid->value == $reviewId) {
+                    $review->selected = 1;
                     break;
                 }
             }
-            $this->_aViewData["allreviews"] = $oRevs;
+            $this->_aViewData["allreviews"] = $reviewList;
             $this->_aViewData["editlanguage"] = $this->_iEditLang;
 
-            if (isset($sRevoxId)) {
-                $oReview = oxNew("oxreview");
-                $oReview->load($sRevoxId);
-                $this->_aViewData["editreview"] = $oReview;
+            if (isset($reviewId)) {
+                $reviewForEditing = oxNew("oxReview");
+                $reviewForEditing->load($reviewId);
+                $this->_aViewData["editreview"] = $reviewForEditing;
 
-                $oUser = oxNew("oxuser");
-                $oUser->load($oReview->oxreviews__oxuserid->value);
-                $this->_aViewData["user"] = $oUser;
+                $user = oxNew("oxuser");
+                $user->load($reviewForEditing->oxreviews__oxuserid->value);
+                $this->_aViewData["user"] = $user;
             }
             //show "active" checkbox if moderating is active
-            $this->_aViewData["blShowActBox"] = $myConfig->getConfigParam('blGBModerate');
+            $this->_aViewData["blShowActBox"] = $config->getConfigParam('blGBModerate');
         }
 
         return "article_review.tpl";
@@ -80,38 +84,38 @@ class Article_Review extends oxAdminDetails
     /**
      * returns reviews list for article
      *
-     * @param oxArticle $oArticle Article object
+     * @param oxArticle $article Article object
      *
      * @return oxList
      */
-    protected function _getReviewList($oArticle)
+    protected function _getReviewList($article)
     {
-        $oDb = oxDb::getDb();
-        $sSelect = "select oxreviews.* from oxreviews
-                     where oxreviews.OXOBJECTID = " . $oDb->quote($oArticle->oxarticles__oxid->value) . "
+        $database = oxDb::getDb();
+        $query = "select oxreviews.* from oxreviews
+                     where oxreviews.OXOBJECTID = " . $database->quote($article->oxarticles__oxid->value) . "
                      and oxreviews.oxtype = 'oxarticle'";
 
-        $aVariantList = $oArticle->getVariants();
+        $variantList = $article->getVariants();
 
-        if ($this->getConfig()->getConfigParam('blShowVariantReviews') && count($aVariantList)) {
+        if ($this->getConfig()->getConfigParam('blShowVariantReviews') && count($variantList)) {
 
             // verifying rights
-            foreach ($aVariantList as $oVariant) {
-                $sSelect .= "or oxreviews.oxobjectid = " . $oDb->quote($oVariant->oxarticles__oxid->value) . " ";
+            foreach ($variantList as $variant) {
+                $query .= "or oxreviews.oxobjectid = " . $database->quote($variant->oxarticles__oxid->value) . " ";
             }
 
         }
 
         //$sSelect .= "and oxreviews.oxtext".oxRegistry::getLang()->getLanguageTag($this->_iEditLang)." != ''";
-        $sSelect .= "and oxreviews.oxlang = '" . $this->_iEditLang . "'";
-        $sSelect .= "and oxreviews.oxtext != '' ";
+        $query .= "and oxreviews.oxlang = '" . $this->_iEditLang . "'";
+        $query .= "and oxreviews.oxtext != '' ";
 
         // all reviews
-        $oRevs = oxNew("oxlist");
-        $oRevs->init("oxreview");
-        $oRevs->selectString($sSelect);
+        $reviewList = oxNew("oxlist");
+        $reviewList->init("oxreview");
+        $reviewList->selectString($query);
 
-        return $oRevs;
+        return $reviewList;
     }
 
     /**
@@ -121,16 +125,16 @@ class Article_Review extends oxAdminDetails
     {
         parent::save();
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $parameters = oxRegistry::getConfig()->getRequestParameter("editval");
         // checkbox handling
-        if ($this->getConfig()->getConfigParam('blGBModerate') && !isset($aParams['oxreviews__oxactive'])) {
-            $aParams['oxreviews__oxactive'] = 0;
+        if ($this->getConfig()->getConfigParam('blGBModerate') && !isset($parameters['oxreviews__oxactive'])) {
+            $parameters['oxreviews__oxactive'] = 0;
         }
 
-        $oReview = oxNew("oxreview");
-        $oReview->load(oxRegistry::getConfig()->getRequestParameter("rev_oxid"));
-        $oReview->assign($aParams);
-        $oReview->save();
+        $review = oxNew("oxreview");
+        $review->load(oxRegistry::getConfig()->getRequestParameter("rev_oxid"));
+        $review->assign($parameters);
+        $review->save();
     }
 
     /**
@@ -140,21 +144,20 @@ class Article_Review extends oxAdminDetails
     {
         $this->resetContentCache();
 
-        $sRevoxId = oxRegistry::getConfig()->getRequestParameter("rev_oxid");
-        $oReview = oxNew("oxreview");
-        $oReview->load($sRevoxId);
-        $oReview->delete();
+        $reviewId = oxRegistry::getConfig()->getRequestParameter("rev_oxid");
+        $review = oxNew("oxreview");
+        $review->load($reviewId);
+        $review->delete();
 
         // recalculating article average rating
-        $oRating = oxNew("oxRating");
-        $sArticleId = $this->getEditObjectId();
+        $rating = oxNew("oxRating");
+        $articleId = $this->getEditObjectId();
 
-        $oArticle = oxNew('oxArticle');
-        $oArticle->load($sArticleId);
+        $article = oxNew('oxArticle');
+        $article->load($articleId);
 
-        $oArticle->setRatingAverage($oRating->getRatingAverage($sArticleId, 'oxarticle'));
-        $oArticle->setRatingCount($oRating->getRatingCount($sArticleId, 'oxarticle'));
-        $oArticle->save();
-
+        $article->setRatingAverage($rating->getRatingAverage($articleId, 'oxarticle'));
+        $article->setRatingCount($rating->getRatingCount($articleId, 'oxarticle'));
+        $article->save();
     }
 }

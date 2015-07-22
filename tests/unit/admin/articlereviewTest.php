@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -35,17 +35,13 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
     {
         parent::setUp();
 
-        $this->sTestId = '2077';
-        $sVar = '8a142c4100e0b2f57.59530204';
+        $articleId = $this->getTestArticleId();
 
-        oxDb::getDb()->Execute(
+        oxDb::getDb()->execute(
             'replace into oxreviews (OXID, OXACTIVE, OXOBJECTID, OXTYPE, OXTEXT, OXUSERID, OXCREATE, OXLANG, OXRATING)
-                        values ("_test_i1", 1, "' . $this->sTestId . '", "oxarticle", "aa", "' . oxADMIN_LOGIN . '", "0000-00-00 00:00:00", "0", "3")'
+                        values ("_test_i1", 1, "' . $articleId . '", "oxarticle", "aa", "' . oxADMIN_LOGIN . '", "0000-00-00 00:00:00", "0", "3")'
         );
-        oxDb::getDb()->Execute(
-            'replace into oxreviews (OXID, OXACTIVE, OXOBJECTID, OXTYPE, OXTEXT, OXUSERID, OXCREATE, OXLANG, OXRATING)
-                        values ("_test_i2", 1, "' . $sVar . '", "oxarticle", "aa", "' . oxADMIN_LOGIN . '", "0000-00-00 00:00:00", "0", "3")'
-        );
+
     }
 
     /**
@@ -66,7 +62,7 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
      */
     public function testRender()
     {
-        $this->setRequestParameter("oxid", $this->sTestId);
+        $this->setRequestParameter("oxid", $this->getTestArticleId());
         $this->setRequestParameter("rev_oxid", "_test_i1");
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
@@ -144,13 +140,34 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
      */
     public function testGetReviewList()
     {
+        $articleVariantId = $this->getTestArticleVariantId();
+        oxDb::getDb()->execute(
+            'replace into oxreviews (OXID, OXACTIVE, OXOBJECTID, OXTYPE, OXTEXT, OXUSERID, OXCREATE, OXLANG, OXRATING)
+                        values ("_test_i2", 1, "' . $articleVariantId . '", "oxarticle", "aa", "' . oxADMIN_LOGIN . '", "0000-00-00 00:00:00", "0", "3")'
+        );
         oxTestModules::publicize('article_review', '_getReviewList');
         $o = oxNew('article_review');
         $oA = new oxArticle();
-        $oA->load($this->sTestId);
+        $oA->load($this->getTestArticleId());
         $this->getConfig()->setConfigParam('blShowVariantReviews', false);
         $this->assertEquals(1, count($o->p_getReviewList($oA)));
         $this->getConfig()->setConfigParam('blShowVariantReviews', true);
         $this->assertEquals(2, count($o->p_getReviewList($oA)));
+    }
+
+    /**
+     * @return string Test Article Id
+     */
+    protected function getTestArticleId()
+    {
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? '2363' : '2077';
+    }
+
+    /**
+     * @return string Test Article Variant Id
+     */
+    protected function getTestArticleVariantId()
+    {
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? '2363-01' : '8a142c4100e0b2f57.59530204';
     }
 }

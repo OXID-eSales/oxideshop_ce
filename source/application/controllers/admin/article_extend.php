@@ -82,30 +82,7 @@ class Article_Extend extends oxAdminDetails
             }
         }
 
-        if ($this->getConfig()->getEdition() !== 'EE') {
-            $oDB = oxDb::getDB();
-            $myConfig = $this->getConfig();
-
-            $sArticleTable = getViewName('oxarticles', $this->_iEditLang);
-            $sSelect = "select {$sArticleTable}.oxtitle, {$sArticleTable}.oxartnum, {$sArticleTable}.oxvarselect " .
-                "from {$sArticleTable} where 1 ";
-            // #546
-            $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
-            $sBundleIdField = 'oxarticles__oxbundleid';
-            $sSelect .= $blVariantsSelectionParameter ? '' : " and {$sArticleTable}.oxparentid = '' ";
-            $sSelect .= " and {$sArticleTable}.oxid = " . $oDB->quote($article->$sBundleIdField->value);
-
-            $rs = $oDB->Execute($sSelect);
-            if ($rs != false && $rs->RecordCount() > 0) {
-                while (!$rs->EOF) {
-                    $sArtNum = new oxField($rs->fields[1]);
-                    $sArtTitle = new oxField($rs->fields[0] . " " . $rs->fields[2]);
-                    $rs->MoveNext();
-                }
-            }
-            $this->_aViewData['bundle_artnum'] = $sArtNum;
-            $this->_aViewData['bundle_title'] = $sArtTitle;
-        }
+        $this->prepareBundledArticlesDataForView($article);
 
         $iAoc = $this->getConfig()->getRequestParameter("aoc");
         if ($iAoc == 1) {
@@ -291,5 +268,36 @@ class Article_Extend extends oxAdminDetails
     protected function updateArticle($article)
     {
         return $article;
+    }
+
+    /**
+     * Adds data to _aViewData for later use in templates.
+     *
+     * @param oxArticle $article
+     */
+    protected function prepareBundledArticlesDataForView($article)
+    {
+        $database = oxDb::getDB();
+        $config = $this->getConfig();
+
+        $articleTable = getViewName('oxarticles', $this->_iEditLang);
+        $query = "select {$articleTable}.oxtitle, {$articleTable}.oxartnum, {$articleTable}.oxvarselect " .
+            "from {$articleTable} where 1 ";
+        // #546
+        $isVariantSelectionEnabled = $config->getConfigParam('blVariantsSelection');
+        $bundleIdField = 'oxarticles__oxbundleid';
+        $query .= $isVariantSelectionEnabled ? '' : " and {$articleTable}.oxparentid = '' ";
+        $query .= " and {$articleTable}.oxid = " . $database->quote($article->$bundleIdField->value);
+
+        $resultFromDatabase = $database->Execute($query);
+        if ($resultFromDatabase != false && $resultFromDatabase->RecordCount() > 0) {
+            while (!$resultFromDatabase->EOF) {
+                $articleNumber = new oxField($resultFromDatabase->fields[1]);
+                $articleTitle = new oxField($resultFromDatabase->fields[0] . " " . $resultFromDatabase->fields[2]);
+                $resultFromDatabase->MoveNext();
+            }
+        }
+        $this->_aViewData['bundle_artnum'] = $articleNumber;
+        $this->_aViewData['bundle_title'] = $articleTitle;
     }
 }

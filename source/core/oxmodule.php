@@ -312,7 +312,7 @@ class oxModule extends oxSuperCfg
         }
 
         $aModulePaths = $this->getModulePaths();
-        $sModulePath = $aModulePaths[$sModuleId];
+        $sModulePath = (isset($aModulePaths[$sModuleId])) ? $aModulePaths[$sModuleId] : '';
 
         // if still no module dir, try using module ID as dir name
         if (!$sModulePath && is_dir($this->getConfig()->getModulesDir() . $sModuleId)) {

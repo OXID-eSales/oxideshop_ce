@@ -350,6 +350,36 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
         $oUtilsObject->getClassName($sClassName);
     }
 
+    public function providerReturnsClassNameAliasFromClassName()
+    {
+        return array(
+            array('\OxidEsales\Enterprise\Core\DbMetaDataHandler', 'oxdbmetadatahandler'),
+            array('\OxidEsales\Enterprise\Core\NonExisting', null),
+            array('OxidEsales\Enterprise\Core\DbMetaDataHandler', 'oxdbmetadatahandler'),
+            array('OxidEsales\Enterprise\Core\NonExisting', null),
+        );
+    }
+
+    /**
+     * @param string $className
+     * @param string $classAliasName
+     *
+     * @dataProvider providerReturnsClassNameAliasFromClassName
+     */
+    public function testReturnsClassNameAliasFromClassName($className, $classAliasName)
+    {
+        $utilsObject = new oxUtilsObject();
+        $map = array(
+            'oxdbmetadatahandler' => '\OxidEsales\Enterprise\Core\DbMetaDataHandler',
+            'oxmodulecache' => '\OxidEsales\Enterprise\Core\Module\ModuleCache',
+            'oxmoduleinstaller' => '\OxidEsales\Enterprise\Core\Module\ModuleInstaller',
+        );
+
+        $utilsObject->setClassMap($map);
+
+        $this->assertSame($classAliasName, $utilsObject->getClassAliasName($className));
+    }
+
     private function _prepareFakeModule($class, $extension)
     {
         $wrapper = $this->getVfsStreamWrapper();

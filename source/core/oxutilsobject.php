@@ -143,6 +143,14 @@ class oxUtilsObject
     }
 
     /**
+     * @param array $classMap
+     */
+    public function setClassMap($classMap)
+    {
+        $this->classMap = $classMap;
+    }
+
+    /**
      * Creates and returns new object. If creation is not available, dies and outputs
      * error message.
      *
@@ -322,6 +330,27 @@ class oxUtilsObject
     }
 
     /**
+     * Method returns class alias by given class name.
+     *
+     * @param string $className with namespace.
+     *
+     * @return string|null
+     */
+    public function getClassAliasName($className)
+    {
+        if (substr($className, 0, 1) !== '\\') {
+            $className = '\\' . $className;
+        }
+
+        $classAlias = array_search($className, $this->getExtendedClassMap());
+        if ($classAlias === false) {
+            $classAlias = null;
+        }
+
+        return $classAlias;
+    }
+
+    /**
      * @param $class
      * @return mixed
      */
@@ -356,7 +385,7 @@ class oxUtilsObject
                 $map = array_merge($map, $classMap->getMap());
             }
 
-            $this->classMap = $map;
+            $this->setClassMap($map);
         }
 
         return $this->classMap;

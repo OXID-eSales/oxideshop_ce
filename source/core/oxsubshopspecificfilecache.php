@@ -20,17 +20,40 @@
  * @version   OXID eShop CE
  */
 
-class Unit_Core_oxModuleVariablesLocatorTest extends OxidTestCase
+/**
+ * Cache for storing module variables selected from database.
+ *
+ * @internal Do not make a module extension for this class.
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ */
+class oxSubShopSpecificFileCache extends oxFileCache
 {
+    /** @var oxShopIdCalculator */
+    private $shopIdCalculator;
 
-    public function testGetModuleVarFromDB()
+    /**
+     * @param oxShopIdCalculator $shopIdCalculator
+     */
+    public function __construct($shopIdCalculator)
     {
-        $cache = $this->getMock('oxFileCache');
+        $this->shopIdCalculator = $shopIdCalculator;
+    }
 
-        $shopIdCalculator = $this->getMock('oxShopIdCalculator', array('getShopId'), array(), '', false);
-        $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue($this->getShopId()));
+    /**
+     * Returns shopId which should be used for cache file name generation.
+     *
+     * @return string
+     */
+    protected function getShopId()
+    {
+        return $this->getShopIdCalculator()->getShopId();
+    }
 
-        $moduleCache = oxNew('oxModuleVariablesLocator', $cache, $shopIdCalculator);
-        $this->assertEquals(Array("a7c40f631fc920687.20179984"), $moduleCache->getModuleVar("aHomeCountry"));
+    /**
+     * @return oxShopIdCalculator
+     */
+    protected function getShopIdCalculator()
+    {
+        return $this->shopIdCalculator;
     }
 }

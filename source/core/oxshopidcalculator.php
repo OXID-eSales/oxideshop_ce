@@ -11,11 +11,11 @@ class oxShopIdCalculator
 
     private static $urlMap;
 
-    /** @var oxModuleVariablesCache */
+    /** @var oxFileCache */
     private $variablesCache;
 
     /**
-     * @param oxModuleVariablesCache $variablesCache
+     * @param oxFileCache $variablesCache
      */
     public function __construct($variablesCache)
     {
@@ -58,7 +58,7 @@ class oxShopIdCalculator
         }
 
         //get from file cache
-        $aMap = $this->getVariablesCache()->_getFromCache("urlMap", false);
+        $aMap = $this->getVariablesCache()->_getFromCache("urlMap");
         if (!is_null($aMap)) {
             self::$urlMap = $aMap;
 
@@ -97,14 +97,14 @@ class oxShopIdCalculator
         }
 
         //save to cache
-        $this->getVariablesCache()->_setToCache("urlMap", $aMap, false);
+        $this->getVariablesCache()->_setToCache("urlMap", $aMap);
         self::$urlMap = $aMap;
 
         return $aMap;
     }
 
     /**
-     * @return oxModuleVariablesCache
+     * @return oxFileCache
      */
     protected function getVariablesCache()
     {

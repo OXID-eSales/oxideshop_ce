@@ -20,17 +20,30 @@
  * @version   OXID eShop CE
  */
 
-class Unit_Core_oxModuleVariablesLocatorTest extends OxidTestCase
+class Unit_Core_oxSubShopSpecificFileCacheTest extends OxidTestCase
 {
 
-    public function testGetModuleVarFromDB()
+    public function testSetGetCacheSubShopSpecific()
     {
-        $cache = $this->getMock('oxFileCache');
+        $sTest = "test val";
 
         $shopIdCalculator = $this->getMock('oxShopIdCalculator', array('getShopId'), array(), '', false);
-        $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue($this->getShopId()));
+        $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue(1));
 
-        $moduleCache = oxNew('oxModuleVariablesLocator', $cache, $shopIdCalculator);
-        $this->assertEquals(Array("a7c40f631fc920687.20179984"), $moduleCache->getModuleVar("aHomeCountry"));
+        $moduleCache = oxNew('oxSubShopSpecificFileCache', $shopIdCalculator);
+
+        $moduleCache->_setToCache("testKey", $sTest);
+        $this->assertEquals($sTest, $moduleCache->_getFromCache("testKey"));
+    }
+
+    public function testGetCacheFileName()
+    {
+        $shopIdCalculator = $this->getMock('oxShopIdCalculator', array('getShopId'), array(), '', false);
+        $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue(2));
+
+        $moduleCache = $this->getProxyClass('oxSubShopSpecificFileCache', array($shopIdCalculator));
+
+        $sExpt = "config.2.testval.txt";
+        $this->assertEquals($sExpt, basename($moduleCache->_getCacheFileName("testVal")));
     }
 }

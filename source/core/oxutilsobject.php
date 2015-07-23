@@ -84,15 +84,15 @@ class oxUtilsObject
         }
         $this->editionCodeHandler = $editionCodeHandler;
 
-        $moduleVariablesCache = new oxModuleVariablesCache();
         if (!$shopIdCalculator) {
+            $moduleVariablesCache = new oxFileCache();
             $shopIdCalculator = new oxShopIdCalculator($moduleVariablesCache);
         }
         $this->shopIdCalculator = $shopIdCalculator;
-        $moduleVariablesCache->setShopIdCalculator($shopIdCalculator);
 
         if (!$moduleChainsGenerator) {
-            $moduleVariablesLocator = new oxModuleVariablesLocator($moduleVariablesCache, $shopIdCalculator);
+            $subShopSpecificCache = new oxSubShopSpecificFileCache($shopIdCalculator);
+            $moduleVariablesLocator = new oxModuleVariablesLocator($subShopSpecificCache, $shopIdCalculator);
             $moduleChainsGenerator = new oxModuleChainsGenerator($moduleVariablesLocator);
         }
         $this->moduleChainsGenerator = $moduleChainsGenerator;
@@ -115,10 +115,12 @@ class oxUtilsObject
             $oUtilsObject = new oxUtilsObject();
 
             $editionCodeHandler = $oUtilsObject->oxNew('oxEditionCodeHandler');
-            $moduleVariablesCache = $oUtilsObject->oxNew('oxModuleVariablesCache');
+
+            $moduleVariablesCache = $oUtilsObject->oxNew('oxFileCache');
             $shopIdCalculator = $oUtilsObject->oxNew('oxShopIdCalculator', $moduleVariablesCache);
-            $moduleVariablesCache->setShopIdCalculator($shopIdCalculator);
-            $moduleVariablesLocator = $oUtilsObject->oxNew('oxModuleVariablesLocator', $moduleVariablesCache, $shopIdCalculator);
+
+            $subShopSpecific = $oUtilsObject->oxNew('oxSubShopSpecificFileCache', $shopIdCalculator);
+            $moduleVariablesLocator = $oUtilsObject->oxNew('oxModuleVariablesLocator', $subShopSpecific, $shopIdCalculator);
             $moduleChainsGenerator = $oUtilsObject->oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
 
             self::$_instance = $oUtilsObject->oxNew('oxUtilsObject', $editionCodeHandler, $moduleChainsGenerator, $shopIdCalculator);
@@ -173,11 +175,24 @@ class oxUtilsObject
         self::$_aInstanceCache = array();
     }
 
+    /**
+     * @deprecated
+     * @param $sModuleVarName
+     *
+     * @return array
+     */
     public function getModuleVar($sModuleVarName)
     {
         return $this->getModuleChainsGenerator()->getModuleVariablesLocator()->getModuleVar($sModuleVarName);
     }
 
+    /**
+     * @deprecated
+     * @param $sModuleVarName
+     * @param $aValues
+     *
+     * @return array
+     */
     public function setModuleVar($sModuleVarName, $aValues)
     {
         $this->getModuleChainsGenerator()->getModuleVariablesLocator()->setModuleVar($sModuleVarName, $aValues);

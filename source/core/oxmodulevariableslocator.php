@@ -35,14 +35,14 @@ class oxModuleVariablesLocator
      */
     protected static $_aModuleVars = array();
 
-    /** @var oxModuleVariablesCache */
+    /** @var oxFileCache */
     private $variablesCache;
 
     /** @var oxShopIdCalculator */
     private $shopIdCalculator;
 
     /**
-     * @param oxModuleVariablesCache $variablesCache
+     * @param oxFileCache $variablesCache
      * @param oxShopIdCalculator     $shopIdCalculator
      */
     public function __construct($variablesCache, $shopIdCalculator)
@@ -108,7 +108,7 @@ class oxModuleVariablesLocator
     public static function resetModuleVars()
     {
         self::$_aModuleVars = array();
-        oxModuleVariablesCache::clearCache();
+        oxFileCache::clearCache();
     }
 
     /**
@@ -149,7 +149,7 @@ class oxModuleVariablesLocator
     }
 
     /**
-     * @return oxModuleVariablesCache
+     * @return oxFileCache
      */
     protected function getVariablesCache()
     {

@@ -26,37 +26,24 @@
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxModuleVariablesCache
+class oxFileCache
 {
-
     /**
      * Cache file prefix
      */
     const CACHE_FILE_PREFIX = "config";
-
-    /** @var oxShopIdCalculator */
-    private $shopIdCalculator;
-
-    /**
-     * @param oxShopIdCalculator $shopIdCalculator
-     */
-    public function __construct($shopIdCalculator = null)
-    {
-        $this->shopIdCalculator = $shopIdCalculator;
-    }
 
     /**
      * Returns shop module variable value from cache.
      * This method is independent from oxConfig class and does not use database.
      *
      * @param string $sModuleVarName    Module variable name
-     * @param bool   $blSubShopSpecific Indicates should cache be shop specific or not
      *
      * @return string
      */
-    public function _getFromCache($sModuleVarName, $blSubShopSpecific = true)
+    public function _getFromCache($sModuleVarName)
     {
-        $sFileName = $this->_getCacheFileName($sModuleVarName, $blSubShopSpecific);
+        $sFileName = $this->_getCacheFileName($sModuleVarName);
         $sValue = null;
         if (is_readable($sFileName)) {
             $sValue = file_get_contents($sFileName);
@@ -78,12 +65,27 @@ class oxModuleVariablesCache
      *
      * @param string $sVarName          Variable name
      * @param string $sValue            Variable value.
-     * @param bool   $blSubShopSpecific Indicates should cache be shop specific or not
      */
-    public function _setToCache($sVarName, $sValue, $blSubShopSpecific = true)
+    public function _setToCache($sVarName, $sValue)
     {
-        $sFileName = $this->_getCacheFileName($sVarName, $blSubShopSpecific);
+        $sFileName = $this->_getCacheFileName($sVarName);
         file_put_contents($sFileName, serialize($sValue), LOCK_EX);
+    }
+
+    /**
+     * Clears all cache.
+     */
+    public static function clearCache()
+    {
+        $sMask = oxRegistry::get("oxConfigFile")->getVar("sCompileDir") . "/" . self::CACHE_FILE_PREFIX . ".*.txt";
+        $aFiles = glob($sMask);
+        if (is_array($aFiles)) {
+            foreach ($aFiles as $sFile) {
+                if (is_file($sFile)) {
+                    @unlink($sFile);
+                }
+            }
+        }
     }
 
     /**
@@ -106,16 +108,11 @@ class oxModuleVariablesCache
      *
      * @return string
      */
-    protected function _getCacheFileName($sModuleVarName, $blSubShopSpecific = true)
+    protected function _getCacheFileName($sModuleVarName)
     {
-        $sShopId = "all";
-        if ($blSubShopSpecific) {
-            $sShopId = $this->getShopIdCalculator()->getShopId();
-        }
-
         $sDir = $this->_getCacheDir();
         $sVar = strtolower(basename($sModuleVarName));
-        $sShop = strtolower(basename($sShopId));
+        $sShop = strtolower(basename($this->getShopId()));
 
         $sFileName = $sDir . "/" . self::CACHE_FILE_PREFIX . "." . $sShop . '.' . $sVar . ".txt";
 
@@ -123,34 +120,12 @@ class oxModuleVariablesCache
     }
 
     /**
+     * Returns shopId which should be used for cache file name generation.
      *
+     * @return string
      */
-    public static function clearCache()
+    protected function getShopId()
     {
-        $sMask = oxRegistry::get("oxConfigFile")->getVar("sCompileDir") . "/" . self::CACHE_FILE_PREFIX . ".*.txt";
-        $aFiles = glob($sMask);
-        if (is_array($aFiles)) {
-            foreach ($aFiles as $sFile) {
-                if (is_file($sFile)) {
-                    @unlink($sFile);
-                }
-            }
-        }
-    }
-
-    /**
-     * @param oxShopIdCalculator $shopIdCalculator
-     */
-    public function setShopIdCalculator($shopIdCalculator)
-    {
-        $this->shopIdCalculator = $shopIdCalculator;
-    }
-
-    /**
-     * @return oxShopIdCalculator
-     */
-    protected function getShopIdCalculator()
-    {
-        return $this->shopIdCalculator;
+        return "all";
     }
 }

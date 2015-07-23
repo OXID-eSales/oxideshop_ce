@@ -27,7 +27,7 @@ class Unit_Core_oxModuleVariablesCacheTest extends OxidTestCase
     {
         $sTest = "test val";
 
-        $moduleCache = oxNew('oxModuleVariablesCache');
+        $moduleCache = oxNew('oxFileCache');
 
         $moduleCache->_setToCache("testKey", $sTest, false);
         $this->assertEquals($sTest, $moduleCache->_getFromCache("testKey", false));
@@ -37,10 +37,7 @@ class Unit_Core_oxModuleVariablesCacheTest extends OxidTestCase
     {
         $sTest = "test val";
 
-        $shopIdCalculator = $this->getMock('oxShopIdCalculator', array('getShopId'), array(), '', false);
-        $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue(1));
-
-        $moduleCache = oxNew('oxModuleVariablesCache', $shopIdCalculator);
+        $moduleCache = oxNew('oxFileCache');
 
         $moduleCache->_setToCache("testKey", $sTest);
         $this->assertEquals($sTest, $moduleCache->_getFromCache("testKey"));
@@ -48,7 +45,7 @@ class Unit_Core_oxModuleVariablesCacheTest extends OxidTestCase
 
     public function testGetCacheFileName()
     {
-        $moduleCache = $this->getProxyClass('oxModuleVariablesCache');
+        $moduleCache = $this->getProxyClass('oxFileCache');
 
         $sExpt = "config.all.testval.txt";
         $this->assertEquals($sExpt, basename($moduleCache->_getCacheFileName("testVal", false)));

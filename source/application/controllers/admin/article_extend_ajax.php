@@ -135,7 +135,7 @@ class article_extend_ajax extends ajaxListComponent
         if (is_array($categoriesToRemove) && count($categoriesToRemove)) {
             $query = "delete from oxobject2category where oxobject2category.oxobjectid= "
                   . oxDb::getDb()->quote($oxId) . " and ";
-            $query = $this->onRemovingCategoriesUpdateQuery($query);
+            $query = $this->updateQueryForRemovingArticleFromCategory($query);
             $query .= " oxcatnid in (" . implode(', ', oxDb::getInstance()->quoteArray($categoriesToRemove)) . ')';
             $dataBase->Execute($query);
 
@@ -146,7 +146,7 @@ class article_extend_ajax extends ajaxListComponent
         $this->resetArtSeoUrl($oxId, $categoriesToRemove);
         $this->resetContentCache();
 
-        $this->onRemovingCategoriesAdditionalActions($categoriesToRemove, $oxId);
+        $this->onCategoriesRemoval($categoriesToRemove, $oxId);
     }
 
     /**
@@ -191,7 +191,7 @@ class article_extend_ajax extends ajaxListComponent
 
             $this->resetArtSeoUrl($oxId);
             $this->resetContentCache();
-            $this->onAddingCategories($categoriesToAdd);
+            $this->onCategoriesAdd($categoriesToAdd);
         }
     }
 
@@ -205,7 +205,7 @@ class article_extend_ajax extends ajaxListComponent
         $database = oxDb::getDb();
         $objectToCategoryView = $this->_getViewName('oxobject2category');
         $oxId = $database->quote($oxId);
-        $queryToEmbed = $this->onUpdatingOxTimeGetQueryToEmbed();
+        $queryToEmbed = $this->formQueryToEmbedForUpdatingTime();
         // updating oxtime values
         $query = "update oxobject2category set oxtime = 0 where oxobjectid = {$oxId} {$queryToEmbed} and oxid = (
                     select oxid from (
@@ -228,7 +228,7 @@ class article_extend_ajax extends ajaxListComponent
         $quotedOxId = $database->quote($oxId);
         $quotedDefCat = $database->quote($defCat);
 
-        $queryToEmbed = $this->onSettingCategoryAsDefaultGetQueryToEmbed();
+        $queryToEmbed = $this->formQueryToEmbedForSettingCategoryAsDefault();
 
         // #0003650: increment all product references independent to active shop
         $query = "update oxobject2category set oxtime = oxtime + 10 where oxobjectid = {$quotedOxId} {$queryToEmbed}";
@@ -252,7 +252,7 @@ class article_extend_ajax extends ajaxListComponent
      *
      * @return string
      */
-    protected function onRemovingCategoriesUpdateQuery($query)
+    protected function updateQueryForRemovingArticleFromCategory($query)
     {
         return $query;
     }
@@ -263,7 +263,7 @@ class article_extend_ajax extends ajaxListComponent
      * @param array  $categoriesToRemove
      * @param string $oxId
      */
-    protected function onRemovingCategoriesAdditionalActions($categoriesToRemove, $oxId)
+    protected function onCategoriesRemoval($categoriesToRemove, $oxId)
     {
     }
 
@@ -272,7 +272,7 @@ class article_extend_ajax extends ajaxListComponent
      *
      * @param array $categories
      */
-    protected function onAddingCategories($categories)
+    protected function onCategoriesAdd($categories)
     {
     }
 
@@ -281,7 +281,7 @@ class article_extend_ajax extends ajaxListComponent
      *
      * @return string
      */
-    protected function onUpdatingOxTimeGetQueryToEmbed()
+    protected function formQueryToEmbedForUpdatingTime()
     {
         return '';
     }
@@ -291,7 +291,7 @@ class article_extend_ajax extends ajaxListComponent
      *
      * @return string
      */
-    protected function onSettingCategoryAsDefaultGetQueryToEmbed()
+    protected function formQueryToEmbedForSettingCategoryAsDefault()
     {
         return '';
     }

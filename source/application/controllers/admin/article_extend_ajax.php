@@ -21,11 +21,10 @@
  */
 
 /**
- * Class controls article assignment to category
+ * Class controls article assignment to category.
  */
 class article_extend_ajax extends ajaxListComponent
 {
-
     /**
      * Columns array
      *
@@ -54,27 +53,27 @@ class article_extend_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $sCategoriesTable = $this->_getViewName('oxcategories');
-        $sO2CView = $this->_getViewName('oxobject2category');
-        $oDb = oxDb::getDb();
+        $categoriesTable = $this->_getViewName('oxcategories');
+        $objectToCategoryView = $this->_getViewName('oxobject2category');
+        $database = oxDb::getDb();
 
-        $sOxid = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchOxid = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $oxId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $synchOxid = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
-        if ($sOxid) {
+        if ($oxId) {
             // all categories article is in
-            $sQAdd = " from $sO2CView left join $sCategoriesTable on $sCategoriesTable.oxid=$sO2CView.oxcatnid ";
-            $sQAdd .= " where $sO2CView.oxobjectid = " . $oDb->quote($sOxid)
-                      . " and $sCategoriesTable.oxid is not null ";
+            $query = " from $objectToCategoryView left join $categoriesTable on $categoriesTable.oxid=$objectToCategoryView.oxcatnid ";
+            $query .= " where $objectToCategoryView.oxobjectid = " . $database->quote($oxId)
+                      . " and $categoriesTable.oxid is not null ";
         } else {
-            $sQAdd = " from $sCategoriesTable where $sCategoriesTable.oxid not in ( ";
-            $sQAdd .= " select $sCategoriesTable.oxid from $sO2CView "
-                      . "left join $sCategoriesTable on $sCategoriesTable.oxid=$sO2CView.oxcatnid ";
-            $sQAdd .= " where $sO2CView.oxobjectid = " . $oDb->quote($sSynchOxid)
-                      . " and $sCategoriesTable.oxid is not null ) and $sCategoriesTable.oxpriceto = '0'";
+            $query = " from $categoriesTable where $categoriesTable.oxid not in ( ";
+            $query .= " select $categoriesTable.oxid from $objectToCategoryView "
+                      . "left join $categoriesTable on $categoriesTable.oxid=$objectToCategoryView.oxcatnid ";
+            $query .= " where $objectToCategoryView.oxobjectid = " . $database->quote($synchOxid)
+                      . " and $categoriesTable.oxid is not null ) and $categoriesTable.oxpriceto = '0'";
         }
 
-        return $sQAdd;
+        return $query;
     }
 
     /**
@@ -155,42 +154,42 @@ class article_extend_ajax extends ajaxListComponent
      */
     public function addCat()
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
         $categoriesToAdd = $this->_getActionIds('oxcategories.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
-        $sShopID = $myConfig->getShopId();
-        $sO2CView = $this->_getViewName('oxobject2category');
+        $oxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $shopId = $config->getShopId();
+        $objectToCategoryView = $this->_getViewName('oxobject2category');
 
         // adding
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
-            $sCategoriesTable = $this->_getViewName('oxcategories');
-            $categoriesToAdd = $this->_getAll($this->_addFilter("select $sCategoriesTable.oxid " . $this->_getQuery()));
+            $categoriesTable = $this->_getViewName('oxcategories');
+            $categoriesToAdd = $this->_getAll($this->_addFilter("select $categoriesTable.oxid " . $this->_getQuery()));
         }
 
         if (isset($categoriesToAdd) && is_array($categoriesToAdd)) {
-            $oDb = oxDb::getDb();
+            $database = oxDb::getDb();
 
-            $oNew = oxNew('oxobject2category');
+            $objectToCategory = oxNew('oxobject2category');
 
             foreach ($categoriesToAdd as $sAdd) {
                 // check, if it's already in, then don't add it again
-                $sSelect = "select 1 from " . $sO2CView . " as oxobject2category where oxobject2category.oxcatnid= "
-                           . $oDb->quote($sAdd) . " and oxobject2category.oxobjectid = " . $oDb->quote($soxId) . " ";
-                if ($oDb->getOne($sSelect, false, false)) {
+                $sSelect = "select 1 from " . $objectToCategoryView . " as oxobject2category where oxobject2category.oxcatnid= "
+                           . $database->quote($sAdd) . " and oxobject2category.oxobjectid = " . $database->quote($oxId) . " ";
+                if ($database->getOne($sSelect, false, false)) {
                     continue;
                 }
 
-                $oNew->setId(md5($soxId . $sAdd . $sShopID));
-                $oNew->oxobject2category__oxobjectid = new oxField($soxId);
-                $oNew->oxobject2category__oxcatnid = new oxField($sAdd);
-                $oNew->oxobject2category__oxtime = new oxField(time());
+                $objectToCategory->setId(md5($oxId . $sAdd . $shopId));
+                $objectToCategory->oxobject2category__oxobjectid = new oxField($oxId);
+                $objectToCategory->oxobject2category__oxcatnid = new oxField($sAdd);
+                $objectToCategory->oxobject2category__oxtime = new oxField(time());
 
-                $oNew->save();
+                $objectToCategory->save();
             }
 
-            $this->_updateOxTime($soxId);
+            $this->_updateOxTime($oxId);
 
-            $this->resetArtSeoUrl($soxId);
+            $this->resetArtSeoUrl($oxId);
             $this->resetContentCache();
             $this->onAddingCategories($categoriesToAdd);
         }
@@ -199,22 +198,22 @@ class article_extend_ajax extends ajaxListComponent
     /**
      * Updates oxtime value for product
      *
-     * @param string $soxId product id
+     * @param string $oxId product id
      */
-    protected function _updateOxTime($soxId)
+    protected function _updateOxTime($oxId)
     {
-        $oDb = oxDb::getDb();
-        $sO2CView = $this->_getViewName('oxobject2category');
-        $soxId = $oDb->quote($soxId);
-        $sqlShopFilter = $this->onUpdatingOxTimeGetQueryToEmbed();
+        $database = oxDb::getDb();
+        $objectToCategoryView = $this->_getViewName('oxobject2category');
+        $oxId = $database->quote($oxId);
+        $queryToEmbed = $this->onUpdatingOxTimeGetQueryToEmbed();
         // updating oxtime values
-        $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$soxId} {$sqlShopFilter} and oxid = (
+        $query = "update oxobject2category set oxtime = 0 where oxobjectid = {$oxId} {$queryToEmbed} and oxid = (
                     select oxid from (
-                        select oxid from {$sO2CView} where oxobjectid = {$soxId} {$sqlShopFilter}
+                        select oxid from {$objectToCategoryView} where oxobjectid = {$oxId} {$queryToEmbed}
                         order by oxtime limit 1
                     ) as _tmp
                 )";
-        $oDb->execute($sQ);
+        $database->execute($query);
     }
 
     /**
@@ -222,27 +221,27 @@ class article_extend_ajax extends ajaxListComponent
      */
     public function setAsDefault()
     {
-        $sDefCat = oxRegistry::getConfig()->getRequestParameter("defcat");
-        $soxId = oxRegistry::getConfig()->getRequestParameter("oxid");
-        $oDb = oxDb::getDb();
+        $defCat = oxRegistry::getConfig()->getRequestParameter("defcat");
+        $oxId = oxRegistry::getConfig()->getRequestParameter("oxid");
+        $database = oxDb::getDb();
 
-        $sQuotedOxId = $oDb->quote($soxId);
-        $sQuotedDefCat = $oDb->quote($sDefCat);
+        $quotedOxId = $database->quote($oxId);
+        $quotedDefCat = $database->quote($defCat);
 
-        $sqlShopFilter = $this->onSettingCategoryAsDefaultGetQueryToEmbed();
+        $queryToEmbed = $this->onSettingCategoryAsDefaultGetQueryToEmbed();
 
         // #0003650: increment all product references independent to active shop
-        $sQ = "update oxobject2category set oxtime = oxtime + 10 where oxobjectid = {$sQuotedOxId} {$sqlShopFilter}";
-        oxDb::getInstance()->getDb()->Execute($sQ);
+        $query = "update oxobject2category set oxtime = oxtime + 10 where oxobjectid = {$quotedOxId} {$queryToEmbed}";
+        oxDb::getInstance()->getDb()->Execute($query);
 
         // set main category for active shop
-        $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$sQuotedOxId} " .
-              "and oxcatnid = {$sQuotedDefCat} {$sqlShopFilter}";
-        oxDb::getInstance()->getDb()->Execute($sQ);
+        $query = "update oxobject2category set oxtime = 0 where oxobjectid = {$quotedOxId} " .
+              "and oxcatnid = {$quotedDefCat} {$queryToEmbed}";
+        oxDb::getInstance()->getDb()->Execute($query);
         //echo "\n$sQ\n";
 
         // #0003366: invalidate article SEO for all shops
-        oxRegistry::get("oxSeoEncoder")->markAsExpired($soxId, null, 1, null, "oxtype='oxarticle'");
+        oxRegistry::get("oxSeoEncoder")->markAsExpired($oxId, null, 1, null, "oxtype='oxarticle'");
         $this->resetContentCache();
     }
 

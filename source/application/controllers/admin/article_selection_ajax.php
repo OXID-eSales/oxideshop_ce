@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -98,6 +98,8 @@ class article_selection_ajax extends ajaxListComponent
             oxDb::getDb()->Execute($sQ);
         }
 
+        $articleId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $this->onArticleSelectionListChange($articleId);
     }
 
     /**
@@ -129,6 +131,16 @@ class article_selection_ajax extends ajaxListComponent
                 $oNew->save();
             }
 
+            $this->onArticleSelectionListChange($soxId);
         }
+    }
+
+    /**
+     * Method is used to bind to article selection list change.
+     *
+     * @param string $articleId
+     */
+    protected function onArticleSelectionListChange($articleId)
+    {
     }
 }

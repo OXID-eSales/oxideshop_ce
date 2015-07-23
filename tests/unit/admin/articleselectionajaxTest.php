@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,9 +25,6 @@
  */
 class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
 {
-
-    protected $_sSelectListView = 'oxv_oxselectlist_1_de';
-
     /**
      * Initialize the fixture.
      *
@@ -37,7 +34,6 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
     {
         parent::setUp();
 
-        $this->setSelectListViewTable('oxv_oxselectlist_de');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticle', oxparentid='_testArticlePArent', oxshopid='1', oxtitle='_testArticle'", 'oxarticles');
         $this->addToDatabase("replace into oxselectlist set oxid='_testSelectList', oxshopid='1', oxtitle='_testSelectList'", 'oxselectlist');
         $this->addTeardownSql("delete from oxarticles where oxid = '_testArticles'");
@@ -51,14 +47,9 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
         $this->addTeardownSql("delete from oxobject2selectlist where oxobjectid like '%_test%' or oxid = '_testOxid'");
     }
 
-    public function setSelectListViewTable($sParam)
-    {
-        $this->_sSelectListView = $sParam;
-    }
-
     public function getSelectListViewTable()
     {
-        return $this->_sSelectListView;
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxselectlist_1_de' : 'oxv_oxselectlist_de';
     }
 
     /**
@@ -200,8 +191,15 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->setRequestParameter("all", true);
 
-
-        $iCount = $oDb->getOne("select count(oxv_oxselectlist_de.oxid)  from oxv_oxselectlist_de  where oxv_oxselectlist_de.oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join oxv_oxselectlist_de on oxv_oxselectlist_de.oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '_testAdd'  )");
+        $selectListTable = $this->getSelectListViewTable();
+        $iCount = $oDb->getOne(
+            "select count({$selectListTable}.oxid) from {$selectListTable}
+                where {$selectListTable}.oxid not in (
+                    select oxobject2selectlist.oxselnid
+                        from oxobject2selectlist
+                        left join {$selectListTable} on {$selectListTable}.oxid=oxobject2selectlist.oxselnid
+                        where oxobject2selectlist.oxobjectid = '_testAdd'  )"
+        );
 
         $this->assertGreaterThan(0, $iCount);
         $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));

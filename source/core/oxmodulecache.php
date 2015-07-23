@@ -75,7 +75,7 @@ class oxModuleCache extends oxSuperCfg
         $oUtils->resetLanguageCache();
         $oUtils->resetMenuCache();
 
-        oxModuleVariablesLocator::resetModuleVars();
+        oxModuleVariablesLocator::resetModuleVariables();
 
         $this->_clearApcCache();
     }

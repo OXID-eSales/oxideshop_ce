@@ -21,33 +21,29 @@
  */
 
 /**
- * Selects variables from database.
+ * Selects module variables from database or cache.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class oxModuleVariablesLocator
 {
-    /**
-     * Module information variables
-     *
-     * @var array
-     */
-    protected static $_aModuleVars = array();
+    /** @var array Static cache for module information variables. */
+    protected static $moduleVariables = array();
 
     /** @var oxFileCache */
-    private $variablesCache;
+    private $fileCache;
 
     /** @var oxShopIdCalculator */
     private $shopIdCalculator;
 
     /**
-     * @param oxFileCache $variablesCache
-     * @param oxShopIdCalculator     $shopIdCalculator
+     * @param oxFileCache        $fileCache
+     * @param oxShopIdCalculator $shopIdCalculator
      */
-    public function __construct($variablesCache, $shopIdCalculator)
+    public function __construct($fileCache, $shopIdCalculator)
     {
-        $this->variablesCache = $variablesCache;
+        $this->fileCache = $fileCache;
         $this->shopIdCalculator = $shopIdCalculator;
     }
 
@@ -56,48 +52,45 @@ class oxModuleVariablesLocator
      * Currently getModuleVar() is expected to be called with one of the values: aModules | aDisabledModules | aModulePaths
      * This method is independent from oxConfig functionality.
      *
-     * @param string $sModuleVarName Configuration array name
+     * @param string $name Configuration array name
      *
      * @return array
      */
-    public function getModuleVar($sModuleVarName)
+    public function getModuleVariable($name)
     {
-        //static cache
-        if (isset(self::$_aModuleVars[$sModuleVarName])) {
-            return self::$_aModuleVars[$sModuleVarName];
+        if (isset(self::$moduleVariables[$name])) {
+            return self::$moduleVariables[$name];
         }
-        $cache = $this->getVariablesCache();
+        $cache = $this->getFileCache();
 
         //first try to get it from cache
-        //we do not use any of our cache APIs, as we want to prevent any class dependencies here
-        $aValue = $cache->getFromCache($sModuleVarName);
+        $value = $cache->getFromCache($name);
 
-        if (is_null($aValue)) {
-            $aValue = $this->_getModuleVarFromDB($sModuleVarName);
-            $cache->setToCache($sModuleVarName, $aValue);
+        if (is_null($value)) {
+            $value = $this->getModuleVarFromDB($name);
+            $cache->setToCache($name, $value);
         }
 
-        //static cache
-        self::$_aModuleVars[$sModuleVarName] = $aValue;
+        self::$moduleVariables[$name] = $value;
 
-        return $aValue;
+        return $value;
     }
 
     /**
      * Sets module information variable. The variable is set statically and is not saved for future.
      *
-     * @param string $sModuleVarName Configuration array name
-     * @param array  $aValues        Module name values
+     * @param string $name  Configuration array name
+     * @param array  $value Module name values
      */
-    public function setModuleVar($sModuleVarName, $aValues)
+    public function setModuleVariable($name, $value)
     {
-        if (is_null($aValues)) {
-            self::$_aModuleVars = null;
+        if (is_null($value)) {
+            self::$moduleVariables = null;
         } else {
-            self::$_aModuleVars[$sModuleVarName] = $aValues;
+            self::$moduleVariables[$name] = $value;
         }
 
-        $this->getVariablesCache()->setToCache($sModuleVarName, $aValues);
+        $this->getFileCache()->setToCache($name, $value);
     }
 
     /**
@@ -105,9 +98,9 @@ class oxModuleVariablesLocator
      *
      * @static
      */
-    public static function resetModuleVars()
+    public static function resetModuleVariables()
     {
-        self::$_aModuleVars = array();
+        self::$moduleVariables = array();
         oxFileCache::clearCache();
     }
 
@@ -116,44 +109,42 @@ class oxModuleVariablesLocator
      *
      * @return string
      */
-    protected function _getConfKey()
+    protected function getConfigurationKey()
     {
-        $sFileName = dirname(__FILE__) . "/oxconfk.php";
-        $sCfgFile = new oxConfigFile($sFileName);
+        $configKeyFileName = dirname(__FILE__) . "/oxconfk.php";
+        $configFile = new oxConfigFile($configKeyFileName);
 
-        return $sCfgFile->getVar("sConfigKey");
+        return $configFile->getVar("sConfigKey");
     }
 
     /**
      * Returns shop module variable value directly from database.
      *
-     * @param string $sModuleVarName Module variable name
+     * @param string $name Module variable name
      *
      * @return string
      */
-    protected function _getModuleVarFromDB($sModuleVarName)
+    protected function getModuleVarFromDB($name)
     {
-        $oDb = oxDb::getDb();
+        $database = oxDb::getDb();
 
-        $sShopId = $this->getShopIdCalculator()->getShopId();
-        $sConfKey = $this->_getConfKey();
+        $shopId = $this->getShopIdCalculator()->getShopId();
+        $configKey = $this->getConfigurationKey();
 
-        $sSelect = "SELECT DECODE( oxvarvalue , " . $oDb->quote($sConfKey) . " ) FROM oxconfig " .
-            "WHERE oxvarname = " . $oDb->quote($sModuleVarName) . " AND oxshopid = " . $oDb->quote($sShopId);
+        $query = "SELECT DECODE( oxvarvalue , ? ) FROM oxconfig WHERE oxvarname = ? AND oxshopid = ?";
 
-        $sModuleVarName = $oDb->getOne($sSelect, false, false);
+        $value = $database->getOne($query, array($configKey, $name, $shopId), false);
+        $value = unserialize($value);
 
-        $sModuleVarName = unserialize($sModuleVarName);
-
-        return $sModuleVarName;
+        return $value;
     }
 
     /**
      * @return oxFileCache
      */
-    protected function getVariablesCache()
+    protected function getFileCache()
     {
-        return $this->variablesCache;
+        return $this->fileCache;
     }
 
     /**

@@ -30,16 +30,16 @@ class Unit_Core_oxModuleChainsGeneratorTest extends OxidTestCase
         $aModuleChain = array("oe/invoicepdf2/myorder");
 
         /** @var oxModuleVariablesLocator|MockObject $oUtilsObject */
-        $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVar'), array(), '', false);
+        $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVariable'), array(), '', false);
         $valueMap = array(
             array('aDisabledModules', array('invoicepdf')),
             array('aModulePaths', array("invoicepdf2" => "oe/invoicepdf2", "invoicepdf" => "oe/invoicepdf")),
         );
-        $moduleVariablesLocator->expects($this->any())->method('getModuleVar')->will($this->returnValueMap($valueMap));
+        $moduleVariablesLocator->expects($this->any())->method('getModuleVariable')->will($this->returnValueMap($valueMap));
 
         $moduleChainsGenerator = oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
 
-        $this->assertEquals($aModuleChain, $moduleChainsGenerator->filterInactiveModuleChain($aModuleChain));
+        $this->assertEquals($aModuleChain, $moduleChainsGenerator->filterInactiveExtensions($aModuleChain));
     }
 
     public function testGetActiveModuleChainIfDisabled()
@@ -48,16 +48,16 @@ class Unit_Core_oxModuleChainsGeneratorTest extends OxidTestCase
         $aModuleChainResult = array();
 
         /** @var oxModuleVariablesLocator|MockObject $oUtilsObject */
-        $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVar'), array(), '', false);
+        $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVariable'), array(), '', false);
         $valueMap = array(
             array('aDisabledModules', array('invoicepdf')),
             array('aModulePaths', array("invoicepdf" => "oe/invoicepdf")),
         );
-        $moduleVariablesLocator->expects($this->any())->method('getModuleVar')->will($this->returnValueMap($valueMap));
+        $moduleVariablesLocator->expects($this->any())->method('getModuleVariable')->will($this->returnValueMap($valueMap));
 
         $moduleChainsGenerator = oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
 
-        $this->assertEquals($aModuleChainResult, $moduleChainsGenerator->filterInactiveModuleChain($aModuleChain));
+        $this->assertEquals($aModuleChainResult, $moduleChainsGenerator->filterInactiveExtensions($aModuleChain));
     }
 
     public function testGetActiveModuleChainIfDisabledWithoutPath()
@@ -66,16 +66,16 @@ class Unit_Core_oxModuleChainsGeneratorTest extends OxidTestCase
         $aModuleChainResult = array();
 
         /** @var oxModuleVariablesLocator|MockObject $oUtilsObject */
-        $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVar'), array(), '', false);
+        $moduleVariablesLocator = $this->getMock('oxModuleVariablesLocator', array('getModuleVariable'), array(), '', false);
         $valueMap = array(
             array('aDisabledModules', array('invoicepdf')),
             array('aModulePaths', array("invoicepdf2" => "oe/invoicepdf2")),
         );
-        $moduleVariablesLocator->expects($this->any())->method('getModuleVar')->will($this->returnValueMap($valueMap));
+        $moduleVariablesLocator->expects($this->any())->method('getModuleVariable')->will($this->returnValueMap($valueMap));
 
         $moduleChainsGenerator = oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
 
-        $this->assertEquals($aModuleChainResult, $moduleChainsGenerator->filterInactiveModuleChain($aModuleChain));
+        $this->assertEquals($aModuleChainResult, $moduleChainsGenerator->filterInactiveExtensions($aModuleChain));
     }
 
     public function testDisableModule()

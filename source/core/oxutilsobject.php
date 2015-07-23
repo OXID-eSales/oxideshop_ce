@@ -180,13 +180,13 @@ class oxUtilsObject
      *
      * @param string $variableName
      *
-     * @deprecated
+     * @deprecated use oxModuleVariablesLocator::getModuleVariable()
      *
      * @return mixed
      */
     public function getModuleVar($variableName)
     {
-        return $this->getModuleChainsGenerator()->getModuleVariablesLocator()->getModuleVar($variableName);
+        return $this->getModuleChainsGenerator()->getModuleVariablesLocator()->getModuleVariable($variableName);
     }
 
     /**
@@ -195,11 +195,11 @@ class oxUtilsObject
      * @param string $variableName
      * @param mixed $value
      *
-     * @deprecated
+     * @deprecated use oxModuleVariablesLocator::setModuleVariable()
      */
     public function setModuleVar($variableName, $value)
     {
-        $this->getModuleChainsGenerator()->getModuleVariablesLocator()->setModuleVar($variableName, $value);
+        $this->getModuleChainsGenerator()->getModuleVariablesLocator()->setModuleVariable($variableName, $value);
     }
 
     /**

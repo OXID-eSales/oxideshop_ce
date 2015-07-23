@@ -31,6 +31,6 @@ class Unit_Core_oxModuleVariablesLocatorTest extends OxidTestCase
         $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue($this->getShopId()));
 
         $moduleCache = oxNew('oxModuleVariablesLocator', $cache, $shopIdCalculator);
-        $this->assertEquals(Array("a7c40f631fc920687.20179984"), $moduleCache->getModuleVar("aHomeCountry"));
+        $this->assertEquals(Array("a7c40f631fc920687.20179984"), $moduleCache->getModuleVariable("aHomeCountry"));
     }
 }

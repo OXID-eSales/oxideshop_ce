@@ -50,20 +50,15 @@ class oxModuleChainsGenerator
     public function createClassChain($class, $classAlias)
     {
         $variablesLocator = $this->getModuleVariablesLocator();
-        $modules = (array) $variablesLocator->getModuleVar('aModules');
+        $modules = (array) $variablesLocator->getModuleVariable('aModules');
         $modules = array_change_key_case($modules);
 
         if (array_key_exists($classAlias, $modules)) {
             $fullChain = explode("&", $modules[$classAlias]);
-            $activeChain = $this->filterInactiveModuleChain($fullChain);
+            $activeChain = $this->filterInactiveExtensions($fullChain);
 
             if (!empty($activeChain)) {
-                $class = $this->makeSafeModuleClassParents($activeChain, $class);
-
-                // check if there is a path, if yes, remove it
-                if (strpos($class, '/') !== false) {
-                    $class = basename($class);
-                }
+                $class = $this->createClassExtensions($activeChain, $class);
             }
         }
 
@@ -73,137 +68,160 @@ class oxModuleChainsGenerator
     /**
      * Checks if module is disabled, added to aDisabledModules config.
      *
-     * @param array $aClassChain Module names
+     * @param array $classChain Module names
      *
      * @return array
      */
-    public function filterInactiveModuleChain($aClassChain)
+    public function filterInactiveExtensions($classChain)
     {
         $variablesLocator = $this->getModuleVariablesLocator();
-        $aDisabledModules = $variablesLocator->getModuleVar('aDisabledModules');
-        $aModulePaths = $variablesLocator->getModuleVar('aModulePaths');
+        $disabledModules = $variablesLocator->getModuleVariable('aDisabledModules');
+        $modulePaths = $variablesLocator->getModuleVariable('aModulePaths');
 
-        if (is_array($aDisabledModules) && count($aDisabledModules) > 0) {
-            foreach ($aDisabledModules as $sId) {
-                $sPath = $sId;
-                if (is_array($aModulePaths) && array_key_exists($sId, $aModulePaths)) {
-                    $sPath = $aModulePaths[$sId];
-                    if (!isset($sPath)) {
-                        $sPath = $sId;
+        if (is_array($disabledModules) && count($disabledModules) > 0) {
+            foreach ($disabledModules as $disabledModuleId) {
+                $disabledModuleDirectory = $disabledModuleId;
+                if (is_array($modulePaths) && array_key_exists($disabledModuleId, $modulePaths)) {
+                    if (isset($modulePaths[$disabledModuleId])) {
+                        $disabledModuleDirectory = $modulePaths[$disabledModuleId];
                     }
                 }
-                foreach ($aClassChain as $sKey => $sModuleClass) {
-                    if (strpos($sModuleClass, $sPath . "/") === 0) {
-                        unset($aClassChain[$sKey]);
-                    } elseif (strpos($sPath, ".")) {
+                foreach ($classChain as $key => $moduleClass) {
+                    if (strpos($moduleClass, $disabledModuleDirectory . "/") === 0) {
+                        unset($classChain[$key]);
+                    } elseif (strpos($disabledModuleDirectory, ".")) {
                         // If module consists of one file without own dir (getting module.php as id, instead of module)
-                        if (strpos($sPath, strtolower($sModuleClass)) === 0) {
-                            unset($aClassChain[$sKey]);
+                        if (strpos($disabledModuleDirectory, strtolower($moduleClass)) === 0) {
+                            unset($classChain[$key]);
                         }
                     }
                 }
             }
         }
 
-        return $aClassChain;
+        return $classChain;
     }
 
     /**
      * Creates middle classes if needed.
      *
-     * @param array  $aClassChain Module names
-     * @param string $sBaseModule Oxid base class
+     * @param array  $classChain Module names
+     * @param string $baseClass  Oxid base class
      *
      * @throws oxSystemComponentException missing system component exception
      *
      * @return string
      */
-    protected function makeSafeModuleClassParents($aClassChain, $sBaseModule)
+    protected function createClassExtensions($classChain, $baseClass)
     {
         //security: just preventing string termination
-        $sClassName = str_replace(chr(0), '', $sBaseModule);
-        $sParent = $sClassName;
+        $lastClass = str_replace(chr(0), '', $baseClass);
+        $parentClass = $lastClass;
 
-        //building middle classes if needed
-        foreach ($aClassChain as $sModule) {
-            //creating middle classes
-            //e.g. class suboutput1_parent extends oxoutput {}
-            //     class suboutput2_parent extends suboutput1 {}
-            //$sModuleClass = $this->getClassName($sModule);
+        foreach ($classChain as $extensionPath) {
+            $extensionPath = str_replace(chr(0), '', $extensionPath);
 
-            //security: just preventing string termination
-            $sModule = str_replace(chr(0), '', $sModule);
-
-            //get parent and module class names from sub/suboutput2
-            $sModuleClass = basename($sModule);
-
-            if (!class_exists($sModuleClass, false)) {
-                $sParentClass = basename($sParent);
-                $sModuleParentClass = $sModuleClass . "_parent";
-
-                //initializing middle class
-                if (!class_exists($sModuleParentClass, false)) {
-                    // If possible using alias instead if eval (since php 5.3).
-                    if (function_exists('class_alias')) {
-                        class_alias($sParentClass, $sModuleParentClass);
-                    } else {
-                        eval("abstract class $sModuleParentClass extends $sParentClass {}");
-                    }
-                }
-                $sParentPath = oxRegistry::get("oxConfigFile")->getVar("sShopDir") . "/modules/" . $sModule . ".php";
-
-                //including original file
-                if (file_exists($sParentPath)) {
-                    include_once $sParentPath;
-                } elseif (!class_exists($sModuleClass)) {
-                    // special case is when oxconfig class is extended: we cant call "_disableModule" as it requires valid config object
-                    // but we can't create it as module class extending it does not exist. So we will use original oxConfig object instead.
-                    if ($sParentClass == "oxconfig") {
-                        $oConfig = new oxConfig();
-                        oxRegistry::set("oxConfig", $oConfig);
-                    }
-
-                    // disable module if extended class is not found
-                    $blDisableModuleOnError = !oxRegistry::get("oxConfigFile")->getVar("blDoNotDisableModuleOnError");
-                    if ($blDisableModuleOnError) {
-                        $this->disableModule($sModule);
-                    } else {
-                        //to avoid problems with unitest and only throw a exception if class does not exists MAFI
-                        /** @var oxSystemComponentException $oEx */
-                        $oEx = oxNew("oxSystemComponentException");
-                        $oEx->setMessage("EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND");
-                        $oEx->setComponent($sModuleClass);
-                        throw $oEx;
-                    }
-                    continue;
-                }
+            if ($this->createClassExtension($parentClass, $extensionPath)) {
+                $parentClass = basename($extensionPath);
+                $lastClass = basename($extensionPath);
             }
-            $sParent = $sModule;
-            $sClassName = $sModule;
         }
 
         //returning the last module from the chain
-        return $sClassName;
+        return $lastClass;
+    }
+
+    /**
+     * Creating middle classes
+     * e.g. class suboutput1_parent extends oxoutput {}
+     *      class suboutput2_parent extends suboutput1 {}
+     *
+     * @param string $class
+     * @param string $extensionPath
+     *
+     * @throws oxSystemComponentException
+     *
+     * @return bool
+     */
+    protected function createClassExtension($class, $extensionPath)
+    {
+        $extensionClass = basename($extensionPath);
+
+        if (!class_exists($extensionClass, false)) {
+            $extensionParentClass = $extensionClass . "_parent";
+
+            if (!class_exists($extensionParentClass, false)) {
+                class_alias($class, $extensionParentClass);
+            }
+            $modulesDirectory = oxRegistry::get("oxConfigFile")->getVar("sShopDir");
+            $extensionParentPath = "$modulesDirectory/modules/$extensionPath.php";
+
+            //including original file
+            if (file_exists($extensionParentPath)) {
+                include_once $extensionParentPath;
+            } elseif (!class_exists($extensionClass)) {
+                $this->handleSpecialCases($class, $extensionClass);
+                $this->onModuleExtensionCreationError($extensionPath, $extensionClass);
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Special case is when oxconfig class is extended: we cant call "_disableModule" as it requires valid config object
+     * but we can't create it as module class extending it does not exist. So we will use original oxConfig object instead.
+     *
+     * @param string $requestedClass Class, for which extension chain was generated.
+     * @param string $extensionClass
+     */
+    protected function handleSpecialCases($requestedClass, $extensionClass)
+    {
+        if ($requestedClass == "oxconfig") {
+            $config = new oxConfig();
+            oxRegistry::set("oxConfig", $config);
+        }
+    }
+
+    /**
+     * If blDoNotDisableModuleOnError config value is false, disables bad module.
+     * To avoid problems with unit tests it only throw an exception if class does not exist.
+     *
+     * @param string $classExtension
+     * @param string $moduleClass
+     *
+     * @throws oxSystemComponentException
+     */
+    protected function onModuleExtensionCreationError($classExtension, $moduleClass)
+    {
+        $disableModuleOnError = !oxRegistry::get("oxConfigFile")->getVar("blDoNotDisableModuleOnError");
+        if ($disableModuleOnError) {
+            $this->disableModule($classExtension);
+        } else {
+            $exception = oxNew("oxSystemComponentException");
+            $exception->setMessage("EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND");
+            $exception->setComponent($moduleClass);
+            throw $exception;
+        }
     }
 
     /**
      * Disables module, adds to aDisabledModules config.
      *
-     * @param array $sModule Module name
+     * @param array $modulePath Full module path
      */
-    public function disableModule($sModule)
+    public function disableModule($modulePath)
     {
-        /** @var oxModule $oModule */
-        $oModule = oxNew("oxModule");
-        $sModuleId = $oModule->getIdByPath($sModule);
-        $oModule->load($sModuleId);
+        $module = oxNew("oxModule");
+        $moduleId = $module->getIdByPath($modulePath);
+        $module->load($moduleId);
 
-        /** @var oxModuleCache $oModuleCache */
-        $oModuleCache = oxNew('oxModuleCache', $oModule);
-        /** @var oxModuleInstaller $oModuleInstaller */
-        $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
+        $moduleCache = oxNew('oxModuleCache', $module);
+        $moduleInstaller = oxNew('oxModuleInstaller', $moduleCache);
 
-        $oModuleInstaller->deactivate($oModule);
+        $moduleInstaller->deactivate($module);
     }
 
     /**

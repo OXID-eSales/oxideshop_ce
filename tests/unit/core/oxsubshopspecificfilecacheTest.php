@@ -44,6 +44,6 @@ class Unit_Core_oxSubShopSpecificFileCacheTest extends OxidTestCase
         $moduleCache = $this->getProxyClass('oxSubShopSpecificFileCache', array($shopIdCalculator));
 
         $sExpt = "config.2.testval.txt";
-        $this->assertEquals($sExpt, basename($moduleCache->_getCacheFileName("testVal")));
+        $this->assertEquals($sExpt, basename($moduleCache->getCacheFilePath("testVal")));
     }
 }

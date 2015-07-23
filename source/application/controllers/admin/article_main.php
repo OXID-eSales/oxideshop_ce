@@ -297,7 +297,7 @@ class Article_Main extends oxAdminDetails
         $base->oxobject2category__oxobjectid = new oxField($sOXID);
         $base->oxobject2category__oxcatnid = new oxField($sCatID);
 
-        $base = $this->onAddingToCategoryUpdate($base);
+        $base = $this->updateBase($base);
 
         $base->save();
     }
@@ -757,7 +757,7 @@ class Article_Main extends oxAdminDetails
     /**
      * @param oxBase $base
      */
-    protected function onAddingToCategoryUpdate($base)
+    protected function updateBase($base)
     {
         return $base;
     }

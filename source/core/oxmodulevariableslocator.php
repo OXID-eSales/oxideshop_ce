@@ -70,11 +70,11 @@ class oxModuleVariablesLocator
 
         //first try to get it from cache
         //we do not use any of our cache APIs, as we want to prevent any class dependencies here
-        $aValue = $cache->_getFromCache($sModuleVarName);
+        $aValue = $cache->getFromCache($sModuleVarName);
 
         if (is_null($aValue)) {
             $aValue = $this->_getModuleVarFromDB($sModuleVarName);
-            $cache->_setToCache($sModuleVarName, $aValue);
+            $cache->setToCache($sModuleVarName, $aValue);
         }
 
         //static cache
@@ -97,7 +97,7 @@ class oxModuleVariablesLocator
             self::$_aModuleVars[$sModuleVarName] = $aValues;
         }
 
-        $this->getVariablesCache()->_setToCache($sModuleVarName, $aValues);
+        $this->getVariablesCache()->setToCache($sModuleVarName, $aValues);
     }
 
     /**

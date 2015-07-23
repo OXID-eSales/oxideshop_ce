@@ -32,8 +32,8 @@ class Unit_Core_oxSubShopSpecificFileCacheTest extends OxidTestCase
 
         $moduleCache = oxNew('oxSubShopSpecificFileCache', $shopIdCalculator);
 
-        $moduleCache->_setToCache("testKey", $sTest);
-        $this->assertEquals($sTest, $moduleCache->_getFromCache("testKey"));
+        $moduleCache->setToCache("testKey", $sTest);
+        $this->assertEquals($sTest, $moduleCache->getFromCache("testKey"));
     }
 
     public function testGetCacheFileName()

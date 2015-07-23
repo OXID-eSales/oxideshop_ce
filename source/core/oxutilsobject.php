@@ -133,13 +133,13 @@ class oxUtilsObject
      * Factory instance setter. Sets the instance to be returned over later called oxNew().
      * This method is mostly intended to be used by phpUnit tests.
      *
-     * @param string $sClassName Class name expected to be later supplied over oxNew
-     * @param object $oInstance  Instance object
+     * @param string $className Class name expected to be later supplied over oxNew
+     * @param object $instance  Instance object
      */
-    public static function setClassInstance($sClassName, $oInstance)
+    public static function setClassInstance($className, $instance)
     {
-        $sClassName = strtolower($sClassName);
-        self::$_aClassInstances[$sClassName] = $oInstance;
+        $className = strtolower($className);
+        self::$_aClassInstances[$className] = $instance;
     }
 
     /**
@@ -153,22 +153,22 @@ class oxUtilsObject
     /**
      * Resets instance cache
      *
-     * @param string $sClassName class name in the cache
+     * @param string $className class name in the cache
      *
      * @return null;
      */
-    public function resetInstanceCache($sClassName = null)
+    public function resetInstanceCache($className = null)
     {
-        if ($sClassName && isset(self::$_aInstanceCache[$sClassName])) {
-            unset(self::$_aInstanceCache[$sClassName]);
+        if ($className && isset(self::$_aInstanceCache[$className])) {
+            unset(self::$_aInstanceCache[$className]);
 
             return;
         }
 
         //looping due to possible memory "leak".
         if (is_array(self::$_aInstanceCache)) {
-            foreach (self::$_aInstanceCache as $sKey => $oInstance) {
-                unset(self::$_aInstanceCache[$sKey]);
+            foreach (self::$_aInstanceCache as $key => $instance) {
+                unset(self::$_aInstanceCache[$key]);
             }
         }
 
@@ -176,127 +176,130 @@ class oxUtilsObject
     }
 
     /**
-     * @deprecated
-     * @param $sModuleVarName
+     * Returns module variable value from configuration by given name.
      *
-     * @return array
+     * @param string $variableName
+     *
+     * @deprecated
+     *
+     * @return mixed
      */
-    public function getModuleVar($sModuleVarName)
+    public function getModuleVar($variableName)
     {
-        return $this->getModuleChainsGenerator()->getModuleVariablesLocator()->getModuleVar($sModuleVarName);
+        return $this->getModuleChainsGenerator()->getModuleVariablesLocator()->getModuleVar($variableName);
     }
 
     /**
-     * @deprecated
-     * @param $sModuleVarName
-     * @param $aValues
+     * Sets module variable value to configuration by given name.
      *
-     * @return array
+     * @param string $variableName
+     * @param mixed $value
+     *
+     * @deprecated
      */
-    public function setModuleVar($sModuleVarName, $aValues)
+    public function setModuleVar($variableName, $value)
     {
-        $this->getModuleChainsGenerator()->getModuleVariablesLocator()->setModuleVar($sModuleVarName, $aValues);
+        $this->getModuleChainsGenerator()->getModuleVariablesLocator()->setModuleVar($variableName, $value);
     }
 
     /**
      * Creates and returns new object. If creation is not available, dies and outputs
      * error message.
      *
-     * @param string $sClassName Name of class
+     * @param string $className Name of class
      *
      * @throws oxSystemComponentException in case that class does not exists
      *
      * @return object
      */
-    public function oxNew($sClassName)
+    public function oxNew($className)
     {
-        $aArgs = func_get_args();
-        array_shift($aArgs);
-        $iArgCnt = count($aArgs);
-        $blCacheObj = $this->shouldCacheObject($sClassName, $aArgs);
-        $sClassName = strtolower($sClassName);
+        $arguments = func_get_args();
+        array_shift($arguments);
+        $argumentsCount = count($arguments);
+        $shouldUseCache = $this->shouldCacheObject($className, $arguments);
+        $className = strtolower($className);
 
-        if (isset(self::$_aClassInstances[$sClassName])) {
-            return self::$_aClassInstances[$sClassName];
+        if (isset(self::$_aClassInstances[$className])) {
+            return self::$_aClassInstances[$className];
         }
-        if (!defined('OXID_PHP_UNIT') && $blCacheObj) {
-            $sCacheKey = ($iArgCnt) ? $sClassName . md5(serialize($aArgs)) : $sClassName;
-            if (isset(self::$_aInstanceCache[$sCacheKey])) {
-                return clone self::$_aInstanceCache[$sCacheKey];
+        if (!defined('OXID_PHP_UNIT') && $shouldUseCache) {
+            $cacheKey = ($argumentsCount) ? $className . md5(serialize($arguments)) : $className;
+            if (isset(self::$_aInstanceCache[$cacheKey])) {
+                return clone self::$_aInstanceCache[$cacheKey];
             }
         }
 
-        // performance
-        if (!defined('OXID_PHP_UNIT') && isset($this->_aClassNameCache[$sClassName])) {
-            $sActionClassName = $this->_aClassNameCache[$sClassName];
+        if (!defined('OXID_PHP_UNIT') && isset($this->_aClassNameCache[$className])) {
+            $realClassName = $this->_aClassNameCache[$className];
         } else {
-            $sActionClassName = $this->getClassName($sClassName);
+            $realClassName = $this->getClassName($className);
             //expect __autoload() (oxfunctions.php) to do its job when class_exists() is called
-            if (!class_exists($sActionClassName)) {
+            if (!class_exists($realClassName)) {
                 /** @var $oEx oxSystemComponentException */
                 $oEx = oxNew("oxSystemComponentException");
                 $oEx->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
-                $oEx->setComponent($sClassName);
+                $oEx->setComponent($className);
                 $oEx->debugOut();
                 throw $oEx;
             }
-            // performance
-            $this->_aClassNameCache[$sClassName] = $sActionClassName;
+
+            $this->_aClassNameCache[$className] = $realClassName;
         }
 
-        $oActionObject = $this->_getObject($sActionClassName, $iArgCnt, $aArgs);
-        if ($blCacheObj && $oActionObject instanceof oxBase) {
-            self::$_aInstanceCache[$sCacheKey] = clone $oActionObject;
+        $object = $this->_getObject($realClassName, $argumentsCount, $arguments);
+        if ($shouldUseCache && $object instanceof oxBase) {
+            self::$_aInstanceCache[$cacheKey] = clone $object;
         }
 
-        return $oActionObject;
+        return $object;
     }
 
     /**
      * Creates object with dynamic constructor parameters.
-     * If parameter count > 5 - exception is thrown
+     * If parameter count > 5 - uses reflection class to create object.
      *
-     * @param string $sClassName class name
-     * @param int    $iArgCnt    argument count
-     * @param array  $aParams    constructor parameters
+     * @param string $className      class name
+     * @param int    $argumentsCount argument count
+     * @param array  $arguments      constructor parameters
      *
      * @throws oxSystemComponentException in case parameters count > 5
      *
      * @return mixed
      */
-    protected function _getObject($sClassName, $iArgCnt, $aParams)
+    protected function _getObject($className, $argumentsCount, $arguments)
     {
         // dynamic creation (if parameter count < 4) gives more performance for regular objects
-        switch ($iArgCnt) {
+        switch ($argumentsCount) {
             case 0:
-                $oObj = new $sClassName();
+                $object = new $className();
                 break;
             case 1:
-                $oObj = new $sClassName($aParams[0]);
+                $object = new $className($arguments[0]);
                 break;
             case 2:
-                $oObj = new $sClassName($aParams[0], $aParams[1]);
+                $object = new $className($arguments[0], $arguments[1]);
                 break;
             case 3:
-                $oObj = new $sClassName($aParams[0], $aParams[1], $aParams[2]);
+                $object = new $className($arguments[0], $arguments[1], $arguments[2]);
                 break;
             default:
                 try {
                     // unlimited constructor arguments support
-                    $oRo = new ReflectionClass($sClassName);
-                    $oObj = $oRo->newInstanceArgs($aParams);
-                } catch (ReflectionException $oRefExcp) {
+                    $reflection = new ReflectionClass($className);
+                    $object = $reflection->newInstanceArgs($arguments);
+                } catch (ReflectionException $reflectionException) {
                     // something went wrong?
-                    /** @var $oEx oxSystemComponentException */
-                    $oEx = oxNew("oxSystemComponentException");
-                    $oEx->setMessage($oRefExcp->getMessage());
-                    $oEx->setComponent($sClassName);
-                    $oEx->debugOut();
-                    throw $oEx;
+                    $systemComponentException = oxNew("oxSystemComponentException");
+                    $systemComponentException->setMessage($reflectionException->getMessage());
+                    $systemComponentException->setComponent($className);
+                    $systemComponentException->debugOut();
+
+                    throw $systemComponentException;
                 }
         }
 
-        return $oObj;
+        return $object;
     }
 
     /**
@@ -306,8 +309,7 @@ class oxUtilsObject
      */
     public function generateUId()
     {
-        return /*substr( $this->getSession()->getId(), 0, 3 ) . */
-            substr(md5(uniqid('', true) . '|' . microtime()), 0, 32);
+        return substr(md5(uniqid('', true) . '|' . microtime()), 0, 32);
     }
 
 
@@ -320,9 +322,9 @@ class oxUtilsObject
      */
     public function getClassName($classAlias)
     {
-        $editionCodeHandler = new oxEditionCodeHandler();
+        $editionCodeHandler = $this->getEditionCodeHandler();
 
-        $class = $editionCodeHandler->getRealClassName($classAlias);
+        $class = $editionCodeHandler->getClassName($classAlias);
 
         $class = $this->getModuleChainsGenerator()->createClassChain($class, $classAlias);
 
@@ -340,7 +342,7 @@ class oxUtilsObject
     {
         return $this->getEditionCodeHandler()->getClassAliasName($className);
     }
-    
+
     /**
      * Returns shop id.
      *

@@ -42,11 +42,16 @@ class oxSubShopSpecificFileCache extends oxFileCache
     /**
      * Returns shopId which should be used for cache file name generation.
      *
+     * @param string $key
+     *
      * @return string
      */
-    protected function getShopId()
+    protected function getCacheFileName($key)
     {
-        return $this->getShopIdCalculator()->getShopId();
+        $name = strtolower(basename($key));
+        $shopId = strtolower(basename($this->getShopIdCalculator()->getShopId()));
+
+        return parent::CACHE_FILE_PREFIX . ".$shopId.$name.txt";
     }
 
     /**

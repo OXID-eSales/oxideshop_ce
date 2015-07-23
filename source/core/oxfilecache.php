@@ -28,72 +28,85 @@
  */
 class oxFileCache
 {
-    /**
-     * Cache file prefix
-     */
+    /** Cache file prefix */
     const CACHE_FILE_PREFIX = "config";
 
     /**
-     * Returns shop module variable value from cache.
+     * Returns cached item value by given key.
      * This method is independent from oxConfig class and does not use database.
      *
-     * @param string $sModuleVarName    Module variable name
+     * @param string $key cached item key.
      *
-     * @return string
+     * @return mixed
      */
-    public function _getFromCache($sModuleVarName)
+    public function getFromCache($key)
     {
-        $sFileName = $this->_getCacheFileName($sModuleVarName);
-        $sValue = null;
-        if (is_readable($sFileName)) {
-            $sValue = file_get_contents($sFileName);
-            if ($sValue == serialize(false)) {
+        $fileName = $this->getCacheFilePath($key);
+        $value = null;
+        if (is_readable($fileName)) {
+            $value = file_get_contents($fileName);
+            if ($value == serialize(false)) {
                 return false;
             }
 
-            $sValue = unserialize($sValue);
-            if ($sValue === false) {
-                $sValue = null;
+            $value = unserialize($value);
+            if ($value === false) {
+                $value = null;
             }
         }
 
-        return $sValue;
+        return $value;
     }
 
     /**
-     * Writes shop module variable information to cache.
+     * Caches item value by given key.
      *
-     * @param string $sVarName          Variable name
-     * @param string $sValue            Variable value.
+     * @param string $key   cached item key.
+     * @param mixed  $value
      */
-    public function _setToCache($sVarName, $sValue)
+    public function setToCache($key, $value)
     {
-        $sFileName = $this->_getCacheFileName($sVarName);
-        file_put_contents($sFileName, serialize($sValue), LOCK_EX);
+        $sFileName = $this->getCacheFilePath($key);
+        file_put_contents($sFileName, serialize($value), LOCK_EX);
     }
 
     /**
-     * Clears all cache.
+     * Clears all cache by deleting cached files.
      */
     public static function clearCache()
     {
-        $sMask = oxRegistry::get("oxConfigFile")->getVar("sCompileDir") . "/" . self::CACHE_FILE_PREFIX . ".*.txt";
-        $aFiles = glob($sMask);
-        if (is_array($aFiles)) {
-            foreach ($aFiles as $sFile) {
-                if (is_file($sFile)) {
-                    @unlink($sFile);
+        $tempDirectory = oxRegistry::get("oxConfigFile")->getVar("sCompileDir");
+        $mask = $tempDirectory . "/" . self::CACHE_FILE_PREFIX . ".*.txt";
+        $files = glob($mask);
+        if (is_array($files)) {
+            foreach ($files as $file) {
+                if (is_file($file)) {
+                    @unlink($file);
                 }
             }
         }
     }
 
     /**
-     * Gets cache directory
+     * Returns module file cache name.
+     *
+     * @param string $key cached item key. Will be used for file name generation.
      *
      * @return string
      */
-    protected function _getCacheDir()
+    protected function getCacheFilePath($key)
+    {
+        $sFileName = $this->getCacheDir() . "/" . $this->getCacheFileName($key);
+
+        return $sFileName;
+    }
+
+    /**
+     * Returns cache directory.
+     *
+     * @return string
+     */
+    protected function getCacheDir()
     {
         $sDir = oxRegistry::get("oxConfigFile")->getVar("sCompileDir");
 
@@ -101,31 +114,16 @@ class oxFileCache
     }
 
     /**
-     * Returns module file cache name.
-     *
-     * @param string $sModuleVarName    Module variable name
-     * @param bool   $blSubShopSpecific Shop id
-     *
-     * @return string
-     */
-    protected function _getCacheFileName($sModuleVarName)
-    {
-        $sDir = $this->_getCacheDir();
-        $sVar = strtolower(basename($sModuleVarName));
-        $sShop = strtolower(basename($this->getShopId()));
-
-        $sFileName = $sDir . "/" . self::CACHE_FILE_PREFIX . "." . $sShop . '.' . $sVar . ".txt";
-
-        return $sFileName;
-    }
-
-    /**
      * Returns shopId which should be used for cache file name generation.
      *
+     * @param string $key
+     *
      * @return string
      */
-    protected function getShopId()
+    protected function getCacheFileName($key)
     {
-        return "all";
+        $name = strtolower(basename($key));
+
+        return self::CACHE_FILE_PREFIX .".all.$name.txt";
     }
 }

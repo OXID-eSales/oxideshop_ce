@@ -29,8 +29,8 @@ class Unit_Core_oxModuleVariablesCacheTest extends OxidTestCase
 
         $moduleCache = oxNew('oxFileCache');
 
-        $moduleCache->_setToCache("testKey", $sTest, false);
-        $this->assertEquals($sTest, $moduleCache->_getFromCache("testKey", false));
+        $moduleCache->setToCache("testKey", $sTest, false);
+        $this->assertEquals($sTest, $moduleCache->getFromCache("testKey", false));
     }
 
     public function testSetGetCacheSubShopSpecific()
@@ -39,8 +39,8 @@ class Unit_Core_oxModuleVariablesCacheTest extends OxidTestCase
 
         $moduleCache = oxNew('oxFileCache');
 
-        $moduleCache->_setToCache("testKey", $sTest);
-        $this->assertEquals($sTest, $moduleCache->_getFromCache("testKey"));
+        $moduleCache->setToCache("testKey", $sTest);
+        $this->assertEquals($sTest, $moduleCache->getFromCache("testKey"));
     }
 
     public function testGetCacheFileName()

@@ -58,7 +58,7 @@ class oxShopIdCalculator
         }
 
         //get from file cache
-        $aMap = $this->getVariablesCache()->_getFromCache("urlMap");
+        $aMap = $this->getVariablesCache()->getFromCache("urlMap");
         if (!is_null($aMap)) {
             self::$urlMap = $aMap;
 
@@ -97,7 +97,7 @@ class oxShopIdCalculator
         }
 
         //save to cache
-        $this->getVariablesCache()->_setToCache("urlMap", $aMap);
+        $this->getVariablesCache()->setToCache("urlMap", $aMap);
         self::$urlMap = $aMap;
 
         return $aMap;

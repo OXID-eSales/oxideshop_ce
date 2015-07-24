@@ -118,12 +118,19 @@ window.onload = function ()
     </td>
     <!-- Anfang rechte Seite -->
     <td valign="top" class="edittext" align="left" width="55%">
-    [{ if $oxid != "-1"}]
-    <input [{ $readonly }] type="button" value="[{ oxmultilang ident="GENERAL_ASSIGNARTICLES" }]" class="edittext" onclick="JavaScript:showDialog('&cl=manufacturer_main&aoc=1&oxid=[{ $oxid }]');" [{ $readonly }]>
-    [{ /if}]
+        [{block name="admin_manufacturer_main_right_column"}]
+            [{ if $oxid != "-1"}]
+                <input [{ $readonly }] 
+                    type="button" 
+                    value="[{ oxmultilang ident="GENERAL_ASSIGNARTICLES" }]" 
+                    class="edittext" 
+                    onclick="JavaScript:showDialog('&cl=manufacturer_main&aoc=1&oxid=[{ $oxid }]');" 
+                    [{ $readonly }]>
+            [{ /if}]
+        [{/block}]
     </td>
     <!-- Ende rechte Seite -->
-
+    
     </tr>
 </table>
 

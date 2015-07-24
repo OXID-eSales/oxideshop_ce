@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -96,8 +96,6 @@ class attribute_category_ajax extends ajaxListComponent
     {
         $aChosenCat = $this->_getActionIds('oxcategory2attribute.oxid');
 
-
-
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxcategory2attribute.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
@@ -107,9 +105,7 @@ class attribute_category_ajax extends ajaxListComponent
             oxDb::getDb()->Execute($sQ);
         }
 
-
         $this->resetContentCache();
-
     }
 
     /**
@@ -146,5 +142,4 @@ class attribute_category_ajax extends ajaxListComponent
 
         $this->resetContentCache();
     }
-
 }

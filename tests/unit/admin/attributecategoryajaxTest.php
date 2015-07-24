@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,10 +25,6 @@
  */
 class Unit_Admin_AttributeCategoryAjaxTest extends OxidTestCase
 {
-
-    protected $_sCategoryView = 'oxv_oxcategories_1_de';
-    protected $_sShopId = '1';
-
     /**
      * Initialize the fixture.
      *
@@ -38,8 +34,6 @@ class Unit_Admin_AttributeCategoryAjaxTest extends OxidTestCase
     {
         parent::setUp();
 
-        $this->setShopIdTest('oxbaseshop');
-        $this->setCategoryViewTable('oxv_oxcategories_de');
         $this->addToDatabase("replace into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='" . $this->getgetShopIdTest() . "', oxactive=1", 'oxcategories');
         $this->addToDatabase("replace into oxattribute set oxid='_testAttribute', oxtitle='_testAttribute', oxshopid='" . $this->getgetShopIdTest() . "'", 'oxattribute');
         $this->addToDatabase("replace into oxattribute set oxid='_testAttributeAll', oxtitle='_testAttributeAll', oxshopid='" . $this->getgetShopIdTest() . "'", 'oxattribute');
@@ -53,24 +47,14 @@ class Unit_Admin_AttributeCategoryAjaxTest extends OxidTestCase
         $this->addTeardownSql("delete from oxcategory2attribute where oxid like '%_testOxid%'");
     }
 
-    public function setCategoryViewTable($sParam)
-    {
-        $this->_sCategoryView = $sParam;
-    }
-
-    public function setShopIdTest($sParam)
-    {
-        $this->_sShopId = $sParam;
-    }
-
     public function getCategoryViewTable()
     {
-        return $this->_sCategoryView;
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxcategories_1_de' : 'oxv_oxcategories_de';
     }
 
     public function getgetShopIdTest()
     {
-        return $this->_sShopId;
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
     }
 
     /**

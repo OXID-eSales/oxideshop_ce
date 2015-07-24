@@ -130,7 +130,7 @@ window.onload = function ()
         [{/block}]
     </td>
     <!-- Ende rechte Seite -->
-    
+
     </tr>
 </table>
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -61,6 +61,10 @@ class Article_Variant extends oxAdminDetails
         if (isset($soxId) && $soxId != "-1") {
             // load object
             $oArticle->loadInLang($this->_iEditLang, $soxId);
+
+            if ($oArticle->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
 
             $_POST["language"] = $_GET["language"] = $this->_iEditLang;
             $oVariants = $oArticle->getAdminVariants($this->_iEditLang);
@@ -120,9 +124,6 @@ class Article_Variant extends oxAdminDetails
             $sOXID = oxRegistry::getConfig()->getRequestParameter("voxid");
             $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
         }
-
-        // shopid
-        $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
         // varianthandling
         $soxparentId = $this->getEditObjectId();
@@ -216,7 +217,6 @@ class Article_Variant extends oxAdminDetails
      */
     public function savevariants()
     {
-
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
         if (is_array($aParams)) {
             foreach ($aParams as $soxId => $aVarParams) {
@@ -234,12 +234,18 @@ class Article_Variant extends oxAdminDetails
      */
     public function deleteVariant()
     {
+        $editObjectOxid = $this->getEditObjectId();
+        $editObject = oxNew("oxArticle");
+        $editObject->load($editObjectOxid);
+        if ($editObject->isDerived()) {
+            return;
+        }
 
         $this->resetContentCache();
 
-        $soxId = oxRegistry::getConfig()->getRequestParameter("voxid");
-        $oDelete = oxNew("oxArticle");
-        $oDelete->delete($soxId);
+        $variantOxid = oxRegistry::getConfig()->getRequestRawParameter("voxid");
+        $variant = oxNew("oxArticle");
+        $variant->delete($variantOxid);
     }
 
     /**
@@ -251,9 +257,6 @@ class Article_Variant extends oxAdminDetails
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
         $this->resetContentCache();
-
-        // shopid
-        $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
         $oArticle = oxNew("oxArticle");
         if ($soxId != "-1") {
@@ -275,10 +278,12 @@ class Article_Variant extends oxAdminDetails
     public function addsel()
     {
         $oArticle = oxNew("oxArticle");
-        //#3644
-        //$oArticle->setEnableMultilang( false );
         if ($oArticle->load($this->getEditObjectId())) {
 
+            //Disable editing for derived articles
+            if ($oArticle->isDerived()) {
+                return;
+            }
 
             $this->resetContentCache();
 

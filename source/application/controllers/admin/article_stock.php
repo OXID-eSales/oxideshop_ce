@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -62,6 +62,10 @@ class Article_Stock extends oxAdminDetails
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
 
+            if ($oArticle->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
+
             // variant handling
             if ($oArticle->oxarticles__oxparentid->value) {
                 $oParentArticle = oxNew("oxArticle");
@@ -98,10 +102,6 @@ class Article_Stock extends oxAdminDetails
 
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
-
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxarticles__oxshopid'] = $sShopID;
 
         $oArticle = oxNew("oxArticle");
         $oArticle->loadInLang($this->_iEditLang, $soxId);
@@ -141,8 +141,7 @@ class Article_Stock extends oxAdminDetails
         $this->resetContentCache();
 
         $sOxArtId = $this->getEditObjectId();
-
-
+        $this->onArticleAmountPriceChange($sOxArtId);
 
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
@@ -215,13 +214,15 @@ class Article_Stock extends oxAdminDetails
      */
     public function updateprices()
     {
-
         $aParams = oxRegistry::getConfig()->getRequestParameter("updateval");
         if (is_array($aParams)) {
             foreach ($aParams as $soxId => $aStockParams) {
                 $this->addprice($soxId, $aStockParams);
             }
         }
+
+        $sOxArtId = $this->getEditObjectId();
+        $this->onArticleAmountPriceChange($sOxArtId);
     }
 
 
@@ -234,7 +235,19 @@ class Article_Stock extends oxAdminDetails
 
         $oDb = oxDb::getDb();
         $sPriceId = $oDb->quote(oxRegistry::getConfig()->getRequestParameter("priceid"));
-        $sId = $oDb->quote($this->getEditObjectId());
+        $articleId = $this->getEditObjectId();
+        $sId = $oDb->quote($articleId);
         $oDb->execute("delete from oxprice2article where oxid = {$sPriceId} and oxartid = {$sId}");
+
+        $this->onArticleAmountPriceChange($articleId);
+    }
+
+    /**
+     * Method is used to bind to article amount price change.
+     *
+     * @param string $articleId
+     */
+    protected function onArticleAmountPriceChange($articleId)
+    {
     }
 }

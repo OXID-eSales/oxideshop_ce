@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -39,6 +39,7 @@ class Unit_Admin_ArticleUserdefTest extends OxidTestCase
         // testing..
         $oView = new Article_Userdef();
         $this->assertEquals('article_userdef.tpl', $oView->render());
+        $this->assertTrue($oView->getViewDataElement('readonly'));
     }
 
 }

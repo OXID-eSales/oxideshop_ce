@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -50,6 +50,11 @@ class Attribute_Main extends oxAdminDetails
             $this->_createCategoryTree("artcattree", $soxId);
             // load object
             $oAttr->loadInLang($this->_iEditLang, $soxId);
+
+            //Disable editing for derived items
+            if ($oAttr->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
 
             $oOtherLang = $oAttr->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
@@ -95,8 +100,6 @@ class Attribute_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        // shopid
-        $aParams['oxattribute__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
         $oAttr = oxNew("oxattribute");
 
         if ($soxId != "-1") {
@@ -106,6 +109,10 @@ class Attribute_Main extends oxAdminDetails
             //$aParams = $oAttr->ConvertNameArray2Idx( $aParams);
         }
 
+        //Disable editing for derived items
+        if ($oAttr->isDerived()) {
+            return;
+        }
 
         $oAttr->setLanguage(0);
         $oAttr->assign($aParams);
@@ -128,8 +135,6 @@ class Attribute_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        // shopid
-        $aParams['oxattribute__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
         $oAttr = oxNew("oxattribute");
 
         if ($soxId != "-1") {
@@ -138,6 +143,10 @@ class Attribute_Main extends oxAdminDetails
             $aParams['oxattribute__oxid'] = null;
         }
 
+        //Disable editing for derived items
+        if ($oAttr->isDerived()) {
+            return;
+        }
 
         $oAttr->setLanguage(0);
         $oAttr->assign($aParams);

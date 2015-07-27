@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -67,9 +67,10 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('attribute_order_ajax');
+        $sViewTable = $this->getVieTableName();
 
+        $this->assertEquals("from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
 
-        $this->assertEquals("from oxv_oxattribute_de left join oxcategory2attribute on oxcategory2attribute.oxattrid = oxv_oxattribute_de.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
     }
 
     /**
@@ -92,8 +93,7 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("iDebug", 1);
 
-
-        $sViewTable = "oxv_oxattribute_de";
+        $sViewTable = $this->getVieTableName();
 
         $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
 
@@ -114,8 +114,7 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
         $this->getConfig()->setConfigParam("iDebug", 1);
         $this->setRequestParameter("sortoxid", 0);
 
-
-        $sViewTable = "oxv_oxattribute_de";
+        $sViewTable = $this->getVieTableName();
 
         $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
 
@@ -126,4 +125,16 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
         $this->assertEquals(1, oxDb::getDb()->getOne("select sum(oxsort) from oxcategory2attribute where oxobjectid='_testObject'"));
     }
 
+    /**
+     * @return string
+     */
+    private function getVieTableName()
+    {
+        $sViewTable = "oxv_oxattribute_de";
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sViewTable = "oxv_oxattribute_1_de";
+        }
+
+        return $sViewTable;
+    }
 }

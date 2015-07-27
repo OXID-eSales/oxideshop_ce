@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -135,7 +135,6 @@ class attribute_main_ajax extends ajaxListComponent
     {
         $aChosenCat = $this->_getActionIds('oxobject2attribute.oxid');
 
-
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sO2AttributeView = $this->_getViewName('oxobject2attribute');
 
@@ -172,7 +171,17 @@ class attribute_main_ajax extends ajaxListComponent
                 $oNewGroup->oxobject2attribute__oxattrid = new oxField($oAttribute->oxattribute__oxid->value);
                 $oNewGroup->save();
 
+                $this->onArticleAddToAttributeList($sAdd);
             }
         }
+    }
+
+    /**
+     * Method used to overload.
+     *
+     * @param string $articleId
+     */
+    protected function onArticleAddToAttributeList($articleId)
+    {
     }
 }

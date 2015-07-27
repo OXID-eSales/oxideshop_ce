@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -40,10 +40,12 @@ class Unit_Admin_AttributeMainAjaxTest extends OxidTestCase
     {
         parent::setUp();
 
-        $this->setShopId('oxbaseshop');
-        $this->setArticleViewTable('oxv_oxarticles_de');
-        $this->setObject2AttributeViewTable('oxv_oxobject2attribute_de');
-        $this->setObject2CategoryViewTable('oxv_oxobject2category_de');
+        if ($this->getConfig()->getEdition() !== 'EE') {
+            $this->setShopId('oxbaseshop');
+            $this->setArticleViewTable('oxv_oxarticles_de');
+            $this->setObject2AttributeViewTable('oxv_oxobject2attribute_de');
+            $this->setObject2CategoryViewTable('oxv_oxobject2category_de');
+        }
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleRemoveAll', oxshopid='1', oxtitle='_testArticleRemoveAll'", 'oxarticles');
         $this->addToDatabase("replace into oxattribute set oxid='_testAttribute', oxtitle='_testAttribute'", 'oxattribute');
         $this->addToDatabase("replace into oxattribute set oxid='_testAttributeAddAll', oxtitle='_testAttributeAddAll'", 'oxattribute');

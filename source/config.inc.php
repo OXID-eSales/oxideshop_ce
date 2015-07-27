@@ -172,9 +172,9 @@
     $this->aUserComponentNames = null;
 
     /**
-     * Default database conection character set
+     * Default database connection character set. This option is only used when config option iUtfMode is set to 0.
      */
-    $this->sDefaultDatabaseConnection = '';
+    $this->sDefaultDatabaseConnection = 'latin1';
 
     /**
      * Additional multi language tables

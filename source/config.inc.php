@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -172,9 +172,9 @@
     $this->aUserComponentNames = null;
 
     /**
-     * Default database conection character set
+     * Default database connection character set. This option is only used when config option iUtfMode is set to 0.
      */
-    $this->sDefaultDatabaseConnection = '';
+    $this->sDefaultDatabaseConnection = 'latin1';
 
     /**
      * Additional multi language tables

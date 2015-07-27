@@ -43,12 +43,16 @@ class oxModuleChainsGenerator
      * Creates given class chains.
      *
      * @param string $class      Class name.
-     * @param string $classAlias Class alias, used for searching module extensions.
+     * @param string $classAlias Class alias, used for searching module extensions. Class is used if no alias given.
      *
      * @return string
      */
-    public function createClassChain($class, $classAlias)
+    public function createClassChain($class, $classAlias = null)
     {
+        if (!$classAlias) {
+            $classAlias = $class;
+        }
+
         $variablesLocator = $this->getModuleVariablesLocator();
         $modules = (array) $variablesLocator->getModuleVariable('aModules');
         $modules = array_change_key_case($modules);

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class oxAutoloaderNameSpaced
+class oxNamespacedAutoloader
 {
     /** @var string */
     private $shopPath = '';

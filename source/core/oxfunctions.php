@@ -26,9 +26,9 @@ if (!function_exists('registerShopAutoLoad')) {
      */
     function registerShopAutoLoad()
     {
-        require_once __DIR__ . "/oxautoloader.php";
-        $autoLoader = new oxAutoLoader();
-        spl_autoload_register(array($autoLoader, 'autoload'));
+        require_once __DIR__ . "/oxshopautoloader.php";
+        $shopAutoloader = new oxShopAutoloader();
+        spl_autoload_register(array($shopAutoloader, 'autoload'));
     }
 }
 
@@ -426,10 +426,15 @@ if (!function_exists('getRequestUrl')) {
     }
 }
 
-//registering autoload handlers
-require_once __DIR__ . "/oxautoloadernamespaced.php";
-$nameSpacedAutoLoader = new oxAutoLoaderNameSpaced(getShopBasePath());
-spl_autoload_register(array($nameSpacedAutoLoader, 'autoload'));
+// register namespaced classes autoloader
+require_once __DIR__ . "/oxnamespacedautoloader.php";
+$namespacedAutoloader = new oxNamespacedAutoloader(getShopBasePath());
+spl_autoload_register(array($namespacedAutoloader, 'autoload'));
 
 registerComposerAutoLoad();
 registerShopAutoLoad();
+
+// register module classes autoloader
+require_once __DIR__ . "/oxmoduleautoloader.php";
+$moduleAutoloader = new oxModuleAutoloader();
+spl_autoload_register(array($moduleAutoloader, 'autoload'));

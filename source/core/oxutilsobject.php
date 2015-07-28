@@ -193,7 +193,7 @@ class oxUtilsObject
      * Sets module variable value to configuration by given name.
      *
      * @param string $variableName
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @deprecated use oxModuleVariablesLocator::setModuleVariable()
      */

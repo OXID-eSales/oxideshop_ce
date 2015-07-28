@@ -40,8 +40,6 @@ class oxModuleAutoloader
      * checks module extensions.
      *
      * @param string $class Class name.
-     *
-     * @return null
      */
     public function autoload($class)
     {
@@ -95,8 +93,6 @@ class oxModuleAutoloader
      * this class comes to autoload and class chain has to be created.
      *
      * @param string $class
-     *
-     * @return null
      */
     protected function createExtensionClassChain($class)
     {

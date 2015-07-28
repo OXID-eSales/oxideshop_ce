@@ -25,6 +25,9 @@ class oxNamespacedAutoloader
     /** @var string */
     private $shopPath = '';
 
+    /**
+     * @param string $shopPath
+     */
     public function __construct($shopPath)
     {
         $this->shopPath = $shopPath;
@@ -33,9 +36,7 @@ class oxNamespacedAutoloader
     /**
      * Includes $sClass class file
      *
-     * @param string $class classname
-     *
-     * @return null
+     * @param string $class Class name
      */
     public function autoload($class)
     {

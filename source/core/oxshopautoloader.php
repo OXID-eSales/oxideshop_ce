@@ -37,9 +37,7 @@ class oxShopAutoloader
     /**
      * Includes file, where given class is described.
      *
-     * @param string $class classname
-     *
-     * @return null
+     * @param string $class Class Name
      */
     public function autoload($class)
     {

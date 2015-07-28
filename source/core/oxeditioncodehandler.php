@@ -51,7 +51,7 @@ class oxEditionCodeHandler
      *
      * @return mixed
      */
-    public function getRealClassName($classAlias)
+    public function getClassName($classAlias)
     {
         $classMap = $this->getExtendedClassMap();
 

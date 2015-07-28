@@ -8,7 +8,7 @@
  */
 class oxShopIdCalculator
 {
-
+    /** @var array */
     private static $urlMap;
 
     /** @var oxFileCache */

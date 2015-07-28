@@ -117,7 +117,6 @@ class oxShopAutoloader
             $shopBasePath . 'core/interface/',
             $shopBasePath . 'core/cache/',
             $shopBasePath . 'core/cache/connectors/',
-            $shopBasePath . 'core/wysiwigpro/',
             $shopBasePath . 'admin/reports/',
             $shopBasePath . 'admin/',
             $shopBasePath . 'modules/',

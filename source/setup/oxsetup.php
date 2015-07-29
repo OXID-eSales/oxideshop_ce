@@ -769,7 +769,7 @@ class OxSetupDb extends oxSetupCore
     /**
      * Connection resource object
      *
-     * @var object
+     * @var PDO
      */
     protected $_oConn = null;
 
@@ -808,16 +808,31 @@ class OxSetupDb extends oxSetupCore
      *
      * @throws Exception exception is thrown if error occured during sql execution
      *
-     * @return object
+     * @return PDOStatement|int
      */
     public function execSql($sQ)
     {
-        $rReturn = mysql_query($sQ, $this->getConnection());
-        if ($rReturn === false) {
-            throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_BAD_SQL') . "( $sQ ): " . mysql_error($this->getConnection()) . "\n");
-        }
+        try {
+            $pdo = $this->getConnection();
+            list ($sStatement) = explode(" ", ltrim($sQ));
+            if (in_array(strtoupper($sStatement), array('SELECT', 'SHOW'))) {
+                $oStatement = $pdo->query($sQ);
+            } else {
+                return $pdo->exec($sQ);
+            }
 
-        return $rReturn;
+            return $oStatement;
+
+        } catch (PDOException $e) {
+            throw new Exception(
+                $this->getInstance("oxSetupLang")->getText('ERROR_BAD_SQL') .
+                "( $sQ ): " .
+                $e->getMessage() .
+                "\n",
+                $e->getCode(),
+                $e
+            );
+        }
     }
 
     /**
@@ -827,25 +842,50 @@ class OxSetupDb extends oxSetupCore
      */
     public function testCreateView()
     {
-        // testing creation
-        $sQ = "create or replace view oxviewtest as select 1";
-        $rReturn = mysql_query($sQ, $this->getConnection());
-        if ($rReturn === false) {
-            throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_CREATE') . " " . mysql_error($this->getConnection()) . "\n");
+        $oPdo = $this->getConnection();
+        try {
+            // testing creation
+            $sQ      = "create or replace view oxviewtest as select 1";
+            $oPdo->exec($sQ);
+        } catch (PDOException $e) {
+            throw new Exception(
+                $this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_CREATE') .
+                " " .
+                $e->getMessage() .
+                "\n",
+                $e->getCode(),
+                $e
+            );
         }
 
-        // testing data selection
-        $sQ = "select * from oxviewtest";
-        $rReturn = mysql_query($sQ, $this->getConnection());
-        if ($rReturn === false) {
-            throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_SELECT') . " " . mysql_error($this->getConnection()) . "\n");
+        try {
+            // testing data selection
+            $sQ      = "SELECT * FROM oxviewtest";
+            $oPdo->query($sQ)->closeCursor();
+        } catch (PDOException $e) {
+            throw new Exception(
+                $this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_SELECT') .
+                " " .
+                $e->getMessage() .
+                "\n",
+                $e->getCode(),
+                $e
+            );
         }
 
-        // testing view dropping
-        $sQ = "drop view oxviewtest";
-        $rReturn = mysql_query($sQ, $this->getConnection());
-        if ($rReturn === false) {
-            throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_DROP') . " " . mysql_error($this->getConnection()) . "\n");
+        try {
+            // testing view dropping
+            $sQ      = "drop view oxviewtest";
+            $oPdo->exec($sQ);
+        } catch (PDOException $e) {
+            throw new Exception(
+                $this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_DROP') .
+                " " .
+                $e->getMessage() .
+                "\n",
+                $e->getCode(),
+                $e
+            );
         }
     }
 
@@ -885,16 +925,15 @@ class OxSetupDb extends oxSetupCore
      */
     public function getDatabaseVersion()
     {
-        $rRecords = $this->execSql("SHOW VARIABLES LIKE 'version'");
-        $aRow = mysql_fetch_row($rRecords);
 
-        return $aRow[1];
+        $oStatement = $this->execSql("SHOW VARIABLES LIKE 'version'");
+        return $oStatement->fetchColumn(1);
     }
 
     /**
      * Returns connection resource object
      *
-     * @return object
+     * @return PDO
      */
     public function getConnection()
     {
@@ -919,11 +958,21 @@ class OxSetupDb extends oxSetupCore
         $aParams = (is_array($aParams) && count($aParams)) ? $aParams : $this->getInstance("oxSetupSession")->getSessionParam('aDB');
         if ($this->_oConn === null) {
             // ok open DB
-            $this->_oConn = @mysql_connect($aParams['dbHost'], $aParams['dbUser'], $aParams['dbPwd']);
-            if (!$this->_oConn) {
+            try {
+                $dsn = sprintf('mysql:host=%s', $aParams['dbHost']);
+                $this->_oConn = new PDO(
+                    $dsn,
+                    $aParams['dbUser'],
+                    $aParams['dbPwd'],
+                    array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
+                );
+                $this->_oConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $this->_oConn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                /** @var oxSetup $oSetup */
                 $oSetup = $this->getInstance("oxSetup");
                 $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_DB_CONNECT') . " - " . mysql_error(), oxSetupDb::ERROR_DB_CONNECT);
+                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_DB_CONNECT') . " - " . $e->getMessage(), oxSetupDb::ERROR_DB_CONNECT, $e);
             }
 
             // testing version
@@ -931,8 +980,10 @@ class OxSetupDb extends oxSetupCore
             if (!$oSysReq->checkMysqlVersion($this->getDatabaseVersion())) {
                 throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS'), oxSetupDb::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS);
             }
-            if (!(@mysql_select_db($aParams['dbName'], $this->_oConn))) {
-                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . mysql_error(), oxSetupDb::ERROR_COULD_NOT_CREATE_DB);
+            try {
+                $this->execSql("USE " . $aParams['dbName']);
+            } catch (Exception $e) {
+                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), oxSetupDb::ERROR_COULD_NOT_CREATE_DB, $e);
             }
         }
 
@@ -948,11 +999,12 @@ class OxSetupDb extends oxSetupCore
      */
     public function createDb($sDbName)
     {
-        if (!$this->execSql("create database `" . $sDbName . "`")) {
-            // no success !
+        try {
+            $this->execSql("CREATE DATABASE `$sDbName`");
+        } catch (Exception $e) {
             $oSetup = $this->getInstance("oxSetup");
             $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-            throw new Exception(sprintf($this->getInstance("oxSetupLang")->getText('ERROR_COULD_NOT_CREATE_DB'), $sDbName) . " - " . mysql_error());
+            throw new Exception(sprintf($this->getInstance("oxSetupLang")->getText('ERROR_COULD_NOT_CREATE_DB'), $sDbName) . " - " . $e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -963,12 +1015,15 @@ class OxSetupDb extends oxSetupCore
      */
     public function saveShopSettings($aParams)
     {
+        /** @var oxSetupUtils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
+        /** @var oxSetupSession $oSession */
         $oSession = $this->getInstance("oxSetupSession");
 
         $oConfk = new Conf();
 
-        $sBaseOut = 'oxbaseshop';
+        $oPdo = $this->getConnection();
+
         // disabling usage of dynamic pages if shop country is international
         if ($oSession->getSessionParam('location_lang') === null) {
             $oSession->setSessionParam('use_dynamic_pages', 'false');
@@ -981,61 +1036,78 @@ class OxSetupDb extends oxSetupCore
         $sShopLang = isset($aParams["sShopLang"]) ? $aParams["sShopLang"] : $oSession->getSessionParam('sShopLang');
         $sBaseShopId = $this->getInstance("oxSetup")->getShopId();
 
-        $this->execSql("update oxcountry set oxactive = '0'");
-        $this->execSql("update oxcountry set oxactive = '1' where oxid = '$sCountryLang'");
+        $oPdo->exec("update oxcountry set oxactive = '0'");
+        $oPdo->exec("update oxcountry set oxactive = '1' where oxid = '$sCountryLang'");
 
         // if it is international eshop, setting admin user country to selected one
         if ($oSession->getSessionParam('location_lang') != "de") {
-            $this->execSql("UPDATE oxuser SET oxcountryid = '$sCountryLang' where oxid='oxdefaultadmin'");
+            $oPdo->exec("UPDATE oxuser SET oxcountryid = '$sCountryLang' where oxid='oxdefaultadmin'");
         }
 
-        $this->execSql("delete from oxconfig where oxvarname = 'blLoadDynContents'");
-        $this->execSql("delete from oxconfig where oxvarname = 'sShopCountry'");
-        $this->execSql("delete from oxconfig where oxvarname = 'blCheckForUpdates'");
+        $oPdo->exec("delete from oxconfig where oxvarname = 'blLoadDynContents'");
+        $oPdo->exec("delete from oxconfig where oxvarname = 'sShopCountry'");
+        $oPdo->exec("delete from oxconfig where oxvarname = 'blCheckForUpdates'");
         // $this->execSql( "delete from oxconfig where oxvarname = 'aLanguageParams'" );
 
-        $sID1 = $oUtils->generateUid();
-        $this->execSql(
-            "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values('$sID1', '$sBaseShopId', 'blLoadDynContents', 'bool', ENCODE( '$blUseDynPages', '" . $oConfk->sConfigKey . "'))"
+        $oInsert = $oPdo->prepare("insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
+                                 values(:oxid, :shopId, :name, :type, ENCODE( :value, '{$oConfk->sConfigKey}'))");
+        $oInsert->execute(
+            array(
+                'oxid' => $oUtils->generateUid(),
+                'shopId' => $sBaseShopId,
+                'name' => 'blLoadDynContents',
+                'type' => 'bool',
+                'value' => $blUseDynPages
+            )
         );
 
-        $sID2 = $oUtils->generateUid();
-        $this->execSql(
-            "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values('$sID2', '$sBaseShopId', 'sShopCountry', 'str', ENCODE( '$sLocationLang', '" . $oConfk->sConfigKey . "'))"
+        $oInsert->execute(
+            array(
+                'oxid' => $oUtils->generateUid(),
+                'shopId' => $sBaseShopId,
+                'name' => 'sShopCountry',
+                'type' => 'str',
+                'value' => $sLocationLang
+            )
         );
 
-        $sID3 = $oUtils->generateUid();
-        $this->execSql(
-            "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values('$sID3', '$sBaseShopId', 'blCheckForUpdates', 'bool', ENCODE( '$blCheckForUpdates', '" . $oConfk->sConfigKey . "'))"
+        $oInsert->execute(
+            array(
+                'oxid' => $oUtils->generateUid(),
+                'shopId' => $sBaseShopId,
+                'name' => 'blCheckForUpdates',
+                'type' => 'bool',
+                'value' => $blCheckForUpdates
+            )
         );
 
 
         $this->_addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession);
 
         //set only one active language
-        $aRes = $this->execSql("select oxvarname, oxvartype, DECODE( oxvarvalue, '" . $oConfk->sConfigKey . "') AS oxvarvalue from oxconfig where oxvarname='aLanguageParams'");
-        if ($aRes) {
-            if ($aRow = mysql_fetch_assoc($aRes)) {
-                if ($aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr') {
-                    $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue']);
-                }
-                $aLanguageParams = $aRow['oxvarvalue'];
+        $oStatement = $oPdo->query("select oxvarname, oxvartype, DECODE( oxvarvalue, '" . $oConfk->sConfigKey . "') AS oxvarvalue from oxconfig where oxvarname='aLanguageParams'");
+        if (false !== ($aRow = $oStatement->fetch())) {
+            if ($aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr') {
+                $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue']);
             }
-            foreach ($aLanguageParams as $sKey => $aLang) {
-                $aLanguageParams[$sKey]["active"] = "0";
-            }
-            $aLanguageParams[$sShopLang]["active"] = "1";
-
-            $sValue = serialize($aLanguageParams);
-            $sID4 = $oUtils->generateUid();
-            $this->execSql(
-                "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                     values('$sID4', '$sBaseShopId', 'aLanguageParams', 'aarr', ENCODE( '$sValue', '" . $oConfk->sConfigKey . "'))"
-            );
+            $aLanguageParams = $aRow['oxvarvalue'];
         }
+        foreach ($aLanguageParams as $sKey => $aLang) {
+            $aLanguageParams[$sKey]["active"] = "0";
+        }
+        $aLanguageParams[$sShopLang]["active"] = "1";
+
+        $sValue = serialize($aLanguageParams);
+
+        $oInsert->execute(
+            array(
+                'oxid' => $oUtils->generateUid(),
+                'shopId' => $sBaseShopId,
+                'name' => 'aLanguageParams',
+                'type' => 'aarr',
+                'value' => $sValue
+            )
+        );
     }
 
 
@@ -1045,34 +1117,29 @@ class OxSetupDb extends oxSetupCore
     public function convertConfigTableToUtf()
     {
         $oConfk = new Conf();
+        /** @var oxSetupUtils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
 
-        $sSql = "SELECT oxvarname, oxvartype, DECODE( oxvarvalue, '" . $oConfk->sConfigKey . "') AS oxvarvalue FROM oxconfig WHERE oxvartype IN ('str', 'arr', 'aarr') ";
-        $aRes = $this->execSql($sSql);
+        $pdo = $this->getConnection();
 
-        $aConverted = array();
+        $sSql = "SELECT oxid, oxvarname, oxvartype, DECODE( oxvarvalue, '{$oConfk->sConfigKey}') AS oxvarvalue FROM oxconfig WHERE oxvartype IN ('str', 'arr', 'aarr') ";
+        $oSelect = $pdo->query($sSql);
+        $oUpdate = $pdo->prepare("UPDATE oxconfig SET oxvarvalue = ENCODE( :varValue, '{$oConfk->sConfigKey}') WHERE oxid = :oxid; ");
 
-        while ($aRow = mysql_fetch_assoc($aRes)) {
+        while (false !== ($aRow = $oSelect->fetch())) {
 
             if ($aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr') {
                 $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue']);
             }
 
             $aRow['oxvarvalue'] = $oUtils->convertToUtf8($aRow['oxvarvalue']);
-            $aConverted[] = $aRow;
-        }
 
-        $oConn = $this->getConnection();
-        foreach ($aConverted as $sKey => $sValue) {
-
-            if (is_array($sValue['oxvarvalue'])) {
-                $sVarValue = mysql_real_escape_string(serialize($sValue['oxvarvalue']), $oConn);
-            } else {
-                $sVarValue = is_string($sValue['oxvarvalue']) ? mysql_real_escape_string($sValue['oxvarvalue'], $oConn) : $sValue['oxvarvalue'];
+            $sVarValue = $aRow['oxvarvalue'];
+            if (is_array($aRow['oxvarvalue'])) {
+                $sVarValue = serialize($aRow['oxvarvalue']);
             }
 
-            $sSql = "UPDATE oxconfig SET oxvarvalue = ENCODE( '" . $sVarValue . "', '" . $oConfk->sConfigKey . "') WHERE oxvarname = '" . $sValue['oxvarname'] . "'; ";
-            $this->execSql($sSql);
+            $oUpdate->execute(array('varValue' => $sVarValue, 'oxid' => $aRow['oxid']));
         }
     }
 
@@ -2077,7 +2144,7 @@ class oxSetupController extends oxSetupCore
         } catch (Exception $oExcp) {
             if ($oExcp->getCode() === oxSetupDb::ERROR_DB_CONNECT) {
                 $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-                $oView->setMessage($oLang->getText('ERROR_DB_CONNECT') . " - " . mysql_error());
+                $oView->setMessage($oLang->getText('ERROR_DB_CONNECT') . " - " . $oExcp->getMessage());
 
                 return "default.php";
             } elseif ($oExcp->getCode() === oxSetupDb::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS) {

@@ -737,7 +737,7 @@ class oxSysRequirements
 
         // client version must be >=5
         if ($iModStat) {
-            $sClientVersion = mysql_get_client_info();
+            $sClientVersion = $this->getMySQLClientVersion();
             if (version_compare($sClientVersion, '5', '<')) {
                 $iModStat = 1;
                 if (version_compare($sClientVersion, '4', '<')) {
@@ -761,6 +761,23 @@ class oxSysRequirements
         }
 
         return $iModStat;
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    protected function getMySQLClientVersion()
+    {
+        if (extension_loaded("mysql")) {
+            return mysql_get_client_info();
+        }
+
+        if (extension_loaded("mysqli")) {
+            return mysqli_get_client_info();
+        }
+
+        throw new Exception('PHP extension "mysqli" is required!');
     }
 
     /**

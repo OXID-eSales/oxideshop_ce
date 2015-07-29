@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testRenderConfirmTerms()
     {
-        modConfig::getInstance()->setConfigParam("blPsLoginEnabled", true);
+        $this->getConfig()->setConfigParam("blPsLoginEnabled", true);
 
         $oUserView = $this->getMock('account', array('confirmTerms', 'getUser'));
         $oUserView->expects($this->any())->method('confirmTerms')->will($this->returnValue(true));
@@ -66,7 +66,7 @@ class Unit_Views_accountTest extends OxidTestCase
     public function testConfirmTerms()
     {
         $oView = oxNew('account');
-        modConfig::setRequestParameter('term', '2');
+        $this->setRequestParameter('term', '2');
         $this->assertEquals('2', $oView->confirmTerms());
     }
 
@@ -77,7 +77,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testConfirmTermsForPrivateSales()
     {
-        modConfig::setRequestParameter('term', false);
+        $this->setRequestParameter('term', false);
 
         $oView = $this->getMock("account", array("isEnabledPrivateSales", "getUser"));
         $oUser = $this->getMock("oxuser", array("isTermsAccepted"));
@@ -96,7 +96,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testGetListType()
     {
-        modConfig::setRequestParameter('listtype', 'testListType');
+        $this->setRequestParameter('listtype', 'testListType');
 
         $oView = $this->getMock("account", array("getArticleId"));
         $oView->expects($this->once())->method("getArticleId")->will($this->returnValue(false));
@@ -114,7 +114,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testGetSearchParam()
     {
-        modConfig::setRequestParameter('searchparam', 'testparam');
+        $this->setRequestParameter('searchparam', 'testparam');
 
         $oView = $this->getMock("account", array("getArticleId"));
         $oView->expects($this->exactly(2))->method("getArticleId")->will($this->returnValue(false));
@@ -134,12 +134,12 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testGetArticleId()
     {
-        modConfig::setRequestParameter('aid', null);
+        $this->setRequestParameter('aid', null);
 
         $oView = new account();
         $this->assertNull($oView->getArticleId());
 
-        modConfig::setRequestParameter('aid', 'testaid');
+        $this->setRequestParameter('aid', 'testaid');
 
         $oView = new account();
         $this->assertEquals('testaid', $oView->getArticleId());
@@ -171,7 +171,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testRedirectAfterLoginSouldNotRedirect()
     {
-        modConfig::setRequestParameter('sourcecl', null);
+        $this->setRequestParameter('sourcecl', null);
 
         $oCmp = $this->getMock("oxcmp_user", array("getLoginStatus"));
         $oCmp->expects($this->never())->method("getLoginStatus")->will($this->returnValue(1));
@@ -190,8 +190,8 @@ class Unit_Views_accountTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'redirect', '{ return$aA[0];}');
 
-        modConfig::setRequestParameter('sourcecl', 'testsource');
-        modConfig::setRequestParameter('anid', 'testanid');
+        $this->setRequestParameter('sourcecl', 'testsource');
+        $this->setRequestParameter('anid', 'testanid');
 
         $oCmp = $this->getMock("oxcmp_user", array("getLoginStatus"));
         $oCmp->expects($this->once())->method("getLoginStatus")->will($this->returnValue(1));
@@ -206,7 +206,7 @@ class Unit_Views_accountTest extends OxidTestCase
                 $sParams .= '&' . rawurlencode($sName) . "=" . rawurlencode($sValue);
             }
         }
-        $sUrl = oxRegistry::getConfig()->getShopUrl() . 'index.php?cl=testsource' . $sParams;
+        $sUrl = $this->getConfig()->getShopUrl() . 'index.php?cl=testsource' . $sParams;
         $this->assertEquals($sUrl, $oView->redirectAfterLogin());
     }
 
@@ -217,8 +217,8 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testGetNavigationParams()
     {
-        modConfig::setRequestParameter('sourcecl', 'testsource');
-        modConfig::setRequestParameter('anid', 'testanid');
+        $this->setRequestParameter('sourcecl', 'testsource');
+        $this->setRequestParameter('anid', 'testanid');
 
         $oView = new Account();
         $aNavParams = $oView->getNavigationParams();
@@ -234,7 +234,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter('aid', 'testanid');
+        $this->setRequestParameter('aid', 'testanid');
 
         $oUser = new oxuser();
         $oUser->oxuser__oxpassword = new oxField(1);
@@ -258,8 +258,8 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testRenderNoUser()
     {
-        modConfig::setRequestParameter('aid', 'testanid');
-        modConfig::getInstance()->setConfigParam("blPsLoginEnabled", true);
+        $this->setRequestParameter('aid', 'testanid');
+        $this->getConfig()->setConfigParam("blPsLoginEnabled", true);
 
         $oUser = new oxuser();
         $oUser->oxuser__oxpassword = new oxField(1);
@@ -326,7 +326,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testGetCompareItemsCnt()
     {
-        oxRegistry::getSession()->setVariable('aFiltcompproducts', array('1', '2'));
+        $this->getSession()->setVariable('aFiltcompproducts', array('1', '2'));
 
         $oAcc = new account();
         $this->assertEquals(2, $oAcc->getCompareItemsCnt());

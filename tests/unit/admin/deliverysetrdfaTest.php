@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -46,9 +46,9 @@ class Unit_Admin_DeliverySetRDFaTest extends OxidTestCase
     public function testSave_deleteOldRecords()
     {
         $sTestID = '_test_recid';
-        modConfig::setRequestParameter('oxid', $sTestID);
+        $this->setRequestParameter('oxid', $sTestID);
 
-        $oMapping = oxNew('oxbase');
+        $oMapping = oxNew('oxBase');
         $oMapping->init('oxobject2delivery');
         $oMapping->oxobject2delivery__oxdeliveryid = new oxField($sTestID);
         $oMapping->oxobject2delivery__oxobjectid = new oxField('test_del_objID');
@@ -82,9 +82,9 @@ class Unit_Admin_DeliverySetRDFaTest extends OxidTestCase
     {
         $sTestID = '_test_recid';
         $aObjIDs = array('_test_obj1', '_test_obj2');
-        modConfig::setRequestParameter('oxid', $sTestID);
-        modConfig::setRequestParameter('ardfadeliveries', $aObjIDs);
-        modConfig::setRequestParameter(
+        $this->setRequestParameter('oxid', $sTestID);
+        $this->setRequestParameter('ardfadeliveries', $aObjIDs);
+        $this->setRequestParameter(
             'editval',
             array(
                  'oxobject2delivery__oxdeliveryid' => $sTestID,
@@ -149,7 +149,7 @@ class Unit_Admin_DeliverySetRDFaTest extends OxidTestCase
     {
         $sTestID = '_test_recid';
         $aObjIDs = array('_test_obj1', '_test_obj2');
-        modConfig::setRequestParameter('oxid', $sTestID);
+        $this->setRequestParameter('oxid', $sTestID);
         $oView = oxNew('DeliverySet_RDFa');
 
         $oDB = oxDb::getDb();
@@ -157,7 +157,7 @@ class Unit_Admin_DeliverySetRDFaTest extends OxidTestCase
         $this->assertSame(array(), $oView->getAssignedRDFaDeliveries(), 'Should be empty array');
 
         foreach ($aObjIDs as $sObjID) {
-            $oMapping = oxNew('oxbase');
+            $oMapping = oxNew('oxBase');
             $oMapping->init('oxobject2delivery');
             $oMapping->oxobject2delivery__oxdeliveryid = new oxField($sTestID);
             $oMapping->oxobject2delivery__oxobjectid = new oxField($sObjID);

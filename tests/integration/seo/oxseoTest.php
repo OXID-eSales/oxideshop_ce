@@ -136,7 +136,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             'oxseourl' => 'this/there/'
         );
 
-        $this->getConfig()->setParameter('aSeoData', $aSeoData);
+        $this->setRequestParameter('aSeoData', $aSeoData);
         $oCategorySeo = new Category_Seo();
         $oCategorySeo->setEditObjectId('_test5');
         $oCategorySeo->save();
@@ -145,7 +145,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             'oxseourl' => 'other/there/'
         );
 
-        $this->getConfig()->setParameter('aSeoData', $aSeoData);
+        $this->setRequestParameter('aSeoData', $aSeoData);
         $oCategorySeo = new Category_Seo();
         $oCategorySeo->setEditObjectId('_test6');
         $oCategorySeo->save();
@@ -158,7 +158,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             'oxfixed' => 1
         );
 
-        $this->getConfig()->setParameter('aSeoData', $aSeoData);
+        $this->setRequestParameter('aSeoData', $aSeoData);
         $oArticleSeo = new Article_Seo();
         $oArticleSeo->setEditObjectId('_testid');
         $oArticleSeo->save();
@@ -206,7 +206,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             'oxseourl' => 'this/there/'
         );
 
-        $this->getConfig()->setParameter('aSeoData', $aSeoData);
+        $this->setRequestParameter('aSeoData', $aSeoData);
         $oCategorySeo = new Category_Seo();
         $oCategorySeo->setEditObjectId('_test7');
         $oCategorySeo->save();
@@ -215,7 +215,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             'oxseourl' => 'other/there/'
         );
 
-        $this->getConfig()->setParameter('aSeoData', $aSeoData);
+        $this->setRequestParameter('aSeoData', $aSeoData);
         $oCategorySeo = new Category_Seo();
         $oCategorySeo->setEditObjectId('_test8');
         $oCategorySeo->save();
@@ -227,7 +227,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             'oxparams' => $sParams
         );
 
-        $this->getConfig()->setParameter('aSeoData', $aSeoData);
+        $this->setRequestParameter('aSeoData', $aSeoData);
         $oArticleSeo = new Article_Seo();
         $oArticleSeo->setEditObjectId('_testid');
         $oArticleSeo->save();
@@ -242,7 +242,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             'oxseourl' => 'changed/here/'
         );
 
-        $this->getConfig()->setParameter('aSeoData', $aSeoData);
+        $this->setRequestParameter('aSeoData', $aSeoData);
         $oCategorySeo = new Category_Seo();
         $oCategorySeo->setEditObjectId('_test7');
         $oCategorySeo->save();
@@ -280,7 +280,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             'oxseourl' => 'this/there/'
         );
 
-        $this->getConfig()->setParameter('aSeoData', $aSeoData);
+        $this->setRequestParameter('aSeoData', $aSeoData);
         $oCategorySeo = new Category_Seo();
         $oCategorySeo->setEditObjectId('_test9');
         $oCategorySeo->save();
@@ -289,7 +289,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             'oxseourl' => 'other/there/'
         );
 
-        $this->getConfig()->setParameter('aSeoData', $aSeoData);
+        $this->setRequestParameter('aSeoData', $aSeoData);
         $oCategorySeo = new Category_Seo();
         $oCategorySeo->setEditObjectId('_test10');
         $oCategorySeo->save();
@@ -302,7 +302,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             'oxfixed' => 1
         );
 
-        $this->getConfig()->setParameter('aSeoData', $aSeoData);
+        $this->setRequestParameter('aSeoData', $aSeoData);
         $oArticleSeo = new Article_Seo();
         $oArticleSeo->setEditObjectId('_testid');
         $oArticleSeo->save();
@@ -317,7 +317,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
             'oxseourl' => 'changed/here/'
         );
 
-        $this->getConfig()->setParameter('aSeoData', $aSeoData);
+        $this->setRequestParameter('aSeoData', $aSeoData);
         $oCategorySeo = new Category_Seo();
         $oCategorySeo->setEditObjectId('_test9');
         $oCategorySeo->save();
@@ -427,7 +427,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         foreach ($aArticles as $sArticle) {
             foreach ($aCategories as $sCategory => $iTime) {
                 /** @var oxBase $oNew */
-                $oNew = oxNew('oxbase');
+                $oNew = oxNew('oxBase');
                 $oNew->init('oxobject2category');
                 $oNew->oxobject2category__oxid       = new oxField($oNew->setId($myUtilsObject->generateUID()));
                 $oNew->oxobject2category__oxobjectid = new oxField($sArticle);

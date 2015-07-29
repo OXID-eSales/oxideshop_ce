@@ -204,7 +204,8 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
 
         oxAddClassModule('Unit_oxerpgenimportTest_oxUtilsServer', 'oxUtilsServer');
         //logging in
-        $oUser = $this->getMock('oxuser', array('isAdmin'));
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
+        $oUser = $this->getMock('oxUser', array('isAdmin'));
         $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
         $oUser->loadAdminUser();
@@ -236,12 +237,14 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testInitResetsImportCounter()
     {
+        /** @var oxErpGenImport|PHPUnit_Framework_MockObject_MockObject $oImport */
         $oImport = $this->getMock('oxErpGenImport', array('_resetIdx'));
         $oImport->expects($this->once())->method('_resetIdx');
 
         oxAddClassModule('Unit_oxerpgenimportTest_oxUtilsServer', 'oxUtilsServer');
         //logging in
-        $oUser = $this->getMock('oxuser', array('isAdmin'));
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
+        $oUser = $this->getMock('oxUser', array('isAdmin'));
         $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
         $oUser->loadAdminUser();
@@ -308,6 +311,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testDoImport()
     {
+        /** @var oxErpGenImport|PHPUnit_Framework_MockObject_MockObject $oImport */
         $oImport = $this->getMock('oxErpGenImport', array('init', '_checkAccess'));
         $oImport->expects($this->once())->method('init')->will($this->returnValue(true));
         $oImport->expects($this->any())->method('_checkAccess')->will($this->returnValue(true));
@@ -316,7 +320,8 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
         $oImport->setImportTypePrefix('U');
         $oImport->setCsvFileFieldsOrder(array("OXID", "OXACTIVE", "OXSHOPID", "OXUSERNAME", "OXFNAME", "OXLNAME"));
 
-        $oImport->doImport(getTestsBasePath().'misc/csvWithHeader.csv');
+        $csvWithHeaders = $this->createCsvFile(true);
+        $oImport->doImport($csvWithHeaders);
 
         $aTestData1 = array(array("_testId1", "1", "oxbaseshop", "userName1", "FirstName1", "LastName1"));
         $aTestData2 = array(array("_testId2", "1", "oxbaseshop", "userName2", "FirstName2", "LastName2"));
@@ -333,6 +338,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testDoImportSkipsHeaderLine()
     {
+        /** @var oxErpGenImport|PHPUnit_Framework_MockObject_MockObject $oImport */
         $oImport = $this->getMock('oxErpGenImport', array('init', '_checkAccess'));
         $oImport->expects($this->once())->method('init')->will($this->returnValue(true));
         $oImport->expects($this->any())->method('_checkAccess')->will($this->returnValue(true));
@@ -342,10 +348,10 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
         $oImport->setCsvFileFieldsOrder(array("OXID", "OXACTIVE", "OXSHOPID", "OXUSERNAME", "OXFNAME", "OXLNAME"));
 
         //checking if header line was not saved to DB
-        $oImport->doImport(getTestsBasePath().'misc/csvWithHeader.csv');
+        $csvWithHeaders = $this->createCsvFile(true);
+        $oImport->doImport($csvWithHeaders);
         $this->assertEquals(2, count($oImport->getStatistics()));
         $this->assertFalse(oxDb::getDb()->getOne("select OXID from oxuser where oxid='OXID'"));
-
     }
 
     /*
@@ -353,6 +359,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testDoImportWithCsvWithoutHeaderLine()
     {
+        /** @var oxErpGenImport|PHPUnit_Framework_MockObject_MockObject $oImport */
         $oImport = $this->getMock('oxErpGenImport', array('init', '_checkAccess'));
         $oImport->expects($this->once())->method('init')->will($this->returnValue(true));
         $oImport->expects($this->any())->method('_checkAccess')->will($this->returnValue(true));
@@ -362,7 +369,8 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
         $oImport->setCsvFileFieldsOrder(array("OXID", "OXACTIVE", "OXSHOPID", "OXUSERNAME", "OXFNAME", "OXLNAME"));
 
         //checking if first line from csv file was saved to DB
-        $oImport->doImport(getTestsBasePath().'misc/csvWithoutHeader.csv');
+        $csvWithoutHeaders = $this->createCsvFile(false);
+        $oImport->doImport($csvWithoutHeaders);
         $this->assertEquals('_testId1', oxDb::getDb()->getOne("select oxid from oxuser where oxid='_testId1'"));
     }
 
@@ -371,14 +379,14 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testGetCsvFieldsTerminator()
     {
-        modConfig::getInstance()->setConfigParam('sGiCsvFieldTerminator', "");
-        modConfig::getInstance()->setConfigParam('sCSVSign', ",");
+        $this->getConfig()->setConfigParam('sGiCsvFieldTerminator', "");
+        $this->getConfig()->setConfigParam('sCSVSign', ",");
         $oImport = $this->getProxyClass("oxErpGenImport");
 
         $this->assertEquals(",", $oImport->UNITgetCsvFieldsTerminator());
 
-        modConfig::getInstance()->setConfigParam('sGiCsvFieldTerminator', ";");
-        modConfig::getInstance()->setConfigParam('sCSVSign', ",");
+        $this->getConfig()->setConfigParam('sGiCsvFieldTerminator', ";");
+        $this->getConfig()->setConfigParam('sCSVSign', ",");
         $oImport = $this->getProxyClass("oxErpGenImport");
 
         $this->assertEquals(";", $oImport->UNITgetCsvFieldsTerminator());
@@ -390,7 +398,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testGetCsvFieldsTerminatorDefault()
     {
-        modConfig::getInstance()->setConfigParam('sCSVSign', null);
+        $this->getConfig()->setConfigParam('sCSVSign', null);
         $oImport = $this->getProxyClass("oxErpGenImport");
 
         $this->assertEquals(';', $oImport->UNITgetCsvFieldsTerminator());
@@ -401,7 +409,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testGetCsvFieldsEncolser()
     {
-        modConfig::getInstance()->setConfigParam('sGiCsvFieldEncloser', "'");
+        $this->getConfig()->setConfigParam('sGiCsvFieldEncloser', "'");
         $oImport = $this->getProxyClass("oxErpGenImport");
 
         $this->assertEquals("'", $oImport->UNITgetCsvFieldsEncolser());
@@ -412,9 +420,27 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testGetCsvFieldsEncolserDefault()
     {
-        modConfig::getInstance()->setConfigParam('sGiCsvFieldEncloser', null);
+        $this->getConfig()->setConfigParam('sGiCsvFieldEncloser', null);
         $oImport = $this->getProxyClass("oxErpGenImport");
 
         $this->assertEquals('"', $oImport->UNITgetCsvFieldsEncolser());
+    }
+
+    /**
+     * Creates Csv file with header and returns path to it.
+     *
+     * @param bool $addHeaders
+     *
+     * @return string Csv file path.
+     */
+    private function createCsvFile($addHeaders = true)
+    {
+        $content = '"_testId1";"1";"1";"userName1";"FirstName1";"LastName1"'."\n";
+        $content .= '"_testId2";"1";"1";"userName2";"FirstName2";"LastName2"'."\n";
+        if ($addHeaders) {
+            $content = '"OXID";"OXACTIVE";"OXSHOPID";"OXUSERNAME";"OXFNAME";"OXLNAME"'."\n" . $content;
+        }
+
+        return $this->createFile('csvWithHeader.csv', $content);
     }
 }

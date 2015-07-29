@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -269,8 +269,8 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $aLangParams['zb']['baseId'] = 3;
         $aLangParams['zb']['abbr'] = 'zb';
 
-        modConfig::getInstance()->setConfigParam('aLanguageParams', $aLangParams);
-        modConfig::getInstance()->setConfigParam('aLanguages', $aLang);
+        $this->getConfig()->setConfigParam('aLanguageParams', $aLangParams);
+        $this->getConfig()->setConfigParam('aLanguages', $aLang);
 
         $oObj = new _oxI18n();
         $oObj->init("oxwrapping");
@@ -283,7 +283,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
     public function testGetAvailableInLangsWithNotLoadedObject()
     {
         $aLang = array(0 => "Deutsch", 1 => "English", 2 => "Lithuanian", 3 => "ZuluBumBum");
-        modConfig::getInstance()->setConfigParam('aLanguages', $aLang);
+        $this->getConfig()->setConfigParam('aLanguages', $aLang);
 
         $oObj = new _oxI18n();
         $oObj->init("oxwrapping");
@@ -309,9 +309,9 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $aLangParams['zb']['baseId'] = 3;
         $aLangParams['zb']['abbr'] = 'zb';
 
-        modConfig::getInstance()->setConfigParam('aLanguageParams', $aLangParams);
-        modConfig::getInstance()->setConfigParam('aLanguages', $aLang);
-        modConfig::getInstance()->setConfigParam('aLanguages', $aLang);
+        $this->getConfig()->setConfigParam('aLanguageParams', $aLangParams);
+        $this->getConfig()->setConfigParam('aLanguages', $aLang);
+        $this->getConfig()->setConfigParam('aLanguages', $aLang);
 
         $oObj = new _oxI18n();
         $oObj->init("oxvouchers");
@@ -636,11 +636,10 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oObj->setId("test_update");
         $oObj->oxstates__oxtitle = new oxField('test_x');
 
-        $oDb = $this->getMock('stdclass', array('select', 'execute', 'quote'));
-        $oDb->expects($this->any())->method('select')->will($this->returnValue(false));
-        $oDb->expects($this->any())->method('execute')->will($this->evalFunction('{Unit_Core_oxi18ntest::$aLoggedSqls[] = $args[0];return true;}'));
-        $oDb->expects($this->any())->method('quote')->will($this->evalFunction('{return "\'".mysql_real_escape_string($args[0])."\'";}'));
-        modDb::getInstance()->modAttach($oDb);
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->any())->method('select')->will($this->returnValue(false));
+        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{Unit_Core_oxi18ntest::$aLoggedSqls[] = $args[0];return true;}'));
+        oxDb::setDbObject($dbMock);
 
         $oObj->setLanguage(0);
         Unit_Core_oxi18ntest::$aLoggedSqls = array();
@@ -686,11 +685,10 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oObj->oxstates__oxtitle = new oxField('test_x');
         $oObj->oxstates__oxtitle_90 = new oxField('test_y');
 
-        $oDb = $this->getMock('stdclass', array('select', 'execute', 'quote'));
-        $oDb->expects($this->any())->method('select')->will($this->returnValue(false));
-        $oDb->expects($this->any())->method('execute')->will($this->evalFunction('{Unit_Core_oxi18ntest::$aLoggedSqls[] = $args[0];return true;}'));
-        $oDb->expects($this->any())->method('quote')->will($this->evalFunction('{return "\'".mysql_real_escape_string($args[0])."\'";}'));
-        modDb::getInstance()->modAttach($oDb);
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->any())->method('select')->will($this->returnValue(false));
+        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{Unit_Core_oxi18ntest::$aLoggedSqls[] = $args[0];return true;}'));
+        oxDb::setDbObject($dbMock);
 
         $oObj->setLanguage(0);
         Unit_Core_oxi18ntest::$aLoggedSqls = array();
@@ -751,21 +749,19 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oObj->setId("test_insert");
         $oObj->oxstates__oxtitle = new oxField('test_x');
 
-        $oDb = $this->getMock('stdclass', array('select', 'execute', 'quote', 'getOne', 'Insert_ID'));
-        $oDb->expects($this->any())->method('select')->will($this->returnValue(false));
-        $oDb->expects($this->any())->method('execute')->will($this->evalFunction('{Unit_Core_oxi18ntest::$aLoggedSqls[] = $args[0];return true;}'));
-        $oDb->expects($this->any())->method('quote')->will($this->evalFunction('{return "\'".mysql_real_escape_string($args[0])."\'";}'));
-        $oDb->expects($this->any())->method('getOne');
 
-        modDb::getInstance()->modAttach($oDb);
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->any())->method('select')->will($this->returnValue(false));
+        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{Unit_Core_oxi18ntest::$aLoggedSqls[] = $args[0];return true;}'));
+        oxDb::setDbObject($dbMock);
 
         $oObj->setLanguage(0);
         Unit_Core_oxi18ntest::$aLoggedSqls = array();
         $oObj->UNITinsert();
         $this->assertEquals(
             array(
-                 "Insert into oxstates set oxid = 'test_insert',oxcountryid = '',oxtitle = 'test_x',oxisoalpha2 = ''",
-                 "insert into oxstates_set11 set oxid = 'test_insert'",
+                "Insert into oxstates set oxid = 'test_insert',oxcountryid = '',oxtitle = 'test_x',oxisoalpha2 = ''",
+                "insert into oxstates_set11 set oxid = 'test_insert'",
             ),
             array_map('trim', Unit_Core_oxi18ntest::$aLoggedSqls)
         );
@@ -775,8 +771,8 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oObj->UNITinsert();
         $this->assertEquals(
             array(
-                 "Insert into oxstates set oxid = 'test_insert',oxcountryid = '',oxisoalpha2 = ''",
-                 "insert into oxstates_set11 set oxid = 'test_insert',oxtitle_90 = 'test_x'",
+                "Insert into oxstates set oxid = 'test_insert',oxcountryid = '',oxisoalpha2 = ''",
+                "insert into oxstates_set11 set oxid = 'test_insert',oxtitle_90 = 'test_x'",
             ),
             array_map('trim', Unit_Core_oxi18ntest::$aLoggedSqls)
         );
@@ -986,7 +982,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $sId = "_testRecordForTest";
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
-        modConfig::getInstance()->setConfigParam("iLangPerTable", 4);
+        $this->getConfig()->setConfigParam("iLangPerTable", 4);
         oxTestModules::addFunction("oxLang", "getLanguageIds", "{return array('0' => 'de', '1' => 'de', '2' => 'lt', '3' => 'ru', '4' => 'pl', '5' => 'cz');}");
 
         foreach ($this->_aLangTables as $sObjectType => $sTableName) {

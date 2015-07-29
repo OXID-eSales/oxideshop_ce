@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -130,7 +130,7 @@ class attribute_category_ajax extends ajaxListComponent
         if ($oAttribute->load($soxId) && is_array($aAddCategory)) {
             $oDb = oxDb::getDb();
             foreach ($aAddCategory as $sAdd) {
-                $oNewGroup = oxNew("oxbase");
+                $oNewGroup = oxNew("oxBase");
                 $oNewGroup->init("oxcategory2attribute");
                 $sOxSortField = 'oxcategory2attribute__oxsort';
                 $sObjectIdField = 'oxcategory2attribute__oxobjectid';

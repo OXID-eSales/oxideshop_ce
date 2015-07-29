@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -51,8 +51,8 @@ class Unit_Admin_NewsletterSendTest extends OxidTestCase
         oxTestModules::addFunction('oxNewsLetter', 'send', '{ return true; }');
         oxTestModules::addFunction('oxNewsLetter', 'prepare', '{ return true; }');
 
-        modConfig::setRequestParameter("id", "testId");
-        modConfig::getInstance()->setConfigParam('iCntofMails', 3);
+        $this->setRequestParameter("id", "testId");
+        $this->getConfig()->setConfigParam('iCntofMails', 3);
 
         $oNewsSubscribed = new oxbase();
         $oNewsSubscribed->init("oxnewssubscribed");
@@ -102,8 +102,8 @@ class Unit_Admin_NewsletterSendTest extends OxidTestCase
         oxTestModules::addFunction('oxNewsLetter', 'send', '{ return false; }');
         oxTestModules::addFunction('oxNewsLetter', 'prepare', '{ return true; }');
 
-        modConfig::setRequestParameter("id", "testId");
-        modConfig::getInstance()->setConfigParam('iCntofMails', 3);
+        $this->setRequestParameter("id", "testId");
+        $this->getConfig()->setConfigParam('iCntofMails', 3);
 
         // test data
         $oNewsSubscribed = new oxbase();
@@ -131,8 +131,8 @@ class Unit_Admin_NewsletterSendTest extends OxidTestCase
         $this->assertEquals(2, $aViewData['iStart']);
         $this->assertEquals(2, $aViewData['iSend']);
 
-        modConfig::setRequestParameter("iStart", $aViewData['iStart']);
-        modConfig::setRequestParameter("iSend", $aViewData['iSend']);
+        $this->setRequestParameter("iStart", $aViewData['iStart']);
+        $this->setRequestParameter("iSend", $aViewData['iSend']);
 
         $this->assertEquals('newsletter_done.tpl', $oView->render());
 

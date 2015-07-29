@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -181,7 +181,7 @@ class oxBasketReservation extends oxSuperCfg
         $oReserved = $this->getReservations();
         foreach ($aBasketDiff as $sId => $dAmount) {
             if ($dAmount != 0) {
-                $oArticle = oxNew('oxarticle');
+                $oArticle = oxNew('oxArticle');
                 if ($oArticle->load($sId)) {
                     $oArticle->reduceStock(-$dAmount, $blAllowNegativeStock);
                     $oReserved->addItemToBasket($sId, -$dAmount);
@@ -192,13 +192,15 @@ class oxBasketReservation extends oxSuperCfg
     }
 
     /**
-     * reserve given basket items
+     * reserve given basket items, only when not in admin mode
      *
      * @param oxBasket $oBasket basket object
      */
     public function reserveBasket(oxBasket $oBasket)
     {
-        $this->_reserveArticles($this->_basketDifference($oBasket));
+        if (!$this->isAdmin()) {
+            $this->_reserveArticles($this->_basketDifference($oBasket));
+        }
     }
 
     /**
@@ -217,7 +219,7 @@ class oxBasketReservation extends oxSuperCfg
             $dAmount = $dReserved;
         }
 
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $oArticle->load($sArticleId);
 
         $this->getReservations()->addItemToBasket($sArticleId, -$dAmount);
@@ -236,7 +238,7 @@ class oxBasketReservation extends oxSuperCfg
     {
         $dReserved = $this->getReservedAmount($sArticleId);
         if ($dReserved) {
-            $oArticle = oxNew('oxarticle');
+            $oArticle = oxNew('oxArticle');
             if ($oArticle->load($sArticleId)) {
                 $oArticle->reduceStock(-$dReserved, true);
                 $this->getReservations()->addItemToBasket($sArticleId, 0, null, true);
@@ -283,7 +285,7 @@ class oxBasketReservation extends oxSuperCfg
         }
         $oRs = $oDb->select("select oxartid, oxamount from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")", false, false);
         while (!$oRs->EOF) {
-            $oArticle = oxNew('oxarticle');
+            $oArticle = oxNew('oxArticle');
             if ($oArticle->load($oRs->fields['oxartid'])) {
                 $oArticle->reduceStock(-$oRs->fields['oxamount'], true);
             }

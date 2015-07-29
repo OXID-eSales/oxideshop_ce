@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -34,9 +34,9 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
-        modConfig::getInstance()->setConfigParam('blPerfNoBasketSaving', true);
+        $this->getConfig()->setConfigParam('blPerfNoBasketSaving', true);
 
         // adding test order
         $oOrder = new oxbase();
@@ -88,12 +88,12 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
      */
     public function testGetEditObject()
     {
-        modConfig::setRequestParameter("oxid", null);
+        $this->setRequestParameter("oxid", null);
 
         $oView = new Order_Downloads();
         $this->assertNull($oView->getEditObject());
 
-        modConfig::setRequestParameter("oxid", "_testOrderId1");
+        $this->setRequestParameter("oxid", "_testOrderId1");
 
         $oView = new Order_Downloads();
         $oOrderFiles = $oView->getEditObject();
@@ -107,7 +107,7 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
      */
     public function testGetProductList()
     {
-        modConfig::setRequestParameter("oxorderfileid", "_testOrderFile");
+        $this->setRequestParameter("oxorderfileid", "_testOrderFile");
         oxDb::getDB()->execute(
             'insert into oxorderfiles set oxid="_testOrderFile", oxfileid="fileId", oxmaxdownloadcount="10", oxlinkexpirationtime="24",
                                     oxdownloadexpirationtime="12", oxvaliduntil="2011-10-20 12:12:00", oxdownloadcount="2", oxfirstdownload="2011-10-10", oxlastdownload="2011-10-20"'

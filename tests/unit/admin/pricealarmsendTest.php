@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -48,8 +48,8 @@ class Unit_Admin_PriceAlarmSendTest extends OxidTestCase
     {
         // testing..
         $sNode = "pricealarm_list";
-        modConfig::setRequestParameter("menu", $sNode);
-        modConfig::setRequestParameter('actedit', 1);
+        $this->setRequestParameter("menu", $sNode);
+        $this->setRequestParameter('actedit', 1);
 
         $oNavigation = $this->getMock("oxnavigationtree", array("getTabs", "getActiveTab"));
         $oNavigation->expects($this->any())->method('getActiveTab')->will($this->returnValue("testEdit"));

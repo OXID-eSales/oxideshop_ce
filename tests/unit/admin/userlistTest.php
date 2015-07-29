@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -44,7 +44,7 @@ class Unit_Admin_UserListTest extends OxidTestCase
         $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
         $oView->expects($this->any())->method('getItemList')->will($this->returnValue(array($oUser1, $oUser2)));
         $oView->expects($this->any())->method('_allowAdminEdit')->will($this->returnValue(false));
-        $oView->init();
+        $oView->render();
 
         $this->assertTrue(isset($oUser1->blacklist));
         $this->assertEquals("1", $oUser1->blacklist);
@@ -66,7 +66,7 @@ class Unit_Admin_UserListTest extends OxidTestCase
         oxTestModules::addFunction('oxuser', 'isDerived', '{ return false; }');
         oxTestModules::addFunction('oxuser', 'delete', '{ throw new Exception( "deleteEntry" ); }');
 
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         try {
@@ -75,6 +75,39 @@ class Unit_Admin_UserListTest extends OxidTestCase
             $oView->deleteEntry();
         } catch (Exception $oExcp) {
             $this->assertEquals("deleteEntry", $oExcp->getMessage(), "Error in User_List::deleteEntry()");
+
+            return;
+        }
+        $this->fail("Error in User_List::deleteEntry()");
+    }
+
+    /**
+     * User_List::DeleteEntry() should clean up static cache list before when deleting some value
+     *
+     * @return null
+     */
+    public function testDeleteEntryAfterGettingItems()
+    {
+        oxTestModules::addFunction('oxuser', 'isDerived', '{ return false; }');
+        oxTestModules::addFunction('oxuser', 'delete', '{ throw new Exception( "deleteEntry" ); }');
+
+        $this->setRequestParameter("oxid", "testId");
+
+        // testing..
+        try {
+            $oView = $this->getMock("User_List", array("_allowAdminEdit", "buildWhere"));
+            $oView->expects($this->any())->method('_allowAdminEdit')->will($this->returnValue(true));
+            $oView->getItemList();
+            $oView->deleteEntry();
+
+        } catch (Exception $oExcp) {
+            $this->assertEquals("deleteEntry", $oExcp->getMessage(), "Error in User_List::deleteEntry()");
+            try {
+                $oView->expects($this->any())->method('buildWhere')->will($this->throwException(new Exception("list was empty")));
+                $oView->getItemList();
+            } catch (Exception $oNewExcp) {
+                $this->assertEquals("list was empty", $oNewExcp->getMessage(), "Error in User_List::deleteEntry()");
+            }
 
             return;
         }

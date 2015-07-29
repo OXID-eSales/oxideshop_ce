@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -71,7 +71,7 @@ class payment_rdfa extends oxAdminDetails
 
         // Save new mappings
         foreach ($aRDFaPayments as $sPayment) {
-            $oMapping = oxNew("oxbase");
+            $oMapping = oxNew("oxBase");
             $oMapping->init("oxobject2payment");
             $oMapping->assign($aParams);
             $oMapping->oxobject2payment__oxobjectid = new oxField($sPayment);

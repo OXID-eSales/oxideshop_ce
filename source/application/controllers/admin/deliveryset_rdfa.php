@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -67,7 +67,7 @@ class deliveryset_rdfa extends payment_rdfa
 
         // Save new mappings
         foreach ($aRDFaDeliveries as $sDelivery) {
-            $oMapping = oxNew("oxbase");
+            $oMapping = oxNew("oxBase");
             $oMapping->init("oxobject2delivery");
             $oMapping->assign($aParams);
             $oMapping->oxobject2delivery__oxobjectid = new oxField($sDelivery);

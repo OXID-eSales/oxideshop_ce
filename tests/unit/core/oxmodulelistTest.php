@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -177,7 +177,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         );
 
         $oModuleList = $this->getProxyClass('oxmodulelist');
-        modConfig::getInstance()->setConfigParam("aModules", $aModules);
+        $this->getConfig()->setConfigParam("aModules", $aModules);
 
         $this->assertEquals($aResult, $oModuleList->getModulesWithExtendedClass());
     }
@@ -200,7 +200,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         );
 
         $oModuleList = $this->getProxyClass('oxmodulelist');
-        modConfig::getInstance()->setConfigParam("aModules", $aModules);
+        $this->getConfig()->setConfigParam("aModules", $aModules);
 
         $this->assertEquals($aResult, $oModuleList->extractModulePaths());
     }
@@ -311,7 +311,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
             'testExt2'
         );
 
-        modConfig::getInstance()->setConfigParam("aDisabledModules", $aDisabledModules);
+        $this->getConfig()->setConfigParam("aDisabledModules", $aDisabledModules);
 
         $oModuleList = $this->getProxyClass('oxmodulelist');
 
@@ -330,7 +330,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
             'testExt2' => 'testExt2'
         );
 
-        modConfig::getInstance()->setConfigParam("aModulePaths", $aModulePaths);
+        $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
 
         $oModuleList = $this->getProxyClass('oxmodulelist');
 
@@ -348,19 +348,19 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
             'oxorder' => 'testExt1/testExt11/module1&testExt2/module1',
             'oxnews'  => 'testExt2/module2'
         );
-        modConfig::getInstance()->setConfigParam("aModules", $aModules);
+        $this->getConfig()->setConfigParam("aModules", $aModules);
 
         $aDisabledModules = array(
             'testExt1',
             'testExt2'
         );
-        modConfig::getInstance()->setConfigParam("aDisabledModules", $aDisabledModules);
+        $this->getConfig()->setConfigParam("aDisabledModules", $aDisabledModules);
 
         $aModulePaths = array(
             'testExt1' => 'testExt1/testExt11',
             'testExt2' => 'testExt2'
         );
-        modConfig::getInstance()->setConfigParam("aModulePaths", $aModulePaths);
+        $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
 
         $aDisabledModuleClasses = array(
             'testExt1/testExt11/module1',
@@ -383,18 +383,18 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
             'oxorder' => 'testExt1/testExt11/module1&testExt2/module1',
             'oxnews'  => 'testExt2/module2'
         );
-        modConfig::getInstance()->setConfigParam("aModules", $aModules);
+        $this->getConfig()->setConfigParam("aModules", $aModules);
 
         $aDisabledModules = array(
             'testExt1',
             'testExt2'
         );
-        modConfig::getInstance()->setConfigParam("aDisabledModules", $aDisabledModules);
+        $this->getConfig()->setConfigParam("aDisabledModules", $aDisabledModules);
 
         $aModulePaths = array(
             'testExt1' => 'testExt1/testExt11',
         );
-        modConfig::getInstance()->setConfigParam("aModulePaths", $aModulePaths);
+        $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
 
         $aDisabledModuleClasses = array(
             'testExt1/testExt11/module1',
@@ -714,7 +714,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
             'oxorder'   => 'mod7/testModuleOrder&myext/myextclass',
         );
 
-        modConfig::getInstance()->setConfigParam("aModules", $aModules);
+        $this->getConfig()->setConfigParam("aModules", $aModules);
 
         $oModuleList = $this->getProxyClass('oxModuleList');
         $oModuleList->setNonPublicVar("_aModule", $aModules);
@@ -756,7 +756,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
      */
     public function testGetModulesFromDir()
     {
-        $sModulesDir = oxRegistry::getConfig()->getModulesDir();
+        $sModulesDir = $this->getConfig()->getModulesDir();
 
         $oModuleList = new oxModuleList;
         $aModules = $oModuleList->getModulesFromDir($sModulesDir);
@@ -772,7 +772,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
      */
     public function testIsVendorDir()
     {
-        $sModulesDir = oxRegistry::getConfig()->getModulesDir();
+        $sModulesDir = $this->getConfig()->getModulesDir();
 
         $oModuleList = new oxModuleList;
 

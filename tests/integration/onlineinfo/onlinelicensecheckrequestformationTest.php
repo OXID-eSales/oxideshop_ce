@@ -32,14 +32,28 @@
  */
 class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends OxidTestCase
 {
+    /**
+     * imitating package revision file and return shop dir
+     *
+     * @return string path to virtual shop directory with pkg.rev file
+     */
+    private function mockPackageRevisionFile()
+    {
+        $vfsStream = $this->getVfsStreamWrapper();
+        $shopDir = "shopdir";
+        $vfsStream->createFile($shopDir . DIRECTORY_SEPARATOR . 'pkg.rev', 'somerevisionstring');
+        $fakeShopDir = $vfsStream->getRootPath() . $shopDir . DIRECTORY_SEPARATOR;
+        return $fakeShopDir;
+    }
+
     public function testRequestFormationWithExistingSerials()
     {
         $oConfig = $this->getConfig();
 
-        $oConfig->setConfigParam('aSerials', array('license_key'));
-        $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
+        $oConfig->saveShopConfVar('arr', 'aSerials', array('license_key'));
+        $oConfig->saveShopConfVar('arr', 'sClusterId', array('generated_unique_cluster_id'));
         $iValidNodeTime =  oxRegistry::get("oxUtilsDate")->getTime();
-        $oConfig->setConfigParam('aServersData', array(
+        $oConfig->saveShopConfVar('arr', 'aServersData', array(
             'server_id1' => array(
                 'id' => 'server_id1',
                 'timestamp' => $iValidNodeTime,
@@ -48,6 +62,9 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
                 'lastAdminUsage' => $iValidNodeTime,
                 'isValid' => true,
         )));
+
+        // imitating package revision file
+        $oConfig->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
 
         $sEdition = $oConfig->getEdition();
         $sVersion = $oConfig->getVersion();
@@ -62,7 +79,7 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         if ($sRevision) {
             $sXml .= "<revision>$sRevision</revision>";
         } else {
-            $sXml .= '<revision/>';
+            $sXml .= '<revision></revision>';
         }
         $sXml .=   '<productSpecificInformation>';
         $sXml .=     '<servers>';
@@ -130,6 +147,9 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
                 'isValid' => true,
             )));
 
+        // imitating package revision file
+        $oConfig->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
+
         $sEdition = $oConfig->getEdition();
         $sVersion = $oConfig->getVersion();
         $sShopUrl = $oConfig->getShopUrl();
@@ -146,7 +166,7 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         if ($sRevision) {
             $sXml .= "<revision>$sRevision</revision>";
         } else {
-            $sXml .= '<revision/>';
+            $sXml .= '<revision></revision>';
         }
         $sXml .=   '<productSpecificInformation>';
         $sXml .=     '<servers>';

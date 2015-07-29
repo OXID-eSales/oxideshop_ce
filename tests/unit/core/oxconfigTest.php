@@ -22,6 +22,19 @@
 
 class modForTestGetBaseTplDirExpectsDefault extends oxConfig
 {
+    public function init()
+    {
+        if ($this->_blInit) {
+            return;
+        }
+        $this->_blInit = true;
+
+        $this->_loadVarsFromFile();
+
+        include getShopBasePath() . 'core/oxconfk.php';
+
+        $this->_setDefaults();
+    }
 
     public function getShopId()
     {
@@ -85,20 +98,6 @@ class modForTestGetImageDirNativeImagesIsSsl extends modForTestGetBaseTemplateDi
     }
 }
 
-class modForGetShopHomeUrl extends oxConfig
-{
-
-    public function getShopUrl($iLang = null, $blAdmin = null)
-    {
-        return 'http://www.example.com/';
-    }
-
-    public function getSslShopUrl($iLang = null)
-    {
-        return 'https://www.example.com/';
-    }
-}
-
 class modFortestGetShopTakingFromRequestNoMall extends oxConfig
 {
 
@@ -113,6 +112,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     protected $_iCurr = null;
     protected $_aShops = array();
+    private $shopUrl = 'http://www.example.com/';
 
     /**
      * Initialize the fixture.
@@ -130,7 +130,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         return;
 
         for ($i = 2; $i < 7; $i++) {
-            $this->_aShops[$i] = oxNew('oxbase');
+            $this->_aShops[$i] = oxNew('oxBase');
             $this->_aShops[$i]->init('oxshops');
             $this->_aShops[$i]->setId($i);
             $this->_aShops[$i]->oxshop__oxactive = new oxField(1, oxField::T_RAW);
@@ -166,11 +166,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $sDir = $this->getConfig()->getConfigParam('sShopDir') . "/out/en/tpl";
         if (is_dir(realpath($sDir))) {
             oxRegistry::get("oxUtilsFile")->deleteDir($sDir);
-        }
-
-        $sCustConfigPath = getShopBasePath() . "/cust_config.inc.php";
-        if (file_exists($sCustConfigPath)) {
-            unlink($sCustConfigPath);
         }
 
         $this->cleanUpTable('oxconfig');
@@ -313,11 +308,20 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testInit_noConnection()
     {
-        $oConfig = $this->getMock("oxconfig", array("_loadVarsFromDb"));
+        /** @var oxConnectionException $oEx */
         $oEx = oxNew("oxConnectionException");
-        $oConfig->expects($this->once())->method('_loadVarsFromDb')->will($this->throwException($oEx));
 
-        $this->assertFalse($oConfig->init());
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utilsMock */
+        $utilsMock = $this->getMock('oxUtils', array('showMessageAndExit'));
+        $utilsMock->expects($this->once())->method('showMessageAndExit')->with($this->equalTo($oEx->getString()));
+        oxRegistry::set('oxUtils', $utilsMock);
+
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
+        $oConfig = $this->getMock("oxConfig", array("_loadVarsFromDb"));
+        $oConfig->expects($this->once())->method('_loadVarsFromDb')->will($this->throwException($oEx));
+        $oConfig->setConfigParam('iDebug', -1);
+
+        $oConfig->init();
     }
 
     /**
@@ -335,6 +339,58 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertNull($oConfig->getConfigParam('xxx'));
+    }
+
+    public function testGetConfigParamDefaultValueWhenConfigValueNotFound()
+    {
+        $oConfig = oxNew('oxConfig');
+
+        $this->assertSame('defaultValue', $oConfig->getConfigParam('nonExisting', 'defaultValue'));
+    }
+
+    public function testGetRequestEscapedParameter()
+    {
+        $config = oxNew('oxConfig');
+        $_POST['postKey'] = '&test';
+
+        $this->assertSame('&amp;test', $config->getRequestEscapedParameter('postKey'));
+    }
+
+    public function testGetRequestEscapedParameterWhenParameterNotFound()
+    {
+        $config = oxNew('oxConfig');
+
+        $this->assertSame(null, $config->getRequestEscapedParameter('notExistingPostKey'));
+    }
+
+    public function testGetRequestEscapedParameterWhenParameterNotFoundAndDefaultValueIsProvided()
+    {
+        $config = oxNew('oxConfig');
+
+        $this->assertSame('defaultValue', $config->getRequestEscapedParameter('notExistingPostKey', 'defaultValue'));
+    }
+
+    public function testGetRequestRawParameterFromPost()
+    {
+        $oConfig = oxNew('oxConfig');
+        $_POST['postKey'] = 'testValue';
+
+        $this->assertSame('testValue', $oConfig->getRequestRawParameter('postKey'));
+    }
+
+    public function testGetRequestRawParameterFromGet()
+    {
+        $oConfig = oxNew('oxConfig');
+        $_GET['getKey'] = 'testValue';
+
+        $this->assertSame('testValue', $oConfig->getRequestRawParameter('getKey'));
+    }
+
+    public function testGetRequestRawParameterWhenRequestParametersNotFound()
+    {
+        $oConfig = oxNew('oxConfig');
+
+        $this->assertSame('defaultValue', $oConfig->getRequestRawParameter('nonExisting', 'defaultValue'));
     }
 
     /**
@@ -755,16 +811,16 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         oxDb::getDb()->execute('delete from oxconfig where oxvarname="oxtesting"');
         $this->assertFalse(oxDb::getDb()->getOne('select oxvarvalue from oxconfig where oxvarname="oxtesting"'));
 
-        $this->getConfig()->saveShopConfVar('string', 'oxtesting', 'test', null, '');
-        $this->getConfig()->saveShopConfVar('string', 'oxtesting', 'test', null, 'theme:basic');
+        $config = $this->getConfig();
 
-        $this->getConfig()->cleanup();
-        $this->assertEquals('test', $this->getConfig()->getConfigParam('oxtesting'));
+        $config->saveShopConfVar('string', 'oxtesting', 'test', null, '');
+        $config->saveShopConfVar('string', 'oxtesting', 'test', null, 'theme:basic');
+
+        $this->assertEquals('test', $config->getConfigParam('oxtesting'));
 
         oxDb::getDb()->execute('delete from oxconfig where oxmodule="theme:basic" and oxvarname="oxtesting"');
         $this->getConfig()->saveShopConfVar('string', 'oxtesting', 'test', null, 'theme:basic');
 
-        $this->getConfig()->cleanup();
         $this->assertEquals('test', $this->getConfig()->getConfigParam('oxtesting'));
 
         oxDb::getDb()->execute('delete from oxconfig where oxvarname="oxtesting"');
@@ -1115,7 +1171,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         // checking if different language forces reload
         $iCurrLang = oxRegistry::getLang()->getBaseLanguage();
         oxRegistry::getLang()->resetBaseLanguage();
-        modConfig::setRequestParameter('lang', $iCurrLang + 1);
+        $this->setRequestParameter('lang', $iCurrLang + 1);
 
         $oShop = $oConfig->getActiveShop();
         $this->assertFalse(isset($oShop->xxx));
@@ -1139,14 +1195,12 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testThemeNameExpectsDefault()
     {
         $oConfig = new modForTestGetBaseTplDirExpectsDefault();
-        $oConfig->init();
         $this->assertEquals('azure', $oConfig->getConfigParam('sTheme'));
     }
 
     public function testGetResourceUrlExpectsDefault()
     {
         $oConfig = new modForTestGetBaseTplDirExpectsDefault();
-        $oConfig->init();
         $sDir = $oConfig->getConfigParam('sShopURL') . $this->_getOutPath($oConfig, 'admin', false) . "src/";
         $this->assertEquals($sDir, $oConfig->getResourceUrl('', true));
     }
@@ -1154,8 +1208,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetResourceUrlNonAdminExpectsDefault()
     {
         $oConfig = new modForTestGetBaseTplDirExpectsDefault();
-        $oConfig->init();
-
         $sDir = $oConfig->getConfigParam('sShopURL') . $this->_getOutPath($oConfig, null, false) . "src/";
         $this->assertEquals($sDir, $oConfig->getResourceUrl());
     }
@@ -1499,27 +1551,20 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertEquals($sDir, $oConfig->getImageUrl());
     }
 
-
     /**
      * Testing getShopHomeUrl getter
      */
     public function testGetShopHomeUrl()
     {
-        $oConfig = new modForGetShopHomeUrl();
-        $oConfig->init();
-        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl('http://www.example.com/index.php', false);
-        $this->assertEquals($sUrl, $oConfig->getShopHomeUrl());
-    }
+        $sUrl = $this->shopUrl . 'index.php?';
 
-    /**
-     * Testing getShopHomeUrl getter
-     */
-    public function testGetWidgetUrl()
-    {
-        $oConfig = new modForGetShopHomeUrl();
+        $oConfig = oxNew('oxConfig');
+        $oConfig->setConfigParam('sShopURL', $this->shopUrl);
         $oConfig->init();
-        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl('http://www.example.com/widget.php', false);
-        $this->assertEquals($sUrl, $oConfig->getWidgetUrl());
+
+        $this->setToRegistryOxUtilsUrlMock('index.php');
+
+        $this->assertEquals($sUrl, $oConfig->getShopHomeUrl());
     }
 
     /**
@@ -1527,9 +1572,14 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testGetShopSecureHomeUrl()
     {
-        $oConfig = new modForGetShopHomeUrl();
+        $sUrl = $this->shopUrl . 'index.php?';
+
+        $oConfig = oxNew('oxConfig');
+        $oConfig->setConfigParam('sShopURL', $this->shopUrl);
         $oConfig->init();
-        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl('https://www.example.com/index.php', false);
+
+        $this->setToRegistryOxUtilsUrlMock('index.php');
+
         $this->assertEquals($sUrl, $oConfig->getShopSecureHomeUrl());
     }
 
@@ -1628,7 +1678,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oGbp->decimal = '2';
         $oGbp->selected = 0;
 
-        modConfig::setRequestParameter('cur', 1);
+        $this->setRequestParameter('cur', 1);
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertEquals($oGbp, $oConfig->getActShopCurrencyObject());
@@ -1648,7 +1698,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oEur->decimal = '2';
         $oEur->selected = 0;
 
-        modConfig::setRequestParameter('cur', 999);
+        $this->setRequestParameter('cur', 999);
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertEquals($oEur, $oConfig->getActShopCurrencyObject());
@@ -1744,38 +1794,38 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     /* P
     public function testGetShopLanguageTestingRequest()
     {
-        modConfig::setRequestParameter( 'changelang', 1 );
+        $this->setRequestParameter( 'changelang', 1 );
         $oConfig = $this->getMock( 'oxConfig', array( 'isAdmin' ) );
         $oConfig->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
         $oConfig->init();
         //$oConfig->setNonPublicVar( '_iLanguageId', null );
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
 
-        modConfig::setRequestParameter( 'changelang', null );
-        modConfig::setRequestParameter( 'lang', 1 );
+        $this->setRequestParameter( 'changelang', null );
+        $this->setRequestParameter( 'lang', 1 );
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
 
-        modConfig::setRequestParameter( 'changelang', null );
-        modConfig::setRequestParameter( 'lang',       null );
-        modConfig::setRequestParameter( 'tpllanguage', 1 );
+        $this->setRequestParameter( 'changelang', null );
+        $this->setRequestParameter( 'lang',       null );
+        $this->setRequestParameter( 'tpllanguage', 1 );
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
 
-        modConfig::setRequestParameter( 'changelang',  null );
-        modConfig::setRequestParameter( 'lang',        null );
-        modConfig::setRequestParameter( 'tpllanguage', null );
-        modConfig::setRequestParameter( 'language', 1 );
+        $this->setRequestParameter( 'changelang',  null );
+        $this->setRequestParameter( 'lang',        null );
+        $this->setRequestParameter( 'tpllanguage', null );
+        $this->setRequestParameter( 'language', 1 );
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
 
-        modConfig::setRequestParameter( 'changelang',  null );
-        modConfig::setRequestParameter( 'lang',        null );
-        modConfig::setRequestParameter( 'tpllanguage', null );
-        modConfig::setRequestParameter( 'language',    null );
+        $this->setRequestParameter( 'changelang',  null );
+        $this->setRequestParameter( 'lang',        null );
+        $this->setRequestParameter( 'tpllanguage', null );
+        $this->setRequestParameter( 'language',    null );
         $oConfig = new oxConfig();
         $oConfig->init();
         $oConfig->setConfigParam( 'sDefaultLang', 1 );
@@ -1784,7 +1834,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     // testing if bad language id is fixed
     public function testGetShopLanguagePassingNotExistingShouldBeFixed()
     {
-        modConfig::setRequestParameter( 'changelang', 'xxx' );
+        $this->setRequestParameter( 'changelang', 'xxx' );
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertEquals( 0, $oConfig->getShopLanguage() );
@@ -1849,12 +1899,20 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $_FILES = $aBack;
     }
 
-    public function testGetRequestParameter()
+    public function testGetRequestParameterEscaped()
     {
-        $oConfig = $this->getConfig();
-        $oConfig->setRequestParameter('testval', '_testval');
+        $config = oxNew('oxConfig');
+        $_POST['testParameterKey'] = '&testValue';
 
-        $this->assertEquals('_testval', $oConfig->getRequestParameter('testval'));
+        $this->assertEquals('&amp;testValue', $config->getRequestParameter('testParameterKey'));
+    }
+
+    public function testGetRequestParameterRaw()
+    {
+        $config = oxNew('oxConfig');
+        $_POST['testParameterKey'] = '&testValue';
+
+        $this->assertEquals('&testValue', $config->getRequestParameter('testParameterKey', true));
     }
 
     public function testGetEdition()
@@ -1878,7 +1936,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetRevision_NoFile()
     {
         $oConfig = new oxConfig();
-        $sDir = oxRegistry::getConfig()->getConfigParam('sShopDir') . '/out/downloads/';
+        $sDir = $this->getConfig()->getConfigParam('sShopDir') . '/out/downloads/';
         $oConfig->setConfigParam('sShopDir', $sDir);
         $this->assertFalse($oConfig->getRevision());
     }
@@ -1897,7 +1955,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetPackageInfo_NoFile()
     {
         $oConfig = new oxConfig();
-        $sDir = oxRegistry::getConfig()->getConfigParam('sShopDir') . '/out/downloads/';
+        $sDir = $this->getConfig()->getConfigParam('sShopDir') . '/out/downloads/';
         $oConfig->setConfigParam('sShopDir', $sDir);
         $this->assertFalse($oConfig->getPackageInfo());
     }
@@ -1937,8 +1995,11 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_level5()
     {
-        $sTestDir = getTestsBasePath() . '/unit/';
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('out/test4/1/de/test1/text.txt', '');
+        $sTestDir = $vfsStreamWrapper->getRootPath();
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
@@ -1951,8 +2012,11 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_delvel4()
     {
-        $sTestDir = getTestsBasePath() . '/unit/';
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('out/test4/1/test2/text.txt', '');
+        $sTestDir = $vfsStreamWrapper->getRootPath();
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
@@ -1965,8 +2029,11 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_level3()
     {
-        $sTestDir = getTestsBasePath() . '/unit/';
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('out/test4/de/test2a/text.txt', '');
+        $sTestDir = $vfsStreamWrapper->getRootPath();
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
@@ -1979,8 +2046,11 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_delvel2()
     {
-        $sTestDir = getTestsBasePath() . '/unit/';
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('out/test4/test3/text.txt', '');
+        $sTestDir = $vfsStreamWrapper->getRootPath();
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
@@ -1993,8 +2063,11 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_delvel1()
     {
-        $sTestDir = getTestsBasePath() . '/unit/';
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('out/test4/text.txt', '');
+        $sTestDir = $vfsStreamWrapper->getRootPath();
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
@@ -2007,8 +2080,11 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetDir_delvel0()
     {
-        $sTestDir = getTestsBasePath() . '/unit/';
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('out/de/test5/text.txt', '');
+        $sTestDir = $vfsStreamWrapper->getRootPath();
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getOutDir'));
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
@@ -2018,8 +2094,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $sDir = $oConfig->getDir('text.txt', 'test5', false, 0, 1, 'test4');
         $this->assertEquals($sOutDir . 'de/test5/text.txt', $sDir);
     }
-
-
 
 
     public function testGetOutDir()
@@ -2070,8 +2144,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig = new oxConfig();
         $oConfig->init();
 
-        $sDir = $oConfig->getConfigParam('sShopDir') . 'out/pictures/';
-
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
+        $sDir = $oConfig->getConfigParam('sShopDir') . "out/pictures$postfix/";
 
         $this->assertEquals($sDir, $oConfig->getPicturePath(null, false));
     }
@@ -2087,8 +2161,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $sMainURL = $oConfig->getConfigParam('sShopURL');
         $sMallURL = 'http://www.example.com/';
 
-        $sDir = 'out/pictures/';
-
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
+        $sDir = "out/pictures$postfix/";
 
         $oConfig->setConfigParam('sMallShopURL', $sMallURL);
 
@@ -2118,7 +2192,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig = new oxConfig();
         $oConfig->init();
         $oConfig->setConfigParam('blFormerTplSupport', true);
-        //$this->assertEquals( '', $oConfig->getPictureUrl( "test.gif", false) );
         $this->assertContains('nopic.jpg', $oConfig->getPictureUrl("test.gif", false));
     }
 
@@ -2140,8 +2213,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig->setConfigParam("sAltImageDir", false);
         $oConfig->setConfigParam("blFormerTplSupport", false);
 
-        $sNoPicUrl = $myConfig->getConfigParam("sShopURL") . "out/pictures/master/nopic.jpg";
-
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
+        $sNoPicUrl = $myConfig->getConfigParam("sShopURL") . "out/pictures$postfix/master/nopic.jpg";
 
         $this->assertEquals($sNoPicUrl, $oConfig->getPictureUrl("unknown.file", true));
     }
@@ -2194,10 +2267,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig->setConfigParam('blDemoShop', true);
         $this->assertTrue($oConfig->isDemoShop());
     }
-
-
-
-
 
     public function testUtfModeIsSet()
     {
@@ -2373,20 +2442,24 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testLoadCustomConfig()
     {
-        $sDir = getShopBasePath();
-        $sCustConfig = $sDir . "/cust_config.inc.php";
+        $customConfigPath = getShopBasePath() . "/cust_config.inc.php";
 
-        $handle = fopen($sCustConfig, "w");
-        chmod($sCustConfig, 0777);
+        try {
+            $data = '<?php $this->custVar = test;';
+            file_put_contents($customConfigPath, $data);
 
-        $data = '<?php $this->custVar = test;';
-        fwrite($handle, $data);
+            /** @var oxConfig $oConfig */
+            $oConfig = $this->getProxyClass('oxconfig');
+            $oConfig->_loadVarsFromFile();
+            $sVar = $oConfig->getConfigParam("custVar");
 
-        $oConfig = $this->getProxyClass('oxconfig');
-        $oConfig->_loadVarsFromFile();
-        $sVar = $oConfig->getConfigParam("custVar");
+            $this->assertSame("test", $sVar);
+        } catch (Exception $e) {
+            @unlink($customConfigPath);
+            throw $e;
+        }
 
-        $this->assertSame("test", $sVar);
+        @unlink($customConfigPath);
     }
 
     /**
@@ -2399,7 +2472,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oVar->xxx = 'yyy';
         $aVar = array('&\\o<x>i"\'d' . chr(0));
         $sVar = '&\\o<x>i"\'d' . chr(0);
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         // object must came back the same
         $this->assertEquals($oVar, $oConfig->checkParamSpecialChars($oVar));
 
@@ -2419,7 +2492,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $aValues = array('first' => 'first char &', 'second' => 'second char &', 'third' => 'third char &');
         $aRaw = array('first', 'third');
         // object must came back the same
-        $aRet = oxRegistry::getConfig()->checkParamSpecialChars($aValues, $aRaw);
+        $aRet = $this->getConfig()->checkParamSpecialChars($aValues, $aRaw);
         $this->assertEquals($aValues['first'], $aRet['first']);
         $this->assertEquals('second char &amp;', $aRet['second']);
         $this->assertEquals($aValues['third'], $aRet['third']);
@@ -2443,7 +2516,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         );
         $oConfig = $this->getConfig();
         foreach ($test as $check) {
-            $this->assertEquals($check['result'], oxRegistry::getConfig()->checkParamSpecialChars($check['data']));
+            $this->assertEquals($check['result'], $this->getConfig()->checkParamSpecialChars($check['data']));
         }
     }
 
@@ -2470,7 +2543,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $aVar = array("text" . $sNewLineCharacter);
         $sVar = "text" . $sNewLineCharacter;
 
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         // object must came back the same
         $this->assertEquals($oVar, $oConfig->checkParamSpecialChars($oVar));
 
@@ -2487,10 +2560,17 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testInit_noValuesFromConfig()
     {
-        $oConfig = $this->getMock("oxconfig", array("_loadVarsFromDb"));
-        $oConfig->expects($this->once())->method('_loadVarsFromDb')->will($this->returnValue(false));
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utilsMock */
+        $utilsMock = $this->getMock('oxUtils', array('showMessageAndExit'));
+        $utilsMock->expects($this->once())->method('showMessageAndExit');
+        oxRegistry::set('oxUtils', $utilsMock);
 
-        $this->assertFalse($oConfig->init());
+        /** @var oxconfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
+        $oConfig = $this->getMock("oxConfig", array("_loadVarsFromDb"));
+        $oConfig->expects($this->once())->method('_loadVarsFromDb')->will($this->returnValue(false));
+        $oConfig->setConfigParam('iDebug', -1);
+
+        $oConfig->init();
     }
 
     /**
@@ -2498,10 +2578,17 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testInit_noShopId()
     {
-        $oConfig = $this->getMock("oxconfig", array("getShopId"));
-        $oConfig->expects($this->once())->method('getShopId')->will($this->returnValue(false));
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utilsMock */
+        $utilsMock = $this->getMock('oxUtils', array('showMessageAndExit'));
+        $utilsMock->expects($this->once())->method('showMessageAndExit');
+        oxRegistry::set('oxUtils', $utilsMock);
 
-        $this->assertFalse($oConfig->init());
+        /** @var oxconfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
+        $oConfig = $this->getMock("oxConfig", array("getShopId"));
+        $oConfig->expects($this->once())->method('getShopId')->will($this->returnValue(false));
+        $oConfig->setConfigParam('iDebug', -1);
+
+        $oConfig->init();
     }
 
     /**
@@ -2571,5 +2658,18 @@ class Unit_Core_oxconfigTest extends OxidTestCase
             array('int', 'iNum1', 0),
             array('int', 'iNum2', 4),
         );
+    }
+
+    /**
+     * @param string $entryPoint
+     */
+    private function setToRegistryOxUtilsUrlMock($entryPoint)
+    {
+        $utilsUrl = $this->getMock('oxUtilsUrl');
+        $utilsUrl->expects($this->atLeastOnce())
+            ->method('processUrl')
+            ->with($this->identicalTo($this->shopUrl . $entryPoint, false))
+            ->will($this->returnValue($this->shopUrl . $entryPoint . '?'));
+        oxRegistry::set('oxUtilsUrl', $utilsUrl);
     }
 }

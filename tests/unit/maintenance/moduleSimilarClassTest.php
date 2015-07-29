@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -28,11 +28,20 @@ class Unit_Maintenance_moduleSimilarClassTest extends OxidTestCase
      */
     public function testModuleSimilarName()
     {
-        oxUtilsObject::getInstance()->setModuleVar('aModules', array('oxbasketitem' => 'testbasketitem', 'oxbasket' => 'testbasket'));
+        $filePath = $this->createFile('testModuleSimilarName.php', '<?php
+            class testModuleSimilarName extends testModuleSimilarName_parent {
+                public function sayHi() {
+                    return "Hi!";
+                }
+            }
+        ');
 
-        include_once dirname(__FILE__) . '/modules/testbasket.php';
+        $extensions = array('oxbasketitem' => 'testmodulesimilarnameitem', 'oxbasket' => 'testmodulesimilarname');
+        oxRegistry::get('oxUtilsObject')->setModuleVar('aModules', $extensions);
 
-        $oTestMod = oxNew('testbasket');
+        include_once $filePath;
+
+        $oTestMod = oxNew('oxBasket');
         $this->assertEquals("Hi!", $oTestMod->sayHi());
     }
 
@@ -41,11 +50,21 @@ class Unit_Maintenance_moduleSimilarClassTest extends OxidTestCase
      */
     public function testModuleSimilarName_ClassNotExist()
     {
+        $filePath = $this->createFile('testModuleSimilarName.php', '<?php
+            class testModuleSimilarName extends testModuleSimilarName_parent {
+                public function sayHi() {
+                    return "Hi!";
+                }
+            }
+        ');
+
         $this->setExpectedException('oxSystemComponentException');
-        modConfig::getInstance()->setConfigParam(
-            'aModules', array(
-                             'oxbasketitem' => 'test/testbasket')
-        );
-        $oBask = oxNew('testbaske');
+
+        $extensions = array('oxbasketitem' => 'testmodulesimilar', 'oxbasket' => 'testmodulesimilarname');
+        oxRegistry::get('oxUtilsObject')->setModuleVar('aModules', $extensions);
+
+        include_once $filePath;
+
+        oxNew('testmodulesimilar');
     }
 }

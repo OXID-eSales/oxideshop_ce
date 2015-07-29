@@ -36,13 +36,13 @@ class Unit_utf8Test extends OxidTestCase
     {
         parent::setUp();
 
-        $this->_sOrigTheme = modConfig::getInstance()->getRealInstance()->getConfigParam('sTheme');
-        modConfig::getInstance()->getRealInstance()->setConfigParam('sTheme', 'azure');
+        $this->_sOrigTheme = $this->getConfig()->getConfigParam('sTheme');
+        $this->getConfig()->setConfigParam('sTheme', 'azure');
     }
 
     protected function tearDown()
     {
-        modConfig::getInstance()->getRealInstance()->setConfigParam('sTheme', $this->_sOrigTheme);
+        $this->getConfig()->setConfigParam('sTheme', $this->_sOrigTheme);
 
         $this->cleanUpTable('oxarticles');
         $this->cleanUpTable('oxaddress');
@@ -84,7 +84,7 @@ class Unit_utf8Test extends OxidTestCase
 
         $this->cleanUpTable('oxstatistics');
 
-        oxRegistry::getConfig()->setActiveView(null);
+        $this->getConfig()->setActiveView(null);
         parent::tearDown();
     }
 
@@ -131,7 +131,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testOxArticleGetSelectList()
     {
         $myDB = oxDb::getDB();
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
         $sShopId = $myConfig->getBaseShopId();
@@ -143,8 +143,8 @@ class Unit_utf8Test extends OxidTestCase
         $sQ = 'insert into oxobject2selectlist (oxid, oxobjectid, oxselnid, oxsort) values ("_testSellisttest", "1651", "_testSellisttest", 1) ';
         $myDB->Execute($sQ);
 
-        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', true);
-        modConfig::getInstance()->setConfigParam('bl_perfUseSelectlistPrice', true);
+        $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', true);
+        $this->getConfig()->setConfigParam('bl_perfUseSelectlistPrice', true);
 
         $oObject = new stdClass();
         $oObject->price = '-5.99';
@@ -196,10 +196,10 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxArticleLongDescriptionSmartyProcess()
     {
-        modConfig::getInstance()->setConfigParam('bl_perfParseLongDescinSmarty', 1);
+        $this->getConfig()->setConfigParam('bl_perfParseLongDescinSmarty', 1);
 
         $sValue = '[{ $oViewConf->getImageUrl() }] Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
-        $sResult = oxRegistry::getConfig()->getImageUrl(false) . ' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
+        $sResult = $this->getConfig()->getImageUrl(false) . ' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
 
         $oArticle = new oxarticle();
         $oArticle->setId('_testArticle');
@@ -214,8 +214,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testOxArticleGetPersParam()
     {
         $aPersParam = array('_testArticle' => 'sėkme Литовские für');
-        modSession::getInstance()->setVar('persparam', $aPersParam);
-
+        $this->getSession()->setVariable('persparam', $aPersParam);
         $oArticle = new oxarticle();
         $oArticle->setId('_testArticle');
         $oArticle->UNITassignPersistentParam();
@@ -440,10 +439,10 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxCategoryLongDescriptionSmartyProcess()
     {
-        modConfig::getInstance()->setConfigParam('bl_perfParseLongDescinSmarty', 1);
+        $this->getConfig()->setConfigParam('bl_perfParseLongDescinSmarty', 1);
 
         $sValue = '[{ $oViewConf->getImageUrl() }] Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
-        $sResult = oxRegistry::getConfig()->getImageUrl(false) . ' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
+        $sResult = $this->getConfig()->getImageUrl(false) . ' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
 
         $oCat = new oxbase();
         $oCat->init('oxcategories');
@@ -542,7 +541,7 @@ class Unit_utf8Test extends OxidTestCase
         $sIn = "a&g<e>n\"t'ūrų Л" . chr(0) . "итовские fü\\r";
         $sOut = "a&amp;g&lt;e&gt;n&quot;t&#039;ūrų Литовские fü&#092;r";
 
-        $this->assertEquals($sOut, oxRegistry::getConfig()->checkParamSpecialChars($sIn));
+        $this->assertEquals($sOut, $this->getConfig()->checkParamSpecialChars($sIn));
     }
 
     public function testOxConfigGetCurrencyArray()
@@ -589,7 +588,7 @@ class Unit_utf8Test extends OxidTestCase
 
         $aCurrArray = array($oCurr1, $oCurr2, $oCurr3, $oCurr4);
 
-        $this->assertEquals($aCurrArray, oxRegistry::getConfig()->getCurrencyArray());
+        $this->assertEquals($aCurrArray, $this->getConfig()->getCurrencyArray());
     }
 
     public function testOxContentSetAndGet()
@@ -819,10 +818,10 @@ class Unit_utf8Test extends OxidTestCase
 
         $oActView = oxNew('oxubase');
         $oActView->addGlobalParams();
-        oxRegistry::getConfig()->setActiveView($oActView);
+        $this->getConfig()->setActiveView($oActView);
 
         $sValue = '[{ $oViewConf->getImageUrl() }] Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
-        $sResult = oxRegistry::getConfig()->getImageUrl(false) . ' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
+        $sResult = $this->getConfig()->getImageUrl(false) . ' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
 
         $oNewsletter = new oxnewsletter();
         $oNewsletter->oxnewsletter__oxtemplate = new oxField($sValue, oxField::T_RAW);
@@ -912,7 +911,7 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'agentūrų Литовские für';
         $aDynVal = array("kktype" => "visa", "kknumber" => "12345", "kkmonth" => "11", "kkyear" => "2008", "kkname" => $sValue, "kkpruef" => "56789");
-        oxRegistry::getSession()->setVariable('dynvalue', $aDynVal);
+        $this->getSession()->setVariable('dynvalue', $aDynVal);
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField();
@@ -969,7 +968,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testOxOutputProcessWithEuroSign()
     {
         $oOutput = oxNew('oxOutput');
-        oxRegistry::getConfig()->setConfigParam('blSkipEuroReplace', false);
+        $this->getConfig()->setConfigParam('blSkipEuroReplace', false);
         $this->assertEquals('€someting', $oOutput->process('€someting', 'something'));
     }
 
@@ -1106,13 +1105,9 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'agentūrų Литовские für';
         oxTestModules::addFunction('oxutilsurl', 'prepareUrlForNoSession', '{return $aA[0]."extra";}');
-        $oCfg = $this->getMock('oxconfig', array('getActShopCurrencyObject'));
-
-        $oActCur = new stdClass();
-        $oActCur->decimal = 1;
-        $oActCur->sign = 'EUR';
-        $oCfg->expects($this->any())->method('getActShopCurrencyObject')->will($this->returnValue($oActCur));
-        modConfig::getInstance()->setConfigParam('bl_perfParseLongDescinSmarty', false);
+        $oCfg = $this->getConfig();
+        $oCfg->setConfigParam('aCurrencies', array('EUR@1.00@.@.@EUR@1'));
+        $this->getConfig()->setConfigParam('bl_perfParseLongDescinSmarty', false);
         $oRss = oxNew('oxrssfeed');
         $oRss->setConfig($oCfg);
 
@@ -1186,7 +1181,7 @@ class Unit_utf8Test extends OxidTestCase
         $sValue = 'ū';
 
         // forcing config
-        modConfig::getInstance()->setConfigParam('aSearchCols', array('oxlongdesc'));
+        $this->getConfig()->setConfigParam('aSearchCols', array('oxlongdesc'));
 
         $sQ = " and ( (  oxv_oxartextends_en.oxlongdesc like '%$sValue%' )  ) ";
 
@@ -1266,14 +1261,14 @@ class Unit_utf8Test extends OxidTestCase
                          'oxshops__oxversion');
 
 
-        $oShop = oxNew('oxshop');
+        $oShop = oxNew('oxShop');
         $oShop->setId(5);
         foreach ($aFields as $sFieldName) {
             $oShop->{$sFieldName} = new oxField($sValue);
         }
         $oShop->save();
 
-        $oShop = oxNew('oxshop');
+        $oShop = oxNew('oxShop');
         $oShop->load(5);
 
         foreach ($aFields as $sFieldName) {
@@ -1456,8 +1451,8 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxUtilsFillExplodeArray()
     {
-        modConfig::getInstance()->setConfigParam('bl_perfLoadSelectLists', true);
-        modConfig::getInstance()->setConfigParam('bl_perfUseSelectlistPrice', true);
+        $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', true);
+        $this->getConfig()->setConfigParam('bl_perfUseSelectlistPrice', true);
 
         $sValue = 'agentūЛитовfür';
         $sParam = "{$sValue}1!P!10%__@@{$sValue}2!P!20abs__@@{$sValue}3!P!30%__@@";
@@ -1491,7 +1486,7 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxUtilsFillExplodeArrayWithoutPrice()
     {
-        modConfig::getInstance()->setConfigParam('bl_perfUseSelectlistPrice', false);
+        $this->getConfig()->setConfigParam('bl_perfUseSelectlistPrice', false);
 
         $sValue = 'agentūЛитовfür';
         $sParam = "{$sValue}1!P!10%__@@{$sValue}2!P!20abs__@@{$sValue}3!P!30%__@@";
@@ -1666,7 +1661,7 @@ class Unit_utf8Test extends OxidTestCase
         $oListView = $this->getMock('alist', array('getActiveCategory'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oActCat));
 
-        $sDescription = "agentūЛитовfür     . " . oxRegistry::getConfig()->getActiveShop()->oxshops__oxtitleprefix->value;
+        $sDescription = "agentūЛитовfür     . " . $this->getConfig()->getActiveShop()->oxshops__oxtitleprefix->value;
 
         $oView = new oxubase();
         $this->assertEquals($sDescription, $oListView->UNITprepareMetaDescription(false));
@@ -1764,7 +1759,7 @@ class Unit_utf8Test extends OxidTestCase
         $sValue = 'agentūЛитовfür test best nest fest test';
         $sResult = 'test, best, nest, fest';
 
-        modConfig::getInstance()->setConfigParam('aSkipTags', array('agentūЛитовfür'));
+        $this->getConfig()->setConfigParam('aSkipTags', array('agentūЛитовfür'));
 
         $oView = new oxubase();
         $this->assertEquals($sResult, $oView->UNITprepareMetaKeyword($sValue));
@@ -1815,13 +1810,13 @@ class Unit_utf8Test extends OxidTestCase
         $oEmail = $this->getMock('oxemail', array('getBody', 'setBody'));
         $oEmail->expects($this->once())->method('getBody')->will($this->returnValue($sBodyToReturn));
         $oEmail->expects($this->once())->method('setBody')->with($this->equalTo($sBodyToSet));
-        $oEmail->UNITincludeImages("__imagedir__", null, null, oxRegistry::getConfig()->getImageDir());
+        $oEmail->UNITincludeImages("__imagedir__", null, null, $this->getConfig()->getImageDir());
     }
 
     public function testOxEmailSetBody()
     {
         $sBodyToSet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=somesid&amp;something=something\" title=\"agentūлитовfür\">";
-        $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;shp=" . oxRegistry::getConfig()->getBaseShopId() . "&amp;something=something\" title=\"agentūлитовfür\">";
+        $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;shp=" . $this->getConfig()->getBaseShopId() . "&amp;something=something\" title=\"agentūлитовfür\">";
 
         $oEmail = new oxEmail();
         $oEmail->setBody($sBodyToSet);
@@ -1831,7 +1826,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testOxEmailSetAltBody()
     {
         $sBodyToSet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=somesid&amp;something=something\" title=\"agentūлитовfür\">";
-        $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&shp=" . oxRegistry::getConfig()->getBaseShopId() . "&something=something\" title=\"agentūлитовfür\">";
+        $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&shp=" . $this->getConfig()->getBaseShopId() . "&something=something\" title=\"agentūлитовfür\">";
 
         $oEmail = new oxEmail();
         $oEmail->setAltBody($sBodyToSet);

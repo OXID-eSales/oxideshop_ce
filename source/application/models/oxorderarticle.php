@@ -148,7 +148,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
     {
         // TODO: use oxarticle reduceStock
         // decrement stock if there is any
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $oArticle->load($this->oxorderarticles__oxartid->value);
         $oArticle->beforeUpdate();
 
@@ -298,7 +298,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
         }
 
         $oDb = oxDb::getDb();
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $sQ = "select oxparentid from " . $oArticle->getViewName() . " where oxid=" . $oDb->quote($this->getProductId());
         $this->oxarticles__oxparentid = new oxField($oDb->getOne($sQ));
 
@@ -580,7 +580,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
     {
         if ($iNewAmount >= 0) {
             // to update stock we must first check if it is possible - article exists?
-            $oArticle = oxNew("oxarticle");
+            $oArticle = oxNew("oxArticle");
             if ($oArticle->load($this->oxorderarticles__oxartid->value)) {
 
                 // updating stock info

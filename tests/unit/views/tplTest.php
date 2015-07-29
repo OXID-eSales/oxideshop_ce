@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -30,7 +30,7 @@ class Unit_Views_tplTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("tpl", 'fulder/subfolder/test.tpl');
+        $this->setRequestParameter("tpl", 'fulder/subfolder/test.tpl');
 
         $oView = new Tpl();
         $this->assertEquals('custom/test.tpl', $oView->render());

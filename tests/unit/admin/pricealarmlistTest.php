@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -65,7 +65,7 @@ class Unit_Admin_PriceAlarmListTest extends OxidTestCase
      */
     public function testBuildWhere()
     {
-        modConfig::setRequestParameter('where', array("oxpricealarm" => array("oxprice" => 15), "oxarticles" => array("oxprice" => 15)));
+        $this->setRequestParameter('where', array("oxpricealarm" => array("oxprice" => 15), "oxarticles" => array("oxprice" => 15)));
 
         $sViewName = getViewName("oxpricealarm");
         $sArtViewName = getViewName("oxarticles");

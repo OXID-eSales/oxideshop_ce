@@ -25,6 +25,7 @@
  */
 class oxUtilsUrl extends oxSuperCfg
 {
+    const PARAMETER_SEPARATOR = '&amp;';
 
     /**
      * Additional url parameters which should be appended to seo/std urls.
@@ -158,29 +159,34 @@ class oxUtilsUrl extends oxSuperCfg
      * Appends url with given parameters.
      *
      * @param string $sUrl       url to append
-     * @param array  $aAddParams parameters to append
+     * @param array  $parametersToAdd parameters to append
      * @param bool   $blFinalUrl final url
+     * @param bool $allowParameterOverwrite Decides if same parameters should overwrite query parameters.
      *
      * @return string
      */
-    public function appendUrl($sUrl, $aAddParams, $blFinalUrl = false)
+    public function appendUrl($sUrl, $parametersToAdd, $blFinalUrl = false, $allowParameterOverwrite = false)
     {
-        /** @var oxStrRegular $oStr */
-        $oStr = getStr();
+        $paramSeparator = self::PARAMETER_SEPARATOR;
+        $finalParameters = $this->removeNotSetParameters($parametersToAdd);
 
-        $sSeparator = $this->_getUrlParametersSeparator($sUrl);
+        if (is_array($finalParameters) && !empty($finalParameters)) {
+            $urlWithoutQuery = $sUrl;
+            $separatorPlace = strpos($sUrl, '?');
+            if ($separatorPlace !== false) {
+                $urlWithoutQuery = substr($sUrl, 0, $separatorPlace);
+                $urlQueryEscaped = substr($sUrl, $separatorPlace + 1);
+                $urlQuery = str_replace($paramSeparator, '&', $urlQueryEscaped);
 
-        if (is_array($aAddParams)) {
-            foreach ($aAddParams as $sName => $sValue) {
-                if (isset($sValue) && !$oStr->preg_match("/\?(.*&(amp;)?)?" . preg_quote($sName) . "=/", $sUrl)) {
-                    $sUrl .= $sSeparator . $sName . "=" . $sValue;
-                    $sSeparator = '&amp;';
-                }
+                $finalParameters = $this->mergeDuplicatedParameters($finalParameters, $urlQuery, $allowParameterOverwrite);
             }
+
+            $sUrl = $this->appendParamSeparator($urlWithoutQuery);
+            $sUrl .= http_build_query($finalParameters, null, $paramSeparator);
         }
 
         if ($sUrl && !$blFinalUrl) {
-            $sUrl .= $sSeparator;
+            $sUrl = $this->appendParamSeparator($sUrl);
         }
 
         return $sUrl;
@@ -270,10 +276,66 @@ class oxUtilsUrl extends oxSuperCfg
         $sUrl = oxRegistry::getSession()->processUrl($sUrl);
 
         if ($blFinalUrl) {
-            $sUrl = getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sUrl);
+            $sUrl = $this->rightTrimAmp($sUrl);
         }
 
         return $sUrl;
+    }
+
+    /**
+     * Method returns active shop host.
+     *
+     * @return string
+     */
+    public function getActiveShopHost()
+    {
+        $shopUrl = $this->getConfig()->getShopUrl();
+        return $this->extractHost($shopUrl);
+    }
+
+    /**
+     * Extract host from url.
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    public function extractHost($url)
+    {
+        $host = $url;
+        $sUrlHost = $this->parseUrlAndAppendSchema($host, PHP_URL_HOST);
+
+        if (!is_null($sUrlHost)) {
+            $host = $sUrlHost;
+        }
+
+        return $host;
+    }
+
+    /**
+     * Method returns shop URL part - path.
+     *
+     * @return null|string
+     */
+    public function getActiveShopUrlPath()
+    {
+        $shopUrl = oxRegistry::getConfig()->getShopUrl();
+
+        return $this->extractUrlPath($shopUrl);
+    }
+
+    /**
+     * Method returns URL part - path.
+     *
+     * @param string $shopUrl
+     *
+     * @return string|null
+     */
+    public function extractUrlPath($shopUrl)
+    {
+        $urlPath = $this->parseUrlAndAppendSchema($shopUrl, PHP_URL_PATH);
+
+        return $urlPath;
     }
 
     /**
@@ -305,6 +367,24 @@ class oxUtilsUrl extends oxSuperCfg
     }
 
     /**
+     * Improved url parsing with parse_url as base and scheme checking improvement in url preprocessing
+     *
+     * @param string $url
+     * @param string $flag
+     * @param string $appendScheme Append this scheme to url if no scheme found
+     *
+     * @return string
+     */
+    private function parseUrlAndAppendSchema($url, $flag, $appendScheme = 'http')
+    {
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            $url = $appendScheme . '://' . $url;
+        }
+
+        return parse_url($url, $flag);
+    }
+
+    /**
      * Seo url processor: adds various needed parameters, like currency, shop id.
      *
      * @param string $sUrl url to process.
@@ -320,7 +400,7 @@ class oxUtilsUrl extends oxSuperCfg
 
         $sUrl = $this->cleanUrlParams($sUrl);
 
-        return getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sUrl);
+        return $this->rightTrimAmp($sUrl);
     }
 
     /**
@@ -374,17 +454,7 @@ class oxUtilsUrl extends oxSuperCfg
      */
     public function appendParamSeparator($sUrl)
     {
-        /** @var oxStrRegular $oStr */
-        $oStr = getStr();
-        if ($oStr->preg_match('/(\?|&(amp;)?)$/i', $sUrl)) {
-            // it is already ok
-            return $sUrl;
-        }
-        if ($oStr->strpos($sUrl, '?') === false) {
-            return $sUrl . '?';
-        }
-
-        return $sUrl . '&amp;';
+        return $sUrl . $this->getUrlParametersSeparator($sUrl);
     }
 
     /**
@@ -440,6 +510,21 @@ class oxUtilsUrl extends oxSuperCfg
     }
 
     /**
+     * Return array of language key and language value.
+     *
+     * @param integer $languageId
+     *
+     * @return array
+     */
+    public function getUrlLanguageParameter($languageId)
+    {
+        $language = oxRegistry::getLang();
+        $languageParameter = array($language->getName() => $languageId);
+
+        return $languageParameter;
+    }
+
+    /**
      * Extracts host from given url and appends $aHosts with it
      *
      * @param string $sUrl    url to extract
@@ -453,7 +538,7 @@ class oxUtilsUrl extends oxSuperCfg
             }
         }
     }
-    
+
     /**
      * Appends language urls to $aHosts.
      *
@@ -510,24 +595,71 @@ class oxUtilsUrl extends oxSuperCfg
     /**
      * Returns url separator (?,&amp;) for adding new parameters.
      *
-     * @param string $sUrl
+     * @param string $url
      *
      * @return string
      */
-    private function _getUrlParametersSeparator($sUrl)
+    private function getUrlParametersSeparator($url)
     {
         /** @var oxStrRegular $oStr */
         $oStr = getStr();
 
-        $sSeparator = '';
-        if ($oStr->strpos($sUrl, '?') === false) {
-            $sSeparator = '?';
-        } else {
-            if ($sSeparator === '' && !$oStr->preg_match("/(\?|&(amp;)?)$/", $sUrl)) {
-                $sSeparator = '&amp;';
+        $urlSeparator = '&amp;';
+        if ($oStr->preg_match('/(\?|&(amp;)?)$/i', $url)) {
+            $urlSeparator = '';
+        } elseif ($oStr->strpos($url, '?') === false) {
+            $urlSeparator = '?';
+        }
+
+        return $urlSeparator;
+    }
+
+    /**
+     * Removes parameters which are not set.
+     *
+     * @param $parametersToAdd
+     */
+    private function removeNotSetParameters($parametersToAdd)
+    {
+        if (is_array($parametersToAdd) && !empty($parametersToAdd)) {
+            foreach ($parametersToAdd as $key => $value) {
+                if (is_null($value)) {
+                    unset($parametersToAdd[$key]);
+                }
             }
         }
 
-        return $sSeparator;
+        return $parametersToAdd;
+    }
+
+    /**
+     * @param array $aAddParams parameters to add to URL.
+     * @param string $query URL query part.
+     * @param bool $allowParameterOverwrite Decides if same parameters should overwrite query parameters.
+     *
+     * @return array
+     */
+    private function mergeDuplicatedParameters($aAddParams, $query, $allowParameterOverwrite = true)
+    {
+        parse_str($query, $currentUrlParameters);
+        if ($allowParameterOverwrite) {
+            $newParameters = array_merge($currentUrlParameters, $aAddParams);
+        } else {
+            $newFilteredParameters = array_diff_key($aAddParams, $currentUrlParameters);
+            $newParameters = array_merge($currentUrlParameters, $newFilteredParameters);
+        }
+        return $newParameters;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return string
+     */
+    private function rightTrimAmp($url)
+    {
+        /** @var oxStrRegular $oStr */
+        $oStr = getStr();
+        return $oStr->preg_replace('/(\?|&(amp;)?)$/i', '', $url);
     }
 }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -116,7 +116,7 @@ class oxSeoEncoderCategory extends oxSeoEncoder
 
                 if ($iLang != $oCat->getLanguage()) {
                     $sId = $oCat->getId();
-                    $oCat = oxNew('oxcategory');
+                    $oCat = oxNew('oxCategory');
                     $oCat->loadInLang($iLang, $sId);
                 }
 
@@ -257,7 +257,7 @@ class oxSeoEncoderCategory extends oxSeoEncoder
     protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
-        $oCat = oxNew("oxcategory");
+        $oCat = oxNew("oxCategory");
         if ($oCat->loadInLang($iLang, $sObjectId)) {
             $sSeoUrl = $this->getCategoryUri($oCat, $iLang);
         }

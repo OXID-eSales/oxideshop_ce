@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -90,8 +90,8 @@ class Unit_Core_oxoutputTest extends OxidTestCase
     public function testProcessWithEuroSign()
     {
         $oOutput = oxNew('oxOutput');
-        oxRegistry::getConfig()->setConfigParam('blSkipEuroReplace', false);
-        modConfig::getInstance()->setConfigParam('iUtfMode', 0);
+        $this->getConfig()->setConfigParam('blSkipEuroReplace', false);
+        $this->getConfig()->setConfigParam('iUtfMode', 0);
         $this->assertEquals('&euro;someting', $oOutput->process('山ometing', 'something'));
     }
 
@@ -101,8 +101,8 @@ class Unit_Core_oxoutputTest extends OxidTestCase
     public function testProcessWithEuroSignInUtfMode()
     {
         $oOutput = oxNew('oxOutput');
-        oxRegistry::getConfig()->setConfigParam('blSkipEuroReplace', false);
-        modConfig::getInstance()->setConfigParam('iUtfMode', 1);
+        $this->getConfig()->setConfigParam('blSkipEuroReplace', false);
+        $this->getConfig()->setConfigParam('iUtfMode', 1);
         $this->assertEquals('山ometing', $oOutput->process('山ometing', 'something'));
     }
 
@@ -112,15 +112,15 @@ class Unit_Core_oxoutputTest extends OxidTestCase
     public function testProcessWithEuroSignWithDisabledReplace()
     {
         $oOutput = oxNew('oxOutput');
-        oxRegistry::getConfig()->setConfigParam('blSkipEuroReplace', true);
-        oxRegistry::getConfig()->setConfigParam('iUtfMode', 0);
+        $this->getConfig()->setConfigParam('blSkipEuroReplace', true);
+        $this->getConfig()->setConfigParam('iUtfMode', 0);
 
         $this->assertEquals('山ometing', $oOutput->process('山ometing', 'something'));
     }
 
     public function testAddVersionTags()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $sVersion = $myConfig->getActiveShop()->oxshops__oxversion->value;
         $sVersion = $myConfig->getActiveShop()->oxshops__oxversion = new oxField("9.9", oxField::T_RAW);
         $sCurYear = date("Y");
@@ -146,7 +146,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
      */
     public function testAddVersionTagsUpperCase()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $sVersion = $myConfig->getActiveShop()->oxshops__oxversion->value;
         $sVersion = $myConfig->getActiveShop()->oxshops__oxversion = new oxField("9.9", oxField::T_RAW);
         $sCurYear = date("Y");

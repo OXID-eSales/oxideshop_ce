@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -64,7 +64,7 @@ class oxcmp_utils extends oxView
             $oProduct = oxNew('oxArticle');
             $oProduct->load($sId);
         } elseif ($myConfig->getConfigParam('bl_perfLoadAktion')) {
-            $oArtList = oxNew('oxarticlelist');
+            $oArtList = oxNew('oxArticleList');
             $oArtList->loadActionArticles('OXAFFILIATE');
             $oProduct = $oArtList->current();
         }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -141,7 +141,7 @@ class Unit_Admin_DeliveryArticlesAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('delivery_articles_ajax');
         $this->assertEquals("from " . $this->getArticlesViewTable() . " where 1 and " . $this->getArticlesViewTable() . ".oxparentid = '' and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = \"oxarticles\" )", trim($oView->UNITgetQuery()));
@@ -157,7 +157,7 @@ class Unit_Admin_DeliveryArticlesAjaxTest extends OxidTestCase
         $sSynchoxid = '_testAction';
 
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('delivery_articles_ajax');
         $this->assertEquals("from " . $this->getArticlesViewTable() . " where 1 and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = \"oxarticles\" )", trim($oView->UNITgetQuery()));
@@ -171,7 +171,7 @@ class Unit_Admin_DeliveryArticlesAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('delivery_articles_ajax');
         $this->assertEquals("from oxobject2delivery left join " . $this->getArticlesViewTable() . " on " . $this->getArticlesViewTable() . ".oxid=oxobject2delivery.oxobjectid where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = \"oxarticles\"", trim($oView->UNITgetQuery()));
@@ -186,8 +186,8 @@ class Unit_Admin_DeliveryArticlesAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('delivery_articles_ajax');
         $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticlesViewTable() . " on  " . $this->getArticlesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxobjectid where " . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "'and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = \"oxarticles\" )", trim($oView->UNITgetQuery()));
@@ -202,8 +202,8 @@ class Unit_Admin_DeliveryArticlesAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
 
         $oView = oxNew('delivery_articles_ajax');
@@ -234,8 +234,8 @@ class Unit_Admin_DeliveryArticlesAjaxTest extends OxidTestCase
     public function testRemoveArtFromDelAll()
     {
         $sOxid = '_testDelieveryRemoveAll';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
-        $this->getConfig()->setRequestParameter("all", true);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("all", true);
 
         $sSql = "select count(oxobject2delivery.oxid) from oxobject2delivery left join " . $this->getArticlesViewTable() . " on " . $this->getArticlesViewTable() . ".oxid=oxobject2delivery.oxobjectid where oxobject2delivery.oxdeliveryid = '_testDelieveryRemoveAll' and oxobject2delivery.oxtype = 'oxarticles'";
         $oView = oxNew('delivery_articles_ajax');
@@ -252,7 +252,7 @@ class Unit_Admin_DeliveryArticlesAjaxTest extends OxidTestCase
     public function testAddArtToDel()
     {
         $sSynchoxid = '_testActionAddArt';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
@@ -272,8 +272,8 @@ class Unit_Admin_DeliveryArticlesAjaxTest extends OxidTestCase
     public function testAddArtToDelAll()
     {
         $sSynchoxid = '_testActionAddArtAll';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
-        $this->getConfig()->setRequestParameter("all", true);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("all", true);
 
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(" . $this->getArticlesViewTable() . ".oxid) from " . $this->getArticlesViewTable() . " where 1 and " . $this->getArticlesViewTable() . ".oxparentid = '' and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxarticles' )");

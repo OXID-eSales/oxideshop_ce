@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -112,7 +112,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testGetTemplateDirs()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $aDirs = array();
         $aDirs[] = $myConfig->getTemplateDir(false);
         $sDir = $myConfig->getOutDir(true) . $myConfig->getConfigParam('sTheme') . "/tpl/";
@@ -138,7 +138,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testSetTemplateDir()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $aDirs[] = "testDir1";
         $aDirs[] = "testDir2";
         $aDirs[] = $myConfig->getTemplateDir(false);
@@ -181,9 +181,8 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testGetTemplateOutput()
     {
-        modConfig::getInstance()->setConfigParam('iDebug', 0);
-        $sPath = getTestsBasePath();
-        $sTpl = $sPath . "/misc/testTempOut.tpl";
+        $this->getConfig()->setConfigParam('iDebug', 0);
+        $sTpl = __DIR__ ."/../testData//misc/testTempOut.tpl";
 
         $oView = new oxview();
         $oView->addTplParam('articletitle', 'xxx');
@@ -221,9 +220,9 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
 
     public function testAddErrorToDisplayCustomDestinationFromPost()
     {
-        $myConfig = oxRegistry::getConfig();
-        $this->setRequestParam('CustomError', 'myDest');
-        $this->setRequestParam('actcontrol', 'oxwminibasket');
+        $myConfig = $this->getConfig();
+        $this->setRequestParameter('CustomError', 'myDest');
+        $this->setRequestParameter('actcontrol', 'oxwminibasket');
 
         $oSession = $this->getMock('oxSession', array('getId'));
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(true));
@@ -241,7 +240,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
 
     public function testAddErrorToDisplayDefaultDestination()
     {
-        $this->setRequestParam('actcontrol', 'start');
+        $this->setRequestParameter('actcontrol', 'start');
         $oSession = $this->getMock('oxSession', array('getId'));
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(true));
 
@@ -333,22 +332,27 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     // demo mode
     public function testFillCommonSmartyPropertiesANDSmartyCompileCheckDemoShop()
     {
-        modConfig::getInstance()->setConfigParam('iDebug', 1);
-        modConfig::getInstance()->setConfigParam('blDemoShop', 1);
+        $config = oxNew('oxConfig');
 
-        $myConfig = oxRegistry::getConfig();
+        $config->setConfigParam('iDebug', 1);
+        $config->setConfigParam('blDemoShop', 1);
 
-        $sTplDir = $myConfig->getTemplateDir($myConfig->isAdmin());
+        $sTplDir = $config->getTemplateDir($config->isAdmin());
 
         $aTemplatesDir = array();
         if ($sTplDir) {
             $aTemplatesDir[] = $sTplDir;
         }
 
-        $sTplDir = $myConfig->getOutDir() . $myConfig->getConfigParam('sTheme') . "/tpl/";
+        $sTplDir = $config->getOutDir() . $config->getConfigParam('sTheme') . "/tpl/";
         if ($sTplDir && !in_array($sTplDir, $aTemplatesDir)) {
             $aTemplatesDir[] = $sTplDir;
         }
+
+        $oVfsStreamWrapper = $this->getVfsStreamWrapper();
+        $oVfsStreamWrapper->createStructure(array('tmp_directory' => array()));
+        $compileDirectory = $oVfsStreamWrapper->getRootPath().'tmp_directory';
+        $config->setConfigParam('sCompileDir', $compileDirectory);
 
         $aCheck = array('php_handling'      => 2,
                         'security'          => true,
@@ -356,10 +360,10 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                         'left_delimiter'    => '[{',
                         'right_delimiter'   => '}]',
                         'caching'           => false,
-                        'compile_dir'       => $myConfig->getConfigParam('sCompileDir') . "/smarty/",
-                        'cache_dir'         => $myConfig->getConfigParam('sCompileDir') . "/smarty/",
+                        'compile_dir'       => $compileDirectory . "/smarty/",
+                        'cache_dir'         => $compileDirectory . "/smarty/",
                         'template_dir'      => $aTemplatesDir,
-                        'compile_id'        => md5($myConfig->getTemplateDir(false) . '__' . $myConfig->getShopId()),
+                        'compile_id'        => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
                         'debugging'         => true,
                         'compile_check'     => true,
                         'security_settings' => array(
@@ -396,7 +400,6 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                         )
         );
 
-
         $oSmarty = $this->getMock('smarty', array('register_resource', 'register_prefilter'));
         $oSmarty->expects($this->once())->method('register_resource')
             ->with(
@@ -414,45 +417,51 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
             ->with($this->equalTo('smarty_prefilter_oxblock'));
 
         $oUtilsView = new oxutilsview();
+        $oUtilsView->setConfig($config);
         $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
         $oUtilsView->UNITsmartyCompileCheck($oSmarty);
 
         foreach ($aCheck as $sVarName => $sVarValue) {
             $this->assertTrue(isset($oSmarty->$sVarName));
-            $this->assertEquals($oSmarty->$sVarName, $sVarValue, $sVarName);
+            $this->assertEquals($sVarValue, $oSmarty->$sVarName, $sVarName);
         }
     }
 
     // non demo mode
     public function testFillCommonSmartyPropertiesANDSmartyCompileCheck()
     {
-        modConfig::getInstance()->setConfigParam('iDebug', 1);
-        modConfig::getInstance()->setConfigParam('blDemoShop', 0);
+        $config = oxNew('oxConfig');
 
-        $myConfig = oxRegistry::getConfig();
+        $config->setConfigParam('iDebug', 1);
+        $config->setConfigParam('blDemoShop', 0);
 
-        $sTplDir = $myConfig->getTemplateDir($myConfig->isAdmin());
+        $sTplDir = $config->getTemplateDir($config->isAdmin());
 
         $aTemplatesDir = array();
         if ($sTplDir) {
             $aTemplatesDir[] = $sTplDir;
         }
 
-        $sTplDir = $myConfig->getOutDir() . $myConfig->getConfigParam('sTheme') . "/tpl/";
+        $sTplDir = $config->getOutDir() . $config->getConfigParam('sTheme') . "/tpl/";
         if ($sTplDir && !in_array($sTplDir, $aTemplatesDir)) {
             $aTemplatesDir[] = $sTplDir;
         }
 
+        $oVfsStreamWrapper = $this->getVfsStreamWrapper();
+        $oVfsStreamWrapper->createStructure(array('tmp_directory' => array()));
+        $compileDirectory = $oVfsStreamWrapper->getRootPath().'tmp_directory';
+        $config->setConfigParam('sCompileDir', $compileDirectory);
+
         $aCheck = array('php_handling'    => 2,
                         'security'        => false,
-                        'php_handling'    => (int) $myConfig->getConfigParam('iSmartyPhpHandling'),
+                        'php_handling'    => (int) $config->getConfigParam('iSmartyPhpHandling'),
                         'left_delimiter'  => '[{',
                         'right_delimiter' => '}]',
                         'caching'         => false,
-                        'compile_dir'     => $myConfig->getConfigParam('sCompileDir') . "/smarty/",
-                        'cache_dir'       => $myConfig->getConfigParam('sCompileDir') . "/smarty/",
+                        'compile_dir'     => $compileDirectory . "/smarty/",
+                        'cache_dir'       => $compileDirectory . "/smarty/",
                         'template_dir'    => $aTemplatesDir,
-                        'compile_id'      => md5($myConfig->getTemplateDir(false) . '__' . $myConfig->getShopId()),
+                        'compile_id'      => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
                         'debugging'       => true,
                         'compile_check'   => true);
 
@@ -461,6 +470,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $oSmarty->expects($this->once())->method('register_resource');
 
         $oUtilsView = new oxutilsview();
+        $oUtilsView->setConfig($config);
         $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
         $oUtilsView->UNITsmartyCompileCheck($oSmarty);
 
@@ -493,27 +503,27 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testGetTemplateBlock()
     {
-        $sMdir = realpath((dirname(__FILE__) . '/../moduleTestBlock'));
+        $vfsStream = $this->getVfsStreamWrapper();
+        $vfsStream->createFile('modules/test1/out/blocks/test2.tpl', '*this is module test block*');
+        $fakeShopDirectory = $vfsStream->getRootPath();
 
-        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
-        $oCfg->expects($this->any())->method('getConfigParam')->with($this->equalTo('sShopDir'))->will($this->returnValue($sMdir));
-        $aInfo = array('test1' => 'test1', '__sModule__' => '__sModule__');
+        $config = $this->getConfig();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory);
 
-        $oUV = $this->getMock(
-            oxTestModules::publicize('oxUtilsView', '_getTemplateBlock'),
-            array('getConfig', '_getActiveModuleInfo')
-        );
-        $oUV->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
-        $oUV->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
+        $message = "Template block file (${fakeShopDirectory}/modules/__sModule__/out/blocks/__sFile__.tpl) not found for '__sModule__' module.";
+        $this->setExpectedException('oxException', $message);
 
-        $this->assertEquals('*this is module test block*', $oUV->p_getTemplateBlock('test1', 'test2'));
+        $moduleInfo = array('test1' => 'test1', '__sModule__' => '__sModule__');
 
-        try {
-            $oUV->p_getTemplateBlock('__sModule__', '__sFile__');
-            $this->fail("no exception");
-        } catch (oxException $oE) {
-            $this->assertEquals("Template block file (__basepath__/modules/__sModule__/out/blocks/__sFile__.tpl) not found for '__sModule__' module.", str_replace($sMdir, '__basepath__', $oE->getMessage()));
-        }
+        /** @var oxUtilsView|PHPUnit_Framework_MockObject_MockObject $utilsView */
+        $utilsView = $this->getMock('oxUtilsView', array('getConfig', '_getActiveModuleInfo'));
+
+        $utilsView->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($moduleInfo));
+
+        $this->assertEquals('*this is module test block*', $utilsView->_getTemplateBlock('test1', 'test2'));
+
+        $utilsView->_getTemplateBlock('__sModule__', '__sFile__');
     }
 
     /**
@@ -521,24 +531,23 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testGetTemplateBlocks()
     {
-        $oCfg = $this->getMock('oxConfig', array('getShopId'));
-        $oCfg->expects($this->at(0))->method('getShopId')->will($this->returnValue('15'));
-        $oCfg->expects($this->at(1))->method('getShopId')->will($this->returnValue('15'));
-        $oCfg->expects($this->at(2))->method('getShopId')->will($this->returnValue('25'));
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        $config = $this->getMock('oxConfig', array('getShopId', 'init'));
+        $config->expects($this->at(0))->method('getShopId')->will($this->returnValue('15'));
+        $config->expects($this->at(1))->method('getShopId')->will($this->returnValue('15'));
+        $config->expects($this->at(2))->method('getShopId')->will($this->returnValue('25'));
+
         $aInfo = array('module1' => 'module1', 'module2' => 'module2');
 
-        $o = $this->getMock('oxUtilsView', array('getConfig', '_getActiveModuleInfo', '_getTemplateBlock'));
-        $o->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
-        $o->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
-        $o->expects($this->at(3))->method('_getTemplateBlock')
-            ->with($this->equalTo('module2'), $this->equalTo('contentfile3'))
-            ->will($this->returnValue('content3'));
-        $o->expects($this->at(4))->method('_getTemplateBlock')
-            ->with($this->equalTo('module1'), $this->equalTo('contentfile1'))
-            ->will($this->returnValue('content1'));
-        $o->expects($this->at(5))->method('_getTemplateBlock')
-            ->with($this->equalTo('module2'), $this->equalTo('contentfile2'))
-            ->will($this->returnValue('content2'));
+        /** @var oxUtilsView|PHPUnit_Framework_MockObject_MockObject $utilsView */
+        $utilsView = $this->getMock('oxUtilsView', array('_getActiveModuleInfo', '_getTemplateBlock'));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
+        $utilsView->expects($this->any())->method('_getTemplateBlock')->will($this->returnValueMap(array(
+            array('module2', 'contentfile3', 'content3'),
+            array('module1', 'contentfile1', 'content1'),
+            array('module2', 'contentfile2', 'content2'),
+        )));
+        $utilsView->setConfig($config);
 
         $this->assertEquals(
             array(
@@ -550,12 +559,12 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                      'content2',
                  ),
             ),
-            $o->getTemplateBlocks('filename.tpl')
+            $utilsView->getTemplateBlocks('filename.tpl')
         );
 
         $this->assertEquals(
             array(),
-            $o->getTemplateBlocks('filename.tpl')
+            $utilsView->getTemplateBlocks('filename.tpl')
         );
     }
 
@@ -564,25 +573,27 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testGetTemplateBlocksLogsExceptions()
     {
-        $oCfg = $this->getMock('oxConfig', array('getShopId'));
-        $oCfg->expects($this->at(0))->method('getShopId')->will($this->returnValue('15'));
-        $oCfg->expects($this->at(1))->method('getShopId')->will($this->returnValue('15'));
-        $oCfg->expects($this->at(2))->method('getShopId')->will($this->returnValue('25'));
+        $config = $this->getMock('oxConfig', array('getShopId', 'init'));
+        $config->expects($this->at(0))->method('getShopId')->will($this->returnValue('15'));
+        $config->expects($this->at(1))->method('getShopId')->will($this->returnValue('15'));
+        $config->expects($this->at(2))->method('getShopId')->will($this->returnValue('25'));
         $aInfo = array('module1' => 'module1', 'module2' => 'module2');
 
-        $oE = $this->getMock('oxException', array('debugOut'));
-        $oE->expects($this->once())->method('debugOut');
+        /** @var oxException|PHPUnit_Framework_MockObject_MockObject $exception */
+        $exception = $this->getMock('oxException', array('debugOut'));
+        $exception->expects($this->once())->method('debugOut');
 
-        $o = $this->getMock('oxUtilsView', array('getConfig', '_getActiveModuleInfo', '_getTemplateBlock'));
-        $o->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
-        $o->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
-        $o->expects($this->at(3))->method('_getTemplateBlock')
+        /** @var oxUtilsView|PHPUnit_Framework_MockObject_MockObject $utilsView */
+        $utilsView = $this->getMock('oxUtilsView', array('getConfig', '_getActiveModuleInfo', '_getTemplateBlock'));
+        $utilsView->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
+        $utilsView->expects($this->at(3))->method('_getTemplateBlock')
             ->with($this->equalTo('module2'), $this->equalTo('contentfile3'))
-            ->will($this->throwException($oE));
-        $o->expects($this->at(4))->method('_getTemplateBlock')
+            ->will($this->throwException($exception));
+        $utilsView->expects($this->at(4))->method('_getTemplateBlock')
             ->with($this->equalTo('module1'), $this->equalTo('contentfile1'))
             ->will($this->returnValue('content1'));
-        $o->expects($this->at(5))->method('_getTemplateBlock')
+        $utilsView->expects($this->at(5))->method('_getTemplateBlock')
             ->with($this->equalTo('module2'), $this->equalTo('contentfile2'))
             ->will($this->returnValue('content2'));
 
@@ -595,30 +606,29 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                      'content2',
                  ),
             ),
-            $o->getTemplateBlocks('filename.tpl')
+            $utilsView->getTemplateBlocks('filename.tpl')
         );
 
         $this->assertEquals(
             array(),
-            $o->getTemplateBlocks('filename.tpl')
+            $utilsView->getTemplateBlocks('filename.tpl')
         );
     }
-
 
     /**
      * file filtering test
      */
     public function testGetTemplateBlocksFileFilter()
     {
-        $oCfg = $this->getMock('oxConfig', array('getShopId'));
-        $oCfg->expects($this->at(0))->method('getShopId')->will($this->returnValue('15'));
-        $oCfg->expects($this->at(1))->method('getShopId')->will($this->returnValue('15'));
-        $aInfo = array('module99' => 'module99');
+        $oCfg = $this->getMock('oxConfig', array('getShopId', 'init'));
+        $oCfg->expects($this->any())->method('getShopId')->will($this->returnValue('15'));
 
-        $o = $this->getMock('oxUtilsView', array('getConfig', '_getTemplateBlock', '_getActiveModuleInfo'));
-        $o->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
-        $o->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
-        $o->expects($this->once())->method('_getTemplateBlock')
+        $aInfo = array('module99' => 'module99');
+        /** @var oxUtilsView|PHPUnit_Framework_MockObject_MockObject $utilsView */
+        $utilsView = $this->getMock('oxUtilsView', array('getConfig', '_getTemplateBlock', '_getActiveModuleInfo'));
+        $utilsView->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
+        $utilsView->expects($this->once())->method('_getTemplateBlock')
             ->with($this->equalTo('module99'), $this->equalTo('contentfile99'))
             ->will($this->returnValue('content99'));
 
@@ -628,7 +638,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                      'content99',
                  ),
             ),
-            $o->getTemplateBlocks('inc/filename.tpl')
+            $utilsView->getTemplateBlocks('inc/filename.tpl')
         );
     }
 
@@ -648,9 +658,17 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testGetSmartyDir()
     {
-        $oUV = new oxUtilsView();
+        $config = oxNew('oxConfig');
 
-        $sExp = $this->getConfigParam('sCompileDir') . "/smarty/";
+        $oUV = new oxUtilsView();
+        $oUV->setConfig($config);
+
+        $oVfsStreamWrapper = $this->getVfsStreamWrapper();
+        $oVfsStreamWrapper->createStructure(array('tmp_directory' => array()));
+        $compileDirectory = $oVfsStreamWrapper->getRootPath().'tmp_directory';
+        $config->setConfigParam('sCompileDir', $compileDirectory);
+
+        $sExp = $compileDirectory . "/smarty/";
 
         $this->assertSame($sExp, $oUV->getSmartyDir());
 

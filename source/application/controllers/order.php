@@ -529,7 +529,7 @@ class order extends oxUBase
 
         // delivery address
         if (oxRegistry::getSession()->getVariable('deladrid')) {
-            $oDelAdress = oxNew('oxaddress');
+            $oDelAdress = oxNew('oxAddress');
             $oDelAdress->load(oxRegistry::getSession()->getVariable('deladrid'));
 
             $sDelAddress .= $oDelAdress->getEncodedDeliveryAddress();

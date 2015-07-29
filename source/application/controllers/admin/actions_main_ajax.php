@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -192,7 +192,7 @@ class actions_main_ajax extends ajaxListComponent
         if ($soxId && $soxId != "-1" && is_array($aArticles)) {
             $sShopId = $myConfig->getShopId();
             foreach ($aArticles as $sAdd) {
-                $oNewGroup = oxNew('oxbase');
+                $oNewGroup = oxNew('oxBase');
                 $oNewGroup->init('oxactions2article');
                 $oNewGroup->oxactions2article__oxshopid = new oxField($sShopId);
                 $oNewGroup->oxactions2article__oxactionid = new oxField($soxId);

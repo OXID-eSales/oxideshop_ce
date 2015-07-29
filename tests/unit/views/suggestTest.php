@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -42,7 +42,7 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testGetProduct()
     {
-        modConfig::setRequestParameter('anid', '2000');
+        $this->setRequestParameter('anid', '2000');
         $oSuggest = $this->getProxyClass("suggest");
 
         $this->assertEquals('2000', $oSuggest->getProduct()->getId());
@@ -51,7 +51,7 @@ class Unit_Views_suggestTest extends OxidTestCase
     public function testGetCrossSelling()
     {
         $oSuggest = $this->getProxyClass("suggest");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("1849");
         $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oSuggest->getCrossSelling();
@@ -64,7 +64,7 @@ class Unit_Views_suggestTest extends OxidTestCase
     public function testGetSimilarProducts()
     {
         $oSuggest = $this->getProxyClass("suggest");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load("2000");
         $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oSuggest->getSimilarProducts();
@@ -77,7 +77,7 @@ class Unit_Views_suggestTest extends OxidTestCase
     public function testGetRecommList()
     {
         $myDB = oxDb::getDB();
-        $sShopId = oxRegistry::getConfig()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
         // adding article to recommendlist
         $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "' . $sShopId . '" ) ';
         $myDB->Execute($sQ);
@@ -85,7 +85,7 @@ class Unit_Views_suggestTest extends OxidTestCase
         $myDB->Execute($sQ);
 
         $oSuggest = $this->getProxyClass("suggest");
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->load('2000');
         $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $aLists = $oSuggest->getRecommList();
@@ -99,7 +99,7 @@ class Unit_Views_suggestTest extends OxidTestCase
     public function testGetSuggestData()
     {
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
-        modConfig::setRequestParameter('editval', array('name' => 'test', 'value' => 'testvalue'));
+        $this->setRequestParameter('editval', array('name' => 'test', 'value' => 'testvalue'));
 
         /** @var Suggest $oSuggest */
         $oSuggest = $this->getProxyClass("suggest");
@@ -113,7 +113,7 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testSendSuggestWithoutCaptcha()
     {
-        modConfig::setRequestParameter('editval', array('name' => 'test', 'value' => 'testvalue'));
+        $this->setRequestParameter('editval', array('name' => 'test', 'value' => 'testvalue'));
 
         /** @var Suggest $oSuggest */
         $oSuggest = $this->getProxyClass("suggest");
@@ -122,15 +122,15 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testGetLink()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $oCfg = oxRegistry::getConfig();
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        $oCfg = $this->getConfig();
         $oV = $this->getMock('suggest', array('_getRequestParams', '_getSeoRequestParams'));
         $oV->expects($this->any())->method('_getRequestParams')->will($this->returnValue('cl=suggest'));
         $oV->expects($this->any())->method('_getSeoRequestParams')->will($this->returnValue('cl=suggest'));
 
         $sCnid = '8a142c3e60a535f16.78077188';
-        modConfig::setRequestParameter('anid', '2000');
-        modConfig::setRequestParameter('cnid', $sCnid);
+        $this->setRequestParameter('anid', '2000');
+        $this->setRequestParameter('cnid', $sCnid);
         $this->assertEquals($oCfg->getShopURL() . 'empfehlen/?cnid=' . $sCnid . '&amp;anid=2000', $oV->getLink());
         $this->assertEquals($oCfg->getShopURL() . 'empfehlen/?cnid=' . $sCnid . '&amp;anid=2000', $oV->getLink(0));
         $this->assertEquals($oCfg->getShopURL() . 'en/recommend/?cnid=' . $sCnid . '&amp;anid=2000', $oV->getLink(1));
@@ -168,7 +168,7 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testSendNoEditval()
     {
-        modConfig::setRequestParameter('editval', null);
+        $this->setRequestParameter('editval', null);
 
         /** @var Suggest $oSuggest */
         $oSuggest = oxnew('Suggest');
@@ -177,7 +177,7 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testSendPass()
     {
-        modConfig::setRequestParameter(
+        $this->setRequestParameter(
             'editval',
             array(
                 'name'         => 'test',
@@ -209,11 +209,11 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oSuggest->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
         $oSuggest->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
 
-        modConfig::setRequestParameter('searchparam', "searchparam&&A");
-        modConfig::setRequestParameter('searchcnid', "searchcnid&&A");
-        modConfig::setRequestParameter('searchvendor', "searchvendor&&A");
-        modConfig::setRequestParameter('searchmanufacturer', "searchmanufacturer&&A");
-        modConfig::setRequestParameter('listtype', "listtype&&A");
+        $this->setRequestParameter('searchparam', "searchparam&&A");
+        $this->setRequestParameter('searchcnid', "searchcnid&&A");
+        $this->setRequestParameter('searchvendor', "searchvendor&&A");
+        $this->setRequestParameter('searchmanufacturer', "searchmanufacturer&&A");
+        $this->setRequestParameter('listtype', "listtype&&A");
 
         $sExpected = 'details?anid=XProduct&searchparam=searchparam%26%26A&searchcnid=searchcnid&amp;&amp;A&searchvendor=searchvendor&amp;&amp;A&searchmanufacturer=searchmanufacturer&amp;&amp;A&listtype=listtype&amp;&amp;A';
         $this->assertEquals($sExpected, $oSuggest->send());
@@ -221,7 +221,7 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testSendPassInvalidMail()
     {
-        modConfig::setRequestParameter(
+        $this->setRequestParameter(
             'editval',
             array(
                 'name'         => 'test',

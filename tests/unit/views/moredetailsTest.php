@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -45,7 +45,7 @@ class Unit_Views_moredetailsTest extends OxidTestCase
     public function testGetProductId()
     {
         $oMoreDetails = $this->getProxyClass('moredetails');
-        modConfig::setRequestParameter('anid', '2000');
+        $this->setRequestParameter('anid', '2000');
         $oMoreDetails->init();
 
         $this->assertEquals('2000', $oMoreDetails->getProductId());
@@ -59,7 +59,7 @@ class Unit_Views_moredetailsTest extends OxidTestCase
     public function testGetProduct()
     {
         $oMoreDetails = $this->getProxyClass('moredetails');
-        modConfig::setRequestParameter('anid', '2000');
+        $this->setRequestParameter('anid', '2000');
         $oMoreDetails->init();
 
         $this->assertEquals('2000', $oMoreDetails->getProduct()->getId());
@@ -73,7 +73,7 @@ class Unit_Views_moredetailsTest extends OxidTestCase
     public function testGetActPictureId()
     {
         $oMoreDetails = $this->getProxyClass('moredetails');
-        modConfig::setRequestParameter('anid', '096a1b0849d5ffa4dd48cd388902420b');
+        $this->setRequestParameter('anid', '096a1b0849d5ffa4dd48cd388902420b');
         $oMoreDetails->init();
 
         $this->assertEquals('1', $oMoreDetails->getActPictureId());
@@ -87,7 +87,7 @@ class Unit_Views_moredetailsTest extends OxidTestCase
     public function testGetArtZoomPics()
     {
         $oMoreDetails = $this->getProxyClass('moredetails');
-        modConfig::setRequestParameter('anid', '096a1b0849d5ffa4dd48cd388902420b');
+        $this->setRequestParameter('anid', '096a1b0849d5ffa4dd48cd388902420b');
         $oMoreDetails->init();
         $aZoom = $oMoreDetails->getArtZoomPics();
 

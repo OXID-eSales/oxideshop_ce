@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -145,7 +145,7 @@ class Order_Article extends oxAdminDetails
             if ($rs != false && $rs->recordCount() > 0) {
                 $sArtId = $rs->fields['OXPARENTID'] ? $rs->fields['OXPARENTID'] : $rs->fields['OXID'];
 
-                $oProduct = oxNew("oxarticle");
+                $oProduct = oxNew("oxArticle");
                 if ($oProduct->load($sArtId)) {
                     $this->_oMainSearchProduct = $oProduct;
                 }
@@ -187,7 +187,7 @@ class Order_Article extends oxAdminDetails
     {
         $sOxid = oxRegistry::getConfig()->getRequestParameter('aid');
         $dAmount = oxRegistry::getConfig()->getRequestParameter('am');
-        $oProduct = oxNew("oxarticle");
+        $oProduct = oxNew("oxArticle");
 
         if ($sOxid && $dAmount && $oProduct->load($sOxid)) {
 

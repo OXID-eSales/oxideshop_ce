@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -64,7 +64,7 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
     public function testGetQuery()
     {
         $sOxid = '_testOxid';
-        modConfig::setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('attribute_order_ajax');
 
@@ -90,7 +90,7 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
      */
     public function testSetSorting()
     {
-        modconfig::getInstance()->setConfigParam("iDebug", 1);
+        $this->getConfig()->setConfigParam("iDebug", 1);
 
 
         $sViewTable = "oxv_oxattribute_de";
@@ -110,9 +110,9 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
     public function testSetSortingOxid()
     {
         $sOxid = '_testObject';
-        modConfig::setRequestParameter("oxid", $sOxid);
-        modconfig::getInstance()->setConfigParam("iDebug", 1);
-        modConfig::setRequestParameter("sortoxid", 0);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->getConfig()->setConfigParam("iDebug", 1);
+        $this->setRequestParameter("sortoxid", 0);
 
 
         $sViewTable = "oxv_oxattribute_de";

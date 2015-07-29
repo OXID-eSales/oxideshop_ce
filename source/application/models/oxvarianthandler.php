@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -155,7 +155,7 @@ class oxVariantHandler extends oxSuperCfg
                 foreach ($oVariants as $oSimpleVariant) {
                     if (!$iCounter) {
                         //we just update the first variant
-                        $oVariant = oxNew("oxarticle");
+                        $oVariant = oxNew("oxArticle");
                         $oVariant->setEnableMultilang(false);
                         $oVariant->load($oSimpleVariant->oxarticles__oxid->value);
                         $oVariant->oxarticles__oxprice->setValue($oVariant->oxarticles__oxprice->value + $dPriceMod);

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -58,7 +58,7 @@ class Article_Files extends oxAdminDetails
         $oArticle = $this->getArticle();
         // variant handling
         if ($oArticle->oxarticles__oxparentid->value) {
-            $oParentArticle = oxNew('oxarticle');
+            $oParentArticle = oxNew('oxArticle');
             $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
             $oArticle->oxarticles__oxisdownloadable = new oxField($oParentArticle->oxarticles__oxisdownloadable->value);
             $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;

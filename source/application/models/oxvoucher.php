@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -165,11 +165,11 @@ class oxVoucher extends oxBase
     public function getDiscountValue($dPrice)
     {
         if ($this->_isProductVoucher()) {
-            return $this->_getProductDiscoutValue((double) $dPrice);
+            return $this->_getProductDiscountValue((double) $dPrice);
         } elseif ($this->_isCategoryVoucher()) {
-            return $this->_getCategoryDiscoutValue((double) $dPrice);
+            return $this->_getCategoryDiscountValue((double) $dPrice);
         } else {
-            return $this->_getGenericDiscoutValue((double) $dPrice);
+            return $this->_getGenericDiscountValue((double) $dPrice);
         }
     }
 
@@ -473,22 +473,24 @@ class oxVoucher extends oxBase
     }
 
     /**
-     * create oxVoucherSeries object of this voucher
+     * create oxVoucherSerie object of this voucher
      *
-     * @return oxVoucherSeries
+     * @throws oxObjectException
+     * 
+     * @return oxVoucherSerie
      */
     public function getSerie()
     {
         if ($this->_oSerie !== null) {
             return $this->_oSerie;
         }
-        $oSeries = oxNew('oxVoucherSerie');
-        if (!$oSeries->load($this->oxvouchers__oxvoucherserieid->value)) {
+        $oSerie = oxNew('oxVoucherSerie');
+        if (!$oSerie->load($this->oxvouchers__oxvoucherserieid->value)) {
             throw oxNew("oxObjectException");
         }
-        $this->_oSerie = $oSeries;
+        $this->_oSerie = $oSerie;
 
-        return $oSeries;
+        return $oSerie;
     }
 
     /**
@@ -643,9 +645,25 @@ class oxVoucher extends oxBase
      *
      * @throws oxVoucherException exception
      *
+     * @deprecated on b-dev (2015-03-31); Use function _getGenericDiscountValue()
+     *
      * @return double
      */
     protected function _getGenericDiscoutValue($dPrice)
+    {
+        return $this->_getGenericDiscountValue($dPrice);
+    }
+
+    /**
+     * Returns the discount value used.
+     *
+     * @param double $dPrice price to calculate discount on it
+     *
+     * @throws oxVoucherException exception
+     *
+     * @return double
+     */
+    protected function _getGenericDiscountValue($dPrice)
     {
         $oSeries = $this->getSerie();
         if ($oSeries->oxvoucherseries__oxdiscounttype->value == 'absolute') {
@@ -687,6 +705,21 @@ class oxVoucher extends oxBase
         return $oSeries->oxvoucherseries__oxdiscounttype->value;
     }
 
+    /**
+     * Returns the discount value used, if voucher is aplied only for specific products.
+     *
+     * @param double $dPrice price to calculate discount on it
+     *
+     * @throws oxVoucherException exception
+     *
+     * @deprecated on b-dev (2015-03-31); Use function _getProductDiscountValue()
+     *
+     * @return double
+     */
+    protected function _getProductDiscoutValue($dPrice)
+    {
+        return $this->_getProductDiscountValue($dPrice);
+    }
 
     /**
      * Returns the discount value used, if voucher is aplied only for specific products.
@@ -697,7 +730,7 @@ class oxVoucher extends oxBase
      *
      * @return double
      */
-    protected function _getProductDiscoutValue($dPrice)
+    protected function _getProductDiscountValue($dPrice)
     {
         $oDiscount = $this->_getSerieDiscount();
         $aBasketItems = $this->_getBasketItems($oDiscount);
@@ -753,6 +786,22 @@ class oxVoucher extends oxBase
 
         return $dVoucher;
     }
+    
+    /**
+     * Returns the discount value used, if voucher is applied only for specific categories.
+     *
+     * @param double $dPrice price to calculate discount on it
+     *
+     * @throws oxVoucherException exception
+     *
+     * @deprecated on b-dev (2015-03-31); Use function _getCategoryDiscountValue()
+     *
+     * @return double
+     */
+    protected function _getCategoryDiscoutValue($dPrice)
+    {
+        return $this->_getCategoryDiscountValue($dPrice);
+    }
 
     /**
      * Returns the discount value used, if voucher is applied only for specific categories.
@@ -763,7 +812,7 @@ class oxVoucher extends oxBase
      *
      * @return double
      */
-    protected function _getCategoryDiscoutValue($dPrice)
+    protected function _getCategoryDiscountValue($dPrice)
     {
         $oDiscount = $this->_getSerieDiscount();
         $aBasketItems = $this->_getBasketItems($oDiscount);

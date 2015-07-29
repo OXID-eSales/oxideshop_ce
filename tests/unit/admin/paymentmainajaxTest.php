@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -88,7 +88,7 @@ class Unit_Admin_PaymentMainAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('payment_main_ajax');
         $this->assertEquals("from oxv_oxgroups_de where  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )", trim($oView->UNITgetQuery()));
@@ -102,7 +102,7 @@ class Unit_Admin_PaymentMainAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('payment_main_ajax');
         $this->assertEquals("from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sOxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid", trim($oView->UNITgetQuery()));
@@ -117,8 +117,8 @@ class Unit_Admin_PaymentMainAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('payment_main_ajax');
         $this->assertEquals("from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sOxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid and  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )", trim($oView->UNITgetQuery()));
@@ -148,8 +148,8 @@ class Unit_Admin_PaymentMainAjaxTest extends OxidTestCase
     public function testRemovePayGroupAll()
     {
         $sOxid = '_testPayRemoveAll';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
-        $this->getConfig()->setRequestParameter("all", true);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("all", true);
 
         $sSql = "select count(oxid) from oxobject2group where oxobjectid = '" . $sOxid . "'";
         $oView = oxNew('payment_main_ajax');
@@ -166,7 +166,7 @@ class Unit_Admin_PaymentMainAjaxTest extends OxidTestCase
     public function testAddPayGroup()
     {
         $sSynchoxid = '_testPayAdd';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $sSql = "select count(oxid) from oxobject2group where oxobjectid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
@@ -186,8 +186,8 @@ class Unit_Admin_PaymentMainAjaxTest extends OxidTestCase
     public function testAddPayGroupAll()
     {
         $sSynchoxid = '_testPayAddAll';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
-        $this->getConfig()->setRequestParameter("all", true);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("all", true);
 
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(oxv_oxgroups_de.oxid) from oxv_oxgroups_de where  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )");

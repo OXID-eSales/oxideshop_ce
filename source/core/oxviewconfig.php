@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -1380,10 +1380,11 @@ class oxViewConfig extends oxSuperCfg
     {
         $blModuleIsActive = false;
 
-        $aModules = $this->getConfig()->getConfigParam('aModules');
+        // use aModuleVersions instead of aModules, because aModules gives only modules which extend oxid classes
+        $aModuleVersions = $this->getConfig()->getConfigParam('aModuleVersions');
 
-        if (is_array($aModules)) {
-            $blModuleIsActive = $this->_moduleExists($sModuleId, $aModules);
+        if (is_array($aModuleVersions)) {
+            $blModuleIsActive = $this->_moduleExists($sModuleId, $aModuleVersions);
 
             if ($blModuleIsActive) {
                 $blModuleIsActive = $this->_isModuleEnabled($sModuleId) && $this->_isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo);
@@ -1524,19 +1525,18 @@ class oxViewConfig extends oxSuperCfg
      * Checks if module exists.
      *
      * @param string $sModuleId Module id
-     * @param array  $aModules  Modules
+     * @param array  $aModuleVersions  Modules from oxconfig 'aModuleVersions'
      *
      * @return bool
      */
-    private function _moduleExists($sModuleId, $aModules)
+    private function _moduleExists($sModuleId, $aModuleVersions)
     {
         $blModuleExists = false;
-        foreach ($aModules as $sExtendPath) {
-            if (false !== strpos($sExtendPath, '/' . $sModuleId . '/')) {
-                $blModuleExists = true;
-                break;
-            }
+
+        if (in_array($sModuleId, array_keys($aModuleVersions) )) {
+            $blModuleExists = true;
         }
+
         return $blModuleExists;
     }
 

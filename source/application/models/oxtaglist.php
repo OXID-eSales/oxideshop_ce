@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -81,7 +81,7 @@ class oxTagList extends oxI18n implements oxITagList
         $sViewName = getViewName('oxartextends', $iLang);
 
         // check if article is still active
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $oArticle->setLanguage($iLang);
         $sArtActive = $oArticle->getActiveCheckQuery(true);
 

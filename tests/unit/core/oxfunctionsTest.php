@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -100,7 +100,7 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
 
     public function test_dumpVar()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         @unlink($myConfig->getConfigParam('sCompileDir') . "/vardump.txt");
         dumpVar("bobo", true);
         $file = file_get_contents($myConfig->getConfigParam('sCompileDir') . "/vardump.txt");
@@ -153,7 +153,7 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
         $sRes = 'aa';
         $this->assertEquals(true, ox_get_template('blah', $sRes, $fake));
         $this->assertEquals('test', $sRes);
-        if (oxRegistry::getConfig()->isDemoShop()) {
+        if ($this->getConfig()->isDemoShop()) {
             $this->assertEquals($fake->security, true);
         }
     }

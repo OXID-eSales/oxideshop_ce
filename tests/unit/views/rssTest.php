@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -44,12 +44,12 @@ class Unit_Views_rssTest extends OxidTestCase
     {
         $oRss = oxNew('rss');
 
-        modConfig::setRequestParameter('cur', 2);
-        modSession::getInstance()->setVar('currency', 4);
+        $this->setRequestParameter('cur', 2);
+        $this->getSession()->setVariable('currency', 4);
 
         $this->assertSame(null, $oRss->init());
 
-        $this->assertEquals(2, modSession::getInstance()->getVar('currency'));
+        $this->assertEquals(2, $this->getSession()->getVariable('currency'));
     }
 
     public function testGetRssFeed()
@@ -180,10 +180,10 @@ class Unit_Views_rssTest extends OxidTestCase
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
 
-        modConfig::setRequestParameter('searchparam', 'x&searchparam');
-        modConfig::setRequestParameter('searchcnid', 'x&searchcnid');
-        modConfig::setRequestParameter('searchvendor', 'x&searchvendor');
-        modConfig::setRequestParameter('searchmanufacturer', 'x&searchmanufacturer');
+        $this->setRequestParameter('searchparam', 'x&searchparam');
+        $this->setRequestParameter('searchcnid', 'x&searchcnid');
+        $this->setRequestParameter('searchvendor', 'x&searchvendor');
+        $this->setRequestParameter('searchmanufacturer', 'x&searchmanufacturer');
 
         $oRssFeed = $this->getMock('stdclass', array('loadSearchArticles'));
         $oRssFeed->expects($this->once())->method('loadSearchArticles')->with(
@@ -270,7 +270,7 @@ class Unit_Views_rssTest extends OxidTestCase
         $oRss->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $oRss->expects($this->once())->method('_getRssFeed')->will($this->returnValue($oRssFeed));
 
-        modConfig::setRequestParameter('cat', 'x&objid');
+        $this->setRequestParameter('cat', 'x&objid');
         oxTestModules::addModuleObject('oxCategory', $oObj);
 
         $oRss->catarts();
@@ -310,7 +310,7 @@ class Unit_Views_rssTest extends OxidTestCase
         $oRss->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $oRss->expects($this->once())->method('_getRssFeed')->will($this->returnValue($oRssFeed));
 
-        modConfig::setRequestParameter('anid', 'x&objid');
+        $this->setRequestParameter('anid', 'x&objid');
         oxTestModules::addModuleObject('oxarticle', $oObj);
 
         $oRss->recommlists();
@@ -351,7 +351,7 @@ class Unit_Views_rssTest extends OxidTestCase
         $oRss->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $oRss->expects($this->once())->method('_getRssFeed')->will($this->returnValue($oRssFeed));
 
-        modConfig::setRequestParameter('recommid', 'x&objid');
+        $this->setRequestParameter('recommid', 'x&objid');
         oxTestModules::addModuleObject('oxrecommlist', $oObj);
 
         $oRss->recommlistarts();
@@ -373,7 +373,7 @@ class Unit_Views_rssTest extends OxidTestCase
         $oRss->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $oRss->expects($this->never())->method('_getRssFeed');
 
-        modConfig::setRequestParameter('recommid', 'x&objid');
+        $this->setRequestParameter('recommid', 'x&objid');
         oxTestModules::addModuleObject('oxrecommlist', $oObj);
 
         $oRss->recommlistarts();
@@ -395,7 +395,7 @@ class Unit_Views_rssTest extends OxidTestCase
         $oRss->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
         $oRss->expects($this->never())->method('_getRssFeed');
 
-        modConfig::setRequestParameter('anid', 'x&objid');
+        $this->setRequestParameter('anid', 'x&objid');
         oxTestModules::addModuleObject('oxarticle', $oObj);
 
         $oRss->recommlists();

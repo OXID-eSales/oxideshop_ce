@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -646,13 +646,13 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $myConfig->setConfigParam('sDefaultListDisplayType', 'grid');
         $this->assertEquals($aNrofCatArticlesInGrid, $oViewCfg->getNrOfCatArticles());
 
-        $oSession->setVar("ldtype", "grid");
+        $oSession->setVariable("ldtype", "grid");
         $this->assertEquals($aNrofCatArticlesInGrid, $oViewCfg->getNrOfCatArticles());
 
-        $oSession->setVar("ldtype", "line");
+        $oSession->setVariable("ldtype", "line");
         $this->assertEquals($aNrofCatArticles, $oViewCfg->getNrOfCatArticles());
 
-        $oSession->setVar("ldtype", "infogrid");
+        $oSession->setVariable("ldtype", "infogrid");
         $this->assertEquals($aNrofCatArticles, $oViewCfg->getNrOfCatArticles());
     }
 
@@ -669,57 +669,89 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
     public function testGetModulePath()
     {
-        $sMdir = realpath((dirname(__FILE__) . '/../moduleTestBlock'));
+        $config = $this->getConfig();
+        $fakeShopDirectory = $this->createModuleStructure();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory . "/");
 
-        $myConfig = $this->getConfig();
-        $myConfig->setConfigParam("sShopDir", $sMdir . "/");
+        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        $viewConfig = $this->getMock('oxViewConfig', array('getConfig'));
+        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
-        $oVC = $this->getMock('oxViewConfig', array('getConfig'));
-        $oVC->expects($this->any())->method('getConfig')->will($this->returnValue($myConfig));
+        $this->assertEquals($fakeShopDirectory . "/modules/test1/out", $viewConfig->getModulePath('test1', 'out'));
+        $this->assertEquals($fakeShopDirectory . "/modules/test1/out/", $viewConfig->getModulePath('test1', '/out/'));
 
-        $this->assertEquals($sMdir . "/modules/test1/out", $oVC->getModulePath('test1', 'out'));
-        $this->assertEquals($sMdir . "/modules/test1/out/", $oVC->getModulePath('test1', '/out/'));
+        $this->assertEquals($fakeShopDirectory . "/modules/test1/out/blocks/test2.tpl", $viewConfig->getModulePath('test1', 'out/blocks/test2.tpl'));
+        $this->assertEquals($fakeShopDirectory . "/modules/test1/out/blocks/test2.tpl", $viewConfig->getModulePath('test1', '/out/blocks/test2.tpl'));
+    }
 
-        $this->assertEquals($sMdir . "/modules/test1/out/blocks/test2.tpl", $oVC->getModulePath('test1', 'out/blocks/test2.tpl'));
-        $this->assertEquals($sMdir . "/modules/test1/out/blocks/test2.tpl", $oVC->getModulePath('test1', '/out/blocks/test2.tpl'));
+    public function testGetModulePathExceptionThrownWhenPathNotFoundAndDebugEnabled()
+    {
+        $config = $this->getConfig();
+        $config->setConfigParam("iDebug", -1);
 
-        $this->getConfig()->setConfigParam("iDebug", false);
-        $this->assertEquals('', $oVC->getModulePath('test1', '/out/blocks/testWWW.tpl'));
-        // check exception throwing
-        try {
-            $this->getConfig()->setConfigParam("iDebug", true);
-            $oVC->getModulePath('test1', '/out/blocks/test1.tpl');
-            $this->fail("should have thrown");
-        } catch (oxFileException $e) {
-            $this->assertEquals("Requested file not found for module test1 (" . $sMdir . "/modules/test1/out/blocks/test1.tpl)", $e->getMessage());
-        }
+        $fakeShopDirectory = $this->createModuleStructure();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory);
+
+        $message = "Requested file not found for module test1 (" . $fakeShopDirectory . "modules/test1/out/blocks/non_existing_template.tpl)";
+        $this->setExpectedException('oxFileException', $message);
+
+        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        $viewConfig = $this->getMock('oxViewConfig', array('getConfig'));
+        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+
+        $viewConfig->getModulePath('test1', '/out/blocks/non_existing_template.tpl');
+    }
+
+    public function testGetModulePathExceptionThrownWhenPathNotFoundAndDebugDisabled()
+    {
+        $config = $this->getConfig();
+        $config->setConfigParam("iDebug", 0);
+
+        $fakeShopDirectory = $this->createModuleStructure();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory . "/");
+
+        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        $viewConfig = $this->getMock('oxViewConfig', array('getConfig'));
+        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+
+        $this->assertEquals('', $viewConfig->getModulePath('test1', '/out/blocks/non_existing_template.tpl'));
     }
 
     public function testGetModuleUrl()
     {
-        $sBaseUrl = $this->getConfig()->getCurrentShopUrl();
-        $sMdir = realpath((dirname(__FILE__) . '/../moduleTestBlock'));
+        $config = $this->getConfig();
+        $config->setConfigParam("iDebug", -1);
 
-        $myConfig = $this->getConfig();
-        $myConfig->setConfigParam("sShopDir", $sMdir . "/");
+        $fakeShopDirectory = $this->createModuleStructure();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory);
 
-        $oVC = $this->getMock('oxViewConfig', array('getConfig'));
-        $oVC->expects($this->any())->method('getConfig')->will($this->returnValue($myConfig));
+        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        $viewConfig = $this->getMock('oxViewConfig', array('getConfig'));
+        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
-        $this->assertEquals("{$sBaseUrl}modules/test1/out", $oVC->getModuleUrl('test1', 'out'));
-        $this->assertEquals("{$sBaseUrl}modules/test1/out/", $oVC->getModuleUrl('test1', '/out/'));
+        $baseUrl = $config->getCurrentShopUrl();
+        $this->assertEquals("{$baseUrl}modules/test1/out", $viewConfig->getModuleUrl('test1', 'out'));
+        $this->assertEquals("{$baseUrl}modules/test1/out/", $viewConfig->getModuleUrl('test1', '/out/'));
+        $this->assertEquals("{$baseUrl}modules/test1/out/blocks/test2.tpl", $viewConfig->getModuleUrl('test1', 'out/blocks/test2.tpl'));
+        $this->assertEquals("{$baseUrl}modules/test1/out/blocks/test2.tpl", $viewConfig->getModuleUrl('test1', '/out/blocks/test2.tpl'));
+    }
 
-        $this->assertEquals("{$sBaseUrl}modules/test1/out/blocks/test2.tpl", $oVC->getModuleUrl('test1', 'out/blocks/test2.tpl'));
-        $this->assertEquals("{$sBaseUrl}modules/test1/out/blocks/test2.tpl", $oVC->getModuleUrl('test1', '/out/blocks/test2.tpl'));
+    public function testGetModuleUrlExceptionThrownWhenPathNotFoundAndDebugEnabled()
+    {
+        $config = $this->getConfig();
+        $config->setConfigParam("iDebug", -1);
 
-        // check exception throwing
-        try {
-            $oVC->getModuleUrl('test1', '/out/blocks/test1.tpl');
-            $this->fail("should have thrown");
-        } catch (oxFileException $e) {
-            $sBaseUrl = $this->getConfig()->getConfigParam('sShopDir');
-            $this->assertEquals("Requested file not found for module test1 (" . $sMdir . "/modules/test1/out/blocks/test1.tpl)", $e->getMessage());
-        }
+        $fakeShopDirectory = $this->createModuleStructure();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory);
+
+        $message = "Requested file not found for module test1 (" . $fakeShopDirectory . "modules/test1/out/blocks/non_existing_template.tpl)";
+        $this->setExpectedException('oxFileException', $message);
+
+        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        $viewConfig = $this->getMock('oxViewConfig', array('getConfig'));
+        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+
+        $viewConfig->getModuleUrl('test1', '/out/blocks/non_existing_template.tpl');
     }
 
     public function testViewThemeParam()
@@ -983,7 +1015,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetActTplName()
     {
-        $this->setRequestParam("tpl", 123);
+        $this->setRequestParameter("tpl", 123);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals(123, $oViewConf->getActTplName());
@@ -996,7 +1028,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetActCurrency()
     {
-        $this->setRequestParam("cur", 1);
+        $this->setRequestParameter("cur", 1);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals(1, $oViewConf->getActCurrency());
@@ -1009,12 +1041,12 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetActContentLoadId()
     {
-        $this->setRequestParam("oxloadid", 123);
+        $this->setRequestParameter("oxloadid", 123);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals(123, $oViewConf->getActContentLoadId());
 
-        $this->setRequestParam("oxloadid", null);
+        $this->setRequestParameter("oxloadid", null);
         $oViewConf->setViewConfigParam('oxloadid', 234);
         $this->assertNull($oViewConf->getActContentLoadId());
     }
@@ -1045,7 +1077,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetActRecommendationId()
     {
-        $this->setRequestParam("recommid", 1);
+        $this->setRequestParameter("recommid", 1);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals(1, $oViewConf->getActRecommendationId());
@@ -1060,7 +1092,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetActCatId()
     {
         $iCat = 12345;
-        $this->setRequestParam("cnid", $iCat);
+        $this->setRequestParameter("cnid", $iCat);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals($iCat, $oViewConf->getActCatId());
@@ -1075,7 +1107,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetActArticleId()
     {
         $sArt = "12345";
-        $this->setRequestParam("anid", $sArt);
+        $this->setRequestParameter("anid", $sArt);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals($sArt, $oViewConf->getActArticleId());
@@ -1090,7 +1122,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetActSearchParam()
     {
         $sParam = "test=john";
-        $this->setRequestParam("searchparam", $sParam);
+        $this->setRequestParameter("searchparam", $sParam);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals($sParam, $oViewConf->getActSearchParam());
@@ -1105,7 +1137,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetActSearchTag()
     {
         $sTag = "test=john";
-        $this->setRequestParam("searchtag", $sTag);
+        $this->setRequestParameter("searchtag", $sTag);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals($sTag, $oViewConf->getActSearchTag());
@@ -1120,7 +1152,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetActListType()
     {
         $sType = "testType";
-        $this->setRequestParam("listtype", $sType);
+        $this->setRequestParameter("listtype", $sType);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals($sType, $oViewConf->getActListType());
@@ -1135,7 +1167,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetContentId()
     {
         $sOxcid = "testCID";
-        $this->setRequestParam("oxcid", $sOxcid);
+        $this->setRequestParameter("oxcid", $sOxcid);
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals($sOxcid, $oViewConf->getContentId());
@@ -1220,7 +1252,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
         $this->assertEquals($sSidNew, $oViewConf->getHiddenSid());
     }
-
 
 
     /**
@@ -2520,23 +2551,24 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      *
      * @dataProvider _dpGetSessionChallengeToken
      *
-     * @param boolean $blIsSessionStarted                   is session started
-     * @param integer $iGetSessionChallengeTokenCalledTimes method getSessionChallengeToken expected to be called times
-     * @param string  $sToken                               Security token
+     * @param boolean $isSessionStarted Was session started.
+     * @param integer $callTimes method How many times getSessionChallengeToken is expected to be called.
+     * @param string  $token            Security token.
      */
-    public function testGetSessionChallengeToken($blIsSessionStarted, $iGetSessionChallengeTokenCalledTimes, $sToken)
+    public function testGetSessionChallengeToken($isSessionStarted, $callTimes, $token)
     {
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('isSessionStarted', 'getSessionChallengeToken'));
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $session */
+        $session = $this->getMock('oxSession', array('isSessionStarted', 'getSessionChallengeToken'));
 
-        $oSession->expects($this->once())->method('isSessionStarted')
-            ->will($this->returnValue($blIsSessionStarted));
-        $oSession->expects($this->exactly($iGetSessionChallengeTokenCalledTimes))->method('getSessionChallengeToken')
-            ->will($this->returnValue($sToken));
-        oxRegistry::set('oxSession', $oSession);
+        $session->expects($this->once())->method('isSessionStarted')->will($this->returnValue($isSessionStarted));
+        $session->expects($this->exactly($callTimes))->method('getSessionChallengeToken')->will($this->returnValue($token));
+        oxRegistry::set('oxSession', $session);
 
-        $oViewConfig = new oxViewConfig();
-        $this->assertSame($sToken, $oViewConfig->getSessionChallengeToken());
+        /** @var oxViewConfig $viewConfig */
+        $viewConfig = oxNew('oxViewConfig');
+        $viewConfig->setSession($session);
+
+        $this->assertSame($token, $viewConfig->getSessionChallengeToken());
     }
 
     /**
@@ -2545,10 +2577,10 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function _dpIsModuleActive()
     {
         return array(
-            array(array('order' => 'oe/oepaypal/controllers/oepaypalorder'), array(), 'oepaypal', true),
-            array(array('order' => 'oe/oepaypal/controllers/oepaypalorder'), array(0 => 'oepaypal'), 'oepaypal', false),
-            array(array(), array(), 'oepaypal', false),
-            array(array(), array(0 => 'oepaypal'), 'oepaypal', false),
+            array(array('order' => 'oe/oepaypal/controllers/oepaypalorder'), array('oepaypal' => '2.0'), array(), 'oepaypal', true), // module activated
+            array(array('order' => 'oe/oepaypal/controllers/oepaypalorder'), array(), array(0 => 'oepaypal'), 'oepaypal', false),    // module disabled
+            array(array(), array(), array(), 'oepaypal', false),                                                                     // module never activated
+            array(array(), array('oepaypal' => '2.0'), array(0 => 'oepaypal'), 'oepaypal', false),                                   // module does not extend oxid-class and disabled
         );
     }
 
@@ -2556,11 +2588,13 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      * oxViewConfig::oePayPalIsModuleActive()
      * @dataProvider _dpIsModuleActive
      */
-    public function testIsModuleActive($aModules, $aDisabledModules, $sModuleId, $blModuleIsActive)
+    public function testIsModuleActive($aModules, $aModuleVersions, $aDisabledModules, $sModuleId, $blModuleIsActive)
     {
+
         $this->setConfigParam('aModules', $aModules);
         $this->setConfigParam('aDisabledModules', $aDisabledModules);
-
+        $this->setConfigParam('aModuleVersions', $aModuleVersions);
+        
         $oViewConf = new oxViewConfig();
         $blIsModuleActive = $oViewConf->isModuleActive($sModuleId);
 
@@ -2618,5 +2652,34 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $oViewConfig = new oxViewConfig();
         $this->assertEquals( $this->getConfig()->getEdition(), $oViewConfig->getEdition() );
+    }
+
+    /**
+     * Creates module structre for testing.
+     *
+     * @return string Path to modules root.
+     */
+    private function createModuleStructure()
+    {
+        $structure = array(
+            'modules' => array(
+                'test1' => array(
+                    'out' => array(
+                        'blocks' => array(
+                            'test2.tpl' => '*this is module test block*'
+                        ),
+                        'lang' => array(
+                            'de' => array(
+                                'test_lang.php' => ''
+                            )
+                        )
+                    )
+                )
+            )
+        );
+        $vfsStream = $this->getVfsStreamWrapper();
+        $vfsStream->createStructure($structure);
+
+        return $vfsStream->getRootPath();
     }
 }

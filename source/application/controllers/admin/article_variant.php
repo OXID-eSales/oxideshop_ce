@@ -55,7 +55,7 @@ class Article_Variant extends oxAdminDetails
         $oAllSel->selectString($sQ);
         $this->_aViewData["allsel"] = $oAllSel;
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $this->_aViewData["edit"] = $oArticle;
 
         if ($soxId != "-1" && isset($soxId)) {
@@ -133,7 +133,7 @@ class Article_Variant extends oxAdminDetails
             unset($aParams['oxarticles__oxparentid']);
         }
         /** @var oxArticle $oArticle */
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
 
         if ($sOXID != "-1") {
             $oArticle->loadInLang($this->_iEditLang, $sOXID);
@@ -203,7 +203,7 @@ class Article_Variant extends oxAdminDetails
             ($this->_oProductParent !== false && $this->_oProductParent->getId() != $sParentId)
         ) {
             $this->_oProductParent = false;
-            $oProduct = oxNew("oxarticle");
+            $oProduct = oxNew("oxArticle");
             if ($oProduct->load($sParentId)) {
                 $this->_oProductParent = $oProduct;
             }
@@ -239,7 +239,7 @@ class Article_Variant extends oxAdminDetails
         $this->resetContentCache();
 
         $soxId = oxRegistry::getConfig()->getRequestParameter("voxid");
-        $oDelete = oxNew("oxarticle");
+        $oDelete = oxNew("oxArticle");
         $oDelete->delete($soxId);
     }
 
@@ -256,7 +256,7 @@ class Article_Variant extends oxAdminDetails
         // shopid
         $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         if ($soxId != "-1") {
             $oArticle->loadInLang($this->_iEditLang, $soxId);
         }
@@ -275,7 +275,7 @@ class Article_Variant extends oxAdminDetails
      */
     public function addsel()
     {
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         //#3644
         //$oArticle->setEnableMultilang( false );
         if ($oArticle->load($this->getEditObjectId())) {

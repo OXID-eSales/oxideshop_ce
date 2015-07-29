@@ -134,7 +134,7 @@ class Shop_Config extends oxAdminDetails
         $sShopId = $this->getEditObjectId();
         $sModule = $this->_getModuleForConfigVars();
         foreach ($this->_aConfParams as $sType => $sParam) {
-            $aConfVars = oxRegistry::getConfig()->getRequestParameter($sParam);
+            $aConfVars = oxRegistry::getConfig()->getRequestParameter($sParam, true);
             if (is_array($aConfVars)) {
                 foreach ($aConfVars as $sName => $sValue) {
                     $oldValue = $myConfig->getConfigParam($sName);
@@ -317,7 +317,8 @@ class Shop_Config extends oxAdminDetails
     }
 
     /**
-     * Serialize config var depending on it's type
+     * Prepares data for storing to database.
+     * Example: $sType='aarr', $sName='aModules', $mValue='key1=>val1\nkey2=>val2'
      *
      * @param string $sType  var type
      * @param string $sName  var name

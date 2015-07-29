@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -47,7 +47,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new VoucherSerie_Main();
@@ -65,7 +65,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new VoucherSerie_Main();
@@ -137,20 +137,20 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
      */
     public function testStart()
     {
-        modConfig::setRequestParameter("voucherid", "testvoucherid");
-        modConfig::setRequestParameter("voucherAmount", "testvoucherAmount");
-        modConfig::setRequestParameter("randomVoucherNr", "testrandomVoucherNr");
-        modConfig::setRequestParameter("voucherNr", "testvoucherNr");
+        $this->setRequestParameter("voucherid", "testvoucherid");
+        $this->setRequestParameter("voucherAmount", "testvoucherAmount");
+        $this->setRequestParameter("randomVoucherNr", "testrandomVoucherNr");
+        $this->setRequestParameter("voucherNr", "testvoucherNr");
 
         $oView = new VoucherSerie_Main();
         $oView->start();
 
-        $oSession = modSession::getInstance();
+        $oSession = $this->getSession();
 
-        $this->assertEquals($oSession->getVar("voucherid"), "testvoucherid");
-        $this->assertEquals($oSession->getVar("voucherAmount"), 0);
-        $this->assertEquals($oSession->getVar("randomVoucherNr"), "testrandomVoucherNr");
-        $this->assertEquals($oSession->getVar("voucherNr"), "testvoucherNr");
+        $this->assertEquals($oSession->getVariable("voucherid"), "testvoucherid");
+        $this->assertEquals($oSession->getVariable("voucherAmount"), 0);
+        $this->assertEquals($oSession->getVariable("randomVoucherNr"), "testrandomVoucherNr");
+        $this->assertEquals($oSession->getVariable("voucherNr"), "testvoucherNr");
     }
 
     /**
@@ -165,7 +165,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
         $oVoucherSerie->setId("_testvoucherserie");
         $oVoucherSerie->save();
 
-        modSession::getInstance()->setVar("voucherid", "_testvoucherserie");
+        $this->getSession()->setVariable("voucherid", "_testvoucherserie");
 
         $oView = new VoucherSerie_Main();
         $oVoucherSerie = $oView->UNITgetVoucherSerie();

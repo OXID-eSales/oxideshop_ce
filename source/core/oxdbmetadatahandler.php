@@ -518,7 +518,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
         $bSuccess = true;
         foreach ($aShops as $aShop) {
             $sShopId = $aShop[0];
-            $oShop = oxNew('oxshop');
+            $oShop = oxNew('oxShop');
             $oShop->load($sShopId);
             $oShop->setMultiShopTables($aTables);
             $aMallInherit = array();

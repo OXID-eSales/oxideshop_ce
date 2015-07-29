@@ -18,7 +18,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -142,7 +142,7 @@ class Pricealarm extends oxUBase
         if ($this->_oArticle === null) {
             $this->_oArticle = false;
             $aParams = $this->_getParams();
-            $oArticle = oxNew('oxarticle');
+            $oArticle = oxNew('oxArticle');
             $oArticle->load($aParams['aid']);
             $this->_oArticle = $oArticle;
         }

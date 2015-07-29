@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -114,7 +114,7 @@ class oxAttribute extends oxI18n
                 foreach ($oValue as $sId) {
                     //var_dump($sVarId, $oAttribute->oxattribute__oxid->value);
                     $sVarId = substr($sVarId, 6);
-                    $oNewAssign = oxNew("oxbase");
+                    $oNewAssign = oxNew("oxBase");
                     $oNewAssign->init("oxobject2attribute");
                     $sNewId = oxUtilsObject::getInstance()->generateUID();
                     if ($oNewAssign->load($sId)) {

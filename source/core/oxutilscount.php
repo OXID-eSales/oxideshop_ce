@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -141,7 +141,7 @@ class oxUtilsCount extends oxSuperCfg
      */
     public function setCatArticleCount($aCache, $sCatId, $sActIdent)
     {
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $sTable = $oArticle->getViewName();
         $sO2CView = getViewName('oxobject2category');
         $oDb = oxDb::getDb();
@@ -172,7 +172,7 @@ class oxUtilsCount extends oxSuperCfg
      */
     public function setPriceCatArticleCount($aCache, $sCatId, $sActIdent, $dPriceFrom, $dPriceTo)
     {
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $sTable = $oArticle->getViewName();
 
         $sSelect = "select count({$sTable}.oxid) from {$sTable} where oxvarminprice >= 0 ";
@@ -203,7 +203,7 @@ class oxUtilsCount extends oxSuperCfg
             return 0;
         }
 
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $sTable = $oArticle->getViewName();
 
         // select each vendor articles count
@@ -236,7 +236,7 @@ class oxUtilsCount extends oxSuperCfg
             return 0;
         }
 
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $sArtTable = $oArticle->getViewName();
         $sManTable = getViewName('oxmanufacturers');
 
@@ -313,7 +313,7 @@ class oxUtilsCount extends oxSuperCfg
     {
         $oDb = oxDb::getDb();
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $sArticleTable = $oArticle->getViewName();
         $sActiveSnippet = $oArticle->getSqlActiveSnippet();
         $sViewName = getViewName('oxartextends', $iLang);

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 /**
@@ -1263,7 +1263,7 @@ class oxEmail extends PHPMailer
     {
         $blSend = false;
 
-        $oArticleList = oxNew("oxarticlelist");
+        $oArticleList = oxNew("oxArticleList");
         $oArticleList->loadStockRemindProducts($aBasketContents);
 
         // nothing to remind?
@@ -1350,7 +1350,7 @@ class oxEmail extends PHPMailer
 
         $iAlarmLang = $oAlarm->oxpricealarm__oxlang->value;
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         //$oArticle->setSkipAbPrice( true );
         $oArticle->loadInLang($iAlarmLang, $aParams['aid']);
         $oLang = oxRegistry::getLang();

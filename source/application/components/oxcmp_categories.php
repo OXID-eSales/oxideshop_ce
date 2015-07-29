@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -101,7 +101,7 @@ class oxcmp_categories extends oxView
             if (($oProduct = $oParentView->getViewProduct())) {
                 return $oProduct;
             } else {
-                $oProduct = oxNew('oxarticle');
+                $oProduct = oxNew('oxArticle');
                 if ($oProduct->load($sActProduct)) {
                     // storing for reuse
                     $oParentView->setViewProduct($oProduct);

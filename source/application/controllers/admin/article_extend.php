@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -164,7 +164,7 @@ class Article_Extend extends oxAdminDetails
         // default values
         $aParams = $this->addDefaultValues($aParams);
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->loadInLang($this->_iEditLang, $soxId);
         $sTPriceField = 'oxarticles__oxtprice';
         $sPriceField = 'oxarticles__oxprice';

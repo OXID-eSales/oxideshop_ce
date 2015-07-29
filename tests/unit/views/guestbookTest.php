@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -84,7 +84,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     {
         $oObj = new GuestBook();
         $this->getConfig()->setConfigParam('iMaxGBEntriesPerDay', 10);
-        $this->getSession()->setVar('usr', 'oxdefaultadmin');
+        $this->getSession()->setVariable('usr', 'oxdefaultadmin');
         $this->assertFalse($oObj->floodProtection());
     }
 
@@ -97,7 +97,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     {
         $oObj = new GuestBook();
         $this->getConfig()->setConfigParam('iMaxGBEntriesPerDay', 1);
-        $this->getSession()->setVar('usr', 'oxdefaultadmin');
+        $this->getSession()->setVariable('usr', 'oxdefaultadmin');
         $this->assertTrue($oObj->floodProtection());
     }
 
@@ -109,7 +109,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testFloodProtectionIfUserNotSet()
     {
         $oObj = new GuestBook();
-        $this->getSession()->setVar('usr', null);
+        $this->getSession()->setVariable('usr', null);
         $this->assertTrue($oObj->floodProtection());
     }
 
@@ -168,8 +168,8 @@ class Unit_Views_GuestbookTest extends OxidTestCase
 
     public function testSaveEntry_nouser()
     {
-        $this->getSession()->setVar('usr', null);
-        $this->getConfig()->setRequestParameter('rvw_txt', '');
+        $this->getSession()->setVariable('usr', null);
+        $this->setRequestParameter('rvw_txt', '');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getShopId'));
@@ -195,8 +195,8 @@ class Unit_Views_GuestbookTest extends OxidTestCase
 
     public function testSaveEntry_noshop()
     {
-        $this->getSession()->setVar('usr', 'some_userid');
-        $this->getConfig()->setRequestParameter('rvw_txt', '');
+        $this->getSession()->setVariable('usr', 'some_userid');
+        $this->setRequestParameter('rvw_txt', '');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getShopId'));
@@ -222,8 +222,8 @@ class Unit_Views_GuestbookTest extends OxidTestCase
 
     public function testSaveEntry_noReview()
     {
-        $this->getSession()->setVar('usr', 'some_userid');
-        $this->getConfig()->setRequestParameter('rvw_txt', '');
+        $this->getSession()->setVariable('usr', 'some_userid');
+        $this->setRequestParameter('rvw_txt', '');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getShopId'));
@@ -249,8 +249,8 @@ class Unit_Views_GuestbookTest extends OxidTestCase
 
     public function testSaveEntry_floodFailed()
     {
-        $this->getSession()->setVar('usr', 'some_userid');
-        $this->getConfig()->setRequestParameter('rvw_txt', 'some review');
+        $this->getSession()->setVariable('usr', 'some_userid');
+        $this->setRequestParameter('rvw_txt', 'some review');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getShopId'));
@@ -276,8 +276,8 @@ class Unit_Views_GuestbookTest extends OxidTestCase
 
     public function testSaveEntry_saveCall()
     {
-        $this->getSession()->setVar('usr', 'some_userid');
-        $this->getConfig()->setRequestParameter('rvw_txt', 'some review');
+        $this->getSession()->setVariable('usr', 'some_userid');
+        $this->setRequestParameter('rvw_txt', 'some review');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getShopId'));
@@ -303,8 +303,8 @@ class Unit_Views_GuestbookTest extends OxidTestCase
 
     public function testSaveEntry_nosavecall()
     {
-        $this->getSession()->setVar('usr', 'some_userid');
-        $this->getConfig()->setRequestParameter('rvw_txt', 'some review');
+        $this->getSession()->setVariable('usr', 'some_userid');
+        $this->setRequestParameter('rvw_txt', 'some review');
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock('oxConfig', array('getShopId'));

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Admin_UserGroupMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new UserGroup_Main();
@@ -50,7 +50,7 @@ class Unit_Admin_UserGroupMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new UserGroup_Main();
@@ -72,8 +72,8 @@ class Unit_Admin_UserGroupMainTest extends OxidTestCase
         oxTestModules::addFunction('oxgroups', 'assign', '{ return true; }');
         oxTestModules::addFunction('oxgroups', 'save', '{ throw new Exception( "save" ); }');
 
-        modConfig::setRequestParameter("oxid", "testId");
-        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
+        $this->setRequestParameter("oxid", "testId");
+        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {

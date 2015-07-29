@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -368,7 +368,7 @@ class oxRssFeed extends oxSuperCfg
             return;
         }
 
-        $oArtList = oxNew('oxarticlelist');
+        $oArtList = oxNew('oxArticleList');
         $oArtList->loadTop5Articles($this->getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = oxRegistry::getLang();
@@ -421,7 +421,7 @@ class oxRssFeed extends oxSuperCfg
         if (($this->_aChannel = $this->_loadFromCache(self::RSS_NEWARTS))) {
             return;
         }
-        $oArtList = oxNew('oxarticlelist');
+        $oArtList = oxNew('oxArticleList');
         $oArtList->loadNewestArticles($this->getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = oxRegistry::getLang();
@@ -510,7 +510,7 @@ class oxRssFeed extends oxSuperCfg
             return;
         }
 
-        $oArtList = oxNew('oxarticlelist');
+        $oArtList = oxNew('oxArticleList');
         $oArtList->setCustomSorting('oc.oxtime desc');
         $oArtList->loadCategoryArticles($oCat->getId(), null, $this->getConfig()->getConfigParam('iRssItemsCount'));
 
@@ -679,7 +679,7 @@ class oxRssFeed extends oxSuperCfg
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('iNrofCatArticles', $oConfig->getConfigParam('iRssItemsCount'));
 
-        $oArtList = oxNew('oxsearch')->getSearchArticles($sSearch, $sCatId, $sVendorId, $sManufacturerId, oxNew('oxarticle')->getViewName() . '.oxtimestamp desc');
+        $oArtList = oxNew('oxsearch')->getSearchArticles($sSearch, $sCatId, $sVendorId, $sManufacturerId, oxNew('oxArticle')->getViewName() . '.oxtimestamp desc');
 
         $this->_loadData(
             // dont use cache for search
@@ -828,7 +828,7 @@ class oxRssFeed extends oxSuperCfg
             return;
         }
 
-        $oList = oxNew('oxarticlelist');
+        $oList = oxNew('oxArticleList');
         $oList->loadRecommArticles($oRecommList->getId(), ' order by oxobject2list.oxtimestamp desc limit ' . $this->getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = oxRegistry::getLang();
@@ -882,7 +882,7 @@ class oxRssFeed extends oxSuperCfg
             return;
         }
 
-        $oArtList = oxNew('oxarticlelist');
+        $oArtList = oxNew('oxArticleList');
         $oArtList->loadActionArticles('OXBARGAIN', $this->getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = oxRegistry::getLang();

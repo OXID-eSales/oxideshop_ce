@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -45,7 +45,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Order_Overview();
@@ -110,7 +110,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
      */
     public function testSendorder()
     {
-        modConfig::setRequestParameter("sendmail", true);
+        $this->setRequestParameter("sendmail", true);
         oxTestModules::addFunction('oxemail', 'sendSendedNowMail', '{ throw new Exception( "sendSendedNowMail" ); }');
         oxTestModules::addFunction('oxorder', 'load', '{ return true; }');
         oxTestModules::addFunction('oxorder', 'save', '{ return true; }');
@@ -165,7 +165,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $oBase->oxorderarticles__oxorderid = new oxField("testOrderId");
         $oBase->oxorderarticles__oxamount = new oxField(1);
         $oBase->oxorderarticles__oxartid = new oxField("1126");
-        $oBase->oxorderarticles__oxordershopid = new oxField(oxRegistry::getConfig()->getShopId());
+        $oBase->oxorderarticles__oxordershopid = new oxField($this->getConfig()->getShopId());
         $oBase->save();
 
         // testing..
@@ -188,7 +188,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         // writing test order
         $oOrder = oxNew("oxorder");
         $oOrder->setId($soxId);
-        $oOrder->oxorder__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId());
+        $oOrder->oxorder__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oOrder->oxorder__oxuserid = new oxField("oxdefaultadmin");
         $oOrder->oxorder__oxbillcompany = new oxField("Ihr Firmenname");
         $oOrder->oxorder__oxbillemail = new oxField(oxADMIN_LOGIN);
@@ -201,7 +201,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
 
         $oView = new Order_Overview();
 
-        modConfig::setRequestParameter("oxid", $soxId);
+        $this->setRequestParameter("oxid", $soxId);
         $this->assertFalse($oView->canResetShippingDate());
 
         $oOrder->oxorder__oxsenddate = new oxField(date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime()));

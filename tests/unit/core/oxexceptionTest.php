@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -59,13 +59,13 @@ class Unit_Core_oxexceptionTest extends OxidTestCase
             $oTestObject->debugOut(1); // actuall test
         } catch (Exception $e) {
             // Lets try to delete an eventual left over file
-            unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+            unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
             $this->fail();
 
             return;
         }
-        $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
-        unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+        $sFile = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+        unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
         // we check on class name and message - rest is not checked yet
         $this->assertContains($sMsg, $sFile);
         $this->assertContains('oxException', $sFile);
@@ -87,13 +87,13 @@ class Unit_Core_oxexceptionTest extends OxidTestCase
             $oTestObject->debugOut(0); // actuall test
         } catch (Exception $e) {
             // Lets try to delete an eventual left over file
-            unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+            unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
             $this->fail();
 
             return;
         }
-        $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
-        unlink(oxRegistry::getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+        $sFile = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
+        unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
         // we check on class name and message - rest is not checked yet
         $this->assertContains($sMsg, $sFile);
         $this->assertContains('oxException', $sFile);

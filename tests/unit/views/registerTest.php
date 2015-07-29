@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -30,7 +30,7 @@ class Unit_Views_registerTest extends OxidTestCase
      */
     public function testRenderForLoginFeature()
     {
-        modConfig::getInstance()->setConfigParam("blPsLoginEnabled", true);
+        $this->getConfig()->setConfigParam("blPsLoginEnabled", true);
 
         $oView = $this->getMock("register", array("isConfirmed"));
         $oView->expects($this->once())->method('isConfirmed')->will($this->returnValue(true));
@@ -75,7 +75,7 @@ class Unit_Views_registerTest extends OxidTestCase
      */
     public function testGetUpdateId()
     {
-        modConfig::setRequestParameter('uid', "testUid");
+        $this->setRequestParameter('uid', "testUid");
 
         $oView = new register();
         $this->assertEquals("testUid", $oView->getUpdateId());
@@ -90,17 +90,17 @@ class Unit_Views_registerTest extends OxidTestCase
     {
         $oView = new register();
 
-        modConfig::setRequestParameter("confirmstate", 0);
+        $this->setRequestParameter("confirmstate", 0);
         $this->assertFalse($oView->isConfirmed());
 
-        modConfig::setRequestParameter("confirmstate", 1);
+        $this->setRequestParameter("confirmstate", 1);
         $this->assertTrue($oView->isConfirmed());
     }
 
     public function testGetRegistrationError()
     {
         $oRegister = $this->getProxyClass('register');
-        modConfig::setRequestParameter('newslettererror', 'testError');
+        $this->setRequestParameter('newslettererror', 'testError');
 
         $this->assertEquals('testError', $oRegister->getRegistrationError());
     }
@@ -108,7 +108,7 @@ class Unit_Views_registerTest extends OxidTestCase
     public function testGetRegistrationStatus()
     {
         $oRegister = $this->getProxyClass('register');
-        modConfig::setRequestParameter('success', 'success');
+        $this->setRequestParameter('success', 'success');
 
         $this->assertEquals('success', $oRegister->getRegistrationStatus());
     }

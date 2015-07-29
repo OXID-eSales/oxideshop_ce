@@ -80,8 +80,8 @@ class Unit_Admin_DiscountCategoriesAjaxTest extends OxidTestCase
     {
         $sOxid = '_testOxid';
         $sSynchoxid = '_testSynchoxid';
-        $this->setRequestParam("oxid", $sOxid);
-        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
         $sCategoryTable = getViewName("oxcategories");
 
         $oView = oxNew('discount_categories_ajax');
@@ -100,7 +100,7 @@ class Unit_Admin_DiscountCategoriesAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testSynchoxid';
-        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
         $sCategoryTable = getViewName("oxcategories");
 
         $oView = oxNew('discount_categories_ajax');
@@ -133,8 +133,8 @@ class Unit_Admin_DiscountCategoriesAjaxTest extends OxidTestCase
     public function testRemoveDiscCatAll()
     {
         $sOxid = '_testDiscount';
-        $this->setRequestParam("oxid", $sOxid);
-        $this->setRequestParam("all", true);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("all", true);
 
         $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
@@ -151,7 +151,7 @@ class Unit_Admin_DiscountCategoriesAjaxTest extends OxidTestCase
     public function testAddDiscCat()
     {
         $sSynchoxid = '_testDiscount';
-        $this->setRequestParam("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
         $oView = $this->getMock("discount_categories_ajax", array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testCatAdd1', '_testCatAdd1')));
         $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
@@ -168,8 +168,8 @@ class Unit_Admin_DiscountCategoriesAjaxTest extends OxidTestCase
     public function testAddDiscCatAll()
     {
         $sSynchoxid = '_testDiscountNew';
-        $this->setRequestParam("synchoxid", $sSynchoxid);
-        $this->setRequestParam("all", true);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("all", true);
 
         $iCount = oxDb::getDb()->getOne("select count(oxid) from oxcategories");
 

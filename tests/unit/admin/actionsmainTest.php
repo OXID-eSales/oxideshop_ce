@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        $this->setRequestParam("oxid", -1);
+        $this->setRequestParameter("oxid", -1);
 
         // testing..
         $oView = new Actions_Main();
@@ -52,7 +52,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testRenderWithExistingAction()
     {
-        $this->setRequestParam("oxid", oxDb::getDb()->getOne("select oxid from oxactions"));
+        $this->setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxactions"));
 
         // testing..
         $oView = $this->getMock("Actions_Main", array("_createCategoryTree"));
@@ -72,8 +72,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testRenderForCategory()
     {
-        $this->setRequestParam("oxid", oxDb::getDb()->getOne("select oxid from oxcategories"));
-        $this->setRequestParam("aoc", 1);
+        $this->setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxcategories"));
+        $this->setRequestParameter("aoc", 1);
 
         // testing..
         $oView = new Actions_Main();
@@ -95,8 +95,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
     public function testRenderForArticlePromotions()
     {
         $sPromotion = oxDb::getDb()->getOne("select oxid from oxactions");
-        $this->setRequestParam("oxid", $sPromotion);
-        $this->setRequestParam("oxpromotionaoc", 'article');
+        $this->setRequestParameter("oxid", $sPromotion);
+        $this->setRequestParameter("oxpromotionaoc", 'article');
 
         $oArticle = new oxarticle();
         $oArticle->oxarticles__oxartnum = new oxField("testArtNr");
@@ -130,8 +130,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
     public function testRenderForGroupPromotions()
     {
         $sPromotion = oxDb::getDb()->getOne("select oxid from oxactions");
-        $this->setRequestParam("oxid", $sPromotion);
-        $this->setRequestParam("oxpromotionaoc", 'groups');
+        $this->setRequestParameter("oxid", $sPromotion);
+        $this->setRequestParameter("oxpromotionaoc", 'groups');
 
         $oPromotion = new oxactions();
         $oPromotion->load($sPromotion);
@@ -160,8 +160,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
     public function testRenderForPromotionsEditor()
     {
         $sPromotion = oxDb::getDb()->getOne("select oxid from oxactions where oxtype=2");
-        $this->setRequestParam("oxid", $sPromotion);
-        $this->setRequestParam("oxpromotionaoc", null);
+        $this->setRequestParameter("oxid", $sPromotion);
+        $this->setRequestParameter("oxpromotionaoc", null);
 
         $oPromotion = new oxactions();
         $oPromotion->load($sPromotion);
@@ -190,8 +190,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         oxTestModules::addFunction('oxactions', 'load', '{ return true; }');
         oxTestModules::addFunction('oxactions', 'save', '{ return true; }');
 
-        $this->setRequestParam("oxid", "xxx");
-        $this->setRequestParam("editval", array("xxx"));
+        $this->setRequestParameter("oxid", "xxx");
+        $this->setRequestParameter("editval", array("xxx"));
         $this->setConfigParam("blAllowSharedEdit", true);
 
         $oView = new Actions_Main();
@@ -222,8 +222,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
      */
     public function testPromotionsRender()
     {
-        $this->setRequestParam("oxid", -1);
-        $this->setRequestParam("saved_oxid", -1);
+        $this->setRequestParameter("oxid", -1);
+        $this->setRequestParameter("saved_oxid", -1);
 
         $oPromotion = new oxActions();
         $oPromotion->oxactions__oxtype = new oxField(2);
@@ -251,8 +251,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         oxTestModules::addFunction('oxactions', 'load', '{ return true; }');
         oxTestModules::addFunction('oxactions', 'save', '{ return true; }');
 
-        $this->setRequestParam("oxid", "xxx");
-        $this->setRequestParam("editval", array("xxx"));
+        $this->setRequestParameter("oxid", "xxx");
+        $this->setRequestParameter("editval", array("xxx"));
         $this->setConfigParam("blAllowSharedEdit", true);
 
         $oView = new Actions_Main();
@@ -275,8 +275,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         oxTestModules::addFunction('oxactions', 'save', '{ return true; }');
         oxTestModules::addFunction('oxactions', 'getId', '{ return "testId"; }');
 
-        $this->setRequestParam("oxid", "-1");
-        $this->setRequestParam("editval", array("xxx"));
+        $this->setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("editval", array("xxx"));
         $this->setConfigParam("blAllowSharedEdit", true);
 
         $oView = new Actions_Main();

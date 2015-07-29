@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -59,7 +59,7 @@ class Unit_Views_wishlistTest extends OxidTestCase
      */
     public function testGetWishUser()
     {
-        modConfig::setRequestParameter('wishid', '_testId');
+        $this->setRequestParameter('wishid', '_testId');
         $oWishList = oxNew("Wishlist");
 
         $oWishUser = $oWishList->getWishUser();
@@ -73,7 +73,7 @@ class Unit_Views_wishlistTest extends OxidTestCase
      */
     public function testGetWishList()
     {
-        modConfig::setRequestParameter('wishid', '_testId');
+        $this->setRequestParameter('wishid', '_testId');
         $oWishList = oxNew("Wishlist");
         $myDB = oxDb::getDB();
 
@@ -96,7 +96,7 @@ class Unit_Views_wishlistTest extends OxidTestCase
      */
     public function testGetWishListIactive()
     {
-        modConfig::setRequestParameter('wishid', '_testId');
+        $this->setRequestParameter('wishid', '_testId');
         $oWishList = oxNew("Wishlist");
         $myDB = oxDb::getDB();
 
@@ -117,7 +117,7 @@ class Unit_Views_wishlistTest extends OxidTestCase
     public function testSearchForWishList()
     {
 
-        modConfig::setRequestParameter('search', 'testUserName');
+        $this->setRequestParameter('search', 'testUserName');
 
         $oWishList = $this->getProxyClass("Wishlist");
         $myDB = oxDb::getDB(oxDB::FETCH_MODE_ASSOC);

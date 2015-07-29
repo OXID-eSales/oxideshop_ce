@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -34,9 +34,9 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     public function testChshpPE()
     {
 
-        modConfig::setRequestParameter("listview", "testlistview");
-        modConfig::setRequestParameter("editview", "testeditview");
-        modConfig::setRequestParameter("actedit", "testactedit");
+        $this->setRequestParameter("listview", "testlistview");
+        $this->setRequestParameter("editview", "testeditview");
+        $this->setRequestParameter("actedit", "testactedit");
 
         $oView = new Navigation();
         $oView->chshp();
@@ -57,7 +57,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxUtilsServer', 'setOxCookie', '{}');
-        modConfig::setRequestParameter("favorites", array(0, 1, 2));
+        $this->setRequestParameter("favorites", array(0, 1, 2));
 
         // testing..
         $oView = new Navigation();
@@ -73,10 +73,10 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsServer', 'setOxCookie', '{}');
         oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{return "a|b";}');
-        modConfig::setRequestParameter("item", "home.tpl");
-        modConfig::setRequestParameter("favorites", array(0, 1, 2));
-        modConfig::setRequestParameter("navReload", false);
-        modConfig::setRequestParameter("openHistory", true);
+        $this->setRequestParameter("item", "home.tpl");
+        $this->setRequestParameter("favorites", array(0, 1, 2));
+        $this->setRequestParameter("navReload", false);
+        $this->setRequestParameter("openHistory", true);
 
         $oDom = new stdClass();
         $oDom->documentElement = new stdClass();
@@ -112,11 +112,11 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsServer', 'setOxCookie', '{}');
         oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{return "a|b";}');
-        modConfig::setRequestParameter("item", "home.tpl");
-        modConfig::setRequestParameter("favorites", array(0, 1, 2));
-        modConfig::setRequestParameter("navReload", true);
-        modConfig::setRequestParameter("openHistory", true);
-        modSession::getInstance()->setVar("navReload", "true");
+        $this->setRequestParameter("item", "home.tpl");
+        $this->setRequestParameter("favorites", array(0, 1, 2));
+        $this->setRequestParameter("navReload", true);
+        $this->setRequestParameter("openHistory", true);
+        $this->getSession()->setVariable("navReload", "true");
 
         $oDom = new stdClass();
         $oDom->documentElement = new stdClass();
@@ -153,10 +153,10 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'redirect', '{}');
 
-        modSession::getInstance()->setVar('usr', "testUsr");
-        modSession::getInstance()->setVar('auth', "testAuth");
-        modSession::getInstance()->setVar('dynvalue', "testDynValue");
-        modSession::getInstance()->setVar('paymentid', "testPaymentId");
+        $this->getSession()->setVariable('usr', "testUsr");
+        $this->getSession()->setVariable('auth', "testAuth");
+        $this->getSession()->setVariable('dynvalue', "testDynValue");
+        $this->getSession()->setVariable('paymentid', "testPaymentId");
 
         $oConfig = $this->getMock("oxConfig", array("getConfigParam"));
         $oConfig->expects($this->at(0))->method('getConfigParam')->with($this->equalTo("blAdodbSessionHandler"))->will($this->returnValue(false));
@@ -188,7 +188,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     public function testExturl()
     {
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ throw new Exception("showMessageAndExit"); }');
-        modConfig::setRequestParameter("url", null);
+        $this->setRequestParameter("url", null);
 
         try {
             // testing..
@@ -212,7 +212,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
         $sUrl = "http://admin.oxid-esales.com";
 
         // creating test file
-        $rFile = fopen(oxRegistry::getConfig()->getConfigParam('sCompileDir') . "/" . md5($sUrl) . '.html', "w+");
+        $rFile = fopen($this->getConfig()->getConfigParam('sCompileDir') . "/" . md5($sUrl) . '.html', "w+");
         fwrite($rFile, "</head>");
         fclose($rFile);
 
@@ -220,11 +220,11 @@ class Unit_Admin_NavigationTest extends OxidTestCase
         oxTestModules::addFunction('oxUtils', 'redirect', '{ return true; }');
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ throw new Exception($aA[0]); }');
 
-        modConfig::setRequestParameter("url", $sUrl);
+        $this->setRequestParameter("url", $sUrl);
 
         $oConfig = $this->getMock("oxConfig", array("getConfigParam", "getVersion", "getFullEdition"));
         $oConfig->expects($this->at(0))->method('getConfigParam')->with($this->equalTo("blLoadDynContents"))->will($this->returnValue(true));
-        $oConfig->expects($this->at(1))->method('getConfigParam')->with($this->equalTo("sCompileDir"))->will($this->returnValue(oxRegistry::getConfig()->getConfigParam('sCompileDir')));
+        $oConfig->expects($this->at(1))->method('getConfigParam')->with($this->equalTo("sCompileDir"))->will($this->returnValue($this->getConfig()->getConfigParam('sCompileDir')));
         $oConfig->expects($this->once())->method('getVersion')->will($this->returnValue("getVersion"));
         $oConfig->expects($this->once())->method('getFullEdition')->will($this->returnValue("getFullEdition"));
 
@@ -250,7 +250,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     public function testExturlUrlDefinedByParamBlLoadDynContentsFalse()
     {
         oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception($aA[0]); }');
-        modConfig::setRequestParameter("url", "testUrl");
+        $this->setRequestParameter("url", "testUrl");
 
         $oConfig = $this->getMock("oxConfig", array("getConfigParam"));
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo("blLoadDynContents"))->will($this->returnValue(false));
@@ -277,7 +277,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
      */
     public function testDoStartUpChecks()
     {
-        modConfig::getInstance()->setConfigParam("blCheckForUpdates", true);
+        $this->getConfig()->setConfigParam("blCheckForUpdates", true);
 
         // testing..
         $oView = $this->getMock("Navigation", array("_checkVersion"));

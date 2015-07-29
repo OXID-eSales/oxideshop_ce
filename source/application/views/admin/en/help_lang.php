@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -588,7 +588,7 @@ $aLang =  array(
 
 'HELP_PROMOTIONS_BANNER_PICTUREANDLINK'       => 'Upload banner image and enter banner URL which will be used when clicking on banner. If product is assigned to banner and URL is not entered, link to assigned product will be used when clicking on banner.',
 'HELP_SHOP_PERF_SEO_CACHE'                    => 'Enabled SEO cache increases performance, but requires a lot of disk space in /tmp directory.',
-'HELP_SHOP_PERF_SYSREQ_CHECK'                 => 'Runs the system health check when accessing the admin home page and displays messages if necessary. In special configurations this may affect the performance of the admin panel.',
+
 'HELP_ALTERNATIVE_IMAGE_SERVER_NOTE'          => 'Alternative URL to remote image server can be specified in configuration file config.inc.php by setting <i>sAltImageUrl</i> and <i>sSSLAltImageUrl</i>.<br> Thus all product pictures will be loaded from this alternative server instead of the local one. However, uploaded files will be stored locally. In this case synchronization to external server has to be done manually or with custom scripts.',
 
 'HELP_SHOP_RDFA_SUBMIT_URL'                   => 'Submits your shop URL to GR-Notify page. There the URL is saved and forwarded to Linked Open Commerce & Semantic Web search engines and endpoints.',
@@ -611,7 +611,7 @@ $aLang =  array(
 'HELP_SHOP_RDFA_FNC'                          => 'Select the business function of the products here. For example, are they offered to sell, to lease or to repair?',
 'HELP_SHOP_RDFA_COSTUMER'                     => 'The types of customers for which shop products are valid (End user, Reseller, Business and/or Public).',
 'HELP_SHOP_RDFA_DURATION_OFFERINGS'           => 'This property specifies the time of the validity of the products, e.g. 1 day, 1 week or 1 month.',
-
+'HELP_SHOP_PERF_SYSREQ_CHECK'                 => 'Runs the system health check when accessing the admin home page and displays messages if necessary. In special configurations this may affect the performance of the admin panel.',
 'HELP_SHOP_CONFIG_ADDITIONAL_SERVICE_VAT_CALCULATION_BIGGEST_NET'  => 'The VAT rate of the products, which have the biggest net value in shopping cart, is used for calculating.',
 'HELP_SHOP_CONFIG_ADDITIONAL_SERVICE_VAT_CALCULATION_PROPORTIONAL' => 'The percentage of products in cart with the same VAT rate is used for calculating.',
 'HELP_SHOP_CONFIG_VIEWNETPRICE'               => 'In frontend product prices are shown as net prices.',

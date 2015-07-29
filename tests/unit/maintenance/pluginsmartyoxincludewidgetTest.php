@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,14 +33,16 @@ class Unit_Maintenance_pluginSmartyoxIncludeWidgetTest extends OxidTestCase
 
         oxRegistry::set("oxReverseProxyBackend", $oReverseProxyBackend);
 
+        $oConfig = $this->getMock('oxConfig');
+        $oConfig->expects($this->atLeastOnce())
+            ->method('getWidgetUrl')
+            ->with($this->identicalTo(null, null, array('cl' => 'oxwTagCloud', 'blShowTags' => 1)))
+            ->will($this->returnValue('widget_url'));
+        oxRegistry::set('oxConfig', $oConfig);
+
         $oSmarty = new smarty();
-        $sOutput = "<esi:include src='" . $this->getConfig()->getWidgetUrl() . "blShowTags=1&amp;cl=oxwtagcloud'/>";
+        $sOutput = "<esi:include src='widget_url'/>";
         $this->assertEquals($sOutput, smarty_function_oxid_include_widget(array('cl' => 'oxwTagCloud', 'blShowTags' => 1), $oSmarty));
-
-        oxRegistry::getLang()->setBaseLanguage(1);
-        $sOutput = "<esi:include src='" . $this->getConfig()->getWidgetUrl() . "blShowTags=1&amp;cl=oxwtagcloud'/>";
-        $this->assertEquals($sOutput, smarty_function_oxid_include_widget(array('cl' => 'oxwTagCloud', 'blShowTags' => 1), $oSmarty));
-
     }
 
     public function testIncludeWidget()

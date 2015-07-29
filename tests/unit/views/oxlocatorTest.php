@@ -66,12 +66,12 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         parent::setUp();
 
         // backuping
-        $this->_iSeoMode = oxRegistry::getConfig()->getActiveShop()->oxshops__oxseoactive->value;
-        oxRegistry::getConfig()->getActiveShop()->oxshops__oxseoactive = new oxField(0, oxField::T_RAW);
+        $this->_iSeoMode = $this->getConfig()->getActiveShop()->oxshops__oxseoactive->value;
+        $this->getConfig()->getActiveShop()->oxshops__oxseoactive = new oxField(0, oxField::T_RAW);
 
         oxRegistry::getUtils()->seoIsActive(true);
 
-        modConfig::setRequestParameter("listtype", null);
+        $this->setRequestParameter("listtype", null);
     }
 
     /**
@@ -81,7 +81,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxRegistry::getConfig()->setGlobalParameter('listtype', null);
+        $this->getConfig()->setGlobalParameter('listtype', null);
 
         $sDelete = "Delete from oxcategories where oxtitle = 'test'";
         oxDb::getDb()->Execute($sDelete);
@@ -89,7 +89,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         oxDb::getDb()->execute('delete from oxobject2list where oxlistid like "testlist%" ');
 
         // restoring
-        oxRegistry::getConfig()->getActiveShop()->oxshops__oxseoactive = new oxField($this->_iSeoMode, oxField::T_RAW);
+        $this->getConfig()->getActiveShop()->oxshops__oxseoactive = new oxField($this->_iSeoMode, oxField::T_RAW);
 
         oxRegistry::getUtils()->seoIsActive(true);
         parent::tearDown();
@@ -142,13 +142,13 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
     public function testSetListLocatorData()
     {
         // seo off
-        modConfig::getInstance()->setConfigParam('blSeoMode', false);
+        $this->getConfig()->setConfigParam('blSeoMode', false);
 
-        modConfig::getInstance()->setConfigParam('iNrofCatArticles', 10);
+        $this->getConfig()->setConfigParam('iNrofCatArticles', 10);
 
         oxRegistry::getUtils()->seoIsActive(true);
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oCurrArticle = $this->getMock('oxarticle', array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
@@ -189,10 +189,10 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
     public function testSetListLocatorDataSeo()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return true; }');
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oCurrArticle = $this->getMock('oxarticle', array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
@@ -225,7 +225,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         // testing
         $oLocator->UNITsetListLocatorData($oLocatorTarget, $oCurrArticle);
 
-        $sShopUrl = oxRegistry::getConfig()->getShopUrl();
+        $sShopUrl = $this->getConfig()->getShopUrl();
 
         $this->assertEquals(9, $oCategory->iProductPos);
         $this->assertEquals(32, $oCategory->iCntOfProd);
@@ -246,7 +246,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $this->getConfig()->setConfigParam('blSeoMode', false);
         oxRegistry::getUtils()->seoIsActive(true);
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $sArt = '1142';
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1477&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
@@ -285,10 +285,10 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
     public function testSetVendorLocatorDataSeo()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return true; }');
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $sArt = '1142';
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1477&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
@@ -317,7 +317,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocator = new testOxLocator();
         $oLocator->UNITsetVendorLocatorData($oLocatorTarget, $oCurrArticle);
 
-        $sShopUrl = oxRegistry::getConfig()->getShopUrl();
+        $sShopUrl = $this->getConfig()->getShopUrl();
 
 
         $this->assertEquals(1, $oVendor->iProductPos);
@@ -334,10 +334,10 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
     public function testSetManufacturerLocatorData()
     {
         // seo off
-        modConfig::getInstance()->setConfigParam('blSeoMode', false);
+        $this->getConfig()->setConfigParam('blSeoMode', false);
         oxRegistry::getUtils()->seoIsActive(true);
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $sArt = '1142';
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1477&amp;listtype=manufacturer&amp;mnid=" . md5("d2e44d9b31fcce448.08890330");
@@ -377,10 +377,10 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
     public function testSetManufacturerLocatorDataSeo()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return true; }');
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $sArt = '1142';
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1477&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
@@ -410,7 +410,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocator = new testOxLocator();
         $oLocator->UNITsetManufacturerLocatorData($oLocatorTarget, $oCurrArticle);
 
-        $sShopUrl = oxRegistry::getConfig()->getShopUrl();
+        $sShopUrl = $this->getConfig()->getShopUrl();
 
 
         $this->assertEquals(1, $oManufacturer->iProductPos);
@@ -426,10 +426,10 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
     public function testSetSearchLocatorData()
     {
-        modConfig::getInstance()->setConfigParam('blSeoMode', false);
+        $this->getConfig()->setConfigParam('blSeoMode', false);
         oxRegistry::getUtils()->seoIsActive(true);
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1651&amp;searchparam=Bier&amp;listtype=search";
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=2357&amp;searchparam=Bier&amp;listtype=search";
         $sArtId = '1889';
@@ -448,10 +448,10 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
-        modConfig::setRequestParameter("searchparam", 'Bier');
+        $this->setRequestParameter("searchparam", 'Bier');
         $oLocator = new testOxLocator();
         $oLocator->UNITsetSearchLocatorData($oLocatorTarget, $oCurrArticle);
-        modConfig::setRequestParameter("searchparam", null);
+        $this->setRequestParameter("searchparam", null);
 
         $oSearch = $oLocatorTarget->getActSearch();
 
@@ -468,10 +468,10 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
     public function testSetSearchLocatorDataFromVendor()
     {
         // seo off
-        modConfig::getInstance()->setConfigParam('blSeoMode', false);
+        $this->getConfig()->setConfigParam('blSeoMode', false);
         oxRegistry::getUtils()->seoIsActive(true);
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $sPrevId = '1131';
         $sNextId = '1477';
@@ -495,12 +495,12 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         $sSearchVendor = 'd2e44d9b31fcce448.08890330';
         $sSearchVendor = '68342e2955d7401e6.18967838';
-        modConfig::setRequestParameter("searchparam", 'a');
-        modConfig::setRequestParameter("searchvendor", $sSearchVendor);
+        $this->setRequestParameter("searchparam", 'a');
+        $this->setRequestParameter("searchvendor", $sSearchVendor);
         $oLocator = new testOxLocator();
         $oLocator->UNITsetSearchLocatorData($oLocatorTarget, $oCurrArticle);
-        modConfig::setRequestParameter("searchparam", null);
-        modConfig::setRequestParameter("searchvendor", null);
+        $this->setRequestParameter("searchparam", null);
+        $this->setRequestParameter("searchvendor", null);
 
         $oSearch = $oLocatorTarget->getActSearch();
 
@@ -516,10 +516,10 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
     public function testSetSearchLocatorDataFromCat()
     {
-        modConfig::getInstance()->setConfigParam('blSeoMode', false);
+        $this->getConfig()->setConfigParam('blSeoMode', false);
         oxRegistry::getUtils()->seoIsActive(true);
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oCurrArticle = $this->getMock('oxarticle', array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
@@ -538,12 +538,12 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sSearchCat = '8a142c3e4143562a5.46426637';
         $sNextLink = '';
 
-        modConfig::setRequestParameter("searchparam", 'Bier');
-        modConfig::setRequestParameter("searchcnid", $sSearchCat);
+        $this->setRequestParameter("searchparam", 'Bier');
+        $this->setRequestParameter("searchcnid", $sSearchCat);
         $oLocator = new testOxLocator();
         $oLocator->UNITsetSearchLocatorData($oLocatorTarget, $oCurrArticle);
-        modConfig::setRequestParameter("searchparam", null);
-        modConfig::setRequestParameter("searchcnid", null);
+        $this->setRequestParameter("searchparam", null);
+        $this->setRequestParameter("searchcnid", null);
 
         $oSearch = $oLocatorTarget->getActSearch();
 
@@ -559,10 +559,10 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
     public function testSetTagLocatorData()
     {
         // seo off
-        modConfig::getInstance()->setConfigParam('blSeoMode', false);
+        $this->getConfig()->setConfigParam('blSeoMode', false);
         oxRegistry::getUtils()->seoIsActive(true);
 
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oCurrArticle = $this->getMock('oxarticle', array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('2000'));
@@ -575,7 +575,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_TAG));
 
-        modConfig::setRequestParameter("searchtag", 'wanduhr');
+        $this->setRequestParameter("searchtag", 'wanduhr');
         $oLocator = new testOxLocator();
         $oLocator->UNITsetTagLocatorData($oLocatorTarget, $oCurrArticle);
 
@@ -624,7 +624,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecomm));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_TAG));
 
-        modConfig::setRequestParameter("searchrecomm", 'test');
+        $this->setRequestParameter("searchrecomm", 'test');
         $oLocator = new testOxLocator();
         $oLocator->UNITsetRecommListLocatorData($oLocatorTarget, $oCurrArticle);
 
@@ -642,7 +642,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
     public function testSetRecommListLocatorDataNoSearchParam()
     {
         oxTestModules::addFunction('oxarticlelist', 'loadRecommArticleIds', '{parent::loadRecommArticleIds($aA[0], " order by oxobject2list.oxobjectid asc" );}');
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         // seo off
         $this->setConfigParam('blSeoMode', false);
@@ -670,7 +670,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecomm));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
-        modConfig::setRequestParameter("searchrecomm", null);
+        $this->setRequestParameter("searchrecomm", null);
         $oLocator = new testOxLocator();
         $oLocator->UNITsetRecommListLocatorData($oLocatorTarget, $oCurrArticle);
 
@@ -736,7 +736,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         $oLocator = new testOxLocator();
 
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
         $oCategory->oxcategories__oxtitle = new oxField('test', oxField::T_RAW);
         $oCategory->oxcategories__oxpricefrom = new oxField(10, oxField::T_RAW);
         $oCategory->oxcategories__oxpriceto = new oxField(50, oxField::T_RAW);
@@ -758,7 +758,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         $oLocator = new testOxLocator();
 
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
         $oCategory->oxcategories__oxtitle = new oxField('test', oxField::T_RAW);
         $oCategory->oxcategories__oxpricefrom = new oxField(10, oxField::T_RAW);
         $oCategory->oxcategories__oxpriceto = new oxField(50, oxField::T_RAW);

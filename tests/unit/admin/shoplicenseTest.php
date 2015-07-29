@@ -33,7 +33,7 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
      */
     public function setUp()
     {
-        modSession::getInstance()->setVar("malladmin", true);
+        $this->getSession()->setVariable("malladmin", true);
 
 
         return parent::setUp();
@@ -44,7 +44,7 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
      */
     public function tearDown()
     {
-        modSession::getInstance()->setVar("malladmin", null);
+        $this->getSession()->setVariable("malladmin", null);
 
         return parent::tearDown();
     }
@@ -78,7 +78,7 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxshops"));
+        $this->setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxshops"));
 
         // testing..
         $oView = new Shop_License();
@@ -96,7 +96,7 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Shop_License();
@@ -115,7 +115,7 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
     {
         $oSubj = $this->getProxyClass("Shop_License");
 
-        modSession::getInstance()->setVar("malladmin", true);
+        $this->getSession()->setVariable("malladmin", true);
 
         $oConfig = $this->getMock("oxconfig", array("isDemoShop", "getConfigParam", "setConfigParam", "saveShopConfVar", "getBaseShopId"));
         $oConfig->expects($this->any())->method('isDemoShop')->will($this->returnValue(false));
@@ -133,7 +133,7 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
     {
         $oSubj = $this->getProxyClass("Shop_License");
 
-        modSession::getInstance()->setVar("malladmin", false);
+        $this->getSession()->setVariable("malladmin", false);
 
         $oConfig = $this->getMock("oxconfig", array("isDemoShop", "getConfigParam", "setConfigParam", "saveShopConfVar", "getBaseShopId"));
         $oConfig->expects($this->any())->method('isDemoShop')->will($this->returnValue(false));
@@ -151,7 +151,7 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
     {
         $oSubj = $this->getProxyClass("Shop_License");
 
-        modSession::getInstance()->setVar("malladmin", true);
+        $this->getSession()->setVariable("malladmin", true);
 
         $oConfig = $this->getMock("oxconfig", array("isDemoShop"));
         $oConfig->expects($this->any())->method('isDemoShop')->will($this->returnValue(true));

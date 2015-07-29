@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -43,7 +43,7 @@ class Actions_Main extends oxAdminDetails
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oAction = oxNew("oxactions");
+            $oAction = oxNew("oxActions");
             $oAction->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oAction->getAvailableInLangs();
@@ -141,7 +141,7 @@ class Actions_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oPromotion = oxNew("oxactions");
+        $oPromotion = oxNew("oxActions");
         if ($soxId != "-1") {
             $oPromotion->load($soxId);
         } else {

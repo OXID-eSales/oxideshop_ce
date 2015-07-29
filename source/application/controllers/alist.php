@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -198,7 +198,7 @@ class aList extends oxUBase
         if ('oxmore' == $myConfig->getRequestParameter('cnid')) {
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
-            $oCategory = oxNew('oxcategory');
+            $oCategory = oxNew('oxCategory');
             $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
             $this->setActiveCategory($oCategory);
 
@@ -352,37 +352,37 @@ class aList extends oxUBase
     /**
      * Loads and returns article list of active category.
      *
-     * @param string $oCategory category object
+     * @param oxCategory $category category object
      *
-     * @return array
+     * @return oxArticleList
      */
-    protected function _loadArticles($oCategory)
+    protected function _loadArticles($category)
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
 
-        $iNrofCatArticles = (int) $myConfig->getConfigParam('iNrofCatArticles');
-        $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
+        $numberOfCategoryArticles = (int) $config->getConfigParam('iNrofCatArticles');
+        $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
 
         // load only articles which we show on screen
-        $oArtList = oxNew('oxarticlelist');
-        $oArtList->setSqlLimit($iNrofCatArticles * $this->_getRequestPageNr(), $iNrofCatArticles);
-        $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
+        $articleList = oxNew('oxArticleList');
+        $articleList->setSqlLimit($numberOfCategoryArticles * $this->_getRequestPageNr(), $numberOfCategoryArticles);
+        $articleList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
-        if ($oCategory->isPriceCategory()) {
-            $dPriceFrom = $oCategory->oxcategories__oxpricefrom->value;
-            $dPriceTo = $oCategory->oxcategories__oxpriceto->value;
+        if ($category->isPriceCategory()) {
+            $priceFrom = $category->oxcategories__oxpricefrom->value;
+            $priceTo = $category->oxcategories__oxpriceto->value;
 
-            $this->_iAllArtCnt = $oArtList->loadPriceArticles($dPriceFrom, $dPriceTo, $oCategory);
+            $this->_iAllArtCnt = $articleList->loadPriceArticles($priceFrom, $priceTo, $category);
         } else {
-            $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
+            $sessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
 
-            $sActCat = oxRegistry::getConfig()->getRequestParameter('cnid');
-            $this->_iAllArtCnt = $oArtList->loadCategoryArticles($sActCat, $aSessionFilter);
+            $activeCategoryId = $category->getId();
+            $this->_iAllArtCnt = $articleList->loadCategoryArticles($activeCategoryId, $sessionFilter);
         }
 
-        $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
+        $this->_iCntPages = round($this->_iAllArtCnt / $numberOfCategoryArticles + 0.49);
 
-        return $oArtList;
+        return $articleList;
     }
 
     /**
@@ -989,7 +989,7 @@ class aList extends oxUBase
         if ($this->_aBargainArticleList === null) {
             $this->_aBargainArticleList = array();
             if ($this->getConfig()->getConfigParam('bl_perfLoadAktion') && $this->_isActCategory()) {
-                $oArtList = oxNew('oxarticlelist');
+                $oArtList = oxNew('oxArticleList');
                 $oArtList->loadActionArticles('OXBARGAIN');
                 if ($oArtList->count()) {
                     $this->_aBargainArticleList = $oArtList;

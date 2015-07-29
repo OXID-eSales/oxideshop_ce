@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -46,7 +46,7 @@ class shop_default_category_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $oCat = oxNew('oxcategory');
+        $oCat = oxNew('oxCategory');
         $oCat->setLanguage(oxRegistry::getConfig()->getRequestParameter('editlanguage'));
 
         $sCategoriesTable = $oCat->getViewName();
@@ -60,7 +60,7 @@ class shop_default_category_ajax extends ajaxListComponent
     public function unassignCat()
     {
         $sShopId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $oShop = oxNew('oxshop');
+        $oShop = oxNew('oxShop');
         if ($oShop->load($sShopId)) {
             $oShop->oxshops__oxdefcat = new oxField('');
             $oShop->save();
@@ -74,7 +74,7 @@ class shop_default_category_ajax extends ajaxListComponent
     {
         $sChosenCat = oxRegistry::getConfig()->getRequestParameter('oxcatid');
         $sShopId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $oShop = oxNew('oxshop');
+        $oShop = oxNew('oxShop');
         if ($oShop->load($sShopId)) {
             $oShop->oxshops__oxdefcat = new oxField($sChosenCat);
             $oShop->save();

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -56,7 +56,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
 
         // set shop params for testing
         $this->_oShop = oxNew("oxshop");
-        $this->_oShop->load(oxRegistry::getConfig()->getShopId());
+        $this->_oShop->load($this->getConfig()->getShopId());
         $this->_oShop->oxshops__oxorderemail = new oxField('orderemail@orderemail.nl', oxField::T_RAW);
         $this->_oShop->oxshops__oxordersubject = new oxField('testOrderSubject', oxField::T_RAW);
         $this->_oShop->oxshops__oxsendednowsubject = new oxField('testSendedNowSubject', oxField::T_RAW);
@@ -71,12 +71,12 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $this->_oShop->oxshops__oxforgotpwdsubject = new oxField('testUserFogotPwdSubject', oxField::T_RAW);
 
         // insert test article
-        $this->_oArticle = oxNew("oxarticle");
+        $this->_oArticle = oxNew("oxArticle");
         $this->_oArticle->setId('_testArticleId');
         $this->_oArticle->oxarticles__oxtitle = new oxField('testArticle', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxtitle_1 = new oxField('testArticle_EN', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxartnum = new oxField('123456789', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
+        $this->_oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
         $this->_oArticle->oxarticles__oxshortdesc = new oxField('testArticleDescription', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxprice = new oxField('256', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxremindactive = new oxField('1', oxField::T_RAW);
@@ -98,7 +98,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $oActShop = oxRegistry::getConfig()->getActiveShop();
+        $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(0);
         oxRegistry::getLang()->setBaseLanguage(0);
         $this->cleanUpTable('oxuser');
@@ -137,32 +137,38 @@ class Unit_Core_oxemailTest extends OxidTestCase
     public function testIncludeImagesErrorTestCase()
     {
         oxTestModules::addFunction("oxUtilsObject", "generateUId", "{ return 'xxx'; }");
-        $myConfig = oxRegistry::getConfig();
+        $config = $this->getConfig();
 
         $oArticle = new oxarticle();
         $oArticle->load('1351');
         $sImgUrl = $oArticle->getThumbnailUrl();
         $iImgFile = basename($sImgUrl);
         $sTitle = $oArticle->oxarticles__oxtitle->value;
+        $imageDirectory = $config->getImageDir();
 
-        $sBody = '<img src="' . $myConfig->getImageDir() . 'stars.jpg" border="0" hspace="0" vspace="0" alt="stars" align="texttop">';
-        $sBody .= '<img src="' . $myConfig->getImageUrl() . 'logo.png" border="0" hspace="0" vspace="0" alt="logo" align="texttop">';
+        $imageGenerator = $this->getMock('oxDynImgGenerator', array('getImagePath'));
+        $imageGenerator->expects($this->any())->method('getImagePath')->will($this->returnValue($config->getPictureDir(false) .'generated/product/thumb/185_150_75/nopic.jpg'));
+        oxTestModules::addModuleObject('oxDynImgGenerator', $imageGenerator);
+
+        $sBody = '<img src="' . $imageDirectory . 'stars.jpg" border="0" hspace="0" vspace="0" alt="stars" align="texttop">';
+        $sBody .= '<img src="' . $config->getImageUrl() . 'logo.png" border="0" hspace="0" vspace="0" alt="logo" align="texttop">';
         $sBody .= '<img src="' . $sImgUrl . '" border="0" hspace="0" vspace="0" alt="' . $sTitle . '" align="texttop">';
 
         $sGenBody = '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="stars" align="texttop">';
         $sGenBody .= '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="logo" align="texttop">';
         $sGenBody .= '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="' . $sTitle . '" align="texttop">';
 
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
         $oEmail = $this->getMock('oxemail', array('getBody', 'addEmbeddedImage', 'setBody'));
         $oEmail->expects($this->once())->method('getBody')->will($this->returnValue($sBody));
-        $oEmail->expects($this->at(1))->method('addEmbeddedImage')->with($this->equalTo($myConfig->getImageDir() . 'stars.jpg'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
-        $oEmail->expects($this->at(2))->method('addEmbeddedImage')->with($this->equalTo($myConfig->getImageDir() . 'logo.png'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/png'))->will($this->returnValue(true));
-        $oEmail->expects($this->at(3))->method('addEmbeddedImage')->with($this->equalTo($myConfig->getPictureDir(false) . 'generated/product/thumb/185_150_75/' . $iImgFile), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
+        $oEmail->expects($this->at(1))->method('addEmbeddedImage')->with($this->equalTo($imageDirectory . 'stars.jpg'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
+        $oEmail->expects($this->at(2))->method('addEmbeddedImage')->with($this->equalTo($imageDirectory . 'logo.png'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/png'))->will($this->returnValue(true));
+        $oEmail->expects($this->at(3))->method('addEmbeddedImage')->with($this->equalTo($config->getPictureDir(false) . 'generated/product/thumb/185_150_75/' . $iImgFile), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
         $oEmail->expects($this->once())->method('setBody')->with($this->equalTo($sGenBody));
 
-        $oEmail->UNITincludeImages(
-            $myConfig->getImageDir(), $myConfig->getImageUrl(false), $myConfig->getPictureUrl(null),
-            $myConfig->getImageDir(), $myConfig->getPictureDir(false)
+        $oEmail->_includeImages(
+            $imageDirectory, $config->getImageUrl(false), $config->getPictureUrl(null),
+            $imageDirectory, $config->getPictureDir(false)
         );
     }
 
@@ -262,7 +268,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendOrderEMailToOwnerAddsHistoryRecord()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $myDb = oxDb::getDb();
 
         $oPayment = new oxPayment();
@@ -301,7 +307,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendForgotPwdEmailToNotExistingUser()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
         $oEmail->expects($this->never())->method('_sendMail');
@@ -316,7 +322,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendForgotPwdEmailSendingFailed()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
 
         $oEmail = $this->getMock('oxEmail', array("send", "_getShop"));
         $oEmail->expects($this->any())->method('send')->will($this->returnValue(false));
@@ -332,21 +338,21 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendBackupMailWithAttachment()
     {
-        $myConfig = oxRegistry::getConfig();
+        $fileToAttach = $this->createFile('alternativeFile.php', '');
+        $filesToAttach = array(basename($fileToAttach));
+        $filesToAttachDirectory = dirname($fileToAttach);
+        $emailAddress = 'username@useremail.nl';
+        $subject = 'testBackupMailSubject';
+        $message = 'testBackupMailMessage';
+        $status = array();
+        $errors = array();
 
-        $aAttFiles[] = basename(__FILE__);
-        $sAttPath = getTestsBasePath() . "/unit/core/";
-        $sEmailAdress = 'username@useremail.nl';
-        $sSubject = 'testBackupMailSubject';
-        $sMessage = 'testBackupMailMessage';
-        $aStatus = array();
-        $aError = array();
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        $email = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
+        $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
+        $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
-
-        $blRet = $oEmail->sendBackupMail($aAttFiles, $sAttPath, $sEmailAdress, $sSubject, $sMessage, $aStatus, $aError);
+        $blRet = $email->sendBackupMail($filesToAttach, $filesToAttachDirectory, $emailAddress, $subject, $message, $status, $errors);
         $this->assertTrue($blRet, 'Backup mail was not sent to shop owner');
     }
 
@@ -355,24 +361,24 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendBackupMailWithAttachmentStatusCode()
     {
-        $myConfig = oxRegistry::getConfig();
+        $fileToAttach = $this->createFile('alternativeFile.php', '');
+        $filesToAttach = array(basename($fileToAttach));
+        $filesToAttachDirectories = dirname($fileToAttach);
+        $emailAddress = 'username@useremail.nl';
+        $subject = 'testBackupMailSubject';
+        $message = 'testBackupMailMessage';
+        $status = array();
+        $errors = array();
 
-        $aAttFiles[] = basename(__FILE__);
-        $sAttPath = getTestsBasePath() . "/unit/core/";
-        $sEmailAdress = 'username@useremail.nl';
-        $sSubject = 'testBackupMailSubject';
-        $sMessage = 'testBackupMailMessage';
-        $aStatus = array();
-        $aError = array();
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        $email = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
+        $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
+        $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
-
-        $oEmail->sendBackupMail($aAttFiles, $sAttPath, $sEmailAdress, $sSubject, $sMessage, $aStatus, $aError);
+        $email->sendBackupMail($filesToAttach, $filesToAttachDirectories, $emailAddress, $subject, $message, $status, $errors);
 
         //check status code
-        $this->assertEquals(3, $aStatus[0], "Attachment was not icluded im mail");
+        $this->assertEquals(3, $status[0], "Attachment was not icluded im mail");
     }
 
     /*
@@ -381,28 +387,29 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendBackupMailWithWrongAttachmentGeneratesErrorCodes()
     {
-        $myConfig = oxRegistry::getConfig();
+        $fileToAttach = $this->createFile('alternativeFile.php', '');
+        $filesToAttach = array(basename($fileToAttach));
+        $filesToAttachDirectory = 'nosuchdir';
 
-        $aAttFiles[] = basename(__FILE__);
-        $sAttPath = 'nosuchdir';
-        $sEmailAdress = 'username@useremail.nl';
-        $sSubject = 'testBackupMailSubject';
-        $sMessage = 'testBackupMailMessage';
-        $aStatus = array();
-        $aError = array();
+        $emailAddress = 'username@useremail.nl';
+        $subject = 'testBackupMailSubject';
+        $message = 'testBackupMailMessage';
+        $status = array();
+        $errors = array();
 
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
         $oEmail->expects($this->never())->method('_sendMail');
         $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
 
-        $blRet = $oEmail->sendBackupMail($aAttFiles, $sAttPath, $sEmailAdress, $sSubject, $sMessage, $aStatus, $aError);
+        $blRet = $oEmail->sendBackupMail($filesToAttach, $filesToAttachDirectory, $emailAddress, $subject, $message, $status, $errors);
         $this->assertFalse($blRet, 'Bad backup mail was not sent to shop owner');
 
         // checking error codes
         // 4 - backup mail was not sent
         // 5 - file not found
-        $this->assertTrue((in_array(5, $aError[0])), "Wrong attachment was icluded in mail");
-        $this->assertTrue((in_array(4, $aError[1])), "Wrong attachment was was sent");
+        $this->assertTrue((in_array(5, $errors[0])), "Wrong attachment was icluded in mail");
+        $this->assertTrue((in_array(4, $errors[1])), "Wrong attachment was was sent");
     }
 
     /*
@@ -507,7 +514,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testIncludeImages()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $sImageDir = $myConfig->getImageDir();
 
         $oEmail = new oxEmail();
@@ -732,15 +739,15 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testGetUseInlineImagesFromConfig()
     {
-        modConfig::getInstance()->setConfigParam("blInlineImgEmail", true);
+        $this->getConfig()->setConfigParam("blInlineImgEmail", true);
         $oEmail = oxNew("oxemail");
         $this->assertTrue($oEmail->UNITgetUseInlineImages());
 
-        modConfig::getInstance()->setConfigParam("blInlineImgEmail", false);
+        $this->getConfig()->setConfigParam("blInlineImgEmail", false);
         $oEmail = oxNew("oxemail");
         $this->assertFalse($oEmail->UNITgetUseInlineImages());
 
-        modConfig::getInstance()->setConfigParam("blInlineImgEmail", true);
+        $this->getConfig()->setConfigParam("blInlineImgEmail", true);
         $oEmail = oxNew("oxemail");
         $this->assertTrue($oEmail->UNITgetUseInlineImages());
     }
@@ -759,7 +766,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testAddAttachment()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $sImageDir = $myConfig->getImageDir() . '/';
 
         $this->_oEmail->AddAttachment($sImageDir, 'barrcode.gif');
@@ -773,7 +780,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testClearAttachments()
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = $this->getConfig();
         $sImageDir = $myConfig->getImageDir() . '/';
 
         $this->_oEmail->AddAttachment($sImageDir, 'barrcode.gif');
@@ -934,7 +941,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testGetShopWhenShopIsNotSet()
     {
-        $this->assertEquals(oxRegistry::getConfig()->getActiveShop(), $this->_oEmail->UNITgetShop());
+        $this->assertEquals($this->getConfig()->getActiveShop(), $this->_oEmail->UNITgetShop());
     }
 
     /*
@@ -956,7 +963,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
         $oShop = $this->_oEmail->UNITgetShop(1);
         $this->assertEquals(1, $oShop->getLanguage());
-        $this->assertEquals(oxRegistry::getConfig()->getShopId(), $oShop->getShopId());
+        $this->assertEquals($this->getConfig()->getShopId(), $oShop->getShopId());
     }
 
     /*
@@ -1042,18 +1049,18 @@ class Unit_Core_oxemailTest extends OxidTestCase
 
     public function testGetNewsSubsLink()
     {
-        $sUrl = oxRegistry::getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0';
+        $sUrl = $this->getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0';
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX'));
-        $oActShop = oxRegistry::getConfig()->getActiveShop();
+        $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(1);
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX'));
     }
 
     public function testGetNewsSubsLinkWithConfirm()
     {
-        $sUrl = oxRegistry::getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0&amp;confirm=AAAA';
+        $sUrl = $this->getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0&amp;confirm=AAAA';
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX', 'AAAA'));
-        $oActShop = oxRegistry::getConfig()->getActiveShop();
+        $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(1);
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX', 'AAAA'));
     }

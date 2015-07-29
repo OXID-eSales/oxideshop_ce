@@ -38,7 +38,6 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
         $myDB->execute("delete from oxseo where oxobjectid = '_testArt'");
         $myDB->execute("delete from oxnewssubscribed where oxuserid = '_testUser'");
         oxArticleHelper::cleanup();
-        modSession::getInstance()->cleanup();
 
         //resetting cached testing values
         $_GET["testReset"] = null;
@@ -90,7 +89,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
         $oAdminView->expects($this->any())->method('_getCountryByCode')->will($this->returnValue("testcountrycode"));
         $oAdminView->expects($this->any())->method('_getShopVersionNr')->will($this->returnValue("testshopversion"));
 
-        modSession::getInstance()->setVar('tpllanguage', 'de');
+        $this->getSession()->setVariable('tpllanguage', 'de');
 
         $sTestUrl = "testprotocol://admin.oxid-esales.com/$sPref/testshopversion/testcountrycode/de/";
         $this->assertEquals($sTestUrl, $oAdminView->getServiceUrl());
@@ -192,7 +191,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
 
         oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
-        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", null);
+        $this->getConfig()->setConfigParam("blClearCacheOnLogout", null);
 
         $oAdminView = oxNew('oxAdminView');
         $oAdminView->resetContentCache();
@@ -211,7 +210,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
 
         oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
-        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", 1);
+        $this->getConfig()->setConfigParam("blClearCacheOnLogout", 1);
 
         $oAdminView = oxNew('oxAdminView');
         $oAdminView->resetContentCache();
@@ -231,7 +230,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
 
         oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
-        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", 1);
+        $this->getConfig()->setConfigParam("blClearCacheOnLogout", 1);
 
         $oAdminView->resetContentCache(true);
 
@@ -245,7 +244,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testResetCounter()
     {
-        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", null);
+        $this->getConfig()->setConfigParam("blClearCacheOnLogout", null);
         oxTestModules::addFunction('oxUtilsCount', 'resetPriceCatArticleCount', '{ $_GET["testReset"]["priceCatCount"] = $aA[0]; }');
         oxTestModules::addFunction('oxUtilsCount', 'resetCatArticleCount', '{ $_GET["testReset"]["catCount"] = $aA[0]; }');
         oxTestModules::addFunction('oxUtilsCount', 'resetVendorArticleCount', '{ $_GET["testReset"]["vendorCount"] = $aA[0]; }');
@@ -270,7 +269,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testResetCounterWhenResetOnLogoutEnabled()
     {
-        modConfig::getInstance()->setConfigParam("blClearCacheOnLogout", 1);
+        $this->getConfig()->setConfigParam("blClearCacheOnLogout", 1);
 
         oxTestModules::addFunction('oxUtilsCount', 'resetPriceCatArticleCount', '{ $_GET["testReset"]["priceCatCount"] = $aA[0]; }');
         oxTestModules::addFunction('oxUtilsCount', 'resetCatArticleCount', '{ $_GET["testReset"]["catCount"] = $aA[0]; }');
@@ -380,20 +379,20 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testSetEditObjectIdGetEditObjectId()
     {
-        modConfig::setRequestParameter("oxid", null);
-        modSession::getInstance()->setVar("saved_oxid", "testSessId");
+        $this->setRequestParameter("oxid", null);
+        $this->getSession()->setVariable("saved_oxid", "testSessId");
 
         $oView = new oxAdminView();
         $this->assertEquals("testSessId", $oView->getEditObjectId());
 
-        modConfig::setRequestParameter("oxid", "testRequestId");
-        modSession::getInstance()->setVar("saved_oxid", "testSessId");
+        $this->setRequestParameter("oxid", "testRequestId");
+        $this->getSession()->setVariable("saved_oxid", "testSessId");
 
         $oView = new oxAdminView();
         $this->assertEquals("testRequestId", $oView->getEditObjectId());
 
-        modConfig::setRequestParameter("oxid", "testRequestId");
-        modSession::getInstance()->setVar("saved_oxid", "testSessId");
+        $this->setRequestParameter("oxid", "testRequestId");
+        $this->getSession()->setVariable("saved_oxid", "testSessId");
 
         $oView = new oxAdminView();
         $oView->setEditObjectId("testSetId");

@@ -18,7 +18,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -41,7 +41,7 @@ class Unit_Views_pricealarmTest extends OxidTestCase
     {
         $oPriceAlarm = $this->getProxyClass('pricealarm');
         $pa['aid'] = '2000';
-        modConfig::setRequestParameter('pa', $pa);
+        $this->setRequestParameter('pa', $pa);
 
         $this->assertEquals('2000', $oPriceAlarm->getProduct()->getId());
     }
@@ -50,7 +50,7 @@ class Unit_Views_pricealarmTest extends OxidTestCase
     {
         $oPriceAlarm = $this->getProxyClass('pricealarm');
         $pa['price'] = '10';
-        modConfig::setRequestParameter('pa', $pa);
+        $this->setRequestParameter('pa', $pa);
 
         $this->assertEquals('10,00', $oPriceAlarm->getBidPrice());
     }
@@ -68,8 +68,8 @@ class Unit_Views_pricealarmTest extends OxidTestCase
         $oDb = oxDb::getDb();
 
         $oPriceAlarm = $this->getProxyClass('pricealarm');
-        modConfig::setRequestParameter("c_mac", "aa");
-        modConfig::setRequestParameter("c_mach", "bb");
+        $this->setRequestParameter("c_mac", "aa");
+        $this->setRequestParameter("c_mach", "bb");
 
         $oPriceAlarm->addme();
 
@@ -86,7 +86,7 @@ class Unit_Views_pricealarmTest extends OxidTestCase
         $oPriceAlarm = $this->getProxyClass('pricealarm');
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
 
-        modConfig::setRequestParameter("pa", array("email" => "ladyGaga"));
+        $this->setRequestParameter("pa", array("email" => "ladyGaga"));
         $oPriceAlarm->addme();
 
         $this->assertEquals(0, $oPriceAlarm->getNonPublicVar("_iPriceAlarmStatus"));
@@ -101,14 +101,14 @@ class Unit_Views_pricealarmTest extends OxidTestCase
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
         oxTestModules::addFunction('oxEmail', 'sendPricealarmNotification', '{return 999;}');
 
-        modSession::getInstance()->setVar('usr', "testUserId");
+        $this->getSession()->setVariable('usr', "testUserId");
         $aParams["email"] = "goodemail@ladyGagaFans.lt";
         $aParams["aid"] = "_testArtId";
         $aParams["price"] = "10";
 
         $aParams["mano"] = "101";
 
-        modConfig::setRequestParameter("pa", $aParams);
+        $this->setRequestParameter("pa", $aParams);
         $oPriceAlarm->addme();
 
         $this->assertEquals(999, $oPriceAlarm->getNonPublicVar("_iPriceAlarmStatus"));
@@ -134,11 +134,11 @@ class Unit_Views_pricealarmTest extends OxidTestCase
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
         oxTestModules::addFunction('oxEmail', 'sendPricealarmNotification', '{return 999;}');
 
-        modSession::getInstance()->setVar('usr', "testUserId");
+        $this->getSession()->setVariable('usr', "testUserId");
         $aParams["email"] = "goodemail@ladyGagaFans.lt";
 
         oxRegistry::getLang()->setBaseLanguage(1);
-        modConfig::setRequestParameter("pa", $aParams);
+        $this->setRequestParameter("pa", $aParams);
 
         $oPriceAlarm->addme();
 

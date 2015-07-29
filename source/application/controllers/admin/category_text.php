@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -38,7 +38,7 @@ class Category_Text extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oCategory = oxNew('oxcategory');
+        $this->_aViewData['edit'] = $oCategory = oxNew('oxCategory');
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ($soxId != "-1" && isset($soxId)) {
@@ -81,7 +81,7 @@ class Category_Text extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
         $iCatLang = oxRegistry::getConfig()->getRequestParameter("catlang");
         $iCatLang = $iCatLang ? $iCatLang : 0;
 

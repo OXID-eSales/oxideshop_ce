@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Views_searchTest extends OxidTestCase
     */
     public function testIsEmptySearchWithSpace()
     {
-        $this->getConfig()->setRequestParameter('searchparam', ' ');
+        $this->setRequestParameter('searchparam', ' ');
 
         $oSearch = new search();
         $oSearch->init();
@@ -99,7 +99,7 @@ class Unit_Views_searchTest extends OxidTestCase
 
     public function testGetArticleList()
     {
-        $this->getConfig()->setRequestParameter('searchparam', 'bar');
+        $this->setRequestParameter('searchparam', 'bar');
 
         $oSearch = new search();
         $oSearch->init();
@@ -124,7 +124,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getProxyClass('search');
         $oSearch->setNonPublicVar("_blSearchClass", true);
-        modConfig::setRequestParameter('searchparam', 'ü  a');
+        $this->setRequestParameter('searchparam', 'ü  a');
 
         $this->assertEquals('ü  a', $oSearch->getSearchParamForHtml());
     }
@@ -133,7 +133,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getProxyClass('search');
         $oSearch->setNonPublicVar("_blSearchClass", true);
-        modConfig::setRequestParameter('searchparam', 'ü  a');
+        $this->setRequestParameter('searchparam', 'ü  a');
 
         $this->assertEquals('%FC%20%20a', $oSearch->getSearchParam());
     }
@@ -142,7 +142,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getProxyClass('search');
         $oSearch->setNonPublicVar("_blSearchClass", true);
-        modConfig::setRequestParameter('searchcnid', 'test');
+        $this->setRequestParameter('searchcnid', 'test');
 
         $this->assertEquals('test', $oSearch->getSearchCatId());
     }
@@ -151,7 +151,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getProxyClass('search');
         $oSearch->setNonPublicVar("_blSearchClass", true);
-        modConfig::setRequestParameter('searchvendor', 'test');
+        $this->setRequestParameter('searchvendor', 'test');
 
         $this->assertEquals('test', $oSearch->getSearchVendor());
     }
@@ -172,7 +172,7 @@ class Unit_Views_searchTest extends OxidTestCase
 
     public function testRender()
     {
-        modConfig::getInstance()->setConfigParam('bl_rssSearch', false);
+        $this->getConfig()->setConfigParam('bl_rssSearch', false);
         $n = $this->getMock(
             'search', array(
                            '_processListArticles'
@@ -202,11 +202,11 @@ class Unit_Views_searchTest extends OxidTestCase
             )->will($this->returnValue('rss1url'));
         oxTestModules::addModuleObject('oxrssfeed', $oRss);
 
-        modConfig::getInstance()->setConfigParam('bl_rssSearch', 1);
-        modConfig::setRequestParameter('searchparam', 'ysearchparam');
-        modConfig::setRequestParameter('searchcnid', 'ysearchcnid');
-        modConfig::setRequestParameter('searchvendor', 'ysearchvendor');
-        modConfig::setRequestParameter('searchmanufacturer', 'ysearchmanufacturer');
+        $this->getConfig()->setConfigParam('bl_rssSearch', 1);
+        $this->setRequestParameter('searchparam', 'ysearchparam');
+        $this->setRequestParameter('searchcnid', 'ysearchcnid');
+        $this->setRequestParameter('searchvendor', 'ysearchvendor');
+        $this->setRequestParameter('searchmanufacturer', 'ysearchmanufacturer');
 
         $n = $this->getMock(
             'search', array(
@@ -222,18 +222,18 @@ class Unit_Views_searchTest extends OxidTestCase
 
     public function testGetAddUrlParams()
     {
-        modConfig::setRequestParameter('searchparam', 'ysearchparam');
-        modConfig::setRequestParameter('searchcnid', 'ysearchcnid');
-        modConfig::setRequestParameter('searchvendor', 'ysearchvendor');
-        modConfig::setRequestParameter('searchmanufacturer', 'ysearchmanufacturer');
+        $this->setRequestParameter('searchparam', 'ysearchparam');
+        $this->setRequestParameter('searchcnid', 'ysearchcnid');
+        $this->setRequestParameter('searchvendor', 'ysearchvendor');
+        $this->setRequestParameter('searchmanufacturer', 'ysearchmanufacturer');
         $this->assertEquals('listtype=search&amp;searchparam=ysearchparam&amp;searchcnid=ysearchcnid&amp;searchvendor=ysearchvendor&amp;searchmanufacturer=ysearchmanufacturer', oxNew('search')->getAddUrlParams());
     }
 
     public function testIsSearchClass()
     {
-        modConfig::setRequestParameter('cl', 'ysearchcnid');
+        $this->setRequestParameter('cl', 'ysearchcnid');
         $this->assertEquals(false, oxNew('search')->UNITisSearchClass());
-        modConfig::setRequestParameter('cl', 'search');
+        $this->setRequestParameter('cl', 'search');
         $this->assertEquals(true, oxNew('search')->UNITisSearchClass());
 
     }
@@ -242,7 +242,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getMock("search", array("_isSearchClass"));
         $oSearch->expects($this->once())->method('_isSearchClass')->will($this->returnValue(true));
-        modConfig::setRequestParameter('searchmanufacturer', 'gsearchmanufacturer&');
+        $this->setRequestParameter('searchmanufacturer', 'gsearchmanufacturer&');
         $this->assertSame('gsearchmanufacturer&amp;', $oSearch->getSearchManufacturer());
     }
 
@@ -250,7 +250,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getMock("search", array("_isSearchClass"));
         $oSearch->expects($this->once())->method('_isSearchClass')->will($this->returnValue(false));
-        modConfig::setRequestParameter('searchmanufacturer', 'gsearchmanufacturer&');
+        $this->setRequestParameter('searchmanufacturer', 'gsearchmanufacturer&');
         $this->assertSame(false, $oSearch->getSearchManufacturer());
     }
 

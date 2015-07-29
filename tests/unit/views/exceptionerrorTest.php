@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -67,8 +67,8 @@ class Unit_Views_exceptionErrorTest extends OxidTestCase
      */
     public function testDisplayExceptionError_resetsErrorsInSession()
     {
-        modSession::getInstance()->setVar("Errors", "testValue");
-        $this->assertEquals("testValue", modSession::getInstance()->getVar("Errors"));
+        $this->getSession()->setVariable("Errors", "testValue");
+        $this->assertEquals("testValue", $this->getSession()->getVariable("Errors"));
 
         $oErr = $this->getMock("exceptionError", array("_getErrors", 'getViewData'));
         $oErr->expects($this->once())->method('getViewData')->will($this->returnValue(array()));
@@ -76,7 +76,7 @@ class Unit_Views_exceptionErrorTest extends OxidTestCase
 
         $oErr->displayExceptionError();
 
-        $this->assertEquals(array(), modSession::getInstance()->getVar("Errors"));
+        $this->assertEquals(array(), $this->getSession()->getVariable("Errors"));
     }
 
     /**
@@ -86,7 +86,7 @@ class Unit_Views_exceptionErrorTest extends OxidTestCase
      */
     public function testGetErrors()
     {
-        modSession::getInstance()->setVar("Errors", "testValue");
+        $this->getSession()->setVariable("Errors", "testValue");
 
         $oErr = $this->getProxyClass("exceptionError");
         $this->assertEquals("testValue", $oErr->UNITgetErrors());

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -50,7 +50,7 @@ class Unit_Admin_StatisticServiceTest extends OxidTestCase
     {
         // testing..
         $iTimeFrame = "62";
-        modConfig::setRequestParameter("timeframe", $iTimeFrame);
+        $this->setRequestParameter("timeframe", $iTimeFrame);
         $dNow = time();
         $sInsertFrom = date("Y-m-d H:i:s", mktime(date("H", $dNow), date("i", $dNow), date("s", $dNow), date("m", $dNow), date("d", $dNow) - 186, date("Y", $dNow)));
         $sDeleteFrom = date("Y-m-d H:i:s", mktime(date("H", $dNow), date("i", $dNow), date("s", $dNow), date("m", $dNow), date("d", $dNow) - $iTimeFrame, date("Y", $dNow)));

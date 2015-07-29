@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -58,7 +58,7 @@ class oxImex extends oxBase
             $oDb->setFetchMode($oldMode);
 
             while (!$rs->EOF) {
-                $oArticle = oxNew("oxarticle");
+                $oArticle = oxNew("oxArticle");
                 $blAdmin = $this->isAdmin();
                 // TODO: this place could be optimized. please check what we can do.
                 $this->setAdminMode(false);

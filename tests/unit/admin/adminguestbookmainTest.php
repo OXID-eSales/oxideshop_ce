@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", "xxx");
+        $this->setRequestParameter("oxid", "xxx");
         oxTestModules::addFunction('oxgbentry', 'save', '{ return true; }');
 
         // testing..
@@ -44,7 +44,7 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
         $this->assertTrue($aViewData["edit"] instanceof oxgbentry);
-        $this->assertEquals(modConfig::getInstance()->getConfigParam("blGBModerate"), $aViewData["blShowActBox"]);
+        $this->assertEquals($this->getConfig()->getConfigParam("blGBModerate"), $aViewData["blShowActBox"]);
 
         $this->assertEquals('adminguestbook_main.tpl', $sTplName);
     }
@@ -56,8 +56,8 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
      */
     public function testRenderDefaultOxid()
     {
-        modConfig::setRequestParameter("oxid", "-1");
-        modConfig::setRequestParameter("saved_oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("saved_oxid", "-1");
 
         // testing..
         $oView = new Adminguestbook_Main();
@@ -68,7 +68,7 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
         $this->assertFalse(isset($aViewData["edit"]));
         $this->assertTrue(isset($aViewData["oxid"]));
         $this->assertEquals("-1", $aViewData["oxid"]);
-        $this->assertEquals(modConfig::getInstance()->getConfigParam("blGBModerate"), $aViewData["blShowActBox"]);
+        $this->assertEquals($this->getConfig()->getConfigParam("blGBModerate"), $aViewData["blShowActBox"]);
 
         $this->assertEquals('adminguestbook_main.tpl', $sTplName);
     }
@@ -83,8 +83,8 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
         oxTestModules::addFunction('oxgbentry', 'load', '{ return true; }');
         oxTestModules::addFunction('oxgbentry', 'save', '{ return true; }');
 
-        modConfig::setRequestParameter("oxid", "xxx");
-        modConfig::setRequestParameter("editval", array("xxx"));
+        $this->setRequestParameter("oxid", "xxx");
+        $this->setRequestParameter("editval", array("xxx"));
 
         $oView = new Adminguestbook_Main();
         $oView->save();
@@ -103,8 +103,8 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxgbentry', 'save', '{ $this->oxgbentries__oxid = new oxField( "testId" ); return true; }');
 
-        modConfig::setRequestParameter("oxid", "-1");
-        modConfig::setRequestParameter("editval", array("xxx"));
+        $this->setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("editval", array("xxx"));
 
         $oView = new Adminguestbook_Main();
         $oView->save();

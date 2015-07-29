@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -47,7 +47,7 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
      */
     public function testGetDownloadUrl()
     {
-        $myConfig = modConfig::getInstance();
+        $myConfig = $this->getConfig();
 
         $myConfig->setConfigParam("sAdminSSLURL", "sAdminSSLURL");
         oxRegistry::get("oxUtilsUrl")->setAdminMode(true);
@@ -89,7 +89,7 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
         $oView = $this->getMock("VoucherSerie_Export", array("_getExportFileName"));
         $oView->expects($this->once())->method('_getExportFileName')->will($this->returnValue("testName"));
 
-        $this->assertEquals(oxRegistry::getConfig()->getConfigParam('sShopDir') . "/export/" . "testName", $oView->UNITgetExportFilePath());
+        $this->assertEquals($this->getConfig()->getConfigParam('sShopDir') . "/export/" . "testName", $oView->UNITgetExportFilePath());
     }
 
     /**
@@ -104,7 +104,7 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
         $oVoucherSerie->setId("_testvoucherserie");
 
         // inserting test voucher
-        $oVoucher = oxNew("oxbase");
+        $oVoucher = oxNew("oxBase");
         $oVoucher->init("oxvouchers");
         $oVoucher->setId("_testvoucher");
         $oVoucher->oxvouchers__oxvoucherserieid = new oxField("_testvoucherserie");

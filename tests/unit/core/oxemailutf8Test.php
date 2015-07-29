@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -81,7 +81,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
         $oBasketItem->expects($this->any())->method('getTitle')->will($this->returnValue("testarticle"));
 
         // insert test article
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->setId('_testArticleId');
         $oArticle->setId('_testArticleId');
         $oArticle->oxarticles__oxtitle = new oxField();
@@ -122,7 +122,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
         $oOrder->oxorder__oxdeltype = new oxField("oxidstandard");
 
         $oShop = oxNew("oxshop");
-        $oShop->load(oxRegistry::getConfig()->getShopId());
+        $oShop->load($this->getConfig()->getShopId());
 
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
@@ -134,7 +134,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
 
         $sBody = $oEmail->getBody();
         //uncoment line to generate template for checking mail body
-        //file_put_contents ('unit/email_templates/'.__FUNCTION__.'_.html', $oEmail->getBody() );
+        //file_put_contents (__DIR__ .'/../testData/email_templates/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
         $oStr = oxStr::getStr();
 

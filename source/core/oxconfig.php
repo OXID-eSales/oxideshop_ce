@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -310,30 +310,24 @@ class oxConfig extends oxSuperCfg
     /**
      * Returns config parameter value if such parameter exists
      *
-     * @param string $sName config parameter name
+     * @param string $sName    config parameter name
+     * @param mixed  $sDefault default value if no config var is found default null
      *
      * @return mixed
      */
-    public function getConfigParam($sName)
+    public function getConfigParam($sName, $sDefault = null)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset(modConfig::$unitMOD) && is_object(modConfig::$unitMOD)) {
-                $sValue = modConfig::$unitMOD->getModConfigParam($sName);
-                if ($sValue !== null) {
-                    return $sValue;
-                }
-            }
-        }
-
         $this->init();
 
         if (isset ($this->_aConfigParams[$sName])) {
-            return $this->_aConfigParams[$sName];
+            $sValue = $this->_aConfigParams[$sName];
+        } elseif (isset($this->$sName)) {
+            $sValue = $this->$sName;
+        } else {
+            $sValue = $sDefault;
         }
 
-        if (isset($this->$sName)) {
-            return $this->$sName;
-        }
+        return $sValue;
     }
 
     /**
@@ -366,8 +360,6 @@ class oxConfig extends oxSuperCfg
      * Starts session manager
      *
      * @throws oxConnectionException
-     *
-     * @return null
      */
     public function init()
     {
@@ -389,8 +381,6 @@ class oxConfig extends oxSuperCfg
 
         try {
             $sShopID = $this->getShopId();
-
-
             $blConfigLoaded = $this->_loadVarsFromDb($sShopID);
             // loading shop config
             if (empty($sShopID) || !$blConfigLoaded) {
@@ -431,9 +421,9 @@ class oxConfig extends oxSuperCfg
             $this->_oStart = new oxStart();
             $this->_oStart->appInit();
         } catch (oxConnectionException $oEx) {
-            return $this->_handleDbConnectionException($oEx);
+            $this->_handleDbConnectionException($oEx);
         } catch (oxCookieException $oEx) {
-            return $this->_handleCookieException($oEx);
+            $this->_handleCookieException($oEx);
         }
     }
 
@@ -629,52 +619,71 @@ class oxConfig extends oxSuperCfg
      * use $blRaw very carefully if you want to get unescaped
      * parameter.
      *
-     * @param string $sName Name of parameter
-     * @param bool   $blRaw Get unescaped parameter
+     * @param string $name  Name of parameter.
+     * @param bool   $blRaw Get unescaped parameter.
+     *
+     * @deprecated on b-dev (2015-06-10);
+     * Use oxConfig::getRequestEscapedParameter() or oxConfig::getRequestRawParameter().
      *
      * @return mixed
      */
-    public function getRequestParameter($sName, $blRaw = false)
+    public function getRequestParameter($name, $blRaw = false)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset(modConfig::$unitMOD) && is_object(modConfig::$unitMOD)) {
-                try {
-                    $sValue = modConfig::getRequestParameter($sName, $blRaw);
-
-                    // TODO: remove this after special chars concept implementation
-                    $blIsAdmin = modConfig::getInstance()->isAdmin() || modSession::getInstance()->getVariable("blIsAdmin");
-                    if ($sValue !== null && !$blIsAdmin && (!$blRaw || is_array($blRaw))) {
-                        $this->checkParamSpecialChars($sValue, $blRaw);
-                    }
-
-                    return $sValue;
-                } catch (Exception $e) {
-                    // if exception is thrown, use default
-                }
-            }
-        }
-
-        $sValue = null;
-
-        if (isset($_POST[$sName])) {
-            $sValue = $_POST[$sName];
-        } elseif (isset($_GET[$sName])) {
-            $sValue = $_GET[$sName];
-        }
-
-        // TODO: remove this after special chars concept implementation
-        $blIsAdmin = $this->isAdmin() && $this->getSession()->getVariable("blIsAdmin");
-        if ($sValue !== null && !$blIsAdmin && (!$blRaw || is_array($blRaw))) {
-            $this->checkParamSpecialChars($sValue, $blRaw);
+        if ($blRaw) {
+            $sValue = $this->getRequestRawParameter($name);
+        } else {
+            $sValue = $this->getRequestEscapedParameter($name);
         }
 
         return $sValue;
     }
 
     /**
+     * Returns escaped value of parameter stored in POST,GET.
+     *
+     * @param string $name         Name of parameter.
+     * @param string $defaultValue Default value if no value provided.
+     *
+     * @return mixed
+     */
+    public function getRequestEscapedParameter($name, $defaultValue = null)
+    {
+        $value = $this->getRequestRawParameter($name, $defaultValue);
+
+        // TODO: remove this after special chars concept implementation
+        $isAdmin = $this->isAdmin() && $this->getSession()->getVariable("blIsAdmin");
+        if ($value !== null && !$isAdmin) {
+            $this->checkParamSpecialChars($value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Returns raw value of parameter stored in POST,GET.
+     *
+     * @param string $name         Name of parameter.
+     * @param string $defaultValue Default value if no value provided.
+     *
+     * @return mixed
+     */
+    public function getRequestRawParameter($name, $defaultValue = null)
+    {
+        if (isset($_POST[$name])) {
+            $value = $_POST[$name];
+        } elseif (isset($_GET[$name])) {
+            $value = $_GET[$name];
+        } else {
+            $value = $defaultValue;
+        }
+
+        return $value;
+    }
+
+    /**
      * Returns uploaded file parameter
      *
-     * @param array $sParamName param name
+     * @param string $sParamName param name
      *
      * @return null
      */
@@ -1006,16 +1015,28 @@ class oxConfig extends oxSuperCfg
     /**
      * Returns widget start non SSL URL including widget.php and sid.
      *
-     * @param int  $iLang   language
-     * @param bool $blAdmin if admin
+     * @param int  $languageId   language
+     * @param bool $inAdmin if admin
+     * @param array $urlParameters parameters which should be added to URL.
      *
      * @return string
      */
-    public function getWidgetUrl($iLang = null, $blAdmin = null)
+    public function getWidgetUrl($languageId = null, $inAdmin = null, $urlParameters = array())
     {
-        $sUrl = $this->isSsl() ? $this->getSslShopUrl($iLang) : $this->getShopUrl($iLang, $blAdmin);
+        $utilsUrl = oxRegistry::get('oxUtilsUrl');
+        $widgetUrl = $this->isSsl() ? $this->getSslShopUrl($languageId) : $this->getShopUrl($languageId, $inAdmin);
+        $widgetUrl = $utilsUrl->processUrl($widgetUrl . 'widget.php', false);
 
-        return oxRegistry::get('oxUtilsUrl')->processUrl($sUrl . 'widget.php', false);
+        if (!isset($languageId)) {
+            $language = oxRegistry::getLang();
+            $languageId = $language->getBaseLanguage();
+        }
+        $urlLang = $utilsUrl->getUrlLanguageParameter($languageId);
+        $widgetUrl = $utilsUrl->appendUrl($widgetUrl, $urlLang, true);
+
+        $widgetUrl = $utilsUrl->appendUrl($widgetUrl, $urlParameters, true, true);
+
+        return $widgetUrl;
     }
 
     /**
@@ -1052,14 +1073,6 @@ class oxConfig extends oxSuperCfg
      */
     public function getActShopCurrencyObject()
     {
-        //caching currency as it does not change through the script
-        //but not for unit tests as ther it changes always
-        if (!defined('OXID_PHP_UNIT')) {
-            if (!is_null($this->_oActCurrencyObject)) {
-                return $this->_oActCurrencyObject;
-            }
-        }
-
         $iCur = $this->getShopCurrency();
         $aCurrencies = $this->getCurrencyArray();
         if (!isset($aCurrencies[$iCur])) {
@@ -1413,7 +1426,7 @@ class oxConfig extends oxSuperCfg
      */
     public function getPictureUrl($sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null, $sDefPic = "master/nopic.jpg")
     {
-        if ($sAltUrl = oxRegistry::get("oxPictureHandler")->getAltImageUrl('/', $sFile, $blSSL)) {
+        if ($sAltUrl = oxRegistry::get("oxPictureHandler")->getAltImageUrl('', $sFile, $blSSL)) {
             return $sAltUrl;
         }
 
@@ -1584,19 +1597,6 @@ class oxConfig extends oxSuperCfg
         $aConfCurrencies = $this->getConfigParam('aCurrencies');
         if (!is_array($aConfCurrencies)) {
             return array();
-        }
-
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset(modConfig::$unitMOD) && is_object(modConfig::$unitMOD)) {
-                try {
-                    $aAltCurrencies = modConfig::getInstance()->getConfigParam('modaCurrencies');
-                    if (isset($aAltCurrencies)) {
-                        $aConfCurrencies = $aAltCurrencies;
-                    }
-                } catch (Exception $e) {
-                    // if exception is thrown, use default
-                }
-            }
         }
 
         // processing currency configuration data
@@ -1958,7 +1958,7 @@ class oxConfig extends oxSuperCfg
             return $this->_oActShop;
         }
 
-        $this->_oActShop = oxNew('oxshop');
+        $this->_oActShop = oxNew('oxShop');
         $this->_oActShop->load($this->getShopId());
 
         return $this->_oActShop;
@@ -2204,9 +2204,7 @@ class oxConfig extends oxSuperCfg
     protected function _handleDbConnectionException($oEx)
     {
         $oEx->debugOut();
-        if (defined('OXID_PHP_UNIT')) {
-            return false;
-        } elseif (0 != $this->iDebug) {
+        if (0 != $this->getConfigParam('iDebug')) {
             oxRegistry::getUtils()->showMessageAndExit($oEx->getString());
         } else {
             header("HTTP/1.1 500 Internal Server Error");

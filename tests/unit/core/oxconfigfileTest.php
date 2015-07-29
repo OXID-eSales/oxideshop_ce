@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -107,18 +107,10 @@ class Unit_Core_OxConfigFileTest extends OxidTestCase
      */
     public function testSetFile()
     {
-        $sDir = getTestsBasePath() . '/unit/configtest';
-        if (!is_dir($sDir)) {
-            mkdir($sDir);
-        }
-        $sCustConfig = $sDir . "/cust_config.inc.php";
-        $handle = fopen($sCustConfig, "w+");
-        chmod($sCustConfig, 0777);
-        $data = '<?php $this->custVar = test;';
-        fwrite($handle, $data);
+        $customConfigInc = $this->createFile('config.inc.php', '<?php $this->custVar = test;');
 
         $oConfigFile = new oxConfigFile(getShopBasePath() . "config.inc.php");
-        $oConfigFile->setFile($sCustConfig);
+        $oConfigFile->setFile($customConfigInc);
         $sVar = $oConfigFile->getVar("custVar");
 
         $this->assertSame("test", $sVar);

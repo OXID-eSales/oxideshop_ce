@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -45,8 +45,8 @@ class Unit_Admin_OrderRemarkTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", "testId");
-        modConfig::setRequestParameter("rem_oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("rem_oxid", "testId");
 
         $oView = new order_remark();
         $this->assertEquals("order_remark.tpl", $oView->render());
@@ -62,8 +62,8 @@ class Unit_Admin_OrderRemarkTest extends OxidTestCase
      */
     public function testSave()
     {
-        modConfig::setRequestParameter('oxid', '_testOrder');
-        modConfig::setRequestParameter('remarktext', 'test text');
+        $this->setRequestParameter('oxid', '_testOrder');
+        $this->setRequestParameter('remarktext', 'test text');
         $oOrder = new oxbase();
         $oOrder->init('oxorder');
         $oOrder->setId('_testOrder');

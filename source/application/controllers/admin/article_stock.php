@@ -41,7 +41,7 @@ class Article_Stock extends oxAdminDetails
 
         parent::render();
 
-        $this->_aViewData["edit"] = $oArticle = oxNew("oxarticle");
+        $this->_aViewData["edit"] = $oArticle = oxNew("oxArticle");
 
         $soxId = $this->getEditObjectId();
         if ($soxId != "-1" && isset($soxId)) {
@@ -66,7 +66,7 @@ class Article_Stock extends oxAdminDetails
 
             // variant handling
             if ($oArticle->oxarticles__oxparentid->value) {
-                $oParentArticle = oxNew("oxarticle");
+                $oParentArticle = oxNew("oxArticle");
                 $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
                 $this->_aViewData["parentarticle"] = $oParentArticle;
                 $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;
@@ -106,7 +106,7 @@ class Article_Stock extends oxAdminDetails
         $sShopID = oxRegistry::getSession()->getVariable("actshop");
         $aParams['oxarticles__oxshopid'] = $sShopID;
 
-        $oArticle = oxNew("oxarticle");
+        $oArticle = oxNew("oxArticle");
         $oArticle->loadInLang($this->_iEditLang, $soxId);
 
         $oArticle->setLanguage(0);
@@ -181,7 +181,7 @@ class Article_Stock extends oxAdminDetails
         $dPrice = $aParams['price'];
         $sType = $aParams['pricetype'];
 
-        $oArticlePrice = oxNew("oxbase");
+        $oArticlePrice = oxNew("oxBase");
         $oArticlePrice->init("oxprice2article");
         $oArticlePrice->assign($aParams);
 

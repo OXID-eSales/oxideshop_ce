@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -179,19 +179,19 @@ class Unit_Core_oxlistTest extends OxidTestCase
     public function testSelectString()
     {
 
-        $oAction = oxNew("oxbase");
+        $oAction = oxNew("oxBase");
         $oAction->init('oxactions');
         $oAction->setId('_test1');
         $oAction->oxactions__oxtitle = new oxField('action1', oxField::T_RAW);
         $oAction->save();
 
-        $oAction = oxNew("oxbase");
+        $oAction = oxNew("oxBase");
         $oAction->init('oxactions');
         $oAction->setId('_test2');
         $oAction->oxactions__oxtitle = new oxField('action2', oxField::T_RAW);
         $oAction->save();
 
-        $oAction = oxNew("oxbase");
+        $oAction = oxNew("oxBase");
         $oAction->init('oxactions');
         $oAction->blIsClonedAndKeptProperty = true;
 
@@ -213,13 +213,13 @@ class Unit_Core_oxlistTest extends OxidTestCase
 
     public function testSelectStringIfLimitIsSet()
     {
-        $oAction = oxNew("oxbase");
+        $oAction = oxNew("oxBase");
         $oAction->init('oxactions');
         $oAction->setId('_test1');
         $oAction->oxactions__oxtitle = new oxField('action1', oxField::T_RAW);
         $oAction->save();
 
-        $oAction = oxNew("oxbase");
+        $oAction = oxNew("oxBase");
         $oAction->init('oxactions');
         $oAction->setId('_test2');
         $oAction->oxactions__oxtitle = new oxField('action2', oxField::T_RAW);

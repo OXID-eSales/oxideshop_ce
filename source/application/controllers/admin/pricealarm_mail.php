@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -62,7 +62,7 @@ class PriceAlarm_Mail extends oxAdminDetails
                         $this->_aViewData['iAllCnt'] += 1;
                     }
                 } else {
-                    $oArticle = oxNew("oxarticle");
+                    $oArticle = oxNew("oxArticle");
                     if ($oArticle->load($sArtID)) {
                         $dArtPrice = $aSimpleCache[$sArtID] = $oArticle->getPrice()->getBruttoPrice();
                         if ($dArtPrice <= $sPrice) {

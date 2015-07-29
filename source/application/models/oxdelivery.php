@@ -338,7 +338,7 @@ class oxDelivery extends oxI18n
         $blHasArticles = $this->hasArticles();
         $blHasCategories = $this->hasCategories();
         $blUse = true;
-        $iAmount = 0;
+        $aggregatedDeliveryAmount = 0;
         $blForBasket = false;
 
         // category & article check
@@ -357,14 +357,14 @@ class oxDelivery extends oxI18n
 
                 if ($blHasArticles && (in_array($sProductId, $aDeliveryArticles) || ($sParentId && in_array($sParentId, $aDeliveryArticles)))) {
                     $blUse = true;
-                    $iArtAmount = $this->getDeliveryAmount($oContent);
-                    if ($this->getCalculationRule() != self::CALCULATION_RULE_ONCE_PER_CART) {
-                        if ($this->_isForArticle($oContent, $iArtAmount)) {
-                            $blForBasket = true;
-                        }
+                    $artAmount = $this->getDeliveryAmount($oContent);
+                    if ($this->isDeliveryRuleFitByArticle($artAmount)) {
+                        $blForBasket = true;
+                        $this->updateItemCount($oContent);
+                        $this->increaseProductCount();
                     }
                     if (!$blForBasket) {
-                        $iAmount += $iArtAmount;
+                        $aggregatedDeliveryAmount += $artAmount;
                     }
 
                 } elseif ($blHasCategories) {
@@ -386,16 +386,20 @@ class oxDelivery extends oxI18n
                     foreach ($aDeliveryCategories as $sCatId) {
 
                         if ($oProduct->inCategory($sCatId)) {
+                            $artAmount = $this->getDeliveryAmount($oContent);
+
                             $blUse = true;
-                            $iArtAmount = $this->getDeliveryAmount($oContent);
-                            if ($this->getCalculationRule() != self::CALCULATION_RULE_ONCE_PER_CART) {
-                                if ($this->_isForArticle($oContent, $iArtAmount)) {
-                                    $blForBasket = true;
-                                }
+                            if ($this->isDeliveryRuleFitByArticle($artAmount)) {
+                                $blForBasket = true;
+                                $this->updateItemCount($oContent);
+                                $this->increaseProductCount();
                             }
                             if (!$blForBasket) {
-                                $iAmount += $iArtAmount;
+                                $aggregatedDeliveryAmount += $artAmount;
                             }
+
+                            //HR#5650 product might be in multiple rule categories, counting it once is enough
+                            break;
                         }
                     }
 
@@ -404,48 +408,56 @@ class oxDelivery extends oxI18n
         } else {
             // regular amounts check
             foreach ($oBasket->getContents() as $oContent) {
-                $iArtAmount = $this->getDeliveryAmount($oContent);
-                if ($this->getCalculationRule() != self::CALCULATION_RULE_ONCE_PER_CART) {
-                    if ($this->_isForArticle($oContent, $iArtAmount)) {
-                        $blForBasket = true;
-                    }
+                $artAmount = $this->getDeliveryAmount($oContent);
+                if ($this->isDeliveryRuleFitByArticle($artAmount)) {
+                    $blForBasket = true;
+                    $this->updateItemCount($oContent);
+                    $this->increaseProductCount();
                 }
                 if (!$blForBasket) {
-                    $iAmount += $iArtAmount;
+                    $aggregatedDeliveryAmount += $artAmount;
                 }
             }
         }
 
-        /* if ( $this->getConditionType() == self::CONDITION_TYPE_PRICE ) {
-             $iAmount = $oBasket->_getDiscountedProductsSum();
-         }*/
-
         //#M1130: Single article in Basket, checked as free shipping, is not buyable (step 3 no payments found)
-        if (!$blForBasket && $blUse && ($this->_checkDeliveryAmount($iAmount) || $this->_blFreeShipping)) {
+        if (!$blForBasket && $blUse && ($this->_checkDeliveryAmount($aggregatedDeliveryAmount) || $this->_blFreeShipping)) {
             $blForBasket = true;
         }
 
         return $blForBasket;
     }
-
     /**
      * Checks if delivery fits for one article
      *
-     * @param object  $oContent   shop basket item
-     * @param integer $iArtAmount product amount
+     * @deprecated in b-dev since (2015-07-27), use isDeliveryRuleFitByArticle instead
+     *
+     * @param object  $content   shop basket item
+     * @param integer $artAmount product amount
      *
      * @return bool
      */
-    protected function _isForArticle($oContent, $iArtAmount)
+    protected function _isForArticle($content, $artAmount)
     {
-        $blResult = false;
-        if (!$this->_blFreeShipping && $this->_checkDeliveryAmount($iArtAmount)) {
-            $this->_iItemCnt += $oContent->getAmount();
-            $this->_iProdCnt += 1;
-            $blResult = true;
-        }
+        return $this->isDeliveryRuleFitByArticle($artAmount);
+    }
 
-        return $blResult;
+    /**
+     * Update total count of product items are covered by current delivery.
+     *
+     * @param $content
+     */
+    protected function updateItemCount($content)
+    {
+        $this->_iItemCnt += $content->getAmount();
+    }
+
+    /**
+     * Increase count of products which are covered by current delivery.
+     */
+    protected function increaseProductCount()
+    {
+        $this->_iProdCnt += 1;
     }
 
     /**
@@ -610,5 +622,25 @@ class oxDelivery extends oxI18n
         }
 
         return $dPrice;
+    }
+
+    /**
+     * Checks if delivery rule applies for basket because of one article's amount.
+     * Delivery rules that are to be applied once per cart can be ruled out here.
+     *
+     * @param integer $artAmount product amount
+     *
+     * @return bool
+     */
+    protected function isDeliveryRuleFitByArticle($artAmount)
+    {
+        $result = false;
+        if ($this->getCalculationRule() != self::CALCULATION_RULE_ONCE_PER_CART) {
+            if (!$this->_blFreeShipping && $this->_checkDeliveryAmount($artAmount)) {
+                $result = true;
+            }
+        }
+
+        return $result;
     }
 }

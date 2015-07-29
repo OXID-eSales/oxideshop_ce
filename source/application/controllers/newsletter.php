@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -230,7 +230,7 @@ class Newsletter extends oxUBase
         if ($this->_oActionArticles === null) {
             $this->_oActionArticles = false;
             if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
-                $oArtList = oxNew('oxarticlelist');
+                $oArtList = oxNew('oxArticleList');
                 $oArtList->loadActionArticles('OXTOPSTART');
                 if ($oArtList->count()) {
                     $this->_oTopArticle = $oArtList->current();

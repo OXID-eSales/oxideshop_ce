@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -69,7 +69,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
         oxTestModules::addFunction("oxcategory", "isDerived", "{return true;}");
 
         // testing..
@@ -87,7 +87,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Category_Main();
@@ -108,8 +108,8 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
                          "oxcategories__oxparentid" => "oxrootid",
                          "oxcategories__oxtitle"    => "Test category title for unit");
 
-        modConfig::setRequestParameter("oxid", -1);
-        modConfig::setRequestParameter("editval", $aParams);
+        $this->setRequestParameter("oxid", -1);
+        $this->setRequestParameter("editval", $aParams);
 
         $oView = new Category_Main();
         $oView->save();
@@ -126,7 +126,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
     public function testSave()
     {
         oxTestModules::addFunction('oxcategory', 'save', '{ return true; }');
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Category_Main();
@@ -144,7 +144,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
     public function testSaveDefaultOxid()
     {
         oxTestModules::addFunction('oxcategory', 'save', '{ $this->oxcategories__oxid = new oxField( "testId" ); return true; }');
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Category_Main();
@@ -160,7 +160,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testSaveinnlang()
     {
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
         oxTestModules::addFunction('oxcategory', 'save', '{ return true; }');
 
         // testing..
@@ -178,7 +178,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testSaveinnlangDefaultOxid()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
         oxTestModules::addFunction('oxcategory', 'save', '{ $this->oxcategories__oxid = new oxField( "testId" ); return true; }');
 
         // testing..

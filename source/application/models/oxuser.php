@@ -794,7 +794,7 @@ class oxUser extends oxBase
         $sDeliveryCountry = '';
         $soxAddressId = oxRegistry::getSession()->getVariable('deladrid');
         if ($soxAddressId) {
-            $oDelAddress = oxNew('oxaddress');
+            $oDelAddress = oxNew('oxAddress');
             $oDelAddress->load($soxAddressId);
             $sDeliveryCountry = $oDelAddress->oxaddress__oxcountryid->value;
         } elseif ($this->getId()) {
@@ -1211,7 +1211,7 @@ class oxUser extends oxBase
             $sAddressId = $this->getConfig()->getRequestParameter('oxaddressid');
             $sAddressId = ($sAddressId === null || $sAddressId == -1 || $sAddressId == -2) ? null : $sAddressId;
 
-            $oAddress = oxNew('oxaddress');
+            $oAddress = oxNew('oxAddress');
             $oAddress->setId($sAddressId);
             $oAddress->load($sAddressId);
             $oAddress->assign($aDelAddress);
@@ -2012,24 +2012,6 @@ class oxUser extends oxBase
     public function isLoadedFromCookie()
     {
         return $this->_blLoadedFromCookie;
-    }
-
-    /**
-     * Returns password hash. In case password in db is plain or decodable
-     * password is processed and hash returned
-     *
-     * @deprecated since v5.2 (2014-08-11); was used for eFire downloader, not used anymore.
-     *
-     * @return string
-     */
-    public function getPasswordHash()
-    {
-        $sHash = null;
-        if ($this->oxuser__oxpassword->value) {
-            $sHash = $this->oxuser__oxpassword->value;
-        }
-
-        return $sHash;
     }
 
     /**

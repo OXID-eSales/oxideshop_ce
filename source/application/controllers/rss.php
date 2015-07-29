@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -186,7 +186,7 @@ class Rss extends oxUBase
     public function recommlists()
     {
         if ($this->getViewConfig()->getShowListmania() && $this->getConfig()->getConfigParam('bl_rssRecommLists')) {
-            $oArticle = oxNew('oxarticle');
+            $oArticle = oxNew('oxArticle');
             if ($oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'))) {
                 $this->_getRssFeed()->loadRecommLists($oArticle);
 

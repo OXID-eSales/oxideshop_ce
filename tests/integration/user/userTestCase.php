@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class UserTestCase extends OxidTestCase
+abstract class UserTestCase extends OxidTestCase
 {
 
     /**
@@ -136,7 +136,7 @@ class UserTestCase extends OxidTestCase
      */
     private function _setLoginParametersToRequest($sUserName, $sUserPassword)
     {
-        $this->setRequestParam('lgn_usr', $sUserName);
-        $this->setRequestParam('lgn_pwd', $sUserPassword);
+        $this->setRequestParameter('lgn_usr', $sUserName);
+        $this->setRequestParameter('lgn_pwd', $sUserPassword);
     }
 }

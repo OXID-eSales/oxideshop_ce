@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -126,23 +126,23 @@ class Tag extends aList
     /**
      * Loads and returns article list according active tag.
      *
-     * @param object $oCategory category object
+     * @param oxCategory $category category object
      *
-     * @return array
+     * @return oxArticleList
      */
-    protected function _loadArticles($oCategory)
+    protected function _loadArticles($category)
     {
         // load only articles which we show on screen
-        $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
-        $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
-        $oArtList = oxNew('oxarticlelist');
-        $oArtList->setSqlLimit($iNrofCatArticles * $this->_getRequestPageNr(), $iNrofCatArticles);
-        $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
+        $numberOfCategoryArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+        $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
+        $articleList = oxNew('oxArticleList');
+        $articleList->setSqlLimit($numberOfCategoryArticles * $this->_getRequestPageNr(), $numberOfCategoryArticles);
+        $articleList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
         // load the articles
-        $this->_iAllArtCnt = $oArtList->loadTagArticles($this->getTag(), oxRegistry::getLang()->getBaseLanguage());
-        $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
+        $this->_iAllArtCnt = $articleList->loadTagArticles($this->getTag(), oxRegistry::getLang()->getBaseLanguage());
+        $this->_iCntPages = round($this->_iAllArtCnt / $numberOfCategoryArticles + 0.49);
 
-        return $oArtList;
+        return $articleList;
     }
 
     /**
@@ -260,11 +260,11 @@ class Tag extends aList
         if (($sTag = $this->getTag())) {
             $oStr = getStr();
 
-            $aPath[0] = oxNew("oxcategory");
+            $aPath[0] = oxNew("oxCategory");
             $aPath[0]->setLink(false);
             $aPath[0]->oxcategories__oxtitle = new oxField(oxRegistry::getLang()->translateString('TAGS'));
 
-            $aPath[1] = oxNew("oxcategory");
+            $aPath[1] = oxNew("oxCategory");
             $aPath[1]->setLink(false);
             $aPath[1]->oxcategories__oxtitle = new oxField($oStr->ucfirst($sTag));
 

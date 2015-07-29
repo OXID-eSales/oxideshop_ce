@@ -35,20 +35,19 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
 
         // restoring table structure
         try {
-
             $sCustomColumn = $oDb->getOne("show columns from oxv_oxarticles_de where field = 'oxseoid'");
 
             if ($sCustomColumn == 'OXSEOID') {
                 $oDb->execute("ALTER TABLE `oxarticles` DROP `OXSEOID`");
                 $oDb->execute("ALTER TABLE `oxarticles` DROP `OXSEOID_1`");
-                $oDb->execute("CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxarticles AS SELECT oxarticles.* FROM oxarticles");
-                $oDb->execute("CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxarticles_de AS SELECT OXID,oxarticles.OXSHOPID,OXPARENTID,OXACTIVE,OXACTIVEFROM,OXACTIVETO,OXARTNUM,OXEAN,OXDISTEAN,OXMPN,OXTITLE,OXSHORTDESC,OXPRICE,OXBLFIXEDPRICE,OXPRICEA,OXPRICEB,OXPRICEC,OXBPRICE,OXTPRICE,OXUNITNAME,OXUNITQUANTITY,OXEXTURL,OXURLDESC,OXURLIMG,OXVAT,OXTHUMB,OXICON,OXPIC1,OXPIC2,OXPIC3,OXPIC4,OXPIC5,OXPIC6,OXPIC7,OXPIC8,OXPIC9,OXPIC10,OXPIC11,OXPIC12,OXWEIGHT,OXSTOCK,OXSTOCKFLAG,OXSTOCKTEXT,OXNOSTOCKTEXT,OXDELIVERY,OXINSERT,oxarticles.OXTIMESTAMP,OXLENGTH,OXWIDTH,OXHEIGHT,OXFILE,OXSEARCHKEYS,OXTEMPLATE,OXQUESTIONEMAIL,OXISSEARCH,OXISCONFIGURABLE,OXVARNAME,OXVARSTOCK,OXVARCOUNT,OXVARSELECT,OXVARMINPRICE,OXVARMAXPRICE,OXBUNDLEID,OXFOLDER,OXSUBCLASS,OXSORT,OXSOLDAMOUNT,OXNONMATERIAL,OXFREESHIPPING,OXREMINDACTIVE,OXREMINDAMOUNT,OXAMITEMID,OXAMTASKID,OXVENDORID,OXMANUFACTURERID,OXSKIPDISCOUNTS,OXRATING,OXRATINGCNT,OXMINDELTIME,OXMAXDELTIME,OXDELTIMEUNIT,OXUPDATEPRICE, OXUPDATEPRICEA, OXUPDATEPRICEB, OXUPDATEPRICEC, OXUPDATEPRICETIME, OXISDOWNLOADABLE, OXSHOWCUSTOMAGREEMENT FROM oxarticles");
-                $oDb->execute("CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxarticles_en AS SELECT OXID,oxarticles.OXSHOPID,OXPARENTID,OXACTIVE,OXACTIVEFROM,OXACTIVETO,OXARTNUM,OXEAN,OXDISTEAN,OXMPN,OXTITLE_1 AS OXTITLE,OXSHORTDESC_1 AS OXSHORTDESC,OXPRICE,OXBLFIXEDPRICE,OXPRICEA,OXPRICEB,OXPRICEC,OXBPRICE,OXTPRICE,OXUNITNAME,OXUNITQUANTITY,OXEXTURL,OXURLDESC_1 AS OXURLDESC,OXURLIMG,OXVAT,OXTHUMB,OXICON,OXPIC1,OXPIC2,OXPIC3,OXPIC4,OXPIC5,OXPIC6,OXPIC7,OXPIC8,OXPIC9,OXPIC10,OXPIC11,OXPIC12,OXWEIGHT,OXSTOCK,OXSTOCKFLAG,OXSTOCKTEXT_1 AS OXSTOCKTEXT,OXNOSTOCKTEXT_1 AS OXNOSTOCKTEXT,OXDELIVERY,OXINSERT,oxarticles.OXTIMESTAMP,OXLENGTH,OXWIDTH,OXHEIGHT,OXFILE,OXSEARCHKEYS_1 AS OXSEARCHKEYS,OXTEMPLATE,OXQUESTIONEMAIL,OXISSEARCH,OXISCONFIGURABLE,OXVARNAME_1 AS OXVARNAME,OXVARSTOCK,OXVARCOUNT,OXVARSELECT_1 AS OXVARSELECT,OXVARMINPRICE,OXVARMAXPRICE,OXBUNDLEID,OXFOLDER,OXSUBCLASS,OXSORT,OXSOLDAMOUNT,OXNONMATERIAL,OXFREESHIPPING,OXREMINDACTIVE,OXREMINDAMOUNT,OXAMITEMID,OXAMTASKID,OXVENDORID,OXMANUFACTURERID,OXSKIPDISCOUNTS,OXRATING,OXRATINGCNT,OXMINDELTIME,OXMAXDELTIME,OXDELTIMEUNIT,OXUPDATEPRICE, OXUPDATEPRICEA, OXUPDATEPRICEB, OXUPDATEPRICEC, OXUPDATEPRICETIME, OXISDOWNLOADABLE, OXSHOWCUSTOMAGREEMENT FROM oxarticles");
+                $dataHandler = oxNew('oxDbMetaDataHandler');
+                $dataHandler->updateViews();
             }
 
         } catch (Exception $oEx) {
             // avoiding exceptions while removing columns ..
         }
+
         parent::tearDown();
     }
 
@@ -98,7 +97,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $oShop = new oxshop();
         $oShop->load($iShop);
 
-        $aMultiShopTables = oxRegistry::getConfig()->getConfigParam('aMultiShopTables');
+        $aMultiShopTables = $this->getConfig()->getConfigParam('aMultiShopTables');
         $oShop->setMultiShopTables($aMultiShopTables);
         $oShop->generateViews();
     }
@@ -244,10 +243,8 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $oDb->execute("UPDATE `oxarticles` SET `OXSEOID` = 'someid1' WHERE `OXID` = '1126' ");
         $oDb->execute("UPDATE `oxarticles` SET `OXSEOID_1` = 'someid2' WHERE `OXID` = '1127' ");
 
-        // update views
-        $oDb->execute("CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxarticles AS SELECT oxarticles.* FROM oxarticles");
-        $oDb->execute("CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxarticles_de AS SELECT OXSEOID,OXID,oxarticles.OXSHOPID,OXPARENTID,OXACTIVE,OXACTIVEFROM,OXACTIVETO,OXARTNUM,OXEAN,OXDISTEAN,OXMPN,OXTITLE,OXSHORTDESC,OXPRICE,OXBLFIXEDPRICE,OXPRICEA,OXPRICEB,OXPRICEC,OXBPRICE,OXTPRICE,OXUNITNAME,OXUNITQUANTITY,OXEXTURL,OXURLDESC,OXURLIMG,OXVAT,OXTHUMB,OXICON,OXPIC1,OXPIC2,OXPIC3,OXPIC4,OXPIC5,OXPIC6,OXPIC7,OXPIC8,OXPIC9,OXPIC10,OXPIC11,OXPIC12,OXWEIGHT,OXSTOCK,OXSTOCKFLAG,OXSTOCKTEXT,OXNOSTOCKTEXT,OXDELIVERY,OXINSERT,oxarticles.OXTIMESTAMP,OXLENGTH,OXWIDTH,OXHEIGHT,OXFILE,OXSEARCHKEYS,OXTEMPLATE,OXQUESTIONEMAIL,OXISSEARCH,OXISCONFIGURABLE,OXVARNAME,OXVARSTOCK,OXVARCOUNT,OXVARSELECT,OXVARMINPRICE,OXVARMAXPRICE,OXBUNDLEID,OXFOLDER,OXSUBCLASS,OXSORT,OXSOLDAMOUNT,OXNONMATERIAL,OXFREESHIPPING,OXREMINDACTIVE,OXREMINDAMOUNT,OXAMITEMID,OXAMTASKID,OXVENDORID,OXMANUFACTURERID,OXSKIPDISCOUNTS,OXRATING,OXRATINGCNT,OXMINDELTIME,OXMAXDELTIME,OXDELTIMEUNIT,OXUPDATEPRICE, OXUPDATEPRICEA, OXUPDATEPRICEB, OXUPDATEPRICEC, OXUPDATEPRICETIME, OXISDOWNLOADABLE, OXSHOWCUSTOMAGREEMENT FROM oxarticles");
-        $oDb->execute("CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_oxarticles_en AS SELECT OXSEOID_1 as OXSEOID,OXID,oxarticles.OXSHOPID,OXPARENTID,OXACTIVE,OXACTIVEFROM,OXACTIVETO,OXARTNUM,OXEAN,OXDISTEAN,OXMPN,OXTITLE_1 AS OXTITLE,OXSHORTDESC_1 AS OXSHORTDESC,OXPRICE,OXBLFIXEDPRICE,OXPRICEA,OXPRICEB,OXPRICEC,OXBPRICE,OXTPRICE,OXUNITNAME,OXUNITQUANTITY,OXEXTURL,OXURLDESC_1 AS OXURLDESC,OXURLIMG,OXVAT,OXTHUMB,OXICON,OXPIC1,OXPIC2,OXPIC3,OXPIC4,OXPIC5,OXPIC6,OXPIC7,OXPIC8,OXPIC9,OXPIC10,OXPIC11,OXPIC12,OXWEIGHT,OXSTOCK,OXSTOCKFLAG,OXSTOCKTEXT_1 AS OXSTOCKTEXT,OXNOSTOCKTEXT_1 AS OXNOSTOCKTEXT,OXDELIVERY,OXINSERT,oxarticles.OXTIMESTAMP,OXLENGTH,OXWIDTH,OXHEIGHT,OXFILE,OXSEARCHKEYS_1 AS OXSEARCHKEYS,OXTEMPLATE,OXQUESTIONEMAIL,OXISSEARCH,OXISCONFIGURABLE,OXVARNAME_1 AS OXVARNAME,OXVARSTOCK,OXVARCOUNT,OXVARSELECT_1 AS OXVARSELECT,OXVARMINPRICE,OXVARMAXPRICE,OXBUNDLEID,OXFOLDER,OXSUBCLASS,OXSORT,OXSOLDAMOUNT,OXNONMATERIAL,OXFREESHIPPING,OXREMINDACTIVE,OXREMINDAMOUNT,OXAMITEMID,OXAMTASKID,OXVENDORID,OXMANUFACTURERID,OXSKIPDISCOUNTS,OXRATING,OXRATINGCNT,OXMINDELTIME,OXMAXDELTIME,OXDELTIMEUNIT,OXUPDATEPRICE, OXUPDATEPRICEA, OXUPDATEPRICEB, OXUPDATEPRICEC, OXUPDATEPRICETIME, OXISDOWNLOADABLE, OXSHOWCUSTOMAGREEMENT FROM oxarticles");
+        $dataHandler = oxNew('oxDbMetaDataHandler');
+        $dataHandler->updateViews();
 
         $sColumnAdded = $oDb->getOne("show columns from oxarticles where field = 'oxseoid'");
         $this->assertEquals('OXSEOID', $sColumnAdded);
@@ -281,8 +278,8 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxSeoDecoder', 'parseStdUrl', create_function('$u', 'return array();'));
         $oD = oxNew('oxSeoDecoder');
-        $this->assertSame(false, $oD->decodeUrl(oxRegistry::getConfig()->getShopURL() . 'Uragarana/'));
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $this->assertSame(false, $oD->decodeUrl($this->getConfig()->getShopURL() . 'Uragarana/'));
+        $iShopId = $this->getConfig()->getBaseShopId();
 
         try {
             $oDb = oxDb::getDb();
@@ -305,7 +302,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $sOldSeoUrl = 'old_seo_category1/old_seo_category2/old_seo_article1.html';
         $sObjectId = 'xxx';
 
-        $iShopId = oxRegistry::getConfig()->getBaseShopId();
+        $iShopId = $this->getConfig()->getBaseShopId();
         $oDb = oxDb::getDb();
 
         // inserting seo data
@@ -313,7 +310,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $oDb->Execute("insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang  ) values ( '{$sObjectId}', '" . md5(strtolower("$sOldSeoUrl")) . "', '{$iShopId}', '0' )");
 
         $oDecoder = new oxSeoDecoder();
-        $this->assertEquals($sNewSeoUrl, $oDecoder->UNITdecodeOldUrl(oxRegistry::getConfig()->getShopURL() . "$sOldSeoUrl"));
+        $this->assertEquals($sNewSeoUrl, $oDecoder->UNITdecodeOldUrl($this->getConfig()->getShopURL() . "$sOldSeoUrl"));
 
         // checking if oxhits value was incremented
         $this->assertEquals(1, $oDb->getOne("select oxhits from oxseohistory where oxobjectid = '{$sObjectId}'"));
@@ -385,6 +382,53 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
             }
         }
         $this->fail('error running testProcessSeoCallUsingSeoHistory');
+    }
+
+    /**
+     * Testing seo call processor using http status code 301 for redirects of seo history
+     * see https://bugs.oxid-esales.com/view.php?id=5471
+     * We test processing a changed url.
+     *
+     */
+    public function testProcessSeoCallUsingStatus301ForRedirectsOldUrl()
+    {
+        $encoder = $this->getMock('oxseodecoder', array('_getParams', 'decodeUrl', '_decodeOldUrl', '_decodeSimpleUrl'));
+        $shopUrl = $encoder->getConfig()->getShopURL();
+        $parameters = 'en/Kiteboarding/Kites/Kite-CORE-GTS.html';
+        $decodedOldUrlPart = 'en/Something/else/entirely.html';
+        $redirectOldUrl = rtrim($shopUrl, '/') . '/' . $decodedOldUrlPart;
+        $encoder->expects($this->once())->method('_getParams')->will($this->returnValue($parameters));
+        $encoder->expects($this->once())->method('decodeUrl')->will($this->returnValue(null));
+        $encoder->expects($this->once())->method('_decodeOldUrl')->with($this->equalTo($parameters))->will($this->returnValue($decodedOldUrlPart));
+        $utils = $this->getMock('oxutils', array('redirect'));
+        $utils->expects($this->once())->method('redirect')->with($this->equalTo($redirectOldUrl), $this->equalTo(false), $this->equalTo(301));
+        oxRegistry::set('oxUtils', $utils);
+        //call simulates decoding of a changed url
+        $encoder->processSeoCall();
+    }
+
+    /**
+     * Testing seo call processor using http status code 301 for redirects of seo history
+     * see https://bugs.oxid-esales.com/view.php?id=5471
+     * We test processing a simple url.
+     *
+     */
+    public function testProcessSeoCallUsingStatus301ForRedirectsSimpleUrl()
+    {
+        $encoder = $this->getMock('oxseodecoder', array('_getParams', 'decodeUrl', '_decodeOldUrl', '_decodeSimpleUrl'));
+        $shopUrl = $encoder->getConfig()->getShopURL();
+        $parameters = 'en/Kiteboarding/Kites/Kite-CORE-GTS.html';
+        $decodedSimpleUrlPart = 'en/Something/really/simple.html';
+        $redirectSimpleUrl = rtrim($shopUrl, '/') . '/' . $decodedSimpleUrlPart;
+        $encoder->expects($this->once())->method('_getParams')->will($this->returnValue($parameters));
+        $encoder->expects($this->once())->method('decodeUrl')->will($this->returnValue(null));
+        $encoder->expects($this->once())->method('_decodeOldUrl')->with($this->equalTo($parameters))->will($this->returnValue(null));
+        $encoder->expects($this->once())->method('_decodeSimpleUrl')->with($this->equalTo($parameters))->will($this->returnValue($decodedSimpleUrlPart));
+        $utils = $this->getMock('oxutils', array('redirect'));
+        $utils->expects($this->once())->method('redirect')->with($this->equalTo($redirectSimpleUrl), $this->equalTo(false), $this->equalTo(301));
+        oxRegistry::set('oxUtils', $utils);
+        //call simulates decoding of an old style (simple) url
+        $encoder->processSeoCall();
     }
 
     public function testGetSeoUrl()

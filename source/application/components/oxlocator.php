@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -189,7 +189,7 @@ class oxLocator extends oxSuperCfg
             $blSeo = $myUtils->seoIsActive();
 
             // loading data for article navigation
-            $oIdList = oxNew("oxarticlelist");
+            $oIdList = oxNew("oxArticleList");
             if ($oLocatorTarget->showSorting()) {
                 $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             }
@@ -255,7 +255,7 @@ class oxLocator extends oxSuperCfg
             $sSearchManufacturer = $sSearchManufacturer ? rawurldecode($sSearchManufacturer) : $sSearchManufacturer;
 
             // loading data for article navigation
-            $oIdList = oxNew('oxarticlelist');
+            $oIdList = oxNew('oxArticleList');
             if ($oLocatorTarget->showSorting()) {
                 $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             }
@@ -310,7 +310,7 @@ class oxLocator extends oxSuperCfg
             $myUtils = oxRegistry::getUtils();
 
             // loading data for article navigation
-            $oIdList = oxNew('oxarticlelist');
+            $oIdList = oxNew('oxArticleList');
             $oLang = oxRegistry::getLang();
 
             if ($oLocatorTarget->showSorting()) {
@@ -366,7 +366,7 @@ class oxLocator extends oxSuperCfg
         if (($oRecommList = $oLocatorTarget->getActiveRecommList())) {
 
             // loading data for article navigation
-            $oIdList = oxNew('oxarticlelist');
+            $oIdList = oxNew('oxArticleList');
             $oIdList->loadRecommArticleIds($oRecommList->getId(), null);
 
             //page number
@@ -425,7 +425,7 @@ class oxLocator extends oxSuperCfg
      */
     protected function _loadIdsInList($oCategory, $oCurrArticle, $sOrderBy = null)
     {
-        $oIdList = oxNew('oxarticlelist');
+        $oIdList = oxNew('oxArticleList');
         $oIdList->setCustomSorting($sOrderBy);
 
         // additionally check if this category is loaded and is price category ?
@@ -525,7 +525,7 @@ class oxLocator extends oxSuperCfg
             $iPos = array_search($sOxid, $aIds);
 
             if (array_key_exists($iPos - 1, $aIds)) {
-                $oBackProduct = oxNew('oxarticle');
+                $oBackProduct = oxNew('oxArticle');
                 $oBackProduct->modifyCacheKey('_locator');
                 $oBackProduct->setNoVariantLoading(true);
                 if ($oBackProduct->load($aIds[$iPos - 1])) {
@@ -535,7 +535,7 @@ class oxLocator extends oxSuperCfg
             }
 
             if (array_key_exists($iPos + 1, $aIds)) {
-                $oNextProduct = oxNew('oxarticle');
+                $oNextProduct = oxNew('oxArticle');
                 $oNextProduct->modifyCacheKey('_locator');
                 $oNextProduct->setNoVariantLoading(true);
                 if ($oNextProduct->load($aIds[$iPos + 1])) {

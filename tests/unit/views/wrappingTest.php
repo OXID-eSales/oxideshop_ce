@@ -18,7 +18,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -95,9 +95,9 @@ class Unit_Views_wrappingTest extends OxidTestCase
      */
     public function testChangeWrapping()
     {
-        modConfig::setRequestParameter("wrapping", array(1 => 2));
-        modConfig::setRequestParameter("giftmessage", "testCardMessage");
-        modConfig::setRequestParameter("chosencard", "testCardId");
+        $this->setRequestParameter("wrapping", array(1 => 2));
+        $this->setRequestParameter("giftmessage", "testCardMessage");
+        $this->setRequestParameter("chosencard", "testCardId");
 
         $oBasketItem1 = $this->getMock("oxBasketItem", array("setWrapping"));
         $oBasketItem1->expects($this->once())->method('setWrapping')->with($this->equalTo(2));

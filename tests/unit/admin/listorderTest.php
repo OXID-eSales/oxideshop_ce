@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -108,14 +108,14 @@ class Unit_Admin_ListOrderTest extends OxidTestCase
      */
     public function testPrepareOrderByQuery()
     {
-        modConfig::setRequestParameter("sort", array(0 => array("oxorderamount" => "asc")));
+        $this->setRequestParameter("sort", array(0 => array("oxorderamount" => "asc")));
         $sSql = "select * from oxorder, oxorderarticles";
 
         $oView = new List_Order();
         $sResultSql = "select * from oxorder, oxorderarticles order by oxorderamount";
         $this->assertEquals($sResultSql, trim($oView->UNITprepareOrderByQuery($sSql)));
 
-        modConfig::setRequestParameter("sort", array(0 => array("oxorderdate" => "asc")));
+        $this->setRequestParameter("sort", array(0 => array("oxorderdate" => "asc")));
 
         $oView = new List_Order();
         $sResultSql = "select * from oxorder, oxorderarticles group by oxorderarticles.oxartnum order by max(oxorder.oxorderdate) desc";

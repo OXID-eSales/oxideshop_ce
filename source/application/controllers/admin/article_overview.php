@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -41,7 +41,7 @@ class Article_Overview extends oxAdminDetails
 
         parent::render();
 
-        $this->_aViewData['edit'] = $oArticle = oxNew('oxarticle');
+        $this->_aViewData['edit'] = $oArticle = oxNew('oxArticle');
 
         $soxId = $this->getEditObjectId();
         if ($soxId != "-1" && isset($soxId)) {
@@ -54,7 +54,7 @@ class Article_Overview extends oxAdminDetails
 
             // variant handling
             if ($oArticle->oxarticles__oxparentid->value) {
-                $oParentArticle = oxNew("oxarticle");
+                $oParentArticle = oxNew("oxArticle");
                 $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
                 $this->_aViewData["parentarticle"] = $oParentArticle;
                 $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;

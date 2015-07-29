@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Admin_UserExtendTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", "oxdefaultadmin");
+        $this->setRequestParameter("oxid", "oxdefaultadmin");
 
         // testing..
         $oView = $this->getMock("User_Extend", array("_allowAdminEdit"));
@@ -62,9 +62,9 @@ class Unit_Admin_UserExtendTest extends OxidTestCase
         oxTestModules::addFunction('oxnewssubscribed', 'setOptInStatus', '{ return true; }');
         oxTestModules::addFunction('oxnewssubscribed', 'setOptInEmailStatus', '{ return true; }');
 
-        modConfig::setRequestParameter("oxid", "testId");
-        modConfig::setRequestParameter("editnews", "1");
-        modConfig::setRequestParameter("editval", array("oxaddress__oxid" => "testOxId"));
+        $this->setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("editnews", "1");
+        $this->setRequestParameter("editval", array("oxaddress__oxid" => "testOxId"));
 
         // testing..
         try {

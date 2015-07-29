@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -28,6 +28,8 @@
 class Unit_Core_oxOnlineCallerTest extends OxidTestCase
 {
 
+    const SUT = 'oxOnlineCaller';
+
     public function testCallWhenSucceedsOnTheLastAllowedCall()
     {
         /** @var oxOnlineCaller $oCaller */
@@ -36,10 +38,10 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
             array($this->_getMockedCurl(), $this->_getMockedEmailBuilder(), $this->_getMockedSimpleXML()),
             '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
         );
-        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
+        $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
         $oCaller->call($this->_getRequest());
 
-        $this->assertSame(0, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+        $this->assertSame(0, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
     public function testCallWhenFailsAndItsLastAllowedCall()
@@ -50,10 +52,10 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
             array($this->_getMockedCurlWhichThrowsException(), $this->_getMockedEmailBuilder(), $this->_getMockedSimpleXML()),
             '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
         );
-        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
+        $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
 
         $this->assertNull($oCaller->call($this->_getRequest()));
-        $this->assertSame(5, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+        $this->assertSame(5, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
     public function testCallWhenFailsAndThereAreNotAllowedCallsCount()
@@ -71,10 +73,10 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
         );
         $oCaller->expects($this->any())->method('_getXMLDocumentName')->will($this->returnValue('testXML'));
         /** @var oxOnlineCaller $oCaller */
-        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 5);
+        $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 5);
 
         $oCaller->call($this->_getRequest());
-        $this->assertSame(0, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+        $this->assertSame(0, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
     public function testCallWhenStatusCodeIndicatesError()
@@ -89,10 +91,41 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
             array($oCurl, $this->_getMockedEmailBuilder(), $this->_getMockedSimpleXML()),
             '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
         );
-        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
+        $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
         $oCaller->call($this->_getRequest());
 
-        $this->assertSame(5, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+        $this->assertSame(5, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+    }
+
+    /**
+     * Test if timeout option was set before calling the curl execute method.
+     */
+    public function testCallSetsTimeoutOptionForCurlExecution()
+    {
+        // Arrange
+        $curlDouble = new oxOnlineCallerOxCurlOptionDouble();
+
+        /** @var oxOnlineCaller $sut */
+        $sut = $this->getMockBuilder(static::SUT)
+            ->setConstructorArgs(
+                array(
+                    $curlDouble,
+                    $this->_getMockedEmailBuilder(),
+                    $this->_getMockedSimpleXML()
+                )
+            )
+            ->getMockForAbstractClass();
+
+        // Act
+        $sut->call($this->_getRequest());
+
+        // Assert
+        $expectedOptionValue = oxOnlineCaller::CURL_EXECUTION_TIMEOUT;
+        $actualOptionValue = $curlDouble->getOption(
+            oxCurl::EXECUTION_TIMEOUT_OPTION
+        );
+
+        $this->assertSame($expectedOptionValue, $actualOptionValue);
     }
 
     /**
@@ -167,5 +200,55 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
         $oSimpleXML->expects($this->any())->method('objectToXml')->will($this->returnValue('_someXML'));
 
         return $oSimpleXML;
+    }
+}
+
+/**
+ * Class oxOnlineCallerOxCurlOptionDouble
+ *
+ * This is a test double for oxCurl class.
+ *
+ * This class is used to check if a given option was set before calling the
+ * execute method. In order to make an assertion of the fact, just check the
+ * value of getOption method.
+ */
+class oxOnlineCallerOxCurlOptionDouble extends oxCurl
+{
+    /** @var array Hash map of options which were set before execution */
+    private $options;
+
+    /** @var bool Flag which indicated that execute method was called */
+    private $executionCalled;
+
+    public function __construct()
+    {
+        $this->options = array();
+        $this->executionCalled = false;
+    }
+
+    public function setOption($name, $value)
+    {
+        if (!$this->executionCalled) {
+            $this->options[$name] = $value;
+        }
+    }
+
+    public function getOption($name)
+    {
+        $result = null;
+
+        $callCondition = $this->executionCalled;
+        $keyExistsCondition = array_key_exists($name, $this->options);
+
+        if ($callCondition && $keyExistsCondition) {
+            $result = $this->options[$name];
+        }
+
+        return $result;
+    }
+
+    public function execute()
+    {
+        $this->executionCalled = true;
     }
 }

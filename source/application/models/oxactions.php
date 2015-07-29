@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -54,7 +54,7 @@ class oxActions extends oxI18n
         $sQ = "select max(oxsort) from oxactions2article where oxactionid = " . $oDb->quote($this->getId()) . " and oxshopid = '" . $this->getShopId() . "'";
         $iSort = ((int) $oDb->getOne($sQ)) + 1;
 
-        $oNewGroup = oxNew('oxbase');
+        $oNewGroup = oxNew('oxBase');
         $oNewGroup->init('oxactions2article');
         $oNewGroup->oxactions2article__oxshopid = new oxField($this->getShopId());
         $oNewGroup->oxactions2article__oxactionid = new oxField($this->getId());
@@ -220,7 +220,7 @@ class oxActions extends oxI18n
         );
 
         if ($sArtId) {
-            $oArticle = oxNew('oxarticle');
+            $oArticle = oxNew('oxArticle');
 
             if ($this->isAdmin()) {
                 $oArticle->setLanguage(oxRegistry::getLang()->getEditLanguage());

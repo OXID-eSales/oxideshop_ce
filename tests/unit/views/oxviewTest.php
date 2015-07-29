@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once TESTING_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
+require_once TEST_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
 
 class modOxView extends oxView
 {
@@ -138,8 +138,6 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testAddGlobalParams()
     {
-        $myConfig = $this->getConfig();
-
         $oView = new oxView();
 
         $oView->addGlobalParams();
@@ -372,16 +370,16 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
         oxAddClassModule("oxUtilsHelper", "oxutils");
 
-        $oConfig = $this->getMock('oxconfig', array('isSsl', 'getSslShopUrl', 'getShopUrl'));
-        $oConfig->expects($this->once())->method('isSsl')->will($this->returnValue(true));
-        $oConfig->expects($this->once())->method('getSslShopUrl')->will($this->returnValue('SSLshopurl/'));
-        $oConfig->expects($this->never())->method('getShopUrl');
-        $this->setConfigParam('sAdminDir', 'admin');
+        $config = $this->getMock('oxconfig', array('isSsl', 'getSslShopUrl', 'getShopUrl'));
+        $config->expects($this->once())->method('isSsl')->will($this->returnValue(true));
+        $config->expects($this->once())->method('getSslShopUrl')->will($this->returnValue('SSLshopurl/'));
+        $config->expects($this->never())->method('getShopUrl');
+        $config->setConfigParam('sAdminDir', 'admin');
 
         $oView = $this->getMock('oxview', array('getConfig', 'isAdmin'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($config));
         $oView->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
-        $sUrl = $oView->UNITexecuteNewAction("details?fnc=somefnc&anid=someanid");
+        $oView->UNITexecuteNewAction("details?fnc=somefnc&anid=someanid");
         $this->assertEquals('SSLshopurl/admin/index.php?cl=details&fnc=somefnc&anid=someanid&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
     }
 
@@ -668,11 +666,11 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oView = new oxView();
         $this->assertNull($oView->getCategoryId());
 
-        $this->getConfig()->setRequestParameter('cnid', 'xxx');
+        $this->setRequestParameter('cnid', 'xxx');
         $this->assertEquals('xxx', $oView->getCategoryId());
 
         // additionally checking cache
-        $this->getConfig()->setRequestParameter('cnid', null);
+        $this->setRequestParameter('cnid', null);
         $this->assertEquals('xxx', $oView->getCategoryId());
 
         $oView->setCategoryId('yyy');
@@ -750,8 +748,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testShowFbConnectToAccountMsg_FbConnectIsOff()
     {
-        $myConfig = $this->getConfig();
-        $myConfig->setRequestParameter("fblogin", false);
+        $this->setRequestParameter("fblogin", false);
 
         $oView = new oxView();
         $this->assertFalse($oView->showFbConnectToAccountMsg());
@@ -766,8 +763,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testShowFbConnectToAccountMsg_FbOn_NoAccount()
     {
-        $myConfig = $this->getConfig();
-        $myConfig->setRequestParameter("fblogin", true);
+        $this->setRequestParameter("fblogin", true);
 
         $oView = $this->getMock('oxview', array('getUser'));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(null));
@@ -784,8 +780,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testShowFbConnectToAccountMsg_FbOn_AccountOn()
     {
-        $myConfig = $this->getConfig();
-        $myConfig->setRequestParameter("fblogin", true);
+        $this->setRequestParameter("fblogin", true);
         $oUser = new oxUser();
 
         $oView = $this->getMock('oxview', array('getUser'));
@@ -878,7 +873,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oSession->expects($this->once())->method("setVariable")->with($this->equalTo('belboon'));
 
         $this->getSession()->setVariable('belboon', false);
-        $this->setRequestParam('belboon', $sTest2);
+        $this->setRequestParameter('belboon', $sTest2);
         $oView = $this->getMock("oxView", array("getSession"));
         $oView->expects($this->exactly(2))->method("getSession")->will($this->returnValue($oSession));
         $this->assertEquals($sTest2, $oView->getBelboonParam());

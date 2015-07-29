@@ -10,13 +10,14 @@ php:
   - "5.6"
 
 # TRAVIS_ERROR_LEVEL = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_STRICT
-env: TRAVIS_ERROR_LEVEL=22519 INSTALL_SHOP=0 OX_BASE_PATH="$TRAVIS_BUILD_DIR/source/"
+env: TRAVIS_ERROR_LEVEL=22519 OX_BASE_PATH="$TRAVIS_BUILD_DIR/source/"
 
 services: mysql
 
 before_install:
   - echo 'Europe/Berlin' | sudo tee /etc/timezone
   - sudo dpkg-reconfigure --frontend noninteractive tzdata
+  - sudo apt-get update
 
 before_script:
   # apache setup (http://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP)
@@ -34,19 +35,9 @@ before_script:
   # database setup
   - sudo sed -e 's|utf8_unicode_ci|latin1_general_ci|g; s|utf8|latin1|g' --in-place /etc/mysql/my.cnf
   - sudo service mysql restart
-  - mysql -e 'CREATE SCHEMA `oxidehop_ce` DEFAULT CHARACTER SET latin1 COLLATE latin1_general_ci;'
-  - mysql --default-character-set=latin1 oxidehop_ce < source/setup/sql/database.sql
-  - mysql --default-character-set=latin1 oxidehop_ce < tests/testsql/testdata.sql
 
   # replace configuration values in config.inc.php
   - sed -i 's|<dbHost_ce>|localhost|; s|<dbName_ce>|oxidehop_ce|; s|<dbUser_ce>|root|; s|<dbPwd_ce>||; s|<sShopURL_ce>|http://localhost|; s|<sShopDir_ce>|'$TRAVIS_BUILD_DIR'/source|; s|<sCompileDir_ce>|'$TRAVIS_BUILD_DIR'/source/tmp|; s|<iUtfMode>|0|; s|$this->iDebug = 0|$this->iDebug = 1|' source/config.inc.php
-
-  # fetching pictures from oxid latest
-  - wget http://download.oxid-esales.com/ -O oxidlatest.zip
-  - mkdir oxidlatest
-  - unzip oxidlatest.zip -d oxidlatest
-  - rsync -avz oxidlatest/out/pictures/ source/out/pictures/
-  - cp oxidlatest/pkg.* source/
 
   # composer initiation
   - cd source && SHOP_PATH='' SHOP_TESTS_PATH='../tests' MODULES_PATH='' composer install

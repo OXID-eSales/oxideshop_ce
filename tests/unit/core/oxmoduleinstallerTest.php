@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -54,12 +54,12 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
 
         $oModuleInstaller = new oxModuleInstaller();
 
-        oxRegistry::getConfig()->setConfigParam("aModules", $aModulesBefore);
+        $this->getConfig()->setConfigParam("aModules", $aModulesBefore);
 
-        $this->assertEquals($aModulesBefore, oxRegistry::getConfig()->getConfigParam("aModules"));
+        $this->assertEquals($aModulesBefore, $this->getConfig()->getConfigParam("aModules"));
 
         $this->assertTrue($oModuleInstaller->activate($oModule));
-        $this->assertEquals($aModulesAfter, oxRegistry::getConfig()->getConfigParam("aModules"));
+        $this->assertEquals($aModulesAfter, $this->getConfig()->getConfigParam("aModules"));
     }
 
     /**
@@ -80,8 +80,8 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
         $oModule->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oModule->expects($this->any())->method('getExtensions')->will($this->returnValue(array('oxtest' => 'test/mytest')));
 
-        oxRegistry::getConfig()->setConfigParam("aModules", $aModulesBefore);
-        oxRegistry::getConfig()->setConfigParam("aDisabledModules", $aDisabledModulesBefore);
+        $this->getConfig()->setConfigParam("aModules", $aModulesBefore);
+        $this->getConfig()->setConfigParam("aDisabledModules", $aDisabledModulesBefore);
 
         $this->assertEquals($aModulesBefore, $this->getConfig()->getConfigParam("aModules"));
         $this->assertEquals($aDisabledModulesBefore, $this->getConfig()->getConfigParam("aDisabledModules"));
@@ -108,7 +108,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
 
         $oModuleInstaller = new oxModuleInstaller();
 
-        oxRegistry::getConfig()->setConfigParam("aModules", $aModulesBefore);
+        $this->getConfig()->setConfigParam("aModules", $aModulesBefore);
         $this->assertEquals($aModulesBefore, $this->getConfig()->getConfigParam("aModules"));
 
         $this->assertTrue($oModuleInstaller->activate($oModule));

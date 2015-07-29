@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -34,8 +34,8 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
     public function testPerformsql()
     {
         // testing..
-        oxRegistry::getSession()->setVariable('auth', "oxdefaultadmin");
-        modConfig::setRequestParameter("updatesql", 'select * from oxvoucher');
+        $this->getSession()->setVariable('auth', "oxdefaultadmin");
+        $this->setRequestParameter("updatesql", 'select * from oxvoucher');
 
         $oView = new Tools_List();
         $oView->performsql();
@@ -92,7 +92,7 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
      */
     public function testUpdateViews()
     {
-        modSession::getInstance()->setVar('malladmin', true);
+        $this->getSession()->setVariable('malladmin', true);
 
         $oView = new Tools_List();
         $oView->updateViews();

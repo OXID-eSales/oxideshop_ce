@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -116,7 +116,7 @@ class oxPricealarm extends oxBase
     {
         if ($this->_oArticle == null) {
             $this->_oArticle = false;
-            $oArticle = oxNew("oxarticle");
+            $oArticle = oxNew("oxArticle");
             if ($oArticle->load($this->oxpricealarm__oxartid->value)) {
                 $this->_oArticle = $oArticle;
             }
@@ -181,7 +181,7 @@ class oxPricealarm extends oxBase
             if ($oArticle = $this->getArticle()) {
                 $this->_sTitle = $oArticle->oxarticles__oxtitle->value;
                 if ($oArticle->oxarticles__oxparentid->value && !$oArticle->oxarticles__oxtitle->value) {
-                    $oParent = oxNew("oxarticle");
+                    $oParent = oxNew("oxArticle");
                     $oParent->load($oArticle->oxarticles__oxparentid->value);
                     $this->_sTitle = $oParent->oxarticles__oxtitle->value . " " . $oArticle->oxarticles__oxvarselect->value;
                 }

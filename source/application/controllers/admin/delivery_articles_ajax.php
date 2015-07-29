@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -153,7 +153,7 @@ class delivery_articles_ajax extends ajaxListComponent
 
         if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {
             foreach ($aChosenArt as $sChosenArt) {
-                $oObject2Delivery = oxNew('oxbase');
+                $oObject2Delivery = oxNew('oxBase');
                 $oObject2Delivery->init('oxobject2delivery');
                 $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($soxId);
                 $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sChosenArt);

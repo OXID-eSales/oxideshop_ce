@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -124,7 +124,7 @@ class Account_Order extends Account
             $this->_aArticlesList = false;
             $oOrdersList = $this->getOrderList();
             if ($oOrdersList && $oOrdersList->count()) {
-                $this->_aArticlesList = oxNew('oxarticlelist');
+                $this->_aArticlesList = oxNew('oxArticleList');
                 $this->_aArticlesList->loadOrderArticles($oOrdersList);
             }
         }

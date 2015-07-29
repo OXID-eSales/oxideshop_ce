@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -712,8 +712,13 @@ class oxShopControl extends oxSuperCfg
         $sClass = oxRegistry::getConfig()->getRequestParameter('cl');
 
         if (!$sClass) {
-            $sClass = $this->isAdmin() ? 'login' : $this->_getFrontendStartController();
-            oxRegistry::getSession()->setVariable('cl', $sClass);
+            $oSession = oxRegistry::getSession();
+            if ($this->isAdmin()) {
+                $sClass = $oSession->getVariable("auth") ? 'admin_start' : 'login';
+            } else {
+                $sClass = $this->_getFrontendStartController();
+            }
+            $oSession->setVariable('cl', $sClass);
         }
 
         return $sClass;

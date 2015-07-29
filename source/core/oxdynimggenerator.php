@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -432,9 +432,6 @@ class oxDynImgGenerator
                     clearstatcache();
                     // in case creation did not succeed, maybe another process allready created folder?
                     $iMode = 0755;
-                    if (defined('OXID_PHP_UNIT')) {
-                        $iMode = 0777;
-                    }
                     $blDone = mkdir($sDir, $iMode, true) || file_exists($sDir);
                 }
             }
@@ -694,9 +691,6 @@ class oxDynImgGenerator
     public function outputImage()
     {
         $blBuffer = true;
-        if (defined('OXID_PHP_UNIT')) {
-            $blBuffer = false;
-        }
 
         // starting output buffering
         if ($blBuffer) {

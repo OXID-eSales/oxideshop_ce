@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -84,7 +84,7 @@ class Category_Seo extends Object_Seo
      */
     public function isEntrySuffixed()
     {
-        $oCategory = oxNew('oxcategory');
+        $oCategory = oxNew('oxCategory');
         if ($oCategory->load($this->getEditObjectId())) {
             return (bool) $oCategory->oxcategories__oxshowsuffix->value;
         }
@@ -97,7 +97,7 @@ class Category_Seo extends Object_Seo
      */
     public function getEntryUri()
     {
-        $oCategory = oxNew('oxcategory');
+        $oCategory = oxNew('oxCategory');
         if ($oCategory->load($this->getEditObjectId())) {
             return $this->_getEncoder()->getCategoryUri($oCategory, $this->getEditLang());
         }

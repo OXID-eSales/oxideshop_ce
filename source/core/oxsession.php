@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -443,18 +443,6 @@ class oxSession extends oxSuperCfg
      */
     public function hasVariable($name)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset(modSession::$unitMOD) && is_object(modSession::$unitMOD)) {
-                try {
-                    $sVal = modSession::getInstance()->getVar($name);
-
-                    return isset($sVal);
-                } catch (Exception $e) {
-                    // if exception is thrown, use default
-                }
-            }
-        }
-
         return isset($_SESSION[$name]);
     }
 
@@ -468,18 +456,7 @@ class oxSession extends oxSuperCfg
      */
     public function setVariable($name, $value)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset(modSession::$unitMOD) && is_object(modSession::$unitMOD)) {
-                try {
-                    return modSession::getInstance()->setVar($name, $value);
-                } catch (Exception $e) {
-                    // if exception is thrown, use default
-                }
-            }
-        }
-
         $_SESSION[$name] = $value;
-        //logger( "set sessionvar : $name -> $value");
     }
 
     /**
@@ -491,16 +468,6 @@ class oxSession extends oxSuperCfg
      */
     public function getVariable($name)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset(modSession::$unitMOD) && is_object(modSession::$unitMOD)) {
-                try {
-                    return modSession::getInstance()->getVar($name);
-                } catch (Exception $e) {
-                    // if exception is thrown, use default
-                }
-            }
-        }
-
         if (isset($_SESSION[$name])) {
             return $_SESSION[$name];
         } else {
@@ -517,18 +484,7 @@ class oxSession extends oxSuperCfg
      */
     public function deleteVariable($name)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (isset(modSession::$unitMOD) && is_object(modSession::$unitMOD)) {
-                try {
-                    return modSession::getInstance()->setVar($name, null);
-                } catch (Exception $e) {
-                    // if exception is thrown, use default
-                }
-            }
-        }
-
         $_SESSION[$name] = null;
-        //logger( "delete sessionvar : $name");
         unset($_SESSION[$name]);
     }
 
@@ -597,10 +553,10 @@ class oxSession extends oxSuperCfg
 
             //init oxbasketitem class first
             //#1746
-            oxNew('oxbasketitem');
+            oxNew('oxBasketItem');
 
             // init oxbasket through oxNew and not oxAutoload, Mantis-Bug #0004262
-            $oEmptyBasket = oxNew('oxbasket');
+            $oEmptyBasket = oxNew('oxBasket');
 
             $oBasket = ($sBasket && ($oBasket = unserialize($sBasket))) ? $oBasket : null;
 

@@ -34,7 +34,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxuser', 'loadAdminUser', '{ $this->oxuser__oxrights = new oxField( "malladmin" ); return; }');
-        modConfig::setRequestParameter("oxid", "oxdefaultadmin");
+        $this->setRequestParameter("oxid", "oxdefaultadmin");
 
         // testing..
         $oView = new User_Main();
@@ -55,7 +55,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
     public function testRenderNoRealObjectId()
     {
         oxTestModules::addFunction('oxuser', 'loadAdminUser', '{ $this->oxuser__oxrights = new oxField( "malladmin" ); return; }');
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new User_Main();
@@ -73,7 +73,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
      */
     public function testSave()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         oxTestModules::addFunction('oxuser', 'load', '{ return true; }');
         oxTestModules::addFunction('oxuser', 'save', '{ return true; }');
@@ -99,7 +99,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
      */
     public function testSaveExceptionDuringSave()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         oxTestModules::addFunction('oxuser', 'load', '{ return true; }');
         oxTestModules::addFunction('oxuser', 'save', '{ throw new Exception("save"); }');
@@ -150,16 +150,20 @@ class Unit_Admin_UserMainTest extends OxidTestCase
      */
     public function testSave_passwordSpecChars()
     {
+        $this->setAdminMode(true);
+
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
-        modConfig::setRequestParameter('newPassword', $sPass);
+        $this->setRequestParameter('newPassword', $sPass);
 
         $oUser = $this->getMock('oxuser', array('setPassword', 'checkIfEmailExists', 'load'));
         $oUser->expects($this->once())->method('setPassword')->with($this->equalTo($sPass));
         $oUser->expects($this->once())->method('checkIfEmailExists')->will($this->returnValue(true));
         oxTestModules::addModuleObject('oxuser', $oUser);
 
+        /** @var User_Main|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock('User_Main', array('getEditObjectId', '_allowAdminEdit'));
         $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(true));
+
         $oView->save();
     }
 }

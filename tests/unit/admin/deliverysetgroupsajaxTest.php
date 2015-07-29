@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -111,7 +111,7 @@ class Unit_Admin_DeliverysetGroupsAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_groups_ajax');
         $this->assertEquals("from " . $this->getGroupsViewTable() . " where 1  and " . $this->getGroupsViewTable() . ".oxid not in ( select " . $this->getGroupsViewTable() . ".oxid from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg' )", trim($oView->UNITgetQuery()));
@@ -125,7 +125,7 @@ class Unit_Admin_DeliverysetGroupsAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('deliveryset_groups_ajax');
         $this->assertEquals("from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg'", trim($oView->UNITgetQuery()));
@@ -140,8 +140,8 @@ class Unit_Admin_DeliverysetGroupsAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_groups_ajax');
         $this->assertEquals("from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg'  and " . $this->getGroupsViewTable() . ".oxid not in ( select " . $this->getGroupsViewTable() . ".oxid from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg' )", trim($oView->UNITgetQuery()));
@@ -171,8 +171,8 @@ class Unit_Admin_DeliverysetGroupsAjaxTest extends OxidTestCase
     public function testRemoveGroupFromSetAll()
     {
         $sOxid = '_testDeliverysetGroupRemoveAll';
-        $this->getConfig()->setRequestParameter("oxid", $sOxid);
-        $this->getConfig()->setRequestParameter("all", true);
+        $this->setRequestParameter("oxid", $sOxid);
+        $this->setRequestParameter("all", true);
 
         $sSql = "select count(oxobject2delivery.oxid) from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg'";
         $oView = oxNew('deliveryset_groups_ajax');
@@ -189,7 +189,7 @@ class Unit_Admin_DeliverysetGroupsAjaxTest extends OxidTestCase
     public function testAddGroupToset()
     {
         $sSynchoxid = '_testActionAddGroup';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
@@ -209,8 +209,8 @@ class Unit_Admin_DeliverysetGroupsAjaxTest extends OxidTestCase
     public function testAddGroupToSetAll()
     {
         $sSynchoxid = '_testActionAddGroupAll';
-        $this->getConfig()->setRequestParameter("synchoxid", $sSynchoxid);
-        $this->getConfig()->setRequestParameter("all", true);
+        $this->setRequestParameter("synchoxid", $sSynchoxid);
+        $this->setRequestParameter("all", true);
 
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(" . $this->getGroupsViewTable() . ".oxid) from " . $this->getGroupsViewTable() . " where 1  and " . $this->getGroupsViewTable() . ".oxid not in ( select " . $this->getGroupsViewTable() . ".oxid from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg' )");

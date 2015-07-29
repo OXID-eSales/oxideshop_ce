@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,14 +33,14 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testGetArticleNoProduct()
     {
-        modConfig::getInstance()->setConfigParam('blAllowRemoteArticleInfo', 1);
+        $this->getConfig()->setConfigParam('blAllowRemoteArticleInfo', 1);
 
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ throw new Exception( $aA[0] ); }');
         oxTestModules::addFunction('oxarticlelist', 'loadActionArticles', '{}');
         oxTestModules::addFunction('oxarticlelist', 'current', '{}');
 
-        modConfig::setRequestParameter('oxid', false);
-        modConfig::getInstance()->setConfigParam("bl_perfLoadAktion", true);
+        $this->setRequestParameter('oxid', false);
+        $this->getConfig()->setConfigParam("bl_perfLoadAktion", true);
 
         try {
             $oCmp = new oxcmp_utils();
@@ -60,11 +60,11 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testGetArticle()
     {
-        modConfig::getInstance()->setConfigParam('blAllowRemoteArticleInfo', 1);
+        $this->getConfig()->setConfigParam('blAllowRemoteArticleInfo', 1);
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ throw new Exception( $aA[0] ); }');
 
-        modConfig::setRequestParameter('oxid', "1126");
-        modConfig::getInstance()->setConfigParam("bl_perfLoadAktion", true);
+        $this->setRequestParameter('oxid', "1126");
+        $this->getConfig()->setConfigParam("bl_perfLoadAktion", true);
 
         try {
             $oCmp = new oxcmp_utils();
@@ -88,11 +88,11 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testGetArticleDisabled()
     {
-        modConfig::getInstance()->setConfigParam('blAllowRemoteArticleInfo', false);
+        $this->getConfig()->setConfigParam('blAllowRemoteArticleInfo', false);
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ throw new Exception( $aA[0] ); }');
 
-        modConfig::setRequestParameter('oxid', "1126");
-        modConfig::getInstance()->setConfigParam("bl_perfLoadAktion", true);
+        $this->setRequestParameter('oxid', "1126");
+        $this->getConfig()->setConfigParam("bl_perfLoadAktion", true);
 
         try {
             $oCmp = new oxcmp_utils();
@@ -121,11 +121,11 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testToCompareListAdding()
     {
-        modConfig::getInstance()->setConfigParam("bl_showCompareList", true);
+        $this->getConfig()->setConfigParam("bl_showCompareList", true);
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
 
-        modConfig::setRequestParameter("addcompare", true);
-        modConfig::setRequestParameter('removecompare', null);
+        $this->setRequestParameter("addcompare", true);
+        $this->setRequestParameter('removecompare', null);
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock("oxArticle", array("getId", "setOnComparisonList"));
@@ -150,12 +150,12 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testToCompareListRemoving()
     {
-        modConfig::getInstance()->setConfigParam("bl_showCompareList", true);
+        $this->getConfig()->setConfigParam("bl_showCompareList", true);
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
 
-        modConfig::setRequestParameter("addcompare", null);
-        modConfig::setRequestParameter('removecompare', true);
-        modConfig::setRequestParameter('aFiltcompproducts', array("1126"));
+        $this->setRequestParameter("addcompare", null);
+        $this->setRequestParameter('removecompare', true);
+        $this->setRequestParameter('aFiltcompproducts', array("1126"));
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock("oxArticle", array("getId", "setOnComparisonList"));
@@ -203,14 +203,14 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
         $oSession->expects($this->exactly(2))->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
-        modConfig::getInstance()->setConfigParam("bl_showWishlist", false);
+        $this->getConfig()->setConfigParam("bl_showWishlist", false);
 
         /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
         $oCmp = $this->getMock("oxcmp_utils", array("_toList"));
         $oCmp->expects($this->never())->method('_toList');
         $oCmp->toWishList('1126', 999, 'sel');
 
-        modConfig::getInstance()->setConfigParam("bl_showWishlist", true);
+        $this->getConfig()->setConfigParam("bl_showWishlist", true);
 
         /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
         $oCmp = $this->getMock("oxcmp_utils", array("_toList"));
@@ -225,7 +225,7 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testToList()
     {
-        modConfig::getInstance()->setConfigParam("blAllowUnevenAmounts", false);
+        $this->getConfig()->setConfigParam("blAllowUnevenAmounts", false);
 
         $oBasket = $this->getMock("oxBasket", array("addItemToBasket", "getItemCount"));
         $oBasket->expects($this->once())->method('addItemToBasket')->with($this->equalTo("1126"), $this->equalTo(999), $this->equalTo('sel'));
@@ -246,8 +246,8 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testRenderCompareIsOff()
     {
-        modConfig::getInstance()->setConfigParam("bl_showCompareList", false);
-        modConfig::setRequestParameter('wishid', "testWishId");
+        $this->getConfig()->setConfigParam("bl_showCompareList", false);
+        $this->setRequestParameter('wishid', "testWishId");
         oxTestModules::addFunction('oxuser', 'load', '{ return true; }');
 
         $oParentView = $this->getMock("oxView", array("setMenueList"));
@@ -265,11 +265,11 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::getInstance()->setConfigParam("bl_showCompareList", true);
-        modConfig::getInstance()->setConfigParam("blDisableNavBars", false);
+        $this->getConfig()->setConfigParam("bl_showCompareList", true);
+        $this->getConfig()->setConfigParam("blDisableNavBars", false);
 
-        modSession::getInstance()->setVar('wishid', "testWishId");
-        modSession::getInstance()->setVar('aFiltcompproducts', array("1126"));
+        $this->getSession()->setVariable('wishid', "testWishId");
+        $this->getSession()->setVariable('aFiltcompproducts', array("1126"));
 
         oxTestModules::addFunction('oxuser', 'load', '{ return true; }');
 

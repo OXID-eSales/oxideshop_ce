@@ -247,6 +247,11 @@ class oxOrder extends oxBase
     protected $_sShipTrackUrl = null;
 
     /**
+     * @var oxBasket
+     */
+    protected $_oOrderBasket = null;
+
+    /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
     public function __construct()
@@ -1199,7 +1204,7 @@ class oxOrder extends oxBase
             $soxAddressId = oxRegistry::getSession()->getVariable('deladrid');
         }
         if ($soxAddressId) {
-            $oDelAdress = oxNew('oxaddress');
+            $oDelAdress = oxNew('oxAddress');
             $oDelAdress->load($soxAddressId);
 
             //get delivery country name from delivery country id
@@ -1225,7 +1230,7 @@ class oxOrder extends oxBase
     {
         foreach ($oBasket->getContents() as $key => $oContent) {
             try {
-                $oProd = $oContent->getArticle(true);
+                $oProd = $oContent->getArticle(true, null, true);
             } catch (oxNoArticleException $oEx) {
                 $oBasket->removeItem($key);
                 throw $oEx;
@@ -1402,14 +1407,8 @@ class oxOrder extends oxBase
         } catch (Exception $oE) {
             // if exception, rollBack everything
             oxDb::getDb()->rollbackTransaction();
-
-            if (defined('OXID_PHP_UNIT')) {
-                throw $oE;
-            }
         }
     }
-
-    protected $_oOrderBasket = null;
 
     /**
      * Returns basket object filled up with discount, delivery, wrapping and all other info

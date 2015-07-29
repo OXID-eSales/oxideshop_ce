@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -202,7 +202,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testInit()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $oConfig->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', true);
 
         $oOrder = oxNew("order");
@@ -224,7 +224,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testInitForcesBasketRecalculation()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $mySession = oxRegistry::getSession();
 
         $oBasket = $this->getMock('oxBasket', array('onUpdate'));
@@ -236,7 +236,7 @@ class Unit_Views_orderTest extends OxidTestCase
 
         //setting basket to session
         $mySession->setBasket($oBasket);
-        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
+        //$this->getSession()->setVariable( 'basket', $oBasket );
 
         $oOrder = oxNew("order");
 
@@ -250,7 +250,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testRenderWhenNoBasketExist()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $mySession = oxRegistry::getSession();
 
         //basket name in session will be "basket"
@@ -258,8 +258,8 @@ class Unit_Views_orderTest extends OxidTestCase
 
         //no basket, no user
         $mySession->setBasket(null);
-        //oxRegistry::getSession()->setVariable( 'basket', null );
-        oxRegistry::getSession()->setVariable('usr', null);
+        //$this->getSession()->setVariable( 'basket', null );
+        $this->getSession()->setVariable('usr', null);
 
         $oOrder = oxNew("order");
 
@@ -278,11 +278,11 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testRenderWhenNoActiveUserExistWithBasket()
     {
-        $sRedirUrl = oxRegistry::getConfig()->getShopHomeURL() . 'cl=basket';
+        $sRedirUrl = $this->getConfig()->getShopHomeURL() . 'cl=basket';
         $this->setExpectedException('oxException', $sRedirUrl);
 
         oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');
-        modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', false);
+        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
 
         $oB = $this->getMock('oxbasket', array('getProductsCount'));
         $oB->expects($this->once())->method('getProductsCount')->will($this->returnValue(1));
@@ -304,11 +304,11 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testRenderWhenNoActiveUserExistNoBasket()
     {
-        $sRedirUrl = oxRegistry::getConfig()->getShopHomeURL();
+        $sRedirUrl = $this->getConfig()->getShopHomeURL();
         $this->setExpectedException('oxException', $sRedirUrl);
 
         oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');
-        modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', false);
+        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
 
         $oB = $this->getMock('oxbasket', array('getProductsCount'));
         $oB->expects($this->any())->method('getProductsCount')->will($this->returnValue(0));
@@ -330,7 +330,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testRenderWhenBasketIsEmpty()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $mySession = oxRegistry::getSession();
 
         //basket name in session will be "basket"
@@ -338,8 +338,8 @@ class Unit_Views_orderTest extends OxidTestCase
 
         $oBasket = oxNew('oxBasket');
         $mySession->setBasket($oBasket);
-        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
-        oxRegistry::getSession()->setVariable('usr', 'oxdefaultadmin');
+        //$this->getSession()->setVariable( 'basket', $oBasket );
+        $this->getSession()->setVariable('usr', 'oxdefaultadmin');
 
         $oOrder = oxNew("order");
 
@@ -358,7 +358,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testRenderWhenPaymentIsEmpty()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $mySession = oxRegistry::getSession();
 
         //basket name in session will be "basket"
@@ -368,8 +368,8 @@ class Unit_Views_orderTest extends OxidTestCase
         $oBasket->setNonPublicVar('_iProductsCnt', 5);
         $oBasket->setPayment(null);
         $mySession->setBasket($oBasket);
-        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
-        oxRegistry::getSession()->setVariable('usr', 'oxdefaultadmin');
+        //$this->getSession()->setVariable( 'basket', $oBasket );
+        $this->getSession()->setVariable('usr', 'oxdefaultadmin');
 
         $oOrder = oxNew("order");
 
@@ -390,7 +390,7 @@ class Unit_Views_orderTest extends OxidTestCase
         oxAddClassModule('modOxUtilsObject_order', 'oxutilsobject');
         oxAddClassModule('modOxPayment_order', 'oxpayment');
 
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $mySession = oxRegistry::getSession();
 
         //basket name in session will be "basket"
@@ -409,12 +409,12 @@ class Unit_Views_orderTest extends OxidTestCase
 
         //setting order info to session
         $oBasket->setPayment('oxidcashondel');
-        oxRegistry::getSession()->setVariable('sShipSet', 'oxidstandard');
+        $this->getSession()->setVariable('sShipSet', 'oxidstandard');
         $mySession->setBasket($oBasket);
-        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
-        oxRegistry::getSession()->setVariable('usr', 'oxdefaultadmin');
-        oxRegistry::getSession()->setVariable('deladrid', 'null');
-        oxRegistry::getSession()->setVariable('ordrem', 'testRemark');
+        //$this->getSession()->setVariable( 'basket', $oBasket );
+        $this->getSession()->setVariable('usr', 'oxdefaultadmin');
+        $this->getSession()->setVariable('deladrid', 'null');
+        $this->getSession()->setVariable('ordrem', 'testRemark');
 
         //setting some config data
         $oConfig->setConfigParam('blConfirmAGB', '1');
@@ -446,13 +446,13 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testExecuteWithoutAGB()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
 
         $oConfig->setConfigParam('blConfirmAGB', 1);
-        modConfig::setRequestParameter('ord_agb', null);
+        $this->setRequestParameter('ord_agb', null);
 
         $oConfig->setConfigParam('blConfirmCustInfo', 1);
-        modConfig::setRequestParameter('ord_custinfo', 1);
+        $this->setRequestParameter('ord_custinfo', 1);
 
         $oS = $this->getMock('oxSession', array('checkSessionChallenge'));
         $oS->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
@@ -471,14 +471,14 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testExecuteWithoutCustInfo()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
 
         $oConfig->setConfigParam('blConfirmAGB', 1);
-        modConfig::setRequestParameter('ord_agb', 1);
+        $this->setRequestParameter('ord_agb', 1);
 
         $oConfig->setConfigParam('blConfirmCustInfo', 1);
         // test new tpl, when option (ord_custinfo) was removed
-        modConfig::setRequestParameter('ord_custinfo', null);
+        $this->setRequestParameter('ord_custinfo', null);
         $oS = $this->getMock('oxSession', array('checkSessionChallenge'));
         $oS->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         $oOrder = $this->getMock('order', array('getSession'));
@@ -486,7 +486,7 @@ class Unit_Views_orderTest extends OxidTestCase
 
         $this->assertEquals('user', $oOrder->execute());
         // test former tpl. If ord_custinfo is not confirmed
-        modConfig::setRequestParameter('ord_custinfo', 0);
+        $this->setRequestParameter('ord_custinfo', 0);
 
         $oS = $this->getMock('oxSession', array('checkSessionChallenge'));
         $oS->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
@@ -504,7 +504,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testExecute()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
 
         oxAddClassModule('modOxOrder_order', 'oxorder');
 
@@ -516,7 +516,7 @@ class Unit_Views_orderTest extends OxidTestCase
         $oConfig->setConfigParam('blConfirmCustInfo', 0);
 
         //setting active user
-        oxRegistry::getSession()->setVariable('usr', '_testUserId');
+        $this->getSession()->setVariable('usr', '_testUserId');
 
         //setting basket info
         $oBasket = $this->getProxyClass('oxBasket');
@@ -527,7 +527,7 @@ class Unit_Views_orderTest extends OxidTestCase
         $oBasket->setNonPublicVar('_oPrice', $oPrice);
         $oBasket->setNonPublicVar('_iProductsCnt', 1);
 
-        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
+        //$this->getSession()->setVariable( 'basket', $oBasket );
 
         $oUser = $this->getMock('oxuser', array('onOrderExecute'));
         $oUser->expects($this->once())->method('onOrderExecute')->will($this->returnValue(null));
@@ -553,7 +553,7 @@ class Unit_Views_orderTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{throw $aA[0];}');
 
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
 
         //basket name in session will be "basket"
         $oConfig->setConfigParam('blMallSharedBasket', 1);
@@ -610,7 +610,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testExecuteOnSuccessMarksUser()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
 
         oxAddClassModule('modOxOrder_order', 'oxorder');
 
@@ -706,8 +706,8 @@ class Unit_Views_orderTest extends OxidTestCase
         $mySession = oxRegistry::getSession();
 
         $oBasket = oxNew('oxBasket');
-        oxRegistry::getConfig()->setConfigParam('blMallSharedBasket', 1);
-        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
+        $this->getConfig()->setConfigParam('blMallSharedBasket', 1);
+        //$this->getSession()->setVariable( 'basket', $oBasket );
         $mySession->setBasket($oBasket);
         $oOrder = $this->getProxyClass('order');
         $this->assertEquals($oBasket, $oOrder->getBasket());
@@ -724,7 +724,7 @@ class Unit_Views_orderTest extends OxidTestCase
         oxTestModules::addFunction('oxpayment', 'isValidPayment', '{return true;}');
 
         //basket name in session will be "basket"
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blMallSharedBasket', 1);
         $oConfig->setConfigParam('iMinOrderPrice', false);
 
@@ -733,9 +733,9 @@ class Unit_Views_orderTest extends OxidTestCase
 
         $mySession->setBasket($oBasket);
 
-        oxRegistry::getSession()->setVariable('sShipSet', 'oxidstandard');
-        oxRegistry::getSession()->setVariable('usr', 'oxdefaultadmin');
-        oxRegistry::getSession()->setVariable('deladrid', 'null');
+        $this->getSession()->setVariable('sShipSet', 'oxidstandard');
+        $this->getSession()->setVariable('usr', 'oxdefaultadmin');
+        $this->getSession()->setVariable('deladrid', 'null');
         $oOrder = $this->getProxyClass('order');
         $this->assertEquals('oxidcashondel', $oOrder->getPayment()->getId());
     }
@@ -785,7 +785,7 @@ class Unit_Views_orderTest extends OxidTestCase
     public function testGetOrderRemark()
     {
         $oOrder = $this->getProxyClass('order');
-        oxRegistry::getSession()->setVariable('ordrem', 'test');
+        $this->getSession()->setVariable('ordrem', 'test');
         $this->assertEquals('test', $oOrder->getOrderRemark());
     }
 
@@ -802,9 +802,9 @@ class Unit_Views_orderTest extends OxidTestCase
         $oBasket->expects($this->any())->method('getProductsCount')->will($this->returnValue(1));
         $oBasket->expects($this->any())->method('getBasketArticles')->will($this->returnValue($aBasketArticles));
         //basket name in session will be "basket"
-        oxRegistry::getConfig()->setConfigParam('blMallSharedBasket', 1);
+        $this->getConfig()->setConfigParam('blMallSharedBasket', 1);
         //setting order info to session
-        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
+        //$this->getSession()->setVariable( 'basket', $oBasket );
         $mySession = oxRegistry::getSession();
         $mySession->setBasket($oBasket);
 
@@ -820,9 +820,9 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testGetDelAddress()
     {
-        modConfig::setRequestParameter('deladrid', '_testDelAddrId');
+        $this->setRequestParameter('deladrid', '_testDelAddrId');
 
-        $oDelAdress = oxNew('oxbase');
+        $oDelAdress = oxNew('oxBase');
         $oDelAdress->init('oxaddress');
         $oDelAdress->setId('_testDelAddrId');
         $oDelAdress->oxaddress__oxuserid = new oxField('_testUserId', oxField::T_RAW);
@@ -845,15 +845,15 @@ class Unit_Views_orderTest extends OxidTestCase
     public function testGetShipSet()
     {
         //basket name in session will be "basket"
-        oxRegistry::getConfig()->setConfigParam('blMallSharedBasket', 1);
+        $this->getConfig()->setConfigParam('blMallSharedBasket', 1);
         $oBasket = oxNew('oxBasket');
         $oBasket->setPayment('oxidcashondel');
 
         $mySession = oxRegistry::getSession();
         $mySession->setBasket($oBasket);
 
-        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
-        oxRegistry::getSession()->setVariable('sShipSet', 'oxidstandard');
+        //$this->getSession()->setVariable( 'basket', $oBasket );
+        $this->getSession()->setVariable('sShipSet', 'oxidstandard');
         $oOrder = $this->getProxyClass("order");
 
         $this->assertEquals('oxidstandard', $oOrder->getShipSet()->getId());
@@ -868,7 +868,7 @@ class Unit_Views_orderTest extends OxidTestCase
     {
         $oOrder = $this->getProxyClass("order");
 
-        oxRegistry::getConfig()->setConfigParam('blConfirmAGB', true);
+        $this->getConfig()->setConfigParam('blConfirmAGB', true);
         $this->assertTrue($oOrder->isConfirmAGBActive());
 
     }
@@ -881,7 +881,7 @@ class Unit_Views_orderTest extends OxidTestCase
     public function testIsConfirmCustInfoActive()
     {
         $oOrder = $this->getProxyClass("order");
-        oxRegistry::getConfig()->setConfigParam('blConfirmCustInfo', true);
+        $this->getConfig()->setConfigParam('blConfirmCustInfo', true);
         $this->assertTrue($oOrder->isConfirmCustInfoActive());
     }
 
@@ -897,13 +897,13 @@ class Unit_Views_orderTest extends OxidTestCase
         $oOrder = $this->getMock('order', array('getSession'));
         $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oS));
 
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
 
         $oConfig->setConfigParam('blConfirmAGB', 1);
-        modConfig::setRequestParameter('ord_agb', null);
+        $this->setRequestParameter('ord_agb', null);
 
         $oConfig->setConfigParam('blConfirmCustInfo', 1);
-        modConfig::setRequestParameter('ord_custinfo', 1);
+        $this->setRequestParameter('ord_custinfo', 1);
         $oOrder->execute();
         $this->assertEquals(1, $oOrder->isConfirmAGBError());
     }
@@ -925,11 +925,11 @@ class Unit_Views_orderTest extends OxidTestCase
         $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
         $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
 
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
 
         $oConfig->setConfigParam('blConfirmAGB', 0);
         $oConfig->setConfigParam('blEnableIntangibleProdAgreement', 1);
-        modConfig::setRequestParameter('oxdownloadableproductsagreement', null);
+        $this->setRequestParameter('oxdownloadableproductsagreement', null);
 
         $oOrder->execute();
         $this->assertEquals(1, $oOrder->isConfirmAGBError());
@@ -952,11 +952,11 @@ class Unit_Views_orderTest extends OxidTestCase
         $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
         $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
 
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = $this->getConfig();
 
         $oConfig->setConfigParam('blConfirmAGB', 0);
         $oConfig->setConfigParam('blEnableIntangibleProdAgreement', 1);
-        modConfig::setRequestParameter('oxdownloadableproductsagreement', null);
+        $this->setRequestParameter('oxdownloadableproductsagreement', null);
 
         $oOrder->execute();
         $this->assertEquals(1, $oOrder->isConfirmAGBError());
@@ -970,7 +970,7 @@ class Unit_Views_orderTest extends OxidTestCase
     public function testShowOrderButtonOnTop()
     {
         $oOrder = $this->getProxyClass("order");
-        oxRegistry::getConfig()->setConfigParam('blShowOrderButtonOnTop', true);
+        $this->getConfig()->setConfigParam('blShowOrderButtonOnTop', true);
         $this->assertTrue($oOrder->showOrderButtonOnTop());
     }
 
@@ -1007,7 +1007,7 @@ class Unit_Views_orderTest extends OxidTestCase
 
     public function testRenderDoesNotCleanReservationsIfOff()
     {
-        modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', false);
+        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
 
         $oS = $this->getMock('oxsession', array('getBasketReservations'));
         $oS->expects($this->never())->method('getBasketReservations');
@@ -1018,14 +1018,14 @@ class Unit_Views_orderTest extends OxidTestCase
         try {
             $oO->render();
         } catch (Exception $e) {
-            $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL(), $e->getMessage());
+            $this->assertEquals($this->getConfig()->getShopHomeURL(), $e->getMessage());
         }
 
     }
 
     public function testRenderDoesCleanReservationsIfOn()
     {
-        modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', true);
+        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
 
         $oR = $this->getMock('stdclass', array('renewExpiration'));
         $oR->expects($this->once())->method('renewExpiration')->will($this->returnValue(null));
@@ -1039,7 +1039,7 @@ class Unit_Views_orderTest extends OxidTestCase
         try {
             $oO->render();
         } catch (Exception $e) {
-            $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL() . 'cl=basket', $e->getMessage());
+            $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=basket', $e->getMessage());
         }
     }
 
@@ -1062,7 +1062,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testGetAddressError()
     {
-        modConfig::setRequestParameter('iAddressError', 1);
+        $this->setRequestParameter('iAddressError', 1);
         $oOrder = new Order();
         $this->assertEquals(1, $oOrder->getAddressError());
     }
@@ -1074,7 +1074,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testGetDeliveryAddressMD5()
     {
-        $oDelAddress = oxNew('oxaddress');
+        $oDelAddress = oxNew('oxAddress');
         $oDelAddress->init('oxaddress');
         $oDelAddress->setId('_testDelAddrId');
         $oDelAddress->oxaddress__oxcompany = new oxField("company");
@@ -1088,7 +1088,7 @@ class Unit_Views_orderTest extends OxidTestCase
 
         $this->assertEquals($oUser->getEncodedDeliveryAddress(), $oOrder->getDeliveryAddressMD5());
 
-        oxRegistry::getSession()->setVariable('deladrid', _testDelAddrId);
+        $this->getSession()->setVariable('deladrid', _testDelAddrId);
 
         $this->assertEquals($oUser->getEncodedDeliveryAddress() . $oDelAddress->getEncodedDeliveryAddress(), $oOrder->getDeliveryAddressMD5());
 

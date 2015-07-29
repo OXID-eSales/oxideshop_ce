@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -42,7 +42,7 @@ class Category_Main extends oxAdminDetails
         parent::render();
 
         /** @var oxcategory $oCategory */
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
 
         $soxId = $this->getEditObjectId();
 
@@ -147,7 +147,7 @@ class Category_Main extends oxAdminDetails
         );
 
         /** @var oxCategory $oCategory */
-        $oCategory = oxNew("oxcategory");
+        $oCategory = oxNew("oxCategory");
 
         if ($soxId != "-1") {
             $this->resetCounter("catArticle", $soxId);

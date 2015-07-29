@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -134,7 +134,7 @@ class discount_users_ajax extends ajaxListComponent
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenUsr)) {
             foreach ($aChosenUsr as $sChosenUsr) {
-                $oObject2Discount = oxNew("oxbase");
+                $oObject2Discount = oxNew("oxBase");
                 $oObject2Discount->init('oxobject2discount');
                 $oObject2Discount->oxobject2discount__oxdiscountid = new oxField($soxId);
                 $oObject2Discount->oxobject2discount__oxobjectid = new oxField($sChosenUsr);

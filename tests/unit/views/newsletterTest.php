@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -114,7 +114,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
     public function testGetNewsletterStatusAfterRemoveme()
     {
         $oTestNews = oxNew("NewsLetter");
-        $this->setRequestParam('uid', 'test');
+        $this->setRequestParameter('uid', 'test');
         $oTestNews->removeme();
         $iStatus = $oTestNews->getNewsletterStatus();
 
@@ -130,8 +130,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $oUser->save();
 
         $oTestNews = oxNew("NewsLetter");
-        $this->setRequestParam('uid', 'testAddMe');
-        $this->setRequestParam('confirm', md5('test@addme.comsalt'));
+        $this->setRequestParameter('uid', 'testAddMe');
+        $this->setRequestParameter('confirm', md5('test@addme.comsalt'));
 
         $oTestNews->addme();
         $oUserGroups = $oUser->getUserGroups();
@@ -153,8 +153,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $oUser->save();
 
         $oTestNews = oxNew("NewsLetter");
-        $this->setRequestParam('uid', 'testAddMe');
-        $this->setRequestParam('confirm', md5('test@addme.comsalt'));
+        $this->setRequestParameter('uid', 'testAddMe');
+        $this->setRequestParameter('confirm', md5('test@addme.comsalt'));
         $oTestNews->addme();
         $iStatus = $oTestNews->getNewsletterStatus();
 
@@ -179,8 +179,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams['oxuser__oxfname'] = 'test';
         $aParams['oxuser__oxlname'] = 'test';
         $aParams['oxuser__oxcountryid'] = 'test';
-        $this->setRequestParam('editval', $aParams);
-        $this->setRequestParam('subscribeStatus', 1);
+        $this->setRequestParameter('editval', $aParams);
+        $this->setRequestParameter('subscribeStatus', 1);
         $oTestNews->send();
         $iStatus = $oTestNews->getNewsletterStatus();
 
@@ -204,8 +204,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams['oxuser__oxfname'] = 'test';
         $aParams['oxuser__oxlname'] = 'test';
         $aParams['oxuser__oxcountryid'] = 'test';
-        $this->setRequestParam('editval', $aParams);
-        $this->setRequestParam('subscribeStatus', 1);
+        $this->setRequestParameter('editval', $aParams);
+        $this->setRequestParameter('subscribeStatus', 1);
         $oTestNews->send();
         $iStatus = $oTestNews->getNewsletterStatus();
 
@@ -228,8 +228,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams = array();
         $aParams['oxuser__oxusername'] = 'test@oxid-esales.com';
         $aParams['oxuser__oxfname'] = 'test';
-        $this->setRequestParam('editval', $aParams);
-        $this->setRequestParam('subscribeStatus', 1);
+        $this->setRequestParameter('editval', $aParams);
+        $this->setRequestParameter('subscribeStatus', 1);
         $oTestNews->send();
         $iStatus = $oTestNews->getNewsletterStatus();
 
@@ -252,8 +252,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams = array();
         $aParams['oxuser__oxusername'] = 'test@test.de';
         $aParams['oxuser__oxfname'] = 'test';
-        $this->setRequestParam('editval', $aParams);
-        $this->setRequestParam('subscribeStatus', 1);
+        $this->setRequestParameter('editval', $aParams);
+        $this->setRequestParameter('subscribeStatus', 1);
         $oTestNews->send();
 
         $sSql = "select oxusername from oxuser where oxusername='test@test.de'";
@@ -278,8 +278,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams['oxuser__oxusername'] = 'test@test.de';
         $aParams['oxuser__oxfname'] = 'test';
         $aParams['oxuser__oxlname'] = 'test';
-        $this->setRequestParam('editval', $aParams);
-        $this->setRequestParam('subscribeStatus', 1);
+        $this->setRequestParameter('editval', $aParams);
+        $this->setRequestParameter('subscribeStatus', 1);
         $oTestNews->send();
 
         $sSql = "select oxdboptin from oxnewssubscribed where oxfname = 'test' AND oxlname = 'test'";
@@ -307,8 +307,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams['oxuser__oxusername'] = 'test@test.de';
         $aParams['oxuser__oxfname'] = 'test';
         $aParams['oxuser__oxlname'] = 'test';
-        $this->setRequestParam('subscribeStatus', 1);
-        $this->setRequestParam('editval', $aParams);
+        $this->setRequestParameter('subscribeStatus', 1);
+        $this->setRequestParameter('editval', $aParams);
         $oTestNews->send();
 
         $sSql = "select oxdboptin from oxnewssubscribed where oxfname = 'test' AND oxlname = 'test'";
@@ -316,7 +316,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $this->assertEquals('2', $sStatus);
 
         //unsubscribing
-        $this->setRequestParam('subscribeStatus', null);
+        $this->setRequestParameter('subscribeStatus', null);
         $oTestNews->send();
 
         $sSql = "select oxdboptin from oxnewssubscribed where oxfname = 'test' AND oxlname = 'test'";
@@ -337,7 +337,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams['oxuser__oxfname'] = 'test';
         $aParams['oxuser__oxlname'] = 'test';
         $aParams['oxuser__oxcountryid'] = 'test';
-        $this->setRequestParam('editval', $aParams);
+        $this->setRequestParameter('editval', $aParams);
         $oTestNews->fill();
         $aRegParams = $oTestNews->getRegParams();
 
@@ -354,7 +354,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
     public function testRemovemeForAdmin()
     {
         $oTestNews = oxNew("NewsLetter");
-        $this->setRequestParam('uid', 'oxdefaultadmin');
+        $this->setRequestParameter('uid', 'oxdefaultadmin');
         $oTestNews->removeme();
         $iStatus = $oTestNews->getNewsletterStatus();
 
@@ -398,7 +398,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
         // no email
         $aParams['oxuser__oxusername'] = '';
-        $this->setRequestParam('editval', $aParams);
+        $this->setRequestParameter('editval', $aParams);
 
         $oTestNews->send();
         $aErrors = oxRegistry::getSession()->getVariable('Errors');
@@ -406,11 +406,11 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $this->assertEquals(oxRegistry::getLang()->translateString('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY'), $oErr->getOxMessage());
 
         //reseting errors
-        oxRegistry::getSession()->setVariable('Errors', null);
+        $this->getSession()->setVariable('Errors', null);
 
         // wrong email
         $aParams['oxuser__oxusername'] = 'aaaaaa@';
-        $this->setRequestParam('editval', $aParams);
+        $this->setRequestParameter('editval', $aParams);
         $oTestNews->send();
 
         $aErrors = oxRegistry::getSession()->getVariable('Errors');
@@ -434,8 +434,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
         $aParams['oxuser__oxusername'] = 'test@test.de';
         $aParams['oxuser__oxfname'] = 'test';
-        $this->setRequestParam('subscribeStatus', 1);
-        $this->setRequestParam('editval', $aParams);
+        $this->setRequestParameter('subscribeStatus', 1);
+        $this->setRequestParameter('editval', $aParams);
         $oTestNews->send();
 
         $aErrors = oxRegistry::getSession()->getVariable('Errors');

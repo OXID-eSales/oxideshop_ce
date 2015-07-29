@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Views_oxcmpCurTest extends OxidTestCase
         $this->assertEquals(2, $oCur->decimal);
 
         // changing decimal percision from 2 => 1
-        oxRegistry::getConfig()->setConfigParam("modaCurrencies", array("EUR@ 1.00@ ,@ .@ ¤@ 1"));
+        $this->getConfig()->setConfigParam("aCurrencies", array("EUR@ 1.00@ ,@ .@ ¤@ 1"));
         $oCurView->init();
 
         $oCur = $oCurView->getSession()->getBasket()->getBasketCurrency();

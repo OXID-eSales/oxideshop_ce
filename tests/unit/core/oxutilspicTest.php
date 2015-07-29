@@ -36,7 +36,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
 
             case "testDeletePictureExisting":
 
-                $myConfig = oxRegistry::getConfig();
+                $myConfig = $this->getConfig();
 
                 // setup-> create a copy of a picture and delete this one for successful test
                 $sOrigTestPicFile = "detail1_z3_ico_th.jpg";
@@ -66,7 +66,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
 
             case "testDeletePictureExisting":
 
-                $myConfig = oxRegistry::getConfig();
+                $myConfig = $this->getConfig();
 
                 // setup-> create a copy of a picture and delete this one for successful test
                 $sCloneTestPicFile = "CC1672_th.jpg";
@@ -121,19 +121,19 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
         $this->assertTrue($this->_resizeImageTest($sTestImageFilePNG, $sTestImageFileResizedPNG, 21, 10));
 
         // checking if works with "gd 1"
-        modConfig::getInstance()->setConfigParam('iUseGDVersion', 1);
+        $this->getConfig()->setConfigParam('iUseGDVersion', 1);
         $this->assertTrue($this->_resizeImageTest($sTestImageFilePNG, $sTestImageFileResizedPNG, 21, 10));
     }
 
     protected function _resizeImageTest($sTestImageFile, $sTestImageFileResized, $iWidth = 100, $iHeight = 48)
     {
-        $sDir = getTestsBasePath() . "misc" . DIRECTORY_SEPARATOR;
+        $sDir = __DIR__ ."/../testData/misc" . DIRECTORY_SEPARATOR;
         if (!file_exists($sDir . $sTestImageFile)) {
             $sMsg = "Failed to find the image file: " . $sDir . $sTestImageFile;
             $this->fail($sMsg);
         }
         //actual test
-        if (!(oxRegistry::get("oxUtilsPic")->resizeImage($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight, oxRegistry::getConfig()->getConfigParam('iUseGDVersion'), false))) {
+        if (!(oxRegistry::get("oxUtilsPic")->resizeImage($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight, $this->getConfig()->getConfigParam('iUseGDVersion'), false))) {
             $this->fail("Failed to call resizeImage()");
         }
 
@@ -201,20 +201,54 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
     public function testDeletePictureExisting()
     {
         $oUtilsPic = new oxutilspic();
-        $this->assertTrue($oUtilsPic->UNITdeletePicture('CCdetail1_z3_ico_th.jpg', oxRegistry::getConfig()->getPictureDir(false) . "master/product/thumb/"));
+        $this->assertTrue($oUtilsPic->UNITdeletePicture('CCdetail1_z3_ico_th.jpg', $this->getConfig()->getPictureDir(false) . "master/product/thumb/"));
     }
 
-    public function testIsPicDeletable()
+    /**
+     * Data provider for testIsPicDeletable.
+     *
+     * @return array
+     */
+    public function testIsPicDeletableDataProvider()
+    {
+        return array(
+            array('testOK.jpg', 1, true),
+            array('testFail.jpg', 2, false),
+        );
+    }
+
+    /**
+     * Test isPicDeletable method.
+     *
+     * @param string $filename
+     * @param int|null $response
+     * @param bool $expectedResult
+     *
+     * @dataProvider testIsPicDeletableDataProvider
+     */
+    public function testIsPicDeletable($filename, $response, $expectedResult)
     {
         $myUtils = new oxUtilsPic();
 
-        // testing
-        modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 1;'));
-        $this->assertTrue($myUtils->UNITisPicDeletable("testOK.jpg", "test", "file"));
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->any())->method('getOne')->will($this->returnValue($response));
+        oxDb::setDbObject($dbMock);
 
-        modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 2;'));
-        $this->assertFalse($myUtils->UNITisPicDeletable("testFail.jpg", "test", "file"));
-        $this->assertFalse($myUtils->UNITisPicDeletable("nopic.jpg", "test", "file"));
+        $this->assertEquals($expectedResult, $myUtils->UNITisPicDeletable($filename, 'test', 'file'));
+    }
+
+    /**
+     * Test IsPicDeletable with nopic.jpg case.
+     */
+    public function testIsPicDeletableNoPic()
+    {
+        $myUtils = new oxUtilsPic();
+
+        $dbMock = $this->getDbObjectMock();
+        $dbMock->expects($this->never())->method('getOne');
+        oxDb::setDbObject($dbMock);
+
+        $this->assertEquals(false, $myUtils->UNITisPicDeletable('nopic.jpg', 'test', 'file'));
     }
 
     /**
@@ -313,10 +347,8 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
 
     protected function _resizeGIFTest($sTestImageFile, $sTestImageFileResized, $gdver = 2)
     {
-
         $myUtils = new oxUtilsPic();
-        $myConfig = oxRegistry::getConfig();
-        $sDir = getTestsBasePath() . "misc" . DIRECTORY_SEPARATOR;
+        $sDir = __DIR__ ."/../testData/misc" . DIRECTORY_SEPARATOR;
         $iWidth = 100;
         $iHeight = 48;
         if (!file_exists($sDir . $sTestImageFile)) {

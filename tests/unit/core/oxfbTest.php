@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -74,7 +74,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
      */
     public function testIsConnected_FbConnectIsDisabled()
     {
-        modConfig::getInstance()->setConfigParam("bl_showFbConnect", false);
+        $this->getConfig()->setConfigParam("bl_showFbConnect", false);
 
         $oFb = oxNew("oxFb");
         $this->assertFalse($oFb->isConnected());
@@ -87,7 +87,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
      */
     public function testIsConnected_FbConnectIsEnabled()
     {
-        modConfig::getInstance()->setConfigParam("bl_showFbConnect", true);
+        $this->getConfig()->setConfigParam("bl_showFbConnect", true);
 
         $oFb = $this->getMock('oxFb', array('getUser', 'api'));
         $oFb->expects($this->once())->method('getUser')->will($this->returnValue(1));
@@ -103,7 +103,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
      */
     public function testIsConnected_noFbSession_withUser()
     {
-        modConfig::getInstance()->setConfigParam("bl_showFbConnect", true);
+        $this->getConfig()->setConfigParam("bl_showFbConnect", true);
 
         $oFb = $this->getMock('oxFb', array('getUser'));
         $oFb->expects($this->once())->method('getUser')->will($this->returnValue(10));
@@ -118,7 +118,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
      */
     public function testIsConnected_noFbUser()
     {
-        modConfig::getInstance()->setConfigParam("bl_showFbConnect", true);
+        $this->getConfig()->setConfigParam("bl_showFbConnect", true);
 
         $oFb = $this->getMock('oxFb', array('getUser'));
         $oFb->expects($this->once())->method('getUser')->will($this->returnValue(null));

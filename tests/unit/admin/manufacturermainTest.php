@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Admin_ManufacturerMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
         oxTestModules::addFunction('oxmanufacturer', 'isDerived', '{ return true; }');
 
         // testing..
@@ -52,7 +52,7 @@ class Unit_Admin_ManufacturerMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Manufacturer_Main();
@@ -71,7 +71,7 @@ class Unit_Admin_ManufacturerMainTest extends OxidTestCase
     {
         // testing..
         oxTestModules::addFunction('oxmanufacturer', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
+        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {
@@ -94,7 +94,7 @@ class Unit_Admin_ManufacturerMainTest extends OxidTestCase
     {
         // testing..
         oxTestModules::addFunction('oxmanufacturer', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::getInstance()->setConfigParam("blAllowSharedEdit", true);
+        $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
 
         // testing..
         try {

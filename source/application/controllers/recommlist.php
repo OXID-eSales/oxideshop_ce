@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -438,7 +438,7 @@ class RecommList extends aList
     {
         $oLang = oxRegistry::getLang();
 
-        $aPath[0] = oxNew("oxcategory");
+        $aPath[0] = oxNew("oxCategory");
         $aPath[0]->setLink(false);
         $aPath[0]->oxcategories__oxtitle = new oxField($oLang->translateString('RECOMMLIST'));
 
@@ -447,7 +447,7 @@ class RecommList extends aList
             $sUrl = $shopHomeURL . "cl=recommlist&amp;searchrecomm=" . rawurlencode($sSearchParam);
             $sTitle = $oLang->translateString('RECOMMLIST_SEARCH') . ' "' . $sSearchParam . '"';
 
-            $aPath[1] = oxNew("oxcategory");
+            $aPath[1] = oxNew("oxCategory");
             $aPath[1]->setLink($sUrl);
             $aPath[1]->oxcategories__oxtitle = new oxField($sTitle);
         }

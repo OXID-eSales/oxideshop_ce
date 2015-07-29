@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -661,7 +661,7 @@ class DynExportBase extends oxAdminDetails
             $iExpLang = oxRegistry::getSession()->getVariable("iExportLanguage");
         }
 
-        $oArticle = oxNew('oxarticle');
+        $oArticle = oxNew('oxArticle');
         $oArticle->setLanguage($iExpLang);
 
         $sO2CView = getViewName('oxobject2category', $iExpLang);
@@ -884,7 +884,7 @@ class DynExportBase extends oxAdminDetails
 
         $oRs = oxDb::getDb()->selectLimit("select oxid from $sHeapTable", 1, $iCnt);
         if ($oRs != false && $oRs->recordCount() > 0) {
-            $oArticle = oxNew('oxarticle');
+            $oArticle = oxNew('oxArticle');
             $oArticle->setLoadParentData(true);
 
             $oArticle->setLanguage(oxRegistry::getSession()->getVariable("iExportLanguage"));

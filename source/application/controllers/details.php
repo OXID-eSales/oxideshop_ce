@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -654,7 +654,7 @@ class Details extends oxUBase
             $sOxid = $this->getConfig()->getRequestParameter('anid');
 
             // object is not yet loaded
-            $this->_oProduct = oxNew('oxarticle');
+            $this->_oProduct = oxNew('oxArticle');
 
             if (!$this->_oProduct->load($sOxid)) {
                 $oUtils->redirect($oConfig->getShopHomeURL());

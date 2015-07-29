@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction("oxattribute", "isDerived", "{return true;}");
-        modConfig::setRequestParameter("oxid", "testId");
+        $this->setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Attribute_Main();
@@ -51,7 +51,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Attribute_Main();
@@ -90,7 +90,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
     public function testSaveDefaultOxid()
     {
         oxTestModules::addFunction('oxattribute', 'save', '{ $this->oxattribute__oxid = new oxField("testId"); return true; }');
-        modConfig::setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Attribute_Main();
@@ -128,14 +128,14 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
     public function testSaveinnlangDefaultOxid()
     {
         oxTestModules::addFunction('oxattribute', 'save', '{ $this->oxattribute__oxid = new oxField("testId"); return true; }');
-        modConfig::setRequestParameter("oxid", "-1");
-        modConfig::setRequestParameter("new_lang", "999");
+        $this->setRequestParameter("oxid", "-1");
+        $this->setRequestParameter("new_lang", "999");
 
         // testing..
         $oView = new Attribute_Main();
         $oView->saveinnlang();
 
         $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
-        $this->assertEquals(999, oxRegistry::getConfig()->getRequestParameter("new_lang"));
+        $this->assertEquals(999, $this->getRequestParameter("new_lang"));
     }
 }

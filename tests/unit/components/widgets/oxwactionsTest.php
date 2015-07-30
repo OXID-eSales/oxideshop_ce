@@ -33,8 +33,8 @@ class Unit_Components_Widgets_oxwActionsTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oAction = new oxwActions();
-        $this->assertEquals('widget/product/action.tpl', $oAction->render());
+        $action = oxNew('oxwActions');
+        $this->assertSame('widget/product/action.tpl', $action->render());
     }
 
     /**
@@ -46,9 +46,9 @@ class Unit_Components_Widgets_oxwActionsTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('bl_perfLoadAktion', 1);
 
-        $oAction = new oxwActions();
-        $oAction->setViewParameters(array('action' => 'oxtop5'));
-        $aList = $oAction->getAction();
+        $action = oxNew('oxwActions');
+        $action->setViewParameters(array('action' => 'oxtop5'));
+        $aList = $action->getAction();
         $this->assertTrue($aList instanceof oxarticlelist);
         $this->assertSame(4, $aList->count());
         $this->assertSame('2080', $aList->current()->getId());
@@ -61,9 +61,9 @@ class Unit_Components_Widgets_oxwActionsTest extends OxidTestCase
      */
     public function testGetActionName()
     {
-        $oAction = new oxwActions();
-        $oAction->setViewParameters(array('action' => 'oxbargain'));
-        $this->assertSame('Angebot der Woche', $oAction->getActionName());
+        $action = oxNew('oxwActions');
+        $action->setViewParameters(array('action' => 'oxbargain'));
+        $this->assertSame('Angebot der Woche', $action->getActionName());
     }
 
     /**
@@ -73,8 +73,8 @@ class Unit_Components_Widgets_oxwActionsTest extends OxidTestCase
      */
     public function testGetListType()
     {
-        $oAction = new oxwActions();
-        $oAction->setViewParameters(array('listtype' => 'grid'));
-        $this->assertEquals('grid', $oAction->getListType());
+        $action = oxNew('oxwActions');
+        $action->setViewParameters(array('listtype' => 'grid'));
+        $this->assertSame('grid', $action->getListType());
     }
 }

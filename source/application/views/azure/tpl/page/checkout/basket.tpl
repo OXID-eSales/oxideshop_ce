@@ -109,7 +109,7 @@
             [{/block}]
             [{block name="basket_widget_bestseller"}]
                 [{oxid_include_widget cl="oxwActions" action="oxtop5" listtype="grid" }]
-            [{ /block }]
+            [{/block}]
         [{/if }]
         [{if $oView->isWrapping() }]
            [{include file="page/checkout/inc/wrapping.tpl"}]

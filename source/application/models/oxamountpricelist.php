@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -26,7 +26,6 @@
  */
 class oxAmountPriceList extends oxList
 {
-
     /**
      * List Object class name
      *
@@ -40,6 +39,15 @@ class oxAmountPriceList extends oxList
      * @var oxArticle
      */
     protected $_oArticle = null;
+
+    /**
+     * Class constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('oxbase');
+        $this->init('oxbase', 'oxprice2article');
+    }
 
     /**
      *  Article getter
@@ -62,12 +70,17 @@ class oxAmountPriceList extends oxList
     }
 
     /**
-     * Class constructor
+     * Load category list data
+     *
+     * @param oxArticle $article Article
      */
-    public function __construct()
+    public function load($article)
     {
-        parent::__construct('oxbase');
-        $this->init('oxbase', 'oxprice2article');
+        $this->setArticle($article);
+
+        $aData = $this->_loadFromDb();
+
+        $this->assignArray($aData);
     }
 
     /**
@@ -94,21 +107,5 @@ class oxAmountPriceList extends oxList
         $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
 
         return $aData;
-    }
-
-
-    /**
-     * Load category list data
-     *
-     * @param oxArticle $oArticle Article
-     */
-    public function load($oArticle)
-    {
-        $this->setArticle($oArticle);
-
-
-        $aData = $this->_loadFromDb();
-
-        $this->assignArray($aData);
     }
 }

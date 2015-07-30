@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,6 @@ define('OXARTICLE_LINKTYPE_RECOMM', 5);
  */
 class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 {
-
 
     /**
      * Current class name
@@ -209,7 +208,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Object holding the list of attributes and attribute values associated with this article
      */
     protected $_oAttributeList = null;
-
 
     /**
      * Indicates whether the price is "From" price
@@ -689,14 +687,26 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function getSqlActiveSnippet($blForceCoreTable = null)
     {
+        $sQ = $this->_createSqlActiveSnippet($blForceCoreTable);
+
+        return "( $sQ ) ";
+    }
+
+    /**
+     * Returns SQL select string with checks if items are available
+     *
+     * @param $blForceCoreTable
+     * @return string
+     */
+    protected function _createSqlActiveSnippet($blForceCoreTable)
+    {
         // check if article is still active
         $sQ = $this->getActiveCheckQuery($blForceCoreTable);
 
         // stock and variants check
         $sQ .= $this->getStockCheckQuery($blForceCoreTable);
 
-
-        return "( $sQ ) ";
+        return $sQ;
     }
 
     /**
@@ -821,7 +831,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         return $this->_blLoadParentData;
     }
 
-
     /**
      * Returns true if the field is multilanguage
      *
@@ -928,17 +937,24 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
         $oPrice = null;
-        $dPrice = $this->_getVarMinPrice();
-
-        $dPrice = $this->_preparePrice($dPrice, $this->getArticleVat());
-
+        $dPrice = $this->_calculateVarMinPrice();
 
         $oPrice = $this->_getPriceObject();
         $oPrice->setPrice($dPrice);
+
         $this->_calculatePrice($oPrice);
 
-
         return $oPrice;
+    }
+
+    /**
+     * @return float
+     */
+    protected function _calculateVarMinPrice()
+    {
+        $dPrice = $this->_getVarMinPrice();
+
+        return $this->_preparePrice($dPrice, $this->getArticleVat());
     }
 
     /**
@@ -958,14 +974,24 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $dPrice = $this->_getVarMinPrice();
         }
 
-        $dPrice = $this->_preparePrice($dPrice, $this->getArticleVat());
-
+        $dPrice = $this->_prepareModifiedPrice($dPrice);
 
         $oPrice = $this->_getPriceObject();
         $oPrice->setPrice($dPrice);
         $this->_calculatePrice($oPrice);
 
         return $oPrice;
+    }
+
+    /**
+     * @param $dPrice
+     * @return float
+     */
+    protected function _prepareModifiedPrice($dPrice)
+    {
+        $this->_preparePrice($dPrice, $this->getArticleVat());
+
+        return $dPrice;
     }
 
     /**
@@ -1014,7 +1040,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function isVisible()
     {
-
         // admin preview mode
         if (($blCanPreview = oxRegistry::getUtils()->canPreview()) !== null) {
             return $blCanPreview;
@@ -1069,16 +1094,25 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $this->_assignParentFieldValues();
         $this->_assignNotBuyableParent();
 
+        // assign only for a first load time
+        if (!$this->isLoaded()) {
+            $this->_setShopValues($this);
+        }
 
         $this->_assignStock();
         $this->_assignPersistentParam();
         $this->_assignDynImageDir();
         $this->_assignComparisonListFlag();
 
-
         stopProfile('articleAssign');
     }
 
+    /**
+     * @param $oArticle
+     */
+    protected function _setShopValues($oArticle)
+    {
+    }
 
     /**
      * Loads object data from DB (object data ID must be passed to method).
@@ -1095,8 +1129,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // A. #1325 resetting to avoid problems when reloading (details etc)
         $this->_blNotBuyableParent = false;
 
-
-        $aData = $this->_loadFromDb($sOXID);
+        $aData = $this->_loadData($sOXID);
 
         if ($aData) {
             $this->assign($aData);
@@ -1111,6 +1144,15 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
         return false;
+    }
+
+    /**
+     * @param $sOXID
+     * @return array
+     */
+    protected function _loadData($sOXID)
+    {
+        return $this->_loadFromDb($sOXID);
     }
 
     /**
@@ -1134,7 +1176,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         return $blChanged;
     }
 
-
     /**
      * Calculates and saves product rating average
      *
@@ -1151,7 +1192,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // oxarticles.oxtimestamp = oxarticles.oxtimestamp to keep old timestamp value
         $oDb = oxDb::getDb();
         $oDb->execute('update oxarticles set oxarticles.oxrating = ' . $dRating . ',oxarticles.oxratingcnt = ' . $dRatingCnt . ', oxarticles.oxtimestamp = oxarticles.oxtimestamp where oxarticles.oxid = ' . $oDb->quote($this->getId()));
-
     }
 
     /**
@@ -1706,15 +1746,14 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function getVendor($blShopCheck = true)
     {
-        if (($sVendorId = $this->getVendorId())) {
+        $sVendorId = $this->getVendorId();
+        if ($sVendorId) {
             $oVendor = oxNew('oxvendor');
         } elseif (!$blShopCheck && $this->oxarticles__oxvendorid->value) {
-            $oVendor = oxNew('oxi18n');
-            $oVendor->init('oxvendor');
-            $oVendor->setReadOnly(true);
+            $oVendor = $this->_createMultilanguageVendorObject();
             $sVendorId = $this->oxarticles__oxvendorid->value;
         }
-        if ($sVendorId && $oVendor->load($sVendorId) && $oVendor->oxvendor__oxactive->value) {
+        if ($sVendorId && $oVendor && $oVendor->load($sVendorId) && $oVendor->oxvendor__oxactive->value) {
 
             return $oVendor;
         }
@@ -1723,18 +1762,28 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
+     * @param $blShopCheck
+     * @return oxi18n
+     */
+    protected function _createMultilanguageVendorObject()
+    {
+        $oVendor = oxNew('oxi18n');
+        $oVendor->init('oxvendor');
+        $oVendor->setReadOnly(true);
+
+        return $oVendor;
+    }
+
+    /**
      * Returns article object vendor ID. Result is cached into self::$_aArticleVendors
-     *
-     * @param bool $blForceReload reloads id even if it is cached
      *
      * @return string
      */
-    public function getVendorId($blForceReload = false)
+    public function getVendorId()
     {
         $sVendorId = false;
         if ($this->oxarticles__oxvendorid->value) {
             $sVendorId = $this->oxarticles__oxvendorid->value;
-
         }
 
         return $sVendorId;
@@ -1743,16 +1792,13 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns article object Manufacturer ID. Result is cached into self::$_aArticleManufacturers
      *
-     * @param bool $blForceReload reloads id even if it is cached
-     *
      * @return string
      */
-    public function getManufacturerId($blForceReload = false)
+    public function getManufacturerId()
     {
         $sManufacturerId = false;
         if ($this->oxarticles__oxmanufacturerid->value) {
             $sManufacturerId = $this->oxarticles__oxmanufacturerid->value;
-
         }
 
         return $sManufacturerId;
@@ -1945,8 +1991,18 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
         // GroupPrice or DB price ajusted by AmountPrice
-        $dPrice = $this->_getAmountPrice($dAmount);
+        $dPrice = $this->_getModifiedAmountPrice($dAmount);
 
+        return $dPrice;
+    }
+
+    /**
+     * @param $dAmount
+     * @return bool|null
+     */
+    protected function _getModifiedAmountPrice($dAmount)
+    {
+        $dPrice = $this->_getAmountPrice($dAmount);
 
         return $dPrice;
     }
@@ -2067,8 +2123,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             return false;
         }
 
-
-
         // #2339 delete first variants before deleting parent product
         $this->_deleteVariantRecords($sOXID);
         $this->load($sOXID);
@@ -2188,7 +2242,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $this->onChange(ACTION_UPDATE, null, $sParentId);
         }
     }
-
 
     /**
      * collect article pics, icons, zoompic and puts it all in an array
@@ -2335,7 +2388,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $this->_assignStock();
             $this->_onChangeStockResetCount($sOXID);
         }
-
     }
 
     /**
@@ -2403,7 +2455,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
     }
 
-
     /**
      * Get article long description
      *
@@ -2414,7 +2465,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if ($this->_oLongDesc === null) {
             // initializing
             $this->_oLongDesc = new oxField();
-
 
             // choosing which to get..
             $sOxid = $this->getId();
@@ -2458,7 +2508,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function setArticleLongDesc($sDesc)
     {
-
         // setting current value
         $this->_oLongDesc = new oxField($sDesc, oxField::T_RAW);
         $this->oxarticles__oxlongdesc = new oxField($sDesc, oxField::T_RAW);
@@ -3405,10 +3454,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $aResult = $oDb->getAll($sSql);
         $aReturn = array();
 
-
         foreach ($aResult as $aValue) {
             $aValue = array_change_key_case($aValue, CASE_LOWER);
-
 
             $aReturn[] = $aValue[$sField];
         }
@@ -3562,8 +3609,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _saveArtLongDesc()
     {
-        $myConfig = $this->getConfig();
-        $sShopId = $myConfig->getShopID();
         if (in_array("oxlongdesc", $this->_aSkipSaveFields)) {
             return;
         }
@@ -3616,8 +3661,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _skipSaveFields()
     {
-        $myConfig = $this->getConfig();
-
         $this->_aSkipSaveFields = array();
 
         $this->_aSkipSaveFields[] = 'oxtimestamp';
@@ -3628,7 +3671,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if (!$this->_blAllowEmptyParentId && (!isset($this->oxarticles__oxparentid->value) || $this->oxarticles__oxparentid->value == '')) {
             $this->_aSkipSaveFields[] = 'oxparentid';
         }
-
     }
 
     /**
@@ -3748,13 +3790,15 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $oItemPrice = $this->_getPriceObject();
             if ($oItem->oxprice2article__oxaddabs->value) {
                 $dBasePrice = $oItem->oxprice2article__oxaddabs->value;
-                $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat());
+                $dBasePrice = $this->_prepareModifiedPrice($dBasePrice);
 
                 $oItemPrice->setPrice($dBasePrice);
                 $this->_calculatePrice($oItemPrice);
             } else {
                 $dBasePrice = $this->_getGroupPrice();
-                $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat());
+
+                $dBasePrice = $this->_prepareModifiedPrice($dBasePrice);
+
                 $oItemPrice->setPrice($dBasePrice);
                 $oItemPrice->subtractPercent($oItem->oxprice2article__oxaddperc->value);
             }
@@ -3857,7 +3901,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         $oPrice->multiply($oCur->rate);
     }
-
 
     /**
      * gets attribs string
@@ -4362,10 +4405,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $this->oxarticles__oxsubclass = new oxField('oxarticle');
         }
 
-        $blRes = parent::_insert();
-
-
-        return $blRes;
+        return parent::_insert();
     }
 
     /**
@@ -4375,17 +4415,12 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _update()
     {
-
         $this->setUpdateSeo(true);
         $this->_setUpdateSeoOnFieldChange('oxtitle');
 
         $this->_skipSaveFields();
 
-        $myConfig = $this->getConfig();
-
-
         $blRes = parent::_update();
-
 
         return $blRes;
     }
@@ -4445,7 +4480,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         $sDelete = 'delete from oxobject2list where oxobjectid = ' . $sOXID . ' ';
         $rs = $oDb->execute($sDelete);
-
 
         return $rs;
     }
@@ -4810,8 +4844,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _getVarMinPrice()
     {
         if ($this->_dVarMinPrice === null) {
-            $dPrice = null;
-
+            $dPrice = $this->_getShopVarMinPrice();
 
             if (is_null($dPrice)) {
                 $sPriceSuffix = $this->_getUserPriceSufix();
@@ -4905,6 +4938,22 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
+     * @return null
+     */
+    protected function _getShopVarMinPrice()
+    {
+        return null;
+    }
+
+    /**
+     * @return null
+     */
+    protected function _getShopVarMaxPrice()
+    {
+        return null;
+    }
+
+    /**
      * Return sub shop variant max price
      *
      * @return null
@@ -4941,13 +4990,19 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _loadFromDb($sOXID)
     {
-
         $sSelect = $this->buildSelectString(array($this->getViewName() . ".oxid" => $sOXID));
-
 
         $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getRow($sSelect);
 
         return $aData;
+    }
+
+    /**
+     * @param float $dAmount
+     */
+    public function checkForVpe($dAmount)
+    {
+
     }
 
     /**
@@ -4994,8 +5049,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
         }
     }
-
-
 
     /**
      * Saves values of sorting fields on article load.

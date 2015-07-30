@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -258,7 +258,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
 
     public function testIsForBasketDeliverySetUpForCategory()
     {
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('1126');
         $aCategoryIds = $oArticle->getCategoryIds();
 
@@ -303,7 +303,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
 
     public function testIsForBasketDeliverySetUpForCategoryOncePerArticle()
     {
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('1126');
         $aCategoryIds = $oArticle->getCategoryIds();
 

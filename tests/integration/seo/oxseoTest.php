@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -58,7 +58,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $sArticleSeo = 'this/there/then.html';
         $sCurrentSeo = oxRegistry::getConfig()->getShopUrl() . $sArticleSeo;
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testid');
         $oArticle->getLink();
         $this->assertEquals($sCurrentSeo, $oArticle->getLink());
@@ -73,7 +73,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $this->assertEquals($sRegeneratedExpectedCategory, $oCategory->getLink());
 
         $sRegeneratedExpectedArticle = oxRegistry::getConfig()->getShopUrl() . "testCategory1test/testArticle.html";
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testid');
         $oArticle->getLink();
         $this->assertEquals($sRegeneratedExpectedArticle, $oArticle->getLink());
@@ -101,14 +101,14 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $sArticleSeo = 'this/there/then.html';
         $sCurrentSeo = oxRegistry::getConfig()->getShopUrl() . $sArticleSeo;
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testid');
         $this->assertEquals($sCurrentSeo, $oArticle->getLink());
         $oArticle->oxarticles__oxtitle = new oxField($oArticle->oxarticles__oxtitle . 'test');
         $oArticle->save();
 
         $sRegeneratedExpectedArticle = oxRegistry::getConfig()->getShopUrl() . "this/there/testArticletest.html";
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testid');
         $oArticle->getLink();
         $this->assertEquals($sRegeneratedExpectedArticle, $oArticle->getLink());
@@ -165,7 +165,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
 
         $sCurrentSeo = oxRegistry::getConfig()->getShopUrl() . $sArticleSeo;
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testid');
         $this->assertEquals($sCurrentSeo, $oArticle->getLink());
 
@@ -179,7 +179,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $oCategory->load('_test5');
         $this->assertEquals($sRegeneratedExpectedCategory, $oCategory->getLink());
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testid');
         $this->assertEquals($sCurrentSeo, $oArticle->getLink());
     }
@@ -234,7 +234,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
 
         $sCurrentSeo = oxRegistry::getConfig()->getShopUrl() . $sArticleSeo;
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testid');
         $this->assertEquals($sCurrentSeo, $oArticle->getLink());
 
@@ -253,7 +253,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $this->assertEquals($sRegeneratedExpectedCategory, $oCategory->getLink());
 
         $sRegeneratedExpectedArticle = oxRegistry::getConfig()->getShopUrl() . "changed/here/testArticle.html";
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testid');
         $this->assertEquals($sRegeneratedExpectedArticle, $oArticle->getLink());
     }
@@ -309,7 +309,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
 
         $sCurrentSeo = oxRegistry::getConfig()->getShopUrl() . $sArticleSeo;
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testid');
         $this->assertEquals($sCurrentSeo, $oArticle->getLink());
 
@@ -327,7 +327,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $oCategory->load('_test9');
         $this->assertEquals($sRegeneratedExpectedCategory, $oCategory->getLink());
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testid');
         $this->assertEquals($sCurrentSeo, $oArticle->getLink());
     }
@@ -354,7 +354,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $sArticleSeo = 'this/there/testArticle.html';
         $sCurrentSeo = oxRegistry::getConfig()->getShopUrl() . $sArticleSeo;
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testid');
         $this->assertEquals($sCurrentSeo, $oArticle->getLink());
 

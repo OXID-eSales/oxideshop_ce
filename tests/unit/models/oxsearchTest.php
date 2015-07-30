@@ -591,7 +591,7 @@ class Unit_Models_oxsearchTest extends OxidTestCase
         $sIDMan = "fe07958b49de225bd1dbc7594fb9a6b0";
         $sIDCat = "8a142c3e4d3253c95.46563530";
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sArticleTable = getViewName('oxarticles');
         $sO2Cat = getViewName('oxobject2category');
@@ -634,7 +634,7 @@ class Unit_Models_oxsearchTest extends OxidTestCase
 
         $sSearchDate = date('Y-m-d H:i:s', $iCurrTime);
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sArticleTable = getViewName('oxarticles');
         $sO2Cat = getViewName('oxobject2category');

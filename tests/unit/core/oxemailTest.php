@@ -139,7 +139,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         oxTestModules::addFunction("oxUtilsObject", "generateUId", "{ return 'xxx'; }");
         $config = $this->getConfig();
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('1351');
         $sImgUrl = $oArticle->getThumbnailUrl();
         $iImgFile = basename($sImgUrl);

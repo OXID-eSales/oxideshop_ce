@@ -105,15 +105,15 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         $this->setRequestParameter("art_category", "vnd@@" . $sVndId);
         $this->getConfig()->setConfigParam("blSkipFormatConversion", false);
 
-        $oArticle1 = new oxArticle();
+        $oArticle1 = oxNew('oxArticle');
         $oArticle1->oxarticles__oxtitle = new oxField("title1");
         $oArticle1->oxarticles__oxtitle->fldtype = "datetime";
 
-        $oArticle2 = new oxArticle();
+        $oArticle2 = oxNew('oxArticle');
         $oArticle2->oxarticles__oxtitle = new oxField("title2");
         $oArticle2->oxarticles__oxtitle->fldtype = "timestamp";
 
-        $oArticle3 = new oxArticle();
+        $oArticle3 = oxNew('oxArticle');
         $oArticle3->oxarticles__oxtitle = new oxField("title3");
         $oArticle3->oxarticles__oxtitle->fldtype = "date";
 
@@ -147,7 +147,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         $sO2CView = getViewName("oxobject2category");
         $this->setRequestParameter("art_category", "cat@@testCategory");
 
-        $oProduct = new oxArticle();
+        $oProduct = oxNew('oxArticle');
         $sQ = $oProduct->buildSelectString(null);
         $sQ = str_replace(" from $sTable where 1 ", " from $sTable left join $sO2CView on $sTable.oxid = $sO2CView.oxobjectid where $sO2CView.oxcatnid = 'testCategory' and  1  and $sTable.oxparentid = '' ", $sQ);
 
@@ -165,7 +165,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         $sTable = getViewName("oxarticles");
         $this->setRequestParameter("art_category", "mnf@@testManufacturer");
 
-        $oProduct = new oxArticle();
+        $oProduct = oxNew('oxArticle');
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = new Article_List();
@@ -182,7 +182,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         $sTable = getViewName("oxarticles");
         $this->setRequestParameter("art_category", "vnd@@testVendor");
 
-        $oProduct = new oxArticle();
+        $oProduct = oxNew('oxArticle');
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = new Article_List();
@@ -210,7 +210,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
      */
     public function testBuildSelectString()
     {
-        $oProduct = new oxArticle();
+        $oProduct = oxNew('oxArticle');
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = new Article_List();
@@ -250,7 +250,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         $aSkipFields = array("oxblfixedprice", "oxvarselect", "oxamitemid", "oxamtaskid", "oxpixiexport", "oxpixiexported");
         $oView = new Article_List();
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $this->assertEquals(array_diff($oArticle->getFieldNames(), $aSkipFields), $oView->getSearchFields());
     }
 }

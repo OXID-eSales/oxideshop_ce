@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -134,7 +134,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
      */
     public function testSetLocatorData()
     {
-        $oCurrArticle = new oxarticle();
+        $oCurrArticle = oxNew('oxArticle');
 
         $oLocatorTarget = $this->getMock('oxview', array('setListType'));
         $oLocatorTarget->expects($this->once())->method('setListType');
@@ -747,7 +747,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oCategory->oxcategories__oxpriceto = new oxField(50, oxField::T_RAW);
 
         // testing
-        $oIdList = $oLocator->UNITloadIdsInList($oCategory, new oxarticle(), 'oxid');
+        $oIdList = $oLocator->UNITloadIdsInList($oCategory, oxNew('oxArticle'), 'oxid');
         $this->assertEquals('1651', $oIdList['1651']);
 
         $this->assertEquals(24, count($oIdList));
@@ -769,7 +769,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oCategory->oxcategories__oxpriceto = new oxField(50, oxField::T_RAW);
 
         // testing
-        $oIdList = $oLocator->UNITloadIdsInList($oCategory, new oxarticle(), 'oxid');
+        $oIdList = $oLocator->UNITloadIdsInList($oCategory, oxNew('oxArticle'), 'oxid');
         $this->assertEquals('1651', $oIdList['1651']);
 
         $this->assertEquals(24, count($oIdList));

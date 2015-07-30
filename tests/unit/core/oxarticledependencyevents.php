@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -28,13 +28,13 @@ class Unit_Core_oxArticleTest extends OxidTestCase
 
     public function testHasSortingFieldsChangedWhenNoFieldsWereChanged()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticleId');
         $oArticle->oxarticles__oxprice = new oxField(10, oxField::T_RAW);
         $oArticle->oxarticles__oxtitle = new oxField("title", oxField::T_RAW);
         $oArticle->save();
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticleId');
         $this->assertFalse($oArticle->hasSortingFieldsChanged());
     }
@@ -43,13 +43,13 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('aSortCols', array('oxtitle', 'oxprice'));
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticleId');
         $oArticle->oxarticles__oxprice = new oxField(10, oxField::T_RAW);
         $oArticle->oxarticles__oxtitle = new oxField("title", oxField::T_RAW);
         $oArticle->save();
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticleId');
         $oArticle->oxarticles__oxtitle = new oxField("NewTitle", oxField::T_RAW);
         $this->assertTrue($oArticle->hasSortingFieldsChanged());
@@ -59,13 +59,13 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('aSortCols', array('oxtitle', 'oxprice'));
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticleId');
         $oArticle->oxarticles__oxprice = new oxField(10);
         $oArticle->oxarticles__oxtitle = new oxField("title");
         $oArticle->save();
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticleId');
         $oArticle->oxarticles__oxtitle = new oxField("title");
         $this->assertFalse($oArticle->hasSortingFieldsChanged());
@@ -75,13 +75,13 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('aSortCols', array('oxprice'));
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticleId');
         $oArticle->oxarticles__oxprice = new oxField(10);
         $oArticle->oxarticles__oxtitle = new oxField("title");
         $oArticle->save();
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticleId');
         $oArticle->oxarticles__oxtitle = new oxField("changed title");
         $this->assertFalse($oArticle->hasSortingFieldsChanged());
@@ -91,13 +91,13 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('aSortCols', '');
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticleId');
         $oArticle->oxarticles__oxprice = new oxField(10, oxField::T_RAW);
         $oArticle->oxarticles__oxtitle = new oxField("title", oxField::T_RAW);
         $oArticle->save();
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticleId');
         $oArticle->oxarticles__oxprice = new oxField(100, oxField::T_RAW);
         $this->assertFalse($oArticle->hasSortingFieldsChanged());

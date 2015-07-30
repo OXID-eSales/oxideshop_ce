@@ -91,7 +91,7 @@ class BasketConstruct
         // group setup
         $this->createGroup($aTestCase['group']);
 
-        // adding articles to basket      
+        // adding articles to basket
         foreach ($aArtsForBasket as $aArt) {
             if (is_null($aArt['amount']) || ($aArt['amount']) == 0) {
                 continue;
@@ -188,7 +188,7 @@ class BasketConstruct
         }
         $aResult = array();
         foreach ($aArtDemoData as $sOuterKey => $aArt) {
-            $oArt = new oxArticle();
+            $oArt = oxNew('oxArticle');
             $oArt->setId($aArt['oxid']);
             foreach ($aArt as $sKey => $sValue) {
                 if (strstr($sKey, "ox")) {

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -629,7 +629,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
     public function testGetAmount()
     {
         $article = $this->createArticle();
-        
+
         $oBasketItem = new oxbasketitem();
         $oBasketItem->init($article->getId(), 6);
         $this->assertEquals(6, $oBasketItem->getAmount());
@@ -643,7 +643,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
     public function testGetWeight()
     {
         $article = $this->createArticle();
-        
+
         $oBasketItem = new oxbasketitem();
         $oBasketItem->init($article->getId(), 6);
         $this->assertEquals(60, $oBasketItem->getWeight());
@@ -657,7 +657,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
     public function testGetTitle()
     {
         $article = $this->createArticle();
-        
+
         $article->oxarticles__oxvarselect = new oxField('xxx', oxField::T_RAW);
         $article->save();
 
@@ -691,7 +691,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
 
         $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures{$sPrefix}/generated/product/1/87_87_75/nopic.jpg";
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxpic1 = new oxField('testicon.jpg');
 
         $oBasketItem = $this->getMock('oxbasketitem', array('getArticle'));
@@ -738,7 +738,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
     public function testGetLink()
     {
         $article = $this->createArticle();
-        
+
         $oBasketItem = new oxbasketitem();
         $oBasketItem->init($article->getId(), 6);
         $oArticle = oxNew('oxArticle');

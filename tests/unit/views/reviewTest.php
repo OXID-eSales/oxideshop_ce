@@ -102,11 +102,11 @@ class Unit_Views_reviewTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("bl_perfLoadReviews", true);
 
-        $oProduct = new oxArticle();
+        $oProduct = oxNew('oxArticle');
         $oProduct->load("1126");
 
-        $oProd1 = new oxArticle();
-        $oProd2 = new oxArticle();
+        $oProd1 = oxNew('oxArticle');
+        $oProd2 = oxNew('oxArticle');
 
         $oProducts = new oxArticleList();
         $oProducts->offsetSet(0, $oProd1);
@@ -127,11 +127,11 @@ class Unit_Views_reviewTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("bl_perfLoadReviews", true);
 
-        $oProduct = new oxArticle();
+        $oProduct = oxNew('oxArticle');
         $oProduct->load("1126");
 
-        $oProd1 = new oxArticle();
-        $oProd2 = new oxArticle();
+        $oProd1 = oxNew('oxArticle');
+        $oProd2 = oxNew('oxArticle');
 
         $oReview = $this->getMock("review", array("getActiveRecommList", "getActiveRecommItems", "getReviewUser"));
         $oReview->expects($this->once())->method('getReviewUser');
@@ -162,12 +162,12 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetActiveRecommItems()
     {
-        $oProd1 = new oxArticle();
-        $oProd2 = new oxArticle();
+        $oProd1 = oxNew('oxArticle');
+        $oProd2 = oxNew('oxArticle');
 
-        $oProd3 = new oxArticle();
+        $oProd3 = oxNew('oxArticle');
         $oProd3->text = 'testArtDescription';
-        $oProd4 = new oxArticle();
+        $oProd4 = oxNew('oxArticle');
         $oProd4->text = 'testArtDescription';
 
         $oProducts = new oxArticleList();
@@ -428,7 +428,7 @@ class Unit_Views_reviewTest extends OxidTestCase
     {
         $this->getSession()->setVariable('reviewuserid', 'oxdefaultadmin');
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('2000');
 
         $oUser = new oxUser();
@@ -458,7 +458,7 @@ class Unit_Views_reviewTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxreview', 'loadList', '{$o=new oxlist();$o[0]="asd";$o->args=$aA;return $o;}');
         $oReview = $this->getProxyClass("review");
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('2000');
         $oReview->setNonPublicVar("_oProduct", $oArticle);
         $oResult = $oReview->getReviews();
@@ -477,7 +477,7 @@ class Unit_Views_reviewTest extends OxidTestCase
     public function testGetActiveObjectIfProduct()
     {
         $oReview = $this->getProxyClass("review");
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('2000');
         $oReview->setNonPublicVar("_oProduct", $oArticle);
 

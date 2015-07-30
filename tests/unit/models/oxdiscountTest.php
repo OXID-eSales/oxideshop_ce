@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -240,7 +240,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $oDiscount->setId($testDiscId);
         $oDiscount->save();
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
 
         //an item discount should return false
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('itm', oxField::T_RAW);
@@ -286,7 +286,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $this->assertTrue($oDiscount->isForArticle($oArticle));
 
         //no article discount for fitting category
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId($testAid);
         $this->assertFalse($oDiscount->isForArticle($oArticle));
     }
@@ -309,7 +309,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES('testIsForArticle','" . $testDiscId . "','" . $testCatId . "','oxcategories')");
 
         //no article discount for fitting category
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId($testAid);
         $this->assertFalse($oDiscount->isForArticle($oArticle));
     }
@@ -344,7 +344,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $oDiscount->save();
 
         $testAid = 'testaid';
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxparentid = new oxField($testAid, oxField::T_RAW);
         //$oArticle->save();
 
@@ -441,13 +441,13 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $oDiscount = new oxDiscount();
         $oDiscount->load($sDiscountId);
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('1127');
         $this->assertTrue($oDiscount->isForBasketItem($oArticle) && $oDiscount->isForBasketAmount($oBasket));
 
         $oBasket->addToBasket('1126', 6);
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('1127');
 
         $this->assertTrue($oDiscount->isForBasketItem($oArticle));
@@ -485,14 +485,14 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $oDiscount = new oxDiscount();
         $oDiscount->load($sDiscountId);
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('1127');
         $this->assertTrue($oDiscount->isForBasketItem($oArticle));
         $this->assertFalse($oDiscount->isForBasketAmount($oBasket));
 
         $oBasket->addToBasket('1126', 10);
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('1127');
 
         $this->assertTrue($oDiscount->isForBasketItem($oArticle) && $oDiscount->isForBasketAmount($oBasket));
@@ -506,7 +506,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $testDiscId = 'testIsForBasketItem';
         $oDiscount->setId($testDiscId);
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oBasket = new oxBasket();
 
         //an discount with amount or price should return false
@@ -524,7 +524,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
     public function testIsForBasketItemVariantCheck()
     {
         $testAid = 'xxx';
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxparentid = new oxField($testAid);
 
         oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( 'testIsForArticle', 'testdid', '{$testAid}', 'oxarticles' )");
@@ -545,7 +545,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
     public function testIsForBasketItemMainArticleCheck()
     {
         $testAid = 'xxx';
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId($testAid);
 
         oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( 'testIsForArticle', 'testdid', '{$testAid}', 'oxarticles' )");
@@ -569,7 +569,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $testDiscId = 'testIsForBasketItem';
         $oDiscount->setId($testDiscId);
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oBasket = new oxBasket();
 
         //an discount with amount or price should return false
@@ -586,7 +586,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $testDiscId = 'testIsForBasketItem';
         $oDiscount->setId($testDiscId);
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oBasket = new oxBasket();
 
         //an discount with amount or price should return false
@@ -691,7 +691,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
     public function testIsForBundleItemWithData()
     {
         $testAid = 'xxx';
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId($testAid);
 
         $oDiscount = $this->getMock('oxdiscount', array('_checkForArticleCategories'));
@@ -959,7 +959,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $this->getConfig()->setActShopCurrency(1);
 
         //getting a real demo product becaues with mock it is not easy to make sure the price set is NOT in active currency
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('1126');
         //$oArticle = $this->getMock( 'oxarticle', array( 'getPrice', 'getId' ) );
         //$oArticle->expects( $this->any() )->method( 'getPrice' )->will( $this->returnValue( new oxprice( 150 ) ));

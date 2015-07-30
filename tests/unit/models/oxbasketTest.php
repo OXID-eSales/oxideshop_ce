@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -4392,7 +4392,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testHasDownloadableProducts()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArt');
         $oArticle->oxarticles__oxisdownloadable = new oxField(true);
         $oOrderArticle = $this->getMock('oxorderarticle', array('getArticle'));
@@ -4441,7 +4441,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("sAdditionalServVATCalcMethod", 'proportional');
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testArt1');
         $oArticle->oxarticles__oxprice = new oxField(60);
@@ -4656,7 +4656,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     private function createBasketItemForArticleAgreementTests($blIntangible, $blDownloadable, $blShowCustomAgreement)
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArt');
         $oArticle->oxarticles__oxnonmaterial = new oxField($blIntangible);
         $oArticle->oxarticles__oxisdownloadable = new oxField($blDownloadable);

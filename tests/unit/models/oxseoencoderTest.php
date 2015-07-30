@@ -109,7 +109,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
 
         // cleanup
         if ($this->getName() == 'testIfArticleMetaDataStoredInSeoTableIsKeptAfterArticleTitleWasChanged') {
-            $oArticle = new oxArticle();
+            $oArticle = oxNew('oxArticle');
             $oArticle->delete('_testArticle');
         }
 
@@ -263,7 +263,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $sStdUrl = "index.php?cl=details&amp;anid={$sOxid}";
         $sType = "oxarticle";
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticleIdxxx');
         $oArticle->oxarticles__oxshopid = new oxField($iShopId);
         $oArticle->oxarticles__oxtitle = new oxField('test article title');
@@ -432,7 +432,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oConfig->dropLastActiveView();
         $oConfig->setActiveView($oView);
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load($sArticleId);
         $oArticle->setLinkType(OXARTICLE_LINKTYPE_CATEGORY);
         $this->assertEquals($sArticleSeoUrl, $oArticle->getLink(0));
@@ -527,7 +527,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oConfig->dropLastActiveView();
         $oConfig->setActiveView($oView);
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setLinkType(OXARTICLE_LINKTYPE_CATEGORY);
         $oArticle->load($sArticleId);
         $this->assertEquals($sArticleSeoUrl, $oArticle->getLink(1));
@@ -648,7 +648,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oArticle->oxarticles__oxtitle = new oxField('new testarticletitle');
         $oArticle->save();
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticle');
         $oArticle->getLink();
 
@@ -659,7 +659,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         // resetting seo
         $oEncoder->markAsExpired(null, $oArticle->getShopId());
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticle');
         $oArticle->getLink();
 
@@ -673,7 +673,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         oxTestModules::addFunction("oxUtils", "seoIsActive", "{ return true;}");
         oxTestModules::addFunction("oxUtils", "isSearchEngine", "{return false;}");
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('1126');
         $oArticle->getLink();
 
@@ -1006,7 +1006,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         // cleaning up
         oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('1126');
         $oArticle->getLink();
 

@@ -84,7 +84,7 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
     public function testSetPriceCatArticleCountWhenPriceFrom0To1AndDbContainsProductWhichPriceIs0()
     {
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId("_testArticle");
         $oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oArticle->oxarticles__oxactive = new oxField(1);

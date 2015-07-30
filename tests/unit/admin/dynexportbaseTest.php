@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -304,7 +304,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $sCatString = 'Geschenke/Bar-Equipment';
 
         // defining parameters
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load($sOxid);
 
         $oView = new DynExportBase();
@@ -322,7 +322,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $sCatString = 'Bar-Equipment';
 
         // defining parameters
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load($sOxid);
 
         $oView = new DynExportBase();
@@ -725,7 +725,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $sProdId = '8a142c4113f3b7aa3.13470399';
         $sParentId = '2077';
         $sTitle = 'violett';
-        $oParent = new oxArticle();
+        $oParent = oxNew('oxArticle');
         $oParent->load($sParentId);
 
         $oDb = oxDb::getDb();

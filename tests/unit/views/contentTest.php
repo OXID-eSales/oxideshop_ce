@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -38,7 +38,7 @@ class contentTest_oxUtilsView extends oxUtilsView
  */
 class Unit_Views_contentTest extends OxidTestCase
 {
-    
+
     /** @var oxContent  */
     protected $_oObj = null;
 
@@ -197,7 +197,7 @@ class Unit_Views_contentTest extends OxidTestCase
      */
     public function testPrepareMetaKeyword()
     {
-        $oContent = new oxarticle();
+        $oContent = oxNew('oxArticle');
         $oContent->oxcontents__oxtitle = $this->getMock('oxField', array('__get'));
         $oContent->oxcontents__oxtitle->expects($this->once())->method('__get')->will($this->returnValue('testtitle'));
 
@@ -215,7 +215,7 @@ class Unit_Views_contentTest extends OxidTestCase
      */
     public function testPrepareMetaDescription()
     {
-        $oContent = new oxarticle();
+        $oContent = oxNew('oxArticle');
         $oContent->oxcontents__oxtitle = $this->getMock('oxField', array('__get'));
         $oContent->oxcontents__oxtitle->expects($this->once())->method('__get')->will($this->returnValue('testtitle'));
 
@@ -705,7 +705,7 @@ class Unit_Views_contentTest extends OxidTestCase
 
         $this->assertEquals( 'ADSSSSSSSS', $oContent->getParsedContent(), 'Content not as in second page. If result ABSSSSSSSS than it is ame as in first page, so used wrong smarty cache file.' );
     }
-    
+
     /**
      * getParsedContent() test case
      * test returned parsed content with smarty tags when template regeneration is disabled

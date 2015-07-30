@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -149,7 +149,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
         $oVendor->setId("_test1");
         $oVendor->save();
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxvendorid = new oxField("_test1");
 
         $oView = new Article_Seo();
@@ -173,7 +173,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
         $oManufacturer->setId("_test1");
         $oManufacturer->save();
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxmanufacturerid = new oxField("_test1");
 
         $oView = new Article_Seo();
@@ -475,7 +475,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
         // must be existing
         $this->assertTrue((bool) $sProdId);
 
-        $oProduct = new oxArticle();
+        $oProduct = oxNew('oxArticle');
         $oProduct->load($sProdId);
 
         $sQ = "select oxobject2category.oxcatnid as oxid from {$sO2CView} as oxobject2category where oxobject2category.oxobjectid="
@@ -509,7 +509,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
         // must be existing
         $this->assertTrue((bool) $sProdId);
 
-        $oProduct = new oxArticle();
+        $oProduct = oxNew('oxArticle');
         $oProduct->load($sProdId);
 
         $oArticleTagList = new oxArticleTagList();

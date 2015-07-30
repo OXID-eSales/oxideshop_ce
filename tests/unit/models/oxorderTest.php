@@ -383,7 +383,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $sShopId = $this->getConfig()->getShopId();
 
         // test products for stock check
-        $oProd = new oxArticle();
+        $oProd = oxNew('oxArticle');
         $oProd->setId("_testProdId");
         $oProd->oxarticles__oxactive = new oxField(1);
         $oProd->oxarticles__oxtitle = new oxField("testprod");
@@ -418,7 +418,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $this->assertEquals(1, $oOrderProd->oxorderarticles__oxstorno->value);
 
         // checking products
-        $oProd = new oxArticle();
+        $oProd = oxNew('oxArticle');
         $oProd->load("_testProdId");
         $this->assertEquals(15, $oProd->oxarticles__oxstock->value);
 

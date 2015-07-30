@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -188,11 +188,11 @@ class Unit_Views_tagTest extends OxidTestCase
 
     public function testPrepareMetaKeyword()
     {
-        $oArticle1 = new oxarticle();
+        $oArticle1 = oxNew('oxArticle');
         $oArticle1->setId('oArticle1');
         $oArticle1->oxarticles__oxtitle = new oxField('testoxtitle1');
 
-        $oArticle2 = new oxarticle();
+        $oArticle2 = oxNew('oxArticle');
         $oArticle2->setId('oArticle2');
         $oArticle2->oxarticles__oxtitle = new oxField('testoxtitle2');
 
@@ -207,11 +207,11 @@ class Unit_Views_tagTest extends OxidTestCase
 
     public function testPrepareMetaDescription()
     {
-        $oArticle1 = new oxarticle();
+        $oArticle1 = oxNew('oxArticle');
         $oArticle1->setId('oArticle1');
         $oArticle1->oxarticles__oxtitle = new oxField('testoxtitle1');
 
-        $oArticle2 = new oxarticle();
+        $oArticle2 = oxNew('oxArticle');
         $oArticle2->setId('oArticle2');
         $oArticle2->oxarticles__oxtitle = new oxField('testoxtitle2');
 

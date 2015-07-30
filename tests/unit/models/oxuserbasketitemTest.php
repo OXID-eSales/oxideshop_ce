@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -45,7 +45,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('xxx');
         $oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('2000', oxField::T_RAW);
@@ -87,7 +87,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
     {
         oxRemClassModule('modOxArticle_oxUserBasketItem');
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->delete('xxx');
 
         $oSel = new oxbase();
@@ -227,7 +227,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
         $oArticle->oxarticles__oxparentid = new oxField(null, oxField::T_RAW);
         $oArticle->save();
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('xxx');
 
         $oBasketItem = new oxuserbasketitem();

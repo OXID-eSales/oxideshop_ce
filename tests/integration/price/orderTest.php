@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -267,7 +267,7 @@ class Integration_Price_OrderTest extends OxidTestCase
         $oBasketConstruct = new BasketConstruct();
         $aArts = $oBasketConstruct->getArticles($aArticles);
         foreach ($aArts as $aArt) {
-            $oProduct = new oxArticle();
+            $oProduct = oxNew('oxArticle');
             $oProduct->load($aArt['id']);
             $dAmount = $aArt['amount'];
             $oOrderArticle = oxNew('oxorderArticle');

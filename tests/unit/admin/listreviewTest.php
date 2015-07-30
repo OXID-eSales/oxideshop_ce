@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -70,7 +70,7 @@ class Unit_Admin_ListReviewTest extends OxidTestCase
     public function testPrepareWhereQuery()
     {
         $oArtList = new Article_List();
-        $sSql = $oArtList->UNITbuildSelectString(new oxArticle());
+        $sSql = $oArtList->UNITbuildSelectString(oxNew('oxArticle'));
         $sSql = $oArtList->UNITprepareWhereQuery(array(), $sSql);
 
         // checking if exists string oxarticle.oxparentid = ''
@@ -94,7 +94,7 @@ class Unit_Admin_ListReviewTest extends OxidTestCase
     public function testPrepareWhereQueryCase2()
     {
         $oArtList = new Article_List();
-        $sSql = $oArtList->UNITbuildSelectString(new oxArticle());
+        $sSql = $oArtList->UNITbuildSelectString(oxNew('oxArticle'));
         $sSql = $oArtList->UNITprepareWhereQuery(array(), $sSql);
 
         // checking if exists string oxarticle.oxparentid = ''

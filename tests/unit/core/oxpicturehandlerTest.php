@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -96,7 +96,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
                             "sFileName" => "testThumb1.jpg");
 
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxpic1 = new oxField("testPic1.jpg");
 
         // testing functions calls
@@ -136,7 +136,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
                              "sFileName" => "testThumb1.jpg");
 
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxpic1 = new oxField("testPic1.jpg");
 
         // testing functions calls
@@ -168,7 +168,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
                              "sFileName" => "testPic1.jpg");
 
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxpic1 = new oxField("testPic1.jpg");
         $oArticle->oxarticles__oxthumb = new oxField("testThumb1.jpg");
         $oArticle->oxarticles__oxicon = new oxField("testIco1.jpg");
@@ -193,7 +193,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
     public function testDeleteArticleMasterPicture_deletesCustomZoomPicture()
     {
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxpic1 = new oxField("testPic1.jpg");
         $oArticle->oxarticles__oxzoom1 = new oxField("testCustomZoom.jpg");
 
@@ -218,7 +218,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $sAbsImageDir = $this->getConfig()->getPictureDir(false);
 
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxpic1 = new oxField("nopic.jpg");
 
         // testing functions calls
@@ -246,7 +246,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $sFileName = "testPic1.jpg";
 
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxpic1 = new oxField("1/testPic1.jpg");
 
         // testing functions calls
@@ -275,7 +275,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $sFileName = "testIcon.jpg";
 
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxicon = new oxField("testIcon.jpg");
 
         // testing functions calls
@@ -296,7 +296,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
     public function testDeleteMainIcon_emptyValue()
     {
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxicon = new oxField("");
 
         // testing functions calls
@@ -321,7 +321,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $sFileName = "testThumb.jpg";
 
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxthumb = new oxField("testThumb.jpg");
 
         // testing functions calls
@@ -341,7 +341,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
     public function testDeleteThumbnail_emptyValue()
     {
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxthumb = new oxField("");
 
         // testing functions calls
@@ -367,7 +367,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $sFileName = "testZoom2.jpg";
 
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxzoom2 = new oxField("testZoom2.jpg");
 
         // testing functions calls
@@ -389,7 +389,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         oxTestModules::addFunction('oxDbMetaDataHandler', 'fieldExists', '{ return true; }');
 
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxzoom1 = new oxField("");
 
         // testing functions calls
@@ -410,7 +410,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         oxTestModules::addFunction('oxDbMetaDataHandler', 'fieldExists', '{ return true; }');
 
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxzoom1 = new oxField("nopic.jpg");
 
         // testing functions calls
@@ -436,7 +436,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
                              "sFileName" => "testMaster2.jpg");
 
         //test article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxpic2 = new oxField("testMaster2.jpg");
 
         // testing functions calls

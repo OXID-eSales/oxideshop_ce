@@ -77,7 +77,7 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
         oxRemClassModule('modOxUtilsObject_oxUtilsObject');
 
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->delete('testArticle');
 
         oxRegistry::get("oxConfigFile")->setVar('blDoNotDisableModuleOnError', $this->getConfigParam('blDoNotDisableModuleOnError'));
@@ -199,7 +199,7 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
     public function testResetInstanceCacheSingle()
     {
         $oTestInstance = new modOxUtilsObject_oxUtilsObject();
-        $aInstanceCache = array("oxArticle" => new oxArticle(), "oxattribute" => new oxAttribute());
+        $aInstanceCache = array("oxArticle" => oxNew('oxArticle'), "oxattribute" => new oxAttribute());
         $oTestInstance->setClassNameCache($aInstanceCache);
 
         $oTestInstance->resetInstanceCache("oxArticle");
@@ -213,7 +213,7 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
     public function testResetInstanceCacheAll()
     {
         $oTestInstance = new modOxUtilsObject_oxUtilsObject();
-        $aInstanceCache = array("oxArticle" => new oxArticle(), "oxattribute" => new oxAttribute());
+        $aInstanceCache = array("oxArticle" => oxNew('oxArticle'), "oxattribute" => new oxAttribute());
         $oTestInstance->setClassNameCache($aInstanceCache);
 
         $oTestInstance->resetInstanceCache();

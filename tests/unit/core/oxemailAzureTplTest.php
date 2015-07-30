@@ -747,7 +747,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oParams->send_name = 'testShopName';
 
 
-        $oProduct = new oxArticle();
+        $oProduct = oxNew('oxArticle');
         $oProduct->load('_testArticleId');
 
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));

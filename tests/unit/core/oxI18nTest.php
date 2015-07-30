@@ -80,12 +80,12 @@ class Unit_Core_oxi18ntest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('testa');
         $oArticle->save();
         $oArticle->getLink();
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setAdminMode(true);
         $oArticle->load('testa');
         $oArticle->oxarticles__oxtitle = new oxField('new title');
@@ -106,14 +106,14 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         )->will($this->returnValue(null));
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('testa');
         $oArticle->save();
         $oArticle->getLink();
 
         oxTestModules::addModuleObject('oxSeoEncoder', $oSeo);
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setAdminMode(true);
         $oArticle->load('testa');
         $oArticle->oxarticles__oxtitle = new oxField('new title');
@@ -860,7 +860,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
      */
     public function testIsMultilingualFieldFor0003138()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $this->assertTrue($oArticle->isMultilingualField("oxtitle"));
         $this->assertTrue($oArticle->isMultilingualField("OXTITLE"));
         $this->assertTrue($oArticle->isMultilingualField("oXtItLe"));

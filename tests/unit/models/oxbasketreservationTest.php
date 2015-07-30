@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -407,7 +407,7 @@ class Unit_Models_oxbasketreservationTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('iPsBasketReservationTimeout', 0);
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('2000');
         $initial = $oArticle->oxarticles__oxstock->value;
 
@@ -420,7 +420,7 @@ class Unit_Models_oxbasketreservationTest extends OxidTestCase
 
         $oBR->discardUnusedReservations(50);
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('2000');
         $this->assertEquals($initial + 5, $oArticle->oxarticles__oxstock->value);
 

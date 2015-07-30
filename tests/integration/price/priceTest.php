@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -136,7 +136,7 @@ class Integration_Price_PriceTest extends OxidTestCase
             if (empty($aExp)) {
                 continue;
             }
-            $oArt = new oxArticle();
+            $oArt = oxNew('oxArticle');
             $oArt->load($aArt['id']);
 
             $this->assertEquals($aExp['base_price'], $this->_getFormatted($oArt->getBasePrice()), "Base Price of article #{$aArt['id']}");

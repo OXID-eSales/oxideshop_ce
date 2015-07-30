@@ -107,7 +107,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
      */
     public function testLoadStockRemindProductsOneOfTwoItemsStockIsBelowCriticalState()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticleId');
         $oArticle->oxarticles__oxremindactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(9, oxField::T_RAW);
@@ -161,14 +161,14 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
      */
     public function testLoadPriceIdsWhenPriceFrom0To1AndDbContainsProductWhichPriceIs0()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId("_testArticle");
         $oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oArticle->oxarticles__oxactive = new oxField(1);
         $oArticle->oxarticles__oxprice = new oxField(0);
         $oArticle->save();
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load("_testArticle");
 
         $oArticleList = new oxArticleList();
@@ -443,7 +443,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
 
         $sArticleTable = $this->_getArticleTable();
         $sO2CTable = $this->_getO2CTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "SELECT oxid, $sArticleTable.oxtimestamp FROM $sO2CTable as oc left join $sArticleTable
                   ON $sArticleTable.oxid = oc.oxobjectid WHERE
@@ -475,7 +475,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
 
         $sArticleTable = $this->_getArticleTable();
         $sO2CTable = $this->_getO2CTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "SELECT oxid, $sArticleTable.oxtimestamp FROM $sO2CTable as oc left join $sArticleTable ON
                   $sArticleTable.oxid = oc.oxobjectid WHERE
@@ -502,7 +502,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
 
         $sArticleTable = $this->_getArticleTable();
         $sO2CTable = $this->_getO2CTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "SELECT oxid, $sArticleTable.oxtimestamp FROM $sO2CTable as oc left join $sArticleTable
                   ON $sArticleTable.oxid = oc.oxobjectid WHERE
@@ -778,7 +778,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $this->setTime(100);
 
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
         $sExpt .= " " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''";
@@ -806,7 +806,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $this->setTime(100);
         $this->setLanguage(1);
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
         $sExpt .= " " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''";
@@ -836,7 +836,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
 
         $sArticleTable = $this->_getArticleTable();
         $sO2CTable = $this->_getO2CTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "select $sArticleTable.oxid from $sO2CTable as oxobject2category, $sArticleTable ";
         $sExpt .= " where oxobject2category.oxcatnid='cat1' and oxobject2category.oxobjectid=$sArticleTable.oxid";
@@ -864,7 +864,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $this->setTime(100);
 
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
         $sExpt .= " " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''";
@@ -891,7 +891,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $this->setTime(100);
 
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
         $sExpt .= " " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''";
@@ -919,7 +919,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
 
         $sArticleTable = $this->_getArticleTable();
         $sO2CTable = $this->_getO2CTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "select $sArticleTable.oxid from $sO2CTable as oxobject2category, $sArticleTable ";
         $sExpt .= " where oxobject2category.oxcatnid='cat1' and oxobject2category.oxobjectid=$sArticleTable.oxid";
@@ -948,7 +948,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $this->setConfigParam('aSearchCols', array('oxtags'));
 
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sAEV = getViewName('oxartextends');
 
@@ -976,7 +976,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $this->setConfigParam('aSearchCols', array('oxlongdesc'));
 
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sAEV = getViewName('oxartextends');
         $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  LEFT JOIN $sAEV ON $sAEV.oxid=$sArticleTable.oxid  where";
@@ -1021,7 +1021,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $iPrice2 = 15;
 
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "select`$sArticleTable`.`oxid`from{$sArticleTable}whereoxvarminprice>=0andoxvarminprice<=15andoxvarminprice>=12and";
         $sExpt .= $oArticle->getSqlActiveSnippet() . "and$sArticleTable.oxissearch=1orderby";
@@ -1049,7 +1049,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $iPrice2 = 15;
 
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "select`$sArticleTable`.`oxid`from{$sArticleTable}whereoxvarminprice>=0andoxvarminprice<=15andoxvarminprice>=12and";
         $sExpt .= $oArticle->getSqlActiveSnippet() . "and$sArticleTable.oxissearch=1orderby";
@@ -1241,7 +1241,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $this->setTime(100);
 
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $this->setConfigParam('iNrofNewcomerArticles', 4);
         $this->setConfigParam('blNewArtByInsert', 0);
@@ -1289,7 +1289,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $this->setTime(100);
 
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $this->setConfigParam('iNrofNewcomerArticles', 4);
         $this->setConfigParam('blNewArtByInsert', 1);
@@ -1363,7 +1363,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
 
         $this->setTime(100);
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "select * from";
         $sExpt .= " $sArticleTable where " . $oArticle->getSqlActiveSnippet() . " and";
@@ -1389,7 +1389,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
 
         $this->setTime(100);
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "select * from";
         $sExpt .= " $sArticleTable where " . $oArticle->getSqlActiveSnippet() . " and";
@@ -1416,7 +1416,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $this->setTime(100);
 
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "select `$sArticleTable`.`oxid` from $sArticleTable where $sArticleTable.oxvendorid = 'testVendor'  and " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''   ORDER BY customsort ";
 
@@ -1441,7 +1441,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $this->setTime(100);
 
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
         $sExpt = "select `$sArticleTable`.`oxid` from $sArticleTable where $sArticleTable.oxmanufacturerid = 'testManufacturer'  and " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''   ORDER BY customsort ";
 
@@ -1649,7 +1649,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
     public function testLoadIds()
     {
         $sArticleTable = $this->_getArticleTable();
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
 
 
         $this->setTime(100);
@@ -2375,7 +2375,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
      */
     public function testUpdateUpcomingPrices_VarMinPriceWithInactiveChildAndUpdateTimeIsTomorrow()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
@@ -2421,7 +2421,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
      */
     public function testUpdateUpcomingPrices_VarMaxPriceWithInactiveChildAndUpdateTimeIsTomorrow()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
@@ -2467,7 +2467,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
      */
     public function testUpdateUpcomingPrices_VarMinPriceWithInactiveChildAndUpdateTimeIsYesterday()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
@@ -2513,7 +2513,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
      */
     public function testUpdateUpcomingPrices_VarMaxPriceWithInactiveChildAndUpdateTimeIsYesterday()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
@@ -2559,7 +2559,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
      */
     public function testUpdateUpcomingPrices_VarMinPriceWithNoChildAndUpdateTimeIsTomorrow()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
@@ -2584,7 +2584,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
      */
     public function testUpdateUpcomingPrices_VarMinPriceWithNoChildAndUpdateTimeIsYesterday()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
@@ -2609,7 +2609,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
      */
     public function testUpdateUpcomingPrices_VarMaxPriceWithNoChildAndUpdateTimeIsTomorrow()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
@@ -2634,7 +2634,7 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
      */
     public function testUpdateUpcomingPrices_VarMaxPriceWithNoChildAndUpdateTimeIsYesterday()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);

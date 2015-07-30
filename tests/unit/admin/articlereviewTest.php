@@ -147,7 +147,7 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
         );
         oxTestModules::publicize('article_review', '_getReviewList');
         $o = oxNew('article_review');
-        $oA = new oxArticle();
+        $oA = oxNew('oxArticle');
         $oA->load($this->getTestArticleId());
         $this->getConfig()->setConfigParam('blShowVariantReviews', false);
         $this->assertEquals(1, count($o->p_getReviewList($oA)));

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -841,7 +841,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         oxTestModules::addFunction(
             'oxsearch', 'getSearchArticles', '{
             $oArtList = new oxArticleList();
-            $oArt = new oxArticle();
+            $oArt = oxNew("oxArticle");
             $oArt->setId("loaded".$aA[0].$aA[1].$aA[2].$aA[3].$aA[4]);
             $oArtList->offsetSet(\'test_item\', $oArt);
             return $oArtList;
@@ -854,7 +854,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         $oRss->loadSearchArticles("AA", "BB", "CC", "DD");
 
         $oArtList = new oxArticleList();
-        $oArt = new oxArticle();
+        $oArt = oxNew('oxArticle');
         $oArt->setId('loadedAABBCCDD' . oxNew('oxArticle')->getViewName() . '.oxtimestamp desc');
         $oArtList->offsetSet('test_item', $oArt);
 
@@ -919,7 +919,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
         $oRss->setConfig($oCfg);
-        $oArt = new oxarticle();
+        $oArt = oxNew('oxArticle');
         $oArt->oxarticles__oxtitle = new oxField('tsss');
         $this->assertEquals('Test Shop/LISTMANIA_LIST_FORtsss', $oRss->getRecommListsTitle($oArt));
     }
@@ -939,7 +939,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
 
         $oRss = oxNew('oxrssfeed');
 
-        $oArt = new oxarticle();
+        $oArt = oxNew('oxArticle');
         $oArt->setId('ajai');
         $oArt->oxarticles__oxtitle = new oxField('tsss');
         $sCheckString = "http://myshop/?cl=rss&amp;fnc=recommlists&amp;anid=ajai&amp;lang=1";
@@ -961,7 +961,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
 
         $oRss = oxNew('oxrssfeed');
 
-        $oArt = new oxarticle();
+        $oArt = oxNew('oxArticle');
         $oArt->setId('ajai');
         $oArt->oxarticles__oxtitle = new oxField('tsss');
 

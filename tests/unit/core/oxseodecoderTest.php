@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -223,12 +223,12 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         oxTestModules::addFunction("oxUtils", "isSearchEngine", "{return false;}");
 
         // forcing link generation
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->disableLazyLoading();
         $oArticle->load('1126');
         $oArticle->getLink();
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->disableLazyLoading();
         $oArticle->loadInLang(1, '1127');
         $oArticle->getLink();

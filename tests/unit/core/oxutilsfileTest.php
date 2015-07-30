@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -178,7 +178,7 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
         $oUtilsFile->expects($this->once())->method('_moveImage')->will($this->returnValue(true));
 
         $oUtilsFile->setConfig($oConfig);
-        $oUtilsFile->processFiles(new oxArticle());
+        $oUtilsFile->processFiles(oxNew('oxArticle'));
     }
 
     public function testProcessNonImageFiles()
@@ -477,7 +477,7 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
         $oUtilsFile->expects($this->any())->method('_moveImage')->will($this->returnValue(true));
 
         $oUtilsFile->setConfig($oConfig);
-        $oUtilsFile->processFiles(new oxArticle());
+        $oUtilsFile->processFiles(oxNew('oxArticle'));
 
         $this->assertEquals($oUtilsFile->getNewFilesCounter(), 2, "Check how much new files add.");
     }

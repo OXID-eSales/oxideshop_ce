@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -156,7 +156,7 @@ class Unit_utf8Test extends OxidTestCase
         $aShouldBe[0] = $aSelList;
         $aShouldBe[0]['name'] = 'Опрос Žiniasklaidai Gästebuch';
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('1651');
         $this->assertEquals($aShouldBe, $oArticle->getSelectLists());
     }
@@ -175,7 +175,7 @@ class Unit_utf8Test extends OxidTestCase
         );
         $sLongDesc = 'Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticle');
 
         foreach ($aData as $sField => $sValue) {
@@ -185,7 +185,7 @@ class Unit_utf8Test extends OxidTestCase
         $oArticle->setArticleLongDesc($sLongDesc);
         $oArticle->save();
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticle');
 
         foreach ($aData as $sField => $sValue) {
@@ -201,12 +201,12 @@ class Unit_utf8Test extends OxidTestCase
         $sValue = '[{ $oViewConf->getImageUrl() }] Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
         $sResult = $this->getConfig()->getImageUrl(false) . ' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticle');
         $oArticle->setArticleLongDesc($sValue);
         $oArticle->save();
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticle');
         $this->assertEquals($sResult, $oArticle->getLongDesc());
     }
@@ -215,7 +215,7 @@ class Unit_utf8Test extends OxidTestCase
     {
         $aPersParam = array('_testArticle' => 'sėkme Литовские für');
         $this->getSession()->setVariable('persparam', $aPersParam);
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticle');
         $oArticle->UNITassignPersistentParam();
         $this->assertEquals($aPersParam['_testArticle'], $oArticle->getPersParams());
@@ -227,7 +227,7 @@ class Unit_utf8Test extends OxidTestCase
         $sCatId = oxDb::getDb()->getOne('select oxid from oxcategories where oxactive = "1" ');
 
         // creating test articles
-        $oTestArticle1 = new oxArticle();
+        $oTestArticle1 = oxNew('oxArticle');
         $oTestArticle1->setId('_testArticle1');
         $oTestArticle1->save();
 
@@ -337,17 +337,17 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
 
-        $oTestArticle1 = new oxArticle();
+        $oTestArticle1 = oxNew('oxArticle');
         $oTestArticle1->setId('_testArticle1');
         $oTestArticle1->oxarticles__oxtitle = new oxField($sValue);
         $oTestArticle1->save();
 
-        $oTestArticle2 = new oxArticle();
+        $oTestArticle2 = oxNew('oxArticle');
         $oTestArticle2->setId('_testArticle2');
         $oTestArticle2->oxarticles__oxtitle = new oxField($sValue);
         $oTestArticle2->save();
 
-        $oTestArticle3 = new oxArticle();
+        $oTestArticle3 = oxNew('oxArticle');
         $oTestArticle3->setId('_testArticle3');
         $oTestArticle3->oxarticles__oxtitle = new oxField($sValue);
         $oTestArticle3->save();
@@ -363,17 +363,17 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxArticleListLoadSearchIdsWithSorting()
     {
-        $oTestArticle1 = new oxArticle();
+        $oTestArticle1 = oxNew('oxArticle');
         $oTestArticle1->setId('_testArticle1');
         $oTestArticle1->oxarticles__oxtitle = new oxField("testart_ä");
         $oTestArticle1->save();
 
-        $oTestArticle2 = new oxArticle();
+        $oTestArticle2 = oxNew('oxArticle');
         $oTestArticle2->setId('_testArticle2');
         $oTestArticle2->oxarticles__oxtitle = new oxField("testart_o");
         $oTestArticle2->save();
 
-        $oTestArticle3 = new oxArticle();
+        $oTestArticle3 = oxNew('oxArticle');
         $oTestArticle3->setId('_testArticle3');
         $oTestArticle3->oxarticles__oxtitle = new oxField("testart_a");
         $oTestArticle3->save();
@@ -404,7 +404,7 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxBasketItemSetArticle()
     {
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticle');
         $oArticle->oxarticles__oxtitle = new oxField("agentūrų Литовские");
         $oArticle->oxarticles__oxvarselect = new oxField("für");
@@ -461,7 +461,7 @@ class Unit_utf8Test extends OxidTestCase
         $sCatId = oxDb::getDb()->getOne('select oxid from oxcategories where oxactive = "1" ');
 
         // creating test articles
-        $oTestArticle1 = new oxArticle();
+        $oTestArticle1 = oxNew('oxArticle');
         $oTestArticle1->setId('_testArticle1');
         $oTestArticle1->save();
 
@@ -1629,7 +1629,7 @@ class Unit_utf8Test extends OxidTestCase
         $oActCat->oxcategories__oxlongdesc = $this->getMock('oxField', array('__get'));
         $oActCat->oxcategories__oxlongdesc->expects($this->once())->method('__get')->will($this->returnValue(''));
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxtitle = $this->getMock('oxField', array('__get'));
         $oArticle->oxarticles__oxtitle->expects($this->exactly(2))->method('__get')->will($this->returnValue($sValue));
 
@@ -1703,7 +1703,7 @@ class Unit_utf8Test extends OxidTestCase
         $sValue = 'agentū Литовfür test best nest fest';
         $sResult = 'agentū литовfür test best nest fest';
 
-        $oArt = new oxArticle();
+        $oArt = oxNew('oxArticle');
         $oArt->setArticleLongDesc($sValue);
         $oArtList = new oxlist();
         $oArtList->offsetSet(0, $oArt);
@@ -1719,7 +1719,7 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'agentūЛитовfür test, best nest fest<br><br /><br/>';
 
-        $oArt = new oxArticle();
+        $oArt = oxNew('oxArticle');
         $oArt->oxarticles__oxtitle = new oxField($sValue, oxField::T_RAW);
         $oArt->setArticleLongDesc($sValue);
         $oArt->oxarticles__oxsearchkeys = new oxField($sValue, oxField::T_RAW);

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -112,7 +112,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $oOrder = new oxorder();
         $oOrder->delete('_testOrder');
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->delete('_testArticle');
 
         $this->cleanUpTable('oxorder');
@@ -295,7 +295,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
     public function testGetSearchProduct()
     {
         $sProdArtNr = "xxx";
-        $oProduct = new oxArticle();
+        $oProduct = oxNew('oxArticle');
         $oProduct->oxarticles__oxartnum = new oxField($sProdArtNr);
 
         $oView = $this->getMock("Order_Article", array("getSearchProductArtNr", "getProductList"));

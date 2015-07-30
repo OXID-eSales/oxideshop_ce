@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -349,7 +349,7 @@ class Unit_Models_oxSeoEncoderCategoryTest extends OxidTestCase
         oxDb::getDb()->execute("insert into oxseo (oxobjectid, oxident, oxtype, oxexpired) value ('{$sSubCat}', 'testCat', 'oxcategory', '0' )");
 
         $sSubArt = oxDb::getDb()->getOne("select oxobjectid from oxobject2category where OXCATNID = '$sSubCat'");
-        $oArt = new oxarticle();
+        $oArt = oxNew('oxArticle');
         $oArt->load($sSubArt);
         $oArt->getLink();
 

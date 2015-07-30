@@ -32,7 +32,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
     {
         parent::setUp();
 
-        $this->_oArticle = new oxArticle();
+        $this->_oArticle = oxNew('oxArticle');
         $this->_oArticle->setId("_testArtId");
         $this->_oArticle->save();
     }

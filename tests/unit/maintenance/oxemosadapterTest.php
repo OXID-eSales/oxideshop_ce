@@ -121,7 +121,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        $oProduct = new oxarticle();
+        $oProduct = oxNew('oxArticle');
         $oProduct->load('1126');
 
         $oEmosItem = new EMOS_Item();
@@ -477,7 +477,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
     public function testGetCodeForDetails()
     {
-        $oProduct = new oxarticle();
+        $oProduct = oxNew('oxArticle');
         $oProduct->load('1126');
 
         $aParams = array('product' => $oProduct);
@@ -1147,7 +1147,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        $oProduct = new oxarticle();
+        $oProduct = oxNew('oxArticle');
         $oProduct->load('1126');
 
         $oEmosItem = new EMOS_Item();
@@ -1200,7 +1200,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        $oProduct = new oxarticle();
+        $oProduct = oxNew('oxArticle');
         $oProduct->load('1126');
 
         $oEmosItem = new EMOS_Item();

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -61,7 +61,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
      */
     public function testGetBaseStdLink()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId("testArticle");
 
         $oVariant = new oxSimpleVariant();
@@ -79,7 +79,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
      */
     public function testGetStdLink()
     {
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId("testArticle");
 
         $oVariant = new oxSimpleVariant();
@@ -293,7 +293,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
         $oSubj = new oxSimpleVariant();
         $oSubj->oxarticles__oxprice = new oxField(10);
 
-        $oParent = new oxArticle();
+        $oParent = oxNew('oxArticle');
         $oParent->oxarticles__oxprice = new oxField(10);
         $oSubj->setParent($oParent);
 
@@ -305,7 +305,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxarticle", "skipDiscounts", "{return true;}");
         $oSubj = new oxSimpleVariant();
-        $oParent = new oxArticle();
+        $oParent = oxNew('oxArticle');
         $oParent->oxarticles__oxprice = new oxField(10);
         $oSubj->setParent($oParent);
         $this->assertEquals(10, $oSubj->getPrice()->getBruttoPrice());

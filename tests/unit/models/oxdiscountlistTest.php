@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -57,7 +57,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->load("oxdefaultadmin");
 
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->load("1431");
 
         $oBasket = new oxBasket();
@@ -259,7 +259,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
     public function testGetArticleDiscounts()
     {
         // just simulating article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->xxx = 'yyy';
 
         $aDiscounts[0] = $this->getMock('oxdiscount', array('isForArticle', 'getId'));
@@ -292,7 +292,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
     public function testGetBasketItemDiscounts()
     {
         // just simulating article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->xxx = 'yyy';
 
         // simulating basket
@@ -372,7 +372,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
     public function testGetBasketItemBundleDiscounts()
     {
         // just simulating article
-        $oArticle = new oxArticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->xxx = 'yyy';
 
         // simulating basket

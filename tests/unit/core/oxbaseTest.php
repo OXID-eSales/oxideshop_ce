@@ -2214,7 +2214,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     {
         $sId = oxDb::getDb()->getOne("select oxid from oxarticles where oxtitle_1 != '' and oxtitle != oxtitle_1");
         $sTitle = oxDb::getDb()->getOne("select oxtitle_1 from oxarticles where oxid='$sId'");
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->loadInLang(1, $sId);
 
         $this->assertEquals($sTitle, $oArticle->oxarticles__oxtitle->value);

@@ -1091,7 +1091,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $oConfig->setConfigParam('blSeoMode', true);
 
         $oV = $this->getMock('oxubase', array('_getRequestParams', '_getSubject'));
-        $oArt = new oxArticle();
+        $oArt = oxNew('oxArticle');
         $oArt->loadInLang(1, '1126');
         $sExp = "Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
         $sExpEng = "en/Gifts/Bar-Equipment/Bar-Set-ABSINTH.html";
@@ -1109,7 +1109,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $oConfig->setConfigParam('blSeoMode', true);
 
         $oV = $this->getMock('oxubase', array('_getRequestParams', '_getSubject'));
-        $oArt = new oxArticle();
+        $oArt = oxNew('oxArticle');
         $oArt->setLinkType(OXARTICLE_LINKTYPE_MANUFACTURER);
         $oArt->loadInLang(1, '1964');
         $sVndExp = "Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";

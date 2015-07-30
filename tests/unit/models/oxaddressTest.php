@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Models_oxAddressTest extends OxidTestCase
      */
     public function testToString()
     {
-        $oSubj = new oxAddress();
+        $oSubj = oxNew('oxAddress');
         $oSubj->oxaddress__oxfname = new oxField('Fname');
         $oSubj->oxaddress__oxlname = new oxField('Lname');
         $oSubj->oxaddress__oxstreet = new oxField('Street');
@@ -50,7 +50,7 @@ class Unit_Models_oxAddressTest extends OxidTestCase
      */
     public function testToStringNoName()
     {
-        $oSubj = new oxAddress();
+        $oSubj = oxNew('oxAddress');
         $oSubj->oxaddress__oxstreet = new oxField('Street');
         $oSubj->oxaddress__oxstreetnr = new oxField('StreetNr');
         $oSubj->oxaddress__oxcity = new oxField('Kaunas');
@@ -66,7 +66,7 @@ class Unit_Models_oxAddressTest extends OxidTestCase
      */
     public function testToStringNoFirstName()
     {
-        $oSubj = new oxAddress();
+        $oSubj = oxNew('oxAddress');
         $oSubj->oxaddress__oxlname = new oxField('Lname');
         $oSubj->oxaddress__oxstreet = new oxField('Street');
         $oSubj->oxaddress__oxstreetnr = new oxField('StreetNr');
@@ -83,7 +83,7 @@ class Unit_Models_oxAddressTest extends OxidTestCase
      */
     public function testToStringMagic()
     {
-        $oSubj = new oxAddress();
+        $oSubj = oxNew('oxAddress');
         $oSubj->oxaddress__oxfname = new oxField('Fname');
         $oSubj->oxaddress__oxlname = new oxField('Lname');
         $oSubj->oxaddress__oxstreet = new oxField('Street');
@@ -114,7 +114,7 @@ class Unit_Models_oxAddressTest extends OxidTestCase
      */
     public function testGetEncodedDeliveryAddress()
     {
-        $oSubj = new oxAddress();
+        $oSubj = oxNew('oxAddress');
         $oSubj->oxaddress__oxcompany = new oxField('Company');
         $oSubj->oxaddress__oxfname = new oxField('First name');
         $oSubj->oxaddress__oxlname = new oxField('Last name');
@@ -136,7 +136,7 @@ class Unit_Models_oxAddressTest extends OxidTestCase
      */
     public function testGetStateId()
     {
-        $oSubj = new oxAddress();
+        $oSubj = oxNew('oxAddress');
         $oSubj->oxaddress__oxstateid = new oxField('TTT');
         $this->assertEquals('TTT', $oSubj->getStateId());
     }
@@ -205,7 +205,7 @@ class Unit_Models_oxAddressTest extends OxidTestCase
      */
     public function testSetSelected()
     {
-        $oSubj = new oxAddress();
+        $oSubj = oxNew('oxAddress');
         $this->assertFalse($oSubj->isSelected());
 
         $oSubj->setSelected();

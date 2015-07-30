@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -44,7 +44,7 @@ class Unit_Models_oxorderarticlelistTest extends OxidTestCase
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin', oxField::T_RAW);
         $oOrder->save();
 
-        $oArticle = new oxarticle();
+        $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticleId');
         $oArticle->oxarticles__oxtitle = new oxField('testArticleTitle', oxField::T_RAW);
         $oArticle->oxarticles__oxactive = new oxField('1', oxField::T_RAW);

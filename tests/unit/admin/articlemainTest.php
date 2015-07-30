@@ -366,11 +366,11 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
      */
     public function testGetTitle()
     {
-        $oO1 = new oxArticle();
+        $oO1 = oxNew('oxArticle');
         $oO1->oxarticles__oxtitle = $this->getMock("oxfield", array("__get"));
         $oO1->oxarticles__oxtitle->expects($this->once())->method('__get')->will($this->returnValue("oxtitle"));
 
-        $oO2 = new oxArticle();
+        $oO2 = oxNew('oxArticle');
         $oO2->oxarticles__oxtitle = $this->getMock("oxfield", array("__get"));
         $oO2->oxarticles__oxtitle->expects($this->once())->method('__get')->will($this->returnValue(null));
         $oO2->oxarticles__oxvarselect = $this->getMock("oxfield", array("__get"));
@@ -531,10 +531,10 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
      */
     public function testFormJumpListParent()
     {
-        $oVar1 = new oxArticle();
+        $oVar1 = oxNew('oxArticle');
         $oVar1->oxarticles__oxid = new oxField("testId1");
 
-        $oVar2 = new oxArticle();
+        $oVar2 = oxNew('oxArticle');
         $oVar2->oxarticles__oxid = new oxField("testId2");
 
         $oParentVariants = new oxList();
@@ -572,10 +572,10 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
      */
     public function testFormJumpList()
     {
-        $oVar1 = new oxArticle();
+        $oVar1 = oxNew('oxArticle');
         $oVar1->oxarticles__oxid = new oxField("testId1");
 
-        $oVar2 = new oxArticle();
+        $oVar2 = oxNew('oxArticle');
         $oVar2->oxarticles__oxid = new oxField("testId2");
 
         $oVariants = new oxList();
@@ -603,7 +603,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
      */
     public function testCopyArticleSkipsRating()
     {
-        $oArt = new oxarticle();
+        $oArt = oxNew('oxArticle');
         $oArt->setId("_testArtId");
         $oArt->oxarticles__oxrating = new oxField(10);
         $oArt->oxarticles__oxratingcnt = new oxField(110);
@@ -612,7 +612,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oV = new Article_Main();
         $oV->copyArticle('_testArtId', '_testArtId2');
 
-        $oArt = new oxarticle();
+        $oArt = oxNew('oxArticle');
         $this->assertTrue($oArt->load('_testArtId2'));
         $this->assertEquals(0, $oArt->oxarticles__oxrating->value);
         $this->assertEquals(0, $oArt->oxarticles__oxratingcnt->value);

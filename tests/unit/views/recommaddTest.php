@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -28,7 +28,7 @@ class Unit_Views_RecommAddTest extends OxidTestCase
      */
     public function testForUseCase()
     {
-        $oProduct = new oxArticle();
+        $oProduct = oxNew('oxArticle');
         $oProduct->load("1126");
         $oProduct->oxarticles__oxtemplate->value = 'details_persparam.tpl';
 
@@ -58,7 +58,7 @@ class Unit_Views_RecommAddTest extends OxidTestCase
      */
     public function testGetTitle()
     {
-        $oProduct = new oxArticle();
+        $oProduct = oxNew('oxArticle');
         $oProduct->oxarticles__oxtitle = new oxField('title');
         $oProduct->oxarticles__oxvarselect = new oxField('select');
 

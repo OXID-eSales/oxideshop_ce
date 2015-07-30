@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -48,12 +48,12 @@ class Unit_Models_oxactionsTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_oAction = new oxactions();
+        $this->_oAction = oxNew('oxActions');
         $this->_oAction->oxactions__oxtitle = new oxField("test", oxField::T_RAW);
         $this->_oAction->save();
 
 
-        $this->_oPromo = new oxActions();
+        $this->_oPromo = oxNew('oxActions');
         $this->_oPromo->assign(
             array(
                  'oxtitle'    => 'title',
@@ -77,7 +77,6 @@ class Unit_Models_oxactionsTest extends OxidTestCase
     {
         $this->_oAction->delete();
         $this->_oPromo->delete();
-        //  oxNew('oxStr')->setH(null);
 
         parent::tearDown();
     }
@@ -138,7 +137,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
     public function testDeleteNotExistingAction()
     {
         $sArtOxid = 'xxx';
-        $oAction = new oxactions();
+        $oAction = oxNew('oxActions');
         $this->assertFalse($oAction->delete());
     }
 
@@ -160,7 +159,6 @@ class Unit_Models_oxactionsTest extends OxidTestCase
             $this->fail("fail deleting");
         }
     }
-
 
     /**
      * oxActions::getTimeLeft() test case
@@ -203,7 +201,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
         $this->_oPromo->save();
 
         $id = $this->_oPromo->getId();
-        $this->_oPromo = new oxActions();
+        $this->_oPromo = oxNew('oxActions');
         $this->_oPromo->load($id);
 
         $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
@@ -216,7 +214,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
         $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
 
         $id = $this->_oPromo->getId();
-        $this->_oPromo = new oxActions();
+        $this->_oPromo = oxNew('oxActions');
         $this->_oPromo->load($id);
         $this->assertEquals(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactivefrom->value);
         $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
@@ -226,13 +224,13 @@ class Unit_Models_oxactionsTest extends OxidTestCase
         $sTo = $this->_oPromo->oxactions__oxactiveto->value;
         $this->_oPromo->save();
         $id = $this->_oPromo->getId();
-        $this->_oPromo = new oxActions();
+        $this->_oPromo = oxNew('oxActions');
         $this->_oPromo->load($id);
         $this->assertEquals($sTo, $this->_oPromo->oxactions__oxactiveto->value);
 
         $this->_oPromo->start();
         $id = $this->_oPromo->getId();
-        $this->_oPromo = new oxActions();
+        $this->_oPromo = oxNew('oxActions');
         $this->_oPromo->load($id);
         $this->assertEquals($sTo, $this->_oPromo->oxactions__oxactiveto->value);
     }
@@ -252,7 +250,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
         $this->assertEquals(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactiveto->value);
 
         $id = $this->_oPromo->getId();
-        $this->_oPromo = new oxActions();
+        $this->_oPromo = oxNew('oxActions');
         $this->_oPromo->load($id);
 
         $this->assertEquals(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactiveto->value);
@@ -346,7 +344,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        $oPromo = new oxactions();
+        $oPromo = oxNew('oxActions');
         $oPromo->setId('promoid');
         $this->assertNull($oPromo->getBannerArticle());
     }
@@ -366,7 +364,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        $oPromo = new oxactions();
+        $oPromo = oxNew('oxActions');
         $oPromo->setId('promoid');
         $this->assertNull($oPromo->getBannerArticle());
     }
@@ -386,7 +384,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        $oPromo = new oxactions();
+        $oPromo = oxNew('oxActions');
         $oPromo->setId('promoid');
         $oArt = $oPromo->getBannerArticle();
         $this->assertNotNull($oArt);
@@ -417,7 +415,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
      */
     public function testGetBannerPictureUrl()
     {
-        $oPromo = new oxactions();
+        $oPromo = oxNew('oxActions');
         $oPromo->oxactions__oxpic = new oxField("current_de.jpg");
         $oConfig = $this->getConfig();
 
@@ -429,7 +427,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
      */
     public function testGetBannerPictureUrl_noPicture()
     {
-        $oPromo = new oxactions();
+        $oPromo = oxNew('oxActions');
         $oConfig = $this->getConfig();
 
         $this->assertNull($oPromo->getBannerPictureUrl());
@@ -440,7 +438,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
      */
     public function testGetBannerPictureUrl_pictureNotUploaded()
     {
-        $oPromo = new oxactions();
+        $oPromo = oxNew('oxActions');
         $oPromo->oxactions__oxpic = new oxField("noSuchPic.jpg");
         $this->assertEquals($this->getConfig()->getPictureUrl("master/") . "nopic.jpg", $oPromo->getBannerPictureUrl());
     }
@@ -457,7 +455,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
         $oUtilsUrl->expects($this->any())->method('processUrl')->with('http://with-url/' . $sUrl)->will($this->returnValue($sUrl . '/with-params'));
         oxRegistry::set("oxUtilsUrl", $oUtilsUrl);
 
-        $oPromo = new oxactions();
+        $oPromo = oxNew('oxActions');
         $oPromo->oxactions__oxlink = new oxField($sUrl);
 
         $this->assertEquals($sUrl . '/with-params', $oPromo->getBannerLink());
@@ -468,7 +466,7 @@ class Unit_Models_oxactionsTest extends OxidTestCase
      */
     public function testGetBannerLink_noLink()
     {
-        $oPromo = new oxactions();
+        $oPromo = oxNew('oxActions');
         $oPromo->oxactions__oxlink = new oxField(null);
 
         $this->assertNull($oPromo->getBannerLink());

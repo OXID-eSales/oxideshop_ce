@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -46,9 +46,9 @@ class oxActions extends oxI18n
     /**
      * Adds an article to this actions
      *
-     * @param string $sOxId id of the article to be added
+     * @param string $articleId id of the article to be added
      */
-    public function addArticle($sOxId)
+    public function addArticle($articleId)
     {
         $oDb = oxDb::getDb();
         $sQ = "select max(oxsort) from oxactions2article where oxactionid = " . $oDb->quote($this->getId()) . " and oxshopid = '" . $this->getShopId() . "'";
@@ -58,28 +58,25 @@ class oxActions extends oxI18n
         $oNewGroup->init('oxactions2article');
         $oNewGroup->oxactions2article__oxshopid = new oxField($this->getShopId());
         $oNewGroup->oxactions2article__oxactionid = new oxField($this->getId());
-        $oNewGroup->oxactions2article__oxartid = new oxField($sOxId);
+        $oNewGroup->oxactions2article__oxartid = new oxField($articleId);
         $oNewGroup->oxactions2article__oxsort = new oxField($iSort);
         $oNewGroup->save();
-
-
     }
 
     /**
      * Removes an article from this actions
      *
-     * @param string $sOxId id of the article to be removed
+     * @param string $articleId id of the article to be removed
      *
-     * @return null
+     * @return bool
      */
-    public function removeArticle($sOxId)
+    public function removeArticle($articleId)
     {
         // remove actions from articles also
         $oDb = oxDb::getDb();
-        $sDelete = "delete from oxactions2article where oxactionid = " . $oDb->quote($this->getId()) . " and oxartid = " . $oDb->quote($sOxId) . " and oxshopid = '" . $this->getShopId() . "'";
+        $sDelete = "delete from oxactions2article where oxactionid = " . $oDb->quote($this->getId()) . " and oxartid = " . $oDb->quote($articleId) . " and oxshopid = '" . $this->getShopId() . "'";
         $oDb->execute($sDelete);
         $iRemovedArticles = $oDb->affected_Rows();
-
 
         return (bool) $iRemovedArticles;
     }
@@ -89,26 +86,23 @@ class oxActions extends oxI18n
      * performance - you can not load action object - just pass
      * action ID.
      *
-     * @param string $sOxId Object ID
+     * @param string $articleId Object ID
      *
      * @return bool
      */
-    public function delete($sOxId = null)
+    public function delete($articleId = null)
     {
-        if (!$sOxId) {
-            $sOxId = $this->getId();
-        }
-        if (!$sOxId) {
+        $articleId = $articleId ? $articleId : $this->getId();
+        if (!$articleId) {
             return false;
         }
 
-
         // remove actions from articles also
         $oDb = oxDb::getDb();
-        $sDelete = "delete from oxactions2article where oxactionid = " . $oDb->quote($sOxId) . " and oxshopid = '" . $this->getShopId() . "'";
+        $sDelete = "delete from oxactions2article where oxactionid = " . $oDb->quote($articleId) . " and oxshopid = '" . $this->getShopId() . "'";
         $oDb->execute($sDelete);
 
-        return parent::delete($sOxId);
+        return parent::delete($articleId);
     }
 
     /**
@@ -151,7 +145,6 @@ class oxActions extends oxI18n
             }
         }
         $this->save();
-
     }
 
     /**
@@ -273,5 +266,4 @@ class oxActions extends oxI18n
 
         return $sUrl;
     }
-
 }

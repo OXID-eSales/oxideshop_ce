@@ -48,12 +48,12 @@ class oxwActions extends oxWidget
      */
     public function getAction()
     {
-        $sActionId = $this->getViewParameter("action");
-        if ($sActionId && $this->_getLoadActionsParam()) {
-            $oArtList = oxNew('oxarticlelist');
-            $oArtList->loadActionArticles($sActionId);
-            if ($oArtList->count()) {
-                return $oArtList;
+        $actionId = $this->getViewParameter('action');
+        if ($actionId && $this->_getLoadActionsParam()) {
+            $artList = oxNew('oxarticlelist');
+            $artList->loadActionArticles($actionId);
+            if ($artList->count()) {
+                return $artList;
             }
         }
     }
@@ -77,10 +77,10 @@ class oxwActions extends oxWidget
      */
     public function getActionName()
     {
-        $sActionId = $this->getViewParameter("action");
-        $oAction   = oxNew("oxactions");
-        if ($oAction->load($sActionId)) {
-            return $oAction->oxactions__oxtitle->value;
+        $actionId = $this->getViewParameter('action');
+        $action   = oxNew('oxactions');
+        if ($action->load($actionId)) {
+            return $action->oxactions__oxtitle->value;
         }
     }
 
@@ -91,6 +91,6 @@ class oxwActions extends oxWidget
      */
     public function getListType()
     {
-        return $this->getViewParameter("listtype");
+        return $this->getViewParameter('listtype');
     }
 }

@@ -227,7 +227,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
      */
     public function testGetPriceWithGivenAmount()
     {
-        $oPrice2Prod = new oxBase();
+        $oPrice2Prod = oxNew('oxBase');
         $oPrice2Prod->init('oxprice2article');
         $oPrice2Prod->setId('_testPrice2article');
         $oPrice2Prod->oxprice2article__oxshopid = new oxField($this->getConfig()->getBaseShopId());
@@ -237,7 +237,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oPrice2Prod->oxprice2article__oxamountto = new oxField(5);
         $oPrice2Prod->save();
 
-        $oPrice2Prod = new oxBase();
+        $oPrice2Prod = oxNew('oxBase');
         $oPrice2Prod->init('oxprice2article');
         $oPrice2Prod->setId('_testPrice2article2');
         $oPrice2Prod->oxprice2article__oxshopid = new oxField($this->getConfig()->getBaseShopId());
@@ -972,7 +972,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oArticle = $this->_createArticle('_testArt', '_testVar');
 
         // some data for test
-        $oP2A = new oxBase();
+        $oP2A = oxNew('oxBase');
         $oP2A->init('oxprice2article');
         $oP2A->oxprice2article__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oP2A->oxprice2article__oxartid = new oxField($oArticle->getId());
@@ -981,7 +981,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oP2A->oxprice2article__oxamountto = new oxField(10);
         $oP2A->save();
 
-        $oP2A = new oxBase();
+        $oP2A = oxNew('oxBase');
         $oP2A->init('oxprice2article');
         $oP2A->oxprice2article__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oP2A->oxprice2article__oxartid = new oxField($oArticle->getId());
@@ -1028,13 +1028,13 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oArticle->load('1126');
         $dArticlePrice = $oArticle->UNITgetGroupPrice();
 
-        $oP2A = new oxbase();
+        $oP2A = oxNew('oxBase');
         $oP2A->setId('_test_1');
         $oP2A->init('oxprice2article');
         $oP2A->oxprice2article__oxaddabs = new oxField('6');
         $oAmPriceList[$oP2A->getId()] = $oP2A;
 
-        $oP2A = new oxbase();
+        $oP2A = oxNew('oxBase');
         $oP2A->setId('_test_2');
         $oP2A->init('oxprice2article');
         $oP2A->oxprice2article__oxaddperc = new oxField('7');
@@ -1070,13 +1070,13 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oArticle->load('1126');
         $dArticlePrice = $oArticle->UNITgetGroupPrice();
 
-        $oP2A = new oxbase();
+        $oP2A = oxNew('oxBase');
         $oP2A->setId('_test_1');
         $oP2A->init('oxprice2article');
         $oP2A->oxprice2article__oxaddabs = new oxField('5');
         $oAmPriceList[$oP2A->getId()] = $oP2A;
 
-        $oP2A = new oxbase();
+        $oP2A = oxNew('oxBase');
         $oP2A->setId('_test_2');
         $oP2A->init('oxprice2article');
         $oP2A->oxprice2article__oxaddperc = new oxField('5');
@@ -1103,13 +1103,13 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $dArticlePrice = $oArticle->UNITgetGroupPrice();
 
         $this->getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', 1);
-        $oP2A = new oxbase();
+        $oP2A = oxNew('oxBase');
         $oP2A->setId('_test_1');
         $oP2A->init('oxprice2article');
         $oP2A->oxprice2article__oxaddabs = new oxField('5');
         $oAmPriceList[$oP2A->getId()] = $oP2A;
 
-        $oP2A = new oxbase();
+        $oP2A = oxNew('oxBase');
         $oP2A->setId('_test_2');
         $oP2A->init('oxprice2article');
         $oP2A->oxprice2article__oxaddperc = new oxField('5');
@@ -1143,7 +1143,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $dArticlePrice = $oArticle->UNITgetGroupPrice();
 
         $this->getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', 1);
-        $oP2A = new oxbase();
+        $oP2A = oxNew('oxBase');
         $oP2A->setId('_test_1');
         $oP2A->init('oxprice2article');
         $oP2A->oxprice2article__oxaddperc = new oxField('10');
@@ -1153,7 +1153,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oP2A->save();
         $oAmPriceList[$oP2A->getId()] = $oP2A;
 
-        $oP2A = new oxbase();
+        $oP2A = oxNew('oxBase');
         $oP2A->setId('_test_2');
         $oP2A->init('oxprice2article');
         $oP2A->oxprice2article__oxaddperc = new oxField('5');
@@ -1192,7 +1192,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $dArticlePrice = $oArticle->UNITgetGroupPrice();
 
         $this->getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', 1);
-        $oP2A = new oxbase();
+        $oP2A = oxNew('oxBase');
         $oP2A->setId('_test_1');
         $oP2A->init('oxprice2article');
         $oP2A->oxprice2article__oxaddperc = new oxField('5');
@@ -1202,7 +1202,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oP2A->save();
         $oAmPriceList[$oP2A->getId()] = $oP2A;
 
-        $oP2A = new oxbase();
+        $oP2A = oxNew('oxBase');
         $oP2A->setId('_test_2');
         $oP2A->init('oxprice2article');
         $oP2A->oxprice2article__oxaddperc = new oxField('10');
@@ -6329,7 +6329,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oA2C->setId($testAid);
         $oA2C->save();
 
-        $oA2C = new oxbase();
+        $oA2C = oxNew('oxBase');
         $oA2C->init('oxobject2category');
         $oA2C->oxobject2category__oxobjectid = new oxField($testParentid);
         $oA2C->oxobject2category__oxcatnid = new oxField($testCatId);
@@ -6566,12 +6566,11 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oConfig = $this->getMock("oxconfig", array("getMasterPicturePath"));
         $oConfig->expects($this->any())->method('getMasterPicturePath')->will($this->returnValue(true));
 
-        $oArticle = $this->getProxyClass("oxarticle");
+        $oArticle = $this->getProxyClass("oxArticle");
         $oArticle->setConfig($oConfig);
         $oArticle->oxarticles__oxpic1 = new oxField('testPic1.jpg', oxField::T_RAW);
 
-        $this->getProxyClass("oxarticle");
-        $oArticle2 = $this->getMock("oxarticlePROXY", array("isVariant", "getParentArticle"));
+        $oArticle2 = $this->getMock($this->getProxyClassName("oxArticle"), array("isVariant", "getParentArticle"));
         $oArticle2->expects($this->any())->method('isVariant')->will($this->returnValue(true));
         $oArticle2->expects($this->any())->method('getParentArticle')->will($this->returnValue($oArticle));
         $oArticle2->setConfig($oConfig);
@@ -6730,7 +6729,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
     public function testGetSelections()
     {
         // inserting selection lists
-        $oSel = new oxBase();
+        $oSel = oxNew('oxBase');
         $oSel->init("oxselectlist");
         $oSel->setId("_testSel1");
         $oSel->oxselectlist__oxshopid = new oxField(1);
@@ -6740,7 +6739,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oSel->oxselectlist__oxvaldesc_1 = new oxField("L__@@M__@@S__@@");
         $oSel->save();
 
-        $oSel = new oxBase();
+        $oSel = oxNew('oxBase');
         $oSel->init("oxselectlist");
         $oSel->setId("_testSel2");
         $oSel->oxselectlist__oxshopid = new oxField(1);
@@ -6751,7 +6750,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oSel->save();
 
         // assigning to products
-        $oO2S = new oxBase();
+        $oO2S = oxNew('oxBase');
         $oO2S->init("oxobject2selectlist");
         $oO2S->setId("_testo2s1");
         $oO2S->oxobject2selectlist__oxobjectid = new oxField("1126");
@@ -6759,7 +6758,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oO2S->oxobject2selectlist__oxsort = new oxField(1);
         $oO2S->save();
 
-        $oO2S = new oxBase();
+        $oO2S = oxNew('oxBase');
         $oO2S->init("oxobject2selectlist");
         $oO2S->setId("_testo2s2");
         $oO2S->oxobject2selectlist__oxobjectid = new oxField("1126");
@@ -6999,7 +6998,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         oxArticleHelper::resetAmountPrice();
 
         // assign scale price Amount 2-2 Price 11.95
-        $oPrice2Prod = new oxBase();
+        $oPrice2Prod = oxNew('oxBase');
         $oPrice2Prod->init('oxprice2article');
         $oPrice2Prod->setId('_testPrice2article');
         $oPrice2Prod->oxprice2article__oxshopid = new oxField($this->getConfig()->getBaseShopId());

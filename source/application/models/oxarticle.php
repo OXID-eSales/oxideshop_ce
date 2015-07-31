@@ -695,7 +695,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns SQL select string with checks if items are available
      *
-     * @param $forceCoreTable
+     * @param bool $forceCoreTable
+     *
      * @return string
      */
     protected function _createSqlActiveSnippet($forceCoreTable)
@@ -4910,8 +4911,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _getVarMaxPrice()
     {
         if ($this->_dVarMaxPrice === null) {
-
-            $dPrice = null;
+            $dPrice = $this->_getShopVarMaxPrice();
 
             if (is_null($dPrice)) {
                 $sPriceSuffix = $this->_getUserPriceSufix();

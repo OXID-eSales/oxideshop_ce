@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -182,6 +182,10 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
      */
     public function testLoadAttributesWithSort()
     {
+        if (OXID_VERSION_EE) {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
+
         oxRegistry::getLang()->setBaseLanguage(0);
 
         $myDB = oxDb::getDB();
@@ -218,21 +222,22 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
 
     public function testGetCategoryAttributes()
     {
+        if (OXID_VERSION_EE) {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
+
         $sCategoryId = '8a142c3e60a535f16.78077188';
         $sAttributeId = '8a142c3e9cd961518.80299776';
 
         $myDB = oxDb::getDb();
         $myDB->Execute('insert into oxcategory2attribute (oxid, oxobjectid, oxattrid, oxsort) values ("test3","' . $sCategoryId . '","' . $sAttributeId . '", "333")');
 
-
         $oAttrList = oxNew("oxattributelist");
         $oAttrList->getCategoryAttributes($sCategoryId, 1);
         $oAttribute = $oAttrList->offsetGet($sAttributeId);
 
-
         $this->assertEquals(1, $oAttrList->count());
         $this->assertEquals(6, count($oAttribute->getValues()));
-
     }
 
 }

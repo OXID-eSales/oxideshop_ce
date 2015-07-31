@@ -695,16 +695,16 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns SQL select string with checks if items are available
      *
-     * @param $blForceCoreTable
+     * @param $forceCoreTable
      * @return string
      */
-    protected function _createSqlActiveSnippet($blForceCoreTable)
+    protected function _createSqlActiveSnippet($forceCoreTable)
     {
         // check if article is still active
-        $sQ = $this->getActiveCheckQuery($blForceCoreTable);
+        $sQ = $this->getActiveCheckQuery($forceCoreTable);
 
         // stock and variants check
-        $sQ .= $this->getStockCheckQuery($blForceCoreTable);
+        $sQ .= $this->getStockCheckQuery($forceCoreTable);
 
         return $sQ;
     }
@@ -1108,9 +1108,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * @param $oArticle
+     * @param $article
      */
-    protected function _setShopValues($oArticle)
+    protected function _setShopValues($article)
     {
     }
 
@@ -1147,12 +1147,12 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * @param $sOXID
+     * @param $articleId
      * @return array
      */
-    protected function _loadData($sOXID)
+    protected function _loadData($articleId)
     {
-        return $this->_loadFromDb($sOXID);
+        return $this->_loadFromDb($articleId);
     }
 
     /**
@@ -1179,15 +1179,15 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Calculates and saves product rating average
      *
-     * @param integer $iRating new rating value
+     * @param integer $rating new rating value
      */
-    public function addToRatingAverage($iRating)
+    public function addToRatingAverage($rating)
     {
         $dOldRating = $this->oxarticles__oxrating->value;
         $dOldCnt = $this->oxarticles__oxratingcnt->value;
-        $this->oxarticles__oxrating->setValue(($dOldRating * $dOldCnt + $iRating) / ($dOldCnt + 1));
+        $this->oxarticles__oxrating->setValue(($dOldRating * $dOldCnt + $rating) / ($dOldCnt + 1));
         $this->oxarticles__oxratingcnt->setValue($dOldCnt + 1);
-        $dRating = ($dOldRating * $dOldCnt + $iRating) / ($dOldCnt + 1);
+        $dRating = ($dOldRating * $dOldCnt + $rating) / ($dOldCnt + 1);
         $dRatingCnt = (int) ($dOldCnt + 1);
         // oxarticles.oxtimestamp = oxarticles.oxtimestamp to keep old timestamp value
         $oDb = oxDb::getDb();
@@ -1762,7 +1762,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * @param $blShopCheck
      * @return oxi18n
      */
     protected function _createMultilanguageVendorObject()
@@ -1997,14 +1996,17 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * @param $dAmount
-     * @return bool|null
+     * Modifies given amount price.
+     *
+     * @param int $amount
+     *
+     * @return double
      */
-    protected function _getModifiedAmountPrice($dAmount)
+    protected function _getModifiedAmountPrice($amount)
     {
-        $dPrice = $this->_getAmountPrice($dAmount);
+        $price = $this->_getAmountPrice($amount);
 
-        return $dPrice;
+        return $price;
     }
 
     /**
@@ -2332,28 +2334,28 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Call oxArticle::onChange($sAction, $sOXID) with ID parameter when changes are executed over SQL.
      * (or use module class instead of oxArticle if such exists)
      *
-     * @param string $sAction   Action constant
-     * @param string $sOXID     Article ID
-     * @param string $sParentID Parent ID
+     * @param string $action   Action constant
+     * @param string $articleId     Article ID
+     * @param string $parentArticleId Parent ID
      *
      * @return null
      */
-    public function onChange($sAction = null, $sOXID = null, $sParentID = null)
+    public function onChange($action = null, $articleId = null, $parentArticleId = null)
     {
         $myConfig = $this->getConfig();
 
-        if (!isset($sOXID)) {
+        if (!isset($articleId)) {
             if ($this->getId()) {
-                $sOXID = $this->getId();
+                $articleId = $this->getId();
             }
-            if (!isset ($sOXID)) {
-                $sOXID = $this->oxarticles__oxid->value;
+            if (!isset ($articleId)) {
+                $articleId = $this->oxarticles__oxid->value;
             }
             if ($this->oxarticles__oxparentid->value) {
-                $sParentID = $this->oxarticles__oxparentid->value;
+                $parentArticleId = $this->oxarticles__oxparentid->value;
             }
         }
-        if (!isset($sOXID)) {
+        if (!isset($articleId)) {
             return;
         }
 
@@ -2361,32 +2363,32 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if ($myConfig->getConfigParam('blUseStock')) {
             //if article has variants then updating oxvarstock field
             //getting parent id
-            if (!isset($sParentID)) {
+            if (!isset($parentArticleId)) {
                 $oDb = oxDb::getDb();
-                $sQ = 'select oxparentid from oxarticles where oxid = ' . $oDb->quote($sOXID);
-                $sParentID = $oDb->getOne($sQ);
+                $sQ = 'select oxparentid from oxarticles where oxid = ' . $oDb->quote($articleId);
+                $parentArticleId = $oDb->getOne($sQ);
             }
             //if we have parent id then update stock
-            if ($sParentID) {
-                $this->_onChangeUpdateStock($sParentID);
+            if ($parentArticleId) {
+                $this->_onChangeUpdateStock($parentArticleId);
             }
         }
         //if we have parent id then update count
         //update count even if blUseStock is not active
-        if ($sParentID) {
-            $this->_onChangeUpdateVarCount($sParentID);
+        if ($parentArticleId) {
+            $this->_onChangeUpdateVarCount($parentArticleId);
         }
 
-        $sId = ($sParentID) ? $sParentID : $sOXID;
+        $sId = ($parentArticleId) ? $parentArticleId : $articleId;
         $this->_setVarMinMaxPrice($sId);
 
         $this->_updateParentDependFields();
 
         // resetting articles count cache if stock has changed and some
         // articles goes offline (M:1448)
-        if ($sAction === ACTION_UPDATE_STOCK) {
+        if ($action === ACTION_UPDATE_STOCK) {
             $this->_assignStock();
-            $this->_onChangeStockResetCount($sOXID);
+            $this->_onChangeStockResetCount($articleId);
         }
     }
 
@@ -2502,15 +2504,15 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Save article long description to oxartext table
      *
-     * @param string $sDesc description to set
+     * @param string $longDescription description to set
      *
      * @return null
      */
-    public function setArticleLongDesc($sDesc)
+    public function setArticleLongDesc($longDescription)
     {
         // setting current value
-        $this->_oLongDesc = new oxField($sDesc, oxField::T_RAW);
-        $this->oxarticles__oxlongdesc = new oxField($sDesc, oxField::T_RAW);
+        $this->_oLongDesc = new oxField($longDescription, oxField::T_RAW);
+        $this->oxarticles__oxlongdesc = new oxField($longDescription, oxField::T_RAW);
     }
 
     /**
@@ -3354,110 +3356,110 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Loads and returns variants list.
      *
-     * @param bool $blSimple              If parameter $blSimple - list will be filled with oxSimpleVariant objects, else - oxArticle
+     * @param bool $loadSimpleVariants              If parameter $blSimple - list will be filled with oxSimpleVariant objects, else - oxArticle
      * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
-     * @param bool $blForceCoreTable      if true forces core table use, default is false [optional]
+     * @param bool $forceCoreTableUsage      if true forces core table use, default is false [optional]
      *
      * @return array | oxsimplevariantlist | oxarticlelist
      */
-    protected function _loadVariantList($blSimple, $blRemoveNotOrderables = true, $blForceCoreTable = null)
+    protected function _loadVariantList($loadSimpleVariants, $blRemoveNotOrderables = true, $forceCoreTableUsage = null)
     {
-        $oVariants = array();
-        if (($sId = $this->getId())) {
+        $variants = array();
+        if (($articleId = $this->getId())) {
             //do not load me as a parent later
-            self::$_aLoadedParents[$sId . "_" . $this->getLanguage()] = $this;
+            self::$_aLoadedParents[$articleId . "_" . $this->getLanguage()] = $this;
 
-            $myConfig = $this->getConfig();
+            $config = $this->getConfig();
 
             if (!$this->_blLoadVariants ||
-                (!$this->isAdmin() && !$myConfig->getConfigParam('blLoadVariants')) ||
+                (!$this->isAdmin() && !$config->getConfigParam('blLoadVariants')) ||
                 (!$this->isAdmin() && !$this->oxarticles__oxvarcount->value)
             ) {
-                return $oVariants;
+                return $variants;
             }
 
             // cache
-            $sCacheKey = $blSimple ? "simple" : "full";
+            $cacheKey = $loadSimpleVariants ? "simple" : "full";
             if ($blRemoveNotOrderables) {
-                if (isset($this->_aVariants[$sCacheKey])) {
-                    return $this->_aVariants[$sCacheKey];
+                if (isset($this->_aVariants[$cacheKey])) {
+                    return $this->_aVariants[$cacheKey];
                 } else {
-                    $this->_aVariants[$sCacheKey] = &$oVariants;
+                    $this->_aVariants[$cacheKey] = &$variants;
                 }
             } elseif (!$blRemoveNotOrderables) {
-                if (isset($this->_aVariantsWithNotOrderables[$sCacheKey])) {
-                    return $this->_aVariantsWithNotOrderables[$sCacheKey];
+                if (isset($this->_aVariantsWithNotOrderables[$cacheKey])) {
+                    return $this->_aVariantsWithNotOrderables[$cacheKey];
                 } else {
-                    $this->_aVariantsWithNotOrderables[$sCacheKey] = &$oVariants;
+                    $this->_aVariantsWithNotOrderables[$cacheKey] = &$variants;
                 }
             }
 
-            if (($this->_blHasVariants = $this->_hasAnyVariant($blForceCoreTable))) {
+            if (($this->_blHasVariants = $this->_hasAnyVariant($forceCoreTableUsage))) {
 
                 //load simple variants for lists
-                if ($blSimple) {
-                    $oVariants = oxNew('oxsimplevariantlist');
-                    $oVariants->setParent($this);
+                if ($loadSimpleVariants) {
+                    $variants = oxNew('oxSimpleVariantList');
+                    $variants->setParent($this);
                 } else {
                     //loading variants
-                    $oVariants = oxNew('oxArticleList');
-                    $oVariants->getBaseObject()->modifyCacheKey('_variants');
+                    $variants = oxNew('oxArticleList');
+                    $variants->getBaseObject()->modifyCacheKey('_variants');
                 }
 
                 startProfile("selectVariants");
-                $blUseCoreTable = (bool) $blForceCoreTable;
-                $oBaseObject = $oVariants->getBaseObject();
-                $oBaseObject->setLanguage($this->getLanguage());
+                $forceCoreTableUsage = (bool) $forceCoreTableUsage;
+                $baseObject = $variants->getBaseObject();
+                $baseObject->setLanguage($this->getLanguage());
 
 
-                $sArticleTable = $this->getViewName($blUseCoreTable);
+                $sArticleTable = $this->getViewName($forceCoreTableUsage);
 
-                $sSelect = "select " . $oBaseObject->getSelectFields($blUseCoreTable) . " from $sArticleTable where " .
-                           $this->getActiveCheckQuery($blUseCoreTable) .
-                           $this->getVariantsQuery($blRemoveNotOrderables, $blUseCoreTable) .
+                $query = "select " . $baseObject->getSelectFields($forceCoreTableUsage) . " from $sArticleTable where " .
+                           $this->getActiveCheckQuery($forceCoreTableUsage) .
+                           $this->getVariantsQuery($blRemoveNotOrderables, $forceCoreTableUsage) .
                            " order by $sArticleTable.oxsort";
-                $oVariants->selectString($sSelect);
+                $variants->selectString($query);
 
                 //if this is multidimensional variants, make additional processing
-                if ($myConfig->getConfigParam('blUseMultidimensionVariants')) {
+                if ($config->getConfigParam('blUseMultidimensionVariants')) {
                     $oMdVariants = oxNew("oxVariantHandler");
-                    $this->_blHasMdVariants = $oMdVariants->isMdVariant($oVariants->current());
+                    $this->_blHasMdVariants = $oMdVariants->isMdVariant($variants->current());
                 }
                 stopProfile("selectVariants");
             }
 
             //if we have variants then depending on config option the parent may be non buyable
-            if (!$myConfig->getConfigParam('blVariantParentBuyable') && $this->_blHasVariants) {
+            if (!$config->getConfigParam('blVariantParentBuyable') && $this->_blHasVariants) {
                 $this->_blNotBuyableParent = true;
             }
 
             //if we have variants, but all variants are incative means article may be non buyable (depends on config option)
-            if (!$myConfig->getConfigParam('blVariantParentBuyable') && count($oVariants) == 0 && $this->_blHasVariants) {
+            if (!$config->getConfigParam('blVariantParentBuyable') && count($variants) == 0 && $this->_blHasVariants) {
                 $this->_blNotBuyable = true;
             }
         }
 
-        return $oVariants;
+        return $variants;
     }
 
     /**
      * Selects category IDs from given SQL statement and ID field name
      *
-     * @param string $sSql   sql statement
-     * @param string $sField category ID field name
+     * @param string $query   sql statement
+     * @param string $field category ID field name
      *
      * @return array
      */
-    protected function _selectCategoryIds($sSql, $sField)
+    protected function _selectCategoryIds($query, $field)
     {
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $aResult = $oDb->getAll($sSql);
+        $aResult = $oDb->getAll($query);
         $aReturn = array();
 
         foreach ($aResult as $aValue) {
             $aValue = array_change_key_case($aValue, CASE_LOWER);
 
-            $aReturn[] = $aValue[$sField];
+            $aReturn[] = $aValue[$field];
         }
 
         return $aReturn;
@@ -3719,19 +3721,19 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * Modifies article price depending on given amount.
      * Takes data from oxprice2article table.
      *
-     * @param double $dAmount Basket amount
+     * @param int $amount Basket amount
      *
-     * @return bool | null
+     * @return double
      */
-    protected function _getAmountPrice($dAmount = 1)
+    protected function _getAmountPrice($amount = 1)
     {
         startProfile("_getAmountPrice");
 
         $dPrice = $this->_getGroupPrice();
         $oAmtPrices = $this->_getAmountPriceList();
         foreach ($oAmtPrices as $oAmPrice) {
-            if ($oAmPrice->oxprice2article__oxamount->value <= $dAmount
-                && $dAmount <= $oAmPrice->oxprice2article__oxamountto->value
+            if ($oAmPrice->oxprice2article__oxamount->value <= $amount
+                && $amount <= $oAmPrice->oxprice2article__oxamountto->value
                 && $dPrice > $oAmPrice->oxprice2article__oxaddabs->value
             ) {
                 $dPrice = $oAmPrice->oxprice2article__oxaddabs->value;
@@ -4428,57 +4430,57 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Deletes records in database
      *
-     * @param string $sOXID Article ID
+     * @param string $articleId Article ID
      *
      * @return int
      */
-    protected function _deleteRecords($sOXID)
+    protected function _deleteRecords($articleId)
     {
         $oDb = oxDb::getDb();
 
-        $sOXID = $oDb->quote($sOXID);
+        $articleId = $oDb->quote($articleId);
 
         //remove other records
-        $sDelete = 'delete from oxobject2article where oxarticlenid = ' . $sOXID . ' or oxobjectid = ' . $sOXID . ' ';
+        $sDelete = 'delete from oxobject2article where oxarticlenid = ' . $articleId . ' or oxobjectid = ' . $articleId . ' ';
         $oDb->execute($sDelete);
 
-        $sDelete = 'delete from oxobject2attribute where oxobjectid = ' . $sOXID . ' ';
+        $sDelete = 'delete from oxobject2attribute where oxobjectid = ' . $articleId . ' ';
         $oDb->execute($sDelete);
 
-        $sDelete = 'delete from oxobject2category where oxobjectid = ' . $sOXID . ' ';
+        $sDelete = 'delete from oxobject2category where oxobjectid = ' . $articleId . ' ';
         $oDb->execute($sDelete);
 
-        $sDelete = 'delete from oxobject2selectlist where oxobjectid = ' . $sOXID . ' ';
+        $sDelete = 'delete from oxobject2selectlist where oxobjectid = ' . $articleId . ' ';
         $oDb->execute($sDelete);
 
-        $sDelete = 'delete from oxprice2article where oxartid = ' . $sOXID . ' ';
+        $sDelete = 'delete from oxprice2article where oxartid = ' . $articleId . ' ';
         $oDb->execute($sDelete);
 
-        $sDelete = 'delete from oxreviews where oxtype="oxarticle" and oxobjectid = ' . $sOXID . ' ';
+        $sDelete = 'delete from oxreviews where oxtype="oxarticle" and oxobjectid = ' . $articleId . ' ';
         $oDb->execute($sDelete);
 
-        $sDelete = 'delete from oxratings where oxobjectid = ' . $sOXID . ' ';
+        $sDelete = 'delete from oxratings where oxobjectid = ' . $articleId . ' ';
         $rs = $oDb->execute($sDelete);
 
-        $sDelete = 'delete from oxaccessoire2article where oxobjectid = ' . $sOXID . ' or oxarticlenid = ' . $sOXID . ' ';
+        $sDelete = 'delete from oxaccessoire2article where oxobjectid = ' . $articleId . ' or oxarticlenid = ' . $articleId . ' ';
         $oDb->execute($sDelete);
 
         //#1508C - deleting oxobject2delivery entries added
-        $sDelete = 'delete from oxobject2delivery where oxobjectid = ' . $sOXID . ' and oxtype=\'oxarticles\' ';
+        $sDelete = 'delete from oxobject2delivery where oxobjectid = ' . $articleId . ' and oxtype=\'oxarticles\' ';
         $oDb->execute($sDelete);
 
-        $sDelete = 'delete from oxartextends where oxid = ' . $sOXID . ' ';
+        $sDelete = 'delete from oxartextends where oxid = ' . $articleId . ' ';
         $oDb->execute($sDelete);
 
         //delete the record
         foreach ($this->_getLanguageSetTables("oxartextends") as $sSetTbl) {
-            $oDb->execute("delete from $sSetTbl where oxid = {$sOXID}");
+            $oDb->execute("delete from $sSetTbl where oxid = {$articleId}");
         }
 
-        $sDelete = 'delete from oxactions2article where oxartid = ' . $sOXID . ' ';
+        $sDelete = 'delete from oxactions2article where oxartid = ' . $articleId . ' ';
         $rs = $oDb->execute($sDelete);
 
-        $sDelete = 'delete from oxobject2list where oxobjectid = ' . $sOXID . ' ';
+        $sDelete = 'delete from oxobject2list where oxobjectid = ' . $articleId . ' ';
         $rs = $oDb->execute($sDelete);
 
         return $rs;
@@ -4984,13 +4986,13 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Get data from db
      *
-     * @param string $sOXID id
+     * @param string $articleId id
      *
      * @return array
      */
-    protected function _loadFromDb($sOXID)
+    protected function _loadFromDb($articleId)
     {
-        $sSelect = $this->buildSelectString(array($this->getViewName() . ".oxid" => $sOXID));
+        $sSelect = $this->buildSelectString(array($this->getViewName() . ".oxid" => $articleId));
 
         $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getRow($sSelect);
 
@@ -4998,9 +5000,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * @param float $dAmount
+     * @param float $amount
      */
-    public function checkForVpe($dAmount)
+    public function checkForVpe($amount)
     {
 
     }

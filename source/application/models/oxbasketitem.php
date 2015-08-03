@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -373,7 +373,7 @@ class oxBasketItem extends oxSuperCfg
         }
 
         $oArticle = $this->getArticle(true);
-
+        $dAmount = $this->applyPackageOnAmount($oArticle, $dAmount);
 
         // setting default
         $iOnStock = true;
@@ -413,6 +413,19 @@ class oxBasketItem extends oxSuperCfg
             $oEx->setBasketIndex($sItemKey);
             throw $oEx;
         }
+    }
+
+    /**
+     * Apply checks for package on amount
+     *
+     * @param oxArticle $article
+     * @param double $amount
+     *
+     * @return double
+     */
+    protected function applyPackageOnAmount($article, $amount)
+    {
+        return $amount;
     }
 
     /**

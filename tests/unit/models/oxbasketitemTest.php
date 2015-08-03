@@ -124,7 +124,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
      */
     public function testInitProductIsNotBuyable()
     {
-        $sProdId = "2077";
+        $sProdId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2275' : '2077';
 
         $oBasketItem = oxNew('oxBasketItem');
         try {
@@ -687,8 +687,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
      */
     public function testGetIconUrl()
     {
-        $sPrefix = '';
-
+        $sPrefix = "_" . strtolower($this->getTestConfig()->getShopEdition());
         $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures{$sPrefix}/generated/product/1/87_87_75/nopic.jpg";
 
         $oArticle = oxNew('oxArticle');
@@ -707,8 +706,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
      */
     public function testGetIconUrlAfterSslSwitch()
     {
-        $sPrefix = '';
-
+        $sPrefix = "_" . strtolower($this->getTestConfig()->getShopEdition());
         $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures{$sPrefix}/master/product/icon/nopic_ico.jpg";
 
         $oArticle = $this->getMock('oxarticle', array('getIconUrl', 'getLink'));
@@ -874,7 +872,8 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
         $this->assertEquals($article->oxarticles__oxtitle->value . ", xxx", $oBasketItem->sTitle);
         $this->assertEquals('xxx', $oBasketItem->sVarSelect);
 
-        $this->assertEquals("2077_p1_ico.jpg", $oBasketItem->sIcon);
+        $expectedImageName = $this->getTestConfig()->getShopEdition() == 'EE' ? '2275-01_ico.jpg' : '2077_p1_ico.jpg';
+        $this->assertEquals($expectedImageName, $oBasketItem->sIcon);
 
         $this->assertEquals($article->getLink(), $oBasketItem->sLink);
         $this->assertEquals($this->getConfig()->getBaseShopId(), $oBasketItem->sShopId);

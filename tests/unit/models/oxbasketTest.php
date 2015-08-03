@@ -64,7 +64,8 @@ class Unit_Models_oxbasketTest extends OxidTestCase
 
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', true);
 
-        $sId = '2077';
+        $sId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2275' : '2077';
+
         $sNewId = oxUtilsObject::getInstance()->generateUId();
 
         oxTestModules::addFunction('oxarticle', 'getLink( $iLang = null, $blMain = false  )', '{return "htpp://link_for_article/".$this->getId();}');
@@ -346,6 +347,10 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->addTableForCleanup('oxobject2selectlist');
         $this->addTableForCleanup('oxselectlist');
 
+        $this->addTableForCleanup('oxselectlist2shop');
+        $this->addTableForCleanup('oxarticles2shop');
+        $this->addTableForCleanup('oxdiscount2shop');
+
         oxArticleHelper::cleanup();
         $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', $this->blPerfLoadSelectLists);
         parent::tearDown();
@@ -363,7 +368,6 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         oxDb::getDb()->execute('delete from oxuserbasketitems');
 
         $sArtId = '1126';
-        $sCatId = '8a142c3e4143562a5.46426637';
 
         // creating select lists..
         $oSelList = new oxSelectlist;
@@ -1110,7 +1114,6 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetArticleBundlesHasNoBundles()
     {
-
         $oBasket = new oxbasket();
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1, null, null, false, true);
         $this->assertEquals(array(), $oBasket->UNITgetArticleBundles($oItem));
@@ -1124,7 +1127,6 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetArticleBundlesHasSomeBundle()
     {
-
         $this->oArticle->oxarticles__oxbundleid = new oxField('xxx', oxField::T_RAW);
         $this->oArticle->save();
 
@@ -1132,7 +1134,6 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
         $this->assertEquals(array('xxx' => 1), $oBasket->UNITgetArticleBundles($oItem));
     }
-
 
     /**
      * Testing how correctly bundle information is loaded

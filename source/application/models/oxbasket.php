@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -655,7 +655,6 @@ class oxBasket extends oxSuperCfg
         return $aBundles;
     }
 
-
     /**
      * Returns array of bundled discount articles
      *
@@ -746,9 +745,9 @@ class oxBasket extends oxSuperCfg
 
                 // adding item type bundles
                 $aArtBundles = $this->_getArticleBundles($oBasketItem);
-
                 // adding bundles to basket
                 $this->_addBundlesToBasket($aArtBundles);
+
             } catch (oxNoArticleException $oEx) {
                 $this->removeItem($key);
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);

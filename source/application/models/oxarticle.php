@@ -3357,9 +3357,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Loads and returns variants list.
      *
-     * @param bool $loadSimpleVariants              If parameter $blSimple - list will be filled with oxSimpleVariant objects, else - oxArticle
-     * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
-     * @param bool $forceCoreTableUsage      if true forces core table use, default is false [optional]
+     * @param bool $loadSimpleVariants       if parameter $blSimple - list will be filled with oxSimpleVariant objects, else - oxArticle
+     * @param bool $blRemoveNotOrderables    if true, removes from list not orderable articles, which are out of stock [optional]
+     * @param bool|null $forceCoreTableUsage if true forces core table use, default is false [optional]
      *
      * @return array | oxsimplevariantlist | oxarticlelist
      */
@@ -3409,9 +3409,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
                 startProfile("selectVariants");
                 $forceCoreTableUsage = (bool) $forceCoreTableUsage;
-                $baseObject = $variants->getBaseObject();
-                $baseObject->setLanguage($this->getLanguage());
 
+                $baseObject = $variants->getBaseObject();
+                $this->updateVariantsBaseObject($baseObject, $forceCoreTableUsage);
 
                 $sArticleTable = $this->getViewName($forceCoreTableUsage);
 
@@ -5079,5 +5079,16 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                  $this->getActiveCheckQuery($forceCoreTableUsage) .
                  $this->getVariantsQuery($blRemoveNotOrderables, $forceCoreTableUsage) .
                  " order by $sArticleTable.oxsort";
+    }
+
+    /**
+     * Set needed parameters to article list object like language.
+     *
+     * @param oxBase $baseObject             article list template object.
+     * @param bool|null $forceCoreTableUsage if true forces core table use, default is false [optional]
+     */
+    protected function updateVariantsBaseObject($baseObject, $forceCoreTableUsage = null)
+    {
+        $baseObject->setLanguage($this->getLanguage());
     }
 }

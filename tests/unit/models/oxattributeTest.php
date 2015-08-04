@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -92,7 +92,6 @@ class Unit_Models_oxattributeTest extends OxidTestCase
             $this->fail("fail deleting");
         }
     }
-
 
     /**
      * Test assign variables to attribute.
@@ -208,19 +207,4 @@ class Unit_Models_oxattributeTest extends OxidTestCase
 
         $this->assertEquals(array('val1', 'val2'), $oAttr->getValues());
     }
-
-    /**
-     * Test get attribute id.
-     *
-     * @return null
-     */
-    public function testGetArticleIds()
-    {
-        return; // EE only
-        $aArticles = $this->_oAttr->getArticleIds();
-        $this->assertEquals(1, count($aArticles));
-        $this->assertEquals('test_oxid', $aArticles[0]);
-    }
-
-
 }

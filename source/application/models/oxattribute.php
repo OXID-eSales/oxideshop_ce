@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -27,7 +27,6 @@
  */
 class oxAttribute extends oxI18n
 {
-
     /**
      * Current class name
      *
@@ -77,10 +76,10 @@ class oxAttribute extends oxI18n
         if (!$sOXID) {
             $sOXID = $this->getId();
         }
-        if (!$sOXID) {
+
+        if (!$this->canDeleteAttribute($sOXID)) {
             return false;
         }
-
 
         // remove attributes from articles also
         $oDb = oxDb::getDb();
@@ -266,4 +265,20 @@ class oxAttribute extends oxI18n
         return $this->_aValues;
     }
 
+    /**
+     * Checks if possible to delete attribute.
+     *
+     * @param string $oxId
+     *
+     * @return bool
+     */
+    protected function canDeleteAttribute($oxId)
+    {
+        $canDelete = true;
+        if (!$oxId) {
+            $canDelete = false;
+        }
+
+        return $canDelete;
+    }
 }

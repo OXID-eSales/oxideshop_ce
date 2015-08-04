@@ -21,11 +21,10 @@
  */
 
 /**
- * Test oxCategoryList module
+ * Enterprise edition extending
  */
-class testOxCategoryList extends oxCategoryList
+class testEEoxCategoryList extends \OxidEsales\Enterprise\Application\Model\CategoryList
 {
-
     protected $_testAdmin = false;
 
     /**
@@ -65,11 +64,73 @@ class testOxCategoryList extends oxCategoryList
 }
 
 /**
- * Test oxContentList module
+ * CE extending
  */
-class modContentList_oxcategorylist extends oxContentList
+class testPEOxCategoryList extends \oxCategoryList
 {
+    protected $_testAdmin = false;
 
+    /**
+     * Get private field value.
+     *
+     * @param string $sName Field name
+     *
+     * @return mixed
+     */
+    public function getVar($sName)
+    {
+        return $this->{'_' . $sName};
+    }
+
+    /**
+     * Set private field value.
+     *
+     * @param string $sName  Field name
+     * @param string $sValue Field value
+     *
+     * @return null
+     */
+    public function setVar($sName, $sValue)
+    {
+        $this->{'_' . $sName} = $sValue;
+    }
+
+    /**
+     * Override isAdmin.
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->_testAdmin;
+    }
+}
+
+/**
+ * Test oxContentList module for EE
+ */
+class modContentListEE_oxcategorylist extends \OxidEsales\Enterprise\Application\Model\CategoryList
+{
+    /**
+     * Test loadCatMenues.
+     *
+     * @return bool
+     */
+    public function loadCatMenues()
+    {
+        $sActCat = '3ee44bf933cf342e2.99739972';
+        $oContent1 = oxNew('Content');
+        $oContent2 = clone $oContent1;
+        $aResult = array($sActCat => array($oContent1, $oContent2));
+        $this->assign($aResult);
+    }
+}
+
+/**
+ * Test oxContentList module for CE
+ */
+class modContentListCE_oxcategorylist extends \oxCategoryList
+{
     /**
      * Test loadCatMenues.
      *
@@ -78,8 +139,6 @@ class modContentList_oxcategorylist extends oxContentList
     public function loadCatMenues()
     {
         $sActCat = '8a142c3e44ea4e714.31136811';
-
-
         $oContent1 = oxNew('Content');
         $oContent2 = clone $oContent1;
         $aResult = array($sActCat => array($oContent1, $oContent2));
@@ -92,12 +151,13 @@ class modContentList_oxcategorylist extends oxContentList
  */
 class Unit_Models_oxCategoryListTest extends OxidTestCase
 {
-
     protected $_oList = null;
     protected $_sNoCat;
     protected $_sActCat;
     protected $_sActRoot;
     protected $_aActPath;
+
+    protected $classForMock;
 
     /**
      * Initialize the fixture.
@@ -107,13 +167,15 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_oList = oxNew('testOxCategoryList');
+
+        $this->classForMock = ($this->getTestConfig()->getShopEdition() === 'EE') ? 'testEEoxCategoryList' : 'testPEoxCategoryList';
+
+        $this->_oList = oxNew($this->classForMock);
         $this->_sNoCat = '_no_such_cat_';
 
-        $this->_sActCat = '8a142c3e44ea4e714.31136811';
-        $this->_sActRoot = '8a142c3e4143562a5.46426637';
-        $this->_aActPath = array($this->_sActRoot, $this->_sActCat);
-
+        $this->_sActCat = $this->getTestConfig()->getShopEdition() === 'EE' ? '3ee44bf933cf342e2.99739972' : '8a142c3e44ea4e714.31136811';
+        $this->_sActRoot = $this->getTestConfig()->getShopEdition() === 'EE' ? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
+        $this->_aActPath = $this->getTestConfig()->getShopEdition() === 'EE' ? array($this->_sActRoot, '30e44ab8593023055.23928895', $this->_sActCat) : array($this->_sActRoot, $this->_sActCat);
 
         $this->testAdmin = false;
         $this->cleanUpTable('oxcategories');
@@ -127,7 +189,8 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
     protected function tearDown()
     {
         $this->cleanUpTable('oxcategories');
-        oxRemClassModule('modContentList_oxcategorylist');
+        oxRemClassModule('modContentListEE_oxcategorylist');
+        oxRemClassModule('modContentListCE_oxcategorylist');
         parent::tearDown();
     }
 
@@ -201,12 +264,14 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
         $this->_oList->setVar('blForceFull', false);
         $this->_oList->setVar('iForceLevel', 0);
 
-        $oCat = new oxcategory();
+        $oCat = oxNew('oxcategory');
         $oCat->load($this->_sActCat);
         $sCurSnippet = $this->_oList->UNITgetDepthSqlSnippet($oCat);
 
         $sViewName = getViewName('oxcategories');
-        $sExpSnippet = " ( 0 or ($sViewName.oxparentid = '8a142c3e44ea4e714.31136811') ) ";
+
+        $snippetOxid = $this->getTestConfig()->getShopEdition() === 'EE' ? '3ee44bf933cf342e2.99739972' : '8a142c3e44ea4e714.31136811';
+        $sExpSnippet = " ( 0 or ($sViewName.oxparentid = '" . $snippetOxid . "') ) ";
 
         $this->assertEquals($sExpSnippet, $sCurSnippet);
     }
@@ -303,8 +368,7 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
 
         $sCurSql = $this->_oList->UNITgetSelectString();
 
-        $sExpSql = "and oxcategories.oxshopid = '1'";
-
+        $sExpSql = $this->getTestConfig()->getShopEdition() === 'EE' ? "and oxv_oxcategories_1.oxshopid = '1'" : "and oxcategories.oxshopid = '1'";
 
         $this->assertNotContains($sExpSql, $sCurSql);
     }
@@ -325,8 +389,8 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
         $sCurSql = $this->_oList->UNITgetSelectString();
 
         $sViewName = getViewName('oxcategories');
-        $sExpSql = ",not $sViewName.oxactive as oxppremove";
 
+        $sExpSql = $this->getTestConfig()->getShopEdition() === 'EE' ? ",not ($sViewName.oxactive " . $this->_oList->UNITgetSqlRightsSnippet() . ") as oxppremove" : ",not $sViewName.oxactive as oxppremove";
 
         $this->assertContains($sExpSql, $sCurSql);
     }
@@ -338,6 +402,10 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
      */
     public function test_getSqlSelectFieldsForTree()
     {
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
+
         $sExpect = 'tablex.oxid as oxid,'
                    . ' tablex.oxactive as oxactive,'
                    . ' tablex.oxhidden as oxhidden,'
@@ -353,13 +421,10 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
                    . ' tablex.oxpricefrom as oxpricefrom,'
                    . ' tablex.oxpriceto as oxpriceto,'
                    . ' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink,'
-                   . ' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon,';
+                   . ' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon,'
+                   . 'not tablex.oxactive as oxppremove';
 
-        $sExpect .= 'not tablex.oxactive as oxppremove';
-        //
-        $oList = new oxCategoryList();
-
-
+        $oList = oxNew('oxCategoryList');
         $this->assertEquals($sExpect, $oList->UNITgetSqlSelectFieldsForTree('tablex'));
     }
 
@@ -370,6 +435,10 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
      */
     public function test_getSqlSelectFieldsForTree_lang1()
     {
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
+
         oxRegistry::getLang()->setBaseLanguage(1);
         $sExpect = 'tablex.oxid as oxid,'
                    . ' tablex.oxactive as oxactive,'
@@ -386,12 +455,10 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
                    . ' tablex.oxpricefrom as oxpricefrom,'
                    . ' tablex.oxpriceto as oxpriceto,'
                    . ' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink,'
-                   . ' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon,';
+                   . ' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon,'
+                   . 'not tablex.oxactive as oxppremove';
 
-        $sExpect .= 'not tablex.oxactive as oxppremove';
-        //
-        $oList = new oxCategoryList();
-
+        $oList = oxNew('oxCategoryList');
 
         $this->assertEquals($sExpect, $oList->UNITgetSqlSelectFieldsForTree('tablex'));
     }
@@ -404,7 +471,7 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
      */
     public function test_getDepthSqlUnion()
     {
-        $oCat = new oxcategory();
+        $oCat = oxNew('oxCategory');
         $oCat->oxcategories__oxrootid = new oxField('rootid');
         $oCat->oxcategories__oxleft = new oxField('151');
         $oCat->oxcategories__oxright = new oxField('959');
@@ -597,7 +664,8 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
         $this->_oList->setVar('blForceFull', false);
         $this->_oList->setVar('iForceLevel', 0);
 
-        oxAddClassModule('modContentList_oxcategorylist', 'oxcontentlist');
+        $moduleName = ($this->getTestConfig()->getShopEdition() === 'EE') ? 'modContentListEE_oxcategorylist' : 'modContentListCE_oxcategorylist';
+        oxAddClassModule($moduleName, 'oxcontentlist');
 
         $this->_oList->load();
         $this->_oList->UNITppAddContentCategories();
@@ -654,7 +722,7 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
         foreach ($this->_aActPath as $sNr => $sId) {
 
             //Hidded actCat
-            if ($sId == $this->_sActCat) {
+            if ($sId === $this->_sActCat) {
                 $this->assertFalse($oCat->getIsVisible());
             } else {
                 $this->assertTrue($oCat->getIsVisible());
@@ -678,19 +746,19 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
         $this->_oList->setVar('iForceLevel', 2);
 
         $sParentId = $this->_sActRoot;
-        $oCat1 = new oxCategory();
+        $oCat1 = oxNew('oxCategory');
         $oCat1->setId("_test1");
         $oCat1->oxcategories__oxparentid = new oxField($sParentId);
         $oCat1->oxcategories__oxsort = new oxField(2);
         $oCat1->oxcategories__oxactive = new oxField(1);
         $oCat1->save();
-        $oCat2 = new oxCategory();
+        $oCat2 = oxNew('oxCategory');
         $oCat2->setId("_test2");
         $oCat2->oxcategories__oxparentid = new oxField($sParentId);
         $oCat2->oxcategories__oxsort = new oxField(3);
         $oCat2->oxcategories__oxactive = new oxField(1);
         $oCat2->save();
-        $oCat3 = new oxCategory();
+        $oCat3 = oxNew('oxCategory');
         $oCat3->setId("_test3");
         $oCat3->oxcategories__oxparentid = new oxField($sParentId);
         $oCat3->oxcategories__oxsort = new oxField(1);
@@ -753,7 +821,7 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
     public function test_addDepthInfo()
     {
         $aTree = array();
-        $oCat = new oxCategory();
+        $oCat = oxNew('oxCategory');
         $oCat->setId("_test1");
         $oCat->oxcategories__oxparentid = new oxField("_test2");
         $oCat->oxcategories__oxsort = new oxField(2);
@@ -777,9 +845,6 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
         }
     }
 
-
-
-
     /**
      * Test if build tree executes all required postprocessing methods.
      *
@@ -787,7 +852,7 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
      */
     public function testBuildTree()
     {
-        $oCatList = $this->getMock('testOxCategoryList', array('load', '_ppRemoveInactiveCategories', '_ppAddPathInfo', '_ppAddContentCategories', '_ppBuildTree', '_ppLoadFullCategory'));
+        $oCatList = $this->getMock($this->classForMock, array('load', '_ppRemoveInactiveCategories', '_ppAddPathInfo', '_ppAddContentCategories', '_ppBuildTree', '_ppLoadFullCategory'));
         $oCatList->expects($this->at(0))->method('load');
         $oCatList->expects($this->at(1))->method('_ppRemoveInactiveCategories');
         $oCatList->expects($this->at(2))->method('_ppLoadFullCategory');
@@ -799,7 +864,6 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
 
         $this->assertEquals($this->_sActCat, $oCatList->getVar('sActCat'));
     }
-
 
     /**
      * Test Load list.
@@ -908,14 +972,28 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
             }
         }
 
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $aUpdateInfo = array(
+                '*** <b>SHOP : 1</b><br><br>',
 
-        $aUpdateInfo = array(
-            '<b>Processing : Eco-Fashion</b>(943a9ba3050e78b443c16e043ae60ef3)<br>',
-            '<b>Processing : Geschenke</b>(8a142c3e4143562a5.46426637)<br>',
-            '<b>Processing : 1-8|1-8</b>(_test1)<br>',
-        );
+                '<b>Processing : Eco-Fashion</b>(943a9ba3050e78b443c16e043ae60ef3)<br>',
+                '<b>Processing : Für Sie</b>(30e44ab82c03c3848.49471214)<br>',
+                '<b>Processing : Für Ihn</b>(30e44ab834ea42417.86131097)<br>',
+                '<b>Processing : Wohnen</b>(30e44ab83b6e585c9.63147165)<br>',
+                '<b>Processing : Party</b>(30e44ab83fdee7564.23264141)<br>',
+                '<b>Processing : Outdoor</b>(30e44ab83d52c6d74.06410508)<br>',
+                '<b>Processing : Spiele</b>(30e44ab8539ce4931.41747937)<br>',
+                '<b>Processing : 1-8|1-8</b>(_test1)<br>',
+            );
+        } else {
+            $aUpdateInfo = array(
+                '<b>Processing : Eco-Fashion</b>(943a9ba3050e78b443c16e043ae60ef3)<br>',
+                '<b>Processing : Geschenke</b>(8a142c3e4143562a5.46426637)<br>',
+                '<b>Processing : 1-8|1-8</b>(_test1)<br>',
+            );
+        }
 
-        $this->assertTrue($iTrue == 1 || $iTrue == 2);
+        $this->assertTrue($iTrue === 1 || $iTrue === 2);
         $this->assertEquals($aUpdateInfo, $this->_oList->getUpdateInfo());
     }
 
@@ -968,7 +1046,7 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
      */
     public function testLoadLevel()
     {
-        $oCategoryList = new oxCategoryList();
+        $oCategoryList = oxNew('oxCategoryList');
         $oCategoryList->setLoadLevel(1);
         $this->assertEquals(1, $oCategoryList->getLoadLevel());
 
@@ -990,7 +1068,7 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
      */
     public function testLoadFull()
     {
-        $oCategoryList = new oxCategoryList();
+        $oCategoryList = oxNew('oxCategoryList');
 
         $oCategoryList->setLoadFull(true);
         $this->assertTrue($oCategoryList->getLoadFull());
@@ -998,7 +1076,4 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
         $oCategoryList->setLoadFull(false);
         $this->assertFalse($oCategoryList->getLoadFull());
     }
-
-
-
 }

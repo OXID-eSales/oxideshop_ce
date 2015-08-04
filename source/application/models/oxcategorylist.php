@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -163,10 +163,19 @@ class oxCategoryList extends oxList
                       . " $sTable.oxicon as oxicon, $sTable.oxextlink as oxextlink,"
                       . " $sTable.oxthumb as oxthumb, $sTable.oxpromoicon as oxpromoicon";
 
-        $sFieldList .= ",not $sTable.oxactive as oxppremove";
-
+        $sFieldList .= $this->getActivityFieldsSql($sTable);
 
         return $sFieldList;
+    }
+
+    /**
+     * Get activity related fields
+     *
+     * @param string $tableName
+     */
+    protected function getActivityFieldsSql($tableName)
+    {
+        return ",not $tableName.oxactive as oxppremove";
     }
 
     /**
@@ -266,8 +275,6 @@ class oxCategoryList extends oxList
                . " AND subcats.oxright >= " . (int) $oCat->oxcategories__oxright->value;
     }
 
-
-
     /**
      * Get data from db
      *
@@ -286,12 +293,9 @@ class oxCategoryList extends oxList
      */
     public function load()
     {
-
         $aData = $this->_loadFromDb();
-
         $this->assignArray($aData);
     }
-
 
     /**
      * Fetches reversed raw categories and does all necessary postprocessing for
@@ -566,8 +570,8 @@ class oxCategoryList extends oxList
     public function updateCategoryTree($blVerbose = true, $sShopID = null)
     {
         $oDb = oxDb::getDb();
-        $sWhere = '1';
 
+        $sWhere = $this->getInitialUpdateCategoryTreeCondition($blVerbose);
 
         $oDb->execute("update oxcategories set oxleft = 0, oxright = 0 where $sWhere");
         $oDb->execute("update oxcategories set oxleft = 1, oxright = 2 where oxparentid = 'oxrootid' and $sWhere");
@@ -586,6 +590,23 @@ class oxCategoryList extends oxList
                 $rs->moveNext();
             }
         }
+
+        $this->onUpdateCategoryTree();
+    }
+
+    /**
+     * Triggering in the end of updateCategoryTree method
+     */
+    protected function onUpdateCategoryTree()
+    {
+    }
+
+    /**
+     * Get Initial updateCategoryTree sql condition
+     */
+    protected function getInitialUpdateCategoryTreeCondition($blVerbose = false)
+    {
+        return '1';
     }
 
     /**

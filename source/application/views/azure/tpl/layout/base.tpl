@@ -47,6 +47,14 @@
             <link rel="canonical" href="[{$canonical_url}]">
         [{/if}]
     [{/block}]
+    
+    [{block name="head_link_hreflang"}]
+        [{if $oView->isLanguageLoaded()}]
+            [{foreach from=$oxcmp_lang item=_lng}]
+                <link rel="alternate" hreflang="[{$_lng->abbr}]" href="[{$_lng->link|oxaddparams:$oView->getDynUrlParams()}]" />
+            [{/foreach}]
+        [{/if}]
+    [{/block}]
 
     [{block name="head_link_favicon"}]
         <link rel="shortcut icon" href="[{$oViewConf->getImageUrl('favicon.ico')}]">

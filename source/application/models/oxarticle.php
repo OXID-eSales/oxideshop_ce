@@ -1811,7 +1811,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param bool $blShopCheck Set false if shop check is not required (default is true)
      *
-     * @return object
+     * @return oxmanufacturer|null
      */
     public function getManufacturer($blShopCheck = true)
     {

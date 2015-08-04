@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -32,7 +32,7 @@ class Integration_Article_ArticleTest extends OxidTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->addTableForCleanup('oxarticles');
+         $this->addTableForCleanup('oxarticles');
     }
 
     public function testArticleParentFieldsInChild_ParentUpdate_SetParentValueToChild()
@@ -147,5 +147,4 @@ class Integration_Article_ArticleTest extends OxidTestCase
             $this->assertEquals(1, $oProductChild->$sField->value);
         }
     }
-
 }

@@ -3415,10 +3415,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
                 $sArticleTable = $this->getViewName($forceCoreTableUsage);
 
-                $query = "select " . $baseObject->getSelectFields($forceCoreTableUsage) . " from $sArticleTable where " .
-                           $this->getActiveCheckQuery($forceCoreTableUsage) .
-                           $this->getVariantsQuery($blRemoveNotOrderables, $forceCoreTableUsage) .
-                           " order by $sArticleTable.oxsort";
+                $query = $this->getLoadVariantsQuery($blRemoveNotOrderables, $forceCoreTableUsage, $baseObject, $sArticleTable);
                 $variants->selectString($query);
 
                 //if this is multidimensional variants, make additional processing
@@ -5064,5 +5061,23 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $sFullField = $this->_getFieldLongName($sField);
             $this->_aSortingFieldsOnLoad[$sFullField] = $this->$sFullField->value;
         }
+    }
+
+    /**
+     * Forms query to load variants.
+     *
+     * @param $blRemoveNotOrderables
+     * @param $forceCoreTableUsage
+     * @param $baseObject
+     * @param $sArticleTable
+     *
+     * @return string
+     */
+    protected function getLoadVariantsQuery($blRemoveNotOrderables, $forceCoreTableUsage, $baseObject, $sArticleTable)
+    {
+        return "select " . $baseObject->getSelectFields($forceCoreTableUsage) . " from $sArticleTable where " .
+                 $this->getActiveCheckQuery($forceCoreTableUsage) .
+                 $this->getVariantsQuery($blRemoveNotOrderables, $forceCoreTableUsage) .
+                 " order by $sArticleTable.oxsort";
     }
 }

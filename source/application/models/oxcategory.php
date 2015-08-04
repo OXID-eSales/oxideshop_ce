@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -215,7 +215,6 @@ class oxCategory extends oxI18n implements oxIUrl
         return parent::__get($sName);
     }
 
-
     /**
      * Get data from db
      *
@@ -240,18 +239,15 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function load($sOXID)
     {
-
         $aData = $this->_loadFromDb($sOXID);
 
         if ($aData) {
             $this->assign($aData);
-
             return true;
         }
 
         return false;
     }
-
 
     /**
      * Loads and assigns object data from DB.
@@ -281,7 +277,6 @@ class oxCategory extends oxI18n implements oxIUrl
         }
 
         $sOXID = isset($sOXID) ? $sOXID : $this->getId();
-
 
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
@@ -587,9 +582,20 @@ class oxCategory extends oxI18n implements oxIUrl
 
         $sTable = $this->getViewName($blForceCoreTable);
         $sQ .= (strlen($sQ) ? ' and ' : '') . " $sTable.oxhidden = '0' ";
-
+        $sQ .= $this->getAdditionalSqlFilter($blForceCoreTable);
 
         return "( $sQ ) ";
+    }
+
+    /**
+     * Additional SQL conditions for selecting articles snippet
+     *
+     * @param bool $forceCoreTable
+     * @return string
+     */
+    protected function getAdditionalSqlFilter($forceCoreTable)
+    {
+        return '';
     }
 
     /**
@@ -802,7 +808,6 @@ class oxCategory extends oxI18n implements oxIUrl
         return $oDb->getOne('select oxrootid from ' . getViewName('oxcategories') . ' where oxid = ' . $oDb->quote($sCategoryId));
     }
 
-
     /**
      * Before assigning the record from SQL it checks for viewable rights
      *
@@ -816,7 +821,6 @@ class oxCategory extends oxI18n implements oxIUrl
             return true;
         }
 
-
         return false;
     }
 
@@ -827,9 +831,6 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     protected function _insert()
     {
-
-
-
         if ($this->oxcategories__oxparentid->value != "oxrootid") {
             // load parent
             $oParent = oxNew("oxCategory");
@@ -886,7 +887,6 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     protected function _update()
     {
-
         $this->setUpdateSeo(true);
         $this->_setUpdateSeoOnFieldChange('oxtitle');
 
@@ -1003,7 +1003,6 @@ class oxCategory extends oxI18n implements oxIUrl
 
         return parent::_setFieldData($sFieldName, $sValue, $iDataType);
     }
-
 
     /**
      * Returns category icon picture url if exist, false - if not

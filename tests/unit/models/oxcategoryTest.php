@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -30,21 +30,6 @@ class oxcategoryTest_oxUtilsView extends oxUtilsView
         return 'aazz';
     }
 }
-
-class oxcategoryForoxCategoryTest extends oxcategory
-{
-
-    public function insert()
-    {
-        return parent::_insert();
-    }
-
-    public function update()
-    {
-        return parent::_update();
-    }
-}
-
 
 class Unit_Models_oxCategoryTest extends OxidTestCase
 {
@@ -70,10 +55,10 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $this->removeTestData();
         $this->saveParent();
         $this->saveChild();
-        $this->_sAttributeD = '8a142c3e9cd961518.80299776';
         $this->_sAttributeC = '8a142c3ee0edb75d4.80743302';
         $this->_sAttributeB = '8a142c3f0a792c0c3.93013584';
-        $this->_sCategory = '8a142c3e60a535f16.78077188';
+        $this->_sCategory = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e60a535f16.78077188';
+        $this->_sAttributeD = $this->getTestConfig()->getShopEdition() == 'EE' ? '8a142c3f0a792c0c3.93013584' : '8a142c3e9cd961518.80299776';
         $db = oxDb::getDb();
         $db->Execute('insert into oxcategory2attribute (oxid, oxobjectid, oxattrid, oxsort) values ("test3","' . $this->_sCategory . '","' . $this->_sAttributeD . '", "333")');
     }
@@ -107,12 +92,13 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
      */
     private function saveParent()
     {
-        $sShopId = "oxbaseshop";
+        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+
         $sInsert = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
                    "values ('test','test','{$sShopId}','1','4','test','','','','','1','10','50')";
         $this->addToDatabase($sInsert, 'oxcategories');
 
-        $this->_oCategory = new oxcategory();
+        $this->_oCategory = oxNew('oxcategory');
         $this->_oCategory->load('test');
     }
 
@@ -121,12 +107,13 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
      */
     private function saveChild()
     {
-        $sShopId = "oxbaseshop";
+        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+
         $sInsert = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXPARENTID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
                    "values ('test2','test','" . $sShopId . "','test','2','3','test','','','','','1','10','50')";
         $this->addToDatabase($sInsert, 'oxcategories');
 
-        $this->_oCategoryB = new oxcategory();
+        $this->_oCategoryB = oxNew('oxcategory');
         $this->_oCategoryB->load('test2');
     }
 
@@ -152,7 +139,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         oxTestModules::addFunction("oxSeoEncoderCategory", "getCategoryUrl", "{return 'sCategoryUrl';}");
         oxTestModules::addFunction("oxSeoEncoderCategory", "getCategoryPageUrl", "{return 'sCategoryPageUrl';}");
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $this->assertEquals("sCategoryPageUrl", $oCategory->getBaseSeoLink(0, 1));
     }
 
@@ -161,7 +148,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         oxTestModules::addFunction("oxSeoEncoderCategory", "getCategoryUrl", "{return 'sCategoryUrl';}");
         oxTestModules::addFunction("oxSeoEncoderCategory", "getCategoryPageUrl", "{return 'sCategoryPageUrl';}");
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $this->assertEquals("sCategoryUrl", $oCategory->getBaseSeoLink(0));
     }
 
@@ -169,7 +156,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
     {
         $iLang = 0;
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId("testCategoryId");
 
         $sTestUrl = $this->getConfig()->getConfig()->getShopHomeUrl($iLang, false) . "cl=alist&amp;cnid=" . $oCategory->getId();
@@ -180,7 +167,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
     {
         $iLang = 0;
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId("testCategoryId");
         $oCategory->oxcategories__oxextlink = new oxField("trestssa");
 
@@ -189,7 +176,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
     public function testIsPriceCategory()
     {
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxpricefrom = new oxField(1);
         $this->assertTrue($oCategory->isPriceCategory());
 
@@ -199,11 +186,11 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
     public function testIsTopCategory()
     {
-        $oCat1 = new oxcategory();
+        $oCat1 = oxNew('oxCategory');
         $oCat1->oxcategories__oxparentid = new oxField('xxx');
         $this->assertFalse($oCat1->isTopCategory());
 
-        $oCat2 = new oxcategory();
+        $oCat2 = oxNew('oxCategory');
         $oCat2->oxcategories__oxparentid = new oxField('oxrootid');
         $this->assertTrue($oCat2->isTopCategory());
     }
@@ -216,7 +203,6 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
         $this->assertEquals("(  xxx.oxactive = 1  and  xxx.oxhidden = '0'  ) ", $oCategory->getSqlActiveSnippet());
     }
-
 
     public function testAssign()
     {
@@ -231,14 +217,12 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $this->assertEquals($sDimagedir, $this->_oCategory->dimagedir);
     }
 
-
-
     //#M317 check if parent is loaded
     public function testInsertNotValidParentCat()
     {
-        $oCategory = new oxcategoryForoxCategoryTest();
+        $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxparentid = new oxField("aaaaa", oxField::T_RAW);
-        $this->assertFalse($oCategory->insert());
+        $this->assertFalse($oCategory->UNITinsert());
     }
 
     public function testInsert()
@@ -314,16 +298,17 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
     public function testAssignCountArt()
     {
-        $oObj = new oxcategory();
+        $oObj = oxNew('oxCategory');
         $this->assertEquals(0, $oObj->getNrOfArticles());
         $this->getConfig()->setConfigParam('bl_perfShowActionCatArticleCnt', true);
-        $sCat = '30e44ab83fdee7564.23264141';
-        $sCat = '8a142c3e4143562a5.46426637';
+
+        $sCat = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
 
         $oObj->load($sCat);
         oxRegistry::get("oxUtilsCount")->resetCatArticleCount($oObj->getId());
 
-        $this->assertEquals(32, $oObj->getNrOfArticles());
+        $expectedArticlesCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 32;
+        $this->assertEquals($expectedArticlesCount, $oObj->getNrOfArticles());
     }
 
     public function testAssignCountArtForPriceCat()
@@ -338,7 +323,8 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
         oxRegistry::get("oxUtilsCount")->resetCatArticleCount($this->_oCategory->getId());
 
-        $this->assertEquals(24, $this->_oCategory->getNrOfArticles());
+        $expectedArticlesCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 34 : 24;
+        $this->assertEquals($expectedArticlesCount, $this->_oCategory->getNrOfArticles());
     }
 
     public function testDelete()
@@ -352,7 +338,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $this->assertEquals(0, count(oxRegistry::get("oxSeoEncoderCategory")->onDelete));
 
         // so delete child
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $this->assertEquals(true, $oCategory->delete($this->_oCategoryB->getId()));
         $this->assertEquals(1, count(oxRegistry::get("oxSeoEncoderCategory")->onDelete));
         $this->assertSame($oCategory, oxRegistry::get("oxSeoEncoderCategory")->onDelete[0]);
@@ -361,7 +347,6 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         // now parent is deletable [not a parent anymore]
         $this->assertEquals(true, $this->_oCategory->delete());
     }
-
 
     // FS#1885
     public function testDeleteWithRelatedEntries()
@@ -372,7 +357,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $myDB = oxDb::getDb();
         $myDB->Execute('insert into oxobject2delivery (oxid, oxdeliveryid, oxobjectid, oxtype) values ("_test","' . $sDelId . '","' . $sCatId . '", "oxcategories")');
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $this->assertEquals(true, $oCategory->delete($sCatId));
 
         $this->reload();
@@ -406,7 +391,6 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $this->assertEquals('test', $oCatBaseLang->oxcategories__oxtitle->value);
     }
 
-
     public function testUpdate()
     {
         $this->_oCategoryB->oxcategories__oxparentid = new oxField("oxrootid", oxField::T_RAW);
@@ -435,10 +419,9 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $this->reload();
         $this->assertNotEquals($this->_oCategory->getId(), $this->_oCategoryB->oxcategories__oxparentid->value);
         // answer is simple - no. framework had restored recursive data to its former (valid) state.
-        $sCatId1 = "30e44ab8593023055.23928895";
-        $sCatId2 = "30e44ab83fdee7564.23264141";
-        $sCatId1 = "8a142c3e44ea4e714.31136811";
-        $sCatId2 = "8a142c3e4143562a5.46426637";
+        $sCatId1 = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab8593023055.23928895' : '8a142c3e44ea4e714.31136811';
+        $sCatId2 = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
+
         $this->_oCategoryB->oxcategories__oxparentid = new oxField($sCatId1, oxField::T_RAW);
 
         $this->_oCategoryB->save(); // call update
@@ -452,20 +435,11 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
     public function testUpdateMarkRelatedAsExpired()
     {
         $this->setAdminMode(true);
-        $oObj2 = new oxCategory();
+        $oObj2 = oxNew('oxCategory');
         $oObj2->oxcategories__oxparentid = new oxField("oxrootid", oxField::T_RAW);
         $oObj2->save(); // call update
         $this->assertEquals("oxrootid", $oObj2->oxcategories__oxparentid->value);
     }
-
-
-
-
-
-
-
-
-
 
     public function testSetFieldData()
     {
@@ -502,7 +476,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
      */
     public function testGetStdLinkShouldReturnExtLink()
     {
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxextlink = new oxField('xxx', oxField::T_RAW);
 
         $this->assertEquals('xxx?', $oCategory->getStdLink());
@@ -510,7 +484,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
     public function testGetStdLinkshoudlReturnDefaultLink()
     {
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('xxx');
 
         $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=xxx", $oCategory->getStdLink());
@@ -523,7 +497,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('xxx');
 
         $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=xxx", $oCategory->getStdLink());
@@ -533,7 +507,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxextlink = new oxField('www.test.com', oxField::T_RAW);
 
         $this->assertEquals('www.test.com?', $oCategory->getLink());
@@ -546,12 +520,15 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
         $oCategory = new oxcategory();
 
-        $oCategory->loadInLang(0, '8a142c3e60a535f16.78077188');
-        $sExp = "Geschenke/Wohnen/Uhren/";
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . $sExp, $oCategory->getLink());
+        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab82c03c3848.49471214' : '8a142c3e60a535f16.78077188';
+        $expectation = $this->getTestConfig()->getShopEdition() == 'EE' ? 'Fuer-Sie/' : 'Geschenke/Wohnen/Uhren/';
+
+        $oCategory->loadInLang(0, $categoryId);
+
+        $this->assertEquals($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink());
         //testing magic getter
-        $this->assertEquals($this->getConfig()->getShopUrl() . $sExp, $oCategory->link);
+        $this->assertEquals($this->getConfig()->getShopUrl() . $expectation, $oCategory->link);
     }
 
     public function testGetLinkSeoEng()
@@ -559,12 +536,14 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
 
-        $oCategory->loadInLang(1, '8a142c3e60a535f16.78077188');
-        $sExp = "en/Gifts/Living/Clocks/";
+        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83159266c7.83602558' : '8a142c3e60a535f16.78077188';
+        $expectation = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/For-Her/Sports/' : 'en/Gifts/Living/Clocks/';
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . $sExp, $oCategory->getLink());
+        $oCategory->loadInLang(1, $categoryId);
+
+        $this->assertEquals($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink());
     }
 
     /**
@@ -572,7 +551,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
      */
     public function testGetStdLinkShouldReturnExtLinkWithLangParam()
     {
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxextlink = new oxField('xxx', oxField::T_RAW);
 
         $this->assertEquals('xxx?', $oCategory->getStdLink(2));
@@ -580,10 +559,10 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
     public function testGetStdLinkshoudlReturnDefaultLinkWithLangParam()
     {
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('xxx');
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('xxx');
         $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=xxx&amp;lang=3", $oCategory->getStdLink(3));
     }
@@ -595,7 +574,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('xxx');
 
         $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=xxx", $oCategory->getStdLink(0));
@@ -606,12 +585,14 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
 
-        $oCategory->load('8a142c3e60a535f16.78077188');
-        $sExp = "Geschenke/Wohnen/Uhren/";
+        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab82c03c3848.49471214' : '8a142c3e60a535f16.78077188';
+        $expectation = $this->getTestConfig()->getShopEdition() == 'EE' ? 'Fuer-Sie/' : 'Geschenke/Wohnen/Uhren/';
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . $sExp, $oCategory->getLink(0));
+        $oCategory->load($categoryId);
+
+        $this->assertEquals($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink(0));
     }
 
     public function testGetLinkSeoDeWithLangParam()
@@ -619,12 +600,14 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
 
-        $oCategory->loadInLang(1, '8a142c3e60a535f16.78077188');
-        $sExp = "Geschenke/Wohnen/Uhren/";
+        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab82c03c3848.49471214' : '8a142c3e60a535f16.78077188';
+        $expectation = $this->getTestConfig()->getShopEdition() == 'EE' ? 'Fuer-Sie/' : 'Geschenke/Wohnen/Uhren/';
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . $sExp, $oCategory->getLink(0));
+        $oCategory->loadInLang(1, $categoryId);
+
+        $this->assertEquals($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink(0));
     }
 
     public function testGetLinkSeoEngWithLangParam()
@@ -632,12 +615,14 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
 
-        $oCategory->loadInLang(0, '8a142c3e60a535f16.78077188');
-        $sExp = "en/Gifts/Living/Clocks/";
+        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83159266c7.83602558' : '8a142c3e60a535f16.78077188';
+        $expectation = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/For-Her/Sports/' : 'en/Gifts/Living/Clocks/';
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . $sExp, $oCategory->getLink(1));
+        $oCategory->loadInLang(0, $categoryId);
+
+        $this->assertEquals($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink(1));
     }
 
     public function testGetIsVisible()
@@ -701,20 +686,6 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $this->_oCategory->oxcategories__oxhidden = new oxField(true, oxField::T_RAW);
     }
 
-    // #M291: unassigning categories
-    public function  testUnassignWithSubCat()
-    {
-    }
-
-    public function  testUnassignIdNotSet()
-    {
-    }
-
-    // #M291: unassigning categories
-    public function  testUnassignIfShopNoSet()
-    {
-    }
-
     public function testSetGetSubCats()
     {
         $oSubCat = $this->getMock('oxcategory', array('getIsVisible'));
@@ -761,9 +732,9 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
     public function testSortSubCatsIfSortingNotSet()
     {
-        $oCat = new oxcategory();
+        $oCat = oxNew('oxCategory');
         $oCat->oxcategories__oxsort = new oxField(2);
-        $oCat2 = new oxcategory();
+        $oCat2 = oxNew('oxCategory');
         $oCat2->oxcategories__oxsort = new oxField(1);
         $oCategory = $this->getProxyClass("oxcategory");
         $oCategory->setSubCats(array(0 => $oCat, 1 => $oCat2));
@@ -784,9 +755,13 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $this->getConfig()->setConfigParam('bl_perfShowActionCatArticleCnt', false);
         $this->getConfig()->setConfigParam('blDontShowEmptyCategories', true);
         $oCategory = $this->getProxyClass("oxcategory");
-        $oCategory->load('8a142c3e60a535f16.78077188');
+
+        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab82c03c3848.49471214' : '8a142c3e60a535f16.78077188';
+        $articlesCountExpected = $this->getTestConfig()->getShopEdition() == 'EE' ? 8 : 6;
+
+        $oCategory->load($categoryId);
         oxRegistry::get("oxUtilsCount")->resetCatArticleCount($oCategory->getId());
-        $this->assertEquals(6, $oCategory->getNrOfArticles());
+        $this->assertEquals($articlesCountExpected, $oCategory->getNrOfArticles());
     }
 
     public function testSetGetIsVisible()
@@ -844,7 +819,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
     public function testGetParentCategory()
     {
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load('test2');
         $oParent = $oCategory->getParentCategory();
         $this->assertEquals($oCategory->oxcategories__oxparentid->value, $oParent->getId());
@@ -867,27 +842,24 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         $this->assertNull(oxcategory::getRootId(null));
     }
 
-
     public function testLoadingInOtherLangs()
     {
-        $sId = '30e44ab83b6e585c9.63147165';
-
-        $sId = '8a142c3e44ea4e714.31136811';
+        $sId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83b6e585c9.63147165' : '8a142c3e44ea4e714.31136811';
 
         oxRegistry::getLang()->setBaseLanguage(0);
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load($sId);
         $this->assertEquals('Wohnen', $oCategory->oxcategories__oxtitle->value);
 
         oxRegistry::getLang()->setBaseLanguage(1);
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load($sId);
         $this->assertEquals('Living', $oCategory->oxcategories__oxtitle->value);
     }
 
     public function testGetStdLinkWithParams()
     {
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('l_id');
         $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=l_id&amp;foo=bar", $oCategory->getStdLink(0, array('foo' => 'bar')));
         $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=l_id&amp;foo=bar&amp;lang=1", $oCategory->getStdLink(1, array('foo' => 'bar')));
@@ -895,7 +867,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
     public function testGetPictureUrlForType()
     {
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('l_id');
 
         $sExistingPic = '1126_th.jpg';
@@ -916,7 +888,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
      */
     public function testGetThumbUrl()
     {
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('l_id');
 
         $sExistingPic = 'sportswear_1_tc.jpg';
@@ -945,7 +917,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
      */
     public function testGetIconUrl()
     {
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('l_id');
 
         $sExistingIcon = 'access_1_cico.jpg';
@@ -974,7 +946,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
      */
     public function testGetPromotionIconUrl()
     {
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('l_id');
 
         $sExistingIcon = 'cat_promo_pico.jpg';
@@ -1039,7 +1011,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
     public function testGetTitle()
     {
         $sTitle = "testtitle";
-        $oCat = new oxCategory();
+        $oCat = oxNew('oxCategory');
         $oCat->oxcategories__oxtitle = new oxField("testtitle");
         $this->assertEquals($sTitle, $oCat->getTitle());
     }
@@ -1051,7 +1023,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
      */
     public function testGetDefaultSort()
     {
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $this->assertNull($oCategory->getDefaultSorting());
 
         $oCategory->load("30e44ab85808a1f05.26160932");
@@ -1068,10 +1040,10 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
      */
     public function testGetDefaultSortMode()
     {
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $this->assertNull($oCategory->getDefaultSortingMode());
 
-        $oCategoryId = '8a142c3e60a535f16.78077188';
+        $oCategoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e60a535f16.78077188';
         $oCategory->load($oCategoryId);
         $this->assertEquals(0, $oCategory->getDefaultSortingMode());
 

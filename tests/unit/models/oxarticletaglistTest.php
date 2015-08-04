@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -42,8 +42,13 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
         $oArticleTagList->load('1126');
         $aTags = $oArticleTagList->getArray();
 
-        $this->assertEquals(9, count($aTags));
-        $this->assertTrue(array_key_exists("fee", $aTags));
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->assertEquals(6, count($aTags));
+            $this->assertTrue(array_key_exists("wild", $aTags));
+        } else {
+            $this->assertEquals(9, count($aTags));
+            $this->assertTrue(array_key_exists("fee", $aTags));
+        }
     }
 
     /**
@@ -56,7 +61,11 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
         $oArticleTagList->load('2000');
         $oTagSet = $oArticleTagList->get();
 
-        $iExpt = 1;
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $iExpt = 0;
+        } else {
+            $iExpt = 1;
+        }
         $this->assertEquals($iExpt, count($oTagSet->get()));
     }
 
@@ -123,14 +132,19 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
         $oTagList = $oArticleTagList->get();
         $aTags = $oTagList->get();
 
-        $this->assertEquals(11, count($aTags));
-        $this->assertTrue(array_key_exists("testtag1", $aTags));
-        $this->assertTrue(array_key_exists("a", $aTags));
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->assertEquals(8, count($aTags));
+            $this->assertTrue(array_key_exists("testtag1", $aTags));
+            $this->assertTrue(array_key_exists("a", $aTags));
+        } else {
+            $this->assertEquals(11, count($aTags));
+            $this->assertTrue(array_key_exists("testtag1", $aTags));
+            $this->assertTrue(array_key_exists("a", $aTags));
+        }
 
         $oArticleTagList->set($sOriginalTags);
         $this->assertTrue($oArticleTagList->save());
     }
-
 
     /**
      * Test addition of tag.
@@ -207,8 +221,13 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
         $oTagSet = $oArticleTagList->get();
         $aTags = $oTagSet->get();
 
-        $this->assertEquals(9, count($aTags));
-        $this->assertTrue(array_key_exists('fee', $aTags));
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->assertEquals(6, count($aTags));
+            $this->assertTrue(array_key_exists('wild', $aTags));
+        } else {
+            $this->assertEquals(9, count($aTags));
+            $this->assertTrue(array_key_exists('fee', $aTags));
+        }
 
         $this->getConfig()->setConfigParam('blUseTimeCheck', $blParam);
         $oArticle->oxarticles__oxactive->value = 1;

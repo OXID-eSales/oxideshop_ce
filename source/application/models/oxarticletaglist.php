@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -124,6 +124,10 @@ class oxArticleTagList extends oxI18n implements oxITagList
      */
     public function save()
     {
+        if (!$this->canSave()) {
+            return false;
+        }
+
         if (!$this->getArticleId()) {
             return false;
         }
@@ -233,7 +237,6 @@ class oxArticleTagList extends oxI18n implements oxITagList
     public function executeDependencyEvent()
     {
         $this->_updateTagDependency();
-
     }
 
     /**
@@ -247,5 +250,16 @@ class oxArticleTagList extends oxI18n implements oxITagList
         $oTagCloud = oxNew("oxTagCloud");
         $oTagCloud->setTagList($oTagList);
         $oTagCloud->resetCache();
+    }
+
+    /**
+     * Should article tags be saved.
+     * Method is used to overwrite.
+     *
+     * @return bool
+     */
+    protected function canSave()
+    {
+        return true;
     }
 }

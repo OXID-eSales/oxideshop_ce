@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -130,7 +130,6 @@ class oxContent extends oxI18n implements oxIUrl
         return $this->oxcontents__oxcatid->value;
     }
 
-
     /**
      * Get data from db.
      *
@@ -181,18 +180,15 @@ class oxContent extends oxI18n implements oxIUrl
      */
     public function loadByIdent($sLoadId)
     {
-
         $aData = $this->_loadFromDb($sLoadId);
 
         if ($aData) {
             $this->assign($aData);
-
             return true;
         }
 
         return false;
     }
-
 
     /**
      * Returns unique object id.
@@ -223,7 +219,6 @@ class oxContent extends oxI18n implements oxIUrl
      */
     public function assign($dbRecord)
     {
-
         parent::assign($dbRecord);
         // workaround for firefox showing &lang= as &9001;= entity, mantis#0001272
 

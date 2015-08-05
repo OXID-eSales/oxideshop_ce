@@ -329,8 +329,15 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
     {
         $this->setConfigParam('blVariantParentBuyable', true);
 
+        // Get proxy creates class which is used in mock.
         $this->getProxyClass('oxarticle');
-        $oProductParent = $this->getMock('oxarticlePROXY', array('getSelectLists', 'getId'));
+        // Get proxy use oxUtilsObject to creates class name so get namespace class.
+        $articleProxyName = 'oxarticleProxy';
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $articleProxyName = '_OxidEsales_Enterprise_Application_Model_ArticleProxy';
+        }
+
+        $oProductParent = $this->getMock($articleProxyName, array('getSelectLists', 'getId'));
         $oProductParent->expects($this->once())->method('getSelectLists');
         $oProductParent->expects($this->atLeastOnce())->method('getId')->will($this->returnValue('123'));
         $oProductParent->oxarticles__oxvarcount = new oxField(10);

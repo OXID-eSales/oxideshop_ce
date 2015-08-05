@@ -593,7 +593,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oOrderArticle->oxorderarticles__oxamount = new oxField(10);
         $oOrderArticle->oxorderarticles__oxwrapid = new oxField("swrapid");
 
-        $oTestBasketItem = new oxBasketItem();
+        $oTestBasketItem = oxNew('oxBasketItem');
         $oTestBasketItem->initFromOrderArticle($oOrderArticle);
         $oTestBasketItem->setWrapping("swrapid");
 

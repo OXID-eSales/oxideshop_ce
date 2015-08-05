@@ -839,12 +839,7 @@ class oxArticleList extends oxList
      */
     public function renewPriceUpdateTime()
     {
-        $oDb = oxDb::getDb();
-
-        // fetching next update time
-        $sQ = "select unix_timestamp( oxupdatepricetime ) from %s where oxupdatepricetime > 0 order by oxupdatepricetime asc";
-        $iTimeToUpdate = $oDb->getOne(sprintf($sQ, "`oxarticles`"), false, false);
-
+        $iTimeToUpdate = $this->fetchNextUpdateTime();
 
         // next day?
         $iCurrUpdateTime = oxRegistry::get("oxUtilsDate")->getTime();
@@ -886,21 +881,7 @@ class oxArticleList extends oxList
             $aUpdatedArticleIds = $oDb->getCol($sQ, false, false);
 
             // updating oxarticles
-            $sQ = "UPDATE %s SET
-                       `oxprice`  = IF( `oxupdateprice` > 0, `oxupdateprice`, `oxprice` ),
-                       `oxpricea` = IF( `oxupdatepricea` > 0, `oxupdatepricea`, `oxpricea` ),
-                       `oxpriceb` = IF( `oxupdatepriceb` > 0, `oxupdatepriceb`, `oxpriceb` ),
-                       `oxpricec` = IF( `oxupdatepricec` > 0, `oxupdatepricec`, `oxpricec` ),
-                       `oxupdatepricetime` = 0,
-                       `oxupdateprice`     = 0,
-                       `oxupdatepricea`    = 0,
-                       `oxupdatepriceb`    = 0,
-                       `oxupdatepricec`    = 0
-                   WHERE
-                       `oxupdatepricetime` > 0 AND
-                       `oxupdatepricetime` <= '{$sCurrUpdateTime}'";
-            $blUpdated = $oDb->execute(sprintf($sQ, "`oxarticles`"));
-
+            $blUpdated = $this->updateOxArticles($sCurrUpdateTime, $oDb);
 
             // renew update time in case update is not forced
             if (!$blForceUpdate) {
@@ -918,6 +899,7 @@ class oxArticleList extends oxList
                 }
             }
 
+            $this->updateArticles($aUpdatedArticleIds);
         }
 
         return $blUpdated;
@@ -1254,5 +1236,76 @@ class oxArticleList extends oxList
         }
 
         return $blCan;
+    }
+
+    /**
+     * Method fetches next update time for renewing price update time.
+     *
+     * @return string
+     */
+    protected function fetchNextUpdateTime()
+    {
+        $oDb = oxDb::getDb();
+        // fetching next update time
+        $sQ = $this->getQueryToFetchNextUpdateTime();
+        $iTimeToUpdate = $oDb->getOne(sprintf($sQ, "`oxarticles`"), false, false);
+
+        return $iTimeToUpdate;
+    }
+
+    /**
+     * Returns query to fetch next update time.
+     *
+     * @return string
+     */
+    protected function getQueryToFetchNextUpdateTime()
+    {
+        return "select unix_timestamp( oxupdatepricetime ) from %s where oxupdatepricetime > 0 order by oxupdatepricetime asc";
+    }
+
+    /**
+     * @param string     $sCurrUpdateTime
+     * @param oxLegacyDb $oDb
+     *
+     * @return mixed
+     */
+    protected function updateOxArticles($sCurrUpdateTime, $oDb)
+    {
+        $sQ = $this->getQueryToUpdateOxArticle($sCurrUpdateTime);
+        $blUpdated = $oDb->execute(sprintf($sQ, "`oxarticles`"));
+
+        return $blUpdated;
+    }
+
+    /**
+     * @param string $sCurrUpdateTime
+     *
+     * @return string
+     */
+    protected function getQueryToUpdateOxArticle($sCurrUpdateTime)
+    {
+        $sQ = "UPDATE %s SET
+                       `oxprice`  = IF( `oxupdateprice` > 0, `oxupdateprice`, `oxprice` ),
+                       `oxpricea` = IF( `oxupdatepricea` > 0, `oxupdatepricea`, `oxpricea` ),
+                       `oxpriceb` = IF( `oxupdatepriceb` > 0, `oxupdatepriceb`, `oxpriceb` ),
+                       `oxpricec` = IF( `oxupdatepricec` > 0, `oxupdatepricec`, `oxpricec` ),
+                       `oxupdatepricetime` = 0,
+                       `oxupdateprice`     = 0,
+                       `oxupdatepricea`    = 0,
+                       `oxupdatepriceb`    = 0,
+                       `oxupdatepricec`    = 0
+                   WHERE
+                       `oxupdatepricetime` > 0 AND
+                       `oxupdatepricetime` <= '{$sCurrUpdateTime}'";
+        return $sQ;
+    }
+
+    /**
+     * Method is used for overloading.
+     *
+     * @param array $aUpdatedArticleIds
+     */
+    protected function updateArticles($aUpdatedArticleIds)
+    {
     }
 }

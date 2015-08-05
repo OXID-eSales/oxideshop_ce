@@ -1264,6 +1264,8 @@ class oxArticleList extends oxList
     }
 
     /**
+     * Updates article.
+     *
      * @param string     $sCurrUpdateTime
      * @param oxLegacyDb $oDb
      *
@@ -1278,6 +1280,8 @@ class oxArticleList extends oxList
     }
 
     /**
+     * Method returns query to update article.
+     *
      * @param string $sCurrUpdateTime
      *
      * @return string

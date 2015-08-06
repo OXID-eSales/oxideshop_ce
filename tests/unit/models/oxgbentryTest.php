@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Models_oxGbEntryTest extends OxidTestCase
         parent::setUp();
 
         $myConfig = $this->getConfig();
-        $this->_oObj = new oxGBEntry();
+        $this->_oObj = oxNew('oxGBEntry');
         $this->_oObj->oxgbentries__oxuserid = new oxField('oxdefaultadmin', oxField::T_RAW);
         $this->_oObj->oxgbentries__oxcontent = new oxField("test content\ntest content", oxField::T_RAW);
         $this->_oObj->oxgbentries__oxcreate = new oxField(null, oxField::T_RAW);
@@ -96,12 +96,12 @@ class Unit_Models_oxGbEntryTest extends OxidTestCase
 
     public function testAssignNoUserData()
     {
-        $oObj = new oxGBEntry();
+        $oObj = oxNew('oxGBEntry');
         $oObj->load($this->_oObj->getId());
         $oObj->oxgbentries__oxuserid = new oxField('', oxField::T_RAW);
         $oObj->save();
 
-        $oObj = new oxGBEntry();
+        $oObj = oxNew('oxGBEntry');
         $oObj->load($this->_oObj->getId());
         $this->assertEquals("test content\ntest content", $oObj->oxgbentries__oxcontent->value);
         $this->assertFalse(isset($oObj->oxuser__oxfname));
@@ -109,7 +109,7 @@ class Unit_Models_oxGbEntryTest extends OxidTestCase
 
     public function testAssignWithUserData()
     {
-        $oObj = new oxGBEntry();
+        $oObj = oxNew('oxGBEntry');
         $oObj->load($this->_oObj->getId());
 
         $this->assertEquals("test content\ntest content", $oObj->oxgbentries__oxcontent->value);
@@ -122,7 +122,7 @@ class Unit_Models_oxGbEntryTest extends OxidTestCase
         $myDB = oxDb::getDb();
         $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","' . $this->getConfig()->getBaseShopId() . '","oxdefaultadmin","AA test content")';
         $myDB->execute($sSql);
-        $oObj = new oxGBEntry();
+        $oObj = oxNew('oxGBEntry');
         $aEntries = $oObj->getAllEntries(0, 10, 'oxcontent');
         $this->assertEquals(2, $aEntries->count());
         $oEntry = $aEntries->current();
@@ -135,7 +135,7 @@ class Unit_Models_oxGbEntryTest extends OxidTestCase
         $myDB = oxDb::getDb();
         $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","' . $this->getConfig()->getBaseShopId() . '","oxdefaultadmin","AA test content")';
         $myDB->execute($sSql);
-        $oObj = new oxGBEntry();
+        $oObj = oxNew('oxGBEntry');
         $aEntries = $oObj->getAllEntries(0, 10, null);
         $this->assertEquals(0, $aEntries->count());
         $sSql = 'update oxgbentries set oxactive="1" where oxid="_test"';
@@ -146,7 +146,7 @@ class Unit_Models_oxGbEntryTest extends OxidTestCase
 
     public function testGetEntryCount()
     {
-        $oObj = new oxGBEntry();
+        $oObj = oxNew('oxGBEntry');
         $iCnt = $oObj->getEntryCount();
         $this->assertEquals(1, $iCnt);
     }
@@ -154,7 +154,7 @@ class Unit_Models_oxGbEntryTest extends OxidTestCase
     public function testGetEntryCountModerationOn()
     {
         $this->getConfig()->setConfigParam('blGBModerate', 1);
-        $oObj = new oxGBEntry();
+        $oObj = oxNew('oxGBEntry');
         $iCnt = $oObj->getEntryCount();
         $this->assertEquals(0, $iCnt);
         $this->_oObj->oxgbentries__oxactive = new oxField(1, oxField::T_RAW);
@@ -165,14 +165,14 @@ class Unit_Models_oxGbEntryTest extends OxidTestCase
 
     public function testFloodProtectionIfAllow()
     {
-        $oObj = new oxGBEntry();
+        $oObj = oxNew('oxGBEntry');
         $myConfig = $this->getConfig();
         $this->assertFalse($oObj->floodProtection($myConfig->getShopId(), 'oxdefaultadmin'));
     }
 
     public function testFloodProtectionMaxReached()
     {
-        $oObj = new oxGBEntry();
+        $oObj = oxNew('oxGBEntry');
         $myConfig = $this->getConfig();
         $myConfig->setConfigParam('iMaxGBEntriesPerDay', 1);
         $this->assertTrue($oObj->floodProtection($myConfig->getShopId(), 'oxdefaultadmin'));
@@ -180,10 +180,9 @@ class Unit_Models_oxGbEntryTest extends OxidTestCase
 
     public function testFloodProtectionIfShopAndUserNotSet()
     {
-        $oObj = new oxGBEntry();
+        $oObj = oxNew('oxGBEntry');
         $this->assertTrue($oObj->floodProtection());
     }
-
 
     public function testSetFieldData()
     {
@@ -191,5 +190,4 @@ class Unit_Models_oxGbEntryTest extends OxidTestCase
         $oObj->UNITsetFieldData("oxgbentries__oxcontent", "asd< as");
         $this->assertEquals('asd&lt; as', $oObj->oxgbentries__oxcontent->value);
     }
-
 }

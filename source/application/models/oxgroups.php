@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -44,7 +44,6 @@ class oxGroups extends oxI18n
         $this->init('oxgroups');
     }
 
-
     /**
      * Deletes user group from database. Returns true/false, according to deleting status.
      *
@@ -61,12 +60,9 @@ class oxGroups extends oxI18n
             return false;
         }
 
-
-
         parent::delete($sOXID);
 
         $oDb = oxDb::getDb();
-
 
         // deleting related data records
         $sDelete = 'delete from oxobject2group where oxobject2group.oxgroupsid = ' . $oDb->quote($sOXID);
@@ -83,5 +79,4 @@ class oxGroups extends oxI18n
 
         return $rs->EOF;
     }
-
 }

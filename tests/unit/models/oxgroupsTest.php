@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -39,12 +39,11 @@ class Unit_Models_oxgroupsTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $oGroup = new oxgroups();
-        $oGroup->setId('testgroup');
-        $oGroup->oxgroups__oxtitle = new oxfield('testgroup');
-        $oGroup->oxgroups__oxactive = new oxfield(1);
-        $oGroup->save();
-
+        $group = oxNew('oxgroups');
+        $group->setId('testgroup');
+        $group->oxgroups__oxtitle = new oxfield('testgroup');
+        $group->oxgroups__oxactive = new oxfield(1);
+        $group->save();
     }
 
     /**
@@ -54,12 +53,11 @@ class Unit_Models_oxgroupsTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $oGroup = new oxgroups();
-        $oGroup->delete('testgroup');
-        $oGroup->delete('testgroup2');
+        $group = oxNew('oxgroups');
+        $group->delete('testgroup');
+        $group->delete('testgroup2');
         parent::tearDown();
     }
-
 
     public function testDelete()
     {
@@ -68,15 +66,14 @@ class Unit_Models_oxgroupsTest extends OxidTestCase
         $myDB = oxDb::getDb();
 
         // selecting count from DB
-        $oGroups = oxNew('oxgroups');
-        $oGroups->Load('testgroup');
-        $oGroups->delete();
+        $group = oxNew('oxgroups');
+        $group->Load('testgroup');
+        $group->delete();
 
         // checking of group is deleted from DB
-        $sQ = "select * from oxgroups where oxid = '$sGroupId' ";
-        $iGroup = $myDB->getOne($sQ);
-
-        if ($iGroup > 0) {
+        $groupId = $group->getId();
+        $sQ = "select count(*) from oxgroups where oxid = '$groupId' ";
+        if ($myDB->getOne($sQ)) {
             $this->fail('item from oxgroups are not deleted');
         }
 
@@ -84,20 +81,11 @@ class Unit_Models_oxgroupsTest extends OxidTestCase
         foreach ($this->_aAdd as $sTable => $aField) {
             $sField = $aField[0];
 
-            $sQ = "select count(*) from $sTable where $sTable.$sField = '$sGroupId' ";
+            $sQ = "select count(*) from $sTable where $sTable.$sField = '$groupId' ";
             if ($myDB->getOne($sQ)) {
                 $this->fail('records from ' . $sTable . ' are not deleted');
             }
         }
-
-        return;
-        // EE only
-
-        $iOffset = ( int ) ($oGroup->oxgroups__oxrrid->value / 31);
-        $iBitMap = 1 << ($oGroup->oxgroups__oxrrid->value % 31);
-
-        $this->assertEquals(0, $myDB->getOne("select count(*) from oxobject2role where oxobjectid='testgroup'"));
-        $this->assertEquals(0, $myDB->getOne("select count(*) from oxobjectrights where oxoffset = $iOffset and oxgroupidx & $iBitMap "));
     }
 
     public function testDeleteNoId()
@@ -105,7 +93,4 @@ class Unit_Models_oxgroupsTest extends OxidTestCase
         $oGroups = oxNew('oxgroups');
         $this->assertFalse($oGroups->delete());
     }
-
-
-
 }

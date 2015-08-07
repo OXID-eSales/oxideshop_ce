@@ -176,7 +176,6 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $this->assertFalse($oDiscount->delete());
     }
 
-
     /**
      * When article base price is higher than discount priceTo - discount should not be valid
      */
@@ -419,10 +418,13 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $this->getConfig()->setConfigParam("blVariantParentBuyable", 1);
         $sDiscountId = '_' . uniqid(rand());
 
-        // inserting test discount
-        $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
-               values ( '{$sDiscountId}', '" . $this->getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'abs', '10' )";
-
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto,  oxaddsumtype, oxaddsum )
+                   values ( '{$sDiscountId}', '" . $this->getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'abs', '10' )";
+        } else {
+            $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
+                   values ( '{$sDiscountId}', '" . $this->getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'abs', '10' )";
+        }
         $this->addToDatabase($sQ, 'oxdiscount');
 
         // inserting test discount

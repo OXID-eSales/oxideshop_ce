@@ -250,7 +250,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->load("oxdefaultadmin");
 
-        $oDelList = new oxDeliveryList();
+        $oDelList = oxNew('oxDeliveryList');
         $oDelList = $oDelList->getDeliveryList($oBasket, $oUser);
         $iListCOunt = count($oDelList);
 
@@ -285,7 +285,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $oGarbage->save();
 
 
-        $oDelList = new oxDeliveryList();
+        $oDelList = oxNew('oxDeliveryList');
         $oDelList = $oDelList->getDeliveryList($oBasket, $oUser);
         $iNewListCount = count($oDelList);
 
@@ -329,7 +329,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $oBasket->addToBasket('1354', 5);
         $oBasket->calculateBasket();
 
-        $oDelList = new oxDeliveryList();
+        $oDelList = oxNew('oxDeliveryList');
         $this->assertFalse($oDelList->hasDeliveries($oBasket, $oUser, 'xxx', 'yyy'));
         $this->assertTrue($oDelList->hasDeliveries($oBasket, $oUser, $oUser->oxuser__oxcountryid->value, 'oxidstandard'));
     }

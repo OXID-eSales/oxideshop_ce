@@ -542,7 +542,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param string $sId New ID
      *
-     * @return null
+     * @return string|null
      */
     public function setId($sId = null)
     {
@@ -695,7 +695,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns SQL select string with checks if items are available
      *
-     * @param bool $forceCoreTable
+     * @param bool $forceCoreTable forces core table usage (optional)
      *
      * @return string
      */
@@ -949,7 +949,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * @return float
+     * Calculates lowest price of available article variants.
+     *
+     * @return double
      */
     protected function _calculateVarMinPrice()
     {
@@ -985,8 +987,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * @param $dPrice
-     * @return float
+     * @param double $dPrice
+     *
+     * @return double
      */
     protected function _prepareModifiedPrice($dPrice)
     {
@@ -1117,8 +1120,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Loads object data from DB (object data ID must be passed to method).
-     * Converts dates (oxarticle::oxarticles__oxinsert)
-     * to international format (oxutils.php oxRegistry::get("oxUtilsDate")->formatDBDate(...)).
+     * Converts dates (oxArticle::oxarticles__oxinsert)
+     * to international format (oxUtils.php oxRegistry::get("oxUtilsDate")->formatDBDate(...)).
      * Returns true if article was loaded successfully.
      *
      * @param string $sOXID Article object ID
@@ -1148,7 +1151,10 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * @param $articleId
+     * Loads data from database and returns it.
+     *
+     * @param string $articleId
+     *
      * @return array
      */
     protected function _loadData($articleId)
@@ -1664,7 +1670,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * assigned category and is such category does not exist, tries to
      * load category by price
      *
-     * @return oxcategory
+     * @return oxCategory
      */
     public function getCategory()
     {
@@ -1811,7 +1817,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param bool $blShopCheck Set false if shop check is not required (default is true)
      *
-     * @return oxmanufacturer|null
+     * @return oxManufacturer|null
      */
     public function getManufacturer($blShopCheck = true)
     {
@@ -2013,7 +2019,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Calculates and returns price of article (adds taxes and discounts).
      *
-     * @param float $dAmount article amount
+     * @param float|int $dAmount article amount.
      *
      * @return oxPrice
      */
@@ -2062,9 +2068,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * return article user
-     *
-     * @return oxUser
+     * @return oxUser article user.
      */
     public function getArticleUser()
     {
@@ -2409,8 +2413,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Checks if stock configuration allows to buy user chosen amount $dAmount
      *
-     * @param double $dAmount         buyable amount
-     * @param double $dArtStockAmount stock amount
+     * @param double     $dAmount buyable amount
+     * @param double|int $dArtStockAmount stock amount
      *
      * @return mixed
      */
@@ -4409,7 +4413,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Executes oxarticle::_skipSaveFields() and updates article information
+     * Executes oxArticle::_skipSaveFields() and updates article information
      *
      * @return bool
      */
@@ -4873,9 +4877,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Return sub shop variant min price
+     * Return sub shop variant min price.
      *
-     * @return null
+     * @return double|null
      */
     protected function _getSubShopVarMinPrice()
     {
@@ -4937,7 +4941,10 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * @return null
+     * Place to hook to return variant min price if it might be different,
+     * for example for subshops.
+     *
+     * @return double|null
      */
     protected function _getShopVarMinPrice()
     {
@@ -4945,7 +4952,10 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * @return null
+     * Place to hook to return variant max price if it might be different,
+     * for example for subshops.
+     *
+     * @return double|null
      */
     protected function _getShopVarMaxPrice()
     {
@@ -4953,9 +4963,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Return sub shop variant max price
+     * Return sub shop variant max price.
      *
-     * @return null
+     * @return double|null
      */
     protected function _getSubShopVarMaxPrice()
     {
@@ -4997,11 +5007,15 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * @param float $amount
+     * Place to hook and change amount if it should be calculated by different logic,
+     * for example VPE.
+     *
+     * @param double $amount Amount
+     *
+     * @return double|null
      */
     public function checkForVpe($amount)
     {
-
     }
 
     /**

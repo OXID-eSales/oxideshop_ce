@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -370,7 +370,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $oUser = oxNew("oxUser");
 
         $oValidator = $this->getMock('oxInputValidator', array('getCompanyVatInValidator'));
-        $oValidator->expects($this->any())->method('getCompanyVatInValidator')->will($this->returnValue(new oxCompanyVatInValidator(new oxCountry())));
+        $oValidator->expects($this->any())->method('getCompanyVatInValidator')->will($this->returnValue(new oxCompanyVatInValidator(oxNew('oxCountry'))));
 
         $oValidator->checkVatId($oUser, array('oxuser__oxustid' => 'AT123', 'oxuser__oxcountryid' => 'a7c40f6320aeb2ec2.72885259', 'oxuser__oxcompany' => 'Company'));
     }
@@ -383,7 +383,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $oUser = oxNew("oxUser");
 
         $oValidator = $this->getMock('oxInputValidator', array('getCompanyVatInValidator'));
-        $oValidator->expects($this->any())->method('getCompanyVatInValidator')->will($this->returnValue(new oxCompanyVatInValidator(new oxCountry())));
+        $oValidator->expects($this->any())->method('getCompanyVatInValidator')->will($this->returnValue(new oxCompanyVatInValidator(oxNew('oxCountry'))));
 
         $oValidator->checkVatId($oUser, array('oxuser__oxustid' => 'AT123', 'oxuser__oxcountryid' => 'a7c40f6320aeb2ec2.72885259', 'oxuser__oxcompany' => 'Company'));
     }
@@ -1179,7 +1179,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
     public function testGetCompanyVatInValidator_Set()
     {
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oInputValidator = new oxInputValidator();
         $oVatInValidator = new oxCompanyVatInValidator($oCountry);
 
@@ -1192,7 +1192,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     {
         $oInputValidator = new oxInputValidator();
 
-        $oVatInValidator = $oInputValidator->getCompanyVatInValidator(new oxCountry());
+        $oVatInValidator = $oInputValidator->getCompanyVatInValidator(oxNew('oxCountry'));
 
         $this->assertTrue($oVatInValidator instanceof oxCompanyVatInValidator);
         $aCheckers = $oVatInValidator->getCheckers();
@@ -1208,7 +1208,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $this->getConfig()->setConfigParam('blVatIdCheckDisabled', true);
 
         $oInputValidator = new oxInputValidator();
-        $oVatInValidator = $oInputValidator->getCompanyVatInValidator(new oxCountry());
+        $oVatInValidator = $oInputValidator->getCompanyVatInValidator(oxNew('oxCountry'));
 
         $this->assertTrue($oVatInValidator instanceof oxCompanyVatInValidator);
 

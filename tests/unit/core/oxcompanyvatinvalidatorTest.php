@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,7 +25,7 @@ class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
 
     public function testGetCountry_Construct()
     {
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
         $this->assertSame($oCountry, $oValidator->getCountry());
@@ -33,10 +33,10 @@ class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
 
     public function testGetCountry_set()
     {
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
-        $oCountryOther = new oxCountry();
+        $oCountryOther = oxNew('oxCountry');
         $oValidator->setCountry($oCountryOther);
 
         $this->assertSame($oCountryOther, $oValidator->getCountry());
@@ -44,7 +44,7 @@ class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
 
     public function testGetError_notSet()
     {
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
         $this->assertSame('', $oValidator->getError());
@@ -52,7 +52,7 @@ class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
 
     public function testGetError_set()
     {
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oValidator = new oxCompanyVatInValidator($oCountry);
         $oValidator->setError('Error');
 
@@ -61,7 +61,7 @@ class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
 
     public function testAddChecker()
     {
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
         $oChecker = new oxCompanyVatInCountryChecker();
@@ -73,7 +73,7 @@ class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
     public function testValidate_noCheckers()
     {
         $oVatIn = new oxCompanyVatIn('LT1123');
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
         $this->assertFalse($oValidator->validate($oVatIn));
@@ -82,7 +82,7 @@ class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
     public function testValidate_onChecker_success()
     {
         $oVatIn = new oxCompanyVatIn('LT1123');
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
         $oChecker = $this->getMock('oxCompanyVatInCountryChecker');
@@ -96,7 +96,7 @@ class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
     public function testValidate_onChecker_fail()
     {
         $oVatIn = new oxCompanyVatIn('LT1123');
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
         $oChecker = $this->getMock('oxCompanyVatInCountryChecker');
@@ -113,7 +113,7 @@ class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
     public function testValidate_2Checkers_success()
     {
         $oVatIn = new oxCompanyVatIn('LT1123');
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
         $oChecker = $this->getMock('oxCompanyVatInCountryChecker');
@@ -132,7 +132,7 @@ class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
     public function testValidate_2Checkers_OneFail()
     {
         $oVatIn = new oxCompanyVatIn('LT1123');
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
         $oChecker = $this->getMock('oxCompanyVatInCountryChecker');

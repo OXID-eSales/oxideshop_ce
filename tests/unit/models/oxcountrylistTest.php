@@ -41,7 +41,7 @@ class Unit_Models_oxCountryListTest extends OxidTestCase
 
         $this->aList = array();
         foreach ($aCountryTitle as $iPos => $sTitle) {
-            $this->aList[$iPos] = new oxcountry();
+            $this->aList[$iPos] = oxNew('oxCountry');
             $this->aList[$iPos]->setId('_testCountryId' . $iPos);
             $this->aList[$iPos]->oxcountry__oxorder = new oxField('123', oxField::T_RAW);
             $this->aList[$iPos]->oxcountry__oxtitle = new oxField($sTitle, oxField::T_RAW);
@@ -49,7 +49,7 @@ class Unit_Models_oxCountryListTest extends OxidTestCase
         }
 
         // and one with diff order number
-        $oCountry = new oxcountry();
+        $oCountry = oxNew('oxCountry');
         $oCountry->setId('_testCountryId5');
         $oCountry->oxcountry__oxorder = new oxField('0', oxField::T_RAW);
         $oCountry->oxcountry__oxtitle = new oxField("oxCountryListTest_ä", oxField::T_RAW);
@@ -94,7 +94,7 @@ class Unit_Models_oxCountryListTest extends OxidTestCase
      */
     public function testSelectStringChangeOrder()
     {
-        $oCountry = new oxcountry();
+        $oCountry = oxNew('oxCountry');
         $oCountry->load('_testCountryId4');
         $oCountry->oxcountry__oxorder = new oxField('999', oxField::T_RAW);
         $oCountry->save();

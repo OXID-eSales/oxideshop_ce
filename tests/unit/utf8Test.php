@@ -615,7 +615,7 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'sėkme Литовские für';
 
-        $oCountry = new oxcountry();
+        $oCountry = oxNew('oxCountry');
         $oCountry->setId('_testCountry');
         $oCountry->oxcountry__oxtitle = new oxField($sValue);
         $oCountry->oxcountry__oxisoalpha2 = new oxField("ėЛ");
@@ -625,7 +625,7 @@ class Unit_utf8Test extends OxidTestCase
         $oCountry->oxcountry__oxlongdesc = new oxField($sValue);
         $oCountry->save();
 
-        $oCountry = new oxcountry();
+        $oCountry = oxNew('oxCountry');
         $oCountry->load('_testCountry');
 
         $this->assertEquals($sValue, $oCountry->oxcountry__oxtitle->value);
@@ -639,7 +639,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testOxCountryListLoad()
     {
         // inserting test country
-        $oCountry = new oxcountry();
+        $oCountry = oxNew('oxCountry');
         $oCountry->setId('_testCountry');
         $oCountry->oxcountry__oxtitle = new oxField('Ö_testCountry');
         $oCountry->oxcountry__oxorder = new oxField(9999);

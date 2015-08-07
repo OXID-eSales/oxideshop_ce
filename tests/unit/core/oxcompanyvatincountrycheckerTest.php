@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -26,7 +26,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
     public function testGetCountry_set()
     {
         $oChecker = new oxCompanyVatInCountryChecker();
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
 
         $oChecker->setCountry($oCountry);
         $this->assertSame($oCountry, $oChecker->getCountry());
@@ -52,7 +52,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
     public function testValidate($sCountryCode, $sVatIn, $blExpectValidationResult)
     {
         $oVatIn = new oxCompanyVatIn($sVatIn);
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oCountry->oxcountry__oxvatinprefix = new oxField($sCountryCode);
 
         $oChecker = new oxCompanyVatInCountryChecker();
@@ -78,7 +78,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
     public function testValidateGreece()
     {
         $oVatIn = new oxCompanyVatIn('EL123');
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oCountry->load('a7c40f633114e8fc6.25257477');
 
         $oChecker = new oxCompanyVatInCountryChecker();
@@ -89,7 +89,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
     public function testValidate_notValid_errorMessage()
     {
         $oVatIn = new oxCompanyVatIn('LT12345');
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oCountry->oxcountry__oxvatinprefix = new oxField('DE');
 
         $oChecker = new oxCompanyVatInCountryChecker();
@@ -102,7 +102,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
     public function testValidate_notValidWrongDataType_errorMessage()
     {
         $oVatIn = new oxCompanyVatIn('LT12345');
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oCountry->oxcountry__oxvatinprefix = new oxField(1);
 
         $oChecker = new oxCompanyVatInCountryChecker();
@@ -115,7 +115,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
     public function testValidate_valid_noErrorMessage()
     {
         $oVatIn = new oxCompanyVatIn('LT12345');
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oCountry->oxcountry__oxvatinprefix = new oxField('LT');
 
         $oChecker = new oxCompanyVatInCountryChecker();

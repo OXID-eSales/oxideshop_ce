@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -40,7 +40,7 @@ class Unit_Models_oxCountryTest extends OxidTestCase
         $oObj->oxcountry__oxtitle_1 = new oxField('oxCountryTestENG', oxField::T_RAW);
         $oObj->save();
 
-        $this->oObj = new oxCountry();
+        $this->oObj = oxNew('oxCountry');
         $this->oObj->load($oObj->getId());
     }
 
@@ -61,7 +61,7 @@ class Unit_Models_oxCountryTest extends OxidTestCase
     // for default lang
     public function testLoadingCountryDefLanguage()
     {
-        $oObj = new oxCountry();
+        $oObj = oxNew('oxCountry');
         $oObj->load($this->oObj->getId());
         $this->assertEquals('oxCountryTestDE', $oObj->oxcountry__oxtitle->value);
     }
@@ -69,7 +69,7 @@ class Unit_Models_oxCountryTest extends OxidTestCase
     // for second language
     public function testLoadingCountrySecondLanguage()
     {
-        $oObj = new oxCountry();
+        $oObj = oxNew('oxCountry');
         //$this->getConfig()->setLanguage( 1 );
         $oObj->loadInLang(1, $this->oObj->getId());
         $this->assertEquals('oxCountryTestENG', $oObj->oxcountry__oxtitle->value);
@@ -86,7 +86,7 @@ class Unit_Models_oxCountryTest extends OxidTestCase
 
     public function testIsForeignCountry()
     {
-        $oObj = new oxCountry();
+        $oObj = oxNew('oxCountry');
         $aHome = $this->getConfig()->getConfigParam('aHomeCountry');
         $oObj->setId($aHome[0]);
         $this->assertFalse($oObj->isForeignCountry());
@@ -97,7 +97,7 @@ class Unit_Models_oxCountryTest extends OxidTestCase
 
     public function testisInEU()
     {
-        $oObj = new oxCountry();
+        $oObj = oxNew('oxCountry');
         $oObj->setId('test');
         $oObj->oxcountry__oxvatstatus = new oxField(1, oxField::T_RAW);
         $this->assertTrue($oObj->isInEU());
@@ -114,7 +114,7 @@ class Unit_Models_oxCountryTest extends OxidTestCase
      */
     public function testGetStatesNumber()
     {
-        $oSubj = new oxCountry();
+        $oSubj = oxNew('oxCountry');
         $oSubj->load('8f241f11095649d18.02676059');
         $aStates = $oSubj->getStates();
         $this->assertEquals(13, count($aStates));
@@ -127,7 +127,7 @@ class Unit_Models_oxCountryTest extends OxidTestCase
      */
     public function testGetStatesIsOrdered()
     {
-        $oSubj = new oxCountry();
+        $oSubj = oxNew('oxCountry');
         $oSubj->load('8f241f11096877ac0.98748826');
         $aStates = $oSubj->getStates();
         $aKeys = $aStates->arrayKeys();
@@ -144,7 +144,7 @@ class Unit_Models_oxCountryTest extends OxidTestCase
      */
     public function testGetStates()
     {
-        $oSubj = new oxCountry();
+        $oSubj = oxNew('oxCountry');
         $oSubj->load('8f241f11095649d18.02676059');
         $aStates = $oSubj->getStates();
         $this->assertEquals('Manitoba', $aStates['MB']->oxstates__oxtitle->value);
@@ -157,7 +157,7 @@ class Unit_Models_oxCountryTest extends OxidTestCase
      */
     public function testGetIdByCode()
     {
-        $oSubj = new oxCountry();
+        $oSubj = oxNew('oxCountry');
         $this->assertEquals('a7c40f631fc920687.20179984', $oSubj->getIdByCode('DE'));
     }
 
@@ -180,7 +180,7 @@ class Unit_Models_oxCountryTest extends OxidTestCase
      */
     public function testGetVatIdentificationNumberPrefix($sCountryId, $sPrefix)
     {
-        $oCountry = new oxCountry();
+        $oCountry = oxNew('oxCountry');
         $oCountry->load($sCountryId);
 
         $this->assertEquals($sPrefix, $oCountry->getVATIdentificationNumberPrefix());

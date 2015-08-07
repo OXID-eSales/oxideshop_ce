@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -132,7 +132,7 @@ class Unit_Models_oxpaymentlistTest extends OxidTestCase
         $oO2Group->save();
 
         // delivery set
-        $this->oDelSet = new oxDeliverySet();
+        $this->oDelSet = oxNew('oxDeliverySet');
         $this->oDelSet->setId($this->_getUId());
         $this->oDelSet->oxdeliveryset__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
         $this->oDelSet->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
@@ -472,7 +472,7 @@ class Unit_Models_oxpaymentlistTest extends OxidTestCase
         $oDb->execute('update oxdeliveryset set oxactive = 0');
 
         //
-        $oDelSet = new oxDeliverySet();
+        $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->setId('_' . md5(time()));
         $oDelSet->oxdeliveryset__oxshopid = new oxField($iShopId);
         $oDelSet->oxdeliveryset__oxactive = new oxField(1);
@@ -509,7 +509,7 @@ class Unit_Models_oxpaymentlistTest extends OxidTestCase
 
 
         //
-        $oDelSet = new oxDeliverySet();
+        $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->setId($this->_getUId());
         $oDelSet->oxdeliveryset__oxshopid = new oxField($iShopId);
         $oDelSet->oxdeliveryset__oxactive = new oxField(1);
@@ -554,7 +554,7 @@ class Unit_Models_oxpaymentlistTest extends OxidTestCase
 
 
         //
-        $oDelSet = new oxDeliverySet();
+        $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->load('oxidstandard');
         $oDelSet->oxdeliveryset__oxshopid = new oxField($iShopId);
         $oDelSet->oxdeliveryset__oxactive = new oxField(1);

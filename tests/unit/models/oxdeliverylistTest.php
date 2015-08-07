@@ -229,7 +229,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $oDelivery->delete('a713e96c15c7bf3c7.45279281');
         $oDelivery->delete('a713e96c1aeaefa75.74010807');
         $oDelivery->delete('bdd46f9f2455153b9.22318118');
-        $oDelList = new oxDeliverySet();
+        $oDelList = oxNew('oxDeliverySet');
         $oDelList->delete('b3b46b74d3894f9f5.62965460');
 
         oxRegistry::getSession()->deleteVariable('deladrid');

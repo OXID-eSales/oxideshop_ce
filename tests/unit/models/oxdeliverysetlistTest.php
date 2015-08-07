@@ -239,7 +239,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oDel2->save();
 
         // Deliveryset 1
-        $oDelSet1 = new oxDeliverySet();
+        $oDelSet1 = oxNew('oxDeliverySet');
         $oDelSet1->setId('_testdeliveryset1');
         $oDelSet1->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $oDelSet1->oxdeliveryset__oxshopid = new oxField($iActShop, oxField::T_RAW);
@@ -248,7 +248,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oDelSet1->save();
 
         // Deliveryset 2
-        $oDelSet2 = new oxDeliverySet();
+        $oDelSet2 = oxNew('oxDeliverySet');
         $oDelSet2->setId('_testdeliveryset2');
         $oDelSet2->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $oDelSet2->oxdeliveryset__oxshopid = new oxField($iActShop, oxField::T_RAW);
@@ -705,17 +705,17 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
     public function test_getDeliverySetList()
     {
         // inserting delivery set
-        $oDelSet = new oxDeliverySet();
+        $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->setId('_testDeliverySetId1');
         $oDelSet->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $oDelSet->save();
 
-        $oDelSet = new oxDeliverySet();
+        $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->setId('_testDeliverySetId2');
         $oDelSet->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $oDelSet->save();
 
-        $oDelSet = new oxDeliverySet();
+        $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->setId('_testDeliverySetId3');
         $oDelSet->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $oDelSet->save();
@@ -777,7 +777,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oDel1->save();
 
         // Deliveryset 1
-        $oDelSet1 = new oxDeliverySet();
+        $oDelSet1 = oxNew('oxDeliverySet');
         $oDelSet1->setId('_testdeliveryset1');
         $oDelSet1->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $oDelSet1->oxdeliveryset__oxshopid = new oxField($iActShop, oxField::T_RAW);

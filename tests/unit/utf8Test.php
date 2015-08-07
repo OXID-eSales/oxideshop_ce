@@ -684,12 +684,12 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'sėkme Литовские für';
 
-        $oDeliverySet = new oxdeliveryset();
+        $oDeliverySet = oxNew('oxDeliverySet');
         $oDeliverySet->setId('_testDelivery');
         $oDeliverySet->oxdeliveryset__oxtitle = new oxField($sValue);
         $oDeliverySet->save();
 
-        $oDeliverySet = new oxdeliveryset();
+        $oDeliverySet = oxNew('oxDeliverySet');
         $oDeliverySet->load('_testDelivery');
 
         $this->assertEquals($sValue, $oDeliverySet->oxdeliveryset__oxtitle->value);

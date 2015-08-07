@@ -117,7 +117,7 @@ class Unit_Models_oxDeliverySetTest extends OxidTestCase
 
     public function testGetIdByName()
     {
-        $oD = new oxDeliverySet();
+        $oD = oxNew('oxDeliverySet');
         $this->assertEquals('_testDeliverySetId', $oD->getIdByName('_testDeliverySetTitle'));
     }
 }

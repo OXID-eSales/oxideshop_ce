@@ -47,11 +47,15 @@
             <link rel="canonical" href="[{$canonical_url}]">
         [{/if}]
     [{/block}]
-    
+
     [{block name="head_link_hreflang"}]
         [{if $oView->isLanguageLoaded()}]
+            [{assign var="oConfig" value=$oViewConf->getConfig()}]
             [{foreach from=$oxcmp_lang item=_lng}]
-                <link rel="alternate" hreflang="[{$_lng->abbr}]" href="[{$_lng->link|oxaddparams:$oView->getDynUrlParams()}]" />
+                [{if $_lng->id == $oConfig->getConfigParam('sDefaultLang')}]
+                    <link rel="alternate" hreflang="x-default" href="[{$_lng->link|replace:'/startseite/':''}]"/>
+                [{/if}]
+                <link rel="alternate" hreflang="[{$_lng->abbr}]" href="[{$_lng->link|replace:'/startseite/':''|oxaddparams:$oView->getDynUrlParams()}]"/>
             [{/foreach}]
         [{/if}]
     [{/block}]

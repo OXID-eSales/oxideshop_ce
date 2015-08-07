@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -121,7 +121,6 @@ class oxContentList extends oxList
         $this->_aArray = $aArray;
     }
 
-
     /**
      * Get data from db
      *
@@ -140,16 +139,13 @@ class oxContentList extends oxList
     /**
      * Load category list data
      *
-     * @param integer $iType - type of content
+     * @param integer $type - type of content
      */
-    protected function _load($iType)
+    protected function _load($type)
     {
-
-        $aData = $this->_loadFromDb($iType);
-
-        $this->assignArray($aData);
+        $data = $this->_loadFromDb($type);
+        $this->assignArray($data);
     }
-
 
     /**
      * Load category list data.

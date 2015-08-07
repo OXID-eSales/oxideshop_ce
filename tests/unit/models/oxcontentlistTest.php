@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -65,7 +65,7 @@ class Unit_Models_oxcontentlistTest extends OxidTestCase
      */
     public function testLoadMainMenulist()
     {
-        $oList = new oxcontentlist();
+        $oList = oxNew('oxContentList');
         $oList->LoadMainMenulist();
 
         $sOxid = $this->_oContent->getId();
@@ -89,7 +89,7 @@ class Unit_Models_oxcontentlistTest extends OxidTestCase
         $this->_oContent->oxcontents__oxcatid = new oxField('testoxcontentlist', oxField::T_RAW);
         $this->_oContent->save();
 
-        $oList = new oxcontentlist();
+        $oList = oxNew('oxContentList');
         $oList->LoadCatMenues();
 
         $sOxid = $this->_oContent->getId();
@@ -105,13 +105,12 @@ class Unit_Models_oxcontentlistTest extends OxidTestCase
         $this->assertEquals($oList->aList['testoxcontentlist'][0]->oxcontents__oxloadid->value, "testid_Unit_oxcontentlistTest");
     }
 
-
     /**
      * Checks loaded services count.
      */
     public function testLoadServices()
     {
-        $oContent = new oxContentList();
+        $oContent = oxNew('oxContentList');
         $oContent->loadServices();
 
         $this->assertEquals(6, count($oContent));

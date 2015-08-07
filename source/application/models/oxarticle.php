@@ -4877,34 +4877,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Return sub shop variant min price.
-     *
-     * @return double|null
-     */
-    protected function _getSubShopVarMinPrice()
-    {
-        $myConfig = $this->getConfig();
-        $sShopId = $myConfig->getShopId();
-        if ($this->getConfig()->getConfigParam('blMallCustomPrice') && $sShopId != $this->oxarticles__oxshopid->value) {
-            $sPriceSuffix = $this->_getUserPriceSufix();
-            $sSql = 'SELECT ';
-            if ($sPriceSuffix != '' && $this->getConfig()->getConfigParam('blOverrideZeroABCPrices')) {
-                $sSql .= 'MIN(IF(`oxfield2shop`.`oxprice' . $sPriceSuffix . '` = 0, `oxfield2shop`.`oxprice`, `oxfield2shop`.`oxprice' . $sPriceSuffix . '`)) AS `varminprice` ';
-            } else {
-                $sSql .= 'MIN(`oxfield2shop`.`oxprice' . $sPriceSuffix . '`) AS `varminprice` ';
-            }
-            $sSql .= ' FROM ' . getViewName('oxfield2shop') . ' AS oxfield2shop
-                        INNER JOIN ' . $this->getViewName(true) . ' AS oxarticles ON `oxfield2shop`.`oxartid` = `oxarticles`.`oxid`
-                        WHERE ' . $this->getSqlActiveSnippet(true) . '
-                            AND ( `oxarticles`.`oxparentid` = ' . oxDb::getDb()->quote($this->getId()) . ' )
-                            AND ( `oxfield2shop`.`oxshopid` = ' . oxDb::getDb()->quote($sShopId) . ' )';
-            $dPrice = oxDb::getDb()->getOne($sSql);
-        }
-
-        return $dPrice;
-    }
-
-    /**
      * Return variant max price
      *
      * @return null
@@ -4960,34 +4932,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _getShopVarMaxPrice()
     {
         return null;
-    }
-
-    /**
-     * Return sub shop variant max price.
-     *
-     * @return double|null
-     */
-    protected function _getSubShopVarMaxPrice()
-    {
-        $myConfig = $this->getConfig();
-        $sShopId = $myConfig->getShopId();
-        if ($this->getConfig()->getConfigParam('blMallCustomPrice') && $sShopId != $this->oxarticles__oxshopid->value) {
-            $sPriceSuffix = $this->_getUserPriceSufix();
-            $sSql = 'SELECT ';
-            if ($sPriceSuffix != '' && $this->getConfig()->getConfigParam('blOverrideZeroABCPrices')) {
-                $sSql .= 'MAX(IF(`oxfield2shop`.`oxprice' . $sPriceSuffix . '` = 0, `oxfield2shop`.`oxprice`, `oxfield2shop`.`oxprice' . $sPriceSuffix . '`)) AS `varmaxprice` ';
-            } else {
-                $sSql .= 'MAX(`oxfield2shop`.`oxprice' . $sPriceSuffix . '`) AS `varmaxprice` ';
-            }
-            $sSql .= ' FROM ' . getViewName('oxfield2shop') . ' AS oxfield2shop
-                        INNER JOIN ' . $this->getViewName(true) . ' AS oxarticles ON `oxfield2shop`.`oxartid` = `oxarticles`.`oxid`
-                        WHERE ' . $this->getSqlActiveSnippet(true) . '
-                            AND ( `oxarticles`.`oxparentid` = ' . oxDb::getDb()->quote($this->getId()) . ' )
-                            AND ( `oxfield2shop`.`oxshopid` = ' . oxDb::getDb()->quote($sShopId) . ' )';
-            $dPrice = oxDb::getDb()->getOne($sSql);
-        }
-
-        return $dPrice;
     }
 
     /**

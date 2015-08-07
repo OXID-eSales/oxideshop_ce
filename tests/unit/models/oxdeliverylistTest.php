@@ -1061,12 +1061,15 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $this->assertEquals('oLiaLiaMergaite', $oDList->getUser()->getId());
     }
 
-
     /**
      * With special data and mysql 5.0.77
      */
     public function testGetListSpecialCase()
     {
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
+
         $sQ = "INSERT INTO `oxdelivery` VALUES
                ('b763e957be61108f8.80080127', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert Inland unter � 40,00 = � 2,60', '', '', '', 'abs', 2.6, 'p', 10, 39.99, 0, 9999, 1, NOW()),
                ('3033e968fb5b30930.92732498', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert Inland �ber � 40,00 = portofrei', '', '', '', 'abs', 0, 'p', 40, 1000000, 0, 9999, 1, NOW()),
@@ -1109,7 +1112,6 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
             array_keys($oDList->aList)
         );
     }
-
 
     /**
      * Testing loadDeliveryListForProduct

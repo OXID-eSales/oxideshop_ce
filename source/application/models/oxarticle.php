@@ -1825,7 +1825,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if (!($sManufacturerId = $this->getManufacturerId()) &&
             !$blShopCheck && $this->oxarticles__oxmanufacturerid->value
         ) {
-            $oManufacturer->setReadOnly(true);
+            $this->updateManufacturerBeforeLoading($oManufacturer);
             $sManufacturerId = $this->oxarticles__oxmanufacturerid->value;
         }
 
@@ -5048,5 +5048,13 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function updateVariantsBaseObject($baseObject, $forceCoreTableUsage = null)
     {
         $baseObject->setLanguage($this->getLanguage());
+    }
+
+    /**
+     * @param oxManufacturer $oManufacturer
+     */
+    protected function updateManufacturerBeforeLoading($oManufacturer)
+    {
+        $oManufacturer->setReadOnly(true);
     }
 }

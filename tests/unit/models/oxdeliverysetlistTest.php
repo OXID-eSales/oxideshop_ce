@@ -126,7 +126,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oBasket->addToBasket($sProductId, $dAmount);
         $oBasket->calculateBasket();
 
-        $oDelSetList = new oxDeliverySetList();
+        $oDelSetList = oxNew('oxDeliverySetList');
         list(, , $aPaymentList) = $oDelSetList->getDeliverySetData($sShipSet, $oUser, $oBasket);
         $this->assertTrue(count($aPaymentList) > 0);
     }
@@ -139,7 +139,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->load("oxdefaultadmin");
 
-        $oDelSetList = new oxDeliverySetList();
+        $oDelSetList = oxNew('oxDeliverySetList');
         $oDelSetList = $oDelSetList->getDeliverySetList($oUser, $oUser->oxuser__oxcountryid->value);
         $iListCOunt = count($oDelSetList);
 
@@ -173,7 +173,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oGarbage->oxobject2delivery__oxtype = new oxField("oxdelsetg");
         $oGarbage->save();
 
-        $oDelSetList = new oxDeliverySetList();
+        $oDelSetList = oxNew('oxDeliverySetList');
         $oDelSetList = $oDelSetList->getDeliverySetList($oUser, $oUser->oxuser__oxcountryid->value);
         $iNewListCount = count($oDelSetList);
 
@@ -334,7 +334,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         /**
          * act. delivery set must be "Standard Germany" ('oxidstandard')
          */
-        $oDeliverySetList = new oxDeliverySetList();
+        $oDeliverySetList = oxNew('oxDeliverySetList');
         list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
         $this->assertEquals('oxidstandard', $sActShipSet);
 
@@ -346,7 +346,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oBasket->addToBasket('1126', 1);
         $oBasket->calculateBasket();
 
-        $oDeliverySetList = new oxDeliverySetList();
+        $oDeliverySetList = oxNew('oxDeliverySetList');
         list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
         $this->assertEquals('oxidstandard', $sActShipSet);
 
@@ -361,7 +361,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oUser->oxuser__oxcountryid = new oxField('a7c40f631fc920687.20179984', oxField::T_RAW);
         $oBasket->setBasketUser($oUser);
 
-        $oDeliverySetList = new oxDeliverySetList();
+        $oDeliverySetList = oxNew('oxDeliverySetList');
         list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
         $this->assertEquals('_testdeliveryset1', $sActShipSet);
 
@@ -372,7 +372,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oBasket->addToBasket('1127', 10);
         $oBasket->calculateBasket();
 
-        $oDeliverySetList = new oxDeliverySetList();
+        $oDeliverySetList = oxNew('oxDeliverySetList');
         list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
         $this->assertEquals('_testdeliveryset2', $sActShipSet);
 
@@ -389,22 +389,22 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oBasket->addToBasket('1126', 0, array(), null, true);
         $oBasket->calculateBasket();
 
-        $oDeliverySetList = new oxDeliverySetList();
+        $oDeliverySetList = oxNew('oxDeliverySetList');
         list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
         $this->assertEquals('_testdeliveryset2', $sActShipSet);
 
         // if user is not set
-        $oDeliverySetList = new oxDeliverySetList();
+        $oDeliverySetList = oxNew('oxDeliverySetList');
         list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData(null, null, $oBasket);
         $this->assertNull($sActShipSet);
 
         // if shipset selected
-        $oDeliverySetList = new oxDeliverySetList();
+        $oDeliverySetList = oxNew('oxDeliverySetList');
         list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData('_testdeliveryset2', $oUser, $oBasket);
         $this->assertEquals('_testdeliveryset2', $sActShipSet);
 
         // if wrong shipset selected
-        $oDeliverySetList = new oxDeliverySetList();
+        $oDeliverySetList = oxNew('oxDeliverySetList');
         list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData('someshipset', $oUser, $oBasket);
         $this->assertEquals('_testdeliveryset2', $sActShipSet);
     }
@@ -548,7 +548,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
      */
     public function testGetListTestingResultsNoInput()
     {
-        $oList = new oxDeliverySetList();
+        $oList = oxNew('oxDeliverySetList');
         $oList->UNITgetList(null, null);
 
         $this->assertEquals(3, count($oList->aList));
@@ -560,7 +560,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
     // only country
     public function testGetListTestingResultsPassingOnlyCountryId()
     {
-        $oList = new oxDeliverySetList();
+        $oList = oxNew('oxDeliverySetList');
         $oList->UNITgetList(null, 'a7c40f6320aeb2ec2.72885259'); // austria
 
         $this->assertEquals(3, count($oList->aList));
@@ -579,7 +579,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
 
-        $oList = new oxDeliverysetList();
+        $oList = oxNew('oxDeliverySetList');
         $sQ = $oList->UNITgetFilterSelect(null, null);
 
         $sTable = getViewName('oxdeliveryset');
@@ -615,7 +615,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
 
-        $oList = new oxDeliverysetList();
+        $oList = oxNew('oxDeliverySetList');
         $sQ = $oList->UNITgetFilterSelect($this->_oUser, '_testCoutntryId');
 
         $sTable = getViewName('oxdeliveryset');
@@ -721,7 +721,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oDelSet->save();
 
 
-        $oDelSetList = new oxDeliverySetList();
+        $oDelSetList = oxNew('oxDeliverySetList');
         $aList = $oDelSetList->getDeliverySetList(null, null, '_testDeliverySetId2');
         reset($aList);
         $oItem = current($aList);
@@ -817,7 +817,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
 
         oxAddClassModule('modOxDeliverySetList_paymentList', 'oxPaymentList');
 
-        $oDeliverySetList = new oxDeliverySetList();
+        $oDeliverySetList = oxNew('oxDeliverySetList');
 
         $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
         $this->assertEquals(100, modOxDeliverySetList_paymentList::$dBasketPrice);
@@ -836,7 +836,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oP2DelSet1->oxobject2delivery__oxtype = new oxField("rdfadeliveryset", oxField::T_RAW);
         $oP2DelSet1->save();
 
-        $oDeliverySetList = new oxDeliverySetList();
+        $oDeliverySetList = oxNew('oxDeliverySetList');
         $oDeliverySetList->loadNonRDFaDeliverySetList();
         $this->assertEquals(2, $oDeliverySetList->count());
     }
@@ -859,7 +859,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oDeliverySet->oxdeliveryset__oxactive = new oxField(0, oxField::T_RAW);
         $oDeliverySet->save();
 
-        $oDeliverySetList = new oxDeliverySetList();
+        $oDeliverySetList = oxNew('oxDeliverySetList');
         $oDeliverySetList->loadRDFaDeliverySetList();
         $this->assertEquals(3, $oDeliverySetList->count());
         foreach ($oDeliverySetList as $oDel) {
@@ -892,7 +892,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oD2DelSet1->oxdel2delset__oxdelsetid = new oxField('1b842e732a23255b1.91207750', oxField::T_RAW);
         $oD2DelSet1->save();
 
-        $oDeliverySetList = new oxDeliverySetList();
+        $oDeliverySetList = oxNew('oxDeliverySetList');
         // standart delivery costs for DE
         $oDeliverySetList->loadRDFaDeliverySetList('1b842e73470578914.54719298');
         $this->assertEquals(2, $oDeliverySetList->count());

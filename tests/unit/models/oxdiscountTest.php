@@ -181,7 +181,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
      */
     public function testIsForArticle_ArticleBasePriceTooLow()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->oxdiscount__oxpriceto = new oxField(10);
         $oArticle = $this->getMock('oxArticle', array('getBasePrice'));
         $oArticle->expects($this->any())->method('getBasePrice')->will($this->returnValue(50));
@@ -194,7 +194,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
      */
     public function testIsGlobalDiscount_True()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->setId('testIsGlobalDiscount');
         $oDiscount->save();
         $this->assertTrue($oDiscount->isGlobalDiscount());
@@ -205,7 +205,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
      */
     public function testIsGlobalDiscount_DiscountForArticle_False()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->setId('testGlobalDiscount');
         $oDiscount->save();
 
@@ -219,7 +219,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
      */
     public function testIsGlobalDiscount_DiscountForCategory_False()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->setId('testGlobalDiscount');
         $oDiscount->save();
 
@@ -293,7 +293,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
     //no article discount for fitting category
     public function testIsForArticleFittingOnlyCat()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $testDiscId = 'testdid';
         $oDiscount->setId($testDiscId);
         $oDiscount->save();
@@ -316,7 +316,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
     //no article discount
     public function testIsForArticleNoFittingDiscounts()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $testDiscId = 'testdid';
         $oDiscount->setId($testDiscId);
         $oDiscount->save();
@@ -337,7 +337,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
     // variant ( FS#2625 )
     public function testIsForArticleVariant()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $testDiscId = 'testdid';
         $oDiscount->setId($testDiscId);
         $oDiscount->save();
@@ -351,7 +351,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $this->assertTrue($oDiscount->isForArticle($oArticle));
 
         //global discount for all articles
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $testDiscId = 'testdid';
         $oDiscount->setId($testDiscId);
         $oDiscount->save();
@@ -362,7 +362,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
     //amount discount from 0 to n, price discount is off (M:792)
     public function testIsForArticleWithAmountFromZeroToN()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $testDiscId = 'testdid';
         $oDiscount->setId($testDiscId);
         $oDiscount->save();
@@ -385,7 +385,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
     //amount discount is off, price discount from 0 to n
     public function testIsForArticleWithPriceDiscountFromZeroToN()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $testDiscId = 'testdid';
         $oDiscount->setId($testDiscId);
         $oDiscount->save();
@@ -440,7 +440,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $oBasket->addToBasket('1131', 4);
         $oBasket->addToBasket('1142', 6);
 
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->load($sDiscountId);
 
         $oArticle = oxNew('oxArticle');
@@ -484,7 +484,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $oBasket->addToBasket('1127', 10); // 80
         $oBasket->addToBasket('1131', 10); // 230
 
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->load($sDiscountId);
 
         $oArticle = oxNew('oxArticle');
@@ -504,7 +504,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
     // testing discount params check
     public function testIsForBasketItem()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $testDiscId = 'testIsForBasketItem';
         $oDiscount->setId($testDiscId);
 
@@ -567,7 +567,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
     //if general discount
     public function testIsForBasketItemIfGeneralDiscount()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $testDiscId = 'testIsForBasketItem';
         $oDiscount->setId($testDiscId);
 
@@ -584,7 +584,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
     //if bundel discount
     public function testIsForBasketItemIfBundelDiscount()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $testDiscId = 'testIsForBasketItem';
         $oDiscount->setId($testDiscId);
 
@@ -657,7 +657,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $oBasket->expects($this->atLeastOnce())->method('getBasketSummary')->will($this->returnValue($oSummary));
         $oBasket->expects($this->atLeastOnce())->method('getBasketCurrency')->will($this->returnValue($oCurr));
 
-        $oDiscount = new oxdiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->oxdiscount__oxprice = new oxField(100);
         $oDiscount->oxdiscount__oxpriceto = new oxField(150);
 
@@ -670,7 +670,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $oBasket->expects($this->atLeastOnce())->method('getBasketSummary')->will($this->returnValue($oSummary));
         $oBasket->expects($this->atLeastOnce())->method('getBasketCurrency')->will($this->returnValue($oCurr));
 
-        $oDiscount = new oxdiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->oxdiscount__oxprice = new oxField(100);
         $oDiscount->oxdiscount__oxpriceto = new oxField(150);
 
@@ -711,7 +711,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
     // configuration check
     public function testIsForBundleBasket()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->oxdiscount__oxaddsumtype = new oxField("test", oxField::T_RAW);
         $this->assertFalse($oDiscount->isForBundleBasket(null));
     }
@@ -740,7 +740,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
 
     public function testGetAbsValueAbsForAmount()
     {
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('abs', oxField::T_RAW);
         $oDiscount->oxdiscount__oxaddsum = new oxField(5, oxField::T_RAW);
         $this->assertEquals(10, $oDiscount->getAbsValue(100, 2));
@@ -1005,7 +1005,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $sQ1 = " and ( oxobjectid = 'ProductId' or oxobjectid = 'ProductParentId' )";
         $sQ2 = " and oxobjectid = 'ProductId'";
 
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $this->assertEquals($sQ1, $oDiscount->UNITgetProductCheckQuery($oProduct1));
         $this->assertEquals($sQ2, $oDiscount->UNITgetProductCheckQuery($oProduct2));
     }
@@ -1056,7 +1056,7 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $oUnrelatedProduct->expects($this->once())->method('getProductId')->will($this->returnValue("UnrelatedProductId"));
 
         // testing
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->load($sDiscountId);
         $this->assertTrue($oDiscount->isForBundleItem($oParentProduct));
         $this->assertTrue($oDiscount->isForBundleItem($oProduct));

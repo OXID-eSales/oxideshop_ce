@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -1378,7 +1378,7 @@ class Unit_Models_oxvoucherTest extends OxidTestCase
         $oBasketItem1['price'] = 5.45;
         $oBasketItem1['amount'] = 100;
 
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->oxdiscount__oxshopid = new oxField($this->getConfig()->getShopId());
         $oDiscount->oxdiscount__oxactive = new oxField(1);
         $oDiscount->oxdiscount__oxactivefrom = new oxField("0000-00-00 00:00:00");

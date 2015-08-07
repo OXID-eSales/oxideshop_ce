@@ -274,7 +274,7 @@ class BasketConstruct
         }
         foreach ($aDiscounts as $aDiscount) {
             // add discounts
-            $oDiscount = new oxDiscount();
+            $oDiscount = oxNew('oxDiscount');
             $oDiscount->setId($aDiscount['oxid']);
             foreach ($aDiscount as $sKey => $mxValue) {
                 if (!is_array($mxValue)) {

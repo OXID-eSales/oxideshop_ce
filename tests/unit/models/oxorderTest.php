@@ -3335,7 +3335,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $sShopId = $this->getConfig()->getBaseShopId();
 
         // bundle type discount
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->setAdminMode(false);
         $oDiscount->setId("_testDiscountId");
         $oDiscount->oxdiscount__oxshopid = new oxField($sShopId);

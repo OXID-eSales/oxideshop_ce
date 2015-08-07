@@ -4319,7 +4319,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $sShopId = $this->getConfig()->getBaseShopId();
 
         // create new discount
-        $oDiscount = new oxDiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->setId('_testDiscount');
         $oDiscount->oxdiscount__oxshopid = new oxField($sShopId);
         $oDiscount->oxdiscount__oxactive = new oxField(1);

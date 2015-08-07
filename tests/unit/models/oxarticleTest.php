@@ -870,7 +870,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         oxRegistry::get("oxDiscountList")->forceReload();
 
         // creating discount for test
-        $oDiscount = new oxdiscount();
+        $oDiscount = oxNew('oxDiscount');
         $oDiscount->setId('_testdiscount');
         $oDiscount->oxdiscount__oxactive = new oxField(1);
         $oDiscount->oxdiscount__oxtitle = new oxField('Test discount');

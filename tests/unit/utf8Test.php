@@ -647,7 +647,7 @@ class Unit_utf8Test extends OxidTestCase
         $oCountry->save();
 
         //
-        $oCountryList = new oxcountrylist();
+        $oCountryList = oxNew('oxCountryList');
         $oCountryList->loadActiveCountries();
         $oCountryList->rewind();
 

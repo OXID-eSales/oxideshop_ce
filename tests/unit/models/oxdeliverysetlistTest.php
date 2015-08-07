@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -211,7 +211,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
          */
 
         // Deliverycost 1
-        $oDel1 = new oxDelivery();
+        $oDel1 = oxNew('oxDelivery');
         $oDel1->setId('_testdelivery1');
         $oDel1->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDel1->oxdelivery__oxshopid = new oxField($iActShop, oxField::T_RAW);
@@ -225,7 +225,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oDel1->save();
 
         // Deliverycost 2
-        $oDel2 = new oxDelivery();
+        $oDel2 = oxNew('oxDelivery');
         $oDel2->setId('_testdelivery2');
         $oDel2->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDel2->oxdelivery__oxshopid = new oxField($iActShop, oxField::T_RAW);
@@ -770,7 +770,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $iActShop = $this->getConfig()->getBaseShopId();
 
         // Deliverycost 1
-        $oDel1 = new oxDelivery();
+        $oDel1 = oxNew('oxDelivery');
         $oDel1->setId('_testdelivery1');
         $oDel1->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDel1->oxdelivery__oxshopid = new oxField($iActShop, oxField::T_RAW);

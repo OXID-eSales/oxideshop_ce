@@ -165,14 +165,14 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     {
         $oPrice = 'xxx';
 
-        $oDelivery = new oxdelivery();
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->setDeliveryPrice($oPrice);
         $this->assertEquals('xxx', $oDelivery->getDeliveryPrice());
     }
 
     public function testGetDeliveryPriceCache()
     {
-        $oDelivery = new oxdelivery();
+        $oDelivery = oxNew('oxDelivery');
         $oPrice = $oDelivery->getDeliveryPrice(50);
         $this->assertEquals($oPrice, $oDelivery->getDeliveryPrice(50));
     }
@@ -182,7 +182,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testIsForBasketDeliverySetUpForArticle()
     {
-        $oDelivery = new oxDelivery();
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
@@ -221,7 +221,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testIsForBasketDeliverySetUpForArticleOncePerArticle()
     {
-        $oDelivery = new oxDelivery();
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
@@ -262,7 +262,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oArticle->load('1126');
         $aCategoryIds = $oArticle->getCategoryIds();
 
-        $oDelivery = new oxDelivery();
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
@@ -307,7 +307,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oArticle->load('1126');
         $aCategoryIds = $oArticle->getCategoryIds();
 
-        $oDelivery = new oxDelivery();
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
@@ -344,7 +344,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
 
     public function testIsForBasketRegularDelivery()
     {
-        $oDelivery = new oxDelivery();
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
@@ -373,7 +373,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
     // #1130: Single article in Basket, checked as free shipping, is not buyable (step 3 no payments found)
     public function testIsForBasketPriceDeliveryIsFixed()
     {
-        $oDelivery = new oxDelivery();
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
@@ -397,7 +397,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
 
     public function testIsForBasketRegularDeliveryOncePerArticle()
     {
-        $oDelivery = new oxDelivery();
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
@@ -1024,7 +1024,6 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $this->assertEquals($this->_sOxId, $sDeliveryId);
     }
 
-
     // 3. trying to delete denied action by RR (EE only)
     public function testCheckDeliveryAmount()
     {
@@ -1072,7 +1071,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
 
     public function testGetIdByName()
     {
-        $oD = new oxDelivery();
+        $oD = oxNew('oxDelivery');
         $this->assertEquals('_testDeliveryId', $oD->getIdByName('test_oxDelivery'));
     }
 
@@ -1081,7 +1080,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
      */
     public function testGetCountriesISO()
     {
-        $oD = new oxDelivery();
+        $oD = oxNew('oxDelivery');
         //standard delivery id for rest EU
         $oD->load('1b842e7352422a708.01472527');
         $aCountries = $oD->getCountriesISO();

@@ -380,7 +380,7 @@ class BasketConstruct
         $oDeliverySet = $this->createObj($aData, 'oxdeliveryset', 'oxdeliveryset');
 
         foreach ($aDeliveryCosts as $iKey => $aDelivery) {
-            $oDelivery = new oxDelivery();
+            $oDelivery = oxNew('oxDelivery');
             $oDelivery->save();
             foreach ($aDelivery as $sKey => $mxValue) {
                 if (!is_array($mxValue)) {

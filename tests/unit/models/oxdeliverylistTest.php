@@ -223,7 +223,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $this->cleanUpTable('oxdelivery');
         $this->cleanUpTable('oxaddress');
         $this->cleanUpTable('oxobject2group');
-        $oDelivery = new oxDelivery();
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->delete('b763e957be61108f8.80080127');
         $oDelivery->delete('3033e968fb5b30930.92732498');
         $oDelivery->delete('a713e96c15c7bf3c7.45279281');
@@ -306,7 +306,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
     public function testHasDeliveries()
     {
         // test delivery
-        $oDelivery = new oxDelivery();
+        $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);

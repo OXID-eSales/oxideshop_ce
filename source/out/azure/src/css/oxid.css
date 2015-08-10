@@ -1816,44 +1816,42 @@ div.searchBox input.textbox:focus {
 #footer .bar .deliveryinfo {float: right;}
 #footer .bar .deliveryinfo a {font-size:10px; color:#515353;}
 
-#footer dl {
-    float:left;
+#footer .list {
+    clear: none;
+    float: left;
     width: 233px;
-    margin:10px 0;
-    color:#465256;
-    height: auto;
+    margin: 10px 0;
+    color: #465256;
     border-right: 1px solid #3799b1;
     border-left: 1px solid #ffffff;
 }
 
-#footer dl.services {
-    border-left: none;
+#footer .list a {
+    line-height: 100%;
+    display: block;
+    padding: 4px 20px;
+    color: #29373c;
+    text-shadow: 0 1px 2px #fff;
 }
 
-#footer dl:last-child {
-    border-right: none;
-}
-
-#footer ul {
-    margin: 0;
-}
-
-#footer li {
-    list-style: none;
-    padding: 0;
-}
-
-#footer dl dt {
-    color:#29373C;
-    padding:2px 20px;
-    text-transform: uppercase;
-}
-
-#footer .list a  { line-height: 100%; display:block; padding:4px 20px; color: #29373c; text-shadow: 0 1px 2px #fff;}
 #footer .list a:hover  {
     text-decoration: none;
     color: #FFF;
     text-shadow: none;
+}
+
+#footer .list-header {
+    color: #29373C;
+    padding: 2px 20px;
+    text-transform: uppercase;
+}
+
+#footer .services {
+    border-left: 0;
+}
+
+#footer .categories {
+    border-right: 0;
 }
 
 #footer .tree ul {margin: 0; margin-left:10px;}

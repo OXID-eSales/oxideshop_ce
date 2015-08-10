@@ -270,7 +270,7 @@ class Unit_Models_oxmediaurlTest extends OxidTestCase
 
     }
 
-    public function testDeleteNonUploaded($sOXID = null)
+    public function testDeleteNonUploaded()
     {
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
@@ -282,8 +282,7 @@ class Unit_Models_oxmediaurlTest extends OxidTestCase
         $this->assertTrue(file_exists($sFilePath));
     }
 
-
-    public function testDeleteUploaded($sOXID = null)
+    public function testDeleteUploaded()
     {
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
@@ -295,7 +294,7 @@ class Unit_Models_oxmediaurlTest extends OxidTestCase
         $this->assertFalse(file_exists($sFilePath));
     }
 
-    public function testDeleteUploadedIfFullPathAdded($sOXID = null)
+    public function testDeleteUploadedIfFullPathAdded()
     {
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
@@ -331,5 +330,4 @@ class Unit_Models_oxmediaurlTest extends OxidTestCase
         $sExpt = 'test6<br><iframe width="425" height="344" src="http://www.youtube.com/embed/tRCwo6pSHnk" frameborder="0" allowfullscreen></iframe>';
         $this->assertEquals($sExpt, $oMediaUrl->UNITgetYoutubeHtml());
     }
-
 }

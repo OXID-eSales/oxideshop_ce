@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -61,7 +61,6 @@ class oxNews extends oxI18n
      */
     public function assign($dbRecord)
     {
-
         parent::assign($dbRecord);
 
         // convert date's to international format
@@ -132,7 +131,6 @@ class oxNews extends oxI18n
             $oDb->execute("delete from oxobject2group where oxobject2group.oxobjectid = " . $oDb->quote($sOxid));
         }
 
-
         return $blDelete;
     }
 
@@ -142,7 +140,6 @@ class oxNews extends oxI18n
     protected function _update()
     {
         $this->oxnews__oxdate->setValue(oxRegistry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value, true));
-
 
         parent::_update();
     }
@@ -160,7 +157,6 @@ class oxNews extends oxI18n
         } else {
             $this->oxnews__oxdate = new oxField(oxRegistry::get("oxUtilsDate")->formatDBDate($this->oxnews__oxdate->value, true));
         }
-
 
         return parent::_insert();
     }
@@ -196,5 +192,4 @@ class oxNews extends oxI18n
         $oUtilsView = oxRegistry::get("oxUtilsView");
         return $oUtilsView->parseThroughSmarty($this->oxnews__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
     }
-
 }

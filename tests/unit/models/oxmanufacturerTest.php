@@ -274,6 +274,9 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
     public function testGetNrOfArticles()
     {
         $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $sManufacturerId = '88a996f859f94176da943f38ee067984';
+        }
 
         $oManufacturer = $this->getProxyClass("oxManufacturer");
         $oManufacturer->setNonPublicVar("_blShowArticleCnt", true);
@@ -285,6 +288,9 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
     public function testGetNrOfArticlesDonotShow()
     {
         $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $sManufacturerId = '88a996f859f94176da943f38ee067984';
+        }
 
         $oManufacturer = $this->getProxyClass("oxManufacturer");
         $oManufacturer->load($sManufacturerId);

@@ -169,7 +169,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
      */
     public function testGetManufacturerList()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId("_test1");
         $oManufacturer->save();
 

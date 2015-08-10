@@ -440,7 +440,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxmanufacturerid = new oxField($sManufacturerId);
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
 
         $oView = $this->getMock("oxUBase", array("getActManufacturer"));
@@ -466,7 +466,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxmanufacturerid = new oxField($sManufacturerId);
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
 
         $oView = $this->getMock("oxUBase", array("getActManufacturer"));
@@ -493,7 +493,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxmanufacturerid = new oxField($sManufacturerId);
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId("xxx");
 
         $oView = $this->getMock("oxUBase", array("getActManufacturer"));
@@ -707,7 +707,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
     public function testGetArticleManufacturerUriArticleHasNoManufacturerAssigned()
     {
         $sManufacturerId = oxDb::getDb()->getOne("select oxid from oxmanufacturers");
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
         $sSeoUri = "Nach-Hersteller/" . str_replace(array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value) . "/oxid-test-article-title-oxid-test-article-var-select.html";
 
@@ -742,7 +742,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
     public function testGetArticleManufacturerUriArticleArticleIsAssignedToManufacturer()
     {
         $sManufacturerId = oxDb::getDb()->getOne('select oxid from oxmanufacturers');
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
 
         $sSeoUri = 'Nach-Hersteller/' . str_replace(array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value) . '/oxid-test-article-title-oxid-test-article-var-select.html';
@@ -784,7 +784,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
     public function testGetArticleManufacturerUriArticleArticleIsAssignedToManufacturerWithLangParam()
     {
         $sManufacturerId = oxDb::getDb()->getOne('select oxid from oxmanufacturers');
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
 
         $oArticle = oxNew('oxArticle');
@@ -832,7 +832,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
     public function testGetArticleManufacturerUriArticleArticleIsAssignedToManufacturerEngWithLangParam()
     {
         $sManufacturerId = oxDb::getDb()->getOne('select oxid from oxmanufacturers');
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sManufacturerId);
 
         $oArticle = oxNew('oxArticle');

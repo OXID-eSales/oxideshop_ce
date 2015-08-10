@@ -2663,7 +2663,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxmanufacturerid = new oxField($sManId, oxField::T_RAW);
         $oMan = $oArticle->getManufacturer();
-        $oExpMan = new oxmanufacturer();
+        $oExpMan = oxNew('oxManufacturer');
         $oExpMan->load($sManId);
         $this->assertEquals($oExpMan->oxmanufacturers__oxtitle->value, $oMan->oxmanufacturers__oxtitle->value);
     }
@@ -2684,7 +2684,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oArticle->expects($this->any())->method('getManufacturerId')->will($this->returnValue(false));
         $oArticle->oxarticles__oxmanufacturerid = new oxField($sManId, oxField::T_RAW);
 
-        $oExpMan = new oxmanufacturer();
+        $oExpMan = oxNew('oxManufacturer');
         $oExpMan->load($sManId);
 
         $oMan = $oArticle->getManufacturer(false);

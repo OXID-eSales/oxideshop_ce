@@ -208,7 +208,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->setRequestParameter('mnid', 'root');
 
         $oUBase = new oxUBase();
-        $oM = new oxManufacturer();
+        $oM = oxNew('oxManufacturer');
         $oM->load('root');
         $this->assertEquals($oM, $oUBase->getActManufacturer());
     }

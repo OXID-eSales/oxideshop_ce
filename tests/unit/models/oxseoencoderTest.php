@@ -457,7 +457,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oContent->load($sContentId);
         $this->assertEquals($sContentSeoUrl, $oContent->getLink(0));
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
         $this->assertEquals($sManufacturerSeoUrl, $oManufacturer->getLink(0));
 
@@ -552,7 +552,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oContent->load($sContentId);
         $this->assertEquals($sContentSeoUrl, $oContent->getLink(1));
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
         $this->assertEquals($sManufacturerSeoUrl, $oManufacturer->getLink(1));
 

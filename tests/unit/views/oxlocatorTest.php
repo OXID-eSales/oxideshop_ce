@@ -356,7 +356,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sActCat = md5('d2e44d9b31fcce448.08890330');
         $sActCat = md5('77442e37fdf34ccd3.94620745');
 
-        $oManufacturer = new oxmanufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sActCat);
 
         $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActManufacturer', 'getManufacturerTree', 'showSorting'));
@@ -400,7 +400,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sActCat = md5('d2e44d9b31fcce448.08890330');
         $sActCat = md5('77442e37fdf34ccd3.94620745');
 
-        $oManufacturer = new oxmanufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sActCat);
 
         $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActManufacturer', 'getManufacturerTree', 'showSorting'));

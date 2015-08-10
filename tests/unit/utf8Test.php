@@ -780,13 +780,13 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'sėkme Литовские für';
 
-        $oMan = new oxmanufacturer();
+        $oMan = oxNew('oxManufacturer');
         $oMan->setId('_testMan');
         $oMan->oxmanufacturers__oxtitle = new oxField($sValue);
         $oMan->oxmanufacturers__oxshortdesc = new oxField($sValue);
         $oMan->save();
 
-        $oMan = new oxmanufacturer();
+        $oMan = oxNew('oxManufacturer');
         $oMan->load('_testMan');
         $this->assertEquals($sValue, $oMan->oxmanufacturers__oxtitle->value);
         $this->assertEquals($sValue, $oMan->oxmanufacturers__oxshortdesc->value);

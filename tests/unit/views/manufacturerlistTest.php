@@ -239,7 +239,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
      */
     public function testGetAddUrlParams()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId("testManufacturerId");
 
         $oView = $this->getMock("manufacturerlist", array("getActManufacturer"));
@@ -346,7 +346,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
         $oManufacturerTree = new oxManufacturerlist();
         $oManufacturerTree->buildManufacturerTree('Manufacturerlist', $sManufacturerId, $this->getConfig()->getShopHomeURL());
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
         $oManufacturer->setIsVisible(true);
 
@@ -380,7 +380,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     {
         $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
 
         $oManufacturerList = $this->getProxyClass("Manufacturerlist");
@@ -399,7 +399,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     {
         $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
 
         $oManufacturerList = $this->getProxyClass("Manufacturerlist");
@@ -447,7 +447,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     {
         $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
         $oManufacturer->oxmanufacturer__oxshowsuffix = new oxField(1);
 

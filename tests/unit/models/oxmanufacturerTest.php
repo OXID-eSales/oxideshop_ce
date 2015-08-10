@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -44,7 +44,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
         oxTestModules::addFunction("oxSeoEncoderManufacturer", "getManufacturerUrl", "{return 'sManufacturerUrl';}");
         oxTestModules::addFunction("oxSeoEncoderManufacturer", "getManufacturerPageUrl", "{return 'sManufacturerPageUrl';}");
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $this->assertEquals("sManufacturerPageUrl", $oManufacturer->getBaseSeoLink(0, 1));
     }
 
@@ -53,7 +53,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
         oxTestModules::addFunction("oxSeoEncoderManufacturer", "getManufacturerUrl", "{return 'sManufacturerUrl';}");
         oxTestModules::addFunction("oxSeoEncoderManufacturer", "getManufacturerPageUrl", "{return 'sManufacturerPageUrl';}");
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $this->assertEquals("sManufacturerUrl", $oManufacturer->getBaseSeoLink(0));
     }
 
@@ -61,7 +61,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
     {
         $iLang = 0;
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId("testManufacturerId");
 
         $sTestUrl = $this->getConfig()->getShopHomeUrl($iLang, false) . 'cl=manufacturerlist&amp;mnid=' . $oManufacturer->getId();
@@ -70,13 +70,13 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
 
     public function testGetContentCats()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $this->assertNull($oManufacturer->getContentCats());
     }
 
     public function testMagicGetter()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.jpg');
 
         $this->assertEquals('big_matsol_1_mico.jpg', basename($oManufacturer->getIconUrl()));
@@ -137,7 +137,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
 
     public function testGetStdLink()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('xxx');
         $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx', $oManufacturer->getStdLink());
     }
@@ -156,7 +156,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
         $sQ = 'select oxtitle from oxmanufacturers where oxmanufacturers.oxshopid = "' . $this->getConfig()->getShopID() . '"';
         $sManufacturerTitle = $myDB->getOne($sQ);
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setLanguage(0);
         $oManufacturer->load($sManufacturerId);
 
@@ -177,7 +177,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
         $sQ = 'select oxtitle_1 from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
         $sManufacturerTitle = $myDB->getOne($sQ);
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sManufacturerId);
 
         $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-Manufacturer/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink());
@@ -187,7 +187,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('xxx');
 
         $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx', $oManufacturer->getLink());
@@ -195,7 +195,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
 
     public function testGetStdLinkWithLangParam()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('xxx');
         $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx&amp;lang=1', $oManufacturer->getStdLink(1));
     }
@@ -214,7 +214,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
         $sQ = 'select oxtitle from oxmanufacturers where oxmanufacturers.oxshopid = "' . $this->getConfig()->getShopID() . '"';
         $sManufacturerTitle = $myDB->getOne($sQ);
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setLanguage(1);
         $oManufacturer->load($sManufacturerId);
 
@@ -235,7 +235,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
         $sQ = 'select oxtitle_1 from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
         $sManufacturerTitle = $myDB->getOne($sQ);
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(0, $sManufacturerId);
 
         $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-Manufacturer/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink(1));
@@ -245,7 +245,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('xxx');
 
         $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx&amp;lang=1', $oManufacturer->getLink(1));
@@ -253,20 +253,20 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
 
     public function testLoadRootManufacturer()
     {
-        $oV = new oxManufacturer();
+        $oV = oxNew('oxManufacturer');
         $oV->load('root');
         $this->assertTrue($oV instanceof oxManufacturer);
         $this->assertEquals('root', $oV->getId());
 
-        $oV = new oxManufacturer();
+        $oV = oxNew('oxManufacturer');
         $oV->loadInLang(0, 'root');
         $this->assertEquals(0, $oV->getLanguage());
 
-        $oV = new oxManufacturer();
+        $oV = oxNew('oxManufacturer');
         $oV->loadInLang(1, 'root');
         $this->assertEquals(1, $oV->getLanguage());
 
-        $oV = new oxManufacturer();
+        $oV = oxNew('oxManufacturer');
         $oV->load('root');
         $this->assertEquals(oxRegistry::getLang()->getBaseLanguage(), $oV->getLanguage());
     }
@@ -319,7 +319,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
     // #M366: Upload of manufacturer and categories icon does not work
     public function testGetIconUrl()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.jpg');
 
         $this->assertEquals('big_matsol_1_mico.jpg', basename($oManufacturer->getIconUrl()));
@@ -351,7 +351,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
         oxTestModules::addFunction('oxSeoEncoderManufacturer', 'onDeleteManufacturer', '{$this->onDelete[] = $aA[0];}');
         oxRegistry::get("oxSeoEncoderManufacturer")->onDelete = array();
 
-        $obj = new oxmanufacturer();
+        $obj = oxNew('oxManufacturer');
         $this->assertEquals(false, $obj->delete());
         $this->assertEquals(0, count(oxRegistry::get("oxSeoEncoderManufacturer")->onDelete));
         $this->assertEquals(false, $obj->exists());
@@ -365,14 +365,14 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
 
     public function testGetStdLinkWithParams()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('xxx');
         $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx&amp;foo=bar', $oManufacturer->getStdLink(0, array('foo' => 'bar')));
     }
 
     public function testGetThumbUrl()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('xxx');
 
         $this->assertFalse($oManufacturer->getThumbUrl());
@@ -386,7 +386,7 @@ class Unit_Models_oxmanufacturerTest extends OxidTestCase
     public function testGetTitle()
     {
         $sTitle = "testtitle";
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->oxmanufacturers__oxtitle = new oxField("testtitle");
         $this->assertEquals($sTitle, $oManufacturer->getTitle());
     }

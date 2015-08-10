@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -110,12 +110,12 @@ class Unit_Admin_ManufacturerSeoTest extends OxidTestCase
      */
     public function testIsEntrySuffixed()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId("_test1");
         $oManufacturer->oxmanufacturers__oxshowsuffix = new oxField(1);
         $oManufacturer->save();
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId("_test2");
         $oManufacturer->oxmanufacturers__oxshowsuffix = new oxField(0);
         $oManufacturer->save();
@@ -135,7 +135,7 @@ class Unit_Admin_ManufacturerSeoTest extends OxidTestCase
      */
     public function testGetEntryUri()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId("_test1");
         $oManufacturer->oxmanufacturers__oxshowsuffix = new oxField(0);
         $oManufacturer->save();
@@ -156,7 +156,7 @@ class Unit_Admin_ManufacturerSeoTest extends OxidTestCase
      */
     public function testGetStdUrl()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId("_test1");
         $oManufacturer->oxmanufacturers__oxshowsuffix = new oxField(0);
         $oManufacturer->save();

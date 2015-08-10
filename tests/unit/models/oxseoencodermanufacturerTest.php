@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -86,7 +86,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
         $sUrl = $this->getConfig()->getShopUrl() . 'Nach-Hersteller/Bush/';
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sVndId);
 
         $oEncoder = new oxSeoEncoderManufacturer();
@@ -103,7 +103,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
         $sUrl = $this->getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/';
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sVndId);
 
         $oEncoder = new oxSeoEncoderManufacturer();
@@ -116,7 +116,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
         $sUrl = $this->getConfig()->getShopUrl() . 'Nach-Hersteller/Bush/';
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sVndId);
 
         $oEncoder = new oxSeoEncoderManufacturer();
@@ -133,7 +133,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
         $sUrl = $this->getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/';
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(0, $sVndId);
 
         $oEncoder = new oxSeoEncoderManufacturer();
@@ -145,7 +145,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
      */
     public function testGetManufacturerUriExistingManufacturer()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('xxx');
 
         $oEncoder = $this->getMock('oxSeoEncoderManufacturer', array('_loadFromDb', '_prepareTitle'));
@@ -161,7 +161,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
 
     public function testGetManufacturerUriRootManufacturer()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('root');
         $oManufacturer->oxmanufacturers__oxtitle = new oxField('root', oxField::T_RAW);
 
@@ -175,7 +175,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
 
     public function testGetManufacturerUriRootManufacturerSecondLanguage()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('root');
         $oManufacturer->setLanguage(1);
         $oManufacturer->oxmanufacturers__oxtitle = new oxField('root', oxField::T_RAW);
@@ -198,7 +198,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
 
     public function testGetManufacturerUriNewManufacturer()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setLanguage(1);
         $oManufacturer->setId('xxx');
         $oManufacturer->oxmanufacturers__oxtitle = new oxField('xxx', oxField::T_RAW);
@@ -222,7 +222,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $sUrl = $this->getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/101/';
         $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sVndId);
 
         $oEncoder = new oxSeoEncoderManufacturer();
@@ -236,7 +236,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $sUrl = $this->getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/101/';
         $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
 
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(0, $sVndId);
 
         $oEncoder = new oxSeoEncoderManufacturer();
@@ -257,7 +257,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
 
     public function testGetManufacturerUriExistingManufacturerWithLangParam()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setLanguage(1);
         $oManufacturer->setId('xxx');
 
@@ -274,7 +274,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
 
     public function testGetManufacturerUriRootManufacturerWithLangParam()
     {
-        $oManufacturer = new oxManufacturer();
+        $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('root');
         $oManufacturer->oxmanufacturers__oxtitle = new oxField('root', oxField::T_RAW);
 

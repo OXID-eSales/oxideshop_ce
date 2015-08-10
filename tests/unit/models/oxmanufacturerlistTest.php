@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -49,36 +49,6 @@ class Unit_Models_oxManufacturerlistTest extends OxidTestCase
         parent::tearDown();
     }
 
-    /**
-     * Test loading simple Manufacturer list
-     */
-    /*    public function test_loadManufacturerList() {
-            $myUtils = oxRegistry::getUtils();
-            $myConfig= $this->getConfig();
-            $myDB    = oxDb::getDB();
-
-            $oManufacturerlist = oxNew( 'oxManufacturerlist' );
-            $oManufacturerlist->loadManufacturerList(true, true, true);
-
-            $this->assertTrue((count($oManufacturerlist) > 0), "Manufacturers list not loaded");
-
-            // checking if vendros are the same
-            $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "'.$myConfig->getShopID().'"';
-            $rs = $myDB->Execute( $sQ );
-
-
-            if ( $rs != false && $rs->RecordCount() > 0 ) {
-                while ( !$rs->EOF ) {
-                    if ( !isset( $oManufacturerlist[ $rs->fields[0] ] ) )
-                        $this->fail('Not all Manufacturers are loaded');
-                    $rs->MoveNext();
-                }
-            } else {
-                $this->fail('No records found in Manufacturers table');
-            }
-
-        }
-    */
     /**
      * Test loading simple Manufacturer list by selected language
      */

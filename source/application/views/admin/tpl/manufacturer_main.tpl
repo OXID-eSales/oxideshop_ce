@@ -118,7 +118,7 @@ window.onload = function ()
     </td>
     <!-- Anfang rechte Seite -->
     <td valign="top" class="edittext" align="left" width="55%">
-        [{block name="admin_manufacturer_main_right_column"}]
+        [{block name="admin_manufacturer_main_assign_articles"}]
             [{ if $oxid != "-1"}]
                 <input [{ $readonly }] 
                     type="button" 

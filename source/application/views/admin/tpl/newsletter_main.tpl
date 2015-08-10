@@ -31,7 +31,7 @@
                     [{oxmultilang ident="NEWSLETTER_SUBJECT"}]
                     </td>
                     <td class="edittext">
-                    <input type="text" class="editinput" style="width:100%" size="120" maxlength="[{$edit->oxnewsletter__oxsubject->fldmax_length}]" name="editval[oxnewsletter__oxsubject]" value="[{$edit->oxnewsletter__oxsubject->value}]">                    
+                    <input type="text" class="editinput" style="width:100%" size="120" maxlength="[{$edit->oxnewsletter__oxsubject->fldmax_length}]" name="editval[oxnewsletter__oxsubject]" value="[{$edit->oxnewsletter__oxsubject->value}]">
                     </td>
                   </tr>
                   <tr>

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -40,7 +40,7 @@ class Newsletter_Preview extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != "-1") {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
             $oNewsletter = oxNew("oxnewsletter");
             $oNewsletter->load($soxId);

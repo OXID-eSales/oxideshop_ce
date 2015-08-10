@@ -33,4 +33,3 @@ window.onload = function ()
         [{include file="pagetabsnippet.tpl" noOXIDCheck="true"}]
     </body>
 </html>
-

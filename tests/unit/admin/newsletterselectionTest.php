@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -38,13 +38,18 @@ class Unit_Admin_NewsletterSelectionTest extends OxidTestCase
         parent::setUp();
         $oDB = oxDb::getDb();
 
-        $sInsert = "INSERT INTO `oxnewsletter` VALUES ( 'newstest', 'oxbaseshop', 'Test', 'TestHTML', 'TestPlain', 'TestSubject', NOW() )";
+        $shopId = 'oxbaseshop';
+        if ($this->getConfig()->getEdition() == 'EE') {
+            $shopId = 1;
+        }
+
+        $sInsert = "INSERT INTO `oxnewsletter` VALUES ( 'newstest', '{$shopId}', 'Test', 'TestHTML', 'TestPlain', 'TestSubject', NOW() )";
         $oDB->Execute($sInsert);
 
-        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test', 'oxbaseshop', '_testUserId', 'oxidnewcustomer', NOW() )";
+        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test', '{$shopId}', '_testUserId', 'oxidnewcustomer', NOW() )";
         $oDB->Execute($sInsert);
 
-        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test2', 'oxbaseshop', 'newstest', 'oxidnewcustomer', NOW() )";
+        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test2', '{$shopId}', 'newstest', 'oxidnewcustomer', NOW() )";
         $oDB->Execute($sInsert);
 
         $this->_oNewsSub = oxNew("oxnewssubscribed");

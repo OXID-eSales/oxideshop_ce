@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -274,7 +274,7 @@ class Unit_Models_oxmediaurlTest extends OxidTestCase
     {
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
-        $oMediaUrl = new oxMediaUrl();
+        $oMediaUrl = oxNew('oxMediaUrl');
         $oMediaUrl->load('_test3');
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(false, oxField::T_RAW);
         $this->assertTrue(file_exists($sFilePath));
@@ -287,7 +287,7 @@ class Unit_Models_oxmediaurlTest extends OxidTestCase
     {
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
-        $oMediaUrl = new oxMediaUrl();
+        $oMediaUrl = oxNew('oxMediaUrl');
         $oMediaUrl->load('_test3');
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(true, oxField::T_RAW);
         $this->assertTrue(file_exists($sFilePath));
@@ -299,7 +299,7 @@ class Unit_Models_oxmediaurlTest extends OxidTestCase
     {
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
-        $oMediaUrl = new oxMediaUrl();
+        $oMediaUrl = oxNew('oxMediaUrl');
         $oMediaUrl->load('_test3');
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(true, oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxurl = new oxField($this->getConfig()->getShopUrl() . '/out/media/test.jpg', oxField::T_RAW);

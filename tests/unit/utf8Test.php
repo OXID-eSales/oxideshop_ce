@@ -796,7 +796,7 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'sėkme Литовские für';
 
-        $oMedia = new oxmediaurl();
+        $oMedia = oxNew('oxMediaUrl');
         $oMedia->setId('_testMan');
         $oMedia->oxmediaurls__oxdesc = new oxField($sValue);
         $oMedia->save();
@@ -805,7 +805,7 @@ class Unit_utf8Test extends OxidTestCase
         $oMedia->oxmediaurls__oxurl = new oxField("http://www.youtube.com/watch?v=ZN239G6aJZo");
         $oMedia->save();
 
-        $oMedia = new oxmediaurl();
+        $oMedia = oxNew('oxMediaUrl');
         $oMedia->load('_testMan');
         $this->assertEquals($sValue, $oMedia->oxmediaurls__oxdesc->value);
         $oMedia->load('_testMan2');

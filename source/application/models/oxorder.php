@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -295,7 +295,6 @@ class oxOrder extends oxBase
      */
     public function assign($dbRecord)
     {
-
         parent::assign($dbRecord);
 
         $oUtilsDate = oxRegistry::get("oxUtilsDate");
@@ -1354,7 +1353,6 @@ class oxOrder extends oxBase
             return false;
         }
 
-
         // delete order articles
         $oOrderArticles = $this->getOrderArticles(false);
         foreach ($oOrderArticles as $oOrderArticle) {
@@ -1516,7 +1514,6 @@ class oxOrder extends oxBase
                 $this->_oUser->oxuser__oxstreetnr = clone $this->oxorder__oxbillstreetnr;
                 $this->_oUser->oxuser__oxaddinfo = clone $this->oxorder__oxbilladdinfo;
                 $this->_oUser->oxuser__oxustid = clone $this->oxorder__oxbillustid;
-
 
                 $this->_oUser->oxuser__oxcity = clone $this->oxorder__oxbillcity;
                 $this->_oUser->oxuser__oxcountryid = clone $this->oxorder__oxbillcountryid;

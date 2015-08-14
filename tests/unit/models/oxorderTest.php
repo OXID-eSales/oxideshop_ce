@@ -928,9 +928,8 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $this->assertEquals("601.9", $oOrder->oxorder__oxtotalordersum->value);
 
         // insert test article 2
-
         $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
-                values ('_testArticleId3','" . $myConfig->getShopId() . "','testArticleTitle2','2','20','238')";
+                    values ('_testArticleId3','" . $myConfig->getShopId() . "','testArticleTitle2','2','20','238')";
 
         $this->addToDatabase($sInsert, 'oxarticles');
 
@@ -1326,7 +1325,6 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $this->assertEquals("_testUserId", $oOrder->oxorder__oxuserid->value);
     }
 
-
     /*
      * Test if assing sets bill and delivery country title when title is empty
      */
@@ -1468,10 +1466,8 @@ class Unit_Models_oxorderTest extends OxidTestCase
 
         $oDB->Execute($sInsert);
 
-        // insert test article
-
         $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
-                    values ('_testArticleId','" . $myConfig->getShopId() . "','testArticleTitle','2','20','119')";
+                        values ('_testArticleId','" . $myConfig->getShopId() . "','testArticleTitle','2','20','119')";
 
         $this->addToDatabase($sInsert, 'oxarticles');
 
@@ -1899,7 +1895,6 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->load("oxdefaultadmin");
 
-
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->UNITsetUser($oUser);
 
@@ -1907,7 +1902,6 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $this->assertEquals('John', $oOrder->oxorder__oxbillfname->value);
         $this->assertEquals('Doe', $oOrder->oxorder__oxbilllname->value);
         $this->assertEquals(null, $oOrder->oxorder__oxdelfname->value);
-
     }
 
     public function testSetUserLoadsDeliveryAddress()
@@ -2028,8 +2022,8 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oOrderArticle = $oArticles->current();
 
         //check if article info was copied to oxorderarticle
-
-        $this->assertEquals('14', $oOrderArticle->oxorderarticles__oxstock->value);
+        $expected = ($this->getConfig()->getEdition() === 'EE') ? '50' : '14';
+        $this->assertEquals($expected, $oOrderArticle->oxorderarticles__oxstock->value);
     }
 
     public function testSetOrderArticlesWithChoosenSelectList()
@@ -2190,31 +2184,6 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $this->assertEquals('testErrorMsg', $oOrder->UNITexecutePayment($oBasket, $oPayment));
     }
 
-    /*
-    public function testGetGatewayIPayment()
-    {
-        return; // EE only
-
-        $this->_insertTestOrder();
-
-        $this->getConfig()->setConfigParam( 'iPayment_blActive', true );
-
-        $oOrder = $this->getProxyClass( "oxOrder" );
-        $oOrder->oxorder__oxpaymenttype = new oxField('_testPaymentId', oxField::T_RAW);
-
-        $oPayment = oxNew( 'oxPayment' );
-        $oPayment->oxpayments__oxactive = new oxField('1', oxField::T_RAW);
-        $oPayment->setId('_testPaymentId');
-        $oPayment->save();
-
-        $oDB = oxDb::getDb();
-        $oDB->execute( 'insert into oxobject2ipayment (oxid, oxshopid, oxpaymentid)
-                        values ("_testO2ipId", "'.$this->getConfig()->getShopId().'", "_testPaymentId")' );
-
-        $oGateway = $oOrder->UNITgetGateway();
-        $this->assertEquals( "oxipaymentgateway", get_class($oGateway) );
-    }
-*/
     public function testGetGatewayPayment()
     {
         $this->_insertTestOrder();
@@ -2232,9 +2201,6 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oPayment->oxpayments__oxactive = new oxField('1', oxField::T_RAW);
         $oPayment->setId('_testPaymentId');
         $oPayment->save();
-
-        /*
-        */
 
         $oGateway = $oOrder->UNITgetGateway();
         $this->assertEquals("oxPaymentGateway", get_class($oGateway));
@@ -2431,7 +2397,8 @@ class Unit_Models_oxorderTest extends OxidTestCase
     // FS#1661
     public function testUpdateWishlistRemoveFromWishListVariant()
     {
-        $sArtId = '2077';
+        $sArtId = ($this->getConfig()->getEdition() === 'EE') ? '2363' : '2077';
+
         $oBasketItem = $this->getProxyClass("oxBasketItem");
         $oBasketItem->setNonPublicVar('_sProductId', "$sArtId-01");
         $oBasketItem->setNonPublicVar('_dAmount', 1);
@@ -2779,7 +2746,6 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $this->assertEquals(0, $sStatus);
 
     }
-
 
     public function testDeleteRemovesUserPaymentInfo()
     {
@@ -3345,7 +3311,10 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oDiscount->oxdiscount__oxamountto = new oxField(9999);
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('itm');
         $oDiscount->oxdiscount__oxaddsum = new oxField(0);
-        $oDiscount->oxdiscount__oxitmartid = new oxField('1126');
+
+        $itmArtId = ($this->getConfig()->getEdition() === 'EE') ? '1487' : '1126';
+        $oDiscount->oxdiscount__oxitmartid = new oxField($itmArtId);
+
         $oDiscount->oxdiscount__oxitmamount = new oxField(1);
         $oDiscount->oxdiscount__oxitmmultiple = new oxField(0);
         $oDiscount->save();

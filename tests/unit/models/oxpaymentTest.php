@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -31,10 +31,6 @@ class testPayment extends oxPayment
 
 class Unit_Models_oxpaymentTest extends OxidTestCase
 {
-
-    private $_oPayment;
-    private $_oUser;
-
     /**
      * Tear down the fixture.
      *
@@ -43,7 +39,6 @@ class Unit_Models_oxpaymentTest extends OxidTestCase
     public function tearDown()
     {
         $this->cleanUpTable('oxobject2group', 'oxgroupsid');
-
         parent::tearDown();
     }
 
@@ -294,23 +289,6 @@ class Unit_Models_oxpaymentTest extends OxidTestCase
 
     }
 
-    /*
-    public function testIsValidPayment_NoCreditCardCheckingIPayment()
-    {
-        return; // EE only
-
-        $oPayment = $this->getMock( 'oxpayment', array( 'isIPayment' ) );
-        $oPayment->expects( $this->once() )->method( 'isIPayment' )->will( $this->returnValue( true ) );
-        $oPayment->Load( 'oxidcreditcard' );
-
-        $oUser = new oxuser();
-        $oUser->Load( 'oxdefaultadmin' );
-
-        $blRes = $oPayment->isValidPayment( array(), oxConfig::getBaseShopId(), $oUser, 0.0, 'oxidstandard' );
-        $this->assertTrue( $blRes );
-    }
-    */
-
     /**
      * Test payment validation
      */
@@ -465,67 +443,4 @@ class Unit_Models_oxpaymentTest extends OxidTestCase
         $oPayment->setPaymentVatOnTop(true);
         $this->assertTrue($oPayment->getNonPublicVar("_blPaymentVatOnTop"));
     }
-    /**
-     * Test logging ipayment action
-     */
-    /*
-    public function testLogIPayment()
-    {
-        return; // EE only
-
-        $myConfig = $this->getConfig();
-        $mySession = oxRegistry::getSession()->getId();
-
-        $myConfig->setConfigParam( 'iPayment_blLogPaymentActions', true );
-        $this->setRequestParameter('paymentid', '_testPaymentId');
-        $mySession->setVar('_ipaysessid', '_testIPaymentSessId');
-
-        $oPayment = new oxPayment();
-        $oPayment->logIPayment( '1', '2', '3', '4', '5', '6', '7' );
-
-        $sLogMsg  = "ACTIVE CLASS: 6 (ipayment)\n";
-        $sLogMsg .= "TRANSACTION TYPE: 7\n";
-        $sLogMsg .= "ERROR TEXT: 5\n";
-
-        $sSql = "select * from oxpaylogs where oxsessid = '_testIPaymentSessId' ";
-        $aLogs = oxDb::getDb( oxDB::FETCH_MODE_ASSOC )->getAll( $sSql );
-
-        $this->assertEquals( '_testIPaymentSessId', $aLogs[0]['OXSESSID'] );
-        $this->assertEquals( $this->getConfig()->getBaseShopId(), $aLogs[0]['OXSHOPID'] );
-        $this->assertEquals( '_testPaymentId', $aLogs[0]['OXPAYID'] );
-        $this->assertEquals( '1', $aLogs[0]['OXAMOUNT'] );
-        $this->assertEquals( '2', $aLogs[0]['OXORDERID'] );
-        $this->assertEquals( '3', $aLogs[0]['OXTRANSID'] );
-        $this->assertEquals( '4', $aLogs[0]['OXERRCODE'] );
-
-        $sDbLogMsg = unserialize(stripslashes($aLogs[0]['OXERRTEXT']));
-
-        $sLogMsg = preg_replace("/\r|\n/", "", $sLogMsg);
-        $sDbLogMsg = preg_replace("/\r|\n/", "", $sDbLogMsg);
-
-        $this->assertEquals( $sLogMsg, $sDbLogMsg );
-
-    }
-    */
-    /**
-     * Test logging ipayment action when logging is off
-     */
-    /*
-    public function testLogIPaymentWhenLoggingIsOff()
-    {
-        return; // EE only
-
-        $myConfig = $this->getConfig();
-
-        $myConfig->setConfigParam( 'iPayment_blLogPaymentActions', false );
-
-        $oPayment = new oxPayment();
-        $oPayment->logIPayment( '1', '2', '3', '4', '5', '6', '7' );
-
-        $sSql = "select * from oxpaylogs where oxsessid = '_testIPaymentSessId' ";
-        $aLogs = oxDb::getDb( oxDB::FETCH_MODE_ASSOC )->getAll( $sSql );
-
-        $this->assertEquals( 0, count($aLogs) );
-    }
-    */
 }

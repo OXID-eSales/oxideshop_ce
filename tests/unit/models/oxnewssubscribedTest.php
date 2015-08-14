@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -213,7 +213,7 @@ class Unit_Models_oxnewssubscribedTest extends OxidTestCase
     {
         $this->_oNewsSub->setOptInStatus('9'); //oxnewssubscribed__oxdboptin = new oxField('9', oxField::T_RAW);
 
-        $oNewsSubscribed = new oxnewssubscribed();
+        $oNewsSubscribed = oxNew('oxnewssubscribed');
         $oNewsSubscribed->load('_testNewsSubscrId');
 
         $this->assertEquals(9, $oNewsSubscribed->oxnewssubscribed__oxdboptin->value);
@@ -238,7 +238,7 @@ class Unit_Models_oxnewssubscribedTest extends OxidTestCase
         $this->_oNewsSub->setOptInEmailStatus(1);
 
 
-        $oNewsSubscribed = new oxnewssubscribed();
+        $oNewsSubscribed = oxNew('oxnewssubscribed');
         $oNewsSubscribed->load('_testNewsSubscrId');
 
         $this->assertEquals(1, $oNewsSubscribed->oxnewssubscribed__oxemailfailed->value);
@@ -250,7 +250,7 @@ class Unit_Models_oxnewssubscribedTest extends OxidTestCase
      */
     public function testUpdateSubscription()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxsal = new oxField('newusersal', oxField::T_RAW);
         $oUser->oxuser__oxfname = new oxField('newuserfname', oxField::T_RAW);
         $oUser->oxuser__oxlname = new oxField('newuserlname', oxField::T_RAW);
@@ -275,7 +275,7 @@ class Unit_Models_oxnewssubscribedTest extends OxidTestCase
      */
     public function testUpdateSubscriptionWhenEmailParamIsEmpty()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxsal = new oxField('newusersal', oxField::T_RAW);
         $oUser->oxuser__oxfname = new oxField('newuserfname', oxField::T_RAW);
         $oUser->oxuser__oxlname = new oxField('newuserlname', oxField::T_RAW);
@@ -313,7 +313,7 @@ class Unit_Models_oxnewssubscribedTest extends OxidTestCase
      */
     public function testWasUnsubscribedBug5416()
     {
-        $oNewsSubscribed = new oxNewsSubscribed();
+        $oNewsSubscribed = oxNew('oxnewssubscribed');
 
         //not subscribed
         $oNewsSubscribed->oxnewssubscribed__oxunsubscribed = new oxField('0000-00-00 00:00:00', oxField::T_TEXT);

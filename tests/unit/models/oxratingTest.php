@@ -16,13 +16,12 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
 class Unit_Models_oxratingTest extends OxidTestCase
 {
-
     /**
      * Initialize the fixture.
      *
@@ -94,7 +93,7 @@ class Unit_Models_oxratingTest extends OxidTestCase
         $oRev->oxreviews__oxrating = new oxField(5);
         $oRev->save();
 
-        $oRating = new oxRating();
+        $oRating = oxNew('oxRating');
         $this->assertEquals(2, $oRating->getRatingAverage('xxx', 'oxarticle'));
         $this->assertEquals(2, $oRating->getRatingCount('xxx', 'oxarticle'));
         $this->assertEquals(3, $oRating->getRatingAverage('xxx', 'oxarticle', array('yyy')));
@@ -104,27 +103,27 @@ class Unit_Models_oxratingTest extends OxidTestCase
     public function testGetObjectIdAndType()
     {
         // inserting few test records
-        $oRat = new oxrating();
+        $oRat = oxNew('oxRating');
         $oRat->setId('id1');
         $oRat->oxratings__oxobjectid = new oxField('xx1');
         $oRat->oxratings__oxtype = new oxField('oxarticle');
         $oRat->oxratings__oxrating = new oxField(1);
         $oRat->save();
 
-        $oRat = new oxrating();
+        $oRat = oxNew('oxRating');
         $oRat->setId('id2');
         $oRat->oxratings__oxobjectid = new oxField('xx2');
         $oRat->oxratings__oxtype = new oxField('oxrecommlist');
         $oRat->oxratings__oxrating = new oxField(2);
         $oRat->save();
 
-        $oRat = new oxrating();
+        $oRat = oxNew('oxRating');
         $oRat->load('id1');
         $this->assertEquals('id1', $oRat->getId());
         $this->assertEquals('xx1', $oRat->getObjectId());
         $this->assertEquals('oxarticle', $oRat->getObjectType());
 
-        $oRat = new oxrating();
+        $oRat = oxNew('oxRating');
         $oRat->load('id2');
         $this->assertEquals('id2', $oRat->getId());
         $this->assertEquals('xx2', $oRat->getObjectId());

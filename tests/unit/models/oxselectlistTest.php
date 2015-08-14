@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,7 +25,6 @@
  */
 class Unit_Models_oxselectlistTest extends OxidTestCase
 {
-
     /**
      * Initialize the fixture add some users.
      *
@@ -41,6 +40,7 @@ class Unit_Models_oxselectlistTest extends OxidTestCase
         $sVal = '&amp;&test1, 10!P!10__@@test2, 10!P!10__@@test3, 10!P!10__@@';
 
         $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("oxsellisttest", "' . $sShopId . '", "oxsellisttest", "oxsellisttest", "' . $sVal . '")';
+
         $this->addToDatabase($sQ, 'oxselectlist');
 
         $sQ = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("oxsellisttest", "oxsellisttest", "oxsellisttest", 1) ';
@@ -72,7 +72,7 @@ class Unit_Models_oxselectlistTest extends OxidTestCase
     {
         $myDB = oxDb::getDB();
 
-        $oSelList = new oxselectlist();
+        $oSelList = oxNew('oxselectlist');
         $oSelList->load('oxsellisttest');
         $oSelList->delete();
 
@@ -101,7 +101,7 @@ class Unit_Models_oxselectlistTest extends OxidTestCase
         $aSelList[2]->name = 'test3, 10';
         $aSelList[2]->value = null;
 
-        $oSelList = new oxselectlist();
+        $oSelList = oxNew('oxselectlist');
         $oSelList->Load('oxsellisttest');
 
         // checking loaded data
@@ -110,7 +110,7 @@ class Unit_Models_oxselectlistTest extends OxidTestCase
 
     public function testAssignWithOtherLang()
     {
-        $oSelectList = new oxselectlist();
+        $oSelectList = oxNew('oxselectlist');
         $oSelectList->setLanguage(1);
         $oSelectList->load('oxsellisttest');
 
@@ -126,7 +126,7 @@ class Unit_Models_oxselectlistTest extends OxidTestCase
 
     public function testDeleteNotExistingSelect()
     {
-        $oSelectList = new oxselectlist();
+        $oSelectList = oxNew('oxselectlist');
         $this->assertFalse($oSelectList->delete("111111"));
     }
 
@@ -139,7 +139,7 @@ class Unit_Models_oxselectlistTest extends OxidTestCase
         $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', 1);
         $this->getConfig()->setConfigParam('bl_perfUseSelectlistPrice', 1);
 
-        $oSelList = new oxselectlist();
+        $oSelList = oxNew('oxselectlist');
         $oSelList->load('oxsellisttest');
         $aSelList = $oSelList->getFieldList();
 
@@ -196,7 +196,7 @@ class Unit_Models_oxselectlistTest extends OxidTestCase
     public function testGetSelections()
     {
         // valdesc is not set
-        $oSelectList = new oxselectlist();
+        $oSelectList = oxNew('oxselectlist');
         $this->assertNull($oSelectList->getSelections());
 
         $this->setRequestParameter('cur', 2);
@@ -206,7 +206,7 @@ class Unit_Models_oxselectlistTest extends OxidTestCase
         );
 
         // valdesc is set
-        $oSelectList = new oxselectlist();
+        $oSelectList = oxNew('oxselectlist');
         $oSelectList->oxselectlist__oxvaldesc = new oxField('test1, 10!P!10__@@test2, 10!P!10__@@test3\', 10!P!10__@@');
 
         $this->assertEquals($aSelections, $oSelectList->getSelections());
@@ -219,7 +219,7 @@ class Unit_Models_oxselectlistTest extends OxidTestCase
      */
     public function testGetLabel()
     {
-        $oSelectList = new oxselectlist();
+        $oSelectList = oxNew('oxselectlist');
         $oSelectList->oxselectlist__oxtitle = new oxField("test");
         $this->assertEquals("test", $oSelectList->getLabel());
 
@@ -233,7 +233,7 @@ class Unit_Models_oxselectlistTest extends OxidTestCase
     public function testSetVatAndGetVat()
     {
         // no VAT set
-        $oSelectList = new oxselectlist();
+        $oSelectList = oxNew('oxselectlist');
         $this->assertNull($oSelectList->getVat());
 
         // setting and checking VAT

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -26,7 +26,6 @@
  */
 class oxSelectlist extends oxI18n implements oxISelectList
 {
-
     /**
      * Select list fields array
      *
@@ -200,5 +199,4 @@ class oxSelectlist extends oxI18n implements oxISelectList
             }
         }
     }
-
 }

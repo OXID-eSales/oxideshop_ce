@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -76,7 +76,7 @@ class Unit_Models_oxnewslistTest extends OxidTestCase
     // no user
     public function testLoadNewsNoUser()
     {
-        $oNewsList = new oxnewslist();
+        $oNewsList = oxNew('oxnewslist');
         $oNewsList->loadNews();
 
         $this->assertEquals(1, $oNewsList->count());
@@ -87,10 +87,10 @@ class Unit_Models_oxnewslistTest extends OxidTestCase
     // admin user
     public function testLoadNewsAdminUser()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        $oNewsList = new oxnewslist();
+        $oNewsList = oxNew('oxnewslist');
         $oNewsList->setUser($oUser);
         $oNewsList->loadNews();
 
@@ -108,10 +108,10 @@ class Unit_Models_oxnewslistTest extends OxidTestCase
     // admin user
     public function testLoadNewsAdminUserLimit()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
-        $oNewsList = new oxnewslist();
+        $oNewsList = oxNew('oxnewslist');
         $oNewsList->setUser($oUser);
         $oNewsList->loadNews(0, 1);
 
@@ -125,10 +125,10 @@ class Unit_Models_oxnewslistTest extends OxidTestCase
      */
     public function testSetUserAndGetUser()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->xxx = 'yyy';
 
-        $oNewsList = new oxnewslist();
+        $oNewsList = oxNew('oxnewslist');
         $oNewsList->setUser($oUser);
         $this->assertEquals($oUser, $oNewsList->getUser());
     }

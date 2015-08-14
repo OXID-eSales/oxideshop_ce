@@ -643,8 +643,13 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oSeoEncoderArticle = $this->getMock("oxSeoEncoderArticle", array("_getTag"));
 
-        $sTag = 'absinth';
-        $sTagUrl = "tag/{$sTag}/Bar-Set-ABSINTH.html";
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sTag = 'intellektuelle';
+            $sTagUrl = "tag/{$sTag}/Bar-Set-ABSINTH.html";
+        } else {
+            $sTag = 'absinth';
+            $sTagUrl = "tag/{$sTag}/Bar-Set-ABSINTH.html";
+        }
 
         $oSeoEncoderArticle->expects($this->any())->method('_getTag')->will($this->returnValue($sTag));
 
@@ -765,8 +770,13 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setLanguage(1);
-        $sArtId = '1354';
-        $oxtitle = 'Wanduhr-SPIDER';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sArtId = '1131';
+            $oxtitle = 'Flaschenverschluss-EGO';
+        } else {
+            $sArtId = '1354';
+            $oxtitle = 'Wanduhr-SPIDER';
+        }
 
         $sSeoUri = 'Nach-Lieferant/' . str_replace(array(' ', '.', '+'), '-', $oVendor->oxvendor__oxtitle->value) . '/' . $oxtitle . '-oxid-test-article-var-select.html';
 
@@ -789,8 +799,13 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setLanguage(1);
-        $sArtId = '1354';
-        $oxtitle = 'Wanduhr-SPIDER';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sArtId = '1131';
+            $oxtitle = 'Flaschenverschluss-EGO';
+        } else {
+            $sArtId = '1354';
+            $oxtitle = 'Wanduhr-SPIDER';
+        }
 
         $sSeoUri = 'Nach-Hersteller/' . str_replace(array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value) . '/' . $oxtitle . '-oxid-test-article-var-select.html';
 
@@ -813,8 +828,13 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setLanguage(0);
-        $sArtId = '1354';
-        $oxtitle = 'Wall-Clock-SPIDER';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sArtId = '1131';
+            $oxtitle = 'Bottle-Cap-EGO';
+        } else {
+            $sArtId = '1354';
+            $oxtitle = 'Wall-Clock-SPIDER';
+        }
 
         $sSeoUri = 'en/By-Distributor/' . str_replace(array(' ', '.', '+'), '-', $oVendor->oxvendor__oxtitle->value) . '/' . $oxtitle . '-oxid-test-article-var-select.html';
 
@@ -837,8 +857,13 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setLanguage(0);
-        $sArtId = '1354';
-        $oxtitle = 'Wall-Clock-SPIDER';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sArtId = '1131';
+            $oxtitle = 'Bottle-Cap-EGO';
+        } else {
+            $sArtId = '1354';
+            $oxtitle = 'Wall-Clock-SPIDER';
+        }
 
         $sSeoUri = 'en/By-Manufacturer/' . str_replace(array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value) . '/' . $oxtitle . '-oxid-test-article-var-select.html';
 
@@ -1041,8 +1066,13 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = $this->getMock("oxarticle", array("inCategory"));
         $oArticle->expects($this->once())->method('inCategory')->will($this->returnValue(true));
-        $oArticle->load('8a142c410f55ed579.98106125');
-        $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . '/Tischlampe-SPHERE-rot.html';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $oArticle->load('2363-02');
+            $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . '/Tischfussball-BIG-KICK-ohne-Muenzeinwurf.html';
+        } else {
+            $oArticle->load('8a142c410f55ed579.98106125');
+            $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . '/Tischlampe-SPHERE-rot.html';
+        }
 
         $oEncoder = $this->getMock('oxSeoEncoderArticle', array('_loadFromDb', "_getCategory"));
         $oEncoder->expects($this->once())->method('_getCategory')->will($this->returnValue($oCategory));
@@ -1063,8 +1093,13 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = $this->getMock("oxarticle", array("inCategory"));
         $oArticle->expects($this->once())->method('inCategory')->will($this->returnValue(true));
 
-        $oArticle->loadInLang(1, '8a142c410f55ed579.98106125');
-        $sUrl = "en/" . oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Table+Lamp+SPHERE+red.html";
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $oArticle->loadInLang(1, '2363-02');
+            $sUrl = "en/" . oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Soccer+Table+BIG+KICK+without+coin+slot.html";
+        } else {
+            $oArticle->loadInLang(1, '8a142c410f55ed579.98106125');
+            $sUrl = "en/" . oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Table+Lamp+SPHERE+red.html";
+        }
 
         $oEncoder = $this->getMock('modSeoEncoderArticle', array('_loadFromDb', "_getCategory"));
         $oEncoder->expects($this->once())->method('_getCategory')->will($this->returnValue($oCategory));
@@ -1085,8 +1120,13 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = $this->getMock("oxarticle", array("inCategory"));
         $oArticle->expects($this->once())->method('inCategory')->will($this->returnValue(true));
-        $oArticle->loadInLang(1, '8a142c410f55ed579.98106125');
-        $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . '/Tischlampe-SPHERE-rot.html';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $oArticle->loadInLang(1, '2363-02');
+            $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . '/Tischfussball-BIG-KICK-ohne-Muenzeinwurf.html';
+        } else {
+            $oArticle->loadInLang(1, '8a142c410f55ed579.98106125');
+            $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . '/Tischlampe-SPHERE-rot.html';
+        }
 
         $oEncoder = $this->getMock('oxSeoEncoderArticle', array('_loadFromDb', "_getCategory"));
         $oEncoder->expects($this->once())->method('_getCategory')->will($this->returnValue($oCategory));
@@ -1104,8 +1144,13 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oArticle = $this->getMock("oxarticle", array("inCategory"));
         $oArticle->expects($this->once())->method('inCategory')->will($this->returnValue(true));
-        $oArticle->loadInLang(0, '8a142c410f55ed579.98106125');
-        $sUrl = "en/" . oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Table+Lamp+SPHERE+red.html";
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $oArticle->loadInLang(0, '2363-02');
+            $sUrl = "en/" . oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Soccer+Table+BIG+KICK+without+coin+slot.html";
+        } else {
+            $oArticle->loadInLang(0, '8a142c410f55ed579.98106125');
+            $sUrl = "en/" . oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Table+Lamp+SPHERE+red.html";
+        }
 
         $oEncoder = $this->getMock('modSeoEncoderArticle', array('_loadFromDb', "_getCategory"));
         $oEncoder->expects($this->once())->method('_getCategory')->will($this->returnValue($oCategory));
@@ -1129,8 +1174,13 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
     {
         $oArticle = oxNew('oxArticle');
 
-        $oArticle->loadInLang(0, '1127');
-        $sExp = "Blinkende-Eiswuerfel-FLASH";
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $oArticle->loadInLang(0, '1889');
+            $sExp = "Bierspiel-OANS-ZWOA-GSUFFA";
+        } else {
+            $oArticle->loadInLang(0, '1127');
+            $sExp = "Blinkende-Eiswuerfel-FLASH";
+        }
 
         $oEncoder = oxRegistry::get("oxSeoEncoderArticle");
         $oEncoder->setSeparator();
@@ -1144,7 +1194,11 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
      */
     public function testActicleIsSavedSeoUrlShouldStayTheSame()
     {
-        $sArtId = '1131';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sArtId = '2363';
+        } else {
+            $sArtId = '1131';
+        }
 
         $oArticle = oxNew('oxArticle');
         $oArticle->load($sArtId);

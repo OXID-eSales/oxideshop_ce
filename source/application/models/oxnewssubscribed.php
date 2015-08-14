@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -50,18 +50,15 @@ class oxNewsSubscribed extends oxBase
      */
     protected $_sClassName = 'oxnewssubscribed';
 
-
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
     public function __construct()
     {
-
         parent::__construct();
 
         $this->init('oxnewssubscribed');
     }
-
 
     /**
      * Loads object (newssubscription) details from DB. Returns true on success.
@@ -92,11 +89,24 @@ class oxNewsSubscribed extends oxBase
      */
     public function loadFromEmail($sEmailAddress)
     {
-        $oDb = oxDb::getDb();
-        $sEmailAddressQuoted = $oDb->quote($sEmailAddress);
-        $sOxId = $oDb->getOne("select oxid from oxnewssubscribed where oxemail = {$sEmailAddressQuoted} ");
+        $userOxid = $this->getSubscribedUserIdByEmail($sEmailAddress);
+        return $this->load($userOxid);
+    }
 
-        return $this->load($sOxId);
+    /**
+     * Get subscribed user id by email.
+     *
+     * @param string $email
+     *
+     * @return string
+     */
+    protected function getSubscribedUserIdByEmail($email)
+    {
+        $database = oxDb::getDb();
+        $sEmailAddressQuoted = $database->quote($email);
+        $userOxid = $database->getOne("select oxid from oxnewssubscribed where oxemail = {$sEmailAddressQuoted} ");
+
+        return $userOxid;
     }
 
     /**

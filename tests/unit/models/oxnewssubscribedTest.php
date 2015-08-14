@@ -24,7 +24,6 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxNewsSubscribedHelper.php';
 
 class Unit_Models_oxnewssubscribedTest extends OxidTestCase
 {
-
     private $_oNewsSub = null;
     private $_oUser = null;
 
@@ -98,7 +97,6 @@ class Unit_Models_oxnewssubscribedTest extends OxidTestCase
     public function test_loadFromEmailExistingUser()
     {
         $oNewsSubscribed = oxNew('oxnewssubscribed');
-
         $this->assertTrue($oNewsSubscribed->loadFromEmail('useremail@useremail.nl'));
         $this->assertEquals('_testNewsSubscrId', $oNewsSubscribed->oxnewssubscribed__oxid->value);
     }
@@ -109,11 +107,9 @@ class Unit_Models_oxnewssubscribedTest extends OxidTestCase
     public function testLoadFromEmailNotExistingUser()
     {
         $oNewsSubscribed = oxNew('oxnewssubscribed');
-
         $this->assertFalse($oNewsSubscribed->loadFromEmail('nosuchuser@useremail.nl'));
         $this->assertNull($oNewsSubscribed->oxnewssubscribed__oxid->value);
     }
-
 
     /**
      * Testing email subscription loader by user id with existing user
@@ -133,13 +129,6 @@ class Unit_Models_oxnewssubscribedTest extends OxidTestCase
         $oNewsSubscribed = oxNew('oxnewssubscribed');
         $this->assertFalse($oNewsSubscribed->loadFromUserId('noSuchUserId'));
         $this->assertNull($oNewsSubscribed->oxnewssubscribed__oxid->value);
-    }
-
-    /**
-     * Testing subscription loading by userid in different shops
-     */
-    public function testLoadFromUserIdDifferentShops()
-    {
     }
 
     /**

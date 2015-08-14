@@ -16,10 +16,9 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-
 
 class Unit_Models_oxreviewTest extends OxidTestCase
 {
@@ -39,7 +38,7 @@ class Unit_Models_oxreviewTest extends OxidTestCase
         $this->_iReviewTime = time();
         oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $this->_iReviewTime; }");
 
-        $this->_oReview = new oxreview();
+        $this->_oReview = oxNew('oxReview');
         $this->_oReview->setId('_testId');
         $this->_oReview->oxreviews__oxuserid = new oxField('oxdefaultadmin', oxField::T_RAW);
         $this->_oReview->oxreviews__oxtext = new oxField('deValue', oxField::T_RAW);
@@ -68,7 +67,7 @@ class Unit_Models_oxreviewTest extends OxidTestCase
      */
     public function testAssignNonExisting()
     {
-        $oReview = new oxreview();
+        $oReview = oxNew('oxReview');
         $oReview->load('xxx');
 
         $this->assertFalse(isset($oReview->oxuser__oxfname));
@@ -76,7 +75,7 @@ class Unit_Models_oxreviewTest extends OxidTestCase
 
     public function testAssignExisting()
     {
-        $oReview = new oxreview();
+        $oReview = oxNew('oxReview');
         $oReview->load('_testId');
 
         $this->assertTrue(isset($oReview->oxuser__oxfname));
@@ -85,7 +84,7 @@ class Unit_Models_oxreviewTest extends OxidTestCase
 
     public function testLoadDe()
     {
-        $oReview = new oxreview();
+        $oReview = oxNew('oxReview');
         $oReview->load('_testId');
 
         $this->assertEquals('deValue', $oReview->oxreviews__oxtext->value);
@@ -105,7 +104,7 @@ class Unit_Models_oxreviewTest extends OxidTestCase
         $this->_oReview->oxreviews__oxtext = new oxField('deValue2', oxField::T_RAW);
         $this->_oReview->Save();
 
-        $oReview = new oxreview();
+        $oReview = oxNew('oxReview');
         $oReview->load('_testId');
 
         $sCreate = date('d.m.Y H:i:s', $iCurrTime);
@@ -121,12 +120,12 @@ class Unit_Models_oxreviewTest extends OxidTestCase
     {
         $iCurrTime = time();
 
-        $oReview = new oxreview();
+        $oReview = oxNew('oxReview');
         $oReview->setId('_testId2');
         $oReview->oxreviews__oxtext = new oxField('deValue', oxField::T_RAW);
         $oReview->save();
 
-        $oReview = new oxreview();
+        $oReview = oxNew('oxReview');
         $oReview->load('_testId2');
 
         $sCreate = date('d.m.Y H:i:s', $iCurrTime);
@@ -136,8 +135,6 @@ class Unit_Models_oxreviewTest extends OxidTestCase
 
         $this->assertTrue($sCreate >= $oReview->oxreviews__oxcreate->value);
     }
-
-
 
     public function testLoadList()
     {
@@ -158,14 +155,14 @@ class Unit_Models_oxreviewTest extends OxidTestCase
 
     public function testLoadListNoIdsPassed()
     {
-        $oRev = new oxreview();
+        $oRev = oxNew('oxReview');
         $this->assertEquals(0, $oRev->loadList('x', null)->count());
     }
 
     public function testLoadListModerationTest()
     {
         // inserting few test records
-        $oRev = new oxreview();
+        $oRev = oxNew('oxReview');
         $oRev->setId('_testrev1');
         $oRev->oxreviews__oxactive = new oxField(1);
         $oRev->oxreviews__oxobjectid = new oxField('xxx');
@@ -173,7 +170,7 @@ class Unit_Models_oxreviewTest extends OxidTestCase
         $oRev->oxreviews__oxtext = new oxField('revtext');
         $oRev->save();
 
-        $oRev = new oxreview();
+        $oRev = oxNew('oxReview');
         $oRev->setId('_testrev2');
         $oRev->oxreviews__oxactive = new oxField(0);
         $oRev->oxreviews__oxobjectid = new oxField('xxx');
@@ -183,7 +180,7 @@ class Unit_Models_oxreviewTest extends OxidTestCase
 
         // moderation is OFF
         $this->getConfig()->setConfigParam('blGBModerate', 0);
-        $oRev = new oxreview();
+        $oRev = oxNew('oxReview');
         $this->assertEquals(2, $oRev->loadList('oxarticle', 'xxx')->count());
 
         // moderation is ON
@@ -194,7 +191,7 @@ class Unit_Models_oxreviewTest extends OxidTestCase
     public function testGetObjectIdAndType()
     {
         // inserting few test records
-        $oRev = new oxreview();
+        $oRev = oxNew('oxReview');
         $oRev->setId('id1');
         $oRev->oxreviews__oxactive = new oxField(1);
         $oRev->oxreviews__oxobjectid = new oxField('xx1');
@@ -202,7 +199,7 @@ class Unit_Models_oxreviewTest extends OxidTestCase
         $oRev->oxreviews__oxtext = new oxField('revtext');
         $oRev->save();
 
-        $oRev = new oxreview();
+        $oRev = oxNew('oxReview');
         $oRev->setId('id2');
         $oRev->oxreviews__oxactive = new oxField(1);
         $oRev->oxreviews__oxobjectid = new oxField('xx2');
@@ -210,12 +207,12 @@ class Unit_Models_oxreviewTest extends OxidTestCase
         $oRev->oxreviews__oxtext = new oxField('revtext');
         $oRev->save();
 
-        $oRev = new oxreview();
+        $oRev = oxNew('oxReview');
         $oRev->load('id1');
         $this->assertEquals('xx1', $oRev->getObjectId());
         $this->assertEquals('oxarticle', $oRev->getObjectType());
 
-        $oRev = new oxreview();
+        $oRev = oxNew('oxReview');
         $oRev->load('id2');
         $this->assertEquals('xx2', $oRev->getObjectId());
         $this->assertEquals('oxrecommlist', $oRev->getObjectType());

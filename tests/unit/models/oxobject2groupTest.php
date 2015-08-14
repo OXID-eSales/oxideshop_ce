@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -34,11 +34,11 @@ class Unit_Models_oxobject2groupTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $oNews = new oxnews();
+        $oNews = oxNew('oxnews');
         $oNews->oxnews__oxshortdesc = new oxField('Test', oxField::T_RAW);
         $oNews->Save();
 
-        $this->_oGroup = new oxobject2group();
+        $this->_oGroup = oxNew('oxobject2group');
         $this->_oGroup->oxobject2group__oxobjectid = new oxField($oNews->getId(), oxField::T_RAW);
         $this->_oGroup->oxobject2group__oxgroupsid = new oxField("oxidnewcustomer", oxField::T_RAW);
         $this->_oGroup->Save();
@@ -75,7 +75,7 @@ class Unit_Models_oxobject2groupTest extends OxidTestCase
 
     public function testSaveNew()
     {
-        $this->_oGroup = new oxobject2group();
+        $this->_oGroup = oxNew('oxobject2group');
         $this->_oGroup->oxobject2group__oxobjectid = new oxField("1111", oxField::T_RAW);
         $this->_oGroup->oxobject2group__oxgroupsid = new oxField("oxidnewcustomer", oxField::T_RAW);
 
@@ -84,12 +84,12 @@ class Unit_Models_oxobject2groupTest extends OxidTestCase
 
     public function testSaveIfAlreadyExists()
     {
-        $oGroup = new oxobject2group();
+        $oGroup = oxNew('oxobject2group');
         $oGroup->oxobject2group__oxobjectid = new oxField($this->_sObjID, oxField::T_RAW);
         $oGroup->oxobject2group__oxgroupsid = new oxField("oxidnewcustomer", oxField::T_RAW);
         $oGroup->Save();
 
-        $oGroup = new oxobject2group();
+        $oGroup = oxNew('oxobject2group');
         $oGroup->oxobject2group__oxobjectid = new oxField($this->_sObjID, oxField::T_RAW);
         $oGroup->oxobject2group__oxgroupsid = new oxField("oxidnewcustomer", oxField::T_RAW);
 

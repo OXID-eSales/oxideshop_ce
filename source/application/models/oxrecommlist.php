@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -158,8 +158,7 @@ class oxRecommList extends oxBase implements oxIUrl
             $oDb = oxDb::getDb();
             // cleaning up related data
             $oDb->execute("delete from oxobject2list where oxlistid = " . $oDb->quote($sOXID));
-
-
+            $this->onDelete();
         }
 
         return $blDelete;
@@ -194,7 +193,6 @@ class oxRecommList extends oxBase implements oxIUrl
     public function removeArticle($sOXID)
     {
         if ($sOXID) {
-
             $oDb = oxDb::getDb();
             $sQ = "delete from oxobject2list where oxobjectid = " . $oDb->quote($sOXID) . " and oxlistid=" . $oDb->quote($this->getId());
 
@@ -516,8 +514,22 @@ class oxRecommList extends oxBase implements oxIUrl
         if (!$this->oxrecommlists__oxtitle->value) {
             throw oxNew("oxObjectException", 'EXCEPTION_RECOMMLIST_NOTITLE');
         }
+        $this->onSave();
 
         return parent::save();
     }
 
+    /**
+     * Method is used for overriding when deleting recommendation list.
+     */
+    protected function onDelete()
+    {
+    }
+
+    /**
+     * Method is used for overriding when saving.
+     */
+    protected function onSave()
+    {
+    }
 }

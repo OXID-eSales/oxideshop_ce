@@ -36,7 +36,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
     {
         parent::setUp();
 
-        $this->_oOrderArticle = new oxorderarticle();
+        $this->_oOrderArticle = oxNew('oxorderarticle');
         $this->_oOrderArticle->setId('_testOrderArticleId');
         $this->_oOrderArticle->oxorderarticles__oxartid = new oxField('_testArticleId', oxField::T_RAW);
         $this->_oOrderArticle->oxorderarticles__oxorderid = new oxField('51', oxField::T_RAW);
@@ -141,17 +141,17 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
 
     public function testIsOrderArticle()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertTrue($oOrderArticle->isOrderArticle());
     }
 
 
     public function testGetProductParentId()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertFalse($oOrderArticle->getProductParentId());
 
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->oxorderarticles__oxartparentid = new oxField("sParentId");
         $this->assertEquals("sParentId", $oOrderArticle->getProductParentId());
     }
@@ -161,7 +161,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->load("1126");
 
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->oxorderarticles__oxartid = new oxField("1126");
 
         $this->assertEquals($oArticle->getCategoryIds(false, true), $oOrderArticle->getCategoryIds(false, true));
@@ -178,7 +178,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
 
     public function testGetProductId()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->oxorderarticles__oxartid = new oxField('testArticleId');
         $this->assertEquals('testArticleId', $oOrderArticle->getProductId());
     }
@@ -192,13 +192,13 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
 
     public function testCheckForStock()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertTrue($oOrderArticle->checkForStock(999));
     }
 
     public function testGetOrderArticle()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
 
         $oArticle = $oOrderArticle->UNITgetOrderArticle("1126");
         $this->assertTrue($oArticle instanceof oxarticle);
@@ -218,7 +218,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
 
     public function testSetIsNewOrderItemAndIsNewOrderItem()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertFalse($oOrderArticle->isNewOrderItem());
 
         $oOrderArticle->setIsNewOrderItem(true);
@@ -249,29 +249,29 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
 
     public function testSkipDiscounts()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertFalse($oOrderArticle->skipDiscounts());
     }
 
     public function testGetCategoryIdsNoArticleSet()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertEquals(array(), $oOrderArticle->getCategoryIds(false, null));
     }
 
     public function getLanguage()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertEquals(oxRegistry::getLang()->getBaseLanguage(), $oOrderArticle->getLanguage());
     }
 
     public function testGetPrice()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->oxorderarticles__oxvat = new oxField(33);
         $oOrderArticle->oxorderarticles__oxbprice = new oxField(133);
 
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setVat(33);
         $oPrice->setPrice(133);
@@ -411,17 +411,17 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
 
         // test getting correct list and correct handling of letters case
         $sFields = "Color : BluE, size: small ";
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertEquals(array(0 => 1, 1 => 2), $oOrderArticle->getOrderArticleSelectList('1126', $sFields));
 
         // just one list must be returned
         $sFields = "Size : middle ";
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertEquals(array(1 => 1), $oOrderArticle->getOrderArticleSelectList('1126', $sFields));
 
         // only existing list returned
         $sFields = "Color : red, Material : wood ";
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertEquals(array(0 => 0), $oOrderArticle->getOrderArticleSelectList('1126', $sFields));
     }
 
@@ -452,12 +452,12 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
 
         // just one list must be returned
         $sFields = "Size : middle +10,00 EUR";
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertEquals(array(1 => 1), $oOrderArticle->getOrderArticleSelectList('1127', $sFields), 'Size : middle +10,00 EUR');
 
         // just one list must be returned
         $sFields = "Size : small +12,03 EUR";
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertEquals(array(1 => 2), $oOrderArticle->getOrderArticleSelectList('1127', $sFields), 'Size : small +12,03 EUR');
     }
 
@@ -481,14 +481,14 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
         $oDB->Execute($sQ1);
         $oDB->Execute($sQ2);
 
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $sFields = "_______:::_______";
         $this->assertEquals(array(), $oOrderArticle->getOrderArticleSelectList('1126', $sFields));
     }
 
     public function testMakeSelListArrayWithNoAssignedSelLists()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $sFields = "Color : blue, Size : small ";
 
         $this->assertEquals(array(), $oOrderArticle->getOrderArticleSelectList('1127', $sFields));
@@ -499,7 +499,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
      */
     public function testLoadingOrderArticle()
     {
-        $oOrderArticle = new oxorderarticle();
+        $oOrderArticle = oxNew('oxorderarticle');
         $this->assertTrue($oOrderArticle->load('_testOrderArticleId'));
 
         $this->assertEquals("_testArticleId", $oOrderArticle->oxorderarticles__oxartid->value);
@@ -533,7 +533,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
      */
     public function testAssignAddsPersistenInfo()
     {
-        $oOrderArticle = new oxorderarticle();
+        $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->load('_testOrderArticleId');
     }
 
@@ -655,7 +655,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
     {
         $aParams = array('xxx', 'yyy', 'zzz');
 
-        $oOrderArticle = new oxorderarticle();
+        $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->setPersParams($aParams);
 
         $this->assertEquals(serialize($aParams), $oOrderArticle->oxorderarticles__oxpersparam->value);
@@ -673,7 +673,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
         $this->_oOrderArticle->oxorderarticles__oxerpstatus = new oxField($sParams, oxField::T_RAW);
         $this->_oOrderArticle->save();
 
-        $oOrderArticle = new oxorderarticle();
+        $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->load('_testOrderArticleId');
 
 
@@ -694,7 +694,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
         $sSQL = "select * from oxorderarticles where oxid = '_testOrderArticleId' ";
         $rs = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->execute($sSQL);
 
-        $oOrderArticle = new oxorderarticle();
+        $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->assign($rs->fields); // field names are in upercase
 
         $this->assertEquals('" &', $oOrderArticle->oxorderarticles__oxpersparam->value);
@@ -710,7 +710,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
     public function testGetWrapping()
     {
         oxTestModules::addFunction('oxwrapping', 'load($id)', '{if ($id=="a") return true; }');
-        $o = new oxOrderArticle();
+        $o = oxNew('oxOrderArticle');
 
         $o->oxorderarticles__oxwrapid = new oxField('');
         $this->assertSame(null, $o->getWrapping());
@@ -729,11 +729,11 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
      */
     public function testIsBundle()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->oxorderarticles__oxisbundle = new oxField(false);
         $this->assertFalse($oOrderArticle->isBundle());
 
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->oxorderarticles__oxisbundle = new oxField(true);
         $this->assertTrue($oOrderArticle->isBundle());
     }
@@ -780,7 +780,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
     {
         $oArticle = oxNew('oxArticle');
 
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
 
         $oOrderArticle->setArticle($oArticle);
 

@@ -103,5 +103,4 @@ interface oxIArticle
      * @return bool
      */
     public function isOrderArticle();
-
 }

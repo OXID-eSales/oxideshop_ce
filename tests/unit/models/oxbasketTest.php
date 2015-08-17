@@ -588,7 +588,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testAddOrderArticleToBasket()
     {
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId("sOrderArticleId");
         $oOrderArticle->oxorderarticles__oxamount = new oxField(10);
         $oOrderArticle->oxorderarticles__oxwrapid = new oxField("swrapid");

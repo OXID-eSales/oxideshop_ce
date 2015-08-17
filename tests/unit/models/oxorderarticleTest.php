@@ -175,7 +175,6 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
         $this->assertEquals($oPrice, $oOrderArticle->getBasePrice());
     }
 
-
     public function testGetProductId()
     {
         $oOrderArticle = oxNew('oxOrderArticle');
@@ -632,7 +631,6 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
         $this->assertEquals(-7, $this->_oOrderArticle->UNITgetArtStock(-17, true));
     }
 
-
     /**
      * Testing persistent data getter
      */
@@ -662,7 +660,7 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
     }
 
     /*
-     * Test correct serializing and loading oxpersparam and oxerpstatus values
+     * Test correct serializing and loading oxpersparam values
      */
     public function testSerializingValues()
     {
@@ -670,18 +668,16 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
         $sParams = serialize($aTestArr);
 
         $this->_oOrderArticle->oxorderarticles__oxpersparam = new oxField($sParams, oxField::T_RAW);
-        $this->_oOrderArticle->oxorderarticles__oxerpstatus = new oxField($sParams, oxField::T_RAW);
         $this->_oOrderArticle->save();
 
         $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->load('_testOrderArticleId');
 
-
         $this->assertEquals($aTestArr, $oOrderArticle->getPersParams());
     }
 
     /*
-     * Test _setFieldData - correctly sets data type to T_RAW to oxpersparam and oxerpstatus fields
+     * Test _setFieldData - correctly sets data type to T_RAW to oxpersparam field
      * M #275
      */
     public function test_setFieldData()
@@ -699,7 +695,6 @@ class Unit_Models_oxorderarticleTest extends OxidTestCase
 
         $this->assertEquals('" &', $oOrderArticle->oxorderarticles__oxpersparam->value);
         $this->assertEquals('" &', $oOrderArticle->oxorderarticles__oxtitle->value);
-
     }
 
     /**

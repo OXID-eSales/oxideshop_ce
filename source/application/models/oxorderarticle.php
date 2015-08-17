@@ -192,7 +192,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
         return $iStockCount;
     }
 
-
     /**
      * Order persistent data getter
      *
@@ -610,7 +609,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
     {
         return true;
     }
-
 
     /**
      * Sets order article storno value to 1 and if stock control is on -

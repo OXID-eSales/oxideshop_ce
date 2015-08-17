@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -30,49 +30,49 @@ class Unit_Models_oxorderfilelistTest extends OxidTestCase
      */
     protected function setUp()
     {
-        $oOrder = new oxOrder();
+        $oOrder = oxNew('oxOrder');
         $oOrder->setId('_orderId_1');
         $oOrder->oxorder__oxuserid = new oxField('_userId');
         $oOrder->save();
 
-        $oOrder = new oxOrder();
+        $oOrder = oxNew('oxOrder');
         $oOrder->setId('_orderId_2');
         $oOrder->oxorder__oxpaid = new oxField('2011-01-10 12:12:12');
         $oOrder->oxorder__oxuserid = new oxField('_userId');
         $oOrder->save();
 
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_orderArticleId_1');
         $oOrderArticle->oxorderarticles__oxtitle = new oxField('title');
         $oOrderArticle->oxorderarticles__oxartnum = new oxField('artnum');
         $oOrderArticle->save();
 
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_orderArticleId_2');
         $oOrderArticle->oxorderarticles__oxtitle = new oxField('title');
         $oOrderArticle->oxorderarticles__oxartnum = new oxField('artnum');
         $oOrderArticle->save();
 
-        $oOrderFile1 = new oxOrderFile();
+        $oOrderFile1 = oxNew('oxOrderFile');
         $oOrderFile1->setOrderId('_orderId_1');
         $oOrderFile1->setOrderArticleId('_orderArticleId_1');
         $oOrderFile1->setFile('_fileName_1', '_fileId_1', 10, 24, 12);
         $oOrderFile1->save();
 
-        $oOrderFile2 = new oxOrderFile();
+        $oOrderFile2 = oxNew('oxOrderFile');
         $oOrderFile2->setOrderId('_orderId_1');
         $oOrderFile2->setOrderArticleId('_orderArticleId_1');
         $oOrderFile2->setFile('_fileName_2', '_fileId_2', 10, 24, 12);
         $oOrderFile2->save();
 
 
-        $oOrderFile3 = new oxOrderFile();
+        $oOrderFile3 = oxNew('oxOrderFile');
         $oOrderFile3->setOrderId('_orderId_2');
         $oOrderFile3->setOrderArticleId('_orderArticleId_2');
         $oOrderFile3->setFile('_fileName_3', '_fileId_3', 10, 24, 12);
         $oOrderFile3->save();
 
-        $oOrderFile4 = new oxOrderFile();
+        $oOrderFile4 = oxNew('oxOrderFile');
         $oOrderFile4->setOrderId('_orderId_1');
         $oOrderFile4->setOrderArticleId('_orderArticleId_1');
         $oOrderFile4->setShopId('_shopId');
@@ -106,7 +106,7 @@ class Unit_Models_oxorderfilelistTest extends OxidTestCase
     public function testLoadUserFiles()
     {
 
-        $oUserFilesList = new oxOrderFileList();
+        $oUserFilesList = oxNew('oxOrderFileList');
         $oUserFilesList->loadUserFiles('_userId');
 
         $this->assertEquals(3, count($oUserFilesList));
@@ -129,7 +129,7 @@ class Unit_Models_oxorderfilelistTest extends OxidTestCase
      */
     public function testLoadOrderFiles()
     {
-        $oOrderFilesList = new oxOrderFileList();
+        $oOrderFilesList = oxNew('oxOrderFileList');
         $oOrderFilesList->loadOrderFiles('_orderId_1');
 
         $this->assertEquals(2, count($oOrderFilesList));

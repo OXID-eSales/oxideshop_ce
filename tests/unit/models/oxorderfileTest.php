@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -38,7 +38,7 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
      */
     public function testSetOrderFile()
     {
-        $oOrderFileNew = new oxOrderFile();
+        $oOrderFileNew = oxNew('oxOrderFile');
         $oOrderFileNew->setOrderId('orderId');
         $oOrderFileNew->setOrderArticleId('orderArticleId');
         $oOrderFileNew->setShopId('1');
@@ -47,7 +47,7 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
 
         $id = $oOrderFileNew->getId();
 
-        $oOrderFile = new oxOrderFile();
+        $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load($id);
 
         $sDate = date('Y-m-d', oxRegistry::get('oxUtilsDate')->getTime() + 24 * 3600);
@@ -70,7 +70,7 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
      */
     public function testIsValid()
     {
-        $oOrderFileNew = new oxOrderFile();
+        $oOrderFileNew = oxNew('oxOrderFile');
         $oOrderFileNew->setOrderId('_orderId');
         $oOrderFileNew->oxorderfiles__oxdownloadcount = new oxField("2");
         $oOrderFileNew->oxorderfiles__oxmaxdownloadcount = new oxField('10');
@@ -84,7 +84,7 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
      */
     public function testIsNotValid()
     {
-        $oOrderFileNew = new oxOrderFile();
+        $oOrderFileNew = oxNew('oxOrderFile');
         $oOrderFileNew->setOrderId('_orderId');
         $oOrderFileNew->oxorderfiles__oxdownloadcount = new oxField("10");
         $oOrderFileNew->oxorderfiles__oxmaxdownloadcount = new oxField('10');
@@ -98,7 +98,7 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
      */
     public function testReset()
     {
-        $oOrderFileNew = new oxOrderFile();
+        $oOrderFileNew = oxNew('oxOrderFile');
         $oOrderFileNew->setOrderId('orderId');
         $oOrderFileNew->setOrderArticleId('orderArticleId');
         $oOrderFileNew->setShopId('1');
@@ -114,7 +114,7 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
 
         $id = $oOrderFileNew->getId();
 
-        $oOrderFile = new oxOrderFile();
+        $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load($id);
 
         $this->assertEquals('orderId', $oOrderFile->oxorderfiles__oxorderid->value);
@@ -134,7 +134,7 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
         $oOrderFile->reset();
         $oOrderFile->save();
 
-        $oOrderFileReset = new oxOrderFile();
+        $oOrderFileReset = oxNew('oxOrderFile');
         $oOrderFileReset->load($id);
 
         $this->assertEquals('0', $oOrderFileReset->oxorderfiles__oxdownloadcount->value);
@@ -149,13 +149,13 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
      */
     public function testGetValidUntil()
     {
-        $oOrderFileNew = new oxOrderFile();
+        $oOrderFileNew = oxNew('oxOrderFile');
         $oOrderFileNew->oxorderfiles__oxvaliduntil = new oxField('2010-10-10 11:23:12');
         $oOrderFileNew->save();
 
         $id = $oOrderFileNew->getId();
 
-        $oOrderFile = new oxOrderFile();
+        $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load($id);
 
         $this->assertEquals('2010-10-10 11:23', $oOrderFile->getValidUntil());
@@ -166,14 +166,14 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
      */
     public function testGetLeftDownloadCount()
     {
-        $oOrderFileNew = new oxOrderFile();
+        $oOrderFileNew = oxNew('oxOrderFile');
         $oOrderFileNew->oxorderfiles__oxmaxdownloadcount = new oxField(10);
         $oOrderFileNew->oxorderfiles__oxdownloadcount = new oxField(7);
         $oOrderFileNew->save();
 
         $id = $oOrderFileNew->getId();
 
-        $oOrderFile = new oxOrderFile();
+        $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load($id);
 
         $this->assertEquals(3, $oOrderFile->getLeftDownloadCount());
@@ -184,14 +184,14 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
      */
     public function testGetLeftDownloadCountNegative()
     {
-        $oOrderFileNew = new oxOrderFile();
+        $oOrderFileNew = oxNew('oxOrderFile');
         $oOrderFileNew->oxorderfiles__oxmaxdownloadcount = new oxField(7);
         $oOrderFileNew->oxorderfiles__oxdownloadcount = new oxField(10);
         $oOrderFileNew->save();
 
         $id = $oOrderFileNew->getId();
 
-        $oOrderFile = new oxOrderFile();
+        $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load($id);
 
         $this->assertEquals(0, $oOrderFile->getLeftDownloadCount());
@@ -202,7 +202,7 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
      */
     public function testProcessOrderFileFirstDownload()
     {
-        $oOrderFileNew = new oxOrderFile();
+        $oOrderFileNew = oxNew('oxOrderFile');
         $oOrderFileNew->setId('_orderFileId');
         $oOrderFileNew->setOrderId('_orderId');
         $oOrderFileNew->setOrderArticleId('orderArticleId');
@@ -215,7 +215,7 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
         $sNow = oxRegistry::get("oxUtilsDate")->getTime();
         $sDate = date('Y-m-d H:i:s', $sNow);
 
-        $oOrderFile = new oxOrderFile();
+        $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load('_orderFileId');
         $sFileId = $oOrderFile->processOrderFile();
 
@@ -237,7 +237,7 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
      */
     public function testProcessOrderFile()
     {
-        $oOrderFileNew = new oxOrderFile();
+        $oOrderFileNew = oxNew('oxOrderFile');
         $oOrderFileNew->setId('_orderFileId');
         $oOrderFileNew->setOrderId('_orderId');
         $oOrderFileNew->setOrderArticleId('orderArticleId');
@@ -249,7 +249,7 @@ class Unit_Models_oxOrderFileTest extends OxidTestCase
         $oOrderFileNew->save();
 
         $sLastDate = date('Y-m-d H:i:s');
-        $oOrderFile = new oxOrderFile();
+        $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load('_orderFileId');
         $sFileId = $oOrderFile->processOrderFile();
 

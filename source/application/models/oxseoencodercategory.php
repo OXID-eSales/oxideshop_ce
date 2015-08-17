@@ -16,23 +16,16 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
 /**
- * Seo encoder base
- *
+ * Seo encoder category
  */
 class oxSeoEncoderCategory extends oxSeoEncoder
 {
-
-    /**
-     * _aCatCache cache for categories
-     *
-     * @var array
-     * @access protected
-     */
+    /** @var array _aCatCache cache for categories. */
     protected $_aCatCache = array();
 
     /**
@@ -58,8 +51,6 @@ class oxSeoEncoderCategory extends oxSeoEncoder
      */
     protected function _categoryUrlLoader($oCat, $iLang)
     {
-        $sSeoUrl = false;
-
         $sCacheId = $this->_getCategoryCacheId($oCat, $iLang);
         if (isset($this->_aCatCache[$sCacheId])) {
             $sSeoUrl = $this->_aCatCache[$sCacheId];
@@ -89,7 +80,7 @@ class oxSeoEncoderCategory extends oxSeoEncoder
     /**
      * Returns SEO uri for passed category
      *
-     * @param oxcategory $oCat         category object
+     * @param oxCategory $oCat         category object
      * @param int        $iLang        language
      * @param bool       $blRegenerate if TRUE forces seo url regeneration
      *
@@ -113,7 +104,6 @@ class oxSeoEncoderCategory extends oxSeoEncoder
             $aStdLinks = array();
 
             while ($oCat && !($sSeoUrl = $this->_categoryUrlLoader($oCat, $iLang))) {
-
                 if ($iLang != $oCat->getLanguage()) {
                     $sId = $oCat->getId();
                     $oCat = oxNew('oxCategory');
@@ -146,7 +136,6 @@ class oxSeoEncoderCategory extends oxSeoEncoder
 
         return $sSeoUrl;
     }
-
 
     /**
      * Returns category SEO url for specified page
@@ -229,7 +218,6 @@ class oxSeoEncoderCategory extends oxSeoEncoder
               ."and seo1.oxfixed = 0";
         $oDb->execute($sQ);
     }
-
 
     /**
      * deletes Category seo entries

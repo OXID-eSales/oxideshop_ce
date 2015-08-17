@@ -259,48 +259,6 @@ class Unit_Models_oxSeoEncoderCategoryTest extends OxidTestCase
         $this->assertEquals(null, $blReturn);
     }
 
-    /*
-    // Encoding category URLs for parent category
-    public function testGetCategoryUrlCatEncodeAlsoChildCats()
-    {
-        // setting parameters
-        $oCategory = oxNew( 'oxCategory' );
-        $oSubCategory = oxNew( 'oxCategory' );
-
-        $oCategory->load( "8a142c3e49b5a80c1.23676990" );
-        $oSubCategory->load( "8a142c3e60a535f16.78077188" );
-        $sUrl = 'Geschenke_prepared_/unqBar-Equipment_prepared_/unqUhren_prepared_/unq';
-
-        $oCategory->setSubCat( $oSubCategory );
-
-        oxTestModules::addFunction( 'oxSeoEncoderCategory', '_loadFromDb', '{return false;}' );
-        oxTestModules::addFunction( 'oxSeoEncoderCategory', '_prepareTitle', '{return $aA[0]."_prepared_";}' );
-        oxTestModules::addFunction( 'oxSeoEncoderCategory', '_getUniqueSeoUrl', '{return $aA[0]."unq";}' );
-        oxTestModules::addFunction( 'oxSeoEncoderCategory', '_saveToDb', '{return false;}' );
-        $oEncoder = oxNew('oxSeoEncoderCategory');
-
-        $sSeoUrl = $oEncoder->UNITgetCategoryUri( $oCategory );
-        $this->assertEquals( $sUrl, $sSeoUrl );
-    }
-    // Encoding category URLs for parent category
-    public function testGetCategoryUrlCatWithoutParentAndNoCache()
-    {
-        // setting parameters
-        $oSubCategory = oxNew( 'oxCategory' );
-
-        $oSubCategory->load( "8a142c3e49b5a80c1.23676990" );
-        $sUrl = 'Geschenke_prepared_/unqBar-Equipment_prepared_/unq';
-
-        oxTestModules::addFunction('oxSeoEncoderCategory', '_loadFromDb', '{return false;}');
-        oxTestModules::addFunction('oxSeoEncoderCategory', '_prepareTitle', '{return $aA[0]."_prepared_";}');
-        oxTestModules::addFunction('oxSeoEncoderCategory', '_getUniqueSeoUrl', '{return $aA[0]."unq";}');
-        oxTestModules::addFunction('oxSeoEncoderCategory', '_saveToDb', '{return false;}');
-        $oEncoder = oxNew('oxSeoEncoderCategory');
-
-        $sSeoUrl = $oEncoder->UNITgetCategoryUri( $oSubCategory );
-        $this->assertEquals( $sUrl, $sSeoUrl );
-    }*/
-
     /**
      * Testing page url getters
      */

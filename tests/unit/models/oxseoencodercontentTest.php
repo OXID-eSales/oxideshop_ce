@@ -28,26 +28,20 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
         parent::setUp();
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-        //echo $this->getName()."\n";
     }
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
         modDB::getInstance()->cleanup();
-        // deleting seo entries
         oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');
         oxDb::getDb()->execute('delete from oxobject2seodata');
         oxDb::getDb()->execute('delete from oxseohistory');
@@ -57,18 +51,8 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
         parent::tearDown();
     }
 
-    public function __SaveToDbCreatesGoodMd5Callback($sSQL)
-    {
-        $this->aSQL[] = $sSQL;
-        if ($this->aRET && isset($this->aRET[count($this->aSQL) - 1])) {
-            return $this->aRET[count($this->aSQL) - 1];
-        }
-    }
-
     /**
      * oxSeoEncoderContent::_getAltUri() test case
-     *
-     * @return null
      */
     public function testGetAltUriTag()
     {
@@ -85,7 +69,7 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
      */
     public function testGetContentUrlExisting()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $sStdUrl = 'cl=content';
         $sSeoUrl = 'content-title/';
@@ -99,7 +83,7 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
         $sShopId = $this->getConfig()->getBaseShopId();
         $iLang = 1;
         $sObjectId = $oContent->getId();
-        $sIdent = md5(strtolower($sSeoUrl));;
+        $sIdent = md5(strtolower($sSeoUrl));
         $sType = 'oxcontent';
 
         $sQ = "insert into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype)
@@ -116,7 +100,7 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
 
     public function testGetContentUrlExistingWithLangParam()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $sStdUrl = 'cl=content';
         $sSeoUrl = 'content-title/';
@@ -130,7 +114,7 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
         $sShopId = $this->getConfig()->getBaseShopId();
         $iLang = 1;
         $sObjectId = $oContent->getId();
-        $sIdent = md5(strtolower($sSeoUrl));;
+        $sIdent = md5(strtolower($sSeoUrl));
         $sType = 'oxcontent';
 
         $sQ = "insert into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype)
@@ -150,7 +134,7 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
      */
     public function testGetContentUrlNotExisting()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $content = oxNew('oxContent');
         $content->setId('contentid');

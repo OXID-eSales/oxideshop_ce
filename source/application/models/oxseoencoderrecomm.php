@@ -16,21 +16,19 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
 /**
  * Seo encoder base
- *
  */
 class oxSeoEncoderRecomm extends oxSeoEncoder
 {
-
     /**
      * Returns SEO uri for tag.
      *
-     * @param oxrecommlist $oRecomm recomm list object
+     * @param oxRecommList $oRecomm recommendation list object
      * @param int          $iLang   language
      *
      * @return string
@@ -61,7 +59,7 @@ class oxSeoEncoderRecomm extends oxSeoEncoder
     /**
      * Returns full url for passed tag
      *
-     * @param oxrecommlist $oRecomm recomendation list object
+     * @param oxRecommList $oRecomm recommendation list object
      * @param int          $iLang   language
      *
      * @return string
@@ -78,7 +76,7 @@ class oxSeoEncoderRecomm extends oxSeoEncoder
     /**
      * Returns tag SEO url for specified page
      *
-     * @param oxrecommlist $oRecomm recomendation list object
+     * @param oxRecommList $oRecomm recommendation list object
      * @param int          $iPage   page tu prepare number
      * @param int          $iLang   language
      * @param bool         $blFixed fixed url marker (default is false)

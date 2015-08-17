@@ -239,7 +239,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $this->getConfig()->setActiveView($oView);
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $this->assertEquals("testRecommList", $oEncoder->UNITgetRecomm(new oxarticle, 0));
     }
 
@@ -255,7 +255,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $this->getConfig()->setActiveView($oView);
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $this->assertEquals("testTag", $oEncoder->UNITgetTag(new oxarticle, 0));
     }
 
@@ -266,7 +266,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
      */
     public function testGetVendorArticleHasNoManufacturerDefined()
     {
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $this->assertNull($oEncoder->UNITgetVendor(oxNew('oxArticle'), 0));
     }
 
@@ -284,7 +284,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $this->getConfig()->setActiveView(new oxUbase);
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $oVendor = $oEncoder->UNITgetVendor($oArticle, 0);
         $this->assertNotNull($oVendor);
         $this->assertEquals($sVendorId, $oVendor->getId());
@@ -300,7 +300,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxvendorid = new oxField("xxx");
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $this->assertNull($oEncoder->UNITgetVendor($oArticle, 0));
     }
 
@@ -324,7 +324,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $this->getConfig()->setActiveView($oView);
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $oManufacturer = $oEncoder->UNITgetVendor($oArticle, 0);
         $this->assertNotNull($oVendor);
         $this->assertEquals($sVendorId, $oVendor->getId());
@@ -350,7 +350,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $this->getConfig()->setActiveView($oView);
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $oVendor = $oEncoder->UNITgetVendor($oArticle, 1);
         $this->assertNotNull($oVendor);
         $this->assertEquals($sVendorId, $oVendor->getId());
@@ -377,7 +377,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $this->getConfig()->setActiveView($oView);
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $oVendor = $oEncoder->UNITgetVendor($oArticle, 0);
         $this->assertNotNull($oVendor);
         $this->assertEquals($sVendorId, $oVendor->getId());
@@ -390,7 +390,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
      */
     public function testGetManufacturerArticleHasNoManufacturerDefined()
     {
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $this->assertNull($oEncoder->UNITgetManufacturer(oxNew('oxArticle'), 0));
     }
 
@@ -408,7 +408,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $this->getConfig()->setActiveView(new oxUbase);
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $oManufacturer = $oEncoder->UNITgetManufacturer($oArticle, 0);
         $this->assertNotNull($oManufacturer);
         $this->assertEquals($sManufacturerId, $oManufacturer->getId());
@@ -424,7 +424,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxmanufacturerid = new oxField("xxx");
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $this->assertNull($oEncoder->UNITgetManufacturer($oArticle, 0));
     }
 
@@ -448,7 +448,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $this->getConfig()->setActiveView($oView);
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $oManufacturer = $oEncoder->UNITgetManufacturer($oArticle, 0);
         $this->assertNotNull($oManufacturer);
         $this->assertEquals($sManufacturerId, $oManufacturer->getId());
@@ -474,7 +474,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $this->getConfig()->setActiveView($oView);
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $oManufacturer = $oEncoder->UNITgetManufacturer($oArticle, 1);
         $this->assertNotNull($oManufacturer);
         $this->assertEquals($sManufacturerId, $oManufacturer->getId());
@@ -501,7 +501,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $this->getConfig()->setActiveView($oView);
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $oManufacturer = $oEncoder->UNITgetManufacturer($oArticle, 0);
         $this->assertNotNull($oManufacturer);
         $this->assertEquals($sManufacturerId, $oManufacturer->getId());
@@ -665,7 +665,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle->expects($this->once())->method('getLanguage')->will($this->returnValue(2));
         $oArticle->expects($this->once())->method('getId')->will($this->returnValue('1126'));
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $oArticle = $oEncoder->UNITgetProductForLang($oArticle, 0);
         $this->assertEquals('1126', $oArticle->getId());
 
@@ -673,7 +673,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle->expects($this->once())->method('getLanguage')->will($this->returnValue(0));
         $oArticle->expects($this->once())->method('getId')->will($this->returnValue('1126'));
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $oArticle = $oEncoder->UNITgetProductForLang($oArticle, 0);
         $this->assertEquals('1126', $oArticle->getId());
 
@@ -883,7 +883,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxtitle = new oxfield('test main title');
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $this->assertEquals('test-main-title.html', $oEncoder->UNITprepareArticleTitle($oArticle));
 
         // no title just number
@@ -1261,7 +1261,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = new oxbase();
         $oArticle->setId('article_id');
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $oEncoder->onDeleteArticle($oArticle);
 
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'article_id'"));
@@ -1388,22 +1388,22 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oProduct4->oxarticles__oxparentid = new oxField($sParentId);
         $oProduct4->save();
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $sLink = $oEncoder->getArticleUri($oProduct1, 0);
         $this->assertTrue((bool) $sLink);
         $this->assertEquals("Bar-Set-ABSINTH-artnum1.html", basename($sLink));
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $sLink = $oEncoder->getArticleUri($oProduct2, 0);
         $this->assertTrue((bool) $sLink);
         $this->assertEquals("Bar-Set-ABSINTH-artnum2.html", basename($sLink));
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $sLink = $oEncoder->getArticleUri($oProduct3, 0);
         $this->assertTrue((bool) $sLink);
         $this->assertEquals("Bar-Set-ABSINTH-artnum3.html", basename($sLink));
 
-        $oEncoder = new oxSeoEncoderArticle();
+        $oEncoder = oxNew('oxSeoEncoderArticle');
         $sLink = $oEncoder->getArticleUri($oProduct4, 0);
         $this->assertTrue((bool) $sLink);
         $this->assertEquals("Bar-Set-ABSINTH-artnum4.html", basename($sLink));

@@ -28,26 +28,20 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
         parent::setUp();
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-        //echo $this->getName()."\n";
     }
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
         modDB::getInstance()->cleanup();
-        // deleting seo entries
         oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');
         oxDb::getDb()->execute('delete from oxobject2seodata');
         oxDb::getDb()->execute('delete from oxseohistory');
@@ -57,18 +51,8 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         parent::tearDown();
     }
 
-    public function __SaveToDbCreatesGoodMd5Callback($sSQL)
-    {
-        $this->aSQL[] = $sSQL;
-        if ($this->aRET && isset($this->aRET[count($this->aSQL) - 1])) {
-            return $this->aRET[count($this->aSQL) - 1];
-        }
-    }
-
     /**
      * oxSeoEncoderManufacturer::_getAltUri() test case
-     *
-     * @return null
      */
     public function testGetAltUriTag()
     {
@@ -319,5 +303,4 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'oid'"));
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'oid'"));
     }
-
 }

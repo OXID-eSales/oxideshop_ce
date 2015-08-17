@@ -16,17 +16,15 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
 /**
  * Seo encoder base
- *
  */
 class oxSeoEncoderManufacturer extends oxSeoEncoder
 {
-
     /**
      * Root manufacturer uri cache
      *
@@ -47,7 +45,7 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
     /**
      * Returns part of SEO url excluding path
      *
-     * @param oxmanufacturer $oManufacturer manufacturer object
+     * @param oxManufacturer $oManufacturer manufacturer object
      * @param int            $iLang         language
      * @param bool           $blRegenerate  if TRUE forces seo url regeneration
      *
@@ -60,7 +58,6 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
         }
         // load from db
         if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxmanufacturer', $oManufacturer->getId(), $iLang))) {
-
             if ($iLang != $oManufacturer->getLanguage()) {
                 $sId = $oManufacturer->getId();
                 $oManufacturer = oxNew('oxmanufacturer');
@@ -118,10 +115,10 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
     /**
      * Encodes manufacturer category URLs into SEO format
      *
-     * @param oxmanufacturer $oManufacturer Manufacturer object
+     * @param oxManufacturer $oManufacturer Manufacturer object
      * @param int            $iLang         language
      *
-     * @return null
+     * @return string
      */
     public function getManufacturerUrl($oManufacturer, $iLang = null)
     {
@@ -135,7 +132,7 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
     /**
      * Deletes manufacturer seo entry
      *
-     * @param oxmanufacturer $oManufacturer Manufacturer object
+     * @param oxManufacturer $oManufacturer Manufacturer object
      */
     public function onDeleteManufacturer($oManufacturer)
     {

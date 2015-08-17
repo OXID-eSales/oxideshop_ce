@@ -152,18 +152,20 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-        $oContent = oxNew('oxContent');
-        $oContent->setId('contentid');
-        $oContent->setTitle('content title');
-        $oContent->setType(2);
+        $content = oxNew('oxContent');
+        $content->setId('contentid');
+        $content->setTitle('content title');
+        $content->setType(2);
 
-        $oContent->setCategoryId('8a142c3e49b5a80c1.23676990 ');
-        $sUrl = $this->getConfig()->getShopUrl() . 'Geschenke/content-title/';
+        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e49b5a80c1.23676990';
+        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'Wohnen/content-title/' : 'Geschenke/content-title/';
 
-        $oEncoder = new oxSeoEncoderContent();
-        $sSeoUrl = $oEncoder->getContentUrl($oContent);
+        $content->setCategoryId($categoryId);
 
-        $this->assertEquals($sUrl, $sSeoUrl);
+        $encoder = new oxSeoEncoderContent();
+        $seoUrl = $encoder->getContentUrl($content);
+
+        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $seoUrl);
     }
 
     // code call seq. check

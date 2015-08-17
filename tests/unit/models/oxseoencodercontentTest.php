@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -90,7 +90,7 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
         $sStdUrl = 'cl=content';
         $sSeoUrl = 'content-title/';
 
-        $oContent = new oxContent();
+        $oContent = oxNew('oxContent');
         $oContent->setLanguage(1);
         $oContent->setId('contentid');
         $oContent->oxcontents__oxtitle = new oxField('content title');
@@ -106,7 +106,7 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
                values ('$sObjectId', '$sIdent', '$sShopId', '$iLang', '$sStdUrl', '$sSeoUrl', '$sType')";
         oxDb::getDb()->execute($sQ);
 
-        $oEncoder = new oxSeoEncoderContent();
+        $oEncoder = oxNew('oxSeoEncoderContent');
 
         $sUrl = $this->getConfig()->getShopUrl() . $sSeoUrl;
         $sSeoUrl = $oEncoder->getContentUrl($oContent);
@@ -121,7 +121,7 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
         $sStdUrl = 'cl=content';
         $sSeoUrl = 'content-title/';
 
-        $oContent = new oxContent();
+        $oContent = oxNew('oxContent');
         $oContent->setLanguage(0);
         $oContent->setId('contentid');
         $oContent->oxcontents__oxtitle = new oxField('content title');
@@ -137,7 +137,7 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
                values ('$sObjectId', '$sIdent', '$sShopId', '$iLang', '$sStdUrl', '$sSeoUrl', '$sType')";
         oxDb::getDb()->execute($sQ);
 
-        $oEncoder = new oxSeoEncoderContent();
+        $oEncoder = oxNew('oxSeoEncoderContent');
 
         $sUrl = $this->getConfig()->getShopUrl() . $sSeoUrl;
         $sSeoUrl = $oEncoder->getContentUrl($oContent, 1);
@@ -152,7 +152,7 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-        $oContent = new oxContent();
+        $oContent = oxNew('oxContent');
         $oContent->setId('contentid');
         $oContent->setTitle('content title');
         $oContent->setType(2);
@@ -242,9 +242,9 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
      */
     public function testGetContentUriSwitchingTypeFromCategoryToSnippetUrlIsCorrect()
     {
-        $oEncoder = new oxSeoEncoderContent();
+        $oEncoder = oxNew('oxSeoEncoderContent');
 
-        $oContent = new oxContent();
+        $oContent = oxNew('oxContent');
         $oContent->setId('testcontent_cat_to_snippet');
         $oContent->setCategoryId('943202124f58e02e84bb228a9a2a9f1e');
         $oContent->setType(2);
@@ -275,7 +275,7 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'oid'"));
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'oid'"));
 
-        $oEncoder = new oxSeoEncoderContent();
+        $oEncoder = oxNew('oxSeoEncoderContent');
         $oEncoder->onDeleteContent('oid');
 
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'oid'"));

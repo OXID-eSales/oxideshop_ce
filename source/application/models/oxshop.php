@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -27,7 +27,6 @@
  */
 class oxShop extends oxI18n
 {
-
     /**
      * Name of current class.
      *
@@ -41,7 +40,6 @@ class oxShop extends oxI18n
      * @var array
      */
     protected $_aMultiShopTables = null;
-
 
     /**
      * @var $_aQueries array variable
@@ -76,8 +74,7 @@ class oxShop extends oxI18n
     public function getTables()
     {
         if (is_null($this->_aTables)) {
-            $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
-            $aTables = array_unique($aMultilangTables);
+            $aTables = $this->formDatabaseTablesArray();
             $this->setTables($aTables);
         }
 
@@ -121,13 +118,15 @@ class oxShop extends oxI18n
     {
         parent::__construct();
 
+        if (!$this->isShopValid()) {
+            return;
+        }
 
         $this->init('oxshops');
 
         if ($iMax = $this->getConfig()->getConfigParam('iMaxShopId')) {
             $this->setMaxShopId($iMax);
         }
-
     }
 
     /**
@@ -154,16 +153,15 @@ class oxShop extends oxI18n
         return $this->_aMultiShopTables;
     }
 
-
     /**
      * (Re)generates shop views
      *
-     * @param bool  $blMultishopInheritCategories config option blMultishopInherit_oxcategories
-     * @param array $aMallInherit                 array of config options blMallInherit
+     * @param bool  $multishopInheritCategories Config option blMultishopInherit_oxcategories
+     * @param array $mallInherit                Array of config options blMallInherit
      *
      * @return bool is all views generated successfully
      */
-    public function generateViews($blMultishopInheritCategories = false, $aMallInherit = null)
+    public function generateViews($multishopInheritCategories = false, $mallInherit = null)
     {
         $this->_prepareViewsQueries();
         $blSuccess = $this->_runQueries();
@@ -176,14 +174,13 @@ class oxShop extends oxI18n
     /**
      * Returns table field name mapping sql section for single language views
      *
-     * @param string $sTable table name
-     * @param array  $iLang  language id
+     * @param string $sTable Table name
+     * @param array  $iLang  Language id
      *
      * @return string
      */
     protected function _getViewSelect($sTable, $iLang)
     {
-        /** @var oxDbMetaDataHandler $oMetaData */
         $oMetaData = oxNew('oxDbMetaDataHandler');
         $aFields = $oMetaData->getSinglelangFields($sTable, $iLang);
         foreach ($aFields as $sCoreField => $sField) {
@@ -260,7 +257,6 @@ class oxShop extends oxI18n
 
         return $sJoin;
     }
-
 
     /**
      * Returns default category of the shop.
@@ -340,8 +336,6 @@ class oxShop extends oxI18n
      */
     public function createViewQuery($sTable, $aLanguages = null)
     {
-        $sDefaultLangAddition = '';
-        $sShopAddition = '';
         $sStart = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW';
 
         if (!is_array($aLanguages)) {
@@ -349,23 +343,34 @@ class oxShop extends oxI18n
         }
 
         foreach ($aLanguages as $iLang => $sLang) {
-            $sLangAddition = $sLang === null ? $sDefaultLangAddition : "_{$sLang}";
+            $this->addViewLanguageQuery($sStart, $sTable, $iLang, $sLang);
+        }
+    }
 
-            $sViewTable = "oxv_{$sTable}{$sLangAddition}";
+    /**
+     * Adds view language query to query array.
+     *
+     * @param string $sStart
+     * @param string $sTable
+     * @param int    $iLang
+     * @param string $sLang
+     */
+    protected function addViewLanguageQuery($sStart, $sTable, $iLang, $sLang)
+    {
+        $sLangAddition = $sLang === null ? '' : "_{$sLang}";
 
-            if ($sLang === null) {
-                $sFields = $this->_getViewSelectMultilang($sTable);
-                $sJoin = $this->_getViewJoinAll($sTable);
-            } else {
-                $sFields = $this->_getViewSelect($sTable, $iLang);
-                $sJoin = $this->_getViewJoinLang($sTable, $iLang);
-            }
+        $sViewTable = "oxv_{$sTable}{$sLangAddition}";
 
-            $sQuery = "{$sStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$sTable}{$sJoin}";
-            $this->addQuery($sQuery);
-
+        if ($sLang === null) {
+            $sFields = $this->_getViewSelectMultilang($sTable);
+            $sJoin = $this->_getViewJoinAll($sTable);
+        } else {
+            $sFields = $this->_getViewSelect($sTable, $iLang);
+            $sJoin = $this->_getViewJoinLang($sTable, $iLang);
         }
 
+        $sQuery = "{$sStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$sTable}{$sJoin}";
+        $this->addQuery($sQuery);
     }
 
     /**
@@ -388,4 +393,25 @@ class oxShop extends oxI18n
         return $bSuccess;
     }
 
+    /**
+     * Forms array of tables which are available.
+     *
+     * @return array
+     */
+    protected function formDatabaseTablesArray()
+    {
+        $multilanguageTables = oxRegistry::getLang()->getMultiLangTables();
+
+        return array_unique($multilanguageTables);
+    }
+
+    /**
+     * Validates shop.
+     *
+     * @return bool
+     */
+    protected function isShopValid()
+    {
+        return true;
+    }
 }

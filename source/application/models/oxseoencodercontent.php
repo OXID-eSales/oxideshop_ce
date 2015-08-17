@@ -16,17 +16,15 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
 /**
  * Seo encoder base
- *
  */
 class oxSeoEncoderContent extends oxSeoEncoder
 {
-
     /**
      * Returns target "extension" (/)
      *
@@ -41,7 +39,7 @@ class oxSeoEncoderContent extends oxSeoEncoder
      * Returns SEO uri for content object. Includes parent category path info if
      * content is assigned to it
      *
-     * @param oxcontent $oCont        content category object
+     * @param oxContent $oCont        content category object
      * @param int       $iLang        language
      * @param bool      $blRegenerate if TRUE forces seo url regeneration
      *
@@ -54,7 +52,6 @@ class oxSeoEncoderContent extends oxSeoEncoder
         }
         //load details link from DB
         if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxContent', $oCont->getId(), $iLang))) {
-
             if ($iLang != $oCont->getLanguage()) {
                 $sId = $oCont->getId();
                 $oCont = oxNew('oxContent');
@@ -125,8 +122,7 @@ class oxSeoEncoderContent extends oxSeoEncoder
     protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
-        /** @var oxContent $oCont */
-        $oCont = oxNew("oxcontent");
+        $oCont = oxNew("oxContent");
         if ($oCont->loadInLang($iLang, $sObjectId)) {
             $sSeoUrl = $this->getContentUri($oCont, $iLang, true);
         }

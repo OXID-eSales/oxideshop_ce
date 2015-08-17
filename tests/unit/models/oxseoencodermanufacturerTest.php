@@ -74,7 +74,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sVndId);
 
-        $oEncoder = new oxSeoEncoderManufacturer();
+        $oEncoder = oxNew('oxSeoEncoderManufacturer');
         $this->assertEquals($this->getConfig()->getShopUrl() . $sUrl, $oEncoder->getManufacturerUrl($oManufacturer));
     }
 
@@ -92,7 +92,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sVndId);
 
-        $oEncoder = new oxSeoEncoderManufacturer();
+        $oEncoder = oxNew('oxSeoEncoderManufacturer');
         $this->assertEquals($this->getConfig()->getShopUrl() . $sUrl, $oEncoder->getManufacturerUrl($oManufacturer));
     }
 
@@ -106,7 +106,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sVndId);
 
-        $oEncoder = new oxSeoEncoderManufacturer();
+        $oEncoder = oxNew('oxSeoEncoderManufacturer');
         $this->assertEquals($this->getConfig()->getShopUrl() . $sUrl, $oEncoder->getManufacturerUrl($oManufacturer, 0));
     }
 
@@ -124,7 +124,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(0, $sVndId);
 
-        $oEncoder = new oxSeoEncoderManufacturer();
+        $oEncoder = oxNew('oxSeoEncoderManufacturer');
         $this->assertEquals($this->getConfig()->getShopUrl() . $sUrl, $oEncoder->getManufacturerUrl($oManufacturer, 1));
     }
 
@@ -213,7 +213,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sVndId);
 
-        $oEncoder = new oxSeoEncoderManufacturer();
+        $oEncoder = oxNew('oxSeoEncoderManufacturer');
         $this->assertEquals($this->getConfig()->getShopUrl() . $sUrl, $oEncoder->getManufacturerPageUrl($oManufacturer, 100));
     }
 
@@ -227,7 +227,7 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(0, $sVndId);
 
-        $oEncoder = new oxSeoEncoderManufacturer();
+        $oEncoder = oxNew('oxSeoEncoderManufacturer');
         $this->assertEquals($this->getConfig()->getShopUrl() . $sUrl, $oEncoder->getManufacturerPageUrl($oManufacturer, 100, 1));
     }
 
@@ -298,10 +298,10 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'oid'"));
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'oid'"));
 
-        $oObj = new oxbase();
+        $oObj = oxNew('oxBase');
         $oObj->setId('oid');
 
-        $oEncoder = new oxSeoEncoderManufacturer();
+        $oEncoder = oxNew('oxSeoEncoderManufacturer');
         $oEncoder->onDeleteManufacturer($oObj);
 
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'oid'"));

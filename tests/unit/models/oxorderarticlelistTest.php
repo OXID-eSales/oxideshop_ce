@@ -33,13 +33,13 @@ class Unit_Models_oxorderarticlelistTest extends OxidTestCase
     protected function setup()
     {
         parent::setUp();
-        $this->_oOrderArticle = new oxorderarticle();
+        $this->_oOrderArticle = oxNew('oxorderarticle');
         $this->_oOrderArticle->setId('_testOrderArticleId');
         $this->_oOrderArticle->oxorderarticles__oxartid = new oxField('_testArticleId', oxField::T_RAW);
         $this->_oOrderArticle->oxorderarticles__oxorderid = new oxField('_testOrderId', oxField::T_RAW);
         $this->_oOrderArticle->save();
 
-        $oOrder = new oxorder();
+        $oOrder = oxNew('oxorder');
         $oOrder->setId('_testOrderId');
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin', oxField::T_RAW);
         $oOrder->save();
@@ -73,7 +73,7 @@ class Unit_Models_oxorderarticlelistTest extends OxidTestCase
      */
     public function testLoadOrderArticlesForUser()
     {
-        $oOrderArticleList = new oxorderarticlelist();
+        $oOrderArticleList = oxNew('oxorderarticlelist');
         $oOrderArticleList->loadOrderArticlesForUser('oxdefaultadmin');
         $this->assertEquals(1, $oOrderArticleList->count());
         $oOrderArticle = $oOrderArticleList->current();
@@ -85,7 +85,7 @@ class Unit_Models_oxorderarticlelistTest extends OxidTestCase
      */
     public function testLoadOrderArticlesForUserIfUserIsNotSet()
     {
-        $oOrderArticleList = new oxorderarticlelist();
+        $oOrderArticleList = oxNew('oxorderarticlelist');
         $oOrderArticleList->loadOrderArticlesForUser(null);
         $this->assertEquals(0, $oOrderArticleList->count());
     }

@@ -67,61 +67,65 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
     public function testGetManufacturerUrlExistingManufacturer()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
-        $sUrl = $this->getConfig()->getShopUrl() . 'Nach-Hersteller/Bush/';
+
+        $sVndId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2536d76675ebe5cb777411914a2fc8fb' : 'ee4948794e28d488cf1c8101e716a3f4';
+        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'Nach-Hersteller/Hersteller-2/' : 'Nach-Hersteller/Bush/';
 
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sVndId);
 
         $oEncoder = new oxSeoEncoderManufacturer();
-        $this->assertEquals($sUrl, $oEncoder->getManufacturerUrl($oManufacturer));
+        $this->assertEquals($this->getConfig()->getShopUrl() . $sUrl, $oEncoder->getManufacturerUrl($oManufacturer));
     }
 
     public function testGetManufacturerUrlExistingManufacturerEng()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction('oxManufacturer', 'resetRootManufacturer', '{ self::$_aRootManufacturer = array() ; }');
+
+        $sVndId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2536d76675ebe5cb777411914a2fc8fb' : 'ee4948794e28d488cf1c8101e716a3f4';
+        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-Manufacturer/Manufacturer-2/' : 'en/By-Manufacturer/Bush/';
+
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->resetRootManufacturer();
-
-        $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
-        $sUrl = $this->getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/';
 
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sVndId);
 
         $oEncoder = new oxSeoEncoderManufacturer();
-        $this->assertEquals($sUrl, $oEncoder->getManufacturerUrl($oManufacturer));
+        $this->assertEquals($this->getConfig()->getShopUrl() . $sUrl, $oEncoder->getManufacturerUrl($oManufacturer));
     }
 
     public function testGetManufacturerUrlExistingManufacturerWithLangParam()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
-        $sUrl = $this->getConfig()->getShopUrl() . 'Nach-Hersteller/Bush/';
+
+        $sVndId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2536d76675ebe5cb777411914a2fc8fb' : 'ee4948794e28d488cf1c8101e716a3f4';
+        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'Nach-Hersteller/Hersteller-2/' : 'Nach-Hersteller/Bush/';
 
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sVndId);
 
         $oEncoder = new oxSeoEncoderManufacturer();
-        $this->assertEquals($sUrl, $oEncoder->getManufacturerUrl($oManufacturer, 0));
+        $this->assertEquals($this->getConfig()->getShopUrl() . $sUrl, $oEncoder->getManufacturerUrl($oManufacturer, 0));
     }
 
     public function testGetManufacturerUrlExistingManufacturerEngWithLangParam()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction('oxManufacturer', 'resetRootManufacturer', '{ self::$_aRootManufacturer = array() ; }');
+
+        $sVndId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2536d76675ebe5cb777411914a2fc8fb' : 'ee4948794e28d488cf1c8101e716a3f4';
+        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-Manufacturer/Manufacturer-2/' : 'en/By-Manufacturer/Bush/';
+
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->resetRootManufacturer();
-
-        $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
-        $sUrl = $this->getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/';
 
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(0, $sVndId);
 
         $oEncoder = new oxSeoEncoderManufacturer();
-        $this->assertEquals($sUrl, $oEncoder->getManufacturerUrl($oManufacturer, 1));
+        $this->assertEquals($this->getConfig()->getShopUrl() . $sUrl, $oEncoder->getManufacturerUrl($oManufacturer, 1));
     }
 
     /**
@@ -203,28 +207,28 @@ class Unit_Models_oxSeoEncoderManufacturerTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-        $sUrl = $this->getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/101/';
-        $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
+        $sVndId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2536d76675ebe5cb777411914a2fc8fb' : 'ee4948794e28d488cf1c8101e716a3f4';
+        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-Manufacturer/Manufacturer-2/101/' : 'en/By-Manufacturer/Bush/101/';
 
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sVndId);
 
         $oEncoder = new oxSeoEncoderManufacturer();
-        $this->assertEquals($sUrl, $oEncoder->getManufacturerPageUrl($oManufacturer, 100));
+        $this->assertEquals($this->getConfig()->getShopUrl() . $sUrl, $oEncoder->getManufacturerPageUrl($oManufacturer, 100));
     }
 
     public function testGetManufacturerPageUrlWithLangParam()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-        $sUrl = $this->getConfig()->getShopUrl() . 'en/By-Manufacturer/Bush/101/';
-        $sVndId = 'ee4948794e28d488cf1c8101e716a3f4';
+        $sVndId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2536d76675ebe5cb777411914a2fc8fb' : 'ee4948794e28d488cf1c8101e716a3f4';
+        $sUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/By-Manufacturer/Manufacturer-2/101/' : 'en/By-Manufacturer/Bush/101/';
 
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(0, $sVndId);
 
         $oEncoder = new oxSeoEncoderManufacturer();
-        $this->assertEquals($sUrl, $oEncoder->getManufacturerPageUrl($oManufacturer, 100, 1));
+        $this->assertEquals($this->getConfig()->getShopUrl() . $sUrl, $oEncoder->getManufacturerPageUrl($oManufacturer, 100, 1));
     }
 
     public function testGetManufacturerUrl()

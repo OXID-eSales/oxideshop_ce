@@ -16,149 +16,143 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
 /**
- * Seo encoder base
- *
+ * Seo encoder for tags.
  */
 class oxSeoEncoderTag extends oxSeoEncoder
 {
-
-    /**
-     * Tag preparation util object
-     *
-     * @var oxtagcloud
-     */
+    /** @var oxTagCloud Tag preparation util object. */
     protected $_oTagPrepareUtil = null;
 
     /**
      * Returns SEO uri for tag.
      *
-     * @param string $sTag  tag
-     * @param int    $iLang language
-     * @param string $sOxid object id [optional]
+     * @param string $tag        Tag name
+     * @param int    $languageId Language id
+     * @param string $objectId   Object id [optional]
      *
      * @return string
      */
-    public function getTagUri($sTag, $iLang = null, $sOxid = null)
+    public function getTagUri($tag, $languageId = null, $objectId = null)
     {
-        return $this->_getDynamicTagUri($sTag, $this->getStdTagUri($sTag), "tag/{$sTag}/", $iLang, $sOxid);
+        return $this->_getDynamicTagUri($tag, $this->getStdTagUri($tag), "tag/{$tag}/", $languageId, $objectId);
     }
 
     /**
-     * Returns dynamic object SEO URI
+     * Returns dynamic object SEO URI.
      *
-     * @param string $sTag    tag
-     * @param string $sStdUrl standart url
-     * @param string $sSeoUrl seo uri
-     * @param int    $iLang   active language
-     * @param string $sOxid   object id [optional]
+     * @param string $tag        Tag name
+     * @param string $stdUrl     Standard url
+     * @param string $seoUrl     Seo uri
+     * @param int    $languageId Active language
+     * @param string $articleId  Article id [optional]
      *
      * @return string
      */
-    protected function _getDynamicTagUri($sTag, $sStdUrl, $sSeoUrl, $iLang, $sOxid = null)
+    protected function _getDynamicTagUri($tag, $stdUrl, $seoUrl, $languageId, $articleId = null)
     {
-        $iShopId = $this->getConfig()->getShopId();
+        $shopId = $this->getConfig()->getShopId();
 
-        $sStdUrl = $this->_trimUrl($sStdUrl);
-        $sObjectId = $this->getDynamicObjectId($iShopId, $sStdUrl);
-        $sSeoUrl = $this->_prepareUri($this->addLanguageParam($sSeoUrl, $iLang), $iLang);
+        $stdUrl = $this->_trimUrl($stdUrl);
+        $objectId = $this->getDynamicObjectId($shopId, $stdUrl);
+        $seoUrl = $this->_prepareUri($this->addLanguageParam($seoUrl, $languageId), $languageId);
 
         //load details link from DB
-        $sOldSeoUrl = $this->_loadFromDb('dynamic', $sObjectId, $iLang);
-        if ($sOldSeoUrl === $sSeoUrl) {
-            $sSeoUrl = $sOldSeoUrl;
+        $oldSeoUrl = $this->_loadFromDb('dynamic', $objectId, $languageId);
+        if ($oldSeoUrl === $seoUrl) {
+            $seoUrl = $oldSeoUrl;
         } else {
-            if ($sOldSeoUrl) {
+            if ($oldSeoUrl) {
                 // old must be transferred to history
-                $this->_copyToHistory($sObjectId, $iShopId, $iLang, 'dynamic');
+                $this->_copyToHistory($objectId, $shopId, $languageId, 'dynamic');
             }
             // creating unique
-            $sSeoUrl = $this->_processSeoUrl($sSeoUrl, $sObjectId, $iLang);
+            $seoUrl = $this->_processSeoUrl($seoUrl, $objectId, $languageId);
 
             // inserting
-            $this->_saveToDb('dynamic', $sObjectId, $sStdUrl, $sSeoUrl, $iLang, $iShopId);
+            $this->_saveToDb('dynamic', $objectId, $stdUrl, $seoUrl, $languageId, $shopId);
         }
 
-        return $sSeoUrl;
+        return $seoUrl;
     }
 
     /**
      * Prepares tag for search in db
      *
-     * @param string $sTag tag to prepare
+     * @param string $tag tag to prepare
      *
      * @return string
      */
-    protected function _prepareTag($sTag)
+    protected function _prepareTag($tag)
     {
         if ($this->_oTagPrepareUtil == null) {
-            $this->_oTagPrepareUtil = oxNew('oxtagcloud');
+            $this->_oTagPrepareUtil = oxNew('oxTagCloud');
         }
 
-        return $sTag = $this->_oTagPrepareUtil->prepareTags($sTag);
+        return $tag = $this->_oTagPrepareUtil->prepareTags($tag);
     }
 
     /**
-     * Returns standard tag url
+     * Returns standard tag url.
+     * While tags are just strings, standard ulrs formatted stays here.
      *
-     * @param string $sTag           tag
-     * @param bool   $blIncludeIndex if you need only parameters set this param to false (optional)
+     * @param string $tag                Tag name
+     * @param bool   $shouldIncludeIndex If you need only parameters, set this to false (optional)
      *
      * @return string
      */
-    public function getStdTagUri($sTag, $blIncludeIndex = true)
+    public function getStdTagUri($tag, $shouldIncludeIndex = true)
     {
-        // while tags are just strings, standard ulrs formatted stays here
-        $sUri = "cl=tag&amp;searchtag=" . rawurlencode($sTag);
-        if ($blIncludeIndex) {
-            $sUri = "index.php?" . $sUri;
+        $uri = "cl=tag&amp;searchtag=" . rawurlencode($tag);
+        if ($shouldIncludeIndex) {
+            $uri = "index.php?" . $uri;
         }
 
-        return $sUri;
+        return $uri;
     }
 
     /**
      * Returns full url for passed tag
      *
-     * @param string $sTag  tag
-     * @param int    $iLang language
+     * @param string $tag        Tag name
+     * @param int    $languageId Language id
      *
      * @return string
      */
-    public function getTagUrl($sTag, $iLang = null)
+    public function getTagUrl($tag, $languageId = null)
     {
-        if (!isset($iLang)) {
-            $iLang = oxRegistry::getLang()->getBaseLanguage();
+        if (!isset($languageId)) {
+            $languageId = oxRegistry::getLang()->getBaseLanguage();
         }
 
-        return $this->_getFullUrl($this->getTagUri($sTag, $iLang), $iLang);
+        return $this->_getFullUrl($this->getTagUri($tag, $languageId), $languageId);
     }
 
     /**
-     * Returns tag SEO url for specified page
+     * Returns tag SEO url for specified page.
      *
-     * @param string $sTag    manufacturer object
-     * @param int    $iPage   page tu prepare number
-     * @param int    $iLang   language
-     * @param bool   $blFixed fixed url marker (default is false)
+     * @param string $tag        Tag name
+     * @param int    $pageNumber Page to prepare number
+     * @param int    $languageId Language id
+     * @param bool   $isFixed    Fixed url marker (default is false)
      *
      * @return string
      */
-    public function getTagPageUrl($sTag, $iPage, $iLang = null, $blFixed = false)
+    public function getTagPageUrl($tag, $pageNumber, $languageId = null, $isFixed = false)
     {
-        if (!isset($iLang)) {
-            $iLang = oxRegistry::getLang()->getBaseLanguage();
+        if (!isset($languageId)) {
+            $languageId = oxRegistry::getLang()->getBaseLanguage();
         }
-        $sStdUrl = $this->getStdTagUri($sTag) . '&amp;pgNr=' . $iPage;
-        $sParams = (int) ($iPage + 1);
+        $stdUrl = $this->getStdTagUri($tag) . '&amp;pgNr=' . $pageNumber;
+        $parameters = (int) ($pageNumber + 1);
 
-        $sStdUrl = $this->_trimUrl($sStdUrl, $iLang);
-        $sSeoUrl = $this->getTagUri($sTag, $iLang) . $sParams . "/";
+        $stdUrl = $this->_trimUrl($stdUrl, $languageId);
+        $seoUrl = $this->getTagUri($tag, $languageId) . $parameters . "/";
 
-        return $this->_getFullUrl($this->_getDynamicTagUri($sTag, $sStdUrl, $sSeoUrl, $iLang), $iLang);
+        return $this->_getFullUrl($this->_getDynamicTagUri($tag, $stdUrl, $seoUrl, $languageId), $languageId);
     }
 }

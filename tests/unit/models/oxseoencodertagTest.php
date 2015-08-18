@@ -25,15 +25,11 @@
  */
 class Unit_Models_oxSeoEncoderTagTest extends OxidTestCase
 {
-
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
-        // deleting seo entries
         oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');
         oxDb::getDb()->execute('delete from oxseohistory');
 
@@ -51,7 +47,7 @@ class Unit_Models_oxSeoEncoderTagTest extends OxidTestCase
 
     public function testGetStdTagUri()
     {
-        $oEncoder = new oxSeoEncoderTag();
+        $oEncoder = oxNew('oxSeoEncoderTag');
         $this->assertEquals("index.php?cl=tag&amp;searchtag=sTag", $oEncoder->getStdTagUri('sTag'));
     }
 
@@ -72,10 +68,10 @@ class Unit_Models_oxSeoEncoderTagTest extends OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         $sUrl = $this->getConfig()->getShopUrl(oxRegistry::getLang()->getBaseLanguage());
 
-        $sTag = "erste";
-        $sAltTag = "authentisches";
+        $sTag = $this->getTestConfig()->getShopEdition() == 'EE' ? 'hingucker' : 'erste';
+        $sAltTag = $this->getTestConfig()->getShopEdition() == 'EE' ? 'grilltonne' : 'authentisches';
 
-        $oSeoEncoderTag = new oxSeoEncoderTag();
+        $oSeoEncoderTag = oxNew('oxSeoEncoderTag');
         $this->assertEquals($sUrl . "tag/{$sTag}/16/", $oSeoEncoderTag->getTagPageUrl($sTag, 15));
         $this->assertEquals($sUrl . "tag/{$sTag}/16/", $oSeoEncoderTag->getTagPageUrl($sTag, 15));
 
@@ -103,7 +99,7 @@ class Unit_Models_oxSeoEncoderTagTest extends OxidTestCase
 
     public function testGetDynamicTagUriCreatingNew()
     {
-        $sTag = "zauber";
+        $sTag = $this->getTestConfig()->getShopEdition() == 'EE' ? 'schon' : 'zauber';
 
         $sOxid = "1126";
 

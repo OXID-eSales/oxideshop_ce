@@ -23,41 +23,26 @@
 /**
  * Shop manager.
  * Performs configuration and object loading or deletion.
- *
  */
 class oxShop extends oxI18n
 {
-    /**
-     * Name of current class.
-     *
-     * @var string
-     */
+    /** @var string Name of current class. */
     protected $_sClassName = 'oxshop';
 
-    /**
-     * Multi shop tables, set in config.
-     *
-     * @var array
-     */
+    /** @var array Multi shop tables, set in config. */
     protected $_aMultiShopTables = null;
 
-    /**
-     * @var $_aQueries array variable
-     */
+    /** @var array Query variables. */
     protected $_aQueries = array();
 
-    /**
-     * @var $_aTables array variable
-     */
+    /** @var array Database tables. */
     protected $_aTables = null;
 
-    /**
-     * @var $_blMultiShopInheritCategories defines if multishop inherits categories
-     */
+    /** @var bool Defines if multishop inherits categories. */
     protected $_blMultiShopInheritCategories = false;
 
     /**
-     * $_aTables setter
+     * Database tables setter.
      *
      * @param array $aTables
      */
@@ -67,7 +52,7 @@ class oxShop extends oxI18n
     }
 
     /**
-     * $_aTables getter
+     * Database tables getter.
      *
      * @return array
      */
@@ -82,7 +67,7 @@ class oxShop extends oxI18n
     }
 
     /**
-     * $_aQueries setter
+     * Database queries setter.
      *
      * @param array $aQueries
      */
@@ -92,7 +77,7 @@ class oxShop extends oxI18n
     }
 
     /**
-     * $_aQueries getter
+     * Database queries getter.
      *
      * @return array
      */
@@ -102,9 +87,9 @@ class oxShop extends oxI18n
     }
 
     /**
-     * Add a query to query array
+     * Add a query to query array.
      *
-     * @param string $sQuery Query
+     * @param string $sQuery
      */
     public function addQuery($sQuery)
     {
@@ -172,10 +157,49 @@ class oxShop extends oxI18n
     }
 
     /**
+     * Returns default category of the shop.
+     *
+     * @return string
+     */
+    public function getDefaultCategory()
+    {
+        return $this->oxshops__oxdefcat->value;
+    }
+
+    /**
+     * Returns true if shop in productive mode
+     *
+     * @return bool
+     */
+    public function isProductiveMode()
+    {
+        return (bool) $this->oxshops__oxproductive->value;
+    }
+
+    /**
+     * Creates view query and adds it to query array.
+     *
+     * @param string $sTable     Table name
+     * @param array  $aLanguages Language array( id => abbreviation )
+     */
+    public function createViewQuery($sTable, $aLanguages = null)
+    {
+        $sStart = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW';
+
+        if (!is_array($aLanguages)) {
+            $aLanguages = array(null => null);
+        }
+
+        foreach ($aLanguages as $iLang => $sLang) {
+            $this->addViewLanguageQuery($sStart, $sTable, $iLang, $sLang);
+        }
+    }
+
+    /**
      * Returns table field name mapping sql section for single language views
      *
      * @param string $sTable Table name
-     * @param array  $iLang  Language id
+     * @param int    $iLang  Language id
      *
      * @return string
      */
@@ -203,7 +227,6 @@ class oxShop extends oxI18n
     {
         $aFields = array();
 
-        /** @var oxDbMetaDataHandler $oMetaData */
         $oMetaData = oxNew('oxDbMetaDataHandler');
         $aTables = array_merge(array($sTable), $oMetaData->getAllMultiTables($sTable));
         foreach ($aTables as $sTableKey => $sTableName) {
@@ -243,7 +266,7 @@ class oxShop extends oxI18n
      * Returns language table view JOIN section
      *
      * @param string $sTable table name
-     * @param array  $iLang  language id
+     * @param int    $iLang  language id
      *
      * @return string $sSQL
      */
@@ -256,26 +279,6 @@ class oxShop extends oxI18n
         }
 
         return $sJoin;
-    }
-
-    /**
-     * Returns default category of the shop.
-     *
-     * @return string
-     */
-    public function getDefaultCategory()
-    {
-        return $this->oxshops__oxdefcat->value;
-    }
-
-    /**
-     * Returns true if shop in productive mode
-     *
-     * @return bool
-     */
-    public function isProductiveMode()
-    {
-        return (bool) $this->oxshops__oxproductive->value;
     }
 
     /**
@@ -293,7 +296,6 @@ class oxShop extends oxI18n
         $oLang = oxRegistry::getLang();
         $aAllShopLanguages = $oLang->getAllShopLanguageIds();
 
-        /** @var oxShopViewValidator $oViewsValidator */
         $oViewsValidator = oxNew('oxShopViewValidator');
 
         $oViewsValidator->setShopId($this->getId());
@@ -319,31 +321,11 @@ class oxShop extends oxI18n
 
         $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
         $aTables = $this->getTables();
-        $iShopId = $this->getId();
         foreach ($aTables as $sTable) {
             $this->createViewQuery($sTable);
             if (in_array($sTable, $aMultilangTables)) {
                 $this->createViewQuery($sTable, $aLanguages);
             }
-        }
-    }
-
-    /**
-     * Creates view query and adds it to query array
-     *
-     * @param string $sTable     table name
-     * @param array  $aLanguages language array( id => abbreviation )
-     */
-    public function createViewQuery($sTable, $aLanguages = null)
-    {
-        $sStart = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW';
-
-        if (!is_array($aLanguages)) {
-            $aLanguages = array(null => null);
-        }
-
-        foreach ($aLanguages as $iLang => $sLang) {
-            $this->addViewLanguageQuery($sStart, $sTable, $iLang, $sLang);
         }
     }
 
@@ -406,7 +388,7 @@ class oxShop extends oxI18n
     }
 
     /**
-     * Validates shop.
+     * Checks whether current shop is valid.
      *
      * @return bool
      */

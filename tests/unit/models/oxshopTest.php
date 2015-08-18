@@ -29,21 +29,21 @@ class Unit_Models_oxshopTest extends OxidTestCase
 
     public function testStructure()
     {
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $this->assertTrue($oShop instanceof oxi18n);
         $this->assertEquals('oxshops', $oShop->getCoreTableName());
     }
 
     public function testIsProductiveMode_ProductiveMode()
     {
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->setId(10);
         $oShop->oxshops__oxproductive = new oxField(true);
         $oShop->oxshops__oxactive = new oxField(1);
         $oShop->oxshops__oxname = new oxField('Test shop');
         $oShop->save();
 
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->load(10);
 
         $this->assertTrue($oShop->isProductiveMode());
@@ -51,14 +51,14 @@ class Unit_Models_oxshopTest extends OxidTestCase
 
     public function testIsProductiveMode_nonProductiveMode()
     {
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->setId(12);
         $oShop->oxshops__oxproductive = new oxField(false);
         $oShop->oxshops__oxactive = new oxField(1);
         $oShop->oxshops__oxname = new oxField('Test shop');
         $oShop->save();
 
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->load(12);
 
         $this->assertFalse($oShop->isProductiveMode());
@@ -108,7 +108,7 @@ class Unit_Models_oxshopTest extends OxidTestCase
      */
     public function testGetMultishopTablesDefaultNotSet()
     {
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $this->assertEquals(array(), $oShop->getMultiShopTables());
     }
 
@@ -118,7 +118,7 @@ class Unit_Models_oxshopTest extends OxidTestCase
      */
     public function testGetMultishopTablesWhenSet()
     {
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->setMultiShopTables(array('table1', 'table2'));
         $this->assertEquals(array('table1', 'table2'), $oShop->getMultiShopTables());
     }
@@ -128,7 +128,7 @@ class Unit_Models_oxshopTest extends OxidTestCase
      */
     public function testAddQuery()
     {
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->addQuery('query');
         $this->assertEquals(array('query'), $oShop->getQueries());
 
@@ -141,7 +141,7 @@ class Unit_Models_oxshopTest extends OxidTestCase
      */
     public function testGetQueriesNoQueriesAdded()
     {
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $this->assertEquals(array(), $oShop->getQueries());
     }
 
@@ -150,7 +150,7 @@ class Unit_Models_oxshopTest extends OxidTestCase
      */
     public function testGetQueriesQueriesAdded()
     {
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->setQueries(array('query', 'query2'));
         $this->assertEquals(array('query', 'query2'), $oShop->getQueries());
     }
@@ -160,7 +160,7 @@ class Unit_Models_oxshopTest extends OxidTestCase
      */
     public function testDeleteWhenOxidIsNull()
     {
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $this->assertFalse($oShop->delete(null));
     }
 }

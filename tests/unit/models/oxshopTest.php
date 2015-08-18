@@ -23,10 +23,6 @@
 class Unit_Models_oxshopTest extends OxidTestCase
 {
 
-    protected $_aLangTables = array();
-
-
-
     public function testStructure()
     {
         $oShop = oxNew('oxShop');
@@ -102,16 +98,17 @@ class Unit_Models_oxshopTest extends OxidTestCase
         $this->assertEquals(rtrim($sQuery), rtrim($aQueries[0]));
     }
 
-
     /**
      * Test call to getMultishopTables when it's not set anywhere
      */
     public function testGetMultishopTablesDefaultNotSet()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
         $oShop = oxNew('oxShop');
         $this->assertEquals(array(), $oShop->getMultiShopTables());
     }
-
 
     /**
      * Test call to getMultishopTables when it's set

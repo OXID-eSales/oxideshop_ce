@@ -88,7 +88,7 @@ class Unit_Models_oxshopTest extends OxidTestCase
      */
     public function testMakeViewQuery($sTable, $sLang, $aMockedFunctionReturns, $sQuery)
     {
-        /** @var oxShop $oShop */
+        /** @var oxShop|PHPUnit_Framework_MockObject_MockObject $oShop */
         $oShop = $this->getMock('oxShop', array_keys($aMockedFunctionReturns));
         foreach ($aMockedFunctionReturns as $sFunction => $sReturnValue) {
             $oShop->expects($this->any())->method($sFunction)->will($this->returnValue($sReturnValue));

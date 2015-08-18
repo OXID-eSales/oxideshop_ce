@@ -332,26 +332,26 @@ class oxShop extends oxI18n
     /**
      * Adds view language query to query array.
      *
-     * @param string $sStart
-     * @param string $sTable
-     * @param int    $iLang
-     * @param string $sLang
+     * @param string $queryStart
+     * @param string $table
+     * @param int    $languageId
+     * @param string $languageAbbr
      */
-    protected function addViewLanguageQuery($sStart, $sTable, $iLang, $sLang)
+    protected function addViewLanguageQuery($queryStart, $table, $languageId, $languageAbbr)
     {
-        $sLangAddition = $sLang === null ? '' : "_{$sLang}";
+        $sLangAddition = $languageAbbr === null ? '' : "_{$languageAbbr}";
 
-        $sViewTable = "oxv_{$sTable}{$sLangAddition}";
+        $sViewTable = "oxv_{$table}{$sLangAddition}";
 
-        if ($sLang === null) {
-            $sFields = $this->_getViewSelectMultilang($sTable);
-            $sJoin = $this->_getViewJoinAll($sTable);
+        if ($languageAbbr === null) {
+            $sFields = $this->_getViewSelectMultilang($table);
+            $sJoin = $this->_getViewJoinAll($table);
         } else {
-            $sFields = $this->_getViewSelect($sTable, $iLang);
-            $sJoin = $this->_getViewJoinLang($sTable, $iLang);
+            $sFields = $this->_getViewSelect($table, $languageId);
+            $sJoin = $this->_getViewJoinLang($table, $languageId);
         }
 
-        $sQuery = "{$sStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$sTable}{$sJoin}";
+        $sQuery = "{$queryStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$table}{$sJoin}";
         $this->addQuery($sQuery);
     }
 

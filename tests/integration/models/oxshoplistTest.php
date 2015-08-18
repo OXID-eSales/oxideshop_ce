@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -28,15 +28,18 @@ class  Integration_Models_oxshoplistTest extends OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
         parent::setUp();
 
         for ($i = 2; $i < 5; $i++) {
-            $this->addToDatabase("INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME) VALUES ($i, 1, 'Test Shop $i')", 'oxshops');
+            if ($this->getTestConfig()->getShopEdition() == 'EE') {
+                $query = "INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME, OXPARENTID) VALUES ($i, 1, 'Test Shop $i', 1)";
+            } else {
+                $query = "INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME) VALUES ($i, 1, 'Test Shop $i')";
+            }
+            $this->addToDatabase($query, 'oxshops');
         }
 
         $this->addTableForCleanup('oxshops');
@@ -47,7 +50,7 @@ class  Integration_Models_oxshoplistTest extends OxidTestCase
      */
     public function testGetAll()
     {
-        $oShopList = new oxShopList();
+        $oShopList = oxNew('oxShopList');
         $oShopList->getAll();
         $this->assertEquals(4, $oShopList->count());
     }
@@ -57,8 +60,7 @@ class  Integration_Models_oxshoplistTest extends OxidTestCase
      */
     public function testGetIdTitleList()
     {
-        /** @var oxShopList $oShopList */
-        $oShopList = new oxShopList();
+        $oShopList = oxNew('oxShopList');
         $oShopList->getIdTitleList();
         $this->assertEquals(4, $oShopList->count());
     }

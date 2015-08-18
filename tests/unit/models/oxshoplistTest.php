@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -30,7 +30,7 @@ class Unit_Models_oxshoplistTest extends OxidTestCase
      */
     public function testGetAll()
     {
-        /** @var oxShopList $oShopList */
+        /** @var oxShopList|PHPUnit_Framework_MockObject_MockObject $oShopList */
         $oShopList = $this->getMock('oxShopList', array('selectString', 'setBaseObject'));
         $oShopList->expects($this->once())->method('selectString');
         $oShopList->getAll();
@@ -41,7 +41,7 @@ class Unit_Models_oxshoplistTest extends OxidTestCase
      */
     public function testGetIdTitleList()
     {
-        /** @var oxShopList $oShopList */
+        /** @var oxShopList|PHPUnit_Framework_MockObject_MockObject $oShopList */
         $oShopList = $this->getMock('oxShopList', array('selectString', 'setBaseObject'));
         $oShopList->expects($this->once())->method('setBaseObject');
         $oShopList->expects($this->once())->method('selectString');

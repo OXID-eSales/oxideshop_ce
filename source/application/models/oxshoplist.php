@@ -16,18 +16,16 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
 /**
  * Shop list manager.
  * Organizes list of shop objects.
- *
  */
 class oxShopList extends oxList
 {
-
     /**
      * Calls parent constructor
      */
@@ -52,5 +50,4 @@ class oxShopList extends oxList
         $this->setBaseObject(oxNew('oxListObject', 'oxshops'));
         $this->selectString('SELECT `OXID`, `OXNAME` FROM `oxshops`');
     }
-
 }

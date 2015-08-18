@@ -85,15 +85,17 @@ class oxSeoEncoderTag extends oxSeoEncoder
      *
      * @param string $tag tag to prepare
      *
+     * @deprecated since v5.3.0 (2015-08-18), use oxTag::prepare() instead.
+     *
      * @return string
      */
     protected function _prepareTag($tag)
     {
         if ($this->_oTagPrepareUtil == null) {
-            $this->_oTagPrepareUtil = oxNew('oxTagCloud');
+            $this->_oTagPrepareUtil = oxNew('oxTag');
         }
 
-        return $tag = $this->_oTagPrepareUtil->prepareTags($tag);
+        return $tag = $this->_oTagPrepareUtil->prepare($tag);
     }
 
     /**

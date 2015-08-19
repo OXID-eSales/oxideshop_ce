@@ -86,8 +86,6 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         oxTestModules::cleanUp();
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-
-        //echo $this->getName()."\n";
     }
 
     /**
@@ -224,7 +222,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oEncoder->expects($this->once())->method('getArticleRecommUri')->will($this->returnValue("testRecommUrl"));
         $oEncoder->expects($this->once())->method('_getFullUrl')->will($this->returnValue("testFullRecommUrl"));
 
-        $this->assertEquals("testFullRecommUrl", $oEncoder->getArticleUrl(new oxArticle, 0, OXARTICLE_LINKTYPE_RECOMM));
+        $this->assertEquals("testFullRecommUrl", $oEncoder->getArticleUrl(oxNew('oxArticle'), 0, OXARTICLE_LINKTYPE_RECOMM));
     }
 
     /**
@@ -240,7 +238,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $this->getConfig()->setActiveView($oView);
 
         $oEncoder = oxNew('oxSeoEncoderArticle');
-        $this->assertEquals("testRecommList", $oEncoder->UNITgetRecomm(new oxarticle, 0));
+        $this->assertEquals("testRecommList", $oEncoder->UNITgetRecomm(oxNew('oxarticle'), 0));
     }
 
     /**
@@ -256,7 +254,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $this->getConfig()->setActiveView($oView);
 
         $oEncoder = oxNew('oxSeoEncoderArticle');
-        $this->assertEquals("testTag", $oEncoder->UNITgetTag(new oxarticle, 0));
+        $this->assertEquals("testTag", $oEncoder->UNITgetTag(oxNew('oxarticle'), 0));
     }
 
     /**
@@ -282,7 +280,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxvendorid = new oxField($sVendorId);
 
-        $this->getConfig()->setActiveView(new oxUbase);
+        $this->getConfig()->setActiveView(oxNew('oxUbase'));
 
         $oEncoder = oxNew('oxSeoEncoderArticle');
         $oVendor = $oEncoder->UNITgetVendor($oArticle, 0);
@@ -316,7 +314,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxvendorid = new oxField($sVendorId);
 
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
 
         $oView = $this->getMock("oxUBase", array("getActVendor"));
@@ -342,7 +340,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxvendorid = new oxField($sVendorId);
 
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
 
         $oView = $this->getMock("oxUBase", array("getActVendor"));
@@ -369,7 +367,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxvendorid = new oxField($sVendorId);
 
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->setId("xxx");
 
         $oView = $this->getMock("oxUBase", array("getActVendor"));
@@ -406,7 +404,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxmanufacturerid = new oxField($sManufacturerId);
 
-        $this->getConfig()->setActiveView(new oxUbase);
+        $this->getConfig()->setActiveView(oxNew('oxUbase'));
 
         $oEncoder = oxNew('oxSeoEncoderArticle');
         $oManufacturer = $oEncoder->UNITgetManufacturer($oArticle, 0);
@@ -515,7 +513,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle->setId("_testArticleId");
 
         // creating test recomm list
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->setId("_testRecomm");
         $oRecomm->oxrecommlists__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oRecomm->oxrecommlists__oxtitle = new oxField("testrecommtitle");
@@ -694,7 +692,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
     public function testGetArticleVendorUriArticleHasNoVendorAssigned()
     {
         $sVendorId = oxDb::getDb()->getOne("select oxid from oxvendor");
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
 
         $sSeoUri = "Nach-Lieferant/" . str_replace(array(' ', '.', '+'), '-', $oVendor->oxvendor__oxtitle->value) . "/oxid-test-article-title-oxid-test-article-var-select.html";
@@ -729,7 +727,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
     public function testGetArticleVendorUriArticleArticleIsAssignedToVendor()
     {
         $sVendorId = oxDb::getDb()->getOne("select oxid from oxvendor");
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
 
         $sSeoUri = 'Nach-Lieferant/' . str_replace(array(' ', '.', '+'), '-', $oVendor->oxvendor__oxtitle->value) . '/oxid-test-article-title-oxid-test-article-var-select.html';
@@ -765,7 +763,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
     public function testGetArticleVendorUriArticleArticleIsAssignedToVendorWithLangParam()
     {
         $sVendorId = oxDb::getDb()->getOne('select oxid from oxvendor');
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
 
         $oArticle = oxNew('oxArticle');
@@ -823,7 +821,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
     public function testGetArticleVendorUriArticleArticleIsAssignedToVendorEngWithLangParam()
     {
         $sVendorId = oxDb::getDb()->getOne('select oxid from oxvendor');
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->loadInLang(1, $sVendorId);
 
         $oArticle = oxNew('oxArticle');
@@ -1213,11 +1211,11 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
     /**
      * Test case:
-     * new article with same title, seo url must contain "-oxid" prefix
+     * New article with same title, seo url must contain "-oxid" prefix
      */
     public function testAddinNewArticleWithSameTitle()
     {
-        $oArticle = new oxbase();
+        $oArticle = oxNew('oxbase');
         $oArticle->init('oxarticles');
         $oArticle->load('2363');
         $oArticle->oxarticles__oxtitle = new oxField(" testa");
@@ -1228,7 +1226,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle->load('testa');
         $sSeoUrl = $oArticle->getLink();
 
-        $oArticle = new oxbase();
+        $oArticle = oxNew('oxbase');
         $oArticle->init('oxarticles');
         $oArticle->load('testa');
         $oArticle->setId('testb');
@@ -1258,7 +1256,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'article_id'"));
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'article_id'"));
 
-        $oArticle = new oxbase();
+        $oArticle = oxNew('oxbase');
         $oArticle->setId('article_id');
 
         $oEncoder = oxNew('oxSeoEncoderArticle');
@@ -1343,7 +1341,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $oProduct = oxNew('oxArticle');
         $oProduct->load($sProdId);
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load($sCatId);
         $sBaseUri = str_replace($this->getConfig()->getConfigParam("sShopURL"), "", $oCategory->getLink());
 

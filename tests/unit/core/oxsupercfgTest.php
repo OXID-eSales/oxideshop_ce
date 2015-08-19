@@ -16,11 +16,11 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
-class Unit_Core_oxsupercfgTest extends OxidTestCase
+class Unit_Core_oxSuperCfgTest extends OxidTestCase
 {
 
     protected function tearDown()
@@ -31,20 +31,20 @@ class Unit_Core_oxsupercfgTest extends OxidTestCase
 
     public function testSetGetConfig()
     {
-        $oOxSuperCfg = new oxsupercfg();
+        $oOxSuperCfg = oxNew('oxSuperCfg');
         $oOxSuperCfg->setConfig(null);
         $oConfig = $this->getConfig();
         $this->assertEquals($oConfig, $oOxSuperCfg->getConfig());
 
-        $myConfig = $this->getMock('oxConfig', array('getConfigParam'));
-        $myConfig->expects($this->once())->method('getConfigParam')->will($this->returnValue(true));
-        $oOxSuperCfg->setConfig($myConfig);
+        $config = $this->getMock('oxConfig', array('getConfigParam'));
+        $config->expects($this->once())->method('getConfigParam')->will($this->returnValue(true));
+        $oOxSuperCfg->setConfig($config);
         $this->assertTrue($oOxSuperCfg->getConfig()->getConfigParam('xxx'));
     }
 
     public function testSetGetSession()
     {
-        $oOxSuperCfg = new oxsupercfg();
+        $oOxSuperCfg = oxNew('oxSuperCfg');
         $oOxSuperCfg->setSession(null);
         $oSession = oxRegistry::getSession();
         $this->assertEquals($oSession, $oOxSuperCfg->getSession());
@@ -57,7 +57,7 @@ class Unit_Core_oxsupercfgTest extends OxidTestCase
 
     public function testSetGetUser()
     {
-        $oOxSuperCfg = new oxsupercfg();
+        $oOxSuperCfg = oxNew('oxSuperCfg');
         $oOxSuperCfg->setUser(null);
         $this->getSession()->setVariable('usr', 'oxdefaultadmin');
         $oActUser = new oxuser();
@@ -72,7 +72,7 @@ class Unit_Core_oxsupercfgTest extends OxidTestCase
 
     public function testSetGetAdminMode()
     {
-        $oOxSuperCfg = new oxsupercfg();
+        $oOxSuperCfg = oxNew('oxSuperCfg');
         $this->assertFalse($oOxSuperCfg->isAdmin());
 
         $oOxSuperCfg->setAdminMode(true);

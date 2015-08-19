@@ -41,7 +41,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         $oRss = oxNew('oxRssFeed');
 
         $oCfg = $this->getMock('oxconfig', array('getActiveShop', 'getShopUrl', 'getImageUrl'));
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('name');
         $oShop->oxshops__oxversion = new oxField('oxversion');
         $oShop->oxshops__oxfname = new oxField('John');
@@ -433,7 +433,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         $oRss = oxNew('oxRssFeed');
 
         $oCfg = $this->getMock('oxconfig', array('getActiveShop'));
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oShop->oxshops__oxversion = new oxField('oxversion');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
@@ -541,7 +541,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
         $oRss = oxNew('oxRssFeed');
         $oCfg = $this->getMock('oxconfig', array('getActiveShop'));
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
         $oRss->setConfig($oCfg);
@@ -598,7 +598,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
         $oRss = oxNew('oxRssFeed');
         $oCfg = $this->getMock('oxconfig', array('getActiveShop'));
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
         $oRss->setConfig($oCfg);
@@ -670,7 +670,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         }
 
         $oCfg = $this->getMock('oxconfig', array('getActiveShop'));
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
         $oRss->setConfig($oCfg);
@@ -776,7 +776,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
 
         $oRss = oxNew('oxRssFeed');
         $oCfg = $this->getMock('oxconfig', array('getActiveShop'));
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
         $oRss->setConfig($oCfg);
@@ -918,7 +918,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."%s";}');
         $oRss = oxNew('oxRssFeed');
         $oCfg = $this->getMock('oxconfig', array('getActiveShop'));
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
         $oRss->setConfig($oCfg);
@@ -1068,7 +1068,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."%s";}');
         $oRss = oxNew('oxRssFeed');
         $oCfg = $this->getMock('oxconfig', array('getActiveShop'));
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
         $oRss->setConfig($oCfg);
@@ -1175,7 +1175,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
         $oRss = oxNew('oxRssFeed');
         $oCfg = $this->getMock('oxconfig', array('getActiveShop'));
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
         $oRss->setConfig($oCfg);

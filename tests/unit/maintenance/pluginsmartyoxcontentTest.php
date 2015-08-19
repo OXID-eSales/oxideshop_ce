@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -27,7 +27,7 @@ class Unit_Maintenance_pluginSmartyOxContentTest extends OxidTestCase
 
     public function testGetContentWhenShopIsNotProductiveAndContentDoesNotExist()
     {
-        oxTestModules::addFunction("oxconfig", "getActiveShop", "{ \$oShop = new oxShop(); \$oShop->oxshops__oxproductive = new oxField();  return \$oShop;}");
+        oxTestModules::addFunction("oxconfig", "getActiveShop", "{ \$oShop = oxNew('oxShop');; \$oShop->oxshops__oxproductive = new oxField();  return \$oShop;}");
 
         $aParams['ident'] = 'testident';
         $oSmarty = new Smarty();

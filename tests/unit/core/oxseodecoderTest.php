@@ -94,7 +94,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
 
     protected function _regenerateViews($iShop)
     {
-        $oShop = new oxshop();
+        $oShop = oxNew('oxShop');
         $oShop->load($iShop);
 
         $aMultiShopTables = $this->getConfig()->getConfigParam('aMultiShopTables');

@@ -1142,7 +1142,7 @@ class Unit_utf8Test extends OxidTestCase
         $oRss = oxNew('oxrssfeed');
 
         $oCfg = $this->getMock('oxconfig', array('getActiveShop'));
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField($sValue);
         $oShop->oxshops__oxversion = new oxField('oxversion');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
@@ -1169,7 +1169,7 @@ class Unit_utf8Test extends OxidTestCase
 
         $oRss = oxNew('oxrssfeed');
         $oCfg = $this->getMock('oxconfig', array('getActiveShop'));
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
         $oRss->setConfig($oCfg);

@@ -927,7 +927,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
     public function testGetTitleSuffix()
     {
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxtitlesuffix = $this->getMock('oxField', array('__get'));
         $oShop->oxshops__oxtitlesuffix->expects($this->once())->method('__get')->will($this->returnValue('testsuffix'));
 
@@ -942,7 +942,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
     public function testGetTitlePrefix()
     {
-        $oShop = new oxShop();
+        $oShop = oxNew('oxShop');
         $oShop->oxshops__oxtitleprefix = $this->getMock('oxField', array('__get'));
         $oShop->oxshops__oxtitleprefix->expects($this->once())->method('__get')->will($this->returnValue('testsuffix'));
 

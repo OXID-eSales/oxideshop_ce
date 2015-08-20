@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "efe157d62f7850d2e355697282e2f44e",
+    "hash": "0e42e3b2e5ef6fde1b317900c89f86b2",
     "packages": [],
     "packages-dev": [
         {
@@ -612,16 +612,16 @@
         },
         {
             "name": "oxid-esales/coding-standards",
-            "version": "2.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/coding_standards.git",
-                "reference": "d5560012e5a151a92489ef14e47015d747b70b0b"
+                "reference": "7d9bef7a7ff0f30168a58e718bd918a7ac1dbe16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/coding_standards/zipball/d5560012e5a151a92489ef14e47015d747b70b0b",
-                "reference": "d5560012e5a151a92489ef14e47015d747b70b0b",
+                "url": "https://api.github.com/repos/OXID-eSales/coding_standards/zipball/7d9bef7a7ff0f30168a58e718bd918a7ac1dbe16",
+                "reference": "7d9bef7a7ff0f30168a58e718bd918a7ac1dbe16",
                 "shasum": ""
             },
             "require": {
@@ -642,9 +642,9 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/OXID-eSales/coding_standards/tree/v2.0.0"
+                "source": "https://github.com/OXID-eSales/coding_standards/tree/master"
             },
-            "time": "2015-03-24 09:28:16"
+            "time": "2015-08-05 12:48:13"
         },
         {
             "name": "oxid-esales/testing-library",
@@ -1565,7 +1565,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "oxid-esales/testing-library": 20
+        "oxid-esales/testing-library": 20,
+        "oxid-esales/coding-standards": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

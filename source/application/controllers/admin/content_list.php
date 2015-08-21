@@ -42,10 +42,17 @@ class Content_List extends oxAdminList
      * @var string
      */
     protected $_sListType = 'oxcontentlist';
+    
+    /**
+     * Current class template name.
+     * 
+     * @var string
+     */
+    protected $_sThisTemplate = "content_list.tpl";
 
     /**
-     * Executes parent method parent::render() and returns name of template
-     * file "Content_list.tpl".
+     * Executes parent method parent::render() and returns current class template
+     * name.
      *
      * @return string
      */
@@ -59,16 +66,16 @@ class Content_List extends oxAdminList
         $this->_aViewData["folder"] = $sFolder;
         $this->_aViewData["afolder"] = $this->getConfig()->getConfigParam('aCMSfolder');
 
-        return "content_list.tpl";
+        return $this->_sThisTemplate;
     }
 
     /**
-     * Adding folder check and empty folder field check
+     * Adding folder check and empty folder field check.
      *
      * @param array  $aWhere  SQL condition array
      * @param string $sqlFull SQL query string
      *
-     * @return $sQ
+     * @return string
      */
     protected function _prepareWhereQuery($aWhere, $sqlFull)
     {

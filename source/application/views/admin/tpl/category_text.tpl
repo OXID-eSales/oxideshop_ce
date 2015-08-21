@@ -24,11 +24,6 @@ function loadLang(obj)
     <input type="hidden" name="cl" value="category_text">
     <input type="hidden" name="editlanguage" value="[{ $editlanguage }]">
 </form>
-
-
-                  [{ $editor }]
-
-
         <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post" onSubmit="copyLongDesc( 'oxcategories__oxlongdesc' );" style="padding: 0px;margin: 0px;height:0px;">
         [{ $oViewConf->getHiddenSid() }]
         <input type="hidden" name="cl" value="category_text">
@@ -38,6 +33,9 @@ function loadLang(obj)
         <input type="hidden" name="editval[oxcategories__oxid]" value="[{ $oxid }]">
         <input type="hidden" name="catlang" value="[{$catlang}]">
         <input type="hidden" name="editval[oxcategories__oxlongdesc]" value="">
+        
+        [{ $editor }]
+        
         <table>
         <tr>
           <td valign="top" class="edittext">
@@ -55,8 +53,8 @@ function loadLang(obj)
                 <input type="submit" class="edittext" name="save" value="[{ oxmultilang ident="CATEGORY_TEXT_SAVE" }]" onClick="Javascript:document.myedit.fnc.value='save'">
           </td>
         </tr>
-        </form>
       </table>
+      </form>
 
 [{include file="bottomnaviitem.tpl"}]
 

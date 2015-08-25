@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -38,7 +38,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
         parent::setUp();
 
         $oConfig = $this->getConfig();
-        $this->_oObj = new oxGBEntry();
+        $this->_oObj = oxNew('oxGBEntry');
         $this->_oObj->oxgbentries__oxuserid = new oxField('oxdefaultadmin', oxField::T_RAW);
         $this->_oObj->oxgbentries__oxcontent = new oxField("test content\ntest content", oxField::T_RAW);
         $this->_oObj->oxgbentries__oxcreate = new oxField(null, oxField::T_RAW);
@@ -82,7 +82,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
      */
     public function testFloodProtectionIfAllow()
     {
-        $oObj = new GuestBook();
+        $oObj = oxNew('GuestBook');
         $this->getConfig()->setConfigParam('iMaxGBEntriesPerDay', 10);
         $this->getSession()->setVariable('usr', 'oxdefaultadmin');
         $this->assertFalse($oObj->floodProtection());
@@ -95,7 +95,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
      */
     public function testFloodProtectionMaxReached()
     {
-        $oObj = new GuestBook();
+        $oObj = oxNew('GuestBook');
         $this->getConfig()->setConfigParam('iMaxGBEntriesPerDay', 1);
         $this->getSession()->setVariable('usr', 'oxdefaultadmin');
         $this->assertTrue($oObj->floodProtection());
@@ -108,7 +108,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
      */
     public function testFloodProtectionIfUserNotSet()
     {
-        $oObj = new GuestBook();
+        $oObj = oxNew('GuestBook');
         $this->getSession()->setVariable('usr', null);
         $this->assertTrue($oObj->floodProtection());
     }
@@ -120,7 +120,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
      */
     public function testGetEntries()
     {
-        $oObj = new GuestBook();
+        $oObj = oxNew('GuestBook');
         $aEntries = $oObj->getEntries();
         $oEntries = $aEntries->current();
         $this->assertEquals("test content\ntest content", $oEntries->oxgbentries__oxcontent->value);
@@ -147,7 +147,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oGuestBook = new GuestBook();
+        $oGuestBook = oxNew('GuestBook');
 
         $this->assertEquals(1, count($oGuestBook->getBreadCrumb()));
     }

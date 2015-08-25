@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -81,28 +81,28 @@ class Unit_Views_userTest extends OxidTestCase
     public function testGetMustFillFields()
     {
         $this->getConfig()->setConfigParam('aMustFillFields', array("bb" => "aa"));
-        $oUserView = new user();
+        $oUserView = oxNew('user');
         $this->assertEquals(array("aa" => "bb"), $oUserView->getMustFillFields());
     }
 
     public function testGetShowNoRegOption()
     {
         $this->getConfig()->setConfigParam('blOrderDisWithoutReg', true);
-        $oUserView = new user();
+        $oUserView = oxNew('user');
         $this->assertFalse($oUserView->getShowNoRegOption());
     }
 
     public function testGetLoginOption()
     {
         $this->setRequestParameter('option', 1);
-        $oUserView = new user();
+        $oUserView = oxNew('user');
         $this->assertEquals(1, $oUserView->getLoginOption());
     }
 
     public function testGetLoginOptionIfNotLogedIn()
     {
         $this->setRequestParameter('option', 2);
-        $oUserView = new user();
+        $oUserView = oxNew('user');
         $this->assertEquals(0, $oUserView->getLoginOption());
     }
 
@@ -148,7 +148,7 @@ class Unit_Views_userTest extends OxidTestCase
     public function testIsNewsSubscribed()
     {
         $this->setRequestParameter('blnewssubscribed', null);
-        $oUserView = new user();
+        $oUserView = oxNew('user');
         $this->assertFalse($oUserView->isNewsSubscribed());
     }
 
@@ -165,7 +165,7 @@ class Unit_Views_userTest extends OxidTestCase
 
     public function testShowShipAddress()
     {
-        $oUserView = new user();
+        $oUserView = oxNew('user');
 
         $this->getSession()->setVariable('blshowshipaddress', false);
         $this->assertFalse($oUserView->showShipAddress());
@@ -182,7 +182,7 @@ class Unit_Views_userTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oUserView = new User();
+        $oUserView = oxNew('User');
         $this->assertEquals('page/checkout/user.tpl', $oUserView->render());
     }
 
@@ -297,7 +297,7 @@ class Unit_Views_userTest extends OxidTestCase
     {
         $myConfig = $this->getConfig();
         $myConfig->setConfigParam("bl_showFbConnect", true);
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
 
         $oView = $this->getMock("user", array("_fillFormWithFacebookData", "getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
@@ -383,7 +383,7 @@ class Unit_Views_userTest extends OxidTestCase
         $myConfig = $this->getConfig();
         $myConfig->setConfigParam("blEnableDownloads", false);
 
-        $oB = new oxBasket();
+        $oB = oxNew('oxBasket');
 
         $oS = $this->getMock('oxsession', array('getBasket'));
         $oS->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
@@ -401,7 +401,7 @@ class Unit_Views_userTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oUser = new User();
+        $oUser = oxNew('User');
         $aResult = array();
         $aResults = array();
 
@@ -422,7 +422,7 @@ class Unit_Views_userTest extends OxidTestCase
     {
         $this->setConfigParam('blnewssubscribed', true);
 
-        $oUser = new User();
+        $oUser = oxNew('User');
         $this->assertEquals($this->getRequestParameter('blnewssubscribed'), $oUser->modifyBillAddress());
     }
 }

@@ -28,7 +28,7 @@ class Unit_Views_tagTest extends OxidTestCase
 
     public function testSetItemSorting()
     {
-        $oView = new tag();
+        $oView = oxNew('tag');
         $oView->setItemSorting('alist', "testSortBy", "testSortOrder");
 
         $aSorting = $this->getSession()->getVariable("aSorting");
@@ -42,7 +42,7 @@ class Unit_Views_tagTest extends OxidTestCase
     public function testRender()
     {
         $this->setRequestParameter("searchtag", "kuyichi");
-        $oView = new tag();
+        $oView = oxNew('tag');
 
         $this->assertEquals("page/list/list.tpl", $oView->render());
     }
@@ -55,7 +55,7 @@ class Unit_Views_tagTest extends OxidTestCase
         $this->setRequestParameter("pgNr", 999);
         $this->setRequestParameter("searchtag", "notexistingtag");
 
-        $oView = new tag();
+        $oView = oxNew('tag');
         $this->assertEquals("page/list/list.tpl", $oView->render());
     }
 
@@ -63,11 +63,11 @@ class Unit_Views_tagTest extends OxidTestCase
     {
         $this->setRequestParameter("searchtag", "testSearchTag");
 
-        $oListView = new aList();
+        $oListView = oxNew('aList');
         $sListViewParams = $oListView->getAddUrlParams();
         $sListViewParams .= "listtype=tag&amp;searchtag=testSearchTag";
 
-        $oView = new tag();
+        $oView = oxNew('tag');
         $this->assertEquals($sListViewParams, $oView->getAddUrlParams());
     }
 
@@ -106,7 +106,7 @@ class Unit_Views_tagTest extends OxidTestCase
 
     public function testNoIndex()
     {
-        $oTagView = new tag();
+        $oTagView = oxNew('tag');
         $this->assertTrue(0 === $oTagView->noIndex());
     }
 
@@ -182,7 +182,7 @@ class Unit_Views_tagTest extends OxidTestCase
 
     public function testGetProductLinkType()
     {
-        $oTagView = new tag();
+        $oTagView = oxNew('tag');
         $this->assertEquals(OXARTICLE_LINKTYPE_TAG, $oTagView->UNITgetProductLinkType());
     }
 
@@ -196,7 +196,7 @@ class Unit_Views_tagTest extends OxidTestCase
         $oArticle2->setId('oArticle2');
         $oArticle2->oxarticles__oxtitle = new oxField('testoxtitle2');
 
-        $oArtList = new oxlist();
+        $oArtList = oxNew('oxlist');
         $oArtList->offsetSet($oArticle1->getId(), $oArticle1);
         $oArtList->offsetSet($oArticle2->getId(), $oArticle2);
 
@@ -215,7 +215,7 @@ class Unit_Views_tagTest extends OxidTestCase
         $oArticle2->setId('oArticle2');
         $oArticle2->oxarticles__oxtitle = new oxField('testoxtitle2');
 
-        $oArtList = new oxlist();
+        $oArtList = oxNew('oxlist');
         $oArtList->offsetSet($oArticle1->getId(), $oArticle1);
         $oArtList->offsetSet($oArticle2->getId(), $oArticle2);
 
@@ -250,7 +250,7 @@ class Unit_Views_tagTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oTag = new Tag();
+        $oTag = oxNew('Tag');
         $this->assertEquals(2, count($oTag->getBreadCrumb()));
     }
 
@@ -261,7 +261,7 @@ class Unit_Views_tagTest extends OxidTestCase
      */
     public function testGetTag()
     {
-        $oTag = new Tag();
+        $oTag = oxNew('Tag');
 
         $this->setRequestParameter('searchtag', null);
         $this->assertNull($oTag->getTag());
@@ -275,7 +275,7 @@ class Unit_Views_tagTest extends OxidTestCase
      */
     public function testGetTagSpecialChars()
     {
-        $oTag = new Tag();
+        $oTag = oxNew('Tag');
 
         $this->setRequestParameter('searchtag', 'sometag<">');
         $this->assertEquals('sometag&lt;&quot;&gt;', $oTag->getTag());

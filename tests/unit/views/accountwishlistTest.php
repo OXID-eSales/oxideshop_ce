@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -45,7 +45,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oUser = new oxuser;
+        $oUser = oxNew('oxuser');
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
         $oView = $this->getMock("Account_Wishlist", array("getUser"));
@@ -62,12 +62,12 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
     {
         $this->setRequestParameter("blshowsuggest", 0);
 
-        $oView = new Account_Wishlist();
+        $oView = oxNew('Account_Wishlist');
         $this->assertFalse($oView->showSuggest());
 
         $this->setRequestParameter("blshowsuggest", 1);
 
-        $oView = new Account_Wishlist();
+        $oView = oxNew('Account_Wishlist');
         $this->assertTrue($oView->showSuggest());
     }
 
@@ -191,7 +191,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
-        $oView = new Account_Wishlist();
+        $oView = oxNew('Account_Wishlist');
         $this->assertEquals("addErrorToDisplay", $oView->sendWishList());
         $this->assertEquals(( object ) $aParams, $oView->getEnteredData());
     }
@@ -269,7 +269,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
         $this->setRequestParameter('search', "searchParam");
         oxTestModules::addFunction('oxuserlist', 'loadWishlistUsers', '{ $this->_aArray[0] = 1; }');
 
-        $oView = new Account_Wishlist();
+        $oView = oxNew('Account_Wishlist');
         $oView->searchForWishList();
 
         $this->assertTrue($oView->getWishListUsers() instanceof oxuserlist);
@@ -283,7 +283,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oAccWishList = new Account_Wishlist();
+        $oAccWishList = oxNew('Account_Wishlist');
 
         $this->assertEquals(2, count($oAccWishList->getBreadCrumb()));
     }

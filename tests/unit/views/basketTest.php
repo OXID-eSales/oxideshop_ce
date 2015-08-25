@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Views_basketTest extends OxidTestCase
      */
     public function testGetErrorDestination()
     {
-        $oBasket = new basket();
+        $oBasket = oxNew('basket');
         $this->assertEquals('basket', $oBasket->getErrorDestination());
     }
 
@@ -80,7 +80,7 @@ class Unit_Views_basketTest extends OxidTestCase
     {
         oxRegistry::getUtils()->setSearchEngine(false);
 
-        $oBasket = new basket();
+        $oBasket = oxNew('basket');
 
         $this->assertEquals('page/checkout/basket.tpl', $oBasket->render());
     }
@@ -243,7 +243,7 @@ class Unit_Views_basketTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oBasket = new Basket();
+        $oBasket = oxNew('Basket');
 
         $this->assertEquals(1, count($oBasket->getBreadCrumb()));
     }
@@ -257,7 +257,7 @@ class Unit_Views_basketTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxwrapping', 'getWrappingList', '{ return "getWrappingList"; }');
 
-        $oView = new Basket();
+        $oView = oxNew('Basket');
         $this->assertEquals("getWrappingList", $oView->getWrappingList());
     }
 
@@ -270,7 +270,7 @@ class Unit_Views_basketTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxwrapping', 'getWrappingList', '{ return "getCardList"; }');
 
-        $oView = new Basket();
+        $oView = oxNew('Basket');
         $this->assertEquals("getCardList", $oView->getCardList());
     }
 
@@ -291,7 +291,7 @@ class Unit_Views_basketTest extends OxidTestCase
         $oBasketItem2 = $this->getMock("oxBasketItem", array("setWrapping"));
         $oBasketItem2->expects($this->never())->method('setWrapping');
 
-        $oContents = new oxList();
+        $oContents = oxNew('oxList');
         $oContents->offsetSet(1, $oBasketItem1);
         $oContents->offsetSet(2, $oBasketItem2);
 
@@ -320,7 +320,7 @@ class Unit_Views_basketTest extends OxidTestCase
      */
     public function testIsWrapping()
     {
-        $oView = new Basket();
+        $oView = oxNew('Basket');
         $this->assertTrue($oView->isWrapping());
     }
 
@@ -333,7 +333,7 @@ class Unit_Views_basketTest extends OxidTestCase
     {
         $this->setConfigParam('bl_showGiftWrapping', false);
 
-        $oView = new Basket();
+        $oView = oxNew('Basket');
         $this->assertSame(false, $oView->isWrapping());
     }
 

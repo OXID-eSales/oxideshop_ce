@@ -109,7 +109,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
             'www.1.com/index.php'        => array('a=1&amp;b=2', 'www.1.com/index.php?a=1&amp;b=2'),
             'www.1.com/index.php?cl=xxx' => array('a=1&amp;b=2', 'www.1.com/index.php?cl=xxx&amp;a=1&amp;b=2'),
         );
-        $oLocator = new oxLocator();
+        $oLocator = oxNew('oxLocator');
         foreach ($aInput as $sLink => $aParams) {
             if ($oLocator->UNITmakeLink($sLink, $aParams[0]) != $aParams[1]) {
                 $this->fail('testMakeLink failed');
@@ -165,7 +165,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sPrevId = '1477';
         $sNextId = '1672';
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxcategory');
         $oCategory->load($sActCat);
 
         $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActiveCategory', 'getCategoryTree', 'showSorting'));
@@ -173,7 +173,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects($this->any())->method('setCatTreePath');
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $oLocatorTarget->expects($this->once())->method('getCategoryTree')->will($this->returnValue(new oxcategorylist));
+        $oLocatorTarget->expects($this->once())->method('getCategoryTree')->will($this->returnValue(oxNew('oxcategorylist')));
         $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
@@ -209,7 +209,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sPrevId = '1477';
         $sNextId = '1672';
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxcategory');
         $oCategory->load($sActCat);
 
         $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActiveCategory', 'getCategoryTree', 'showSorting'));
@@ -217,7 +217,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects($this->any())->method('setCatTreePath');
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $oLocatorTarget->expects($this->once())->method('getCategoryTree')->will($this->returnValue(new oxcategorylist));
+        $oLocatorTarget->expects($this->once())->method('getCategoryTree')->will($this->returnValue(oxNew('oxcategorylist')));
         $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
@@ -265,7 +265,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sActCat = 'v_d2e44d9b31fcce448.08890330';
         $sActCat = 'v_77442e37fdf34ccd3.94620745';
 
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->load(str_replace('v_', '', $sActCat));
 
         $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActVendor', 'getVendorTree', 'showSorting'));
@@ -308,7 +308,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sActCat = 'v_d2e44d9b31fcce448.08890330';
         $sActCat = 'v_77442e37fdf34ccd3.94620745';
 
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->load(str_replace('v_', '', $sActCat));
 
         $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActVendor', 'getVendorTree', 'showSorting'));
@@ -364,7 +364,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects($this->any())->method('setCatTreePath');
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
-        $oLocatorTarget->expects($this->once())->method('getManufacturerTree')->will($this->returnValue(new oxmanufacturerlist));
+        $oLocatorTarget->expects($this->once())->method('getManufacturerTree')->will($this->returnValue(oxNew('oxmanufacturerlist')));
         $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_MANUFACTURER));
 
@@ -408,7 +408,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects($this->any())->method('setCatTreePath');
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
-        $oLocatorTarget->expects($this->once())->method('getManufacturerTree')->will($this->returnValue(new oxmanufacturerlist));
+        $oLocatorTarget->expects($this->once())->method('getManufacturerTree')->will($this->returnValue(oxNew('oxmanufacturerlist')));
         $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_MANUFACTURER));
 
@@ -616,7 +616,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
               ' ( "testlist2", "2000", "testlist", "test" ), ( "testlist3", "1126", "testlist", "test" ) ';
         $myDB->Execute($sQ);
 
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
 
         $oCurrArticle = $this->getMock('oxarticle', array('getId'));
@@ -662,7 +662,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
               ' ( "testlist2", "2000", "testlist", "test" ), ( "testlist3", "1126", "testlist", "test" ) ';
         $myDB->Execute($sQ);
 
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
 
         $oCurrArticle = $this->getMock('oxarticle', array('getId'));
@@ -699,7 +699,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         $oLocator = new testOxLocator();
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxcategory');
         $oCategory->load($sActCat);
 
         // testing
@@ -720,7 +720,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         $oLocator = new testOxLocator();
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxcategory');
         $oCategory->load($sActCat);
 
         // testing
@@ -777,7 +777,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
     public function testGetPageNumber()
     {
-        $oLocator = new oxlocator();
+        $oLocator = oxNew('oxlocator');
         $this->assertEquals('pgNr=5', $oLocator->UNITgetPageNumber(5));
         $this->assertEquals('', $oLocator->UNITgetPageNumber(-3));
         $this->assertEquals('', $oLocator->UNITgetPageNumber('nonumber'));
@@ -794,7 +794,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sNextId = $aTest["1771"] = "1771";
         $aTest["2028"] = "2028";
 
-        $oTest = new oxlist();
+        $oTest = oxNew('oxlist');
         $oTest->assign($aTest);
 
         $oArticle = $this->getMock('oxarticle', array('getId'));
@@ -815,7 +815,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sBackId = $aTest["1771"] = "1771";
         $aTest["2000"] = "2000";
 
-        $oTest = new oxlist();
+        $oTest = oxNew('oxlist');
         $oTest->assign($aTest);
 
         $oLocator = new testOxLocator();
@@ -830,7 +830,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $sNextId = $aTest["1771"] = "1771";
         $aTest["1951"] = "1951";
 
-        $oTest = new oxlist();
+        $oTest = oxNew('oxlist');
         $oTest->assign($aTest);
 
         $oArticle = $this->getMock('oxarticle', array('getId'));

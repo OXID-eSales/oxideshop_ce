@@ -77,7 +77,7 @@ class Unit_Views_newsTest extends OxidTestCase
      */
     public function testGetNews()
     {
-        $oNews = new news();
+        $oNews = oxNew('news');
         $oNewsList = $oNews->getNews();
 
         $this->assertEquals(2, $oNewsList->count());

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,7 +25,7 @@ class Unit_Views_searchTest extends OxidTestCase
 
     public function testIsEmptySearch()
     {
-        $oSearch = new search();
+        $oSearch = oxNew('search');
         $oSearch->init();
 
         $this->assertTrue($oSearch->isEmptySearch());
@@ -38,7 +38,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $this->setRequestParameter('searchparam', ' ');
 
-        $oSearch = new search();
+        $oSearch = oxNew('search');
         $oSearch->init();
 
         $this->assertTrue($oSearch->isEmptySearch());
@@ -101,7 +101,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $this->setRequestParameter('searchparam', 'bar');
 
-        $oSearch = new search();
+        $oSearch = oxNew('search');
         $oSearch->init();
 
         $this->assertEquals(8, $oSearch->getArticleList()->count());
@@ -256,7 +256,7 @@ class Unit_Views_searchTest extends OxidTestCase
 
     public function testGetBreadCrumb()
     {
-        $oSearch = new Search();
+        $oSearch = oxNew('Search');
 
         $this->assertEquals(1, count($oSearch->getBreadCrumb()));
     }
@@ -280,7 +280,7 @@ class Unit_Views_searchTest extends OxidTestCase
 
     public function testCanRedirect()
     {
-        $oSearch = new search();
+        $oSearch = oxNew('search');
         $this->assertFalse($oSearch->UNITcanRedirect());
     }
 

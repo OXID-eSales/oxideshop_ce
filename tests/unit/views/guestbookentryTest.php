@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -49,7 +49,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxUtilsObject", "generateUId", "{return 'xxx';}");
 
-        $oView = new GuestbookEntry();
+        $oView = oxNew('GuestbookEntry');
         $this->assertEquals('xxx', $oView->getFormId());
     }
 
@@ -67,7 +67,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
-        $oView = new GuestbookEntry();
+        $oView = oxNew('GuestbookEntry');
         $this->assertNull($oView->saveEntry());
 
         $aErrors = oxRegistry::getSession()->getVariable("Errors");
@@ -125,7 +125,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
-        $oView = new GuestbookEntry();
+        $oView = oxNew('GuestbookEntry');
         $this->assertEquals('guestbookentry', $oView->saveEntry());
 
         $aErrors = oxRegistry::getSession()->getVariable("Errors");
@@ -153,7 +153,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
-        $oView = new GuestbookEntry();
+        $oView = oxNew('GuestbookEntry');
         $this->assertEquals('guestbookentry', $oView->saveEntry());
 
         $aErrors = oxRegistry::getSession()->getVariable("Errors");
@@ -182,7 +182,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
-        $oView = new GuestbookEntry();
+        $oView = oxNew('GuestbookEntry');
         $this->assertEquals('guestbook', $oView->saveEntry());
 
         $this->assertEquals(0, oxDb::getDb()->getOne('select count(*) from oxgbentries'));

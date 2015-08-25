@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -47,7 +47,7 @@ class Unit_Views_downloadTest extends OxidTestCase
         $oFile->expects($this->any())->method('download');
         oxTestModules::addModuleObject('oxFile', $oFile);
 
-        $oDownloads = new Download();
+        $oDownloads = oxNew('Download');
 
         $oDownloads->render();
     }
@@ -62,7 +62,7 @@ class Unit_Views_downloadTest extends OxidTestCase
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new exception( 'testDownload', 123 );}");
 
         try {
-            $oDownloads = new Download();
+            $oDownloads = oxNew('Download');
             $oDownloads->render();
         } catch (Exception $oEx) {
             $this->assertEquals(123, $oEx->getCode(), 'Error executing "testRenderWrongLink" test');
@@ -92,7 +92,7 @@ class Unit_Views_downloadTest extends OxidTestCase
         $oFile->expects($this->any())->method('load')->will($this->returnValue(true));
         oxTestModules::addModuleObject('oxFile', $oFile);
         try {
-            $oDownloads = new Download();;
+            $oDownloads = oxNew('Download');;
             $oDownloads->render();
         } catch (Exception $oEx) {
             $this->assertEquals(123, $oEx->getCode(), 'Error executing "testRenderWrongLink" test');
@@ -118,7 +118,7 @@ class Unit_Views_downloadTest extends OxidTestCase
         oxTestModules::addModuleObject('oxOrderFile', $oOrderFile);
 
         try {
-            $oDownloads = new Download();
+            $oDownloads = oxNew('Download');
             $oDownloads->render();
         } catch (Exception $oEx) {
             $this->assertEquals(123, $oEx->getCode(), 'Error executing "testRenderWrongLink" test');
@@ -148,17 +148,17 @@ class Unit_Views_downloadTest extends OxidTestCase
         $oFile = $this->getMock('oxFile', array('load', 'download', 'exist'));
         $oFile->expects($this->any())->method('load')->will($this->returnValue(true));
         $oFile->expects($this->any())->method('exist')->will($this->returnValue(true));
-        $oFile->expects($this->any())->method('download')->will($this->throwException(new oxException));
+        $oFile->expects($this->any())->method('download')->will($this->throwException(oxNew('oxException')));
         oxTestModules::addModuleObject('oxFile', $oFile);
 
-        $oException = new oxExceptionToDisplay();
+        $oException = oxNew('oxExceptionToDisplay');
         $oException->setMessage("ERROR_MESSAGE_FILE_DOWNLOAD_FAILED");
         $oUtilsView = $this->getMock('oxUtilsView', array('addErrorToDisplay'));
         $oUtilsView->expects($this->once())->method('addErrorToDisplay')->with($oException, false);
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);
 
         try {
-            $oDownloads = new Download();
+            $oDownloads = oxNew('Download');
             $oDownloads->render();
         } catch (Exception $oEx) {
             $this->assertEquals(123, $oEx->getCode(), 'Error executing "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED" test');
@@ -192,13 +192,13 @@ class Unit_Views_downloadTest extends OxidTestCase
         $oFile->expects($this->any())->method('download');
         oxTestModules::addModuleObject('oxFile', $oFile);
 
-        $oException = new oxExceptionToDisplay();
+        $oException = oxNew('oxExceptionToDisplay');
         $oException->setMessage("ERROR_MESSAGE_FILE_DOESNOT_EXIST");
         $oUtilsView = $this->getMock('oxUtilsView', array('addErrorToDisplay'));
         $oUtilsView->expects($this->once())->method('addErrorToDisplay')->with($oException, false);
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);
 
-        $oDownloads = new Download();
+        $oDownloads = oxNew('Download');
         $oDownloads->render();
     }
 

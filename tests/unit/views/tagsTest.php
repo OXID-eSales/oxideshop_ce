@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -30,7 +30,7 @@ class Unit_Views_tagsTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oView = new Tags();
+        $oView = oxNew('Tags');
         $this->assertEquals('page/tags/tags.tpl', $oView->render());
     }
 
@@ -41,7 +41,7 @@ class Unit_Views_tagsTest extends OxidTestCase
      */
     public function testGetTagCloudManager()
     {
-        $oView = new Tags();
+        $oView = oxNew('Tags');
         $this->assertTrue($oView->getTagCloudManager() instanceof oxTagCloud);
     }
 
@@ -52,7 +52,7 @@ class Unit_Views_tagsTest extends OxidTestCase
      */
     public function testGetTitleSuffix()
     {
-        $oView = new Tags();
+        $oView = oxNew('Tags');
         $this->assertNull($oView->getTitleSuffix());
     }
 
@@ -75,7 +75,7 @@ class Unit_Views_tagsTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oTags = new Tags();
+        $oTags = oxNew('Tags');
 
         $this->assertEquals(1, count($oTags->getBreadCrumb()));
     }

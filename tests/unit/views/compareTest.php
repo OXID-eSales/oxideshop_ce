@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -117,7 +117,7 @@ class Unit_Views_compareTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oView = new compare();
+        $oView = oxNew('compare');
 
         $this->assertEquals("page/compare/compare.tpl", $oView->render());
 
@@ -128,7 +128,7 @@ class Unit_Views_compareTest extends OxidTestCase
      */
     public function testRenderInPopup()
     {
-        $oView = new compare();
+        $oView = oxNew('compare');
 
         $oView->inPopup();
         $this->assertEquals("compare_popup.tpl", $oView->render());
@@ -155,10 +155,10 @@ class Unit_Views_compareTest extends OxidTestCase
     public function testSetCompareItemsGetCompareItems()
     {
         $this->getSession()->setVariable('aFiltcompproducts', array("testItems1"));
-        $oView = new compare();
+        $oView = oxNew('compare');
         $this->assertEquals(array("testItems1"), $oView->getCompareItems());
 
-        $oView = new compare();
+        $oView = oxNew('compare');
         $oView->setCompareItems(array("testItems2"));
         $this->assertEquals(array("testItems2"), $oView->getCompareItems());
         $this->assertEquals(array("testItems2"), oxRegistry::getSession()->getVariable('aFiltcompproducts'));
@@ -277,7 +277,7 @@ class Unit_Views_compareTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oCompare = new Compare();
+        $oCompare = oxNew('Compare');
         $aCatPath = array();
         $aResult = array();
 
@@ -301,7 +301,7 @@ class Unit_Views_compareTest extends OxidTestCase
     {
         $oSubj = $this->getProxyClass("Compare");
         $aItems = array("1126" => true, "nonExistingVal" => true, "1127" => true);
-        $oArtList = new oxArticleList();
+        $oArtList = oxNew('oxArticleList');
         $oArtList->loadIds(array_keys($aItems));
 
         $oResList = $oSubj->UNITchangeArtListOrder($aItems, $oArtList);

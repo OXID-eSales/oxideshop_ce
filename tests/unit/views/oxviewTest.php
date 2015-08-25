@@ -49,7 +49,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_oView = new oxView;
+        $this->_oView = oxNew('oxView');
 
         // backuping
         $this->_iSeoMode = $this->getConfig()->getActiveShop()->oxshops__oxseoactive->value;
@@ -93,7 +93,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testInit()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $oView->init();
         $this->assertEquals("oxview", $oView->getThisAction());
 
@@ -108,7 +108,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testInitForSeach()
     {
-        $oView = new search();
+        $oView = oxNew('search');
         $oView->init();
         $this->assertEquals("search", $oView->getThisAction());
     }
@@ -118,7 +118,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->assertEquals('', $oView->render());
     }
 
@@ -138,7 +138,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testAddGlobalParams()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
 
         $oView->addGlobalParams();
 
@@ -160,7 +160,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
             $sParams .= $sLang . "&amp;";
         }
 
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->assertEquals($sParams, $oView->getAdditionalParams());
     }
 
@@ -169,7 +169,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testAddTplParam()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $oView->addTplParam('testName', 'testValue');
         $oView->addGlobalParams();
 
@@ -181,7 +181,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testSetGetTemplateName()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $oView->setTemplateName("testTemplate");
 
         $this->assertEquals('testTemplate', $oView->getTemplateName());
@@ -412,7 +412,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
     public function testGetTrustedShopIdNotValid()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->getConfig()->setConfigParam('tsSealActive', 1);
         $this->getConfig()->setConfigParam('iShopID_TrustedShops', array(0 => 'aaa'));
 
@@ -421,7 +421,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
     public function testGetTrustedShopIdIfNotMultilanguage()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->getConfig()->setConfigParam('tsSealActive', 1);
         $this->getConfig()->setConfigParam('tsSealType', array(0 => 'CLASSIC'));
         $this->getConfig()->setConfigParam('iShopID_TrustedShops', 'XAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
@@ -430,7 +430,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
     public function testGetTrustedShopIdIfNotMultilanguageNotValid()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->getConfig()->setConfigParam('tsSealActive', 1);
         $this->getConfig()->setConfigParam('iShopID_TrustedShops', 'XXX');
         $this->assertFalse($oView->getTrustedShopId());
@@ -448,7 +448,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
     public function testGetTrustedShopIdNotActive()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->getConfig()->setConfigParam('iShopID_TrustedShops', null);
 
         $this->assertFalse($oView->getTrustedShopId());
@@ -462,7 +462,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
     public function testGetTrustedShopIdFalse()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->getConfig()->setConfigParam('tsSealActive', 1);
         $this->getConfig()->setConfigParam('tsSealType', array(0 => 'CLASSIC'));
         $this->getConfig()->setConfigParam('iShopID_TrustedShops', 'ABC');
@@ -536,19 +536,19 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
     public function testGetCharSet()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->assertEquals('UTF-8', $oView->getCharSet());
     }
 
     public function testGetShopVersion()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->assertEquals($this->getConfig()->getActiveShop()->oxshops__oxversion->value, $oView->getShopVersion());
     }
 
     public function testIsDemoVersion()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         if ($this->getConfig()->detectVersion() == 1) {
             $this->assertTrue($oView->isDemoVersion());
         } else {
@@ -630,7 +630,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testShowBetaNote($isBetaVersion, $isRCVersion, $showBetaNote)
     {
-        $oxView = new oxView();
+        $oxView = oxNew('oxView');
         if (!$oxView->showBetaNote()) {
             $this->markTestSkipped('there is no real beta note for this version');
         }
@@ -645,7 +645,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     public function testEditionIsNotEmpty()
     {
         //edition is always set
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $sEdition = $oView->getShopEdition();
         $this->assertNotSame('', $sEdition);
     }
@@ -653,7 +653,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     public function testGetEdition()
     {
         //edition is always set
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $sEdition = $oView->getShopEdition();
 
         $this->assertTrue($sEdition == "CE" || $sEdition == "PE");
@@ -664,7 +664,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     public function testFullEditionIsNotEmpty()
     {
         //edition is always set
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $sEdition = $oView->getShopFullEdition();
         $this->assertNotSame('', $sEdition);
     }
@@ -672,7 +672,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     public function testGetFullEdition()
     {
         //edition is always set
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $sEdition = $oView->getShopFullEdition();
 
         $this->assertEquals("Community Edition", $sEdition);
@@ -684,7 +684,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testGetCategoryIdAndSetCategoryId()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->assertNull($oView->getCategoryId());
 
         $this->setRequestParameter('cnid', 'xxx');
@@ -716,7 +716,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oFB = $this->getMock("oxFb", array("isConnected"));
         $oFB->expects($this->any())->method("isConnected")->will($this->returnValue(true));
         oxTestModules::addModuleObject('oxFb', $oFB);
-        $oView = new oxView();
+        $oView = oxNew('oxView');
 
         $this->setConfigParam("bl_showFbConnect", true);
         $this->assertTrue($oView->isConnectedWithFb());
@@ -738,7 +738,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
         $this->setConfigParam("bl_showFbConnect", true);
 
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->assertFalse($oView->isConnectedWithFb());
     }
 
@@ -754,7 +754,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $myConfig = $this->getConfig();
         $myConfig->setConfigParam("bl_showFbConnect", false);
 
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->assertNull($oView->getFbUserId());
 
         $myConfig->setConfigParam("bl_showFbConnect", true);
@@ -771,7 +771,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     {
         $this->setRequestParameter("fblogin", false);
 
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->assertFalse($oView->showFbConnectToAccountMsg());
     }
 
@@ -802,7 +802,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     public function testShowFbConnectToAccountMsg_FbOn_AccountOn()
     {
         $this->setRequestParameter("fblogin", true);
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
 
         $oView = $this->getMock('oxview', array('getUser'));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
@@ -815,13 +815,13 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testIsMall()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->assertFalse($oView->isMall());
     }
 
     public function testIsCallForCache()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $oView->setIsCallForCache('123456789');
         $this->assertEquals('123456789', $oView->getIsCallForCache());
     }
@@ -833,19 +833,19 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testGetViewId()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->assertNull($oView->getViewId());
     }
 
     public function testShowRdfa()
     {
-        $oView = new oxview();
+        $oView = oxNew('oxview');
         $this->assertFalse($oView->showRdfa());
     }
 
     public function testSetGetViewParameters()
     {
-        $oView = new oxview();
+        $oView = oxNew('oxview');
 
         $oView->setViewParameters(array("testItem1" => "testValue1", "testItem2" => "testValue2"));
 
@@ -857,13 +857,13 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
     public function testShowNewsletter()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $this->assertEquals(1, $oView->showNewsletter());
     }
 
     public function testSetShowNewsletter()
     {
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $oView->setShowNewsletter(0);
 
         $this->assertEquals(0, $oView->showNewsletter());
@@ -880,7 +880,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $sTest = "testValue";
         $this->getSession()->setVariable('belboon', $sTest);
 
-        $oView = new oxview();
+        $oView = oxNew('oxview');
         $this->assertEquals($sTest, $oView->getBelboonParam());
 
         //other test case

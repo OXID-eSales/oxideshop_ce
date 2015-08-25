@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -48,7 +48,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testRenderNoTerms()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxpassword = new oxField("psw");
         $oUserView = $this->getMock('account', array('confirmTerms', 'getUser', 'getOrderCnt', "isEnabledPrivateSales"));
         $oUserView->expects($this->any())->method('confirmTerms')->will($this->returnValue(false));
@@ -136,12 +136,12 @@ class Unit_Views_accountTest extends OxidTestCase
     {
         $this->setRequestParameter('aid', null);
 
-        $oView = new account();
+        $oView = oxNew('account');
         $this->assertNull($oView->getArticleId());
 
         $this->setRequestParameter('aid', 'testaid');
 
-        $oView = new account();
+        $oView = oxNew('account');
         $this->assertEquals('testaid', $oView->getArticleId());
     }
 
@@ -220,7 +220,7 @@ class Unit_Views_accountTest extends OxidTestCase
         $this->setRequestParameter('sourcecl', 'testsource');
         $this->setRequestParameter('anid', 'testanid');
 
-        $oView = new Account();
+        $oView = oxNew('Account');
         $aNavParams = $oView->getNavigationParams();
 
         $this->assertTrue(isset($aNavParams['sourcecl']));
@@ -236,7 +236,7 @@ class Unit_Views_accountTest extends OxidTestCase
     {
         $this->setRequestParameter('aid', 'testanid');
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->oxuser__oxpassword = new oxField(1);
 
         $oView = $this->getMock(
@@ -261,7 +261,7 @@ class Unit_Views_accountTest extends OxidTestCase
         $this->setRequestParameter('aid', 'testanid');
         $this->getConfig()->setConfigParam("blPsLoginEnabled", true);
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->oxuser__oxpassword = new oxField(1);
 
         $oView = $this->getMock(
@@ -285,7 +285,7 @@ class Unit_Views_accountTest extends OxidTestCase
     {
         $sUsername = 'Username';
         $sLink = 'Link url';
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->oxuser__oxusername = new oxField($sUsername);
 
         $oView = $this->getMock("account", array('getUser', 'getLink'));
@@ -309,7 +309,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testGetBreadCrumbNoUser()
     {
-        $oAcc = new account();
+        $oAcc = oxNew('account');
         $aBreadCrumbs = $oAcc->getBreadCrumb();
 
         $this->assertTrue(is_array($aBreadCrumbs));
@@ -328,7 +328,7 @@ class Unit_Views_accountTest extends OxidTestCase
     {
         $this->getSession()->setVariable('aFiltcompproducts', array('1', '2'));
 
-        $oAcc = new account();
+        $oAcc = oxNew('account');
         $this->assertEquals(2, $oAcc->getCompareItemsCnt());
     }
 
@@ -339,7 +339,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testGetTitle()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new oxField('Jon');
 
         $oActiveView = $this->getMock("oxView", array('getClassName'));

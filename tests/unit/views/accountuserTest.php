@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -45,7 +45,7 @@ class Unit_Views_accountUserTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oUser = new oxuser;
+        $oUser = oxNew('oxuser');
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
         $oView = $this->getMock("Account_User", array("getUser"));
@@ -60,7 +60,7 @@ class Unit_Views_accountUserTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oAccUser = new Account_User();
+        $oAccUser = oxNew('Account_User');
 
         $this->assertEquals(2, count($oAccUser->getBreadCrumb()));
     }
@@ -72,7 +72,7 @@ class Unit_Views_accountUserTest extends OxidTestCase
      */
     public function testShowShipAddress()
     {
-        $oAccUser = new Account_User();
+        $oAccUser = oxNew('Account_User');
         //check true
         $this->getSession()->setVariable('blshowshipaddress', true);
         $this->assertTrue($oAccUser->showShipAddress());

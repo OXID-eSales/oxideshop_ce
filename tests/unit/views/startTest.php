@@ -57,7 +57,7 @@ class Unit_Views_startTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
-        $oView = new start();
+        $oView = oxNew('start');
         $this->assertEquals($this->getConfig()->getConfigParam("sShopURL"), $oView->getCanonicalUrl());
     }
 
@@ -116,7 +116,7 @@ class Unit_Views_startTest extends OxidTestCase
         $oStart = $this->getMock('start', array('getFirstArticle'));
         $oStart->expects($this->once())->method('getFirstArticle')->will($this->returnValue($oArticle));
 
-        $oView = new oxubase();
+        $oView = oxNew('oxubase');
         $this->assertEquals($oView->UNITprepareMetaKeyword('testlongdesc'), $oStart->UNITprepareMetaKeyword(null));
     }
 
@@ -141,7 +141,7 @@ class Unit_Views_startTest extends OxidTestCase
         $oStart = $this->getMock('start', array('getFirstArticle'));
         $oStart->expects($this->once())->method('getFirstArticle')->will($this->returnValue($oArticle));
 
-        $oView = new oxubase();
+        $oView = oxNew('oxubase');
         $this->assertEquals($oView->UNITprepareMetaDescription('- testlongdesc'), $oStart->UNITprepareMetaDescription(null));
     }
 
@@ -163,7 +163,7 @@ class Unit_Views_startTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxActionList', $oArticleList);
 
-        $oView = new start();
+        $oView = oxNew('start');
         $oView->getBanners();
 
     }

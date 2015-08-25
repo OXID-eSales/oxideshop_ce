@@ -165,7 +165,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     {
         $this->setRequestParameter('mnid', "testMnId");
 
-        $oView = new manufacturerlist();
+        $oView = oxNew('manufacturerlist');
         $oView->setItemSorting("testCnid", "testBy", "testDir");
         $this->assertEquals(array("sortby" => "testBy", "sortdir" => "testDir"), $oView->getSorting("testCnid"));
     }
@@ -245,7 +245,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
         $oView = $this->getMock("manufacturerlist", array("getActManufacturer"));
         $oView->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
 
-        $oUBaseView = new oxUBase();
+        $oUBaseView = oxNew('oxUBase');
         $sTestParams = $oUBaseView->getAddUrlParams();
         $sTestParams .= ($sTestParams ? '&amp;' : '') . "listtype=manufacturer";
         $sTestParams .= "&amp;mnid=testManufacturerId";
@@ -291,7 +291,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     {
         $oArticle = oxNew('oxArticle');
 
-        $oListView = new manufacturerlist();
+        $oListView = oxNew('manufacturerlist');
         $this->assertEquals(2, $oListView->UNITgetProductLinkType());
     }
 
@@ -303,10 +303,10 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     public function testGetSubCatList()
     {
         $this->setRequestParameter('mnid', 'root');
-        $oManufacturerTree = new oxManufacturerlist();
+        $oManufacturerTree = oxNew('oxManufacturerlist');
         $oManufacturerTree->buildManufacturerTree('manufacturerlist', 'root', $this->getConfig()->getShopHomeURL());
 
-        $oManufacturer = new Manufacturerlist();
+        $oManufacturer = oxNew('Manufacturerlist');
         $oManufacturer->setManufacturerTree($oManufacturerTree);
         $oTree = $oManufacturer->getSubCatList();
 
@@ -321,10 +321,10 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     public function testHasVisibleSubCats()
     {
         $this->setRequestParameter('mnid', 'root');
-        $oManufacturerTree = new oxManufacturerlist();
+        $oManufacturerTree = oxNew('oxManufacturerlist');
         $oManufacturerTree->buildManufacturerTree('manufacturerlist', 'root', $this->getConfig()->getShopHomeURL());
 
-        $oManufacturer = new Manufacturerlist();
+        $oManufacturer = oxNew('Manufacturerlist');
         $oManufacturer->setManufacturerTree($oManufacturerTree);
 
         $this->assertEquals(4, $oManufacturer->hasVisibleSubCats());
@@ -343,7 +343,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
 
         $this->setRequestParameter('cnid', $sManufacturerId);
         $this->getConfig()->setConfigParam('iNrofCatArticles', 20);
-        $oManufacturerTree = new oxManufacturerlist();
+        $oManufacturerTree = oxNew('oxManufacturerlist');
         $oManufacturerTree->buildManufacturerTree('Manufacturerlist', $sManufacturerId, $this->getConfig()->getShopHomeURL());
 
         $oManufacturer = oxNew('oxManufacturer');
@@ -417,7 +417,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     public function testgetCatTreePath()
     {
         $this->setRequestParameter('cnid', 'v_root');
-        $oManufacturerTree = new oxManufacturerlist();
+        $oManufacturerTree = oxNew('oxManufacturerlist');
         $oManufacturerTree->buildManufacturerTree('Manufacturerlist', 'v_root', $this->getConfig()->getShopHomeURL());
 
         $oManufacturer = $this->getProxyClass("Manufacturerlist");
@@ -434,7 +434,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
      */
     public function testNoIndex()
     {
-        $oManufacturer = new manufacturerlist();
+        $oManufacturer = oxNew('manufacturerlist');
         $this->assertTrue(0 === $oManufacturer->noIndex());
     }
 

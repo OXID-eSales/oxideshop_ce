@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -77,7 +77,7 @@ class Unit_Views_registerTest extends OxidTestCase
     {
         $this->setRequestParameter('uid', "testUid");
 
-        $oView = new register();
+        $oView = oxNew('register');
         $this->assertEquals("testUid", $oView->getUpdateId());
     }
 
@@ -88,7 +88,7 @@ class Unit_Views_registerTest extends OxidTestCase
      */
     public function testIsConfirmed()
     {
-        $oView = new register();
+        $oView = oxNew('register');
 
         $this->setRequestParameter("confirmstate", 0);
         $this->assertFalse($oView->isConfirmed());
@@ -129,7 +129,7 @@ class Unit_Views_registerTest extends OxidTestCase
 
     public function testRenderNoRStat()
     {
-        $oRegister = new register();
+        $oRegister = oxNew('register');
         $this->assertEquals('page/account/register.tpl', $oRegister->render());
     }
 
@@ -146,7 +146,7 @@ class Unit_Views_registerTest extends OxidTestCase
 
     public function testGetBreadCrumb()
     {
-        $oRegister = new register;
+        $oRegister = oxNew('register');
 
         $this->assertEquals(1, count($oRegister->getBreadCrumb()));
     }

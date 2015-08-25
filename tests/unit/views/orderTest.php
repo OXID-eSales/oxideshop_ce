@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -191,7 +191,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testIsWrapping()
     {
-        $oView = new order();
+        $oView = oxNew('order');
         $this->assertTrue($oView->isWrapping());
     }
 
@@ -583,7 +583,7 @@ class Unit_Views_orderTest extends OxidTestCase
         $oSession->expects($this->any())->method("getBasket")->will($this->returnValue($oBasket));
         $oSession->expects($this->once())->method("checkSessionChallenge")->will($this->returnValue(true));
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load('_testUserId');
 
         //on order success must return next step value
@@ -748,7 +748,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testGetPayment_userBasketPriceForPayment()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
         $oBasket = $this->getMock('oxBasket', array('getPriceForPayment', 'getPaymentId'));
@@ -1050,7 +1050,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oOrder = new Order();
+        $oOrder = oxNew('Order');
 
         $this->assertEquals(1, count($oOrder->getBreadCrumb()));
     }
@@ -1063,7 +1063,7 @@ class Unit_Views_orderTest extends OxidTestCase
     public function testGetAddressError()
     {
         $this->setRequestParameter('iAddressError', 1);
-        $oOrder = new Order();
+        $oOrder = oxNew('Order');
         $this->assertEquals(1, $oOrder->getAddressError());
     }
 

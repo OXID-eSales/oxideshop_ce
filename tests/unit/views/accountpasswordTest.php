@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -220,7 +220,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oUser = new oxuser;
+        $oUser = oxNew('oxuser');
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
         /** @var Account_Password|PHPUnit_Framework_MockObject_MockObject $oView */
@@ -237,7 +237,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oAccPaswd = new Account_Password();
+        $oAccPaswd = oxNew('Account_Password');
 
         $this->assertEquals(2, count($oAccPaswd->getBreadCrumb()));
     }

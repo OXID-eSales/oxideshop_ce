@@ -18,7 +18,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -32,7 +32,7 @@ class Unit_Views_wrappingTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oView = new Wrapping();
+        $oView = oxNew('Wrapping');
         $this->assertEquals('page/checkout/wrapping.tpl', $oView->render());
     }
 
@@ -105,7 +105,7 @@ class Unit_Views_wrappingTest extends OxidTestCase
         $oBasketItem2 = $this->getMock("oxBasketItem", array("setWrapping"));
         $oBasketItem2->expects($this->never())->method('setWrapping');
 
-        $oContents = new oxList();
+        $oContents = oxNew('oxList');
         $oContents->offsetSet(1, $oBasketItem1);
         $oContents->offsetSet(2, $oBasketItem2);
 

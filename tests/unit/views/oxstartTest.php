@@ -28,7 +28,7 @@ class Unit_Views_oxStartTest extends OxidTestCase
 
     public function testRenderNormal()
     {
-        $oStart = new oxStart();
+        $oStart = oxNew('oxStart');
         $oStart->getConfig();
         $sRes = $oStart->render();
         $this->assertEquals('message/err_unknown.tpl', $sRes);

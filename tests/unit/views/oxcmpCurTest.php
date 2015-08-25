@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -29,8 +29,8 @@ class Unit_Views_oxcmpCurTest extends OxidTestCase
      */
     public function testInitUpdatesBasketCurrency()
     {
-        $oParentView = new oxUBase();
-        $oCurView = new oxcmp_cur();
+        $oParentView = oxNew('oxUBase');
+        $oCurView = oxNew('oxcmp_cur');
         $oCurView->setParent($oParentView);
 
         $oCur = $oCurView->getSession()->getBasket()->getBasketCurrency();

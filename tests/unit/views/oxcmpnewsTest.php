@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -35,7 +35,7 @@ class Unit_Views_oxCmpNewsTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("bl_perfLoadNews", false);
 
-        $oCmp = new oxcmp_news();
+        $oCmp = oxNew('oxcmp_news');
         $this->assertNull($oCmp->render());
     }
 
@@ -72,7 +72,7 @@ class Unit_Views_oxCmpNewsTest extends OxidTestCase
         $this->getConfig()->setConfigParam("blDisableNavBars", false);
         $this->getConfig()->setConfigParam("bl_perfLoadNewsOnlyStart", false);
 
-        $oCmp = new oxcmp_news();
+        $oCmp = oxNew('oxcmp_news');
         $this->assertTrue($oCmp->render() instanceof oxnewslist);
     }
 }

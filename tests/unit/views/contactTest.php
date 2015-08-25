@@ -199,7 +199,7 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oContact = new Contact();
+        $oContact = oxNew('Contact');
 
         $this->assertEquals(1, count($oContact->getBreadCrumb()));
     }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -188,7 +188,7 @@ class Unit_Views_oxcmpCategoriesTest extends OxidTestCase
         $oParent = $this->getMock('stdClass', array('getViewProduct'));
         $oParent->expects($this->once())->method('getViewProduct')->will($this->returnValue('asd'));
 
-        $o = new oxcmp_categories;
+        $o = oxNew('oxcmp_categories');
         $o->setParent($oParent);
 
         $this->assertEquals('asd', $o->getProduct());
@@ -207,7 +207,7 @@ class Unit_Views_oxcmpCategoriesTest extends OxidTestCase
         $oParent->expects($this->once())->method('getViewProduct')->will($this->returnValue(null));
         $oParent->expects($this->once())->method('setViewProduct')->with($this->equalTo($oExpectArticle))->will($this->returnValue(null));
 
-        $o = new oxcmp_categories;
+        $o = oxNew('oxcmp_categories');
         $o->setParent($oParent);
 
         $this->assertEquals('lalala', $o->getProduct()->getId());
@@ -223,7 +223,7 @@ class Unit_Views_oxcmpCategoriesTest extends OxidTestCase
         $oParent->expects($this->once())->method('getViewProduct')->will($this->returnValue(null));
         $oParent->expects($this->never())->method('setViewProduct');
 
-        $o = new oxcmp_categories;
+        $o = oxNew('oxcmp_categories');
         $o->setParent($oParent);
 
         $this->assertSame(null, $o->getProduct());
@@ -316,7 +316,7 @@ class Unit_Views_oxcmpCategoriesTest extends OxidTestCase
         $oParent->expects($this->once())->method('setCategoryTree')
             ->with($this->equalTo($oCategoryList));
 
-        $o = new oxcmp_categories();
+        $o = oxNew('oxcmp_categories');
 
         $o->setParent($oParent);
 
@@ -464,7 +464,7 @@ class Unit_Views_oxcmpCategoriesTest extends OxidTestCase
 
         $oCmp = $this->getMock("oxcmp_categories", array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("testCatId", $oCmp->UNITaddAdditionalParams(new oxarticle, "testCatId", "testManId", "testTag", "testVendorId"));
+        $this->assertEquals("testCatId", $oCmp->UNITaddAdditionalParams(oxNew('oxarticle'), "testCatId", "testManId", "testTag", "testVendorId"));
     }
 
     /**

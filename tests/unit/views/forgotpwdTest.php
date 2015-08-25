@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -59,7 +59,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
      */
     public function testGetUpdateId()
     {
-        $oView = new forgotpwd();
+        $oView = oxNew('forgotpwd');
         $this->assertNull($oView->getUpdateId());
 
         $this->setRequestParameter('uid', 'testuid');
@@ -73,7 +73,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
      */
     public function testShowUpdateScreen()
     {
-        $oView = new forgotpwd();
+        $oView = oxNew('forgotpwd');
         $this->assertFalse($oView->showUpdateScreen());
 
         $this->setRequestParameter('uid', 'testuid');
@@ -87,7 +87,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
      */
     public function testUpdateSuccess()
     {
-        $oView = new forgotpwd();
+        $oView = oxNew('forgotpwd');
         $this->assertFalse($oView->updateSuccess());
 
         $this->setRequestParameter('success', 'testsuccess');
@@ -104,7 +104,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         // overriding utility function
         oxTestModules::addFunction("oxUtilsView", "addErrorToDisplay", "{ throw new Exception( \$aA[0] ); }");
 
-        $oView = new forgotpwd();
+        $oView = oxNew('forgotpwd');
 
         // no pass
         $this->setRequestParameter('password_new', null);
@@ -155,7 +155,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         $this->setRequestParameter('password_new', 'aaaaaa');
         $this->setRequestParameter('password_new_confirm', 'aaaaaa');
 
-        $oView = new forgotpwd();
+        $oView = oxNew('forgotpwd');
 
         try {
             $oView->updatePassword();
@@ -174,7 +174,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
     public function testUpdatePassword()
     {
         // adding test user
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->setId('_testArt');
         $oUser->oxuser__oxshopid = new oxfield($this->getConfig()->getShopId());
         $oUser->setPassword('xxxxxx');
@@ -185,7 +185,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         $this->setRequestParameter('password_new', 'aaaaaa');
         $this->setRequestParameter('password_new_confirm', 'aaaaaa');
 
-        $oView = new forgotpwd();
+        $oView = oxNew('forgotpwd');
         $this->assertEquals('forgotpwd?success=1', $oView->updatePassword());
     }
 
@@ -196,7 +196,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oF = new ForgotPwd();
+        $oF = oxNew('ForgotPwd');
 
         $this->assertEquals(1, count($oF->getBreadCrumb()));
     }
@@ -222,7 +222,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         $oInputValidator->expects($this->once())->method('checkPassword')->with($this->equalTo($oUser), $this->equalTo($sPass), $this->equalTo($sPass), $this->equalTo(true))->will($this->returnValue(new oxException()));
         oxRegistry::set('oxInputValidator', $oInputValidator);
 
-        $oView = new ForgotPwd();
+        $oView = oxNew('ForgotPwd');
         $oView->updatePassword();
 
         oxRegistry::set('oxInputValidator', $oRealInputValidator);
@@ -237,7 +237,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
     {
         $this->setRequestParameter('uid', 'aaaaaa');
 
-        $oView = new forgotpwd();
+        $oView = oxNew('forgotpwd');
         $this->assertTrue($oView->isExpiredLink());
     }
 

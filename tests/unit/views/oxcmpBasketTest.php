@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -271,7 +271,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testGetItemsFromArgs()
     {
-        $o = new oxcmp_basket();
+        $o = oxNew('oxcmp_basket');
         $this->assertEquals(
             array
             (
@@ -291,7 +291,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testGetItemsFromArgsEmpty()
     {
-        $o = new oxcmp_basket();
+        $o = oxNew('oxcmp_basket');
         $this->assertEquals(false, $o->UNITgetItems('', 10, 'sel', 'persparam', 'override'));
     }
 
@@ -311,7 +311,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
                          )
         );
         $this->setRequestParameter('removeBtn', 1);
-        $o = new oxcmp_basket();
+        $o = oxNew('oxcmp_basket');
         $this->assertEquals(
             array(
                  'abc' => array
@@ -337,7 +337,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
         $this->setRequestParameter('persparam', array('details' => 'b:persparam'));
         $this->setRequestParameter('bindex', 'bindex');
 
-        $o = new oxcmp_basket();
+        $o = oxNew('oxcmp_basket');
         $this->assertEquals(
             array
             (
@@ -383,7 +383,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
         $this->setRequestParameter('persparam', 'b:persparam');
         $this->setRequestParameter('bindex', 'bindex');
 
-        $o = new oxcmp_basket();
+        $o = oxNew('oxcmp_basket');
         $this->assertEquals(
             array
             (),
@@ -709,7 +709,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
         $aBasketInfo = (object) array(
             'aArticles' => array('b_aid' => 15)
         );
-        $o = new oxcmp_basket();
+        $o = oxNew('oxcmp_basket');
         $this->assertSame(null, $o->UNITsetLastCall('sCallName', $aProductInfo, $aBasketInfo));
         $this->assertEquals(array('sCallName' => $aProductInfo), oxRegistry::getSession()->getVariable('aLastcall'));
     }
@@ -823,7 +823,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testSetGetLastCallFnc()
     {
-        $o = new oxcmp_basket();
+        $o = oxNew('oxcmp_basket');
         $o->UNITsetLastCallFnc('tobasket');
         $this->assertEquals('tobasket', $o->UNITgetLastCallFnc());
     }
@@ -832,7 +832,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
     {
         $this->setRequestParameter('tobasket', true);
 
-        $oCB = new oxcmp_basket();
+        $oCB = oxNew('oxcmp_basket');
         $this->assertEquals('basket', $oCB->executeuserchoice());
     }
 

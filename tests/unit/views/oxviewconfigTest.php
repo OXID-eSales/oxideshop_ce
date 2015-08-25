@@ -47,7 +47,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $this->getConfig()->setConfigParam("aTsLangIds", array($sLangId => 123));
         $this->getConfig()->setConfigParam("aTsActiveLangIds", array($sLangId => 123));
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals(123, $oViewConf->getTsId());
     }
 
@@ -63,7 +63,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $this->getConfig()->setConfigParam("blTsOrderEmailReview", false);
         $this->getConfig()->setConfigParam("blTsOrderSendEmailReview", false);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertFalse($oViewConf->showTs("WIDGET"));
         $this->assertFalse($oViewConf->showTs("THANKYOU"));
         $this->assertFalse($oViewConf->showTs("ORDEREMAIL"));
@@ -105,7 +105,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("aTsConfig", $this->_aTsConfig);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals("https://www.trustedshops.com", $oViewConf->getTsDomain());
     }
 
@@ -146,7 +146,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetHelpPageLinkActiveContents_EN()
     {
-        $oViewConfig = new oxViewConfig();
+        $oViewConfig = oxNew('oxViewConfig');
         $this->getConfig()->setConfigParam("sDefaultLang", 1);
         $this->assertEquals($this->getConfig()->getShopUrl() . 'en/Help-Main/', $oViewConfig->getHelpPageLink());
     }
@@ -156,7 +156,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxLang", "getBaseLanguage", "{return 1;}");
 
-        $oViewConfig = new oxviewconfig();
+        $oViewConfig = oxNew('oxviewconfig');
         $this->assertEquals($this->getConfig()->getShopUrl() . 'en/home/', $oViewConfig->getHomeLink());
     }
 
@@ -223,7 +223,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
 
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $oViewConfig = new oxviewconfig();
+        $oViewConfig = oxNew('oxviewconfig');
         $this->assertEquals($this->getConfig()->getShopURL(), $oViewConfig->getHomeLink());
     }
 
@@ -315,7 +315,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
     public function testGetRemoteAccessToken()
     {
-        $oSubj = new oxViewConfig();
+        $oSubj = oxNew('oxViewConfig');
         $sTestToken1 = $oSubj->getRemoteAccessToken();
         $sTestToken2 = $oSubj->getRemoteAccessToken();
 
@@ -582,7 +582,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetCountryList()
     {
-        $oView = new oxViewConfig();
+        $oView = oxNew('oxViewConfig');
         $this->assertTrue($oView->getCountryList() instanceof oxcountrylist);
     }
 
@@ -675,7 +675,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
     public function testViewThemeParam()
     {
-        $oVC = new oxViewConfig();
+        $oVC = oxNew('oxViewConfig');
 
         $oV = $this->getMock('oxConfig', array('isThemeOption'));
         $oV->expects($this->any())->method('getSession')->will($this->returnValue(false));
@@ -700,7 +700,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testShowSelectLists()
     {
         $blExp = (bool) $this->getConfig()->getConfigParam('bl_perfLoadSelectLists');
-        $oVC = new oxViewConfig();
+        $oVC = oxNew('oxViewConfig');
         $this->assertEquals($blExp, $oVC->showSelectLists());
     }
 
@@ -918,7 +918,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $this->setRequestParameter("tpl", 123);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals(123, $oViewConf->getActTplName());
     }
 
@@ -931,7 +931,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $this->setRequestParameter("cur", 1);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals(1, $oViewConf->getActCurrency());
     }
 
@@ -944,7 +944,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $this->setRequestParameter("oxloadid", 123);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals(123, $oViewConf->getActContentLoadId());
 
         $this->setRequestParameter("oxloadid", null);
@@ -959,7 +959,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetActContentLoadIdFromActView()
     {
-        $oView = new content();
+        $oView = oxNew('content');
         $oViewConf = $oView->getViewConfig();
         $oViewConf->setViewConfigParam('oxloadid', 234);
 
@@ -980,7 +980,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $this->setRequestParameter("recommid", 1);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals(1, $oViewConf->getActRecommendationId());
     }
 
@@ -995,7 +995,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $iCat = 12345;
         $this->setRequestParameter("cnid", $iCat);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($iCat, $oViewConf->getActCatId());
     }
 
@@ -1010,7 +1010,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $sArt = "12345";
         $this->setRequestParameter("anid", $sArt);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sArt, $oViewConf->getActArticleId());
     }
 
@@ -1025,7 +1025,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $sParam = "test=john";
         $this->setRequestParameter("searchparam", $sParam);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sParam, $oViewConf->getActSearchParam());
     }
 
@@ -1040,7 +1040,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $sTag = "test=john";
         $this->setRequestParameter("searchtag", $sTag);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sTag, $oViewConf->getActSearchTag());
     }
 
@@ -1055,7 +1055,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $sType = "testType";
         $this->setRequestParameter("listtype", $sType);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sType, $oViewConf->getActListType());
     }
 
@@ -1070,7 +1070,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $sOxcid = "testCID";
         $this->setRequestParameter("oxcid", $sOxcid);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sOxcid, $oViewConf->getContentId());
     }
 
@@ -1184,7 +1184,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sDir = "testingDir";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('coreutilsdir', $sDir);
 
         $this->assertEquals($sDir, $oViewConf->getCoreUtilsDir());
@@ -1220,7 +1220,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('selfactionlink', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getSelfActionLink());
@@ -1256,7 +1256,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('currenthomedir', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getCurrentHomeDir());
@@ -1292,7 +1292,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('basketlink', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getBasketLink());
@@ -1329,7 +1329,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('orderlink', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getOrderLink());
@@ -1366,7 +1366,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('paymentlink', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getPaymentLink());
@@ -1403,7 +1403,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('exeorderlink', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getExeOrderLink());
@@ -1440,7 +1440,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('orderconfirmlink', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getOrderConfirmLink());
@@ -1477,7 +1477,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('basetpldir', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getResourceUrl());
@@ -1532,7 +1532,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('templatedir', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getTemplateDir());
@@ -1568,7 +1568,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('urltemplatedir', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getUrlTemplateDir());
@@ -1604,7 +1604,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('nossl_imagedir', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getNoSslImageDir());
@@ -1640,7 +1640,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('picturedir', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getPictureDir());
@@ -1676,7 +1676,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sLink = "testingLink";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('sAdminDir', $sLink);
 
         $this->assertEquals($sLink, $oViewConf->getAdminDir());
@@ -1710,7 +1710,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sId = "testShopId";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('shopid', $sId);
 
         $this->assertEquals($sId, $oViewConf->getActiveShopId());
@@ -1746,7 +1746,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sTest = "isSsl";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('isssl', $sTest);
 
         $this->assertEquals($sTest, $oViewConf->isSsl());
@@ -1782,7 +1782,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sTest = "testAddress";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('ip', $sTest);
 
         $this->assertEquals($sTest, $oViewConf->getRemoteAddress());
@@ -1820,7 +1820,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sTest = "testIdent";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('popupident', $sTest);
 
         $this->assertEquals($sTest, $oViewConf->getPopupIdent());
@@ -1857,7 +1857,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sTest = "testIdent";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('popupidentrand', $sTest);
 
         $this->assertEquals($sTest, $oViewConf->getPopupIdentRand());
@@ -1888,7 +1888,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sTest = "testUrl";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('artperpageform', $sTest);
 
         $this->assertEquals($sTest, $oViewConf->getArtPerPageForm());
@@ -1923,7 +1923,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("blVariantParentBuyable", true);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertTrue($oViewConf->isBuyableParent());
 
         $this->getConfig()->setConfigParam("blVariantParentBuyable", false);
@@ -1939,7 +1939,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("blShowBirthdayFields", true);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertTrue($oViewConf->showBirthdayFields());
 
         $this->getConfig()->setConfigParam("blShowBirthdayFields", false);
@@ -1953,7 +1953,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testShowFinalStep()
     {
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertTrue($oViewConf->showFinalStep());
     }
 
@@ -1971,7 +1971,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
         oxRegistry::set("oxLang", $oLang);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sTest, $oViewConf->getActLanguageAbbr());
     }
 
@@ -2005,7 +2005,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetArtPerPageCount()
     {
         $sTest = "testAbc";
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('iartPerPage', $sTest);
 
         $this->assertEquals($sTest, $oViewConf->getArtPerPageCount());
@@ -2019,7 +2019,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetNavUrlParams()
     {
         $sTest = "testAbc";
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('navurlparams', $sTest);
 
         $this->assertEquals($sTest, $oViewConf->getNavUrlParams());
@@ -2125,7 +2125,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function getNavFormParams()
     {
         $sTest = "testAbc";
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('navformparams', $sTest);
 
         $this->assertEquals($sTest, $oViewConf->getNavFormParams());
@@ -2237,7 +2237,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $sTest = "testValue";
         $this->getConfig()->setConfigParam("blStockOnDefaultMessage", $sTest);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sTest, $oViewConf->getStockOnDefaultMessage());
     }
 
@@ -2251,7 +2251,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $sTest = "testValue";
         $this->getConfig()->setConfigParam("blStockOffDefaultMessage", $sTest);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sTest, $oViewConf->getStockOffDefaultMessage());
     }
 
@@ -2264,7 +2264,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sTest = "testShopVersion";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('sShopVersion', $sTest);
         $this->assertEquals($sTest, $oViewConf->getShopVersion());
     }
@@ -2278,7 +2278,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $sTest = "testServiceUrl";
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->setViewConfigParam('sServiceUrl', $sTest);
         $this->assertEquals($sTest, $oViewConf->getServiceUrl());
     }
@@ -2334,7 +2334,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $sTest = "sFbApp";
         $this->getConfig()->setConfigParam("sFbAppId", $sTest);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sTest, $oViewConf->getFbAppId());
     }
 
@@ -2345,7 +2345,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetShowFbConnect()
     {
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
 
         $this->getConfig()->setConfigParam("bl_showFbConnect", false);
         $this->assertFalse($oViewConf->getShowFbConnect());
@@ -2379,7 +2379,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetPasswordLength()
     {
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals(6, $oViewConf->getPasswordLength());
 
         $this->getConfig()->setConfigParam("iPasswordLength", 66);
@@ -2392,7 +2392,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetActiveTheme_mainTheme()
     {
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->getConfig()->setConfigParam("sTheme", "testTheme");
         $this->assertEquals('testTheme', $oViewConf->getActiveTheme());
     }
@@ -2402,7 +2402,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetActiveTheme_customTheme()
     {
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $oViewConf->getConfig()->setConfigParam("sCustomTheme", "testCustomTheme");
         $oViewConf->getConfig()->setConfigParam("sTheme", "testTheme");
         $this->assertEquals('testCustomTheme', $oViewConf->getActiveTheme());
@@ -2410,21 +2410,21 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
     public function testSetGetShopLogo()
     {
-        $oView = new oxViewConfig();
+        $oView = oxNew('oxViewConfig');
         $oView->setShopLogo("testlogo");
         $this->assertEquals("testlogo", $oView->getShopLogo());
     }
 
     public function testSetGetShopLogo_FromConfig()
     {
-        $oView = new oxViewConfig();
+        $oView = oxNew('oxViewConfig');
         $this->getConfig()->setConfigParam("sShopLogo", 'logo');
         $this->assertEquals("logo", $oView->getShopLogo());
     }
 
     public function testSetGetShopLogo_DefaultValue()
     {
-        $oView = new oxViewConfig();
+        $oView = oxNew('oxViewConfig');
 
         $sLogo = "logo.png";
 
@@ -2494,7 +2494,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $this->setConfigParam('aDisabledModules', $aDisabledModules);
         $this->setConfigParam('aModuleVersions', $aModuleVersions);
         
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $blIsModuleActive = $oViewConf->isModuleActive($sModuleId);
 
         $this->assertEquals($blModuleIsActive, $blIsModuleActive, "Module state is not as expected.");
@@ -2541,7 +2541,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $this->setConfigParam('aDisabledModules', array());
         $this->setConfigParam('aModuleVersions', $aModuleVersions);
 
-        $oViewConf = new oxViewConfig();
+        $oViewConf = oxNew('oxViewConfig');
         $blIsModuleActive = $oViewConf->isModuleActive('oepaypal', $sFrom, $sTo);
 
         $this->assertEquals($blModuleStateExpected, $blIsModuleActive, "Module state is not from '$sFrom' to '$sTo'.");
@@ -2549,7 +2549,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
     public function testGetEdition()
     {
-        $oViewConfig = new oxViewConfig();
+        $oViewConfig = oxNew('oxViewConfig');
         $this->assertEquals( $this->getConfig()->getEdition(), $oViewConfig->getEdition() );
     }
 

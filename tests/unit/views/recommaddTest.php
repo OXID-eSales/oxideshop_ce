@@ -36,7 +36,7 @@ class Unit_Views_RecommAddTest extends OxidTestCase
         $oRecomm->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oRecomm->init();
 
-        $oBlankRecomm = new RecommAdd();
+        $oBlankRecomm = oxNew('RecommAdd');
         $this->assertEquals($oBlankRecomm->getTemplateName(), $oRecomm->render());
     }
 
@@ -48,7 +48,7 @@ class Unit_Views_RecommAddTest extends OxidTestCase
         $oUser = $this->getMock('oxUser', array('getUserRecommLists'));
         $oUser->expects($this->once())->method('getUserRecommLists')->will($this->returnValue('testRecommList'));
 
-        $oRecomm = new RecommAdd();
+        $oRecomm = oxNew('RecommAdd');
         $oRecomm->setUser($oUser);
         $this->assertEquals('testRecommList', $oRecomm->getRecommLists('test'));
     }

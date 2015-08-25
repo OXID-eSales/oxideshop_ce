@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -91,7 +91,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     {
         // testing..
         $this->setRequestParameter('su', 'testid');
-        $oView = new oxcmp_user();
+        $oView = oxNew('oxcmp_user');
         $oView->getInvitor();
         $this->assertEquals('testid', $this->getSession()->getVariable('su'));
     }
@@ -340,7 +340,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     {
         $iStatus = 999;
 
-        $oCmp = new oxcmp_user();
+        $oCmp = oxNew('oxcmp_user');
         $this->assertNull($oCmp->getLoginStatus());
 
         $oCmp->setLoginStatus($iStatus);
@@ -430,7 +430,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
 
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new exception( 'testBlockedUser', 123 );}");
 
-        $oUser2 = new oxuser();
+        $oUser2 = oxNew('oxuser');
         $oUser2->load($oUser->getId());
         $oUser2->login('test@oxid-esales.com', crc32('Test@oxid-esales.com'));
 
@@ -439,7 +439,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $myDB->Execute($sQ);
 
         try {
-            $oUserView = new oxcmp_user();
+            $oUserView = oxNew('oxcmp_user');
             $oUserView->init();
         } catch (Exception $oE) {
             if ($oE->getCode() === 123) {
@@ -465,7 +465,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $this->setRequestParameter('lgn_usr', 'testuser');
         $this->getConfig()->setConfigParam("blPsLoginEnabled", false);
 
-        $oParent = new oxUbase();
+        $oParent = oxNew('oxUbase');
 
         $oUserView = $this->getMock('oxcmp_user', array('getParent', 'getUser'));
         $oUserView->expects($this->atLeastOnce())->method('getParent')->will($this->returnValue($oParent));
@@ -532,7 +532,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxUser", "login", "{ throw new oxUserException( 'testWrongUser', 123 );}");
 
-        $oUserView = new oxcmp_user();
+        $oUserView = oxNew('oxcmp_user');
         $this->assertEquals('user', $oUserView->login());
     }
 
@@ -545,7 +545,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxUser", "login", "{ throw new oxCookieException( 'testWrongUser', 123 );}");
 
-        $oUserView = new oxcmp_user();
+        $oUserView = oxNew('oxcmp_user');
         $this->assertEquals('user', $oUserView->login());
     }
 
@@ -585,7 +585,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oUser->expects($this->once())->method('inGroup')->will($this->returnValue(true));
 
         try {
-            $oUserView = new oxcmp_user();
+            $oUserView = oxNew('oxcmp_user');
             $oUserView->UNITafterLogin($oUser);
         } catch (Exception $oE) {
             if ($oE->getCode() === 123) {
@@ -1004,7 +1004,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
             'oxaddress__oxcountryid' => 'a7c40f631fc920687.20179984'
         );
         $sUser = '_test@oxid.de';
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setId('_test_oxuserid');
         $oUser->oxuser__oxactive = new oxField('1', oxField::T_RAW);
         $oUser->oxuser__oxrights = new oxField('user', oxField::T_RAW);
@@ -1017,7 +1017,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oUser->oxuser__oxregister = new oxField(date('Y-m-d'), oxField::T_RAW);
         $oUser->save();
 
-        $oNewsSubscribed = new oxNewsSubscribed();
+        $oNewsSubscribed = oxNew('oxNewsSubscribed');
         $oNewsSubscribed->setId('_test_9191965231c39c27141aab0431');
         $oNewsSubscribed->oxnewssubscribed__oxdboptin = new oxField('1', oxField::T_RAW);
         $oNewsSubscribed->oxnewssubscribed__oxuserid = new oxField('_test_oxuserid', oxField::T_RAW);
@@ -1062,7 +1062,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
             'oxaddress__oxcountryid' => 'a7c40f631fc920687.20179984'
         );
         $sUser = '_test@oxid.de';
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setId('_test_oxuserid');
         $oUser->oxuser__oxactive = new oxField('1', oxField::T_RAW);
         $oUser->oxuser__oxrights = new oxField('user', oxField::T_RAW);
@@ -1075,7 +1075,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oUser->oxuser__oxregister = new oxField(date('Y-m-d'), oxField::T_RAW);
         $oUser->save();
 
-        $oNewsSubscribed = new oxNewsSubscribed();
+        $oNewsSubscribed = oxNew('oxNewsSubscribed');
         $oNewsSubscribed->setId('_test_9191965231c39c27141aab0431');
         $oNewsSubscribed->oxnewssubscribed__oxdboptin = new oxField('2', oxField::T_RAW);
         $oNewsSubscribed->oxnewssubscribed__oxuserid = new oxField('_test_oxuserid', oxField::T_RAW);

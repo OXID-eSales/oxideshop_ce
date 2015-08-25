@@ -129,7 +129,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception("HandledOxSystemComponentException"); }');
 
         $oControl = $this->getMock("oxShopControl", array("_runOnce", "_process"), array(), '', false);
-        $oControl->expects($this->any())->method('_process')->will($this->throwException(new oxSystemComponentException));
+        $oControl->expects($this->any())->method('_process')->will($this->throwException(oxNew('oxSystemComponentException')));
 
         try {
             $oControl->start('classToLoad', 'functionToLoad');
@@ -154,7 +154,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception("oxAddErrorToDisplayException"); }');
 
         $oControl = $this->getMock("oxShopControl", array("_runOnce", "_process"), array(), '', false);
-        $oControl->expects($this->any())->method('_process')->will($this->throwException(new oxSystemComponentException));
+        $oControl->expects($this->any())->method('_process')->will($this->throwException(oxNew('oxSystemComponentException')));
 
         try {
             $oControl->start('classToLoad', 'functionToLoad');
@@ -236,7 +236,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oControl->expects($this->any())->method('_runOnce');
         $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oControl->expects($this->any())->method('_process')->will($this->throwException(new oxSystemComponentException));
+        $oControl->expects($this->any())->method('_process')->will($this->throwException(oxNew('oxSystemComponentException')));
         $oControl->expects($this->any())->method('_isDebugMode')->will($this->returnValue(true));
 
         try {
@@ -263,7 +263,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oControl = $this->getMock("oxShopControl", array("_runOnce", "isAdmin", "_process", "_isDebugMode"), array(), '', false);
         $oControl->expects($this->any())->method('_runOnce');
         $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oControl->expects($this->any())->method('_process')->will($this->throwException(new oxCookieException));
+        $oControl->expects($this->any())->method('_process')->will($this->throwException(oxNew('oxCookieException')));
         $oControl->expects($this->any())->method('_isDebugMode')->will($this->returnValue(false));
 
         try {
@@ -323,7 +323,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $this->assertEquals(0, $oDb->getOne("select count(*) from oxlogs"));
 
         //
-        $oControl = new oxShopControl();
+        $oControl = oxNew('oxShopControl');
         $oControl->UNITlog('content', 'testFnc1');
         $oControl->UNITlog('search', 'testFnc2');
 
@@ -494,7 +494,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oControl->expects($this->any())->method('_getOutputManager')->will($this->returnValue($oOut));
         $oControl->expects($this->atLeastOnce())->method('_executeMaintenanceTasks');
         $aErrors = array();
-        $oDE = new oxDisplayError();
+        $oDE = oxNew('oxDisplayError');
         $oDE->setMessage('test1');
         $aErrors['other'][] = serialize($oDE);
         $oDE->setMessage('test2');
@@ -560,19 +560,19 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     public function testGetErrors()
     {
         $this->setSessionParam('Errors', null);
-        $oControl = new oxShopControl();
+        $oControl = oxNew('oxShopControl');
         $this->assertEquals(array(), $oControl->UNITgetErrors('start'));
         $this->assertEquals(array(), $this->getSessionParam('Errors'));
         $this->assertEquals(array(), $oControl->UNITgetErrors('start'));
 
         $this->setSessionParam('Errors', array());
-        $oControl = new oxShopControl();
+        $oControl = oxNew('oxShopControl');
         $this->assertEquals(array(), $oControl->UNITgetErrors('start'));
         $this->assertEquals(array(), $this->getSessionParam('Errors'));
         $this->assertEquals(array(), $oControl->UNITgetErrors('start'));
 
         $this->setSessionParam('Errors', array('asd' => 'asd'));
-        $oControl = new oxShopControl();
+        $oControl = oxNew('oxShopControl');
         $this->assertEquals(array('asd' => 'asd'), $oControl->UNITgetErrors('start'));
         $this->assertEquals(array(), $this->getSessionParam('Errors'));
         $this->assertEquals(array('asd' => 'asd'), $oControl->UNITgetErrors('start'));
@@ -582,7 +582,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         $this->setSessionParam('Errors', array('asd' => 'asd'));
         $this->setSessionParam('ErrorController', array('asd' => 'start'));
-        $oControl = new oxShopControl();
+        $oControl = oxNew('oxShopControl');
         $this->assertEquals(array('asd' => 'asd'), $oControl->UNITgetErrors('start'));
         $this->assertEquals(array(), $this->getSessionParam('Errors'));
         $this->assertEquals(array('asd' => 'asd'), $oControl->UNITgetErrors('start'));
@@ -593,14 +593,14 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         $this->setSessionParam('Errors', array('asd' => 'asd'));
         $this->setSessionParam('ErrorController', array('asd' => 'oxwidget'));
-        $oControl = new oxShopControl();
+        $oControl = oxNew('oxShopControl');
         $this->assertEquals(array('asd' => 'asd'), $oControl->UNITgetErrors('start'));
         $this->assertEquals(array('asd' => 'asd'), $this->getSessionParam('Errors'));
     }
 
     public function testGetOutputManager()
     {
-        $oControl = new oxShopControl();
+        $oControl = oxNew('oxShopControl');
         $oOut = $oControl->UNITgetOutputManager();
         $this->assertTrue($oOut instanceof oxOutput);
         $oOut1 = $oControl->UNITgetOutputManager();

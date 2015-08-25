@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -216,7 +216,7 @@ class Unit_Views_thankyouTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oTh = new Thankyou();
+        $oTh = oxNew('Thankyou');
 
         $this->assertEquals(1, count($oTh->getBreadCrumb()));
     }
@@ -228,7 +228,7 @@ class Unit_Views_thankyouTest extends OxidTestCase
      */
     public function testGetCountryISO3()
     {
-        $oOrder = new oxOrder();
+        $oOrder = oxNew('oxOrder');
         $oOrder->oxorder__oxbillcountryid = new oxField('a7c40f631fc920687.20179984');
 
         $oTh = $this->getMock('thankyou', array('getOrder'));

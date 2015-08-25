@@ -75,7 +75,7 @@ class Unit_Views_reviewTest extends OxidTestCase
     {
         $this->setRequestParameter('reviewuserhash', 'testHash');
 
-        $oView = new review();
+        $oView = oxNew('review');
         $this->assertEquals('testHash', $oView->getReviewUserHash());
     }
 
@@ -108,7 +108,7 @@ class Unit_Views_reviewTest extends OxidTestCase
         $oProd1 = oxNew('oxArticle');
         $oProd2 = oxNew('oxArticle');
 
-        $oProducts = new oxArticleList();
+        $oProducts = oxNew('oxArticleList');
         $oProducts->offsetSet(0, $oProd1);
         $oProducts->offsetSet(1, $oProd2);
 
@@ -149,7 +149,7 @@ class Unit_Views_reviewTest extends OxidTestCase
         $oUtils->expects($this->once())->method('redirect')->with($this->equalTo($oConfig->getShopHomeURL()));
         oxTestModules::addModuleObject('oxUtils', $oUtils);
 
-        $oReview = new Review();
+        $oReview = oxNew('Review');
 
         $oReview->render();
     }
@@ -170,11 +170,11 @@ class Unit_Views_reviewTest extends OxidTestCase
         $oProd4 = oxNew('oxArticle');
         $oProd4->text = 'testArtDescription';
 
-        $oProducts = new oxArticleList();
+        $oProducts = oxNew('oxArticleList');
         $oProducts->offsetSet(0, $oProd1);
         $oProducts->offsetSet(1, $oProd2);
 
-        $oTestProducts = new oxArticleList();
+        $oTestProducts = oxNew('oxArticleList');
         $oTestProducts->offsetSet(0, $oProd3);
         $oTestProducts->offsetSet(1, $oProd4);
 
@@ -190,7 +190,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetReviewSendStatus()
     {
-        $oReview = new review();
+        $oReview = oxNew('review');
         $this->assertNull($oReview->getReviewSendStatus());
     }
 
@@ -222,12 +222,12 @@ class Unit_Views_reviewTest extends OxidTestCase
         $this->setRequestParameter('recommid', 'testRecommId');
         $this->setRequestParameter('anid', '1126');
 
-        $oRecommList = new oxRecommList();
+        $oRecommList = oxNew('oxRecommList');
         $oRecommList->setId('testRecommId');
 
         $oReview = $this->getMock("review", array("getActiveRecommList"));
         $oReview->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
-        $oUbase = new oxUBase;
+        $oUbase = oxNew('oxUBase');
 
         $this->assertEquals($oUbase->init(), $oReview->init());
     }
@@ -266,7 +266,7 @@ class Unit_Views_reviewTest extends OxidTestCase
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->once())->method('addToRatingAverage');
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
         /** @var Review|PHPUnit_Framework_MockObject_MockObject $oReview */
@@ -311,7 +311,7 @@ class Unit_Views_reviewTest extends OxidTestCase
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
@@ -342,7 +342,7 @@ class Unit_Views_reviewTest extends OxidTestCase
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
@@ -373,7 +373,7 @@ class Unit_Views_reviewTest extends OxidTestCase
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         oxRegistry::set('oxSession', $oSession);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
@@ -400,20 +400,20 @@ class Unit_Views_reviewTest extends OxidTestCase
         $this->setRequestParameter('listtype', 'testlisttype');
         $this->setRequestParameter('recommid', 'testrecommid');
 
-        $oUbase = new oxUBase();
+        $oUbase = oxNew('oxUBase');
         $sDynParams = $oUbase->getDynUrlParams();
         $sDynParams .= "&amp;cnid=testcnid&amp;anid=testanid&amp;listtype=testlisttype&amp;recommid=testrecommid";
 
-        $oReview = new review();
+        $oReview = oxNew('review');
         $this->assertEquals($sDynParams, $oReview->getDynUrlParams());
     }
 
     public function testCanRateForRecomm()
     {
-        $oRecommtList = new oxRecommList();
+        $oRecommtList = oxNew('oxRecommList');
         $oRecommtList->load('testlist');
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
         $oReview = $this->getMock("review", array("_getActiveObject", "getReviewUser", "_getActiveType"));
@@ -431,7 +431,7 @@ class Unit_Views_reviewTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->load('2000');
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
         $oReview = $this->getMock("review", array("_getActiveObject", "getReviewUser", "_getActiveType"));
@@ -469,7 +469,7 @@ class Unit_Views_reviewTest extends OxidTestCase
     public function testGetProduct()
     {
         $this->setRequestParameter('anid', '2000');
-        $oReview = new review();
+        $oReview = oxNew('review');
 
         $this->assertEquals('2000', $oReview->getProduct()->getId());
     }
@@ -486,7 +486,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetActiveObjectIfRecommList()
     {
-        $oRecommtList = new oxRecommList();
+        $oRecommtList = oxNew('oxRecommList');
         $oRecommtList->setId('testid');
 
         $oReview = $this->getMock("review", array("getProduct", "getActiveRecommList"));
@@ -539,10 +539,10 @@ class Unit_Views_reviewTest extends OxidTestCase
         $this->setRequestParameter('recommid', 'testlist');
         $this->setRequestParameter('reviewuserid', 'oxdefaultadmin');
 
-        $oUbase = new oxUBase();
+        $oUbase = oxNew('oxUBase');
         $sParams = $oUbase->getAdditionalParams();
 
-        $oRecommList = new oxRecommList();
+        $oRecommList = oxNew('oxRecommList');
         $oRecommList->setId("testlist");
 
         $oReview = $this->getMock('review', array('getActiveRecommList'));

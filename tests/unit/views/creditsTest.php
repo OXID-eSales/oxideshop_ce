@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Views_creditsTest extends OxidTestCase
      */
     public function testGetSeoObjectId()
     {
-        $oView = new Credits();
+        $oView = oxNew('Credits');
         $this->assertEquals("oxcredits", $oView->UNITgetSeoObjectId());
     }
 
@@ -45,7 +45,7 @@ class Unit_Views_creditsTest extends OxidTestCase
     public function testGetContent()
     {
         // default "oxcredits"
-        $oView = new Credits();
+        $oView = oxNew('Credits');
         $oContent = $oView->getContent();
         $this->assertTrue($oContent instanceof oxcontent);
         $this->assertEquals("oxcredits", $oContent->oxcontents__oxloadid->value);

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -200,7 +200,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testSaveRecommList()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load("oxdefaultadmin");
 
         $this->setRequestParameter('recomm_title', 'testtitle');
@@ -229,7 +229,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testSaveRecommListUpdating()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load("oxdefaultadmin");
 
         /** @var oxRecommList $oRecommList */
@@ -261,7 +261,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     // #1428: xss possible while saving recomm list
     public function testSaveRecommListXSS()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load("oxdefaultadmin");
 
         /** @var oxRecommList $oRecommList */
@@ -297,7 +297,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testSaveRecommListAddsErrorOnException()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load("oxdefaultadmin");
 
         $this->setRequestParameter('recomm_title', 'testtitle');
@@ -337,7 +337,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         $oUser = $this->getMock('oxuser', array('getUserRecommLists'));
         $oUser->expects($this->once())->method('getUserRecommLists')->will($this->returnValue('testRecommList'));
 
-        $oRecomm = new account_recommlist();
+        $oRecomm = oxNew('account_recommlist');
         $oRecomm->setUser($oUser);
         $aLists = $oRecomm->getRecommLists('test');
         $this->assertEquals('testRecommList', $oRecomm->getRecommLists('test'));
@@ -352,7 +352,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     {
         $this->setRequestParameter('recommid', 'testlist');
         $oRecomm = $this->getProxyClass("account_recommlist");
-        $oRecommtList = new oxRecommList();
+        $oRecommtList = oxNew('oxRecommList');
         $oRecommtList->load('testlist');
         $oRecomm->setNonPublicVar("_oActRecommList", $oRecommtList);
         $this->assertEquals(1, count($oRecomm->getArticleList()));
@@ -367,10 +367,10 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     {
         $this->setRequestParameter('recommid', 'testlist');
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load("oxdefaultadmin");
 
-        $oRecList = new oxRecommList();
+        $oRecList = oxNew('oxRecommList');
         $oRecList->setId('testlist');
         $oRecList->oxrecommlists__oxuserid = new oxField($oUser->getId());
         $oRecList->oxrecommlists__oxshopid = new oxField($this->getConfig()->getShopId());
@@ -497,7 +497,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('bl_showListmania', true);
 
-        $oView = new account_recommlist();
+        $oView = oxNew('account_recommlist');
         $oView->setActiveRecommList("testRecommList");
         $this->assertEquals("testRecommList", $oView->getActiveRecommList());
     }
@@ -559,7 +559,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oAccRecommList = new Account_Recommlist();
+        $oAccRecommList = oxNew('Account_Recommlist');
 
         $this->assertEquals(2, count($oAccRecommList->getBreadCrumb()));
     }

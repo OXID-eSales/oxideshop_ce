@@ -130,7 +130,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oUser = new oxuser;
+        $oUser = oxNew('oxuser');
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
         /** @var Account_Noticelist|MockObject $oView */

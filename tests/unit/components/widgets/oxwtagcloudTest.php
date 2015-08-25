@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Components_Widgets_oxwTagCloudTest extends OxidTestCase
      */
     public function testGetTagCloudManager()
     {
-        $oTagCloud = new oxwTagCloud();
+        $oTagCloud = oxNew('oxwTagCloud');
         $this->assertTrue($oTagCloud->getTagCloudManager() instanceof oxTagCloud);
     }
 
@@ -44,7 +44,7 @@ class Unit_Components_Widgets_oxwTagCloudTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oTagCloud = new oxwTagCloud();
+        $oTagCloud = oxNew('oxwTagCloud');
         $this->assertEquals('widget/sidebar/tags.tpl', $oTagCloud->render());
     }
 
@@ -55,7 +55,7 @@ class Unit_Components_Widgets_oxwTagCloudTest extends OxidTestCase
      */
     public function testDisplayInBox()
     {
-        $oTagCloud = new oxwTagCloud();
+        $oTagCloud = oxNew('oxwTagCloud');
         $oTagCloud->setViewParameters(array("blShowBox" => 1));
         $this->assertTrue($oTagCloud->displayInBox());
     }
@@ -67,7 +67,7 @@ class Unit_Components_Widgets_oxwTagCloudTest extends OxidTestCase
      */
     public function testIsMoreTagsVisible()
     {
-        $oTagCloud = new oxwTagCloud();
+        $oTagCloud = oxNew('oxwTagCloud');
         $this->assertTrue($oTagCloud->isMoreTagsVisible());
     }
 

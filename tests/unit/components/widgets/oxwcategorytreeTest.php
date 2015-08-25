@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Components_Widgets_oxwCategoryTreeTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oCategoryTree = new oxwCategoryTree();
+        $oCategoryTree = oxNew('oxwCategoryTree');
         $this->assertEquals('widget/sidebar/categorytree.tpl', $oCategoryTree->render());
     }
 
@@ -44,7 +44,7 @@ class Unit_Components_Widgets_oxwCategoryTreeTest extends OxidTestCase
      */
     public function testRenderDifferentTemplate()
     {
-        $oCategoryTree = new oxwCategoryTree();
+        $oCategoryTree = oxNew('oxwCategoryTree');
         $oCategoryTree->setViewParameters(array("sWidgetType" => "header"));
         $this->assertEquals('widget/header/categorylist.tpl', $oCategoryTree->render());
     }
@@ -56,7 +56,7 @@ class Unit_Components_Widgets_oxwCategoryTreeTest extends OxidTestCase
      */
     public function testGetDeepLevel()
     {
-        $oCategoryTree = new oxwCategoryTree();
+        $oCategoryTree = oxNew('oxwCategoryTree');
         $oCategoryTree->setViewParameters(array("deepLevel" => 2));
         $this->assertEquals(2, $oCategoryTree->getDeepLevel());
     }

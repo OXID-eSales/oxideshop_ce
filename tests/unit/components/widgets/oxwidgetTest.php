@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Components_Widgets_oxWidgetTest extends OxidTestCase
      */
     public function testInitComponentNotSet()
     {
-        $oWidget = new oxwLanguageList();
+        $oWidget = oxNew('oxwLanguageList');
         $oWidget->init();
 
         $aComponents = $oWidget->getComponents();
@@ -48,12 +48,12 @@ class Unit_Components_Widgets_oxWidgetTest extends OxidTestCase
      */
     public function testInitComponentIsSet()
     {
-        $aComponents["oxcmp_lang"] = new oxcmp_lang();
+        $aComponents["oxcmp_lang"] = oxNew('oxcmp_lang');
         $oView = oxNew("details");
         $oView->setComponents($aComponents);
         $this->getConfig()->setActiveView($oView);
 
-        $oWidget = new oxwLanguageList();
+        $oWidget = oxNew('oxwLanguageList');
         $oWidget->init();
 
         $aComponents = $oWidget->getComponents();

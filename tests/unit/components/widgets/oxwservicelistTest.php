@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Components_Widgets_oxwServiceListTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oServiceList = new oxwServiceList();
+        $oServiceList = oxNew('oxwServiceList');
         $this->assertEquals('widget/footer/services.tpl', $oServiceList->render());
     }
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oRating = new oxwRating();
+        $oRating = oxNew('oxwRating');
         $this->assertEquals('widget/reviews/rating.tpl', $oRating->render());
     }
 
@@ -44,7 +44,7 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
      */
     public function testGetRatingValue()
     {
-        $oRating = new oxwRating();
+        $oRating = oxNew('oxwRating');
         $oRating->setViewParameters(array("dRatingValue" => 2.59));
         $this->assertEquals(2.6, $oRating->getRatingValue());
     }
@@ -56,7 +56,7 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
      */
     public function testGetRatingCount()
     {
-        $oRating = new oxwRating();
+        $oRating = oxNew('oxwRating');
         $oRating->setViewParameters(array("dRatingCount" => 6));
         $this->assertEquals(6, $oRating->getRatingCount());
     }
@@ -68,7 +68,7 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
      */
     public function testCanRate()
     {
-        $oRating = new oxwRating();
+        $oRating = oxNew('oxwRating');
         $oRating->setViewParameters(array("blCanRate" => true));
         $this->assertTrue($oRating->canRate());
     }
@@ -80,7 +80,7 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
      */
     public function testGetArticleNId()
     {
-        $oRating = new oxwRating();
+        $oRating = oxNew('oxwRating');
         $oRating->setViewParameters(array('anid' => 'testanid'));
         $this->assertEquals('testanid', $oRating->getArticleNId());
     }
@@ -92,7 +92,7 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
      */
     public function testGetRateUrl_RateUrlParamSet_RateUrlValue()
     {
-        $oRating = new oxwRating();
+        $oRating = oxNew('oxwRating');
         $oRating->setViewParameters(array("sRateUrl" => "testUrl"));
         $this->assertEquals('testUrl', $oRating->getRateUrl());
     }
@@ -104,7 +104,7 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
      */
     public function testGetRateUrl_NoRateUrlParam_Null()
     {
-        $oRating = new oxwRating();
+        $oRating = oxNew('oxwRating');
         $this->assertEquals(null, $oRating->getRateUrl());
     }
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Components_Widgets_oxwRecommendationTest extends OxidTestCase
     public function testGetSimilarRecommLists_empty()
     {
         $aParams["aArticleIds"] = array();
-        $oRecomm = new oxwRecommendation();
+        $oRecomm = oxNew('oxwRecommendation');
         $oRecomm->setViewParameters($aParams);
         $oRecommList = $oRecomm->getSimilarRecommLists();
         $this->assertTrue(!isset($oRecommList), "Should be empty if no articles id given");
@@ -53,7 +53,7 @@ class Unit_Components_Widgets_oxwRecommendationTest extends OxidTestCase
 
         $aParams["aArticleIds"] = array("articleId");
 
-        $oRecomm = new oxwRecommendation();
+        $oRecomm = oxNew('oxwRecommendation');
         $oRecomm->setViewParameters($aParams);
 
         $this->assertEquals("oxRecommListMock", $oRecomm->getSimilarRecommLists(), "Should try to create RecommList object.");
@@ -66,7 +66,7 @@ class Unit_Components_Widgets_oxwRecommendationTest extends OxidTestCase
      */
     public function testGetRecommList()
     {
-        $oRecommList = new oxwRecommendation();
+        $oRecommList = oxNew('oxwRecommendation');
         $this->assertTrue($oRecommList->getRecommList() instanceof recommlist);
     }
 

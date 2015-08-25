@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Components_Widgets_oxwServiceMenuTest extends OxidTestCase
         $oCompare->expects($this->once())->method("getCompareItemsCnt")->will($this->returnValue(10));
         oxTestModules::addModuleObject('compare', $oCompare);
 
-        $oServiceMenu = new oxwServiceMenu();
+        $oServiceMenu = oxNew('oxwServiceMenu');
         $this->assertEquals(10, $oServiceMenu->getCompareItemsCnt());
     }
 
@@ -53,7 +53,7 @@ class Unit_Components_Widgets_oxwServiceMenuTest extends OxidTestCase
         $oCompare->expects($this->once())->method("getCompareItems")->will($this->returnValue($aItems));
         oxTestModules::addModuleObject('compare', $oCompare);
 
-        $oServiceMenu = new oxwServiceMenu();
+        $oServiceMenu = oxNew('oxwServiceMenu');
         $this->assertEquals($aItems, $oServiceMenu->getCompareItems());
     }
 
@@ -70,7 +70,7 @@ class Unit_Components_Widgets_oxwServiceMenuTest extends OxidTestCase
         $oCompare->expects($this->once())->method("getCompareItems")->will($this->returnValue($aItems));
         oxTestModules::addModuleObject('compare', $oCompare);
 
-        $oServiceMenu = new oxwServiceMenu();
+        $oServiceMenu = oxNew('oxwServiceMenu');
         $this->assertEquals($aResult, $oServiceMenu->getCompareItems(true));
     }
 

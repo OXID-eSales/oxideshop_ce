@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -45,7 +45,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oArticleBox = new oxwArticleBox();
+        $oArticleBox = oxNew('oxwArticleBox');
 
         $this->assertEquals("widget/product/boxproduct.tpl", $oArticleBox->render(), "Default template should be loaded");
     }
@@ -57,7 +57,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
      */
     public function testRenderDifferentTemplates($sWidgetType, $sListType, $sExpected)
     {
-        $oArticleBox = new oxwArticleBox();
+        $oArticleBox = oxNew('oxwArticleBox');
 
         $aViewParams = array(
             "sWidgetType" => $sWidgetType,
@@ -73,7 +73,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
      */
     public function testRenderForcedTemplate()
     {
-        $oArticleBox = new oxwArticleBox();
+        $oArticleBox = oxNew('oxwArticleBox');
 
         $sForcedTemplate = "page/compare/inc/compareitem.tpl";
 
@@ -90,7 +90,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
      */
     public function testGetProduct()
     {
-        $oArticleBox = new oxwArticleBox();
+        $oArticleBox = oxNew('oxwArticleBox');
 
         $sId = "1126";
         $iLinkType = 4;
@@ -109,7 +109,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
      */
     public function testGetProductWithSearch()
     {
-        $oArticleBox = new oxwArticleBox();
+        $oArticleBox = oxNew('oxwArticleBox');
         $this->setLanguage(1);
 
         $sId = "1126";
@@ -123,7 +123,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
 
         $oArticleBox->setParent("search");
         $oConfig = $this->getMock("oxConfig", array('getTopActiveView'));
-        $oSearch = new Search();
+        $oSearch = oxNew('Search');
         $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oSearch));
 
         $oArticleBox->setConfig($oConfig);
@@ -141,12 +141,12 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
      */
     public function testGetLink()
     {
-        $oView = new aList();
+        $oView = oxNew('aList');
         $oView->setClassName("alist");
 
         $this->getConfig()->setActiveView($oView);
 
-        $oArticleBox = new oxwArticleBox();
+        $oArticleBox = oxNew('oxwArticleBox');
         $aViewParams = array(
             "_parent" => $oView->getClassName()
         );
@@ -160,7 +160,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
      */
     public function testGetRSSLinks()
     {
-        $oArticleBox = new oxwArticleBox();
+        $oArticleBox = oxNew('oxwArticleBox');
 
         $aRSS = array(
             'title' => 'OXID eShop 5/Bargain',
@@ -179,7 +179,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
      */
     public function testGetRSSLinksReturnsCorrectType()
     {
-        $oArticleBox = new oxwArticleBox();
+        $oArticleBox = oxNew('oxwArticleBox');
 
         $aViewParams = array(
             "rsslinks" => array(),
@@ -223,7 +223,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
      */
     public function testGetViewParameterValue($sKey, $mxValue, $sFunction, $sMessage)
     {
-        $oArticleBox = new oxwArticleBox();
+        $oArticleBox = oxNew('oxwArticleBox');
 
         $aViewParams = array($sKey => $mxValue);
         $oArticleBox->setViewParameters($aViewParams);
@@ -237,10 +237,10 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
      */
     public function testGetActiveCategory_ParentControllerActiveCategoryIsSet_ReturnCategory()
     {
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load('943a9ba3050e78b443c16e043ae60ef3');
 
-        $oList = new aList();
+        $oList = oxNew('aList');
         $oList->setActiveCategory($oCategory);
 
         $oConfig = $this->getMock('oxConfig', array('getTopActiveView'));
@@ -260,9 +260,9 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
      */
     public function testGetActiveCategory_ParentControllerActiveCategoryIsNotSet_ReturnNull()
     {
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
 
-        $oList = new aList();
+        $oList = oxNew('aList');
         $oList->setActiveCategory($oCategory);
 
         $oConfig = $this->getMock('oxConfig', array('getTopActiveView'));

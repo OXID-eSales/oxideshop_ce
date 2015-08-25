@@ -192,7 +192,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     {
         parent::setUp();
         //creating new instance
-        $this->oSession = new testSession();
+        $this->oSession = oxNew('testSession');
     }
 
     /**
@@ -331,7 +331,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         oxTestModules::addFunction("oxUtils", "isSearchEngine", "{return true;}");
         $this->setRequestParameter('skipSession', 0);
 
-        $oSession = new oxSession();
+        $oSession = oxNew('oxSession');
         $this->assertFalse($oSession->UNITallowSessionStart());
     }
 
@@ -347,7 +347,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         oxTestModules::addFunction("oxUtils", "isSearchEngine", "{return false;}");
         $this->setRequestParameter('skipSession', 1);
 
-        $oSession = new oxSession();
+        $oSession = oxNew('oxSession');
         $this->assertFalse($oSession->UNITallowSessionStart());
     }
 
@@ -456,7 +456,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxUtils", "isSearchEngine", "{return true;}");
 
-        $oSession = new oxsession();
+        $oSession = oxNew('oxsession');
         $this->assertFalse($oSession->isSidNeeded());
     }
 
@@ -465,7 +465,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         oxTestModules::addFunction("oxUtils", "isSearchEngine", "{return false;}");
         oxTestModules::addFunction("oxUtilsServer", "getOxCookie", "{return true;}");
 
-        $oSession = new oxsession();
+        $oSession = oxNew('oxsession');
         $this->assertFalse($oSession->isSidNeeded());
     }
 
@@ -502,7 +502,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
 
         $this->getSession()->setVariable('blSidNeeded', false);
 
-        $oSession = new oxsession();
+        $oSession = oxNew('oxsession');
         $this->assertFalse($oSession->isSidNeeded());
     }
 
@@ -510,7 +510,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     {
         $this->setRequestParameter('fnc', 'nothingspecial');
 
-        $oSession = new oxsession();
+        $oSession = oxNew('oxsession');
         $this->assertFalse($oSession->UNITisSessionRequiredAction());
     }
 
@@ -518,7 +518,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     {
         $this->setRequestParameter('fnc', 'tobasket');
 
-        $oSession = new oxsession();
+        $oSession = oxNew('oxsession');
         $this->assertTrue($oSession->UNITisSessionRequiredAction());
     }
 
@@ -1109,7 +1109,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         //noting to test here as oxSession::freeze() includes only PHP session functionality
         //testing at least if this method exists by just calling it
         session_id("testSessId");
-        $testSession = new oxSession();
+        $testSession = oxNew('oxSession');
         $testSession->freeze();
     }
 
@@ -1119,7 +1119,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     function testSetHasGetVar()
     {
         //taking real session object
-        $testSession = new oxSession();
+        $testSession = oxNew('oxSession');
         $testSession->setVariable('testVar', 'testVal');
         $this->assertTrue($testSession->hasVariable('testVar'));
         $this->assertEquals('testVal', $testSession->getVariable('testVar'));
@@ -1372,7 +1372,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     public function testInitNewSessionChallenge()
     {
         $this->getSession()->setVariable('sess_stoken', '');
-        $oSession = new oxSession();
+        $oSession = oxNew('oxSession');
         $this->assertEquals('', $this->getSession()->getVariable('sess_stoken'));
         $this->assertEquals('', $oSession->getRequestChallengeToken());
 
@@ -1527,14 +1527,14 @@ class Unit_Core_oxsessionTest extends OxidTestCase
 
     public function testGetRemoteAccessToken()
     {
-        $oSubj = new oxSession();
+        $oSubj = oxNew('oxSession');
         $sTestToken = $oSubj->getRemoteAccessToken();
         $this->assertEquals(8, strlen($sTestToken));
     }
 
     public function testGetRemoteAccessTokenNotGenerated()
     {
-        $oSubj = new oxSession();
+        $oSubj = oxNew('oxSession');
         $oSubj->deleteVariable('_rtoken');
         $sTestToken = $oSubj->getRemoteAccessToken(false);
 
@@ -1548,7 +1548,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
 
     public function testGetRemoteAccessTokenTwice()
     {
-        $oSubj = new oxSession();
+        $oSubj = oxNew('oxSession');
         $oSubj->deleteVariable('_rtoken');
         $sToken1 = $oSubj->getRemoteAccessToken();
         $sToken2 = $oSubj->getRemoteAccessToken();

@@ -98,7 +98,7 @@ class Unit_Core_oxDbTest extends OxidTestCase
 
     public function testSetDbObject()
     {
-        $oxDb = new oxDb();
+        $oxDb = oxNew('oxDb');
         $dbMock = $this->getDbObjectMock();
 
         $oxDb->setDbObject($dbMock);
@@ -109,7 +109,7 @@ class Unit_Core_oxDbTest extends OxidTestCase
 
     public function testGetDbObject()
     {
-        $oxDb = new oxDb();
+        $oxDb = oxNew('oxDb');
         $dbMock = $this->getDbObjectMock();
 
         $oxDb->setDbObject($dbMock);
@@ -120,7 +120,7 @@ class Unit_Core_oxDbTest extends OxidTestCase
 
     public function testQuoteArray()
     {
-        $oDb = new oxDb();
+        $oDb = oxNew('oxDb');
 
         $aArray = array("asd'", 'pppp');
         $aRezArray = array("'asd\''", "'pppp'");
@@ -153,7 +153,7 @@ class Unit_Core_oxDbTest extends OxidTestCase
 
     public function testIsValidFieldName()
     {
-        $oDb = new oxDb();
+        $oDb = oxNew('oxDb');
         $this->assertTrue($oDb->isValidFieldName('oxid'));
         $this->assertTrue($oDb->isValidFieldName('oxid_1'));
         $this->assertTrue($oDb->isValidFieldName('oxid.1'));

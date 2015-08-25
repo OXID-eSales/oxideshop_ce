@@ -405,7 +405,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     public function testOxBase()
     {
 
-        $oBase = new oxBase();
+        $oBase = oxNew('oxBase');
 
         $this->assertEquals($this->getConfig()->getShopId(), $oBase->getShopId());
         $this->assertNotEquals(0, $this->getConfig()->getShopID());
@@ -419,8 +419,8 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     public function testOxClone()
     {
 
-        $o = new oxBase();
-        $u = new oxBase();
+        $o = oxNew('oxBase');
+        $u = oxNew('oxBase');
         $u->aa = 'a';
         $handle = $u->ab = new stdClass();
         $handle->z = 'z';
@@ -1220,7 +1220,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testBuildSelectString()
     {
-        $oBase = new oxBase();
+        $oBase = oxNew('oxBase');
         $oBase->init("oxactions");
         $sView = getViewName("oxactions", -1);
         $sSelect = $oBase->buildSelectString(array("$sView.oxid" => "oxstart"));
@@ -1236,7 +1236,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testBuildSelectStringWithoutShopId()
     {
-        $oBase = new oxBase();
+        $oBase = oxNew('oxBase');
         $oBase->init("oxattribute");
         $sSelect = $oBase->buildSelectString(array("oxid" => "111"));
         $sSelect = str_replace("  ", " ", $sSelect);
@@ -1250,7 +1250,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function  testBuildSelectStringWithShopId()
     {
-        $oBase = new oxBase();
+        $oBase = oxNew('oxBase');
         $oBase->init("oxattribute");
         $sSelect = $oBase->buildSelectString(array("oxid" => "111"));
         $sSelect = str_replace("  ", " ", $sSelect);
@@ -1307,7 +1307,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function  testGetSelectFields()
     {
-        $oBase = new oxBase();
+        $oBase = oxNew('oxBase');
         $oBase->init('oxactions');
 
         $sView = getViewName('oxactions', -1);
@@ -1321,7 +1321,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function  testGetSelectFieldsNoFields()
     {
-        $oBase = new oxBase();
+        $oBase = oxNew('oxBase');
         $this->assertEquals($oBase->getSelectFields(), ".`oxid`");
     }
 
@@ -1856,7 +1856,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oBase->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oBase->init('oxactions');
 
-        $oField1 = new ADOFieldObject();
+        $oField1 = oxNew('ADOFieldObject');
         $oField1->name = 'OXID';
         $oField1->max_length = '32';
         $oField1->type = 'char';
@@ -1868,7 +1868,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oField1->unsigned = false;
         $oField1->has_default = false;
 
-        $oField2 = new ADOFieldObject();
+        $oField2 = oxNew('ADOFieldObject');
         $oField2->name = 'OXSHOPID';
         $oField2->max_length = '11';
         $oField2->type = 'int';
@@ -1882,7 +1882,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oField2->unsigned = false;
         $oField2->has_default = false;
 
-        $oField3 = new ADOFieldObject();
+        $oField3 = oxNew('ADOFieldObject');
         $oField3->name = 'OXTYPE';
         $oField3->max_length = '1';
         $oField3->type = 'tinyint';
@@ -1894,7 +1894,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oField3->unsigned = false;
         $oField3->has_default = false;
 
-        $oField4 = new ADOFieldObject();
+        $oField4 = oxNew('ADOFieldObject');
         $oField4->name = 'OXTITLE';
         $oField4->max_length = '128';
         $oField4->type = 'char';
@@ -1917,7 +1917,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
         $aExpectedFields = array($oField1, $oField2, $oField3, $oField4, $oField41, $oField42, $oField43);
 
-        $oField5 = new ADOFieldObject();
+        $oField5 = oxNew('ADOFieldObject');
         $oField5->name = 'OXLONGDESC';
         $oField5->max_length = '10';
         $oField5->type = 'text';
@@ -1938,7 +1938,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oField53 = clone $oField5;
         $oField53->name = 'OXLONGDESC_3';
 
-        $oField6 = new ADOFieldObject();
+        $oField6 = oxNew('ADOFieldObject');
         $oField6->name = 'OXACTIVE';
         $oField6->max_length = '1';
         $oField6->type = 'tinyint';
@@ -1951,7 +1951,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oField6->has_default = true;
         $oField6->default_value = 1;
 
-        $oField7 = new ADOFieldObject();
+        $oField7 = oxNew('ADOFieldObject');
         $oField7->name = 'OXACTIVEFROM';
         $oField7->max_length = 20;
         $oField7->type = 'datetime';
@@ -1964,7 +1964,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oField7->has_default = true;
         $oField7->default_value = '0000-00-00 00:00:00';
 
-        $oField8 = new ADOFieldObject();
+        $oField8 = oxNew('ADOFieldObject');
         $oField8->name = 'OXACTIVETO';
         $oField8->max_length = 20;
         $oField8->type = 'datetime';
@@ -1977,7 +1977,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oField8->has_default = true;
         $oField8->default_value = '0000-00-00 00:00:00';
 
-        $oField9 = new ADOFieldObject();
+        $oField9 = oxNew('ADOFieldObject');
         $oField9->name = 'OXPIC';
         $oField9->max_length = '128';
         $oField9->type = 'varchar';
@@ -1998,7 +1998,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oField93 = clone $oField9;
         $oField93->name = 'OXPIC_3';
 
-        $oField10 = new ADOFieldObject();
+        $oField10 = oxNew('ADOFieldObject');
         $oField10->name = 'OXLINK';
         $oField10->max_length = '128';
         $oField10->type = 'varchar';
@@ -2019,7 +2019,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oField103 = clone $oField10;
         $oField103->name = 'OXLINK_3';
 
-        $oField11 = new ADOFieldObject();
+        $oField11 = oxNew('ADOFieldObject');
         $oField11->name = 'OXSORT';
         $oField11->max_length = '5';
         $oField11->type = 'int';
@@ -2032,7 +2032,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oField11->has_default = true;
         $oField11->default_value = '0';
 
-        $oField12 = new ADOFieldObject();
+        $oField12 = oxNew('ADOFieldObject');
         $oField12->name = 'OXTIMESTAMP';
         $oField12->max_length = '10';
         $oField12->type = 'timestamp';
@@ -2250,7 +2250,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testSetIsDerived()
     {
-        $obj = new oxBase();
+        $obj = oxNew('oxBase');
         $obj->setIsDerived(true);
         $this->assertTrue($obj->isDerived());
         $obj->setIsDerived(false);
@@ -2264,7 +2264,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testIsOx()
     {
-        $obj = new oxBase();
+        $obj = oxNew('oxBase');
         $obj->setId('oxtest');
         $this->assertTrue($obj->isOx());
         $obj->setId('test');
@@ -2317,7 +2317,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testGetFieldNames()
     {
-        $oBase = new oxBase();
+        $oBase = oxNew('oxBase');
         $this->assertEquals(array("oxid"), $oBase->getFieldNames());
 
         $oBase->init("oxarticles");

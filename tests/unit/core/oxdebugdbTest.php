@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -86,7 +86,7 @@ class Unit_Core_oxdebugdbTest extends OxidTestCase
     public function testGetWarnings()
     {
         modDB::$unitMOD = false;
-        $oSubj = new oxDebugDb();
+        $oSubj = oxNew('oxDebugDb');
         $aOut = $oSubj->getWarnings();
         $this->assertEquals(4, count($aOut));
         $this->assertEquals(1, $aOut[0]['time']);

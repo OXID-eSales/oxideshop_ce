@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -48,7 +48,7 @@ class Unit_Core_oxUtilsXmlTest extends OxidTestCase
      */
     public function testLoadXmlNoDocument($sXml, $blResult)
     {
-        $oUtilsXml = new oxUtilsXml();
+        $oUtilsXml = oxNew('oxUtilsXml');
         $this->assertEquals($blResult, $oUtilsXml->loadXml($sXml) != false);
     }
 
@@ -57,7 +57,7 @@ class Unit_Core_oxUtilsXmlTest extends OxidTestCase
      */
     public function testLoadXmlWithDomDocumentInvalidXml()
     {
-        $oUtilsXml = new oxUtilsXml();
+        $oUtilsXml = oxNew('oxUtilsXml');
         $oDom = new DOMDocument();
         $sInValidXml = '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><message>ACK</message>';
         $this->assertEquals(false, $oUtilsXml->loadXml($sInValidXml, $oDom) != false);
@@ -68,7 +68,7 @@ class Unit_Core_oxUtilsXmlTest extends OxidTestCase
      */
     public function testLoadXmlWithDomDocumentValidXml()
     {
-        $oUtilsXml = new oxUtilsXml();
+        $oUtilsXml = oxNew('oxUtilsXml');
         $oDom = new DOMDocument();
         $sValidXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><ocl><message>ACK</message></ocl>";
         $this->assertEquals(true, $oUtilsXml->loadXml($sValidXml, $oDom) != false);

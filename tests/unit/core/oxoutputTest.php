@@ -127,7 +127,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
 
         $sMajorVersion = '9';
 
-        $oOutput = new oxOutput();
+        $oOutput = oxNew('oxOutput');
         // should add tag only to first head item
         $sTest = "<head>foo</head>bar<head>test2</head>";
         $sRes = $oOutput->addVersionTags($sTest);
@@ -152,7 +152,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
 
         $sMajorVersion = '9';
 
-        $oOutput = new oxOutput();
+        $oOutput = oxNew('oxOutput');
         $sTest = "<head>foo</Head>bar";
         $sRes = $oOutput->addVersionTags($sTest);
         //reset value
@@ -178,7 +178,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
     public function testProcessEmail()
     {
         $oOutput = oxNew('oxOutput');
-        $oEmail = new oxEmail();
+        $oEmail = oxNew('oxEmail');
         $oEmail->email = 1;
         $oEmail2 = clone $oEmail;
         $oOutput->processEmail($oEmail);

@@ -143,7 +143,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
     public function testIsTrustedClientIp()
     {
-        $oUtilsServer = new oxUtilsServer();
+        $oUtilsServer = oxNew('oxUtilsServer');
         $this->assertFalse($oUtilsServer->isTrustedClientIp());
 
         //
@@ -158,7 +158,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
         $sShopId = $this->getConfig()->getShopId();
         $this->getConfig()->setConfigParam("aCookiePaths", array($sShopId => 'somepath'));
 
-        $oUtilsServer = new oxUtilsServer();
+        $oUtilsServer = oxNew('oxUtilsServer');
         $this->assertEquals('somepath', $oUtilsServer->UNITgetCookiePath(""));
     }
 
@@ -167,13 +167,13 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
         $sShopId = $this->getConfig()->getShopId();
         $this->getConfig()->setConfigParam("aCookieDomains", array($sShopId => 'somedomain'));
 
-        $oUtilsServer = new oxUtilsServer();
+        $oUtilsServer = oxNew('oxUtilsServer');
         $this->assertEquals('somedomain', $oUtilsServer->UNITgetCookieDomain(""));
     }
 
     public function testGetCookiePath()
     {
-        $oUtilsServer = new oxUtilsServer();
+        $oUtilsServer = oxNew('oxUtilsServer');
         $this->assertEquals("xxx", $oUtilsServer->UNITgetCookiePath("xxx"));
         $this->assertEquals("", $oUtilsServer->UNITgetCookiePath(null));
     }
@@ -264,7 +264,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
         $sCryptedVal = 'admin@@@' . crypt('admin', 'test_salt');
-        $oUtils = new oxutilsserver();
+        $oUtils = oxNew('oxutilsserver');
 
         $this->assertNull($oUtils->getUserCookie());
 
@@ -334,7 +334,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
         );
 
-        $oUtils = new oxUtilsServer();
+        $oUtils = oxNew('oxUtilsServer');
         foreach ($aServerInfo as $sKey => $sVal) {
             $this->assertTrue($oUtils->processUserAgentInfo($sKey) == $oUtils->processUserAgentInfo($sVal));
         }
@@ -346,7 +346,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
         $sExpectedIP = '192.168.0.9';
         $_SERVER['SERVER_ADDR'] = $sExpectedIP;
-        $oUtils = new oxUtilsServer();
+        $oUtils = oxNew('oxUtilsServer');
         $sServerIp = $oUtils->getServerIp();
 
         $_SERVER['SERVER_ADDR'] = $sOldServerIp;
@@ -356,7 +356,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
     public function testGetServerNodeIdNotEmpty()
     {
-        $oUtilsServer = new oxUtilsServer();
+        $oUtilsServer = oxNew('oxUtilsServer');
         $sServerId = $oUtilsServer->getServerNodeId();
 
         $this->assertNotEmpty($sServerId);
@@ -369,7 +369,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
      */
     public function testGetServerNodeIdReturnSameValue($sServerId1)
     {
-        $oUtilsServer = new oxUtilsServer();
+        $oUtilsServer = oxNew('oxUtilsServer');
         $sServerId2 = $oUtilsServer->getServerNodeId();
 
         $this->assertSame($sServerId1, $sServerId2);
@@ -385,7 +385,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
         $sExpectedIP = '1.168.0.9';
         $_SERVER['SERVER_ADDR'] = $sExpectedIP;
 
-        $oUtilsServer = new oxUtilsServer();
+        $oUtilsServer = oxNew('oxUtilsServer');
         $sServerId2 = $oUtilsServer->getServerNodeId();
 
         $_SERVER['SERVER_ADDR'] = $sOldServerIp;

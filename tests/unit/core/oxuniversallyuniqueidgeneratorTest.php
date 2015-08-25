@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -30,7 +30,7 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
 
     public function testUUIDUniqueness()
     {
-        $oGenerator = new oxUniversallyUniqueIdGenerator();
+        $oGenerator = oxNew('oxUniversallyUniqueIdGenerator');
 
         $aIds = array();
         for ($i = 0; $i < 100; $i++) {
@@ -45,7 +45,7 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
      */
     public function testUUIDStructure()
     {
-        $oGenerator = new oxUniversallyUniqueIdGenerator();
+        $oGenerator = oxNew('oxUniversallyUniqueIdGenerator');
         $sId = $oGenerator->generate();
 
         $this->assertRegExp('/^[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}$/', $sId);
@@ -53,7 +53,7 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
 
     public function testUUIDV4Uniqueness()
     {
-        $oGenerator = new oxUniversallyUniqueIdGenerator();
+        $oGenerator = oxNew('oxUniversallyUniqueIdGenerator');
 
         $aIds = array();
         for ($i = 0; $i < 100; $i++) {
@@ -89,7 +89,7 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
      */
     public function testUUIDV4Structure()
     {
-        $oGenerator = new oxUniversallyUniqueIdGenerator();
+        $oGenerator = oxNew('oxUniversallyUniqueIdGenerator');
         $sId = $oGenerator->generateV4();
 
         $this->assertRegExp('/^[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}$/', $sId);
@@ -100,7 +100,7 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
      */
     public function testUUIDV5UniquenessWithDifferentSalt()
     {
-        $oGenerator = new oxUniversallyUniqueIdGenerator();
+        $oGenerator = oxNew('oxUniversallyUniqueIdGenerator');
 
         $aIds = array();
         for ($i = 0; $i < 100; $i++) {
@@ -115,7 +115,7 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
      */
     public function testUUIDV5UniquenessWithDifferentSeed()
     {
-        $oGenerator = new oxUniversallyUniqueIdGenerator();
+        $oGenerator = oxNew('oxUniversallyUniqueIdGenerator');
 
         $aIds = array();
         for ($i = 0; $i < 100; $i++) {
@@ -130,7 +130,7 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
      */
     public function testUUIDV5EqualityWithSameSeedAndSalt()
     {
-        $oGenerator = new oxUniversallyUniqueIdGenerator();
+        $oGenerator = oxNew('oxUniversallyUniqueIdGenerator');
 
         $sId1 = $oGenerator->generateV5('seed', 'salt');
         $sId2 = $oGenerator->generateV5('seed', 'salt');
@@ -143,7 +143,7 @@ class Unit_Core_oxUniversallyUniqueIdGeneratorTest extends OxidTestCase
      */
     public function testUUIDV5Structure()
     {
-        $oGenerator = new oxUniversallyUniqueIdGenerator();
+        $oGenerator = oxNew('oxUniversallyUniqueIdGenerator');
         $sId = $oGenerator->generateV5('seed', 'salt');
 
         $this->assertRegExp('/^[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}$/', $sId);

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -200,7 +200,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
     // deleting existing
     public function testDeletePictureExisting()
     {
-        $oUtilsPic = new oxutilspic();
+        $oUtilsPic = oxNew('oxutilspic');
         $this->assertTrue($oUtilsPic->UNITdeletePicture('CCdetail1_z3_ico_th.jpg', $this->getConfig()->getPictureDir(false) . "master/product/thumb/"));
     }
 
@@ -228,7 +228,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
      */
     public function testIsPicDeletable($filename, $response, $expectedResult)
     {
-        $myUtils = new oxUtilsPic();
+        $myUtils = oxNew('oxUtilsPic');
 
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())->method('getOne')->will($this->returnValue($response));
@@ -242,7 +242,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
      */
     public function testIsPicDeletableNoPic()
     {
-        $myUtils = new oxUtilsPic();
+        $myUtils = oxNew('oxUtilsPic');
 
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->never())->method('getOne');
@@ -347,7 +347,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
 
     protected function _resizeGIFTest($sTestImageFile, $sTestImageFileResized, $gdver = 2)
     {
-        $myUtils = new oxUtilsPic();
+        $myUtils = oxNew('oxUtilsPic');
         $sDir = __DIR__ ."/../testData/misc" . DIRECTORY_SEPARATOR;
         $iWidth = 100;
         $iHeight = 48;

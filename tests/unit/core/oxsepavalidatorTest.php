@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
      */
     public function testGetIBANRegistry()
     {
-        $oSepaValidator = new oxSepaValidator();
+        $oSepaValidator = oxNew('oxSepaValidator');
 
         $aIBANRegistry = $oSepaValidator->getIBANCodeLengths();
 
@@ -49,7 +49,7 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
      */
     public function testIsValidIBAN_validIBAN_true()
     {
-        $oSepaValidator = new oxSepaValidator();
+        $oSepaValidator = oxNew('oxSepaValidator');
 
         $this->assertTrue($oSepaValidator->isValidIBAN("MT84MALT011000012345MTLCAST001S"), "IBAN must be valid");
     }
@@ -60,7 +60,7 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
      */
     public function testIsValidIBAN_invalidIBAN_false()
     {
-        $oSepaValidator = new oxSepaValidator();
+        $oSepaValidator = oxNew('oxSepaValidator');
 
         $this->assertFalse($oSepaValidator->isValidIBAN("NX9386011117947"), "IBAN must be not valid");
     }
@@ -71,7 +71,7 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
      */
     public function testIsValidBIC_validBIC_true()
     {
-        $oSepaValidator = new oxSepaValidator();
+        $oSepaValidator = oxNew('oxSepaValidator');
 
         $this->assertTrue($oSepaValidator->isValidBIC("ASPKAT2L"), "BIC must be valid");
     }
@@ -82,7 +82,7 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
      */
     public function testIsValidBIC_invalidBIC_false()
     {
-        $oSepaValidator = new oxSepaValidator();
+        $oSepaValidator = oxNew('oxSepaValidator');
 
         $this->assertFalse($oSepaValidator->isValidBIC("AAAACCX"), "BIC must be not valid");
     }

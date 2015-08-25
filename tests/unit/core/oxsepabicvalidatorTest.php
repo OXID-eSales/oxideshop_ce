@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -63,7 +63,7 @@ class Unit_Core_oxSepaBICValidatorTest extends OxidTestCase
      */
     public function testIsValid_validBIC_true($sBIC)
     {
-        $oSepaBICValidator = new oxSepaBICValidator();
+        $oSepaBICValidator = oxNew('oxSepaBICValidator');
 
         $this->assertTrue($oSepaBICValidator->isValid($sBIC), "BIC must be valid");
     }
@@ -114,7 +114,7 @@ class Unit_Core_oxSepaBICValidatorTest extends OxidTestCase
      */
     public function testIsValid_invalidBIC_false($sBIC)
     {
-        $oSepaBICValidator = new oxSepaBICValidator();
+        $oSepaBICValidator = oxNew('oxSepaBICValidator');
 
         $this->assertFalse($oSepaBICValidator->isValid($sBIC), "BIC must be not valid");
     }

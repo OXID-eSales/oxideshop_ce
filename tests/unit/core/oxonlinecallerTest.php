@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -103,7 +103,7 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
     public function testCallSetsTimeoutOptionForCurlExecution()
     {
         // Arrange
-        $curlDouble = new oxOnlineCallerOxCurlOptionDouble();
+        $curlDouble = oxNew('oxOnlineCallerOxCurlOptionDouble');
 
         /** @var oxOnlineCaller $sut */
         $sut = $this->getMockBuilder(static::SUT)
@@ -170,7 +170,7 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
      */
     private function _getRequest()
     {
-        $oRequest = new oxOnlineRequest();
+        $oRequest = oxNew('oxOnlineRequest');
         $oRequest->clusterId = '_testClusterId';
         $oRequest->edition = '_testEdition';
         $oRequest->version = '_testVersion';

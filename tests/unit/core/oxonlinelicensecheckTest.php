@@ -55,7 +55,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         /** @var oxConfig $oConfig */
         oxRegistry::set('oxConfig', $oConfig);
 
-        $oRequest = new oxOnlineLicenseCheckRequest();
+        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
         $oRequest->revision = $this->getConfig()->getRevision();
         $oRequest->pVersion = '1.1';
         $oRequest->productId = 'eShop';
@@ -89,7 +89,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
      */
     public function testValidationPassed()
     {
-        $oResponse = new oxOnlineLicenseCheckResponse();
+        $oResponse = oxNew('oxOnlineLicenseCheckResponse');
         $oResponse->code = 0;
         $oResponse->message = 'ACK';
 
@@ -118,7 +118,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
      */
     public function testValidationFailed()
     {
-        $oResponse = new oxOnlineLicenseCheckResponse();
+        $oResponse = oxNew('oxOnlineLicenseCheckResponse');
         $oResponse->code = 1;
         $oResponse->message = 'NACK';
 
@@ -175,7 +175,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         /** @var oxConfig $oConfig */
         oxRegistry::set('oxConfig', $oConfig);
 
-        $oRequest = new oxOnlineLicenseCheckRequest();
+        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
         $oRequest->edition = $this->getConfig()->getEdition();
         $oRequest->version = $this->getConfig()->getVersion();
         $oRequest->revision = $this->getConfig()->getRevision();
@@ -225,7 +225,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
         $this->setConfigParam('aServersData', array());
         oxRegistry::set('oxConfig', $oConfig);
 
-        $oRequest = new oxOnlineLicenseCheckRequest();
+        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
         $oRequest->edition = $this->getConfig()->getEdition();
         $oRequest->version = $this->getConfig()->getVersion();
         $oRequest->revision = $this->getConfig()->getRevision();
@@ -262,7 +262,7 @@ class Unit_Core_oxOnlineLicenseCheckTest extends OxidTestCase
 
     public function testLog()
     {
-        $oResponse = new oxOnlineLicenseCheckResponse();
+        $oResponse = oxNew('oxOnlineLicenseCheckResponse');
         $oResponse->code = 0;
         $oResponse->message = 'ACK';
 

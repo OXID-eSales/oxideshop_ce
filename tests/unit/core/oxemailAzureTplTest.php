@@ -310,7 +310,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oPrice4->expects($this->any())->method('getNettoPrice')->will($this->returnValue(7));
         $oBasket->setCost('oxtsprotection', $oPrice4);
 
-        $oPayment = new oxPayment();
+        $oPayment = oxNew('oxPayment');
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
         $oOrder = $this->getMock('oxOrder', array("getOrderUser", "getBasket", "getPayment"));
@@ -430,7 +430,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oPrice4->expects($this->any())->method('getNettoPrice')->will($this->returnValue(7));
         $oBasket->setCost('oxtsprotection', $oPrice4);
 
-        $oPayment = new oxPayment();
+        $oPayment = oxNew('oxPayment');
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
         $oOrder = $this->getMock('oxOrder', array("getOrderUser", "getBasket", "getPayment"));
@@ -488,10 +488,10 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         oxRegistry::getLang()->setTplLanguage(1);
         oxRegistry::getLang()->setBaseLanguage(1);
 
-        $oPayment = new oxPayment();
+        $oPayment = oxNew('oxPayment');
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->setCost('oxpayment', new oxPrice(0));
         $oBasket->setCost('oxdelivery', new oxPrice(6626));
 
@@ -791,10 +791,10 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oOrderArticle->load('_testOrderArtId');
         $aOrderArticles[] = $oOrderArticle;
 
-        $oArticles = new oxList();
+        $oArticles = oxNew('oxList');
         $oArticles->assign($aOrderArticles);
 
-        $oPayment = new oxPayment();
+        $oPayment = oxNew('oxPayment');
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
         $oOrder = $this->getMock('oxOrder', array("getOrderUser", "getOrderArticles", "getPayment"));

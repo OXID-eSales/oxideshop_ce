@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -28,11 +28,11 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
 
     public function testObjectToXml()
     {
-        $oXml = new oxSimpleXml();
+        $oXml = oxNew('oxSimpleXml');
 
-        $oTestObject = new oxStdClass();
+        $oTestObject = oxNew('oxStdClass');
         $oTestObject->title = "TestTitle";
-        $oTestObject->keys = new oxStdClass();
+        $oTestObject->keys = oxNew('oxStdClass');
         $oTestObject->keys->key = array("testKey1", "testKey2");
 
         $sTestResult = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
@@ -46,7 +46,7 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
 
     public function testObjectToXmlWithObjectsInArray()
     {
-        $oXml = new oxSimpleXml();
+        $oXml = oxNew('oxSimpleXml');
 
         $oModule1 = new stdClass();
         $oModule1->id = "id1";
@@ -56,9 +56,9 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
         $oModule2->id = "id2";
         $oModule2->active = false;
 
-        $oTestObject = new oxStdClass();
+        $oTestObject = oxNew('oxStdClass');
         $oTestObject->title = "TestTitle";
-        $oTestObject->modules = new oxStdClass();
+        $oTestObject->modules = oxNew('oxStdClass');
         $oTestObject->modules->module = array($oModule1, $oModule2);
 
         $oExpectedXml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"utf-8\"?><testXml/>");
@@ -78,7 +78,7 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
 
     public function testXmlToObject()
     {
-        $oXml = new oxSimpleXml();
+        $oXml = oxNew('oxSimpleXml');
 
         $sTestXml = '<?xml version="1.0"?>';
         $sTestXml .= '<testXml>';
@@ -95,7 +95,7 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
 
     public function testObjectToXmlWithElementsAndAttributes()
     {
-        $oXml = new oxSimpleXml();
+        $oXml = oxNew('oxSimpleXml');
 
         $oElement1 = new stdClass();
         $oElement1->id = 'id1';
@@ -122,7 +122,7 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
 
     public function testObjectToXmlWithElementsWithAttributesKey()
     {
-        $oXml = new oxSimpleXml();
+        $oXml = oxNew('oxSimpleXml');
 
         $oTestObject = new stdClass();
         $oTestObject->attributes = new stdClass();
@@ -141,9 +141,9 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
 
     public function testObjectToXmlWithAssocArrayKeys()
     {
-        $oXml = new oxSimpleXml();
+        $oXml = oxNew('oxSimpleXml');
 
-        $oTestObject = new oxStdClass();
+        $oTestObject = oxNew('oxStdClass');
         $oTestObject->elements = array('element' => array(
             array('key1' => 'value1', 'key2' => 'value2'),
             array('key1' => 'value1', 'key2' => 'value2')

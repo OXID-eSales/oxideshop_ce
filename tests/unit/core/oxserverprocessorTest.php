@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -27,7 +27,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
 {
     public function testNodeInformationNotUpdatedIfNotNeed()
     {
-        $oNode = new oxApplicationServer();
+        $oNode = oxNew('oxApplicationServer');
         $oNode->setTimestamp(time());
 
         /** @var oxServersManager $oServerNodesManager */
@@ -54,7 +54,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $sIP = '192.168.1.7';
         $sServerId = 'a45sdas5d4as564d56asd4';
 
-        $oNode = new oxApplicationServer();
+        $oNode = oxNew('oxApplicationServer');
         $oNode->setId($sServerId);
         $oNode->setIp($sIP);
         $oNode->setTimestamp($sCurrentTime);
@@ -85,7 +85,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
     {
         $this->setAdminMode($blAdmin);
 
-        $oNode = new oxApplicationServer();
+        $oNode = oxNew('oxApplicationServer');
         $oNode->setTimestamp(time());
         /** @var oxServersManager $oServerNodesManager */
         $oServerNodesManager = $this->getMock('oxServersManager');

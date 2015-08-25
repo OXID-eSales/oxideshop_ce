@@ -498,7 +498,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
      */
     public function testIsMultilang()
     {
-        $oObj = new oxi18n();
+        $oObj = oxNew('oxi18n');
         $this->assertTrue($oObj->isMultilang());
     }
 
@@ -559,7 +559,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
      */
     public function testGetUpdateFieldsForTable()
     {
-        $oObj = new oxi18n();
+        $oObj = oxNew('oxi18n');
         $oObj->init('oxstates');
         $oObj->setId('test_a');
         $oObj->oxstates__oxtitle = new oxField('titletest');
@@ -629,7 +629,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
      */
     public function testUpdate()
     {
-        $oObj = new oxi18n();
+        $oObj = oxNew('oxi18n');
         $oObj->init('oxstates');
 
 
@@ -715,7 +715,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
     public function testGetLanguageSetTables()
     {
-        $oObj = new oxi18n();
+        $oObj = oxNew('oxi18n');
         $oObj->init('oxstates');
 
         $this->assertEquals(
@@ -784,7 +784,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
      */
     public function testGetViewName()
     {
-        $oObj = new oxi18n();
+        $oObj = oxNew('oxi18n');
         $oObj->init('oxarticles');
 
         $this->assertEquals(getViewName('oxarticles', 0, 1), $oObj->getViewName());
@@ -838,7 +838,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
      */
     public function test_getUpdateFieldValue()
     {
-        $oObj = new oxI18n();
+        $oObj = oxNew('oxI18n');
         $oObj->init("oxarticles");
         $oObj->setId('test');
         $this->assertSame("'aaa'", $oObj->UNITgetUpdateFieldValue('oxid', new oxField('aaa')));

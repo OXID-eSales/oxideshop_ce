@@ -82,7 +82,7 @@ class Unit_Core_oxModuleChainsGeneratorTest extends OxidTestCase
     {
         $sModuleId = 'testId';
 
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->load($sModuleId);
 
         /** @var oxModuleVariablesLocator|MockObject $oUtilsObject */

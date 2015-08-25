@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -31,7 +31,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     {
         $sEndpointUrl = 'http://www.oxid-esales.com/index.php?anid=article';
 
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setUrl($sEndpointUrl);
         $sUrlToCall = $oCurl->getUrl();
 
@@ -43,7 +43,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testGetUrl_notSet_null()
     {
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $this->assertNull($oCurl->getUrl());
     }
 
@@ -52,7 +52,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testSetQuery_set_get()
     {
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setQuery('param1=value1&param2=values2');
 
         $this->assertEquals('param1=value1&param2=values2', $oCurl->getQuery());
@@ -63,7 +63,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testGetQuery_setParameter_getQueryFromParameters()
     {
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setParameters(array('param1' => 'value1', 'param2' => 'values2'));
 
         $this->assertEquals('param1=value1&param2=values2', $oCurl->getQuery());
@@ -74,7 +74,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testGetQuery_setParameterManyTimes_getQueryFromParameters()
     {
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setParameters(array('param1' => 'value1', 'param2' => 'values2'));
         $this->assertEquals('param1=value1&param2=values2', $oCurl->getQuery());
 
@@ -88,7 +88,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testGetQuery_setParameterNotUtf_getQueryFromParameters()
     {
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setParameters(array('param1' => 'Jäger', 'param2' => 'values2'));
 
         $aPramsUtf = array('param1' => 'Jäger', 'param2' => 'values2');
@@ -101,7 +101,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testGetParameters_default_null()
     {
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $this->assertNull($oCurl->getParameters());
     }
 
@@ -112,7 +112,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     {
         $aParameters = array('parameter' => 'value');
 
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setParameters($aParameters);
         $this->assertEquals($aParameters, $oCurl->getParameters());
     }
@@ -122,7 +122,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testSetConnectionCharset_set_get()
     {
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setConnectionCharset('ISO-8859-1');
 
         $this->assertEquals('ISO-8859-1', $oCurl->getConnectionCharset());
@@ -133,7 +133,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testGetConnectionCharset_notSet_UTF()
     {
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $this->assertEquals('UTF-8', $oCurl->getConnectionCharset());
     }
 
@@ -142,7 +142,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testGetHost_notSet_null()
     {
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $this->assertNull($oCurl->getHost(), 'Default value must be null.');
     }
 
@@ -153,7 +153,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     {
         $sHost = 'someHost';
 
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setHost($sHost);
 
         $this->assertEquals($sHost, $oCurl->getHost(), 'Check if getter returns what is set in setter.');
@@ -171,7 +171,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
             'Host: ' . $sHost,
             'Connection: close'
         );
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setHost($sHost);
 
         $this->assertEquals($aExpectedHeader, $oCurl->getHeader(), 'Header must be formed from set host.');
@@ -187,7 +187,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
             'Content-Type: application/x-www-form-urlencoded',
             'Connection: close'
         );
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
 
         $this->assertEquals($aExpectedHeader, $oCurl->getHeader(), 'Header must be without host as host not set.');
     }
@@ -199,7 +199,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     {
         $sHost = 'someHost';
         $aHeader = array('Test header');
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setHost($sHost);
         $oCurl->setHeader($aHeader);
 
@@ -212,7 +212,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     public function testGetHeader_headerSetAndHostNotSet_headerWithoutHost()
     {
         $aHeader = array('Test header');
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setHeader($aHeader);
 
         $this->assertEquals($aHeader, $oCurl->getHeader(), 'Header must be same as set header.');
@@ -224,7 +224,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testSetOption()
     {
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setOption('CURLOPT_VERBOSE', 0);
         $aOptions = $oCurl->getOptions();
         $this->assertEquals(2, count($aOptions));
@@ -238,7 +238,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     {
         $this->setExpectedException('oxException');
 
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setOption('rParam1', "rValue1");
     }
 
@@ -249,7 +249,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     {
         $this->setExpectedException('oxException');
 
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setOption('CURLOPT_WRONG', "rValue1");
     }
 
@@ -259,7 +259,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
      */
     public function testSetGetMethod()
     {
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setMethod('POST');
 
         $this->assertEquals('POST', $oCurl->getMethod());

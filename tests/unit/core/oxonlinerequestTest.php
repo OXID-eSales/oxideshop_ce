@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,14 +33,14 @@ class Unit_Core_oxOnlineRequestTest extends OxidTestCase
     public function testClusterIdGenerationWhenNotSet()
     {
         $this->getConfig()->setConfigParam('sClusterId', '');
-        $oRequest = new oxOnlineRequest();
+        $oRequest = oxNew('oxOnlineRequest');
         $this->assertNotEquals('', $oRequest->clusterId);
     }
 
     public function testClusterIdIsNotRegenerationWhenAlreadySet()
     {
         $this->getConfig()->setConfigParam('sClusterId', 'generated_unique_cluster_id');
-        $oRequest = new oxOnlineRequest();
+        $oRequest = oxNew('oxOnlineRequest');
         $this->assertSame('generated_unique_cluster_id', $oRequest->clusterId);
     }
 
@@ -52,7 +52,7 @@ class Unit_Core_oxOnlineRequestTest extends OxidTestCase
 
         $this->setShopId(9);
         $oConfig->setConfigParam('sClusterId', '');
-        $oRequest = new oxOnlineRequest();
+        $oRequest = oxNew('oxOnlineRequest');
         $this->assertSame('generated_unique_cluster_id', $oRequest->clusterId);
     }
 
@@ -62,7 +62,7 @@ class Unit_Core_oxOnlineRequestTest extends OxidTestCase
         $oConfig = $this->getConfig();
 
         $oConfig->setConfigParam('sClusterId', 'generated_unique_cluster_id');
-        $oRequest = new oxOnlineRequest();
+        $oRequest = oxNew('oxOnlineRequest');
 
         $this->assertSame('generated_unique_cluster_id', $oRequest->clusterId);
         $this->assertSame($oConfig->getEdition(), $oRequest->edition);

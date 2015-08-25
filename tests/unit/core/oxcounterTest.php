@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Core_oxcounterTest extends OxidTestCase
      */
     public function testGetNext()
     {
-        $oCounter = new oxCounter();
+        $oCounter = oxNew('oxCounter');
 
         $iNext1 = $oCounter->getNext("test1");
         $this->assertEquals(++$iNext1, $oCounter->getNext("test1"));
@@ -59,7 +59,7 @@ class Unit_Core_oxcounterTest extends OxidTestCase
     public function testUpdate()
     {
 
-        $oCounter = new oxCounter();
+        $oCounter = oxNew('oxCounter');
 
         $this->assertEquals(1, $oCounter->getNext("test4"));
         $oCounter->update("test3", 3);

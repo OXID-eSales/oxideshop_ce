@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -66,7 +66,7 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
         /** @var oxCurl $oCurl */
 
         $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
-        $oRequest = new oxOnlineLicenseCheckRequest();
+        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
         $oOnlineLicenseCaller->doRequest($oRequest);
     }
 
@@ -105,13 +105,13 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
         /** @var oxSimpleXml $oSimpleXml */
 
         $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
-        $oRequest = new oxOnlineLicenseCheckRequest();
+        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
         $oOnlineLicenseCaller->doRequest($oRequest);
     }
 
     public function testCorrectResponseReturned()
     {
-        $oExpectedResponse = new oxOnlineLicenseCheckResponse();
+        $oExpectedResponse = oxNew('oxOnlineLicenseCheckResponse');
         $oExpectedResponse->code = 0;
         $oExpectedResponse->message = 'ACK';
 
@@ -127,7 +127,7 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
         /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
 
         $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
-        $oRequest = new oxOnlineLicenseCheckRequest();
+        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
 
         $this->assertEquals($oExpectedResponse, $oOnlineLicenseCaller->doRequest($oRequest));
     }
@@ -147,7 +147,7 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
         /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
 
         $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
-        $oRequest = new oxOnlineLicenseCheckRequest();
+        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
         $oRequest->keys = '_testKeys';
 
         $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 5);

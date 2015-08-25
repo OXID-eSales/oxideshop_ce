@@ -85,13 +85,13 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
     {
         $sFilePath = $this->getConfig()->getPictureDir(false) . "/master/product/1/";
 
-        $oUtilsFile = new oxUtilsFile();
+        $oUtilsFile = oxNew('oxUtilsFile');
         $this->assertEquals("2010_speed3_120_1(1).jpg", $oUtilsFile->UNITgetUniqueFileName($sFilePath, "2010_speed3_120_1", "jpg"));
     }
 
     public function testGetImageSize()
     {
-        $oUtilsFile = new oxUtilsFile();
+        $oUtilsFile = oxNew('oxUtilsFile');
 
         $aDetailImageSizes = array("oxpic1" => "251*201", "oxpic2" => "252*202", "oxpic3" => "253*203");
         $this->getConfig()->setConfigParam("aDetailImageSizes", $aDetailImageSizes);
@@ -116,7 +116,7 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
 
     public function testUrlValidateBadUrl()
     {
-        $oUtilsFile = new oxUtilsFile();
+        $oUtilsFile = oxNew('oxUtilsFile');
         $this->assertFalse($oUtilsFile->urlValidate("test"));
         $this->assertFalse($oUtilsFile->urlValidate("http://www.oxid_non_existing_page.com"));
 
@@ -143,7 +143,7 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
 
     public function testProcessFilesCallState()
     {
-        $oObject = new oxbase();
+        $oObject = oxNew('oxbase');
         $oObject->testfield = $this->getMock('oxfield', array('setValue'));
         $oObject->testfield->expects($this->once())->method('setValue')->with($this->equalTo('testfilename'));
 
@@ -313,7 +313,7 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
 
     public function testReadRemoteFileAsString()
     {
-        $oUtilsFile = new oxUtilsFile();
+        $oUtilsFile = oxNew('oxUtilsFile');
         $this->assertEquals("", $oUtilsFile->readRemoteFileAsString(getShopBasePath() . time()));
         $this->assertEquals("<?php", substr($oUtilsFile->readRemoteFileAsString(getShopBasePath() . "index.php"), 0, 5));
     }
@@ -414,7 +414,7 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
 
     public function testTranslateError()
     {
-        $oUF = new oxUtilsFile();
+        $oUF = oxNew('oxUtilsFile');
         $this->assertEquals(
             '',
             $oUF->translateError(0, 'fileName')

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,20 +25,20 @@ class Unit_Core_oxModuleValidatorFactoryTest extends OxidTestCase
 
     public function testModuleValidatorReturnInterface()
     {
-        $oModuleValidatorFactory = new oxModuleValidatorFactory();
+        $oModuleValidatorFactory = oxNew('oxModuleValidatorFactory');
         $this->assertInstanceOf('oxIModuleValidator', $oModuleValidatorFactory->getModuleMetadataValidator());
         $this->assertInstanceOf('oxIModuleValidator', $oModuleValidatorFactory->getModuleFilesValidator());
     }
 
     public function testModuleValidatorReturnCorrectInterfaceForMetadata()
     {
-        $oModuleValidatorFactory = new oxModuleValidatorFactory();
+        $oModuleValidatorFactory = oxNew('oxModuleValidatorFactory');
         $this->assertInstanceOf('oxModuleMetadataValidator', $oModuleValidatorFactory->getModuleMetadataValidator());
     }
 
     public function testModuleValidatorReturnCorrectInterfaceForFiles()
     {
-        $oModuleValidatorFactory = new oxModuleValidatorFactory();
+        $oModuleValidatorFactory = oxNew('oxModuleValidatorFactory');
         $this->assertInstanceOf('oxModuleFilesValidator', $oModuleValidatorFactory->getModuleFilesValidator());
     }
 }

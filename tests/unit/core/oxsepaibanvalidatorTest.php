@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Core_oxSepaIBANValidatorTest extends OxidTestCase
      */
     public function testGetCodeLengths()
     {
-        $oSepaIBANValidator = new oxSepaIBANValidator();
+        $oSepaIBANValidator = oxNew('oxSepaIBANValidator');
 
         $aCodeLengths = array("DE" => 22);
 
@@ -50,7 +50,7 @@ class Unit_Core_oxSepaIBANValidatorTest extends OxidTestCase
      */
     public function testIsValid_noCodeLengthsSetCorrectIBANGiven_false()
     {
-        $oSepaIBANValidator = new oxSepaIBANValidator();
+        $oSepaIBANValidator = oxNew('oxSepaIBANValidator');
 
         $this->assertFalse($oSepaIBANValidator->isValid("MT84MALT011000012345MTLCAST001S"), "IBAN must be not valid");
     }
@@ -87,7 +87,7 @@ class Unit_Core_oxSepaIBANValidatorTest extends OxidTestCase
      */
     public function testValidateCodeLengths($blExpected, $aCodeLengths, $sMessage)
     {
-        $oSepaIBANValidator = new oxSepaIBANValidator();
+        $oSepaIBANValidator = oxNew('oxSepaIBANValidator');
 
         $this->assertEquals($blExpected, $oSepaIBANValidator->isValidCodeLengths($aCodeLengths), $sMessage);
     }
@@ -99,7 +99,7 @@ class Unit_Core_oxSepaIBANValidatorTest extends OxidTestCase
      */
     public function testSetCodeLengths($blExpected, $aCodeLengths, $sMessage)
     {
-        $oSepaIBANValidator = new oxSepaIBANValidator();
+        $oSepaIBANValidator = oxNew('oxSepaIBANValidator');
 
         $this->assertEquals($blExpected, $oSepaIBANValidator->setCodeLengths($aCodeLengths), $sMessage);
     }
@@ -127,7 +127,7 @@ class Unit_Core_oxSepaIBANValidatorTest extends OxidTestCase
      */
     public function testIsValid_validIBAN_true($sIBAN, $aCodeLengths)
     {
-        $oSepaIBANValidator = new oxSepaIBANValidator();
+        $oSepaIBANValidator = oxNew('oxSepaIBANValidator');
 
         $oSepaIBANValidator->setCodeLengths($aCodeLengths);
 
@@ -160,7 +160,7 @@ class Unit_Core_oxSepaIBANValidatorTest extends OxidTestCase
      */
     public function testIsValid_invalidIBAN_false($sIBAN, $aCodeLengths)
     {
-        $oSepaIBANValidator = new oxSepaIBANValidator();
+        $oSepaIBANValidator = oxNew('oxSepaIBANValidator');
 
         $oSepaIBANValidator->setCodeLengths($aCodeLengths);
 

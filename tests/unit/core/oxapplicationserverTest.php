@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -28,62 +28,62 @@ class Unit_Core_oxApplicationServerTest extends OxidTestCase
 
     public function testSetGetId()
     {
-        $oServerNode = new oxApplicationServer();
+        $oServerNode = oxNew('oxApplicationServer');
         $oServerNode->setId('ThisIsServerId');
         $this->assertSame('ThisIsServerId', $oServerNode->getId());
     }
 
     public function testSetGetIp()
     {
-        $oServerNode = new oxApplicationServer();
+        $oServerNode = oxNew('oxApplicationServer');
         $oServerNode->setIp('11.11.11.11');
         $this->assertSame('11.11.11.11', $oServerNode->getIp());
     }
 
     public function testSetGetTimeStamp()
     {
-        $oServerNode = new oxApplicationServer();
+        $oServerNode = oxNew('oxApplicationServer');
         $oServerNode->setTimestamp(123456789);
         $this->assertSame(123456789, $oServerNode->getTimestamp());
     }
 
     public function testSetGetLastFrontendUsage()
     {
-        $oServerNode = new oxApplicationServer();
+        $oServerNode = oxNew('oxApplicationServer');
         $oServerNode->setLastFrontendUsage(123456789);
         $this->assertSame(123456789, $oServerNode->getLastFrontendUsage());
     }
 
     public function testSetGetLastAdminUsage()
     {
-        $oServerNode = new oxApplicationServer();
+        $oServerNode = oxNew('oxApplicationServer');
         $oServerNode->setLastAdminUsage(123456789);
         $this->assertSame(123456789, $oServerNode->getLastAdminUsage());
     }
 
     public function testServerValidityOnCreation()
     {
-        $oServerNode = new oxApplicationServer();
+        $oServerNode = oxNew('oxApplicationServer');
         $this->assertFalse($oServerNode->isValid());
     }
 
     public function testServerValidityOnSetFalse()
     {
-        $oServerNode = new oxApplicationServer();
+        $oServerNode = oxNew('oxApplicationServer');
         $oServerNode->setIsValid(false);
         $this->assertFalse($oServerNode->isValid());
     }
 
     public function testServerValidityOnSetTrue()
     {
-        $oServerNode = new oxApplicationServer();
+        $oServerNode = oxNew('oxApplicationServer');
         $oServerNode->setIsValid(true);
         $this->assertTrue($oServerNode->isValid());
     }
 
     public function testServerValidityOnSetDefault()
     {
-        $oServerNode = new oxApplicationServer();
+        $oServerNode = oxNew('oxApplicationServer');
         $oServerNode->setIsValid();
         $this->assertTrue($oServerNode->isValid());
     }

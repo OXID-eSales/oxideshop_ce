@@ -152,7 +152,7 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
         $oCaptcha->expects($this->once())->method('_passFromSession')->will($this->returnValue(null));
 
         // reseting session
-        $oSession = new oxSession();
+        $oSession = oxNew('oxSession');
         $oCaptcha->setSession($oSession);
 
         $oCaptcha->getHash('3at8u');
@@ -186,7 +186,7 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
         $sHash1 = 1234;
         $sHash2 = 1235;
 
-        $oCaptcha = new oxCaptcha();
+        $oCaptcha = oxNew('oxCaptcha');
         $aHash = array(
             $sHash1 => array($oCaptcha->getTextHash($sMac1) => time() + 3600),
             $sHash2 => array($oCaptcha->getTextHash($sMac2) => time() + 3600)

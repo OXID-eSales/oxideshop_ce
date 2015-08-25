@@ -119,7 +119,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendRegisterConfirmEmail()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
 
         $oEmail = $this->getMock("oxemail", array("sendRegisterEmail"));
         $oEmail->expects($this->once())->method('sendRegisterEmail')->with($this->equalTo($oUser), $this->equalTo(null));
@@ -256,7 +256,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSetSmtpWithNoSmtpValues()
     {
-        $oEmail = new oxEmail();
+        $oEmail = oxNew('oxEmail');
 
         $this->_oShop->oxshops__oxsmtp = new oxField(null, oxField::T_RAW);
         $oEmail->setSmtp($this->_oShop);
@@ -271,10 +271,10 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $myConfig = $this->getConfig();
         $myDb = oxDb::getDb();
 
-        $oPayment = new oxPayment();
+        $oPayment = oxNew('oxPayment');
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->setCost('oxpayment', new oxPrice(0));
         $oBasket->setCost('oxdelivery', new oxPrice(6626));
 
@@ -514,7 +514,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $myConfig = $this->getConfig();
         $sImageDir = $myConfig->getImageDir();
 
-        $oEmail = new oxEmail();
+        $oEmail = oxNew('oxEmail');
         $oEmail->setBody("<img src='{$sImageDir}/logo.png'> --- <img src='{$sImageDir}/stars.jpg'>");
 
         $oEmail->UNITincludeImages(
@@ -533,7 +533,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSetGetSubject()
     {
-        $oEmail = new oxEmail();
+        $oEmail = oxNew('oxEmail');
         $oEmail->setSubject('testSubject');
         $this->assertEquals('testSubject', $oEmail->getSubject());
     }
@@ -543,7 +543,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSetGetBody()
     {
-        $oEmail = new oxEmail();
+        $oEmail = oxNew('oxEmail');
         $oEmail->setBody('testBody');
         $this->assertEquals('testBody', $oEmail->getBody());
     }
@@ -555,7 +555,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
         $sShopId = $this->getConfig()->getBaseShopId();
 
-        $oEmail = new oxEmail();
+        $oEmail = oxNew('oxEmail');
 
         $oEmail->setBody('testBody index.php?bonusid=111&sid=123456789 blabla', true);
         $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $oEmail->getBody());
@@ -575,7 +575,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSetGetAltBody()
     {
-        $oEmail = new oxEmail();
+        $oEmail = oxNew('oxEmail');
 
         $oEmail->setAltBody('testAltBody');
         $this->assertEquals('testAltBody', $oEmail->getAltBody());
@@ -1092,7 +1092,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $oEmail->expects($this->once())->method("_sendMail")->will($this->returnValue(true));
         $oEmail->expects($this->any())->method("_getSmarty")->will($this->returnValue($oSmartyMock));
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
         //oxOrder mock
         $oOrder = $this->getMock("oxOrder", array("getOrderUser"));

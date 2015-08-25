@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Core_oxPriceTest extends OxidTestCase
     {
         parent::setUp();
 
-        $this->_oPrice = new oxPrice();
+        $this->_oPrice = oxNew('oxPrice');
         $this->_oPrice->setBruttoPriceMode();
     }
 
@@ -426,10 +426,10 @@ class Unit_Core_oxPriceTest extends OxidTestCase
 
     public function testAddWithPriceObject()
     {
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(236, 18);
 
-        $oPrice2 = new oxPrice();
+        $oPrice2 = oxNew('oxPrice');
         $oPrice2->setPrice(118, 18);
 
         $oPrice->addPrice($oPrice2);
@@ -439,11 +439,11 @@ class Unit_Core_oxPriceTest extends OxidTestCase
 
     public function testAddWithPriceObjectIfNetPriceMode()
     {
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setNettoPriceMode();
         $oPrice->setPrice(200, 18);
 
-        $oPrice2 = new oxPrice();
+        $oPrice2 = oxNew('oxPrice');
         $oPrice2->setNettoPriceMode();
         $oPrice2->setPrice(100, 18);
 
@@ -471,16 +471,16 @@ class Unit_Core_oxPriceTest extends OxidTestCase
 
     public function testCompare()
     {
-        $oPrice1 = new oxPrice();
+        $oPrice1 = oxNew('oxPrice');
         $oPrice1->setPrice(100, 20);
 
-        $oPrice2 = new oxPrice();
+        $oPrice2 = oxNew('oxPrice');
         $oPrice2->setPrice(101, 0);
 
-        $oPrice3 = new oxPrice();
+        $oPrice3 = oxNew('oxPrice');
         $oPrice3->setPrice(99, 0);
 
-        $oPrice4 = new oxPrice();
+        $oPrice4 = oxNew('oxPrice');
         $oPrice4->setPrice(100, 0);
 
         $this->assertEquals(0, $oPrice1->compare($oPrice4));
@@ -501,12 +501,12 @@ class Unit_Core_oxPriceTest extends OxidTestCase
      */
     public function testGetPrice()
     {
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setNettoPriceMode();
         $oPrice->setPrice(10, 19);
         $this->assertEquals(10, $oPrice->getPrice());
 
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(10, 19);
         $this->assertEquals(10, $oPrice->getPrice());
@@ -520,14 +520,14 @@ class Unit_Core_oxPriceTest extends OxidTestCase
      */
     public function testNettoBruttoCalculation()
     {
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setNettoPriceMode();
         $oPrice->setPrice(10, 19);
         $this->assertEquals(10, $oPrice->getNettoPrice());
         $this->assertEquals(11.9, $oPrice->getBruttoPrice());
         $this->assertEquals(1.9, $oPrice->getVatValue());
 
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(10, 19);
         $this->assertEquals(8.40, $oPrice->getNettoPrice());
@@ -544,7 +544,7 @@ class Unit_Core_oxPriceTest extends OxidTestCase
      */
     public function testApplyDiscount()
     {
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setNettoPriceMode();
         $oPrice->setPrice(10, 19);
 
@@ -583,7 +583,7 @@ class Unit_Core_oxPriceTest extends OxidTestCase
 
     public function testSetModeNetto_defaultParam_NettoMode()
     {
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
 
         $oPrice->setNettoMode();
         $this->assertTrue($oPrice->isNettoMode());
@@ -591,7 +591,7 @@ class Unit_Core_oxPriceTest extends OxidTestCase
 
     public function testSetModeNetto_ParamTrue_NettoMode()
     {
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
 
         $oPrice->setNettoMode(true);
         $this->assertTrue($oPrice->isNettoMode());
@@ -599,7 +599,7 @@ class Unit_Core_oxPriceTest extends OxidTestCase
 
     public function testSetModeNetto_ParamFalse_BruttoMode()
     {
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
 
         $oPrice->setNettoMode(false);
         $this->assertFalse($oPrice->isNettoMode());

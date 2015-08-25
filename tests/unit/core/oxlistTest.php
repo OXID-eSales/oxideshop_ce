@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -118,7 +118,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
         $aData[] = array('oxid' => 4, 'oxtitle' => 'name4');
 
 
-        $oList = new oxList;
+        $oList = oxNew('oxList');
         $oList->init('oxCategory');
         $oList->assignArray($aData);
 
@@ -268,7 +268,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
 
     public function testGetArray()
     {
-        $oList = new oxlist();
+        $oList = oxNew('oxlist');
         $oList->offsetSet('xxx', 'yyy');
 
         $this->assertEquals(array('xxx' => 'yyy'), $oList->getArray());
@@ -276,7 +276,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
 
     public function testOffsetGet()
     {
-        $oList = new oxlist();
+        $oList = oxNew('oxlist');
         $oList->offsetSet('xxx', 'yyy');
 
         $this->assertEquals('yyy', $oList->offsetGet('xxx'));
@@ -285,7 +285,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
 
     public function testOffsetUnset()
     {
-        $oList = new oxlist();
+        $oList = oxNew('oxlist');
         $oList->offsetSet('xxx', 'yyy');
         $this->assertEquals('yyy', $oList->offsetGet('xxx'));
         $oList->offsetUnset('xxx');
@@ -299,7 +299,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
                         'c' => 'c1',
                         'd' => 'd1');
 
-        $oList = new oxlist();
+        $oList = oxNew('oxlist');
         $oList->assign($aArray);
 
         $this->assertEquals(array_keys($aArray), $oList->arrayKeys());
@@ -309,7 +309,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
     {
         $aArray = array('a' => 'a1', 'b' => 'b1');
 
-        $oList = new oxlist();
+        $oList = oxNew('oxlist');
         $oList->assign($aArray);
 
         $this->assertEquals($aArray = array('b' => 'b1', 'a' => 'a1'), $oList->reverse());
@@ -319,11 +319,11 @@ class Unit_Core_oxlistTest extends OxidTestCase
     {
 
         $sQ = "select * from oxarticles limit 0,5";
-        $oSubj = new oxList();
+        $oSubj = oxNew('oxList');
         $oSubj->init("testElement", "oxarticles");
         $oSubj->selectString($sQ);
 
-        $oElement = new testElement();
+        $oElement = oxNew('testElement');
         $this->assertFalse($oElement->isInList());
 
         foreach ($oSubj as $oElement) {
@@ -362,7 +362,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
 
     public function testUnsetForeach()
     {
-        $oList = new oxlist();
+        $oList = oxNew('oxlist');
         $oList->offsetSet('k1', 'cnt4');
         $oList->offsetSet('k2', 'cnt3');
         $oList->offsetSet('k3', 'cnt2');
@@ -386,7 +386,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
      */
     public function testUnsetBeforeForeach()
     {
-        $oList = new oxlist();
+        $oList = oxNew('oxlist');
         $oList->offsetSet('k1', 'cnt4');
         $oList->offsetSet('k2', 'cnt3');
         $oList->offsetSet('k3', 'cnt2');
@@ -404,7 +404,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
 
     public function testUnsetWhile()
     {
-        $oList = new oxlist();
+        $oList = oxNew('oxlist');
         $oList->offsetSet('k1', 'cnt4');
         $oList->offsetSet('k2', 'cnt3');
         $oList->offsetSet('k3', 'cnt2');
@@ -429,7 +429,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
      */
     public function testUnsetBeforeWhile()
     {
-        $oList = new oxlist();
+        $oList = oxNew('oxlist');
         $oList->offsetSet('k1', 'cnt4');
         $oList->offsetSet('k2', 'cnt3');
         $oList->offsetSet('k3', 'cnt2');
@@ -459,7 +459,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
                         3 => '3',
                         4 => '4');
 
-        $oList = new oxlist();
+        $oList = oxNew('oxlist');
         $oList->assign($aArray);
         foreach ($oList as $key => $val) {
             if ($key == 3) {
@@ -476,7 +476,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
      */
     public function testAdd()
     {
-        $oList = new oxList();
+        $oList = oxNew('oxList');
         $oSample = new oxListObject('table');
         $oList->add($oSample);
         $this->assertEquals($oSample, $oList->current());

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -29,7 +29,7 @@ class Unit_Core_oxServerCheckerTest extends OxidTestCase
     public function tearDown()
     {
         parent::tearDown();
-        $oUtilsDate = new oxUtilsDate();
+        $oUtilsDate = oxNew('oxUtilsDate');
         oxRegistry::set('oxUtilsDate', $oUtilsDate);
     }
 
@@ -54,7 +54,7 @@ class Unit_Core_oxServerCheckerTest extends OxidTestCase
     public function testCheckWhenNodeIsValid($iCurrentTime)
     {
         $this->_prepareCurrentTime($iCurrentTime);
-        $oServerNodeChecker = new oxServerChecker();
+        $oServerNodeChecker = oxNew('oxServerChecker');
 
         $this->assertTrue($oServerNodeChecker->check($this->_getMockedNode()), 'Server node must be valid.');
     }
@@ -84,14 +84,14 @@ class Unit_Core_oxServerCheckerTest extends OxidTestCase
     public function testCheckIfNodeIsNotValid($iCurrentTime)
     {
         $this->_prepareCurrentTime($iCurrentTime);
-        $oServerNodeChecker = new oxServerChecker();
+        $oServerNodeChecker = oxNew('oxServerChecker');
 
         $this->assertFalse($oServerNodeChecker->check($this->_getMockedNode()), 'Server node must be not valid.');
     }
 
     public function testCheckWhenNodeDoesNotReturnTimestamp()
     {
-        $oServerNodeChecker = new oxServerChecker();
+        $oServerNodeChecker = oxNew('oxServerChecker');
         /** @var oxApplicationServer $oNode */
         $oNode = $this->getMock('oxApplicationServer', array('getTimestamp'));
         $oNode->expects($this->any())->method('getTimestamp')->will($this->returnValue(null));

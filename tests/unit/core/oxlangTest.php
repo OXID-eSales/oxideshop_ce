@@ -847,7 +847,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $this->setRequestParameter('editlanguage', 0);
         $this->setRequestParameter('new_lang', 1);
 
-        $oView = new oxView();
+        $oView = oxNew('oxView');
         $oView->setFncName('saveinnlang');
 
         $oConfig = $this->getMock('oxConfig', array('getActiveView'));

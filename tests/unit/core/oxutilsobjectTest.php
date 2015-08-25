@@ -309,7 +309,7 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
             )
         ));
 
-        $oUtilsObject = new oxUtilsObject();
+        $oUtilsObject = oxNew('oxUtilsObject');
         $oUtilsObject->setModuleVar('aModules', array($class => $extension));
 
         return $oUtilsObject;

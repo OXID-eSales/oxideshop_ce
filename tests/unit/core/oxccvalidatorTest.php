@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Core_oxCcValidatorTest extends OxidTestCase
         $sDate = date("my");
         $sBadDate = date("my", mktime(0, 0, 0, date("m"), date("d"), date("Y") - 1));
 
-        $oValidator = new oxCcValidator();
+        $oValidator = oxNew('oxCcValidator');
 
         // good numbers, good exp. date
         $this->assertTrue($oValidator->isValidCard("370000000000002", "amx", $sDate));

@@ -59,7 +59,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
     public function testAddQueryString()
     {
         $sUrl = "shop.com/index.php";
-        $oDecoder = new oxSeoDecoder();
+        $oDecoder = oxNew('oxSeoDecoder');
 
         $_SERVER["QUERY_STRING"] = "?abc=123";
         $this->assertEquals($sUrl . "?def=456&abc=123", $oDecoder->UNITaddQueryString($sUrl . "?def=456"));
@@ -84,7 +84,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
 
         $sDeAltUrl = 'de/seo_category/SEO_subcategory/';
 
-        $oDecoder = new oxSeoDecoder();
+        $oDecoder = oxNew('oxSeoDecoder');
         $this->assertEquals(md5(strtolower($sDeUrl)), $oDecoder->UNITgetIdent($sDeUrl));
         $this->assertEquals(md5(strtolower($sEnUrl)), $oDecoder->UNITgetIdent($sEnUrl));
         $this->assertEquals(md5(strtolower($sDeAltUrl)), $oDecoder->UNITgetIdent($sDeAltUrl));
@@ -213,7 +213,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
 
     public function testGetObjectUrlColumnInDbIsMissing()
     {
-        $oDecoder = new oxseodecoder();
+        $oDecoder = oxNew('oxseodecoder');
         $this->assertNull($oDecoder->UNITgetObjectUrl('someid', 'oxarticles', 0, 'oxarticle'));
     }
 
@@ -256,7 +256,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $sUrl2 = 'en/Gifts/Bar-Equipment/Ice-Cubes-FLASH.html';
 
         //
-        $oDecoder = new oxseodecoder();
+        $oDecoder = oxNew('oxseodecoder');
         $this->assertEquals($sUrl1, $oDecoder->UNITgetObjectUrl('someid1', 'oxarticles', 0, 'oxarticle'));
         $this->assertEquals($sUrl2, $oDecoder->UNITgetObjectUrl('someid2', 'oxarticles', 1, 'oxarticle'));
     }
@@ -309,7 +309,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype ) values ( '{$sObjectId}', '" . md5(strtolower("de/$sNewSeoUrl")) . "', '{$iShopId}', '0', '{$sNewSeoUrl}', 'oxarticle' )");
         $oDb->Execute("insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang  ) values ( '{$sObjectId}', '" . md5(strtolower("$sOldSeoUrl")) . "', '{$iShopId}', '0' )");
 
-        $oDecoder = new oxSeoDecoder();
+        $oDecoder = oxNew('oxSeoDecoder');
         $this->assertEquals($sNewSeoUrl, $oDecoder->UNITdecodeOldUrl($this->getConfig()->getShopURL() . "$sOldSeoUrl"));
 
         // checking if oxhits value was incremented
@@ -320,7 +320,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new exception( 'testGetParams', 123 );}");
 
-        $oD = new oxSeoDecoder();
+        $oD = oxNew('oxSeoDecoder');
 
         try {
             // this forces redirect to "/oxideshop/eshop/source/asd" + "/"
@@ -438,7 +438,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl1")) . "', 'iShopId', '0', 'seourl1', 'NOToxarticle', 'asd' )");
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl2")) . "', 'iShopId', '0', 'seourl2', 'NOToxarticle', 'bsd' )");
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl3")) . "', 'iShopId', '0', 'seourl3', 'NOToxarticle', 'csd' )");
-        $oDec = new oxSeoDecoder();
+        $oDec = oxNew('oxSeoDecoder');
         $this->assertEquals('seourl1', $oDec->UNITgetSeoUrl('obid', 0, 'iShopId'));
     }
 
@@ -449,7 +449,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl1")) . "', 'iShopId', '0', 'seourl1', 'oxarticle', 'asd' )");
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl2")) . "', 'iShopId', '0', 'seourl2', 'oxarticle', 'bsd' )");
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl3")) . "', 'iShopId', '0', 'seourl3', 'oxarticle', 'csd' )");
-        $oDec = new oxSeoDecoder();
+        $oDec = oxNew('oxSeoDecoder');
         $this->assertEquals('seourl1', $oDec->UNITgetSeoUrl('obid', 0, 'iShopId'));
     }
 
@@ -463,7 +463,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $this->addToDatabase("insert into oxobject2category ( oxid, oxobjectid, oxcatnid, oxtime ) values ( '_x1', 'obid', 'cat1', 10 )", 'oxobject2category');
         $this->addToDatabase("insert into oxobject2category ( oxid, oxobjectid, oxcatnid, oxtime ) values ( '_x2', 'obid', 'bsd', 5 )", 'oxobject2category');
         $this->addToDatabase("insert into oxobject2category ( oxid, oxobjectid, oxcatnid, oxtime ) values ( '_x3', 'obid', 'cat3', 15 )", 'oxobject2category');
-        $oDec = new oxSeoDecoder();
+        $oDec = oxNew('oxSeoDecoder');
         $this->assertEquals('seourl2', $oDec->UNITgetSeoUrl('obid', 0, 'iShopId'));
     }
 }

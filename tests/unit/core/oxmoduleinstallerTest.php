@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -52,7 +52,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
         $oModule->expects($this->any())->method('getId')->will($this->returnValue('test1'));
         $oModule->expects($this->any())->method('getExtensions')->will($this->returnValue($aExtends));
 
-        $oModuleInstaller = new oxModuleInstaller();
+        $oModuleInstaller = oxNew('oxModuleInstaller');
 
         $this->getConfig()->setConfigParam("aModules", $aModulesBefore);
 
@@ -74,7 +74,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
         $aDisabledModulesBefore = array('test');
         $aDisabledModulesAfter = array();
 
-        $oModuleInstaller = new oxModuleInstaller();
+        $oModuleInstaller = oxNew('oxModuleInstaller');
 
         $oModule = $this->getMock('oxModule', array('getId', 'getExtensions'));
         $oModule->expects($this->any())->method('getId')->will($this->returnValue('test'));
@@ -106,7 +106,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
         $oModule->expects($this->any())->method('getId')->will($this->returnValue('test1'));
         $oModule->expects($this->any())->method('getExtensions')->will($this->returnValue(array('oxtest' => 'test1/mytest1')));
 
-        $oModuleInstaller = new oxModuleInstaller();
+        $oModuleInstaller = oxNew('oxModuleInstaller');
 
         $this->getConfig()->setConfigParam("aModules", $aModulesBefore);
         $this->assertEquals($aModulesBefore, $this->getConfig()->getConfigParam("aModules"));
@@ -136,7 +136,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
         $oModule->setNonPublicVar('_aModule', $aModule);
         $oModule->setNonPublicVar('_blMetadata', true);
 
-        $oModuleInstaller = new oxModuleInstaller();
+        $oModuleInstaller = oxNew('oxModuleInstaller');
 
         $aDisabledModules = $this->getConfigParam('aDisabledModules');
         $aDisabledModules[] = $sModuleId;
@@ -156,7 +156,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
      */
     public function testBuildModuleChainsEmpty()
     {
-        $oModuleInstaller = new oxModuleInstaller();
+        $oModuleInstaller = oxNew('oxModuleInstaller');
 
         $aModules = array();
         $aModulesArray = array();
@@ -168,7 +168,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
      */
     public function testBuildModuleChainsSingle()
     {
-        $oModuleInstaller = new oxModuleInstaller();
+        $oModuleInstaller = oxNew('oxModuleInstaller');
 
         $aModules = array('oxtest' => 'test/mytest');
         $aModulesArray = array('oxtest' => array('test/mytest'));
@@ -180,7 +180,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
      */
     public function testBuildModuleChains()
     {
-        $oModuleInstaller = new oxModuleInstaller();
+        $oModuleInstaller = oxNew('oxModuleInstaller');
 
         $aModules = array('oxtest' => 'test/mytest&test1/mytest1');
         $aModulesArray = array('oxtest' => array('test/mytest', 'test1/mytest1'));

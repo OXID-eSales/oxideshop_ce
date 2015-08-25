@@ -64,7 +64,7 @@ class Unit_Core_oxCompanyVatInValidatorTest extends OxidTestCase
         $oCountry = oxNew('oxCountry');
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
-        $oChecker = new oxCompanyVatInCountryChecker();
+        $oChecker = oxNew('oxCompanyVatInCountryChecker');
         $oValidator->addChecker($oChecker);
 
         $this->assertSame(1, count($oValidator->getCheckers()));

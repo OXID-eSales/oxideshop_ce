@@ -184,10 +184,10 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $this->getConfig()->setConfigParam('iDebug', 0);
         $sTpl = __DIR__ ."/../testData//misc/testTempOut.tpl";
 
-        $oView = new oxview();
+        $oView = oxNew('oxview');
         $oView->addTplParam('articletitle', 'xxx');
 
-        $oUtilsView = new oxutilsview();
+        $oUtilsView = oxNew('oxutilsview');
         $oUtilsView->getSmarty(true);
 
         $this->assertEquals('xxx', $oUtilsView->getTemplateOutput($sTpl, $oView));
@@ -316,13 +316,13 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $oActView = $this->getMock('oxview', array('getViewData'));
         $oActView->expects($this->once())->method('getViewData')->will($this->returnValue($aData));
 
-        $oUtilsView = new oxutilsview();
+        $oUtilsView = oxNew('oxutilsview');
         $this->assertEquals('?', $oUtilsView->parseThroughSmarty('[{$shop->urlSeparator}]', time(), $oActView));
 
         $oActView = $this->getMock('oxview', array('getViewData'));
         $oActView->expects($this->once())->method('getViewData')->will($this->returnValue($aData));
 
-        $oUtilsView = new oxutilsview();
+        $oUtilsView = oxNew('oxutilsview');
         $this->assertEquals(array('!' => '?'), $oUtilsView->parseThroughSmarty(array('!' => array('%', '[{$shop->urlSeparator}]')), time(), $oActView));
     }
 
@@ -416,7 +416,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $oSmarty->expects($this->once())->method('register_prefilter')
             ->with($this->equalTo('smarty_prefilter_oxblock'));
 
-        $oUtilsView = new oxutilsview();
+        $oUtilsView = oxNew('oxutilsview');
         $oUtilsView->setConfig($config);
         $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
         $oUtilsView->UNITsmartyCompileCheck($oSmarty);
@@ -469,7 +469,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $oSmarty = $this->getMock('smarty', array('register_resource'));
         $oSmarty->expects($this->once())->method('register_resource');
 
-        $oUtilsView = new oxutilsview();
+        $oUtilsView = oxNew('oxutilsview');
         $oUtilsView->setConfig($config);
         $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
         $oUtilsView->UNITsmartyCompileCheck($oSmarty);
@@ -660,7 +660,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     {
         $config = oxNew('oxConfig');
 
-        $oUV = new oxUtilsView();
+        $oUV = oxNew('oxUtilsView');
         $oUV->setConfig($config);
 
         $oVfsStreamWrapper = $this->getVfsStreamWrapper();

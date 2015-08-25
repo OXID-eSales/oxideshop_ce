@@ -25,7 +25,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
 
     public function testGetCountry_set()
     {
-        $oChecker = new oxCompanyVatInCountryChecker();
+        $oChecker = oxNew('oxCompanyVatInCountryChecker');
         $oCountry = oxNew('oxCountry');
 
         $oChecker->setCountry($oCountry);
@@ -34,13 +34,13 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
 
     public function testGetCountry_empty()
     {
-        $oChecker = new oxCompanyVatInCountryChecker();
+        $oChecker = oxNew('oxCompanyVatInCountryChecker');
         $this->assertNull($oChecker->getCountry());
     }
 
     public function testValidate_countryNotSet()
     {
-        $oChecker = new oxCompanyVatInCountryChecker();
+        $oChecker = oxNew('oxCompanyVatInCountryChecker');
         $oVatIn = new oxCompanyVatIn('DE1234');
 
         $this->assertFalse($oChecker->validate($oVatIn));
@@ -55,7 +55,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
         $oCountry = oxNew('oxCountry');
         $oCountry->oxcountry__oxvatinprefix = new oxField($sCountryCode);
 
-        $oChecker = new oxCompanyVatInCountryChecker();
+        $oChecker = oxNew('oxCompanyVatInCountryChecker');
         $oChecker->setCountry($oCountry);
 
         $this->assertSame($blExpectValidationResult, $oChecker->validate($oVatIn));
@@ -81,7 +81,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
         $oCountry = oxNew('oxCountry');
         $oCountry->load('a7c40f633114e8fc6.25257477');
 
-        $oChecker = new oxCompanyVatInCountryChecker();
+        $oChecker = oxNew('oxCompanyVatInCountryChecker');
         $oChecker->setCountry($oCountry);
         $this->assertTrue($oChecker->validate($oVatIn));
     }
@@ -92,7 +92,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
         $oCountry = oxNew('oxCountry');
         $oCountry->oxcountry__oxvatinprefix = new oxField('DE');
 
-        $oChecker = new oxCompanyVatInCountryChecker();
+        $oChecker = oxNew('oxCompanyVatInCountryChecker');
         $oChecker->setCountry($oCountry);
         $oChecker->validate($oVatIn);
 
@@ -105,7 +105,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
         $oCountry = oxNew('oxCountry');
         $oCountry->oxcountry__oxvatinprefix = new oxField(1);
 
-        $oChecker = new oxCompanyVatInCountryChecker();
+        $oChecker = oxNew('oxCompanyVatInCountryChecker');
         $oChecker->setCountry($oCountry);
         $oChecker->validate($oVatIn);
 
@@ -118,7 +118,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
         $oCountry = oxNew('oxCountry');
         $oCountry->oxcountry__oxvatinprefix = new oxField('LT');
 
-        $oChecker = new oxCompanyVatInCountryChecker();
+        $oChecker = oxNew('oxCompanyVatInCountryChecker');
         $oChecker->setCountry($oCountry);
         $oChecker->validate($oVatIn);
 

@@ -60,11 +60,11 @@ class Unit_Core_oxSuperCfgTest extends OxidTestCase
         $oOxSuperCfg = oxNew('oxSuperCfg');
         $oOxSuperCfg->setUser(null);
         $this->getSession()->setVariable('usr', 'oxdefaultadmin');
-        $oActUser = new oxuser();
+        $oActUser = oxNew('oxuser');
         $oActUser->loadActiveUser();
         $this->assertEquals(oxADMIN_LOGIN, $oOxSuperCfg->getUser()->oxuser__oxusername->value);
         $this->getSession()->setVariable('usr', null);
-        $oActUser = new oxuser();
+        $oActUser = oxNew('oxuser');
         $oActUser->oxuser__oxusername = new oxField('testUser', oxField::T_RAW);
         $oOxSuperCfg->setUser($oActUser);
         $this->assertEquals('testUser', $oOxSuperCfg->getUser()->oxuser__oxusername->value);

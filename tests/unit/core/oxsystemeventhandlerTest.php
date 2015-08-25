@@ -39,7 +39,7 @@ class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
 
     public function testOnAdminLoginOnlineModuleVersionNotifier()
     {
-        $oSystemEventHandler = new oxSystemEventHandler();
+        $oSystemEventHandler = oxNew('oxSystemEventHandler');
 
         $oModuleNotifierMock = $this->getMock("oxOnlineModuleVersionNotifier", array(), array(), '', false);
         $oModuleNotifierMock->expects($this->once())->method("versionNotify");
@@ -53,7 +53,7 @@ class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
 
     public function testOnShopStartSendShopInformationForFirstTime()
     {
-        $oSystemEventHandler = new oxSystemEventHandler();
+        $oSystemEventHandler = oxNew('oxSystemEventHandler');
 
         $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         // Test that shop online validation was performed.
@@ -73,7 +73,7 @@ class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
         $this->setConfigParam('sOnlineLicenseNextCheckTime', $sOnlineLicenseInvalidTime);
         $this->setConfigParam('sOnlineLicenseCheckTime', date('H:i:s'));
 
-        $oSystemEventHandler = new oxSystemEventHandler();
+        $oSystemEventHandler = oxNew('oxSystemEventHandler');
 
         $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         // Test that shop online validation was performed.
@@ -91,7 +91,7 @@ class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
         $this->setConfigParam('sOnlineLicenseNextCheckTime', time() + (24 * 60 * 60));
         $this->setConfigParam('sOnlineLicenseCheckTime', date('H:i:s'));
 
-        $oSystemEventHandler = new oxSystemEventHandler();
+        $oSystemEventHandler = oxNew('oxSystemEventHandler');
 
         $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         // Test that shop online validation was not performed.
@@ -110,7 +110,7 @@ class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
         $oUtils = oxRegistry::get('oxUtils');
         $oUtils->setSearchEngine(true);
 
-        $oSystemEventHandler = new oxSystemEventHandler();
+        $oSystemEventHandler = oxNew('oxSystemEventHandler');
 
         $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         // Test that shop online validation was not performed.
@@ -125,7 +125,7 @@ class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
 
     public function testOnShopStartSetWhenToSendInformationForFirstTimeCorrectFormat()
     {
-        $oSystemEventHandler = new oxSystemEventHandler();
+        $oSystemEventHandler = oxNew('oxSystemEventHandler');
 
         $oOnlineLicenseCheck = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
@@ -154,7 +154,7 @@ class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
 
     public function testOnShopStartDoNotChangeWhenToSendInformation()
     {
-        $oSystemEventHandler = new oxSystemEventHandler();
+        $oSystemEventHandler = oxNew('oxSystemEventHandler');
 
         $oOnlineLicenseCheck = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
@@ -191,7 +191,7 @@ class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
         /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
         $oOnlineLicenseCheck = $oOnlineLicenseCheckMock;
 
-        $oSystemEventHandler = new oxSystemEventHandler();
+        $oSystemEventHandler = oxNew('oxSystemEventHandler');
         $oSystemEventHandler->setOnlineLicenseCheck($oOnlineLicenseCheck);
 
         $oSystemEventHandler->onShopStart();
@@ -202,7 +202,7 @@ class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
 
     public function testFormationOfOnlineLicenseCheckObjectWhenNotSet()
     {
-        $oSystemEventHandler = new oxSystemEventHandler();
+        $oSystemEventHandler = oxNew('oxSystemEventHandler');
         $this->assertInstanceOf('oxOnlineLicenseCheck', $oSystemEventHandler->getOnlineLicenseCheck());
     }
 
@@ -222,7 +222,7 @@ class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
         $this->_prepareCurrentTime(1400000000);
         $this->getConfig()->setConfigParam('blLoadDynContents', true);
 
-        $oSystemEventHandler = new oxSystemEventHandler();
+        $oSystemEventHandler = oxNew('oxSystemEventHandler');
 
         $oOnlineLicenseCheck = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         $oOnlineLicenseCheck->expects($this->once())->method("validateShopSerials");
@@ -238,7 +238,7 @@ class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
         $this->_prepareCurrentTime(1400000000);
         $this->getConfig()->setConfigParam('blLoadDynContents', false);
 
-        $oSystemEventHandler = new oxSystemEventHandler();
+        $oSystemEventHandler = oxNew('oxSystemEventHandler');
 
         $oOnlineLicenseCheck = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         $oOnlineLicenseCheck->expects($this->never())->method("validateShopSerials");

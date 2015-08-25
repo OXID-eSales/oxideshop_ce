@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
 
     public function testGetRequiredModules()
     {
-        $oSysReq = new oxSysRequirements();
+        $oSysReq = oxNew('oxSysRequirements');
         $aRequiredModules = $oSysReq->getRequiredModules();
         $sCnt = 25;
         if (isAdmin()) {
@@ -101,7 +101,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
         }
 
         //
-        $oSysReq = new oxSysRequirements();
+        $oSysReq = oxNew('oxSysRequirements');
         $this->assertEquals($iModStat, $oSysReq->checkMysqlVersion());
         $this->assertEquals(0, $oSysReq->checkMysqlVersion('5'));
         $this->assertEquals(0, $oSysReq->checkMysqlVersion('5.0.1'));
@@ -132,7 +132,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
     {
         $sUrl = "http://www.oxidforge.org/wiki/Installation";
 
-        $oSubj = new oxSysRequirements();
+        $oSubj = oxNew('oxSysRequirements');
         $this->assertEquals($sUrl . "#PHP_version_at_least_5.3.25", $oSubj->getReqInfoUrl("php_version"));
         $this->assertEquals($sUrl, $oSubj->getReqInfoUrl("none"));
         $this->assertEquals($sUrl . "#Zend_Optimizer", $oSubj->getReqInfoUrl("zend_optimizer"));
@@ -146,7 +146,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
     public function testGetShopHostInfoFromConfig()
     {
         $this->getConfig()->setConfigParam('sShopURL', 'http://www.testshopurl.lt/testsubdir1/insideit2/');
-        $oSC = new oxSysRequirements();
+        $oSC = oxNew('oxSysRequirements');
         $this->assertEquals(
             array(
                  'host' => 'www.testshopurl.lt',
@@ -197,7 +197,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
     public function testGetShopSSLHostInfoFromConfig()
     {
         $this->getConfig()->setConfigParam('sSSLShopURL', 'http://www.testshopurl.lt/testsubdir1/insideit2/');
-        $oSC = new oxSysRequirements();
+        $oSC = oxNew('oxSysRequirements');
         $this->assertEquals(
             array(
                  'host' => 'www.testshopurl.lt',
@@ -252,7 +252,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
         $_SERVER['SERVER_PORT'] = null;
         $_SERVER['HTTP_HOST'] = 'www.testshopurl.lt';
 
-        $oSC = new oxSysRequirements();
+        $oSC = oxNew('oxSysRequirements');
         $this->assertEquals(
             array(
                  'host' => 'www.testshopurl.lt',

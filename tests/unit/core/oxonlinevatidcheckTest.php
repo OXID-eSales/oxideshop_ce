@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -40,7 +40,7 @@ class Unit_Core_oxOnlineVatIdCheckTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'writeToLog', '{ return $aA; }');
 
-        $oOnlineVatIdCheck = new oxOnlineVatIdCheck();
+        $oOnlineVatIdCheck = oxNew('oxOnlineVatIdCheck');
         $aResult = $oOnlineVatIdCheck->catchWarning(1, 1, 1, 1);
 
         $this->assertEquals(array("Warning: 1 in 1 on line 1", "EXCEPTION_LOG.txt"), $aResult);
@@ -193,7 +193,7 @@ class Unit_Core_oxOnlineVatIdCheckTest extends OxidTestCase
         $oCheckVat->countryCode = 'DE';
         $oCheckVat->vatNumber = '231450866';
 
-        $oOnlineVatCheck = new oxOnlineVatIdCheck();
+        $oOnlineVatCheck = oxNew('oxOnlineVatIdCheck');
         if (!$oOnlineVatCheck->UNITisServiceAvailable()) {
             $this->markTestSkipped('VAT check service is not available');
         }
@@ -315,7 +315,7 @@ class Unit_Core_oxOnlineVatIdCheckTest extends OxidTestCase
      */
     public function testGetWsdlUrl_default()
     {
-        $oOnline = new oxOnlineVatIdCheck();
+        $oOnline = oxNew('oxOnlineVatIdCheck');
         $this->assertEquals('http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl', $oOnline->getWsdlUrl());
     }
 
@@ -324,7 +324,7 @@ class Unit_Core_oxOnlineVatIdCheckTest extends OxidTestCase
      */
     public function testGetWsdlUrl_custom()
     {
-        $oOnline = new oxOnlineVatIdCheck();
+        $oOnline = oxNew('oxOnlineVatIdCheck');
         $this->getConfig()->setConfigParam("sVatIdCheckInterfaceWsdl", "sVatIdCheckInterfaceWsdl");
         $this->assertEquals("sVatIdCheckInterfaceWsdl", $oOnline->getWsdlUrl());
     }
@@ -334,7 +334,7 @@ class Unit_Core_oxOnlineVatIdCheckTest extends OxidTestCase
      */
     public function testIsDisabled()
     {
-        $oOnline = new oxOnlineVatIdCheck();
+        $oOnline = oxNew('oxOnlineVatIdCheck');
         $this->assertEquals(false, $oOnline->isDisabled());
 
         $this->getConfig()->setConfigParam("blVatIdCheckDisabled", "blVatIdCheckDisabled");

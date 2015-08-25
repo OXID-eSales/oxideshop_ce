@@ -37,7 +37,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $sExpUrl = "shop.com/index.php?param1=value1&amp;bonusid=111";
         $sExpUrl .= "&amp;lang={$iLang}";
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertEquals($sExpUrl, $oUtils->prepareCanonicalUrl("shop.com/index.php?param1=value1&amp;bonusid=111&amp;sid=1234"));
     }
 
@@ -48,7 +48,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
      */
     public function testCleanUrl()
     {
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertEquals("http://www.myoxideshop.com/index.php", $oUtils->cleanUrl("http://www.myoxideshop.com/index.php?param1=value1&param2=value2"));
         $this->assertEquals("http://www.myoxideshop.com/index.php?param2=value2", $oUtils->cleanUrl("http://www.myoxideshop.com/index.php?param1=value1&param2=value2", array("param1")));
     }
@@ -56,7 +56,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
     public function testGetBaseAddUrlParamsPE()
     {
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertEquals(array(), $oUtils->getBaseAddUrlParams());
     }
 
@@ -146,7 +146,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
      */
     public function testAppendUrl($sUrl, $aParams, $sExpectedUrl)
     {
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertEquals($sExpectedUrl, $oUtils->appendUrl($sUrl, $aParams));
     }
 
@@ -166,7 +166,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
      */
     public function testAppendUrlWithoutOverwriting($sUrl, $aParams, $sExpectedUrl)
     {
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertEquals($sExpectedUrl, $oUtils->appendUrl($sUrl, $aParams, false));
     }
 
@@ -188,7 +188,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
      */
     public function testAppendUrlWithFinalUrlForming($sUrl, $aParams, $sExtectedUrl)
     {
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertEquals($sExtectedUrl, $oUtils->appendUrl($sUrl, $aParams, true, true));
     }
 
@@ -210,14 +210,14 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
      */
     public function testAddBaseUrl($sUrl, $sExpectedUrl)
     {
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
 
         $this->assertEquals($sExpectedUrl, $oUtils->addShopHost($sUrl));
     }
 
     public function testProcessUrlWithParametersAdded()
     {
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
 
         $aParameters = array('param1' => 'value1', 'param2' => 'value2');
 
@@ -252,7 +252,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->getConfig()->setConfigParam('sDefaultLang', 0);
         $this->setLanguage(1);
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
 
         $sShopUrl = $this->getConfig()->getShopUrl();
         $this->assertEquals("$sShopUrl/anyUrl?lang=1", $oUtils->processUrl("$sShopUrl/anyUrl"));
@@ -265,7 +265,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $oSession->expects($this->any())->method('isSidNeeded')->will($this->returnValue(true));
         $oSession->setId('SID');
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         oxRegistry::set('oxSession', $oSession);
         $sShopUrl = $this->getConfig()->getShopUrl();
 
@@ -282,7 +282,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->getConfig()->setConfigParam('sDefaultLang', 0);
         $this->setLanguage(1);
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         oxRegistry::set('oxSession', $oSession);
 
         $this->assertEquals("anyUrl?lang=1&amp;force_sid=SID", $oUtils->processUrl("anyUrl"));
@@ -293,7 +293,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->getConfig()->setConfigParam('sDefaultLang', 0);
         $this->setLanguage(1);
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
 
         $this->assertEquals("http://www.external-url.com/anyUrl", $oUtils->processUrl("http://www.external-url.com/anyUrl"));
     }
@@ -303,7 +303,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->getSession()->setVariable('blSidNeeded', true);
         $this->getSession()->setId('SID');
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
 
         $this->assertEquals("http://www.external-url.com/anyUrl", $oUtils->processUrl("http://www.external-url.com/anyUrl"));
     }
@@ -313,14 +313,14 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->getConfig()->setConfigParam('sDefaultLang', 0);
         $this->setLanguage(1);
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
 
         $this->assertEquals("anyUrl?param=val1&amp;lang=1&amp;", $oUtils->processUrl("anyUrl", false, array('param' => 'val1')));
     }
 
     public function testAppendParamSeparator()
     {
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertEquals("asd?", $oUtils->appendParamSeparator("asd"));
         $this->assertEquals("asd?", $oUtils->appendParamSeparator("asd?"));
         $this->assertEquals("asd&", $oUtils->appendParamSeparator("asd&"));
@@ -398,7 +398,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
      */
     public function testGetCurrentUrl($sHttps, $sHttpXForwarded, $sHttpHost, $sRequestUri, $sResult)
     {
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
 
         $oUtilsServer = $this->getMock('oxUtilsServer', array('getServerVar'));
         $oUtilsServer->expects($this->at(0))->method('getServerVar')->with($this->equalTo("HTTPS"))->will($this->returnValue($sHttps));
@@ -430,7 +430,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
      */
     public function testIsCurrentShopHost($sUrl, $blResult)
     {
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertSame($blResult, $oUtils->isCurrentShopHost($sUrl));
     }
 
@@ -440,7 +440,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->getConfig()->setConfigParam("sShopURL", 'http://shopHost');
         $this->getConfig()->setConfigParam("aLanguageURLs", array());
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertSame(true, $oUtils->isCurrentShopHost('http://shopHost'));
     }
 
@@ -451,7 +451,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->getConfig()->setConfigParam("sSSLShopURL", 'https://shopHost');
         $this->getConfig()->setConfigParam("aLanguageURLs", array());
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertSame(true, $oUtils->isCurrentShopHost('https://shopHost'));
     }
 
@@ -463,7 +463,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->getConfig()->setConfigParam("sShopURL", '');
         $this->getConfig()->setConfigParam("aLanguageURLs", array(0 => 'http://german.shopHost', 1 => 'http://english.shopHost'));
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertSame(true, $oUtils->isCurrentShopHost('http://english.shopHost'));
         $this->assertSame(false, $oUtils->isCurrentShopHost('http://german.shopHost'));
     }
@@ -477,7 +477,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->getConfig()->setConfigParam("aLanguageURLs", array(0 => 'http://german.shopHost', 1 => 'http://english.shopHost'));
         $this->getConfig()->setConfigParam("aLanguageSSLURLs", array(0 => 'https://german.shopHost.de', 1 => 'https://english.shopHost.en'));
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertSame(true, $oUtils->isCurrentShopHost('https://english.shopHost.en'));
         $this->assertSame(false, $oUtils->isCurrentShopHost('https://german.shopHost.de'));
     }
@@ -520,7 +520,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
      */
     public function testStringToParamsArray($sString, $aExpected)
     {
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertEquals($aExpected, $oUtils->stringToParamsArray($sString));
     }
 
@@ -556,7 +556,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $oConfig->expects($this->any())->method('getShopUrl')->will($this->returnValue($url));
         oxRegistry::set('oxConfig', $oConfig);
 
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertSame($host, $oUtils->getActiveShopHost());
     }
 
@@ -613,7 +613,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
      */
     public function testExtractsHostFromUrl($url, $host)
     {
-        $oUtils = new oxUtilsUrl();
+        $oUtils = oxNew('oxUtilsUrl');
         $this->assertSame($host, $oUtils->extractHost($url));
     }
 
@@ -635,7 +635,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
     {
         oxRegistry::getLang()->setBaseLanguage(0);
 
-        $utilsUrl = new oxUtilsUrl();
+        $utilsUrl = oxNew('oxUtilsUrl');
         $this->assertSame($expectedLanguageUrlParameter, $utilsUrl->getUrlLanguageParameter($languageId));
     }
 }

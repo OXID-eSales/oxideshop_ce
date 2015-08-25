@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Core_oxHeaderTest extends OxidTestCase
      */
     public function testGetHeader_default()
     {
-        $oHeader = new oxHeader();
+        $oHeader = oxNew('oxHeader');
         $this->assertEquals(array(), $oHeader->getHeader(), 'Default header should be empty as nothing is set.');
     }
 
@@ -46,7 +46,7 @@ class Unit_Core_oxHeaderTest extends OxidTestCase
      */
     public function testSetGetHeader()
     {
-        $oHeader = new oxHeader();
+        $oHeader = oxNew('oxHeader');
         $oHeader->setHeader("Some header");
         $this->assertEquals(array("Some header" . "\r\n"), $oHeader->getHeader(), 'Set header check.');
     }
@@ -59,7 +59,7 @@ class Unit_Core_oxHeaderTest extends OxidTestCase
      */
     public function testSetNonCacheable()
     {
-        $oHeader = new oxHeader();
+        $oHeader = oxNew('oxHeader');
         $oHeader->setNonCacheable();
         $this->assertEquals(array("Cache-Control: no-cache;" . "\r\n"), $oHeader->getHeader(), 'Cache header was NOT formated correctly.');
     }
@@ -89,7 +89,7 @@ class Unit_Core_oxHeaderTest extends OxidTestCase
      */
     public function testSetGetHeader_withNewLine_newLineRemoved($sNewLine)
     {
-        $oHeader = new oxHeader();
+        $oHeader = oxNew('oxHeader');
         $oHeader->setHeader("Some header" . $sNewLine . "2");
         $this->assertEquals(array("Some header2" . "\r\n"), $oHeader->getHeader(), 'Set header check.');
     }

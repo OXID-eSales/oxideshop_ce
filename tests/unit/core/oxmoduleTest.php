@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -116,7 +116,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
      */
     public function testLoadWhenModuleDoesNotExists()
     {
-        $oModule = new oxModule;
+        $oModule = oxNew('oxModule');
         $this->assertFalse($oModule->load('non_existing_module'));
     }
 
@@ -150,7 +150,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'title' => 'testModuleTitle'
         );
 
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
         $this->assertEquals("testModuleId", $oModule->getInfo("id"));
@@ -169,7 +169,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'description' => array("en" => "test EN value", "de" => "test DE value")
         );
 
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
         $this->assertEquals('testModuleTitle', $oModule->getInfo("title"));
@@ -191,7 +191,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->getConfig()->setConfigParam("aModules", $aModules);
 
         $aExtend = array('extend' => array());
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aExtend);
 
         $this->assertFalse($oModule->isActive());
@@ -208,7 +208,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->getConfig()->setConfigParam("aModules", $aModules);
 
         $aExtend = array('id' => 'test', 'extend' => array('oxtest' => 'test/mytest'));
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aExtend);
 
         $this->assertTrue($oModule->isActive());
@@ -225,7 +225,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->getConfig()->setConfigParam("aModules", $aModules);
 
         $aExtend = array('extend' => array('oxtest' => 'test/mytest'), 'id' => 'test');
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aExtend);
 
         $this->assertTrue($oModule->isActive());
@@ -239,7 +239,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     public function testIsActiveInactive()
     {
         $aModule = array('extend' => array('oxtest' => 'test/mytest'));
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
         $this->assertFalse($oModule->isActive());
@@ -256,7 +256,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->getConfig()->setConfigParam("aModules", $aModules);
 
         $aExtend = array('extend' => array('oxtest' => 'test/mytest'), 'id' => 'test');
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aExtend);
 
         $this->assertFalse($oModule->isActive());
@@ -273,7 +273,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->getConfig()->setConfigParam("aDisabledModules", $aDisabledModules);
 
         $aModule = array('id' => 'test');
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
         $this->assertFalse($oModule->isActive());
@@ -290,7 +290,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->getConfig()->setConfigParam("aDisabledModules", $aDisabledModules);
 
         $aModule = array('id' => 'test');
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
         $this->assertFalse($oModule->isActive());
@@ -384,7 +384,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $oConfig = $this->getMock('oxConfig', array('getModulesWithExtendedClass'));
         $oConfig->expects($this->any())->method('getModulesWithExtendedClass')->will($this->returnValue($aAlreadyActivatedModule));
 
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModuleToActivate);
         $oModule->setConfig($oConfig);
 
@@ -481,7 +481,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
         $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
 
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
 
         $this->assertEquals($aModulePaths, $oModule->getModulePaths());
     }
@@ -579,7 +579,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'id' => 'testModuleId'
         );
 
-        $oModule = new oxModule;
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
         $this->assertEquals('testModuleId', $oModule->getId());
@@ -592,7 +592,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'extend' => array('class' => 'vendor/module/path/class')
         );
 
-        $oModule = new oxModule;
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
         $this->assertEquals(array('class' => 'vendor/module/path/class'), $oModule->getExtensions());
@@ -604,7 +604,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'id' => 'testModuleId'
         );
 
-        $oModule = new oxModule;
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
         $this->assertEquals(array(), $oModule->getExtensions());
@@ -617,7 +617,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'files' => array('class' => 'vendor/module/path/class.php')
         );
 
-        $oModule = new oxModule;
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
         $this->assertEquals(array('class' => 'vendor/module/path/class.php'), $oModule->getFiles());
@@ -629,7 +629,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'id' => 'testModuleId'
         );
 
-        $oModule = new oxModule;
+        $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
         $this->assertEquals(array(), $oModule->getFiles());
@@ -715,7 +715,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
         $sModule = "invoicepdf/myorder";
 
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->getIdByPath($sModule);
         $this->assertEquals('invoicepdf', $oModule->getIdByPath($sModule));
     }
@@ -728,7 +728,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
         $sModule = "myorder";
 
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->getIdByPath($sModule);
         $this->assertEquals('myorder', $oModule->getIdByPath($sModule));
     }

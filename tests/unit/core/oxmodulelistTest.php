@@ -758,7 +758,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
     {
         $sModulesDir = $this->getConfig()->getModulesDir();
 
-        $oModuleList = new oxModuleList;
+        $oModuleList = oxNew('oxModuleList');
         $aModules = $oModuleList->getModulesFromDir($sModulesDir);
 
         $oModule = $aModules["invoicepdf"];
@@ -774,7 +774,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
     {
         $sModulesDir = $this->getConfig()->getModulesDir();
 
-        $oModuleList = new oxModuleList;
+        $oModuleList = oxNew('oxModuleList');
 
         $this->assertFalse($oModuleList->_isVendorDir($sModulesDir . "/invoicepdf"));
     }
@@ -790,7 +790,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
             ),
         );
         $this->setConfigParam("aModules", $aModules);
-        $oModuleList = new oxModuleList();
+        $oModuleList = oxNew('oxModuleList');
         $aDeletedExtRes = $oModuleList->getDeletedExtensions();
 
         $this->assertEquals($aDeletedExt, $aDeletedExtRes);
@@ -838,7 +838,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
 
     public function testGetModuleIds()
     {
-        $oModuleList = new oxModuleList();
+        $oModuleList = oxNew('oxModuleList');
         $aModuleExtensions = array(
             'oxarticle' => 'mod/testModule&mod2/testModule2/',
             'oxorder'   => 'oe/invoicepdf/models/invoicepdfoxorder'
@@ -863,7 +863,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
             'myext1' => array("title" => "test title 1")
         );
         $this->getConfig()->setConfigParam('aModuleFiles', $aModuleFiles);
-        $oModuleList = new oxModuleList();
+        $oModuleList = oxNew('oxModuleList');
 
         $this->assertSame($aModuleFiles, $oModuleList->getModuleFiles());
     }
@@ -872,14 +872,14 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('aModuleFiles', array());
 
-        $oModuleList = new oxModuleList();
+        $oModuleList = oxNew('oxModuleList');
 
         $this->assertSame(array(), $oModuleList->getModuleFiles());
     }
 
     public function testGetModuleExtensionsWithMultipleExtensions()
     {
-        $oModuleList = new oxModuleList();
+        $oModuleList = oxNew('oxModuleList');
         $aModuleExtensions = array(
             'oxArticle' => 'mod/articleExtension1&mod/articleExtension2&mod2/articleExtension3',
             'oxOrder'   => 'mod2/oxOrder',
@@ -902,7 +902,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
 
     public function testGetModuleExtensionsWithNoExtensions()
     {
-        $oModuleList = new oxModuleList();
+        $oModuleList = oxNew('oxModuleList');
 
         $this->getConfig()->setConfigParam('aModules', array());
 

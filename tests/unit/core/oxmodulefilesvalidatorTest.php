@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -39,7 +39,7 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         /** @var oxModule $oModule */
         $oModule = $oModuleStub;
 
-        $oModuleFilesValidator = new oxModuleFilesValidator();
+        $oModuleFilesValidator = oxNew('oxModuleFilesValidator');
         $this->assertTrue($oModuleFilesValidator->validate($oModule));
     }
 
@@ -74,7 +74,7 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         /** @var oxModule $oModule */
         $oModule = $oModuleStub;
 
-        $oModuleFilesValidator = new oxModuleFilesValidator();
+        $oModuleFilesValidator = oxNew('oxModuleFilesValidator');
         $this->assertFalse($oModuleFilesValidator->validate($oModule));
     }
 
@@ -118,7 +118,7 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         /** @var oxModule $oModule */
         $oModule = $oModuleStub;
 
-        $oModuleFilesValidator = new oxModuleFilesValidator();
+        $oModuleFilesValidator = oxNew('oxModuleFilesValidator');
         $oModuleFilesValidator->setPathToModuleDirectory($sPathToModules);
         $this->assertTrue($oModuleFilesValidator->validate($oModule));
     }
@@ -156,7 +156,7 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         /** @var oxModule $oModule */
         $oModule = $oModuleStub;
 
-        $oModuleFilesValidator = new oxModuleFilesValidator();
+        $oModuleFilesValidator = oxNew('oxModuleFilesValidator');
         $oModuleFilesValidator->validate($oModule);
         $this->assertSame($aMissingFiles, $oModuleFilesValidator->getMissingFiles());
     }
@@ -175,7 +175,7 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
             ->method('getExtensions')
             ->will($this->returnValue(array('class2' => 'vendor/module/path/class2')));
 
-        $oModuleFilesValidator = new oxModuleFilesValidator();
+        $oModuleFilesValidator = oxNew('oxModuleFilesValidator');
         $oModuleFilesValidator->validate($oModuleStub1);
         $oModuleFilesValidator->validate($oModuleStub2);
 

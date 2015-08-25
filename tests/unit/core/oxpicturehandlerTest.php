@@ -50,7 +50,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testGetThumbName()
     {
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $this->assertEquals('testPic_p1.jpg', $oPicHandler->getThumbName("testPic_p1.jpg"));
     }
 
@@ -59,7 +59,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testGetZoomName()
     {
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $this->assertEquals('testPic_p1.jpg', $oPicHandler->getZoomName("testPic_p1.jpg", 1));
     }
 
@@ -227,7 +227,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->deleteArticleMasterPicture($oArticle, 1, false);
 
         $oArticle->oxarticles__oxpic1 = new oxField("");
@@ -285,7 +285,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->deleteMainIcon($oArticle);
 
     }
@@ -305,7 +305,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->deleteMainIcon($oArticle);
     }
 
@@ -331,7 +331,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->deleteThumbnail($oArticle);
     }
 
@@ -350,7 +350,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->deleteThumbnail($oArticle);
     }
 
@@ -377,7 +377,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->deleteZoomPicture($oArticle, 2);
     }
 
@@ -398,7 +398,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->deleteZoomPicture($oArticle, 1);
     }
 
@@ -419,7 +419,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->deleteZoomPicture($oArticle, 1);
     }
 
@@ -446,13 +446,13 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->deleteZoomPicture($oArticle, 2);
     }
 
     public function testGetImageSize()
     {
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
 
         $this->assertEquals(array(15, 153), $oPicHandler->getImageSize(array('asd' => '12*56', 'dsa' => '15*153'), 'dsa'));
         $this->assertEquals(null, $oPicHandler->getImageSize(array('asd' => '12*56', 'dsa' => '15*153'), 'dsas'));
@@ -542,7 +542,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $config->setConfigParam('sAltImageUrl', 'http://alt/image/url');
         $config->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->setConfig($config);
 
         $this->assertEquals('https://ssl-alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg'));
@@ -557,7 +557,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $config->setConfigParam('sAltImageUrl', 'http://alt/image/url');
         $config->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->setConfig($config);
 
         $this->assertEquals('http://alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg'));
@@ -572,7 +572,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $config->setConfigParam('sAltImageUrl', 'http://alt/image/url');
         $config->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->setConfig($config);
 
         $this->assertEquals('https://ssl-alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg', true));
@@ -587,7 +587,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $config->setConfigParam('sAltImageUrl', 'http://alt/image/url');
         $config->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->setConfig($config);
 
         $this->assertEquals('http://alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg', false));
@@ -651,7 +651,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $sSize = $oConfig->getConfigParam('aDetailImageSizes');
         $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/380_340_75/30-360-back_p1_z_f_th_665.jpg';
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $this->assertEquals($sPath, $oPicHandler->getProductPicUrl("product/1/", "30-360-back_p1_z_f_th_665.jpg", $sSize, "oxpic1"));
     }
 
@@ -666,7 +666,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $sSize = $oConfig->getConfigParam('aDetailImageSizes');
         $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/380_340_75/nopic.jpg';
 
-        $oPicHandler = new oxPictureHandler();
+        $oPicHandler = oxNew('oxPictureHandler');
         $this->assertEquals($sPath, $oPicHandler->getProductPicUrl("product/1/", false, $sSize, "oxpic1"));
     }
 }

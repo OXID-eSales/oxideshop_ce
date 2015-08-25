@@ -98,7 +98,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testExtractDomain()
     {
-        $oUtils = new oxUtils();
+        $oUtils = oxNew('oxUtils');
         $this->assertEquals("oxid-esales.com", $oUtils->extractDomain("www.oxid-esales.com"));
         $this->assertEquals("oxid-esales.com", $oUtils->extractDomain("oxid-esales.com"));
         $this->assertEquals("127.0.0.1", $oUtils->extractDomain("127.0.0.1"));
@@ -128,7 +128,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     {
         $sLogMessage = $sLogFileName = md5(uniqid(rand(), true));
 
-        $oUtils = new oxUtils();
+        $oUtils = oxNew('oxUtils');
         $oUtils->writeToLog($sLogMessage, $sLogFileName);
 
         $this->_sTestLogFileName = $this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sLogFileName;
@@ -155,7 +155,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $sCacheName = time();
         $aLangCache = array("ggg" => "bbb");
 
-        $oUtils = new oxutils();
+        $oUtils = oxNew('oxutils');
         $oUtils->setLangCache($sCacheName, $aLangCache);
 
         $this->assertEquals($aLangCache, $oUtils->getLangCache($sCacheName));
@@ -167,7 +167,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testSeoIsActive()
     {
         // as now SEO is on by default
-        $oUtils = new oxutils();
+        $oUtils = oxNew('oxutils');
 
         $oConfig = $oUtils->getConfig();
         $oConfig->setConfigParam('aSeoModes', array('testshop' => array(2 => false, 3 => true)));
@@ -593,7 +593,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testToFromStaticCache()
     {
-        $oUtils = new oxutils();
+        $oUtils = oxNew('oxutils');
 
         $sName = "SomeName";
         $mContent = "SomeContent";
@@ -616,7 +616,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testCleanStaticCacheSpecific()
     {
-        $oUtils = new oxutils();
+        $oUtils = oxNew('oxutils');
 
         $sName1 = "SomeName";
         $mContent1 = "SomeContent";
@@ -638,7 +638,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testCleanStaticCacheFullClean()
     {
 
-        $oUtils = new oxutils();
+        $oUtils = oxNew('oxutils');
 
         $sName1 = "SomeName";
         $mContent1 = "SomeContent";
@@ -661,7 +661,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $sName = "testFileCache";
         $sInput = "test_test_test";
 
-        $oUtils = new oxutils();
+        $oUtils = oxNew('oxutils');
         $oUtils->toFileCache($sName, $sInput);
         $this->assertEquals($sInput, $oUtils->fromFileCache($sName));
     }
@@ -673,7 +673,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $sInput1 = "test_test_test";
         $sInput2 = "test_test";
 
-        $oUtils = new oxutils();
+        $oUtils = oxNew('oxutils');
         $oUtils->toFileCache($sName1, $sInput1);
         $oUtils->toFileCache($sName2, $sInput2);
         $this->assertEquals($sInput1, $oUtils->fromFileCache($sName1));
@@ -687,7 +687,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $sInput1 = "test_test_test";
         $sInput2 = "test_test";
 
-        $oUtils = new oxutils();
+        $oUtils = oxNew('oxutils');
         $oUtils->toFileCache($sName1, $sInput1);
         $this->assertEquals($sInput1, $oUtils->fromFileCache($sName1));
         $oUtils->toFileCache($sName2, $sInput2);
@@ -938,7 +938,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testAddUrlParameters()
     {
-        $oUtils = new oxUtils();
+        $oUtils = oxNew('oxUtils');
 
         $sURL = 'http://www.url.com';
         $aParams = array('string' => 'someString', 'bool1' => false, 'bool2' => true, 'int' => 1234, 'float' => 123.45, 'negfloat' => -123.45);
@@ -954,7 +954,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testOxMimeContentType()
     {
-        $oUtils = new oxUtils();
+        $oUtils = oxNew('oxUtils');
         $sFile = 'asdnasd/asdasd.asd.ad.ad.asd.gif';
         $this->assertEquals('image/gif', $oUtils->oxMimeContentType($sFile));
 
@@ -976,7 +976,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     {
         $sTests = "myblaaFooString!";
         $sKey = "oxid987654321";
-        $oUtils = new oxUtils();
+        $oUtils = oxNew('oxUtils');
 
         $sCode = $oUtils->strMan($sTests, $sKey);
         $this->assertNotEquals($sTests, $sCode);
@@ -1082,7 +1082,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testFromFileCacheEmpty()
     {
-        $oUtils = new oxutils();
+        $oUtils = oxNew('oxutils');
         $sCacheHit = $oUtils->fromFileCache("notexistantkey");
         $this->assertFalse($sCacheHit === false);
         $this->assertNull($sCacheHit);
@@ -1090,14 +1090,14 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testCheckUrlEndingSlash()
     {
-        $oUtils = new oxutils();
+        $oUtils = oxNew('oxutils');
         $this->assertEquals("http://www.site.de/", $oUtils->checkUrlEndingSlash("http://www.site.de/"));
         $this->assertEquals("http://www.site.de/", $oUtils->checkUrlEndingSlash("http://www.site.de"));
     }
 
     public function testCacheRaceConditions0Size()
     {
-        $oUtils = new oxutils();
+        $oUtils = oxNew('oxutils');
         $sFileName = $oUtils->getCacheFilePath('testCache1');
         @unlink($sFileName);
         $oUtils->toFileCache('testCache1', 'teststs');
@@ -1108,7 +1108,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testCacheRaceConditionsNon0Size()
     {
-        $oUtils = new oxutils();
+        $oUtils = oxNew('oxutils');
         $sFileName = $oUtils->getCacheFilePath('testCache2');
         @unlink($sFileName);
         $oUtils->toFileCache('testCache2', 'teststs');
@@ -1120,8 +1120,8 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testCacheRaceConditionsIgnoredBySisterProcess()
     {
-        $oUtils1 = new oxutils();
-        $oUtils2 = new oxutils();
+        $oUtils1 = oxNew('oxutils');
+        $oUtils2 = oxNew('oxutils');
         $sFileName = $oUtils1->getCacheFilePath('testCache3');
         @unlink($sFileName);
         $oUtils1->toFileCache('testCache3', 'instance1111');
@@ -1136,7 +1136,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testCachingLockRelease()
     {
         clearstatcache();
-        $oUtils1 = new oxutils();
+        $oUtils1 = oxNew('oxutils');
         $sFileName = $oUtils1->getCacheFilePath('testCache3');
         @unlink($sFileName);
         $this->assertFalse(file_exists($sFileName));
@@ -1151,7 +1151,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $this->assertEquals(serialize(array('content' => 'instance1111')), file_get_contents($sFileName));
         $this->assertNotEquals(0, filesize($sFileName));
 
-        $oUtils2 = new oxutils();
+        $oUtils2 = oxNew('oxutils');
         $oUtils2->toFileCache('testCache3', 'instance2222');
         clearstatcache();
         $this->assertTrue(file_exists($sFileName));
@@ -1171,14 +1171,14 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testCanPreview()
     {
         $this->setRequestParameter("preview", null);
-        $oUtils = new oxUtils();
+        $oUtils = oxNew('oxUtils');
         $this->assertNull($oUtils->canPreview());
 
         $this->setRequestParameter("preview", "132");
         oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return "123"; }');
         $this->assertFalse($oUtils->canPreview());
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
         $oUtils = $this->getMock("oxUtils", array("getUser"));
@@ -1296,7 +1296,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testGetCacheMetaSetCacheMeta()
     {
-        $oUtils = new oxUtils();
+        $oUtils = oxNew('oxUtils');
         $oUtils->setCacheMeta("xxx", "yyy");
 
         $this->assertFalse($oUtils->getCacheMeta("yyy"));
@@ -1315,7 +1315,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
             fwrite($hFile, serialize("test"));
             fclose($hFile);
 
-            $oUtils = new oxUtils();
+            $oUtils = oxNew('oxUtils');
             $this->assertEquals("test", $oUtils->UNITreadFile($sFilePath));
 
             return;
@@ -1336,7 +1336,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
             fwrite($hFile, '<?php $_aCacheContents = "test123";');
             fclose($hFile);
 
-            $oUtils = new oxUtils();
+            $oUtils = oxNew('oxUtils');
             $this->assertEquals("test123", $oUtils->UNITincludeFile($sFilePath));
 
             return;
@@ -1367,11 +1367,11 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     {
         $this->setTime(10);
 
-        $oUtils = new oxUtils();
+        $oUtils = oxNew('oxUtils');
         $oUtils->toFileCache('anykey', 'test', 10);
         $oUtils->commitFileCache();
 
-        $oUtils2 = new oxUtils();
+        $oUtils2 = oxNew('oxUtils');
 
         $this->setTime(15);
         $this->assertEquals('test', $oUtils2->fromFileCache('anykey'));
@@ -1383,11 +1383,11 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testGetTtlCachingTooLate()
     {
         $this->setTime(10);
-        $oUtils = new oxUtils();
+        $oUtils = oxNew('oxUtils');
         $oUtils->toFileCache('otherkey', 'test', 10);
         $oUtils->commitFileCache();
 
-        $oUtils2 = new oxUtils();
+        $oUtils2 = oxNew('oxUtils');
 
         $this->setTime(145);
         $this->assertEquals(null, $oUtils2->fromFileCache('otherkey'));
@@ -1398,7 +1398,11 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testGetEditionCacheFilePrefix()
     {
-        $utils = new oxUtils();
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
+            $this->markTestSkipped('This test is for Community edition only');
+        }
+
+        $utils = oxNew('oxUtils');
         $expected = '';
         $this->assertSame($expected, $utils->getEditionCacheFilePrefix());
     }

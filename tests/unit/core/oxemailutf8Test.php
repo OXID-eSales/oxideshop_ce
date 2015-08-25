@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -50,7 +50,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
      */
     public function testGetCharset()
     {
-        $oEmail = new oxEmail();
+        $oEmail = oxNew('oxEmail');
         $this->assertEquals("UTF-8", $oEmail->getCharset());
     }
 
@@ -61,7 +61,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
      */
     public function testGetCurrency()
     {
-        $oEmail = new oxEmail();
+        $oEmail = oxNew('oxEmail');
         $this->assertEquals("€", $oEmail->getCurrency()->sign);
     }
 
@@ -97,7 +97,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
         $oBasket->expects($this->any())->method('getCosts')->will($this->returnValue($oPrice));
         $oBasket->expects($this->any())->method('getBruttoSum')->will($this->returnValue(7));
 
-        $oPayment = new oxPayment();
+        $oPayment = oxNew('oxPayment');
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
         $oUser = oxNew("oxuser");

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -29,7 +29,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
     public function tearDown()
     {
         parent::tearDown();
-        $oUtilsDate = new oxUtilsDate();
+        $oUtilsDate = oxNew('oxUtilsDate');
         oxRegistry::set('oxUtilsDate', $oUtilsDate);
     }
 
@@ -38,11 +38,11 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $aServers = array('serverNameHash1' => array('timestamp' => 'timestamp'));
         $this->getConfig()->setConfigParam('aServersData', $aServers);
 
-        $oExpectedServer = new oxApplicationServer();
+        $oExpectedServer = oxNew('oxApplicationServer');
         $oExpectedServer->setId('serverNameHash1');
         $oExpectedServer->setTimestamp('timestamp');
 
-        $oServerList = new oxServersManager();
+        $oServerList = oxNew('oxServersManager');
         $this->assertEquals($oExpectedServer, $oServerList->getServer('serverNameHash1'));
     }
 
@@ -55,11 +55,11 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         );
         $this->getConfig()->setConfigParam('aServersData', $aServers);
 
-        $oExpectedServer = new oxApplicationServer();
+        $oExpectedServer = oxNew('oxApplicationServer');
         $oExpectedServer->setId('serverNameHash2');
         $oExpectedServer->setTimestamp('timestamp2');
 
-        $oServerList = new oxServersManager();
+        $oServerList = oxNew('oxServersManager');
         $this->assertEquals($oExpectedServer, $oServerList->getServer('serverNameHash2'));
     }
 
@@ -67,10 +67,10 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('aServersData', null);
 
-        $oExpectedServer = new oxApplicationServer();
+        $oExpectedServer = oxNew('oxApplicationServer');
         $oExpectedServer->setId('serverNameHash1');
 
-        $oServerList = new oxServersManager();
+        $oServerList = oxNew('oxServersManager');
         $this->assertEquals($oExpectedServer, $oServerList->getServer('serverNameHash1'));
     }
 
@@ -78,7 +78,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('aServersData', null);
 
-        $oServer = new oxApplicationServer();
+        $oServer = oxNew('oxApplicationServer');
         $oServer->setId('serverNameHash1');
         $oServer->setTimestamp('timestamp');
         $oServer->setIp('127.0.0.1');
@@ -87,7 +87,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $oServer->setIsValid();
 
 
-        $oServerList = new oxServersManager();
+        $oServerList = oxNew('oxServersManager');
         $oServerList->saveServer($oServer);
 
         $aExpectedServerData = array(
@@ -120,7 +120,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                             )
         );
 
-        $oServer = new oxApplicationServer();
+        $oServer = oxNew('oxApplicationServer');
         $oServer->setId('serverNameHash2');
         $oServer->setTimeStamp('timestampUpdated');
         $oServer->setIp('127.0.0.255');
@@ -128,7 +128,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $oServer->setLastAdminUsage('adminUsageTimestampUpdated');
         $oServer->setIsValid();
 
-        $oServerList = new oxServersManager();
+        $oServerList = oxNew('oxServersManager');
         $oServerList->saveServer($oServer);
 
         $aExpectedServerData = array(
@@ -154,7 +154,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                             )
         );
 
-        $oServer = new oxApplicationServer();
+        $oServer = oxNew('oxApplicationServer');
         $oServer->setId('serverNameHash1');
         $oServer->setTimeStamp('timestampUpdated');
         $oServer->setIp('127.0.0.1');
@@ -162,7 +162,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $oServer->setLastAdminUsage('adminUsageTimestampUpdated');
         $oServer->setIsValid(false);
 
-        $oServerList = new oxServersManager();
+        $oServerList = oxNew('oxServersManager');
         $oServerList->saveServer($oServer);
 
         $aExpectedServerData = array(
@@ -213,7 +213,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
         $this->getConfig()->setConfigParam('aServersData', $aStoredData);
 
-        $oManager = new oxServersManager();
+        $oManager = oxNew('oxServersManager');
 
         $this->assertEquals($aServers, $oManager->getServers());
     }
@@ -243,7 +243,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
         $this->assertSame(2, count($this->getConfig()->getConfigParam('aServersData')));
 
-        $oManager = new oxServersManager();
+        $oManager = oxNew('oxServersManager');
         $oManager->deleteServer('serverNameHash1');
 
         $this->assertSame(1, count($this->getConfig()->getConfigParam('aServersData')));
@@ -275,7 +275,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
         $this->getConfig()->setConfigParam('aServersData', $aStoredData);
 
-        $oManager = new oxServersManager();
+        $oManager = oxNew('oxServersManager');
         $oManager->markInActiveServers();
 
         $this->assertSame(1, count($oManager->getServers()));
@@ -307,7 +307,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
         $this->getConfig()->setConfigParam('aServersData', $aStoredData);
 
-        $oManager = new oxServersManager();
+        $oManager = oxNew('oxServersManager');
         $oManager->markInActiveServers();
 
         $this->assertSame(2, count($oManager->getServers()));
@@ -339,7 +339,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
         $this->getConfig()->setConfigParam('aServersData', $aStoredData);
 
-        $oManager = new oxServersManager();
+        $oManager = oxNew('oxServersManager');
         $oManager->deleteInActiveServers();
 
         $this->assertSame(2, count($this->getConfig()->getConfigParam('aServersData')));
@@ -371,7 +371,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
         $this->getConfig()->setConfigParam('aServersData', $aStoredData);
 
-        $oManager = new oxServersManager();
+        $oManager = oxNew('oxServersManager');
         $oManager->deleteInActiveServers();
 
         $this->assertSame(1, count($this->getConfig()->getConfigParam('aServersData')));

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -88,7 +88,7 @@ class Unit_Setup_oxSetupUtilsTest extends OxidTestCase
 
         $sFilePath = getShopBasePath() . "setup/en/{$sLicenseFile}";
 
-        $oUtils = new oxSetupUtils();
+        $oUtils = oxNew('oxSetupUtils');
         $this->assertEquals(file_get_contents($sFilePath), $oUtils->getFileContents($sFilePath));
     }
 
@@ -112,7 +112,7 @@ class Unit_Setup_oxSetupUtilsTest extends OxidTestCase
         $aParams['sCompileDir'] = $aParams['sShopDir'] . $sTmp;
         $aParams['sShopURL'] = "http://127.0.0.1:1001/ee440setup/";
 
-        $oUtils = new oxSetupUtils();
+        $oUtils = oxNew('oxSetupUtils');
         $this->assertEquals($aParams, $oUtils->getDefaultPathParams());
     }
 
@@ -136,7 +136,7 @@ class Unit_Setup_oxSetupUtilsTest extends OxidTestCase
         $aParams['sCompileDir'] = $aParams['sShopDir'] . $sTmp;
         $aParams['sShopURL'] = "http://127.0.0.1:1001/ee440setup/";
 
-        $oUtils = new oxSetupUtils();
+        $oUtils = oxNew('oxSetupUtils');
         $this->assertEquals($aParams, $oUtils->getDefaultPathParams());
     }
 
@@ -152,7 +152,7 @@ class Unit_Setup_oxSetupUtilsTest extends OxidTestCase
             $sValue = current($_ENV);
             $sName = key($_ENV);
 
-            $oUtils = new oxSetupUtils();
+            $oUtils = oxNew('oxSetupUtils');
             $this->assertEquals($sValue, $oUtils->getEnvVar($sName));
         }
     }
@@ -167,7 +167,7 @@ class Unit_Setup_oxSetupUtilsTest extends OxidTestCase
         $_POST["testPostVarName"] = "testPostVarValue";
         $_GET["testGetVarName"] = "testGetVarValue";
 
-        $oUtils = new oxSetupUtils();
+        $oUtils = oxNew('oxSetupUtils');
         $this->assertEquals("testPostVarValue", $oUtils->getRequestVar("testPostVarName"));
         $this->assertEquals("testGetVarValue", $oUtils->getRequestVar("testGetVarName"));
     }
@@ -179,7 +179,7 @@ class Unit_Setup_oxSetupUtilsTest extends OxidTestCase
      */
     public function testPreparePath()
     {
-        $oUtils = new oxSetupUtils();
+        $oUtils = oxNew('oxSetupUtils');
         $this->assertEquals("c:/www/oxid", $oUtils->preparePath('c:\\www\\oxid\\'));
         $this->assertEquals("/htdocs/eshop", $oUtils->preparePath('/htdocs/eshop/'));
         $this->assertEquals("/o/x/i/d", $oUtils->preparePath('/o/x/i/d/'));
@@ -192,7 +192,7 @@ class Unit_Setup_oxSetupUtilsTest extends OxidTestCase
      */
     public function testExtractBasePath()
     {
-        $oUtils = new oxSetupUtils();
+        $oUtils = oxNew('oxSetupUtils');
         $this->assertEquals("nothing", $oUtils->extractRewriteBase("nothing"));
         $this->assertEquals("/folder", $oUtils->extractRewriteBase("http://www.shop.com/folder/"));
         $this->assertEquals("www.shop.com/folder", $oUtils->extractRewriteBase("www.shop.com/folder/"));
@@ -207,7 +207,7 @@ class Unit_Setup_oxSetupUtilsTest extends OxidTestCase
      */
     public function testIsValidEmail()
     {
-        $oUtils = new oxSetupUtils();
+        $oUtils = oxNew('oxSetupUtils');
         $this->assertFalse($oUtils->isValidEmail("admin"));
         $this->assertTrue($oUtils->isValidEmail("shop@admin.com"));
     }

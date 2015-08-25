@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -35,7 +35,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
      */
     public function testSetTitleAndGetTitle()
     {
-        $oSetup = new OxSetup();
+        $oSetup = oxNew('OxSetup');
         $oSetup->setTitle("testTitle");
         $this->assertEquals("testTitle", $oSetup->getTitle());
     }
@@ -47,7 +47,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
      */
     public function testSetMessageAndGetMessage()
     {
-        $oSetup = new OxSetup();
+        $oSetup = oxNew('OxSetup');
         $oSetup->setMessage("testTMessage");
         $this->assertEquals("testTMessage", $oSetup->getMessage());
     }
@@ -75,7 +75,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
      */
     public function testSetNextStepAndGetNextStep()
     {
-        $oSetup = new OxSetup();
+        $oSetup = oxNew('OxSetup');
         $oSetup->setNextStep("testStep");
         $this->assertEquals("testStep", $oSetup->getNextStep());
     }
@@ -88,7 +88,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
      */
     public function testAlreadySetUp()
     {
-        $oSetup = new oxSetup();
+        $oSetup = oxNew('oxSetup');
         $this->assertTrue($oSetup->alreadySetUp());
     }
 
@@ -102,7 +102,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
         $sBaseShopId = 'oxbaseshop';
 
 
-        $oSetup = new oxSetup();
+        $oSetup = oxNew('oxSetup');
         $this->assertEquals($sBaseShopId, $oSetup->getShopId());
     }
 
@@ -117,7 +117,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
 
         $iCount = 9;
 
-        $oSetup = new oxSetup();
+        $oSetup = oxNew('oxSetup');
         $this->assertEquals($iCount, count($oSetup->getSteps()));
     }
 
@@ -128,7 +128,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
      */
     public function testGetStep()
     {
-        $oSetup = new oxSetup();
+        $oSetup = oxNew('oxSetup');
         $this->assertEquals(100, $oSetup->getStep("STEP_SYSTEMREQ"));
         $this->assertNull($oSetup->getStep("TESTID"));
     }
@@ -140,7 +140,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
      */
     public function testGetVersionPrefix()
     {
-        $oSetup = new oxSetup();
+        $oSetup = oxNew('oxSetup');
         $sVerPrefix = '';
 
 
@@ -154,7 +154,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
      */
     public function testGetModuleClass()
     {
-        $oSetup = new oxSetup();
+        $oSetup = oxNew('oxSetup');
         $this->assertEquals('pass', $oSetup->getModuleClass(2));
         $this->assertEquals('pmin', $oSetup->getModuleClass(1));
         $this->assertEquals('null', $oSetup->getModuleClass(-1));

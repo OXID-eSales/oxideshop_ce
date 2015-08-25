@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -60,7 +60,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetMessages()
     {
-        $oSetupView = new oxsetupView();
+        $oSetupView = oxNew('oxsetupView');
         $this->assertEquals(array(), $oSetupView->getMessages());
     }
 
@@ -71,7 +71,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testSetMessage()
     {
-        $oSetupView = new oxsetupView();
+        $oSetupView = oxNew('oxsetupView');
         $oSetupView->setMessage("msg1");
         $this->assertEquals(array("msg1"), $oSetupView->getMessages());
         $oSetupView->setMessage("msg2");
@@ -102,7 +102,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testSetViewParamGetViewParam()
     {
-        $oSetupView = new oxsetupView();
+        $oSetupView = oxNew('oxsetupView');
         $oSetupView->setViewParam("testParamName", "testParamValue");
         $this->assertEquals("testParamValue", $oSetupView->getViewParam("testParamName"));
     }
@@ -174,7 +174,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetImageDir()
     {
-        $oSetupView = new oxsetupView();
+        $oSetupView = oxNew('oxsetupView');
         $this->assertEquals(getInstallPath() . 'out/admin/img', $oSetupView->getImageDir());
     }
 
@@ -215,7 +215,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     {
         $sUrl = "http://www.oxidforge.org/wiki/Installation";
 
-        $oSetupView = new oxsetupView();
+        $oSetupView = oxNew('oxsetupView');
         $this->assertEquals($sUrl . "#PHP_version_at_least_5.3.25", $oSetupView->getReqInfoUrl("php_version", false));
         $this->assertEquals($sUrl, $oSetupView->getReqInfoUrl("none", false));
         $this->assertEquals($sUrl . "#Zend_Optimizer", $oSetupView->getReqInfoUrl("zend_optimizer", false));

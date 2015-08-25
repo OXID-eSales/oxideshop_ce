@@ -77,7 +77,7 @@ class BasketConstruct
         $aVoucherIDs = $this->_setVouchers($aCosts['voucherserie']);
 
         // basket preparation
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
 
         // setup and login user for basket
         if (empty($aUser)) {
@@ -310,7 +310,7 @@ class BasketConstruct
         }
         if ($aTrustedShop['payments']) {
             foreach ($aTrustedShop['payments'] as $sShopPayId => $sTsPayId) {
-                $aPayment = new oxPayment();
+                $aPayment = oxNew('oxPayment');
                 if ($aPayment->load($sShopPayId)) {
                     $aPayment->oxpayments__oxtspaymentid = new oxField($sTsPayId);
                     $aPayment->save();
@@ -424,7 +424,7 @@ class BasketConstruct
         $aPay = array();
         foreach ($aPayments as $iKey => $aPayment) {
             // add discounts
-            $oPayment = new oxPayment();
+            $oPayment = oxNew('oxPayment');
             foreach ($aPayment as $sKey => $mxValue) {
                 if (!is_array($mxValue)) {
                     $sField = "oxpayments__" . $sKey;
@@ -570,7 +570,7 @@ class BasketConstruct
 
         $aNewData = is_array($aData[0]) ? $aData : array($aData);
         foreach ($aNewData as $aValues) {
-            $oObj = new oxBase();
+            $oObj = oxNew('oxBase');
             $oObj->init($sObj2ObjTable);
             foreach ($aValues as $sKey => $sValue) {
                 $sField = $sObj2ObjTable . "__" . $sKey;
@@ -654,7 +654,7 @@ class BasketConstruct
             $oShop->assign($aParams);
             $oShop->save();
 
-            $oConfig = new oxConfig();
+            $oConfig = oxNew('oxConfig');
             $oConfig->setShopId($oShop->getId());
             $oConfig->saveShopConfVar('aarr', 'aLanguages', array('de' => 'Deutch', 'en' => 'English'));
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -45,10 +45,10 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
      */
     public function testModuleActivationWithNewMetaData($aInstallModules, $sModule, $aMetaData, $aResultToAsserts)
     {
-        $oEnvironment = new Environment();
+        $oEnvironment = oxNew('Environment');
         $oEnvironment->prepare($aInstallModules);
 
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->load($sModule);
 
         $this->_deactivateModule($oModule);

@@ -91,13 +91,13 @@ abstract class UserTestCase extends OxidTestCase
             $sSaltVal = $this->_sNewSalt;
         }
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new oxField('_testUserName@oxid-esales.com', oxField::T_RAW);
         $oUser->oxuser__oxpassword = new oxField($sPassVal, oxField::T_RAW);
         $oUser->oxuser__oxpasssalt = new oxField($sSaltVal, oxField::T_RAW);
         $oUser->save();
 
-        $oUserFromBase = new oxBase();
+        $oUserFromBase = oxNew('oxBase');
         $oUserFromBase->init('oxuser');
         $oUserFromBase->load($oUser->getId());
         $oUserFromBase->oxuser__oxshopid = new oxField($iShopId, oxField::T_RAW);
@@ -126,7 +126,7 @@ abstract class UserTestCase extends OxidTestCase
             $sUserPassword = $this->_sDefaultUserPassword;
         }
         $this->_setLoginParametersToRequest($sUserName, $sUserPassword);
-        $oCmpUser = new oxcmp_user();
+        $oCmpUser = oxNew('oxcmp_user');
         $oCmpUser->login();
     }
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -30,13 +30,13 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
      */
     public function testVersionNotify()
     {
-        $oEnvironment = new Environment();
+        $oEnvironment = oxNew('Environment');
         $oEnvironment->prepare(array('extending_1_class', 'extending_1_class_3_extensions', 'with_everything'));
 
         $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'), array(), '', false);
         $oCaller->expects($this->any())->method('doRequest')->with($this->equalTo($this->_getExpectedRequest()));
 
-        $oModuleList = new oxModuleList();
+        $oModuleList = oxNew('oxModuleList');
         $sModuleDir = realpath(dirname(__FILE__)) . '/testData/modules';
         $oModuleList->getModulesFromDir($sModuleDir);
 
@@ -46,7 +46,7 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
 
     protected function _getExpectedRequest()
     {
-        $oRequest = new oxOnlineModulesNotifierRequest();
+        $oRequest = oxNew('oxOnlineModulesNotifierRequest');
 
         $sShopUrl = $this->getConfig()->getShopUrl();
         $oRequest->edition = $this->getConfig()->getEdition();

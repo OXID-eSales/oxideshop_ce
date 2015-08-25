@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -117,12 +117,12 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = new oxOnlineServerEmailBuilder();
-        $oSimpleXml = new oxSimpleXml();
+        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oSimpleXml = oxNew('oxSimpleXml');
         $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
 
-        $oUserCounter = new oxUserCounter();
-        $oServersManager = new oxServersManager();
+        $oUserCounter = oxNew('oxUserCounter');
+        $oServersManager = oxNew('oxServersManager');
         $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller);
         $oLicenseCheck->setUserCounter($oUserCounter);
         $oLicenseCheck->setServersManager($oServersManager);
@@ -204,13 +204,13 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = new oxOnlineServerEmailBuilder();
+        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
 
-        $oSimpleXml = new oxSimpleXml();
+        $oSimpleXml = oxNew('oxSimpleXml');
         $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
 
-        $oUserCounter = new oxUserCounter();
-        $oServersManager = new oxServersManager();
+        $oUserCounter = oxNew('oxUserCounter');
+        $oServersManager = oxNew('oxServersManager');
         $oLicenseCheck = new oxOnlineLicenseCheck($oLicenseCaller);
         $oLicenseCheck->setUserCounter($oUserCounter);
         $oLicenseCheck->setServersManager($oServersManager);

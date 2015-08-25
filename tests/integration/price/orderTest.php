@@ -107,7 +107,7 @@ class Integration_Price_OrderTest extends OxidTestCase
         $aActions = $aTestCase['actions'];
 
         // load calculated basket from provided data
-        $oBasketConstruct = new BasketConstruct();
+        $oBasketConstruct = oxNew('BasketConstruct');
         $oBasket = $oBasketConstruct->calculateBasket($aTestCase);
 
         $oUser = $oBasket->getBasketUser();
@@ -264,7 +264,7 @@ class Integration_Price_OrderTest extends OxidTestCase
      */
     protected function _addArticles($aArticles, $oOrder)
     {
-        $oBasketConstruct = new BasketConstruct();
+        $oBasketConstruct = oxNew('BasketConstruct');
         $aArts = $oBasketConstruct->getArticles($aArticles);
         foreach ($aArts as $aArt) {
             $oProduct = oxNew('oxArticle');

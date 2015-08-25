@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Integration_Models_oxTsRatingsTest extends OxidTestCase
      */
     public function testInvalidCallToTrustedShops()
     {
-        $oTsRatings = new oxTsRatings();
+        $oTsRatings = oxNew('oxTsRatings');
         $oTsRatings->setTsId('xyz');
         $aResultExpected = array('empty' => true);
         $this->assertEquals($aResultExpected, $oTsRatings->getRatings());
@@ -46,7 +46,7 @@ class Integration_Models_oxTsRatingsTest extends OxidTestCase
      */
     public function testValidCallToTrustedShops()
     {
-        $oTsRatings = new oxTsRatings();
+        $oTsRatings = oxNew('oxTsRatings');
         $oTsRatings->setTsId('XA2A8D35838AF5F63E5EB0E05847B1CB8');
 
         $aResult = $oTsRatings->getRatings();

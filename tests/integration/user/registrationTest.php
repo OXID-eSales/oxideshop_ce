@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -93,8 +93,8 @@ class Integration_User_registrationTest extends UserTestCase
      */
     private function _createCmpUserObject()
     {
-        $oRegister = new Register();
-        $oCmpUser = new oxcmp_user();
+        $oRegister = oxNew('Register');
+        $oCmpUser = oxNew('oxcmp_user');
         $oCmpUser->setParent($oRegister);
 
         return $oCmpUser;

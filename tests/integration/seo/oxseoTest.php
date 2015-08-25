@@ -62,13 +62,13 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $oArticle->load('_testid');
         $oArticle->getLink();
         $this->assertEquals($sCurrentSeo, $oArticle->getLink());
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load('_test1');
         $oCategory->oxcategories__oxtitle = new oxField($oCategory->oxcategories__oxtitle . 'test');
         $oCategory->save();
 
         $sRegeneratedExpectedCategory = oxRegistry::getConfig()->getShopUrl() . "testCategory1test/";
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load('_test1');
         $this->assertEquals($sRegeneratedExpectedCategory, $oCategory->getLink());
 
@@ -137,7 +137,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         );
 
         $this->setRequestParameter('aSeoData', $aSeoData);
-        $oCategorySeo = new Category_Seo();
+        $oCategorySeo = oxNew('Category_Seo');
         $oCategorySeo->setEditObjectId('_test5');
         $oCategorySeo->save();
 
@@ -146,7 +146,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         );
 
         $this->setRequestParameter('aSeoData', $aSeoData);
-        $oCategorySeo = new Category_Seo();
+        $oCategorySeo = oxNew('Category_Seo');
         $oCategorySeo->setEditObjectId('_test6');
         $oCategorySeo->save();
 
@@ -159,7 +159,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         );
 
         $this->setRequestParameter('aSeoData', $aSeoData);
-        $oArticleSeo = new Article_Seo();
+        $oArticleSeo = oxNew('Article_Seo');
         $oArticleSeo->setEditObjectId('_testid');
         $oArticleSeo->save();
 
@@ -169,13 +169,13 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $oArticle->load('_testid');
         $this->assertEquals($sCurrentSeo, $oArticle->getLink());
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load('_test5');
         $oCategory->oxcategories__oxtitle = new oxField($oCategory->oxcategories__oxtitle . 'test');
         $oCategory->save();
 
         $sRegeneratedExpectedCategory = oxRegistry::getConfig()->getShopUrl() . "testCategory1test/";
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load('_test5');
         $this->assertEquals($sRegeneratedExpectedCategory, $oCategory->getLink());
 
@@ -207,7 +207,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         );
 
         $this->setRequestParameter('aSeoData', $aSeoData);
-        $oCategorySeo = new Category_Seo();
+        $oCategorySeo = oxNew('Category_Seo');
         $oCategorySeo->setEditObjectId('_test7');
         $oCategorySeo->save();
 
@@ -216,7 +216,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         );
 
         $this->setRequestParameter('aSeoData', $aSeoData);
-        $oCategorySeo = new Category_Seo();
+        $oCategorySeo = oxNew('Category_Seo');
         $oCategorySeo->setEditObjectId('_test8');
         $oCategorySeo->save();
 
@@ -228,7 +228,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         );
 
         $this->setRequestParameter('aSeoData', $aSeoData);
-        $oArticleSeo = new Article_Seo();
+        $oArticleSeo = oxNew('Article_Seo');
         $oArticleSeo->setEditObjectId('_testid');
         $oArticleSeo->save();
 
@@ -243,12 +243,12 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         );
 
         $this->setRequestParameter('aSeoData', $aSeoData);
-        $oCategorySeo = new Category_Seo();
+        $oCategorySeo = oxNew('Category_Seo');
         $oCategorySeo->setEditObjectId('_test7');
         $oCategorySeo->save();
 
         $sRegeneratedExpectedCategory = oxRegistry::getConfig()->getShopUrl() . "changed/here/";
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load('_test7');
         $this->assertEquals($sRegeneratedExpectedCategory, $oCategory->getLink());
 
@@ -281,7 +281,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         );
 
         $this->setRequestParameter('aSeoData', $aSeoData);
-        $oCategorySeo = new Category_Seo();
+        $oCategorySeo = oxNew('Category_Seo');
         $oCategorySeo->setEditObjectId('_test9');
         $oCategorySeo->save();
 
@@ -290,7 +290,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         );
 
         $this->setRequestParameter('aSeoData', $aSeoData);
-        $oCategorySeo = new Category_Seo();
+        $oCategorySeo = oxNew('Category_Seo');
         $oCategorySeo->setEditObjectId('_test10');
         $oCategorySeo->save();
 
@@ -303,7 +303,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         );
 
         $this->setRequestParameter('aSeoData', $aSeoData);
-        $oArticleSeo = new Article_Seo();
+        $oArticleSeo = oxNew('Article_Seo');
         $oArticleSeo->setEditObjectId('_testid');
         $oArticleSeo->save();
 
@@ -318,12 +318,12 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         );
 
         $this->setRequestParameter('aSeoData', $aSeoData);
-        $oCategorySeo = new Category_Seo();
+        $oCategorySeo = oxNew('Category_Seo');
         $oCategorySeo->setEditObjectId('_test9');
         $oCategorySeo->save();
 
         $sRegeneratedExpectedCategory = oxRegistry::getConfig()->getShopUrl() . "changed/here/";
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load('_test9');
         $this->assertEquals($sRegeneratedExpectedCategory, $oCategory->getLink());
 
@@ -358,7 +358,7 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $oArticle->load('_testid');
         $this->assertEquals($sCurrentSeo, $oArticle->getLink());
 
-        $oAlc = new ajaxListComponent();
+        $oAlc = oxNew('ajaxListComponent');
         //reset article URL
         $oAlc->resetArtSeoUrl(array('_testid'), array('_test3'));
 

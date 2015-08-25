@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -65,17 +65,17 @@ class Integration_OnlineInfo_OnlineModuleNotifierRequestFormationTest extends Ox
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = new oxOnlineServerEmailBuilder();
+        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
         $oOnlineModuleVersionNotifierCaller = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
 
-        $oModule1 = new oxModule();
+        $oModule1 = oxNew('oxModule');
         $oModule1->setModuleData(array(
             'id' => 'moduleId1',
             'version' => '1.0',
             'active' => true,
         ));
 
-        $oModule2 = new oxModule();
+        $oModule2 = oxNew('oxModule');
         $oModule2->setModuleData(array(
             'id' => 'moduleId2',
             'version' => '2.0',

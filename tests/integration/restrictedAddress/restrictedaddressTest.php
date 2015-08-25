@@ -177,7 +177,7 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
      */
     private function callPage($sShopUrl)
     {
-        $oCurl = new oxCurl();
+        $oCurl = oxNew('oxCurl');
         $oCurl->setOption('CURLOPT_HEADER', true);
         $oCurl->setUrl($sShopUrl);
 

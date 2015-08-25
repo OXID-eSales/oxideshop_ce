@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -110,7 +110,7 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
         $aOptions = $aTestCase['options'];
 
         // load calculated basket from provided data
-        $oBasketConstruct = new BasketConstruct();
+        $oBasketConstruct = oxNew('BasketConstruct');
         $oBasket = $oBasketConstruct->calculateBasket($aTestCase);
 
         $oUser = $oBasket->getBasketUser();
@@ -162,7 +162,7 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
         $aOptions = $aTestCase['options'];
 
         // load calculated basket from provided data
-        $oBasketConstruct = new BasketConstruct();
+        $oBasketConstruct = oxNew('BasketConstruct');
         $oBasket = $oBasketConstruct->calculateBasket($aTestCase);
 
         $oUser = $oBasket->getBasketUser();
@@ -227,7 +227,7 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
         $aOptions = $aTestCase['options'];
 
         // load calculated basket from provided data
-        $oBasketConstruct = new BasketConstruct();
+        $oBasketConstruct = oxNew('BasketConstruct');
         $oBasket = $oBasketConstruct->calculateBasket($aTestCase);
 
         $oUser = $oBasket->getBasketUser();

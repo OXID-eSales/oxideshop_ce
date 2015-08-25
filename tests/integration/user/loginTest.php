@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -58,7 +58,7 @@ class Integration_User_loginTest extends UserTestCase
         //creating test admin user
         $oUser = $this->_createUser($this->_sDefaultUserName, $this->_sOldEncodedPassword, $this->_sOldSalt);
         //updating user over oxBase methods as oxUser restricts rights update
-        $oUpdUser = new oxBase();
+        $oUpdUser = oxNew('oxBase');
         $oUpdUser->init("oxuser");
         $oUpdUser->load($oUser->getId());
         $oUpdUser->oxuser__oxrights = new oxField(1);
@@ -135,7 +135,7 @@ class Integration_User_loginTest extends UserTestCase
      */
     private function _createUser($sUserName, $sEncodedPassword, $sSalt)
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new oxField($sUserName, oxField::T_RAW);
         $oUser->oxuser__oxpassword = new oxField($sEncodedPassword, oxField::T_RAW);
         $oUser->oxuser__oxpasssalt = new oxField($sSalt, oxField::T_RAW);

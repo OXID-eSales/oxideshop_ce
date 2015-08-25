@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -32,7 +32,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
             'extending_1_class'
         );
 
-        $oEnvironment = new Environment();
+        $oEnvironment = oxNew('Environment');
         $oEnvironment->prepare($aInstallModules);
 
         //adding module without metadata
@@ -41,7 +41,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
 
         $this->getConfig()->setConfigParam('aModules', $aModules);
 
-        $oModuleList = new oxModuleList();
+        $oModuleList = oxNew('oxModuleList');
         $aGarbage = $oModuleList->getDeletedExtensions();
 
         $this->assertSame(array('no_metadata' => array('files' => array('no_metadata/metadata.php'))), $aGarbage);
@@ -54,10 +54,10 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
             'extending_1_class'
         );
 
-        $oEnvironment = new Environment();
+        $oEnvironment = oxNew('Environment');
         $oEnvironment->prepare($aInstallModules);
 
-        $oModuleList = new oxModuleList();
+        $oModuleList = oxNew('oxModuleList');
         $aGarbage = $oModuleList->getDeletedExtensions();
 
         $this->assertSame(array(), $aGarbage);
@@ -71,7 +71,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
             'extending_1_class', 'with_2_files'
         );
 
-        $oEnvironment = new Environment();
+        $oEnvironment = oxNew('Environment');
         $oEnvironment->prepare($aInstallModules);
 
         $aModules = $this->getConfig()->getConfigParam('aModules');
@@ -82,7 +82,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
 
         $this->getConfig()->setConfigParam('aModuleFiles', $aModuleFiles);
 
-        $oModuleList = new oxModuleList();
+        $oModuleList = oxNew('oxModuleList');
         $aGarbage = $oModuleList->getDeletedExtensions();
 
         $aExpect = array(
@@ -101,10 +101,10 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
             'with_1_extension', 'with_2_files'
         );
 
-        $oEnvironment = new Environment();
+        $oEnvironment = oxNew('Environment');
         $oEnvironment->prepare($aInstallModules);
 
-        $oModuleList = new oxModuleList();
+        $oModuleList = oxNew('oxModuleList');
         $aGarbage = $oModuleList->getDeletedExtensions();
 
         $aExpect = array(

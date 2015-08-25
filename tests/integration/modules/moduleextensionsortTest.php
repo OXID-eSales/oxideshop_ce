@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -74,13 +74,13 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
      */
     public function testIsActive($aInstallModules, $sModule, $aReorderedExtensions)
     {
-        $oEnvironment = new Environment();
+        $oEnvironment = oxNew('Environment');
         $oEnvironment->prepare($aInstallModules);
 
         // load reordered extensions
         oxRegistry::getConfig()->setConfigParam('aModules', $aReorderedExtensions);
 //
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->load($sModule);
 
         $this->_deactivateModule($oModule);

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
         $sState = $oConfig->getConfigParam('sTestActivateEvent');
         $this->assertSame(null, $sState, 'No events should have been executed till now');
 
-        $oEnvironment = new Environment();
+        $oEnvironment = oxNew('Environment');
         $oEnvironment->prepare(array('with_events'));
 
         $sState = $oConfig->getConfigParam('sTestActivateEvent');
@@ -50,10 +50,10 @@ class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
     {
         $oConfig = oxRegistry::getConfig();
 
-        $oEnvironment = new Environment();
+        $oEnvironment = oxNew('Environment');
         $oEnvironment->prepare(array('with_events'));
 
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->load('with_events');
 
         $this->_deactivateModule($oModule);
@@ -75,10 +75,10 @@ class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
         $sState = $oConfig->getConfigParam('sTestDeactivateEvent');
         $this->assertSame(null, $sState, 'No events should have been executed till now');
 
-        $oEnvironment = new Environment();
+        $oEnvironment = oxNew('Environment');
         $oEnvironment->prepare(array('with_events'));
 
-        $oModule = new oxModule();
+        $oModule = oxNew('oxModule');
         $oModule->load('with_events');
 
         $this->_deactivateModule($oModule);

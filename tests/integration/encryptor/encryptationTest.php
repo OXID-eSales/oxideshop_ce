@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -42,8 +42,8 @@ class Integration_Encryptor_EncryptationTest extends OxidTestCase
      */
     public function testEncodingAndDecodingGivesSameResultWithCorrectKey($sString, $sKey)
     {
-        $oEncryptor = new oxEncryptor();
-        $oDecryptor = new oxDecryptor();
+        $oEncryptor = oxNew('oxEncryptor');
+        $oDecryptor = oxNew('oxDecryptor');
 
         $sEncrypted = $oEncryptor->encrypt($sString, $sKey);
         $this->assertSame($sString, $oDecryptor->decrypt($sEncrypted, $sKey));
@@ -51,8 +51,8 @@ class Integration_Encryptor_EncryptationTest extends OxidTestCase
 
     public function testEncodingAndDecodingGivesDifferentResultWithIncorrectKey()
     {
-        $oEncryptor = new oxEncryptor();
-        $oDecryptor = new oxDecryptor();
+        $oEncryptor = oxNew('oxEncryptor');
+        $oDecryptor = oxNew('oxDecryptor');
 
         $sEncrypted = $oEncryptor->encrypt('testString', 'correctKey');
         $this->assertNotSame('testString', $oDecryptor->decrypt($sEncrypted, 'incorrectKey'));

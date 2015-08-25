@@ -98,7 +98,7 @@ class Integration_Price_PriceTest extends OxidTestCase
         $aExpected = $aTestCase['expected'];
 
         // load calculated basket from provided data
-        $oConstruct = new BasketConstruct();
+        $oConstruct = oxNew('BasketConstruct');
         // create shops
         $iActiveShopId = $oConstruct->createShop($aTestCase['shop']);
 

@@ -50,7 +50,7 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
      */
     public function testLoadAttributesByIds()
     {
-        $oAttrList = new oxAttributelist();
+        $oAttrList = oxNew('oxAttributelist');
         $aAttributes = $oAttrList->loadAttributesByIds(array('1672'));
 
         $sSelect = "select oxattrid, oxvalue from oxobject2attribute where oxobjectid = '1672'";
@@ -69,7 +69,7 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
     public function testLoadAttributesByIdsInOtherLang()
     {
         oxRegistry::getLang()->setBaseLanguage(1);
-        $oAttrList = new oxAttributelist();
+        $oAttrList = oxNew('oxAttributelist');
         $aAttributes = $oAttrList->loadAttributesByIds(array('1672'));
 
         $sSelect = "select oxattrid, oxvalue_1 from oxobject2attribute where oxobjectid = '1672'";
@@ -87,7 +87,7 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
      */
     public function testLoadAttributesByIdsNoIds()
     {
-        $oAttrList = new oxAttributelist();
+        $oAttrList = oxNew('oxAttributelist');
         $aAttributes = $oAttrList->loadAttributesByIds(null);
 
         $this->assertNull($aAttributes);
@@ -100,7 +100,7 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
      */
     public function testLoadAttributes()
     {
-        $oAttrList = new oxAttributelist();
+        $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributes('1672');
         $sSelect = "select oxattrid from oxobject2attribute where oxobjectid = '$sArtID'";
         $sID = oxDb::getDB()->getOne($sSelect);
@@ -117,7 +117,7 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
      */
     public function testLoadAttributesWithParent()
     {
-        $oAttrList = new oxAttributelist();
+        $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributes('1672', '1351');
         $this->assertEquals(9, $oAttrList->count());
     }
@@ -135,7 +135,7 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
         $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = 'd8842e3b7c5e108c1.63072778' ";
         $rs = oxDb::getDB()->execute($sSelect);
 
-        $oAttrList = new oxAttributelist();
+        $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributesDisplayableInBasket('1672', '1351');
         $sAttribValue = $oAttrList['8a142c3f0c0baa3f4.54955953']->oxattribute__oxvalue->rawValue;
         $sAttribParentValue = $oAttrList['d8842e3b7d4e7acb1.34583879']->oxattribute__oxvalue->rawValue;
@@ -150,7 +150,7 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
      */
     public function testLoadAttributesDisplayableInBasketNoAttributes()
     {
-        $oAttrList = new oxAttributelist();
+        $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributesDisplayableInBasket('1672');
         $this->assertEquals(0, count($oAttrList));
 
@@ -165,7 +165,7 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
     public function testLoadAttributesInOtherLang()
     {
         oxRegistry::getLang()->setBaseLanguage(1);
-        $oAttrList = new oxAttributelist();
+        $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributes('1672');
         $sSelect = "select oxattrid from oxobject2attribute where oxobjectid = '$sArtID'";
         $sID = oxDb::getDB()->getOne($sSelect);
@@ -197,7 +197,7 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
         $sSql = "insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values ('test3', '$sArtId', 'test3', '3'), ('test1', '$sArtId', 'test1', '1'), ('test2', '$sArtId', 'test2', '2')";
         $myDB->execute($sSql);
 
-        $oAttrList = new oxAttributelist();
+        $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributes($sArtId);
         $iCnt = 1;
         foreach ($oAttrList as $sId => $aAttr) {
@@ -214,7 +214,7 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
      */
     public function testLoadAttributesEmptyId()
     {
-        $oAttrList = new oxAttributelist();
+        $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributes(null);
 
         $this->assertEquals(0, count($oAttrList));

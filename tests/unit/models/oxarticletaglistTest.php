@@ -28,7 +28,7 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
      */
     public function testSetGetArticleId()
     {
-        $oArticleTagList = new oxArticleTagList();
+        $oArticleTagList = oxNew('oxArticleTagList');
         $oArticleTagList->setArticleId("testArticle");
         $this->assertEquals("testArticle", $oArticleTagList->getArticleId());
     }
@@ -38,7 +38,7 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
      */
     public function testLoadingArticleTagsWithSetArticleId()
     {
-        $oArticleTagList = new oxArticleTagList();
+        $oArticleTagList = oxNew('oxArticleTagList');
         $oArticleTagList->load('1126');
         $aTags = $oArticleTagList->getArray();
 
@@ -56,7 +56,7 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
      */
     public function testGetArticleTagsEn()
     {
-        $oArticleTagList = new oxArticleTagList();
+        $oArticleTagList = oxNew('oxArticleTagList');
         $oArticleTagList->setLanguage(1);
         $oArticleTagList->load('2000');
         $oTagSet = $oArticleTagList->get();
@@ -74,7 +74,7 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
      */
     public function testLoadingArticleTagsWithNoArticleId()
     {
-        $oArticleTagList = new oxArticleTagList();
+        $oArticleTagList = oxNew('oxArticleTagList');
         $this->assertFalse($oArticleTagList->loadList());
         $this->assertEquals(new oxTagSet(), $oArticleTagList->get());
     }
@@ -86,12 +86,12 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
      */
     public function testSetGetTags()
     {
-        $oArticleTagList = new oxArticleTagList();
+        $oArticleTagList = oxNew('oxArticleTagList');
 
         $sExpTags = "bier,zukunft,mehr,mithalten,edles";
         $oArticleTagList->set($sExpTags);
 
-        $oxTagSet = new oxTagSet();
+        $oxTagSet = oxNew('oxTagSet');
         $oxTagSet->set($sExpTags);
 
         $this->assertEquals($oxTagSet, $oArticleTagList->get());
@@ -104,12 +104,12 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
      */
     public function testSetGetTagsArray()
     {
-        $oArticleTagList = new oxArticleTagList();
+        $oArticleTagList = oxNew('oxArticleTagList');
 
         $sExpTags = "bier,zukunft,mehr,mithalten,edles";
         $oArticleTagList->set($sExpTags);
 
-        $oxTagSet = new oxTagSet();
+        $oxTagSet = oxNew('oxTagSet');
         $oxTagSet->set($sExpTags);
 
         $this->assertEquals($oxTagSet->get(), $oArticleTagList->getArray());
@@ -120,14 +120,14 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
      */
     public function testSaveTags()
     {
-        $oArticleTagList = new oxArticleTagList();
+        $oArticleTagList = oxNew('oxArticleTagList');
         $oArticleTagList->load("1126");
         $sOriginalTags = $oArticleTagList->get()->__toString();
         $oArticleTagList->addTag("testtag1");
         $oArticleTagList->addTag("a");
         $this->assertTrue($oArticleTagList->save());
 
-        $oArticleTagList = new oxArticleTagList();
+        $oArticleTagList = oxNew('oxArticleTagList');
         $oArticleTagList->load("1126");
         $oTagList = $oArticleTagList->get();
         $aTags = $oTagList->get();
@@ -153,12 +153,12 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
      */
     public function testAddTag()
     {
-        $oArticleTagList = new oxArticleTagList();
+        $oArticleTagList = oxNew('oxArticleTagList');
 
         $oArticleTagList->set("test1");
         $oArticleTagList->addTag("test2");
 
-        $oxTagSet = new oxTagSet();
+        $oxTagSet = oxNew('oxTagSet');
         $oxTagSet->set("test1,test2");
 
         $this->assertEquals($oxTagSet, $oArticleTagList->get());
@@ -171,8 +171,8 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
      */
     public function testAddTagForNewArt()
     {
-        $oArticleTagList = new oxArticleTagList();
-        $oTagSet = new oxTagSet();
+        $oArticleTagList = oxNew('oxArticleTagList');
+        $oTagSet = oxNew('oxTagSet');
         $this->assertEquals($oTagSet, $oArticleTagList->get());
         $oArticleTagList->addTag("tag1");
         $oTagSet->set("tag1");
@@ -186,7 +186,7 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
      */
     public function testFormationOfSingleTags()
     {
-        $oArticleTagList = new oxArticleTagList();
+        $oArticleTagList = oxNew('oxArticleTagList');
         $this->assertEquals("", $oArticleTagList->get()->__toString());
 
         $oArticleTagList->addTag("tag1");
@@ -216,7 +216,7 @@ class Unit_Models_oxarticletaglistTest extends OxidTestCase
         $oArticle->oxarticles__oxactiveto->value = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() + 100);
         $oArticle->save();
 
-        $oArticleTagList = new oxArticleTagList();
+        $oArticleTagList = oxNew('oxArticleTagList');
         $oArticleTagList->load('1126');
         $oTagSet = $oArticleTagList->get();
         $aTags = $oTagSet->get();

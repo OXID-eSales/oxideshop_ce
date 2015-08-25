@@ -238,7 +238,7 @@ class Unit_Models_oxvarianthandlerTest extends OxidTestCase
         $oVar2->expects($this->once())->method('getLink')->will($this->returnValue("testLink"));
         $oVar2->oxarticles__oxvarselect = new oxField("var2value1 | var2value2 | var2value3");
 
-        $oVariants = new oxList();
+        $oVariants = oxNew('oxList');
         $oVariants->offsetSet("var1", $oVar1);
         $oVariants->offsetSet("var2", $oVar2);
 
@@ -260,15 +260,15 @@ class Unit_Models_oxvarianthandlerTest extends OxidTestCase
         $this->assertEquals(array(), $oHandler->fillVariantSelections(array(), 100, $aFilter, ""));
 
         // filled variant list
-        $oVariant1 = new oxbase();
+        $oVariant1 = oxNew('oxbase');
         $oVariant1->setId("test1");
         $oVariant1->oxarticles__oxvarselect = new oxField("a | b | c");
 
-        $oVariant2 = new oxbase();
+        $oVariant2 = oxNew('oxbase');
         $oVariant2->setId("test2");
         $oVariant2->oxarticles__oxvarselect = new oxField("a | b");
 
-        $oVariant3 = new oxbase();
+        $oVariant3 = oxNew('oxbase');
         $oVariant3->setId("test3");
         $oVariant3->oxarticles__oxvarselect = new oxField("a");
 
@@ -311,7 +311,7 @@ class Unit_Models_oxvarianthandlerTest extends OxidTestCase
         $aArray["test4"][] = array('name' => '', 'disabled' => null, 'active' => false, 'hash' => md5(''));
         $aArray["test4"][] = array('name' => '', 'disabled' => null, 'active' => false, 'hash' => md5(''));
 
-        $oHandler = new oxVariantHandler();
+        $oHandler = oxNew('oxVariantHandler');
 
         // no filter
         $aFilter = array();
@@ -451,7 +451,7 @@ class Unit_Models_oxvarianthandlerTest extends OxidTestCase
         $aSelections["test3"][] = array('name' => 'a', 'disabled' => false, 'active' => true, 'hash' => md5('a'));
         $aSelections["test3"][] = array('name' => '', 'disabled' => true, 'active' => false, 'hash' => md5(''));
 
-        $oHandler = new oxVariantHandler();
+        $oHandler = oxNew('oxVariantHandler');
         $aList = $oHandler->UNITbuildVariantSelectionsList($aVarSelects, $aSelections);
 
         // testing

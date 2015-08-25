@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -63,7 +63,7 @@ class Unit_Models_oxpaymentgatewayTest extends OxidTestCase
         $oUserpayment->oxuserpayments__oxpaymentsid = new oxField("test", oxField::T_RAW);
         $oUserpayment->oxuserpayments__oxvalue = new oxField("test", oxField::T_RAW);
         $oUserpayment->Save();
-        $oPaymentGateway = new mod_oxpaymentgateway;
+        $oPaymentGateway = oxNew('mod_oxpaymentgateway');
         $oPaymentGateway->setPaymentParams($oUserpayment);
         $oUP = $oPaymentGateway->getPaymentInfo();
         $this->assertEquals($oUP->oxuserpayments__oxvalue->value, $oUserpayment->oxuserpayments__oxvalue->value);
@@ -81,7 +81,7 @@ class Unit_Models_oxpaymentgatewayTest extends OxidTestCase
     public function testExecutePaymentWithoutPaymentInfo()
     {
         $oOrder = new stdClass();
-        $oPaymentGateway = new mod_oxpaymentgateway;
+        $oPaymentGateway = oxNew('mod_oxpaymentgateway');
         $oPaymentGateway->setActive();
         $blResult = $oPaymentGateway->executePayment(2, $oOrder);
         $this->assertEquals($blResult, false);
@@ -95,7 +95,7 @@ class Unit_Models_oxpaymentgatewayTest extends OxidTestCase
         $oUserpayment->oxuserpayments__oxpaymentsid = new oxField("test", oxField::T_RAW);
         $oUserpayment->oxuserpayments__oxvalue = new oxField("test", oxField::T_RAW);
         $oUserpayment->Save();
-        $oPaymentGateway = new mod_oxpaymentgateway;
+        $oPaymentGateway = oxNew('mod_oxpaymentgateway');
         $oPaymentGateway->setActive();
         $oPaymentGateway->setPaymentParams($oUserpayment);
         $blResult = $oPaymentGateway->executePayment(2, $oOrder);
@@ -110,7 +110,7 @@ class Unit_Models_oxpaymentgatewayTest extends OxidTestCase
         $oUserpayment->oxuserpayments__oxpaymentsid = new oxField("oxempty", oxField::T_RAW);
         $oUserpayment->oxuserpayments__oxvalue = new oxField("test", oxField::T_RAW);
         $oUserpayment->Save();
-        $oPaymentGateway = new mod_oxpaymentgateway;
+        $oPaymentGateway = oxNew('mod_oxpaymentgateway');
         $oPaymentGateway->setActive();
         $oPaymentGateway->setPaymentParams($oUserpayment);
         $blResult = $oPaymentGateway->executePayment(2, $oOrder);
@@ -119,7 +119,7 @@ class Unit_Models_oxpaymentgatewayTest extends OxidTestCase
 
     public function testGetLastErrorNo()
     {
-        $oPaymentGateway = new mod_oxpaymentgateway;
+        $oPaymentGateway = oxNew('mod_oxpaymentgateway');
         $oPaymentGateway->setError(null, null);
         $blResult = $oPaymentGateway->getLastErrorNo();
         $this->assertEquals($blResult, null);
@@ -127,7 +127,7 @@ class Unit_Models_oxpaymentgatewayTest extends OxidTestCase
 
     public function testGetLastSetErrorNo()
     {
-        $oPaymentGateway = new mod_oxpaymentgateway;
+        $oPaymentGateway = oxNew('mod_oxpaymentgateway');
         $oPaymentGateway->setError(22, "Test Error");
         $blResult = $oPaymentGateway->getLastErrorNo();
         $this->assertEquals($blResult, 22);
@@ -135,7 +135,7 @@ class Unit_Models_oxpaymentgatewayTest extends OxidTestCase
 
     public function testGetLastError()
     {
-        $oPaymentGateway = new mod_oxpaymentgateway;
+        $oPaymentGateway = oxNew('mod_oxpaymentgateway');
         $oPaymentGateway->setError(null, null);
         $blResult = $oPaymentGateway->getLastError();
         $this->assertEquals($blResult, null);
@@ -143,7 +143,7 @@ class Unit_Models_oxpaymentgatewayTest extends OxidTestCase
 
     public function testGetLastSetError()
     {
-        $oPaymentGateway = new mod_oxpaymentgateway;
+        $oPaymentGateway = oxNew('mod_oxpaymentgateway');
         $oPaymentGateway->setError(22, "Test Error");
         $blResult = $oPaymentGateway->getLastError();
         $this->assertEquals($blResult, "Test Error");

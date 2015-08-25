@@ -170,10 +170,10 @@ class Unit_Models_oxmdvariantTest extends OxidTestCase
      */
     public function testSetGetMdSubvariants()
     {
-        $oVariant1 = new oxMdVariant();
+        $oVariant1 = oxNew('oxMdVariant');
         $oVariant1->setName("testas1");
 
-        $oVariant2 = new oxMdVariant();
+        $oVariant2 = oxNew('oxMdVariant');
         $oVariant2->setName("testas2");
 
         $this->_oSubj->setMdSubvariants(Array($oVariant1, $oVariant2));
@@ -187,7 +187,7 @@ class Unit_Models_oxmdvariantTest extends OxidTestCase
      */
     public function testAddMdSubvariant()
     {
-        $oVariant1 = new oxMdVariant();
+        $oVariant1 = oxNew('oxMdVariant');
         $oVariant1->setName("testas1");
         $oVariant1->setId("testId1");
 
@@ -203,10 +203,10 @@ class Unit_Models_oxmdvariantTest extends OxidTestCase
      */
     public function testGetFirstMdSubvariant()
     {
-        $oVariant1 = new oxMdVariant();
+        $oVariant1 = oxNew('oxMdVariant');
         $oVariant1->setName("testas1");
 
-        $oVariant2 = new oxMdVariant();
+        $oVariant2 = oxNew('oxMdVariant');
         $oVariant2->setName("testas2");
 
         $this->_oSubj->setMdSubvariants(Array($oVariant1, $oVariant2));
@@ -377,7 +377,7 @@ class Unit_Models_oxmdvariantTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('bl_perfLoadPrice', false);
 
-        $oSubj = new oxMdVariant();
+        $oSubj = oxNew('oxMdVariant');
         $sArtId = '';
         $aNames = array();
         $dPrice = 10.10;

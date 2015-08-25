@@ -72,21 +72,21 @@ class Unit_Models_oxratingTest extends OxidTestCase
     public function testGetRatingAverage()
     {
         // inserting few test records
-        $oRev = new oxreview();
+        $oRev = oxNew('oxreview');
         $oRev->setId('_testrev1');
         $oRev->oxreviews__oxobjectid = new oxField('xxx');
         $oRev->oxreviews__oxtype = new oxField('oxarticle');
         $oRev->oxreviews__oxrating = new oxField(3);
         $oRev->save();
 
-        $oRev = new oxreview();
+        $oRev = oxNew('oxreview');
         $oRev->setId('_testrev2');
         $oRev->oxreviews__oxobjectid = new oxField('xxx');
         $oRev->oxreviews__oxtype = new oxField('oxarticle');
         $oRev->oxreviews__oxrating = new oxField(1);
         $oRev->save();
 
-        $oRev = new oxreview();
+        $oRev = oxNew('oxreview');
         $oRev->setId('_testrev3');
         $oRev->oxreviews__oxobjectid = new oxField('yyy');
         $oRev->oxreviews__oxtype = new oxField('oxarticle');

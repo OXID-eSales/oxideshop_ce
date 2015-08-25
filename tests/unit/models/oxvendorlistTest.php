@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -169,7 +169,7 @@ class Unit_Models_oxvendorlistTest extends OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
         $myConfig = $this->getConfig();
 
-        $oVendorlist = new oxvendorlist();
+        $oVendorlist = oxNew('oxvendorlist');
         $oVendorlist->loadVendorList();
         $oVendor = $oVendorlist->current();
 

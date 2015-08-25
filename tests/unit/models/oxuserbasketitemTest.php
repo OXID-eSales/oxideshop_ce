@@ -53,25 +53,25 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
         $oArticle->oxarticles__oxtitle = new oxField('xxx', oxField::T_RAW);
         $oArticle->save();
 
-        $oSel = new oxbase();
+        $oSel = oxNew('oxbase');
         $oSel->init('oxselectlist');
         $oSel->setId('xxx');
         $oSel->oxselectlist__oxvaldesc = new oxField('S, 10!P!10__@@M, 20!P!20__@@L, 30!P!30__@@', oxField::T_RAW);
         $oSel->save();
 
-        $oSel = new oxbase();
+        $oSel = oxNew('oxbase');
         $oSel->init('oxselectlist');
         $oSel->setId('yyy');
         $oSel->oxselectlist__oxvaldesc = new oxField('R, 10!P!10%__@@G, 20!P!20%__@@B, 30!P!30%__@@', oxField::T_RAW);
         $oSel->save();
 
-        $oO2Sel = new oxbase();
+        $oO2Sel = oxNew('oxbase');
         $oO2Sel->init('oxobject2selectlist');
         $oO2Sel->oxobject2selectlist__oxobjectid = new oxField('xxx', oxField::T_RAW);
         $oO2Sel->oxobject2selectlist__oxselnid = new oxField('xxx', oxField::T_RAW);
         $oO2Sel->save();
 
-        $oO2Sel = new oxbase();
+        $oO2Sel = oxNew('oxbase');
         $oO2Sel->init('oxobject2selectlist');
         $oO2Sel->oxobject2selectlist__oxobjectid = new oxField('xxx', oxField::T_RAW);
         $oO2Sel->oxobject2selectlist__oxselnid = new oxField('yyy', oxField::T_RAW);
@@ -90,7 +90,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->delete('xxx');
 
-        $oSel = new oxbase();
+        $oSel = oxNew('oxbase');
         $oSel->init('oxselectlist');
         $oSel->delete('xxx');
         $oSel->delete('yyy');
@@ -100,7 +100,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
 
     public function testSetFieldData()
     {
-        $oUserBasketItem = new oxuserbasketitem();
+        $oUserBasketItem = oxNew('oxuserbasketitem');
 
         $sValue = '<script>alert("oxid");</script>';
 
@@ -118,7 +118,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
     {
         $aData = array("t");
 
-        $oUserBasketItem = new oxuserbasketitem();
+        $oUserBasketItem = oxNew('oxuserbasketitem');
 
         // no data for empty object
         $this->assertNull($oUserBasketItem->getSelList());
@@ -135,7 +135,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
     {
         $aData = array("p");
 
-        $oUserBasketItem = new oxuserbasketitem();
+        $oUserBasketItem = oxNew('oxuserbasketitem');
 
         // no data for empty object
         $this->assertNull($oUserBasketItem->getPersParams());
@@ -179,7 +179,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
     // no article is set, exception is thrown
     public function testGetArticleNoarticleIsSet()
     {
-        $oBasketItem = new oxuserbasketitem();
+        $oBasketItem = oxNew('oxuserbasketitem');
         try {
             $oBasketItem->getArticle("");
         } catch (oxArticleException $oEx) {
@@ -193,7 +193,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
     // trying to get non existing article
     public function testGetArticleNonExisting()
     {
-        $oBasketItem = new oxuserbasketitem();
+        $oBasketItem = oxNew('oxuserbasketitem');
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('nothing', oxField::T_RAW);
         $this->assertFalse($oBasketItem->getArticle("xxx"));
     }
@@ -205,7 +205,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
 
         $sProductId = "2000";
 
-        $oBasketItem = new oxuserbasketitem();
+        $oBasketItem = oxNew('oxuserbasketitem');
         $oBasketItem->setVariantParentBuyable(true);
         $oBasketItem->oxuserbasketitems__oxartid = new oxField($sProductId, oxField::T_RAW);
 
@@ -221,7 +221,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
     // testing article title formatting - article has NO parent
     public function testGetArticleTitleFormatterArticleHasNoParent()
     {
-        $oArticle = new oxi18n();
+        $oArticle = oxNew('oxi18n');
         $oArticle->init('oxarticles');
         $oArticle->load('xxx');
         $oArticle->oxarticles__oxparentid = new oxField(null, oxField::T_RAW);
@@ -230,7 +230,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->load('xxx');
 
-        $oBasketItem = new oxuserbasketitem();
+        $oBasketItem = oxNew('oxuserbasketitem');
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('xxx', oxField::T_RAW);
         $oArticle = $oBasketItem->getArticle('xxx');
 
@@ -245,7 +245,7 @@ class Unit_Models_oxuserbasketitemTest extends OxidTestCase
 
         $aTest = array(0, 1);
 
-        $oBasketItem = new oxuserbasketitem();
+        $oBasketItem = oxNew('oxuserbasketitem');
         $oBasketItem->oxuserbasketitems__oxartid = new oxField("xxx", oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxsellist = new oxField(serialize(array(0, 1)), oxField::T_RAW);
 

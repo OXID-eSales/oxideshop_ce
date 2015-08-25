@@ -64,7 +64,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->setId("testArticle");
 
-        $oVariant = new oxSimpleVariant();
+        $oVariant = oxNew('oxSimpleVariant');
         $oVariant->setId("testArticle");
 
         $this->assertEquals($oArticle->getBaseStdLink(0), $oVariant->getBaseStdLink(0));
@@ -82,7 +82,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->setId("testArticle");
 
-        $oVariant = new oxSimpleVariant();
+        $oVariant = oxNew('oxSimpleVariant');
         $oVariant->setId("testArticle");
 
         $this->assertEquals($oArticle->getStdLink(), $oVariant->getStdLink());
@@ -172,7 +172,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxSeoEncoderArticle", "getArticleUrl", "{return 'sArticleUrl';}");
 
-        $oVariant = new oxSimpleVariant();
+        $oVariant = oxNew('oxSimpleVariant');
         $this->assertEquals("sArticleUrl", $oVariant->getBaseSeoLink(0));
     }
 
@@ -196,20 +196,20 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
 
     public function testSelectListGetter()
     {
-        $oSimpleVar = new oxSimpleVariant();
+        $oSimpleVar = oxNew('oxSimpleVariant');
         $this->assertNull($oSimpleVar->getSelectLists());
     }
 
     public function testGetSelectLists()
     {
-        $oSubj = new oxSimpleVariant();
+        $oSubj = oxNew('oxSimpleVariant');
         $this->assertNull($oSubj->getSelectLists());
     }
 
     public function testSetPrice()
     {
         $sPrice = "someString";
-        $oSubj = new oxSimpleVariant();
+        $oSubj = oxNew('oxSimpleVariant');
         $oSubj->setPrice($sPrice);
         $this->assertEquals($sPrice, $oSubj->getPrice());
     }
@@ -229,13 +229,13 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
         $oSubj = $this->getMock("oxSimpleVariant", array('getParent'));
         $oSubj->expects($this->once())->method('getParent')->will($this->returnValue(null));
 
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oSubj->UNITapplyParentVat($oPrice);
     }
 
     public function testApplyParentVat()
     {
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
 
         $oParent = $this->getMock('oxArticle', array('applyVats'));
         $oParent->expects($this->once())->method('applyVats')->will($this->returnValue(null))->with($oPrice);
@@ -249,7 +249,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
     // #2231: Admin settings for "apply VAT in cart" and "net product pricing" don't work for Variants
     public function testApplyParentVatCalcVatOnlyForBasketOrder()
     {
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $this->getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', true);
 
         $oParent = $this->getMock('oxArticle', array('applyVats'));
@@ -271,7 +271,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
 
     public function testGetFPrice()
     {
-        $oSubj = new oxSimpleVariant();
+        $oSubj = oxNew('oxSimpleVariant');
         $oSubj->getPrice()->setPrice(10, 10);
         $this->assertEquals("10,00", $oSubj->getFPrice());
     }
@@ -290,7 +290,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
         $oDiscount->oxdiscount__oxamountto = new oxField(999, oxField::T_RAW);
         $oDiscount->save();
 
-        $oSubj = new oxSimpleVariant();
+        $oSubj = oxNew('oxSimpleVariant');
         $oSubj->oxarticles__oxprice = new oxField(10);
 
         $oParent = oxNew('oxArticle');
@@ -304,7 +304,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
     public function testGetPriceFromParent()
     {
         oxTestModules::addFunction("oxarticle", "skipDiscounts", "{return true;}");
-        $oSubj = new oxSimpleVariant();
+        $oSubj = oxNew('oxSimpleVariant');
         $oParent = oxNew('oxArticle');
         $oParent->oxarticles__oxprice = new oxField(10);
         $oSubj->setParent($oParent);
@@ -326,7 +326,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
 
     public function testGetParent()
     {
-        $oSubj = new oxSimpleVariant();
+        $oSubj = oxNew('oxSimpleVariant');
         $oSubj->setParent(5);
         $this->assertEquals(5, $oSubj->getParent());
     }
@@ -437,7 +437,7 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('bl_perfLoadPrice', false);
 
-        $oSubj = new oxSimpleVariant();
+        $oSubj = oxNew('oxSimpleVariant');
         $oSubj->setPrice(10);
         $iPrice = $oSubj->getPrice();
         $this->assertTrue(empty($iPrice));

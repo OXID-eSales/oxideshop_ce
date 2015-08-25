@@ -67,7 +67,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
         oxTestModules::addFunction("oxSeoEncoderRecomm", "getRecommUrl", "{return 'sRecommUrl';}");
         oxTestModules::addFunction("oxSeoEncoderRecomm", "getRecommPageUrl", "{return 'sRecommPageUrl';}");
 
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $this->assertEquals("sRecommPageUrl", $oRecomm->getBaseSeoLink(0, 1));
     }
 
@@ -76,21 +76,21 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
         oxTestModules::addFunction("oxSeoEncoderRecomm", "getRecommUrl", "{return 'sRecommUrl';}");
         oxTestModules::addFunction("oxSeoEncoderRecomm", "getRecommPageUrl", "{return 'sRecommPageUrl';}");
 
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $this->assertEquals("sRecommUrl", $oRecomm->getBaseSeoLink(0));
     }
 
     public function testGetBaseStdLink()
     {
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return false; }');
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->setId('testrecommid');
         $this->assertEquals($this->getConfig()->getShopHomeUrl() . "cl=recommlist&amp;recommid=testrecommid", $oRecomm->getBaseStdLink(1));
     }
 
     public function testGetStdLink()
     {
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->setId("testId");
         $this->assertEquals($this->getConfig()->getShopHomeUrl() . "cl=recommlist&amp;recommid=testId&amp;param1=value1", $oRecomm->getStdLink(null, array('param1' => 'value1')));
     }
@@ -100,13 +100,13 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
      */
     public function testGetArticlesNoArticles()
     {
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $this->assertEquals(0, count($oRecomm->getArticles()));
     }
 
     public function testGetArticlesOneArticle()
     {
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
         $this->assertEquals(1, count($oRecomm->getArticles()));
     }
@@ -127,7 +127,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
         $myDB->Execute($sQ);
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testlist3", "1126", "testlist", "test" ) ';
         $myDB->Execute($sQ);
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
         $this->assertEquals(3, count($oRecomm->getArticles(null, null, true)));
         $this->assertEquals(2, count($oRecomm->getArticles(0, 2, true)));
@@ -135,7 +135,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
 
     public function testDelete()
     {
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
         $oRecomm->delete();
         $myDB = oxDb::getDB();
@@ -145,7 +145,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
 
     public function testDeleteEmptyList()
     {
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $this->assertFalse($oRecomm->delete());
         $myDB = oxDb::getDB();
         $this->assertEquals('testlist', $myDB->getOne('select oxid from oxrecommlists where oxid = "testlist" '));
@@ -154,7 +154,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
 
     public function testGetArtDescription()
     {
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
         $oArtList = $oRecomm->getArticles();
         $oArt = $oArtList->current();
@@ -163,7 +163,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
 
     public function testGetArtDescriptionIfArtIdNotSet()
     {
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
         $this->assertFalse($oRecomm->getArtDescription(null));
     }
@@ -173,7 +173,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testlist2", "' . $this->_sArticleID . '", "testlist2", "test" ) ';
         oxDb::getDB()->Execute($sQ);
 
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
         $oArtList = $oRecomm->getArticles();
         $oArt = $oArtList->current();
@@ -187,14 +187,14 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
 
     public function testRemoveArticleIfArtIdNotSet()
     {
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
         $this->assertNull($oRecomm->removeArticle(null));
     }
 
     public function testAddArticle()
     {
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
         $oRecomm->addArticle('2000', 'new Art');
         $myDB = oxDb::getDB();
@@ -207,7 +207,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
         $sArticleID = '2000';
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testlist2", "' . $sArticleID . '", "testlist", "test" ) ';
         $myDB->Execute($sQ);
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $aLists = $oRecomm->getRecommListsByIds(array($this->_sArticleID, $sArticleID));
         $this->assertEquals(1, count($aLists));
         $this->assertEquals('testlist', $aLists['testlist']->getId());
@@ -221,7 +221,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
         $myDB->Execute($sQ);
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testid3", "2000", "testlist2", "test" ) ';
         $myDB->Execute($sQ);
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $aLists = $oRecomm->getRecommListsByIds(array($this->_sArticleID));
         $this->assertEquals(1, count($aLists));
         $this->assertEquals('testlist2', $aLists['testlist2']->getId());
@@ -255,7 +255,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
         $myDB->Execute('insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testid7", "' . $aArticles[2] . '", "testlist3", "test" ) ');
         $myDB->Execute('insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testid8", "' . $aArticles[3] . '", "testlist3", "test" ) ');
 
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $aLists = $oRecomm->getRecommListsByIds(array($aArticles[0], $aArticles[1]));
         $this->assertEquals(3, count($aLists));
 
@@ -296,7 +296,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
 
     public function testGetSearchRecommListsIfNoArtAdded()
     {
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $aLists = $oRecomm->getSearchRecommLists('test');
         $this->assertEquals(1, count($aLists));
         $this->assertEquals('testlist', $aLists['testlist']->getId());
@@ -310,7 +310,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
         $myDB->Execute($sQ);
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testlist3", "2000", "testlist2", "test" ) ';
         $myDB->Execute($sQ);
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $aLists = $oRecomm->getSearchRecommLists('test');
         $this->assertEquals(2, count($aLists));
         $aLists = $oRecomm->getSearchRecommLists('oxtest2');
@@ -322,7 +322,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
         $myDB = oxDb::getDB();
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testlist2", "' . $this->_sArticleID . '", "testlist2", "test" ) ';
         $myDB->Execute($sQ);
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $this->assertEquals(2, $oRecomm->getSearchRecommListCount('test'));
         $this->assertEquals(1, $oRecomm->getSearchRecommListCount('oxtest2'));
     }
@@ -332,14 +332,14 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
         $myDB = oxDb::getDB();
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testlist3", "2000", "testlist", "test" ) ';
         $myDB->Execute($sQ);
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
         $this->assertEquals(2, $oRecomm->getArtCount('test'));
     }
 
     public function testaddToRatingAverage()
     {
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->setId('testid');
         $oRecomm->oxrecommlists__oxtitle = new oxField("x", oxField::T_RAW);
         $oRecomm->oxrecommlists__oxrating = new oxField(3.5, oxField::T_RAW);
@@ -360,7 +360,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
     public function testGetReviews()
     {
         oxTestModules::addFunction('oxreview', 'loadList', '{$o=new oxlist();$o->args=$aA;return $o;}');
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->setId('testid');
         $oResult = $oRecomm->getReviews();
         $this->assertEquals(null, $oResult);
@@ -372,7 +372,7 @@ class Unit_Models_oxrecommlistTest extends OxidTestCase
 
     public function testGetLink()
     {
-        $oRecomm = new oxRecommList();
+        $oRecomm = oxNew('oxRecommList');
         $oRecomm->load('testlist');
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");

@@ -141,7 +141,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
      */
     public function testGetAltUri()
     {
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $this->assertNull($oEncoder->UNITgetAltUri("", ""));
     }
 
@@ -197,7 +197,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
     {
         $sChars = "\ + * ? [ ^ ] $ ( ) { } = ! < > | :";
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $oEncoder->setSeparator("+");
         $oEncoder->setPrefix("-");
         $oEncoder->setReservedWords(explode(" ", $sChars));
@@ -211,7 +211,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
      */
     public function testPrepareUriNonRec()
     {
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $oEncoder->setSeparator("+");
         $oEncoder->setPrefix("-");
         $oEncoder->setReservedWords(array('-'));
@@ -229,7 +229,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $iLang = 0;
         oxRegistry::get("oxSeoEncoder")->setPrefix("_");
 
-        $oContent = new oxContent();
+        $oContent = oxNew('oxContent');
         $oContent->setId("_testContent");
 
         $this->assertEquals($this->getConfig()->getShopUrl($iLang) . "_/", $oContent->getLink($iLang));
@@ -247,7 +247,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $sOutKeywords = "Laufräder &#039;&quot;";
         $sOutDescription = "Laufräder &#039;&quot;";
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $oEncoder->addSeoEntry($sObjectId, $iShopId, $iLang, 'stdurl', 'seourl', 'oxarticle', 0, $sInKeywords, $sInDescription);
 
         $this->assertEquals($sOutKeywords, $oEncoder->getMetaData($sObjectId, 'oxdescription', $iShopId, $iLang));
@@ -315,7 +315,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $sStdUrl = "index.php?cl=alist&amp;cnid={$sOxid}";
         $sType = "oxcategory";
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->setId('_testCategoryIdxxx');
         $oCategory->oxcategories__oxshopid = new oxField($iShopId);
         $oCategory->oxcategories__oxtitle = new oxField('test article title');
@@ -358,7 +358,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $iShopId = $oConfig->getShopId();
         $sOxid = '123';
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
 
         // initially writing first one
         $oEncoder->markAsExpired($sOxid, $iShopId, 1, 0);
@@ -378,7 +378,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
     public function testProcessSeoUrl()
     {
         $sSeoUrl = "seourl/";
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $this->assertEquals($sSeoUrl, $oEncoder->UNITprocessSeoUrl($sSeoUrl, null, 1, true));
         $this->assertEquals("en/" . $sSeoUrl, $oEncoder->UNITprocessSeoUrl($sSeoUrl, null, 1, false));
     }
@@ -389,7 +389,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oConfig = $this->getConfig();
 
         // inserting price category for test
-        $oPriceCategory = new oxCategory();
+        $oPriceCategory = oxNew('oxCategory');
         $oPriceCategory->setId("_testPriceCategoryId");
         $oPriceCategory->oxcategories__oxparentid = new oxField("oxrootid");
         $oPriceCategory->oxcategories__oxrootid = $oPriceCategory->getId();
@@ -421,7 +421,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $sVendorId = "68342e2955d7401e6.18967838";
         $sVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Haller-Stahlwaren/";
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load($sCategoryId);
 
         $oView = $this->getMock("oxUBase", array("getTag", "getActiveCategory"));
@@ -449,11 +449,11 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oArticle->setLinkType(OXARTICLE_LINKTYPE_TAG);
         $this->assertEquals($sArticleTagSeoUrl, $oArticle->getLink(0));
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load($sCategoryId);
         $this->assertEquals($sCategorySeoUrl, $oCategory->getLink(0));
 
-        $oContent = new oxContent();
+        $oContent = oxNew('oxContent');
         $oContent->load($sContentId);
         $this->assertEquals($sContentSeoUrl, $oContent->getLink(0));
 
@@ -461,14 +461,14 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oManufacturer->load($sManufacturerId);
         $this->assertEquals($sManufacturerSeoUrl, $oManufacturer->getLink(0));
 
-        $oTagEncoder = new oxSeoEncoderTag();
+        $oTagEncoder = oxNew('oxSeoEncoderTag');
         $sTag = "flaschen";
         $sTagUrl = "tag/flaschen/";
 
         $this->assertEquals($sShopUrl . "tag/bar-equipment/", $oTagEncoder->getTagUrl("bar equipment", 0));
         $this->assertEquals($sShopUrl . $sTagUrl, $oTagEncoder->getTagUrl($sTag, 0));
 
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
         $this->assertEquals($sVendorSeoUrl, $oVendor->getLink(0));
 
@@ -481,7 +481,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oConfig = $this->getConfig();
 
         // inserting price category for test
-        $oPriceCategory = new oxCategory();
+        $oPriceCategory = oxNew('oxCategory');
         $oPriceCategory->setId("_testPriceCategoryId");
         $oPriceCategory->oxcategories__oxparentid = new oxField("oxrootid");
         $oPriceCategory->oxcategories__oxrootid = $oPriceCategory->getId();
@@ -516,7 +516,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $sVendorId = "68342e2955d7401e6.18967838";
         $sVendorSeoUrl = $sShopUrl . "en/By-Distributor/Haller-Stahlwaren/";
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load($sCategoryId);
 
         $oView = $this->getMock("oxUBase", array("getTag", "getActiveCategory"));
@@ -544,11 +544,11 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oArticle->setLinkType(OXARTICLE_LINKTYPE_TAG);
         $this->assertEquals($sArticleTagSeoUrl, $oArticle->getLink(1));
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load($sCategoryId);
         $this->assertEquals($sCategorySeoUrl, $oCategory->getLink(1));
 
-        $oContent = new oxContent();
+        $oContent = oxNew('oxContent');
         $oContent->load($sContentId);
         $this->assertEquals($sContentSeoUrl, $oContent->getLink(1));
 
@@ -559,10 +559,10 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $sTag = "kuyichi";
         $sTagSeoUrl = $sShopUrl . "en/tag/kuyichi/";
 
-        $oTagEncoder = new oxSeoEncoderTag();
+        $oTagEncoder = oxNew('oxSeoEncoderTag');
         $this->assertEquals($sTagSeoUrl, $oTagEncoder->getTagUrl($sTag, 1));
 
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
         $this->assertEquals($sVendorSeoUrl, $oVendor->getLink(1));
 
@@ -601,7 +601,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $iShopId = $this->getConfig()->getBaseShopId();
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $oEncoder->addSeoEntry('testid', $iShopId, 0, 'index.php?cl=std', 'seo/url/', 'oxcategory', 0, 'oxkeywords', 'oxdescription', '');
 
         $sQ = "select oxkeywords from oxobject2seodata where oxobjectid = 'testid' and oxshopid = '{$iShopId}' and oxlang = 0 ";
@@ -610,7 +610,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $sQ = "select oxdescription from oxobject2seodata where oxobjectid = 'testid' and oxshopid = '{$iShopId}' and oxlang = 0 ";
         $this->assertEquals('oxdescription', $oDb->getOne($sQ));
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $oEncoder->addSeoEntry('testid', $iShopId, 0, 'index.php?cl=std', 'seo/url/', 'oxcategory', 0, '', '', '');
 
         $sQ = "select oxkeywords from oxobject2seodata where oxobjectid = 'testid' and oxshopid = '{$iShopId}' and oxlang = 0 ";
@@ -681,7 +681,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
 
         $sStdUrl = 'index.php?cl=details&amp;anid=1126&amp;cnid=' . ($oCat ? $oCat->getId() : '');
 
-        $oEncoder = new oxseoencoder();
+        $oEncoder = oxNew('oxseoencoder');
 
         $this->assertEquals('Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html', $oEncoder->fetchSeoUrl($sStdUrl));
     }
@@ -689,7 +689,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
     public function testFetchSeoUrlNoAvailable()
     {
         $sStdUrl = 'index.php?cl=details&amp;anid=1126';
-        $oEncoder = new oxseoencoder();
+        $oEncoder = oxNew('oxseoencoder');
         $this->assertFalse($oEncoder->fetchSeoUrl($sStdUrl));
     }
 
@@ -698,7 +698,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $sTitle = "Wie/bestellen?/" . str_repeat('a', 200) . ' ' . str_repeat('a', 200) . ' ' . str_repeat('a', 200);
         $sResult = "Wie-bestellen-" . str_repeat('a', 200) . '-' . str_repeat('a', 200);
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $this->assertEquals($sResult, $oEncoder->UNITprepareTitle($sTitle));
         $this->assertEquals($sResult, $oEncoder->UNITprepareTitle($sTitle, false));
         $this->assertEquals($sResult . '-' . str_repeat('a', 200), $oEncoder->UNITprepareTitle($sTitle, true));
@@ -731,7 +731,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
                values ('$sObjectId', '$sIdent', '$sShopId', '$iLang', '$sStdUrl', '$sSeoUrl', '$sType')";
         oxDb::getDb()->execute($sQ);
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
 
         $sUrl = $this->getConfig()->getShopUrl() . $sSeoUrl;
         $sSeoUrl = $oEncoder->getDynamicUrl($sStdUrl, $sSeoUrl, $iLang);
@@ -756,7 +756,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
                values ('$sObjectId', '$sIdent', '$sShopId', '$iLang', '$sStdUrl', '$sSeoUrl', '$sType', 1)";
         oxDb::getDb()->execute($sQ);
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
 
         $sUrl = $this->getConfig()->getShopUrl() . $sSeoUrl . 'addon/';
         $sSeoUrl = $oEncoder->getDynamicUrl($sStdUrl, $sSeoUrl . 'addon/', $iLang);
@@ -774,7 +774,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $iLang = 1;
         $sStdUrl = 'cl=stdcl';
         $sSeoUrl = 'en/dynseourl/';
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
 
         $sUrl = $this->getConfig()->getShopUrl() . $sSeoUrl . 'addon/';
         $sSeoUrl = $oEncoder->getDynamicUrl($sStdUrl, $sSeoUrl . 'addon/', $iLang);
@@ -890,7 +890,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
 
     public function testDeleteSeoEntry()
     {
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
 
         $dbMock = $this->getDbObjectMock();
         $dbMock->expects($this->any())->method('execute')->will($this->returnCallback(array($this, 'fillDbQueryBuffer')));
@@ -985,7 +985,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         // checking if new records are copied
         $iPreCnt = oxDb::getDb()->getOne('select count(oxobjectid) from oxseo where oxshopid = "1" ');
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $oEncoder->copyStaticUrls($this->getConfig()->getBaseShopId());
 
         $this->assertEquals($iPreCnt, oxDb::getDb()->getOne('select count(oxobjectid) from oxseo where oxshopid = "1" '));
@@ -1042,7 +1042,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
                             'oxseo__oxseourl'   => array(1 => $sSeoUrl . 'someparam/')
         );
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $oEncoder->encodeStaticUrls($aStaticUrl, $iShopId, 1);
 
         // checkign if old one is gone
@@ -1066,7 +1066,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
 
         $this->assertTrue('1' == $oDB->getOne('select oxexpired from oxseo where oxobjectid = "999"'));
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $oEncoder->UNITsaveToDb("oxarticle", '999', 'stdurt', 'seourl', '999', '999');
 
         $this->assertTrue('0' == $oDB->getOne('select oxexpired from oxseo where oxobjectid = "999"'));
@@ -1117,7 +1117,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
                                    values ( '{$sObjectId}', '" . md5(strtolower("de/$sSeoUrl3")) . "', '{$iShopId}', '0', '{$sStdUrl3}', '{$sSeoUrl3}', '1', 'oxarticle', '{$sRootId3}' )"
         );
 
-        $oEncoder = new oxSeoEncoder();;
+        $oEncoder = oxNew('oxSeoEncoder');;
         $oEncoder->UNITsaveToDb('oxarticle', $sObjectId, $sStdUrl3, $sSeoUrl3, 0, $iShopId, null, $sRootId3);
 
         $sSql = " select oxobjectid, oxparams, oxexpired from oxseo where oxobjectid= '{$sObjectId}' and oxexpired = '0' ";
@@ -1137,7 +1137,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
                                               values ( "999", "' . md5('seourl') . '", 999, 999, "stdurl", "seourl", "oxarticle", "1" )'
         );
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $oEncoder->UNITsaveToDb("oxarticle", '999', 'newstdurt', 'seourl', '999', '999');
 
         $this->assertTrue('newstdurt' == $oDB->getOne('select oxstdurl from oxseo where oxobjectid = "999"'));
@@ -1152,7 +1152,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
                                               values ( "999", "999", 999, 999, "stdurl", "seourl", "oxarticle", "1" )'
         );
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $oEncoder->UNITcopyToHistory('999', '999', '999');
 
         // testing if record is stored to db
@@ -1169,7 +1169,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
 
         $this->assertFalse($oDB->getOne('select 1 from oxseo where oxexpired = "1" and oxobjectid = "999" and oxident = "999" and oxshopid = "999" and oxlang = "999" '));
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $oEncoder->markAsExpired('999');
 
         $this->assertTrue('1' == $oDB->getOne('select 1 from oxseo where oxexpired = "1" and oxobjectid = "999" and oxident = "999" and oxshopid = "999" and oxlang = "999" '));
@@ -1229,24 +1229,24 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         try {
             // starting test
             $oDb->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxexpired, oxfixed) values ("test", "test", 1, 0, "stdurl", "seourl", "static", 1, 0)');
-            $oEncoder = new oxSeoEncoder();
+            $oEncoder = oxNew('oxSeoEncoder');
             $this->assertFalse($oEncoder->UNITisFixed('static', 'test', 0, 1));
             $oDb->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxexpired, oxfixed) values ("test", "test", 1, 0, "stdurl", "seourl", "static", 1, 1)');
 
             oxSeoEncoderHelper::cleanup();
 
-            $oEncoder = new oxSeoEncoder();
+            $oEncoder = oxNew('oxSeoEncoder');
             $this->assertTrue($oEncoder->UNITisFixed('static', 'test', 0, 1));
 
             oxSeoEncoderHelper::cleanup();
 
-            $oEncoder = new oxSeoEncoder();
+            $oEncoder = oxNew('oxSeoEncoder');
             $this->assertTrue($oEncoder->UNITisFixed('static', 'test', 0, 1, 0, 0));
             $oDb->Execute('delete from oxseo where oxident="test"');
 
             oxSeoEncoderHelper::cleanup();
 
-            $oEncoder = new oxSeoEncoder();
+            $oEncoder = oxNew('oxSeoEncoder');
             $this->assertFalse($oEncoder->UNITisFixed('static', 'test', 0, 1));
             // test finished
         } catch (Exception $e) {
@@ -1431,7 +1431,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
     {
         $iShopId = $this->getConfig()->getBaseShopId();
         $oDb = oxDb::getDb();
-        $oEncoder = new oxseoencoder();
+        $oEncoder = oxNew('oxseoencoder');
 
         $this->assertEquals('uaaA/', $oEncoder->UNITgetUniqueSeoUrl('uaaA'));
         $oDb->execute("insert into oxseo (`oxobjectid`, `oxident`, `oxshopid`, `oxlang`, `oxtype` ) values( '" . md5(uniqid(rand(), true)) . "', '" . $oEncoder->UNITgetSeoIdent($oEncoder->UNITtrimUrl('uaaa/')) . "', '$iShopId', 0, 'oxcategory' )");
@@ -1524,14 +1524,14 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oDb = oxDb::getDb();
         $oDb->execute("insert into oxobject2seodata (`oxobjectid`, `oxkeywords`, `oxshopid`, `oxlang`) values( 'xxx', 'yyy', '$iShopId', 0)");
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
 
         $this->assertEquals('yyy', $oEncoder->getMetaData('xxx', 'oxkeywords'));
     }
 
     public function testGetSeoIdent()
     {
-        $oE = new oxSeoEncoder();
+        $oE = oxNew('oxSeoEncoder');
 
         $this->assertEquals(md5('aaa'), $oE->UNITgetSeoIdent('aAa', 0));
         $this->assertEquals(md5('a1aa'), $oE->UNITgetSeoIdent('a1Aa', 1));
@@ -1542,7 +1542,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
     public function testGetGetPageUriEntryExistsInDb()
     {
         $iLang = 1;
-        $oObject = new oxI18n();
+        $oObject = oxNew('oxI18n');
         $oObject->setLanguage($iLang);
         $oObject->setId('yyy');
 
@@ -1572,7 +1572,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
     public function testGetGetPageUriWithLangParam()
     {
         $iLang = 1;
-        $oObject = new oxI18n();
+        $oObject = oxNew('oxI18n');
         $oObject->setLanguage(0);
         $oObject->setId('yyy');
 
@@ -1602,7 +1602,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
     public function testGetPageUriEntryDoesNotExistInDbAndWillBeCreated()
     {
         $iLang = 1;
-        $oObject = new oxI18n();
+        $oObject = oxNew('oxI18n');
         $oObject->setLanguage($iLang);
         $oObject->setId('yyy');
 
@@ -1658,11 +1658,11 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
     {
         $sCatId = '30e44ab8593023055.23928895';
 
-        $oParentCategory = new oxCategory();
+        $oParentCategory = oxNew('oxCategory');
         $oParentCategory->load($sCatId);
 
         // creating and assigning sub category named "2"
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxtitle = new oxField("2");
         $oCategory->oxcategories__oxparentid = new oxField($sCatId);
         $oCategory->oxcategories__oxactive = new oxField(1);
@@ -1680,7 +1680,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $sEncodedString = "\"<Flaschenoeffner'";
         $sPartEncodedString = '"<Flaschenöffner\'';
 
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $this->assertEquals($sEncodedString, $oEncoder->encodeString($sString));
         $this->assertEquals($sPartEncodedString, $oEncoder->encodeString($sString, false));
 
@@ -1695,7 +1695,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         oxDb::getDb()->execute("delete from oxseo where oxident = '_testIdent'");
         $sQ = "insert into oxseo (oxident, oxstdurl, oxseourl, oxshopid) values('_testIdent', 'index.php?cl=account', 'testSeoUrl', 5) ";
         oxDb::getDb()->execute($sQ);
-        $oEncoder = new oxSeoEncoder();
+        $oEncoder = oxNew('oxSeoEncoder');
         $sSeoUrl = $oEncoder->fetchSeoUrl('index.php?cl=account');
         $sExpUrl = 'mein-konto/';
         $this->assertEquals($sExpUrl, $sSeoUrl);

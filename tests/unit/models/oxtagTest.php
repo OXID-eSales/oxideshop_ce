@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -30,7 +30,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
      */
     public function testConstructing()
     {
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
         $this->assertEquals("", $oTag->get());
 
         $oTag = new oxTag("test");
@@ -43,7 +43,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
      */
     public function testSetGetMaxLength()
     {
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
 
         $iNewMaxLength = $oTag->getMaxLength() + 10;
         $oTag->setMaxLength($iNewMaxLength);
@@ -60,7 +60,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
      */
     public function testSetGetHitCount()
     {
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
         $oTag->setHitCount(5);
         $this->assertEquals(5, $oTag->getHitCount());
     }
@@ -70,7 +70,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
      */
     public function testGetHitCount()
     {
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
         $this->assertEquals(1, $oTag->getHitCount());
     }
 
@@ -79,7 +79,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
      */
     public function testIncreaseHitCount()
     {
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
         $oTag->increaseHitCount();
         $this->assertEquals(2, $oTag->getHitCount());
     }
@@ -89,7 +89,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
      */
     public function testIncreaseHitCountOnNotDefaultValue()
     {
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
         $oTag->setHitCount(5);
         $oTag->increaseHitCount();
         $this->assertEquals(6, $oTag->getHitCount());
@@ -102,7 +102,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
      */
     public function testSetGetTag()
     {
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
 
         $sExpTags = "test";
         $oTag->set($sExpTags);
@@ -115,7 +115,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
      */
     public function testIsValid()
     {
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
 
         $oTag->set("");
         $this->assertFalse($oTag->isValid());
@@ -137,7 +137,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('blSeoMode', true);
 
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
 
 
         $oTag->set("zauber");
@@ -156,7 +156,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('blSeoMode', false);
 
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
 
         $oTag->set("testTag");
         $this->assertEquals($this->getConfig()->getConfigParam("sShopURL") . "index.php?cl=tag&amp;searchtag=testtag&amp;lang=0", $oTag->getLink());
@@ -169,7 +169,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
      */
     public function testGetTagTitle()
     {
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
 
         $oTag->set("testTag");
         $this->assertEquals("testtag", $oTag->getTitle());
@@ -247,7 +247,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
      */
     public function testStripMetaChars($result, $data)
     {
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
 
         $this->assertEquals($result, $oTag->stripMetaChars($data));
     }
@@ -259,7 +259,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
      */
     public function testPrepareTag()
     {
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
 
         $this->assertEquals('a b', $oTag->prepare('a[]{};:./|!@#$%^&?=`b'));
 
@@ -315,7 +315,7 @@ class Unit_Models_oxtagTest extends OxidTestCase
      */
     public function testRemoveUnderscoresSplitByDashes($sTag, $sResult)
     {
-        $oTag = new oxTag();
+        $oTag = oxNew('oxTag');
         $oTag->set(str_replace(' ', '-', $sResult), false);
 
         $oTag->removeUnderscores();

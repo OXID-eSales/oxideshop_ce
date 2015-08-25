@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -104,7 +104,7 @@ class Unit_Models_oxVatSelectorTest extends OxidTestCase
         $oVatSelector = $this->getMock('oxVatSelector', array('_getForeignCountryUserVat'));
         $oVatSelector->expects($this->once())->method('_getForeignCountryUserVat')->will($this->returnValue(66));
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->oxuser__oxcountryid = new oxField(null, oxField::T_RAW);
         $this->assertFalse($oVatSelector->getUserVat($oUser, true));
         // check cache
@@ -133,7 +133,7 @@ class Unit_Models_oxVatSelectorTest extends OxidTestCase
         $oCountry1 = $this->getMock('oxCountry', array('isInEU'));
         $oCountry1->expects($this->once())->method('isInEU')->will($this->returnValue(false));
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oVatSelector = $this->getProxyClass("oxVatSelector");
 
         $this->assertSame(0, $oVatSelector->UNITgetForeignCountryUserVat($oUser, $oCountry1));
@@ -180,19 +180,19 @@ class Unit_Models_oxVatSelectorTest extends OxidTestCase
         $oArticle1 = $this->getMock('oxarticle', array('getCategoryIds'));
         $oArticle1->expects($this->never())->method('getCategoryIds');
 
-        $oVatSelector = new oxVatSelector();
+        $oVatSelector = oxNew('oxVatSelector');
         $this->assertFalse($oVatSelector->UNITgetVatForArticleCategory($oArticle1));
 
         $this->oCategory->oxcategories__oxvat = new oxField(69, oxField::T_RAW);
         $this->oCategory->save();
 
-        $oVatSelector = new oxVatSelector();
+        $oVatSelector = oxNew('oxVatSelector');
         $this->assertEquals(69, $oVatSelector->UNITgetVatForArticleCategory($this->oArticle));
 
         $this->oCategory->oxcategories__oxvat = new oxField(null, oxField::T_RAW);
         $this->oCategory->save();
 
-        $oVatSelector = new oxVatSelector();
+        $oVatSelector = oxNew('oxVatSelector');
         $this->assertFalse($oVatSelector->UNITgetVatForArticleCategory($this->oArticle));
     }
 
@@ -258,11 +258,11 @@ class Unit_Models_oxVatSelectorTest extends OxidTestCase
         $sSwitzerlandId = 'a7c40f6321c6f6109.43859248';
 
         //swiss address
-        $oAddress = new oxAddress();
+        $oAddress = oxNew('oxAddress');
         $oAddress->setId('_testAddress');
         $oAddress->oxaddress__oxcountryid = new oxField($sSwitzerlandId);
 
-        $oAddressList = new oxList();
+        $oAddressList = oxNew('oxList');
         $oAddressList['_testAddress'] = $oAddress;
 
         $oUser = $this->getMock("oxuser", array("getUserAddresses", "getSelectedAddressId"));
@@ -288,11 +288,11 @@ class Unit_Models_oxVatSelectorTest extends OxidTestCase
         $sSwitzerlandId = 'a7c40f6321c6f6109.43859248';
 
         //swiss address
-        $oAddress = new oxAddress();
+        $oAddress = oxNew('oxAddress');
         $oAddress->setId('_testAddress');
         $oAddress->oxaddress__oxcountryid = new oxField($sSwitzerlandId);
 
-        $oAddressList = new oxList();
+        $oAddressList = oxNew('oxList');
         $oAddressList['_testAddress'] = $oAddress;
 
         $oUser = $this->getMock("oxuser", array("getUserAddresses", "getSelectedAddressId"));
@@ -318,11 +318,11 @@ class Unit_Models_oxVatSelectorTest extends OxidTestCase
         $sSwitzerlandId = 'a7c40f6321c6f6109.43859248';
 
         //swiss address
-        $oAddress = new oxAddress();
+        $oAddress = oxNew('oxAddress');
         $oAddress->setId('_testAddress');
         $oAddress->oxaddress__oxcountryid = new oxField($sSwitzerlandId);
 
-        $oAddressList = new oxList();
+        $oAddressList = oxNew('oxList');
         $oAddressList['_testAddress'] = $oAddress;
 
         $oUser = $this->getMock("oxuser", array("getUserAddresses", "getSelectedAddressId"));
@@ -344,7 +344,7 @@ class Unit_Models_oxVatSelectorTest extends OxidTestCase
     public function testGetVatCountryIsCalled()
     {
         $sGermanyId = 'a7c40f631fc920687.20179984';
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
 
         $oVatSelector = $this->getMock("oxVatSelector", array("_getVatCountry"));
         $oVatSelector->expects($this->once())->method("_getVatCountry")->with($oUser)->will($this->returnValue($sGermanyId));

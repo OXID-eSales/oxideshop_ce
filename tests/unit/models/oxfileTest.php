@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -140,19 +140,19 @@ class Unit_Models_oxfileTest extends OxidTestCase
         $filePath = $vfsStream->createFile('out/downloads/te/testFileH', 'test jpg file');
         $this->getConfig()->setConfigParam('sShopDir', $vfsStream->getRootPath());
 
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
 
         $this->assertTrue($oFile->delete('testId1'));
         $this->assertTrue(is_file($filePath));
         $this->assertEquals(2, $oDb->getOne("SELECT COUNT(*) FROM `oxfiles`"));
 
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
         $oFile->load('testId2');
         $this->assertTrue($oFile->delete());
         $this->assertFalse(is_file($filePath));
         $this->assertEquals(1, $oDb->getOne("SELECT COUNT(*) FROM `oxfiles`"));
 
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
 
         $this->assertFalse($oFile->delete('testId4'));
     }
@@ -224,15 +224,15 @@ class Unit_Models_oxfileTest extends OxidTestCase
                                oxorderarticleid ="_orderarticleId"'
         );
 
-        $oOrder = new oxOrder();
+        $oOrder = oxNew('oxOrder');
         $oOrder->setId('_orderId');
         $oOrder->save();
 
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_orderArticleId');
         $oOrderArticle->save();
 
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
         $oFile->setId("fileId");
         $this->assertTrue($oFile->hasValidDownloads());
     }
@@ -242,7 +242,7 @@ class Unit_Models_oxfileTest extends OxidTestCase
      */
     public function testHasValidDownloadsFalse()
     {
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
         $this->assertFalse($oFile->hasValidDownloads());
     }
 
@@ -251,7 +251,7 @@ class Unit_Models_oxfileTest extends OxidTestCase
      */
     public function testIsUploaded()
     {
-        $oSubj = new oxFile();
+        $oSubj = oxNew('oxFile');
         $oSubj->oxfiles__oxstorehash = new oxField("hash5");
         $this->assertTrue($oSubj->isUploaded());
     }
@@ -261,7 +261,7 @@ class Unit_Models_oxfileTest extends OxidTestCase
      */
     public function testIsUploadedNegative()
     {
-        $oSubj = new oxFile();
+        $oSubj = oxNew('oxFile');
         $oSubj->oxfiles__oxstorehash = new oxField("");
         $this->assertFalse($oSubj->isUploaded());
     }
@@ -272,7 +272,7 @@ class Unit_Models_oxfileTest extends OxidTestCase
     public function testGetGlobalMaxDownloadsCount()
     {
         $this->getConfig()->setConfigParam("iMaxDownloadsCount", 2);
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
         $oFile->oxfiles__oxmaxdownloads = new oxField(-1);
         $this->assertEquals(2, $oFile->getMaxDownloadsCount());
     }
@@ -283,7 +283,7 @@ class Unit_Models_oxfileTest extends OxidTestCase
     public function testGetMaxDownloadsCount()
     {
         $this->getConfig()->setConfigParam("iMaxDownloadsCount", 2);
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
         $oFile->oxfiles__oxmaxdownloads = new oxField(0);
         $this->assertEquals(0, $oFile->getMaxDownloadsCount());
     }
@@ -294,7 +294,7 @@ class Unit_Models_oxfileTest extends OxidTestCase
     public function testGetGlobalMaxUnregisteredDownloadsCount()
     {
         $this->getConfig()->setConfigParam("iMaxDownloadsCountUnregistered", 2);
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
         $oFile->oxfiles__oxmaxunregdownloads = new oxField(-1);
         $this->assertEquals(2, $oFile->getMaxUnregisteredDownloadsCount());
     }
@@ -305,7 +305,7 @@ class Unit_Models_oxfileTest extends OxidTestCase
     public function testGetMaxUnregisteredDownloadsCount()
     {
         $this->getConfig()->setConfigParam("iMaxDownloadsCountUnregistered", 2);
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
         $oFile->oxfiles__oxmaxunregdownloads = new oxField(0);
         $this->assertEquals(0, $oFile->getMaxUnregisteredDownloadsCount());
     }
@@ -316,7 +316,7 @@ class Unit_Models_oxfileTest extends OxidTestCase
     public function testGetGlobalLinkExpirationTime()
     {
         $this->getConfig()->setConfigParam("iLinkExpirationTime", 2);
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
         $oFile->oxfiles__oxlinkexptime = new oxField(-1);
         $this->assertEquals(2, $oFile->getLinkExpirationTime());
     }
@@ -327,7 +327,7 @@ class Unit_Models_oxfileTest extends OxidTestCase
     public function testGetLinkExpirationTime()
     {
         $this->getConfig()->setConfigParam("iLinkExpirationTime", 2);
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
         $oFile->oxfiles__oxlinkexptime = new oxField(0);
         $this->assertEquals(0, $oFile->getLinkExpirationTime());
     }
@@ -338,7 +338,7 @@ class Unit_Models_oxfileTest extends OxidTestCase
     public function testGetGlobalDownloadExpirationTime()
     {
         $this->getConfig()->setConfigParam("iDownloadExpirationTime", 2);
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
         $oFile->oxfiles__oxdownloadexptime = new oxField(-1);
         $this->assertEquals(2, $oFile->getDownloadExpirationTime());
     }
@@ -349,7 +349,7 @@ class Unit_Models_oxfileTest extends OxidTestCase
     public function testGetDownloadExpirationTime()
     {
         $this->getConfig()->setConfigParam("iDownloadExpirationTime", 2);
-        $oFile = new oxFile();
+        $oFile = oxNew('oxFile');
         $oFile->oxfiles__oxdownloadexptime = new oxField(0);
         $this->assertEquals(0, $oFile->getDownloadExpirationTime());
     }

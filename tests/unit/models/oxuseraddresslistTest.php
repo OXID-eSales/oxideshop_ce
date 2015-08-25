@@ -80,7 +80,7 @@ class Unit_Models_oxUserAddressListTest extends OxidTestCase
         oxRegistry::getLang()->setBaseLanguage($iLanguageId, self::AUSTRIA_ID);
         $sAddressId = $this->_createAddress($sUserId, self::AUSTRIA_ID);
 
-        $oAddressList = new oxUserAddressList;
+        $oAddressList = oxNew('oxUserAddressList');
         $oAddressList->load($sUserId);
 
         $this->assertSame(1, count($oAddressList), 'User has one address - Austria.');
@@ -96,7 +96,7 @@ class Unit_Models_oxUserAddressListTest extends OxidTestCase
         $sAustriaAddressId = $this->_createAddress($sUserId, self::AUSTRIA_ID);
         $sGermanyAddressId = $this->_createAddress($sUserId, self::GERMANY_ID);
 
-        $oAddressList = new oxUserAddressList;
+        $oAddressList = oxNew('oxUserAddressList');
         $oAddressList->load($sUserId);
 
         $this->assertSame(2, count($oAddressList), 'User has two addresses - Austria and Germany.');
@@ -115,7 +115,7 @@ class Unit_Models_oxUserAddressListTest extends OxidTestCase
         $sOXID = '__testAddress' . $this->_iAddressCounter;
         $this->_iAddressCounter++;
 
-        $oSubj = new oxAddress();
+        $oSubj = oxNew('oxAddress');
         $oSubj->setId($sOXID);
         $oSubj->oxaddress__oxuserid = new oxField($sUserId);
         // Set country Austria as this country has different name in english and germany.

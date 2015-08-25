@@ -65,13 +65,13 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         oxAddClassModule('modOxDeliverySetList', 'oxDeliverySetList');
 
         //set default user
-        $this->_oUser = new oxuser();
+        $this->_oUser = oxNew('oxuser');
         $this->_oUser->setId('_testUserId');
         $this->_oUser->oxuser__oxactive = new oxField('1', oxField::T_RAW);
         $this->_oUser->save();
 
         //add user addres
-        $oAdress = new oxbase();
+        $oAdress = oxNew('oxbase');
         $oAdress->init('oxaddress');
         $oAdress->setId('_testAddressId');
         $oAdress->oxaddress__oxuserid = new oxField($this->_oUser->getId(), oxField::T_RAW);
@@ -122,7 +122,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oUser->expects($this->any())->method('getActiveCountry')->will($this->returnValue("a7c40f631fc920687.20179984"));
         $oUser->load("oxdefaultadmin");
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($sProductId, $dAmount);
         $oBasket->calculateBasket();
 
@@ -136,7 +136,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
      */
     public function testGetDeliverySetListWithSomeWrongData()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
         $oDelSetList = oxNew('oxDeliverySetList');
@@ -149,7 +149,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oDeliverySet = current($oDelSetList);
 
         // adding garbage
-        $oGarbage = new oxbase();
+        $oGarbage = oxNew('oxbase');
         $oGarbage->init("oxobject2delivery");
         $oGarbage->setId("_testoxobject2delivery1");
         $oGarbage->oxobject2delivery__oxdeliveryid = new oxField($oDeliverySet->getId());
@@ -157,7 +157,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oGarbage->oxobject2delivery__oxtype = new oxField("oxdelset");
         $oGarbage->save();
 
-        $oGarbage = new oxbase();
+        $oGarbage = oxNew('oxbase');
         $oGarbage->init("oxobject2delivery");
         $oGarbage->setId("_testoxobject2delivery2");
         $oGarbage->oxobject2delivery__oxdeliveryid = new oxField($oDeliverySet->getId());
@@ -165,7 +165,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oGarbage->oxobject2delivery__oxtype = new oxField("oxdelsetu");
         $oGarbage->save();
 
-        $oGarbage = new oxbase();
+        $oGarbage = oxNew('oxbase');
         $oGarbage->init("oxobject2delivery");
         $oGarbage->setId("_testoxobject2delivery3");
         $oGarbage->oxobject2delivery__oxdeliveryid = new oxField($oDeliverySet->getId());
@@ -257,7 +257,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oDelSet2->save();
 
         // Article 1 => Deliverycost 1
-        $oO2D1 = new oxbase();
+        $oO2D1 = oxNew('oxbase');
         $oO2D1->init('oxobject2delivery');
         $oO2D1->setId('_testoxobject2delivery1');
         $oO2D1->oxobject2delivery__oxdeliveryid = new oxField($oDel1->getId(), oxField::T_RAW);
@@ -266,7 +266,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oO2D1->save();
 
         // Article 1 & Article 2 => Deliverycost 2
-        $oO2D2 = new oxbase();
+        $oO2D2 = oxNew('oxbase');
         $oO2D2->init('oxobject2delivery');
         $oO2D2->setId('_testoxobject2delivery2');
         $oO2D2->oxobject2delivery__oxdeliveryid = new oxField($oDel2->getId(), oxField::T_RAW);
@@ -274,7 +274,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oO2D2->oxobject2delivery__oxtype = new oxField('oxarticles', oxField::T_RAW);
         $oO2D2->save();
 
-        $oO2D3 = new oxbase();
+        $oO2D3 = oxNew('oxbase');
         $oO2D3->init('oxobject2delivery');
         $oO2D3->setId('_testoxobject2delivery2');
         $oO2D3->oxobject2delivery__oxdeliveryid = new oxField($oDel2->getId(), oxField::T_RAW);
@@ -283,7 +283,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oO2D3->save();
 
         // Deliverycost 1 => Deliveryset 1
-        $oD2DelSet1 = new oxbase();
+        $oD2DelSet1 = oxNew('oxbase');
         $oD2DelSet1->init('oxdel2delset');
         $oD2DelSet1->setId('_testoxdel2delset1');
         $oD2DelSet1->oxdel2delset__oxdelid = new oxField($oDel1->getId(), oxField::T_RAW);
@@ -291,7 +291,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oD2DelSet1->save();
 
         // Deliverycost 2 => Deliveryset 2
-        $oD2DelSet2 = new oxbase();
+        $oD2DelSet2 = oxNew('oxbase');
         $oD2DelSet2->init('oxdel2delset');
         $oD2DelSet2->setId('_testoxdel2delset2');
         $oD2DelSet2->oxdel2delset__oxdelid = new oxField($oDel2->getId(), oxField::T_RAW);
@@ -299,7 +299,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oD2DelSet2->save();
 
         // payment => Deliveryset 1
-        $oP2DelSet1 = new oxbase();
+        $oP2DelSet1 = oxNew('oxbase');
         $oP2DelSet1->init('oxobject2payment');
         $oP2DelSet1->oxobject2payment__oxpaymentid = new oxField('oxidcashondel', oxField::T_RAW);
         $oP2DelSet1->oxobject2payment__oxobjectid = new oxField($oDelSet1->getId(), oxField::T_RAW);
@@ -307,7 +307,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oP2DelSet1->save();
 
         // payment => Deliveryset 2
-        $oP2DelSet2 = new oxbase();
+        $oP2DelSet2 = oxNew('oxbase');
         $oP2DelSet2->init('oxobject2payment');
         $oP2DelSet2->oxobject2payment__oxpaymentid = new oxField('oxidpayadvance', oxField::T_RAW);
         $oP2DelSet2->oxobject2payment__oxobjectid = new oxField($oDelSet2->getId(), oxField::T_RAW);
@@ -318,11 +318,11 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
          * Preparing input
          */
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
         oxRegistry::getSession()->deleteVariable('deladrid');
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $oBasket->setBasketUser($oUser);
         $oBasket->addToBasket('1127', 1);
@@ -784,7 +784,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oDelSet1->save();
 
         // Article 1 => Deliverycost 1
-        $oO2D1 = new oxbase();
+        $oO2D1 = oxNew('oxbase');
         $oO2D1->init('oxobject2delivery');
         $oO2D1->setId('_testoxobject2delivery1');
         $oO2D1->oxobject2delivery__oxdeliveryid = new oxField($oDel1->getId(), oxField::T_RAW);
@@ -793,7 +793,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oO2D1->save();
 
         // Deliverycost 1 => Deliveryset 1
-        $oD2DelSet1 = new oxbase();
+        $oD2DelSet1 = oxNew('oxbase');
         $oD2DelSet1->init('oxdel2delset');
         $oD2DelSet1->setId('_testoxdel2delset1');
         $oD2DelSet1->oxdel2delset__oxdelid = new oxField($oDel1->getId(), oxField::T_RAW);
@@ -801,14 +801,14 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oD2DelSet1->save();
 
         // payment => Deliveryset 1
-        $oP2DelSet1 = new oxbase();
+        $oP2DelSet1 = oxNew('oxbase');
         $oP2DelSet1->init('oxobject2payment');
         $oP2DelSet1->oxobject2payment__oxpaymentid = new oxField('oxidcashondel', oxField::T_RAW);
         $oP2DelSet1->oxobject2payment__oxobjectid = new oxField($oDelSet1->getId(), oxField::T_RAW);
         $oP2DelSet1->oxobject2payment__oxtype = new oxField("oxdelset", oxField::T_RAW);
         $oP2DelSet1->save();
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
         $this->setRequestParameter('deladrid', null);
 
@@ -828,7 +828,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
      */
     public function testLoadNonRDFaDeliverySetList()
     {
-        $oP2DelSet1 = new oxbase();
+        $oP2DelSet1 = oxNew('oxbase');
         $oP2DelSet1->init('oxobject2delivery');
         $oP2DelSet1->setId('_testoxobject2delivery1');
         $oP2DelSet1->oxobject2delivery__oxdeliveryid = new oxField('oxidstandard', oxField::T_RAW);
@@ -846,7 +846,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
      */
     public function testLoadRDFaDeliverySetList()
     {
-        $oP2DelSet1 = new oxbase();
+        $oP2DelSet1 = oxNew('oxbase');
         $oP2DelSet1->init('oxobject2delivery');
         $oP2DelSet1->setId('_testoxobject2delivery1');
         $oP2DelSet1->oxobject2delivery__oxdeliveryid = new oxField('oxidstandard', oxField::T_RAW);
@@ -876,7 +876,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
      */
     public function testLoadRDFaDeliverySetListForDeliveryId()
     {
-        $oP2DelSet1 = new oxbase();
+        $oP2DelSet1 = oxNew('oxbase');
         $oP2DelSet1->init('oxobject2delivery');
         $oP2DelSet1->setId('_testoxobject2delivery1');
         $oP2DelSet1->oxobject2delivery__oxdeliveryid = new oxField('oxidstandard', oxField::T_RAW);
@@ -885,7 +885,7 @@ class Unit_Models_oxDeliverysetListTest extends OxidTestCase
         $oP2DelSet1->save();
 
         // Deliverycost 1 => Deliveryset 1
-        $oD2DelSet1 = new oxbase();
+        $oD2DelSet1 = oxNew('oxbase');
         $oD2DelSet1->init('oxdel2delset');
         $oD2DelSet1->setId('_testoxdel2delset1');
         $oD2DelSet1->oxdel2delset__oxdelid = new oxField('1b842e73470578914.54719298', oxField::T_RAW);

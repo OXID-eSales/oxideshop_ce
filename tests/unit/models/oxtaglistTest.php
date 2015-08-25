@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -28,7 +28,7 @@ class Unit_Models_oxtaglistTest extends OxidTestCase
      */
     public function testLoadingAndGettingTagSet()
     {
-        $oTagList = new oxTagList();
+        $oTagList = oxNew('oxTagList');
         $this->assertTrue($oTagList->loadList());
         $oTagSet = $oTagList->get();
         $aTags = $oTagSet->get();
@@ -42,7 +42,7 @@ class Unit_Models_oxtaglistTest extends OxidTestCase
      */
     public function testAddingTagsToList()
     {
-        $oTagList = new oxTagList();
+        $oTagList = oxNew('oxTagList');
         $oTagList->addTag('testTag');
         $oTagSet = $oTagList->get();
         $aExpResult = array('testtag' => new oxTag('testTag'));
@@ -55,7 +55,7 @@ class Unit_Models_oxtaglistTest extends OxidTestCase
      */
     public function testGetTagsEn()
     {
-        $oTagList = new oxTagList();
+        $oTagList = oxNew('oxTagList');
         $oTagList->setLanguage(1);
         $oTagList->loadList();
         $oTagSet = $oTagList->get();
@@ -70,7 +70,7 @@ class Unit_Models_oxtaglistTest extends OxidTestCase
      */
     public function testgetCacheId()
     {
-        $oTagList = new oxTagList();
+        $oTagList = oxNew('oxTagList');
         $oTagList->setLanguage(1);
         $this->assertEquals('tag_list_1', $oTagList->getCacheId());
         $oTagList->setLanguage(2);

@@ -518,7 +518,7 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
-        $oCategory = new oxcategory();
+        $oCategory = oxNew('oxcategory');
 
 
         $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab82c03c3848.49471214' : '8a142c3e60a535f16.78077188';
@@ -970,8 +970,8 @@ class Unit_Models_oxCategoryTest extends OxidTestCase
 
     public function testGetAttributes()
     {
-        $oAttrList = new oxAttributeList();
-        $oAttr = new oxAttribute();
+        $oAttrList = oxNew('oxAttributeList');
+        $oAttr = oxNew('oxAttribute');
         $oAttrList->offsetSet(1, $oAttr);
 
         $oCAttrList = $this->getMock('oxattributelist', array('getCategoryAttributes'));

@@ -125,7 +125,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         if ($oUser->loadActiveUser()) {
             $oUser->logout();
         }
@@ -178,7 +178,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
             $sShopId = $this->getConfig()->getShopId();
         }
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxshopid = new oxField($sShopId, oxField::T_RAW);
         $oUser->oxuser__oxactive = new oxField($iActive, oxField::T_RAW);
         $oUser->oxuser__oxrights = new oxField($sRights, oxField::T_RAW);
@@ -221,7 +221,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
         // creating test executed user payment
         $aDynValue = $this->_aDynPaymentFields;
-        $oPayment = new oxPayment();
+        $oPayment = oxNew('oxPayment');
         $oPayment->load('oxidcreditcard');
         $oPayment->setDynValues($oUtils->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value, true, true, true));
 
@@ -352,7 +352,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxacceptedterms where oxuserid='oxdefaultadmin'"));
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
         $oUser->acceptTerms();
 
@@ -377,25 +377,25 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
         $iCustNr = $this->getDb()->getOne("select max(oxcustnr) from oxuser");
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setId("testID");
         $oUser->oxuser__oxusername = new oxField("aaa@bbb.lt", oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->save();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("testID");
         $this->assertEquals($iCustNr + 1, $oUser->oxuser__oxcustnr->value);
 
         $oUser->delete();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setId("testID");
         $oUser->oxuser__oxusername = new oxField("aaa@bbb.lt", oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->save();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("testID");
         $this->assertEquals($iCustNr + 2, $oUser->oxuser__oxcustnr->value);
 
@@ -405,14 +405,14 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testSetSelectedAddressId()
     {
         $sAddressId = 'xxx';
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setSelectedAddressId($sAddressId);
         $this->assertEquals($sAddressId, $oUser->getSelectedAddressId());
     }
 
     public function testAllowDerivedUpdate()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertTrue($oUser->allowDerivedUpdate());
     }
 
@@ -467,7 +467,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
     public function testIsSamePassword()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
 
         // plain password in db
         $oUser->oxuser__oxpassword = new oxfield('aaa');
@@ -482,7 +482,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
     public function testSetPassword()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setPassword('xxx');
         $this->assertFalse('' == $oUser->oxuser__oxpassword->value);
         $this->assertTrue($oUser->isSamePassword('xxx'));
@@ -497,7 +497,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $sSalt = 'yyy';
         $sEncPass = hash('sha512', $sPassword . $sSalt);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertEquals($sEncPass, $oUser->encodePassword($sPassword, $sSalt));
     }
 
@@ -550,7 +550,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
         $sUid = md5($oUser->getId() . $oUser->oxuser__oxshopid->value . $oUser->oxuser__oxupdatekey->value);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertTrue($oUser->loadUserByUpdateId($sUid));
         $this->assertEquals($sUserId, $oUser->getId());
 
@@ -564,7 +564,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testBoniAfterUserInsert()
     {
         $sId = 'testuserx';
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setId($sId);
         $oUser->oxuser__oxusername = new oxField("aaa@bbb.lt", oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
@@ -582,27 +582,27 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oUser->oxuser__oxrights = new oxField('user');
         $oUser->save();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertFalse($oUser->checkIfEmailExists('admin@oxid.lt'));
     }
 
     public function testCheckIfEmailExistsMallUsersTryingToCreateUserWithNameAdmin()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
 
         $this->assertTrue($oUser->checkIfEmailExists(oxADMIN_LOGIN));
     }
 
     public function testCheckIfEmailExistsMallUsersOldEntryWithoutPass()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
 
         $this->assertFalse($oUser->checkIfEmailExists('aaa@bbb.lt'));
     }
 
     public function testCheckIfEmailExistsMallUsersOldEntryWithPass()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
 
         $this->assertTrue($oUser->checkIfEmailExists(oxADMIN_LOGIN));
     }
@@ -632,11 +632,11 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oDb = $this->getDb();
         $oDb->execute('delete from oxuser where oxusername="aaa@bbb.lt" ');
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
         $oUser->createUser();
 
-        $oNewUser = new oxUser();
+        $oNewUser = oxNew('oxUser');
         $oNewUser->load($oUser->getId());
         $this->assertEquals('user', $oNewUser->oxuser__oxrights->value);
     }
@@ -648,7 +648,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testCreateUserWhileRegistrationNoPass()
     {
         // simulating newsletter subscription
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
@@ -665,7 +665,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
                             'oxuser__oxcity'      => 'ooo',
                             'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984');
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setId('_testUser');
         $oUser->checkValues('aaa@bbb.lt', '', '', $aInvAdress, array());
         $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
@@ -685,7 +685,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testCreateUserWhileRegistrationWithPass()
     {
         // simulating newsletter subscription
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
@@ -702,7 +702,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
                             'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984');
 
         try {
-            $oUser = new oxUser();
+            $oUser = oxNew('oxUser');
             $oUser->setId('_testUser');
             $oUser->checkValues('aaa@bbb.lt', 'xxx', 'xxx', $aInvAdress, array());
             $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
@@ -741,7 +741,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
                             'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984');
 
         try {
-            $oUser = new oxUser();
+            $oUser = oxNew('oxUser');
             $oUser->setId('_testUser');
             $oUser->checkValues('aaa@bbb.lt', 'xxx', 'xxx', $aInvAdress, array());
             $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
@@ -783,7 +783,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
                             'oxuser__oxpassword'  => 'xxx');
 
         try {
-            $oUser = new oxUser();
+            $oUser = oxNew('oxUser');
             $oUser->load($sUserId);
             $oUser->changeUserData('xxx@yyy.zzz', 'xxx', 'xxx', $aInvAdress, array());
             $this->assertEquals($sUserId, $oUser->getId());
@@ -807,7 +807,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
                             'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984');
 
         try {
-            $oUser = new oxUser();
+            $oUser = oxNew('oxUser');
             $oUser->setId('_testUser');
             $oUser->checkValues('aaa@bbb.lt', 'xxx', 'xxx', $aInvAdress, array());
             $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
@@ -828,7 +828,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testGet()
     {
         $oUser1 = $this->createUser();
-        $oUser2 = new oxUser();
+        $oUser2 = oxNew('oxUser');
         $oUser2->load($oUser1->getId());
 
         $this->assertEquals($oUser1->oGroups->arrayKeys(), $oUser2->getUserGroups()->arrayKeys());
@@ -846,7 +846,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     //    must return empty oxnewssubscribed object
     public function testGetNewsSubscriptionNoUserEmptySubscription()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertNull($oUser->getNewsSubscription()->oxnewssubscribed__oxid->value);
     }
 
@@ -854,7 +854,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testGetNewsSubscriptionNoUserReturnsByOxid()
     {
         oxAddClassModule('oxuserTest_oxnewssubscribed', 'oxnewssubscribed');
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setId('oxid');
         $this->assertTrue($oUser->getNewsSubscription()->loadFromUserID);
     }
@@ -863,7 +863,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testGetNewsSubscriptionNoUserReturnsByEmail()
     {
         oxAddClassModule('oxuserTest_oxnewssubscribed', 'oxnewssubscribed');
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new oxField('email', oxField::T_RAW);
         $this->assertTrue($oUser->getNewsSubscription()->loadFromEMail);
     }
@@ -888,7 +888,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     // 2. fetching group info for not existing user - must return 0 group
     public function testGetUserGroupsWrongInput()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setId('xxx');
         $oGroups = $oUser->getUserGroups();
 
@@ -919,7 +919,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     // 2. fetching address info for not existing user - must return 0 address
     public function testGetUserAddressesWrongInput()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $aAddress = $oUser->getUserAddresses('xxx');
 
         // each new created user is assigned to 1 new created address
@@ -950,7 +950,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     // 2. fetching payment info for not existing user - must return 0 payment
     public function testGetUserPaymentsWrongInput()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oPayments = $oUser->getUserPayments('xxx');
 
         // each new created user is assigned to 1 new created exec. payment
@@ -975,7 +975,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid ) values ( "test", "' . $sArticleID . '", "test" ) ';
         $oDb->Execute($sQ);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oRecommlists = $oUser->getUserRecommLists($sUserId);
 
         $this->assertEquals(1, count($oRecommlists));
@@ -1002,7 +1002,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid ) values ( "test", "' . $sArticleID . '", "test" ) ';
         $oDb->Execute($sQ);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load($sUserId);
         $iRecommlists = $oUser->getRecommListsCount();
 
@@ -1016,7 +1016,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     {
         $oDb = $this->getDb();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxpassword = new oxField('somePassword', oxField::T_RAW);
         $oUser->oxuser__oxrights = new oxField(null, oxField::T_RAW);
         $oUser->oxuser__oxregister = new oxField(0, oxField::T_RAW);
@@ -1030,7 +1030,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $sQ = 'select count(oxid) from oxremark where oxparentid = "' . $oUser->getId() . '" and oxtype !="o"';
         $this->assertEquals(1, (int) $oDb->getOne($sQ));
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setId($oUser->getId());
         $oUser->save();
     }
@@ -1060,7 +1060,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     {
         $oDb = $this->getDb();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxpassword = new oxField('somePassword', oxField::T_RAW);
         $oUser->oxuser__oxbirthdate = new oxField(array('day' => '12', 'month' => '12', 'year' => '1212'), oxField::T_RAW);
         $oUser->oxuser__oxrights = new oxField(null, oxField::T_RAW);
@@ -1084,7 +1084,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     // 1. for user with no initial rights
     public function testGetUserRightsNoInitialRights()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertEquals('user', $oUser->UNITgetUserRights());
     }
 
@@ -1093,7 +1093,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     {
         $this->getSession()->setVariable("usr", "oxdefaultadmin");
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
         $this->assertEquals('malladmin', $oUser->UNITgetUserRights());
     }
@@ -1102,7 +1102,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testGetUserRightsInitialAdminRightsSessionUserIsSimpleUser()
     {
         $this->getSession()->setVariable("usr", null);
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
         $this->assertEquals('user', $oUser->UNITgetUserRights());
     }
@@ -1113,7 +1113,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oUser = $this->createUser();
         $sUserId = $oUser->getId();
 
-        $oUser = new oxBase();
+        $oUser = oxNew('oxBase');
         $oUser->init('oxuser');
         $oUser->load($sUserId);
         $oUser->oxuser__oxrights = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
@@ -1121,17 +1121,17 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
         $this->getSession()->setVariable("usr", $oUser->oxuser__oxid->value);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField($this->getConfig()->GetShopId(), oxField::T_RAW);
         $this->assertEquals($this->getConfig()->GetShopId(), $oUser->UNITgetUserRights());
 
         // check for denial
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField(2, oxField::T_RAW);
         $this->assertEquals("user", $oUser->UNITgetUserRights());
 
         // check for denial
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
         $this->assertEquals("user", $oUser->UNITgetUserRights());
     }
@@ -1162,7 +1162,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testDeleteEmptyUser()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertEquals(false, $oUser->delete());
     }
 
@@ -1174,13 +1174,13 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $sUserId = $oUser->getId();
 
         // user address
-        $oAddress = new oxAddress();
+        $oAddress = oxNew('oxAddress');
         $oAddress->setId("_testAddress");
         $oAddress->oxaddress__oxuserid = new oxField($sUserId);
         $oAddress->save();
 
         // user groups
-        $o2g = new oxBase();
+        $o2g = oxNew('oxBase');
         $o2g->init("oxobject2group");
         $o2g->setId("_testO2G");
         $o2g->oxobject2group__oxobjectid = new oxField($sUserId);
@@ -1188,14 +1188,14 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $o2g->save();
 
         // notice/wish lists
-        $oU2B = new oxBase();
+        $oU2B = oxNew('oxBase');
         $oU2B->init("oxuserbaskets");
         $oU2B->setId("_testU2B");
         $oU2B->oxuserbaskets__oxuserid = new oxField($sUserId);
         $oU2B->save();
 
         // newsletter subscription
-        $oNewsSubs = new oxBase();
+        $oNewsSubs = oxNew('oxBase');
         $oNewsSubs->init("oxnewssubscribed");
         $oNewsSubs->setId("_testNewsSubs");
         $oNewsSubs->oxnewssubscribed__oxemail = new oxField($sUserId);
@@ -1203,7 +1203,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oNewsSubs->save();
 
         // delivery and delivery sets
-        $o2d = new oxBase();
+        $o2d = oxNew('oxBase');
         $o2d->init("oxobject2delivery");
         $o2d->setId("_testo2d");
         $o2d->oxnewssubscribed__oxobjectid = new oxField($sUserId);
@@ -1211,7 +1211,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $o2d->save();
 
         // discounts
-        $o2d = new oxBase();
+        $o2d = oxNew('oxBase');
         $o2d->init("oxobject2discount");
         $o2d->setId("_testo2d");
         $o2d->oxnewssubscribed__oxobjectid = new oxField($sUserId);
@@ -1220,14 +1220,14 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
 
         // order information
-        $oRemark = new oxBase();
+        $oRemark = oxNew('oxBase');
         $oRemark->init("oxremark");
         $oRemark->setId("_testRemark");
         $oRemark->oxremark__oxparentid = new oxField($sUserId);
         $oRemark->oxremark__oxtype = new oxField('r');
         $oRemark->save();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load($sUserId);
         $oUser->delete();
 
@@ -1269,7 +1269,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $sQ .= 'values ( "oxtestuser", "' . $sShopId . '", "1", "user", "testuser", "", "' . $iLastCustNr . '", "testCountry" )';
         $oDb->execute($sQ);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->delete("oxtestuser");
         $this->assertEquals(false, $oDb->getOne('select oxid from oxuser where oxid = "oxtestuser"'));
     }
@@ -1285,7 +1285,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oUser = $this->createUser();
         $sUserId = $oUser->getId();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load($sUserId);
 
         $sCreate = $oDb->getOne('select oxcreate from oxuser where oxid="' . $oUser->getId() . '" ');
@@ -1300,7 +1300,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     {
         $oDb = $this->getDb();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->UNITinsert();
 
         // checking
@@ -1333,7 +1333,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oUser->UNITupdate();
 
         // reloading
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load($sUserId);
 
         // checking
@@ -1347,7 +1347,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testExistsNotExisting()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertFalse($oUser->exists('zzz'));
     }
 
@@ -1367,7 +1367,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
     public function testExistsIfMallAdmin()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
         $this->assertTrue($oUser->exists());
     }
@@ -1383,7 +1383,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testExistsInOtherSubshops()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
         $oUser->oxuser__oxrights = new oxField("");
         $oUser->oxuser__oxshopid = new oxField("2");
@@ -1400,7 +1400,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testExistsUsername()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new oxField("admin", oxField::T_RAW);
         $this->assertTrue($oUser->exists());
     }
@@ -1412,7 +1412,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testExistsUsernameMultishop()
     {
         $this->getConfig()->setShopId(2);
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new oxField("admin", oxField::T_RAW);
 
         $this->assertFalse($oUser->exists());
@@ -1450,7 +1450,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     // 1. empty user normally have no orders
     public function testGetOrderCountEmptyUser()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertEquals(0, $oUser->getOrderCount());
     }
 
@@ -1471,7 +1471,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testGetActiveCountryEmptyUser()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         //to make sure there is no user in the session
         $oUser->logout();
         $this->assertEquals('', $oUser->getActiveCountry());
@@ -1516,7 +1516,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $this->getSession()->setVariable('usr', $oUser->getId());
 
         // checking user country
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertEquals($sUsrCountry, $oUser->getActiveCountry());
     }
 
@@ -1529,7 +1529,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     {
         $oDb = $this->getDb();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->createUser();
 
         // checking
@@ -1545,7 +1545,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
         $this->getConfig()->setConfigParam('blMallUsers', true);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->createUser();
 
         // checking
@@ -1559,7 +1559,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     {
         $oDb = $this->getDb();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxpassword = new oxField('', oxField::T_RAW);
         $oUser->save();
 
@@ -1707,7 +1707,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oDb->Execute($sQ);
 
         $oBasket = $this->getProxyClass("oxBasket");
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(9);
         $oBasket->setNonPublicVar("_oPrice", $oPrice);
 
@@ -1740,7 +1740,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oDb->Execute($sQ);
 
         $oBasket = $this->getProxyClass("oxBasket");
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(699);
         $oBasket->setNonPublicVar("_oPrice", $oPrice);
 
@@ -1772,7 +1772,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oDb->Execute($sQ);
 
         $oBasket = $this->getProxyClass("oxBasket");
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(1999);
         $oBasket->setNonPublicVar("_oPrice", $oPrice);
 
@@ -1804,7 +1804,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     // 2. fetching basket for no user - should return 0
     public function testGetBasketNotExistingBasket()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
 
         $oBasket = $oUser->getBasket('oxtest2');
         $this->assertEquals(0, count($oBasket->oArticles));
@@ -1816,31 +1816,31 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testConvertBirthdayGoodInput()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertEquals('1981-05-14', $oUser->convertBirthday(array('year' => 1981, 'month' => 05, 'day' => 14)));
     }
 
     public function testConvertBirthdayAlmostGoodInput()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertEquals('1981-02-01', $oUser->convertBirthday(array('year' => 1981, 'month' => 02, 'day' => 31)));
     }
 
     public function testConvertBirthdayAlmostGoodInput2()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertEquals('1981-04-01', $oUser->convertBirthday(array('year' => 1981, 'month' => 04, 'day' => 31)));
     }
 
     public function testConvertBirthdayBadInput()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertEquals('', $oUser->convertBirthday('oxtest'));
     }
 
     public function testConvertBirthdaySomeGoodInput()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertEquals('1981-01-01', $oUser->convertBirthday(array('year' => 1981)));
     }
 
@@ -1852,7 +1852,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oUser = $this->createUser();
         $sUsername = $oUser->oxuser__oxusername->value;
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
         $this->assertTrue($oUser->checkIfEmailExists($sUsername));
@@ -1881,7 +1881,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oInputValidator->expects($this->once())->method('checkVatId');
         oxRegistry::set('oxInputValidator', $oInputValidator);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->checkValues("X", "X", "X", array(), array());
     }
 
@@ -1891,7 +1891,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oInputValidator->expects($this->once())->method("checkVatId")->will($this->throwException(new oxInputException()));
         oxRegistry::set('oxInputValidator', $oInputValidator);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         try {
             $oUser->checkValues("X", "X", "X", array(), array());
         } catch (oxInputException $oException) {
@@ -2073,12 +2073,12 @@ class Unit_Models_oxUserTest extends OxidTestCase
     {
         oxAddClassModule('Unit_oxuserTest_oxUtilsServer', 'oxUtilsServer');
         //not logged in
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertFalse($oUser->loadAdminUser());
         //logging in
-        $oAdminUser = new oxUser();
+        $oAdminUser = oxNew('oxUser');
         $oAdminUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
-        $oActiveUser = new oxUser();
+        $oActiveUser = oxNew('oxUser');
         $oActiveUser->loadAdminUser();
 
         $this->assertNull($oActiveUser->oxuser__oxusername->value);
@@ -2091,7 +2091,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
         $this->assertEquals($oActiveUser->oxuser__oxusername->value, oxADMIN_LOGIN);
         $oAdminUser->logout();
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertFalse($oUser->loadAdminUser());
     }
 
@@ -2101,7 +2101,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testGetUser()
     {
         //not logged in
-        $oActUser = new oxUser();
+        $oActUser = oxNew('oxUser');
         $this->assertFalse($oActUser->loadActiveUser());
         $testUser = $this->getMock('oxuser', array('isAdmin'));
         $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
@@ -2124,7 +2124,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $sTempPassword = oxADMIN_PASSWD;
 
         //not logged in
-        $oActUser = new oxUser();
+        $oActUser = oxNew('oxUser');
         $this->assertFalse($oActUser->loadActiveUser());
         $testUser = $this->getMock('oxuser', array('isAdmin'));
         $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
@@ -2172,7 +2172,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testLogin_Logout()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
         $this->assertEquals(oxRegistry::getSession()->getVariable('usr'), 'oxdefaultadmin');
         $this->assertNull(oxRegistry::getSession()->getVariable('auth'));
@@ -2205,7 +2205,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testLoginByPassingCustomerNumberNotAllowed()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         try {
             $oUser->login(1, oxADMIN_PASSWD);
         } catch (Exception $oExcp) {
@@ -2263,7 +2263,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsServer', 'setUserCookie', '{ throw new Exception( "cookie is set" ); }');
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         try {
             $this->assertTrue($oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD, true));
         } catch (Exception $oExcp) {
@@ -2282,7 +2282,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsServer', 'setUserCookie', '{ throw new Exception( "cookie is set" ); }');
         $this->getConfig()->setConfigParam('blShowRememberMe', 0);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         try {
             $this->assertTrue($oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD, true));
         } catch (Exception $oExcp) {
@@ -2324,7 +2324,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oConfig->setConfigParam('blDemoShop', 1);
         $oConfig->setAdminMode(true);
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         // demo shop login data: admin/admin here
         $oUser->login("admin", "admin");
 
@@ -2350,7 +2350,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testLogout()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
 
         $this->getSession()->setVariable('dynvalue', 'test');
@@ -2381,7 +2381,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $this->getSession()->setVariable('deladrid', 'xxx');
         $aDelAddress = array();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->UNITassignAddress($aDelAddress);
 
         $this->assertNull(oxRegistry::getSession()->getVariable('deladrid'));
@@ -2541,7 +2541,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testGetEncodedDeliveryAddress()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxcompany = new oxField('Company');
         $oUser->oxuser__oxfname = new oxField('First name');
         $oUser->oxuser__oxlname = new oxField('Last name');
@@ -2571,7 +2571,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testGetUserCountryId()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertEquals("a7c40f631fc920687.20179984", $oUser->getUserCountryId('DE'));
     }
 
@@ -2753,7 +2753,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oUser = $this->createUser();
         $sUserId = $oUser->getId();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load($sUserId);
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
         $oUser->setPassword('testPassword');
@@ -2866,7 +2866,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oUser->expects($this->any())->method('inGroup')->will($this->returnValue(false));
         $oUser->load($sUserId);
 
-        $oGroup = new oxGroups();
+        $oGroup = oxNew('oxGroups');
         $oGroup->setId('_testGroup');
         $oGroup->oxgroups__oxtitle = new oxfield('_testGroup');
         $oGroup->oxgroups__oxactive = new oxfield(1);
@@ -2879,19 +2879,19 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
     public function testGetIdByUserName()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setId("_testId_1");
         $oUser->oxuser__oxusername = new oxField("aaa@bbb.lt", oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->save();
 
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->setId("_testId_2");
         $oUser->oxuser__oxusername = new oxField("bbb@ccc.lt", oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField('xxx');
         $oUser->save();
 
-        $oU = new oxUser();
+        $oU = oxNew('oxUser');
 
         $this->getConfig()->setConfigParam('blMallUsers', false);
         $this->assertEquals('_testId_1', $oU->getIdByUserName('aaa@bbb.lt'));
@@ -2905,7 +2905,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
     public function testIsPriceViewModeNetto()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
 
         $this->getConfig()->setConfigParam('blShowNetPrice', false);
         $this->assertFalse($oUser->isPriceViewModeNetto());
@@ -2920,7 +2920,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testUserCreditRating()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $this->assertEquals(1000, $oUser->getBoni());
 
         $this->getConfig()->setConfigParam('iCreditRating', 100);
@@ -2932,7 +2932,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testGetStateId()
     {
-        $oSubj = new oxUser();
+        $oSubj = oxNew('oxUser');
         $oSubj->oxuser__oxstateid = new oxField('TTT');
         $this->assertEquals('TTT', $oSubj->getStateId());
     }

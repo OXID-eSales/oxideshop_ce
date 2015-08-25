@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -54,7 +54,7 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
             "sTestTag6" => 100,
             "sTestTag7" => 100
         );
-        $oTagCloud = new oxTagCloud();
+        $oTagCloud = oxNew('oxTagCloud');
         $oTagCloud->setCloudArray($aTestData);
 
         foreach ($aTestResults as $sTag => $iVal) {
@@ -86,7 +86,7 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
      */
     public function testGetCloudArray()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
         $oTagSet->set("tag1,tag2");
 
         $oTagList = $this->getMock('oxtaglist', array('getCacheId', 'loadList', 'get'));
@@ -94,7 +94,7 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
         $oTagList->expects($this->any())->method('loadList')->will($this->returnValue(true));
         $oTagList->expects($this->any())->method('get')->will($this->returnValue($oTagSet));
 
-        $oTagCloud = new oxTagCloud();
+        $oTagCloud = oxNew('oxTagCloud');
         $oTagCloud->setTagList($oTagList);
 
         $aTags = array(
@@ -110,7 +110,7 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
      */
     public function testSettingExtendedMode()
     {
-        $oTagCloud = new oxTagCloud();
+        $oTagCloud = oxNew('oxTagCloud');
 
         $oTagCloud->setExtendedMode(true);
         $this->assertTrue($oTagCloud->isExtended());
@@ -124,11 +124,11 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
      */
     public function testGetCloudArrayInExtendedMode()
     {
-        $oTagCloud = new oxTagCloud();
+        $oTagCloud = oxNew('oxTagCloud');
         $oTagCloud->setExtendedMode(true);
         $iMaxAmount = $oTagCloud->GetMaxAmount() + 10;
 
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
         for ($i = 1; $i < $iMaxAmount; $i++) {
             $oTagSet->addTag('tag' . $i);
         }
@@ -153,7 +153,7 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
      */
     public function testGetMaxAmount()
     {
-        $oTagCloud = new oxTagCloud();
+        $oTagCloud = oxNew('oxTagCloud');
 
         $oTagCloud->setExtendedMode(true);
         $this->assertEquals(OXTAGCLOUD_EXTENDEDCOUNT, $oTagCloud->GetMaxAmount());
@@ -167,7 +167,7 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
      */
     public function testTagCache()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
         $oTagSet->add('tag1,tag2');
 
         $oTagList = $this->getMock('oxtaglist', array('getCacheId', 'loadList', 'get'));
@@ -176,7 +176,7 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
         $oTagList->expects($this->exactly(2))->method('loadList')->will($this->returnValue(true));
         $oTagList->expects($this->any())->method('get')->will($this->returnValue($oTagSet));
 
-        $oTagCloud = new oxTagCloud();
+        $oTagCloud = oxNew('oxTagCloud');
         $oTagCloud->setTagList($oTagList);
 
         $aTags = array(
@@ -188,7 +188,7 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
         $this->assertEquals($aTags, $oTagCloud->getCloudArray());
 
         // Set new oxTagCloud, to reset the local class caching
-        $oTagCloud = new oxTagCloud();
+        $oTagCloud = oxNew('oxTagCloud');
         $oTagCloud->setTagList($oTagList);
 
         // should be taken from cache, loadList should not be called
@@ -197,7 +197,7 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
         $oTagCloud->resetCache();
 
         // Set new oxTagCloud, to reset the local class caching
-        $oTagCloud = new oxTagCloud();
+        $oTagCloud = oxNew('oxTagCloud');
         $oTagCloud->setTagList($oTagList);
 
         // should be taken from db again, because we resetted cache.
@@ -209,7 +209,7 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
      */
     public function testTagCacheWithCacheIdNull()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
         $oTagSet->add('tag1,tag2');
 
         $oTagList = $this->getMock('oxTagList', array('getCacheId', 'loadList', 'get'));
@@ -218,7 +218,7 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
         // Load list should be called all times, cache should not be used
         $oTagList->expects($this->exactly(2))->method('loadList')->will($this->returnValue(true));
 
-        $oTagCloud = new oxTagCloud();
+        $oTagCloud = oxNew('oxTagCloud');
         $oTagCloud->setTagList($oTagList);
 
         $aTags = array(
@@ -230,7 +230,7 @@ class Unit_Models_oxTagCloudTest extends OxidTestCase
         $this->assertEquals($aTags, $oTagCloud->getCloudArray());
 
         // Set new oxTagCloud, to reset the local class caching
-        $oTagCloud = new oxTagCloud();
+        $oTagCloud = oxNew('oxTagCloud');
         $oTagCloud->setTagList($oTagList);
 
         // should be taken from cache, loadList should not be called

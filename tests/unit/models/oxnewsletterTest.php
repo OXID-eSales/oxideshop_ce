@@ -251,7 +251,7 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
         $myConfig = $this->getConfig();
 
         // preparing input
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
         $oTestNews = $this->getMock('oxnewsletterForUnit_oxnewsletterTest', array('_assignProducts'));
@@ -332,7 +332,7 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
     // setting by id
     public function testSetUserId()
     {
-        $oTestNews = new modOxNewsLetter;
+        $oTestNews = oxNew('modOxNewsLetter');
         $oTestNews->UNITsetUser('oxdefaultadmin');
         $oUser = $oTestNews->getUser();
         $this->assertEquals($oUser->oxuser__oxid->value, 'oxdefaultadmin');
@@ -341,7 +341,7 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
     // setting by object
     public function testSetUserObject()
     {
-        $oTestNews = new modOxNewsLetter;
+        $oTestNews = oxNew('modOxNewsLetter');
         $oUser = oxNew("oxUser");
         $oUser->load('oxdefaultadmin');
         $oTestNews->UNITsetUser($oUser);
@@ -352,7 +352,7 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
     // setting wrong id
     public function testSetUserWrongId()
     {
-        $oTestNews = new modOxNewsLetter;
+        $oTestNews = oxNew('modOxNewsLetter');
         $oTestNews->UNITsetUser('123');
         $oUser = $oTestNews->getUser();
         $this->assertEquals($oUser->oxuser__oxid->value, null);
@@ -367,7 +367,7 @@ class Unit_Models_oxnewsletterTest extends OxidTestCase
 
         $oView = oxNew('oxubase');
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
         $oTestNews = $this->getProxyClass('oxnewsLetter');

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -76,7 +76,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
         oxTestModules::addFunction("oxSeoEncoderVendor", "getVendorUrl", "{return 'sVendorUrl';}");
         oxTestModules::addFunction("oxSeoEncoderVendor", "getVendorPageUrl", "{return 'sVendorPageUrl';}");
 
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $this->assertEquals("sVendorPageUrl", $oVendor->getBaseSeoLink(0, 1));
     }
 
@@ -85,7 +85,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
         oxTestModules::addFunction("oxSeoEncoderVendor", "getVendorUrl", "{return 'sVendorUrl';}");
         oxTestModules::addFunction("oxSeoEncoderVendor", "getVendorPageUrl", "{return 'sVendorPageUrl';}");
 
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $this->assertEquals("sVendorUrl", $oVendor->getBaseSeoLink(0));
     }
 
@@ -93,7 +93,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
     {
         $iLang = 0;
 
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->setId("testVendorId");
 
         $sTestUrl = $this->getConfig()->getConfig()->getShopHomeUrl($iLang, false) . "cl=vendorlist&amp;cnid=v_" . $oVendor->getId();
@@ -102,7 +102,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
 
     public function testGetContentCats()
     {
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $this->assertNull($oVendor->getContentCats());
     }
 
@@ -154,7 +154,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
 
     public function testGetStdLink()
     {
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->setId('xxx');
         $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx', $oVendor->getStdLink());
     }
@@ -173,7 +173,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
         $sQ = 'select oxtitle from oxvendor where oxvendor.oxshopid = "' . $this->getConfig()->getShopID() . '"';
         $sVendorTitle = $myDB->getOne($sQ);
 
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->setLanguage(0);
         $oVendor->load($sVendorId);
 
@@ -194,7 +194,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
         $sQ = 'select oxtitle_1 from oxvendor where oxvendor.oxshopid = "' . $myConfig->getShopID() . '"';
         $sVendorTitle = $myDB->getOne($sQ);
 
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->loadInLang(1, $sVendorId);
 
         $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-Distributor/' . str_replace(' ', '-', $sVendorTitle) . '/', $oVendor->getLink());
@@ -204,7 +204,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->setId('xxx');
 
         $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx', $oVendor->getLink());
@@ -212,7 +212,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
 
     public function testGetStdLinkWithLangParam()
     {
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->setId('xxx');
         $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx&amp;lang=1', $oVendor->getStdLink(1));
     }
@@ -230,7 +230,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
         $sQ = 'select oxtitle from oxvendor where oxvendor.oxshopid = "' . $this->getConfig()->getShopID() . '"';
         $sVendorTitle = $myDB->getOne($sQ);
 
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->setLanguage(1);
         $oVendor->load($sVendorId);
 
@@ -251,7 +251,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
         $sQ = 'select oxtitle_1 from oxvendor where oxvendor.oxshopid = "' . $myConfig->getShopID() . '"';
         $sVendorTitle = $myDB->getOne($sQ);
 
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->loadInLang(0, $sVendorId);
 
         $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-Distributor/' . str_replace(' ', '-', $sVendorTitle) . '/', $oVendor->getLink(1));
@@ -261,7 +261,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->setId('xxx');
 
         $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx&amp;lang=1', $oVendor->getLink(1));
@@ -269,20 +269,20 @@ class Unit_Models_oxvendorTest extends OxidTestCase
 
     public function testLoadRootVendor()
     {
-        $oV = new oxVendor();
+        $oV = oxNew('oxVendor');
         $oV->load('root');
         $this->assertTrue($oV instanceof oxVendor);
         $this->assertEquals('root', $oV->getId());
 
-        $oV = new oxVendor();
+        $oV = oxNew('oxVendor');
         $oV->loadInLang(0, 'root');
         $this->assertEquals(0, $oV->getLanguage());
 
-        $oV = new oxVendor();
+        $oV = oxNew('oxVendor');
         $oV->loadInLang(1, 'root');
         $this->assertEquals(1, $oV->getLanguage());
 
-        $oV = new oxVendor();
+        $oV = oxNew('oxVendor');
         $oV->load('root');
         $this->assertEquals(oxRegistry::getLang()->getBaseLanguage(), $oV->getLanguage());
     }
@@ -353,7 +353,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
         oxTestModules::addFunction('oxSeoEncoderVendor', 'onDeleteVendor', '{$this->onDelete[] = $aA[0];}');
         oxRegistry::get("oxSeoEncoderVendor")->onDelete = array();
 
-        $obj = new oxvendor();
+        $obj = oxNew('oxvendor');
         $this->assertEquals(false, $obj->delete());
         $this->assertEquals(0, count(oxRegistry::get("oxSeoEncoderVendor")->onDelete));
         $this->assertEquals(false, $obj->exists());
@@ -367,14 +367,14 @@ class Unit_Models_oxvendorTest extends OxidTestCase
 
     public function testGetStdLinkWithParams()
     {
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->setId('xxx');
         $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx&amp;foo=bar&amp;lang=1', $oVendor->getStdLink(1, array('foo' => 'bar')));
     }
 
     public function testGetThumbUrl()
     {
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->setId('xxx');
 
         $this->assertFalse($oVendor->getThumbUrl());
@@ -388,7 +388,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
     public function testGetTitle()
     {
         $sTitle = "testtitle";
-        $oVendor = new oxvendor();
+        $oVendor = oxNew('oxvendor');
         $oVendor->oxvendor__oxtitle = new oxField("testtitle");
         $this->assertEquals($sTitle, $oVendor->getTitle());
     }

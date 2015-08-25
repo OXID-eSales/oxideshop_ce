@@ -34,12 +34,12 @@ class Unit_Models_oxattributeTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_oAttr = new oxAttribute();
+        $this->_oAttr = oxNew('oxAttribute');
         $this->_oAttr->oxattribute__oxtitle = new oxField("test", oxField::T_RAW);
         $this->_oAttr->save();
 
         // article attribute
-        $oNewGroup = new oxbase();
+        $oNewGroup = oxNew('oxbase');
         $oNewGroup->Init('oxobject2attribute');
         $oNewGroup->oxobject2attribute__oxobjectid = new oxField("test_oxid", oxField::T_RAW);
         $oNewGroup->oxobject2attribute__oxattrid = new oxField($this->_oAttr->getId(), oxField::T_RAW);
@@ -47,7 +47,7 @@ class Unit_Models_oxattributeTest extends OxidTestCase
         $oNewGroup->Save();
 
         // category attribute
-        $oNewGroup = new oxbase();
+        $oNewGroup = oxNew('oxbase');
         $oNewGroup->Init('oxcategory2attribute');
         $oNewGroup->oxcategory2attribute__oxobjectid = new oxField("test_oxid", oxField::T_RAW);
         $oNewGroup->oxcategory2attribute__oxattrid = new oxField($this->_oAttr->getId(), oxField::T_RAW);
@@ -72,7 +72,7 @@ class Unit_Models_oxattributeTest extends OxidTestCase
      */
     public function testDeleteNonExisting()
     {
-        $oAttr = new oxAttribute();
+        $oAttr = oxNew('oxAttribute');
         $this->assertFalse($oAttr->delete());
     }
 
@@ -87,7 +87,7 @@ class Unit_Models_oxattributeTest extends OxidTestCase
 
         $sCheckOxid1 = oxDb::getDb()->GetOne("select oxid from oxobject2attribute where oxattrid = '{$this->sOxid}'");
         $sCheckOxid2 = oxDb::getDb()->GetOne("select oxid from oxcategory2attribute where oxattrid = '{$this->sOxid}'");
-        $oAttr = new oxAttribute();
+        $oAttr = oxNew('oxAttribute');
         if ($sCheckOxid1 || $sCheckOxid2 || $oAttr->Load($this->_oAttr->getId())) {
             $this->fail("fail deleting");
         }
@@ -177,7 +177,7 @@ class Unit_Models_oxattributeTest extends OxidTestCase
      */
     public function testSetTitle()
     {
-        $oAttr = new oxAttribute();
+        $oAttr = oxNew('oxAttribute');
         $oAttr->setTitle('title');
         $this->assertEquals('title', $oAttr->getTitle());
     }
@@ -189,7 +189,7 @@ class Unit_Models_oxattributeTest extends OxidTestCase
      */
     public function testSetActiveValue()
     {
-        $oAttr = new oxAttribute();
+        $oAttr = oxNew('oxAttribute');
         $oAttr->setActiveValue('selectedValue');
         $this->assertEquals('selectedValue', $oAttr->getActiveValue());
     }
@@ -201,7 +201,7 @@ class Unit_Models_oxattributeTest extends OxidTestCase
      */
     public function testAddValue()
     {
-        $oAttr = new oxAttribute();
+        $oAttr = oxNew('oxAttribute');
         $oAttr->addValue('val1');
         $oAttr->addValue('val2');
 

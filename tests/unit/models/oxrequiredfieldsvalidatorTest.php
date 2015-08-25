@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -30,7 +30,7 @@ class Unit_Models_oxRequiredFieldsValidatorTest extends OxidTestCase
     {
         $aRequiredFields = array('field1', 'field2');
 
-        $oAddressValidator = new oxRequiredFieldsValidator();
+        $oAddressValidator = oxNew('oxRequiredFieldsValidator');
         $oAddressValidator->setRequiredFields($aRequiredFields);
 
         $this->assertSame($aRequiredFields, $oAddressValidator->getRequiredFields());
@@ -68,7 +68,7 @@ class Unit_Models_oxRequiredFieldsValidatorTest extends OxidTestCase
     {
         $aRequiredFields = array('field1', 'field2');
 
-        $oAddressValidator = new oxRequiredFieldsValidator();
+        $oAddressValidator = oxNew('oxRequiredFieldsValidator');
         $oAddressValidator->setRequiredFields($aRequiredFields);
 
         $this->assertSame($blResult, $oAddressValidator->validateFields($this->_createObject($aFields)));
@@ -81,7 +81,7 @@ class Unit_Models_oxRequiredFieldsValidatorTest extends OxidTestCase
      */
     public function testValidateFieldsWithNoRequiredFields($aFields)
     {
-        $oAddressValidator = new oxRequiredFieldsValidator();
+        $oAddressValidator = oxNew('oxRequiredFieldsValidator');
         $oAddressValidator->setRequiredFields(array());
 
         $this->assertTrue($oAddressValidator->validateFields($this->_createObject($aFields)));
@@ -97,7 +97,7 @@ class Unit_Models_oxRequiredFieldsValidatorTest extends OxidTestCase
     {
         $aRequiredFields = array('field1', 'field2');
 
-        $oAddressValidator = new oxRequiredFieldsValidator();
+        $oAddressValidator = oxNew('oxRequiredFieldsValidator');
         $oAddressValidator->setRequiredFields($aRequiredFields);
         $oAddressValidator->validateFields($this->_createObject($aFields));
 
@@ -111,7 +111,7 @@ class Unit_Models_oxRequiredFieldsValidatorTest extends OxidTestCase
      */
     private function _createObject($aData)
     {
-        $oObject = new oxBase();
+        $oObject = oxNew('oxBase');
         foreach ($aData as $sKey => $sValue) {
             $sKey = "__" . $sKey;
             $oObject->$sKey = new oxField($sValue);

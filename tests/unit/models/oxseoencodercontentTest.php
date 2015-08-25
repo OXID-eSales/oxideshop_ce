@@ -146,7 +146,7 @@ class Unit_Models_oxSeoEncoderContentTest extends OxidTestCase
 
         $content->setCategoryId($categoryId);
 
-        $encoder = new oxSeoEncoderContent();
+        $encoder = oxNew('oxSeoEncoderContent');
         $seoUrl = $encoder->getContentUrl($content);
 
         $this->assertEquals($this->getConfig()->getShopUrl() . $link, $seoUrl);

@@ -370,14 +370,14 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $sArtId = '1126';
 
         // creating select lists..
-        $oSelList = new oxSelectlist;
+        $oSelList = oxNew('oxSelectlist');
         $oSelList->setId('_testoxsellist');
         $oSelList->oxselectlist__oxtitle = new oxfield('testsel');
         $oSelList->oxselectlist__oxvaldesc = new oxfield('Large__@@Medium__@@Small__@@');
         $oSelList->save();
 
         // assigning sel list
-        $oO2Sel = new oxbase;
+        $oO2Sel = oxNew('oxbase');
         $oO2Sel->init("oxobject2selectlist");
         $oO2Sel->setId('_testoxobject2selectlist');
         $oO2Sel->oxobject2selectlist__oxobjectid = new oxfield($sArtId);
@@ -409,7 +409,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oProdPrice = new oxPrice(1199);
         $oProdPrice->setBruttoPriceMode();
 
-        $oProdPriceList = new oxPriceList();
+        $oProdPriceList = oxNew('oxPriceList');
         $oProdPriceList->addToPriceList($oProdPrice);
 
         $oTotalDiscount = new oxPrice(100);
@@ -486,17 +486,17 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     public function testUpdateBasketTwoProductsWithSameSelectionList()
     {
         $sArtId = '1126';
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
 
         // creating selection list
-        $oSelList = new oxSelectlist;
+        $oSelList = oxNew('oxSelectlist');
         $oSelList->setId('_testoxsellist');
         $oSelList->oxselectlist__oxtitle = new oxfield('testsel');
         $oSelList->oxselectlist__oxvaldesc = new oxfield('Large__@@Medium__@@Small__@@');
         $oSelList->save();
 
         // assigning sel list
-        $oO2Sel = new oxbase;
+        $oO2Sel = oxNew('oxbase');
         $oO2Sel->init("oxobject2selectlist");
         $oO2Sel->setId('_testoxobject2selectlist');
         $oO2Sel->oxobject2selectlist__oxobjectid = new oxfield($sArtId);
@@ -540,7 +540,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testSetDiscountCalcModeAndCanCalcDiscounts()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setDiscountCalcMode(false);
         $this->assertFalse($oBasket->canCalcDiscounts());
 
@@ -560,7 +560,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oDiscountPrice->setBruttoPriceMode();
         $oDiscountPrice->add($dDiscount);
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setVoucherDiscount($dDiscount);
 
         $this->assertEquals($oDiscountPrice, $oBasket->getVoucherDiscount());
@@ -573,11 +573,11 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testAddOrderArticleToBasketAmountIsZero()
     {
-        $oOrderArticle = new oxorderarticle();
+        $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->oxorderarticles__oxamount = new oxField(0);
         $oOrderArticle->oxorderarticles__oxisbundle = new oxField(0);
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $this->assertNull($oBasket->addOrderArticleToBasket($oOrderArticle));
     }
 
@@ -656,7 +656,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', false);
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
         $oBasket = $this->getProxyClass("oxbasket");
@@ -666,7 +666,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
 
         $oBasket->UNITsave();
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->setBasketUser($oUser);
         $aContents = $oBasket->getContents();
         $this->assertEquals(0, count($aContents));
@@ -693,15 +693,15 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', false);
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oUser);
         $oBasket->addToBasket('1126', 2);
         $oBasket->calculateBasket(true);
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oUser);
         $oBasket->addToBasket('1127', 2);
         $oBasket->calculateBasket(true);
@@ -737,17 +737,17 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', false);
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oUser);
         $oBasket->addToBasket('1126', 2);
         $oBasket->calculateBasket(true);
         $oBasket->addToBasket('1127', 2);
         $oBasket->calculateBasket(true);
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oUser);
         $oBasket->calculateBasket(true);
 
@@ -770,7 +770,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $aContents = $oBasket->getContents();
         $this->assertEquals(0, count($aContents));
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oUser);
         $oBasket->calculateBasket(true);
         $aContents = $oBasket->getContents();
@@ -799,7 +799,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testStockStatusSetterCheck()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setStockCheckMode(false);
         $this->assertFalse($oBasket->getStockCheckMode());
 
@@ -816,7 +816,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', true);
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $aIds = array($this->oArticle->getId(), $this->oVariant->getId());
@@ -899,7 +899,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testAddToBasketNormalArticle()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10);
         $this->assertEquals(10, $oBasketItem->getAmount());
         $this->assertEquals(100, $oBasketItem->getWeight());
@@ -914,7 +914,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testAddToBasketBadInput()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         try {
             $oBasket->addToBasket($this->oArticle->getId(), 'xxx');
         } catch (oxArticleInputException $oExcp) {
@@ -931,7 +931,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testAddToBasketOutOfStock()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         try {
             $oBasket->addToBasket($this->oArticle->getId(), 666);
         } catch (oxOutOfStockException $oExcp) {
@@ -948,7 +948,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testAddToBasketAddingTwiceAncCheckingAmounts()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
         $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
         $this->assertEquals(20, $oBasketItem->getAmount());
@@ -964,7 +964,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testAddToBasketAddingArticleWithSelectlist()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10, array('0'), null, false, true);
         $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
         $this->assertEquals(20, $oBasketItem->getAmount());
@@ -980,7 +980,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testAddToBasketRemovingBySettingZero()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 0, null, null);
         $this->assertEquals(0, count($oBasket->getBasketArticles()));
     }
@@ -1020,7 +1020,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $sKey = md5('_xxx' . '|' . serialize(array('_xxx')) . '|' . serialize(array('_xxx')) . '|' . ( int ) true . '|' . serialize('_xxx'));
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $this->assertEquals($sKey, $oBasket->getItemKey('_xxx', array('_xxx'), array('_xxx'), true, '_xxx'));
     }
 
@@ -1033,7 +1033,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $sKey = md5('_xxx' . '|' . serialize(array('0')) . '|' . serialize(array('_xxx')) . '|' . ( int ) true . '|' . serialize('_xxx'));
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $this->assertEquals($sKey, $oBasket->getItemKey('_xxx', null, array('_xxx'), true, '_xxx'));
     }
 
@@ -1044,7 +1044,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testRemoveItem()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
         $sKey = key($oBasket->getContents());
 
@@ -1091,7 +1091,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testClearBundles()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
         $oBasket->addToBasket($this->oArticle->getId(), 2, null, null, false, true);
 
@@ -1114,7 +1114,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetArticleBundlesHasNoBundles()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1, null, null, false, true);
         $this->assertEquals(array(), $oBasket->UNITgetArticleBundles($oItem));
     }
@@ -1130,7 +1130,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->oArticle->oxarticles__oxbundleid = new oxField('xxx', oxField::T_RAW);
         $this->oArticle->save();
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
         $this->assertEquals(array('xxx' => 1), $oBasket->UNITgetArticleBundles($oItem));
     }
@@ -1143,7 +1143,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetItemBundlesItemIsBundle()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1, null, null, false, true);
         $this->assertEquals(array(), $oBasket->UNITgetItemBundles($oItem));
     }
@@ -1161,7 +1161,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
         $this->assertEquals(array(), $oBasket->UNITgetItemBundles($oItem));
     }
@@ -1181,7 +1181,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->aDiscounts[0]->save();
         $aArray = array('xxx' => (double) 2);
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
         $this->assertEquals($aArray, $oBasket->UNITgetItemBundles($oItem, $aArray));
     }
@@ -1196,7 +1196,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $aArray = array('xxx' => (double) 2);
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
         $this->assertEquals(array('xxx' => (double) 6), $oBasket->UNITgetItemBundles($oItem, $aArray));
     }
@@ -1224,7 +1224,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
         $this->assertEquals(array(), $oBasket->UNITgetBasketBundles());
     }
@@ -1238,7 +1238,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
 
         // simulating basket contents
-        $oBasketItem = new oxbasketitem();
+        $oBasketItem = oxNew('oxbasketitem');
         $oBasketItem->init($this->oArticle->getId(), 1);
 
         $oBasket = $this->getMock('modForTestAddBundles', array('_getItemBundles', 'addToBasket', '_getBasketBundles'));
@@ -1360,10 +1360,10 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oDisc2Art->save();
 
         // simulating basket contents
-        $oBasketItem = new oxbasketitem();
+        $oBasketItem = oxNew('oxbasketitem');
         $oBasketItem->init($this->oArticle->getId(), 1);
 
-        $oBasketItem2 = new oxbasketitem();
+        $oBasketItem2 = oxNew('oxbasketitem');
         $oBasketItem2->init($oArticle->getId(), 1);
 
         $oBasket = $this->getMock('modForTestAddBundles', array('_addBundlesToBasket'));
@@ -1475,7 +1475,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $aDiscounts['1'] = $oDiscount1;
         $aDiscounts['2'] = $oDiscount2;
         $aItemDiscounts['1'] = $oDiscount3;
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $aReturn = $oBasket->UNITmergeDiscounts($aDiscounts, $aItemDiscounts);
         $aDiscounts['1'] = $oDiscount4;
         $this->assertEquals($aDiscounts, $aReturn);
@@ -1491,7 +1491,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('blCalculateDelCostIfNotLoggedIn', false);
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser(false);
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oPrice = $oBasket->UNITcalcDeliveryCost();
@@ -1519,10 +1519,10 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->getConfig()->setConfigParam('blCalculateDelCostIfNotLoggedIn', false);
         $this->getConfig()->setConfigParam('blEnterNetPrice', true);
 
-        $oAdmin = new oxuser();
+        $oAdmin = oxNew('oxuser');
         $oAdmin->load('oxdefaultadmin');
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oAdmin);
         $this->oArticle->oxarticles__oxfreeshipping = new oxField(true, oxField::T_RAW);
         $this->oArticle->save();
@@ -1552,10 +1552,10 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oSetPrice = oxNew("oxprice");
         $oSetPrice->setPrice(5);
 
-        $oAdmin = new oxuser();
+        $oAdmin = oxNew('oxuser');
         $oAdmin->load('oxdefaultadmin');
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oAdmin);
         $this->oArticle->oxarticles__oxfreeshipping = new oxField(true, oxField::T_RAW);
         $this->oArticle->save();
@@ -1575,10 +1575,10 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testSetBasketUserAndGetBasketUserInOneTest()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->xxx = 'yyy';
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oUser);
 
         $this->assertEquals($oUser, $oBasket->getBasketUser());
@@ -1591,10 +1591,10 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetBasketUser()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->xxx = 'qqq';
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setUser($oUser);
 
         $this->assertEquals($oUser, $oBasket->getBasketUser());
@@ -1607,7 +1607,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testSetGetBasketUser()
     {
-        $oSubj = new oxBasket();
+        $oSubj = oxNew('oxBasket');
         $oSubj->setBasketUser('testUser');
         $this->assertEquals('testUser', $oSubj->getBasketUser());
     }
@@ -1619,7 +1619,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetBasketUserGlobal()
     {
-        $oSubj = new oxBasket();
+        $oSubj = oxNew('oxBasket');
         $oSubj->setUser('testUser');
         $this->assertEquals('testUser', $oSubj->getBasketUser());
     }
@@ -1631,7 +1631,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetBasketUserNonGlobal()
     {
-        $oSubj = new oxBasket();
+        $oSubj = oxNew('oxBasket');
         $oSubj->setUser('testUser');
         $oSubj->setBasketUser('testLocalUser');
         $this->assertEquals('testLocalUser', $oSubj->getBasketUser());
@@ -1671,7 +1671,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $aV[$oV->getId()] = $oV->getSimpleVoucher();
         }
         $oBasket->setNonPublicVar('_aVouchers', $aV);
-        $oBasket->setNonPublicVar('_oTotalDiscount', new oxprice);
+        $oBasket->setNonPublicVar('_oTotalDiscount', oxNew('oxprice'));
         $this->assertNull($oBasket->getVoucherDiscount());
         $oBasket->UNITcalcVoucherDiscount();
         $aVouch = $oBasket->getVouchers();
@@ -1694,7 +1694,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
 
         $oBasket = new modForTestAddBundles();
         $oBasket->setVar('oDiscountProductsPriceList', $oProductsPriceList);
-        $oBasket->setVar('oTotalDiscount', new oxprice);
+        $oBasket->setVar('oTotalDiscount', oxNew('oxprice'));
         $aV = array();
         foreach ($this->aVouchers as $oV) {
             $aV[$oV->getId()] = $oV->getSimpleVoucher();
@@ -1732,7 +1732,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $aV[$oV->getId()] = $oV->getSimpleVoucher();
         }
         $oBasket->setNonPublicVar('_aVouchers', $aV);
-        $oBasket->setNonPublicVar('_oTotalDiscount', new oxprice);
+        $oBasket->setNonPublicVar('_oTotalDiscount', oxNew('oxprice'));
         $oBasket->setSkipVouchersChecking(true);
         $oBasket->UNITcalcVoucherDiscount();
 
@@ -1757,7 +1757,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
 
         $this->assertFalse($oBasket->getFWrappingCosts());
         $this->assertFalse($oBasket->getWrappCostNet());
@@ -1814,7 +1814,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         }
 
         // choosing first payment which is active and has costs
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 2);
         $oBasket->addToBasket($this->oVariant->getId(), 3);
         $oBasket->calculateBasket(false);
@@ -1842,7 +1842,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         }
 
         // choosing first payment which is active and has costs
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 2);
         $oBasket->addToBasket($this->oVariant->getId(), 3);
         $oBasket->calculateBasket(false);
@@ -2019,7 +2019,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->addToBasket($this->oArticle->getId(), 10);
 
@@ -2045,7 +2045,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->addToBasket($this->oArticle->getId(), 10);
 
@@ -2070,7 +2070,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $this->oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
@@ -2098,7 +2098,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2122,7 +2122,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2236,7 +2236,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->save();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setPayment('oxidcashondel');
         $oBasket->setCardId($this->oCard->getId());
         $oBasket->setCardMessage('message');
@@ -2345,7 +2345,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('aHomeCountry', null);
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->setBasketUser(false);
         $this->assertNull($oBasket->UNITfindDelivCountry());
     }
@@ -2360,7 +2360,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->getConfig()->setConfigParam('aHomeCountry', array('_xxx'));
         $this->getConfig()->setConfigParam('blCalculateDelCostIfNotLoggedIn', true);
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->setBasketUser(false);
         $this->assertEquals('_xxx', $oBasket->UNITfindDelivCountry());
     }
@@ -2372,10 +2372,10 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testFindDelivCountryAdminUserCountryId()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->setBasketUser($oUser);
         $this->assertEquals($oUser->oxuser__oxcountryid->value, $oBasket->UNITfindDelivCountry());
     }
@@ -2387,10 +2387,10 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testFindDelivCountry_delcountryid()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oUser);
 
         $this->getConfig()->setGlobalParameter('delcountryid', '_yyy');
@@ -2404,10 +2404,10 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testFindDelivCountryDeladrId()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oUser);
 
         $this->getConfig()->setGlobalParameter('delcountryid', null);
@@ -2475,7 +2475,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         // testing if value is taken from request
         $this->getSession()->setVariable('paymentid', 'xxx');
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $this->assertEquals('xxx', $oBasket->getPaymentId());
 
         // testing if value is taken from setter
@@ -2491,12 +2491,12 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     public function testSetShippingAndGetShippingId()
     {
         // testing if default value is set
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $this->assertEquals('oxidstandard', $oBasket->getShippingId());
 
         // testing if value is taken from request
         $this->getSession()->setVariable('sShipSet', 'xxx');
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $this->assertEquals('xxx', $oBasket->getShippingId());
 
         // testing if value is taken from setter
@@ -2522,7 +2522,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', false);
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $aIds = array($this->oArticle->getId(), $this->oVariant->getId());
@@ -2553,7 +2553,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2574,7 +2574,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket();
@@ -2596,7 +2596,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetProductsPriceIfNotSet()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oProdPrice = $oBasket->getProductsPrice();
         $this->assertTrue($oProdPrice instanceof oxpricelist);
     }
@@ -2613,7 +2613,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2633,7 +2633,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetPriceIfNotSet()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oPrice = $oBasket->getPrice();
         $this->assertTrue($oPrice instanceof oxprice);
     }
@@ -2645,7 +2645,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testSetOrderIdAndGetOrderId()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setOrderId('xxx');
         $this->assertEquals('xxx', $oBasket->getOrderId());
     }
@@ -2663,7 +2663,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 2);
         $oBasket->addToBasket($this->oVariant->getId(), 11);
         $oBasket->calculateBasket(false);
@@ -2681,7 +2681,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2711,7 +2711,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 2);
         $oBasket->addToBasket($this->oVariant->getId(), 11);
         $oBasket->calculateBasket(false);
@@ -2730,7 +2730,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 7);
         $oBasket->addToBasket($this->oVariant->getId(), 6);
         $oBasket->calculateBasket(false);
@@ -2749,7 +2749,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
             $oDiscount->delete();
         }
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2763,7 +2763,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetContents()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $aIds = array($this->oArticle->getId(), $this->oVariant->getId());
@@ -2790,7 +2790,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->oVariant->oxarticles__oxvat = new oxField(9, oxField::T_RAW);
         $this->oVariant->save();
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2809,7 +2809,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetProductVatsIfPriceNotSet()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $this->assertEquals(0, count($oBasket->getProductVats()));
     }
 
@@ -2820,7 +2820,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testSetCardMessageAndGetCardMessage()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setCardMessage('xxx');
         $this->assertEquals('xxx', $oBasket->getCardMessage());
     }
@@ -2832,7 +2832,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetCard()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->setCardId($this->oCard->getId());
 
         // testing Id getter
@@ -2915,7 +2915,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testGetVoucherDiscount()
     {
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2946,7 +2946,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->oVoucherSerie->oxvoucherseries__oxdiscounttype = new oxField('percent', oxField::T_RAW);
         $this->oVoucherSerie->save();
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -3597,7 +3597,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     public function testGetWrappCostVat()
     {
         $this->getConfig()->setConfigParam('blShowVATForWrapping', true);
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(5, 19);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', array("oxwrapping" => $oPrice));
@@ -3612,7 +3612,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     public function testGetWrappCostVat_priceIsZero()
     {
         $this->getConfig()->setConfigParam('blShowVATForWrapping', true);
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(0, 0);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', array("oxwrapping" => $oPrice));
@@ -3642,7 +3642,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     public function testGetWrappCostNet()
     {
         $this->getConfig()->setConfigParam('blShowVATForWrapping', true);
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(5, 19);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', array("oxwrapping" => $oPrice));
@@ -3657,7 +3657,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     public function testGetWrappCostNet_priceIsZero()
     {
         $this->getConfig()->setConfigParam('blShowVATForWrapping', true);
-        $oPrice = new oxPrice();
+        $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(0, 0);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', array("oxwrapping" => $oPrice));
@@ -3920,9 +3920,9 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     public function testGetArtStockInBasket()
     {
         // simulating basket contents
-        $oBasketItem = new oxbasketitem();
+        $oBasketItem = oxNew('oxbasketitem');
         $oBasketItem->init($this->oArticle->getId(), 1, null, null, true);
-        $oBasketItem2 = new oxbasketitem();
+        $oBasketItem2 = oxNew('oxbasketitem');
         $oBasketItem2->init($this->oArticle->getId(), 2);
 
         $oBasket = $this->getProxyClass("oxBasket");
@@ -4148,7 +4148,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("blBasketExcludeEnabled", true);
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load(oxDb::getDb()->getOne("select oxcatnid from oxobject2category where oxobjectid = '1126'"));
         $this->getConfig()->getActiveView()->setActiveCategory($oCategory);
 
@@ -4165,7 +4165,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("blBasketExcludeEnabled", true);
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load(oxDb::getDb()->getOne("select oxcatnid from oxobject2category where oxobjectid != '1126'"));
         $this->getConfig()->getActiveView()->setActiveCategory($oCategory);
 
@@ -4281,7 +4281,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     public function testCalcTsProtectionCost()
     {
         //$this->getConfig()->setConfigParam( 'blEnterNetPrice', false );
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->addToBasket($this->oArticle->getId(), 2);
         $oBasket->calculateBasket(false);
         $oBasket->setTsProductId('TS080501_500_30_EUR');
@@ -4335,7 +4335,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oDiscount->oxdiscount__oxitmmultiple = new oxField(1);
         $oDiscount->save();
 
-        $oO2D = new oxbase();
+        $oO2D = oxNew('oxbase');
         $oO2D->init("oxobject2discount");
         $oO2D->setId('_testo2d1');
         $oO2D->oxobject2discount__oxdiscountid = new oxField('_testDiscount');
@@ -4343,7 +4343,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oO2D->oxobject2discount__oxtype = new oxField("oxarticles");
         $oO2D->save();
 
-        $oO2D = new oxbase();
+        $oO2D = oxNew('oxbase');
         $oO2D->init("oxobject2discount");
         $oO2D->setId('_testo2d2');
         $oO2D->oxobject2discount__oxdiscountid = new oxField('_testDiscount');
@@ -4374,11 +4374,11 @@ class Unit_Models_oxbasketTest extends OxidTestCase
      */
     public function testIsNewItemAdded()
     {
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->assertFalse($oBasket->isNewItemAdded());
         $this->assertNull(oxRegistry::getSession()->getVariable("blAddedNewItem"));
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->UNITaddedNewItem(0, 0, 0, 0, 0, 0, 0);
         $this->assertTrue(oxRegistry::getSession()->getVariable("blAddedNewItem"));
         $this->assertTrue($oBasket->isNewItemAdded());
@@ -4428,7 +4428,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("sAdditionalServVATCalcMethod", 'proportional');
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->assertTrue($oBasket->isProportionalCalculationOn());
 
         $this->getConfig()->setConfigParam("sAdditionalServVATCalcMethod", 'not propotional');
@@ -4454,7 +4454,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $oArticle->oxarticles__oxvat = new oxField(10);
         $oArticle->save();
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->addToBasket('_testArt1', 2);
         $oBasket->addToBasket('_testArt2', 1);
         $oBasket->calculateBasket();
@@ -4476,17 +4476,17 @@ class Unit_Models_oxbasketTest extends OxidTestCase
         $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', true);
 
         $sArtId = '1126';
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
 
         // creating selection list
-        $oSelList = new oxSelectlist;
+        $oSelList = oxNew('oxSelectlist');
         $oSelList->setId('_testoxsellist');
         $oSelList->oxselectlist__oxtitle = new oxfield('testsel');
         $oSelList->oxselectlist__oxvaldesc = new oxfield('Large!P!10__@@Medium!P!20__@@Small!P!30__@@');
         $oSelList->save();
 
         // assigning sel list
-        $oO2Sel = new oxBase;
+        $oO2Sel = oxNew('oxBase');
         $oO2Sel->init("oxobject2selectlist");
         $oO2Sel->setId('_testoxobject2selectlist');
         $oO2Sel->oxobject2selectlist__oxobjectid = new oxfield($sArtId);
@@ -4505,7 +4505,7 @@ class Unit_Models_oxbasketTest extends OxidTestCase
 
     public function testInsuredSumCalculationForTrustedShop()
     {
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->setPrice(new oxPrice(100.98));
         $oBasket->setCost('oxtsprotection', new oxPrice(0.98));
 
@@ -4514,28 +4514,28 @@ class Unit_Models_oxbasketTest extends OxidTestCase
 
     public function testGetSaveBasketSetNotSave()
     {
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->enableSaveToDataBase(false);
         $this->assertFalse($oBasket->isSaveToDataBaseEnabled());
     }
 
     public function testGetSaveBasketSetNotSaveWithConfig()
     {
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', true);
         $this->assertFalse($oBasket->isSaveToDataBaseEnabled());
     }
 
     public function testGetSaveBasketSetSaveWithConfig()
     {
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', false);
         $this->assertTrue($oBasket->isSaveToDataBaseEnabled());
     }
 
     public function testGetSaveBasketSetSaveWithConfigNotDefined()
     {
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', null);
         $this->assertTrue($oBasket->isSaveToDataBaseEnabled());
     }

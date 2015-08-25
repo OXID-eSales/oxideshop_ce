@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -39,7 +39,7 @@ class Unit_Models_oxremarkTest extends OxidTestCase
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
         oxRegistry::get("oxUtilsDate")->UNITSetTime($this->_iNow);
 
-        $this->_oRemark = new oxremark();
+        $this->_oRemark = oxNew('oxremark');
         $this->_oRemark->oxremark__oxtext = new oxField('Test', oxField::T_RAW);
         $this->_oRemark->save();
         $this->_oRemark->load($this->_oRemark->getId());
@@ -59,7 +59,7 @@ class Unit_Models_oxremarkTest extends OxidTestCase
 
     public function testLoad()
     {
-        $oRemark = new oxremark();
+        $oRemark = oxNew('oxremark');
         $oRemark->load($this->_oRemark->oxremark__oxid->value);
 
         $sSendDate = 'd.m.Y H:i:s';
@@ -72,7 +72,7 @@ class Unit_Models_oxremarkTest extends OxidTestCase
 
     public function testUpdate()
     {
-        $oRemark = new oxremark();
+        $oRemark = oxNew('oxremark');
         $oRemark->load($this->_oRemark->getId());
 
         $oRemark->oxremark__oxtext = new oxField("Test_remark", oxField::T_RAW);
@@ -90,11 +90,11 @@ class Unit_Models_oxremarkTest extends OxidTestCase
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
         oxRegistry::get("oxUtilsDate")->UNITSetTime($iNow);
 
-        $oRemark = new oxremark();
+        $oRemark = oxNew('oxremark');
         $oRemark->load($this->_oRemark->oxremark__oxid->value);
         $oRemark->delete();
 
-        $oRemark = new oxremark();
+        $oRemark = oxNew('oxremark');
         $oRemark->setId($this->_oRemark->oxremark__oxid->value);
         $oRemark->save();
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,24 +33,24 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $oBasket = new OxUserBasket();
+        $oBasket = oxNew('OxUserBasket');
         $oBasket->setId("testUserBasket");
         $oBasket->save();
 
-        $oBasketItem = new oxUserBasketItem();
+        $oBasketItem = oxNew('oxUserBasketItem');
         $oBasketItem->setId('testitem');
         $oBasketItem->oxuserbasketitems__oxbasketid = new oxField($oBasket->getId(), oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('2000', oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxamount = new oxField('5', oxField::T_RAW);
         $oBasketItem->save();
 
-        $oSel = new oxbase();
+        $oSel = oxNew('oxbase');
         $oSel->init('oxselectlist');
         $oSel->setId('xxx');
         $oSel->oxselectlist__oxvaldesc = new oxField('S, 10!P!10__@@M, 20!P!20__@@L, 30!P!30__@@', oxField::T_RAW);
         $oSel->save();
 
-        $oO2Sel = new oxbase();
+        $oO2Sel = oxNew('oxbase');
         $oO2Sel->init('oxobject2selectlist');
         $oO2Sel->setId('xxx');
         $oO2Sel->oxobject2selectlist__oxobjectid = new oxField('2000', oxField::T_RAW);
@@ -67,18 +67,18 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
     {
         $this->cleanUpTable('oxuserbaskets');
 
-        $oUserBasket = new oxUserBasket();
+        $oUserBasket = oxNew('oxUserBasket');
         $oUserBasket->delete("testUserBasket");
         $oUserBasket->delete("testUserBasket2");
 
-        $oUserBasketItem = new oxUserBasketItem();
+        $oUserBasketItem = oxNew('oxUserBasketItem');
         $oUserBasketItem->delete("testitem");
 
-        $oSel = new oxbase();
+        $oSel = oxNew('oxbase');
         $oSel->init('oxselectlist');
         $oSel->delete('xxx');
 
-        $oO2Sel = new oxbase();
+        $oO2Sel = oxNew('oxbase');
         $oO2Sel->init('oxobject2selectlist');
         $oO2Sel->delete('xxx');
 
@@ -93,15 +93,15 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
     public function testIfNewlyCreatedBasketIsByDefaultPublic()
     {
         // deleting for lighter teardown
-        $oUserBasket = new oxUserBasket();
+        $oUserBasket = oxNew('oxUserBasket');
         $oUserBasket->delete("testUserBasket");
 
         //
-        $oNewBasket = new oxUserBasket();
+        $oNewBasket = oxNew('oxUserBasket');
         $oNewBasket->setId("testUserBasket");
         $oNewBasket->save();
 
-        $oLoadedBasket = new oxUserBasket();
+        $oLoadedBasket = oxNew('oxUserBasket');
         $oLoadedBasket->load("testUserBasket");
         $this->assertEquals(1, $oLoadedBasket->oxuserbaskets__oxpublic->value);
     }
@@ -115,12 +115,12 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
     public function testRemovedLastBasketItemTestingIfStatusIsKept()
     {
         // deleting for lighter teardown
-        $oBasket = new OxUserBasket();
+        $oBasket = oxNew('OxUserBasket');
         $oBasket->load("testUserBasket");
         $oBasket->oxuserbaskets__oxpublic = new oxField(1, oxField::T_RAW);
         $oBasket->addItemToBasket('2000', 0, null, true);
 
-        $oOldBasket = new OxUserBasket();
+        $oOldBasket = oxNew('OxUserBasket');
         $oOldBasket->load("testUserBasket");
         $this->assertEquals(1, $oOldBasket->oxuserbaskets__oxpublic->value);
         $this->assertEquals(0, $oOldBasket->getItemCount());
@@ -149,7 +149,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
         oxRegistry::get("oxUtilsDate")->UNITSetTime($iTime);
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->setId("_testUserBasketId");
         $oBasket->save();
         $this->assertEquals($iTime, $oBasket->oxuserbaskets__oxupdate->value);
@@ -160,13 +160,13 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
      */
     public function testGetArticlesNoArticles()
     {
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $this->assertEquals(0, count($oBasket->getArticles()));
     }
 
     public function testGetArticlesOneArticle()
     {
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $this->assertEquals(1, count($oBasket->getArticles()));
     }
@@ -177,7 +177,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
     //  simple getter, empty select list info
     public function testGetItems()
     {
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $aItems = $oBasket->getItems();
 
@@ -199,7 +199,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oA);
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $aItems = $oBasket->getItems();
     }
@@ -211,14 +211,14 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oA);
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $aItems = $oBasket->getItems(true, false);
     }
 
     public function testGetItemsCached()
     {
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $aItems = $oBasket->getItems();
         $oItem = current($aItems);
@@ -235,7 +235,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
 
     public function testGetItemsReload()
     {
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $aItems = $oBasket->getItems();
         $oItem = current($aItems);
@@ -256,7 +256,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
 
         $sArtId = "2000";
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $oItem = $oBasket->UNITcreateItem($sArtId, null);
 
@@ -272,7 +272,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
 
         $sArtId = "2000";
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $oItem = $oBasket->UNITcreateItem($sArtId, array(0 => '1'));
 
@@ -286,7 +286,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
     {
         $sArtId = "2000";
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $oItem = $oBasket->UNITcreateItem($sArtId, null, array('param' => 'test'));
 
@@ -302,16 +302,16 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
     // passing article id, which will be used to create item key to fetch item from an array
     public function testGetItem()
     {
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
 
         $this->assertEquals("testUserBasket", $oBasket->getItem("2000", null)->oxuserbasketitems__oxbasketid->value);
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $this->assertEquals("testUserBasket", $oBasket->getItem(md5("2000" . '|' . serialize(array())), null)->oxuserbasketitems__oxbasketid->value);
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $this->assertEquals("2000", $oBasket->getItem("2000", null)->oxuserbasketitems__oxartid->value);
     }
 
@@ -333,7 +333,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
      */
     public function testGetItemKey()
     {
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
 
         $this->assertEquals(md5("123" . '|' . serialize(array(0 => '0')) . '|' . serialize(null)), $oBasket->UNITgetItemKey("123"));
         $this->assertEquals(md5("123" . '|' . serialize(array("b")) . '|' . serialize('xxx')), $oBasket->UNITgetItemKey("123", array("b"), 'xxx'));
@@ -341,10 +341,10 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
 
     public function testGetItemCount()
     {
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $this->assertEquals(0, $oBasket->getItemCount());
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $this->assertEquals(1, $oBasket->getItemCount());
     }
@@ -361,7 +361,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
 
         $this->setTime(99999);
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $oBasket->setIsNewBasket();
 
@@ -373,7 +373,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
         $this->assertEquals(0, $oBasket->addItemToBasket($sArtId, 0, null, true));
 
         $this->assertEquals(99999, $oBasket->oxuserbaskets__oxupdate->value);
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $this->assertEquals(99999, $oBasket->oxuserbaskets__oxupdate->value);
 
@@ -387,7 +387,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
         $sArtId = "2000";
         $dAmount = 3;
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $oBasket->setIsNewBasket();
 
@@ -405,7 +405,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
         $this->assertEquals(1, oxDb::getDb()->getOne($sQ));
         $sQ = "select 1 from oxuserbasketitems where oxbasketid = 'testUserBasket' ";
         $this->assertEquals(1, oxDb::getDb()->getOne($sQ));
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $this->assertTrue($oBasket->delete("testUserBasket"));
 
         $sQ = "select 1 from oxuserbaskets where oxid = 'testUserBasket' ";
@@ -421,7 +421,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
         $this->assertEquals(1, oxDb::getDb()->getOne($sQ));
         $sQ = "select 1 from oxuserbasketitems where oxbasketid = 'testUserBasket' ";
         $this->assertEquals(1, oxDb::getDb()->getOne($sQ));
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
         $this->assertTrue($oBasket->delete());
 
@@ -434,13 +434,13 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
 
     public function testDeleteBlank()
     {
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $this->assertFalse($oBasket->delete());
     }
 
     public function testIsVisibleOtherUserActive()
     {
-        $oSubj = new oxUserBasket();
+        $oSubj = oxNew('oxUserBasket');
         $oSubj->init();
         $oSubj->oxuserbaskets__oxpublic = new oxField(1);
         $this->assertTrue($oSubj->isVisible());
@@ -448,7 +448,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
 
     public function testIsVisibleOtherUserInactive()
     {
-        $oSubj = new oxUserBasket();
+        $oSubj = oxNew('oxUserBasket');
         $oSubj->init();
         $oSubj->oxuserbaskets__oxpublic = new oxField(0);
         $this->assertFalse($oSubj->isVisible());
@@ -456,11 +456,11 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
 
     public function testIsVisibleSameUser()
     {
-        $oSubj = new oxUserBasket();
+        $oSubj = oxNew('oxUserBasket');
         $oSubj->init();
         $oSubj->oxuserbaskets__oxpublic = new oxField(0);
         $oSubj->oxuserbaskets__oxuserid = new oxField('oxdefaultadmin');
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
         $oSubj->getConfig()->setUser($oUser);
         $this->assertTrue($oSubj->isVisible());
@@ -504,7 +504,7 @@ class Unit_Models_oxuserbasketTest extends OxidTestCase
     {
         $this->setTime(3333);
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->setIsNewBasket();
 
         $this->assertTrue($oBasket->isNewBasket());

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -28,7 +28,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testSetGetSeparator()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTagSet->setSeparator("|");
         $this->assertEquals("|", $oTagSet->getSeparator());
@@ -39,13 +39,13 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testNotDefaultSeparator()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTagSet->setSeparator("|");
 
-        $oTag1 = new oxTag();
+        $oTag1 = oxNew('oxTag');
         $oTag1->set("test1,test2");
-        $oTag2 = new oxTag();
+        $oTag2 = oxNew('oxTag');
         $oTag2->set("test3,test4");
 
         $aTags = array(
@@ -65,7 +65,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testSetGet()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTagSet->set("test1,test2,test3");
 
@@ -85,7 +85,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testAdd()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
         $oTagSet->add("test1,test2");
         $oTagSet->add("test3,test4");
 
@@ -106,7 +106,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testAddTag()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTagSet->addTag("test1");
         $oTagSet->addTag("test2");
@@ -126,7 +126,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testAddTagNotValid()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         // empty strings should not be stored in invalid tags list
         $oTagSet->addTag("");
@@ -147,7 +147,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testInvalidTagsWithAllValidTags()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
         $oTagSet->addTag("validtag");
         $this->assertEquals(array(), $oTagSet->getInvalidTags());
     }
@@ -159,7 +159,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testAddTagObject()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTag1 = new oxTag("test1");
         $oTag2 = new oxTag("test2");
@@ -182,7 +182,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testAddRepeatingTags()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTagSet->set("test1,  test2  ,test1 ");
         $oTagSet->add("test2, test2 , test2");
@@ -203,7 +203,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testAddInvalidTags()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTagSet->set("");
         $oTagSet->add(",,,,");
@@ -219,7 +219,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testClear()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTagSet->set("test1,test2");
         $this->assertEquals("test1,test2", $oTagSet->formString());
@@ -234,7 +234,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testFormingTagsString()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTagSet->set("test1, test2, test2  , test1 ");
         $this->assertEquals("test1,test1,test2,test2", $oTagSet->formString());
@@ -247,7 +247,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testTagSetUsingAsString()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTagSet->set("test1, test2, test2  , test1 ");
         $this->assertEquals("Result: test1,test1,test2,test2", 'Result: ' . $oTagSet);
@@ -260,7 +260,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testTagSetSlicing()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTagSet->set("test1, test2, test2  , test1, test3 ");
         $oTagSet->slice(0, 2);
@@ -281,7 +281,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testTagSetSort()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTagSet->set("btag,ctag,atag,1tag");
         $oTagSet->sort();
@@ -303,7 +303,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testTagSetSortByHitCount()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
 
         $oTagSet->set("atag,ctag,ctag,ctag,dtag,dtag,dtag,dtag,btag,btag");
         $oTagSet->sortByHitCount();
@@ -327,7 +327,7 @@ class Unit_Models_oxtagsetTest extends OxidTestCase
      */
     public function testIterator()
     {
-        $oTagSet = new oxTagSet();
+        $oTagSet = oxNew('oxTagSet');
         $oTagSet->set("test1,test2");
 
         $aTags = array();

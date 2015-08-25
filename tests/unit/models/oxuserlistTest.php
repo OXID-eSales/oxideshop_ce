@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Models_oxuserlistTest extends OxidTestCase
     public function setUp()
     {
         parent::setUp();
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->setId('user1');
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
@@ -42,35 +42,35 @@ class Unit_Models_oxuserlistTest extends OxidTestCase
         $oUser->save();
 
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->setId('user2');
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField(2, oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField('user2', oxField::T_RAW);
         $oUser->save();
 
-        $oBasket = new OxUserBasket();
+        $oBasket = oxNew('OxUserBasket');
         $oBasket->setId("testUserBasket");
         $oBasket->oxuserbaskets__oxuserid = new oxField('user2', oxField::T_RAW);
         $oBasket->oxuserbaskets__oxtitle = new oxField('wishlist', oxField::T_RAW);
         $oBasket->oxuserbaskets__oxpublic = new oxField(1, oxField::T_RAW);
         $oBasket->save();
 
-        $oBasketItem = new OxUserBasketItem();
+        $oBasketItem = oxNew('OxUserBasketItem');
         $oBasketItem->setId("testUserBasketItem");
         $oBasketItem->oxuserbasketitems__oxbasketid = new oxField('testUserBasket', oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxamount = new oxField(1, oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('test', oxField::T_RAW);
         $oBasketItem->save();
 
-        $oBasket = new OxUserBasket();
+        $oBasket = oxNew('OxUserBasket');
         $oBasket->setId("testUserBasket2");
         $oBasket->oxuserbaskets__oxuserid = new oxField('user1', oxField::T_RAW);
         $oBasket->oxuserbaskets__oxtitle = new oxField('wishlist', oxField::T_RAW);
         $oBasket->oxuserbaskets__oxpublic = new oxField(1, oxField::T_RAW);
         $oBasket->save();
 
-        $oBasketItem = new OxUserBasketItem();
+        $oBasketItem = oxNew('OxUserBasketItem');
         $oBasketItem->setId("testUserBasketItem2");
         $oBasketItem->oxuserbasketitems__oxbasketid = new oxField('testUserBasket2', oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxamount = new oxField(1, oxField::T_RAW);
@@ -85,13 +85,13 @@ class Unit_Models_oxuserlistTest extends OxidTestCase
      */
     public function tearDown()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->delete('user1');
         $oUser->delete('user2');
-        $oUserBasket = new oxUserBasket();
+        $oUserBasket = oxNew('oxUserBasket');
         $oUserBasket->delete("testUserBasket");
         $oUserBasket->delete("testUserBasket2");
-        $oUserBasket = new OxUserBasketItem();
+        $oUserBasket = oxNew('OxUserBasketItem');
         $oUserBasket->delete("testUserBasketItem");
         $oUserBasket->delete("testUserBasketItem2");
 
@@ -109,7 +109,7 @@ class Unit_Models_oxuserlistTest extends OxidTestCase
 
         $iUserCount = oxDB::getDB()->getOne($sQ);
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUserList = oxNew('oxuserlist');
         $oUserList->selectString($oUser->buildSelectString());
 
@@ -122,7 +122,7 @@ class Unit_Models_oxuserlistTest extends OxidTestCase
         $sQ = 'select count(*) from oxuser';
         $iUserCount = oxDB::getDB()->getOne($sQ);
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUserList = oxNew('oxuserlist');
         $oUserList->selectString($oUser->buildSelectString());
 

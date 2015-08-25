@@ -194,7 +194,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oDelivery->oxdelivery__oxparamend = new oxField(100, oxField::T_RAW);
         $oDelivery->save();
 
-        $oO2D = new oxBase();
+        $oO2D = oxNew('oxBase');
         $oO2D->init('oxobject2delivery');
         $oO2D->setId('_testoxobject2delivery');
         $oO2D->oxobject2delivery__oxdeliveryid = new oxField($oDelivery->getId(), oxField::T_RAW);
@@ -202,7 +202,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oO2D->oxobject2delivery__oxtype = new oxField('oxarticles', oxField::T_RAW);
         $oO2D->save();
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $this->getConfig()->setConfigParam('blExclNonMaterialFromDelivery', true);
         $oBasket->addToBasket('1126', 5);
@@ -234,7 +234,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oDelivery->oxdelivery__oxparamend = new oxField(100, oxField::T_RAW);
         $oDelivery->save();
 
-        $oO2D = new oxBase();
+        $oO2D = oxNew('oxBase');
         $oO2D->init('oxobject2delivery');
         $oO2D->setId('_testoxobject2delivery');
         $oO2D->oxobject2delivery__oxdeliveryid = new oxField($oDelivery->getId(), oxField::T_RAW);
@@ -242,7 +242,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oO2D->oxobject2delivery__oxtype = new oxField('oxarticles', oxField::T_RAW);
         $oO2D->save();
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $this->getConfig()->setConfigParam('blExclNonMaterialFromDelivery', true);
         $oBasket->addToBasket('1126', 2);
@@ -274,7 +274,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oDelivery->oxdelivery__oxparamend = new oxField(100, oxField::T_RAW);
         $oDelivery->save();
 
-        $oO2D = new oxBase();
+        $oO2D = oxNew('oxBase');
         $oO2D->init('oxobject2delivery');
         $oO2D->setId('_testoxobject2delivery');
         $oO2D->oxobject2delivery__oxdeliveryid = new oxField($oDelivery->getId(), oxField::T_RAW);
@@ -282,7 +282,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oO2D->oxobject2delivery__oxtype = new oxField('oxcategories', oxField::T_RAW);
         $oO2D->save();
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $this->getConfig()->setConfigParam('blExclNonMaterialFromDelivery', true);
         $oBasket->addToBasket('1354', 15);
@@ -320,7 +320,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oDelivery->oxdelivery__oxparamend = new oxField(100, oxField::T_RAW);
         $oDelivery->save();
 
-        $oO2D = new oxBase();
+        $oO2D = oxNew('oxBase');
         $oO2D->init('oxobject2delivery');
         $oO2D->setId('_testoxobject2delivery');
         $oO2D->oxobject2delivery__oxdeliveryid = new oxField($oDelivery->getId(), oxField::T_RAW);
@@ -328,7 +328,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oO2D->oxobject2delivery__oxtype = new oxField('oxcategories', oxField::T_RAW);
         $oO2D->save();
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $this->getConfig()->setConfigParam('blExclNonMaterialFromDelivery', true);
         $oBasket->addToBasket('1126', 2);
@@ -356,7 +356,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oDelivery->oxdelivery__oxparamend = new oxField(100, oxField::T_RAW);
         $oDelivery->save();
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $this->getConfig()->setConfigParam('blExclNonMaterialFromDelivery', true);
         $oBasket->addToBasket('1354', 5);
@@ -386,7 +386,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oDelivery->oxdelivery__oxparamend = new oxField(0, oxField::T_RAW);
         $oDelivery->save();
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $this->getConfig()->setConfigParam('blExclNonMaterialFromDelivery', true);
         $oBasket->addToBasket('1354', 5);
@@ -410,7 +410,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oDelivery->oxdelivery__oxparamend = new oxField(100, oxField::T_RAW);
         $oDelivery->save();
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $this->getConfig()->setConfigParam('blExclNonMaterialFromDelivery', true);
         $oBasket->addToBasket('1126', 2);
@@ -440,7 +440,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oDelivery->oxdelivery__oxparamend = new oxField(100, oxField::T_RAW);
         $oDelivery->save();
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $this->getConfig()->setConfigParam('blExclNonMaterialFromDelivery', true);
         $oBasket->addToBasket('1126', 2);
@@ -475,7 +475,7 @@ class Unit_Models_oxdeliveryTest extends OxidTestCase
         $oArticle->load("_testArticleId1");
         $oArticle->oxarticles__oxfreeshipping = new oxField(true, oxField::T_RAW);
         $oArticle->save();
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
         $this->getConfig()->setConfigParam('blExclNonMaterialFromDelivery', true);
 

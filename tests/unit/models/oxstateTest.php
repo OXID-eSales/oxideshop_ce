@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,7 +25,7 @@ class Unit_Models_oxstateTest extends OxidTestCase
 
     public function testInit()
     {
-        $oState = new oxState();
+        $oState = oxNew('oxState');
         $oState->load('AB');
         $this->assertEquals('Alberta', $oState->oxstates__oxtitle->value);
     }
@@ -35,7 +35,7 @@ class Unit_Models_oxstateTest extends OxidTestCase
      */
     public function testGetIdByCode()
     {
-        $oState = new oxState();
+        $oState = oxNew('oxState');
         $this->assertEquals('MB', $oState->getIdByCode('MB', '8f241f11095649d18.02676059'));
     }
 
@@ -78,7 +78,7 @@ class Unit_Models_oxstateTest extends OxidTestCase
      */
     public function testGetTitleById($sId, $sExpected, $sMsg)
     {
-        $oState = new oxState();
+        $oState = oxNew('oxState');
         $this->assertEquals($sExpected, $oState->getTitleById($sId), $sMsg);
     }
 

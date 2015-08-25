@@ -148,7 +148,7 @@ class Unit_Models_oxManufacturerlistTest extends OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
         $myConfig = $this->getConfig();
 
-        $oManufacturerlist = new oxManufacturerlist();
+        $oManufacturerlist = oxNew('oxManufacturerlist');
         $oManufacturerlist->loadManufacturerList();
         $oManufacturer = $oManufacturerlist->current();
 

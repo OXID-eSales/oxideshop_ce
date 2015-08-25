@@ -34,7 +34,7 @@ class Unit_Models_oxCountryTest extends OxidTestCase
     {
         parent::setUp();
 
-        $oObj = new oxbase();
+        $oObj = oxNew('oxbase');
         $oObj->init('oxcountry');
         $oObj->oxcountry__oxtitle = new oxField('oxCountryTestDE', oxField::T_RAW);
         $oObj->oxcountry__oxtitle_1 = new oxField('oxCountryTestENG', oxField::T_RAW);

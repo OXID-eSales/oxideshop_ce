@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -62,17 +62,17 @@ class Unit_Models_oxuserpaymentTest extends OxidTestCase
 
     public function testGetDynValuesIfAlwaysArrayIsReturned()
     {
-        $oUserPayment = new oxUserPayment();
+        $oUserPayment = oxNew('oxUserPayment');
         $oUserPayment->oxuserpayments__oxvalue = new oxField('lsbankname__12613212@@lsblz__132132132@@lsktonr__1331321321@@lsktoinhaber__Dainius O&quot;bryan@@');
 
         $this->assertTrue(is_array($oUserPayment->getDynValues()));
 
-        $oUserPayment = new oxUserPayment();
+        $oUserPayment = oxNew('oxUserPayment');
         $oUserPayment->oxuserpayments__oxvalue = new oxField('some unknown format value');
 
         $this->assertTrue(is_array($oUserPayment->getDynValues()));
 
-        $oUserPayment = new oxUserPayment();
+        $oUserPayment = oxNew('oxUserPayment');
         $this->assertTrue(is_array($oUserPayment->getDynValues()));
     }
 
@@ -106,7 +106,7 @@ class Unit_Models_oxuserpaymentTest extends OxidTestCase
         $oVal->value = 'Dainius O&quot;bryan';
         $aDynValues[] = $oVal;
 
-        $oUserPayment = new oxuserpayment();
+        $oUserPayment = oxNew('oxuserpayment');
         $oUserPayment->oxuserpayments__oxvalue = new oxField('lsbankname__12613212@@lsblz__132132132@@lsktonr__1331321321@@lsktoinhaber__Dainius O&quot;bryan@@');
         $this->assertEquals($aDynValues, $oUserPayment->getDynValues());
     }

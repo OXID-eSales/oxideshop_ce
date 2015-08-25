@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -32,7 +32,7 @@ class Unit_Models_oxtsproductTest extends OxidTestCase
      */
     public function testGetAmount()
     {
-        $oSubj = new oxTsProduct();
+        $oSubj = oxNew('oxTsProduct');
         $oSubj->setTsId('TS080501_500_30_EUR');
         $this->assertEquals('500', $oSubj->getAmount());
     }
@@ -43,7 +43,7 @@ class Unit_Models_oxtsproductTest extends OxidTestCase
      */
     public function testGetFPrice()
     {
-        $oSubj = new oxTsProduct();
+        $oSubj = oxNew('oxTsProduct');
         $oSubj->setTsId('TS080501_500_30_EUR');
         $this->assertEquals('0,82', $oSubj->getFPrice());
     }
@@ -54,7 +54,7 @@ class Unit_Models_oxtsproductTest extends OxidTestCase
      */
     public function testSetGetTsId()
     {
-        $oSubj = new oxTsProduct();
+        $oSubj = oxNew('oxTsProduct');
         $oSubj->setTsId('TS080501_500_30_EUR');
         $this->assertEquals('TS080501_500_30_EUR', $oSubj->getTsId());
     }
@@ -65,7 +65,7 @@ class Unit_Models_oxtsproductTest extends OxidTestCase
      */
     public function testGetAllTsProducts()
     {
-        $oSubj = new oxTsProduct();
+        $oSubj = oxNew('oxTsProduct');
         $this->assertEquals(6, count($oSubj->getAllTsProducts()));
     }
 }

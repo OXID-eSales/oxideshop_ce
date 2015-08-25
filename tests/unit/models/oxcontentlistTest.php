@@ -35,7 +35,7 @@ class Unit_Models_oxcontentlistTest extends OxidTestCase
     {
         parent::setUp();
         // creating demo content
-        $this->_oContent = new oxcontent();
+        $this->_oContent = oxNew('oxcontent');
         $this->_oContent->oxcontents__oxtitle = new oxField('test_Unit_oxcontentlistTest', oxField::T_RAW);
         $this->_sShopId = $this->getConfig()->getShopId();
         $this->_oContent->oxcontents__oxshopid = new oxField($this->_sShopId, oxField::T_RAW);

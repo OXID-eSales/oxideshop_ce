@@ -1303,7 +1303,7 @@ class Unit_Models_oxvoucherTest extends OxidTestCase
     // balnk voucher will not be marked
     public function testMarkAsUsedBlankMarking()
     {
-        $oVoucher = new oxvoucher();
+        $oVoucher = oxNew('oxvoucher');
         $oVoucher->markAsUsed('xxx', 'yyy', '');
 
         $this->assertNull($oVoucher->oxvouchers__oxorderid->value);
@@ -1322,7 +1322,7 @@ class Unit_Models_oxvoucherTest extends OxidTestCase
         $oSerie->load($sVoucherSerie);
         $sVoucher = current($this->_aVoucherOxid[$sVoucherSerie]);
 
-        $oVoucher = new oxvoucher();
+        $oVoucher = oxNew('oxvoucher');
         $oVoucher->load($sVoucher);
         $oVoucher->markAsUsed('xxx', 'yyy', $oSerie->oxvoucherseries__oxdiscount->value);
 

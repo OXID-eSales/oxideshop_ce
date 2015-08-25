@@ -54,17 +54,17 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
      */
     public function testGetDiscountListWithSomeWrongData()
     {
-        $oUser = new oxUser();
+        $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
         $oArticle = oxNew('oxArticle');
         $oArticle->load("1431");
 
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->addToBasket("1431", 1);
         $oBasket->calculateBasket();
 
-        $oDiscountList = new oxDiscountList();
+        $oDiscountList = oxNew('oxDiscountList');
         $oDiscountList = $oDiscountList->getBasketItemDiscounts($oArticle, $oBasket, $oUser);
         $iListCOunt = count($oDiscountList);
 
@@ -74,7 +74,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
         $oDiscount = current($oDiscountList);
 
         // adding garbage
-        $oGarbage = new oxbase();
+        $oGarbage = oxNew('oxbase');
         $oGarbage->init("oxobject2discount");
         $oGarbage->setId("_testoxobject2discount1");
         $oGarbage->oxobject2discount__oxdiscountid = new oxField($oDiscount->getId());
@@ -82,7 +82,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
         $oGarbage->oxobject2discount__oxtype = new oxField("oxcountry");
         $oGarbage->save();
 
-        $oGarbage = new oxbase();
+        $oGarbage = oxNew('oxbase');
         $oGarbage->init("oxobject2discount");
         $oGarbage->setId("_testoxobject2discount2");
         $oGarbage->oxobject2discount__oxdiscountid = new oxField($oDiscount->getId());
@@ -90,7 +90,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
         $oGarbage->oxobject2discount__oxtype = new oxField("oxuser");
         $oGarbage->save();
 
-        $oGarbage = new oxbase();
+        $oGarbage = oxNew('oxbase');
         $oGarbage->init("oxobject2discount");
         $oGarbage->setId("_testoxobject2discount3");
         $oGarbage->oxobject2discount__oxdiscountid = new oxField($oDiscount->getId());
@@ -98,7 +98,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
         $oGarbage->oxobject2discount__oxtype = new oxField("oxgroups");
         $oGarbage->save();
 
-        $oDiscountList = new oxDiscountList();
+        $oDiscountList = oxNew('oxDiscountList');
         $oDiscountList = $oDiscountList->getBasketItemDiscounts($oArticle, $oBasket, $oUser);
         $iNewListCount = count($oDiscountList);
 
@@ -134,7 +134,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
     // testing returned data
     public function testGetListDataCheckNoUser()
     {
-        $oList = new oxdiscountlist();
+        $oList = oxNew('oxdiscountlist');
         $oList->UNITgetList();
 
         // checking using demo data
@@ -147,10 +147,10 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
 
     public function testGetListDataCheckAdminUser()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
-        $oList = new oxdiscountlist();
+        $oList = oxNew('oxdiscountlist');
         $oList->UNITgetList($oUser);
 
         // checking using demo data
@@ -167,17 +167,17 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
     // no user, will be taken from config
     public function testGetCountryIdNoUserExpectsConfigCountry()
     {
-        $oList = new oxdiscountlist();
+        $oList = oxNew('oxdiscountlist');
         $this->assertNull($oList->getCountryId(null));
     }
 
     // taking user country id
     public function testGetCountryIdAdminUser()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
-        $oList = new oxdiscountlist();
+        $oList = oxNew('oxdiscountlist');
         $this->assertEquals('a7c40f631fc920687.20179984', $oList->getCountryId($oUser));
     }
 
@@ -193,7 +193,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
 
-        $oList = new oxdiscountlist();
+        $oList = oxNew('oxdiscountlist');
 
         // default oxConfig country check.
         $sTable = getViewName('oxdiscount');
@@ -221,7 +221,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
 
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
         $sGroupIds = '';
@@ -232,7 +232,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
             $sGroupIds .= "'" . $oGroup->getId() . "'";
         }
 
-        $oList = new oxdiscountlist();
+        $oList = oxNew('oxdiscountlist');
 
         // default oxConfig country check.
         $sTable = getViewName('oxdiscount');
@@ -296,7 +296,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
         $oArticle->xxx = 'yyy';
 
         // simulating basket
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->zzz = 'www';
 
         $aDiscounts[0] = $this->getMock('oxdiscount', array('isForBasketItem', 'isForBasketAmount', 'getId'));
@@ -339,7 +339,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
     public function testGetBasketDiscounts()
     {
         // simulating basket
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->zzz = 'www';
 
         $aDiscounts[0] = $this->getMock('oxdiscount', array('isForBasket', 'getId'));
@@ -376,7 +376,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
         $oArticle->xxx = 'yyy';
 
         // simulating basket
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->zzz = 'www';
 
         $aDiscounts[0] = $this->getMock('oxdiscount', array('isForBundleItem', 'isForBasketAmount', 'getId'));
@@ -413,7 +413,7 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
     public function testGetBasketBundleDiscounts()
     {
         // simulating basket
-        $oBasket = new oxBasket();
+        $oBasket = oxNew('oxBasket');
         $oBasket->zzz = 'www';
 
         $aDiscounts[0] = $this->getMock('oxdiscount', array('isForBundleBasket', 'getId'));

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -39,7 +39,7 @@ class Unit_Models_oxRequiredAddressFieldsTest extends OxidTestCase
 
         $this->getConfig()->setConfigParam('aMustFillFields', '');
 
-        $oxRequiredAddressFields = new oxRequiredAddressFields();
+        $oxRequiredAddressFields = oxNew('oxRequiredAddressFields');
 
         $this->assertSame($aRequiredFields, $oxRequiredAddressFields->getRequiredFields());
     }
@@ -50,7 +50,7 @@ class Unit_Models_oxRequiredAddressFieldsTest extends OxidTestCase
 
         $this->getConfig()->setConfigParam('aMustFillFields', $aRequiredFields);
 
-        $oAddressValidator = new oxRequiredAddressFields();
+        $oAddressValidator = oxNew('oxRequiredAddressFields');
 
         $this->assertSame($aRequiredFields, $oAddressValidator->getRequiredFields());
     }
@@ -60,7 +60,7 @@ class Unit_Models_oxRequiredAddressFieldsTest extends OxidTestCase
         $aRequiredFields = array('oxuser__oxfname');
         $this->getConfig()->setConfigParam('aMustFillFields', array('someField'));
 
-        $oAddressValidator = new oxRequiredAddressFields();
+        $oAddressValidator = oxNew('oxRequiredAddressFields');
         $oAddressValidator->setRequiredFields($aRequiredFields);
 
         $this->assertSame($aRequiredFields, $oAddressValidator->getRequiredFields());
@@ -71,7 +71,7 @@ class Unit_Models_oxRequiredAddressFieldsTest extends OxidTestCase
         $aAllRequiredFields = array('oxuser__oxfname', 'oxuser__oxlname', 'oxaddress__oxfname', 'oxaddress__oxlname', 'oxsomeother__sname');
         $aUserRequiredFields = array('oxuser__oxfname', 'oxuser__oxlname');
 
-        $oAddressValidator = new oxRequiredAddressFields();
+        $oAddressValidator = oxNew('oxRequiredAddressFields');
         $oAddressValidator->setRequiredFields($aAllRequiredFields);
 
         $this->assertSame($aUserRequiredFields, $oAddressValidator->getBillingFields());
@@ -82,7 +82,7 @@ class Unit_Models_oxRequiredAddressFieldsTest extends OxidTestCase
         $aAllRequiredFields = array('oxuser__oxfname', 'oxuser__oxlname', 'oxaddress__oxfname', 'oxaddress__oxlname', 'oxsomeother__sname');
         $aUserRequiredFields = array('oxaddress__oxfname', 'oxaddress__oxlname');
 
-        $oAddressValidator = new oxRequiredAddressFields();
+        $oAddressValidator = oxNew('oxRequiredAddressFields');
         $oAddressValidator->setRequiredFields($aAllRequiredFields);
 
         $this->assertSame($aUserRequiredFields, $oAddressValidator->getDeliveryFields());

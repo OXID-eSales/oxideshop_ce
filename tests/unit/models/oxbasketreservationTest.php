@@ -80,7 +80,7 @@ class Unit_Models_oxbasketreservationTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxuserbasket', $oUO);
 
-        $oR = new oxBasketReservation();
+        $oR = oxNew('oxBasketReservation');
         $this->assertSame($oUO, $oR->UNITloadReservations('p:basketId'));
     }
 
@@ -103,7 +103,7 @@ class Unit_Models_oxbasketreservationTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxuserbasket', $oUO);
 
-        $oR = new oxBasketReservation();
+        $oR = oxNew('oxBasketReservation');
         $this->assertSame($oUO, $oR->UNITloadReservations('p:basketId'));
 
         $this->assertEquals('reservations', $oUO->oxuserbaskets__oxtitle->value);
@@ -193,25 +193,25 @@ class Unit_Models_oxbasketreservationTest extends OxidTestCase
      */
     public function testGetReservedItemsLoad()
     {
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->setId("testUserBasket");
         $oBasket->save();
 
-        $oBasketItem = new oxUserBasketItem();
+        $oBasketItem = oxNew('oxUserBasketItem');
         $oBasketItem->setId('testitem1');
         $oBasketItem->oxuserbasketitems__oxbasketid = new oxField($oBasket->getId(), oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('2000', oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxamount = new oxField('1.5', oxField::T_RAW);
         $oBasketItem->save();
 
-        $oBasketItem = new oxUserBasketItem();
+        $oBasketItem = oxNew('oxUserBasketItem');
         $oBasketItem->setId('testitem2');
         $oBasketItem->oxuserbasketitems__oxbasketid = new oxField($oBasket->getId(), oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('1126', oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxamount = new oxField('3', oxField::T_RAW);
         $oBasketItem->save();
 
-        $oBasketItem = new oxUserBasketItem();
+        $oBasketItem = oxNew('oxUserBasketItem');
         $oBasketItem->setId('testitem3');
         $oBasketItem->oxuserbasketitems__oxbasketid = new oxField($oBasket->getId(), oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('2000', oxField::T_RAW);
@@ -219,7 +219,7 @@ class Unit_Models_oxbasketreservationTest extends OxidTestCase
         $oBasketItem->oxuserbasketitems__oxamount = new oxField('0.5', oxField::T_RAW);
         $oBasketItem->save();
 
-        $oBasket = new oxUserBasket();
+        $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
 
         $oR = $this->getMock('oxBasketReservation', array('getReservations'));
@@ -439,7 +439,7 @@ class Unit_Models_oxbasketreservationTest extends OxidTestCase
         $this->getConfig()->setConfigParam('iPsBasketReservationTimeout', 50);
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return 8484;}');
 
-        $oUB = new oxUserBasket();
+        $oUB = oxNew('oxUserBasket');
         $oUB->setId(123);
 
         $oR = $this->getMock('oxBasketReservation', array('getReservations'));

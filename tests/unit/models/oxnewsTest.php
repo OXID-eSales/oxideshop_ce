@@ -257,7 +257,7 @@ class Unit_Models_oxnewsTest extends OxidTestCase
     // deleting non existing
     public function testDeleteNonExisting()
     {
-        $oTestNews = new oxnews();
+        $oTestNews = oxNew('oxnews');
         $this->assertFalse($oTestNews->delete());
     }
 

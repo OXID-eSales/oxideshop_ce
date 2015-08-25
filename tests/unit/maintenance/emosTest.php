@@ -186,7 +186,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testSetEmosECPageArray()
     {
-        $oItem = new EMOS_Item();
+        $oItem = oxNew('EMOS_Item');
         $oItem->productId = 'productId';
         $oItem->productName = 'product Name';
         $oItem->price = 'price';
@@ -331,7 +331,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddContentRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
         $oSubj->addContent("Test test");
         $sRes = $oSubj->toString();
@@ -346,7 +346,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddContactRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
         $oSubj->addContact("Test test");
         $sRes = $oSubj->toString();
@@ -361,7 +361,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddCountryIdRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
         $oSubj->addCountryId(15);
         $sRes = $oSubj->toString();
@@ -376,7 +376,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddPageIdRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
         $oSubj->addPageId("123");
         $sRes = $oSubj->toString();
@@ -391,7 +391,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddRegisterRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
         $oSubj->addRegister("testUser", 1);
         $sRes = $oSubj->toString();
@@ -405,7 +405,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddLoginRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
         $oSubj->addLogin("testUser", 1);
         $sRes = $oSubj->toString();
@@ -419,7 +419,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddSearchRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
         $oSubj->addSearch("Test search", 15);
         $sRes = $oSubj->toString();
@@ -433,7 +433,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddSiteIdRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
         $oSubj->addSiteId(1);
         $sRes = $oSubj->toString();
@@ -448,7 +448,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddDownloadRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
         $oSubj->addDownload("testDownlod");
         $sRes = $oSubj->toString();
@@ -463,9 +463,9 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddToBasketRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
-        $oItem = new EMOS_Item();
+        $oItem = oxNew('EMOS_Item');
         $oItem->productId = "123";
         $oItem->productName = "Test product";
         $oItem->price = 46.50;
@@ -489,9 +489,9 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testRemoveFromBasketRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
-        $oItem = new EMOS_Item();
+        $oItem = oxNew('EMOS_Item');
         $oItem->productId = "123";
         $oItem->productName = "Test product";
         $oItem->price = 46.50;
@@ -515,9 +515,9 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddEmosBasketPageArrayRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
-        $oItem1 = new EMOS_Item();
+        $oItem1 = oxNew('EMOS_Item');
         $oItem1->productId = "1";
         $oItem1->productName = "Prod 1";
         $oItem1->price = 46.50;
@@ -527,7 +527,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
         $oItem1->variant2 = null;
         $oItem1->variant3 = "var13";
 
-        $oItem2 = new EMOS_Item();
+        $oItem2 = oxNew('EMOS_Item');
         $oItem2->productId = "2";
         $oItem2->productName = "Prod 2";
         $oItem2->price = 46.51;
@@ -553,9 +553,9 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddDetailViewRefactored()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
-        $oItem = new EMOS_Item();
+        $oItem = oxNew('EMOS_Item');
         $oItem->productId = "123";
         $oItem->productName = "Test product";
         $oItem->price = 46.50;
@@ -687,7 +687,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testAddEmosBillingPageArray()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
         $oSubj->addEmosBillingPageArray("sBillingId", "sCustomerNumber", 0, "de", "cip", "Halle");
 
         $sRes = $oSubj->toString();
@@ -704,9 +704,9 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testShowAddOnly()
     {
-        $oSubj = new EMOS();
+        $oSubj = oxNew('EMOS');
 
-        $oItem = new EMOS_Item();
+        $oItem = oxNew('EMOS_Item');
         $oItem->productId = "123";
         $oItem->productName = "Test product";
         $oItem->price = 46.50;

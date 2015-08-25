@@ -44,7 +44,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
      */
     public function testConvProd2EmosItem()
     {
-        $oCurr = new oxStdClass;
+        $oCurr = new \stdClass;
         $oCurr->rate = 2;
 
         $oPrice = $this->getMock('oxPrice', array('getBruttoPrice'));
@@ -77,7 +77,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
     public function testPrepareProductTitle()
     {
-        $oProduct = new oxStdClass;
+        $oProduct = new \stdClass;
         $oProduct->oxarticles__oxtitle = new oxField('oxütitle');
         $oProduct->oxarticles__oxvarselect = new oxField('oxüvarselect');
 
@@ -124,7 +124,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oProduct = oxNew('oxArticle');
         $oProduct->load('1126');
 
-        $oEmosItem = new EMOS_Item();
+        $oEmosItem = oxNew('EMOS_Item');
         $oEmosItem->productId = '1126';
         $oEmosItem->productName = 'Bar-Set ABSINTH';
         $oEmosItem->price = 34;
@@ -151,7 +151,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
     public function testGetEmos()
     {
-        $oEmosAdapter = new oxEmosAdapter();
+        $oEmosAdapter = oxNew('oxEmosAdapter');
         $oEmos = $oEmosAdapter->getEmos();
         $this->assertTrue($oEmos instanceof Emos);
 
@@ -159,7 +159,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
     public function testGetEmosPageTitle()
     {
-        $oEmosCode = new oxEmosAdapter();
+        $oEmosCode = oxNew('oxEmosAdapter');
         $this->assertNull($oEmosCode->UNITgetEmosPageTitle(array()));
         $this->assertEquals('testGetEmosPageTitle', $oEmosCode->UNITgetEmosPageTitle(array('title' => 'testGetEmosPageTitle')));
     }
@@ -192,7 +192,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
     {
         $this->setRequestParameter('tpl', 'getTemplateName');
 
-        $oEmos = new oxEmosAdapter();
+        $oEmos = oxNew('oxEmosAdapter');
         $this->assertEquals('getTemplateName', $oEmos->UNITgetTplName());
     }
 
@@ -382,7 +382,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', true);
         $this->getSession()->setVariable('usr', 'oxdefaultadmin');
 
-        $oEmosItem = new EMOS_Item();
+        $oEmosItem = oxNew('EMOS_Item');
         $oEmosItem->productId = '1126';
         $oEmosItem->productName = 'Bar-Set ABSINTH';
         $oEmosItem->price = 34;
@@ -394,13 +394,13 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
         $aBasketArray = array($oEmosItem);
 
-        $oOrder = new oxorder();
+        $oOrder = oxNew('oxorder');
         $oOrder->oxorder__oxordernr = new oxfield('999');
         $oOrder->oxorder__oxbillcountry = new oxfield('999');
         $oOrder->oxorder__oxbillzip = new oxfield('999');
         $oOrder->oxorder__oxbillcity = new oxfield('999');
 
-        $oBasket = new oxbasket();
+        $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket('1126', 10);
         $oBasket->calculateBasket(false);
 
@@ -441,7 +441,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oArticle->oxarticles__oxstockflag = new oxField(2);
         $oArticle->save();
 
-        $oOrder = new oxorder();
+        $oOrder = oxNew('oxorder');
         $oOrder->oxorder__oxordernr = new oxfield('999');
         $oOrder->oxorder__oxbillcountry = new oxfield('999');
         $oOrder->oxorder__oxbillzip = new oxfield('999');
@@ -483,7 +483,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = array('product' => $oProduct);
         $oSmarty = null;
 
-        $oEmosItem = new EMOS_Item();
+        $oEmosItem = oxNew('EMOS_Item');
         $oEmosItem->productId = '1126';
         $oEmosItem->productName = 'Bar-Set ABSINTH';
         $oEmosItem->price = 34;
@@ -965,7 +965,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        $oContent = new oxcontent();
+        $oContent = oxNew('oxcontent');
         $oContent->oxcontents__oxloadid = new oxfield('oximpressum');
 
         $oView = $this->getMock('content', array('getContent'));
@@ -990,7 +990,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        $oContent = new oxcontent();
+        $oContent = oxNew('oxcontent');
         $oContent->oxcontents__oxloadid = new oxfield('oxagb');
 
         $oView = $this->getMock('content', array('getContent'));
@@ -1015,7 +1015,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        $oContent = new oxcontent();
+        $oContent = oxNew('oxcontent');
         $oContent->oxcontents__oxloadid = new oxfield('oxorderinfo');
 
         $oView = $this->getMock('content', array('getContent'));
@@ -1040,7 +1040,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        $oContent = new oxcontent();
+        $oContent = oxNew('oxcontent');
         $oContent->oxcontents__oxloadid = new oxfield('oxdeliveryinfo');
 
         $oView = $this->getMock('content', array('getContent'));
@@ -1065,7 +1065,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $aParams = null;
         $oSmarty = null;
 
-        $oContent = new oxcontent();
+        $oContent = oxNew('oxcontent');
         $oContent->oxcontents__oxloadid = new oxfield('oxsecurityinfo');
 
         $oView = $this->getMock('content', array('getContent'));
@@ -1150,7 +1150,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oProduct = oxNew('oxArticle');
         $oProduct->load('1126');
 
-        $oEmosItem = new EMOS_Item();
+        $oEmosItem = oxNew('EMOS_Item');
         $oEmosItem->productId = '1126';
         $oEmosItem->productName = 'Bar-Set ABSINTH';
         $oEmosItem->price = 34;
@@ -1191,7 +1191,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
     public function testGetScriptPath()
     {
-        $oEmos = new oxEmosAdapter();
+        $oEmos = oxNew('oxEmosAdapter');
         $this->assertEquals($this->getConfig()->getShopUrl() . 'modules/econda/out/', $oEmos->UNITgetScriptPath());
     }
 
@@ -1203,7 +1203,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oProduct = oxNew('oxArticle');
         $oProduct->load('1126');
 
-        $oEmosItem = new EMOS_Item();
+        $oEmosItem = oxNew('EMOS_Item');
         $oEmosItem->productId = '1126';
         $oEmosItem->productName = 'Bar-Set ABSINTH';
         $oEmosItem->price = 34;

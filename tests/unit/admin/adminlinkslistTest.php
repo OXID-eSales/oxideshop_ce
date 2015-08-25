@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -47,7 +47,7 @@ class Unit_Admin_AdminlinksListTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Adminlinks_List();
+        $oView = oxNew('Adminlinks_List');
         $this->assertEquals('adminlinks_list.tpl', $oView->render());
     }
 

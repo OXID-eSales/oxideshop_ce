@@ -16,44 +16,27 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
 class Unit_Admin_ModuleListTest extends OxidTestCase
 {
-    /** @var Module_List */
-    private $moduleList;
-
-    public function setUp()
+    /**
+     * Module_List::Render() test case
+    */
+    public function testRender()
     {
-        parent::setup();
-
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
         $config = $this->getMock('oxConfig', array('getModulesDir'));
-        $config->expects($this->any())
-            ->method('getModulesDir')
-            ->will($this->returnValue(__DIR__.'/../testData/modules/'));
+        $config->expects($this->any())->method('getModulesDir')->will($this->returnValue(__DIR__.'/../testData/modules/'));
 
-        $moduleList = oxNew('Module_List');
-        $moduleList->setConfig($config);
+        $oView = oxNew('Module_List');
+        $oView->setConfig($config);
+        $this->assertEquals('module_list.tpl', $oView->render());
 
-        $this->moduleList = $moduleList;
-    }
-
-    public function testRenderReturnsCorrectTemplateName()
-    {
-        $this->assertEquals('module_list.tpl', $this->moduleList->render());
-    }
-
-    public function testGetViewDataContainsOurModuleList()
-    {
-        // Needs to be called since render method triggers the population of viewData.
-        $this->moduleList->render();
-
-        $viewData = $this->moduleList->getViewData();
-        $modulesNames = array_keys($viewData['mylist']);
-
-        $this->assertSame(array('testmodule'), $modulesNames);
+        $aViewData = $oView->getViewData();
+        $aModulesNames = array_keys($aViewData['mylist']);
+        $this->assertSame('testmodule', current($aModulesNames));
     }
 }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new GenImport_Main();
+        $oView = oxNew('GenImport_Main');
         $this->assertEquals('genimport_main.tpl', $oView->render());
     }
 
@@ -61,7 +61,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testRenderIfConvertedViewData($sParameter, $sValue, $sResult)
     {
-        $oView = new GenImport_Main();
+        $oView = oxNew('GenImport_Main');
         $this->getConfig()->setConfigParam($sParameter, $sValue);
         $oView->render();
         $aData = $oView->getViewData();
@@ -190,7 +190,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
         // defining parameters
         $iNavStep = 3;
 
-        $oView = new GenImport_Main();
+        $oView = oxNew('GenImport_Main');
         $this->assertEquals(2, $oView->UNITcheckErrors($iNavStep));
     }
 
@@ -207,7 +207,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
         // defining parameters
         $iNavStep = 3;
 
-        $oView = new GenImport_Main();
+        $oView = oxNew('GenImport_Main');
         $this->assertEquals($iNavStep, $oView->UNITcheckErrors($iNavStep));
     }
 
@@ -276,7 +276,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
         $oErpImport->expects($this->once())->method('getStatistics')->will($this->returnValue(array(array("r" => false, "m" => true))));
 
         try {
-            $oView = new GenImport_Main();
+            $oView = oxNew('GenImport_Main');
             $oView->UNITcheckImportErrors($oErpImport);
         } catch (Exception $oExcp) {
             $this->assertEquals("addErrorToDisplay", $oExcp->getMessage(), "Error in GenImport_Main::_checkImportErrors()");
@@ -296,7 +296,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
         $this->getConfig()->setConfigParam("sGiCsvFieldTerminator", ";");
 
         // testing..
-        $oView = new GenImport_Main();
+        $oView = oxNew('GenImport_Main');
         $this->assertEquals($this->getConfig()->getConfigParam('sGiCsvFieldTerminator'), $oView->UNITgetCsvFieldsTerminator());
 
     }
@@ -311,7 +311,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
         $this->getConfig()->setConfigParam("sGiCsvFieldEncloser", "\"");
 
         // testing..
-        $oView = new GenImport_Main();
+        $oView = oxNew('GenImport_Main');
         $this->assertEquals($this->getConfig()->getConfigParam('sGiCsvFieldEncloser'), $oView->UNITgetCsvFieldsEncolser());
     }
 }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -159,7 +159,7 @@ class Unit_Admin_userPaymentTest extends OxidTestCase
     public function testGetPaymentIdFromUserPayment()
     {
         $this->setRequestParameter('oxpaymentid', null);
-        $oUserPayment = new oxUserPayment();
+        $oUserPayment = oxNew('oxUserPayment');
         $oUserPayment->oxuserpayments__oxid = new oxField('oxidinvoice');
         $oUser = $this->getMock('oxuser', array('getUserPayments'));
         $oUser->expects($this->once())->method('getUserPayments')->will($this->returnValue(array($oUserPayment)));

@@ -72,14 +72,14 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', true);
 
         // adding test order
-        $oOrder = new oxbase();
+        $oOrder = oxNew('oxbase');
         $oOrder->init('oxorder');
         $oOrder->setId('_testOrder');
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->save();
 
         // adding test article
-        $oArticle = new oxbase();
+        $oArticle = oxNew('oxbase');
         $oArticle->init('oxarticles');
         $oArticle->load('1126');
         $oArticle->setId('_testArticle');
@@ -109,7 +109,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $oOrder = new oxorder();
+        $oOrder = oxNew('oxorder');
         $oOrder->delete('_testOrder');
 
         $oArticle = oxNew('oxArticle');
@@ -133,11 +133,11 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $this->setRequestParameter("am", 4);
         $this->setRequestParameter("oxid", '_testOrder');
 
-        $oObj = new order_article();
+        $oObj = oxNew('order_article');
         $oObj->addThisArticle();
 
         // now reading order articles table
-        $oOrder = new oxorder();
+        $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrder');
         $oOrderArticles = $oOrder->getOrderArticles();
 
@@ -160,7 +160,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $this->setRequestParameter('am', 1);
         $this->setRequestParameter('oxid', '_testOrderId1');
 
-        $oOrderArticle = new order_article();
+        $oOrderArticle = oxNew('order_article');
         $oOrderArticle->addThisArticle();
 
         $oOrder = oxNew("oxOrder");
@@ -180,11 +180,11 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $this->setRequestParameter("am", 4);
         $this->setRequestParameter("oxid", '_testOrder');
 
-        $oObj = new order_article();
+        $oObj = oxNew('order_article');
         $oObj->addThisArticle();
 
         // now reading order articles table
-        $oOrder = new oxorder();
+        $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrder');
         $oOrderArticles = $oOrder->getOrderArticles();
 
@@ -197,7 +197,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $oObj->deleteThisArticle();
 
         // now reading order articles table
-        $oOrder = new oxorder();
+        $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrder');
         $oOrderArticles = $oOrder->getOrderArticles();
 
@@ -216,10 +216,10 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $this->setRequestParameter("am", 4);
         $this->setRequestParameter("oxid", '_testOrder');
 
-        $oObj = new order_article();
+        $oObj = oxNew('order_article');
         $oObj->addThisArticle();
 
-        $oOrder = new oxorder();
+        $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrder');
         $oOrderArticles = $oOrder->getOrderArticles();
 
@@ -232,7 +232,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
 
         // canceling
         $oObj->storno();
-        $oOrder = new oxorder();
+        $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrder');
         $oOrderArticles = $oOrder->getOrderArticles();
 
@@ -243,7 +243,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
 
         // "un"-canceling
         $oObj->storno();
-        $oOrder = new oxorder();
+        $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrder');
         $oOrderArticles = $oOrder->getOrderArticles();
 
@@ -261,12 +261,12 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
     {
         $this->setRequestParameter("oxid", null);
 
-        $oView = new Order_Article();
+        $oView = oxNew('Order_Article');
         $this->assertNull($oView->getEditObject());
 
         $this->setRequestParameter("oxid", "_testOrderId1");
 
-        $oView = new Order_Article();
+        $oView = oxNew('Order_Article');
         $oOrder = $oView->getEditObject();
         $this->assertTrue($oOrder instanceof oxorder);
     }
@@ -279,11 +279,11 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
     public function testGetSearchProductArtNr()
     {
         $this->setRequestParameter("sSearchArtNum", null);
-        $oView = new Order_Article();
+        $oView = oxNew('Order_Article');
         $this->assertNull($oView->getSearchProductArtNr());
 
         $this->setRequestParameter("sSearchArtNum", 123);
-        $oView = new Order_Article();
+        $oView = oxNew('Order_Article');
         $this->assertEquals(123, $oView->getSearchProductArtNr());
     }
 
@@ -315,19 +315,19 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         // product number not set
         $this->setRequestParameter("sSearchArtNum", null);
 
-        $oView = new Order_Article();
+        $oView = oxNew('Order_Article');
         $this->assertNull($oView->getMainProduct());
 
         // not existing product number
         $this->setRequestParameter("sSearchArtNum", "xxx");
 
-        $oView = new Order_Article();
+        $oView = oxNew('Order_Article');
         $this->assertFalse($oView->getMainProduct());
 
         // existing product
         $this->setRequestParameter("sSearchArtNum", "1126");
 
-        $oView = new Order_Article();
+        $oView = oxNew('Order_Article');
         $oProduct = $oView->getMainProduct();
         $this->assertTrue($oProduct instanceof oxarticle);
     }
@@ -342,7 +342,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         // empty list
         $this->setRequestParameter("sSearchArtNum", null);
 
-        $oView = new Order_Article();
+        $oView = oxNew('Order_Article');
         $oList = $oView->getProductList();
         $this->assertEquals(0, $oList->count());
 
@@ -350,7 +350,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $this->setRequestParameter("sSearchArtNum", "2077");
         $iCnt = 4;
 
-        $oView = new Order_Article();
+        $oView = oxNew('Order_Article');
         $oList = $oView->getProductList();
         $this->assertEquals($iCnt, $oList->count());
     }
@@ -368,7 +368,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $this->setRequestParameter('am', 1);
         $this->setRequestParameter('oxid', '_testOrderId1');
 
-        $oOrderArticle = new order_article();
+        $oOrderArticle = oxNew('order_article');
         $oOrderArticle->addThisArticle();
 
         $oOrder = oxNew("oxOrder");
@@ -389,7 +389,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $this->setRequestParameter('am', 'test');
         $this->setRequestParameter('oxid', '_testOrderId1');
 
-        $oOrderArticle = new order_article();
+        $oOrderArticle = oxNew('order_article');
         $oOrderArticle->addThisArticle();
 
         $oOrder = oxNew("oxOrder");

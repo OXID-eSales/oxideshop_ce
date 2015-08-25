@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -73,7 +73,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         oxTestModules::addFunction("oxcategory", "isDerived", "{return true;}");
 
         // testing..
-        $oView = new Category_Main();
+        $oView = oxNew('Category_Main');
         $this->assertEquals('category_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -90,7 +90,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new Category_Main();
+        $oView = oxNew('Category_Main');
         $this->assertEquals('category_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
@@ -111,7 +111,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", -1);
         $this->setRequestParameter("editval", $aParams);
 
-        $oView = new Category_Main();
+        $oView = oxNew('Category_Main');
         $oView->save();
 
         $sActive = oxDb::getDb()->getOne("SELECT OXACTIVE FROM oxcategories WHERE OXTITLE='Test category title for unit'");
@@ -129,7 +129,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new Category_Main();
+        $oView = oxNew('Category_Main');
         $oView->save();
 
         $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
@@ -147,7 +147,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new Category_Main();
+        $oView = oxNew('Category_Main');
         $oView->save();
 
         $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
@@ -164,7 +164,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         oxTestModules::addFunction('oxcategory', 'save', '{ return true; }');
 
         // testing..
-        $oView = new Category_Main();
+        $oView = oxNew('Category_Main');
         $oView->saveinnlang();
 
         $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
@@ -182,7 +182,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         oxTestModules::addFunction('oxcategory', 'save', '{ $this->oxcategories__oxid = new oxField( "testId" ); return true; }');
 
         // testing..
-        $oView = new Category_Main();
+        $oView = oxNew('Category_Main');
         $oView->saveinnlang();
 
         $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
@@ -195,7 +195,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testGetSortableFields()
     {
-        $oCatMain = new Category_Main();
+        $oCatMain = oxNew('Category_Main');
 
         $aFields = $oCatMain->getSortableFields();
         $this->assertTrue(in_array('OXTITLE', $aFields));

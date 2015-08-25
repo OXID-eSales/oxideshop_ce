@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Admin_ContentListTest extends OxidTestCase
         $this->setRequestParameter("folder", "sTestFolder");
 
         // testing..
-        $oView = new Content_List();
+        $oView = oxNew('Content_List');
         $sTplName = $oView->render();
         $aViewData = $oView->getViewData();
         $this->assertEquals($this->getConfig()->getConfigParam('afolder'), $aViewData["CMSFOLDER_EMAILS"]);
@@ -56,7 +56,7 @@ class Unit_Admin_ContentListTest extends OxidTestCase
         $sViewName = getviewName("oxcontents");
 
         // defining parameters
-        $oView = new Content_List();
+        $oView = oxNew('Content_List');
         $sResQ = $oView->UNITprepareWhereQuery(array(), "");
 
         $sQ .= " and {$sViewName}.oxfolder = 'testFolder'";

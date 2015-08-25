@@ -37,7 +37,7 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
         $this->setRequestParameter("saved_oxid", -1);
 
         // testing..
-        $oView = new Adminlinks_main();
+        $oView = oxNew('Adminlinks_main');
         $sTplName = $oView->render();
 
         // testing view data
@@ -56,7 +56,7 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxlinks"));
 
         // testing..
-        $oView = new Adminlinks_main();
+        $oView = oxNew('Adminlinks_main');
         $sTplName = $oView->render();
 
         // testing view data
@@ -79,7 +79,7 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "xxx");
 
         // testing..
-        $oView = new Adminlinks_main();
+        $oView = oxNew('Adminlinks_main');
         $oView->saveinnlang();
         $aViewData = $oView->getViewData();
 
@@ -102,7 +102,7 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "xxx");
 
         // testing..
-        $oView = new Adminlinks_main();
+        $oView = oxNew('Adminlinks_main');
         $oView->save();
         $aViewData = $oView->getViewData();
 
@@ -121,8 +121,8 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
             $this->markTestSkipped('This test is for Community edition only.');
         }
 
-        $oAdminDetails = new adminlinks_main();
-        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle');
+        $oAdminDetails = oxNew('adminlinks_main');
+        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, oxNew('oxarticle'), 'oxarticles__oxtitle');
 
         $this->assertFalse($oEditor);
     }

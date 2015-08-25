@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Admin_dyntrustedratingsTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new dyn_trusted_ratings();
+        $oView = oxNew('dyn_trusted_ratings');
         $this->assertEquals('dyn_trusted_ratings.tpl', $oView->render());
     }
 
@@ -75,7 +75,7 @@ class Unit_Admin_dyntrustedratingsTest extends OxidTestCase
         $this->getConfig()->setConfigParam("aTsConfig", array("blTestMode" => false));
         $this->getConfig()->setConfigParam("sTsServiceWsdl", "testWsdlUrl");
 
-        $oView = new dyn_trusted_ratings();
+        $oView = oxNew('dyn_trusted_ratings');
         $this->assertEquals("testWsdlUrl", $oView->UNITgetServiceWsdl());
     }
 
@@ -90,7 +90,7 @@ class Unit_Admin_dyntrustedratingsTest extends OxidTestCase
         $sMultiline = "a\nb\n\nc";
 
         // testing..
-        $oView = new dyn_trusted_ratings();
+        $oView = oxNew('dyn_trusted_ratings');
         $this->assertEquals(array(0 => "a", 1 => "b", 3 => "c"), $oView->UNITmultilineToArray($sMultiline));
         $this->assertEquals(array(0 => "a", 1 => "b", 3 => "c"), $oView->UNITmultilineToArray(array(0 => "a", 1 => "b", 3 => "c")));
     }
@@ -106,7 +106,7 @@ class Unit_Admin_dyntrustedratingsTest extends OxidTestCase
         $sMultiline = "a => b\nc => d";
 
         // testing..
-        $oView = new dyn_trusted_ratings();
+        $oView = oxNew('dyn_trusted_ratings');
         $this->assertEquals(array("a" => "b", "c" => "d"), $oView->UNITmultilineToAarray($sMultiline));
         $this->assertEquals(array("a" => "b", "c" => "d"), $oView->UNITmultilineToAarray(array("a" => "b", "c" => "d")));
     }
@@ -118,7 +118,7 @@ class Unit_Admin_dyntrustedratingsTest extends OxidTestCase
      */
     public function testGetViewId()
     {
-        $oView = new dyn_trusted_ratings();
+        $oView = oxNew('dyn_trusted_ratings');
         $this->assertEquals('dyn_interface', $oView->getViewId());
     }
 }

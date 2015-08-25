@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -54,7 +54,7 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
         $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl('sAdminSSLURL/index.php');
 
         // ssl
-        $oView = new VoucherSerie_Export();
+        $oView = oxNew('VoucherSerie_Export');
         $this->assertEquals($sUrl . '&amp;cl=voucherserie_export&amp;fnc=download', $oView->getDownloadUrl());
 
         $myConfig->setConfigParam("sAdminSSLURL", null);
@@ -62,7 +62,7 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
         $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl($sUrl . '/index.php');
 
         // non ssl
-        $oView = new VoucherSerie_Export();
+        $oView = oxNew('VoucherSerie_Export');
         $this->assertEquals($sUrl . '&amp;cl=voucherserie_export&amp;fnc=download', $oView->getDownloadUrl());
     }
 
@@ -73,7 +73,7 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
      */
     public function testGetExportFileName()
     {
-        $oView = new VoucherSerie_Export();
+        $oView = oxNew('VoucherSerie_Export');
         $oView->UNITgetExportFileName();
 
         $this->assertNotNull(oxRegistry::getSession()->getVariable("sExportFileName"));

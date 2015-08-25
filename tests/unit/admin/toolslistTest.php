@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
         $this->getSession()->setVariable('auth', "oxdefaultadmin");
         $this->setRequestParameter("updatesql", 'select * from oxvoucher');
 
-        $oView = new Tools_List();
+        $oView = oxNew('Tools_List');
         $oView->performsql();
         $this->assertTrue(isset($oView->aSQLs));
     }
@@ -52,7 +52,7 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
         // testing..
         $_FILES['myfile']['name'] = array("test.txt");
 
-        $oView = new Tools_List();
+        $oView = oxNew('Tools_List');
         $this->assertNull($oView->UNITprocessFiles());
     }
 
@@ -68,7 +68,7 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
         $iSQLlen = '';
 
         // testing..
-        $oView = new Tools_List();
+        $oView = oxNew('Tools_List');
         $this->assertTrue($oView->UNITprepareSQL($sSQL, $iSQLlen));
         $this->assertTrue(isset($oView->aSQLs));
     }
@@ -81,7 +81,7 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Tools_List();
+        $oView = oxNew('Tools_List');
         $this->assertEquals('tools_list.tpl', $oView->render());
     }
 
@@ -94,7 +94,7 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
     {
         $this->getSession()->setVariable('malladmin', true);
 
-        $oView = new Tools_List();
+        $oView = oxNew('Tools_List');
         $oView->updateViews();
 
         // assert that updating was successful

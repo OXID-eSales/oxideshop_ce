@@ -73,7 +73,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $this->setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxarticles where oxparentid != ''"));
 
         // testing..
-        $oView = new Article_Pictures();
+        $oView = oxNew('Article_Pictures');
         $sTplName = $oView->render();
 
         // testing view data

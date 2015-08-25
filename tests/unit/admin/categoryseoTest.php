@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -47,7 +47,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Category_Seo();
+        $oView = oxNew('Category_Seo');
         $this->assertEquals('object_seo.tpl', $oView->render());
     }
 
@@ -59,7 +59,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
     public function testGetType()
     {
         // testing..
-        $oView = new Category_Seo();
+        $oView = oxNew('Category_Seo');
         $this->assertEquals('oxcategory', $oView->UNITgetType());
     }
 
@@ -77,7 +77,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Category_Seo();
+            $oView = oxNew('Category_Seo');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("markRelatedAsExpired", $oExcp->getMessage(), "Error in Category_Seo::Save()");
@@ -94,7 +94,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
      */
     public function testGetEncoder()
     {
-        $oView = new Category_Seo();
+        $oView = oxNew('Category_Seo');
         $this->assertTrue($oView->UNITgetEncoder() instanceof oxSeoEncoderCategory);
     }
 
@@ -105,7 +105,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
      */
     public function testIsSuffixSupported()
     {
-        $oView = new Category_Seo();
+        $oView = oxNew('Category_Seo');
         $this->assertTrue($oView->isSuffixSupported());
     }
 
@@ -166,7 +166,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
         $this->addToDatabase($sQ1, 'oxcategories');
         $this->addTeardownSql("delete from oxcategories where oxid like '%_test%'");
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew('oxCategory');
         $oCategory->load("_test1");
 
         $oView = $this->getMock("Category_Seo", array("getEditLang"));

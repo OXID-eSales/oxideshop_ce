@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -48,7 +48,7 @@ class Unit_Admin_OrderRemarkTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
         $this->setRequestParameter("rem_oxid", "testId");
 
-        $oView = new order_remark();
+        $oView = oxNew('order_remark');
         $this->assertEquals("order_remark.tpl", $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['allremark']));
@@ -64,12 +64,12 @@ class Unit_Admin_OrderRemarkTest extends OxidTestCase
     {
         $this->setRequestParameter('oxid', '_testOrder');
         $this->setRequestParameter('remarktext', 'test text');
-        $oOrder = new oxbase();
+        $oOrder = oxNew('oxbase');
         $oOrder->init('oxorder');
         $oOrder->setId('_testOrder');
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->save();
-        $oView = new order_remark();
+        $oView = oxNew('order_remark');
         $oView->save();
         $oRemark = oxNew("oxRemark");
         $oRemark->load("_testRemark");
@@ -88,7 +88,7 @@ class Unit_Admin_OrderRemarkTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new order_remark();
+            $oView = oxNew('order_remark');
             $oView->delete();
         } catch (Exception $oExcp) {
             $this->assertEquals("delete", $oExcp->getMessage(), "Error in order_remark::delete()");

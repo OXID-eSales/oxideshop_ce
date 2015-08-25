@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -48,7 +48,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         $this->setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxarticles where oxparentid !='' "));
 
         // testing..
-        $oView = new Article_Extend();
+        $oView = oxNew('Article_Extend');
         $sTplName = $oView->render();
 
         // testing view data
@@ -73,7 +73,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Article_Extend();
+            $oView = oxNew('Article_Extend');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Extend::save()");
@@ -97,7 +97,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         $this->setRequestParameter("mediaDesc", null);
 
         // testing..
-        $oView = new Article_Extend();
+        $oView = oxNew('Article_Extend');
         $this->assertEquals("EXCEPTION_NODESCRIPTIONADDED", $oView->save());
     }
 
@@ -117,7 +117,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         $this->setRequestParameter("mediaDesc", "testDesc");
 
         // testing..
-        $oView = new Article_Extend();
+        $oView = oxNew('Article_Extend');
         $this->assertEquals("EXCEPTION_NOMEDIAADDED", $oView->save());
     }
 
@@ -225,7 +225,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         $this->setRequestParameter("mediaid", "testMediaId");
 
         // testing..
-        $oView = new Article_Extend();
+        $oView = oxNew('Article_Extend');
         $oView->deletemedia();
 
         $this->assertFalse(oxDb::getDb()->getOne("select 1 from oxmediaurls where oxid = 'testMediaId'"));
@@ -239,7 +239,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
     public function testAddDefaultValues()
     {
         $aParams['oxarticles__oxexturl'] = "http://www.delfi.lt";
-        $oView = new Article_Extend();
+        $oView = oxNew('Article_Extend');
         $aParams = $oView->addDefaultValues($aParams);
 
         $this->assertEquals("www.delfi.lt", $aParams['oxarticles__oxexturl']);
@@ -259,7 +259,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         $aValue = array("testMediaId" => array("oxmediaurls__oxurl" => "testUrl", "oxmediaurls__oxdesc" => "testDesc"));
         $this->setRequestParameter("aMediaUrls", $aValue);
 
-        $oView = new Article_Extend();
+        $oView = oxNew('Article_Extend');
         $oView->updateMedia();
 
         $this->assertTrue((bool) oxDb::getDb()->getOne("select 1 from oxmediaurls where oxurl = 'testUrl' and oxdesc='testDesc' "));
@@ -273,7 +273,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
     public function testGetUnitsArray()
     {
         $aArray = oxRegistry::getLang()->getSimilarByKey("_UNIT_", 0, false);
-        $oView = new Article_Extend();
+        $oView = oxNew('Article_Extend');
 
         $this->assertEquals($aArray, $oView->getUnitsArray());
     }

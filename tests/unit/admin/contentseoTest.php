@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -47,7 +47,7 @@ class Unit_Admin_ContentSeoTest extends OxidTestCase
     public function testGetType()
     {
         // testing..
-        $oView = new Content_Seo();
+        $oView = oxNew('Content_Seo');
         $this->assertEquals('oxcontent', $oView->UNITgetType());
     }
 
@@ -58,7 +58,7 @@ class Unit_Admin_ContentSeoTest extends OxidTestCase
      */
     public function testGetEncoder()
     {
-        $oView = new Content_Seo();
+        $oView = oxNew('Content_Seo');
         $this->assertTrue($oView->UNITgetEncoder() instanceof oxSeoEncoderContent);
     }
 
@@ -69,7 +69,7 @@ class Unit_Admin_ContentSeoTest extends OxidTestCase
      */
     public function testGetEntryUri()
     {
-        $oContent = new oxContent();
+        $oContent = oxNew('oxContent');
         $oContent->setId("_test1");
         $oContent->save();
 
@@ -89,7 +89,7 @@ class Unit_Admin_ContentSeoTest extends OxidTestCase
      */
     public function testGetStdUrl()
     {
-        $oContent = new oxContent();
+        $oContent = oxNew('oxContent');
         $oContent->setId("_test1");
         $oContent->save();
 
@@ -107,7 +107,7 @@ class Unit_Admin_ContentSeoTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Content_Seo();
+        $oView = oxNew('Content_Seo');
         $this->assertEquals('object_seo.tpl', $oView->render());
     }
 }

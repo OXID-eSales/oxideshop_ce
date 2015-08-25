@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -38,7 +38,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
         $this->setRequestParameter("editview", "testeditview");
         $this->setRequestParameter("actedit", "testactedit");
 
-        $oView = new Navigation();
+        $oView = oxNew('Navigation');
         $oView->chshp();
 
         $this->assertEquals("testlistview", $oView->getViewDataElement("listview"));
@@ -60,7 +60,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
         $this->setRequestParameter("favorites", array(0, 1, 2));
 
         // testing..
-        $oView = new Navigation();
+        $oView = oxNew('Navigation');
         $this->assertEquals('nav_frame.tpl', $oView->render());
     }
 
@@ -192,7 +192,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
 
         try {
             // testing..
-            $oView = new Navigation();
+            $oView = oxNew('Navigation');
             $oView->exturl();
         } catch (Exception $oExcp) {
             $this->assertEquals("showMessageAndExit", $oExcp->getMessage(), "Error in Navigation::exturl()");

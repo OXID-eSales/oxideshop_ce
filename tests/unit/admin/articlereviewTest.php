@@ -67,7 +67,7 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
-        $oView = new Article_Review();
+        $oView = oxNew('Article_Review');
         $sTplName = $oView->render();
 
         // testing view data

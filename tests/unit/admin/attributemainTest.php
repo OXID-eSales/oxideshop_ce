@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new Attribute_Main();
+        $oView = oxNew('Attribute_Main');
         $this->assertEquals('attribute_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -54,7 +54,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new Attribute_Main();
+        $oView = oxNew('Attribute_Main');
         $this->assertEquals('attribute_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
@@ -72,7 +72,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Attribute_Main();
+            $oView = oxNew('Attribute_Main');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Attribute_Main::save()");
@@ -93,7 +93,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new Attribute_Main();
+        $oView = oxNew('Attribute_Main');
         $oView->save();
 
         $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
@@ -110,7 +110,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Attribute_Main();
+            $oView = oxNew('Attribute_Main');
             $oView->saveinnlang();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Attribute_Main::Saveinnlang()");
@@ -132,7 +132,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
         $this->setRequestParameter("new_lang", "999");
 
         // testing..
-        $oView = new Attribute_Main();
+        $oView = oxNew('Attribute_Main');
         $oView->saveinnlang();
 
         $this->assertEquals("1", $oView->getViewDataElement("updatelist"));

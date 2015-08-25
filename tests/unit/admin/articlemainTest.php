@@ -105,7 +105,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $this->addToDatabase("INSERT INTO `{$sO2CView}` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testCatId', '0', '0');", 'oxobject2category');
         $this->addToDatabase("INSERT INTO `{$sO2CView}` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testCatId2', '0', '0');", 'oxobject2category');
         $this->addTeardownSql("delete from `{$sO2CView}` where OXOBJECTID = '_testArtId'");
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $oView->UNITcopyCategories("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from {$sO2CView} where oxobjectid = '_testArtId2'"));
@@ -126,7 +126,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oDb->execute("INSERT INTO `oxobject2attribute` (OXID,OXOBJECTID,OXATTRID,OXVALUE,OXPOS,OXVALUE_1,OXVALUE_2,OXVALUE_3) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testObjId', '0', '0', '0', '0', '0' );");
         $oDb->execute("INSERT INTO `oxobject2attribute` (OXID,OXOBJECTID,OXATTRID,OXVALUE,OXPOS,OXVALUE_1,OXVALUE_2,OXVALUE_3) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testObjId', '0', '0', '0', '0', '0' );");
 
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $oView->UNITcopyAttributes("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from oxobject2attribute where oxobjectid = '_testArtId2'"));
@@ -147,7 +147,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oDb->execute("INSERT INTO `oxobject2selectlist` (OXID,OXOBJECTID,OXSELNID,OXSORT) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testObjId', 0);");
         $oDb->execute("INSERT INTO `oxobject2selectlist` (OXID,OXOBJECTID,OXSELNID,OXSORT) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testObjId', 0);");
 
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $oView->UNITcopySelectlists("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from oxobject2selectlist where oxobjectid = '_testArtId2'"));
@@ -168,7 +168,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oDb->execute("INSERT INTO `oxfiles` (`OXID`, `OXARTID`, `OXFILENAME`) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testObjId');");
         $oDb->execute("INSERT INTO `oxfiles` (`OXID`, `OXARTID`, `OXFILENAME`) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testObjId');");
 
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $oView->UNITcopyFiles("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("SELECT COUNT(*) FROM `oxfiles` WHERE `oxartid` = '_testArtId2'"));
@@ -189,7 +189,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oDb->execute("INSERT INTO `oxobject2article` (OXID,OXOBJECTID,OXARTICLENID,OXSORT) VALUES ('" . $oUtils->generateUId() . "', '_testObjId', '_testArtId', 0);");
         $oDb->execute("INSERT INTO `oxobject2article` (OXID,OXOBJECTID,OXARTICLENID,OXSORT) VALUES ('" . $oUtils->generateUId() . "', '_testObjId', '_testArtId', 0);");
 
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $oView->UNITcopyCrossseling("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from oxobject2article where oxarticlenid = '_testArtId2'"));
@@ -210,7 +210,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oDb->execute("INSERT INTO `oxaccessoire2article` (OXID,OXOBJECTID,OXARTICLENID,OXSORT) VALUES ('" . $oUtils->generateUId() . "', '_testObjId', '_testArtId', 0);");
         $oDb->execute("INSERT INTO `oxaccessoire2article` (OXID,OXOBJECTID,OXARTICLENID,OXSORT) VALUES ('" . $oUtils->generateUId() . "', '_testObjId', '_testArtId', 0);");
 
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $oView->UNITcopyAccessoires("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from oxaccessoire2article where oxarticlenid = '_testArtId2'"));
@@ -232,7 +232,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oDb->execute("INSERT INTO `oxprice2article` (OXID,OXSHOPID,OXARTID,OXADDABS,OXADDPERC,OXAMOUNT,OXAMOUNTTO) VALUES ('" . $oUtils->generateUId() . "', '{$iShopId}', '_testArtId', 1, 0, 2, 3);");
         $oDb->execute("INSERT INTO `oxprice2article` (OXID,OXSHOPID,OXARTID,OXADDABS,OXADDPERC,OXAMOUNT,OXAMOUNTTO) VALUES ('" . $oUtils->generateUId() . "', '{$iShopId}', '_testArtId', 0.5, 0, 4, 5);");
 
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $oView->UNITcopyStaffelpreis("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from oxprice2article where oxartid = '_testArtId2'"));
@@ -248,7 +248,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         oxTestModules::addFunction('oxbase', 'save', '{ throw new Exception( "save" ); }');
 
         try {
-            $oView = new Article_Main();
+            $oView = oxNew('Article_Main');
             $oView->UNITcopyArtExtends("old", "new");
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Main::_copyArtExtends()");
@@ -339,7 +339,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $this->setRequestParameter("voxid", "-1");
         $this->setRequestParameter("oxparentid", $sParentOxid);
 
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $this->assertEquals("article_main.tpl", $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData['edit'] instanceof oxarticle);
@@ -355,7 +355,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
      */
     public function testAddDefaultValues()
     {
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $this->assertEquals("aaa", $oView->addDefaultValues("aaa"));
     }
 
@@ -376,7 +376,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oO2->oxarticles__oxvarselect = $this->getMock("oxfield", array("__get"));
         $oO2->oxarticles__oxvarselect->expects($this->once())->method('__get')->will($this->returnValue("oxvarselect"));
 
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $this->assertEquals("oxtitle", $oView->UNITgetTitle($oO1));
         $this->assertEquals("oxvarselect", $oView->UNITgetTitle($oO2));
     }
@@ -390,7 +390,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         $iListSize = oxDb::getDb()->getOne("select count(*) from oxcategories");
 
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $oList = $oView->getCategoryList();
         $this->assertTrue($oList instanceof oxCategoryList);
         $this->assertEquals($iListSize, $oList->count());
@@ -405,7 +405,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         $iListSize = oxDb::getDb()->getOne("select count(*) from oxvendor");
 
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $oList = $oView->getVendorList();
         $this->assertTrue($oList instanceof oxvendorlist);
         $this->assertEquals($iListSize, $oList->count());
@@ -420,7 +420,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         $iListSize = oxDb::getDb()->getOne("select count(*) from oxmanufacturers");
 
-        $oView = new Article_Main();
+        $oView = oxNew('Article_Main');
         $oList = $oView->getManufacturerList();
         $this->assertTrue($oList instanceof oxmanufacturerlist);
         $this->assertEquals($iListSize, $oList->count());
@@ -483,7 +483,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $this->setRequestParameter("oxparentid", "-1");
         $this->setRequestParameter("editval", array('tags' => 'test tags', "oxarticles__oxparentid" => "-1", "oxarticles__oxartnum" => "123", "oxarticles__oxprice" => "123", "oxarticles__oxactive" => 1));
 
-        $oArtView = new article_main();
+        $oArtView = oxNew('article_main');
 
         try {
             $oArtView->save();
@@ -511,7 +511,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $this->setRequestParameter("editval", array('tags' => 'test tags', "oxarticles__oxparentid" => "-1", "oxarticles__oxartnum" => "123", "oxarticles__oxprice" => "123", "oxarticles__oxactive" => 1));
         $this->setRequestParameter("art_category", -1);
 
-        $oArtView = new article_main();
+        $oArtView = oxNew('article_main');
         $oArtView->setCategoryId('_testCategoryId');
 
         try {
@@ -537,7 +537,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oVar2 = oxNew('oxArticle');
         $oVar2->oxarticles__oxid = new oxField("testId2");
 
-        $oParentVariants = new oxList();
+        $oParentVariants = oxNew('oxList');
         $oParentVariants->offsetSet("var1", $oVar1);
         $oParentVariants->offsetSet("var2", $oVar2);
 
@@ -545,7 +545,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oParentArticle->expects($this->once())->method('getAdminVariants')->will($this->returnValue($oParentVariants));
         $oParentArticle->oxarticles__oxid = new oxField("testParentId");
 
-        $oVariants = new oxList();
+        $oVariants = oxNew('oxList');
         $oVariants->offsetSet("var1", $oVar1);
         $oVariants->offsetSet("var2", $oVar2);
 
@@ -578,7 +578,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oVar2 = oxNew('oxArticle');
         $oVar2->oxarticles__oxid = new oxField("testId2");
 
-        $oVariants = new oxList();
+        $oVariants = oxNew('oxList');
         $oVariants->offsetSet("var1", $oVar1);
         $oVariants->offsetSet("var2", $oVar2);
 
@@ -609,7 +609,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oArt->oxarticles__oxratingcnt = new oxField(110);
         $oArt->save();
 
-        $oV = new Article_Main();
+        $oV = oxNew('Article_Main');
         $oV->copyArticle('_testArtId', '_testArtId2');
 
         $oArt = oxNew('oxArticle');
@@ -627,7 +627,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $iCount = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne("select count(*) from oxobject2category where OXCATNID = '_testCategory1' AND OXOBJECTID = '_testArticle1'");
         $this->assertEquals(0, $iCount, "expected no entries oxobject2category, but got {$iCount}.");
 
-        $oV = new Article_Main();
+        $oV = oxNew('Article_Main');
         $oV->addToCategory('_testCategory1', '_testArticle1');
 
         $iCount = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne("select count(*) from oxobject2category where OXCATNID = '_testCategory1' AND OXOBJECTID = '_testArticle1'");

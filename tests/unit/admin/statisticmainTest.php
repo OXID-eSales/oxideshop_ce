@@ -71,7 +71,7 @@ class Unit_Admin_StatisticMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new Statistic_Main();
+        $oView = oxNew('Statistic_Main');
         $this->assertEquals('statistic_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
@@ -95,7 +95,7 @@ class Unit_Admin_StatisticMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new Statistic_Main();
+        $oView = oxNew('Statistic_Main');
         $this->assertEquals('statistic_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
@@ -105,7 +105,7 @@ class Unit_Admin_StatisticMainTest extends OxidTestCase
     public function testRenderWithSomeReports()
     {
         // testing..
-        $oView = new Statistic_Main();
+        $oView = oxNew('Statistic_Main');
         $this->setRequestParameter("oxid", "testId");
 
         $oStatMock = $this->getMock("oxstatistic", array("load", "getReports"));
@@ -140,7 +140,7 @@ class Unit_Admin_StatisticMainTest extends OxidTestCase
         oxTestModules::addModuleObject('statistic_main_ajax', $oStatMock);
 
         // testing..
-        $oView = new Statistic_Main();
+        $oView = oxNew('Statistic_Main');
         $this->assertEquals('popups/statistic_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -43,7 +43,7 @@ class Unit_Admin_PriceAlarmListTest extends OxidTestCase
         $sSql .= "left join oxuser on oxuser.oxid = {$sViewName}.oxuserid WHERE 1 ";
 
         // testing..
-        $oView = new PriceAlarm_List();
+        $oView = oxNew('PriceAlarm_List');
         $this->assertEquals($sSql, $oView->UNITbuildSelectString(new stdClass()));
     }
 
@@ -54,7 +54,7 @@ class Unit_Admin_PriceAlarmListTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oView = new PriceAlarm_List();
+        $oView = oxNew('PriceAlarm_List');
         $this->assertEquals('pricealarm_list.tpl', $oView->render());
     }
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Admin_UserGroupMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new UserGroup_Main();
+        $oView = oxNew('UserGroup_Main');
         $this->assertEquals('usergroup_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -53,7 +53,7 @@ class Unit_Admin_UserGroupMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new UserGroup_Main();
+        $oView = oxNew('UserGroup_Main');
         $this->assertEquals('usergroup_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
@@ -77,7 +77,7 @@ class Unit_Admin_UserGroupMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new UserGroup_Main();
+            $oView = oxNew('UserGroup_Main');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "Error in UserGroup_Main::save()");

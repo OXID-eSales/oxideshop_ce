@@ -56,7 +56,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         $sCatId = oxDb::getDb()->getOne("select oxid from oxcategories");
         $this->setRequestParameter("art_category", "cat@@" . $sCatId);
         // testing..
-        $oView = new Article_List();
+        $oView = oxNew('Article_List');
         $this->assertEquals('article_list.tpl', $oView->render());
 
         // testing view data
@@ -82,7 +82,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
 
         // testing..
         $oView = $this->getMock("Article_List", array("getItemList"));
-        $oView->expects($this->any())->method('getItemList')->will($this->returnValue(new oxarticlelist));
+        $oView->expects($this->any())->method('getItemList')->will($this->returnValue(oxNew('oxarticlelist')));
         $this->assertEquals('article_list.tpl', $oView->render());
 
         // testing view data
@@ -117,7 +117,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         $oArticle3->oxarticles__oxtitle = new oxField("title3");
         $oArticle3->oxarticles__oxtitle->fldtype = "date";
 
-        $oList = new oxList();
+        $oList = oxNew('oxList');
         $oList->offsetSet("1", $oArticle1);
         $oList->offsetSet("2", $oArticle2);
         $oList->offsetSet("3", $oArticle3);
@@ -151,7 +151,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         $sQ = $oProduct->buildSelectString(null);
         $sQ = str_replace(" from $sTable where 1 ", " from $sTable left join $sO2CView on $sTable.oxid = $sO2CView.oxobjectid where $sO2CView.oxcatnid = 'testCategory' and  1  and $sTable.oxparentid = '' ", $sQ);
 
-        $oView = new Article_List();
+        $oView = oxNew('Article_List');
         $this->assertEquals($sQ, $oView->UNITbuildSelectString($oProduct));
     }
 
@@ -168,7 +168,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         $oProduct = oxNew('oxArticle');
         $sQ = $oProduct->buildSelectString(null);
 
-        $oView = new Article_List();
+        $oView = oxNew('Article_List');
         $this->assertEquals($sQ . " and $sTable.oxparentid = ''  and $sTable.oxmanufacturerid = 'testManufacturer'", $oView->UNITbuildSelectString($oProduct));
     }
 
@@ -185,7 +185,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         $oProduct = oxNew('oxArticle');
         $sQ = $oProduct->buildSelectString(null);
 
-        $oView = new Article_List();
+        $oView = oxNew('Article_List');
         $this->assertEquals($sQ . " and $sTable.oxparentid = ''  and $sTable.oxvendorid = 'testVendor'", $oView->UNITbuildSelectString($oProduct));
     }
 
@@ -199,7 +199,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         $this->setRequestParameter("folder", "testFolder");
         $sViewName = getViewName('oxarticles');
 
-        $oView = new Article_List();
+        $oView = oxNew('Article_List');
         $this->assertEquals(array("$sViewName.oxfolder" => "testFolder"), $oView->buildWhere());
     }
 
@@ -213,7 +213,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         $oProduct = oxNew('oxArticle');
         $sQ = $oProduct->buildSelectString(null);
 
-        $oView = new Article_List();
+        $oView = oxNew('Article_List');
         $this->assertEquals($sQ . " and " . getViewName('oxarticles') . ".oxparentid = '' ", $oView->UNITbuildSelectString($oProduct));
     }
 
@@ -248,7 +248,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     public function testGetSearchFields()
     {
         $aSkipFields = array("oxblfixedprice", "oxvarselect", "oxamitemid", "oxamtaskid", "oxpixiexport", "oxpixiexported");
-        $oView = new Article_List();
+        $oView = oxNew('Article_List');
 
         $oArticle = oxNew('oxArticle');
         $this->assertEquals(array_diff($oArticle->getFieldNames(), $aSkipFields), $oView->getSearchFields());

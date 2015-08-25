@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -151,7 +151,7 @@ class Unit_Admin_ShopSeoTest extends OxidTestCase
     public function testCleanupUrl()
     {
         // testing..
-        $oView = new Shop_Seo();
+        $oView = oxNew('Shop_Seo');
         $this->assertEquals("&amp;", $oView->UNITcleanupUrl("&amp;&amp;&&"));
     }
 
@@ -167,7 +167,7 @@ class Unit_Admin_ShopSeoTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Shop_Seo();
+            $oView = oxNew('Shop_Seo');
             $oView->dropSeoIds();
         } catch (Exception $oExcp) {
             $this->assertEquals("markAsExpired", $oExcp->getMessage(), "error in Shop_Seo::dropSeoIds()");
@@ -194,7 +194,7 @@ class Unit_Admin_ShopSeoTest extends OxidTestCase
         $this->assertEquals(1, $oDb->getOne("select 1 from oxseo where oxobjectid = 'testObjectId' and oxshopid = '1'"));
 
         // testing..
-        $oView = new Shop_Seo();
+        $oView = oxNew('Shop_Seo');
         $oView->deleteStaticUrl();
 
         $this->assertFalse($oDb->getOne("select 1 from oxseo where oxobjectid = 'testObjectId' and oxshopid = '1'"));

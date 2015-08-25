@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -54,7 +54,7 @@ class Unit_Admin_VendorMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new Vendor_Main();
+        $oView = oxNew('Vendor_Main');
         $this->assertEquals('vendor_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
@@ -78,7 +78,7 @@ class Unit_Admin_VendorMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Vendor_Main();
+            $oView = oxNew('Vendor_Main');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "Error in Vendor_Main::save()");
@@ -104,7 +104,7 @@ class Unit_Admin_VendorMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Vendor_Main();
+            $oView = oxNew('Vendor_Main');
             $oView->saveinnlang();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "Error in Vendor_Main::saveinnlang()");

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -246,7 +246,7 @@ class Unit_Admin_loginTest extends OxidTestCase
      */
     public function testGetViewId()
     {
-        $oView = new Login();
+        $oView = oxNew('Login');
         $this->assertEquals(strtolower("Login"), $oView->getViewId());
     }
 
@@ -257,7 +257,7 @@ class Unit_Admin_loginTest extends OxidTestCase
      */
     public function testAuthorize()
     {
-        $oView = new Login();
+        $oView = oxNew('Login');
         $this->assertTrue($oView->UNITauthorize());
     }
 
@@ -275,7 +275,7 @@ class Unit_Admin_loginTest extends OxidTestCase
         $this->setRequestParameter('profile', "testProfile");
         $this->getSession()->setVariable("aAdminProfiles", array("testProfile" => array("testValue")));
 
-        $oView = new Login();
+        $oView = oxNew('Login');
         $this->assertEquals("admin_start", $oView->checklogin());
         $this->assertEquals(array("testValue"), oxRegistry::getSession()->getVariable("profile"));
     }

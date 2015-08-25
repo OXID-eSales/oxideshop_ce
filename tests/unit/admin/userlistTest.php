@@ -145,7 +145,7 @@ class Unit_Admin_UserListTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new User_List();
+        $oView = oxNew('User_List');
         $this->assertEquals('user_list.tpl', $oView->render());
     }
 }

@@ -69,7 +69,7 @@ class Unit_Admin_ListReviewTest extends OxidTestCase
      */
     public function testPrepareWhereQuery()
     {
-        $oArtList = new Article_List();
+        $oArtList = oxNew('Article_List');
         $sSql = $oArtList->UNITbuildSelectString(oxNew('oxArticle'));
         $sSql = $oArtList->UNITprepareWhereQuery(array(), $sSql);
 
@@ -77,7 +77,7 @@ class Unit_Admin_ListReviewTest extends OxidTestCase
         $blCheckForParent = preg_match("/\s+and\s+" . getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
         $this->assertTrue((bool) $blCheckForParent);
 
-        $oList = new List_Review();
+        $oList = oxNew('List_Review');
         $sSql = $oList->UNITbuildSelectString("");
         $sSql = $oList->UNITprepareWhereQuery(array(), $sSql);
 
@@ -93,7 +93,7 @@ class Unit_Admin_ListReviewTest extends OxidTestCase
      */
     public function testPrepareWhereQueryCase2()
     {
-        $oArtList = new Article_List();
+        $oArtList = oxNew('Article_List');
         $sSql = $oArtList->UNITbuildSelectString(oxNew('oxArticle'));
         $sSql = $oArtList->UNITprepareWhereQuery(array(), $sSql);
 
@@ -101,7 +101,7 @@ class Unit_Admin_ListReviewTest extends OxidTestCase
         $blCheckForParent = preg_match("/\s+and\s+" . getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
         $this->assertTrue((bool) $blCheckForParent);
 
-        $oList = new List_Review();
+        $oList = oxNew('List_Review');
         $sSql = $oList->UNITbuildSelectString("");
         $sSql = $oList->UNITprepareWhereQuery(array(), $sSql);
 

@@ -36,7 +36,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", -1);
 
         // testing..
-        $oView = new Actions_Main();
+        $oView = oxNew('Actions_Main');
         $sTplName = $oView->render();
 
         // testing view data
@@ -76,7 +76,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $this->setRequestParameter("aoc", 1);
 
         // testing..
-        $oView = new Actions_Main();
+        $oView = oxNew('Actions_Main');
         $sTplName = $oView->render();
 
         $this->assertEquals("popups/actions_main.tpl", $sTplName);
@@ -194,7 +194,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $this->setRequestParameter("editval", array("xxx"));
         $this->setConfigParam("blAllowSharedEdit", true);
 
-        $oView = new Actions_Main();
+        $oView = oxNew('Actions_Main');
         $oView->save();
 
         $aViewData = $oView->getViewData();
@@ -255,7 +255,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $this->setRequestParameter("editval", array("xxx"));
         $this->setConfigParam("blAllowSharedEdit", true);
 
-        $oView = new Actions_Main();
+        $oView = oxNew('Actions_Main');
         $oView->save();
 
         $aViewData = $oView->getViewData();
@@ -279,7 +279,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $this->setRequestParameter("editval", array("xxx"));
         $this->setConfigParam("blAllowSharedEdit", true);
 
-        $oView = new Actions_Main();
+        $oView = oxNew('Actions_Main');
         $oView->save();
 
         $aViewData = $oView->getViewData();

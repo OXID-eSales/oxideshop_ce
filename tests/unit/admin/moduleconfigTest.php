@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Admin_ModuleConfigTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Module_Config();
+        $oView = oxNew('Module_Config');
         $this->assertEquals('module_config.tpl', $oView->render());
     }
 
@@ -60,7 +60,7 @@ class Unit_Admin_ModuleConfigTest extends OxidTestCase
         $this->setRequestParameter('confstrs', $aStrRequest);
         $this->setRequestParameter('confpassword', $aPasswordRequest);
 
-        $oModuleConfig = new Module_Config();
+        $oModuleConfig = oxNew('Module_Config');
         $oModuleConfig->saveConfVars();
 
         $this->assertSame('', $this->getConfigParam('stringParameterName1'), 'First string parameter is not as expected.');

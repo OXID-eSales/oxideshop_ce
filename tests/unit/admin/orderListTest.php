@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Admin_OrderListTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new order_list();
+        $oView = oxNew('order_list');
         $this->assertEquals('order_list.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['folder']));
@@ -67,10 +67,10 @@ class Unit_Admin_OrderListTest extends OxidTestCase
     public function testBuildSelectString()
     {
         $oDb = oxDb::getDb();
-        $oListObject = new oxOrder();
+        $oListObject = oxNew('oxOrder');
 
         $this->setRequestParameter("addsearch", "oxorderarticles");
-        $oView = new order_list();
+        $oView = oxNew('order_list');
         $sQ = $oView->UNITbuildSelectString($oListObject);
         $this->assertTrue(strpos($sQ, "oxorder where oxorder.oxpaid like " . $oDb->quote("%oxorderarticles%") . " and ") !== false);
 
@@ -92,7 +92,7 @@ class Unit_Admin_OrderListTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxlang", "isAdmin", "{return 1;}");
         $sExpQ = " and ( oxorder.oxfolder = 'ORDERFOLDER_NEW' )";
-        $oOrderList = new order_list();
+        $oOrderList = oxNew('order_list');
         $sQ = $oOrderList->UNITprepareWhereQuery(array(), "");
         $this->assertEquals($sExpQ, $sQ);
     }
@@ -107,7 +107,7 @@ class Unit_Admin_OrderListTest extends OxidTestCase
         oxTestModules::addFunction("oxlang", "isAdmin", "{return 1;}");
         $this->setRequestParameter('folder', 'ORDERFOLDER_FINISHED');
         $sExpQ = " and ( oxorder.oxfolder = 'ORDERFOLDER_FINISHED' )";
-        $oOrderList = new order_list();
+        $oOrderList = oxNew('order_list');
         $sQ = $oOrderList->UNITprepareWhereQuery(array(), "");
         $this->assertEquals($sExpQ, $sQ);
     }

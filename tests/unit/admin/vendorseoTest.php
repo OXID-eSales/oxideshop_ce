@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -47,7 +47,7 @@ class Unit_Admin_VendorSeoTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Vendor_Seo();
+        $oView = oxNew('Vendor_Seo');
         $this->assertEquals('object_seo.tpl', $oView->render());
     }
 
@@ -59,7 +59,7 @@ class Unit_Admin_VendorSeoTest extends OxidTestCase
     public function testGetType()
     {
         // testing..
-        $oView = new Vendor_Seo();
+        $oView = oxNew('Vendor_Seo');
         $this->assertEquals("oxvendor", $oView->UNITgetType());
     }
 
@@ -77,7 +77,7 @@ class Unit_Admin_VendorSeoTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Vendor_Seo();
+            $oView = oxNew('Vendor_Seo');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "Error in Vendor_Seo::save()");
@@ -94,7 +94,7 @@ class Unit_Admin_VendorSeoTest extends OxidTestCase
      */
     public function testGetEncoder()
     {
-        $oView = new Vendor_Seo();
+        $oView = oxNew('Vendor_Seo');
         $this->assertTrue($oView->UNITgetEncoder() instanceof oxSeoEncoderVendor);
     }
 
@@ -105,7 +105,7 @@ class Unit_Admin_VendorSeoTest extends OxidTestCase
      */
     public function testIsSuffixSupported()
     {
-        $oView = new Vendor_Seo();
+        $oView = oxNew('Vendor_Seo');
         $this->assertTrue($oView->isSuffixSupported());
     }
 
@@ -116,12 +116,12 @@ class Unit_Admin_VendorSeoTest extends OxidTestCase
      */
     public function testIsEntrySuffixed()
     {
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->setId("_test1");
         $oVendor->oxvendor__oxshowsuffix = new oxField(1);
         $oVendor->save();
 
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->setId("_test2");
         $oVendor->oxvendor__oxshowsuffix = new oxField(0);
         $oVendor->save();
@@ -141,7 +141,7 @@ class Unit_Admin_VendorSeoTest extends OxidTestCase
      */
     public function testGetEntryUri()
     {
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->setId("_test1");
         $oVendor->oxvendor__oxshowsuffix = new oxField(0);
         $oVendor->save();
@@ -162,7 +162,7 @@ class Unit_Admin_VendorSeoTest extends OxidTestCase
      */
     public function testGetStdUrl()
     {
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->setId("_test1");
         $oVendor->oxvendor__oxshowsuffix = new oxField(0);
         $oVendor->save();

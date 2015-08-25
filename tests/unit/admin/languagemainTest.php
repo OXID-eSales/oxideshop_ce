@@ -34,7 +34,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Language_Main();
+        $oView = oxNew('Language_Main');
         $sTplName = $oView->render();
 
         // testing view data

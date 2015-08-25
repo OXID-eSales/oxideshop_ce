@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Admin_DeliveryMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new Delivery_Main();
+        $oView = oxNew('Delivery_Main');
         $this->assertEquals('delivery_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -54,7 +54,7 @@ class Unit_Admin_DeliveryMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new Delivery_Main();
+        $oView = oxNew('Delivery_Main');
         $this->assertEquals('delivery_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
@@ -74,7 +74,7 @@ class Unit_Admin_DeliveryMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Delivery_Main();
+            $oView = oxNew('Delivery_Main');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Delivery_Main::save()");
@@ -97,7 +97,7 @@ class Unit_Admin_DeliveryMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Delivery_Main();
+            $oView = oxNew('Delivery_Main');
             $oView->saveinnlang();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Delivery_Main::save()");
@@ -114,7 +114,7 @@ class Unit_Admin_DeliveryMainTest extends OxidTestCase
      */
     public function testGetDeliveryTypes()
     {
-        $oView = new Delivery_Main();
+        $oView = oxNew('Delivery_Main');
         $aDelTypes = $oView->getDeliveryTypes();
 
         $oLang = oxRegistry::getLang();

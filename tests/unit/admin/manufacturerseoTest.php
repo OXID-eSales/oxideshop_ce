@@ -47,7 +47,7 @@ class Unit_Admin_ManufacturerSeoTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Manufacturer_Seo();
+        $oView = oxNew('Manufacturer_Seo');
         $this->assertEquals('object_seo.tpl', $oView->render());
     }
 
@@ -59,7 +59,7 @@ class Unit_Admin_ManufacturerSeoTest extends OxidTestCase
     public function testGetType()
     {
         // testing..
-        $oView = new Manufacturer_Seo();
+        $oView = oxNew('Manufacturer_Seo');
         $this->assertEquals('oxmanufacturer', $oView->UNITgetType());
     }
 
@@ -88,7 +88,7 @@ class Unit_Admin_ManufacturerSeoTest extends OxidTestCase
      */
     public function testGetEncoder()
     {
-        $oView = new Manufacturer_Seo();
+        $oView = oxNew('Manufacturer_Seo');
         $this->assertTrue($oView->UNITgetEncoder() instanceof oxSeoEncoderManufacturer);
     }
 
@@ -99,7 +99,7 @@ class Unit_Admin_ManufacturerSeoTest extends OxidTestCase
      */
     public function testIsSuffixSupported()
     {
-        $oView = new Manufacturer_Seo();
+        $oView = oxNew('Manufacturer_Seo');
         $this->assertTrue($oView->isSuffixSupported());
     }
 

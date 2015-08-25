@@ -48,7 +48,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
         $this->setRequestParameter("oxid", oxDb::getDb()->getOne('select oxid from oxarticles where oxparentid != "" '));
 
         // testing..
-        $oView = new Article_Stock();
+        $oView = oxNew('Article_Stock');
         $sTplName = $oView->render();
 
         // testing view data
@@ -73,7 +73,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Article_Stock();
+            $oView = oxNew('Article_Stock');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Stock::save()");
@@ -99,7 +99,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Article_Stock();
+            $oView = oxNew('Article_Stock');
             $oView->addprice();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Stock::addprice()");
@@ -129,7 +129,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Article_Stock();
+            $oView = oxNew('Article_Stock');
             $oView->addprice($sOXID, $aParams);
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Stock::addprice()");
@@ -187,7 +187,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
         );
         $oDb = oxDb::getDb();
 
-        $oView = new Article_Stock();
+        $oView = oxNew('Article_Stock');
 
         $oView->updateprices();
         $this->assertFalse($oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));

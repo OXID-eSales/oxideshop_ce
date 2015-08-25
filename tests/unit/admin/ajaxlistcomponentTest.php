@@ -33,7 +33,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testInit()
     {
-        $oComponent = new ajaxListComponent();
+        $oComponent = oxNew('ajaxListComponent');
         $oComponent->init("aColNames");
         $this->assertEquals("aColNames", $oComponent->UNITgetColNames());
     }
@@ -80,7 +80,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetQuery()
     {
-        $oComponent = new ajaxListComponent();
+        $oComponent = oxNew('ajaxListComponent');
         $this->assertEquals("", $oComponent->UNITgetQuery());
     }
 
@@ -107,7 +107,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
     {
         $sQ = "testQ";
 
-        $oComponent = new ajaxListComponent();
+        $oComponent = oxNew('ajaxListComponent');
         $this->assertEquals("select count( * ) {$sQ}", $oComponent->UNITgetCountQuery($sQ));
     }
 
@@ -168,7 +168,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
     {
         $this->setRequestParameter('cmpid', null);
 
-        $oComponent = new ajaxListComponent();
+        $oComponent = oxNew('ajaxListComponent');
         $oComponent->init("testNames");
         $this->assertEquals("testNames", $oComponent->UNITgetColNames());
     }
@@ -182,7 +182,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
     {
         $this->setRequestParameter('cmpid', "testCmpId");
 
-        $oComponent = new ajaxListComponent();
+        $oComponent = oxNew('ajaxListComponent');
         $oComponent->init(array("testCmpId" => "testNames"));
         $this->assertEquals("testNames", $oComponent->UNITgetColNames());
     }
@@ -306,7 +306,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetLimit()
     {
-        $oComponent = new ajaxListComponent();
+        $oComponent = oxNew('ajaxListComponent');
         $this->assertEquals(' limit 0, 2500 ', $oComponent->UNITgetLimit(0));
     }
 
@@ -376,7 +376,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
             }
         }
 
-        $oComponent = new ajaxListComponent();
+        $oComponent = oxNew('ajaxListComponent');
         $this->assertEquals($aReturn, $oComponent->UNITgetAll($sQ));
     }
 
@@ -389,7 +389,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
     {
         $this->setRequestParameter('dir', "someDirection");
 
-        $oComponent = new ajaxListComponent();
+        $oComponent = oxNew('ajaxListComponent');
         $this->assertEquals("asc", $oComponent->UNITgetSortDir());
     }
 
@@ -402,7 +402,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
     {
         $this->setRequestParameter('startIndex', "someIndex");
 
-        $oComponent = new ajaxListComponent();
+        $oComponent = oxNew('ajaxListComponent');
         $this->assertEquals((int) "someIndex", $oComponent->UNITgetStartIndex());
     }
 
@@ -414,7 +414,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
     public function testGetTotalCount()
     {
         $sQ = "select count(*) from oxcategories";
-        $oComponent = new ajaxListComponent();
+        $oComponent = oxNew('ajaxListComponent');
         $this->assertEquals(oxDb::getDb()->getOne($sQ), $oComponent->UNITgetTotalCount($sQ));
     }
 
@@ -426,7 +426,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
     public function testGetDataFields()
     {
         $sQ = "select count(*) from oxcategories";
-        $oComponent = new ajaxListComponent();
+        $oComponent = oxNew('ajaxListComponent');
         $this->assertEquals(oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getArray($sQ), $oComponent->UNITgetDataFields($sQ));
     }
 
@@ -494,7 +494,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
 
         // testing..
         try {
-            $oComponent = new ajaxListComponent();
+            $oComponent = oxNew('ajaxListComponent');
             $oComponent->resetArtSeoUrl("testArtId");
         } catch (Exception $oExcp) {
             $this->assertEquals("markAsExpired", $oExcp->getMessage(), "error in ajaxListComponent::resetArtSeoUrl()");

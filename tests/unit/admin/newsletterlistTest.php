@@ -34,7 +34,7 @@ class Unit_Admin_NewsletterListTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Newsletter_List();
+        $oView = oxNew('Newsletter_List');
         $this->assertEquals('newsletter_list.tpl', $oView->render());
     }
 }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -41,7 +41,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Shop_Config();
+        $oView = oxNew('Shop_Config');
         $this->assertEquals('shop_config.tpl', $oView->render());
     }
 
@@ -146,7 +146,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
         $aInput = array("a", "b", "c");
 
         // testing..
-        $oView = new Shop_Config();
+        $oView = oxNew('Shop_Config');
         $this->assertEquals("a\nb\nc", $oView->UNITarrayToMultiline($aInput));
     }
 
@@ -161,7 +161,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
         $sMultiline = "a\nb\n\nc";
 
         // testing..
-        $oView = new Shop_Config();
+        $oView = oxNew('Shop_Config');
         $this->assertEquals(array(0 => "a", 1 => "b", 3 => "c"), $oView->UNITmultilineToArray($sMultiline));
     }
 
@@ -176,7 +176,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
         $aInput = array("a" => "b", "c" => "d");
 
         // testing..
-        $oView = new Shop_Config();
+        $oView = oxNew('Shop_Config');
         $this->assertEquals("a => b\nc => d", $oView->UNITaarrayToMultiline($aInput));
     }
 
@@ -191,7 +191,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
         $sMultiline = "a => b\nc => d";
 
         // testing..
-        $oView = new Shop_Config();
+        $oView = oxNew('Shop_Config');
         $this->assertEquals(array("a" => "b", "c" => "d"), $oView->UNITmultilineToAarray($sMultiline));
     }
 
@@ -259,7 +259,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
      */
     public function testLoadConfVars()
     {
-        $oTest = new Shop_Config();
+        $oTest = oxNew('Shop_Config');
         $aDbConfig = $oTest->loadConfVars($this->getConfig()->getShopId(), '');
 
         $this->assertEquals(

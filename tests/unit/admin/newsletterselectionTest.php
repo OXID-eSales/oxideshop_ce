@@ -104,7 +104,7 @@ class Unit_Admin_NewsletterSelectionTest extends OxidTestCase
     {
         $this->setRequestParameter("iStart", 0);
         $this->setRequestParameter("oxid", 'newstest');
-        $oNewsletter = new Newsletter_selection();
+        $oNewsletter = oxNew('Newsletter_selection');
         $this->assertEquals(1, $oNewsletter->getUserCount());
 
         $oDB = oxDb::getDb();
@@ -112,7 +112,7 @@ class Unit_Admin_NewsletterSelectionTest extends OxidTestCase
         $oDB->Execute($sDelete);
         $this->setRequestParameter("iStart", 0);
         $this->setRequestParameter("oxid", 'newstest');
-        $oNewsletter = new Newsletter_selection();
+        $oNewsletter = oxNew('Newsletter_selection');
         $this->assertEquals(0, $oNewsletter->getUserCount());
     }
 
@@ -128,7 +128,7 @@ class Unit_Admin_NewsletterSelectionTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Newsletter_Selection();
+            $oView = oxNew('Newsletter_Selection');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Newsletter_Plain::save()");

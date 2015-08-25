@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -46,7 +46,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
      */
     public function testIsEntrySuffixed()
     {
-        $oView = new Object_Seo();
+        $oView = oxNew('Object_Seo');
         $this->assertFalse($oView->isEntrySuffixed());
     }
 
@@ -57,7 +57,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
      */
     public function isSuffixSupported()
     {
-        $oView = new Object_Seo();
+        $oView = oxNew('Object_Seo');
         $this->assertFalse($oView->isSuffixSupported());
     }
 
@@ -68,7 +68,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
      */
     public function showCatSelect()
     {
-        $oView = new Object_Seo();
+        $oView = oxNew('Object_Seo');
         $this->assertFalse($oView->showCatSelect());
     }
 
@@ -81,7 +81,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
     {
         $sParam = "param";
 
-        $oView = new Object_Seo();
+        $oView = oxNew('Object_Seo');
         $this->assertEquals($sParam, $oView->processParam($sParam));
     }
 
@@ -92,7 +92,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
      */
     public function testGetEncoder()
     {
-        $oView = new Object_Seo();
+        $oView = oxNew('Object_Seo');
         $this->assertNull($oView->UNITgetEncoder());
     }
 
@@ -103,7 +103,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
      */
     public function testGetEntryUri()
     {
-        $oView = new Object_Seo();
+        $oView = oxNew('Object_Seo');
         $this->assertNull($oView->getEntryUri());
     }
 
@@ -114,7 +114,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
      */
     public function testGetType()
     {
-        $oView = new Object_Seo();
+        $oView = oxNew('Object_Seo');
         $this->assertNull($oView->UNITgetType());
     }
 
@@ -125,7 +125,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
      */
     public function testGetStdUrl()
     {
-        $oView = new Object_Seo();
+        $oView = oxNew('Object_Seo');
         $this->assertNull($oView->UNITgetStdUrl("anyid"));
     }
 
@@ -149,7 +149,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
      */
     public function testGetAltSeoEntryId()
     {
-        $oView = new Object_Seo();
+        $oView = oxNew('Object_Seo');
         $this->assertNull($oView->UNITgetAltSeoEntryId());
     }
 
@@ -174,7 +174,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Object_Seo();
+        $oView = oxNew('Object_Seo');
         $this->assertEquals('object_seo.tpl', $oView->render());
     }
 
@@ -270,7 +270,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
     public function testGetActCatType()
     {
         // testing..
-        $oView = new Object_Seo();
+        $oView = oxNew('Object_Seo');
         $this->assertFalse($oView->getActCatType());
     }
 

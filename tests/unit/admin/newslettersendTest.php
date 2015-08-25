@@ -54,7 +54,7 @@ class Unit_Admin_NewsletterSendTest extends OxidTestCase
         $this->setRequestParameter("id", "testId");
         $this->getConfig()->setConfigParam('iCntofMails', 3);
 
-        $oNewsSubscribed = new oxbase();
+        $oNewsSubscribed = oxNew('oxbase');
         $oNewsSubscribed->init("oxnewssubscribed");
         $oNewsSubscribed->setId("_test1");
         $oNewsSubscribed->oxnewssubscribed__oxuserid = new oxField("oxdefaultadmin");
@@ -67,7 +67,7 @@ class Unit_Admin_NewsletterSendTest extends OxidTestCase
         $oNewsSubscribed->oxnewssubscribed__oxsubscribed = new oxField("2005-07-26 19:16:09");
         $oNewsSubscribed->save();
 
-        $oNewsSubscribed = new oxbase();
+        $oNewsSubscribed = oxNew('oxbase');
         $oNewsSubscribed->init("oxnewssubscribed");
         $oNewsSubscribed->setId("_test2");
         $oNewsSubscribed->oxnewssubscribed__oxemail = new oxField("testadmin@myoxideshop.com");
@@ -106,7 +106,7 @@ class Unit_Admin_NewsletterSendTest extends OxidTestCase
         $this->getConfig()->setConfigParam('iCntofMails', 3);
 
         // test data
-        $oNewsSubscribed = new oxbase();
+        $oNewsSubscribed = oxNew('oxbase');
         $oNewsSubscribed->init("oxnewssubscribed");
         $oNewsSubscribed->setId("_test1");
         $oNewsSubscribed->oxnewssubscribed__oxuserid = new oxField("oxdefaultadmin");

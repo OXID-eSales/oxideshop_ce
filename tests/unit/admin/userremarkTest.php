@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Admin_UserRemarkTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
         $this->setRequestParameter("rem_oxid", "testId");
 
-        $oView = new user_remark();
+        $oView = oxNew('user_remark');
         $this->assertEquals("user_remark.tpl", $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -62,7 +62,7 @@ class Unit_Admin_UserRemarkTest extends OxidTestCase
         $this->setRequestParameter('remarkheader', 'test header');
 
         try {
-            $oView = new user_remark();
+            $oView = oxNew('user_remark');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "Error in user_remark::save()");
@@ -83,7 +83,7 @@ class Unit_Admin_UserRemarkTest extends OxidTestCase
         oxTestModules::addFunction('oxremark', 'delete', '{ throw new Exception( "delete" ); }');
 
         try {
-            $oView = new user_remark();
+            $oView = oxNew('user_remark');
             $oView->delete();
         } catch (Exception $oExcp) {
             $this->assertEquals("delete", $oExcp->getMessage(), "Error in user_remark::delete()");

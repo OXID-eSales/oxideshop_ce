@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -34,7 +34,7 @@ class Unit_Admin_ModuleSortListTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Module_SortList();
+        $oView = oxNew('Module_SortList');
         $this->assertEquals('module_sortlist.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['aExtClasses']));
@@ -59,7 +59,7 @@ class Unit_Admin_ModuleSortListTest extends OxidTestCase
         $oConfig = $this->getMock('oxConfig', array('saveShopConfVar'));
         $oConfig->expects($this->once())->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aModules));
 
-        $oView = new Module_SortList();
+        $oView = oxNew('Module_SortList');
         $oView->setConfig($oConfig);
 
         $oView->save();
@@ -73,7 +73,7 @@ class Unit_Admin_ModuleSortListTest extends OxidTestCase
     public function testRemove()
     {
         $this->setRequestParameter("noButton", true);
-        $oView = new Module_SortList();
+        $oView = oxNew('Module_SortList');
         $oView->remove();
         $this->assertTrue($this->getSession()->getVariable("blSkipDeletedExtChecking"));
     }

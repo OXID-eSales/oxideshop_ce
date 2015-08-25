@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -50,7 +50,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new VoucherSerie_Main();
+        $oView = oxNew('VoucherSerie_Main');
         $this->assertEquals('voucherserie_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
@@ -68,7 +68,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new VoucherSerie_Main();
+        $oView = oxNew('VoucherSerie_Main');
         $this->assertEquals('voucherserie_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
@@ -87,7 +87,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new VoucherSerie_Main();
+            $oView = oxNew('VoucherSerie_Main');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Wrapping_Main::save()");
@@ -105,7 +105,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
      */
     public function testPrepareExport()
     {
-        $oView = new VoucherSerie_Main();
+        $oView = oxNew('VoucherSerie_Main');
         $this->assertNull($oView->prepareExport());
     }
 
@@ -143,7 +143,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
         $this->setRequestParameter("voucherNr", "testvoucherNr");
         $this->setRequestParameter("cl", "voucherserie_generate");
 
-        $oView = new VoucherSerie_Main();
+        $oView = oxNew('VoucherSerie_Main');
         $oView->start();
 
         $oSession = $this->getSession();
@@ -190,7 +190,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
 
         $this->getSession()->setVariable("voucherid", "_testvoucherserie");
 
-        $oView = new VoucherSerie_Main();
+        $oView = oxNew('VoucherSerie_Main');
         $oVoucherSerie = $oView->UNITgetVoucherSerie();
 
         $this->assertNotNull($oVoucherSerie);
@@ -205,7 +205,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
      */
     public function testGetViewId()
     {
-        $oView = new VoucherSerie_Main();
+        $oView = oxNew('VoucherSerie_Main');
         $this->assertEquals("tbclvoucherserie_main", $oView->getViewId());
     }
 }

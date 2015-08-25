@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -88,7 +88,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         oxTestModules::addModuleObject("oxEmail", $oEmail);
 
         // testing..
-        $oView = new PriceAlarm_Main();
+        $oView = oxNew('PriceAlarm_Main');
         $this->assertEquals('pricealarm_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -127,7 +127,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         $this->addTeardownSql("delete from oxpricealarm where oxid like '%_testAlarm%'");
 
         // testing..
-        $oView = new PriceAlarm_Main();
+        $oView = oxNew('PriceAlarm_Main');
         $oView->render();
 
         $aViewData = $oView->getViewData();
@@ -150,7 +150,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         $this->setRequestParameter("editval", array("oxpricealarm__oxlongdesc" => "test Mail Body"));
 
         // testing..
-        $oView = new PriceAlarm_Main();
+        $oView = oxNew('PriceAlarm_Main');
         $oView->render();
 
         $aViewData = $oView->getViewData();
@@ -168,7 +168,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new PriceAlarm_Main();
+        $oView = oxNew('PriceAlarm_Main');
         $this->assertEquals('pricealarm_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
@@ -185,7 +185,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", null);
 
         // testing..
-        $oView = new PriceAlarm_Main();
+        $oView = oxNew('PriceAlarm_Main');
         $this->assertNull($oView->send());
         $this->assertEquals(1, $oView->getViewDataElement("mail_err"));
         $this->assertNull($oView->getViewDataElement("mail_succ"));
@@ -216,7 +216,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         oxTestModules::addModuleObject("oxpricealarm", $oPriceAlarm);
 
         // testing..
-        $oView = new PriceAlarm_Main();
+        $oView = oxNew('PriceAlarm_Main');
         $this->assertNull($oView->send());
         $this->assertEquals(1, $oView->getViewDataElement("mail_succ"));
         $this->assertNull($oView->getViewDataElement("mail_err"));
@@ -256,7 +256,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         oxTestModules::addModuleObject("oxEmail", $oEmail);
 
         // testing..
-        $oView = new PriceAlarm_Main();
+        $oView = oxNew('PriceAlarm_Main');
         $this->assertNull($oView->send());
     }
 }

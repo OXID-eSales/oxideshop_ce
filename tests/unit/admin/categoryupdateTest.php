@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -51,7 +51,7 @@ class Unit_Admin_CategoryUpdateTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxCategoryList', 'updateCategoryTree', '{}');
 
-        $oView = new Category_Update();
+        $oView = oxNew('Category_Update');
         $this->assertTrue($oView->UNITgetCategoryList() instanceof oxCategoryList);
     }
 
@@ -63,7 +63,7 @@ class Unit_Admin_CategoryUpdateTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Category_Update();
+        $oView = oxNew('Category_Update');
         $this->assertEquals('category_update.tpl', $oView->render());
     }
 }

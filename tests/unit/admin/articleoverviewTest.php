@@ -49,7 +49,7 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
         $this->setRequestParameter("oxid", "1126");
 
-        $oBase = new oxbase();
+        $oBase = oxNew('oxbase');
         $oBase->init("oxorderarticles");
         $oBase->setId("_testOrderArticleId");
         $oBase->oxorderarticles__oxorderid = new oxField("testOrderId");
@@ -59,7 +59,7 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
         $oBase->save();
 
         // testing..
-        $oView = new Article_Overview();
+        $oView = oxNew('Article_Overview');
         $sTplName = $oView->render();
 
         // testing view data
@@ -83,7 +83,7 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
         $this->getConfig()->setConfigParam("blVariantParentBuyable", true);
 
         // testing..
-        $oView = new Article_Overview();
+        $oView = oxNew('Article_Overview');
         $sTplName = $oView->render();
 
         // testing view data

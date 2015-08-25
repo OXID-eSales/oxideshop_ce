@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -111,7 +111,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     public function testGetPreviewId()
     {
         oxTestModules::addFunction('oxUtils', 'getPreviewId', '{ return "123"; }');
-        $oAdminView = new oxadminview();
+        $oAdminView = oxNew('oxadminview');
         $this->assertEquals("123", $oAdminView->getPreviewId());
     }
 
@@ -156,7 +156,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     public function testAllowAdminEditPE()
     {
 
-        $oAdminView = new oxadminview();
+        $oAdminView = oxNew('oxadminview');
         $this->assertTrue($oAdminView->UNITallowAdminEdit('xxx'));
     }
 
@@ -295,7 +295,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
         //modInstances::addMod('oxUtilsUrl', $oUU);
         oxTestModules::addModuleObject('oxUtilsUrl', $oUU);
 
-        $oAView = new oxAdminView();
+        $oAView = oxNew('oxAdminView');
         $oAView->addGlobalParams();
         $oViewCfg = $oAView->getViewConfig();
 
@@ -348,7 +348,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
         $oLang->expects($this->any())->method('getLanguageIds')->will($this->returnValue(array('de')));
         oxTestModules::addModuleObject('oxLang', $oLang);
 
-        $oSubj = new oxadminView();
+        $oSubj = oxNew('oxadminView');
         $sTestCode = "de";
         $this->assertEquals("germany", $oSubj->UNITgetCountryByCode($sTestCode));
     }
@@ -382,19 +382,19 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
         $this->setRequestParameter("oxid", null);
         $this->getSession()->setVariable("saved_oxid", "testSessId");
 
-        $oView = new oxAdminView();
+        $oView = oxNew('oxAdminView');
         $this->assertEquals("testSessId", $oView->getEditObjectId());
 
         $this->setRequestParameter("oxid", "testRequestId");
         $this->getSession()->setVariable("saved_oxid", "testSessId");
 
-        $oView = new oxAdminView();
+        $oView = oxNew('oxAdminView');
         $this->assertEquals("testRequestId", $oView->getEditObjectId());
 
         $this->setRequestParameter("oxid", "testRequestId");
         $this->getSession()->setVariable("saved_oxid", "testSessId");
 
-        $oView = new oxAdminView();
+        $oView = oxNew('oxAdminView');
         $oView->setEditObjectId("testSetId");
         $this->assertEquals("testSetId", $oView->getEditObjectId());
     }

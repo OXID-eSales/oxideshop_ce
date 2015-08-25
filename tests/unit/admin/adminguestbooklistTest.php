@@ -33,10 +33,10 @@ class Unit_Admin_AdminGuestbookListTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oEntry = new GuestbookEntry();
+        $oEntry = oxNew('GuestbookEntry');
         $oEntry->oxgbentries__oxuserid = new oxField("oxdefaultadmin");
 
-        $oList = new oxList();
+        $oList = oxNew('oxList');
         $oList->offsetSet("testEntryId", $oEntry);
 
         // testing..

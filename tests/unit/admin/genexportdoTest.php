@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -106,7 +106,7 @@ class Unit_Admin_GenExportDoTest extends OxidTestCase
         oxTestModules::addFunction("oxUtilsView", "getSmarty", "{return Unit_Admin_GenExportDoTest_smarty::getInstance();}");
 
         $oView = $this->getMock("GenExport_Do", array("getOneArticle", "write", "getViewId"));
-        $oView->expects($this->once())->method('getOneArticle')->will($this->returnValue(new oxArticle));
+        $oView->expects($this->once())->method('getOneArticle')->will($this->returnValue(oxNew('oxArticle')));
         $oView->expects($this->once())->method('write');
         $oView->expects($this->once())->method('getViewId')->will($this->returnValue('dyn_interface'));
         $this->assertEquals(2, $oView->nextTick(1));
@@ -134,7 +134,7 @@ class Unit_Admin_GenExportDoTest extends OxidTestCase
         $sLine = 'TestExport';
         $testFile = $this->createFile('test.txt', '');
 
-        $oView = new GenExport_Do();
+        $oView = oxNew('GenExport_Do');
         $oView->fpFile = @fopen($testFile, "w");
         $oView->write($sLine);
         fclose($oView->fpFile);
@@ -150,7 +150,7 @@ class Unit_Admin_GenExportDoTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new GenExport_Do();
+        $oView = oxNew('GenExport_Do');
         $this->assertEquals('dynbase_do.tpl', $oView->render());
     }
 }

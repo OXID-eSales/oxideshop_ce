@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new SelectList_Main();
+        $oView = oxNew('SelectList_Main');
         $this->assertEquals('selectlist_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -53,7 +53,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new SelectList_Main();
+        $oView = oxNew('SelectList_Main');
         $this->assertEquals('selectlist_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
@@ -73,7 +73,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new SelectList_Main();
+            $oView = oxNew('SelectList_Main');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in SelectList_Main::save()");
@@ -96,7 +96,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new SelectList_Main();
+            $oView = oxNew('SelectList_Main');
             $oView->saveinnlang();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in SelectList_Main::saveinnlang()");
@@ -138,7 +138,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         oxTestModules::addFunction('oxselectlist', 'loadInLang', '{ return true; }');
 
         // testing..
-        $oView = new SelectList_Main();
+        $oView = oxNew('SelectList_Main');
         $this->assertNull($oView->addField());
         $this->assertEquals(-1, oxRegistry::getSession()->getVariable("iErrorCode"));
     }
@@ -195,7 +195,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         $this->setRequestParameter("sAddField", null);
 
         // testing..
-        $oView = new SelectList_Main();
+        $oView = oxNew('SelectList_Main');
         $this->assertNull($oView->changeField());
         $this->assertEquals(-1, oxRegistry::getSession()->getVariable("iErrorCode"));
     }
@@ -332,7 +332,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
      */
     public function testParseFieldName()
     {
-        $oView = new SelectList_Main();
+        $oView = oxNew('SelectList_Main');
         $this->assertEquals("bbb", $oView->parseFieldName("aaa__@@bbb"));
     }
 }

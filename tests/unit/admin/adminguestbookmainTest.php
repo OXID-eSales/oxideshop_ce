@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
         oxTestModules::addFunction('oxgbentry', 'save', '{ return true; }');
 
         // testing..
-        $oView = new Adminguestbook_Main();
+        $oView = oxNew('Adminguestbook_Main');
         $sTplName = $oView->render();
 
         // testing view data
@@ -60,7 +60,7 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
         $this->setRequestParameter("saved_oxid", "-1");
 
         // testing..
-        $oView = new Adminguestbook_Main();
+        $oView = oxNew('Adminguestbook_Main');
         $sTplName = $oView->render();
 
         // testing view data
@@ -86,7 +86,7 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "xxx");
         $this->setRequestParameter("editval", array("xxx"));
 
-        $oView = new Adminguestbook_Main();
+        $oView = oxNew('Adminguestbook_Main');
         $oView->save();
 
         $aViewData = $oView->getViewData();
@@ -106,7 +106,7 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
         $this->setRequestParameter("editval", array("xxx"));
 
-        $oView = new Adminguestbook_Main();
+        $oView = oxNew('Adminguestbook_Main');
         $oView->save();
 
         $aViewData = $oView->getViewData();

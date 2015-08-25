@@ -145,7 +145,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
      */
     public function testGetEditValueObjectNotSet()
     {
-        $oAdminDetails = new oxadmindetails();
+        $oAdminDetails = oxNew('oxadmindetails');
         $this->assertEquals('', $oAdminDetails->UNITgetEditValue(null, null));
     }
 
@@ -162,7 +162,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $oObject->oField2 = new stdClass;
         $oObject->oField2->value = 'field2value';
 
-        $oAdminDetails = new oxadmindetails();
+        $oAdminDetails = oxNew('oxadmindetails');
         $this->assertEquals('', $oAdminDetails->UNITgetEditValue($oObject, 'notExistingField'));
         $this->assertEquals('field1value', $oAdminDetails->UNITgetEditValue($oObject, 'oField1'));
         $this->assertEquals('field2value', $oAdminDetails->UNITgetEditValue($oObject, 'oField2'));
@@ -182,7 +182,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $myConfig->setConfigParam("bl_perfParseLongDescinSmarty", false);
         $sUrl = $this->getConfig()->getCurrentShopURL();
 
-        $oAdminDetails = new oxadmindetails();
+        $oAdminDetails = oxNew('oxadmindetails');
         $this->assertEquals("test $sUrl", $oAdminDetails->UNITgetEditValue($oObject, 'oField'));
     }
 
@@ -193,7 +193,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
      */
     public function testGetTextEditor()
     {
-        $oAdminDetails = new oxadmindetails();
+        $oAdminDetails = oxNew('oxadmindetails');
 
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxtitle = new oxField("test value");
@@ -211,8 +211,8 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
     public function testGetTextEditor_cssInclude()
     {
         $oConfig = $this->getConfig();
-        $oAdminDetails = new oxadmindetails();
-        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle', 'oxid_ie6.css');
+        $oAdminDetails = oxNew('oxadmindetails');
+        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, oxNew('oxarticle'), 'oxarticles__oxtitle', 'oxid_ie6.css');
 
         $this->assertFalse($oEditor);
 
@@ -230,8 +230,8 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam("blFormerTplSupport", true);
 
-        $oAdminDetails = new oxadmindetails();
-        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle', 'basket.tpl.css');
+        $oAdminDetails = oxNew('oxadmindetails');
+        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, oxNew('oxarticle'), 'oxarticles__oxtitle', 'basket.tpl.css');
 
         $this->assertFalse($oEditor);
 
@@ -270,8 +270,8 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $this->getConfig()->setConfigParam('sShopURL', $sShopUrl);
         $this->getConfig()->setConfigParam('sSSLShopURL', $sShopUrl);
 
-        $oAdminDetails = new oxadmindetails();
-        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle', 'basket.tpl.css');
+        $oAdminDetails = oxNew('oxadmindetails');
+        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, oxNew('oxarticle'), 'oxarticles__oxtitle', 'basket.tpl.css');
 
         $this->assertFalse($oEditor);
 
@@ -287,8 +287,8 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $this->getConfig()->setIsSsl(false);
         $this->getConfig()->setConfigParam('sShopURL', 'http://test_shop_url/');
 
-        $oAdminDetails = new oxadmindetails();
-        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, new oxarticle, 'oxarticles__oxtitle', 'basket.tpl.css');
+        $oAdminDetails = oxNew('oxadmindetails');
+        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, oxNew('oxarticle'), 'oxarticles__oxtitle', 'basket.tpl.css');
 
         $this->assertFalse($oEditor);
 
@@ -370,7 +370,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
      */
     public function testGetCategoryTreeTestingIfEmptyCategoryWillBeSelected()
     {
-        $oAdminDetails = new oxadmindetails();
+        $oAdminDetails = oxNew('oxadmindetails');
         $sActCatId = $oAdminDetails->UNITgetCategoryTree('xxx', null);
         $oList = $oAdminDetails->getViewDataElement('xxx');
         $oList->rewind();
@@ -390,7 +390,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $sCatTable = getViewName('oxcategories');
         $sCat = oxDb::getDb()->getOne("select oxid from $sCatTable where oxactive = 1");
 
-        $oAdminDetails = new oxadmindetails();
+        $oAdminDetails = oxNew('oxadmindetails');
         $sActCatId = $oAdminDetails->UNITgetCategoryTree('xxx', null, $sCat);
         $oList = $oAdminDetails->getViewDataElement('xxx');
 
@@ -411,7 +411,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $sCatTable = getViewName('oxcategories');
         $sCat = oxDb::getDb()->getOne("select oxid from $sCatTable where oxactive = 1");
 
-        $oAdminDetails = new oxadmindetails();
+        $oAdminDetails = oxNew('oxadmindetails');
         $sActCatId = $oAdminDetails->UNITgetCategoryTree('xxx', $sCat);
         $oList = $oAdminDetails->getViewDataElement('xxx');
 

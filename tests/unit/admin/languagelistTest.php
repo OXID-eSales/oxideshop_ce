@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -71,7 +71,7 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = new Language_List();
+        $oView = oxNew('Language_List');
         $this->assertEquals('language_list.tpl', $oView->render());
     }
 
@@ -102,7 +102,7 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
         $oLang2->selected = 0;
         $oLang2->default = false;
 
-        $oView = new Language_List();
+        $oView = oxNew('Language_List');
         $this->assertEquals(array($oLang1, $oLang2), $oView->UNITgetLanguagesList());
     }
 
@@ -146,7 +146,7 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ throw new Exception( "addErrorToDisplay" ); }');
 
         try {
-            $oView = new Language_List();
+            $oView = oxNew('Language_List');
             $oView->UNITresetMultiLangDbFields(3);
         } catch (Exception $oExcp) {
             $this->assertEquals("addErrorToDisplay", $oExcp->getMessage(), "Error in Language_List::UNITresetMultiLangDbFields()");
@@ -165,7 +165,7 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxDbMetaDataHandler', 'resetLanguage', '{}');
 
-        $oView = new Language_List();
+        $oView = oxNew('Language_List');
         $this->assertNull($oView->UNITresetMultiLangDbFields(3));
     }
 }

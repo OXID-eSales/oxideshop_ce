@@ -36,7 +36,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
-        $oView = new Article_Variant();
+        $oView = oxNew('Article_Variant');
         $this->assertEquals('article_variant.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
@@ -55,7 +55,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
-        $oView = new Article_Variant();
+        $oView = oxNew('Article_Variant');
         $this->assertEquals('article_variant.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
@@ -78,7 +78,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testid");
 
         try {
-            $oView = new Article_Variant();
+            $oView = oxNew('Article_Variant');
             $oView->savevariant();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Variant::savevariant()");
@@ -99,7 +99,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
         $this->setRequestParameter("voxid", "-1");
 
         try {
-            $oView = new Article_Variant();
+            $oView = oxNew('Article_Variant');
             $oView->savevariant();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Variant::savevariant()");
@@ -140,7 +140,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testid");
 
         try {
-            $oView = new Article_Variant();
+            $oView = oxNew('Article_Variant');
             $oView->deleteVariant();
         } catch (Exception $oExcp) {
             $this->assertEquals("delete", $oExcp->getMessage(), "error in Article_Variant::deleteVariant()");
@@ -161,7 +161,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testid");
 
         try {
-            $oView = new Article_Variant();
+            $oView = oxNew('Article_Variant');
             $oView->changename();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Variant::changename()");
@@ -185,7 +185,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
         $this->setRequestParameter("allsel", "testsel");
 
         try {
-            $oView = new Article_Variant();
+            $oView = oxNew('Article_Variant');
             $oView->addsel();
         } catch (Exception $oExcp) {
             $this->assertEquals("genVariantFromSell", $oExcp->getMessage(), "error in Article_Variant::addsel()");

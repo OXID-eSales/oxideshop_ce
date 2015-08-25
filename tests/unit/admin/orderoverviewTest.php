@@ -48,7 +48,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new Order_Overview();
+        $oView = oxNew('Order_Overview');
         $this->assertEquals('order_overview.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -68,7 +68,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $oOrder = $this->getMock("oxorder", array("getPaymentType"));
         $oOrder->oxorder__oxpaymenttype = new oxField("testValue");
 
-        $oView = new Order_Overview();
+        $oView = oxNew('Order_Overview');
         $oUserPayment = $oView->UNITgetPaymentType($oOrder);
 
         $this->assertTrue($oUserPayment instanceof oxuserpayment);
@@ -92,7 +92,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Order_Overview();
+            $oView = oxNew('Order_Overview');
             $oView->sendorder();
         } catch (Exception $oExcp) {
             $this->assertEquals("sendSendedNowMail", $oExcp->getMEssage(), "Error in Order_Overview::sendorder()");
@@ -114,7 +114,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Order_Overview();
+            $oView = oxNew('Order_Overview');
             $oView->resetorder();
         } catch (Exception $oExcp) {
             $this->assertEquals("0000-00-00 00:00:00", $oExcp->getMessage(), "Error in Order_Overview::resetorder()");
@@ -133,7 +133,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxModule', 'isActive', '{ return true; }');
 
-        $oBase = new oxbase();
+        $oBase = oxNew('oxbase');
         $oBase->init("oxorderarticles");
         $oBase->setId("_testOrderArticleId");
         $oBase->oxorderarticles__oxorderid = new oxField("testOrderId");
@@ -143,7 +143,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $oBase->save();
 
         // testing..
-        $oView = new Order_Overview();
+        $oView = oxNew('Order_Overview');
 
         $oView = $this->getMock("Order_Overview", array("getEditObjectId"));
         $oView->expects($this->any())->method('getEditObjectId')->will($this->returnValue('testOrderId'));
@@ -173,7 +173,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $oOrder->oxorder__oxsenddate = new oxField("0000-00-00 00:00:00");
         $oOrder->save();
 
-        $oView = new Order_Overview();
+        $oView = oxNew('Order_Overview');
 
         $this->setRequestParameter("oxid", $soxId);
         $this->assertFalse($oView->canResetShippingDate());
@@ -226,7 +226,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
      */
     public function testMakeValidFileName($sName, $sExpectedValidaName)
     {
-        $oMyOrder = new Order_Overview();
+        $oMyOrder = oxNew('Order_Overview');
         $this->assertEquals($sExpectedValidaName, $oMyOrder->makeValidFileName($sName));
     }
 }

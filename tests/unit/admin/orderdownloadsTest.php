@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -39,14 +39,14 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', true);
 
         // adding test order
-        $oOrder = new oxbase();
+        $oOrder = oxNew('oxbase');
         $oOrder->init('oxorder');
         $oOrder->setId('_testOrder');
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->save();
 
         // adding test article
-        $oArticle = new oxbase();
+        $oArticle = oxNew('oxbase');
         $oArticle->init('oxarticles');
         $oArticle->load('1126');
         $oArticle->setId('_testArticle');
@@ -90,12 +90,12 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
     {
         $this->setRequestParameter("oxid", null);
 
-        $oView = new Order_Downloads();
+        $oView = oxNew('Order_Downloads');
         $this->assertNull($oView->getEditObject());
 
         $this->setRequestParameter("oxid", "_testOrderId1");
 
-        $oView = new Order_Downloads();
+        $oView = oxNew('Order_Downloads');
         $oOrderFiles = $oView->getEditObject();
         $this->assertTrue($oOrderFiles instanceof oxorderfilelist);
     }
@@ -116,10 +116,10 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
         $sNow = oxRegistry::get("oxUtilsDate")->getTime();
         $sDate = date('Y-m-d H:i:s', $sNow);
 
-        $oView = new Order_Downloads();
+        $oView = oxNew('Order_Downloads');
         $oView->resetDownloadLink();
 
-        $oOrderFile = new oxOrderFile();
+        $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load("_testOrderFile");
         $this->assertEquals('0', $oOrderFile->oxorderfiles__oxdownloadcount->value);
         $this->assertTrue($oOrderFile->oxorderfiles__oxvaliduntil->value >= $sDate);

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -45,7 +45,7 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new Order_Main();
+        $oView = oxNew('Order_Main');
         $this->assertEquals('order_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -62,7 +62,7 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new Order_Main();
+        $oView = oxNew('Order_Main');
         $this->assertEquals('order_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
@@ -91,7 +91,7 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
         // testing..
         try {
             $_POST = array('editval' => array('oxorder__oxdiscount' => 10.0));
-            $oView = new Order_Main();
+            $oView = oxNew('Order_Main');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("recalculateOrder", $oExcp->getMessage(), "error in Order_Main::save()");
@@ -122,7 +122,7 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Order_Main();
+            $oView = oxNew('Order_Main');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("saveOrder", $oExcp->getMessage(), "error in Order_Main::save()");
@@ -151,7 +151,7 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Order_Main();
+            $oView = oxNew('Order_Main');
             $oView->sendorder();
         } catch (Exception $oExcp) {
             $this->assertEquals("sendSendedNowMail", $oExcp->getMessage(), "error in Order_Main::sendorder()");
@@ -176,7 +176,7 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Order_Main();
+            $oView = oxNew('Order_Main');
             $oView->senddownloadlinks();
         } catch (Exception $oExcp) {
             $this->assertEquals("sendDownloadLinksMail", $oExcp->getMessage(), "error in Order_Main::senddownloadlinks()");
@@ -199,7 +199,7 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Order_Main();
+            $oView = oxNew('Order_Main');
             $oView->resetorder();
         } catch (Exception $oExcp) {
             $this->assertEquals("recalculateOrder", $oExcp->getMessage(), "error in Order_Main::resetorder()");

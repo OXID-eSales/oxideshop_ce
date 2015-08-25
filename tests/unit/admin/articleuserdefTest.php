@@ -37,7 +37,7 @@ class Unit_Admin_ArticleUserdefTest extends OxidTestCase
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
-        $oView = new Article_Userdef();
+        $oView = oxNew('Article_Userdef');
         $this->assertEquals('article_userdef.tpl', $oView->render());
         $this->assertTrue($oView->getViewDataElement('readonly'));
     }

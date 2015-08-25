@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Admin_OrderAddressTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new Order_Address();
+        $oView = oxNew('Order_Address');
         $this->assertEquals('order_address.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -53,7 +53,7 @@ class Unit_Admin_OrderAddressTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new Order_Address();
+        $oView = oxNew('Order_Address');
         $this->assertEquals('order_address.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
@@ -73,7 +73,7 @@ class Unit_Admin_OrderAddressTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Order_Address();
+            $oView = oxNew('Order_Address');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Order_Address::save()");
@@ -125,7 +125,7 @@ class Unit_Admin_OrderAddressTest extends OxidTestCase
         $aOutData = $aInData;
         $aOutData["oxorder__oxdelsal"] = "";
 
-        $oView = new Order_Address();
+        $oView = oxNew('Order_Address');
         $aInData = $oView->UNITprocessAddress($aInData, "oxorder__oxdel", array("oxorder__oxdelsal"));
 
         $this->assertEquals($aOutData, $aInData);

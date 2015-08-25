@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -36,7 +36,7 @@ class Unit_Admin_NewsMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new News_Main();
+        $oView = oxNew('News_Main');
         $this->assertEquals('news_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -53,7 +53,7 @@ class Unit_Admin_NewsMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new News_Main();
+        $oView = oxNew('News_Main');
         $this->assertEquals('news_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
@@ -73,7 +73,7 @@ class Unit_Admin_NewsMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new News_Main();
+            $oView = oxNew('News_Main');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in News_Main::save()");
@@ -96,7 +96,7 @@ class Unit_Admin_NewsMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new News_Main();
+            $oView = oxNew('News_Main');
             $oView->saveinnlang();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in News_Main::saveinnlang()");

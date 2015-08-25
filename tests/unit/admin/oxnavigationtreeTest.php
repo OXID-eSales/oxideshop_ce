@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -177,11 +177,11 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
     {
         $iLang = 0;
 
-        $oAdminView = new oxadminview();
+        $oAdminView = oxNew('oxadminview');
         $sDynscreenUrl = $oAdminView->getServiceUrl($iLang) . "menue/dynscreen.xml";
         $sDynscreenLocalUrl = getShopBasePath() . "application/views/admin/dynscreen_local.xml";
 
-        $oNavTree = new oxnavigationtree();
+        $oNavTree = oxNew('oxnavigationtree');
         $this->assertEquals($sDynscreenUrl, $oNavTree->UNITgetDynMenuUrl($iLang, true));
         $this->assertEquals($sDynscreenLocalUrl, $oNavTree->UNITgetDynMenuUrl($iLang, false));
     }
@@ -208,7 +208,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
      */
     public function testHasRights()
     {
-        $oUser = new oxuser();
+        $oUser = oxNew('oxuser');
         $oUser->oxuser__oxrights = new oxField("testRights");
 
         $oNavTree = $this->getMock("oxnavigationtree", array("getUser"));
@@ -458,7 +458,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         $oDomElemTo->expects($this->at(0))->method('setAttribute')->with($this->equalTo('nodeName1'), $this->equalTo('nodeValue1'));
         $oDomElemTo->expects($this->at(1))->method('setAttribute')->with($this->equalTo('nodeName2'), $this->equalTo('nodeValue2'));
 
-        $oNavTree = new oxnavigationtree();
+        $oNavTree = oxNew('oxnavigationtree');
         $oNavTree->UNITcopyAttributes($oDomElemTo, $oDomElemFrom);
     }
 
@@ -532,7 +532,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
     public function testCheckDynFileFileDoesNotExist()
     {
         $sFilePath = $this->getConfig()->getConfigParam('sCompileDir') . "xxx.file";
-        $oNavTree = new oxnavigationtree();
+        $oNavTree = oxNew('oxnavigationtree');
         $this->assertNull($oNavTree->UNITcheckDynFile($sFilePath));
 
     }
@@ -546,7 +546,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
     public function testCheckDynFileWrongFileContent()
     {
         $sFilePath = $this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sWrongDynfile}";
-        $oNavTree = new oxnavigationtree();
+        $oNavTree = oxNew('oxnavigationtree');
         $this->assertNull($oNavTree->UNITcheckDynFile($sFilePath));
     }
 
@@ -559,7 +559,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
     public function testCheckDynFileFileIsValidXml()
     {
         $sFilePath = $this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}";
-        $oNavTree = new oxnavigationtree();
+        $oNavTree = oxNew('oxnavigationtree');
         $this->assertEquals($sFilePath, $oNavTree->UNITcheckDynFile($sFilePath));
     }
 
@@ -802,7 +802,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam("sAdminSSLURL", "testAdminSslUrl");
 
-        $oNavTree = new oxnavigationtree();
+        $oNavTree = oxNew('oxnavigationtree');
         $this->assertEquals("testAdminSslUrl/index.php?", $oNavTree->UNITgetAdminUrl());
     }
 
@@ -820,7 +820,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         //modInstances::addMod('oxUtilsUrl', $oUU);
         oxTestModules::addModuleObject('oxUtilsUrl', $oUU);
 
-        $o = new oxNavigationTree();
+        $o = oxNew('oxNavigationTree');
 
         $this->assertEquals('sess:url?', $o->UNITgetAdminUrl());
     }
@@ -928,7 +928,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
      */
     public function testInit()
     {
-        $oTree = new oxNavigationTree();
+        $oTree = oxNew('oxNavigationTree');
         if (method_exists($oTree, "init")) {
             $this->assertNull($oTree->init());
         }

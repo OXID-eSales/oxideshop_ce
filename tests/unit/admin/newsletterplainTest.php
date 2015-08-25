@@ -36,7 +36,7 @@ class Unit_Admin_NewsletterPlainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new Newsletter_Plain();
+        $oView = oxNew('Newsletter_Plain');
         $this->assertEquals('newsletter_plain.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -53,7 +53,7 @@ class Unit_Admin_NewsletterPlainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new Newsletter_Plain();
+        $oView = oxNew('Newsletter_Plain');
         $this->assertEquals('newsletter_plain.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
@@ -72,7 +72,7 @@ class Unit_Admin_NewsletterPlainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Newsletter_Plain();
+            $oView = oxNew('Newsletter_Plain');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Newsletter_Plain::save()");

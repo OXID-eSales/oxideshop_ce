@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -68,7 +68,7 @@ class Unit_Admin_ListOrderTest extends OxidTestCase
         $oAdminList = oxNew("oxAdminList");
         $sWhere = $oAdminList->UNITprepareWhereQuery($aWhere, $sSqlFull);
 
-        $oView = new List_Order();
+        $oView = oxNew('List_Order');
         $this->assertEquals($sWhere . " group by oxorderarticles.oxartnum", $oView->UNITprepareWhereQuery($aWhere, $sSqlFull));
     }
 
@@ -97,7 +97,7 @@ class Unit_Admin_ListOrderTest extends OxidTestCase
     {
         $sSql = 'select oxorderarticles.oxid, oxorder.oxid as oxorderid, max(oxorder.oxorderdate) as oxorderdate, oxorderarticles.oxartnum, sum( oxorderarticles.oxamount ) as oxorderamount, oxorderarticles.oxtitle, round( sum(oxorderarticles.oxbrutprice*oxorder.oxcurrate),2) as oxprice from oxorderarticles left join oxorder on oxorder.oxid=oxorderarticles.oxorderid where 1';
 
-        $oView = new List_Order();
+        $oView = oxNew('List_Order');
         $this->assertEquals($sSql, trim($oView->UNITbuildSelectString()));
     }
 
@@ -111,13 +111,13 @@ class Unit_Admin_ListOrderTest extends OxidTestCase
         $this->setRequestParameter("sort", array(0 => array("oxorderamount" => "asc")));
         $sSql = "select * from oxorder, oxorderarticles";
 
-        $oView = new List_Order();
+        $oView = oxNew('List_Order');
         $sResultSql = "select * from oxorder, oxorderarticles order by oxorderamount";
         $this->assertEquals($sResultSql, trim($oView->UNITprepareOrderByQuery($sSql)));
 
         $this->setRequestParameter("sort", array(0 => array("oxorderdate" => "asc")));
 
-        $oView = new List_Order();
+        $oView = oxNew('List_Order');
         $sResultSql = "select * from oxorder, oxorderarticles group by oxorderarticles.oxartnum order by max(oxorder.oxorderdate) desc";
         $sSql = $oView->UNITprepareWhereQuery(array(), $sSql);
         $this->assertEquals($sResultSql, trim($oView->UNITprepareOrderByQuery($sSql)));

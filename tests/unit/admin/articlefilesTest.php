@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -54,7 +54,7 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Article_Files();
+            $oView = oxNew('Article_Files');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Files::save()");
@@ -73,7 +73,7 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
     {
         $this->setRequestParameter("oxid", 2000);
 
-        $oView = new Article_Files();
+        $oView = oxNew('Article_Files');
         $this->assertEquals(2000, $oView->getArticle()->getId());
     }
 
@@ -155,11 +155,11 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
      */
     public function testDeleteUsedFile()
     {
-        $oOrder = new oxOrder();
+        $oOrder = oxNew('oxOrder');
         $oOrder->setId('_orderId');
         $oOrder->save();
 
-        $oOrderArticle = new oxOrderArticle();
+        $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_orderArticleId');
         $oOrderArticle->save();
 

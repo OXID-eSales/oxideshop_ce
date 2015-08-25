@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,7 +33,7 @@ class Unit_Admin_dyninterfaceTest extends OxidTestCase
      */
     public function testGetViewId()
     {
-        $oView = new dyn_interface();
+        $oView = oxNew('dyn_interface');
         $this->assertEquals('dyn_interface', $oView->getViewId());
     }
 }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -39,7 +39,7 @@ class Unit_Admin_CountryListTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Country_List();
+            $oView = oxNew('Country_List');
             $oView->deleteEntry();
         } catch (Exception $oExcp) {
             $this->assertEquals("delete", $oExcp->getMessage(), "Error in Country_List::DeleteEntry()");

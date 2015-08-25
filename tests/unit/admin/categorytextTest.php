@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Admin_CategoryTextTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new Category_Text();
+        $oView = oxNew('Category_Text');
         $sTplName = $oView->render();
 
         // testing view data
@@ -56,7 +56,7 @@ class Unit_Admin_CategoryTextTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new Category_Text();
+        $oView = oxNew('Category_Text');
         $this->assertEquals('category_text.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
@@ -74,7 +74,7 @@ class Unit_Admin_CategoryTextTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Category_Text();
+            $oView = oxNew('Category_Text');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "Error in Category_Text::Save()");

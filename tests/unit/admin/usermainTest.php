@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "oxdefaultadmin");
 
         // testing..
-        $oView = new User_Main();
+        $oView = oxNew('User_Main');
         $this->assertEquals('user_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
@@ -58,7 +58,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new User_Main();
+        $oView = oxNew('User_Main');
         $this->assertEquals('user_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();

@@ -88,11 +88,11 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
      */
     public function testGetUserDefListSize()
     {
-        $oAdminList = new oxadminlist();
+        $oAdminList = oxNew('oxadminlist');
         $this->assertEquals(50, $oAdminList->UNITgetUserDefListSize());
 
         $this->setRequestParameter('viewListSize', 999);
-        $oAdminList = new oxadminlist();
+        $oAdminList = oxNew('oxadminlist');
         $this->assertEquals(999, $oAdminList->UNITgetUserDefListSize());
     }
 
@@ -114,7 +114,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
 
         // testing if cookie data is used
         $this->getSession()->setVariable('profile', array(1 => 500));
-        $oAdminList = new oxadminlist();
+        $oAdminList = oxNew('oxadminlist');
         $this->assertEquals(500, $oAdminList->UNITgetViewListSize());
     }
 
@@ -125,7 +125,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
      */
     public function testProcessFilter()
     {
-        $oAdminList = new oxadminlist();
+        $oAdminList = oxNew('oxadminlist');
         $this->assertEquals('test string', $oAdminList->UNITprocessFilter('%test  string%'));
     }
 
@@ -136,7 +136,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
      */
     public function testBuildFilter()
     {
-        $oAdminList = new oxadminlist();
+        $oAdminList = oxNew('oxadminlist');
         $this->assertEquals(" like '%\'test\'\\\"%' ", $oAdminList->UNITbuildFilter("'test'\"", true));
         $this->assertEquals(" = 'test' ", $oAdminList->UNITbuildFilter('test', false));
 
@@ -149,7 +149,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
      */
     public function testIsSearchValue()
     {
-        $oAdminList = new oxadminlist();
+        $oAdminList = oxNew('oxadminlist');
         $this->assertTrue($oAdminList->UNITisSearchValue('%test%'));
         $this->assertFalse($oAdminList->UNITisSearchValue('test'));
 
@@ -398,7 +398,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $sTable = getViewName('oxactions');
         $sSql = "select `{$sTable}`.`oxid`, `{$sTable}`.`oxshopid`, `{$sTable}`.`oxtype`, `{$sTable}`.`oxtitle`, `{$sTable}`.`oxlongdesc`, `{$sTable}`.`oxactive`, `{$sTable}`.`oxactivefrom`, `{$sTable}`.`oxactiveto`, `{$sTable}`.`oxpic`, `{$sTable}`.`oxlink`, `{$sTable}`.`oxsort`, `{$sTable}`.`oxtimestamp` from {$sTable} where 1 ";
 
-        $oAdminList = new oxadminlist();
+        $oAdminList = oxNew('oxadminlist');
         $this->assertEquals($sSql, $oAdminList->UNITbuildSelectString(new oxActions()));
     }
 
@@ -552,7 +552,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
      */
     public function testChangeselect()
     {
-        $oAdminList = new oxadminlist();
+        $oAdminList = oxNew('oxadminlist');
         $this->assertEquals('xxx', $oAdminList->UNITchangeselect('xxx'));
     }
 
@@ -701,7 +701,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $oLinks = oxNew('oxList');
         $oLinks->init('oxLinks');
 
-        $oBaseObject = new oxLinks();
+        $oBaseObject = oxNew('oxLinks');
         $oBaseObject->oxlinks__oxinsert = new oxField("test");
         $oBaseObject->oxlinks__oxinsert->fldtype = "date";
 
@@ -809,7 +809,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
 
         $aWhere = $oAdminList->getViewDataElement('where');
 
-        $aResult = new oxLinks();
+        $aResult = oxNew('oxLinks');
         $aResult->oxlinks__oxid = '1';
         $aResult->oxlinks__oxshopid = '2';
         $aResult->oxarticles__oxtitle = '3';

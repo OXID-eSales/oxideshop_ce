@@ -37,7 +37,7 @@ class Unit_Admin_NewsletterPreviewTest extends OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = new Newsletter_Preview();
+        $oView = oxNew('Newsletter_Preview');
         $this->assertEquals('newsletter_preview.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));

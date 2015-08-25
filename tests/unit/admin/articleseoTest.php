@@ -111,7 +111,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
      */
     public function showCatSelect()
     {
-        $oView = new Article_Seo();
+        $oView = oxNew('Article_Seo');
         $this->assertTrue($oView->showCatSelect());
     }
 
@@ -122,7 +122,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
      */
     public function testGetEncoder()
     {
-        $oView = new Article_Seo();
+        $oView = oxNew('Article_Seo');
         $this->assertTrue($oView->UNITgetEncoder() instanceof oxSeoEncoderArticle);
     }
 
@@ -134,7 +134,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
      */
     public function testRender()
     {
-        $oView = new Article_Seo();
+        $oView = oxNew('Article_Seo');
         $this->assertEquals("object_seo.tpl", $oView->render());
     }
 
@@ -145,14 +145,14 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
      */
     public function testGetVendorList()
     {
-        $oVendor = new oxVendor();
+        $oVendor = oxNew('oxVendor');
         $oVendor->setId("_test1");
         $oVendor->save();
 
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxvendorid = new oxField("_test1");
 
-        $oView = new Article_Seo();
+        $oView = oxNew('Article_Seo');
         $aList = $oView->UNITgetVendorList($oArticle);
 
         $this->assertTrue(is_array($aList));
@@ -176,7 +176,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxmanufacturerid = new oxField("_test1");
 
-        $oView = new Article_Seo();
+        $oView = oxNew('Article_Seo');
         $aList = $oView->UNITgetManufacturerList($oArticle);
 
         $this->assertTrue(is_array($aList));
@@ -196,7 +196,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxcategory', 'load', '{ return true; }');
 
-        $oView = new Article_Seo();
+        $oView = oxNew('Article_Seo');
         $this->assertTrue($oView->getActCategory() instanceof oxcategory);
     }
 
@@ -334,7 +334,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
      */
     public function testGetType()
     {
-        $oView = new Article_Seo();
+        $oView = oxNew('Article_Seo');
         $this->assertEquals('oxarticle', $oView->UNITgetType());
     }
 
@@ -484,7 +484,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
         $sQ = "select count(*) from ( $sQ ) as _tmp";
         $iCount = $oDb->getOne($sQ);
 
-        $oView = new Article_Seo();
+        $oView = oxNew('Article_Seo');
         $aList = $oView->UNITgetCategoryList($oProduct);
 
         // must be have few assignments
@@ -512,12 +512,12 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
         $oProduct = oxNew('oxArticle');
         $oProduct->load($sProdId);
 
-        $oArticleTagList = new oxArticleTagList();
+        $oArticleTagList = oxNew('oxArticleTagList');
         $oArticleTagList->load($sProdId);
         $oTagSet = $oArticleTagList->get();
         $aTags = $oTagSet->get();
 
-        $oView = new Article_Seo();
+        $oView = oxNew('Article_Seo');
         $aList = $oView->UNITgetTagList($oProduct, 0);
 
         // must be have few assignments

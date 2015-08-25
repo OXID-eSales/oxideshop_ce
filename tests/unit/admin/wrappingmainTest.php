@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Admin_WrappingMainTest extends OxidTestCase
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
-        $oView = new Wrapping_Main();
+        $oView = oxNew('Wrapping_Main');
         $this->assertEquals('wrapping_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
@@ -55,7 +55,7 @@ class Unit_Admin_WrappingMainTest extends OxidTestCase
         $this->setRequestParameter("oxid", "-1");
 
         // testing..
-        $oView = new Wrapping_Main();
+        $oView = oxNew('Wrapping_Main');
         $this->assertEquals('wrapping_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
@@ -74,7 +74,7 @@ class Unit_Admin_WrappingMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Wrapping_Main();
+            $oView = oxNew('Wrapping_Main');
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Wrapping_Main::save()");
@@ -95,7 +95,7 @@ class Unit_Admin_WrappingMainTest extends OxidTestCase
 
         // testing..
         try {
-            $oView = new Wrapping_Main();
+            $oView = oxNew('Wrapping_Main');
             $oView->saveinnlang();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "error in Wrapping_Main::save()");

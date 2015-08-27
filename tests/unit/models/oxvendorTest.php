@@ -289,8 +289,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
 
     public function testGetNrOfArticles()
     {
-        $sVendorId = '68342e2955d7401e6.18967838';
-
+        $sVendorId = $this->getConfig()->getEdition() === 'EE' ? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
         $oVendor = $this->getProxyClass("oxvendor");
         $oVendor->setNonPublicVar("_blShowArticleCnt", true);
         $oVendor->load($sVendorId);
@@ -300,8 +299,7 @@ class Unit_Models_oxvendorTest extends OxidTestCase
 
     public function testGetNrOfArticlesDonotShow()
     {
-        $sVendorId = '68342e2955d7401e6.18967838';
-
+        $sVendorId = $this->getConfig()->getEdition() === 'EE' ? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
         $oVendor = $this->getProxyClass("oxvendor");
         $oVendor->load($sVendorId);
         $oVendor->setNonPublicVar("_blShowArticleCnt", false);

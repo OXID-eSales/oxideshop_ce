@@ -28,6 +28,7 @@
  */
 class Category_Main extends oxAdminDetails
 {
+    const NEW_CATEGORY_ID = "-1";
 
     /**
      * Loads article category data, passes it to Smarty engine, returns
@@ -49,7 +50,8 @@ class Category_Main extends oxAdminDetails
         $this->_aViewData["edit"] = $oCategory;
         $this->_aViewData["oxid"] = $soxId;
 
-        if (isset($soxId) && $soxId != "-1") {
+        if (isset($soxId) && $soxId != self::NEW_CATEGORY_ID) {
+
             // generating category tree for select list
             $this->_createCategoryTree("artcattree", $soxId);
 
@@ -152,18 +154,9 @@ class Category_Main extends oxAdminDetails
         /** @var oxCategory $oCategory */
         $oCategory = oxNew("oxCategory");
 
-        if ($soxId != "-1") {
+        if ($soxId != self::NEW_CATEGORY_ID) {
             $this->resetCounter("catArticle", $soxId);
-            $oCategory->load($soxId);
-            $oCategory->loadInLang($this->_iEditLang, $soxId);
-
-            /** @var oxUtilsPic $myUtilsPic */
-            $myUtilsPic = oxRegistry::get("oxUtilsPic");
-
-            // #1173M - not all pic are deleted, after article is removed
-            $myUtilsPic->overwritePic($oCategory, 'oxcategories', 'oxthumb', 'TC', '0', $aParams, $myConfig->getPictureDir(false));
-            $myUtilsPic->overwritePic($oCategory, 'oxcategories', 'oxicon', 'CICO', 'icon', $aParams, $myConfig->getPictureDir(false));
-            $myUtilsPic->overwritePic($oCategory, 'oxcategories', 'oxpromoicon', 'PICO', 'icon', $aParams, $myConfig->getPictureDir(false));
+            $this->resetCategoryPictures($oCategory, $aParams, $soxId);
         }
 
         //Disable editing for derived items
@@ -317,7 +310,7 @@ class Category_Main extends oxAdminDetails
         // shopId
         $aReqParams['oxcategories__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
-        if ($this->getEditObjectId() == "-1") {
+        if ($this->getEditObjectId() == self::NEW_CATEGORY_ID) {
             //#550A - if new category is made then is must be default activ
             //#4051: Impossible to create inactive category
             //$aReqParams['oxcategories__oxactive'] = 1;
@@ -336,5 +329,25 @@ class Category_Main extends oxAdminDetails
         }
 
         return $aReqParams;
+    }
+
+    /**
+     * @param oxCategory $category
+     * @param array $params
+     * @param string $categoryId
+     */
+    protected function resetCategoryPictures($category, $params, $categoryId)
+    {
+        $config = $this->getConfig();
+        $category->load($categoryId);
+        $category->loadInLang($this->_iEditLang, $categoryId);
+
+        /** @var oxUtilsPic $utilsPic */
+        $utilsPic = oxRegistry::get("oxUtilsPic");
+
+        // #1173M - not all pic are deleted, after article is removed
+        $utilsPic->overwritePic($category, 'oxcategories', 'oxthumb', 'TC', '0', $params, $config->getPictureDir(false));
+        $utilsPic->overwritePic($category, 'oxcategories', 'oxicon', 'CICO', 'icon', $params, $config->getPictureDir(false));
+        $utilsPic->overwritePic($category, 'oxcategories', 'oxpromoicon', 'PICO', 'icon', $params, $config->getPictureDir(false));
     }
 }

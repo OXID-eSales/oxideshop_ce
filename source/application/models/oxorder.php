@@ -500,12 +500,12 @@ class oxOrder extends oxBase
      * Mailing status (1 if OK, 0 on error) is returned.
      *
      * @param oxBasket $oBasket              Shopping basket object
-     * @param object   $oUser                Current user object
+     * @param oxUser   $oUser                Current user object
      * @param bool     $blRecalculatingOrder Order recalculation
      *
      * @return integer
      */
-    public function finalizeOrder(oxBasket $oBasket, $oUser, $blRecalculatingOrder = false)
+    public function finalizeOrder(oxBasket $oBasket, oxUser $oUser, $blRecalculatingOrder = false)
     {
         // check if this order is already stored
         $sGetChallenge = oxRegistry::getSession()->getVariable('sess_challenge');
@@ -778,9 +778,9 @@ class oxOrder extends oxBase
     /**
      * Assigns to new oxorder object customer delivery and shipping info
      *
-     * @param object $oUser user object
+     * @param oxUser $oUser user object
      */
-    protected function _setUser($oUser)
+    protected function _setUser(oxUser $oUser)
     {
 
         $this->oxorder__oxuserid = new oxField($oUser->getId());
@@ -1077,9 +1077,9 @@ class oxOrder extends oxBase
      * or wishlist (oxuserbasket::addItemToBasket()).
      *
      * @param array  $aArticleList basket products
-     * @param object $oUser        user object
+     * @param oxUser $oUser        user object
      */
-    protected function _updateWishlist($aArticleList, $oUser)
+    protected function _updateWishlist($aArticleList, oxUser $oUser)
     {
 
         foreach ($aArticleList as $oContent) {
@@ -1115,9 +1115,9 @@ class oxOrder extends oxBase
      * removing bought items from users notice list
      *
      * @param array  $aArticleList array of basket products
-     * @param oxuser $oUser        basket user object
+     * @param oxuser oxUser        basket user object
      */
-    protected function _updateNoticeList($aArticleList, $oUser)
+    protected function _updateNoticeList($aArticleList, oxUser $oUser)
     {
         // loading users notice list ..
         if ($oUserBasket = $oUser->getBasket('noticelist')) {
@@ -1155,7 +1155,7 @@ class oxOrder extends oxBase
      * @param oxBasket $oBasket basket object
      * @param oxUser   $oUser   user object
      */
-    protected function _markVouchers($oBasket, $oUser)
+    protected function _markVouchers(oxBasket $oBasket, oxUser $oUser)
     {
         $this->_aVoucherList = $oBasket->getVouchers();
 
@@ -1195,7 +1195,7 @@ class oxOrder extends oxBase
      * Loads and returns delivery address object or null
      * if deladrid is not configured, or object was not loaded
      *
-     * @return  object
+     * @return oxAddress|null
      */
     public function getDelAddressInfo()
     {
@@ -1222,11 +1222,11 @@ class oxOrder extends oxBase
      * Function which checks if article stock is valid.
      * If not displays error and returns false.
      *
-     * @param object $oBasket basket object
+     * @param oxBasket $oBasket basket object
      *
      * @throws oxOutOfStockException exception
      */
-    public function validateStock($oBasket)
+    public function validateStock(oxBasket $oBasket)
     {
         foreach ($oBasket->getContents() as $key => $oContent) {
             try {
@@ -2062,7 +2062,7 @@ class oxOrder extends oxBase
      *
      * @return bool
      */
-    public function validateBasket($oBasket)
+    public function validateBasket(oxBasket $oBasket)
     {
         return $oBasket->isBelowMinOrderPrice() ? self::ORDER_STATE_BELOWMINPRICE : null;
     }
@@ -2075,7 +2075,7 @@ class oxOrder extends oxBase
      *
      * @return int
      */
-    public function validateDeliveryAddress($oUser)
+    public function validateDeliveryAddress(oxUser $oUser)
     {
         $sDelAddressMD5 = $this->getConfig()->getRequestParameter('sDeliveryAddressMD5');
 
@@ -2115,7 +2115,7 @@ class oxOrder extends oxBase
      *
      * @return null
      */
-    public function validateDelivery($oBasket)
+    public function validateDelivery(oxBasket $oBasket)
     {
         // proceed with no delivery
         // used for other countries
@@ -2144,7 +2144,7 @@ class oxOrder extends oxBase
      *
      * @return null
      */
-    public function validatePayment($oBasket)
+    public function validatePayment(oxBasket $oBasket)
     {
         $oDb = oxDb::getDb();
 

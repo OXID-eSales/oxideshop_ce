@@ -52,6 +52,10 @@ class Unit_Admin_ContentListTest extends OxidTestCase
      */
     public function testPrepareWhereQueryUserDefinedFolder()
     {
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
+
         $this->setRequestParameter("folder", "testFolder");
         $sViewName = getviewName("oxcontents");
 
@@ -59,7 +63,7 @@ class Unit_Admin_ContentListTest extends OxidTestCase
         $oView = oxNew('Content_List');
         $sResQ = $oView->UNITprepareWhereQuery(array(), "");
 
-        $sQ .= " and {$sViewName}.oxfolder = 'testFolder'";
+        $sQ = " and {$sViewName}.oxfolder = 'testFolder'";
 
         $this->assertEquals($sQ, $sResQ);
     }

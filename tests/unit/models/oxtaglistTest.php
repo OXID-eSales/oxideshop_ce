@@ -33,8 +33,16 @@ class Unit_Models_oxtaglistTest extends OxidTestCase
         $oTagSet = $oTagList->get();
         $aTags = $oTagSet->get();
 
-        $this->assertEquals(209, count($aTags));
-        $this->assertTrue(array_key_exists("fee", $aTags));
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $keyToCheck = 'otl';
+            $tagsCount = 324;
+        } else {
+            $keyToCheck = 'fee';
+            $tagsCount = 209;
+        }
+
+        $this->assertEquals($tagsCount, count($aTags));
+        $this->assertTrue(array_key_exists($keyToCheck, $aTags));
     }
 
     /**
@@ -60,7 +68,7 @@ class Unit_Models_oxtaglistTest extends OxidTestCase
         $oTagList->loadList();
         $oTagSet = $oTagList->get();
 
-        $iExpt = 81;
+        $iExpt = $this->getTestConfig()->getShopEdition() === 'EE' ? 19 : 81;
 
         $this->assertEquals($iExpt, count($oTagSet->get()));
     }

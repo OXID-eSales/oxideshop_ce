@@ -38,7 +38,6 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
         parent::tearDown();
     }
 
-
     /**
      * Resting if magic getter returns "aSelectlist" value
      *
@@ -389,45 +388,6 @@ class Unit_Models_oxsimpleVariantTest extends OxidTestCase
 
         $this->assertTrue($oSubj->inPriceCategory($sCatId));
     }
-
-    /*  public function testGetStdLink()
-      {
-          $oSubj = $this->getProxyClass("oxSimpleVariant");
-          $oSubj->setId( "1126" );
-
-          $this->assertEquals( $this->getConfig()->getShopHomeURL()."cl=details&amp;anid=1126", $oSubj->getStdLink() );
-      }
-
-      public function testGetLinkType_withoutParent()
-      {
-          $oSubj = $this->getProxyClass("oxSimpleVariant");
-          $oSubj->setParent( null );
-
-          $this->assertEquals( 0, $oSubj->getLinkType() );
-      }
-
-      public function testGetLink()
-      {
-          $oSubj = $this->getProxyClass("oxSimpleVariant");
-          $oSubj->setId( "1126" );
-
-      $sLink = $this->getConfig()->getShopUrl()."Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
-
-
-          $this->assertEquals( $sLink, $oSubj->getLink() );
-      }
-
-      public function testGetLink_inOtherLang()
-      {
-          $oSubj = $this->getProxyClass("oxSimpleVariant");
-          $oSubj->setId( "1126" );
-
-      $sLink = $this->getConfig()->getShopUrl()."en/Gifts/Bar-Equipment/Bar-Set-ABSINTH.html";
-
-
-          $this->assertEquals( $sLink, $oSubj->getLink(1) );
-      }*/
-
 
     /**
      * 0002030: Option "Calculate Product Price" does not work with variants.

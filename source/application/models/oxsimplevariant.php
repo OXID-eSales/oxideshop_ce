@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -88,20 +88,6 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
     }
 
     /**
-     * Assigns to oxarticle object some base parameters/values (such as
-     * detaillink, moredetaillink, etc).
-     *
-     * @param string $aRecord Array representing current field values
-     */
-    public function assign($aRecord)
-    {
-        // load object from database
-        parent::assign($aRecord);
-
-    }
-
-
-    /**
      * Implementing (fakeing) performance friendly method from oxArticle
      *oxbase
      *
@@ -152,7 +138,6 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
         return $dPrice;
     }
 
-
     /**
      * Implementing (faking) performance friendly method from oxArticle
      *
@@ -169,6 +154,7 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
         if ($this->_oPrice === null) {
             $this->_oPrice = oxNew("oxPrice");
             if (($dPrice = $this->_getGroupPrice())) {
+                $dPrice = $this->modifyGroupPrice($dPrice);
                 $this->_oPrice->setPrice($dPrice, $this->_dVat);
 
                 $this->_applyParentVat($this->_oPrice);
@@ -181,6 +167,17 @@ class oxSimpleVariant extends oxI18n implements oxIUrl
         }
 
         return $this->_oPrice;
+    }
+
+    /**
+     * Make changes to price on getting price.
+     *
+     * @param float $price
+     * @return float
+     */
+    public function modifyGroupPrice($price)
+    {
+        return $price;
     }
 
     /**

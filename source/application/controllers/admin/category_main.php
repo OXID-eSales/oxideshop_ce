@@ -164,16 +164,9 @@ class Category_Main extends oxAdminDetails
             return;
         }
 
-        $oCategory->setLanguage(0);
+        $this->setCategoryParameters($oCategory, $aParams);
+        $this->setCategoryFiles($oCategory);
 
-
-        $oCategory->assign($aParams);
-        $oCategory->setLanguage($this->_iEditLang);
-
-        /** @var oxUtilsFile $oUtilsFile */
-        $oUtilsFile = oxRegistry::get("oxUtilsFile");
-
-        $oCategory = $oUtilsFile->processFiles($oCategory);
         $oCategory->save();
 
         $this->setEditObjectId($oCategory->getId());
@@ -349,5 +342,29 @@ class Category_Main extends oxAdminDetails
         $utilsPic->overwritePic($category, 'oxcategories', 'oxthumb', 'TC', '0', $params, $config->getPictureDir(false));
         $utilsPic->overwritePic($category, 'oxcategories', 'oxicon', 'CICO', 'icon', $params, $config->getPictureDir(false));
         $utilsPic->overwritePic($category, 'oxcategories', 'oxpromoicon', 'PICO', 'icon', $params, $config->getPictureDir(false));
+    }
+
+    /**
+     * @param oxCategory $category
+     * @param array $params
+     */
+    protected function setCategoryParameters($category, $params)
+    {
+        $config = $this->getConfig();
+        $category->setLanguage(0);
+
+
+        $category->assign($params);
+        $category->setLanguage($this->_iEditLang);
+    }
+
+    /**
+     * @param oxCategory $category
+     */
+    protected function setCategoryFiles($category)
+    {
+        /** @var oxUtilsFile $oUtilsFile */
+        $oUtilsFile = oxRegistry::get("oxUtilsFile");
+        $oUtilsFile->processFiles($category);
     }
 }

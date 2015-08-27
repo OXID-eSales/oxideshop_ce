@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -218,24 +218,41 @@ class oxShopViewValidator
     {
         if (empty($this->_aValidShopViews)) {
 
-            $aTables = $this->getMultilangTables();
-
-
+            $aTables = $this->getShopTables();
             $this->_aValidShopViews = array();
 
             foreach ($aTables as $sTable) {
-                $this->_aValidShopViews[] = 'oxv_' . $sTable;
-
-                if (in_array($sTable, $this->getMultiLangTables())) {
-                    foreach ($this->getAllShopLanguages() as $sLang) {
-                        $this->_aValidShopViews[] = 'oxv_' . $sTable . '_' . $sLang;
-                    }
-                }
-
+                $this->prepareShopTableViewNames($sTable);
             }
         }
 
         return $this->_aValidShopViews;
+    }
+
+    /**
+     * Get list of shop tables
+     *
+     * @return array
+     */
+    protected function getShopTables()
+    {
+        $shopTables = $this->getMultilangTables();
+
+        return $shopTables;
+    }
+
+    /**
+     * Appends possible table views to $this->_aValidShopViews variable
+     */
+    protected function prepareShopTableViewNames($tableName)
+    {
+        $this->_aValidShopViews[] = 'oxv_' . $tableName;
+
+        if (in_array($tableName, $this->getMultiLangTables())) {
+            foreach ($this->getAllShopLanguages() as $sLang) {
+                $this->_aValidShopViews[] = 'oxv_' . $tableName . '_' . $sLang;
+            }
+        }
     }
 
     /**

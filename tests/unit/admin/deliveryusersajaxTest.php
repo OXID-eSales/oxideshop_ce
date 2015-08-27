@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -26,7 +26,7 @@
 class Unit_Admin_DeliveryUsersAjaxTest extends OxidTestCase
 {
 
-    protected $_sShopId = '1';
+    protected $_sShopId = 'oxbaseshop';
 
     /**
      * Initialize the fixture.
@@ -46,7 +46,9 @@ class Unit_Admin_DeliveryUsersAjaxTest extends OxidTestCase
         oxDb::getDb()->execute("insert into oxuser set oxid='_testUser1', oxusername='_testUser1'");
         oxDb::getDb()->execute("insert into oxuser set oxid='_testUser2', oxusername='_testUser2'");
 
-        $this->setShopIdTest('oxbaseshop');
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->setShopIdTest('1');
+        }
     }
 
     /**

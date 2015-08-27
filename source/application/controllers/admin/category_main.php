@@ -251,7 +251,6 @@ class Category_Main extends oxAdminDetails
      */
     protected function _deleteCatPicture(oxCategory $oItem, $sField)
     {
-
         if ($oItem->isDerived()) {
             return;
         }

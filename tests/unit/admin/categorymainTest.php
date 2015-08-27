@@ -278,58 +278,6 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
     }
 
     /**
-     * Category_Main::_deleteCatPicture() no rights
-     *
-     * @return null
-     */
-    public function testDeleteThumbnailNoRights()
-    {
-        return;
-
-        $oItem = $this->getMock("oxCategory", array("canUpdateField", 'canUpdate', 'isDerived'));
-        $oItem->expects($this->once())->method('canUpdateField')->with($this->equalTo('oxthumb'))->will($this->returnValue(true));
-        $oItem->expects($this->once())->method('canUpdate')->will($this->returnValue(false));
-        $oItem->expects($this->never())->method('isDerived')->will($this->returnValue(false));
-
-        $oItem->oxcategories__oxthumb = new oxField('testThumb.jpg');
-
-        $oPicHandler = $this->getMock("oxUtilsPic", array('safePictureDelete'));
-        $oPicHandler->expects($this->never())->method('safePictureDelete');
-        modInstances::addMod('oxUtilsPic', $oPicHandler);
-
-        /** @var Category_Main $oView */
-        $oView = $this->getProxyClass('Category_Main');
-        $oView->UNITdeleteCatPicture($oItem, 'oxthumb');
-        $this->assertEquals('testThumb.jpg', $oItem->oxcategories__oxthumb->value);
-    }
-
-    /**
-     * Category_Main::_deleteCatPicture() derived category
-     *
-     * @return null
-     */
-    public function testDeleteThumbnailDerived()
-    {
-        return;
-
-        $oItem = $this->getMock("oxCategory", array("canUpdateField", 'canUpdate', 'isDerived'));
-        $oItem->expects($this->once())->method('canUpdateField')->with($this->equalTo('oxthumb'))->will($this->returnValue(true));
-        $oItem->expects($this->once())->method('canUpdate')->will($this->returnValue(true));
-        $oItem->expects($this->once())->method('isDerived')->will($this->returnValue(true));
-
-        $oItem->oxcategories__oxthumb = new oxField('testThumb.jpg');
-
-        $oPicHandler = $this->getMock("oxUtilsPic", array('safePictureDelete'));
-        $oPicHandler->expects($this->never())->method('safePictureDelete');
-        modInstances::addMod('oxUtilsPic', $oPicHandler);
-
-        /** @var Category_Main $oView */
-        $oView = $this->getProxyClass('Category_Main');
-        $oView->UNITdeleteCatPicture($oItem, 'oxthumb');
-        $this->assertEquals('testThumb.jpg', $oItem->oxcategories__oxthumb->value);
-    }
-
-    /**
      * Category_Main::deletePicture() - in demo shop mode
      *
      * @return null

@@ -1041,6 +1041,10 @@ class Unit_Models_oxvoucherTest extends OxidTestCase
         }
 
         $sUserId = 'oxdefaultadmin';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sQ = 'select oxid from oxuser where oxid != "oxdefaultadmin" ';
+            $sUserId = $myDB->getOne($sQ);
+        }
 
         $oUser = oxNew('oxuser');
         if (!$oUser->Load($sUserId)) {

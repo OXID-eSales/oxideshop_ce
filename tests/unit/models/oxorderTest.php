@@ -179,13 +179,16 @@ class Unit_Models_oxorderTest extends OxidTestCase
 
     public function testValidateOrder()
     {
+        $oBasket = oxNew('oxBasket');
+        $oUser = oxNew('oxUser');
+        
         $oOrder = $this->getMock("oxorder", array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
         $oOrder->expects($this->once())->method('validateStock');
         $oOrder->expects($this->once())->method('validateDelivery');
         $oOrder->expects($this->once())->method('validatePayment');
         $oOrder->expects($this->once())->method('validateDeliveryAddress');
         $oOrder->expects($this->once())->method('validateBasket');
-        $this->assertNull($oOrder->validateOrder(0, 0));
+        $this->assertNull($oOrder->validateOrder($oBasket, $oUser));
 
         // stock check failed
         $oOrder = $this->getMock("oxorder", array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
@@ -194,7 +197,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oOrder->expects($this->never())->method('validatePayment');
         $oOrder->expects($this->never())->method('validateDeliveryAddress');
         $oOrder->expects($this->never())->method('validateBasket');
-        $this->assertEquals("validateStock", $oOrder->validateOrder(0, 0));
+        $this->assertEquals("validateStock", $oOrder->validateOrder($oBasket, $oUser));
 
         // delivery check failed
         $oOrder = $this->getMock("oxorder", array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
@@ -203,7 +206,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oOrder->expects($this->never())->method('validatePayment');
         $oOrder->expects($this->never())->method('validateDeliveryAddress');
         $oOrder->expects($this->never())->method('validateBasket');
-        $this->assertEquals("validateDelivery", $oOrder->validateOrder(0, 0));
+        $this->assertEquals("validateDelivery", $oOrder->validateOrder($oBasket, $oUser));
 
         // payment check failed
         $oOrder = $this->getMock("oxorder", array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
@@ -212,7 +215,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oOrder->expects($this->once())->method('validatePayment')->will($this->returnValue("validatePayment"));
         $oOrder->expects($this->never())->method('validateDeliveryAddress');
         $oOrder->expects($this->never())->method('validateBasket');
-        $this->assertEquals("validatePayment", $oOrder->validateOrder(0, 0));
+        $this->assertEquals("validatePayment", $oOrder->validateOrder($oBasket, $oUser));
 
         // payment check failed
         $oOrder = $this->getMock("oxorder", array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
@@ -221,7 +224,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oOrder->expects($this->once())->method('validatePayment');
         $oOrder->expects($this->once())->method('validateDeliveryAddress')->will($this->returnValue("validateDeliveryAddress", "validateBasket"));
         $oOrder->expects($this->never())->method('validateBasket');
-        $this->assertEquals("validateDeliveryAddress", $oOrder->validateOrder(0, 0));
+        $this->assertEquals("validateDeliveryAddress", $oOrder->validateOrder($oBasket, $oUser));
 
         // min basket price check failed
         $oOrder = $this->getMock("oxorder", array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
@@ -230,7 +233,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oOrder->expects($this->once())->method('validatePayment');
         $oOrder->expects($this->once())->method('validateDeliveryAddress');
         $oOrder->expects($this->once())->method('validateBasket')->will($this->returnValue("validateBasket"));
-        $this->assertEquals("validateBasket", $oOrder->validateOrder(0, 0));
+        $this->assertEquals("validateBasket", $oOrder->validateOrder($oBasket, $oUser));
     }
 
     public function testValidateDeliveryAddress()

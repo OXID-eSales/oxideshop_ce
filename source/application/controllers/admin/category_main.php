@@ -56,6 +56,10 @@ class Category_Main extends oxAdminDetails
             // load object
             $oCategory->loadInLang($this->_iEditLang, $soxId);
 
+            //Disable editing for derived items
+            if ($oCategory->isDerived()) {
+                $this->_aViewData['readonly_fields'] = true;
+            }
 
             $oOtherLang = $oCategory->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
@@ -162,6 +166,10 @@ class Category_Main extends oxAdminDetails
             $myUtilsPic->overwritePic($oCategory, 'oxcategories', 'oxpromoicon', 'PICO', 'icon', $aParams, $myConfig->getPictureDir(false));
         }
 
+        //Disable editing for derived items
+        if ($oCategory->isDerived()) {
+            return;
+        }
 
         $oCategory->setLanguage(0);
 
@@ -243,6 +251,10 @@ class Category_Main extends oxAdminDetails
      */
     protected function _deleteCatPicture(oxCategory $oItem, $sField)
     {
+
+        if ($oItem->isDerived()) {
+            return;
+        }
 
         $myConfig = $this->getConfig();
         $sItemKey = 'oxcategories__' . $sField;

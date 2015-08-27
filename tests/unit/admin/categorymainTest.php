@@ -25,7 +25,6 @@
  */
 class Unit_Admin_CategoryMainTest extends OxidTestCase
 {
-
     /**
      * @var oxCategory
      */

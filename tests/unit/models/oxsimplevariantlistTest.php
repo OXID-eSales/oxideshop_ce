@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -49,10 +49,15 @@ class Unit_Models_oxsimplevariantlistTest extends OxidTestCase
     //bug #441 test case for lists
     public function testParentPriceIsLoadedForVariant()
     {
-        $sArtId = '2077';
-        $sVariantId = '8a142c4100e0b2f57.59530204';
-        //adjust to demodata
-        $sArtPrice = 19;
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $sArtId = '1661';
+            $sVariantId = '1661-01';
+            $sArtPrice = 13.9;
+        } else {
+            $sArtId = '2077';
+            $sVariantId = '8a142c4100e0b2f57.59530204';
+            $sArtPrice = 19;
+        }
 
         $oParent = $this->getProxyClass("oxArticle");
         $oParent->setInList();

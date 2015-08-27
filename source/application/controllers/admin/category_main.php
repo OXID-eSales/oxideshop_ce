@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -55,6 +55,7 @@ class Category_Main extends oxAdminDetails
 
             // load object
             $oCategory->loadInLang($this->_iEditLang, $soxId);
+
 
             $oOtherLang = $oCategory->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
@@ -242,9 +243,9 @@ class Category_Main extends oxAdminDetails
      */
     protected function _deleteCatPicture(oxCategory $oItem, $sField)
     {
+
         $myConfig = $this->getConfig();
         $sItemKey = 'oxcategories__' . $sField;
-
 
         switch ($sField) {
             case 'oxthumb':

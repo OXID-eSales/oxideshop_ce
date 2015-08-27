@@ -1716,6 +1716,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
     public function testFinalizeOrderReturnsErrorCodeOnPaymentFailure()
     {
         $oBasket = oxNew('oxBasket');
+        $oUser   = oxNew('oxUser');
 
         $aMethods = array('setId',
                           '_setUser',
@@ -1737,7 +1738,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oOrder->expects($this->once())->method('_executePayment')->will($this->returnValue(2));
         $oOrder->expects($this->once())->method('validateOrder');
 
-        $iRet = $oOrder->finalizeOrder($oBasket, null);
+        $iRet = $oOrder->finalizeOrder($oBasket, $oUser);
         $this->assertEquals(2, $iRet);
     }
 

@@ -103,14 +103,18 @@ class Unit_Models_oxuserlistTest extends OxidTestCase
      */
     public function testUserListLoadingEnabledShopCheck()
     {
-        // selecting count from DB
+        $sQ = 'select count(*) from oxuser where true';
 
-        $sQ = 'select count(*) from oxuser';
-
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sQ .= ' AND oxuser.oxshopid="' . $this->getConfig()->getBaseShopId() . '" ';
+        }
         $iUserCount = oxDB::getDB()->getOne($sQ);
 
         $oUser = oxNew('oxuser');
         $oUserList = oxNew('oxuserlist');
+        if ($this->getConfig()->getEdition() === 'EE') :
+            $oUser->setDisableShopCheck(false);
+        endif;
         $oUserList->selectString($oUser->buildSelectString());
 
         $this->assertEquals($iUserCount, $oUserList->count());
@@ -123,6 +127,9 @@ class Unit_Models_oxuserlistTest extends OxidTestCase
         $iUserCount = oxDB::getDB()->getOne($sQ);
 
         $oUser = oxNew('oxuser');
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $oUser->setDisableShopCheck(true);
+        }
         $oUserList = oxNew('oxuserlist');
         $oUserList->selectString($oUser->buildSelectString());
 

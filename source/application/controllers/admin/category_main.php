@@ -300,9 +300,6 @@ class Category_Main extends oxAdminDetails
             $aReqParams['oxcategories__oxvat'] = null;
         }
 
-        // shopId
-        $aReqParams['oxcategories__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
-
         if ($this->getEditObjectId() == self::NEW_CATEGORY_ID) {
             //#550A - if new category is made then is must be default activ
             //#4051: Impossible to create inactive category

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -26,7 +26,7 @@
 class Unit_Admin_DeliverysetCountryAjaxTest extends OxidTestCase
 {
 
-    protected $_sShopId = '1';
+    protected $_sShopId = 'oxbaseshop';
     protected $_sCountryView = 'oxv_oxcountry_de';
 
     /**
@@ -47,7 +47,9 @@ class Unit_Admin_DeliverysetCountryAjaxTest extends OxidTestCase
         oxDb::getDb()->execute("insert into oxcountry set oxid='_testCountry1', oxtitle='_testCountry1'");
         oxDb::getDb()->execute("insert into oxcountry set oxid='_testCountry2', oxtitle='_testCountry2'");
 
-        $this->setShopIdTest('oxbaseshop');
+        if ($this->getConfig()->getEdition() === 'EE') :
+            $this->setShopIdTest('1');
+        endif;
     }
 
     /**

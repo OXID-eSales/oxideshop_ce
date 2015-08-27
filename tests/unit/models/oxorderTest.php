@@ -1580,8 +1580,9 @@ class Unit_Models_oxorderTest extends OxidTestCase
             ->will($this->returnValue(true));
 
         $oBasket = new oxBasket();
+        $oUser   = oxNew('oxUser');
 
-        $iRet = $oOrder->finalizeOrder($oBasket, null);
+        $iRet = $oOrder->finalizeOrder($oBasket, $oUser);
 
         $this->assertEquals(3, $iRet);
     }
@@ -1595,6 +1596,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
     public function testFinalizeOrderCallsAllRequiredMethods()
     {
         $oBasket = oxNew('oxBasket');
+        $oUser   = oxNew('oxUser');
 
         $aMethods = array('setId',
                           '_loadFromBasket',
@@ -1626,7 +1628,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oOrder->expects($this->once())->method('validateOrder');
         $oOrder->expects($this->once())->method('_updateOrderDate');
 
-        $oOrder->finalizeOrder($oBasket, null);
+        $oOrder->finalizeOrder($oBasket, $oUser);
     }
 
     /**
@@ -1638,6 +1640,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
     public function testFinalizeOrderFromRecalculateOrder()
     {
         $oBasket = oxNew('oxBasket');
+        $oUser = oxNew('oxUser');
 
         $aMethods = array('_setUser',
                           '_loadFromBasket',
@@ -1661,7 +1664,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
 
         $oOrder->expects($this->never())->method('_updateOrderDate');
 
-        $oOrder->finalizeOrder($oBasket, null, true);
+        $oOrder->finalizeOrder($oBasket, $oUser, true);
     }
 
     /**
@@ -1670,6 +1673,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
     public function testFinalizeOrderReturnsMailingStatusOnSuccess()
     {
         $oBasket = oxNew('oxBasket');
+        $oUser = oxNew('oxUser');
 
         $aMethods = array('setId',
                           '_setUser',
@@ -1702,7 +1706,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
         $oOrder->expects($this->once())->method('_sendOrderByEmail')->will($this->returnValue(1));
         $oOrder->expects($this->once())->method('validateOrder');
 
-        $iRet = $oOrder->finalizeOrder($oBasket, null);
+        $iRet = $oOrder->finalizeOrder($oBasket, $oUser);
         $this->assertEquals(1, $iRet);
     }
 

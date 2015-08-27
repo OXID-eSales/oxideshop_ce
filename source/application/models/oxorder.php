@@ -1226,7 +1226,7 @@ class oxOrder extends oxBase
      *
      * @throws oxOutOfStockException exception
      */
-    public function validateStock(oxBasket $oBasket)
+    public function validateStock($oBasket)
     {
         foreach ($oBasket->getContents() as $key => $oContent) {
             try {

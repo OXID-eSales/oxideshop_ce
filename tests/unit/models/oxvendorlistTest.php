@@ -42,36 +42,6 @@ class Unit_Models_oxvendorlistTest extends OxidTestCase
     }
 
     /**
-     * Test loading simple vendor list
-     */
-    /*    public function test_loadVendorList() {
-            $myUtils = oxRegistry::getUtils();
-            $myConfig= $this->getConfig();
-            $myDB    = oxDb::getDB();
-
-            $oVendorlist = oxNew( 'oxvendorlist' );
-            $oVendorlist->loadVendorList(true, true, true);
-
-            $this->assertTrue((count($oVendorlist) > 0), "Vendors list not loaded");
-
-            // checking if vendros are the same
-            $sQ = 'select oxid from oxvendor where oxvendor.oxshopid = "'.$myConfig->getShopID().'"';
-            $rs = $myDB->Execute( $sQ );
-
-
-            if ( $rs != false && $rs->RecordCount() > 0 ) {
-                while ( !$rs->EOF ) {
-                    if ( !isset( $oVendorlist[ $rs->fields[0] ] ) )
-                        $this->fail('Not all vendors are loaded');
-                    $rs->MoveNext();
-                }
-            } else {
-                $this->fail('No records found in vendors table');
-            }
-
-        }
-    */
-    /**
      * Test loading simple vendor list by selected language
      */
     public function test_loadVendorListByLanguage()
@@ -80,8 +50,6 @@ class Unit_Models_oxvendorlistTest extends OxidTestCase
         $myConfig = $this->getConfig();
         $myDB = oxDb::getDB();
 
-        //modConfig::addClassVar("_iLanguageId","1"); //$oVendorlist->sLanguage = '1';
-        //$myConfig->addClassFunction("getShopLanguage",create_function("","return 1;"));
         oxRegistry::getLang()->setBaseLanguage(1);
 
         $oVendorlist = oxNew('oxvendorlist');

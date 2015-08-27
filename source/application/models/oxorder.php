@@ -922,9 +922,9 @@ class oxOrder extends oxBase
             $oOrderArticle->oxorderarticles__oxbrutprice = new oxField($oPrice->getBruttoPrice(), oxField::T_RAW);
             $oOrderArticle->oxorderarticles__oxvat = new oxField($oPrice->getVat(), oxField::T_RAW);
 
-            $oUnitPtice = $oContent->getUnitPrice();
-            $oOrderArticle->oxorderarticles__oxnprice = new oxField($oUnitPtice->getNettoPrice(), oxField::T_RAW);
-            $oOrderArticle->oxorderarticles__oxbprice = new oxField($oUnitPtice->getBruttoPrice(), oxField::T_RAW);
+            $oUnitPrice = $oContent->getUnitPrice();
+            $oOrderArticle->oxorderarticles__oxnprice = new oxField($oUnitPrice->getNettoPrice(), oxField::T_RAW);
+            $oOrderArticle->oxorderarticles__oxbprice = new oxField($oUnitPrice->getBruttoPrice(), oxField::T_RAW);
 
             // wrap id
             $oOrderArticle->oxorderarticles__oxwrapid = new oxField($oContent->getWrappingId(), oxField::T_RAW);

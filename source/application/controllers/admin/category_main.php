@@ -350,10 +350,6 @@ class Category_Main extends oxAdminDetails
      */
     protected function setCategoryParameters($category, $params)
     {
-        $config = $this->getConfig();
-        $category->setLanguage(0);
-
-
         $category->assign($params);
         $category->setLanguage($this->_iEditLang);
     }

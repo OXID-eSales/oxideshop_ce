@@ -139,7 +139,6 @@ class Unit_Models_oxtagTest extends OxidTestCase
 
         $oTag = oxNew('oxTag');
 
-
         $oTag->set("zauber");
         $this->assertEquals($this->getConfig()->getConfigParam("sShopURL") . "tag/zauber/", $oTag->getLink());
 

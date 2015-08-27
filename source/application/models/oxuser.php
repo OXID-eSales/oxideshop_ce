@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -606,6 +606,7 @@ class oxUser extends oxBase
             // discounts
             $rs = $oDb->execute("delete from oxobject2discount where oxobjectid = {$sOXIDQuoted}");
 
+            $this->deleteAdditionally($sOXIDQuoted);
 
             // and leaving all order related information
             $rs = $oDb->execute("delete from oxremark where oxparentid = {$sOXIDQuoted} and oxtype !='o'");
@@ -710,8 +711,7 @@ class oxUser extends oxBase
         if ($this->oxuser__oxregister->value > 1) {
             $oDb = oxDb::getDb();
             $sQ = 'select * from oxorder where oxuserid = ' . $oDb->quote($this->getId()) . ' and oxorderdate >= ' . $oDb->quote($this->oxuser__oxregister->value) . ' ';
-
-            //#1546 - shopid check added, if it is not multishop
+            $sQ = $this->updateGetOrdersQuery($sQ);
 
             $sQ .= ' order by oxorderdate desc ';
             $oOrders->selectString($sQ);
@@ -1073,8 +1073,13 @@ class oxUser extends oxBase
         $oInputValidator->checkCountries($this, $aInvAddress, $aDelAddress);
 
         // 6. vat id check.
-        $oInputValidator->checkVatId($this, $aInvAddress);
-
+        try {
+            $oInputValidator->checkVatId($this, $aInvAddress);
+        } catch (oxConnectionException $e) {
+            // R080730 just oxInputException is passed here
+            // if it oxConnectionException, it means it could not check vat id
+            // and will set 'not checked' status to it later
+        }
 
         // throwing first validation error
         if ($oError = oxRegistry::get("oxInputValidator")->getFirstValidationError()) {
@@ -1157,13 +1162,13 @@ class oxUser extends oxBase
 
         $this->assign($aInvAddress);
 
+        $this->onChangeUserData($aInvAddress);
 
         // update old or add new delivery address
         $this->_assignAddress($aDelAddress);
 
         // saving new values
         if ($this->save()) {
-
             // assigning automatically to specific groups
             $sCountryId = isset($aInvAddress['oxuser__oxcountryid']) ? $aInvAddress['oxuser__oxcountryid'] : '';
             $this->_setAutoGroups($sCountryId);
@@ -1205,7 +1210,6 @@ class oxUser extends oxBase
     protected function _assignAddress($aDelAddress)
     {
         if (is_array($aDelAddress) && count($aDelAddress)) {
-
             $sAddressId = $this->getConfig()->getRequestParameter('oxaddressid');
             $sAddressId = ($sAddressId === null || $sAddressId == -1 || $sAddressId == -2) ? null : $sAddressId;
 
@@ -1243,21 +1247,13 @@ class oxUser extends oxBase
      */
     protected function _getLoginQueryHashedWithMD5($sUser, $sPassword, $sShopID, $blAdmin)
     {
-        $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
 
         $sUserSelect = "oxuser.oxusername = " . $oDb->quote($sUser);
         $sPassSelect = " oxuser.oxpassword = BINARY MD5( CONCAT( " . $oDb->quote($sPassword) . ", UNHEX( oxuser.oxpasssalt ) ) ) ";
-        $sShopSelect = "";
-
-
-        // admin view: can only login with higher than 'user' rights
-        if ($blAdmin) {
-            $sShopSelect = " and ( oxrights != 'user' ) ";
-        }
+        $sShopSelect = $this->formShopSelectQuery($sShopID, $blAdmin);
 
         $sSelect = "select `oxid` from oxuser where oxuser.oxactive = 1 and {$sPassSelect} and {$sUserSelect} {$sShopSelect} ";
-
 
         return $sSelect;
     }
@@ -1276,23 +1272,17 @@ class oxUser extends oxBase
      */
     protected function _getLoginQuery($sUser, $sPassword, $sShopID, $blAdmin)
     {
-        $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
 
         $sUserSelect = "oxuser.oxusername = " . $oDb->quote($sUser);
 
-        $sShopSelect = "";
-        // admin view: can only login with higher than 'user' rights
-        if ($blAdmin) {
-            $sShopSelect = " and ( oxrights != 'user' ) ";
-        }
+        $sShopSelect = $this->formShopSelectQuery($sShopID, $blAdmin);
 
         $sSalt = $oDb->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  " . $sUserSelect . $sShopSelect);
 
         $sPassSelect = " oxuser.oxpassword = " . $oDb->quote($this->encodePassword($sPassword, $sSalt));
 
         $sSelect = "select `oxid` from oxuser where oxuser.oxactive = 1 and {$sPassSelect} and {$sUserSelect} {$sShopSelect} ";
-
 
         return $sSelect;
     }
@@ -1308,11 +1298,7 @@ class oxUser extends oxBase
      */
     protected function _getShopSelect($myConfig, $sShopID, $blAdmin)
     {
-        $sShopSelect = "";
-        // admin view: can only login with higher than 'user' rights
-        if ($blAdmin) {
-            $sShopSelect = " and ( oxrights != 'user' ) ";
-        }
+        $sShopSelect = $this->formShopSelectQuery($sShopID, $blAdmin);
 
         return $sShopSelect;
     }
@@ -1344,13 +1330,11 @@ class oxUser extends oxBase
 
 
         if ($sPassword) {
-
             $sShopID = $oConfig->getShopId();
             $this->_dbLogin($sUser, $sPassword, $sShopID);
         }
 
-
-
+        $this->onLogin($sUser, $sPassword);
 
         //login successful?
         if ($this->oxuser__oxid->value) {
@@ -1479,13 +1463,13 @@ class oxUser extends oxBase
     {
         $oDb = oxDb::getDb();
         $oFb = oxRegistry::get("oxFb");
-        $oConfig = $this->getConfig();
         if ($oFb->isConnected() && $oFb->getUser()) {
             $sUserSelect = "oxuser.oxfbid = " . $oDb->quote($oFb->getUser());
-            $sShopSelect = "";
 
+            $sSelect = "select oxid from oxuser where oxuser.oxactive = 1 and {$sUserSelect}";
 
-            $sSelect = "select oxid from oxuser where oxuser.oxactive = 1 and {$sUserSelect} {$sShopSelect} ";
+            $sSelect = $this->updateQueryForGettingFacebookUserId($sSelect);
+
             $sUserID = $oDb->getOne($sSelect);
         }
 
@@ -1510,6 +1494,7 @@ class oxUser extends oxBase
 
             $sSelect = 'select oxid, oxpassword, oxpasssalt from oxuser where oxuser.oxpassword != "" and  oxuser.oxactive = 1 and oxuser.oxusername = ' . $oDb->quote($sUser);
 
+            $sSelect = $this->updateQueryForGettingCookieUserId($sSelect, $sShopID);
             $rs = $oDb->select($sSelect);
             if ($rs != false && $rs->recordCount() > 0) {
                 while (!$rs->EOF) {
@@ -1838,7 +1823,6 @@ class oxUser extends oxBase
             $this->addToGroup('oxidnewcustomer');
         }
     }
-
 
     /**
      * Tries to load user object by passed update id. Update id is
@@ -2313,5 +2297,90 @@ class oxUser extends oxBase
         }
 
         return $sSelect;
+    }
+
+    /**
+     * Method used for override.
+     *
+     * @param array $aInvAddress
+     */
+    protected function onChangeUserData($aInvAddress)
+    {
+    }
+
+    /**
+     * Forms shop select query.
+     *
+     * @param string $sShopID Shop id is used when method is overridden.
+     * @param bool   $blAdmin
+     *
+     * @return string
+     */
+    protected function formShopSelectQuery($sShopID, $blAdmin)
+    {
+        $sShopSelect = '';
+
+        // Admin view: can only login with higher than 'user' rights
+        if ($blAdmin) {
+            $sShopSelect = " and ( oxrights != 'user' ) ";
+        }
+
+        return $sShopSelect;
+    }
+
+    /**
+     * Method is used to make additional delete actions.
+     *
+     * @param string $sOXIDQuoted
+     */
+    protected function deleteAdditionally($sOXIDQuoted)
+    {
+    }
+
+    /**
+     * Updates query for selecting orders.
+     *
+     * @param string $query
+     *
+     * @return string
+     */
+    protected function updateGetOrdersQuery($query)
+    {
+        return $query;
+    }
+
+    /**
+     * Method is used for overriding and add additional actions when logging in.
+     *
+     * @param string $sUser
+     * @param string $sPassword
+     */
+    protected function onLogin($sUser, $sPassword)
+    {
+    }
+
+    /**
+     * Updates given query.
+     *
+     * @param string $query
+     *
+     * @return string
+     */
+    protected function updateQueryForGettingFacebookUserId($query)
+    {
+        return $query;
+    }
+
+    /**
+     * Updates given query. Method is for overriding.
+     *
+     * @param string $query
+     * @param string $shopId
+     *
+     * @return string
+     */
+    protected function updateQueryForGettingCookieUserId($query, $shopId)
+    {
+        return $query;
     }
 }

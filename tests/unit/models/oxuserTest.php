@@ -416,7 +416,6 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $this->assertTrue($oUser->allowDerivedUpdate());
     }
 
-
     public function testisExpiredUpdateId()
     {
         $oUser = $this->createUser();
@@ -557,7 +556,6 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $this->assertNull($oUser->loadUserByUpdateId('xxx'));
     }
 
-
     /**
      * Boni index for newly created users must be 1000 instead of 1000
      */
@@ -583,12 +581,18 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oUser->save();
 
         $oUser = oxNew('oxUser');
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $oUser->setMallUsersStatus(true);
+        }
         $this->assertFalse($oUser->checkIfEmailExists('admin@oxid.lt'));
     }
 
     public function testCheckIfEmailExistsMallUsersTryingToCreateUserWithNameAdmin()
     {
         $oUser = oxNew('oxUser');
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $oUser->setMallUsersStatus(true);
+        }
 
         $this->assertTrue($oUser->checkIfEmailExists(oxADMIN_LOGIN));
     }
@@ -596,6 +600,9 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testCheckIfEmailExistsMallUsersOldEntryWithoutPass()
     {
         $oUser = oxNew('oxUser');
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $oUser->setMallUsersStatus(true);
+        }
 
         $this->assertFalse($oUser->checkIfEmailExists('aaa@bbb.lt'));
     }
@@ -603,6 +610,9 @@ class Unit_Models_oxUserTest extends OxidTestCase
     public function testCheckIfEmailExistsMallUsersOldEntryWithPass()
     {
         $oUser = oxNew('oxUser');
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $oUser->setMallUsersStatus(true);
+        }
 
         $this->assertTrue($oUser->checkIfEmailExists(oxADMIN_LOGIN));
     }
@@ -1075,7 +1085,6 @@ class Unit_Models_oxUserTest extends OxidTestCase
         // looking for record in oxremark tabl
         $sQ = 'select count(oxid) from oxremark where oxparentid = "' . $oUser->getId() . '"  and oxtype !="o"';
         $this->assertEquals(1, (int) $oDb->getOne($sQ));
-
     }
 
     /**
@@ -1206,18 +1215,17 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $o2d = oxNew('oxBase');
         $o2d->init("oxobject2delivery");
         $o2d->setId("_testo2d");
-        $o2d->oxnewssubscribed__oxobjectid = new oxField($sUserId);
-        $o2d->oxnewssubscribed__oxdeliveryid = new oxField($sUserId);
+        $o2d->oxobject2delivery__oxobjectid = new oxField($sUserId);
+        $o2d->oxobject2delivery__oxdeliveryid = new oxField($sUserId);
         $o2d->save();
 
         // discounts
         $o2d = oxNew('oxBase');
         $o2d->init("oxobject2discount");
         $o2d->setId("_testo2d");
-        $o2d->oxnewssubscribed__oxobjectid = new oxField($sUserId);
-        $o2d->oxnewssubscribed__oxdiscountid = new oxField($sUserId);
+        $o2d->oxobject2discount__oxobjectid = new oxField($sUserId);
+        $o2d->oxobject2discount__oxdiscountid = new oxField($sUserId);
         $o2d->save();
-
 
         // order information
         $oRemark = oxNew('oxBase');
@@ -1242,7 +1250,6 @@ class Unit_Models_oxUserTest extends OxidTestCase
             // all order information must be preserved
                        'oxremark'          => 'oxparentid',
         );
-
 
         // now checking if all related records were deleted
         foreach ($aWhat as $sTable => $sField) {
@@ -1432,8 +1439,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $this->assertEquals(1, count($oUser->getOrders()));
     }
 
-
-    // 3. checking order count for random user. order count must be 1
+    // 2. checking order count for random user. order count must be 1
     public function testGetOrdersForNonRegUser()
     {
         $oUser = $this->createUser();
@@ -1901,7 +1907,6 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $this->fail('oxInputException should have been thrown!');
     }
 
-
     /**
      * Testing if auto group assignment works fine
      */
@@ -2047,23 +2052,6 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oUser->setConfig($oConfig);
 
         $this->assertTrue($oUser->setNewsSubscription(false, false));
-    }
-
-    /**
-     * Testing customer information update function
-     */
-    // 1. all data "is fine" (emulated), just checking if all necessary methods were called
-    public function testChangeUserDataAllDataIsFine()
-    {
-        $oUser = $this->getMock("oxUser", array("checkValues", "assign", "save", "_setAutoGroups"));
-        $oUser->expects($this->once())->method('checkValues');
-        $oUser->expects($this->once())->method('assign');
-        $oUser->expects($this->once())->method('save')->will($this->returnValue(true));
-        $oUser->expects($this->once())->method('_setAutoGroups');
-
-
-        $oUser->changeUserData(null, null, null, null, null, null, null, null, null, null);
-
     }
 
     /**
@@ -2240,9 +2228,6 @@ class Unit_Models_oxUserTest extends OxidTestCase
      */
     public function testLoginOxidNotSet()
     {
-        $this->getConfig()->setConfigParam('blUseLDAP', 1);
-        $this->getConfig()->setConfigParam('blMallUsers', 1);
-
         $oUser = $this->getMock('oxuser', array('load', '_ldapLogin'));
         $oUser->expects($this->atLeastOnce())->method('load')->will($this->returnValue(true));
 
@@ -2497,8 +2482,6 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $oSelAddress = $oUser->getSelectedAddress($oUser->getId());
         $this->assertEquals('test_user1', $oSelAddress->getId());
     }
-
-
 
     public function testGetNoticeListArtCnt()
     {
@@ -2792,7 +2775,6 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $this->assertNull(oxRegistry::get("oxUtilsServer")->getUserCookie());
     }
 
-
     public function testGetWishListId()
     {
         $oBasketItem = $this->getMock('oxBasketItem', array('getWishId'));
@@ -2832,24 +2814,6 @@ class Unit_Models_oxUserTest extends OxidTestCase
         $this->assertEquals("1", $aRec[1]["OXPENDING"]);
         $this->assertEquals("0", $aRec[1]["OXACCEPTED"]);
         $this->assertEquals("1", $aRec[1]["OXTYPE"]);
-    }
-
-    /**
-     * Test case for oxUSer::_getLoginQuery() - staging mode
-     *
-     * @return null
-     */
-    public function testGetLoginQuery_stagingMode()
-    {
-    }
-
-    /**
-     * Test case for oxUSer::_getLoginQuery() - staging mode
-     *
-     * @return null
-     */
-    public function testGetLoginQuery_stagingMode_InvalidLogin()
-    {
     }
 
     /**

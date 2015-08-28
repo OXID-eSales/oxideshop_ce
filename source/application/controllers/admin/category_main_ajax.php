@@ -245,7 +245,6 @@ class category_main_ajax extends ajaxListComponent
 
         $this->resetArtSeoUrl($aArticles, $sCategoryID);
         $this->resetCounter("catArticle", $sCategoryID);
-
     }
 
     /**

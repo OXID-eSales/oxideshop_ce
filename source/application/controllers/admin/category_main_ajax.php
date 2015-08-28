@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -132,7 +132,7 @@ class category_main_ajax extends ajaxListComponent
         $myConfig = $this->getConfig();
 
         $aArticles = $this->_getActionIds('oxarticles.oxid');
-        $sCategoryID = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sCategoryID = $myConfig->getRequestParameter('synchoxid');
         $sShopID = $myConfig->getShopId();
         $oDb = oxDb::getDb();
         $sArticleTable = $this->_getViewName('oxarticles');
@@ -178,7 +178,6 @@ class category_main_ajax extends ajaxListComponent
 
             $this->resetArtSeoUrl($aArticles);
             $this->resetCounter("catArticle", $sCategoryID);
-
         }
     }
 

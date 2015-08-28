@@ -249,8 +249,6 @@ class category_order_ajax extends ajaxListComponent
      */
     protected function getRemNewOrderSqlWhereFilter()
     {
-        $sSqlShopFilter = "";
-
-        return $sSqlShopFilter;
+        return '';
     }
 }

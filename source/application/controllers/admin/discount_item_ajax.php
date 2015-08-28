@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -31,24 +31,26 @@ class discount_item_ajax extends ajaxListComponent
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxartnum', 'oxarticles', 1, 0, 0),
-        array('oxtitle', 'oxarticles', 1, 1, 0),
-        array('oxean', 'oxarticles', 1, 0, 0),
-        array('oxmpn', 'oxarticles', 0, 0, 0),
-        array('oxprice', 'oxarticles', 0, 0, 0),
-        array('oxstock', 'oxarticles', 0, 0, 0),
-        array('oxid', 'oxarticles', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxartnum', 'oxarticles', 1, 0, 0),
-                                     array('oxtitle', 'oxarticles', 1, 1, 0),
-                                     array('oxean', 'oxarticles', 1, 0, 0),
-                                     array('oxmpn', 'oxarticles', 0, 0, 0),
-                                     array('oxprice', 'oxarticles', 0, 0, 0),
-                                     array('oxstock', 'oxarticles', 0, 0, 0),
-                                     array('oxitmartid', 'oxdiscount', 0, 0, 1)
-                                 )
+    protected $_aColumns = array(
+        // field , table, visible, multilanguage, id
+        'container1' => array(
+            array('oxartnum', 'oxarticles', 1, 0, 0),
+            array('oxtitle', 'oxarticles', 1, 1, 0),
+            array('oxean', 'oxarticles', 1, 0, 0),
+            array('oxmpn', 'oxarticles', 0, 0, 0),
+            array('oxprice', 'oxarticles', 0, 0, 0),
+            array('oxstock', 'oxarticles', 0, 0, 0),
+            array('oxid', 'oxarticles', 0, 0, 1)
+        ),
+         'container2' => array(
+             array('oxartnum', 'oxarticles', 1, 0, 0),
+             array('oxtitle', 'oxarticles', 1, 1, 0),
+             array('oxean', 'oxarticles', 1, 0, 0),
+             array('oxmpn', 'oxarticles', 0, 0, 0),
+             array('oxprice', 'oxarticles', 0, 0, 0),
+             array('oxstock', 'oxarticles', 0, 0, 0),
+             array('oxitmartid', 'oxdiscount', 0, 0, 1)
+         )
     );
 
     /**
@@ -61,7 +63,6 @@ class discount_item_ajax extends ajaxListComponent
         $oConfig = $this->getConfig();
 
         $sArticleTable = $this->_getViewName('oxarticles');
-        $sCatTable = $this->_getViewName('oxcategories');
         $sO2CView = $this->_getViewName('oxobject2category');
         $sDiscTable = $this->_getViewName('oxdiscount');
         $oDb = oxDb::getDb();
@@ -89,7 +90,7 @@ class discount_item_ajax extends ajaxListComponent
 
         if ($sSynchOxid && $sSynchOxid != $sOxid) {
             // performance
-            $sSubSelect .= " select $sArticleTable.oxid from $sDiscTable, $sArticleTable where $sArticleTable.oxid=$sDiscTable.oxitmartid ";
+            $sSubSelect = " select $sArticleTable.oxid from $sDiscTable, $sArticleTable where $sArticleTable.oxid=$sDiscTable.oxitmartid ";
             $sSubSelect .= " and $sDiscTable.oxid = " . $oDb->quote($sSynchOxid);
 
             if (stristr($sQAdd, 'where') === false) {

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,9 +25,6 @@
  */
 class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
 {
-
-    protected $_sShopId = '1';
-
     /**
      * Initialize the fixture.
      *
@@ -45,8 +42,6 @@ class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
 
         oxDb::getDb()->execute("insert into oxuser set oxid='_testUser1', oxusername='_testUser1'");
         oxDb::getDb()->execute("insert into oxuser set oxid='_testUser2', oxusername='_testUser2'");
-
-        $this->setShopIdTest('oxbaseshop');
     }
 
     /**
@@ -69,16 +64,6 @@ class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
         oxDb::getDb()->execute("delete from oxobject2delivery where oxdeliveryid='_testActionAddUserAll'");
 
         parent::tearDown();
-    }
-
-    public function setShopIdTest($sParam)
-    {
-        $this->_sShopId = $sParam;
-    }
-
-    public function getShopIdTest()
-    {
-        return $this->_sShopId;
     }
 
     /**
@@ -256,5 +241,15 @@ class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
 
         $oView->addUserToSet();
         $this->assertEquals($iCount, oxDb::getDb()->getOne($sSql));
+    }
+
+    /**
+     * Returns shop id based on edition.
+     *
+     * @return string
+     */
+    protected function getShopIdTest()
+    {
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
     }
 }

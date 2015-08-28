@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -31,30 +31,32 @@ class deliveryset_users_ajax extends ajaxListComponent
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,  visible, multilanguage, ident
-        array('oxusername', 'oxuser', 1, 0, 0),
-        array('oxlname', 'oxuser', 0, 0, 0),
-        array('oxfname', 'oxuser', 0, 0, 0),
-        array('oxstreet', 'oxuser', 0, 0, 0),
-        array('oxstreetnr', 'oxuser', 0, 0, 0),
-        array('oxcity', 'oxuser', 0, 0, 0),
-        array('oxzip', 'oxuser', 0, 0, 0),
-        array('oxfon', 'oxuser', 0, 0, 0),
-        array('oxbirthdate', 'oxuser', 0, 0, 0),
-        array('oxid', 'oxuser', 0, 0, 1),
-    ),
-                                 'container2' => array(
-                                     array('oxusername', 'oxuser', 1, 0, 0),
-                                     array('oxlname', 'oxuser', 0, 0, 0),
-                                     array('oxfname', 'oxuser', 0, 0, 0),
-                                     array('oxstreet', 'oxuser', 0, 0, 0),
-                                     array('oxstreetnr', 'oxuser', 0, 0, 0),
-                                     array('oxcity', 'oxuser', 0, 0, 0),
-                                     array('oxzip', 'oxuser', 0, 0, 0),
-                                     array('oxfon', 'oxuser', 0, 0, 0),
-                                     array('oxbirthdate', 'oxuser', 0, 0, 0),
-                                     array('oxid', 'oxobject2delivery', 0, 0, 1),
-                                 )
+    protected $_aColumns = array(
+        // field , table,  visible, multilanguage, id
+        'container1' => array(
+            array('oxusername', 'oxuser', 1, 0, 0),
+            array('oxlname', 'oxuser', 0, 0, 0),
+            array('oxfname', 'oxuser', 0, 0, 0),
+            array('oxstreet', 'oxuser', 0, 0, 0),
+            array('oxstreetnr', 'oxuser', 0, 0, 0),
+            array('oxcity', 'oxuser', 0, 0, 0),
+            array('oxzip', 'oxuser', 0, 0, 0),
+            array('oxfon', 'oxuser', 0, 0, 0),
+            array('oxbirthdate', 'oxuser', 0, 0, 0),
+            array('oxid', 'oxuser', 0, 0, 1),
+        ),
+         'container2' => array(
+             array('oxusername', 'oxuser', 1, 0, 0),
+             array('oxlname', 'oxuser', 0, 0, 0),
+             array('oxfname', 'oxuser', 0, 0, 0),
+             array('oxstreet', 'oxuser', 0, 0, 0),
+             array('oxstreetnr', 'oxuser', 0, 0, 0),
+             array('oxcity', 'oxuser', 0, 0, 0),
+             array('oxzip', 'oxuser', 0, 0, 0),
+             array('oxfon', 'oxuser', 0, 0, 0),
+             array('oxbirthdate', 'oxuser', 0, 0, 0),
+             array('oxid', 'oxobject2delivery', 0, 0, 1),
+         )
     );
 
     /**

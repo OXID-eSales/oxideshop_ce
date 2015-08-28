@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -54,7 +54,10 @@ class DeliverySet_Main extends oxAdminDetails
             }
 
             $this->_aViewData["edit"] = $odeliveryset;
-
+            //Disable editing for derived articles
+            if ($odeliveryset->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
             // remove already created languages
             $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
@@ -91,9 +94,6 @@ class DeliverySet_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxdeliveryset__oxshopid'] = $sShopID;
         $oDelSet = oxNew("oxdeliveryset");
 
         if ($soxId != "-1") {
@@ -107,6 +107,10 @@ class DeliverySet_Main extends oxAdminDetails
             $aParams['oxdeliveryset__oxactive'] = 0;
         }
 
+        //Disable editing for derived articles
+        if ($oDelSet->isDerived()) {
+            return;
+        }
 
         //$aParams = $oDelSet->ConvertNameArray2Idx( $aParams);
         $oDelSet->setLanguage(0);
@@ -133,9 +137,6 @@ class DeliverySet_Main extends oxAdminDetails
             $aParams['oxdeliveryset__oxactive'] = 0;
         }
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxdeliveryset__oxshopid'] = $sShopID;
         $oDelSet = oxNew("oxdeliveryset");
 
         if ($soxId != "-1") {
@@ -148,6 +149,10 @@ class DeliverySet_Main extends oxAdminDetails
         $oDelSet->setLanguage(0);
         $oDelSet->assign($aParams);
 
+        //Disable editing for derived articles
+        if ($oDelSet->isDerived()) {
+            return;
+        }
 
         // apply new language
         $oDelSet->setLanguage(oxRegistry::getConfig()->getRequestParameter("new_lang"));

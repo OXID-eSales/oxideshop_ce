@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -82,10 +82,8 @@ class discount_main_ajax extends ajaxListComponent
     public function removeDiscCountry()
     {
         $oConfig = $this->getConfig();
-
         $aChosenCntr = $this->_getActionIds('oxobject2discount.oxid');
         if ($oConfig->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
 
@@ -103,7 +101,6 @@ class discount_main_ajax extends ajaxListComponent
         $oConfig = $this->getConfig();
         $aChosenCntr = $this->_getActionIds('oxcountry.oxid');
         $soxId = $oConfig->getRequestParameter('synchoxid');
-
 
         if ($oConfig->getRequestParameter('all')) {
             $sCountryTable = $this->_getViewName('oxcountry');

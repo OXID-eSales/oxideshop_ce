@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,25 +25,26 @@
  */
 class discount_categories_ajax extends ajaxListComponent
 {
-
     /**
      * Columns array
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxtitle', 'oxcategories', 1, 1, 0),
-        array('oxdesc', 'oxcategories', 1, 1, 0),
-        array('oxid', 'oxcategories', 0, 0, 0),
-        array('oxid', 'oxcategories', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxtitle', 'oxcategories', 1, 1, 0),
-                                     array('oxdesc', 'oxcategories', 1, 1, 0),
-                                     array('oxid', 'oxcategories', 0, 0, 0),
-                                     array('oxid', 'oxobject2discount', 0, 0, 1),
-                                     array('oxid', 'oxcategories', 0, 0, 1)
-                                 ),
+    protected $_aColumns = array(
+        // field , table, visible, multilanguage, id
+        'container1' => array(
+            array('oxtitle', 'oxcategories', 1, 1, 0),
+            array('oxdesc', 'oxcategories', 1, 1, 0),
+            array('oxid', 'oxcategories', 0, 0, 0),
+            array('oxid', 'oxcategories', 0, 0, 1)
+        ),
+         'container2' => array(
+             array('oxtitle', 'oxcategories', 1, 1, 0),
+             array('oxdesc', 'oxcategories', 1, 1, 0),
+             array('oxid', 'oxcategories', 0, 0, 0),
+             array('oxid', 'oxobject2discount', 0, 0, 1),
+             array('oxid', 'oxcategories', 0, 0, 1)
+         ),
     );
 
     /**
@@ -92,19 +93,17 @@ class discount_categories_ajax extends ajaxListComponent
      */
     public function removeDiscCat()
     {
-        $oConfig = $this->getConfig();
-        $aChosenCat = $this->_getActionIds('oxobject2discount.oxid');
+        $config = $this->getConfig();
+        $categoryIds = $this->_getActionIds('oxobject2discount.oxid');
 
+        if ($config->getRequestParameter('all')) {
+            $query = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
+            oxDb::getDb()->Execute($query);
 
-        if ($oConfig->getRequestParameter('all')) {
-
-            $sQ = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
-
-        } elseif (is_array($aChosenCat)) {
-            $sChosenCategories = implode(", ", oxDb::getInstance()->quoteArray($aChosenCat));
-            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . $sChosenCategories . ") ";
-            oxDb::getDb()->Execute($sQ);
+        } elseif (is_array($categoryIds)) {
+            $chosenCategories = implode(", ", oxDb::getInstance()->quoteArray($categoryIds));
+            $query = "delete from oxobject2discount where oxobject2discount.oxid in (" . $chosenCategories . ") ";
+            oxDb::getDb()->Execute($query);
         }
     }
 
@@ -113,25 +112,35 @@ class discount_categories_ajax extends ajaxListComponent
      */
     public function addDiscCat()
     {
-        $oConfig = $this->getConfig();
-        $aChosenCat = $this->_getActionIds('oxcategories.oxid');
-        $soxId = $oConfig->getRequestParameter('synchoxid');
+        $config = $this->getConfig();
+        $categoryIds = $this->_getActionIds('oxcategories.oxid');
+        $discountId = $config->getRequestParameter('synchoxid');
 
-
-        if ($oConfig->getRequestParameter('all')) {
-            $sCategoryTable = $this->_getViewName('oxcategories');
-            $aChosenCat = $this->_getAll($this->_addFilter("select $sCategoryTable.oxid " . $this->_getQuery()));
+        if ($config->getRequestParameter('all')) {
+            $categoryTable = $this->_getViewName('oxcategories');
+            $categoryIds = $this->_getAll($this->_addFilter("select $categoryTable.oxid " . $this->_getQuery()));
         }
-        if ($soxId && $soxId != "-1" && is_array($aChosenCat)) {
-            foreach ($aChosenCat as $sChosenCat) {
-                $oObject2Discount = oxNew("oxBase");
-                $oObject2Discount->init('oxobject2discount');
-                $oObject2Discount->oxobject2discount__oxdiscountid = new oxField($soxId);
-                $oObject2Discount->oxobject2discount__oxobjectid = new oxField($sChosenCat);
-                $oObject2Discount->oxobject2discount__oxtype = new oxField("oxcategories");
-                $oObject2Discount->save();
+        if ($discountId && $discountId != "-1" && is_array($categoryIds)) {
+            foreach ($categoryIds as $categoryId) {
+                $this->addCategoryToDiscount($discountId, $categoryId);
             }
         }
+    }
 
+    /**
+     * Adds category to discounts list.
+     *
+     * @param string $discountId
+     * @param string $categoryId
+     */
+    protected function addCategoryToDiscount($discountId, $categoryId)
+    {
+        $object2Discount = oxNew("oxBase");
+        $object2Discount->init('oxobject2discount');
+        $object2Discount->oxobject2discount__oxdiscountid = new oxField($discountId);
+        $object2Discount->oxobject2discount__oxobjectid = new oxField($categoryId);
+        $object2Discount->oxobject2discount__oxtype = new oxField("oxcategories");
+
+        $object2Discount->save();
     }
 }

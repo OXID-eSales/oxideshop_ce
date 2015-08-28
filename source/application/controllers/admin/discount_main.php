@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -52,6 +52,11 @@ class Discount_Main extends oxAdminDetails
             }
 
             $this->_aViewData["edit"] = $oDiscount;
+
+            //disabling derived items
+            if ($oDiscount->isDerived()) {
+                $this->_aViewData["readonly"] = true;
+            }
 
             // remove already created languages
             $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
@@ -121,9 +126,6 @@ class Discount_Main extends oxAdminDetails
         $sOxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxdiscount__oxshopid'] = $sShopID;
-
         $oDiscount = oxNew("oxDiscount");
         if ($sOxId != "-1") {
             $oDiscount->load($sOxId);
@@ -136,6 +138,10 @@ class Discount_Main extends oxAdminDetails
             $aParams['oxdiscount__oxactive'] = 0;
         }
 
+        //disabling derived items
+        if ($oDiscount->isDerived()) {
+            return;
+        }
 
         //$aParams = $oAttr->ConvertNameArray2Idx( $aParams);
         $oDiscount->setLanguage(0);
@@ -160,9 +166,6 @@ class Discount_Main extends oxAdminDetails
         $sOxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxdiscount__oxshopid'] = $sShopID;
         $oAttr = oxNew("oxdiscount");
         if ($sOxId != "-1") {
             $oAttr->load($sOxId);
@@ -174,6 +177,10 @@ class Discount_Main extends oxAdminDetails
             $aParams['oxdiscount__oxactive'] = 0;
         }
 
+        //disabling derived items
+        if ($oAttr->isDerived()) {
+            return;
+        }
 
         //$aParams = $oAttr->ConvertNameArray2Idx( $aParams);
         $oAttr->setLanguage(0);

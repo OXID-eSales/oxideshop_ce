@@ -39,9 +39,11 @@ class Unit_Admin_CategoryMainAjaxTest extends OxidTestCase
     {
         parent::setUp();
 
-        $this->setArticleViewTable('oxv_oxarticles_de');
-        $this->setObject2CategoryViewTable('oxobject2category');
-        $this->setShopIdTest('oxbaseshop');
+        if ($this->getConfig()->getEdition() !== 'EE') {
+            $this->setArticleViewTable('oxv_oxarticles_de');
+            $this->setObject2CategoryViewTable('oxobject2category');
+            $this->setShopIdTest('oxbaseshop');
+        }
 
         $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove1', oxtitle='_testArticle1', oxshopid='" . $this->getShopIdTest() . "'", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove2', oxtitle='_testArticle2', oxshopid='" . $this->getShopIdTest() . "'", 'oxarticles');

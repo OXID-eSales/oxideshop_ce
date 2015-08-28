@@ -25,7 +25,6 @@
  */
 class Unit_Models_oxuserlistTest extends OxidTestCase
 {
-
     /**
      * Initialize the fixture.
      *
@@ -98,38 +97,14 @@ class Unit_Models_oxuserlistTest extends OxidTestCase
         parent::tearDown();
     }
 
-    /**
-     * Checking if object is loaded and if type is valid
-     */
-    public function testUserListLoadingEnabledShopCheck()
-    {
-        $sQ = 'select count(*) from oxuser where true';
-
-        if ($this->getConfig()->getEdition() === 'EE') {
-            $sQ .= ' AND oxuser.oxshopid="' . $this->getConfig()->getBaseShopId() . '" ';
-        }
-        $iUserCount = oxDB::getDB()->getOne($sQ);
-
-        $oUser = oxNew('oxuser');
-        $oUserList = oxNew('oxuserlist');
-        if ($this->getConfig()->getEdition() === 'EE') :
-            $oUser->setDisableShopCheck(false);
-        endif;
-        $oUserList->selectString($oUser->buildSelectString());
-
-        $this->assertEquals($iUserCount, $oUserList->count());
-    }
-
     public function testUserListLoadingDisabledShopcheck()
     {
-        // selecting count from DB
-        $sQ = 'select count(*) from oxuser';
-        $iUserCount = oxDB::getDB()->getOne($sQ);
+        $iUserCount = '3';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $iUserCount = '8';
+        }
 
         $oUser = oxNew('oxuser');
-        if ($this->getConfig()->getEdition() === 'EE') {
-            $oUser->setDisableShopCheck(true);
-        }
         $oUserList = oxNew('oxuserlist');
         $oUserList->selectString($oUser->buildSelectString());
 

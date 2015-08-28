@@ -211,7 +211,7 @@ class category_order_ajax extends ajaxListComponent
                 oxRegistry::getSession()->setVariable('neworder_sess', null);
             }
 
-
+            $this->onCategoryChange($sId);
         }
     }
 
@@ -241,6 +241,7 @@ class category_order_ajax extends ajaxListComponent
 
             oxRegistry::getSession()->setVariable('neworder_sess', null);
 
+            $this->onCategoryChange($sId);
         }
     }
 
@@ -250,5 +251,12 @@ class category_order_ajax extends ajaxListComponent
     protected function getRemNewOrderSqlWhereFilter()
     {
         return '';
+    }
+
+    /**
+     * @param string $categoryId
+     */
+    protected function onCategoryChange($categoryId)
+    {
     }
 }

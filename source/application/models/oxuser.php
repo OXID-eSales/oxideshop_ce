@@ -1251,7 +1251,7 @@ class oxUser extends oxBase
 
         $sUserSelect = "oxuser.oxusername = " . $oDb->quote($sUser);
         $sPassSelect = " oxuser.oxpassword = BINARY MD5( CONCAT( " . $oDb->quote($sPassword) . ", UNHEX( oxuser.oxpasssalt ) ) ) ";
-        $sShopSelect = $this->formShopSelectQuery($sShopID, $blAdmin);
+        $sShopSelect = $this->formQueryPartForAdminView($sShopID, $blAdmin);
 
         $sSelect = "select `oxid` from oxuser where oxuser.oxactive = 1 and {$sPassSelect} and {$sUserSelect} {$sShopSelect} ";
 
@@ -1276,7 +1276,7 @@ class oxUser extends oxBase
 
         $sUserSelect = "oxuser.oxusername = " . $oDb->quote($sUser);
 
-        $sShopSelect = $this->formShopSelectQuery($sShopID, $blAdmin);
+        $sShopSelect = $this->formQueryPartForAdminView($sShopID, $blAdmin);
 
         $sSalt = $oDb->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  " . $sUserSelect . $sShopSelect);
 
@@ -1298,7 +1298,7 @@ class oxUser extends oxBase
      */
     protected function _getShopSelect($myConfig, $sShopID, $blAdmin)
     {
-        $sShopSelect = $this->formShopSelectQuery($sShopID, $blAdmin);
+        $sShopSelect = $this->formQueryPartForAdminView($sShopID, $blAdmin);
 
         return $sShopSelect;
     }
@@ -1464,11 +1464,7 @@ class oxUser extends oxBase
         $oDb = oxDb::getDb();
         $oFb = oxRegistry::get("oxFb");
         if ($oFb->isConnected() && $oFb->getUser()) {
-            $sUserSelect = "oxuser.oxfbid = " . $oDb->quote($oFb->getUser());
-
-            $sSelect = "select oxid from oxuser where oxuser.oxactive = 1 and {$sUserSelect}";
-
-            $sSelect = $this->updateQueryForGettingFacebookUserId($sSelect);
+            $sSelect = $this->formFacebookUserIdQuery($oFb);
 
             $sUserID = $oDb->getOne($sSelect);
         }
@@ -1492,9 +1488,7 @@ class oxUser extends oxBase
             $sUser = $aData[0];
             $sPWD = @$aData[1];
 
-            $sSelect = 'select oxid, oxpassword, oxpasssalt from oxuser where oxuser.oxpassword != "" and  oxuser.oxactive = 1 and oxuser.oxusername = ' . $oDb->quote($sUser);
-
-            $sSelect = $this->updateQueryForGettingCookieUserId($sSelect, $sShopID);
+            $sSelect = $this->formUserCookieQuery($sUser, $sShopID);
             $rs = $oDb->select($sSelect);
             if ($rs != false && $rs->recordCount() > 0) {
                 while (!$rs->EOF) {
@@ -2316,7 +2310,7 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    protected function formShopSelectQuery($sShopID, $blAdmin)
+    protected function formQueryPartForAdminView($sShopID, $blAdmin)
     {
         $sShopSelect = '';
 
@@ -2360,27 +2354,35 @@ class oxUser extends oxBase
     }
 
     /**
-     * Updates given query.
+     * Forms Facebook user ID query.
      *
-     * @param string $query
+     * @param oxFb $facebookConnector
      *
      * @return string
      */
-    protected function updateQueryForGettingFacebookUserId($query)
+    protected function formFacebookUserIdQuery($facebookConnector)
     {
+        $userSelectQuery = "oxuser.oxfbid = " . oxDb::getDb()->quote($facebookConnector->getUser());
+
+        $query = "select oxid from oxuser where oxuser.oxactive = 1 and {$userSelectQuery}";
+
         return $query;
     }
 
     /**
      * Updates given query. Method is for overriding.
      *
-     * @param string $query
+     * @param string $user
      * @param string $shopId
      *
      * @return string
      */
-    protected function updateQueryForGettingCookieUserId($query, $shopId)
+    protected function formUserCookieQuery($user, $shopId)
     {
+        $query = 'select oxid, oxpassword, oxpasssalt from oxuser '
+            . 'where oxuser.oxpassword != "" and  oxuser.oxactive = 1 and oxuser.oxusername = '
+            . oxDb::getDb()->quote($user);
+
         return $query;
     }
 }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -59,7 +59,6 @@ class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $sArticleTable = getViewName("oxarticles");
-        $sO2CView = getViewName("oxobject2category");
 
         $oView = oxNew('discount_articles_ajax');
         $sQuery = "from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";

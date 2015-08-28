@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -38,24 +38,26 @@ class discount_articles_ajax extends ajaxListComponent
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxartnum', 'oxarticles', 1, 0, 0),
-        array('oxtitle', 'oxarticles', 1, 1, 0),
-        array('oxean', 'oxarticles', 1, 0, 0),
-        array('oxmpn', 'oxarticles', 0, 0, 0),
-        array('oxprice', 'oxarticles', 0, 0, 0),
-        array('oxstock', 'oxarticles', 0, 0, 0),
-        array('oxid', 'oxarticles', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxartnum', 'oxarticles', 1, 0, 0),
-                                     array('oxtitle', 'oxarticles', 1, 1, 0),
-                                     array('oxean', 'oxarticles', 1, 0, 0),
-                                     array('oxmpn', 'oxarticles', 0, 0, 0),
-                                     array('oxprice', 'oxarticles', 0, 0, 0),
-                                     array('oxstock', 'oxarticles', 0, 0, 0),
-                                     array('oxid', 'oxobject2discount', 0, 0, 1)
-                                 )
+    protected $_aColumns = array(
+        // field , table, visible, multilanguage, id
+        'container1' => array(
+            array('oxartnum', 'oxarticles', 1, 0, 0),
+            array('oxtitle', 'oxarticles', 1, 1, 0),
+            array('oxean', 'oxarticles', 1, 0, 0),
+            array('oxmpn', 'oxarticles', 0, 0, 0),
+            array('oxprice', 'oxarticles', 0, 0, 0),
+            array('oxstock', 'oxarticles', 0, 0, 0),
+            array('oxid', 'oxarticles', 0, 0, 1)
+        ),
+        'container2' => array(
+            array('oxartnum', 'oxarticles', 1, 0, 0),
+            array('oxtitle', 'oxarticles', 1, 1, 0),
+            array('oxean', 'oxarticles', 1, 0, 0),
+            array('oxmpn', 'oxarticles', 0, 0, 0),
+            array('oxprice', 'oxarticles', 0, 0, 0),
+            array('oxstock', 'oxarticles', 0, 0, 0),
+            array('oxid', 'oxobject2discount', 0, 0, 1)
+        )
     );
 
     /**
@@ -95,7 +97,7 @@ class discount_articles_ajax extends ajaxListComponent
 
         if ($sSynchOxid && $sSynchOxid != $sOxid) {
             // performance
-            $sSubSelect .= " select $sArticleTable.oxid from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
+            $sSubSelect = " select $sArticleTable.oxid from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
             $sSubSelect .= " and oxobject2discount.oxdiscountid = " . $oDb->quote($sSynchOxid) . " and oxobject2discount.oxtype = 'oxarticles' ";
 
             if (stristr($sQAdd, 'where') === false) {
@@ -116,15 +118,14 @@ class discount_articles_ajax extends ajaxListComponent
     {
         $aChosenArt = $this->_getActionIds('oxobject2discount.oxid');
 
-
         if ($this->getConfig()->getRequestParameter('all')) {
 
             $sQ = parent::_addFilter("delete oxobject2discount.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            oxDb::getDb()->execute($sQ);
 
         } elseif (is_array($aChosenArt)) {
             $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
-            oxDb::getDb()->Execute($sQ);
+            oxDb::getDb()->execute($sQ);
         }
     }
 
@@ -133,26 +134,36 @@ class discount_articles_ajax extends ajaxListComponent
      */
     public function addDiscArt()
     {
-        $oConfig = $this->getConfig();
-        $aChosenArt = $this->_getActionIds('oxarticles.oxid');
-        $soxId = $oConfig->getRequestParameter('synchoxid');
-
+        $config = $this->getConfig();
+        $articleIds = $this->_getActionIds('oxarticles.oxid');
+        $discountListId = $config->getRequestParameter('synchoxid');
 
         // adding
-        if ($oConfig->getRequestParameter('all')) {
-            $sArticleTable = $this->_getViewName('oxarticles');
-            $aChosenArt = $this->_getAll(parent::_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
+        if ($config->getRequestParameter('all')) {
+            $articleTable = $this->_getViewName('oxarticles');
+            $articleIds = $this->_getAll(parent::_addFilter("select $articleTable.oxid " . $this->_getQuery()));
         }
-        if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {
-            foreach ($aChosenArt as $sChosenArt) {
-                $oObject2Discount = oxNew("oxBase");
-                $oObject2Discount->init('oxobject2discount');
-                $oObject2Discount->oxobject2discount__oxdiscountid = new oxField($soxId);
-                $oObject2Discount->oxobject2discount__oxobjectid = new oxField($sChosenArt);
-                $oObject2Discount->oxobject2discount__oxtype = new oxField("oxarticles");
-                $oObject2Discount->save();
-
+        if ($discountListId && $discountListId != "-1" && is_array($articleIds)) {
+            foreach ($articleIds as $articleId) {
+                $this->addArticleToDiscount($discountListId, $articleId);
             }
         }
+    }
+
+    /**
+     * Adds article to discount list
+     *
+     * @param string $discountListId
+     * @param string $articleId
+     */
+    protected function addArticleToDiscount($discountListId, $articleId)
+    {
+        $object2Discount = oxNew("oxBase");
+        $object2Discount->init('oxobject2discount');
+        $object2Discount->oxobject2discount__oxdiscountid = new oxField($discountListId);
+        $object2Discount->oxobject2discount__oxobjectid = new oxField($articleId);
+        $object2Discount->oxobject2discount__oxtype = new oxField("oxarticles");
+
+        $object2Discount->save();
     }
 }

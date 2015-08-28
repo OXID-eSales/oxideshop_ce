@@ -302,6 +302,9 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
     {
         $sOxid = '1126';
         $sCatString = 'Geschenke/Bar-Equipment';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sCatString = 'Party/Bar-Equipment';
+        }
 
         // defining parameters
         $oArticle = oxNew('oxArticle');
@@ -725,6 +728,11 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $sProdId = '8a142c4113f3b7aa3.13470399';
         $sParentId = '2077';
         $sTitle = 'violett';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sProdId = '1661-02';
+            $sParentId = '1661';
+            $sTitle = 'Bayer';
+        }
         $oParent = oxNew('oxArticle');
         $oParent->load($sParentId);
 

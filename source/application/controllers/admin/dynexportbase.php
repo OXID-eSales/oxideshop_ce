@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -685,11 +685,6 @@ class DynExportBase extends oxAdminDetails
             $sSelect .= $sCatAdd;
         }
 
-        if (!$sCatAdd) {
-            $sShopID = $this->getConfig()->getShopId();
-            $sSelect .= " and {$sArticleTable}.oxshopid = '$sShopID' ";
-        }
-
         // add minimum stock value
         if ($this->getConfig()->getConfigParam('blUseStock') && ($dMinStock = oxRegistry::getConfig()->getRequestParameter("sExportMinStock"))) {
             $dMinStock = str_replace(array(";", " ", "/", "'"), "", $dMinStock);
@@ -878,8 +873,6 @@ class DynExportBase extends oxAdminDetails
      */
     protected function _initArticle($sHeapTable, $iCnt, & $blContinue)
     {
-
-
         $oRs = oxDb::getDb()->selectLimit("select oxid from $sHeapTable", 1, $iCnt);
         if ($oRs != false && $oRs->recordCount() > 0) {
             $oArticle = oxNew('oxArticle');
@@ -898,6 +891,7 @@ class DynExportBase extends oxAdminDetails
                     $sTitle = $oArticle->oxarticles__oxvarselect->value ? " " . $oArticle->oxarticles__oxvarselect->value : "";
                     $oArticle->oxarticles__oxtitle->setValue($oArticle->oxarticles__oxtitle->value . $sTitle);
 
+                    $oArticle = $this->updateArticle($oArticle);
 
                     return $oArticle;
                 }
@@ -938,5 +932,17 @@ class DynExportBase extends oxAdminDetails
     public function getViewId()
     {
         return 'dyn_interface';
+    }
+
+    /**
+     * Updates Article object. Method is used for overriding.
+     *
+     * @param oxArticle $article
+     *
+     * @return oxArticle
+     */
+    protected function updateArticle($article)
+    {
+        return $article;
     }
 }

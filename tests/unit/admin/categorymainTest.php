@@ -134,7 +134,6 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
     }
 
-
     /**
      * Category_Main::Save() test case
      *
@@ -168,7 +167,6 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
 
         $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
     }
-
 
     /**
      * Category_Main::Saveinnlang() test case

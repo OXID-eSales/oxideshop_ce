@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -49,7 +49,9 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
         $this->addTeardownSql("delete from oxdel2delset where oxid like '%_testDelivery%'");
         $this->addTeardownSql("delete from oxdelivery where oxid like '%_testMain%'");
 
-        $this->setDeliveryViewTable('oxv_oxdelivery_de');
+        if ($this->getConfig()->getEdition() !== 'EE') :
+            $this->setDeliveryViewTable('oxv_oxdelivery_de');
+        endif;
     }
 
     public function setDeliveryViewTable($sParam)

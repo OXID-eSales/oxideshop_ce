@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -45,11 +45,17 @@ class Unit_Admin_CategoryMainAjaxTest extends OxidTestCase
 
         $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove1', oxtitle='_testArticle1', oxshopid='" . $this->getShopIdTest() . "'", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove2', oxtitle='_testArticle2', oxshopid='" . $this->getShopIdTest() . "'", 'oxarticles');
-        $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove3', oxtitle='_testArticle3', oxshopid='" . $this->getShopIdTest() . "'", 'oxarticles');
 
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove1', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove1'", 'oxcategories');
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove2', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove2'", 'oxcategories');
-        $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove3', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove3'", 'oxcategories');
+
+        $this->addToDatabase("insert into oxarticles set
+                                            oxid='_testObjectRemoveChild1',
+                                            oxparentid='_testObjectRemove1',
+                                            oxtitle='_testArticleChild1',
+                                            oxshopid='" . $this->getShopIdTest() . "'",
+            'oxarticles');
+        $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemoveChild1', oxcatnid='_testCategory', oxobjectid = '_testObjectRemoveChild1'", 'oxcategories');
     }
 
     /**
@@ -152,7 +158,7 @@ class Unit_Admin_CategoryMainAjaxTest extends OxidTestCase
         $sOxid = '_testCategory';
         $this->setRequestParameter("oxid", $sOxid);
         $oView = $this->getMock("category_main_ajax", array("_getActionIds"));
-        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testObjectRemove1', '_testObjectRemove2')));
+        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testObjectRemove1')));
         $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2category where oxcatnid='$sOxid'"));
 
         $oView->removeArticle();

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,22 +25,23 @@
  */
 class discount_groups_ajax extends ajaxListComponent
 {
-
     /**
      * Columns array
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,  visible, multilanguage, ident
-        array('oxtitle', 'oxgroups', 1, 0, 0),
-        array('oxid', 'oxgroups', 0, 0, 0),
-        array('oxid', 'oxgroups', 0, 0, 1),
-    ),
-                                 'container2' => array(
-                                     array('oxtitle', 'oxgroups', 1, 0, 0),
-                                     array('oxid', 'oxgroups', 0, 0, 0),
-                                     array('oxid', 'oxobject2discount', 0, 0, 1),
-                                 )
+    protected $_aColumns = array(
+        // field , table,  visible, multilanguage, id
+        'container1' => array(
+            array('oxtitle', 'oxgroups', 1, 0, 0),
+            array('oxid', 'oxgroups', 0, 0, 0),
+            array('oxid', 'oxgroups', 0, 0, 1),
+        ),
+         'container2' => array(
+             array('oxtitle', 'oxgroups', 1, 0, 0),
+             array('oxid', 'oxgroups', 0, 0, 0),
+             array('oxid', 'oxobject2discount', 0, 0, 1),
+         )
     );
 
     /**
@@ -61,7 +62,7 @@ class discount_groups_ajax extends ajaxListComponent
         if (!$sId) {
             $sQAdd = " from {$sGroupTable} where 1 ";
         } else {
-            $sQAdd .= " from oxobject2discount, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2discount.oxobjectid ";
+            $sQAdd = " from oxobject2discount, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2discount.oxobjectid ";
             $sQAdd .= " and oxobject2discount.oxdiscountid = " . $oDb->quote($sId) .
                       " and oxobject2discount.oxtype = 'oxgroups' ";
         }
@@ -81,18 +82,18 @@ class discount_groups_ajax extends ajaxListComponent
      */
     public function removeDiscGroup()
     {
-        $oConfig = $this->getConfig();
+        $config = $this->getConfig();
 
-        $aRemoveGroups = $this->_getActionIds('oxobject2discount.oxid');
-        if ($oConfig->getRequestParameter('all')) {
+        $groupIds = $this->_getActionIds('oxobject2discount.oxid');
+        if ($config->getRequestParameter('all')) {
 
-            $sQ = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            $query = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
+            oxDb::getDb()->Execute($query);
 
-        } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sRemoveGroups = implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups));
-            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . $sRemoveGroups . ") ";
-            oxDb::getDb()->Execute($sQ);
+        } elseif ($groupIds && is_array($groupIds)) {
+            $groupIdsQuoted = implode(", ", oxDb::getInstance()->quoteArray($groupIds));
+            $query = "delete from oxobject2discount where oxobject2discount.oxid in (" . $groupIdsQuoted . ") ";
+            oxDb::getDb()->Execute($query);
         }
     }
 
@@ -101,23 +102,22 @@ class discount_groups_ajax extends ajaxListComponent
      */
     public function addDiscGroup()
     {
-        $oConfig = $this->getConfig();
-        $aChosenCat = $this->_getActionIds('oxgroups.oxid');
-        $soxId = $oConfig->getRequestParameter('synchoxid');
+        $config = $this->getConfig();
+        $groupIds = $this->_getActionIds('oxgroups.oxid');
+        $discountId = $config->getRequestParameter('synchoxid');
 
-
-        if ($oConfig->getRequestParameter('all')) {
-            $sGroupTable = $this->_getViewName('oxgroups');
-            $aChosenCat = $this->_getAll($this->_addFilter("select $sGroupTable.oxid " . $this->_getQuery()));
+        if ($config->getRequestParameter('all')) {
+            $groupTable = $this->_getViewName('oxgroups');
+            $groupIds = $this->_getAll($this->_addFilter("select $groupTable.oxid " . $this->_getQuery()));
         }
-        if ($soxId && $soxId != "-1" && is_array($aChosenCat)) {
-            foreach ($aChosenCat as $sChosenCat) {
-                $oObject2Discount = oxNew("oxBase");
-                $oObject2Discount->init('oxobject2discount');
-                $oObject2Discount->oxobject2discount__oxdiscountid = new oxField($soxId);
-                $oObject2Discount->oxobject2discount__oxobjectid = new oxField($sChosenCat);
-                $oObject2Discount->oxobject2discount__oxtype = new oxField("oxgroups");
-                $oObject2Discount->save();
+        if ($discountId && $discountId != "-1" && is_array($groupIds)) {
+            foreach ($groupIds as $groupId) {
+                $object2Discount = oxNew("oxBase");
+                $object2Discount->init('oxobject2discount');
+                $object2Discount->oxobject2discount__oxdiscountid = new oxField($discountId);
+                $object2Discount->oxobject2discount__oxobjectid = new oxField($groupId);
+                $object2Discount->oxobject2discount__oxtype = new oxField("oxgroups");
+                $object2Discount->save();
             }
         }
     }

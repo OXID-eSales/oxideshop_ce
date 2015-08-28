@@ -231,8 +231,6 @@ class category_main_ajax extends ajaxListComponent
     {
         $aArticles = $this->_getActionIds('oxarticles.oxid');
         $sCategoryID = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sShopID = $this->getConfig()->getShopId();
-        $oDb = oxDb::getDb();
 
         // adding
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
@@ -242,24 +240,54 @@ class category_main_ajax extends ajaxListComponent
 
         // adding
         if (is_array($aArticles) && count($aArticles)) {
-            $sProdIds = implode(", ", oxDb::getInstance()->quoteArray($aArticles));
-
-            $sDelete = "delete from oxobject2category where";
-            $sWhere = " oxcatnid=" . $oDb->quote($sCategoryID);
-            if (!$this->getConfig()->getConfigParam('blVariantsSelection')) {
-                $sQ = $sDelete . $sWhere . " and oxobjectid in
-                    ( select oxid from oxarticles where oxparentid in ( {$sProdIds} ) )";
-                $oDb->execute($sQ);
-            }
-            $sQ = $sDelete . $sWhere . " and oxobjectid in ( {$sProdIds} )";
-            $oDb->execute($sQ);
-
-            // updating oxtime values
-            $this->_updateOxTime($sProdIds);
+            $this->removeCategoryArticles($aArticles, $sCategoryID);
         }
 
         $this->resetArtSeoUrl($aArticles, $sCategoryID);
         $this->resetCounter("catArticle", $sCategoryID);
 
+    }
+
+    /**
+     * @param array $articles
+     * @param string $categoryID
+     */
+    protected function removeCategoryArticles($articles, $categoryID)
+    {
+        $db = oxDb::getDb();
+        $prodIds = implode(", ", oxDb::getInstance()->quoteArray($articles));
+
+        $delete = "delete from oxobject2category ";
+        $where = $this->getRemoveCategoryArticlesWhereSqlFilter($categoryID, $prodIds);
+
+
+        $sQ = $delete . $where;
+        $db->execute($sQ);
+
+        // updating oxtime values
+        $this->_updateOxTime($prodIds);
+    }
+
+    /**
+     * @param $categoryID
+     * @param $prodIds
+     *
+     * @return string
+     */
+    protected function getRemoveCategoryArticlesWhereSqlFilter($categoryID, $prodIds)
+    {
+        $db = oxDb::getDb();
+        $where = "where oxcatnid=" . $db->quote($categoryID);
+
+        $whereProductIdIn = " oxobjectid in ( {$prodIds} )";
+        if (!$this->getConfig()->getConfigParam('blVariantsSelection')) {
+            $whereProductIdIn = "( " . $whereProductIdIn . " OR oxobjectid in (
+                                        select oxid from oxarticles where oxparentid in ({$prodIds})
+                                        )
+            )";
+        }
+        $where = $where . ' AND ' . $whereProductIdIn;
+
+        return $where;
     }
 }

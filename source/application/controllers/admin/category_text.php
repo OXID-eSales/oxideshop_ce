@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -52,6 +52,11 @@ class Category_Text extends oxAdminDetails
             $this->_aViewData["catlang"] = $iCatLang;
 
             $oCategory->loadInLang($iCatLang, $soxId);
+
+            //Disable editing for derived items
+            if ($oCategory->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
 
             foreach (oxRegistry::getLang()->getLanguageNames() as $id => $language) {
                 $oLang = new stdClass();
@@ -90,6 +95,10 @@ class Category_Text extends oxAdminDetails
             $aParams['oxcategories__oxid'] = null;
         }
 
+        //Disable editing for derived items
+        if ($oCategory->isDerived()) {
+            return;
+        }
 
         $oCategory->setLanguage(0);
         $oCategory->assign($aParams);

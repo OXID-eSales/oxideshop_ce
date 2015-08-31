@@ -25,7 +25,6 @@
  */
 class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
 {
-
     /**
      * Template view parameters data provider
      */

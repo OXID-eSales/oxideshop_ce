@@ -17,7 +17,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -26,7 +26,6 @@
  */
 class oxwArticleBox extends oxWidget
 {
-
     /**
      * Names of components (classes) that are initiated and executed
      * before any other regular operation.
@@ -43,14 +42,12 @@ class oxwArticleBox extends oxWidget
      */
     protected $_sTemplate = 'widget/product/boxproduct.tpl';
 
-
     /**
      * Current article
      *
      * @var oxArticle|null
      */
     protected $_oArticle = null;
-
 
     /**
      * Returns active category
@@ -115,6 +112,7 @@ class oxwArticleBox extends oxWidget
             } else {
                 $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
 
+                $sAddDynParams = $this->updateDynamicParameters($sAddDynParams);
 
                 $oArticle = $this->_getArticleById($this->getViewParameter('anid'));
                 $this->_addDynParamsToLink($sAddDynParams, $oArticle);
@@ -302,5 +300,15 @@ class oxwArticleBox extends oxWidget
         }
 
         return $oArticle;
+    }
+
+    /**
+     * @param string $dynamicParameters
+     *
+     * @return string
+     */
+    protected function updateDynamicParameters($dynamicParameters)
+    {
+        return $dynamicParameters;
     }
 }

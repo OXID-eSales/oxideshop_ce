@@ -1071,7 +1071,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oEur->rate = '1.00';
         $oEur->dec = ',';
         $oEur->thousand = '.';
-        $oEur->sign = 'ï¿½';
+        $oEur->sign = '¤';
         $oEur->decimal = '2';
         $oEur->selected = 1;
 
@@ -1081,7 +1081,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oGbp->rate = '0.8565';
         $oGbp->dec = '.';
         $oGbp->thousand = '';
-        $oGbp->sign = 'ï¿½';
+        $oGbp->sign = '£';
         $oGbp->decimal = '2';
         $oGbp->selected = 0;
 
@@ -1130,7 +1130,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oEur->rate = '1.00';
         $oEur->dec = ',';
         $oEur->thousand = '.';
-        $oEur->sign = 'ï¿½';
+        $oEur->sign = '¤';
         $oEur->decimal = '2';
         $oEur->selected = 0;
 
@@ -1674,7 +1674,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oGbp->rate = '0.8565';
         $oGbp->dec = '.';
         $oGbp->thousand = '';
-        $oGbp->sign = 'ï¿½';
+        $oGbp->sign = '£';
         $oGbp->decimal = '2';
         $oGbp->selected = 0;
 
@@ -1694,7 +1694,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oEur->rate = '1.00';
         $oEur->dec = ',';
         $oEur->thousand = '.';
-        $oEur->sign = 'ï¿½';
+        $oEur->sign = '¤';
         $oEur->decimal = '2';
         $oEur->selected = 0;
 

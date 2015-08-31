@@ -123,7 +123,7 @@ class oxManufacturerList extends oxList
         foreach ($this as $sVndId => $oManufacturer) {
 
             // storing active manufacturer object
-            if ($sVndId == $sActCat) {
+            if ($sVndId === $sActCat) {
                 $this->setClickManufacturer($oManufacturer);
             }
 

@@ -25,7 +25,6 @@
  */
 class Unit_Components_Widgets_oxwServiceMenuTest extends OxidTestCase
 {
-
     /**
      * Testing oxwServiceMenu::getCompareItemsCnt()
      *
@@ -73,5 +72,4 @@ class Unit_Components_Widgets_oxwServiceMenuTest extends OxidTestCase
         $oServiceMenu = oxNew('oxwServiceMenu');
         $this->assertEquals($aResult, $oServiceMenu->getCompareItems(true));
     }
-
 }

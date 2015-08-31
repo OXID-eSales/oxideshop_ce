@@ -25,8 +25,6 @@
  */
 class Unit_Components_Widgets_oxwMiniBasketTest extends OxidTestCase
 {
-
-
     /**
      * Testing oxwMiniBasket::render()
      *

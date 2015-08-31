@@ -25,7 +25,6 @@
  */
 class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
 {
-
     /**
      * Test get active zoom picture.
      *
@@ -122,7 +121,6 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
 
         $this->assertEquals(array('sortby' => 'testsort', 'sortdir' => "desc"), $oController->getDefaultSorting());
     }
-
 
     /**
      * Test get parent product.
@@ -385,6 +383,9 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
     public function testGetVariantList()
     {
         $this->setRequestParameter('anid', '2077');
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->setRequestParameter('anid', '2278');
+        }
 
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $this->assertEquals(3, $oDetails->getVariantList()->count());
@@ -452,6 +453,9 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
     public function testGetManufacturer()
     {
         $sManId = '68342e2955d7401e6.18967838';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sManId = '88a996f859f94176da943f38ee067984';
+        }
         $oArticle = $this->getMock('oxarticle', array('getManufacturerId'));
         $oArticle->expects($this->any())->method('getManufacturerId')->will($this->returnValue(false));
 
@@ -473,6 +477,9 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
     public function testGetVendor()
     {
         $sVendId = '68342e2955d7401e6.18967838';
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sVendId = 'd2e44d9b31fcce448.08890330';
+        }
 
         $oArticle = $this->getMock('oxarticle', array('getVendorId'));
         $oArticle->expects($this->any())->method('getVendorId')->will($this->returnValue(false));
@@ -500,6 +507,9 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
         $oCategory = $oDetails->getCategory();
 
         $sCatId = "8a142c3e49b5a80c1.23676990";
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sCatId = "30e44ab8593023055.23928895";
+        }
 
         $this->assertNotNull($oCategory);
         $this->assertEquals($sCatId, $oCategory->getId());
@@ -620,8 +630,11 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
         $oList = $oDetails->getCrossSelling();
         $this->assertTrue($oList instanceof oxarticlelist);
 
-        $iCount = 3;
         $iCount = 2;
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $iCount = 3;
+        }
+
         $this->assertEquals($iCount, $oList->count());
     }
 

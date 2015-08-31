@@ -25,7 +25,6 @@
  */
 class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
 {
-
     /**
      * Testing oxwRating::render()
      *

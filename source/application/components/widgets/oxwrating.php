@@ -17,7 +17,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -27,7 +27,6 @@
  */
 class oxwRating extends oxWidget
 {
-
     /**
      * Names of components (classes) that are initiated and executed
      * before any other regular operation.
@@ -57,7 +56,6 @@ class oxwRating extends oxWidget
      * @var integer
      */
     protected $_iRatingCnt = null;
-
 
     /**
      * Executes parent::render().

@@ -25,7 +25,6 @@
  */
 class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
 {
-
     /**
      * Testing oxwReview::getReviewType()
      *

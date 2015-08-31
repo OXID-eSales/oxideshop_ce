@@ -999,65 +999,6 @@ class Unit_Models_oxCategoryListTest extends OxidTestCase
         $this->assertFalse($oCategoryList->getLoadFull());
     }
 
-    /**
-     * Test case for first cache call.
-     * Verify that the full category tree is loaded for caching.
-     * Verify that former load full flag setting is restored.
-     */
-    public function testLoadFromCacheLoadFullInitiallyFalse()
-    {
-        $this->markTestSkipped('EE only');
 
-        $cacheBackend = $this->getMock('oxCacheBackend', array('get', 'set', 'isActive'), array(), '', false);
-        $cacheBackend->expects($this->any())->method('get')->will($this->returnValue(null));
-        $cacheBackend->expects($this->any())->method('isActive')->will($this->returnValue(true));
 
-        $categoryList = $this->getMock('oxCategoryList', array('_getCacheBackend'), array(), '', false);
-        $categoryList->expects($this->any())->method('_getCacheBackend')->will($this->returnValue($cacheBackend));
-        $categoryList->setLoadFull(false);
-        $categoryList->load();
-
-        $this->assertSame(28, count($categoryList));
-        $this->assertFalse($categoryList->getLoadFull());
-    }
-
-    /**
-     * Test case for first cache call.
-     * Verify that the full category tree is loaded for caching.
-     * Verify that former load full flag setting is restored.
-     */
-    public function testLoadFromCacheLoadFullInitiallyTrue()
-    {
-        $this->markTestSkipped('EE only');
-
-        $cacheBackend = $this->getMock('oxCacheBackend', array('get', 'set', 'isActive'), array(), '', false);
-        $cacheBackend->expects($this->any())->method('get')->will($this->returnValue(null));
-        $cacheBackend->expects($this->any())->method('isActive')->will($this->returnValue(true));
-
-        $categoryList = $this->getMock('oxCategoryList', array('_getCacheBackend'), array(), '', false);
-        $categoryList->expects($this->any())->method('_getCacheBackend')->will($this->returnValue($cacheBackend));
-        $categoryList->setLoadFull(true);
-        $categoryList->load();
-
-        $this->assertSame(28, count($categoryList));
-        $this->assertTrue($categoryList->getLoadFull());
-    }
-
-    /**
-     * Calling function load in case cache is not activated.
-     */
-    public function testLoadFromDB()
-    {
-        $this->markTestSkipped('EE only');
-
-        $cacheBackend = $this->getMock('oxCacheBackend', array('get', 'set', 'isActive'), array(), '', false);
-        $cacheBackend->expects($this->any())->method('get')->will($this->returnValue(null));
-        $cacheBackend->expects($this->any())->method('isActive')->will($this->returnValue(false));
-
-        $categoryList = $this->getMock('oxCategoryList', array('_getCacheBackend'), array(), '', false);
-        $categoryList->expects($this->any())->method('_getCacheBackend')->will($this->returnValue($cacheBackend));
-        $categoryList->load();
-
-        $this->assertSame(21, count($categoryList));
-    }
 }

@@ -68,10 +68,10 @@ class modForTestGetBaseTemplateDirNonAdminNonSsl extends oxConfig
 class modForTestGetBaseTemplateDirAdminSsl extends oxConfig
 {
 
-    public function getConfigParam($sP)
+    public function getConfigParam($sName, $sDefault = null)
     {
-        $orig = parent::getConfigParam($sP);
-        if ($sP == 'sSSLShopURL') {
+        $orig = parent::getConfigParam($sName, $sDefault);
+        if ($sName == 'sSSLShopURL') {
             return $orig ? $orig : 'https://leuleuleu/';
         }
 
@@ -1071,7 +1071,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oEur->rate = '1.00';
         $oEur->dec = ',';
         $oEur->thousand = '.';
-        $oEur->sign = '¤';
+        $oEur->sign = 'ï¿½';
         $oEur->decimal = '2';
         $oEur->selected = 1;
 
@@ -1081,7 +1081,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oGbp->rate = '0.8565';
         $oGbp->dec = '.';
         $oGbp->thousand = '';
-        $oGbp->sign = '£';
+        $oGbp->sign = 'ï¿½';
         $oGbp->decimal = '2';
         $oGbp->selected = 0;
 
@@ -1130,7 +1130,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oEur->rate = '1.00';
         $oEur->dec = ',';
         $oEur->thousand = '.';
-        $oEur->sign = '¤';
+        $oEur->sign = 'ï¿½';
         $oEur->decimal = '2';
         $oEur->selected = 0;
 
@@ -1674,7 +1674,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oGbp->rate = '0.8565';
         $oGbp->dec = '.';
         $oGbp->thousand = '';
-        $oGbp->sign = '£';
+        $oGbp->sign = 'ï¿½';
         $oGbp->decimal = '2';
         $oGbp->selected = 0;
 
@@ -1694,7 +1694,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oEur->rate = '1.00';
         $oEur->dec = ',';
         $oEur->thousand = '.';
-        $oEur->sign = '¤';
+        $oEur->sign = 'ï¿½';
         $oEur->decimal = '2';
         $oEur->selected = 0;
 

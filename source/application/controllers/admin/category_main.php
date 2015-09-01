@@ -42,21 +42,20 @@ class Category_Main extends oxAdminDetails
 
         parent::render();
 
-        /** @var oxcategory $oCategory */
+        /** @var oxCategory $oCategory */
         $oCategory = oxNew("oxCategory");
 
-        $soxId = $this->getEditObjectId();
+        $categoryId = $this->getEditObjectId();
 
         $this->_aViewData["edit"] = $oCategory;
-        $this->_aViewData["oxid"] = $soxId;
+        $this->_aViewData["oxid"] = $categoryId;
 
-        if (isset($soxId) && $soxId != self::NEW_CATEGORY_ID) {
-
+        if (isset($categoryId) && $categoryId != self::NEW_CATEGORY_ID) {
             // generating category tree for select list
-            $this->_createCategoryTree("artcattree", $soxId);
+            $this->_createCategoryTree("artcattree", $categoryId);
 
             // load object
-            $oCategory->loadInLang($this->_iEditLang, $soxId);
+            $oCategory->loadInLang($this->_iEditLang, $categoryId);
 
             //Disable editing for derived items
             if ($oCategory->isDerived()) {
@@ -66,7 +65,7 @@ class Category_Main extends oxAdminDetails
             $oOtherLang = $oCategory->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oCategory->loadInLang(key($oOtherLang), $soxId);
+                $oCategory->loadInLang(key($oOtherLang), $categoryId);
             }
 
             // remove already created languages
@@ -229,21 +228,21 @@ class Category_Main extends oxAdminDetails
     /**
      * Delete category picture, specified in $sField parameter
      *
-     * @param oxCategory $oItem  active category object
-     * @param string     $sField picture field name
+     * @param oxCategory $item  active category object
+     * @param string     $field picture field name
      *
      * @return null
      */
-    protected function _deleteCatPicture(oxCategory $oItem, $sField)
+    protected function _deleteCatPicture(oxCategory $item, $field)
     {
-        if ($oItem->isDerived()) {
+        if ($item->isDerived()) {
             return;
         }
 
         $myConfig = $this->getConfig();
-        $sItemKey = 'oxcategories__' . $sField;
+        $sItemKey = 'oxcategories__' . $field;
 
-        switch ($sField) {
+        switch ($field) {
             case 'oxthumb':
                 $sImgType = 'TC';
                 break;
@@ -267,10 +266,10 @@ class Category_Main extends oxAdminDetails
             $oUtilsFile = oxRegistry::get("oxUtilsFile");
 
             $sDir = $myConfig->getPictureDir(false);
-            $myUtilsPic->safePictureDelete($oItem->$sItemKey->value, $sDir . $oUtilsFile->getImageDirByType($sImgType), 'oxcategories', $sField);
+            $myUtilsPic->safePictureDelete($item->$sItemKey->value, $sDir . $oUtilsFile->getImageDirByType($sImgType), 'oxcategories', $field);
 
-            $oItem->$sItemKey = new oxField();
-            $oItem->save();
+            $item->$sItemKey = new oxField();
+            $item->save();
         }
     }
 
@@ -321,9 +320,11 @@ class Category_Main extends oxAdminDetails
     }
 
     /**
+     * Set parameters, language and files to category object.
+     *
      * @param oxCategory $category
-     * @param array $params
-     * @param string $categoryId
+     * @param array      $params
+     * @param string     $categoryId
      */
     protected function resetCategoryPictures($category, $params, $categoryId)
     {
@@ -341,8 +342,10 @@ class Category_Main extends oxAdminDetails
     }
 
     /**
+     * Set parameters, language and files to category object.
+     *
      * @param oxCategory $category
-     * @param array $params
+     * @param array      $params
      *
      * @return oxCategory
      */

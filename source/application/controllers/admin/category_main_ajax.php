@@ -190,8 +190,8 @@ class category_main_ajax extends ajaxListComponent
     {
         if ($sProdIds) {
             $sO2CView = $this->_getViewName('oxobject2category');
-            $sSqlShopFilter = $this->_getUpdateOxTimeSqlShopFilter();
-            $sSqlWhereShopFilter = $this->_getUpdateOxTimeSqlWhereFilter();
+            $sSqlShopFilter = $this->getUpdateOxTimeQueryShopFilter();
+            $sSqlWhereShopFilter = $this->getUpdateOxTimeSqlWhereFilter();
             $sQ = "update oxobject2category set oxtime = 0 where oxid in (
                       select _tmp.oxid from (
                           select oxobject2category.oxid from (
@@ -200,7 +200,7 @@ class category_main_ajax extends ajaxListComponent
                           ) as _subtmp
                           left join oxobject2category on oxobject2category.oxtime = _subtmp.oxtime
                            and oxobject2category.oxobjectid = _subtmp.oxobjectid
-                           where true {$sSqlWhereShopFilter}
+                           {$sSqlWhereShopFilter}
                       ) as _tmp
                    ) {$sSqlShopFilter}";
 
@@ -211,17 +211,20 @@ class category_main_ajax extends ajaxListComponent
     /**
      * @return string
      */
-    protected function _getUpdateOxTimeSqlShopFilter()
+    protected function getUpdateOxTimeQueryShopFilter()
     {
         return '';
     }
 
     /**
+     * Return where with "true " as this allows to concat query condition
+     * without knowing about other who changes this place (module or different edition).
+     *
      * @return string
      */
-    protected function _getUpdateOxTimeSqlWhereFilter()
+    protected function getUpdateOxTimeSqlWhereFilter()
     {
-        return '';
+        return 'where true ';
     }
 
     /**
@@ -248,7 +251,9 @@ class category_main_ajax extends ajaxListComponent
     }
 
     /**
-     * @param array $articles
+     * Delete articles from category (from oxobject2category).
+     *
+     * @param array  $articles
      * @param string $categoryID
      */
     protected function removeCategoryArticles($articles, $categoryID)
@@ -257,7 +262,7 @@ class category_main_ajax extends ajaxListComponent
         $prodIds = implode(", ", oxDb::getInstance()->quoteArray($articles));
 
         $delete = "delete from oxobject2category ";
-        $where = $this->getRemoveCategoryArticlesWhereSqlFilter($categoryID, $prodIds);
+        $where = $this->getRemoveCategoryArticlesQueryFilter($categoryID, $prodIds);
 
 
         $sQ = $delete . $where;
@@ -268,12 +273,14 @@ class category_main_ajax extends ajaxListComponent
     }
 
     /**
-     * @param $categoryID
-     * @param $prodIds
+     * Form query filter to remove articles from category.
+     *
+     * @param string $categoryID
+     * @param string $prodIds
      *
      * @return string
      */
-    protected function getRemoveCategoryArticlesWhereSqlFilter($categoryID, $prodIds)
+    protected function getRemoveCategoryArticlesQueryFilter($categoryID, $prodIds)
     {
         $db = oxDb::getDb();
         $where = "where oxcatnid=" . $db->quote($categoryID);

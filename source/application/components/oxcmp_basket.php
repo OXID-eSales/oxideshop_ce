@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -73,7 +73,7 @@ class oxcmp_basket extends oxView
                 if (!$oReservations->getTimeLeft()) {
                     $oBasket = $this->getSession()->getBasket();
                     if ($oBasket && $oBasket->getProductsCount()) {
-                        $oBasket->deleteBasket();
+                        $this->emptyBasket($oBasket);
                     }
                 }
                 $iLimit = (int) $oConfig->getConfigParam('iBasketReservationCleanPerRequest');
@@ -127,7 +127,7 @@ class oxcmp_basket extends oxView
      *
      * @return mixed
      */
-    public function tobasket($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false)
+    public function toBasket($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false)
     {
         // adding to basket is not allowed ?
         $myConfig = $this->getConfig();
@@ -463,9 +463,8 @@ class oxcmp_basket extends oxView
      *
      * @return mixed
      */
-    public function executeuserchoice()
+    public function executeUserChoice()
     {
-
         // redirect to basket
         if (oxRegistry::getConfig()->getRequestParameter("tobasket")) {
             return "basket";
@@ -476,6 +475,15 @@ class oxcmp_basket extends oxView
         }
     }
 
+    /**
+     * Deletes user basket object from session and saved one from DB if needed.
+     *
+     * @param oxBasket $oBasket
+     */
+    protected function emptyBasket($oBasket)
+    {
+        $oBasket->deleteBasket();
+    }
 
     /**
      * Prepare information for adding product to basket.

@@ -762,7 +762,6 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
         $this->assertTrue($oCB->isRootCatChanged());
     }
 
-
     public function testInitNormalShop()
     {
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
@@ -853,5 +852,4 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
         $this->assertNull($oCB->executeuserchoice());
     }
-
 }

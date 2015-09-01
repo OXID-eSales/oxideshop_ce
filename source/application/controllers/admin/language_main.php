@@ -69,7 +69,6 @@ class Language_Main extends oxAdminDetails
     {
         $myConfig = $this->getConfig();
 
-
         parent::render();
 
         $sOxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
@@ -92,9 +91,6 @@ class Language_Main extends oxAdminDetails
      */
     public function save()
     {
-        $myConfig = $this->getConfig();
-
-
         parent::save();
 
         $sOxId = $this->getEditObjectId();

@@ -25,6 +25,9 @@
  */
 class discount_groups_ajax extends ajaxListComponent
 {
+    /** If this discount id comes from request, it means that new discount should be created. */
+    const NEW_DISCOUNT_ID = "-1";
+
     /**
      * Columns array
      *
@@ -110,7 +113,7 @@ class discount_groups_ajax extends ajaxListComponent
             $groupTable = $this->_getViewName('oxgroups');
             $groupIds = $this->_getAll($this->_addFilter("select $groupTable.oxid " . $this->_getQuery()));
         }
-        if ($discountId && $discountId != "-1" && is_array($groupIds)) {
+        if ($discountId && $discountId != self::NEW_DISCOUNT_ID && is_array($groupIds)) {
             foreach ($groupIds as $groupId) {
                 $object2Discount = oxNew("oxBase");
                 $object2Discount->init('oxobject2discount');

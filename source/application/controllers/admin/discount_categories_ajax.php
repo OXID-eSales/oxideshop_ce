@@ -25,6 +25,9 @@
  */
 class discount_categories_ajax extends ajaxListComponent
 {
+    /** If this discount id comes from request, it means that new discount should be created. */
+    const NEW_DISCOUNT_ID = "-1";
+
     /**
      * Columns array
      *
@@ -120,7 +123,7 @@ class discount_categories_ajax extends ajaxListComponent
             $categoryTable = $this->_getViewName('oxcategories');
             $categoryIds = $this->_getAll($this->_addFilter("select $categoryTable.oxid " . $this->_getQuery()));
         }
-        if ($discountId && $discountId != "-1" && is_array($categoryIds)) {
+        if ($discountId && $discountId != self::NEW_DISCOUNT_ID && is_array($categoryIds)) {
             foreach ($categoryIds as $categoryId) {
                 $this->addCategoryToDiscount($discountId, $categoryId);
             }

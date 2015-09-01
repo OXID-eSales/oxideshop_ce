@@ -25,6 +25,8 @@
  */
 class discount_articles_ajax extends ajaxListComponent
 {
+    /**  */
+    const NEW_DISCOUNT_LIST_ID = "-1";
 
     /**
      * If true extended column selection will be build
@@ -143,7 +145,7 @@ class discount_articles_ajax extends ajaxListComponent
             $articleTable = $this->_getViewName('oxarticles');
             $articleIds = $this->_getAll(parent::_addFilter("select $articleTable.oxid " . $this->_getQuery()));
         }
-        if ($discountListId && $discountListId != "-1" && is_array($articleIds)) {
+        if ($discountListId && $discountListId != self::NEW_DISCOUNT_LIST_ID && is_array($articleIds)) {
             foreach ($articleIds as $articleId) {
                 $this->addArticleToDiscount($discountListId, $articleId);
             }

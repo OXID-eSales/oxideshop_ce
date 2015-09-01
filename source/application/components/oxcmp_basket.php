@@ -153,7 +153,6 @@ class oxcmp_basket extends oxView
                 oxRegistry::getSession()->setVariable('_newitem', $oNewItem);
             }
 
-
             // redirect to basket
             return $this->_getRedirectUrl();
         }

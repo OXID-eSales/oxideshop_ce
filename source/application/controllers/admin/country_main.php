@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -36,8 +36,6 @@ class Country_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
-
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
@@ -85,9 +83,6 @@ class Country_Main extends oxAdminDetails
      */
     public function save()
     {
-        $myConfig = $this->getConfig();
-
-
         parent::save();
 
         $soxId = $this->getEditObjectId();
@@ -123,9 +118,6 @@ class Country_Main extends oxAdminDetails
      */
     public function saveinnlang()
     {
-        $myConfig = $this->getConfig();
-
-
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 

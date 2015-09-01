@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -45,15 +45,16 @@ class Unit_Admin_DeliveryArticlesAjaxTest extends OxidTestCase
         oxDb::getDb()->execute("insert into oxobject2delivery set oxid='_testDeliveryDeleteAll1', oxdeliveryid='_testDelieveryRemoveAll', oxobjectid='_testObjectId', oxtype='oxarticles'");
         oxDb::getDb()->execute("insert into oxobject2delivery set oxid='_testDeliveryDeleteAll2', oxdeliveryid='_testDelieveryRemoveAll', oxobjectid='_testObjectId', oxtype='oxarticles'");
 
+        $shopId = $this->getConfig()->getEdition() === 'EE' ? '1' : 'oxbaseshop';
 
+        oxDb::getDb()->execute("insert into oxarticles set oxid='_testArticle1', oxshopid='" . $shopId . "', oxtitle='_testArticle1'");
+        oxDb::getDb()->execute("insert into oxarticles set oxid='_testArticle2', oxshopid='" . $shopId . "', oxtitle='_testArticle2'");
 
-        oxDb::getDb()->execute("insert into oxarticles set oxid='_testArticle1', oxshopid='oxbaseshop', oxtitle='_testArticle1'");
-        oxDb::getDb()->execute("insert into oxarticles set oxid='_testArticle2', oxshopid='oxbaseshop', oxtitle='_testArticle2'");
-
-        $this->setArticlesViewTable('oxv_oxarticles_de');
-        $this->setCategoriesViewTable('oxv_oxcategories_de');
-        $this->setObject2CategoryViewTable('oxobject2category');
-
+        if ($this->getConfig()->getEdition() !== 'EE') {
+            $this->setArticlesViewTable('oxv_oxarticles_de');
+            $this->setCategoriesViewTable('oxv_oxcategories_de');
+            $this->setObject2CategoryViewTable('oxobject2category');
+        }
     }
 
     /**

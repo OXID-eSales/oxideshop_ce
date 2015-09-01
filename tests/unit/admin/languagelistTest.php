@@ -28,37 +28,37 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
 
     /**
      * Language_List::DeleteEntry() test case
-     *
-     * @return null
      */
     public function testDeleteEntry()
     {
         $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
         $this->setRequestParameter('oxid', 1);
 
-        $iCnt = 0;
+        $oConfig = $this->getMock("oxConfig", array("getConfigParam", "saveShopConfVar"));
 
-        $oConfig = $this->getMock("oxconfig", array("getConfigParam", "saveShopConfVar"));
+        $map = array(
+            array('blAllowSharedEdit',  null, "1"),
+            array('aLanguageParams', null, array(1 => array('baseId' => 1))),
+            array('aLanguages', null, array(1 => 1)),
+            array('aLanguageURLs', null, array(1 => 1)),
+            array('aLanguageSSLURLs', null, array(1 => 1)),
+            array('sDefaultLang', null, 1),
+        );
+        $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValueMap($map));
 
-
-        $oConfig->expects($this->at($iCnt++))->method('getConfigParam')->with($this->equalTo('aLanguageParams'))->will($this->returnValue(array(1 => array('baseId' => 1))));
-        $oConfig->expects($this->at($iCnt++))->method('getConfigParam')->with($this->equalTo('aLanguages'))->will($this->returnValue(array(1 => 1)));
-        $oConfig->expects($this->at($iCnt++))->method('getConfigParam')->with($this->equalTo('aLanguageURLs'))->will($this->returnValue(array(1 => 1)));
-        $oConfig->expects($this->at($iCnt++))->method('getConfigParam')->with($this->equalTo('aLanguageSSLURLs'))->will($this->returnValue(array(1 => 1)));
-        $oConfig->expects($this->at($iCnt++))->method('saveShopConfVar')->with($this->equalTo('aarr'), $this->equalTo('aLanguageParams'), $this->equalTo(array()));
-        $oConfig->expects($this->at($iCnt++))->method('saveShopConfVar')->with($this->equalTo('aarr'), $this->equalTo('aLanguages'), $this->equalTo(array()));
-        $oConfig->expects($this->at($iCnt++))->method('saveShopConfVar')->with($this->equalTo('arr'), $this->equalTo('aLanguageURLs'), $this->equalTo(array()));
-        $oConfig->expects($this->at($iCnt++))->method('saveShopConfVar')->with($this->equalTo('arr'), $this->equalTo('aLanguageSSLURLs'), $this->equalTo(array()));
-        $oConfig->expects($this->at($iCnt++))->method('getConfigParam')->with($this->equalTo('sDefaultLang'))->will($this->returnValue(1));
-        $oConfig->expects($this->at($iCnt++))->method('saveShopConfVar')->with($this->equalTo('str'), $this->equalTo('sDefaultLang'), $this->equalTo(0));
+        $map = array(
+            array('aarr', "aLanguageParams", array(), null),
+            array('aarr', "aLanguages", array(), null),
+            array('arr', "aLanguageURLs", array(), null),
+            array('arr', "aLanguageSSLURLs", array(), null),
+            array('str', "sDefaultLang", 0, null),
+        );
+        $oConfig->expects($this->exactly(5))->method('saveShopConfVar')->will($this->returnValueMap($map));
 
         $aTasks = array("getConfig");
-        $aTasks[] = "_resetMultiLangDbFields";
 
         $oView = $this->getMock("Language_List", $aTasks, array(), '', false);
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
-
-        $oView->expects($this->once())->method('_resetMultiLangDbFields')->with($this->equalTo(1));
+        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $oView->deleteEntry();
     }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -48,8 +48,6 @@ class Language_List extends oxAdminList
     public function deleteEntry()
     {
         $myConfig = $this->getConfig();
-
-
         $sOxId = $this->getEditObjectId();
 
         $aLangData['params'] = $myConfig->getConfigParam('aLanguageParams');
@@ -84,10 +82,6 @@ class Language_List extends oxAdminList
         if ($iBaseId == $myConfig->getConfigParam('sDefaultLang')) {
             $myConfig->saveShopConfVar('str', 'sDefaultLang', 0);
         }
-
-        // reseting all multilanguage DB fields with deleted lang id
-        // to default value
-        $this->_resetMultiLangDbFields($iBaseId);
     }
 
     /**
@@ -98,7 +92,6 @@ class Language_List extends oxAdminList
      */
     public function render()
     {
-
         parent::render();
         $this->_aViewData['mylist'] = $this->_getLanguagesList();
 

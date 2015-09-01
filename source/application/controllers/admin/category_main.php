@@ -164,8 +164,7 @@ class Category_Main extends oxAdminDetails
             return;
         }
 
-        $this->setCategoryParameters($oCategory, $aParams);
-        $this->setCategoryFiles($oCategory);
+        $oCategory = $this->updateCategoryOnSave($oCategory, $aParams);
 
         $oCategory->save();
 
@@ -344,20 +343,17 @@ class Category_Main extends oxAdminDetails
     /**
      * @param oxCategory $category
      * @param array $params
+     *
+     * @return oxCategory
      */
-    protected function setCategoryParameters($category, $params)
+    protected function updateCategoryOnSave($category, $params)
     {
         $category->assign($params);
         $category->setLanguage($this->_iEditLang);
-    }
 
-    /**
-     * @param oxCategory $category
-     */
-    protected function setCategoryFiles($category)
-    {
-        /** @var oxUtilsFile $oUtilsFile */
-        $oUtilsFile = oxRegistry::get("oxUtilsFile");
-        $oUtilsFile->processFiles($category);
+        $utilsFile = oxRegistry::get("oxUtilsFile");
+        $category = $utilsFile->processFiles($category);
+
+        return $category;
     }
 }

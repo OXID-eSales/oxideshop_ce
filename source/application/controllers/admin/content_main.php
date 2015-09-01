@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -144,9 +144,6 @@ class Content_Main extends oxAdminDetails
             $aParams['oxcontents__oxfolder'] = '';
         }
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxcontents__oxshopid'] = $sShopID;
         $oContent = oxNew("oxcontent");
 
         if ($soxId != "-1") {
@@ -186,10 +183,6 @@ class Content_Main extends oxAdminDetails
         if (!isset($aParams['oxcontents__oxactive'])) {
             $aParams['oxcontents__oxactive'] = 0;
         }
-
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxcontents__oxshopid'] = $sShopID;
 
         $oContent = oxNew("oxcontent");
 

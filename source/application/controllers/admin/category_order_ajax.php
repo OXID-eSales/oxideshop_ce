@@ -235,7 +235,7 @@ class category_order_ajax extends ajaxListComponent
 
             $sQuotedCategoryId = $oDb->quote($oCategory->getId());
 
-            $sSqlShopFilter = $this->getRemNewOrderSqlWhereFilter();
+            $sSqlShopFilter = $this->updateQueryFilterForResetCategoryArticlesOrder();
             $sSelect = "update oxobject2category set oxpos = '0' where oxobject2category.oxcatnid = {$sQuotedCategoryId} {$sSqlShopFilter}";
             $oDb->execute($sSelect);
 
@@ -248,7 +248,7 @@ class category_order_ajax extends ajaxListComponent
     /**
      * @return string
      */
-    protected function getRemNewOrderSqlWhereFilter()
+    protected function updateQueryFilterForResetCategoryArticlesOrder()
     {
         return '';
     }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -64,6 +64,11 @@ class Delivery_Main extends oxAdminDetails
 
             $this->_aViewData["edit"] = $oDelivery;
 
+            //Disable editing for derived articles
+            if ($oDelivery->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
+
             // remove already created languages
             $aLang = array_diff($oLang->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
@@ -108,10 +113,6 @@ class Delivery_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxdelivery__oxshopid'] = $sShopID;
-
         $oDelivery = oxNew("oxdelivery");
 
         if ($soxId != "-1") {
@@ -137,6 +138,10 @@ class Delivery_Main extends oxAdminDetails
             $aParams['oxdelivery__oxsort'] = 9999;
         }
 
+        //Disable editing for derived articles
+        if ($oDelivery->isDerived()) {
+            return;
+        }
 
         $oDelivery->setLanguage(0);
         $oDelivery->assign($aParams);
@@ -158,10 +163,6 @@ class Delivery_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxdelivery__oxshopid'] = $sShopID;
-
         $oDelivery = oxNew("oxdelivery");
 
         if ($soxId != "-1") {
@@ -178,6 +179,10 @@ class Delivery_Main extends oxAdminDetails
             $aParams['oxdelivery__oxfixed'] = 0;
         }
 
+        //Disable editing for derived articles
+        if ($oDelivery->isDerived()) {
+            return;
+        }
 
         $oDelivery->setLanguage(0);
         $oDelivery->assign($aParams);

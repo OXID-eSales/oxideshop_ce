@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -89,7 +89,7 @@ class oxSuperCfg
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
      *
-     * @return null;
+     * @return null
      */
     public function __construct()
     {
@@ -98,7 +98,7 @@ class oxSuperCfg
     /**
      * oxConfig instance getter
      *
-     * @return oxconfig
+     * @return oxConfig
      */
     public function getConfig()
     {
@@ -112,7 +112,7 @@ class oxSuperCfg
     /**
      * oxConfig instance setter
      *
-     * @param oxconfig $oConfig config object
+     * @param oxConfig $oConfig config object
      *
      * @return null
      */

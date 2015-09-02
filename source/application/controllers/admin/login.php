@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -26,6 +26,8 @@
  */
 class Login extends oxAdminView
 {
+    /** Login page view id. */
+    CONST VIEW_ID = 'login';
 
     /**
      * Sets value for _sThisAction to "login".
@@ -52,18 +54,12 @@ class Login extends oxAdminView
         }
 
         //resets user once on this screen.
-        $oUser = oxNew("oxuser");
+        $oUser = oxNew("oxUser");
         $oUser->logout();
 
         oxView::render();
 
-        //if( $myConfig->blDemoMode)
-        $oBaseShop = oxNew("oxshop");
-
-        $oBaseShop->load($myConfig->getBaseShopId());
-        $sVersion = $oBaseShop->oxshops__oxversion->value;
-
-        $this->getViewConfig()->setViewConfigParam('sShopVersion', $sVersion);
+        $this->setShopConfigParameters();
 
         if ($myConfig->isDemoShop()) {
             // demo
@@ -85,6 +81,19 @@ class Login extends oxAdminView
         }
 
         return "login.tpl";
+    }
+
+    /**
+     * Sets configuration parameters related to current shop.
+     */
+    protected function setShopConfigParameters()
+    {
+        $myConfig = $this->getConfig();
+
+        $oBaseShop = oxNew("oxShop");
+        $oBaseShop->load($myConfig->getBaseShopId());
+        $sVersion = $oBaseShop->oxshops__oxversion->value;
+        $this->getViewConfig()->setViewConfigParam('sShopVersion', $sVersion);
     }
 
     /**
@@ -168,13 +177,13 @@ class Login extends oxAdminView
     }
 
     /**
-     * authorization
+     * Users are always authorized to use login page.
+     * Rewrites authorization method.
      *
      * @return boolean
      */
     protected function _authorize()
     {
-        // users are always authorized to use login page
         return true;
     }
 
@@ -185,9 +194,8 @@ class Login extends oxAdminView
      */
     public function getViewId()
     {
-        return strtolower(get_class($this));
+        return self::VIEW_ID;
     }
-
 
     /**
      * Get available admin interface languages

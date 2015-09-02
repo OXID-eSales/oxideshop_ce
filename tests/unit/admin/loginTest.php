@@ -247,7 +247,7 @@ class Unit_Admin_loginTest extends OxidTestCase
     public function testGetViewId()
     {
         $oView = oxNew('Login');
-        $this->assertEquals(strtolower("Login"), $oView->getViewId());
+        $this->assertEquals('login', $oView->getViewId());
     }
 
     /**
@@ -260,7 +260,6 @@ class Unit_Admin_loginTest extends OxidTestCase
         $oView = oxNew('Login');
         $this->assertTrue($oView->UNITauthorize());
     }
-
 
     /**
      * Testing login::checklogin()

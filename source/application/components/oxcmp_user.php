@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -256,7 +256,6 @@ class oxcmp_user extends oxView
             $oBasket->onUpdate();
         }
 
-
         return 'payment';
     }
 
@@ -346,6 +345,7 @@ class oxcmp_user extends oxView
             // finalizing ..
             $this->_afterLogout();
 
+            $this->resetPermissions();
 
             if ($this->getParent()->isEnabledPrivateSales()) {
                 return 'account';
@@ -356,6 +356,13 @@ class oxcmp_user extends oxView
                 oxRegistry::getUtils()->redirect($this->_getLogoutLink());
             }
         }
+    }
+
+    /**
+     * Any additional permission reset actions required on logout or changeuser actions
+     */
+    protected function resetPermissions()
+    {
     }
 
     /**
@@ -457,6 +464,7 @@ class oxcmp_user extends oxView
             $iSubscriptionStatus = $oUser->getNewsSubscription()->getOptInStatus();
 
             $oUser->createUser();
+            $oUser = $this->configureUserBeforeCreation($oUser);
             $oUser->load($oUser->getId());
             $oUser->changeUserData($oUser->oxuser__oxusername->value, $sPassword, $sPassword, $aInvAdress, $aDelAdress);
 
@@ -537,6 +545,18 @@ class oxcmp_user extends oxView
         }
 
         return $sAction;
+    }
+
+    /**
+     * If any additional configurations required right before user creation
+     *
+     * @param oxUser $user
+     */
+    protected function configureUserBeforeCreation($user)
+    {
+        $user->setUseMaster();
+
+        return $user;
     }
 
     /**
@@ -649,6 +669,7 @@ class oxcmp_user extends oxView
             return;
         }
 
+        $this->resetPermissions();
 
         // order remark
         $sOrderRemark = oxRegistry::getConfig()->getRequestParameter('order_remark', true);

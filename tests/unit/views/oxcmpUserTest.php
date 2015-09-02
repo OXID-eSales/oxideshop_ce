@@ -205,6 +205,10 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testLogoutForLoginFeature()
     {
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->markTestSkipped("Skip CE/PE related tests for EE edition");
+        }
+
         oxTestModules::addFunction("oxUser", "logout", "{ return true;}");
 
         $aMockFnc = array('_afterLogout', '_getLogoutLink', 'getParent');
@@ -270,8 +274,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oParent = $this->getMock('oxubase', array("isEnabledPrivateSales"));
         $oParent->expects($this->once())->method('isEnabledPrivateSales')->will($this->returnValue(true));
 
-        $this->getProxyClass("oxcmp_user");
-        $oUserView = $this->getMock('oxcmp_userPROXY', array('login', 'getParent'));
+        $oUserView = $this->getMock($this->getProxyClassName("oxcmp_user"), array('login', 'getParent'));
         $oUserView->expects($this->any())->method('login')->will($this->returnValue('payment'));
         $oUserView->expects($this->any())->method('getParent')->will($this->returnValue($oParent));
 
@@ -330,8 +333,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oParent = $this->getMock('oxubase', array("isEnabledPrivateSales"));
         $oParent->expects($this->once())->method('isEnabledPrivateSales')->will($this->returnValue(true));
 
-        $this->getProxyClass("oxcmp_user");
-        $oUserView = $this->getMock('oxcmp_userPROXY', array('getParent'));
+        $oUserView = $this->getMock($this->getProxyClassName("oxcmp_user"), array('getParent'));
         $oUserView->expects($this->any())->method('getParent')->will($this->returnValue($oParent));
         $this->assertNull($oUserView->createUser());
     }
@@ -556,6 +558,10 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testAfterLogin()
     {
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->markTestSkipped("Skip CE/PE related tests for EE edition");
+        }
+
         $this->setRequestParameter('blPerfNoBasketSaving', true);
         $oBasket = $this->getMock('oxBasket', array('onUpdate'));
         $oBasket->expects($this->once())->method('onUpdate');
@@ -566,6 +572,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
 
         $oUser = $this->getMock('oxcmp_user', array('inGroup'));
         $oUser->expects($this->once())->method('inGroup')->will($this->returnValue(false));
+
         $aMockFnc = array('getSession', "getLoginStatus");
         $oUserView = $this->getMock('oxcmp_user', $aMockFnc);
         $oUserView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
@@ -643,6 +650,10 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testLogout()
     {
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->markTestSkipped("Skip CE/PE related tests for EE edition");
+        }
+
         oxTestModules::addFunction("oxUtils", "redirect", "{ return true;}");
         oxTestModules::addFunction("oxUser", "logout", "{ return true;}");
         $this->setRequestParameter('redirect', true);
@@ -653,12 +664,10 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oParent->expects($this->once())->method('isEnabledPrivateSales')->will($this->returnValue(false));
 
         $aMockFnc = array('_afterLogout', '_getLogoutLink', 'getParent');
-
         $oUserView = $this->getMock('oxcmp_user', $aMockFnc);
         $oUserView->expects($this->once())->method('_afterLogout');
         $oUserView->expects($this->once())->method('_getLogoutLink')->will($this->returnValue("testurl"));
         $oUserView->expects($this->any())->method('getParent')->will($this->returnValue($oParent));
-
 
         $oUserView->logout();
         $this->assertEquals(3, $oUserView->getLoginStatus());
@@ -740,8 +749,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oParent = $this->getMock('oxubase', array("isEnabledPrivateSales"));
         $oParent->expects($this->once())->method('isEnabledPrivateSales')->will($this->returnValue(false));
 
-        $this->getProxyClass("oxcmp_user");
-        $oUserView = $this->getMock('oxcmp_userPROXY', array('getParent'));
+        $oUserView = $this->getMock($this->getProxyClassName("oxcmp_user"), array('getParent'));
         $oUserView->expects($this->any())->method('getParent')->will($this->returnValue($oParent));
         $this->assertEquals('payment?new_user=1&success=1', $oUserView->createUser());
         $this->assertEquals('TestRemark', oxRegistry::getSession()->getVariable('ordrem'));
@@ -769,8 +777,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oParent = $this->getMock('oxubase', array("isEnabledPrivateSales"));
         $oParent->expects($this->once())->method('isEnabledPrivateSales')->will($this->returnValue(false));
 
-        $this->getProxyClass("oxcmp_user");
-        $oUserView = $this->getMock('oxcmp_userPROXY', array('_afterLogin', 'getParent'));
+        $oUserView = $this->getMock($this->getProxyClassName("oxcmp_user"), array('_afterLogin', 'getParent'));
         $oUserView->expects($this->once())->method('_afterLogin');
         $oUserView->expects($this->any())->method('getParent')->will($this->returnValue($oParent));
         $this->assertEquals('payment?new_user=1&success=1', $oUserView->createUser());
@@ -854,8 +861,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testRegisterUser()
     {
-        $this->getProxyClass("oxcmp_user");
-        $oUserView = $this->getMock('oxcmp_userPROXY', array('createuser', 'logout'));
+        $oUserView = $this->getMock($this->getProxyClassName("oxcmp_user"), array('createuser', 'logout'));
         $oUserView->expects($this->once())->method('createuser')->will($this->returnValue("payment"));
         $oUserView->setNonPublicVar('_blIsNewUser', true);
         $this->assertEquals('register?success=1', $oUserView->registerUser());
@@ -868,8 +874,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testRegisterUserWithNewsletterError()
     {
-        $this->getProxyClass("oxcmp_user");
-        $oUserView = $this->getMock('oxcmp_userPROXY', array('createuser', 'logout'));
+        $oUserView = $this->getMock($this->getProxyClassName("oxcmp_user"), array('createuser', 'logout'));
         $oUserView->expects($this->once())->method('createuser')->will($this->returnValue("payment"));
         $oUserView->setNonPublicVar('_blIsNewUser', true);
         $oUserView->setNonPublicVar('_blNewsSubscriptionStatus', false);
@@ -883,6 +888,10 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testChangeUserNoRedirect()
     {
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->markTestSkipped("Skip CE/PE related tests for EE edition");
+        }
+
         $this->setRequestParameter('order_remark', 'TestRemark');
         $this->setRequestParameter('blnewssubscribed', null);
         $aRawVal = array('oxuser__oxfname'     => 'fname',
@@ -894,7 +903,6 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
                          'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984');
         $this->setRequestParameter('invadr', $aRawVal);
 
-        $this->getProxyClass("oxcmp_user");
         $oUser = $this->getMock('oxUser', array('changeUserData', 'getNewsSubscription', 'setNewsSubscription'));
         $oUser->expects($this->once())->method('changeUserData')->with(
             $this->equalTo('test@oxid-esales.com'),
@@ -913,8 +921,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         $aMockFnc = array('getSession', 'getUser', '_getDelAddressData');
-        $this->getProxyClass("oxcmp_user");
-        $oUserView = $this->getMock('oxcmp_userPROXY', $aMockFnc);
+        $oUserView = $this->getMock($this->getProxyClassName("oxcmp_user"), $aMockFnc);
         $oUserView->expects($this->once())->method('_getDelAddressData')->will($this->returnValue(null));
         $oUserView->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
         $oUserView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));

@@ -67,51 +67,51 @@ class manufacturer_main_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
 
         // looking for table/view
-        $sArtTable = $this->_getViewName('oxarticles');
-        $sO2CView = $this->_getViewName('oxobject2category');
-        $oDb = oxDb::getDb();
+        $articlesViewName = $this->_getViewName('oxarticles');
+        $objectToCategoryViewName = $this->_getViewName('oxobject2category');
+        $database = oxDb::getDb();
 
-        $sManufacturerId = $myConfig->getRequestParameter('oxid');
-        $sSynchManufacturerId = $myConfig->getRequestParameter('synchoxid');
+        $manufacturerId = $config->getRequestParameter('oxid');
+        $syncedManufacturerId = $config->getRequestParameter('synchoxid');
 
         // Manufacturer selected or not ?
-        if (!$sManufacturerId) {
+        if (!$manufacturerId) {
             // performance
-            $sQAdd = ' from ' . $sArtTable . ' where ' . $sArtTable . '.oxshopid="' . $myConfig->getShopId() . '" and 1 ';
-            $sQAdd .= $myConfig->getRequestParameter('blVariantsSelection') ? '' : " and $sArtTable.oxparentid = '' and $sArtTable.oxmanufacturerid != " . $oDb->quote($sSynchManufacturerId);
-        } elseif ($sSynchManufacturerId && $sSynchManufacturerId != $sManufacturerId) {
+            $query = ' from ' . $articlesViewName . ' where ' . $articlesViewName . '.oxshopid="' . $config->getShopId() . '" and 1 ';
+            $query .= $config->getRequestParameter('blVariantsSelection') ? '' : " and $articlesViewName.oxparentid = '' and $articlesViewName.oxmanufacturerid != " . $database->quote($syncedManufacturerId);
+        } elseif ($syncedManufacturerId && $syncedManufacturerId != $manufacturerId) {
             // selected category ?
-            $sQAdd = " from $sO2CView left join $sArtTable on ";
-            $sQAdd .= $myConfig->getRequestParameter('blVariantsSelection') ? " ( $sArtTable.oxid = $sO2CView.oxobjectid or $sArtTable.oxparentid = $sO2CView.oxobjectid )" : " $sArtTable.oxid = $sO2CView.oxobjectid ";
-            $sQAdd .= 'where ' . $sArtTable . '.oxshopid="' . $myConfig->getShopId() . '" and ' . $sO2CView . '.oxcatnid = ' . $oDb->quote($sManufacturerId) . ' and ' . $sArtTable . '.oxmanufacturerid != ' . $oDb->quote($sSynchManufacturerId);
-            $sQAdd .= $myConfig->getRequestParameter('blVariantsSelection') ? '' : " and $sArtTable.oxparentid = '' ";
+            $query = " from $objectToCategoryViewName left join $articlesViewName on ";
+            $query .= $config->getRequestParameter('blVariantsSelection') ? " ( $articlesViewName.oxid = $objectToCategoryViewName.oxobjectid or $articlesViewName.oxparentid = $objectToCategoryViewName.oxobjectid )" : " $articlesViewName.oxid = $objectToCategoryViewName.oxobjectid ";
+            $query .= 'where ' . $articlesViewName . '.oxshopid="' . $config->getShopId() . '" and ' . $objectToCategoryViewName . '.oxcatnid = ' . $database->quote($manufacturerId) . ' and ' . $articlesViewName . '.oxmanufacturerid != ' . $database->quote($syncedManufacturerId);
+            $query .= $config->getRequestParameter('blVariantsSelection') ? '' : " and $articlesViewName.oxparentid = '' ";
         } else {
-            $sQAdd = " from $sArtTable where $sArtTable.oxmanufacturerid = " . $oDb->quote($sManufacturerId);
-            $sQAdd .= $myConfig->getRequestParameter('blVariantsSelection') ? '' : " and $sArtTable.oxparentid = '' ";
+            $query = " from $articlesViewName where $articlesViewName.oxmanufacturerid = " . $database->quote($manufacturerId);
+            $query .= $config->getRequestParameter('blVariantsSelection') ? '' : " and $articlesViewName.oxparentid = '' ";
         }
 
-        return $sQAdd;
+        return $query;
     }
 
     /**
      * Adds filter SQL to current query
      *
-     * @param string $sQ query to add filter condition
+     * @param string $query query to add filter condition
      *
      * @return string
      */
-    protected function _addFilter($sQ)
+    protected function _addFilter($query)
     {
-        $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = parent::_addFilter($sQ);
+        $articleViewName = $this->_getViewName('oxarticles');
+        $query = parent::_addFilter($query);
 
         // display variants or not ?
-        $sQ .= $this->getConfig()->getRequestParameter('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';
+        $query .= $this->getConfig()->getRequestParameter('blVariantsSelection') ? ' group by ' . $articleViewName . '.oxid ' : '';
 
-        return $sQ;
+        return $query;
     }
 
     /**
@@ -119,20 +119,20 @@ class manufacturer_main_ajax extends ajaxListComponent
      */
     public function removeManufacturer()
     {
-        $myConfig = $this->getConfig();
-        $aRemoveArt = $this->_getActionIds('oxarticles.oxid');
-        $sOxid = $myConfig->getRequestParameter('oxid');
+        $config = $this->getConfig();
+        $articleIds = $this->_getActionIds('oxarticles.oxid');
+        $manufacturerId = $config->getRequestParameter('oxid');
 
         if ($this->getConfig()->getRequestParameter("all")) {
-            $sArtTable = $this->_getViewName('oxarticles');
-            $aRemoveArt = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
+            $articleViewTable = $this->_getViewName('oxarticles');
+            $articleIds = $this->_getAll($this->_addFilter("select $articleViewTable.oxid " . $this->_getQuery()));
         }
 
-        if (is_array($aRemoveArt) && !empty($aRemoveArt)) {
-            $sSelect = $this->formManufacturerRemovalQuery($aRemoveArt);
-            oxDb::getDb()->execute($sSelect);
+        if (is_array($articleIds) && !empty($articleIds)) {
+            $query = $this->formManufacturerRemovalQuery($articleIds);
+            oxDb::getDb()->execute($query);
 
-            $this->resetCounter("manufacturerArticle", $sOxid);
+            $this->resetCounter("manufacturerArticle", $manufacturerId);
         }
     }
 
@@ -156,22 +156,22 @@ class manufacturer_main_ajax extends ajaxListComponent
      */
     public function addManufacturer()
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
 
-        $aAddArticle = $this->_getActionIds('oxarticles.oxid');
-        $sSynchOxid = $myConfig->getRequestParameter('synchoxid');
+        $articleIds = $this->_getActionIds('oxarticles.oxid');
+        $manufacturerId = $config->getRequestParameter('synchoxid');
 
-        if ($myConfig->getRequestParameter('all')) {
-            $sArtTable = $this->_getViewName('oxarticles');
-            $aAddArticle = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
+        if ($config->getRequestParameter('all')) {
+            $articleViewName = $this->_getViewName('oxarticles');
+            $articleIds = $this->_getAll($this->_addFilter("select $articleViewName.oxid " . $this->_getQuery()));
         }
 
-        if ($sSynchOxid && $sSynchOxid != "-1" && is_array($aAddArticle)) {
-            $oDb = oxDb::getDb();
+        if ($manufacturerId && $manufacturerId != "-1" && is_array($articleIds)) {
+            $database = oxDb::getDb();
 
-            $sSelect = $this->formArticleToManufacturerAdditionQuery($sSynchOxid, $aAddArticle);
-            $oDb->execute($sSelect);
-            $this->resetCounter("manufacturerArticle", $sSynchOxid);
+            $query = $this->formArticleToManufacturerAdditionQuery($manufacturerId, $articleIds);
+            $database->execute($query);
+            $this->resetCounter("manufacturerArticle", $manufacturerId);
         }
     }
 
@@ -185,11 +185,11 @@ class manufacturer_main_ajax extends ajaxListComponent
      */
     protected function formArticleToManufacturerAdditionQuery($manufacturerId, $articlesToAdd)
     {
-        $db = oxDb::getDb();
+        $database = oxDb::getDb();
         $query = "
             UPDATE oxarticles
-            SET oxmanufacturerid = " . $db->quote($manufacturerId) . "
-            WHERE oxid IN ( " . implode(", ", $db->quoteArray($articlesToAdd)) . " )";
+            SET oxmanufacturerid = " . $database->quote($manufacturerId) . "
+            WHERE oxid IN ( " . implode(", ", $database->quoteArray($articlesToAdd)) . " )";
 
         return $query;
     }

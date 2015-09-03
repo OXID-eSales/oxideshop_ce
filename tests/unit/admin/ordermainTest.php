@@ -77,10 +77,10 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
     public function testSaveRecalculate()
     {
         //
-        if (OXID_VERSION_PE) {
-            oxTestModules::addFunction('oxorder', 'load', '{$this->oxorder__oxshopid = new oxField("oxbaseshop");}');
-        } else {
+        if ($this->getConfig()->getEdition() === 'EE') {
             oxTestModules::addFunction('oxorder', 'load', '{}');
+        } else {
+            oxTestModules::addFunction('oxorder', 'load', '{$this->oxorder__oxshopid = new oxField("oxbaseshop");}');
         }
         oxTestModules::addFunction('oxorder', 'save', '{}');
         oxTestModules::addFunction('oxorder', 'assign', '{}');
@@ -108,11 +108,10 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
      */
     public function testSaveNoRecalculate()
     {
-        //
-        if (OXID_VERSION_PE) {
-            oxTestModules::addFunction('oxorder', 'load', '{$this->oxorder__oxshopid = new oxField("oxbaseshop");}');
-        } else {
+        if ($this->getConfig()->getEdition() === 'EE') {
             oxTestModules::addFunction('oxorder', 'load', '{}');
+        } else {
+            oxTestModules::addFunction('oxorder', 'load', '{$this->oxorder__oxshopid = new oxField("oxbaseshop");}');
         }
         oxTestModules::addFunction('oxorder', 'save', '{ throw new Exception( "saveOrder" ); }');
         oxTestModules::addFunction('oxorder', 'assign', '{}');
@@ -120,7 +119,6 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
         oxTestModules::addFunction('oxorder', 'reloadDiscount', '{}');
         oxTestModules::addFunction('oxorder', 'recalculateOrder', '{ throw new Exception( "recalculateOrder" ); }');
 
-        // testing..
         try {
             $oView = oxNew('Order_Main');
             $oView->save();

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -102,10 +102,6 @@ class Order_Main extends oxAdminDetails
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxorder__oxshopid'] = $sShopID;
-
         $oOrder = oxNew("oxorder");
         if ($soxId != "-1") {
             $oOrder->load($soxId);
@@ -169,7 +165,7 @@ class Order_Main extends oxAdminDetails
     /**
      * Sends order.
      */
-    public function sendorder()
+    public function sendOrder()
     {
         $soxId = $this->getEditObjectId();
         $oOrder = oxNew("oxorder");
@@ -186,14 +182,14 @@ class Order_Main extends oxAdminDetails
                 $oEmail = oxNew("oxemail");
                 $oEmail->sendSendedNowMail($oOrder);
             }
-
+            $this->onOrderSend();
         }
     }
 
     /**
      * Sends download links.
      */
-    public function senddownloadlinks()
+    public function sendDownloadLinks()
     {
         $soxId = $this->getEditObjectId();
         $oOrder = oxNew("oxorder");
@@ -206,7 +202,7 @@ class Order_Main extends oxAdminDetails
     /**
      * Resets order shipping date.
      */
-    public function resetorder()
+    public function resetOrder()
     {
         $oOrder = oxNew("oxorder");
         if ($oOrder->load($this->getEditObjectId())) {
@@ -214,6 +210,21 @@ class Order_Main extends oxAdminDetails
             $oOrder->oxorder__oxsenddate = new oxField("0000-00-00 00:00:00");
             $oOrder->save();
 
+            $this->onOrderReset();
         }
+    }
+
+    /**
+     * Method is used for overriding.
+     */
+    protected function onOrderSend()
+    {
+    }
+
+    /**
+     * Method is used for overriding.
+     */
+    protected function onOrderReset()
+    {
     }
 }

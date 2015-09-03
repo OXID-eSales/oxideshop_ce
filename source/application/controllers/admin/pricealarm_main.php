@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -39,23 +39,7 @@ class PriceAlarm_Main extends oxAdminDetails
     {
         $myConfig = $this->getConfig();
 
-        // #1140 R - price must be checked from the object.
-        $sSql = "select oxarticles.oxid, oxpricealarm.oxprice from oxpricealarm, oxarticles " .
-                "where oxarticles.oxid = oxpricealarm.oxartid and oxpricealarm.oxsended = '000-00-00 00:00:00'";
-        $rs = oxDb::getDb()->Execute($sSql);
-        $iAllCnt = 0;
-
-        if ($rs != false && $rs->recordCount() > 0) {
-            while (!$rs->EOF) {
-                $oArticle = oxNew("oxArticle");
-                $oArticle->load($rs->fields[0]);
-                if ($oArticle->getPrice()->getBruttoPrice() <= $rs->fields[1]) {
-                    $iAllCnt++;
-                }
-                $rs->moveNext();
-            }
-        }
-        $this->_aViewData['iAllCnt'] = $iAllCnt;
+        $this->_aViewData['iAllCnt'] = $this->getActivePriceAlarmsCount();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
@@ -74,7 +58,7 @@ class PriceAlarm_Main extends oxAdminDetails
             //
             $oShop = oxNew("oxshop");
             $oShop->load($myConfig->getShopId());
-            $oShop = $this->addGlobalParams($oShop);
+            $this->addGlobalParams($oShop);
 
             if (!($iLang = $oPricealarm->oxpricealarm__oxlang->value)) {
                 $iLang = 0;
@@ -89,16 +73,6 @@ class PriceAlarm_Main extends oxAdminDetails
             if (isset($aParams['oxpricealarm__oxlongdesc']) && $aParams['oxpricealarm__oxlongdesc']) {
                 $oLetter->oxpricealarm__oxlongdesc = new oxField(stripslashes($aParams['oxpricealarm__oxlongdesc']), oxField::T_RAW);
             } else {
-                /*
-                                $smarty = oxRegistry::get("oxUtilsView")->getSmarty();
-                                $smarty->assign( "shop", $oShop );
-                                $smarty->assign( "product", $oPricealarm->getArticle() );
-                                $smarty->assign( "bidprice", $oPricealarm->getFProposedPrice());
-                                $smarty->assign( "currency", $oPricealarm->getPriceAlarmCurrency() );
-                                $smarty->assign( "currency", $oPricealarm->getPriceAlarmCurrency() );
-                */
-
-
                 $oEmail = oxNew("oxEmail");
                 $sDesc = $oEmail->sendPricealarmToCustomer($oPricealarm->oxpricealarm__oxemail->value, $oPricealarm, null, true);
 
@@ -154,5 +128,34 @@ class PriceAlarm_Main extends oxAdminDetails
         } else {
             $this->_aViewData["mail_err"] = 1;
         }
+    }
+
+    /**
+     * @return int
+     */
+    protected function getActivePriceAlarmsCount()
+    {
+        $myConfig = $this->getConfig();
+        $count = 0;
+
+        // #1140 R - price must be checked from the object.
+        $sSql = "select oxarticles.oxid, oxpricealarm.oxprice from oxpricealarm, oxarticles " .
+            "where oxarticles.oxid = oxpricealarm.oxartid and oxpricealarm.oxsended = '000-00-00 00:00:00'";
+        $rs = oxDb::getDb()->Execute($sSql);
+        $iAllCnt = 0;
+
+        if ($rs != false && $rs->recordCount() > 0) {
+            while (!$rs->EOF) {
+                $oArticle = oxNew("oxArticle");
+                $oArticle->load($rs->fields[0]);
+                if ($oArticle->getPrice()->getBruttoPrice() <= $rs->fields[1]) {
+                    $iAllCnt++;
+                }
+                $rs->moveNext();
+            }
+        }
+        $count = $iAllCnt;
+
+        return $count;
     }
 }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -46,7 +46,6 @@ class Manufacturer_Main extends oxAdminDetails
 
             $oOtherLang = $oManufacturer->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oManufacturer->loadInLang(key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oManufacturer;
@@ -99,10 +98,6 @@ class Manufacturer_Main extends oxAdminDetails
             $aParams['oxmanufacturers__oxactive'] = 0;
         }
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxmanufacturers__oxshopid'] = $sShopID;
-
         $oManufacturer = oxNew("oxmanufacturer");
 
         if ($soxId != "-1") {
@@ -111,6 +106,10 @@ class Manufacturer_Main extends oxAdminDetails
             $aParams['oxmanufacturers__oxid'] = null;
         }
 
+        //Disable editing for derived articles
+        if ($oManufacturer->isDerived()) {
+            return;
+        }
 
         //$aParams = $oManufacturer->ConvertNameArray2Idx( $aParams);
         $oManufacturer->setLanguage(0);
@@ -128,7 +127,7 @@ class Manufacturer_Main extends oxAdminDetails
      *
      * @return mixed
      */
-    public function saveinnlang()
+    public function saveInnLang()
     {
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
@@ -136,10 +135,6 @@ class Manufacturer_Main extends oxAdminDetails
         if (!isset($aParams['oxmanufacturers__oxactive'])) {
             $aParams['oxmanufacturers__oxactive'] = 0;
         }
-
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxmanufacturers__oxshopid'] = $sShopID;
 
         $oManufacturer = oxNew("oxmanufacturer");
 
@@ -149,6 +144,10 @@ class Manufacturer_Main extends oxAdminDetails
             $aParams['oxmanufacturers__oxid'] = null;
         }
 
+        //Disable editing for derived articles
+        if ($oManufacturer->isDerived()) {
+            return;
+        }
 
         //$aParams = $oManufacturer->ConvertNameArray2Idx( $aParams);
         $oManufacturer->setLanguage(0);

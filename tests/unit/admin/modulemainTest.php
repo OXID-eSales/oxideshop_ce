@@ -46,6 +46,9 @@ class Unit_Admin_ModuleMainTest extends OxidTestCase
      */
     public function testRender_loadingObject()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
         $oView = $this->getMock('Module_Main', array('getEditObjectId'));
         $oView->expects($this->any())->method('getEditObjectId')->will($this->returnValue('oe/invoicepdf'));
         $oView->render();

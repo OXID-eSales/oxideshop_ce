@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -27,7 +27,6 @@
  */
 class Payment_Main extends oxAdminDetails
 {
-
     /**
      * Keeps all act. fields to store
      */
@@ -46,11 +45,6 @@ class Payment_Main extends oxAdminDetails
 
         // remove itm from list
         unset($this->_aViewData["sumtype"][2]);
-
-        // all usergroups
-        $oGroups = oxNew("oxlist");
-        $oGroups->init("oxgroups");
-        $oGroups->selectString("select * from " . getViewName("oxgroups", $this->_iEditLang));
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
@@ -101,7 +95,6 @@ class Payment_Main extends oxAdminDetails
      */
     public function save()
     {
-
         parent::save();
 
         $soxId = $this->getEditObjectId();
@@ -161,13 +154,9 @@ class Payment_Main extends oxAdminDetails
      */
     public function saveinnlang()
     {
-
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxpayments__oxshopid'] = $sShopID;
         $oObj = oxNew("oxpayment");
 
         if ($soxId != "-1") {
@@ -195,10 +184,8 @@ class Payment_Main extends oxAdminDetails
      */
     public function delFields()
     {
-
         $oPayment = oxNew("oxpayment");
         if ($oPayment->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
-
             $aDelFields = oxRegistry::getConfig()->getRequestParameter("aFields");
             $this->_aFieldArray = oxRegistry::getUtils()->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value);
 
@@ -223,10 +210,8 @@ class Payment_Main extends oxAdminDetails
      */
     public function addField()
     {
-
         $oPayment = oxNew("oxpayment");
         if ($oPayment->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
-
             $this->_aFieldArray = oxRegistry::getUtils()->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value);
 
             $oField = new stdClass();

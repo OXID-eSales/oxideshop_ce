@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -28,7 +28,7 @@
  */
 class Module_Config extends Shop_Config
 {
-
+    /** @var string Template name. */
     protected $_sModule = 'shop_config.tpl';
 
     /**
@@ -48,10 +48,7 @@ class Module_Config extends Shop_Config
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
-
         $sModuleId = $this->_sModuleId = $this->getEditObjectId();
-        $sShopId = $myConfig->getShopId();
 
         $oModule = oxNew('oxModule');
 
@@ -172,7 +169,6 @@ class Module_Config extends Shop_Config
         );
     }
 
-
     /**
      * Saves shop configuration variables
      */
@@ -182,7 +178,7 @@ class Module_Config extends Shop_Config
 
         $this->resetContentCache();
 
-        $sModuleId = $this->_sModuleId = $this->getEditObjectId();
+        $this->_sModuleId = $this->getEditObjectId();
         $sShopId = $oConfig->getShopId();
 
         $sModuleId = $this->_getModuleForConfigVars();
@@ -220,5 +216,4 @@ class Module_Config extends Shop_Config
 
         return $sDbType;
     }
-
 }

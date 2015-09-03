@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -27,7 +27,6 @@
  */
 class Order_Address extends oxAdminDetails
 {
-
     /**
      * Executes parent method parent::render(), creates oxorder object
      * and passes it's data to Smarty engine. Returns name of template
@@ -75,16 +74,13 @@ class Order_Address extends oxAdminDetails
         $aFields = array();
 
         foreach ($aData as $sName => $sValue) {
-
             // if field type matches..
             if (strpos($sName, $sTypeToProcess) !== false) {
-
                 // storing which fields must be unset..
                 $aFields[] = $sName;
 
                 // ignoring whats need to be ignored and testing values
                 if (!in_array($sName, $aIgnore) && $sValue) {
-
                     // something was found - means leaving as is..
                     $blEmpty = false;
                     break;
@@ -111,10 +107,6 @@ class Order_Address extends oxAdminDetails
 
         $soxId = $this->getEditObjectId();
         $aParams = (array) oxRegistry::getConfig()->getRequestParameter("editval");
-
-        //TODO check if shop id is realy necessary at this place.
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxorder__oxshopid'] = $sShopID;
 
         $oOrder = oxNew("oxorder");
         if ($soxId != "-1") {

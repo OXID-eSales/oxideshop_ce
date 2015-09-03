@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -38,19 +38,12 @@ class News_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
-
         parent::render();
-
-        // all usergroups
-        $oGroups = oxNew("oxlist");
-        $oGroups->init("oxgroups");
-        $oGroups->selectString("select * from " . getViewName("oxgroups", $this->_iEditLang));
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oNews = oxNew("oxnews");
+            $oNews = oxNew("oxNews");
             $oNews->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oNews->getAvailableInLangs();
@@ -59,6 +52,11 @@ class News_Main extends oxAdminDetails
                 $oNews->loadInLang(key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oNews;
+
+            //Disable editing for derived items
+            if ($oNews->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
 
             // remove already created languages
             $this->_aViewData["posslang"] = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
@@ -95,10 +93,6 @@ class News_Main extends oxAdminDetails
         if (!isset($aParams['oxnews__oxactive'])) {
             $aParams['oxnews__oxactive'] = 0;
         }
-
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxnews__oxshopid'] = $sShopID;
         // creating fake object to save correct time value
         if (!$aParams['oxnews__oxdate']) {
             $aParams['oxnews__oxdate'] = "";
@@ -118,6 +112,10 @@ class News_Main extends oxAdminDetails
             $aParams['oxnews__oxid'] = null;
         }
 
+        //Disable editing for derived items
+        if ($oNews->isDerived()) {
+            return;
+        }
 
         //$aParams = $oNews->ConvertNameArray2Idx( $aParams);
 
@@ -146,9 +144,6 @@ class News_Main extends oxAdminDetails
 
         parent::save();
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxnews__oxshopid'] = $sShopID;
         // creating fake object to save correct time value
         if (!$aParams['oxnews__oxdate']) {
             $aParams['oxnews__oxdate'] = "";
@@ -168,6 +163,10 @@ class News_Main extends oxAdminDetails
             $aParams['oxnews__oxid'] = null;
         }
 
+        //Disable editing for derived items
+        if ($oNews->isDerived()) {
+            return;
+        }
 
         //$aParams = $oNews->ConvertNameArray2Idx( $aParams);
         $oNews->setLanguage(0);

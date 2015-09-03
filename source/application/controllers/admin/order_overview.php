@@ -27,7 +27,6 @@
  */
 class Order_Overview extends oxAdminDetails
 {
-
     /**
      * Executes parent method parent::render(), creates oxOrder, passes
      * it's data to Smarty engine and returns name of template file
@@ -46,7 +45,6 @@ class Order_Overview extends oxAdminDetails
 
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
-            // load object
             $oOrder->load($soxId);
 
             $this->_aViewData["edit"] = $oOrder;
@@ -125,7 +123,6 @@ class Order_Overview extends oxAdminDetails
     {
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
-            // load object
             $oOrder = oxNew("oxorder");
             if ($oOrder->load($soxId)) {
                 $oUtils = oxRegistry::getUtils();
@@ -145,7 +142,6 @@ class Order_Overview extends oxAdminDetails
             }
         }
     }
-
 
     /**
      * Sends order.

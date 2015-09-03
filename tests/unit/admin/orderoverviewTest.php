@@ -75,8 +75,6 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $this->assertEquals("testValue", $oUserPayment->oxpayments__oxdesc->value);
     }
 
-
-
     /**
      * Order_Overview::Sendorder() test case
      *

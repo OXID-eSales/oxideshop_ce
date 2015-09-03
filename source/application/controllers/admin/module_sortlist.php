@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -67,7 +67,6 @@ class Module_SortList extends oxAdminDetails
         $aModules = $oModuleInstaller->buildModuleChains($aModules);
 
         $this->getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
-
     }
 
     /**
@@ -87,5 +86,4 @@ class Module_SortList extends oxAdminDetails
         $oModuleList = oxNew("oxModuleList");
         $oModuleList->cleanup();
     }
-
 }

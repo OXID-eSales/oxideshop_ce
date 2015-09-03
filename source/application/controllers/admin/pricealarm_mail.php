@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,40 +37,37 @@ class PriceAlarm_Mail extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
 
         parent::render();
-        // #889C - Netto prices in Admin
-        $sIndex = "";
-        if ($myConfig->getConfigParam('blEnterNetPrice')) {
-            $sIndex = " * " . (1 + $myConfig->getConfigParam('dDefaultVAT') / 100);
-        }
 
-        $sShopID = $myConfig->getShopId();
+        $shopId = $config->getShopId();
         //articles price in subshop and baseshop can be different
         $this->_aViewData['iAllCnt'] = 0;
-        $sQ = "select oxprice, oxartid from oxpricealarm " .
-              "where oxsended = '000-00-00 00:00:00' and oxshopid = '$sShopID' ";
-        $rs = oxDb::getDb()->execute($sQ);
-        if ($rs != false && $rs->recordCount() > 0) {
-            $aSimpleCache = array();
-            while (!$rs->EOF) {
-                $sPrice = $rs->fields[0];
-                $sArtID = $rs->fields[1];
-                if (isset($aSimpleCache[$sArtID])) {
-                    if ($aSimpleCache[$sArtID] <= $sPrice) {
+        $query = "
+            SELECT oxprice, oxartid
+            FROM oxpricealarm
+            WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = '$shopId' ";
+        $result = oxDb::getDb()->execute($query);
+        if ($result != false && $result->recordCount() > 0) {
+            $simpleCache = array();
+            while (!$result->EOF) {
+                $price = $result->fields[0];
+                $articleId = $result->fields[1];
+                if (isset($simpleCache[$articleId])) {
+                    if ($simpleCache[$articleId] <= $price) {
                         $this->_aViewData['iAllCnt'] += 1;
                     }
                 } else {
-                    $oArticle = oxNew("oxArticle");
-                    if ($oArticle->load($sArtID)) {
-                        $dArtPrice = $aSimpleCache[$sArtID] = $oArticle->getPrice()->getBruttoPrice();
-                        if ($dArtPrice <= $sPrice) {
+                    $article = oxNew("oxArticle");
+                    if ($article->load($articleId)) {
+                        $articlePrice = $simpleCache[$articleId] = $article->getPrice()->getBruttoPrice();
+                        if ($articlePrice <= $price) {
                             $this->_aViewData['iAllCnt'] += 1;
                         }
                     }
                 }
-                $rs->moveNext();
+                $result->moveNext();
             }
         }
 

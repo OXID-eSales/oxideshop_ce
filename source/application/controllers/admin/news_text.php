@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,7 +25,6 @@
  */
 class News_Text extends oxAdminDetails
 {
-
     /**
      * Executes parent method parent::render(), creates oxnews object and
      * passes news text to smarty. Returns name of template file "news_text.tpl".
@@ -34,8 +33,6 @@ class News_Text extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
-
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
@@ -58,6 +55,11 @@ class News_Text extends oxAdminDetails
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
 
+            // Disable editing for derived items.
+            if ($oNews->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
+
             $this->_aViewData["edit"] = $oNews;
         }
         $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 255, $oNews, "oxnews__oxlongdesc", "news.tpl.css");
@@ -73,9 +75,6 @@ class News_Text extends oxAdminDetails
     public function save()
     {
         parent::save();
-
-        $myConfig = $this->getConfig();
-
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
@@ -93,8 +92,10 @@ class News_Text extends oxAdminDetails
             $aParams['oxnews__oxid'] = null;
         }
 
-
-        //$aParams = $oNews->ConvertNameArray2Idx( $aParams);
+        // Disable editing for derived items.
+        if ($oNews->isDerived()) {
+            return;
+        }
 
         $oNews->setLanguage(0);
         $oNews->assign($aParams);

@@ -70,14 +70,12 @@ class Unit_Admin_PriceAlarmListTest extends OxidTestCase
         $sViewName = getViewName("oxpricealarm");
         $sArtViewName = getViewName("oxarticles");
 
-        $aWhere[$sViewName . '.oxprice'] = '%15%';
-        $aWhere[$sArtViewName . '.oxprice'] = '%15%';
-
-
-        // testing..
         $oView = $this->getMock("PriceAlarm_List", array("_authorize"));
         $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
         $oView->init();
-        $this->assertEquals($aWhere, $oView->buildWhere());
+
+        $queryWhereParts = $oView->buildWhere();
+        $this->assertEquals('%15%', $queryWhereParts[$sViewName . '.oxprice']);
+        $this->assertEquals('%15%', $queryWhereParts[$sArtViewName . '.oxprice']);
     }
 }

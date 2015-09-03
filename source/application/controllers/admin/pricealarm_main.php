@@ -37,7 +37,7 @@ class PriceAlarm_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
 
         $this->_aViewData['iAllCnt'] = $this->getActivePriceAlarmsCount();
 
@@ -57,7 +57,7 @@ class PriceAlarm_Main extends oxAdminDetails
 
             //
             $oShop = oxNew("oxshop");
-            $oShop->load($myConfig->getShopId());
+            $oShop->load($config->getShopId());
             $this->addGlobalParams($oShop);
 
             if (!($iLang = $oPricealarm->oxpricealarm__oxlang->value)) {
@@ -84,7 +84,7 @@ class PriceAlarm_Main extends oxAdminDetails
 
             $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 300, $oLetter, "oxpricealarm__oxlongdesc", "details.tpl.css");
             $this->_aViewData["edit"] = $oPricealarm;
-            $this->_aViewData["actshop"] = $myConfig->getShopId();
+            $this->_aViewData["actshop"] = $config->getShopId();
         }
 
         parent::render();
@@ -131,30 +131,30 @@ class PriceAlarm_Main extends oxAdminDetails
     }
 
     /**
+     * Returns number of active price alarms.
+     *
      * @return int
      */
     protected function getActivePriceAlarmsCount()
     {
-        $myConfig = $this->getConfig();
+        // #1140 R - price must be checked from the object.
+        $query = "
+            SELECT oxarticles.oxid, oxpricealarm.oxprice
+            FROM oxpricealarm, oxarticles
+            WHERE oxarticles.oxid = oxpricealarm.oxartid AND oxpricealarm.oxsended = '000-00-00 00:00:00'";
+        $result = oxDb::getDb()->execute($query);
         $count = 0;
 
-        // #1140 R - price must be checked from the object.
-        $sSql = "select oxarticles.oxid, oxpricealarm.oxprice from oxpricealarm, oxarticles " .
-            "where oxarticles.oxid = oxpricealarm.oxartid and oxpricealarm.oxsended = '000-00-00 00:00:00'";
-        $rs = oxDb::getDb()->Execute($sSql);
-        $iAllCnt = 0;
-
-        if ($rs != false && $rs->recordCount() > 0) {
-            while (!$rs->EOF) {
-                $oArticle = oxNew("oxArticle");
-                $oArticle->load($rs->fields[0]);
-                if ($oArticle->getPrice()->getBruttoPrice() <= $rs->fields[1]) {
-                    $iAllCnt++;
+        if ($result != false && $result->recordCount() > 0) {
+            while (!$result->EOF) {
+                $article = oxNew("oxArticle");
+                $article->load($result->fields[0]);
+                if ($article->getPrice()->getBruttoPrice() <= $result->fields[1]) {
+                    $count++;
                 }
-                $rs->moveNext();
+                $result->moveNext();
             }
         }
-        $count = $iAllCnt;
 
         return $count;
     }

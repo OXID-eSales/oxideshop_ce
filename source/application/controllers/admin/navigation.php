@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 /**
@@ -57,7 +57,7 @@ class Navigation extends oxAdminView
             // set menu structure
             $this->_aViewData["menustructure"] = $oNavTree->getDomXml()->documentElement->childNodes;
 
-            // version patch strin
+            // version patch string
             $sVersion = str_replace(array("EE.", "PE."), "", $this->_sShopVersion);
             $this->_aViewData["sVersion"] = trim($sVersion);
 
@@ -90,14 +90,11 @@ class Navigation extends oxAdminView
             $this->_aViewData["blOpenHistory"] = oxRegistry::getConfig()->getRequestParameter('openHistory');
         }
 
-        $sWhere = '';
         $blisMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
-        /** @var oxShopList $oShoplist */
         $oShoplist = oxNew('oxShopList');
         if (!$blisMallAdmin) {
             // we only allow to see our shop
             $iShopId = oxRegistry::getSession()->getVariable("actshop");
-            /** @var oxShop $oShop */
             $oShop = oxNew('oxShop');
             $oShop->load($iShopId);
             $oShoplist->add($oShop);
@@ -118,14 +115,9 @@ class Navigation extends oxAdminView
 
         // informing about basefrm parameters
         $this->_aViewData['loadbasefrm'] = true;
-        $sListView = oxRegistry::getConfig()->getRequestParameter('listview');
-        $sEditView = oxRegistry::getConfig()->getRequestParameter('editview');
-        $iActEdit = oxRegistry::getConfig()->getRequestParameter('actedit');
-
-
-        $this->_aViewData['listview'] = $sListView;
-        $this->_aViewData['editview'] = $sEditView;
-        $this->_aViewData['actedit'] = $iActEdit;
+        $this->_aViewData['listview'] = oxRegistry::getConfig()->getRequestParameter('listview');
+        $this->_aViewData['editview'] = oxRegistry::getConfig()->getRequestParameter('editview');
+        $this->_aViewData['actedit'] = oxRegistry::getConfig()->getRequestParameter('actedit');
     }
 
     /**
@@ -136,7 +128,7 @@ class Navigation extends oxAdminView
         $mySession = $this->getSession();
         $myConfig = $this->getConfig();
 
-        $oUser = oxNew("oxuser");
+        $oUser = oxNew("oxUser");
         $oUser->logout();
 
         // kill session
@@ -148,7 +140,7 @@ class Navigation extends oxAdminView
             $oDb->execute("delete from oxsessions where SessionID = " . $oDb->quote($mySession->getId()));
         }
 
-        //reseting content cache if needed
+        //resetting content cache if needed
         if ($myConfig->getConfigParam('blClearCacheOnLogout')) {
             $this->resetContentCache(true);
         }
@@ -253,13 +245,12 @@ class Navigation extends oxAdminView
      */
     protected function _checkVersion()
     {
-        $sVersion = 'CE';
-
-        $sQuery = 'http://admin.oxid-esales.com/' . $sVersion . '/onlinecheck.php?getlatestversion';
-        if ($sVersion = oxRegistry::get("oxUtilsFile")->readRemoteFileAsString($sQuery)) {
+        $edition = $this->getConfig()->getEdition();
+        $query = 'http://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';
+        if ($version = oxRegistry::get("oxUtilsFile")->readRemoteFileAsString($query)) {
             // current version is older ..
-            if (version_compare($this->getConfig()->getVersion(), $sVersion) == '-1') {
-                return sprintf(oxRegistry::getLang()->translateString('NAVIGATION_NEWVERSIONAVAILABLE'), $sVersion);
+            if (version_compare($this->getConfig()->getVersion(), $version) == '-1') {
+                return sprintf(oxRegistry::getLang()->translateString('NAVIGATION_NEWVERSIONAVAILABLE'), $version);
             }
         }
     }

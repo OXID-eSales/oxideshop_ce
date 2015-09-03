@@ -33,6 +33,9 @@ class Unit_Admin_NavigationTest extends OxidTestCase
      */
     public function testChshpPE()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
 
         $this->setRequestParameter("listview", "testlistview");
         $this->setRequestParameter("editview", "testeditview");
@@ -46,8 +49,6 @@ class Unit_Admin_NavigationTest extends OxidTestCase
         $this->assertEquals("testactedit", $oView->getViewDataElement("actedit"));
         $this->assertEquals(true, $oView->getViewDataElement("loadbasefrm"));
     }
-
-
 
     /**
      * Navigation::Render() test case
@@ -303,7 +304,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
 
         // testing..
         $oView = $this->getMock("Navigation", array("getConfig"), array(), '', false);
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $this->assertEquals("Version 4 is available.", $oView->UNITcheckVersion());
     }
 }

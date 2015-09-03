@@ -24,8 +24,16 @@ class Unit_Admin_ModuleListTest extends OxidTestCase
 {
     /**
      * Module_List::Render() test case
-    */
+     *
+     * @return null
+     */
     public function testRender()
+    {
+        $oView = oxNew('Module_List');
+        $this->assertEquals('module_list.tpl', $oView->render());
+    }
+    
+    public function testRenderWithCorrectModuleNames()
     {
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
         $config = $this->getMock('oxConfig', array('getModulesDir'));

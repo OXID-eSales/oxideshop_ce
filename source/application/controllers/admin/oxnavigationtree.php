@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,7 +25,6 @@
  */
 class OxNavigationTree extends oxSuperCfg
 {
-
     /**
      * stores DOM object for all navigation tree
      */
@@ -514,10 +513,6 @@ class OxNavigationTree extends oxSuperCfg
                 // caching last load state
                 oxRegistry::getSession()->setVariable("loadedremotexml", $sDynPath ? true : false);
             }
-        } else {
-            if ($sShopCountry) {
-                //non international country
-            }
         }
 
         // loading dynpages
@@ -560,19 +555,14 @@ class OxNavigationTree extends oxSuperCfg
     }
 
     /**
-     * process cache contents and return the result
-     * deprecated, as cache files are cleared from session data, which is only added
-     * after loading the cache by _sessionizeLocalUrls()
+     * Method is used for overriding.
      *
-     * @param string $sCacheContents initial cached string
-     *
-     * @see self::_sessionizeLocalUrls()
+     *  @param string $sCacheContents
      *
      * @return string
      */
     protected function _processCachedFile($sCacheContents)
     {
-
         return $sCacheContents;
     }
 
@@ -656,8 +646,7 @@ class OxNavigationTree extends oxSuperCfg
 
             // check config params
             $this->_checkDemoShopDenials($this->_oDom);
-
-
+            $this->onGettingDomXml();
             $this->_cleanEmptyParents($this->_oDom, '//SUBMENU[@id][@list]', 'TAB');
             $this->_cleanEmptyParents($this->_oDom, '//MAINMENU[@id]', 'SUBMENU');
         }
@@ -861,5 +850,12 @@ class OxNavigationTree extends oxSuperCfg
         $sLangAbr = $aLanguages[$iDynLang]->abbr;
 
         return $sLangAbr;
+    }
+
+    /**
+     * Method is used for overriding.
+     */
+    protected function onGettingDomXml()
+    {
     }
 }

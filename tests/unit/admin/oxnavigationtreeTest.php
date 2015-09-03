@@ -156,14 +156,12 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
     {
         $aTestMethods = array("_getInitialDom", "_checkGroups", "_checkRights", "_checkDemoShopDenials", "_cleanEmptyParents");
 
-
         $oNavTree = $this->getMock("oxnavigationtree", $aTestMethods);
         $oNavTree->expects($this->once())->method('_getInitialDom')->will($this->returnValue(new stdClass));
         $oNavTree->expects($this->once())->method('_checkGroups');
         $oNavTree->expects($this->once())->method('_checkRights');
         $oNavTree->expects($this->once())->method('_checkDemoShopDenials');
         $oNavTree->expects($this->exactly(2))->method('_cleanEmptyParents');
-
 
         $oNavTree->getDomXml();
     }

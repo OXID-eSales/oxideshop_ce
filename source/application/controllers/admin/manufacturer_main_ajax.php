@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -38,24 +38,26 @@ class manufacturer_main_ajax extends ajaxListComponent
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,       visible, multilanguage, ident
-        array('oxartnum', 'oxarticles', 1, 0, 0),
-        array('oxtitle', 'oxarticles', 1, 1, 0),
-        array('oxean', 'oxarticles', 1, 0, 0),
-        array('oxmpn', 'oxarticles', 0, 0, 0),
-        array('oxprice', 'oxarticles', 0, 0, 0),
-        array('oxstock', 'oxarticles', 0, 0, 0),
-        array('oxid', 'oxarticles', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxartnum', 'oxarticles', 1, 0, 0),
-                                     array('oxtitle', 'oxarticles', 1, 1, 0),
-                                     array('oxean', 'oxarticles', 1, 0, 0),
-                                     array('oxmpn', 'oxarticles', 0, 0, 0),
-                                     array('oxprice', 'oxarticles', 0, 0, 0),
-                                     array('oxstock', 'oxarticles', 0, 0, 0),
-                                     array('oxid', 'oxarticles', 0, 0, 1)
-                                 )
+    protected $_aColumns = array(
+        // field , table, visible, multilanguage, id
+        'container1' => array(
+            array('oxartnum', 'oxarticles', 1, 0, 0),
+            array('oxtitle', 'oxarticles', 1, 1, 0),
+            array('oxean', 'oxarticles', 1, 0, 0),
+            array('oxmpn', 'oxarticles', 0, 0, 0),
+            array('oxprice', 'oxarticles', 0, 0, 0),
+            array('oxstock', 'oxarticles', 0, 0, 0),
+            array('oxid', 'oxarticles', 0, 0, 1)
+        ),
+        'container2' => array(
+            array('oxartnum', 'oxarticles', 1, 0, 0),
+            array('oxtitle', 'oxarticles', 1, 1, 0),
+            array('oxean', 'oxarticles', 1, 0, 0),
+            array('oxmpn', 'oxarticles', 0, 0, 0),
+            array('oxprice', 'oxarticles', 0, 0, 0),
+            array('oxstock', 'oxarticles', 0, 0, 0),
+            array('oxid', 'oxarticles', 0, 0, 1)
+        )
     );
 
     /**
@@ -127,11 +129,26 @@ class manufacturer_main_ajax extends ajaxListComponent
         }
 
         if (is_array($aRemoveArt) && !empty($aRemoveArt)) {
-            $sSelect = "update oxarticles set oxmanufacturerid = null where oxid in ( " . implode(", ", oxDb::getInstance()->quoteArray($aRemoveArt)) . ") ";
-            oxDb::getDb()->Execute($sSelect);
+            $sSelect = $this->formManufacturerRemovalQuery($aRemoveArt);
+            oxDb::getDb()->execute($sSelect);
 
             $this->resetCounter("manufacturerArticle", $sOxid);
         }
+    }
+
+    /**
+     * Forms and returns query for manufacturers removal.
+     *
+     * @param array $articlesToRemove Ids of manufacturers which should be removed.
+     *
+     * @return string
+     */
+    protected function formManufacturerRemovalQuery($articlesToRemove)
+    {
+        return "
+          UPDATE oxarticles
+          SET oxmanufacturerid = null
+          WHERE oxid IN ( " . implode(", ", oxDb::getDb()->quoteArray($articlesToRemove)) . ") ";
     }
 
     /**
@@ -151,10 +168,29 @@ class manufacturer_main_ajax extends ajaxListComponent
 
         if ($sSynchOxid && $sSynchOxid != "-1" && is_array($aAddArticle)) {
             $oDb = oxDb::getDb();
-            $sSelect = "update oxarticles set oxmanufacturerid = " . $oDb->quote($sSynchOxid) . " where oxid in ( " . implode(", ", oxDb::getInstance()->quoteArray($aAddArticle)) . " )";
 
-            $oDb->Execute($sSelect);
+            $sSelect = $this->formArticleToManufacturerAdditionQuery($sSynchOxid, $aAddArticle);
+            $oDb->execute($sSelect);
             $this->resetCounter("manufacturerArticle", $sSynchOxid);
         }
+    }
+
+    /**
+     * Forms and returns query for articles addition to manufacturer.
+     *
+     * @param string $manufacturerId Manufacturer id.
+     * @param array  $articlesToAdd  Array of article ids to be added to manufacturer.
+     *
+     * @return string
+     */
+    protected function formArticleToManufacturerAdditionQuery($manufacturerId, $articlesToAdd)
+    {
+        $db = oxDb::getDb();
+        $query = "
+            UPDATE oxarticles
+            SET oxmanufacturerid = " . $db->quote($manufacturerId) . "
+            WHERE oxid IN ( " . implode(", ", $db->quoteArray($articlesToAdd)) . " )";
+
+        return $query;
     }
 }

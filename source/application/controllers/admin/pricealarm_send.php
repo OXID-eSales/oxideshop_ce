@@ -46,56 +46,26 @@ class PriceAlarm_Send extends oxAdminList
         parent::render();
 
         $config = $this->getConfig();
-        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
         ini_set("session.gc_maxlifetime", 36000);
 
-        $start = oxRegistry::getConfig()->getRequestParameter("iStart");
-        $count = oxRegistry::getConfig()->getRequestParameter("iAllCnt");
-        // #1140 R
-        $alarmsQuery =
-            "SELECT oxpricealarm.oxid, oxpricealarm.oxemail, oxpricealarm.oxartid, oxpricealarm.oxprice
-            FROM oxpricealarm, oxarticles
-            WHERE oxarticles.oxid = oxpricealarm.oxartid AND oxpricealarm.oxsended = '0000-00-00 00:00:00'";
-        if (isset($start)) {
-            $result = $database->selectLimit($alarmsQuery, $config->getConfigParam('iCntofMails'), $start);
-        } else {
-            $result = $database->execute($alarmsQuery);
+        $start = (int) $config->getRequestParameter("iStart");
+        $limit = $config->getConfigParam('iCntofMails');
+        $activeAlertsAmount = $config->getRequestParameter("iAllCnt");
+        if (!isset($activeAlertsAmount)) {
+            $activeAlertsAmount = $this->countActivePriceAlerts();
         }
 
-        $temporaryCount = 0;
-
-        if ($result != false && $result->recordCount() > 0) {
-            while (!$result->EOF) {
-                $article = oxNew("oxArticle");
-                $article->load($result->fields['oxid']);
-                if ($article->getPrice()->getBruttoPrice() <= $result->fields['oxprice']) {
-                    $this->sendeMail(
-                        $result->fields['oxemail'],
-                        $result->fields['oxartid'],
-                        $result->fields['oxid'],
-                        $result->fields['oxprice']
-                    );
-                    $temporaryCount++;
-                }
-                $result->moveNext();
-            }
-        }
-        if (!isset($start)) {
-            // first call
-            $start = 0;
-            $count = $temporaryCount;
-        }
+        $this->sendPriceChangeNotifications($start, $limit);
 
         // Advance mail pointer and set parameter
-        $start += $config->getConfigParam('iCntofMails');
+        $start += $limit;
 
         $this->_aViewData["iStart"] = $start;
-        $this->_aViewData["iAllCnt"] = $count;
+        $this->_aViewData["iAllCnt"] = $activeAlertsAmount;
         $this->_aViewData["actlang"] = oxRegistry::getLang()->getBaseLanguage();
 
-        // end ?
-        if ($start < $count) {
+        if ($start < $activeAlertsAmount) {
             $template = "pricealarm_send.tpl";
         } else {
             $template = "pricealarm_done.tpl";
@@ -112,6 +82,66 @@ class PriceAlarm_Send extends oxAdminList
     protected function _setupNavigation($sId)
     {
         parent::_setupNavigation('pricealarm_list');
+    }
+
+    /**
+     * Counts active price alerts and returns this number.
+     *
+     * @return int
+     */
+    protected function countActivePriceAlerts()
+    {
+        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $config = $this->getConfig();
+        $shopId = $config->getShopId();
+
+        $activeAlarmsQuery =
+            "SELECT oxprice, oxartid FROM oxpricealarm
+                    WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = '$shopId'";
+        $result = $database->execute($activeAlarmsQuery);
+        $count = 0;
+        while ($result != false && !$result->EOF) {
+            $alarmPrice = $result->fields['oxprice'];
+            $article = oxNew("oxArticle");
+            $article->load($result->fields['oxartid']);
+            if ($article->getPrice()->getBruttoPrice() <= $alarmPrice) {
+                $count++;
+            }
+            $result->moveNext();
+        }
+
+        return $count;
+    }
+
+    /**
+     * Sends price alert notifications about changed article prices.
+     *
+     * @param int $start How much price alerts was already sent.
+     * @param int $limit How much price alerts to send.
+     */
+    protected function sendPriceChangeNotifications($start, $limit)
+    {
+        $config = $this->getConfig();
+        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $shopId = $config->getShopId();
+
+        $alarmsQuery =
+            "SELECT oxid, oxemail, oxartid, oxprice FROM oxpricealarm
+            WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = '$shopId'";
+        $result = $database->selectLimit($alarmsQuery, $limit, $start);
+        while ($result != false && !$result->EOF) {
+            $article = oxNew("oxArticle");
+            $article->load($result->fields['oxartid']);
+            if ($article->getPrice()->getBruttoPrice() <= $result->fields['oxprice']) {
+                $this->sendeMail(
+                    $result->fields['oxemail'],
+                    $result->fields['oxartid'],
+                    $result->fields['oxid'],
+                    $result->fields['oxprice']
+                );
+            }
+            $result->moveNext();
+        }
     }
 
     /**

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -30,7 +30,6 @@ DEFINE("ERR_POSOUTOFBOUNDS", -2);
  */
 class SelectList_Main extends oxAdminDetails
 {
-
     /**
      * Keeps all act. fields to store
      */
@@ -45,7 +44,6 @@ class SelectList_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
         parent::render();
 
         $sOxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
@@ -79,6 +77,11 @@ class SelectList_Main extends oxAdminDetails
                 $oAttr->loadInLang(key($oOtherLang), $sOxId);
             }
             $this->_aViewData["edit"] = $oAttr;
+
+            // Disable editing for derived items.
+            if ($oAttr->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
 
             // remove already created languages
             $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
@@ -125,9 +128,6 @@ class SelectList_Main extends oxAdminDetails
         $sOxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxselectlist__oxshopid'] = $sShopID;
         $oAttr = oxNew("oxselectlist");
 
         if ($sOxId != "-1") {
@@ -136,6 +136,10 @@ class SelectList_Main extends oxAdminDetails
             $aParams['oxselectlist__oxid'] = null;
         }
 
+        //Disable editing for derived items
+        if ($oAttr->isDerived()) {
+            return;
+        }
 
         //$aParams = $oAttr->ConvertNameArray2Idx( $aParams);
         $oAttr->setLanguage(0);
@@ -175,9 +179,6 @@ class SelectList_Main extends oxAdminDetails
         $sOxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        // shopid
-        $sShopID = oxRegistry::getSession()->getVariable("actshop");
-        $aParams['oxselectlist__oxshopid'] = $sShopID;
         $oObj = oxNew("oxselectlist");
 
         if ($sOxId != "-1") {
@@ -186,6 +187,10 @@ class SelectList_Main extends oxAdminDetails
             $aParams['oxselectlist__oxid'] = null;
         }
 
+        //Disable editing for derived items
+        if ($oObj->isDerived()) {
+            return;
+        }
 
         parent::save();
 
@@ -210,6 +215,10 @@ class SelectList_Main extends oxAdminDetails
     {
         $oSelectlist = oxNew("oxselectlist");
         if ($oSelectlist->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
+            // Disable editing for derived items.
+            if ($oSelectlist->isDerived()) {
+                return;
+            }
 
             $aDelFields = oxRegistry::getConfig()->getRequestParameter("aFields");
             $this->aFieldArray = oxRegistry::getUtils()->assignValuesFromText($oSelectlist->oxselectlist__oxvaldesc->getRawValue());
@@ -239,6 +248,10 @@ class SelectList_Main extends oxAdminDetails
         $oSelectlist = oxNew("oxselectlist");
         if ($oSelectlist->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
 
+            //Disable editing for derived items.
+            if ($oSelectlist->isDerived()) {
+                return;
+            }
 
             $sAddField = oxRegistry::getConfig()->getRequestParameter("sAddField");
             if (empty($sAddField)) {
@@ -281,10 +294,8 @@ class SelectList_Main extends oxAdminDetails
 
         $aChangeFields = oxRegistry::getConfig()->getRequestParameter("aFields");
         if (is_array($aChangeFields) && count($aChangeFields)) {
-
             $oSelectlist = oxNew("oxselectlist");
             if ($oSelectlist->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
-
                 $this->aFieldArray = oxRegistry::getUtils()->assignValuesFromText($oSelectlist->oxselectlist__oxvaldesc->getRawValue());
                 $sChangeFieldName = $this->parseFieldName($aChangeFields[0]);
 

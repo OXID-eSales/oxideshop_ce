@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -28,6 +28,9 @@
  */
 class Shop extends oxAdminView
 {
+    const CURRENT_TEMPLATE = 'shop.tpl';
+
+    const SHOP_ID = 'oxbaseshop';
 
     /**
      * Executes parent method parent::render() and returns name of template
@@ -38,21 +41,8 @@ class Shop extends oxAdminView
     public function render()
     {
         parent::render();
+        $this->_aViewData['currentadminshop'] = static::SHOP_ID;
 
-        $sCurrentAdminShop = oxRegistry::getSession()->getVariable("currentadminshop");
-
-        if (!$sCurrentAdminShop) {
-            if (oxRegistry::getSession()->getVariable("malladmin")) {
-                $sCurrentAdminShop = "oxbaseshop";
-            } else {
-                $sCurrentAdminShop = oxRegistry::getSession()->getVariable("actshop");
-            }
-        }
-
-        $this->_aViewData["currentadminshop"] = $sCurrentAdminShop;
-        oxRegistry::getSession()->setVariable("currentadminshop", $sCurrentAdminShop);
-
-
-        return "shop.tpl";
+        return static::CURRENT_TEMPLATE;
     }
 }

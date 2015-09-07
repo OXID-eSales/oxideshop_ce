@@ -25,15 +25,11 @@
  */
 class Unit_Admin_ShopTest extends OxidTestCase
 {
-
     /**
-     * Shop::Render() test case
-     *
-     * @return null
+     * Shop::Render() test case.
      */
     public function testRender()
     {
-        // testing..
         $oView = oxNew('Shop');
         $this->assertEquals('shop.tpl', $oView->render());
     }

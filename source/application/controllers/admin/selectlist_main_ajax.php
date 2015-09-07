@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -116,11 +116,7 @@ class selectlist_main_ajax extends ajaxListComponent
     {
         $aChosenArt = $this->_getActionIds('oxobject2selectlist.oxid');
 
-
-
-
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
-
             $sQ = parent::_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
             oxDb::getDb()->Execute($sQ);
 
@@ -153,9 +149,15 @@ class selectlist_main_ajax extends ajaxListComponent
                 $oNewGroup->oxobject2selectlist__oxsort = new oxField(( int ) $oDb->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $oDb->quote($sAdd) . " ", false, false));
                 $oNewGroup->save();
 
+                $this->onArticleAddToSelectionList($sAdd);
             }
         }
+    }
 
-
+    /**
+     * @param string $articleId
+     */
+    protected function onArticleAddToSelectionList($articleId)
+    {
     }
 }

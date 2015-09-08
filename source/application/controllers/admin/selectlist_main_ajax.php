@@ -155,6 +155,8 @@ class selectlist_main_ajax extends ajaxListComponent
     }
 
     /**
+     * Method is used for overriding.
+     *
      * @param string $articleId
      */
     protected function onArticleAddToSelectionList($articleId)

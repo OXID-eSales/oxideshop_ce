@@ -557,7 +557,7 @@ class OxNavigationTree extends oxSuperCfg
     /**
      * Method is used for overriding.
      *
-     *  @param string $sCacheContents
+     * @param string $sCacheContents
      *
      * @return string
      */

@@ -27,7 +27,7 @@ if (isset($_GET['e_mac'])) {
     return;
 }
 
-require_once '../oxfunctions.php';
+require_once '../../bootstrap.php';
 
 if (!function_exists('generateVerificationImg')) {
 

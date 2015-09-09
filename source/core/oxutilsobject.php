@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -154,8 +154,17 @@ class oxUtilsObject
         $aArgs = func_get_args();
         array_shift($aArgs);
         $iArgCnt = count($aArgs);
-        $blCacheObj = $this->shouldCacheObject($sClassName, $aArgs);
+        $blCacheObj = $iArgCnt < 2;
         $sClassName = strtolower($sClassName);
+
+        if($blCacheObj) {
+            foreach ($aArgs as $mArg) {
+                if (! ($mArg == null || is_scalar($mArg)) ) {
+                    $blCacheObj = false;
+                    break;
+                }
+            }
+        }
 
         if (isset(self::$_aClassInstances[$sClassName])) {
             return self::$_aClassInstances[$sClassName];
@@ -694,19 +703,5 @@ class oxUtilsObject
 
         $sFileName = $this->_getCacheFileName($sVarName, $sShopId);
         file_put_contents($sFileName, serialize($sValue), LOCK_EX);
-    }
-
-    /**
-     * Checks whether class with arguments should be cached.
-     * Cache only when object has none or one scalar argument.
-     *
-     * @param string $className
-     * @param array $arguments
-     *
-     * @return bool
-     */
-    protected function shouldCacheObject($className, $arguments)
-    {
-        return count($arguments) < 2 && (!isset($arguments[0]) || is_scalar($arguments[0]));
     }
 }

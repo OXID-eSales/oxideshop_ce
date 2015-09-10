@@ -25,7 +25,6 @@
  */
 class Unit_Admin_ShopLicenseTest extends OxidTestCase
 {
-
     /**
      * Sets malladmin parameter
      *
@@ -34,7 +33,6 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
     public function setUp()
     {
         $this->getSession()->setVariable("malladmin", true);
-
 
         return parent::setUp();
     }
@@ -48,7 +46,6 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
 
         return parent::tearDown();
     }
-
 
     /**
      * Shop_License::Render() test case
@@ -106,8 +103,6 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
         $this->assertEquals("-1", $aViewData['oxid']);
     }
 
-
-
     /**
      * Testting Shop_License::_canUpdate();
      */
@@ -125,7 +120,6 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
         $this->assertTrue($oSubj->UNITcanUpdate());
     }
 
-
     /**
      * Testting Shop_License::_canUpdate(); for malladmin
      */
@@ -142,7 +136,6 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
 
         $this->assertFalse($oSubj->UNITcanUpdate());
     }
-
 
     /**
      * Testting Shop_License::_canUpdate(); for demo shops (#3870)

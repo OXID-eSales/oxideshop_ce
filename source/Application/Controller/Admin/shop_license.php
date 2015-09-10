@@ -47,7 +47,6 @@ class Shop_License extends Shop_Config
         "CE" => "http://admin.oxid-esales.com/CE/onlinecheck.php"
     );
 
-
     /**
      * Executes parent method parent::render(), creates oxshop object, passes it's
      * data to Smarty engine and returns name of template file "shop_license.tpl".
@@ -84,7 +83,6 @@ class Shop_License extends Shop_Config
 
         return $this->_sThisTemplate;
     }
-
 
     /**
      * Checks if the license key update is allowed.

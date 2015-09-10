@@ -27,7 +27,6 @@
  */
 class Shop_License extends Shop_Config
 {
-
     /**
      * Current class template.
      *
@@ -35,17 +34,8 @@ class Shop_License extends Shop_Config
      */
     protected $_sThisTemplate = "shop_license.tpl";
 
-
-    /**
-     * Getting current shop version links for editions
-     *
-     * @var array
-     */
-    protected $_aVersionCheckLinks = array(
-        "EE" => "http://admin.oxid-esales.com/EE/onlinecheck.php",
-        "PE" => "http://admin.oxid-esales.com/PE/onlinecheck.php",
-        "CE" => "http://admin.oxid-esales.com/CE/onlinecheck.php"
-    );
+    /** @var string Current shop version links for edition. */
+    private $versionCheckLink = 'http://admin.oxid-esales.com/CE/onlinecheck.php';
 
     /**
      * Executes parent method parent::render(), creates oxshop object, passes it's
@@ -74,8 +64,9 @@ class Shop_License extends Shop_Config
 
         $this->_aViewData["version"] = $myConfig->getVersion();
 
+        $this->_aViewData['aCurVersionInfo'] = $this->_fetchCurVersionInfo($this->versionCheckLink);
 
-        $this->_aViewData['aCurVersionInfo'] = $this->_fetchCurVersionInfo($this->_aVersionCheckLinks["CE"]);
+
 
         if (!$this->_canUpdate()) {
             $this->_aViewData['readonly'] = true;

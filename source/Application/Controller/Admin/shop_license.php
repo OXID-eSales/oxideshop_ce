@@ -66,8 +66,6 @@ class Shop_License extends Shop_Config
 
         $this->_aViewData['aCurVersionInfo'] = $this->_fetchCurVersionInfo($this->versionCheckLink);
 
-
-
         if (!$this->_canUpdate()) {
             $this->_aViewData['readonly'] = true;
         }

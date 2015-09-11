@@ -28,6 +28,8 @@
  */
 class Shop_Main extends oxAdminDetails
 {
+    /** Identifies new shop. */
+    const NEW_SHOP_ID = "-1";
 
     /**
      * Shop field set size, limited to 64bit by MySQL
@@ -45,33 +47,33 @@ class Shop_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
         parent::render();
 
-        $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
+        $shopId = $this->_aViewData["oxid"] = $this->getEditObjectId();
 
 
-        if (isset($soxId) && $soxId != "-1") {
+        if (isset($shopId) && $shopId != self::NEW_SHOP_ID) {
             // load object
-            $oShop = oxNew("oxshop");
-            $isubjlang = oxRegistry::getConfig()->getRequestParameter("subjlang");
-            if (!isset($isubjlang)) {
-                $isubjlang = $this->_iEditLang;
+            $shop = oxNew("oxshop");
+            $subjLang = oxRegistry::getConfig()->getRequestParameter("subjlang");
+            if (!isset($subjLang)) {
+                $subjLang = $this->_iEditLang;
             }
 
-            if ($isubjlang && $isubjlang > 0) {
-                $this->_aViewData["subjlang"] = $isubjlang;
+            if ($subjLang && $subjLang > 0) {
+                $this->_aViewData["subjlang"] = $subjLang;
             }
 
-            $oShop->loadInLang($isubjlang, $soxId);
+            $shop->loadInLang($subjLang, $shopId);
 
-            $this->_aViewData["edit"] = $oShop;
+            $this->_aViewData["edit"] = $shop;
             //oxSession::setVar( "actshop", $soxId);//echo "<h2>$soxId</h2>";
-            oxRegistry::getSession()->setVariable("shp", $soxId);
+            oxRegistry::getSession()->setVariable("shp", $shopId);
         }
 
 
-        $this->_aViewData['IsOXDemoShop'] = $myConfig->isDemoShop();
+        $this->_aViewData['IsOXDemoShop'] = $config->isDemoShop();
         if (!isset($this->_aViewData['updatenav'])) {
             $this->_aViewData['updatenav'] = oxRegistry::getConfig()->getRequestParameter('updatenav');
         }
@@ -88,43 +90,42 @@ class Shop_Main extends oxAdminDetails
     {
         parent::save();
 
-        $myConfig = $this->getConfig();
-        $soxId = $this->getEditObjectId();
+        $config = $this->getConfig();
+        $shopId = $this->getEditObjectId();
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $parameters = oxRegistry::getConfig()->getRequestParameter("editval");
 
 
         //  #918 S
         // checkbox handling
-        $aParams['oxshops__oxactive'] = (isset($aParams['oxshops__oxactive']) && $aParams['oxshops__oxactive'] == true) ? 1 : 0;
-        $aParams['oxshops__oxproductive'] = (isset($aParams['oxshops__oxproductive']) && $aParams['oxshops__oxproductive'] == true) ? 1 : 0;
+        $parameters['oxshops__oxactive'] = (isset($parameters['oxshops__oxactive']) && $parameters['oxshops__oxactive'] == true) ? 1 : 0;
+        $parameters['oxshops__oxproductive'] = (isset($parameters['oxshops__oxproductive']) && $parameters['oxshops__oxproductive'] == true) ? 1 : 0;
 
-        $isubjlang = oxRegistry::getConfig()->getRequestParameter("subjlang");
-        $iLang = ($isubjlang && $isubjlang > 0) ? $isubjlang : 0;
+        $subjLang = oxRegistry::getConfig()->getRequestParameter("subjlang");
+        $shopLanguageId = ($subjLang && $subjLang > 0) ? $subjLang : 0;
 
-        /** @var oxShop $oShop */
-        $oShop = oxNew("oxshop");
-        if ($soxId != "-1") {
-            $oShop->loadInLang($iLang, $soxId);
+        $shop = oxNew("oxshop");
+        if ($shopId != self::NEW_SHOP_ID) {
+            $shop->loadInLang($shopLanguageId, $shopId);
         } else {
-            $aParams['oxshops__oxid'] = null;
+            $parameters['oxshops__oxid'] = null;
         }
 
-        if ($aParams['oxshops__oxsmtp']) {
-            $aParams['oxshops__oxsmtp'] = trim($aParams['oxshops__oxsmtp']);
+        if ($parameters['oxshops__oxsmtp']) {
+            $parameters['oxshops__oxsmtp'] = trim($parameters['oxshops__oxsmtp']);
         }
 
-        $oShop->setLanguage(0);
-        $oShop->assign($aParams);
-        $oShop->setLanguage($iLang);
+        $shop->setLanguage(0);
+        $shop->assign($parameters);
+        $shop->setLanguage($shopLanguageId);
 
-        if (($sNewSMPTPass = oxRegistry::getConfig()->getRequestParameter("oxsmtppwd"))) {
-            $oShop->oxshops__oxsmtppwd->setValue($sNewSMPTPass == '-' ? "" : $sNewSMPTPass);
+        if (($newSMPTPass = oxRegistry::getConfig()->getRequestParameter("oxsmtppwd"))) {
+            $shop->oxshops__oxsmtppwd->setValue($newSMPTPass == '-' ? "" : $newSMPTPass);
         }
 
 
         try {
-            $oShop->save();
+            $shop->save();
         } catch (oxException $e) {
 
             return;
@@ -133,7 +134,7 @@ class Shop_Main extends oxAdminDetails
         $this->_aViewData["updatelist"] = "1";
 
 
-        oxRegistry::getSession()->setVariable("actshop", $soxId);
+        oxRegistry::getSession()->setVariable("actshop", $shopId);
     }
 
     /**
@@ -143,53 +144,58 @@ class Shop_Main extends oxAdminDetails
      */
     protected function _getNonCopyConfigVars()
     {
-        $aNonCopyVars = array("aSerials", "IMS", "IMD", "IMA", "sBackTag", "sUtilModule", "aModulePaths", "aModuleFiles", "aModuleEvents", "aModuleVersions", "aModuleTemplates", "aModules", "aDisabledModules");
+        $nonCopyVars = array("aSerials", "IMS", "IMD", "IMA", "sBackTag", "sUtilModule", "aModulePaths", "aModuleFiles", "aModuleEvents", "aModuleVersions", "aModuleTemplates", "aModules", "aDisabledModules");
         //adding non copable multishop field options
-        $aMultiShopTables = $this->getConfig()->getConfigParam('aMultiShopTables');
-        foreach ($aMultiShopTables as $sMultishopTable) {
-            $aNonCopyVars[] = 'blMallInherit_' . strtolower($sMultishopTable);
+        $multiShopTables = $this->getConfig()->getConfigParam('aMultiShopTables');
+        foreach ($multiShopTables as $multishopTable) {
+            $nonCopyVars[] = 'blMallInherit_' . strtolower($multishopTable);
         }
 
-        return $aNonCopyVars;
+        return $nonCopyVars;
     }
 
     /**
      * Copies base shop config variables to current
      *
-     * @param oxshop $oShop new shop object
+     * @param oxshop $shop new shop object
      */
-    protected function _copyConfigVars($oShop)
+    protected function _copyConfigVars($shop)
     {
-        $myConfig = $this->getConfig();
-        $myUtilsObject = oxUtilsObject::getInstance();
-        $oDB = oxDb::getDb();
+        $config = $this->getConfig();
+        $utilsObject = oxUtilsObject::getInstance();
+        $db = oxDb::getDb();
 
-        $aNonCopyVars = $this->_getNonCopyConfigVars();
+        $nonCopyVars = $this->_getNonCopyConfigVars();
 
-        $sSelect = "select oxvarname, oxvartype, DECODE( oxvarvalue, " . $oDB->quote($myConfig->getConfigParam('sConfigKey')) . ") as oxvarvalue, oxmodule from oxconfig where oxshopid = '1'";
-        $rs = $oDB->execute($sSelect);
-        if ($rs != false && $rs->recordCount() > 0) {
-            while (!$rs->EOF) {
-                $sVarName = $rs->fields[0];
-                if (!in_array($sVarName, $aNonCopyVars)) {
-                    $sID = $myUtilsObject->generateUID();
-                    $sInsert = "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue, oxmodule) values ( '$sID', " . $oDB->quote($oShop->getId())
-                               . ", " . $oDB->quote($rs->fields[0])
-                               . ", " . $oDB->quote($rs->fields[1])
-                               . ",  ENCODE( " . $oDB->quote($rs->fields[2])
-                               . ", '" . $myConfig->getConfigParam('sConfigKey')
-                               . "')"
-                               . ", " . $oDB->quote($rs->fields[3]) . " )";
-                    $oDB->execute($sInsert);
+        $selectShopConfigurationQuery =
+            "select oxvarname, oxvartype,
+            DECODE( oxvarvalue, " . $db->quote($config->getConfigParam('sConfigKey')) . ") as oxvarvalue, oxmodule
+            from oxconfig where oxshopid = '1'";
+        $shopConfiguration = $db->execute($selectShopConfigurationQuery);
+        if ($shopConfiguration != false && $shopConfiguration->recordCount() > 0) {
+            while (!$shopConfiguration->EOF) {
+                $configName = $shopConfiguration->fields[0];
+                if (!in_array($configName, $nonCopyVars)) {
+                    $newId = $utilsObject->generateUID();
+                    $insertNewConfigQuery =
+                        "insert into oxconfig
+                        (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue, oxmodule) values ( '$newId', " . $db->quote($shop->getId())
+                        . ", " . $db->quote($shopConfiguration->fields[0])
+                        . ", " . $db->quote($shopConfiguration->fields[1])
+                        . ",  ENCODE( " . $db->quote($shopConfiguration->fields[2])
+                        . ", '" . $config->getConfigParam('sConfigKey')
+                        . "')"
+                        . ", " . $db->quote($shopConfiguration->fields[3]) . " )";
+                    $db->execute($insertNewConfigQuery);
                 }
-                $rs->moveNext();
+                $shopConfiguration->moveNext();
             }
         }
 
-        $sInheritAll = $oShop->oxshops__oxisinherited->value ? "true" : "false";
-        $aMultiShopTables = $myConfig->getConfigParam('aMultiShopTables');
-        foreach ($aMultiShopTables as $sMultishopTable) {
-            $myConfig->saveShopConfVar("bool", 'blMallInherit_' . strtolower($sMultishopTable), $sInheritAll, $oShop->oxshops__oxid->value);
+        $inheritAll = $shop->oxshops__oxisinherited->value ? "true" : "false";
+        $multiShopTables = $config->getConfigParam('aMultiShopTables');
+        foreach ($multiShopTables as $multishopTable) {
+            $config->saveShopConfVar("bool", 'blMallInherit_' . strtolower($multishopTable), $inheritAll, $shop->oxshops__oxid->value);
         }
     }
 }

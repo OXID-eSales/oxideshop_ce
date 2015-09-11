@@ -104,6 +104,8 @@ class Shop_Main extends oxAdminDetails
 
         $parameters = oxRegistry::getConfig()->getRequestParameter("editval");
 
+        $user = $this->getUser();
+        $shopId = $this->updateShopIdByUser2($user, $shopId);
 
         //  #918 S
         // checkbox handling
@@ -117,7 +119,7 @@ class Shop_Main extends oxAdminDetails
         if ($shopId != self::NEW_SHOP_ID) {
             $shop->loadInLang($shopLanguageId, $shopId);
         } else {
-            $parameters['oxshops__oxid'] = null;
+            $parameters = $this->updateParameters($parameters);
         }
 
         if ($parameters['oxshops__oxsmtp']) {
@@ -132,16 +134,21 @@ class Shop_Main extends oxAdminDetails
             $shop->oxshops__oxsmtppwd->setValue($newSMPTPass == '-' ? "" : $newSMPTPass);
         }
 
+        $canCreateShop = $this->canCreateShop($shopId, $shop, $config);
+        if (!$canCreateShop) {
+            return;
+        }
 
         try {
             $shop->save();
         } catch (oxException $e) {
-
+            $this->checkExceptionType($e);
             return;
         }
 
         $this->_aViewData["updatelist"] = "1";
 
+        $this->updateShopInformation($config, $shop, $shopId);
 
         oxRegistry::getSession()->setVariable("actshop", $shopId);
     }
@@ -237,11 +244,75 @@ class Shop_Main extends oxAdminDetails
     }
 
     /**
-     * Load parent and set result to _aViewData.
+     * Load Shop parent and set result to _aViewData.
      *
      * @param oxShop $shop
      */
     protected function checkParent($shop)
+    {
+    }
+
+    /**
+     * Check user rights.
+     * Change Shop ID to user Shop if user has different rights.
+     *
+     * @param oxUser $user
+     * @param string $shopId
+     *
+     * @return string
+     */
+    protected function updateShopIdByUser2($user, $shopId)
+    {
+
+        return $shopId;
+    }
+
+    /**
+     * Unset Shop ID from parameters as it is not used.
+     *
+     * @param array $parameters
+     *
+     * @return array
+     */
+    protected function updateParameters($parameters)
+    {
+        $parameters['oxshops__oxid'] = null;
+
+        return $parameters;
+    }
+
+    /**
+     * Check for exception type and set it to _aViewData.
+     *
+     * @param oxException $exception
+     */
+    protected function checkExceptionType($exception)
+    {
+    }
+
+    /**
+     * Check if Shop can be created.
+     *
+     * @param string $shopId
+     * @param oxShop $shop
+     *
+     * @return bool
+     */
+    protected function canCreateShop($shopId, $shop)
+    {
+        $canCreateShop = true;
+
+        return $canCreateShop;
+    }
+
+    /**
+     * Update shop information in DB and oxConfig.
+     *
+     * @param oxConfig $config
+     * @param oxShop   $shop
+     * @param string   $shopId
+     */
+    protected function updateShopInformation($config, $shop, $shopId)
     {
     }
 }

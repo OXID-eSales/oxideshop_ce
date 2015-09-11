@@ -1,5 +1,0 @@
-<Files ~ ".*">
-  deny from all
-</Files>
-Options Indexes
-order deny,allow

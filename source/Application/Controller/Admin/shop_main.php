@@ -52,11 +52,14 @@ class Shop_Main extends oxAdminDetails
 
         $shopId = $this->_aViewData["oxid"] = $this->getEditObjectId();
 
+        $templateName = $this->renderNewShop();
 
         if ($templateName) {
             return $templateName;
         }
 
+        $user = $this->getUser();
+        $shopId = $this->updateShopIdByUser1($user, $shopId);
 
         if (isset($shopId) && $shopId != self::NEW_SHOP_ID) {
             // load object
@@ -77,6 +80,7 @@ class Shop_Main extends oxAdminDetails
             oxRegistry::getSession()->setVariable("shp", $shopId);
         }
 
+        $this->checkParent($shop);
 
         $this->_aViewData['IsOXDemoShop'] = $config->isDemoShop();
         if (!isset($this->_aViewData['updatenav'])) {
@@ -202,5 +206,42 @@ class Shop_Main extends oxAdminDetails
         foreach ($multiShopTables as $multishopTable) {
             $config->saveShopConfVar("bool", 'blMallInherit_' . strtolower($multishopTable), $inheritAll, $shop->oxshops__oxid->value);
         }
+    }
+
+    /**
+     * Return template name for new shop if it is different from standard.
+     *
+     * @return string
+     */
+    protected function renderNewShop()
+    {
+        $templateName = '';
+
+
+        return $templateName;
+    }
+
+    /**
+     * Check user rights and change userId if need.
+     * Set shop id to _aViewData if user does not have enough rights.
+     *
+     * @param oxUser $user
+     * @param string $shopId
+     *
+     * @return string
+     */
+    protected function updateShopIdByUser1($user, $shopId)
+    {
+
+        return $shopId;
+    }
+
+    /**
+     * Load parent and set result to _aViewData.
+     *
+     * @param oxShop $shop
+     */
+    protected function checkParent($shop)
+    {
     }
 }

@@ -53,6 +53,11 @@ class Shop_Main extends oxAdminDetails
         $shopId = $this->_aViewData["oxid"] = $this->getEditObjectId();
 
 
+        if ($templateName) {
+            return $templateName;
+        }
+
+
         if (isset($shopId) && $shopId != self::NEW_SHOP_ID) {
             // load object
             $shop = oxNew("oxshop");

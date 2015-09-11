@@ -229,5 +229,4 @@ class Unit_Admin_StatisticMainTest extends OxidTestCase
 
         $oStatistic_Main->generate();
     }
-
 }

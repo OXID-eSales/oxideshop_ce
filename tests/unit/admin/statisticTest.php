@@ -25,11 +25,8 @@
  */
 class Unit_Admin_StatisticTest extends OxidTestCase
 {
-
     /**
      * Statistic::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

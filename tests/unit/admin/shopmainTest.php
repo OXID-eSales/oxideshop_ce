@@ -25,11 +25,8 @@
  */
 class Unit_Admin_ShopMainTest extends OxidTestCase
 {
-
     /**
      * Shop_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -61,5 +58,4 @@ class Unit_Admin_ShopMainTest extends OxidTestCase
         }
         $this->fail("error in Shop_Main::save()");
     }
-
 }

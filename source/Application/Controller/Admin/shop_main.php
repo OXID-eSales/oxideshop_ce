@@ -20,7 +20,6 @@
  * @version   OXID eShop CE
  */
 
-
 /**
  * Admin article main shop manager.
  * Performs collection and updatind (on user submit) main item information.
@@ -222,10 +221,8 @@ class Shop_Main extends oxAdminDetails
      */
     protected function renderNewShop()
     {
-        $templateName = '';
 
-
-        return $templateName;
+        return '';
     }
 
     /**
@@ -239,7 +236,6 @@ class Shop_Main extends oxAdminDetails
      */
     protected function updateShopIdByUser($user, $shopId, $updateViewData = false)
     {
-
         return $shopId;
     }
 
@@ -253,7 +249,7 @@ class Shop_Main extends oxAdminDetails
     }
 
     /**
-     * Unset Shop ID from parameters as it is not used.
+     * Unset not used Shop parameters.
      *
      * @param array $parameters
      *
@@ -262,7 +258,6 @@ class Shop_Main extends oxAdminDetails
     protected function updateParameters($parameters)
     {
         $parameters['oxshops__oxid'] = null;
-
         return $parameters;
     }
 
@@ -285,9 +280,7 @@ class Shop_Main extends oxAdminDetails
      */
     protected function canCreateShop($shopId, $shop)
     {
-        $canCreateShop = true;
-
-        return $canCreateShop;
+        return true;
     }
 
     /**

@@ -239,7 +239,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
             $sTheme .= "/";
         }
 
-        return $sShop . 'application/views/' . $sTheme;
+        return $sShop . 'Application/views/' . $sTheme;
     }
 
     /**
@@ -1207,7 +1207,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetTranslationsDir()
     {
         $oConfig = oxNew('oxConfig');
-        $sDir = $this->getConfigParam('sShopDir') . 'application/translations/en/lang.php';
+        $sDir = $this->getConfigParam('sShopDir') . 'Application/translations/en/lang.php';
         $this->assertEquals($sDir, $oConfig->getTranslationsDir('lang.php', 'en'));
         $this->assertFalse($oConfig->getTranslationsDir('lang.php', 'na'));
     }
@@ -2104,7 +2104,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
-        $this->assertEquals("application/views/admin/", $oConfig->getTemplateBase(true));
+        $this->assertEquals("Application/views/admin/", $oConfig->getTemplateBase(true));
     }
 
     public function testGetResourcePath()

@@ -195,7 +195,7 @@ class OxNavigationTree extends oxSuperCfg
             }
 
             // checking for setup page
-            if (file_exists($myConfig->getConfigParam('sShopDir') . "/application/controllers/admin/{$sFile}.php")) {
+            if (file_exists($myConfig->getConfigParam('sShopDir') . "/Application/Controller/Admin/{$sFile}.php")) {
                 $oTabElem = new DOMElement('TAB');
                 $oNode->appendChild($oTabElem);
                 $oTabElem->setAttribute('id', 'dyn_interface');
@@ -456,7 +456,7 @@ class OxNavigationTree extends oxSuperCfg
         $myConfig = $this->getConfig();
         $myOxUtlis = oxRegistry::getUtils();
 
-        $sFullAdminDir = getShopBasePath() . 'application/views/admin';
+        $sFullAdminDir = getShopBasePath() . 'Application/views/admin';
         $sMenuFile = "/menu.xml";
 
         $sTmpDir = $myConfig->getConfigParam('sCompileDir');
@@ -822,7 +822,7 @@ class OxNavigationTree extends oxSuperCfg
     {
         if (!$blLoadDynContents) {
             // getting dyn info from oxid server is off, so getting local menu path
-            $sFullAdminDir = getShopBasePath() . 'application/views/admin';
+            $sFullAdminDir = getShopBasePath() . 'Application/views/admin';
             $sUrl = $sFullAdminDir . "/dynscreen_local.xml";
         } else {
             $oAdminView = oxNew('oxadminview');

@@ -68,7 +68,7 @@ class oxDiagnostics
         'oxid.php',
         'oxseo.php',
         'admin/',
-        'application/',
+        'Application/',
         'bin/',
         'Core/',
         'modules/',

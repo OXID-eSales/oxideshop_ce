@@ -1130,9 +1130,9 @@ class oxConfig extends oxSuperCfg
     public function getViewsDir($blAbsolute = true)
     {
         if ($blAbsolute) {
-            return $this->getConfigParam('sShopDir') . 'application/views/';
+            return $this->getConfigParam('sShopDir') . 'Application/views/';
         } else {
-            return 'application/views/';
+            return 'Application/views/';
         }
     }
 
@@ -1148,7 +1148,7 @@ class oxConfig extends oxSuperCfg
     public function getTranslationsDir($sFile, $sDir, $blAbsolute = true)
     {
         $sPath = $blAbsolute ? $this->getConfigParam('sShopDir') : '';
-        $sPath .= 'application/translations/';
+        $sPath .= 'Application/translations/';
         if (is_readable($sPath . $sDir . '/' . $sFile)) {
             return $sPath . $sDir . '/' . $sFile;
         }
@@ -1166,9 +1166,9 @@ class oxConfig extends oxSuperCfg
     public function getAppDir($blAbsolute = true)
     {
         if ($blAbsolute) {
-            return $this->getConfigParam('sShopDir') . 'application/';
+            return $this->getConfigParam('sShopDir') . 'Application/';
         } else {
-            return 'application/';
+            return 'Application/';
         }
     }
 

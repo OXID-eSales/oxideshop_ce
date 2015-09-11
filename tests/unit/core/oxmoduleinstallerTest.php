@@ -130,7 +130,7 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
                 'oxpsmyemptymodulemodule' => 'oxps/myemptymodule/core/oxpsmyemptymodulemodule.php',
             ),
             'blocks' => array(
-                array('template' => 'footer.tpl', 'block' => 'footer_main', 'file' => '/application/views/blocks/myemptymodulefooter.tpl'),
+                array('template' => 'footer.tpl', 'block' => 'footer_main', 'file' => '/Application/views/blocks/myemptymodulefooter.tpl'),
             ),
         );
         $oModule->setNonPublicVar('_aModule', $aModule);

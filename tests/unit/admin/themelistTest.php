@@ -42,7 +42,7 @@ class Unit_Admin_ThemeListTest extends OxidTestCase
         $this->assertTrue(is_array($aViewData['mylist']));
 
         // Count themes in themes folder except admin
-        $iThemesCount = count(glob(oxPATH . "/application/views/*", GLOB_ONLYDIR)) - 1;
+        $iThemesCount = count(glob(oxPATH . "/Application/views/*", GLOB_ONLYDIR)) - 1;
 
         $this->assertEquals($iThemesCount, count($aViewData['mylist']));
     }

@@ -43,7 +43,7 @@ class Unit_Core_oxthemeTest extends OxidTestCase
     public function testGetList()
     {
         // Count themes in themes folder except admin
-        $iCount = count(glob(oxPATH . "/application/views/*", GLOB_ONLYDIR)) - 1;
+        $iCount = count(glob(oxPATH . "/Application/views/*", GLOB_ONLYDIR)) - 1;
 
         $aThemeList = $this->getProxyClass('oxTheme')->getList();
 

@@ -829,8 +829,8 @@ class oxLang extends oxSuperCfg
             $oConfig = $this->getConfig();
             foreach ($aModulePaths as $sPath) {
                 $sFullPath = $oConfig->getModulesDir() . $sPath;
-                if (file_exists($sFullPath . '/application/')) {
-                    $sFullPath .= '/application';
+                if (file_exists($sFullPath . '/Application/')) {
+                    $sFullPath .= '/Application';
                 }
                 $sFullPath .= ($blForAdmin) ? '/views/admin/' : '/translations/';
                 $sFullPath .= $sLang;

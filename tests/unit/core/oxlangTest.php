@@ -175,7 +175,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         if (!OXID_VERSION_PE) {
             $this->markTestSkipped('This test is for Community edition only.');
         }
-        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . 'modules/oxlangTestModule/application/translations/de/';
+        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . 'modules/oxlangTestModule/Application/translations/de/';
 
         if (!is_dir($sFilePath)) {
             mkdir($sFilePath, 0755, true);
@@ -189,7 +189,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
             $sPath . "translations/de/lang.php",
             $sPath . "translations/de/translit_lang.php",
             $sPath . "views/azure/de/lang.php",
-            $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php",
+            $sShopPath . "modules/oxlangTestModule/Application/translations/de/test_lang.php",
             $sPath . "views/azure/de/cust_lang.php"
         );
 
@@ -200,10 +200,10 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $this->assertEquals($aPathArray, $oLang->UNITgetLangFilesPathArray(0));
 
-        unlink($sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php");
-        rmdir($sShopPath . "modules/oxlangTestModule/application/translations/de/");
-        rmdir($sShopPath . "modules/oxlangTestModule/application/translations/");
-        rmdir($sShopPath . "modules/oxlangTestModule/application/");
+        unlink($sShopPath . "modules/oxlangTestModule/Application/translations/de/test_lang.php");
+        rmdir($sShopPath . "modules/oxlangTestModule/Application/translations/de/");
+        rmdir($sShopPath . "modules/oxlangTestModule/Application/translations/");
+        rmdir($sShopPath . "modules/oxlangTestModule/Application/");
     }
 
 
@@ -1220,7 +1220,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         //writing a test file
         $sFileContents = '<?php $aLang = array( "charset" => "UTF-8", "TESTKEY" => "testVal");';
-        $sFileName = getShopBasePath() . "/application/views/azure/de/my_lang.php";
+        $sFileName = getShopBasePath() . "/Application/views/azure/de/my_lang.php";
         $sShopId = $this->getConfig()->getShopId();
         $sCacheKey = "languagefiles__0_$sShopId";
         oxRegistry::getUtils()->toFileCache($sCacheKey, null);

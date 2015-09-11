@@ -177,7 +177,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
 
         $oAdminView = oxNew('oxadminview');
         $sDynscreenUrl = $oAdminView->getServiceUrl($iLang) . "menue/dynscreen.xml";
-        $sDynscreenLocalUrl = getShopBasePath() . "application/views/admin/dynscreen_local.xml";
+        $sDynscreenLocalUrl = getShopBasePath() . "Application/views/admin/dynscreen_local.xml";
 
         $oNavTree = oxNew('oxnavigationtree');
         $this->assertEquals($sDynscreenUrl, $oNavTree->UNITgetDynMenuUrl($iLang, true));
@@ -710,7 +710,7 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
      */
     protected function _getDomXml()
     {
-        $adminViewsDirectory = $this->getTestConfig()->getShopPath() .'/application/views/admin';
+        $adminViewsDirectory = $this->getTestConfig()->getShopPath() .'/Application/views/admin';
 
         $edition = strtolower($this->getTestConfig()->getShopEdition());
         $menuFile = "/menu_$edition.xml";

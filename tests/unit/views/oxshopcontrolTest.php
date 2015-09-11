@@ -373,7 +373,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
         oxTestModules::addFunction('oxUtils', 'setHeader', '{}');
 
-        $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/application/views/";
+        $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/Application/views/";
         $sTplPath .= $this->getConfig()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
 
         $iAt = 0;
@@ -413,7 +413,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
 
         $this->setRequestParameter('renderPartial', 'asd');
 
-        $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/application/views/";
+        $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/Application/views/";
         $sTplPath .= $this->getConfig()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
 
         $iAt = 0;
@@ -455,7 +455,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
 
         $this->setRequestParameter('renderPartial', 'asd');
 
-        $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/application/views/";
+        $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/Application/views/";
         $sTplPath .= $this->getConfig()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
 
         $iAt = 0;

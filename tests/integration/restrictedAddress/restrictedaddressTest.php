@@ -130,7 +130,7 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
         return array(
             array('/log/EXCEPTION_LOG.txt'),
             array('/log/anything'),
-            array('/application/views/azure/tpl/widget/rss.tpl'),
+            array('/Application/views/azure/tpl/widget/rss.tpl'),
             array('/pkg.info'),
             array('/op.ini'),
             array('/.htaccess'),
@@ -154,7 +154,7 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
     {
         return array(
             array('/op.ini.php'),
-            array('/application/views/azure/tpl/widget/rss.tpl.whatever'),
+            array('/Application/views/azure/tpl/widget/rss.tpl.whatever'),
         );
     }
 

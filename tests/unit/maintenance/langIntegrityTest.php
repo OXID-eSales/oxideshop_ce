@@ -583,10 +583,10 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
         }
         // default exclude paths
         if ($aExcludePaths == array()) {
-            $aExcludeDirPattern[] = '/source/application/translations';
-            $aExcludeDirPattern[] = '/source/application/views/admin';
-            $aExcludeDirPattern[] = '/source/application/views/' . $this->getThemeName() . '/en';
-            $aExcludeDirPattern[] = '/source/application/views/' . $this->getThemeName() . '/de';
+            $aExcludeDirPattern[] = '/source/Application/translations';
+            $aExcludeDirPattern[] = '/source/Application/views/admin';
+            $aExcludeDirPattern[] = '/source/Application/views/' . $this->getThemeName() . '/en';
+            $aExcludeDirPattern[] = '/source/Application/views/' . $this->getThemeName() . '/de';
         } else {
             $aExcludeDirPattern = $aExcludePaths;
         }

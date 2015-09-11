@@ -16,12 +16,12 @@
          verbose="false">
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">application</directory>
+            <directory suffix=".php">Application</directory>
             <directory suffix=".php">Core</directory>
         </whitelist>
         <blacklist>
-            <directory suffix=".php">application/controllers/admin/reports/</directory>
-            <directory suffix=".php">application/views/</directory>
+            <directory suffix=".php">Application/Controller/Admin/Report/</directory>
+            <directory suffix=".php">Application/views/</directory>
             <directory suffix=".php">Core/smarty</directory>
             <directory suffix=".php">Core/wysiwigpro/</directory>
             <directory suffix=".php">Core/jpgraph/</directory>

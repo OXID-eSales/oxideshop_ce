@@ -649,16 +649,16 @@
         },
         {
             "name": "oxid-esales/testing-library",
-            "version": "v1.0.0-alpha9",
+            "version": "v1.0.0-alpha10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "a8ca2976bef703b73fb184c321f945ff2d00167d"
+                "reference": "b8a92b1d2e9a70a45559b32666b63fb95ec0f65d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/a8ca2976bef703b73fb184c321f945ff2d00167d",
-                "reference": "a8ca2976bef703b73fb184c321f945ff2d00167d",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/b8a92b1d2e9a70a45559b32666b63fb95ec0f65d",
+                "reference": "b8a92b1d2e9a70a45559b32666b63fb95ec0f65d",
                 "shasum": ""
             },
             "require": {
@@ -714,9 +714,9 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/OXID-eSales/testing_library/tree/v1.0.0-alpha9"
+                "source": "https://github.com/OXID-eSales/testing_library/tree/v1.0.0-alpha10"
             },
-            "time": "2015-08-31 12:36:55"
+            "time": "2015-09-11 14:52:42"
         },
         {
             "name": "pdepend/pdepend",

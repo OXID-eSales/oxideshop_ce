@@ -27,6 +27,8 @@
  */
 class Shop_List extends oxAdminList
 {
+    /** New Shop indicator. */
+    const NEW_SHOP_ID = '-1';
 
     /**
      * Forces main frame update is set TRUE
@@ -57,16 +59,6 @@ class Shop_List extends oxAdminList
     protected $_blUpdateNav = null;
 
     /**
-     * Sets SQL query parameters (such as sorting),
-     * executes parent method parent::Init().
-     */
-    public function init()
-    {
-        parent::Init();
-
-    }
-
-    /**
      * Executes parent method parent::render() and returns name of template
      * file "shop_list.tpl".
      *
@@ -79,7 +71,7 @@ class Shop_List extends oxAdminList
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != '-1') {
+        if (isset($soxId) && $soxId != self::NEW_SHOP_ID) {
             // load object
             $oShop = oxNew('oxShop');
             if (!$oShop->load($soxId)) {
@@ -93,13 +85,15 @@ class Shop_List extends oxAdminList
         $this->_aViewData['default_edit'] = 'shop_main';
         $this->_aViewData['updatemain'] = $this->_blUpdateMain;
 
+        $this->updateNavigation();
+
         if ($this->_aViewData['updatenav']) {
             //skipping requirements checking when reloading nav frame
             oxRegistry::getSession()->setVariable("navReload", true);
         }
 
         //making sure we really change shops on low level
-        if ($soxId && $soxId != '-1') {
+        if ($soxId && $soxId != self::NEW_SHOP_ID) {
             $myConfig->setShopId($soxId);
             oxRegistry::getSession()->setVariable('currentadminshop', $soxId);
         }
@@ -124,4 +118,10 @@ class Shop_List extends oxAdminList
         return $this->_aWhere;
     }
 
+    /**
+     * Set to view data if update navigation menu.
+     */
+    protected function updateNavigation()
+    {
+    }
 }

@@ -171,17 +171,29 @@ class Shop_Seo extends Shop_Config
     }
 
     /**
-     * Deletes static url
+     * Deletes static url.
      */
     public function deleteStaticUrl()
     {
-        if (is_array($aStaticUrl = oxRegistry::getConfig()->getRequestParameter('aStaticUrl'))) {
-            if (($sObjectid = $aStaticUrl['oxseo__oxobjectid']) && $sObjectid != '-1') {
-                // active shop id
-                $soxId = $this->getEditObjectId();
-                $oDb = oxDb::getDb();
-                $oDb->execute("delete from oxseo where oxtype='static' and oxobjectid = " . $oDb->quote($sObjectid) . " and oxshopid = " . $oDb->quote($soxId));
+        $aStaticUrl = oxRegistry::getConfig()->getRequestParameter('aStaticUrl');
+        if (is_array($aStaticUrl)) {
+            $sObjectid = $aStaticUrl['oxseo__oxobjectid'];
+            if ($sObjectid && $sObjectid != '-1') {
+                $this->deleteStaticUrlFromDb($sObjectid);
             }
         }
+    }
+
+    /**
+     * Deletes static url from DB.
+     *
+     * @param string $staticUrlId
+     */
+    protected function deleteStaticUrlFromDb($staticUrlId)
+    {
+        // active shop id
+        $shopId = $this->getEditObjectId();
+        $db = oxDb::getDb();
+        $db->execute("delete from oxseo where oxtype='static' and oxobjectid = " . $db->quote($staticUrlId) . " and oxshopid = " . $db->quote($shopId));
     }
 }

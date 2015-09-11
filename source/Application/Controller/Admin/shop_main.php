@@ -59,7 +59,7 @@ class Shop_Main extends oxAdminDetails
         }
 
         $user = $this->getUser();
-        $shopId = $this->updateShopIdByUser1($user, $shopId);
+        $shopId = $this->updateShopIdByUser($user, $shopId, true);
 
         if (isset($shopId) && $shopId != self::NEW_SHOP_ID) {
             // load object
@@ -105,7 +105,7 @@ class Shop_Main extends oxAdminDetails
         $parameters = oxRegistry::getConfig()->getRequestParameter("editval");
 
         $user = $this->getUser();
-        $shopId = $this->updateShopIdByUser2($user, $shopId);
+        $shopId = $this->updateShopIdByUser($user, $shopId, false);
 
         //  #918 S
         // checkbox handling
@@ -230,14 +230,14 @@ class Shop_Main extends oxAdminDetails
 
     /**
      * Check user rights and change userId if need.
-     * Set shop id to _aViewData if user does not have enough rights.
      *
      * @param oxUser $user
      * @param string $shopId
+     * @param bool   $updateViewData If needs to update view data when shop Id changes.
      *
      * @return string
      */
-    protected function updateShopIdByUser1($user, $shopId)
+    protected function updateShopIdByUser($user, $shopId, $updateViewData = false)
     {
 
         return $shopId;
@@ -250,21 +250,6 @@ class Shop_Main extends oxAdminDetails
      */
     protected function checkParent($shop)
     {
-    }
-
-    /**
-     * Check user rights.
-     * Change Shop ID to user Shop if user has different rights.
-     *
-     * @param oxUser $user
-     * @param string $shopId
-     *
-     * @return string
-     */
-    protected function updateShopIdByUser2($user, $shopId)
-    {
-
-        return $shopId;
     }
 
     /**

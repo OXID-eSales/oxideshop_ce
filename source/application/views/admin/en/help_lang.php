@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -50,7 +50,7 @@ $aLang =  array(
                                                  '<li>Above 80 hardly any quality improvement can be detected, but the filesize increases enormously.</li></ul><br>'.
                                                  'The default value is 75.',
 
-'HELP_SHOP_SYSTEM_LDAP'                       => 'Please edit file core/oxldap.php.',
+'HELP_SHOP_SYSTEM_LDAP'                       => 'Please edit file Core/oxldap.php.',
 
 'HELP_SHOP_SYSTEM_SHOWVARIANTREVIEWS'         => 'This setting affects how reviews for variants are handled: If the setting is checked, remarks from variants are also shown at the parent product.',
 

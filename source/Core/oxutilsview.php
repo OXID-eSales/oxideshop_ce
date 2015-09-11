@@ -364,7 +364,7 @@ class oxUtilsView extends oxSuperCfg
         }
 
         if ($iDebug == 8 && !$myConfig->isAdmin()) {
-            include_once getShopBasePath() . 'core/smarty/plugins/prefilter.oxtpldebug.php';
+            include_once getShopBasePath() . 'Core/smarty/plugins/prefilter.oxtpldebug.php';
             $oSmarty->register_prefilter('smarty_prefilter_oxtpldebug');
         }
 

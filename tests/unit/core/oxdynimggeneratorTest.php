@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once getShopBasePath() . 'core/oxdynimggenerator.php';
+require_once getShopBasePath() . 'Core/oxdynimggenerator.php';
 
 /**
  * Tests for Actions_List class

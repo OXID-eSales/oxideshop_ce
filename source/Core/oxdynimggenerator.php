@@ -62,7 +62,7 @@ if (!function_exists("getConfig")) {
         include_once getShopBasePath() . 'modules/functions.php';
 
         // Generic utility method file
-        include_once getShopBasePath() . 'core/oxfunctions.php';
+        include_once getShopBasePath() . 'Core/oxfunctions.php';
 
         // initializes singleton config class
         return oxRegistry::getConfig();
@@ -116,7 +116,7 @@ if (!function_exists("includeImageUtils")) {
      */
     function includeImageUtils()
     {
-        include_once getShopBasePath() . "core/utils/oxpicgenerator.php";
+        include_once getShopBasePath() . "Core/utils/oxpicgenerator.php";
     }
 }
 

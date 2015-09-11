@@ -46,7 +46,7 @@ public function getStringWidth( $arg1=null )
 require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfoxorder.php';
 require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfblock.php';
 require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfarticlesummary.php';
-require_once getShopBasePath() . 'core/oxpdf.php';
+require_once getShopBasePath() . 'Core/oxpdf.php';
 
 /**
 * InvoicepdfOxOrder parrent chain class.

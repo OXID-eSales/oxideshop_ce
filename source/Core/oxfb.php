@@ -22,7 +22,7 @@
 
 
 try {
-    include_once getShopBasePath() . "core/facebook/facebook.php";
+    include_once getShopBasePath() . "Core/facebook/facebook.php";
 } catch (Exception $oEx) {
     // skipping class includion if curl or json is not active
     oxRegistry::getConfig()->setConfigParam("bl_showFbConnect", false);

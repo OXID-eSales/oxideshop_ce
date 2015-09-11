@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ if (!defined('OX_BASE_PATH')) {
 require_once OX_BASE_PATH . 'modules/functions.php';
 
 // Generic utility method file including autoloading definition
-require_once OX_BASE_PATH . 'core/oxfunctions.php';
+require_once OX_BASE_PATH . 'Core/oxfunctions.php';
 
 //sets default PHP ini params
 setPhpIniParams();

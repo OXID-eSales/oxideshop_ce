@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -39,11 +39,11 @@ DEFINE('CACHE_DIR', $myConfig->getConfigParam('sCompileDir'));
 /**
  * including libraries
  */
-require_once "$sIncPath/core/jpgraph/jpgraph.php";
-require_once "$sIncPath/core/jpgraph/jpgraph_bar.php";
-require_once "$sIncPath/core/jpgraph/jpgraph_line.php";
-require_once "$sIncPath/core/jpgraph/jpgraph_pie.php";
-require_once "$sIncPath/core/jpgraph/jpgraph_pie3d.php";
+require_once "$sIncPath/Core/jpgraph/jpgraph.php";
+require_once "$sIncPath/Core/jpgraph/jpgraph_bar.php";
+require_once "$sIncPath/Core/jpgraph/jpgraph_line.php";
+require_once "$sIncPath/Core/jpgraph/jpgraph_pie.php";
+require_once "$sIncPath/Core/jpgraph/jpgraph_pie3d.php";
 
 if (!class_exists('report_base')) {
     /**

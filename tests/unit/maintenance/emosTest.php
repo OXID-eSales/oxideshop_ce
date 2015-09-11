@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once getShopBasePath() . '/core/smarty/plugins/emos.php';
+require_once getShopBasePath() . '/Core/smarty/plugins/emos.php';
 
 /**
  * Exposes protected methods for EMOS class

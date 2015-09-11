@@ -1004,7 +1004,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     public function testSetMailerPluginDir()
     {
         $this->_oEmail->UNITsetMailerPluginDir();
-        $this->assertEquals(getShopBasePath() . "core/phpmailer/", $this->_oEmail->PluginDir);
+        $this->assertEquals(getShopBasePath() . "Core/phpmailer/", $this->_oEmail->PluginDir);
     }
 
     /**

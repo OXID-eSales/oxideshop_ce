@@ -117,7 +117,7 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
         $this->setConfigParam('captchaKey', '');
 
         $this->_oCaptcha->setNonPublicVar('_sText', 'test1');
-        $this->assertEquals($this->getConfig()->getShopUrl() . "core/utils/verificationimg.php?e_mac=ox_MB4FUUYlYlld", $this->_oCaptcha->getImageUrl());
+        $this->assertEquals($this->getConfig()->getShopUrl() . "Core/utils/verificationimg.php?e_mac=ox_MB4FUUYlYlld", $this->_oCaptcha->getImageUrl());
     }
 
     /**

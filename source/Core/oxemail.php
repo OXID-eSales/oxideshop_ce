@@ -296,7 +296,7 @@ class oxEmail extends PHPMailer
         $this->setMailWordWrap(100);
 
         $this->isHtml(true);
-        $this->setLanguage("en", $myConfig->getConfigParam('sShopDir') . "/core/phpmailer/language/");
+        $this->setLanguage("en", $myConfig->getConfigParam('sShopDir') . "/Core/phpmailer/language/");
 
         $this->_getSmarty();
     }
@@ -2057,7 +2057,7 @@ class oxEmail extends PHPMailer
      */
     protected function _setMailerPluginDir()
     {
-        $this->set("PluginDir", getShopBasePath() . "core/phpmailer/");
+        $this->set("PluginDir", getShopBasePath() . "Core/phpmailer/");
     }
 
     /**

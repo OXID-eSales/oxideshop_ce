@@ -23,7 +23,7 @@
 /**
  * Including pictures generator functions file
  */
-require_once getShopBasePath() . "core/utils/oxpicgenerator.php";
+require_once getShopBasePath() . "Core/utils/oxpicgenerator.php";
 
 /**
  * Image manipulation class

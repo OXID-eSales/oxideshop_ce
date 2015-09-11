@@ -22,7 +22,7 @@
 
 
 // Including main ADODB include
-require_once getShopBasePath() . 'core/adodblite/adodb.inc.php';
+require_once getShopBasePath() . 'Core/adodblite/adodb.inc.php';
 
 /**
  * Database connection class
@@ -267,7 +267,7 @@ class oxDb
         global $ADODB_EXCEPTION;
         $ADODB_EXCEPTION = 'oxAdoDbException';
 
-        include_once getShopBasePath() . 'core/adodblite/adodb-exceptions.inc.php';
+        include_once getShopBasePath() . 'Core/adodblite/adodb-exceptions.inc.php';
     }
 
     /**
@@ -315,7 +315,7 @@ class oxDb
      */
     protected function _sendMail($sEmail, $sSubject, $sBody)
     {
-        include_once getShopBasePath() . 'core/phpmailer/class.phpmailer.php';
+        include_once getShopBasePath() . 'Core/phpmailer/class.phpmailer.php';
         $oMailer = new phpmailer();
         $oMailer->isMail();
 

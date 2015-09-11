@@ -69,9 +69,9 @@ if (!function_exists('getSystemReqCheck')) {
     function getSystemReqCheck()
     {
         if (defined('OXID_PHP_UNIT')) {
-            include_once getShopBasePath() . "core/oxsysrequirements.php";
+            include_once getShopBasePath() . "Core/oxsysrequirements.php";
         } else {
-            include_once getInstallPath() . "core/oxsysrequirements.php";
+            include_once getInstallPath() . "Core/oxsysrequirements.php";
         }
 
         return new oxSysRequirements();
@@ -195,9 +195,9 @@ if (!class_exists("Conf")) {
         public function __construct()
         {
             if (defined('OXID_PHP_UNIT')) {
-                include getShopBasePath() . "core/oxconfk.php";
+                include getShopBasePath() . "Core/oxconfk.php";
             } else {
-                include getInstallPath() . "core/oxconfk.php";
+                include getInstallPath() . "Core/oxconfk.php";
             }
         }
     }

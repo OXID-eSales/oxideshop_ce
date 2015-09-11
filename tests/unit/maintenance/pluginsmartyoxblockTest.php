@@ -16,11 +16,11 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
-require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/prefilter.oxblock.php';
+require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'Core/smarty/plugins/prefilter.oxblock.php';
 
 class Unit_Maintenance_pluginSmartyOxBlockTest extends OxidTestCase
 {
@@ -73,7 +73,7 @@ class Unit_Maintenance_pluginSmartyOxBlockTest extends OxidTestCase
                 ->with(
                         $this->equalTo('block tags mismatch (or there are more than 500 blocks in one file).'),
                         $this->equalTo(E_USER_ERROR),
-                        $this->equalTo(realpath($this->getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/prefilter.oxblock.php')),
+                        $this->equalTo(realpath($this->getConfig()->getConfigParam( 'sShopDir' ).'Core/smarty/plugins/prefilter.oxblock.php')),
                         $this->greaterThan(75)
                 )
                 ->will($this->throwException(new oxException('ok')));

@@ -369,7 +369,7 @@ class oxConfig extends oxSuperCfg
 
         $this->_loadVarsFromFile();
 
-        include getShopBasePath() . 'core/oxconfk.php';
+        include getShopBasePath() . 'Core/oxconfk.php';
 
         // setting ADODB timeout
         global $ADODB_SESS_LIFE;
@@ -504,7 +504,7 @@ class oxConfig extends oxSuperCfg
         }
 
         $sCoreDir = $this->getConfigParam('sShopDir');
-        $this->setConfigParam('sCoreDir', $sCoreDir . '/core/');
+        $this->setConfigParam('sCoreDir', $sCoreDir . '/Core/');
     }
 
     /**
@@ -956,7 +956,7 @@ class oxConfig extends oxSuperCfg
      */
     public function getCoreUtilsUrl()
     {
-        return $this->getCurrentShopUrl() . 'core/utils/';
+        return $this->getCurrentShopUrl() . 'Core/utils/';
     }
 
     /**

@@ -247,10 +247,10 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
     public function urlProvider()
     {
         return array(
-            array('https://test_shop_url/', 'https://test_shop_url/core/wysiwigpro/'),
-            array('https://test_shop_url', 'https://test_shop_url/core/wysiwigpro/'),
-            array('https://test_shop_url/sub/', 'https://test_shop_url/sub/core/wysiwigpro/'),
-            array('https://test_shop_url/sub', 'https://test_shop_url/sub/core/wysiwigpro/'),
+            array('https://test_shop_url/', 'https://test_shop_url/Core/wysiwigpro/'),
+            array('https://test_shop_url', 'https://test_shop_url/Core/wysiwigpro/'),
+            array('https://test_shop_url/sub/', 'https://test_shop_url/sub/Core/wysiwigpro/'),
+            array('https://test_shop_url/sub', 'https://test_shop_url/sub/Core/wysiwigpro/'),
         );
     }
 

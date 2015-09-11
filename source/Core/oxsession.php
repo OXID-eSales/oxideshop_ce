@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-DEFINE('_DB_SESSION_HANDLER', getShopBasePath() . 'core/adodblite/session/adodb-session.php');
+DEFINE('_DB_SESSION_HANDLER', getShopBasePath() . 'Core/adodblite/session/adodb-session.php');
 
 /**
  * Session manager.

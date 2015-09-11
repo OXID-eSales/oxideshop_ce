@@ -65,7 +65,7 @@ class oxShopAutoloader
         $filePath = '';
 
         if (in_array($class, $this->coreClasses)) {
-            $filePath = getShopBasePath() . "core/" . $class . ".php";
+            $filePath = getShopBasePath() . "Core/" . $class . ".php";
         } else {
             $directories = $this->getClassDirectories();
             foreach ($directories as $directory) {
@@ -102,7 +102,7 @@ class oxShopAutoloader
     {
         $shopBasePath = getShopBasePath();
         $aClassDirs = array(
-            $shopBasePath . 'core/',
+            $shopBasePath . 'Core/',
             $shopBasePath . 'application/components/widgets/',
             $shopBasePath . 'application/components/services/',
             $shopBasePath . 'application/components/',
@@ -111,10 +111,10 @@ class oxShopAutoloader
             $shopBasePath . 'application/controllers/admin/',
             $shopBasePath . 'application/controllers/admin/reports/',
             $shopBasePath . 'views/',
-            $shopBasePath . 'core/exception/',
-            $shopBasePath . 'core/interface/',
-            $shopBasePath . 'core/cache/',
-            $shopBasePath . 'core/cache/connectors/',
+            $shopBasePath . 'Core/exception/',
+            $shopBasePath . 'Core/interface/',
+            $shopBasePath . 'Core/cache/',
+            $shopBasePath . 'Core/cache/connectors/',
             $shopBasePath . 'admin/reports/',
             $shopBasePath . 'admin/',
             $shopBasePath . 'modules/',

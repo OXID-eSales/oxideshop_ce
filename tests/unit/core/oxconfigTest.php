@@ -31,7 +31,7 @@ class modForTestGetBaseTplDirExpectsDefault extends oxConfig
 
         $this->_loadVarsFromFile();
 
-        include getShopBasePath() . 'core/oxconfk.php';
+        include getShopBasePath() . 'Core/oxconfk.php';
 
         $this->_setDefaults();
     }
@@ -1318,7 +1318,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     {
         $oConfig = $this->getMock('oxConfig', array('getCurrentShopUrl'));
         $oConfig->expects($this->any())->method('getCurrentShopUrl')->will($this->returnValue('xxx/'));
-        $this->assertEquals('xxx/core/utils/', $oConfig->getCoreUtilsUrl());
+        $this->assertEquals('xxx/Core/utils/', $oConfig->getCoreUtilsUrl());
     }
 
     public function testGetCoreUtilsUrlMall()
@@ -1328,7 +1328,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig->setConfigParam('aLanguageSSLURLs', null);
         $oConfig->setConfigParam('sMallSSLShopURL', null);
         $oConfig->setConfigParam('sMallShopURL', 'http://www.example3.com/');
-        $this->assertEquals('http://www.example3.com/core/utils/', $oConfig->getCoreUtilsUrl());
+        $this->assertEquals('http://www.example3.com/Core/utils/', $oConfig->getCoreUtilsUrl());
     }
 
 

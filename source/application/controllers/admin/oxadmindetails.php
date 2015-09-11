@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -89,7 +89,7 @@ class oxAdminDetails extends oxAdminView
 
             // include the config file and editor class:
             $sEditorPath = 'wysiwigpro';
-            $sEditorFile = getShopBasePath() . "core/" . $sEditorPath . '/wysiwygPro.class.php';
+            $sEditorFile = getShopBasePath() . "Core/" . $sEditorPath . '/wysiwygPro.class.php';
 
 
             // setting loaded state
@@ -102,9 +102,9 @@ class oxAdminDetails extends oxAdminView
                 $this->_oEditor = new wysiwygPro();
 
                 if (oxRegistry::getConfig()->isSsl() && oxRegistry::getConfig()->getSslShopUrl()) {
-                    $sEditorUrl = rtrim(oxRegistry::getConfig()->getSslShopUrl(), '/') . "/core/{$sEditorPath}/";
+                    $sEditorUrl = rtrim(oxRegistry::getConfig()->getSslShopUrl(), '/') . "/Core/{$sEditorPath}/";
                 } else {
-                    $sEditorUrl = rtrim(oxRegistry::getConfig()->getShopUrl(), '/') . "/core/{$sEditorPath}/";
+                    $sEditorUrl = rtrim(oxRegistry::getConfig()->getShopUrl(), '/') . "/Core/{$sEditorPath}/";
                 }
 
                 $this->_oEditor->editorURL = $sEditorUrl;

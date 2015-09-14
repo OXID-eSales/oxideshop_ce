@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Core\ClassMapProvider;
+use OxidEsales\Core\ClassNameProvider;
+use OxidEsales\Core\EditionSelector;
+
 /**
  * Object Factory implementation (oxNew() method is implemented in this class).
  *
@@ -63,7 +67,7 @@ class oxUtilsObject
      */
     private static $_instance = null;
 
-    /** @var oxEditionCodeHandler */
+    /** @var ClassNameProvider */
     private $editionCodeHandler;
 
     /** @var oxModuleChainsGenerator */
@@ -73,14 +77,15 @@ class oxUtilsObject
     private $shopIdCalculator;
 
     /**
-     * @param oxEditionCodeHandler    $editionCodeHandler
+     * @param ClassNameProvider       $editionCodeHandler
      * @param oxModuleChainsGenerator $moduleChainsGenerator
      * @param oxShopIdCalculator      $shopIdCalculator
      */
     public function __construct($editionCodeHandler = null, $moduleChainsGenerator = null, $shopIdCalculator = null)
     {
         if (!$editionCodeHandler) {
-            $editionCodeHandler = new oxEditionCodeHandler();
+            $classMapProvider = new ClassMapProvider(new EditionSelector());
+            $editionCodeHandler = new ClassNameProvider($classMapProvider->getOverridableClassMap());
         }
         $this->editionCodeHandler = $editionCodeHandler;
 
@@ -114,7 +119,8 @@ class oxUtilsObject
             // allow modules
             $oUtilsObject = new oxUtilsObject();
 
-            $editionCodeHandler = $oUtilsObject->oxNew('oxEditionCodeHandler');
+            $classMapProvider = new ClassMapProvider(new EditionSelector());
+            $editionCodeHandler = new ClassNameProvider($classMapProvider->getOverridableClassMap());
 
             $moduleVariablesCache = $oUtilsObject->oxNew('oxFileCache');
             $shopIdCalculator = $oUtilsObject->oxNew('oxShopIdCalculator', $moduleVariablesCache);
@@ -378,7 +384,7 @@ class oxUtilsObject
     }
 
     /**
-     * @return oxEditionCodeHandler
+     * @return ClassNameProvider
      */
     protected function getEditionCodeHandler()
     {

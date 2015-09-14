@@ -68,7 +68,7 @@ class oxUtilsObject
     private static $_instance = null;
 
     /** @var ClassNameProvider */
-    private $editionCodeHandler;
+    private $classNameProvider;
 
     /** @var oxModuleChainsGenerator */
     private $moduleChainsGenerator;
@@ -77,17 +77,17 @@ class oxUtilsObject
     private $shopIdCalculator;
 
     /**
-     * @param ClassNameProvider       $editionCodeHandler
+     * @param ClassNameProvider       $classNameProvider
      * @param oxModuleChainsGenerator $moduleChainsGenerator
      * @param oxShopIdCalculator      $shopIdCalculator
      */
-    public function __construct($editionCodeHandler = null, $moduleChainsGenerator = null, $shopIdCalculator = null)
+    public function __construct($classNameProvider = null, $moduleChainsGenerator = null, $shopIdCalculator = null)
     {
-        if (!$editionCodeHandler) {
+        if (!$classNameProvider) {
             $classMapProvider = new ClassMapProvider(new EditionSelector());
-            $editionCodeHandler = new ClassNameProvider($classMapProvider->getOverridableClassMap());
+            $classNameProvider = new ClassNameProvider($classMapProvider->getOverridableClassMap());
         }
-        $this->editionCodeHandler = $editionCodeHandler;
+        $this->classNameProvider = $classNameProvider;
 
         if (!$shopIdCalculator) {
             $moduleVariablesCache = new oxFileCache();
@@ -120,7 +120,7 @@ class oxUtilsObject
             $oUtilsObject = new oxUtilsObject();
 
             $classMapProvider = new ClassMapProvider(new EditionSelector());
-            $editionCodeHandler = new ClassNameProvider($classMapProvider->getOverridableClassMap());
+            $classNameProvider = new ClassNameProvider($classMapProvider->getOverridableClassMap());
 
             $moduleVariablesCache = $oUtilsObject->oxNew('oxFileCache');
             $shopIdCalculator = $oUtilsObject->oxNew('oxShopIdCalculator', $moduleVariablesCache);
@@ -129,7 +129,7 @@ class oxUtilsObject
             $moduleVariablesLocator = $oUtilsObject->oxNew('oxModuleVariablesLocator', $subShopSpecific, $shopIdCalculator);
             $moduleChainsGenerator = $oUtilsObject->oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
 
-            self::$_instance = $oUtilsObject->oxNew('oxUtilsObject', $editionCodeHandler, $moduleChainsGenerator, $shopIdCalculator);
+            self::$_instance = $oUtilsObject->oxNew('oxUtilsObject', $classNameProvider, $moduleChainsGenerator, $shopIdCalculator);
         }
 
         return self::$_instance;
@@ -328,9 +328,9 @@ class oxUtilsObject
      */
     public function getClassName($classAlias)
     {
-        $editionCodeHandler = $this->getEditionCodeHandler();
+        $classNameProvider = $this->getClassNameProvider();
 
-        $class = $editionCodeHandler->getClassName($classAlias);
+        $class = $classNameProvider->getClassName($classAlias);
 
         $class = $this->getModuleChainsGenerator()->createClassChain($class, $classAlias);
 
@@ -346,7 +346,7 @@ class oxUtilsObject
      */
     public function getClassAliasName($className)
     {
-        return $this->getEditionCodeHandler()->getClassAliasName($className);
+        return $this->getClassNameProvider()->getClassAliasName($className);
     }
 
     /**
@@ -386,9 +386,9 @@ class oxUtilsObject
     /**
      * @return ClassNameProvider
      */
-    protected function getEditionCodeHandler()
+    protected function getClassNameProvider()
     {
-        return $this->editionCodeHandler;
+        return $this->classNameProvider;
     }
 
     /**

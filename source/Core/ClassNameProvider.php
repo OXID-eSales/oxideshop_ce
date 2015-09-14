@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Core;
+
 /**
  * Forms real class name for edition based classes.
  *

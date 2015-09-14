@@ -1,4 +1,3 @@
-
 <?php
 /**
  * This file is part of OXID eShop Community Edition.
@@ -20,6 +19,8 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+
+use OxidEsales\Core\ClassNameProvider;
 
 class ClassNameProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
 {

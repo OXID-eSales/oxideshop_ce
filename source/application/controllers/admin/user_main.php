@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -39,21 +39,12 @@ class User_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
-        $soxId = $this->getEditObjectId();
-
         parent::render();
 
         // malladmin stuff
         $oAuthUser = oxNew('oxuser');
         $oAuthUser->loadAdminUser();
         $blisMallAdmin = $oAuthUser->oxuser__oxrights->value == "malladmin";
-
-        // all usergroups
-        $sViewName = getViewName("oxgroups", $this->_iEditLang);
-        $oGroups = oxNew("oxlist");
-        $oGroups->init("oxgroups");
-        $oGroups->selectString("select * from {$sViewName} order by {$sViewName}.oxtitle");
 
         // User rights
         $aUserRights = array();
@@ -72,6 +63,7 @@ class User_Main extends oxAdminDetails
             $aUserRights[$iPos]->name = $oLang->translateString("Admin", $iTplLang);
         }
 
+        $aUserRights = $this->calculateAdditionalRights($aUserRights);
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
@@ -97,8 +89,6 @@ class User_Main extends oxAdminDetails
         $oCountryList->loadActiveCountries($oLang->getObjectTplLanguage());
 
         $this->_aViewData["countrylist"] = $oCountryList;
-
-        $this->_aViewData["allgroups"] = $oGroups;
 
         $this->_aViewData["rights"] = $aUserRights;
 
@@ -160,6 +150,10 @@ class User_Main extends oxAdminDetails
 
             $oUser->assign($aParams);
 
+            //seting shop id for ONLY for new created user
+            if ($soxId == "-1") {
+                $this->onUserCreation($oUser);
+            }
 
             // A. changing field type to save birth date correctly
             $oUser->oxuser__oxbirthdate->fldtype = 'char';
@@ -173,5 +167,27 @@ class User_Main extends oxAdminDetails
                 $this->_sSaveError = $oExcp->getMessage();
             }
         }
+    }
+
+    /**
+     * If we need to add more rights / modify current rights by any conditions.
+     *
+     * @param array $userRights
+     *
+     * @return array
+     */
+    protected function calculateAdditionalRights($userRights)
+    {
+        return $userRights;
+    }
+
+    /**
+     * Additional actions on user creation.
+     *
+     * @param oxUser $user
+     */
+    protected function onUserCreation($user)
+    {
+        return $user;
     }
 }

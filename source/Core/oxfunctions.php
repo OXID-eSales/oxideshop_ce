@@ -431,6 +431,11 @@ require_once __DIR__ . "/oxnamespacedautoloader.php";
 $namespacedAutoloader = new oxNamespacedAutoloader(getShopBasePath());
 spl_autoload_register(array($namespacedAutoloader, 'autoload'));
 
+// Register not overloadable classes autoloader.
+$classMapProvider = new \OxidEsales\Core\ClassMapProvider(new \OxidEsales\Core\EditionSelector());
+$notOverridableClassAutoloader = new \OxidEsales\Core\NotOverridableClassAutoloader($classMapProvider->getNotOverridableClassMap());
+spl_autoload_register(array($notOverridableClassAutoloader, 'autoload'));
+
 registerComposerAutoLoad();
 registerShopAutoLoad();
 

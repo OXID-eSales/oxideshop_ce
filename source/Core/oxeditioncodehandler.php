@@ -105,12 +105,12 @@ class oxEditionCodeHandler
 
         if (OXID_VERSION_EE || OXID_VERSION_PE_PE) {
             $classMap = new \OxidEsales\Professional\ClassMap();
-            $map = $classMap->getMap();
+            $map = $classMap->getOverridableMap();
         }
 
         if (OXID_VERSION_EE) {
             $classMap = new \OxidEsales\Enterprise\ClassMap();
-            $map = array_merge($map, $classMap->getMap());
+            $map = array_merge($map, $classMap->getOverridableMap());
         }
 
         return $map;

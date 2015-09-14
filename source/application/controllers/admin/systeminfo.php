@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -53,10 +53,8 @@ class SystemInfo extends oxAdminView
                 if (gettype($value) == "object") {
                     continue;
                 }
-                // security fix - we do not output dbname and dbpwd cause of demoshops
-                if ($name == "oDB" || $name == "dbUser" || $name == "dbPwd" ||
-                    $name == "oSerial" || $name == "aSerials" || $name == "sSerialNr"
-                ) {
+
+                if (!$this->isClassVariableVisible($name)) {
                     continue;
                 }
 
@@ -79,5 +77,26 @@ class SystemInfo extends oxAdminView
         } else {
             return oxRegistry::getUtils()->showMessageAndExit("Access denied !");
         }
+    }
+
+    /**
+     * Checks if class var can be shown in systeminfo.
+     *
+     * @param string $varName
+     * @return bool
+     */
+    protected function isClassVariableVisible($varName)
+    {
+        $skipNames = array(
+            'oDB',
+            'dbUser',
+            'dbPwd',
+            'oSerial',
+            'aSerials',
+            'sSerialNr'
+        );
+        $result = !in_array($varName, $skipNames);
+
+        return $result;
     }
 }

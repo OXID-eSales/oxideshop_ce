@@ -121,6 +121,10 @@ class Unit_Admin_UserListTest extends OxidTestCase
      */
     public function testPrepareWhereQuery()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
+
         $sQ = " and (  oxuser.oxlname testFilter or oxuser.oxlname testFilter  or  oxuser.oxfname testFilter or oxuser.oxfname testFilter ) ";
 
         oxTestModules::addFunction('oxUtilsString', 'prepareStrForSearch', '{ return "testUml"; }');
@@ -135,7 +139,6 @@ class Unit_Admin_UserListTest extends OxidTestCase
         $oView->expects($this->any())->method('_buildFilter')->will($this->returnValue("testFilter"));
         $this->assertEquals($sQ, $oView->UNITprepareWhereQuery($aWhere, ''));
     }
-
 
     /**
      * User_List::Render() test case

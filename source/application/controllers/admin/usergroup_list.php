@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -50,7 +50,6 @@ class UserGroup_List extends oxAdminList
      */
     public function render()
     {
-
         parent::render();
 
         return "usergroup_list.tpl";

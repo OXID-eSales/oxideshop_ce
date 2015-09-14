@@ -21,7 +21,7 @@
  * @version   OXID eShop CE
  */
 
-class Unit_Core_oxeditionchainshandlerTest extends OxidEsales\TestingLibrary\UnitTestCase
+class ClassNameProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
 {
     public function providerReturnsClassNameFromClassAlias()
     {
@@ -45,7 +45,7 @@ class Unit_Core_oxeditionchainshandlerTest extends OxidEsales\TestingLibrary\Uni
             'oxmoduleinstaller' => '\OxidEsales\Enterprise\Core\Module\ModuleInstaller',
         );
 
-        $utilsObject = new oxEditionCodeHandler($map);
+        $utilsObject = new ClassNameProvider($map);
 
         $this->assertSame($className, $utilsObject->getClassName($classAlias));
     }
@@ -74,7 +74,7 @@ class Unit_Core_oxeditionchainshandlerTest extends OxidEsales\TestingLibrary\Uni
             'oxmoduleinstaller' => '\OxidEsales\Enterprise\Core\Module\ModuleInstaller',
         );
 
-        $utilsObject = new oxEditionCodeHandler($map);
+        $utilsObject = new ClassNameProvider($map);
 
         $this->assertSame($classAliasName, $utilsObject->getClassAliasName($className));
     }

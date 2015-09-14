@@ -26,7 +26,7 @@
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxEditionCodeHandler
+class ClassNameProvider
 {
     /** @var array */
     private $classMap;
@@ -34,12 +34,8 @@ class oxEditionCodeHandler
     /**
      * @param array $classMap
      */
-    public function __construct($classMap = null)
+    public function __construct($classMap)
     {
-        if (is_null($classMap)) {
-            $classMap = $this->generateClassMap();
-        }
-
         $this->classMap = $classMap;
     }
 
@@ -92,27 +88,5 @@ class oxEditionCodeHandler
     protected function getExtendedClassMap()
     {
         return $this->classMap;
-    }
-
-    /**
-     * Returns extended classes map
-     *
-     * @return array
-     */
-    protected function generateClassMap()
-    {
-        $map = array();
-
-        if (OXID_VERSION_EE || OXID_VERSION_PE_PE) {
-            $classMap = new \OxidEsales\Professional\ClassMap();
-            $map = $classMap->getOverridableMap();
-        }
-
-        if (OXID_VERSION_EE) {
-            $classMap = new \OxidEsales\Enterprise\ClassMap();
-            $map = array_merge($map, $classMap->getOverridableMap());
-        }
-
-        return $map;
     }
 }

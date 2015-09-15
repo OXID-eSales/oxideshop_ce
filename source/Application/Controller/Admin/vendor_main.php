@@ -99,9 +99,6 @@ class Vendor_Main extends oxAdminDetails
             $aParams['oxvendor__oxactive'] = 0;
         }
 
-        // shopid
-        $aParams['oxvendor__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
-
         $oVendor = oxNew("oxvendor");
         if ($soxId != "-1") {
             $oVendor->loadInLang($this->_iEditLang, $soxId);
@@ -109,6 +106,10 @@ class Vendor_Main extends oxAdminDetails
             $aParams['oxvendor__oxid'] = null;
         }
 
+        //Disable editing for derived articles
+        if ($oVendor->isDerived()) {
+            return;
+        }
 
         $oVendor->setLanguage(0);
         $oVendor->assign($aParams);
@@ -134,9 +135,6 @@ class Vendor_Main extends oxAdminDetails
             $aParams['oxvendor__oxactive'] = 0;
         }
 
-        // shopid
-        $aParams['oxvendor__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
-
         $oVendor = oxNew("oxvendor");
 
         if ($soxId != "-1") {
@@ -145,6 +143,10 @@ class Vendor_Main extends oxAdminDetails
             $aParams['oxvendor__oxid'] = null;
         }
 
+        //Disable editing for derived articles
+        if ($oVendor->isDerived()) {
+            return;
+        }
 
         $oVendor->setLanguage(0);
         $oVendor->assign($aParams);

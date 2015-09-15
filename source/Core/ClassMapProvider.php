@@ -27,6 +27,9 @@ use OxidEsales\Professional\ClassMap as ProfessionalClassMap;
 
 /**
  * Class responsible for returning class map by edition.
+ *
+ * @internal Do not make a module extension for this class.
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class ClassMapProvider
 {
@@ -43,6 +46,8 @@ class ClassMapProvider
     private $professionalClassMap;
 
     /**
+     * Sets edition selector object.
+     *
      * @param EditionSelector $editionSelector
      */
     public function __construct($editionSelector)

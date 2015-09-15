@@ -23,7 +23,7 @@
 namespace OxidEsales\Core;
 
 /**
- * Autoloader class which is used to create class aliases for not overloadable classes.
+ * Autoloader which is used to create class aliases for not overridable classes.
  */
 class NotOverridableClassAutoloader
 {

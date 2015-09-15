@@ -24,6 +24,9 @@ namespace OxidEsales\Core;
 
 /**
  * Class is responsible for returning edition.
+ *
+ * @internal Do not make a module extension for this class.
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class EditionSelector
 {

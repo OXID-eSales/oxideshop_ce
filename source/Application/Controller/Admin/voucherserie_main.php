@@ -68,6 +68,10 @@ class VoucherSerie_Main extends DynExportBase
             $oVoucherSerie->load($soxId);
             $this->_aViewData["edit"] = $oVoucherSerie;
 
+            //Disable editing for derived items
+            if ($oVoucherSerie->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
         }
 
         return $this->_sThisTemplate;
@@ -95,7 +99,10 @@ class VoucherSerie_Main extends DynExportBase
             $aSerieParams["oxvoucherseries__oxid"] = null;
         }
 
-
+        //Disable editing for derived items
+        if ($oVoucherSerie->isDerived()) {
+            return;
+        }
 
         $aSerieParams["oxvoucherseries__oxdiscount"] = abs($aSerieParams["oxvoucherseries__oxdiscount"]);
 

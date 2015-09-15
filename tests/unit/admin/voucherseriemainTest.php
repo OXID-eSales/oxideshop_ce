@@ -97,7 +97,6 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
         $this->fail("error in VoucherSerie_Main::save()");
     }
 
-
     /**
      * VoucherSerie_Main::prepareExport() test case
      *

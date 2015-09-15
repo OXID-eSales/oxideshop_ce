@@ -31,15 +31,15 @@ class ClassMapProviderTest extends OxidTestCase
     public function providerGetsNotOverridableClassMap()
     {
         $classMapProfessional = array(
-            'classnotoverloadableprofessional' => '\class\which\is\under\PE\not\overloadable'
+            'classprofessional' => '\class\which\is\under\PE'
         );
         $classMapEnterprise = array(
-            'classnotoverloadableenterprise' => '\class\which\is\under\EE\not\overloadable'
+            'classenterprise' => '\class\which\is\under\EE'
         );
         $resultProfessional = $classMapProfessional;
         $resultEnterprise = array(
-            'classnotoverloadableprofessional' => '\class\which\is\under\PE\not\overloadable',
-            'classnotoverloadableenterprise' => '\class\which\is\under\EE\not\overloadable'
+            'classprofessional' => '\class\which\is\under\PE',
+            'classenterprise' => '\class\which\is\under\EE'
         );
         $resultCommunity = array();
 

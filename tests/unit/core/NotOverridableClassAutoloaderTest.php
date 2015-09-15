@@ -31,7 +31,7 @@ class NotOverridableClassAutoloaderTest extends OxidTestCase
     public function testCreatesAlias()
     {
         $autoloader = new NotOverridableClassAutoloader($this->getMap());
-        $autoloader->autoload('classalias');
+        $autoloader->autoload('ClassAlias');
         $this->assertTrue(class_exists('ClassAlias'));
     }
 

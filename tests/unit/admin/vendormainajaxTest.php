@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -35,7 +35,7 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
     {
         parent::setUp();
 
-        $sShopId = 'oxbaseshop';
+        $sShopId = $this->getShopId();
 
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle1', oxshopid='{$sShopId}', oxtitle='testArticle1', oxvendorid='_testVendorId'", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testArticle2', oxshopid='{$sShopId}', oxtitle='testArticle2', oxvendorid='_testVendorId'", 'oxarticles');
@@ -51,20 +51,17 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
 
     public function getArticleViewTable()
     {
-        return oxv_oxarticles_de;
-
+        return $this->getConfig()->getEdition() === 'EE' ? 'oxv_oxarticles_1_de' : 'oxv_oxarticles_de';
     }
 
     public function getObject2CategoryViewTable()
     {
-        return "oxobject2category";
-
+        return $this->getConfig()->getEdition() === 'EE' ? 'oxv_oxobject2category_1' : 'oxobject2category';
     }
 
     public function getShopId()
     {
-        return "oxbaseshop";
-
+        return $this->getConfig()->getEdition() === 'EE' ? 1 : 'oxbaseshop';
     }
 
     /**
@@ -274,7 +271,6 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
         $oView->removeVendor();
     }
 
-
     /**
      * AttributeMainAjax::addVendor() test case
      *
@@ -330,5 +326,4 @@ class Unit_Admin_VendorMainAjaxTest extends OxidTestCase
 
         $oView->addVendor();
     }
-
 }

@@ -125,9 +125,13 @@ class vendor_main_ajax extends ajaxListComponent
         }
 
         if (is_array($aRemoveArt)) {
-            $sSelect = "update oxarticles set oxvendorid = null where oxid in ( " . implode(", ", oxDb::getInstance()->quoteArray($aRemoveArt)) . ") ";
+            $sSelect = "update oxarticles set oxvendorid = null where "
+                . $this->onVendorActionArticleUpdateConditions($aRemoveArt);
             oxDb::getDb()->Execute($sSelect);
+
             $this->resetCounter("vendorArticle", $oConfig->getRequestParameter('oxid'));
+
+            $this->onVendorAction($oConfig->getRequestParameter('oxid'));
         }
     }
 
@@ -148,10 +152,33 @@ class vendor_main_ajax extends ajaxListComponent
 
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
             $oDb = oxDb::getDb();
-            $sSelect = "update oxarticles set oxvendorid = " . $oDb->quote($soxId) . " where oxid in ( " . implode(", ", oxDb::getInstance()->quoteArray($aAddArticle)) . " )";
+            $sSelect = "update oxarticles set oxvendorid = " . $oDb->quote($soxId) . " where "
+                . $this->onVendorActionArticleUpdateConditions($aAddArticle);
 
             $oDb->Execute($sSelect);
             $this->resetCounter("vendorArticle", $soxId);
+
+            $this->onVendorAction($soxId);
         }
+    }
+
+    /**
+     * Condition for updating oxarticles on add / remove vendor actions.
+     *
+     * @param $vendorOxid
+     */
+    protected function onVendorActionArticleUpdateConditions($articleIds)
+    {
+        $database = oxDb::getDb();;
+        return 'oxid in (' . implode(", ", $database->quoteArray($articleIds)) . ')';
+    }
+
+    /**
+     * Additional actions on vendor add/remove.
+     *
+     * @param $vendorOxid
+     */
+    protected function onVendorAction($vendorOxid)
+    {
     }
 }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -35,11 +35,10 @@ class Unit_Admin_VoucherseriegroupsajaxTest extends OxidTestCase
     {
         parent::setUp();
 
-        $sShopId = "oxbaseshop";
+        $shopId = $this->getConfig()->getEdition() === 'EE' ? 1 : 'oxbaseshop';
 
-
-        oxDb::getDb()->execute("replace into oxobject2group set oxid='_testId1', oxshopid='$sShopId', oxobjectid='_testVoucherId1', oxgroupsid='_testGroupId1'");
-        oxDb::getDb()->execute("replace into oxobject2group set oxid='_testId2', oxshopid='$sShopId', oxobjectid='_testVoucherId1', oxgroupsid='_testGroupId2'");
+        oxDb::getDb()->execute("replace into oxobject2group set oxid='_testId1', oxshopid='$shopId', oxobjectid='_testVoucherId1', oxgroupsid='_testGroupId1'");
+        oxDb::getDb()->execute("replace into oxobject2group set oxid='_testId2', oxshopid='$shopId', oxobjectid='_testVoucherId1', oxgroupsid='_testGroupId2'");
 
         oxDb::getDb()->execute("replace into oxgroups set oxid='_testGroupId1', oxactive=1, oxtitle='_testGroup1', oxtitle_1='_testGroup1_en'");
         oxDb::getDb()->execute("replace into oxgroups set oxid='_testGroupId2', oxactive=1, oxtitle='_testGroup2', oxtitle_1='_testGroup2_en'");

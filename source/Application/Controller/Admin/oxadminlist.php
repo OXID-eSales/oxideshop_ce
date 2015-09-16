@@ -25,7 +25,6 @@
  */
 class oxAdminList extends oxAdminView
 {
-
     /**
      * Name of chosen object class (default null).
      *
@@ -235,6 +234,10 @@ class oxAdminList extends oxAdminView
     {
         $oDelete = oxNew($this->_sListClass);
 
+        //disabling deletion for derived items
+        if ($oDelete->isDerived()) {
+            return;
+        }
 
         $blDelete = $oDelete->delete($this->getEditObjectId());
 
@@ -485,7 +488,6 @@ class oxAdminList extends oxAdminView
     {
         return $sSql;
     }
-
 
     /**
      * Builds and returns array of SQL WHERE conditions.

@@ -155,7 +155,6 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
 
     }
 
-
     /**
      * Test delete entry.
      *
@@ -534,6 +533,9 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
      */
     public function testPrepareWhereQueryWithOrderWhenFolderNotSpecified()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
         $this->getConfig()->setConfigParam('aOrderfolder', array('Neu' => 1, 'Old' => 2));
         $this->setRequestParameter('folder', '');
 
@@ -555,7 +557,6 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $oAdminList = oxNew('oxadminlist');
         $this->assertEquals('xxx', $oAdminList->UNITchangeselect('xxx'));
     }
-
 
     /**
      * Test building sql where array adds multilang fields is array

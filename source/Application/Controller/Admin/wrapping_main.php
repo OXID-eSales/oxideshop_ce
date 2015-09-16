@@ -52,6 +52,10 @@ class Wrapping_Main extends oxAdminDetails
             }
             $this->_aViewData["edit"] = $oWrapping;
 
+            //Disable editing for derived articles
+            if ($oWrapping->isDerived()) {
+                $this->_aViewData['readonly'] = true;
+            }
 
             // remove already created languages
             $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
@@ -87,9 +91,6 @@ class Wrapping_Main extends oxAdminDetails
             $aParams['oxwrapping__oxactive'] = 0;
         }
 
-        // shopid
-        $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
-
         $oWrapping = oxNew("oxwrapping");
 
         if ($soxId != "-1") {
@@ -101,6 +102,10 @@ class Wrapping_Main extends oxAdminDetails
             //$aParams = $oWrapping->ConvertNameArray2Idx( $aParams);
         }
 
+        //Disable editing for derived articles
+        if ($oWrapping->isDerived()) {
+            return;
+        }
 
         $oWrapping->setLanguage(0);
         $oWrapping->assign($aParams);
@@ -128,9 +133,6 @@ class Wrapping_Main extends oxAdminDetails
             $aParams['oxwrapping__oxactive'] = 0;
         }
 
-        // shopid
-        $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
-
         $oWrapping = oxNew("oxwrapping");
 
         if ($soxId != "-1") {
@@ -140,6 +142,10 @@ class Wrapping_Main extends oxAdminDetails
             //$aParams = $oWrapping->ConvertNameArray2Idx( $aParams);
         }
 
+        //Disable editing for derived articles
+        if ($oWrapping->isDerived()) {
+            return;
+        }
 
         $oWrapping->setLanguage(0);
         $oWrapping->assign($aParams);

@@ -251,7 +251,7 @@ function getDb($blAssoc = true)
 /**
  * Returns string handler
  *
- * @return oxStr
+ * @return oxStrRegular|oxStrMb
  */
 function getStr()
 {

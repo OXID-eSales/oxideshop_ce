@@ -54,7 +54,7 @@ class AdminView extends \oxView
      * Override this in list class to show other tab from beginning
      * (default 0 - the first tab).
      *
-     * @var array
+     * @var int
      */
     protected $_iDefEdit = 0;
 

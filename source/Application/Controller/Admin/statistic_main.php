@@ -54,7 +54,7 @@ class Statistic_Main extends oxAdminDetails
         }
 
         // setting all reports data: check for reports and load them
-        $sPath = getShopBasePath() . "Application/controllers/admin/reports";
+        $sPath = getShopBasePath() . "Application/Controller/Admin/Report";
         $iLanguage = (int) oxRegistry::getConfig()->getRequestParameter("editlanguage");
         $aAllreports = array();
 

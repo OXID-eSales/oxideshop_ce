@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Application\Controller\Admin;
 
+use OxidEsales\Core\EditionSelector;
 use oxRegistry;
 use oxDb;
 use oxNavigationTree;
@@ -127,7 +128,6 @@ class AdminView extends \oxView
             // passing shop info
             $this->_sShopTitle = $oShop->oxshops__oxname->getRawValue();
             $this->_sShopVersion = $oShop->oxshops__oxversion->value;
-
         }
     }
 
@@ -244,9 +244,8 @@ class AdminView extends \oxView
 
             $sProtocol = $this->_getServiceProtocol();
 
-
-
-            $sUrl = $sProtocol . '://admin.oxid-esales.com/CE/';
+            $editionSelector = new EditionSelector();
+            $sUrl = $sProtocol . '://admin.oxid-esales.com/' . $editionSelector->getEdition() . '/';
 
             $sCountry = $this->_getCountryByCode($this->getConfig()->getConfigParam('sShopCountry'));
 
@@ -439,12 +438,8 @@ class AdminView extends \oxView
     public function resetContentCache($blForceReset = null)
     {
         $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
-
         if (!$blDeleteCacheOnLogout || $blForceReset) {
-            $this->_resetCaches();
-
             oxRegistry::getUtils()->oxResetFileCache();
-
         }
     }
 
@@ -640,14 +635,5 @@ class AdminView extends \oxView
     {
         $this->_sEditObjectId = $sId;
         $this->_aViewData["updatelist"] = 1;
-    }
-
-    /**
-     * Resets caches
-     *
-     * @edition EE
-     */
-    private function _resetCaches()
-    {
     }
 }

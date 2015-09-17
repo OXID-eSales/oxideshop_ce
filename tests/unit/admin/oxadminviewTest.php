@@ -78,9 +78,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testGetServiceUrl()
     {
-
-
-        $sPref = 'CE';
+        $sPref = $this->getConfig()->getEdition();
 
         // no lang abbr
         $this->getProxyClass("oxadminview");
@@ -122,6 +120,10 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testInit()
     {
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
+
         $oAdminView = $this->getMock('oxadminview', array('_authorize'));
         $oAdminView->expects($this->once())->method('_authorize')->will($this->returnValue(true));
         $oAdminView->init();
@@ -155,14 +157,13 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testAllowAdminEditPE()
     {
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
 
         $oAdminView = oxNew('oxadminview');
         $this->assertTrue($oAdminView->UNITallowAdminEdit('xxx'));
     }
-
-
-
-
 
     /**
      * Test get view id.
@@ -187,16 +188,12 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testResetContentCached()
     {
-        $oAdminView = oxNew('oxAdminView');
-
-        oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
-
-        $this->getConfig()->setConfigParam("blClearCacheOnLogout", null);
+        oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDoneMain"; }');
 
         $oAdminView = oxNew('oxAdminView');
         $oAdminView->resetContentCache();
 
-        $this->assertEquals('resetDone', $_GET["testReset"]);
+        $this->assertEquals('resetDoneMain', $_GET["testReset"]);
     }
 
     /**
@@ -206,8 +203,6 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testResetContentCachedWhenResetOnLogoutEnabled()
     {
-        $oAdminView = oxNew('oxAdminView');
-
         oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
         $this->getConfig()->setConfigParam("blClearCacheOnLogout", 1);
@@ -226,12 +221,11 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testResetContentCachedWhenResetOnLogoutEnabledAndForceResetIsOn()
     {
-        $oAdminView = oxNew('oxAdminView');
-
         oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ $_GET["testReset"] = "resetDone"; }');
 
         $this->getConfig()->setConfigParam("blClearCacheOnLogout", 1);
 
+        $oAdminView = oxNew('oxAdminView');
         $oAdminView->resetContentCache(true);
 
         $this->assertEquals('resetDone', $_GET["testReset"]);

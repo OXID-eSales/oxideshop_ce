@@ -37,7 +37,7 @@ class Unit_Admin_AttributeListTest extends OxidTestCase
         oxTestModules::addFunction("oxUtils", "checkAccessRights", "{return true;}");
 
         $oSess = $this->getMock('oxsession', array('checkSessionChallenge'));
-        $oSess->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSess->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
 
         $oView = $this->getMock($this->getProxyClassName('Attribute_List'), array('getSession'));
         $oView->expects($this->any())->method('getSession')->will($this->returnValue($oSess));

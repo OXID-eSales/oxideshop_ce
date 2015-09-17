@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -35,7 +35,7 @@ class Unit_Admin_ManufacturerListTest extends OxidTestCase
     {
         // testing..
         $oView = $this->getMock("Manufacturer_List", array("_authorize"));
-        $oView->expects($this->once())->method('_authorize')->will($this->returnValue(true));
+        $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
         $oView->init();
         $this->assertEquals("manufacturer_list.tpl", $oView->render());
         $this->assertEquals(array('oxmanufacturers' => array("oxtitle" => "asc")), $oView->getListSorting());

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -37,7 +37,7 @@ class Unit_Admin_DeliverySetListTest extends OxidTestCase
         oxTestModules::addFunction("oxUtils", "checkAccessRights", "{return true;}");
 
         $oSess = $this->getMock('oxsession', array('checkSessionChallenge'));
-        $oSess->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSess->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
 
         $oView = $this->getMock($this->getProxyClassName('DeliverySet_List'), array('getSession'));
         $oView->expects($this->any())->method('getSession')->will($this->returnValue($oSess));

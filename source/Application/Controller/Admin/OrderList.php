@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Admin order list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Orders -> Display Orders.
  */
-class Order_List extends oxAdminList
+class OrderList extends \oxAdminList
 {
     /**
      * Name of chosen object class (default null).
@@ -58,100 +63,50 @@ class Order_List extends oxAdminList
     {
         parent::render();
 
-        $aFolders = $this->getConfig()->getConfigParam('aOrderfolder');
-        $sFolder = oxRegistry::getConfig()->getRequestParameter("folder");
+        $folders = $this->getConfig()->getConfigParam('aOrderfolder');
+        $folder = oxRegistry::getConfig()->getRequestParameter("folder");
         // first display new orders
-        if (!$sFolder && is_array($aFolders)) {
-            $aNames = array_keys($aFolders);
-            $sFolder = $aNames[0];
+        if (!$folder && is_array($folders)) {
+            $names = array_keys($folders);
+            $folder = $names[0];
         }
 
-        $aSearch = array('oxorderarticles' => 'ARTID', 'oxpayments' => 'PAYMENT');
-        $sSearch = oxRegistry::getConfig()->getRequestParameter("addsearch");
-        $sSearchfld = oxRegistry::getConfig()->getRequestParameter("addsearchfld");
+        $search = array('oxorderarticles' => 'ARTID', 'oxpayments' => 'PAYMENT');
+        $searchQuery = oxRegistry::getConfig()->getRequestParameter("addsearch");
+        $searchField = oxRegistry::getConfig()->getRequestParameter("addsearchfld");
 
-        $this->_aViewData["folder"] = $sFolder ? $sFolder : -1;
-        $this->_aViewData["addsearchfld"] = $sSearchfld ? $sSearchfld : -1;
-        $this->_aViewData["asearch"] = $aSearch;
-        $this->_aViewData["addsearch"] = $sSearch;
-        $this->_aViewData["afolder"] = $aFolders;
+        $this->_aViewData["folder"] = $folder ? $folder : -1;
+        $this->_aViewData["addsearchfld"] = $searchField ? $searchField : -1;
+        $this->_aViewData["asearch"] = $search;
+        $this->_aViewData["addsearch"] = $searchQuery;
+        $this->_aViewData["afolder"] = $folders;
 
         return "order_list.tpl";
     }
 
     /**
-     * Adding folder check
+     * Cancels order and its order articles
      *
-     * @param array  $aWhere  SQL condition array
-     * @param string $sqlFull SQL query string
-     *
-     * @return $sQ
+     * @deprecated since 6.0 (2015-09-17); use self::cancelOrder().
      */
-    protected function _prepareWhereQuery($aWhere, $sqlFull)
+    public function storno()
     {
-        $oDb = oxDb::getDb();
-        $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
-        $myConfig = $this->getConfig();
-        $aFolders = $myConfig->getConfigParam('aOrderfolder');
-        $sFolder = oxRegistry::getConfig()->getRequestParameter('folder');
-        //searchong for empty oxfolder fields
-        if ($sFolder && $sFolder != '-1') {
-            $sQ .= " and ( oxorder.oxfolder = " . $oDb->quote($sFolder) . " )";
-        } elseif (!$sFolder && is_array($aFolders)) {
-            $aFolderNames = array_keys($aFolders);
-            $sQ .= " and ( oxorder.oxfolder = " . $oDb->quote($aFolderNames[0]) . " )";
-        }
-
-        return $sQ;
-    }
-
-    /**
-     * Builds and returns SQL query string. Adds additional order check.
-     *
-     * @param object $oListObject list main object
-     *
-     * @return string
-     */
-    protected function _buildSelectString($oListObject = null)
-    {
-        $sSql = parent::_buildSelectString($oListObject);
-        $oDb = oxDb::getDb();
-
-        $sSearch = oxRegistry::getConfig()->getRequestParameter('addsearch');
-        $sSearch = trim($sSearch);
-        $sSearchField = oxRegistry::getConfig()->getRequestParameter('addsearchfld');
-
-        if ($sSearch) {
-            switch ($sSearchField) {
-                case 'oxorderarticles':
-                    $sQ = "oxorder left join oxorderarticles on oxorderarticles.oxorderid=oxorder.oxid where ( oxorderarticles.oxartnum like " . $oDb->quote("%{$sSearch}%") . " or oxorderarticles.oxtitle like " . $oDb->quote("%{$sSearch}%") . " ) and ";
-                    break;
-                case 'oxpayments':
-                    $sQ = "oxorder left join oxpayments on oxpayments.oxid=oxorder.oxpaymenttype where oxpayments.oxdesc like " . $oDb->quote("%{$sSearch}%") . " and ";
-                    break;
-                default:
-                    $sQ = "oxorder where oxorder.oxpaid like " . $oDb->quote("%{$sSearch}%") . " and ";
-                    break;
-            }
-            $sSql = str_replace('oxorder where', $sQ, $sSql);
-        }
-
-        return $sSql;
+        $this->cancelOrder();
     }
 
     /**
      * Cancels order and its order articles
+     * Calls init() to reload list items after cancellation.
      */
-    public function storno()
+    public function cancelOrder()
     {
-        $oOrder = oxNew("oxorder");
-        if ($oOrder->load($this->getEditObjectId())) {
-            $oOrder->cancelOrder();
+        $order = oxNew("oxOrder");
+        if ($order->load($this->getEditObjectId())) {
+            $order->cancelOrder();
         }
 
         $this->resetContentCache();
 
-        //we call init() here to load list items after sorno()
         $this->init();
     }
 
@@ -162,11 +117,71 @@ class Order_List extends oxAdminList
      */
     public function getListSorting()
     {
-        $aSorting = parent::getListSorting();
-        if (isset($aSorting["oxorder"]["oxbilllname"])) {
+        $sorting = parent::getListSorting();
+        if (isset($sorting["oxorder"]["oxbilllname"])) {
             $this->_blDesc = false;
         }
 
-        return $aSorting;
+        return $sorting;
+    }
+
+    /**
+     * Adding folder check
+     *
+     * @param array  $whereQuery SQL condition array
+     * @param string $fullQuery  SQL query string
+     *
+     * @return string
+     */
+    protected function _prepareWhereQuery($whereQuery, $fullQuery)
+    {
+        $database = oxDb::getDb();
+        $query = parent::_prepareWhereQuery($whereQuery, $fullQuery);
+        $config = $this->getConfig();
+        $folders = $config->getConfigParam('aOrderfolder');
+        $folder = oxRegistry::getConfig()->getRequestParameter('folder');
+        // Searching for empty oxfolder fields
+        if ($folder && $folder != '-1') {
+            $query .= " and ( oxorder.oxfolder = " . $database->quote($folder) . " )";
+        } elseif (!$folder && is_array($folders)) {
+            $folderNames = array_keys($folders);
+            $query .= " and ( oxorder.oxfolder = " . $database->quote($folderNames[0]) . " )";
+        }
+
+        return $query;
+    }
+
+    /**
+     * Builds and returns SQL query string. Adds additional order check.
+     *
+     * @param object $listObject list main object
+     *
+     * @return string
+     */
+    protected function _buildSelectString($listObject = null)
+    {
+        $query = parent::_buildSelectString($listObject);
+        $database = oxDb::getDb();
+
+        $searchQuery = oxRegistry::getConfig()->getRequestParameter('addsearch');
+        $searchQuery = trim($searchQuery);
+        $searchField = oxRegistry::getConfig()->getRequestParameter('addsearchfld');
+
+        if ($searchQuery) {
+            switch ($searchField) {
+                case 'oxorderarticles':
+                    $queryPart = "oxorder left join oxorderarticles on oxorderarticles.oxorderid=oxorder.oxid where ( oxorderarticles.oxartnum like " . $database->quote("%{$searchQuery}%") . " or oxorderarticles.oxtitle like " . $database->quote("%{$searchQuery}%") . " ) and ";
+                    break;
+                case 'oxpayments':
+                    $queryPart = "oxorder left join oxpayments on oxpayments.oxid=oxorder.oxpaymenttype where oxpayments.oxdesc like " . $database->quote("%{$searchQuery}%") . " and ";
+                    break;
+                default:
+                    $queryPart = "oxorder where oxorder.oxpaid like " . $database->quote("%{$searchQuery}%") . " and ";
+                    break;
+            }
+            $query = str_replace('oxorder where', $queryPart, $query);
+        }
+
+        return $query;
     }
 }

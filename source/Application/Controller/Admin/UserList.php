@@ -20,14 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Application\Controller\Admin;
+
+use oxRegistry;
+use oxUser;
+
 /**
  * Admin user list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: User Administration -> Users.
  */
-class User_List extends oxAdminList
+class UserList extends \oxAdminList
 {
-
     /**
      * Name of chosen object class (default null).
      *
@@ -63,13 +67,14 @@ class User_List extends oxAdminList
      */
     public function render()
     {
-        foreach ($this->getItemList() as $sId => $oUser) {
-            if ($oUser->inGroup("oxidblacklist") || $oUser->inGroup("oxidblocked")) {
-                $oUser->blacklist = "1";
+        foreach ($this->getItemList() as $itemId => $user) {
+            /** @var oxUser $user */
+            if ($user->inGroup("oxidblacklist") || $user->inGroup("oxidblocked")) {
+                $user->blacklist = "1";
             }
-            $oUser->blPreventDelete = false;
-            if (!$this->_allowAdminEdit($sId)) {
-                $oUser->blPreventDelete = true;
+            $user->blPreventDelete = false;
+            if (!$this->_allowAdminEdit($itemId)) {
+                $user->blPreventDelete = true;
             }
         }
 
@@ -94,58 +99,54 @@ class User_List extends oxAdminList
      * For each search value if german umlauts exist, adds them
      * and replaced by spec. char to query
      *
-     * @param array  $aWhere     SQL condition array
-     * @param string $sQueryFull SQL query string
+     * @param array  $whereQuery SQL condition array
+     * @param string $fullQuery  SQL query string
      *
      * @return string
      */
-    public function _prepareWhereQuery($aWhere, $sQueryFull)
+    public function _prepareWhereQuery($whereQuery, $fullQuery)
     {
-        $aNameWhere = null;
-        if (isset($aWhere['oxuser.oxlname']) && ($sName = $aWhere['oxuser.oxlname'])) {
+        $nameWhere = null;
+        if (isset($whereQuery['oxuser.oxlname']) && ($name = $whereQuery['oxuser.oxlname'])) {
             // check if this is search string (contains % sign at begining and end of string)
-            $blIsSearchValue = $this->_isSearchValue($sName);
-            $sName = $this->_processFilter($sName);
-            $aNameWhere['oxuser.oxfname'] = $aNameWhere['oxuser.oxlname'] = $sName;
+            $isSearchValue = $this->_isSearchValue($name);
+            $name = $this->_processFilter($name);
+            $nameWhere['oxuser.oxfname'] = $nameWhere['oxuser.oxlname'] = $name;
 
-            // unsetting..
-            unset($aWhere['oxuser.oxlname']);
+            unset($whereQuery['oxuser.oxlname']);
         }
-        $sQ = parent::_prepareWhereQuery($aWhere, $sQueryFull);
+        $query = parent::_prepareWhereQuery($whereQuery, $fullQuery);
 
-        if ($aNameWhere) {
+        if ($nameWhere) {
+            $values = explode(' ', $name);
+            $query .= ' and (';
+            $queryBoolAction = '';
+            $utilsString = oxRegistry::get("oxUtilsString");
 
-            $aVal = explode(' ', $sName);
-            $sQ .= ' and (';
-            $sSqlBoolAction = '';
-            $myUtilsString = oxRegistry::get("oxUtilsString");
-
-            foreach ($aNameWhere as $sFieldName => $sValue) {
-
-                //for each search field using AND anction
-                foreach ($aVal as $sVal) {
-
-                    $sQ .= " {$sSqlBoolAction} {$sFieldName} ";
+            foreach ($nameWhere as $fieldName => $fieldValue) {
+                //for each search field using AND action
+                foreach ($values as $value) {
+                    $query .= " {$queryBoolAction} {$fieldName} ";
 
                     //for search in same field for different values using AND
-                    $sSqlBoolAction = ' or ';
+                    $queryBoolAction = ' or ';
 
-                    $sQ .= $this->_buildFilter($sVal, $blIsSearchValue);
+                    $query .= $this->_buildFilter($value, $isSearchValue);
 
                     // trying to search spec chars in search value
                     // if found, add cleaned search value to search sql
-                    $sUml = $myUtilsString->prepareStrForSearch($sVal);
-                    if ($sUml) {
-                        $sQ .= " or {$sFieldName} ";
-                        $sQ .= $this->_buildFilter($sUml, $blIsSearchValue);
+                    $uml = $utilsString->prepareStrForSearch($value);
+                    if ($uml) {
+                        $query .= " or {$fieldName} ";
+                        $query .= $this->_buildFilter($uml, $isSearchValue);
                     }
                 }
             }
 
             // end for AND action
-            $sQ .= ' ) ';
+            $query .= ' ) ';
         }
 
-        return $sQ;
+        return $query;
     }
 }

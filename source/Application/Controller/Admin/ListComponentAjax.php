@@ -20,11 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
 
 /**
  * AJAX call processor class
+ *
+ * @internal This class should not be directly extended, instead of it ajaxListComponent class should be used.
  */
-class ajaxListComponent extends oxSuperCfg
+class ListComponentAjax extends \oxSuperCfg
 {
 
     /**

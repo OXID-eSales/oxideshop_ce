@@ -44,14 +44,17 @@ class Unit_Components_Widgets_oxwActionsTest extends OxidTestCase
      */
     public function testGetAction()
     {
+        $topProductCount = 4;
+        $topProductId = '2080';
+
         $this->getConfig()->setConfigParam('bl_perfLoadAktion', 1);
 
         $action = oxNew('oxwActions');
         $action->setViewParameters(array('action' => 'oxtop5'));
         $aList = $action->getAction();
         $this->assertTrue($aList instanceof oxarticlelist);
-        $this->assertSame(4, $aList->count());
-        $this->assertSame('2080', $aList->current()->getId());
+        $this->assertSame($topProductCount, $aList->count());
+        $this->assertSame($topProductId, $aList->current()->getId());
     }
 
     /**

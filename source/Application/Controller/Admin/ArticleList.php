@@ -20,13 +20,20 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Application\Controller\Admin;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Admin article list manager.
  * Collects base article information (according to filtering rules), performs sorting,
  * deletion of articles, etc.
  * Admin Menu: Manage Products -> Articles.
+ *
+ * @internal This class should not be directly extended, instead of it oxAdminList class should be used.
  */
-class Article_List extends oxAdminList
+class ArticleList extends \oxAdminList
 {
     /**
      * Name of chosen object class (default null).

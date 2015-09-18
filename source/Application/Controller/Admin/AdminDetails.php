@@ -20,50 +20,43 @@
  * @version   OXID eShop CE
  */
 
-/**
- * Including AJAX wrapper class
- */
-//require_once "oxajax.php";
+namespace OxidEsales\Application\Controller\Admin;
+
+use oxRegistry;
+use oxField;
 
 /**
  * Admin selectlist list manager.
+ *
+ * @internal This class should not be directly extended, instead of it oxAdminDetails class should be used.
  */
-class oxAdminDetails extends oxAdminView
+class AdminDetails extends \oxAdminView
 {
-
     /**
-     * Global editor object
+     * Global editor object.
      *
      * @var object
      */
     protected $_oEditor = null;
 
     /**
-     * Calls parent::render, sets admin help url
+     * Calls parent::render, sets admin help url.
      *
      * @return string
      */
     public function render()
     {
         $sReturn = parent::render();
-        $oLang = oxRegistry::getLang();
 
         // generate help link
         $myConfig = $this->getConfig();
         $sDir = $myConfig->getConfigParam('sShopDir') . '/documentation/admin';
-        $iLang = 1;
-        $sAbbr = $oLang->getLanguageAbbr($oLang->getTplLanguage());
-        if ($sAbbr == "de") {
-            $iLang = 0;
-        }
         if (is_dir($sDir)) {
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
         } else {
-
+            $languageId = $this->getDocumentationLanguageId();
             $oShop = $this->_getEditShop(oxRegistry::getSession()->getVariable('actshop'));
-            //$sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" .
-            //$myConfig->getConfigParam( 'iAdminLanguage' ) . '/admin';
-            $sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $iLang . '/admin';
+            $sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $languageId . '/admin';
         }
 
         $this->_aViewData['sHelpURL'] = $sDir;
@@ -72,141 +65,35 @@ class oxAdminDetails extends oxAdminView
     }
 
     /**
-     * Initiates Text editor
+     * Get language id for documentation by current language id.
+     */
+    protected function getDocumentationLanguageId()
+    {
+        $language = oxRegistry::getLang();
+        $languageId = 1;
+        $languageAbbr = $language->getLanguageAbbr($language->getTplLanguage());
+        if ($languageAbbr === "de") {
+            $languageId = 0;
+        }
+
+        return $languageId;
+    }
+
+    /**
+     * Method is used for overriding.
      *
      * @param int    $iWidth      editor width
      * @param int    $iHeight     editor height
      * @param object $oObject     object passed to editor
      * @param string $sField      object field which content is passed to editor
      * @param string $sStylesheet stylesheet to use in editor
-     *
-     * @return wysiwygPro
      */
     protected function _getTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet = null)
     {
-        if ($this->_oEditor === null) {
-            $myConfig = $this->getConfig();
-
-            // include the config file and editor class:
-            $sEditorPath = 'wysiwigpro';
-            $sEditorFile = getShopBasePath() . "Core/" . $sEditorPath . '/wysiwygPro.class.php';
-
-
-            // setting loaded state
-            $this->_oEditor = false;
-
-            if ($sEditorFile && file_exists($sEditorFile)) {
-                include_once $sEditorFile;
-
-                // create a new instance of the wysiwygPro class:
-                $this->_oEditor = new wysiwygPro();
-
-                if (oxRegistry::getConfig()->isSsl() && oxRegistry::getConfig()->getSslShopUrl()) {
-                    $sEditorUrl = rtrim(oxRegistry::getConfig()->getSslShopUrl(), '/') . "/Core/{$sEditorPath}/";
-                } else {
-                    $sEditorUrl = rtrim(oxRegistry::getConfig()->getShopUrl(), '/') . "/Core/{$sEditorPath}/";
-                }
-
-                $this->_oEditor->editorURL = $sEditorUrl;
-                $this->_oEditor->urlFormat = 'preserve';
-
-                // document & image directory:
-                $sPictureDir = $myConfig->getPictureDir(false) . 'wysiwigpro/';
-                $sPictureUrl = $myConfig->getPictureUrl(null, false) . 'wysiwigpro/';
-                $this->_oEditor->documentDir = $this->_oEditor->imageDir = $sPictureDir;
-                $this->_oEditor->documentURL = $this->_oEditor->imageURL = $sPictureUrl;
-
-                // enabling upload
-                $this->_oEditor->upload = true;
-
-                // setting empty value
-                $this->_oEditor->emptyValue = "<p>&nbsp;</p>";
-
-                //#M432 enabling deleting files and folders
-                $this->_oEditor->deleteFiles = true;
-                $this->_oEditor->deleteFolders = true;
-
-                // allowed image extensions
-                $this->_oEditor->allowedImageExtensions = '.jpg, .jpeg, .gif, .png';
-
-                // allowed document extensions
-                $this->_oEditor->allowedDocExtensions = '.html, .htm, .pdf, .doc, .rtf, .txt, .xl, .xls, .ppt, .pps, ' .
-                                                        '.zip, .tar, .swf, .wmv, .rm, .mov, .jpg, .jpeg, .gif, .png';
-
-                // set name
-                $this->_oEditor->name = $sField;
-
-                // set language file name
-                $oLang = oxRegistry::getLang();
-                $this->_oEditor->lang = $oLang->translateString('editor_language', $oLang->getTplLanguage());
-
-                // set contents
-                if ($sEditObjectValue = $this->_getEditValue($oObject, $sField)) {
-                    $this->_oEditor->value = $sEditObjectValue;
-                    $this->_oEditor->encoding = $this->getConfig()->isUtf() ? 'UTF-8' : 'ISO-8859-15';
-                }
-
-                // parse for styles and add them
-                $this->setAdminMode(false);
-                $sCSSPath = $myConfig->getResourcePath("{$sStylesheet}", false);
-                $sCSSUrl = $myConfig->getResourceUrl("{$sStylesheet}", false);
-
-                $aCSSPaths = array();
-                $this->setAdminMode(true);
-
-                if (is_file($sCSSPath)) {
-
-                    $aCSSPaths[] = $sCSSUrl;
-
-                    if (is_readable($sCSSPath)) {
-                        $aCSS = @file($sCSSPath);
-                        if (isset($aCSS) && $aCSS) {
-                            $aClasses = array();
-                            $oStr = getStr();
-                            foreach ($aCSS as $key => $sLine) {
-                                $sLine = trim($sLine);
-
-                                if ($sLine[0] == '.' && !$oStr->strstr($sLine, 'default')) {
-                                    // found one tag
-                                    $sTag = $oStr->substr($sLine, 1);
-                                    $iEnd = $oStr->strpos($sTag, ' ');
-                                    if (!isset($iEnd) || !$iEnd) {
-                                        $iEnd = $oStr->strpos($sTag, '\n');
-                                    }
-
-                                    if ($sTag = $oStr->substr($sTag, 0, $iEnd)) {
-                                        $aClasses["span class='{$sTag}'"] = $sTag;
-                                    }
-                                }
-                            }
-                            $this->_oEditor->stylesMenu = $aClasses;
-                        }
-                    }
-                }
-
-                foreach ($aCSSPaths as $sCssPath) {
-                    $this->_oEditor->addStylesheet($sCssPath);
-                }
-
-                //while there is a bug in editor template filter we cannot use this feature
-                // loading template filter plugin
-                $this->_oEditor->loadPlugin('templateFilter');
-                $this->_oEditor->plugins['templateFilter']->protect('[{', '}]');
-                if ($myConfig->getConfigParam('bl_perfParseLongDescinSmarty')) {
-                    $sCurrentHomeDir = '[{$oViewConf->getCurrentHomeDir()}]';
-                    $this->_oEditor->plugins['templateFilter']->assign($sCurrentHomeDir, $myConfig->getShopURL());
-                    // note: in "[{ $" the space is needed for this parameter not to override previous call.
-                    // see assign fnc of templateFilter
-                    $this->_oEditor->plugins['templateFilter']->assign($sCurrentHomeDir, $myConfig->getSSLShopURL());
-                }
-            }
-
-            return $this->_oEditor;
-        }
     }
 
     /**
-     * Returns string which must be edited by editor
+     * Returns string which must be edited by editor.
      *
      * @param oxbase $oObject object whifh field will be used for editing
      * @param string $sField  name of editable field
@@ -232,7 +119,7 @@ class oxAdminDetails extends oxAdminView
     }
 
     /**
-     * Processes edit value
+     * Processes edit value.
      *
      * @param string $sValue string to process
      *
@@ -252,7 +139,7 @@ class oxAdminDetails extends oxAdminView
     }
 
     /**
-     * Returns textarea filled with text to edit
+     * Returns textarea filled with text to edit.
      *
      * @param int    $iWidth  editor width
      * @param int    $iHeight editor height
@@ -276,7 +163,7 @@ class oxAdminDetails extends oxAdminView
     }
 
     /**
-     * Generates Text editor html code
+     * Generates Text editor html code.
      *
      * @param int    $iWidth      editor width
      * @param int    $iHeight     editor height
@@ -300,7 +187,7 @@ class oxAdminDetails extends oxAdminView
     }
 
     /**
-     * Resets number of articles in current shop categories
+     * Resets number of articles in current shop categories.
      */
     public function resetNrOfCatArticles()
     {
@@ -309,7 +196,7 @@ class oxAdminDetails extends oxAdminView
     }
 
     /**
-     * Resets number of articles in current shop vendors
+     * Resets number of articles in current shop vendors.
      */
     public function resetNrOfVendorArticles()
     {
@@ -318,7 +205,7 @@ class oxAdminDetails extends oxAdminView
     }
 
     /**
-     * Resets number of articles in current shop manufacturers
+     * Resets number of articles in current shop manufacturers.
      */
     public function resetNrOfManufacturerArticles()
     {
@@ -371,7 +258,7 @@ class oxAdminDetails extends oxAdminView
 
     /**
      * Function creates category tree for select list used in "Category main", "Article extend" etc.
-     * Returns ID of selected category if available
+     * Returns ID of selected category if available.
      *
      * @param string $sTplVarName     name of template variable where is stored category tree
      * @param string $sSelectedCatId  ID of category witch was selected in select list
@@ -410,7 +297,7 @@ class oxAdminDetails extends oxAdminView
     }
 
     /**
-     * Updates object folder parameters
+     * Updates object folder parameters.
      */
     public function changeFolder()
     {
@@ -429,7 +316,7 @@ class oxAdminDetails extends oxAdminView
     }
 
     /**
-     * Sets-up navigation parameters
+     * Sets-up navigation parameters.
      *
      * @param string $sNode active view id
      */
@@ -449,13 +336,12 @@ class oxAdminDetails extends oxAdminView
     }
 
     /**
-     * Resets count of vendor/manufacturer category items
+     * Resets count of vendor/manufacturer category items.
      *
-     * @param string $aIds array to reset type => id
+     * @param array $aIds to reset type => id
      */
     protected function _resetCounts($aIds)
     {
-        $oUtils = oxRegistry::get("oxUtilsCount");
         foreach ($aIds as $sType => $aResetInfo) {
             foreach ($aResetInfo as $sResetId => $iPos) {
                 switch ($sType) {

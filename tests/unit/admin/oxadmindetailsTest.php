@@ -75,7 +75,6 @@ class modOxAdminView_Editor
  */
 class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 {
-
     /**
      * Tear down the fixture.
      *
@@ -184,114 +183,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
 
         $oAdminDetails = oxNew('oxadmindetails');
         $this->assertEquals("test $sUrl", $oAdminDetails->UNITgetEditValue($oObject, 'oField'));
-    }
-
-    /**
-     * Test get text editor.
-     *
-     * @return null
-     */
-    public function testGetTextEditor()
-    {
-        $oAdminDetails = oxNew('oxadmindetails');
-
-        $oArticle = oxNew('oxArticle');
-        $oArticle->oxarticles__oxtitle = new oxField("test value");
-
-        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, $oArticle, 'oxarticles__oxtitle');
-
-        $this->assertFalse($oEditor);
-    }
-
-    /**
-     * Test get text editor - including css files.
-     *
-     * @return null
-     */
-    public function testGetTextEditor_cssInclude()
-    {
-        $oConfig = $this->getConfig();
-        $oAdminDetails = oxNew('oxadmindetails');
-        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, oxNew('oxarticle'), 'oxarticles__oxtitle', 'oxid_ie6.css');
-
-        $this->assertFalse($oEditor);
-
-        $sDefaultCss = "oxid.css";
-
-    }
-
-    /**
-     * Test get text editor - including css files.
-     *
-     * @return null
-     */
-    public function testGetTextEditor_cssIncludeFormerTemplates()
-    {
-        $oConfig = $this->getConfig();
-        $oConfig->setConfigParam("blFormerTplSupport", true);
-
-        $oAdminDetails = oxNew('oxadmindetails');
-        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, oxNew('oxarticle'), 'oxarticles__oxtitle', 'basket.tpl.css');
-
-        $this->assertFalse($oEditor);
-
-        $sDefaultCss = "oxid.css";
-
-    }
-
-    /**
-     * Provides url data for testGetTextEditor_httpsUrl
-     *
-     * @return array
-     */
-    public function urlProvider()
-    {
-        return array(
-            array('https://test_shop_url/', 'https://test_shop_url/Core/wysiwigpro/'),
-            array('https://test_shop_url', 'https://test_shop_url/Core/wysiwigpro/'),
-            array('https://test_shop_url/sub/', 'https://test_shop_url/sub/Core/wysiwigpro/'),
-            array('https://test_shop_url/sub', 'https://test_shop_url/sub/Core/wysiwigpro/'),
-        );
-    }
-
-    /**
-     * Test get text editor - uses admin https url if defined.
-     *
-     * @param string $sShopUrl     shop url to be set
-     * @param string $sExpectedUrl expected url retrieved as editor url
-     *
-     * @dataProvider urlProvider
-     *
-     * @return null
-     */
-    public function testGetTextEditor_httpsUrl($sShopUrl, $sExpectedUrl)
-    {
-        $this->getConfig()->setIsSsl(true);
-        $this->getConfig()->setConfigParam('sShopURL', $sShopUrl);
-        $this->getConfig()->setConfigParam('sSSLShopURL', $sShopUrl);
-
-        $oAdminDetails = oxNew('oxadmindetails');
-        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, oxNew('oxarticle'), 'oxarticles__oxtitle', 'basket.tpl.css');
-
-        $this->assertFalse($oEditor);
-
-    }
-
-    /**
-     * Test get text editor - uses admin https url if defined.
-     *
-     * @return null
-     */
-    public function testGetTextEditor_httpUrl()
-    {
-        $this->getConfig()->setIsSsl(false);
-        $this->getConfig()->setConfigParam('sShopURL', 'http://test_shop_url/');
-
-        $oAdminDetails = oxNew('oxadmindetails');
-        $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, oxNew('oxarticle'), 'oxarticles__oxtitle', 'basket.tpl.css');
-
-        $this->assertFalse($oEditor);
-
     }
 
     /**
@@ -470,6 +361,9 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
      */
     public function testResetCounts()
     {
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
 
         $oAdminDetails = $this->getMock('oxadmindetails', array('resetCounter'));
         $oAdminDetails->expects($this->at(0))->method('resetCounter')->with($this->equalTo("vendorArticle"), $this->equalTo("ID1"));

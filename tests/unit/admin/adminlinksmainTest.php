@@ -111,7 +111,7 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
     }
 
     /**
-     * Adminlinks_Main::testGetTextEditor() test case
+     * Adminlinks_Main::testGetTextEditor() test case.
      *
      * @return null
      */
@@ -124,6 +124,6 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
         $oAdminDetails = oxNew('adminlinks_main');
         $oEditor = $oAdminDetails->UNITgetTextEditor(10, 10, oxNew('oxarticle'), 'oxarticles__oxtitle');
 
-        $this->assertFalse($oEditor);
+        $this->assertNull($oEditor);
     }
 }

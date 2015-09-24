@@ -65,12 +65,13 @@ class oxSeoDecoder extends oxSuperCfg
      * decodeUrl decodes given url into oxid eShop required parameters
      * wich are returned as array
      *
-     * @param string $sSeoUrl SEO url
+     * @param string $sSeoUrl   SEO url
+     * @param int    $iShopId   shop id
      *
      * @access        public
      * @return array || false
      */
-    public function decodeUrl($sSeoUrl)
+    public function decodeUrl($sSeoUrl, $iShopId = null)
     {
         $oStr = getStr();
         $sBaseUrl = $this->getConfig()->getShopURL();
@@ -78,7 +79,9 @@ class oxSeoDecoder extends oxSuperCfg
             $sSeoUrl = $oStr->substr($sSeoUrl, $oStr->strlen($sBaseUrl));
         }
         $sSeoUrl = rawurldecode($sSeoUrl);
-        $iShopId = $this->getConfig()->getShopId();
+        if (!$iShopId) {
+            $iShopId = $this->getConfig()->getShopId();
+        }
 
         $sKey = $this->_getIdent($sSeoUrl);
         $aRet = false;

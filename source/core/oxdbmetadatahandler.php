@@ -53,6 +53,13 @@ class oxDbMetaDataHandler extends oxSuperCfg
     protected $_aSkipTablesOnReset = array("oxcountry");
 
     /**
+     * When creating views, always use those fields from core table.
+     *
+     * @var array
+     */
+    protected $aForceOriginalFields = array('OXID');
+
+    /**
      *  Get table fields
      *
      * @param string $sTableName  table name
@@ -336,7 +343,11 @@ class oxDbMetaDataHandler extends oxSuperCfg
 
         $aBaseFields = $this->getFields($sTable);
         $aLangFields = $this->getFields($sLangTable);
-        $aFields = array_merge($aLangFields, $aBaseFields);
+
+        //Some fields (for example OXID) must be taken from core table.
+        $aLangFields = $this->filterCoreFields($aLangFields);
+
+        $aFields = array_merge($aBaseFields, $aLangFields);
         $aSingleLangFields = array();
 
         foreach ($aFields as $sFieldName => $sField) {
@@ -531,5 +542,23 @@ class oxDbMetaDataHandler extends oxSuperCfg
         }
 
         return $bSuccess;
+    }
+
+    /**
+     * Make sure that e.g. OXID is always used from core table when creating views.
+     * Otherwise we might have unwanted side effects from rows with OXIDs null in view tables.
+     *
+     * @param $fields Language fields array we need to filter for core fields.
+     *
+     * @return array
+     */
+    protected function filterCoreFields($aFields)
+    {
+        foreach ($this->aForceOriginalFields as $aFieldname) {
+            if (array_key_exists($aFieldname, $aFields)) {
+                unset($aFields[$aFieldname]);
+            }
+        }
+        return $aFields;
     }
 }

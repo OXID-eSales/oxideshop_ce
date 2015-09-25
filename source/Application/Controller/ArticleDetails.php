@@ -20,15 +20,24 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Application\Controller;
+
+use oxArticle;
+use oxArticleTagList;
+use oxCategory;
+use oxRegistry;
+use oxField;
+use oxTagCloud;
+use oxVariantSelectList;
+
 /**
  * Article details information page.
  * Collects detailed article information, possible variants, such information
  * as crosselling, similarlist, picture gallery list, etc.
  * OXID eShop -> (Any chosen product).
  */
-class Details extends oxUBase
+class ArticleDetails extends \oxUBase
 {
-
     /**
      * Current class default template name.
      *

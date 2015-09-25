@@ -19,12 +19,29 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Application\Controller;
 
 /**
  * Includes extended class.
  */
 
 // view indexing state for search engines:
+use oxActionList;
+use oxArticle;
+use oxCategory;
+use oxCategoryList;
+use oxContent;
+use oxDb;
+use oxManufacturer;
+use oxManufacturerList;
+use oxPrice;
+use oxRecommList;
+use oxRegistry;
+use oxShop;
+use oxUtilsObject;
+use oxVendor;
+use stdClass;
+
 define('VIEW_INDEXSTATE_INDEX', 0); //  index without limitations
 define('VIEW_INDEXSTATE_NOINDEXNOFOLLOW', 1); //  no index / no follow
 define('VIEW_INDEXSTATE_NOINDEXFOLLOW', 2); //  no index / follow
@@ -34,9 +51,8 @@ define('VIEW_INDEXSTATE_NOINDEXFOLLOW', 2); //  no index / follow
  * Class is responsible for managing of components that must be
  * loaded and executed before any regular operation.
  */
-class oxUBase extends oxView
+class ViewBase extends \oxView
 {
-
     /**
      * Facebook widget status marker
      *
@@ -96,7 +112,7 @@ class oxUBase extends oxView
     /**
      * Active articles category object.
      *
-     * @var oxcategory
+     * @var oxCategory
      */
     protected $_oActCategory = null;
 
@@ -110,7 +126,7 @@ class oxUBase extends oxView
     /**
      * Active vendor object.
      *
-     * @var oxvendor
+     * @var oxVendor
      */
     protected $_oActVendor = null;
 
@@ -617,8 +633,7 @@ class oxUBase extends oxView
         $this->_processRequest();
 
         // storing current view
-        $blInit = true;
-
+        $blInit = $this->shouldInitializeComponents();
 
         // init all components if there are any
         if ($this->_blLoadComponents) {
@@ -648,6 +663,16 @@ class oxUBase extends oxView
     }
 
     /**
+     * Returns whether init() should initialize created components.
+     *
+     * @return bool
+     */
+    protected function shouldInitializeComponents()
+    {
+        return true;
+    }
+
+    /**
      * If current view ID is not set - forms and returns view ID
      * according to language and currency.
      *
@@ -670,12 +695,7 @@ class oxUBase extends oxView
     protected function generateViewId()
     {
         $oConfig = $this->getConfig();
-        $iLang = oxRegistry::getLang()->getBaseLanguage();
-        $iCur = (int) $oConfig->getShopCurrency();
-        $viewId = '';
-
-
-        $viewId = "ox|$iLang|$iCur";
+        $viewId = $this->generateViewIdBase();
 
         $viewId .= "|" . ((int) $this->_blForceNoIndex) . '|' . ((int) $this->isRootCatChanged());
 
@@ -696,6 +716,18 @@ class oxUBase extends oxView
         return $viewId;
     }
 
+    /**
+     * Generates base for view id.
+     *
+     * @return string
+     */
+    protected function generateViewIdBase()
+    {
+        $iLang = oxRegistry::getLang()->getBaseLanguage();
+        $iCur = (int) $this->getConfig()->getShopCurrency();
+
+        return "ox|$iLang|$iCur";
+    }
 
     /**
      * Template variable getter. Returns true if sorting is on

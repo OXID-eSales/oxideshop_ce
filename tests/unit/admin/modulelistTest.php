@@ -27,23 +27,19 @@ class Unit_Admin_ModuleListTest extends OxidTestCase
 {
     /**
      * Module_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        $config = $this->getMock('oxConfig', array('getModulesDir'));
+        $config->expects($this->any())->method('getModulesDir')->will($this->returnValue(__DIR__.'/../testData/modules/'));
+
         $oView = new Module_List();
+        $oView->setConfig($config);
         $this->assertEquals('module_list.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
         $aModulesNames = array_keys($aViewData['mylist']);
-        if (count($aViewData['mylist']) == 1) {
-            $this->assertSame('invoicepdf', current($aModulesNames));
-        } else {
-            $this->assertSame('invoicepdf', $aModulesNames[0]);
-            $this->assertSame('oethemeswitcher', $aModulesNames[1]);
-            $this->assertSame('oxpspaymorrow', $aModulesNames[2]);
-            $this->assertSame('oepaypal', $aModulesNames[3]);
-        }
+        $this->assertSame('testmodule', current($aModulesNames));
     }
 }

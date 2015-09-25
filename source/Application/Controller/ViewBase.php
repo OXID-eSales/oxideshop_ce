@@ -815,7 +815,7 @@ class oxUBase extends oxView
             }
 
             $this->_sListDisplayType = in_array(( string ) $this->_sListDisplayType, $this->_aListDisplayTypes) ?
-                                                                            $this->_sListDisplayType : 'infogrid';
+                $this->_sListDisplayType : 'infogrid';
 
             // writing to session
             if ($this->getConfig()->getRequestParameter('ldtype')) {
@@ -2824,7 +2824,7 @@ class oxUBase extends oxView
         $this->_blShowPromotions = false;
         if (oxNew('oxActionList')->areAnyActivePromotions()) {
             $this->_blShowPromotions = (count($this->getPromoFinishedList()) + count($this->getPromoCurrentList()) +
-                                        count($this->getPromoFutureList())) > 0;
+                    count($this->getPromoFutureList())) > 0;
         }
 
         return $this->_blShowPromotions;

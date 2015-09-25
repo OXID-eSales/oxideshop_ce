@@ -1668,7 +1668,7 @@ class oxUBase extends oxView
      */
     public function getLink($iLang = null)
     {
-        return $this->_addPageNrParam($this->getBaseLink($iLang), $this->getActPage());
+        return $this->_addPageNrParam($this->getBaseLink($iLang), $this->getActPage(), $iLang);
     }
 
     /**

@@ -21,12 +21,8 @@
  */
 namespace OxidEsales\Application\Controller;
 
-/**
- * Includes extended class.
- */
-
-// view indexing state for search engines:
 use oxActionList;
+use oxAddress;
 use oxArticle;
 use oxCategory;
 use oxCategoryList;
@@ -40,8 +36,10 @@ use oxRegistry;
 use oxShop;
 use oxUtilsObject;
 use oxVendor;
+use oxViewConfig;
 use stdClass;
 
+// view indexing state for search engines:
 define('VIEW_INDEXSTATE_INDEX', 0); //  index without limitations
 define('VIEW_INDEXSTATE_NOINDEXNOFOLLOW', 1); //  no index / no follow
 define('VIEW_INDEXSTATE_NOINDEXFOLLOW', 2); //  no index / follow
@@ -133,7 +131,7 @@ class ViewBase extends \oxView
     /**
      * Active recommendation's list
      *
-     * @var object
+     * @var oxRecommList
      */
     protected $_oActiveRecommList = null;
 
@@ -282,7 +280,7 @@ class ViewBase extends \oxView
     protected $_blForceNoIndex = false;
 
     /**
-     * Number of products in comparelist.
+     * Number of products in compare list.
      *
      * @var integer
      */
@@ -295,25 +293,13 @@ class ViewBase extends \oxView
      */
     protected $_sContentId = null;
 
-    /**
-     * Default content
-     *
-     * @return oxContent
-     */
+    /** @return oxContent Default content. */
     protected $_oContent = null;
 
-    /**
-     * View id
-     *
-     * @var string
-     */
+    /** @var string View id. */
     protected $_sViewResetID = null;
 
-    /**
-     * Menu list
-     *
-     * @var array
-     */
+    /** @var array Menu list. */
     protected $_aMenueList = null;
 
     /**
@@ -341,228 +327,119 @@ class ViewBase extends \oxView
      */
     protected $_aUserComponentNames = array();
 
-    /**
-     * Current view product object
-     *
-     * @var oxArticle
-     */
+    /** @var oxArticle Current view product object. */
     protected $_oProduct = null;
 
-    /**
-     * Number of current list page.
-     *
-     * @var integer
-     */
+    /** @var int Number of current list page. */
     protected $_iActPage = null;
 
-    /**
-     * A list of articles.
-     *
-     * @var array
-     */
+    /** @var array A list of articles. */
     protected $_aArticleList = null;
 
-    /**
-     * Manufacturer list object.
-     *
-     * @var object
-     */
+    /** @var oxManufacturerList Manufacturer list object. */
     protected $_oManufacturerTree = null;
 
-    /**
-     * Category tree object.
-     *
-     * @var oxCategoryList
-     */
+    /** @var oxCategoryList Category tree object. */
     protected $_oCategoryTree = null;
 
-    /**
-     * Top 5 article list.
-     *
-     * @var array
-     */
+    /** @var array Top 5 article list. */
     protected $_aTop5ArticleList = null;
 
-    /**
-     * Bargain article list.
-     *
-     * @var array
-     */
+    /** @var array Bargain article list. */
     protected $_aBargainArticleList = null;
 
-    /**
-     * If order price to low
-     *
-     * @var integer
-     */
+    /** @var integer If order price to low. */
     protected $_blLowOrderPrice = null;
 
-    /**
-     * Min order price
-     *
-     * @var string
-     */
+    /** @var string Min order price. */
     protected $_sMinOrderPrice = null;
 
-    /**
-     * Real newsletter status
-     *
-     * @var string
-     */
+    /** @var string Real newsletter status. */
     protected $_iNewsRealStatus = null;
 
-    /**
-     * Url parameters which block redirection
-     *
-     * @return null
-     */
+    /** @return array Url parameters which block redirection. */
     protected $_aBlockRedirectParams = array('fnc', 'stoken', 'force_sid', 'force_admin_sid');
 
-    /**
-     * Root vendor object
-     *
-     * @var object
-     */
+    /** @var oxVendor Root vendor object. */
     protected $_oRootVendor = null;
 
-    /**
-     * Vendor id
-     *
-     * @var string
-     */
+    /** @var string Vendor id. */
     protected $_sVendorId = null;
 
-    /**
-     * Manufacturer list for search
-     *
-     * @var array
-     */
+    /** @var array Manufacturer list for search. */
     protected $_aManufacturerlist = null;
 
-    /**
-     * Root manufacturer object
-     *
-     * @var object
-     */
+    /** @var oxManufacturer Root manufacturer object. */
     protected $_oRootManufacturer = null;
 
-    /**
-     * Manufacturer id
-     *
-     * @var string
-     */
+    /** @var string Manufacturer id. */
     protected $_sManufacturerId = null;
 
-    /**
-     * Has user news subscribed
-     *
-     * @var bool
-     */
+    /** @var bool Has user news subscribed. */
     protected $_blNewsSubscribed = null;
 
-    /**
-     * Delivery address
-     *
-     * @var object
-     */
+    /** @var oxAddress Delivery address. */
     protected $_oDelAddress = null;
 
-    /**
-     * Category tree path
-     *
-     * @var string
-     */
+    /** @var array Category tree path. */
     protected $_sCatTreePath = null;
 
-    /**
-     * Loaded contents array (cache)
-     *
-     * @var array
-     */
+    /** @var array Loaded contents array (cache). */
     protected $_aContents = array();
 
-    /**
-     * Sign if to load and show top5articles action
-     *
-     * @var bool
-     */
+    /** @var bool Sign if to load and show top5articles action. */
     protected $_blTop5Action = false;
 
-    /**
-     * Sign if to load and show bargain action
-     *
-     * @var bool
-     */
+    /** @var bool Sign if to load and show bargain action. */
     protected $_blBargainAction = false;
 
-    /**
-     * check all "must-be-fields" if they are completely
-     *
-     * @var array
-     */
+    /** @var array check all "must-be-fields" if they are completely. */
     protected $_aMustFillFields = null;
 
-    /**
-     * Show tags cloud
-     *
-     * @var bool
-     */
+    /** @var bool Show tags cloud. */
     protected $_blShowTagCloud = true;
 
-    /**
-     * If active root category was changed
-     *
-     * @var bool
-     */
+    /** @var bool If active root category was changed. */
     protected $_blRootCatChanged = false;
 
-    /**
-     * User address
-     *
-     * @var array
-     */
+    /** @var array User address. */
     protected $_aInvoiceAddress = null;
 
-    /**
-     * User delivery address
-     *
-     * @var array
-     */
+    /** @var array User delivery address. */
     protected $_aDeliveryAddress = null;
 
-    /**
-     * Logged in user name
-     *
-     * @var string
-     */
+    /** @var string Logged in user name. */
     protected $_sActiveUsername = null;
 
-    /**
-     * Components which needs to be initialized/rendered (depending
-     * on cache and its cache status)
-     *
-     * @var array
-     */
+    /** @var array Components which needs to be initialized/rendered (depending on cache and its cache status). */
     protected static $_aCollectedComponentNames = null;
 
-    /**
-     * If active load components
-     * By default active
-     *
-     * @var array
-     */
+    /** @var array If active load components. By default active. */
     protected $_blLoadComponents = true;
 
-
-    /**
-     * Sorting columns list
-     *
-     * @var array
-     */
+    /** @var array Sorting columns list. */
     protected $_aSortColumns = null;
 
+    /** @var StdClass Page navigation. */
+    protected $_oPageNavigation = null;
+
+    /** @var integer Number of possible pages. */
+    protected $_iCntPages = null;
+
+    /** @var stdClass Active tag. */
+    protected $_oActTag = null;
+
+    /** @var string Form id. */
+    protected $_sFormId = null;
+
+    /** @var bool Whether session form id matches with request form id. */
+    protected $_blCanAcceptFormData = null;
+
     /**
-     * Returns component names
+     * Returns component names.
+     *
+     * At the moment it is not possible to override $_aCollectedComponentNames in oxUBase,
+     * so aUserComponentNames was added to config.inc.php file.
      *
      * @return array
      */
@@ -571,10 +448,8 @@ class ViewBase extends \oxView
         if (self::$_aCollectedComponentNames === null) {
             self::$_aCollectedComponentNames = array_merge($this->_aComponentNames, $this->_aUserComponentNames);
 
-            // #1721: custom component handling. At the moment it is not possible to override this variable in oxubase,
-            // so we added this array to config.inc.php file
-            if (($aUserCmps = $this->getConfig()->getConfigParam('aUserComponentNames'))) {
-                self::$_aCollectedComponentNames = array_merge(self::$_aCollectedComponentNames, $aUserCmps);
+            if (($userComponentNames = $this->getConfig()->getConfigParam('aUserComponentNames'))) {
+                self::$_aCollectedComponentNames = array_merge(self::$_aCollectedComponentNames, $userComponentNames);
             }
 
             if (oxRegistry::getConfig()->getRequestParameter('_force_no_basket_cmp')) {
@@ -596,28 +471,27 @@ class ViewBase extends \oxView
      */
     protected function _processRequest()
     {
-        $myUtils = oxRegistry::getUtils();
+        $utils = oxRegistry::getUtils();
 
         // non admin, request is not empty and was not processed by seo engine
-        if (!isSearchEngineUrl() && $myUtils->seoIsActive() && ($sStdUrl = getRequestUrl('', true))) {
-
+        if (!isSearchEngineUrl() && $utils->seoIsActive() && ($requestUrl = getRequestUrl('', true))) {
             // fetching standard url and looking for it in seo table
-            if ($this->_canRedirect() && ($sRedirectUrl = oxRegistry::get("oxSeoEncoder")->fetchSeoUrl($sStdUrl))) {
-                $myUtils->redirect($this->getConfig()->getCurrentShopUrl() . $sRedirectUrl, false);
+            if ($this->_canRedirect() && ($redirectUrl = oxRegistry::get("oxSeoEncoder")->fetchSeoUrl($requestUrl))) {
+                $utils->redirect($this->getConfig()->getCurrentShopUrl() . $redirectUrl, false);
             } elseif (VIEW_INDEXSTATE_INDEX == $this->noIndex()) {
                 // forcing to set no index/follow meta
                 $this->_forceNoIndex();
 
                 if ($this->getConfig()->getConfigParam('blSeoLogging')) {
-                    $sShopId = $this->getConfig()->getShopId();
-                    $sLangId = oxRegistry::getLang()->getBaseLanguage();
-                    $sIdent = md5(strtolower($sStdUrl) . $sShopId . $sLangId);
+                    $shopId = $this->getConfig()->getShopId();
+                    $languageId = oxRegistry::getLang()->getBaseLanguage();
+                    $id = md5(strtolower($requestUrl) . $shopId . $languageId);
 
                     // logging "not found" url
-                    $oDb = oxDb::getDb();
-                    $oDb->execute(
-                        "replace oxseologs ( oxstdurl, oxident, oxshopid, oxlang )
-                               values ( " . $oDb->quote($sStdUrl) . ", '{$sIdent}', '{$sShopId}', '{$sLangId}' ) "
+                    $database = oxDb::getDb();
+                    $database->execute(
+                        "replace oxseologs ( oxstdurl, oxident, oxshopid, oxlang ) values ( ?, ?, ?, ? ) ",
+                        array($requestUrl, $id, $shopId, $languageId)
                     );
                 }
             }
@@ -633,27 +507,27 @@ class ViewBase extends \oxView
         $this->_processRequest();
 
         // storing current view
-        $blInit = $this->shouldInitializeComponents();
+        $shouldInitialize = $this->shouldInitializeComponents();
 
         // init all components if there are any
         if ($this->_blLoadComponents) {
-            foreach ($this->_getComponentNames() as $sComponentName => $blNotCacheable) {
+            foreach ($this->_getComponentNames() as $componentName => $isNotCacheable) {
                 // do not override initiated components
-                if (!isset($this->_oaComponents[$sComponentName])) {
+                if (!isset($this->_oaComponents[$componentName])) {
                     // component objects MUST be created to support user called functions
-                    $oComponent = oxNew($sComponentName);
-                    $oComponent->setParent($this);
-                    $oComponent->setThisAction($sComponentName);
-                    $this->_oaComponents[$sComponentName] = $oComponent;
+                    $component = oxNew($componentName);
+                    $component->setParent($this);
+                    $component->setThisAction($componentName);
+                    $this->_oaComponents[$componentName] = $component;
                 }
 
                 // do we really need to initiate them ?
-                if ($blInit) {
-                    $this->_oaComponents[$sComponentName]->init();
+                if ($shouldInitialize) {
+                    $this->_oaComponents[$componentName]->init();
 
                     // executing only is view does not have action method
                     if (!method_exists($this, $this->getFncName())) {
-                        $this->_oaComponents[$sComponentName]->executeFunction($this->getFncName());
+                        $this->_oaComponents[$componentName]->executeFunction($this->getFncName());
                     }
                 }
             }
@@ -694,22 +568,22 @@ class ViewBase extends \oxView
      */
     protected function generateViewId()
     {
-        $oConfig = $this->getConfig();
+        $config = $this->getConfig();
         $viewId = $this->generateViewIdBase();
 
         $viewId .= "|" . ((int) $this->_blForceNoIndex) . '|' . ((int) $this->isRootCatChanged());
 
         // #0004798: SSL should be included in viewId
-        if ($oConfig->isSsl()) {
+        if ($config->isSsl()) {
             $viewId .= "|ssl";
         }
 
         // #0002866: external global viewID addition
         if (function_exists('customGetViewId')) {
-            $oExtViewId = customGetViewId();
+            $externalViewId = customGetViewId();
 
-            if ($oExtViewId !== null) {
-                $viewId .= '|' . md5(serialize($oExtViewId));
+            if ($externalViewId !== null) {
+                $viewId .= '|' . md5(serialize($externalViewId));
             }
         }
 
@@ -723,10 +597,10 @@ class ViewBase extends \oxView
      */
     protected function generateViewIdBase()
     {
-        $iLang = oxRegistry::getLang()->getBaseLanguage();
-        $iCur = (int) $this->getConfig()->getShopCurrency();
+        $languageId = oxRegistry::getLang()->getBaseLanguage();
+        $currencyId = (int) $this->getConfig()->getShopCurrency();
 
-        return "ox|$iLang|$iCur";
+        return "ox|$languageId|$currencyId";
     }
 
     /**
@@ -742,11 +616,11 @@ class ViewBase extends \oxView
     /**
      * Set array of component objects
      *
-     * @param array $aComponents array of components objects
+     * @param array $components array of components objects
      */
-    public function setComponents($aComponents = null)
+    public function setComponents($components = null)
     {
-        $this->_oaComponents = $aComponents;
+        $this->_oaComponents = $components;
     }
 
     /**
@@ -762,25 +636,25 @@ class ViewBase extends \oxView
     /**
      * Get component object
      *
-     * @param string $sName name of component object
+     * @param string $name name of component object
      *
      * @return object
      */
-    public function getComponent($sName)
+    public function getComponent($name)
     {
-        if (isset($sName) && isset($this->_oaComponents[$sName])) {
-            return $this->_oaComponents[$sName];
+        if (isset($name) && isset($this->_oaComponents[$name])) {
+            return $this->_oaComponents[$name];
         }
     }
 
     /**
      * Set flag if current view is an order view
      *
-     * @param bool $blIsOrderStep flag if current view is an order view
+     * @param bool $isOrderStep flag if current view is an order view
      */
-    public function setIsOrderStep($blIsOrderStep = null)
+    public function setIsOrderStep($isOrderStep = null)
     {
-        $this->_blIsOrderStep = $blIsOrderStep;
+        $this->_blIsOrderStep = $isOrderStep;
     }
 
     /**
@@ -797,17 +671,17 @@ class ViewBase extends \oxView
     /**
      * Active category setter
      *
-     * @param oxCategory $oCategory active category
+     * @param oxCategory $category active category
      */
-    public function setActiveCategory($oCategory)
+    public function setActiveCategory($category)
     {
-        $this->_oActCategory = $oCategory;
+        $this->_oActCategory = $category;
     }
 
     /**
      * Returns active category
      *
-     * @return null
+     * @return oxCategory|null
      */
     public function getActiveCategory()
     {
@@ -822,10 +696,10 @@ class ViewBase extends \oxView
     public function getListType()
     {
         if ($this->_sListType == null) {
-            if ($sListType = $this->getConfig()->getRequestParameter('listtype')) {
-                $this->_sListType = $sListType;
-            } elseif ($sListType = $this->getConfig()->getGlobalParameter('listtype')) {
-                $this->_sListType = $sListType;
+            if ($listType = $this->getConfig()->getRequestParameter('listtype')) {
+                $this->_sListType = $listType;
+            } elseif ($listType = $this->getConfig()->getGlobalParameter('listtype')) {
+                $this->_sListType = $listType;
             }
         }
 
@@ -879,12 +753,12 @@ class ViewBase extends \oxView
     /**
      * List type setter
      *
-     * @param string $sType type of list
+     * @param string $type type of list
      */
-    public function setListType($sType)
+    public function setListType($type)
     {
-        $this->_sListType = $sType;
-        $this->getConfig()->setGlobalParameter('listtype', $sType);
+        $this->_sListType = $type;
+        $this->getConfig()->setGlobalParameter('listtype', $type);
     }
 
     /**
@@ -896,8 +770,8 @@ class ViewBase extends \oxView
     {
         if ($this->_blLoadCurrency == null) {
             $this->_blLoadCurrency = false;
-            if ($blLoadCurrency = $this->getConfig()->getConfigParam('bl_perfLoadCurrency')) {
-                $this->_blLoadCurrency = $blLoadCurrency;
+            if ($loadCurrency = $this->getConfig()->getConfigParam('bl_perfLoadCurrency')) {
+                $this->_blLoadCurrency = $loadCurrency;
             }
         }
 
@@ -913,8 +787,8 @@ class ViewBase extends \oxView
     {
         if ($this->_blDontShowEmptyCats == null) {
             $this->_blDontShowEmptyCats = false;
-            if ($blDontShowEmptyCats = $this->getConfig()->getConfigParam('blDontShowEmptyCategories')) {
-                $this->_blDontShowEmptyCats = $blDontShowEmptyCats;
+            if ($dontShowEmptyCats = $this->getConfig()->getConfigParam('blDontShowEmptyCategories')) {
+                $this->_blDontShowEmptyCats = $dontShowEmptyCats;
             }
         }
 
@@ -940,8 +814,8 @@ class ViewBase extends \oxView
     {
         if ($this->_blLoadLanguage == null) {
             $this->_blLoadLanguage = false;
-            if ($blLoadLanguage = $this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
-                $this->_blLoadLanguage = $blLoadLanguage;
+            if ($loadLanguage = $this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
+                $this->_blLoadLanguage = $loadLanguage;
             }
         }
 
@@ -956,8 +830,8 @@ class ViewBase extends \oxView
     public function getTopNavigationCatCnt()
     {
         if ($this->_iTopCatNavItmCnt == null) {
-            $iTopCatNavItmCnt = $this->getConfig()->getConfigParam('iTopNaviCatCount');
-            $this->_iTopCatNavItmCnt = $iTopCatNavItmCnt ? $iTopCatNavItmCnt : 5;
+            $topCategoryNavigationItemsCount = $this->getConfig()->getConfigParam('iTopNaviCatCount');
+            $this->_iTopCatNavItmCnt = $topCategoryNavigationItemsCount ? $topCategoryNavigationItemsCount : 5;
         }
 
         return $this->_iTopCatNavItmCnt;
@@ -966,22 +840,22 @@ class ViewBase extends \oxView
     /**
      * addRssFeed adds link to rss
      *
-     * @param string $sTitle feed page title
-     * @param string $sUrl   feed url
-     * @param int    $key    feed number
+     * @param string $title feed page title
+     * @param string $url   feed url
+     * @param int    $key   feed number
      */
-    public function addRssFeed($sTitle, $sUrl, $key = null)
+    public function addRssFeed($title, $url, $key = null)
     {
         if (!is_array($this->_aRssLinks)) {
             $this->_aRssLinks = array();
         }
 
-        $sUrl = oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession($sUrl);
+        $url = oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession($url);
 
         if ($key === null) {
-            $this->_aRssLinks[] = array('title' => $sTitle, 'link' => $sUrl);
+            $this->_aRssLinks[] = array('title' => $title, 'link' => $url);
         } else {
-            $this->_aRssLinks[$key] = array('title' => $sTitle, 'link' => $sUrl);
+            $this->_aRssLinks[$key] = array('title' => $title, 'link' => $url);
         }
     }
 
@@ -1033,57 +907,57 @@ class ViewBase extends \oxView
      */
     public function getUserSelectedSorting()
     {
-        $aSorting = null;
-        $oStr = getStr();
-        $oConfig = oxRegistry::getConfig();
-        $aSortDirections = array('desc', 'asc');
+        $sorting = null;
+        $stringModifier = getStr();
+        $config = oxRegistry::getConfig();
+        $sortDirections = array('desc', 'asc');
 
-        $sSortBy = $oConfig->getRequestParameter($this->getSortOrderByParameterName());
-        $sSortDir = $oConfig->getRequestParameter($this->getSortOrderParameterName());
+        $sortBy = $config->getRequestParameter($this->getSortOrderByParameterName());
+        $sortOrder = $config->getRequestParameter($this->getSortOrderParameterName());
 
-        if ($sSortBy && oxDb::getInstance()->isValidFieldName($sSortBy) && $sSortDir &&
-            oxRegistry::getUtils()->isValidAlpha($sSortDir) && in_array($oStr->strtolower($sSortDir), $aSortDirections)
+        if ($sortBy && oxDb::getInstance()->isValidFieldName($sortBy) && $sortOrder &&
+            oxRegistry::getUtils()->isValidAlpha($sortOrder) && in_array($stringModifier->strtolower($sortOrder), $sortDirections)
         ) {
-            $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);
+            $sorting = array('sortby' => $sortBy, 'sortdir' => $sortOrder);
         }
 
-        return $aSorting;
+        return $sorting;
     }
 
 
     /**
      * Returns sorting variable from session
      *
-     * @param string $sSortIdent sorting indent
+     * @param string $sortIdent sorting indent
      *
      * @return array
      */
-    public function getSavedSorting($sSortIdent)
+    public function getSavedSorting($sortIdent)
     {
-        $aSorting = oxRegistry::getSession()->getVariable('aSorting');
-        if (isset($aSorting[$sSortIdent])) {
-            return $aSorting[$sSortIdent];
+        $sorting = oxRegistry::getSession()->getVariable('aSorting');
+        if (isset($sorting[$sortIdent])) {
+            return $sorting[$sortIdent];
         }
     }
 
     /**
      * Set sorting column name
      *
-     * @param string $sColumn - column name
+     * @param string $column - column name
      */
-    public function setListOrderBy($sColumn)
+    public function setListOrderBy($column)
     {
-        $this->_sListOrderBy = $sColumn;
+        $this->_sListOrderBy = $column;
     }
 
     /**
      * Set sorting directions
      *
-     * @param string $sDirection - direction desc / asc
+     * @param string $direction - direction desc / asc
      */
-    public function setListOrderDirection($sDirection)
+    public function setListOrderDirection($direction)
     {
-        $this->_sListOrderDir = $sDirection;
+        $this->_sListOrderDir = $direction;
     }
 
     /**
@@ -1094,10 +968,10 @@ class ViewBase extends \oxView
     public function getListOrderBy()
     {
         //if column is with table name split it
-        $aColumns = explode('.', $this->_sListOrderBy);
+        $columns = explode('.', $this->_sListOrderBy);
 
-        if (is_array($aColumns) && count($aColumns) > 1) {
-            return $aColumns[1];
+        if (is_array($columns) && count($columns) > 1) {
+            return $columns[1];
         }
 
         return $this->_sListOrderBy;
@@ -1116,62 +990,62 @@ class ViewBase extends \oxView
     /**
      * Sets the view parameter "meta_description"
      *
-     * @param string $sDescription prepared string for description
+     * @param string $description prepared string for description
      *
      * @return null
      */
-    public function setMetaDescription($sDescription)
+    public function setMetaDescription($description)
     {
-        return $this->_sMetaDescription = $sDescription;
+        return $this->_sMetaDescription = $description;
     }
 
     /**
      * Sets the view parameter 'meta_keywords'
      *
-     * @param string $sKeywords prepared string for meta keywords
+     * @param string $keywords prepared string for meta keywords
      *
      * @return null
      */
-    public function setMetaKeywords($sKeywords)
+    public function setMetaKeywords($keywords)
     {
-        return $this->_sMetaKeywords = $sKeywords;
+        return $this->_sMetaKeywords = $keywords;
     }
 
     /**
      * Fetches meta data (description or keywords) from seo table
      *
-     * @param string $sDataType data type "oxkeywords" or "oxdescription"
+     * @param string $dataType data type "oxkeywords" or "oxdescription"
      *
      * @return string
      */
-    protected function _getMetaFromSeo($sDataType)
+    protected function _getMetaFromSeo($dataType)
     {
-        $sOxId = $this->_getSeoObjectId();
-        $iLang = oxRegistry::getLang()->getBaseLanguage();
-        $sShop = $this->getConfig()->getShopId();
+        $seoObjectId = $this->_getSeoObjectId();
+        $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
+        $shopId = $this->getConfig()->getShopId();
 
-        if ($sOxId && oxRegistry::getUtils()->seoIsActive() &&
-            ($sKeywords = oxRegistry::get("oxSeoEncoder")->getMetaData($sOxId, $sDataType, $sShop, $iLang))
+        if ($seoObjectId && oxRegistry::getUtils()->seoIsActive() &&
+            ($keywords = oxRegistry::get("oxSeoEncoder")->getMetaData($seoObjectId, $dataType, $shopId, $baseLanguageId))
         ) {
-            return $sKeywords;
+            return $keywords;
         }
     }
 
     /**
      * Fetches meta data (description or keywords) from content table
      *
-     * @param string $sMetaIdent meta content ident
+     * @param string $metaIdent meta content ident
      *
      * @return string
      */
-    protected function _getMetaFromContent($sMetaIdent)
+    protected function _getMetaFromContent($metaIdent)
     {
-        if ($sMetaIdent) {
-            $oContent = oxNew('oxContent');
-            if ($oContent->loadByIdent($sMetaIdent) &&
-                $oContent->oxcontents__oxactive->value
+        if ($metaIdent) {
+            $content = oxNew('oxContent');
+            if ($content->loadByIdent($metaIdent) &&
+                $content->oxcontents__oxactive->value
             ) {
-                return getStr()->strip_tags($oContent->oxcontents__oxcontent->value);
+                return getStr()->strip_tags($content->oxcontents__oxcontent->value);
             }
         }
     }
@@ -1187,10 +1061,10 @@ class ViewBase extends \oxView
             $this->_sMetaKeywords = false;
 
             // set special meta keywords ?
-            if (($sKeywords = $this->_getMetaFromSeo('oxkeywords'))) {
-                $this->_sMetaKeywords = $sKeywords;
-            } elseif (($sKeywords = $this->_getMetaFromContent($this->_sMetaKeywordsIdent))) {
-                $this->_sMetaKeywords = $this->_prepareMetaKeyword($sKeywords, false);
+            if (($keywords = $this->_getMetaFromSeo('oxkeywords'))) {
+                $this->_sMetaKeywords = $keywords;
+            } elseif (($keywords = $this->_getMetaFromContent($this->_sMetaKeywordsIdent))) {
+                $this->_sMetaKeywords = $this->_prepareMetaKeyword($keywords, false);
             } else {
                 $this->_sMetaKeywords = $this->_prepareMetaKeyword(false, true);
             }
@@ -1210,10 +1084,10 @@ class ViewBase extends \oxView
             $this->_sMetaDescription = false;
 
             // set special meta description ?
-            if (($sDescription = $this->_getMetaFromSeo('oxdescription'))) {
-                $this->_sMetaDescription = $sDescription;
-            } elseif (($sDescription = $this->_getMetaFromContent($this->_sMetaDescriptionIdent))) {
-                $this->_sMetaDescription = $this->_prepareMetaDescription($sDescription);
+            if (($description = $this->_getMetaFromSeo('oxdescription'))) {
+                $this->_sMetaDescription = $description;
+            } elseif (($description = $this->_getMetaFromContent($this->_sMetaDescriptionIdent))) {
+                $this->_sMetaDescription = $this->_prepareMetaDescription($description);
             } else {
                 $this->_sMetaDescription = $this->_prepareMetaDescription(false);
             }
@@ -1235,11 +1109,11 @@ class ViewBase extends \oxView
     /**
      * Active currency setter
      *
-     * @param object $oCur corrency object
+     * @param object $currency Currency object
      */
-    public function setActCurrency($oCur)
+    public function setActCurrency($currency)
     {
-        $this->_oActCurrency = $oCur;
+        $this->_oActCurrency = $currency;
     }
 
     /**
@@ -1250,8 +1124,8 @@ class ViewBase extends \oxView
     public function getCompareItemCount()
     {
         if ($this->_iCompItemsCnt === null) {
-            $aItems = oxRegistry::getSession()->getVariable('aFiltcompproducts');
-            $this->_iCompItemsCnt = is_array($aItems) ? count($aItems) : 0;
+            $items = oxRegistry::getSession()->getVariable('aFiltcompproducts');
+            $this->_iCompItemsCnt = is_array($items) ? count($items) : 0;
         }
 
         return $this->_iCompItemsCnt;
@@ -1302,11 +1176,11 @@ class ViewBase extends \oxView
     /**
      * Header menu list setter
      *
-     * @param array $aMenu menu list
+     * @param array $menu menu list
      */
-    public function setMenueList($aMenu)
+    public function setMenueList($menu)
     {
-        $this->_aMenueList = $aMenu;
+        $this->_aMenueList = $menu;
     }
 
     /**
@@ -1314,50 +1188,50 @@ class ViewBase extends \oxView
      */
     protected function _setNrOfArtPerPage()
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
 
         //setting default values to avoid possible errors showing article list
-        $iNrofCatArticles = $myConfig->getConfigParam('iNrofCatArticles');
+        $numberOfCategoryArticles = $config->getConfigParam('iNrofCatArticles');
 
-        $iNrofCatArticles = ($iNrofCatArticles) ? $iNrofCatArticles : 10;
+        $numberOfCategoryArticles = ($numberOfCategoryArticles) ? $numberOfCategoryArticles : 10;
 
         // checking if all needed data is set
         switch ($this->getListDisplayType()) {
             case 'grid':
-                $aNrofCatArticles = $myConfig->getConfigParam('aNrofCatArticlesInGrid');
+                $numbersOfCategoryArticles = $config->getConfigParam('aNrofCatArticlesInGrid');
                 break;
             case 'line':
             case 'infogrid':
             default:
-                $aNrofCatArticles = $myConfig->getConfigParam('aNrofCatArticles');
+                $numbersOfCategoryArticles = $config->getConfigParam('aNrofCatArticles');
         }
 
-        if (!is_array($aNrofCatArticles) || !isset($aNrofCatArticles[0])) {
-            $aNrofCatArticles = array($iNrofCatArticles);
-            $myConfig->setConfigParam('aNrofCatArticles', $aNrofCatArticles);
+        if (!is_array($numbersOfCategoryArticles) || !isset($numbersOfCategoryArticles[0])) {
+            $numbersOfCategoryArticles = array($numberOfCategoryArticles);
+            $config->setConfigParam('aNrofCatArticles', $numbersOfCategoryArticles);
         } else {
-            $iNrofCatArticles = $aNrofCatArticles[0];
+            $numberOfCategoryArticles = $numbersOfCategoryArticles[0];
         }
 
-        $oViewConf = $this->getViewConfig();
+        $viewConfig = $this->getViewConfig();
         //value from user input
-        $oSession = oxRegistry::getSession();
-        if (($iNrofArticles = (int) oxRegistry::getConfig()->getRequestParameter('_artperpage'))) {
+        $session = oxRegistry::getSession();
+        if (($articlesPerPage = (int) oxRegistry::getConfig()->getRequestParameter('_artperpage'))) {
             // M45 Possibility to push any "Show articles per page" number parameter
-            $iNrofCatArticles = (in_array($iNrofArticles, $aNrofCatArticles)) ? $iNrofArticles : $iNrofCatArticles;
-            $oViewConf->setViewConfigParam('iartPerPage', $iNrofCatArticles);
-            $oSession->setVariable('_artperpage', $iNrofCatArticles);
-        } elseif (($iSessArtPerPage = $oSession->getVariable('_artperpage')) && is_numeric($iSessArtPerPage)) {
+            $numberOfCategoryArticles = (in_array($articlesPerPage, $numbersOfCategoryArticles)) ? $articlesPerPage : $numberOfCategoryArticles;
+            $viewConfig->setViewConfigParam('iartPerPage', $numberOfCategoryArticles);
+            $session->setVariable('_artperpage', $numberOfCategoryArticles);
+        } elseif (($sessArtPerPage = $session->getVariable('_artperpage')) && is_numeric($sessArtPerPage)) {
             // M45 Possibility to push any "Show articles per page" number parameter
-            $iNrofCatArticles = (in_array($iSessArtPerPage, $aNrofCatArticles)) ? $iSessArtPerPage : $iNrofCatArticles;
-            $oViewConf->setViewConfigParam('iartPerPage', $iNrofCatArticles);
-            $oSession->setVariable('_artperpage', $iNrofCatArticles);
+            $numberOfCategoryArticles = (in_array($sessArtPerPage, $numbersOfCategoryArticles)) ? $sessArtPerPage : $numberOfCategoryArticles;
+            $viewConfig->setViewConfigParam('iartPerPage', $numberOfCategoryArticles);
+            $session->setVariable('_artperpage', $numberOfCategoryArticles);
         } else {
-            $oViewConf->setViewConfigParam('iartPerPage', $iNrofCatArticles);
+            $viewConfig->setViewConfigParam('iartPerPage', $numberOfCategoryArticles);
         }
 
         //setting number of articles per page to config value
-        $myConfig->setConfigParam('iNrofCatArticles', $iNrofCatArticles);
+        $config->setConfigParam('iNrofCatArticles', $numberOfCategoryArticles);
     }
 
     /**
@@ -1370,108 +1244,107 @@ class ViewBase extends \oxView
     /**
      * Returns current view meta description data
      *
-     * @param string $sMeta                   category path
-     * @param int    $iLength                 max length of result, -1 for no truncation
-     * @param bool   $blRemoveDuplicatedWords if true - performs additional duplicate cleaning
+     * @param string $meta                  Category path
+     * @param int    $length                Max length of result, -1 for no truncation
+     * @param bool   $removeDuplicatedWords If true - performs additional duplicate cleaning
      *
-     * @return  string  $sString    converted string
+     * @return  string  $string    converted string
      */
-    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blRemoveDuplicatedWords = false)
+    protected function _prepareMetaDescription($meta, $length = 1024, $removeDuplicatedWords = false)
     {
-        if ($sMeta) {
-
-            $oStr = getStr();
-            if ($iLength != -1) {
+        if ($meta) {
+            $stringModifier = getStr();
+            if ($length != -1) {
                 /* *
                  * performance - we do not need a huge amount of initial text.
-                 * assume that effective text may be double longer than $iLength
+                 * assume that effective text may be double longer than $length
                  * and simple truncate it
                  */
-                $iELength = ($iLength * 2);
-                $sMeta = $oStr->substr($sMeta, 0, $iELength);
+                $doubleLength = ($length * 2);
+                $meta = $stringModifier->substr($meta, 0, $doubleLength);
             }
 
             // decoding html entities
-            $sMeta = $oStr->html_entity_decode($sMeta);
+            $meta = $stringModifier->html_entity_decode($meta);
             // stripping HTML tags
-            $sMeta = $oStr->strip_tags($sMeta);
+            $meta = $stringModifier->strip_tags($meta);
 
             // removing some special chars
-            $sMeta = $oStr->cleanStr($sMeta);
+            $meta = $stringModifier->cleanStr($meta);
 
             // removing duplicate words
-            if ($blRemoveDuplicatedWords) {
-                $sMeta = $this->_removeDuplicatedWords($sMeta, $this->getConfig()->getConfigParam('aSkipTags'));
+            if ($removeDuplicatedWords) {
+                $meta = $this->_removeDuplicatedWords($meta, $this->getConfig()->getConfigParam('aSkipTags'));
             }
 
             // some special cases
-            $sMeta = str_replace(' ,', ',', $sMeta);
-            $aPattern = array("/,[\s\+\-\*]*,/", "/\s+,/");
-            $sMeta = $oStr->preg_replace($aPattern, ',', $sMeta);
-            $sMeta = oxRegistry::get("oxUtilsString")->minimizeTruncateString($sMeta, $iLength);
-            $sMeta = $oStr->htmlspecialchars($sMeta);
+            $meta = str_replace(' ,', ',', $meta);
+            $pattern = array("/,[\s\+\-\*]*,/", "/\s+,/");
+            $meta = $stringModifier->preg_replace($pattern, ',', $meta);
+            $meta = oxRegistry::get("oxUtilsString")->minimizeTruncateString($meta, $length);
+            $meta = $stringModifier->htmlspecialchars($meta);
 
-            return trim($sMeta);
+            return trim($meta);
         }
     }
 
     /**
      * Returns current view keywords separated by comma
      *
-     * @param string $sKeywords               data to use as keywords
-     * @param bool   $blRemoveDuplicatedWords if true - performs additional duplicate cleaning
+     * @param string $keywords              Data to use as keywords
+     * @param bool   $removeDuplicatedWords If true - performs additional duplicate cleaning
      *
      * @return string of keywords separated by comma
      */
-    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
+    protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true)
     {
 
-        $sString = $this->_prepareMetaDescription($sKeywords, -1, false);
+        $string = $this->_prepareMetaDescription($keywords, -1, false);
 
-        if ($blRemoveDuplicatedWords) {
-            $sString = $this->_removeDuplicatedWords($sString, $this->getConfig()->getConfigParam('aSkipTags'));
+        if ($removeDuplicatedWords) {
+            $string = $this->_removeDuplicatedWords($string, $this->getConfig()->getConfigParam('aSkipTags'));
         }
 
-        return trim($sString);
+        return trim($string);
     }
 
     /**
      * Removes duplicated words (not case sensitive)
      *
-     * @param mixed $aInput    array of string or string
-     * @param array $aSkipTags in admin defined strings
+     * @param mixed $input    array of string or string
+     * @param array $skipTags in admin defined strings
      *
      * @return string of words separated by comma
      */
-    protected function _removeDuplicatedWords($aInput, $aSkipTags = array())
+    protected function _removeDuplicatedWords($input, $skipTags = array())
     {
-        $oStr = getStr();
-        if (is_array($aInput)) {
-            $aInput = implode(" ", $aInput);
+        $stringModifier = getStr();
+        if (is_array($input)) {
+            $input = implode(" ", $input);
         }
 
         // removing some usually met characters..
-        $aInput = $oStr->preg_replace("/[" . preg_quote($this->_sRemoveMetaChars, "/") . "]/", " ", $aInput);
+        $input = $stringModifier->preg_replace("/[" . preg_quote($this->_sRemoveMetaChars, "/") . "]/", " ", $input);
 
         // splitting by word
-        $aStrings = $oStr->preg_split("/[\s,]+/", $aInput);
+        $strings = $stringModifier->preg_split("/[\s,]+/", $input);
 
-        if ($sCount = count($aSkipTags)) {
-            for ($iNum = 0; $iNum < $sCount; $iNum++) {
-                $aSkipTags[$iNum] = $oStr->strtolower($aSkipTags[$iNum]);
+        if ($count = count($skipTags)) {
+            for ($num = 0; $num < $count; $num++) {
+                $skipTags[$num] = $stringModifier->strtolower($skipTags[$num]);
             }
         }
-        $sCount = count($aStrings);
-        for ($iNum = 0; $iNum < $sCount; $iNum++) {
-            $aStrings[$iNum] = $oStr->strtolower($aStrings[$iNum]);
+        $count = count($strings);
+        for ($num = 0; $num < $count; $num++) {
+            $strings[$num] = $stringModifier->strtolower($strings[$num]);
             // removing in admin defined strings
-            if (!$aStrings[$iNum] || in_array($aStrings[$iNum], $aSkipTags)) {
-                unset($aStrings[$iNum]);
+            if (!$strings[$num] || in_array($strings[$num], $skipTags)) {
+                unset($strings[$num]);
             }
         }
 
         // duplicates
-        return implode(', ', array_unique($aStrings));
+        return implode(', ', array_unique($strings));
     }
 
     /**
@@ -1483,80 +1356,80 @@ class ViewBase extends \oxView
      */
     public function getNavigationParams()
     {
-        $oConfig = $this->getConfig();
-        $aParams['cnid'] = $this->getCategoryId();
-        $aParams['mnid'] = $oConfig->getRequestParameter('mnid');
+        $config = $this->getConfig();
+        $params['cnid'] = $this->getCategoryId();
+        $params['mnid'] = $config->getRequestParameter('mnid');
 
-        $aParams['listtype'] = $this->getListType();
-        $aParams['ldtype'] = $this->getCustomListDisplayType();
-        $aParams['actcontrol'] = $this->getClassName();
+        $params['listtype'] = $this->getListType();
+        $params['ldtype'] = $this->getCustomListDisplayType();
+        $params['actcontrol'] = $this->getClassName();
 
-        $aParams['recommid'] = $oConfig->getRequestParameter('recommid');
+        $params['recommid'] = $config->getRequestParameter('recommid');
 
-        $aParams['searchrecomm'] = $oConfig->getRequestParameter('searchrecomm', true);
-        $aParams['searchparam'] = $oConfig->getRequestParameter('searchparam', true);
-        $aParams['searchtag'] = $oConfig->getRequestParameter('searchtag', true);
+        $params['searchrecomm'] = $config->getRequestParameter('searchrecomm', true);
+        $params['searchparam'] = $config->getRequestParameter('searchparam', true);
+        $params['searchtag'] = $config->getRequestParameter('searchtag', true);
 
-        $aParams['searchvendor'] = $oConfig->getRequestParameter('searchvendor');
-        $aParams['searchcnid'] = $oConfig->getRequestParameter('searchcnid');
-        $aParams['searchmanufacturer'] = $oConfig->getRequestParameter('searchmanufacturer');
+        $params['searchvendor'] = $config->getRequestParameter('searchvendor');
+        $params['searchcnid'] = $config->getRequestParameter('searchcnid');
+        $params['searchmanufacturer'] = $config->getRequestParameter('searchmanufacturer');
 
-        return $aParams;
+        return $params;
     }
 
     /**
      * Sets sorting item config
      *
-     * @param string $sSortIdent sortable item id
-     * @param string $sSortBy    sort field
-     * @param string $sSortDir   sort direction (optional)
+     * @param string $sortIdent sortable item id
+     * @param string $sortBy    sort field
+     * @param string $sortDir   sort direction (optional)
      */
-    public function setItemSorting($sSortIdent, $sSortBy, $sSortDir = null)
+    public function setItemSorting($sortIdent, $sortBy, $sortDir = null)
     {
-        $aSorting = oxRegistry::getSession()->getVariable('aSorting');
-        $aSorting[$sSortIdent]['sortby'] = $sSortBy;
-        $aSorting[$sSortIdent]['sortdir'] = $sSortDir ? $sSortDir : null;
+        $sorting = oxRegistry::getSession()->getVariable('aSorting');
+        $sorting[$sortIdent]['sortby'] = $sortBy;
+        $sorting[$sortIdent]['sortdir'] = $sortDir ? $sortDir : null;
 
-        oxRegistry::getSession()->setVariable('aSorting', $aSorting);
+        oxRegistry::getSession()->setVariable('aSorting', $sorting);
     }
 
     /**
      * Returns sorting config for current item
      *
-     * @param string $sSortIdent sortable item id
+     * @param string $sortIdent sortable item id
      *
      * @return array
      */
-    public function getSorting($sSortIdent)
+    public function getSorting($sortIdent)
     {
-        $aSorting = null;
+        $sorting = null;
 
-        if ($aSorting = $this->getUserSelectedSorting()) {
-            $this->setItemSorting($sSortIdent, $aSorting['sortby'], $aSorting['sortdir']);
-        } elseif (!$aSorting = $this->getSavedSorting($sSortIdent)) {
-            $aSorting = $this->getDefaultSorting();
+        if ($sorting = $this->getUserSelectedSorting()) {
+            $this->setItemSorting($sortIdent, $sorting['sortby'], $sorting['sortdir']);
+        } elseif (!$sorting = $this->getSavedSorting($sortIdent)) {
+            $sorting = $this->getDefaultSorting();
         }
 
-        if ($aSorting) {
-            $this->setListOrderBy($aSorting['sortby']);
-            $this->setListOrderDirection($aSorting['sortdir']);
+        if ($sorting) {
+            $this->setListOrderBy($sorting['sortby']);
+            $this->setListOrderDirection($sorting['sortdir']);
         }
 
-        return $aSorting;
+        return $sorting;
     }
 
     /**
      * Returns part of SQL query with sorting params
      *
-     * @param string $sIdent sortable item id
+     * @param string $ident sortable item id
      *
      * @return string
      */
-    public function getSortingSql($sIdent)
+    public function getSortingSql($ident)
     {
-        $aSorting = $this->getSorting($sIdent);
-        if (is_array($aSorting)) {
-            return implode(" ", $aSorting);
+        $sorting = $this->getSorting($ident);
+        if (is_array($sorting)) {
+            return implode(" ", $sorting);
         }
     }
 
@@ -1595,22 +1468,22 @@ class ViewBase extends \oxView
      */
     public function getPageTitle()
     {
-        $sTitle = '';
+        $title = '';
 
-        $aTitleParts = array();
-        $aTitleParts[] = $this->getTitlePrefix();
-        $aTitleParts[] = $this->getTitle();
-        $aTitleParts[] = $this->getTitleSuffix();
-        $aTitleParts[] = $this->getTitlePageSuffix();
+        $titleParts = array();
+        $titleParts[] = $this->getTitlePrefix();
+        $titleParts[] = $this->getTitle();
+        $titleParts[] = $this->getTitleSuffix();
+        $titleParts[] = $this->getTitlePageSuffix();
 
-        $aTitleParts = array_filter($aTitleParts);
+        $titleParts = array_filter($titleParts);
 
-        if (count($aTitleParts)) {
-            $sTitle = implode(' | ', $aTitleParts);
+        if (count($titleParts)) {
+            $title = implode(' | ', $titleParts);
         }
 
 
-        return $sTitle;
+        return $title;
     }
 
 
@@ -1618,11 +1491,11 @@ class ViewBase extends \oxView
      * returns object, associated with current view.
      * (the object that is shown in frontend)
      *
-     * @param int $iLang language id
+     * @param int $languageId language id
      *
      * @return object
      */
-    protected function _getSubject($iLang)
+    protected function _getSubject($languageId)
     {
         return null;
     }
@@ -1634,84 +1507,84 @@ class ViewBase extends \oxView
      */
     public function getDynUrlParams()
     {
-        $sRet = '';
-        $sListType = $this->getListType();
-        $oConfig = $this->getConfig();
+        $result = '';
+        $listType = $this->getListType();
+        $config = $this->getConfig();
 
-        switch ($sListType) {
+        switch ($listType) {
             default:
                 break;
             case 'search':
-                $sRet .= "&amp;listtype={$sListType}";
-                if ($sSearchParamForLink = rawurlencode($oConfig->getRequestParameter('searchparam', true))) {
-                    $sRet .= "&amp;searchparam={$sSearchParamForLink}";
+                $result .= "&amp;listtype={$listType}";
+                if ($searchParamForLink = rawurlencode($config->getRequestParameter('searchparam', true))) {
+                    $result .= "&amp;searchparam={$searchParamForLink}";
                 }
 
-                if (($sVar = $oConfig->getRequestParameter('searchcnid', true))) {
-                    $sRet .= '&amp;searchcnid=' . rawurlencode(rawurldecode($sVar));
+                if (($var = $config->getRequestParameter('searchcnid', true))) {
+                    $result .= '&amp;searchcnid=' . rawurlencode(rawurldecode($var));
                 }
-                if (($sVar = $oConfig->getRequestParameter('searchvendor', true))) {
-                    $sRet .= '&amp;searchvendor=' . rawurlencode(rawurldecode($sVar));
+                if (($var = $config->getRequestParameter('searchvendor', true))) {
+                    $result .= '&amp;searchvendor=' . rawurlencode(rawurldecode($var));
                 }
-                if (($sVar = $oConfig->getRequestParameter('searchmanufacturer', true))) {
-                    $sRet .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($sVar));
+                if (($var = $config->getRequestParameter('searchmanufacturer', true))) {
+                    $result .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($var));
                 }
                 break;
             case 'tag':
-                $sRet .= "&amp;listtype={$sListType}";
-                if ($sParam = rawurlencode($oConfig->getRequestParameter('searchtag', true))) {
-                    $sRet .= "&amp;searchtag={$sParam}";
+                $result .= "&amp;listtype={$listType}";
+                if ($param = rawurlencode($config->getRequestParameter('searchtag', true))) {
+                    $result .= "&amp;searchtag={$param}";
                 }
                 break;
         }
 
-        return $sRet;
+        return $result;
     }
 
     /**
      * Get base link of current view
      *
-     * @param int $iLang requested language
+     * @param int $languageId requested language
      *
      * @return string
      */
-    public function getBaseLink($iLang = null)
+    public function getBaseLink($languageId = null)
     {
-        if (!isset($iLang)) {
-            $iLang = oxRegistry::getLang()->getBaseLanguage();
+        if (!isset($languageId)) {
+            $languageId = oxRegistry::getLang()->getBaseLanguage();
         }
 
-        $oConfig = $this->getConfig();
+        $config = $this->getConfig();
 
         if (oxRegistry::getUtils()->seoIsActive()) {
-            if ($oDisplayObj = $this->_getSubject($iLang)) {
-                $sUrl = $oDisplayObj->getLink($iLang);
+            if ($displayObj = $this->_getSubject($languageId)) {
+                $url = $displayObj->getLink($languageId);
             } else {
-                $oEncoder = oxRegistry::get("oxSeoEncoder");
-                $sConstructedUrl = $oConfig->getShopHomeURL($iLang) . $this->_getSeoRequestParams();
-                $sUrl = $oEncoder->getStaticUrl($sConstructedUrl, $iLang);
+                $encoder = oxRegistry::get("oxSeoEncoder");
+                $constructedUrl = $config->getShopHomeURL($languageId) . $this->_getSeoRequestParams();
+                $url = $encoder->getStaticUrl($constructedUrl, $languageId);
             }
         }
 
-        if (!$sUrl) {
-            $sConstructedUrl = $oConfig->getShopCurrentURL($iLang) . $this->_getRequestParams();
-            $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl($sConstructedUrl, true, null, $iLang);
+        if (!$url) {
+            $constructedUrl = $config->getShopCurrentURL($languageId) . $this->_getRequestParams();
+            $url = oxRegistry::get("oxUtilsUrl")->processUrl($constructedUrl, true, null, $languageId);
         }
 
-        return $sUrl;
+        return $url;
     }
 
 
     /**
      * Get link of current view. In url its include also page number if it is list page
      *
-     * @param int $iLang requested language
+     * @param int $languageId requested language
      *
      * @return string
      */
-    public function getLink($iLang = null)
+    public function getLink($languageId = null)
     {
-        return $this->_addPageNrParam($this->getBaseLink($iLang), $this->getActPage(), $iLang);
+        return $this->_addPageNrParam($this->getBaseLink($languageId), $this->getActPage(), $languageId);
     }
 
     /**
@@ -1743,84 +1616,84 @@ class ViewBase extends \oxView
     /**
      * collects _GET parameters used by eShop and returns uri
      *
-     * @param bool $blAddPageNr if TRUE - page number will be added
+     * @param bool $addPageNumber if TRUE - page number will be added
      *
      * @return string
      */
-    protected function _getRequestParams($blAddPageNr = true)
+    protected function _getRequestParams($addPageNumber = true)
     {
-        $sClass = $this->getClassName();
-        $sFnc = $this->getFncName();
+        $class = $this->getClassName();
+        $function = $this->getFncName();
 
-        $aFnc = array('tobasket', 'login_noredirect', 'addVoucher', 'moveleft', 'moveright');
-        if (in_array($sFnc, $aFnc)) {
-            $sFnc = '';
+        $forbiddenFunctions = array('tobasket', 'login_noredirect', 'addVoucher', 'moveleft', 'moveright');
+        if (in_array($function, $forbiddenFunctions)) {
+            $function = '';
         }
 
         // #680
-        $sURL = "cl={$sClass}";
-        if ($sFnc) {
-            $sURL .= "&amp;fnc={$sFnc}";
+        $url = "cl={$class}";
+        if ($function) {
+            $url .= "&amp;fnc={$function}";
         }
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('cnid')) {
-            $sURL .= "&amp;cnid={$sVal}";
+        if ($value = oxRegistry::getConfig()->getRequestParameter('cnid')) {
+            $url .= "&amp;cnid={$value}";
         }
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('mnid')) {
-            $sURL .= "&amp;mnid={$sVal}";
+        if ($value = oxRegistry::getConfig()->getRequestParameter('mnid')) {
+            $url .= "&amp;mnid={$value}";
         }
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('anid')) {
-            $sURL .= "&amp;anid={$sVal}";
-        }
-
-        if ($sVal = basename(oxRegistry::getConfig()->getRequestParameter('page'))) {
-            $sURL .= "&amp;page={$sVal}";
+        if ($value = oxRegistry::getConfig()->getRequestParameter('anid')) {
+            $url .= "&amp;anid={$value}";
         }
 
-        if ($sVal = basename(oxRegistry::getConfig()->getRequestParameter('tpl'))) {
-            $sURL .= "&amp;tpl={$sVal}";
+        if ($value = basename(oxRegistry::getConfig()->getRequestParameter('page'))) {
+            $url .= "&amp;page={$value}";
         }
 
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('oxloadid')) {
-            $sURL .= "&amp;oxloadid={$sVal}";
+        if ($value = basename(oxRegistry::getConfig()->getRequestParameter('tpl'))) {
+            $url .= "&amp;tpl={$value}";
         }
 
-        $iPgNr = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+        if ($value = oxRegistry::getConfig()->getRequestParameter('oxloadid')) {
+            $url .= "&amp;oxloadid={$value}";
+        }
+
+        $pageNumber = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
         // don't include page number for navigation
         // it will be done in oxubase::generatePageNavigation
-        if ($blAddPageNr && $iPgNr > 0) {
-            $sURL .= "&amp;pgNr={$iPgNr}";
+        if ($addPageNumber && $pageNumber > 0) {
+            $url .= "&amp;pgNr={$pageNumber}";
         }
 
         // #1184M - specialchar search
-        if ($sVal = rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchparam', true))) {
-            $sURL .= "&amp;searchparam={$sVal}";
+        if ($value = rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchparam', true))) {
+            $url .= "&amp;searchparam={$value}";
         }
 
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('searchcnid')) {
-            $sURL .= "&amp;searchcnid={$sVal}";
+        if ($value = oxRegistry::getConfig()->getRequestParameter('searchcnid')) {
+            $url .= "&amp;searchcnid={$value}";
         }
 
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('searchvendor')) {
-            $sURL .= "&amp;searchvendor={$sVal}";
+        if ($value = oxRegistry::getConfig()->getRequestParameter('searchvendor')) {
+            $url .= "&amp;searchvendor={$value}";
         }
 
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer')) {
-            $sURL .= "&amp;searchmanufacturer={$sVal}";
+        if ($value = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer')) {
+            $url .= "&amp;searchmanufacturer={$value}";
         }
 
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('searchrecomm')) {
-            $sURL .= "&amp;searchrecomm={$sVal}";
+        if ($value = oxRegistry::getConfig()->getRequestParameter('searchrecomm')) {
+            $url .= "&amp;searchrecomm={$value}";
         }
 
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('searchtag')) {
-            $sURL .= "&amp;searchtag={$sVal}";
+        if ($value = oxRegistry::getConfig()->getRequestParameter('searchtag')) {
+            $url .= "&amp;searchtag={$value}";
         }
 
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('recommid')) {
-            $sURL .= "&amp;recommid={$sVal}";
+        if ($value = oxRegistry::getConfig()->getRequestParameter('recommid')) {
+            $url .= "&amp;recommid={$value}";
         }
 
-        return $sURL;
+        return $url;
     }
 
     /**
@@ -1830,38 +1703,38 @@ class ViewBase extends \oxView
      */
     protected function _getSeoRequestParams()
     {
-        $sClass = $this->getClassName();
-        $sFnc = $this->getFncName();
+        $class = $this->getClassName();
+        $function = $this->getFncName();
 
         // #921 S
-        $aFnc = array('tobasket', 'login_noredirect', 'addVoucher');
-        if (in_array($sFnc, $aFnc)) {
-            $sFnc = '';
+        $forbiddenFunctions = array('tobasket', 'login_noredirect', 'addVoucher');
+        if (in_array($function, $forbiddenFunctions)) {
+            $function = '';
         }
 
         // #680
-        $sURL = "cl={$sClass}";
-        if ($sFnc) {
-            $sURL .= "&amp;fnc={$sFnc}";
+        $url = "cl={$class}";
+        if ($function) {
+            $url .= "&amp;fnc={$function}";
         }
-        if ($sVal = basename(oxRegistry::getConfig()->getRequestParameter('page'))) {
-            $sURL .= "&amp;page={$sVal}";
-        }
-
-        if ($sVal = basename(oxRegistry::getConfig()->getRequestParameter('tpl'))) {
-            $sURL .= "&amp;tpl={$sVal}";
+        if ($value = basename(oxRegistry::getConfig()->getRequestParameter('page'))) {
+            $url .= "&amp;page={$value}";
         }
 
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('oxloadid')) {
-            $sURL .= "&amp;oxloadid={$sVal}";
+        if ($value = basename(oxRegistry::getConfig()->getRequestParameter('tpl'))) {
+            $url .= "&amp;tpl={$value}";
         }
 
-        $iPgNr = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
-        if ($iPgNr > 0) {
-            $sURL .= "&amp;pgNr={$iPgNr}";
+        if ($value = oxRegistry::getConfig()->getRequestParameter('oxloadid')) {
+            $url .= "&amp;oxloadid={$value}";
         }
 
-        return $sURL;
+        $pageNumber = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+        if ($pageNumber > 0) {
+            $url .= "&amp;pgNr={$pageNumber}";
+        }
+
+        return $url;
     }
 
     /**
@@ -1871,12 +1744,12 @@ class ViewBase extends \oxView
      */
     public function showSearch()
     {
-        $blShow = true;
+        $show = true;
         if ($this->getConfig()->getConfigParam('blDisableNavBars') && $this->getIsOrderStep()) {
-            $blShow = false;
+            $show = false;
         }
 
-        return (int) $blShow;
+        return (int) $show;
     }
 
     /**
@@ -1907,11 +1780,11 @@ class ViewBase extends \oxView
     /**
      * Set sorting columns
      *
-     * @param array $aSortColumns array of column names array('name1', 'name2',...)
+     * @param array $sortColumns array of column names array('name1', 'name2',...)
      */
-    public function setSortColumns($aSortColumns)
+    public function setSortColumns($sortColumns)
     {
-        $this->_aSortColumns = $aSortColumns;
+        $this->_aSortColumns = $sortColumns;
     }
 
     /**
@@ -1944,9 +1817,9 @@ class ViewBase extends \oxView
     {
         if ($this->_oActiveRecommList === null) {
             $this->_oActiveRecommList = false;
-            if ($sOxId = $this->getConfig()->getRequestParameter('recommid')) {
+            if ($recommendationListId = $this->getConfig()->getRequestParameter('recommid')) {
                 $this->_oActiveRecommList = oxNew('oxrecommlist');
-                $this->_oActiveRecommList->load($sOxId);
+                $this->_oActiveRecommList->load($recommendationListId);
             }
         }
 
@@ -1995,11 +1868,11 @@ class ViewBase extends \oxView
      */
     public function getTitle()
     {
-        $oLang = oxRegistry::getLang();
-        $sTranslationName = 'PAGE_TITLE_' . strtoupper($this->getConfig()->getActiveView()->getClassName());
-        $sTranslated = $oLang->translateString($sTranslationName, oxRegistry::getLang()->getBaseLanguage(), false);
+        $language = oxRegistry::getLang();
+        $translationName = 'PAGE_TITLE_' . strtoupper($this->getConfig()->getActiveView()->getClassName());
+        $translated = $language->translateString($translationName, oxRegistry::getLang()->getBaseLanguage(), false);
 
-        return $sTranslationName == $sTranslated ? null : $sTranslated;
+        return $translationName == $translated ? null : $translated;
     }
 
     /**
@@ -2015,10 +1888,10 @@ class ViewBase extends \oxView
         }
 
         if (!isset($this->_sActiveLangAbbr)) {
-            $aLanguages = oxRegistry::getLang()->getLanguageArray();
-            while (list($sKey, $oVal) = each($aLanguages)) {
-                if ($oVal->selected) {
-                    $this->_sActiveLangAbbr = $oVal->abbr;
+            $languages = oxRegistry::getLang()->getLanguageArray();
+            while (list($key, $language) = each($languages)) {
+                if ($language->selected) {
+                    $this->_sActiveLangAbbr = $language->abbr;
                     break;
                 }
             }
@@ -2030,17 +1903,17 @@ class ViewBase extends \oxView
     /**
      * Sets and caches default parameters for shop object and returns it.
      *
-     * @param oxShop $oShop current shop object
+     * @param oxShop $shop current shop object
      *
-     * @return object $oShop current shop object
+     * @return oxViewConfig Current shop object
      */
-    public function addGlobalParams($oShop = null)
+    public function addGlobalParams($shop = null)
     {
-        $oViewConf = parent::addGlobalParams($oShop);
+        $viewConfig = parent::addGlobalParams($shop);
 
         $this->_setNrOfArtPerPage();
 
-        return $oViewConf;
+        return $viewConfig;
     }
 
     /**
@@ -2055,28 +1928,28 @@ class ViewBase extends \oxView
             $this->_sAdditionalParams = parent::getAdditionalParams();
             $this->_sAdditionalParams .= 'cl=' . $this->getConfig()->getTopActiveView()->getClassName();
 
-            // #1834M - specialchar search
-            $sSearchParamForLink = rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchparam', true));
-            if (isset($sSearchParamForLink)) {
-                $this->_sAdditionalParams .= "&amp;searchparam={$sSearchParamForLink}";
+            // #1834M - special char search
+            $searchParamForLink = rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchparam', true));
+            if (isset($searchParamForLink)) {
+                $this->_sAdditionalParams .= "&amp;searchparam={$searchParamForLink}";
             }
-            if (($sVar = oxRegistry::getConfig()->getRequestParameter('searchtag'))) {
-                $this->_sAdditionalParams .= '&amp;searchtag=' . rawurlencode(rawurldecode($sVar));
+            if (($value = oxRegistry::getConfig()->getRequestParameter('searchtag'))) {
+                $this->_sAdditionalParams .= '&amp;searchtag=' . rawurlencode(rawurldecode($value));
             }
-            if (($sVar = oxRegistry::getConfig()->getRequestParameter('searchcnid'))) {
-                $this->_sAdditionalParams .= '&amp;searchcnid=' . rawurlencode(rawurldecode($sVar));
+            if (($value = oxRegistry::getConfig()->getRequestParameter('searchcnid'))) {
+                $this->_sAdditionalParams .= '&amp;searchcnid=' . rawurlencode(rawurldecode($value));
             }
-            if (($sVar = oxRegistry::getConfig()->getRequestParameter('searchvendor'))) {
-                $this->_sAdditionalParams .= '&amp;searchvendor=' . rawurlencode(rawurldecode($sVar));
+            if (($value = oxRegistry::getConfig()->getRequestParameter('searchvendor'))) {
+                $this->_sAdditionalParams .= '&amp;searchvendor=' . rawurlencode(rawurldecode($value));
             }
-            if (($sVar = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer'))) {
-                $this->_sAdditionalParams .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($sVar));
+            if (($value = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer'))) {
+                $this->_sAdditionalParams .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($value));
             }
-            if (($sVar = oxRegistry::getConfig()->getRequestParameter('cnid'))) {
-                $this->_sAdditionalParams .= '&amp;cnid=' . rawurlencode(rawurldecode($sVar));
+            if (($value = oxRegistry::getConfig()->getRequestParameter('cnid'))) {
+                $this->_sAdditionalParams .= '&amp;cnid=' . rawurlencode(rawurldecode($value));
             }
-            if (($sVar = oxRegistry::getConfig()->getRequestParameter('mnid'))) {
-                $this->_sAdditionalParams .= '&amp;mnid=' . rawurlencode(rawurldecode($sVar));
+            if (($value = oxRegistry::getConfig()->getRequestParameter('mnid'))) {
+                $this->_sAdditionalParams .= '&amp;mnid=' . rawurlencode(rawurldecode($value));
             }
         }
 
@@ -2086,7 +1959,7 @@ class ViewBase extends \oxView
     /**
      * Generates URL for page navigation
      *
-     * @return string $sUrl String with working page url.
+     * @return string $url String with working page url.
      */
     public function generatePageNavigationUrl()
     {
@@ -2096,28 +1969,28 @@ class ViewBase extends \oxView
     /**
      * Adds page number parameter to url and returns modified url, if page number 0 drops from url
      *
-     * @param string $sUrl  url to add page number
-     * @param int    $iPage active page number
-     * @param int    $iLang language id
+     * @param string $url        Url to add page number
+     * @param int    $page       Active page number
+     * @param int    $languageId Language id
      *
      * @return string
      */
-    protected function _addPageNrParam($sUrl, $iPage, $iLang = null)
+    protected function _addPageNrParam($url, $page, $languageId = null)
     {
-        if ($iPage) {
-            if ((strpos($sUrl, 'pgNr='))) {
-                $sUrl = preg_replace('/pgNr=[0-9]*/', 'pgNr=' . $iPage, $sUrl);
+        if ($page) {
+            if ((strpos($url, 'pgNr='))) {
+                $url = preg_replace('/pgNr=[0-9]*/', 'pgNr=' . $page, $url);
             } else {
-                $sUrl .= ((strpos($sUrl, '?') === false) ? '?' : '&amp;') . 'pgNr=' . $iPage;
+                $url .= ((strpos($url, '?') === false) ? '?' : '&amp;') . 'pgNr=' . $page;
             }
         } else {
-            $sUrl = preg_replace('/pgNr=[0-9]*/', '', $sUrl);
-            $sUrl = preg_replace('/\&amp\;\&amp\;/', '&amp;', $sUrl);
-            $sUrl = preg_replace('/\?\&amp\;/', '?', $sUrl);
-            $sUrl = preg_replace('/\&amp\;$/', '', $sUrl);
+            $url = preg_replace('/pgNr=[0-9]*/', '', $url);
+            $url = preg_replace('/\&amp\;\&amp\;/', '&amp;', $url);
+            $url = preg_replace('/\?\&amp\;/', '?', $url);
+            $url = preg_replace('/\&amp\;$/', '', $url);
         }
 
-        return $sUrl;
+        return $url;
     }
 
     /**
@@ -2131,13 +2004,13 @@ class ViewBase extends \oxView
     /**
      * Template variable getter. Returns page navigation with default 7 positions
      *
-     * @param int $iPositionCount - paging positions count ( 0 - unlimited )
+     * @param int $positionCount Paging positions count ( 0 - unlimited )
      *
-     * @return object
+     * @return StdClass
      */
-    public function getPageNavigationLimitedTop($iPositionCount = 7)
+    public function getPageNavigationLimitedTop($positionCount = 7)
     {
-        $this->_oPageNavigation = $this->generatePageNavigation($iPositionCount);
+        $this->_oPageNavigation = $this->generatePageNavigation($positionCount);
 
         return $this->_oPageNavigation;
     }
@@ -2145,81 +2018,78 @@ class ViewBase extends \oxView
     /**
      * Template variable getter. Returns page navigation with default 11 positions
      *
-     * @param int $iPositionCount - paging positions count ( 0 - unlimited )
+     * @param int $positionCount Paging positions count ( 0 - unlimited )
      *
-     * @return object
+     * @return StdClass
      */
-    public function getPageNavigationLimitedBottom($iPositionCount = 11)
+    public function getPageNavigationLimitedBottom($positionCount = 11)
     {
-        $this->_oPageNavigation = $this->generatePageNavigation($iPositionCount);
+        $this->_oPageNavigation = $this->generatePageNavigation($positionCount);
 
         return $this->_oPageNavigation;
     }
 
-
     /**
      * Generates variables for page navigation
      *
-     * @param int $iPositionCount - paging positions count ( 0 - unlimited )
+     * @param int $positionCount Paging positions count ( 0 - unlimited )
      *
-     * @return  stdClass    $pageNavigation Object with page navigation data
+     * @return StdClass Object with page navigation data
      */
-    public function generatePageNavigation($iPositionCount = 0)
+    public function generatePageNavigation($positionCount = 0)
     {
         startProfile('generatePageNavigation');
 
-        $pageNavigation = new stdClass();
+        $pageNavigation = new StdClass();
 
         $pageNavigation->NrOfPages = $this->_iCntPages;
-        $iActPage = $this->getActPage();
-        $pageNavigation->actPage = $iActPage + 1;
-        $sUrl = $this->generatePageNavigationUrl();
+        $activePage = $this->getActPage();
+        $pageNavigation->actPage = $activePage + 1;
+        $url = $this->generatePageNavigationUrl();
 
-        if ($iPositionCount == 0 || ($iPositionCount >= $pageNavigation->NrOfPages)) {
-            $iStartNo = 2;
-            $iFinishNo = $pageNavigation->NrOfPages;
+        if ($positionCount == 0 || ($positionCount >= $pageNavigation->NrOfPages)) {
+            $startNo = 2;
+            $finishNo = $pageNavigation->NrOfPages;
         } else {
-            $iTmpVal = $iPositionCount - 3;
-            $iTmpVal2 = floor(($iPositionCount - 4) / 2);
+            $tmpVal = $positionCount - 3;
+            $tmpVal2 = floor(($positionCount - 4) / 2);
 
             // actual page is at the start
-            if ($pageNavigation->actPage <= $iTmpVal) {
-                $iStartNo = 2;
-                $iFinishNo = $iTmpVal + 1;
+            if ($pageNavigation->actPage <= $tmpVal) {
+                $startNo = 2;
+                $finishNo = $tmpVal + 1;
                 // actual page is at the end
-            } elseif ($pageNavigation->actPage >= $pageNavigation->NrOfPages - $iTmpVal) {
-                $iStartNo = $pageNavigation->NrOfPages - $iTmpVal;
-                $iFinishNo = $pageNavigation->NrOfPages - 1;
+            } elseif ($pageNavigation->actPage >= $pageNavigation->NrOfPages - $tmpVal) {
+                $startNo = $pageNavigation->NrOfPages - $tmpVal;
+                $finishNo = $pageNavigation->NrOfPages - 1;
                 // actual page is in the middle
             } else {
-                $iStartNo = $pageNavigation->actPage - $iTmpVal2;
-                $iFinishNo = $pageNavigation->actPage + $iTmpVal2;
+                $startNo = $pageNavigation->actPage - $tmpVal2;
+                $finishNo = $pageNavigation->actPage + $tmpVal2;
             }
         }
 
-        if ($iActPage > 0) {
-            $pageNavigation->previousPage = $this->_addPageNrParam($sUrl, $iActPage - 1);
+        if ($activePage > 0) {
+            $pageNavigation->previousPage = $this->_addPageNrParam($url, $activePage - 1);
         }
 
-        if ($iActPage < $pageNavigation->NrOfPages - 1) {
-            $pageNavigation->nextPage = $this->_addPageNrParam($sUrl, $iActPage + 1);
+        if ($activePage < $pageNavigation->NrOfPages - 1) {
+            $pageNavigation->nextPage = $this->_addPageNrParam($url, $activePage + 1);
         }
 
         if ($pageNavigation->NrOfPages > 1) {
-
             for ($i = 1; $i < $pageNavigation->NrOfPages + 1; $i++) {
-
-                if ($i == 1 || $i == $pageNavigation->NrOfPages || ($i >= $iStartNo && $i <= $iFinishNo)) {
+                if ($i == 1 || $i == $pageNavigation->NrOfPages || ($i >= $startNo && $i <= $finishNo)) {
                     $page = new stdClass();
-                    $page->url = $this->_addPageNrParam($sUrl, $i - 1);
+                    $page->url = $this->_addPageNrParam($url, $i - 1);
                     $page->selected = ($i == $pageNavigation->actPage) ? 1 : 0;
                     $pageNavigation->changePage[$i] = $page;
                 }
             }
 
             // first/last one
-            $pageNavigation->firstpage = $this->_addPageNrParam($sUrl, 0);
-            $pageNavigation->lastpage = $this->_addPageNrParam($sUrl, $pageNavigation->NrOfPages - 1);
+            $pageNavigation->firstpage = $this->_addPageNrParam($url, 0);
+            $pageNavigation->lastpage = $this->_addPageNrParam($url, $pageNavigation->NrOfPages - 1);
         }
 
         stopProfile('generatePageNavigation');
@@ -2235,8 +2105,8 @@ class ViewBase extends \oxView
      */
     public function render()
     {
-        foreach (array_keys($this->_oaComponents) as $sComponentName) {
-            $this->_aViewData[$sComponentName] = $this->_oaComponents[$sComponentName]->render();
+        foreach (array_keys($this->_oaComponents) as $componentName) {
+            $this->_aViewData[$componentName] = $this->_oaComponents[$componentName]->render();
         }
 
         parent::render();
@@ -2266,11 +2136,11 @@ class ViewBase extends \oxView
     /**
      * Sets view product
      *
-     * @param oxArticle $oProduct view product object
+     * @param oxArticle $product view product object
      */
-    public function setViewProduct($oProduct)
+    public function setViewProduct($product)
     {
-        $this->_oProduct = $oProduct;
+        $this->_oProduct = $product;
     }
 
     /**
@@ -2309,16 +2179,16 @@ class ViewBase extends \oxView
     {
         if ($this->_oActTag === null) {
             $this->_oActTag = new stdClass();
-            $this->_oActTag->sTag = $sTag = $this->getConfig()->getRequestParameter("searchtag", 1);
-            $oSeoEncoderTag = oxRegistry::get("oxSeoEncoderTag");
+            $this->_oActTag->sTag = $tag = $this->getConfig()->getRequestParameter("searchtag", 1);
+            $seoEncoderTag = oxRegistry::get("oxSeoEncoderTag");
 
-            $sLink = false;
+            $link = false;
             if (oxRegistry::getUtils()->seoIsActive()) {
-                $sLink = $oSeoEncoderTag->getTagUrl($sTag, oxRegistry::getLang()->getBaseLanguage());
+                $link = $seoEncoderTag->getTagUrl($tag, oxRegistry::getLang()->getBaseLanguage());
             }
 
-            $sConstructedUrl = $this->getConfig()->getShopHomeURL() . $oSeoEncoderTag->getStdTagUri($sTag, false);
-            $this->_oActTag->link = $sLink ? $sLink : $sConstructedUrl;
+            $constructedUrl = $this->getConfig()->getShopHomeURL() . $seoEncoderTag->getStdTagUri($tag, false);
+            $this->_oActTag->link = $link ? $link : $constructedUrl;
         }
 
         return $this->_oActTag;
@@ -2338,11 +2208,11 @@ class ViewBase extends \oxView
         // and we still need some object to mount navigation info
         if ($this->_oActVendor === null) {
             $this->_oActVendor = false;
-            $sVendorId = $this->getConfig()->getRequestParameter('cnid');
-            $sVendorId = $sVendorId ? str_replace('v_', '', $sVendorId) : $sVendorId;
-            $oVendor = oxNew('oxVendor');
-            if ($oVendor->load($sVendorId)) {
-                $this->_oActVendor = $oVendor;
+            $vendorId = $this->getConfig()->getRequestParameter('cnid');
+            $vendorId = $vendorId ? str_replace('v_', '', $vendorId) : $vendorId;
+            $vendor = oxNew('oxVendor');
+            if ($vendor->load($vendorId)) {
+                $this->_oActVendor = $vendor;
             }
         }
 
@@ -2364,10 +2234,10 @@ class ViewBase extends \oxView
         if ($this->_oActManufacturer === null) {
 
             $this->_oActManufacturer = false;
-            $sManufacturerId = $this->getConfig()->getRequestParameter('mnid');
-            $oManufacturer = oxNew('oxManufacturer');
-            if ($oManufacturer->load($sManufacturerId)) {
-                $this->_oActManufacturer = $oManufacturer;
+            $manufacturerId = $this->getConfig()->getRequestParameter('mnid');
+            $manufacturer = oxNew('oxManufacturer');
+            if ($manufacturer->load($manufacturerId)) {
+                $this->_oActManufacturer = $manufacturer;
             }
         }
 
@@ -2377,21 +2247,21 @@ class ViewBase extends \oxView
     /**
      * Active vendor setter
      *
-     * @param oxVendor $oVendor active vendor
+     * @param oxVendor $vendor active vendor
      */
-    public function setActVendor($oVendor)
+    public function setActVendor($vendor)
     {
-        $this->_oActVendor = $oVendor;
+        $this->_oActVendor = $vendor;
     }
 
     /**
      * Active Manufacturer setter
      *
-     * @param oxManufacturer $oManufacturer active Manufacturer
+     * @param oxManufacturer $manufacturer active Manufacturer
      */
-    public function setActManufacturer($oManufacturer)
+    public function setActManufacturer($manufacturer)
     {
-        $this->_oActManufacturer = $oManufacturer;
+        $this->_oActManufacturer = $manufacturer;
     }
 
     /**
@@ -2403,8 +2273,8 @@ class ViewBase extends \oxView
     {
         if ($this->_oActSearch === null) {
             $this->_oActSearch = new stdClass();
-            $sUrl = $this->getConfig()->getShopHomeURL();
-            $this->_oActSearch->link = "{$sUrl}cl=search";
+            $url = $this->getConfig()->getShopHomeURL();
+            $this->_oActSearch->link = "{$url}cl=search";
         }
 
         return $this->_oActSearch;
@@ -2423,11 +2293,11 @@ class ViewBase extends \oxView
     /**
      * Category list setter
      *
-     * @param oxCategoryList $oCatTree category tree
+     * @param oxCategoryList $categoryTree category tree
      */
-    public function setCategoryTree($oCatTree)
+    public function setCategoryTree($categoryTree)
     {
-        $this->_oCategoryTree = $oCatTree;
+        $this->_oCategoryTree = $categoryTree;
     }
 
     /**
@@ -2443,11 +2313,11 @@ class ViewBase extends \oxView
     /**
      * Manufacturer tree setter
      *
-     * @param oxManufacturerList $oManufacturerTree Manufacturer tree
+     * @param oxManufacturerList $manufacturerTree Manufacturer tree
      */
-    public function setManufacturerTree($oManufacturerTree)
+    public function setManufacturerTree($manufacturerTree)
     {
-        $this->_oManufacturerTree = $oManufacturerTree;
+        $this->_oManufacturerTree = $manufacturerTree;
     }
 
     /**
@@ -2461,22 +2331,22 @@ class ViewBase extends \oxView
      * Template variable getter. Returns Top 5 article list.
      * Parameter oxUBase::$_blTop5Action must be set to true.
      *
-     * @param integer $iCount - product count in list
+     * @param integer $count Product count in list
      *
      * @return array
      */
-    public function getTop5ArticleList($iCount = null)
+    public function getTop5ArticleList($count = null)
     {
         if ($this->_blTop5Action) {
             if ($this->_aTop5ArticleList === null) {
                 $this->_aTop5ArticleList = false;
-                $myConfig = $this->getConfig();
-                if ($myConfig->getConfigParam('bl_perfLoadAktion')) {
+                $config = $this->getConfig();
+                if ($config->getConfigParam('bl_perfLoadAktion')) {
                     // top 5 articles
-                    $oArtList = oxNew('oxArticleList');
-                    $oArtList->loadTop5Articles($iCount);
-                    if ($oArtList->count()) {
-                        $this->_aTop5ArticleList = $oArtList;
+                    $artList = oxNew('oxArticleList');
+                    $artList->loadTop5Articles($count);
+                    if ($artList->count()) {
+                        $this->_aTop5ArticleList = $artList;
                     }
                 }
             }
@@ -2497,10 +2367,10 @@ class ViewBase extends \oxView
             if ($this->_aBargainArticleList === null) {
                 $this->_aBargainArticleList = array();
                 if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
-                    $oArtList = oxNew('oxArticleList');
-                    $oArtList->loadActionArticles('OXBARGAIN');
-                    if ($oArtList->count()) {
-                        $this->_aBargainArticleList = $oArtList;
+                    $articleList = oxNew('oxArticleList');
+                    $articleList->loadActionArticles('OXBARGAIN');
+                    if ($articleList->count()) {
+                        $this->_aBargainArticleList = $articleList;
                     }
                 }
             }
@@ -2519,8 +2389,8 @@ class ViewBase extends \oxView
      */
     public function isLowOrderPrice()
     {
-        if ($this->_blLowOrderPrice === null && ($oBasket = $this->getSession()->getBasket())) {
-            $this->_blLowOrderPrice = $oBasket->isBelowMinOrderPrice();
+        if ($this->_blLowOrderPrice === null && ($basket = $this->getSession()->getBasket())) {
+            $this->_blLowOrderPrice = $basket->isBelowMinOrderPrice();
         }
 
         return $this->_blLowOrderPrice;
@@ -2536,8 +2406,8 @@ class ViewBase extends \oxView
     public function getMinOrderPrice()
     {
         if ($this->_sMinOrderPrice === null && $this->isLowOrderPrice()) {
-            $dMinOrderPrice = oxPrice::getPriceInActCurrency($this->getConfig()->getConfigParam('iMinOrderPrice'));
-            $this->_sMinOrderPrice = oxRegistry::getLang()->formatCurrency($dMinOrderPrice);
+            $minOrderPrice = oxPrice::getPriceInActCurrency($this->getConfig()->getConfigParam('iMinOrderPrice'));
+            $this->_sMinOrderPrice = oxRegistry::getLang()->formatCurrency($minOrderPrice);
         }
 
         return $this->_sMinOrderPrice;
@@ -2560,8 +2430,8 @@ class ViewBase extends \oxView
      */
     protected function _canRedirect()
     {
-        foreach ($this->_aBlockRedirectParams as $sParam) {
-            if ($this->getConfig()->getRequestParameter($sParam) !== null) {
+        foreach ($this->_aBlockRedirectParams as $param) {
+            if ($this->getConfig()->getRequestParameter($param) !== null) {
                 return false;
             }
         }
@@ -2581,7 +2451,7 @@ class ViewBase extends \oxView
      *
      * @return array
      */
-    public function getManufacturerlist()
+    public function getManufacturerList()
     {
         return $this->_aManufacturerlist;
     }
@@ -2589,27 +2459,27 @@ class ViewBase extends \oxView
     /**
      * Sets Manufacturer list for search
      *
-     * @param array $aList manufacturer list
+     * @param array $list manufacturer list
      */
-    public function setManufacturerlist($aList)
+    public function setManufacturerList($list)
     {
-        $this->_aManufacturerlist = $aList;
+        $this->_aManufacturerlist = $list;
     }
 
     /**
      * Sets root vendor
      *
-     * @param object $oVendor vendor object
+     * @param oxVendor $vendor vendor object
      */
-    public function setRootVendor($oVendor)
+    public function setRootVendor($vendor)
     {
-        $this->_oRootVendor = $oVendor;
+        $this->_oRootVendor = $vendor;
     }
 
     /**
      * Template variable getter. Returns root vendor
      *
-     * @return object
+     * @return oxVendor
      */
     public function getRootVendor()
     {
@@ -2619,17 +2489,17 @@ class ViewBase extends \oxView
     /**
      * Sets root Manufacturer
      *
-     * @param object $oManufacturer manufacturer object
+     * @param oxManufacturer $manufacturer manufacturer object
      */
-    public function setRootManufacturer($oManufacturer)
+    public function setRootManufacturer($manufacturer)
     {
-        $this->_oRootManufacturer = $oManufacturer;
+        $this->_oRootManufacturer = $manufacturer;
     }
 
     /**
      * Template variable getter. Returns root Manufacturer
      *
-     * @return object
+     * @return oxManufacturer
      */
     public function getRootManufacturer()
     {
@@ -2645,8 +2515,8 @@ class ViewBase extends \oxView
     {
         if ($this->_sVendorId === null) {
             $this->_sVendorId = false;
-            if (($oVendor = $this->getActVendor())) {
-                $this->_sVendorId = $oVendor->getId();
+            if (($vendor = $this->getActVendor())) {
+                $this->_sVendorId = $vendor->getId();
             }
         }
 
@@ -2662,8 +2532,8 @@ class ViewBase extends \oxView
     {
         if ($this->_sManufacturerId === null) {
             $this->_sManufacturerId = false;
-            if (($oManufacturer = $this->getActManufacturer())) {
-                $this->_sManufacturerId = $oManufacturer->getId();
+            if (($manufacturer = $this->getActManufacturer())) {
+                $this->_sManufacturerId = $manufacturer->getId();
             }
         }
 
@@ -2683,7 +2553,7 @@ class ViewBase extends \oxView
     /**
      * Template variable getter. Returns category path
      *
-     * @return string
+     * @return array
      */
     public function getCatTreePath()
     {
@@ -2693,18 +2563,18 @@ class ViewBase extends \oxView
     /**
      * Loads and returns oxContent object requested by its ident
      *
-     * @param string $sIdent content identifier
+     * @param string $ident content identifier
      *
      * @return oxContent
      */
-    public function getContentByIdent($sIdent)
+    public function getContentByIdent($ident)
     {
-        if (!isset($this->_aContents[$sIdent])) {
-            $this->_aContents[$sIdent] = oxNew('oxContent');
-            $this->_aContents[$sIdent]->loadByIdent($sIdent);
+        if (!isset($this->_aContents[$ident])) {
+            $this->_aContents[$ident] = oxNew('oxContent');
+            $this->_aContents[$ident]->loadByIdent($ident);
         }
 
-        return $this->_aContents[$sIdent];
+        return $this->_aContents[$ident];
     }
 
     /**
@@ -2728,9 +2598,9 @@ class ViewBase extends \oxView
             $this->_aMustFillFields = false;
 
             // passing must-be-filled-fields info
-            $aMustFillFields = $this->getConfig()->getConfigParam('aMustFillFields');
-            if (is_array($aMustFillFields)) {
-                $this->_aMustFillFields = array_flip($aMustFillFields);
+            $mustFillFields = $this->getConfig()->getConfigParam('aMustFillFields');
+            if (is_array($mustFillFields)) {
+                $this->_aMustFillFields = array_flip($mustFillFields);
             }
         }
 
@@ -2740,14 +2610,14 @@ class ViewBase extends \oxView
     /**
      * Returns if field is required.
      *
-     * @param string $sField required field to check
+     * @param string $field required field to check
      *
      * @return array | bool
      */
-    public function isFieldRequired($sField)
+    public function isFieldRequired($field)
     {
-        if ($aMustFillFields = $this->getMustFillFields()) {
-            if (isset($aMustFillFields[$sField])) {
+        if ($mustFillFields = $this->getMustFillFields()) {
+            if (isset($mustFillFields[$field])) {
                 return true;
             }
         }
@@ -2771,7 +2641,7 @@ class ViewBase extends \oxView
     }
 
     /**
-     * Checks if session session form id matches with form id
+     * Checks if session form id matches with request form id
      *
      * @return bool
      */
@@ -2780,11 +2650,11 @@ class ViewBase extends \oxView
         if ($this->_blCanAcceptFormData === null) {
             $this->_blCanAcceptFormData = false;
 
-            $sFormId = $this->getConfig()->getRequestParameter("uformid");
-            $sSessionFormId = oxRegistry::getSession()->getVariable("sessionuformid");
+            $formId = $this->getConfig()->getRequestParameter("uformid");
+            $sessionFormId = oxRegistry::getSession()->getVariable("sessionuformid");
 
             // testing if form and session ids matches
-            if ($sFormId && $sFormId === $sSessionFormId) {
+            if ($formId && $formId === $sessionFormId) {
                 $this->_blCanAcceptFormData = true;
             }
 
@@ -2871,8 +2741,8 @@ class ViewBase extends \oxView
     {
         if ($this->_blEnabledPrivateSales === null) {
             $this->_blEnabledPrivateSales = (bool) $this->getConfig()->getConfigParam('blPsLoginEnabled');
-            if ($this->_blEnabledPrivateSales && ($blCanPreview = oxRegistry::getUtils()->canPreview()) !== null) {
-                $this->_blEnabledPrivateSales = !$blCanPreview;
+            if ($this->_blEnabledPrivateSales && ($canPreview = oxRegistry::getUtils()->canPreview()) !== null) {
+                $this->_blEnabledPrivateSales = !$canPreview;
             }
         }
 
@@ -2902,11 +2772,11 @@ class ViewBase extends \oxView
     /**
      * Sets if active root category was changed
      *
-     * @param bool $blRootCatChanged root category changed
+     * @param bool $rootCategoryChanged root category changed
      */
-    public function setRootCatChanged($blRootCatChanged)
+    public function setRootCatChanged($rootCategoryChanged)
     {
-        $this->_blRootCatChanged = $blRootCatChanged;
+        $this->_blRootCatChanged = $rootCategoryChanged;
     }
 
     /**
@@ -2927,9 +2797,9 @@ class ViewBase extends \oxView
     public function getInvoiceAddress()
     {
         if ($this->_aInvoiceAddress == null) {
-            $aAddress = $this->getConfig()->getRequestParameter('invadr');
-            if ($aAddress) {
-                $this->_aInvoiceAddress = $aAddress;
+            $invoiceAddress = $this->getConfig()->getRequestParameter('invadr');
+            if ($invoiceAddress) {
+                $this->_aInvoiceAddress = $invoiceAddress;
             }
         }
 
@@ -2944,10 +2814,10 @@ class ViewBase extends \oxView
     public function getDeliveryAddress()
     {
         if ($this->_aDeliveryAddress == null) {
-            $oConfig = $this->getConfig();
+            $config = $this->getConfig();
             //do not show deladr if address was reloaded
-            if (!$oConfig->getRequestParameter('reloadaddress')) {
-                $this->_aDeliveryAddress = $oConfig->getRequestParameter('deladr');
+            if (!$config->getRequestParameter('reloadaddress')) {
+                $this->_aDeliveryAddress = $config->getRequestParameter('deladr');
             }
         }
 
@@ -2957,21 +2827,21 @@ class ViewBase extends \oxView
     /**
      * Template variable setter. Sets user delivery address
      *
-     * @param array $aDeliveryAddress delivery address
+     * @param array $deliveryAddress delivery address
      */
-    public function setDeliveryAddress($aDeliveryAddress)
+    public function setDeliveryAddress($deliveryAddress)
     {
-        $this->_aDeliveryAddress = $aDeliveryAddress;
+        $this->_aDeliveryAddress = $deliveryAddress;
     }
 
     /**
      * Template variable setter. Sets user address
      *
-     * @param array $aAddress user address
+     * @param array $address user address
      */
-    public function setInvoiceAddress($aAddress)
+    public function setInvoiceAddress($address)
     {
-        $this->_aInvoiceAddress = $aAddress;
+        $this->_aInvoiceAddress = $address;
     }
 
     /**
@@ -2983,11 +2853,11 @@ class ViewBase extends \oxView
     {
         if ($this->_sActiveUsername == null) {
             $this->_sActiveUsername = false;
-            $sUsername = $this->getConfig()->getRequestParameter('lgn_usr');
-            if ($sUsername) {
-                $this->_sActiveUsername = $sUsername;
-            } elseif ($oUser = $this->getUser()) {
-                $this->_sActiveUsername = $oUser->oxuser__oxusername->value;
+            $username = $this->getConfig()->getRequestParameter('lgn_usr');
+            if ($username) {
+                $this->_sActiveUsername = $username;
+            } elseif ($user = $this->getUser()) {
+                $this->_sActiveUsername = $user->oxuser__oxusername->value;
             }
         }
 
@@ -3030,7 +2900,6 @@ class ViewBase extends \oxView
      */
     public function getLastProducts()
     {
-
     }
 
     /**
@@ -3046,13 +2915,13 @@ class ViewBase extends \oxView
     /**
      * Checks if feature is enabled
      *
-     * @param string $sName feature name
+     * @param string $name feature name
      *
      * @return bool
      */
-    public function isActive($sName)
+    public function isActive($name)
     {
-        return $this->getConfig()->getConfigParam("bl" . $sName . "Enabled");
+        return $this->getConfig()->getConfigParam("bl" . $name . "Enabled");
     }
 
     /**
@@ -3063,10 +2932,10 @@ class ViewBase extends \oxView
     public function isFbWidgetVisible()
     {
         if ($this->_blFbWidgetsOn === null) {
-            $oUtils = oxRegistry::get("oxUtilsServer");
+            $utils = oxRegistry::get("oxUtilsServer");
 
             // reading ..
-            $this->_blFbWidgetsOn = (bool) $oUtils->getOxCookie("fbwidgetson");
+            $this->_blFbWidgetsOn = (bool) $utils->getOxCookie("fbwidgetson");
         }
 
         return $this->_blFbWidgetsOn;
@@ -3100,19 +2969,19 @@ class ViewBase extends \oxView
      */
     public function isVatIncluded()
     {
-        $blResult = true;
-        $oUser = $this->getUser();
-        $oConfig = $this->getConfig();
+        $result = true;
+        $user = $this->getUser();
+        $config = $this->getConfig();
 
-        $blShowNetPriceParameter = $oConfig->getConfigParam('blShowNetPrice');
-        $blPerfCalcVatOnlyForBasketOrderParameter = $oConfig->getConfigParam('bl_perfCalcVatOnlyForBasketOrder');
-        if ($blShowNetPriceParameter || $blPerfCalcVatOnlyForBasketOrderParameter) {
-            $blResult = false;
-        } elseif ($oUser && $oUser->isPriceViewModeNetto()) {
-            $blResult = false;
+        $showNetPriceParameter = $config->getConfigParam('blShowNetPrice');
+        $calculateVatOnlyForBasketOrderParameter = $config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder');
+        if ($showNetPriceParameter || $calculateVatOnlyForBasketOrderParameter) {
+            $result = false;
+        } elseif ($user && $user->isPriceViewModeNetto()) {
+            $result = false;
         }
 
-        return $blResult;
+        return $result;
     }
 
     /**
@@ -3143,12 +3012,12 @@ class ViewBase extends \oxView
     public function getWishlistName()
     {
         if ($this->getUser()) {
-            $sWishId = $this->getConfig()->getRequestParameter('wishid');
-            $sUserId = ($sWishId) ? $sWishId : oxRegistry::getSession()->getVariable('wishid');
-            if ($sUserId) {
-                $oWishUser = oxNew('oxUser');
-                if ($oWishUser->load($sUserId)) {
-                    return $oWishUser;
+            $wishId = $this->getConfig()->getRequestParameter('wishid');
+            $userId = ($wishId) ? $wishId : oxRegistry::getSession()->getVariable('wishid');
+            if ($userId) {
+                $wishUser = oxNew('oxUser');
+                if ($wishUser->load($userId)) {
+                    return $wishUser;
                 }
             }
         }

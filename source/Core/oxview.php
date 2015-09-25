@@ -268,7 +268,7 @@ class oxView extends oxSuperCfg
      *
      * @param oxShop $oShop current shop object
      *
-     * @return object $oShop current shop object
+     * @return oxViewConfig $oShop current shop object
      */
     public function addGlobalParams($oShop = null)
     {

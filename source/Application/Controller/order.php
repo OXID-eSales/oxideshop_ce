@@ -65,7 +65,7 @@ class order extends oxUBase
     /**
      * Delivery address
      *
-     * @var object
+     * @var oxAddress|null
      */
     protected $_oDelAddress = null;
 

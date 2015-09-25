@@ -1194,7 +1194,7 @@ class oxOrder extends oxBase
      * Loads and returns delivery address object or null
      * if deladrid is not configured, or object was not loaded
      *
-     * @return  object
+     * @return oxAddress|null
      */
     public function getDelAddressInfo()
     {
@@ -1208,7 +1208,7 @@ class oxOrder extends oxBase
 
             //get delivery country name from delivery country id
             if ($oDelAdress->oxaddress__oxcountryid->value && $oDelAdress->oxaddress__oxcountryid->value != -1) {
-                $oCountry = oxNew('oxcountry');
+                $oCountry = oxNew('oxCountry');
                 $oCountry->load($oDelAdress->oxaddress__oxcountryid->value);
                 $oDelAdress->oxaddress__oxcountry = clone $oCountry->oxcountry__oxtitle;
             }

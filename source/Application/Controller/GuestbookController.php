@@ -19,14 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Application\Controller;
+
+use oxField;
+use oxGbEntry;
+use oxRegistry;
 
 /**
  * Shop guestbook page.
  * Manages, collects, denies user comments.
  */
-class GuestBook extends oxUBase
+class GuestbookController extends \oxUBase
 {
-
     /**
      * Number of possible pages.
      *
@@ -111,7 +115,6 @@ class GuestBook extends oxUBase
      */
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
 
-
     /**
      * Loads guestbook entries, forms guestbook naviagation URLS,
      * executes parent::render() and returns name of template to
@@ -161,7 +164,7 @@ class GuestBook extends oxUBase
     /**
      * Template variable getter. Returns order directory
      *
-     * @return void
+     * @return string
      */
     public function getGbSortDir()
     {

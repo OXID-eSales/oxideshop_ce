@@ -331,8 +331,8 @@ class AccountController extends \oxUBase
         $paths = array();
         $pathData = array();
         $language = oxRegistry::getLang();
+        $baseLanguageId = $language->getBaseLanguage();
         if ($user = $this->getUser()) {
-            $baseLanguageId = $language->getBaseLanguage();
             $username = $user->oxuser__oxusername->value;
             $pathData['title'] = $language->translateString('MY_ACCOUNT', $baseLanguageId, false) . " - " . $username;
         } else {

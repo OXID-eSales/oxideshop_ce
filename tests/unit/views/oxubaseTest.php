@@ -162,7 +162,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
     public function testGetActTagSeo()
     {
-        $sTag = "liebliche";
+        $sTag = $this->getTestConfig()->getShopEdition() == 'EE' ? 'ideale' : 'liebliche';
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
@@ -215,7 +215,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
     public function testGetActManufacturer()
     {
-        $sId = 'fe07958b49de225bd1dbc7594fb9a6b0';
+        $sId = $this->getTestConfig()->getShopEdition() == 'EE' ? '88a996f859f94176da943f38ee067984' : 'fe07958b49de225bd1dbc7594fb9a6b0';
         $this->setRequestParameter('mnid', $sId);
 
         $oUBase = oxNew('oxUBase');
@@ -236,7 +236,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
     public function testGetActVendor__()
     {
-        $sId = 'v_68342e2955d7401e6.18967838';
+        $sId = $this->getTestConfig()->getShopEdition() == 'EE' ? 'v_d2e44d9b31fcce448.08890330' : 'v_68342e2955d7401e6.18967838';
         $this->setRequestParameter('cnid', $sId);
 
         $oUBase = oxNew('oxUBase');
@@ -302,12 +302,11 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testGetViewId()
     {
-        $myConfig = $this->getConfig();
-        $sShopURL = $myConfig->getShopUrl();
-        $sShopID = $myConfig->getShopId();
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
 
-        $oView = oxNew('oxubase');
-        $sId = $oView->getViewId();
+        $oView = oxNew('oxUBase');
         $this->assertEquals("ox|0|0|0|0", $oView->getViewId());
 
         // and caching
@@ -315,13 +314,14 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->assertEquals("ox|0|0|0|0", $oView->getViewId());
     }
 
-
     /*
      * Test getting view ID with some additional params
      */
     public function testGetViewIdWithOtherParams()
     {
-        $myConfig = $this->getConfig();
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
 
         oxRegistry::getLang()->setBaseLanguage(1);
         $this->setRequestParameter('currency', '1');
@@ -329,12 +329,8 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->setRequestParameter('fnc', 'dsd');
         $this->setSessionParam("usr", 'oxdefaultadmin');
 
-        $oView = oxNew('oxubase');
+        $oView = oxNew('oxUBase');
         $sId = $oView->getViewId();
-
-        $sShopURL = $myConfig->getShopUrl();
-        $sShopID = $myConfig->getShopId();
-
 
         $this->assertEquals("ox|1|1|0|0", $sId);
     }
@@ -344,15 +340,15 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testGetViewIdWithSSL()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
+
         $myConfig = $this->getConfig();
         $myConfig->setIsSsl(true);
 
-        $oView = oxNew('oxubase');
+        $oView = oxNew('oxUBase');
         $sId = $oView->getViewId();
-
-        $sShopURL = $myConfig->getShopUrl();
-        $sShopID = $myConfig->getShopId();
-
 
         $this->assertEquals("ox|0|0|0|0|ssl", $sId);
     }
@@ -1091,10 +1087,17 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $oConfig->setConfigParam('blSeoMode', true);
 
         $oV = $this->getMock('oxubase', array('_getRequestParams', '_getSubject'));
-        $oArt = oxNew('oxArticle');
-        $oArt->loadInLang(1, '1126');
+
+        $articleId = '1126';
         $sExp = "Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
         $sExpEng = "en/Gifts/Bar-Equipment/Bar-Set-ABSINTH.html";
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $articleId = '1889';
+            $sExp = "Spiele/Brettspiele/Bierspiel-OANS-ZWOA-GSUFFA.html";
+            $sExpEng = "en/Games/Boardgames/Beergame-OANS-ZWOA-GSUFFA.html";
+        }
+        $oArt = oxNew('oxArticle');
+        $oArt->loadInLang(1, $articleId);
 
         $oV->expects($this->any())->method('_getSubject')->will($this->returnValue($oArt));
 
@@ -1108,12 +1111,20 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', true);
 
-        $oV = $this->getMock('oxubase', array('_getRequestParams', '_getSubject'));
-        $oArt = oxNew('oxArticle');
-        $oArt->setLinkType(OXARTICLE_LINKTYPE_MANUFACTURER);
-        $oArt->loadInLang(1, '1964');
+        $oV = $this->getMock('oxUBase', array('_getRequestParams', '_getSubject'));
+
+        $articleId = '1964';
         $sVndExp = "Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";
         $sVndExpEng = "en/By-Manufacturer/Bush/Original-BUSH-Beach-Radio.html";
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $articleId = '1889';
+            $sVndExp = "Nach-Hersteller/Hersteller-2/Bierspiel-OANS-ZWOA-GSUFFA.html";
+            $sVndExpEng = "en/By-Manufacturer/Manufacturer-2/Beergame-OANS-ZWOA-GSUFFA.html";
+        }
+
+        $oArt = oxNew('oxArticle');
+        $oArt->setLinkType(OXARTICLE_LINKTYPE_MANUFACTURER);
+        $oArt->loadInLang(1, $articleId);
 
         $oV->expects($this->any())->method('_getSubject')->will($this->returnValue($oArt));
 
@@ -1189,7 +1200,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
     public function testGetRssLinks()
     {
-        $oView = oxNew('oxUbase');
+        $oView = oxNew('oxUBase');
         $oView->addRssFeed('testTitle', 'testUrl', 'test');
         $aRssLinks['test'] = array('title' => 'testTitle', 'link' => 'testUrl');
         $this->assertEquals($aRssLinks, $oView->getRssLinks());
@@ -1558,7 +1569,9 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
         $oUBase->setNonPublicVar("_blTop5Action", true);
         $aList = $oUBase->getTop5ArticleList();
-        $this->assertEquals(4, $aList->count());
+
+        $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 4;
+        $this->assertEquals($expectedCount, $aList->count());
     }
 
     public function testGetTop5ArticleList_notDefaultCount()
@@ -1575,7 +1588,9 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
         $oUBase->setNonPublicVar("_blBargainAction", true);
         $aList = $oUBase->getBargainArticleList();
-        $this->assertEquals(4, $aList->count());
+
+        $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 4;
+        $this->assertEquals($expectedCount, $aList->count());
     }
 
     public function testGetNewsRealStatus()
@@ -1637,12 +1652,6 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->setRequestParameter('cnid', 'v_root');
         $this->assertEquals('root', $oView->getVendorId());
     }
-
-
-
-
-
-
 
     /**
      * oxUBase::getPromoFinishedList() test case
@@ -1730,12 +1739,6 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->assertFalse($oView->getShowPromotionList());
     }
 
-
-
-
-    /**
-     *
-     */
     public function testGetFieldValidationErrors()
     {
         oxTestModules::addFunction("oxInputValidator", "getFieldValidationErrors", "{return array('test');}");

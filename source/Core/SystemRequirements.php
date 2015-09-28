@@ -20,15 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Core;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * System requirements class.
- *
- * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxSysRequirements
+class SystemRequirements
 {
-
     /**
      * System required modules
      *
@@ -255,7 +256,6 @@ class oxSysRequirements
                 'server_permissions',
                 'bug53632'
             );
-
 
             if ($this->isAdmin()) {
                 $aRequiredServerConfigs[] = 'mysql_version';
@@ -1188,9 +1188,9 @@ class oxSysRequirements
      */
     protected function _getMinimumMemoryLimit()
     {
-        $sDefLimit = '14M';
+        $requiredMinimalMemory = '14M';
 
-        return $sDefLimit;
+        return $requiredMinimalMemory;
     }
 
     /**
@@ -1200,8 +1200,8 @@ class oxSysRequirements
      */
     protected function _getRecommendMemoryLimit()
     {
-        $sRecLimit = '30M';
+        $recommendedMemory = '30M';
 
-        return $sRecLimit;
+        return $recommendedMemory;
     }
 }

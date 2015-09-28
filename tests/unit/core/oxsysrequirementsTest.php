@@ -35,12 +35,10 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
     {
         $oSysReq = oxNew('oxSysRequirements');
         $aRequiredModules = $oSysReq->getRequiredModules();
-        $sCnt = 25;
-        if (isAdmin()) {
-            $sCnt++;
-        }
-        $sCnt++;
-        $this->assertEquals($sCnt, count($aRequiredModules));
+        $this->assertTrue(is_array($aRequiredModules));
+
+        $requirementGroups = array_unique(array_values($aRequiredModules));
+        $this->assertCount(3, $requirementGroups);
     }
 
     public function testGetModuleInfo()
@@ -59,8 +57,14 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
         $sCnt = 13;
         $this->assertEquals($sCnt, count($aSysInfo['php_extennsions']));
         $this->assertEquals(10, count($aSysInfo['php_config']));
-        $sCnt = 4;
+
         $sCnt = 2;
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $sCnt = 4;
+        } elseif ($this->getTestConfig()->getShopEdition() === 'PE') {
+            $sCnt = 3;
+        }
+
         if (isAdmin()) {
             $sCnt++;
         }
@@ -481,31 +485,34 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
      */
     public function providerCheckMemoryLimit()
     {
-        $aMemoryLimitsWithExpectedSystemHealth = array(
+        $memoryLimitsWithExpectedSystemHealth = array(
             array('8M', 0),
             array('14M', 1),
             array('30M', 2),
             array('-1', 2),
         );
 
-        return $aMemoryLimitsWithExpectedSystemHealth;
+        return $memoryLimitsWithExpectedSystemHealth;
     }
 
     /**
      * Testing oxSysRequirements::checkMemoryLimit()
      * contains assertion for bug #5083
      *
-     * @param string $sMemoryLimit    how much memory allocated.
-     * @param int    $iExpectedResult if fits system requirements.
+     * @param string $memoryLimit    how much memory allocated.
+     * @param int    $expectedResult if fits system requirements.
      *
      * @dataProvider providerCheckMemoryLimit
      *
      * @return null
      */
-    public function testCheckMemoryLimit($sMemoryLimit, $iExpectedResult)
+    public function testCheckMemoryLimit($memoryLimit, $expectedResult)
     {
-        /** @var oxSysRequirements $oSysReq */
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
+
         $oSysReq = oxNew('oxSysRequirements');
-        $this->assertEquals($iExpectedResult, $oSysReq->checkMemoryLimit($sMemoryLimit));
+        $this->assertEquals($expectedResult, $oSysReq->checkMemoryLimit($memoryLimit));
     }
 }

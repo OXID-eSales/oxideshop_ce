@@ -1368,7 +1368,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Loads and returns articles list, bought by same customer.
      *
-     * @return array
+     * @return oxArticleList|null
      */
     public function getCustomerAlsoBoughtThisProducts()
     {

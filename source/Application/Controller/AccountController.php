@@ -138,10 +138,10 @@ class AccountController extends \oxUBase
         $this->redirectAfterLogin();
 
         // is logged in ?
-        $oUser = $this->getUser();
-        $sPasswordField = 'oxuser__oxpassword';
-        if (!$oUser || ($oUser && !$oUser->$sPasswordField->value) ||
-            ($this->isEnabledPrivateSales() && $oUser && (!$oUser->isTermsAccepted() || $this->confirmTerms()))
+        $user = $this->getUser();
+        $passwordField = 'oxuser__oxpassword';
+        if (!$user || ($user && !$user->$passwordField->value) ||
+            ($this->isEnabledPrivateSales() && $user && (!$user->isTermsAccepted() || $this->confirmTerms()))
         ) {
             $this->_sThisTemplate = $this->_getLoginTemplate();
         }
@@ -168,15 +168,15 @@ class AccountController extends \oxUBase
      */
     public function confirmTerms()
     {
-        $blConfirm = oxRegistry::getConfig()->getRequestParameter("term");
-        if (!$blConfirm && $this->isEnabledPrivateSales()) {
-            $oUser = $this->getUser();
-            if ($oUser && !$oUser->isTermsAccepted()) {
-                $blConfirm = true;
+        $termsConfirmation = oxRegistry::getConfig()->getRequestParameter("term");
+        if (!$termsConfirmation && $this->isEnabledPrivateSales()) {
+            $user = $this->getUser();
+            if ($user && !$user->isTermsAccepted()) {
+                $termsConfirmation = true;
             }
         }
 
-        return $blConfirm;
+        return $termsConfirmation;
     }
 
     /**
@@ -189,18 +189,17 @@ class AccountController extends \oxUBase
      */
     public function getNavigationParams()
     {
-        $aParams = parent::getNavigationParams();
+        $parameters = parent::getNavigationParams();
 
-        // source class name
-        if ($sSource = oxRegistry::getConfig()->getRequestParameter("sourcecl")) {
-            $aParams['sourcecl'] = $sSource;
+        if ($sourceClass = oxRegistry::getConfig()->getRequestParameter("sourcecl")) {
+            $parameters['sourcecl'] = $sourceClass;
         }
 
-        if ($sSource = oxRegistry::getConfig()->getRequestParameter("anid")) {
-            $aParams['anid'] = $sSource;
+        if ($articleId = oxRegistry::getConfig()->getRequestParameter("anid")) {
+            $parameters['anid'] = $articleId;
         }
 
-        return $aParams;
+        return $parameters;
     }
 
     /**
@@ -217,22 +216,22 @@ class AccountController extends \oxUBase
     public function redirectAfterLogin()
     {
         // in case source class is provided - redirecting back to it with all default parameters
-        if (($sSource = oxRegistry::getConfig()->getRequestParameter("sourcecl")) &&
+        if (($sourceClass = oxRegistry::getConfig()->getRequestParameter("sourcecl")) &&
             $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS
         ) {
 
-            $sRedirectUrl = $this->getConfig()->getShopUrl() . 'index.php?cl=' . rawurlencode($sSource);
-            // building redirect link
+            $redirectUrl = $this->getConfig()->getShopUrl() . 'index.php?cl=' . rawurlencode($sourceClass);
 
-            foreach ($this->getNavigationParams() as $sName => $sValue) {
-                if ($sValue && $sName != "sourcecl") {
-                    $sRedirectUrl .= '&' . rawurlencode($sName) . "=" . rawurlencode($sValue);
+            // building redirect link
+            foreach ($this->getNavigationParams() as $key => $value) {
+                if ($value && $key != "sourcecl") {
+                    $redirectUrl .= '&' . rawurlencode($key) . "=" . rawurlencode($value);
                 }
             }
 
-            /** @var oxUtilsUrl $oUtilsUrl */
-            $oUtilsUrl = oxRegistry::get("oxUtilsUrl");
-            return oxRegistry::getUtils()->redirect($oUtilsUrl->processUrl($sRedirectUrl), true, 302);
+            /** @var oxUtilsUrl $utilsUrl */
+            $utilsUrl = oxRegistry::get("oxUtilsUrl");
+            return oxRegistry::getUtils()->redirect($utilsUrl->processUrl($redirectUrl), true, 302);
         }
     }
 
@@ -245,8 +244,8 @@ class AccountController extends \oxUBase
     {
         if ($this->_iOrderCnt === null) {
             $this->_iOrderCnt = 0;
-            if ($oUser = $this->getUser()) {
-                $this->_iOrderCnt = $oUser->getOrderCount();
+            if ($user = $this->getUser()) {
+                $this->_iOrderCnt = $user->getOrderCount();
             }
         }
 
@@ -262,8 +261,8 @@ class AccountController extends \oxUBase
     {
         if ($this->_sArticleId === null) {
             // passing wishlist information
-            if ($sArticleId = oxRegistry::getConfig()->getRequestParameter('aid')) {
-                $this->_sArticleId = $sArticleId;
+            if ($articleId = oxRegistry::getConfig()->getRequestParameter('aid')) {
+                $this->_sArticleId = $articleId;
             }
         }
 
@@ -329,22 +328,20 @@ class AccountController extends \oxUBase
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
-        $oLang = oxRegistry::getLang();
-        if ($oUser = $this->getUser()) {
-            $iBaseLanguage = $oLang->getBaseLanguage();
-            $sUsernameField = 'oxuser__oxusername';
-
-            $aPath['title'] =
-                $oLang->translateString('MY_ACCOUNT', $iBaseLanguage, false) . " - " . $oUser->$sUsernameField->value;
+        $paths = array();
+        $pathData = array();
+        $language = oxRegistry::getLang();
+        if ($user = $this->getUser()) {
+            $baseLanguageId = $language->getBaseLanguage();
+            $username = $user->oxuser__oxusername->value;
+            $pathData['title'] = $language->translateString('MY_ACCOUNT', $baseLanguageId, false) . " - " . $username;
         } else {
-            $aPath['title'] = $oLang->translateString('LOGIN', $iBaseLanguage, false);
+            $pathData['title'] = $language->translateString('LOGIN', $baseLanguageId, false);
         }
-        $aPath['link'] = $this->getLink();
-        $aPaths[] = $aPath;
+        $pathData['link'] = $this->getLink();
+        $paths[] = $pathData;
 
-        return $aPaths;
+        return $paths;
     }
 
     /**
@@ -354,10 +351,9 @@ class AccountController extends \oxUBase
      */
     public function getCompareItemsCnt()
     {
-        $oCompare = oxNew("compare");
-        $iCompItemsCnt = $oCompare->getCompareItemsCnt();
+        $compare = oxNew("Compare");
 
-        return $iCompItemsCnt;
+        return $compare->getCompareItemsCnt();
     }
 
     /**
@@ -367,17 +363,17 @@ class AccountController extends \oxUBase
      */
     public function getTitle()
     {
-        $sTitle = parent::getTitle();
+        $title = parent::getTitle();
 
         if ($this->getConfig()->getActiveView()->getClassName() == 'account') {
-            $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-            $sTitle = oxRegistry::getLang()->translateString('PAGE_TITLE_ACCOUNT', $iBaseLanguage, false);
-            if ($oUser = $this->getUser()) {
-                $sUsername = 'oxuser__oxusername';
-                $sTitle .= ' - "' . $oUser->$sUsername->value . '"';
+            $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
+            $title = oxRegistry::getLang()->translateString('PAGE_TITLE_ACCOUNT', $baseLanguageId, false);
+            if ($user = $this->getUser()) {
+                $username = $user->oxuser__oxusername->value;
+                $title .= ' - "' . $username . '"';
             }
         }
 
-        return $sTitle;
+        return $title;
     }
 }

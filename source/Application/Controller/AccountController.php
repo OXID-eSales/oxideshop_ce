@@ -19,6 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Application\Controller;
+
+use oxRegistry;
+use oxUtilsUrl;
 
 /**
  * Current user "My account" window.
@@ -27,11 +31,8 @@
  * is a link for logging out. Template includes Topoffer , bargain
  * boxes. OXID eShop -> MY ACCOUNT.
  */
-
-
-class Account extends oxUBase
+class AccountController extends \oxUBase
 {
-
     /**
      * Number of user's orders.
      *
@@ -122,7 +123,6 @@ class Account extends oxUBase
      * @var bool
      */
     protected $_blShowTagCloud = false;
-
 
     /**
      * Loads action articles. If user is logged and returns name of

@@ -562,7 +562,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetViewIdPE()
     {
-        if (!OXID_VERSION_PE) {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
 
@@ -583,7 +583,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testGetViewId_ListTypeNotInSession_ReturnsViewIdWithDefaultListTypeIncluded()
     {
-        if (!OXID_VERSION_PE) {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
         $this->setRequestParameter('cnid', 'xxx');

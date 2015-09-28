@@ -19,6 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Application\Controller;
+
+use oxArticleList;
+use oxCategory;
+use oxField;
+use oxRegistry;
 
 /**
  * List of articles for a selected product group.
@@ -26,9 +32,8 @@
  * meta tags (for search engines). Result - "list.tpl" template.
  * OXID eShop -> (Any selected shop product category).
  */
-class aList extends oxUBase
+class ArticleList extends \oxUBase
 {
-
     /**
      * Count of all articles in list.
      *

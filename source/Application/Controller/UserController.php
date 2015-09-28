@@ -86,9 +86,9 @@ class UserController extends \oxUBase
     protected $_sWishId = null;
 
     /**
-     * Loads customer basket object form session (oxsession::getBasket()),
+     * Loads customer basket object form session (oxSession::getBasket()),
      * passes action article/basket/country list to template engine. If
-     * available - loads user delivery address data (oxaddress). If user
+     * available - loads user delivery address data (oxAddress). If user
      * is connected using Facebook connect calls user::_fillFormWithFacebookData to
      * prefill form data with data taken from user Facebook account. Returns
      * name template file to render user::_sThisTemplate.
@@ -97,24 +97,24 @@ class UserController extends \oxUBase
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $config = $this->getConfig();
 
         if ($this->getIsOrderStep()) {
-            if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
+            if ($config->getConfigParam('blPsBasketReservationEnabled')) {
                 $this->getSession()->getBasketReservations()->renewExpiration();
             }
 
-            $oBasket = $this->getSession()->getBasket();
-            $blPsBasketReservationsEnabled = $myConfig->getConfigParam('blPsBasketReservationEnabled');
-            if ($this->_blIsOrderStep && $blPsBasketReservationsEnabled &&
-                (!$oBasket || ($oBasket && !$oBasket->getProductsCount()))) {
-                oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=basket', true, 302);
+            $basket = $this->getSession()->getBasket();
+            $isPsBasketReservationsEnabled = $config->getConfigParam('blPsBasketReservationEnabled');
+            if ($this->_blIsOrderStep && $isPsBasketReservationsEnabled &&
+                (!$basket || ($basket && !$basket->getProductsCount()))) {
+                oxRegistry::getUtils()->redirect($config->getShopHomeURL() . 'cl=basket', true, 302);
             }
         }
 
         parent::render();
 
-        if ($myConfig->getConfigParam("bl_showFbConnect") && !$this->getUser()) {
+        if ($config->getConfigParam("bl_showFbConnect") && !$this->getUser()) {
             $this->_fillFormWithFacebookData();
         }
 
@@ -144,12 +144,12 @@ class UserController extends \oxUBase
     {
         if ($this->_iOption === null) {
             // passing user chosen option value to display correct content
-            $iOption = oxRegistry::getConfig()->getRequestParameter('option');
+            $option = oxRegistry::getConfig()->getRequestParameter('option');
             // if user chosen "Option 2"" - we should show user details only if he is authorized
-            if ($iOption == 2 && !$this->getUser()) {
-                $iOption = 0;
+            if ($option == 2 && !$this->getUser()) {
+                $option = 0;
             }
-            $this->_iOption = $iOption;
+            $this->_iOption = $option;
         }
 
         return $this->_iOption;
@@ -162,18 +162,17 @@ class UserController extends \oxUBase
      */
     public function getOrderRemark()
     {
-        $oConfig = oxRegistry::getConfig();
+        $config = oxRegistry::getConfig();
         if ($this->_sOrderRemark === null) {
-            $sOrderRemark = false;
             // if already connected, we can use the session
             if ($this->getUser()) {
-                $sOrderRemark = oxRegistry::getSession()->getVariable('ordrem');
+                $orderRemark = oxRegistry::getSession()->getVariable('ordrem');
             } else {
                 // not connected so nowhere to save, we're gonna use what we get from post
-                $sOrderRemark = $oConfig->getRequestParameter('order_remark', true);
+                $orderRemark = $config->getRequestParameter('order_remark', true);
             }
 
-            $this->_sOrderRemark = $sOrderRemark ? $oConfig->checkParamSpecialChars($sOrderRemark) : false;
+            $this->_sOrderRemark = $orderRemark ? $config->checkParamSpecialChars($orderRemark) : false;
         }
 
         return $this->_sOrderRemark;
@@ -187,14 +186,13 @@ class UserController extends \oxUBase
     public function isNewsSubscribed()
     {
         if ($this->_blNewsSubscribed === null) {
-            $blNews = false;
-            if (($blNews = oxRegistry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
-                $blNews = false;
+            if (($isSubscribedToNews = oxRegistry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
+                $isSubscribedToNews = false;
             }
-            if (($oUser = $this->getUser())) {
-                $blNews = $oUser->getNewsSubscription()->getOptInStatus();
+            if (($user = $this->getUser())) {
+                $isSubscribedToNews = $user->getNewsSubscription()->getOptInStatus();
             }
-            $this->_blNewsSubscribed = $blNews;
+            $this->_blNewsSubscribed = $isSubscribedToNews;
         }
 
         if (is_null($this->_blNewsSubscribed)) {
@@ -220,26 +218,26 @@ class UserController extends \oxUBase
     protected function _fillFormWithFacebookData()
     {
         // Create our Application instance.
-        $oFacebook = oxRegistry::get("oxFb");
+        $facebook = oxRegistry::get("oxFb");
 
-        if ($oFacebook->isConnected()) {
-            $aMe = $oFacebook->api('/me');
+        if ($facebook->isConnected()) {
+            $facebookUser = $facebook->api('/me');
 
-            $aInvAdr = $this->getInvoiceAddress();
-            $sCharset = oxRegistry::getLang()->translateString("charset");
+            $invoiceAddress = $this->getInvoiceAddress();
+            $charset = oxRegistry::getLang()->translateString("charset");
 
             // do not stop converting on error - just try to translit unknown symbols
-            $sCharset .= '//TRANSLIT';
+            $charset .= '//TRANSLIT';
 
-            if (!$aInvAdr["oxuser__oxfname"]) {
-                $aInvAdr["oxuser__oxfname"] = iconv('UTF-8', $sCharset, $aMe["first_name"]);
+            if (!$invoiceAddress["oxuser__oxfname"]) {
+                $invoiceAddress["oxuser__oxfname"] = iconv('UTF-8', $charset, $facebookUser["first_name"]);
             }
 
-            if (!$aInvAdr["oxuser__oxlname"]) {
-                $aInvAdr["oxuser__oxlname"] = iconv('UTF-8', $sCharset, $aMe["last_name"]);
+            if (!$invoiceAddress["oxuser__oxlname"]) {
+                $invoiceAddress["oxuser__oxlname"] = iconv('UTF-8', $charset, $facebookUser["last_name"]);
             }
 
-            $this->setInvoiceAddress($aInvAdr);
+            $this->setInvoiceAddress($invoiceAddress);
         }
     }
 
@@ -260,16 +258,16 @@ class UserController extends \oxUBase
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $paths = array();
+        $path = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('ADDRESS', $iBaseLanguage, false);
-        $aPath['link'] = $this->getLink();
+        $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
+        $path['title'] = oxRegistry::getLang()->translateString('ADDRESS', $baseLanguageId, false);
+        $path['link'] = $this->getLink();
 
-        $aPaths[] = $aPath;
+        $paths[] = $path;
 
-        return $aPaths;
+        return $paths;
     }
 
     /**
@@ -279,9 +277,9 @@ class UserController extends \oxUBase
      */
     public function isDownloadableProductWarning()
     {
-        $oBasket = $this->getSession()->getBasket();
-        if ($oBasket && $this->getConfig()->getConfigParam("blEnableDownloads")) {
-            if ($oBasket->hasDownloadableProducts()) {
+        $basket = $this->getSession()->getBasket();
+        if ($basket && $this->getConfig()->getConfigParam("blEnableDownloads")) {
+            if ($basket->hasDownloadableProducts()) {
                 return true;
             }
         }

@@ -19,14 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Application\Controller;
+
+use oxRegistry;
 
 /**
  * User details.
  * Collects and arranges user object data (information, like shipping address, etc.).
  */
-class User extends oxUBase
+class UserController extends \oxUBase
 {
-
     /**
      * Current class template.
      *
@@ -82,7 +84,6 @@ class User extends oxUBase
      * @var string
      */
     protected $_sWishId = null;
-
 
     /**
      * Loads customer basket object form session (oxsession::getBasket()),

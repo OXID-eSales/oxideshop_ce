@@ -21,6 +21,7 @@
  */
 namespace OxidEsales\Application\Controller;
 
+use oxArticle;
 use oxArticleList;
 use oxCategory;
 use oxField;
@@ -161,24 +162,24 @@ class ArticleList extends \oxUBase
      */
     protected function generateViewId()
     {
-        $sCatId = oxRegistry::getConfig()->getRequestParameter('cnid');
-        $iActPage = $this->getActPage();
-        $iArtPerPage = oxRegistry::getSession()->getVariable('_artperpage');
-        $sListDisplayType = $this->_getListDisplayType();
-        $sParentViewId = parent::generateViewId();
+        $categoryId = oxRegistry::getConfig()->getRequestParameter('cnid');
+        $activePage = $this->getActPage();
+        $articlesPerPage = oxRegistry::getSession()->getVariable('_artperpage');
+        $listDisplayType = $this->_getListDisplayType();
+        $parentViewId = parent::generateViewId();
 
         return md5(
-            $sParentViewId . '|' . $sCatId . '|' . $iActPage . '|' . $iArtPerPage . '|' . $sListDisplayType
+            $parentViewId . '|' . $categoryId . '|' . $activePage . '|' . $articlesPerPage . '|' . $listDisplayType
         );
     }
 
     /**
      * Executes parent::render(), loads active category, prepares article
      * list sorting rules. According to category type loads list of
-     * articles - regular (oxarticlelist::LoadCategoryArticles()) or price
-     * dependent (oxarticlelist::LoadPriceArticles()). Generates page navigation data
+     * articles - regular (oxArticleList::LoadCategoryArticles()) or price
+     * dependent (oxArticleList::LoadPriceArticles()). Generates page navigation data
      * such as previous/next window URL, number of available pages, generates
-     * meta tags info (oxubase::_convertForMetaTags()) and returns name of
+     * meta tags info (oxUBase::_convertForMetaTags()) and returns name of
      * template to render. Also checks if actual pages count does not exceed real
      * articles page count. If yes - calls error_404_handler().
      *
@@ -197,10 +198,10 @@ class ArticleList extends \oxUBase
 
         $activeCategory = $this->getActiveCategory();
         if ($activeCategory && $config->getConfigParam('bl_rssCategories')) {
-            $oRss = oxNew('oxrssfeed');
+            $rss = oxNew('oxrssfeed');
             $this->addRssFeed(
-                $oRss->getCategoryArticlesTitle($activeCategory),
-                $oRss->getCategoryArticlesUrl($activeCategory),
+                $rss->getCategoryArticlesTitle($activeCategory),
+                $rss->getCategoryArticlesUrl($activeCategory),
                 'activeCategory'
             );
         }
@@ -258,9 +259,9 @@ class ArticleList extends \oxUBase
      */
     protected function _checkRequestedPage()
     {
-        $iPageCnt = $this->getPageCount();
+        $pageCount = $this->getPageCount();
         // redirecting to first page in case requested page does not exist
-        if ($iPageCnt && (($iPageCnt - 1) < $this->getActPage())) {
+        if ($pageCount && (($pageCount - 1) < $this->getActPage())) {
             oxRegistry::getUtils()->redirect($this->getActiveCategory()->getLink(), false);
         }
     }
@@ -271,27 +272,25 @@ class ArticleList extends \oxUBase
      */
     protected function _processListArticles()
     {
-        if ($aArtList = $this->getArticleList()) {
-            $iLinkType = $this->_getProductLinkType();
-            $sAddDynParams = $this->getAddUrlParams();
-            $sAddSeoParams = $this->getAddSeoUrlParams();
+        if ($articleList = $this->getArticleList()) {
+            $linkType = $this->_getProductLinkType();
+            $dynamicParameters = $this->getAddUrlParams();
+            $seoParameters = $this->getAddSeoUrlParams();
 
-            foreach ($aArtList as $oArticle) {
-                $oArticle->setLinkType($iLinkType);
+            foreach ($articleList as $article) {
+                /** @var oxArticle $article */
+                $article->setLinkType($linkType);
 
-                // appending dynamic urls
-                if ($sAddDynParams) {
-                    $oArticle->appendStdLink($sAddDynParams);
+                if ($dynamicParameters) {
+                    $article->appendStdLink($dynamicParameters);
                 }
 
-                // appending seo urls
-                if ($sAddSeoParams) {
-                    $oArticle->appendLink($sAddSeoParams);
+                if ($seoParameters) {
+                    $article->appendLink($seoParameters);
                 }
             }
         }
     }
-
 
     /**
      * Returns additional URL parameters which must be added to list products dynamic urls
@@ -300,22 +299,25 @@ class ArticleList extends \oxUBase
      */
     public function getAddUrlParams()
     {
-        $sParams = parent::getAddUrlParams();
+        $dynamicParameters = parent::getAddUrlParams();
         if (!oxRegistry::getUtils()->seoIsActive()) {
-            $iPgNr = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
-            if ($iPgNr > 0) {
-                $sParams .= ($sParams ? '&amp;' : '') . "pgNr={$iPgNr}";
+            $pageNumber = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+            if ($pageNumber > 0) {
+                $dynamicParameters .= ($dynamicParameters ? '&amp;' : '') . "pgNr={$pageNumber}";
             }
         }
 
-        return $sParams;
+        return $dynamicParameters;
     }
 
     /**
      * Returns additional URL parameters which must be added to list products seo urls
+     *
+     * @return string
      */
     public function getAddSeoUrlParams()
     {
+        return '';
     }
 
     /**
@@ -327,12 +329,12 @@ class ArticleList extends \oxUBase
      */
     protected function _getProductLinkType()
     {
-        $iCatType = OXARTICLE_LINKTYPE_CATEGORY;
-        if (($oCat = $this->getActiveCategory()) && $oCat->isPriceCategory()) {
-            $iCatType = OXARTICLE_LINKTYPE_PRICECATEGORY;
+        $categoryType = OXARTICLE_LINKTYPE_CATEGORY;
+        if (($category = $this->getActiveCategory()) && $category->isPriceCategory()) {
+            $categoryType = OXARTICLE_LINKTYPE_PRICECATEGORY;
         }
 
-        return $iCatType;
+        return $categoryType;
     }
 
     /**
@@ -343,18 +345,18 @@ class ArticleList extends \oxUBase
      */
     public function executefilter()
     {
-        $iLang = oxRegistry::getLang()->getBaseLanguage();
+        $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
         // store this into session
-        $aFilter = oxRegistry::getConfig()->getRequestParameter('attrfilter', true);
-        $sActCat = oxRegistry::getConfig()->getRequestParameter('cnid');
+        $attributeFilter = oxRegistry::getConfig()->getRequestParameter('attrfilter', true);
+        $activeCategory = oxRegistry::getConfig()->getRequestParameter('cnid');
 
-        if (!empty($aFilter)) {
-            $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
+        if (!empty($attributeFilter)) {
+            $sessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
             //fix for #2904 - if language will be changed attributes of this category will be deleted from session
             //and new filters for active language set.
-            $aSessionFilter[$sActCat] = null;
-            $aSessionFilter[$sActCat][$iLang] = $aFilter;
-            oxRegistry::getSession()->setVariable('session_attrfilter', $aSessionFilter);
+            $sessionFilter[$activeCategory] = null;
+            $sessionFilter[$activeCategory][$baseLanguageId] = $attributeFilter;
+            oxRegistry::getSession()->setVariable('session_attrfilter', $sessionFilter);
         }
     }
 
@@ -424,13 +426,13 @@ class ArticleList extends \oxUBase
      */
     protected function _getListDisplayType()
     {
-        $sListDisplayType = oxRegistry::getSession()->getVariable('ldtype');
+        $listDisplayType = oxRegistry::getSession()->getVariable('ldtype');
 
-        if (is_null($sListDisplayType)) {
-            $sListDisplayType = oxRegistry::getConfig()->getConfigParam('sDefaultListDisplayType');
+        if (is_null($listDisplayType)) {
+            $listDisplayType = oxRegistry::getConfig()->getConfigParam('sDefaultListDisplayType');
         }
 
-        return $sListDisplayType;
+        return $listDisplayType;
     }
 
     /**
@@ -440,8 +442,8 @@ class ArticleList extends \oxUBase
      */
     protected function _getSeoObjectId()
     {
-        if (($oCategory = $this->getActiveCategory())) {
-            return $oCategory->getId();
+        if (($category = $this->getActiveCategory())) {
+            return $category->getId();
         }
     }
 
@@ -453,20 +455,18 @@ class ArticleList extends \oxUBase
     protected function _getCatPathString()
     {
         if ($this->_sCatPathString === null) {
-
             // marking as already set
             $this->_sCatPathString = false;
 
             //fetching category path
-            if (is_array($aPath = $this->getCatTreePath())) {
-
-                $oStr = getStr();
+            if (is_array($categoryTreePath = $this->getCatTreePath())) {
+                $stringModifier = getStr();
                 $this->_sCatPathString = '';
-                foreach ($aPath as $oCat) {
+                foreach ($categoryTreePath as $category) {
                     if ($this->_sCatPathString) {
                         $this->_sCatPathString .= ', ';
                     }
-                    $this->_sCatPathString .= $oStr->strtolower($oCat->oxcategories__oxtitle->value);
+                    $this->_sCatPathString .= $stringModifier->strtolower($category->oxcategories__oxtitle->value);
                 }
             }
         }
@@ -475,40 +475,40 @@ class ArticleList extends \oxUBase
     }
 
     /**
-     * Returns current view meta description data
+     * Returns current view meta description data.
      *
-     * @param string $sMeta     category path
-     * @param int    $iLength   max length of result, -1 for no truncation
-     * @param bool   $blDescTag if true - performs additional duplicate cleaning
+     * @param string $meta           Category path.
+     * @param int    $length         Max length of result, -1 for no truncation.
+     * @param bool   $descriptionTag If true - performs additional duplicate cleaning.
      *
-     * @return  string  $sString    converted string
+     * @return  string
      */
-    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
+    protected function _prepareMetaDescription($meta, $length = 1024, $descriptionTag = false)
     {
-        $sDescription = '';
+        $description = '';
         // appending parent title
-        if ($oCategory = $this->getActiveCategory()) {
-            if (($oParent = $oCategory->getParentCategory())) {
-                $sDescription .= " {$oParent->oxcategories__oxtitle->value} -";
+        if ($activeCategory = $this->getActiveCategory()) {
+            if (($parentCategory = $activeCategory->getParentCategory())) {
+                $description .= " {$parentCategory->oxcategories__oxtitle->value} -";
             }
 
             // adding category title
-            $sDescription .= " {$oCategory->oxcategories__oxtitle->value}.";
+            $description .= " {$activeCategory->oxcategories__oxtitle->value}.";
         }
 
         // and final component ..
         //changed for #2776
-        if (($sSuffix = $this->getConfig()->getActiveShop()->oxshops__oxtitleprefix->value)) {
-            $sDescription .= " {$sSuffix}";
+        if (($suffix = $this->getConfig()->getActiveShop()->oxshops__oxtitleprefix->value)) {
+            $description .= " {$suffix}";
         }
 
         // making safe for output
-        $sDescription = getStr()->html_entity_decode($sDescription);
-        $sDescription = getStr()->strip_tags($sDescription);
-        $sDescription = getStr()->cleanStr($sDescription);
-        $sDescription = getStr()->htmlspecialchars($sDescription);
+        $description = getStr()->html_entity_decode($description);
+        $description = getStr()->strip_tags($description);
+        $description = getStr()->cleanStr($description);
+        $description = getStr()->htmlspecialchars($description);
 
-        return trim($sDescription);
+        return trim($description);
     }
 
     /**
@@ -518,142 +518,143 @@ class ArticleList extends \oxUBase
      */
     public function getMetaDescription()
     {
-        $sMeta = parent::getMetaDescription();
+        $meta = parent::getMetaDescription();
 
-        if ($sTitlePageSuffix = $this->getTitlePageSuffix()) {
-            if ($sMeta) {
-                $sMeta .= ", ";
+        if ($titlePageSuffix = $this->getTitlePageSuffix()) {
+            if ($meta) {
+                $meta .= ", ";
             }
-            $sMeta .= $sTitlePageSuffix;
+            $meta .= $titlePageSuffix;
         }
 
-        return $sMeta;
+        return $meta;
     }
 
     /**
      * Meta tags - description and keywords - generator for search
      * engines. Uses string passed by parameters, cleans HTML tags,
      * string duplicates, special chars. Also removes strings defined
-     * in $myConfig->aSkipTags (Admin area).
+     * in $config->aSkipTags (Admin area).
      *
-     * @param string $sMeta     category path
-     * @param int    $iLength   max length of result, -1 for no truncation
-     * @param bool   $blDescTag if true - performs additional duplicate cleaning
+     * @param string $meta           Category path
+     * @param int    $length         Max length of result, -1 for no truncation
+     * @param bool   $descriptionTag If true - performs additional duplicate cleaning
      *
-     * @return  string  $sString    converted string
+     * @return  string
      */
-    protected function _collectMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
+    protected function _collectMetaDescription($meta, $length = 1024, $descriptionTag = false)
     {
         //formatting description tag
-        $oCategory = $this->getActiveCategory();
+        $category = $this->getActiveCategory();
 
-        $sAddText = (($oCategory instanceof oxCategory)) ? trim($oCategory->getLongDesc()) : '';
+        $additionalText = (($category instanceof oxCategory)) ? trim($category->getLongDesc()) : '';
 
-        $aArticleList = $this->getArticleList();
-        if (!$sAddText && count($aArticleList)) {
-            foreach ($aArticleList as $oArticle) {
-                if ($sAddText) {
-                    $sAddText .= ', ';
+        $articleList = $this->getArticleList();
+        if (!$additionalText && count($articleList)) {
+            foreach ($articleList as $article) {
+                if ($additionalText) {
+                    $additionalText .= ', ';
                 }
-                $sAddText .= $oArticle->oxarticles__oxtitle->value;
+                $additionalText .= $article->oxarticles__oxtitle->value;
             }
         }
 
-        if (!$sMeta) {
-            $sMeta = trim($this->_getCatPathString());
+        if (!$meta) {
+            $meta = trim($this->_getCatPathString());
         }
 
-        if ($sMeta) {
-            $sMeta = "{$sMeta} - {$sAddText}";
+        if ($meta) {
+            $meta = "{$meta} - {$additionalText}";
         } else {
-            $sMeta = $sAddText;
+            $meta = $additionalText;
         }
 
-        return parent::_prepareMetaDescription($sMeta, $iLength, $blDescTag);
+        return parent::_prepareMetaDescription($meta, $length, $descriptionTag);
     }
 
     /**
      * Returns current view keywords separated by comma
      *
-     * @param string $sKeywords               data to use as keywords
-     * @param bool   $blRemoveDuplicatedWords remove duplicated words
+     * @param string $keywords              Data to use as keywords
+     * @param bool   $removeDuplicatedWords Remove duplicated words
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
+    protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true)
     {
-        $sKeywords = '';
-        if (($oCategory = $this->getActiveCategory())) {
-            $aKeywords = array();
+        $keywords = '';
+        if (($activeCategory = $this->getActiveCategory())) {
+            $keywordsList = array();
 
-            if ($oCatTree = $this->getCategoryTree()) {
-                foreach ($oCatTree->getPath() as $oCat) {
-                    $aKeywords[] = trim($oCat->oxcategories__oxtitle->value);
+            if ($categoryTree = $this->getCategoryTree()) {
+                foreach ($categoryTree->getPath() as $category) {
+                    $keywordsList[] = trim($category->oxcategories__oxtitle->value);
                 }
             }
 
-            if (count($aKeywords) > 0) {
-                $sKeywords = implode(", ", $aKeywords);
+            $subCategories = $activeCategory->getSubCats();
+            if (is_array($subCategories)) {
+                foreach ($subCategories as $subCategory) {
+                    $keywordsList[] = $subCategory->oxcategories__oxtitle->value;
+                }
             }
 
-            $aSubCats = $oCategory->getSubCats();
-            if (is_array($aSubCats)) {
-                foreach ($aSubCats as $oSubCat) {
-                    $sKeywords .= ', ' . $oSubCat->oxcategories__oxtitle->value;
-                }
+            if (count($keywordsList) > 0) {
+                $keywords = implode(", ", $keywordsList);
             }
         }
 
-        $sKeywords = parent::_prepareMetaDescription($sKeywords, -1, $blRemoveDuplicatedWords);
+        $keywords = parent::_prepareMetaDescription($keywords, -1, $removeDuplicatedWords);
 
-        return trim($sKeywords);
+        return trim($keywords);
     }
 
     /**
      * Creates a string of keyword filtered by the function prepareMetaDescription and without any duplicates
      * additional the admin defined strings are removed
      *
-     * @param string $sKeywords category path
+     * @param string $keywords category path
      *
      * @return string
      */
-    protected function _collectMetaKeyword($sKeywords)
+    protected function _collectMetaKeyword($keywords)
     {
-        $iMaxTextLength = 60;
-        $sText = '';
+        $maxTextLength = 60;
+        $text = '';
 
-        if (count($aArticleList = $this->getArticleList())) {
-            $oStr = getStr();
-            foreach ($aArticleList as $oProduct) {
-                $sDesc = $oStr->strip_tags(trim($oStr->strtolower($oProduct->getLongDescription()->value)));
+        if (count($articleList = $this->getArticleList())) {
+            $stringModifier = getStr();
+            foreach ($articleList as $article) {
+                /** @var oxArticle $article */
+                $description = $stringModifier->strip_tags(trim($stringModifier->strtolower($article->getLongDescription()->value)));
 
                 //removing dots from string (they are not cleaned up during general string cleanup)
-                $sDesc = $oStr->preg_replace("/\./", " ", $sDesc);
+                $description = $stringModifier->preg_replace("/\./", " ", $description);
 
-                if ($oStr->strlen($sDesc) > $iMaxTextLength) {
-                    $sMidText = $oStr->substr($sDesc, 0, $iMaxTextLength);
-                    $sDesc = $oStr->substr(
-                        $sMidText,
+                if ($stringModifier->strlen($description) > $maxTextLength) {
+                    $midText = $stringModifier->substr($description, 0, $maxTextLength);
+                    $description = $stringModifier->substr(
+                        $midText,
                         0,
-                        ($oStr->strlen($sMidText) - $oStr->strpos(strrev($sMidText), ' '))
+                        ($stringModifier->strlen($midText) - $stringModifier->strpos(strrev($midText), ' '))
                     );
                 }
-                if ($sText) {
-                    $sText .= ', ';
+                if ($text) {
+                    $text .= ', ';
                 }
-                $sText .= $sDesc;
+                $text .= $description;
             }
         }
 
-        if (!$sKeywords) {
-            $sKeywords = $this->_getCatPathString();
+        if (!$keywords) {
+            $keywords = $this->_getCatPathString();
         }
 
-        if ($sKeywords) {
-            $sText = "{$sKeywords}, {$sText}";
+        if ($keywords) {
+            $text = "{$keywords}, {$text}";
         }
 
-        return parent::_prepareMetaKeyword($sText);
+        return parent::_prepareMetaKeyword($text);
     }
 
     /**
@@ -666,10 +667,10 @@ class ArticleList extends \oxUBase
     public function getTemplateName()
     {
         // assign template name
-        if (($sTplName = basename(oxRegistry::getConfig()->getRequestParameter('tpl')))) {
-            $this->_sThisTemplate = 'custom/' . $sTplName;
-        } elseif (($oCategory = $this->getActiveCategory()) && $oCategory->oxcategories__oxtemplate->value) {
-            $this->_sThisTemplate = $oCategory->oxcategories__oxtemplate->value;
+        if (($templateName = basename(oxRegistry::getConfig()->getRequestParameter('tpl')))) {
+            $this->_sThisTemplate = 'custom/' . $templateName;
+        } elseif (($category = $this->getActiveCategory()) && $category->oxcategories__oxtemplate->value) {
+            $this->_sThisTemplate = $category->oxcategories__oxtemplate->value;
         }
 
         return $this->_sThisTemplate;
@@ -678,24 +679,24 @@ class ArticleList extends \oxUBase
     /**
      * Adds page number parameter to current Url and returns formatted url
      *
-     * @param string $sUrl  url to append page numbers
-     * @param int    $iPage current page number
-     * @param int    $iLang requested language
+     * @param string $url         Url to append page numbers
+     * @param int    $currentPage Current page number
+     * @param int    $languageId  Requested language
      *
      * @return string
      */
-    protected function _addPageNrParam($sUrl, $iPage, $iLang = null)
+    protected function _addPageNrParam($url, $currentPage, $languageId = null)
     {
-        if (oxRegistry::getUtils()->seoIsActive() && ($oCategory = $this->getActiveCategory())) {
-            if ($iPage) {
+        if (oxRegistry::getUtils()->seoIsActive() && ($category = $this->getActiveCategory())) {
+            if ($currentPage) {
                 // only if page number > 0
-                $sUrl = $oCategory->getBaseSeoLink($iLang, $iPage);
+                $url = $category->getBaseSeoLink($languageId, $currentPage);
             }
         } else {
-            $sUrl = parent::_addPageNrParam($sUrl, $iPage, $iLang);
+            $url = parent::_addPageNrParam($url, $currentPage, $languageId);
         }
 
-        return $sUrl;
+        return $url;
     }
 
     /**
@@ -715,8 +716,8 @@ class ArticleList extends \oxUBase
      */
     public function generatePageNavigationUrl()
     {
-        if ((oxRegistry::getUtils()->seoIsActive() && ($oCategory = $this->getActiveCategory()))) {
-            return $oCategory->getLink();
+        if ((oxRegistry::getUtils()->seoIsActive() && ($category = $this->getActiveCategory()))) {
+            return $category->getLink();
         }
 
         return parent::generatePageNavigationUrl();
@@ -729,19 +730,19 @@ class ArticleList extends \oxUBase
      */
     public function getDefaultSorting()
     {
-        $aSorting = parent::getDefaultSorting();
+        $sorting = parent::getDefaultSorting();
 
-        $oCategory = $this->getActiveCategory();
-        if ($oCategory && $oCategory instanceof oxCategory) {
-            if ($sDefaultSorting = $oCategory->getDefaultSorting()) {
-                $sArticleTable = getViewName('oxarticles');
-                $sSortBy = $sArticleTable . '.' . $sDefaultSorting;
-                $sSortDir = ($oCategory->getDefaultSortingMode()) ? "desc" : "asc";
-                $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);
+        $category = $this->getActiveCategory();
+        if ($category && $category instanceof oxCategory) {
+            if ($defaultSorting = $category->getDefaultSorting()) {
+                $articleViewName = getViewName('oxarticles');
+                $sortBy = $articleViewName . '.' . $defaultSorting;
+                $sortDirection = ($category->getDefaultSortingMode()) ? "desc" : "asc";
+                $sorting = array('sortby' => $sortBy, 'sortdir' => $sortDirection);
             }
         }
 
-        return $aSorting;
+        return $sorting;
     }
 
 
@@ -764,20 +765,20 @@ class ArticleList extends \oxUBase
      */
     public function getTitlePageSuffix()
     {
-        if (($iPage = $this->getActPage())) {
-            return oxRegistry::getLang()->translateString('PAGE') . " " . ($iPage + 1);
+        if (($activePage = $this->getActPage())) {
+            return oxRegistry::getLang()->translateString('PAGE') . " " . ($activePage + 1);
         }
     }
 
     /**
-     * returns object, associated with current view.
+     * Returns object, associated with current view.
      * (the object that is shown in frontend)
      *
-     * @param int $iLang language id
+     * @param int $languageId Language id
      *
      * @return object
      */
-    protected function _getSubject($iLang)
+    protected function _getSubject($languageId)
     {
         return $this->getActiveCategory();
     }
@@ -792,10 +793,10 @@ class ArticleList extends \oxUBase
     {
         $this->_aAttributes = false;
 
-        if (($oCategory = $this->getActiveCategory())) {
-            $aAttributes = $oCategory->getAttributes();
-            if (count($aAttributes)) {
-                $this->_aAttributes = $aAttributes;
+        if (($category = $this->getActiveCategory())) {
+            $attributes = $category->getAttributes();
+            if (count($attributes)) {
+                $this->_aAttributes = $attributes;
             }
         }
 
@@ -805,15 +806,15 @@ class ArticleList extends \oxUBase
     /**
      * Template variable getter. Returns category's article list
      *
-     * @return array
+     * @return oxArticleList|null
      */
     public function getArticleList()
     {
         if ($this->_aArticleList === null) {
-            if ($oCategory = $this->getActiveCategory()) {
-                $aArticleList = $this->_loadArticles($oCategory);
-                if (count($aArticleList)) {
-                    $this->_aArticleList = $aArticleList;
+            if ($category = $this->getActiveCategory()) {
+                $articleList = $this->_loadArticles($category);
+                if (count($articleList)) {
+                    $this->_aArticleList = $articleList;
                 }
             }
         }
@@ -841,8 +842,8 @@ class ArticleList extends \oxUBase
         if ($this->_aSimilarRecommListIds === null) {
             $this->_aSimilarRecommListIds = false;
 
-            if ($aCatArtList = $this->getArticleList()) {
-                $this->_aSimilarRecommListIds = $aCatArtList->arrayKeys();
+            if ($categoryArticlesList = $this->getArticleList()) {
+                $this->_aSimilarRecommListIds = $categoryArticlesList->arrayKeys();
             }
         }
 
@@ -852,15 +853,15 @@ class ArticleList extends \oxUBase
     /**
      * Template variable getter. Returns category path
      *
-     * @return string
+     * @return array
      */
     public function getCatTreePath()
     {
         if ($this->_sCatTreePath === null) {
             $this->_sCatTreePath = false;
             // category path
-            if ($oCatTree = $this->getCategoryTree()) {
-                $this->_sCatTreePath = $oCatTree->getPath();
+            if ($categoryTree = $this->getCategoryTree()) {
+                $this->_sCatTreePath = $categoryTree->getPath();
             }
         }
 
@@ -874,8 +875,8 @@ class ArticleList extends \oxUBase
      */
     public function getTreePath()
     {
-        if ($oCatTree = $this->getCategoryTree()) {
-            return $oCatTree->getPath();
+        if ($categoryTree = $this->getCategoryTree()) {
+            return $categoryTree->getPath();
         }
     }
 
@@ -886,34 +887,35 @@ class ArticleList extends \oxUBase
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
+        $paths = array();
 
         if ('oxmore' == oxRegistry::getConfig()->getRequestParameter('cnid')) {
-            $aPath = array();
-            $aPath['title'] = oxRegistry::getLang()->translateString(
+            $path = array();
+            $path['title'] = oxRegistry::getLang()->translateString(
                 'CATEGORY_OVERVIEW',
                 oxRegistry::getLang()->getBaseLanguage(),
                 false
             );
-            $aPath['link'] = $this->getLink();
+            $path['link'] = $this->getLink();
 
-            $aPaths[] = $aPath;
+            $paths[] = $path;
 
-            return $aPaths;
+            return $paths;
         }
 
-        if (($oCatTree = $this->getCategoryTree()) && ($oCatPath = $oCatTree->getPath())) {
-            foreach ($oCatPath as $oCat) {
-                $aCatPath = array();
+        if (($categoryTree = $this->getCategoryTree()) && ($categoryPaths = $categoryTree->getPath())) {
+            foreach ($categoryPaths as $category) {
+                /** @var oxCategory $category */
+                $categoryPath = array();
 
-                $aCatPath['link'] = $oCat->getLink();
-                $aCatPath['title'] = $oCat->oxcategories__oxtitle->value;
+                $categoryPath['link'] = $category->getLink();
+                $categoryPath['title'] = $category->oxcategories__oxtitle->value;
 
-                $aPaths[] = $aCatPath;
+                $paths[] = $categoryPath;
             }
         }
 
-        return $aPaths;
+        return $paths;
     }
 
     /**
@@ -926,8 +928,8 @@ class ArticleList extends \oxUBase
     {
         if ($this->_blHasVisibleSubCats === null) {
             $this->_blHasVisibleSubCats = false;
-            if ($oClickCat = $this->getActiveCategory()) {
-                $this->_blHasVisibleSubCats = $oClickCat->getHasVisibleSubCats();
+            if ($activeCategory = $this->getActiveCategory()) {
+                $this->_blHasVisibleSubCats = $activeCategory->getHasVisibleSubCats();
             }
         }
 
@@ -943,8 +945,8 @@ class ArticleList extends \oxUBase
     {
         if ($this->_aSubCatList === null) {
             $this->_aSubCatList = array();
-            if ($oClickCat = $this->getActiveCategory()) {
-                $this->_aSubCatList = $oClickCat->getSubCats();
+            if ($activeCategory = $this->getActiveCategory()) {
+                $this->_aSubCatList = $activeCategory->getSubCats();
             }
         }
 
@@ -975,13 +977,12 @@ class ArticleList extends \oxUBase
         if ($this->_sCatTitle === null) {
             $this->_sCatTitle = false;
             if ($this->getCategoryId() == 'oxmore') {
-                $oLang = oxRegistry::getLang();
-                $iBaseLanguage = $oLang->getBaseLanguage();
+                $language = oxRegistry::getLang();
+                $baseLanguageId = $language->getBaseLanguage();
 
-                $this->_sCatTitle = $oLang->translateString('CATEGORY_OVERVIEW', $iBaseLanguage, false);
-            } elseif (($oCategory = $this->getActiveCategory())) {
-                $sTitleField = 'oxcategories__oxtitle';
-                $this->_sCatTitle = $oCategory->$sTitleField->value;
+                $this->_sCatTitle = $language->translateString('CATEGORY_OVERVIEW', $baseLanguageId, false);
+            } elseif (($category = $this->getActiveCategory())) {
+                $this->_sCatTitle = $category->oxcategories__oxtitle->value;
             }
         }
 
@@ -998,10 +999,10 @@ class ArticleList extends \oxUBase
         if ($this->_aBargainArticleList === null) {
             $this->_aBargainArticleList = array();
             if ($this->getConfig()->getConfigParam('bl_perfLoadAktion') && $this->_isActCategory()) {
-                $oArtList = oxNew('oxArticleList');
-                $oArtList->loadActionArticles('OXBARGAIN');
-                if ($oArtList->count()) {
-                    $this->_aBargainArticleList = $oArtList;
+                $articleList = oxNew('oxArticleList');
+                $articleList->loadActionArticles('OXBARGAIN');
+                if ($articleList->count()) {
+                    $this->_aBargainArticleList = $articleList;
                 }
             }
         }
@@ -1018,9 +1019,9 @@ class ArticleList extends \oxUBase
     {
         if ($this->_oActCategory === null) {
             $this->_oActCategory = false;
-            $oCategory = oxNew('oxCategory');
-            if ($oCategory->load($this->getCategoryId())) {
-                $this->_oActCategory = $oCategory;
+            $category = oxNew('oxCategory');
+            if ($category->load($this->getCategoryId())) {
+                $this->_oActCategory = $category;
             }
         }
 
@@ -1034,19 +1035,19 @@ class ArticleList extends \oxUBase
      */
     public function getCanonicalUrl()
     {
-        if (($oCategory = $this->getActiveCategory())) {
-            $oUtils = oxRegistry::get("oxUtilsUrl");
+        if (($category = $this->getActiveCategory())) {
+            $utilsUrl = oxRegistry::get("oxUtilsUrl");
             if (oxRegistry::getUtils()->seoIsActive()) {
-                $sUrl = $oUtils->prepareCanonicalUrl(
-                    $oCategory->getBaseSeoLink($oCategory->getLanguage(), $this->getActPage())
+                $url = $utilsUrl->prepareCanonicalUrl(
+                    $category->getBaseSeoLink($category->getLanguage(), $this->getActPage())
                 );
             } else {
-                $sUrl = $oUtils->prepareCanonicalUrl(
-                    $oCategory->getBaseStdLink($oCategory->getLanguage(), $this->getActPage())
+                $url = $utilsUrl->prepareCanonicalUrl(
+                    $category->getBaseStdLink($category->getLanguage(), $this->getActPage())
                 );
             }
 
-            return $sUrl;
+            return $url;
         }
     }
 

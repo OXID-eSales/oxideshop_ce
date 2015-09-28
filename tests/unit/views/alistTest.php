@@ -66,7 +66,7 @@ class Unit_Views_alistTest extends OxidTestCase
     public function testGetAddSeoUrlParams()
     {
         $oView = oxNew('AList');
-        $this->assertNull($oView->getAddSeoUrlParams());
+        $this->assertEquals('', $oView->getAddSeoUrlParams());
     }
 
     /**

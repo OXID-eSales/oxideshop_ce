@@ -22,7 +22,6 @@
 namespace OxidEsales\Application\Controller;
 
 use oxField;
-use oxGbEntry;
 use oxRegistry;
 
 /**
@@ -174,23 +173,22 @@ class GuestbookController extends \oxUBase
     /**
      * Loads guestbook entries for active page and returns them.
      *
-     * @return array $oEntries guestbook entries
+     * @return array Guestbook entries
      */
     public function getEntries()
     {
         if ($this->_aEntries === null) {
             $this->_aEntries = false;
-            $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
-            $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
+            $numberOfCategoryArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+            $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 10;
 
             // loading only if there is some data
-            /** @var oxGbEntry $oEntries */
-            $oEntries = oxNew('oxgbentry');
-            if ($iCnt = $oEntries->getEntryCount()) {
-                $this->_iCntPages = ceil($iCnt / $iNrofCatArticles);
-                $this->_aEntries = $oEntries->getAllEntries(
-                    $this->getActPage() * $iNrofCatArticles,
-                    $iNrofCatArticles,
+            $entries = oxNew('oxGbEntry');
+            if ($count = $entries->getEntryCount()) {
+                $this->_iCntPages = ceil($count / $numberOfCategoryArticles);
+                $this->_aEntries = $entries->getAllEntries(
+                    $this->getActPage() * $numberOfCategoryArticles,
+                    $numberOfCategoryArticles,
                     $this->getSortingSql($this->getSortIdent())
                 );
             }
@@ -209,11 +207,11 @@ class GuestbookController extends \oxUBase
         if ($this->_blFloodProtection === null) {
             $this->_blFloodProtection = false;
             // is user logged in ?
-            $sUserId = oxRegistry::getSession()->getVariable('usr');
-            $sUserId = $sUserId ? $sUserId : 0;
+            $userId = oxRegistry::getSession()->getVariable('usr');
+            $userId = $userId ? $userId : 0;
 
-            $oEntries = oxNew('oxgbentry');
-            $this->_blFloodProtection = $oEntries->floodProtection($this->getConfig()->getShopId(), $sUserId);
+            $entries = oxNew('oxGbEntry');
+            $this->_blFloodProtection = $entries->floodProtection($this->getConfig()->getShopId(), $userId);
         }
 
         return $this->_blFloodProtection;
@@ -240,7 +238,7 @@ class GuestbookController extends \oxUBase
     }
 
     /**
-     * Returns page sort indentificator. It is used as intentificator in session variable aSorting[ident]
+     * Returns page sort identificator. It is used as identificator in session variable aSorting[id]
      *
      * @return string
      */
@@ -256,9 +254,9 @@ class GuestbookController extends \oxUBase
      */
     public function getDefaultSorting()
     {
-        $aSorting = array('sortby' => 'date', 'sortdir' => 'desc');
+        $sorting = array('sortby' => 'date', 'sortdir' => 'desc');
 
-        return $aSorting;
+        return $sorting;
     }
 
     /**
@@ -289,36 +287,36 @@ class GuestbookController extends \oxUBase
             return;
         }
 
-        $sReviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true));
-        $sShopId = $this->getConfig()->getShopId();
-        $sUserId = oxRegistry::getSession()->getVariable('usr');
+        $reviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true));
+        $shopId = $this->getConfig()->getShopId();
+        $userId = oxRegistry::getSession()->getVariable('usr');
 
         // guest book`s entry is validated
-        $oUtilsView = oxRegistry::get("oxUtilsView");
-        if (!$sUserId) {
-            $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_LOGIN_TO_WRITE_ENTRY');
+        $utilsView = oxRegistry::get("oxUtilsView");
+        if (!$userId) {
+            $utilsView->addErrorToDisplay('ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_LOGIN_TO_WRITE_ENTRY');
 
             //return to same page
             return;
         }
 
-        if (!$sShopId) {
-            $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_UNDEFINED_SHOP');
+        if (!$shopId) {
+            $utilsView->addErrorToDisplay('ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_UNDEFINED_SHOP');
 
             return 'guestbookentry';
         }
 
         // empty entries validation
-        if ('' == $sReviewText) {
-            $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_REVIEW_CONTAINS_NO_TEXT');
+        if ('' == $reviewText) {
+            $utilsView->addErrorToDisplay('ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_REVIEW_CONTAINS_NO_TEXT');
 
             return 'guestbook';
         }
 
         // flood protection
-        $oEntrie = oxNew('oxgbentry');
-        if ($oEntrie->floodProtection($sShopId, $sUserId)) {
-            $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_MAXIMUM_NUMBER_EXCEEDED');
+        $entry = oxNew('oxGbEntry');
+        if ($entry->floodProtection($shopId, $userId)) {
+            $utilsView->addErrorToDisplay('ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_MAXIMUM_NUMBER_EXCEEDED');
 
             return 'guestbookentry';
         }
@@ -326,11 +324,11 @@ class GuestbookController extends \oxUBase
         // double click protection
         if ($this->canAcceptFormData()) {
             // here the guest book entry is saved
-            $oEntry = oxNew('oxgbentry');
-            $oEntry->oxgbentries__oxshopid = new oxField($sShopId);
-            $oEntry->oxgbentries__oxuserid = new oxField($sUserId);
-            $oEntry->oxgbentries__oxcontent = new oxField($sReviewText);
-            $oEntry->save();
+            $newEntry = oxNew('oxGbEntry');
+            $newEntry->oxgbentries__oxshopid = new oxField($shopId);
+            $newEntry->oxgbentries__oxuserid = new oxField($userId);
+            $newEntry->oxgbentries__oxcontent = new oxField($reviewText);
+            $newEntry->save();
         }
 
         return 'guestbook';
@@ -343,14 +341,14 @@ class GuestbookController extends \oxUBase
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $paths = array();
+        $path = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('GUESTBOOK', $iBaseLanguage, false);
-        $aPath['link'] = $this->getLink();
-        $aPaths[] = $aPath;
+        $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
+        $path['title'] = oxRegistry::getLang()->translateString('GUESTBOOK', $baseLanguageId, false);
+        $path['link'] = $this->getLink();
+        $paths[] = $path;
 
-        return $aPaths;
+        return $paths;
     }
 }

@@ -25,8 +25,8 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\Enterprise\Application\Controller\ViewBase
+ * @mixin \OxidEsales\Enterprise\Application\Controller\BaseController
  */
-class oxUBase extends \OxidEsales\Application\Controller\ViewBase
+class oxUBase extends \OxidEsales\Application\Controller\BaseController
 {
 }

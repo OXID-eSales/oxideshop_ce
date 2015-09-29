@@ -572,6 +572,8 @@ class oxArticle extends oxI18n implements ArticleInterface, oxIUrl
         // check if article is still active
         $sQ = " $sTable.oxactive = 1 ";
 
+        $sQ .= " and $sTable.oxhidden = 0 ";
+
         // enabled time range check ?
         if ($this->getConfig()->getConfigParam('blUseTimeCheck')) {
             $sDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());

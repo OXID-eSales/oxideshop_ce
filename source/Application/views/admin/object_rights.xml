@@ -2,6 +2,7 @@
 <objects>
   <object table="oxarticles">
 	<field name="oxactive" />
+	<field name="oxhidden" />
 	<field name="oxactiveto" />
 	<field name="oxactivefrom" />
     <field name="oxartnum" />

@@ -26,7 +26,7 @@
  * meta tags (for search engines). Result - "vendorlist.tpl" template.
  * OXID eShop -> (Any selected shop product category).
  */
-class VendorList extends aList
+class VendorList extends AList
 {
 
     /**

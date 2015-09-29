@@ -25,7 +25,7 @@
  * Collects some article base information, sets default recomendation text,
  * sends suggestion mail to user.
  */
-class RecommList extends aList
+class RecommList extends AList
 {
 
     /**

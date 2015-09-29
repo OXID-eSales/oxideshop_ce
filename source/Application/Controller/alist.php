@@ -25,8 +25,8 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\Enterprise\Application\Controller\ArticleList
+ * @mixin \OxidEsales\Enterprise\Application\Controller\ArticleListController
  */
-class AList extends \OxidEsales\Application\Controller\ArticleList
+class AList extends \OxidEsales\Application\Controller\ArticleListController
 {
 }

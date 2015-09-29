@@ -26,7 +26,7 @@
  * metatags (for search engines). Result - "manufacturerlist.tpl" template.
  * OXID eShop -> (Any selected shop product category).
  */
-class ManufacturerList extends aList
+class ManufacturerList extends AList
 {
 
     /**

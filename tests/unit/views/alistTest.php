@@ -1032,7 +1032,7 @@ class Unit_Views_alistTest extends OxidTestCase
 
         $this->setRequestParameter('cnid', $sCatId);
 
-        /** @var alist|PHPUnit_Framework_MockObject_MockObject $oSubj */
+        /** @var AList|PHPUnit_Framework_MockObject_MockObject $oSubj */
         $oSubj = $this->getMock('alist', array('_prepareMetaKeyword'));
         $oSubj->expects($this->any())->method('_prepareMetaKeyword')->will($this->returnValue("aaa"));
 

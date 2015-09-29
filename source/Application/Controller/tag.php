@@ -23,7 +23,7 @@
 /**
  * Tag filter for articles
  */
-class Tag extends aList
+class Tag extends AList
 {
 
     /**

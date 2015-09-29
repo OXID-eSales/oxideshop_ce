@@ -492,6 +492,20 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     }
 
     /**
+     * Test get hidden check query.
+     *
+     * @return null
+     */
+    public function testGetHiddenCheckQuery()
+    {
+        $oArticle = new oxarticle();
+        $sTable = $oArticle->getViewName();
+
+        $sQ = "(  $sTable.oxactive = 1 and $sTable.oxhidden = 1 ) ";
+        $this->assertEquals($sQ, $oArticle->getActiveCheckQuery());
+    }
+
+    /**
      * Test get stock check query.
      *
      * @return null

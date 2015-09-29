@@ -415,6 +415,7 @@ $aLang = array(
 'ARTICLE_MAIN_ACTIVETO'                                    => 'bis',
 'ARTICLE_MAIN_ACTIVEFROM'                                  => 'von',
 'ARTICLE_MAIN_ACTIVE'                                      => 'Aktiv',
+'ARTICLE_MAIN_HIDDEN'                                      => 'Versteckt',
 'ARTICLE_MAIN_SHORTDESC'                                   => 'Kurzbeschr.',
 'ARTICLE_MAIN_PRICEA'                                      => 'A: ',
 'ARTICLE_MAIN_PRICEB'                                      => 'B: ',

@@ -419,6 +419,7 @@ $aLang = array(
 'ARTICLE_MAIN_ACTIVETO'                                    => 'To',
 'ARTICLE_MAIN_ACTIVEFROM'                                  => 'From',
 'ARTICLE_MAIN_ACTIVE'                                      => 'Active',
+'ARTICLE_MAIN_HIDDEN'                                      => 'Hidden',
 'ARTICLE_MAIN_SHORTDESC'                                   => 'Short Descr.',
 'ARTICLE_MAIN_PRICEA'                                      => 'A: ',
 'ARTICLE_MAIN_PRICEB'                                      => 'B: ',

@@ -2122,14 +2122,11 @@ $aLang = array(
 //final note
 'OXDIAG_FINALNOTE'                  =>    'Ende der Auswertung',
 
-'OLC_ERROR_SERIAL_NOT_VALID'                               => 'Lizenzschlüsselabgleich fehlgeschlagen. Bitte versuchen Sie es später noch einmal oder kontaktieren Sie den Support, falls dieses Problem weiterhin bestehen sollte.',
-'OLC_ERROR_RESPONSE_NOT_VALID'                             => 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal. Falls das Problem weiterhin bestehen sollte, überprüfen Sie bitte, dass Ihr Shop ausgehende Verbindungen aufbauen kann.',
-'OLC_ERROR_REQUEST_FAILED'                                 => 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal. Falls das Problem weiterhin bestehen sollte, überprüfen Sie bitte, dass Ihr Shop ausgehende Verbindungen aufbauen kann.',
-'OLC_ERROR_RESPONSE_UNEXPECTED'                            => 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal. Falls das Problem weiterhin bestehen sollte, überprüfen Sie bitte, dass Ihr Shop ausgehende Verbindungen aufbauen kann.',
+'OLC_ERROR_SERIAL_NOT_VALID'        =>    'Lizenzschlüsselabgleich fehlgeschlagen. Bitte versuchen Sie es später noch einmal oder kontaktieren Sie den Support, falls dieses Problem weiterhin bestehen sollte.',
+'OLC_ERROR_RESPONSE_NOT_VALID'      =>    'Fehler: Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal. Falls das Problem weiterhin bestehen sollte, überprüfen Sie bitte, dass Ihr Shop ausgehende Verbindungen aufbauen kann.',
+'OLC_ERROR_RESPONSE_UNEXPECTED'     =>    'Fehler: Antwort vom Server kann wegen unerwarteten Formats nicht ausgewertet werden. Bitte versuchen Sie es erneut.',
 
-'OMVN_ERROR_REQUEST_FAILED'                                => 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal. Falls das Problem weiterhin bestehen sollte, überprüfen Sie bitte, dass Ihr Shop ausgehende Verbindungen aufbauen kann.',
-
-'VERSION_UPDATE_LINK'                                         => 'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-aktualisieren/update-vorbereiten.html',
+'VERSION_UPDATE_LINK'               =>    'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-aktualisieren/update-vorbereiten.html',
 );
 
 /*

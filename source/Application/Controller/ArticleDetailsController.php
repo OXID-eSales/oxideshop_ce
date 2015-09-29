@@ -41,7 +41,7 @@ use oxVariantSelectList;
  * as crosselling, similarlist, picture gallery list, etc.
  * OXID eShop -> (Any chosen product).
  */
-class ArticleDetails extends \oxUBase
+class ArticleDetailsController extends \oxUBase
 {
     /**
      * Current class default template name.

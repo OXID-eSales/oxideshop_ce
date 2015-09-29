@@ -2130,14 +2130,11 @@ $aLang = array(
 //final note
 'OXDIAG_FINALNOTE'                 =>    'End of analysis.',
 
-'OLC_ERROR_SERIAL_NOT_VALID'       => 'License key check failed. Try again or contact support if this occurs permanently.',
-'OLC_ERROR_RESPONSE_NOT_VALID'     => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
-'OLC_ERROR_REQUEST_FAILED'         => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
-'OLC_ERROR_RESPONSE_UNEXPECTED'    => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
+'OLC_ERROR_SERIAL_NOT_VALID'       =>    'License key check failed. Try again or contact support if this occurs permanently.',
+'OLC_ERROR_RESPONSE_NOT_VALID'     =>    'Error: service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
+'OLC_ERROR_RESPONSE_UNEXPECTED'    =>    'Error: server response cannot be analyzed due to a not expected format. Please try again.',
 
-'OMVN_ERROR_REQUEST_FAILED'        => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
-
-'VERSION_UPDATE_LINK'              => 'http://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-update-installation/preparing-update.html',
+'VERSION_UPDATE_LINK'              =>    'http://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-update-installation/preparing-update.html',
 );
 
 /*

@@ -20,11 +20,13 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Application\Model\Contract;
+
 /**
  * Article interface
  *
  */
-interface oxIArticle
+interface ArticleInterface
 {
 
     /**

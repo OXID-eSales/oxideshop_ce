@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Application\Model\Contract\ArticleInterface;
+
 /**
  * Order article manager.
  * Performs copying of article.
  *
  */
-class oxOrderArticle extends oxBase implements oxIArticle
+class oxOrderArticle extends oxBase implements ArticleInterface
 {
 
     /**

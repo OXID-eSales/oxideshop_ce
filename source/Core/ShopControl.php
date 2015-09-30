@@ -19,16 +19,26 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Core;
+
+use oxConnectionException;
+use oxCookieException;
+use oxDb;
+use oxException;
+use OxidEsales\Enterprise\Core\Cache\DynamicContent\ContentCache;
+use oxOutput;
+use oxRegistry;
+use oxSystemComponentException;
+use oxUBase;
+use ReflectionMethod;
 
 /**
  * Main shop actions controller. Processes user actions, logs
- * them (if needed), controlls output, redirects according to
- * processed methods logic. This class is initalized from index.php
+ * them (if needed), controls output, redirects according to
+ * processed methods logic. This class is initialized from index.php
  */
-class oxShopControl extends oxSuperCfg
+class ShopControl extends \oxSuperCfg
 {
-
-
     /**
      * Used to force handling, it allows other place like widget controller to skip it.
      *
@@ -97,7 +107,7 @@ class oxShopControl extends oxSuperCfg
     /**
      * Cache manager instance
      *
-     * @var oxCache
+     * @var ContentCache
      */
     protected $_oCache = null;
 
@@ -128,7 +138,6 @@ class oxShopControl extends oxSuperCfg
             $this->_handleSystemException($oEx);
         } catch (oxCookieException $oEx) {
             $this->_handleCookieException($oEx);
-
         }
         catch (oxConnectionException $oEx) {
             $this->_handleDbConnectionException($oEx);
@@ -141,7 +150,7 @@ class oxShopControl extends oxSuperCfg
      * Sets default exception handler.
      * Ideally all exceptions should be handled with try catch and default exception should never be reached.
      *
-     * @return null;
+     * @return null
      */
     protected function _setDefaultExceptionHandler()
     {
@@ -213,7 +222,6 @@ class oxShopControl extends oxSuperCfg
     protected function _stopMonitor($blIsCache = false, $blIsCached = false, $sViewID = null, $aViewData = array())
     {
         if ($this->_isDebugMode() && !$this->isAdmin()) {
-            /* @var $oDebugInfo oxDebugInfo */
             $iDebug = $this->getConfig()->getConfigParam('iDebug');
             $oDebugInfo = oxNew('oxDebugInfo');
 
@@ -235,11 +243,15 @@ class oxShopControl extends oxSuperCfg
             // output timing
             $this->_dTimeEnd = microtime(true);
 
+            $shopEdition = new EditionSelector();
+            if ($shopEdition->getEdition() == 'EE') {
+                $sLog .= $oDebugInfo->formatContentCaching($blIsCache, $blIsCached, $sViewID);
+                $sLog .= $oDebugInfo->formatReverseProxyActive();
+            }
 
             $sLog .= $oDebugInfo->formatMemoryUsage();
 
             $sLog .= $oDebugInfo->formatTimeStamp();
-
 
             $sLog .= $oDebugInfo->formatExecutionTime($this->getTotalTime());
 
@@ -268,7 +280,7 @@ class oxShopControl extends oxSuperCfg
     /**
      * Returns the difference between stored profiler end time and start time. Works only after _stopMonitor() is called, otherwise returns 0.
      *
-     * @return  double
+     * @return double
      */
     public function getTotalTime()
     {
@@ -330,52 +342,76 @@ class oxShopControl extends oxSuperCfg
         // starting resource monitor
         $this->_startMonitor();
 
-        // caching params ...
-        $sOutput = null;
-        $blIsCached = false;
-
         // Initialize view object and it's components.
         $oViewObject = $this->_initializeViewObject($sClass, $sFunction, $aParams, $aViewsChain);
 
-        if (!$this->_canExecuteFunction($oViewObject, $oViewObject->getFncName())) {
-            /** @var oxSystemComponentException $oException */
-            $oException = oxNew('oxSystemComponentException', 'Non public method cannot be accessed');
-            throw $oException;
+        $this->executeAction($oViewObject, $oViewObject->getFncName());
+
+        $sOutput = $this->formOutput($oViewObject);
+
+        $oOutputManager = $this->_getOutputManager();
+        $oOutputManager->setCharset($oViewObject->getCharSet());
+
+        if ($myConfig->getRequestParameter('renderPartial')) {
+            $oOutputManager->setOutputFormat(oxOutput::OUTPUT_FORMAT_JSON);
+            $oOutputManager->output('errors', $this->_getFormattedErrors($oViewObject->getClassName()));
         }
 
-        // executing user defined function
-        $oViewObject->executeFunction($oViewObject->getFncName());
+        $oOutputManager->sendHeaders();
 
+        $this->sendAdditionalHeaders($oViewObject);
 
-
-        // if no cache was stored before we should generate it
-        if (!$blIsCached) {
-            $sOutput = $this->_render($oViewObject);
-        }
-
-
-        $oOutput = $this->_getOutputManager();
-        $oOutput->setCharset($oViewObject->getCharSet());
-
-        if (oxRegistry::getConfig()->getRequestParameter('renderPartial')) {
-            $oOutput->setOutputFormat(oxOutput::OUTPUT_FORMAT_JSON);
-            $oOutput->output('errors', $this->_getFormattedErrors($oViewObject->getClassName()));
-        }
-
-        $oOutput->sendHeaders();
-
-
-        $oOutput->output('content', $sOutput);
+        $oOutputManager->output('content', $sOutput);
 
         $myConfig->pageClose();
 
         stopProfile('process');
 
         // stopping resource monitor
+        $blIsCached = false;
         $this->_stopMonitor($oViewObject->getIsCallForCache(), $blIsCached, $sViewID, $oViewObject->getViewData());
 
         // flush output (finalize)
-        $oOutput->flushOutput();
+        $oOutputManager->flushOutput();
+    }
+
+    /**
+     * Executes provided function on view object.
+     * If this function can not be executed (is protected or so), oxSystemComponentException exception is thrown.
+     *
+     * @param oxUBase $oViewObject
+     * @param string  $functionName
+     *
+     * @throws oxSystemComponentException
+     */
+    protected function executeAction($oViewObject, $functionName)
+    {
+        if (!$this->_canExecuteFunction($oViewObject, $functionName)) {
+            throw oxNew('oxSystemComponentException', 'Non public method cannot be accessed');
+        }
+
+        $oViewObject->executeFunction($functionName);
+    }
+
+    /**
+     * Forms output from view object.
+     *
+     * @param oxUBase $oViewObject
+     *
+     * @return string
+     */
+    protected function formOutput($oViewObject)
+    {
+        return $this->_render($oViewObject);
+    }
+
+    /**
+     * Method for sending any additional headers on every page requests.
+     *
+     * @param oxUBase $oViewObject
+     */
+    protected function sendAdditionalHeaders($oViewObject)
+    {
     }
 
     /**
@@ -386,27 +422,33 @@ class oxShopControl extends oxSuperCfg
      * @param array  $aParams     parameters array
      * @param array  $aViewsChain array of views names that should be initialized also
      *
-     * @return oxView
+     * @return oxUBase
      */
     protected function _initializeViewObject($sClass, $sFunction, $aParams = null, $aViewsChain = null)
     {
-        $myConfig = $this->getConfig();
-
-        // creating current view object
+        /** @var oxUBase $oViewObject */
         $oViewObject = oxNew($sClass);
 
-        // store this call
         $oViewObject->setClassName($sClass);
         $oViewObject->setFncName($sFunction);
         $oViewObject->setViewParameters($aParams);
 
-        $myConfig->setActiveView($oViewObject);
+        $this->getConfig()->setActiveView($oViewObject);
 
+        $this->onViewCreation($oViewObject);
 
-        // init class
         $oViewObject->init();
 
         return $oViewObject;
+    }
+
+    /**
+     * Event for any actions during view creation.
+     *
+     * @param oxUBase $oViewObject
+     */
+    protected function onViewCreation($oViewObject)
+    {
     }
 
     /**
@@ -430,7 +472,6 @@ class oxShopControl extends oxSuperCfg
 
         return $blCanExecute;
     }
-
 
     /**
      * format error messages from _getErrors and return as array
@@ -456,9 +497,9 @@ class oxShopControl extends oxSuperCfg
     }
 
     /**
-     * render oxView object
+     * render oxUBase object
      *
-     * @param oxView $oViewObject view object to render
+     * @param oxUBase $oViewObject view object to render
      *
      * @return string
      */
@@ -473,7 +514,6 @@ class oxShopControl extends oxSuperCfg
         // check if template dir exists
         $sTemplateFile = $this->getConfig()->getTemplatePath($sTemplateName, $this->isAdmin());
         if (!file_exists($sTemplateFile)) {
-
             $oEx = oxNew('oxSystemComponentException');
             $oEx->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND');
             $oEx->setComponent($sTemplateName);
@@ -503,7 +543,6 @@ class oxShopControl extends oxSuperCfg
 
         // passing current view object to smarty
         $oSmarty->oxobject = $oViewObject;
-
 
         $sOutput = $oSmarty->fetch($sTemplateName, $oViewObject->getViewId());
 
@@ -576,7 +615,6 @@ class oxShopControl extends oxSuperCfg
 
         $blRunOnceExecuted = oxRegistry::getSession()->getVariable('blRunOnceExecuted');
         if (!$blRunOnceExecuted && !$this->isAdmin() && $oConfig->isProductiveMode()) {
-
             // check if setup is still there
             if (file_exists($oConfig->getConfigParam('sShopDir') . '/setup/index.php')) {
                 $sTpl = 'message/err_setup.tpl';
@@ -628,8 +666,6 @@ class oxShopControl extends oxSuperCfg
 
         return false;
     }
-
-
 
     /**
      * Shows exceptionError page.

@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Core;
+
+use oxRegistry;
+use oxDb;
+
 /**
  * Base view class. Collects and passes data to template engine, sets some global
  * configuration parameters.
  */
-class oxView extends oxSuperCfg
+class View extends \oxSuperCfg
 {
 
     /**
@@ -180,7 +185,6 @@ class oxView extends oxSuperCfg
      * @var oxViewConfig
      */
     protected $_oViewConf = null;
-
 
     /**
      * Initiates all components stored, executes oxView::addGlobalParams.
@@ -517,8 +521,6 @@ class oxView extends oxSuperCfg
         // execute
         if ($sFunction && !self::$_blExecuted) {
             if (method_exists($this, $sFunction)) {
-
-
                 $sNewAction = $this->$sFunction();
                 self::$_blExecuted = true;
 
@@ -588,10 +590,18 @@ class oxView extends oxSuperCfg
                 $sUrl = $sSeoUrl;
             }
 
+            $this->onExecuteNewAction();
 
             //#M341 do not add redirect parameter
             oxRegistry::getUtils()->redirect($sUrl, (bool) $myConfig->getRequestParameter('redirected'), 302);
         }
+    }
+
+    /**
+     * Method for overwriting if any additional actions on _executeNewAction is needed
+     */
+    protected function onExecuteNewAction()
+    {
     }
 
     /**
@@ -1010,7 +1020,6 @@ class oxView extends oxSuperCfg
     {
         return false;
     }
-
 
     /**
      * Returns session ID, but only in case it is needed to be included for widget calls.

@@ -95,7 +95,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     {
         $oView = oxNew('oxView');
         $oView->init();
-        $this->assertEquals("oxview", $oView->getThisAction());
+        $this->assertEquals(1, preg_match("@\\View$@si", $oView->getThisAction()));
 
         $oUtilsServer = $this->getMock('oxUtilsServer', array('setOxCookie'));
         $oUtilsServer->expects($this->never())->method('setOxCookie');
@@ -144,9 +144,21 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
         $aViewData = $oView->getViewData();
 
-
         $this->assertEquals($aViewData['oView'], $oView);
         $this->assertEquals($aViewData['oViewConf'], $oView->getViewConfig());
+    }
+
+    /*
+     * Test adding global params to view data
+     */
+    public function testIsMall()
+    {
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
+
+        $oView = oxNew('oxView');
+        $this->assertFalse($oView->isMall());
     }
 
     /*
@@ -304,13 +316,6 @@ class Unit_Views_oxviewTest extends OxidTestCase
     }
 
     /**
-     * oxView::executeFunction() test case
-     *
-     * @return null
-     */
-
-
-    /**
      * New action url getter tests, case we try to redirect to a not existing class
      */
     public function testExecuteNewActionNotExistingClass()
@@ -319,12 +324,12 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
         oxAddClassModule("oxUtilsHelper", "oxutils");
 
-        $config = $this->getMock('oxconfig', array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
+        $config = $this->getMock('oxConfig', array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
         $config->expects($this->never())->method('isSsl');
         $config->expects($this->never())->method('getSslShopUrl');
         $config->expects($this->never())->method('getShopUrl');
 
-        $view = $this->getMock('oxview', array('getConfig'));
+        $view = $this->getMock('oxView', array('getConfig'));
         $view->expects($this->once())->method('getConfig')->will($this->returnValue($config));
 
         $this->setExpectedException('oxSystemComponentException', 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND');
@@ -403,12 +408,6 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oView->UNITexecuteNewAction("details?fnc=somefnc&anid=someanid");
         $this->assertEquals('SSLshopurl/admin/index.php?cl=details&fnc=somefnc&anid=someanid&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
     }
-
-    /**
-     * oxView::_executeNewAction() test case
-     *
-     * @return null
-     */
 
     public function testGetTrustedShopIdNotValid()
     {
@@ -654,29 +653,26 @@ class Unit_Views_oxviewTest extends OxidTestCase
     {
         //edition is always set
         $oView = oxNew('oxView');
-        $sEdition = $oView->getShopEdition();
+        $viewEdition = $oView->getShopEdition();
 
-        $this->assertTrue($sEdition == "CE" || $sEdition == "PE");
-
+        $expectedEdition = $this->getTestConfig()->getShopEdition();
+        $this->assertEquals($expectedEdition, $viewEdition);
     }
 
-
-    public function testFullEditionIsNotEmpty()
-    {
-        //edition is always set
-        $oView = oxNew('oxView');
-        $sEdition = $oView->getShopFullEdition();
-        $this->assertNotSame('', $sEdition);
-    }
 
     public function testGetFullEdition()
     {
+        $expected = 'Community Edition';
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $expected = 'Enterprise Edition';
+        } elseif ($this->getTestConfig()->getShopEdition() === 'PE') {
+            $expected = 'Professional Edition';
+        }
+
         //edition is always set
         $oView = oxNew('oxView');
         $sEdition = $oView->getShopFullEdition();
-
-        $this->assertEquals("Community Edition", $sEdition);
-
+        $this->assertEquals($expected, $sEdition);
     }
 
     /**
@@ -810,15 +806,6 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $this->assertFalse($oView->showFbConnectToAccountMsg());
     }
 
-    /**
-     * Testing mall mode getter
-     */
-    public function testIsMall()
-    {
-        $oView = oxNew('oxView');
-        $this->assertFalse($oView->isMall());
-    }
-
     public function testIsCallForCache()
     {
         $oView = oxNew('oxView');
@@ -853,7 +840,6 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $this->assertEquals("testValue2", $oView->getViewParameter("testItem2"));
         $this->assertNull($oView->getViewParameter("testItem3"));
     }
-
 
     public function testShowNewsletter()
     {
@@ -943,6 +929,4 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
         $this->assertNull($oView->getSidForWidget());
     }
-
-
 }

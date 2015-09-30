@@ -25,6 +25,9 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
+ * @internal Do not make a module extension for this class.
+ * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ *
  * @mixin \OxidEsales\Professional\Core\SystemRequirements
  * @mixin \OxidEsales\Enterprise\Core\SystemRequirements
  */

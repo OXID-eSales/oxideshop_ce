@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "hash": "8778472a3d41acc055b63485d71599c9",
+    "content-hash": "cd861d8d4c7dd9fc3b05628cfd1ad0da",
     "packages": [],
     "packages-dev": [
         {
@@ -649,16 +650,16 @@
         },
         {
             "name": "oxid-esales/testing-library",
-            "version": "v1.0.0-alpha10",
+            "version": "v1.0.0-alpha11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "b8a92b1d2e9a70a45559b32666b63fb95ec0f65d"
+                "reference": "11b1139f22c01d2eda923adece23cf7023076322"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/b8a92b1d2e9a70a45559b32666b63fb95ec0f65d",
-                "reference": "b8a92b1d2e9a70a45559b32666b63fb95ec0f65d",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/11b1139f22c01d2eda923adece23cf7023076322",
+                "reference": "11b1139f22c01d2eda923adece23cf7023076322",
                 "shasum": ""
             },
             "require": {
@@ -714,9 +715,9 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/OXID-eSales/testing_library/tree/v1.0.0-alpha10"
+                "source": "https://github.com/OXID-eSales/testing_library/tree/v1.0.0-alpha11"
             },
-            "time": "2015-09-11 14:52:42"
+            "time": "2015-09-25 11:59:21"
         },
         {
             "name": "pdepend/pdepend",

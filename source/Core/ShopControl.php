@@ -147,6 +147,20 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
+     * Returns the difference between stored profiler end time and start time. Works only after _stopMonitor() is called, otherwise returns 0.
+     *
+     * @return double
+     */
+    public function getTotalTime()
+    {
+        if ($this->_dTimeEnd && $this->_dTimeStart) {
+            return $this->_dTimeEnd - $this->_dTimeStart;
+        }
+
+        return 0;
+    }
+
+    /**
      * Sets default exception handler.
      * Ideally all exceptions should be handled with try catch and default exception should never be reached.
      *
@@ -162,171 +176,61 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
-     * Logs user performed actions to DB. Skips action logging if
-     * it's search engine.
-     *
-     * @param string $sClass Name of class
-     * @param string $fnc   Name of executed class method
-     */
-    protected function _log($sClass, $fnc)
-    {
-        $db = oxDb::getDb();
-        $oConfig = $this->getConfig();
-        $session = $this->getSession();
-
-        $shopID = $session->getVariable('actshop');
-        $time = date('Y-m-d H:i:s');
-        $sidQuoted = $db->quote($session->getId());
-        $userIDQuoted = $db->quote($session->getVariable('usr'));
-
-        $cnid = $oConfig->getRequestParameter('cnid');
-        $anid = $oConfig->getRequestParameter('aid') ? $oConfig->getRequestParameter('aid') : $oConfig->getRequestParameter('anid');
-
-        $parameter = '';
-
-        if ($sClass == 'content') {
-            $parameter = str_replace('.tpl', '', $oConfig->getRequestParameter('tpl'));
-        } elseif ($sClass == 'search') {
-            $parameter = $oConfig->getRequestParameter('searchparam');
-        }
-
-        $fncQuoted = $db->quote($fnc);
-        $classQuoted = $db->quote($sClass);
-        $parameterQuoted = $db->quote($parameter);
-
-        $sQ = "insert into oxlogs (oxtime, oxshopid, oxuserid, oxsessid, oxclass, oxfnc, oxcnid, oxanid, oxparameter) " .
-              "values( '$time', '$shopID', $userIDQuoted, $sidQuoted, $classQuoted, $fncQuoted, " . $db->quote($cnid) . ", " . $db->quote($anid) . ", $parameterQuoted )";
-
-        $db->execute($sQ);
-    }
-
-    // OXID : add timing
-    /**
-     * Starts resource monitor
-     */
-    protected function _startMonitor()
-    {
-        if ($this->_isDebugMode()) {
-            $this->_dTimeStart = microtime(true);
-        }
-    }
-
-    /**
-     * Stops resource monitor, summarizes and outputs values
-     *
-     * @deprecated since 2015-10-01; use self::stopMonitoring() instead.
-     *
-     * @param bool    $isCallForCache Is content cache
-     * @param bool    $isCached       Is content cached
-     * @param string  $viewId         View ID
-     * @param array   $viewData       View data
-     * @param oxUBase $view           View object
-     */
-    protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = array(), $view = null)
-    {
-        $this->stopMonitoring($view);
-    }
-
-    /**
-     * Stops resource monitor, summarizes and outputs values
-     *
-     * @param oxUBase $view View object
-     */
-    protected function stopMonitoring($view)
-    {
-        if ($this->_isDebugMode() && !$this->isAdmin()) {
-            $debugLevel = $this->getConfig()->getConfigParam('iDebug');
-            $debugInfo = oxNew('oxDebugInfo');
-
-            $logId = md5(time() . rand() . rand());
-            $header = $debugInfo->formatGeneralInfo();
-            $display = ($debugLevel == -1) ? 'none' : 'block';
-            $monitorMessage = $this->formMonitorMessage($view);
-
-            $logMessage = "
-                <div id='oxidDebugInfo_$logId'>
-                    <div style='color:#630;margin:15px 0 0;cursor:pointer'
-                         onclick='var el=document.getElementById(\"debugInfoBlock_$logId\"); if (el.style.display==\"block\")el.style.display=\"none\"; else el.style.display = \"block\";'>
-                          $header(show/hide)
-                    </div>
-                    <div id='debugInfoBlock_$logId' style='display:$display' class='debugInfoBlock' align='left'>
-                        $monitorMessage
-                    </div>
-                    <script type='text/javascript'>
-                        var b = document.getElementById('oxidDebugInfo_$logId');
-                        var c = document.body;
-                        if (c) { c.appendChild(b.parentNode.removeChild(b));}
-                    </script>
-                </div>";
-
-            $this->_getOutputManager()->output('debuginfo', $logMessage);
-        }
-    }
-
-    /**
-     * @param oxUBase $view
+     * Returns controller class which should be loaded.
      *
      * @return string
      */
-    protected function formMonitorMessage($view)
+    protected function _getStartController()
     {
-        $debugInfo = oxNew('oxDebugInfo');
+        $class = oxRegistry::getConfig()->getRequestParameter('cl');
 
-        $debugLevel = $this->getConfig()->getConfigParam('iDebug');
-
-        $message = '';
-
-        // Outputting template params
-        if ($debugLevel == 4) {
-            $message .= $debugInfo->formatTemplateData($view->getViewData());
+        if (!$class) {
+            $session = oxRegistry::getSession();
+            if ($this->isAdmin()) {
+                $class = $session->getVariable("auth") ? 'admin_start' : 'login';
+            } else {
+                $class = $this->_getFrontendStartController();
+            }
+            $session->setVariable('cl', $class);
         }
 
-        // Output timing
-        $this->_dTimeEnd = microtime(true);
-
-        $message .= $debugInfo->formatMemoryUsage();
-        $message .= $debugInfo->formatTimeStamp();
-        $message .= $debugInfo->formatExecutionTime($this->getTotalTime());
-
-        if ($debugLevel == 7) {
-            $message .= $debugInfo->formatDbInfo();
-        }
-
-        if ($debugLevel == 2 || $debugLevel == 3 || $debugLevel == 4) {
-            $message .= $debugInfo->formatAdoDbPerf();
-        }
-
-        return $message;
+        return $class;
     }
 
     /**
-     * Returns the difference between stored profiler end time and start time. Works only after _stopMonitor() is called, otherwise returns 0.
+     * Returns which controller should be loaded at shop start.
+     * Check whether we have to display mall start screen or not.
      *
-     * @return double
+     * @return string
      */
-    public function getTotalTime()
+    protected function _getFrontendStartController()
     {
-        if ($this->_dTimeEnd && $this->_dTimeStart) {
-            return $this->_dTimeEnd - $this->_dTimeStart;
+        $class = 'start';
+        if ($this->getConfig()->isMall()) {
+            $class = $this->_getFrontendMallStartController();
         }
 
-        return 0;
+        return $class;
     }
 
     /**
-     * Executes regular maintenance functions..
+     * Returns start controller class name for frontend mall.
+     * If no class specified, we need to change back to base shop
      *
-     * @return null
+     * @return string
      */
-    protected function _executeMaintenanceTasks()
+    protected function _getFrontendMallStartController()
     {
-        if (isset($this->_blMainTasksExecuted)) {
-            return;
+        $activeShopsCount = oxDb::getDb()->getOne('select count(*) from oxshops where oxactive = 1');
+
+        $mallShopURL = $this->getConfig()->getConfigParam('sMallShopURL');
+
+        $class = 'start';
+        if ($activeShopsCount && $activeShopsCount > 1 && $this->getConfig()->getConfigParam('iMallMode') != 0 && !$mallShopURL) {
+            $class = 'mallstart';
         }
 
-        startProfile('executeMaintenanceTasks');
-        oxNew("oxArticleList")->updateUpcomingPrices();
-        stopProfile('executeMaintenanceTasks');
+        return $class;
     }
 
     /**
@@ -394,6 +298,22 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
+     * Executes regular maintenance functions..
+     *
+     * @return null
+     */
+    protected function _executeMaintenanceTasks()
+    {
+        if (isset($this->_blMainTasksExecuted)) {
+            return;
+        }
+
+        startProfile('executeMaintenanceTasks');
+        oxNew("oxArticleList")->updateUpcomingPrices();
+        stopProfile('executeMaintenanceTasks');
+    }
+
+    /**
      * Executes provided function on view object.
      * If this function can not be executed (is protected or so), oxSystemComponentException exception is thrown.
      *
@@ -433,7 +353,7 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
-     * initialize and return view object
+     * Initialize and return view object.
      *
      * @param string $class      View name
      * @param string $function   Function name
@@ -492,7 +412,7 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
-     * format error messages from _getErrors and return as array
+     * Format error messages from _getErrors and return as array.
      *
      * @param string $controllerName a class name
      *
@@ -515,7 +435,7 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
-     * render oxUBase object
+     * Render oxUBase object.
      *
      * @param oxUBase $view view object to render
      *
@@ -571,7 +491,7 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
-     * return output handler
+     * Return output handler.
      *
      * @return oxOutput
      */
@@ -585,9 +505,9 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
-     * return page errors array
+     * Return page errors array.
      *
-     * @param string $currentControllerName a class name
+     * @param string $currentControllerName Class name
      *
      * @return array
      */
@@ -620,7 +540,7 @@ class ShopControl extends \oxSuperCfg
 
     /**
      * This function is only executed one time here we perform checks if we
-     * only need once per session
+     * only need once per session.
      *
      * @return null
      */
@@ -672,7 +592,7 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
-     * Checks if shop is in debug mode
+     * Checks if shop is in debug mode.
      *
      * @return bool
      */
@@ -683,6 +603,145 @@ class ShopControl extends \oxSuperCfg
         }
 
         return false;
+    }
+
+    /**
+     * Logs user performed actions to DB. Skips action logging if
+     * it's search engine.
+     *
+     * @param string $class Name of class
+     * @param string $fnc   Name of executed class method
+     */
+    protected function _log($class, $fnc)
+    {
+        $database = oxDb::getDb();
+        $config = $this->getConfig();
+        $session = $this->getSession();
+
+        $shopId = $session->getVariable('actshop');
+        $time = date('Y-m-d H:i:s');
+        $sidQuoted = $database->quote($session->getId());
+        $userIDQuoted = $database->quote($session->getVariable('usr'));
+
+        $categoryId = $config->getRequestParameter('cnid');
+        $articleId = $config->getRequestParameter('aid') ? $config->getRequestParameter('aid') : $config->getRequestParameter('anid');
+
+        $parameter = '';
+
+        if ($class == 'content') {
+            $parameter = str_replace('.tpl', '', $config->getRequestParameter('tpl'));
+        } elseif ($class == 'search') {
+            $parameter = $config->getRequestParameter('searchparam');
+        }
+
+        $fncQuoted = $database->quote($fnc);
+        $classQuoted = $database->quote($class);
+        $parameterQuoted = $database->quote($parameter);
+
+        $query = "insert into oxlogs (oxtime, oxshopid, oxuserid, oxsessid, oxclass, oxfnc, oxcnid, oxanid, oxparameter) " .
+            "values( '$time', '$shopId', $userIDQuoted, $sidQuoted, $classQuoted, $fncQuoted, " . $database->quote($categoryId) . ", " . $database->quote($articleId) . ", $parameterQuoted )";
+
+        $database->execute($query);
+    }
+
+    /**
+     * Starts resource monitor.
+     */
+    protected function _startMonitor()
+    {
+        if ($this->_isDebugMode()) {
+            $this->_dTimeStart = microtime(true);
+        }
+    }
+
+    /**
+     * Stops resource monitor, summarizes and outputs values.
+     *
+     * @deprecated since 2015-10-01; use self::stopMonitoring() instead.
+     *
+     * @param bool    $isCallForCache Is content cache
+     * @param bool    $isCached       Is content cached
+     * @param string  $viewId         View ID
+     * @param array   $viewData       View data
+     * @param oxUBase $view           View object
+     */
+    protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = array(), $view = null)
+    {
+        $this->stopMonitoring($view);
+    }
+
+    /**
+     * Stops resource monitor, summarizes and outputs values.
+     *
+     * @param oxUBase $view View object
+     */
+    protected function stopMonitoring($view)
+    {
+        if ($this->_isDebugMode() && !$this->isAdmin()) {
+            $debugLevel = $this->getConfig()->getConfigParam('iDebug');
+            $debugInfo = oxNew('oxDebugInfo');
+
+            $logId = md5(time() . rand() . rand());
+            $header = $debugInfo->formatGeneralInfo();
+            $display = ($debugLevel == -1) ? 'none' : 'block';
+            $monitorMessage = $this->formMonitorMessage($view);
+
+            $logMessage = "
+                <div id='oxidDebugInfo_$logId'>
+                    <div style='color:#630;margin:15px 0 0;cursor:pointer'
+                         onclick='var el=document.getElementById(\"debugInfoBlock_$logId\"); if (el.style.display==\"block\")el.style.display=\"none\"; else el.style.display = \"block\";'>
+                          $header(show/hide)
+                    </div>
+                    <div id='debugInfoBlock_$logId' style='display:$display' class='debugInfoBlock' align='left'>
+                        $monitorMessage
+                    </div>
+                    <script type='text/javascript'>
+                        var b = document.getElementById('oxidDebugInfo_$logId');
+                        var c = document.body;
+                        if (c) { c.appendChild(b.parentNode.removeChild(b));}
+                    </script>
+                </div>";
+
+            $this->_getOutputManager()->output('debuginfo', $logMessage);
+        }
+    }
+
+    /**
+     * Forms message for displaying monitoring information on the bottom of the page.
+     *
+     * @param oxUBase $view
+     *
+     * @return string
+     */
+    protected function formMonitorMessage($view)
+    {
+        $debugInfo = oxNew('oxDebugInfo');
+
+        $debugLevel = $this->getConfig()->getConfigParam('iDebug');
+
+        $message = '';
+
+        // Outputting template params
+        if ($debugLevel == 4) {
+            $message .= $debugInfo->formatTemplateData($view->getViewData());
+        }
+
+        // Output timing
+        $this->_dTimeEnd = microtime(true);
+
+        $message .= $debugInfo->formatMemoryUsage();
+        $message .= $debugInfo->formatTimeStamp();
+        $message .= $debugInfo->formatExecutionTime($this->getTotalTime());
+
+        if ($debugLevel == 7) {
+            $message .= $debugInfo->formatDbInfo();
+        }
+
+        if ($debugLevel == 2 || $debugLevel == 3 || $debugLevel == 4) {
+            $message .= $debugInfo->formatAdoDbPerf();
+        }
+
+        return $message;
     }
 
     /**
@@ -754,63 +813,5 @@ class ShopControl extends \oxSuperCfg
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception);
             $this->_process('exceptionError', 'displayExceptionError');
         }
-    }
-
-    /**
-     * Returns controller class which should be loaded.
-     *
-     * @return string
-     */
-    protected function _getStartController()
-    {
-        $class = oxRegistry::getConfig()->getRequestParameter('cl');
-
-        if (!$class) {
-            $session = oxRegistry::getSession();
-            if ($this->isAdmin()) {
-                $class = $session->getVariable("auth") ? 'admin_start' : 'login';
-            } else {
-                $class = $this->_getFrontendStartController();
-            }
-            $session->setVariable('cl', $class);
-        }
-
-        return $class;
-    }
-
-    /**
-     * Returns which controller should be loaded at shop start.
-     * Check whether we have to display mall start screen or not.
-     *
-     * @return string
-     */
-    protected function _getFrontendStartController()
-    {
-        $class = 'start';
-        if ($this->getConfig()->isMall()) {
-            $class = $this->_getFrontendMallStartController();
-        }
-
-        return $class;
-    }
-
-    /**
-     * Returns start controller class name for frontend mall.
-     * If no class specified, we need to change back to base shop
-     *
-     * @return string
-     */
-    protected function _getFrontendMallStartController()
-    {
-        $activeShopsCount = oxDb::getDb()->getOne('select count(*) from oxshops where oxactive = 1');
-
-        $mallShopURL = $this->getConfig()->getConfigParam('sMallShopURL');
-
-        $class = 'start';
-        if ($activeShopsCount && $activeShopsCount > 1 && $this->getConfig()->getConfigParam('iMallMode') != 0 && !$mallShopURL) {
-            $class = 'mallstart';
-        }
-
-        return $class;
     }
 }

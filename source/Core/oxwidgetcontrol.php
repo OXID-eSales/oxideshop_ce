@@ -47,20 +47,20 @@ class oxWidgetControl extends oxShopControl
      * Session variables:
      * <b>actshop</b>
      *
-     * @param string $sClass      Class name
-     * @param string $sFunction   Function name
-     * @param array  $aParams     Parameters array
-     * @param array  $aViewsChain Array of views names that should be initialized also
+     * @param string $class      Class name
+     * @param string $function   Function name
+     * @param array  $parameters     Parameters array
+     * @param array  $viewsChain Array of views names that should be initialized also
      */
-    public function start($sClass = null, $sFunction = null, $aParams = null, $aViewsChain = null)
+    public function start($class = null, $function = null, $parameters = null, $viewsChain = null)
     {
         //$aParams = ( isset($aParams) ) ? $aParams : oxRegistry::getConfig()->getRequestParameter( 'oxwparams' );
 
-        if (!isset($aViewsChain) && oxRegistry::getConfig()->getRequestParameter('oxwparent')) {
-            $aViewsChain = explode("|", oxRegistry::getConfig()->getRequestParameter('oxwparent'));
+        if (!isset($viewsChain) && oxRegistry::getConfig()->getRequestParameter('oxwparent')) {
+            $viewsChain = explode("|", oxRegistry::getConfig()->getRequestParameter('oxwparent'));
         }
 
-        parent::start($sClass, $sFunction, $aParams, $aViewsChain);
+        parent::start($class, $function, $parameters, $viewsChain);
 
         //perform tasks that should be done at the end of widget processing
         $this->_runLast();

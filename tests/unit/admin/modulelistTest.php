@@ -20,27 +20,40 @@
  * @version   OXID eShop CE
  */
 
-/**
- * Tests for Shop_Config class
- */
 class Unit_Admin_ModuleListTest extends OxidTestCase
 {
-    /**
-     * Module_List::Render() test case
-     */
-    public function testRender()
+    /** @var Module_List */
+    private $moduleList;
+
+    public function setUp()
     {
+        parent::setup();
+
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
         $config = $this->getMock('oxConfig', array('getModulesDir'));
-        $config->expects($this->any())->method('getModulesDir')->will($this->returnValue(__DIR__.'/../testData/modules/'));
+        $config->expects($this->any())
+            ->method('getModulesDir')
+            ->will($this->returnValue(__DIR__.'/../testData/modules/'));
         oxRegistry::set('oxConfig', $config);
 
-        $oView = new Module_List();
-        $oView->setConfig($config);
-        $this->assertEquals('module_list.tpl', $oView->render());
+        $moduleList = oxNew('Module_List');
 
-        $aViewData = $oView->getViewData();
+        $this->moduleList = $moduleList;
+    }
+
+    public function testRenderReturnsCorrectTemplateName()
+    {
+        $this->assertEquals('module_list.tpl', $this->moduleList->render());
+    }
+
+    public function testGetViewDataContainsOurModuleList()
+    {
+        // Needs to be called since render method triggers the population of viewData.
+        $this->moduleList->render();
+
+        $aViewData = $this->moduleList->getViewData();
         $aModulesNames = array_keys($aViewData['mylist']);
-        $this->assertSame('testmodule', current($aModulesNames));
+
+        $this->assertSame(array('testmodule'), $aModulesNames);
     }
 }

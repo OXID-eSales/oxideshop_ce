@@ -214,23 +214,25 @@ class ShopControl extends \oxSuperCfg
     /**
      * Stops resource monitor, summarizes and outputs values
      *
-     * @param bool   $isCallForCache Is content cache
-     * @param bool   $isCached       Is content cached
-     * @param string $viewId         View ID
-     * @param array  $viewData       View data
+     * @deprecated since 2015-10-01; use self::stopMonitoring() instead.
+     *
+     * @param bool    $isCallForCache Is content cache
+     * @param bool    $isCached       Is content cached
+     * @param string  $viewId         View ID
+     * @param array   $viewData       View data
+     * @param oxUBase $view           View object
      */
-    protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = array())
+    protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = array(), $view = null)
     {
-        $this->stopMonitoring($viewId, $viewData);
+        $this->stopMonitoring($view);
     }
 
     /**
      * Stops resource monitor, summarizes and outputs values
      *
-     * @param string $viewId   View Id
-     * @param array  $viewData View data
+     * @param oxUBase $view View object
      */
-    protected function stopMonitoring($viewId = null, $viewData = array())
+    protected function stopMonitoring($view)
     {
         if ($this->_isDebugMode() && !$this->isAdmin()) {
             $debugLevel = $this->getConfig()->getConfigParam('iDebug');
@@ -239,7 +241,7 @@ class ShopControl extends \oxSuperCfg
             $logId = md5(time() . rand() . rand());
             $header = $debugInfo->formatGeneralInfo();
             $display = ($debugLevel == -1) ? 'none' : 'block';
-            $monitorMessage = $this->formMonitorMessage($viewId, $viewData);
+            $monitorMessage = $this->formMonitorMessage($view);
 
             $logMessage = "
                 <div id='oxidDebugInfo_$logId'>
@@ -262,12 +264,11 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
-     * @param string $viewId
-     * @param array  $viewData
+     * @param oxUBase $view
      *
      * @return string
      */
-    protected function formMonitorMessage($viewId, $viewData)
+    protected function formMonitorMessage($view)
     {
         $debugInfo = oxNew('oxDebugInfo');
 
@@ -277,7 +278,7 @@ class ShopControl extends \oxSuperCfg
 
         // Outputting template params
         if ($debugLevel == 4) {
-            $message .= $debugInfo->formatTemplateData($viewData);
+            $message .= $debugInfo->formatTemplateData($view->getViewData());
         }
 
         // Output timing
@@ -387,8 +388,7 @@ class ShopControl extends \oxSuperCfg
 
         stopProfile('process');
 
-        $isCached = false;
-        $this->_stopMonitor($view->getIsCallForCache(), $isCached, $view->getViewId(), $view->getViewData());
+        $this->_stopMonitor($view->getIsCallForCache(), false, $view->getViewId(), $view->getViewData(), $view);
 
         $outputManager->flushOutput();
     }

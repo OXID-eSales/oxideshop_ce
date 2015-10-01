@@ -302,7 +302,6 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $this->fail("Error while executing testStartCookieExceptionThrown_onlyInDebugMode()");
     }
 
-
     /**
      * Testing oxShopControl::_log()
      *
@@ -365,11 +364,12 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
 
     /**
      * Testing oxShopControl::_process()
-     *
-     * @return null
      */
     public function testProcess()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community/Professional edition only.');
+        }
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
         oxTestModules::addFunction('oxUtils', 'setHeader', '{}');
 
@@ -380,6 +380,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oConfig = $this->getMock("oxConfig", array("setActiveView", "getTemplatePath", "getConfigParam", "pageClose"));
         $oConfig->expects($this->at($iAt++))->method('getConfigParam')->with($this->equalTo("blLogging"))->will($this->returnValue(true));
         $oConfig->expects($this->at($iAt++))->method('setActiveView');
+
         $oConfig->expects($this->at($iAt++))->method('getTemplatePath')->will($this->returnValue($sTplPath));
         $oConfig->expects($this->at($iAt++))->method('pageClose');
 
@@ -398,7 +399,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);
 
         $oControl = $this->getMock("oxShopControl", $aTasks, array(), '', false);
-        $oControl->expects($this->exactly(3))->method('getConfig')->will($this->returnValue($oConfig));
+        $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oControl->expects($this->any())->method('_getOutputManager')->will($this->returnValue($oOut));
         $oControl->expects($this->atLeastOnce())->method('_executeMaintenanceTasks');
@@ -408,6 +409,9 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
 
     public function testProcessJson()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community/Professional edition only.');
+        }
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
         oxTestModules::addFunction('oxUtils', 'setHeader', '{}');
 
@@ -439,7 +443,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);
 
         $oControl = $this->getMock("oxShopControl", $aTasks, array(), '', false);
-        $oControl->expects($this->exactly(3))->method('getConfig')->will($this->returnValue($oConfig));
+        $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oControl->expects($this->any())->method('_getOutputManager')->will($this->returnValue($oOut));
         $oControl->expects($this->any())->method('_getErrors')->will($this->returnValue(array()));
@@ -450,6 +454,9 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
 
     public function testProcessJsonWithErrors()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community/Professional edition only.');
+        }
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
         oxTestModules::addFunction('oxUtils', 'setHeader', '{}');
 
@@ -462,6 +469,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oConfig = $this->getMock("oxConfig", array("setActiveView", "getTemplatePath", "getConfigParam", "pageClose"));
         $oConfig->expects($this->at($iAt++))->method('getConfigParam')->with($this->equalTo("blLogging"))->will($this->returnValue(true));
         $oConfig->expects($this->at($iAt++))->method('setActiveView');
+
         $oConfig->expects($this->at($iAt++))->method('getTemplatePath')->will($this->returnValue($sTplPath));
         $oConfig->expects($this->at($iAt++))->method('pageClose');
 
@@ -489,7 +497,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);
 
         $oControl = $this->getMock("oxShopControl", $aTasks, array(), '', false);
-        $oControl->expects($this->exactly(3))->method('getConfig')->will($this->returnValue($oConfig));
+        $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oControl->expects($this->any())->method('_getOutputManager')->will($this->returnValue($oOut));
         $oControl->expects($this->atLeastOnce())->method('_executeMaintenanceTasks');
@@ -508,8 +516,6 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
 
         $oControl->UNITprocess("content", null);
     }
-
-
 
     /**
      * Testing oxShopControl::_startMonitor() & oxShopControl::_stopMonitor()
@@ -606,8 +612,6 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oOut1 = $oControl->UNITgetOutputManager();
         $this->assertSame($oOut, $oOut1);
     }
-
-
 
     /**
      * Test case for oxShopControl::_executeMaintenanceTasks();

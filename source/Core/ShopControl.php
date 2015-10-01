@@ -667,6 +667,9 @@ class ShopControl extends \oxSuperCfg
      */
     protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = array(), $view = null)
     {
+        if (is_null($view)) {
+            $view = oxNew($this->_getStartController());
+        }
         $this->stopMonitoring($view);
     }
 

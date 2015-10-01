@@ -68,13 +68,24 @@ if (!function_exists('getSystemReqCheck')) {
      */
     function getSystemReqCheck()
     {
-        if (defined('OXID_PHP_UNIT')) {
-            include_once getShopBasePath() . "Core/oxsysrequirements.php";
+        $basePath = defined('OXID_PHP_UNIT') ? getShopBasePath() : getInstallPath();
+
+        include_once $basePath . '/Core/EditionSelector.php';
+
+        $editionSelector = new \OxidEsales\Core\EditionSelector();
+        include_once $basePath . '/Core/SystemRequirements.php';
+        if ($editionSelector->getEdition() === 'EE') {
+            include_once $basePath . '/Edition/Professional/Core/SystemRequirements.php';
+            include_once $basePath . '/Edition/Enterprise/Core/SystemRequirements.php';
+            $systemRequirements = new \OxidEsales\Enterprise\Core\SystemRequirements;
+        } elseif ($editionSelector->getEdition() === 'PE') {
+            include_once $basePath . '/Edition/Professional/Core/SystemRequirements.php';
+            $systemRequirements = new OxidEsales\Professional\Core\SystemRequirements;
         } else {
-            include_once getInstallPath() . "Core/oxsysrequirements.php";
+            $systemRequirements = new OxidEsales\Core\SystemRequirements;
         }
 
-        return new oxSysRequirements();
+        return $systemRequirements;
     }
 }
 

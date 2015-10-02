@@ -25,11 +25,11 @@ use oxConnectionException;
 use oxCookieException;
 use oxDb;
 use oxException;
+use OxidEsales\Application\Controller\BaseController;
 use OxidEsales\Enterprise\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
 use oxRegistry;
 use oxSystemComponentException;
-use oxUBase;
 use ReflectionMethod;
 
 /**
@@ -317,8 +317,8 @@ class ShopControl extends \oxSuperCfg
      * Executes provided function on view object.
      * If this function can not be executed (is protected or so), oxSystemComponentException exception is thrown.
      *
-     * @param oxUBase $view
-     * @param string  $functionName
+     * @param BaseController $view
+     * @param string         $functionName
      *
      * @throws oxSystemComponentException
      */
@@ -334,7 +334,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Forms output from view object.
      *
-     * @param oxUBase $view
+     * @param BaseController $view
      *
      * @return string
      */
@@ -346,7 +346,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Method for sending any additional headers on every page requests.
      *
-     * @param oxUBase $view
+     * @param BaseController $view
      */
     protected function sendAdditionalHeaders($view)
     {
@@ -360,11 +360,11 @@ class ShopControl extends \oxSuperCfg
      * @param array  $parameters Parameters array
      * @param array  $viewsChain Array of views names that should be initialized also
      *
-     * @return oxUBase
+     * @return BaseController
      */
     protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
     {
-        /** @var oxUBase $view */
+        /** @var BaseController $view */
         $view = oxNew($class);
 
         $view->setClassName($class);
@@ -383,7 +383,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Event for any actions during view creation.
      *
-     * @param oxUBase $view
+     * @param BaseController $view
      */
     protected function onViewCreation($view)
     {
@@ -392,8 +392,8 @@ class ShopControl extends \oxSuperCfg
     /**
      * Check if method can be executed.
      *
-     * @param oxUBase $view     View object to check if its method can be executed.
-     * @param string  $function Method to check if it can be executed.
+     * @param BaseController $view     View object to check if its method can be executed.
+     * @param string         $function Method to check if it can be executed.
      *
      * @return bool
      */
@@ -435,9 +435,9 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
-     * Render oxUBase object.
+     * Render BaseController object.
      *
-     * @param oxUBase $view view object to render
+     * @param BaseController $view view object to render
      *
      * @return string
      */
@@ -659,11 +659,11 @@ class ShopControl extends \oxSuperCfg
      *
      * @deprecated since 2015-10-01; use self::stopMonitoring() instead.
      *
-     * @param bool    $isCallForCache Is content cache
-     * @param bool    $isCached       Is content cached
-     * @param string  $viewId         View ID
-     * @param array   $viewData       View data
-     * @param oxUBase $view           View object
+     * @param bool           $isCallForCache Is content cache
+     * @param bool           $isCached       Is content cached
+     * @param string         $viewId         View ID
+     * @param array          $viewData       View data
+     * @param BaseController $view           View object
      */
     protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = array(), $view = null)
     {
@@ -676,7 +676,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Stops resource monitor, summarizes and outputs values.
      *
-     * @param oxUBase $view View object
+     * @param BaseController $view View object
      */
     protected function stopMonitoring($view)
     {
@@ -712,7 +712,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Forms message for displaying monitoring information on the bottom of the page.
      *
-     * @param oxUBase $view
+     * @param BaseController $view
      *
      * @return string
      */

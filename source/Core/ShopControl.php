@@ -205,32 +205,7 @@ class ShopControl extends \oxSuperCfg
      */
     protected function _getFrontendStartController()
     {
-        $class = 'start';
-        if ($this->getConfig()->isMall()) {
-            $class = $this->_getFrontendMallStartController();
-        }
-
-        return $class;
-    }
-
-    /**
-     * Returns start controller class name for frontend mall.
-     * If no class specified, we need to change back to base shop
-     *
-     * @return string
-     */
-    protected function _getFrontendMallStartController()
-    {
-        $activeShopsCount = oxDb::getDb()->getOne('select count(*) from oxshops where oxactive = 1');
-
-        $mallShopURL = $this->getConfig()->getConfigParam('sMallShopURL');
-
-        $class = 'start';
-        if ($activeShopsCount && $activeShopsCount > 1 && $this->getConfig()->getConfigParam('iMallMode') != 0 && !$mallShopURL) {
-            $class = 'mallstart';
-        }
-
-        return $class;
+        return 'start';
     }
 
     /**
@@ -776,16 +751,6 @@ class ShopControl extends \oxSuperCfg
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception);
         }
         oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
-    }
-
-    /**
-     * R&R handling -> redirect to error msg, also, can call _process again, specifying error handler view class.
-     *
-     * @param oxException $exception Exception
-     */
-    protected function _handleAccessRightsException($exception)
-    {
-        oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=content&tpl=err_accessdenied.tpl', true, 302);
     }
 
     /**

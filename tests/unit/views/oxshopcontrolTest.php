@@ -49,28 +49,18 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         $this->setRequestParameter('cl', null);
         $this->setRequestParameter('fnc', "testFnc");
-        $this->getSession()->setVariable('actshop', null);
-        oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception("Error in testStart()"); }');
-
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())->method('getOne')->will($this->returnValue(2));
-        oxDb::setDbObject($dbMock);
 
         $oConfig = $this->getMock("oxConfig", array("isMall", "getConfigParam", "getShopHomeUrl"));
-        $oConfig->expects($this->at(0))->method('isMall')->will($this->returnValue(true));
-        $oConfig->expects($this->at(1))->method('getConfigParam')->with($this->equalTo("sMallShopURL"))->will($this->returnValue(false));
-        $oConfig->expects($this->at(2))->method('getConfigParam')->with($this->equalTo("iMallMode"))->will($this->returnValue(1));
-        //$oConfig->expects( $this->never() )->method( 'getShopId' );
+        $oConfig->expects($this->any())->method('isMall')->will($this->returnValue(false));
         $oConfig->expects($this->never())->method('getShopHomeUrl');
 
         $oControl = $this->getMock("oxShopControl", array("getConfig", "_runOnce", "isAdmin", "_process"), array(), '', false);
         $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oControl->expects($this->once())->method('_runOnce');
-        $oControl->expects($this->once())->method('isAdmin')->will($this->returnValue(false));
-        $oControl->expects($this->once())->method('_process')->with($this->equalTo("mallstart"), $this->equalTo("testFnc"));
-        $oControl->start();
+        $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oControl->expects($this->once())->method('_process')->with($this->equalTo("start"), $this->equalTo("testFnc"));
 
-        //$this->assertEquals( $this->getConfig()->getBaseShopId(), $this->getSession()->getVariable( "actshop" ) );
+        $oControl->start();
     }
 
     /**

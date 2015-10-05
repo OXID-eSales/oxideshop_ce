@@ -632,7 +632,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Stops resource monitor, summarizes and outputs values.
      *
-     * @deprecated since 2015-10-01; use self::stopMonitoring() instead.
+     * @deprecated on b-dev (2015-10-01); Use self::stopMonitoring() instead.
      *
      * @param bool           $isCallForCache Is content cache
      * @param bool           $isCached       Is content cached

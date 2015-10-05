@@ -1051,6 +1051,21 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->assertEquals('&amp;listtype=tag&amp;searchtag=testtag', $sGot);
     }
 
+    /**
+     * Bug 6233 test case.
+     */
+    public function testGetLinkTransfersThirdParameter()
+    {
+        $languageId = 2;
+        $activePage = 10;
+
+        $baseView = $this->getMock('oxubase', array('getBaseLink', 'getActPage', '_addPageNrParam'));
+        $baseView->expects($this->once())->method('getActPage')->will($this->returnValue($activePage));
+        $baseView->expects($this->once())->method('getBaseLink')->with($this->equalTo($languageId))->will($this->returnValue('link'));
+        $baseView->expects($this->once())->method('_addPageNrParam')->with($this->equalTo('link'), $this->equalTo($activePage), $this->equalTo($languageId));
+        $baseView->getLink($languageId);
+    }
+
     public function testGetLinkWithDefinedPageNumber()
     {
         $oConfig = $this->getConfig();

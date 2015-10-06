@@ -1320,17 +1320,21 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-
-        $oDetails = new Details();
-
+        $details = oxNew('details');
         $this->setRequestParameter('listtype', 'search');
-        $this->assertTrue(count($oDetails->getBreadCrumb()) >= 1);
+        $this->assertTrue(count($details->getBreadCrumb()) >= 1);
 
+        $details = oxNew('details');
         $this->setRequestParameter('listtype', 'tag');
-        $this->assertTrue(count($oDetails->getBreadCrumb()) >= 1);
+        $this->assertTrue(count($details->getBreadCrumb()) >= 1);
 
+        $details = oxNew('details');
         $this->setRequestParameter('listtype', 'recommlist');
-        $this->assertTrue(count($oDetails->getBreadCrumb()) >= 1);
+        $this->assertTrue(count($details->getBreadCrumb()) >= 1);
+
+        $details = oxNew('details');
+        $this->setRequestParameter('listtype', 'vendor');
+        $this->assertTrue(count($details->getBreadCrumb()) >= 1);
 
         $this->setRequestParameter('listtype', 'aaa');
 

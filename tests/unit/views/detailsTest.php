@@ -1322,14 +1322,19 @@ class Unit_Views_detailsTest extends OxidTestCase
     {
 
         $oDetails = new Details();
-
         $this->setRequestParam('listtype', 'search');
         $this->assertTrue(count($oDetails->getBreadCrumb()) >= 1);
 
+        $oDetails = new Details();
         $this->setRequestParam('listtype', 'tag');
         $this->assertTrue(count($oDetails->getBreadCrumb()) >= 1);
 
+        $oDetails = new Details();
         $this->setRequestParam('listtype', 'recommlist');
+        $this->assertTrue(count($oDetails->getBreadCrumb()) >= 1);
+
+        $oDetails = new Details();
+        $this->setRequestParam('listtype', 'vendor');
         $this->assertTrue(count($oDetails->getBreadCrumb()) >= 1);
 
         $this->setRequestParam('listtype', 'aaa');

@@ -20,15 +20,18 @@
  */
 ( function( $ ) {
 
-    oxAGBCheck = {
+    var oxAGBCheck = {
 
+        /**
+         * Initiating AGB Check
+         * @private
+         */
         _create: function(){
 
             var self = this,
-                options = self.options,
                 el      = self.element;
 
-             el.closest('form').submit(function() {
+            el.closest('form').submit(function() {
                 if( el.prop('checked') ){
                     return true;
                 } else {
@@ -47,7 +50,7 @@
                 }
             });
         }
-    }
+    };
 
     $.widget( "ui.oxAGBCheck", oxAGBCheck );
 

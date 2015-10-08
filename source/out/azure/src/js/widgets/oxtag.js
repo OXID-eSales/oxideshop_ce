@@ -18,12 +18,11 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-( function ( $ ) {
+( function ( $, oxAjax ) {
 
-    oxTag = {
+    var oxTag = {
 
-         highTag : function() {
-
+        highTag : function() {
             var oSelf = $(this);
 
             $("p.tagError").hide();
@@ -55,12 +54,14 @@
                         if ( response.tags.length > 0 ) {
                             $(".tagCloud").append("<span class='taggedText'>, " + response.tags + "</span> ");
                         }
+
+                        var tagError;
                         if ( response.invalid.length > 0 ) {
-                            var tagError = $("p.tagError.invalid").show();
+                            tagError = $("p.tagError.invalid").show();
                             $("span", tagError).text( response.invalid );
                         }
                         if ( response.inlist.length > 0 ) {
-                            var tagError = $("p.tagError.inlist").show();
+                            tagError = $("p.tagError.inlist").show();
                             $("span", tagError).text( response.inlist );
                         }
                     }
@@ -78,7 +79,7 @@
                     'onSuccess' : function(response, params) {
                         if ( response ) {
                             $('#tags').html(response);
-                            $("#tags #editTag").click(oxTag.editTag);
+                            $("#editTag").click(oxTag.editTag);
                         }
                     }
                 }
@@ -94,12 +95,12 @@
                     'targetEl' : $("#tags"),
                     'additionalData' : {'blAjax' : '1'},
                     'onSuccess' : function(response, params) {
-
                         if ( response ) {
-                            $('#tags').html(response);
-                            $("#tags .tagText").click(oxTag.highTag);
-                            $('#tags #saveTag').click(oxTag.saveTag);
-                            $('#tags #cancelTag').click(oxTag.cancelTag);
+                            var tags = $('#tags');
+                            tags.html(response);
+                            tags.find(".tagText").click(oxTag.highTag);
+                            $('#saveTag').click(oxTag.saveTag);
+                            $('#cancelTag').click(oxTag.cancelTag);
                         }
                     }
                 }
@@ -107,8 +108,8 @@
 
             return false;
         }
-    }
+    };
 
     $.widget("ui.oxTag", oxTag );
 
-})( jQuery );
+})( jQuery, oxAjax );

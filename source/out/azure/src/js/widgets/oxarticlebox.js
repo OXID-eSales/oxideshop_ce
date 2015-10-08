@@ -20,8 +20,12 @@
  */
 ( function( $ ) {
 
-    oxArticleBox = {
+    var oxArticleBox = {
 
+        /**
+         * Initiating article box
+         * @private
+         */
         _create: function(){
             var oSelf         = this,
                 oElement      = oSelf.element,
@@ -51,7 +55,7 @@
                 }
             });
 
-            // triming titles to mach container width (if needed)
+            // trimming titles to mach container width (if needed)
             $( ".box h3 a", oElement ).each(function() {
                 var iTitleWidth = $(this).width(),
                     iContWidth  = $(this).parent().width(),
@@ -63,7 +67,7 @@
                     // checking if title has numbers at the end
                     var sTitleEnd	    = $.trim(sEndPattern.exec(sTitleText));
 
-                    // seperating the title from the numbers
+                    // separating the title from the numbers
                     if (sTitleEnd) {
                         sTitleEnd  = ' ' + sTitleEnd;
                         sTitleText = sTitlePattern.exec(sTitleText).pop();
@@ -76,13 +80,13 @@
                     {
                         iTitleLength--;
                         $(this).html(sTitleText.substr(0, iTitleLength)+'&hellip;' + sTitleEnd);
-                        var iTitleWidth = $(this).width();
+                        iTitleWidth = $(this).width();
                     }
                     $(this).attr('title',sTitleText);
                 }
             });
         }
-    }
+    };
 
     $.widget( "ui.oxArticleBox", oxArticleBox );
 

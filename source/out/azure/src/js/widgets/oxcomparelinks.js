@@ -23,15 +23,12 @@
     /**
      * Beta note handler
      */
-    oxCompareLinks = {
+    var oxCompareLinks = {
 
         /**
          * Update compare links, hide add link and show remove link.
          *
-         * @param id
-         * @param state 1=hide add, 0=hide remove
-         *
-         * @return void
+         * @param {jQuery} list
          */
         updateLinks: function(list)
         {

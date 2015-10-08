@@ -20,8 +20,12 @@
  */
 ( function( $ ) {
 
-    oxBasketChecks = {
+    var oxBasketChecks = {
 
+        /**
+         * Initiating basket checks
+         * @private
+         */
         _create: function(){
 
             var self = this,
@@ -39,20 +43,29 @@
             });
         },
 
+        /**
+         * Toggle checkbox states
+         *
+         * @param {boolean} blChecked
+         */
         toggleChecks : function( blChecked ){
             $( ".basketitems .checkbox input" ).prop( "checked", blChecked );
         },
 
+        /**
+         * Toggle the main checkbox
+         *
+         * @returns {boolean}
+         */
         toggleMainCheck : function(){
-            if ( $( "#checkAll" ).prop( "checked" ) ) {
-                $( "#checkAll" ).prop( "checked", false );
-                return false;
-            } else {
-                $( "#checkAll" ).prop( "checked", true );
-                return true;
-            }
+            var checkAll = $( "#checkAll" );
+            var blChecked = checkAll.prop( "checked" );
+
+            checkAll.prop( "checked", !blChecked );
+
+            return !blChecked;
         }
-    }
+    };
 
     $.widget( "ui.oxBasketChecks", oxBasketChecks );
 

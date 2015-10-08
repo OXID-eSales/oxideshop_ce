@@ -20,12 +20,16 @@
  */
 ( function( $ ) {
 
-    oxMorePictures = {
+    var oxMorePictures = {
 
         options: {
             iDefaultIndex  : -1
         },
 
+        /**
+         * Init More Pictures
+         * @private
+         */
         _create: function() {
 
             var self    = this,
@@ -41,6 +45,10 @@
             });
         },
 
+        /**
+         * Init More Pictures
+         * @private
+         */
         _init: function() {
             var self    = this,
                 options = self.options,
@@ -51,7 +59,7 @@
                 $("li a:eq("+ options.iDefaultIndex +")", el).trigger("click");
             }
         }
-    }
+    };
 
     $.widget( "ui.oxMorePictures", oxMorePictures );
 

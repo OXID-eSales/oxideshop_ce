@@ -20,7 +20,7 @@
  */
 ( function( $ ) {
 
-    oxZoomPictures = {
+    var oxZoomPictures = {
 
         options: {
             sMorePicsContainerId     : "#morePicsContainer",
@@ -29,8 +29,11 @@
             sZoomTriggerButtonId     : "#zoomTrigger"
         },
 
+        /**
+         * Init ox zoom pictures
+         * @private
+         */
         _create: function() {
-
             var self    = this,
                 options = self.options,
                 el      = self.element;
@@ -45,10 +48,9 @@
              $(options.sZoomTriggerButtonId).click(function() {
                  self._beforeShow();
              } );
-
         },
 
-        /*
+        /**
          * Checking which picture was selected in product details view
          * and zooming this selected picture
          */
@@ -57,10 +59,10 @@
                 options = self.options,
                 el      = self.element;
 
-            iIndex = $(options.sMorePicsContainerId + " li a.selected").parent().index();
+            var iIndex = $(options.sMorePicsContainerId + " li a.selected").parent().index();
             $(options.sMoreZoomPicsContainerId).oxMorePictures({iDefaultIndex: iIndex});
         }
-    }
+    };
 
     $.widget( "ui.oxZoomPictures", oxZoomPictures );
 

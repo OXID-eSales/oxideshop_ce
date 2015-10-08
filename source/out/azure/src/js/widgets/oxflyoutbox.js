@@ -20,15 +20,16 @@
  */
 ( function( $ ) {
 
-    oxFlyOutBox = {
+    var oxFlyOutBox = {
 
+        /**
+         * Init fly out box
+         * @private
+         */
         _create: function(){
-
             var self = this,
                 options = self.options,
                 el      = self.element;
-
-
 
             $(document).click( function( e ){
                 if( $(e.target).parents("div").hasClass("topPopList") ){
@@ -50,7 +51,7 @@
             });
 
         }
-    }
+    };
 
     $.widget( "ui.oxFlyOutBox", oxFlyOutBox );
 

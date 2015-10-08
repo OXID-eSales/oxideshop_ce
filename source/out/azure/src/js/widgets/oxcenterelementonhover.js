@@ -20,8 +20,12 @@
  */
 ( function( $ ) {
 
-    oxCenterElementOnHover = {
+    var oxCenterElementOnHover = {
 
+        /**
+         * Center element on hover
+         * @private
+         */
         _create: function(){
 
             var self = this;
@@ -38,7 +42,7 @@
                   $(".viewAllHover", el).hide();
               });
         }
-    }
+    };
 
     $.widget( "ui.oxCenterElementOnHover", oxCenterElementOnHover );
 

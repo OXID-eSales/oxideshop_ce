@@ -18,88 +18,95 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-    /*
-     * Facebook related scripts
+
+/**
+ * Facebook related scripts
+ */
+var oxFacebook = {
+
+    /**
+     * FB widgets/buttons array
      */
-    oxFacebook = {
+    buttons: {
+    },
 
-        /*
-         * FB widgets/buttons array
-         */
-        buttons: {
-        },
+    /**
+     * Enables FB widgets
+     * @param {String} sFbAppId
+     * @param sLocale
+     * @param {String} sLoginUrl
+     * @param {String} sLogoutUrl
+     */
+    showFbWidgets: function ( sFbAppId, sLocale, sLoginUrl, sLogoutUrl ) {
 
-        /*
-         * Enables FB widgets
-         */
-        showFbWidgets: function ( sFbAppId, sLocale, sLoginUrl, sLogoutUrl ) {
+        var self = this;
+        self.key = null;
 
-            var self = this;
-            self.key = null;
-
-            for ( key in this.buttons ) {
-                if ( this.buttons[key].script ) {
-                    self.key = key;
-                    $.getScript( this.buttons[key].script, function () {
-                        $( self.key ).html( unescape( self.buttons[self.key].html ) );
-                    } );
-                } else {
-                    $( key ).html( unescape( this.buttons[key].html ) );
-                }
-            }
-
-            $.cookie( 'fbwidgetson',1, {path: '/'});
-            this.fbInit( sFbAppId, sLocale, sLoginUrl, sLogoutUrl );
-        },
-
-        /*
-         * Initing Facebook API
-         *
-         */
-        fbInit: function ( sFbAppId, sLocale, sLoginUrl, sLogoutUrl ) {
-
-            window.fbAsyncInit = function() {
-
-                FB.init({appId: sFbAppId, status: true, cookie: true, xfbml: true, oauth: true});
-                FB.Event.subscribe('auth.login', function(response) {
-                    // redirecting after successfull login
-                    setTimeout(function(){oxFacebook.redirectPage(sLoginUrl);}, 0);
-
-                    if ( FB.XFBML.Host !== undefined && FB.XFBML.Host.parseDomTree )
-                          setTimeout(function(){FB.XFBML.Host.parseDomTree;}, 0 );
-                });
-
-                FB.Event.subscribe('auth.logout', function(response) {
-                    // redirecting after logout
-                    setTimeout(function(){oxFacebook.redirectPage(sLogoutUrl);}, 0);
-                });
-            };
-
-            // loading FB script file
-            var e   = document.createElement('script');
-            e.type  = 'text/javascript';
-            e.async = true;
-            e.src   = document.location.protocol + '//connect.facebook.net/' + sLocale + '/all.js';
-            $('#fb-root').append(e);
-        },
-
-        /*
-         * Redicrecting page to given url
-         */
-        redirectPage: function ( sUrl ) {
-
-           sUrl = sUrl.toString().replace(/&amp;/g,"&");
-           document.location.href = sUrl;
-        },
-
-        /*
-         * Add scripts from tpl
-         */
-        initDetailsPagePartial : function () {
-            if (window.fbAsyncInit) {
-                window.fbAsyncInit();
+        for ( var key in this.buttons ) {
+            if ( this.buttons[key].script ) {
+                self.key = key;
+                $.getScript( this.buttons[key].script, function () {
+                    $( self.key ).html( unescape( self.buttons[self.key].html ) );
+                } );
+            } else {
+                $( key ).html( unescape( this.buttons[key].html ) );
             }
         }
 
-    };
+        $.cookie( 'fbwidgetson',1, {path: '/'});
+        this.fbInit( sFbAppId, sLocale, sLoginUrl, sLogoutUrl );
+    },
+
+    /**
+     * Init Facebook API
+     * @param {String} sFbAppId
+     * @param sLocale
+     * @param {String} sLoginUrl
+     * @param {String} sLogoutUrl
+     */
+    fbInit: function ( sFbAppId, sLocale, sLoginUrl, sLogoutUrl ) {
+
+        window.fbAsyncInit = function() {
+
+            FB.init({appId: sFbAppId, status: true, cookie: true, xfbml: true, oauth: true});
+            FB.Event.subscribe('auth.login', function(response) {
+                // redirecting after successful login
+                setTimeout(function(){oxFacebook.redirectPage(sLoginUrl);}, 0);
+
+                if ( FB.XFBML.Host !== undefined && FB.XFBML.Host.parseDomTree )
+                      setTimeout(function(){FB.XFBML.Host.parseDomTree;}, 0 );
+            });
+
+            FB.Event.subscribe('auth.logout', function(response) {
+                // redirecting after logout
+                setTimeout(function(){oxFacebook.redirectPage(sLogoutUrl);}, 0);
+            });
+        };
+
+        // loading FB script file
+        var e   = document.createElement('script');
+        e.type  = 'text/javascript';
+        e.async = true;
+        e.src   = document.location.protocol + '//connect.facebook.net/' + sLocale + '/all.js';
+        $('#fb-root').append(e);
+    },
+
+    /**
+     * Redirecting page to given url
+     */
+    redirectPage: function ( sUrl ) {
+       sUrl = sUrl.toString().replace(/&amp;/g,"&");
+       document.location.href = sUrl;
+    },
+
+    /**
+     * Add scripts from tpl
+     */
+    initDetailsPagePartial : function () {
+        if (window.fbAsyncInit) {
+            window.fbAsyncInit();
+        }
+    }
+
+};
 

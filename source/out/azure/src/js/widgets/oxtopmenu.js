@@ -20,14 +20,16 @@
  */
 ( function( $ ) {
 
-    oxTopMenu = {
+    var oxTopMenu = {
 
+        /**
+         * Init top menu
+         * @private
+         */
         _create: function(){
-
-            var self = this,
+            var self    = this,
                 options = self.options,
                 el      = self.element;
-
 
             if ($.browser.msie) {
                 $("li:not(:has(ul))", el).hover(function(){
@@ -44,18 +46,18 @@
                 extraWidth:  1     // extra width can ensure lines don't sometimes turn over
                                    // due to slight rounding differences and font-family
             }).superfish( {
-                 delay : 500,
-                 dropShadows : false,
-                 onBeforeShow : function() {
+                delay : 500,
+                dropShadows : false,
+                onBeforeShow : function() {
                     //adding hover class for active <A> elements
                     $('a:first', this.parent()).addClass($.fn.superfish.op.hoverClass);
 
-                    // horizontaly centering top navigation first level popup accoring its parent
-                    activeItem = this.parent()
+                    // horizontally centering top navigation first level popup according its parent
+                    var activeItem = this.parent()
                     if ( activeItem.parent().hasClass('sf-menu') ) {
-                        liWidth = activeItem.width();
-                        ulWidth = $('ul:first', activeItem).width();
-                        marginWidth = (liWidth - ulWidth) / 2;
+                        var liWidth = activeItem.width();
+                        var ulWidth = $('ul:first', activeItem).width();
+                        var marginWidth = (liWidth - ulWidth) / 2;
 
                         var itemleft = activeItem.position().left + marginWidth;
                         if (itemleft < 0) marginWidth -= itemleft;
@@ -72,7 +74,7 @@
                 }
             });
         }
-    }
+    };
 
     $.widget( "ui.oxTopMenu", oxTopMenu );
 

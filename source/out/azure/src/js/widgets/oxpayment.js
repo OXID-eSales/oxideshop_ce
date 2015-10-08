@@ -19,7 +19,12 @@
  * @version   OXID eShop CE
  */
 ( function( $ ) {
-    oxPayment = {
+    var oxPayment = {
+
+        /**
+         * Init Payment
+         * @private
+         */
         _create: function(){
             var self = this,
                 options = self.options,
@@ -30,7 +35,7 @@
                 $(this).parents("dl").children("dd").toggle();
             });
         }
-    }
+    };
 
     $.widget( "ui.oxPayment", oxPayment );
 

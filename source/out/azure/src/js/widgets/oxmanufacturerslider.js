@@ -20,25 +20,28 @@
  */
 ( function( $ ) {
 
-    oxManufacturerSlider = {
-            options: {
-                classButtonNext    : '.nextItem',
-                classButtonPrev    : '.prevItem'
-            },
+    var oxManufacturerSlider = {
+        options: {
+            classButtonNext : '.nextItem',
+            classButtonPrev : '.prevItem'
+        },
 
-            _create: function() {
+        /**
+         * Init Manufacturer Slider
+         * @private
+         */
+        _create: function() {
+            var self = this,
+            options  = self.options,
+            el       = self.element;
 
-                var self = this,
-                options = self.options,
-                el         = self.element;
-
-                 el.jCarouselLite({
-                     btnNext: options.classButtonNext,
-                     btnPrev: options.classButtonPrev,
-                   visible: 6,
-                   scroll: 1
-                });
-            }
+            el.jCarouselLite({
+               btnNext: options.classButtonNext,
+               btnPrev: options.classButtonPrev,
+               visible: 6,
+               scroll: 1
+            });
+        }
     };
 
     $.widget("ui.oxManufacturerSlider", oxManufacturerSlider );

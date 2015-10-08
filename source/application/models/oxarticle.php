@@ -2473,8 +2473,11 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     public function getAttributes()
     {
         if ($this->_oAttributeList === null) {
-            $this->_oAttributeList = oxNew('oxattributelist');
-            $this->_oAttributeList->loadAttributes($this->getId(), $this->getParentId());
+            $this->_oAttributeList = false;
+            if ($this->getConfig()->getConfigParam('bl_perfLoadAttributes') || $this->getConfig()->getRequestParameter('cl') == 'details') {
+                $this->_oAttributeList = oxNew('oxattributelist');
+                $this->_oAttributeList->loadAttributes($this->getId(), $this->getParentId());
+            }
         }
 
         return $this->_oAttributeList;

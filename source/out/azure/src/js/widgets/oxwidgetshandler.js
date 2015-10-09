@@ -117,7 +117,7 @@ var WidgetsHandler = (function() {
         $.ajaxSetup( {cache: true} );
         for ( var i in oRegister[ 'files' ] ) {
             $.getScript( oRegister[ 'files' ][ i ], function() {
-                iFilesLoaded++
+                iFilesLoaded++;
                 if ( iFilesLoaded == iFilesTotal) {
                     _loadFunctions( oRegister );
                 }

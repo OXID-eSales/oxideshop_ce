@@ -59,7 +59,7 @@
             }
         }
 
-    }
+    };
 
     $.widget( "ui.oxEnterPassword", oxEnterPassword );
 

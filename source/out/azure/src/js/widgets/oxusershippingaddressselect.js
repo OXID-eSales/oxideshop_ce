@@ -85,7 +85,7 @@
                 return '2';
             }
         }
-    }
+    };
 
     $.widget( "ui.oxUserShippingAddressSelect", oxUserShippingAddressSelect );
 

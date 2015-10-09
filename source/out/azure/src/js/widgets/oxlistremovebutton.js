@@ -34,7 +34,7 @@
             });
 
         }
-    }
+    };
 
     $.widget( "ui.oxListRemoveButton", oxListRemoveButton );
 

@@ -121,7 +121,7 @@
             );
             return false;
         }
-    }
+    };
 
     /**
      * Handles form submit

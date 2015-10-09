@@ -150,7 +150,7 @@
                 return 220;
             }
         }
-    }
+    };
 
     $.widget( "ui.oxArticleActionLinksSelect", oxArticleActionLinksSelect );
 

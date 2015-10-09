@@ -52,7 +52,7 @@
                 return true;
             }
         }
-    }
+    };
 
     $.widget( "ui.oxBasketChecks", oxBasketChecks );
 

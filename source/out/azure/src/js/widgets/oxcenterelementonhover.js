@@ -38,7 +38,7 @@
                   $(".viewAllHover", el).hide();
               });
         }
-    }
+    };
 
     $.widget( "ui.oxCenterElementOnHover", oxCenterElementOnHover );
 

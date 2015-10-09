@@ -41,7 +41,7 @@
             __ts.parentNode.insertBefore(_ts, __ts);
 
         }
-    }
+    };
 
     $.widget( "ui.oxTsBadge", oxTsBadge );
 

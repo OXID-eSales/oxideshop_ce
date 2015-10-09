@@ -72,7 +72,7 @@
                 }
             });
         }
-    }
+    };
 
     $.widget( "ui.oxTopMenu", oxTopMenu );
 

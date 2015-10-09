@@ -30,7 +30,7 @@
                 $(this).parents("dl").children("dd").toggle();
             });
         }
-    }
+    };
 
     $.widget( "ui.oxPayment", oxPayment );
 

@@ -71,7 +71,7 @@
         resetVariantSelections: function() {
             resetVariantSelections();
         }
-    }
+    };
 
     /**
      * Handles variant selection action

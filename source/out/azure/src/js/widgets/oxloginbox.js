@@ -49,7 +49,7 @@
                }
             });
         }
-    }
+    };
 
     $.widget( "ui.oxLoginBox", oxLoginBox );
 

@@ -60,7 +60,7 @@
             iIndex = $(options.sMorePicsContainerId + " li a.selected").parent().index();
             $(options.sMoreZoomPicsContainerId).oxMorePictures({iDefaultIndex: iIndex});
         }
-    }
+    };
 
     $.widget( "ui.oxZoomPictures", oxZoomPictures );
 

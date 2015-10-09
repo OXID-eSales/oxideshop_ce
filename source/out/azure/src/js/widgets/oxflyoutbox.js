@@ -50,7 +50,7 @@
             });
 
         }
-    }
+    };
 
     $.widget( "ui.oxFlyOutBox", oxFlyOutBox );
 

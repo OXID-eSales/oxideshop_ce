@@ -47,7 +47,7 @@
                 }
             });
         }
-    }
+    };
 
     $.widget( "ui.oxAGBCheck", oxAGBCheck );
 

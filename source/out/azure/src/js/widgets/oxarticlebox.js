@@ -82,7 +82,7 @@
                 }
             });
         }
-    }
+    };
 
     $.widget( "ui.oxArticleBox", oxArticleBox );
 

@@ -64,7 +64,7 @@
            var pos = input.position();
            label.css( { "left": (pos.left) + "px", "top":(pos.top) + "px" } );
        }
-    }
+    };
 
     $.widget( "ui.oxInnerLabel", oxInnerLabel );
 

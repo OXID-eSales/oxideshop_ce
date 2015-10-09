@@ -113,7 +113,7 @@
                 })
             );
         }
-    }
+    };
 
     /**
      * Compare list widget

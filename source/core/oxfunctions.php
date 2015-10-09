@@ -161,6 +161,29 @@ function getClassDirs($sBasePath)
 }
 
 
+if (!function_exists('registerShopAutoLoad')) {
+    /**
+     * Registers auto-loader from shop.
+     */
+    function registerShopAutoLoad()
+    {
+        spl_autoload_register("oxAutoload");
+    }
+}
+
+if (!function_exists('registerComposerAutoLoad')) {
+    /**
+     * Registers auto-loader from composer.
+     */
+    function registerComposerAutoLoad()
+    {
+        $autoloaderPath = __DIR__ . '/../vendor/autoload.php';
+        if (file_exists($autoloaderPath)) {
+            include_once $autoloaderPath;
+        }
+    }
+}
+
 if (!function_exists('getShopBasePath')) {
     /**
      * Returns framework base path.
@@ -563,5 +586,5 @@ if (!function_exists('getRequestUrl')) {
     }
 }
 
-//registering oxAutoload() as autoload handler
-spl_autoload_register("oxAutoload");
+registerComposerAutoLoad();
+registerShopAutoLoad();

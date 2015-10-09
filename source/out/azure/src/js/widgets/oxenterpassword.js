@@ -22,11 +22,15 @@
     /**
      * Show password field if email will be changed
      */
-    oxEnterPassword = {
+    var oxEnterPassword = {
         options: {
-            metodEnterPasswd      : "oxValidate_enterPass"
+            methodEnterPasswd : "oxValidate_enterPass"
         },
 
+        /**
+         * Init enter password
+         * @private
+         */
         _create: function()
         {
             var self    = this,
@@ -34,7 +38,7 @@
             el      = self.element;
 
             el.bind ( "keyup", function() {
-                self.showInput( el, el.val() != el.prop( "defaultValue" ), options.metodEnterPasswd );
+                self.showInput( el, el.val() != el.prop( "defaultValue" ), options.methodEnterPasswd );
             });
         },
 
@@ -59,7 +63,7 @@
             }
         }
 
-    }
+    };
 
     $.widget( "ui.oxEnterPassword", oxEnterPassword );
 

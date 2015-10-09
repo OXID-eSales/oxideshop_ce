@@ -20,8 +20,12 @@
  */
 ( function( $ ) {
 
-    oxListRemoveButton = {
+    var oxListRemoveButton = {
 
+        /**
+         * Init list remove button
+         * @private
+         */
         _create: function(){
 
             var self = this;
@@ -34,7 +38,7 @@
             });
 
         }
-    }
+    };
 
     $.widget( "ui.oxListRemoveButton", oxListRemoveButton );
 

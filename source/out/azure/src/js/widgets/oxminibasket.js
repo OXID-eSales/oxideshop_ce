@@ -22,8 +22,11 @@
 
     var oxMiniBasket = {
 
+        /**
+         * Init Mini Basket
+         * @private
+         */
         _create: function(){
-
             var self = this,
                 options = self.options,
                 el      = self.element;
@@ -62,22 +65,27 @@
              });
 
             // show / hide added article message
-            if($("#newItemMsg").length > 0){
-                $("#countValue").hide();
-                $("#newItemMsg").delay(3000).fadeTo("fast", 0, function(){
-                    $("#countValue").fadeTo("fast", 1);
-                    $("#newItemMsg").remove()
+            var newItemMsg = $("#newItemMsg");
+            if(newItemMsg.length > 0){
+                var countVal = $("#countValue");
+
+                countVal.hide();
+                newItemMsg.delay(3000).fadeTo("fast", 0, function(){
+                    countVal.fadeTo("fast", 1);
+                    newItemMsg.remove()
                 });
             }
 
             $("#countdown").countdown(
                 function(count, element, container) {
                     if (count <= 1) {
+
                         //closing and emptying the basket
                         $(element).parents("#basketFlyout").hide();
                         $("#countValue").parent('span').remove();
                         $("#basketFlyout").remove();
-                        $("#miniBasket #minibasketIcon").unbind('mouseenter mouseleave');
+                        $("#minibasketIcon").unbind('mouseenter mouseleave');
+
                         // refresh mini basket widget
                         $( "form.js-oxWidgetReload-miniBasket" ).submit();
                         return container.not(element);
@@ -88,11 +96,15 @@
 
         },
 
+        /**
+         * Show the mini basket
+         */
         showMiniBasket : function(){
             $("#basketFlyout").show();
 
-            if ($(".scrollable .scrollbarBox").length > 0) {
-                $('.scrollable .scrollbarBox').jScrollPane({
+            var box = $(".scrollable .scrollbarBox");
+            if (box.length > 0) {
+                box.jScrollPane({
                     showArrows: true,
                     verticalArrowPositions: 'split'
                 });
@@ -121,7 +133,7 @@
             );
             return false;
         }
-    }
+    };
 
     /**
      * Handles form submit

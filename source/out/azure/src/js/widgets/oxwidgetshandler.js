@@ -5,8 +5,8 @@ var WidgetsHandler = (function() {
         /**
          * Registers function if it was not already registered
          *
-         * @param sFunction function text
-         * @param sWidget widget name
+         * @param {String} sFunction - function text
+         * @param {String} sWidget widget - name
          */
         registerFunction: function( sFunction, sWidget ) {
             _register( oRegister, sFunction, 'functions' );
@@ -17,8 +17,8 @@ var WidgetsHandler = (function() {
         /**
          * Registers files if it was not already registered
          *
-         * @param sFile file name
-         * @param sWidget widget name
+         * @param {String} sFile - file name
+         * @param {String} sWidget - widget name
          */
         registerFile: function( sFile, sWidget ) {
             _register( oRegister, sFile, 'files' );
@@ -36,16 +36,16 @@ var WidgetsHandler = (function() {
         /**
          * Loads all registered functions
          *
-         * @param sWidget widget name
+         * @param {String} sWidget widget name
          */
         reloadWidget: function( sWidget ) {
             _loadWidget( sWidget );
         }
-    }
+    };
 
     /**
      * Initiates widget
-     * @param sWidget
+     * @param {String} sWidget
      * @private
      */
     function _initWidget( sWidget )
@@ -58,9 +58,9 @@ var WidgetsHandler = (function() {
     /**
      * Registers given value to given register
      *
-     * @param oRegister
-     * @param sValue
-     * @param sGroup
+     * @param {Object} oRegister
+     * @param {String} sValue
+     * @param {String} sGroup
      */
     function _register( oRegister, sValue, sGroup ) {
         if ( !_isRegistered( oRegister[ sGroup ], sValue ) ) {
@@ -71,8 +71,8 @@ var WidgetsHandler = (function() {
     /**
      * Checks whether given needle is registered in given register
      *
-     * @param oRegister
-     * @param sNeedle
+     * @param {Object} oRegister
+     * @param {String} sNeedle
      * @returns {boolean}
      */
     function _isRegistered( oRegister, sNeedle ) {
@@ -98,6 +98,7 @@ var WidgetsHandler = (function() {
     /**
      * Loads all widget functions and files from register
      *
+     * @param {String} sWidget
      * @private
      */
     function _loadWidget( sWidget ) {
@@ -107,8 +108,9 @@ var WidgetsHandler = (function() {
     }
 
     /**
+     * Loads everything
      *
-     * @param oRegister
+     * @param {Object} oRegister
      * @private
      */
     function _load( oRegister ) {
@@ -129,6 +131,7 @@ var WidgetsHandler = (function() {
     /**
      * Loads widget functions from register
      *
+     * @param {Object} oRegister
      * @private
      */
     function _loadFunctions( oRegister ) {

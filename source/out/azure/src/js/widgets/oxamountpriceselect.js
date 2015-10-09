@@ -22,8 +22,12 @@
     /**
      * Details amount price selector
      */
-    oxAmountPriceSelect = {
+    var oxAmountPriceSelect = {
 
+        /**
+         * Initiating details amount price selector
+         * @private
+         */
         _create: function()
         {
             var self = this,
@@ -54,8 +58,6 @@
 
         /**
          * Shows price list box
-         *
-         * @return null
          */
         showPriceList : function()
         {
@@ -66,8 +68,6 @@
 
         /**
          * Hides price list box
-         *
-         * @return null
          */
         hidePriceList : function()
         {
@@ -78,19 +78,16 @@
 
         /**
          * Hides all lists box
-         *
-         * @return null
          */
         hideAll : function()
         {
-            $('a.js-amountPriceSelector').next( 'ul' ).hide();
-            $('a.js-amountPriceSelector').removeClass('js-selected');
+            var priceSelect = $('a.js-amountPriceSelector');
+            priceSelect.next( 'ul' ).hide();
+            priceSelect.removeClass('js-selected');
         },
 
         /**
          * toggle list box
-         *
-         * @return null
          */
         togglePriceList : function ()
         {
@@ -108,13 +105,13 @@
         /**
          * returns state of list box
          *
-         * @return boolean
+         * @returns {boolean}
          */
         isOpened : function ()
         {
             return this.arrow.hasClass('js-selected');
         }
-    }
+    };
 
     $.widget( "ui.oxAmountPriceSelect", oxAmountPriceSelect );
 

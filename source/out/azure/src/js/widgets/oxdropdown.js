@@ -20,7 +20,7 @@
  */
 ( function ( $ ) {
 
-    oxDropDown = {
+    var oxDropDown = {
 
         options: {
             sSubmitActionClass  : 'js-fnSubmit',
@@ -28,7 +28,11 @@
             sDisabledClass      : 'js-disabled'
         },
 
-         _create: function(){
+        /**
+         * Init dropdown
+         * @private
+         */
+        _create: function(){
 
             var self = this,
                 options = self.options;
@@ -64,7 +68,7 @@
         /**
          * execute action after select: do nothing, submit, go link
          *
-         * @return boolean
+         * @returns {boolean}
          */
         action : function(){
 
@@ -86,7 +90,7 @@
         /**
          * set selected value
          *
-         * @return null
+         * @param {jQuery} oSelectLink
          */
         select : function( oSelectLink ) {
             this.selectedValue.val( oSelectLink.attr('data-selection-id') );
@@ -97,8 +101,6 @@
 
         /**
          * toggle oxDropDown
-         *
-         * @return null
          */
         toggleDropDown : function() {
             if ( !this.isDisabled() ) {
@@ -113,8 +115,6 @@
 
         /**
          * show value list
-         *
-         * @return null
          */
         showDropDown : function (){
 
@@ -134,8 +134,6 @@
 
         /**
          * hide values list
-         *
-         * @return null
          */
         hideDropDown : function() {
             this.valueList.hide();
@@ -143,9 +141,7 @@
         },
 
         /**
-         * hide all opend oxDropDown
-         *
-         * @return null
+         * hide all opened oxDropDown
          */
         hideAll : function() {
             $("li.value").remove();
@@ -155,13 +151,13 @@
         /**
          * check is dropdown disabled
          *
-         * @return boolean
+         * @returns {boolean}
          */
         isDisabled : function() {
             return this.head.hasClass( this.options.sDisabledClass );
         }
-    }
+    };
 
-   $.widget("ui.oxDropDown", oxDropDown );
+    $.widget("ui.oxDropDown", oxDropDown );
 
 })( jQuery );

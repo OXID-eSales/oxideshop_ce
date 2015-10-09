@@ -20,8 +20,12 @@
  */
 ( function( $ ) {
 
-    oxLoginBox = {
+    var oxLoginBox = {
 
+        /**
+         * Init Login Box
+         * @private
+         */
         _create: function(){
 
             var self = this,
@@ -49,7 +53,7 @@
                }
             });
         }
-    }
+    };
 
     $.widget( "ui.oxLoginBox", oxLoginBox );
 

@@ -22,8 +22,12 @@
     /**
      * Details article action links selector
      */
-    oxArticleActionLinksSelect = {
+    var oxArticleActionLinksSelect = {
 
+        /**
+         * Initiating article action links select
+         * @private
+         */
         _create: function()
         {
             var self = this,
@@ -33,8 +37,9 @@
             var targetWidth  = $("span", el).width();
             var linkboxWidth = self.getLinkboxWidth( targetWidth, $("span", el));
             var targetHeight = $("span", el).height();
+            var actionlinks  = $("ul.actionLinks");
 
-            $("ul.actionLinks").css({
+            actionlinks.css({
                 "top": el.position().top - 7,
                 "left": el.position().left - 10,
                 "padding-top": targetHeight + 10,
@@ -42,9 +47,10 @@
             });
 
             var arrowSrc = $(".selector img").attr("src");
-            var arrow = $("#productLinks").children("img");
+            var productLinks = $("#productLinks");
+            var arrow = productLinks.children("img");
 
-            $("#productLinks").css({
+            productLinks.css({
                 "top": el.position().top - 3,
                 "left": targetWidth + el.position().left + 10
             }).click(function(){
@@ -56,14 +62,14 @@
                 return false;
             });
 
-            $("#productLinks").mouseenter(function() {
+            productLinks.mouseenter(function() {
                 if (! $(this).hasClass("selected") ) {
                     self.showLinks(arrow);
                 }
                 return false;
             });
 
-            $("ul.actionLinks").mouseleave( function() {
+            productLinks.mouseleave( function() {
                 self.hideLinks(arrow, arrowSrc);
                 return false;
             });
@@ -98,9 +104,7 @@
         /**
          * Shows action links list box in details
          *
-         * @param object arrow img object
-         *
-         * @return null
+         * @param {HTMLElement} arrow - img object
          */
         showLinks : function( arrow )
         {
@@ -114,10 +118,8 @@
         /**
          * Hides action links list box in details
          *
-         * @param object arrow    img object of selector
-         * @param object arrowSrc img object of product links
-         *
-         * @return null
+         * @param {HTMLElement} arrow - img object of selector
+         * @param {String} arrowSrc   - img object of product links
          */
         hideLinks : function( arrow, arrowSrc )
         {
@@ -137,10 +139,10 @@
         /**
          * Shows action links list box in details
          *
-         * @param integer iTargetWidth terget width
-         * @param object oObject      object to set width
+         * @param {Number} iTargetWidth - target width
+         * @param {jQuery} oObject      - object to set width
          *
-         * @return integer
+         * @returns {Number}
          */
         getLinkboxWidth : function( iTargetWidth, oObject )
         {
@@ -150,7 +152,7 @@
                 return 220;
             }
         }
-    }
+    };
 
     $.widget( "ui.oxArticleActionLinksSelect", oxArticleActionLinksSelect );
 

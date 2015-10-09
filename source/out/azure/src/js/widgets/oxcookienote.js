@@ -23,14 +23,15 @@
     /**
      * Cookie note handler
      */
-    oxCookieNote = {
+    var oxCookieNote = {
         options: {
             closeButton : ".dismiss"
         },
         /**
          * Enable cookie note dismiss
          *
-         * @return false
+         * @returns {boolean} false
+         * @private
          */
         _create: function() {
             var self = this;

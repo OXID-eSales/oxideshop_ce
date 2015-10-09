@@ -23,22 +23,22 @@
     /**
      * Ajax
      */
-    oxAjax = {
+    var oxAjax = {
 
         /**
-         * Loading temporary screen when ajax call proseeds
+         * Loading temporary screen when ajax call proceeds
          */
         loadingScreen:  {
 
             /**
              * Starts load
              *
-             * @target - DOM element witch must be hide with the loading screen
-             * @iconPositionElement - element of a target on witch loaging icon is shown
+             * @param {HTMLElement} target - DOM element witch must be hide with the loading screen
+             * @param {jQuery} iconPositionElement - element of a target on witch loaging icon is shown
              */
             start : function (target, iconPositionElement) {
 
-                var loadingScreens = Array();
+                var loadingScreens = [];
                 $(target).each(function() {
                     var overlayKeeper = document.createElement("div");
                     overlayKeeper.innerHTML = '<div class="loadingfade"></div><div class="loadingicon"></div><div class="loadingiconbg"></div>';
@@ -82,30 +82,29 @@
                 return loadingScreens;
             },
 
-
             /**
              * Stops viewing loading screens
              *
-             * @loadingScreens - one or more showing screens
+             * @param {jQuery} loadingScreens - one or more showing screens
              */
             stop : function ( loadingScreens ) {
-              $.each(loadingScreens, function(i, el) {
-                  $('div', el).not('.loadingfade').remove();
-                  $('div.loadingfade', el)
-                      .stop(true, true)
-                      .animate({
-                          opacity: 0
-                      }, 100, function(){
-                          $(el).remove();
-                      });
-              });
+                $.each(loadingScreens, function(i, el) {
+                    $('div', el).not('.loadingfade').remove();
+                    $('div.loadingfade', el)
+                        .stop(true, true)
+                        .animate({
+                            opacity: 0
+                        }, 100, function(){
+                            $(el).remove();
+                        });
+                });
             }
         },
 
         /**
          * Updating errors on page
          *
-         * @errors - array of errors
+         * @param {Array} errors - array of errors
          */
         updatePageErrors : function(errors) {
             if (errors.length) {
@@ -131,8 +130,8 @@
         /**
          * Ajax call
          *
-         * @activator - link or form element that activates ajax call
-         * @params - call params: targetEl, iconPosEl, onSuccess, onError, additionalData
+         * @param {HTMLElement} activator - link or form element that activates ajax call
+         * @param {Array} params - call params: targetEl, iconPosEl, onSuccess, onError, additionalData
          */
         ajax : function(activator, params) {
             var self = this;
@@ -214,7 +213,7 @@
         /**
          * If it's possible report JS error
          *
-         * @param e JS exception
+         * @param {Object} e JS exception
          */
         reportJSError: function(e) {
             if (typeof console != 'undefined' && typeof console.error != 'undefined') {
@@ -225,7 +224,7 @@
         /**
          * Evals returned html and executes javascript after reload
          *
-         * @container - witch javascript must be restarted
+         * @param {jQuery} container - which javascript must be restarted
          */
         evalScripts : function(container){
             var self = this;

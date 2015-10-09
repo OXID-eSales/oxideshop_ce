@@ -20,7 +20,7 @@
  */
 ( function( $ ) {
 
-   oxCountryStateSelect = {
+    var oxCountryStateSelect = {
         options: {
             listItem        : "li",
             select          : "select",
@@ -28,6 +28,10 @@
             selectedStateId : "selectedStateId"
         },
 
+       /**
+        * Init country state select
+        * @private
+        */
         _create: function() {
             var self = this,
             options = self.options,
@@ -51,7 +55,11 @@
         /**
          * show / hide select add/remove options
          *
-         * @return object
+         * @param oSelect
+         * @param aStates
+         * @param aStatesValues
+         * @param selectedStateId
+         * @returns object
          */
         manageStateSelect: function(oSelect, aStates, aStatesValues, selectedStateId)
         {
@@ -73,28 +81,34 @@
         /**
          * get state select
          *
-         * @return object
+         * @param {HTMLElement} oCountrySelect
+         * @returns {jQuery}
          */
         getStateSelect: function(oCountrySelect)
         {
-            oOptions = this.options;
-            return     $( oCountrySelect ).parent(oOptions.listItem).next(oOptions.listItem).children(oOptions.span).children(oOptions.select);
+            var oOptions = this.options;
+            return $( oCountrySelect ).parent(oOptions.listItem)
+                .next(oOptions.listItem).children(oOptions.span).children(oOptions.select);
         },
 
         /**
          * get state select span
          *
-         * @return object
+         * @param {HTMLElement} oStateSelect
+         * @returns {jQuery}
          */
         getStateSelectSpan: function(oStateSelect)
         {
-            oOptions = this.options;
-            return     $( oStateSelect ).parent(oOptions.span);
+            return $( oStateSelect ).parent(this.options.span);
         },
 
         /**
          * add options
          *
+         * @param oSelect
+         * @param aValues
+         * @param aLables
+         * @param selectedStateId
          * @return object
          */
         addSelectOptions: function(oSelect, aValues, aLables, selectedStateId)
@@ -118,7 +132,7 @@
         /**
          * remove all select options except first list promt string
          *
-         * @return object
+         * @returns {jQuery}
          */
         removeSelectOptions: function(oSelect)
         {
@@ -129,7 +143,7 @@
         /**
          * get Country state names
          *
-         * @return array
+         * @returns {Array}
          */
         getStates: function(sCountry, allStates, allCountryIds)
         {
@@ -139,7 +153,7 @@
         /**
          * get Country state ids
          *
-         * @return array
+         * @returns {Array}
          */
         getStatesValues: function(sCountry, allStatesIds, allCountryIds)
         {

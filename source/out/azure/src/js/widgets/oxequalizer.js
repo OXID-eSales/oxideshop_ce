@@ -23,19 +23,21 @@
     /**
      * Equalize columns
      */
-    oxEqualizer = {
+    var oxEqualizer = {
 
         /**
          * Gets tallest element value
          *
-         * @return integer
+         * @param group
+         * @param target
+         * @returns {Number} - The tallest height
          */
         equalHeight: function(group, target)
         {
-            var self    = this,
-                newh    = 0,
-                tallest = 0,
-                elementh = 0;
+            var self     = this,
+                newH     = 0,
+                tallest  = 0,
+                elementH = 0;
 
             if ( target ) {
                 if (group.height() < target.height()){
@@ -45,16 +47,16 @@
                 tallest = self.getTallest( group );
             }
 
-            if( tallest ) {
+            if ( tallest ) {
                 group.each(function(){
                     if($(this).hasClass('oxEqualized')) {
                         $(this).css('height','');
                         $(this).removeClass('oxEqualized');
                     }
-                    elementh = $(this).outerHeight();
-                    if (elementh < tallest) {
-                        newh = tallest - (elementh - $(this).height());
-                        $(this).height(newh).addClass('oxEqualized');
+                    elementH = $(this).outerHeight();
+                    if (elementH < tallest) {
+                        newH = tallest - (elementH - $(this).height());
+                        $(this).height(newH).addClass('oxEqualized');
                     }
                 });
             }
@@ -63,7 +65,7 @@
         /**
          * Gets tallest element value
          *
-         * @return integer
+         * @returns {Number} - The tallest height
          */
         getTallest: function(el)
         {

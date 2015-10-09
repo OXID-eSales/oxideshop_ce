@@ -23,7 +23,7 @@
     /**
      * Beta note handler
      */
-    oxBetaNote = {
+    var oxBetaNote = {
         options: {
             cookieName  : "hideBetaNote",
             closeButton : ".dismiss"
@@ -31,8 +31,7 @@
 
         /**
          * Enable beta note dismiss and set cookie to keep it hidden on next pages
-         *
-         * @return integer
+         * @private
          */
         _create: function() {
             

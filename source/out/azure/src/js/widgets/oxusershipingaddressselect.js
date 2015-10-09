@@ -22,7 +22,12 @@
     /**
      * User shipping address selector
      */
-    oxUserShipingAddressSelect = {
+    var oxUserShippingAddressSelect = {
+
+        /**
+         * Init shipping address select
+         * @private
+         */
         _create: function()
         {
             var self = this,
@@ -30,11 +35,12 @@
                 el = self.element;
 
             el.change(function() {
-                var selectValue = $(this).val();
-
-                if ($("input[name=reloadaddress]")) {
-                    $("input[name=reloadaddress]").val(self.getReloadValue(selectValue));
+                var selectValue   = $(this).val();
+                var reloadAddress = $("input[name=reloadaddress]");
+                if (reloadAddress) {
+                    reloadAddress.val(self.getReloadValue(selectValue));
                 }
+
                 if (selectValue !== '-1') {
                     $( ".js-oxValidate" ).unbind('submit');
                     self.submitForm();
@@ -46,8 +52,6 @@
 
         /**
          * Clears all shipping address input fields
-         *
-         * @return null
          */
         emptyInputFields : function()
         {
@@ -62,8 +66,6 @@
 
         /**
          * Sets some form values and submits it
-         *
-         * @return null
          */
         submitForm : function()
         {
@@ -75,7 +77,8 @@
         /**
          * Returns reloadaddress value
          *
-         * @return integer
+         * @param {String} selectValue
+         * @returns {String}
          */
         getReloadValue : function( selectValue )
         {
@@ -85,8 +88,8 @@
                 return '2';
             }
         }
-    }
+    };
 
-    $.widget( "ui.oxUserShipingAddressSelect", oxUserShipingAddressSelect );
+    $.widget( "ui.oxUserShippingAddressSelect", oxUserShippingAddressSelect );
 
 } )( jQuery );

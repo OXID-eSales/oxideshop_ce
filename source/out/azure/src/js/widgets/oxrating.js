@@ -20,7 +20,7 @@
  */
 ( function( $ ) {
 
-    oxRating = {
+    var oxRating = {
         options: {
             reviewButton         : "writeNewReview",
             articleRatingValue   : "productRating",
@@ -33,9 +33,13 @@
             ratingElement        : "a.ox-write-review"
         },
 
+        /**
+         * Init Rating
+         * @private
+         */
         _create: function() {
 
-            var self     = this;
+            var self    = this;
             var options = self.options;
             var el      = self.element;
 
@@ -64,7 +68,9 @@
         /**
          * set rating value on form element
          *
-         * @return object
+         * @param {jQuery} oElement
+         * @param value
+         * @returns {jQuery}
          */
         setRatingValue: function( oElement, value )
         {
@@ -75,7 +81,9 @@
         /**
          * set rating value on stars
          *
-         * @return object
+         * @param {jQuery} oElement
+         * @param value
+         * @returns {jQuery}
          */
         setCurrentRating: function( oElement, value )
         {
@@ -87,7 +95,8 @@
         /**
          * hide review button
          *
-         * @return object
+         * @param {jQuery} oButton
+         * @returns {jQuery}
          */
         hideReviewButton: function( oButton )
         {
@@ -98,7 +107,8 @@
         /**
          * open review form
          *
-         * @return object
+         * @param {jQuery} oForm
+         * @returns {jQuery}
          */
         openReviewForm: function( oForm )
         {

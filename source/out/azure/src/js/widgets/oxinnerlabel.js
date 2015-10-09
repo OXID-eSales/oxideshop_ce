@@ -20,15 +20,18 @@
  */
 ( function( $ ) {
 
-    oxInnerLabel = {
+    var oxInnerLabel = {
 
         options: {
                 sDefaultValue  : 'innerLabel',
                 sReloadElement : ''
         },
 
+        /**
+         * Init inner label
+         * @private
+         */
         _create: function(){
-
             var self = this,
                 options = self.options,
                 input = self.element,
@@ -58,13 +61,19 @@
             $(options.sReloadElement).click(function() {
                 setTimeout(function(){ self._reload( self.element, label ); }, 100);
             });
-       },
-       
-       _reload : function( input, label ){
-           var pos = input.position();
-           label.css( { "left": (pos.left) + "px", "top":(pos.top) + "px" } );
-       }
-    }
+        },
+
+        /**
+         * Refresh the position
+         * @param {jQuery} input
+         * @param {jQuery} label
+         * @private
+         */
+        _reload : function( input, label ){
+            var pos = input.position();
+            label.css( { "left": (pos.left) + "px", "top":(pos.top) + "px" } );
+        }
+    };
 
     $.widget( "ui.oxInnerLabel", oxInnerLabel );
 

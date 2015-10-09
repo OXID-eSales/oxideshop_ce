@@ -20,14 +20,17 @@
  */
 ( function( $ ) {
 
-    oxReview = {
+    var oxReview = {
         options: {
             reviewButton : "#writeNewReview",
             reviewForm   : "#writeReview"
         },
 
+        /**
+         * Init Review
+         * @private
+         */
         _create: function() {
-
             var self    = this;
             var options = self.options;
             var el      = self.element;
@@ -44,6 +47,5 @@
      * Review widget
      */
     $.widget("ui.oxReview", oxReview );
-
 
 } )( jQuery );

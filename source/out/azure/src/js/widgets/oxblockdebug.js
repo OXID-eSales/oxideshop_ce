@@ -20,8 +20,12 @@
  */
 ( function ( $ ) {
 
-    oxBlockDebug = {
+    var oxBlockDebug = {
 
+        /**
+         * Init block debug
+         * @private
+         */
         _create : function(){
 
             $("hr.debugBlocksStart").each(function(){
@@ -113,7 +117,7 @@
                 })
             );
         }
-    }
+    };
 
     /**
      * Compare list widget

@@ -20,14 +20,17 @@
  */
 ( function( $ ) {
 
-    oxTsBadge = {
+    var oxTsBadge = {
 
         options: {
             trustedShopId : "trustedShopId"
         },
 
+        /**
+         * Init Trusted Shop Badge
+         * @private
+         */
         _create: function(){
-
             var self = this,
                 options = self.options;
 
@@ -39,9 +42,8 @@
 
             var __ts = document.getElementsByTagName('script')[0];
             __ts.parentNode.insertBefore(_ts, __ts);
-
         }
-    }
+    };
 
     $.widget( "ui.oxTsBadge", oxTsBadge );
 

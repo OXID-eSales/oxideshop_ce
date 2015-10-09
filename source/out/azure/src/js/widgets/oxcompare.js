@@ -24,7 +24,7 @@
     /**
      * Compare list
      */
-    oxCompare = {
+    var oxCompare = {
         options: {
             browsers: {
                 chrome: "chrome",
@@ -39,6 +39,10 @@
             idFirstTr: "#firstTr"
         },
 
+        /**
+         * Init compare list
+         * @private
+         */
         _create: function ()
         {
 
@@ -60,6 +64,9 @@
 
         /**
          * align first columns rows with data columns
+         *
+         * @param sBrowser
+         * @param {Number} iColumnCount
          */
         alignRows: function ( sBrowser, iColumnCount )
         {
@@ -92,9 +99,9 @@
         },
 
         /**
-         * get colummns rows hight
+         * Get column row height
          *
-         * @return integer
+         * @returns {Number}
          */
         getColumnHeight: function ( sBrowser, oColumn )
         {
@@ -113,9 +120,9 @@
         },
 
         /**
-         * set colummns rows hight
+         * Set column row height
          *
-         * @return object
+         * @returns {jQuery}
          */
         setColumnHeight: function ( oColumn, iHeight )
         {
@@ -123,9 +130,9 @@
         },
 
         /**
-         * get colummns
+         * Get Columns
          *
-         * @return object
+         * @returns {jQuery}
          */
         getOtherColumn: function ( iColumnCount, iNumberOfRow )
         {
@@ -133,13 +140,12 @@
         },
 
         /**
-         * get browser
+         * Get Browser
          *
-         * @return object
+         * @returns {String} - The browser
          */
         getBrowser: function ()
         {
-
             var __this = this,
                 sBrowser = this.options.browsers.mozilla;
 
@@ -156,9 +162,9 @@
         },
 
         /**
-         * get column Count
+         * Get column Count
          *
-         * @return object
+         * @returns {Number}
          */
         getColumnCount: function ()
         {

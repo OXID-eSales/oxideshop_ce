@@ -53,7 +53,7 @@
                 el         = self.element;
                 var oAnythingSlider;
 
-                var aNavigationTabs = new Array();
+                var aNavigationTabs = [];
 
                 aNavigationTabs = self.getNavigationTabsArray(el, options.elementLi);
 
@@ -139,7 +139,7 @@
              */
             getNavigationTabsArray: function(oElement, stElementType){
 
-                var aTabs = new Array();
+                var aTabs = [];
 
                 $( stElementType, oElement ).each( function( index ) {
                     aTabs[index] = index + 1;

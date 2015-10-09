@@ -22,7 +22,7 @@
     /**
      * User shipping address selector
      */
-    oxUserShipingAddressSelect = {
+    oxUserShippingAddressSelect = {
         _create: function()
         {
             var self = this,
@@ -87,6 +87,6 @@
         }
     }
 
-    $.widget( "ui.oxUserShipingAddressSelect", oxUserShipingAddressSelect );
+    $.widget( "ui.oxUserShippingAddressSelect", oxUserShippingAddressSelect );
 
 } )( jQuery );

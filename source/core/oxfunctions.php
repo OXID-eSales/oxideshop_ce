@@ -166,7 +166,7 @@ if (!function_exists('registerShopAutoLoad')) {
      */
     function registerShopAutoLoad()
     {
-        spl_autoload_register("oxAutoload", true, true);
+        spl_autoload_register("oxAutoload");
     }
 }
 

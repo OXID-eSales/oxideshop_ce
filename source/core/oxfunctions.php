@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -159,6 +159,29 @@ function getClassDirs($sBasePath)
     return $aClassDirs;
 }
 
+
+if (!function_exists('registerShopAutoLoad')) {
+    /**
+     * Registers auto-loader from shop.
+     */
+    function registerShopAutoLoad()
+    {
+        spl_autoload_register("oxAutoload", true, true);
+    }
+}
+
+if (!function_exists('registerComposerAutoLoad')) {
+    /**
+     * Registers auto-loader from composer.
+     */
+    function registerComposerAutoLoad()
+    {
+        $autoloaderPath = __DIR__ . '/../vendor/autoload.php';
+        if (file_exists($autoloaderPath)) {
+            include_once $autoloaderPath;
+        }
+    }
+}
 
 if (!function_exists('getShopBasePath')) {
     /**
@@ -562,5 +585,5 @@ if (!function_exists('getRequestUrl')) {
     }
 }
 
-//registering oxAutoload() as autoload handler
-spl_autoload_register("oxAutoload");
+registerComposerAutoLoad();
+registerShopAutoLoad();

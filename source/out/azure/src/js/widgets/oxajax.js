@@ -38,7 +38,7 @@
              */
             start : function (target, iconPositionElement) {
 
-                var loadingScreens = Array();
+                var loadingScreens = [];
                 $(target).each(function() {
                     var overlayKeeper = document.createElement("div");
                     overlayKeeper.innerHTML = '<div class="loadingfade"></div><div class="loadingicon"></div><div class="loadingiconbg"></div>';
@@ -156,7 +156,7 @@
 
             // sorting array to pass parameters alphabetically
             var aInputs = {};
-            var keys = Array();
+            var keys = [];
             for ( var key in inputs ) {
                 if ( inputs.hasOwnProperty( key ) ) {
                     keys.push( key );

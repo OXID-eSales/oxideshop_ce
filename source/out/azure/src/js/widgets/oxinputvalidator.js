@@ -114,7 +114,7 @@
 
                     if ( $( oInput ).hasClass( oOptions.methodValidateMatch ) && blValidInput ) {
 
-                        var inputs = new Array();
+                        var inputs = [];
 
                         var oForm = $( oInput ).closest(oOptions.form);
 

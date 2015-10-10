@@ -81,8 +81,7 @@ ul ul, ol ul {
 }
 
 ol li {
-    list-style-type: decimal;
-    list-style-position: inside;
+    list-style: decimal inside;
 }
 
 ol ol {
@@ -740,8 +739,7 @@ a.viewAllHover,
 .box ul, .box ol, .box .content {
     border: 2px solid #58b3ca;
     border-top: none;
-    margin: 0;
-    margin-top: -2px;
+    margin: -2px 0 0;
     text-shadow: 0 1px 1px #fff;
 }
 
@@ -1676,10 +1674,9 @@ a.submitButton {
     min-width: 25px;
     box-shadow: none;
     text-decoration: none;
-    padding: 2px 5px;
     line-height: 16px;
     font-weight:700;
-    padding-left:8px;
+    padding: 2px 5px 2px 8px;
     color:#29373C;
 }
 
@@ -1704,9 +1701,7 @@ a.submitButton {
 
 #languages a.flag span,
 .selectedValue a.flag span{
-    background-image:url(../../img/lang/blank.png) ;
-    background-position: 0 3px;
-    background-repeat: no-repeat;
+    background: url(../../img/lang/blank.png) no-repeat 0 3px;
 }
 
 .selectedValue a.flag span{
@@ -1854,7 +1849,9 @@ div.searchBox input.textbox:focus {
     border-right: 0;
 }
 
-#footer .tree ul {margin: 0; margin-left:10px;}
+#footer .tree ul {
+    margin: 0 0 0 10px;
+}
 
 .newsletter {float: left; background: #E7EAEC; padding:0 0 0 10px; font-size:10px; width: auto;}
 .newsletter .textbox {margin: 0 10px 0 10px; width: 140px;}
@@ -1993,8 +1990,7 @@ a.compare.remove {display:none}
 /* --- Grid View ------------------------------------ */
 .gridView,
 .infogridView {
-    margin: 0;
-    margin-bottom:20px;
+    margin: 0 0 20px;
 }
 
 .gridView li{
@@ -2403,8 +2399,7 @@ a.compare.remove {display:none}
 }
 
 .basketFlyout .functions {
-    padding: 10px;
-    padding-bottom: 0;
+    padding: 10px 10px 0;
     margin: 0;
 }
 
@@ -3086,7 +3081,6 @@ a.next {
 
 .checkoutSteps li{
     list-style: none;
-    padding: 0;
     float: left;
     height: 29px;
     text-transform: uppercase;
@@ -3094,7 +3088,7 @@ a.next {
     position: relative;
     left: 0;
     margin-left: -15px;
-    padding-left: 15px;
+    padding: 0 0 0 15px;
     background: url(../../img/steps.png) no-repeat 100% 0;
 }
 
@@ -4556,8 +4550,7 @@ a.sliderHover {
 .cloud-zoom-big {
     border:2px solid #51A8BC;
     overflow:hidden;
-    background-repeat: no-repeat;
-    background-color: #fff;
+    background: #fff;
 }
 
 /* This is the loading message. */
@@ -5124,9 +5117,7 @@ p.shoplupe {
 
 /* --- category tree ----------------------------- */
 .categoryBox {
-    border-color: #999999;
-    border-style: solid;
-    border-width: 1px;
+    border: 1px solid #999999;
     margin: 0 0 20px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -5135,9 +5126,7 @@ p.shoplupe {
 }
 
 .categoryTagsBox {
-    border-top-color: #999999;
-    border-top-style: solid;
-    border-top-width: 1px;
+    border-top: 1px solid #999999;
 }
 
 .categoryTagsBox h3 {

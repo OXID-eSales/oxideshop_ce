@@ -1,3 +1,3 @@
 <div class="status success corners">
-    <p>[{ $statusMessage }]</p>
+    <p>[{$statusMessage}]</p>
 </div>

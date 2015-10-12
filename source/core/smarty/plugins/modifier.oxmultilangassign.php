@@ -24,7 +24,7 @@
  * Smarty function
  * -------------------------------------------------------------
  * Purpose: Modifies provided language constant with it's translation
- * usage: [{ $val|oxmultilangassign}]
+ * usage: [{$val|oxmultilangassign}]
  * -------------------------------------------------------------
  *
  * @param string $sIdent language constant ident

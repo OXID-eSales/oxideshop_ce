@@ -1,15 +1,15 @@
 [{oxscript add="$('a.js-external').attr('target', '_blank');"}]
 [{capture append="oxidBlock_content"}]
-    [{if $oView->getActiveRecommList() }]
-        [{assign var="_actvrecommlist" value=$oView->getActiveRecommList() }]
-        [{assign var="rsslinks" value=$oView->getRssLinks() }]
+    [{if $oView->getActiveRecommList()}]
+        [{assign var="_actvrecommlist" value=$oView->getActiveRecommList()}]
+        [{assign var="rsslinks" value=$oView->getRssLinks()}]
         [{if $oxcmp_user}]
             [{assign var="force_sid" value=$oView->getSidForWidget()}]
         [{/if}]
 
         <h1 class="pageHead">[{$oView->getTitle()}]
 
-        [{assign var='rsslinks' value=$oView->getRssLinks() }]
+        [{assign var='rsslinks' value=$oView->getRssLinks()}]
 
         [{if $rsslinks.recommlistarts}]
             <a class="rss js-external" id="rssRecommListProducts" href="[{$rsslinks.recommlistarts.link}]" title="[{$rsslinks.recommlistarts.title}]">
@@ -27,7 +27,7 @@
             <div>
                 <div class="clear">
                     <div>
-                        [{ $_actvrecommlist->oxrecommlists__oxdesc->value }]
+                        [{$_actvrecommlist->oxrecommlists__oxdesc->value}]
                     </div>
                     [{if $oView->isReviewActive()}]
                     <div class="rating clear">
@@ -48,7 +48,7 @@
         [{/if}]
     [{else}]
         <h1 class="pageHead">[{$oView->getTitle()}]</h1>
-        [{ include file="page/recommendations/inc/list.tpl"}]
+        [{include file="page/recommendations/inc/list.tpl"}]
     [{/if}]
 [{/capture}]
 [{include file="layout/page.tpl" sidebar="Left"}]

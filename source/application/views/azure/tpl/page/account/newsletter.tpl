@@ -1,8 +1,8 @@
 [{capture append="oxidBlock_content"}]
-    [{if $oView->getSubscriptionStatus() != 0 }]
-        [{if $oView->getSubscriptionStatus() == 1 }]
+    [{if $oView->getSubscriptionStatus() != 0}]
+        [{if $oView->getSubscriptionStatus() == 1}]
           <div class="status success corners">[{oxmultilang ident="MESSAGE_NEWSLETTER_SUBSCRIPTION_SUCCESS"}]</div>
-        [{else }]
+        [{else}]
           <div class="status success corners">[{oxmultilang ident="MESSAGE_NEWSLETTER_SUBSCRIPTION_CANCELED"}]</div>
         [{/if}]
     [{/if}]

@@ -1,8 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    [{block name="admin_home_head" }]
-        <title>[{ oxmultilang ident="MAIN_TITLE" }]</title>
+    [{block name="admin_home_head"}]
+        <title>[{oxmultilang ident="MAIN_TITLE"}]</title>
         <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]main.css">
         <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors.css">
         <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
@@ -15,29 +15,29 @@
     parent.setTitle();
 </script>
 
-<h1>[{ oxmultilang ident="NAVIGATION_HOME" }]</h1>
+<h1>[{oxmultilang ident="NAVIGATION_HOME"}]</h1>
 <p class="desc">
-    <b>[{ oxmultilang ident="HOME_DESC" }]</b>
+    <b>[{oxmultilang ident="HOME_DESC"}]</b>
 </p>
 <hr>
 
-[{if $aMessage }]
+[{if $aMessage}]
     <div class="messagebox">
-        [{ oxmultilang ident="MAIN_INFO" }]:<br>
-        [{foreach from=$aMessage item=sMessage key=class }]
-            <p class="[{$class}]">[{ $sMessage }]</p>
+        [{oxmultilang ident="MAIN_INFO"}]:<br>
+        [{foreach from=$aMessage item=sMessage key=class}]
+            <p class="[{$class}]">[{$sMessage}]</p>
         [{/foreach}]
     </div>
     <hr>
 [{/if}]
 
-[{block name="admin_home_navigation_items" }]
+[{block name="admin_home_navigation_items"}]
 
     <table width="100%" height="84%">
     [{assign var="shMen" value=1}]
 
-    [{foreach from=$menustructure item=menuholder }]
-    [{if $shMen && $menuholder->nodeType == XML_ELEMENT_NODE && $menuholder->childNodes->length }]
+    [{foreach from=$menustructure item=menuholder}]
+    [{if $shMen && $menuholder->nodeType == XML_ELEMENT_NODE && $menuholder->childNodes->length}]
 
         [{assign var="nrCol" value=1}]
         [{assign var="ttCol" value=1}]
@@ -47,18 +47,18 @@
         [{assign var="mn" value=1}]
             <tr>
             <td valign="top" width="30%">
-            [{foreach from=$menuholder->childNodes item=menuitem }]
-            [{if $menuitem->nodeType == XML_ELEMENT_NODE && $menuitem->childNodes->length }]
+            [{foreach from=$menuholder->childNodes item=menuitem}]
+            [{if $menuitem->nodeType == XML_ELEMENT_NODE && $menuitem->childNodes->length}]
                 [{assign var="sb" value=1}]
                 <dl [{if $nrCol == 1}]class="first"[{/if}]>
-                    <dt>[{ oxmultilang ident=$menuitem->getAttribute('name')|default:$menuitem->getAttribute('id') }]</dt>
+                    <dt>[{oxmultilang ident=$menuitem->getAttribute('name')|default:$menuitem->getAttribute('id')}]</dt>
                     <dd>
                         <ul>
                         [{strip}]
-                        [{foreach from=$menuitem->childNodes item=submenuitem }]
+                        [{foreach from=$menuitem->childNodes item=submenuitem}]
                         [{if $submenuitem->nodeType == XML_ELEMENT_NODE}]
                             <li>
-                                <a href="[{ $submenuitem->getAttribute('link') }]" onclick="_homeExpAct('nav-1-[{$mn}]','nav-1-[{$mn}]-[{$sb}]');" target="basefrm"><b>[{ oxmultilang ident=$submenuitem->getAttribute('name')|default:$submenuitem->getAttribute('id') }]</b></a>
+                                <a href="[{$submenuitem->getAttribute('link')}]" onclick="_homeExpAct('nav-1-[{$mn}]','nav-1-[{$mn}]-[{$sb}]');" target="basefrm"><b>[{oxmultilang ident=$submenuitem->getAttribute('name')|default:$submenuitem->getAttribute('id')}]</b></a>
                             </li>
                             [{assign var="sb" value=$sb+1}]
                         [{/if}]
@@ -91,11 +91,11 @@ function openExchange()
 {
     [{assign var="sExchangeUrl" value=false}]
     [{assign var="mn" value=1}]
-    [{foreach from=$menustructure item=menuholder }]
-      [{if $menuholder->nodeType == XML_ELEMENT_NODE && $menuholder->childNodes->length }]
+    [{foreach from=$menustructure item=menuholder}]
+      [{if $menuholder->nodeType == XML_ELEMENT_NODE && $menuholder->childNodes->length}]
         [{assign var="smn" value=1}]
-        [{foreach from=$menuholder->childNodes item=menuitem }]
-          [{if $menuitem->nodeType == XML_ELEMENT_NODE && $menuitem->childNodes->length }]
+        [{foreach from=$menuholder->childNodes item=menuitem}]
+          [{if $menuitem->nodeType == XML_ELEMENT_NODE && $menuitem->childNodes->length}]
             [{if $menuitem->getAttribute('id') == 'dyn_menu' && $menuitem->getAttribute('name') == 'mxoxexchange'}]
             [{assign var="sExchangeUrl" value=$menuitem->getAttribute('url')}]
 
@@ -123,7 +123,7 @@ function openExchange()
 </tr>
 [{/if}]
 <tr><td colspan="5" valign="bottom">
-    <iframe src="[{ $oViewConf->getServiceUrl() }]banners/home.html" width="100%" frameborder="0" scrolling="auto" noresize marginwidth="0" marginheight="0">oxid</iframe>
+    <iframe src="[{$oViewConf->getServiceUrl()}]banners/home.html" width="100%" frameborder="0" scrolling="auto" noresize marginwidth="0" marginheight="0">oxid</iframe>
 </td></tr>
 [{/if}]
 </table>

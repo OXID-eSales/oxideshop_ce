@@ -32,9 +32,9 @@
             [{/if}]
         [{/if}]
 
-        [{if $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement') }]
-            [{assign var="oExplanationMarks" value=$oView->getBasketContentMarkGenerator() }]
-            [{if $oxcmp_basket->hasArticlesWithDownloadableAgreement() }]
+        [{if $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement')}]
+            [{assign var="oExplanationMarks" value=$oView->getBasketContentMarkGenerator()}]
+            [{if $oxcmp_basket->hasArticlesWithDownloadableAgreement()}]
                 [{oxifcontent ident="oxdownloadableproductsagreement" object="oContent"}]
                     <p id="noteForDownloadableArticles" class="agbConfirmation">
                         <input id="oxdownloadableproductsagreement" class="checkbox" type="checkbox" name="oxdownloadableproductsagreement" value="1">
@@ -42,7 +42,7 @@
                     </p>
                 [{/oxifcontent}]
             [{/if}]
-            [{if $oxcmp_basket->hasArticlesWithIntangibleAgreement() }]
+            [{if $oxcmp_basket->hasArticlesWithIntangibleAgreement()}]
                 [{oxifcontent ident="oxserviceproductsagreement" object="oContent"}]
                     <p id="noteForIntangibleArticles" class="agbConfirmation">
                         <input id="oxserviceproductsagreement" class="checkbox" type="checkbox" name="oxserviceproductsagreement" value="1">

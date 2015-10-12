@@ -16,10 +16,10 @@
         <div class="errorBox" style="width: auto;">
               [{if count($Errors) > 0 && count($Errors.default) > 0}]
               <div class="error">
-                  [{foreach from=$Errors.default item=oEr key=key }]
-                      <p class="msg">[{ $oEr->getOxMessage()}]</p>
+                  [{foreach from=$Errors.default item=oEr key=key}]
+                      <p class="msg">[{$oEr->getOxMessage()}]</p>
 
-                      <p class="stackTrace">[{ $oEr->getStackTrace()|nl2br }];</p>
+                      <p class="stackTrace">[{$oEr->getStackTrace()|nl2br}];</p>
                   [{/foreach}]
               </div>
               [{/if}]          

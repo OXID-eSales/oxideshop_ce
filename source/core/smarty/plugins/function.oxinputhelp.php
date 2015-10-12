@@ -24,7 +24,7 @@
  * Smarty function
  * -------------------------------------------------------------
  * Purpose: Output help popup icon and help text
- * add [{ oxinputhelp ident="..." }] where you want to display content
+ * add [{oxinputhelp ident="..."}] where you want to display content
  * -------------------------------------------------------------
  *
  * @param array  $params  params

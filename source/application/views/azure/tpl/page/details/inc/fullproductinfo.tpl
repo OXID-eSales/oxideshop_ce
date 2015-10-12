@@ -7,7 +7,7 @@
         [{if $oView->getAlsoBoughtTheseProducts()}]
             [{include file="widget/product/list.tpl" type="grid" listId="alsoBought" header="light" head="CUSTOMERS_ALSO_BOUGHT"|oxmultilangassign|colon products=$oView->getAlsoBoughtTheseProducts()}]
         [{/if}]
-        [{if $oView->isReviewActive() }]
+        [{if $oView->isReviewActive()}]
         <div class="widgetBox reviews">
             <h4>[{oxmultilang ident="WRITE_PRODUCT_REVIEW"}]</h4>
             [{assign var="product" value=$oView->getProduct()}]
@@ -18,5 +18,5 @@
         </div>
         [{/if}]
     </div>
-    [{ include file="page/details/inc/related_products.tpl" }]
+    [{include file="page/details/inc/related_products.tpl"}]
 </div>

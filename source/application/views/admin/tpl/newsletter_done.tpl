@@ -12,17 +12,17 @@ window.onload = function ()
 //-->
 </script>
 
-<form name="search" id="search" action="[{ $oViewConf->getSelfLink() }]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
 [{include file="_formparams.tpl" cl="newsletter_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 </form>
 
 <div id="liste">
 [{foreach from=$oView->getMailErrors() item=sError}]
-  [{ $sError }]<br>
+  [{$sError}]<br>
 [{/foreach}]
 <center>
-<h1>[{ oxmultilang ident="NEWSLETTER_DONE_NEWSSEND" }]</h1>
-<a href="JavaScript:var oSearch = document.getElementById('search');oSearch.submit();"><b>[{ oxmultilang ident="NEWSLETTER_DONE_GOTONEWSLETTER" }]</b></a>
+<h1>[{oxmultilang ident="NEWSLETTER_DONE_NEWSSEND"}]</h1>
+<a href="JavaScript:var oSearch = document.getElementById('search');oSearch.submit();"><b>[{oxmultilang ident="NEWSLETTER_DONE_GOTONEWSLETTER"}]</b></a>
 </center>
 </div>
 

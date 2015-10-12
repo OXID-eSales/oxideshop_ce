@@ -5,16 +5,16 @@
     {
 
         YAHOO.oxid.container1 = new YAHOO.oxid.aoc( 'container1',
-                                                    [ [{ foreach from=$oxajax.container1 item=aItem key=iKey }]
-                                                       [{$sSep}][{strip}]{ key:'_[{ $iKey }]', ident: [{if $aItem.4 }]true[{else}]false[{/if}]
-                                                       [{if !$aItem.4 }],
-                                                       label: '[{ oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper }]',
-                                                       visible: [{if $aItem.2 }]true[{else}]false[{/if}]
+                                                    [ [{foreach from=$oxajax.container1 item=aItem key=iKey}]
+                                                       [{$sSep}][{strip}]{ key:'_[{$iKey}]', ident: [{if $aItem.4}]true[{else}]false[{/if}]
+                                                       [{if !$aItem.4}],
+                                                       label: '[{oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper}]',
+                                                       visible: [{if $aItem.2}]true[{else}]false[{/if}]
                                                        [{/if}]}
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
-                                                      [{ /foreach }] ],
-                                                    '[{ $oViewConf->getAjaxLink() }]cmpid=container1&container=article_bundle&synchoxid=[{ $oxid }]',
+                                                      [{/foreach}] ],
+                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=article_bundle&synchoxid=[{$oxid}]',
                                                      { selectionMode: "single" }
                                                     );
 
@@ -22,7 +22,7 @@
         {
             oSelect = $('artcat');
             if ( oSelect.selectedIndex ) {
-                sRequest += '&oxid='+oSelect.options[oSelect.selectedIndex].value+'&synchoxid=[{ $oxid }]';
+                sRequest += '&oxid='+oSelect.options[oSelect.selectedIndex].value+'&synchoxid=[{$oxid}]';
             }
             return sRequest;
         }
@@ -53,7 +53,7 @@
                 oParam = YAHOO.oxid.container1.getRecord(aSelRows[0]);
                 sRequest = '&oxbundleid=' + oParam._oData._6;
             }
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{ $oViewConf->getAjaxLink() }]&cmpid=container1&container=article_bundle&fnc=addarticlebundle&oxid=[{ $oxid }]'+sRequest, callback );
+            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container1&container=article_bundle&fnc=addarticlebundle&oxid=[{$oxid}]'+sRequest, callback );
 
         }
         YAHOO.oxid.container1.onRemove = function()
@@ -71,7 +71,7 @@
                 failure: YAHOO.oxid.container1.onFailure,
                 scope:   YAHOO.oxid.container1
             };
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{ $oViewConf->getAjaxLink() }]&cmpid=container1&container=article_bundle&fnc=removearticlebundle&oxid=[{ $oxid }]', callback );
+            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container1&container=article_bundle&fnc=removearticlebundle&oxid=[{$oxid}]', callback );
 
         }
         // subscribint event listeners on buttons
@@ -84,16 +84,16 @@
 
     <table width="100%">
         <tr class="edittext">
-            <td >[{ oxmultilang ident="GENERAL_FILTERING" }]<br /><br /></td>
+            <td >[{oxmultilang ident="GENERAL_FILTERING"}]<br /><br /></td>
         </tr>
         <tr class="edittext">
-            <td align="center"><b>[{ oxmultilang ident="ARTICLE_BUNDLE_ALLITEMS" }]</b></td>
+            <td align="center"><b>[{oxmultilang ident="ARTICLE_BUNDLE_ALLITEMS"}]</b></td>
         </tr>
         <tr>
             <td style="padding-left:4px;padding-right:10px">
                 <select name="artcat" id="artcat" style="width:100%;" class="editinput">
                 [{foreach from=$artcattree->aList item=pcat}]
-                <option value="[{ $pcat->oxcategories__oxid->value }]">[{ $pcat->oxcategories__oxtitle->value }]</option>
+                <option value="[{$pcat->oxcategories__oxid->value}]">[{$pcat->oxcategories__oxtitle->value}]</option>
                 [{/foreach}]
                 </select>
             </td>
@@ -103,14 +103,14 @@
         </tr>
         <tr>
             <td>
-                <input id="saveBtn" type="button" class="edittext oxid-aoc-button" value="[{ oxmultilang ident="ARTICLE_BUNDLE_ASSIGNARTICLE" }]">
-                <input id="remBtn" type="button" class="edittext oxid-aoc-button" value="[{ oxmultilang ident="ARTICLE_BUNDLE_UNASSIGNARTICLE" }]" [{if !$bundle_artnum }] disabled [{/if}]>
+                <input id="saveBtn" type="button" class="edittext oxid-aoc-button" value="[{oxmultilang ident="ARTICLE_BUNDLE_ASSIGNARTICLE"}]">
+                <input id="remBtn" type="button" class="edittext oxid-aoc-button" value="[{oxmultilang ident="ARTICLE_BUNDLE_UNASSIGNARTICLE"}]" [{if !$bundle_artnum}] disabled [{/if}]>
             </td>
         </tr>
         <tr>
-            <td valign="top" class="edittext" id="_bundle" [{if !$bundle_artnum }] style="visibility:hidden" [{/if}]>
-              <b>[{ oxmultilang ident="ARTICLE_BUNDLE_ASSIGNEDARTICLE" }]</b>
-              <b id="bundle_artnum">[{ $bundle_artnum }]</b> <b id="bundle_title">[{ $bundle_title }]</b>
+            <td valign="top" class="edittext" id="_bundle" [{if !$bundle_artnum}] style="visibility:hidden" [{/if}]>
+              <b>[{oxmultilang ident="ARTICLE_BUNDLE_ASSIGNEDARTICLE"}]</b>
+              <b id="bundle_artnum">[{$bundle_artnum}]</b> <b id="bundle_title">[{$bundle_title}]</b>
             </td>
         </tr>
     </table>

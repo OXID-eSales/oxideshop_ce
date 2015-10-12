@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    <title>[{ $title }]</title>
+    <title>[{$title}]</title>
     <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
   <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
 
@@ -19,7 +19,7 @@
 
     <link rel="stylesheet" type="text/css" href="[{$oViewConf->getResourceUrl()}]aoc.css">
     <!--[if IE 8]><link rel="stylesheet" type="text/css" href="[{$oViewConf->getResourceUrl()}]aoc_ie8.css"><![endif]-->
-    <script type="text/javascript" src="[{ 	$oViewConf->getResourceUrl() }]yui/oxid-aoc.js"></script>
+    <script type="text/javascript" src="[{	$oViewConf->getResourceUrl()}]yui/oxid-aoc.js"></script>
 
     [{if $readonly}]
         [{assign var="readonly" value="readonly disabled"}]

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="[{$oView->getCharSet()}]" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-        [{assign var="channel" value=$oView->getChannel() }]
+        [{assign var="channel" value=$oView->getChannel()}]
         <title>[{$channel.title}]</title>
         <link>[{$channel.link}]</link>
         <description>[{$channel.description}]</description>

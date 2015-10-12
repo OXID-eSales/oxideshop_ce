@@ -125,8 +125,7 @@
                 countrySelectId="delCountrySelect"
                 stateSelectName="deladr[oxaddress__oxstateid]"
                 selectedStateIdPrim=$deladr.oxaddress__oxstateid
-                selectedStateId=$delivadr->oxaddress__oxstateid->value
-                }]
+                selectedStateId=$delivadr->oxaddress__oxstateid->value}]
             </li>
         [{/block}]
         <li [{if $aErrors.oxaddress__oxfon}]class="oxInValid"[{/if}]>

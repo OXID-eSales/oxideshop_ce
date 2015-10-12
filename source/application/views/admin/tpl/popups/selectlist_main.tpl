@@ -5,38 +5,38 @@
     {
 
         YAHOO.oxid.container1 = new YAHOO.oxid.aoc( 'container1',
-                                                    [ [{ foreach from=$oxajax.container1 item=aItem key=iKey }]
-                                                       [{$sSep}][{strip}]{ key:'_[{ $iKey }]', ident: [{if $aItem.4 }]true[{else}]false[{/if}]
-                                                       [{if !$aItem.4 }],
-                                                       label: '[{ oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper }]',
-                                                       visible: [{if $aItem.2 }]true[{else}]false[{/if}]
+                                                    [ [{foreach from=$oxajax.container1 item=aItem key=iKey}]
+                                                       [{$sSep}][{strip}]{ key:'_[{$iKey}]', ident: [{if $aItem.4}]true[{else}]false[{/if}]
+                                                       [{if !$aItem.4}],
+                                                       label: '[{oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper}]',
+                                                       visible: [{if $aItem.2}]true[{else}]false[{/if}]
                                                        [{/if}]}
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
-                                                      [{ /foreach }] ],
-                                                    '[{ $oViewConf->getAjaxLink() }]cmpid=container1&container=selectlist_main&synchoxid=[{ $oxid }]'
+                                                      [{/foreach}] ],
+                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=selectlist_main&synchoxid=[{$oxid}]'
                                                     );
 
         [{assign var="sSep" value=""}]
 
         YAHOO.oxid.container2 = new YAHOO.oxid.aoc( 'container2',
-                                                    [ [{ foreach from=$oxajax.container2 item=aItem key=iKey }]
-                                                       [{$sSep}][{strip}]{ key:'_[{ $iKey }]', ident: [{if $aItem.4 }]true[{else}]false[{/if}]
-                                                       [{if !$aItem.4 }],
-                                                       label: '[{ oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper }]',
-                                                       visible: [{if $aItem.2 }]true[{else}]false[{/if}],
+                                                    [ [{foreach from=$oxajax.container2 item=aItem key=iKey}]
+                                                       [{$sSep}][{strip}]{ key:'_[{$iKey}]', ident: [{if $aItem.4}]true[{else}]false[{/if}]
+                                                       [{if !$aItem.4}],
+                                                       label: '[{oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper}]',
+                                                       visible: [{if $aItem.2}]true[{else}]false[{/if}],
                                                        formatter: YAHOO.oxid.aoc.custFormatter
                                                        [{/if}]}
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
-                                                      [{ /foreach }] ],
-                                                    '[{ $oViewConf->getAjaxLink() }]cmpid=container2&container=selectlist_main&oxid=[{ $oxid }]'
+                                                      [{/foreach}] ],
+                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container2&container=selectlist_main&oxid=[{$oxid}]'
                                                     );
         YAHOO.oxid.container1.modRequest = function( sRequest )
         {
             oSelect = $('artcat');
             if ( oSelect.selectedIndex ) {
-                sRequest += '&oxid='+oSelect.options[oSelect.selectedIndex].value+'&synchoxid=[{ $oxid }]';
+                sRequest += '&oxid='+oSelect.options[oSelect.selectedIndex].value+'&synchoxid=[{$oxid}]';
             }
             return sRequest;
         }
@@ -70,16 +70,16 @@
             var sOxid = oParam.record._oData._7;
             if ( YAHOO.oxid.container3 == null) {
                 YAHOO.oxid.container3 = new YAHOO.oxid.aoc( 'container3',
-                                                [ [{ foreach from=$oxajax.container3 item=aItem key=iKey }]
-                                                   { key:'_[{ $iKey }]', ident: [{if $aItem.4 }]true[{else}]false[{/if}]
-                                                   [{if !$aItem.4 }],
-                                                   label: '[{ oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper }]',
-                                                   visible: [{if $aItem.2 }]true[{else}]false[{/if}],
+                                                [ [{foreach from=$oxajax.container3 item=aItem key=iKey}]
+                                                   { key:'_[{$iKey}]', ident: [{if $aItem.4}]true[{else}]false[{/if}]
+                                                   [{if !$aItem.4}],
+                                                   label: '[{oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper}]',
+                                                   visible: [{if $aItem.2}]true[{else}]false[{/if}],
                                                    formatter: YAHOO.oxid.aoc.custFormatter,
                                                    sortable: false
                                                    [{/if}]},
-                                                  [{ /foreach }] ],
-                                                '[{ $oViewConf->getAjaxLink() }]cmpid=container1&container=selectlist_order&oxid='+sOxid,
+                                                  [{/foreach}] ],
+                                                '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=selectlist_order&oxid='+sOxid,
                                                 { selectionMode:'single' }
                                                 )
                 //
@@ -138,22 +138,22 @@
             <col span="1" width="4%" />
         </colgroup>
         <tr class="edittext">
-            <td colspan="4">[{ oxmultilang ident="GENERAL_AJAX_DESCRIPTION" }]<br>[{ oxmultilang ident="GENERAL_FILTERING" }]<br /><br /></td>
+            <td colspan="4">[{oxmultilang ident="GENERAL_AJAX_DESCRIPTION"}]<br>[{oxmultilang ident="GENERAL_FILTERING"}]<br /><br /></td>
         </tr>
         <tr class="edittext">
-            <td align="center" valign="top"><b>[{ oxmultilang ident="GENERAL_ALLITEMS" }]</b></td>
+            <td align="center" valign="top"><b>[{oxmultilang ident="GENERAL_ALLITEMS"}]</b></td>
             <td align="center" valign="top">
-              <b>[{ oxmultilang ident="SELECTLIST_MAIN_ITEMSWITHCHOSLIST" }]</b><br />
-              <b>[{ oxmultilang ident="GENERAL_CLICKFORDETAILS" }]</b>
+              <b>[{oxmultilang ident="SELECTLIST_MAIN_ITEMSWITHCHOSLIST"}]</b><br />
+              <b>[{oxmultilang ident="GENERAL_CLICKFORDETAILS"}]</b>
             </td>
-            <td align="center" valign="top">[{ oxmultilang ident="SELECTLIST_MAIN_CHOSENITEMSLIST" }]</td>
+            <td align="center" valign="top">[{oxmultilang ident="SELECTLIST_MAIN_CHOSENITEMSLIST"}]</td>
             <td></td>
         </tr>
         <tr>
             <td class="oxid-aoc-category">
                 <select name="artcat" id="artcat">
                 [{foreach from=$artcattree->aList item=pcat}]
-                <option value="[{ $pcat->oxcategories__oxid->value }]">[{ $pcat->oxcategories__oxtitle->value }]</option>
+                <option value="[{$pcat->oxcategories__oxid->value}]">[{$pcat->oxcategories__oxtitle->value}]</option>
                 [{/foreach}]
                 </select>
             </td>
@@ -169,8 +169,8 @@
             </td>
         </tr>
         <tr>
-            <td class="oxid-aoc-actions"><input type="button" value="[{ oxmultilang ident="GENERAL_AJAX_ASSIGNALL" }]" id="container1_btn"></td>
-            <td class="oxid-aoc-actions"><input type="button" value="[{ oxmultilang ident="GENERAL_AJAX_UNASSIGNALL" }]" id="container2_btn"></td>
+            <td class="oxid-aoc-actions"><input type="button" value="[{oxmultilang ident="GENERAL_AJAX_ASSIGNALL"}]" id="container1_btn"></td>
+            <td class="oxid-aoc-actions"><input type="button" value="[{oxmultilang ident="GENERAL_AJAX_UNASSIGNALL"}]" id="container2_btn"></td>
         </tr>
     </table>
 

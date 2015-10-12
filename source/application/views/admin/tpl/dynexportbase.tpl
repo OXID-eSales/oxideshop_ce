@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>[{ oxmultilang ident="GENERAL_ADMIN_TITLE" }]</title>
+    <title>[{oxmultilang ident="GENERAL_ADMIN_TITLE"}]</title>
 </head>
 
 <!-- frames -->

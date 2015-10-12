@@ -12,7 +12,7 @@
             <div property="gr:hasUnitOfMeasurement" content="C62" datatype="xsd:string"></div>
             <div property="gr:hasCurrency" content="[{$currency->name}]" datatype="xsd:string"></div>
 [{/capture}]
-[{if $oProduct->loadAmountPriceInfo() }]
+[{if $oProduct->loadAmountPriceInfo()}]
     [{foreach from=$oProduct->loadAmountPriceInfo() item=priceItem name=amountPrice}]
         [{if $smarty.foreach.amountPrice.first}]
             [{assign var="iRDFaMinAmount" value=$priceItem->oxprice2article__oxamount->value}]

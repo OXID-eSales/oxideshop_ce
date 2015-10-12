@@ -11,10 +11,10 @@
                 [{oxeval var=$oLongdesc}]
                 [{if $oDetailsProduct->oxarticles__oxexturl->value}]
                     <a id="productExturl" class="js-external" href="http://[{$oDetailsProduct->oxarticles__oxexturl->value}]">
-                    [{if $oDetailsProduct->oxarticles__oxurldesc->value }]
-                        [{$oDetailsProduct->oxarticles__oxurldesc->value }]
+                    [{if $oDetailsProduct->oxarticles__oxurldesc->value}]
+                        [{$oDetailsProduct->oxarticles__oxurldesc->value}]
                     [{else}]
-                        [{$oDetailsProduct->oxarticles__oxexturl->value }]
+                        [{$oDetailsProduct->oxarticles__oxexturl->value}]
                     [{/if}]
                     </a>
                 [{/if}]

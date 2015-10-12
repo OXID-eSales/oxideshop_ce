@@ -11,12 +11,12 @@ window.onload = function ()
 //-->
 </script>
 
-[{foreach from=$oView->getCatListUpdateInfo() item=curr_data }]
-  [{ $curr_data }]
+[{foreach from=$oView->getCatListUpdateInfo() item=curr_data}]
+  [{$curr_data}]
 [{/foreach}]
 
 <br>
-&nbsp;&nbsp;&nbsp;<button onclick="window.close()">[{ oxmultilang ident="CATEGORY_UPDATE_CLOSE" }]</button>
+&nbsp;&nbsp;&nbsp;<button onclick="window.close()">[{oxmultilang ident="CATEGORY_UPDATE_CLOSE"}]</button>
 <br><br>
 
 

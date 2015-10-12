@@ -1,6 +1,6 @@
-<b>[{ oxmultilang ident="REPORT_SEARCHSTRINGS" }] :</b><br>
+<b>[{oxmultilang ident="REPORT_SEARCHSTRINGS"}] :</b><br>
 <br>
-[{ oxmultilang ident="REPORT_SEARCHSTRINGS_INTIME" }] :<br>
+[{oxmultilang ident="REPORT_SEARCHSTRINGS_INTIME"}] :<br>
 <br>
 [{if $drawStat}]
 <table class="report_searchstrings_table" cellpadding="0" cellspacing="0" width="800">
@@ -11,7 +11,7 @@
          <td colspan="[{$allCols}]" align="center">&nbsp;</td>
         </tr>
         <tr>
-         <td colspan="[{$allCols}]" align="center"><b>[{ oxmultilang ident="REPORT_SEARCHSTRINGS_SEARCHSRT" }]</b></td>
+         <td colspan="[{$allCols}]" align="center"><b>[{oxmultilang ident="REPORT_SEARCHSTRINGS_SEARCHSRT"}]</b></td>
         </tr>
         <tr>
          <td colspan="[{$allCols}]" align="center">&nbsp;</td>
@@ -28,7 +28,7 @@
         [{foreach name=outer item=percent from=$percents}]
          [{foreach key=key item=curr_point from=$percent}]
          <tr>
-          <td class="report_searchstrings_scale">[{ $key }]&nbsp;</td><td colspan="[{$cols}]"><img src="[{ $oViewConf->getBaseDir() }]/out/admin/img/slide.jpg" height="20" width="[{$curr_point}]%"></td><td></td>
+          <td class="report_searchstrings_scale">[{$key}]&nbsp;</td><td colspan="[{$cols}]"><img src="[{$oViewConf->getBaseDir()}]/out/admin/img/slide.jpg" height="20" width="[{$curr_point}]%"></td><td></td>
          </tr>
          [{/foreach}]
         [{/foreach}]
@@ -40,7 +40,7 @@
     </tr>
   </table>
 [{else}]
-<b>[{ oxmultilang ident="GENERAL_NODATA" }]</b>
+<b>[{oxmultilang ident="GENERAL_NODATA"}]</b>
 [{/if}]
 <br>
 <br>

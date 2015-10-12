@@ -1,3 +1,3 @@
-[{ oxcontent ident=$contentplainident|default:"oxregisterplainemail" }]
+[{oxcontent ident=$contentplainident|default:"oxregisterplainemail"}]
 
-[{ oxcontent ident="oxemailfooterplain" }]
+[{oxcontent ident="oxemailfooterplain"}]

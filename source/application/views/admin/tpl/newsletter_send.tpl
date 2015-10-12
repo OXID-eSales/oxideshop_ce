@@ -9,24 +9,24 @@
 window.onload = function ()
 {
     top.reloadEditFrame();
-    [{ if $updatelist == 1}]
+    [{if $updatelist == 1}]
         top.oxid.admin.updateList('[{$oView->getEditObjectId()}]');
-    [{ /if}]
+    [{/if}]
 }
 //-->
 </script>
     <body>
 
-        <form name="search" id="search" action="[{ $oViewConf->getSelfLink() }]" method="post">
+        <form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
             [{include file="_formparams.tpl" cl="pricealarm_list" lstrt=$lstrt actedit=$actedit oxid=$oView->getEditObjectId() fnc="" language=$actlang editlanguage=$actlang}]
         </form>
 
         <div class="liste">
             [{foreach from=$oView->getMailErrors() item=sError}]
-                [{ $sError }]<br>
+                [{$sError}]<br>
             [{/foreach}]
             <center>
-                <h1>[{ oxmultilang ident="NEWSLETTER_SEND_SEND1" }] : [{$iSend}] [{ oxmultilang ident="NEWSLETTER_SEND_SEND2" }] [{$oView->getUserCount()}].</h1>
+                <h1>[{oxmultilang ident="NEWSLETTER_SEND_SEND1"}] : [{$iSend}] [{oxmultilang ident="NEWSLETTER_SEND_SEND2"}] [{$oView->getUserCount()}].</h1>
             </center>
         </div>
 

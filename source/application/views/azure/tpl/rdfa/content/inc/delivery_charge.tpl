@@ -1,4 +1,4 @@
-[{assign var="currency" value=$oView->getActCurrency() }]
+[{assign var="currency" value=$oView->getActCurrency()}]
 [{foreach from=$oView->getNotMappedToRDFaDeliverySets() item=oNewDeliveryMethod}]
     <div about="[{$sRDFaUrl}]#[{$oNewDeliveryMethod->oxdeliveryset__oxtitle->value|strip:''|cat:'_'|cat:$oNewDeliveryMethod->oxdeliveryset__oxid->value}]" typeof="gr:DeliveryMethod">
         <div property="rdfs:label" content="[{$oNewDeliveryMethod->oxdeliveryset__oxtitle->value}]"></div>

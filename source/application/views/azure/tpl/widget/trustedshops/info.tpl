@@ -1,14 +1,14 @@
 [{oxscript add="$('a.js-external').attr('target', '_blank');"}]
 <!-- Trusted Shops Siegel -->
-[{if $oView->getTrustedShopId() }]
-    [{assign var="tsId" value=$oView->getTrustedShopId() }]
+[{if $oView->getTrustedShopId()}]
+    [{assign var="tsId" value=$oView->getTrustedShopId()}]
 [{/if}]
 
-[{if $oView->getTSExcellenceId() }]
-    [{assign var="tsId" value=$oView->getTSExcellenceId() }]
+[{if $oView->getTSExcellenceId()}]
+    [{assign var="tsId" value=$oView->getTSExcellenceId()}]
 [{/if}]
 
-[{if $tsId }]
+[{if $tsId}]
     [{oxscript include='js/widgets/oxtsbadge.js'}]
     [{oxscript add="$( 'body' ).oxTsBadge({trustedShopId:'`$tsId`'});"}]
     <noscript>
@@ -17,9 +17,9 @@
         </a>
     </noscript>
 [{else}]
-    <a id="tsMembership" class="js-external" href="[{ oxmultilang ident="TRUSTED_SHOPS_LINK" }]">
-        [{assign var="sTrustShopImg" value="trustedshops_"|cat:$oViewConf->getActLanguageAbbr()|cat:".gif" }]
-        <img src="[{$oViewConf->getImageUrl($sTrustShopImg)}]" alt="[{ oxmultilang ident="MORE" }]">
+    <a id="tsMembership" class="js-external" href="[{oxmultilang ident="TRUSTED_SHOPS_LINK"}]">
+        [{assign var="sTrustShopImg" value="trustedshops_"|cat:$oViewConf->getActLanguageAbbr()|cat:".gif"}]
+        <img src="[{$oViewConf->getImageUrl($sTrustShopImg)}]" alt="[{oxmultilang ident="MORE"}]">
     </a>
 [{/if}]
 <!-- / Trusted Shops Siegel -->

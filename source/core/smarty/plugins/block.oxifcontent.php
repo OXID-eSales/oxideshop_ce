@@ -27,7 +27,7 @@
  * Type: string, html
  * Name: block_oxifcontent
  * Purpose: Output content snippet if content exists
- * add [{oxifcontent ident="..." }][{/oxifcontent}] where you want to display content
+ * add [{oxifcontent ident="..."}][{/oxifcontent}] where you want to display content
  * -------------------------------------------------------------
  *
  * @param array  $params  params

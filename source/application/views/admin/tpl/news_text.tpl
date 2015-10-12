@@ -19,35 +19,35 @@ function loadLang(obj)
 //-->
 </script>
 
-<form name="transfer" id="transfer" action="[{ $oViewConf->getSelfLink() }]" method="post">
-    [{ $oViewConf->getHiddenSid() }]
-    <input type="hidden" name="oxid" value="[{ $oxid }]">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="news_text">
-    <input type="hidden" name="editlanguage" value="[{ $editlanguage }]">
+    <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
-        <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post" onSubmit="copyLongDesc( 'oxnews__oxlongdesc' );">
-        [{ $oViewConf->getHiddenSid() }]
+        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="copyLongDesc( 'oxnews__oxlongdesc' );">
+        [{$oViewConf->getHiddenSid()}]
         <input type="hidden" name="cl" value="news_text">
         <input type="hidden" name="fnc" value="">
-        <input type="hidden" name="oxid" value="[{ $oxid }]">
-        <input type="hidden" name="voxid" value="[{ $oxid }]">
-        <input type="hidden" name="editval[oxnews__oxid]" value="[{ $oxid }]">
+        <input type="hidden" name="oxid" value="[{$oxid}]">
+        <input type="hidden" name="voxid" value="[{$oxid}]">
+        <input type="hidden" name="editval[oxnews__oxid]" value="[{$oxid}]">
         <input type="hidden" name="editval[oxnews__oxlongdesc]" value="">
 
-        [{ $editor }]
+        [{$editor}]
 
 
         <br>
-        [{if $languages}]<b>[{ oxmultilang ident="GENERAL_LANGUAGE" }]</b>
-        <select name="newslang" class="editinput" onchange="Javascript:loadLang(this)" [{ $readonly }]>
+        [{if $languages}]<b>[{oxmultilang ident="GENERAL_LANGUAGE"}]</b>
+        <select name="newslang" class="editinput" onchange="Javascript:loadLang(this)" [{$readonly}]>
         [{foreach key=key item=item from=$languages}]
           <option value="[{$key}]"[{if $newslang == $key}] SELECTED[{/if}]>[{$item->name}]</option>
         [{/foreach}]
         </select>
         [{/if}]
         <br>
-        <input type="submit" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_SAVE" }]" onClick="Javascript:document.myedit.fnc.value='save'" [{ $readonly }]>
+        <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]>
 
 </form>
 [{include file="bottomnaviitem.tpl"}]

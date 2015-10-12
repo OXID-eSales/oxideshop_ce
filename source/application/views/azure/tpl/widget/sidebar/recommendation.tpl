@@ -1,11 +1,11 @@
 [{oxscript add="$('a.js-external').attr('target', '_blank');"}]
 [{assign var="_oRecommendationList" value=$oView->getSimilarRecommLists()}]
-[{assign var="oRecommList" value=$oView->getRecommList() }]
+[{assign var="oRecommList" value=$oView->getRecommList()}]
 
-[{ if $_oRecommendationList || $oRecommList->getRecommSearch() }]
+[{if $_oRecommendationList || $oRecommList->getRecommSearch()}]
 <div class="box" id="recommendationsBox">
-    <h3>[{ oxmultilang ident="LISTMANIA" }]
-    [{assign var='rsslinks' value=$oRecommList->getRssLinks() }]
+    <h3>[{oxmultilang ident="LISTMANIA"}]
+    [{assign var='rsslinks' value=$oRecommList->getRssLinks()}]
     [{if $rsslinks.recommlists}]
         <a class="rss js-external" id="rssRecommLists" href="[{$rsslinks.recommlists.link}]" title="[{$rsslinks.recommlists.title}]">
             <img src="[{$oViewConf->getImageUrl('rss.png')}]" alt="[{$rsslinks.recommlists.title}]"><span class="FXgradOrange corners glowShadow">[{$rsslinks.recommlists.title}]</span>
@@ -14,7 +14,7 @@
     </h3>
 
     <div>
-    [{ if $_oRecommendationList }]
+    [{if $_oRecommendationList}]
         [{$_oRecommendationList->rewind()}]
 
         [{if $_oRecommendationList->current()}]
@@ -27,24 +27,24 @@
         [{/if}]
     [{/if}]
         <ul class="featuredList">
-        [{ if $_oRecommendationList }]
+        [{if $_oRecommendationList}]
             [{foreach from=$_oRecommendationList item=_oListItem name="testRecommendationsList"}]
                 <li>
-                    <a href="[{ $_oListItem->getLink() }]"><b>[{ $_oListItem->oxrecommlists__oxtitle->value|strip_tags }]</b></a>
-                    <div class="desc">[{ oxmultilang ident="LIST_BY" suffix="COLON" }] [{ $_oListItem->oxrecommlists__oxauthor->value|strip_tags }]</div>
+                    <a href="[{$_oListItem->getLink()}]"><b>[{$_oListItem->oxrecommlists__oxtitle->value|strip_tags}]</b></a>
+                    <div class="desc">[{oxmultilang ident="LIST_BY" suffix="COLON"}] [{$_oListItem->oxrecommlists__oxauthor->value|strip_tags}]</div>
                 </li>
             [{/foreach}]
         [{/if}]
-            [{ if $_oRecommendationList || $oRecommList->getRecommSearch() }]
+            [{if $_oRecommendationList || $oRecommList->getRecommSearch()}]
             <li>
-                <form name="basket" class="recommendationsSearchForm" action="[{ $oViewConf->getSelfActionLink() }]" method="post">
+                <form name="basket" class="recommendationsSearchForm" action="[{$oViewConf->getSelfActionLink()}]" method="post">
                     <div>
                         <input type="hidden" name="cl" value="recommlist">
-                        [{ $oViewConf->getHiddenSid() }]
+                        [{$oViewConf->getHiddenSid()}]
                     </div>
-                    <label>[{ oxmultilang ident="SEARCH_FOR_LISTS" suffix="COLON" }]</label>
+                    <label>[{oxmultilang ident="SEARCH_FOR_LISTS" suffix="COLON"}]</label>
                     <input type="text" name="searchrecomm" id="searchRecomm" value="[{$oRecommList->getRecommSearch()}]" class="searchInput">
-                    <button class="submitButton largeButton" type="submit">[{ oxmultilang ident="GO" }]</button>
+                    <button class="submitButton largeButton" type="submit">[{oxmultilang ident="GO"}]</button>
                 </form>
             </li>
             [{/if}]

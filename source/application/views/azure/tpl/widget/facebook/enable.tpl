@@ -1,4 +1,4 @@
-[{if $oView->isActive('FacebookConfirm') && !$oView->isFbWidgetVisible() }]
+[{if $oView->isActive('FacebookConfirm') && !$oView->isFbWidgetVisible()}]
     [{include file=$source assign="file"}]
     [{assign var='file' value=$file|strip|escape:'url'}]
     [{oxscript add="oxFacebook.buttons['`$ident`']={html:'`$file`',script:'`$script`'};"}]

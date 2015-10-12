@@ -25,7 +25,7 @@
  * Smarty function
  * -------------------------------------------------------------
  * Purpose: output SEO style url
- * add [{ oxgetseourl ident="..." }] where you want to display content
+ * add [{oxgetseourl ident="..."}] where you want to display content
  * -------------------------------------------------------------
  *
  * @param array  $params  params

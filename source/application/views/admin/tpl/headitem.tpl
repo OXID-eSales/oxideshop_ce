@@ -1,12 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-  <title>[{ $title }]</title>
+  <title>[{$title}]</title>
   <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
-  [{if isset($meta_refresh_sec,$meta_refresh_url) }]
+  [{if isset($meta_refresh_sec,$meta_refresh_url)}]
   <meta http-equiv=Refresh content="[{$meta_refresh_sec}];URL=[{$meta_refresh_url|replace:"&amp;":"&"}]">
   [{/if}]
-  <link rel="shortcut icon" href="[{ $oViewConf->getBaseDir() }]favicon.ico">
+  <link rel="shortcut icon" href="[{$oViewConf->getBaseDir()}]favicon.ico">
 
   [{block name="admin_headitem_inccss"}]
       <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]main.css">
@@ -24,25 +24,25 @@
       <script type="text/javascript">
       <!--
         // standard messages
-        var sUnassignMessage = "[{ oxmultilang ident='GENERAL_YOUWANTTOUNASSIGN' }]";
-        var sDeleteMessage   = "[{ oxmultilang ident='GENERAL_YOUWANTTODELETE' }]";;
+        var sUnassignMessage = "[{oxmultilang ident='GENERAL_YOUWANTTOUNASSIGN'}]";
+        var sDeleteMessage   = "[{oxmultilang ident='GENERAL_YOUWANTTODELETE'}]";;
 
         // class info
-        var sDefClass = '[{ $default_edit }]';
+        var sDefClass = '[{$default_edit}]';
         var sActClass = '[{$actlocation}]';
 
-        [{ if $updatelist == 1}]
+        [{if $updatelist == 1}]
         window.onload = function ()
         {
-            top.oxid.admin.updateList('[{ $oxid }]');
+            top.oxid.admin.updateList('[{$oxid}]');
         }
-        [{ /if}]
+        [{/if}]
 
 
         var ajaxpopup = null;
         function showDialog( sParams )
         {
-            ajaxpopup = window.open('[{ $oViewConf->getSelfLink()|replace:"&amp;":"&" }]'+sParams, 'ajaxpopup', 'width=800,height=680,scrollbars=yes,resizable=yes');
+            ajaxpopup = window.open('[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]'+sParams, 'ajaxpopup', 'width=800,height=680,scrollbars=yes,resizable=yes');
         }
 
         function focusPopup()

@@ -1,4 +1,5 @@
 [{assign var="shop"      value=$oEmailView->getShop()}]
+[{assign var="oView"     value=$oEmailView->getView()}]
 [{assign var="oViewConf" value=$oEmailView->getViewConfig()}]
 [{assign var="currency"  value=$oEmailView->getCurrency()}]
 [{assign var="user"      value=$oEmailView->getUser()}]
@@ -41,8 +42,7 @@
 [{/foreach}][{/if}]
 [{if $basketitem->getPersParams()}]
 [{foreach key=sVar from=$basketitem->getPersParams() item=aParam}]
-
-[{$sVar}] : [{$aParam}]
+    [{include file="page/pers_params/email_plain_order_cust.tpl" sPersParamKey=$sVar sPersParamValue=$aParam}]
 [{/foreach}]
 [{/if}]
 [{if $oViewConf->getShowGiftWrapping()}]

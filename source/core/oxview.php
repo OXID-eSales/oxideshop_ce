@@ -1030,4 +1030,60 @@ class oxView extends oxSuperCfg
 
         return $sRet;
     }
+
+    /**
+     * persparam visible, or as hidden field (in checkout)
+     * 
+     * @param $s_paramKey string
+     *
+     * @return bool
+     */
+    public function showPersParam($s_paramKey) {
+
+        $bRet = false;
+
+        if ($s_paramKey == "details")
+            $bRet = true;
+
+        return $bRet;
+    }
+
+    /**
+     * return label text for persparam (getter for text)
+     * 
+     * @param $sOxMultilangIdent
+     *
+     * @return string
+     */
+    public function getPersParamText($sOxMultilangIdent) {
+
+        if ($sOxMultilangIdent == "details") {
+            // details has different multilang-idents
+            if (isAdmin())
+                $sOxMultilangIdent = "ORDER_PACKAGE_DETAILS";
+            else
+                $sOxMultilangIdent = "LABEL";
+        }
+
+        return oxRegistry::getLang()->translateString($sOxMultilangIdent);
+    }
+
+    /**
+     * return value for persparam (getter for value)
+     * 
+     * @param $s_paramKey
+     * @param $s_paramValue
+     *
+     * @return null|other
+     */
+    public function getPersParamValue($s_paramKey, $s_paramValue) {
+
+        $_ret = null;
+
+        if ($s_paramKey == "details")
+            $_ret = $s_paramValue;
+
+        return $_ret;
+    }
+
 }

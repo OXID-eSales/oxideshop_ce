@@ -122,15 +122,7 @@ function StornoThisArticle( sID)
         <td valign="top" class="[{$listclass}]">
             [{if $listitem->getPersParams()}]
                 [{foreach key=sVar from=$listitem->getPersParams() item=aParam name=persparams}]
-                    [{if !$smarty.foreach.persparams.first}]&nbsp;&nbsp;,&nbsp;[{/if}]
-                    <em>
-                        [{if $smarty.foreach.persparams.first && $smarty.foreach.persparams.last}]
-                            [{oxmultilang ident="GENERAL_LABEL"}]
-                        [{else}]
-                            [{$sVar}] :
-                        [{/if}]
-                        [{$aParam}]
-                    </em>
+                    [{include file="pers_params/order_article.tpl" sPersParamKey=$sVar sPersParamValue=$aParam }]
                 [{/foreach}]
             [{/if}]
         </td>

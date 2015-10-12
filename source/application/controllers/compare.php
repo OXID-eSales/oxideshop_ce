@@ -293,7 +293,7 @@ class Compare extends oxUBase
 
                 // cut page articles
                 if ($this->_iArticlesPerPage > 0) {
-                    $this->_iCntPages = round($oList->count() / $this->_iArticlesPerPage + 0.49);
+                    $this->_iCntPages = ceil($oList->count() / $this->_iArticlesPerPage);
                     $aItems = $this->_removeArticlesFromPage($aItems, $oList);
                 }
 

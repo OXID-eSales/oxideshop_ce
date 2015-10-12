@@ -158,7 +158,7 @@ class VendorList extends aList
         $this->_iAllArtCnt = $oArtList->loadVendorArticles($sVendorId, $oVendor);
 
         // counting pages
-        $this->_iCntPages = round($this->_iAllArtCnt / $iNrOfCatArticles + 0.49);
+        $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrOfCatArticles);
 
         return array($oArtList, $this->_iAllArtCnt);
     }

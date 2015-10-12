@@ -140,7 +140,7 @@ class Tag extends aList
         $articleList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
         // load the articles
         $this->_iAllArtCnt = $articleList->loadTagArticles($this->getTag(), oxRegistry::getLang()->getBaseLanguage());
-        $this->_iCntPages = round($this->_iAllArtCnt / $numberOfCategoryArticles + 0.49);
+        $this->_iCntPages = ceil($this->_iAllArtCnt / $numberOfCategoryArticles);
 
         return $articleList;
     }

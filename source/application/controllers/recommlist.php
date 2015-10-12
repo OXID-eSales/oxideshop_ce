@@ -147,7 +147,7 @@ class RecommList extends aList
         if ($oList && $oList->count()) {
             $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
-            $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
+            $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
         }
         // processing list articles
         $this->_processListArticles();

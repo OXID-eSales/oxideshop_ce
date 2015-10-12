@@ -78,9 +78,7 @@ class News extends oxUBase
             $oActNews = oxNew('oxnewslist');
 
             if ($iCnt = $oActNews->getCount()) {
-
-                $this->_iCntPages = round($iCnt / $iPerPage + 0.49);
-
+                $this->_iCntPages = ceil($iCnt / $iPerPage);
                 $oActNews->loadNews($this->getActPage() * $iPerPage, $iPerPage);
                 $this->_oNewsList = $oActNews;
             }

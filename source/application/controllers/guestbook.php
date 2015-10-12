@@ -184,7 +184,7 @@ class GuestBook extends oxUBase
             /** @var oxGbEntry $oEntries */
             $oEntries = oxNew('oxgbentry');
             if ($iCnt = $oEntries->getEntryCount()) {
-                $this->_iCntPages = round($iCnt / $iNrofCatArticles + 0.49);
+                $this->_iCntPages = ceil($iCnt / $iNrofCatArticles);
                 $this->_aEntries = $oEntries->getAllEntries(
                     $this->getActPage() * $iNrofCatArticles,
                     $iNrofCatArticles,

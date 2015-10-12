@@ -40,7 +40,7 @@ class DeliverySet_Payment extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $odeliveryset = oxNew("oxdeliveryset");
             $odeliveryset->setLanguage($this->_iEditLang);

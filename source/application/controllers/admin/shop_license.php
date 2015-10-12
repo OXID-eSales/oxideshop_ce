@@ -66,7 +66,7 @@ class Shop_License extends Shop_Config
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if ($soxId != "-1") {
             // load object
             $oShop = oxNew("oxshop");
             $oShop->load($soxId);

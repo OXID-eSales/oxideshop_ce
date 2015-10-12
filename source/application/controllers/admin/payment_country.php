@@ -44,7 +44,7 @@ class Payment_Country extends oxAdminDetails
         unset($this->_aViewData["sumtype"][2]);
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oPayment = oxNew("oxpayment");
             $oPayment->loadInLang($this->_iEditLang, $soxId);

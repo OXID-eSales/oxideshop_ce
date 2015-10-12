@@ -41,7 +41,7 @@ class Adminguestbook_Main extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != '-1' && isset($soxId)) {
+        if (isset($soxId) && $soxId != '-1') {
             // load object
             $oLinks = oxNew('oxgbentry');
             $oLinks->load($soxId);

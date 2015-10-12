@@ -42,7 +42,7 @@ class Delivery_Articles extends oxAdminDetails
 
         $soxId = $this->getEditObjectId();
 
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             $this->_createCategoryTree("artcattree");
 
             // load object

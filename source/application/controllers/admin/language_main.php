@@ -66,19 +66,15 @@ class Language_Main extends oxAdminDetails
     {
         $myConfig = $this->getConfig();
 
-
         parent::render();
 
         $sOxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         //loading languages info from config
         $this->_aLangData = $this->_getLanguages();
 
-        if ($sOxId != -1) {
+        if (isset($sOxId) && $sOxId != "-1") {
             //checking if translations files exists
             $this->_checkLangTranslations($sOxId);
-        }
-
-        if ($sOxId != "-1" && isset($sOxId)) {
             $this->_aViewData["edit"] = $this->_getLanguageInfo($sOxId);
         }
 

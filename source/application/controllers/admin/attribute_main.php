@@ -45,12 +45,11 @@ class Attribute_Main extends oxAdminDetails
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
 
         // copy this tree for our article choose
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // generating category tree for select list
             $this->_createCategoryTree("artcattree", $soxId);
             // load object
             $oAttr->loadInLang($this->_iEditLang, $soxId);
-
 
             $oOtherLang = $oAttr->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {

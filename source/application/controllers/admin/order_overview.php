@@ -45,7 +45,7 @@ class Order_Overview extends oxAdminDetails
         $oLang = oxRegistry::getLang();
 
         $soxId = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oOrder->load($soxId);
 
@@ -144,7 +144,7 @@ class Order_Overview extends oxAdminDetails
     public function createPDF()
     {
         $soxId = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oOrder = oxNew("oxorder");
             if ($oOrder->load($soxId)) {

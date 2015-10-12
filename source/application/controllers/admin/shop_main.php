@@ -49,9 +49,7 @@ class Shop_Main extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-
-
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oShop = oxNew("oxshop");
             $isubjlang = oxRegistry::getConfig()->getRequestParameter("subjlang");

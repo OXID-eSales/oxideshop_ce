@@ -41,7 +41,7 @@ class Actions_Main extends oxAdminDetails
 
         // check if we right now saved a new entry
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oAction = oxNew("oxActions");
             $oAction->loadInLang($this->_iEditLang, $soxId);

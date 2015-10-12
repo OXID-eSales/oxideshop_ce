@@ -41,7 +41,7 @@ class Category_Pictures extends oxAdminDetails
         $this->_aViewData['edit'] = $oCategory = oxNew('oxCategory');
 
         $soxId = $this->getEditObjectId();
-        if ($soxId != '-1' && isset($soxId)) {
+        if (isset($soxId) && $soxId != '-1') {
             // load object
             $oCategory->load($soxId);
         }

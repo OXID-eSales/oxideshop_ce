@@ -45,7 +45,7 @@ class Category_Order extends oxAdminDetails
 
         $soxId = $this->getEditObjectId();
 
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oCategory->load($soxId);
 

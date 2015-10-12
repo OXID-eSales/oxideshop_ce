@@ -44,8 +44,7 @@ class Article_Stock extends oxAdminDetails
         $this->_aViewData["edit"] = $oArticle = oxNew("oxArticle");
 
         $soxId = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
-
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oArticle->loadInLang($this->_iEditLang, $soxId);
 
@@ -62,7 +61,6 @@ class Article_Stock extends oxAdminDetails
                 $oLang->selected = ($id == $this->_iEditLang);
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
-
 
             // variant handling
             if ($oArticle->oxarticles__oxparentid->value) {
@@ -86,7 +84,6 @@ class Article_Stock extends oxAdminDetails
             $oPriceList->selectstring($sQ);
 
             $this->_aViewData["amountprices"] = $oPriceList;
-
         }
 
         return "article_stock.tpl";

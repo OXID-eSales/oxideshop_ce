@@ -58,10 +58,9 @@ class Article_Variant extends oxAdminDetails
         $oArticle = oxNew("oxArticle");
         $this->_aViewData["edit"] = $oArticle;
 
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oArticle->loadInLang($this->_iEditLang, $soxId);
-
 
             $_POST["language"] = $_GET["language"] = $this->_iEditLang;
             $oVariants = $oArticle->getAdminVariants($this->_iEditLang);

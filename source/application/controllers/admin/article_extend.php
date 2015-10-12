@@ -54,7 +54,7 @@ class Article_Extend extends oxAdminDetails
         $this->_createCategoryTree("artcattree");
 
         // all categories
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oArticle->loadInLang($this->_iEditLang, $soxId);
 

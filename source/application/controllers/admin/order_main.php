@@ -49,11 +49,10 @@ class Order_Main extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oOrder = oxNew("oxorder");
             $oOrder->load($soxId);
-
 
             // paid ?
             $sOxPaidField = 'oxorder__oxpaid';
@@ -66,14 +65,11 @@ class Order_Main extends oxAdminDetails
                 $oOrder->$sOxPaidField = new oxField($oUtilsDate->formatDBDate($oOrder->$sOxPaidField->value));
             }
 
-
             $this->_aViewData["edit"] = $oOrder;
             $this->_aViewData["paymentType"] = $oOrder->getPaymentType();
             $this->_aViewData["oShipSet"] = $oOrder->getShippingSetList();
 
-
             if ($oOrder->$sDelTypeField->value) {
-
                 // order user
                 $oUser = oxNew('oxuser');
                 $oUser->load($oOrder->oxorder__oxuserid->value);

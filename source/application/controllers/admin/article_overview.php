@@ -44,11 +44,9 @@ class Article_Overview extends oxAdminDetails
         $this->_aViewData['edit'] = $oArticle = oxNew('oxArticle');
 
         $soxId = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
-
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oArticle->loadInLang(oxRegistry::getConfig()->getRequestParameter("editlanguage"), $soxId);
-
 
             $oDB = oxDb::getDb();
 

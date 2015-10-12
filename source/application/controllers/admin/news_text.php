@@ -39,7 +39,7 @@ class News_Text extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oNews = oxNew("oxnews");
             $iNewsLang = oxRegistry::getConfig()->getRequestParameter("newslang");
@@ -58,10 +58,7 @@ class News_Text extends oxAdminDetails
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
 
-
             $this->_aViewData["edit"] = $oNews;
-
-
         }
         $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 255, $oNews, "oxnews__oxlongdesc", "news.tpl.css");
 

@@ -49,7 +49,7 @@ class Article_Crossselling extends oxAdminDetails
         $this->_createCategoryTree("artcattree2");
 
         $soxId = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oArticle->load($soxId);
 

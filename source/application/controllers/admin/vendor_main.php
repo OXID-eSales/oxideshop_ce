@@ -39,7 +39,7 @@ class Vendor_Main extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oVendor = oxNew("oxvendor");
             $oVendor->loadInLang($this->_iEditLang, $soxId);

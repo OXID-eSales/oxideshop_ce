@@ -41,7 +41,7 @@ class Category_Text extends oxAdminDetails
         $this->_aViewData['edit'] = $oCategory = oxNew('oxCategory');
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $iCatLang = oxRegistry::getConfig()->getRequestParameter("catlang");
 
@@ -52,7 +52,6 @@ class Category_Text extends oxAdminDetails
             $this->_aViewData["catlang"] = $iCatLang;
 
             $oCategory->loadInLang($iCatLang, $soxId);
-
 
             foreach (oxRegistry::getLang()->getLanguageNames() as $id => $language) {
                 $oLang = new stdClass();

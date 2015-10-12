@@ -44,7 +44,7 @@ class Statistic_Main extends oxAdminDetails
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         $aReports = array();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oStat = oxNew("oxstatistic");
             $oStat->load($soxId);

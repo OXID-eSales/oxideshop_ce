@@ -54,7 +54,7 @@ class SelectList_Main extends oxAdminDetails
         //create empty edit object
         $this->_aViewData["edit"] = oxNew("oxselectlist");
 
-        if ($sOxId != "-1" && isset($sOxId)) {
+        if (isset($sOxId) && $sOxId != "-1") {
             // generating category tree for select list
             // A. hack - passing language by post as lists uses only language passed by POST/GET/SESSION
             $_POST["language"] = $this->_iEditLang;
@@ -79,7 +79,6 @@ class SelectList_Main extends oxAdminDetails
                 $oAttr->loadInLang(key($oOtherLang), $sOxId);
             }
             $this->_aViewData["edit"] = $oAttr;
-
 
             // remove already created languages
             $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);

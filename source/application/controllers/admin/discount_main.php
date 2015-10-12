@@ -40,7 +40,7 @@ class Discount_Main extends oxAdminDetails
         parent::render();
 
         $sOxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($sOxId != "-1" && isset($sOxId)) {
+        if (isset($sOxId) && $sOxId != "-1") {
             // load object
             $oDiscount = oxNew("oxdiscount");
             $oDiscount->loadInLang($this->_iEditLang, $sOxId);
@@ -52,7 +52,6 @@ class Discount_Main extends oxAdminDetails
             }
 
             $this->_aViewData["edit"] = $oDiscount;
-
 
             // remove already created languages
             $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
@@ -98,7 +97,7 @@ class Discount_Main extends oxAdminDetails
     {
         $sTitle = false;
         $sOxId = $this->getEditObjectId();
-        if ($sOxId != "-1" && isset($sOxId)) {
+        if (isset($sOxId) && $sOxId != "-1") {
             $sViewName = getViewName("oxarticles", $this->_iEditLang);
             $oDb = oxDb::getDb();
             $sQ = "select concat( $sViewName.oxartnum, ' ', $sViewName.oxtitle ) from oxdiscount

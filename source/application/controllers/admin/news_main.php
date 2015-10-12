@@ -48,7 +48,7 @@ class News_Main extends oxAdminDetails
         $oGroups->selectString("select * from " . getViewName("oxgroups", $this->_iEditLang));
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oNews = oxNew("oxnews");
             $oNews->loadInLang($this->_iEditLang, $soxId);
@@ -59,7 +59,6 @@ class News_Main extends oxAdminDetails
                 $oNews->loadInLang(key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oNews;
-
 
             // remove already created languages
             $this->_aViewData["posslang"] = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);

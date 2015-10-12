@@ -3,10 +3,10 @@
     <div property="gr:legalName vcard:fn" content="[{$oxcmp_shop->oxshops__oxcompany->value}]" datatype="xsd:string"></div>
     <div rel="vcard:adr">
         <div typeof="vcard:Address">
-            <div property="vcard:country-name" content="[{$oxcmp_shop->oxshops__oxcountry->value }]"></div>
-            <div property="vcard:locality" content="[{$oxcmp_shop->oxshops__oxcity->value }]"></div>
-            <div property="vcard:postal-code" content="[{$oxcmp_shop->oxshops__oxzip->value }]"></div>
-            <div property="vcard:street-address" content="[{$oxcmp_shop->oxshops__oxstreet->value }]"></div>
+            <div property="vcard:country-name" content="[{$oxcmp_shop->oxshops__oxcountry->value}]"></div>
+            <div property="vcard:locality" content="[{$oxcmp_shop->oxshops__oxcity->value}]"></div>
+            <div property="vcard:postal-code" content="[{$oxcmp_shop->oxshops__oxzip->value}]"></div>
+            <div property="vcard:street-address" content="[{$oxcmp_shop->oxshops__oxstreet->value}]"></div>
         </div>
     </div>
 [{if $aExtends.sRDFaLatitude && $aExtends.sRDFaLongitude}]

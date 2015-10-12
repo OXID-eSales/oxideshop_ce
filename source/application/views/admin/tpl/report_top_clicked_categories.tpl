@@ -1,4 +1,4 @@
-<b>[{ oxmultilang ident="REPORT_TOP_CLICKED_CATEGORIES" }] :</b><br><br>
+<b>[{oxmultilang ident="REPORT_TOP_CLICKED_CATEGORIES"}] :</b><br><br>
 [{if $drawStat}]
 <table class="report_searchstrings_table" cellpadding="0" cellspacing="0" width="800">
     <tr>
@@ -8,7 +8,7 @@
          <td colspan="[{$allCols}]" align="center">&nbsp;</td>
         </tr>
         <tr>
-         <td colspan="[{$allCols}]" align="center"><b>[{ oxmultilang ident="REPORT_TOP_CLICKED_CATEGORIES_CLICKPERCAT" }]</b></td>
+         <td colspan="[{$allCols}]" align="center"><b>[{oxmultilang ident="REPORT_TOP_CLICKED_CATEGORIES_CLICKPERCAT"}]</b></td>
         </tr>
         <tr>
          <td colspan="[{$allCols}]" align="center">&nbsp;</td>
@@ -25,7 +25,7 @@
         [{foreach name=outer item=percent from=$percents}]
          [{foreach key=key item=curr_point from=$percent}]
          <tr>
-          <td class="report_searchstrings_scale" style="height: 20px;width: 150px;">&nbsp;[{ $key }]&nbsp;</td><td colspan="[{$cols}]"><img src="[{ $oViewConf->getBaseDir() }]/out/admin/img/slide.jpg" height="10" width="[{$curr_point}]%"></td><td></td>
+          <td class="report_searchstrings_scale" style="height: 20px;width: 150px;">&nbsp;[{$key}]&nbsp;</td><td colspan="[{$cols}]"><img src="[{$oViewConf->getBaseDir()}]/out/admin/img/slide.jpg" height="10" width="[{$curr_point}]%"></td><td></td>
          </tr>
          [{/foreach}]
         [{/foreach}]
@@ -37,7 +37,7 @@
     </tr>
   </table>
 [{else}]
-<b>[{ oxmultilang ident="GENERAL_NODATA" }]</b>
+<b>[{oxmultilang ident="GENERAL_NODATA"}]</b>
 [{/if}]
 <br>
 <br>

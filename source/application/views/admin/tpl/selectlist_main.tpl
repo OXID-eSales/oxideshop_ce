@@ -43,25 +43,25 @@ function onSelect_aField(){
 //-->
 </script>
 
-[{ if $readonly }]
+[{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
 [{else}]
     [{assign var="readonly" value=""}]
 [{/if}]
 
-<form name="transfer" id="transfer" action="[{ $oViewConf->getSelfLink() }]" method="post">
-    [{ $oViewConf->getHiddenSid() }]
-    <input type="hidden" name="oxid" value="[{ $oxid }]">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="selectlist_main">
-    <input type="hidden" name="editlanguage" value="[{ $editlanguage }]">
+    <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
-<form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post">
-[{ $oViewConf->getHiddenSid() }]
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+[{$oViewConf->getHiddenSid()}]
 <input type="hidden" name="cl" value="selectlist_main">
 <input type="hidden" name="fnc" value="">
-<input type="hidden" name="oxid" value="[{ $oxid }]">
-<input type="hidden" name="editval[oxselectlist__oxid]" value="[{ $oxid }]">
+<input type="hidden" name="oxid" value="[{$oxid}]">
+<input type="hidden" name="editval[oxselectlist__oxid]" value="[{$oxid}]">
 
 <table cellspacing="0" cellpadding="0" border="0" width="98%">
 <tr>
@@ -71,28 +71,28 @@ function onSelect_aField(){
         [{block name="admin_selectlist_main_form"}]
             <tr>
                 <td class="edittext" width="100">
-                [{ oxmultilang ident="GENERAL_TITLE" }]
+                [{oxmultilang ident="GENERAL_TITLE"}]
                 </td>
                 <td class="edittext">
-                <input [{ $readonly }] type="text" class="editinput" size="25" maxlength="[{$edit->oxselectlist__oxtitle->fldmax_length}]" name="editval[oxselectlist__oxtitle]" value="[{$edit->oxselectlist__oxtitle->value}]" style="width: 150px;">
-                [{ oxinputhelp ident="HELP_GENERAL_TITLE" }]
+                <input [{$readonly}] type="text" class="editinput" size="25" maxlength="[{$edit->oxselectlist__oxtitle->fldmax_length}]" name="editval[oxselectlist__oxtitle]" value="[{$edit->oxselectlist__oxtitle->value}]" style="width: 150px;">
+                [{oxinputhelp ident="HELP_GENERAL_TITLE"}]
                 </td>
                 <td>&nbsp;</td>
             </tr>
             <tr>
                 <td class="edittext" width="100">
-                [{ oxmultilang ident="SELECTLIST_MAIN_TITLEIDENT" }]
+                [{oxmultilang ident="SELECTLIST_MAIN_TITLEIDENT"}]
                 </td>
                 <td class="edittext">
-                <input [{ $readonly }] type="text" class="editinput" size="25" maxlength="[{$edit->oxselectlist__oxident->fldmax_length}]" name="editval[oxselectlist__oxident]" value="[{$edit->oxselectlist__oxident->value}]" style="width: 150px;">
-                [{ oxinputhelp ident="HELP_SELECTLIST_MAIN_TITLEIDENT" }]
+                <input [{$readonly}] type="text" class="editinput" size="25" maxlength="[{$edit->oxselectlist__oxident->fldmax_length}]" name="editval[oxselectlist__oxident]" value="[{$edit->oxselectlist__oxident->value}]" style="width: 150px;">
+                [{oxinputhelp ident="HELP_SELECTLIST_MAIN_TITLEIDENT"}]
                 </td>
                 <td>&nbsp;
                 [{if $iErrorCode == 1}]
                 [{elseif $iErrorCode == -1}]
-                    <span class="errorbox">[{ oxmultilang ident="GENERAL_REQUIRED_MISS" }]</span>
+                    <span class="errorbox">[{oxmultilang ident="GENERAL_REQUIRED_MISS"}]</span>
                 [{elseif $iErrorCode == -2}]
-                    <span class="errorbox">[{oxmultilang ident="SELECTLIST_MAIN_ADDFIELD_POS"}] [{ oxmultilang ident="GENERAL_OUTOFBOUNDS" }]</span>
+                    <span class="errorbox">[{oxmultilang ident="SELECTLIST_MAIN_ADDFIELD_POS"}] [{oxmultilang ident="GENERAL_OUTOFBOUNDS"}]</span>
                 [{/if}]
                 </td>
             </tr>
@@ -101,15 +101,15 @@ function onSelect_aField(){
         <tr valign="top">
             [{block name="admin_selectlist_main_fields"}]
                 <td class="edittext">
-                [{ oxmultilang ident="SELECTLIST_MAIN_FIELDS" }]
+                [{oxmultilang ident="SELECTLIST_MAIN_FIELDS"}]
                 </td>
                 <td class="edittext">
                 <select name="aFields[]" id="aFields" size="12" multiple class="editinput" style="width: 150px;" onchange="javascript:onSelect_aField()">
-                   [{foreach from=$edit->getFieldList() item=sField name=fields }]
-                    <option value="[{ $smarty.foreach.fields.iteration }]__@@[{ $sField->name }]__@@[{ $sField->price }]">[{ $smarty.foreach.fields.iteration }] - [{ $sField->name }][{ if $sField->price }],[{ $sField->price }][{/if}]</option>
+                   [{foreach from=$edit->getFieldList() item=sField name=fields}]
+                    <option value="[{$smarty.foreach.fields.iteration}]__@@[{$sField->name}]__@@[{$sField->price}]">[{$smarty.foreach.fields.iteration}] - [{$sField->name}][{if $sField->price}],[{$sField->price}][{/if}]</option>
                     [{/foreach}]
                  </select>
-                 [{ oxinputhelp ident="HELP_SELECTLIST_MAIN_FIELDS" }]
+                 [{oxinputhelp ident="HELP_SELECTLIST_MAIN_FIELDS"}]
                 </td>
             [{/block}]
             <td class="edittext">
@@ -118,35 +118,35 @@ function onSelect_aField(){
                         <tr>
                             <td class="edittext" width="10">&nbsp;</td>
                             <td class="edittext" width="100">
-                                [{ oxmultilang ident="SELECTLIST_MAIN_ADDFIELD_NAME" }]&nbsp;<span style="color:red;">*</span>
+                                [{oxmultilang ident="SELECTLIST_MAIN_ADDFIELD_NAME"}]&nbsp;<span style="color:red;">*</span>
                             </td>
                             <td class="edittext" align="right">
-                                <input [{ $readonly }] type="text" class="edittext" id="EditAddName" name="sAddField" value="" size="15" style="width: 100px;">
-                                [{ oxinputhelp ident="HELP_SELECTLIST_MAIN_ADDFIELD_NAME" }]
+                                <input [{$readonly}] type="text" class="edittext" id="EditAddName" name="sAddField" value="" size="15" style="width: 100px;">
+                                [{oxinputhelp ident="HELP_SELECTLIST_MAIN_ADDFIELD_NAME"}]
                             </td>
                         </tr>
                         <tr>
                             <td class="edittext" width="10">&nbsp;</td>
                             <td class="edittext" width="100">
-                                [{ oxmultilang ident="SELECTLIST_MAIN_ADDFIELD_PREIS" }] ([{ $oActCur->sign }])
+                                [{oxmultilang ident="SELECTLIST_MAIN_ADDFIELD_PREIS"}] ([{$oActCur->sign}])
                             </td>
                             <td class="edittext" align="right">
-                                <input [{ $readonly }] type="text" class="edittext" id="EditAddPrice" name="sAddFieldPriceMod" value="" size="10" style="width: 50px;">
-                                <select [{ $readonly }] id="EditAddPriceUnit" name="sAddFieldPriceModUnit" class="editinput" style="width: 46px;">
+                                <input [{$readonly}] type="text" class="edittext" id="EditAddPrice" name="sAddFieldPriceMod" value="" size="10" style="width: 50px;">
+                                <select [{$readonly}] id="EditAddPriceUnit" name="sAddFieldPriceModUnit" class="editinput" style="width: 46px;">
                                     <option value="" >abs</option>
                                     <option value="%" >%</option>
                                 </select>
-                                [{ oxinputhelp ident="HELP_SELECTLIST_MAIN_ADDFIELD_PREIS" }]
+                                [{oxinputhelp ident="HELP_SELECTLIST_MAIN_ADDFIELD_PREIS"}]
                             </td>
                         </tr>
                         <tr>
                             <td class="edittext" width="10">&nbsp;</td>
                             <td class="edittext" width="100">
-                                [{ oxmultilang ident="SELECTLIST_MAIN_ADDFIELD_POS" }]
+                                [{oxmultilang ident="SELECTLIST_MAIN_ADDFIELD_POS"}]
                             </td>
                             <td class="edittext" align="right">
-                                <input [{ $readonly }] type="text" class="edittext" id="EditAddPos" name="sAddFieldPos" value="" size="15" style="width: 100px;">
-                                [{ oxinputhelp ident="HELP_SELECTLIST_MAIN_ADDFIELD_POS" }]
+                                <input [{$readonly}] type="text" class="edittext" id="EditAddPos" name="sAddFieldPos" value="" size="15" style="width: 100px;">
+                                [{oxinputhelp ident="HELP_SELECTLIST_MAIN_ADDFIELD_POS"}]
                             </td>
                         </tr>
                     [{/block}]
@@ -158,19 +158,19 @@ function onSelect_aField(){
                     <tr>
                         <td class="edittext" width="10">&nbsp;</td>
                         <td class="edittext" colspan="2" align="right">
-                         <input [{ $readonly }] type="submit" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_FIELDS_ADD" }]" onClick="Javascript:document.myedit.fnc.value='addfield'" [{ $readonly }] style="width: 100px;">
+                         <input [{$readonly}] type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_FIELDS_ADD"}]" onClick="Javascript:document.myedit.fnc.value='addfield'" [{$readonly}] style="width: 100px;">
                         </td>
                     </tr>
                     <tr>
                         <td class="edittext" width="10">&nbsp;</td>
                         <td class="edittext" colspan="2" align="right">
-                         <input [{ $readonly }] type="submit" id="submit_modify" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_FIELDS_MODIFY" }]" onClick="Javascript:document.myedit.fnc.value='changefield'" [{ $readonly }] style="width: 100px;" DISABLED>
+                         <input [{$readonly}] type="submit" id="submit_modify" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_FIELDS_MODIFY"}]" onClick="Javascript:document.myedit.fnc.value='changefield'" [{$readonly}] style="width: 100px;" DISABLED>
                         </td>
                     </tr>
                     <tr>
                         <td class="edittext" width="10">&nbsp;</td>
                         <td class="edittext" colspan="2" align="right">
-                         <br /><input [{ $readonly }] type="submit" id="submit_delete" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_FIELDS_DELETE" }]" onClick="Javascript:document.myedit.fnc.value='delfields'" [{ $readonly }] style="width: 150px;" DISABLED>
+                         <br /><input [{$readonly}] type="submit" id="submit_delete" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_FIELDS_DELETE"}]" onClick="Javascript:document.myedit.fnc.value='delfields'" [{$readonly}] style="width: 150px;" DISABLED>
                         </td>
                     </tr>
                 </table>
@@ -179,7 +179,7 @@ function onSelect_aField(){
         <tr>
             <td class="edittext" colspan="2">
                 <br>
-                <input [{ $readonly }] type="submit" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_SAVE" }]" onClick="Javascript:document.myedit.fnc.value='save'">
+                <input [{$readonly}] type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'">
             </td>
             <td>&nbsp;</td>
         </tr>
@@ -194,9 +194,9 @@ function onSelect_aField(){
     </td>
     <!-- Anfang rechte Seite -->
     <td valign="top" class="edittext" align="left" width="50%">
-        [{ if $oxid != "-1"}]
-        <input [{ $readonly }] type="button" value="[{ oxmultilang ident="GENERAL_ASSIGNARTICLES" }]" class="edittext" onclick="JavaScript:showDialog('&cl=selectlist_main&aoc=1&oxid=[{ $oxid }]');">
-        [{ /if}]
+        [{if $oxid != "-1"}]
+        <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNARTICLES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=selectlist_main&aoc=1&oxid=[{$oxid}]');">
+        [{/if}]
     </td>
     </tr>
 </table>

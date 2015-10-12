@@ -1,32 +1,32 @@
 [{include file="headitem.tpl" title="TOOLS_MAIN_TITLE"|oxmultilangassign}]
-[{ if $readonly }]
+[{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
 [{else}]
     [{assign var="readonly" value=""}]
 [{/if}]
-<form name="transfer" id="transfer" action="[{ $oViewConf->getSelfLink() }]" method="post">
-    [{ $oViewConf->getHiddenSid() }]
-    <input type="hidden" name="oxid" value="[{ $oxid }]">
-    <input type="hidden" name="oxidCopy" value="[{ $oxid }]">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="oxid" value="[{$oxid}]">
+    <input type="hidden" name="oxidCopy" value="[{$oxid}]">
     <input type="hidden" name="cl" value="tools_main">
 </form>
 
-<form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post">
-    [{ $oViewConf->getHiddenSid() }]
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+    [{$oViewConf->getHiddenSid()}]
     <input type="hidden" name="cl" value="tools_main">
     <input type="hidden" name="fnc" value="">
-    <input type="hidden" name="oxid" value="[{ $oxid }]">
-    <input type="hidden" name="voxid" value="[{ $oxid }]">
-    <input type="hidden" name="oxparentid" value="[{ $oxparentid }]">
-    <input type="hidden" name="editval[oxarticles__oxid]" value="[{ $oxid }]">
+    <input type="hidden" name="oxid" value="[{$oxid}]">
+    <input type="hidden" name="voxid" value="[{$oxid}]">
+    <input type="hidden" name="oxparentid" value="[{$oxparentid}]">
+    <input type="hidden" name="editval[oxarticles__oxid]" value="[{$oxid}]">
 </form>
 
 <table cellspacing="0" cellpadding="0" border="0" width="98%">
 <tr>
     <td valign="top" class="edittext">
-        <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post" target="list" enctype="multipart/form-data">
+        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" target="list" enctype="multipart/form-data">
         <input type="hidden" name="MAX_FILE_SIZE" value="[{$iMaxUploadFileSize}]">
-        [{ $oViewConf->getHiddenSid() }]
+        [{$oViewConf->getHiddenSid()}]
         <input type="hidden" name="cl" value="tools_list">
         <input type="hidden" name="fnc" value="performsql">
 
@@ -35,20 +35,20 @@
         [{block name="admin_tools_main_form"}]
             <tr>
                 <td class="edittext" valign="top">
-                    [{ oxmultilang ident="TOOLS_MAIN_UPDATESQL" }]&nbsp;&nbsp;&nbsp;
+                    [{oxmultilang ident="TOOLS_MAIN_UPDATESQL"}]&nbsp;&nbsp;&nbsp;
                 </td>
                 <td class="edittext">
-                    <textarea class="confinput" style="width: 100%; height: 120px" name="updatesql" [{ $readonly }]></textarea>
-                    [{ oxinputhelp ident="HELP_TOOLS_MAIN_UPDATESQL" }]
+                    <textarea class="confinput" style="width: 100%; height: 120px" name="updatesql" [{$readonly}]></textarea>
+                    [{oxinputhelp ident="HELP_TOOLS_MAIN_UPDATESQL"}]
                 </td>
             </tr>
             <tr>
                 <td class="edittext">
-                    [{ oxmultilang ident="TOOLS_MAIN_SQLDUMB" }] ([{ oxmultilang ident="GENERAL_MAX_FILE_UPLOAD"}] [{$sMaxFormattedFileSize}])&nbsp;&nbsp;&nbsp;
+                    [{oxmultilang ident="TOOLS_MAIN_SQLDUMB"}] ([{oxmultilang ident="GENERAL_MAX_FILE_UPLOAD"}] [{$sMaxFormattedFileSize}])&nbsp;&nbsp;&nbsp;
                 </td>
                 <td class="edittext"><br>
-                    <input type="file" style="width: 370" class="edittext" name="myfile[SQL1@usqlfile]" [{ $readonly }]>
-                    [{ oxinputhelp ident="HELP_TOOLS_MAIN_SQLDUMB" }]
+                    <input type="file" style="width: 370" class="edittext" name="myfile[SQL1@usqlfile]" [{$readonly}]>
+                    [{oxinputhelp ident="HELP_TOOLS_MAIN_SQLDUMB"}]
                 </td>
             </tr>
         [{/block}]
@@ -56,7 +56,7 @@
             <td class="edittext">
             </td>
             <td class="edittext"><br>
-            <input type="submit" class="edittext" name="save" value="[{ oxmultilang ident="TOOLS_MAIN_START" }]" [{if !$blIsMallAdmin}]disabled[{/if}] [{ $readonly }]>
+            <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="TOOLS_MAIN_START"}]" [{if !$blIsMallAdmin}]disabled[{/if}] [{$readonly}]>
             </td>
         </tr>
         </table>
@@ -64,12 +64,12 @@
 
     [{if $showViewUpdate}]
       <hr>
-      <form name="regerateviews" id="regerateviews" action="[{ $oViewConf->getSelfLink() }]" method="post" target="list">
-        [{ $oViewConf->getHiddenSid() }]
+      <form name="regerateviews" id="regerateviews" action="[{$oViewConf->getSelfLink()}]" method="post" target="list">
+        [{$oViewConf->getHiddenSid()}]
         <input type="hidden" name="cl" value="tools_list">
         <input type="hidden" name="fnc" value="updateViews">
-        <br>[{ oxmultilang ident="TOOLS_MAIN_UPDATEVIEWSINFO" }]<br><br>
-        <input class="confinput" type="Submit" value="[{ oxmultilang ident="TOOLS_MAIN_UPDATEVIEWSNOW" }]" onClick="return confirm('[{ oxmultilang ident="TOOLS_MAIN_UPDATEVIEWSCONFIRM" }]')" [{$readonly}]>
+        <br>[{oxmultilang ident="TOOLS_MAIN_UPDATEVIEWSINFO"}]<br><br>
+        <input class="confinput" type="Submit" value="[{oxmultilang ident="TOOLS_MAIN_UPDATEVIEWSNOW"}]" onClick="return confirm('[{oxmultilang ident="TOOLS_MAIN_UPDATEVIEWSCONFIRM"}]')" [{$readonly}]>
       </form>
     [{/if}]
 

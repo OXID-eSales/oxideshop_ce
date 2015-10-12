@@ -1,6 +1,6 @@
 </div>
 
-[{ oxscript }]
+[{oxscript}]
 
 </body>
 </html>

@@ -10,6 +10,6 @@
     <div width="600" style="width: 600px">
 
         <div style="padding: 10px 0;">
-            <img src="[{$oViewConf->getImageUrl('logo_email.png', false)}]" border="0" hspace="0" vspace="0" alt="[{ $shop->oxshops__oxname->value }]" align="texttop">
+            <img src="[{$oViewConf->getImageUrl('logo_email.png', false)}]" border="0" hspace="0" vspace="0" alt="[{$shop->oxshops__oxname->value}]" align="texttop">
         </div>
 

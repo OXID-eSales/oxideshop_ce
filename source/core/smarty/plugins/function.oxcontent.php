@@ -27,7 +27,7 @@
  * Type: string, html
  * Name: oxid_content
  * Purpose: Output content snippet
- * add [{ insert name="oxid_content" ident="..." }] where you want to display content
+ * add [{insert name="oxid_content" ident="..."}] where you want to display content
  * -------------------------------------------------------------
  *
  * @param array  $params  params

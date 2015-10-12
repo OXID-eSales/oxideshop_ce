@@ -1,5 +1,5 @@
 [{block name="footer_main"}]
-    [{oxscript include="js/widgets/oxequalizer.js" priority=10 }]
+    [{oxscript include="js/widgets/oxequalizer.js" priority=10}]
     [{oxscript add="$(function(){oxEqualizer.equalHeight($( '#panel dl' ));});"}]
     <div id="footer">
         <div id="panel" class="corners">
@@ -18,9 +18,9 @@
                         <div class="deliveryinfo">
                             [{oxifcontent ident="oxdeliveryinfo" object="oCont"}]
                                 [{if $oView->isVatIncluded()}]
-                                    <a href="[{ $oCont->getLink() }]" rel="nofollow">* [{ oxmultilang ident="PLUS_SHIPPING" }] [{ oxmultilang ident="PLUS_SHIPPING2" }]</a>
+                                    <a href="[{$oCont->getLink()}]" rel="nofollow">* [{oxmultilang ident="PLUS_SHIPPING"}] [{oxmultilang ident="PLUS_SHIPPING2"}]</a>
                                 [{else}]
-                                    <a href="[{ $oCont->getLink() }]" rel="nofollow">* [{ oxmultilang ident="PLUS" }] [{ oxmultilang ident="PLUS_SHIPPING2" }]</a>
+                                    <a href="[{$oCont->getLink()}]" rel="nofollow">* [{oxmultilang ident="PLUS"}] [{oxmultilang ident="PLUS_SHIPPING2"}]</a>
                                 [{/if}]
                             [{/oxifcontent}]
                         </div>
@@ -47,7 +47,7 @@
     </div>
 [{/block}]
 [{if $oView->isRootCatChanged()}]
-    [{oxscript include="js/widgets/oxmodalpopup.js" priority=10 }]
+    [{oxscript include="js/widgets/oxmodalpopup.js" priority=10}]
     [{oxscript add="$( '#scRootCatChanged' ).oxModalPopup({ target: '#scRootCatChanged', openDialog: true});"}]
     <div id="scRootCatChanged" class="popupBox corners FXgradGreyLight glowShadow">
         [{include file="form/privatesales/basketexcl.tpl"}]

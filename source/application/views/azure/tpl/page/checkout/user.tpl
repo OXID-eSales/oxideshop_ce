@@ -1,8 +1,8 @@
 [{capture append="oxidBlock_content"}]
     [{* ordering steps *}]
-    [{include file="page/checkout/inc/steps.tpl" active=2 }]
+    [{include file="page/checkout/inc/steps.tpl" active=2}]
     [{block name="checkout_user_main"}]
-        [{if !$oxcmp_user && !$oView->getLoginOption() }]
+        [{if !$oxcmp_user && !$oView->getLoginOption()}]
             [{include file="page/checkout/inc/options.tpl"}]
         [{/if}]
 

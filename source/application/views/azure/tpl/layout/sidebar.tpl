@@ -5,7 +5,7 @@
 [{block name="sidebar"}]
     [{block name="sidebar_adminbanner"}]
         [{if $oView->isDemoShop()}]
-            [{ include file="widget/sidebar/adminbanner.tpl" }]
+            [{include file="widget/sidebar/adminbanner.tpl"}]
         [{/if}]
     [{/block}]
 
@@ -17,15 +17,15 @@
 
     [{block name="sidebar_trustedshopsratings"}]
         [{if $oView->getClassName() eq "start"}]
-            [{if $oViewConf->showTs("WIDGET") }]
-                [{include file="widget/trustedshops/ratings.tpl" }]
+            [{if $oViewConf->showTs("WIDGET")}]
+                [{include file="widget/trustedshops/ratings.tpl"}]
             [{/if}]
         [{/if}]
     [{/block}]
 
     [{block name="sidebar_partners"}]
         [{if $oView->getClassName() eq "start"}]
-            [{include file="widget/sidebar/partners.tpl" }]
+            [{include file="widget/sidebar/partners.tpl"}]
         [{/if}]
     [{/block}]
 
@@ -36,7 +36,7 @@
     [{/block}]
 
     [{block name="sidebar_recommendation"}]
-        [{if $oViewConf->getShowListmania() && $oView->getSimilarRecommListIds() }]
+        [{if $oViewConf->getShowListmania() && $oView->getSimilarRecommListIds()}]
             [{oxid_include_widget nocookie=1 cl="oxwRecommendation" aArticleIds=$oView->getSimilarRecommListIds() searchrecomm=$oView->getRecommSearch()}]
         [{elseif $oViewConf->getShowListmania() && $oView->getRecommSearch()}]
             [{oxid_include_widget nocookie=1 cl="oxwRecommendation" _parent=$oView->getClassName() searchrecomm=$oView->getRecommSearch()}]
@@ -45,12 +45,12 @@
 
     [{block name="sidebar_tags"}]
         [{if $oView->showTags() && $oView->getClassName() ne "details" && $oView->getClassName() ne "alist" && $oView->getClassName() ne "suggest" && $oView->getClassName() ne "tags"}]
-            [{oxid_include_widget nocookie=1 cl="oxwTagCloud" blShowBox="1" noscript=1 }]
+            [{oxid_include_widget nocookie=1 cl="oxwTagCloud" blShowBox="1" noscript=1}]
         [{/if}]
     [{/block}]
 
     [{block name="sidebar_news"}]
-        [{if $oxcmp_news|count }]
+        [{if $oxcmp_news|count}]
             [{include file="widget/sidebar/news.tpl" oNews=$oxcmp_news}]
         [{/if}]
     [{/block}]
@@ -68,7 +68,7 @@
 
     [{block name="sidebar_shopluperatings"}]
         [{if $oView->getClassName() eq "start"}]
-           [{include file="widget/shoplupe/ratings.tpl" }]
+           [{include file="widget/shoplupe/ratings.tpl"}]
         [{/if}]
     [{/block}]
 [{/block}]

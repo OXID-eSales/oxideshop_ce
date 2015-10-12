@@ -28,7 +28,7 @@
  * Name: oxscript
  * Purpose: Collect given javascript includes/calls, but include/call them at the bottom of the page.
  *
- * Add [{oxscript add="oxid.popup.load();" }] to add script call.
+ * Add [{oxscript add="oxid.popup.load();"}] to add script call.
  * Add [{oxscript include="oxid.js"}] to include local javascript file.
  * Add [{oxscript include="oxid.js?20120413"}] to include local javascript file with query string part.
  * Add [{oxscript include="http://www.oxid-esales.com/oxid.js"}] to include external javascript file.

@@ -12,16 +12,16 @@
 window.onload = function ()
 {
     top.reloadEditFrame();
-    [{ if $updatelist == 1}]
-        top.oxid.admin.updateList('[{ $oxid }]');
-    [{ /if}]
+    [{if $updatelist == 1}]
+        top.oxid.admin.updateList('[{$oxid}]');
+    [{/if}]
 }
 //-->
 </script>
 
 <div id="liste">
 
-<form name="search" id="search" action="[{ $oViewConf->getSelfLink() }]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
 [{include file="_formparams.tpl" cl="content_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
     <colgroup>
@@ -40,12 +40,12 @@ window.onload = function ()
             <td valign="top" class="listfilter" height="20">
                 <div class="r1"><div class="b1">
                 <select name="folder" class="folderselect" onChange="document.search.submit();" style="width: 75px;">
-                    <option value="-1" style="color: #000000;">[{ oxmultilang ident="CONTENT_LIST_ALL" }]</option>
+                    <option value="-1" style="color: #000000;">[{oxmultilang ident="CONTENT_LIST_ALL"}]</option>
                     [{foreach from=$afolder key=field item=color}]
-                    <option value="[{ $field }]" [{ if $folder == $field }]SELECTED[{/if}] style="color: [{ $color }];">[{ oxmultilang ident=$field }]</option>
+                    <option value="[{$field}]" [{if $folder == $field}]SELECTED[{/if}] style="color: [{$color}];">[{oxmultilang ident=$field}]</option>
                     [{/foreach}]
                 </select>
-                &nbsp;&nbsp;<input class="listedit" type="text" size="30" maxlength="128" name="where[oxcontents][oxtitle]" value="[{ $where.oxcontents.oxtitle }]">
+                &nbsp;&nbsp;<input class="listedit" type="text" size="30" maxlength="128" name="where[oxcontents][oxtitle]" value="[{$where.oxcontents.oxtitle}]">
                 </div></div>
             </td>
             <td valign="top" class="listfilter" height="20" colspan="2">
@@ -53,21 +53,21 @@ window.onload = function ()
                 <div class="find">
                     <select name="changelang" class="editinput" onChange="Javascript:top.oxid.admin.changeLanguage();">
                     [{foreach from=$languages item=lang}]
-                    <option value="[{ $lang->id }]" [{ if $lang->selected}]SELECTED[{/if}]>[{ $lang->name }]</option>
+                    <option value="[{$lang->id}]" [{if $lang->selected}]SELECTED[{/if}]>[{$lang->name}]</option>
                     [{/foreach}]
                     </select>
-                    <input class="listedit" type="submit" name="submitit" value="[{ oxmultilang ident="GENERAL_SEARCH" }]">
+                    <input class="listedit" type="submit" name="submitit" value="[{oxmultilang ident="GENERAL_SEARCH"}]">
                 </div>
-                <input class="listedit" type="text" size="32" maxlength="32" name="where[oxcontents][oxloadid]" value="[{ $where.oxcontents.oxloadid }]">
+                <input class="listedit" type="text" size="32" maxlength="32" name="where[oxcontents][oxloadid]" value="[{$where.oxcontents.oxloadid}]">
                 </div></div>
             </td>
         [{/block}]
     </tr>
     <tr>
         [{block name="admin_content_list_sorting"}]
-        	<td class="listheader first" height="15" width="30" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxcontents', 'oxactive', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_ACTIVTITLE" }]</a></td>
-            <td class="listheader" height="15">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxcontents', 'oxtitle', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_TITLE" }]</a></td>
-            <td class="listheader" colspan="2">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxcontents', 'oxloadid', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_IDENT" }]</a></td>
+        	<td class="listheader first" height="15" width="30" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxcontents', 'oxactive', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_ACTIVTITLE"}]</a></td>
+            <td class="listheader" height="15">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxcontents', 'oxtitle', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_TITLE"}]</a></td>
+            <td class="listheader" colspan="2">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxcontents', 'oxloadid', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_IDENT"}]</a></td>
         [{/block}]
     </tr>
 
@@ -78,20 +78,20 @@ window.onload = function ()
     <tr id="row.[{$_cnt}]">
 
         [{block name="admin_content_list_item"}]
-            [{ if $listitem->blacklist == 1}]
-                [{assign var="listclass" value=listitem3 }]
-            [{ else}]
-                [{assign var="listclass" value=listitem$blWhite }]
-            [{ /if}]
-            [{ if $listitem->getId() == $oxid }]
-                [{assign var="listclass" value=listitem4 }]
-            [{ /if}]
-            <td valign="top" class="[{ $listclass}][{ if $listitem->oxcontents__oxactive->value == 1}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
-            <td valign="top" class="[{ $listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxcontents__oxid->value}]');" class="[{ $listclass}]">[{ if $listitem->oxcontents__oxtitle->value }][{ $listitem->oxcontents__oxtitle->value }][{else}]---[{/if}]</a></div></td>
-            <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxcontents__oxid->value}]');" class="[{ $listclass}]">[{ $listitem->oxcontents__oxloadid->value }]</a></div></td>
-            <td class="[{ $listclass}]">
+            [{if $listitem->blacklist == 1}]
+                [{assign var="listclass" value=listitem3}]
+            [{else}]
+                [{assign var="listclass" value=listitem$blWhite}]
+            [{/if}]
+            [{if $listitem->getId() == $oxid}]
+                [{assign var="listclass" value=listitem4}]
+            [{/if}]
+            <td valign="top" class="[{$listclass}][{if $listitem->oxcontents__oxactive->value == 1}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
+            <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxcontents__oxid->value}]');" class="[{$listclass}]">[{if $listitem->oxcontents__oxtitle->value}][{$listitem->oxcontents__oxtitle->value}][{else}]---[{/if}]</a></div></td>
+            <td valign="top" class="[{$listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxcontents__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxcontents__oxloadid->value}]</a></div></td>
+            <td class="[{$listclass}]">
             [{if !$readonly}]
-            <a href="Javascript:top.oxid.admin.deleteThis('[{ $listitem->oxcontents__oxid->value }]');" class="delete" id="del.[{$_cnt}]" alt="" [{include file="help.tpl" helpid=item_delete}]></a>
+            <a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxcontents__oxid->value}]');" class="delete" id="del.[{$_cnt}]" alt="" [{include file="help.tpl" helpid=item_delete}]></a>
             [{/if}]
             </td>
         [{/block}]
@@ -113,8 +113,8 @@ window.onload = function ()
 <script type="text/javascript">
 if (parent.parent)
 {   parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname->getRawValue()|oxaddslashes}]";
-    parent.parent.sMenuItem    = "[{ oxmultilang ident="CONTENT_LIST_MENUITEM" }]";
-    parent.parent.sMenuSubItem = "[{ oxmultilang ident="CONTENT_LIST_MENUSUBITEM" }]";
+    parent.parent.sMenuItem    = "[{oxmultilang ident="CONTENT_LIST_MENUITEM"}]";
+    parent.parent.sMenuSubItem = "[{oxmultilang ident="CONTENT_LIST_MENUSUBITEM"}]";
     parent.parent.sWorkArea    = "[{$_act}]";
     parent.parent.setTitle();
 }

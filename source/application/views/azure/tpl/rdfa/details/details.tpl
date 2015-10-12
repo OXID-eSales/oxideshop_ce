@@ -1,5 +1,5 @@
 [{* Offering *}]
-[{assign var="currency" value=$oView->getActCurrency() }]
+[{assign var="currency" value=$oView->getActCurrency()}]
 [{assign var="oProduct" value=$oView->getProduct()}]
 [{assign var="sRDFaUrl" value=$oView->getLink()}]
 

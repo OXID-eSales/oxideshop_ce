@@ -12,36 +12,36 @@ function loadLang(obj)
 //-->
 </script>
 
-[{ if $readonly }]
+[{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
 [{else}]
     [{assign var="readonly" value=""}]
 [{/if}]
 
-<form name="transfer" id="transfer" action="[{ $oViewConf->getSelfLink() }]" method="post">
-    [{ $oViewConf->getHiddenSid() }]
-    <input type="hidden" name="oxid" value="[{ $oxid }]">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="category_text">
-    <input type="hidden" name="editlanguage" value="[{ $editlanguage }]">
+    <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
-    <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post" onSubmit="copyLongDesc( 'oxcategories__oxlongdesc' );" style="padding: 0px;margin: 0px;height:0px;">
-        [{ $oViewConf->getHiddenSid() }]
+    <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="copyLongDesc( 'oxcategories__oxlongdesc' );" style="padding: 0px;margin: 0px;height:0px;">
+        [{$oViewConf->getHiddenSid()}]
         <input type="hidden" name="cl" value="category_text">
         <input type="hidden" name="fnc" value="">
-        <input type="hidden" name="oxid" value="[{ $oxid }]">
-        <input type="hidden" name="voxid" value="[{ $oxid }]">
-        <input type="hidden" name="editval[oxcategories__oxid]" value="[{ $oxid }]">
+        <input type="hidden" name="oxid" value="[{$oxid}]">
+        <input type="hidden" name="voxid" value="[{$oxid}]">
+        <input type="hidden" name="editval[oxcategories__oxid]" value="[{$oxid}]">
         <input type="hidden" name="catlang" value="[{$catlang}]">
         <input type="hidden" name="editval[oxcategories__oxlongdesc]" value="">
 
-        [{ $editor }]
+        [{$editor}]
 
         <table>
         <tr>
           <td valign="top" class="edittext">
-          [{if $languages}]<b>[{ oxmultilang ident="GENERAL_LANGUAGE" }]</b>
-          <select name="catlang" class="editinput" onchange="Javascript:loadLang(this)" [{ $readonly }]>
+          [{if $languages}]<b>[{oxmultilang ident="GENERAL_LANGUAGE"}]</b>
+          <select name="catlang" class="editinput" onchange="Javascript:loadLang(this)" [{$readonly}]>
           [{foreach key=key item=item from=$languages}]
             <option value="[{$key}]"[{if $catlang == $key}] SELECTED[{/if}]>[{$item->name}]</option>
           [{/foreach}]
@@ -51,7 +51,7 @@ function loadLang(obj)
         </tr>
         <tr>
           <td>
-                <input type="submit" class="edittext" name="save" value="[{ oxmultilang ident="CATEGORY_TEXT_SAVE" }]" onClick="Javascript:document.myedit.fnc.value='save'">
+                <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="CATEGORY_TEXT_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'">
           </td>
         </tr>
         </table>

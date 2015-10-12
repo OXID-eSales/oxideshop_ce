@@ -27,7 +27,7 @@
  * Type: string, html
  * Name: oxid_tracker
  * Purpose: Output etracker code or Econda Code
- * add [{ insert name="oxid_tracker" title="..." }] after Body Tag in Templates
+ * add [{insert name="oxid_tracker" title="..."}] after Body Tag in Templates
  * -------------------------------------------------------------
  *
  * @param array  $params  params

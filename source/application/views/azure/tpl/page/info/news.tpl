@@ -1,6 +1,6 @@
 [{capture append="oxidBlock_content"}]
     <div>
-    [{assign var="oNews" value=$oView->getNews() }]
+    [{assign var="oNews" value=$oView->getNews()}]
     <h1 class="pageHead">[{$oView->getTitle()}]</h1>
     <div class="listRefine clear bottomRound">
     </div>

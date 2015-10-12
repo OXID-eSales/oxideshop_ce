@@ -1,7 +1,7 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign box="list"}]
 [{assign var="where" value=$oView->getListFilter()}]
 
-[{ if $readonly}]
+[{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
 [{else}]
     [{assign var="readonly" value=""}]
@@ -23,7 +23,7 @@ function editThis( sID )
         var oInputElement = document.createElement( 'input' );
         oInputElement.setAttribute( 'name', 'actedit');
         oInputElement.setAttribute( 'type', 'hidden' );
-        oInputElement.value = "[{ $actedit }]";
+        oInputElement.value = "[{$actedit}]";
         oForm.appendChild( oInputElement );
 
         var oInputElement = document.createElement( 'input' );
@@ -40,17 +40,17 @@ function editThis( sID )
 
 window.onload = function ()
 {
-    [{ if $updatenav }]
+    [{if $updatenav}]
     var oTransfer = top.basefrm.edit.document.getElementById( "transfer" );
     oTransfer.updatenav.value = 1;
-    oTransfer.cl.value = '[{ $default_edit }]';
-    [{ /if}]
+    oTransfer.cl.value = '[{$default_edit}]';
+    [{/if}]
     top.reloadEditFrame();
 }
          //-->
 </script>
 
-<form name="search" id="search" action="[{ $oViewConf->getSelfLink() }]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
 [{include file="_formparams.tpl" cl="shop_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang delshopid="" updatenav=""}]
 
 
@@ -61,8 +61,8 @@ window.onload = function ()
 <script type="text/javascript">
 if (parent.parent != null && parent.parent.setTitle )
 {   parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname->getRawValue()|oxaddslashes}]";
-    parent.parent.sMenuItem    = "[{ oxmultilang ident="SHOP_LIST_MENUITEM" }]";
-    parent.parent.sMenuSubItem = "[{ oxmultilang ident="SHOP_LIST_MENUSUBITEM" }]";
+    parent.parent.sMenuItem    = "[{oxmultilang ident="SHOP_LIST_MENUITEM"}]";
+    parent.parent.sMenuSubItem = "[{oxmultilang ident="SHOP_LIST_MENUSUBITEM"}]";
     parent.parent.sWorkArea    = "[{$_act}]";
     parent.parent.setTitle();
 }

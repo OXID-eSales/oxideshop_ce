@@ -24,7 +24,7 @@
  * Smarty function
  * -------------------------------------------------------------
  * Purpose: set params and render widget
- * Use [{ oxid_include_dynamic file="..." }] instead of include
+ * Use [{oxid_include_dynamic file="..."}] instead of include
  * -------------------------------------------------------------
  *
  * @param array  $params   params

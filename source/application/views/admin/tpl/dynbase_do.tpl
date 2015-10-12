@@ -5,22 +5,22 @@
 }]
 
 [{if !isset($refresh)}]
-    [{ if !isset($iError) }]
-        [{ oxmultilang ident="AUCTMASTER_DO_EXPORTNOTSTARTED" }]
+    [{if !isset($iError)}]
+        [{oxmultilang ident="AUCTMASTER_DO_EXPORTNOTSTARTED"}]
     [{else}]
-        [{ if $iError}]
-            [{ if $iError == -2}]
-                [{ oxmultilang ident="AUCTMASTER_DO_EXPORTEND" }]
-            <b>[{ assign var='oxDownloadFile' value=$sDownloadFile }][{ oxmultilang ident="DYNBASE_DO_SUCCESS" args=$oxDownloadFile }]</b><br>
-                [{ oxmultilang ident="DYNBASE_DO_LINK" }]<em>[{$sDownloadFile}]</em>
+        [{if $iError}]
+            [{if $iError == -2}]
+                [{oxmultilang ident="AUCTMASTER_DO_EXPORTEND"}]
+            <b>[{assign var='oxDownloadFile' value=$sDownloadFile}][{oxmultilang ident="DYNBASE_DO_SUCCESS" args=$oxDownloadFile}]</b><br>
+                [{oxmultilang ident="DYNBASE_DO_LINK"}]<em>[{$sDownloadFile}]</em>
             [{/if}]
 
-            [{ if $iError == -1}][{ oxmultilang ident="AUCTMASTER_DO_UNKNOWNERROR" }][{/if}]
-            [{ if $iError == 1 }][{ assign var='oxOutputFile' value=$sOutputFile }][{ oxmultilang ident="AUCTMASTER_DO_EXPORTFILE" args=$oxOutputFile}][{/if}]
+            [{if $iError == -1}][{oxmultilang ident="AUCTMASTER_DO_UNKNOWNERROR"}][{/if}]
+            [{if $iError == 1}][{assign var='oxOutputFile' value=$sOutputFile}][{oxmultilang ident="AUCTMASTER_DO_EXPORTFILE" args=$oxOutputFile}][{/if}]
         [{/if}]
     [{/if}]
 [{else}]
-  [{ oxmultilang ident="GENEXPORT_EXPRUNNING" }] [{ oxmultilang ident="GENEXPORT_EXPORTEDITEMS" }] [{$iExpItems|default:0}]
+  [{oxmultilang ident="GENEXPORT_EXPRUNNING"}] [{oxmultilang ident="GENEXPORT_EXPORTEDITEMS"}] [{$iExpItems|default:0}]
 [{/if}]
 
 [{include file="bottomitem.tpl"}]

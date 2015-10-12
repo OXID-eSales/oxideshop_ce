@@ -1,35 +1,35 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
 
-[{* if $readonly }]
+[{* if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
 [{else}]
     [{assign var="readonly" value=""}]
 [{/if*}]
 
-<form name="transfer" id="transfer" action="[{ $oViewConf->getSelfLink() }]" method="post">
-    [{ $oViewConf->getHiddenSid() }]
-    <input type="hidden" name="oxid" value="[{ $oxid }]">
-    <input type="hidden" name="oxidCopy" value="[{ $oxid }]">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="oxid" value="[{$oxid}]">
+    <input type="hidden" name="oxidCopy" value="[{$oxid}]">
     <input type="hidden" name="cl" value="[{$oViewConf->getActiveClassName()}]">
-    <input type="hidden" name="language" value="[{ $actlang }]">
-    <input type="hidden" name="editlanguage" value="[{ $editlanguage }]">
+    <input type="hidden" name="language" value="[{$actlang}]">
+    <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
 
-<form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post">
-[{ $oViewConf->getHiddenSid() }]
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+[{$oViewConf->getHiddenSid()}]
 <input type="hidden" name="cl" value="[{$oViewConf->getActiveClassName()}]">
 <input type="hidden" name="fnc" value="">
-<input type="hidden" name="oxid" value="[{ $oxid }]">
-<input type="hidden" name="language" value="[{ $actlang }]">
+<input type="hidden" name="oxid" value="[{$oxid}]">
+<input type="hidden" name="language" value="[{$actlang}]">
 
         <table border="0" width="98%">
 
         [{block name="admin_object_seo_form"}]
-            [{if $oView->showCatSelect() }]
+            [{if $oView->showCatSelect()}]
             <tr>
                 <td class="edittext" width="120">
-                [{ oxmultilang ident="GENERAL_SEO_ACTCAT" }]
+                [{oxmultilang ident="GENERAL_SEO_ACTCAT"}]
                 </td>
                 <td class="edittext">
                     <select [{$readonly}] onChange="document.myedit.submit();" name="aSeoData[oxparams]">
@@ -46,7 +46,7 @@
                                 [{elseif $sListType == "oxmanufacturer"}]
                                     [{assign var="sLabel" value="GENERAL_SEO_MANUFACTURER"|oxmultilangassign}]
                                 [{elseif $sListType == "oxtag"}]
-                                [{assign var="oTagLang" value=$otherlang.$iLang }]
+                                [{assign var="oTagLang" value=$otherlang.$iLang}]
                                     [{assign var="sLabel" value="GENERAL_SEO_TAG"|oxmultilangassign|cat:" "|cat:$oTagLang->sLangDesc}]
                                 [{/if}]
 
@@ -62,7 +62,7 @@
                             <option value="">--</option>
                         [{/if}]
                     </select>
-                    [{ oxinputhelp ident="HELP_GENERAL_SEO_ACTCAT" }]
+                    [{oxinputhelp ident="HELP_GENERAL_SEO_ACTCAT"}]
                 </td>
             </tr>
             [{/if}]
@@ -70,53 +70,53 @@
 
             <tr>
                 <td class="edittext" width="120">
-                [{ oxmultilang ident="GENERAL_SEO_FIXED" }]
+                [{oxmultilang ident="GENERAL_SEO_FIXED"}]
                 </td>
                 <td class="edittext">
-                <input class="edittext" type="checkbox" name="aSeoData[oxfixed]" value='1' [{if $oView->isEntryFixed()}]checked[{/if}] [{ $readonly }]>
-                [{ oxinputhelp ident="HELP_GENERAL_SEO_FIXED" }]
+                <input class="edittext" type="checkbox" name="aSeoData[oxfixed]" value='1' [{if $oView->isEntryFixed()}]checked[{/if}] [{$readonly}]>
+                [{oxinputhelp ident="HELP_GENERAL_SEO_FIXED"}]
                 </td>
             </tr>
 
             [{if $oView->isSuffixSupported()}]
                 <tr>
                     <td class="edittext" width="120">
-                    [{ oxmultilang ident="GENERAL_SEO_SHOWSUFFIX" }]
+                    [{oxmultilang ident="GENERAL_SEO_SHOWSUFFIX"}]
                     </td>
                     <td class="edittext">
-                    <input class="edittext" type="checkbox" name="blShowSuffix" value='1' [{if $oView->isEntrySuffixed()}]checked[{/if}] [{ $readonly }]>
-                    [{ oxinputhelp ident="HELP_GENERAL_SEO_SHOWSUFFIX" }]
+                    <input class="edittext" type="checkbox" name="blShowSuffix" value='1' [{if $oView->isEntrySuffixed()}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="HELP_GENERAL_SEO_SHOWSUFFIX"}]
                     </td>
                 </tr>
             [{/if}]
 
             <tr>
                 <td class="edittext">
-                [{ oxmultilang ident="GENERAL_SEO_URL" }]
+                [{oxmultilang ident="GENERAL_SEO_URL"}]
                 </td>
                 <td class="edittext">
-                <input type="text" class="editinput" style="width: 100%;" name="aSeoData[oxseourl]" value="[{$oView->getEntryUri()}]" [{ $readonly }]>
-                [{ oxinputhelp ident="HELP_GENERAL_SEO_URL" }]
+                <input type="text" class="editinput" style="width: 100%;" name="aSeoData[oxseourl]" value="[{$oView->getEntryUri()}]" [{$readonly}]>
+                [{oxinputhelp ident="HELP_GENERAL_SEO_URL"}]
                 </td>
             </tr>
 
             <tr>
                 <td class="edittext" valign="top">
-                  [{ oxmultilang ident="GENERAL_SEO_OXKEYWORDS" }]
+                  [{oxmultilang ident="GENERAL_SEO_OXKEYWORDS"}]
                 </td>
                 <td class="edittext">
-                  <textarea type="text" class="editinput" style="width: 100%; height: 78px"  name="aSeoData[oxkeywords]" [{ $readonly }]>[{$oView->getEntryMetaData("oxkeywords")}]</textarea>
-                  [{ oxinputhelp ident="HELP_GENERAL_SEO_OXKEYWORDS" }]
+                  <textarea type="text" class="editinput" style="width: 100%; height: 78px"  name="aSeoData[oxkeywords]" [{$readonly}]>[{$oView->getEntryMetaData("oxkeywords")}]</textarea>
+                  [{oxinputhelp ident="HELP_GENERAL_SEO_OXKEYWORDS"}]
                 </td>
             </tr>
 
             <tr>
                 <td class="edittext" valign="top">
-                  [{ oxmultilang ident="GENERAL_SEO_OXDESCRIPTION" }]
+                  [{oxmultilang ident="GENERAL_SEO_OXDESCRIPTION"}]
                 </td>
                 <td class="edittext">
-                  <textarea type="text" class="editinput" style="width: 100%; height: 78px"  name="aSeoData[oxdescription]" [{ $readonly }]>[{$oView->getEntryMetaData("oxdescription")}]</textarea>
-                  [{ oxinputhelp ident="HELP_GENERAL_SEO_OXDESCRIPTION" }]
+                  <textarea type="text" class="editinput" style="width: 100%; height: 78px"  name="aSeoData[oxdescription]" [{$readonly}]>[{$oView->getEntryMetaData("oxdescription")}]</textarea>
+                  [{oxinputhelp ident="HELP_GENERAL_SEO_OXDESCRIPTION"}]
                 </td>
             </tr>
         [{/block}]
@@ -126,10 +126,10 @@
             <td class="edittext">
             </td>
             <td class="edittext"><br>
-                [{if $oView->getActCatType() == 'oxtag' }]
+                [{if $oView->getActCatType() == 'oxtag'}]
                     [{assign var="custreadonly" value="readonly disabled"}]
                 [{/if}]
-                [{include file="language_edit.tpl" custreadonly=$custreadonly }]
+                [{include file="language_edit.tpl" custreadonly=$custreadonly}]
             </td>
         </tr>
         [{/if}]
@@ -137,7 +137,7 @@
             <td class="edittext">
             </td>
             <td class="edittext">
-            <input type="submit" class="edittext" onclick="document.getElementById('myedit').fnc.value='save';" name="saveArticle" value="[{ oxmultilang ident="GENERAL_SAVE" }]" [{ $readonly }]><br>
+            <input type="submit" class="edittext" onclick="document.getElementById('myedit').fnc.value='save';" name="saveArticle" value="[{oxmultilang ident="GENERAL_SAVE"}]" [{$readonly}]><br>
             </td>
         </tr>
 

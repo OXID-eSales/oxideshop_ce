@@ -10,21 +10,21 @@
             [{$oCont->oxcontents__oxcontent->value}]
         [{/oxifcontent}]
         <div>
-            [{ oxmultilang ident="PLEASE_CHOOSE" suffix="COLON" }]
+            [{oxmultilang ident="PLEASE_CHOOSE" suffix="COLON"}]
             <br>
             <br>
             [{assign var="shoplinks" value=$oView->getShopLinks()}]
             [{assign var="shoplangs" value=$oView->getShopDefaultLangs()}]
             [{foreach from=$oView->getShopList() item=mallshop key=shopid}]
                 [{if $shoplinks.$shopid}]
-                    <a href="[{$shoplinks.$shopid}]">[{ $mallshop->oxshops__oxname->value }]</a><br>
+                    <a href="[{$shoplinks.$shopid}]">[{$mallshop->oxshops__oxname->value}]</a><br>
                 [{else}]
-                    <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=mallstart" params="fnc=chshp&amp;shp=`$mallshop->oxshops__oxid->value`&amp;lang=`$shoplangs.$shopid`" }]" >[{ $mallshop->oxshops__oxname->value }]</a><br>
+                    <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=mallstart" params="fnc=chshp&amp;shp=`$mallshop->oxshops__oxid->value`&amp;lang=`$shoplangs.$shopid`"}]" >[{$mallshop->oxshops__oxname->value}]</a><br>
                 [{/if}]
             [{/foreach}]
          </div>
         [{if $oView->isDemoShop()}]
-            <a id="demoAdminLink" href="[{ $oViewConf->getBaseDir() }]admin/" rel="nofollow"><img src="[{ $oViewConf->getImageUrl('admin_start.jpg') }]"></a>
+            <a id="demoAdminLink" href="[{$oViewConf->getBaseDir()}]admin/" rel="nofollow"><img src="[{$oViewConf->getImageUrl('admin_start.jpg')}]"></a>
         [{/if}]
     </div>
 

@@ -25,7 +25,7 @@
  * -------------------------------------------------------------
  * Purpose: render or leave dynamic parts with parameters in
  * templates used by content caching algorithm.
- * Use [{ oxid_include_dynamic file="..." }] instead of include
+ * Use [{oxid_include_dynamic file="..."}] instead of include
  * -------------------------------------------------------------
  *
  * @param array  $params  params

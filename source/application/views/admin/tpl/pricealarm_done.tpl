@@ -12,14 +12,14 @@ window.onload = function ()
 //-->
 </script>
 
-<form name="search" id="search" action="[{ $oViewConf->getSelfLink() }]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
 [{include file="_formparams.tpl" cl="pricealarm_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 </form>
 
 <div id="liste">
 <center>
-<h1>[{$iAllCnt}] [{ oxmultilang ident="PRICEALARM_DONE_SENDEMAIL" }]</h1>
-<a href="JavaScript:var oSearch = document.getElementById('search');oSearch.submit();"><b>[{ oxmultilang ident="PRICEALARM_DONE_GOTOPRICEALARM" }]</b></a>
+<h1>[{$iAllCnt}] [{oxmultilang ident="PRICEALARM_DONE_SENDEMAIL"}]</h1>
+<a href="JavaScript:var oSearch = document.getElementById('search');oSearch.submit();"><b>[{oxmultilang ident="PRICEALARM_DONE_GOTOPRICEALARM"}]</b></a>
 </center>
 </div>
 

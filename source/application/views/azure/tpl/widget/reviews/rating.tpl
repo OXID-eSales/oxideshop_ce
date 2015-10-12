@@ -1,4 +1,4 @@
-[{oxscript include="js/widgets/oxrating.js" priority=10 }]
+[{oxscript include="js/widgets/oxrating.js" priority=10}]
 [{oxscript add="$( '#itemRating' ).oxRating();"}]
 
 <ul id="itemRating" class="rating">
@@ -21,7 +21,7 @@
             <a  class="[{if $oView->canRate()}]ox-write-review[{/if}] ox-rateindex-[{$smarty.section.star.index}]" rel="nofollow"
                 [{if !$oxcmp_user}]
                     [{assign var="sAnid" value=$oView->getArticleNId()}]
-                    href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=$sAnid"|cat:"&amp;sourcecl="|cat:$oViewConf->getTopActiveClassName()|cat:$oViewConf->getNavUrlParams() }]"
+                    href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=$sAnid"|cat:"&amp;sourcecl="|cat:$oViewConf->getTopActiveClassName()|cat:$oViewConf->getNavUrlParams()}]"
                 [{elseif $oView->canRate()}]
                     href="#review"
                 [{/if}]

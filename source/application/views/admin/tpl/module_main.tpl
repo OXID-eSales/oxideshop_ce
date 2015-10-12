@@ -1,14 +1,14 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign box="box"}]
 
-[{if $updatenav }]
+[{if $updatenav}]
     [{oxscript add="top.oxid.admin.reloadNavigation('`$shopid`');" priority=10}]
 [{/if}]
 
-<form name="transfer" id="transfer" action="[{ $oViewConf->getSelfLink() }]" method="post">
-    [{ $oViewConf->getHiddenSid() }]
-    <input type="hidden" name="oxid" value="[{ $oxid }]">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="module_main">
-    <input type="hidden" name="editlanguage" value="[{ $editlanguage }]">
+    <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
 [{oxscript include="js/libs/jquery.min.js"}]
@@ -19,9 +19,9 @@
         <tr>
             <td width="245" valign="top">
                 [{if $oModule->getInfo('thumbnail')}]
-                    <img src="[{ $oViewConf->getBaseDir() }]/modules/[{$oModule->getModulePath()}]/[{$oModule->getInfo('thumbnail')}]" hspace="20" vspace="10"></td>
+                    <img src="[{$oViewConf->getBaseDir()}]/modules/[{$oModule->getModulePath()}]/[{$oModule->getInfo('thumbnail')}]" hspace="20" vspace="10"></td>
                 [{else}]
-                    <img src="[{ $oViewConf->getResourceUrl() }]bg/module.png" hspace="20" vspace="10">
+                    <img src="[{$oViewConf->getResourceUrl()}]bg/module.png" hspace="20" vspace="10">
                 [{/if}]
             </td>
             <td width="" valign="top">
@@ -30,24 +30,24 @@
                 <hr>
 
                 <dl class="moduleDesc clear">
-                    <dt>[{ oxmultilang ident="MODULE_VERSION" }]</dt>
+                    <dt>[{oxmultilang ident="MODULE_VERSION"}]</dt>
                     <dd>[{$oModule->getInfo('version')|default:'-'}]</dd>
 
-                    <dt>[{ oxmultilang ident="MODULE_AUTHOR" }]</dt>
+                    <dt>[{oxmultilang ident="MODULE_AUTHOR"}]</dt>
                     <dd>[{$oModule->getInfo('author')|default:'-'}]</dd>
 
-                    <dt>[{ oxmultilang ident="GENERAL_EMAIL" }]</dt>
+                    <dt>[{oxmultilang ident="GENERAL_EMAIL"}]</dt>
                     <dd>
-                        [{if $oModule->getInfo('email') }]
+                        [{if $oModule->getInfo('email')}]
                             <a href="mailto:[{$oModule->getInfo('email')}]">[{$oModule->getInfo('email')}]</a>
                         [{else}]
                             -
                         [{/if}]
                     </dd>
 
-                    <dt>[{ oxmultilang ident="GENERAL_URL" }]</dt>
+                    <dt>[{oxmultilang ident="GENERAL_URL"}]</dt>
                     <dd>
-                        [{if $oModule->getInfo('url') }]
+                        [{if $oModule->getInfo('url')}]
                             <a href="[{$oModule->getInfo('url')}]" target="_blank">[{$oModule->getInfo('url')}]</a>
                         [{else}]
                             -
@@ -62,14 +62,14 @@
             <td width="260" valign="top">
                 [{if !$oModule->hasMetadata() && !$oModule->isRegistered()}]
                 <div class="info">
-                    [{ oxmultilang ident="MODULE_ENABLEACTIVATIONTEXT" }]
+                    [{oxmultilang ident="MODULE_ENABLEACTIVATIONTEXT"}]
                 </div>
                 [{/if}]
                 [{if !$_sError}]
                     [{if $oModule->hasMetadata() || $oModule->isRegistered()}]
-                        <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post">
+                        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
                             <div>
-                                [{ $oViewConf->getHiddenSid() }]
+                                [{$oViewConf->getHiddenSid()}]
                                 <input type="hidden" name="cl" value="module_main">
                                 <input type="hidden" name="updatelist" value="1">
                                 <input type="hidden" name="oxid" value="[{$oModule->getId()}]">
@@ -77,13 +77,13 @@
                                     [{if $oModule->isActive()}]
                                     <input type="hidden" name="fnc" value="deactivateModule">
                                     <div align="center">
-                                        <input type="submit" id="module_deactivate" class="saveButton" value="[{ oxmultilang ident="MODULE_DEACTIVATE" }]">
+                                        <input type="submit" id="module_deactivate" class="saveButton" value="[{oxmultilang ident="MODULE_DEACTIVATE"}]">
                                     </div>
                                     [{else}]
                                     <input type="hidden" name="fnc" value="activateModule">
 
                                     <div align="center">
-                                        <input type="submit" id="module_activate" class="saveButton" value="[{ oxmultilang ident="MODULE_ACTIVATE" }]">
+                                        <input type="submit" id="module_activate" class="saveButton" value="[{oxmultilang ident="MODULE_ACTIVATE"}]">
                                     </div>
                                     [{/if}]
                                 [{/if}]

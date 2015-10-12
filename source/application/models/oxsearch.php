@@ -129,6 +129,11 @@ class oxSearch extends oxSuperCfg
      */
     protected function _getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false)
     {
+        if (!$sSearchParamForQuery && !$sInitialSearchCat && !$sInitialSearchVendor && !$sInitialSearchManufacturer) {
+            //no search string
+            return null;
+        }
+
         $oDb = oxDb::getDb();
 
         // performance
@@ -171,12 +176,8 @@ class oxSearch extends oxSuperCfg
         }
 
         $sWhere = null;
-
         if ($sSearchParamForQuery) {
             $sWhere = $this->_getWhere($sSearchParamForQuery);
-        } elseif (!$sInitialSearchCat && !$sInitialSearchVendor && !$sInitialSearchManufacturer) {
-            //no search string
-            return null;
         }
 
         $oArticle = oxNew('oxArticle');

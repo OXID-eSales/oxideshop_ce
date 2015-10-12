@@ -63,7 +63,7 @@ class Delivery_Users extends oxAdminDetails
 
         $oGroups = $aNewList;
 
-        if (isset($soxId) && $soxId != "-") {
+        if (isset($soxId) && $soxId != "-1") {
             $oDelivery = oxNew("oxdelivery");
             $oDelivery->load($soxId);
 

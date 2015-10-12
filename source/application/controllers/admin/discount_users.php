@@ -62,7 +62,7 @@ class Discount_Users extends oxAdminDetails
 
         $this->_aViewData["allgroups2"] = $aNewList;
 
-        if (isset($soxId) && $soxId != "-") {
+        if (isset($soxId) && $soxId != "-1") {
             $oDiscount = oxNew("oxdiscount");
             $oDiscount->load($soxId);
 

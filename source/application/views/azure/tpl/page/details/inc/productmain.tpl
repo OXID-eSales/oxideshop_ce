@@ -229,9 +229,14 @@
             [{* pers params *}]
             [{block name="details_productmain_persparams"}]
                 [{if $oView->isPersParam()}]
+[{*---------------------------------------------------------------------------------------------*}]
+[{*
                     <div class="persparamBox clear">
                         <label for="persistentParam">[{ oxmultilang ident="LABEL" suffix="COLON" }]</label><input type="text" id="persistentParam" name="persparam[details]" value="[{ $oDetailsProduct->aPersistParam.text }]" size="35">
                     </div>
+*}]
+[{include file="custom/persparams_input.tpl" sPersParamKey="details" sPersParamValue=$oDetailsProduct->aPersistParam.text tpl="page_details_inc_productmain" }]
+[{*---------------------------------------------------------------------------------------------*}]
                 [{/if}]
             [{/block}]
 

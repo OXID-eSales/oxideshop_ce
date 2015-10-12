@@ -122,6 +122,8 @@ function StornoThisArticle( sID)
         <td valign="top" class="[{ $listclass}]">
             [{if $listitem->getPersParams()}]
                 [{foreach key=sVar from=$listitem->getPersParams() item=aParam name=persparams}]
+[{*---------------------------------------------------------------------------------------------*}]
+[{*
                     [{if !$smarty.foreach.persparams.first}]&nbsp;&nbsp;,&nbsp;[{/if}]
                     <em>
                         [{if $smarty.foreach.persparams.first && $smarty.foreach.persparams.last}]
@@ -131,6 +133,9 @@ function StornoThisArticle( sID)
                         [{/if}]
                         [{$aParam}]
                     </em>
+*}]
+[{include file="custom/persparams_output.tpl" sPersParamKey=$sVar sPersParamValue=$aParam tpl="admin__order_article" }]
+[{*---------------------------------------------------------------------------------------------*}]
                 [{/foreach}]
             [{/if}]
         </td>

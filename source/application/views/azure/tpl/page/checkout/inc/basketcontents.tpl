@@ -110,6 +110,8 @@
                             [{if !$editable }]
                                 <p class="persparamBox">
                                     [{foreach key=sVar from=$basketitem->getPersParams() item=aParam name=persparams }]
+[{*---------------------------------------------------------------------------------------------*}]
+[{*
                                         [{if !$smarty.foreach.persparams.first}]<br />[{/if}]
                                         <strong>
                                             [{if $smarty.foreach.persparams.first && $smarty.foreach.persparams.last}]
@@ -118,6 +120,9 @@
                                                 [{ $sVar }] :
                                             [{/if}]
                                         </strong> [{ $aParam }]
+*}]
+[{include file="custom/persparams_output.tpl" sPersParamKey=$sVar sPersParamValue=$aParam tpl="page_checkout_inc_basketcontents_noteditable" }]
+[{*---------------------------------------------------------------------------------------------*}]
                                     [{/foreach}]
                                 </p>
                             [{else}]
@@ -125,6 +130,8 @@
                                     [{if $basketitem->getPersParams()}]
                                         <br />
                                         [{foreach key=sVar from=$basketitem->getPersParams() item=aParam name=persparams }]
+[{*---------------------------------------------------------------------------------------------*}]
+[{*
                                             <p>
                                                 <label class="persParamLabel">
                                                     [{if $smarty.foreach.persparams.first && $smarty.foreach.persparams.last}]
@@ -135,9 +142,17 @@
                                                 </label>
                                                 <input class="textbox persParam" type="text" name="aproducts[[{ $basketindex }]][persparam][[{ $sVar }]]" value="[{ $aParam }]">
                                             </p>
+*}]
+[{include file="custom/persparams_input.tpl" sPersParamKey=$sVar sPersParamValue=$aParam tpl="page_checkout_inc_basketcontents_editable" basketindex=$basketindex }]
+[{*---------------------------------------------------------------------------------------------*}]
                                         [{/foreach}]
                                     [{else}]
+[{*---------------------------------------------------------------------------------------------*}]
+[{*
                                          <p>[{ oxmultilang ident="LABEL" suffix="COLON" }] <input class="textbox persParam" type="text" name="aproducts[[{ $basketindex }]][persparam][details]" value=""></p>
+*}]
+[{include file="custom/persparams_output.tpl" sPersParamKey="details" sPersParamValue="" tpl="page_checkout_inc_basketcontents_editable_empty" basketindex=$basketindex }]
+[{*---------------------------------------------------------------------------------------------*}]
                                     [{/if}]
                                 [{/if}]
                             [{/if}]

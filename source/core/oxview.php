@@ -1017,4 +1017,42 @@ class oxView extends oxSuperCfg
 
         return $sRet;
     }
+
+
+// ------------------------------------------------------------------------------------------------
+	public function showPersParam($s_paramKey) {
+
+		$bRet = false;
+
+		if ( $s_paramKey == "details" )
+			$bRet = true;
+
+		/*
+		 * extend with own module
+		 */
+
+		return $bRet;
+	}
+
+	public function getPersParamText($sOxMultilangIdent) {
+
+		return oxRegistry::getLang()->translateString($sOxMultilangIdent) . ":";
+	}
+
+	public function getPersParamValue($s_paramKey, $s_paramValue) {
+
+		$_ret = null;
+
+		if ( $s_paramKey == "details" )
+			$_ret = $s_paramValue;
+
+		/*
+		 * extend with own module
+		 */
+		
+		return $_ret;
+	}
+// ------------------------------------------------------------------------------------------------
+
+
 }

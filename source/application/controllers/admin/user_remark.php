@@ -41,7 +41,7 @@ class User_Remark extends oxAdminDetails
 
         $soxId = $this->getEditObjectId();
         $sRemoxId = oxRegistry::getConfig()->getRequestParameter("rem_oxid");
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oUser = oxNew("oxuser");
             $oUser->load($soxId);

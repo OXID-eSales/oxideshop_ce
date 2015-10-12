@@ -42,10 +42,9 @@ class Article_Pictures extends oxAdminDetails
         $this->_aViewData["edit"] = $oArticle = oxNew("oxArticle");
 
         $soxId = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oArticle->load($soxId);
-
 
             // variant handling
             if ($oArticle->oxarticles__oxparentid->value) {

@@ -149,7 +149,7 @@ class User_Payment extends oxAdminDetails
         if ($this->_oActiveUser == null) {
             $this->_oActiveUser = false;
             $sOxId = $this->getEditObjectId();
-            if ($sOxId != "-1" && isset($sOxId)) {
+            if (isset($sOxId) && $sOxId != "-1") {
                 // load object
                 $this->_oActiveUser = oxNew("oxuser");
                 $this->_oActiveUser->load($sOxId);

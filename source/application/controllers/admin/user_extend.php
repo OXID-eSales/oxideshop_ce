@@ -39,7 +39,7 @@ class User_Extend extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oUser = oxNew("oxuser");
             $oUser->load($soxId);

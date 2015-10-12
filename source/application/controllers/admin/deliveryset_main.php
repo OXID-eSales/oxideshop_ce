@@ -41,7 +41,7 @@ class DeliverySet_Main extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $odeliveryset = oxNew("oxdeliveryset");
             $odeliveryset->loadInLang($this->_iEditLang, $soxId);
@@ -54,7 +54,6 @@ class DeliverySet_Main extends oxAdminDetails
             }
 
             $this->_aViewData["edit"] = $odeliveryset;
-
 
             // remove already created languages
             $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);

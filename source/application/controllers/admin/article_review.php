@@ -45,11 +45,10 @@ class Article_Review extends oxAdminDetails
 
         $soxId = $this->getEditObjectId();
         $sRevoxId = oxRegistry::getConfig()->getRequestParameter('rev_oxid');
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
 
             // load object
             $oArticle->load($soxId);
-
 
             $oRevs = $this->_getReviewList($oArticle);
 
@@ -73,7 +72,6 @@ class Article_Review extends oxAdminDetails
             }
             //show "active" checkbox if moderating is active
             $this->_aViewData["blShowActBox"] = $myConfig->getConfigParam('blGBModerate');
-
         }
 
         return "article_review.tpl";

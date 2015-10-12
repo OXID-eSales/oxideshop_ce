@@ -54,7 +54,7 @@ class Shop_Config extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $this->_aViewData["edit"] = $oShop = $this->_getEditShop($soxId);
 

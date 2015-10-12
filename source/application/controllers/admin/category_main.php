@@ -49,14 +49,12 @@ class Category_Main extends oxAdminDetails
         $this->_aViewData["edit"] = $oCategory;
         $this->_aViewData["oxid"] = $soxId;
 
-        if ($soxId != "-1" && isset($soxId)) {
-
+        if (isset($soxId) && $soxId != "-1") {
             // generating category tree for select list
             $this->_createCategoryTree("artcattree", $soxId);
 
             // load object
             $oCategory->loadInLang($this->_iEditLang, $soxId);
-
 
             $oOtherLang = $oCategory->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {

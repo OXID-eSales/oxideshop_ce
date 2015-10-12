@@ -62,12 +62,11 @@ class VoucherSerie_Main extends DynExportBase
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oVoucherSerie = oxNew("oxvoucherserie");
             $oVoucherSerie->load($soxId);
             $this->_aViewData["edit"] = $oVoucherSerie;
-
         }
 
         return $this->_sThisTemplate;

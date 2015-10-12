@@ -41,7 +41,7 @@ class VoucherSerie_Groups extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oVoucherSerie = oxNew("oxvoucherserie");
             $oVoucherSerie->load($soxId);

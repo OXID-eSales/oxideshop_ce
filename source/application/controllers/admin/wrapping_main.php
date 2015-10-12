@@ -40,7 +40,7 @@ class Wrapping_Main extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oWrapping = oxNew("oxwrapping");
             $oWrapping->loadInLang($this->_iEditLang, $soxId);
@@ -51,7 +51,6 @@ class Wrapping_Main extends oxAdminDetails
                 $oWrapping->loadInLang(key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oWrapping;
-
 
             // remove already created languages
             $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);

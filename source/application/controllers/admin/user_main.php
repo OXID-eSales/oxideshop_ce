@@ -74,7 +74,7 @@ class User_Main extends oxAdminDetails
 
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oUser = oxNew("oxuser");
             $oUser->load($soxId);

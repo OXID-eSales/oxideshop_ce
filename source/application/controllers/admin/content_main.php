@@ -47,7 +47,7 @@ class Content_Main extends oxAdminDetails
         $oCatTree->loadList();
 
         $oContent = oxNew("oxcontent");
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oContent->loadInLang($this->_iEditLang, $soxId);
 
@@ -72,7 +72,6 @@ class Content_Main extends oxAdminDetails
             if ($oContent->oxcontents__oxcatid->value && isset($oCatTree[$oContent->oxcontents__oxcatid->value])) {
                 $oCatTree[$oContent->oxcontents__oxcatid->value]->selected = 1;
             }
-
         } else {
             // create ident to make life easier
             $sUId = oxUtilsObject::getInstance()->generateUId();

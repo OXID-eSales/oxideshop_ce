@@ -38,11 +38,10 @@ class Country_Main extends oxAdminDetails
     {
         $myConfig = $this->getConfig();
 
-
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oCountry = oxNew("oxcountry");
             $oCountry->loadInLang($this->_iEditLang, $soxId);

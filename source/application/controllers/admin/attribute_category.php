@@ -41,8 +41,7 @@ class Attribute_Category extends oxAdminDetails
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
 
-        $aListAllIn = array();
-        if ($soxId != "-1" && isset($soxId)) {
+        if (isset($soxId) && $soxId != "-1") {
             // load object
             $oAttr = oxNew("oxattribute");
             $oAttr->load($soxId);

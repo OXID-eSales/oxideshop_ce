@@ -103,7 +103,7 @@ class Account_Order extends Account
                 $this->_iAllArtCnt = $oUser->getOrderCount();
                 if ($this->_iAllArtCnt && $this->_iAllArtCnt > 0) {
                     $this->_aOrderList = $oUser->getOrders($iNrofCatArticles, $this->getActPage());
-                    $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
+                    $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
                 }
             }
         }

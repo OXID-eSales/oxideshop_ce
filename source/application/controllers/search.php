@@ -209,7 +209,7 @@ class Search extends oxUBase
 
         $iNrofCatArticles = (int) $myConfig->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
-        $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
+        $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
     }
 
     /**

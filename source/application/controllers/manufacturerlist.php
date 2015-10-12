@@ -158,7 +158,7 @@ class ManufacturerList extends aList
         $this->_iAllArtCnt = $oArtList->loadManufacturerArticles($sManufacturerId, $oManufacturer);
 
         // counting pages
-        $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
+        $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
 
         return array($oArtList, $this->_iAllArtCnt);
     }

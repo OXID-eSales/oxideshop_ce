@@ -178,7 +178,7 @@ class Review extends Details
                 // load only lists which we show on screen
                 $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
                 $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
-                $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
+                $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
             }
         }
 

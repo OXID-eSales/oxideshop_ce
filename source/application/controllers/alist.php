@@ -380,7 +380,7 @@ class aList extends oxUBase
             $this->_iAllArtCnt = $articleList->loadCategoryArticles($activeCategoryId, $sessionFilter);
         }
 
-        $this->_iCntPages = round($this->_iAllArtCnt / $numberOfCategoryArticles + 0.49);
+        $this->_iCntPages = ceil($this->_iAllArtCnt / $numberOfCategoryArticles);
 
         return $articleList;
     }

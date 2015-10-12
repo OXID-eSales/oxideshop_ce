@@ -103,7 +103,7 @@ class Account_Recommlist extends Account
             $this->_iAllArtCnt = $oUser->getRecommListsCount();
             $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
-            $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
+            $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
         }
 
         return $this->_sThisTemplate;

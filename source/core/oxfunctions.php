@@ -176,7 +176,7 @@ if (!function_exists('registerComposerAutoLoad')) {
      */
     function registerComposerAutoLoad()
     {
-        $autoloaderPath = __DIR__ . '/../vendor/autoload.php';
+        $autoloaderPath = __DIR__ . '/../modules/vendor/autoload.php';
         if (file_exists($autoloaderPath)) {
             include_once $autoloaderPath;
         }

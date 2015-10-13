@@ -646,7 +646,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oView = new oxView();
         $sEdition = $oView->getShopEdition();
 
-            $this->assertTrue($sEdition == "CE" || $sEdition == "PE");
+        $this->assertTrue($sEdition == "CE" || $sEdition == "PE");
 
     }
 
@@ -665,7 +665,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oView = new oxView();
         $sEdition = $oView->getShopFullEdition();
 
-            $this->assertEquals("Community Edition", $sEdition);
+        $this->assertEquals("Community Edition", $sEdition);
 
     }
 
@@ -809,7 +809,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     public function testIsMall()
     {
         $oView = new oxView();
-            $this->assertFalse($oView->isMall());
+        $this->assertFalse($oView->isMall());
     }
 
     public function testIsCallForCache()

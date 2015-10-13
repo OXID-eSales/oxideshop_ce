@@ -535,7 +535,7 @@
 
                     [{if $oxcmp_basket->hasSkipedDiscount()}]
                         <tr>
-                            <th><span id="noteWithSkippedDiscount" class="note">[{$oMarkGenerator->getMark('skippedDiscount')}]</span> [{oxmultilang ident="MESSAGE_COUPON_NOT_APPLIED_FOR_ARTICLES"}]</span></th>
+                            <th><span id="noteWithSkippedDiscount" class="note">[{$oMarkGenerator->getMark('skippedDiscount')}]</span> [{oxmultilang ident="MESSAGE_COUPON_NOT_APPLIED_FOR_ARTICLES"}]</th>
                             <td></td>
                         </tr>
                     [{/if}]

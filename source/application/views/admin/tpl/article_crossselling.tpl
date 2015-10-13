@@ -43,7 +43,7 @@
     <!-- Ende rechte Seite -->
     </tr>
   </table>
-
+</form>
 [{include file="bottomnaviitem.tpl"}]
 
 [{include file="bottomitem.tpl"}]

@@ -59,6 +59,7 @@
 [{/if}]
 [{/foreach}]
 </table>
+</form>
 
 [{include file="bottomnaviitem.tpl"}]
 

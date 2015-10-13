@@ -57,6 +57,7 @@ window.onload = function ()
 
 
 [{include file="pagetabsnippet.tpl"}]
+</form>
 
 <script type="text/javascript">
 if (parent.parent != null && parent.parent.setTitle )

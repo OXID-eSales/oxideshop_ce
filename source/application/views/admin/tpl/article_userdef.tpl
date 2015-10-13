@@ -43,7 +43,7 @@
 
     </tr>
 </table>
-
+</form>
 </td>
 </tr>
 [{include file="bottomnaviitem.tpl"}]

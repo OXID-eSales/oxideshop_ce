@@ -51,7 +51,7 @@
                 $("li a:eq("+ options.iDefaultIndex +")", el).trigger("click");
             }
         }
-    }
+    };
 
     $.widget( "ui.oxMorePictures", oxMorePictures );
 

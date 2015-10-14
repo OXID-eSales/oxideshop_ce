@@ -114,7 +114,7 @@
         {
             return this.arrow.hasClass('js-selected');
         }
-    }
+    };
 
     $.widget( "ui.oxAmountPriceSelect", oxAmountPriceSelect );
 

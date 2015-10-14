@@ -107,7 +107,7 @@
 
             return false;
         }
-    }
+    };
 
     $.widget("ui.oxTag", oxTag );
 

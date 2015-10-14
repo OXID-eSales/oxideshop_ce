@@ -160,7 +160,7 @@
         isDisabled : function() {
             return this.head.hasClass( this.options.sDisabledClass );
         }
-    }
+    };
 
    $.widget("ui.oxDropDown", oxDropDown );
 

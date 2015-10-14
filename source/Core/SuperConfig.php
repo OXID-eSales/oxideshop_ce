@@ -22,7 +22,11 @@
 
 namespace OxidEsales\Core;
 
+use oxConfig;
 use oxRegistry;
+use oxSession;
+use oxSystemComponentException;
+use oxUser;
 
 /**
  * Super config class
@@ -69,25 +73,25 @@ class SuperConfig
      * Only used for convenience in UNIT tests by doing so we avoid
      * writing extended classes for testing protected or private methods
      *
-     * @param string $sMethod Methods name
-     * @param array  $aArgs   Argument array
+     * @param string $method Methods name
+     * @param array  $arguments   Argument array
      *
      * @throws oxSystemComponentException Throws an exception if the called method does not exist or is not accessable in current class
      *
      * @return string
      */
-    public function __call($sMethod, $aArgs)
+    public function __call($method, $arguments)
     {
         if (defined('OXID_PHP_UNIT')) {
-            if (substr($sMethod, 0, 4) == "UNIT") {
-                $sMethod = str_replace("UNIT", "_", $sMethod);
+            if (substr($method, 0, 4) === 'UNIT') {
+                $method = str_replace('UNIT', '_', $method);
             }
-            if (method_exists($this, $sMethod)) {
-                return call_user_func_array(array(& $this, $sMethod), $aArgs);
+            if (method_exists($this, $method)) {
+                return call_user_func_array(array(& $this, $method), $arguments);
             }
         }
 
-        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new oxSystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
     }
 
     /**
@@ -116,13 +120,13 @@ class SuperConfig
     /**
      * oxConfig instance setter
      *
-     * @param oxConfig $oConfig config object
+     * @param oxConfig $config config object
      *
      * @return null
      */
-    public function setConfig($oConfig)
+    public function setConfig($config)
     {
-        self::$_oConfig = $oConfig;
+        self::$_oConfig = $config;
     }
 
     /**
@@ -142,13 +146,13 @@ class SuperConfig
     /**
      * oxSession instance setter
      *
-     * @param oxsession $oSession session object
+     * @param oxsession $session session object
      *
      * @return null
      */
-    public function setSession($oSession)
+    public function setSession($session)
     {
-        self::$_oSession = $oSession;
+        self::$_oSession = $session;
     }
 
     /**
@@ -160,9 +164,9 @@ class SuperConfig
     {
         if (self::$_oActUser === null) {
             self::$_oActUser = false;
-            $oUser = oxNew('oxuser');
-            if ($oUser->loadActiveUser()) {
-                self::$_oActUser = $oUser;
+            $user = oxNew('oxuser');
+            if ($user->loadActiveUser()) {
+                self::$_oActUser = $user;
             }
         }
 
@@ -172,13 +176,13 @@ class SuperConfig
     /**
      * Active oxuser object setter
      *
-     * @param oxuser $oUser user object
+     * @param oxuser $user user object
      *
      * @return null
      */
-    public function setUser($oUser)
+    public function setUser($user)
     {
-        self::$_oActUser = $oUser;
+        self::$_oActUser = $user;
     }
 
     /**
@@ -198,10 +202,10 @@ class SuperConfig
     /**
      * Admin mode setter
      *
-     * @param bool $blAdmin admin mode
+     * @param bool $isAdmin admin mode
      */
-    public function setAdminMode($blAdmin)
+    public function setAdminMode($isAdmin)
     {
-        self::$_blIsAdmin = $blAdmin;
+        self::$_blIsAdmin = $isAdmin;
     }
 }

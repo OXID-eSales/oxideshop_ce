@@ -20,15 +20,8 @@
  * @version   OXID eShop CE
  */
 
-class Unit_Core_oxSuperCfgTest extends OxidTestCase
+class SuperConfigTest extends OxidTestCase
 {
-
-    protected function tearDown()
-    {
-
-        return parent::tearDown();
-    }
-
     public function testSetGetConfig()
     {
         $oOxSuperCfg = oxNew('oxSuperCfg');
@@ -78,8 +71,4 @@ class Unit_Core_oxSuperCfgTest extends OxidTestCase
         $oOxSuperCfg->setAdminMode(true);
         $this->assertTrue($oOxSuperCfg->isAdmin());
     }
-
-
-
-
 }

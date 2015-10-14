@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Core;
+
+use oxRegistry;
+
 /**
  * Super config class
  */
-class oxSuperCfg
+class SuperConfig
 {
 
     /**
@@ -200,5 +204,4 @@ class oxSuperCfg
     {
         self::$_blIsAdmin = $blAdmin;
     }
-
 }

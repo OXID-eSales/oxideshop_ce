@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-/**
- */
+namespace OxidEsales\Core;
+
+use oxRegistry;
+use oxDb;
 
 /**
  * Class handling multilanguage data fields
- *
  */
-class oxI18n extends oxBase
+class I18n extends \oxBase
 {
 
     /**
@@ -411,6 +412,10 @@ class oxI18n extends oxBase
                 }
             }
 
+            if (!$this->checkFieldCanBeUpdated($sKey)) {
+                continue;
+            }
+
             $sLongName = $this->_getFieldLongName($sKey);
             $oField = $this->$sLongName;
 
@@ -422,6 +427,18 @@ class oxI18n extends oxBase
         }
 
         return $sSql;
+    }
+
+    /**
+     * If needed, check if field can be updated
+     *
+     * @param string $fieldName
+     *
+     * @return bool
+     */
+    protected function checkFieldCanBeUpdated($fieldName)
+    {
+        return true;
     }
 
     /**

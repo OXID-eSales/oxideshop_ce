@@ -1,1 +1,1 @@
-<input type="hidden" name="uformid" value="[{ $oView->getFormId() }]">
+<input type="hidden" name="uformid" value="[{$oView->getFormId()}]">

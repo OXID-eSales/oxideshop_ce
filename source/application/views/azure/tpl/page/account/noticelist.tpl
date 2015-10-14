@@ -1,6 +1,6 @@
 [{capture append="oxidBlock_content"}]
      <h1 class="pageHead">[{$oView->getTitle()}]</h1>
-    [{if $oView->getNoticeProductList() }]
+    [{if $oView->getNoticeProductList()}]
         [{include file="widget/product/list.tpl" type="line" listId="noticelistProductList" title="" products=$oView->getNoticeProductList() removeFunction="tonoticelist" owishid=$oxcmp_user->oxuser__oxid->value}]
     [{else}]
         <div class="box info">

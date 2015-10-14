@@ -40,8 +40,8 @@
         [{include file="widget/header/search.tpl"}]
     [{/block}]
 </div>
-[{if $oView->getClassName()=='start' && $oView->getBanners()|@count > 0 }]
+[{if $oView->getClassName()=='start' && $oView->getBanners()|@count > 0}]
     <div class="oxSlider">
-        [{include file="widget/promoslider.tpl" }]
+        [{include file="widget/promoslider.tpl"}]
     </div>
 [{/if}]

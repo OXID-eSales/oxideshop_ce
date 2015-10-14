@@ -2,21 +2,21 @@
 
 <div id="container">
 
-    <form name="transfer" id="transfer" action="[{ $oViewConf->getSelfLink() }]" method="post">
-        [{ $oViewConf->getHiddenSid() }]
-        <input type="hidden" name="oxid" value="[{ $oxid }]">
+    <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+        [{$oViewConf->getHiddenSid()}]
+        <input type="hidden" name="oxid" value="[{$oxid}]">
         <input type="hidden" name="cl" value="module_main">
-        <input type="hidden" name="editlanguage" value="[{ $editlanguage }]">
+        <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
     </form>
 
      <div id="infoContent">
 
-         [{ if $aDeletedExt }]
+         [{if $aDeletedExt}]
             <div class="msgBox">
 
                 <div class="info">
-                    <p>[{ oxmultilang ident="MODULE_EXTENSIONISDELETED" }]</p>
-                    <p>[{ oxmultilang ident="MODULE_DELETEEXTENSION" }]</p>
+                    <p>[{oxmultilang ident="MODULE_EXTENSIONISDELETED"}]</p>
+                    <p>[{oxmultilang ident="MODULE_DELETEEXTENSION"}]</p>
 
                     <table cellspacing="0" cellpadding="0" border="0" width="98%">
                         <tr>
@@ -26,8 +26,8 @@
                         [{foreach from=$aDeletedExt item=aModules key=sModuleId}]
                             [{assign var="listclass" value=listitem$blWhite}]
                             <tr>
-                                <td valign="top" class="[{ $listclass}]">[{$sModuleId}]</td>
-                                <td valign="top" class="[{ $listclass}]">
+                                <td valign="top" class="[{$listclass}]">[{$sModuleId}]</td>
+                                <td valign="top" class="[{$listclass}]">
                                     <ul>
                                     [{foreach from=$aModules.extensions item=mFile key=sClassName}]
                                         [{if is_array($mFile)}]
@@ -54,11 +54,11 @@
                 </div>
 
                 <div>
-                    <form name="remove" action="[{ $oViewConf->getSelfLink() }]" method="post">
-                        [{ $oViewConf->getHiddenSid() }]
+                    <form name="remove" action="[{$oViewConf->getSelfLink()}]" method="post">
+                        [{$oViewConf->getHiddenSid()}]
                         <input type="hidden" name="cl" value="module_sortlist">
                         <input type="hidden" name="fnc" value="remove">
-                        <input type="hidden" name="oxid" value="[{ $oxid }]">
+                        <input type="hidden" name="oxid" value="[{$oxid}]">
                         <input type="hidden" name="aModules" value="">
                         <input type="hidden" name="updatelist" value="1">
                         <input type="submit" name="yesButton" class="saveButton" value="[{oxmultilang ident="GENERAL_YES"}]">
@@ -70,11 +70,11 @@
 
              [{if $aExtClasses}]
                 <ul class="sortable" id="aModulesList">
-                [{foreach from=$aExtClasses item=aModuleNames key=sClassName }]
+                [{foreach from=$aExtClasses item=aModuleNames key=sClassName}]
                     <li id="[{$sClassName}]">
                         <span>[{$sClassName}]</span>
                         <ul class="sortable2" id="[{$sClassName}]_modules">
-                            [{foreach from=$aModuleNames item=sModule }]
+                            [{foreach from=$aModuleNames item=sModule}]
                                 [{if is_array($aDisabledModules) && in_array($sModule, $aDisabledModules)}]
                                 [{assign var="cssDisabled" value="disabled"}]
                                 [{else}]
@@ -101,22 +101,22 @@
 
 </div>
 
-[{ if !$aDeletedExt && $aExtClasses}]
+[{if !$aDeletedExt && $aExtClasses}]
     <div id="footerBox">
         <div class="buttonsBox">
-            <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post">
-                [{ $oViewConf->getHiddenSid() }]
+            <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+                [{$oViewConf->getHiddenSid()}]
                 <input type="hidden" name="cl" value="module_sortlist">
                 <input type="hidden" name="fnc" value="save">
-                <input type="hidden" name="oxid" value="[{ $oxid }]">
+                <input type="hidden" name="oxid" value="[{$oxid}]">
                 <input type="hidden" name="aModules" value="">
-                <input type="button" name="saveButton" class="saveButton" value="[{ oxmultilang ident="GENERAL_SAVE" }]" disabled>
+                <input type="button" name="saveButton" class="saveButton" value="[{oxmultilang ident="GENERAL_SAVE"}]" disabled>
             </form>
         </div>
 
         <div class="description">
             <p>
-                [{ oxmultilang ident="MODULE_DRAGANDDROP" }]
+                [{oxmultilang ident="MODULE_DRAGANDDROP"}]
 
             </p>
         </div>

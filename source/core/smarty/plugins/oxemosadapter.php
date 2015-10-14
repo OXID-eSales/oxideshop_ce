@@ -48,7 +48,7 @@ require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'smarty/plugi
  * ECONDA Trackiong into a Shop-System.
  *
  * The smarty tempaltes should include s tag like
- * [{insert name="oxid_tracker" title=$template_title }]
+ * [{insert name="oxid_tracker" title=$template_title}]
  */
 class oxEmosAdapter extends oxSuperCfg
 {

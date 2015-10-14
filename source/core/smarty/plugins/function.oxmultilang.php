@@ -24,7 +24,7 @@
  * Smarty function
  * -------------------------------------------------------------
  * Purpose: Output multilang string
- * add [{ oxmultilang ident="..." args=... }] where you want to display content
+ * add [{oxmultilang ident="..." args=...}] where you want to display content
  * ident - language constant
  * args - array of argument that can be parsed to language constant threw %s
  * -------------------------------------------------------------

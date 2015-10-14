@@ -9,20 +9,20 @@
 
 <div id="box">
 
-    <form name="transfer" id="transfer" action="[{ $oViewConf->getSelfLink() }]" method="post">
-        [{ $oViewConf->getHiddenSid() }]
-        <input type="hidden" name="oxid" value="[{ $oxid }]">
+    <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+        [{$oViewConf->getHiddenSid()}]
+        <input type="hidden" name="oxid" value="[{$oxid}]">
         <input type="hidden" name="cl" value="newsletter_preview">
-        <input type="hidden" name="editlanguage" value="[{ $editlanguage }]">
+        <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
     </form>
 
-    <b>[{ oxmultilang ident="NEWSLETTER_PREVIEW_PLAINTEXT" }]</b>:<br>
+    <b>[{oxmultilang ident="NEWSLETTER_PREVIEW_PLAINTEXT"}]</b>:<br>
     <hr>
-    <pre>[{ $previewtext }]</pre>
+    <pre>[{$previewtext}]</pre>
 
-    <b>[{ oxmultilang ident="NEWSLETTER_PREVIEW_HTML" }]</b>:<br>
+    <b>[{oxmultilang ident="NEWSLETTER_PREVIEW_HTML"}]</b>:<br>
     <hr>
-    [{ $previewhtml }]
+    [{$previewhtml}]
 
 </div>
 </body>

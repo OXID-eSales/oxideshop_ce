@@ -3,15 +3,15 @@
     <h1 class="pageHead">[{$oView->getTitle()}]</h1>
     [{if !$oView->getInviteSendStatus()}]
         <ul>
-            <li>[{ oxmultilang ident="MESSAGE_INVITE_YOUR_FRIENDS" }]</li>
-            <li>[{ oxmultilang ident="MESSAGE_INVITE_YOUR_FRIENDS_EMAIL" }]</li>
+            <li>[{oxmultilang ident="MESSAGE_INVITE_YOUR_FRIENDS"}]</li>
+            <li>[{oxmultilang ident="MESSAGE_INVITE_YOUR_FRIENDS_EMAIL"}]</li>
         </ul>
         [{oxifcontent ident="oxsecurityinfo" object="oCont"}]
-            <p>[{ oxmultilang ident="MESSAGE_READ_DETAILS" }] <a href="[{$oCont->getLink()}]" rel="nofollow">[{ $oCont->oxcontents__oxtitle->value }]</a></p>
+            <p>[{oxmultilang ident="MESSAGE_READ_DETAILS"}] <a href="[{$oCont->getLink()}]" rel="nofollow">[{$oCont->oxcontents__oxtitle->value}]</a></p>
         [{/oxifcontent}]
         [{include file="form/privatesales/invite.tpl"}]
     [{else}]
-        [{ oxmultilang ident="MESSAGE_INVITE_YOUR_FRIENDS_INVITATION_SENT" }]<br><br>
+        [{oxmultilang ident="MESSAGE_INVITE_YOUR_FRIENDS_INVITATION_SENT"}]<br><br>
     [{/if}]
 [{/capture}]
 [{include file="layout/page.tpl" sidebar="Left"}]

@@ -5,12 +5,12 @@
 [{assign var=divId value=oxStateDiv_$stateSelectName}]
 [{assign var=stateSelectId value=oxStateSelect_$stateSelectName}]
 
-[{if $currCountry }]
+[{if $currCountry}]
   [{assign var=showDiv value='true'}]
 [{else}]
   [{assign var=showDiv value='false'}]
 [{/if}]
-[{oxscript include="js/widgets/oxcountrystateselect.js" priority=10 }]
+[{oxscript include="js/widgets/oxcountrystateselect.js" priority=10}]
 [{oxscript add="$( '#`$countrySelectId`' ).oxCountryStateSelect({selectedStateId:'`$selectedStateId`'});"}]
 
 <script type="text/javascript"><!--
@@ -18,7 +18,7 @@
   var allStateIds = new Array();
   var allCountryIds = new Object();
   var cCount = 0;
-  [{foreach from=$oViewConf->getCountryList() item=country key=country_id }]
+  [{foreach from=$oViewConf->getCountryList() item=country key=country_id}]
 
     var states = new Array();
     var ids = new Array();

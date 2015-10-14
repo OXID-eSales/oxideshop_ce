@@ -64,12 +64,12 @@
     <tr>
         <td valign="top">
 
-            [{ if !empty($sErrorMessage) }]
-                <p><span style="color: red"><b>[{ oxmultilang ident="OXDIAG_ERRORMESSAGETEMPLATE" }]</b></span></p>
-                <span style="color: red">[{ $sErrorMessage }]</span>
+            [{if !empty($sErrorMessage)}]
+                <p><span style="color: red"><b>[{oxmultilang ident="OXDIAG_ERRORMESSAGETEMPLATE"}]</b></span></p>
+                <span style="color: red">[{$sErrorMessage}]</span>
             [{elseif !$oView->getParam('runAnalysis')}]
 
-            <form name="diagnosticsForm" id="diagnosticsForm" action="[{ $oViewConf->getSelfLink() }]" onsubmit="handleSubmit()" method="post">
+            <form name="diagnosticsForm" id="diagnosticsForm" action="[{$oViewConf->getSelfLink()}]" onsubmit="handleSubmit()" method="post">
                 <table border="0" cellpadding="0">
                     [{$oViewConf->getHiddenSid()}]
                     <input type="hidden" name="cl" value="diagnostics_main">
@@ -112,24 +112,24 @@
                 </table>
 
                 <br><br>
-                <input type="submit" class="edittext" id="submitButton" name="submitButton" value=" [{ oxmultilang ident="OXDIAG_FORM_START_CHECK" }] " >
+                <input type="submit" class="edittext" id="submitButton" name="submitButton" value=" [{oxmultilang ident="OXDIAG_FORM_START_CHECK"}] " >
 
             </form>
-            [{ /if}]
+            [{/if}]
 
         </td>
         <td valign="top" >
             <div class="hidden" id="version_checker_comment">
-            <p>[{ oxmultilang ident="OXDIAG_INTROINFORMATION" }]</p>
-            <p>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_NO_PERSONAL_INFO" }]</p>
-            <p>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_DATA_TRANSMITTED" }]</p>
+            <p>[{oxmultilang ident="OXDIAG_INTROINFORMATION"}]</p>
+            <p>[{oxmultilang ident="OXDIAG_INTROINFORMATION_NO_PERSONAL_INFO"}]</p>
+            <p>[{oxmultilang ident="OXDIAG_INTROINFORMATION_DATA_TRANSMITTED"}]</p>
             <ul>
-                <li>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_FILENAME_TO_BE_CHECKED" }]</li>
-                <li>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_MD5_CHECKSUM" }]</li>
-                <li>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_VERSION_DETECTED" }]</li>
-                <li>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_REVISION_DETECTED" }]</li>
+                <li>[{oxmultilang ident="OXDIAG_INTROINFORMATION_FILENAME_TO_BE_CHECKED"}]</li>
+                <li>[{oxmultilang ident="OXDIAG_INTROINFORMATION_MD5_CHECKSUM"}]</li>
+                <li>[{oxmultilang ident="OXDIAG_INTROINFORMATION_VERSION_DETECTED"}]</li>
+                <li>[{oxmultilang ident="OXDIAG_INTROINFORMATION_REVISION_DETECTED"}]</li>
             </ul>
-            <p>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_MORE_INFORMATION" }] <strong><a class="underlined" href="http://www.oxid-esales.com/de/news/blog/shop-checking-tool-oxchkversion-v3" target=_blank>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_OXID_ESALES_BLOG" }]</a></strong>.</p>
+            <p>[{oxmultilang ident="OXDIAG_INTROINFORMATION_MORE_INFORMATION"}] <strong><a class="underlined" href="http://www.oxid-esales.com/de/news/blog/shop-checking-tool-oxchkversion-v3" target=_blank>[{oxmultilang ident="OXDIAG_INTROINFORMATION_OXID_ESALES_BLOG"}]</a></strong>.</p>
             </div>
         </td>
     </tr>
@@ -137,17 +137,17 @@
 
 
 
-[{ if !empty($sResult) }]
-<h1>[{ oxmultilang ident="OXDIAG_RESULT_SUCCESSFUL" }]</h1>
-<h2><strong><a class="underlined" href="[{ $oViewConf->getSelfLink() }]&amp;cl=diagnostics_main&amp;fnc=downloadResultFile">[{ oxmultilang ident="OXDIAG_DOWNLOAD_FILE" }]</a></strong>.</h2>
+[{if !empty($sResult)}]
+<h1>[{oxmultilang ident="OXDIAG_RESULT_SUCCESSFUL"}]</h1>
+<h2><strong><a class="underlined" href="[{$oViewConf->getSelfLink()}]&amp;cl=diagnostics_main&amp;fnc=downloadResultFile">[{oxmultilang ident="OXDIAG_DOWNLOAD_FILE"}]</a></strong>.</h2>
 
-<h3>[{ oxmultilang ident="OXDIAG_RESULT" }]:</h3>
+<h3>[{oxmultilang ident="OXDIAG_RESULT"}]:</h3>
 <div class="result">
     <p>
-    [{ $sResult }]
+    [{$sResult}]
     </p>
 </div>
-[{ /if}]
+[{/if}]
 
 [{include file="bottomnaviitem.tpl"}]
 

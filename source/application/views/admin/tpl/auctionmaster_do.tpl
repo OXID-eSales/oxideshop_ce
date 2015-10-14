@@ -1,12 +1,12 @@
 <html>
 <head>
-    <title>[{ oxmultilang ident="AUCTMASTER_DO_TITLE" }]</title>
+    <title>[{oxmultilang ident="AUCTMASTER_DO_TITLE"}]</title>
     <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]style.css">
 
 
     <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
     [{if isset($refresh)}]
-    <META HTTP-EQUIV=Refresh CONTENT="[{$refresh}]; URL=[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]&cl=[{$sClassDo}]&iStart=[{ $iStart}]&fnc=run">
+    <META HTTP-EQUIV=Refresh CONTENT="[{$refresh}]; URL=[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]&cl=[{$sClassDo}]&iStart=[{$iStart}]&fnc=run">
     [{/if}]
 </head>
 
@@ -17,23 +17,23 @@
 </td>
 <td class="edittext" bgcolor="#86A7C1" style="border: 1px #000000; border-style: none none solid none; color: #E3ECF4;">
     [{if !isset($refresh)}]
-        [{ if !isset($iError) }]
-            [{ oxmultilang ident="AUCTMASTER_DO_EXPORTNOTSTARTED" }]
+        [{if !isset($iError)}]
+            [{oxmultilang ident="AUCTMASTER_DO_EXPORTNOTSTARTED"}]
         [{else}]
-            [{ oxmultilang ident="AUCTMASTER_DO_EXPORTEND" }]
-            [{ if $iError}]
+            [{oxmultilang ident="AUCTMASTER_DO_EXPORTEND"}]
+            [{if $iError}]
 
-                [{ if $iError == -2}]
-                    <strong>[{ oxmultilang ident="AUCTMASTER_DO_SUCCESS" }]<br>
+                [{if $iError == -2}]
+                    <strong>[{oxmultilang ident="AUCTMASTER_DO_SUCCESS"}]<br>
                 [{/if}]
 
-                [{ if $iError == -1}][{ oxmultilang ident="AUCTMASTER_DO_UNKNOWNERROR" }][{/if}]
-                        [{ if $iError == 1 }][{ assign var='oxOutputFile' value=$sOutputFile }][{ oxmultilang ident="AUCTMASTER_DO_EXPORTFILE" args=$oxOutputFile}][{/if}]
+                [{if $iError == -1}][{oxmultilang ident="AUCTMASTER_DO_UNKNOWNERROR"}][{/if}]
+                        [{if $iError == 1}][{assign var='oxOutputFile' value=$sOutputFile}][{oxmultilang ident="AUCTMASTER_DO_EXPORTFILE" args=$oxOutputFile}][{/if}]
 
             [{/if}]
         [{/if}]
     [{else}]
-     [{ oxmultilang ident="AUCTMASTER_DO_EXPORTING1" }][{ $iStart|default:0}] [{ oxmultilang ident="AUCTMASTER_DO_EXPORTING2" }] [{ $iEnd }].
+     [{oxmultilang ident="AUCTMASTER_DO_EXPORTING1"}][{$iStart|default:0}] [{oxmultilang ident="AUCTMASTER_DO_EXPORTING2"}] [{$iEnd}].
     [{/if}]
 </td>
 </table>

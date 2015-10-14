@@ -3,7 +3,7 @@
 [{if $manufacturers|count}]
     [{block name="footer_manufacturers"}]
     <dl id="footerManufacturers" class="list manufacturers">
-        <dt class="list-header">[{oxmultilang ident="MANUFACTURERS" }]</dt>
+        <dt class="list-header">[{oxmultilang ident="MANUFACTURERS"}]</dt>
         [{assign var="rootManufacturer" value=$oView->getRootManufacturer()}]
         <dd><a href="[{$rootManufacturer->getLink()}]">[{oxmultilang ident="ALL_BRANDS"}]</a></dd>
         [{foreach from=$manufacturers item=_mnf name=manufacturers}]

@@ -24,7 +24,7 @@
  * Smarty function
  * -------------------------------------------------------------
  * Purpose: eval given string
- * add [{ oxeval var="..." }] where you want to display content
+ * add [{oxeval var="..."}] where you want to display content
  * -------------------------------------------------------------
  *
  * @param array  $aParams  parameters to process

@@ -4,7 +4,7 @@
     <div id="cookieNote">
         <div class="notify">
             [{oxmultilang ident='COOKIE_NOTE'}]
-            <span class="cancelCookie"><a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=clearcookies" }]" title="[{oxmultilang ident='COOKIE_NOTE_DISAGREE'}]">[{oxmultilang ident='COOKIE_NOTE_DISAGREE'}]</a></span>
+            <span class="cancelCookie"><a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=clearcookies"}]" title="[{oxmultilang ident='COOKIE_NOTE_DISAGREE'}]">[{oxmultilang ident='COOKIE_NOTE_DISAGREE'}]</a></span>
             <span class="dismiss"><a href="#" title="[{oxmultilang ident='CLOSE'}]">x</a></span>
         </div>
     </div>

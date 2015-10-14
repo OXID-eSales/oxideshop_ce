@@ -1,13 +1,13 @@
 [{capture append="oxidBlock_content"}]
-[{if $oView->isPasswordChanged() }]
+[{if $oView->isPasswordChanged()}]
      <div class="status success corners">
-      [{ oxmultilang ident="MESSAGE_PASSWORD_CHANGED" }]
+      [{oxmultilang ident="MESSAGE_PASSWORD_CHANGED"}]
      </div>
 [{/if}]
 [{if count($Errors) > 0 && count($Errors.user) > 0}]
 <div class="status error corners">
-    [{foreach from=$Errors.user item=oEr key=key }]
-        <p>[{ $oEr->getOxMessage()}]</p>
+    [{foreach from=$Errors.user item=oEr key=key}]
+        <p>[{$oEr->getOxMessage()}]</p>
     [{/foreach}]
 </div>
 [{/if}]

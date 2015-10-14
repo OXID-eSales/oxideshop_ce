@@ -1,18 +1,18 @@
 [{capture append="oxidBlock_content"}]
     <h1 class="pageHead">[{$oView->getTitle()}]</h1>
-    [{if $oView->getOrderFilesList()|count }]
+    [{if $oView->getOrderFilesList()|count}]
     <ul class="downloadList">
       [{foreach from=$oView->getOrderFilesList() item="oOrderArticle"}]
         <li>
           <dl>
                 <dt>
-                    <strong>[{$oOrderArticle.oxarticletitle}] - [{oxmultilang ident="ORDER_NUMBER" suffix="COLON"}] [{ $oOrderArticle.oxordernr }], [{ $oOrderArticle.oxorderdate|date_format:"%d.%m.%Y"}]</strong>
+                    <strong>[{$oOrderArticle.oxarticletitle}] - [{oxmultilang ident="ORDER_NUMBER" suffix="COLON"}] [{$oOrderArticle.oxordernr}], [{$oOrderArticle.oxorderdate|date_format:"%d.%m.%Y"}]</strong>
                 </dt>
                 [{foreach from=$oOrderArticle.oxorderfiles item="oOrderFile"}]
                 <dd>
-                   [{if $oOrderFile->isPaid() || !$oOrderFile->oxorderfiles__oxpurchasedonly->value  }]
-                         [{if $oOrderFile->isValid() }]
-                           <a class="downloadableFile" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=download" params="sorderfileid="|cat:$oOrderFile->getId() }]" rel="nofollow">[{$oOrderFile->oxorderfiles__oxfilename->value}]</a>
+                   [{if $oOrderFile->isPaid() || !$oOrderFile->oxorderfiles__oxpurchasedonly->value}]
+                         [{if $oOrderFile->isValid()}]
+                           <a class="downloadableFile" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=download" params="sorderfileid="|cat:$oOrderFile->getId()}]" rel="nofollow">[{$oOrderFile->oxorderfiles__oxfilename->value}]</a>
 
                             [{include file="page/account/inc/file_attributes.tpl"}]
 
@@ -22,7 +22,7 @@
                         [{/if}]
                   [{else}]
                     <span class="downloadableFile pending">[{$oOrderFile->oxorderfiles__oxfilename->value}]</span>
-                    <strong>[{ oxmultilang ident="DOWNLOADS_PAYMENT_PENDING" }]</strong>
+                    <strong>[{oxmultilang ident="DOWNLOADS_PAYMENT_PENDING"}]</strong>
                   [{/if}]
                 </dd>
                 [{/foreach}]

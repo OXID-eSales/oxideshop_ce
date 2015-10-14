@@ -24,7 +24,7 @@
  * Smarty function
  * -------------------------------------------------------------
  * Purpose: Output translated salutation field
- * add [{ $ }] where you want to display content
+ * add [{$}] where you want to display content
  * -------------------------------------------------------------
  *
  * @param string $sIdent language constant ident

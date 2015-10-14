@@ -4,9 +4,9 @@
 <!--
 window.onload = function ()
 {
-    [{ if $updatelist == 1}]
-        top.oxid.admin.updateList('[{ $oxid }]');
-    [{ /if}]
+    [{if $updatelist == 1}]
+        top.oxid.admin.updateList('[{$oxid}]');
+    [{/if}]
     var oField = top.oxid.admin.getLockTarget();
     oField.onchange = oField.onkeyup = oField.onmouseout = top.oxid.admin.unlockSave;
 }
@@ -19,23 +19,23 @@ window.onload = function ()
     [{assign var="readonly" value=""}]
 [{/if}]
 
-<form name="transfer" id="transfer" action="[{ $oViewConf->getSelfLink() }]" method="post">
-    [{ $oViewConf->getHiddenSid() }]
-    <input type="hidden" name="oxid" value="[{ $oxid }]">
-    <input type="hidden" name="oxidCopy" value="[{ $oxid }]">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="oxid" value="[{$oxid}]">
+    <input type="hidden" name="oxidCopy" value="[{$oxid}]">
     <input type="hidden" name="cl" value="country_main">
-    <input type="hidden" name="language" value="[{ $actlang }]">
+    <input type="hidden" name="language" value="[{$actlang}]">
 </form>
 
-<form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post">
-[{ $oViewConf->getHiddenSid() }]
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+[{$oViewConf->getHiddenSid()}]
 <input type="hidden" name="cl" value="country_main">
 <input type="hidden" name="fnc" value="">
-<input type="hidden" name="oxid" value="[{ $oxid }]">
-<input type="hidden" name="voxid" value="[{ $oxid }]">
-<input type="hidden" name="oxparentid" value="[{ $oxparentid }]">
-<input type="hidden" name="editval[oxcountry__oxid]" value="[{ $oxid }]">
-<input type="hidden" name="language" value="[{ $actlang }]">
+<input type="hidden" name="oxid" value="[{$oxid}]">
+<input type="hidden" name="voxid" value="[{$oxid}]">
+<input type="hidden" name="oxparentid" value="[{$oxparentid}]">
+<input type="hidden" name="editval[oxcountry__oxid]" value="[{$oxid}]">
+<input type="hidden" name="language" value="[{$actlang}]">
 
 <table cellspacing="0" cellpadding="0" border="0" width="98%">
 <tr>
@@ -46,81 +46,81 @@ window.onload = function ()
             [{block name="admin_country_main_form"}]
                 <tr>
                     <td class="edittext" width="120">
-                    [{ oxmultilang ident="GENERAL_ACTIVE" }]
+                    [{oxmultilang ident="GENERAL_ACTIVE"}]
                     </td>
                     <td class="edittext">
-                    <input class="edittext" type="checkbox" name="editval[oxcountry__oxactive]" value='1' [{if $edit->oxcountry__oxactive->value == 1}]checked[{/if}] [{ $readonly }]>
-                    [{ oxinputhelp ident="HELP_GENERAL_ACTIVE" }]
-                    </td>
-                </tr>
-                <tr>
-                    <td class="edittext">
-                    [{ oxmultilang ident="GENERAL_TITLE" }]
-                    </td>
-                    <td class="edittext">
-                    <input type="text" class="editinput" size="40" maxlength="[{$edit->oxcountry__oxtitle->fldmax_length}]" id="oLockTarget" name="editval[oxcountry__oxtitle]" value="[{$edit->oxcountry__oxtitle->value}]" [{ $readonly }]>
-                    [{ oxinputhelp ident="HELP_GENERAL_TITLE" }]
+                    <input class="edittext" type="checkbox" name="editval[oxcountry__oxactive]" value='1' [{if $edit->oxcountry__oxactive->value == 1}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="HELP_GENERAL_ACTIVE"}]
                     </td>
                 </tr>
                 <tr>
                     <td class="edittext">
-                    [{ oxmultilang ident="GENERAL_SHORTDESC" }]
+                    [{oxmultilang ident="GENERAL_TITLE"}]
                     </td>
                     <td class="edittext">
-                    <input type="text" class="editinput" size="40" maxlength="[{$edit->oxcountry__oxshortdesc->fldmax_length}]" name="editval[oxcountry__oxshortdesc]" value="[{$edit->oxcountry__oxshortdesc->value}]" [{ $readonly }]>
-                    [{ oxinputhelp ident="HELP_GENERAL_SHORTDESC" }]
-                    </td>
-                </tr>
-                <tr>
-                    <td class="edittext">
-                    [{ oxmultilang ident="COUNTRY_MAIN_ISO2" }]
-                    </td>
-                    <td class="edittext">
-                    <input type="text" class="editinput" size="5" maxlength="[{$edit->oxcountry__oxisoalpha2->fldmax_length}]" name="editval[oxcountry__oxisoalpha2]" value="[{$edit->oxcountry__oxisoalpha2->value}]" [{ $readonly }]>
-                    [{ oxinputhelp ident="HELP_COUNTRY_MAIN_ISO2" }]
+                    <input type="text" class="editinput" size="40" maxlength="[{$edit->oxcountry__oxtitle->fldmax_length}]" id="oLockTarget" name="editval[oxcountry__oxtitle]" value="[{$edit->oxcountry__oxtitle->value}]" [{$readonly}]>
+                    [{oxinputhelp ident="HELP_GENERAL_TITLE"}]
                     </td>
                 </tr>
                 <tr>
                     <td class="edittext">
-                    [{ oxmultilang ident="COUNTRY_MAIN_ISO3" }]
+                    [{oxmultilang ident="GENERAL_SHORTDESC"}]
                     </td>
                     <td class="edittext">
-                    <input type="text" class="editinput" size="5" maxlength="[{$edit->oxcountry__oxisoalpha3->fldmax_length}]" name="editval[oxcountry__oxisoalpha3]" value="[{$edit->oxcountry__oxisoalpha3->value}]" [{ $readonly }]>
-                    [{ oxinputhelp ident="HELP_COUNTRY_MAIN_ISO3" }]
-                    </td>
-                </tr>
-                <tr>
-                    <td class="edittext">
-                    [{ oxmultilang ident="COUNTRY_MAIN_ISOUNNUM" }]
-                    </td>
-                    <td class="edittext">
-                    <input type="text" class="editinput" size="5" maxlength="[{$edit->oxcountry__oxunnum3->fldmax_length}]" name="editval[oxcountry__oxunnum3]" value="[{$edit->oxcountry__oxunnum3->value}]" [{ $readonly }]>
-                    [{ oxinputhelp ident="HELP_COUNTRY_MAIN_ISOUNNUM" }]
+                    <input type="text" class="editinput" size="40" maxlength="[{$edit->oxcountry__oxshortdesc->fldmax_length}]" name="editval[oxcountry__oxshortdesc]" value="[{$edit->oxcountry__oxshortdesc->value}]" [{$readonly}]>
+                    [{oxinputhelp ident="HELP_GENERAL_SHORTDESC"}]
                     </td>
                 </tr>
                 <tr>
                     <td class="edittext">
-                    [{ oxmultilang ident="GENERAL_SORT" }]
+                    [{oxmultilang ident="COUNTRY_MAIN_ISO2"}]
                     </td>
                     <td class="edittext">
-                    <input type="text" class="editinput" size="5" maxlength="[{$edit->oxcountry__oxorder->fldmax_length}]" name="editval[oxcountry__oxorder]" value="[{$edit->oxcountry__oxorder->value}]" [{ $readonly }]>
-                    [{ oxinputhelp ident="HELP_GENERAL_SORT" }]
+                    <input type="text" class="editinput" size="5" maxlength="[{$edit->oxcountry__oxisoalpha2->fldmax_length}]" name="editval[oxcountry__oxisoalpha2]" value="[{$edit->oxcountry__oxisoalpha2->value}]" [{$readonly}]>
+                    [{oxinputhelp ident="HELP_COUNTRY_MAIN_ISO2"}]
+                    </td>
+                </tr>
+                <tr>
+                    <td class="edittext">
+                    [{oxmultilang ident="COUNTRY_MAIN_ISO3"}]
+                    </td>
+                    <td class="edittext">
+                    <input type="text" class="editinput" size="5" maxlength="[{$edit->oxcountry__oxisoalpha3->fldmax_length}]" name="editval[oxcountry__oxisoalpha3]" value="[{$edit->oxcountry__oxisoalpha3->value}]" [{$readonly}]>
+                    [{oxinputhelp ident="HELP_COUNTRY_MAIN_ISO3"}]
+                    </td>
+                </tr>
+                <tr>
+                    <td class="edittext">
+                    [{oxmultilang ident="COUNTRY_MAIN_ISOUNNUM"}]
+                    </td>
+                    <td class="edittext">
+                    <input type="text" class="editinput" size="5" maxlength="[{$edit->oxcountry__oxunnum3->fldmax_length}]" name="editval[oxcountry__oxunnum3]" value="[{$edit->oxcountry__oxunnum3->value}]" [{$readonly}]>
+                    [{oxinputhelp ident="HELP_COUNTRY_MAIN_ISOUNNUM"}]
+                    </td>
+                </tr>
+                <tr>
+                    <td class="edittext">
+                    [{oxmultilang ident="GENERAL_SORT"}]
+                    </td>
+                    <td class="edittext">
+                    <input type="text" class="editinput" size="5" maxlength="[{$edit->oxcountry__oxorder->fldmax_length}]" name="editval[oxcountry__oxorder]" value="[{$edit->oxcountry__oxorder->value}]" [{$readonly}]>
+                    [{oxinputhelp ident="HELP_GENERAL_SORT"}]
                     </td>
                 </tr>
                 [{if $blForeignCountry}]
                 <tr>
                     <td class="edittext">
-                    [{ oxmultilang ident="COUNTRY_MAIN_OXVATSTATUS" }]
+                    [{oxmultilang ident="COUNTRY_MAIN_OXVATSTATUS"}]
                     </td>
                     <td class="edittext">
                     <fieldset style="margin: 5px 0 0 0;">
-                        <input type="radio" name="editval[oxcountry__oxvatstatus]" value="0" [{if $edit->oxcountry__oxvatstatus->value == 0}]checked[{/if}] [{ $readonly }]>
-                        [{ oxmultilang ident="COUNTRY_MAIN_OXVATSTATUS_0" }]
-                        [{ oxinputhelp ident="HELP_COUNTRY_MAIN_OXVATSTATUS_0" }]
+                        <input type="radio" name="editval[oxcountry__oxvatstatus]" value="0" [{if $edit->oxcountry__oxvatstatus->value == 0}]checked[{/if}] [{$readonly}]>
+                        [{oxmultilang ident="COUNTRY_MAIN_OXVATSTATUS_0"}]
+                        [{oxinputhelp ident="HELP_COUNTRY_MAIN_OXVATSTATUS_0"}]
                         <br />
-                        <input type="radio" name="editval[oxcountry__oxvatstatus]" value="1" [{if $edit->oxcountry__oxvatstatus->value == 1}]checked[{/if}] [{ $readonly }]>
-                        [{ oxmultilang ident="COUNTRY_MAIN_OXVATSTATUS_1" }]
-                        [{ oxinputhelp ident="HELP_COUNTRY_MAIN_OXVATSTATUS_1" }]
+                        <input type="radio" name="editval[oxcountry__oxvatstatus]" value="1" [{if $edit->oxcountry__oxvatstatus->value == 1}]checked[{/if}] [{$readonly}]>
+                        [{oxmultilang ident="COUNTRY_MAIN_OXVATSTATUS_1"}]
+                        [{oxinputhelp ident="HELP_COUNTRY_MAIN_OXVATSTATUS_1"}]
                     </fieldset>
                     </td>
                 </tr>
@@ -139,7 +139,7 @@ window.onload = function ()
             <td class="edittext"><br><br>
             </td>
             <td class="edittext"><br><br>
-            <input type="submit" class="edittext" id="oLockButton" name="saveArticle" value="[{ oxmultilang ident="GENERAL_SAVE" }]" onClick="Javascript:document.myedit.fnc.value='save'"" [{ $readonly }] [{ if !$edit->oxcountry__oxtitle->value && !$oxparentid }]disabled[{/if}]><br>
+            <input type="submit" class="edittext" id="oLockButton" name="saveArticle" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" [{$readonly}] [{if !$edit->oxcountry__oxtitle->value && !$oxparentid}]disabled[{/if}]><br>
             </td>
         </tr>
 
@@ -149,8 +149,8 @@ window.onload = function ()
     <!-- Anfang rechte Seite -->
     <td valign="top" class="edittext" align="left" width="55%">
         [{block name="admin_country_main_description"}]
-            [{ oxmultilang ident="COUNTRY_MAIN_OPDESCRIPTION" }]<br>
-            <textarea class="editinput" style="width:250;height:100;" wrap="VIRTUAL" name="editval[oxcountry__oxlongdesc]" [{ $readonly }]>[{$edit->oxcountry__oxlongdesc->value}]</textarea>
+            [{oxmultilang ident="COUNTRY_MAIN_OPDESCRIPTION"}]<br>
+            <textarea class="editinput" style="width:250;height:100;" wrap="VIRTUAL" name="editval[oxcountry__oxlongdesc]" [{$readonly}]>[{$edit->oxcountry__oxlongdesc->value}]</textarea>
         [{/block}]
     </td>
     <!-- Ende rechte Seite -->

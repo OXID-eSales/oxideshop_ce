@@ -1,6 +1,6 @@
-[{oxscript include="js/widgets/oxajax.js" priority=10 }]
-[{oxscript include="js/widgets/oxcountdown.js" priority=10 }]
-[{oxscript include="js/widgets/oxminibasket.js" priority=10 }]
+[{oxscript include="js/widgets/oxajax.js" priority=10}]
+[{oxscript include="js/widgets/oxcountdown.js" priority=10}]
+[{oxscript include="js/widgets/oxminibasket.js" priority=10}]
 [{oxscript include="js/widgets/oxmodalpopup.js" priority=10}]
 [{oxscript add="$( '#miniBasket' ).oxMiniBasket();"}]
 [{if $oxcmp_basket->getProductsCount() gte 8}]
@@ -40,13 +40,13 @@
             [{if $oxcmp_basket->getProductsCount() gte 8}]
                 [{assign var="scrollableBasket" value=true}]
             [{/if}]
-                [{assign var="currency" value=$oView->getActCurrency() }]
+                [{assign var="currency" value=$oView->getActCurrency()}]
                 <div id="[{$_prefix}]basketFlyout" class="basketFlyout corners[{if $scrollableBasket}] scrollable[{/if}]">
                     <p class="title">
                         [{if $_prefix != "modal"}]
-                            <strong>[{$oxcmp_basket->getItemsCount()}] [{ oxmultilang ident="ITEMS_IN_BASKET" suffix="COLON" }]</strong>
+                            <strong>[{$oxcmp_basket->getItemsCount()}] [{oxmultilang ident="ITEMS_IN_BASKET" suffix="COLON"}]</strong>
                         [{else}]
-                            <strong class="note">[{ oxmultilang ident="NEW_BASKET_ITEM_MSG" }]</strong>
+                            <strong class="note">[{oxmultilang ident="NEW_BASKET_ITEM_MSG"}]</strong>
                         [{/if}]
                         <img src="[{$oViewConf->getImageUrl('x.png')}]" alt="" class="closePop">
                     </p>
@@ -70,14 +70,14 @@
                     <ul>
                     [{foreach from=$oxcmp_basket->getContents() name=miniBasketList item=_product}]
                         [{block name="widget_minibasket_product"}]
-                            [{ assign var="minibasketItemTitle" value=$_product->getTitle() }]
+                            [{assign var="minibasketItemTitle" value=$_product->getTitle()}]
                             <li>
-                                <a href="[{$_product->getLink()}]" title="[{ $minibasketItemTitle|strip_tags }]">
+                                <a href="[{$_product->getLink()}]" title="[{$minibasketItemTitle|strip_tags}]">
                                     <span class="item">
                                         [{if $_product->getAmount() gt 1}]
                                             [{$_product->getAmount()}] x
                                         [{/if}]
-                                        [{ $minibasketItemTitle|strip_tags }]
+                                        [{$minibasketItemTitle|strip_tags}]
                                     </span>
                                     <strong class="price">[{oxprice price=$_product->getPrice() currency=$currency}]</strong>
                                 </a>
@@ -92,25 +92,25 @@
                     [{/if}]
                     [{block name="widget_minibasket_total"}]
                         <p class="totals">
-                           <span class="item">[{ oxmultilang ident="TOTAL" }]</span>
+                           <span class="item">[{oxmultilang ident="TOTAL"}]</span>
                            <strong class="price">
                            [{if $oxcmp_basket->isPriceViewModeNetto()}]
-                           [{ $oxcmp_basket->getProductsNetPrice()}]
+                           [{$oxcmp_basket->getProductsNetPrice()}]
                            [{else}]
-                           [{ $oxcmp_basket->getFProductsPrice()}]
+                           [{$oxcmp_basket->getFProductsPrice()}]
                            [{/if}]
-                           [{ $currency->sign}]</strong>
+                           [{$currency->sign}]</strong>
                         </p>
                     [{/block}]
                     <hr>
                     [{include file="widget/minibasket/countdown.tpl"}]
                     <p class="functions clear">
                        [{if $oxcmp_user}]
-                            <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=payment" }]" class="submitButton largeButton">[{ oxmultilang ident="CHECKOUT" }]</a>
+                            <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=payment"}]" class="submitButton largeButton">[{oxmultilang ident="CHECKOUT"}]</a>
                        [{else}]
-                            <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=user" }]" class="submitButton largeButton">[{ oxmultilang ident="CHECKOUT" }]</a>
+                            <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=user"}]" class="submitButton largeButton">[{oxmultilang ident="CHECKOUT"}]</a>
                        [{/if}]
-                       <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=basket" }]" class="textButton">[{ oxmultilang ident="DISPLAY_BASKET" }]</a>
+                       <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=basket"}]" class="textButton">[{oxmultilang ident="DISPLAY_BASKET"}]</a>
                     </p>
                 </div>
             [{/oxhasrights}]

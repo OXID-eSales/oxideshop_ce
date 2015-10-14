@@ -2,7 +2,7 @@
     <h1 class="pageHead">[{$oView->getTitle()}]</h1>
     [{if $oView->getNewsletterStatus() == 4 || !$oView->getNewsletterStatus()}]
       [{oxifcontent ident="oxnewstlerinfo" object="oCont"}]
-           [{ $oCont->oxcontents__oxcontent->value }]
+           [{$oCont->oxcontents__oxcontent->value}]
       [{/oxifcontent}]
       <br>
       [{include file="form/newsletter.tpl"}]

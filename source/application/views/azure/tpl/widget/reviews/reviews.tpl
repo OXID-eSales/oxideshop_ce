@@ -1,6 +1,6 @@
-[{oxscript include="js/widgets/oxrating.js" priority=10 }]
+[{oxscript include="js/widgets/oxrating.js" priority=10}]
 [{oxscript add="$( '#reviewRating' ).oxRating({openReviewForm: false, hideReviewButton: false});"}]
-[{oxscript include="js/widgets/oxreview.js" priority=10 }]
+[{oxscript include="js/widgets/oxreview.js" priority=10}]
 [{oxscript add="$( '#writeNewReview' ).oxReview();"}]
 <div id="review">
     [{block name="widget_reviews_form"}]
@@ -56,7 +56,7 @@
                 [{block name="widget_reviews_record"}]
                     <dt id="reviewName_[{$smarty.foreach.ReviewsCounter.iteration}]" class="clear item">
                         <span>
-                            <span>[{$review->oxuser__oxfname->value}]</span> [{oxmultilang ident="WRITES" suffix="COLON" }]
+                            <span>[{$review->oxuser__oxfname->value}]</span> [{oxmultilang ident="WRITES" suffix="COLON"}]
                             <span>[{$review->oxreviews__oxcreate->value|date_format:"%d.%m.%Y"}]</span>
                         </span>
                         [{if $review->oxreviews__oxrating->value}]

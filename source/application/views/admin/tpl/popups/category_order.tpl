@@ -4,32 +4,32 @@
     initAoc = function()
     {
         YAHOO.oxid.container1 = new YAHOO.oxid.aoc( 'container1',
-                                                    [ [{ foreach from=$oxajax.container1 item=aItem key=iKey }]
-                                                       [{$sSep}][{strip}]{ key:'_[{ $iKey }]', ident: [{if $aItem.4 }]true[{else}]false[{/if}]
-                                                       [{if !$aItem.4 }],
-                                                       label: '[{ oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper }]',
-                                                       visible: [{if $aItem.2 }]true[{else}]false[{/if}]
+                                                    [ [{foreach from=$oxajax.container1 item=aItem key=iKey}]
+                                                       [{$sSep}][{strip}]{ key:'_[{$iKey}]', ident: [{if $aItem.4}]true[{else}]false[{/if}]
+                                                       [{if !$aItem.4}],
+                                                       label: '[{oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper}]',
+                                                       visible: [{if $aItem.2}]true[{else}]false[{/if}]
                                                        [{/if}]}
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
-                                                      [{ /foreach }] ],
-                                                    '[{ $oViewConf->getAjaxLink() }]cmpid=container1&container=category_order&synchoxid=[{ $oxid }]'
+                                                      [{/foreach}] ],
+                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=category_order&synchoxid=[{$oxid}]'
                                                     );
 
         [{assign var="sSep" value=""}]
 
         YAHOO.oxid.container2 = new YAHOO.oxid.aoc( 'container2',
-                                                    [ [{ foreach from=$oxajax.container2 item=aItem key=iKey }]
-                                                       [{$sSep}][{strip}]{ key:'_[{ $iKey }]', ident: [{if $aItem.4 }]true[{else}]false[{/if}]
-                                                       [{if !$aItem.4 }],
-                                                       label: '[{ oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper }]',
-                                                       visible: [{if $aItem.2 }]true[{else}]false[{/if}],
+                                                    [ [{foreach from=$oxajax.container2 item=aItem key=iKey}]
+                                                       [{$sSep}][{strip}]{ key:'_[{$iKey}]', ident: [{if $aItem.4}]true[{else}]false[{/if}]
+                                                       [{if !$aItem.4}],
+                                                       label: '[{oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper}]',
+                                                       visible: [{if $aItem.2}]true[{else}]false[{/if}],
                                                        sortable: false
                                                        [{/if}]}
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
-                                                      [{ /foreach }] ],
-                                                    '[{ $oViewConf->getAjaxLink() }]cmpid=container2&container=category_order&oxid=[{ $oxid }]'
+                                                      [{/foreach}] ],
+                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container2&container=category_order&oxid=[{$oxid}]'
                                                     );
         // disabling filters for second container
         if ( YAHOO.oxid.container2._aFilters ) {
@@ -76,7 +76,7 @@
                 failure: YAHOO.oxid.container2.onFailure,
                 scope:   YAHOO.oxid.container2
             };
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{ $oViewConf->getAjaxLink() }]&cmpid=container2&container=category_order&fnc=saveneworder&oxid=[{ $oxid }]&aoc=1', callback );
+            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container2&container=category_order&fnc=saveneworder&oxid=[{$oxid}]&aoc=1', callback );
         };
         YAHOO.oxid.container2.deleteOrder = function( oEvt )
         {
@@ -86,7 +86,7 @@
                 scope:   YAHOO.oxid.container2
             };
 
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{ $oViewConf->getAjaxLink() }]&cmpid=container2&container=category_order&fnc=remneworder&oxid=[{ $oxid }]', callback );
+            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container2&container=category_order&fnc=remneworder&oxid=[{$oxid}]', callback );
         };
         // subscribing event listeners on buttons
         YAHOO.oxid.container1.oDeleteBtn.on("click", YAHOO.oxid.container2.deleteOrder);
@@ -100,11 +100,11 @@
             <col span="2" width="50%" />
         </colgroup>
         <tr class="edittext">
-            <td colspan="2">[{ oxmultilang ident="GENERAL_AJAX_DESCRIPTION" }]<br>[{ oxmultilang ident="GENERAL_FILTERING" }]<br /><br /></td>
+            <td colspan="2">[{oxmultilang ident="GENERAL_AJAX_DESCRIPTION"}]<br>[{oxmultilang ident="GENERAL_FILTERING"}]<br /><br /></td>
         </tr>
         <tr class="edittext">
-            <td align="center"><b>[{ oxmultilang ident="CATEGORY_ORDER_ACTSORT" }]</b></td>
-            <td align="center"><b>[{ oxmultilang ident="CATEGORY_ORDER_NEWSORT" }]</b></td>
+            <td align="center"><b>[{oxmultilang ident="CATEGORY_ORDER_ACTSORT"}]</b></td>
+            <td align="center"><b>[{oxmultilang ident="CATEGORY_ORDER_NEWSORT"}]</b></td>
         </tr>
         <tr>
             <td valign="top" id="container1"></td>
@@ -113,8 +113,8 @@
         <tr>
             <td align="right"></td>
             <td align="left" class="oxid-aoc-actions">
-              <input type="button" id="saveBtn" class="edittext" disabled value="[{ oxmultilang ident="CATEGORY_ORDER_NEWSORTSAVE" }]" [{$readonly}]>
-              <input type="button" id="deleteBtn" class="edittext" value="[{ oxmultilang ident="CATEGORY_ORDER_DELETESORT" }]" [{$readonly}]>
+              <input type="button" id="saveBtn" class="edittext" disabled value="[{oxmultilang ident="CATEGORY_ORDER_NEWSORTSAVE"}]" [{$readonly}]>
+              <input type="button" id="deleteBtn" class="edittext" value="[{oxmultilang ident="CATEGORY_ORDER_DELETESORT"}]" [{$readonly}]>
             </td>
         </tr>
     </table>

@@ -9,10 +9,10 @@
             [{if $oView->getEntries()}]
                 [{foreach from=$oView->getEntries() item=entry}]
                     <dt class="clear item">
-                        <span>[{ $entry->oxuser__oxfname->value }] [{oxmultilang ident="WRITES" suffix="COLON" }] <span>[{$entry->oxgbentries__oxcreate->value|date_format:"%d.%m.%Y"}] [{ $entry->oxgbentries__oxcreate->value|date_format:"%H:%M" }]<span></span></span>
+                        <span>[{$entry->oxuser__oxfname->value}] [{oxmultilang ident="WRITES" suffix="COLON"}] <span>[{$entry->oxgbentries__oxcreate->value|date_format:"%d.%m.%Y"}] [{$entry->oxgbentries__oxcreate->value|date_format:"%H:%M"}]<span></span></span>
                     </dt>
                     <dd>
-                        <div class="description">[{ $entry->oxgbentries__oxcontent->value|nl2br }]</div>
+                        <div class="description">[{$entry->oxgbentries__oxcontent->value|nl2br}]</div>
                     </dd>
                 [{/foreach}]
             [{else}]

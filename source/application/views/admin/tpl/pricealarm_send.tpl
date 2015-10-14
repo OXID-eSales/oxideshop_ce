@@ -9,21 +9,21 @@
 window.onload = function ()
 {
     top.reloadEditFrame();
-    [{ if $updatelist == 1}]
-        top.oxid.admin.updateList('[{ $oxid }]');
-    [{ /if}]
+    [{if $updatelist == 1}]
+        top.oxid.admin.updateList('[{$oxid}]');
+    [{/if}]
 }
 //-->
 </script>
 <body>
 
-<form name="search" id="search" action="[{ $oViewConf->getSelfLink() }]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
 [{include file="_formparams.tpl" cl="pricealarm_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 </form>
 
 <div class="liste">
 <center>
-<h1>[{ oxmultilang ident="PRICEALARM_MESSAGE_SENT" }] [{ $iStart}] [{ oxmultilang ident="PRICEALARM_SEND_FROM" }] [{$iAllCnt}].</h1>
+<h1>[{oxmultilang ident="PRICEALARM_MESSAGE_SENT"}] [{$iStart}] [{oxmultilang ident="PRICEALARM_SEND_FROM"}] [{$iAllCnt}].</h1>
 </center>
 </div>
 

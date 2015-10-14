@@ -5,16 +5,16 @@
     {
 
         YAHOO.oxid.container1 = new YAHOO.oxid.aoc( 'container1',
-                                                    [ [{ foreach from=$oxajax.container1 item=aItem key=iKey }]
-                                                       [{$sSep}][{strip}]{ key:'_[{ $iKey }]', ident: [{if $aItem.4 }]true[{else}]false[{/if}]
-                                                       [{if !$aItem.4 }],
-                                                       label: '[{ oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper }]',
-                                                       visible: [{if $aItem.2 }]true[{else}]false[{/if}]
+                                                    [ [{foreach from=$oxajax.container1 item=aItem key=iKey}]
+                                                       [{$sSep}][{strip}]{ key:'_[{$iKey}]', ident: [{if $aItem.4}]true[{else}]false[{/if}]
+                                                       [{if !$aItem.4}],
+                                                       label: '[{oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper}]',
+                                                       visible: [{if $aItem.2}]true[{else}]false[{/if}]
                                                        [{/if}]}
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
-                                                      [{ /foreach }] ],
-                                                    '[{ $oViewConf->getAjaxLink() }]cmpid=container1&container=shop_default_category&synchoxid=[{ $oxid }]',
+                                                      [{/foreach}] ],
+                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=shop_default_category&synchoxid=[{$oxid}]',
                                                      { selectionMode: "single" }
                                                     );
 
@@ -49,7 +49,7 @@
                 oParam = YAHOO.oxid.container1.getRecord(aSelRows[0]);
                 sRequest = '&oxcatid=' + oParam._oData._3;
             }
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{ $oViewConf->getAjaxLink() }]&cmpid=container1&container=shop_default_category&fnc=assignCat&oxid=[{ $oxid }]'+sRequest, callback );
+            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container1&container=shop_default_category&fnc=assignCat&oxid=[{$oxid}]'+sRequest, callback );
 
         }
         YAHOO.oxid.container1.onRemove = function()
@@ -66,7 +66,7 @@
                 failure: YAHOO.oxid.container1.onFailure,
                 scope:   YAHOO.oxid.container1
             };
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{ $oViewConf->getAjaxLink() }]&cmpid=container1&container=shop_default_category&fnc=unassignCat&oxid=[{ $oxid }]', callback );
+            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container1&container=shop_default_category&fnc=unassignCat&oxid=[{$oxid}]', callback );
 
         }
         // subscribing  listeners on buttons
@@ -79,24 +79,24 @@
 
     <table width="100%">
         <tr class="edittext">
-            <td >[{ oxmultilang ident="GENERAL_FILTERING" }]<br /><br /></td>
+            <td >[{oxmultilang ident="GENERAL_FILTERING"}]<br /><br /></td>
         </tr>
         <tr class="edittext">
-            <td align="center"><b>[{ oxmultilang ident="SHOP_CONFIG_ACTIVECATEGORYBYSTART" }]</b></td>
+            <td align="center"><b>[{oxmultilang ident="SHOP_CONFIG_ACTIVECATEGORYBYSTART"}]</b></td>
         </tr>
         <tr>
             <td valign="top" id="container1"></td>
         </tr>
         <tr>
             <td class="oxid-aoc-actions">
-                <input id="saveBtn" type="button" value="[{ oxmultilang ident="SHOP_CONFIG_ASSIGNDEFAULTCAT" }]">
-                <input id="remBtn" type="button" value="[{ oxmultilang ident="SHOP_CONFIG_UNASSIGNDEFAULTCAT" }]" [{if !$defcat }] disabled [{/if}]>
+                <input id="saveBtn" type="button" value="[{oxmultilang ident="SHOP_CONFIG_ASSIGNDEFAULTCAT"}]">
+                <input id="remBtn" type="button" value="[{oxmultilang ident="SHOP_CONFIG_UNASSIGNDEFAULTCAT"}]" [{if !$defcat}] disabled [{/if}]>
             </td>
         </tr>
         <tr>
-            <td valign="top" class="edittext" id="_defcat" [{if !$defcat }] style="visibility:hidden" [{/if}]>
-              <b>[{ oxmultilang ident="SHOP_CONFIG_ASSIGNEDDEFAULTCAT" }]</b>
-              <b id="defcat_title">[{ $defcat->oxcategories__oxtitle->value }]</b>
+            <td valign="top" class="edittext" id="_defcat" [{if !$defcat}] style="visibility:hidden" [{/if}]>
+              <b>[{oxmultilang ident="SHOP_CONFIG_ASSIGNEDDEFAULTCAT"}]</b>
+              <b id="defcat_title">[{$defcat->oxcategories__oxtitle->value}]</b>
             </td>
         </tr>
     </table>

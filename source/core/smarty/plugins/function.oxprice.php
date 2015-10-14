@@ -24,7 +24,7 @@
  * Smarty function
  * -------------------------------------------------------------
  * Purpose: Output price string
- * add [{ oxprice price="..." currency="..." }] where you want to display content
+ * add [{oxprice price="..." currency="..."}] where you want to display content
  * price - decimal number: 13; 12.45; 13.01;
  * currency - currency abbreviation: EUR, USD, LTL etc.
  * -------------------------------------------------------------

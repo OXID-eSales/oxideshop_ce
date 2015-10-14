@@ -1,13 +1,13 @@
 [{assign var="_additionalParams" value=$oView->getAdditionalParams()}]
 [{assign var="_listType" value=$oView->getListDisplayType()}]
-[{oxscript include="js/widgets/oxdropdown.js" priority=10 }]
+[{oxscript include="js/widgets/oxdropdown.js" priority=10}]
 [{oxscript add="$('div.dropDown p').oxDropDown();"}]
 <div class="dropDown js-fnLink" id="itemsPerPage">
     <p>
-        <label>[{oxmultilang ident="PRODUCTS_PER_PAGE" suffix="COLON" }]</label>
+        <label>[{oxmultilang ident="PRODUCTS_PER_PAGE" suffix="COLON"}]</label>
         <span>
-            [{if $oViewConf->getArtPerPageCount() }]
-                [{ $oViewConf->getArtPerPageCount() }]
+            [{if $oViewConf->getArtPerPageCount()}]
+                [{$oViewConf->getArtPerPageCount()}]
             [{else}]
                 [{oxmultilang ident="CHOOSE"}]
             [{/if}]
@@ -15,7 +15,7 @@
     </p>
     <ul class="drop FXgradGreyLight shadow">
         [{foreach from=$oViewConf->getNrOfCatArticles() item=iItemsPerPage}]
-            <li><a href="[{$oView->getBaseLink()|oxaddparams:"ldtype=$_listType&amp;_artperpage=$iItemsPerPage&amp;pgNr=0&amp;$_additionalParams"}]" rel="nofollow" [{if $oViewConf->getArtPerPageCount() == $iItemsPerPage }] class="selected"[{/if}]>[{$iItemsPerPage}]</a></li>
+            <li><a href="[{$oView->getBaseLink()|oxaddparams:"ldtype=$_listType&amp;_artperpage=$iItemsPerPage&amp;pgNr=0&amp;$_additionalParams"}]" rel="nofollow" [{if $oViewConf->getArtPerPageCount() == $iItemsPerPage}] class="selected"[{/if}]>[{$iItemsPerPage}]</a></li>
         [{/foreach}]
     </ul>
 </div>

@@ -1,4 +1,4 @@
-[{oxscript include="js/widgets/oxflyoutbox.js" priority=10 }]
+[{oxscript include="js/widgets/oxflyoutbox.js" priority=10}]
 [{oxscript add="$( '#languageTrigger' ).oxFlyOutBox();"}]
 [{if $oView->isLanguageLoaded()}]
 <div class="topPopList">
@@ -7,10 +7,10 @@
         [{assign var="sLangImg" value="lang/"|cat:$_lng->abbr|cat:".png"}]
         [{if $_lng->selected}]
             [{capture name="languageSelected"}]
-                <a class="flag [{$_lng->abbr }]" title="[{$_lng->name}]" href="[{$_lng->link|oxaddparams:$oView->getDynUrlParams()}]" hreflang="[{$_lng->abbr }]"><span style="background-image:url('[{$oViewConf->getImageUrl($sLangImg)}]')" >[{$_lng->name}]</span></a>
+                <a class="flag [{$_lng->abbr}]" title="[{$_lng->name}]" href="[{$_lng->link|oxaddparams:$oView->getDynUrlParams()}]" hreflang="[{$_lng->abbr}]"><span style="background-image:url('[{$oViewConf->getImageUrl($sLangImg)}]')" >[{$_lng->name}]</span></a>
             [{/capture}]
         [{/if}]
-            <li><a class="flag [{$_lng->abbr }] [{if $_lng->selected}]selected[{/if}]" title="[{$_lng->name}]" href="[{$_lng->link|oxaddparams:$oView->getDynUrlParams()}]" hreflang="[{$_lng->abbr }]"><span style="background-image:url('[{$oViewConf->getImageUrl($sLangImg)}]')">[{$_lng->name}]</span></a></li>
+            <li><a class="flag [{$_lng->abbr}] [{if $_lng->selected}]selected[{/if}]" title="[{$_lng->name}]" href="[{$_lng->link|oxaddparams:$oView->getDynUrlParams()}]" hreflang="[{$_lng->abbr}]"><span style="background-image:url('[{$oViewConf->getImageUrl($sLangImg)}]')">[{$_lng->name}]</span></a></li>
         [{/foreach}]
     [{/capture}]
     <p id="languageTrigger" class="selectedValue">

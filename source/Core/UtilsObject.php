@@ -20,9 +20,15 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Core\ClassMapProvider;
-use OxidEsales\Core\ClassNameProvider;
-use OxidEsales\Core\EditionSelector;
+namespace OxidEsales\Core;
+
+use oxFileCache;
+use oxModuleVariablesLocator;
+use oxShopIdCalculator;
+use oxSubShopSpecificFileCache;
+use oxModuleChainsGenerator;
+use ReflectionClass;
+use oxDb;
 
 /**
  * Object Factory implementation (oxNew() method is implemented in this class).
@@ -30,7 +36,7 @@ use OxidEsales\Core\EditionSelector;
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxUtilsObject
+class UtilsObject
 {
     /**
      * Cache class names
@@ -115,9 +121,9 @@ class oxUtilsObject
             self::$_instance = null;
         }
 
-        if (!self::$_instance instanceof oxUtilsObject) {
+        if (!self::$_instance instanceof UtilsObject) {
             // allow modules
-            $oUtilsObject = new oxUtilsObject();
+            $oUtilsObject = new UtilsObject();
 
             $classMapProvider = new ClassMapProvider(new EditionSelector());
             $classNameProvider = new ClassNameProvider($classMapProvider->getOverridableClassMap());
@@ -242,12 +248,12 @@ class oxUtilsObject
             $realClassName = $this->getClassName($className);
             //expect __autoload() (oxfunctions.php) to do its job when class_exists() is called
             if (!class_exists($realClassName)) {
-                /** @var $oEx oxSystemComponentException */
-                $oEx = oxNew("oxSystemComponentException");
-                $oEx->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
-                $oEx->setComponent($className);
-                $oEx->debugOut();
-                throw $oEx;
+                /** @var $exception oxSystemComponentException */
+                $exception = oxNew("oxSystemComponentException");
+                $exception->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
+                $exception->setComponent($className);
+                $exception->debugOut();
+                throw $exception;
             }
 
             $this->_aClassNameCache[$className] = $realClassName;
@@ -317,7 +323,6 @@ class oxUtilsObject
     {
         return substr(md5(uniqid('', true) . '|' . microtime()), 0, 32);
     }
-
 
     /**
      * Returns name of class file, according to class name.

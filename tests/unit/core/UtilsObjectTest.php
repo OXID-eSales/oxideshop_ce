@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class modOxUtilsObject_oxUtilsObject extends oxUtilsObject
+class modOxUtilsObject_oxUtilsObject extends \oxUtilsObject
 {
 
     public function setClassNameCache($aValue)
@@ -56,7 +56,7 @@ class _oxutils_test
     }
 }
 
-class oxModuleUtilsObject extends oxUtilsObject
+class oxModuleUtilsObject extends \oxUtilsObject
 {
 
     public function getActiveModuleChain($aClassChain)
@@ -76,7 +76,6 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
     {
         oxRemClassModule('modOxUtilsObject_oxUtilsObject');
 
-
         $oArticle = oxNew('oxArticle');
         $oArticle->delete('testArticle');
 
@@ -84,6 +83,17 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
         oxRegistry::get("oxConfigFile")->setVar("sShopDir", $this->getConfigParam('sShopDir'));
 
         parent::tearDown();
+    }
+
+    private function getOrderClassName()
+    {
+        $orderClassName = 'oxorder';
+
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $orderClassName = '\OxidEsales\Enterprise\Application\Model\Order';
+        }
+
+        return $orderClassName;
     }
 
     /**
@@ -195,7 +205,6 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
         $this->assertNotEquals($id1, $id2);
     }
 
-
     public function testResetInstanceCacheSingle()
     {
         $oTestInstance = new modOxUtilsObject_oxUtilsObject();
@@ -236,6 +245,9 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
     {
         $sClassName = $sClassNameExpect = 'oxorder';
 
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $sClassNameExpect = '\OxidEsales\Enterprise\Application\Model\Order';
+        }
 
         $sClassNameWhichExtends = 'oemodulenameoxorder_different2';
         $oUtilsObject = $this->_prepareFakeModule($sClassName, $sClassNameWhichExtends);
@@ -245,8 +257,8 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
 
     public function testGetClassName_classNotExistDoDisableModuleOnError_originalClassReturn()
     {
-        $sClassName = $sClassNameExpect = 'oxorder';
-
+        $sClassName = 'oxorder';
+        $sClassNameExpect = $this->getOrderClassName();
 
         oxRegistry::get("oxConfigFile")->setVar('blDoNotDisableModuleOnError', false);
 

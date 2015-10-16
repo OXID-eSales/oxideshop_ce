@@ -1,6 +1,6 @@
 [{* Important ! render page head and body to collect scripts and styles *}]
 [{capture append="oxidBlock_pageHead"}]
-    <meta http-equiv="Content-Type" content="text/html; charset=[{$oView->getCharSet()}]">
+    <meta charset="[{$oView->getCharSet()}]">
     <title>[{block name="head_title"}][{$oView->getPageTitle()}][{/block}]</title>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 

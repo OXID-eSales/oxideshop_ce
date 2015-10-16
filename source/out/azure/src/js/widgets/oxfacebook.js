@@ -53,7 +53,7 @@
         },
 
         /*
-         * Initing Facebook API
+         * Init Facebook API
          *
          */
         fbInit: function ( sFbAppId, sLocale, sLoginUrl, sLogoutUrl ) {
@@ -84,7 +84,7 @@
         },
 
         /*
-         * Redicrecting page to given url
+         * Redirecting page to given url
          */
         redirectPage: function ( sUrl ) {
 

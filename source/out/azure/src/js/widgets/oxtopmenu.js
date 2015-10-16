@@ -50,7 +50,7 @@
                     //adding hover class for active <A> elements
                     $('a:first', this.parent()).addClass($.fn.superfish.op.hoverClass);
 
-                    // horizontaly centering top navigation first level popup accoring its parent
+                    // horizontally centering top navigation first level popup according its parent
                     activeItem = this.parent()
                     if ( activeItem.parent().hasClass('sf-menu') ) {
                         liWidth = activeItem.width();

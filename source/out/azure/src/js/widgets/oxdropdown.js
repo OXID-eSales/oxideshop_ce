@@ -143,7 +143,7 @@
         },
 
         /**
-         * hide all opend oxDropDown
+         * hide all opened oxDropDown
          *
          * @return null
          */

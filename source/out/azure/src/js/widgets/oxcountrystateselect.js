@@ -116,7 +116,7 @@
         },
 
         /**
-         * remove all select options except first list promt string
+         * remove all select options except first list prompt string
          *
          * @return object
          */

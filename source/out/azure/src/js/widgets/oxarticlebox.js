@@ -51,7 +51,7 @@
                 }
             });
 
-            // triming titles to mach container width (if needed)
+            // trimming titles to mach container width (if needed)
             $( ".box h3 a", oElement ).each(function() {
                 var iTitleWidth = $(this).width(),
                     iContWidth  = $(this).parent().width(),
@@ -63,7 +63,7 @@
                     // checking if title has numbers at the end
                     var sTitleEnd	    = $.trim(sEndPattern.exec(sTitleText));
 
-                    // seperating the title from the numbers
+                    // separating the title from the numbers
                     if (sTitleEnd) {
                         sTitleEnd  = ' ' + sTitleEnd;
                         sTitleText = sTitlePattern.exec(sTitleText).pop();

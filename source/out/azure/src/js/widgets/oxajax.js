@@ -26,7 +26,7 @@
     oxAjax = {
 
         /**
-         * Loading temporary screen when ajax call proseeds
+         * Loading temporary screen when ajax call proceeds
          */
         loadingScreen:  {
 
@@ -34,7 +34,7 @@
              * Starts load
              *
              * @target - DOM element witch must be hide with the loading screen
-             * @iconPositionElement - element of a target on witch loaging icon is shown
+             * @iconPositionElement - element of a target on which loading icon is shown
              */
             start : function (target, iconPositionElement) {
 

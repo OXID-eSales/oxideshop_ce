@@ -92,7 +92,7 @@
         },
 
         /**
-         * get colummns rows hight
+         * get columns rows height
          *
          * @return integer
          */
@@ -113,7 +113,7 @@
         },
 
         /**
-         * set colummns rows hight
+         * set columns rows height
          *
          * @return object
          */
@@ -123,7 +123,7 @@
         },
 
         /**
-         * get colummns
+         * get columns
          *
          * @return object
          */

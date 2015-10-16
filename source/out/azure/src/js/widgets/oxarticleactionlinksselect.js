@@ -88,7 +88,7 @@
                 }
             });
 
-            //open price alart tab if pricealert link is clicked
+            //open price alert tab if pricealert link is clicked
             $("#priceAlarmLink").click(function() {
                 $('div.tabbedWidgetBox').tabs('select', '#pricealarm');
                 return false;
@@ -137,7 +137,7 @@
         /**
          * Shows action links list box in details
          *
-         * @param integer iTargetWidth terget width
+         * @param integer iTargetWidth target width
          * @param object oObject      object to set width
          *
          * @return integer

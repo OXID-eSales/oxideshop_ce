@@ -183,6 +183,7 @@ $aLang = array(
 'ERROR_MESSAGE_CURRENT_PASSWORD_INVALID'                      => 'Error: your current password is incorrect.',
 'ERROR_MESSAGE_RECOMMLIST_NOTITLE'                            => 'Title field is empty',
 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND'                 => 'Class "%s" not found',
+'EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND'                     => 'Class "%s" not found',
 'ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND'              => 'Function "%s" not found',
 'EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND'                  => 'Template "%s" not found',
 'ERROR_MESSAGE_UNKNOWN_ERROR'                                 => 'Unknown Error',

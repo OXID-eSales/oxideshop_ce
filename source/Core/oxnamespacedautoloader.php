@@ -40,15 +40,14 @@ class oxNamespacedAutoloader
      */
     public function autoload($class)
     {
-        if (strpos($class, 'OxidEsales\\Enterprise') !== false
-            || strpos($class, 'OxidEsales\\Professional') !== false
-            || strpos($class, 'OxidEsales\\ClassMap') !== false
+        if (strpos($class, 'OxidEsales\\EshopEnterprise') !== false
+            || strpos($class, 'OxidEsales\\EshopProfessional') !== false
         ) {
-            $class = substr($class, 11);
+            $class = substr($class, 16);
             $class = str_replace('\\', '/', $class);
             require_once $this->shopPath.'/Edition/'.$class.'.php';
-        } elseif (strpos($class, 'OxidEsales\\') !== false) {
-            $class = substr($class, 11);
+        } elseif (strpos($class, 'OxidEsales\\Eshop') !== false) {
+            $class = substr($class, 16);
             $class = str_replace('\\', '/', $class);
             require_once $this->shopPath.'/'.$class.'.php';
         }

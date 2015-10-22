@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Core;
+namespace OxidEsales\Eshop\Core;
 
 use OxidEsales\EshopEnterprise\ClassMap as EnterpriseClassMap;
 use OxidEsales\EshopProfessional\ClassMap as ProfessionalClassMap;

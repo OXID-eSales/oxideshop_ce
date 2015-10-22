@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Core\NotOverridableClassAutoloader;
+use OxidEsales\Eshop\Core\NotOverridableClassAutoloader;
 
 class ClassToCheckAliasCreation
 {

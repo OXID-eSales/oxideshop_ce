@@ -25,6 +25,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Core\UtilsObject
  */
-class oxUtilsObject extends \OxidEsales\Core\UtilsObject
+class oxUtilsObject extends \OxidEsales\Eshop\Core\UtilsObject
 {
 }

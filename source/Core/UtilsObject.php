@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Core;
+namespace OxidEsales\Eshop\Core;
 
 use oxFileCache;
 use oxModuleVariablesLocator;

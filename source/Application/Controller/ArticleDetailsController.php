@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Application\Controller;
+namespace OxidEsales\Eshop\Application\Controller;
 
 use oxArticle;
 use oxArticleList;

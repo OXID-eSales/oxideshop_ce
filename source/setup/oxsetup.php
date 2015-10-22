@@ -72,7 +72,7 @@ if (!function_exists('getSystemReqCheck')) {
 
         include_once $basePath . '/Core/EditionSelector.php';
 
-        $editionSelector = new \OxidEsales\Core\EditionSelector();
+        $editionSelector = new \OxidEsales\Eshop\Core\EditionSelector();
         include_once $basePath . '/Core/SystemRequirements.php';
         if ($editionSelector->getEdition() === 'EE') {
             include_once $basePath . '/Edition/Professional/Core/SystemRequirements.php';
@@ -82,7 +82,7 @@ if (!function_exists('getSystemReqCheck')) {
             include_once $basePath . '/Edition/Professional/Core/SystemRequirements.php';
             $systemRequirements = new OxidEsales\EshopProfessional\Core\SystemRequirements;
         } else {
-            $systemRequirements = new OxidEsales\Core\SystemRequirements;
+            $systemRequirements = new OxidEsales\Eshop\Core\SystemRequirements;
         }
 
         return $systemRequirements;

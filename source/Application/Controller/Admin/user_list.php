@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\UserList
  */
-class User_List extends \OxidEsales\Application\Controller\Admin\UserList
+class User_List extends \OxidEsales\Eshop\Application\Controller\Admin\UserList
 {
 }

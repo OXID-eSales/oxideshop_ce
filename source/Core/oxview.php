@@ -28,6 +28,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Core\View
  */
-class oxView extends \OxidEsales\Core\View
+class oxView extends \OxidEsales\Eshop\Core\View
 {
 }

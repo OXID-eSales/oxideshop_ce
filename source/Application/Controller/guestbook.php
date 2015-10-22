@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\GuestbookController
  */
-class GuestBook extends \OxidEsales\Application\Controller\GuestbookController
+class GuestBook extends \OxidEsales\Eshop\Application\Controller\GuestbookController
 {
 }

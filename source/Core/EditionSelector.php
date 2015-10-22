@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Core;
+namespace OxidEsales\Eshop\Core;
 
 /**
  * Class is responsible for returning edition.

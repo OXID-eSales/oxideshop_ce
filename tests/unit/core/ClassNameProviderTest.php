@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Core\ClassNameProvider;
+use OxidEsales\Eshop\Core\ClassNameProvider;
 
 class ClassNameProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
 {

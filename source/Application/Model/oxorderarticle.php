@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Application\Model\Contract\ArticleInterface;
+use OxidEsales\Eshop\Application\Model\Contract\ArticleInterface;
 
 /**
  * Order article manager.

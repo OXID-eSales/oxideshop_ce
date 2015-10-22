@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Application\Controller\Admin;
+namespace OxidEsales\Eshop\Application\Controller\Admin;
 
 use oxRegistry;
 use oxUser;

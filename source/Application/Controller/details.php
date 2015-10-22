@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\ArticleDetailsController
  */
-class Details extends \OxidEsales\Application\Controller\ArticleDetailsController
+class Details extends \OxidEsales\Eshop\Application\Controller\ArticleDetailsController
 {
 }

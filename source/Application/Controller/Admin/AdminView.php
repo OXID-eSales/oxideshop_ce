@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Application\Controller\Admin;
+namespace OxidEsales\Eshop\Application\Controller\Admin;
 
-use OxidEsales\Core\EditionSelector;
+use OxidEsales\Eshop\Core\EditionSelector;
 use oxRegistry;
 use oxDb;
 use oxNavigationTree;

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Core\EditionSelector;
+use OxidEsales\Eshop\Core\EditionSelector;
 
 class EditionSelectorTest extends OxidTestCase
 {

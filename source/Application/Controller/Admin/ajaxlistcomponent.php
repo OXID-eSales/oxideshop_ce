@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\ListComponentAjax
  */
-class ajaxListComponent extends \OxidEsales\Application\Controller\Admin\ListComponentAjax
+class ajaxListComponent extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 }

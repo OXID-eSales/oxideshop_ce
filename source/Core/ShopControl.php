@@ -19,13 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\Core;
+namespace OxidEsales\Eshop\Core;
 
 use oxConnectionException;
 use oxCookieException;
 use oxDb;
 use oxException;
-use OxidEsales\Application\Controller\BaseController;
+use OxidEsales\Eshop\Application\Controller\BaseController;
 use OxidEsales\EshopEnterprise\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
 use oxRegistry;

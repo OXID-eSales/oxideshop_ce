@@ -27,6 +27,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Core\SuperConfig
  */
-class oxSuperCfg extends \OxidEsales\Core\SuperConfig
+class oxSuperCfg extends \OxidEsales\Eshop\Core\SuperConfig
 {
 }

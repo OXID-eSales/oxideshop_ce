@@ -29,6 +29,6 @@
  *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\AdminView
  */
-class oxAdminView extends \OxidEsales\Application\Controller\Admin\AdminView
+class oxAdminView extends \OxidEsales\Eshop\Application\Controller\Admin\AdminView
 {
 }

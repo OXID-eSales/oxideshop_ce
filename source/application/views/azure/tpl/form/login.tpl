@@ -9,7 +9,7 @@
             <input type="hidden" name="fnc" value="login_noredirect">
             <input type="hidden" name="cl" value="[{$oViewConf->getActiveClassName()}]">
             <label class="short">[{oxmultilang ident="EMAIL_ADDRESS"}]</label>
-            <input type="text" name="lgn_usr" class="textbox js-oxValidate js-oxValidate_notEmpty" data-fieldsize="pair-xsmall">
+            <input type="email" name="lgn_usr" class="textbox js-oxValidate js-oxValidate_notEmpty" data-fieldsize="pair-xsmall">
             <p class="underInput short oxValidateError">
                 <span class="js-oxError_notEmpty">[{oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS"}]</span>
             </p>

@@ -24,7 +24,7 @@
         </li>
         <li>
             <label>[{oxmultilang ident="EMAIL" suffix="COLON"}]</label>
-            <input class="js-oxValidate js-oxValidate_notEmpty js-oxValidate_email" type="text" name="pa[email]" value="[{if $oxcmp_user}][{$oxcmp_user->oxuser__oxusername->value}][{/if}]" size="20" maxlength="128">
+            <input class="js-oxValidate js-oxValidate_notEmpty js-oxValidate_email" type="email" name="pa[email]" value="[{if $oxcmp_user}][{$oxcmp_user->oxuser__oxusername->value}][{/if}]" size="20" maxlength="128">
             <p class="oxValidateError">
                 <span class="js-oxError_notEmpty">[{oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS"}]</span>
                 <span class="js-oxError_email">[{oxmultilang ident="ERROR_MESSAGE_INPUT_NOVALIDEMAIL"}]</span>

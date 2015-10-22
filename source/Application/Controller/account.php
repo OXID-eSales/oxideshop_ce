@@ -25,7 +25,7 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\Enterprise\Application\Controller\AccountController
+ * @mixin \OxidEsales\EshopEnterprise\Application\Controller\AccountController
  */
 class Account extends \OxidEsales\Application\Controller\AccountController
 {

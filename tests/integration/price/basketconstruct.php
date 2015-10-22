@@ -234,7 +234,7 @@ class BasketConstruct
         $iOxId = $oObject->getId();
         $sObjectTable = $oObject->getCoreTableName();
 
-        /** @var OxidEsales\Enterprise\Core\Element2ShopRelations $oElement2ShopRelations */
+        /** @var OxidEsales\EshopEnterprise\Core\Element2ShopRelations $oElement2ShopRelations */
         $oElement2ShopRelations = oxNew('oxElement2ShopRelations', $sObjectTable);
         $oElement2ShopRelations->setShopIds($aShops);
         $oElement2ShopRelations->addToShop($iOxId);

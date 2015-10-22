@@ -27,7 +27,7 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\Enterprise\Application\Controller\Admin\AdminView
+ * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\AdminView
  */
 class oxAdminView extends \OxidEsales\Application\Controller\Admin\AdminView
 {

@@ -27,7 +27,7 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\Enterprise\Core\ShopControl
+ * @mixin \OxidEsales\EshopEnterprise\Core\ShopControl
  */
 class oxShopControl extends \OxidEsales\Core\ShopControl
 {

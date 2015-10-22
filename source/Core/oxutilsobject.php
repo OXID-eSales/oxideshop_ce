@@ -23,7 +23,7 @@
 /**
  * @inheritdoc
  *
- * @mixin \OxidEsales\Enterprise\Core\UtilsObject
+ * @mixin \OxidEsales\EshopEnterprise\Core\UtilsObject
  */
 class oxUtilsObject extends \OxidEsales\Core\UtilsObject
 {

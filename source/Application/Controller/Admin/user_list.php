@@ -27,7 +27,7 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\Enterprise\Application\Controller\Admin\UserList
+ * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\UserList
  */
 class User_List extends \OxidEsales\Application\Controller\Admin\UserList
 {

@@ -25,7 +25,7 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\Enterprise\Application\Controller\Admin\ListComponentAjax
+ * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\ListComponentAjax
  */
 class ajaxListComponent extends \OxidEsales\Application\Controller\Admin\ListComponentAjax
 {

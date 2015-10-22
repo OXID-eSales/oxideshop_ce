@@ -23,7 +23,7 @@
 /**
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\Enterprise\Application\Controller\Admin\ArticleList
+ * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\ArticleList
  */
 class Article_List extends \OxidEsales\Application\Controller\Admin\ArticleList
 {

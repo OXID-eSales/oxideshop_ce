@@ -73,8 +73,8 @@ class ClassMapProviderTest extends OxidTestCase
         $classMapProfessional->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue($mapNotOverridableProfessional));
         $classMapProfessional->expects($this->any())->method('getOverridableMap')->will($this->returnValue(array()));
 
-        /** @var \OxidEsales\Enterprise\ClassMap $classMapEnterprise|PHPUnit_Framework_MockObject_MockObject */
-        $classMapEnterprise = $this->getMockBuilder('\OxidEsales\Enterprise\ClassMap')->getMock();
+        /** @var \OxidEsales\EshopEnterprise\ClassMap $classMapEnterprise|PHPUnit_Framework_MockObject_MockObject */
+        $classMapEnterprise = $this->getMockBuilder('\OxidEsales\EshopEnterprise\ClassMap')->getMock();
         $classMapEnterprise->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue($mapNotOverridableEnterprise));
         $classMapEnterprise->expects($this->any())->method('getOverridableMap')->will($this->returnValue(array()));
 
@@ -108,8 +108,8 @@ class ClassMapProviderTest extends OxidTestCase
         $classMapProfessional->expects($this->any())->method('getOverridableMap')->will($this->returnValue($mapOverridableProfessional));
         $classMapProfessional->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue(array()));
 
-        /** @var \OxidEsales\Enterprise\ClassMap $classMapEnterprise|PHPUnit_Framework_MockObject_MockObject */
-        $classMapEnterprise = $this->getMockBuilder('\OxidEsales\Enterprise\ClassMap')->getMock();
+        /** @var \OxidEsales\EshopEnterprise\ClassMap $classMapEnterprise|PHPUnit_Framework_MockObject_MockObject */
+        $classMapEnterprise = $this->getMockBuilder('\OxidEsales\EshopEnterprise\ClassMap')->getMock();
         $classMapEnterprise->expects($this->any())->method('getOverridableMap')->will($this->returnValue($mapOverridableEnterprise));
         $classMapEnterprise->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue(array()));
 

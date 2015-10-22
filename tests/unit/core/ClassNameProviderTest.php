@@ -27,8 +27,8 @@ class ClassNameProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
     public function providerReturnsClassNameFromClassAlias()
     {
         return array(
-            array('oxdbmetadatahandler', '\OxidEsales\Enterprise\Core\DbMetaDataHandler'),
-            array('\OxidEsales\Enterprise\Core\NonExisting', '\OxidEsales\Enterprise\Core\NonExisting'),
+            array('oxdbmetadatahandler', '\OxidEsales\EshopEnterprise\Core\DbMetaDataHandler'),
+            array('\OxidEsales\EshopEnterprise\Core\NonExisting', '\OxidEsales\EshopEnterprise\Core\NonExisting'),
         );
     }
 
@@ -41,9 +41,9 @@ class ClassNameProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
     public function testReturnsClassNameFromClassAlias($classAlias, $className)
     {
         $map = array(
-            'oxdbmetadatahandler' => '\OxidEsales\Enterprise\Core\DbMetaDataHandler',
-            'oxmodulecache' => '\OxidEsales\Enterprise\Core\Module\ModuleCache',
-            'oxmoduleinstaller' => '\OxidEsales\Enterprise\Core\Module\ModuleInstaller',
+            'oxdbmetadatahandler' => '\OxidEsales\EshopEnterprise\Core\DbMetaDataHandler',
+            'oxmodulecache' => '\OxidEsales\EshopEnterprise\Core\Module\ModuleCache',
+            'oxmoduleinstaller' => '\OxidEsales\EshopEnterprise\Core\Module\ModuleInstaller',
         );
 
         $utilsObject = new ClassNameProvider($map);
@@ -54,10 +54,10 @@ class ClassNameProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
     public function providerReturnsClassNameAliasFromClassName()
     {
         return array(
-            array('\OxidEsales\Enterprise\Core\DbMetaDataHandler', 'oxdbmetadatahandler'),
-            array('\OxidEsales\Enterprise\Core\NonExisting', null),
-            array('OxidEsales\Enterprise\Core\DbMetaDataHandler', 'oxdbmetadatahandler'),
-            array('OxidEsales\Enterprise\Core\NonExisting', null),
+            array('\OxidEsales\EshopEnterprise\Core\DbMetaDataHandler', 'oxdbmetadatahandler'),
+            array('\OxidEsales\EshopEnterprise\Core\NonExisting', null),
+            array('OxidEsales\EshopEnterprise\Core\DbMetaDataHandler', 'oxdbmetadatahandler'),
+            array('OxidEsales\EshopEnterprise\Core\NonExisting', null),
         );
     }
 
@@ -70,9 +70,9 @@ class ClassNameProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
     public function testReturnsClassNameAliasFromClassName($className, $classAliasName)
     {
         $map = array(
-            'oxdbmetadatahandler' => '\OxidEsales\Enterprise\Core\DbMetaDataHandler',
-            'oxmodulecache' => '\OxidEsales\Enterprise\Core\Module\ModuleCache',
-            'oxmoduleinstaller' => '\OxidEsales\Enterprise\Core\Module\ModuleInstaller',
+            'oxdbmetadatahandler' => '\OxidEsales\EshopEnterprise\Core\DbMetaDataHandler',
+            'oxmodulecache' => '\OxidEsales\EshopEnterprise\Core\Module\ModuleCache',
+            'oxmoduleinstaller' => '\OxidEsales\EshopEnterprise\Core\Module\ModuleInstaller',
         );
 
         $utilsObject = new ClassNameProvider($map);

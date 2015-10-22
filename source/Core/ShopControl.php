@@ -26,7 +26,7 @@ use oxCookieException;
 use oxDb;
 use oxException;
 use OxidEsales\Application\Controller\BaseController;
-use OxidEsales\Enterprise\Core\Cache\DynamicContent\ContentCache;
+use OxidEsales\EshopEnterprise\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
 use oxRegistry;
 use oxSystemComponentException;

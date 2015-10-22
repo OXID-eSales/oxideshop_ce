@@ -23,7 +23,7 @@
 /**
  * Enterprise edition extending
  */
-class testEEoxCategoryList extends \OxidEsales\Enterprise\Application\Model\CategoryList
+class testEEoxCategoryList extends \OxidEsales\EshopEnterprise\Application\Model\CategoryList
 {
     protected $_testAdmin = false;
 
@@ -109,7 +109,7 @@ class testPEOxCategoryList extends \oxCategoryList
 /**
  * Test oxContentList module for EE
  */
-class modContentListEE_oxcategorylist extends \OxidEsales\Enterprise\Application\Model\CategoryList
+class modContentListEE_oxcategorylist extends \OxidEsales\EshopEnterprise\Application\Model\CategoryList
 {
     /**
      * Test loadCatMenues.

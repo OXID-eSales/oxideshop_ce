@@ -77,7 +77,7 @@ if (!function_exists('getSystemReqCheck')) {
         if ($editionSelector->getEdition() === 'EE') {
             include_once $basePath . '/Edition/Professional/Core/SystemRequirements.php';
             include_once $basePath . '/Edition/Enterprise/Core/SystemRequirements.php';
-            $systemRequirements = new \OxidEsales\Enterprise\Core\SystemRequirements;
+            $systemRequirements = new \OxidEsales\EshopEnterprise\Core\SystemRequirements;
         } elseif ($editionSelector->getEdition() === 'PE') {
             include_once $basePath . '/Edition/Professional/Core/SystemRequirements.php';
             $systemRequirements = new OxidEsales\Professional\Core\SystemRequirements;

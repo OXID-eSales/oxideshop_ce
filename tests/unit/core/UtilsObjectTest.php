@@ -90,7 +90,7 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
         $orderClassName = 'oxorder';
 
         if ($this->getConfig()->getEdition() === 'EE') {
-            $orderClassName = '\OxidEsales\Enterprise\Application\Model\Order';
+            $orderClassName = '\OxidEsales\EshopEnterprise\Application\Model\Order';
         }
 
         return $orderClassName;
@@ -246,7 +246,7 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
         $sClassName = $sClassNameExpect = 'oxorder';
 
         if ($this->getConfig()->getEdition() === 'EE') {
-            $sClassNameExpect = '\OxidEsales\Enterprise\Application\Model\Order';
+            $sClassNameExpect = '\OxidEsales\EshopEnterprise\Application\Model\Order';
         }
 
         $sClassNameWhichExtends = 'oemodulenameoxorder_different2';

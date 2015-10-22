@@ -192,8 +192,9 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
      */
     public function testGetAttributes()
     {
+        $sArtID = '1672';
         $oArticle = oxNew('oxArticle');
-        $oArticle->load('1672');
+        $oArticle->load($sArtID);
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $sSelect = "select oxattrid from oxobject2attribute where oxobjectid = '$sArtID'";
@@ -332,7 +333,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
         // Get proxy use oxUtilsObject to creates class name so get namespace class.
         $articleProxyName = 'oxarticleProxy';
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $articleProxyName = '_OxidEsales_Enterprise_Application_Model_ArticleProxy';
+            $articleProxyName = '_OxidEsales_EshopEnterprise_Application_Model_ArticleProxy';
         }
 
         $oProductParent = $this->getMock($articleProxyName, array('getSelectLists', 'getId'));

@@ -25,7 +25,7 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\Enterprise\Application\Controller\GuestbookController
+ * @mixin \OxidEsales\EshopEnterprise\Application\Controller\GuestbookController
  */
 class GuestBook extends \OxidEsales\Application\Controller\GuestbookController
 {

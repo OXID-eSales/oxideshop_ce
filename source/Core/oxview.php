@@ -26,7 +26,7 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\Enterprise\Core\View
+ * @mixin \OxidEsales\EshopEnterprise\Core\View
  */
 class oxView extends \OxidEsales\Core\View
 {

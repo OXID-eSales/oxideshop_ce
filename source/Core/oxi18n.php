@@ -25,7 +25,7 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\Enterprise\Core\I18n
+ * @mixin \OxidEsales\EshopEnterprise\Core\I18n
  */
 class oxI18n extends \OxidEsales\Core\I18n
 {

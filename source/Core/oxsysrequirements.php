@@ -29,7 +29,7 @@
  * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  *
  * @mixin \OxidEsales\Professional\Core\SystemRequirements
- * @mixin \OxidEsales\Enterprise\Core\SystemRequirements
+ * @mixin \OxidEsales\EshopEnterprise\Core\SystemRequirements
  */
 class oxSysRequirements extends \OxidEsales\Core\SystemRequirements
 {

@@ -22,7 +22,7 @@
 
 namespace OxidEsales\Core;
 
-use OxidEsales\Enterprise\ClassMap as EnterpriseClassMap;
+use OxidEsales\EshopEnterprise\ClassMap as EnterpriseClassMap;
 use OxidEsales\Professional\ClassMap as ProfessionalClassMap;
 
 /**

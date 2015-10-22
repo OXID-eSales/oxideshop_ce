@@ -24,7 +24,7 @@
         <ul class="form clear">
             <li [{if $aErrors}]class="oxInValid"[{/if}]>
                 <label class="req">[{ oxmultilang ident="EMAIL" suffix="COLON" }]</label>
-                <input id="loginUser" class="js-oxValidate js-oxValidate_notEmpty" type="text" name="lgn_usr" value="" size="37" >
+                <input id="loginUser" class="js-oxValidate js-oxValidate_notEmpty" type="email" name="lgn_usr" value="" size="37" >
                 <p class="oxValidateError">
                     <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                 </p>

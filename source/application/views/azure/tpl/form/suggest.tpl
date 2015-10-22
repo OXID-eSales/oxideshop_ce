@@ -41,7 +41,7 @@
             </li>
             <li>
                 <label class="req">[{ oxmultilang ident="SENDER_EMAIL" suffix="COLON" }]</label>
-                <input class="js-oxValidate js-oxValidate_notEmpty js-oxValidate_email" type="text" name="editval[send_email]" size=73 maxlength=73 value="[{$editval->send_email}]" >
+                <input class="js-oxValidate js-oxValidate_notEmpty js-oxValidate_email" type="email" name="editval[send_email]" size=73 maxlength=73 value="[{$editval->send_email}]" >
                 <p class="oxValidateError">
                     <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                     <span class="js-oxError_email">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOVALIDEMAIL" }]</span>

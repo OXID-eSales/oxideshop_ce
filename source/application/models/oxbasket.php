@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -515,6 +515,9 @@ class oxBasket extends oxSuperCfg
         }
 
         // returning basket item object
+        if (is_a($this->_aBasketContents[$sItemId], 'oxBasketItem')) {
+            $this->_aBasketContents[$sItemId]->setBasketItemKey($sItemId);
+        }
         return $this->_aBasketContents[$sItemId];
     }
 

@@ -225,6 +225,32 @@ class oxBasketItem extends oxSuperCfg
      */
     protected $_oRegularUnitPrice = null;
 
+    /**
+     * Basket item's individual key.
+     *
+     * @var string
+     */
+    protected $basketItemKey = null;
+
+    /**
+     * Getter for basketItemkey.
+     *
+     * @return string | null
+     */
+    public function getBasketItemKey()
+    {
+        return $this->basketItemKey;
+    }
+
+    /**
+     * Setter for basketItemkey.
+     *
+     * @param $itemKey
+     */
+    public function setBasketItemKey($itemKey)
+    {
+        $this->basketItemKey = $itemKey;
+    }
 
     /**
      * Return regular unit price

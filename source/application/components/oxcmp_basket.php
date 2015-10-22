@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -284,7 +284,7 @@ class oxcmp_basket extends oxView
         $sProductId = $sProductId ? $sProductId : oxRegistry::getConfig()->getRequestParameter('aid');
         if ($sProductId) {
 
-            // additionally fething current product info
+            // additionally fetching current product info
             $dAmount = isset($dAmount) ? $dAmount : oxRegistry::getConfig()->getRequestParameter('am');
 
             // select lists
@@ -343,6 +343,8 @@ class oxcmp_basket extends oxView
         $oBasket = $this->getSession()->getBasket();
         $oBasketInfo = $oBasket->getBasketSummary();
 
+        $basketItemAmounts = array();
+
         foreach ($aProducts as $sAddProductId => $aProductInfo) {
 
             $sProductId = isset($aProductInfo['aid']) ? $aProductInfo['aid'] : $sAddProductId;
@@ -360,6 +362,13 @@ class oxcmp_basket extends oxView
             $sOldBasketItemId = isset($aProductInfo['basketitemid']) ? $aProductInfo['basketitemid'] : null;
 
             try {
+
+                //If we already changed articles so they now exactly match existing ones,
+                //we need to make sure we get the amounts correct
+                if (isset($basketItemAmounts[$sOldBasketItemId])) {
+                    $dAmount = $dAmount + $basketItemAmounts[$sOldBasketItemId];
+                }
+
                 $oBasketItem = $oBasket->addToBasket(
                     $sProductId,
                     $dAmount,
@@ -369,6 +378,14 @@ class oxcmp_basket extends oxView
                     $blIsBundle,
                     $sOldBasketItemId
                 );
+
+                if (is_a($oBasketItem, 'oxBasketItem')) {
+                    $basketItemId = $oBasketItem->getBasketItemKey();
+                }
+                if (!empty($basketItemId)) {
+                    $basketItemAmounts[$basketItemId] += $dAmount;
+                }
+
             } catch (oxOutOfStockException $oEx) {
                 $oEx->setDestination($sErrorDest);
                 // #950 Change error destination to basket popup

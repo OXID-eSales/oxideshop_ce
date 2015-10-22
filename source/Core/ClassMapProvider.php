@@ -23,7 +23,7 @@
 namespace OxidEsales\Core;
 
 use OxidEsales\EshopEnterprise\ClassMap as EnterpriseClassMap;
-use OxidEsales\Professional\ClassMap as ProfessionalClassMap;
+use OxidEsales\EshopProfessional\ClassMap as ProfessionalClassMap;
 
 /**
  * Class responsible for returning class map by edition.

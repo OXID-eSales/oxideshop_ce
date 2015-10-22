@@ -68,8 +68,8 @@ class ClassMapProviderTest extends OxidTestCase
         $editionSelector = $this->getMockBuilder('\OxidEsales\Core\EditionSelector')->getMock();
         $editionSelector->expects($this->atLeastOnce())->method('getEdition')->will($this->returnValue($edition));
 
-        /** @var \OxidEsales\Professional\ClassMap|PHPUnit_Framework_MockObject_MockObject $classMapProfessional */
-        $classMapProfessional = $this->getMockBuilder('\OxidEsales\Professional\ClassMap')->getMock();
+        /** @var \OxidEsales\EshopProfessional\ClassMap|PHPUnit_Framework_MockObject_MockObject $classMapProfessional */
+        $classMapProfessional = $this->getMockBuilder('\OxidEsales\EshopProfessional\ClassMap')->getMock();
         $classMapProfessional->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue($mapNotOverridableProfessional));
         $classMapProfessional->expects($this->any())->method('getOverridableMap')->will($this->returnValue(array()));
 
@@ -103,8 +103,8 @@ class ClassMapProviderTest extends OxidTestCase
         $editionSelector = $this->getMockBuilder('\OxidEsales\Core\EditionSelector')->getMock();
         $editionSelector->expects($this->atLeastOnce())->method('getEdition')->will($this->returnValue($edition));
 
-        /** @var \OxidEsales\Professional\ClassMap|PHPUnit_Framework_MockObject_MockObject $classMapProfessional */
-        $classMapProfessional = $this->getMockBuilder('\OxidEsales\Professional\ClassMap')->getMock();
+        /** @var \OxidEsales\EshopProfessional\ClassMap|PHPUnit_Framework_MockObject_MockObject $classMapProfessional */
+        $classMapProfessional = $this->getMockBuilder('\OxidEsales\EshopProfessional\ClassMap')->getMock();
         $classMapProfessional->expects($this->any())->method('getOverridableMap')->will($this->returnValue($mapOverridableProfessional));
         $classMapProfessional->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue(array()));
 

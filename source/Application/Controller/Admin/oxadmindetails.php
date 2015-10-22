@@ -23,7 +23,7 @@
 /**
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
- * @mixin \OxidEsales\Professional\Application\Controller\Admin\AdminDetails
+ * @mixin \OxidEsales\EshopProfessional\Application\Controller\Admin\AdminDetails
  */
 class oxAdminDetails extends \OxidEsales\Application\Controller\Admin\AdminDetails
 {

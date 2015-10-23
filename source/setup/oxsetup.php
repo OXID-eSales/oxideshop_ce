@@ -402,7 +402,7 @@ class OxSetup extends oxSetupCore
     {
         $blSetUp = false;
         $sConfig = join("", file(getInstallPath() . "config.inc.php"));
-        if (strpos($sConfig, "<dbHost" . $this->getVersionPrefix() . ">") === false) {
+        if (strpos($sConfig, "<dbHost>") === false) {
             $blSetUp = true;
         }
 

@@ -385,13 +385,10 @@ class Database
      */
     protected function _onConnectionError($oDb)
     {
-        $sVerPrefix = '';
-        $sVerPrefix = '_ce';
-
         $sConfig = join('', file(getShopBasePath() . 'config.inc.php'));
 
-        if (strpos($sConfig, '<dbHost' . $sVerPrefix . '>') !== false &&
-            strpos($sConfig, '<dbName' . $sVerPrefix . '>') !== false
+        if (strpos($sConfig, '<dbHost>') !== false &&
+            strpos($sConfig, '<dbName>') !== false
         ) {
             // pop to setup as there is something wrong
             //oxRegistry::getUtils()->redirect( "setup/index.php", true, 302 );

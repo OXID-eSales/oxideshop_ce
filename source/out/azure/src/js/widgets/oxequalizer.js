@@ -22,65 +22,36 @@
 
     /**
      * Equalize columns
+     *
+     * TODO: This variable is used globally
      */
     oxEqualizer = {
 
         /**
          * Gets tallest element value
          *
-         * @return integer
+         * @param {jQuery} elements - The elements to math the height of
+         * @returns {Number} - The tallest height in px
          */
-        equalHeight: function(group, target)
+        getTallest: function(elements)
         {
-            var self    = this,
-                newh    = 0,
-                tallest = 0,
-                elementh = 0;
+            var aHeight = elements.map(function() {
+                return $(this).outerHeight();
+            }).get();
 
-            if ( target ) {
-                if (group.height() < target.height()){
-                    tallest = target.height() - (group.innerHeight() - group.height());
-                }
-            } else {
-                tallest = self.getTallest( group );
-            }
-
-            if( tallest ) {
-                group.each(function(){
-                    if($(this).hasClass('oxEqualized')) {
-                        $(this).css('height','');
-                        $(this).removeClass('oxEqualized');
-                    }
-                    elementh = $(this).outerHeight();
-                    if (elementh < tallest) {
-                        newh = tallest - (elementh - $(this).height());
-                        $(this).height(newh).addClass('oxEqualized');
-                    }
-                });
-            }
+            return Math.max.apply(null, aHeight);
         },
 
         /**
-         * Gets tallest element value
+         * Match all elements height to the tallest one.
          *
-         * @return integer
+         * @param {jQuery} elements - The elements to math the height of
          */
-        getTallest: function(el)
+        equalHeight: function(elements)
         {
-            var tallest = 0;
-            el.each(function(){
-                var thisHeight = $(this).outerHeight();
-                if (!$(this).hasClass('oxEqualized') && thisHeight > tallest) {
-                    tallest = thisHeight;
-                }
-            });
-            return tallest;
+            var tallest = this.getTallest(elements);
+            elements.height(tallest);
         }
     };
-
-    /**
-     * Equalizer widget
-     */
-    $.widget("ui.oxEqualizer", oxEqualizer );
 
 })( jQuery );

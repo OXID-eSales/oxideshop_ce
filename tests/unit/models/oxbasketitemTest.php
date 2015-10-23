@@ -399,6 +399,17 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
     }
 
     /**
+     * Testing basketItemKey setter and getter
+     */
+    public function testSetGetBasketItemKey()
+    {
+        $basketItem = oxnew('oxBasketItem');
+        $basketItem->setBasketItemKey('some_key');
+
+        $this->assertSame('some_key', $basketItem->getBasketItemKey());
+    }
+
+    /**
      * Testing basket item article getter
      *
      * if no product id is set - exception must be thrown

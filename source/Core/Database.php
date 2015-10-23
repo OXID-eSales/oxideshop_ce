@@ -19,7 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Eshop\Core;
 
+use ADOConnection;
+use ADODB_Exception;
+use mysql_driver_ADOConnection;
+use mysqli;
+use mysqli_driver_ADOConnection;
+use oxAdoDbException;
+use oxConnectionException;
+use oxDb;
+use oxLegacyDb;
+use oxRegistry;
+use PHPMailer;
 
 // Including main ADODB include
 require_once getShopBasePath() . 'Core/adodblite/adodb.inc.php';
@@ -27,9 +39,8 @@ require_once getShopBasePath() . 'Core/adodblite/adodb.inc.php';
 /**
  * Database connection class
  */
-class oxDb
+class Database
 {
-
     /**
      * Fetch mode - numeric
      *
@@ -54,14 +65,14 @@ class oxDb
     /**
      * oxDb instance.
      *
-     * @var oxdb
+     * @var Database
      */
     protected static $_instance = null;
 
     /**
      * Database connection object
      *
-     * @var oxdb
+     * @var Database
      */
     protected static $_oDB = null;
 
@@ -212,12 +223,11 @@ class oxDb
     /**
      * Returns Singleton instance
      *
-     * @return oxdb
+     * @return Database
      */
     public static function getInstance()
     {
-        if (!self::$_instance instanceof oxDb) {
-
+        if (!self::$_instance instanceof Database) {
             //do not use simple oxNew here as it goes to eternal cycle
             self::$_instance = new oxDb();
         }
@@ -311,12 +321,12 @@ class oxDb
      * @param string $sSubject subject
      * @param string $sBody    email body
      *
-     * @return phpmailer
+     * @return PHPMailer
      */
     protected function _sendMail($sEmail, $sSubject, $sBody)
     {
         include_once getShopBasePath() . 'Core/phpmailer/class.phpmailer.php';
-        $oMailer = new phpmailer();
+        $oMailer = new PHPMailer();
         $oMailer->isMail();
 
         $oMailer->From = $sEmail;
@@ -331,6 +341,8 @@ class oxDb
      * Notifying shop owner about connection problems
      *
      * @param ADOConnection $oDb database connection instance
+     *
+     * @throws oxConnectionException
      */
     protected function _notifyConnectionErrors($oDb)
     {
@@ -376,7 +388,6 @@ class oxDb
         $sVerPrefix = '';
         $sVerPrefix = '_ce';
 
-
         $sConfig = join('', file(getShopBasePath() . 'config.inc.php'));
 
         if (strpos($sConfig, '<dbHost' . $sVerPrefix . '>') !== false &&
@@ -392,7 +403,6 @@ class oxDb
         } else {
             // notifying about connection problems
             $this->_notifyConnectionErrors($oDb);
-
         }
     }
 
@@ -400,9 +410,9 @@ class oxDb
     /**
      * Returns database instance object for given type
      *
-     * @param int $iInstType instance type
+     * @param int|bool $iInstType instance type
      *
-     * @return ADONewConnection
+     * @return mysql_driver_ADOConnection|mysqli_driver_ADOConnection
      */
     protected function _getDbInstance($iInstType = false)
     {
@@ -412,6 +422,7 @@ class oxDb
         $sName = self::_getConfigParam("_dbName");
         $sType = self::_getConfigParam("_dbType");
 
+        /** @var mysql_driver_ADOConnection|mysqli_driver_ADOConnection $oDb */
         $oDb = ADONewConnection($sType, $this->_getModules());
 
 
@@ -438,7 +449,6 @@ class oxDb
     public static function getDb($iFetchMode = oxDb::FETCH_MODE_NUM)
     {
         if (self::$_oDB === null) {
-
             $oInst = self::getInstance();
 
             //setting configuration on the first call
@@ -483,18 +493,20 @@ class oxDb
     /**
      * Setter for database connection object
      *
-     * @param $newDbObject
+     * @param Database $newDbObject
      */
-    public static function setDbObject($newDbObject) {
+    public static function setDbObject($newDbObject)
+    {
         self::$_oDB = $newDbObject;
     }
 
     /**
      * Database connection object getter
      *
-     * @return mixed
+     * @return Database
      */
-    public static function getDbObject() {
+    public static function getDbObject()
+    {
         return self::$_oDB;
     }
 
@@ -551,13 +563,13 @@ class oxDb
      */
     public function isValidFieldName($sField)
     {
-        return ( boolean ) getStr()->preg_match("#^[\w\d\._]*$#", $sField);
+        return (boolean) getStr()->preg_match("#^[\w\d\._]*$#", $sField);
     }
 
     /**
      * Get connection ID
      *
-     * @return link identifier
+     * @return mysqli identifier
      */
     protected function _getConnectionId()
     {

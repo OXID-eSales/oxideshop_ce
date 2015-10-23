@@ -403,35 +403,44 @@ class Database
         }
     }
 
-
     /**
      * Returns database instance object for given type
      *
-     * @param int|bool $iInstType instance type
+     * @param bool $instanceType instance type
      *
      * @return mysql_driver_ADOConnection|mysqli_driver_ADOConnection
      */
-    protected function _getDbInstance($iInstType = false)
+    protected function _getDbInstance($instanceType = false)
     {
-        $sHost = self::_getConfigParam("_dbHost");
-        $sUser = self::_getConfigParam("_dbUser");
-        $sPwd = self::_getConfigParam("_dbPwd");
-        $sName = self::_getConfigParam("_dbName");
         $sType = self::_getConfigParam("_dbType");
 
-        /** @var mysql_driver_ADOConnection|mysqli_driver_ADOConnection $oDb */
-        $oDb = ADONewConnection($sType, $this->_getModules());
-
+        /** @var mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection */
+        $connection = ADONewConnection($sType, $this->_getModules());
 
         try {
-            $oDb->connect($sHost, $sUser, $sPwd, $sName);
+            $this->connect($connection, $instanceType);
         } catch (oxAdoDbException $e) {
-            $this->_onConnectionError($oDb);
+            $this->_onConnectionError($connection);
         }
+        self::_setUp($connection);
 
-        self::_setUp($oDb);
+        return $connection;
+    }
 
-        return $oDb;
+    /**
+     * Initiates actual database connection.
+     *
+     * @param mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection
+     * @param bool                                                   $instanceType
+     */
+    protected function connect($connection, $instanceType)
+    {
+        $host = self::_getConfigParam("_dbHost");
+        $user = self::_getConfigParam("_dbUser");
+        $password = self::_getConfigParam("_dbPwd");
+        $databaseName = self::_getConfigParam("_dbName");
+
+        $connection->connect($host, $user, $password, $databaseName);
     }
 
     /**
@@ -446,45 +455,52 @@ class Database
     public static function getDb($iFetchMode = oxDb::FETCH_MODE_NUM)
     {
         if (self::$_oDB === null) {
-            $oInst = self::getInstance();
-
-            //setting configuration on the first call
-            $oInst->setConfig(oxRegistry::get("oxConfigFile"));
-
-            global $ADODB_SESSION_TBL,
-                   $ADODB_SESSION_CONNECT,
-                   $ADODB_SESSION_DRIVER,
-                   $ADODB_SESSION_USER,
-                   $ADODB_SESSION_PWD,
-                   $ADODB_SESSION_DB,
-                   $ADODB_SESS_LIFE,
-                   $ADODB_SESS_DEBUG;
-
-            // session related parameters. don't change.
-
-            //Tomas
-            //the default setting is 3000 * 60, but actually changing this will give no effect as now redefinition of this constant
-            //appears after OXID custom settings are loaded and $ADODB_SESS_LIFE depends on user settings.
-            //You can find the redefinition of ADODB_SESS_LIFE @ oxconfig.php:: line ~ 390.
-            $ADODB_SESS_LIFE = 3000 * 60;
-            $ADODB_SESSION_TBL = "oxsessions";
-            $ADODB_SESSION_DRIVER = self::_getConfigParam('_dbType');
-            $ADODB_SESSION_USER = self::_getConfigParam('_dbUser');
-            $ADODB_SESSION_PWD = self::_getConfigParam('_dbPwd');
-            $ADODB_SESSION_DB = self::_getConfigParam('_dbName');
-            $ADODB_SESSION_CONNECT = self::_getConfigParam('_dbHost');
-            $ADODB_SESS_DEBUG = false;
-
-            $oDb = new oxLegacyDb();
-            $oDbInst = $oInst->_getDbInstance();
-            $oDb->setConnection($oDbInst);
-
-            self::$_oDB = $oDb;
+            self::$_oDB = static::createDatabaseInstance();
         }
-
         self::$_oDB->setFetchMode($iFetchMode);
 
         return self::$_oDB;
+    }
+
+    /**
+     * @return oxLegacyDb
+     */
+    protected static function createDatabaseInstance()
+    {
+        $oInst = self::getInstance();
+
+        //setting configuration on the first call
+        $oInst->setConfig(oxRegistry::get("oxConfigFile"));
+
+        global $ADODB_SESSION_TBL,
+               $ADODB_SESSION_CONNECT,
+               $ADODB_SESSION_DRIVER,
+               $ADODB_SESSION_USER,
+               $ADODB_SESSION_PWD,
+               $ADODB_SESSION_DB,
+               $ADODB_SESS_LIFE,
+               $ADODB_SESS_DEBUG;
+
+        // session related parameters. don't change.
+
+        //Tomas
+        //the default setting is 3000 * 60, but actually changing this will give no effect as now redefinition of this constant
+        //appears after OXID custom settings are loaded and $ADODB_SESS_LIFE depends on user settings.
+        //You can find the redefinition of ADODB_SESS_LIFE @ oxconfig.php:: line ~ 390.
+        $ADODB_SESS_LIFE = 3000 * 60;
+        $ADODB_SESSION_TBL = "oxsessions";
+        $ADODB_SESSION_DRIVER = self::_getConfigParam('_dbType');
+        $ADODB_SESSION_USER = self::_getConfigParam('_dbUser');
+        $ADODB_SESSION_PWD = self::_getConfigParam('_dbPwd');
+        $ADODB_SESSION_DB = self::_getConfigParam('_dbName');
+        $ADODB_SESSION_CONNECT = self::_getConfigParam('_dbHost');
+        $ADODB_SESS_DEBUG = false;
+
+        $oDb = new oxLegacyDb();
+        $oDbInst = $oInst->_getDbInstance();
+        $oDb->setConnection($oDbInst);
+
+        return $oDb;
     }
 
     /**
@@ -539,15 +555,23 @@ class Database
     public function getTableDescription($sTableName)
     {
         // simple cache
-        if (isset(self::$_aTblDescCache[$sTableName])) {
-            return self::$_aTblDescCache[$sTableName];
+        if (!isset(self::$_aTblDescCache[$sTableName])) {
+            self::$_aTblDescCache[$sTableName] = $this->formTableDescription($sTableName);
         }
 
-        $aFields = self::getDb()->MetaColumns($sTableName);
+        return self::$_aTblDescCache[$sTableName];
+    }
 
-        self::$_aTblDescCache[$sTableName] = $aFields;
-
-        return $aFields;
+    /**
+     * Extracts and returns table metadata from DB.
+     *
+     * @param string $sTableName
+     *
+     * @return array
+     */
+    protected function formTableDescription($sTableName)
+    {
+        return self::getDb()->MetaColumns($sTableName);
     }
 
     /**

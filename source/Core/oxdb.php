@@ -23,7 +23,7 @@
 /**
  * @inheritdoc
  *
- * @mixin \OxidEsales\Enterprise\Eshop\Core\Database
+ * @mixin \OxidEsales\EshopEnterprise\Core\Database
  */
 class oxDb extends \OxidEsales\Eshop\Core\Database
 {

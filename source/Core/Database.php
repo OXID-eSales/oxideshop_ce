@@ -182,6 +182,40 @@ class Database
     private static $_sLocalDateFormat;
 
     /**
+     * Returns Singleton instance
+     *
+     * @return Database
+     */
+    public static function getInstance()
+    {
+        if (!self::$_instance instanceof Database) {
+            //do not use simple oxNew here as it goes to eternal cycle
+            self::$_instance = new oxDb();
+        }
+
+        return self::$_instance;
+    }
+
+    /**
+     * Returns database object
+     *
+     * @param int $fetchMode - fetch mode default numeric - 0
+     *
+     * @throws oxConnectionException error while initiating connection to DB
+     *
+     * @return oxLegacyDb
+     */
+    public static function getDb($fetchMode = oxDb::FETCH_MODE_NUM)
+    {
+        if (self::$_oDB === null) {
+            self::$_oDB = static::createDatabase();
+        }
+        self::$_oDB->setFetchMode($fetchMode);
+
+        return self::$_oDB;
+    }
+
+    /**
      * Sets configs object with method getVar() and properties needed for successful connection.
      *
      * @param object $config configs.
@@ -205,6 +239,116 @@ class Database
     }
 
     /**
+     * Setter for database connection object
+     *
+     * @param Database $newDbObject
+     */
+    public static function setDbObject($newDbObject)
+    {
+        self::$_oDB = $newDbObject;
+    }
+
+    /**
+     * Database connection object getter
+     *
+     * @return Database
+     */
+    public static function getDbObject()
+    {
+        return self::$_oDB;
+    }
+
+    /**
+     * Quotes an array.
+     *
+     * @param array $arrayOfStrings array of strings to quote
+     *
+     * @deprecated since v5.2.0 (2014-03-12); use oxLegacyDb::quoteArray()
+     *
+     * @return array
+     */
+    public function quoteArray($arrayOfStrings)
+    {
+        return self::getDb()->quoteArray($arrayOfStrings);
+    }
+
+    /**
+     * Call to reset table description cache
+     */
+    public function resetTblDescCache()
+    {
+        self::$_aTblDescCache = array();
+    }
+
+    /**
+     * Extracts and returns table metadata from DB.
+     *
+     * @param string $tableName Name of table to invest.
+     *
+     * @return array
+     */
+    public function getTableDescription($tableName)
+    {
+        // simple cache
+        if (!isset(self::$_aTblDescCache[$tableName])) {
+            self::$_aTblDescCache[$tableName] = $this->formTableDescription($tableName);
+        }
+
+        return self::$_aTblDescCache[$tableName];
+    }
+
+    /**
+     * Checks if given string is valid database field name.
+     * It must contain from alphanumeric plus dot and underscore symbols
+     *
+     * @param string $field field name
+     *
+     * @return bool
+     */
+    public function isValidFieldName($field)
+    {
+        return (boolean) getStr()->preg_match("#^[\w\d\._]*$#", $field);
+    }
+
+    /**
+     * Escape string for using in mysql statements
+     *
+     * @param string $string string which will be escaped
+     *
+     * @return string
+     */
+    public function escapeString($string)
+    {
+        if ('mysql' == self::_getConfigParam("_dbType")) {
+            return mysql_real_escape_string($string, $this->_getConnectionId());
+        } elseif ('mysqli' == self::_getConfigParam("_dbType")) {
+            return mysqli_real_escape_string($this->_getConnectionId(), $string);
+        } else {
+            return mysql_real_escape_string($string, $this->_getConnectionId());
+        }
+    }
+
+    /**
+     * Get connection ID
+     *
+     * @return mysqli identifier
+     */
+    protected function _getConnectionId()
+    {
+        return self::getDb()->getDb()->connectionId;
+    }
+
+    /**
+     * Cal function is admin from oxFunction. Need to mock in tests.
+     *
+     * @return bool
+     */
+    protected function isAdmin()
+    {
+        return isAdmin();
+    }
+
+    /**
      * Return local config value by given name.
      *
      * @param string $sConfigName returning config name.
@@ -221,32 +365,86 @@ class Database
     }
 
     /**
-     * Returns Singleton instance
+     * Creates database instance and returns it.
      *
-     * @return Database
+     * @return oxLegacyDb
      */
-    public static function getInstance()
+    protected static function createDatabase()
     {
-        if (!self::$_instance instanceof Database) {
-            //do not use simple oxNew here as it goes to eternal cycle
-            self::$_instance = new oxDb();
+        $databaseFactory = self::getInstance();
+
+        // Setting configuration on the first call
+        $databaseFactory->setConfig(oxRegistry::get("oxConfigFile"));
+
+        // Session related parameters. Don't change.
+        global $ADODB_SESSION_TBL,
+               $ADODB_SESSION_CONNECT,
+               $ADODB_SESSION_DRIVER,
+               $ADODB_SESSION_USER,
+               $ADODB_SESSION_PWD,
+               $ADODB_SESSION_DB,
+               $ADODB_SESS_LIFE,
+               $ADODB_SESS_DEBUG;
+
+        // The default setting is 3000 * 60, but actually changing this will give no effect as now redefinition of this constant
+        // appears after OXID custom settings are loaded and $ADODB_SESS_LIFE depends on user settings.
+        // You can find the redefinition of ADODB_SESS_LIFE @ oxconfig.php:: line ~ 390.
+        $ADODB_SESS_LIFE = 3000 * 60;
+        $ADODB_SESSION_TBL = "oxsessions";
+        $ADODB_SESSION_DRIVER = self::_getConfigParam('_dbType');
+        $ADODB_SESSION_USER = self::_getConfigParam('_dbUser');
+        $ADODB_SESSION_PWD = self::_getConfigParam('_dbPwd');
+        $ADODB_SESSION_DB = self::_getConfigParam('_dbName');
+        $ADODB_SESSION_CONNECT = self::_getConfigParam('_dbHost');
+        $ADODB_SESS_DEBUG = false;
+
+        $database = new oxLegacyDb();
+        $databaseConnection = $databaseFactory->_getDbInstance();
+        $database->setConnection($databaseConnection);
+
+        return $database;
+    }
+
+    /**
+     * Returns database instance object for given type
+     *
+     * @deprecated on b-dev (2015-10-23); Use self::createDatabaseConnection() instead.
+     *
+     * @param bool $instanceType instance type
+     *
+     * @return mysql_driver_ADOConnection|mysqli_driver_ADOConnection
+     */
+    protected function _getDbInstance($instanceType = false)
+    {
+        return $this->createDatabaseConnection($instanceType);
+    }
+
+    /**
+     * Returns database instance object for given type
+     *
+     * @param bool $instanceType instance type
+     *
+     * @return mysql_driver_ADOConnection|mysqli_driver_ADOConnection
+     */
+    protected function createDatabaseConnection($instanceType)
+    {
+        $databaseType = self::_getConfigParam("_dbType");
+
+        /** @var mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection */
+        $connection = ADONewConnection($databaseType, $this->_getModules());
+
+        try {
+            $this->connectToDatabase($connection, $instanceType);
+        } catch (oxAdoDbException $e) {
+            $this->_onConnectionError($connection);
         }
+        self::_setUp($connection);
 
-        return self::$_instance;
+        return $connection;
     }
 
     /**
-     * Cal function is admin from oxFunction. Need to mock in tests.
-     *
-     * @return bool
-     */
-    protected function isAdmin()
-    {
-        return isAdmin();
-    }
-
-    /**
-     * Returns adodb modules string
+     * Returns which AdoDbLite modules should be loaded when creating database connection.
      *
      * @return string
      */
@@ -261,12 +459,27 @@ class Database
             $modules = 'perfmon';
         }
 
-        // log admin changes ?
         if ($this->isAdmin() && self::_getConfigParam('_blLogChangesInAdmin')) {
             $modules .= ($modules ? ':' : '') . 'oxadminlog';
         }
 
         return $modules;
+    }
+
+    /**
+     * Initiates actual database connection.
+     *
+     * @param mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection
+     * @param bool                                                   $instanceType
+     */
+    protected function connectToDatabase($connection, $instanceType)
+    {
+        $host = self::_getConfigParam("_dbHost");
+        $user = self::_getConfigParam("_dbUser");
+        $password = self::_getConfigParam("_dbPwd");
+        $databaseName = self::_getConfigParam("_dbName");
+
+        $connection->connect($host, $user, $password, $databaseName);
     }
 
     /**
@@ -283,9 +496,21 @@ class Database
     /**
      * Setting up connection parameters - sql mode, encoding, logging etc
      *
+     * @deprecated on b-dev (2015-10-23); Use self::prepareDatabaseConnection() instead.
+     *
      * @param ADOConnection $connection database connection instance
      */
     protected function _setUp($connection)
+    {
+        $this->prepareDatabaseConnection($connection);
+    }
+
+    /**
+     * Setting up connection parameters - sql mode, encoding, logging etc.
+     *
+     * @param ADOConnection $connection database connection instance
+     */
+    protected function prepareDatabaseConnection($connection)
     {
         $debugLevel = self::_getConfigParam('_iDebug');
         if ($debugLevel == 2 || $debugLevel == 3 || $debugLevel == 4 || $debugLevel == 7) {
@@ -404,165 +629,6 @@ class Database
     }
 
     /**
-     * Returns database instance object for given type
-     *
-     * @param bool $instanceType instance type
-     *
-     * @return mysql_driver_ADOConnection|mysqli_driver_ADOConnection
-     */
-    protected function _getDbInstance($instanceType = false)
-    {
-        $databaseType = self::_getConfigParam("_dbType");
-
-        /** @var mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection */
-        $connection = ADONewConnection($databaseType, $this->_getModules());
-
-        try {
-            $this->connect($connection, $instanceType);
-        } catch (oxAdoDbException $e) {
-            $this->_onConnectionError($connection);
-        }
-        self::_setUp($connection);
-
-        return $connection;
-    }
-
-    /**
-     * Initiates actual database connection.
-     *
-     * @param mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection
-     * @param bool                                                   $instanceType
-     */
-    protected function connect($connection, $instanceType)
-    {
-        $host = self::_getConfigParam("_dbHost");
-        $user = self::_getConfigParam("_dbUser");
-        $password = self::_getConfigParam("_dbPwd");
-        $databaseName = self::_getConfigParam("_dbName");
-
-        $connection->connect($host, $user, $password, $databaseName);
-    }
-
-    /**
-     * Returns database object
-     *
-     * @param int $fetchMode - fetch mode default numeric - 0
-     *
-     * @throws oxConnectionException error while initiating connection to DB
-     *
-     * @return oxLegacyDb
-     */
-    public static function getDb($fetchMode = oxDb::FETCH_MODE_NUM)
-    {
-        if (self::$_oDB === null) {
-            self::$_oDB = static::createDatabaseInstance();
-        }
-        self::$_oDB->setFetchMode($fetchMode);
-
-        return self::$_oDB;
-    }
-
-    /**
-     * @return oxLegacyDb
-     */
-    protected static function createDatabaseInstance()
-    {
-        $instance = self::getInstance();
-
-        //setting configuration on the first call
-        $instance->setConfig(oxRegistry::get("oxConfigFile"));
-
-        global $ADODB_SESSION_TBL,
-               $ADODB_SESSION_CONNECT,
-               $ADODB_SESSION_DRIVER,
-               $ADODB_SESSION_USER,
-               $ADODB_SESSION_PWD,
-               $ADODB_SESSION_DB,
-               $ADODB_SESS_LIFE,
-               $ADODB_SESS_DEBUG;
-
-        // session related parameters. don't change.
-
-        //Tomas
-        //the default setting is 3000 * 60, but actually changing this will give no effect as now redefinition of this constant
-        //appears after OXID custom settings are loaded and $ADODB_SESS_LIFE depends on user settings.
-        //You can find the redefinition of ADODB_SESS_LIFE @ oxconfig.php:: line ~ 390.
-        $ADODB_SESS_LIFE = 3000 * 60;
-        $ADODB_SESSION_TBL = "oxsessions";
-        $ADODB_SESSION_DRIVER = self::_getConfigParam('_dbType');
-        $ADODB_SESSION_USER = self::_getConfigParam('_dbUser');
-        $ADODB_SESSION_PWD = self::_getConfigParam('_dbPwd');
-        $ADODB_SESSION_DB = self::_getConfigParam('_dbName');
-        $ADODB_SESSION_CONNECT = self::_getConfigParam('_dbHost');
-        $ADODB_SESS_DEBUG = false;
-
-        $legacyDatabase = new oxLegacyDb();
-        $databaseInstance = $instance->_getDbInstance();
-        $legacyDatabase->setConnection($databaseInstance);
-
-        return $legacyDatabase;
-    }
-
-    /**
-     * Setter for database connection object
-     *
-     * @param Database $newDbObject
-     */
-    public static function setDbObject($newDbObject)
-    {
-        self::$_oDB = $newDbObject;
-    }
-
-    /**
-     * Database connection object getter
-     *
-     * @return Database
-     */
-    public static function getDbObject()
-    {
-        return self::$_oDB;
-    }
-
-    /**
-     * Quotes an array.
-     *
-     * @param array $arrayOfStrings array of strings to quote
-     *
-     * @deprecated since v5.2.0 (2014-03-12); use oxLegacyDb::quoteArray()
-     *
-     * @return array
-     */
-    public function quoteArray($arrayOfStrings)
-    {
-        return self::getDb()->quoteArray($arrayOfStrings);
-    }
-
-    /**
-     * Call to reset table description cache
-     */
-    public function resetTblDescCache()
-    {
-        self::$_aTblDescCache = array();
-    }
-
-    /**
-     * Extracts and returns table metadata from DB.
-     *
-     * @param string $tableName Name of table to invest.
-     *
-     * @return array
-     */
-    public function getTableDescription($tableName)
-    {
-        // simple cache
-        if (!isset(self::$_aTblDescCache[$tableName])) {
-            self::$_aTblDescCache[$tableName] = $this->formTableDescription($tableName);
-        }
-
-        return self::$_aTblDescCache[$tableName];
-    }
-
-    /**
      * Extracts and returns table metadata from DB.
      *
      * @param string $tableName
@@ -572,46 +638,5 @@ class Database
     protected function formTableDescription($tableName)
     {
         return self::getDb()->MetaColumns($tableName);
-    }
-
-    /**
-     * Checks if given string is valid database field name.
-     * It must contain from alphanumeric plus dot and underscore symbols
-     *
-     * @param string $field field name
-     *
-     * @return bool
-     */
-    public function isValidFieldName($field)
-    {
-        return (boolean) getStr()->preg_match("#^[\w\d\._]*$#", $field);
-    }
-
-    /**
-     * Get connection ID
-     *
-     * @return mysqli identifier
-     */
-    protected function _getConnectionId()
-    {
-        return self::getDb()->getDb()->connectionId;
-    }
-
-    /**
-     * Escape string for using in mysql statements
-     *
-     * @param string $string string which will be escaped
-     *
-     * @return string
-     */
-    public function escapeString($string)
-    {
-        if ('mysql' == self::_getConfigParam("_dbType")) {
-            return mysql_real_escape_string($string, $this->_getConnectionId());
-        } elseif ('mysqli' == self::_getConfigParam("_dbType")) {
-            return mysqli_real_escape_string($this->_getConnectionId(), $string);
-        } else {
-            return mysql_real_escape_string($string, $this->_getConnectionId());
-        }
     }
 }

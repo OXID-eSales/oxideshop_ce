@@ -184,24 +184,24 @@ class Database
     /**
      * Sets configs object with method getVar() and properties needed for successful connection.
      *
-     * @param object $oConfig configs.
+     * @param object $config configs.
      */
-    public static function setConfig($oConfig)
+    public static function setConfig($config)
     {
-        self::$_dbType = $oConfig->getVar('dbType');
-        self::$_dbUser = $oConfig->getVar('dbUser');
-        self::$_dbPwd = $oConfig->getVar('dbPwd');
-        self::$_dbName = $oConfig->getVar('dbName');
-        self::$_dbHost = $oConfig->getVar('dbHost');
-        self::$_iDebug = $oConfig->getVar('iDebug');
-        self::$_blLogChangesInAdmin = $oConfig->getVar('blLogChangesInAdmin');
-        self::$_iUtfMode = $oConfig->getVar('iUtfMode');
-        self::$_sDefaultDatabaseConnection = $oConfig->getVar('sDefaultDatabaseConnection');
-        self::$_aSlaveHosts = $oConfig->getVar('aSlaveHosts');
-        self::$_iMasterSlaveBalance = $oConfig->getVar('iMasterSlaveBalance');
-        self::$_sAdminEmail = $oConfig->getVar('sAdminEmail');
-        self::$_sLocalTimeFormat = $oConfig->getVar('sLocalTimeFormat');
-        self::$_sLocalDateFormat = $oConfig->getVar('sLocalDateFormat');
+        self::$_dbType = $config->getVar('dbType');
+        self::$_dbUser = $config->getVar('dbUser');
+        self::$_dbPwd = $config->getVar('dbPwd');
+        self::$_dbName = $config->getVar('dbName');
+        self::$_dbHost = $config->getVar('dbHost');
+        self::$_iDebug = $config->getVar('iDebug');
+        self::$_blLogChangesInAdmin = $config->getVar('blLogChangesInAdmin');
+        self::$_iUtfMode = $config->getVar('iUtfMode');
+        self::$_sDefaultDatabaseConnection = $config->getVar('sDefaultDatabaseConnection');
+        self::$_aSlaveHosts = $config->getVar('aSlaveHosts');
+        self::$_iMasterSlaveBalance = $config->getVar('iMasterSlaveBalance');
+        self::$_sAdminEmail = $config->getVar('sAdminEmail');
+        self::$_sLocalTimeFormat = $config->getVar('sLocalTimeFormat');
+        self::$_sLocalDateFormat = $config->getVar('sLocalDateFormat');
     }
 
     /**
@@ -252,21 +252,21 @@ class Database
      */
     protected function _getModules()
     {
-        $_iDebug = self::_getConfigParam('_iDebug');
+        $debugLevel = self::_getConfigParam('_iDebug');
 
         $this->_registerAdoDbExceptionHandler();
 
-        $sModules = '';
-        if ($_iDebug == 2 || $_iDebug == 3 || $_iDebug == 4 || $_iDebug == 7) {
-            $sModules = 'perfmon';
+        $modules = '';
+        if ($debugLevel == 2 || $debugLevel == 3 || $debugLevel == 4 || $debugLevel == 7) {
+            $modules = 'perfmon';
         }
 
         // log admin changes ?
         if ($this->isAdmin() && self::_getConfigParam('_blLogChangesInAdmin')) {
-            $sModules .= ($sModules ? ':' : '') . 'oxadminlog';
+            $modules .= ($modules ? ':' : '') . 'oxadminlog';
         }
 
-        return $sModules;
+        return $modules;
     }
 
     /**
@@ -283,34 +283,34 @@ class Database
     /**
      * Setting up connection parameters - sql mode, encoding, logging etc
      *
-     * @param ADOConnection $oDb database connection instance
+     * @param ADOConnection $connection database connection instance
      */
-    protected function _setUp($oDb)
+    protected function _setUp($connection)
     {
-        $_iDebug = self::_getConfigParam('_iDebug');
-        if ($_iDebug == 2 || $_iDebug == 3 || $_iDebug == 4 || $_iDebug == 7) {
+        $debugLevel = self::_getConfigParam('_iDebug');
+        if ($debugLevel == 2 || $debugLevel == 3 || $debugLevel == 4 || $debugLevel == 7) {
             try {
-                $oDb->execute('truncate table adodb_logsql');
+                $connection->execute('truncate table adodb_logsql');
             } catch (ADODB_Exception $e) {
                 // nothing
             }
-            if (method_exists($oDb, "logSQL")) {
-                $oDb->logSQL(true);
+            if (method_exists($connection, "logSQL")) {
+                $connection->logSQL(true);
             }
         }
 
-        $oDb->cacheSecs = 60 * 10; // 10 minute caching
-        $oDb->execute('SET @@session.sql_mode = ""');
+        $connection->cacheSecs = 60 * 10; // 10 minute caching
+        $connection->execute('SET @@session.sql_mode = ""');
 
         if (self::_getConfigParam('_iUtfMode')) {
-            $oDb->execute('SET NAMES "utf8"');
-            $oDb->execute('SET CHARACTER SET utf8');
-            $oDb->execute('SET CHARACTER_SET_CONNECTION = utf8');
-            $oDb->execute('SET CHARACTER_SET_DATABASE = utf8');
-            $oDb->execute('SET character_set_results = utf8');
-            $oDb->execute('SET character_set_server = utf8');
-        } elseif (($sConn = self::_getConfigParam('_sDefaultDatabaseConnection')) != '') {
-            $oDb->execute('SET NAMES "' . $sConn . '"');
+            $connection->execute('SET NAMES "utf8"');
+            $connection->execute('SET CHARACTER SET utf8');
+            $connection->execute('SET CHARACTER_SET_CONNECTION = utf8');
+            $connection->execute('SET CHARACTER_SET_DATABASE = utf8');
+            $connection->execute('SET character_set_results = utf8');
+            $connection->execute('SET character_set_server = utf8');
+        } elseif (($encoding = self::_getConfigParam('_sDefaultDatabaseConnection')) != '') {
+            $connection->execute('SET NAMES "' . $encoding . '"');
         }
     }
 
@@ -326,80 +326,80 @@ class Database
     protected function _sendMail($sEmail, $sSubject, $sBody)
     {
         include_once getShopBasePath() . 'Core/phpmailer/class.phpmailer.php';
-        $oMailer = new PHPMailer();
-        $oMailer->isMail();
+        $mailer = new PHPMailer();
+        $mailer->isMail();
 
-        $oMailer->From = $sEmail;
-        $oMailer->AddAddress($sEmail);
-        $oMailer->Subject = $sSubject;
-        $oMailer->Body = $sBody;
+        $mailer->From = $sEmail;
+        $mailer->AddAddress($sEmail);
+        $mailer->Subject = $sSubject;
+        $mailer->Body = $sBody;
 
-        return $oMailer->send();
+        return $mailer->send();
     }
 
     /**
      * Notifying shop owner about connection problems
      *
-     * @param ADOConnection $oDb database connection instance
+     * @param ADOConnection $connection database connection instance
      *
      * @throws oxConnectionException
      */
-    protected function _notifyConnectionErrors($oDb)
+    protected function _notifyConnectionErrors($connection)
     {
         // notifying shop owner about connection problems
-        if (($sAdminEmail = self::_getConfigParam('_sAdminEmail'))) {
-            $sFailedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
+        if (($adminEmail = self::_getConfigParam('_sAdminEmail'))) {
+            $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
 
-            $sDate = date('l dS of F Y h:i:s A');
-            $sScript = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
-            $sReferer = $_SERVER['HTTP_REFERER'];
+            $date = date('l dS of F Y h:i:s A');
+            $script = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
+            $referer = $_SERVER['HTTP_REFERER'];
 
             //sending a message to admin
-            $sWarningSubject = 'Offline warning!';
-            $sWarningBody = "
+            $warningSubject = 'Offline warning!';
+            $warningBody = "
                 Database error in OXID eShop:
-                Date: {$sDate}
-                Shop: {$sFailedShop}
+                Date: {$date}
+                Shop: {$failedShop}
 
-                mysql error: " . $oDb->errorMsg() . "
-                mysql error no: " . $oDb->errorNo() . "
+                mysql error: " . $connection->errorMsg() . "
+                mysql error no: " . $connection->errorNo() . "
 
-                Script: {$sScript}
-                Referer: {$sReferer}";
+                Script: {$script}
+                Referer: {$referer}";
 
-            $this->_sendMail($sAdminEmail, $sWarningSubject, $sWarningBody);
+            $this->_sendMail($adminEmail, $warningSubject, $warningBody);
         }
 
         //only exception to default construction method
-        $oEx = new oxConnectionException();
-        $oEx->setMessage('EXCEPTION_CONNECTION_NODB');
-        $oEx->setConnectionError(self::_getConfigParam('_dbUser') . 's' . getShopBasePath() . $oDb->errorMsg());
-        throw $oEx;
+        $exception = new oxConnectionException();
+        $exception->setMessage('EXCEPTION_CONNECTION_NODB');
+        $exception->setConnectionError(self::_getConfigParam('_dbUser') . 's' . getShopBasePath() . $connection->errorMsg());
+        throw $exception;
     }
 
     /**
      * In case of connection error - redirects to setup
      * or send notification message for shop owner
      *
-     * @param ADOConnection $oDb database connection instance
+     * @param ADOConnection $connection database connection instance
      */
-    protected function _onConnectionError($oDb)
+    protected function _onConnectionError($connection)
     {
-        $sConfig = join('', file(getShopBasePath() . 'config.inc.php'));
+        $config = join('', file(getShopBasePath() . 'config.inc.php'));
 
-        if (strpos($sConfig, '<dbHost>') !== false &&
-            strpos($sConfig, '<dbName>') !== false
+        if (strpos($config, '<dbHost>') !== false &&
+            strpos($config, '<dbName>') !== false
         ) {
             // pop to setup as there is something wrong
             //oxRegistry::getUtils()->redirect( "setup/index.php", true, 302 );
-            $sHeaderCode = "HTTP/1.1 302 Found";
-            header($sHeaderCode);
+            $headerCode = "HTTP/1.1 302 Found";
+            header($headerCode);
             header("Location: setup/index.php");
             header("Connection: close");
             exit();
         } else {
             // notifying about connection problems
-            $this->_notifyConnectionErrors($oDb);
+            $this->_notifyConnectionErrors($connection);
         }
     }
 
@@ -412,10 +412,10 @@ class Database
      */
     protected function _getDbInstance($instanceType = false)
     {
-        $sType = self::_getConfigParam("_dbType");
+        $databaseType = self::_getConfigParam("_dbType");
 
         /** @var mysql_driver_ADOConnection|mysqli_driver_ADOConnection $connection */
-        $connection = ADONewConnection($sType, $this->_getModules());
+        $connection = ADONewConnection($databaseType, $this->_getModules());
 
         try {
             $this->connect($connection, $instanceType);
@@ -446,18 +446,18 @@ class Database
     /**
      * Returns database object
      *
-     * @param int $iFetchMode - fetch mode default numeric - 0
+     * @param int $fetchMode - fetch mode default numeric - 0
      *
      * @throws oxConnectionException error while initiating connection to DB
      *
      * @return oxLegacyDb
      */
-    public static function getDb($iFetchMode = oxDb::FETCH_MODE_NUM)
+    public static function getDb($fetchMode = oxDb::FETCH_MODE_NUM)
     {
         if (self::$_oDB === null) {
             self::$_oDB = static::createDatabaseInstance();
         }
-        self::$_oDB->setFetchMode($iFetchMode);
+        self::$_oDB->setFetchMode($fetchMode);
 
         return self::$_oDB;
     }
@@ -467,10 +467,10 @@ class Database
      */
     protected static function createDatabaseInstance()
     {
-        $oInst = self::getInstance();
+        $instance = self::getInstance();
 
         //setting configuration on the first call
-        $oInst->setConfig(oxRegistry::get("oxConfigFile"));
+        $instance->setConfig(oxRegistry::get("oxConfigFile"));
 
         global $ADODB_SESSION_TBL,
                $ADODB_SESSION_CONNECT,
@@ -496,11 +496,11 @@ class Database
         $ADODB_SESSION_CONNECT = self::_getConfigParam('_dbHost');
         $ADODB_SESS_DEBUG = false;
 
-        $oDb = new oxLegacyDb();
-        $oDbInst = $oInst->_getDbInstance();
-        $oDb->setConnection($oDbInst);
+        $legacyDatabase = new oxLegacyDb();
+        $databaseInstance = $instance->_getDbInstance();
+        $legacyDatabase->setConnection($databaseInstance);
 
-        return $oDb;
+        return $legacyDatabase;
     }
 
     /**
@@ -526,15 +526,15 @@ class Database
     /**
      * Quotes an array.
      *
-     * @param array $aStrArray array of strings to quote
+     * @param array $arrayOfStrings array of strings to quote
      *
      * @deprecated since v5.2.0 (2014-03-12); use oxLegacyDb::quoteArray()
      *
      * @return array
      */
-    public function quoteArray($aStrArray)
+    public function quoteArray($arrayOfStrings)
     {
-        return self::getDb()->quoteArray($aStrArray);
+        return self::getDb()->quoteArray($arrayOfStrings);
     }
 
     /**
@@ -548,43 +548,43 @@ class Database
     /**
      * Extracts and returns table metadata from DB.
      *
-     * @param string $sTableName Name of table to invest.
+     * @param string $tableName Name of table to invest.
      *
      * @return array
      */
-    public function getTableDescription($sTableName)
+    public function getTableDescription($tableName)
     {
         // simple cache
-        if (!isset(self::$_aTblDescCache[$sTableName])) {
-            self::$_aTblDescCache[$sTableName] = $this->formTableDescription($sTableName);
+        if (!isset(self::$_aTblDescCache[$tableName])) {
+            self::$_aTblDescCache[$tableName] = $this->formTableDescription($tableName);
         }
 
-        return self::$_aTblDescCache[$sTableName];
+        return self::$_aTblDescCache[$tableName];
     }
 
     /**
      * Extracts and returns table metadata from DB.
      *
-     * @param string $sTableName
+     * @param string $tableName
      *
      * @return array
      */
-    protected function formTableDescription($sTableName)
+    protected function formTableDescription($tableName)
     {
-        return self::getDb()->MetaColumns($sTableName);
+        return self::getDb()->MetaColumns($tableName);
     }
 
     /**
      * Checks if given string is valid database field name.
      * It must contain from alphanumeric plus dot and underscore symbols
      *
-     * @param string $sField field name
+     * @param string $field field name
      *
      * @return bool
      */
-    public function isValidFieldName($sField)
+    public function isValidFieldName($field)
     {
-        return (boolean) getStr()->preg_match("#^[\w\d\._]*$#", $sField);
+        return (boolean) getStr()->preg_match("#^[\w\d\._]*$#", $field);
     }
 
     /**
@@ -600,18 +600,18 @@ class Database
     /**
      * Escape string for using in mysql statements
      *
-     * @param string $sString string which will be escaped
+     * @param string $string string which will be escaped
      *
      * @return string
      */
-    public function escapeString($sString)
+    public function escapeString($string)
     {
         if ('mysql' == self::_getConfigParam("_dbType")) {
-            return mysql_real_escape_string($sString, $this->_getConnectionId());
+            return mysql_real_escape_string($string, $this->_getConnectionId());
         } elseif ('mysqli' == self::_getConfigParam("_dbType")) {
-            return mysqli_real_escape_string($this->_getConnectionId(), $sString);
+            return mysqli_real_escape_string($this->_getConnectionId(), $string);
         } else {
-            return mysql_real_escape_string($sString, $this->_getConnectionId());
+            return mysql_real_escape_string($string, $this->_getConnectionId());
         }
     }
 }

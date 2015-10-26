@@ -46,178 +46,177 @@ class LegacyDatabase extends \oxSuperCfg
     /**
      * Set connection
      *
-     * @param mysql_driver|mysql_extend|mysql_meta|mysqli_driver|mysqli_extend|mysqli_extra|object_ADOConnection|pear_ADOConnection $oConnection
+     * @param mysql_driver|mysql_extend|mysql_meta|mysqli_driver|mysqli_extend|mysqli_extra|object_ADOConnection|pear_ADOConnection $connection
      */
-    public function setConnection($oConnection)
+    public function setConnection($connection)
     {
-        $this->_oDb = $oConnection;
+        $this->_oDb = $connection;
     }
 
     /**
      * Set fetch mode to connection
      *
-     * @param int $iFetchMode Fetch mode
+     * @param int $fetchMode Fetch mode
      */
-    public function setFetchMode($iFetchMode)
+    public function setFetchMode($fetchMode)
     {
-        $this->_oDb->setFetchMode($iFetchMode);
+        $this->_oDb->setFetchMode($fetchMode);
     }
 
     /**
      * Return connection to db
      *
-     * @param bool $blType - connection type
+     * @param bool $type Connection type
      *
      * @return mysql_driver|mysql_extend|mysql_meta|mysqli_driver|mysqli_extend|mysqli_extra|object_ADOConnection|pear_ADOConnection
      */
-    public function getDb($blType = true)
+    public function getDb($type = true)
     {
         return $this->_oDb;
     }
 
     /**
-     * Get value
+     * Get one record.
      *
-     * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
-     * @param bool       $blType  connection type
+     * @param string     $query
+     * @param array|bool $parameters Array of parameters
+     * @param bool       $type       Connection type
      *
      * @return string
      */
-    public function getOne($sSql, $aParams = false, $blType = true)
+    public function getOne($query, $parameters = false, $type = true)
     {
-        return $this->getDb($blType)->getOne($sSql, $aParams);
+        return $this->getDb($type)->getOne($query, $parameters);
     }
 
     /**
-     * Get value
+     * Get values as array.
      *
-     * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
-     * @param bool       $blType  connection type
+     * @param string     $query
+     * @param array|bool $parameters Array of parameters
+     * @param bool       $type       Connection type
      *
      * @return array
      */
-    public function getArray($sSql, $aParams = false, $blType = true)
+    public function getArray($query, $parameters = false, $type = true)
     {
-        return $this->getDb($blType)->getArray($sSql, $aParams);
+        return $this->getDb($type)->getArray($query, $parameters);
     }
 
     /**
-     * Get value
+     * Get one row.
      *
-     * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
-     * @param bool       $blType  connection type
+     * @param string     $query
+     * @param array|bool $parameters Array of parameters
+     * @param bool       $type       Connection type
      *
      * @return array
      */
-    public function getRow($sSql, $aParams = false, $blType = true)
+    public function getRow($query, $parameters = false, $type = true)
     {
-        return $this->getDb($blType)->getRow($sSql, $aParams);
+        return $this->getDb($type)->getRow($query, $parameters);
     }
 
     /**
-     * Get value
+     * Get all values. The same as getArray.
      *
-     * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
-     * @param bool       $blType  connection type
+     * @param string     $query
+     * @param array|bool $parameters Array of parameters
+     * @param bool       $type       Connection type
      *
      * @return array
      */
-    public function getAll($sSql, $aParams = false, $blType = true)
+    public function getAll($query, $parameters = false, $type = true)
     {
-
-        return $this->getDb($blType)->getAll($sSql, $aParams);
+        return $this->getDb($type)->getAll($query, $parameters);
     }
 
     /**
      * Get value
      *
-     * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
-     * @param bool       $blType  connection type
+     * @param string     $query
+     * @param array|bool $parameters Array of parameters
+     * @param bool       $type       Connection type
      *
      * @return mixed|Object_ResultSet
      */
-    public function select($sSql, $aParams = false, $blType = true)
+    public function select($query, $parameters = false, $type = true)
     {
-        return $this->getDb($blType)->execute($sSql, $aParams);
+        return $this->getDb($type)->execute($query, $parameters);
     }
 
     /**
-     * Get value
+     * Get values as an associative array.
      *
-     * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
-     * @param bool       $blType  connection type
+     * @param string     $query
+     * @param array|bool $parameters Array of parameters
+     * @param bool       $type       Connection type
      *
      * @return array
      */
-    public function getAssoc($sSql, $aParams = false, $blType = true)
+    public function getAssoc($query, $parameters = false, $type = true)
     {
-        return $this->getDb($blType)->getAssoc($sSql, $aParams);
+        return $this->getDb($type)->getAssoc($query, $parameters);
     }
 
     /**
      * Get column value
      *
-     * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
-     * @param bool       $blType  connection type
+     * @param string     $query
+     * @param array|bool $parameters Array of parameters
+     * @param bool       $type       Connection type
      *
      * @return array
      */
-    public function getCol($sSql, $aParams = false, $blType = true)
+    public function getCol($query, $parameters = false, $type = true)
     {
-        return $this->getDb($blType)->getCol($sSql, $aParams);
+        return $this->getDb($type)->getCol($query, $parameters);
     }
 
     /**
      * Get array
      *
-     * @param string     $sSql    Query
-     * @param int        $iRows   Rows
-     * @param int        $iOffset Offset
-     * @param array|bool $aParams Array of parameters
-     * @param bool       $blType  connection type
+     * @param string     $query
+     * @param int        $numberOfRows Number of rows to select
+     * @param int        $offset       Number of rows to skip
+     * @param array|bool $parameters   Array of parameters
+     * @param bool       $type         Connection type
      *
      * @return mixed|Object_ResultSet
      */
-    public function selectLimit($sSql, $iRows = -1, $iOffset = -1, $aParams = false, $blType = true)
+    public function selectLimit($query, $numberOfRows = -1, $offset = -1, $parameters = false, $type = true)
     {
-        return $this->getDb($blType)->SelectLimit($sSql, $iRows, $iOffset, $aParams);
+        return $this->getDb($type)->SelectLimit($query, $numberOfRows, $offset, $parameters);
     }
 
     /**
-     * Execute query
+     * Executes query and returns result set.
      *
-     * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
+     * @param string     $query
+     * @param array|bool $parameters Array of parameters
      *
      * @return mixed|Object_ResultSet
      */
-    public function execute($sSql, $aParams = false)
+    public function execute($query, $parameters = false)
     {
-        return $this->getDb(false)->execute($sSql, $aParams);
+        return $this->getDb(false)->execute($query, $parameters);
     }
 
     /**
-     * Execute query
+     * Executes query and returns result set.
      *
-     * @param string     $sSql    Query
-     * @param array|bool $aParams Array of parameters
+     * @param string     $query
+     * @param array|bool $parameters Array of parameters
      *
      * @return mixed|Object_ResultSet
      */
-    public function query($sSql, $aParams = false)
+    public function query($query, $parameters = false)
     {
-        return $this->getDb(false)->Query($sSql, $aParams);
+        return $this->getDb(false)->Query($query, $parameters);
     }
 
     /**
-     * Return count effected values
+     * Returns count of affected rows.
      *
      * @return int
      */
@@ -227,7 +226,7 @@ class LegacyDatabase extends \oxSuperCfg
     }
 
     /**
-     * Return error number
+     * Returns error number.
      *
      * @return int
      */
@@ -237,7 +236,7 @@ class LegacyDatabase extends \oxSuperCfg
     }
 
     /**
-     * Return error message
+     * Returns error message.
      *
      * @return string
      */
@@ -249,17 +248,17 @@ class LegacyDatabase extends \oxSuperCfg
     /**
      * Quote string
      *
-     * @param string $sValue value
+     * @param string $value value
      *
      * @return string
      */
-    public function qstr($sValue)
+    public function qstr($value)
     {
-        return $this->getDb(false)->qstr($sValue);
+        return $this->getDb(false)->qstr($value);
     }
 
     /**
-     * Quote string
+     * Quotes string. Same as qstr.
      *
      * @param string $sValue value
      *
@@ -273,46 +272,46 @@ class LegacyDatabase extends \oxSuperCfg
     /**
      * Quotes an array.
      *
-     * @param array $aStrArray array of strings to quote
+     * @param array $arrayOfStrings array of strings to quote
      *
      * @return array
      */
-    public function quoteArray($aStrArray)
+    public function quoteArray($arrayOfStrings)
     {
-        foreach ($aStrArray as $sKey => $sString) {
-            $aStrArray[$sKey] = $this->quote($sString);
+        foreach ($arrayOfStrings as $key => $string) {
+            $arrayOfStrings[$key] = $this->quote($string);
         }
 
-        return $aStrArray;
+        return $arrayOfStrings;
     }
 
     /**
      * return meta data
      *
-     * @param string $sTable Table name
+     * @param string $table Table name
      *
      * @return array
      */
-    public function metaColumns($sTable)
+    public function metaColumns($table)
     {
-        return $this->getDb(false)->MetaColumns($sTable);
+        return $this->getDb(false)->MetaColumns($table);
     }
 
     /**
-     * return meta data
+     * Returns meta data.
      *
-     * @param string $sTable       Table name
-     * @param bool   $blNumIndexes Numeric indexes
+     * @param string $table
+     * @param bool   $numberOfIndexes
      *
      * @return array
      */
-    public function metaColumnNames($sTable, $blNumIndexes = false)
+    public function metaColumnNames($table, $numberOfIndexes = false)
     {
-        return $this->getDb(false)->MetaColumnNames($sTable, $blNumIndexes);
+        return $this->getDb(false)->MetaColumnNames($table, $numberOfIndexes);
     }
 
     /**
-     * Start mysql transaction
+     * Start mysql transaction.
      *
      * @return bool
      */
@@ -322,7 +321,7 @@ class LegacyDatabase extends \oxSuperCfg
     }
 
     /**
-     * Commit mysql transaction
+     * Commit mysql transaction.
      *
      * @return bool
      */
@@ -332,7 +331,7 @@ class LegacyDatabase extends \oxSuperCfg
     }
 
     /**
-     * RollBack mysql transaction
+     * RollBack mysql transaction.
      *
      * @return bool
      */
@@ -342,37 +341,37 @@ class LegacyDatabase extends \oxSuperCfg
     }
 
     /**
-     * Set transaction isolation level
+     * Set transaction isolation level.
      * Allowed values READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE
      *
-     * @param string $sLevel level
+     * @param string $level level
      *
      * @return bool
      */
-    public function setTransactionIsolationLevel($sLevel = null)
+    public function setTransactionIsolationLevel($level = null)
     {
-        $blResult = false;
+        $result = false;
 
-        $aLevels = array('READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE');
-        if (in_array(strtoupper($sLevel), $aLevels)) {
-            $blResult = $this->getDb(false)->execute('SET TRANSACTION ISOLATION LEVEL ' . $sLevel);
+        $availableLevels = array('READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE');
+        if (in_array(strtoupper($level), $availableLevels)) {
+            $result = $this->getDb(false)->execute('SET TRANSACTION ISOLATION LEVEL ' . $level);
         }
 
-        return $blResult;
+        return $result;
     }
 
     /**
      * Calls Db UI method
      *
-     * @param integer $iPollSecs poll seconds
+     * @param integer $pollSeconds poll seconds
      */
-    public function UI($iPollSecs = 5)
+    public function UI($pollSeconds = 5)
     {
-        $this->getDb(false)->UI($iPollSecs);
+        $this->getDb(false)->UI($pollSeconds);
     }
 
     /**
-     * Returns last insert ID
+     * Returns last insert ID.
      *
      * @return int
      */

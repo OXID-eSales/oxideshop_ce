@@ -25,8 +25,6 @@ class Unit_Core_oxLegacyDbTest extends OxidTestCase
 
     /**
      * Test case for seting connection
-     *
-     * @return null
      */
     public function testSetConnection()
     {
@@ -36,10 +34,7 @@ class Unit_Core_oxLegacyDbTest extends OxidTestCase
 
         $oLegacyDb->setConnection($oConnection);
         $this->assertNotNull($oLegacyDb->getDb(false));
-
     }
-
-
 
     /**
      * Test case for oxLegacyDb::execute();
@@ -366,5 +361,4 @@ class Unit_Core_oxLegacyDbTest extends OxidTestCase
 
         $oLegacyDb->UI($iParam);
     }
-
 }

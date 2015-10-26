@@ -19,26 +19,34 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Eshop\Core;
 
+use mysql_driver_ADOConnection as mysql_driver;
+use mysql_extend_ADOConnection as mysql_extend;
+use mysql_meta_ADOConnection as mysql_meta;
+use mysqli_driver_ADOConnection as mysqli_driver;
+use mysqli_extend_ADOConnection as mysqli_extend;
+use mysqli_meta_ADOConnection as mysqli_extra;
+use object_ADOConnection;
+use object_ResultSet;
+use pear_ADOConnection;
 
 /**
  * Database connection class
  */
-class oxLegacyDb extends oxSuperCfg
+class LegacyDatabase extends \oxSuperCfg
 {
-
     /**
      * Database connection object
      *
-     * @var object
+     * @var mysql_driver|mysql_extend|mysql_meta|mysqli_driver|mysqli_extend|mysqli_extra|object_ADOConnection|pear_ADOConnection
      */
     protected $_oDb = null;
-
 
     /**
      * Set connection
      *
-     * @param object $oConnection Connection
+     * @param mysql_driver|mysql_extend|mysql_meta|mysqli_driver|mysqli_extend|mysqli_extra|object_ADOConnection|pear_ADOConnection $oConnection
      */
     public function setConnection($oConnection)
     {
@@ -53,7 +61,6 @@ class oxLegacyDb extends oxSuperCfg
     public function setFetchMode($iFetchMode)
     {
         $this->_oDb->setFetchMode($iFetchMode);
-
     }
 
     /**
@@ -61,11 +68,10 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @param bool $blType - connection type
      *
-     * @return object
+     * @return mysql_driver|mysql_extend|mysql_meta|mysqli_driver|mysqli_extend|mysqli_extra|object_ADOConnection|pear_ADOConnection
      */
     public function getDb($blType = true)
     {
-
         return $this->_oDb;
     }
 
@@ -133,7 +139,7 @@ class oxLegacyDb extends oxSuperCfg
      * @param array|bool $aParams Array of parameters
      * @param bool       $blType  connection type
      *
-     * @return object
+     * @return mixed|Object_ResultSet
      */
     public function select($sSql, $aParams = false, $blType = true)
     {
@@ -161,7 +167,7 @@ class oxLegacyDb extends oxSuperCfg
      * @param array|bool $aParams Array of parameters
      * @param bool       $blType  connection type
      *
-     * @return object
+     * @return array
      */
     public function getCol($sSql, $aParams = false, $blType = true)
     {
@@ -177,7 +183,7 @@ class oxLegacyDb extends oxSuperCfg
      * @param array|bool $aParams Array of parameters
      * @param bool       $blType  connection type
      *
-     * @return object
+     * @return mixed|Object_ResultSet
      */
     public function selectLimit($sSql, $iRows = -1, $iOffset = -1, $aParams = false, $blType = true)
     {
@@ -190,7 +196,7 @@ class oxLegacyDb extends oxSuperCfg
      * @param string     $sSql    Query
      * @param array|bool $aParams Array of parameters
      *
-     * @return object
+     * @return mixed|Object_ResultSet
      */
     public function execute($sSql, $aParams = false)
     {
@@ -203,7 +209,7 @@ class oxLegacyDb extends oxSuperCfg
      * @param string     $sSql    Query
      * @param array|bool $aParams Array of parameters
      *
-     * @return object
+     * @return mixed|Object_ResultSet
      */
     public function query($sSql, $aParams = false)
     {
@@ -215,7 +221,7 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return int
      */
-    public function Affected_Rows()
+    public function affected_rows()
     {
         return $this->getDb(false)->Affected_Rows();
     }
@@ -370,7 +376,7 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @return int
      */
-    public function Insert_ID()
+    public function insert_Id()
     {
         return $this->getDb(false)->Insert_ID();
     }

@@ -26,6 +26,8 @@ define('MAX_64BIT_INTEGER', '18446744073709551615');
 /**
  * Main shop configuration class.
  *
+ * @mixin \OxidEsales\EshopEnterprise\Core\Config
+ * @mixin \OxidEsales\EshopProfessional\Core\Config
  */
 class oxConfig extends oxSuperCfg
 {

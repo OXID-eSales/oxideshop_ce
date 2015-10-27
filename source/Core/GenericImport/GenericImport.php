@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\Eshop\Core\GenericImport;
 
 use Exception;
 use oxDb;
@@ -38,19 +38,19 @@ class GenericImport
 
     /** @var array Import objects types */
     protected $objects = array(
-        'A' => 'article',
-        'K' => 'category',
-        'H' => 'vendor',
-        'C' => 'crossselling',
-        'Z' => 'accessoire',
-        'T' => 'article2category',
-        'I' => 'article2action',
-        'P' => 'scaleprice',
-        'U' => 'user',
-        'O' => 'order',
-        'R' => 'orderarticle',
-        'N' => 'country',
-        'Y' => 'artextends',
+        'A' => 'Article',
+        'K' => 'Category',
+        'H' => 'Vendor',
+        'C' => 'CrossSelling',
+        'Z' => 'Accessories2Article',
+        'T' => 'Article2Category',
+        'I' => 'Article2Action',
+        'P' => 'ScalePrice',
+        'U' => 'User',
+        'O' => 'Order',
+        'R' => 'OrderArticle',
+        'N' => 'Country',
+        'Y' => 'ArticleExtends',
     );
 
     /** @var string Imported data array */

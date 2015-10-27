@@ -19,7 +19,6 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-use OxidEsales\Eshop\Core\GenericImport;
 
 /**
  * main erp type superclass - includes methods abstraction and basic implementation
@@ -250,7 +249,7 @@ class oxERPType
         return;
 
         if ($oObj->isDerived()) {
-            throw new Exception(GenericImport::ERROR_USER_NO_RIGHTS);
+            throw new Exception(oxERPBase::$ERROR_USER_NO_RIGHTS);
         }
     }
 

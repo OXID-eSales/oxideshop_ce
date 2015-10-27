@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\GenericImport\GenericImport;
 
 /**
  * Admin general export manager.
@@ -92,7 +93,7 @@ class GenImport_Main extends oxAdminDetails
     {
         $config = $this->getConfig();
 
-        $oErpImport = new \OxidEsales\Eshop\Core\GenericImport();
+        $oErpImport = new GenericImport();
         $this->_sCsvFilePath = null;
 
         $navigationStep = $config->getRequestParameter('sNavStep');

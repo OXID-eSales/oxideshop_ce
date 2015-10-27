@@ -580,6 +580,6 @@ class GenericImport
             throw new Exception("Class $className not supported in ERP interface!");
         }
 
-        return new $className;
+        return oxNew($className);
     }
 }

@@ -23,7 +23,7 @@
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
- * Accessories2Article type subclass
+ * Import object for assignment of accessories to articles.
  */
 class Accessories2Article extends ImportObject
 {

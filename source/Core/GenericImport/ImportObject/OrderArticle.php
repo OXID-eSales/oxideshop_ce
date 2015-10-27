@@ -28,7 +28,7 @@ use OxidEsales\Eshop\Core\GenericImport\GenericImport;
 use oxRegistry;
 
 /**
- * Order Article erp type subclass
+ * Import object for Order Articles.
  */
 class OrderArticle extends ImportObject
 {

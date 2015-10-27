@@ -110,7 +110,7 @@ class ArticleExtension extends \oxArticle_parent
 }
 
 /**
- * article type subclass
+ * Import object for Articles.
  */
 class Article extends ImportObject
 {

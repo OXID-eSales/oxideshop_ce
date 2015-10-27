@@ -23,7 +23,7 @@
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
- * country erp type subclass
+ * Import object for Countries.
  */
 class Country extends ImportObject
 {

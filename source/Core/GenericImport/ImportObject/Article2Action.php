@@ -23,7 +23,7 @@
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
- * Article2Action type subclass
+ * Import object for Articles assignment to actions.
  */
 class Article2Action extends ImportObject
 {

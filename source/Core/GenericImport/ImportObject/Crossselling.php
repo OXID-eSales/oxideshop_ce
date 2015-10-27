@@ -23,7 +23,7 @@
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
- * cross-selling erp type subclass
+ * Import object for Cross-selling.
  */
 class Crossselling extends ImportObject
 {

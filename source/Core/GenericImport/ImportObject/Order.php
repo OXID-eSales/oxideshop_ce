@@ -23,7 +23,7 @@
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
- * order erp type subclass
+ * Import object for Orders.
  */
 class Order extends ImportObject
 {

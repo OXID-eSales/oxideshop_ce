@@ -23,7 +23,7 @@
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
- * scaleprices erp type subclass
+ * Import object for Scale Prices.
  */
 class ScalePrice extends ImportObject
 {

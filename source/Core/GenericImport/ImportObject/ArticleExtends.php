@@ -23,7 +23,7 @@
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
- * Article extends type subclass
+ * Import object for Article Extends.
  */
 class ArticleExtends extends ImportObject
 {

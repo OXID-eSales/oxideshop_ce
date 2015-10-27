@@ -30,8 +30,7 @@ use OxidEsales\Eshop\Core\GenericImport\GenericImport;
 use oxRegistry;
 
 /**
- * Main import type superclass - includes methods abstraction and basic implementation
- * for all erp object types
+ * Main import object - includes basic implementations of methods.
  */
 abstract class ImportObject
 {

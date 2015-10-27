@@ -105,7 +105,7 @@ class GenericImport
     protected $maxLineLength = 8192;
 
     /**
-     * Init ERP Framework parameters
+     * Init parameters needed for import.
      * Creates Objects, checks Rights etc.
      *
      * @throws Exception
@@ -564,7 +564,7 @@ class GenericImport
     }
 
     /**
-     * Factory for ERP types
+     * Creates and returns import object.
      *
      * @param string $type type name in objects dir
      *
@@ -575,11 +575,9 @@ class GenericImport
     protected function getInstanceOfType($type)
     {
         $className = __NAMESPACE__ . "\\ImportObject\\".$type;
-
         if (!class_exists($className)) {
-            throw new Exception("Class $className not supported in ERP interface!");
+            throw new Exception($className);
         }
-
         return oxNew($className);
     }
 }

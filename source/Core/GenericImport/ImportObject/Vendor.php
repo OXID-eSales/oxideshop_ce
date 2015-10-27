@@ -23,7 +23,7 @@
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
- * vendor erp type subclass
+ * Import object for Vendors.
  */
 class Vendor extends ImportObject
 {

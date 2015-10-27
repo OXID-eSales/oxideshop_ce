@@ -23,7 +23,7 @@
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
- * article2category relation type subclass
+ * Import object for Articles assignment to categories.
  */
 class Article2Category extends ImportObject
 {

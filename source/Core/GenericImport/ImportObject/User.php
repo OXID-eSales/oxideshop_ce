@@ -28,7 +28,7 @@ use oxField;
 use oxRegistry;
 
 /**
- * user erp type subclass
+ * Import object for Users.
  */
 class User extends ImportObject
 {

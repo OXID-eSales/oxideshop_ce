@@ -25,7 +25,7 @@ namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 use oxBase;
 
 /**
- * category type subclass
+ * Import object for Categories.
  */
 class Category extends ImportObject
 {

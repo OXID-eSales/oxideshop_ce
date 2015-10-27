@@ -27,19 +27,8 @@ require_once 'oxerptype.php';
  */
 class oxERPType_Category extends oxERPType
 {
-
-    /**
-     * class constructor
-     *
-     * @return null
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->_sTableName = 'oxcategories';
-        $this->_sShopObjectName = 'oxcategory';
-    }
+    protected $_sTableName = 'oxcategories';
+    protected $_sShopObjectName = 'oxcategory';
 
     /**
      * issued before saving an object. can modify aData for saving

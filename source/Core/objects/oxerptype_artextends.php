@@ -28,7 +28,6 @@ require_once 'oxerptype.php';
  */
 class oxERPType_Artextends extends oxERPType
 {
-
     /**
      * class constructor
      *

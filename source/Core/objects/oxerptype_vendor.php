@@ -27,17 +27,6 @@ require_once 'oxerptype.php';
  */
 class oxERPType_Vendor extends oxERPType
 {
-
-    /**
-     * class constructor
-     *
-     * @return null
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->_sTableName = 'oxvendor';
-        $this->_sShopObjectName = 'oxvendor';
-    }
+    protected $_sTableName = 'oxvendor';
+    protected $_sShopObjectName = 'oxvendor';
 }

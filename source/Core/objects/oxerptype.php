@@ -661,7 +661,7 @@ class oxERPType
      * post saving hook. can finish transactions if needed or ajust related data
      *
      * @param oxBase $oShopObject shop object
-     * @param data   $aData       data to save
+     * @param array  $aData       data to save
      *
      * @return mixed data to return
      */

@@ -27,19 +27,8 @@ require_once 'oxerptype.php';
  */
 class oxERPType_User extends oxERPType
 {
-
-    /**
-     * class constructor
-     *
-     * @return null
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->_sTableName = 'oxuser';
-        $this->_sShopObjectName = 'oxuser';
-    }
+    protected $_sTableName = 'oxuser';
+    protected $_sShopObjectName = 'oxuser';
 
     /**
      * returns SQL string for this type

@@ -27,24 +27,19 @@ require_once 'oxerptype.php';
  */
 class oxERPType_Article2Category extends oxERPType
 {
+    protected $_sTableName = 'oxobject2category';
+
+    protected $_aKeyFieldList = array(
+        'OXOBJECTID' => 'OXOBJECTID',
+        'OXCATNID'   => 'OXCATNID',
+        'OXSHOPID'   => 'OXSHOPID'
+    );
 
     /**
      * class constructor
-     *
-     * @return null
      */
     public function __construct()
     {
-        parent::__construct();
-
-        $this->_sTableName = 'oxobject2category';
-
-        $this->_aKeyFieldList = array(
-            'OXOBJECTID' => 'OXOBJECTID',
-            'OXCATNID'   => 'OXCATNID',
-            'OXSHOPID'   => 'OXSHOPID'
-        );
-
         unset($this->_aKeyFieldList['OXSHOPID']);
     }
 }

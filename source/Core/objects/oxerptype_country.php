@@ -27,17 +27,6 @@ require_once 'oxerptype.php';
  */
 class oxERPType_Country extends oxERPType
 {
-
-    /**
-     * class constructor
-     *
-     * @return null
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->_sTableName = 'oxcountry';
-        $this->_sShopObjectName = 'oxcountry';
-    }
+    protected $_sTableName = 'oxcountry';
+    protected $_sShopObjectName = 'oxcountry';
 }

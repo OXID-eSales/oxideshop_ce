@@ -27,19 +27,8 @@ require_once 'oxerptype.php';
  */
 class oxERPType_OrderArticle extends oxERPType
 {
-
-    /**
-     * class constructor
-     *
-     * @return null
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->_sTableName = 'oxorderarticles';
-        $this->_sShopObjectName = 'oxorderarticle';
-    }
+    protected $_sTableName = 'oxorderarticles';
+    protected $_sShopObjectName = 'oxorderarticle';
 
     /**
      * returns Sql for export

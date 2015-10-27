@@ -28,20 +28,10 @@ require_once 'oxerptype.php';
 class oxERPType_Crossselling extends oxERPType
 {
 
-    /**
-     * class constructor
-     *
-     * @return null
-     */
-    public function __construct()
-    {
-        parent::__construct();
+    protected $_sTableName = 'oxobject2article';
 
-        $this->_sTableName = 'oxobject2article';
-
-        $this->_aKeyFieldList = array(
-            'OXARTICLENID' => 'OXARTICLENID',
-            'OXOBJECTID'   => 'OXOBJECTID'
-        );
-    }
+    protected $_aKeyFieldList = array(
+        'OXARTICLENID' => 'OXARTICLENID',
+        'OXOBJECTID'   => 'OXOBJECTID'
+    );
 }

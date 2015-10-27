@@ -20,20 +20,24 @@
  * @version   OXID eShop CE
  */
 
-
 require_once 'oxerptype.php';
 
 $sArticleClass = oxUtilsObject::getInstance()->getClassName('oxarticle');
-
-
-eval("class oxErpArticle450_parent extends $sArticleClass {};");
+class_alias($sArticleClass, 'oxErpArticle_parent');
 
 /**
- * article class, used inside erp for 4.5.0 eShop version
+ * article class, used inside erp
+ * includes variants loading disabling functionality
  * hotfixe for article long description saving (bug#0002741)
  */
-class oxErpArticle450 extends oxErpArticle450_parent
+class oxErpArticle extends oxErpArticle_parent
 {
+    /**
+     * disable variant loading
+     *
+     * @var bool
+     */
+    protected $_blLoadVariants = false;
 
     /**
      * Sets article parameter
@@ -57,8 +61,6 @@ class oxErpArticle450 extends oxErpArticle450_parent
 
     /**
      * inserts article long description to artextends table
-     *
-     * @return null
      */
     protected function _saveArtLongDesc()
     {
@@ -97,37 +99,14 @@ class oxErpArticle450 extends oxErpArticle450_parent
     }
 }
 
-$sArticleClass = 'oxErpArticle450';
-
-eval("class oxErpArticle_parent extends $sArticleClass {};");
-
-
-/**
- * article class, used inside erp
- * includes variants loading disabling functionality
- */
-class oxErpArticle extends oxErpArticle_parent
-{
-
-    /**
-     * disable variant loading
-     *
-     * @var bool
-     */
-    protected $_blLoadVariants = false;
-}
-
 
 /**
  * article type subclass
  */
 class oxERPType_Article extends oxERPType
 {
-
     /**
      * class constructor
-     *
-     * @return null
      */
     public function __construct()
     {

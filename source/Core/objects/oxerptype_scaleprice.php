@@ -27,21 +27,10 @@ require_once 'oxerptype.php';
  */
 class oxERPType_ScalePrice extends oxERPType
 {
+    protected $_sTableName = 'oxprice2article';
+    protected $_blRestrictedByShopId = true;
 
-    /**
-     * class constructor
-     *
-     * @return null
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->_sTableName = 'oxprice2article';
-        $this->_blRestrictedByShopId = true;
-
-        $this->_aKeyFieldList = array(
-            'OXID' => 'OXID'
-        );
-    }
+    protected $_aKeyFieldList = array(
+        'OXID' => 'OXID'
+    );
 }

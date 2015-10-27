@@ -23,6 +23,7 @@
 namespace OxidEsales\Eshop\Core;
 
 use Exception;
+use oxDb;
 use oxERPType;
 use oxRegistry;
 
@@ -35,12 +36,8 @@ class GenericImport
     const ERROR_USER_NO_RIGHTS = "Not sufficient rights to perform operation!";
     const ERROR_NO_INIT = "Init not executed, Access denied!";
 
-    /**
-     * Import objects types
-     *
-     * @var array
-     */
-    protected $_aObjects = array(
+    /** @var array Import objects types */
+    protected $objects = array(
         'A' => 'article',
         'K' => 'category',
         'H' => 'vendor',
@@ -56,69 +53,41 @@ class GenericImport
         'Y' => 'artextends',
     );
 
-    /**
-     * Imported data array
-     *
-     * @var string
-     */
-    protected $_sImportTypePrefix = null;
+    /** @var string Imported data array */
+    protected $importTypePrefix = null;
 
-    /**
-     * Imported data array
-     *
-     * @var array
-     */
-    protected $_aData = array();
+    /** @var array Imported data array */
+    protected $data = array();
 
-    /**
-     * Imported id array
-     *
-     * @var array
-     */
-    protected $_aImportedIds = array();
+    /** @var array Imported id array */
+    protected $importedIds = array();
 
-    /**
-     * Return message after import
-     *
-     * @var string
-     */
-    protected $_sReturn;
+    /** @var string Return message after import */
+    protected $returnMessage;
 
-    /**
-     * Csv file field terminator
-     *
-     * @var string
-     */
-    protected $_sDefaultStringTerminator = ";";
+    /** @var string Csv file field terminator */
+    protected $defaultStringTerminator = ";";
 
-    /**
-     * Csv file field encloser
-     *
-     * @var string
-     */
-    protected $_sDefaultStringEncloser = '"';
+    /** @var string Csv file field encloser. */
+    protected $defaultStringEncloser = '"';
 
-    /**
-     * CSV file contains header or not.
-     *
-     * @var bool
-     */
-    protected $_blCsvContainsHeader = null;
+    /** @var bool CSV file contains header or not. */
+    protected $csvContainsHeader = null;
 
-    /**
-     * Import file location
-     *
-     * @var string
-     */
-    protected $_sPath;
+    /** @var string Import file location. */
+    protected $importFilePath;
 
     /** @var bool */
-    protected $_blInit = false;
+    protected $isInitialized = false;
 
-    protected $_iLanguage = null;
-    protected $_sUserID = null;
-    //session id
-    protected $_sSID = null;
+    /** @var int */
+    protected $languageId = null;
+
+    /** @var int */
+    protected $userId = null;
+
+    /** @var string */
+    protected $sessionId = null;
 
     /** @var array */
     public $statistics = array();
@@ -126,19 +95,14 @@ class GenericImport
     /** @var int */
     public $index = 0;
 
-    /**
-     * count of import rows
-     *
-     * @var int
-     */
-    protected $_iRetryRows = 0;
+    /** @var int Count of import rows. */
+    protected $retryRows = 0;
 
-    /**
-     * CSV file fields array.
-     *
-     * @var array
-     */
-    protected $_aCsvFileFieldsOrder = array();
+    /** @var array CSV file fields array. */
+    protected $csvFileFieldsOrder = array();
+
+    /** @var int Maximum length of imported line. */
+    protected $maxLineLength = 8192;
 
     /**
      * Init ERP Framework parameters
@@ -150,40 +114,40 @@ class GenericImport
      */
     public function init()
     {
-        $myConfig = oxRegistry::getConfig();
-        $mySession = oxRegistry::getSession();
-        $oUser = oxNew('oxUser');
-        $oUser->loadAdminUser();
+        $config = oxRegistry::getConfig();
+        $session = oxRegistry::getSession();
+        $user = oxNew('oxUser');
+        $user->loadAdminUser();
 
-        if (($oUser->oxuser__oxrights->value == "malladmin" || $oUser->oxuser__oxrights->value == $myConfig->getShopID())) {
-            $this->_sSID = $mySession->getId();
-            $this->_blInit = true;
-            $this->_iLanguage = oxRegistry::getLang()->getBaseLanguage();
-            $this->_sUserID = $oUser->getId();
+        if (($user->oxuser__oxrights->value == "malladmin" || $user->oxuser__oxrights->value == $config->getShopId())) {
+            $this->sessionId = $session->getId();
+            $this->isInitialized = true;
+            $this->languageId = oxRegistry::getLang()->getBaseLanguage();
+            $this->userId = $user->getId();
         } else {
             //user does not have sufficient rights for shop
             throw new Exception(self::ERROR_USER_NO_RIGHTS);
         }
 
-        $this->_resetIdx();
+        $this->resetIndex();
 
-        return $this->_blInit;
+        return $this->isInitialized;
     }
 
     /**
-     * Get imort object according import type
+     * Get import object according import type.
      *
-     * @param string $sType import object type
+     * @param string $type Import object type
      *
-     * @return object
+     * @return oxERPType
      */
-    public function getImportObject($sType)
+    public function getImportObject($type)
     {
-        $this->_sImportTypePrefix = $sType;
+        $this->importTypePrefix = $type;
         $result = null;
         try {
-            $sImportType = $this->_getImportType();
-            $result = $this->_getInstanceOfType($sImportType);
+            $importType = $this->_getImportType();
+            $result = $this->getInstanceOfType($importType);
         } catch (Exception $e) {
         }
 
@@ -193,80 +157,76 @@ class GenericImport
     /**
      * Set import object type prefix
      *
-     * @param string $sType import type prefix
+     * @param string $type import type prefix
      */
-    public function setImportTypePrefix($sType)
+    public function setImportTypePrefix($type)
     {
-        $this->_sImportTypePrefix = $sType;
+        $this->importTypePrefix = $type;
     }
 
     /**
      * Set CSV file columns names
      *
-     * @param array $aCsvFields CSV fields
+     * @param array $csvFields CSV fields
      */
-    public function setCsvFileFieldsOrder($aCsvFields)
+    public function setCsvFileFieldsOrder($csvFields)
     {
-        $this->_aCsvFileFieldsOrder = $aCsvFields;
+        $this->csvFileFieldsOrder = $csvFields;
     }
 
     /**
      * Set if CSV file contains header row
      *
-     * @param bool $blCsvContainsHeader has or not file header
+     * @param bool $csvContainsHeader whether imported file has a header row
      */
-    public function setCsvContainsHeader($blCsvContainsHeader)
+    public function setCsvContainsHeader($csvContainsHeader)
     {
-        $this->_blCsvContainsHeader = $blCsvContainsHeader;
+        $this->csvContainsHeader = $csvContainsHeader;
     }
     /**
      * Main import method, whole import of all types via a given csv file is done here
      *
-     * @param string $sPath full path of the CSV file.
+     * @param string $importFilePath full path of the CSV file.
      *
      * @return string
-     *
      */
-    public function doImport($sPath = null)
+    public function doImport($importFilePath = null)
     {
-        $this->_sReturn = "";
-        $iMaxLineLength = 8192;
-
-        $this->_sPath = $sPath;
+        $this->returnMessage = "";
+        $this->importFilePath = $importFilePath;
 
         //init with given data
         try {
             $this->init();
         } catch (Exception $ex) {
-            return $this->_sReturn = 'ERPGENIMPORT_ERROR_USER_NO_RIGHTS';
+            return $this->returnMessage = 'ERPGENIMPORT_ERROR_USER_NO_RIGHTS';
         }
 
-        $file = @fopen($this->_sPath, "r");
+        $file = @fopen($this->importFilePath, "r");
 
         if (isset($file) && $file) {
-            while (($aRow = fgetcsv($file, $iMaxLineLength, $this->_getCsvFieldsTerminator(), $this->_getCsvFieldsEncolser())) !== false) {
-                $this->_aData[] = $aRow;
+            while (($row = fgetcsv($file, $this->maxLineLength, $this->getCsvFieldsTerminator(), $this->getCsvFieldsEncolser())) !== false) {
+                $this->data[] = $row;
             }
 
-            if ($this->_blCsvContainsHeader) {
+            if ($this->csvContainsHeader) {
                 //skipping first row - it's header
-                array_shift($this->_aData);
+                array_shift($this->data);
             }
 
             try {
                 $this->import();
             } catch (Exception $ex) {
                 echo $ex->getMessage();
-                $this->_sReturn = 'ERPGENIMPORT_ERROR_DURING_IMPORT';
+                $this->returnMessage = 'ERPGENIMPORT_ERROR_DURING_IMPORT';
             }
-
         } else {
-            $this->_sReturn = 'ERPGENIMPORT_ERROR_WRONG_FILE';
+            $this->returnMessage = 'ERPGENIMPORT_ERROR_WRONG_FILE';
         }
 
         @fclose($file);
 
-        return $this->_sReturn;
+        return $this->returnMessage;
     }
 
     /**
@@ -274,16 +234,17 @@ class GenericImport
      */
     public function import()
     {
-        $this->_beforeImport();
+        $this->beforeImport();
 
         do {
-            while ($this->_importOne()) {
+            while ($this->importOne()) {
+                // import data
             }
-        } while (!$this->_afterImport());
+        } while (!$this->afterImport());
     }
 
     /**
-     * _aStatistics getter
+     * Returns statistics information about import.
      *
      * @return array
      */
@@ -299,7 +260,7 @@ class GenericImport
      */
     public function getImportData()
     {
-        return $this->_aData[$this->index];
+        return $this->data[$this->index];
     }
 
     /**
@@ -318,7 +279,7 @@ class GenericImport
      */
     public function getImportedRowCount()
     {
-        return count($this->_aImportedIds);
+        return count($this->importedIds);
     }
 
     /**
@@ -328,24 +289,24 @@ class GenericImport
      */
     public function getImportObjectsList()
     {
-        $aList = array();
-        foreach ($this->_aObjects as $sKey => $sImportType) {
-            $oType = $this->_getInstanceOfType($sImportType);
-            $aList[$sKey] = $oType->getBaseTableName();
+        $importObjects = array();
+        foreach ($this->objects as $sKey => $importType) {
+            $type = $this->getInstanceOfType($importType);
+            $importObjects[$sKey] = $type->getBaseTableName();
         }
 
-        return $aList;
+        return $importObjects;
     }
 
     /**
      * Performs before import actions
      */
-    protected function _beforeImport()
+    protected function beforeImport()
     {
-        if (!$this->_iRetryRows) {
+        if (!$this->retryRows) {
             //convert all text
-            foreach ($this->_aData as $key => $value) {
-                $this->_aData[$key] = $this->_csvTextConvert($value, false);
+            foreach ($this->data as $key => $value) {
+                $this->data[$key] = $this->csvTextConvert($value, false);
             }
         }
     }
@@ -360,57 +321,59 @@ class GenericImport
      *
      * @return boolean
      */
-    protected function _importOne()
+    protected function importOne()
     {
-        $blRet = false;
+        $result = false;
 
         // import one row/call/object...
-        $aData = $this->getImportData();
+        $importData = $this->getImportData();
 
-        if ($aData) {
-            $blRet = true;
-            $blImport = false;
+        if ($importData) {
+            $result = true;
+            $success = false;
 
-            $sType = $this->_getImportType();
-            $oType = $this->_getInstanceOfType($sType);
-            $aData = $this->_modifyData($aData);
-            $aData = $oType->addImportData($aData);
+            $typeName = $this->_getImportType();
+            $type = $this->getInstanceOfType($typeName);
+            $importData = $this->modifyData($importData);
+            $importData = $type->addImportData($importData);
 
             try {
-                $this->_checkAccess($oType, true);
+                $this->checkAccess($type, true);
 
-                $iId = $oType->import($aData);
-                if (!$iId) {
-                    $blImport = false;
+                $id = $type->import($importData);
+                if (!$id) {
+                    $success = false;
                 } else {
-                    $this->setImportedIds($iId);
-                    $blImport = true;
+                    $this->setImportedIds($id);
+                    $success = true;
                 }
-                $sMessage = '';
+                $errorMessage = '';
             } catch (Exception $e) {
-                $sMessage = $e->getMessage();
+                $errorMessage = $e->getMessage();
             }
 
-            $this->statistics[$this->index] = array('r' => $blImport, 'm' => $sMessage);
+            $this->statistics[$this->index] = array('r' => $success, 'm' => $errorMessage);
 
         }
-        $this->_nextIdx();
+        $this->nextIndex();
 
-        return $blRet;
+        return $result;
     }
 
     /**
      * Checks if user as sufficient rights
      *
-     * @param oxErpType $oType   data type object
-     * @param boolean   $blWrite check also for write access
+     * @param oxErpType $type          Data type object
+     * @param boolean   $isWriteAction Check for write permissions
+     *
+     * @throws Exception
      */
-    protected function _checkAccess($oType, $blWrite)
+    protected function checkAccess($type, $isWriteAction)
     {
-        $myConfig = oxRegistry::getConfig();
-        static $aAccessCache;
+        $config = oxRegistry::getConfig();
+        static $accessCache;
 
-        if (!$this->_blInit) {
+        if (!$this->isInitialized) {
             throw new Exception(self::ERROR_NO_INIT);
         }
 
@@ -421,23 +384,23 @@ class GenericImport
      *
      * @return bool
      */
-    protected function _afterImport()
+    protected function afterImport()
     {
         //check if there have been no errors or failures
-        $aStatistics = $this->getStatistics();
-        $iRetryRows = 0;
+        $statistics = $this->getStatistics();
+        $retryRows = 0;
 
-        foreach ($aStatistics as $key => $value) {
+        foreach ($statistics as $key => $value) {
             if ($value['r'] == false) {
-                $iRetryRows++;
-                $this->_sReturn .= "File[" . $this->_sPath . "] - dataset number: $key - Error: " . $value['m'] . " ---<br> " . PHP_EOL;
+                $retryRows++;
+                $this->returnMessage .= "File[" . $this->importFilePath . "] - dataset number: $key - Error: " . $value['m'] . " ---<br> " . PHP_EOL;
             }
         }
 
-        if ($iRetryRows != $this->_iRetryRows && $iRetryRows > 0) {
-            $this->_resetIdx();
-            $this->_iRetryRows = $iRetryRows;
-            $this->_sReturn = '';
+        if ($retryRows != $this->retryRows && $retryRows > 0) {
+            $this->resetIndex();
+            $this->retryRows = $retryRows;
+            $this->returnMessage = '';
 
             return false;
         }
@@ -454,26 +417,26 @@ class GenericImport
      */
     protected function _getImportType()
     {
-        $sType = $this->_sImportTypePrefix;
+        $type = $this->importTypePrefix;
 
-        if (strlen($sType) != 1 || !array_key_exists($sType, $this->_aObjects)) {
-            throw new Exception("Error unknown command: " . $sType);
+        if (strlen($type) != 1 || !array_key_exists($type, $this->objects)) {
+            throw new Exception("Error unknown command: " . $type);
         } else {
-            return $this->_aObjects[$sType];
+            return $this->objects[$type];
         }
     }
 
     /**
-     * Modyfies data before import. Calls method for object fields
+     * Modifies data before import. Calls method for object fields
      * and csv data mapping.
      *
-     * @param array $aData CSV data
+     * @param array $data CSV data
      *
      * @return array
      */
-    protected function _modifyData($aData)
+    protected function modifyData($data)
     {
-        return $this->_mapFields($aData);
+        return $this->mapFields($data);
     }
 
     /** adds true to $_aImportedIds where key is given
@@ -482,15 +445,15 @@ class GenericImport
      */
     protected function setImportedIds($key)
     {
-        if (!array_key_exists($key, $this->_aImportedIds)) {
-            $this->_aImportedIds[$key] = true;
+        if (!array_key_exists($key, $this->importedIds)) {
+            $this->importedIds[$key] = true;
         }
     }
 
     /**
      * Increase import counter, if retry is detected, only failed imports are repeated
      */
-    protected function _nextIdx()
+    protected function nextIndex()
     {
         $this->index++;
 
@@ -504,55 +467,55 @@ class GenericImport
     /**
      * Maps numeric array to assoc. Array
      *
-     * @param array $aData numeric indices
+     * @param array $data numeric indices
      *
      * @return array assoc. indices
      */
-    protected function _mapFields($aData)
+    protected function mapFields($data)
     {
-        $aRet = array();
-        $iIndex = 0;
+        $result = array();
+        $index = 0;
 
-        foreach ($this->_aCsvFileFieldsOrder as $sValue) {
-            if (!empty($sValue)) {
-                if (strtolower($aData[$iIndex]) == "null") {
-                    $aRet[$sValue] = null;
+        foreach ($this->csvFileFieldsOrder as $value) {
+            if (!empty($value)) {
+                if (strtolower($data[$index]) == "null") {
+                    $result[$value] = null;
                 } else {
-                    $aRet[$sValue] = $aData[$iIndex];
+                    $result[$value] = $data[$index];
                 }
             }
-            $iIndex++;
+            $index++;
         }
 
-        return $aRet;
+        return $result;
     }
 
     /**
      * parses and replaces special chars
      *
-     * @param string $sText  input text
-     * @param bool   $blMode true = Text2CSV, false = CSV2Text
+     * @param string $text input text
+     * @param bool   $mode true = Text2CSV, false = CSV2Text
      *
      * @return string
      */
-    protected function _csvTextConvert($sText, $blMode)
+    protected function csvTextConvert($text, $mode)
     {
-        $aSearch = array(chr(13), chr(10), '\'', '"');
-        $aReplace = array('&#13;', '&#10;', '&#39;', '&#34;');
+        $search = array(chr(13), chr(10), '\'', '"');
+        $replace = array('&#13;', '&#10;', '&#39;', '&#34;');
 
-        if ($blMode) {
-            $sText = str_replace($aSearch, $aReplace, $sText);
+        if ($mode) {
+            $text = str_replace($search, $replace, $text);
         } else {
-            $sText = str_replace($aReplace, $aSearch, $sText);
+            $text = str_replace($replace, $search, $text);
         }
 
-        return $sText;
+        return $text;
     }
 
     /**
      * Reset import counter, if retry is detected, only failed imports are repeated
      */
-    protected function _resetIdx()
+    protected function resetIndex()
     {
         $this->index = 0;
 
@@ -568,20 +531,20 @@ class GenericImport
      *
      * @return string
      */
-    protected function _getCsvFieldsTerminator()
+    protected function getCsvFieldsTerminator()
     {
-        $myConfig = oxRegistry::getConfig();
+        $config = oxRegistry::getConfig();
 
-        $sChar = $myConfig->getConfigParam('sGiCsvFieldTerminator');
+        $fieldTerminator = $config->getConfigParam('sGiCsvFieldTerminator');
 
-        if (!$sChar) {
-            $sChar = $myConfig->getConfigParam('sCSVSign');
+        if (!$fieldTerminator) {
+            $fieldTerminator = $config->getConfigParam('sCSVSign');
         }
-        if (!$sChar) {
-            $sChar = $this->_sDefaultStringTerminator;
+        if (!$fieldTerminator) {
+            $fieldTerminator = $this->defaultStringTerminator;
         }
 
-        return $sChar;
+        return $fieldTerminator;
     }
 
     /**
@@ -589,38 +552,38 @@ class GenericImport
      *
      * @return string
      */
-    protected function _getCsvFieldsEncolser()
+    protected function getCsvFieldsEncolser()
     {
-        $myConfig = \oxRegistry::getConfig();
+        $config = \oxRegistry::getConfig();
 
-        if ($sChar = $myConfig->getConfigParam('sGiCsvFieldEncloser')) {
-            return $sChar;
+        if ($fieldEncloser = $config->getConfigParam('sGiCsvFieldEncloser')) {
+            return $fieldEncloser;
         } else {
-            return $this->_sDefaultStringEncloser;
+            return $this->defaultStringEncloser;
         }
     }
 
     /**
      * Factory for ERP types
      *
-     * @param string $sType type name in objects dir
+     * @param string $type type name in objects dir
      *
      * @throws Exception if no such import type prefix
      *
      * @return \oxErpType
      */
-    protected function _getInstanceOfType($sType)
+    protected function getInstanceOfType($type)
     {
-        $sClassName = 'oxerptype_' . $sType;
-        $sFullPath = dirname(__FILE__) . '/objects/' . $sClassName . '.php';
+        $className = 'oxerptype_' . $type;
+        $fullPath = dirname(__FILE__) . '/objects/' . $className . '.php';
 
-        if (!file_exists($sFullPath)) {
-            throw new Exception("Type $sType not supported in ERP interface!");
+        if (!file_exists($fullPath)) {
+            throw new Exception("Type $type not supported in ERP interface!");
         }
 
-        include_once $sFullPath;
+        include_once $fullPath;
 
         //return new $sClassName;
-        return oxNew($sClassName);
+        return oxNew($className);
     }
 }

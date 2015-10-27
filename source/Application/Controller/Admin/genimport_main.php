@@ -92,7 +92,7 @@ class GenImport_Main extends oxAdminDetails
     {
         $config = $this->getConfig();
 
-        $oErpImport = new oxErpGenImport();
+        $oErpImport = new \OxidEsales\Eshop\Core\GenericImport();
         $this->_sCsvFilePath = null;
 
         $navigationStep = $config->getRequestParameter('sNavStep');
@@ -142,7 +142,7 @@ class GenImport_Main extends oxAdminDetails
             $csvFields = $config->getRequestParameter('aCsvFields');
             $type = $config->getRequestParameter('sType');
 
-            $oErpImport = new oxErpGenImport();
+            $oErpImport = new OxidEsales\Eshop\Core\GenericImport();
             $oErpImport->setImportTypePrefix($type);
             $oErpImport->setCsvFileFieldsOrder($csvFields);
             $oErpImport->setCsvContainsHeader(oxRegistry::getSession()->getVariable('blCsvContainsHeader'));

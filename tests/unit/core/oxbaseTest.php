@@ -20,7 +20,6 @@
  * @version   OXID eShop CE
  */
 
-
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxBaseHelper.php';
 
 /**
@@ -258,7 +257,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->cleanUpTable('oxnews');
         $this->cleanUpTable('oxorder');
 
-
         //clean it
         oxDB::getDb()->execute('delete from oxactions where oxtitle like "test%"');
         oxDB::getDb()->execute('delete from oxnews where oxshortdesc like "oxbasetest%"');
@@ -266,6 +264,18 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         oxRemClassModule('modoxCacheAdminForBase');
         oxRemClassModule('modoxCacheForBase');
         parent::teardown();
+    }
+
+    public function getUpdateShopId()
+    {
+        $shopId = $this->getConfig()->getEdition() === 'EE' ? '1' : '';
+        return $shopId;
+    }
+
+    public function getArticlesViewName()
+    {
+        $articlesViewName = $this->getConfig()->getEdition() === 'EE' ? 'oxv_oxarticles_1' : 'oxv_oxarticles';
+        return $articlesViewName;
     }
 
     /**
@@ -311,6 +321,8 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testIsDerivedShopIdsMatch()
     {
+        $expected = $this->getConfig()->getEdition() === 'EE' ? false : null;
+
         $oConfig = $this->getMock('oxconfig', array('getShopId'));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
@@ -318,7 +330,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
-        $this->assertNull($oBase->isDerived());
+        $this->assertSame($expected, $oBase->isDerived());
     }
 
     /**
@@ -328,6 +340,8 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testIsDerivedShopIdsDeosNotMatch()
     {
+        $expected = $this->getConfig()->getEdition() === 'EE' ? true : null;
+
         $oConfig = $this->getMock('oxconfig', array('getShopId'));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
@@ -335,7 +349,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('yyy'));
 
-        $this->assertNull($oBase->isDerived());
+        $this->assertSame($expected, $oBase->isDerived());
     }
 
     /**
@@ -393,9 +407,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertEquals("00000000000000", $oBase->oxsomething__oxfield2->value);
         $this->assertEquals("0000-00-00", $oBase->oxsomething__oxfield3->value);
     }
-
-
-
 
     /**
      * Constructor test
@@ -646,23 +657,11 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testInit()
     {
+        $expected = $this->getArticlesViewName();
         $oBase = new _oxBase();
         $oBase->init("oxarticles");
         $this->assertEquals("oxarticles", $oBase->getCoreTableName());
-        $this->assertEquals("oxv_oxarticles", $oBase->getViewName());
-    }
-
-    /**
-     * Testing init forcing core table usage.
-     *
-     * @return null
-     */
-    public function testInitForceCoreTableUsage()
-    {
-        $oBase = new _oxBase();
-        $oBase->init("oxarticles");
-        $this->assertEquals("oxarticles", $oBase->getCoreTableName());
-        $this->assertEquals("oxv_oxarticles", $oBase->getViewName());
+        $this->assertEquals($expected, $oBase->getViewName());
     }
 
     /**
@@ -734,9 +733,8 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oBase->oxactions__oxid = new oxField("test1", oxField::T_RAW);
         $oBase->oxactions__oxtitle = new oxField("title1", oxField::T_RAW);
 
-
-        $sGetUpdateFields = "oxid = 'test1',oxshopid = '',oxtype = '',oxtitle = 'title1',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0'";
-
+        $shopId = $this->getUpdateShopId();
+        $sGetUpdateFields = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle = 'title1',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0'";
         $this->assertEquals($sGetUpdateFields, $oBase->UNITgetUpdateFields());
     }
 
@@ -754,8 +752,8 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
         $oBase->setClassVar('_aSkipSaveFields', array('oxtitle'));
 
-
-        $sGetUpdateFields = "oxid = 'test1',oxshopid = '',oxtype = '',oxtitle = 'title1',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0',oxtimestamp = 'CURRENT_TIMESTAMP'";
+        $shopId = $this->getUpdateShopId();
+        $sGetUpdateFields = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle = 'title1',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0',oxtimestamp = 'CURRENT_TIMESTAMP'";
         $this->assertEquals($sGetUpdateFields, $oBase->UNITgetUpdateFields(false));
     }
 
@@ -773,12 +771,11 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
         $oBase->setClassVar('_aSkipSaveFields', array('oxtitle'));
 
-
-        $sGetUpdateFields = "oxid = 'test1',oxshopid = '',oxtype = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0',oxtimestamp = 'CURRENT_TIMESTAMP'";
+        $shopId = $this->getUpdateShopId();
+        $sGetUpdateFields = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0',oxtimestamp = 'CURRENT_TIMESTAMP'";
 
         $this->assertEquals($sGetUpdateFields, $oBase->UNITgetUpdateFields());
     }
-
 
     /**
      * Test get core table name.
@@ -818,7 +815,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertEquals("testId", $oBase->getId());
     }
 
-
     /**
      * Test set shop id with numeric value.
      *
@@ -850,9 +846,10 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testGetViewName()
     {
-        $oBase = new _oxBase();
-        $oBase->init("oxarticles");
-        $this->assertEquals("oxv_oxarticles", $oBase->getViewName());
+        $oBase = oxNew('oxBase');
+        $oBase->init('oxarticles');
+        $articlesViewNameExpected = $this->getArticlesViewName();
+        $this->assertEquals($articlesViewNameExpected, $oBase->getViewName());
     }
 
     /**
@@ -902,8 +899,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oBase->modifyCacheKey('testCache3', false);
         $this->assertEquals('testCache2testCache3', $oBase->getClassVar('_sCacheKey'));
     }
-
-
 
     /**
      * Test set is multilang.
@@ -963,8 +958,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertEquals($oBase->getId(), "oxstart");
     }
 
-
-
     /**
      * Test assign with empty data.
      *
@@ -978,7 +971,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oBase->assign("aaa");
         $this->assertEquals($oBase->getId(), null);
     }
-
 
     /**
      * Test assign record.
@@ -1017,27 +1009,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertEquals($oBase->oxactions__oxtitle->value, "Startseite unten");
     }
 
-
-    /**
-     * Test set field data for double field type.
-     *
-     * @return null
-     */
-    public function testSetFieldDataForDoubleFieldTypePE()
-    {
-
-        $oBase = new _oxBase();
-        $oBase->setAdminMode(true);
-        $oBase->init("oxarticles");
-        $oBase->load("1849");
-        $rs = array("oxid" => "1849", "oxprice" => "89,9");
-        while (list($name, $value) = each($rs)) {
-            $oBase->setFieldData($name, $value);
-        }
-        $this->assertEquals(89.9, $oBase->oxarticles__oxprice->value);
-    }
-
-
     /**
      * Test set field data long name.
      *
@@ -1045,7 +1016,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testSetFieldDataLongName()
     {
-
         $oBase = new _oxBase();
         $oBase->init("oxactions");
         $rs = array("oxid" => "oxstart", "oxactions__oxtitle" => "Startseite unten");
@@ -1104,7 +1074,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertEquals(0, $aFieldNames['oxtitle']);
     }
 
-
     /**
      * Test get field data.
      *
@@ -1156,11 +1125,17 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oObj->init("oxarticles");
         $oObj->modifyCacheKey(null, true);
 
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $expectedTranslation = 'Champagne Pliers &amp; Bottle Opener PROFI';
+        } else {
+            $expectedTranslation = 'Champagne Pliers &amp; Bottle Opener';
+        }
+
         $oObj->load(2080);
         $this->assertEquals(2080, $oObj->getId());
         //load in 2 languages anyway
         $this->assertEquals("Barzange PROFI", $oObj->oxarticles__oxtitle->value);
-        $this->assertEquals("Champagne Pliers &amp; Bottle Opener", $oObj->oxarticles__oxtitle_1->value);
+        $this->assertEquals($expectedTranslation, $oObj->oxarticles__oxtitle_1->value);
     }
 
     /**
@@ -1236,6 +1211,10 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testBuildSelectStringWithoutShopId()
     {
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->markTestSkipped("Test for Community and Professional editions only");
+        }
+
         $oBase = oxNew('oxBase');
         $oBase->init("oxattribute");
         $sSelect = $oBase->buildSelectString(array("oxid" => "111"));
@@ -1250,6 +1229,10 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function  testBuildSelectStringWithShopId()
     {
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->markTestSkipped("Test for Community and Professional editions only");
+        }
+
         $oBase = oxNew('oxBase');
         $oBase->init("oxattribute");
         $sSelect = $oBase->buildSelectString(array("oxid" => "111"));
@@ -1271,7 +1254,8 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oDB = oxDb::getDb();
 
         $rs = $oDB->Execute($sSelect);
-        $this->assertEquals(1, $rs->RecordCount());
+        $expectedCount = $this->getConfig()->getEdition() === 'EE' ? 6 : 1;
+        $this->assertEquals($expectedCount, $rs->RecordCount());
     }
 
     /**
@@ -1487,12 +1471,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertEquals(false, $sResult);
     }
 
-
-
-
-
-
-
     /**
      * Test save if exists.
      *
@@ -1668,8 +1646,8 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     public function  testUpdateWithOXID()
     {
         $myDB = oxDb::getDb();
-        $sInsert = "Insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`) values ('_test','1','test')";
-        $sInsert = "Insert into oxarticles (`OXID`,`OXTITLE`) values ('_test','test')";
+        $shopId = $this->getUpdateShopId();
+        $sInsert = "Insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`) values ('_test','{$shopId}','test')";
         $myDB->Execute($sInsert);
 
         $oBase = new _oxBase();
@@ -1733,22 +1711,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Test insert with shop id.
      *
@@ -1757,13 +1719,14 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     public function  testInsertWithShopId()
     {
         $myDB = oxDb::getDb();
-        $oBase = new _oxBase();
+        $oBase = oxNew('oxBase');
         $oBase->init('oxnews');
         $oBase->oxnews__oxshortdesc = new oxField("oxbasetest", oxField::T_RAW);
-        $sResult = $oBase->insert();
+        $sResult = $oBase->UNITinsert();
         $this->assertEquals(1, (int) $myDB->getOne('select count(*) from oxnews where oxshortdesc = "oxbasetest"'));
         $this->assertNotNull($sResult);
         $this->assertEquals($oBase->getId(), $oBase->oxnews__oxid->value);
+        $this->assertEquals($this->getShopId(), $oBase->oxnews__oxshopid->value);
     }
 
     /**
@@ -1801,47 +1764,47 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertEquals($oBase->getId(), $oBase->oxactions__oxid->value);
     }
 
-
-
     /**
      * Test get object view name.
-     *
-     * @return null
      */
     public function  testGetObjectViewName()
     {
-        $oBase = new _oxBase();
-        $sResult = $oBase->getObjectViewName("oxarticles");
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->markTestSkipped("Test for Community and Professional editions only");
+        }
+
+        $oBase = oxNew('oxBase');
+        $sResult = $oBase->UNITgetObjectViewName("oxarticles");
         $this->assertEquals("oxv_oxarticles", $sResult);
     }
 
     /**
      * Test get object view name, forcing core table usage.
-     *
-     * @return null
      */
     public function  testGetObjectViewNameForceCoreTblUsage()
     {
-        $oBase = new _oxBase();
-        $sResult = $oBase->getObjectViewName("oxarticles", "1");
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->markTestSkipped("Test for Community and Professional editions only");
+        }
+
+        $oBase = oxNew('oxBase');
+        $sResult = $oBase->UNITgetObjectViewName("oxarticles", "1");
         $this->assertEquals("oxv_oxarticles", $sResult);
     }
 
     /**
      * Test get object view name for multishop table.
-     *
-     * @return null
      */
     public function  testGetObjectViewNameNotMullShopTable()
     {
-        $oBase = new _oxBase();
-        $sResult = $oBase->getObjectViewName("oxnews", "1");
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->markTestSkipped("Test for Community and Professional editions only");
+        }
+
+        $oBase = oxNew('oxBase');
+        $sResult = $oBase->UNITgetObjectViewName("oxnews", "1");
         $this->assertEquals("oxv_oxnews", $sResult);
     }
-
-
-
-
 
     /**
      * Test get all fields.
@@ -1870,8 +1833,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
         $oField2 = oxNew('ADOFieldObject');
         $oField2->name = 'OXSHOPID';
-        $oField2->max_length = '11';
-        $oField2->type = 'int';
         $oField2->max_length = '32';
         $oField2->type = 'varchar';
         $oField2->scale = null;
@@ -1881,6 +1842,12 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oField2->binary = false;
         $oField2->unsigned = false;
         $oField2->has_default = false;
+        if ($this->getConfig()->getEdition() === 'EE') :
+            $oField2->max_length = '11';
+            $oField2->type = 'int';
+            $oField2->has_default = true;
+            $oField2->default_value = 1;
+        endif;
 
         $oField3 = oxNew('ADOFieldObject');
         $oField3->name = 'OXTYPE';
@@ -2169,8 +2136,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertEquals($sPattern, $oBase->getSqlActiveSnippet());
     }
 
-
-
     /**
      * Test get update field value.
      *
@@ -2219,7 +2184,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
         $this->assertEquals($sTitle, $oArticle->oxarticles__oxtitle->value);
     }
-
 
     /**
      * Test non existing field is never registered.
@@ -2326,5 +2290,4 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertTrue(is_array($aFieldNames) && count($aFieldNames) > 0);
         $this->assertTrue(in_array("oxtitle", $aFieldNames));
     }
-
 }

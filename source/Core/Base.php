@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core;
+
 /**
  * Defining triggered action type.
  */
@@ -29,11 +31,12 @@ DEFINE('ACTION_INSERT', 2);
 DEFINE('ACTION_UPDATE', 3);
 DEFINE('ACTION_UPDATE_STOCK', 4);
 
-/**
- * Base class associated with database record
- *
- */
-class oxBase extends oxSuperCfg
+use oxRegistry;
+use oxField;
+use oxDb;
+use oxUtilsObject;
+
+class Base extends \oxSuperCfg
 {
 
     /**
@@ -77,7 +80,6 @@ class oxBase extends oxSuperCfg
      * @var string
      */
     protected $_sViewTable = null;
-
 
     /**
      * Field name list
@@ -189,7 +191,6 @@ class oxBase extends oxSuperCfg
      */
     protected $_blEmployMultilanguage = false;
 
-
     /**
      * Getting use skip fields or not
      *
@@ -290,7 +291,8 @@ class oxBase extends oxSuperCfg
                 $sCacheFieldName = strtoupper($sFieldName);
 
                 $iFieldStatus = $this->_getFieldStatus($sFieldName);
-                $sViewName = $this->getViewName();
+
+                $sViewName = $this->getGetterViewName();
                 $sId = $this->getId();
 
                 try {
@@ -344,6 +346,17 @@ class oxBase extends oxSuperCfg
         }
 
         return $this->$sName;
+    }
+
+    /**
+     * Get view name for magic getter
+     *
+     * @return string
+     */
+    protected function getGetterViewName()
+    {
+        $viewName = $this->getViewName();
+        return $viewName;
     }
 
     /**
@@ -466,7 +479,6 @@ class oxBase extends oxSuperCfg
             return;
         }
 
-
         reset($dbRecord);
         while (list($sName, $sValue) = each($dbRecord)) {
 
@@ -480,7 +492,6 @@ class oxBase extends oxSuperCfg
 
         $sOxidField = $this->_getFieldLongName('oxid');
         $this->_sOXID = $this->$sOxidField->value;
-
     }
 
     /**
@@ -575,6 +586,7 @@ class oxBase extends oxSuperCfg
                 return $this->getCoreTableName();
             }
 
+            $blForceCoreTableUsage = $this->checkIfCoreTableNeeded($blForceCoreTableUsage);
 
             if (($blForceCoreTableUsage !== null) && $blForceCoreTableUsage) {
                 $iShopId = -1;
@@ -590,6 +602,17 @@ class oxBase extends oxSuperCfg
         }
 
         return $this->_sViewTable;
+    }
+
+    /**
+     * Additional check if core table name should be returned in getViewName
+     *
+     * @param mixed $forceCoreTableUsage
+     * @return mixed
+     */
+    protected function checkIfCoreTableNeeded($forceCoreTableUsage)
+    {
+        return $forceCoreTableUsage;
     }
 
     /**
@@ -616,7 +639,6 @@ class oxBase extends oxSuperCfg
         $this->_initDataStructure(true);
     }
 
-
     /**
      * Returns true in case the item represented by this object is derived from parent shop
      *
@@ -624,7 +646,6 @@ class oxBase extends oxSuperCfg
      */
     public function isDerived()
     {
-
         return $this->_blIsDerived;
     }
 
@@ -660,16 +681,13 @@ class oxBase extends oxSuperCfg
      */
     public function load($sOXID)
     {
-
         //getting at least one field before lazy loading the object
         $this->_addField('oxid', 0);
         $sSelect = $this->buildSelectString(array($this->getViewName() . '.oxid' => $sOXID));
         $this->_isLoaded = $this->assignRecord($sSelect);
 
-
         return $this->_isLoaded;
     }
-
 
     /**
      * Returns object "loaded" state
@@ -686,7 +704,7 @@ class oxBase extends oxSuperCfg
      *
      * @param mixed $aWhere SQL select WHERE conditions array (default false)
      *
-     * @return string
+     * @return array
      */
     public function buildSelectString($aWhere = null)
     {
@@ -702,8 +720,6 @@ class oxBase extends oxSuperCfg
             }
         }
 
-        // add active shop
-
         return $sSelect;
     }
 
@@ -718,7 +734,7 @@ class oxBase extends oxSuperCfg
     {
         $blRet = false;
 
-        $rs = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->select($sSelect);
+        $rs = $this->getRecordByQuery($sSelect);
 
         if ($rs != false && $rs->recordCount() > 0) {
             $blRet = true;
@@ -726,6 +742,18 @@ class oxBase extends oxSuperCfg
         }
 
         return $blRet;
+    }
+
+    /**
+     * Get record
+     *
+     * @param string $query
+     */
+    protected function getRecordByQuery($query)
+    {
+        $record = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->select($query);
+
+        return $record;
     }
 
     /**
@@ -791,7 +819,6 @@ class oxBase extends oxSuperCfg
             return false;
         }
 
-
         $this->_removeElement2ShopRelations($sOxId);
 
         $oDB = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
@@ -813,7 +840,6 @@ class oxBase extends oxSuperCfg
     protected function _removeElement2ShopRelations($sOxId)
     {
     }
-
 
     /**
      * Save this Object to database, insert or update as needed.
@@ -956,7 +982,6 @@ class oxBase extends oxSuperCfg
     {
     }
 
-
     /**
      * Sets item as list element
      */
@@ -985,10 +1010,8 @@ class oxBase extends oxSuperCfg
      */
     protected function _getObjectViewName($sTable, $sShopID = null)
     {
-
         return getViewName($sTable, -1, $sShopID);
     }
-
 
     /**
      * Returns meta field or simple array of all object fields.
@@ -1225,7 +1248,6 @@ class oxBase extends oxSuperCfg
      */
     protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
     {
-
         $sLongFieldName = $this->_getFieldLongName($sFieldName);
         //$sLongFieldName = $this->_sCoreTable . "__" . strtolower($sFieldName);
 
@@ -1342,6 +1364,9 @@ class oxBase extends oxSuperCfg
             $sLongName = $this->_getFieldLongName($sKey);
             $oField = $this->$sLongName;
 
+            if (!$this->checkFieldCanBeUpdated($sKey)) {
+                continue;
+            }
 
             if (!$blUseSkipSaveFields || ($blUseSkipSaveFields && !in_array(strtolower($sKey), $this->_aSkipSaveFields))) {
                 $sSql .= (($blSep) ? ',' : '') . $sKey . ' = ' . $this->_getUpdateFieldValue($sKey, $oField);
@@ -1350,6 +1375,18 @@ class oxBase extends oxSuperCfg
         }
 
         return $sSql;
+    }
+
+    /**
+     * If needed, check if field can be updated
+     *
+     * @param string $fieldName
+     *
+     * @return bool
+     */
+    protected function checkFieldCanBeUpdated($fieldName)
+    {
+        return true;
     }
 
     /**
@@ -1367,7 +1404,6 @@ class oxBase extends oxSuperCfg
         if (!$this->allowDerivedUpdate()) {
             return false;
         }
-
 
         if (!$this->getId()) {
             /**
@@ -1404,7 +1440,6 @@ class oxBase extends oxSuperCfg
      */
     protected function _insert()
     {
-
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $myConfig = $this->getConfig();
         $myUtils = oxRegistry::getUtils();
@@ -1429,10 +1464,8 @@ class oxBase extends oxSuperCfg
 
         $blRet = (bool) $oDb->execute($sInsert);
 
-
         return $blRet;
     }
-
 
     /**
      * Checks if current class disables field caching.
@@ -1530,5 +1563,4 @@ class oxBase extends oxSuperCfg
     {
         return -1;
     }
-
 }

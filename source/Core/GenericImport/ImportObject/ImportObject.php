@@ -28,43 +28,24 @@ use oxDb;
 use oxI18n;
 use OxidEsales\Eshop\Core\GenericImport\GenericImport;
 use oxRegistry;
-use oxSystemComponentException;
 
 /**
- * main erp type superclass - includes methods abstraction and basic implementation
+ * Main import type superclass - includes methods abstraction and basic implementation
  * for all erp object types
  */
-class ImportObject
+abstract class ImportObject
 {
+    /** @var string Database table name. */
     protected $_sTableName = null;
-    protected $_sFunctionSuffix = null;
+
+    /** @var array List of database fields, to which data should be imported. */
     protected $_aFieldList = null;
+
+    /** @var array List of database key fields (i.e. oxid). */
     protected $_aKeyFieldList = null;
+
+    /** @var string Shop object name. */
     protected $_sShopObjectName = null;
-
-    /**
-     * If true a export will be restricted vias th oxshopid column of the table
-     *
-     * @var bool
-     */
-    protected $_blRestrictedByShopId = false;
-
-    /**
-     * versioning support for db layers
-     *
-     * @var array
-     */
-    protected $_aFieldListVersions = null;
-
-    /**
-     * getter for _sFunctionSuffix
-     *
-     * @return string
-     */
-    public function getFunctionSuffix()
-    {
-        return $this->_sFunctionSuffix;
-    }
 
     /**
      * getter for _sShopObjectName
@@ -87,24 +68,6 @@ class ImportObject
     }
 
     /**
-     * class constructor
-     */
-    public function __construct()
-    {
-        $this->_sFunctionSuffix = str_replace("oxERPType_", "", get_class($this));
-    }
-
-    /**
-     * setter for the function prefix
-     *
-     * @param string $sNew new suffix
-     */
-    public function setFunctionSuffix($sNew)
-    {
-        $this->_sFunctionSuffix = $sNew;
-    }
-
-    /**
      * setter for field list
      *
      * @param array $aFieldList fields to set
@@ -117,127 +80,12 @@ class ImportObject
     /**
      * Returns table or View name
      *
-     * @param int $iShopID   shop id - default is the current shop id
-     * @param int $iLanguage language id
-     *
      * @return string
      */
-    public function getTableName($iShopID = null, $iLanguage = 0)
+    public function getTableName()
     {
-        if ($iShopID === null) {
-            $iShopID = oxRegistry::getConfig()->getShopId();
-        }
-
+        $iShopID = oxRegistry::getConfig()->getShopId();
         return getViewName($this->_sTableName, -1, $iShopID);
-    }
-
-    /**
-     * Creates Array with [iLanguage][sFieldName]
-     *
-     * @return array
-     */
-    private function _getMultilangualFields()
-    {
-        $aRet = array();
-
-        $aData = oxDb::getInstance()->getTableDescription($this->_sTableName);
-
-        foreach ($aData as $key => $oADODBField) {
-            $iLang = substr($oADODBField->name, strlen($oADODBField->name) - 1, 1);
-            if (is_numeric($iLang) && substr($oADODBField->name, strlen($oADODBField->name) - 2, 1) == '_') {
-                // multilangual field
-                $sMainFld = str_replace('_' . $iLang, "", $oADODBField->name);
-                $aRet[$iLang][$sMainFld] = $oADODBField->name . ' as ' . $sMainFld;
-            }
-        }
-
-        return $aRet;
-    }
-
-    /**
-     * return sql column name of given table column
-     *
-     * @param string $sField    field to get
-     * @param int    $iLanguage language id
-     * @param int    $iShopID   shop id
-     *
-     * @return string
-     */
-    protected function _getSqlFieldName($sField, $iLanguage = 0, $iShopID = 1)
-    {
-        if ($iLanguage) {
-            $aMultiLang = $this->_getMultilangualFields();
-            // we need to load different fields
-            if (isset($aMultiLang[$iLanguage][$sField])) {
-                $sField = $aMultiLang[$iLanguage][$sField];
-            }
-        }
-
-        switch ($sField) {
-            case 'OXSHOPID':
-            case 'OXSHOPINCL':
-                return "1 as $sField";
-            case 'OXSHOPEXCL':
-                return "0 as $sField";
-        }
-
-        return $sField;
-    }
-
-    /**
-     * returns SQL string for this type
-     *
-     * @param string $sWhere    where part of sql
-     * @param int    $iLanguage language id
-     * @param int    $iShopId   shop id
-     *
-     * @return string
-     */
-    public function getSQL($sWhere, $iLanguage = 0, $iShopId = 1)
-    {
-        if (!$this->_aFieldList) {
-            return;
-        }
-
-        $sSQL = 'select ';
-        $blSep = false;
-
-        foreach ($this->_aFieldList as $sField) {
-            if ($blSep) {
-                $sSQL .= ',';
-            }
-
-            $sSQL .= $this->_getSqlFieldName($sField, $iLanguage, $iShopId);
-            $blSep = true;
-        }
-
-
-        $sSQL .= ' from ' . $this->getTableName($iShopId, $iLanguage) . ' ' . $sWhere;
-
-        return $sSQL;
-    }
-
-    /**
-     * returns the "order by " string for  a sql query
-     *
-     * @param string $sFieldName order by that field
-     * @param string $sType      allowed values ASC and DESC
-     *
-     * @return string
-     */
-    public function getSortString($sFieldName = null, $sType = null)
-    {
-        $sRes = " order by ";
-        if ($sFieldName) {
-            $sRes .= $sFieldName;
-        } else {
-            $sRes .= "oxid";
-        }
-        if ($sType && ($sType == "ASC" || $sType == "DESC")) {
-            $sRes .= " " . $sType;
-        }
-
-        return $sRes;
     }
 
     /**
@@ -271,46 +119,6 @@ class ImportObject
     }
 
     /**
-     * checks done to make sure deletion is possible and allowed
-     *
-     * @param string $sId id of object
-     *
-     * @throws Exception on error
-     *
-     * @return object
-     */
-    public function getObjectForDeletion($sId)
-    {
-        if (!isset($sId)) {
-            throw new Exception("Missing ID!");
-        }
-
-        $sName = $this->getShopObjectName();
-        if ($sName) {
-            $oObj = oxNew($sName, "core");
-        } else {
-            $oObj = oxNew('oxbase', 'core');
-            $oObj->init($this->getBaseTableName());
-        }
-
-        if (!$oObj->exists($sId)) {
-            throw new Exception($this->getShopObjectName() . " " . $sId . " does not exists!");
-        }
-
-        //We must load the object here, to check shopid and return it for further checks
-        if (!$oObj->Load($sId)) {
-            //its possible that access is restricted allready
-            throw new Exception("No right to delete object {$sId} !");
-        }
-
-        if (!$this->_isAllowedToEdit($oObj->getShopId())) {
-            throw new Exception("No right to delete object {$sId} !");
-        }
-
-        return $oObj;
-    }
-
-    /**
      * checks if user is allowed to edit in this shop
      *
      * @param int $iShopId shop id
@@ -329,102 +137,6 @@ class ImportObject
         }
 
         return false;
-    }
-
-    /**
-     * direct sql check if it is allowed to delete the OXID of the current table
-     *
-     * @param string $sId object id
-     *
-     * @throws Exception on no access
-     *
-     * @return null
-     */
-    protected function _directSqlCheckForDeletion($sId)
-    {
-        $oDb = oxDb::getDb();
-        $sSql = "select oxshopid from " . $this->_sTableName . " where oxid = " . $oDb->quote($sId);
-        try {
-            $iShopId = $oDb->getOne($sSql);
-        } catch (Exception $e) {
-            // no shopid was found
-            return;
-        }
-        if (!$this->_isAllowedToEdit($iShopId)) {
-            throw new Exception("No right to delete object {$sId} !");
-        }
-    }
-
-    /**
-     * default check if it is allowed to delete the OXID of the current table
-     *
-     * @param string $sId object id
-     *
-     * @throws Exception on no access
-     *
-     * @return null
-     */
-    public function checkForDeletion($sId)
-    {
-
-        if (!isset($sId)) {
-            throw new Exception("Missing ID!");
-        }
-        // malladmin can do it
-        $oUsr = oxNew('oxUser');
-        $oUsr->loadAdminUser();
-        if ($oUsr->oxuser__oxrights->value == "malladmin") {
-            return;
-        }
-        try {
-            $this->getObjectForDeletion($sId);
-        } catch (oxSystemComponentException $e) {
-            if ($e->getMessage() == 'EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND') {
-                $this->_directSqlCheckForDeletion($sId);
-            } else {
-                throw $e;
-            }
-        }
-    }
-
-    /**
-     * default deletion of the given OXID in the current table
-     *
-     * @param string $sID object id
-     *
-     * @return bool
-     */
-    public function delete($sID)
-    {
-        $oDb = oxDb::getDb();
-        $sSql = "delete from " . $this->_sTableName . " where oxid = " . $oDb->quote($sID);
-
-        return $oDb->Execute($sSql);
-    }
-
-    /**
-     * default delete call to the given object
-     *
-     * @param object $oObj object
-     * @param string $sID  object id
-     *
-     * @return bool
-     */
-    public function deleteObject($oObj, $sID)
-    {
-        return $oObj->delete($sID);
-    }
-
-    /**
-     * We have the possibility to add some data
-     *
-     * @param array $aFields initial data
-     *
-     * @return array
-     */
-    public function addExportData($aFields)
-    {
-        return $aFields;
     }
 
     /**
@@ -531,20 +243,6 @@ class ImportObject
         }
 
         return null;
-    }
-
-    /**
-     * returns try if type has key fields array
-     *
-     * @return bool
-     */
-    public function hasKeyFields()
-    {
-        if (isset($this->_aKeyFieldList) && is_array($this->_aKeyFieldList)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

@@ -36,30 +36,6 @@ class OrderArticle extends ImportObject
     protected $_sShopObjectName = 'oxorderarticle';
 
     /**
-     * returns Sql for export
-     *
-     * @param string $sWhere    where part of sql
-     * @param int    $iLanguage language id
-     * @param int    $iShopID   shop id
-     *
-     * @see objects/oxERPType#getSQL()
-     *
-     * @return string
-     */
-    public function getSQL($sWhere, $iLanguage = 0, $iShopID = 1)
-    {
-        if (strstr($sWhere, 'where')) {
-            $sWhere .= ' and ';
-        } else {
-            $sWhere .= ' where ';
-        }
-
-        $sWhere .= 'oxordershopid = \'' . $iShopID . '\'';
-
-        return parent::getSQL($sWhere, $iLanguage, $iShopID);
-    }
-
-    /**
      * check for write access for id
      *
      * @param oxBase $oObj  loaded shop object
@@ -78,25 +54,6 @@ class OrderArticle extends ImportObject
         }
 
         parent::checkWriteAccess($oObj, $aData);
-    }
-
-    /**
-     * return sql column name of given table column
-     *
-     * @param string $sField    field name
-     * @param int    $iLanguage language id
-     * @param int    $iShopID   shop id
-     *
-     * @return string
-     */
-    protected function _getSqlFieldName($sField, $iLanguage = 0, $iShopID = 1)
-    {
-        switch ($sField) {
-            case 'OXORDERSHOPID':
-                return "'1' as $sField";
-        }
-
-        return parent::_getSqlFieldName($sField, $iLanguage, $iShopID);
     }
 
     /**

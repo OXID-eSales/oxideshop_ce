@@ -65,33 +65,6 @@ class User extends ImportObject
     }
 
     /**
-     * returns SQL string for this type
-     *
-     * @param string $sWhere    where part of sql
-     * @param int    $iLanguage language id
-     * @param int    $iShopId   shop id
-     *
-     * @return string
-     */
-    public function getSQL($sWhere, $iLanguage = 0, $iShopId = 1)
-    {
-        $myConfig = oxRegistry::getConfig();
-
-        // add type 'user' for security reasons
-        if (strstr($sWhere, 'where')) {
-            $sWhere .= ' and ';
-        } else {
-            $sWhere .= ' where ';
-        }
-
-        $sWhere .= ' oxrights = \'user\'';
-        //MAFI also check for shopid to restrict access
-
-
-        return parent::getSQL($sWhere, $iLanguage, $iShopId);
-    }
-
-    /**
      * Basic access check for writing data, checks for same shopid, should be overridden if field oxshopid does not exist
      *
      * @param oxBase $oObj  loaded shop object

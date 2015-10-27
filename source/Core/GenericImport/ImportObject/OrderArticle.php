@@ -32,55 +32,58 @@ use oxRegistry;
  */
 class OrderArticle extends ImportObject
 {
-    protected $_sTableName = 'oxorderarticles';
-    protected $_sShopObjectName = 'oxorderarticle';
+    /** @var string Database table name. */
+    protected $tableName = 'oxorderarticles';
+
+    /** @var string Shop object name. */
+    protected $shopObjectName = 'oxorderarticle';
 
     /**
-     * check for write access for id
+     * Check for write access for id
      *
-     * @param oxBase $oObj  loaded shop object
-     * @param array  $aData fields to be written, null for default
+     * @param oxBase $shopObject Loaded shop object
+     * @param array  $data       Fields to be written, null for default
      *
      * @throws Exception on now access
      *
      * @return null
      */
-    public function checkWriteAccess($oObj, $aData = null)
+    public function checkWriteAccess($shopObject, $data = null)
     {
         return;
 
-        if ($oObj->oxorderarticles__oxordershopid->value != oxRegistry::getConfig()->getShopId()) {
+        if ($shopObject->oxorderarticles__oxordershopid->value != oxRegistry::getConfig()->getShopId()) {
             throw new Exception(GenericImport::ERROR_USER_NO_RIGHTS);
         }
 
-        parent::checkWriteAccess($oObj, $aData);
+        parent::checkWriteAccess($shopObject, $data);
     }
 
     /**
      * issued before saving an object. can modify aData for saving
      *
-     * @param oxBase $oShopObject         oxBase child for object
-     * @param array  $aData               data for object
-     * @param bool   $blAllowCustomShopId if true then AllowCustomShopId
+     * @param oxBase $shopObject        oxBase child for object
+     * @param array  $data              Data for object
+     * @param bool   $allowCustomShopId If true then AllowCustomShopId
      *
      * @return array
      */
-    protected function _preAssignObject($oShopObject, $aData, $blAllowCustomShopId)
+    protected function preAssignObject($shopObject, $data, $allowCustomShopId)
     {
-        $aData = parent::_preAssignObject($oShopObject, $aData, $blAllowCustomShopId);
+        $data = parent::preAssignObject($shopObject, $data, $allowCustomShopId);
 
         // check if data is not serialized
-        $aPersVals = @unserialize($aData['OXPERSPARAM']);
-        if (!is_array($aPersVals)) {
+        $persParamValues = @unserialize($data['OXPERSPARAM']);
+        if (!is_array($persParamValues)) {
             // data is a string with | separation, prepare for oxid
-            $aPersVals = explode("|", $aData['OXPERSPARAM']);
-            $aData['OXPERSPARAM'] = serialize($aPersVals);
+            $persParamValues = explode("|", $data['OXPERSPARAM']);
+            $data['OXPERSPARAM'] = serialize($persParamValues);
         }
 
-        if (isset($aData['OXORDERSHOPID'])) {
-            $aData['OXORDERSHOPID'] = 'oxbaseshop';
+        if (isset($data['OXORDERSHOPID'])) {
+            $data['OXORDERSHOPID'] = 'oxbaseshop';
         }
 
-        return $aData;
+        return $data;
     }
 }

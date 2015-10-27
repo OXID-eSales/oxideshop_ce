@@ -36,26 +36,16 @@ use oxRegistry;
 abstract class ImportObject
 {
     /** @var string Database table name. */
-    protected $_sTableName = null;
+    protected $tableName = null;
 
     /** @var array List of database fields, to which data should be imported. */
-    protected $_aFieldList = null;
+    protected $fieldList = null;
 
     /** @var array List of database key fields (i.e. oxid). */
-    protected $_aKeyFieldList = null;
+    protected $keyFieldList = null;
 
     /** @var string Shop object name. */
-    protected $_sShopObjectName = null;
-
-    /**
-     * getter for _sShopObjectName
-     *
-     * @return string
-     */
-    public function getShopObjectName()
-    {
-        return $this->_sShopObjectName;
-    }
+    protected $shopObjectName = null;
 
     /**
      * getter for _sTableName
@@ -64,7 +54,7 @@ abstract class ImportObject
      */
     public function getBaseTableName()
     {
-        return $this->_sTableName;
+        return $this->tableName;
     }
 
     /**
@@ -74,35 +64,24 @@ abstract class ImportObject
      */
     public function setFieldList($aFieldList)
     {
-        $this->_aFieldList = $aFieldList;
+        $this->fieldList = $aFieldList;
     }
 
     /**
-     * Returns table or View name
+     * Basic access check for writing data, checks for same shopId, should be overridden if field oxshopid does not exist
      *
-     * @return string
-     */
-    public function getTableName()
-    {
-        $iShopID = oxRegistry::getConfig()->getShopId();
-        return getViewName($this->_sTableName, -1, $iShopID);
-    }
-
-    /**
-     * Basic access check for writing data, checks for same shopid, should be overridden if field oxshopid does not exist
-     *
-     * @param oxBase $oObj  loaded shop object
-     * @param array  $aData fields to be written, null for default
+     * @param oxBase $shopObject Loaded shop object
+     * @param array  $data       Fields to be written, null for default
      *
      * @throws Exception on now access
      *
      * @return null
      */
-    public function checkWriteAccess($oObj, $aData = null)
+    public function checkWriteAccess($shopObject, $data = null)
     {
         return;
 
-        if ($oObj->isDerived()) {
+        if ($shopObject->isDerived()) {
             throw new Exception(GenericImport::ERROR_USER_NO_RIGHTS);
         }
     }
@@ -110,266 +89,208 @@ abstract class ImportObject
     /**
      * Basic access check for creating new objects
      *
-     * @param array $aData fields to be written
+     * @param array $data fields to be written
      *
      * @throws Exception on now access
      */
-    public function checkCreateAccess($aData)
+    public function checkCreateAccess($data)
     {
     }
 
     /**
-     * checks if user is allowed to edit in this shop
+     * Insert or Update a Row into database.
      *
-     * @param int $iShopId shop id
+     * @param array $data Assoc. array with field names, values what should be stored in this table.
      *
-     * @return bool
+     * @return string|false
      */
-    protected function _isAllowedToEdit($iShopId)
+    public function import($data)
     {
-        $oUsr = oxNew('oxUser');
-        $oUsr->loadAdminUser();
-
-        if ($oUsr->oxuser__oxrights->value == "malladmin") {
-            return true;
-        } elseif ($oUsr->oxuser__oxrights->value == (int) $iShopId) {
-            return true;
-        }
-
-        return false;
+        return $this->saveObject($data, false);
     }
 
     /**
-     * allows to modify data before import
+     * Allows to modify data before import.
      *
-     * @param array $aFields initial data
+     * @param array $fields initial data
      *
-     * @see _preAssignObject
+     * @see preAssignObject
      *
      * @return array
      */
-    public function addImportData($aFields)
+    public function addImportData($fields)
     {
-        return $aFields;
+        return $fields;
     }
 
     /**
-     * used for the RR implementation, right now not really used
+     * Used for the RR implementation, right now not really used.
      *
      * @return array
      */
     public function getRightFields()
     {
-        $aRParams = array();
-        if (!$this->_aFieldList) {
+        $accessRightFields = array();
+        if (!$this->fieldList) {
             $this->getFieldList();
         }
 
-        foreach ($this->_aFieldList as $sField) {
-            $aRParams[] = strtolower($this->_sTableName . '__' . $sField);
+        foreach ($this->fieldList as $field) {
+            $accessRightFields[] = strtolower($this->tableName . '__' . $field);
         }
 
-        return $aRParams;
+        return $accessRightFields;
     }
 
     /**
-     * returns the predefined field list
+     * Returns the predefined field list
      *
      * @return array
      */
     public function getFieldList()
     {
-        $sObjectName = $this->getShopObjectName();
+        $objectName = $this->getShopObjectName();
 
-        if ($sObjectName) {
-            $oShopObject = oxNew($sObjectName);
+        if ($objectName) {
+            $shopObject = oxNew($objectName);
         } else {
-            $oShopObject = oxNew('oxBase');
-            $oShopObject->init($this->getTableName());
+            $shopObject = oxNew('oxBase');
+            $shopObject->init($this->getTableName());
         }
 
-        if ($oShopObject instanceof oxI18n) {
-            $oShopObject->setLanguage(0);
-            $oShopObject->setEnableMultilang(false);
+        if ($shopObject instanceof oxI18n) {
+            $shopObject->setLanguage(0);
+            $shopObject->setEnableMultilang(false);
         }
 
-        $sViewName = $oShopObject->getViewName();
-        $sFields = str_ireplace('`' . $sViewName . "`.", "", strtoupper($oShopObject->getSelectFields()));
-        $sFields = str_ireplace(array(" ", "`"), array("", ""), $sFields);
-        $this->_aFieldList = explode(",", $sFields);
+        $viewName = $shopObject->getViewName();
+        $fields = str_ireplace('`' . $viewName . "`.", "", strtoupper($shopObject->getSelectFields()));
+        $fields = str_ireplace(array(" ", "`"), array("", ""), $fields);
+        $this->fieldList = explode(",", $fields);
 
-        return $this->_aFieldList;
+        return $this->fieldList;
     }
 
     /**
-     * returns the keylist array
+     * Returns the keylist array
      *
      * @return array
      */
     public function getKeyFields()
     {
-        return $this->_aKeyFieldList;
+        return $this->keyFieldList;
     }
 
     /**
-     * returns oxid of this data type from key fields
-     *
-     * @param array $aData data for object
+     * getter for _sShopObjectName
      *
      * @return string
      */
-    public function getOxidFromKeyFields($aData)
+    protected function getShopObjectName()
     {
-        if (!is_array($this->getKeyFields())) {
-            return null;
-        }
-
-        $oDb = oxDb::getDb();
-
-        $aWhere = array();
-        $blAllKeys = true;
-        foreach ($this->getKeyFields() as $sKey) {
-            if (array_key_exists($sKey, $aData)) {
-                $aWhere[] = $sKey . '=' . $oDb->qstr($aData[$sKey]);
-            } else {
-                $blAllKeys = false;
-            }
-        }
-
-        if ($blAllKeys) {
-            $sSelect = 'SELECT OXID FROM ' . $this->getTableName() . ' WHERE ' . implode(' AND ', $aWhere);
-
-            return $oDb->getOne($sSelect);
-        }
-
-        return null;
+        return $this->shopObjectName;
     }
 
     /**
-     * issued before saving an object. can modify aData for saving
+     * Returns table or View name
      *
-     * @param oxBase $oShopObject         shop object
-     * @param array  $aData               data to prepare
-     * @param bool   $blAllowCustomShopId if allow custom shop id
+     * @return string
+     */
+    protected function getTableName()
+    {
+        $shopId = oxRegistry::getConfig()->getShopId();
+        return getViewName($this->tableName, -1, $shopId);
+    }
+
+    /**
+     * Issued before saving an object. can modify aData for saving
+     *
+     * @param oxBase $shopObject        shop object
+     * @param array  $data              data to prepare
+     * @param bool   $allowCustomShopId if allow custom shop id
      *
      * @return array
      */
-    protected function _preAssignObject($oShopObject, $aData, $blAllowCustomShopId)
+    protected function preAssignObject($shopObject, $data, $allowCustomShopId)
     {
-        if (isset($aData['OXSHOPID'])) {
-            $aData['OXSHOPID'] = oxRegistry::getConfig()->getShopId();
+        if (isset($data['OXSHOPID'])) {
+            $data['OXSHOPID'] = oxRegistry::getConfig()->getShopId();
         }
 
-        if (!isset($aData['OXID'])) {
-            $aData['OXID'] = $this->getOxidFromKeyFields($aData);
+        if (!isset($data['OXID'])) {
+            $data['OXID'] = $this->getOxidFromKeyFields($data);
         }
 
         // null values support
-        foreach ($aData as $key => $val) {
+        foreach ($data as $key => $val) {
             if (!strlen((string) $val)) {
-                // oxbase will quote it as string if db does not support null for this field
-                $aData[$key] = null;
+                // oxBase will quote it as string if db does not support null for this field
+                $data[$key] = null;
             }
         }
 
-        return $aData;
+        return $data;
     }
 
     /**
      * prepares object for saving in shop
      * returns true if save can proceed further
      *
-     * @param oxBase $oShopObject shop object
-     * @param array  $aData       data for importing
+     * @param oxBase $shopObject shop object
+     * @param array  $data       data for importing
      *
      * @return boolean
      */
-    protected function _preSaveObject($oShopObject, $aData)
+    protected function preSaveObject($shopObject, $data)
     {
         return true;
     }
 
     /**
-     * Insert or Update a Row into database
+     * Saves object data.
      *
-     * @param array $aData assoc. Array with fieldnames, values what should be stored in this table
+     * @param array $data              data for saving
+     * @param bool  $allowCustomShopId allow custom shop id
      *
-     * @return string | false
+     * @return string|false
      */
-    public function import($aData)
+    protected function saveObject($data, $allowCustomShopId)
     {
-        return $this->saveObject($aData, false);
-    }
+        $shopObject = $this->createShopObject();
 
-    /**
-     * Checks if id field is valid
-     *
-     * @param string $sID field check id
-     */
-    protected function _checkIDField($sID)
-    {
-        if (!isset($sID) || !$sID) {
-            throw new Exception("ERROR: Articlenumber/ID missing!");
-        } elseif (strlen($sID) > 32) {
-            throw new Exception("ERROR: Articlenumber/ID longer then allowed (32 chars max.)!");
-        }
-    }
-
-    /**
-     * saves data by calling object saving
-     *
-     * @param array $aData               data for saving
-     * @param bool  $blAllowCustomShopId allow custom shop id
-     *
-     * @return string | false
-     */
-    public function saveObject($aData, $blAllowCustomShopId)
-    {
-        $sObjectName = $this->getShopObjectName();
-        if ($sObjectName) {
-            $oShopObject = oxNew($sObjectName, 'core');
-            if ($oShopObject instanceof oxI18n) {
-                $oShopObject->setLanguage(0);
-                $oShopObject->setEnableMultilang(false);
-            }
-        } else {
-            $oShopObject = oxNew('oxbase', 'core');
-            $oShopObject->init($this->getBaseTableName());
-        }
-
-        foreach ($aData as $key => $value) {
+        foreach ($data as $key => $value) {
             // change case to UPPER
-            $sUPKey = strtoupper($key);
-            if (!isset($aData[$sUPKey])) {
-                unset($aData[$key]);
-                $aData[$sUPKey] = $value;
+            $uppercaseKey = strtoupper($key);
+            if (!isset($data[$uppercaseKey])) {
+                unset($data[$key]);
+                $data[$uppercaseKey] = $value;
             }
         }
 
 
-        $blLoaded = false;
-        if ($aData['OXID']) {
-            $blLoaded = $oShopObject->load($aData['OXID']);
+        $isLoaded = false;
+        if ($data['OXID']) {
+            $isLoaded = $shopObject->load($data['OXID']);
         }
 
-        $aData = $this->_preAssignObject($oShopObject, $aData, $blAllowCustomShopId);
+        $data = $this->preAssignObject($shopObject, $data, $allowCustomShopId);
 
-        if ($blLoaded) {
-            $this->checkWriteAccess($oShopObject, $aData);
+        if ($isLoaded) {
+            $this->checkWriteAccess($shopObject, $data);
         } else {
-            $this->checkCreateAccess($aData);
+            $this->checkCreateAccess($data);
         }
 
-        $oShopObject->assign($aData);
+        $shopObject->assign($data);
 
-        if ($blAllowCustomShopId) {
-            $oShopObject->setIsDerived(false);
+        if ($allowCustomShopId) {
+            $shopObject->setIsDerived(false);
         }
 
-        if ($this->_preSaveObject($oShopObject, $aData)) {
+        if ($this->preSaveObject($shopObject, $data)) {
             // store
-            if ($oShopObject->save()) {
-                return $this->_postSaveObject($oShopObject, $aData);
+            if ($shopObject->save()) {
+                return $this->postSaveObject($shopObject, $data);
             }
         }
 
@@ -379,14 +300,105 @@ abstract class ImportObject
     /**
      * post saving hook. can finish transactions if needed or ajust related data
      *
-     * @param oxBase $oShopObject shop object
-     * @param array  $aData       data to save
+     * @param oxBase $shopObject shop object
+     * @param array  $data       data to save
      *
      * @return mixed data to return
      */
-    protected function _postSaveObject($oShopObject, $aData)
+    protected function postSaveObject($shopObject, $data)
     {
         // returning ID on success
-        return $oShopObject->getId();
+        return $shopObject->getId();
+    }
+
+    /**
+     * Returns oxid of this data type from key fields
+     *
+     * @param array $data data for object
+     *
+     * @return string
+     */
+    protected function getOxidFromKeyFields($data)
+    {
+        if (!is_array($this->getKeyFields())) {
+            return null;
+        }
+
+        $database = oxDb::getDb();
+
+        $queryWherePart = array();
+        $allKeysExists = true;
+        foreach ($this->getKeyFields() as $key) {
+            if (array_key_exists($key, $data)) {
+                $queryWherePart[] = $key . '=' . $database->qstr($data[$key]);
+            } else {
+                $allKeysExists = false;
+            }
+        }
+
+        if ($allKeysExists) {
+            $query = 'SELECT OXID FROM ' . $this->getTableName() . ' WHERE ' . implode(' AND ', $queryWherePart);
+
+            return $database->getOne($query);
+        }
+
+        return null;
+    }
+
+    /**
+     * checks if user is allowed to edit in this shop
+     *
+     * @param int $shopId shop id
+     *
+     * @return bool
+     */
+    protected function isAllowedToEdit($shopId)
+    {
+        $user = oxNew('oxUser');
+        $user->loadAdminUser();
+
+        if ($user->oxuser__oxrights->value == "malladmin" || $user->oxuser__oxrights->value == (int) $shopId) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if id field is valid
+     *
+     * @param string $id field check id
+     *
+     * @throws Exception
+     */
+    protected function checkIdField($id)
+    {
+        if (!isset($id) || !$id) {
+            throw new Exception("ERROR: Articlenumber/ID missing!");
+        } elseif (strlen($id) > 32) {
+            throw new Exception("ERROR: Articlenumber/ID longer then allowed (32 chars max.)!");
+        }
+    }
+
+    /**
+     * Creates shop object.
+     *
+     * @return oxBase
+     */
+    protected function createShopObject()
+    {
+        $objectName = $this->getShopObjectName();
+        if ($objectName) {
+            $shopObject = oxNew($objectName, 'core');
+            if ($shopObject instanceof oxI18n) {
+                $shopObject->setLanguage(0);
+                $shopObject->setEnableMultilang(false);
+            }
+        } else {
+            $shopObject = oxNew('oxBase', 'core');
+            $shopObject->init($this->getBaseTableName());
+        }
+
+        return $shopObject;
     }
 }

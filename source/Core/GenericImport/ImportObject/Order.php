@@ -27,7 +27,9 @@ namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
  */
 class Order extends ImportObject
 {
-    protected $_sTableName = 'oxorder';
-    protected $_sShopObjectName = 'oxorder';
-    protected $_blRestrictedByShopId = true;
+    /** @var string Database table name. */
+    protected $tableName = 'oxorder';
+
+    /** @var string Shop object name. */
+    protected $shopObjectName = 'oxorder';
 }

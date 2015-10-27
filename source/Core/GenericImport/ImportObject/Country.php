@@ -27,6 +27,9 @@ namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
  */
 class Country extends ImportObject
 {
-    protected $_sTableName = 'oxcountry';
-    protected $_sShopObjectName = 'oxcountry';
+    /** @var string Database table name. */
+    protected $tableName = 'oxcountry';
+
+    /** @var string Shop object name. */
+    protected $shopObjectName = 'oxcountry';
 }

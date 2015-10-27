@@ -22,77 +22,61 @@
 
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
-use oxBase;
-
 /**
  * Article extends type subclass
  */
 class ArticleExtends extends ImportObject
 {
-    protected $_sTableName = 'oxartextends';
+    /** @var string Database table name. */
+    protected $tableName = 'oxartextends';
 
     /**
-     * prepares object for saving in shop
-     * returns true if save can proceed further
+     * Saves data by calling object saving.
      *
-     * @param oxBase $oShopObject shop object
-     * @param array  $aData       data for importing
+     * @param array $data              Data for saving
+     * @param bool  $allowCustomShopId Allow custom shop id
      *
-     * @return boolean
+     * @return string|false
      */
-    protected function _preSaveObject($oShopObject, $aData)
+    protected function saveObject($data, $allowCustomShopId)
     {
-        return true;
-    }
+        $shopObject = oxNew('oxI18n');
+        $shopObject->init('oxartextends');
+        $shopObject->setLanguage(0);
+        $shopObject->setEnableMultilang(false);
 
-    /**
-     * saves data by calling object saving
-     *
-     * @param array $aData               data for saving
-     * @param bool  $blAllowCustomShopId allow custom shop id
-     *
-     * @return string | false
-     */
-    public function saveObject($aData, $blAllowCustomShopId)
-    {
-        $oShopObject = oxNew('oxI18n');
-        $oShopObject->init('oxartextends');
-        $oShopObject->setLanguage(0);
-        $oShopObject->setEnableMultilang(false);
-
-        foreach ($aData as $key => $value) {
-            // change case to UPPER
-            $sUPKey = strtoupper($key);
-            if (!isset($aData[$sUPKey])) {
-                unset($aData[$key]);
-                $aData[$sUPKey] = $value;
+        foreach ($data as $key => $value) {
+            $uppercaseKey = strtoupper($key);
+            if (!isset($data[$uppercaseKey])) {
+                unset($data[$key]);
+                $data[$uppercaseKey] = $value;
             }
         }
 
 
-        $blLoaded = false;
-        if ($aData['OXID']) {
-            $blLoaded = $oShopObject->load($aData['OXID']);
+        $isLoaded = false;
+        if ($data['OXID']) {
+            $isLoaded = $shopObject->load($data['OXID']);
         }
 
-        $aData = $this->_preAssignObject($oShopObject, $aData, $blAllowCustomShopId);
+        $data = $this->preAssignObject($shopObject, $data, $allowCustomShopId);
 
-        if ($blLoaded) {
-            $this->checkWriteAccess($oShopObject, $aData);
+        if ($isLoaded) {
+            $this->checkWriteAccess($shopObject, $data);
         } else {
-            $this->checkCreateAccess($aData);
+            $this->checkCreateAccess($data);
         }
 
-        $oShopObject->assign($aData);
+        $shopObject->assign($data);
 
-        if ($blAllowCustomShopId) {
-            $oShopObject->setIsDerived(false);
+        if ($allowCustomShopId) {
+            $shopObject->setIsDerived(false);
         }
 
-        if ($this->_preSaveObject($oShopObject, $aData)) {
+        if ($this->preSaveObject($shopObject, $data)) {
             // store
-            if ($oShopObject->save()) {
-                return $this->_postSaveObject($oShopObject, $aData);
+            if ($shopObject->save()) {
+                return $this->postSaveObject($shopObject, $data);
             }
         }
 

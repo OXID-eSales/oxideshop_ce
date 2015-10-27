@@ -27,9 +27,11 @@ namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
  */
 class Crossselling extends ImportObject
 {
-    protected $_sTableName = 'oxobject2article';
+    /** @var string Database table name. */
+    protected $tableName = 'oxobject2article';
 
-    protected $_aKeyFieldList = array(
+    /** @var array List of database key fields (i.e. oxid). */
+    protected $keyFieldList = array(
         'OXARTICLENID' => 'OXARTICLENID',
         'OXOBJECTID'   => 'OXOBJECTID'
     );

@@ -32,56 +32,56 @@ use oxRegistry;
  */
 class User extends ImportObject
 {
-    protected $_sTableName = 'oxuser';
-    protected $_sShopObjectName = 'oxuser';
+    /** @var string Database table name. */
+    protected $tableName = 'oxuser';
+
+    /** @var string Shop object name. */
+    protected $shopObjectName = 'oxuser';
 
     /**
-     * Imports user. Returns import status
+     * Imports user. Returns import status.
      *
-     * @param array $aRow db row array
+     * @param array $data db row array
+     *
+     * @throws Exception If user exists with provided OXID, throw an exception.
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    public function import($aRow)
+    public function import($data)
     {
-        // Special check for user
-        if (isset($aRow['OXUSERNAME'])) {
-            $sID = $aRow['OXID'];
-            $sUserName = $aRow['OXUSERNAME'];
+        if (isset($data['OXUSERNAME'])) {
+            $id = $data['OXID'];
+            $userName = $data['OXUSERNAME'];
 
-            $oUser = oxNew("oxuser", "core");
-            $oUser->oxuser__oxusername = new oxField($sUserName, oxField::T_RAW);
+            $user = oxNew("oxUser", "core");
+            $user->oxuser__oxusername = new oxField($userName, oxField::T_RAW);
 
-            //If user exists with and modifies OXID, throw an axception
-            //throw new Exception( "USER {$sUserName} already exists!");
-            if ($oUser->exists($sID) && $sID != $oUser->getId()) {
-                throw new Exception("USER $sUserName already exists!");
+            if ($user->exists($id) && $id != $user->getId()) {
+                throw new Exception("USER $userName already exists!");
             }
         }
 
-        $sResult = parent::import($aRow);
-
-        return $sResult;
+        return parent::import($data);
     }
 
     /**
      * Basic access check for writing data, checks for same shopid, should be overridden if field oxshopid does not exist
      *
-     * @param oxBase $oObj  loaded shop object
-     * @param array  $aData fields to be written, null for default
+     * @param oxBase $shopObject Loaded shop object
+     * @param array  $data       Fields to be written, null for default
      *
      * @throws Exception on now access
      *
      * @return null
      */
-    public function checkWriteAccess($oObj, $aData = null)
+    public function checkWriteAccess($shopObject, $data = null)
     {
         return;
 
-        $myConfig = oxRegistry::getConfig();
+        $config = oxRegistry::getConfig();
 
-        if (!$myConfig->getConfigParam('blMallUsers')) {
-            parent::checkWriteAccess($oObj, $aData);
+        if (!$config->getConfigParam('blMallUsers')) {
+            parent::checkWriteAccess($shopObject, $data);
         }
     }
 }

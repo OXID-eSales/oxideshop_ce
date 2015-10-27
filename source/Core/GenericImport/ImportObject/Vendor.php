@@ -27,6 +27,9 @@ namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
  */
 class Vendor extends ImportObject
 {
-    protected $_sTableName = 'oxvendor';
-    protected $_sShopObjectName = 'oxvendor';
+    /** @var string Database table name. */
+    protected $tableName = 'oxvendor';
+
+    /** @var string Shop object name. */
+    protected $shopObjectName = 'oxvendor';
 }

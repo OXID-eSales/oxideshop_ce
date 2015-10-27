@@ -27,5 +27,6 @@ namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
  */
 class Accessories2Article extends ImportObject
 {
-    protected $_sTableName = 'oxaccessoire2article';
+    /** @var string Database table name. */
+    protected $tableName = 'oxaccessoire2article';
 }

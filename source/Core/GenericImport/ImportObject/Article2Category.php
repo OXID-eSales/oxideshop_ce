@@ -27,9 +27,11 @@ namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
  */
 class Article2Category extends ImportObject
 {
-    protected $_sTableName = 'oxobject2category';
+    /** @var string Database table name. */
+    protected $tableName = 'oxobject2category';
 
-    protected $_aKeyFieldList = array(
+    /** @var array List of database key fields (i.e. oxid). */
+    protected $keyFieldList = array(
         'OXOBJECTID' => 'OXOBJECTID',
         'OXCATNID'   => 'OXCATNID',
         'OXSHOPID'   => 'OXSHOPID'
@@ -40,8 +42,6 @@ class Article2Category extends ImportObject
      */
     public function __construct()
     {
-        parent::__construct();
-
-        unset($this->_aKeyFieldList['OXSHOPID']);
+        unset($this->keyFieldList['OXSHOPID']);
     }
 }

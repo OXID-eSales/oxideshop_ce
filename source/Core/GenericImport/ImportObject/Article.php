@@ -23,6 +23,7 @@
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 use Exception;
+use oxArticle;
 use oxBase;
 use oxField;
 use oxUtilsObject;
@@ -32,14 +33,16 @@ $sArticleClass = oxUtilsObject::getInstance()->getClassName('oxArticle');
 class_alias($sArticleClass, 'oxArticle_parent');
 
 /**
- * Article class, used inside erp
- * includes variants loading disabling functionality
- * hotfixe for article long description saving (bug#0002741)
+ * Article class extension, used for import.
+ * Disables variants loading functionality.
+ * Adds hot fix for article long description saving.
+ *
+ * @mixin oxArticle
  */
-class oxArticle extends \oxArticle_parent
+class ArticleExtension extends \oxArticle_parent
 {
     /**
-     * disable variant loading
+     * Disable variant loading
      *
      * @var bool
      */
@@ -66,7 +69,7 @@ class oxArticle extends \oxArticle_parent
     }
 
     /**
-     * inserts article long description to artextends table
+     * Inserts article long description to artextends table
      */
     protected function _saveArtLongDesc()
     {
@@ -75,122 +78,116 @@ class oxArticle extends \oxArticle_parent
         }
 
 
-        $oArtExt = oxNew('oxi18n');
-        $oArtExt->setEnableMultilang(false);
-        $oArtExt->init('oxartextends');
-        $aObjFields = $oArtExt->_getAllFields(true);
-        if (!$oArtExt->load($this->getId())) {
-            $oArtExt->setId($this->getId());
+        $artExtends = oxNew('oxi18n');
+        $artExtends->setEnableMultilang(false);
+        $artExtends->init('oxartextends');
+
+        $artExtendsFields = $artExtends->_getAllFields(true);
+        if (!$artExtends->load($this->getId())) {
+            $artExtends->setId($this->getId());
         }
 
-        foreach ($aObjFields as $sKey => $sValue) {
-            if (preg_match('/^oxlongdesc(_(\d{1,2}))?$/', $sKey)) {
-                $sField = $this->_getFieldLongName($sKey);
-                if (isset($this->$sField)) {
-                    $sLongDesc = null;
-                    if ($this->$sField instanceof oxField) {
-                        $sLongDesc = $this->$sField->getRawValue();
-                    } elseif (is_object($this->$sField)) {
-                        $sLongDesc = $this->$sField->value;
+        foreach ($artExtendsFields as $key => $value) {
+            if (preg_match('/^oxlongdesc(_(\d{1,2}))?$/', $key)) {
+                $fieldName = $this->_getFieldLongName($key);
+                if (isset($this->$fieldName)) {
+                    $longDesc = null;
+                    if ($this->$fieldName instanceof oxField) {
+                        $longDesc = $this->$fieldName->getRawValue();
+                    } elseif (is_object($this->$fieldName)) {
+                        $longDesc = $this->$fieldName->value;
                     }
-                    if (isset($sLongDesc)) {
-                        $sAEField = $oArtExt->_getFieldLongName($sKey);
-                        $oArtExt->$sAEField = new oxField($sLongDesc, oxField::T_RAW);
+                    if (isset($longDesc)) {
+                        $sAEField = $artExtends->_getFieldLongName($key);
+                        $artExtends->$sAEField = new oxField($longDesc, oxField::T_RAW);
                     }
                 }
             }
         }
 
-        $oArtExt->save();
+        $artExtends->save();
     }
 }
-
 
 /**
  * article type subclass
  */
 class Article extends ImportObject
 {
-    /**
-     * class constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
+    /** @var string Database table name. */
+    protected $tableName = 'oxarticles';
 
-        $this->_sTableName = 'oxarticles';
-        $this->_sShopObjectName = '\OxidEsales\Eshop\Core\GenericImport\ImportObject\oxArticle';
-    }
+    /** @var string Shop object name. */
+    protected $shopObjectName = '\OxidEsales\Eshop\Core\GenericImport\ImportObject\ArticleExtension';
 
     /**
      * Imports article. Returns import status
      *
-     * @param array $aRow db row array
+     * @param array $data db row array
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    public function import($aRow)
+    public function import($data)
     {
-        if (isset($aRow['OXID'])) {
-            $this->_checkIDField($aRow['OXID']);
+        if (isset($data['OXID'])) {
+            $this->checkIdField($data['OXID']);
         }
 
-        return parent::import($aRow);
+        return parent::import($data);
     }
 
     /**
-     * issued before saving an object. can modify aData for saving
+     * Issued before saving an object.
+     * Can modify $data array before saving.
+     * Set default value of OXSTOCKFLAG to 1 according to eShop admin functionality.
      *
-     * @param oxBase $oShopObject         shop object
-     * @param array  $aData               data to prepare
-     * @param bool   $blAllowCustomShopId if allow custom shop id
+     * @param oxBase $shopObject        shop object
+     * @param array  $data              data to prepare
+     * @param bool   $allowCustomShopId if allow custom shop id
      *
      * @return array
      */
-    protected function _preAssignObject($oShopObject, $aData, $blAllowCustomShopId)
+    protected function preAssignObject($shopObject, $data, $allowCustomShopId)
     {
-        if (!isset($aData['OXSTOCKFLAG'])) {
-            if (!$aData['OXID'] || !$oShopObject->exists($aData['OXID'])) {
-                // default value is 1 according to eShop admin functionality
-                $aData['OXSTOCKFLAG'] = 1;
+        if (!isset($data['OXSTOCKFLAG'])) {
+            if (!$data['OXID'] || !$shopObject->exists($data['OXID'])) {
+                $data['OXSTOCKFLAG'] = 1;
             }
         }
 
-        $aData = parent::_preAssignObject($oShopObject, $aData, $blAllowCustomShopId);
+        $data = parent::preAssignObject($shopObject, $data, $allowCustomShopId);
 
-        return $aData;
+        return $data;
     }
 
     /**
-     * post saving hook. can finish transactions if needed or ajust related data
+     * Post saving hook. can finish transactions if needed or ajust related data
      *
-     * @param oxBase $oShopObject shop object
-     * @param array  $aData       data to save
+     * @param oxArticle $shopObject shop object
+     * @param array     $data       data to save
      *
      * @return mixed data to return
      */
-    protected function _postSaveObject($oShopObject, $aData)
+    protected function postSaveObject($shopObject, $data)
     {
-        $sOXID = $oShopObject->getId();
+        $articleId = $shopObject->getId();
+        $shopObject->onChange(null, $articleId, $articleId);
 
-        $oShopObject->onChange(null, $sOXID, $sOXID);
-
-        // returning ID on success
-        return $sOXID;
+        return $articleId;
     }
 
     /**
-     * Basic access check for writing data. For oxarticle we allow super admin to change
-     * subshop oxarticle fields discribed in config option aMultishopArticleFields.
+     * Basic access check for writing data. For oxArticle we allow super admin to change
+     * subshop oxArticle fields described in config option aMultishopArticleFields.
      *
-     * @param oxBase $oObj  loaded shop object
-     * @param array  $aData fields to be written, null for default
+     * @param oxArticle $shopObject Loaded shop object
+     * @param array     $data       Fields to be written, null for default
      *
      * @throws Exception on now access
      *
      * @return null
      */
-    public function checkWriteAccess($oObj, $aData = null)
+    public function checkWriteAccess($shopObject, $data = null)
     {
         return;
 

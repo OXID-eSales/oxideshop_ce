@@ -27,10 +27,11 @@ namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
  */
 class ScalePrice extends ImportObject
 {
-    protected $_sTableName = 'oxprice2article';
-    protected $_blRestrictedByShopId = true;
+    /** @var string Database table name. */
+    protected $tableName = 'oxprice2article';
 
-    protected $_aKeyFieldList = array(
+    /** @var array List of database key fields (i.e. oxid). */
+    protected $keyFieldList = array(
         'OXID' => 'OXID'
     );
 }

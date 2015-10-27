@@ -27,6 +27,6 @@ namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
  */
 class Article2Action extends ImportObject
 {
-    protected $_sTableName = 'oxactions2article';
-    protected $_blRestrictedByShopId = true;
+    /** @var string Database table name. */
+    protected $tableName = 'oxactions2article';
 }

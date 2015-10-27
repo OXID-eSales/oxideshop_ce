@@ -29,26 +29,29 @@ use oxBase;
  */
 class Category extends ImportObject
 {
-    protected $_sTableName = 'oxcategories';
-    protected $_sShopObjectName = 'oxcategory';
+    /** @var string Database table name. */
+    protected $tableName = 'oxcategories';
+
+    /** @var string Shop object name. */
+    protected $shopObjectName = 'oxcategory';
 
     /**
      * issued before saving an object. can modify aData for saving
      *
-     * @param oxBase $oShopObject         shop object
-     * @param array  $aData               data to prepare
-     * @param bool   $blAllowCustomShopId if allow custom shop id
+     * @param oxBase $shopObject         shop object
+     * @param array  $data               data to prepare
+     * @param bool   $allowCustomShopId if allow custom shop id
      *
      * @return array
      */
-    protected function _preAssignObject($oShopObject, $aData, $blAllowCustomShopId)
+    protected function preAssignObject($shopObject, $data, $allowCustomShopId)
     {
-        $aData = parent::_preAssignObject($oShopObject, $aData, $blAllowCustomShopId);
+        $data = parent::preAssignObject($shopObject, $data, $allowCustomShopId);
 
-        if (!$aData['OXPARENTID']) {
-            $aData['OXPARENTID'] = 'oxrootid';
+        if (!$data['OXPARENTID']) {
+            $data['OXPARENTID'] = 'oxrootid';
         }
 
-        return $aData;
+        return $data;
     }
 }

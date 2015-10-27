@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once 'oxerptype.php';
+namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
  * country erp type subclass
  */
-class oxERPType_Country extends oxERPType
+class Country extends ImportObject
 {
     protected $_sTableName = 'oxcountry';
     protected $_sShopObjectName = 'oxcountry';

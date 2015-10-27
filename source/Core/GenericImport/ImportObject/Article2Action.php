@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once 'oxerptype.php';
+namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
  * Article2Action type subclass
  */
-class oxERPType_Article2Action extends oxERPType
+class Article2Action extends ImportObject
 {
     protected $_sTableName = 'oxactions2article';
     protected $_blRestrictedByShopId = true;

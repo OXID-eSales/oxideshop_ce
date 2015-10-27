@@ -20,14 +20,13 @@
  * @version   OXID eShop CE
  */
 
-require_once 'oxerptype.php';
+namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
  * cross-selling erp type subclass
  */
-class oxERPType_Crossselling extends oxERPType
+class Crossselling extends ImportObject
 {
-
     protected $_sTableName = 'oxobject2article';
 
     protected $_aKeyFieldList = array(

@@ -24,7 +24,7 @@ namespace OxidEsales\Eshop\Core\GenericImport;
 
 use Exception;
 use oxDb;
-use oxERPType;
+use OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject;
 use oxRegistry;
 
 /**
@@ -41,7 +41,7 @@ class GenericImport
         'A' => 'Article',
         'K' => 'Category',
         'H' => 'Vendor',
-        'C' => 'CrossSelling',
+        'C' => 'Crossselling',
         'Z' => 'Accessories2Article',
         'T' => 'Article2Category',
         'I' => 'Article2Action',
@@ -139,7 +139,7 @@ class GenericImport
      *
      * @param string $type Import object type
      *
-     * @return oxERPType
+     * @return ImportObject
      */
     public function getImportObject($type)
     {
@@ -363,7 +363,7 @@ class GenericImport
     /**
      * Checks if user as sufficient rights
      *
-     * @param oxErpType $type          Data type object
+     * @param ImportObject $type          Data type object
      * @param boolean   $isWriteAction Check for write permissions
      *
      * @throws Exception
@@ -570,20 +570,16 @@ class GenericImport
      *
      * @throws Exception if no such import type prefix
      *
-     * @return \oxErpType
+     * @return ImportObject
      */
     protected function getInstanceOfType($type)
     {
-        $className = 'oxerptype_' . $type;
-        $fullPath = dirname(__FILE__) . '/objects/' . $className . '.php';
+        $className = __NAMESPACE__ . "\\ImportObject\\".$type;
 
-        if (!file_exists($fullPath)) {
-            throw new Exception("Type $type not supported in ERP interface!");
+        if (!class_exists($className)) {
+            throw new Exception("Class $className not supported in ERP interface!");
         }
 
-        include_once $fullPath;
-
-        //return new $sClassName;
-        return oxNew($className);
+        return new $className;
     }
 }

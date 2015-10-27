@@ -20,19 +20,23 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Eshop\Core\GenericImport;
+namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
-require_once 'oxerptype.php';
+use Exception;
+use oxBase;
+use oxField;
+use oxUtilsObject;
+use OxidEsales\Eshop\Core\GenericImport\GenericImport;
 
-$sArticleClass = oxUtilsObject::getInstance()->getClassName('oxarticle');
-class_alias($sArticleClass, 'oxErpArticle_parent');
+$sArticleClass = oxUtilsObject::getInstance()->getClassName('oxArticle');
+class_alias($sArticleClass, 'oxArticle_parent');
 
 /**
- * article class, used inside erp
+ * Article class, used inside erp
  * includes variants loading disabling functionality
  * hotfixe for article long description saving (bug#0002741)
  */
-class oxErpArticle extends oxErpArticle_parent
+class oxArticle extends \oxArticle_parent
 {
     /**
      * disable variant loading
@@ -105,7 +109,7 @@ class oxErpArticle extends oxErpArticle_parent
 /**
  * article type subclass
  */
-class oxERPType_Article extends oxERPType
+class Article extends ImportObject
 {
     /**
      * class constructor
@@ -115,7 +119,7 @@ class oxERPType_Article extends oxERPType
         parent::__construct();
 
         $this->_sTableName = 'oxarticles';
-        $this->_sShopObjectName = 'oxErpArticle';
+        $this->_sShopObjectName = '\OxidEsales\Eshop\Core\GenericImport\ImportObject\oxArticle';
     }
 
     /**
@@ -161,7 +165,7 @@ class oxERPType_Article extends oxERPType
      * post saving hook. can finish transactions if needed or ajust related data
      *
      * @param oxBase $oShopObject shop object
-     * @param data   $aData       data to save
+     * @param array  $aData       data to save
      *
      * @return mixed data to return
      */

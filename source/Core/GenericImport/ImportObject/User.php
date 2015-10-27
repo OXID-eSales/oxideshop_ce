@@ -20,16 +20,20 @@
  * @version   OXID eShop CE
  */
 
-require_once 'oxerptype.php';
+namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
+
+use Exception;
+use oxBase;
+use oxField;
+use oxRegistry;
 
 /**
  * user erp type subclass
  */
-class oxERPType_User extends oxERPType
+class User extends ImportObject
 {
     protected $_sTableName = 'oxuser';
     protected $_sShopObjectName = 'oxuser';
-
 
     /**
      * Imports user. Returns import status

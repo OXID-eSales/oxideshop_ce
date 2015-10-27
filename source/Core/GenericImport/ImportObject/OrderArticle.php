@@ -20,14 +20,17 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Eshop\Core\GenericImport;
+namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
-require_once 'oxerptype.php';
+use Exception;
+use oxBase;
+use OxidEsales\Eshop\Core\GenericImport\GenericImport;
+use oxRegistry;
 
 /**
  * Order Article erp type subclass
  */
-class oxERPType_OrderArticle extends oxERPType
+class OrderArticle extends ImportObject
 {
     protected $_sTableName = 'oxorderarticles';
     protected $_sShopObjectName = 'oxorderarticle';

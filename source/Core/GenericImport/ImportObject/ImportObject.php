@@ -20,16 +20,22 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
+
+use Exception;
+use oxBase;
+use oxDb;
+use oxI18n;
+use OxidEsales\Eshop\Core\GenericImport\GenericImport;
+use oxRegistry;
+use oxSystemComponentException;
+
 /**
  * main erp type superclass - includes methods abstraction and basic implementation
  * for all erp object types
  */
-class oxERPType
+class ImportObject
 {
-    const ERROR_USER_NO_RIGHTS = "Not sufficient rights to perform operation!";
-
-    public static $ERROR_WRONG_SHOPID = "Wrong shop id, operation not allowed!";
-
     protected $_sTableName = null;
     protected $_sFunctionSuffix = null;
     protected $_aFieldList = null;
@@ -249,7 +255,7 @@ class oxERPType
         return;
 
         if ($oObj->isDerived()) {
-            throw new Exception(oxERPBase::$ERROR_USER_NO_RIGHTS);
+            throw new Exception(GenericImport::ERROR_USER_NO_RIGHTS);
         }
     }
 
@@ -275,8 +281,6 @@ class oxERPType
      */
     public function getObjectForDeletion($sId)
     {
-        $myConfig = oxRegistry::getConfig();
-
         if (!isset($sId)) {
             throw new Exception("Missing ID!");
         }
@@ -392,7 +396,6 @@ class oxERPType
      */
     public function delete($sID)
     {
-        $myConfig = oxRegistry::getConfig();
         $oDb = oxDb::getDb();
         $sSql = "delete from " . $this->_sTableName . " where oxid = " . $oDb->quote($sID);
 
@@ -505,8 +508,6 @@ class oxERPType
      */
     public function getOxidFromKeyFields($aData)
     {
-        $myConfig = oxRegistry::getConfig();
-
         if (!is_array($this->getKeyFields())) {
             return null;
         }

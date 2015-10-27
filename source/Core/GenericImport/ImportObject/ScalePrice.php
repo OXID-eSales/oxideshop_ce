@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once 'oxerptype.php';
+namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
  * scaleprices erp type subclass
  */
-class oxERPType_ScalePrice extends oxERPType
+class ScalePrice extends ImportObject
 {
     protected $_sTableName = 'oxprice2article';
     protected $_blRestrictedByShopId = true;

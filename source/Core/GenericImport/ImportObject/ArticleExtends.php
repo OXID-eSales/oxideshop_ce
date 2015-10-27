@@ -20,24 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
-require_once 'oxerptype.php';
+use oxBase;
 
 /**
  * Article extends type subclass
  */
-class oxERPType_Artextends extends oxERPType
+class ArticleExtends extends ImportObject
 {
-    /**
-     * class constructor
-     *
-     * @return null
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->_sTableName = 'oxartextends';
-    }
+    protected $_sTableName = 'oxartextends';
 
     /**
      * prepares object for saving in shop
@@ -63,7 +55,7 @@ class oxERPType_Artextends extends oxERPType
      */
     public function saveObject($aData, $blAllowCustomShopId)
     {
-        $oShopObject = oxNew('oxi18n');
+        $oShopObject = oxNew('oxI18n');
         $oShopObject->init('oxartextends');
         $oShopObject->setLanguage(0);
         $oShopObject->setEnableMultilang(false);

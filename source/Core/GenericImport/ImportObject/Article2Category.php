@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once 'oxerptype.php';
+namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
  * article2category relation type subclass
  */
-class oxERPType_Article2Category extends oxERPType
+class Article2Category extends ImportObject
 {
     protected $_sTableName = 'oxobject2category';
 
@@ -40,6 +40,8 @@ class oxERPType_Article2Category extends oxERPType
      */
     public function __construct()
     {
+        parent::__construct();
+
         unset($this->_aKeyFieldList['OXSHOPID']);
     }
 }

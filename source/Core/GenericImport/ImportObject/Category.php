@@ -20,12 +20,14 @@
  * @version   OXID eShop CE
  */
 
-require_once 'oxerptype.php';
+namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
+
+use oxBase;
 
 /**
  * category type subclass
  */
-class oxERPType_Category extends oxERPType
+class Category extends ImportObject
 {
     protected $_sTableName = 'oxcategories';
     protected $_sShopObjectName = 'oxcategory';

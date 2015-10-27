@@ -20,13 +20,12 @@
  * @version   OXID eShop CE
  */
 
-
-require_once 'oxerptype.php';
+namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
 /**
- * Accessoire type subclass
+ * Accessories2Article type subclass
  */
-class oxERPType_Accessoire extends oxERPType
+class Accessories2Article extends ImportObject
 {
     protected $_sTableName = 'oxaccessoire2article';
 }

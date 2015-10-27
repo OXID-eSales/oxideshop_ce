@@ -35,9 +35,6 @@ class GenericImport
     const ERROR_USER_NO_RIGHTS = "Not sufficient rights to perform operation!";
     const ERROR_NO_INIT = "Init not executed, Access denied!";
 
-    /** @var string */
-    public static $MODE_IMPORT = "Import";
-
     /**
      * Import objects types
      *
@@ -144,6 +141,36 @@ class GenericImport
     protected $_aCsvFileFieldsOrder = array();
 
     /**
+     * Init ERP Framework parameters
+     * Creates Objects, checks Rights etc.
+     *
+     * @throws Exception
+     *
+     * @return boolean
+     */
+    public function init()
+    {
+        $myConfig = oxRegistry::getConfig();
+        $mySession = oxRegistry::getSession();
+        $oUser = oxNew('oxUser');
+        $oUser->loadAdminUser();
+
+        if (($oUser->oxuser__oxrights->value == "malladmin" || $oUser->oxuser__oxrights->value == $myConfig->getShopID())) {
+            $this->_sSID = $mySession->getId();
+            $this->_blInit = true;
+            $this->_iLanguage = oxRegistry::getLang()->getBaseLanguage();
+            $this->_sUserID = $oUser->getId();
+        } else {
+            //user does not have sufficient rights for shop
+            throw new Exception(self::ERROR_USER_NO_RIGHTS);
+        }
+
+        $this->_resetIdx();
+
+        return $this->_blInit;
+    }
+
+    /**
      * Get imort object according import type
      *
      * @param string $sType import object type
@@ -153,12 +180,14 @@ class GenericImport
     public function getImportObject($sType)
     {
         $this->_sImportTypePrefix = $sType;
+        $result = null;
         try {
             $sImportType = $this->_getImportType();
-
-            return $this->_getInstanceOfType($sImportType);
+            $result = $this->_getInstanceOfType($sImportType);
         } catch (Exception $e) {
         }
+
+        return $result;
     }
 
     /**
@@ -172,7 +201,7 @@ class GenericImport
     }
 
     /**
-     * Set CSV file comumns names
+     * Set CSV file columns names
      *
      * @param array $aCsvFields CSV fields
      */
@@ -225,7 +254,7 @@ class GenericImport
             }
 
             try {
-                $this->Import();
+                $this->import();
             } catch (Exception $ex) {
                 echo $ex->getMessage();
                 $this->_sReturn = 'ERPGENIMPORT_ERROR_DURING_IMPORT';
@@ -241,36 +270,6 @@ class GenericImport
     }
 
     /**
-     * Init ERP Framework parameters
-     * Creates Objects, checks Rights etc.
-     *
-     * @throws Exception
-     *
-     * @return boolean
-     */
-    public function init()
-    {
-        $myConfig = oxRegistry::getConfig();
-        $mySession = oxRegistry::getSession();
-        $oUser = oxNew('oxUser');
-        $oUser->loadAdminUser();
-
-        if (($oUser->oxuser__oxrights->value == "malladmin" || $oUser->oxuser__oxrights->value == $myConfig->getShopID())) {
-            $this->_sSID = $mySession->getId();
-            $this->_blInit = true;
-            $this->_iLanguage = oxRegistry::getLang()->getBaseLanguage();
-            $this->_sUserID = $oUser->getId();
-        } else {
-            //user does not have sufficient rights for shop
-            throw new Exception(self::ERROR_USER_NO_RIGHTS);
-        }
-
-        $this->_resetIdx();
-
-        return $this->_blInit;
-    }
-
-    /**
      * Performs import action
      */
     public function import()
@@ -281,6 +280,61 @@ class GenericImport
             while ($this->_importOne()) {
             }
         } while (!$this->_afterImport());
+    }
+
+    /**
+     * _aStatistics getter
+     *
+     * @return array
+     */
+    public function getStatistics()
+    {
+        return $this->statistics;
+    }
+
+    /**
+     * Returns import data cor current index
+     *
+     * @return mixed
+     */
+    public function getImportData()
+    {
+        return $this->_aData[$this->index];
+    }
+
+    /**
+     * Get successfully imported rows number
+     *
+     * @return int
+     */
+    public function getTotalImportedRowsNumber()
+    {
+        return $this->getImportedRowCount();
+    }
+
+    /** gets count of imported rows, total, during import
+     *
+     * @return int $_iImportedRowCount
+     */
+    public function getImportedRowCount()
+    {
+        return count($this->_aImportedIds);
+    }
+
+    /**
+     * Get allowed for import objects list
+     *
+     * @return array
+     */
+    public function getImportObjectsList()
+    {
+        $aList = array();
+        foreach ($this->_aObjects as $sKey => $sImportType) {
+            $oType = $this->_getInstanceOfType($sImportType);
+            $aList[$sKey] = $oType->getBaseTableName();
+        }
+
+        return $aList;
     }
 
     /**
@@ -318,13 +372,9 @@ class GenericImport
             $blImport = false;
 
             $sType = $this->_getImportType();
-            $sMode = $this->_getImportMode();
             $oType = $this->_getInstanceOfType($sType);
             $aData = $this->_modifyData($aData);
-
-            if ($sMode == self::$MODE_IMPORT) {
-                $aData = $oType->addImportData($aData);
-            }
+            $aData = $oType->addImportData($aData);
 
             try {
                 $this->_checkAccess($oType, true);
@@ -396,26 +446,6 @@ class GenericImport
     }
 
     /**
-     * _aStatistics getter
-     *
-     * @return array
-     */
-    public function getStatistics()
-    {
-        return $this->statistics;
-    }
-
-    /**
-     * Returns import data cor current index
-     *
-     * @return mixed
-     */
-    public function getImportData()
-    {
-        return $this->_aData[$this->index];
-    }
-
-    /**
      * Gets import object type according type prefix
      *
      * @throws Exception if no such import type prefix
@@ -431,16 +461,6 @@ class GenericImport
         } else {
             return $this->_aObjects[$sType];
         }
-    }
-
-    /**
-     * Gets import mode
-     *
-     * @return string
-     */
-    protected function _getImportMode()
-    {
-        return self::$MODE_IMPORT;
     }
 
     /**
@@ -460,7 +480,7 @@ class GenericImport
      *
      * @param mixed $key - given key
      */
-    public function setImportedIds($key)
+    protected function setImportedIds($key)
     {
         if (!array_key_exists($key, $this->_aImportedIds)) {
             $this->_aImportedIds[$key] = true;
@@ -578,41 +598,6 @@ class GenericImport
         } else {
             return $this->_sDefaultStringEncloser;
         }
-    }
-
-    /**
-     * Get successfully imported rows number
-     *
-     * @return int
-     */
-    public function getTotalImportedRowsNumber()
-    {
-        return $this->getImportedRowCount();
-    }
-
-    /** gets count of imported rows, total, during import
-     *
-     * @return int $_iImportedRowCount
-     */
-    public function getImportedRowCount()
-    {
-        return count($this->_aImportedIds);
-    }
-
-    /**
-     * Get allowed for import objects list
-     *
-     * @return array
-     */
-    public function getImportObjectsList()
-    {
-        $aList = array();
-        foreach ($this->_aObjects as $sKey => $sImportType) {
-            $oType = $this->_getInstanceOfType($sImportType);
-            $aList[$sKey] = $oType->getBaseTableName();
-        }
-
-        return $aList;
     }
 
     /**

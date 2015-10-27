@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\GenericImport;
+
 require_once 'oxerptype.php';
 
 $sArticleClass = oxUtilsObject::getInstance()->getClassName('oxarticle');

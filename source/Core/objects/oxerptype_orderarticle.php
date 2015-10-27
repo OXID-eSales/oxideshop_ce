@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\GenericImport;
+
 require_once 'oxerptype.php';
 
 /**
@@ -69,7 +71,7 @@ class oxERPType_OrderArticle extends oxERPType
         return;
 
         if ($oObj->oxorderarticles__oxordershopid->value != oxRegistry::getConfig()->getShopId()) {
-            throw new Exception(oxERPBase::$ERROR_USER_NO_RIGHTS);
+            throw new Exception(GenericImport::ERROR_USER_NO_RIGHTS);
         }
 
         parent::checkWriteAccess($oObj, $aData);

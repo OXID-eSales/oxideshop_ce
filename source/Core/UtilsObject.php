@@ -22,13 +22,16 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use oxBase;
 use oxFileCache;
 use oxModuleVariablesLocator;
 use oxShopIdCalculator;
 use oxSubShopSpecificFileCache;
 use oxModuleChainsGenerator;
+use oxSystemComponentException;
+use oxUtilsObject;
 use ReflectionClass;
-use oxDb;
+use ReflectionException;
 
 /**
  * Object Factory implementation (oxNew() method is implemented in this class).

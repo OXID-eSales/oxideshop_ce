@@ -23,11 +23,17 @@
 namespace OxidEsales\Eshop\Core;
 
 use Exception;
+use oxERPType;
 use oxRegistry;
 
+/**
+ * Class GenericImport
+ * @package OxidEsales\Eshop\Core
+ */
 class GenericImport
 {
     const ERROR_USER_NO_RIGHTS = "Not sufficient rights to perform operation!";
+    const ERROR_NO_INIT = "Init not executed, Access denied!";
 
     /** @var string */
     public static $MODE_IMPORT = "Import";
@@ -111,6 +117,11 @@ class GenericImport
 
     /** @var bool */
     protected $_blInit = false;
+
+    protected $_iLanguage = null;
+    protected $_sUserID = null;
+    //session id
+    protected $_sSID = null;
 
     /** @var array */
     public $statistics = array();
@@ -311,15 +322,14 @@ class GenericImport
             $oType = $this->_getInstanceOfType($sType);
             $aData = $this->_modifyData($aData);
 
-            // import now
-            $sFnc = '_' . $sMode . $oType->getFunctionSuffix();
-
             if ($sMode == self::$MODE_IMPORT) {
                 $aData = $oType->addImportData($aData);
             }
 
             try {
-                $iId = $this->$sFnc($oType, $aData);
+                $this->_checkAccess($oType, true);
+
+                $iId = $oType->import($aData);
                 if (!$iId) {
                     $blImport = false;
                 } else {
@@ -334,10 +344,26 @@ class GenericImport
             $this->statistics[$this->index] = array('r' => $blImport, 'm' => $sMessage);
 
         }
-        //hotfix #2428 MAFI
         $this->_nextIdx();
 
         return $blRet;
+    }
+
+    /**
+     * Checks if user as sufficient rights
+     *
+     * @param oxErpType $oType   data type object
+     * @param boolean   $blWrite check also for write access
+     */
+    protected function _checkAccess($oType, $blWrite)
+    {
+        $myConfig = oxRegistry::getConfig();
+        static $aAccessCache;
+
+        if (!$this->_blInit) {
+            throw new Exception(self::ERROR_NO_INIT);
+        }
+
     }
 
     /**

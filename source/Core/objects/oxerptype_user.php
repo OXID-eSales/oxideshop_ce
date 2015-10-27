@@ -30,6 +30,36 @@ class oxERPType_User extends oxERPType
     protected $_sTableName = 'oxuser';
     protected $_sShopObjectName = 'oxuser';
 
+
+    /**
+     * Imports user. Returns import status
+     *
+     * @param array $aRow db row array
+     *
+     * @return string $oxid on success, bool FALSE on failure
+     */
+    public function import($aRow)
+    {
+        // Special check for user
+        if (isset($aRow['OXUSERNAME'])) {
+            $sID = $aRow['OXID'];
+            $sUserName = $aRow['OXUSERNAME'];
+
+            $oUser = oxNew("oxuser", "core");
+            $oUser->oxuser__oxusername = new oxField($sUserName, oxField::T_RAW);
+
+            //If user exists with and modifies OXID, throw an axception
+            //throw new Exception( "USER {$sUserName} already exists!");
+            if ($oUser->exists($sID) && $sID != $oUser->getId()) {
+                throw new Exception("USER $sUserName already exists!");
+            }
+        }
+
+        $sResult = parent::import($aRow);
+
+        return $sResult;
+    }
+
     /**
      * returns SQL string for this type
      *

@@ -103,7 +103,6 @@ class GenImport_Main extends oxAdminDetails
             $navigationStep++;
         }
 
-
         $navigationStep = $this->_checkErrors($navigationStep);
 
         if ($navigationStep == 1) {

@@ -117,6 +117,22 @@ class oxERPType_Article extends oxERPType
     }
 
     /**
+     * Imports article. Returns import status
+     *
+     * @param array $aRow db row array
+     *
+     * @return string $oxid on success, bool FALSE on failure
+     */
+    public function import($aRow)
+    {
+        if (isset($aRow['OXID'])) {
+            $this->_checkIDField($aRow['OXID']);
+        }
+
+        return parent::import($aRow);
+    }
+
+    /**
      * issued before saving an object. can modify aData for saving
      *
      * @param oxBase $oShopObject         shop object

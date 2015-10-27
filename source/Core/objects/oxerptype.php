@@ -26,6 +26,7 @@
  */
 class oxERPType
 {
+    const ERROR_USER_NO_RIGHTS = "Not sufficient rights to perform operation!";
 
     public static $ERROR_WRONG_SHOPID = "Wrong shop id, operation not allowed!";
 
@@ -556,13 +557,6 @@ class oxERPType
      */
     protected function _preAssignObject($oShopObject, $aData, $blAllowCustomShopId)
     {
-        /*
-        if (isset($aData['OXSHOPID'])) {
-            $aData['OXSHOPID'] = 'oxbaseshop';
-        }
-
-        */
-
         if (isset($aData['OXSHOPID'])) {
             $aData['OXSHOPID'] = oxRegistry::getConfig()->getShopId();
         }
@@ -574,7 +568,7 @@ class oxERPType
         // null values support
         foreach ($aData as $key => $val) {
             if (!strlen((string) $val)) {
-                // oxbase whill quote it as string if db does not support null for this field
+                // oxbase will quote it as string if db does not support null for this field
                 $aData[$key] = null;
             }
         }
@@ -594,6 +588,32 @@ class oxERPType
     protected function _preSaveObject($oShopObject, $aData)
     {
         return true;
+    }
+
+    /**
+     * Insert or Update a Row into database
+     *
+     * @param array $aData assoc. Array with fieldnames, values what should be stored in this table
+     *
+     * @return string | false
+     */
+    public function import($aData)
+    {
+        return $this->saveObject($aData, false);
+    }
+
+    /**
+     * Checks if id field is valid
+     *
+     * @param string $sID field check id
+     */
+    protected function _checkIDField($sID)
+    {
+        if (!isset($sID) || !$sID) {
+            throw new Exception("ERROR: Articlenumber/ID missing!");
+        } elseif (strlen($sID) > 32) {
+            throw new Exception("ERROR: Articlenumber/ID longer then allowed (32 chars max.)!");
+        }
     }
 
     /**

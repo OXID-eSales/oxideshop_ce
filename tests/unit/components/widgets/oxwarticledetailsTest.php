@@ -202,7 +202,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
         $sSelect = "select oxvalue from oxobject2attribute where oxattrid = '$sID' and oxobjectid = '$sArtID'";
         $sExpectedValue = oxDb::getDB()->getOne($sSelect);
         $aAttrList = $oDetails->getAttributes();
-        $sAttribValue = $aAttrList[$sID]->oxobject2attribute__oxvalue->value;
+        $sAttribValue = $aAttrList[$sID]->value;
         $this->assertEquals($sExpectedValue, $sAttribValue);
     }
 

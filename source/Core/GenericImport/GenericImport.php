@@ -54,7 +54,7 @@ class GenericImport
     );
 
     /** @var string Imported data array */
-    protected $importTypePrefix = null;
+    protected $importObjectType = null;
 
     /** @var array Imported data array */
     protected $data = array();
@@ -143,11 +143,11 @@ class GenericImport
      */
     public function getImportObject($type)
     {
-        $this->importTypePrefix = $type;
+        $this->importObjectType = $type;
         $result = null;
         try {
-            $importType = $this->_getImportType();
-            $result = $this->getInstanceOfType($importType);
+            $importType = $this->getImportType();
+            $result = $this->createImportObject($importType);
         } catch (Exception $e) {
         }
 
@@ -159,9 +159,9 @@ class GenericImport
      *
      * @param string $type import type prefix
      */
-    public function setImportTypePrefix($type)
+    public function setImportObjectType($type)
     {
-        $this->importTypePrefix = $type;
+        $this->importObjectType = $type;
     }
 
     /**
@@ -238,7 +238,7 @@ class GenericImport
 
         do {
             while ($this->importOne()) {
-                // import data
+                // importing data
             }
         } while (!$this->afterImport());
     }
@@ -264,7 +264,7 @@ class GenericImport
     }
 
     /**
-     * Get successfully imported rows number
+     * Returns successfully imported rows number
      *
      * @return int
      */
@@ -273,7 +273,7 @@ class GenericImport
         return $this->getImportedRowCount();
     }
 
-    /** gets count of imported rows, total, during import
+    /** Returns count of imported rows, total, during import
      *
      * @return int $_iImportedRowCount
      */
@@ -283,7 +283,7 @@ class GenericImport
     }
 
     /**
-     * Get allowed for import objects list
+     * Returns allowed for import objects list
      *
      * @return array
      */
@@ -291,7 +291,7 @@ class GenericImport
     {
         $importObjects = array();
         foreach ($this->objects as $sKey => $importType) {
-            $type = $this->getInstanceOfType($importType);
+            $type = $this->createImportObject($importType);
             $importObjects[$sKey] = $type->getBaseTableName();
         }
 
@@ -332,15 +332,15 @@ class GenericImport
             $result = true;
             $success = false;
 
-            $typeName = $this->_getImportType();
-            $type = $this->getInstanceOfType($typeName);
+            $type = $this->getImportType();
+            $importObject = $this->createImportObject($type);
             $importData = $this->modifyData($importData);
-            $importData = $type->addImportData($importData);
+            $importData = $importObject->addImportData($importData);
 
             try {
-                $this->checkAccess($type, true);
+                $this->checkAccess($importObject, true);
 
-                $id = $type->import($importData);
+                $id = $importObject->import($importData);
                 if (!$id) {
                     $success = false;
                 } else {
@@ -363,12 +363,12 @@ class GenericImport
     /**
      * Checks if user as sufficient rights
      *
-     * @param ImportObject $type          Data type object
-     * @param boolean   $isWriteAction Check for write permissions
+     * @param ImportObject $importObject  Data type object
+     * @param boolean      $isWriteAction Check for write permissions
      *
      * @throws Exception
      */
-    protected function checkAccess($type, $isWriteAction)
+    protected function checkAccess($importObject, $isWriteAction)
     {
         $config = oxRegistry::getConfig();
         static $accessCache;
@@ -415,9 +415,9 @@ class GenericImport
      *
      * @return string
      */
-    protected function _getImportType()
+    protected function getImportType()
     {
-        $type = $this->importTypePrefix;
+        $type = $this->importObjectType;
 
         if (strlen($type) != 1 || !array_key_exists($type, $this->objects)) {
             throw new Exception("Error unknown command: " . $type);
@@ -572,7 +572,7 @@ class GenericImport
      *
      * @return ImportObject
      */
-    protected function getInstanceOfType($type)
+    protected function createImportObject($type)
     {
         $className = __NAMESPACE__ . "\\ImportObject\\".$type;
         if (!class_exists($className)) {

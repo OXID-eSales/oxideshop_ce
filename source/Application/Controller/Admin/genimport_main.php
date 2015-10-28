@@ -142,8 +142,8 @@ class GenImport_Main extends oxAdminDetails
             $csvFields = $config->getRequestParameter('aCsvFields');
             $type = $config->getRequestParameter('sType');
 
-            $oErpImport = new OxidEsales\Eshop\Core\GenericImport();
-            $oErpImport->setImportTypePrefix($type);
+            $oErpImport = new OxidEsales\Eshop\Core\GenericImport\GenericImport();
+            $oErpImport->setImportObjectType($type);
             $oErpImport->setCsvFileFieldsOrder($csvFields);
             $oErpImport->setCsvContainsHeader(oxRegistry::getSession()->getVariable('blCsvContainsHeader'));
 

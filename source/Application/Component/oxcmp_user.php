@@ -554,8 +554,6 @@ class oxcmp_user extends oxView
      */
     protected function configureUserBeforeCreation($user)
     {
-        $user->setUseMaster();
-
         return $user;
     }
 

@@ -54,10 +54,7 @@ class GenericImport
     );
 
     /** @var string Imported data array */
-    protected $importObjectType = null;
-
-    /** @var array Imported data array */
-    protected $data = array();
+    protected $importType = null;
 
     /** @var array Imported id array */
     protected $importedIds = array();
@@ -81,22 +78,13 @@ class GenericImport
     protected $isInitialized = false;
 
     /** @var int */
-    protected $languageId = null;
-
-    /** @var int */
     protected $userId = null;
 
-    /** @var string */
-    protected $sessionId = null;
-
     /** @var array */
-    public $statistics = array();
+    protected $statistics = array();
 
-    /** @var int */
-    public $index = 0;
-
-    /** @var int Count of import rows. */
-    protected $retryRows = 0;
+    /** @var bool Whether import was retried. */
+    protected $retried = false;
 
     /** @var array CSV file fields array. */
     protected $csvFileFieldsOrder = array();
@@ -115,21 +103,16 @@ class GenericImport
     public function init()
     {
         $config = oxRegistry::getConfig();
-        $session = oxRegistry::getSession();
         $user = oxNew('oxUser');
         $user->loadAdminUser();
 
         if (($user->oxuser__oxrights->value == "malladmin" || $user->oxuser__oxrights->value == $config->getShopId())) {
-            $this->sessionId = $session->getId();
             $this->isInitialized = true;
-            $this->languageId = oxRegistry::getLang()->getBaseLanguage();
             $this->userId = $user->getId();
         } else {
             //user does not have sufficient rights for shop
             throw new Exception(self::ERROR_USER_NO_RIGHTS);
         }
-
-        $this->resetIndex();
 
         return $this->isInitialized;
     }
@@ -143,7 +126,7 @@ class GenericImport
      */
     public function getImportObject($type)
     {
-        $this->importObjectType = $type;
+        $this->importType = $type;
         $result = null;
         try {
             $importType = $this->getImportType();
@@ -159,9 +142,9 @@ class GenericImport
      *
      * @param string $type import type prefix
      */
-    public function setImportObjectType($type)
+    public function setImportType($type)
     {
-        $this->importObjectType = $type;
+        $this->importType = $type;
     }
 
     /**
@@ -190,7 +173,7 @@ class GenericImport
      *
      * @return string
      */
-    public function doImport($importFilePath = null)
+    public function importFile($importFilePath = null)
     {
         $this->returnMessage = "";
         $this->importFilePath = $importFilePath;
@@ -205,17 +188,17 @@ class GenericImport
         $file = @fopen($this->importFilePath, "r");
 
         if (isset($file) && $file) {
+            $data = array();
             while (($row = fgetcsv($file, $this->maxLineLength, $this->getCsvFieldsTerminator(), $this->getCsvFieldsEncolser())) !== false) {
-                $this->data[] = $row;
+                $data[] = $this->csvTextConvert($row, false);
             }
 
             if ($this->csvContainsHeader) {
-                //skipping first row - it's header
-                array_shift($this->data);
+                array_shift($data);
             }
 
             try {
-                $this->import();
+                $this->importData($data);
             } catch (Exception $ex) {
                 echo $ex->getMessage();
                 $this->returnMessage = 'ERPGENIMPORT_ERROR_DURING_IMPORT';
@@ -231,16 +214,26 @@ class GenericImport
 
     /**
      * Performs import action
+     *
+     * @param array $data
      */
-    public function import()
+    public function importData($data)
     {
-        $this->beforeImport();
+        foreach ($data as $key => $row) {
+            if ($row) {
+                try {
+                    $success = $this->importOne($row);
+                    $errorMessage = '';
+                } catch (Exception $e) {
+                    $success = false;
+                    $errorMessage = $e->getMessage();
+                }
 
-        do {
-            while ($this->importOne()) {
-                // importing data
+                $this->statistics[$key] = array('r' => $success, 'm' => $errorMessage);
             }
-        } while (!$this->afterImport());
+        }
+
+        $this->afterImport($data);
     }
 
     /**
@@ -251,26 +244,6 @@ class GenericImport
     public function getStatistics()
     {
         return $this->statistics;
-    }
-
-    /**
-     * Returns import data cor current index
-     *
-     * @return mixed
-     */
-    public function getImportData()
-    {
-        return $this->data[$this->index];
-    }
-
-    /**
-     * Returns successfully imported rows number
-     *
-     * @return int
-     */
-    public function getTotalImportedRowsNumber()
-    {
-        return $this->getImportedRowCount();
     }
 
     /** Returns count of imported rows, total, during import
@@ -299,19 +272,6 @@ class GenericImport
     }
 
     /**
-     * Performs before import actions
-     */
-    protected function beforeImport()
-    {
-        if (!$this->retryRows) {
-            //convert all text
-            foreach ($this->data as $key => $value) {
-                $this->data[$key] = $this->csvTextConvert($value, false);
-            }
-        }
-    }
-
-    /**
      * Main Import Handler, imports one row/call/object...
      * returns true if there were any data processed, and
      * master loop should run import again.
@@ -319,93 +279,50 @@ class GenericImport
      * after importing, fills $this->_aStatistics[$this->_iIdx] with array
      * of r=>(boolean)result, m=>(string)error message
      *
-     * @return boolean
-     */
-    protected function importOne()
-    {
-        $result = false;
-
-        // import one row/call/object...
-        $importData = $this->getImportData();
-
-        if ($importData) {
-            $result = true;
-            $success = false;
-
-            $type = $this->getImportType();
-            $importObject = $this->createImportObject($type);
-            $importData = $this->modifyData($importData);
-            $importData = $importObject->addImportData($importData);
-
-            try {
-                $this->checkAccess($importObject, true);
-
-                $id = $importObject->import($importData);
-                if (!$id) {
-                    $success = false;
-                } else {
-                    $this->setImportedIds($id);
-                    $success = true;
-                }
-                $errorMessage = '';
-            } catch (Exception $e) {
-                $errorMessage = $e->getMessage();
-            }
-
-            $this->statistics[$this->index] = array('r' => $success, 'm' => $errorMessage);
-
-        }
-        $this->nextIndex();
-
-        return $result;
-    }
-
-    /**
-     * Checks if user as sufficient rights
-     *
-     * @param ImportObject $importObject  Data type object
-     * @param boolean      $isWriteAction Check for write permissions
-     *
-     * @throws Exception
-     */
-    protected function checkAccess($importObject, $isWriteAction)
-    {
-        $config = oxRegistry::getConfig();
-        static $accessCache;
-
-        if (!$this->isInitialized) {
-            throw new Exception(self::ERROR_NO_INIT);
-        }
-
-    }
-
-    /**
-     * Performs after import actions
+     * @param array $data
      *
      * @return bool
      */
-    protected function afterImport()
+    protected function importOne($data)
     {
-        //check if there have been no errors or failures
-        $statistics = $this->getStatistics();
-        $retryRows = 0;
+        $type = $this->getImportType();
+        $importObject = $this->createImportObject($type);
+        $data = $this->mapFields($data);
 
+        $this->checkAccess($importObject, true);
+
+        $id = $importObject->import($data);
+        if ($id) {
+            $this->addImportedId($id);
+        }
+
+        return (bool) $id;
+    }
+
+    /**
+     * Performs after import actions.
+     * If any error occurred during import tries to run import again and marks retried as true.
+     * If after running import second time all of the records failed, stops.
+     *
+     * @param array $data
+     */
+    protected function afterImport($data)
+    {
+        $statistics = $this->getStatistics();
+
+        $dataForRetry = array();
         foreach ($statistics as $key => $value) {
             if ($value['r'] == false) {
-                $retryRows++;
                 $this->returnMessage .= "File[" . $this->importFilePath . "] - dataset number: $key - Error: " . $value['m'] . " ---<br> " . PHP_EOL;
+                $dataForRetry[$key] = $data[$key];
             }
         }
 
-        if ($retryRows != $this->retryRows && $retryRows > 0) {
-            $this->resetIndex();
-            $this->retryRows = $retryRows;
+        if (!empty($dataForRetry) && (!$this->retried || count($dataForRetry) != count($data))) {
+            $this->retried = true;
             $this->returnMessage = '';
-
-            return false;
+            $this->importData($dataForRetry);
         }
-
-        return true;
     }
 
     /**
@@ -417,7 +334,7 @@ class GenericImport
      */
     protected function getImportType()
     {
-        $type = $this->importObjectType;
+        $type = $this->importType;
 
         if (strlen($type) != 1 || !array_key_exists($type, $this->objects)) {
             throw new Exception("Error unknown command: " . $type);
@@ -426,41 +343,14 @@ class GenericImport
         }
     }
 
-    /**
-     * Modifies data before import. Calls method for object fields
-     * and csv data mapping.
-     *
-     * @param array $data CSV data
-     *
-     * @return array
-     */
-    protected function modifyData($data)
-    {
-        return $this->mapFields($data);
-    }
-
     /** adds true to $_aImportedIds where key is given
      *
-     * @param mixed $key - given key
+     * @param mixed $id - given key
      */
-    protected function setImportedIds($key)
+    protected function addImportedId($id)
     {
-        if (!array_key_exists($key, $this->importedIds)) {
-            $this->importedIds[$key] = true;
-        }
-    }
-
-    /**
-     * Increase import counter, if retry is detected, only failed imports are repeated
-     */
-    protected function nextIndex()
-    {
-        $this->index++;
-
-        if (count($this->statistics) && isset($this->statistics[$this->index])) {
-            while (isset($this->statistics[$this->index]) && $this->statistics[$this->index]['r']) {
-                $this->index++;
-            }
+        if (!array_key_exists($id, $this->importedIds)) {
+            $this->importedIds[$id] = true;
         }
     }
 
@@ -513,20 +403,6 @@ class GenericImport
     }
 
     /**
-     * Reset import counter, if retry is detected, only failed imports are repeated
-     */
-    protected function resetIndex()
-    {
-        $this->index = 0;
-
-        if (count($this->statistics) && isset($this->statistics[$this->index])) {
-            while (isset($this->statistics[$this->index]) && $this->statistics[$this->index]['r']) {
-                $this->index++;
-            }
-        }
-    }
-
-    /**
      * Set csv field terminator symbol
      *
      * @return string
@@ -561,6 +437,25 @@ class GenericImport
         } else {
             return $this->defaultStringEncloser;
         }
+    }
+
+    /**
+     * Checks if user has sufficient rights
+     *
+     * @param ImportObject $importObject  Data type object
+     * @param boolean      $isWriteAction Check for write permissions
+     *
+     * @throws Exception
+     */
+    protected function checkAccess($importObject, $isWriteAction)
+    {
+        $config = oxRegistry::getConfig();
+        static $accessCache;
+
+        if (!$this->isInitialized) {
+            throw new Exception(self::ERROR_NO_INIT);
+        }
+
     }
 
     /**

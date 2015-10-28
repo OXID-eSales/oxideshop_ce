@@ -109,20 +109,6 @@ abstract class ImportObject
     }
 
     /**
-     * Allows to modify data before import.
-     *
-     * @param array $fields initial data
-     *
-     * @see preAssignObject
-     *
-     * @return array
-     */
-    public function addImportData($fields)
-    {
-        return $fields;
-    }
-
-    /**
      * Used for the RR implementation, right now not really used.
      *
      * @return array

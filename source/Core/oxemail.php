@@ -31,7 +31,6 @@ require oxRegistry::getConfig()->getConfigParam('sCoreDir') . "/phpmailer/class.
  */
 class oxEmail extends PHPMailer
 {
-
     /**
      * Default Smtp server port
      *
@@ -279,12 +278,15 @@ class oxEmail extends PHPMailer
      */
     protected $_sCharSet = null;
 
+    /** @var oxConfig */
+    protected $_oConfig = null;
+
     /**
      * Class constructor.
      */
     public function __construct()
     {
-        //enabling exception handling in phpmailer class
+        //enabling exception handling in phpMailer class
         parent::__construct(true);
 
         $myConfig = $this->getConfig();
@@ -647,7 +649,7 @@ class oxEmail extends PHPMailer
     /**
      * Method is called when order email is sent to owner.
      *
-     * @param oxUser $user
+     * @param oxUser  $user
      * @param oxOrder $order
      */
     protected function onOrderEmailToOwnerSent($user, $order)
@@ -754,7 +756,6 @@ class oxEmail extends PHPMailer
 
         $sSelect = "select oxid from oxuser where $sWhere $sOrder";
         if (($sOxId = $oDb->getOne($sSelect))) {
-
             $oUser = oxNew('oxuser');
             if ($oUser->load($sOxId)) {
                 // create messages
@@ -1176,8 +1177,8 @@ class oxEmail extends PHPMailer
      * @param string $sEmailAddress Email address
      * @param string $sSubject      Email subject
      * @param string $sMessage      Email body message
-     * @param array  &$aStatus      Pointer to mailing status array
-     * @param array  &$aError       Pointer to error status array
+     * @param array  $aStatus       Pointer to mailing status array
+     * @param array  $aError        Pointer to error status array
      *
      * @return bool
      */
@@ -1304,18 +1305,13 @@ class oxEmail extends PHPMailer
      * Sets mailer additional settings and sends "WishlistMail" mail to user.
      * Returns true on success.
      *
-     * @param object $oParams Mailing parameters object
+     * @param oxUser|object $oParams Mailing parameters object
      *
      * @return bool
      */
     public function sendWishlistMail($oParams)
     {
-        $myConfig = $this->getConfig();
-
         $this->_clearMailer();
-
-        // shop info
-        $oShop = $this->_getShop();
 
         // mailer stuff
         $this->setFrom($oParams->send_email, $oParams->send_name);
@@ -1450,7 +1446,6 @@ class oxEmail extends PHPMailer
     {
         $sBody = $this->getBody();
         if (preg_match_all('/<\s*img\s+[^>]*?src[\s]*=[\s]*[\'"]?([^[\'">]]+|.*?)?[\'">]/i', $sBody, $matches, PREG_SET_ORDER)) {
-
             $oFileUtils = oxRegistry::get("oxUtilsFile");
             $blReSetBody = false;
 
@@ -1466,7 +1461,6 @@ class oxEmail extends PHPMailer
                 $oImgGenerator = oxNew("oxDynImgGenerator");
 
                 foreach ($matches as $aImage) {
-
                     $image = $aImage[1];
                     $sFileName = '';
                     if (strpos($image, $sDynImageDir) === 0) {
@@ -1677,21 +1671,26 @@ class oxEmail extends PHPMailer
     /**
      * Sets mail from address and name.
      *
+     * Preventing possible email spam over php mail() exploit (http://www.securephpwiki.com/index.php/Email_Injection)
+     * this is simple but must work
+     *
      * @param string $sFromAddress email address
      * @param string $sFromName    user name
+     *
+     * @return bool
      */
     public function setFrom($sFromAddress, $sFromName = null)
     {
-        // preventing possible email spam over php mail() exploit (http://www.securephpwiki.com/index.php/Email_Injection)
-        // this is simple but must work
-        // Task #1532 field "From" in emails from shops
         $sFromAddress = substr($sFromAddress, 0, 150);
         $sFromName = substr($sFromName, 0, 150);
 
+        $success = false;
         try {
-            parent::setFrom($sFromAddress, $sFromName);
+            $success = parent::setFrom($sFromAddress, $sFromName);
         } catch (Exception $oEx) {
         }
+
+        return $success;
     }
 
     /**
@@ -1844,14 +1843,11 @@ class oxEmail extends PHPMailer
 
     /**
      * Clears all attachments from mail.
-     *
-     * @return null
      */
     public function clearAttachments()
     {
         $this->_aAttachments = array();
-
-        return parent::clearAttachments();
+        parent::clearAttachments();
     }
 
     /**
@@ -1861,12 +1857,12 @@ class oxEmail extends PHPMailer
      * @param string $sName  header name
      * @param string $sValue header value
      *
-     * @return null
+     * @return string|null
      */
     public function headerLine($sName, $sValue)
     {
         if (stripos($sName, 'X-') !== false) {
-            return;
+            return null;
         }
 
         return parent::headerLine($sName, $sValue);
@@ -1974,8 +1970,6 @@ class oxEmail extends PHPMailer
         $this->clearReplyTos();
         $this->clearAttachments();
 
-        //workaround for phpmailer as it doesn't cleanup as it should
-        $this->error_count = 0;
         $this->ErrorInfo = '';
     }
 
@@ -2186,7 +2180,7 @@ class oxEmail extends PHPMailer
      * Set view data to email view.
      *
      * @param string $sKey   key value
-     * @param object $sValue item value
+     * @param mixed  $sValue item value
      */
     public function setViewData($sKey, $sValue)
     {
@@ -2208,7 +2202,7 @@ class oxEmail extends PHPMailer
      *
      * @param string $sKey view data array key
      *
-     * @return misc
+     * @return mixed
      */
     public function getViewDataItem($sKey)
     {

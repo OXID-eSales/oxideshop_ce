@@ -31,6 +31,9 @@ DEFINE('ACTION_INSERT', 2);
 DEFINE('ACTION_UPDATE', 3);
 DEFINE('ACTION_UPDATE_STOCK', 4);
 
+use Exception;
+use object_ResultSet;
+use oxObjectException;
 use oxRegistry;
 use oxField;
 use oxDb;
@@ -285,9 +288,7 @@ class Base extends \oxSuperCfg
         // This part of the code is slow and normally is called before field cache is built.
         // Make sure it is not called after first page is loaded and cache data is fully built.
         if ($this->_blUseLazyLoading && stripos($variableName, $this->_sCoreTable . "__") === 0) {
-
             if ($this->getId()) {
-
                 //lazy load it
                 $fieldName = str_replace($this->_sCoreTable . '__', '', $variableName);
                 $cacheFieldName = strtoupper($fieldName);
@@ -299,7 +300,6 @@ class Base extends \oxSuperCfg
 
                 try {
                     if ($this->_aInnerLazyCache === null) {
-
                         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
                         $query = 'SELECT * FROM ' . $viewName . ' WHERE `oxid` = ' . $database->quote($id);
                         $queryResult = $database->select($query);
@@ -451,7 +451,7 @@ class Base extends \oxSuperCfg
     /**
      * Sets the names to main and view tables, loads metadata of each table.
      *
-     * @param string $tableName       Name of DB object table
+     * @param string $tableName      Name of DB object table
      * @param bool   $forceAllFields Forces initialisation of all fields overriding lazy loading functionality
      */
     public function init($tableName = null, $forceAllFields = false)
@@ -483,12 +483,6 @@ class Base extends \oxSuperCfg
 
         reset($dbRecord);
         while (list($name, $value) = each($dbRecord)) {
-
-            // patch for IIS
-            //TODO: test it on IIS do we still need it
-            //if( is_array($value) && count( $value) == 1)
-            //    $value = current( $value);
-
             $this->_setFieldData($name, $value);
         }
 
@@ -620,8 +614,8 @@ class Base extends \oxSuperCfg
     /**
      * Lazy loading cache key modifier.
      *
-     * @param string $cacheKey  cache  key
-     * @param bool   $override marker to force override cache key
+     * @param string $cacheKey Cache  key
+     * @param bool   $override Marker to force override cache key
      */
     public function modifyCacheKey($cacheKey, $override = false)
     {
@@ -667,7 +661,7 @@ class Base extends \oxSuperCfg
      *
      * @return bool
      */
-    public function isMultilang()
+    public function isMultiLang()
     {
         return false;
     }
@@ -750,12 +744,12 @@ class Base extends \oxSuperCfg
      * Get record
      *
      * @param string $query
+     *
+     * @return mixed|Object_ResultSet
      */
     protected function getRecordByQuery($query)
     {
-        $record = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->select($query);
-
-        return $record;
+        return oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->select($query);
     }
 
     /**
@@ -808,16 +802,8 @@ class Base extends \oxSuperCfg
      */
     public function delete($oxid = null)
     {
-        if (!$oxid) {
-            $oxid = $this->getId();
-
-            //do not allow derived deletion
-            if (!$this->allowDerivedDelete()) {
-                return false;
-            }
-        }
-
-        if (!$oxid) {
+        $oxid = $oxid ? : $this->getId();
+        if (!$oxid || !$this->allowDerivedDelete()) {
             return false;
         }
 
@@ -952,7 +938,6 @@ class Base extends \oxSuperCfg
 
         // has 'activefrom'/'activeto' fields ?
         if (isset($this->_aFieldNames['oxactivefrom']) && isset($this->_aFieldNames['oxactiveto'])) {
-
             $sDate = date('Y-m-d H:i:s', oxRegistry::get('oxUtilsDate')->getTime());
 
             $query = $query ? " $query or " : '';
@@ -1020,7 +1005,7 @@ class Base extends \oxSuperCfg
      * This method is slow and normally is called before field cache is built.
      * Make sure it is not called after first page is loaded and cache data is fully built (until tmp dir is cleaned).
      *
-     * @param string $table         table name
+     * @param string $table             Table name
      * @param bool   $returnSimpleArray Set $returnSimple to true when you need simple array (meta data array is returned otherwise)
      *
      * @return array
@@ -1180,8 +1165,8 @@ class Base extends \oxSuperCfg
      *
      * @param string $fieldName   Field name
      * @param int    $fieldStatus Field name status. In derived classes it indicates multi language status.
-     * @param string $type   Field type
-     * @param string $length Field Length
+     * @param string $type        Field type
+     * @param string $length      Field Length
      *
      * @return null
      */
@@ -1242,23 +1227,20 @@ class Base extends \oxSuperCfg
     /**
      * Sets data field value
      *
-     * @param string $fieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
-     * @param string $fieldValue     value of data field
-     * @param int    $dataType  field type
-     *
-     * @return null
+     * @param string $fieldName  Index OR name (eg. 'oxarticles__oxtitle') of a data field to set
+     * @param string $fieldValue Value of data field
+     * @param int    $dataType   Field type
      */
     protected function _setFieldData($fieldName, $fieldValue, $dataType = oxField::T_TEXT)
     {
         $sLongFieldName = $this->_getFieldLongName($fieldName);
         //$sLongFieldName = $this->_sCoreTable . "__" . strtolower($sFieldName);
 
-        //T2008-03-14
-        //doing this because in lazy loaded lists on first load it is harmful to have initialised fields but not yet set
-        //situation: only first article is loaded fully for "select oxid from oxarticles"
-        /*
-        if ($this->_blUseLazyLoading && !isset($this->$sLongFieldName))
-            return;*/
+        // doing this because in lazy loaded lists on first load it is harmful to have initialised fields but not yet set
+        // situation: only first article is loaded fully for "select oxid from oxarticles"
+        //if ($this->_blUseLazyLoading && !isset($this->$sLongFieldName))
+        //    return;
+
 
         //in non lazy loading case we just add a field and do not care about it more
         if (!$this->_blUseLazyLoading && !isset($this->$sLongFieldName)) {
@@ -1278,7 +1260,6 @@ class Base extends \oxSuperCfg
         } else {
             $this->$sLongFieldName = new oxField($fieldValue, $dataType);
         }
-
     }
 
     /**
@@ -1394,7 +1375,7 @@ class Base extends \oxSuperCfg
     /**
      * Update this Object into the database, this function only works on
      * the main table, it will not save any dependent tables, which might
-     * be loaded through oxlist.
+     * be loaded through oxList.
      *
      * @throws oxObjectException Throws on failure inserting
      *
@@ -1408,9 +1389,6 @@ class Base extends \oxSuperCfg
         }
 
         if (!$this->getId()) {
-            /**
-             * @var oxObjectException $exception
-             */
             $exception = oxNew('oxObjectException');
             $exception->setMessage('EXCEPTION_OBJECT_OXIDNOTSET');
             $exception->setObject($this);
@@ -1425,7 +1403,6 @@ class Base extends \oxSuperCfg
         $updateQuery = "update {$coreTableName} set " . $this->_getUpdateFields()
                    . " where {$coreTableName}.oxid = " . $database->quote($this->getId());
 
-        //trigger event
         $this->beforeUpdate();
 
         $result = (bool) $database->execute($updateQuery);
@@ -1455,7 +1432,6 @@ class Base extends \oxSuperCfg
         $this->$idKey = new oxField($this->getId(), oxField::T_RAW);
         $insertSql = "Insert into {$this->getCoreTableName()} set ";
 
-        //setting oxshopid
         $shopIdField = $myUtils->getArrFldName($this->getCoreTableName() . '.oxshopid');
 
         if (isset($this->$shopIdField) && !$this->$shopIdField->value) {

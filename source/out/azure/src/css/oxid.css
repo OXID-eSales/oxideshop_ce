@@ -250,7 +250,7 @@ div.sidebarRight #sidebar {
     border-radius: 4px;
 }
 
-.input, .textbox, .pager .active, .lineBox, .areabox, input[type="text"] {
+.input, .textbox, .pager .active, .lineBox, .areabox, input[type="text"], input[type="email"] {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     -khtml-border-radius: 2px;
@@ -1052,7 +1052,7 @@ a.viewAllHover,
     border: none;
 }
 
-.textbox, input[type="text"] {
+.textbox, input[type="text"], input[type="email"] {
     border: 1px solid #8c8989;
     background: #fff;
     padding: 1px 5px;
@@ -3951,7 +3951,8 @@ dl.review .param {
 }
 
 .form input[type="password"],
-.form input[type="text"] {
+.form input[type="text"],
+.form input[type="email"] {
     width: 190px;
 }
 

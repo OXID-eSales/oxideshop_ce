@@ -35,7 +35,7 @@
                     [{oxscript include="js/widgets/oxinnerlabel.js" priority=10 }]
                     [{oxscript add="$( '#loginEmail' ).oxInnerLabel();"}]
                     <label for="loginEmail" class="innerLabel">[{ oxmultilang ident="EMAIL_ADDRESS" }]</label>
-                    <input id="loginEmail" type="text" name="lgn_usr" value="" class="textbox">
+                    <input id="loginEmail" type="email" name="lgn_usr" value="" class="textbox">
                 </p>
                 <p>
                     [{oxscript add="$( '#loginPasword' ).oxInnerLabel();"}]

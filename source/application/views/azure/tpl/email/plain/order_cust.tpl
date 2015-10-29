@@ -41,8 +41,13 @@
 [{ /foreach }][{ /if }]
 [{ if $basketitem->getPersParams() }]
 [{ foreach key=sVar from=$basketitem->getPersParams() item=aParam }]
+[{*---------------------------------------------------------------------------------------------*}]
+[{*
 
 [{ $sVar }] : [{ $aParam }]
+*}]
+[{include file="custom/persparams_output.tpl" sPersParamKey=$sVar sPersParamValue=$aParam tpl="email_plain_order_cust" }]
+[{*---------------------------------------------------------------------------------------------*}]
 [{ /foreach }]
 [{ /if }]
 [{ if $oViewConf->getShowGiftWrapping() }]

@@ -65,7 +65,12 @@
                                     [{/if}]
                                     [{if $basketitem->getPersParams() }]
                                     [{foreach key=sVar from=$basketitem->getPersParams() item=aParam}]
+[{*---------------------------------------------------------------------------------------------*}]
+[{*
                                     ,&nbsp;<em>[{$sVar}] : [{$aParam}]</em>
+*}]
+[{include file="custom/persparams_output.tpl" sPersParamKey=$sVar sPersParamValue=$aParam tpl="email_html_order_owner" }]
+[{*---------------------------------------------------------------------------------------------*}]
                                     [{/foreach}]
                                     [{/if}]
                                     <br>[{oxmultilang ident="PRODUCT_NO" suffix="COLON" }] [{ $basketproduct->oxarticles__oxartnum->value }]

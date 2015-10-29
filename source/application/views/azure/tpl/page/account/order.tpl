@@ -67,9 +67,14 @@
                                         [{ $orderitem->oxorderarticles__oxtitle->value }] [{ $orderitem->oxorderarticles__oxselvariant->value }] <span class="amount"> - [{ $orderitem->oxorderarticles__oxamount->value }] [{oxmultilang ident="QNT"}]</span>
                                     [{if $oArticle->oxarticles__oxid->value && $oArticle->isVisible() }]</a>[{/if}]
                                     [{foreach key=sVar from=$orderitem->getPersParams() item=aParam}]
+[{*---------------------------------------------------------------------------------------------*}]
+[{*
                                         [{if $aParam }]
                                         <br />[{ oxmultilang ident="DETAILS" suffix="COLON" }] [{$aParam}]
                                         [{/if}]
+*}]
+[{include file="custom/persparams_output.tpl" sPersParamKey=$sVar sPersParamValue=$aParam tpl="page_account_order" }]
+[{*---------------------------------------------------------------------------------------------*}]
                                     [{/foreach}]
                                   </td>
                                   <td class="small">

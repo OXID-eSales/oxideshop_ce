@@ -84,7 +84,12 @@
                             [{if $basketitem->getPersParams() }]
                                 <ul style="padding: 0 10px; margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
                                     [{foreach key=sVar from=$basketitem->getPersParams() item=aParam}]
+[{*---------------------------------------------------------------------------------------------*}]
+[{*
                                         <li style="padding: 3px;">[{$sVar}] : [{$aParam}]</li>
+*}]
+[{include file="custom/persparams_output.tpl" sPersParamKey=$sVar sPersParamValue=$aParam tpl="email_html_order_cust" }]
+[{*---------------------------------------------------------------------------------------------*}]
                                     [{/foreach}]
                                 </ul>
                             [{/if}]

@@ -13,7 +13,6 @@
          stopOnFailure="false"
          stopOnIncomplete="false"
          stopOnSkipped="false"
-         strict="false"
          verbose="false">
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">

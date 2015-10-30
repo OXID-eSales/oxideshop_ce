@@ -14,7 +14,6 @@
          stopOnIncomplete="false"
          stopOnSkipped="false"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
-         strict="false"
          verbose="false">
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">

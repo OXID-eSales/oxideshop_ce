@@ -3,28 +3,28 @@
     [{if $oView->showRDFa()}]
         [{include file="rdfa/rdfa.tpl"}]
     [{/if}]
-    <div id="page" class="[{if $sidebar}] sidebar[{$sidebar}][{/if}]">
+    <div id="page"[{if $sidebar}] class="sidebar-[{$sidebar|lower}]"[{/if}]>
         [{block name="layout_header"}]
             [{include file="layout/header.tpl"}]
         [{/block}]
         [{if $oView->getClassName() ne "start" && !$blHideBreadcrumb}]
-        [{block name="layout_breadcrumb"}]
-           [{include file="widget/breadcrumb.tpl"}]
-        [{/block}]
+            [{block name="layout_breadcrumb"}]
+               [{include file="widget/breadcrumb.tpl"}]
+            [{/block}]
         [{/if}]
+        <div id="content">
+            [{block name="content_main"}]
+                [{include file="message/errors.tpl"}]
+                [{foreach from=$oxidBlock_content item="_block"}]
+                    [{$_block}]
+                [{/foreach}]
+            [{/block}]
+        </div>
         [{if $sidebar}]
             <div id="sidebar">
                 [{include file="layout/sidebar.tpl"}]
             </div>
         [{/if}]
-        <div id="content">
-        [{block name="content_main"}]
-            [{include file="message/errors.tpl"}]
-            [{foreach from=$oxidBlock_content item="_block"}]
-                [{$_block}]
-            [{/foreach}]
-        [{/block}]
-        </div>
         [{include file="layout/footer.tpl"}]
     </div>
     [{include file="widget/facebook/init.tpl"}]

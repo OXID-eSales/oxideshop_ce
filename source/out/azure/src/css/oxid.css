@@ -154,32 +154,43 @@ form li {
     position: relative;
 }
 
+/*
+ * Content First Layout:
+ * To load content first, floating must be reversed.
+ */
+
 #sidebar {
     margin-top: 0;
     width: 172px;
-    float: left;
 }
 
 #content {
-    width: 940px;
+    float: left;
     margin: 0 10px;
     padding-bottom: 10px;
-    float: left;
+    width: 940px;
 }
 
-div.sidebarLeft #content, div.sidebarRight #content {
+.sidebar-left #content,
+.sidebar-right #content {
     width: 748px;
 }
 
-div.sidebarRight #sidebar {
+.sidebar-left #content,
+.sidebar-left #sidebar {
     float: right;
+}
+
+.sidebar-right #content,
+.sidebar-right #sidebar {
+    float: left;
 }
 
 #footer {
     clear: both;
-    width: 960px;
-    padding-top: 10px;
     margin: 10px 0;
+    padding-top: 10px;
+    width: 960px;
 }
 
 /* === FX Styles ====================================== */

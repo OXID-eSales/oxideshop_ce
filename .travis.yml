@@ -29,7 +29,7 @@ before_script:
   # apache setup (http://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP)
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   # enable php-fpm
-  - if [[ $(phpenv version-name) = 5.* ]]; then cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi;
+  - cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - if [[ $(phpenv version-name) = 7.* ]]; then cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf; fi;
   - sudo a2enmod rewrite actions fastcgi alias
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini

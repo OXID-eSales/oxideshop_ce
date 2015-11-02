@@ -38,7 +38,7 @@ class Article2Category extends ImportObject
     );
 
     /**
-     * class constructor
+     * Class constructor.
      */
     public function __construct()
     {

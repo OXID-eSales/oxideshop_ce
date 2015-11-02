@@ -65,7 +65,8 @@ class User extends ImportObject
     }
 
     /**
-     * Basic access check for writing data, checks for same shopid, should be overridden if field oxshopid does not exist
+     * Basic access check for writing data, checks for same shopid, should be overridden if field oxshopid does not
+     * exist.
      *
      * @param oxBase $shopObject Loaded shop object
      * @param array  $data       Fields to be written, null for default

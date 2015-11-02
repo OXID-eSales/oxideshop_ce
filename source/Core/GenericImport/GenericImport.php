@@ -28,20 +28,19 @@ use OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject;
 use oxRegistry;
 
 /**
- * Class GenericImport
- * @package OxidEsales\Eshop\Core
+ * Class responsible for generic import functionality.
  */
 class GenericImport
 {
-    const ERROR_USER_NO_RIGHTS = "Not sufficient rights to perform operation!";
-    const ERROR_NO_INIT = "Init not executed, Access denied!";
+    const ERROR_USER_NO_RIGHTS = 'Not sufficient rights to perform operation!';
+    const ERROR_NO_INIT = 'Init not executed, Access denied!';
 
-    /** @var array Import objects types */
+    /** @var array Import objects types. */
     protected $objects = array(
         'A' => 'Article',
         'K' => 'Category',
         'H' => 'Vendor',
-        'C' => 'Crossselling',
+        'C' => 'CrossSelling',
         'Z' => 'Accessories2Article',
         'T' => 'Article2Category',
         'I' => 'Article2Action',
@@ -53,17 +52,17 @@ class GenericImport
         'Y' => 'ArticleExtends',
     );
 
-    /** @var string Imported data array */
+    /** @var string Imported data array. */
     protected $importType = null;
 
     /** @var array Imported id array */
     protected $importedIds = array();
 
-    /** @var string Return message after import */
+    /** @var string Return message after import. */
     protected $returnMessage;
 
-    /** @var string Csv file field terminator */
-    protected $defaultStringTerminator = ";";
+    /** @var string Csv file field terminator. */
+    protected $defaultStringTerminator = ';';
 
     /** @var string Csv file field encloser. */
     protected $defaultStringEncloser = '"';
@@ -106,7 +105,7 @@ class GenericImport
         $user = oxNew('oxUser');
         $user->loadAdminUser();
 
-        if (($user->oxuser__oxrights->value == "malladmin" || $user->oxuser__oxrights->value == $config->getShopId())) {
+        if (($user->oxuser__oxrights->value == 'malladmin' || $user->oxuser__oxrights->value == $config->getShopId())) {
             $this->isInitialized = true;
             $this->userId = $user->getId();
         } else {
@@ -120,7 +119,7 @@ class GenericImport
     /**
      * Get import object according import type.
      *
-     * @param string $type Import object type
+     * @param string $type Import object type.
      *
      * @return ImportObject
      */
@@ -138,9 +137,9 @@ class GenericImport
     }
 
     /**
-     * Set import object type prefix
+     * Set import object type prefix.
      *
-     * @param string $type import type prefix
+     * @param string $type Import type prefix.
      */
     public function setImportType($type)
     {
@@ -148,9 +147,9 @@ class GenericImport
     }
 
     /**
-     * Set CSV file columns names
+     * Set CSV file columns names.
      *
-     * @param array $csvFields CSV fields
+     * @param array $csvFields CSV fields.
      */
     public function setCsvFileFieldsOrder($csvFields)
     {
@@ -158,24 +157,24 @@ class GenericImport
     }
 
     /**
-     * Set if CSV file contains header row
+     * Set if CSV file contains header row.
      *
-     * @param bool $csvContainsHeader whether imported file has a header row
+     * @param bool $csvContainsHeader Whether imported file has a header row.
      */
     public function setCsvContainsHeader($csvContainsHeader)
     {
         $this->csvContainsHeader = $csvContainsHeader;
     }
     /**
-     * Main import method, whole import of all types via a given csv file is done here
+     * Main import method, whole import of all types via a given csv file is done here.
      *
-     * @param string $importFilePath full path of the CSV file.
+     * @param string $importFilePath Full path of the CSV file.
      *
      * @return string
      */
     public function importFile($importFilePath = null)
     {
-        $this->returnMessage = "";
+        $this->returnMessage = '';
         $this->importFilePath = $importFilePath;
 
         //init with given data
@@ -185,7 +184,7 @@ class GenericImport
             return $this->returnMessage = 'ERPGENIMPORT_ERROR_USER_NO_RIGHTS';
         }
 
-        $file = @fopen($this->importFilePath, "r");
+        $file = @fopen($this->importFilePath, 'r');
 
         if (isset($file) && $file) {
             $data = array();
@@ -213,7 +212,7 @@ class GenericImport
     }
 
     /**
-     * Performs import action
+     * Performs import action.
      *
      * @param array $data
      */
@@ -246,7 +245,8 @@ class GenericImport
         return $this->statistics;
     }
 
-    /** Returns count of imported rows, total, during import
+    /**
+     * Returns count of imported rows, total, during import.
      *
      * @return int $_iImportedRowCount
      */
@@ -256,7 +256,7 @@ class GenericImport
     }
 
     /**
-     * Returns allowed for import objects list
+     * Returns allowed for import objects list.
      *
      * @return array
      */
@@ -326,7 +326,7 @@ class GenericImport
     }
 
     /**
-     * Gets import object type according type prefix
+     * Gets import object type according type prefix.
      *
      * @throws Exception if no such import type prefix
      *
@@ -337,13 +337,13 @@ class GenericImport
         $type = $this->importType;
 
         if (strlen($type) != 1 || !array_key_exists($type, $this->objects)) {
-            throw new Exception("Error unknown command: " . $type);
+            throw new Exception('Error unknown command: ' . $type);
         } else {
             return $this->objects[$type];
         }
     }
 
-    /** adds true to $_aImportedIds where key is given
+    /** Adds true to $_aImportedIds where key is given.
      *
      * @param mixed $id - given key
      */
@@ -368,7 +368,7 @@ class GenericImport
 
         foreach ($this->csvFileFieldsOrder as $value) {
             if (!empty($value)) {
-                if (strtolower($data[$index]) == "null") {
+                if (strtolower($data[$index]) == 'null') {
                     $result[$value] = null;
                 } else {
                     $result[$value] = $data[$index];
@@ -381,7 +381,7 @@ class GenericImport
     }
 
     /**
-     * parses and replaces special chars
+     * Parses and replaces special chars.
      *
      * @param string $text input text
      * @param bool   $mode true = Text2CSV, false = CSV2Text
@@ -403,7 +403,7 @@ class GenericImport
     }
 
     /**
-     * Set csv field terminator symbol
+     * Set csv field terminator symbol.
      *
      * @return string
      */
@@ -424,7 +424,7 @@ class GenericImport
     }
 
     /**
-     * Get csv field encloser symbol
+     * Get csv field encloser symbol.
      *
      * @return string
      */
@@ -440,7 +440,7 @@ class GenericImport
     }
 
     /**
-     * Checks if user has sufficient rights
+     * Checks if user has sufficient rights.
      *
      * @param ImportObject $importObject  Data type object
      * @param boolean      $isWriteAction Check for write permissions
@@ -461,9 +461,9 @@ class GenericImport
     /**
      * Creates and returns import object.
      *
-     * @param string $type type name in objects dir
+     * @param string $type Type name in objects dir.
      *
-     * @throws Exception if no such import type prefix
+     * @throws Exception if no such import type prefix.
      *
      * @return ImportObject
      */

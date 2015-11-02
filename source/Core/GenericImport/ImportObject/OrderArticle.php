@@ -39,7 +39,7 @@ class OrderArticle extends ImportObject
     protected $shopObjectName = 'oxorderarticle';
 
     /**
-     * Check for write access for id
+     * Check for write access for id.
      *
      * @param oxBase $shopObject Loaded shop object
      * @param array  $data       Fields to be written, null for default

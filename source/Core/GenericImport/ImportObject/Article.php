@@ -39,11 +39,11 @@ class Article extends ImportObject
     protected $shopObjectName = 'oxArticle';
 
     /**
-     * Imports article. Returns import status
+     * Imports article. Returns import status.
      *
-     * @param array $data db row array
+     * @param array $data DB row array.
      *
-     * @return string $oxid on success, bool FALSE on failure
+     * @return string $oxid Id on success, bool FALSE on failure.
      */
     public function import($data)
     {
@@ -79,10 +79,10 @@ class Article extends ImportObject
     }
 
     /**
-     * Post saving hook. can finish transactions if needed or ajust related data
+     * Post saving hook. can finish transactions if needed or ajust related data.
      *
-     * @param oxArticle $shopObject shop object
-     * @param array     $data       data to save
+     * @param oxArticle $shopObject Shop object.
+     * @param array     $data       Data to save.
      *
      * @return mixed data to return
      */

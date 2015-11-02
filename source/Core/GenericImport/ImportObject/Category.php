@@ -36,11 +36,11 @@ class Category extends ImportObject
     protected $shopObjectName = 'oxcategory';
 
     /**
-     * issued before saving an object. can modify aData for saving
+     * Issued before saving an object. can modify aData for saving.
      *
-     * @param oxBase $shopObject         shop object
-     * @param array  $data               data to prepare
-     * @param bool   $allowCustomShopId if allow custom shop id
+     * @param oxBase $shopObject        Shop object.
+     * @param array  $data              Data to prepare.
+     * @param bool   $allowCustomShopId If allow custom shop id.
      *
      * @return array
      */

@@ -47,7 +47,7 @@ abstract class ImportObject
     protected $shopObjectName = null;
 
     /**
-     * getter for _sTableName
+     * Getter for _sTableName
      *
      * @return string
      */
@@ -67,10 +67,11 @@ abstract class ImportObject
     }
 
     /**
-     * Basic access check for writing data, checks for same shopId, should be overridden if field oxshopid does not exist
+     * Basic access check for writing data, checks for same shopId, should be overridden if field oxshopid does not
+     * exist.
      *
-     * @param oxBase $shopObject Loaded shop object
-     * @param array  $data       Fields to be written, null for default
+     * @param oxBase $shopObject Loaded shop object.
+     * @param array  $data       Fields to be written, null for default.
      *
      * @throws Exception on now access
      *
@@ -128,7 +129,7 @@ abstract class ImportObject
     }
 
     /**
-     * Returns the predefined field list
+     * Returns the predefined field list.
      *
      * @return array
      */
@@ -157,7 +158,7 @@ abstract class ImportObject
     }
 
     /**
-     * Returns the keylist array
+     * Returns the keylist array.
      *
      * @return array
      */
@@ -167,7 +168,7 @@ abstract class ImportObject
     }
 
     /**
-     * getter for _sShopObjectName
+     * Getter for _sShopObjectName.
      *
      * @return string
      */
@@ -177,7 +178,7 @@ abstract class ImportObject
     }
 
     /**
-     * Returns table or View name
+     * Returns table or View name.
      *
      * @return string
      */
@@ -188,7 +189,7 @@ abstract class ImportObject
     }
 
     /**
-     * Issued before saving an object. can modify aData for saving
+     * Issued before saving an object. can modify aData for saving.
      *
      * @param oxBase $shopObject        shop object
      * @param array  $data              data to prepare
@@ -218,11 +219,11 @@ abstract class ImportObject
     }
 
     /**
-     * prepares object for saving in shop
-     * returns true if save can proceed further
+     * Prepares object for saving in shop.
+     * Returns true if save can proceed further.
      *
-     * @param oxBase $shopObject shop object
-     * @param array  $data       data for importing
+     * @param oxBase $shopObject Shop object.
+     * @param array  $data       Data for importing.
      *
      * @return boolean
      */
@@ -283,10 +284,10 @@ abstract class ImportObject
     }
 
     /**
-     * post saving hook. can finish transactions if needed or ajust related data
+     * Post saving hook. can finish transactions if needed or adjust related data.
      *
-     * @param oxBase $shopObject shop object
-     * @param array  $data       data to save
+     * @param oxBase $shopObject Shop object.
+     * @param array  $data       Data to save.
      *
      * @return mixed data to return
      */
@@ -297,9 +298,9 @@ abstract class ImportObject
     }
 
     /**
-     * Returns oxid of this data type from key fields
+     * Returns oxid of this data type from key fields.
      *
-     * @param array $data data for object
+     * @param array $data Data for object.
      *
      * @return string
      */
@@ -331,7 +332,7 @@ abstract class ImportObject
     }
 
     /**
-     * checks if user is allowed to edit in this shop
+     * Checks if user is allowed to edit in this shop.
      *
      * @param int $shopId shop id
      *
@@ -350,7 +351,7 @@ abstract class ImportObject
     }
 
     /**
-     * Checks if id field is valid
+     * Checks if id field is valid.
      *
      * @param string $id field check id
      *

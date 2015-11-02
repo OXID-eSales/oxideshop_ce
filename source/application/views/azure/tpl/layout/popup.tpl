@@ -1,8 +1,8 @@
 [{capture append="oxidBlock_pageBody"}]
     <div id="page">
-        <div id="content">
+        <section id="content">
             [{foreach from=$oxidBlock_content item="_block"}][{$_block}][{/foreach}]
-        </div>
+        </section>
     </div>
 [{/capture}]
 [{include file="layout/base.tpl"}]

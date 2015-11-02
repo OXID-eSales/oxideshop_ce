@@ -12,18 +12,18 @@
                [{include file="widget/breadcrumb.tpl"}]
             [{/block}]
         [{/if}]
-        <div id="content">
+        <section id="content">
             [{block name="content_main"}]
                 [{include file="message/errors.tpl"}]
                 [{foreach from=$oxidBlock_content item="_block"}]
                     [{$_block}]
                 [{/foreach}]
             [{/block}]
-        </div>
+        </section>
         [{if $sidebar}]
-            <div id="sidebar">
+            <aside id="sidebar">
                 [{include file="layout/sidebar.tpl"}]
-            </div>
+            </aside>
         [{/if}]
         [{include file="layout/footer.tpl"}]
     </div>
@@ -35,13 +35,13 @@
             [{if $oView->getTrustedShopId()}]
                 [{assign var="tsBadge" value="TsBadge"}]
             [{/if}]
-            <div id="incVatMessage[{$tsBadge}]">
+            <aside id="incVatMessage[{$tsBadge}]">
                 [{if $oView->isVatIncluded()}]
                     * <span class="deliveryInfo">[{oxmultilang ident="PLUS_SHIPPING"}]<a href="[{$oCont->getLink()}]" rel="nofollow">[{oxmultilang ident="PLUS_SHIPPING2"}]</a></span>
                 [{else}]
                     * <span class="deliveryInfo">[{oxmultilang ident="PLUS"}]<a href="[{$oCont->getLink()}]" rel="nofollow">[{oxmultilang ident="PLUS_SHIPPING2"}]</a></span>
                 [{/if}]
-            </div>
+            </aside>
         [{/oxifcontent}]
         [{/block}]
     [{/if}]

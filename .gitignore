@@ -20,6 +20,7 @@
 
 # IDE
 /.idea/
+/.phpstorm-oxid.meta.php
 
 # OS
 .DS_Store

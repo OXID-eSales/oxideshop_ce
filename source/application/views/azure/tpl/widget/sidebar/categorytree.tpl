@@ -3,7 +3,7 @@
 [{assign var="act" value=$oxcmp_categories->getClickCat()}]
 [{if $categories}]
 [{assign var="deepLevel" value=$oView->getDeepLevel()}]
-<div class="categoryBox">
+<nav class="categoryBox">
     <ul class="tree" id="tree">
     [{defun name="tree" categories=$categories}]
         [{assign var="deepLevel" value=$deepLevel+1}]
@@ -32,6 +32,6 @@
     [{if $oView->showTags()}]
          [{oxid_include_widget cl="oxwTagCloud" nocookie=1 noscript=1}]
     [{/if}]
-</div>
+</nav>
 [{/if}]
 [{/if}]

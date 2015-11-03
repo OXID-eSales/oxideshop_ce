@@ -1088,14 +1088,14 @@ class oxLang extends oxSuperCfg
     {
         $iLang = isset($iLang) ? $iLang : $this->getBaseLanguage();
         $iDefaultLang = intval(oxRegistry::getConfig()->getConfigParam('sDefaultLang'));
-        $iBrowserLanguage = intval($this->detectLanguageByBrowser());
+        $iBrowserLanguage = $this->detectLanguageByBrowser();
         /** @var oxStrRegular $oStr */
         $oStr = getStr();
 
         if (!$this->isAdmin()) {
             $sParam = $this->getUrlLang($iLang);
             if (!$oStr->preg_match('/(\?|&(amp;)?)lang=[0-9]+/', $sUrl) &&
-                ($iLang != $iDefaultLang || $iDefaultLang != $iBrowserLanguage)
+                ($iLang != $iDefaultLang || ($iBrowserLanguage != null && ($iDefaultLang != $iBrowserLanguage)) )
             ) {
                 if ($sUrl) {
                     if ($oStr->strpos($sUrl, '?') === false) {

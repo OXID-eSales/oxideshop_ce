@@ -13,6 +13,7 @@
     [{/if}]
     </h3>
 
+    <div>
     [{if $_oRecommendationList}]
         [{$_oRecommendationList->rewind()}]
 
@@ -48,6 +49,7 @@
             </li>
             [{/if}]
         </ul>
+    </div>
 </article>
 [{/if}]
 [{oxscript widget=$oView->getClassName()}]

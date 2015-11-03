@@ -3,7 +3,7 @@
 [{assign var="oRecommList" value=$oView->getRecommList()}]
 
 [{if $_oRecommendationList || $oRecommList->getRecommSearch()}]
-<div class="box" id="recommendationsBox">
+<article class="box" id="recommendationsBox">
     <h3>[{oxmultilang ident="LISTMANIA"}]
     [{assign var='rsslinks' value=$oRecommList->getRssLinks()}]
     [{if $rsslinks.recommlists}]
@@ -50,6 +50,6 @@
             [{/if}]
         </ul>
     </div>
-</div>
+</article>
 [{/if}]
 [{oxscript widget=$oView->getClassName()}]

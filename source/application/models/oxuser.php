@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -1309,17 +1309,18 @@ class oxUser extends oxBase
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
 
-        $sSalt = $oDb->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE `oxusername` = " . $oDb->quote($sUser));
-
         $sUserSelect = is_numeric( $sUser ) ? "oxuser.oxcustnr = {$sUser} " : "oxuser.oxusername = " . $oDb->quote( $sUser );
-        $sPassSelect = " oxuser.oxpassword = " . $oDb->quote($this->encodePassword($sPassword, $sSalt) );
+
         $sShopSelect = "";
 
-
         // admin view: can only login with higher than 'user' rights
-        if ( $blAdmin ) {
+        if ($blAdmin) {
             $sShopSelect = " and ( oxrights != 'user' ) ";
         }
+
+        $sSalt = $oDb->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  " . $sUserSelect . $sShopSelect);
+
+        $sPassSelect = " oxuser.oxpassword = " . $oDb->quote($this->encodePassword($sPassword, $sSalt));
 
         $sSelect = "select `oxid` from oxuser where oxuser.oxactive = 1 and {$sPassSelect} and {$sUserSelect} {$sShopSelect} ";
 

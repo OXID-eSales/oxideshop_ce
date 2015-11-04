@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -41,12 +41,15 @@ class UserTestCase extends OxidTestCase
         parent::tearDown();
     }
 
-    protected function _createDefaultUser($sRight, $iShopId)
+    protected function _createDefaultUser($sRight,
+                                          $iShopId,
+                                          $sEncryptedPassword = '4bb11fbb0c6bf332517a7ec397e49f1c',
+                                          $sSalt = '3262383936333839303439393466346533653733366533346137326666393632')
     {
         $oUser = new oxUser();
         $oUser->oxuser__oxusername = new oxField('_testUserName@oxid-esales.com', oxField::T_RAW);
-        $oUser->oxuser__oxpassword = new oxField('4bb11fbb0c6bf332517a7ec397e49f1c', oxField::T_RAW);
-        $oUser->oxuser__oxpasssalt = new oxField('3262383936333839303439393466346533653733366533346137326666393632', oxField::T_RAW);
+        $oUser->oxuser__oxpassword = new oxField($sEncryptedPassword, oxField::T_RAW);
+        $oUser->oxuser__oxpasssalt = new oxField($sSalt, oxField::T_RAW);
         $oUser->save();
 
         $oUserFromBase = new oxBase();

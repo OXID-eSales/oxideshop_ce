@@ -815,7 +815,6 @@ class Unit_Admin_oxNavigationTreeTest extends OxidTestCase
         $oUU->expects($this->any())->method('processUrl')
             ->with($this->anything(), $this->equalTo(false))
             ->will($this->returnValue('sess:url?'));
-        //modInstances::addMod('oxUtilsUrl', $oUU);
         oxTestModules::addModuleObject('oxUtilsUrl', $oUU);
 
         $o = oxNew('oxNavigationTree');

@@ -226,7 +226,6 @@ class Unit_Views_userTest extends OxidTestCase
     public function testRenderReturnsToBasketIfReservationOnAndBasketEmpty()
     {
         oxTestModules::addFunction('oxutils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new Exception($url);}');
-        modInstances::addMod('oxutils', oxNew('oxutils'));
 
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
         $this->setRequestParameter('sslredirect', 'forced');

@@ -927,18 +927,16 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
     /**
      * Test assign.
-     *
-     * @return null
      */
     public function testAssign()
     {
-        $oDB = oxDb::getDB(oxDB::FETCH_MODE_ASSOC);
         $oBase = new _oxBase();
         $oBase->init("oxactions");
         $select = "select * from oxactions where oxid = 'oxstart'";
-        $rs = $oDB->Execute($select);
+        $oDB = oxDb::getDB(oxDB::FETCH_MODE_ASSOC);
+        $rs = $oDB->execute($select);
         $oBase->assign($rs->fields);
-        $this->assertEquals($oBase->getId(), "oxstart");
+        $this->assertEquals("oxstart", $oBase->getId());
     }
 
     /**

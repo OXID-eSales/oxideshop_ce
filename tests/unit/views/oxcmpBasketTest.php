@@ -464,7 +464,6 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
                 $this->equalTo('Errors:a')
             );
 
-        //modInstances::addMod('oxUtilsView', $oUtilsView);
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);
 
 
@@ -507,7 +506,6 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
                 $this->equalTo(true),
                 $this->equalTo('popup')
             );
-        //modInstances::addMod('oxUtilsView', $oUtilsView);
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);
 
 
@@ -551,7 +549,6 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
                 $this->equalTo(true),
                 $this->equalTo('Errors:a')
             );
-        //modInstances::addMod('oxUtilsView', $oUtilsView);
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);
 
 

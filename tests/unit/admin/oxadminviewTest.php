@@ -286,7 +286,6 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     {
         $oUU = $this->getMock('oxUtilsUrl', array('processUrl'));
         $oUU->expects($this->any())->method('processUrl')->will($this->returnValue('sess:url'));
-        //modInstances::addMod('oxUtilsUrl', $oUU);
         oxTestModules::addModuleObject('oxUtilsUrl', $oUU);
 
         $oAView = oxNew('oxAdminView');

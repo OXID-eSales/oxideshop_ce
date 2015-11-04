@@ -100,7 +100,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oUtilsServer = $this->getMock('oxUtilsServer', array('setOxCookie'));
         $oUtilsServer->expects($this->never())->method('setOxCookie');
 
-        modInstances::addMod("oxUtilsServer", $oUtilsServer);
+        $this->addClassExtension(get_class($oUtilsServer), 'oxUtilsServer');
     }
 
     /*

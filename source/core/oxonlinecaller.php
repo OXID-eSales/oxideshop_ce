@@ -100,6 +100,7 @@ abstract class oxOnlineCaller
             }
             $this->_resetFailedCallsCount($iFailedCallsCount);
         } catch (Exception $oEx) {
+            $this->_castExceptionAndWriteToLog($oEx);
             if ($iFailedCallsCount > self::ALLOWED_HTTP_FAILED_CALLS_COUNT) {
                 $sXml = $this->_formEmail($oRequest);
                 $this->_sendEmail($sXml);
@@ -110,6 +111,20 @@ abstract class oxOnlineCaller
         }
 
         return $sOutputXml;
+    }
+	
+	/*
+     * Depending on the type of exception, first cast the exception and then write it to log.
+	 *
+     * @param Exception $oEx
+     */
+    protected function _castExceptionAndWriteToLog(Exception $oEx)
+    {
+        if(!$oEx instanceof oxException){
+            $oOxEx = oxNew("oxException");
+            $oOxEx->setMessage($oEx->getMessage());
+        }
+        $oEx->debugOut();
     }
 
     /**

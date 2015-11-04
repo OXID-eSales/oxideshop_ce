@@ -739,6 +739,7 @@ $aLang = array(
 'EXCEPTION_USER_USEREXISTS'                                => 'This user allready exists!',
 'EXCEPTION_CONNECTION_NODB'                                => 'No connection to database!',
 'EXCEPTION_ACCESSRIGHT_ACCESSDENIED'                       => 'Access denied, no sufficient rights!',
+'EXCEPTION_CURL_ERROR'                                     => 'cURL error: %s',
 'EXCEPTION_DELETING_VALID_FILE'                            => 'You cannot delete this file, as long as it has valid downloads',
 'EXCEPTION_NOFILE'                                         => 'No uploaded file',
 'EXCEPTION_FILENAMEINVALIDCHARS'                           => 'Invalid chars in file name',

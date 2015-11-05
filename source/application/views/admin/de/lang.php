@@ -737,6 +737,7 @@ $aLang = array(
 'EXCEPTION_USER_USEREXISTS'                                => 'Dieser Benutzer existiert bereits!',
 'EXCEPTION_CONNECTION_NODB'                                => 'Keine Verbindung zur Datenbank möglich!',
 'EXCEPTION_ACCESSRIGHT_ACCESSDENIED'                       => 'Zugriff verweigert, keine ausreichende Rechte!',
+'EXCEPTION_CURL_ERROR'                                     => 'cURL Fehler: %s',
 'EXCEPTION_DELETING_VALID_FILE'                            => 'Sie können diese Datei nicht löschen, solange es dafür gültige Downloads gibt',
 'EXCEPTION_NOFILE'                                         => 'Keine Dateien hochgeladen',
 'EXCEPTION_FILENAMEINVALIDCHARS'                           => 'Ungültige Zeichen im Dateinamne',

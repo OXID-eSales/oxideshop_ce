@@ -41,7 +41,7 @@
     [{/block}]
 </div>
 [{if $oView->getClassName()=='start' && $oView->getBanners()|@count > 0}]
-    <div class="oxSlider">
+    <section class="oxSlider">
         [{include file="widget/promoslider.tpl"}]
-    </div>
+    </section>
 [{/if}]

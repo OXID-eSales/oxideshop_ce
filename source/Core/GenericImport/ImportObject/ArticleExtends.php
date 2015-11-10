@@ -22,6 +22,8 @@
 
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
+use oxI18n;
+
 /**
  * Import object for Article Extends.
  */
@@ -30,56 +32,19 @@ class ArticleExtends extends ImportObject
     /** @var string Database table name. */
     protected $tableName = 'oxartextends';
 
+    /** @var string Shop object name. */
+    protected $shopObjectName = 'oxI18n';
+
     /**
-     * Saves data by calling object saving.
+     * Creates shop object.
      *
-     * @param array $data              Data for saving
-     * @param bool  $allowCustomShopId Allow custom shop id
-     *
-     * @return string|false
+     * @return oxI18n
      */
-    protected function saveObject($data, $allowCustomShopId)
+    protected function createShopObject()
     {
-        $shopObject = oxNew('oxI18n');
+        $shopObject = parent::createShopObject();
         $shopObject->init('oxartextends');
-        $shopObject->setLanguage(0);
-        $shopObject->setEnableMultilang(false);
 
-        foreach ($data as $key => $value) {
-            $uppercaseKey = strtoupper($key);
-            if (!isset($data[$uppercaseKey])) {
-                unset($data[$key]);
-                $data[$uppercaseKey] = $value;
-            }
-        }
-
-
-        $isLoaded = false;
-        if ($data['OXID']) {
-            $isLoaded = $shopObject->load($data['OXID']);
-        }
-
-        $data = $this->preAssignObject($shopObject, $data, $allowCustomShopId);
-
-        if ($isLoaded) {
-            $this->checkWriteAccess($shopObject, $data);
-        } else {
-            $this->checkCreateAccess($data);
-        }
-
-        $shopObject->assign($data);
-
-        if ($allowCustomShopId) {
-            $shopObject->setIsDerived(false);
-        }
-
-        if ($this->preSaveObject($shopObject, $data)) {
-            // store
-            if ($shopObject->save()) {
-                return $this->postSaveObject($shopObject, $data);
-            }
-        }
-
-        return false;
+        return $shopObject;
     }
 }

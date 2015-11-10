@@ -72,7 +72,7 @@ class UtilsObject
     /**
      * oxUtilsObject class instance.
      *
-     * @var oxUtils* instance
+     * @var UtilsObject instance
      */
     private static $_instance = null;
 
@@ -233,7 +233,9 @@ class UtilsObject
         array_shift($arguments);
         $argumentsCount = count($arguments);
         $shouldUseCache = $this->shouldCacheObject($className, $arguments);
-        $className = strtolower($className);
+        if (strpos($className, '\\') === false) {
+            $className = strtolower($className);
+        }
 
         if (isset(self::$_aClassInstances[$className])) {
             return self::$_aClassInstances[$className];

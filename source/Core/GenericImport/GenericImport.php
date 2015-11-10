@@ -23,7 +23,6 @@
 namespace OxidEsales\Eshop\Core\GenericImport;
 
 use Exception;
-use oxDb;
 use OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject;
 use oxRegistry;
 
@@ -449,13 +448,9 @@ class GenericImport
      */
     protected function checkAccess($importObject, $isWriteAction)
     {
-        $config = oxRegistry::getConfig();
-        static $accessCache;
-
         if (!$this->isInitialized) {
             throw new Exception(self::ERROR_NO_INIT);
         }
-
     }
 
     /**

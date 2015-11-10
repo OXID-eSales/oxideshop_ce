@@ -39,27 +39,6 @@ class OrderArticle extends ImportObject
     protected $shopObjectName = 'oxorderarticle';
 
     /**
-     * Check for write access for id.
-     *
-     * @param oxBase $shopObject Loaded shop object
-     * @param array  $data       Fields to be written, null for default
-     *
-     * @throws Exception on now access
-     *
-     * @return null
-     */
-    public function checkWriteAccess($shopObject, $data = null)
-    {
-        return;
-
-        if ($shopObject->oxorderarticles__oxordershopid->value != oxRegistry::getConfig()->getShopId()) {
-            throw new Exception(GenericImport::ERROR_USER_NO_RIGHTS);
-        }
-
-        parent::checkWriteAccess($shopObject, $data);
-    }
-
-    /**
      * issued before saving an object. can modify aData for saving
      *
      * @param oxBase $shopObject        oxBase child for object
@@ -79,11 +58,22 @@ class OrderArticle extends ImportObject
             $persParamValues = explode("|", $data['OXPERSPARAM']);
             $data['OXPERSPARAM'] = serialize($persParamValues);
         }
-
-        if (isset($data['OXORDERSHOPID'])) {
-            $data['OXORDERSHOPID'] = 'oxbaseshop';
+        if (array_key_exists('OXORDERSHOPID', $data)) {
+            $data['OXORDERSHOPID'] = $this->getOrderShopId($data['OXORDERSHOPID']);
         }
 
         return $data;
+    }
+
+    /**
+     * Returns formed order shop id, which should be set to data array.
+     *
+     * @param string $currentShopId
+     *
+     * @return string
+     */
+    protected function getOrderShopId($currentShopId)
+    {
+        return 'oxbaseshop';
     }
 }

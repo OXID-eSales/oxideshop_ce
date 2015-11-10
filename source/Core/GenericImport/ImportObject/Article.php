@@ -95,23 +95,6 @@ class Article extends ImportObject
     }
 
     /**
-     * Basic access check for writing data. For oxArticle we allow super admin to change
-     * subshop oxArticle fields described in config option aMultishopArticleFields.
-     *
-     * @param oxArticle $shopObject Loaded shop object
-     * @param array     $data       Fields to be written, null for default
-     *
-     * @throws Exception on now access
-     *
-     * @return null
-     */
-    public function checkWriteAccess($shopObject, $data = null)
-    {
-        return;
-
-    }
-
-    /**
      * Creates shop object.
      *
      * @return oxBase

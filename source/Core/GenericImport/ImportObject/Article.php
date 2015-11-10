@@ -22,10 +22,8 @@
 
 namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
 
-use Exception;
 use oxArticle;
 use oxBase;
-use OxidEsales\Eshop\Core\GenericImport\GenericImport;
 
 /**
  * Import object for Articles.

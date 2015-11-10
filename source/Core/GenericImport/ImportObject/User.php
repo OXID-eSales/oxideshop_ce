@@ -63,26 +63,4 @@ class User extends ImportObject
 
         return parent::import($data);
     }
-
-    /**
-     * Basic access check for writing data, checks for same shopid, should be overridden if field oxshopid does not
-     * exist.
-     *
-     * @param oxBase $shopObject Loaded shop object
-     * @param array  $data       Fields to be written, null for default
-     *
-     * @throws Exception on now access
-     *
-     * @return null
-     */
-    public function checkWriteAccess($shopObject, $data = null)
-    {
-        return;
-
-        $config = oxRegistry::getConfig();
-
-        if (!$config->getConfigParam('blMallUsers')) {
-            parent::checkWriteAccess($shopObject, $data);
-        }
-    }
 }

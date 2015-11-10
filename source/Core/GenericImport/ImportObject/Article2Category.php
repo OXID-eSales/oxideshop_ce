@@ -34,14 +34,5 @@ class Article2Category extends ImportObject
     protected $keyFieldList = array(
         'OXOBJECTID' => 'OXOBJECTID',
         'OXCATNID'   => 'OXCATNID',
-        'OXSHOPID'   => 'OXSHOPID'
     );
-
-    /**
-     * Class constructor.
-     */
-    public function __construct()
-    {
-        unset($this->keyFieldList['OXSHOPID']);
-    }
 }

@@ -93,7 +93,7 @@ class GenImport_Main extends oxAdminDetails
     {
         $config = $this->getConfig();
 
-        $oErpImport = new GenericImport();
+        $genericImport = oxNew('OxidEsales\Eshop\Core\GenericImport\GenericImport');
         $this->_sCsvFilePath = null;
 
         $navigationStep = $config->getRequestParameter('sNavStep');
@@ -131,27 +131,27 @@ class GenImport_Main extends oxAdminDetails
             }
 
             $type = $config->getRequestParameter('sType');
-            $oType = $oErpImport->getImportObject($type);
+            $importObject = $genericImport->getImportObject($type);
             $this->_aViewData['sType'] = $type;
-            $this->_aViewData['sImportTable'] = $oType->getBaseTableName();
+            $this->_aViewData['sImportTable'] = $importObject->getBaseTableName();
             $this->_aViewData['aCsvFieldsList'] = $this->_getCsvFieldsNames();
-            $this->_aViewData['aDbFieldsList'] = $oType->getFieldList();
+            $this->_aViewData['aDbFieldsList'] = $importObject->getFieldList();
         }
 
         if ($navigationStep == 3) {
             $csvFields = $config->getRequestParameter('aCsvFields');
             $type = $config->getRequestParameter('sType');
 
-            $oErpImport = new GenericImport();
-            $oErpImport->setImportType($type);
-            $oErpImport->setCsvFileFieldsOrder($csvFields);
-            $oErpImport->setCsvContainsHeader(oxRegistry::getSession()->getVariable('blCsvContainsHeader'));
+            $genericImport = oxNew('OxidEsales\Eshop\Core\GenericImport\GenericImport');
+            $genericImport->setImportType($type);
+            $genericImport->setCsvFileFieldsOrder($csvFields);
+            $genericImport->setCsvContainsHeader(oxRegistry::getSession()->getVariable('blCsvContainsHeader'));
 
-            $oErpImport->importFile($this->_getUploadedCsvFilePath());
-            $this->_aViewData['iTotalRows'] = $oErpImport->getImportedRowCount();
+            $genericImport->importFile($this->_getUploadedCsvFilePath());
+            $this->_aViewData['iTotalRows'] = $genericImport->getImportedRowCount();
 
             //checking if errors occured during import
-            $this->_checkImportErrors($oErpImport);
+            $this->_checkImportErrors($genericImport);
 
             //deleting uploaded csv file from temp dir
             $this->_deleteCsvFile();
@@ -164,7 +164,7 @@ class GenImport_Main extends oxAdminDetails
         }
 
         if ($navigationStep == 1) {
-            $this->_aViewData['aImportTables'] = $oErpImport->getImportObjectsList();
+            $this->_aViewData['aImportTables'] = $genericImport->getImportObjectsList();
             asort($this->_aViewData['aImportTables']);
             $this->_resetUploadedCsvData();
         }

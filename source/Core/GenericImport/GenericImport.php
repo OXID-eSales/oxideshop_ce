@@ -458,16 +458,11 @@ class GenericImport
      *
      * @param string $type Type name in objects dir.
      *
-     * @throws Exception if no such import type prefix.
-     *
      * @return ImportObject
      */
     protected function createImportObject($type)
     {
         $className = __NAMESPACE__ . "\\ImportObject\\".$type;
-        if (!class_exists($className)) {
-            throw new Exception($className);
-        }
         return oxNew($className);
     }
 }

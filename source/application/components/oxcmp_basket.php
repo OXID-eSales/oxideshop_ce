@@ -344,46 +344,47 @@ class oxcmp_basket extends oxView
      * Adds all articles user wants to add to basket. Returns
      * last added to basket item.
      *
-     * @param array $aProducts products to add array
+     * @param array $products products to add array
      *
      * @return  object  $oBasketItem    last added basket item
      */
-    protected function _addItems($aProducts)
+    protected function _addItems($products)
     {
-        $oActView = $this->getConfig()->getActiveView();
-        $sErrorDest = $oActView->getErrorDestination();
+        $activeView = $this->getConfig()->getActiveView();
+        $errorDestination = $activeView->getErrorDestination();
 
-        $oBasket = $this->getSession()->getBasket();
-        $oBasketInfo = $oBasket->getBasketSummary();
+        $basket = $this->getSession()->getBasket();
+        $basketInfo = $basket->getBasketSummary();
 
         $basketItemAmounts = array();
 
-        foreach ($aProducts as $sAddProductId => $aProductInfo) {
+        foreach ($products as $addProductId => $productInfo) {
 
-            $sProductId = isset($aProductInfo['aid']) ? $aProductInfo['aid'] : $sAddProductId;
+            $sProductId = isset($productInfo['aid']) ? $productInfo['aid'] : $addProductId;
 
             // collecting input
-            $oProduct = $oBasketInfo->aArticles[$sProductId];
-            $aProducts[$sAddProductId]['oldam'] = isset($oProduct) ? $oProduct : 0;
+            $productAmount = $basketInfo->aArticles[$sProductId];
+            $products[$addProductId]['oldam'] = isset($productAmount) ? $productAmount : 0;
 
-            $dAmount = isset($aProductInfo['am']) ? $aProductInfo['am'] : 0;
-            $aSelList = isset($aProductInfo['sel']) ? $aProductInfo['sel'] : null;
-            $aPersParam = $this->getPersistedParameters($aProductInfo['persparam']);
-            $blOverride = isset($aProductInfo['override']) ? $aProductInfo['override'] : null;
-            $blIsBundle = isset($aProductInfo['bundle']) ? true : false;
-            $sOldBasketItemId = isset($aProductInfo['basketitemid']) ? $aProductInfo['basketitemid'] : null;
+            $amount = isset($productInfo['am']) ? $productInfo['am'] : 0;
+            $aSelList = isset($productInfo['sel']) ? $productInfo['sel'] : null;
+            $aParams = $productInfo['persparam'];
+            $aPersParam = $this->getPersistedParameters($productInfo['persparam']);
+            $blOverride = isset($productInfo['override']) ? $productInfo['override'] : null;
+            $blIsBundle = isset($productInfo['bundle']) ? true : false;
+            $sOldBasketItemId = isset($productInfo['basketitemid']) ? $productInfo['basketitemid'] : null;
 
             try {
 
                 //0005928 fix, if we already changed articles so they now exactly match existing ones,
                 //we need to make sure we get the amounts correct
                 if (isset($basketItemAmounts[$sOldBasketItemId])) {
-                    $dAmount = $dAmount + $basketItemAmounts[$sOldBasketItemId];
+                    $amount = $amount + $basketItemAmounts[$sOldBasketItemId];
                 }
 
-                $oBasketItem = $oBasket->addToBasket(
+                $basketItem = $basket->addToBasket(
                     $sProductId,
-                    $dAmount,
+                    $amount,
                     $aSelList,
                     $aPersParam,
                     $blOverride,
@@ -391,43 +392,43 @@ class oxcmp_basket extends oxView
                     $sOldBasketItemId
                 );
 
-                if (is_a($oBasketItem, 'oxBasketItem')) {
-                    $basketItemId = $oBasketItem->getBasketItemKey();
+                if (is_a($basketItem, 'oxBasketItem')) {
+                    $basketItemId = $basketItem->getBasketItemKey();
                 }
                 if (!empty($basketItemId)) {
-                    $basketItemAmounts[$basketItemId] += $dAmount;
+                    $basketItemAmounts[$basketItemId] += $amount;
                 }
 
-            } catch (oxOutOfStockException $oEx) {
-                $oEx->setDestination($sErrorDest);
+            } catch (oxOutOfStockException $exception) {
+                $exception->setDestination($errorDestination);
                 // #950 Change error destination to basket popup
-                if (!$sErrorDest && $this->getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
-                    $sErrorDest = 'popup';
+                if (!$errorDestination && $this->getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
+                    $errorDestination = 'popup';
                 }
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, (bool) $sErrorDest, $sErrorDest);
-            } catch (oxArticleInputException $oEx) {
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
+            } catch (oxArticleInputException $exception) {
                 //add to display at specific position
-                $oEx->setDestination($sErrorDest);
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, (bool) $sErrorDest, $sErrorDest);
-            } catch (oxNoArticleException $oEx) {
+                $exception->setDestination($errorDestination);
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
+            } catch (oxNoArticleException $exception) {
                 //ignored, best solution F ?
             }
-            if (!$oBasketItem) {
-                $oInfo = $oBasket->getBasketSummary();
-                $oProduct = $oInfo->aArticles[$sProductId];
-                $aProducts[$sAddProductId]['am'] = isset($oProduct) ? $oProduct : 0;
+            if (!$basketItem) {
+                $info = $basket->getBasketSummary();
+                $productAmount = $info->aArticles[$sProductId];
+                $products[$addProductId]['am'] = isset($productAmount) ? $productAmount : 0;
             }
         }
 
-        //if basket empty remove posible gift card
-        if ($oBasket->getProductsCount() == 0) {
-            $oBasket->setCardId(null);
+        //if basket empty remove possible gift card
+        if ($basket->getProductsCount() == 0) {
+            $basket->setCardId(null);
         }
 
         // information that last call was tobasket
-        $this->_setLastCall($this->_getLastCallFnc(), $aProducts, $oBasketInfo);
+        $this->_setLastCall($this->_getLastCallFnc(), $products, $basketInfo);
 
-        return $oBasketItem;
+        return $basketItem;
     }
 
     /**

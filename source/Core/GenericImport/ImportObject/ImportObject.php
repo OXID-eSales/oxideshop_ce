@@ -74,13 +74,9 @@ abstract class ImportObject
      * @param array  $data       Fields to be written, null for default.
      *
      * @throws Exception on now access
-     *
-     * @return null
      */
     public function checkWriteAccess($shopObject, $data = null)
     {
-        return;
-
         if ($shopObject->isDerived()) {
             throw new Exception(GenericImport::ERROR_USER_NO_RIGHTS);
         }
@@ -253,6 +249,9 @@ abstract class ImportObject
             }
         }
 
+        if (method_exists($shopObject, 'setForceCoreTableUsage')) {
+            $shopObject->setForceCoreTableUsage(true);
+        }
 
         $isLoaded = false;
         if ($data['OXID']) {

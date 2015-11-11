@@ -360,43 +360,31 @@ class oxcmp_basket extends oxView
 
         foreach ($products as $addProductId => $productInfo) {
 
-            $sProductId = isset($productInfo['aid']) ? $productInfo['aid'] : $addProductId;
-
-            // collecting input
-            $productAmount = $basketInfo->aArticles[$sProductId];
+            $productId = isset($productInfo['aid']) ? $productInfo['aid'] : $addProductId;
+            $productAmount = $basketInfo->aArticles[$productId];
             $products[$addProductId]['oldam'] = isset($productAmount) ? $productAmount : 0;
 
-            $amount = isset($productInfo['am']) ? $productInfo['am'] : 0;
-            $aSelList = isset($productInfo['sel']) ? $productInfo['sel'] : null;
-            $aParams = $productInfo['persparam'];
-            $aPersParam = $this->getPersistedParameters($productInfo['persparam']);
-            $blOverride = isset($productInfo['override']) ? $productInfo['override'] : null;
-            $blIsBundle = isset($productInfo['bundle']) ? true : false;
-            $sOldBasketItemId = isset($productInfo['basketitemid']) ? $productInfo['basketitemid'] : null;
+            $data = $this->prepareProductInformation($productInfo);
 
             try {
-
-                //0005928 fix, if we already changed articles so they now exactly match existing ones,
+                //If we already changed articles so they now exactly match existing ones,
                 //we need to make sure we get the amounts correct
-                if (isset($basketItemAmounts[$sOldBasketItemId])) {
-                    $amount = $amount + $basketItemAmounts[$sOldBasketItemId];
+                if (isset($basketItemAmounts[$data['oldBasketItemId']])) {
+                    $data['amount'] = $data['amount'] + $basketItemAmounts[$data['oldBasketItemId']];
                 }
 
                 $basketItem = $basket->addToBasket(
-                    $sProductId,
-                    $amount,
-                    $aSelList,
-                    $aPersParam,
-                    $blOverride,
-                    $blIsBundle,
-                    $sOldBasketItemId
+                    $productId,
+                    $data['amount'],
+                    $data['selectList'],
+                    $data['persistentParameters'],
+                    $data['override'],
+                    $data['bundle'],
+                    $data['oldBasketItemId']
                 );
 
-                if (is_a($basketItem, 'oxBasketItem')) {
-                    $basketItemId = $basketItem->getBasketItemKey();
-                }
-                if (!empty($basketItemId)) {
-                    $basketItemAmounts[$basketItemId] += $amount;
+                if (is_a($basketItem, 'oxBasketItem') && $basketItem->getBasketItemKey()) {
+                    $basketItemAmounts[$basketItem->getBasketItemKey()] += $data['amount'];
                 }
 
             } catch (oxOutOfStockException $exception) {
@@ -415,7 +403,7 @@ class oxcmp_basket extends oxView
             }
             if (!$basketItem) {
                 $info = $basket->getBasketSummary();
-                $productAmount = $info->aArticles[$sProductId];
+                $productAmount = $info->aArticles[$productId];
                 $products[$addProductId]['am'] = isset($productAmount) ? $productAmount : 0;
             }
         }
@@ -511,6 +499,30 @@ class oxcmp_basket extends oxView
             $this->getSession()->getBasket()->deleteBasket();
             $this->getParent()->setRootCatChanged(false);
         }
+    }
+
+
+    /**
+     * Prepare information for adding product to basket.
+     *
+     * @param $productInfo
+     *
+     * @return array
+     */
+    protected function prepareProductInformation($productInfo)
+    {
+        $return = array();
+
+        $return['amount'] = isset($productInfo['am']) ? $productInfo['am'] : 0;
+        $return['selectList'] = isset($productInfo['sel']) ? $productInfo['sel'] : null;
+
+        $parameters = isset($productInfo['persparam']) ? $productInfo['persparam'] : null;
+        $return['persistentParameters'] = $this->getPersistedParameters($productInfo['persparam']);
+        $return['override'] = isset($productInfo['override']) ? $productInfo['override'] : null;
+        $return['bundle'] = isset($productInfo['bundle']) ? true : false;
+        $return['oldBasketItemId'] = isset($productInfo['basketitemid']) ? $productInfo['basketitemid'] : null;
+
+        return $return;
     }
 
 }

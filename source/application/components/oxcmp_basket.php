@@ -360,50 +360,25 @@ class oxcmp_basket extends oxView
 
         foreach ($products as $addProductId => $productInfo) {
 
-            $productId = isset($productInfo['aid']) ? $productInfo['aid'] : $addProductId;
-            $productAmount = $basketInfo->aArticles[$productId];
+            $data = $this->prepareProductInformation($addProductId, $productInfo);
+            $productAmount = $basketInfo->aArticles[$data['id']];
             $products[$addProductId]['oldam'] = isset($productAmount) ? $productAmount : 0;
 
-            $data = $this->prepareProductInformation($productInfo);
-
-            try {
-                //If we already changed articles so they now exactly match existing ones,
-                //we need to make sure we get the amounts correct
-                if (isset($basketItemAmounts[$data['oldBasketItemId']])) {
-                    $data['amount'] = $data['amount'] + $basketItemAmounts[$data['oldBasketItemId']];
-                }
-
-                $basketItem = $basket->addToBasket(
-                    $productId,
-                    $data['amount'],
-                    $data['selectList'],
-                    $data['persistentParameters'],
-                    $data['override'],
-                    $data['bundle'],
-                    $data['oldBasketItemId']
-                );
-
-                if (is_a($basketItem, 'oxBasketItem') && $basketItem->getBasketItemKey()) {
-                    $basketItemAmounts[$basketItem->getBasketItemKey()] += $data['amount'];
-                }
-
-            } catch (oxOutOfStockException $exception) {
-                $exception->setDestination($errorDestination);
-                // #950 Change error destination to basket popup
-                if (!$errorDestination && $this->getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
-                    $errorDestination = 'popup';
-                }
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
-            } catch (oxArticleInputException $exception) {
-                //add to display at specific position
-                $exception->setDestination($errorDestination);
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
-            } catch (oxNoArticleException $exception) {
-                //ignored, best solution F ?
+            //If we already changed articles so they now exactly match existing ones,
+            //we need to make sure we get the amounts correct
+            if (isset($basketItemAmounts[$data['oldBasketItemId']])) {
+                $data['amount'] = $data['amount'] + $basketItemAmounts[$data['oldBasketItemId']];
             }
+
+            $basketItem = $this->addItemToBasket($basket, $data, $errorDestination);
+
+            if (is_a($basketItem, 'oxBasketItem') && $basketItem->getBasketItemKey()) {
+                $basketItemAmounts[$basketItem->getBasketItemKey()] += $data['amount'];
+            }
+
             if (!$basketItem) {
                 $info = $basket->getBasketSummary();
-                $productAmount = $info->aArticles[$productId];
+                $productAmount = $info->aArticles[$data['id']];
                 $products[$addProductId]['am'] = isset($productAmount) ? $productAmount : 0;
             }
         }
@@ -509,14 +484,14 @@ class oxcmp_basket extends oxView
      *
      * @return array
      */
-    protected function prepareProductInformation($productInfo)
+    protected function prepareProductInformation($addProductId, $productInfo)
     {
         $return = array();
 
+        $return['id'] = isset($productInfo['aid']) ? $productInfo['aid'] : $addProductId;
         $return['amount'] = isset($productInfo['am']) ? $productInfo['am'] : 0;
         $return['selectList'] = isset($productInfo['sel']) ? $productInfo['sel'] : null;
 
-        $parameters = isset($productInfo['persparam']) ? $productInfo['persparam'] : null;
         $return['persistentParameters'] = $this->getPersistedParameters($productInfo['persparam']);
         $return['override'] = isset($productInfo['override']) ? $productInfo['override'] : null;
         $return['bundle'] = isset($productInfo['bundle']) ? true : false;
@@ -525,4 +500,45 @@ class oxcmp_basket extends oxView
         return $return;
     }
 
+    /**
+     * Add one item to basket. Handle eventual errors.
+     *
+     * @param $basket
+     * @param $data
+     * @param $errorDestination
+     *
+     * @return null
+     */
+    protected function addItemToBasket($basket, $itemData, $errorDestination)
+    {
+        $basketItem = null;
+
+        try {
+            $basketItem = $basket->addToBasket(
+                $itemData['id'],
+                $itemData['amount'],
+                $itemData['selectList'],
+                $itemData['persistentParameters'],
+                $itemData['override'],
+                $itemData['bundle'],
+                $itemData['oldBasketItemId']
+            );
+
+        } catch (oxOutOfStockException $exception) {
+            $exception->setDestination($errorDestination);
+            // #950 Change error destination to basket popup
+            if (!$errorDestination && $this->getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
+                $errorDestination = 'popup';
+            }
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
+        } catch (oxArticleInputException $exception) {
+            //add to display at specific position
+            $exception->setDestination($errorDestination);
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);
+        } catch (oxNoArticleException $exception) {
+            //ignored, best solution F ?
+        }
+
+        return $basketItem;
+    }
 }

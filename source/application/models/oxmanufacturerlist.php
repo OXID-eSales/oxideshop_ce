@@ -58,8 +58,6 @@ class oxManufacturerList extends oxList
 
     /**
      * Calls parent constructor and defines if Article vendor count is shown
-     *
-     * @return null
      */
     public function __construct()
     {

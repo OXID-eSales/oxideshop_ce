@@ -36,8 +36,6 @@ class oxSearch extends oxSuperCfg
 
     /**
      * Class constructor. Executes search lenguage setter
-     *
-     * @return null
      */
     public function __construct()
     {

@@ -60,8 +60,6 @@ class oxVariantSelectList implements oxISelectList
      *
      * @param string $sLabel list label
      * @param int    $iIndex list index
-     *
-     * @return null
      */
     public function __construct($sLabel, $iIndex)
     {

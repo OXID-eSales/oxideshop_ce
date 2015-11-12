@@ -29,8 +29,6 @@ class oxVoucherList extends oxList
 
     /**
      * Calls parent constructor
-     *
-     * @return null
      */
     public function __construct()
     {

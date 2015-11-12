@@ -29,8 +29,6 @@ class oxUserList extends oxList
 
     /**
      * Class constructor
-     *
-     * @return null
      */
     public function __construct()
     {

@@ -85,8 +85,6 @@ class oxContentList extends oxList
 
     /**
      * Class constructor, initiates parent constructor (parent::oxList()).
-     *
-     * @return null
      */
     public function __construct()
     {

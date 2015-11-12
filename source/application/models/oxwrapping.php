@@ -59,8 +59,6 @@ class oxWrapping extends oxI18n
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()), loads
      * base shop objects.
-     *
-     * @return null
      */
     public function __construct()
     {

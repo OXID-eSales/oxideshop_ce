@@ -56,8 +56,6 @@ class VoucherSerie_Export extends VoucherSerie_Main
 
     /**
      * Calls parent costructor and initializes $this->_sFilePath parameter
-     *
-     * @return null
      */
     public function __construct()
     {

@@ -64,8 +64,6 @@ class oxSelectlist extends oxI18n implements oxISelectList
 
     /**
      * Calls parent constructor and initializes selection list
-     *
-     * @return null
      */
     public function __construct()
     {

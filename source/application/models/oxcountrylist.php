@@ -30,8 +30,6 @@ class oxCountryList extends oxList
 
     /**
      * Call parent class constructor
-     *
-     * @return null
      */
     public function __construct()
     {

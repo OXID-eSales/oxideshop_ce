@@ -57,8 +57,6 @@ class oxRecommList extends oxBase implements oxIUrl
 
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
-     *
-     * @return null
      */
     public function __construct()
     {

@@ -470,8 +470,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * initiates parent constructor (parent::oxI18n()).
      *
      * @param array $aParams The array of names and values of oxArticle instance properties to be set on object instantiation
-     *
-     * @return null
      */
     public function __construct($aParams = null)
     {

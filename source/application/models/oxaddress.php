@@ -61,8 +61,6 @@ class oxAddress extends oxBase
 
     /**
      * Class constructor
-     *
-     * @return null
      */
     public function __construct()
     {

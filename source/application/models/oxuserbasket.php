@@ -61,8 +61,6 @@ class oxUserBasket extends oxBase
 
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
-     *
-     * @return null
      */
     public function __construct()
     {

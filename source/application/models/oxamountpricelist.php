@@ -63,8 +63,6 @@ class oxAmountPriceList extends oxList
 
     /**
      * Class constructor
-     *
-     * @return null
      */
     public function __construct()
     {

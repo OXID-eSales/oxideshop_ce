@@ -83,8 +83,6 @@ class oxCategoryList extends oxList
      * Class constructor, initiates parent constructor (parent::oxList()).
      *
      * @param string $sObjectsInListName optional parameter, the objects contained in the list, always oxCategory
-     *
-     * @return null
      */
     public function __construct($sObjectsInListName = 'oxcategory')
     {

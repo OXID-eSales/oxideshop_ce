@@ -52,8 +52,6 @@ class oxDiscountList extends oxList
 
     /**
      * Class Constructor
-     *
-     * @return null
      */
     public function __construct()
     {

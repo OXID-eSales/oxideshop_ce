@@ -62,8 +62,6 @@ class oxSelection
      * @param string $sValue     selection value
      * @param string $blDisabled selection state - disabled/enabled
      * @param string $blActive   selection state - active/inactive
-     *
-     * @return null
      */
     public function __construct($sName, $sValue, $blDisabled, $blActive)
     {

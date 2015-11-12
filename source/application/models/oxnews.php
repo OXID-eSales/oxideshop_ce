@@ -45,8 +45,6 @@ class oxNews extends oxI18n
 
     /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
-     *
-     * @return null
      */
     public function __construct()
     {

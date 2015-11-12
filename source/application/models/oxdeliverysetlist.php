@@ -57,8 +57,6 @@ class oxDeliverySetList extends oxList
 
     /**
      * Calls parent constructor and sets home country
-     *
-     * @return null
      */
     public function __construct()
     {

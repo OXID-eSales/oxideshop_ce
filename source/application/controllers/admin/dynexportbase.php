@@ -123,8 +123,6 @@ class DynExportBase extends oxAdminDetails
 
     /**
      * Calls parent costructor and initializes $this->_sFilePath parameter
-     *
-     * @return null
      */
     public function __construct()
     {

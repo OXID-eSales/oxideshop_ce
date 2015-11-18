@@ -369,7 +369,6 @@
                   [{oxmultilang ident="SHOP_PERF_PARSELONGDESCINSMARTY"}]
                  </td>
                 </tr>
-
                 <tr>
                  <td valign="top" class="conftext">
                     <input type=hidden name=confbools[bl_perfCalcVatOnlyForBasketOrder] value=false>
@@ -380,18 +379,6 @@
                   [{oxmultilang ident="SHOP_PERF_CALCVATONLYFORBASKETORDER"}]
                  </td>
                 </tr>
-
-                <tr>
-                 <td valign="top" class="conftext">
-                    <input type=hidden name=confbools[bl_perfLoadAttributes] value=false>
-                    <input type=checkbox name=confbools[bl_perfLoadAttributes] value=true  [{if ($confbools.bl_perfLoadAttributes)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_PERF_LOADATTRIBUTES"}]
-                 </td>
-                 <td valign="top" class="conftext" width="100%">
-                  [{oxmultilang ident="SHOP_PERF_LOADATTRIBUTES"}]
-                 </td>
-                </tr>
-
                 </table>
             </td>
         </tr>
@@ -400,8 +387,6 @@
     </fieldset>
         <br>
          <input type="submit" class="confinput" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" [{$readonly}]>
-
-
 </form>
 
 [{include file="bottomnaviitem.tpl"}]

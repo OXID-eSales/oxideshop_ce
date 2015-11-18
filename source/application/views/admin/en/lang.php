@@ -1577,7 +1577,6 @@ $aLang = array(
 'SHOP_PERF_LOADNEWSONLYSTART'                              => 'Load News only on Start Page',
 'SHOP_PERF_LOADVARIANTS'                                   => 'Load Variants in Lists (Search Results, Categories). This uses much Memory and may cause Performance Problems on small Servers',
 'SHOP_PERF_LOADMANUFACTURERTREE'                           => 'Load and display Manufacturer List',
-'SHOP_PERF_LOADATTRIBUTES'                                 => 'Always load Attributes of a Product together with Product',
 'SHOP_PERF_NEWESTARTICLES'                                 => 'List of newest Products (Just arrived!)',
 'SHOP_PERF_PARSELONGDESCINSMARTY'                          => 'Process Description of Articles and Categories with Smarty',
 'SHOP_PERF_PERFORMANCE'                                    => 'Performance',
@@ -1589,7 +1588,6 @@ $aLang = array(
 'SHOP_PERF_HIDELEFTCOLUMN'                                 => 'Hide left column',
 'DYNSCREEN_LOCAL_TITLE'                                    => 'eCommerce Services',
 'DYNSCREEN_LOCAL_TEXT'                                     => 'Some general info about eCommerce services ...',
-
 'GENIMPORT_MENUITEM'                                       => 'Service',
 'GENIMPORT_MENUSUBITEM'                                    => 'Generic Import',
 'GENIMPORT_STEP_1_TITLE'                                   => 'Uploading CSV file',

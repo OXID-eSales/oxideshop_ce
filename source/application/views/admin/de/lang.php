@@ -1575,7 +1575,6 @@ $aLang = array(
 'SHOP_PERF_LOADNEWSONLYSTART'                              => 'Nachrichten nur auf der Startseite anzeigen',
 'SHOP_PERF_LOADVARIANTS'                                   => 'Varianten in Artikellisten laden (z. B. Suchergebnisse, Kategorieansichten). Diese Einstellung verbraucht viel Speicher und kann zu Problemen auf schwachen Servern führen.',
 'SHOP_PERF_LOADMANUFACTURERTREE'                           => 'Herstellerliste laden und anzeigen',
-'SHOP_PERF_LOADATTRIBUTES'                                 => 'Attribute eines Artikels immer zusammen mit dem Artikel laden',
 'SHOP_PERF_NEWESTARTICLES'                                 => 'Liste der neusten Artikel (Frisch eingetroffen!)',
 'SHOP_PERF_PARSELONGDESCINSMARTY'                          => 'Artikelbeschreibung und Kategorienbeschreibung mit Smarty ausführen',
 'SHOP_PERF_PERFORMANCE'                                    => 'Performance',

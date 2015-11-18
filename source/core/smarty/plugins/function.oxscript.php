@@ -186,7 +186,7 @@ function _oxscript_execute( $aScript, $sWidget, $blAjaxRequest )
     if (count($aScript)) {
         foreach ($aScript as $sScriptToken) {
             if ( $sWidget && !$blAjaxRequest ) {
-                $sScriptTokenSanitized = str_replace( '"', '\"', $sScriptToken );
+                $sScriptTokenSanitized = _oxscript_sanitize($sScriptToken);
                 $sOutput .= 'WidgetsHandler.registerFunction( "'. $sScriptTokenSanitized . '", "'.$sWidget.'");'. PHP_EOL ;
             } else {
                 $sOutput .= $sScriptToken. PHP_EOL;
@@ -195,6 +195,12 @@ function _oxscript_execute( $aScript, $sWidget, $blAjaxRequest )
     }
 
     return $sOutput;
+}
+
+function _oxscript_sanitize($sScripts)
+{
+    $sScriptTokenSanitized = strtr($sScripts,array('"' => '\"',"\r" =>'',"\n"=>'\n'));
+    return $sScriptTokenSanitized;
 }
 
 /**

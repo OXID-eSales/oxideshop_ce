@@ -3,7 +3,7 @@
   <head>
       <title>[{$title}]</title>
       <meta http-equiv="Content-Type" content="text/html; charset=[{$oEmailView->getCharset()}]">
-      <base href="[{ $shop->oxshops__oxurl->value }]" />
+      <base href="[{$shop->oxshops__oxurl->value}]" />
   </head>
 
   <body bgcolor="#ffffff" link="#355222" alink="#18778E" vlink="#389CB4" style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;">

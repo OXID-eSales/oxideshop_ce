@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 /**
@@ -1591,6 +1591,10 @@ class oxEmail extends PHPMailer
     public function setRecipient($sAddress = null, $sName = null)
     {
         try {
+            if ($this->getConfig()->isUtf() && function_exists('idn_to_ascii') ) {
+                $sAddress = idn_to_ascii($sAddress);
+            }
+
             parent::AddAddress($sAddress, $sName);
 
             // copying values as original class does not allow to access recipients array

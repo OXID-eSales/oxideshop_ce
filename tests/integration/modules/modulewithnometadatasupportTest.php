@@ -24,7 +24,6 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTestCase
 {
-
     public function testModulesWithoutMetadataShouldBeAddToCleanup()
     {
         // modules to be activated during test preparation
@@ -32,7 +31,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
             'extending_1_class'
         );
 
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
         //adding module without metadata
@@ -54,7 +53,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
             'extending_1_class'
         );
 
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
         $oModuleList = oxNew('oxModuleList');
@@ -121,4 +120,3 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         $this->assertSame($aExpect, $aGarbage);
     }
 }
- 

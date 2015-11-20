@@ -24,7 +24,9 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleConfigsTest extends BaseModuleTestCase
 {
-
+    /**
+     * @return array
+     */
     public function providerModuleIsActive()
     {
         return array(
@@ -58,28 +60,33 @@ class Integration_Modules_ModuleConfigsTest extends BaseModuleTestCase
      * Tests check if changed module config values are the same after deactivation / activation
      *
      * @dataProvider providerModuleIsActive
+     *
+     * @param array  $aInstallModules
+     * @param string $sModuleId
+     * @param array  $aConfigsToChange
+     * @param array  $aResultToAsserts
      */
     public function testModuleConfigs($aInstallModules, $sModuleId, $aConfigsToChange, $aResultToAsserts)
     {
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
         $oModule = oxNew('oxModule');
         $oModule->load($sModuleId);
 
-        $this->_changeConfiguration($sModuleId, $aConfigsToChange);
+        $this->changeConfiguration($sModuleId, $aConfigsToChange);
 
-        $this->_deactivateModule($oModule);
-        $this->_activateModule($oModule);
+        $this->deactivateModule($oModule);
+        $this->activateModule($oModule);
 
-        $this->_runAsserts($aResultToAsserts, $sModuleId);
+        $this->runAsserts($aResultToAsserts);
     }
 
     /**
-     * @param $sModuleId
-     * @param $aConfigsToChange
+     * @param string $sModuleId
+     * @param array  $aConfigsToChange
      */
-    private function _changeConfiguration($sModuleId, $aConfigsToChange)
+    private function changeConfiguration($sModuleId, $aConfigsToChange)
     {
         $oConfig = oxRegistry::getConfig();
         foreach ($aConfigsToChange as $aConfig) {
@@ -90,4 +97,3 @@ class Integration_Modules_ModuleConfigsTest extends BaseModuleTestCase
         }
     }
 }
- 

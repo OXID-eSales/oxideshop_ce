@@ -22,24 +22,23 @@
 
 class Environment
 {
-
     /**
      * Shop Id in which will be prepared environment.
      *
      * @var int
      */
-    private $_iShopId;
+    private $shopId;
 
     /**
      * Sets shop Id for modules environment.
      *
-     * @param int $iShopId
+     * @param int $shopId
      */
-    public function setShopId($iShopId)
+    public function setShopId($shopId)
     {
-        $this->_iShopId = $iShopId;
-        oxRegistry::getConfig()->setShopId($iShopId);
-        $this->_loadShopParameters();
+        $this->shopId = $shopId;
+        oxRegistry::getConfig()->setShopId($shopId);
+        $this->loadShopParameters();
     }
 
     /**
@@ -49,28 +48,28 @@ class Environment
      */
     public function getShopId()
     {
-        return is_null($this->_iShopId) ? 1 : $this->_iShopId;
+        return is_null($this->shopId) ? 1 : $this->shopId;
     }
 
     /**
      * Loads and activates modules by given IDs.
      *
-     * @param null $aModules
+     * @param null $modules
      *
      * @throws Exception
      */
-    public function prepare($aModules = null)
+    public function prepare($modules = null)
     {
         $this->clean();
         $oConfig = oxRegistry::getConfig();
         $oConfig->setShopId($this->getShopId());
-        $oConfig->setConfigParam('sShopDir', $this->_getPathToTestDataDirectory());
+        $oConfig->setConfigParam('sShopDir', $this->getPathToTestDataDirectory());
 
-        if (is_null($aModules)) {
-            $aModules = $this->_getAllModules();
+        if (is_null($modules)) {
+            $modules = $this->getAllModules();
         }
 
-        $this->activateModules($aModules);
+        $this->activateModules($modules);
     }
 
     /**
@@ -78,44 +77,41 @@ class Environment
      */
     public function clean()
     {
-        $oConfig = oxRegistry::getConfig();
-        $oConfig->setConfigParam('aModules', null);
-        $oConfig->setConfigParam('aModuleTemplates', null);
-        $oConfig->setConfigParam('aDisabledModules', array());
-        $oConfig->setConfigParam('aModuleFiles', null);
-        $oConfig->setConfigParam('aModuleVersions', null);
-        $oConfig->setConfigParam('aModuleEvents', null);
+        $config = oxRegistry::getConfig();
+        $config->setConfigParam('aModules', null);
+        $config->setConfigParam('aModuleTemplates', null);
+        $config->setConfigParam('aDisabledModules', array());
+        $config->setConfigParam('aModuleFiles', null);
+        $config->setConfigParam('aModuleVersions', null);
+        $config->setConfigParam('aModuleEvents', null);
 
-        $oDb = oxDb::getDb();
-        $oDb->execute("DELETE FROM `oxconfig` WHERE `oxmodule` LIKE 'module:%' OR `oxvarname` LIKE '%Module%'");
-        $oDb->execute('TRUNCATE `oxconfigdisplay`');
-        $oDb->execute('TRUNCATE `oxtplblocks`');
+        $database = oxDb::getDb();
+        $database->execute("DELETE FROM `oxconfig` WHERE `oxmodule` LIKE 'module:%' OR `oxvarname` LIKE '%Module%'");
+        $database->execute('TRUNCATE `oxconfigdisplay`');
+        $database->execute('TRUNCATE `oxtplblocks`');
     }
 
     /**
      * Activates given modules.
      *
-     * @param $aModules
+     * @param array $modules
      *
      * @throws Exception
      */
-    public function activateModules($aModules)
+    public function activateModules($modules)
     {
         $oModule = oxNew('oxModule');
-        foreach ($aModules as $sModuleId) {
-            if ($oModule->load($sModuleId)) {
-                /** @var oxModuleCache $oModuleCache */
-                $oModuleCache = oxNew('oxModuleCache', $oModule);
-                /** @var oxModuleInstaller $oModuleInstaller */
-                $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
+        foreach ($modules as $moduleId) {
+            if ($oModule->load($moduleId)) {
+                $moduleCache = oxNew('oxModuleCache', $oModule);
+                $moduleInstaller = oxNew('oxModuleInstaller', $moduleCache);
 
-                if (!$oModuleInstaller->activate($oModule)) {
-                    throw new Exception("Module $sModuleId was not activated.");
+                if (!$moduleInstaller->activate($oModule)) {
+                    throw new Exception("Module $moduleId was not activated.");
                 }
             } else {
-                throw new Exception("Module $sModuleId was not activated.");
+                throw new Exception("Module $moduleId was not activated.");
             }
-
         }
     }
 
@@ -124,7 +120,7 @@ class Environment
      *
      * @return string
      */
-    private function _getPathToTestDataDirectory()
+    private function getPathToTestDataDirectory()
     {
         return realpath(dirname(__FILE__)) . '/testData/';
     }
@@ -134,9 +130,9 @@ class Environment
      *
      * @return array
      */
-    private function _getAllModules()
+    private function getAllModules()
     {
-        $aModules = array_diff(scandir($this->_getPathToTestDataDirectory() . 'modules'), array('..', '.'));
+        $aModules = array_diff(scandir($this->getPathToTestDataDirectory() . 'modules'), array('..', '.'));
 
         return $aModules;
     }
@@ -144,7 +140,7 @@ class Environment
     /**
      * Loads config parameters from DB and sets to config.
      */
-    private function _loadShopParameters()
+    private function loadShopParameters()
     {
         $aParameters = array(
             'aModules', 'aModuleEvents', 'aModuleVersions', 'aModuleFiles', 'aDisabledModules', 'aModuleTemplates'
@@ -157,7 +153,7 @@ class Environment
     /**
      * Returns config values from table oxconfig by field- oxvarname.
      *
-     * @param $sVarName
+     * @param string $sVarName
      *
      * @return array
      */

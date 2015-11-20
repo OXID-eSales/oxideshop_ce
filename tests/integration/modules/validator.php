@@ -16,30 +16,27 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
-
-
 class Validator
 {
-
     /**
      * Config object.
      *
      * @var object
      */
-    private $_oConfig;
+    private $config;
 
     /**
      * Sets oxConfig and Shop ID
      *
-     * @param $_oConfig
+     * @param oxConfig $config
      */
-    function __construct($_oConfig)
+    public function __construct($config)
     {
-        $this->_oConfig = $_oConfig;
+        $this->config = $config;
     }
 
     /**
@@ -49,13 +46,13 @@ class Validator
      */
     public function getConfig()
     {
-        return $this->_oConfig;
+        return $this->config;
     }
 
     /**
      * Asserts that module templates match expected templates
      *
-     * @param $aExpectedTemplates
+     * @param array $aExpectedTemplates
      *
      * @return bool
      */
@@ -70,7 +67,7 @@ class Validator
     /**
      * Asserts that module blocks match expected blocks
      *
-     * @param $aExpectedBlocks
+     * @param array $aExpectedBlocks
      *
      * @return bool
      */
@@ -88,7 +85,7 @@ class Validator
     /**
      * Asserts that module extensions match expected extensions
      *
-     * @param $aExpectedExtensions
+     * @param array $aExpectedExtensions
      *
      * @return bool
      */
@@ -102,7 +99,7 @@ class Validator
     /**
      * Asserts that disabled module is in disabled modules list
      *
-     * @param $aExpectedDisabledModules
+     * @param array $aExpectedDisabledModules
      *
      * @return bool
      */
@@ -110,13 +107,13 @@ class Validator
     {
         $aDisabledModules = $this->getConfig()->getConfigParam('aDisabledModules');
 
-        return ($aExpectedDisabledModules == $aDisabledModules);
+        return $aExpectedDisabledModules == $aDisabledModules;
     }
 
     /**
      * Asserts that module files match expected files
      *
-     * @param $aExpectedFiles
+     * @param array $aExpectedFiles
      *
      * @return bool
      */
@@ -125,13 +122,13 @@ class Validator
         $aModuleFilesToCheck = $this->getConfig()->getConfigParam('aModuleFiles');
         $aModuleFilesToCheck = is_null($aModuleFilesToCheck) ? array() : $aModuleFilesToCheck;
 
-        return ($aExpectedFiles == $aModuleFilesToCheck);
+        return $aExpectedFiles == $aModuleFilesToCheck;
     }
 
     /**
      * Asserts that module configs match expected configs
      *
-     * @param $aExpectedConfigs
+     * @param array $aExpectedConfigs
      *
      * @return bool
      */
@@ -144,7 +141,7 @@ class Validator
                    where oxmodule like 'module:%' and c.oxshopid = {$this->getConfig()->getShopId()}";
         $aConfigsToCheck = $oDb->getAll($sQuery);
 
-        return (count($aExpectedConfigs) == count($aConfigsToCheck));
+        return count($aExpectedConfigs) == count($aConfigsToCheck);
     }
 
     /**
@@ -170,7 +167,7 @@ class Validator
     /**
      * Asserts that module version match expected version
      *
-     * @param $aExpectedVersions
+     * @param array $aExpectedVersions
      *
      * @return bool
      */
@@ -179,13 +176,13 @@ class Validator
         $aModuleVersionsToCheck = $this->getConfig()->getConfigParam('aModuleVersions');
         $aModuleVersionsToCheck = is_null($aModuleVersionsToCheck) ? array() : $aModuleVersionsToCheck;
 
-        return ($aExpectedVersions == $aModuleVersionsToCheck);
+        return $aExpectedVersions == $aModuleVersionsToCheck;
     }
 
     /**
      * Asserts that module version match expected version
      *
-     * @param $aExpectedEvents
+     * @param array $aExpectedEvents
      *
      * @return bool
      */
@@ -194,12 +191,12 @@ class Validator
         $aModuleEventsToCheck = $this->getConfig()->getConfigParam('aModuleEvents');
         $aModuleEventsToCheck = is_null($aModuleEventsToCheck) ? array() : $aModuleEventsToCheck;
 
-        return ($aExpectedEvents == $aModuleEventsToCheck);
+        return $aExpectedEvents == $aModuleEventsToCheck;
     }
 
     /**
-     * @param $aExpectedBlocks
-     * @param $aBlocksToCheck
+     * @param array $aExpectedBlocks
+     * @param array $aBlocksToCheck
      *
      * @return bool
      */
@@ -215,8 +212,8 @@ class Validator
     }
 
     /**
-     * @param $aBlockValues
-     * @param $aBlocks
+     * @param array $aBlockValues
+     * @param array $aBlocks
      *
      * @return bool
      */
@@ -234,8 +231,8 @@ class Validator
     }
 
     /**
-     * @param $aBlockValues
-     * @param $aBlock
+     * @param array $aBlockValues
+     * @param array $aBlock
      *
      * @return bool
      */

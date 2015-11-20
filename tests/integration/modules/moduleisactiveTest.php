@@ -24,7 +24,9 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleIsActiveTest extends BaseModuleTestCase
 {
-
+    /**
+     * @return array
+     */
     public function providerModuleIsActive()
     {
         return array(
@@ -86,17 +88,21 @@ class Integration_Modules_ModuleIsActiveTest extends BaseModuleTestCase
      * Tests if module was activated.
      *
      * @dataProvider providerModuleIsActive
+     *
+     * @param array $aInstallModules
+     * @param array $aDeactivateModules
+     * @param array $aResultToAssert
      */
     public function testIsActive($aInstallModules, $aDeactivateModules, $aResultToAssert)
     {
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
         //deactivation
         $oModule = oxNew('oxModule');
 
         foreach ($aDeactivateModules as $sModule) {
-            $this->_deactivateModule($oModule, $sModule);
+            $this->deactivateModule($oModule, $sModule);
         }
 
         //assertion
@@ -111,4 +117,3 @@ class Integration_Modules_ModuleIsActiveTest extends BaseModuleTestCase
         }
     }
 }
- 

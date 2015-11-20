@@ -24,17 +24,19 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
 {
-
+    /**
+     * @return array
+     */
     public function providerModuleActivation()
     {
         return array(
-            $this->_caseFiveModulesPrepared_Activated_with_everything(),
-            $this->_caseOneModulePrepared_Activated_with_everything(),
-            $this->_caseThreeModulesPrepared_Activated_extending_3_classes_with_1_extension(),
-            $this->_caseSevenModulesPrepared_Activated_no_extending(),
-            $this->_caseOneModulePrepared_Activated_with_2_files(),
-            $this->_caseOneModulePrepared_Activated_with_2_settings(),
-            $this->_caseOneModulePrepared_Activated_with_2_templates(),
+            $this->caseFiveModulesPreparedActivatedWithEverything(),
+            $this->caseOneModulePreparedActivatedWithEverything(),
+            $this->caseThreeModulesPreparedActivatedExtendingThreeClassesWithOneExtension(),
+            $this->caseSevenModulesPreparedActivatedNoExtending(),
+            $this->caseOneModulePreparedActivatedWithTwoFiles(),
+            $this->caseOneModulePreparedActivatedWithTwoSettings(),
+            $this->caseOneModulePreparedActivatedWithTwoTemplates(),
         );
     }
 
@@ -42,25 +44,62 @@ class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
      * Tests if module was activated.
      *
      * @dataProvider providerModuleActivation
+     *
+     * @param array  $aInstallModules
+     * @param string $sModule
+     * @param array  $aResultToAsserts
      */
     public function testModuleActivation($aInstallModules, $sModule, $aResultToAsserts)
     {
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
         $oModule = oxNew('oxModule');
-        $this->_activateModule($oModule, $sModule);
+        $this->activateModule($oModule, $sModule);
 
-        $this->_runAsserts($aResultToAsserts, $sModule);
+        $this->runAsserts($aResultToAsserts);
     }
 
+    /**
+     * Tests if module was activated.
+     *
+     * @dataProvider providerModuleActivation
+     *
+     * @param array  $aInstallModules
+     * @param string $sModule
+     * @param array  $aResultToAsserts
+     */
+    public function testModuleActivationInMainShopDidNotActivatedInSubShop($aInstallModules, $sModule, $aResultToAsserts)
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'EE') {
+            $this->markTestSkipped("This test case is only actual when SubShops are available.");
+        }
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare($aInstallModules);
+        $oModule = oxNew('oxModule');
+
+        $oEnvironment->setShopId(2);
+        $oEnvironment->activateModules($aInstallModules);
+
+        $oEnvironment->setShopId(1);
+        $this->activateModule($oModule, $sModule);
+
+        $oEnvironment->setShopId(2);
+        $this->activateModule($oModule, $sModule);
+
+        $oEnvironment->setShopId(1);
+        $this->deactivateModule($oModule, $sModule);
+
+        $oEnvironment->setShopId(2);
+        $this->runAsserts($aResultToAsserts);
+    }
 
     /**
      * Data provider case with 5 modules prepared and with_everything module activated
      *
      * @return array
      */
-    protected function _caseFiveModulesPrepared_Activated_with_everything()
+    protected function caseFiveModulesPreparedActivatedWithEverything()
     {
         return array(
 
@@ -146,7 +185,7 @@ class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseOneModulePrepared_Activated_with_everything()
+    private function caseOneModulePreparedActivatedWithEverything()
     {
         return array(
 
@@ -207,7 +246,7 @@ class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseThreeModulesPrepared_Activated_extending_3_classes_with_1_extension()
+    private function caseThreeModulesPreparedActivatedExtendingThreeClassesWithOneExtension()
     {
         return array(
 
@@ -256,7 +295,7 @@ class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseSevenModulesPrepared_Activated_no_extending()
+    private function caseSevenModulesPreparedActivatedNoExtending()
     {
         return array(
 
@@ -348,7 +387,7 @@ class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseOneModulePrepared_Activated_with_2_files()
+    private function caseOneModulePreparedActivatedWithTwoFiles()
     {
         return array(
 
@@ -390,7 +429,7 @@ class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseOneModulePrepared_Activated_with_2_settings()
+    private function caseOneModulePreparedActivatedWithTwoSettings()
     {
         return array(
 
@@ -430,7 +469,7 @@ class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseOneModulePrepared_Activated_with_2_templates()
+    private function caseOneModulePreparedActivatedWithTwoTemplates()
     {
         return array(
 
@@ -467,4 +506,3 @@ class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
         );
     }
 }
- 

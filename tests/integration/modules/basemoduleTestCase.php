@@ -20,19 +20,20 @@
  * @version   OXID eShop CE
  */
 
-
 require_once realpath(dirname(__FILE__)) . '/validator.php';
 require_once realpath(dirname(__FILE__)) . '/environment.php';
 
+/**
+ * Base class for module integration tests.
+ */
 abstract class BaseModuleTestCase extends OxidTestCase
 {
-
     /**
      * Tear down the fixture.
      */
     protected function tearDown()
     {
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->clean();
         parent::tearDown();
     }
@@ -43,14 +44,12 @@ abstract class BaseModuleTestCase extends OxidTestCase
      * @param oxModule $oModule
      * @param string   $sModuleId
      */
-    protected function _activateModule($oModule, $sModuleId = null)
+    protected function activateModule($oModule, $sModuleId = null)
     {
         if ($sModuleId) {
             $oModule->load($sModuleId);
         }
-        /** @var oxModuleCache $oModuleCache */
         $oModuleCache = oxNew('oxModuleCache', $oModule);
-        /** @var oxModuleInstaller $oModuleInstaller */
         $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
 
         $oModuleInstaller->activate($oModule);
@@ -62,14 +61,12 @@ abstract class BaseModuleTestCase extends OxidTestCase
      * @param oxModule $oModule
      * @param string   $sModuleId
      */
-    protected function _deactivateModule($oModule, $sModuleId = null)
+    protected function deactivateModule($oModule, $sModuleId = null)
     {
         if ($sModuleId) {
             $oModule->load($sModuleId);
         }
-        /** @var oxModuleCache $oModuleCache */
         $oModuleCache = oxNew('oxModuleCache', $oModule);
-        /** @var oxModuleInstaller $oModuleInstaller */
         $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
 
         $oModuleInstaller->deactivate($oModule);
@@ -78,9 +75,9 @@ abstract class BaseModuleTestCase extends OxidTestCase
     /**
      * Runs all asserts
      *
-     * @param $aExpectedResult
+     * @param array $aExpectedResult
      */
-    protected function _runAsserts($aExpectedResult)
+    protected function runAsserts($aExpectedResult)
     {
         $oConfig = oxRegistry::getConfig();
 
@@ -120,11 +117,9 @@ abstract class BaseModuleTestCase extends OxidTestCase
 
         if (isset($aExpectedResult['settings_values'])) {
             $this->assertTrue(
-                $oValidator->checkConfigValues($aExpectedResult['settings_values'])
-                , 'Config values does not match expectations'
+                $oValidator->checkConfigValues($aExpectedResult['settings_values']),
+                'Config values does not match expectations'
             );
         }
     }
-
 }
- 

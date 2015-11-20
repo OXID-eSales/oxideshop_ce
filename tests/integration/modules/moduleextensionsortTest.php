@@ -24,7 +24,9 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
 {
-
+    /**
+     * @return array
+     */
     public function providerModuleReorderExtensions()
     {
         return array(
@@ -46,6 +48,14 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
                     'oxarticle' => 'extending_3_classes/myarticle&extending_3_classes_with_1_extension/mybaseclass',
                     'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
                 ),
+                // Not reordered extensions
+                array(
+                    'oxorder'   => 'extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&' .
+                                   'extending_3_classes/myorder&extending_1_class_3_extensions/myorder1&' .
+                                   'extending_1_class_3_extensions/myorder2&extending_1_class_3_extensions/myorder3',
+                    'oxarticle' => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
+                    'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
+                ),
             ),
 
             array(
@@ -63,6 +73,12 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
                                  'extending_1_class_3_extensions/myorder1&' .
                                  'extending_1_class_3_extensions/myorder3',
                 ),
+                // Not reordered extensions
+                array(
+                    'oxorder' => 'extending_1_class_3_extensions/myorder1&' .
+                                 'extending_1_class_3_extensions/myorder2&' .
+                                 'extending_1_class_3_extensions/myorder3',
+                ),
             )
         );
     }
@@ -71,25 +87,63 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
      * Tests check if changed extensions order stays the same after deactivation / activation
      *
      * @dataProvider providerModuleReorderExtensions
+     *
+     * @param array  $aInstallModules
+     * @param string $sModule
+     * @param array  $aReorderedExtensions
      */
     public function testIsActive($aInstallModules, $sModule, $aReorderedExtensions)
     {
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
         // load reordered extensions
         oxRegistry::getConfig()->setConfigParam('aModules', $aReorderedExtensions);
-//
+
         $oModule = oxNew('oxModule');
         $oModule->load($sModule);
 
-        $this->_deactivateModule($oModule);
-        $this->_activateModule($oModule);
+        $this->deactivateModule($oModule);
+        $this->activateModule($oModule);
 
         $oValidator = new Validator(oxRegistry::getConfig());
 
         $this->assertTrue($oValidator->checkExtensions($aReorderedExtensions), 'Extension order changed');
     }
 
+    /**
+     * Tests check if changed extensions order stays the same after deactivation / activation
+     *
+     * @dataProvider providerModuleReorderExtensions
+     *
+     * @param array  $aInstallModules
+     * @param string $sModule
+     * @param array  $aReorderedExtensions
+     * @param array  $aNotReorderedExtensions
+     */
+    public function testIfNotReorderedOnSubShop($aInstallModules, $sModule, $aReorderedExtensions, $aNotReorderedExtensions)
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'EE') {
+            $this->markTestSkipped("This test case is only actual when SubShops are available.");
+        }
+        $oConfig = oxRegistry::getConfig();
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare($aInstallModules);
+        $oValidator = new Validator($oConfig);
+        $oModule = oxNew('oxModule');
+
+        $oEnvironment->setShopId(2);
+        $oEnvironment->activateModules($aInstallModules);
+
+        // load reordered extensions for shop
+        $oEnvironment->setShopId(1);
+        $oConfig->setConfigParam('aModules', $aReorderedExtensions);
+
+        $oModule->load($sModule);
+        $this->deactivateModule($oModule);
+        $this->activateModule($oModule);
+
+        $oEnvironment->setShopId(2);
+        $this->assertTrue($oValidator->checkExtensions($aNotReorderedExtensions), 'Extension order changed');
+    }
 }
- 

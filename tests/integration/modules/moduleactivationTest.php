@@ -24,17 +24,19 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
 {
-
+    /**
+     * @return array
+     */
     public function providerModuleActivation()
     {
         return array(
-            $this->_caseSixModulesPrepared_Reactivated_with_everything(),
-            $this->_caseTwoModulesPrepared_Reactivated_with_everything(),
-            $this->_caseFourModulesPrepared_Reactivated_extending_3_classes_with_1_extension(),
-            $this->_caseEightModulesPrepared_Reactivated_no_extending(),
-            $this->_caseTwoModulesPrepared_Reactivated_with_2_files(),
-            $this->_caseTwoModulesPrepared_Reactivated_with_2_settings(),
-            $this->_caseTwoModulesPrepared_Reactivated_with_2_templates(),
+            $this->caseSixModulesPreparedReactivatedWithEverything(),
+            $this->caseTwoModulesPreparedReactivatedWithEverything(),
+            $this->caseFourModulesPreparedReactivatedExtendingThreeClassesWithOneExtension(),
+            $this->caseEightModulesPreparedReactivatedNoExtending(),
+            $this->caseTwoModulesPreparedReactivatedWithTwoFiles(),
+            $this->caseTwoModulesPreparedReactivatedWithTwoSettings(),
+            $this->caseTwoModulesPreparedReactivatedWithTwoTemplates(),
         );
     }
 
@@ -42,18 +44,22 @@ class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
      * Tests if module was activated.
      *
      * @dataProvider providerModuleActivation
+     *
+     * @param array  $aInstallModules
+     * @param string $sModule
+     * @param array  $aResultToAsserts
      */
     public function testModuleActivation($aInstallModules, $sModule, $aResultToAsserts)
     {
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
         $oModule = oxNew('oxModule');
         $oModule->load($sModule);
-        $this->_deactivateModule($oModule);
-        $this->_activateModule($oModule);
+        $this->deactivateModule($oModule);
+        $this->activateModule($oModule);
 
-        $this->_runAsserts($aResultToAsserts, $sModule);
+        $this->runAsserts($aResultToAsserts);
     }
 
     /**
@@ -61,7 +67,7 @@ class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    protected function _caseSixModulesPrepared_Reactivated_with_everything()
+    protected function caseSixModulesPreparedReactivatedWithEverything()
     {
         return array(
 
@@ -147,7 +153,7 @@ class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseTwoModulesPrepared_Reactivated_with_everything()
+    private function caseTwoModulesPreparedReactivatedWithEverything()
     {
         return array(
 
@@ -208,7 +214,7 @@ class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseFourModulesPrepared_Reactivated_extending_3_classes_with_1_extension()
+    private function caseFourModulesPreparedReactivatedExtendingThreeClassesWithOneExtension()
     {
         return array(
 
@@ -256,7 +262,7 @@ class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseEightModulesPrepared_Reactivated_no_extending()
+    private function caseEightModulesPreparedReactivatedNoExtending()
     {
         return array(
 
@@ -348,7 +354,7 @@ class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseTwoModulesPrepared_Reactivated_with_2_files()
+    private function caseTwoModulesPreparedReactivatedWithTwoFiles()
     {
         return array(
 
@@ -390,7 +396,7 @@ class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseTwoModulesPrepared_Reactivated_with_2_settings()
+    private function caseTwoModulesPreparedReactivatedWithTwoSettings()
     {
         return array(
 
@@ -430,7 +436,7 @@ class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseTwoModulesPrepared_Reactivated_with_2_templates()
+    private function caseTwoModulesPreparedReactivatedWithTwoTemplates()
     {
         return array(
 
@@ -467,4 +473,3 @@ class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
         );
     }
 }
- 

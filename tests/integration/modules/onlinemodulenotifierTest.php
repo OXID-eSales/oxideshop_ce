@@ -24,17 +24,17 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
 {
-
     /**
      * Tests if module was activated.
      */
     public function testVersionNotify()
     {
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->prepare(array('extending_1_class', 'extending_1_class_3_extensions', 'with_everything'));
 
+        /** @var oxOnlineModuleVersionNotifierCaller|PHPUnit_Framework_MockObject_MockObject $oCaller */
         $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'), array(), '', false);
-        $oCaller->expects($this->any())->method('doRequest')->with($this->equalTo($this->_getExpectedRequest()));
+        $oCaller->expects($this->any())->method('doRequest')->with($this->equalTo($this->getExpectedRequest()));
 
         $oModuleList = oxNew('oxModuleList');
         $sModuleDir = realpath(dirname(__FILE__)) . '/testData/modules';
@@ -44,7 +44,12 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
         $oNotifier->versionNotify();
     }
 
-    protected function _getExpectedRequest()
+    /**
+     * Returns formed request which should be returned during testing.
+     *
+     * @return oxOnlineModulesNotifierRequest
+     */
+    protected function getExpectedRequest()
     {
         $oRequest = oxNew('oxOnlineModulesNotifierRequest');
 

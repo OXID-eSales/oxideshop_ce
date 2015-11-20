@@ -24,12 +24,14 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleActivateWithSimilarNameTest extends BaseModuleTestCase
 {
-
+    /**
+     * @return array
+     */
     public function providerModuleReactivation()
     {
         return array(
-            $this->_caseActivateModuleFirstTime_OtherModuleWithSimilarNameIsDisabled_ExtensionsDoNotChange(),
-            $this->_caseReactivateModule_OtherModuleWithSimilarNameIsDisabled_ExtensionsDoNotChange(),
+            $this->caseActivateModuleFirstTimeOtherModuleWithSimilarNameIsDisabledExtensionsDoNotChange(),
+            $this->caseReactivateModuleOtherModuleWithSimilarNameIsDisabledExtensionsDoNotChange(),
         );
     }
 
@@ -37,28 +39,34 @@ class Integration_Modules_ModuleActivateWithSimilarNameTest extends BaseModuleTe
      * Test check shop environment after activation of module with similar name as deactivated module
      *
      * @dataProvider providerModuleReactivation
+     *
+     * @param array  $installModules
+     * @param string $sReactivateModule
+     * @param array  $aResultToAssert
      */
-    public function testModuleActivateWithSimilarName($aInstallModules, $sReactivateModule, $aResultToAssert)
+    public function testModuleActivateWithSimilarName($installModules, $sReactivateModule, $aResultToAssert)
     {
-        $oEnvironment = oxNew('Environment');
-        $oEnvironment->prepare($aInstallModules);
+        $environment = new Environment();
+        $environment->prepare($installModules);
 
-        foreach ($aInstallModules as $sModule) {
+        foreach ($installModules as $sModule) {
             $oModule = oxNew('oxModule');
-            $this->_deactivateModule($oModule, $sModule);
+            $this->deactivateModule($oModule, $sModule);
         }
 
         $oModule = oxNew('oxModule');
-        $this->_activateModule($oModule, $sReactivateModule);
+        $this->activateModule($oModule, $sReactivateModule);
 
-        $this->_runAsserts($aResultToAssert);
+        $this->runAsserts($aResultToAssert);
     }
 
     /**
      * Activate module first time with other module with similar name is disabled
      * expects that extensions do not change
+     *
+     * @return array
      */
-    protected function _caseActivateModuleFirstTime_OtherModuleWithSimilarNameIsDisabled_ExtensionsDoNotChange()
+    protected function caseActivateModuleFirstTimeOtherModuleWithSimilarNameIsDisabledExtensionsDoNotChange()
     {
         return array(
             // modules to be activated during test preparation
@@ -97,8 +105,10 @@ class Integration_Modules_ModuleActivateWithSimilarNameTest extends BaseModuleTe
     /**
      * Activate module first time with other module with similar name is disabled
      * expects that extensions do not change
+     *
+     * @return array
      */
-    protected function _caseReactivateModule_OtherModuleWithSimilarNameIsDisabled_ExtensionsDoNotChange()
+    protected function caseReactivateModuleOtherModuleWithSimilarNameIsDisabledExtensionsDoNotChange()
     {
         return array(
             // modules to be activated during test preparation
@@ -133,6 +143,4 @@ class Integration_Modules_ModuleActivateWithSimilarNameTest extends BaseModuleTe
             ),
         );
     }
-
 }
- 

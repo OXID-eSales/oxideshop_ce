@@ -20,11 +20,8 @@
  * @version   OXID eShop CE
  */
 
-
-
 class Integration_Modules_ModuleWithNoMetadataTest extends OxidTestCase
 {
-
     /**
      * Tests if module was activated.
      */
@@ -42,6 +39,4 @@ class Integration_Modules_ModuleWithNoMetadataTest extends OxidTestCase
 
         $this->assertFalse(in_array(null, $oModuleList->getDisabledModules()), 'Module id with value null was found in disabled modules list');
     }
-
 }
- 

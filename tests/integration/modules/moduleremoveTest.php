@@ -24,12 +24,14 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
 {
-
+    /**
+     * @return array
+     */
     public function providerModuleDeactivation()
     {
         return array(
-            $this->_caseSevenModulesPrepared_RemovedOneExtension_with_everything(),
-            $this->_caseSevenModulesPrepared_RemovedAllExtension_with_everything(),
+            $this->caseSevenModulesPreparedRemovedOneExtensionWithEverything(),
+            $this->caseSevenModulesPreparedRemovedAllExtensionWithEverything(),
         );
     }
 
@@ -37,23 +39,66 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
      * Test check shop environment after module deactivation
      *
      * @dataProvider providerModuleDeactivation
+     *
+     * @param array $aInstallModules
+     * @param array $aRemovedExtensions
+     * @param array $aResultToAssert
      */
     public function testModuleRemove($aInstallModules, $aRemovedExtensions, $aResultToAssert)
     {
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
-        /** @var oxModuleList $oModuleList */
+        /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $oModuleList */
         $oModuleList = $this->getMock('oxModuleList', array('getDeletedExtensions'));
         $oModuleList->expects($this->any())->method('getDeletedExtensions')->will($this->returnValue($aRemovedExtensions));
 
         $oModuleList->cleanup();
 
-        $this->_runAsserts($aResultToAssert);
+        $this->runAsserts($aResultToAssert);
     }
 
+    /**
+     * Test check shop environment after module deactivation in subshop.
+     *
+     * @dataProvider providerModuleDeactivation
+     *
+     * @param array $aInstallModules
+     * @param array $aRemovedExtensions
+     * @param array $aResultToAssert
+     */
+    public function testModuleRemoveInSubShop($aInstallModules, $aRemovedExtensions, $aResultToAssert)
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'EE') {
+            $this->markTestSkipped("This test case is only actual when SubShops are available.");
+        }
 
-    private function _caseSevenModulesPrepared_RemovedOneExtension_with_everything()
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare($aInstallModules);
+
+        $oEnvironment->setShopId(2);
+        $oEnvironment->activateModules($aInstallModules);
+
+        /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $oModuleList */
+        $oModuleList = $this->getMock('oxModuleList', array('getDeletedExtensions'));
+        $oModuleList->expects($this->any())->method('getDeletedExtensions')->will($this->returnValue($aRemovedExtensions));
+
+        $oModuleList->cleanup();
+
+        //Assert on subshop
+        $this->runAsserts($aResultToAssert);
+
+        $this->markTestIncomplete('Skipped till cleanup for subshops will be fixed');
+
+        //Assert on main shop
+        $oEnvironment->setShopId(1);
+        $this->runAsserts($aResultToAssert);
+    }
+
+    /**
+     * @return array
+     */
+    private function caseSevenModulesPreparedRemovedOneExtensionWithEverything()
     {
         return array(
 
@@ -94,8 +139,6 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
                 'settings'        => array(
                     array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
                     array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
-//                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
-//                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
                 ),
                 'disabledModules' => array(),
                 'templates'       => array(
@@ -127,7 +170,10 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
         );
     }
 
-    private function _caseSevenModulesPrepared_RemovedAllExtension_with_everything()
+    /**
+     * @return array
+     */
+    private function caseSevenModulesPreparedRemovedAllExtensionWithEverything()
     {
         return array(
 
@@ -174,8 +220,6 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
                 'settings'        => array(
                     array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
                     array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
-//                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
-//                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
                 ),
                 'disabledModules' => array(),
                 'templates'       => array(
@@ -206,6 +250,4 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
             ),
         );
     }
-
 }
- 

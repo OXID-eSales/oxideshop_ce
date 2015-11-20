@@ -24,17 +24,19 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
 {
-
+    /**
+     * @return array
+     */
     public function providerModuleDeactivation()
     {
         return array(
-            $this->_caseSevenModulesPrepared_Deactivated_with_everything(),
-            $this->_caseTwoModulesPrepared_Deactivated_with_everything(),
-            $this->_caseFourModulesPrepared_Deactivated_extending_3_classes_with_1_extension(),
-            $this->_caseEightModulesPrepared_Deactivated_no_extending(),
-            $this->_caseTwoModulesPrepared_Deactivated_with_2_files(),
-            $this->_caseTwoModulesPrepared_Deactivated_with_2_templates(),
-            $this->_caseTwoModulesPrepared_Deactivated_with_2_settings(),
+            $this->caseSevenModulesPreparedDeactivatedWithEverything(),
+            $this->caseTwoModulesPreparedDeactivatedWithEverything(),
+            $this->caseFourModulesPreparedDeactivatedWithExtendedClasses(),
+            $this->caseEightModulesPreparedDeactivatedWithoutExtending(),
+            $this->caseTwoModulesPreparedDeactivatedWithFiles(),
+            $this->caseTwoModulesPreparedDeactivatedWithTemplates(),
+            $this->caseTwoModulesPreparedDeactivatedWithSettings(),
         );
     }
 
@@ -42,16 +44,45 @@ class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
      * Test check shop environment after module deactivation
      *
      * @dataProvider providerModuleDeactivation
+     *
+     * @param array  $aInstallModules
+     * @param string $sModuleId
+     * @param array  $aResultToAssert
      */
     public function testModuleDeactivation($aInstallModules, $sModuleId, $aResultToAssert)
     {
-        $oEnvironment = oxNew('Environment');
+        $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
         $oModule = oxNew('oxModule');
-        $this->_deactivateModule($oModule, $sModuleId);
+        $this->deactivateModule($oModule, $sModuleId);
 
-        $this->_runAsserts($aResultToAssert, $sModuleId);
+        $this->runAsserts($aResultToAssert);
+    }
+
+    /**
+     * Test check shop environment after module deactivation in subshop.
+     *
+     * @dataProvider providerModuleDeactivation
+     *
+     * @param array  $aInstallModules
+     * @param string $sModuleId
+     * @param array  $aResultToAssert
+     */
+    public function testModuleDeactivationInSubShop($aInstallModules, $sModuleId, $aResultToAssert)
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'EE') {
+            $this->markTestSkipped("This test case is only actual when SubShops are available.");
+        }
+        $oModule = oxNew('oxModule');
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare($aInstallModules);
+
+        $oEnvironment->setShopId(2);
+        $oEnvironment->activateModules($aInstallModules);
+        $this->deactivateModule($oModule, $sModuleId);
+
+        $this->runAsserts($aResultToAssert);
     }
 
     /**
@@ -59,7 +90,7 @@ class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseSevenModulesPrepared_Deactivated_with_everything()
+    private function caseSevenModulesPreparedDeactivatedWithEverything()
     {
         return array(
 
@@ -136,7 +167,7 @@ class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseTwoModulesPrepared_Deactivated_with_everything()
+    private function caseTwoModulesPreparedDeactivatedWithEverything()
     {
         return array(
 
@@ -180,7 +211,7 @@ class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseFourModulesPrepared_Deactivated_extending_3_classes_with_1_extension()
+    private function caseFourModulesPreparedDeactivatedWithExtendedClasses()
     {
         return array(
 
@@ -228,7 +259,7 @@ class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseEightModulesPrepared_Deactivated_no_extending()
+    private function caseEightModulesPreparedDeactivatedWithoutExtending()
     {
         return array(
 
@@ -320,7 +351,7 @@ class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseTwoModulesPrepared_Deactivated_with_2_files()
+    private function caseTwoModulesPreparedDeactivatedWithFiles()
     {
         return array(
 
@@ -357,7 +388,7 @@ class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseTwoModulesPrepared_Deactivated_with_2_templates()
+    private function caseTwoModulesPreparedDeactivatedWithTemplates()
     {
         return array(
 
@@ -394,7 +425,7 @@ class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
      *
      * @return array
      */
-    private function _caseTwoModulesPrepared_Deactivated_with_2_settings()
+    private function caseTwoModulesPreparedDeactivatedWithSettings()
     {
         return array(
 
@@ -429,4 +460,3 @@ class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
         );
     }
 }
- 

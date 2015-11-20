@@ -53,15 +53,20 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $oConfig->saveShopConfVar('arr', 'aSerials', array('license_key'));
         $oConfig->saveShopConfVar('arr', 'sClusterId', array('generated_unique_cluster_id'));
         $iValidNodeTime =  oxRegistry::get("oxUtilsDate")->getTime();
-        $oConfig->saveShopConfVar('arr', 'aServersData', array(
-            'server_id1' => array(
-                'id' => 'server_id1',
-                'timestamp' => $iValidNodeTime,
-                'ip' => '127.0.0.1',
-                'lastFrontendUsage' => $iValidNodeTime,
-                'lastAdminUsage' => $iValidNodeTime,
-                'isValid' => true,
-        )));
+        $oConfig->saveShopConfVar(
+            'arr',
+            'aServersData',
+            array(
+                'server_id1' => array(
+                    'id' => 'server_id1',
+                    'timestamp' => $iValidNodeTime,
+                    'ip' => '127.0.0.1',
+                    'lastFrontendUsage' => $iValidNodeTime,
+                    'lastAdminUsage' => $iValidNodeTime,
+                    'isValid' => true,
+                )
+            )
+        );
 
         // imitating package revision file
         $oConfig->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
@@ -70,7 +75,7 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $sVersion = $oConfig->getVersion();
         $sShopUrl = $oConfig->getShopUrl();
         $sRevision = $oConfig->getRevision();
-        $iAdminUsers = 1;
+        $iAdminUsers = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 1;
 
         $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
         $sXml .= '<olcRequest>';
@@ -137,15 +142,19 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $oConfig->setConfigParam('aSerials', array('license_key'));
         $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
         $iValidNodeTime =  oxRegistry::get("oxUtilsDate")->getTime();
-        $oConfig->setConfigParam('aServersData', array(
-            'server_id1' => array(
-                'id' => 'server_id1',
-                'timestamp' => $iValidNodeTime,
-                'ip' => '127.0.0.1',
-                'lastFrontendUsage' => $iValidNodeTime,
-                'lastAdminUsage' => $iValidNodeTime,
-                'isValid' => true,
-            )));
+        $oConfig->setConfigParam(
+            'aServersData',
+            array(
+                'server_id1' => array(
+                    'id' => 'server_id1',
+                    'timestamp' => $iValidNodeTime,
+                    'ip' => '127.0.0.1',
+                    'lastFrontendUsage' => $iValidNodeTime,
+                    'lastAdminUsage' => $iValidNodeTime,
+                    'isValid' => true,
+                )
+            )
+        );
 
         // imitating package revision file
         $oConfig->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
@@ -154,7 +163,7 @@ class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest extends Oxid
         $sVersion = $oConfig->getVersion();
         $sShopUrl = $oConfig->getShopUrl();
         $sRevision = $oConfig->getRevision();
-        $iAdminUsers = 1;
+        $iAdminUsers = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 1;
 
         $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
         $sXml .= '<olcRequest>';

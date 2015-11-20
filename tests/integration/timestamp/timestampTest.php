@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -29,8 +29,6 @@ class Integration_Timestamp_TimestampTest extends OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -39,6 +37,8 @@ class Integration_Timestamp_TimestampTest extends OxidTestCase
             $this->cleanUpTable($aTable[1]);
         }
 
+        // OXID is not string in oxshops table !!!
+        oxDb::getDb()->execute("DELETE FROM `oxshops` WHERE `oxid` = '0'");
 
         parent::tearDown();
     }
@@ -87,6 +87,9 @@ class Integration_Timestamp_TimestampTest extends OxidTestCase
             array('oxVoucherSerie', 'oxvoucherseries', 'oxserienr'),
         );
 
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $aNames[] = array('oxRole', 'oxroles', 'oxtitle');
+        }
 
         return $aNames;
     }

@@ -61,8 +61,12 @@ class Integration_OnlineInfo_OnlineLicenseCheckResponseHandlingTest extends \oxU
         $this->assertFalse($oConfig->getConfigParam('blShopStopped'));
         $this->assertEquals('', $oConfig->getConfigParam('sShopVar'));
     }
+
     public function testRequestHandlingWithNegativeResponse()
     {
+        if (!$this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
 
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam('blShopStopped', false);

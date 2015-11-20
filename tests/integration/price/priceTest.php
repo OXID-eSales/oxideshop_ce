@@ -63,17 +63,19 @@ class Integration_Price_PriceTest extends OxidTestCase
      */
     protected function _reset()
     {
-        $oDb = oxDb::getDb();
-        $oConfig = oxRegistry::getConfig();
-        $oDb->query("TRUNCATE oxarticles");
-        $oDb->query("TRUNCATE oxdiscount");
-        $oDb->query("TRUNCATE oxobject2discount");
-        $oDb->query("TRUNCATE oxprice2article");
-        $oDb->query("TRUNCATE oxuser");
-        $oDb->query("TRUNCATE oxobject2group");
-        $oDb->query("TRUNCATE oxgroups");
+        $database = oxDb::getDb();
+        $database->query("TRUNCATE oxarticles");
+        $database->query("TRUNCATE oxdiscount");
+        $database->query("TRUNCATE oxobject2discount");
+        $database->query("TRUNCATE oxprice2article");
+        $tables = $database->getCol("SHOW TABLES");
+        if (in_array('oxfield2shop', $tables)) {
+            $database->query("TRUNCATE oxfield2shop");
+        }
+        $database->query("TRUNCATE oxuser");
+        $database->query("TRUNCATE oxobject2group");
+        $database->query("TRUNCATE oxgroups");
     }
-
 
     /**
      * Order startup data and expected calculations results

@@ -371,38 +371,8 @@ class oxDbMetaDataHandler extends oxSuperCfg
      */
     public function addNewMultilangField($sTable)
     {
-        $aSql = array();
-        $aFields = $this->getMultilangFields($sTable);
-        $iMaxLang = $this->getCurrentMaxLangId();
         $iNewLang = $this->getNextLangId();
-
-        $sTableSet = getLangTableName($sTable, $iNewLang);
-        if (!$this->tableExists($sTableSet)) {
-            $aSql[] = $this->_getCreateTableSetSql($sTable, $iNewLang);
-        }
-
-        if (is_array($aFields) && count($aFields) > 0) {
-            foreach ($aFields as $sField) {
-                $sNewFieldName = $sField . "_" . $iNewLang;
-                if ($iNewLang > 1) {
-                    $iPrevLang = $iNewLang - 1;
-                    $sPrevField = $sField . '_' . $iPrevLang;
-                } else {
-                    $sPrevField = $sField;
-                }
-
-                if (!$this->tableExists($sTableSet) || !$this->fieldExists($sNewFieldName, $sTableSet)) {
-
-                    //getting add field sql
-                    $aSql[] = $this->getAddFieldSql($sTable, $sField, $sNewFieldName, $sPrevField, $sTableSet);
-
-                    //getting add index sql on added field
-                    $aSql = array_merge($aSql, (array) $this->getAddFieldIndexSql($sTable, $sField, $sNewFieldName, $sTableSet));
-                }
-            }
-        }
-
-        $this->executeSql($aSql);
+        $this->ensureMultiLanguageFields($sTable, $iNewLang);
     }
 
     /**
@@ -522,6 +492,8 @@ class oxDbMetaDataHandler extends oxSuperCfg
         $oDb = oxDb::getDb();
         $oConfig = oxRegistry::getConfig();
 
+        $this->safeGuardAdditionalMultiLanguageTables();
+
         $aShops = $oDb->getAll("select * from oxshops");
 
         $aTables = $aTables ? $aTables : $oConfig->getConfigParam('aMultiShopTables');
@@ -560,5 +532,73 @@ class oxDbMetaDataHandler extends oxSuperCfg
             }
         }
         return $aFields;
+    }
+
+    /**
+     * Ensure that all *_set* tables for all tables in config parameter 'aMultiLangTables'
+     * are created.
+     *
+     * @return null
+     */
+    protected function safeGuardAdditionalMultiLanguageTables()
+    {
+        $iMaxLang = $this->getCurrentMaxLangId();
+        $aMultiLanguageTables = $this->getConfig()->getConfigParam('aMultiLangTables');
+
+        if (!is_array($aMultiLanguageTables) || empty($aMultiLanguageTables)) {
+            return; //nothing to do
+        }
+
+        foreach ($aMultiLanguageTables as $sTable) {
+            if ($this->tableExists($sTable)) {
+                //We start with language id 1 and rely on that all fields for language 0 exists.
+                //For language id 0 we have e.g. OXTITLE and logic here would expect it to
+                //be OXTITLE_0, add that as new field, leading to incorrect data in views later on.
+                for ($i=1;$i<=$iMaxLang;$i++) {
+                    $this->ensureMultiLanguageFields($sTable, $i);
+                }
+            }
+        }
+    }
+
+    /**
+     * Make sure that all *_set* tables with all required multilanguage fields are created.
+     *
+     * @param $sTable
+     * @param $iLanguagaId
+     *
+     * @return null
+     */
+    protected function ensureMultiLanguageFields($sTable, $iLanguageId)
+    {
+        $aFields = $this->getMultilangFields($sTable);
+
+        $sTableSet = getLangTableName($sTable, $iLanguageId);
+        if (!$this->tableExists($sTableSet)) {
+            $aSql[] = $this->_getCreateTableSetSql($sTable, $iLanguageId);
+        }
+
+        if (is_array($aFields) && count($aFields) > 0) {
+            foreach ($aFields as $sField) {
+                $sNewFieldName = $sField . "_" . $iLanguageId;
+                if ($iLanguageId > 1) {
+                    $iPrevLang = $iLanguageId - 1;
+                    $sPrevField = $sField . '_' . $iPrevLang;
+                } else {
+                    $sPrevField = $sField;
+                }
+
+                if (!$this->tableExists($sTableSet) || !$this->fieldExists($sNewFieldName, $sTableSet)) {
+
+                    //getting add field sql
+                    $aSql[] = $this->getAddFieldSql($sTable, $sField, $sNewFieldName, $sPrevField, $sTableSet);
+
+                    //getting add index sql on added field
+                    $aSql = array_merge($aSql, (array) $this->getAddFieldIndexSql($sTable, $sField, $sNewFieldName, $sTableSet));
+                }
+            }
+        }
+
+        $this->executeSql($aSql);
     }
 }

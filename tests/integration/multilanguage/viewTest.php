@@ -20,7 +20,9 @@
  * @version   OXID eShop CE
  */
 
-class Integration_Multilanguage_ViewTest extends OxidTestCase
+require_once 'MultilanguageTestCase.php';
+
+class Integration_Multilanguage_ViewTest extends MultilanguageTestCase
 {
     /**
      * Make a copy of Stewart+Brown Shirt Kisser Fish for testing
@@ -31,11 +33,7 @@ class Integration_Multilanguage_ViewTest extends OxidTestCase
      * Generated test article id.
      * @var string
      */
-    private $sTestArticleId = null;
-
-    private $aOriginalLanguageArray = null;
-    private $iOriginalBaseLanguageId = null;
-    private $iLanguageMain = null;
+    private $_sTestArticleId = null;
 
     /**
      * Fixture setUp.
@@ -43,9 +41,6 @@ class Integration_Multilanguage_ViewTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-
-        $this->aOriginalLanguageArray = $this->getLanguageMain()->_getLanguages();
-        $this->iOriginalBaseLanguageId = oxRegistry::getLang()->getBaseLanguage();
     }
 
     /*
@@ -53,10 +48,6 @@ class Integration_Multilanguage_ViewTest extends OxidTestCase
     */
     protected function tearDown()
     {
-        oxRegistry::getLang()->setBaseLanguage($this->iOriginalBaseLanguageId);
-        $this->storeLanguageConfiguration($this->aOriginalLanguageArray);
-        $this->updateViews();
-
         parent::tearDown();
     }
 
@@ -67,26 +58,26 @@ class Integration_Multilanguage_ViewTest extends OxidTestCase
     public function testMultilanguageViewsAddLanguagesAfterAddingArticle()
     {
         //insert article first
-        $this->insertArticle();
+        $this->_insertArticle();
 
         //add more languages and activate latest added language in frontend
-        $iLanguageId = $this->prepare();
+        $iLanguageId = $this->_prepare();
         oxRegistry::getLang()->setBaseLanguage($iLanguageId);
 
         //load article to have a look at e.g. it's title in the current language
         $oArticle = oxnew('oxArticle');
         $oArticle->disableLazyLoading();
-        $oArticle->load($this->sTestArticleId);
+        $oArticle->load($this->_sTestArticleId);
 
         //As we have no data for this language added in table oxarticle_set1, so article title is null.
         $this->assertNull($oArticle->oxarticles__oxtitle->value);
 
         //Make sure we have the expected value for the base language.
         //Effect of #6216 was that base language data was wrongly used for language id >= 8 with no way to change this.
-        oxRegistry::getLang()->setBaseLanguage($this->iOriginalBaseLanguageId);
+        oxRegistry::getLang()->setBaseLanguage($this->_iOriginalBaseLanguageId);
         $oArticle = oxnew('oxArticle');
         $oArticle->disableLazyLoading();
-        $oArticle->load($this->sTestArticleId);
+        $oArticle->load($this->_sTestArticleId);
         $this->assertSame('TEST_MULTI_LANGUAGE', $oArticle->oxarticles__oxtitle->value);
     }
 
@@ -97,145 +88,42 @@ class Integration_Multilanguage_ViewTest extends OxidTestCase
     public function testMultilanguageViewsAddArticleInDifferentDefaultLanguage()
     {
         //add more languages and activate latest added language in frontend
-        $iLanguageId = $this->prepare();
+        $iLanguageId = $this->_prepare();
         oxRegistry::getLang()->setBaseLanguage($iLanguageId);
 
         //insert article after switching base language
-        $this->insertArticle();
+        $this->_insertArticle();
 
         //load article to have a look at e.g. it's title in the current language
         $oArticle = oxnew('oxArticle');
         $oArticle->disableLazyLoading();
-        $oArticle->load($this->sTestArticleId);
+        $oArticle->load($this->_sTestArticleId);
 
         //We stored article in switched default language
         $this->assertSame('TEST_MULTI_LANGUAGE', $oArticle->oxarticles__oxtitle->value);
 
         //As article was stored in switched base language, related original base language field is empty.
-        oxRegistry::getLang()->setBaseLanguage($this->iOriginalBaseLanguageId);
+        oxRegistry::getLang()->setBaseLanguage($this->_iOriginalBaseLanguageId);
         $oArticle = oxnew('oxArticle');
         $oArticle->disableLazyLoading();
-        $oArticle->load($this->sTestArticleId);
+        $oArticle->load($this->_sTestArticleId);
         $this->assertSame('', $oArticle->oxarticles__oxtitle->value);
     }
 
     /**
      * Make a copy of article and variant for testing.
      */
-    private function insertArticle()
+    private function _insertArticle()
     {
-         $this->sTestArticleId = substr_replace( oxUtilsObject::getInstance()->generateUId(), '_', 0, 1 );
+        $this->_sTestArticleId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
 
         //copy from original article
         $oArticle = oxNew('oxarticle');
         $oArticle->disableLazyLoading();
         $oArticle->load(self::SOURCE_ARTICLE_ID);
-        $oArticle->setId($this->sTestArticleId);
+        $oArticle->setId($this->_sTestArticleId);
         $oArticle->oxarticles__oxartnum = new oxField('666-T', oxField::T_RAW);
         $oArticle->oxarticles__oxtitle  = new oxField('TEST_MULTI_LANGUAGE', oxField::T_RAW);
         $oArticle->save();
-    }
-
-    /**
-     * Test helper for test preparation.
-     * Add given count of new languages.
-     *
-     * @param $count
-     *
-     * @return int
-     */
-    private function prepare($count = 9)
-    {
-        for ($i=0;$i<$count;$i++) {
-            $sLanguageName = chr(97+$i) . chr(97+$i);
-            $iLanguageId = $this->insertLanguage($sLanguageName);
-        }
-        //we need a fresh instance of language object in registry,
-        //otherwise stale data is used for language abbreviations.
-        oxRegistry::set('oxLang', null);
-
-        $this->updateViews();
-
-        return $iLanguageId;
-    }
-
-    /**
-     * Test helper to insert a new language with given id.
-     *
-     * @param $iLanguageId
-     *
-     * @return integer
-     */
-    private function insertLanguage($iLanguageId)
-    {
-        $aLanguages = $this->getLanguageMain()->_getLanguages();
-        $iBaseId = $this->getLanguageMain()->_getAvailableLangBaseId();
-        $iSort = $iBaseId*100;
-
-        $aLanguages['params'][$iLanguageId] = array('baseId' => $iBaseId,
-                                                    'active' => 1,
-                                                    'sort'   => $iSort);
-
-        $aLanguages['lang'][$iLanguageId] = $iLanguageId;
-        $aLanguages['urls'][$iBaseId]     = '';
-        $aLanguages['sslUrls'][$iBaseId]  = '';
-        $this->getLanguageMain()->setLanguageData($aLanguages);
-
-        $this->storeLanguageConfiguration($aLanguages);
-
-        if (!$this->getLanguageMain()->_checkMultilangFieldsExistsInDb($iLanguageId)) {
-            $this->getLanguageMain()->_addNewMultilangFieldsToDb();
-        }
-
-        return $iBaseId;
-    }
-
-    /**
-     * Test helper for saving language configuration.
-     *
-     * @param $aLanguages
-     */
-    private function storeLanguageConfiguration($aLanguages)
-    {
-        $this->getConfig()->saveShopConfVar('aarr', 'aLanguageParams', $aLanguages['params']);
-        $this->getConfig()->saveShopConfVar('aarr', 'aLanguages', $aLanguages['lang']);
-        $this->getConfig()->saveShopConfVar('arr', 'aLanguageURLs', $aLanguages['urls']);
-        $this->getConfig()->saveShopConfVar('arr', 'aLanguageSSLURLs', $aLanguages['sslUrls']);
-    }
-
-    /**
-     * Test helder to trigger view update.
-     */
-    private function updateViews()
-    {
-        $oMeta = oxNew('oxDbMetaDataHandler');
-        $oMeta->updateViews();
-    }
-
-    /**
-     * Getter for Language_Main_Helper proxy class.
-     *
-     * @return object
-     */
-    private function getLanguageMain()
-    {
-        if (is_null($this->iLanguageMain)) {
-            $this->iLanguageMain = $this->getProxyClass('Language_Main_Helper');
-            $this->iLanguageMain->render();
-        }
-        return $this->iLanguageMain;
-    }
-}
-
-class Language_Main_Helper extends Language_Main
-{
-    public function getLanguageData()
-    {
-        return $this->_aLangData;
-    }
-
-    public function setLanguageData($LanguageData)
-    {
-        $this->_aLangData = $LanguageData;
     }
 }

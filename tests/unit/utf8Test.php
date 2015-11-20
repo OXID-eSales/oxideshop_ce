@@ -1833,4 +1833,17 @@ class Unit_utf8Test extends OxidTestCase
         $this->assertEquals($sBodyWillGet, $oEmail->getAltBody());
     }
 
+    public function testUserIDNMailaddress()
+    {
+        if (!function_exists('idn_to_ascii')) {
+            $this->markTestSkipped("Function idn_to_ascii does not exists, cannot test.");
+        }
+
+        $mail = oxNew('oxEmail');
+        $mail->setRecipient('müller@testuser.com', 'test user');
+
+        $recipient = $mail->getRecipient();
+        $this->assertNotEmpty($recipient);
+    }
+
 }

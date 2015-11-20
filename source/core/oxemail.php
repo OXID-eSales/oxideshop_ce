@@ -1585,17 +1585,21 @@ class oxEmail extends PHPMailer
     /**
      * Sets mail recipient to recipients array
      *
-     * @param string $sAddress recipient email address
-     * @param string $sName    recipient name
+     * @param string $address recipient email address
+     * @param string $name    recipient name
      */
-    public function setRecipient($sAddress = null, $sName = null)
+    public function setRecipient($address = null, $name = null)
     {
         try {
-            parent::AddAddress($sAddress, $sName);
+            if ($this->getConfig()->isUtf() && function_exists('idn_to_ascii') ) {
+                $address = idn_to_ascii($address);
+            }
+
+            parent::AddAddress($address, $name);
 
             // copying values as original class does not allow to access recipients array
-            $this->_aRecipients[] = array($sAddress, $sName);
-        } catch (Exception $oEx) {
+            $this->_aRecipients[] = array($address, $name);
+        } catch (Exception $exception) {
         }
     }
 

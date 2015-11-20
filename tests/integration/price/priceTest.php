@@ -33,13 +33,13 @@ require_once realpath(dirname(__FILE__)) . '/basketconstruct.php';
 class Integration_Price_PriceTest extends OxidTestCase
 {
 
-    /* Test case directory array */
-    private $_aTestCaseDirs = array(
+    /** @var array Test case directories. */
+    private $testCaseDirectories = array(
         "testcases/price",
     );
-    /* Specified test cases (optional) */
-    private $_aTestCases = array(//"testCase.php",
-    );
+
+    /** @var array If specified, runs only these test cases. */
+    private $testCases = array();
 
     /**
      * Initialize the fixture.
@@ -47,7 +47,7 @@ class Integration_Price_PriceTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_reset();
+        $this->resetDatabase();
     }
 
     /**
@@ -61,7 +61,7 @@ class Integration_Price_PriceTest extends OxidTestCase
     /**
      * Resets db tables, required configs
      */
-    protected function _reset()
+    protected function resetDatabase()
     {
         $database = oxDb::getDb();
         $database->query("TRUNCATE oxarticles");
@@ -79,16 +79,20 @@ class Integration_Price_PriceTest extends OxidTestCase
 
     /**
      * Order startup data and expected calculations results
+     *
+     * @return array
      */
-    public function _dpData()
+    public function providerPrice()
     {
-        return $this->_getTestCases($this->_aTestCaseDirs, $this->_aTestCases);
+        return $this->getTestCases($this->testCaseDirectories, $this->testCases);
     }
 
     /**
      * Tests price calculation
      *
-     * @dataProvider _dpData
+     * @dataProvider providerPrice
+     *
+     * @param array $aTestCase
      */
     public function testPrice($aTestCase)
     {
@@ -141,7 +145,7 @@ class Integration_Price_PriceTest extends OxidTestCase
             $oArt = oxNew('oxArticle');
             $oArt->load($aArt['id']);
 
-            $this->assertEquals($aExp['base_price'], $this->_getFormatted($oArt->getBasePrice()), "Base Price of article #{$aArt['id']}");
+            $this->assertEquals($aExp['base_price'], $this->getFormatted($oArt->getBasePrice()), "Base Price of article #{$aArt['id']}");
             $this->assertEquals($aExp['price'], $oArt->getFPrice(), "Price of article #{$aArt['id']}");
 
             isset($aExp['rrp_price'])
@@ -176,8 +180,10 @@ class Integration_Price_PriceTest extends OxidTestCase
      * Get formatted price
      *
      * @param double $dPrice
+     *
+     * @return double
      */
-    protected function _getFormatted($dPrice)
+    protected function getFormatted($dPrice)
     {
         return number_format(round($dPrice, 2), 2, ',', '.');
     }
@@ -185,42 +191,62 @@ class Integration_Price_PriceTest extends OxidTestCase
     /**
      * Getting test cases from specified
      *
-     * @param string $sDir       directory name
-     * @param array  $aTestCases of specified test cases
+     * @param array $directoriesToScan directory name
+     * @param array $testCases         of specified test cases
+     *
+     * @return array
      */
-    protected function _getTestCases($aDir, $aTestCases = array())
+    protected function getTestCases($directoriesToScan, $testCases = array())
     {
-        $aGlobal = array();
-        foreach ($aDir as $sDir) {
-            $sPath = __DIR__ . "/" . $sDir . "/";
-            print("Scanning dir {$sPath}\r\n");
-            if (empty($aTestCases)) {
-                $aFiles = glob($sPath . "*.php", GLOB_NOSORT);
-                if (empty($aFiles)) {
-                    $aSubDirs = scandir($sPath);
-                    foreach ($aSubDirs as $sSubDir) {
-                        $sPath = "integration/price/" . $sDir . "/" . $sSubDir . "/";
-                        $aFiles = array_merge($aFiles, glob($sPath . "*.php", GLOB_NOSORT));
-                    }
-                }
-            } else {
-                foreach ($aTestCases as $sTestCase) {
-                    $aFiles[] = $sPath . $sTestCase;
-                }
-            }
-            print(count($aFiles) . " test files found\r\n");
-            foreach ($aFiles as $sFilename) {
-                if (!file_exists($sFilename)) {
-                    throw new Exception("Test case {$sFilename} does not exist!");
-                }
-                include($sFilename);
+        $testCaseFiles = array();
+        foreach ($directoriesToScan as $directory) {
+            $basePath = __DIR__ . "/$directory/";
+            $files = empty($testCases) ? $this->collectFilesFromPath($basePath) : $this->getTestCasesFiles($testCases, $basePath);
+            foreach ($files as $file) {
+                $aData = array();
+                include $file;
                 if ($aData) {
-                    $aGlobal["{$sFilename}"] = array($aData);
+                    $testCaseFiles["{$file}"] = array($aData);
                 }
             }
         }
 
-        return $aGlobal;
+        return $testCaseFiles;
+    }
+
+    /**
+     * @param string $path
+     * @param string $collector
+     *
+     * @return array
+     */
+    protected function collectFilesFromPath($path, $collector = "*.php")
+    {
+        $files = glob($path . $collector, GLOB_NOSORT);
+        $directories = glob($path.'*', GLOB_ONLYDIR);
+        foreach ($directories as $directory) {
+            $files = array_merge($files, $this->collectFilesFromPath($directory));
+        }
+
+        return $files;
+    }
+
+    /**
+     * @param array  $testCases
+     * @param string $basePath
+     *
+     * @return array
+     */
+    protected function getTestCasesFiles($testCases, $basePath)
+    {
+        $files = array();
+        foreach ($testCases as $sTestCase) {
+            $file = $basePath . $sTestCase;
+            if (file_exists($file)) {
+                $files[] = $file;
+            }
+        }
+        return $files;
     }
 
     /**
@@ -228,7 +254,7 @@ class Integration_Price_PriceTest extends OxidTestCase
      *
      * @param string $sTable table name
      */
-    protected function _truncateTable($sTable)
+    protected function truncateTable($sTable)
     {
         oxDb::getDb()->execute("TRUNCATE {$sTable}");
     }

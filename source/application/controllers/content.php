@@ -71,7 +71,7 @@ class Content extends oxUBase
     /**
      * Current view content title
      *
-     * @var sting
+     * @var string
      */
     protected $_sContentTitle = null;
 

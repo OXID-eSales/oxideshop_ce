@@ -257,6 +257,7 @@ class oxSeoEncoderCategory extends oxSeoEncoder
     protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
+        /** @var oxCategory $oCat */
         $oCat = oxNew("oxCategory");
         if ($oCat->loadInLang($iLang, $sObjectId)) {
             $sSeoUrl = $this->getCategoryUri($oCat, $iLang);

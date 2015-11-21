@@ -120,6 +120,7 @@ class Article_Seo extends Object_Seo
         if ($this->_aSelectionList === null) {
             $this->_aSelectionList = array();
 
+            /** @var oxArticle $oProduct */
             $oProduct = oxNew('oxArticle');
             $oProduct->load($this->getEditObjectId());
 
@@ -279,6 +280,7 @@ class Article_Seo extends Object_Seo
             $iLang = $this->getActCatLang();
             $sTagId = $this->getActCatId();
 
+            /** @var oxArticle $oProduct */
             $oProduct = oxNew('oxArticle');
             $oProduct->loadInLang($iLang, $this->getEditObjectId());
 

@@ -341,9 +341,9 @@ class oxDiscount extends oxI18n
     /**
      * Return discount percent
      *
-     * @param decimal $dPrice - price from which calculates discount
+     * @param double $dPrice - price from which calculates discount
      *
-     * @return decimal
+     * @return double
      */
     public function getPercentage($dPrice)
     {

@@ -119,6 +119,7 @@ class Article_Pictures extends oxAdminDetails
         $sOxId = $this->getEditObjectId();
         $iIndex = oxRegistry::getConfig()->getRequestParameter("masterPicIndex");
 
+        /** @var oxArticle $oArticle */
         $oArticle = oxNew("oxArticle");
         $oArticle->load($sOxId);
 

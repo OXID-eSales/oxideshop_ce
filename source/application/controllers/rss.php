@@ -149,6 +149,7 @@ class Rss extends oxUBase
     public function catarts()
     {
         if ($this->getConfig()->getConfigParam('bl_rssCategories')) {
+            /** @var oxCategory $oCat */
             $oCat = oxNew('oxCategory');
             if ($oCat->load(oxRegistry::getConfig()->getRequestParameter('cat'))) {
                 $this->_getRssFeed()->loadCategoryArticles($oCat);
@@ -186,6 +187,7 @@ class Rss extends oxUBase
     public function recommlists()
     {
         if ($this->getViewConfig()->getShowListmania() && $this->getConfig()->getConfigParam('bl_rssRecommLists')) {
+            /** @var oxArticle $oArticle */
             $oArticle = oxNew('oxArticle');
             if ($oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'))) {
                 $this->_getRssFeed()->loadRecommLists($oArticle);
@@ -205,6 +207,7 @@ class Rss extends oxUBase
     public function recommlistarts()
     {
         if ($this->getConfig()->getConfigParam('bl_rssRecommListArts')) {
+            /** @var oxrecommlist $oRecommList */
             $oRecommList = oxNew('oxrecommlist');
             if ($oRecommList->load(oxRegistry::getConfig()->getRequestParameter('recommid'))) {
                 $this->_getRssFeed()->loadRecommListArticles($oRecommList);

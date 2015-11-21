@@ -31,7 +31,7 @@ class Article_Files extends oxAdminDetails
     /**
      * Template name
      *
-     * @var unknown_type
+     * @var string
      */
     protected $_sThisTemplate = 'article_files.tpl';
 

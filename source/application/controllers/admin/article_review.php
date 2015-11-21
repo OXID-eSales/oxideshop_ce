@@ -40,7 +40,8 @@ class Article_Review extends oxAdminDetails
         $myConfig = $this->getConfig();
 
         parent::render();
-
+    
+        /** @var oxArticle $oArticle */
         $this->_aViewData["edit"] = $oArticle = oxNew("oxArticle");
 
         $soxId = $this->getEditObjectId();

@@ -70,6 +70,7 @@ class oxSeoEncoderVendor extends oxSeoEncoder
             $sSeoUrl = '';
             if ($oVendor->getId() != 'root') {
                 if (!isset($this->_aRootVendorUri[$iLang])) {
+                    /** @var oxvendor $oRootVendor */
                     $oRootVendor = oxNew('oxvendor');
                     $oRootVendor->loadInLang($iLang, 'root');
                     $this->_aRootVendorUri[$iLang] = $this->getVendorUri($oRootVendor, $iLang);

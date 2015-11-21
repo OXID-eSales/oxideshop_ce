@@ -197,7 +197,7 @@ class oxDeliverySetList extends oxList
      * @param string $sCountryId user country id
      * @param string $sDelSet    preferred delivery set ID (optional)
      *
-     * @return array
+     * @return oxDeliverySet[]
      */
     public function getDeliverySetList($oUser, $sCountryId, $sDelSet = null)
     {

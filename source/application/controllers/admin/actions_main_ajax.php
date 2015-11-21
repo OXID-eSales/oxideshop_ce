@@ -36,7 +36,7 @@ class actions_main_ajax extends ajaxListComponent
     /**
      * Columns array
      *
-     * @var aray
+     * @var array
      */
     protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
         array('oxartnum', 'oxarticles', 1, 0, 0),

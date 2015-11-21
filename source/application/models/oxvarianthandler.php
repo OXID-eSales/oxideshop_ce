@@ -468,7 +468,7 @@ class oxVariantHandler extends oxSuperCfg
      * @param string        $sActVariantId active variant id
      * @param int           $iLimit        limit variant lists count (if non zero, return limited number of multidimensional variant selections)
      *
-     * @return Ambigous false | array
+     * @return false|array
      */
     public function buildVariantSelections($sVarName, $oVariantList, $aFilter, $sActVariantId, $iLimit = 0)
     {

@@ -45,7 +45,7 @@ class RecommAdd extends Details
     /**
      * Renders the view
      *
-     * @return unknown
+     * @return string
      */
     public function render()
     {

@@ -649,7 +649,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Return unit quantity
      *
-     * @return sting
+     * @return string
      */
     public function getUnitQuantity()
     {
@@ -860,7 +860,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns price per unit
      *
-     * @return string
+     * @return oxPrice
      */
     public function getUnitPrice()
     {
@@ -3002,6 +3002,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     {
         // apply discounts
         if (!$this->skipDiscounts()) {
+            /** @var oxDiscountList $oDiscountList */
             $oDiscountList = oxRegistry::get("oxDiscountList");
             $aDiscounts = $oDiscountList->getArticleDiscounts($this, $this->getArticleUser());
 
@@ -4685,7 +4686,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param bool $blCalculationModeNetto - if calculation mode netto - true
      *
-     * @return oxPice
+     * @return oxPrice
      */
     protected function _getPriceObject($blCalculationModeNetto = null)
     {

@@ -368,6 +368,7 @@ class oxRssFeed extends oxSuperCfg
             return;
         }
 
+        /** @var oxArticleList $oArtList */
         $oArtList = oxNew('oxArticleList');
         $oArtList->loadTop5Articles($this->getConfig()->getConfigParam('iRssItemsCount'));
 
@@ -421,6 +422,7 @@ class oxRssFeed extends oxSuperCfg
         if (($this->_aChannel = $this->_loadFromCache(self::RSS_NEWARTS))) {
             return;
         }
+        /** @var oxArticleList $oArtList */
         $oArtList = oxNew('oxArticleList');
         $oArtList->loadNewestArticles($this->getConfig()->getConfigParam('iRssItemsCount'));
 
@@ -510,6 +512,7 @@ class oxRssFeed extends oxSuperCfg
             return;
         }
 
+        /** @var oxArticleList $oArtList */
         $oArtList = oxNew('oxArticleList');
         $oArtList->setCustomSorting('oc.oxtime desc');
         $oArtList->loadCategoryArticles($oCat->getId(), null, $this->getConfig()->getConfigParam('iRssItemsCount'));
@@ -828,6 +831,7 @@ class oxRssFeed extends oxSuperCfg
             return;
         }
 
+        /** @var oxArticleList $oList */
         $oList = oxNew('oxArticleList');
         $oList->loadRecommArticles($oRecommList->getId(), ' order by oxobject2list.oxtimestamp desc limit ' . $this->getConfig()->getConfigParam('iRssItemsCount'));
 
@@ -882,6 +886,7 @@ class oxRssFeed extends oxSuperCfg
             return;
         }
 
+        /** @var oxArticleList $oArtList */
         $oArtList = oxNew('oxArticleList');
         $oArtList->loadActionArticles('OXBARGAIN', $this->getConfig()->getConfigParam('iRssItemsCount'));
 

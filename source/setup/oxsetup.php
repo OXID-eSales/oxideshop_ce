@@ -492,11 +492,14 @@ class OxSetupLang extends oxSetupCore
     /**
      * Returns setup interface language id
      *
-     * @return striong
+     * @return string
      */
     public function getSetupLang()
     {
+        /** @var oxSetupSession $oSession */
         $oSession = $this->getInstance("oxSetupSession");
+        
+        /** @var oxSetupUtils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
 
         $iSetupLang = $oUtils->getRequestVar("setup_lang", "post");
@@ -607,6 +610,7 @@ class OxSetupSession extends oxSetupCore
     {
         session_name($this->_sSessionName);
 
+        /** @var oxSetupUtils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
         $sSid = $oUtils->getRequestVar('sid', 'get');
 
@@ -683,6 +687,7 @@ class OxSetupSession extends oxSetupCore
      */
     protected function _initSessionData()
     {
+        /** @var oxSetupUtils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
 
         //storring country value settings to session
@@ -858,6 +863,7 @@ class OxSetupDb extends oxSetupCore
     {
         $fp = @fopen($sFilename, "r");
         if (!$fp) {
+            /** @var oxSetup $oSetup */
             $oSetup = $this->getInstance("oxSetup");
             // problems with file
             $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
@@ -921,6 +927,7 @@ class OxSetupDb extends oxSetupCore
             // ok open DB
             $this->_oConn = @mysql_connect($aParams['dbHost'], $aParams['dbUser'], $aParams['dbPwd']);
             if (!$this->_oConn) {
+                /** @var oxSetup $oSetup */
                 $oSetup = $this->getInstance("oxSetup");
                 $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
                 throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_DB_CONNECT') . " - " . mysql_error(), oxSetupDb::ERROR_DB_CONNECT);
@@ -950,6 +957,7 @@ class OxSetupDb extends oxSetupCore
     {
         if (!$this->execSql("create database `" . $sDbName . "`")) {
             // no success !
+            /** @var oxSetup $oSetup */
             $oSetup = $this->getInstance("oxSetup");
             $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
             throw new Exception(sprintf($this->getInstance("oxSetupLang")->getText('ERROR_COULD_NOT_CREATE_DB'), $sDbName) . " - " . mysql_error());
@@ -963,7 +971,9 @@ class OxSetupDb extends oxSetupCore
      */
     public function saveShopSettings($aParams)
     {
+        /** @var oxSetupUtils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
+        /** @var oxSetupSession $oSession */
         $oSession = $this->getInstance("oxSetupSession");
 
         $oConfk = new Conf();
@@ -1045,6 +1055,8 @@ class OxSetupDb extends oxSetupCore
     public function convertConfigTableToUtf()
     {
         $oConfk = new Conf();
+        
+        /** @var oxSetupUtils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
 
         $sSql = "SELECT oxvarname, oxvartype, DECODE( oxvarvalue, '" . $oConfk->sConfigKey . "') AS oxvarvalue FROM oxconfig WHERE oxvartype IN ('str', 'arr', 'aarr') ";
@@ -1158,9 +1170,11 @@ class OxSetupDb extends oxSetupCore
      */
     public function writeUtfMode($iUtfMode)
     {
-        $sBaseShopId = $this->getInstance("oxSetup")->getShopId();
-        $oConfk = new Conf();
-        $sQ = "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue) values('iSetUtfMode', '$sBaseShopId', 'iSetUtfMode', 'str', ENCODE( '{$iUtfMode}', '" . $oConfk->sConfigKey . "') )";
+        /** @var oxSetup $oxSetup */
+        $oxSetup     = $this->getInstance("oxSetup");
+        $sBaseShopId = $oxSetup->getShopId();
+        $oConfk      = new Conf();
+        $sQ          = "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue) values('iSetUtfMode', '$sBaseShopId', 'iSetUtfMode', 'str', ENCODE( '{$iUtfMode}', '" . $oConfk->sConfigKey . "') )";
 
         $this->execSql($sQ);
     }
@@ -1404,6 +1418,7 @@ class OxSetupUtils extends oxSetupCore
         $sConfPath = $aParams['sShopDir'] . "/config.inc.php";
         $sVerPrefix = $this->getInstance("oxSetup")->getVersionPrefix();
 
+        /** @var oxSetupLang $oLang */
         $oLang = $this->getInstance("oxSetupLang");
 
         clearstatcache();
@@ -1442,6 +1457,7 @@ class OxSetupUtils extends oxSetupCore
      */
     public function updateHtaccessFile($aParams, $sSubFolder = "")
     {
+        /** @var oxSetupLang $oLang */
         $oLang = $this->getInstance("oxSetupLang");
 
         // preparing rewrite base param
@@ -1824,7 +1840,11 @@ class oxSetupView extends oxSetupCore
     {
         //finalizing installation
         $blDeleted = true;
+    
+        /** @var OxSetupSession $oSession */
         $oSession = $this->getInstance("OxSetupSession");
+        
+        /** @var oxSetupUtils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
         $sPath = getInstallPath();
 
@@ -1893,8 +1913,13 @@ class oxSetupController extends oxSetupCore
      */
     public function systemReq()
     {
+        /** @var oxSetup $oSetup */
         $oSetup = $this->getInstance("oxSetup");
+        
+        /** @var oxSetupLang $oSetupLang */
         $oSetupLang = $this->getInstance("oxSetupLang");
+        
+        /** @var oxSetupUtils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
         $oView = $this->getView();
 
@@ -1950,6 +1975,7 @@ class oxSetupController extends oxSetupCore
      */
     public function welcome()
     {
+        /** @var oxSetupSession $oSession */
         $oSession = $this->getInstance("oxSetupSession");
 
         //setting admin area default language
@@ -1993,11 +2019,14 @@ class oxSetupController extends oxSetupCore
     public function dbInfo()
     {
         $oView = $this->getView();
+        
+        /** @var oxSetupSession $oSession */
         $oSession = $this->getInstance("oxSetupSession");
 
         $iEula = $this->getInstance("oxSetupUtils")->getRequestVar("iEula", "post");
         $iEula = (int) ($iEula ? $iEula : $oSession->getSessionParam("eula"));
         if (!$iEula) {
+            /** @var oxSetup $oSetup */
             $oSetup = $this->getInstance("oxSetup");
             $oSetup->setNextStep($oSetup->getStep("STEP_WELCOME"));
             $oView->setMessage($this->getInstance("oxSetupLang")->getText("ERROR_SETUP_CANCELLED"));
@@ -2049,8 +2078,13 @@ class oxSetupController extends oxSetupCore
      */
     public function dbConnect()
     {
+        /** @var oxSetup $oSetup */
         $oSetup = $this->getInstance("oxSetup");
+        
+        /** @var oxSetupSession $oSession */
         $oSession = $this->getInstance("oxSetupSession");
+        
+        /** @var oxSetupLang $oLang */
         $oLang = $this->getInstance("oxSetupLang");
 
         $oView = $this->getView();
@@ -2072,6 +2106,7 @@ class oxSetupController extends oxSetupCore
 
         try {
             // ok check DB Connection
+            /** @var oxSetupDb $oDb */
             $oDb = $this->getInstance("oxSetupDb");
             $oDb->openDatabase($aDB);
         } catch (Exception $oExcp) {
@@ -2112,8 +2147,13 @@ class oxSetupController extends oxSetupCore
      */
     public function dbCreate()
     {
+        /** @var oxSetup $oSetup */
         $oSetup = $this->getInstance("oxSetup");
+        
+        /** @var oxSetupSession $oSession */
         $oSession = $this->getInstance("oxSetupSession");
+        
+        /** @var oxSetupLang $oLang */
         $oLang = $this->getInstance("oxSetupLang");
 
         $oView = $this->getView();
@@ -2125,6 +2165,7 @@ class oxSetupController extends oxSetupCore
             $blOverwrite = false;
         }
 
+        /** @var oxSetupDb $oDb */
         $oDb = $this->getInstance("oxSetupDb");
         $oDb->openDatabase($aDB);
 
@@ -2337,6 +2378,7 @@ class oxSetupController extends oxSetupCore
      */
     public function finish()
     {
+        /** @var oxSetupSession $oSession */
         $oSession = $this->getInstance("oxSetupSession");
         $aPath = $oSession->getSessionParam("aPath");
 
@@ -2438,6 +2480,7 @@ class oxSetupAps extends oxSetupCore
      */
     public function install()
     {
+        /** @var oxSetupUtils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
 
         // --
@@ -2494,6 +2537,7 @@ class oxSetupAps extends oxSetupCore
         // installing
 
         // db connection instance
+        /** @var oxSetupDb $oDb */
         $oDb = $this->getInstance("oxSetupDb");
 
         // initializing connection
@@ -2591,6 +2635,7 @@ class oxSetupAps extends oxSetupCore
      */
     public function configure()
     {
+        /** @var oxSetupUtils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
 
         // --

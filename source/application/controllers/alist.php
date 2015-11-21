@@ -198,6 +198,7 @@ class aList extends oxUBase
         if ('oxmore' == $myConfig->getRequestParameter('cnid')) {
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
+            /** @var oxCategory $oCategory */
             $oCategory = oxNew('oxCategory');
             $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
             $this->setActiveCategory($oCategory);

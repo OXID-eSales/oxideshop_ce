@@ -58,6 +58,7 @@ class oxcmp_utils extends oxView
 
 
         $sOutput = 'OXID__Problem : no valid oxid !';
+        /** @var oxArticle $oProduct */
         $oProduct = null;
 
         if (($sId = oxRegistry::getConfig()->getRequestParameter('oxid'))) {

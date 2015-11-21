@@ -70,6 +70,7 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
             $sSeoUrl = '';
             if ($oManufacturer->getId() != 'root') {
                 if (!isset($this->_aRootManufacturerUri[$iLang])) {
+                    /** @var oxmanufacturer $oRootManufacturer */
                     $oRootManufacturer = oxNew('oxmanufacturer');
                     $oRootManufacturer->loadInLang($iLang, 'root');
                     $this->_aRootManufacturerUri[$iLang] = $this->getManufacturerUri($oRootManufacturer, $iLang);
@@ -156,6 +157,7 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
     protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
+        /** @var oxmanufacturer $oManufacturer */
         $oManufacturer = oxNew("oxmanufacturer");
         if ($oManufacturer->loadInLang($iLang, $sObjectId)) {
             $sSeoUrl = $this->getManufacturerUri($oManufacturer, $iLang, true);

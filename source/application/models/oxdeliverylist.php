@@ -235,7 +235,7 @@ class oxDeliveryList extends oxList
      * @param string $sDelCountry user country id
      * @param string $sDelSet     delivery set id
      *
-     * @return array
+     * @return oxDelivery[]
      */
     public function getDeliveryList($oBasket, $oUser = null, $sDelCountry = null, $sDelSet = null)
     {

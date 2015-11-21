@@ -369,7 +369,7 @@ class Start extends oxUBase
     /**
      * Returns active banner list
      *
-     * @return objects
+     * @return oxActionList|null
      */
     public function getBanners()
     {

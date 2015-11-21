@@ -82,6 +82,7 @@ class Account_Downloads extends Account
             return $this->_oOrderFilesList;
         }
 
+        /** @var oxOrderFileList $oOrderFileList */
         $oOrderFileList = oxNew('oxOrderFileList');
         $oOrderFileList->loadUserFiles($this->getUser()->getId());
 

@@ -730,7 +730,7 @@ class oxCategory extends oxI18n implements oxIUrl
      *
      * @param object $oActCategory active category
      *
-     * @return object
+     * @return oxCategory
      */
     public function getCatInLang($oActCategory = null)
     {

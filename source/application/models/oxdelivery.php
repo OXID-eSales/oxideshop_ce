@@ -287,6 +287,7 @@ class oxDelivery extends oxI18n
         if ($this->_oPrice === null) {
 
             // loading oxPrice object for final price calculation
+            /** @var oxPrice $oPrice */
             $oPrice = oxNew('oxPrice');
             $oPrice->setNettoMode($this->_blDelVatOnTop);
             $oPrice->setVat($dVat);

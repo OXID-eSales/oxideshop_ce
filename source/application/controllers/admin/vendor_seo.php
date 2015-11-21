@@ -95,6 +95,7 @@ class Vendor_Seo extends Object_Seo
      */
     public function getEntryUri()
     {
+        /** @var $oVendor $oVendor */
         $oVendor = oxNew('oxvendor');
         if ($oVendor->load($this->getEditObjectId())) {
             return $this->_getEncoder()->getVendorUri($oVendor, $this->getEditLang());

@@ -137,7 +137,7 @@ class OxNavigationTree extends oxSuperCfg
     /**
      * Adds to element DynTabs
      *
-     * @param object $oDom dom element to add links
+     * @param DOMDocument $oDom dom element to add links
      */
     protected function _addDynLinks($oDom)
     {
@@ -208,7 +208,7 @@ class OxNavigationTree extends oxSuperCfg
     /**
      * add session parameters to local urls
      *
-     * @param object $oDom dom element to add links
+     * @param DOMDocument $oDom dom element to add links
      */
     protected function _sessionizeLocalUrls($oDom)
     {
@@ -229,7 +229,7 @@ class OxNavigationTree extends oxSuperCfg
     /**
      * Removes form tree elements whitch doesn't have requred user rights
      *
-     * @param object $oDom DOMDocument
+     * @param DOMDocument $oDom
      */
     protected function _checkRights($oDom)
     {

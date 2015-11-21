@@ -48,8 +48,10 @@ class ExceptionError extends oxUBase
         if (is_array($aErrors) && count($aErrors)) {
             oxRegistry::get("oxUtilsView")->passAllErrorsToView($aViewData, $aErrors);
         }
-
-        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+    
+        /** @var oxUtilsView $oxUtilsView */
+        $oxUtilsView = oxRegistry::get("oxUtilsView");
+        $oSmarty     = $oxUtilsView->getSmarty();
         $oSmarty->assign_by_ref("Errors", $aViewData["Errors"]);
 
         // resetting errors from session

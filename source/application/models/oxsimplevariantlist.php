@@ -52,8 +52,8 @@ class oxSimpleVariantList extends oxList
     /**
      * Sets parent for variant. This method is invoked for each element in oxList::assign() loop.
      *
-     * @param oxSimleVariant $oListObject Simple variant
-     * @param array          $aDbFields   Array of available
+     * @param oxSimpleVariant $oListObject Simple variant
+     * @param array           $aDbFields   Array of available
      */
     protected function _assignElement($oListObject, $aDbFields)
     {

@@ -1,7 +1,7 @@
 [{block name="footer_main"}]
     [{oxscript include="js/widgets/oxequalizer.js" priority=10}]
     [{oxscript add="$(function(){oxEqualizer.equalHeight($( '#panel dl' ));});"}]
-    <div id="footer">
+    <footer id="footer">
         <div id="panel" class="corners">
                 <div class="bar">
                     [{block name="footer_fblike"}]
@@ -44,7 +44,7 @@
                 [{$oCont->oxcontents__oxcontent->value}]
             [{/oxifcontent}]
         </div>
-    </div>
+    </footer>
 [{/block}]
 [{if $oView->isRootCatChanged()}]
     [{oxscript include="js/widgets/oxmodalpopup.js" priority=10}]

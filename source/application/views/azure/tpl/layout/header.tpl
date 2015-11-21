@@ -4,7 +4,7 @@
 [{if $oViewConf->getTopActionClassName() != 'clearcookies' && $oViewConf->getTopActionClassName() != 'mallstart'}]
     [{oxid_include_widget cl="oxwCookieNote" _parent=$oView->getClassName() nocookie=1}]
 [{/if}]
-<div id="header" class="clear">
+<header id="header" class="clear">
     [{block name="layout_header_top"}]
         [{oxid_include_widget cl="oxwLanguageList" lang=$oViewConf->getActLanguageId() _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() anid=$oViewConf->getActArticleId()}]
         [{oxid_include_widget cl="oxwCurrencyList" cur=$oViewConf->getActCurrency() _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() anid=$oViewConf->getActArticleId()}]
@@ -39,9 +39,9 @@
         </div>
         [{include file="widget/header/search.tpl"}]
     [{/block}]
-</div>
+</header>
 [{if $oView->getClassName()=='start' && $oView->getBanners()|@count > 0}]
-    <div class="oxSlider">
+    <section class="oxSlider">
         [{include file="widget/promoslider.tpl"}]
-    </div>
+    </section>
 [{/if}]

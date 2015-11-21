@@ -170,31 +170,43 @@ function _oxscript_include( $aInclude, $sWidget )
 }
 
 /**
- * Form output for adds.
+ * Forms how javascript should look like when output.
+ * If varnish is active, javascript should be passed to WidgetsHandler instead of direct call.
  *
- * @param array  $aScript     scripts to execute (from add).
- * @param string $sWidget     widget name.
- * @param bool $blAjaxRequest is ajax request
+ * @param array  $scripts     Scripts to execute (from add).
+ * @param string $widgetName  Widget name.
+ * @param bool   $ajaxRequest Is ajax request.
  *
  * @return string
  */
-function _oxscript_execute( $aScript, $sWidget, $blAjaxRequest )
+function _oxscript_execute($scripts, $widgetName, $ajaxRequest)
 {
-    $myConfig = oxRegistry::getConfig();
-    $sOutput  = '';
+    $output  = '';
 
-    if (count($aScript)) {
-        foreach ($aScript as $sScriptToken) {
-            if ( $sWidget && !$blAjaxRequest ) {
-                $sScriptTokenSanitized = str_replace( '"', '\"', $sScriptToken );
-                $sOutput .= 'WidgetsHandler.registerFunction( "'. $sScriptTokenSanitized . '", "'.$sWidget.'");'. PHP_EOL ;
+    if (count($scripts)) {
+        foreach ($scripts as $script) {
+            if ($widgetName && !$ajaxRequest) {
+                $sanitizedScript = _oxscript_sanitize($script);
+                $output .= 'WidgetsHandler.registerFunction( "'. $sanitizedScript . '", "'.$widgetName.'");'. PHP_EOL ;
             } else {
-                $sOutput .= $sScriptToken. PHP_EOL;
+                $output .= $script. PHP_EOL;
             }
         }
     }
 
-    return $sOutput;
+    return $output;
+}
+
+/**
+ * Sanitize javascript, which will be passed to WidgetsHandler.
+ *
+ * @param string $scripts
+ *
+ * @return string
+ */
+function _oxscript_sanitize($scripts)
+{
+    return strtr($scripts, array('"' => '\"', "\r" =>'', "\n"=>'\n'));
 }
 
 /**

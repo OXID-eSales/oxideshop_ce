@@ -90,6 +90,8 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
             array('oxidadd', 'oxidadd'),
             array('"oxidadd"', '\"oxidadd\"'),
             array("'oxidadd'", "'oxidadd'"),
+            array("oxid\r\nadd", 'oxid\nadd'),
+            array("oxid\nadd", 'oxid\nadd'),
         );
     }
 

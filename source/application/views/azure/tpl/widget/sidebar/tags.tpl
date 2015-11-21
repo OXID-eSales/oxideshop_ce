@@ -2,11 +2,11 @@
 
     [{if $oView->displayInBox()}]
         [{* Display tags in separate box *}]
-        <div id="tagBox" class="box tagCloud">
+        <nav id="tagBox" class="box tagCloud">
             <h3>[{oxmultilang ident="TAGS"}]</h3>
             <div class="content">
     [{else}]
-        <div class="categoryTagsBox">
+        <nav class="categoryTagsBox">
             <h3>[{oxmultilang ident="TAGS"}]</h3>
             <div class="categoryTags">
     [{/if}]
@@ -20,5 +20,5 @@
         <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=tags"}]" class="readMore">[{oxmultilang ident="MORE" suffix="ELLIPSIS"}]</a>
     [{/if}]
         </div>
-    </div>
+    </nav>
 [{/if}]

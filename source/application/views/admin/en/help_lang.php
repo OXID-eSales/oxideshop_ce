@@ -264,9 +264,6 @@ $aLang =  array(
 
 'HELP_SHOP_PERF_PARSELONGDESCINSMARTY'        => 'If this setting is active, the descriptions of products and categories are parsed trough Smarty: You can use Smarty tags (e. g. for using variables) <br>',
 
-'HELP_SHOP_PERF_LOADATTRIBUTES'               => 'Normally attributes are only loaded in the detail view of a product. If the setting is active, the attributes are always loaded with a product.<br>' .
-                                                 'This setting can be useful if you want to adept templates, e. g. showing the attributes in product lists also.',
-
 'HELP_SHOP_PERF_LOADSELECTLISTSINALIST'       => 'Normally selection lists are only shown in the detail view of a product. If you activate this setting, the selection lists are also shown in product lists (e. g. search results, categories).',
 
 'HELP_SHOP_PERF_CHECKIFTPLCOMPILE'            => 'If this setting is activated the eShop checks on each call if any templates were changed. If so, the output is recalculated. Activate this setting when adapting templates, deactivate it if the eShop is live for better performance.',

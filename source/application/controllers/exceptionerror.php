@@ -25,13 +25,15 @@
  */
 class ExceptionError extends oxUBase
 {
-
     /**
      * Current class template name.
      *
      * @var string
      */
     protected $_sThisTemplate = 'message/exception.tpl';
+
+    /** @var array Remove loading of components on exception handling. */
+    protected $_aComponentNames = array();
 
     /**
      * Sets exception errros to template

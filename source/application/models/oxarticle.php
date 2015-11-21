@@ -207,7 +207,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Object holding the list of attributes and attribute values associated with this article
-     * Attributes are loaded only when bl_perfLoadAttributes config option is set to true
      */
     protected $_oAttributeList = null;
 

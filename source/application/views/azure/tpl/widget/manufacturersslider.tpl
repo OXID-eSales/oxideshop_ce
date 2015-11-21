@@ -16,7 +16,7 @@
     [{oxscript include="js/libs/jcarousellite.js"}]
     [{oxscript include="js/widgets/oxmanufacturerslider.js" priority=10}]
     [{oxscript add="$( '#manufacturerSlider' ).oxManufacturerSlider();"}]
-    <div class="itemSlider">
+    <section class="itemSlider">
         <div class="leftHolder">            
             <div class="titleBlock slideNav"><strong>[{oxmultilang ident="OUR_BRANDS"}]</strong></div>
             <a class="prevItem slideNav" href="#" rel="nofollow"><span class="slidePointer">&laquo;</span><span class="slideBg"></span></a>
@@ -27,5 +27,5 @@
                 [{$smarty.capture.slides}]
             </ul>
         </div>
-    </div>  
+    </section>
 [{/if}]

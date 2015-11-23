@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__)) . '/basketconstruct.php';
+require_once __DIR__ . '/baseTestCase.php';
 
 /**
  * Shop price calculation test
@@ -30,13 +30,10 @@ require_once realpath(dirname(__FILE__)) . '/basketconstruct.php';
  * - Total price
  * - Amount price info
  */
-class Integration_Price_PriceTest extends OxidTestCase
+class Integration_Price_PriceTest extends Integration_Price_BaseTestCase
 {
-
     /** @var array Test case directories. */
-    private $testCaseDirectories = array(
-        "testcases/price",
-    );
+    private $testCasesDirectory = "testcases/price";
 
     /** @var array If specified, runs only these test cases. */
     private $testCases = array();
@@ -84,7 +81,11 @@ class Integration_Price_PriceTest extends OxidTestCase
      */
     public function providerPrice()
     {
-        return $this->getTestCases($this->testCaseDirectories, $this->testCases);
+        $directoriesToScan = array($this->testCasesDirectory . '/community/');
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $directoriesToScan[] = $this->testCasesDirectory . '/enterprise/';
+        }
+        return $this->getTestCases($directoriesToScan, $this->testCases);
     }
 
     /**
@@ -126,7 +127,7 @@ class Integration_Price_PriceTest extends OxidTestCase
         $oConstruct->setCategories($aTestCase['categories']);
 
         // create articles
-        $aArts = $oConstruct->getArticles($aTestCase['articles']);
+        $articlesData = $oConstruct->getArticles($aTestCase['articles']);
 
         // apply discounts
         $oConstruct->setDiscounts($aTestCase['discounts']);
@@ -137,41 +138,43 @@ class Integration_Price_PriceTest extends OxidTestCase
         }
 
         // iteration through expectations
-        foreach ($aArts as $aArt) {
-            $aExp = $aExpected[$aArt['id']];
-            if (empty($aExp)) {
+        foreach ($articlesData as $articleData) {
+            $expected = $aExpected[$articleData['id']];
+            if (empty($expected)) {
                 continue;
             }
-            $oArt = oxNew('oxArticle');
-            $oArt->load($aArt['id']);
+            $article = oxNew('oxArticle');
+            $article->load($articleData['id']);
 
-            $this->assertEquals($aExp['base_price'], $this->getFormatted($oArt->getBasePrice()), "Base Price of article #{$aArt['id']}");
-            $this->assertEquals($aExp['price'], $oArt->getFPrice(), "Price of article #{$aArt['id']}");
+            $this->assertEquals($expected['base_price'], $this->getFormatted($article->getBasePrice()), "Base Price of article #{$articleData['id']}");
+            $this->assertEquals($expected['price'], $article->getFPrice(), "Price of article #{$articleData['id']}");
 
-            isset($aExp['rrp_price'])
-                ? $this->assertEquals($aExp['rrp_price'], $oArt->getFTPrice(), "RRP price of article #{$aArt['id']}")
-                : '';
-            isset($aExp['unit_price'])
-                ? $this->assertEquals($aExp['unit_price'], $oArt->getFUnitPrice(), "Unit Price of article #{$aArt['id']}")
-                : '';
-            isset($aExp['is_range_price'])
-                ? $this->assertEquals($aExp['is_range_price'], $oArt->isRangePrice(), "Is range price check of article #{$aArt['id']}")
-                : '';
+            if (isset($expected['rrp_price'])) {
+                $this->assertEquals($expected['rrp_price'], $article->getFTPrice(), "RRP price of article #{$articleData['id']}");
+            }
 
-            isset($aExp['min_price'])
-                ? $this->assertEquals($aExp['min_price'], $oArt->getFMinPrice(), "Min price of article #{$aArt['id']}")
-                : '';
+            if (isset($expected['unit_price'])) {
+                $this->assertEquals($expected['unit_price'], $article->getFUnitPrice(), "Unit Price of article #{$articleData['id']}");
+            }
 
-            isset($aExp['var_min_price'])
-                ? $this->assertEquals($aExp['var_min_price'], $oArt->getFVarMinPrice(), "Var min price of article #{$aArt['id']}")
-                : '';
+            if (isset($expected['is_range_price'])) {
+                $this->assertEquals($expected['is_range_price'], $article->isRangePrice(), "Is range price check of article #{$articleData['id']}");
+            }
 
-            if (isset($aExp['show_rrp'])) {
+            if (isset($expected['min_price'])) {
+                $this->assertEquals($expected['min_price'], $article->getFMinPrice(), "Min price of article #{$articleData['id']}");
+            }
+
+            if (isset($expected['var_min_price'])) {
+                $this->assertEquals($expected['var_min_price'], $article->getFVarMinPrice(), "Var min price of article #{$articleData['id']}");
+            }
+
+            if (isset($expected['show_rrp'])) {
                 $blShowRPP = false;
-                if ($oArt->getTPrice() && $oArt->getTPrice()->getPrice() > $oArt->getPrice()->getPrice()) {
+                if ($article->getTPrice() && $article->getTPrice()->getPrice() > $article->getPrice()->getPrice()) {
                     $blShowRPP = true;
                 }
-                $this->assertEquals($aExp['show_rrp'], $blShowRPP, "RRP price showing of article #{$aArt['id']}");
+                $this->assertEquals($expected['show_rrp'], $blShowRPP, "RRP price showing of article #{$articleData['id']}");
             }
         }
     }
@@ -186,67 +189,6 @@ class Integration_Price_PriceTest extends OxidTestCase
     protected function getFormatted($dPrice)
     {
         return number_format(round($dPrice, 2), 2, ',', '.');
-    }
-
-    /**
-     * Getting test cases from specified
-     *
-     * @param array $directoriesToScan directory name
-     * @param array $testCases         of specified test cases
-     *
-     * @return array
-     */
-    protected function getTestCases($directoriesToScan, $testCases = array())
-    {
-        $testCaseFiles = array();
-        foreach ($directoriesToScan as $directory) {
-            $basePath = __DIR__ . "/$directory/";
-            $files = empty($testCases) ? $this->collectFilesFromPath($basePath) : $this->getTestCasesFiles($testCases, $basePath);
-            foreach ($files as $file) {
-                $aData = array();
-                include $file;
-                if ($aData) {
-                    $testCaseFiles["{$file}"] = array($aData);
-                }
-            }
-        }
-
-        return $testCaseFiles;
-    }
-
-    /**
-     * @param string $path
-     * @param string $collector
-     *
-     * @return array
-     */
-    protected function collectFilesFromPath($path, $collector = "*.php")
-    {
-        $files = glob($path . $collector, GLOB_NOSORT);
-        $directories = glob($path.'*', GLOB_ONLYDIR);
-        foreach ($directories as $directory) {
-            $files = array_merge($files, $this->collectFilesFromPath($directory));
-        }
-
-        return $files;
-    }
-
-    /**
-     * @param array  $testCases
-     * @param string $basePath
-     *
-     * @return array
-     */
-    protected function getTestCasesFiles($testCases, $basePath)
-    {
-        $files = array();
-        foreach ($testCases as $sTestCase) {
-            $file = $basePath . $sTestCase;
-            if (file_exists($file)) {
-                $files[] = $file;
-            }
-        }
-        return $files;
     }
 
     /**

@@ -259,6 +259,22 @@ class oxcmp_basket extends oxView
     }
 
     /**
+     * Cleans and returns persisted parameters.
+     *
+     * @param array $persistedParameters key-value parameters (optional). If not passed - takes parameters from request.
+     *
+     * @return array|null cleaned up parameters or null, if there are no non-empty parameters
+     */
+    protected function getPersistedParameters($persistedParameters = null)
+    {
+        $persistedParameters = ($persistedParameters ?: oxRegistry::getConfig()->getRequestParameter('persparam'));
+        if (!is_array($persistedParameters)) {
+            return null;
+        }
+        return array_filter($persistedParameters, 'trim') ?: null;
+    }
+
+    /**
      * Collects and returns array of items to add to basket. Product info is taken not only from
      * given parameters, but additionally from request 'aproducts' parameter
      *
@@ -292,10 +308,7 @@ class oxcmp_basket extends oxView
 
             // persistent parameters
             if (empty($aPersParam)) {
-                $aPersParam = oxRegistry::getConfig()->getRequestParameter('persparam');
-                if (!is_array($aPersParam) || empty($aPersParam['details'])) {
-                    $aPersParam = null;
-                }
+                $aPersParam = $this->getPersistedParameters();
             }
 
             $sBasketItemId = oxRegistry::getConfig()->getRequestParameter('bindex');
@@ -355,8 +368,7 @@ class oxcmp_basket extends oxView
 
             $dAmount = isset($aProductInfo['am']) ? $aProductInfo['am'] : 0;
             $aSelList = isset($aProductInfo['sel']) ? $aProductInfo['sel'] : null;
-            $aParams = $aProductInfo['persparam'];
-            $aPersParam = (isset($aParams) && is_array($aParams) && strlen($aParams['details'])) ? $aParams : null;
+            $aPersParam = $this->getPersistedParameters($aProductInfo['persparam']);
             $blOverride = isset($aProductInfo['override']) ? $aProductInfo['override'] : null;
             $blIsBundle = isset($aProductInfo['bundle']) ? true : false;
             $sOldBasketItemId = isset($aProductInfo['basketitemid']) ? $aProductInfo['basketitemid'] : null;

@@ -125,19 +125,22 @@ class DataGenerator extends OxidTestCase
     private $blGenDiscounts = false;
     private $blGenVouchers = false;
 
+    /**
+     * Cleans up database tables.
+     */
     protected function _cleanUpCalcDb()
     {
-        $this->_truncateTable("oxarticles");
-        $this->_truncateTable("oxdiscount");
-        $this->_truncateTable("oxobject2discount");
-        $this->_truncateTable("oxwrapping");
-        $this->_truncateTable("oxdelivery");
-        $this->_truncateTable("oxdel2delset");
-        $this->_truncateTable("oxobject2payment");
-        $this->_truncateTable("oxvouchers");
-        $this->_truncateTable("oxvoucherseries");
-        $this->_truncateTable("oxobject2delivery");
-        $this->_truncateTable("oxdeliveryset");
+        $this->truncateTable("oxarticles");
+        $this->truncateTable("oxdiscount");
+        $this->truncateTable("oxobject2discount");
+        $this->truncateTable("oxwrapping");
+        $this->truncateTable("oxdelivery");
+        $this->truncateTable("oxdel2delset");
+        $this->truncateTable("oxobject2payment");
+        $this->truncateTable("oxvouchers");
+        $this->truncateTable("oxvoucherseries");
+        $this->truncateTable("oxobject2delivery");
+        $this->truncateTable("oxdeliveryset");
     }
 
     /**
@@ -480,10 +483,10 @@ class DataGenerator extends OxidTestCase
     /**
      * Truncates specified table
      *
-     * @param string $sTable table name
+     * @param string $table table name
      */
-    protected function _truncateTable($sTable)
+    protected function truncateTable($table)
     {
-        return oxDb::getDb()->execute("TRUNCATE {$sTable}");
+        oxDb::getDb()->execute("TRUNCATE {$table}");
     }
 }

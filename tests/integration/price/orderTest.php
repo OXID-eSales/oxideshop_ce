@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__)) . '/basketconstruct.php';
+require_once __DIR__ . '/baseTestCase.php';
 
 /**
  * Final order calculation test
@@ -33,13 +33,14 @@ require_once realpath(dirname(__FILE__)) . '/basketconstruct.php';
  *     c.) By adding / removing articles
  * 4.) Recalculate
  */
-class Integration_Price_OrderTest extends OxidTestCase
+class Integration_Price_OrderTest extends Integration_Price_BaseTestCase
 {
+    /** @var string Test case directory */
+    private $testCaseDirectory = "testcases/order";
 
-    /* Test case directory */
-    private $_sTestCaseDir = "testcases/order";
-    /* Specified test cases (optional) */
-    private $_aTestCases = array(//"testCase.php"
+    /** @var array Specified test cases (optional) */
+    private $testCases = array(
+        // "testCase.php"
     );
 
     /**
@@ -48,195 +49,151 @@ class Integration_Price_OrderTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_reset();
-    }
-
-    /**
-     * Tear down the fixture.
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
+        $this->reset();
     }
 
     /**
      * Resets db tables, required configs
      */
-    protected function _reset()
+    protected function reset()
     {
-        $oDb = oxDb::getDb();
-        $oDb->query("TRUNCATE oxarticles");
-        $oDb->query("TRUNCATE oxcategories");
-        $oDb->query("TRUNCATE oxdiscount");
-        $oDb->query("TRUNCATE oxobject2discount");
-        $oDb->query("TRUNCATE oxwrapping");
-        $oDb->query("TRUNCATE oxdelivery");
-        $oDb->query("TRUNCATE oxdel2delset");
-        $oDb->query("TRUNCATE oxobject2payment");
-        $oDb->query("TRUNCATE oxobject2category");
-        $oDb->query("TRUNCATE oxvouchers");
-        $oDb->query("TRUNCATE oxvoucherseries");
-        $oDb->query("TRUNCATE oxuser");
-        $oDb->query("TRUNCATE oxdeliveryset");
-        $oDb->query("TRUNCATE oxpayments");
-        $oDb->query("TRUNCATE oxprice2article");
+        $database = oxDb::getDb();
+        $database->query("TRUNCATE oxarticles");
+        $database->query("TRUNCATE oxcategories");
+        $database->query("TRUNCATE oxdiscount");
+        $database->query("TRUNCATE oxobject2discount");
+        $database->query("TRUNCATE oxwrapping");
+        $database->query("TRUNCATE oxdelivery");
+        $database->query("TRUNCATE oxdel2delset");
+        $database->query("TRUNCATE oxobject2payment");
+        $database->query("TRUNCATE oxobject2category");
+        $database->query("TRUNCATE oxvouchers");
+        $database->query("TRUNCATE oxvoucherseries");
+        $database->query("TRUNCATE oxuser");
+        $database->query("TRUNCATE oxdeliveryset");
+        $database->query("TRUNCATE oxpayments");
+        $database->query("TRUNCATE oxprice2article");
     }
-
 
     /**
      * Order startup data and expected calculations results
+     *
+     * @return array
      */
-    public function _dpData()
+    public function providerOrderCalculation()
     {
-        return $this->_getTestCases($this->_sTestCaseDir, $this->_aTestCases);
+        return $this->getTestCases($this->testCaseDirectory, $this->testCases);
     }
 
     /**
      * Tests order calculations
      *
-     * @dataProvider _dpData
+     * @dataProvider providerOrderCalculation
+     *
+     * @param array $testCase
      */
-    public function testOrderCalculation($aTestCase)
+    public function testOrderCalculation($testCase)
     {
-        if ($aTestCase['skipped'] == 1) {
+        if ($testCase['skipped'] == 1) {
             $this->markTestSkipped("testcase is skipped");
         }
         // expectations
-        $aExpected = $aTestCase['expected'];
+        $expected = $testCase['expected'];
         // actions
-        $aActions = $aTestCase['actions'];
+        $actions = $testCase['actions'];
 
         // load calculated basket from provided data
-        $oBasketConstruct = oxNew('BasketConstruct');
-        $oBasket = $oBasketConstruct->calculateBasket($aTestCase);
+        $basketConstruct = oxNew('BasketConstruct');
+        $basket = $basketConstruct->calculateBasket($testCase);
 
-        $oUser = $oBasket->getBasketUser();
+        $user = $basket->getBasketUser();
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        $oOrder = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $oOrder->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
-        $oOrder->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
-        $oOrder->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
-
+        /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $order */
+        $order = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $order->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
+        $order->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
+        $order->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
 
         // if basket has products
-        if ($oBasket->getProductsCount()) {
-            $iSuccess = $oOrder->finalizeOrder($oBasket, $oUser, $blRecalculatingOrder = false);
+        if ($basket->getProductsCount()) {
+            $success = $order->finalizeOrder($basket, $user);
+            $this->assertEquals(0, $success);
         }
 
-        $this->assertEquals(0, $iSuccess);
-
         // check order totals
-        $this->_checkTotals($aExpected, 1, $oOrder);
-        if (!empty($aActions)) {
-            foreach ($aActions as $_sFunction => $aParams) {
-                $this->$_sFunction($aParams, $oOrder);
+        $this->checkTotals($expected, 1, $order);
+        if (!empty($actions)) {
+            foreach ($actions as $function => $parameters) {
+                $this->$function($parameters, $order);
             }
             oxRegistry::set("oxDeliveryList", null);
-            $oOrder->recalculateOrder();
-            $this->_checkTotals($aExpected, 2, $oOrder);
+            $order->recalculateOrder();
+            $this->checkTotals($expected, 2, $order);
         }
     }
 
     /**
      * Check totals of saved (recalculated) order
      *
-     * @param array   $aExpected
-     * @param object  $oOrder
-     * @param integer $iApproach number of order recalculate events starting at 1
+     * @param array   $expected
+     * @param int     $approach number of order recalculate events starting at 1
+     * @param oxOrder $order
      */
-    protected function _checkTotals($aExpected, $iApproach, $oOrder)
+    protected function checkTotals($expected, $approach, $order)
     {
-        $aExpTotals = $aExpected[$iApproach]['totals'];
-        $aArticles = $aExpected[$iApproach]['articles'];
-        $blIsNettoMode = $oOrder->isNettoMode();
-        $aOrderArticles = $oOrder->getOrderArticles();
+        $expectedTotals = $expected[$approach]['totals'];
+        $articles = $expected[$approach]['articles'];
+        $isNettoMode = $order->isNettoMode();
+        $orderArticles = $order->getOrderArticles();
 
-        foreach ($aOrderArticles as $oArticle) {
-            $iArtId = $oArticle->oxorderarticles__oxartid->value;
-            if ($blIsNettoMode) {
-                $sUnitPrice = $oArticle->getNetPriceFormated();
-                $sTotalPrice = $oArticle->getTotalNetPriceFormated();
+        foreach ($orderArticles as $article) {
+            /** @var oxOrderArticle $article */
+            $articleId = $article->oxorderarticles__oxartid->value;
+            if ($isNettoMode) {
+                $unitPrice = $article->getNetPriceFormated();
+                $totalPrice = $article->getTotalNetPriceFormated();
             } else {
-                $sUnitPrice = $oArticle->getBrutPriceFormated();
-                $sTotalPrice = $oArticle->getTotalBrutPriceFormated();
+                $unitPrice = $article->getBrutPriceFormated();
+                $totalPrice = $article->getTotalBrutPriceFormated();
             }
-            $this->assertEquals($aArticles[$iArtId][0], $sUnitPrice, "#{$iApproach} Unit price of order art no #{$iArtId}");
-            $this->assertEquals($aArticles[$iArtId][1], $sTotalPrice, "#{$iApproach} Total price of order art no #{$iArtId}");
+            $this->assertEquals($articles[$articleId][0], $unitPrice, "#{$approach} Unit price of order art no #{$articleId}");
+            $this->assertEquals($articles[$articleId][1], $totalPrice, "#{$approach} Total price of order art no #{$articleId}");
         }
 
-        $aProductVats = $oOrder->getProductVats(true);
+        $productVats = $order->getProductVats(true);
 
-        $this->assertEquals($aExpTotals['totalNetto'], $oOrder->getFormattedTotalNetSum(), "Product Net Price #$iApproach");
-        $this->assertEquals($aExpTotals['discount'], $oOrder->getFormattedDiscount(), "Discount #$iApproach");
+        $this->assertEquals($expectedTotals['totalNetto'], $order->getFormattedTotalNetSum(), "Product Net Price #$approach");
+        $this->assertEquals($expectedTotals['discount'], $order->getFormattedDiscount(), "Discount #$approach");
 
-        if ($aProductVats) {
-            foreach ($aProductVats as $iVat => $dVatPrice) {
-                $this->assertEquals($aExpTotals['vats'][$iVat], $dVatPrice, "Vat %{$iVat} total cost #$iApproach");
+        if ($productVats) {
+            foreach ($productVats as $vat => $vatPrice) {
+                $this->assertEquals($expectedTotals['vats'][$vat], $vatPrice, "Vat %{$vat} total cost #$approach");
             }
         }
 
-        $this->assertEquals($aExpTotals['totalBrutto'], $oOrder->getFormattedTotalBrutSum(), "Product Gross Price #$iApproach");
+        $this->assertEquals($expectedTotals['totalBrutto'], $order->getFormattedTotalBrutSum(), "Product Gross Price #$approach");
 
-        $aExpTotals['voucher']
-            ? $this->assertEquals($aExpTotals['voucher']['brutto'], $oOrder->getFormattedTotalVouchers(), "Voucher costs #$iApproach")
-            : '';
-
-        $aExpTotals['delivery']
-            ? $this->assertEquals($aExpTotals['delivery']['brutto'], $oOrder->getFormattedeliveryCost(), "Shipping costs #$iApproach")
-            : '';
-
-        $aExpTotals['wrapping']
-            ? $this->assertEquals($aExpTotals['wrapping']['brutto'], $oOrder->getFormattedWrapCost(), "Wrapping costs #$iApproach")
-            : '';
-
-        $aExpTotals['giftcard']
-            ? $this->assertEquals($aExpTotals['giftcard']['brutto'], $oOrder->getFormattedGiftCardCost(), "Giftcard costs #$iApproach")
-            : '';
-
-        $aExpTotals['payment']
-            ? $this->assertEquals($aExpTotals['payment']['brutto'], $oOrder->getFormattedPayCost(), "Charge Payment Method #$iApproach")
-            : '';
-        $this->assertEquals($aExpTotals['grandTotal'], $oOrder->getFormattedTotalOrderSum(), "Sum total #$iApproach");
-    }
-
-    /**
-     * Getting test cases from specified
-     *
-     * @param string $sDir       directory name
-     * @param array  $aTestCases of specified test cases
-     */
-    protected function _getTestCases($sDir, $aTestCases = array())
-    {
-        $sPath = __DIR__ . "/" . $sDir . "/";
-        // load test cases
-        $aGlobal = array();
-        if (empty($aTestCases)) {
-            $aFiles = glob($sPath . "*.php", GLOB_NOSORT);
-        } else {
-            foreach ($aTestCases as $sTestCase) {
-                $aFiles[] = $sPath . $sTestCase;
-            }
-        }
-        foreach ($aFiles as $sFilename) {
-            if (!file_exists($sFilename)) {
-                throw new Exception("Test case {$sFilename} does not exist!");
-            }
-            include($sFilename);
-            $aGlobal["{$sFilename}"] = array($aData);
+        if ($expectedTotals['voucher']) {
+            $this->assertEquals($expectedTotals['voucher']['brutto'], $order->getFormattedTotalVouchers(), "Voucher costs #$approach");
         }
 
-        return $aGlobal;
-    }
+        if ($expectedTotals['delivery']) {
+            $this->assertEquals($expectedTotals['delivery']['brutto'], $order->getFormattedeliveryCost(), "Shipping costs #$approach");
+        }
 
-    /**
-     * Truncates specified table
-     *
-     * @param string $sTable table name
-     */
-    protected function _truncateTable($sTable)
-    {
-        return oxDb::getDb()->execute("TRUNCATE {$sTable}");
+        if ($expectedTotals['wrapping']) {
+            $this->assertEquals($expectedTotals['wrapping']['brutto'], $order->getFormattedWrapCost(), "Wrapping costs #$approach");
+        }
+
+        if ($expectedTotals['giftcard']) {
+            $this->assertEquals($expectedTotals['giftcard']['brutto'], $order->getFormattedGiftCardCost(), "Giftcard costs #$approach");
+        }
+
+        if ($expectedTotals['payment']) {
+            $this->assertEquals($expectedTotals['payment']['brutto'], $order->getFormattedPayCost(), "Charge Payment Method #$approach");
+        }
+        $this->assertEquals($expectedTotals['grandTotal'], $order->getFormattedTotalOrderSum(), "Sum total #$approach");
     }
 
     /* --- Expected functions for changing saved order --- */
@@ -244,14 +201,14 @@ class Integration_Price_OrderTest extends OxidTestCase
     /**
      * Change configs
      *
-     * @param array $aConfigOptions
+     * @param array $configOptions
      */
-    protected function _changeConfigs($aConfigOptions)
+    protected function _changeConfigs($configOptions)
     {
-        $oConfig = oxRegistry::getConfig();
-        if (!empty($aConfigOptions)) {
-            foreach ($aConfigOptions as $sKey => $sValue) {
-                $oConfig->setConfigParam($sKey, $sValue);
+        $config = oxRegistry::getConfig();
+        if (!empty($configOptions)) {
+            foreach ($configOptions as $sKey => $sValue) {
+                $config->setConfigParam($sKey, $sValue);
             }
         }
     }
@@ -259,40 +216,41 @@ class Integration_Price_OrderTest extends OxidTestCase
     /**
      * Add articles
      *
-     * @param array  $aArticles new articles to add
-     * @param object $oOrder
+     * @param array  $articlesData new articles to add
+     * @param object $order
      */
-    protected function _addArticles($aArticles, $oOrder)
+    protected function _addArticles($articlesData, $order)
     {
-        $oBasketConstruct = oxNew('BasketConstruct');
-        $aArts = $oBasketConstruct->getArticles($aArticles);
-        foreach ($aArts as $aArt) {
-            $oProduct = oxNew('oxArticle');
-            $oProduct->load($aArt['id']);
-            $dAmount = $aArt['amount'];
-            $oOrderArticle = oxNew('oxorderArticle');
-            $oOrderArticle->oxorderarticles__oxartid = new oxField($oProduct->getId());
-            $oOrderArticle->oxorderarticles__oxartnum = new oxField($oProduct->oxarticles__oxartnum->value);
-            $oOrderArticle->oxorderarticles__oxamount = new oxField($dAmount);
-            $oOrderArticle->oxorderarticles__oxselvariant = new oxField(oxRegistry::getConfig()->getRequestParameter('sel'));
-            $oOrder->recalculateOrder(array($oOrderArticle));
+        $basketConstruct = oxNew('BasketConstruct');
+        $articles = $basketConstruct->getArticles($articlesData);
+        foreach ($articles as $article) {
+            $product = oxNew('oxArticle');
+            $product->load($article['id']);
+            $amount = $article['amount'];
+            $orderArticle = oxNew('oxOrderArticle');
+            $orderArticle->oxorderarticles__oxartid = new oxField($product->getId());
+            $orderArticle->oxorderarticles__oxartnum = new oxField($product->oxarticles__oxartnum->value);
+            $orderArticle->oxorderarticles__oxamount = new oxField($amount);
+            $orderArticle->oxorderarticles__oxselvariant = new oxField(oxRegistry::getConfig()->getRequestParameter('sel'));
+            $order->recalculateOrder(array($orderArticle));
         }
     }
 
     /**
      * Removes articles
      *
-     * @param array  $aArtIds article id's to remove
-     * @param object $oOrder
+     * @param array  $articleIds article id's to remove
+     * @param object $order
      */
-    protected function _removeArticles($aArtIds, $oOrder)
+    protected function _removeArticles($articleIds, $order)
     {
-        $aArtIdsCount = count($aArtIds);
-        $aOrderArticles = $oOrder->getOrderArticles();
-        foreach ($aOrderArticles as $oOrderArticle) {
-            for ($i = 0; $i < $aArtIdsCount; $i++) {
-                if ($oOrderArticle->oxorderarticles__oxartid->value == $aArtIds[$i]) {
-                    $oOrderArticle->delete();
+        $articleCount = count($articleIds);
+        $orderArticles = $order->getOrderArticles();
+        foreach ($orderArticles as $orderArticle) {
+            /** @var oxOrderArticle $orderArticle */
+            for ($i = 0; $i < $articleCount; $i++) {
+                if ($orderArticle->oxorderarticles__oxartid->value == $articleIds[$i]) {
+                    $orderArticle->delete();
                 }
             }
         }
@@ -301,17 +259,18 @@ class Integration_Price_OrderTest extends OxidTestCase
     /**
      * Change articles
      *
-     * @param array  $aArtIdsAmounts
-     * @param object $oOrder
+     * @param array  $articleAmounts
+     * @param object $order
      */
-    protected function _changeArticles($aArtIdsAmounts, $oOrder)
+    protected function _changeArticles($articleAmounts, $order)
     {
-        $sArtCount = count($aArtIdsAmounts);
-        $aOrderArticles = $oOrder->getOrderArticles();
-        foreach ($aOrderArticles as $oOrderArticle) {
-            for ($i = 0; $i < $sArtCount; $i++) {
-                if ($oOrderArticle->oxorderarticles__oxartid->value == $aArtIdsAmounts[$i]['oxid']) {
-                    $oOrderArticle->setNewAmount($aArtIdsAmounts[$i]['amount']);
+        $articlesCount = count($articleAmounts);
+        $orderArticles = $order->getOrderArticles();
+        foreach ($orderArticles as $orderArticle) {
+            /** @var oxOrderArticle $orderArticle */
+            for ($i = 0; $i < $articlesCount; $i++) {
+                if ($orderArticle->oxorderarticles__oxartid->value == $articleAmounts[$i]['oxid']) {
+                    $orderArticle->setNewAmount($articleAmounts[$i]['amount']);
                 }
             }
         }

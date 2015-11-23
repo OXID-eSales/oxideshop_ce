@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(dirname(__FILE__)) . '/basketconstruct.php';
+require_once __DIR__ . '/baseTestCase.php';
 
 /**
  * Basket price calculation test
@@ -32,16 +32,17 @@ require_once realpath(dirname(__FILE__)) . '/basketconstruct.php';
  * - Vouchers
  * - Totals (grand, netto, brutto)
  */
-class Integration_Price_BasketTest extends OxidTestCase
+class Integration_Price_BasketTest extends Integration_Price_BaseTestCase
 {
-
-    /* Test case directory array */
-    private $_aTestCaseDirs = array(
+    /** @var array Test case directory array */
+    private $testCaseDirectories = array(
         "testcases/basket",
-        //"testcases/databomb"
+        // "testcases/databomb",
     );
-    /* Specified test cases (optional) */
-    private $_aTestCases = array(//"testCase.php",
+
+    /** @var string Specified test cases (optional) */
+    private $testCases = array(
+        //"testCase.php",
     );
 
     /**
@@ -50,7 +51,7 @@ class Integration_Price_BasketTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_reset();
+        $this->reset();
     }
 
     /**
@@ -65,247 +66,211 @@ class Integration_Price_BasketTest extends OxidTestCase
     /**
      * Resets db tables, required configs
      */
-    protected function _reset()
+    protected function reset()
     {
-        $oDb = oxDb::getDb();
-        $oConfig = oxRegistry::getConfig();
-        $oDb->query("TRUNCATE oxarticles");
-        $oDb->query("TRUNCATE oxcategories");
-        $oDb->query("TRUNCATE oxdiscount");
-        $oDb->query("TRUNCATE oxobject2discount");
-        $oDb->query("TRUNCATE oxwrapping");
-        $oDb->query("TRUNCATE oxdelivery");
-        $oDb->query("TRUNCATE oxdel2delset");
-        $oDb->query("TRUNCATE oxobject2payment");
-        $oDb->query("TRUNCATE oxvouchers");
-        $oDb->query("TRUNCATE oxvoucherseries");
-        $oDb->query("TRUNCATE oxobject2delivery");
-        $oDb->query("TRUNCATE oxobject2category");
-        $oDb->query("TRUNCATE oxdeliveryset");
-        $oDb->query("TRUNCATE oxuser");
-        $oDb->query("TRUNCATE oxprice2article");
-        $oConfig->setConfigParam("blShowVATForDelivery", true);
-        $oConfig->setConfigParam("blShowVATForPayCharge", true);
+        $database = oxDb::getDb();
+        $config = oxRegistry::getConfig();
+        $database->query("TRUNCATE oxarticles");
+        $database->query("TRUNCATE oxcategories");
+        $database->query("TRUNCATE oxdiscount");
+        $database->query("TRUNCATE oxobject2discount");
+        $database->query("TRUNCATE oxwrapping");
+        $database->query("TRUNCATE oxdelivery");
+        $database->query("TRUNCATE oxdel2delset");
+        $database->query("TRUNCATE oxobject2payment");
+        $database->query("TRUNCATE oxvouchers");
+        $database->query("TRUNCATE oxvoucherseries");
+        $database->query("TRUNCATE oxobject2delivery");
+        $database->query("TRUNCATE oxobject2category");
+        $database->query("TRUNCATE oxdeliveryset");
+        $database->query("TRUNCATE oxuser");
+        $database->query("TRUNCATE oxprice2article");
+        $config->setConfigParam("blShowVATForDelivery", true);
+        $config->setConfigParam("blShowVATForPayCharge", true);
+    }
+
+    /**
+     * Basket startup data and expected calculations results
+     *
+     * @return array
+     */
+    public function providerBasketCalculation()
+    {
+        return $this->getTestCases($this->testCaseDirectories, $this->testCases);
     }
 
     /**
      * Tests special basket calculations
      *
-     * @dataProvider _dpData
+     * @dataProvider providerBasketCalculation
+     *
+     * @param array $testCase
      */
-    public function testBasketCalculation($aTestCase)
+    public function testBasketCalculation($testCase)
     {
-        if ($aTestCase['skipped'] == 1) {
+        if ($testCase['skipped'] == 1) {
             $this->markTestSkipped("testcase is skipped");
         }
         // gathering data arrays
-        $aExpected = $aTestCase['expected'];
+        $expected = $testCase['expected'];
 
         //if not finished testing data skip test
-        if (empty($aExpected)) {
+        if (empty($expected)) {
             $this->markTestSkipped("skipping test case due invalid data provided");
         }
 
         // load calculated basket from provided data
-        $oBasketConstruct = oxNew('BasketConstruct');
-        $oBasket = $oBasketConstruct->calculateBasket($aTestCase);
+        $basketConstruct = oxNew('BasketConstruct');
+        $basket = $basketConstruct->calculateBasket($testCase);
 
         // check basket item list
-        $aExpArts = $aExpected['articles'];
-        $aBasketItemList = $oBasket->getContents();
+        $expectedArticles = $expected['articles'];
+        $basketItemList = $basket->getContents();
 
-        $this->assertEquals(count($aExpArts), count($aBasketItemList), "Expected basket articles amount doesn't match actual");
+        $this->assertEquals(count($expectedArticles), count($basketItemList), "Expected basket articles amount doesn't match actual");
 
-        if ($aBasketItemList) {
-            foreach ($aBasketItemList as $iKey => $oBasketItem) {
-                $iArtId = $oBasketItem->getArticle()->getID();
-                $this->assertEquals($aExpArts[$iArtId][0], $oBasketItem->getFUnitPrice(), "Unit price of article id {$iArtId}");
-                $this->assertEquals($aExpArts[$iArtId][1], $oBasketItem->getFTotalPrice(), "Total price of article id {$iArtId}");
+        if ($basketItemList) {
+            foreach ($basketItemList as $key => $basketItem) {
+                /** @var oxOrderArticle $basketItem */
+                $articleId = $basketItem->getArticle()->getID();
+                $this->assertEquals($expectedArticles[$articleId][0], $basketItem->getFUnitPrice(), "Unit price of article id {$articleId}");
+                $this->assertEquals($expectedArticles[$articleId][1], $basketItem->getFTotalPrice(), "Total price of article id {$articleId}");
             }
         }
 
         // Total discounts
-        $aExpDisc = $aExpected['totals']['discounts'];
-        $aProductDiscounts = $oBasket->getDiscounts();
-        $this->assertEquals(count($aExpDisc), count($aProductDiscounts), "Expected basket discount amount doesn't match actual");
-        if (!empty($aExpDisc)) {
-            foreach ($aProductDiscounts as $oDiscount) {
-                $this->assertEquals($aExpDisc[$oDiscount->sOXID], $oDiscount->fDiscount, "Total discount of {$oDiscount->sOXID}");
+        $expectedDiscounts = $expected['totals']['discounts'];
+        $productDiscounts = $basket->getDiscounts();
+        $this->assertEquals(count($expectedDiscounts), count($productDiscounts), "Expected basket discount amount doesn't match actual");
+        if (!empty($expectedDiscounts)) {
+            foreach ($productDiscounts as $discount) {
+                $this->assertEquals($expectedDiscounts[$discount->sOXID], $discount->fDiscount, "Total discount of {$discount->sOXID}");
             }
         }
 
         // Total vats
-        $aExpVats = $aExpected['totals']['vats'];
-        $aProductVats = $oBasket->getProductVats();
-        $this->assertEquals(count($aExpVats), count($aProductVats), "Expected basket different vat amount doesn't match actual");
-        if (!empty($aExpVats)) {
-            foreach ($aProductVats as $sPercent => $sSum) {
-                $this->assertEquals($aExpVats[$sPercent], $sSum, "Total Vat of {$sPercent}%");
+        $expectedVats = $expected['totals']['vats'];
+        $productVats = $basket->getProductVats();
+        $this->assertEquals(count($expectedVats), count($productVats), "Expected basket different vat amount doesn't match actual");
+        if (!empty($expectedVats)) {
+            foreach ($productVats as $percent => $sum) {
+                $this->assertEquals($expectedVats[$percent], $sum, "Total Vat of {$percent}%");
             }
         }
 
         // Wrapping costs
-        $aExpWraps = $aExpected['totals']['wrapping'];
-        if (!empty($aExpWraps)) {
+        $expectedWrappings = $expected['totals']['wrapping'];
+        if (!empty($expectedWrappings)) {
             $this->assertEquals(
-                $aExpWraps['brutto'],
-                $oBasket->getFWrappingCosts(),
+                $expectedWrappings['brutto'],
+                $basket->getFWrappingCosts(),
                 "Total wrappings brutto price"
             );
             $this->assertEquals(
-                $aExpWraps['netto'],
-                $oBasket->getWrappCostNet(),
+                $expectedWrappings['netto'],
+                $basket->getWrappCostNet(),
                 "Total wrappings netto price"
             );
             $this->assertEquals(
-                $aExpWraps['vat'],
-                $oBasket->getWrappCostVat(),
+                $expectedWrappings['vat'],
+                $basket->getWrappCostVat(),
                 "Total wrappings vat price"
             );
         }
 
-        // Giftcard costs 
-        $aExpCards = $aExpected['totals']['giftcard'];
-        if (!empty($aExpCards)) {
+        // Giftcard costs
+        $expectedCards = $expected['totals']['giftcard'];
+        if (!empty($expectedCards)) {
             $this->assertEquals(
-                $aExpCards['brutto'],
-                $oBasket->getFGiftCardCosts(),
+                $expectedCards['brutto'],
+                $basket->getFGiftCardCosts(),
                 "Total giftcard brutto price"
             );
             $this->assertEquals(
-                $aExpCards['netto'],
-                $oBasket->getGiftCardCostNet(),
+                $expectedCards['netto'],
+                $basket->getGiftCardCostNet(),
                 "Total giftcard netto price"
             );
             $this->assertEquals(
-                $aExpCards['vat'],
-                $oBasket->getGiftCardCostVat(),
+                $expectedCards['vat'],
+                $basket->getGiftCardCostVat(),
                 "Total giftcard vat price"
             );
         }
 
         // Delivery costs
-        $aExpDel = $aExpected['totals']['delivery'];
-        if (!empty($aExpDel)) {
+        $expectedDeliveryCosts = $expected['totals']['delivery'];
+        if (!empty($expectedDeliveryCosts)) {
             $this->assertEquals(
-                $aExpDel['brutto'],
-                number_format(round($oBasket->getDeliveryCosts(), 2), 2, ',', '.'),
+                $expectedDeliveryCosts['brutto'],
+                number_format(round($basket->getDeliveryCosts(), 2), 2, ',', '.'),
                 "Delivery total brutto price"
             );
             $this->assertEquals(
-                $aExpDel['netto'],
-                $oBasket->getDelCostNet(),
+                $expectedDeliveryCosts['netto'],
+                $basket->getDelCostNet(),
                 "Delivery total netto price"
             );
             $this->assertEquals(
-                $aExpDel['vat'],
-                $oBasket->getDelCostVat(),
+                $expectedDeliveryCosts['vat'],
+                $basket->getDelCostVat(),
                 "Delivery total vat price"
             );
         }
 
-        // Payment costs 
-        $aExpPay = $aExpected['totals']['payment'];
-        if (!empty($aExpPay)) {
+        // Payment costs
+        $expectedPayments = $expected['totals']['payment'];
+        if (!empty($expectedPayments)) {
             $this->assertEquals(
-                $aExpPay['brutto'],
-                number_format(round($oBasket->getPaymentCosts(), 2), 2, ',', '.'),
+                $expectedPayments['brutto'],
+                number_format(round($basket->getPaymentCosts(), 2), 2, ',', '.'),
                 "Payment total brutto price"
             );
             $this->assertEquals(
-                $aExpPay['netto'],
-                $oBasket->getPayCostNet(),
+                $expectedPayments['netto'],
+                $basket->getPayCostNet(),
                 "Payment total netto price"
             );
             $this->assertEquals(
-                $aExpPay['vat'],
-                $oBasket->getPayCostVat(),
+                $expectedPayments['vat'],
+                $basket->getPayCostVat(),
                 "Payment total vat price"
             );
         }
 
         // Trusted shop products costs
-        $aExpTS = $aExpected['totals']['trustedshop'];
-        if (!empty($aExpTS)) {
+        $expectedTrustedShops = $expected['totals']['trustedshop'];
+        if (!empty($expectedTrustedShops)) {
             $this->assertEquals(
-                $aExpTS['brutto'],
-                number_format(round($oBasket->getTsProtectionCosts(), 2), 2, ',', '.'),
+                $expectedTrustedShops['brutto'],
+                number_format(round($basket->getTsProtectionCosts(), 2), 2, ',', '.'),
                 "Trusted shop total brutto price"
             );
             $this->assertEquals(
-                $aExpTS['netto'],
-                $oBasket->getTsProtectionNet(),
+                $expectedTrustedShops['netto'],
+                $basket->getTsProtectionNet(),
                 "Trusted shop total netto price"
             );
             $this->assertEquals(
-                $aExpTS['vat'],
-                $oBasket->getTsProtectionVat(),
+                $expectedTrustedShops['vat'],
+                $basket->getTsProtectionVat(),
                 "Trusted shop total vat price"
             );
         }
 
         // Vouchers
-        $aExpVoucher = $aExpected['totals']['voucher'];
-        if (!empty($aExpVoucher)) {
+        $expectedVouchers = $expected['totals']['voucher'];
+        if (!empty($expectedVouchers)) {
             $this->assertEquals(
-                $aExpVoucher['brutto'],
-                number_format(round($oBasket->getVoucherDiscValue(), 2), 2, ',', '.'),
+                $expectedVouchers['brutto'],
+                number_format(round($basket->getVoucherDiscValue(), 2), 2, ',', '.'),
                 "Voucher total discount brutto"
             );
         }
 
         // Total netto & brutto, grand total
-        $this->assertEquals($aExpected['totals']['totalNetto'], $oBasket->getProductsNetPrice(), "Total Netto");
-        $this->assertEquals($aExpected['totals']['totalBrutto'], $oBasket->getFProductsPrice(), "Total Brutto");
-        $this->assertEquals($aExpected['totals']['grandTotal'], $oBasket->getFPrice(), "Grand Total");
-    }
-
-    /**
-     * Basket startup data and expected calculations results
-     */
-    public function _dpData()
-    {
-        return $this->_getTestCases($this->_aTestCaseDirs, $this->_aTestCases);
-    }
-
-    /**
-     * Getting test cases from specified
-     *
-     * @param array $aDir       directory name
-     * @param array $aTestCases of specified test cases
-     */
-    protected function _getTestCases($aDir, $aTestCases = array())
-    {
-        // load test cases
-        $aGlobal = array();
-        foreach ($aDir as $sDir) {
-            $sPath = __DIR__ . "/" . $sDir . "/";
-            print("Scanning dir {$sPath}\r\n");
-            if (empty($aTestCases)) {
-                $aFiles = glob($sPath . "*.php", GLOB_NOSORT);
-                if (empty($aFiles)) {
-                    $aSubDirs = scandir($sPath);
-                    foreach ($aSubDirs as $sSubDir) {
-                        $sPath = "integration/price/" . $sDir . "/" . $sSubDir . "/";
-                        $aFiles = array_merge($aFiles, glob($sPath . "*.php", GLOB_NOSORT));
-                    }
-                }
-            } else {
-                foreach ($aTestCases as $sTestCase) {
-                    $aFiles[] = $sPath . $sTestCase;
-                }
-            }
-            print(count($aFiles) . " test files found\r\n");
-            foreach ($aFiles as $sFilename) {
-                if (!file_exists($sFilename)) {
-                    throw new Exception("Test case {$sFilename} does not exist!");
-                }
-                include($sFilename);
-
-                $aGlobal["{$sFilename}"] = array($aData);
-            }
-        }
-
-        return $aGlobal;
+        $this->assertEquals($expected['totals']['totalNetto'], $basket->getProductsNetPrice(), "Total Netto");
+        $this->assertEquals($expected['totals']['totalBrutto'], $basket->getFProductsPrice(), "Total Brutto");
+        $this->assertEquals($expected['totals']['grandTotal'], $basket->getFPrice(), "Grand Total");
     }
 }

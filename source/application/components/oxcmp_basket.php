@@ -268,6 +268,9 @@ class oxcmp_basket extends oxView
     protected function _getPersParams($aPersParams = null)
     {
         $aPersParams = ($aPersParams ?: oxRegistry::getConfig()->getRequestParameter('persparam'));
+        if (!is_array($aPersParams)) {
+            return null;
+        }
         $blEmptyPersParam = true;
         foreach ($aPersParams as $sPersParamKey => $sPersParamValue) {
             if (!empty($sPersParamValue)) {
@@ -276,7 +279,7 @@ class oxcmp_basket extends oxView
                 unset($aPersParams[$sPersParamKey]);
             }
         }
-        if (!is_array($aPersParams) || $blEmptyPersParam) {
+        if ($blEmptyPersParam) {
             $aPersParams = null;
         }
         return $aPersParams;

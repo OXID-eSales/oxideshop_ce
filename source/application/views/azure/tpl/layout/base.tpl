@@ -114,7 +114,8 @@
         [{/foreach}]
 
         <!--[if (gte IE 6)&(lte IE 8)]>
-            <script type="text/javascript" src="[{$oViewConf->getResourceUrl('js/libs/IE9.js')}]"></script>
+            <script type="text/javascript" src="[{$oViewConf->getResourceUrl('js/libs/selectivizr.js')}]"></script>
+            <script type="text/javascript" src="[{$oViewConf->getResourceUrl('js/IE6-8.js')}]"></script>
         <![endif]-->
     </body>
 </html>

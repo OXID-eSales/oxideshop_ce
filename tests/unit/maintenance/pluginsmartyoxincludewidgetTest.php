@@ -24,27 +24,6 @@ require_once oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/smarty/
 
 class Unit_Maintenance_pluginSmartyoxIncludeWidgetTest extends OxidTestCase
 {
-
-    public function testIncludeIfHTMLCachingIsOn()
-    {
-        return;
-        $oReverseProxyBackend = $this->getMock("oxReverseProxyBackend", array("isActive"));
-        $oReverseProxyBackend->expects($this->any())->method("isActive")->will($this->returnValue(true));
-
-        oxRegistry::set("oxReverseProxyBackend", $oReverseProxyBackend);
-
-        $oConfig = $this->getMock('oxConfig');
-        $oConfig->expects($this->atLeastOnce())
-            ->method('getWidgetUrl')
-            ->with($this->identicalTo(null, null, array('cl' => 'oxwTagCloud', 'blShowTags' => 1)))
-            ->will($this->returnValue('widget_url'));
-        oxRegistry::set('oxConfig', $oConfig);
-
-        $oSmarty = new smarty();
-        $sOutput = "<esi:include src='widget_url'/>";
-        $this->assertEquals($sOutput, smarty_function_oxid_include_widget(array('cl' => 'oxwTagCloud', 'blShowTags' => 1), $oSmarty));
-    }
-
     public function testIncludeWidget()
     {
         $oReverseProxyBackend = $this->getMock("oxReverseProxyBackend", array("isActive"), array(), '', false);
@@ -55,11 +34,9 @@ class Unit_Maintenance_pluginSmartyoxIncludeWidgetTest extends OxidTestCase
         $oShopControl->expects($this->any())->method("start")->will($this->returnValue('html'));
         oxTestModules::addModuleObject('oxWidgetControl', $oShopControl);
 
-
         $oSmarty = new Smarty();
-        $this->assertEquals(
-            smarty_function_oxid_include_widget(array('cl' => 'oxwTagCloud', 'blShowTags' => 1), $oSmarty)
-            , 'html'
-        );
+        $result = smarty_function_oxid_include_widget(array('cl' => 'oxwTagCloud', 'blShowTags' => 1), $oSmarty);
+
+        $this->assertEquals('html', $result);
     }
 }

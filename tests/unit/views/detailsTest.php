@@ -896,12 +896,10 @@ class Unit_Views_detailsTest extends OxidTestCase
 
     /**
      * Test meta keywords generation.
-     *
-     * @return null
      */
     public function testMetaKeywords()
     {
-        if (!OXID_VERSION_PE) {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
         $oProduct = oxNew("oxArticle");
@@ -1460,7 +1458,7 @@ class Unit_Views_detailsTest extends OxidTestCase
 
     public function testGetViewId_testhash()
     {
-        if (!OXID_VERSION_PE) {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
         $oView = $this->getMock($this->getProxyClassName('Details'), array('getTags'));

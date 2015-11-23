@@ -112,7 +112,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
         $this->_oUser->oxuser__oxactive = new oxField('1', oxField::T_RAW);
         $this->_oUser->save();
 
-        //add user addres
+        //add user address
         $oAdress = oxNew('oxBase');
         $oAdress->init('oxaddress');
         $oAdress->setId('_testAddressId');
@@ -160,7 +160,7 @@ class Unit_Models_oxdeliverylistTest extends OxidTestCase
             $oArticle->oxarticles__oxshortdesc = new oxField('testArticle' . $i . 'Description', oxField::T_RAW);
             $oArticle->oxarticles__oxprice = new oxField('256', oxField::T_RAW);
             $oArticle->oxarticles__oxstock = new oxField('9', oxField::T_RAW);
-
+            $oArticle->oxarticles__oxshopid = new oxField(1, oxField::T_RAW);
 
             $oArticle->save();
             $this->_aTestProducts[] = $oArticle;

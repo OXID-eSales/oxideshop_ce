@@ -309,7 +309,5 @@ class Unit_Views_compareTest extends OxidTestCase
         $this->assertArrayHasKey("1126", $oResList);
         $this->assertArrayNotHasKey("nonExistingVal", $oResList);
         $this->assertArrayHasKey("1127", $oResList);
-
     }
-
 }

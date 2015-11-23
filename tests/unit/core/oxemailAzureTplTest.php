@@ -31,8 +31,6 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
@@ -47,7 +45,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $this->cleanUpTable('oxorderarticles');
 
         //set default user
-        $this->_oUser = oxNew("oxuser");
+        $this->_oUser = oxNew("oxUser");
         $this->_oUser->setId('_testUserId');
         $this->_oUser->oxuser__oxactive = new oxField('1', oxField::T_RAW);
         $this->_oUser->oxuser__oxusername = new oxField('username@useremail.nl', oxField::T_RAW);
@@ -59,7 +57,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $this->_oUser->save();
 
         // set shop params for testing
-        $this->_oShop = oxNew("oxshop");
+        $this->_oShop = oxNew("oxShop");
         $this->_oShop->load($this->getConfig()->getShopId());
         $this->_oShop->oxshops__oxorderemail = new oxField('orderemail@orderemail.nl', oxField::T_RAW);
         $this->_oShop->oxshops__oxordersubject = new oxField('testOrderSubject', oxField::T_RAW);
@@ -91,18 +89,15 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
 
         $this->_oArticle->save();
 
-        oxDb::getDb()->Execute(
+        oxDb::getDb()->execute(
             "Insert into oxorderarticles (`oxid`, `oxartid`, `oxamount`, `oxtitle`, `oxartnum`)
                              values ('_testOrderArtId', '_testArticleId' , '7' , 'testArticleTitle', '5')"
         );
-        oxDb::getDb()->Execute("Update oxarticles set `oxtitle_1`='testArticle_EN' where `oxid`='_testArticleId'");
-
+        oxDb::getDb()->execute("Update oxarticles set `oxtitle_1`='testArticle_EN' where `oxid`='_testArticleId'");
     }
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -121,107 +116,16 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         parent::tearDown();
     }
 
-    protected function checkMailFields($aFields = array(), $oEmail = null)
-    {
-        if (!$oEmail) {
-            $oEmail = $this->_oEmail;
-        }
-
-        if ($aFields['sRecipient']) {
-            $aRecipient = $oEmail->getRecipient();
-            $this->assertEquals($aFields['sRecipient'], $aRecipient[0][0], 'Incorect mail recipient');
-        }
-
-        if ($aFields['sRecipientName']) {
-            $aRecipient = $oEmail->getRecipient();
-            $this->assertEquals($aFields['sRecipientName'], $aRecipient[0][1], 'Incorect mail recipient name');
-        }
-
-        if ($aFields['sSubject']) {
-            $this->assertEquals($aFields['sSubject'], $oEmail->getSubject(), 'Incorect mail subject');
-        }
-
-        if ($aFields['sFrom']) {
-            $sFrom = $oEmail->getFrom();
-            $this->assertEquals($aFields['sFrom'], $sFrom, 'Incorect mail from address');
-        }
-
-        if ($aFields['sFromName']) {
-            $sFromName = $oEmail->getFromName();
-            $this->assertEquals($aFields['sFromName'], $sFromName, 'Incorect mail from name');
-        }
-
-        if ($aFields['sReplyTo']) {
-            $aReplyTo = $oEmail->getReplyTo();
-            $this->assertEquals($aFields['sReplyTo'], $aReplyTo[0][0], 'Incorect mail reply to address');
-        }
-
-        if ($aFields['sReplyToName']) {
-            $aReplyTo = $oEmail->getReplyTo();
-            $this->assertEquals($aFields['sReplyToName'], $aReplyTo[0][1], 'Incorect mail reply to name');
-        }
-
-        if ($aFields['sBody']) {
-            $this->assertEquals($aFields['sBody'], $oEmail->getBody(), 'Incorect mail body');
-        }
-
-        return true;
-    }
-
-    protected function checkMailBody($sFuncName, $sBody, $blWriteToTestFile = false)
-    {
-        $sPath = __DIR__ .'/../testData/email_templates/azure/' . $sFuncName . '.html';
-        if (!($sExpectedBody = file_get_contents($sPath))) {
-            return false;
-        }
-
-        //remove <img src="cid:1192193298470f6d12383b8" ... from body, because it is everytime different
-        $sExpectedBody = preg_replace("/cid:[0-9a-zA-Z]+\"/", "cid:\"", $sExpectedBody);
-
-        //replacing test shop id to good one
-        $sExpectedBody = preg_replace("/shp\=testShopId/", "shp=" . $this->_oShop->getId(), $sExpectedBody);
-
-        $sBody = preg_replace("/cid:[0-9a-zA-Z]+\"/", "cid:\"", $sBody);
-
-        // A. very special case for user password reminder
-        if ($sFuncName == 'testSendForgotPwdEmail') {
-            $sExpectedBody = preg_replace("/uid=[0-9a-zA-Z]+\&amp;/", "", $sExpectedBody);
-            $sBody = preg_replace("/uid=[0-9a-zA-Z]+\&amp;/", "", $sBody);
-        }
-
-        $sExpectedBody = preg_replace("/\s+/", " ", $sExpectedBody);
-        $sBody = preg_replace("/\s+/", " ", $sBody);
-
-        $sExpectedBody = str_replace("> <", "><", $sExpectedBody);
-        $sBody = str_replace("> <", "><", $sBody);
-
-        $sExpectedShopUrl = "http://eshop/";
-        $sShopUrl = $this->getConfig()->getConfigParam('sShopURL');
-
-        //remove shop url base path from links
-        $sBody = str_replace($sShopUrl, $sExpectedShopUrl, $sBody);
-
-        if ($blWriteToTestFile) {
-            file_put_contents(__DIR__ .'/../testData/email_templates/azure/' . $sFuncName . '_test_expecting.html', $sExpectedBody);
-            file_put_contents(__DIR__ .'/../testData/email_templates/azure/' . $sFuncName . '_test_result.html', $sBody);
-        }
-
-        $this->assertEquals(strtolower(trim($sExpectedBody)), strtolower(trim($sBody)), "Incorect mail body");
-
-        return true;
-    }
-
-    /*-------------------------------------------------------------*/
-
-    /*
+    /**
      * Test sending mail
      */
     public function testSendEmail()
     {
         $sTo = 'username@useremail.nl';
         $sSubject = 'testSubject';
-        $sBody = 'testBody';
 
+        $sBody = 'testBody';
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -236,9 +140,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sFrom'] = 'orderemail@orderemail.nl';
         $aFields['sFromName'] = 'testShopName';
 
-        if (!$this->checkMailFields($aFields, $oEmail)) {
-            $this->fail('Incorect mail fields');
-        }
+        $this->checkMailFields($aFields, $oEmail);
     }
 
     /**
@@ -249,11 +151,12 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $this->getConfig()->setConfigParam('blSkipEuroReplace', true);
         $this->getConfig()->setConfigParam('blShowVATForDelivery', false);
 
-        $oPrice = oxNew('oxprice');
+        $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
 
+        /** @var oxBasketItem|PHPUnit_Framework_MockObject_MockObject $oBasketItem */
         $oBasketItem = $this->getMock(
-            'oxbasketitem',
+            'oxBasketItem',
             array('getRegularUnitPrice', 'getVatPercent', 'getAmount', 'getTitle', 'getProductId')
         );
 
@@ -272,10 +175,11 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aBasketContents[] = $oBasketItem;
         $aBasketArticles[] = $this->_oArticle;
 
-        $oPriceTotal = $this->getMock('oxprice');
+        $oPriceTotal = $this->getMock('oxPrice');
         $oPriceTotal->expects($this->any())->method('getPrice')->will($this->returnValue(999));
         $oPriceTotal->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(999));
 
+        /** @var oxBasket|PHPUnit_Framework_MockObject_MockObject $oBasket */
         $oBasket = $this->getMock(
             'oxBasket',
             array("getBasketArticles", "getContents", "getPrice", "getBruttoSum", "getNettoSum", "getProductVats")
@@ -289,22 +193,26 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oBasket->expects($this->any())->method('getProductVats')->will($this->returnValue(array('19' => 14.35, '5' => 0.38)));
 
 
-        $oPrice1 = $this->getMock('oxprice');
+        /** @var oxPrice|PHPUnit_Framework_MockObject_MockObject $oPrice1 */
+        $oPrice1 = $this->getMock('oxPrice');
         $oPrice1->expects($this->any())->method('getPrice')->will($this->returnValue(256));
         $oPrice1->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(666));
         $oBasket->setCost('oxdelivery', $oPrice1);
 
-        $oPrice2 = $this->getMock('oxprice');
+        /** @var oxPrice|PHPUnit_Framework_MockObject_MockObject $oPrice2 */
+        $oPrice2 = $this->getMock('oxPrice');
         $oPrice2->expects($this->any())->method('getPrice')->will($this->returnValue(256));
         $oPrice2->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(5));
         $oBasket->setCost('oxwrapping', $oPrice2);
 
-        $oPrice3 = $this->getMock('oxprice');
+        /** @var oxPrice|PHPUnit_Framework_MockObject_MockObject $oPrice3 */
+        $oPrice3 = $this->getMock('oxPrice');
         $oPrice3->expects($this->any())->method('getPrice')->will($this->returnValue(256));
         $oPrice3->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(6));
         $oBasket->setCost('oxgiftcard', $oPrice3);
 
-        $oPrice4 = $this->getMock('oxprice');
+        /** @var oxPrice|PHPUnit_Framework_MockObject_MockObject $oPrice4 */
+        $oPrice4 = $this->getMock('oxPrice');
         $oPrice4->expects($this->any())->method('getPrice')->will($this->returnValue(256));
         $oPrice4->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(true));
         $oPrice4->expects($this->any())->method('getNettoPrice')->will($this->returnValue(7));
@@ -313,6 +221,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oPayment = oxNew('oxPayment');
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
+        /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $oOrder */
         $oOrder = $this->getMock('oxOrder', array("getOrderUser", "getBasket", "getPayment"));
         $oOrder->expects($this->any())->method('getOrderUser')->will($this->returnValue($this->_oUser));
         $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
@@ -330,6 +239,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oOrder->oxorder__oxtsprotectcosts = new oxField('12');
         $oOrder->oxorder__oxdeltype = new oxField("oxidstandard");
 
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages", 'getOrderFileList'));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -348,16 +258,8 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = 'orderemail@orderemail.nl';
         $aFields['sReplyToName'] = 'testShopName';
 
-        if (!$this->checkMailFields($aFields, $oEmail)) {
-            $this->fail('Incorect mail fields');
-        }
-
-        //uncoment line to generate template for checking mail body
-        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
-
-        if (!$this->checkMailBody('testSendOrderEmailToUser', $oEmail->getBody())) {
-            $this->fail('Incorect mail body');
-        }
+        $this->checkMailFields($aFields, $oEmail);
+        $this->checkMailBody('testSendOrderEmailToUser', $oEmail->getBody());
     }
 
     /**
@@ -365,15 +267,14 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendOrderEmailToOwner()
     {
-
         $this->getConfig()->setConfigParam('blSkipEuroReplace', true);
         $this->getConfig()->setConfigParam('blShowVATForDelivery', false);
 
-        $oPrice = oxNew('oxprice');
+        $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
 
         $oBasketItem = $this->getMock(
-            'oxbasketitem',
+            'oxBasketItem',
             array('getRegularUnitPrice', 'getVatPercent', 'getAmount', 'getTitle', 'getProductId')
         );
 
@@ -466,16 +367,8 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = 'username@useremail.nl';
         $aFields['sReplyToName'] = 'testUserFName testUserLName';
 
-        if (!$this->checkMailFields($aFields, $oEmail)) {
-            $this->fail('Incorect mail fields');
-        }
-
-        //uncoment line to generate template for checking mail body
-        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
-
-        if (!$this->checkMailBody('testSendOrderEMailToOwner', $oEmail->getBody())) {
-            $this->fail('Incorect mail body');
-        }
+        $this->checkMailFields($aFields, $oEmail);
+        $this->checkMailBody('testSendOrderEMailToOwner', $oEmail->getBody());
     }
 
     /**
@@ -484,7 +377,6 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendOrderEMailToOwnerWhenShopLangIsDifferentFromAdminLang()
     {
-        $myConfig = $this->getConfig();
         oxRegistry::getLang()->setTplLanguage(1);
         oxRegistry::getLang()->setBaseLanguage(1);
 
@@ -532,16 +424,13 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = 'username@useremail.nl';
         $aFields['sReplyToName'] = 'testUserFName testUserLName';
 
-        if (!$this->checkMailFields($aFields, $oEmail)) {
-            $this->fail('Incorect mail fields');
-        }
+        $this->checkMailFields($aFields, $oEmail);
 
         //checking if mail body is in english
         $this->assertContains('The following products have been ordered in testShopName right now:', $oEmail->getBody());
-
     }
 
-    /*
+    /**
      * Test sending registration mail to user
      */
     public function testSendRegisterEMail()
@@ -564,27 +453,15 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = 'orderemail@orderemail.nl';
         $aFields['sReplyToName'] = 'testShopName';
 
-        // check mail fields
-        if (!$this->checkMailFields($aFields, $oEmail)) {
-            $this->fail('Incorect mail fields');
-        }
-
-        //uncoment line to generate template for checking mail body
-        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
-
-        if (!$this->checkMailBody('testSendRegisterEMail', $oEmail->getBody())) {
-            $this->fail('Incorect mail body');
-        }
+        $this->checkMailFields($aFields, $oEmail);
+        $this->checkMailBody('testSendRegisterEMail', $oEmail->getBody());
     }
 
-
-    /*
+    /**
      * Test sending forgot password to user
      */
     public function testSendForgotPwdEmail()
     {
-        $myConfig = $this->getConfig();
-
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -602,26 +479,15 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = 'orderemail@orderemail.nl';
         $aFields['sReplyToName'] = 'testShopName';
 
-        // check mail fields
-        if (!$this->checkMailFields($aFields, $oEmail)) {
-            $this->fail('Incorect mail fields');
-        }
-
-        //uncoment line to generate template for checking mail body
-        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
-
-        if (!$this->checkMailBody('testSendForgotPwdEmail', $oEmail->getBody())) {
-            $this->fail('Incorect mail body');
-        }
+        $this->checkMailFields($aFields, $oEmail);
+        $this->checkMailBody('testSendForgotPwdEmail', $oEmail->getBody());
     }
 
-    /*
+    /**
      * Test sending forgot password to not existing user
      */
     public function testSendForgotPwdEmailToNotExistingUser()
     {
-        $myConfig = $this->getConfig();
-
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
         $oEmail->expects($this->never())->method('_sendMail');
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -630,14 +496,11 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $this->assertFalse($blRet, 'Mail was sent to not existing user');
     }
 
-
-    /*
+    /**
      * Test sending contact info mail from user to shop owner
      */
     public function testSendContactMail()
     {
-        $myConfig = $this->getConfig();
-
         $sSubject = 'testSubject';
         $sBody = 'testBodyMessage';
         $sUserMail = 'username@useremail.nl';
@@ -660,18 +523,17 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = $sUserMail;
         $aFields['sReplyToName'] = '';
 
-        // check mail fields
-        if (!$this->checkMailFields($aFields, $oEmail))
-            $this->fail('Incorect mail fields');
+        $this->checkMailFields($aFields, $oEmail);
     }
 
-    /*
+    /**
      * Test sending newsletter cofirmation mail to user
      */
     public function testSendNewsletterDBOptInMail()
     {
         $this->getSession()->setId('xsessx');
 
+        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
         $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages", "isSessionStarted"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -690,22 +552,18 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = 'shopInfoEmail@shopOwnerEmail.nl';
         $aFields['sReplyToName'] = 'testShopName';
 
-        // check mail fields
-        if (!$this->checkMailFields($aFields, $oEmail))
-            $this->fail('Incorect mail fields');
-
-        //uncoment line to generate template for checking mail body
-        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
-
-        if (!$this->checkMailBody('testSendNewsletterDBOptInMail', $oEmail->getBody()))
-            $this->fail('Incorect mail body');
+        $this->checkMailFields($aFields, $oEmail);
+        $this->checkMailBody('testSendNewsletterDBOptInMail', $oEmail->getBody());
     }
 
-    /*
+    /**
      * Test sending newsletter mail to user
      */
     public function testSendNewsletterMail()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
 
         $oNewsletter = $this->getMock('oxNewsletter', array("getHtmlText"));
         $oNewsletter->expects($this->once())->method("getHtmlText")->will($this->returnValue("testNewsletterHtmlText"));
@@ -728,13 +586,10 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = 'orderemail@orderemail.nl';
         $aFields['sReplyToName'] = 'testShopName';
 
-        // check mail fields
-        if (!$this->checkMailFields($aFields, $oEmail))
-            $this->fail('Incorect mail fields');
+        $this->checkMailFields($aFields, $oEmail);
     }
 
-
-    /*
+    /**
      * Test sending suggest email
      */
     public function testSendSuggestMail()
@@ -767,18 +622,11 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = $oParams->send_email;
         $aFields['sReplyToName'] = $oParams->send_name;
 
-        // check mail fields
-        if (!$this->checkMailFields($aFields, $oEmail))
-            $this->fail('Incorect mail fields');
-
-        //uncoment line to generate template for checking mail body
-        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
-
-        if (!$this->checkMailBody('testSendSuggestMail', $oEmail->getBody()))
-            $this->fail('Incorect mail body');
+        $this->checkMailFields($aFields, $oEmail);
+        $this->checkMailBody('testSendSuggestMail', $oEmail->getBody());
     }
 
-    /*
+    /**
      * Test sending order
      */
     public function testSendSendedNowMail()
@@ -834,18 +682,11 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = 'orderemail@orderemail.nl';
         $aFields['sReplyToName'] = 'testShopName';
 
-        if (!$this->checkMailFields($aFields, $oEmail))
-            $this->fail('Incorect mail fields');
-
-        //uncoment line to generate template for checking mail body
-        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
-
-        if (!$this->checkMailBody('testSendNowMailSent', $oEmail->getBody())) {
-            $this->fail('Incorect mail body');
-        }
+        $this->checkMailFields($aFields, $oEmail);
+        $this->checkMailBody('testSendNowMailSent', $oEmail->getBody());
     }
 
-    /*
+    /**
      * Test sending download links
      */
     public function testSendDownloadLinksMail()
@@ -887,24 +728,15 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = 'orderemail@orderemail.nl';
         $aFields['sReplyToName'] = 'testShopName';
 
-        if (!$this->checkMailFields($aFields, $oEmail))
-            $this->fail('Incorect mail fields');
-
-        //uncoment line to generate template for checking mail body
-        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
-
-        if (!$this->checkMailBody('testSendDownloadLinksMail', $oEmail->getBody())) {
-            $this->fail('Incorect mail body');
-        }
+        $this->checkMailFields($aFields, $oEmail);
+        $this->checkMailBody('testSendDownloadLinksMail', $oEmail->getBody());
     }
 
-    /*
+    /**
      * Test sending backup mail to shop owner
      */
     public function testSendBackupMail()
     {
-        $myConfig = $this->getConfig();
-
         $aAttFiles = array();
         $sAttPath = null;
         $sEmailAddress = 'username@useremail.nl';
@@ -930,12 +762,10 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = $sEmailAddress;
         $aFields['sReplyToName'] = '';
 
-        if (!$this->checkMailFields($aFields, $oEmail))
-            $this->fail('Incorect mail fields');
-
+        $this->checkMailFields($aFields, $oEmail);
     }
 
-    /*
+    /**
      * Test sends reminder email to shop owner
      */
     public function testSendStockReminder()
@@ -945,7 +775,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $this->_oArticle->oxarticles__oxremindamount = new oxField('9', oxField::T_RAW);
         $this->_oArticle->save();
 
-        $oBasketItem = $this->getMock('oxbasketitem', array('getArticle', 'getProductId'));
+        $oBasketItem = $this->getMock('oxBasketItem', array('getArticle', 'getProductId'));
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oArticle));
         $oBasketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
 
@@ -966,17 +796,11 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sFrom'] = 'shopOwner@shopOwnerEmail.nl';
         $aFields['sFromName'] = 'testShopName';
 
-        if (!$this->checkMailFields($aFields, $oEmail))
-            $this->fail('Incorect mail fields');
-
-        //uncoment line to generate template for checking mail body
-        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
-
-        if (!$this->checkMailBody('testSendStockReminder', $oEmail->getBody()))
-            $this->fail('Incorect mail body');
+        $this->checkMailFields($aFields, $oEmail);
+        $this->checkMailBody('testSendStockReminder', $oEmail->getBody());
     }
 
-    /*
+    /**
      * Test sending whishlist mail to user
      */
     public function testSendWishlistMail()
@@ -1008,66 +832,49 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sReplyTo'] = $oParams->send_email;
         $aFields['sReplyToName'] = $oParams->send_name;
 
-        // check mail fields
-        if (!$this->checkMailFields($aFields, $oEmail))
-            $this->fail('Incorect mail fields');
-
-        //uncoment line to generate template for checking mail body
-        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
-
-        if (!$this->checkMailBody('testSendWishlistMail', $oEmail->getBody())) {
-            $this->fail('Incorect mail body');
-        }
+        $this->checkMailFields($aFields, $oEmail);
+        $this->checkMailBody('testSendWishlistMail', $oEmail->getBody());
     }
 
 
-    /*
+    /**
      * Test sending a notification to the shop owner that pricealarm was subscribed
      */
     public function testSendPriceAlarmNotification()
     {
-        $aParams['email'] = 'username@useremail.nl';
-        $aParams['aid'] = '_testArticleId';
+        $params['email'] = 'username@useremail.nl';
+        $params['aid'] = '_testArticleId';
 
-        $oAlarm = oxNew("oxpricealarm");
-        $oAlarm->oxpricealarm__oxprice = new oxField('123', oxField::T_RAW);
+        $alarm = oxNew("oxpricealarm");
+        $alarm->oxpricealarm__oxprice = new oxField('123', oxField::T_RAW);
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
-        $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
+        $email = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
+        $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
+        $email->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
 
-        $blRet = $oEmail->sendPriceAlarmNotification($aParams, $oAlarm);
+        $blRet = $email->sendPriceAlarmNotification($params, $alarm);
         $this->assertTrue($blRet, 'Price alarm mail was not sent to user');
 
         // check mail fields
-        $aFields['sRecipient'] = 'orderemail@orderemail.nl';
-        $aFields['sRecipientName'] = 'testShopName';
-        $aFields['sSubject'] = oxRegistry::getLang()->translateString('PRICE_ALERT_FOR_PRODUCT', 0) . " testArticle";
-        $aFields['sFrom'] = 'username@useremail.nl';
-        $aFields['sReplyTo'] = 'username@useremail.nl';
+        $fields['sRecipient'] = 'orderemail@orderemail.nl';
+        $fields['sRecipientName'] = 'testShopName';
+        $fields['sSubject'] = oxRegistry::getLang()->translateString('PRICE_ALERT_FOR_PRODUCT', 0) . " testArticle";
+        $fields['sFrom'] = 'username@useremail.nl';
+        $fields['sReplyTo'] = 'username@useremail.nl';
 
-        // check mail fields
-        if (!$this->checkMailFields($aFields, $oEmail)) {
-            $this->fail('Incorect mail fields');
-        }
-
-        //uncoment line to generate template for checking mail body
-        //file_put_contents (__DIR__ .'/../testData/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
-
-        if (!$this->checkMailBody('testSendPriceAlarmNotification', $oEmail->getBody())) {
-            $this->fail('Incorect mail body');
-        }
+        $this->checkMailFields($fields, $email);
+        $this->checkMailBody('testSendPriceAlarmNotification', $email->getBody());
     }
 
-    /*
-     * Test sending a notification to the customer that pricealarm was subscribed
+    /**
+     * Test sending a notification to the customer that price alarm was subscribed
      */
     public function testSendPriceAlarmToCustomer()
     {
-        $myConfig = $this->getConfig();
-        $myConfig->setConfigParam('blAdmin', true);
-        $myConfig->setAdminMode(true);
+        $config = $this->getConfig();
+        $config->setConfigParam('blAdmin', true);
+        $config->setAdminMode(true);
         $oAlarm = oxNew("oxpricealarm");
         $oAlarm->oxpricealarm__oxprice = new oxField('123', oxField::T_RAW);
         $oAlarm->oxpricealarm__oxcurrency = new oxField('EUR');
@@ -1084,8 +891,8 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oEmail->expects($this->any())->method('_getSmarty')->will($this->returnValue($oSmarty));
 
         $blRet = $oEmail->sendPriceAlarmToCustomer('username@useremail.nl', $oAlarm);
-        $myConfig->setConfigParam('blAdmin', false);
-        $myConfig->setAdminMode(false);
+        $config->setConfigParam('blAdmin', false);
+        $config->setAdminMode(false);
         $this->assertTrue($blRet, 'Price alarm mail was not sent to user');
 
         // check mail fields
@@ -1095,13 +902,10 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aFields['sFrom'] = 'orderemail@orderemail.nl';
         $aFields['sReplyTo'] = 'orderemail@orderemail.nl';
 
-        // check mail fields
-        if (!$this->checkMailFields($aFields, $oEmail)) {
-            $this->fail('Incorect mail fields');
-        }
+        $this->checkMailFields($aFields, $oEmail);
     }
 
-    /*
+    /**
      * Test sending a notification to the shop owner that pricealarm was subscribed in other language
      */
     public function testSendPriceAlarmNotificationInEN()
@@ -1109,6 +913,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $aParams['aid'] = $this->_oArticle->getId();
         $aParams['email'] = 'info@oxid-esales.com';
 
+        /** @var oxShop|PHPUnit_Framework_MockObject_MockObject $oShop */
         $oShop = $this->getMock('oxShop', array('getImageUrl'));
         $oShop->expects($this->any())->method('getImageUrl');
         //$oShop->loadInLang( 1, $this->getConfig()->getBaseShopId() );
@@ -1116,9 +921,18 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oShop->oxshops__oxname = new oxField('test shop');
 
         $oEmail = $this->getMock(
-            'oxemail', array('_clearMailer', '_getShop', '_setMailParams',
-                             'setRecipient', 'setSubject', 'setBody',
-                             'setFrom', 'setReplyTo', 'send')
+            'oxemail',
+            array(
+                '_clearMailer',
+                '_getShop',
+                '_setMailParams',
+                'setRecipient',
+                'setSubject',
+                'setBody',
+                'setFrom',
+                'setReplyTo',
+                'send'
+            )
         );
 
         $oEmail->expects($this->once())->method('_clearMailer');
@@ -1138,6 +952,103 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $this->assertEquals('zzz', $oEmail->sendPriceAlarmNotification($aParams, $oAlarm));
     }
 
+    /**
+     * @param array   $aFields
+     * @param oxEmail $oEmail
+     */
+    protected function checkMailFields($aFields = array(), $oEmail = null)
+    {
+        if (!$oEmail) {
+            $oEmail = $this->_oEmail;
+        }
 
+        if ($aFields['sRecipient']) {
+            $aRecipient = $oEmail->getRecipient();
+            $this->assertEquals($aFields['sRecipient'], $aRecipient[0][0], 'Incorect mail recipient');
+        }
+
+        if ($aFields['sRecipientName']) {
+            $aRecipient = $oEmail->getRecipient();
+            $this->assertEquals($aFields['sRecipientName'], $aRecipient[0][1], 'Incorect mail recipient name');
+        }
+
+        if ($aFields['sSubject']) {
+            $this->assertEquals($aFields['sSubject'], $oEmail->getSubject(), 'Incorect mail subject');
+        }
+
+        if ($aFields['sFrom']) {
+            $sFrom = $oEmail->getFrom();
+            $this->assertEquals($aFields['sFrom'], $sFrom, 'Incorect mail from address');
+        }
+
+        if ($aFields['sFromName']) {
+            $sFromName = $oEmail->getFromName();
+            $this->assertEquals($aFields['sFromName'], $sFromName, 'Incorect mail from name');
+        }
+
+        if ($aFields['sReplyTo']) {
+            $aReplyTo = $oEmail->getReplyTo();
+            $this->assertEquals($aFields['sReplyTo'], $aReplyTo[0][0], 'Incorect mail reply to address');
+        }
+
+        if ($aFields['sReplyToName']) {
+            $aReplyTo = $oEmail->getReplyTo();
+            $this->assertEquals($aFields['sReplyToName'], $aReplyTo[0][1], 'Incorect mail reply to name');
+        }
+
+        if ($aFields['sBody']) {
+            $this->assertEquals($aFields['sBody'], $oEmail->getBody(), 'Incorect mail body');
+        }
+    }
+
+    /**
+     * @param string $sFuncName
+     * @param string $sBody
+     * @param bool   $blWriteToTestFile
+     */
+    protected function checkMailBody($sFuncName, $sBody, $blWriteToTestFile = false)
+    {
+        // uncomment line to generate template for checking mail body
+        // file_put_contents (__DIR__ ."/../TestData/email_templates/azure/$sFuncName.html", $sBody);
+
+        $sUtf = ($this->getConfig()->isUtf()) ? '_utf8' : '';
+
+        $sPath = __DIR__ .'/../testData/email_templates/azure/' . $sFuncName . $sUtf . '.html';
+        if (!($sExpectedBody = file_get_contents($sPath))) {
+            $this->fail("Template '$sPath' was not found!");
+        }
+
+        // remove <img src="cid:1192193298470f6d12383b8" ... from body, because it is everytime different
+        $sExpectedBody = preg_replace("/cid:[0-9a-zA-Z]+\"/", "cid:\"", $sExpectedBody);
+
+        // replacing test shop id to good one
+        $sExpectedBody = preg_replace("/shp\=testShopId/", "shp=" . $this->_oShop->getId(), $sExpectedBody);
+
+        $sBody = preg_replace("/cid:[0-9a-zA-Z]+\"/", "cid:\"", $sBody);
+
+        // A. very special case for user password reminder
+        if ($sFuncName == 'testSendForgotPwdEmail') {
+            $sExpectedBody = preg_replace("/uid=[0-9a-zA-Z]+\&amp;/", "", $sExpectedBody);
+            $sBody = preg_replace("/uid=[0-9a-zA-Z]+\&amp;/", "", $sBody);
+        }
+
+        $sExpectedBody = preg_replace("/\s+/", " ", $sExpectedBody);
+        $sBody = preg_replace("/\s+/", " ", $sBody);
+
+        $sExpectedBody = str_replace("> <", "><", $sExpectedBody);
+        $sBody = str_replace("> <", "><", $sBody);
+
+        $sExpectedShopUrl = "http://eshop/";
+        $sShopUrl = $this->getConfig()->getConfigParam('sShopURL');
+
+        //remove shop url base path from links
+        $sBody = str_replace($sShopUrl, $sExpectedShopUrl, $sBody);
+
+        if ($blWriteToTestFile) {
+            file_put_contents(__DIR__ .'/../testData/email_templates/azure/' . $sFuncName . '_test_expecting.html', $sExpectedBody);
+            file_put_contents(__DIR__ .'/../testData/email_templates/azure/' . $sFuncName . '_test_result.html', $sBody);
+        }
+
+        $this->assertEquals(strtolower(trim($sExpectedBody)), strtolower(trim($sBody)), "Incorect mail body");
+    }
 }
-

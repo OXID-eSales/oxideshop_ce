@@ -181,8 +181,9 @@ class GenericImportTest extends OxidTestCase
         $csvWithHeaders = $this->createCsvFile(true);
         $oImport->importFile($csvWithHeaders);
 
-        $aTestData1 = array(array("_testId1", "1", "oxbaseshop", "userName1", "FirstName1", "LastName1"));
-        $aTestData2 = array(array("_testId2", "1", "oxbaseshop", "userName2", "FirstName2", "LastName2"));
+        $shopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        $aTestData1 = array(array("_testId1", "1", $shopId, "userName1", "FirstName1", "LastName1"));
+        $aTestData2 = array(array("_testId2", "1", $shopId, "userName2", "FirstName2", "LastName2"));
 
         $aUser1 = oxDb::getDb()->getAll("select OXID, OXACTIVE, OXSHOPID, OXUSERNAME, OXFNAME, OXLNAME from oxuser where oxid='_testId1'");
         $aUser2 = oxDb::getDb()->getAll("select OXID, OXACTIVE, OXSHOPID, OXUSERNAME, OXFNAME, OXLNAME from oxuser where oxid='_testId2'");

@@ -28,8 +28,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
@@ -44,8 +42,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -66,11 +62,12 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Test get top start article.
-     *
-     * @return null
      */
     public function testGetTopStartArticlePE()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
         $oTestNews = oxNew("NewsLetter");
         $oArticleList = $oTestNews->getTopStartArticle();
 
@@ -79,11 +76,12 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Test get top start action articles.
-     *
-     * @return null
      */
     public function testGetTopStartActionArticlesPE()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community or Professional edition only.');
+        }
         $oTestNews = oxNew("NewsLetter");
         $oArticleList = $oTestNews->getTopStartActionArticles();
 
@@ -94,8 +92,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Test get home country id.
-     *
-     * @return null
      */
     public function testGetHomeCountryId()
     {
@@ -108,8 +104,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Test get newsletter status after remove.
-     *
-     * @return null
      */
     public function testGetNewsletterStatusAfterRemoveme()
     {
@@ -165,8 +159,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Test get newsletter status after send.
-     *
-     * @return null
      */
     public function testGetNewsletterStatusAfterSend()
     {
@@ -189,8 +181,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Test get newsletter status after send.
-     *
-     * @return null
      */
     public function testGetNewsletterStatusAfterSendNoDbOptIn()
     {
@@ -216,8 +206,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
      * Test get newsletter status after send if user exists.
      *
      * (FS#2406)
-     *
-     * @return null
      */
     public function testGetNewsletterStatusAfterSendIfUserExist()
     {
@@ -238,8 +226,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Test if new user was created after subscribe.
-     *
-     * @return null
      */
     public function testNewUserWasCreatedAfterSubscribe()
     {
@@ -263,8 +249,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Test if user was added to newsletter list.
-     *
-     * @return null
      */
     public function testUserWasAddedToNewsletterList()
     {
@@ -289,8 +273,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Test if user unsubscribed list.
-     *
-     * @return null
      */
     public function testUserUnsubscribe()
     {
@@ -326,8 +308,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Test get filled registration paremeters.
-     *
-     * @return null
      */
     public function testGetRegParamsFill()
     {
@@ -348,8 +328,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
      * Test remove rom admin.
      *
      * FS#2525, FS#2522
-     *
-     * @return null
      */
     public function testRemovemeForAdmin()
     {
@@ -364,8 +342,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Testing view render method
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -387,8 +363,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Testing error messages on worng input
-     *
-     * @return null
      */
     public function testSubscribingWithWrongInputs()
     {
@@ -420,8 +394,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Testing error message when sending email about subscribtion fails
-     *
-     * @return null
      */
     public function testNewsletterErrorOnFailedEmailSending()
     {
@@ -445,8 +417,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
     /**
      * Testing newsLetter::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {

@@ -751,11 +751,12 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
 
     /**
      * oxmodulelist::getModulesFromDir() test case
-     *
-     * @return null
      */
     public function testGetModulesFromDir()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
         $sModulesDir = $this->getConfig()->getModulesDir();
 
         $oModuleList = oxNew('oxModuleList');
@@ -767,16 +768,17 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
 
     /**
      * oxmodulelist::_isVendorDir() test case
-     *
-     * @return null
      */
     public function testIsVendorDir()
     {
-        $sModulesDir = $this->getConfig()->getModulesDir();
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
+        $modulesDir = $this->getConfig()->getModulesDir();
 
-        $oModuleList = oxNew('oxModuleList');
+        $moduleList = oxNew('oxModuleList');
 
-        $this->assertFalse($oModuleList->_isVendorDir($sModulesDir . "/invoicepdf"));
+        $this->assertFalse($moduleList->_isVendorDir($modulesDir . "/invoicepdf"));
     }
 
     public function testGetDeletedExtensionsForModuleWithNoMetadata()

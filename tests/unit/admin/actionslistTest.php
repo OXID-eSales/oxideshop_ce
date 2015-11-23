@@ -64,12 +64,10 @@ class Unit_Admin_ActionsListTest extends OxidTestCase
 
     /**
      * Actions_List::_prepareWhereQuery() test case
-     *
-     * @return null
      */
     public function testPrepareWhereQuery()
     {
-        if (OXID_VERSION_EE) {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
         $iTime = time();

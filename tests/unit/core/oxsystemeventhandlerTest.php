@@ -235,6 +235,9 @@ class Unit_Core_oxSystemEventHandlerTest extends \oxUnitTestCase
 
     public function testShopInformationSendingWhenSendingIsNotAllowedInCommunityEdition()
     {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
         $this->_prepareCurrentTime(1400000000);
         $this->getConfig()->setConfigParam('blLoadDynContents', false);
 

@@ -101,10 +101,11 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $this->setRequestParameter('searchparam', 'bar');
 
-        $oSearch = oxNew('search');
+        $oSearch = oxNew('Search');
         $oSearch->init();
 
-        $this->assertEquals(8, $oSearch->getArticleList()->count());
+        $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE'? 5 : 8;
+        $this->assertEquals($expectedCount, $oSearch->getArticleList()->count());
     }
 
     public function testGetSimilarRecommListIds()

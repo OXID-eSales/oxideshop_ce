@@ -22,11 +22,8 @@
 
 class Unit_Core_oxModuleTest extends OxidTestCase
 {
-
     /**
      * test setup
-     *
-     * @return null
      */
     public function setup()
     {
@@ -35,8 +32,6 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -49,11 +44,12 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
     /**
      * oxModule::load() test case
-     *
-     * @return null
      */
     public function testLoad()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
         $aModule = array(
             'id'          => 'invoicepdf',
             'title'       => 'Invoice PDF',
@@ -91,6 +87,9 @@ class Unit_Core_oxModuleTest extends OxidTestCase
      */
     public function testLoadNoExtend()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
         $aModule = array(
             'id'          => 'invoicepdf',
             'title'       => 'Invoice PDF',

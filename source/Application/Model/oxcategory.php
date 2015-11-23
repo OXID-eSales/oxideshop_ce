@@ -715,7 +715,7 @@ class oxCategory extends oxI18n implements oxIUrl
     /**
      * Loads and returns attribute list associated with this category
      *
-     * @return array
+     * @return oxAttributeList
      */
     public function getAttributes()
     {

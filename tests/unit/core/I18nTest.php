@@ -44,7 +44,6 @@ class _oxI18n extends \oxI18n
 
 class Unit_Core_oxi18ntest extends OxidTestCase
 {
-
     protected function setUp()
     {
         if ($this->getName() == "testMultilangObjectDeletion") {
@@ -56,8 +55,6 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -844,8 +841,6 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
     /**
      * Test get update field value.
-     *
-     * @return null
      */
     public function test_getUpdateFieldValue()
     {
@@ -866,8 +861,6 @@ class Unit_Core_oxi18ntest extends OxidTestCase
     /**
      * Test for #0003138: Multilanguage fields having different
      * character case are not always detected as multilanguage
-     *
-     * @return null
      */
     public function testIsMultilingualFieldFor0003138()
     {
@@ -881,8 +874,6 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
     /**
      * Inserts new test language tables
-     *
-     * @return null
      */
     protected function _insertTestLanguage()
     {
@@ -931,7 +922,6 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
         // inserting test records
         foreach ($this->_aLangTables as $sTable) {
-
             // do not insert data into shops table..
             if (stripos($sTable, "oxshops") !== false) {
                 continue;
@@ -970,8 +960,6 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
     /**
      * Removes test language tables
-     *
-     * @return null
      */
     protected function _deleteTestLanguage()
     {
@@ -985,8 +973,6 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
     /**
      * Testing how multilanguage objects are deleted..
-     *
-     * @return null
      */
     public function testMultilangObjectDeletion()
     {
@@ -997,7 +983,6 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         oxTestModules::addFunction("oxLang", "getLanguageIds", "{return array('0' => 'de', '1' => 'de', '2' => 'lt', '3' => 'ru', '4' => 'pl', '5' => 'cz');}");
 
         foreach ($this->_aLangTables as $sObjectType => $sTableName) {
-
             $this->assertTrue((bool) $oDb->getOne("select 1 from {$sTableName} where oxid = '{$sId}'"), "Missing data for table {$sTableName} table");
             $this->assertTrue((bool) $oDb->getOne("select 1 from {$sTableName}_set1 where oxid = '{$sId}'"), "Missing data for table {$sTableName}_set1 table");
 
@@ -1016,5 +1001,4 @@ class Unit_Core_oxi18ntest extends OxidTestCase
             $this->assertFalse((bool) $oDb->getOne("select 1 from {$sTableName}_set1 where oxid = '{$sId}'"), "Not cleaned {$sTableName}_set1 table");
         }
     }
-
 }

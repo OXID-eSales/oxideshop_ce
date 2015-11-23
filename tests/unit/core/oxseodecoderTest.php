@@ -252,10 +252,14 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $sColumnAdded = $oDb->getOne("show columns from oxarticles where field = 'oxseoid_1'");
         $this->assertEquals('OXSEOID_1', $sColumnAdded);
 
-        $sUrl1 = 'Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html';
-        $sUrl2 = 'en/Gifts/Bar-Equipment/Ice-Cubes-FLASH.html';
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $sUrl1 = 'Party/Bar-Equipment/Bar-Set-ABSINTH.html';
+            $sUrl2 = 'en/Party/Bar-Equipment/Ice-Cubes-FLASH.html';
+        } else {
+            $sUrl1 = 'Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html';
+            $sUrl2 = 'en/Gifts/Bar-Equipment/Ice-Cubes-FLASH.html';
+        }
 
-        //
         $oDecoder = oxNew('oxseodecoder');
         $this->assertEquals($sUrl1, $oDecoder->UNITgetObjectUrl('someid1', 'oxarticles', 0, 'oxarticle'));
         $this->assertEquals($sUrl2, $oDecoder->UNITgetObjectUrl('someid2', 'oxarticles', 1, 'oxarticle'));

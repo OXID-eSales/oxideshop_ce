@@ -154,10 +154,9 @@ class Unit_Models_oxVoucherExcludeTest extends OxidTestCase
          Total: 751-250              = 501       Total: 751-450              = 301       Total: 751-50               = 701
 
         */
-
         $sShopFields = "`OXSHOPID`";
-        $sShopValues = "'oxbaseshop'";
-        $sShopId = "'oxbaseshop'";
+        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1': "'oxbaseshop'";
+        $sShopValues = $sShopId;
 
         $sInsertSeriesPart = "
         INSERT INTO `oxvoucherseries`

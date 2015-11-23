@@ -28,8 +28,6 @@ class Unit_Components_Widgets_oxwActionsTest extends OxidTestCase
 {
     /**
      * Testing oxwAction::render()
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -39,13 +37,11 @@ class Unit_Components_Widgets_oxwActionsTest extends OxidTestCase
 
     /**
      * Testing oxwAction::getAction()
-     *
-     * @return null
      */
     public function testGetAction()
     {
-        $topProductCount = 4;
-        $topProductId = '2080';
+        $topProductCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 4;
+        $topProductId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2028' : '2080';
 
         $this->getConfig()->setConfigParam('bl_perfLoadAktion', 1);
 
@@ -59,8 +55,6 @@ class Unit_Components_Widgets_oxwActionsTest extends OxidTestCase
 
     /**
      * Testing oxwAction::getActionName()
-     *
-     * @return null
      */
     public function testGetActionName()
     {
@@ -71,8 +65,6 @@ class Unit_Components_Widgets_oxwActionsTest extends OxidTestCase
 
     /**
      * Testing oxwAction::getListType()
-     *
-     * @return null
      */
     public function testGetListType()
     {

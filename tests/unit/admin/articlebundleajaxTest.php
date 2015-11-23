@@ -27,26 +27,18 @@ class Unit_Admin_ArticleBundleAjaxTest extends OxidTestCase
 {
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
         parent::setUp();
 
-        $setupArticleSql = "insert into oxarticles set oxid='_testArticleBundle', oxshopid='" . $this->getShopId() . "', oxtitle='_testArticleBundle'";
-
-        if ($this->getTestConfig()->getShopEdition() != 'EE') {
-            $setupArticleSql .= ", oxbundleid='_testBundleId'";
-        }
+        $setupArticleSql = "insert into oxarticles set oxid='_testArticleBundle', oxshopid='" . $this->getShopId() . "', oxtitle='_testArticleBundle', oxbundleid='_testBundleId'";
 
         oxDb::getDb()->execute($setupArticleSql);
     }
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -72,8 +64,6 @@ class Unit_Admin_ArticleBundleAjaxTest extends OxidTestCase
 
     /**
      * ArticleBundleAjax::_getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -83,8 +73,6 @@ class Unit_Admin_ArticleBundleAjaxTest extends OxidTestCase
 
     /**
      * ArticleBundleAjax::_getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryVariantsSelectionTrue()
     {
@@ -95,8 +83,6 @@ class Unit_Admin_ArticleBundleAjaxTest extends OxidTestCase
 
     /**
      * ArticleBundleAjax::_getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -109,8 +95,6 @@ class Unit_Admin_ArticleBundleAjaxTest extends OxidTestCase
 
     /**
      * ArticleBundleAjax::_getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxidOxid()
     {
@@ -125,8 +109,6 @@ class Unit_Admin_ArticleBundleAjaxTest extends OxidTestCase
 
     /**
      * ArticleBundleAjax::_getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxidOxidVariantsSelectionTrue()
     {
@@ -142,8 +124,6 @@ class Unit_Admin_ArticleBundleAjaxTest extends OxidTestCase
 
     /**
      * ArticleBundleAjax::_addFilter() test case
-     *
-     * @return null
      */
     public function testAddFilter()
     {
@@ -154,8 +134,6 @@ class Unit_Admin_ArticleBundleAjaxTest extends OxidTestCase
 
     /**
      * ArticleBundleAjax::_addFilter() test case
-     *
-     * @return null
      */
     public function testAddFilterVariantsSelectionTrue()
     {
@@ -165,41 +143,34 @@ class Unit_Admin_ArticleBundleAjaxTest extends OxidTestCase
         $this->assertEquals("$sParam group by " . $this->getArticleViewTable() . ".oxid", trim($oView->UNITaddFilter($sParam)));
     }
 
-
     /**
      * ArticleBundleAjax::removeArticleBundle() test case
-     *
-     * @return null
      */
     public function testRemoveArticleBundle()
     {
-        $sOxid = '_testArticleBundle';
-        $this->setRequestParameter("oxid", $sOxid);
+        $bundledArticleId = '_testArticleBundle';
+        $this->setRequestParameter("oxid", $bundledArticleId);
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
 
-        $this->assertEquals(1, oxDb::getDb()->getOne("select count(oxid) from oxarticles where oxid='$sOxid' and oxbundleid!=''"));
-        $oView = oxNew('article_bundle_ajax');
-        $oView->removeArticleBundle();
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxarticles where oxid='$sOxid' and oxbundleid!=''"));
+        $this->assertEquals(1, oxDb::getDb()->getOne("select count(oxid) from oxarticles where oxid='$bundledArticleId' and oxbundleid != ''"));
+        $view = oxNew('article_bundle_ajax');
+        $view->removeArticleBundle();
+        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxarticles where oxid='$bundledArticleId' and oxbundleid != ''"));
     }
 
     /**
      * ArticleBundleAjax::addArticleBundle() test case
-     *
-     * @return null
      */
     public function testAddArticleBundle()
     {
-        $sOxid = '_testArticleBundle';
-        $this->setRequestParameter("oxid", $sOxid);
-        $sBundleId = '_testArticleBundle';
-        $this->setRequestParameter("oxbundleid", $sBundleId);
+        $bundledArticleId = '_testArticleBundle';
+        $this->setRequestParameter("oxid", $bundledArticleId);
+        $bundleId = '_testArticleBundle';
+        $this->setRequestParameter("oxbundleid", $bundleId);
 
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxarticles where oxid='$sOxid' and oxbundleid='$sBundleId'"));
-        $oView = oxNew('article_bundle_ajax');
-        $oView->addArticleBundle();
-        $this->assertEquals(1, oxDb::getDb()->getOne("select count(oxid) from oxarticles where oxid='$sOxid' and oxbundleid='$sBundleId'"));
+        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxarticles where oxid='$bundledArticleId' and oxbundleid='$bundleId'"));
+        $view = oxNew('article_bundle_ajax');
+        $view->addArticleBundle();
+        $this->assertEquals(1, oxDb::getDb()->getOne("select count(oxid) from oxarticles where oxid='$bundledArticleId' and oxbundleid='$bundleId'"));
     }
-
-
 }

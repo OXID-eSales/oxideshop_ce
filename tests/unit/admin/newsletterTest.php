@@ -25,17 +25,12 @@
  */
 class Unit_Admin_NewsletterTest extends OxidTestCase
 {
-
     /**
      * Admin_News::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
         $oView = oxNew('Admin_Newsletter');
         $this->assertEquals('newsletter.tpl', $oView->render());
     }
-
 }
-

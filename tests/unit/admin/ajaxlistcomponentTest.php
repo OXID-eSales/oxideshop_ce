@@ -511,7 +511,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testResetContentCache()
     {
-        if (OXID_VERSION_EE) {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community/Professional edition only.');
         }
 

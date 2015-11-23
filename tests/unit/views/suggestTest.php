@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -56,8 +56,7 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oSuggest->getCrossSelling();
         $this->assertTrue($oList instanceof oxList);
-        $iCount = 3;
-        $iCount = 2;
+        $iCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 3 : 2;
         $this->assertEquals($iCount, $oList->count());
     }
 
@@ -69,8 +68,7 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oSuggest->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oSuggest->getSimilarProducts();
         $this->assertTrue($oList instanceof oxList);
-        $iCount = 4;
-        $iCount = 5;
+        $iCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 4 : 5;
         $this->assertEquals($iCount, count($oList));
     }
 
@@ -128,7 +126,7 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oV->expects($this->any())->method('_getRequestParams')->will($this->returnValue('cl=suggest'));
         $oV->expects($this->any())->method('_getSeoRequestParams')->will($this->returnValue('cl=suggest'));
 
-        $sCnid = '8a142c3e60a535f16.78077188';
+        $sCnid = $this->getTestConfig()->getShopEdition() == 'EE'? '30e44ab82c03c3848.49471214' : '8a142c3e60a535f16.78077188';
         $this->setRequestParameter('anid', '2000');
         $this->setRequestParameter('cnid', $sCnid);
         $this->assertEquals($oCfg->getShopURL() . 'empfehlen/?cnid=' . $sCnid . '&amp;anid=2000', $oV->getLink());

@@ -118,8 +118,8 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangFilesPathArrayCustom()
     {
-        if (!OXID_VERSION_PE) {
-            $this->markTestSkipped('This test is for Community edition only.');
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
         $sPath = $this->getConfig()->getAppDir();
 
@@ -136,8 +136,8 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangFilesPathForModules()
     {
-        if (!OXID_VERSION_PE) {
-            $this->markTestSkipped('This test is for Community edition only.');
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . 'modules/oxlangTestModule/translations/de/';
 
@@ -172,8 +172,8 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangFilesPathForModulesWithApplicationFolder()
     {
-        if (!OXID_VERSION_PE) {
-            $this->markTestSkipped('This test is for Community edition only.');
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . 'modules/oxlangTestModule/Application/translations/de/';
 
@@ -209,8 +209,8 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangFilesPathForAdmin()
     {
-        if (!OXID_VERSION_PE) {
-            $this->markTestSkipped('This test is for Community edition only.');
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . 'modules/oxlangTestModule/views/admin/de/';
 
@@ -1492,6 +1492,9 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetMultiLangTables()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
 
         $oLang = oxNew('oxLang');
         $aTable = $oLang->getMultiLangTables();

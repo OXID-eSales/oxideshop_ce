@@ -308,7 +308,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oDb = oxDb::getDb();
         $oDb->execute("delete from oxseohistory");
 
-        $sOxid = "8a142c3e4143562a5.46426637";
+        $sOxid = $this->getTestConfig()->getShopEdition() == 'EE' ? "30e44ab82c03c3848.49471214" : "8a142c3e4143562a5.46426637";
 
         $iShopId = $this->getConfig()->getShopId();
         $iLang = 0;
@@ -402,30 +402,43 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
 
         $sShopUrl = $oConfig->getShopUrl(0);
 
-        $sArticleId = "1964";
-        $sArticleSeoUrl = $sShopUrl . "Geschenke/Original-BUSH-Beach-Radio.html";
-        $sArticleVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Bush/Original-BUSH-Beach-Radio.html";
-        $sArticleManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";
-        $sArticlePriceCatSeoUrl = $sShopUrl . "Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
-        $sArticleTagSeoUrl = $sShopUrl . "tag/seiner/Original-BUSH-Beach-Radio.html";
-
-        $sCategoryId = "8a142c3e4143562a5.46426637";
-        $sCategorySeoUrl = $sShopUrl . "Geschenke/";
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $sArticleId = "1849";
+            $sArticleSeoUrl = $sShopUrl . "Party/Bar-Equipment/Bar-Butler-6-BOTTLES.html";
+            $sArticleVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Hersteller-1/Bar-Butler-6-BOTTLES.html";
+            $sArticleManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Hersteller-1/Bar-Butler-6-BOTTLES.html";
+            $sArticlePriceCatSeoUrl = $sShopUrl . "Test-Price-Category-DE/Bar-Butler-6-BOTTLES.html";
+            $sArticleTagSeoUrl = $sShopUrl . "tag/cmmaterial/Bar-Butler-6-BOTTLES.html";
+            $sCategoryId = "30e44ab82c03c3848.49471214";
+            $sCategorySeoUrl = $sShopUrl . "Fuer-Sie/";
+            $sManufacturerId = "88a996f859f94176da943f38ee067984";
+            $sManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Hersteller-1/";
+            $sVendorId = "d2e44d9b31fcce448.08890330";
+            $sVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Hersteller-1/";
+        } else {
+            $sArticleId = "1964";
+            $sArticleSeoUrl = $sShopUrl . "Geschenke/Original-BUSH-Beach-Radio.html";
+            $sArticleVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Bush/Original-BUSH-Beach-Radio.html";
+            $sArticleManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";
+            $sArticlePriceCatSeoUrl = $sShopUrl . "Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
+            $sArticleTagSeoUrl = $sShopUrl . "tag/seiner/Original-BUSH-Beach-Radio.html";
+            $sCategoryId = "8a142c3e4143562a5.46426637";
+            $sCategorySeoUrl = $sShopUrl . "Geschenke/";
+            $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
+            $sManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Haller-Stahlwaren/";
+            $sVendorId = "68342e2955d7401e6.18967838";
+            $sVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Haller-Stahlwaren/";
+        }
 
         $sContentId = "f41427a099a603773.44301043";
         $sContentSeoUrl = $sShopUrl . "Datenschutz/";
-
-        $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
-        $sManufacturerSeoUrl = $sShopUrl . "Nach-Hersteller/Haller-Stahlwaren/";
-
-        $sVendorId = "68342e2955d7401e6.18967838";
-        $sVendorSeoUrl = $sShopUrl . "Nach-Lieferant/Haller-Stahlwaren/";
 
         $oCategory = oxNew('oxCategory');
         $oCategory->load($sCategoryId);
 
         $oView = $this->getMock("oxUBase", array("getTag", "getActiveCategory"));
-        $oView->expects($this->once())->method('getTag')->will($this->returnValue('seiner'));
+        $tag = $this->getTestConfig()->getShopEdition() == 'EE' ? "cmmaterial" : "seiner";
+        $oView->expects($this->once())->method('getTag')->will($this->returnValue($tag));
         $oView->expects($this->at(0))->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oView->expects($this->at(1))->method('getActiveCategory')->will($this->returnValue($oPriceCategory));
 
@@ -462,8 +475,8 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $this->assertEquals($sManufacturerSeoUrl, $oManufacturer->getLink(0));
 
         $oTagEncoder = oxNew('oxSeoEncoderTag');
-        $sTag = "flaschen";
-        $sTagUrl = "tag/flaschen/";
+        $sTag = $this->getTestConfig()->getShopEdition() == 'EE' ? "messerblock" : "flaschen";
+        $sTagUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? "tag/messerblock/" : "tag/flaschen/";
 
         $this->assertEquals($sShopUrl . "tag/bar-equipment/", $oTagEncoder->getTagUrl("bar equipment", 0));
         $this->assertEquals($sShopUrl . $sTagUrl, $oTagEncoder->getTagUrl($sTag, 0));
@@ -495,26 +508,38 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oPriceCategory->save();
 
         $sShopUrl = $oConfig->getShopUrl(0);
-
-        $sArticleId = "1964";
-        $sArticleSeoUrl = $sShopUrl . "en/Gifts/Original-BUSH-Beach-Radio.html";
-        $sArticleVendorSeoUrl = $sShopUrl . "en/By-Distributor/Bush/Original-BUSH-Beach-Radio.html";
-        $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Bush/Original-BUSH-Beach-Radio.html";
-        $sArticlePriceCatSeoUrl = $sShopUrl . "en/Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
-        $sArticleTagSeoUrl = $sShopUrl . "en/tag/original/Original-BUSH-Beach-Radio.html";
-        $sTag = "original";
-
-        $sCategoryId = "8a142c3e4143562a5.46426637";
-        $sCategorySeoUrl = $sShopUrl . "en/Gifts/";
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $sArticleId = "6b63f459c781fa42edeb889242304014";
+            $sArticleSeoUrl = $sShopUrl . "en/Eco-Fashion/Woman/Shirts/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
+            $sArticleVendorSeoUrl = $sShopUrl . "en/By-Distributor/true-fashion-com/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
+            $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Stewart-Brown/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
+            $sArticlePriceCatSeoUrl = $sShopUrl . "en/Test-Price-Category-DE/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
+            $sArticleTagSeoUrl = $sShopUrl . "en/tag/shirt/Stewart-Brown-Organic-Pima-Edged-Lengthen.html";
+            $sTag = "shirt";
+            $sCategoryId = "30e44ab82c03c3848.49471214";
+            $sCategorySeoUrl = $sShopUrl . "en/For-Her/";
+            $sManufacturerId = "88a996f859f94176da943f38ee067984";
+            $sManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Manufacturer-1/";
+            $sVendorId = "d2e44d9b31fcce448.08890330";
+            $sVendorSeoUrl = $sShopUrl . "en/By-Distributor/Manufacturer-1/";
+        } else {
+            $sArticleId = "1964";
+            $sArticleSeoUrl = $sShopUrl . "en/Gifts/Original-BUSH-Beach-Radio.html";
+            $sArticleVendorSeoUrl = $sShopUrl . "en/By-Distributor/Bush/Original-BUSH-Beach-Radio.html";
+            $sArticleManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Bush/Original-BUSH-Beach-Radio.html";
+            $sArticlePriceCatSeoUrl = $sShopUrl . "en/Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
+            $sArticleTagSeoUrl = $sShopUrl . "en/tag/original/Original-BUSH-Beach-Radio.html";
+            $sTag = "original";
+            $sCategoryId = "8a142c3e4143562a5.46426637";
+            $sCategorySeoUrl = $sShopUrl . "en/Gifts/";
+            $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
+            $sManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Haller-Stahlwaren/";
+            $sVendorId = "68342e2955d7401e6.18967838";
+            $sVendorSeoUrl = $sShopUrl . "en/By-Distributor/Haller-Stahlwaren/";
+        }
 
         $sContentId = "f41427a099a603773.44301043";
         $sContentSeoUrl = $sShopUrl . "en/Privacy-Policy/";
-
-        $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
-        $sManufacturerSeoUrl = $sShopUrl . "en/By-Manufacturer/Haller-Stahlwaren/";
-
-        $sVendorId = "68342e2955d7401e6.18967838";
-        $sVendorSeoUrl = $sShopUrl . "en/By-Distributor/Haller-Stahlwaren/";
 
         $oCategory = oxNew('oxCategory');
         $oCategory->load($sCategoryId);
@@ -681,9 +706,10 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
 
         $sStdUrl = 'index.php?cl=details&amp;anid=1126&amp;cnid=' . ($oCat ? $oCat->getId() : '');
 
-        $oEncoder = oxNew('oxseoencoder');
+        $oEncoder = oxNew('oxSeoEncoder');
 
-        $this->assertEquals('Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html', $oEncoder->fetchSeoUrl($sStdUrl));
+        $categoryUrl = $this->getTestConfig()->getShopEdition() == 'EE' ? "Party/Bar-Equipment" : "Geschenke/Bar-Equipment";
+        $this->assertEquals("$categoryUrl/Bar-Set-ABSINTH.html", $oEncoder->fetchSeoUrl($sStdUrl));
     }
 
     public function testFetchSeoUrlNoAvailable()
@@ -831,8 +857,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('static'), $this->equalTo(md5('1xxx')), $this->equalTo(1));
         $oEncoder->getStaticUrl('xxx', 1, 1);
         // default params:
-        $shop = '';
-        $shop = 'oxbaseshop';
+        $shop = $this->getTestConfig()->getShopEdition() == 'EE' ? "1" : "oxbaseshop";
         $oEncoder = $this->getMock('oxSeoEncoder', array('_getStaticUri', '_getFullUrl'));
         $oEncoder->expects($this->once())->method('_getStaticUri')->with($this->equalTo('xxx'), $this->equalTo($shop), $this->equalTo(oxRegistry::getLang()->getEditLanguage()))->will($this->returnValue('seourl'));
         $oEncoder->expects($this->once())->method('_getFullUrl')->with($this->equalTo('seourl'))->will($this->returnValue('fullseourl'));
@@ -991,11 +1016,10 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $this->assertEquals($iPreCnt, oxDb::getDb()->getOne('select count(oxobjectid) from oxseo where oxshopid = "1" '));
     }
 
-
-    //
-    // Test case:
-    // cookies are cleaned up, object seo urls are not written
-    //
+    /**
+     * Test case:
+     * cookies are cleaned up, object seo urls are not written
+     */
     public function testIfSeoUrlsAreFine()
     {
         // preparing environment
@@ -1007,7 +1031,8 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');
 
         $oArticle = oxNew('oxArticle');
-        $oArticle->load('1126');
+        $articleId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1889' : '1126';
+        $oArticle->load($articleId);
         $oArticle->getLink();
 
         $oCat = $oArticle->getCategory();
@@ -1656,15 +1681,15 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
      */
     public function testForCase0001641()
     {
-        $sCatId = '30e44ab8593023055.23928895';
+        $categoryId = '30e44ab8593023055.23928895';
 
         $oParentCategory = oxNew('oxCategory');
-        $oParentCategory->load($sCatId);
+        $oParentCategory->load($categoryId);
 
         // creating and assigning sub category named "2"
         $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxtitle = new oxField("2");
-        $oCategory->oxcategories__oxparentid = new oxField($sCatId);
+        $oCategory->oxcategories__oxparentid = new oxField($categoryId);
         $oCategory->oxcategories__oxactive = new oxField(1);
         $oCategory->oxcategories__oxshopid = new oxField($oParentCategory->oxcategories__oxshopid->value);
         $oCategory->save();

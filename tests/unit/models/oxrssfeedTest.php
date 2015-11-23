@@ -52,6 +52,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
 
         $oRss->setConfig($oCfg);
         $oRss->p_loadBaseChannel();
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
         $expect = array(
             'title'       => 'name',
             'link'        => 'http://homeurl/extra',
@@ -62,12 +63,11 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
             'generator'   => 'name',
             'image'       => array
             (
-                'url'   => 'http://homeurl/lalala/logo.png',
+                'url'   => "http://homeurl/lalala/logo$postfix.png",
                 'title' => 'name',
                 'link'  => 'http://homeurl/extra',
             )
         );
-
 
         $this->assertEquals($expect, $oRss->getChannel());
         $oShop->oxshops__oxinfoemail = new oxField('emaiail.com');
@@ -77,6 +77,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
         $this->assertEquals($expect, $oRss->getChannel());
         oxTestModules::addFunction('oxutils', 'isValidEmail', '{return 1;}');
         $oRss->p_loadBaseChannel();
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
         $expect = array(
             'title'          => 'name',
             'link'           => 'http://homeurl/extra',
@@ -87,12 +88,11 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
             'managingEditor' => 'emaiail.com (John Doe)',
             'generator'      => 'name',
             'image'          => array(
-                'url'   => 'http://homeurl/lalala/logo.png',
+                'url'   => "http://homeurl/lalala/logo$postfix.png",
                 'title' => 'name',
                 'link'  => 'http://homeurl/extra',
             )
         );
-
 
         $this->assertEquals($expect, $oRss->getChannel());
     }

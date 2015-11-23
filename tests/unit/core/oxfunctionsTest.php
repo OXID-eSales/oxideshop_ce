@@ -22,37 +22,37 @@
 
 class Unit_Core_oxfunctionsTest extends OxidTestCase
 {
+    /** @var string */
+    protected $requestMethod = null;
 
-    protected $_sRequestMethod = null;
-    protected $_sRequestUri = null;
+    /** @var string */
+    protected $requestUri = null;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
         parent::setUp();
         // backuping
-        $this->sRequestMethod = $_SERVER["REQUEST_METHOD"];
-        $this->_sRequestUri = $_SERVER['REQUEST_URI'];
+        $this->requestMethod = $_SERVER["REQUEST_METHOD"];
+        $this->requestUri = $_SERVER['REQUEST_URI'];
     }
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
         // restoring
-        $_SERVER["REQUEST_METHOD"] = $this->_sRequestMethod;
-        $_SERVER['REQUEST_URI'] = $this->_sRequestUri;
+        $_SERVER["REQUEST_METHOD"] = $this->requestMethod;
+        $_SERVER['REQUEST_URI'] = $this->requestUri;
         parent::tearDown();
     }
 
-    // testing request uri getter
+    /**
+     * Testing request uri getter
+     */
     public function testGetRequestUrl()
     {
         $_SERVER["REQUEST_METHOD"] = 'GET';
@@ -61,7 +61,9 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
         $this->assertEquals(str_replace(array('&', 'test.php'), array('&amp;', 'index.php'), $sUri), getRequestUrl());
     }
 
-    // testing request uri getter
+    /**
+     * Testing request uri getter
+     */
     public function testGetRequestUrlEmptyParams()
     {
         $_SERVER["REQUEST_METHOD"] = 'GET';
@@ -70,7 +72,9 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
         $this->assertNull(getRequestUrl());
     }
 
-    // testing request uri getter
+    /**
+     * Testing request uri getter
+     */
     public function testGetRequestUrlSubfolder()
     {
         $_SERVER["REQUEST_METHOD"] = 'GET';
@@ -79,7 +83,9 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
         $this->assertEquals('index.php?cl=details', getRequestUrl());
     }
 
-    // testing request removing sid from link
+    /**
+     * Testing request removing sid from link
+     */
     public function testGetRequestUrl_removingSID()
     {
         $_SERVER["REQUEST_METHOD"] = 'GET';
@@ -135,11 +141,11 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
 
     public function testOxNew()
     {
-        $oNew = oxnew('oxarticle');
-        $this->assertTrue($oNew instanceof oxarticle);
+        $oNew = oxNew('oxArticle');
+        $this->assertTrue($oNew instanceof oxArticle);
 
         try {
-            $oNew = oxnew('oxxxx');
+            oxNew('oxxxx');
         } catch (oxSystemComponentException $oExcp) {
             return;
         }
@@ -198,5 +204,4 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
         error_404_handler();
         error_404_handler('asd');
     }
-
 }

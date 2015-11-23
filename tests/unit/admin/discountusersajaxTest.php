@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -25,20 +25,17 @@
  */
 class Unit_Admin_DiscountUsersAjaxTest extends OxidTestCase
 {
-
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
         parent::setUp();
 
-        oxDb::getDb()->execute("insert into oxuser set oxid='_testUser1', oxusername='_testUserName1', oxshopid='oxbaseshop'");
-        oxDb::getDb()->execute("insert into oxuser set oxid='_testUser2', oxusername='_testUserName2', oxshopid='oxbaseshop'");
-        oxDb::getDb()->execute("insert into oxuser set oxid='_testUser3', oxusername='_testUserName3', oxshopid='oxbaseshop'");
-
+        $shopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+        oxDb::getDb()->execute("insert into oxuser set oxid='_testUser1', oxusername='_testUserName1', oxshopid='$shopId'");
+        oxDb::getDb()->execute("insert into oxuser set oxid='_testUser2', oxusername='_testUserName2', oxshopid='$shopId'");
+        oxDb::getDb()->execute("insert into oxuser set oxid='_testUser3', oxusername='_testUserName3', oxshopid='$shopId'");
 
         oxDb::getDb()->execute("insert into oxobject2discount set oxid='_testO2DRemove1', oxdiscountid='_testDiscount', oxobjectid = '_testUser1', oxtype = 'oxuser'");
         oxDb::getDb()->execute("insert into oxobject2discount set oxid='_testO2DRemove2', oxdiscountid='_testDiscount', oxobjectid = '_testUser2', oxtype = 'oxuser'");
@@ -47,8 +44,6 @@ class Unit_Admin_DiscountUsersAjaxTest extends OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -60,8 +55,6 @@ class Unit_Admin_DiscountUsersAjaxTest extends OxidTestCase
 
     /**
      * DiscountUsersAjax::_getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -74,8 +67,6 @@ class Unit_Admin_DiscountUsersAjaxTest extends OxidTestCase
 
     /**
      * DiscountUsersAjax::_getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -95,8 +86,6 @@ class Unit_Admin_DiscountUsersAjaxTest extends OxidTestCase
 
     /**
      * DiscountUsersAjax::_getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -113,8 +102,6 @@ class Unit_Admin_DiscountUsersAjaxTest extends OxidTestCase
 
     /**
      * DiscountUsersAjax::removeDiscUser() test case
-     *
-     * @return null
      */
     public function testRemoveDiscUser()
     {
@@ -128,8 +115,6 @@ class Unit_Admin_DiscountUsersAjaxTest extends OxidTestCase
 
     /**
      * DiscountUsersAjax::removeDiscUser() test case
-     *
-     * @return null
      */
     public function testRemoveDiscUserAll()
     {
@@ -146,8 +131,6 @@ class Unit_Admin_DiscountUsersAjaxTest extends OxidTestCase
 
     /**
      * DiscountUsersAjax::addDiscUser() test case
-     *
-     * @return null
      */
     public function testAddDiscUser()
     {
@@ -163,8 +146,6 @@ class Unit_Admin_DiscountUsersAjaxTest extends OxidTestCase
 
     /**
      * DiscountUsersAjax::addDiscUser() test case
-     *
-     * @return null
      */
     public function testAddDiscUserAll()
     {
@@ -181,5 +162,4 @@ class Unit_Admin_DiscountUsersAjaxTest extends OxidTestCase
         $oView->addDiscUser();
         $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
     }
-
 }

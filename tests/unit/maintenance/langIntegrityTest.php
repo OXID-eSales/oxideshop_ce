@@ -908,8 +908,9 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
      */
     public function providerSqlFilesForInvalidEncoding()
     {
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
         return array(
-            array(getShopBasePath() . '/setup/sql' . OXID_VERSION_SUFIX . '/*.sql'),
+            array(getShopBasePath() . "/setup/sql$postfix/*.sql"),
         );
     }
 
@@ -917,6 +918,8 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
      * Test if sql files don't have invalid encoding.
      *
      * @dataProvider providerSqlFilesForInvalidEncoding
+     *
+     * @param string $sFilePathPattern
      */
     public function testSqlFilesForInvalidEncoding($sFilePathPattern)
     {

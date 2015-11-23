@@ -25,17 +25,23 @@
  */
 class Unit_Models_oxVatSelectorTest extends OxidTestCase
 {
+    /** @var oxArticle */
+    private $oArticle;
+
+    /** @var oxCategory */
+    private $oCategory;
+
+    /** @var double */
+    private $dDefaultVAT;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
         parent::setUp();
         // demo article
-        $sId = '2077';
+        $sId = $this->getTestConfig()->getShopEdition() == 'EE'? '2275': '2077';
         $sNewId = oxUtilsObject::getInstance()->generateUId();
 
         $this->oArticle = oxNew('oxArticle');
@@ -51,7 +57,7 @@ class Unit_Models_oxVatSelectorTest extends OxidTestCase
         $this->oArticle->save();
 
         // demo category
-        $sId = '8a142c3e4143562a5.46426637';
+        $sId = $this->getTestConfig()->getShopEdition() == 'EE'? '30e44ab82c03c3848.49471214': '8a142c3e4143562a5.46426637';
 
         $sNewId = oxUtilsObject::getInstance()->generateUId();
 
@@ -76,8 +82,6 @@ class Unit_Models_oxVatSelectorTest extends OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {

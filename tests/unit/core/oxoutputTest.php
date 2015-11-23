@@ -22,7 +22,6 @@
 
 class oxUtils_Extended extends oxUtils
 {
-
     public function checkForSearchEngines($blIsSEOverride = -1)
     {
         return true;
@@ -31,7 +30,6 @@ class oxUtils_Extended extends oxUtils
 
 class oxOutput_Extended extends oxOutput
 {
-
     public function _SIDCallBack($aMatches)
     {
         return parent::_SIDCallBack($aMatches);
@@ -40,7 +38,6 @@ class oxOutput_Extended extends oxOutput
 
 class oxConfigForUnit_oxoutputTest extends oxconfig
 {
-
     public function getShopURL($iLang = null, $blAdmin = null)
     {
         return 'www.test.com';
@@ -49,11 +46,8 @@ class oxConfigForUnit_oxoutputTest extends oxconfig
 
 class Unit_Core_oxoutputTest extends OxidTestCase
 {
-
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
@@ -64,8 +58,6 @@ class Unit_Core_oxoutputTest extends OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     public function tearDown()
     {
@@ -120,34 +112,33 @@ class Unit_Core_oxoutputTest extends OxidTestCase
 
     public function testAddVersionTags()
     {
-        $myConfig = $this->getConfig();
-        $sVersion = $myConfig->getActiveShop()->oxshops__oxversion->value;
-        $sVersion = $myConfig->getActiveShop()->oxshops__oxversion = new oxField("9.9", oxField::T_RAW);
-        $sCurYear = date("Y");
+        $config = $this->getConfig();
+        $version = new oxField("9.9", oxField::T_RAW);
+        $config->getActiveShop()->oxshops__oxversion = $version;
+        $currentYear = date("Y");
 
-        $sMajorVersion = '9';
+        $majorVersion = '9';
 
-        $oOutput = oxNew('oxOutput');
+        $output = oxNew('oxOutput');
         // should add tag only to first head item
-        $sTest = "<head>foo</head>bar<head>test2</head>";
-        $sRes = $oOutput->addVersionTags($sTest);
+        $test = "<head>foo</head>bar<head>test2</head>";
+        $result = $output->addVersionTags($test);
         //reset value
-        $myConfig->getActiveShop()->oxshops__oxversion = new oxField($sVersion, oxField::T_RAW);
+        $config->getActiveShop()->oxshops__oxversion = new oxField($version, oxField::T_RAW);
 
         $editionName = $this->getEditionName();
-        $this->assertNotEquals($sTest, $sRes);
-        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop ". $editionName ." Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar<head>test2</head>", $sRes);
+        $this->assertNotEquals($test, $result);
+        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop ". $editionName ." Edition, Version $majorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $currentYear - http://www.oxid-esales.com -->bar<head>test2</head>", $result);
     }
 
     /**
      * Bug #1800, fix test
-     *
      */
     public function testAddVersionTagsUpperCase()
     {
-        $myConfig = $this->getConfig();
-        $sVersion = $myConfig->getActiveShop()->oxshops__oxversion->value;
-        $sVersion = $myConfig->getActiveShop()->oxshops__oxversion = new oxField("9.9", oxField::T_RAW);
+        $config = $this->getConfig();
+        $version = new oxField("9.9", oxField::T_RAW);
+        $config->getActiveShop()->oxshops__oxversion = $version;
         $sCurYear = date("Y");
 
         $sMajorVersion = '9';
@@ -156,7 +147,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $sTest = "<head>foo</Head>bar";
         $sRes = $oOutput->addVersionTags($sTest);
         //reset value
-        $myConfig->getActiveShop()->oxshops__oxversion = new oxField($sVersion, oxField::T_RAW);
+        $config->getActiveShop()->oxshops__oxversion = new oxField($version, oxField::T_RAW);
 
         $editionName = $this->getEditionName();
         $this->assertNotEquals($sTest, $sRes);
@@ -187,29 +178,29 @@ class Unit_Core_oxoutputTest extends OxidTestCase
 
     public function testSetCharsetSetOutputFormatSendHeaders()
     {
-        $oU = $this->getMock('oxUtils', array('setHeader'));
-        $oU->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: text/html; charset=asd'));
+        $utils = $this->getMock('oxUtils', array('setHeader'));
+        $utils->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: text/html; charset=asd'));
         oxTestModules::cleanUp();
-        oxTestModules::addModuleObject('oxUtils', $oU);
+        oxTestModules::addModuleObject('oxUtils', $utils);
         $oOutput = oxNew('oxOutput');
         $oOutput->setCharset('asd');
         $oOutput->sendHeaders();
 
 
-        $oU = $this->getMock('oxUtils', array('setHeader'));
-        $oU->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: application/json; charset=asdd'));
+        $utils = $this->getMock('oxUtils', array('setHeader'));
+        $utils->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: application/json; charset=asdd'));
         oxTestModules::cleanUp();
-        oxTestModules::addModuleObject('oxUtils', $oU);
+        oxTestModules::addModuleObject('oxUtils', $utils);
         $oOutput = oxNew('oxOutput');
         $oOutput->setCharset('asdd');
         $oOutput->setOutputFormat(oxOutput::OUTPUT_FORMAT_JSON);
         $oOutput->sendHeaders();
 
 
-        $oU = $this->getMock('oxUtils', array('setHeader'));
-        $oU->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: text/html; charset=asdd'));
+        $utils = $this->getMock('oxUtils', array('setHeader'));
+        $utils->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: text/html; charset=asdd'));
         oxTestModules::cleanUp();
-        oxTestModules::addModuleObject('oxUtils', $oU);
+        oxTestModules::addModuleObject('oxUtils', $utils);
         $oOutput = oxNew('oxOutput');
         $oOutput->setCharset('asdd');
         $oOutput->setOutputFormat(oxOutput::OUTPUT_FORMAT_HTML);
@@ -238,13 +229,14 @@ class Unit_Core_oxoutputTest extends OxidTestCase
 
     private function getEditionName()
     {
-        $editionName = '';
-
-        $editionName = 'Community';
-
-
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $editionName = 'Enterprise';
+        } elseif ($this->getTestConfig()->getShopEdition() == 'PE') {
+            $editionName = 'Professional';
+        } else {
+            $editionName = 'Community';
+        }
 
         return $editionName;
     }
-
 }

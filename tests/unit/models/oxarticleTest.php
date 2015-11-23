@@ -207,9 +207,8 @@ class Unit_Models_oxArticleTest extends OxidTestCase
      */
     public function testForBugReport1782()
     {
-        $sPrefix = '';
-
-        $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures{$sPrefix}/generated/product/1/87_87_75/nopic.jpg";
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
+        $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures$postfix/generated/product/1/87_87_75/nopic.jpg";
         $this->assertEquals($sIconUrl, $this->_createArticle('_testArt')->getIconUrl());
     }
 

@@ -467,18 +467,18 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $sDiscountId = '_' . uniqid(rand());
 
         // inserting test discount
-        $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxprice, oxaddsumtype, oxaddsum )
+        $query = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxprice, oxaddsumtype, oxaddsum )
                values ( '{$sDiscountId}', '" . $this->getConfig()->getBaseShopId() . "', '1', 'Test', '0', '0', '1000', '500', 'abs', '10' )";
 
-        $this->addToDatabase($sQ, 'oxdiscount');
+        $this->addToDatabase($query, 'oxdiscount');
 
         // inserting test discount
-        $sQ = "insert into oxobject2discount ( oxid, oxdiscountid, oxobjectid, oxtype )
+        $query = "insert into oxobject2discount ( oxid, oxdiscountid, oxobjectid, oxtype )
                values
                ( '_test" . uniqid(rand(), true) . ".', '{$sDiscountId}', '1126', 'oxarticles' ),
                ( '_test" . uniqid(rand(), true) . ".', '{$sDiscountId}', '1127', 'oxarticles' ),
                ( '_test" . uniqid(rand(), true) . ".', '{$sDiscountId}', '1131', 'oxarticles' ) ";
-        oxDb::getDb()->Execute($sQ);
+        oxDb::getDb()->Execute($query);
 
         $oBasket = oxNew('oxBasket');
         $oBasket->addToBasket('1127', 10); // 80
@@ -1030,18 +1030,17 @@ class Unit_Models_oxDiscountTest extends OxidTestCase
         $sDiscountId = '_' . uniqid(rand());
 
         // inserting test discount
-        $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
+        $query = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
                values ( '{$sDiscountId}', '" . $this->getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'itm', '10' )";
-
-        $this->addToDatabase($sQ, 'oxdiscount');
+        $this->addToDatabase($query, 'oxdiscount');
 
         // assigning test discount
-        $sQ = "insert into oxobject2discount ( oxid, oxdiscountid, oxobjectid, oxtype )
+        $query = "insert into oxobject2discount ( oxid, oxdiscountid, oxobjectid, oxtype )
                values
                ( '_test" . uniqid(rand(), true) . ".', '{$sDiscountId}', 'product1', 'oxarticles' ),
                ( '_test" . uniqid(rand(), true) . ".', '{$sDiscountId}', 'product2', 'oxarticles' ),
                ( '_test" . uniqid(rand(), true) . ".', '{$sDiscountId}', 'product3', 'oxarticles' ) ";
-        oxDb::getDb()->Execute($sQ);
+        oxDb::getDb()->Execute($query);
 
         $oParentProduct = $this->getMock("oxArticle", array("getParentId", "getProductId"));
         $oParentProduct->expects($this->once())->method('getParentId')->will($this->returnValue(false));

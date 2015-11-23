@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -26,18 +25,17 @@
  */
 class Unit_Core_oxSerialCeTest extends OxidTestCase
 {
-
-    //this test makes sure oxSerial class does not exist in CE edition
+    /**
+     * This test makes sure oxSerial class does not exist in CE edition
+     */
     public function testOxSerialClassDoesNotExist()
     {
-        if (!OXID_VERSION_PE_CE) {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
             $this->markTestSkipped('This test is for Community edition only.');
         }
 
         if (class_exists('oxSerial')) {
             $this->fail("oxSerial class is not excluded from CE eddition!!");
         }
-
-        return;
     }
 }

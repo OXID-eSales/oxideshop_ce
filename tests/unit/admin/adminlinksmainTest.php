@@ -112,12 +112,10 @@ class Unit_Admin_AdminLinksMainTest extends OxidTestCase
 
     /**
      * Adminlinks_Main::testGetTextEditor() test case.
-     *
-     * @return null
      */
     public function testGetTextEditor()
     {
-        if (!OXID_VERSION_PE_CE) {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
             $this->markTestSkipped('This test is for Community edition only.');
         }
 

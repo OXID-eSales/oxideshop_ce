@@ -45,24 +45,22 @@ class Unit_Maintenance_pluginSmartyOxContentTest extends OxidTestCase
 
     public function testGetContentLoadByIdent()
     {
-
-        $sShopId = 'oxbaseshop';
-
+        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
 
         $aParams['ident'] = 'oxsecurityinfo';
-        $oSmarty = $this->getMock("smarty", array("fetch"));
+        $oSmarty = $this->getMock("Smarty", array("fetch"));
         $oSmarty->expects($this->once())->method('fetch')
             ->with($this->equalTo('ox:oxsecurityinfooxcontent0' . $sShopId))
             ->will($this->returnValue('testvalue'));
 
-        $sText = "<b>content not found ! check ident(" . $aParams['ident'] . ") !</b>";
+        $message = "Content not found! check ident(" . $aParams['ident'] . ") !";
 
-        $this->assertEquals('testvalue', smarty_function_oxcontent($aParams, $oSmarty));
+        $this->assertEquals('testvalue', smarty_function_oxcontent($aParams, $oSmarty), $message);
     }
 
     public function testGetContentLoadByIdentLangChange()
     {
-        $sShopId = 'oxbaseshop';
+        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
 
         $aParams['ident'] = 'oxsecurityinfo';
         $oSmarty = $this->getMock("smarty", array("fetch"));
@@ -70,17 +68,16 @@ class Unit_Maintenance_pluginSmartyOxContentTest extends OxidTestCase
             ->with($this->equalTo('ox:oxsecurityinfooxcontent1' . $sShopId))
             ->will($this->returnValue('testvalue'));
 
-        $sText = "<b>content not found ! check ident(" . $aParams['ident'] . ") !</b>";
+        $message = "Content not found! check ident(" . $aParams['ident'] . ") !";
 
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
 
-        $this->assertEquals('testvalue', smarty_function_oxcontent($aParams, $oSmarty));
+        $this->assertEquals('testvalue', smarty_function_oxcontent($aParams, $oSmarty), $message);
     }
 
     public function testGetContentLoadByOxId()
     {
-        $sShopId = 'oxbaseshop';
-
+        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
         $aParams['oxid'] = 'f41427a099a603773.44301043';
         $aParams['assign'] = true;
 

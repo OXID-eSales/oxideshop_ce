@@ -20,8 +20,6 @@
  * @version   OXID eShop CE
  */
 
-require_once getShopBasePath() . '/setup/oxsetup.php';
-
 /**
  * Class Unit_Core_oxOnlineRequestTest
  *
@@ -29,44 +27,30 @@ require_once getShopBasePath() . '/setup/oxsetup.php';
  */
 class Unit_Core_oxOnlineRequestTest extends OxidTestCase
 {
-
     public function testClusterIdGenerationWhenNotSet()
     {
         $this->getConfig()->setConfigParam('sClusterId', '');
-        $oRequest = oxNew('oxOnlineRequest');
-        $this->assertNotEquals('', $oRequest->clusterId);
+        $request = oxNew('oxOnlineRequest');
+        $this->assertNotEquals('', $request->clusterId);
     }
 
     public function testClusterIdIsNotRegenerationWhenAlreadySet()
     {
         $this->getConfig()->setConfigParam('sClusterId', 'generated_unique_cluster_id');
-        $oRequest = oxNew('oxOnlineRequest');
-        $this->assertSame('generated_unique_cluster_id', $oRequest->clusterId);
+        $request = oxNew('oxOnlineRequest');
+        $this->assertSame('generated_unique_cluster_id', $request->clusterId);
     }
-
-    public function testClusterIdTakenFromBaseShopInsteadOfSubShop()
-    {
-    return;
-        $oConfig = $this->getConfig();
-        $oConfig->saveShopConfVar("str", 'sClusterId', 'generated_unique_cluster_id', 1);
-
-        $this->setShopId(9);
-        $oConfig->setConfigParam('sClusterId', '');
-        $oRequest = oxNew('oxOnlineRequest');
-        $this->assertSame('generated_unique_cluster_id', $oRequest->clusterId);
-    }
-
 
     public function testDefaultParametersSetOnConstruct()
     {
-        $oConfig = $this->getConfig();
+        $config = $this->getConfig();
 
-        $oConfig->setConfigParam('sClusterId', 'generated_unique_cluster_id');
-        $oRequest = oxNew('oxOnlineRequest');
+        $config->setConfigParam('sClusterId', 'generated_unique_cluster_id');
+        $request = oxNew('oxOnlineRequest');
 
-        $this->assertSame('generated_unique_cluster_id', $oRequest->clusterId);
-        $this->assertSame($oConfig->getEdition(), $oRequest->edition);
-        $this->assertSame($oConfig->getVersion(), $oRequest->version);
-        $this->assertSame($oConfig->getShopUrl(), $oRequest->shopUrl);
+        $this->assertSame('generated_unique_cluster_id', $request->clusterId);
+        $this->assertSame($config->getEdition(), $request->edition);
+        $this->assertSame($config->getVersion(), $request->version);
+        $this->assertSame($config->getShopUrl(), $request->shopUrl);
     }
 }

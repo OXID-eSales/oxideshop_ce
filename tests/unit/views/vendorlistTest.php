@@ -28,8 +28,6 @@ class Unit_Views_VendorListTest extends OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -41,20 +39,18 @@ class Unit_Views_VendorListTest extends OxidTestCase
 
     /**
      * Testing render() when passing existing vendor
-     *
-     * @return null
      */
     public function testRenderExistingVendor()
     {
-        $sActVendor = "9437def212dc37c66f90cc249143510a";
+        $sActVendor = $this->getTestConfig()->getShopEdition() == 'EE'? "9437def212dc37c66f90cc249143510a" : '9437def212dc37c66f90cc249143510a';
 
-        $oVendorTree = oxNew('oxvendorlist');
+        $oVendorTree = oxNew('oxVendorList');
         $oVendorTree->buildVendorTree('vendorlist', $sActVendor, $this->getConfig()->getShopHomeURL());
 
-        $oVendor = oxNew('oxvendor');
+        $oVendor = oxNew('oxVendor');
         $oVendor->load($sActVendor);
 
-        $oView = $this->getMock("vendorlist", array("getVendorTree", "getActVendor"));
+        $oView = $this->getMock("VendorList", array("getVendorTree", "getActVendor"));
         $oView->expects($this->any())->method('getVendorTree')->will($this->returnValue($oVendorTree));
         $oView->expects($this->any())->method('getActVendor')->will($this->returnValue($oVendor));
 
@@ -63,8 +59,6 @@ class Unit_Views_VendorListTest extends OxidTestCase
 
     /**
      * Testign render() when passing existing vendor, but requested page number exceeds possible
-     *
-     * @return null
      */
     public function testRenderExistingVendorRequestedPageNumerExceedsPossible()
     {
@@ -72,12 +66,12 @@ class Unit_Views_VendorListTest extends OxidTestCase
         $this->setRequestParameter("cnid", 'cnid');
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new Exception('OK'); }");
 
-        $sActVendor = "9437def212dc37c66f90cc249143510a";
+        $sActVendor = $this->getTestConfig()->getShopEdition() == 'EE'? "9437def212dc37c66f90cc249143510a" : '9437def212dc37c66f90cc249143510a';
 
-        $oVendorTree = oxNew('oxvendorlist');
+        $oVendorTree = oxNew('oxVendorList');
         $oVendorTree->buildVendorTree('vendorlist', $sActVendor, $this->getConfig()->getShopHomeURL());
 
-        $oVendor = oxNew('oxvendor');
+        $oVendor = oxNew('oxVendor');
         $oVendor->load($sActVendor);
 
         $oView = $this->getMock("vendorlist", array("getVendorTree", "getActVendor"));
@@ -97,20 +91,18 @@ class Unit_Views_VendorListTest extends OxidTestCase
 
     /**
      * Testign render() when passing existing vendor, but requested page number exceeds possible
-     *
-     * @return null
      */
     public function testRenderVendorHasNoProductsAssigned()
     {
         $this->setRequestParameter("pgNr", 999);
         oxTestModules::addFunction("oxUtils", "handlePageNotFoundError", "{ throw new Exception('OK'); }");
 
-        $sActVendor = "9437def212dc37c66f90cc249143510a";
+        $sActVendor = $this->getTestConfig()->getShopEdition() == 'EE' ? "9437def212dc37c66f90cc249143510a" : "9437def212dc37c66f90cc249143510a";
 
-        $oVendorTree = oxNew('oxvendorlist');
+        $oVendorTree = oxNew('oxVendorList');
         $oVendorTree->buildVendorTree('vendorlist', $sActVendor, $this->getConfig()->getShopHomeURL());
 
-        $oVendor = oxNew('oxvendor');
+        $oVendor = oxNew('oxVendor');
         $oVendor->setId("123");
 
         $oView = $this->getMock("vendorlist", array("getVendorTree", "getActVendor"));
@@ -163,9 +155,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
 
     public function testProcessListArticles()
     {
-        $oArticle = oxNew('oxArticle');
-
-        $oListView = oxNew('vendorlist');
+        $oListView = oxNew('VendorList');
         $this->assertEquals(1, $oListView->UNITgetProductLinkType());
     }
 
@@ -174,10 +164,10 @@ class Unit_Views_VendorListTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
 
         $this->setRequestParameter('cnid', 'v_root');
-        $oVendorTree = oxNew('oxvendorlist');
+        $oVendorTree = oxNew('oxVendorList');
         $oVendorTree->buildVendorTree('vendorlist', 'v_root', $this->getConfig()->getShopHomeURL());
 
-        $oVendor = oxNew('vendorlist');
+        $oVendor = oxNew('VendorList');
         $oVendor->setVendorTree($oVendorTree);
         $oTree = $oVendor->getSubCatList();
 
@@ -190,10 +180,10 @@ class Unit_Views_VendorListTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
 
         $this->setRequestParameter('cnid', 'v_root');
-        $oVendorTree = oxNew('oxvendorlist');
+        $oVendorTree = oxNew('oxVendorList');
         $oVendorTree->buildVendorTree('vendorlist', 'v_root', $this->getConfig()->getShopHomeURL());
 
-        $oVendor = oxNew('vendorlist');
+        $oVendor = oxNew('VendorList');
         $oVendor->setVendorTree($oVendorTree);
 
         $this->assertEquals(3, $oVendor->hasVisibleSubCats());
@@ -203,9 +193,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
 
-        //testing over mock
-        $sVendorId = '68342e2955d7401e6.18967838';
-
+        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE'? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
 
         $this->setRequestParameter('cnid', $sVendorId);
         $this->getConfig()->setConfigParam('iNrofCatArticles', 20);
@@ -215,8 +203,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
 
-        $oVendorList = oxNew('vendorList');
-        // $oVendorList->setVendorTree( $oVendorTree );
+        $oVendorList = oxNew('VendorList');
         $oVendorList->setActVendor($oVendor);
         $oArtList = $oVendorList->getArticleList();
 
@@ -242,8 +229,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
 
-        $sVendorId = '68342e2955d7401e6.18967838';
-
+        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE'? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
 
@@ -254,8 +240,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
 
     public function testGetCatTitle()
     {
-        $sVendorId = '68342e2955d7401e6.18967838';
-
+        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE'? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
 
@@ -268,8 +253,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
 
     public function testGetActiveCategory()
     {
-        $sVendorId = '68342e2955d7401e6.18967838';
-
+        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE'? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
 
         $this->setRequestParameter("cnid", $sVendorId);
 
@@ -287,7 +271,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
         $this->setRequestParameter('cnid', 'v_root');
-        $oVendorTree = oxNew('oxvendorlist');
+        $oVendorTree = oxNew('oxVendorList');
         $oVendorTree->buildVendorTree('vendorlist', 'v_root', $this->getConfig()->getShopHomeURL());
 
         $oVendor = $this->getProxyClass("vendorlist");
@@ -299,14 +283,13 @@ class Unit_Views_VendorListTest extends OxidTestCase
 
     public function testNoIndex()
     {
-        $oVendor = oxNew('vendorlist');
+        $oVendor = oxNew('VendorList');
         $this->assertTrue(0 === $oVendor->noIndex());
     }
 
     public function testGetTitleSuffix()
     {
-        $sVendorId = '68342e2955d7401e6.18967838';
-
+        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE'? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
         $oVendor->oxvendor__oxshowsuffix = new oxField(1);
@@ -321,12 +304,18 @@ class Unit_Views_VendorListTest extends OxidTestCase
     public function testAddPageNrParamIfSeo()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $sVendorId = '68342e2955d7401e6.18967838';
-        $sRez = $this->getConfig()->getShopURL() . "Nach-Lieferant/Haller-Stahlwaren/3/";
+
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $sVendorId = 'd2e44d9b31fcce448.08890330';
+            $sRez = $this->getConfig()->getShopURL() . "Nach-Lieferant/Hersteller-1/3/";
+        } else {
+            $sVendorId = '68342e2955d7401e6.18967838';
+            $sRez = $this->getConfig()->getShopURL() . "Nach-Lieferant/Haller-Stahlwaren/3/";
+        }
 
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
-        $oVendorList = $this->getProxyClass("vendorlist");
+        $oVendorList = $this->getProxyClass("VendorList");
         $oVendorList->setNonPublicVar("_oActVendor", $oVendor);
         $this->assertEquals($sRez, $oVendorList->UNITaddPageNrParam('aa', 2));
     }
@@ -351,8 +340,6 @@ class Unit_Views_VendorListTest extends OxidTestCase
 
     /**
      * Testing allist::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {

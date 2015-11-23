@@ -490,8 +490,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testGetBaseShopId()
     {
-        if (!OXID_VERSION_PE) {
-            $this->markTestSkipped('This test is for Community edition only.');
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
 
         $oConfig = oxNew('oxConfig');
@@ -505,8 +505,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testIsMall()
     {
-        if (!OXID_VERSION_PE) {
-            $this->markTestSkipped('This test is for Community edition only.');
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
 
         $oConfig = oxNew('oxConfig');
@@ -1081,8 +1081,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testGetMandateCountOneSubShop()
     {
-        if (!OXID_VERSION_PE) {
-            $this->markTestSkipped('This test is for Community edition only.');
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
 
         $oConfig = oxNew('oxConfig');
@@ -1220,8 +1220,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
 
-        $sDir = $oConfig->getConfigParam('sShopDir') . 'out/pictures/';
-
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
+        $sDir = $oConfig->getConfigParam('sShopDir') . "out/pictures$postfix/";
 
         $this->assertEquals($sDir, $oConfig->getPictureDir(false));
     }
@@ -1234,8 +1234,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig->init();
         $oConfig->setConfigParam('blUseDifferentDynDirs', true);
 
-        $sDir = $oConfig->getConfigParam('sShopDir') . 'out/pictures/';
-
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
+        $sDir = $oConfig->getConfigParam('sShopDir') . "out/pictures$postfix/";
 
         $this->assertEquals($sDir, $oConfig->getPictureDir(false));
     }
@@ -1757,8 +1757,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testGetShopIdForPeAlwaysOxbaseshop()
     {
-        if (!OXID_VERSION_PE) {
-            $this->markTestSkipped('This test is for Community edition only.');
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
 
         $oConfig = oxNew('oxConfig');
@@ -1844,8 +1844,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testGetFullEdition()
     {
-        if (!OXID_VERSION_PE_CE) {
-            $this->markTestSkipped('This test is for Community edition only.');
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community editions only.');
         }
 
         $sFEdition = $this->getConfig()->getFullEdition();
@@ -1870,10 +1870,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
     public function testCorrectVersion()
     {
-        //at least version 4.0.0.0 (should assert corerctly for higher numbers as well)
-        $this->assertTrue(version_compare($this->getConfig()->getVersion(), '4.0.0.0') >= 0);
+        $this->assertTrue(version_compare($this->getConfig()->getVersion(), '4.9') >= 0);
     }
-
 
     public function testGetDir_level5()
     {

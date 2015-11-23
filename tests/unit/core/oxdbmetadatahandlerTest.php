@@ -117,8 +117,8 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
      */
     public function testGetAllTables()
     {
-        if (!OXID_VERSION_PE) {
-            $this->markTestSkipped('This test is for Community edition only.');
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
         $aTables = oxDb::getDb()->getAll("show tables");
 
@@ -374,8 +374,8 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
      */
     public function testAddNewLangToDb()
     {
-        if (!OXID_VERSION_PE) {
-            $this->markTestSkipped('This test is for Community edition only.');
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
         $aTables = oxDb::getDb()->getAll("show tables");
 

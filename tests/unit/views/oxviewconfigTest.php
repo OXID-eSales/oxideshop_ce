@@ -221,6 +221,9 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
     public function testGetHomeLinkPe()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') :
+            $this->markTestSkipped('This test is for Community/Professional edition only.');
+        endif;
 
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         $oViewConfig = oxNew('oxviewconfig');
@@ -2426,7 +2429,8 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $oView = oxNew('oxViewConfig');
 
-        $sLogo = "logo.png";
+        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
+        $sLogo = "logo$postfix.png";
 
         $this->assertEquals($sLogo, $oView->getShopLogo());
     }

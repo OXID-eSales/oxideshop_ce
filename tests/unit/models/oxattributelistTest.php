@@ -177,12 +177,10 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
 
     /**
      * Test load attributes with sorting.
-     *
-     * @return null
      */
     public function testLoadAttributesWithSort()
     {
-        if (OXID_VERSION_EE) {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
 
@@ -222,7 +220,7 @@ class Unit_Models_oxattributelistTest extends OxidTestCase
 
     public function testGetCategoryAttributes()
     {
-        if (OXID_VERSION_EE) {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
 

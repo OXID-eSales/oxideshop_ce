@@ -18,1050 +18,932 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
-*/
-
-/**
-* InvoicepdfOxOrder parrent chain class.
-*/
-class InvoicepdfOxOrder_parent extends oxOrder {}
-
-/**
-* test pdf class.
-*/
-class testPdfClass
-{
-/**
- * String width getter
- *
- * @param string $arg1 text
- *
- * @return integer
  */
-public function getStringWidth( $arg1=null )
-{
-    return 1;
-}
-}
-
-require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfoxorder.php';
-require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfblock.php';
-require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfarticlesummary.php';
-require_once getShopBasePath() . 'Core/oxpdf.php';
 
 /**
-* InvoicepdfOxOrder parrent chain class.
-*/
-class New_InvoicepdfArticleSummary extends InvoicepdfArticleSummary
-{
-public function setTotalCostsWithDiscount( &$iStartPos ) {
-    $this->_setTotalCostsWithDiscount( $iStartPos );
-}
-
-public function setVoucherInfo( &$iStartPos ) {
-    $this->_setVoucherInfo( $iStartPos );
-}
-
-public function setDeliveryInfo( &$iStartPos ) {
-    $this->_setDeliveryInfo( $iStartPos );
-}
-
-public function setWrappingInfo( &$iStartPos ) {
-    $this->_setWrappingInfo( $iStartPos );
-}
-
-public function setPaymentInfo( &$iStartPos ) {
-    $this->_setPaymentInfo( $iStartPos );
-}
-
-public function setGrandTotalPriceInfo( &$iStartPos ) {
-    $this->_setGrandTotalPriceInfo( $iStartPos );
-}
-
-public function setPayUntilInfo( &$iStartPos ) {
-    $this->_setPayUntilInfo( $iStartPos );
-}
-
-public function setPaymentMethodInfo( &$iStartPos ) {
-    $this->_setPaymentMethodInfo( $iStartPos );
-}
-
-public function getVar( $sVar ) {
-    return $this->$sVar;
-}
-}
-
-/**
-* Testing myorder module for printing pdf's
-*/
+ * Testing myorder module for printing pdf's
+ */
 class Unit_Modules_Oe_Invoicepdf_Models_InvoicePdfOxOrderTest extends OxidTestCase
 {
-/**
- * Tear down the fixture.
- *
- * @return null
- */
-protected function tearDown()
-{
-    $this->cleanUpTable( 'oxorder' );
-    $this->cleanUpTable( 'oxorderarticles' );
-    $this->cleanUpTable( 'oxarticles' );
-    parent::tearDown();
-}
-
-/**
- * Inserts test order.
- *
- * @return null
- */
-private function _insertTestOrder()
-{
-    $myConfig = $this->getConfig();
-
-    //set order
-    $this->_oOrder = oxNew( "oxOrder" );
-    $this->_oOrder->setId( '_testOrderId' );
-    $this->_oOrder->oxorder__oxshopid = new oxField($myConfig->getShopId(), oxField::T_RAW);
-    $this->_oOrder->oxorder__oxuserid = new oxField("_testUserId", oxField::T_RAW);
-    $this->_oOrder->oxorder__oxbillcountryid = new oxField('10', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxdelcountryid = new oxField('11', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxdeltype = new oxField('_testDeliverySetId', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxdelvat = new oxField('19', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxdelcost = new oxField('21', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxpaymentid = new oxField('_testPaymentId', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxpaymenttype = new oxField('oxidcashondel', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxpayvat = new oxField('19', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxpaycost = new oxField('6', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxcardid = new oxField('_testWrappingId', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxtotalnetsum = new oxField('12', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxtotalbrutsum = new oxField('13', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxartvat1  = new oxField('19', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxartvatprice1  = new oxField('7', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxcurrency = new oxField('1', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxdiscount = new oxField('5', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxvoucherdiscount = new oxField('6', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxwrapvat = new oxField('19', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxwrapcost = new oxField('8', oxField::T_RAW);
-    $this->_oOrder->oxorder__oxtotalordersum = new oxField('25', oxField::T_RAW);
-    $this->_oOrder->save();
-}
-
-/**
- * Inserts test order articles.
- *
- * @param integer $iStorno canceled product
- *
- * @return null
- */
-private function _insertTestOrderArticle( $iStorno = 0 )
-{
-    $oOrderArticle = oxNew( "oxOrderArticle" );
-    $oOrderArticle->setId( '_testOrderArticleId' );
-    $oOrderArticle->oxorderarticles__oxorderid = new oxField('_testOrderId', oxField::T_RAW);
-    $oOrderArticle->oxorderarticles__oxartid = new oxField('_testArticleId', oxField::T_RAW);
-    $oOrderArticle->oxorderarticles__oxamount = new oxField(5, oxField::T_RAW);
-    $oOrderArticle->oxorderarticles__oxvat = new oxField(19, oxField::T_RAW);
-    $oOrderArticle->oxorderarticles__oxvatprice = new oxField(7, oxField::T_RAW);
-    $oOrderArticle->oxorderarticles__oxstorno = new oxField($iStorno, oxField::T_RAW);
-    $oOrderArticle->save();
-
-    return $oOrderArticle;
-}
-
-/**
- * Inserts test article.
- *
- * @return null
- */
-private function _insertTestArticle()
-{
-    $oDB = oxDb::getDb();
-    $myConfig = $this->getConfig();
-
-    $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
-                values ('_testArticleId','".$myConfig->getShopId()."','testArticleTitle','2','20','119')";
-
-    $oDB->Execute( $sInsert );
-}
-
-/**
- * Get test InvoicepdfOxOrder object.
- *
- * @return null
- */
-private function _getTestInvoicepdfOxOrder()
-{
-    $this->_insertTestOrder();
-    $oInvoicepdfOxOrder = $this->getProxyClass( "InvoicepdfOxOrder" );
-    $oInvoicepdfOxOrder->load('_testOrderId');
-    $oInvoicepdfOxOrder->setNonPublicVar( "_oCur", $oInvoicepdfOxOrder->getConfig()->getCurrencyObject( 'EUR' ) );
-
-    return $oInvoicepdfOxOrder;
-}
-
-/**
- * Testing InvoicepdfOxOrder::getVats()
- *
- * @return null
- */
-public function testGetVatsGetProductVatsReturnsVatsArray()
-{
-    // getProductVats returns VATs array
-    $aVats = array( 1, 2, 3 );
-    $oInvoicepdfOxOrder = $this->getMock( "InvoicepdfOxOrder", array( "getProductVats" ) );
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( 'getProductVats')->will( $this->returnValue( $aVats ));
-
-    $this->assertEquals( $aVats, $oInvoicepdfOxOrder->getVats() );
-
-    // getProductVats does not return VATs
-}
-
-/*
- * Testing InvoicepdfBlock class
- */
-
-/**
- * Testing adding variables to chache
- *
- * @return null
- */
-public function testInvoicepdfBlock_ToCache()
-{
-    $oPdf = $this->getProxyClass( "InvoicepdfBlock" );
-
-    $aParams = array( 1, 2 );
-    $oPdf->UNITtoCache( 'testFunctionName', $aParams );
-
-    $oItem = new stdClass();
-    $oItem->sFunc = 'testFunctionName';
-    $oItem->aParams = $aParams;
-    $aCache[] = $oItem;
-
-    $this->assertEquals( $aCache, $oPdf->getNonPublicVar('_aCache') );
-}
-
-/**
- * Testing executing functions from cache - if calls setted function with exact parameters
- *
- * @return null
- */
-public function testInvoicepdfBlock_Run()
-{
-    $sClassName = oxTestModules::addFunction('InvoicepdfBlock', 'getArgsNumber', '{ $this->iArgsNum = count(func_get_args()); }');
-    $oPdf = $this->getProxyClass( $sClassName );
-
-    $oItem = new stdClass();
-    $oItem->sFunc = 'getArgsNumber';
-
-    $aParams = array();
-    for ($n = 1; $n <= 5; $n++ ) {
-        $oItem->aParams = $aParams;
-        $aCache = array( $oItem );
-        $oPdf->setNonPublicVar('_aCache', $aCache);
-        $oPdf->run( $oPdf );
-        $this->assertEquals( $n - 1, $oPdf->iArgsNum );
-        $aParams[] = $n;
-    }
-}
-
-/**
- * Testing setting pdf function and params
- *
- * @return null
- */
-public function testInvoicepdfBlock_line()
-{
-    $oPdf = $this->getProxyClass( "InvoicepdfBlock" );
-    $oPdf->line( 1, 2, 3, 4 );
-
-    $oItem = new stdClass();
-    $oItem->sFunc = 'Line';
-    $oItem->aParams = array( 1, 2, 3, 4 );
-
-    $aCache = $oPdf->getNonPublicVar('_aCache' );
-    $this->assertEquals( $oItem, $aCache[0] );
-}
-
-/**
- * Testing setting pdf function and params
- *
- * @return null
- */
-public function testInvoicepdfBlock_text()
-{
-    $oPdf = $this->getProxyClass( "InvoicepdfBlock" );
-    $oPdf->text( 1, 2, 3 );
-
-    $oItem = new stdClass();
-    $oItem->sFunc = 'Text';
-    $oItem->aParams = array( 1, 2, 3 );
-
-    $aCache = $oPdf->getNonPublicVar('_aCache' );
-    $this->assertEquals( $oItem, $aCache[0] );
-}
-
-/**
- * Testing setting pdf function and params
- *
- * @return null
- */
-public function testInvoicepdfBlock_font()
-{
-    $oPdf = $this->getProxyClass( "InvoicepdfBlock" );
-    $oPdf->font( 1, 2, 3 );
-
-    $oItem = new stdClass();
-    $oItem->sFunc = 'SetFont';
-    $oItem->aParams = array( 1, 2, 3 );
-
-    $aCache = $oPdf->getNonPublicVar('_aCache' );
-    $this->assertEquals( $oItem, $aCache[0] );
-}
-
-/**
- * Testing function ajustHeight updates "line" function parameters
- *
- * @return null
- */
-public function testInvoicepdfBlock_ajustHeightWithLineCommand()
-{
-    $oPdf = $this->getProxyClass( "InvoicepdfBlock" );
-    $oPdf->line( 1, 1, 1, 1 );
-    $oPdf->ajustHeight( 3 );
-
-    $aCache = $oPdf->getNonPublicVar('_aCache' );
-    $this->assertEquals( array(1, 4, 1, 4), $aCache[0]->aParams );
-}
-
-/**
- * Testing function ajustHeight updates "text" function parameters
- *
- * @return null
- */
-public function testInvoicepdfBlock_ajustHeightWithTextCommand()
-{
-    $oPdf = $this->getProxyClass( "InvoicepdfBlock" );
-    $oPdf->text( 1, 1, 1 );
-    $oPdf->ajustHeight( 3 );
-
-    $aCache = $oPdf->getNonPublicVar('_aCache' );
-    $this->assertEquals( array(1, 4, 1), $aCache[0]->aParams );
-}
-
-
-/**
- * Testing InvoicepdfArticleSummary class
- */
-
-/**
- * Testing constructor
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_construct()
-{
-    $oPdf = $this->getProxyClass( "InvoicepdfArticleSummary", array(1,2) );
-
-    $this->assertEquals( 1, $oPdf->getNonPublicVar('_oData') );
-    $this->assertEquals( 2, $oPdf->getNonPublicVar('_oPdf') );
-}
-
-
-/*
- * Testing pdfArticleSummary class
- * Admin mode is off, so while testing generated pdf, there will be no translations,
- * only translation constants (because not in admin mode)
- *
- */
-
-/**
- * Testing method _setTotalCostsWithoutDiscount
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_setTotalCostsWithoutDiscount()
-{
-    $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
-
-    $sClass = oxTestModules::addFunction('InvoicepdfArticleSummary', 'getNonPublicVar( $sName )', '{return $this->$sName;}');
-    $sClass = oxTestModules::addFunction($sClass, 'p_setTotalCostsWithoutDiscount( &$iStartPos )', '{return $this->_setTotalCostsWithoutDiscount( $iStartPos );}');
-    $oPdf = new testPdfClass;
-    $oPdfArtSum = new $sClass( $oInvoicepdfOxOrder, $oPdf );
-
-    $iStartPos = 1;
-    $oPdfArtSum->p_setTotalCostsWithoutDiscount( $iStartPos );
-
-    $aCache = $oPdfArtSum->getNonPublicVar('_aCache');
-
-    //checking values
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_ALLPRICENETTO', $aCache[1]->aParams[2] );
-    $this->assertEquals( '12,00 EUR', trim($aCache[2]->aParams[2]) );
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[3]->aParams[2] );
-    $this->assertEquals( '7,00 EUR', trim($aCache[4]->aParams[2]) );
-}
-
-/**
- * Testing method _setTotalCostsWithDiscount
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_setTotalCostsWithDiscount()
-{
-    $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
-
-    $oPdf = new testPdfClass;
-    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oInvoicepdfOxOrder, $oPdf );
-
-    $iStartPos = 1;
-    $oPdfArtSum->setTotalCostsWithDiscount( $iStartPos );
-
-    $aCache = $oPdfArtSum->getVar('_aCache');
-
-    //checking values
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_ALLPRICEBRUTTO', $aCache[1]->aParams[2] );
-    $this->assertEquals( '13,00 EUR', trim($aCache[2]->aParams[2]) );
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_DISCOUNT', $aCache[4]->aParams[2] );
-    $this->assertEquals( '-5,00 EUR', trim($aCache[5]->aParams[2]) );
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_ALLPRICENETTO', $aCache[7]->aParams[2] );
-    $this->assertEquals( '12,00 EUR', trim($aCache[8]->aParams[2]) );
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[9]->aParams[2] );
-    $this->assertEquals( '7,00 EUR', trim($aCache[10]->aParams[2]) );
-}
-
-/**
- * Testing method _setVoucherInfo
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_setVoucherInfo()
-{
-    $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
-
-    $oPdf = new testPdfClass;
-    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oInvoicepdfOxOrder, $oPdf );
-
-    $iStartPos = 1;
-    $oPdfArtSum->setVoucherInfo( $iStartPos );
-
-    $aCache = $oPdfArtSum->getVar('_aCache');
-
-    //checking values
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_VOUCHER', $aCache[0]->aParams[2] );
-    $this->assertEquals( '-6,00 EUR', trim($aCache[1]->aParams[2]) );
-}
-
-/**
- * Testing method _setDeliveryInfo
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_setDeliveryInfo()
-{
-    $this->getConfig()->setConfigParam( 'blCalcVATForDelivery', 1 );
-    $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
-
-    $oPdf = new testPdfClass;
-    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oInvoicepdfOxOrder, $oPdf );
-
-    $iStartPos = 1;
-    $oPdfArtSum->setDeliveryInfo( $iStartPos );
-
-    $aCache = $oPdfArtSum->getVar('_aCache');
-
-
-    //checking values
-    /*$this->assertEquals( 'ORDER_OVERVIEW_PDF_SHIPCOST', $aCache[0]->aParams[2] );
-    $this->assertEquals( '21,00 EUR', trim($aCache[1]->aParams[2]) );
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[2]->aParams[2] );
-    $this->assertEquals( '3,35 EUR', trim($aCache[3]->aParams[2]) );*/
-
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_SHIPCOST', trim($aCache[0]->aParams[2]) );
-    $this->assertEquals( '21,00 EUR', trim($aCache[1]->aParams[2]) );
-}
-
-/**
- * Testing method _setWrappingInfo
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_setWrappingInfo()
-{
-    $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
-
-    $oPdf = new testPdfClass;
-    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oInvoicepdfOxOrder, $oPdf );
-
-    $iStartPos = 1;
-    $oPdfArtSum->setWrappingInfo( $iStartPos );
-
-    $aCache = $oPdfArtSum->getVar('_aCache');
-
-    //checking values
-    $this->assertEquals( 'WRAPPING_COSTS ORDER_OVERVIEW_PDF_BRUTTO', $aCache[0]->aParams[2] );
-    $this->assertEquals( '8,00 EUR', trim($aCache[1]->aParams[2]) );
-    /*$this->assertEquals( 'ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[2]->aParams[2] );
-    $this->assertEquals( '1,28 EUR', trim($aCache[3]->aParams[2]) );
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_WRAPPING ORDER_OVERVIEW_PDF_BRUTTO', trim($aCache[5]->aParams[2]) );
-    $this->assertEquals( '8,00 EUR', trim($aCache[6]->aParams[2]) );*/
-}
-
-/**
- * Testing method _setWrappingInfo
- *
- * @return null
- */
-public function testPdfArticleSummary_setWrappingInfo_WithGiftCardOnly()
-{
-    $oMyOrder = $this->_getTestInvoicepdfOxOrder();
-    $oMyOrder->oxorder__oxwrapvat = new oxField('0', oxField::T_RAW);
-    $oMyOrder->oxorder__oxwrapcost = new oxField('0', oxField::T_RAW);
-    $oMyOrder->oxorder__oxgiftcardvat = new oxField('19', oxField::T_RAW);
-    $oMyOrder->oxorder__oxgiftcardcost = new oxField('8', oxField::T_RAW);
-
-    $oPdf = new testPdfClass;
-    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oMyOrder, $oPdf );
-
-    $iStartPos = 1;
-    $oPdfArtSum->setWrappingInfo( $iStartPos );
-
-    $aCache = $oPdfArtSum->getVar('_aCache');
-
-    //checking values
-    $this->assertEquals( 'GIFTCARD_COSTS ORDER_OVERVIEW_PDF_BRUTTO', $aCache[0]->aParams[2] );
-    $this->assertEquals( '8,00 EUR', trim($aCache[1]->aParams[2]) );
-}
-
-/**
- * Testing method _setPaymentInfo
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_setPaymentInfo()
-{
-    $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
-
-    $oPdf = new testPdfClass;
-    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oInvoicepdfOxOrder, $oPdf );
-
-    $iStartPos = 1;
-    $oPdfArtSum->setPaymentInfo( $iStartPos );
-
-    $aCache = $oPdfArtSum->getVar('_aCache');
-
-    //checking values
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_PAYMENTIMPACT', $aCache[0]->aParams[2] );
-    $this->assertEquals( '6,00 EUR', trim($aCache[1]->aParams[2]) );
-   /* $this->assertEquals( 'ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[2]->aParams[2] );
-    $this->assertEquals( '0,96 EUR', trim($aCache[3]->aParams[2]) );
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_PAYMENTIMPACT', trim($aCache[4]->aParams[2]) );
-    $this->assertEquals( '6,00 EUR', trim($aCache[5]->aParams[2]) );*/
-}
-
-/**
- * Testing method _setGrandTotalPriceInfo
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_setGrandTotalPriceInfo()
-{
-    $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
-
-    $oPdf = new testPdfClass;
-    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oInvoicepdfOxOrder, $oPdf );
-
-    $iStartPos = 1;
-    $oPdfArtSum->setGrandTotalPriceInfo( $iStartPos );
-
-    $aCache = $oPdfArtSum->getVar('_aCache');
-
-    //checking values
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_ALLSUM', $aCache[1]->aParams[2] );
-    $this->assertEquals( '25,00 EUR', trim($aCache[2]->aParams[2]) );
-}
-
-/**
- * Testing method _setPaymentMethodInfo
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_setPaymentMethodInfo()
-{
-    $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
-
-    $oPdf = new testPdfClass;
-    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oInvoicepdfOxOrder, $oPdf );
-
-    $iStartPos = 1;
-    $oPdfArtSum->setPaymentMethodInfo( $iStartPos );
-
-    $aCache = $oPdfArtSum->getVar('_aCache');
-
-    //checking values
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_SELPAYMENTNachnahme', $aCache[1]->aParams[2] );
-}
-
-/**
- * Testing method _setPaymentMethodInfo in not delfault language
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_setPaymentMethodInfoInOtherLang()
-{
-    $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
-    $oInvoicepdfOxOrder->setNonPublicVar( '_iSelectedLang', 1 );
-
-    $oPdf = new testPdfClass;
-    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oInvoicepdfOxOrder, $oPdf );
-
-    $iStartPos = 1;
-    $oPdfArtSum->setPaymentMethodInfo( $iStartPos );
-
-    $aCache = $oPdfArtSum->getVar('_aCache');
-
-    //checking values
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_SELPAYMENTCOD (Cash on Delivery)', $aCache[1]->aParams[2] );
-}
-
-/**
- * Testing method _setPayUntilInfo
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_setPayUntilInfo()
-{
-    $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
-    $oInvoicepdfOxOrder->oxorder__oxbilldate = new oxField('2000-01-01', oxField::T_RAW);
-
-    $oPdf = new testPdfClass;
-    $oPdfArtSum = new New_InvoicepdfArticleSummary( $oInvoicepdfOxOrder, $oPdf );
-
-    $iStartPos = 1;
-    $oPdfArtSum->setPayUntilInfo( $iStartPos );
-
-    $aCache = $oPdfArtSum->getVar('_aCache');
-
-    //checking values
-    $this->assertEquals( 'ORDER_OVERVIEW_PDF_PAYUPTO'. '08.01.2000', $aCache[1]->aParams[2] );
-}
-
-/**
- * Testing method generate
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_generate()
-{
-    $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
-
-    $oPdf = new testPdfClass;
-
-    $aFunctions = array( '_setTotalCostsWithDiscount', '_setVoucherInfo', '_setDeliveryInfo', '_setWrappingInfo', '_setPaymentInfo', '_setGrandTotalPriceInfo', '_setPaymentMethodInfo', '_setPayUntilInfo');
-    $oPdfArtSum = $this->getMock( 'InvoicepdfArticleSummary', $aFunctions, array($oInvoicepdfOxOrder, $oPdf) );
-    $oPdfArtSum->expects( $this->once() )->method( '_setTotalCostsWithDiscount');
-    $oPdfArtSum->expects( $this->once() )->method( '_setVoucherInfo');
-    $oPdfArtSum->expects( $this->once() )->method( '_setDeliveryInfo');
-    $oPdfArtSum->expects( $this->once() )->method( '_setWrappingInfo');
-    $oPdfArtSum->expects( $this->once() )->method( '_setPaymentInfo');
-    $oPdfArtSum->expects( $this->once() )->method( '_setGrandTotalPriceInfo');
-    $oPdfArtSum->expects( $this->once() )->method( '_setPaymentMethodInfo');
-    $oPdfArtSum->expects( $this->once() )->method( '_setPayUntilInfo');
-
-    $oPdfArtSum->generate( 1 );
-}
-
-/**
- * Testing method generate when order is without discount
- *
- * @return null
- */
-public function testInvoicepdfArticleSummary_generateWithoutDiscount()
-{
-    $oInvoicepdfOxOrder = $this->_getTestInvoicepdfOxOrder();
-    $oInvoicepdfOxOrder->oxorder__oxdiscount->value = null;
-    //$oInvoicepdfOxOrder->setNonPublicVar( '_oData', $oData );
-
-    $oPdf = new testPdfClass;
-
-    $aFunctions = array( '_setTotalCostsWithoutDiscount', '_setTotalCostsWithDiscount' );
-    $oPdfArtSum = $this->getMock( 'InvoicepdfArticleSummary', $aFunctions, array($oInvoicepdfOxOrder, $oPdf) );
-
-    $oPdfArtSum->expects( $this->once() )->method( '_setTotalCostsWithoutDiscount');
-    $oPdfArtSum->expects( $this->never() )->method( '_setTotalCostsWithDiscount');
-
-    $oPdfArtSum->generate( 1 );
-}
-
-/*
- * Testing muOrder class
- * Admin mode is off, so while testing generated pdf, there will be no translations,
- * only translation constatns
- */
-
-/**
- * Testing method _getActShop
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_getActShop()
-{
-    $sShopId = 'oxbaseshop';
-
-    $oInvoicepdfOxOrder = $this->getProxyClass( "InvoicepdfOxOrder" );
-    $oShop = $oInvoicepdfOxOrder->UNITgetActShop();
-
-    $this->assertEquals( $sShopId, $oShop->getId() );
-}
-
-/**
- * Testing translate method
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_translate()
-{
-    $oInvoicepdfOxOrder =  new InvoicepdfOxOrder();
-
-    $oInvoicepdfOxOrder->setSelectedLang( 1 );
-    $this->setAdminMode( true );
-
-    $this->assertEquals( 'phone: ', $oInvoicepdfOxOrder->translate('ORDER_OVERVIEW_PDF_PHONE') );
-}
-
-/**
- * Testing genPdf method - generating standart pdf
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_genPdfStandart()
-{
-    $this->_insertTestOrder();
-
-    oxTestModules::addFunction( "oxPdf", "output", "{return '';}" );
-
-    $oInvoicepdfOxOrder = $this->getMock( 'InvoicepdfOxOrder', array('pdfHeader', 'exportStandart', 'pdfFooter') );
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( 'pdfHeader');
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( 'exportStandart');
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( 'pdfFooter');
-
-    $oInvoicepdfOxOrder->load('_testOrderId');
-    $oInvoicepdfOxOrder->genPdf( 'testfilename', 1 );
-}
-
-/**
- * Testing genPdf method - generating standart pdf and counting number of generated pages.
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_genPdfStandartCountingNumberOfGeneratedPages()
-{
-    $this->_insertTestOrder();
-
-    for ( $i = 0; $i < 80; $i++ ) {
-        $this->_insertTestOrderArticle();
-
-        $oOrderArticle = oxNew( 'oxOrderArticle' );
-        if ( $oOrderArticle->load( '_testOrderArticleId' ) ) {
-            $oOrderArticle->setId( '_testOrderArticleId'.$i );
-            $oOrderArticle->save();
+    /**
+     * Prepares test suite.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $invoicePdfOrderClass = getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfoxorder.php';
+        if ($this->getTestConfig()->getShopEdition() == 'EE' || !file_exists($invoicePdfOrderClass)) {
+            $this->markTestSkipped('These tests only work when invoicePDF module is present.');
+        }
+
+        if (!class_exists('InvoicepdfOxOrder', false)) {
+            class_alias('oxOrder', 'InvoicepdfOxOrder_parent');
+
+            require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfoxorder.php';
+            require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfblock.php';
+            require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfarticlesummary.php';
+            require_once getShopBasePath() . 'Core/oxpdf.php';
         }
     }
 
-    oxTestModules::addFunction( "oxPdf", "output", "{return '';}" );
+    /**
+     * Tear down the fixture.
+     */
+    protected function tearDown()
+    {
+        $this->cleanUpTable('oxorder');
+        $this->cleanUpTable('oxorderarticles');
+        $this->cleanUpTable('oxarticles');
+        parent::tearDown();
+    }
 
-    $oInvoicepdfOxOrder = $this->getMock( 'InvoicepdfOxOrder', array( 'pdfHeader' ) );
-    $oInvoicepdfOxOrder->expects( $this->exactly( 3 ) )->method( 'pdfHeader');
-    $oInvoicepdfOxOrder->load('_testOrderId');
+    /**
+     * Testing InvoicepdfOxOrder::getVats()
+     */
+    public function testGetVatsGetProductVatsReturnsVatsArray()
+    {
+        // getProductVats returns VATs array
+        $aVats = array(1, 2, 3);
+        $invoicePdfOxOrder = $this->getMock("InvoicepdfOxOrder", array("getProductVats"));
+        $invoicePdfOxOrder->expects($this->once())->method('getProductVats')->will($this->returnValue($aVats));
 
-    $oInvoicepdfOxOrder->genPdf( 'testfilename', 1 );
-}
+        $this->assertEquals($aVats, $invoicePdfOxOrder->getVats());
+    }
 
-/**
- * Testing genPdf method - generating delivery note pdf
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_genPdfDeliveryNote()
-{
-    $this->_insertTestOrder();
+    /**
+     * Testing adding variables to cache
+     */
+    public function testInvoicepdfBlock_ToCache()
+    {
+        $oPdf = $this->getProxyClass("InvoicepdfBlock");
 
-    oxTestModules::addFunction( "oxPdf", "output", "{return '';}" );
+        $aParams = array(1, 2);
+        $oPdf->UNITtoCache('testFunctionName', $aParams);
 
-    $oInvoicepdfOxOrder = $this->getMock( 'InvoicepdfOxOrder', array('pdfHeader', 'exportDeliveryNote', 'pdfFooter') );
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( 'pdfHeader');
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( 'exportDeliveryNote');
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( 'pdfFooter');
+        $oItem = new stdClass();
+        $oItem->sFunc = 'testFunctionName';
+        $oItem->aParams = $aParams;
+        $aCache[] = $oItem;
 
-    $oInvoicepdfOxOrder->load('_testOrderId');
-    $this->setRequestParameter( 'pdftype', 'dnote' );
-    $oInvoicepdfOxOrder->genPdf( 'testfilename', 1 );
-}
+        $this->assertEquals($aCache, $oPdf->getNonPublicVar('_aCache'));
+    }
 
-/**
- * Testing genPdf method - adding invoice number
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_genPdfSettingInvoiceNr()
-{
-    $this->_insertTestOrder();
+    /**
+     * Testing executing functions from cache - if calls setted function with exact parameters
+     */
+    public function testInvoicepdfBlock_Run()
+    {
+        $sClassName = oxTestModules::addFunction('InvoicepdfBlock', 'getArgsNumber', '{ $this->iArgsNum = count(func_get_args()); }');
+        $oPdf = $this->getProxyClass($sClassName);
 
-    oxTestModules::addFunction( "oxPdf", "output", "{return '';}" );
+        $oItem = new stdClass();
+        $oItem->sFunc = 'getArgsNumber';
 
-    $oInvoicepdfOxOrder = $this->getMock( 'InvoicepdfOxOrder', array('getNextBillNum') );
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( 'getNextBillNum')->will( $this->returnValue( 'testInvoiceNr' ));
+        $aParams = array();
+        for ($n = 1; $n <= 5; $n++) {
+            $oItem->aParams = $aParams;
+            $aCache = array($oItem);
+            $oPdf->setNonPublicVar('_aCache', $aCache);
+            $oPdf->run($oPdf);
+            $this->assertEquals($n - 1, $oPdf->iArgsNum);
+            $aParams[] = $n;
+        }
+    }
 
-    $oInvoicepdfOxOrder->load( '_testOrderId' );
-    $oInvoicepdfOxOrder->genPdf( 'testfilename', 1 );
+    /**
+     * Testing setting pdf function and params
+     */
+    public function testInvoicepdfBlock_line()
+    {
+        $oPdf = $this->getProxyClass("InvoicepdfBlock");
+        $oPdf->line(1, 2, 3, 4);
 
-    $this->assertEquals( 'testInvoiceNr', $oInvoicepdfOxOrder->oxorder__oxbillnr->value );
-}
+        $oItem = new stdClass();
+        $oItem->sFunc = 'Line';
+        $oItem->aParams = array(1, 2, 3, 4);
 
-/**
- * Testing exportStandart method - calling needed methods
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_exportStandart()
-{
-    $this->_insertTestOrder();
+        $aCache = $oPdf->getNonPublicVar('_aCache');
+        $this->assertEquals($oItem, $aCache[0]);
+    }
 
-    $oPdf = new oxPdf;
+    /**
+     * Testing setting pdf function and params
+     */
+    public function testInvoicepdfBlock_text()
+    {
+        $oPdf = $this->getProxyClass("InvoicepdfBlock");
+        $oPdf->text(1, 2, 3);
 
-    $oInvoicepdfOxOrder = $this->getMock( 'InvoicepdfOxOrder', array('_setBillingAddressToPdf', '_setDeliveryAddressToPdf', '_setOrderArticlesToPdf') );
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( '_setBillingAddressToPdf');
-    $oInvoicepdfOxOrder->expects( $this->never() )->method( '_setDeliveryAddressToPdf');
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( '_setOrderArticlesToPdf');
+        $oItem = new stdClass();
+        $oItem->sFunc = 'Text';
+        $oItem->aParams = array(1, 2, 3);
 
-    $oInvoicepdfOxOrder->load('_testOrderId');
-    $oInvoicepdfOxOrder->exportStandart( $oPdf );
-}
+        $aCache = $oPdf->getNonPublicVar('_aCache');
+        $this->assertEquals($oItem, $aCache[0]);
+    }
 
-/**
- * Testing exportStandart method - when order is canceled
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_exportStandartWhenOrderIsCanceled()
-{
-    // marking order article as variant ..
-    $oSelVariantField = $this->getMock( 'oxfield', array( '__get' ) );
-    $oSelVariantField->expects( $this->once() )->method( '__get');
+    /**
+     * Testing setting pdf function and params
+     */
+    public function testInvoicepdfBlock_font()
+    {
+        $oPdf = $this->getProxyClass("InvoicepdfBlock");
+        $oPdf->font(1, 2, 3);
 
-    $this->_insertTestOrder();
-    $oArticle = $this->_insertTestOrderArticle();
-    $oArticle->oxorderarticles__oxtitle = new oxField("testtitle");
-    $oArticle->oxorderarticles__oxselvariant = $oSelVariantField;
+        $oItem = new stdClass();
+        $oItem->sFunc = 'SetFont';
+        $oItem->aParams = array(1, 2, 3);
 
-    $oPdf = new oxPdf;
+        $aCache = $oPdf->getNonPublicVar('_aCache');
+        $this->assertEquals($oItem, $aCache[0]);
+    }
 
-    $oInvoicepdfOxOrder = $this->getMock( "InvoicepdfOxOrder", array( "getOrderArticles" ) );
-    $oInvoicepdfOxOrder->expects( $this->any() )->method( 'getOrderArticles')->will( $this->returnValue( array( $oArticle->getId() => $oArticle ) ) );
-    $oInvoicepdfOxOrder->load('_testOrderId');
+    /**
+     * Testing function ajustHeight updates "line" function parameters
+     */
+    public function testInvoicepdfBlock_ajustHeightWithLineCommand()
+    {
+        $oPdf = $this->getProxyClass("InvoicepdfBlock");
+        $oPdf->line(1, 1, 1, 1);
+        $oPdf->ajustHeight(3);
 
-    //
-    $oInvoicepdfOxOrder->oxorder__oxdelcost = $this->getMock( 'oxfield', array( 'setValue' ) );
-    $oInvoicepdfOxOrder->oxorder__oxdelcost->expects( $this->once() )->method( 'setValue')->with( $this->equalTo( 0 ) );
+        $aCache = $oPdf->getNonPublicVar('_aCache');
+        $this->assertEquals(array(1, 4, 1, 4), $aCache[0]->aParams);
+    }
 
-    $oInvoicepdfOxOrder->oxorder__oxpaycost = $this->getMock( 'oxfield', array( 'setValue' ) );
-    $oInvoicepdfOxOrder->oxorder__oxpaycost->expects( $this->once() )->method( 'setValue')->with( $this->equalTo( 0 ) );
+    /**
+     * Testing function ajustHeight updates "text" function parameters
+     */
+    public function testInvoicepdfBlock_ajustHeightWithTextCommand()
+    {
+        $oPdf = $this->getProxyClass("InvoicepdfBlock");
+        $oPdf->text(1, 1, 1);
+        $oPdf->ajustHeight(3);
 
-    $oInvoicepdfOxOrder->oxorder__oxordernr = $this->getMock( 'oxfield', array( 'setValue' ) );
-    $oInvoicepdfOxOrder->oxorder__oxordernr->expects( $this->once() )->method( 'setValue')->with( $this->equalTo( '   ORDER_OVERVIEW_PDF_STORNO' ), $this->equalTo( 2 ) );
+        $aCache = $oPdf->getNonPublicVar('_aCache');
+        $this->assertEquals(array(1, 4, 1), $aCache[0]->aParams);
+    }
 
-    // marking as canceled
-    $oInvoicepdfOxOrder->oxorder__oxstorno = new oxField( 1 );
+    /**
+     * Testing constructor
+     */
+    public function testInvoicepdfArticleSummary_construct()
+    {
+        $oPdf = $this->getProxyClass("InvoicepdfArticleSummary", array(1,2));
 
-    $oInvoicepdfOxOrder->exportStandart( $oPdf );
-}
+        $this->assertEquals(1, $oPdf->getNonPublicVar('_oData'));
+        $this->assertEquals(2, $oPdf->getNonPublicVar('_oPdf'));
+    }
 
-/**
- * Testing exportStandart method - calling needed methods when delivery address is setted
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_exportStandart_WithDeliveryAddress()
-{
-    $this->_insertTestOrder();
 
-    $oPdf = new oxPdf;
+    /**
+     * Testing pdfArticleSummary class
+     * Admin mode is off, so while testing generated pdf, there will be no translations,
+     * only translation constants (because not in admin mode)
+     */
 
-    $oInvoicepdfOxOrder = $this->getMock( 'InvoicepdfOxOrder', array('_setBillingAddressToPdf', '_setDeliveryAddressToPdf', '_setOrderArticlesToPdf') );
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( '_setBillingAddressToPdf');
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( '_setDeliveryAddressToPdf');
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( '_setOrderArticlesToPdf');
+    /**
+     * Testing method _setTotalCostsWithoutDiscount
+     */
+    public function testInvoicepdfArticleSummary_setTotalCostsWithoutDiscount()
+    {
+        $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
 
-    $oInvoicepdfOxOrder->load('_testOrderId');
-    $oInvoicepdfOxOrder->oxorder__oxdelsal = new oxField('1', oxField::T_RAW);
-    $oInvoicepdfOxOrder->exportStandart( $oPdf );
-}
+        $sClass = oxTestModules::addFunction('InvoicepdfArticleSummary', 'getNonPublicVar($sName)', '{return $this->$sName;}');
+        $sClass = oxTestModules::addFunction($sClass, 'p_setTotalCostsWithoutDiscount(&$iStartPos)', '{return $this->_setTotalCostsWithoutDiscount($iStartPos);}');
+        $oPdf = $this->getPdfTestObject();
+        $oPdfArtSum = new $sClass($invoicePdfOxOrder, $oPdf);
 
-/**
- * Testing exportStandart method - setting order currency
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_exportStandart_SettingCurrency()
-{
-    $this->_insertTestOrder();
+        $iStartPos = 1;
+        $oPdfArtSum->p_setTotalCostsWithoutDiscount($iStartPos);
 
-    $oPdf = new oxPdf;
-    $oInvoicepdfOxOrder = $this->getProxyClass( "InvoicepdfOxOrder" );
+        $aCache = $oPdfArtSum->getNonPublicVar('_aCache');
 
-    $oInvoicepdfOxOrder->load('_testOrderId');
-    $oInvoicepdfOxOrder->oxorder__oxdelsal = new oxField( "testSal" );
+        //checking values
+        $this->assertEquals('ORDER_OVERVIEW_PDF_ALLPRICENETTO', $aCache[1]->aParams[2]);
+        $this->assertEquals('12,00 EUR', trim($aCache[2]->aParams[2]));
+        $this->assertEquals('ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[3]->aParams[2]);
+        $this->assertEquals('7,00 EUR', trim($aCache[4]->aParams[2]));
+    }
 
-    $oCur = $oInvoicepdfOxOrder->getConfig()->getCurrencyObject( 'EUR' );
-    $oInvoicepdfOxOrder->exportStandart( $oPdf );
+    /**
+     * Testing method _setTotalCostsWithDiscount
+     */
+    public function testInvoicepdfArticleSummary_setTotalCostsWithDiscount()
+    {
+        $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
 
-    $this->assertEquals( $oCur, $oInvoicepdfOxOrder->getNonPublicVar('_oCur') );
-}
+        $oPdf = $this->getPdfTestObject();
 
-/**
- * Testing exportDeliveryNote method - calling needed methods
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_exportDeliveryNote()
-{
-    $this->_insertTestOrder();
+        $oPdfArtSum = new InvoicepdfArticleSummary($invoicePdfOxOrder, $oPdf);
 
-    $oPdf = new oxPdf;
+        $iStartPos = 1;
+        $this->callProtectedMethod($oPdfArtSum, '_setTotalCostsWithDiscount', array(&$iStartPos));
+        $aCache = $this->getProtectedProperty($oPdfArtSum, '_aCache');
 
-    $oInvoicepdfOxOrder = $this->getMock( 'InvoicepdfOxOrder', array('_setBillingAddressToPdf', '_setOrderArticlesToPdf') );
-    $oInvoicepdfOxOrder->expects( $this->never() )->method( '_setBillingAddressToPdf');
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( '_setOrderArticlesToPdf');
+        //checking values
+        $this->assertEquals('ORDER_OVERVIEW_PDF_ALLPRICEBRUTTO', $aCache[1]->aParams[2]);
+        $this->assertEquals('13,00 EUR', trim($aCache[2]->aParams[2]));
+        $this->assertEquals('ORDER_OVERVIEW_PDF_DISCOUNT', $aCache[4]->aParams[2]);
+        $this->assertEquals('-5,00 EUR', trim($aCache[5]->aParams[2]));
+        $this->assertEquals('ORDER_OVERVIEW_PDF_ALLPRICENETTO', $aCache[7]->aParams[2]);
+        $this->assertEquals('12,00 EUR', trim($aCache[8]->aParams[2]));
+        $this->assertEquals('ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[9]->aParams[2]);
+        $this->assertEquals('7,00 EUR', trim($aCache[10]->aParams[2]));
+    }
 
-    $oInvoicepdfOxOrder->load('_testOrderId');
-    $oInvoicepdfOxOrder->oxorder__oxdelsal = new oxField( '1', oxField::T_RAW );
-    $oInvoicepdfOxOrder->exportDeliveryNote( $oPdf );
-}
+    /**
+     * Testing method _setVoucherInfo
+     */
+    public function testInvoicepdfArticleSummary_setVoucherInfo()
+    {
+        $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
 
-/**
- * Testing exportDeliveryNote method - when order is canceled.
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_exportDeliveryNoteWhenOrderIsCanceled()
-{
-    $this->_insertTestOrder();
+        $oPdf = $this->getPdfTestObject();
+        $oPdfArtSum = new InvoicepdfArticleSummary($invoicePdfOxOrder, $oPdf);
 
-    $oPdf = new oxPdf;
+        $iStartPos = 1;
+        $this->callProtectedMethod($oPdfArtSum, '_setVoucherInfo', array(&$iStartPos));
+        $aCache = $this->getProtectedProperty($oPdfArtSum, '_aCache');
 
-    $oInvoicepdfOxOrder = new InvoicepdfOxOrder();
-    $oInvoicepdfOxOrder->load('_testOrderId');
+        //checking values
+        $this->assertEquals('ORDER_OVERVIEW_PDF_VOUCHER', $aCache[0]->aParams[2]);
+        $this->assertEquals('-6,00 EUR', trim($aCache[1]->aParams[2]));
+    }
 
-    //
-    $oInvoicepdfOxOrder->oxorder__oxdelcost = $this->getMock( 'oxfield', array( 'setValue' ) );
-    $oInvoicepdfOxOrder->oxorder__oxdelcost->expects( $this->never() )->method( 'setValue');
+    /**
+     * Testing method _setDeliveryInfo
+     */
+    public function testInvoicepdfArticleSummary_setDeliveryInfo()
+    {
+        $this->getConfig()->setConfigParam('blCalcVATForDelivery', 1);
+        $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
 
-    $oInvoicepdfOxOrder->oxorder__oxpaycost = $this->getMock( 'oxfield', array( 'setValue' ) );
-    $oInvoicepdfOxOrder->oxorder__oxpaycost->expects( $this->never() )->method( 'setValue');
+        $oPdf = $this->getPdfTestObject();
+        $oPdfArtSum = new InvoicepdfArticleSummary($invoicePdfOxOrder, $oPdf);
 
-    $oInvoicepdfOxOrder->oxorder__oxordernr = $this->getMock( 'oxfield', array( 'setValue' ) );
-    $oInvoicepdfOxOrder->oxorder__oxordernr->expects( $this->once() )->method( 'setValue')->with( $this->equalTo( '   ORDER_OVERVIEW_PDF_STORNO' ), $this->equalTo( 2 ) );
+        $iStartPos = 1;
+        $this->callProtectedMethod($oPdfArtSum, '_setDeliveryInfo', array(&$iStartPos));
+        $aCache = $this->getProtectedProperty($oPdfArtSum, '_aCache');
 
-    // marking as canceled
-    $oInvoicepdfOxOrder->oxorder__oxstorno = new oxField( 1 );
 
-    $oInvoicepdfOxOrder->exportDeliveryNote( $oPdf );
-}
+        //checking values
+        /*$this->assertEquals('ORDER_OVERVIEW_PDF_SHIPCOST', $aCache[0]->aParams[2]);
+        $this->assertEquals('21,00 EUR', trim($aCache[1]->aParams[2]));
+        $this->assertEquals('ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[2]->aParams[2]);
+        $this->assertEquals('3,35 EUR', trim($aCache[3]->aParams[2]));*/
 
-/**
- * Testing exportDeliveryNote method - uses billing address info
- * if delivery address is not setted
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_exportDeliveryNote_WithoutDeliveryAddress()
-{
-    $this->_insertTestOrder();
+        $this->assertEquals('ORDER_OVERVIEW_PDF_SHIPCOST', trim($aCache[0]->aParams[2]));
+        $this->assertEquals('21,00 EUR', trim($aCache[1]->aParams[2]));
+    }
 
-    $oPdf = new oxPdf;
+    /**
+     * Testing method _setWrappingInfo
+     */
+    public function testInvoicepdfArticleSummary_setWrappingInfo()
+    {
+        $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
 
-    $oInvoicepdfOxOrder = $this->getMock( 'InvoicepdfOxOrder', array('_setBillingAddressToPdf', '_setOrderArticlesToPdf') );
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( '_setBillingAddressToPdf');
-    $oInvoicepdfOxOrder->expects( $this->once() )->method( '_setOrderArticlesToPdf');
+        $oPdf = $this->getPdfTestObject();
+        $oPdfArtSum = new InvoicepdfArticleSummary($invoicePdfOxOrder, $oPdf);
 
-    $oInvoicepdfOxOrder->load('_testOrderId');
-    $oInvoicepdfOxOrder->oxorder__oxdelsal = new oxField( null, oxField::T_RAW );
-    $oInvoicepdfOxOrder->exportDeliveryNote( $oPdf );
-}
+        $iStartPos = 1;
+        $this->callProtectedMethod($oPdfArtSum, '_setWrappingInfo', array(&$iStartPos));
+        $aCache = $this->getProtectedProperty($oPdfArtSum, '_aCache');
 
-/**
- * Testing _replaceExtendedChars method
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_replaceExtendedChars()
-{
-    $oInvoicepdfOxOrder = $this->getProxyClass( "InvoicepdfOxOrder" );
+        //checking values
+        $this->assertEquals('WRAPPING_COSTS ORDER_OVERVIEW_PDF_BRUTTO', $aCache[0]->aParams[2]);
+        $this->assertEquals('8,00 EUR', trim($aCache[1]->aParams[2]));
+        /*$this->assertEquals('ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[2]->aParams[2]);
+        $this->assertEquals('1,28 EUR', trim($aCache[3]->aParams[2]));
+        $this->assertEquals('ORDER_OVERVIEW_PDF_WRAPPING ORDER_OVERVIEW_PDF_BRUTTO', trim($aCache[5]->aParams[2]));
+        $this->assertEquals('8,00 EUR', trim($aCache[6]->aParams[2]));*/
+    }
 
-    $sInput = " &euro; &copy; &quot; &#039; &#97; &#98; some text";
-    $sStr = $oInvoicepdfOxOrder->UNITreplaceExtendedChars($sInput, true);
-    $this->assertEquals( " € © \" ' a b some text", $sStr );
-}
+    /**
+     * Testing method _setWrappingInfo
+     */
+    public function testPdfArticleSummary_setWrappingInfo_WithGiftCardOnly()
+    {
+        $oMyOrder = $this->getTestInvoicepdfOxOrder();
+        $oMyOrder->oxorder__oxwrapvat = new oxField('0', oxField::T_RAW);
+        $oMyOrder->oxorder__oxwrapcost = new oxField('0', oxField::T_RAW);
+        $oMyOrder->oxorder__oxgiftcardvat = new oxField('19', oxField::T_RAW);
+        $oMyOrder->oxorder__oxgiftcardcost = new oxField('8', oxField::T_RAW);
 
-/**
- * Testing getProductVats method
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_getProductVats()
-{
-    $oInvoicepdfOxOrder = $this->getProxyClass( "InvoicepdfOxOrder" );
+        $oPdf = $this->getPdfTestObject();
+        $oPdfArtSum = new InvoicepdfArticleSummary($oMyOrder, $oPdf);
 
-    $oInvoicepdfOxOrder->oxorder__oxartvat1 = new oxField('19', oxField::T_RAW);
-    $oInvoicepdfOxOrder->oxorder__oxartvatprice1 = new oxField('9', oxField::T_RAW);
+        $iStartPos = 1;
+        $this->callProtectedMethod($oPdfArtSum, '_setWrappingInfo', array(&$iStartPos));
+        $aCache = $this->getProtectedProperty($oPdfArtSum, '_aCache');
 
-    $this->assertEquals( array("19"=>9), $oInvoicepdfOxOrder->getProductVats(false) );
-}
+        //checking values
+        $this->assertEquals('GIFTCARD_COSTS ORDER_OVERVIEW_PDF_BRUTTO', $aCache[0]->aParams[2]);
+        $this->assertEquals('8,00 EUR', trim($aCache[1]->aParams[2]));
+    }
 
-/**
- * Testing getCurrency method
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_getCurrency()
-{
-    $oInvoicepdfOxOrder = $this->getProxyClass( "InvoicepdfOxOrder" );
-    $oInvoicepdfOxOrder->setNonPublicVar( '_oCur', 5 );
+    /**
+     * Testing method _setPaymentInfo
+     */
+    public function testInvoicepdfArticleSummary_setPaymentInfo()
+    {
+        $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
 
-    $this->assertEquals( 5, $oInvoicepdfOxOrder->getCurrency() );
-}
+        $oPdf = $this->getPdfTestObject();
+        $oPdfArtSum = new InvoicepdfArticleSummary($invoicePdfOxOrder, $oPdf);
 
-/**
- * Testing getSelectedLang method
- *
- * @return null
- */
-public function testInvoicepdfOxOrder_getSelectedLang()
-{
-    $oInvoicepdfOxOrder = $this->getProxyClass( "InvoicepdfOxOrder" );
-    $oInvoicepdfOxOrder->setNonPublicVar( '_iSelectedLang', 1 );
+        $iStartPos = 1;
+        $this->callProtectedMethod($oPdfArtSum, '_setPaymentInfo', array(&$iStartPos));
+        $aCache = $this->getProtectedProperty($oPdfArtSum, '_aCache');
 
-    $this->assertEquals( 1, $oInvoicepdfOxOrder->getSelectedLang() );
-}
+        //checking values
+        $this->assertEquals('ORDER_OVERVIEW_PDF_PAYMENTIMPACT', $aCache[0]->aParams[2]);
+        $this->assertEquals('6,00 EUR', trim($aCache[1]->aParams[2]));
+       /* $this->assertEquals('ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[2]->aParams[2]);
+        $this->assertEquals('0,96 EUR', trim($aCache[3]->aParams[2]));
+        $this->assertEquals('ORDER_OVERVIEW_PDF_PAYMENTIMPACT', trim($aCache[4]->aParams[2]));
+        $this->assertEquals('6,00 EUR', trim($aCache[5]->aParams[2]));*/
+    }
 
-/**
- * Data provider for testInvoicepdfOxOrder_getPaymentTerm
- *
- * @return array
- */
-public function getPaymentDataProvider()
-{
-    return array( array(null, 7), array(10, 10), array(0, 0) );
-}
+    /**
+     * Testing method _setGrandTotalPriceInfo
+     */
+    public function testInvoicepdfArticleSummary_setGrandTotalPriceInfo()
+    {
+        $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
 
-/**
- * Testing getPaymentTerm() method
- * getPaymentTerm() method returns config param iPaymentTerm, default value is 7;
- *
- * @dataProvider getPaymentDataProvider
- */
-public function testInvoicepdfOxOrder_getPaymentTerm($param, $expect)
-{
-    $oInvoicepdfOxOrder = new InvoicepdfOxOrder();
-    $this->getConfig()->setConfigParam('iPaymentTerm', $param);
+        $oPdf = $this->getPdfTestObject();
+        $oPdfArtSum = new InvoicepdfArticleSummary($invoicePdfOxOrder, $oPdf);
 
-    $this->assertEquals( $expect, $oInvoicepdfOxOrder->getPaymentTerm() );
-}
+        $iStartPos = 1;
+        $this->callProtectedMethod($oPdfArtSum, '_setGrandTotalPriceInfo', array(&$iStartPos));
+        $aCache = $this->getProtectedProperty($oPdfArtSum, '_aCache');
+
+        //checking values
+        $this->assertEquals('ORDER_OVERVIEW_PDF_ALLSUM', $aCache[1]->aParams[2]);
+        $this->assertEquals('25,00 EUR', trim($aCache[2]->aParams[2]));
+    }
+
+    /**
+     * Testing method _setPaymentMethodInfo
+     */
+    public function testInvoicepdfArticleSummary_setPaymentMethodInfo()
+    {
+        $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
+
+        $oPdf = $this->getPdfTestObject();
+        $oPdfArtSum = new InvoicepdfArticleSummary($invoicePdfOxOrder, $oPdf);
+
+        $iStartPos = 1;
+        $this->callProtectedMethod($oPdfArtSum, '_setPaymentMethodInfo', array(&$iStartPos));
+        $aCache = $this->getProtectedProperty($oPdfArtSum, '_aCache');
+
+        //checking values
+        $this->assertEquals('ORDER_OVERVIEW_PDF_SELPAYMENTNachnahme', $aCache[1]->aParams[2]);
+    }
+
+    /**
+     * Testing method _setPaymentMethodInfo in not delfault language
+     */
+    public function testInvoicepdfArticleSummary_setPaymentMethodInfoInOtherLang()
+    {
+        $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
+        $invoicePdfOxOrder->setNonPublicVar('_iSelectedLang', 1);
+
+        $oPdf = $this->getPdfTestObject();
+        $oPdfArtSum = new InvoicepdfArticleSummary($invoicePdfOxOrder, $oPdf);
+
+        $iStartPos = 1;
+        $this->callProtectedMethod($oPdfArtSum, '_setPaymentMethodInfo', array(&$iStartPos));
+        $aCache = $this->getProtectedProperty($oPdfArtSum, '_aCache');
+
+        //checking values
+        $this->assertEquals('ORDER_OVERVIEW_PDF_SELPAYMENTCOD (Cash on Delivery)', $aCache[1]->aParams[2]);
+    }
+
+    /**
+     * Testing method _setPayUntilInfo
+     */
+    public function testInvoicepdfArticleSummary_setPayUntilInfo()
+    {
+        $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
+        $invoicePdfOxOrder->oxorder__oxbilldate = new oxField('2000-01-01', oxField::T_RAW);
+
+        $oPdf = $this->getPdfTestObject();
+        $oPdfArtSum = new InvoicepdfArticleSummary($invoicePdfOxOrder, $oPdf);
+
+        $iStartPos = 1;
+        $this->callProtectedMethod($oPdfArtSum, '_setPayUntilInfo', array(&$iStartPos));
+        $aCache = $this->getProtectedProperty($oPdfArtSum, '_aCache');
+
+        //checking values
+        $this->assertEquals('ORDER_OVERVIEW_PDF_PAYUPTO'. '08.01.2000', $aCache[1]->aParams[2]);
+    }
+
+    /**
+     * Testing method generate
+     */
+    public function testInvoicepdfArticleSummary_generate()
+    {
+        $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
+
+        $oPdf = $this->getPdfTestObject();
+
+        $aFunctions = array('_setTotalCostsWithDiscount', '_setVoucherInfo', '_setDeliveryInfo', '_setWrappingInfo', '_setPaymentInfo', '_setGrandTotalPriceInfo', '_setPaymentMethodInfo', '_setPayUntilInfo');
+        $oPdfArtSum = $this->getMock('InvoicepdfArticleSummary', $aFunctions, array($invoicePdfOxOrder, $oPdf));
+        $oPdfArtSum->expects($this->once())->method('_setTotalCostsWithDiscount');
+        $oPdfArtSum->expects($this->once())->method('_setVoucherInfo');
+        $oPdfArtSum->expects($this->once())->method('_setDeliveryInfo');
+        $oPdfArtSum->expects($this->once())->method('_setWrappingInfo');
+        $oPdfArtSum->expects($this->once())->method('_setPaymentInfo');
+        $oPdfArtSum->expects($this->once())->method('_setGrandTotalPriceInfo');
+        $oPdfArtSum->expects($this->once())->method('_setPaymentMethodInfo');
+        $oPdfArtSum->expects($this->once())->method('_setPayUntilInfo');
+
+        $oPdfArtSum->generate(1);
+    }
+
+    /**
+     * Testing method generate when order is without discount
+     */
+    public function testInvoicepdfArticleSummary_generateWithoutDiscount()
+    {
+        $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
+        $invoicePdfOxOrder->oxorder__oxdiscount->value = null;
+        //$invoicePdfOxOrder->setNonPublicVar('_oData', $oData);
+
+        $oPdf = $this->getPdfTestObject();
+
+        $aFunctions = array('_setTotalCostsWithoutDiscount', '_setTotalCostsWithDiscount');
+        $oPdfArtSum = $this->getMock('InvoicepdfArticleSummary', $aFunctions, array($invoicePdfOxOrder, $oPdf));
+
+        $oPdfArtSum->expects($this->once())->method('_setTotalCostsWithoutDiscount');
+        $oPdfArtSum->expects($this->never())->method('_setTotalCostsWithDiscount');
+
+        $oPdfArtSum->generate(1);
+    }
+
+    /**
+     * Testing muOrder class
+     * Admin mode is off, so while testing generated pdf, there will be no translations,
+     * only translation constatns
+     */
+
+    /**
+     * Testing method _getActShop
+     */
+    public function testInvoicepdfOxOrder_getActShop()
+    {
+        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '1' : 'oxbaseshop';
+
+        $invoicePdfOxOrder = $this->getProxyClass("InvoicepdfOxOrder");
+        $oShop = $invoicePdfOxOrder->UNITgetActShop();
+
+        $this->assertEquals($sShopId, $oShop->getId());
+    }
+
+    /**
+     * Testing translate method
+     */
+    public function testInvoicepdfOxOrder_translate()
+    {
+        $invoicePdfOxOrder =  new InvoicepdfOxOrder();
+
+        $invoicePdfOxOrder->setSelectedLang(1);
+        $this->setAdminMode(true);
+
+        $this->assertEquals('phone: ', $invoicePdfOxOrder->translate('ORDER_OVERVIEW_PDF_PHONE'));
+    }
+
+    /**
+     * Testing genPdf method - generating standart pdf
+     */
+    public function testInvoicepdfOxOrder_genPdfStandart()
+    {
+        $this->insertTestOrder();
+
+        oxTestModules::addFunction("oxPdf", "output", "{return '';}");
+
+        $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('pdfHeader', 'exportStandart', 'pdfFooter'));
+        $invoicePdfOxOrder->expects($this->once())->method('pdfHeader');
+        $invoicePdfOxOrder->expects($this->once())->method('exportStandart');
+        $invoicePdfOxOrder->expects($this->once())->method('pdfFooter');
+
+        $invoicePdfOxOrder->load('_testOrderId');
+        $invoicePdfOxOrder->genPdf('testfilename', 1);
+    }
+
+    /**
+     * Testing genPdf method - generating standart pdf and counting number of generated pages.
+     */
+    public function testInvoicepdfOxOrder_genPdfStandartCountingNumberOfGeneratedPages()
+    {
+        $this->insertTestOrder();
+
+        for ($i = 0; $i < 80; $i++) {
+            $this->insertTestOrderArticle();
+
+            $oOrderArticle = oxNew('oxOrderArticle');
+            if ($oOrderArticle->load('_testOrderArticleId')) {
+                $oOrderArticle->setId('_testOrderArticleId'.$i);
+                $oOrderArticle->save();
+            }
+        }
+
+        oxTestModules::addFunction("oxPdf", "output", "{return '';}");
+
+        $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('pdfHeader'));
+        $invoicePdfOxOrder->expects($this->exactly(3))->method('pdfHeader');
+        $invoicePdfOxOrder->load('_testOrderId');
+
+        $invoicePdfOxOrder->genPdf('testfilename', 1);
+    }
+
+    /**
+     * Testing genPdf method - generating delivery note pdf
+     */
+    public function testInvoicepdfOxOrder_genPdfDeliveryNote()
+    {
+        $this->insertTestOrder();
+
+        oxTestModules::addFunction("oxPdf", "output", "{return '';}");
+
+        $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('pdfHeader', 'exportDeliveryNote', 'pdfFooter'));
+        $invoicePdfOxOrder->expects($this->once())->method('pdfHeader');
+        $invoicePdfOxOrder->expects($this->once())->method('exportDeliveryNote');
+        $invoicePdfOxOrder->expects($this->once())->method('pdfFooter');
+
+        $invoicePdfOxOrder->load('_testOrderId');
+        $this->setRequestParameter('pdftype', 'dnote');
+        $invoicePdfOxOrder->genPdf('testfilename', 1);
+    }
+
+    /**
+     * Testing genPdf method - adding invoice number
+     */
+    public function testInvoicepdfOxOrder_genPdfSettingInvoiceNr()
+    {
+        $this->insertTestOrder();
+
+        oxTestModules::addFunction("oxPdf", "output", "{return '';}");
+
+        $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('getNextBillNum'));
+        $invoicePdfOxOrder->expects($this->once())->method('getNextBillNum')->will($this->returnValue('testInvoiceNr'));
+
+        $invoicePdfOxOrder->load('_testOrderId');
+        $invoicePdfOxOrder->genPdf('testfilename', 1);
+
+        $this->assertEquals('testInvoiceNr', $invoicePdfOxOrder->oxorder__oxbillnr->value);
+    }
+
+    /**
+     * Testing exportStandart method - calling needed methods
+     */
+    public function testInvoicepdfOxOrder_exportStandart()
+    {
+        $this->insertTestOrder();
+
+        $oPdf = new oxPdf;
+
+        $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('_setBillingAddressToPdf', '_setDeliveryAddressToPdf', '_setOrderArticlesToPdf'));
+        $invoicePdfOxOrder->expects($this->once())->method('_setBillingAddressToPdf');
+        $invoicePdfOxOrder->expects($this->never())->method('_setDeliveryAddressToPdf');
+        $invoicePdfOxOrder->expects($this->once())->method('_setOrderArticlesToPdf');
+
+        $invoicePdfOxOrder->load('_testOrderId');
+        $invoicePdfOxOrder->exportStandart($oPdf);
+    }
+
+    /**
+     * Testing exportStandart method - when order is canceled
+     */
+    public function testInvoicepdfOxOrder_exportStandartWhenOrderIsCanceled()
+    {
+        // marking order article as variant ..
+        $oSelVariantField = $this->getMock('oxfield', array('__get'));
+        $oSelVariantField->expects($this->once())->method('__get');
+
+        $this->insertTestOrder();
+        $oArticle = $this->insertTestOrderArticle();
+        $oArticle->oxorderarticles__oxtitle = new oxField("testtitle");
+        $oArticle->oxorderarticles__oxselvariant = $oSelVariantField;
+
+        $oPdf = new oxPdf;
+
+        $invoicePdfOxOrder = $this->getMock("InvoicepdfOxOrder", array("getOrderArticles"));
+        $invoicePdfOxOrder->expects($this->any())->method('getOrderArticles')->will($this->returnValue(array($oArticle->getId() => $oArticle)));
+        $invoicePdfOxOrder->load('_testOrderId');
+
+        //
+        $invoicePdfOxOrder->oxorder__oxdelcost = $this->getMock('oxfield', array('setValue'));
+        $invoicePdfOxOrder->oxorder__oxdelcost->expects($this->once())->method('setValue')->with($this->equalTo(0));
+
+        $invoicePdfOxOrder->oxorder__oxpaycost = $this->getMock('oxfield', array('setValue'));
+        $invoicePdfOxOrder->oxorder__oxpaycost->expects($this->once())->method('setValue')->with($this->equalTo(0));
+
+        $invoicePdfOxOrder->oxorder__oxordernr = $this->getMock('oxfield', array('setValue'));
+        $invoicePdfOxOrder->oxorder__oxordernr->expects($this->once())->method('setValue')->with($this->equalTo('   ORDER_OVERVIEW_PDF_STORNO'), $this->equalTo(2));
+
+        // marking as canceled
+        $invoicePdfOxOrder->oxorder__oxstorno = new oxField(1);
+
+        $invoicePdfOxOrder->exportStandart($oPdf);
+    }
+
+    /**
+     * Testing exportStandart method - calling needed methods when delivery address is setted
+     */
+    public function testInvoicepdfOxOrder_exportStandart_WithDeliveryAddress()
+    {
+        $this->insertTestOrder();
+
+        $oPdf = new oxPdf;
+
+        $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('_setBillingAddressToPdf', '_setDeliveryAddressToPdf', '_setOrderArticlesToPdf'));
+        $invoicePdfOxOrder->expects($this->once())->method('_setBillingAddressToPdf');
+        $invoicePdfOxOrder->expects($this->once())->method('_setDeliveryAddressToPdf');
+        $invoicePdfOxOrder->expects($this->once())->method('_setOrderArticlesToPdf');
+
+        $invoicePdfOxOrder->load('_testOrderId');
+        $invoicePdfOxOrder->oxorder__oxdelsal = new oxField('1', oxField::T_RAW);
+        $invoicePdfOxOrder->exportStandart($oPdf);
+    }
+
+    /**
+     * Testing exportStandart method - setting order currency
+     */
+    public function testInvoicepdfOxOrder_exportStandart_SettingCurrency()
+    {
+        $this->insertTestOrder();
+
+        $oPdf = new oxPdf;
+        $invoicePdfOxOrder = $this->getProxyClass("InvoicepdfOxOrder");
+
+        $invoicePdfOxOrder->load('_testOrderId');
+        $invoicePdfOxOrder->oxorder__oxdelsal = new oxField("testSal");
+
+        $oCur = $invoicePdfOxOrder->getConfig()->getCurrencyObject('EUR');
+        $invoicePdfOxOrder->exportStandart($oPdf);
+
+        $this->assertEquals($oCur, $invoicePdfOxOrder->getNonPublicVar('_oCur'));
+    }
+
+    /**
+     * Testing exportDeliveryNote method - calling needed methods
+     */
+    public function testInvoicepdfOxOrder_exportDeliveryNote()
+    {
+        $this->insertTestOrder();
+
+        $oPdf = new oxPdf;
+
+        $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('_setBillingAddressToPdf', '_setOrderArticlesToPdf'));
+        $invoicePdfOxOrder->expects($this->never())->method('_setBillingAddressToPdf');
+        $invoicePdfOxOrder->expects($this->once())->method('_setOrderArticlesToPdf');
+
+        $invoicePdfOxOrder->load('_testOrderId');
+        $invoicePdfOxOrder->oxorder__oxdelsal = new oxField('1', oxField::T_RAW);
+        $invoicePdfOxOrder->exportDeliveryNote($oPdf);
+    }
+
+    /**
+     * Testing exportDeliveryNote method - when order is canceled.
+     */
+    public function testInvoicepdfOxOrder_exportDeliveryNoteWhenOrderIsCanceled()
+    {
+        $this->insertTestOrder();
+
+        $oPdf = new oxPdf;
+
+        $invoicePdfOxOrder = new InvoicepdfOxOrder();
+        $invoicePdfOxOrder->load('_testOrderId');
+
+        //
+        $invoicePdfOxOrder->oxorder__oxdelcost = $this->getMock('oxfield', array('setValue'));
+        $invoicePdfOxOrder->oxorder__oxdelcost->expects($this->never())->method('setValue');
+
+        $invoicePdfOxOrder->oxorder__oxpaycost = $this->getMock('oxfield', array('setValue'));
+        $invoicePdfOxOrder->oxorder__oxpaycost->expects($this->never())->method('setValue');
+
+        $invoicePdfOxOrder->oxorder__oxordernr = $this->getMock('oxfield', array('setValue'));
+        $invoicePdfOxOrder->oxorder__oxordernr->expects($this->once())->method('setValue')->with($this->equalTo('   ORDER_OVERVIEW_PDF_STORNO'), $this->equalTo(2));
+
+        // marking as canceled
+        $invoicePdfOxOrder->oxorder__oxstorno = new oxField(1);
+
+        $invoicePdfOxOrder->exportDeliveryNote($oPdf);
+    }
+
+    /**
+     * Testing exportDeliveryNote method - uses billing address info
+     * if delivery address is not setted
+     */
+    public function testInvoicepdfOxOrder_exportDeliveryNote_WithoutDeliveryAddress()
+    {
+        $this->insertTestOrder();
+
+        $oPdf = new oxPdf;
+
+        $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('_setBillingAddressToPdf', '_setOrderArticlesToPdf'));
+        $invoicePdfOxOrder->expects($this->once())->method('_setBillingAddressToPdf');
+        $invoicePdfOxOrder->expects($this->once())->method('_setOrderArticlesToPdf');
+
+        $invoicePdfOxOrder->load('_testOrderId');
+        $invoicePdfOxOrder->oxorder__oxdelsal = new oxField(null, oxField::T_RAW);
+        $invoicePdfOxOrder->exportDeliveryNote($oPdf);
+    }
+
+    /**
+     * Testing _replaceExtendedChars method
+     */
+    public function testInvoicepdfOxOrder_replaceExtendedChars()
+    {
+        $invoicePdfOxOrder = $this->getProxyClass("InvoicepdfOxOrder");
+
+        $sInput = " &euro; &copy; &quot; &#039; &#97; &#98; some text";
+        $sStr = $invoicePdfOxOrder->UNITreplaceExtendedChars($sInput, true);
+        $this->assertEquals( " € © \" ' a b some text", $sStr );
+    }
+
+    /**
+     * Testing getProductVats method
+     */
+    public function testInvoicepdfOxOrder_getProductVats()
+    {
+        $invoicePdfOxOrder = $this->getProxyClass("InvoicepdfOxOrder");
+
+        $invoicePdfOxOrder->oxorder__oxartvat1 = new oxField('19', oxField::T_RAW);
+        $invoicePdfOxOrder->oxorder__oxartvatprice1 = new oxField('9', oxField::T_RAW);
+
+        $this->assertEquals(array("19"=>9), $invoicePdfOxOrder->getProductVats(false));
+    }
+
+    /**
+     * Testing getCurrency method
+     */
+    public function testInvoicepdfOxOrder_getCurrency()
+    {
+        $invoicePdfOxOrder = $this->getProxyClass("InvoicepdfOxOrder");
+        $invoicePdfOxOrder->setNonPublicVar('_oCur', 5);
+
+        $this->assertEquals(5, $invoicePdfOxOrder->getCurrency());
+    }
+
+    /**
+     * Testing getSelectedLang method
+     */
+    public function testInvoicepdfOxOrder_getSelectedLang()
+    {
+        $invoicePdfOxOrder = $this->getProxyClass("InvoicepdfOxOrder");
+        $invoicePdfOxOrder->setNonPublicVar('_iSelectedLang', 1);
+
+        $this->assertEquals(1, $invoicePdfOxOrder->getSelectedLang());
+    }
+
+    /**
+     * Data provider for testInvoicepdfOxOrder_getPaymentTerm
+     *
+     * @return array
+     */
+    public function getPaymentDataProvider()
+    {
+        return array(array(null, 7), array(10, 10), array(0, 0));
+    }
+
+    /**
+     * Testing getPaymentTerm() method
+     * getPaymentTerm() method returns config param iPaymentTerm, default value is 7;
+     *
+     * @dataProvider getPaymentDataProvider
+     *
+     * @param int $param
+     * @param int $expect
+     */
+    public function testInvoicepdfOxOrder_getPaymentTerm($param, $expect)
+    {
+        $invoicePdfOxOrder = new InvoicepdfOxOrder();
+        $this->getConfig()->setConfigParam('iPaymentTerm', $param);
+
+        $this->assertEquals($expect, $invoicePdfOxOrder->getPaymentTerm());
+    }
+
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getPdfTestObject()
+    {
+        $pdf = $this->getMock('testPdfClass', array('getStringWidth'));
+        $pdf->expects($this->any())->method('getStringWidth')->will($this->returnValue(1));
+
+        return $pdf;
+    }
+
+    /**
+     * Calls private or protected method.
+     *
+     * @param object      $object
+     * @param string      $methodName
+     * @param array|mixed $arguments
+     *
+     * @return mixed Called method return value.
+     */
+    protected function callProtectedMethod($object, $methodName, $arguments)
+    {
+        $class = new ReflectionClass($object);
+        $method = $class->getMethod($methodName);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, (array) $arguments);
+    }
+
+    /**
+     * Returns value of private or protected object property.
+     *
+     * @param object $object
+     * @param string $propertyName
+     *
+     * @return mixed
+     */
+    protected function getProtectedProperty($object, $propertyName)
+    {
+        $class = new ReflectionClass($object);
+        $property = $class->getProperty($propertyName);
+        $property->setAccessible(true);
+
+        return $property->getValue($object);
+    }
+
+    /**
+     * Get test InvoicePdfOxOrder object.
+     *
+     * @return InvoicePdfOxOrder
+     */
+    private function getTestInvoicepdfOxOrder()
+    {
+        $this->insertTestOrder();
+        $invoicePdfOxOrder = $this->getProxyClass("InvoicepdfOxOrder");
+        $invoicePdfOxOrder->load('_testOrderId');
+        $invoicePdfOxOrder->setNonPublicVar("_oCur", $invoicePdfOxOrder->getConfig()->getCurrencyObject('EUR'));
+
+        return $invoicePdfOxOrder;
+    }
+
+    /**
+     * Inserts test order.
+     */
+    private function insertTestOrder()
+    {
+        $config = $this->getConfig();
+
+        //set order
+        $order = oxNew("oxOrder");
+        $order->setId('_testOrderId');
+        $order->oxorder__oxshopid = new oxField($config->getShopId(), oxField::T_RAW);
+        $order->oxorder__oxuserid = new oxField("_testUserId", oxField::T_RAW);
+        $order->oxorder__oxbillcountryid = new oxField('10', oxField::T_RAW);
+        $order->oxorder__oxdelcountryid = new oxField('11', oxField::T_RAW);
+        $order->oxorder__oxdeltype = new oxField('_testDeliverySetId', oxField::T_RAW);
+        $order->oxorder__oxdelvat = new oxField('19', oxField::T_RAW);
+        $order->oxorder__oxdelcost = new oxField('21', oxField::T_RAW);
+        $order->oxorder__oxpaymentid = new oxField('_testPaymentId', oxField::T_RAW);
+        $order->oxorder__oxpaymenttype = new oxField('oxidcashondel', oxField::T_RAW);
+        $order->oxorder__oxpayvat = new oxField('19', oxField::T_RAW);
+        $order->oxorder__oxpaycost = new oxField('6', oxField::T_RAW);
+        $order->oxorder__oxcardid = new oxField('_testWrappingId', oxField::T_RAW);
+        $order->oxorder__oxtotalnetsum = new oxField('12', oxField::T_RAW);
+        $order->oxorder__oxtotalbrutsum = new oxField('13', oxField::T_RAW);
+        $order->oxorder__oxartvat1  = new oxField('19', oxField::T_RAW);
+        $order->oxorder__oxartvatprice1  = new oxField('7', oxField::T_RAW);
+        $order->oxorder__oxcurrency = new oxField('1', oxField::T_RAW);
+        $order->oxorder__oxdiscount = new oxField('5', oxField::T_RAW);
+        $order->oxorder__oxvoucherdiscount = new oxField('6', oxField::T_RAW);
+        $order->oxorder__oxwrapvat = new oxField('19', oxField::T_RAW);
+        $order->oxorder__oxwrapcost = new oxField('8', oxField::T_RAW);
+        $order->oxorder__oxtotalordersum = new oxField('25', oxField::T_RAW);
+        $order->save();
+    }
+
+    /**
+     * Inserts test order articles.
+     *
+     * @param int $storno canceled product
+     *
+     * @return oxOrderArticle
+     */
+    private function insertTestOrderArticle($storno = 0)
+    {
+        $orderArticle = oxNew("oxOrderArticle");
+        $orderArticle->setId('_testOrderArticleId');
+        $orderArticle->oxorderarticles__oxorderid = new oxField('_testOrderId', oxField::T_RAW);
+        $orderArticle->oxorderarticles__oxartid = new oxField('_testArticleId', oxField::T_RAW);
+        $orderArticle->oxorderarticles__oxamount = new oxField(5, oxField::T_RAW);
+        $orderArticle->oxorderarticles__oxvat = new oxField(19, oxField::T_RAW);
+        $orderArticle->oxorderarticles__oxvatprice = new oxField(7, oxField::T_RAW);
+        $orderArticle->oxorderarticles__oxstorno = new oxField($storno, oxField::T_RAW);
+        $orderArticle->save();
+
+        return $orderArticle;
+    }
 }

@@ -29,6 +29,9 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
      */
     public function testPrepareCanonicalUrl()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community/Professional edition only.');
+        }
 
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{return false;}');
         $this->getConfig()->setConfigParam("sDefaultLang", 9);
@@ -55,6 +58,9 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
 
     public function testGetBaseAddUrlParamsPE()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community/Professional edition only.');
+        }
 
         $oUtils = oxNew('oxUtilsUrl');
         $this->assertEquals(array(), $oUtils->getBaseAddUrlParams());
@@ -88,6 +94,9 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
 
     public function testPrepareUrlForNoSession()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community/Professional edition only.');
+        }
 
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{return false;}');
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 3;}');

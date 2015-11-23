@@ -25,12 +25,11 @@
  */
 class Unit_utf8Test extends OxidTestCase
 {
-
+    /** @var string Original theme */
+    private $_sOrigTheme;
 
     /**
      * Sets up test
-     *
-     * @return null
      */
     protected function setUp()
     {
@@ -40,6 +39,9 @@ class Unit_utf8Test extends OxidTestCase
         $this->getConfig()->setConfigParam('sTheme', 'azure');
     }
 
+    /**
+     * Cleans up database.
+     */
     protected function tearDown()
     {
         $this->getConfig()->setConfigParam('sTheme', $this->_sOrigTheme);
@@ -80,9 +82,13 @@ class Unit_utf8Test extends OxidTestCase
         $this->cleanUpTable('oxvouchers');
         $this->cleanUpTable('oxvoucherseries');
         $this->cleanUpTable('oxwrapping');
-
-
         $this->cleanUpTable('oxstatistics');
+
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->cleanUpTable('oxroles');
+            $query = 'delete from oxshops where oxid > 1 ';
+            oxDb::getDb()->execute($query);
+        }
 
         $this->getConfig()->setActiveView(null);
         parent::tearDown();
@@ -92,14 +98,14 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'Žiniasklaidai жителей Veröffentlicht';
 
-        $oAction = new oxactions();
-        $oAction->setId('_testAction');
-        $oAction->oxactions__oxtitle = new oxField($sValue);
-        $oAction->save();
+        $action = oxNew('oxActions');
+        $action->setId('_testAction');
+        $action->oxactions__oxtitle = new oxField($sValue);
+        $action->save();
 
-        $oAction = new oxactions();
-        $oAction->load('_testAction');
-        $this->assertEquals($sValue, $oAction->oxactions__oxtitle->value);
+        $action = oxNew('oxActions');
+        $action->load('_testAction');
+        $this->assertEquals($sValue, $action->oxactions__oxtitle->value);
     }
 
     public function testOxAddressSaveAndLoad()
@@ -130,35 +136,42 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxArticleGetSelectList()
     {
-        $myDB = oxDb::getDB();
-        $myConfig = $this->getConfig();
-        $oCurrency = $myConfig->getActShopCurrencyObject();
+        $database = oxDb::getDB();
+        $config = $this->getConfig();
+        $currency = $config->getActShopCurrencyObject();
 
-        $sShopId = $myConfig->getBaseShopId();
-        $sVal = 'Опрос Žiniasklaidai Gästebuch!P!-5,99__Опрос Žiniasklaidai Gästebuch@@';
+        $shopId = $config->getBaseShopId();
+        $value = 'Опрос Žiniasklaidai Gästebuch!P!-5,99__Опрос Žiniasklaidai Gästebuch@@';
 
-        $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testSellisttest", "' . $sShopId . '", "Опрос Žiniasklaidai Gästebuch", "_testSellisttest", "' . $sVal . '")';
-        $myDB->Execute($sQ);
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $query = "insert into oxselectlist (oxid, oxmapid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSellisttest', '777', '$shopId', 'Опрос Žiniasklaidai Gästebuch', '_testSellisttest', '$value')";
+            $database->execute($query);
+            $query = "insert into oxselectlist2shop (oxmapobjectid, oxshopid ) values ('777', '$shopId')";
+            $database->execute($query);
+        } else {
+            $query = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSellisttest', '$shopId', 'Опрос Žiniasklaidai Gästebuch', '_testSellisttest', '$value')";
+            $database->execute($query);
+        }
 
-        $sQ = 'insert into oxobject2selectlist (oxid, oxobjectid, oxselnid, oxsort) values ("_testSellisttest", "1651", "_testSellisttest", 1) ';
-        $myDB->Execute($sQ);
+        $query = 'insert into oxobject2selectlist (oxid, oxobjectid, oxselnid, oxsort) values ("_testSellisttest", "1651", "_testSellisttest", 1) ';
+        $database->execute($query);
 
         $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', true);
         $this->getConfig()->setConfigParam('bl_perfUseSelectlistPrice', true);
 
-        $oObject = new stdClass();
-        $oObject->price = '-5.99';
-        $oObject->fprice = '-5,99';
-        $oObject->priceUnit = 'abs';
-        $oObject->name = 'Опрос Žiniasklaidai Gästebuch -5,99 ' . $oCurrency->sign;
-        $oObject->value = 'Опрос Žiniasklaidai Gästebuch';
-        $aSelList[] = $oObject;
-        $aShouldBe[0] = $aSelList;
-        $aShouldBe[0]['name'] = 'Опрос Žiniasklaidai Gästebuch';
+        $object = new stdClass();
+        $object->price = '-5.99';
+        $object->fprice = '-5,99';
+        $object->priceUnit = 'abs';
+        $object->name = 'Опрос Žiniasklaidai Gästebuch -5,99 ' . $currency->sign;
+        $object->value = 'Опрос Žiniasklaidai Gästebuch';
+        $selectionList[] = $object;
+        $expected[0] = $selectionList;
+        $expected[0]['name'] = 'Опрос Žiniasklaidai Gästebuch';
 
-        $oArticle = oxNew('oxArticle');
-        $oArticle->load('1651');
-        $this->assertEquals($aShouldBe, $oArticle->getSelectLists());
+        $article = oxNew('oxArticle');
+        $article->load('1651');
+        $this->assertEquals($expected, $article->getSelectLists());
     }
 
     public function testOxArticleSaveAndLoad()
@@ -458,7 +471,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testOxCategoryLoadCategoryIds()
     {
         // choosing category id
-        $sCatId = oxDb::getDb()->getOne('select oxid from oxcategories where oxactive = "1" ');
+        $categoryId = oxDb::getDb()->getOne('select oxid from oxcategories where oxactive = "1" ');
 
         // creating test articles
         $oTestArticle1 = oxNew('oxArticle');
@@ -468,15 +481,15 @@ class Unit_utf8Test extends OxidTestCase
         // assigning articles to category
         $oA2C = new oxobject2category();
         $oA2C->oxobject2category__oxobjectid = new oxField('_testArticle1');
-        $oA2C->oxobject2category__oxcatnid = new oxField($sCatId);
+        $oA2C->oxobject2category__oxcatnid = new oxField($categoryId);
         $oA2C->setId('_testArticle1');
         $oA2C->save();
 
         // creating attributes
-        $oAttr = new oxattribute();
-        $oAttr->setId('_testAttribute1');
-        $oAttr->oxattribute__oxtitle = new oxField('für');
-        $oAttr->save();
+        $attribute = new oxattribute();
+        $attribute->setId('_testAttribute1');
+        $attribute->oxattribute__oxtitle = new oxField('für');
+        $attribute->save();
 
         // assigning attributes
         $oO2a = new oxbase();
@@ -490,45 +503,47 @@ class Unit_utf8Test extends OxidTestCase
         $oO2a = new oxbase();
         $oO2a->init('oxcategory2attribute');
         $oO2a->setId('_testo2a4');
-        $oO2a->oxcategory2attribute__oxobjectid = new oxField($sCatId);
+        $oO2a->oxcategory2attribute__oxobjectid = new oxField($categoryId);
         $oO2a->oxcategory2attribute__oxattrid = new oxField('_testAttribute1');
         $oO2a->save();
 
         // finally testing
-        $oCat = new oxcategory();
-        $oCat->load($sCatId);
-        $aAttr = $oCat->getAttributes();
-        $oAttr = $aAttr->offsetGet('_testAttribute1');
-        $this->assertTrue($oAttr instanceof oxattribute);
-        $this->assertEquals('für', $oAttr->getTitle());
+        $category = oxNew('oxCategory');
+        $category->load($categoryId);
+        $attributeList = $category->getAttributes();
+        /** @var oxAttribute $attribute */
+        $attribute = $attributeList->offsetGet('_testAttribute1');
+        $this->assertTrue($attribute instanceof oxAttribute);
+        $this->assertEquals('für', $attribute->getTitle());
     }
 
     public function testOxCategorylistSortSubCats()
     {
-        $sActCat = '8a142c3e44ea4e714.31136811';
-        $sActRoot = '8a142c3e4143562a5.46426637';
-        $oObj = $this->getProxyClass("oxCategorylist");
-        $oObj->setNonPublicVar('sShopID', null);
+        $activeCategory = $this->getTestConfig()->getShopEdition() == 'EE' ? '3ee44bf933cf342e2.99739972' : '8a142c3e44ea4e714.31136811';
+        $activeRoot = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
 
-        $oObj->buildTree($sActCat, 0, 0, 1);
+        $categoryList = $this->getProxyClass("oxCategoryList");
+        $categoryList->setNonPublicVar('sShopID', null);
+
+        $categoryList->buildTree($activeCategory, 0, 0, 1);
 
         //Check root order
-        $aCurRootOrder = array();
-        foreach ($oObj as $sId => $oCat) {
-            $aCurRootOrder[] = $oCat->oxcategories__oxsort->value;
+        $currentRootOrder = array();
+        foreach ($categoryList as $category) {
+            $currentRootOrder[] = $category->oxcategories__oxsort->value;
         }
-        $aExpRootOrder = $aCurRootOrder;
-        asort($aExpRootOrder);
-        $this->assertEquals(implode(',', $aExpRootOrder), implode(',', $aCurRootOrder));
+        $expectedRootOrder = $currentRootOrder;
+        asort($expectedRootOrder);
+        $this->assertEquals(implode(',', $expectedRootOrder), implode(',', $currentRootOrder));
 
-        //Chect subcat order
-        $aCurSubOrder = array();
-        foreach ($oObj[$sActRoot]->getSubCats() as $sId => $oCat) {
-            $aCurSubOrder[] = $oCat->oxcategories__oxsort->value;
+        //Check subcategory order
+        $currentSubcategoryOrder = array();
+        foreach ($categoryList[$activeRoot]->getSubCats() as $category) {
+            $currentSubcategoryOrder[] = $category->oxcategories__oxsort->value;
         }
-        $aExpSubOrder = $aCurSubOrder;
-        asort($aExpSubOrder);
-        $this->assertEquals(implode(',', $aExpSubOrder), implode(',', $aCurSubOrder));
+        $expSubcategoryOrder = $currentSubcategoryOrder;
+        asort($expSubcategoryOrder);
+        $this->assertEquals(implode(',', $expSubcategoryOrder), implode(',', $currentSubcategoryOrder));
     }
 
     /**
@@ -815,15 +830,18 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxNewsletterSetParamsPlusSaveLoadFor()
     {
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
+        }
 
-        $oActView = oxNew('oxubase');
+        $oActView = oxNew('oxUBase');
         $oActView->addGlobalParams();
         $this->getConfig()->setActiveView($oActView);
 
         $sValue = '[{ $oViewConf->getImageUrl() }] Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
         $sResult = $this->getConfig()->getImageUrl(false) . ' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
 
-        $oNewsletter = new oxnewsletter();
+        $oNewsletter = oxNew('oxNewsletter');
         $oNewsletter->oxnewsletter__oxtemplate = new oxField($sValue, oxField::T_RAW);
         $oNewsletter->oxnewsletter__oxplaintemplate = new oxField($sValue, oxField::T_RAW);
         $oNewsletter->prepare('oxdefaultadmin');
@@ -832,11 +850,10 @@ class Unit_utf8Test extends OxidTestCase
         $this->assertTrue(strcmp($oNewsletter->getPlainText(), $sResult) === 0, $oNewsletter->getPlainText() . " != $sResult");
     }
 
-
     public function testOxNewsSubscribedUpdateSubscription()
     {
         $sValue = 'agentūrų Литовские für';
-        $oUser = new oxuser();
+        $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new oxField($sValue);
         $oUser->oxuser__oxfname = new oxField($sValue);
         $oUser->oxuser__oxlname = new oxField($sValue);
@@ -939,29 +956,32 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxOrderArticleSaveAndLoad()
     {
-        $sValue = 'agentūЛитовfür';
+        $value = 'agentūЛитовfür';
 
-        $aFields = array('oxorderarticles__oxartnum', 'oxorderarticles__oxtitle', 'oxorderarticles__oxshortdesc',
-                         'oxorderarticles__oxselvariant', 'oxorderarticles__oxpersparam', 'oxorderarticles__oxexturl',
-                         'oxorderarticles__oxurldesc', 'oxorderarticles__oxurlimg', 'oxorderarticles__oxthumb',
-                         'oxorderarticles__oxpic1', 'oxorderarticles__oxpic2',
-                         'oxorderarticles__oxpic3', 'oxorderarticles__oxpic4', 'oxorderarticles__oxpic5',
-                         'oxorderarticles__oxfile', 'oxorderarticles__oxsearchkeys', 'oxorderarticles__oxtemplate',
-                         'oxorderarticles__oxquestionemail', 'oxorderarticles__oxfolder', 'oxorderarticles__oxsubclass');
+        $fieldsToCheck = array('oxorderarticles__oxartnum', 'oxorderarticles__oxtitle', 'oxorderarticles__oxshortdesc',
+                               'oxorderarticles__oxselvariant', 'oxorderarticles__oxpersparam', 'oxorderarticles__oxexturl',
+                               'oxorderarticles__oxurldesc', 'oxorderarticles__oxurlimg', 'oxorderarticles__oxthumb',
+                               'oxorderarticles__oxpic1', 'oxorderarticles__oxpic2',
+                               'oxorderarticles__oxpic3', 'oxorderarticles__oxpic4', 'oxorderarticles__oxpic5',
+                               'oxorderarticles__oxfile', 'oxorderarticles__oxsearchkeys', 'oxorderarticles__oxtemplate',
+                               'oxorderarticles__oxquestionemail', 'oxorderarticles__oxfolder', 'oxorderarticles__oxsubclass');
 
-
-        $oOrderArticle = oxNew('oxorderarticle');
-        $oOrderArticle->setId('_testOrder');
-        foreach ($aFields as $sFieldName) {
-            $oOrderArticle->{$sFieldName} = new oxField($sValue);
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $fieldsToCheck[] = 'oxorderarticles__oxerpstatus';
         }
-        $oOrderArticle->save();
 
-        $oOrderArticle = oxNew('oxorderarticle');
-        $oOrderArticle->load('_testOrder');
+        $orderArticle = oxNew('oxOrderArticle');
+        $orderArticle->setId('_testOrder');
+        foreach ($fieldsToCheck as $fieldName) {
+            $orderArticle->{$fieldName} = new oxField($value);
+        }
+        $orderArticle->save();
 
-        foreach ($aFields as $sFieldName) {
-            $this->assertTrue(strcmp($oOrderArticle->{$sFieldName}->value, $sValue) === 0, "$sFieldName (" . $oOrderArticle->{$sFieldName}->value . ")");
+        $orderArticle = oxNew('oxOrderArticle');
+        $orderArticle->load('_testOrder');
+
+        foreach ($fieldsToCheck as $fieldName) {
+            $this->assertTrue(strcmp($orderArticle->{$fieldName}->value, $value) === 0, "$fieldName (" . $orderArticle->{$fieldName}->value . ")");
         }
     }
 
@@ -1099,7 +1119,6 @@ class Unit_utf8Test extends OxidTestCase
             $this->assertTrue(strcmp($oReview->{$sFieldName}->value, $sValue) === 0, "$sFieldName (" . $oReview->{$sFieldName}->value . ")");
         }
     }
-
 
     public function testOxRssFeedGetArticleItems()
     {
@@ -1260,6 +1279,9 @@ class Unit_utf8Test extends OxidTestCase
                          'oxshops__oxsuperclicksid', 'oxshops__oxaffiliweltid', 'oxshops__oxaffili24id',
                          'oxshops__oxversion');
 
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $aFields[] = 'oxshops__oxserial';
+        }
 
         $oShop = oxNew('oxShop');
         $oShop->setId(5);
@@ -1278,27 +1300,28 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxStatisticsSaveAndLoad()
     {
-
-        $sValue = 'agentūЛитовfür';
-
-        $aFields = array('oxstatistics__oxtitle', 'oxstatistics__oxvalue');
-
-        $oStat = oxNew('oxstatistic');
-        $oStat->setId('_testStat');
-        foreach ($aFields as $sFieldName) {
-            $oStat->{$sFieldName} = new oxField($sValue);
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
-        $oStat->save();
 
-        $oStat = oxNew('oxstatistic');
-        $oStat->load('_testStat');
+        $value = 'agentūЛитовfür';
 
-        foreach ($aFields as $sFieldName) {
-            $this->assertTrue(strcmp($oStat->{$sFieldName}->value, $sValue) === 0, "$sFieldName (" . $oStat->{$sFieldName}->value . ")");
+        $fields = array('oxstatistics__oxtitle', 'oxstatistics__oxvalue');
+
+        $statistics = oxNew('oxStatistic');
+        $statistics->setId('_testStat');
+        foreach ($fields as $fieldName) {
+            $statistics->{$fieldName} = new oxField($value);
+        }
+        $statistics->save();
+
+        $statistics = oxNew('oxStatistic');
+        $statistics->load('_testStat');
+
+        foreach ($fields as $fieldName) {
+            $this->assertTrue(strcmp($statistics->{$fieldName}->value, $value) === 0, "$fieldName (" . $statistics->{$fieldName}->value . ")");
         }
     }
-
-
 
     public function testOxUserSaveAndLoad()
     {
@@ -1312,6 +1335,9 @@ class Unit_utf8Test extends OxidTestCase
                          'oxuser__oxprivfon', 'oxuser__oxmobfon', 'oxuser__oxurl',
                          'oxuser__oxupdatekey');
 
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $aFields[] = 'oxuser__oxldapkey';
+        }
 
         $oUser = oxNew('oxuser');
         $oUser->setId('_testUser');
@@ -1845,5 +1871,4 @@ class Unit_utf8Test extends OxidTestCase
         $recipient = $mail->getRecipient();
         $this->assertNotEmpty($recipient);
     }
-
 }

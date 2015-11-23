@@ -1069,7 +1069,7 @@ class oxCategory extends oxI18n implements oxIUrl
     }
 
     /**
-     * Returns true is category parent id is 'oxrootid'
+     * Returns true if category parentid is 'oxrootid'
      *
      * @return bool
      */

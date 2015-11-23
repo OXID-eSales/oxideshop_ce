@@ -3,7 +3,8 @@
 <head>
     <title>[{oxmultilang ident="REPORT_PAGEHEAD_TITLE"}]</title>
     <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
-    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]style.css">
+    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]statistics_style.css">
+    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]statistics_style.css">
 </head>
 
 <body leftmargin=0 topmargin=0>
@@ -15,7 +16,7 @@
 	  <table width="100%">
 	  <tr>
 	  <td>
-	  		<a href="[{$oViewConf->getSelfLink()}]"><img src="[{$oViewConf->getImageUrl()}]/logo.jpg" alt="[{$oxcmp_shop->oxshops__oxname->value}]" class="pageheadgraphic"></a>
+	  		<a href="[{$oViewConf->getSelfLink()}]"><img src="[{$oViewConf->getImageUrl()}]/logo.gif" alt="[{$oxcmp_shop->oxshops__oxname->value}]" class="pageheadgraphic"></a>
 	  </td>
 	  <td class="pageheadlinkupperback">
 	        <span class="pageheadlinkupper">[{oxmultilang ident="REPORT_PAGEHEAD_SHOPREPORT"}]</span>

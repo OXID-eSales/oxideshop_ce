@@ -7,7 +7,16 @@
     <link rel="shortcut icon" href="[{$oViewConf->getImageUrl()}]favicon.ico">
     <style type="text/css">
         html,body{background:#fff;height:100%;padding:0;margin:0;font:11px Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;}
-        div.box{width:330px;height:200px;padding:20px;background:#fff url([{$oViewConf->getImageUrl()}]login.png) no-repeat;position:absolute;top:50%;margin-top:-127px;left:50%;margin-left:-190px;}
+        div.admin-login-box {
+            border: 1px #FFFFFF solid; border-radius: 5px; width: 332px; padding: 14px 14px 14px; position: absolute; top: 50%; margin-top: -122px; left: 50%; margin-left: -185px;
+            background: #FFFFFF;
+            background: -moz-linear-gradient(#FFFFFF 1%, #E4E4E4 100%);
+            background: -webkit-linear-gradient(#FFFFFF 1%, #E4E4E4 100%);
+            background: -o-linear-gradient(#FFFFFF 1%, #E4E4E4 100%);
+            background: -ms-linear-gradient(#FFFFFF 1%, #E4E4E4 100%);
+            background: linear-gradient(#FFFFFF 1%, #E4E4E4 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#E4E4E4', GradientType=0);
+        }
         p{padding:0;margin:0;}
         img.logo {margin:0 0 0 125px;padding:0;}
         form{padding:0;margin:0;}
@@ -20,11 +29,12 @@
         div.errorbox{color:#f00;text-align:center;margin:0 0 5px 0;}
         .notify {position: fixed; width: 100%; font-size: 16px; color: #fff; background-color: #f77704; padding: 8px 0 8px 0; text-align: center; border-bottom: 1px solid #d36706;}
     </style>
+    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors.css">
 </head>
 <body>
 
 
-<div class="box">
+<div class="admin-login-box">
 
 <form action="[{$oViewConf->getSelfLink()}]" target="_top" method="post" name="login" id="login">
     <p>

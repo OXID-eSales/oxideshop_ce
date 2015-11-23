@@ -1,0 +1,10 @@
+/* main.css */
+#liste td.listitem1, #liste table td.listitem4 {background-color:#006ab4;border-color:#006ab4;}
+div.export  {background:#006ab4;}
+
+/* nav.css */
+.version, .act .rc,  .act .rc b {background-color: #006ab4;color:#fff;}
+span.new {color: #006ab4;}
+.main span.new {color: #535353;}
+
+div.admin-login-box {border-color: #006AB4;}

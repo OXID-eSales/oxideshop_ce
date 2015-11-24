@@ -95,6 +95,7 @@ class Manufacturer_Seo extends Object_Seo
      */
     public function getEntryUri()
     {
+        /** @var oxmanufacturer $oManufacturer */
         $oManufacturer = oxNew('oxmanufacturer');
         if ($oManufacturer->load($this->getEditObjectId())) {
             return $this->_getEncoder()->getManufacturerUri($oManufacturer, $this->getEditLang());

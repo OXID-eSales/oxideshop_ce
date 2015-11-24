@@ -569,7 +569,9 @@ class Details extends oxUBase
             $sCharset = oxRegistry::getLang()->translateString('charset');
             oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . $sCharset);
             $oActView = oxNew('oxubase');
-            $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+            /** @var oxUtilsView $oxUtilsView */
+            $oxUtilsView = oxRegistry::get("oxUtilsView");
+            $oSmarty = $oxUtilsView->getSmarty();
             $oSmarty->assign('oView', $this);
             $oSmarty->assign('oViewConf', $this->getViewConfig());
             oxRegistry::getUtils()->showMessageAndExit(

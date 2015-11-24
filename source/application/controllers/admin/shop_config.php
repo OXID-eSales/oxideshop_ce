@@ -94,6 +94,7 @@ class Shop_Config extends oxAdminDetails
         }
 
         // #251A passing country list
+        /** @var oxCountryList $oCountryList */
         $oCountryList = oxNew("oxCountryList");
         $oCountryList->loadActiveCountries(oxRegistry::getLang()->getObjectTplLanguage());
         if (isset($aConfVars['arr']["aHomeCountry"]) && count($aConfVars['arr']["aHomeCountry"]) && count($oCountryList)) {

@@ -658,6 +658,7 @@ class oxSeoEncoderArticle extends oxSeoEncoder
     protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
+        /** @var oxArticle $oArticle */
         $oArticle = oxNew("oxArticle");
         $oArticle->setSkipAssign(true);
         if ($oArticle->loadInLang($iLang, $sObjectId)) {

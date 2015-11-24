@@ -28,9 +28,9 @@ class oxBasket extends oxSuperCfg
 {
 
     /**
-     * Array or oxbasketitem objects
+     * Array of oxbasketitem objects
      *
-     * @var array
+     * @var oxBasketItem[]
      */
     protected $_aBasketContents = array();
 
@@ -65,21 +65,21 @@ class oxBasket extends oxSuperCfg
     /**
      * Basket calculation mode netto
      *
-     * @var decimal
+     * @var bool
      */
     protected $_isCalculationModeNetto = null;
 
     /**
      * Basket netto sum
      *
-     * @var decimal
+     * @var double
      */
     protected $_dNettoSum = null;
 
     /**
      * Basket brutto sum
      *
-     * @var decimal
+     * @var double
      */
     protected $_dBruttoSum = null;
 
@@ -121,21 +121,21 @@ class oxBasket extends oxSuperCfg
     /**
      * Additional costs array of oxPrice objects
      *
-     * @var array
+     * @var oxPrice[]
      */
     protected $_aCosts = array();
 
     /**
      * Sum price of articles applicable to discounts
      *
-     * @var oxPrice
+     * @var oxpricelist
      */
     protected $_oDiscountProductsPriceList = null;
 
     /**
      * Sum price of articles not applicable to discounts
      *
-     * @var oxPrice
+     * @var oxpricelist
      */
     protected $_oNotDiscountedProductsPriceList = null;
 
@@ -339,7 +339,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Return basket netto sum (in B2B view mode sum include discount)
      *
-     * @return decimal
+     * @return double
      */
     public function getNettoSum()
     {
@@ -349,7 +349,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Return basket brutto sum (in B2C view mode sum include discount)
      *
-     * @return decimal
+     * @return double
      */
     public function getBruttoSum()
     {
@@ -359,7 +359,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Set basket netto sum
      *
-     * @param decimal $dNettoSum sum of basket in netto mode
+     * @param double $dNettoSum sum of basket in netto mode
      */
     public function setNettoSum($dNettoSum)
     {
@@ -369,7 +369,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Set basket brutto sum
      *
-     * @param decimal $dBruttoSum sum of basket in brutto mode
+     * @param double $dBruttoSum sum of basket in brutto mode
      */
     public function setBruttoSum($dBruttoSum)
     {
@@ -580,7 +580,7 @@ class oxBasket extends oxSuperCfg
      * @param array  $aSel             basket item selectlists
      * @param array  $aPersParam       basket item persistent parameters
      * @param bool   $blBundle         bundle marker
-     * @param var    $sAdditionalParam possible additional information
+     * @param mixed  $sAdditionalParam possible additional information
      *
      * @return string
      */
@@ -1026,6 +1026,7 @@ class oxBasket extends oxSuperCfg
         // 1. add products price
         $dPrice = $this->_dBruttoSum;
 
+        /** @var oxPrice $oTotalPrice */
         $oTotalPrice = oxNew('oxPrice');
         $oTotalPrice->setBruttoPriceMode();
         $oTotalPrice->setPrice($dPrice);
@@ -2018,7 +2019,7 @@ class oxBasket extends oxSuperCfg
      *
      * @param string $sId cost id ( optional )
      *
-     * @return array
+     * @return oxPrice|oxPrice[]|null
      */
     public function getCosts($sId = null)
     {
@@ -2073,7 +2074,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns basket items array
      *
-     * @return array
+     * @return oxBasketItem[]
      */
     public function getContents()
     {
@@ -3173,7 +3174,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns min order price value
      *
-     * @return decimal
+     * @return float
      */
     public function getMinOrderPrice()
     {
@@ -3183,7 +3184,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Return sum of basket insured by trusted shops
      *
-     * @return decimal
+     * @return float
      */
     public function getTsInsuredSum()
     {

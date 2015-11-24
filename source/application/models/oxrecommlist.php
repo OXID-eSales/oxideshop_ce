@@ -300,6 +300,7 @@ class oxRecommList extends oxBase implements oxIUrl
             }
             $sArticlesFilter = "$sNegateSql ORDER BY $sArtView.oxid in ( $sIds ) desc";
             $oRecomm->setArticlesFilter($sArticlesFilter);
+            /** @var oxArticleList $oArtList */
             $oArtList = oxNew('oxArticleList');
             $oArtList->setSqlLimit(0, 1);
             $oArtList->loadRecommArticles($oRecomm->getId(), $sArticlesFilter);

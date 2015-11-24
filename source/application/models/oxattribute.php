@@ -259,7 +259,7 @@ class oxAttribute extends oxI18n
     /**
      * Get attribute values
      *
-     * @return Array
+     * @return array
      */
     public function getValues()
     {

@@ -169,6 +169,7 @@ class oxAttributeList extends oxList
     {
         $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
 
+        /** @var oxArticleList $oArtList */
         $oArtList = oxNew("oxArticleList");
         $oArtList->loadCategoryIDs($sCategoryId, $aSessionFilter);
 
@@ -200,6 +201,7 @@ class oxAttributeList extends oxList
 
                     if (!$this->offsetExists($sAttId)) {
 
+                        /** @var oxattribute $oAttribute */
                         $oAttribute = oxNew("oxattribute");
                         $oAttribute->setTitle($sAttTitle);
 

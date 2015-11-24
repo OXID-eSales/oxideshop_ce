@@ -101,6 +101,7 @@ class ForgotPwd extends oxUBase
         $sNewPass = oxRegistry::getConfig()->getRequestParameter('password_new', true);
         $sConfPass = oxRegistry::getConfig()->getRequestParameter('password_new_confirm', true);
 
+        /** @var oxuser $oUser */
         $oUser = oxNew('oxuser');
 
         /** @var oxInputValidator $oInputValidator */

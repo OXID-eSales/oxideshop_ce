@@ -67,7 +67,9 @@ class GenExport_Do extends DynExportBase
         $blContinue = false;
         if ($oArticle = $this->getOneArticle($iCnt, $blContinue)) {
             $myConfig = oxRegistry::getConfig();
-            $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+            /** @var oxUtilsView $oxUtilsView */
+            $oxUtilsView = oxRegistry::get("oxUtilsView");
+            $oSmarty = $oxUtilsView->getSmarty();
             $oSmarty->assign("sCustomHeader", oxRegistry::getSession()->getVariable("sExportCustomHeader"));
             $oSmarty->assign_by_ref("linenr", $iCnt);
             $oSmarty->assign_by_ref("article", $oArticle);

@@ -185,6 +185,7 @@ class oxCategoryList extends oxList
 
         //excluding long desc
         if (!$this->isAdmin() && !$this->_blHideEmpty && !$this->getLoadFull()) {
+            /** @var oxCategory $oCat */
             $oCat = oxNew('oxCategory');
             if (!($this->_sActCat && $oCat->load($this->_sActCat) && $oCat->oxcategories__oxrootid->value)) {
                 $oCat = null;

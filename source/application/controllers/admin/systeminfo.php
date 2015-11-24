@@ -48,7 +48,9 @@ class SystemInfo extends oxAdminView
             $aClassVars = get_object_vars($myConfig);
             $aSystemInfo = array();
             $aSystemInfo['pkg.info'] = $myConfig->getPackageInfo();
-            $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+            /** @var oxUtilsView $oxUtilsView */
+            $oxUtilsView = oxRegistry::get("oxUtilsView");
+            $oSmarty = $oxUtilsView->getSmarty();
             while (list($name, $value) = each($aClassVars)) {
                 if (gettype($value) == "object") {
                     continue;

@@ -1948,7 +1948,7 @@ class oxUser extends oxBase
     {
         /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
         $oOpenSSLFunctionalityChecker = oxNew('oxOpenSSLFunctionalityChecker');
-        /** @var var oxPasswordSaltGenerator $oGenerator */
+        /** @var oxPasswordSaltGenerator $oGenerator */
         $oGenerator = oxNew('oxPasswordSaltGenerator', $oOpenSSLFunctionalityChecker);
 
         return $oGenerator->generate();

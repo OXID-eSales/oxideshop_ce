@@ -66,6 +66,7 @@ class oxVatSelector extends oxSuperCfg
         $sCountryId = $this->_getVatCountry($oUser);
 
         if ($sCountryId) {
+            /** @var oxcountry $oCountry */
             $oCountry = oxNew('oxcountry');
             if (!$oCountry->load($sCountryId)) {
                 throw oxNew("oxObjectException");

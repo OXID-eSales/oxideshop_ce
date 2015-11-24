@@ -174,6 +174,7 @@ class oxMdVariant extends oxSuperCfg
             }
         }
 
+        /** @var oxMdVariant $oNewSubvariant */
         $oNewSubvariant = oxNew("oxMdVariant");
         $oNewSubvariant->setName($sName);
         $oNewSubvariant->setId(md5($sName . $this->getId()));

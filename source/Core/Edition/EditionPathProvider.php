@@ -20,54 +20,57 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\Eshop\Core\Edition;
 
 /**
- * Class is responsible for returning edition.
+ * Class is responsible for returning directories paths according edition.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class EditionSelector
+class EditionPathProvider
 {
-    const ENTERPRISE = 'EE';
+    const SETUP_DIRECTORY = 'Setup';
 
-    const PROFESSIONAL = 'PE';
+    const DATABASE_SQL_DIRECTORY = 'Sql';
 
-    const COMMUNITY = 'CE';
+    /** @var EditionPathSelector */
+    private $editionPathSelector;
 
     /**
-     * Method returns edition.
+     * @param $editionPathSelector
+     */
+    public function __construct($editionPathSelector)
+    {
+        $this->editionPathSelector = $editionPathSelector;
+    }
+
+    /**
+     * Method forms path to corresponding edition setup directory.
      *
      * @return string
      */
-    public function getEdition()
+    public function getSetupDirectoryPath()
     {
-        $edition = static::COMMUNITY;
-
-        if ($this->isEnterprise()) {
-            $edition = static::ENTERPRISE;
-        }
-        if ($this->isProfessional()) {
-            $edition = static::PROFESSIONAL;
-        }
-
-        return $edition;
+        return $this->getEditionPathSelector()->getDirectoryPath()
+        . static::SETUP_DIRECTORY . DIRECTORY_SEPARATOR;
     }
 
     /**
-     * @return bool
+     * Method forms path to corresponding edition database sql files directory.
+     *
+     * @return string
      */
-    protected function isEnterprise()
+    public function getDatabaseSqlDirectoryPath()
     {
-        return (bool) OXID_VERSION_EE;
+        return $this->getSetupDirectoryPath() . static::DATABASE_SQL_DIRECTORY . DIRECTORY_SEPARATOR;
     }
 
     /**
-     * @return bool
+     * @return EditionPathSelector
      */
-    protected function isProfessional()
+    protected function getEditionPathSelector()
     {
-        return (bool) OXID_VERSION_PE_PE;
+        return $this->editionPathSelector;
     }
 }

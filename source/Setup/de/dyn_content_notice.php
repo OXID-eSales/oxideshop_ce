@@ -16,16 +16,29 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-require "_header.php"; ?>
-<textarea readonly="readonly" cols="180" rows="20" class="edittext" style="width: 98%; padding: 7px;"><?php echo $this->getViewParam( "aLicenseText" ); ?></textarea>
-<form action="index.php" method="post">
-  <input type="hidden" name="istep" value="<?php $this->getSetupStep( 'STEP_DB_INFO' ); ?>">
-  <input type="radio" name="iEula" value="1"><?php $this->getText('BUTTON_RADIO_LICENCE_ACCEPT'); ?><br>
-  <input type="radio" name="iEula" value="0" checked><?php $this->getText('BUTTON_RADIO_LICENCE_NOT_ACCEPT'); ?><br><br>
-  <input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
-  <input type="submit" id="step2Submit" class="edittext" value="<?php $this->getText('BUTTON_LICENCE'); ?>">
-</form>
-<?php require "_footer.php";
+
+require_once "lang.php";
+
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <title><?php echo( $aLang['HEADER_META_MAIN_TITLE'] ) ?></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo( $aLang['charset'] ) ?>">
+    <style type="text/css">
+       body, p, td, tr, ol, ul, input, textarea {font:11px/130% Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;}
+    </style>
+</head>    
+
+<body>
+     <p>
+     <?php
+        echo $aLang['LOAD_DYN_CONTENT_NOTICE'];
+     ?>
+     </p>
+</body>
+    
+</html>

@@ -16,8 +16,29 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-require "_header.php";
-require "_footer.php";
+
+require_once "lang.php";
+
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <title><?php echo( $aLang['HEADER_META_MAIN_TITLE'] ) ?></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo( $aLang['charset'] ) ?>">
+    <style type="text/css">
+       body, p, td, tr, ol, ul, input, textarea {font:11px/130% Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;}
+    </style>
+</head>    
+
+<body>
+     <p>
+     <?php
+        echo $aLang['LOAD_DYN_CONTENT_NOTICE'];
+     ?>
+     </p>
+</body>
+    
+</html>

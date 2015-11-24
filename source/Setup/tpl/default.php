@@ -16,13 +16,8 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-?>
-</div>
-<div id="footer">
-    <?php $this->getText( 'FOOTER_OXID_ESALES' ); ?>
-</div>
-</body>
-</html>
+require "_header.php";
+require "_footer.php";

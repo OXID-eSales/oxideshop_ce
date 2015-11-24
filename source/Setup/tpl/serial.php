@@ -16,29 +16,25 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+require "_header.php"; ?>
+<b><?php $this->getText('STEP_5_DESC'); ?></b><br>
+<br>
+<form action="index.php" method="post">
+<input type="hidden" name="istep" value="<?php $this->getSetupStep('STEP_SERIAL_SAVE'); ?>">
 
-require_once "lang.php";
-
-?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
-<html>
-<head>
-    <title><?php echo( $aLang['HEADER_META_MAIN_TITLE'] ) ?></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo( $aLang['charset'] ) ?>">
-    <style type="text/css">
-       body, p, td, tr, ol, ul, input, textarea {font:11px/130% Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;}
-    </style>
-</head>    
-
-<body>
-     <p>
-     <?php
-        echo $aLang['LOAD_DYN_CONTENT_NOTICE'];
-     ?>
-     </p>
-</body>
-    
-</html>
+<table cellpadding="0" cellspacing="5" border="0">
+  <tr>
+    <td><?php $this->getText('STEP_5_LICENCE_KEY'); ?>:</td>
+    <td>&nbsp;&nbsp;<input size="47" name="sLicence" class="editinput" value="<?php echo $this->getViewParam( "sLicense" ); ?>"></td>
+    <td>&nbsp;&nbsp;<input type="submit" id="step5Submit" class="edittext" value="<?php $this->getText('BUTTON_WRITE_LICENCE'); ?>"></td>
+  </tr>
+</table>
+<br>
+<input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
+</form>
+<?php
+$this->getText('STEP_5_LICENCE_DESC');
+require "_footer.php";

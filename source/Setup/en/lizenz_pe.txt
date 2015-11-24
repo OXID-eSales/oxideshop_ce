@@ -1,0 +1,116 @@
+OXID eShop End User License Agreement
+
+1. Definitions
+
+"Software": (i) software files of the products OXID eShop Professional Edition
+and OXID eShop Enterprise Edition, (ii) related documentation, and (iii) any 
+updates, upgrades and additions to such Software. 
+
+"Software Core": all Software files, which are stored by the installation 
+procedure of the Software on the system in den directory "Core" and its
+subdirectories. 
+
+"Client": in organizational and technical database terms, a self-contained 
+unit in a System with separate master records and its own set of tables, 
+defined and controlled by parameters. View means a dynamic, virtual table 
+computed or collated from data in the database for a subsection of the master 
+records. 
+
+"CPU": the number of physical (non-virtual) processors in the production 
+system, each with a maximum of 4 processor cores per CPU.
+
+"Associated Companies": associated companies within the meaning of §§ 15 
+et.seq. German Stock Corporation Act.
+
+2. Copyright
+
+The Software is protected by copyright laws. Except as expressly stated herein, 
+this agreement does not grant you any intellectual property rights in the 
+Software and all rights not expressly granted are reserved by OXID eSales. 
+
+3. License
+
+Upon full payment of the license fees, OXID eSales grants you a non-exclusive, 
+permanent license to use the Software for your internal business purposes and 
+those of your Associated Companies. You may make a reasonable number of backup/ 
+recovery copies of the Software, provided your backup/ recovery copies are not 
+installed on systems.
+
+4. Restrictions
+
+4.1. The use of OXID eShop Professional Edition/Enterprise Edition requires 
+a valid and effective OXID eShop Support and Maintenance Agreement.
+
+4.2. The use of OXID eShop Professional Edition is limited to one (1) Client. 
+
+4.3. The use of OXID eShop Enterprise Edition is limited by the number of 
+licensed CPUs/ Clients. 
+
+4.4. The Software may contain software products of other vendors. Such Third 
+Party Products may be subject to additional terms, see under 
+http://www.oxid-esales.com/en/eshop/third-party-licenses
+
+4.5. You may not modify, adapt or translate the Software Core.
+
+4.6. Any copy of the Software permitted under the terms of this License must 
+contain the same copyright and other proprietary notices of OXID eSales that 
+appear on or in the licensed Software. 
+
+4.7. You may not rent, lease, let or sublicense the Software or make the 
+Software by any other means available to or accessible by third parties. 
+Notwithstanding the aforementioned, you are entitled to assign this License 
+or sublicense the Software to Associated Companies, provided that the use of 
+all sublicensed Software does in total not exceed the number of licensed CPUs/
+Clients. 
+
+4.8. Software provided for testing or demonstration purposes ("Testsoftware") 
+may not be used on production systems. 
+
+4.9. You may use the Software only in full compliance with applicable laws, 
+including, without limitation, compliance of any collecting, use and 
+processing of personal data with applicable data protection laws. 
+
+5. Termination
+
+OXID eSales may terminate this license agreement, if you are in breach with 
+your obligations under Sec. 4 and fail to remedy such breach within ten (10) 
+days after receipt of notice identifying such breach from OXID eSales. 
+OXID eSales right to recover damages for breach shall remain unaffected.
+
+6. Warranties 
+
+6.1. Conformity of the Software is determined exclusively according to 
+specifications of the Software documentation valid at the signing of this 
+agreement.
+
+6.2. The warranty period shall expire 12 months after delivery (making 
+available for download) of the Software. 
+
+6.3. Testsoftware is provided "AS IS" without a warranty of any kind.
+
+7. Liability
+
+7.1. OXID eSales shall be liable a)for any damage caused by a willful, 
+fraudulent or grossly negligent act, or resulting in injury to life, body or 
+health, or covered by the Product Liability Act, b) for any reasonably 
+foreseeable damage resulting from its breach of a fundamental contractual 
+obligation up to the amount of the licensing fees agreed under this agreement. 
+
+7.2. In case of Testsoftware, OXID eSales liability is limited to Sec. 7.1. a). 
+
+7.3. All other claims shall be excluded.
+
+8. Miscellaneous
+
+8.1. This license agreement will be governed by German law. 
+
+8.2. If any part of this agreement is found void and unenforceable, it will 
+not affect the balance of this agreement which will remain valid and 
+enforceable. 
+
+8.3. The German Version of this agreement will be used when interpreting or 
+construing this Agreement. 
+
+8.4. For all disputes arising out of this License, the jurisdiction of the 
+Regional Court Freiburg is herewith agreed. 
+

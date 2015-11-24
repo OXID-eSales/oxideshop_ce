@@ -16,22 +16,16 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-
-
-error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
-
-//setting basic configuration parameters
-ini_set('session.name', 'sid');
-ini_set('session.use_cookies', 0);
-ini_set('session.use_trans_sid', 0);
-ini_set('url_rewriter.tags', '');
-
-/**
- * Includes core setup file
- */
-require_once 'oxsetup.php';
-$oDispatcher = new oxSetupDispatcher();
-$oDispatcher->run();
+require "_header.php"; ?>
+<b><?php $this->getText('STEP_3_1_DB_CONNECT_IS_OK'); ?></b><br>
+<?php
+if ( $this->getViewParam( "blCreated" ) === 1 ) {
+    $aDB = $this->getViewParam( "aDB" );
+    ?><b><?php printf( $this->getText('STEP_3_1_DB_CREATE_IS_OK', false ), $aDB['dbName'] ); ?></b><br><?php
+}
+?>
+<br><?php $this->getText('STEP_3_1_CREATING_TABLES'); ?><br>
+<?php require "_footer.php";

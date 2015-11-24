@@ -16,25 +16,14 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 require "_header.php"; ?>
-<b><?php $this->getText('STEP_5_DESC'); ?></b><br>
-<br>
+</br></br>
 <form action="index.php" method="post">
-<input type="hidden" name="istep" value="<?php $this->getSetupStep('STEP_SERIAL_SAVE'); ?>">
-
-<table cellpadding="0" cellspacing="5" border="0">
-  <tr>
-    <td><?php $this->getText('STEP_5_LICENCE_KEY'); ?>:</td>
-    <td>&nbsp;&nbsp;<input size="47" name="sLicence" class="editinput" value="<?php echo $this->getViewParam( "sLicense" ); ?>"></td>
-    <td>&nbsp;&nbsp;<input type="submit" id="step5Submit" class="edittext" value="<?php $this->getText('BUTTON_WRITE_LICENCE'); ?>"></td>
-  </tr>
-</table>
-<br>
-<input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
+  <input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
+  <input type="hidden" name="istep" value="<?php $this->getText( 'STEP_WELCOME' ); ?>">
+  <input type="submit" id="step0Submit" class="edittext" value="<?php $this->getText( 'BUTTON_START_INSTALL' ); ?>">
 </form>
-<?php
-$this->getText('STEP_5_LICENCE_DESC');
-require "_footer.php";
+<?php require "_footer.php";

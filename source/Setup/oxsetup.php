@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionPathEntryPointProvider;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
+
 if (!function_exists('isAdmin')) {
     /**
      * Returns false, marking non admin state
@@ -70,9 +74,9 @@ if (!function_exists('getSystemReqCheck')) {
     {
         $basePath = defined('OXID_PHP_UNIT') ? getShopBasePath() : getInstallPath();
 
-        include_once $basePath . '/Core/EditionSelector.php';
+        include_once $basePath . '/Core/Edition/EditionSelector.php';
 
-        $editionSelector = new \OxidEsales\Eshop\Core\EditionSelector();
+        $editionSelector = new EditionSelector();
         include_once $basePath . '/Core/SystemRequirements.php';
         if ($editionSelector->getEdition() === 'EE') {
             include_once $basePath . '/Edition/Professional/Core/SystemRequirements.php';
@@ -171,28 +175,9 @@ if (!function_exists('getDefaultConfigFileMode')) {
     }
 }
 
-if (!function_exists('getSqlPath')) {
-    /**
-     * Returns mode which must be set for config file
-     *
-     * @return int
-     */
-    function getSqlPath()
-    {
-        $editionSelector = new \OxidEsales\Eshop\Core\EditionSelector();
-        $edition = $editionSelector->getEdition();
-
-        $path = getShopBasePath() . 'setup/Sql';
-        if ($edition === $editionSelector::ENTERPRISE) {
-            $path = getShopBasePath() . 'Edition/Enterprise/Setup/Sql';
-        }
-        if ($edition === $editionSelector::PROFESSIONAL) {
-            $path = getShopBasePath() . 'Edition/Professional/Setup/Sql';
-        }
-
-        return $path;
-    }
-}
+require_once getShopBasePath() . '/Core/Edition/EditionSelector.php';
+require_once getShopBasePath() . '/Core/Edition/EditionPathEntryPointProvider.php';
+require_once getShopBasePath() . '/Core/Edition/EditionPathProvider.php';
 
 
 if (!class_exists("Config")) {
@@ -563,7 +548,7 @@ class OxSetupLang extends oxSetupCore
     {
         if ($this->_aLangData === null) {
             $this->_aLangData = array();
-            $sLangFilePath = getInstallPath() . "setup/" . $this->getSetupLang() . '/lang.php';
+            $sLangFilePath = getInstallPath() . "Setup/" . ucfirst($this->getSetupLang()) . '/lang.php';
             if (file_exists($sLangFilePath) && is_readable($sLangFilePath)) {
                 include $sLangFilePath;
                 $this->_aLangData = $aLang;
@@ -1435,7 +1420,7 @@ class OxSetupUtils extends oxSetupCore
             if ($blBuildPath) {
                 $sExtPath = $sDir . '/' . $sExtPath;
             }
-            if (stristr($sDir, "setup")) {
+            if (stristr($sDir, "Setup")) {
                 $blBuildPath = true;
             }
         }
@@ -1484,7 +1469,6 @@ class OxSetupUtils extends oxSetupCore
     public function updateConfigFile($aParams)
     {
         $sConfPath = $aParams['sShopDir'] . "/config.inc.php";
-        $sVerPrefix = $this->getInstance("oxSetup")->getVersionPrefix();
 
         $oLang = $this->getInstance("oxSetupLang");
 
@@ -1503,11 +1487,7 @@ class OxSetupUtils extends oxSetupCore
             if ($sParamName[0] != 'i') {
                 $sParamValue = "'{$sParamValue}'";
             }
-            if (0 != preg_match("/(this->{$sParamName}).*'<.*$sVerPrefix>'.*;/", $sConfFile)) {
-                $sConfFile = preg_replace("/(this->{$sParamName}).*'<.*$sVerPrefix>'.*;/", "\\1 = " . $sParamValue . ";", $sConfFile);
-            } else {
-                $sConfFile = preg_replace("/(this->{$sParamName}).*/", "\\1 = " . $sParamValue . ";", $sConfFile);
-            }
+            $sConfFile = preg_replace("/(this->{$sParamName}).*'<.*>'.*;/", "\\1 = " . $sParamValue . ";", $sConfFile);
         }
 
         if (($fp = fopen($sConfPath, "w"))) {
@@ -1515,7 +1495,6 @@ class OxSetupUtils extends oxSetupCore
             fclose($fp);
             @chmod($sConfPath, getDefaultConfigFileMode());
         } else {
-            // error ? strange !?
             throw new Exception(sprintf($oLang->getText('ERROR_CONFIG_FILE_IS_NOT_WRITABLE'), $aParams['sShopDir']));
         }
     }
@@ -1928,7 +1907,7 @@ class oxSetupView extends oxSetupCore
         $aSetupConfig = $oSession->getSessionParam("aSetupConfig");
         if (isset($aSetupConfig['blDelSetupDir']) && $aSetupConfig['blDelSetupDir']) {
             // removing setup files
-            $blDeleted = $oUtils->removeDir($sPath . "setup", true);
+            $blDeleted = $oUtils->removeDir($sPath . "Setup", true);
         }
 
         return $blDeleted;
@@ -2247,7 +2226,8 @@ class oxSetupController extends oxSetupCore
             }
         }
 
-        $sqlDir = getSqlPath();
+        $editionPathSelector = $this->getEditionPathProvider();
+        $sqlDir = $editionPathSelector->getDatabaseSqlDirectoryPath();
 
         //settting database collation
         $iUtfMode = isset($aDB['iUtfMode']) ? ((int) $aDB['iUtfMode']) : 0;
@@ -2437,6 +2417,15 @@ class oxSetupController extends oxSetupCore
         $oView->setViewParam("blWritableConfig", is_writable($aPath['sShopDir'] . "/config.inc.php"));
 
         return "finish.php";
+    }
+
+    /**
+     * @return EditionPathProvider
+     */
+    protected function getEditionPathProvider()
+    {
+        $editionPathSelector = new EditionPathEntryPointProvider(new EditionSelector());
+        return new EditionPathProvider($editionPathSelector);
     }
 }
 

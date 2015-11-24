@@ -41,7 +41,7 @@ class oxTag extends oxSuperCfg
      * Forbidden tags
      */
     protected $_aForbiddenTags = array(
-        'admin', 'application', 'core', 'export', 'modules', 'out', 'setup', 'tmp'
+        'admin', 'application', 'core', 'export', 'modules', 'out', 'setup', 'Setup', 'tmp'
     );
 
     /**

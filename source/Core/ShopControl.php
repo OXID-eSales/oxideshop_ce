@@ -529,7 +529,7 @@ class ShopControl extends \oxSuperCfg
         $runOnceExecuted = oxRegistry::getSession()->getVariable('blRunOnceExecuted');
         if (!$runOnceExecuted && !$this->isAdmin() && $config->isProductiveMode()) {
             // check if setup is still there
-            if (file_exists($config->getConfigParam('sShopDir') . '/setup/index.php')) {
+            if (file_exists($config->getConfigParam('sShopDir') . '/Setup/index.php')) {
                 $tpl = 'message/err_setup.tpl';
                 $activeView = oxNew('oxUBase');
                 $smarty = oxRegistry::get("oxUtilsView")->getSmarty();

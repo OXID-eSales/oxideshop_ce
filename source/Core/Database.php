@@ -619,7 +619,7 @@ class Database
             //oxRegistry::getUtils()->redirect( "setup/index.php", true, 302 );
             $headerCode = "HTTP/1.1 302 Found";
             header($headerCode);
-            header("Location: setup/index.php");
+            header("Location: Setup/index.php");
             header("Connection: close");
             exit();
         } else {

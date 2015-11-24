@@ -219,7 +219,7 @@ class Navigation extends oxAdminView
 
 
         // check if setup dir is deleted
-        if (file_exists($this->getConfig()->getConfigParam('sShopDir') . '/setup/index.php')) {
+        if (file_exists($this->getConfig()->getConfigParam('sShopDir') . '/Setup/index.php')) {
             $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . oxRegistry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
         }
 

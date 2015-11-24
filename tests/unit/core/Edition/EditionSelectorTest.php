@@ -22,7 +22,7 @@
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 
-class EditionSelectorTest extends OxidTestCase
+class EditionSelectorTest extends OxidEsales\TestingLibrary\UnitTestCase
 {
     public function testReturnsEdition()
     {

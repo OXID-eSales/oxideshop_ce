@@ -171,6 +171,29 @@ if (!function_exists('getDefaultConfigFileMode')) {
     }
 }
 
+if (!function_exists('getSqlPath')) {
+    /**
+     * Returns mode which must be set for config file
+     *
+     * @return int
+     */
+    function getSqlPath()
+    {
+        $editionSelector = new \OxidEsales\Eshop\Core\EditionSelector();
+        $edition = $editionSelector->getEdition();
+
+        $path = getShopBasePath() . 'setup/Sql';
+        if ($edition === $editionSelector::ENTERPRISE) {
+            $path = getShopBasePath() . 'Edition/Enterprise/Setup/Sql';
+        }
+        if ($edition === $editionSelector::PROFESSIONAL) {
+            $path = getShopBasePath() . 'Edition/Professional/Setup/Sql';
+        }
+
+        return $path;
+    }
+}
+
 
 if (!class_exists("Config")) {
     /**
@@ -2175,6 +2198,7 @@ class oxSetupController extends oxSetupCore
      */
     public function dbCreate()
     {
+        /** @var oxSetup $oSetup */
         $oSetup = $this->getInstance("oxSetup");
         $oSession = $this->getInstance("oxSetupSession");
         $oLang = $this->getInstance("oxSetupLang");
@@ -2223,7 +2247,7 @@ class oxSetupController extends oxSetupCore
             }
         }
 
-        $sqlDir = 'sql';
+        $sqlDir = getSqlPath();
 
         //settting database collation
         $iUtfMode = isset($aDB['iUtfMode']) ? ((int) $aDB['iUtfMode']) : 0;

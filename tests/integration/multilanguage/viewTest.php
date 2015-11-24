@@ -20,7 +20,9 @@
  * @version   OXID eShop CE
  */
 
-class Integration_Multilanguage_ViewTest extends OxidTestCase
+require_once 'MultilanguageTestCase.php';
+
+class Integration_Multilanguage_ViewTest extends MultilanguageTestCase
 {
     /**
      * Make a copy of Stewart+Brown Shirt Kisser Fish for testing
@@ -33,19 +35,12 @@ class Integration_Multilanguage_ViewTest extends OxidTestCase
      */
     private $testArticleId = null;
 
-    private $originalLanguageArray = null;
-    private $originalBaseLanguageId = null;
-    private $languageMain = null;
-
     /**
      * Fixture setUp.
      */
     protected function setUp()
     {
         parent::setUp();
-
-        $this->originalLanguageArray = $this->getLanguageMain()->_getLanguages();
-        $this->originalBaseLanguageId = oxRegistry::getLang()->getBaseLanguage();
     }
 
     /*
@@ -53,10 +48,6 @@ class Integration_Multilanguage_ViewTest extends OxidTestCase
     */
     protected function tearDown()
     {
-        oxRegistry::getLang()->setBaseLanguage($this->originalBaseLanguageId);
-        $this->storeLanguageConfiguration($this->originalLanguageArray);
-        $this->updateViews();
-
         parent::tearDown();
     }
 
@@ -134,108 +125,5 @@ class Integration_Multilanguage_ViewTest extends OxidTestCase
         $article->oxarticles__oxartnum = new oxField('666-T', oxField::T_RAW);
         $article->oxarticles__oxtitle  = new oxField('TEST_MULTI_LANGUAGE', oxField::T_RAW);
         $article->save();
-    }
-
-    /**
-     * Test helper for test preparation.
-     * Add given count of new languages.
-     *
-     * @param $count
-     *
-     * @return int
-     */
-    private function prepare($count = 9)
-    {
-        for ($i=0;$i<$count;$i++) {
-            $languageName = chr(97+$i) . chr(97+$i);
-            $languageId = $this->insertLanguage($languageName);
-        }
-        //we need a fresh instance of language object in registry,
-        //otherwise stale data is used for language abbreviations.
-        oxRegistry::set('oxLang', null);
-
-        $this->updateViews();
-
-        return $languageId;
-    }
-
-    /**
-     * Test helper to insert a new language with given id.
-     *
-     * @param $languageId
-     *
-     * @return integer
-     */
-    private function insertLanguage($languageId)
-    {
-        $languages = $this->getLanguageMain()->_getLanguages();
-        $baseId = $this->getLanguageMain()->_getAvailableLangBaseId();
-        $sort = $baseId*100;
-
-        $languages['params'][$languageId] = array( 'baseId' => $baseId,
-                                                   'active' => 1,
-                                                   'sort'   => $sort );
-
-        $languages['lang'][$languageId] = $languageId;
-        $languages['urls'][$baseId]     = '';
-        $languages['sslUrls'][$baseId]  = '';
-        $this->getLanguageMain()->setLanguageData($languages);
-
-        $this->storeLanguageConfiguration($languages);
-
-        if (!$this->getLanguageMain()->_checkMultilangFieldsExistsInDb($languageId)) {
-            $this->getLanguageMain()->_addNewMultilangFieldsToDb();
-        }
-
-        return $baseId;
-    }
-
-    /**
-     * Test helper for saving language configuration.
-     *
-     * @param $languages
-     */
-    private function storeLanguageConfiguration($languages)
-    {
-        $this->getConfig()->saveShopConfVar('aarr', 'aLanguageParams', $languages['params']);
-        $this->getConfig()->saveShopConfVar('aarr', 'aLanguages', $languages['lang']);
-        $this->getConfig()->saveShopConfVar('arr', 'aLanguageURLs', $languages['urls']);
-        $this->getConfig()->saveShopConfVar('arr', 'aLanguageSSLURLs', $languages['sslUrls']);
-    }
-
-    /**
-     * Test helder to trigger view update.
-     */
-    private function updateViews()
-    {
-        $meta = oxNew('oxDbMetaDataHandler');
-        $meta->updateViews();
-    }
-
-    /**
-     * Getter for Language_Main_Helper proxy class.
-     *
-     * @return object
-     */
-    private function getLanguageMain()
-    {
-        if (is_null($this->languageMain)) {
-            $this->languageMain = $this->getProxyClass('Language_Main_Helper');
-            $this->languageMain->render();
-        }
-        return $this->languageMain;
-    }
-}
-
-class Language_Main_Helper extends Language_Main
-{
-    public function getLanguageData()
-    {
-        return $this->_aLangData;
-    }
-
-    public function setLanguageData($LanguageData)
-    {
-        $this->_aLangData = $LanguageData;
     }
 }

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once getShopBasePath() . '/setup/oxsetup.php';
+require_once getShopBasePath() . '/Setup/oxsetup.php';
 
 /**
  * oxSetupUtils tests
@@ -86,7 +86,7 @@ class Unit_Setup_oxSetupUtilsTest extends OxidTestCase
         $sLicenseFile = "lizenz.txt";
 
 
-        $sFilePath = getShopBasePath() . "setup/en/{$sLicenseFile}";
+        $sFilePath = getShopBasePath() . "Setup/en/{$sLicenseFile}";
 
         $oUtils = oxNew('oxSetupUtils');
         $this->assertEquals(file_get_contents($sFilePath), $oUtils->getFileContents($sFilePath));

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once getShopBasePath() . '/setup/oxsetup.php';
+require_once getShopBasePath() . '/Setup/oxsetup.php';
 
 /**
  * oxSetupView tests
@@ -194,7 +194,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
         $oInst2 = $this->getMock("oxSetupUtils", array("removeDir"));
         $oInst2->expects($this->at(0))->method("removeDir")->with($this->equalTo($sPath . "out/pictures_/generated"), $this->equalTo(true))->will($this->returnValue(true));
         $oInst2->expects($this->at(1))->method("removeDir")->with($this->equalTo($sPath . "out/pictures_/master"), $this->equalTo(true), $this->equalTo(1), $this->equalTo(array("nopic.jpg")))->will($this->returnValue(true));
-        $oInst2->expects($this->at(2))->method("removeDir")->with($this->equalTo($sPath . "setup"), $this->equalTo(true))->will($this->returnValue(true));
+        $oInst2->expects($this->at(2))->method("removeDir")->with($this->equalTo($sPath . "Setup"), $this->equalTo(true))->will($this->returnValue(true));
 
         $oInst3 = $this->getMock("oxSetup", array("getVersionPrefix"));
         $oInst3->expects($this->once())->method("getVersionPrefix")->will($this->returnValue("_"));

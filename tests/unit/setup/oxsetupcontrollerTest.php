@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-require_once getShopBasePath() . '/setup/oxsetup.php';
+require_once getShopBasePath() . '/Setup/oxsetup.php';
 
 /**
  * oxSetupController tests

@@ -787,7 +787,7 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
         if ($sType == '') {
             $sDir = $this->getConfig()->getAppDir() . '/translations' . DIRECTORY_SEPARATOR . $sLang . DIRECTORY_SEPARATOR . $sFile;
         } elseif ($sType == 'setup') {
-            $sDir = $this->getConfig()->getConfigParam('sShopDir') . '/setup' . DIRECTORY_SEPARATOR . $sLang . DIRECTORY_SEPARATOR . $sFile;
+            $sDir = $this->getConfig()->getConfigParam('sShopDir') . '/Setup' . DIRECTORY_SEPARATOR . $sLang . DIRECTORY_SEPARATOR . $sFile;
         } else {
             $sDir = $this->getConfig()->getAppDir() . '/views' . DIRECTORY_SEPARATOR . $sType . DIRECTORY_SEPARATOR . $sLang . DIRECTORY_SEPARATOR . $sFile;
         }
@@ -908,9 +908,8 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
      */
     public function providerSqlFilesForInvalidEncoding()
     {
-        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
         return array(
-            array(getShopBasePath() . "/setup/sql$postfix/*.sql"),
+            array(getShopBasePath() . '/Setup/sql' . OXID_VERSION_SUFIX . '/*.sql'),
         );
     }
 

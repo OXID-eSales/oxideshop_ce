@@ -85,8 +85,7 @@ class Unit_Setup_oxSetupUtilsTest extends OxidTestCase
     {
         $sLicenseFile = "lizenz.txt";
 
-
-        $sFilePath = getShopBasePath() . "Setup/en/{$sLicenseFile}";
+        $sFilePath = getShopBasePath() . "Setup/En/{$sLicenseFile}";
 
         $oUtils = oxNew('oxSetupUtils');
         $this->assertEquals(file_get_contents($sFilePath), $oUtils->getFileContents($sFilePath));

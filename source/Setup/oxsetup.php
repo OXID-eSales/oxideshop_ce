@@ -2043,9 +2043,15 @@ class oxSetupController extends oxSetupCore
     {
         $sLicenseFile = "lizenz.txt";
 
+        $editionPathSelector = $this->getEditionPathProvider();
+
         $oView = $this->getView();
         $oView->setTitle('STEP_2_TITLE');
-        $oView->setViewParam("aLicenseText", $this->getInstance("oxSetupUtils")->getFileContents($this->getInstance("oxSetupLang")->getSetupLang() . "/" . $sLicenseFile));
+        $oView->setViewParam("aLicenseText", $this->getInstance("oxSetupUtils")->getFileContents(
+            $editionPathSelector->getSetupDirectoryPath()
+            . '/'. ucfirst($this->getInstance("oxSetupLang")->getSetupLang())
+            . '/' . $sLicenseFile
+        ));
 
         return "license.php";
     }

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -471,7 +471,7 @@ class Language_Main extends oxAdminDetails
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
         // if creating new language, checking if language already exists with
-        // entered language abbervation
+        // entered language abbreviation
         if ($sOxId == -1) {
             if ($this->_checkLangExists($aParams['abbr'])) {
                 $oEx = oxNew('oxExceptionToDisplay');
@@ -479,6 +479,14 @@ class Language_Main extends oxAdminDetails
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
                 $blResult = false;
             }
+        }
+
+        // As the abbreviation is used in database view creation, check for allowed characters
+        if (!$this->checkAbbreviationAllowedCharacters($aParams['abbr'])) {
+            $oEx = oxNew('oxExceptionToDisplay');
+            $oEx->setMessage('LANGUAGE_ABBREVIATION_INVALID_ERROR');
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            $blResult = false;
         }
 
         // checking if language name is not empty
@@ -491,4 +499,24 @@ class Language_Main extends oxAdminDetails
 
         return $blResult;
     }
+
+    /**
+     * Check if language abbreviation contains only allowed characters.
+     * Abbreviation is used for view creation, so to be on the safe side with MySQL,
+     * only allow characters [0-9,a-z,A-Z_] (basic Latin letters, digits 0-9, underscore).
+     * Allowing other characters means table names would have to be escaped with backticks in all queries.
+     *
+     * @param string $sAbbreviation language abbreviation
+     *
+     * @return bool
+     */
+    protected function checkAbbreviationAllowedCharacters($sAbbreviation)
+    {
+        $blReturn = false;
+        if (preg_match('/^[a-zA-Z0-9_]*$/', $sAbbreviation)) {
+            $blReturn = true;
+        }
+        return $blReturn;
+    }
+
 }

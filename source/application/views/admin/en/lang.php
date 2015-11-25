@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -816,6 +816,7 @@ $aLang = array(
 'LANGUAGE_ABBRCHANGEMAINLANG_WARNING'                      => 'Attention: you can\'t change abbreviation of main language (with ID = 0)!',
 'LANGUAGE_ALREADYEXISTS_ERROR'                             => 'Error: a language with this abbreviation already exists!',
 'LANGUAGE_EMPTYLANGUAGENAME_ERROR'                         => 'Please enter language name!',
+'LANGUAGE_ABBREVIATION_INVALID_ERROR'                      => 'Language abbreviation invalid! Permitted characters are a-z, A-Z, 0-9 and the underscore.',
 'SETUP_DIRNOTDELETED_WARNING'                              => 'Please delete directory: setup!',
 'UPDATEAPP_DIRNOTDELETED_WARNING'                          => 'Please delete directory: updateApp!',
 'SETUP_CONFIGPERMISSIONS_WARNING'                          => 'Due to security reasons put your config.inc.php file to read-only mode!',

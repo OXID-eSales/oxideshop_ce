@@ -80,7 +80,6 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
         $this->assertEquals("testStep", $oSetup->getNextStep());
     }
 
-
     /**
      * Testing oxSetup::alreadySetUp()
      *
@@ -101,6 +100,9 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
     {
         $sBaseShopId = 'oxbaseshop';
 
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $sBaseShopId = '1';
+        }
 
         $oSetup = oxNew('oxSetup');
         $this->assertEquals($sBaseShopId, $oSetup->getShopId());
@@ -115,7 +117,9 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
     {
         $iCount = 11;
 
-        $iCount = 9;
+        if ($this->getTestConfig()->getShopEdition() === 'CE') {
+            $iCount = 9;
+        }
 
         $oSetup = oxNew('oxSetup');
         $this->assertEquals($iCount, count($oSetup->getSteps()));
@@ -143,6 +147,16 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
         $oSetup = oxNew('oxSetup');
         $sVerPrefix = '';
 
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
+            $sVerPrefix = '_ee';
+        }
+        if ($this->getTestConfig()->getShopEdition() === 'PE') {
+            $sVerPrefix = '_pe';
+        }
+
+        if ($this->getTestConfig()->getShopEdition() === 'CE') {
+            $sVerPrefix = '_ce';
+        }
 
         $this->assertEquals($sVerPrefix, $oSetup->getVersionPrefix());
     }

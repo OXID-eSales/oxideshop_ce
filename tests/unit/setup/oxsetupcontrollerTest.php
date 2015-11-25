@@ -607,7 +607,6 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $this->assertEquals("default.php", $oController->dbCreate());
     }
 
-
     /**
      * Testing oxSetupController::finish()
      *
@@ -870,8 +869,13 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oSetup = $this->getMock("oxSetup", array("setNextStep", "getStep"));
         $oSetup->expects($this->once())->method("setNextStep");
 
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
+            $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_SERIAL"));
+        }
 
-        $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_FINISH"));
+        if ($this->getTestConfig()->getShopEdition() === 'CE') {
+            $oSetup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_FINISH"));
+        }
 
         $iAt = 0;
         $oSession = $this->getMock("oxSetupSession", array("setSessionParam", "getSessionParam"), array(), '', null);

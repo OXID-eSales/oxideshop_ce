@@ -30,11 +30,15 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
     /** @var array Queries will be logged here. */
     private $loggedQueries;
 
+    /**
+     * Resets logged queries.
+     */
     protected function setUp()
     {
         parent::setUp();
         $this->loggedQueries = new stdClass();
     }
+
     /**
      * Testing oxSetupDb::execSql()
      */
@@ -243,7 +247,11 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
             array('check_for_updates', null),
             array('country_lang', null),
         );
-        $map[] = array('use_dynamic_pages', false);
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $map[] = array('use_dynamic_pages', true);
+        } else {
+            $map[] = array('use_dynamic_pages', false);
+        }
         $session->expects($this->any())->method("getSessionParam")->will($this->returnValueMap($map));
 
 
@@ -262,7 +270,6 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
 
         $database->saveShopSettings(array());
     }
-
 
     /**
      * Testing oxSetupDb::setMySqlCollation()

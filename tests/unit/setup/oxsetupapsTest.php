@@ -95,6 +95,12 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
         $oDb->expects($this->at($iAt++))->method("convertConfigTableToUtf");
         $oDb->expects($this->at($iAt++))->method("writeAdminLoginData");
 
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
+            $iAt = 0;
+            $oSetup = $this->getMock("oxSetup", array("getDefaultSerial", "setSerial"));
+            $oSetup->expects($this->at($iAt++))->method("writeAdminLoginData");
+            $oSetup->expects($this->at($iAt++))->method("writeAdminLoginData");
+        }
 
         $iAt = 0;
 
@@ -102,6 +108,9 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
         $oSetupAps->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupUtils"))->will($this->returnValue($oUtils));
         $oSetupAps->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupDb"))->will($this->returnValue($oDb));
 
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
+            $oSetupAps->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetup"))->will($this->returnValue($oSetup));
+        }
         $oSetupAps->install();
     }
 

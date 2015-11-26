@@ -324,6 +324,7 @@ class SystemRequirements
     {
         $sVerPrefix = '';
 
+
         clearstatcache();
         $sPath = $sPath ? $sPath : getShopBasePath();
 
@@ -336,7 +337,7 @@ class SystemRequirements
             return 0;
         }
 
-        $sTmp = "$sPath/tmp{$sVerPrefix}/";
+        $sTmp = "$sPath/tmp/";
         if (class_exists('oxConfig')) {
             $sCfgTmp = $this->getConfig()->getConfigParam('sCompileDir');
             if (strpos($sCfgTmp, '<sCompileDir_') === false) {
@@ -384,6 +385,7 @@ class SystemRequirements
 
         return $iModStat;
     }
+
 
     /**
      * returns host, port, base dir, ssl information as assotiative array, false on error

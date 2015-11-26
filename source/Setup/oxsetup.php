@@ -548,7 +548,7 @@ class OxSetupLang extends oxSetupCore
     {
         if ($this->_aLangData === null) {
             $this->_aLangData = array();
-            $sLangFilePath = getInstallPath() . "Setup/" . ucfirst($this->getSetupLang()) . '/lang.php';
+            $sLangFilePath = getInstallPath() . EditionPathProvider::SETUP_DIRECTORY . '/' . ucfirst($this->getSetupLang()) . '/lang.php';
             if (file_exists($sLangFilePath) && is_readable($sLangFilePath)) {
                 include $sLangFilePath;
                 $this->_aLangData = $aLang;
@@ -1420,7 +1420,7 @@ class OxSetupUtils extends oxSetupCore
             if ($blBuildPath) {
                 $sExtPath = $sDir . '/' . $sExtPath;
             }
-            if (stristr($sDir, "Setup")) {
+            if (stristr($sDir, EditionPathProvider::SETUP_DIRECTORY)) {
                 $blBuildPath = true;
             }
         }
@@ -1907,7 +1907,7 @@ class oxSetupView extends oxSetupCore
         $aSetupConfig = $oSession->getSessionParam("aSetupConfig");
         if (isset($aSetupConfig['blDelSetupDir']) && $aSetupConfig['blDelSetupDir']) {
             // removing setup files
-            $blDeleted = $oUtils->removeDir($sPath . "Setup", true);
+            $blDeleted = $oUtils->removeDir($sPath . EditionPathProvider::SETUP_DIRECTORY, true);
         }
 
         return $blDeleted;

@@ -993,7 +993,7 @@ class OxSetupDb extends oxSetupCore
     /**
      * Creates database
      *
-     * @param object $sDbName database name
+     * @param string $sDbName database name
      *
      * @throws Exception exception is thrown if database creation failed
      */
@@ -1086,28 +1086,28 @@ class OxSetupDb extends oxSetupCore
 
         //set only one active language
         $oStatement = $oPdo->query("select oxvarname, oxvartype, DECODE( oxvarvalue, '" . $oConfk->sConfigKey . "') AS oxvarvalue from oxconfig where oxvarname='aLanguageParams'");
-        if (false !== ($aRow = $oStatement->fetch())) {
+        if ($oStatement && false !== ($aRow = $oStatement->fetch())) {
             if ($aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr') {
                 $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue']);
             }
             $aLanguageParams = $aRow['oxvarvalue'];
-        }
-        foreach ($aLanguageParams as $sKey => $aLang) {
-            $aLanguageParams[$sKey]["active"] = "0";
-        }
-        $aLanguageParams[$sShopLang]["active"] = "1";
+            foreach ($aLanguageParams as $sKey => $aLang) {
+                $aLanguageParams[$sKey]["active"] = "0";
+            }
+            $aLanguageParams[$sShopLang]["active"] = "1";
 
-        $sValue = serialize($aLanguageParams);
+            $sValue = serialize($aLanguageParams);
 
-        $oInsert->execute(
-            array(
-                'oxid' => $oUtils->generateUid(),
-                'shopId' => $sBaseShopId,
-                'name' => 'aLanguageParams',
-                'type' => 'aarr',
-                'value' => $sValue
-            )
-        );
+            $oInsert->execute(
+                array(
+                    'oxid' => $oUtils->generateUid(),
+                    'shopId' => $sBaseShopId,
+                    'name' => 'aLanguageParams',
+                    'type' => 'aarr',
+                    'value' => $sValue
+                )
+            );
+        }
     }
 
 

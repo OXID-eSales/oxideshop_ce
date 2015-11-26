@@ -24,6 +24,7 @@ namespace OxidEsales\Eshop\Core;
 
 use oxBase;
 use oxFileCache;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use oxModuleVariablesLocator;
 use oxShopIdCalculator;
 use oxSubShopSpecificFileCache;

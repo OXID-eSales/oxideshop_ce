@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\EshopEnterprise\ClassMap as EnterpriseClassMap;
 use OxidEsales\EshopProfessional\ClassMap as ProfessionalClassMap;
 

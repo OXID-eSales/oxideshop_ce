@@ -22,7 +22,7 @@
 
 namespace OxidEsales\Eshop\Application\Controller\Admin;
 
-use OxidEsales\Eshop\Core\EditionSelector;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use oxRegistry;
 use oxDb;
 use oxNavigationTree;

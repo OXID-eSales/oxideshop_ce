@@ -432,7 +432,7 @@ $namespacedAutoloader = new oxNamespacedAutoloader(getShopBasePath());
 spl_autoload_register(array($namespacedAutoloader, 'autoload'));
 
 // Register not overridable classes autoloader.
-$classMapProvider = new \OxidEsales\Eshop\Core\ClassMapProvider(new \OxidEsales\Eshop\Core\EditionSelector());
+$classMapProvider = new \OxidEsales\Eshop\Core\ClassMapProvider(new \OxidEsales\Eshop\Core\Edition\EditionSelector());
 $notOverridableClassAutoloader = new \OxidEsales\Eshop\Core\NotOverridableClassAutoloader($classMapProvider->getNotOverridableClassMap());
 spl_autoload_register(array($notOverridableClassAutoloader, 'autoload'));
 

@@ -19,6 +19,9 @@
     RewriteCond %{REQUEST_URI}     config\.inc\.php [NC]
     RewriteRule ^config\.inc\.php  index\.php       [R=301,L]
 
+    RewriteCond %{REQUEST_URI} setup   [NC]
+    RewriteRule ^setup(.*)$    Setup$1 [R=301,L]
+
     RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
     RewriteRule .* - [F]
 

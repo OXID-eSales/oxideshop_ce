@@ -54,8 +54,17 @@ class EditionPathEntryPointProviderTest extends OxidEsales\TestingLibrary\UnitTe
      */
     protected function getEditionSelectorMock($edition)
     {
-        $editionSelector = $this->getMockBuilder('EditionSelector')->setMethods(array('getEdition'))->getMock();
-        $editionSelector->method('getEdition')->willReturn($edition);
+        $mockedMethodName = 'isCommunity';
+        if ($edition === EditionSelector::ENTERPRISE) {
+            $mockedMethodName = 'isEnterprise';
+        }
+        if ($edition === EditionSelector::PROFESSIONAL) {
+            $mockedMethodName = 'isProfessional';
+        }
+
+        $editionSelector = $this->getMockBuilder('OxidEsales\Eshop\Core\Edition\EditionSelector')->getMock();
+        $editionSelector->method($mockedMethodName)->willReturn(true);
+
         return $editionSelector;
     }
 }

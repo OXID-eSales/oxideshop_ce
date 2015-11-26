@@ -58,7 +58,7 @@ class EditionSelector
     /**
      * @return bool
      */
-    protected function isEnterprise()
+    public function isEnterprise()
     {
         return (bool) OXID_VERSION_EE;
     }
@@ -66,8 +66,16 @@ class EditionSelector
     /**
      * @return bool
      */
-    protected function isProfessional()
+    public function isProfessional()
     {
         return (bool) OXID_VERSION_PE_PE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCommunity()
+    {
+        return (bool) OXID_VERSION_PE_CE;
     }
 }

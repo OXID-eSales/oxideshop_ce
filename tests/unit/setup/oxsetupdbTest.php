@@ -28,12 +28,12 @@ require_once getShopBasePath() . '/setup/oxsetup.php';
 class Unit_Setup_oxSetupDbTest extends OxidTestCase
 {
     /** @var array Queries will be logged here. */
-    private $loggedQueries = array();
+    private $loggedQueries;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->loggedQueries = array();
+        $this->loggedQueries = new stdClass();
     }
     /**
      * Testing oxSetupDb::execSql()
@@ -392,11 +392,11 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
             $config->getConfigParam('dbUser'),
             $config->getConfigParam('dbPwd')));
 
-        $test = $this;
+        $loggedQueries = $this->loggedQueries;
         $pdoMock->expects($this->any())
             ->method('exec')
-            ->will($this->returnCallback(function ($query) use ($test) {
-                $test->loggedQueries[] = $query;
+            ->will($this->returnCallback(function ($query) use ($loggedQueries) {
+                $loggedQueries->queries[] = $query;
             }));
 
         return $pdoMock;
@@ -409,6 +409,6 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     protected function getLoggedQueries()
     {
-        return $this->loggedQueries;
+        return $this->loggedQueries->queries;
     }
 }

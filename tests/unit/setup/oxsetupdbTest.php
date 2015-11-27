@@ -378,26 +378,35 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
     }
 
     /**
+     * Logs exec queries instead of executing them.
+     * Prepared statements will be executed as usual and will not be logged.
+     *
      * @return PDO
      */
     protected function createConnectionMock()
     {
         $config = $this->getConfig();
         $dsn = sprintf('mysql:host=%s', $config->getConfigParam('dbHost'));
-
         $pdoMock = $this->getMock('PDO', array('exec'), array(
             $dsn,
             $config->getConfigParam('dbUser'),
             $config->getConfigParam('dbPwd')));
+
+        $test = $this;
         $pdoMock->expects($this->any())
             ->method('exec')
-            ->will($this->returnCallback(function ($query) {
-                $this->loggedQueries[] = $query;
+            ->will($this->returnCallback(function ($query) use ($test) {
+                $test->loggedQueries[] = $query;
             }));
 
         return $pdoMock;
     }
 
+    /**
+     * Returns logged queries when mocked connection is used.
+     *
+     * @return array
+     */
     protected function getLoggedQueries()
     {
         return $this->loggedQueries;

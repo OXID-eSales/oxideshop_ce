@@ -118,7 +118,7 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
     {
         $oUtilsFile = new oxUtilsFile();
         $this->assertFalse($oUtilsFile->urlValidate("test"));
-        $this->assertFalse($oUtilsFile->urlValidate("http://www.gggdddzzzfff.com"));
+        $this->assertFalse($oUtilsFile->urlValidate("http://www.oxid_non_existing_page.com"));
 
         $shopUrl = $this->getTestConfig()->getShopUrl();
         $this->assertTrue($oUtilsFile->urlValidate($shopUrl ."?param=value"));

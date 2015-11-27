@@ -825,8 +825,7 @@ class oxUtils extends oxSuperCfg
         }
         $hRemote = @fopen($sRemote, "rb");
         $blSuccess = false;
-        if (isset($hRemote) && $hRemote) {
-            $hLocal = fopen($sLocal, "wb");
+        if (is_resource($hRemote) && $hLocal = @fopen($sLocal, "wb")) {
             stream_copy_to_stream($hRemote, $hLocal);
             fclose($hRemote);
             fclose($hLocal);

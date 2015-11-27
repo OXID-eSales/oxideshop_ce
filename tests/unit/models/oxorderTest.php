@@ -681,7 +681,7 @@ class Unit_Models_oxorderTest extends OxidTestCase
 
         $oContents = $oBasket->getContents();
         $this->assertEquals(1, count($oContents));
-        $this->assertEquals('xxx', current($oContents)->getWrappingId());
+        $this->assertEquals('xxx', $oContents['_testOrderArticleId']->getWrappingId());
     }
 
     public function testAddOrderArticlesToBasketUsesVouchersDiscount()

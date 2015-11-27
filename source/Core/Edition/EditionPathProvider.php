@@ -34,7 +34,7 @@ class EditionPathProvider
 
     const DATABASE_SQL_DIRECTORY = 'Sql';
 
-    /** @var EditionPathEntryPointProvider */
+    /** @var EditionRootPathProvider */
     private $editionPathSelector;
 
     /**
@@ -67,7 +67,7 @@ class EditionPathProvider
     }
 
     /**
-     * @return EditionPathEntryPointProvider
+     * @return EditionRootPathProvider
      */
     protected function getEditionPathSelector()
     {

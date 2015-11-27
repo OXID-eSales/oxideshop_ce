@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Eshop\Core\Edition\EditionPathEntryPointProvider;
+use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 
-class EditionPathEntryPointProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
+class EditionRootPathProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
 {
     public function providerReturnsEditionPath()
     {
@@ -43,7 +43,7 @@ class EditionPathEntryPointProviderTest extends OxidEsales\TestingLibrary\UnitTe
     public function testReturnsEditionPath($edition, $setupPath)
     {
         $editionSelector = $this->getEditionSelectorMock($edition);
-        $editionPathSelector = new EditionPathEntryPointProvider($editionSelector);
+        $editionPathSelector = new EditionRootPathProvider($editionSelector);
 
         $this->assertSame($setupPath, $editionPathSelector->getDirectoryPath());
     }

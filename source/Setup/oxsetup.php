@@ -21,7 +21,7 @@
  */
 
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionPathEntryPointProvider;
+use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 
 if (!function_exists('isAdmin')) {
@@ -176,7 +176,7 @@ if (!function_exists('getDefaultConfigFileMode')) {
 }
 
 require_once getShopBasePath() . '/Core/Edition/EditionSelector.php';
-require_once getShopBasePath() . '/Core/Edition/EditionPathEntryPointProvider.php';
+require_once getShopBasePath() . '/Core/Edition/EditionRootPathProvider.php';
 require_once getShopBasePath() . '/Core/Edition/EditionPathProvider.php';
 
 
@@ -2430,7 +2430,7 @@ class oxSetupController extends oxSetupCore
      */
     protected function getEditionPathProvider()
     {
-        $editionPathSelector = new EditionPathEntryPointProvider(new EditionSelector());
+        $editionPathSelector = new EditionRootPathProvider(new EditionSelector());
         return new EditionPathProvider($editionPathSelector);
     }
 }

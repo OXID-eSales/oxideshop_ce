@@ -264,17 +264,22 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testSetMySqlCollationUtfMode()
     {
-        $iAt = 0;
+        $connection = $this->createConnectionMock();
         /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
-        $database = $this->getMock("oxSetupDb", array("execSql"));
-        $database->expects($this->at($iAt++))->method("execSql")->with($this->equalTo("ALTER SCHEMA CHARACTER SET utf8 COLLATE utf8_general_ci"));
-        $database->expects($this->at($iAt++))->method("execSql")->with($this->equalTo("set names 'utf8'"));
-        $database->expects($this->at($iAt++))->method("execSql")->with($this->equalTo("set character_set_database=utf8"));
-        $database->expects($this->at($iAt++))->method("execSql")->with($this->equalTo("SET CHARACTER SET latin1"));
-        $database->expects($this->at($iAt++))->method("execSql")->with($this->equalTo("SET CHARACTER_SET_CONNECTION = utf8"));
-        $database->expects($this->at($iAt++))->method("execSql")->with($this->equalTo("SET character_set_results = utf8"));
-        $database->expects($this->at($iAt++))->method("execSql")->with($this->equalTo("SET character_set_server = utf8"));
+        $database = $this->getMock("oxSetupDb", array('getConnection'));
+        $database->expects($this->any())->method('getConnection')->will($this->returnValue($connection));
         $database->setMySqlCollation(1);
+
+        $expectedQueries = array(
+            "ALTER SCHEMA CHARACTER SET utf8 COLLATE utf8_general_ci",
+            "set names 'utf8'",
+            "set character_set_database=utf8",
+            "SET CHARACTER SET latin1",
+            "SET CHARACTER_SET_CONNECTION = utf8",
+            "SET character_set_results = utf8",
+            "SET character_set_server = utf8"
+        );
+        $this->assertEquals($expectedQueries, $this->getLoggedQueries());
     }
 
     /**
@@ -282,12 +287,17 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testSetMySqlCollation()
     {
-        $at = 0;
+        $connection = $this->createConnectionMock();
         /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
-        $database = $this->getMock("oxSetupDb", array("execSql"));
-        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("ALTER SCHEMA CHARACTER SET latin1 COLLATE latin1_general_ci"));
-        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("SET CHARACTER SET latin1"));
+        $database = $this->getMock("oxSetupDb", array("getConnection"));
+        $database->expects($this->any())->method("getConnection")->will($this->returnValue($connection));
         $database->setMySqlCollation(0);
+
+        $expectedQueries = array(
+            "ALTER SCHEMA CHARACTER SET latin1 COLLATE latin1_general_ci",
+            "SET CHARACTER SET latin1",
+        );
+        $this->assertEquals($expectedQueries, $this->getLoggedQueries());
     }
 
     /**

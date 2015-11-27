@@ -1204,17 +1204,18 @@ class OxSetupDb extends oxSetupCore
      */
     public function setMySqlCollation($iUtfMode)
     {
+        $pdo = $this->getConnection();
         if ($iUtfMode) {
-            $this->execSql("ALTER SCHEMA CHARACTER SET utf8 COLLATE utf8_general_ci");
-            $this->execSql("set names 'utf8'");
-            $this->execSql("set character_set_database=utf8");
-            $this->execSql("SET CHARACTER SET latin1");
-            $this->execSql("SET CHARACTER_SET_CONNECTION = utf8");
-            $this->execSql("SET character_set_results = utf8");
-            $this->execSql("SET character_set_server = utf8");
+            $pdo->exec("ALTER SCHEMA CHARACTER SET utf8 COLLATE utf8_general_ci");
+            $pdo->exec("set names 'utf8'");
+            $pdo->exec("set character_set_database=utf8");
+            $pdo->exec("SET CHARACTER SET latin1");
+            $pdo->exec("SET CHARACTER_SET_CONNECTION = utf8");
+            $pdo->exec("SET character_set_results = utf8");
+            $pdo->exec("SET character_set_server = utf8");
         } else {
-            $this->execSql("ALTER SCHEMA CHARACTER SET latin1 COLLATE latin1_general_ci");
-            $this->execSql("SET CHARACTER SET latin1");
+            $pdo->exec("ALTER SCHEMA CHARACTER SET latin1 COLLATE latin1_general_ci");
+            $pdo->exec("SET CHARACTER SET latin1");
         }
     }
 

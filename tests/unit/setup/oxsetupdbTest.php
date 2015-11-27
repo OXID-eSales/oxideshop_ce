@@ -27,6 +27,14 @@ require_once getShopBasePath() . '/setup/oxsetup.php';
  */
 class Unit_Setup_oxSetupDbTest extends OxidTestCase
 {
+    /** @var array Queries will be logged here. */
+    private $loggedQueries = array();
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->loggedQueries = array();
+    }
     /**
      * Testing oxSetupDb::execSql()
      */
@@ -227,12 +235,12 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
 
         $map = array(
             array('location_lang', null),
-            array('use_dynamic_pages', false),
-            array('location_lang', null),
             array('check_for_updates', null),
             array('country_lang', null),
         );
+        $map[] = array('use_dynamic_pages', false);
         $session->expects($this->any())->method("getSessionParam")->will($this->returnValueMap($map));
+
 
         $setup = $this->getMock("oxSetup", array("getShopId"));
         $setup->expects($this->any())->method("getShopId");
@@ -249,6 +257,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
 
         $database->saveShopSettings(array());
     }
+
 
     /**
      * Testing oxSetupDb::setMySqlCollation()
@@ -356,5 +365,31 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $pdo->exec("USE " . $config->getConfigParam('dbName'));
 
         return $pdo;
+    }
+
+    /**
+     * @return PDO
+     */
+    protected function createConnectionMock()
+    {
+        $config = $this->getConfig();
+        $dsn = sprintf('mysql:host=%s', $config->getConfigParam('dbHost'));
+
+        $pdoMock = $this->getMock('PDO', array('exec'), array(
+            $dsn,
+            $config->getConfigParam('dbUser'),
+            $config->getConfigParam('dbPwd')));
+        $pdoMock->expects($this->any())
+            ->method('exec')
+            ->will($this->returnCallback(function ($query) {
+                $this->loggedQueries[] = $query;
+            }));
+
+        return $pdoMock;
+    }
+
+    protected function getLoggedQueries()
+    {
+        return $this->loggedQueries;
     }
 }

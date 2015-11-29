@@ -14,7 +14,7 @@
         label {width:100px;float:left;padding:2px 0;margin-top:2px;clear:both;}
         input,select {width:220px;margin-bottom:2px;font-face:Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;}
         select{width:226px;}
-        input.btn{margin-left:100px;width:226px;}
+        input.btn{margin-left:100px;width:226px;cursor:pointer}
         a.help {text-decoration:none;text-align:center;display:block;color:#000;margin:2px 0 0 100px;}
         a.help:hover {text-decoration:underline;}
         div.errorbox{color:#f00;text-align:center;margin:0 0 5px 0;}

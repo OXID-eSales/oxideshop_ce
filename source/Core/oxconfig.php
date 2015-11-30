@@ -464,7 +464,6 @@ class oxConfig extends oxSuperCfg
      */
     protected function _setDefaults()
     {
-
         $this->setConfigParam('sTheme', 'azure');
 
         if (is_null($this->getConfigParam('sDefaultLang'))) {

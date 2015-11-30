@@ -687,8 +687,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
      */
     public function testGetIconUrl()
     {
-        $sPrefix = "_" . strtolower($this->getTestConfig()->getShopEdition());
-        $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures{$sPrefix}/generated/product/1/87_87_75/nopic.jpg";
+        $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures/generated/product/1/87_87_75/nopic.jpg";
 
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxpic1 = new oxField('testicon.jpg');
@@ -706,8 +705,7 @@ class Unit_Models_oxbasketitemTest extends OxidTestCase
      */
     public function testGetIconUrlAfterSslSwitch()
     {
-        $sPrefix = "_" . strtolower($this->getTestConfig()->getShopEdition());
-        $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures{$sPrefix}/master/product/icon/nopic_ico.jpg";
+        $sIconUrl = $this->getConfig()->getConfigParam("sShopURL") . "out/pictures/master/product/icon/nopic_ico.jpg";
 
         $oArticle = $this->getMock('oxarticle', array('getIconUrl', 'getLink'));
         $oArticle->oxarticles__oxpic1 = new oxField('testicon.jpg');

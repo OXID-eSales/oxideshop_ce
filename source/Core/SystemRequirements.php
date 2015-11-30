@@ -347,12 +347,12 @@ class SystemRequirements
         }
 
         $aPathsToCheck = array(
-            $sPath . "out/pictures{$sVerPrefix}/promo/",
-            $sPath . "out/pictures{$sVerPrefix}/master/",
-            $sPath . "out/pictures{$sVerPrefix}/generated/",
-            $sPath . "out/pictures{$sVerPrefix}/media/", // @deprecated, use out/media instead
-            $sPath . "out/media/",
-            $sPath . "log/",
+            $sPath . 'out/pictures/promo/',
+            $sPath . 'out/pictures/master/',
+            $sPath . 'out/pictures/generated/',
+            $sPath . 'out/pictures/media/', // @deprecated, use out/media instead
+            $sPath . 'out/media/',
+            $sPath . 'log/',
             $sTmp
         );
         $iModStat = 2;

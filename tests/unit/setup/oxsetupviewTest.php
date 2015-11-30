@@ -192,8 +192,8 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
         $oInst1->expects($this->at(1))->method("getSessionParam")->will($this->returnValue(array("blDelSetupDir" => true)));
 
         $oInst2 = $this->getMock("oxSetupUtils", array("removeDir"));
-        $oInst2->expects($this->at(0))->method("removeDir")->with($this->equalTo($sPath . "out/pictures_/generated"), $this->equalTo(true))->will($this->returnValue(true));
-        $oInst2->expects($this->at(1))->method("removeDir")->with($this->equalTo($sPath . "out/pictures_/master"), $this->equalTo(true), $this->equalTo(1), $this->equalTo(array("nopic.jpg")))->will($this->returnValue(true));
+        $oInst2->expects($this->at(0))->method("removeDir")->with($this->equalTo($sPath . "out/pictures/generated"), $this->equalTo(true))->will($this->returnValue(true));
+        $oInst2->expects($this->at(1))->method("removeDir")->with($this->equalTo($sPath . "out/pictures/master"), $this->equalTo(true), $this->equalTo(1), $this->equalTo(array("nopic.jpg")))->will($this->returnValue(true));
         $oInst2->expects($this->at(2))->method("removeDir")->with($this->equalTo($sPath . "Setup"), $this->equalTo(true))->will($this->returnValue(true));
 
         $oInst3 = $this->getMock("oxSetup", array("getVersionPrefix"));

@@ -1895,13 +1895,11 @@ class oxSetupView extends oxSetupCore
 
         $aDemoConfig = $oSession->getSessionParam("aDB");
         if (!isset($aDemoConfig['dbiDemoData']) || $aDemoConfig['dbiDemoData'] != '1') {
-            $sPrfx = $this->getInstance("oxSetup")->getVersionPrefix();
-
             // "/generated" cleanup
-            $oUtils->removeDir($sPath . "out/pictures{$sPrfx}/generated", true);
+            $oUtils->removeDir($sPath . "out/pictures/generated", true);
 
             // "/master" cleanup, leaving nopic
-            $oUtils->removeDir($sPath . "out/pictures{$sPrfx}/master", true, 1, array("nopic.jpg"));
+            $oUtils->removeDir($sPath . "out/pictures/master", true, 1, array("nopic.jpg"));
         }
 
         $aSetupConfig = $oSession->getSessionParam("aSetupConfig");

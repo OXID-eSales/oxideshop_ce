@@ -249,8 +249,7 @@ class oxDynImgGenerator
         if ($this->_sImageUri === null) {
 
             $this->_sImageUri = "";
-            $sReqPath = "out/pictures/generated";
-
+            $sReqPath = 'out/pictures/generated';
 
             $sReqImg = isset($_SERVER["REQUEST_URI"]) ? urldecode($_SERVER["REQUEST_URI"]) : "";
             if (($iPos = strpos($sReqImg, $sReqPath)) !== false) {

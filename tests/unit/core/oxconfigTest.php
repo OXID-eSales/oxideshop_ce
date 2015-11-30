@@ -1220,8 +1220,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
 
-        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
-        $sDir = $oConfig->getConfigParam('sShopDir') . "out/pictures$postfix/";
+        $sDir = $oConfig->getConfigParam('sShopDir') . 'out/pictures/';
 
         $this->assertEquals($sDir, $oConfig->getPictureDir(false));
     }
@@ -1234,8 +1233,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig->init();
         $oConfig->setConfigParam('blUseDifferentDynDirs', true);
 
-        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
-        $sDir = $oConfig->getConfigParam('sShopDir') . "out/pictures$postfix/";
+        $sDir = $oConfig->getConfigParam('sShopDir') . "out/pictures/";
 
         $this->assertEquals($sDir, $oConfig->getPictureDir(false));
     }
@@ -2023,8 +2021,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
 
-        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
-        $sDir = $oConfig->getConfigParam('sShopDir') . "out/pictures$postfix/";
+        $sDir = $oConfig->getConfigParam('sShopDir') . 'out/pictures/';
 
         $this->assertEquals($sDir, $oConfig->getPicturePath(null, false));
     }
@@ -2040,8 +2037,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $sMainURL = $oConfig->getConfigParam('sShopURL');
         $sMallURL = 'http://www.example.com/';
 
-        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
-        $sDir = "out/pictures$postfix/";
+        $sDir = 'out/pictures/';
 
         $oConfig->setConfigParam('sMallShopURL', $sMallURL);
 
@@ -2092,8 +2088,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig->setConfigParam("sAltImageDir", false);
         $oConfig->setConfigParam("blFormerTplSupport", false);
 
-        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
-        $sNoPicUrl = $myConfig->getConfigParam("sShopURL") . "out/pictures$postfix/master/nopic.jpg";
+        $sNoPicUrl = $myConfig->getConfigParam("sShopURL") . 'out/pictures/master/nopic.jpg';
 
         $this->assertEquals($sNoPicUrl, $oConfig->getPictureUrl("unknown.file", true));
     }

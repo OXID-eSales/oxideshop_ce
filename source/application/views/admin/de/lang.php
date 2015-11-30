@@ -733,7 +733,6 @@ $aLang = array(
 'DYNSCREEN_LIST_SERVICE'                                   => 'Servicebereich',
 'EDITOR_PLAINTEXT_HINT'                                    => '<b>Anmerkung:</b> Wenn Sie Zeilenumbrüche unverändert übernehmen möchten (z. B. für plaintext E-Mail), dann benutzen Sie "Source" anstatt "Design".',
 'ALTERNATIVE_IMAGE_SERVER_NOTE'                            => '<b>Hinweis:</b> Der Shop ist konfiguriert, Artikelbilder von einem externen Server zu laden. Dateien werden aber nicht zu diesem Speicherort hochgeladen. Stellen Sie bitte die manuelle Synchronisation sicher.',
-'EXCEPTION_USER_NOVALIDLOGIN'                              => 'Falsche E-Mail oder Passwort!',
 'EXCEPTION_USER_USEREXISTS'                                => 'Dieser Benutzer existiert bereits!',
 'EXCEPTION_CONNECTION_NODB'                                => 'Keine Verbindung zur Datenbank möglich!',
 'EXCEPTION_ACCESSRIGHT_ACCESSDENIED'                       => 'Zugriff verweigert, keine ausreichende Rechte!',

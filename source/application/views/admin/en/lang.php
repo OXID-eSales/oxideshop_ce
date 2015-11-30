@@ -735,7 +735,6 @@ $aLang = array(
 'DYNSCREEN_LIST_SERVICE'                                   => 'Service Area',
 'EDITOR_PLAINTEXT_HINT'                                    => '<b>Note:</b> If you need to preserve text line breaks (e.g. plaintext e-mails), please use tab "html CODE" instead of "Design".',
 'ALTERNATIVE_IMAGE_SERVER_NOTE'                            => '<b>Note:</b> Alternative image server configuration detected, files will not be uploaded to remote location. Please take care about synchronization manually.',
-'EXCEPTION_USER_NOVALIDLOGIN'                              => 'Wrong e-mail or password!',
 'EXCEPTION_USER_USEREXISTS'                                => 'This user allready exists!',
 'EXCEPTION_CONNECTION_NODB'                                => 'No connection to database!',
 'EXCEPTION_ACCESSRIGHT_ACCESSDENIED'                       => 'Access denied, no sufficient rights!',

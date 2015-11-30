@@ -461,8 +461,8 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $this->assertEquals('Aktiv', $oLang->translateString("GENERAL_ACTIVE", 0));
         $this->assertEquals('Active', $oLang->translateString("GENERAL_ACTIVE", 1));
 
-        $this->assertEquals('Falsche E-Mail oder Passwort!', $oLang->translateString("EXCEPTION_USER_NOVALIDLOGIN", 0));
-        $this->assertEquals('Wrong e-mail or password!', $oLang->translateString("EXCEPTION_USER_NOVALIDLOGIN", 1));
+        $this->assertEquals('Dieser Benutzer existiert bereits!', $oLang->translateString("EXCEPTION_USER_USEREXISTS", 0));
+        $this->assertEquals('This user allready exists!', $oLang->translateString("EXCEPTION_USER_USEREXISTS", 1));
 
         $this->assertEquals('blafoowashere123', $oLang->translateString("blafoowashere123"));
         $this->assertEquals('', $oLang->translateString(""));

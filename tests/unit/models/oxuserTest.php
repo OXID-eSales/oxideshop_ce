@@ -1599,7 +1599,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
         try {
             $oUser->createUser();
         } catch (Exception $oExcp) {
-            $this->assertEquals('EXCEPTION_USER_USERCREATIONFAILED', $oExcp->getMessage());
+            $this->assertEquals('ERROR_MESSAGE_USER_USERCREATIONFAILED', $oExcp->getMessage());
 
             return;
         }

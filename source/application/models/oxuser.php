@@ -843,7 +843,7 @@ class oxUser extends oxBase
         }
 
         $this->oxuser__oxshopid = new oxField($sShopID, oxField::T_RAW);
-        if (!($blOK = $this->save())) {
+        if (($blOK = $this->save())) {
             // dropping/cleaning old delivery address/payment info
             $oDb->execute("delete from oxaddress where oxaddress.oxuserid = " . $oDb->quote($this->oxuser__oxid->value) . " ");
             $oDb->execute("update oxuserpayments set oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxusername->value) . " where oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxid->value) . " ");

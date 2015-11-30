@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
+
 /**
  * Navigation tree control class
  */
@@ -456,8 +460,9 @@ class OxNavigationTree extends oxSuperCfg
         $myConfig = $this->getConfig();
         $myOxUtlis = oxRegistry::getUtils();
 
-        $sFullAdminDir = getShopBasePath() . 'Application/views/admin';
-        $sMenuFile = "/menu.xml";
+        $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector()));
+        $fullAdminDir = $editionPathSelector->getViewsDirectoryPath() . 'admin' . DIRECTORY_SEPARATOR;
+        $sMenuFile = $fullAdminDir . 'menu.xml';
 
         $sTmpDir = $myConfig->getConfigParam('sCompileDir');
         $sDynLang = $this->_getDynMenuLang();
@@ -465,13 +470,13 @@ class OxNavigationTree extends oxSuperCfg
 
 
         // including std file
-        if (file_exists($sFullAdminDir . $sMenuFile)) {
-            $aFilesToLoad[] = $sFullAdminDir . $sMenuFile;
+        if (file_exists($sMenuFile)) {
+            $aFilesToLoad[] = $sMenuFile;
         }
 
         // including custom file
-        if (file_exists("$sFullAdminDir/user.xml")) {
-            $aFilesToLoad[] = "$sFullAdminDir/user.xml";
+        if (file_exists($fullAdminDir . 'user.xml')) {
+            $aFilesToLoad[] = $fullAdminDir . 'user.xml';
         }
 
         // including module menu files

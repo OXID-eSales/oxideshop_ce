@@ -196,13 +196,9 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
         $oInst2->expects($this->at(1))->method("removeDir")->with($this->equalTo($sPath . "out/pictures/master"), $this->equalTo(true), $this->equalTo(1), $this->equalTo(array("nopic.jpg")))->will($this->returnValue(true));
         $oInst2->expects($this->at(2))->method("removeDir")->with($this->equalTo($sPath . "Setup"), $this->equalTo(true))->will($this->returnValue(true));
 
-        $oInst3 = $this->getMock("oxSetup", array("getVersionPrefix"));
-        $oInst3->expects($this->once())->method("getVersionPrefix")->will($this->returnValue("_"));
-
         $oSetupView = $this->getMock("oxSetupView", array("getInstance"));
         $oSetupView->expects($this->at(0))->method("getInstance")->with($this->equalTo("OxSetupSession"))->will($this->returnValue($oInst1));
         $oSetupView->expects($this->at(1))->method("getInstance")->with($this->equalTo("oxSetupUtils"))->will($this->returnValue($oInst2));
-        $oSetupView->expects($this->at(2))->method("getInstance")->with($this->equalTo("oxSetup"))->will($this->returnValue($oInst3));
         $this->assertTrue($oSetupView->isDeletedSetup());
     }
 

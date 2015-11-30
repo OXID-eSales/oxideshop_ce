@@ -67,6 +67,18 @@ class EditionPathProvider
     }
 
     /**
+     * Method forms path to corresponding edition views directory.
+     *
+     * @return string
+     */
+    public function getViewsDirectoryPath()
+    {
+        return $this->getEditionPathSelector()->getDirectoryPath()
+        . 'Application' . DIRECTORY_SEPARATOR
+        . 'views' . DIRECTORY_SEPARATOR;
+    }
+
+    /**
      * @return EditionRootPathProvider
      */
     protected function getEditionPathSelector()

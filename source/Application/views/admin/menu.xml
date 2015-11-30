@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<OX>
+    <OXMENU id="NAVIGATION_ESHOPADMIN">
+        <MAINMENU id="mxmainmenu">
+            <SUBMENU id="mxcoresett" cl="shop" list="shop_list">
+                <TAB id="tbclshop_main" cl="shop_main" />
+                <TAB id="tbclshop_config" cl="shop_config" />
+                <TAB id="tbclshop_system" cl="shop_system" />
+                <TAB id="tbclshop_license" cl="shop_license" disableForDemoShop="1" />
+                <TAB id="tbclshop_performance" cl="shop_performance" />
+                <TAB id="tbclshop_seo" cl="shop_seo" />
+                <TAB id="tbclshop_rdfa" cl="shop_rdfa" />
+                <BTN id="shop_new" />
+            </SUBMENU>
+            <SUBMENU id="mxcountries" cl="country" list="country_list">
+                <TAB id="tbclcountry_main" cl="country_main" />
+                <BTN id="country_new" />
+            </SUBMENU>
+            <SUBMENU id="mxvendor" cl="vendor" list="vendor_list">
+                <TAB id="tbclvendor_main" cl="vendor_main" />
+                <TAB id="tbclvendor_seo" cl="vendor_seo" />
+                <BTN id="vendor_new" />
+                <BTN id="vendor_resetnrofarticles" />
+            </SUBMENU>
+            <SUBMENU id="mxmanufacturer" cl="manufacturer" list="manufacturer_list">
+                <TAB id="tbclmanufacturer_main" cl="manufacturer_main" />
+                <TAB id="tbclmanufacturer_seo" cl="manufacturer_seo" />
+                <BTN id="manufacturer_new" />
+                <BTN id="manufacturer_resetnrofarticles" />
+            </SUBMENU>
+            <SUBMENU id="mxlanguages" cl="language" list="language_list">
+                <TAB id="tbcllanguage_main" cl="language_main" />
+                <BTN id="language_new" />
+            </SUBMENU>
+        </MAINMENU>
+        <MAINMENU id="mxshopsett">
+            <SUBMENU id="mxpaymeth" cl="admin_payment" list="payment_list">
+                <TAB id="tbclpayment_main" cl="payment_main" />
+                <TAB id="tbclpayment_country" cl="payment_country" />
+                <TAB id="tbclpayment_rdfa" cl="payment_rdfa" />
+                <BTN id="payment_new"/>
+            </SUBMENU>
+            <SUBMENU id="mxdiscount" cl="discount" list="discount_list">
+                <TAB id="tbcldiscount_main" cl="discount_main" />
+                <TAB id="tbcldiscount_articles" cl="discount_articles" />
+                <TAB id="tbcldiscount_users" cl="discount_users" />
+                <BTN id="discount_new" />
+            </SUBMENU>
+            <SUBMENU id="mxshippingset" cl="deliveryset" list="deliveryset_list">
+                <TAB id="tbcldeliveryset_main" cl="deliveryset_main" />
+                <TAB id="tbcldeliveryset_payment" cl="deliveryset_payment" />
+                <TAB id="tbcldeliveryset_users" cl="deliveryset_users" />
+                <TAB id="tbcldeliveryset_rdfa" cl="deliveryset_rdfa" />
+                <BTN id="deliveryset_new"/>
+            </SUBMENU>
+            <SUBMENU id="mxshipping" cl="delivery" list="delivery_list">
+                <TAB id="tbcldelivery_main" cl="delivery_main" />
+                <TAB id="tbcldelivery_articles" cl="delivery_articles" />
+                <TAB id="tbcldelivery_users" cl="delivery_users" />
+                <BTN id="delivery_new" />
+            </SUBMENU>
+            <SUBMENU id="mxvouchers" cl="voucherserie" list="voucherserie_list">
+                <TAB id="tbclvoucherserie_main" cl="voucherserie_main" />
+                <TAB id="tbclvoucherserie_groups" cl="voucherserie_groups" />
+                <BTN id="voucher_new"/>
+            </SUBMENU>
+            <SUBMENU id="mxwrapping" cl="admin_wrapping" list="wrapping_list">
+                <TAB id="tbclwrapping_main" cl="wrapping_main" />
+                <BTN id="wrapping_new" />
+            </SUBMENU>
+        </MAINMENU>
+        <MAINMENU id="mxextensions">
+            <SUBMENU id="mxtheme" cl="theme" list="theme_list">
+                <TAB id="tbcltheme_main" cl="theme_main" />
+                <TAB id="tbcltheme_config" cl="theme_config" />
+            </SUBMENU>
+            <SUBMENU id="mxmodule" cl="module" list="module_list">
+                <TAB id="tbclmodule_sortlist" cl="module_sortlist" />
+                <TAB id="tbclmodule_main" cl="module_main" />
+                <TAB id="tbclmodule_config" cl="module_config" />
+            </SUBMENU>
+        </MAINMENU>
+        <MAINMENU id="mxmanageprod">
+            <SUBMENU id="mxarticles" cl="article" list="article_list">
+                <TAB id="tbclarticle_main" cl="article_main" />
+                <TAB id="tbclarticle_extend" cl="article_extend" />
+                <TAB id="tbclarticle_stock" cl="article_stock" />
+                <TAB id="tbclarticle_attribute" cl="article_attribute" />
+                <TAB id="tbclarticle_crossselling" cl="article_crossselling"/>
+                <TAB id="tbclarticle_variant" cl="article_variant"/>
+                <TAB id="tbclarticle_pictures" cl="article_pictures" />
+                <TAB id="tbclarticle_files" cl="article_files" />
+                <TAB id="tbclarticle_review" cl="article_review"/>
+                <TAB id="tbclarticle_overview" cl="article_overview" />
+                <TAB id="tbclarticle_seo" cl="article_seo" />
+                <BTN id="article_new" />
+                <BTN id="article_preview" />
+            </SUBMENU>
+            <SUBMENU id="mxattributes" cl="attribute" list="attribute_list">
+                <TAB id="tbclattribute_main" cl="attribute_main" />
+                <TAB id="tbclattribute_category" cl="attribute_category" />
+                <BTN id="attribute_new" />
+            </SUBMENU>
+            <SUBMENU id="mxcategories" cl="category" list="category_list">
+                <TAB id="tbclcategory_main" cl="category_main" />
+                <TAB id="tbclcategory_text" cl="category_text" />
+                <TAB id="tbclcategory_pictures" cl="category_pictures" />
+                <TAB id="tbclcategory_order" cl="category_order" />
+                <TAB id="tbclcategory_seo" cl="category_seo" />
+                <BTN id="category_new" />
+                <BTN id="category_refresh" />
+                <BTN id="category_resetnrofarticles" />
+            </SUBMENU>
+            <SUBMENU id="mxsellist" cl="selectlist" list="selectlist_list">
+                <TAB id="tbclselectlist_main" cl="selectlist_main" />
+                <BTN id="selectlist_new" />
+            </SUBMENU>
+            <SUBMENU id="mxremlist" cl="list_review" />
+        </MAINMENU>
+        <MAINMENU id="mxuadmin">
+            <SUBMENU id="mxusers" cl="admin_user" list="user_list">
+                <TAB id="tbcluser_main" cl="user_main" />
+                <TAB id="tbcluser_extend" cl="user_extend" />
+                <TAB id="tbcluser_article" cl="user_article" />
+                <TAB id="tbcluser_remark" cl="user_remark" />
+                <TAB id="tbcluser_address" cl="user_address" />
+                <TAB id="tbcluser_payment" cl="user_payment" />
+                <BTN id="user_new" />
+                <BTN id="user_newremark" />
+                <BTN id="user_newaddress" />
+            </SUBMENU>
+            <SUBMENU id="mxugroups" cl="usergroup" list="usergroup_list">
+                <TAB id="tbclusergroup_main" cl="usergroup_main" />
+                <BTN id="usergroup_new" />
+            </SUBMENU>
+            <SUBMENU id="mxlist" cl="list_user" />
+        </MAINMENU>
+        <MAINMENU id="mxorders">
+            <SUBMENU id="mxdisplayorders" cl="admin_order" list="order_list">
+                <TAB id="tbclorder_overview" cl="order_overview" />
+                <TAB id="tbclorder_main" cl="order_main" />
+                <TAB id="tbclorder_address" cl="order_address" />
+                <TAB id="tbclorder_article" cl="order_article" />
+                <TAB id="tbclorder_remark" cl="order_remark" />
+                <TAB id="tbclorder_downloads" cl="order_downloads" />
+                <BTN id="order_newremark" />
+            </SUBMENU>
+            <SUBMENU id="mxorderovw" cl="list_order" />
+            <SUBMENU id="mxpacklist" cl="order_package" />
+        </MAINMENU>
+        <MAINMENU id="mxcustnews">
+            <SUBMENU id="mxnews" cl="admin_news" list="news_list">
+                <TAB id="tbclnews_main" cl="news_main" />
+                <TAB id="tbclnews_text" cl="news_text" />
+                <BTN id="news_new" />
+            </SUBMENU>
+            <SUBMENU id="mxnewsletter" cl="admin_newsletter" list="newsletter_list">
+                <TAB id="tbclnewsletter_main" cl="newsletter_main" />
+                <TAB id="tbclnewsletter_plain" cl="newsletter_plain" />
+                <TAB id="tbclnewsletter_preview" cl="newsletter_preview" />
+                <TAB id="tbclnewsletter_selection" cl="newsletter_selection" />
+                <BTN id="newsletter_new" />
+            </SUBMENU>
+            <SUBMENU id="mxurls" cl="admin_links" list="adminlinks_list">
+                <TAB id="tbcladminlinks_main" cl="adminlinks_main" />
+                <BTN id="links_new" />
+            </SUBMENU>
+            <SUBMENU id="mxguestbook" cl="admin_guestbook" list="adminguestbook_list">
+                <TAB id="tbcladminguestbook_main" cl="adminguestbook_main" />
+            </SUBMENU>
+            <SUBMENU id="mxcontent" cl="admin_content" list="content_list">
+                <TAB id="tbclcontent_main" cl="content_main" />
+                <TAB id="tbclcontent_seo" cl="content_seo" />
+                <BTN id="content_new" />
+            </SUBMENU>
+            <SUBMENU id="mxactions" cl="actions" list="actions_list">
+                <TAB id="tbclactions_main" cl="actions_main" />
+                <BTN id="actions_new" />
+            </SUBMENU>
+            <SUBMENU id="mxpricealarm" cl="admin_pricealarm" list="pricealarm_list">
+                <TAB id="tbclpricealarm_main" cl="pricealarm_main" />
+                <TAB id="tbclpricealarm_mail" cl="pricealarm_mail" />
+            </SUBMENU>
+        </MAINMENU>
+        <MAINMENU id="mxstat">
+            <SUBMENU id="mxshow" cl="statistic" list="statistic_list">
+                <TAB id="tbclstatistic_main" cl="statistic_main" />
+                <TAB id="tbclstatistic_service" cl="statistic_service" />
+                <BTN id="statistic_new" />
+            </SUBMENU>
+        </MAINMENU>
+        <MAINMENU id="mxservice">
+            <SUBMENU id="mxsysinfo" cl="systeminfo" rights="malladmin" disableForDemoShop="1" />
+            <SUBMENU id="mxsysreq" cl="sysreq" list="sysreq_list">
+                <TAB id="tbclsysreq_main" cl="sysreq_main" />
+            </SUBMENU>
+            <SUBMENU id="oxdiag_menu" cl="diagnostics" list="diagnostics_list">
+                <TAB id="oxdiag_menu" cl="diagnostics_main" />
+            </SUBMENU>
+            <SUBMENU id="mxtools" cl="tools" list="tools_list" rights="malladmin" disableForDemoShop="1" >
+                <TAB id="tbcltools_main" cl="tools_main" disableForDemoShop="1" />
+            </SUBMENU>
+            <SUBMENU id="mxgenexp" cl="genexport" />
+            <SUBMENU id="mxgenimp" cl="genimport"></SUBMENU>
+        </MAINMENU>
+    </OXMENU>
+</OX>

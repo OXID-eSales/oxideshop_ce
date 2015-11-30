@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -1505,12 +1505,16 @@ class OxSetupUtils extends oxSetupCore
         }
 
         // overwriting settings
-        foreach ( $aParams as $sParamName => $sParamValue ) {
+        foreach ($aParams as $sParamName => $sParamValue) {
             // non integer type variables must be surrounded by quotes
-            if ( $sParamName[0] != 'i' ) {
+            if ($sParamName[0] != 'i') {
                 $sParamValue = "'{$sParamValue}'";
             }
-            $sConfFile = preg_replace( "/(this->{$sParamName}).*". preg_quote( $sVerPrefix ) .".*;/", "\\1 = ".$sParamValue.";", $sConfFile );
+            if (0 != preg_match("/(this->{$sParamName}).*" . preg_quote($sVerPrefix) . ".*;/", $sConfFile)) {
+                $sConfFile = preg_replace("/(this->{$sParamName}).*" . preg_quote($sVerPrefix) . ".*;/", "\\1 = " . $sParamValue . ";", $sConfFile);
+            } else {
+                $sConfFile = preg_replace("/(this->{$sParamName}).*/", "\\1 = " . $sParamValue . ";", $sConfFile);
+            }
         }
 
         if ( ( $fp = fopen( $sConfPath, "w" ) ) ) {
@@ -2321,6 +2325,9 @@ class oxSetupController extends oxSetupCore
         } else {
             $aSetupConfig['blDelSetupDir'] = 0;
         }
+
+        //generate captcha encryption key
+        $aPath['captchaKey'] = $oUtils->generateUID();
 
         $oSession->setSessionParam('aPath', $aPath );
         $oSession->setSessionParam('aSetupConfig', $aSetupConfig );

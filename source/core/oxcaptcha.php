@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -126,7 +126,9 @@ class oxCaptcha extends oxSuperCfg
     public function getImageUrl()
     {
         $sUrl = $this->getConfig()->getCoreUtilsURL() . "verificationimg.php?e_mac=";
-        $sUrl .= oxRegistry::getUtils()->strMan( $this->getText() );
+        $sKey = $this->getConfig()->getConfigParam('captchaKey');
+        $sKey = empty($sKey) ? null : $sKey;
+        $sUrl .= oxRegistry::getUtils()->strMan($this->getText(), $sKey);
 
         return $sUrl;
     }

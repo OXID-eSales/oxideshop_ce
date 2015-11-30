@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -27,7 +27,7 @@ if (isset($_GET['e_mac'])) {
     return;
 }
 
-require_once '../oxfunctions.php';
+require_once '../../bootstrap.php';
 
 if ( !function_exists( 'generateVerificationImg' ) ) {
 
@@ -92,8 +92,12 @@ if ( !function_exists( 'strRem' ) ) {
     {
         $oDecryptor = new oxDecryptor;
 
-        $oCfg = new oxConfKey();
-        $sKey = $oCfg->sConfigKey;
+        $sKey = oxRegistry::getConfig()->getConfigParam('captchaKey');
+
+        if (empty($sKey)) {
+            $oCfg = new oxConfKey();
+            $sKey = $oCfg->sConfigKey;
+        }
 
         return $oDecryptor->decrypt($sVal, $sKey);
     }

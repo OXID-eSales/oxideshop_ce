@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -1469,7 +1469,11 @@ class OxSetupUtils extends oxSetupCore
             if ($sParamName[0] != 'i') {
                 $sParamValue = "'{$sParamValue}'";
             }
-            $sConfFile = preg_replace("/(this->{$sParamName}).*'<.*$sVerPrefix>'.*;/", "\\1 = " . $sParamValue . ";", $sConfFile);
+            if (0 != preg_match("/(this->{$sParamName}).*'<.*$sVerPrefix>'.*;/", $sConfFile)) {
+                $sConfFile = preg_replace("/(this->{$sParamName}).*'<.*$sVerPrefix>'.*;/", "\\1 = " . $sParamValue . ";", $sConfFile);
+            } else {
+                $sConfFile = preg_replace("/(this->{$sParamName}).*/", "\\1 = " . $sParamValue . ";", $sConfFile);
+            }
         }
 
         if (($fp = fopen($sConfPath, "w"))) {
@@ -2300,6 +2304,9 @@ class oxSetupController extends oxSetupCore
         } else {
             $aSetupConfig['blDelSetupDir'] = 0;
         }
+
+        //generate captcha encryption key
+        $aPath['captchaKey'] = $oUtils->generateUID();
 
         $oSession->setSessionParam('aPath', $aPath);
         $oSession->setSessionParam('aSetupConfig', $aSetupConfig);

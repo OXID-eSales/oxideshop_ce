@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -84,18 +84,22 @@ if (!function_exists('strRem')) {
     /**
      * OXID specific string manipulation method
      *
-     * @param string $sVal string
+     * @param string $value string
      *
      * @return string
      */
-    function strRem($sVal)
+    function strRem($value)
     {
-        $oDecryptor = new oxDecryptor;
+        $decryptor = new oxDecryptor;
 
-        $oCfg = new oxConfKey();
-        $sKey = $oCfg->sConfigKey;
+        $key = oxRegistry::getConfig()->getConfigParam('captchaKey');
 
-        return $oDecryptor->decrypt($sVal, $sKey);
+        if (empty($key)) {
+            $configKey = new oxConfKey();
+            $key = $configKey->sConfigKey;
+        }
+
+        return $decryptor->decrypt($value, $key);
     }
 }
 

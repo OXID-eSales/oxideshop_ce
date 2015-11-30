@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -101,6 +101,21 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
      */
     public function testGetImageUrl()
     {
+        $this->setConfigParam('captchaKey', 'someTestCaptchaKey');
+
+        $this->_oCaptcha->setNonPublicVar('_sText', 'test1');
+        $this->assertEquals($this->getConfig()->getShopUrl() . "core/utils/verificationimg.php?e_mac=ox_MAsbCBYgVBoQ", $this->_oCaptcha->getImageUrl());
+    }
+
+    /**
+     * oxCaptcha::getImageUrl() test case if sCaptcha key is not set
+     *
+     * @return null
+     */
+    public function testGetImageUrlFallbackKey()
+    {
+        $this->setConfigParam('captchaKey', '');
+
         $this->_oCaptcha->setNonPublicVar('_sText', 'test1');
         $this->assertEquals($this->getConfig()->getShopUrl() . "core/utils/verificationimg.php?e_mac=ox_MB4FUUYlYlld", $this->_oCaptcha->getImageUrl());
     }

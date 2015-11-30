@@ -772,6 +772,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Get persistent parameters
      *
+     * @deprecated on b-dev (2015-11-30); Not used anymore. Setting pers params to session was removed since 2.7.
+     *
      * @return array
      */
     public function getPersParams()
@@ -4303,7 +4305,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * assigns persistent param to article
+     * Assigns persistent param to article.
+     *
+     * @deprecated on b-dev (2015-11-30); Not used anymore. Setting pers params to session was removed since 2.7.
      */
     protected function _assignPersistentParam()
     {

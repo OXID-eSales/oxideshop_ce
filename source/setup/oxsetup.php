@@ -825,12 +825,7 @@ class OxSetupDb extends oxSetupCore
 
         } catch (PDOException $e) {
             throw new Exception(
-                $this->getInstance("oxSetupLang")->getText('ERROR_BAD_SQL') .
-                "( $sQ ): " .
-                $e->getMessage() .
-                "\n",
-                $e->getCode(),
-                $e
+                $this->getInstance("oxSetupLang")->getText('ERROR_BAD_SQL') . "( $sQ ): {$e->getMessage()}\n"
             );
         }
     }
@@ -849,12 +844,7 @@ class OxSetupDb extends oxSetupCore
             $oPdo->exec($sQ);
         } catch (PDOException $e) {
             throw new Exception(
-                $this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_CREATE') .
-                " " .
-                $e->getMessage() .
-                "\n",
-                $e->getCode(),
-                $e
+                $this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_CREATE') . " {$e->getMessage()}\n"
             );
         }
 
@@ -864,12 +854,7 @@ class OxSetupDb extends oxSetupCore
             $oPdo->query($sQ)->closeCursor();
         } catch (PDOException $e) {
             throw new Exception(
-                $this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_SELECT') .
-                " " .
-                $e->getMessage() .
-                "\n",
-                $e->getCode(),
-                $e
+                $this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_SELECT') . " {$e->getMessage()}\n"
             );
         }
 
@@ -879,12 +864,7 @@ class OxSetupDb extends oxSetupCore
             $oPdo->exec($sQ);
         } catch (PDOException $e) {
             throw new Exception(
-                $this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_DROP') .
-                " " .
-                $e->getMessage() .
-                "\n",
-                $e->getCode(),
-                $e
+                $this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_DROP') . " {$e->getMessage()}\n"
             );
         }
     }

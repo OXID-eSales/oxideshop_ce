@@ -1489,7 +1489,7 @@ class OxSetupUtils extends oxSetupCore
             if ($sParamName[0] != 'i') {
                 $sParamValue = "'{$sParamValue}'";
             }
-            $sConfFile = preg_replace("/(this->{$sParamName}).*" . preg_quote($sVerPrefix) . ".*;/", "\\1 = " . $sParamValue . ";", $sConfFile);
+            $sConfFile = preg_replace("/(this->{$sParamName}).*'<.*$sVerPrefix>'.*;/", "\\1 = " . $sParamValue . ";", $sConfFile);
         }
 
         if (($fp = fopen($sConfPath, "w"))) {

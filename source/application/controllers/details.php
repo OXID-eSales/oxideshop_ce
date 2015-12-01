@@ -344,7 +344,7 @@ class Details extends oxUBase
      *
      * @param string $sMeta     user defined description, description content or empty value
      * @param int    $iLength   max length of result, -1 for no truncation
-     * @param bool   $blDescTag if true - performs additional dublicate cleaning
+     * @param bool   $blDescTag if true - performs additional duplicate cleaning
      *
      * @return string
      */
@@ -373,7 +373,7 @@ class Details extends oxUBase
      * It happens if current view has no meta data defined in oxcontent table
      *
      * @param string $sKeywords               user defined keywords, keywords content or empty value
-     * @param bool   $blRemoveDuplicatedWords remove dublicated words
+     * @param bool   $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
      */

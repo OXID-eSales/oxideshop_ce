@@ -364,7 +364,7 @@ class ManufacturerList extends aList
      * Calls and returns result of parent:: _collectMetaKeyword();
      *
      * @param mixed $aCatPath                category path
-     * @param bool  $blRemoveDuplicatedWords remove dublicated words
+     * @param bool  $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
      */
@@ -381,7 +381,7 @@ class ManufacturerList extends aList
      *
      * @param mixed $aCatPath  category path
      * @param int   $iLength   max length of result, -1 for no truncation
-     * @param bool  $blDescTag if true - performs additional dublicate cleaning
+     * @param bool  $blDescTag if true - performs additional duplicate cleaning
      *
      * @return  string  $sString    converted string
      */

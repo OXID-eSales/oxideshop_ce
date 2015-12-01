@@ -831,7 +831,7 @@ class oxUser extends oxBase
             // try to update
             $this->delete($sOXID);
         } elseif ($this->_blMallUsers) {
-            // must be sure if there is no dublicate user
+            // must be sure if there is no duplicate user
             $sQ = "select oxid from oxuser where oxusername = " . $oDb->quote($this->oxuser__oxusername->value) . " and oxusername != '' ";
             if ($oDb->getOne($sQ, false, false)) {
                 /** @var oxUserException $oEx */

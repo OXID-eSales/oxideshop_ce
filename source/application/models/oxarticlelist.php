@@ -124,7 +124,7 @@ class oxArticleList extends oxList
         $aHistoryArticles = $this->getHistoryArticles();
         $aHistoryArticles[] = $sArtId;
 
-        // removing dublicates
+        // removing duplicates
         $aHistoryArticles = array_unique($aHistoryArticles);
         if (count($aHistoryArticles) > ($iCnt + 1)) {
             array_shift($aHistoryArticles);

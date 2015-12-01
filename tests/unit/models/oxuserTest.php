@@ -1538,7 +1538,7 @@ class Unit_Models_oxUserTest extends OxidTestCase
 
     }
 
-    // 2. creating with additional dublicate entries check for mall users
+    // 2. creating with additional duplicate entries check for mall users
     public function testCreateUserMallUsers()
     {
         $oDb = $this->getDb();

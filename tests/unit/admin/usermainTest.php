@@ -124,7 +124,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSaveDublicatedLogin()
+    public function testSaveDuplicatedLogin()
     {
         oxTestModules::addFunction('oxuser', 'load', '{ return true; }');
         oxTestModules::addFunction('oxuser', 'save', '{ return true; }');

@@ -353,7 +353,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
 
     /**
      * Test cases for oxUtilsUrl::cleanUrlParams()
-     * URL cleanup check, remove dublicate GET parameters and clean &amp; and dublicate &
+     * URL cleanup check, remove duplicate GET parameters and clean &amp; and duplicate &
      *
      * @return null
      */

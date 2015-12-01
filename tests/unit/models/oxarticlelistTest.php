@@ -1620,11 +1620,11 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
     }
 
     /**
-     * Test load history articles dublicate.
+     * Test load history articles duplicate.
      *
      * @return null
      */
-    public function testLoadHistoryArticlesDublicate()
+    public function testLoadHistoryArticlesDuplicate()
     {
         $this->getSession()->setId('sessionId');
 

@@ -698,13 +698,13 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
     /**
      * Test case for oxInputValidator::checkLogin()
-     * 1. testing if method detects dublicate records
+     * 1. testing if method detects duplicate records
      *
      * @return null
      */
-    public function testCheckLoginUserWithPassDublicateLogin()
+    public function testCheckLoginUserWithPassDuplicateLogin()
     {
-        // loading some demo user to test if dublicates possible
+        // loading some demo user to test if duplicates possible
         $oUser = $this->getMock("oxuser", array("checkIfEmailExists"));
         $oUser->setId("testlalaa_");
 

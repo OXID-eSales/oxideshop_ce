@@ -378,7 +378,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      * Checking if method does not removes duplicated words if meta keywords
      * are loaded from oxContent table by ident (M:844)
      */
-    public function testGetMetaKeywordsDoesNotRemovesDublicatedWords()
+    public function testGetMetaKeywordsDoesNotRemovesDuplicatedWords()
     {
         $oContent = new oxcontent();
         $oContent->oxcontents__oxloadid = new oxField('_testKeywordsIdentId');

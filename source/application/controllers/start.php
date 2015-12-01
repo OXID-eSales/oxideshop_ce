@@ -158,7 +158,7 @@ class Start extends oxUBase
      *
      * @param string $sMeta     category path
      * @param int    $iLength   max length of result, -1 for no truncation
-     * @param bool   $blDescTag if true - performs additional dublicate cleaning
+     * @param bool   $blDescTag if true - performs additional duplicate cleaning
      *
      * @return string
      */
@@ -181,7 +181,7 @@ class Start extends oxUBase
      * It happens if current view has no meta data defined in oxcontent table
      *
      * @param string $sKeywords               data to use as keywords
-     * @param bool   $blRemoveDuplicatedWords remove dublicated words
+     * @param bool   $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
      */

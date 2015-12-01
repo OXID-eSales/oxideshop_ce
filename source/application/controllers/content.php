@@ -195,7 +195,7 @@ class Content extends oxUBase
      *
      * @param string $sMeta     category path
      * @param int    $iLength   max length of result, -1 for no truncation
-     * @param bool   $blDescTag if true - performs additional dublicate cleaning
+     * @param bool   $blDescTag if true - performs additional duplicate cleaning
      *
      * @return string
      */
@@ -213,7 +213,7 @@ class Content extends oxUBase
      * If $sKeywords parameter comes empty, sets to it current content title
      *
      * @param string $sKeywords               data to use as keywords
-     * @param bool   $blRemoveDuplicatedWords remove dublicated words
+     * @param bool   $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
      */

@@ -183,7 +183,7 @@ class Article_Main extends oxAdminDetails
             }
         }
 
-        //article number handling, warns for artnum dublicates
+        //article number handling, warns for artnum duplicates
         if (isset($aParams['oxarticles__oxartnum']) && strlen($aParams['oxarticles__oxartnum']) > 0 &&
             $oConfig->getConfigParam('blWarnOnSameArtNums') &&
             $oArticle->oxarticles__oxartnum->value != $aParams['oxarticles__oxartnum']
@@ -438,7 +438,7 @@ class Article_Main extends oxAdminDetails
 
                 $this->setEditObjectId($oArticle->getId());
 
-                //article number handling, warns for artnum dublicates
+                //article number handling, warns for artnum duplicates
                 $sFncParameter = oxRegistry::getConfig()->getRequestParameter('fnc');
                 $sArtNumField = 'oxarticles__oxartnum';
                 if ($myConfig->getConfigParam('blWarnOnSameArtNums') &&

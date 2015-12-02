@@ -961,7 +961,7 @@ class OxSetupDb extends oxSetupCore
                 throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS'), oxSetupDb::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS);
             }
             try {
-                $this->execSql("USE " . $aParams['dbName']);
+                $this->_oConn->exec("USE `{$aParams['dbName']}`");
             } catch (Exception $e) {
                 throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), oxSetupDb::ERROR_COULD_NOT_CREATE_DB, $e);
             }

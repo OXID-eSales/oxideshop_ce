@@ -162,7 +162,10 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
 
         $this->setExpectedException('Exception');
 
-        $database = new oxSetupDb();
+        $sessionMock = $this->getMockBuilder("oxSetupSession")->disableOriginalConstructor()->getMock();
+        $database = $this->getMock("oxSetupDb", array("getInstance"));
+        $database->expects($this->any())->method("getInstance")->will($this->returnValue($sessionMock));
+
         $database->openDatabase($parameters);
     }
 
@@ -179,9 +182,11 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
 
         $this->setExpectedException('Exception');
 
+        $sessionMock = $this->getMockBuilder("oxSetupSession")->disableOriginalConstructor()->getMock();
         /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
-        $database = $this->getMock("oxSetupDb", array("getDatabaseVersion"));
+        $database = $this->getMock("oxSetupDb", array("getDatabaseVersion", 'getInstance'));
         $database->expects($this->once())->method("getDatabaseVersion")->will($this->returnValue(4));
+        $database->expects($this->any())->method("getInstance")->will($this->returnValue($sessionMock));
         $database->openDatabase($aParams);
     }
 

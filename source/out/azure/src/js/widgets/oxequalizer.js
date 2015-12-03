@@ -46,11 +46,18 @@
          * Match all elements height to the tallest one.
          *
          * @param {jQuery} elements - The elements to math the height of
+         * @param {jQuery} target   - Target, which is also included into height calculation
          */
-        equalHeight: function(elements)
+        equalHeight: function(elements, target)
         {
+            elements.filter(".oxEqualized").css("height","");
             var tallest = this.getTallest(elements);
-            elements.height(tallest);
+            if (target && target.outerHeight() > tallest) {
+                tallest = target.outerHeight();
+            }
+            $.each(elements, function(i, element) {
+                $(element).height(tallest - ($(element).outerHeight() - $(element).height())).addClass('oxEqualized');
+            });
         }
     };
 

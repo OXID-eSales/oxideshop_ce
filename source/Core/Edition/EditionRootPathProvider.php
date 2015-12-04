@@ -54,7 +54,7 @@ class EditionRootPathProvider
      */
     public function getDirectoryPath()
     {
-        $path = getShopBasePath() . DIRECTORY_SEPARATOR;
+        $path = rtrim(getShopBasePath(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         if ($this->getEditionSelector()->isEnterprise()) {
             $path .= static::EDITIONS_DIRECTORY . DIRECTORY_SEPARATOR . static::ENTERPRISE_DIRECTORY . DIRECTORY_SEPARATOR;
         }

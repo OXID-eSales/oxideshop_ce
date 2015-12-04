@@ -112,6 +112,10 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testGetTemplateDirs()
     {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
         $myConfig = $this->getConfig();
         $aDirs = array();
         $aDirs[] = $myConfig->getTemplateDir(false);
@@ -131,6 +135,43 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $this->assertEquals($aDirs, $oUtilsView->getTemplateDirs());
     }
 
+    public function testGetEditionTemplateDirs()
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
+        $config = $this->getConfig();
+        $shopPath = rtrim($config->getConfigParam('sShopDir'), '/') . '/';
+
+        $dirs = array(
+            $shopPath . 'Application/views/azure/tpl/',
+            $shopPath . 'out/azure/tpl/',
+        );
+
+        $utilsView = $this->getMock("oxUtilsView", array("isAdmin"));
+        $utilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $this->assertEquals($dirs, $utilsView->getTemplateDirs());
+    }
+
+    public function testGetEditionTemplateDirsForAdmin()
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
+        $config = $this->getConfig();
+        $shopPath = rtrim($config->getConfigParam('sShopDir'), '/') . '/';
+
+        $dirs = array(
+            $shopPath . 'Application/views/admin/tpl/',
+        );
+
+        $utilsView = $this->getMock("oxUtilsView", array("isAdmin"));
+        $utilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
+        $this->assertEquals($dirs, $utilsView->getTemplateDirs());
+    }
+
     /**
      * oxUtilsView::setTemplateDir() test case
      *
@@ -138,6 +179,10 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testSetTemplateDir()
     {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
         $myConfig = $this->getConfig();
         $aDirs[] = "testDir1";
         $aDirs[] = "testDir2";
@@ -332,6 +377,10 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     // demo mode
     public function testFillCommonSmartyPropertiesANDSmartyCompileCheckDemoShop()
     {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
         $config = oxNew('oxConfig');
 
         $config->setConfigParam('iDebug', 1);
@@ -430,6 +479,10 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     // non demo mode
     public function testFillCommonSmartyPropertiesANDSmartyCompileCheck()
     {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
         $config = oxNew('oxConfig');
 
         $config->setConfigParam('iDebug', 1);
@@ -476,7 +529,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
 
         foreach ($aCheck as $sVarName => $sVarValue) {
             $this->assertTrue(isset($oSmarty->$sVarName));
-            $this->assertEquals($oSmarty->$sVarName, $sVarValue, $sVarName);
+            $this->assertEquals($sVarValue, $oSmarty->$sVarName, $sVarName);
         }
     }
 

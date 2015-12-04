@@ -28,9 +28,9 @@ class EditionRootPathProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
     public function providerReturnsEditionPath()
     {
         return array(
-            array(EditionSelector::ENTERPRISE, getShopBasePath() . '/Edition/Enterprise/'),
-            array(EditionSelector::PROFESSIONAL, getShopBasePath() . '/Edition/Professional/'),
-            array(EditionSelector::COMMUNITY, getShopBasePath() . '/'),
+            array(EditionSelector::ENTERPRISE, rtrim(getShopBasePath(), '/') . '/Edition/Enterprise/'),
+            array(EditionSelector::PROFESSIONAL, rtrim(getShopBasePath(), '/') . '/Edition/Professional/'),
+            array(EditionSelector::COMMUNITY, rtrim(getShopBasePath(), '/') . '/'),
         );
     }
 

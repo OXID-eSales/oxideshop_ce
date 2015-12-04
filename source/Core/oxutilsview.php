@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
+
 /**
  * View utility class
  */
@@ -279,12 +283,29 @@ class oxUtilsView extends oxSuperCfg
     {
         $myConfig = oxRegistry::getConfig();
 
-        //T2010-01-13
-        //#1531
-        $this->setTemplateDir($myConfig->getTemplateDir($this->isAdmin()));
+        // get edition
+        $activeEdition = $this->getActiveEdition();
 
+        // if not CE, so lets add required directories to check
+        if ($activeEdition === EditionSelector::ENTERPRISE) {
+            $editionTemplatesDirectory = $this->addActiveThemeId($this->getEnterpriseEditionPath());
+            $this->setTemplateDir($editionTemplatesDirectory);
+        }
+
+        if ($activeEdition !== EditionSelector::COMMUNITY) {
+            $editionTemplatesDirectory = $this->addActiveThemeId($this->getProfessionalEditionPath());
+            $this->setTemplateDir($editionTemplatesDirectory);
+        }
+
+        // buffer for CE (main) edition templates
+        $mainTemplatesDirectory = $myConfig->getTemplateDir($this->isAdmin());
+
+        // main templates directory has not much priority anymore
+        $this->setTemplateDir($mainTemplatesDirectory);
+
+        // out directory can have templates too
         if (!$this->isAdmin()) {
-            $this->setTemplateDir($myConfig->getOutDir(true) . $myConfig->getConfigParam('sTheme') . "/tpl/");
+            $this->setTemplateDir($this->addActiveThemeId($myConfig->getOutDir(true)));
         }
 
         return $this->_aTemplateDir;
@@ -532,5 +553,63 @@ class oxUtilsView extends oxSuperCfg
         }
 
         return $this->_aActiveModuleInfo;
+    }
+
+    /**
+     * Return active edition abbreviation.
+     *
+     * @return string
+     */
+    protected function getActiveEdition()
+    {
+        $editionSelector = new EditionSelector();
+        $edition = $editionSelector->getEdition();
+
+        return $edition;
+    }
+
+    /**
+     * Create Path provider objects to get path.
+     *
+     * @return string
+     */
+    protected function getEnterpriseEditionPath()
+    {
+        $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector(EditionSelector::ENTERPRISE)));
+        $editionTemplatesDirectory = $editionPathSelector->getViewsDirectoryPath();
+
+        return $editionTemplatesDirectory;
+    }
+
+    /**
+     * Create Path provider objects to get path.
+     *
+     * @return string
+     */
+    protected function getProfessionalEditionPath()
+    {
+        $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector(EditionSelector::PROFESSIONAL)));
+        $editionTemplatesDirectory = $editionPathSelector->getViewsDirectoryPath();
+
+        return $editionTemplatesDirectory;
+    }
+
+    /**
+     * Add active theme at the end of theme path to form full path to templates.
+     *
+     * @param string $themePath
+     *
+     * @return string
+     */
+    private function addActiveThemeId($themePath)
+    {
+        $themeId = $this->getConfig()->getConfigParam('sTheme');
+        if ($this->isAdmin()) {
+            $themeId = 'admin';
+        }
+
+        $fullThemePath = $themePath . $themeId . "/tpl/";
+
+        return $fullThemePath;
     }
 }

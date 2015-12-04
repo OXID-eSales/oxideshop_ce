@@ -22,13 +22,70 @@
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 
+// TODO: class should be refactored to testable state.
 class EditionSelectorTest extends OxidEsales\TestingLibrary\UnitTestCase
 {
     public function testReturnsEdition()
     {
         $editionSelector = new EditionSelector();
 
-        // TODO: class should be refactored to testable state.
         $this->assertSame($this->getConfig()->getEdition(), $editionSelector->getEdition());
+    }
+
+    public function testCheckActiveEdition()
+    {
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
+            $this->markTestSkipped('This test is for Community editions only.');
+        }
+
+        $editionSelector = new EditionSelector();
+
+        $this->assertSame('CE', $editionSelector->getEdition());
+        $this->assertTrue($editionSelector->isCommunity());
+        $this->assertFalse($editionSelector->isEnterprise());
+        $this->assertFalse($editionSelector->isProfessional());
+    }
+
+    public function providerReturnsForcedEdition()
+    {
+        return array(
+            array(EditionSelector::ENTERPRISE, 'EE'),
+            array(EditionSelector::PROFESSIONAL, 'PE'),
+            array(EditionSelector::COMMUNITY, 'CE'),
+        );
+    }
+
+    /**
+     * @dataProvider providerReturnsForcedEdition
+     */
+    public function testReturnsForcedEdition($editionToForce, $expectedEdition)
+    {
+        $editionSelector = new EditionSelector($editionToForce);
+
+        $this->assertSame($expectedEdition, $editionSelector->getEdition());
+    }
+
+    public function testIsEnterpriseReturnTrueIfForced()
+    {
+        $editionSelector = new EditionSelector(EditionSelector::ENTERPRISE);
+        $this->assertTrue($editionSelector->isEnterprise());
+        $this->assertFalse($editionSelector->isProfessional());
+        $this->assertFalse($editionSelector->isCommunity());
+    }
+
+    public function testIsProfessionalReturnTrueIfForced()
+    {
+        $editionSelector = new EditionSelector(EditionSelector::PROFESSIONAL);
+        $this->assertTrue($editionSelector->isProfessional());
+        $this->assertFalse($editionSelector->isEnterprise());
+        $this->assertFalse($editionSelector->isCommunity());
+    }
+
+    public function testIsCommunityReturnTrueIfForced()
+    {
+        $editionSelector = new EditionSelector(EditionSelector::COMMUNITY);
+        $this->assertTrue($editionSelector->isCommunity());
+        $this->assertFalse($editionSelector->isEnterprise());
+        $this->assertFalse($editionSelector->isProfessional());
     }
 }

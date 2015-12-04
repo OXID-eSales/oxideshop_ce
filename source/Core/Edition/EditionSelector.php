@@ -36,6 +36,19 @@ class EditionSelector
 
     const COMMUNITY = 'CE';
 
+    /** @var string Edition abbreviation  */
+    private $edition = null;
+
+    /**
+     * EditionSelector constructor.
+     *
+     * @param string|null $edition to force edition.
+     */
+    public function __construct($edition = null)
+    {
+        $this->edition = $edition;
+    }
+
     /**
      * Method returns edition.
      *
@@ -43,12 +56,16 @@ class EditionSelector
      */
     public function getEdition()
     {
+        if (!is_null($this->edition)) {
+            return $this->edition;
+        }
+
         $edition = static::COMMUNITY;
 
-        if ($this->isEnterprise()) {
+        if (OXID_VERSION_EE) {
             $edition = static::ENTERPRISE;
         }
-        if ($this->isProfessional()) {
+        if (OXID_VERSION_PE_PE) {
             $edition = static::PROFESSIONAL;
         }
 
@@ -60,7 +77,7 @@ class EditionSelector
      */
     public function isEnterprise()
     {
-        return (bool) OXID_VERSION_EE;
+        return $this->getEdition() === static::ENTERPRISE;
     }
 
     /**
@@ -68,7 +85,7 @@ class EditionSelector
      */
     public function isProfessional()
     {
-        return (bool) OXID_VERSION_PE_PE;
+        return $this->getEdition() === static::PROFESSIONAL;
     }
 
     /**
@@ -76,6 +93,6 @@ class EditionSelector
      */
     public function isCommunity()
     {
-        return (bool) OXID_VERSION_PE_CE;
+        return $this->getEdition() === static::COMMUNITY;
     }
 }

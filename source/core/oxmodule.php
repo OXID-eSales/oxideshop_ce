@@ -177,9 +177,11 @@ class oxModule extends oxSuperCfg
         $aModulePaths = $myConfig->getConfigParam('aModulePaths');
         $sModuleId = null;
         if (is_array($aModulePaths)) {
+            $sModule = str_replace('\\', '/', $sModule);
             foreach ($aModulePaths as $sId => $sPath) {
                 if (strpos($sModule, $sPath . "/") === 0) {
                     $sModuleId = $sId;
+                    break;
                 }
             }
         }

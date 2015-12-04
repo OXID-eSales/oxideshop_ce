@@ -3,13 +3,13 @@
 $serviceCaller = new \OxidEsales\TestingLibrary\ServiceCaller();
 $testConfig = new \OxidEsales\TestingLibrary\TestConfig();
 
-if (OXID_VERSION_PE_CE) {
+if ($testConfig->getShopEdition() === 'CE') {
     $serviceCaller->setParameter('importSql', '@'. __DIR__ .'/Fixtures/testdata.sql');
 }
-if (OXID_VERSION_PE_PE) {
+if ($testConfig->getShopEdition() === 'PE') {
     $serviceCaller->setParameter('importSql', '@' . $testConfig->getShopPath() . '/Edition/Professional/Tests/Fixtures/testdata.sql');
 }
-if (OXID_VERSION_EE) {
+if ($testConfig->getShopEdition() === 'EE') {
     $serviceCaller->setParameter('importSql', '@' . $testConfig->getShopPath() . '/Edition/Enterprise/Tests/Fixtures/testdata.sql');
 }
 $serviceCaller->callService('ShopPreparation', 1);

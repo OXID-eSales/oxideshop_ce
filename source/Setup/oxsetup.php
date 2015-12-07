@@ -2046,7 +2046,7 @@ class oxSetupController extends oxSetupCore
         $oView = $this->getView();
         $oView->setTitle('STEP_2_TITLE');
         $oView->setViewParam("aLicenseText", $this->getInstance("oxSetupUtils")->getFileContents(
-            $editionPathSelector->getSetupDirectoryPath()
+            $editionPathSelector->getSetupDirectory()
             . '/'. ucfirst($this->getInstance("oxSetupLang")->getSetupLang())
             . '/' . $sLicenseFile
         ));
@@ -2231,7 +2231,7 @@ class oxSetupController extends oxSetupCore
         }
 
         $editionPathSelector = $this->getEditionPathProvider();
-        $sqlDir = $editionPathSelector->getDatabaseSqlDirectoryPath();
+        $sqlDir = $editionPathSelector->getDatabaseSqlDirectory();
 
         //settting database collation
         $iUtfMode = isset($aDB['iUtfMode']) ? ((int) $aDB['iUtfMode']) : 0;

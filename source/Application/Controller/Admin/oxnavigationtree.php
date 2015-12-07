@@ -461,7 +461,7 @@ class OxNavigationTree extends oxSuperCfg
         $myOxUtlis = oxRegistry::getUtils();
 
         $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector()));
-        $fullAdminDir = $editionPathSelector->getViewsDirectoryPath() . 'admin' . DIRECTORY_SEPARATOR;
+        $fullAdminDir = $editionPathSelector->getViewsDirectory() . 'admin' . DIRECTORY_SEPARATOR;
         $sMenuFile = $fullAdminDir . 'menu.xml';
 
         $sTmpDir = $myConfig->getConfigParam('sCompileDir');

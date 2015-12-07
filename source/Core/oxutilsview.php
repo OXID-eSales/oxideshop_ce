@@ -576,7 +576,7 @@ class oxUtilsView extends oxSuperCfg
     protected function getEnterpriseEditionPath()
     {
         $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector(EditionSelector::ENTERPRISE)));
-        $editionTemplatesDirectory = $editionPathSelector->getViewsDirectoryPath();
+        $editionTemplatesDirectory = $editionPathSelector->getViewsDirectory();
 
         return $editionTemplatesDirectory;
     }
@@ -589,7 +589,7 @@ class oxUtilsView extends oxSuperCfg
     protected function getProfessionalEditionPath()
     {
         $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector(EditionSelector::PROFESSIONAL)));
-        $editionTemplatesDirectory = $editionPathSelector->getViewsDirectoryPath();
+        $editionTemplatesDirectory = $editionPathSelector->getViewsDirectory();
 
         return $editionTemplatesDirectory;
     }

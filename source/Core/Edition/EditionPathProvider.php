@@ -50,7 +50,7 @@ class EditionPathProvider
      *
      * @return string
      */
-    public function getSetupDirectoryPath()
+    public function getSetupDirectory()
     {
         return $this->getEditionPathSelector()->getDirectoryPath()
         . static::SETUP_DIRECTORY . DIRECTORY_SEPARATOR;
@@ -61,9 +61,9 @@ class EditionPathProvider
      *
      * @return string
      */
-    public function getDatabaseSqlDirectoryPath()
+    public function getDatabaseSqlDirectory()
     {
-        return $this->getSetupDirectoryPath() . static::DATABASE_SQL_DIRECTORY . DIRECTORY_SEPARATOR;
+        return $this->getSetupDirectory() . static::DATABASE_SQL_DIRECTORY . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -71,7 +71,7 @@ class EditionPathProvider
      *
      * @return string
      */
-    public function getViewsDirectoryPath()
+    public function getViewsDirectory()
     {
         return $this->getEditionPathSelector()->getDirectoryPath()
         . 'Application' . DIRECTORY_SEPARATOR

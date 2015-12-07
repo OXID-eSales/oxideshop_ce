@@ -29,7 +29,7 @@ class EditionPathProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
         $editionPathSelector = $this->getEditionPathSelectorMock();
         $editionPathSelector = new EditionPathProvider($editionPathSelector);
 
-        $this->assertSame('/Setup/', $editionPathSelector->getSetupDirectoryPath());
+        $this->assertSame('/Setup/', $editionPathSelector->getSetupDirectory());
     }
 
     public function testReturnsSqlDirectory()
@@ -37,7 +37,7 @@ class EditionPathProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
         $editionSelector = $this->getEditionPathSelectorMock();
         $editionPathSelector = new EditionPathProvider($editionSelector);
 
-        $this->assertSame('/Setup/Sql/', $editionPathSelector->getDatabaseSqlDirectoryPath());
+        $this->assertSame('/Setup/Sql/', $editionPathSelector->getDatabaseSqlDirectory());
     }
 
     /**

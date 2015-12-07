@@ -20,6 +20,8 @@
  * @version   OXID eShop CE
  */
 
+require_once realpath(dirname(__FILE__)) . '/helpers/LanguageMainHelper.php';
+
 abstract class MultilanguageTestCase extends OxidTestCase
 {
     protected $originalLanguageArray = null;
@@ -126,68 +128,18 @@ abstract class MultilanguageTestCase extends OxidTestCase
     }
 
     /**
-     * Getter for Language_Main_Helper proxy class.
+     * Getter for LanguageMainHelper proxy class.
      *
      * @return object
      */
     protected function getLanguageMain()
     {
         if (is_null($this->languageMain)) {
-            $this->languageMain = $this->getProxyClass('Language_Main_Helper');
+            $this->languageMain = $this->getProxyClass('LanguageMainHelper');
             $this->languageMain->render();
         }
         return $this->languageMain;
     }
 
-    /**
-     * Create additional multilanguage table.
-     *
-     * @param string $name
-     */
-    protected function createTable($name = 'addtest')
-    {
-        $sql = "CREATE TABLE IF NOT EXISTS `" . $name . "` (" .
-               "`OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'Item id'," .
-               "`TITLE` varchar(128) NOT NULL DEFAULT '' COMMENT 'Title (multilanguage)'," .
-               "`TITLE_1` varchar(128) NOT NULL DEFAULT ''," .
-               "`TITLE_2` varchar(128) NOT NULL DEFAULT ''," .
-               "`TITLE_3` varchar(128) NOT NULL DEFAULT ''," .
-               "`TITLE_4` varchar(128) NOT NULL DEFAULT ''," .
-               "`TITLE_5` varchar(128) NOT NULL DEFAULT ''," .
-               "`TITLE_6` varchar(128) NOT NULL DEFAULT ''," .
-               "`TITLE_7` varchar(128) NOT NULL DEFAULT ''," .
-               "PRIMARY KEY (`OXID`)" .
-               ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='for testing'";
-
-        oxDb::getDb()->query($sql);
-        oxDb::getInstance()->getTableDescription($name); //throws exception if table does not exist
-        $this->additionalTables[] = $name;
-    }
-
-    /**
-     * Remove additional multilanguage tables and related.
-     *
-     * @return null
-     */
-    protected function removeAdditionalTables($name)
-    {
-        $sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_NAME LIKE '" . $name . "%'";
-        $result = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getArray($sql);
-        foreach ($result as $sub) {
-            oxDb::getDb()->query("DROP TABLE IF EXISTS `" . $sub['TABLE_NAME'] . "`");
-        }
-    }
 }
 
-class Language_Main_Helper extends Language_Main
-{
-    public function getLanguageData()
-    {
-        return $this->_aLangData;
-    }
-
-    public function setLanguageData($languageData)
-    {
-        $this->_aLangData = $languageData;
-    }
-}

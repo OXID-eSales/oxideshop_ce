@@ -82,16 +82,14 @@ class JavaScriptFormatter
      *
      * @param string $widget     Widget name
      * @param bool   $isInWidget is script rendered inside widget
-     * @param bool   $isDynamic
      *
      * @return string
      */
-    public function render($widget, $isInWidget, $isDynamic)
+    public function render($widget, $isInWidget)
     {
         $config = oxRegistry::getConfig();
-        $suffix = $isDynamic ? '_dynamic' : '';
-        $includesParameterName = 'includes' . $suffix;
-        $scriptsParameterName = 'scripts' . $suffix;
+        $scriptsParameterName = 'scripts';
+        $includesParameterName = 'includes';
         $scripts = (array)$config->getGlobalParameter($scriptsParameterName);
         $includes = (array)$config->getGlobalParameter($includesParameterName);
         $output = '';

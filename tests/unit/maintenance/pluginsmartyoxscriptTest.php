@@ -46,7 +46,7 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $oSmarty = new Smarty();
         $this->assertEquals('', smarty_function_oxscript(array('include' => 'http://someurl/src/js/libs/jquery.min.js'), $oSmarty));
 
-        $sOutput = '<script type="text/javascript" src="http://someurl/src/js/libs/jquery.min.js"></script>' . "\n";
+        $sOutput = '<script type="text/javascript" src="http://someurl/src/js/libs/jquery.min.js"></script>';
 
         $this->assertEquals($sOutput, smarty_function_oxscript(array('inWidget' => false), $oSmarty));
     }
@@ -59,11 +59,13 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $oSmarty = new Smarty();
         $this->assertEquals('', smarty_function_oxscript(array('include' => 'http://someurl/src/js/libs/jquery.min.js'), $oSmarty));
 
-        $sOutput = '<script type="text/javascript">' . PHP_EOL
-                   . 'window.addEventListener("load", function() {' . PHP_EOL
-                   . 'WidgetsHandler.registerFile( "http://someurl/src/js/libs/jquery.min.js", "somewidget" );' . PHP_EOL
-                   . '}, false )' . PHP_EOL
-                   . '</script>' . PHP_EOL;
+        $sOutput = <<<JS
+<script type='text/javascript'>
+    window.addEventListener('load', function() {
+        WidgetsHandler.registerFile('http://someurl/src/js/libs/jquery.min.js', 'somewidget');
+    }, false)
+</script>
+JS;
 
         $this->assertEquals($sOutput, smarty_function_oxscript(array('widget' => 'somewidget', 'inWidget' => true), $oSmarty));
     }
@@ -76,7 +78,7 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $oSmarty = new Smarty();
         $this->assertEquals('', smarty_function_oxscript(array('add' => 'oxidadd'), $oSmarty));
 
-        $sOutput = '<script type="text/javascript">' . PHP_EOL . 'oxidadd' . PHP_EOL . '</script>' . PHP_EOL;
+        $sOutput = "<script type='text/javascript'>oxidadd</script>";
 
         $this->assertEquals($sOutput, smarty_function_oxscript(array(), $oSmarty));
     }
@@ -88,8 +90,8 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
     {
         return array(
             array('oxidadd', 'oxidadd'),
-            array('"oxidadd"', '\"oxidadd\"'),
-            array("'oxidadd'", "'oxidadd'"),
+            array('"oxidadd"', '"oxidadd"'),
+            array("'oxidadd'", "\\'oxidadd\\'"),
             array("oxid\r\nadd", 'oxid\nadd'),
             array("oxid\nadd", 'oxid\nadd'),
         );
@@ -105,12 +107,7 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $oSmarty = new Smarty();
         $this->assertEquals('', smarty_function_oxscript(array('add' => $sScript), $oSmarty));
 
-        $sOutput = '<script type="text/javascript">' . PHP_EOL
-                   . 'window.addEventListener("load", function() {' . PHP_EOL
-                   . 'WidgetsHandler.registerFunction( "' . $sScriptOutput . '", "somewidget");' . PHP_EOL
-                   . '}, false )' . PHP_EOL
-                   . '</script>' . PHP_EOL;
-
+        $sOutput = "<script type='text/javascript'>window.addEventListener('load', function() { WidgetsHandler.registerFunction('$sScriptOutput', 'somewidget'); }, false )</script>";
         $this->assertEquals($sOutput, smarty_function_oxscript(array('widget' => 'somewidget', 'inWidget' => true), $oSmarty));
     }
 }

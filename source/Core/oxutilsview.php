@@ -20,10 +20,6 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-
 /**
  * View utility class
  */
@@ -539,45 +535,6 @@ class oxUtilsView extends oxSuperCfg
         }
 
         return $this->_aActiveModuleInfo;
-    }
-
-    /**
-     * Return active edition abbreviation.
-     *
-     * @return string
-     */
-    protected function getActiveEdition()
-    {
-        $editionSelector = new EditionSelector();
-        $edition = $editionSelector->getEdition();
-
-        return $edition;
-    }
-
-    /**
-     * Create Path provider objects to get path.
-     *
-     * @return string
-     */
-    protected function getEnterpriseEditionPath()
-    {
-        $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector(EditionSelector::ENTERPRISE)));
-        $editionTemplatesDirectory = $editionPathSelector->getViewsDirectory();
-
-        return $editionTemplatesDirectory;
-    }
-
-    /**
-     * Create Path provider objects to get path.
-     *
-     * @return string
-     */
-    protected function getProfessionalEditionPath()
-    {
-        $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector(EditionSelector::PROFESSIONAL)));
-        $editionTemplatesDirectory = $editionPathSelector->getViewsDirectory();
-
-        return $editionTemplatesDirectory;
     }
 
     /**

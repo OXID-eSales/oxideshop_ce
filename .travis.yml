@@ -42,5 +42,5 @@ before_script:
   # replace configuration values in config.inc.php
   - sed -i 's|<dbHost_ce>|localhost|; s|<dbName_ce>|oxidehop_ce|; s|<dbUser_ce>|root|; s|<dbPwd_ce>||; s|<sShopURL_ce>|http://localhost|; s|<sShopDir_ce>|'$TRAVIS_BUILD_DIR'/source|; s|<sCompileDir_ce>|'$TRAVIS_BUILD_DIR'/source/tmp|; s|<iUtfMode>|0|; s|$this->iDebug = 0|$this->iDebug = 1|' source/config.inc.php
 
-script: cd tests && phpunit --verbose --bootstrap bootstrap.php AllTestsUnit
+script: cd tests && ./phpunit --verbose --bootstrap bootstrap.php AllTestsUnit
 

@@ -43,67 +43,17 @@
  */
 function smarty_function_oxstyle($params, &$smarty)
 {
-    $myConfig   = oxRegistry::getConfig();
-    $sSuffix     = !empty($smarty->_tpl_vars["__oxid_include_dynamic"]) ? '_dynamic' : '';
-    $sWidget    = !empty($params['widget']) ? $params['widget' ] : '';
-    $blInWidget = !empty($params['inWidget']) ? $params['inWidget'] : false;
+    $widget = !empty($params['widget']) ? $params['widget'] : '';
+    $forceRender = !empty($params['inWidget']) ? $params['inWidget'] : false;
+    $isDynamic = (bool) $smarty->_tpl_vars["__oxid_include_dynamic"];
+    $styleFormatter = oxNew('OxidEsales\Eshop\Core\ViewHelper\StyleFormatter');
 
-    $sCStyles  = 'conditional_styles'.$sSuffix;
-    $sStyles  = 'styles'.$sSuffix;
-
-    $aCStyles  = (array) $myConfig->getGlobalParameter($sCStyles);
-    $aStyles  = (array) $myConfig->getGlobalParameter($sStyles);
-
-
-    if ( $sWidget && !$blInWidget ) {
-        return;
-    }
-
-    $sOutput  = '';
-    if ( !empty($params['include']) ) {
-        $sStyle = $params['include'];
-        if (!preg_match('#^https?://#', $sStyle)) {
-            $sOriginalStyle = $sStyle;
-
-            // Separate query part #3305.
-            $aStyle = explode('?', $sStyle);
-            $sStyle = $aStyle[0] = $myConfig->getResourceUrl($aStyle[0], $myConfig->isAdmin());
-
-            if ($sStyle && count($aStyle) > 1) {
-                // Append query part if still needed #3305.
-                $sStyle .= '?'.$aStyle[1];
-            } elseif ($sSPath = $myConfig->getResourcePath($sOriginalStyle, $myConfig->isAdmin())) {
-                // Append file modification timestamp #3725.
-                $sStyle .= '?'.filemtime($sSPath);
-            }
-        }
-
-        // File not found ?
-        if (!$sStyle) {
-            if ($myConfig->getConfigParam( 'iDebug' ) != 0) {
-                $sError = "{oxstyle} resource not found: ".getStr()->htmlspecialchars($params['include']);
-                trigger_error($sError, E_USER_WARNING);
-            }
-            return;
-        }
-
-        // Conditional comment ?
-        if ( !empty($params['if']) ) {
-            $aCStyles[$sStyle] = $params['if'];
-            $myConfig->setGlobalParameter($sCStyles, $aCStyles);
-        } else {
-            $aStyles[] = $sStyle;
-            $aStyles = array_unique($aStyles);
-            $myConfig->setGlobalParameter($sStyles, $aStyles);
-        }
+    $output = '';
+    if (!empty($params['include'])) {
+        $styleFormatter->addFile($params['include'], $params['if'], $isDynamic);
     } else {
-        foreach ($aStyles as $sSrc) {
-            $sOutput .= '<link rel="stylesheet" type="text/css" href="'.$sSrc.'" />'.PHP_EOL;
-        }
-        foreach ($aCStyles as $sSrc => $sCondition) {
-            $sOutput .= '<!--[if '.$sCondition.']><link rel="stylesheet" type="text/css" href="'.$sSrc.'"><![endif]-->'.PHP_EOL;
-        }
+        $output = $styleFormatter->render($widget, $forceRender, $isDynamic);
     }
 
-    return $sOutput;
+    return $output;
 }

@@ -30,6 +30,8 @@ use oxRegistry;
 class JavaScriptFormatter
 {
     /**
+     * Register JavaScript code snippet for rendering.
+     *
      * @param string $script
      * @param bool   $isDynamic
      */
@@ -47,44 +49,37 @@ class JavaScriptFormatter
     }
 
     /**
-     * @param string $script
+     * Register JavaScript file (local or remote) for rendering.
+     *
+     * @param string $file
      * @param int    $priority
      * @param bool   $isDynamic
      */
-    public function addFile($script, $priority, $isDynamic)
+    public function addFile($file, $priority, $isDynamic)
     {
         $config = oxRegistry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
         $includeParameterName = 'includes' . $suffix;
-        $originalScript = $script;
-        if (!preg_match('#^https?://#', $script)) {
-            // Separate query part #3305.
-            $scripts = explode('?', $script);
-            $script = $config->getResourceUrl($scripts[0], $config->isAdmin());
-
-            if ($script && count($scripts) > 1) {
-                // Append query part if still needed #3305.
-                $script .= '?' . $scripts[1];
-            } elseif ($sSPath = $config->getResourcePath($originalScript, $config->isAdmin())) {
-                // Append file modification timestamp #3725.
-                $script .= '?' . filemtime($sSPath);
-            }
+        $originalUrl = $file;
+        if (!preg_match('#^https?://#', $file)) {
+            $file = $this->formLocalFileUrl($file);
         }
 
-        // File not found ?
-        if (!$script) {
+        if (!$file) {
             if ($config->getConfigParam('iDebug') != 0) {
-                $sError = "{oxscript} resource not found: " . getStr()->htmlspecialchars($originalScript);
-                trigger_error($sError, E_USER_WARNING);
+                $error = "{oxscript} resource not found: " . getStr()->htmlspecialchars($originalUrl);
+                trigger_error($error, E_USER_WARNING);
             }
         } else {
-            $includes[$priority][] = $script;
+            $includes[$priority][] = $file;
             $includes[$priority] = array_unique($includes[$priority]);
             $config->setGlobalParameter($includeParameterName, $includes);
         }
     }
 
     /**
+     * Renders all registered JavaScript snippets and files.
+     *
      * @param string $widget     Widget name
      * @param bool   $isInWidget is script rendered inside widget
      * @param bool   $isDynamic
@@ -107,28 +102,50 @@ class JavaScriptFormatter
         if (!$widget || $isInWidget || $isAjaxRequest) {
             if (!$isAjaxRequest) {
                 // Form output for includes.
-                $output .= $this->formIncludes($includes, $widget);
+                $output .= $this->formFilesToInclude($includes, $widget);
                 $config->setGlobalParameter($includesParameterName, null);
                 if ($widget) {
                     $dynamicIncludes = (array)$config->getGlobalParameter($includesParameterName . '_dynamic');
-                    $output .= $this->formIncludes($dynamicIncludes, $widget);
+                    $output .= $this->formFilesToInclude($dynamicIncludes, $widget);
                     $config->setGlobalParameter($includesParameterName . '_dynamic', null);
                 }
             }
 
             // Form output for adds.
             $scriptOutput = '';
-            $scriptOutput .= $this->formScripts($scripts, $widget, $isAjaxRequest);
+            $scriptOutput .= $this->formSnippetsToInclude($scripts, $widget, $isAjaxRequest);
             $config->setGlobalParameter($scriptsParameterName, null);
             if ($widget) {
                 $dynamicScripts = (array)$config->getGlobalParameter($scriptsParameterName . '_dynamic');
-                $scriptOutput .= $this->formScripts($dynamicScripts, $widget, $isAjaxRequest);
+                $scriptOutput .= $this->formSnippetsToInclude($dynamicScripts, $widget, $isAjaxRequest);
                 $config->setGlobalParameter($scriptsParameterName . '_dynamic', null);
             }
             $output .= $this->enclose($scriptOutput, $widget, $isAjaxRequest);
         }
 
         return $output;
+    }
+
+    /**
+     * Separate query part, appends query part if needed, append file modification timestamp.
+     *
+     * @param string $file
+     *
+     * @return string
+     */
+    protected function formLocalFileUrl($file)
+    {
+        $config = oxRegistry::getConfig();
+        $parts = explode('?', $file);
+        $url = $config->getResourceUrl($parts[0], $config->isAdmin());
+
+        if ($url && count($parts) > 1) {
+            $url .= '?' . $parts[1];
+        } elseif ($path = $config->getResourcePath($file, $config->isAdmin())) {
+            $url .= '?' . filemtime($path);
+        }
+
+        return $url;
     }
 
     /**
@@ -139,7 +156,7 @@ class JavaScriptFormatter
      *
      * @return string
      */
-    protected function formIncludes($includes, $widget)
+    protected function formFilesToInclude($includes, $widget)
     {
         if (!count($includes)) {
             return '';
@@ -182,7 +199,7 @@ JS;
      *
      * @return string
      */
-    protected function formScripts($scripts, $widgetName, $ajaxRequest)
+    protected function formSnippetsToInclude($scripts, $widgetName, $ajaxRequest)
     {
         $preparedScripts = array();
         foreach ($scripts as $script) {

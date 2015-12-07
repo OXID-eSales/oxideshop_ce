@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
 
@@ -395,6 +395,37 @@ class oxUtils extends oxSuperCfg
         stopProfile('fround');
 
         return round($sVal + $dprez * ($sVal >= 0 ? 1 : -1), $iCurPrecision);
+    }
+
+    /**
+     * Alphanumeric oxid and pure numeric oxid that start with the numeric part and only differ
+     * in postfixed alphabetical characters (e.g. "123" and "123X") are cast to the wrong type
+     * php internally which might result in wrong array_search results.
+     *
+     * Wrapper for php internal array_search function, ony usable for string search.
+     * In case we get unclear results make sure we typecast all data
+     * to string before performing array search.
+     *
+     * @param string $sNeedle
+     * @param array $aHaystack
+     *
+     * @return mixed
+     */
+    public function arrayStringSearch($sNeedle, $aHaystack)
+    {
+        $sResult = array_search((string) $sNeedle, $aHaystack);
+        $sSecond = array_search((string) $sNeedle, $aHaystack, true);
+
+        //got a different result when using strict and not strict?
+        //do a detail check
+        if( $sResult != $sSecond) {
+            $aStringstack = array();
+            foreach ($aHaystack as $sValue) {
+                $aStringstack[] = (string) $sValue;
+            }
+            $sResult = array_search((string) $sNeedle, $aStringstack, true);
+        }
+        return $sResult;
     }
 
     /**

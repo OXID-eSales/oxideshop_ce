@@ -67,6 +67,10 @@ class modUtils extends oxUtils
 
 class Unit_Views_oxlocatorTest extends OxidTestCase
 {
+    /**
+     * Make a copy of The Barrel for testing
+     */
+    const SOURCE_ARTICLE_ID = 'f4f73033cf5045525644042325355732';
 
     protected $_iSeoMode = null;
 
@@ -101,6 +105,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         oxDb::getDb()->Execute($sDelete);
         oxDb::getDb()->execute('delete from oxrecommlists where oxid like "testlist%" ');
         oxDb::getDb()->execute('delete from oxobject2list where oxlistid like "testlist%" ');
+        oxDb::getDb()->execute('delete from oxarticles where oxid like "%1234567%" ');
 
         // restoring
         oxRegistry::getConfig()->getActiveShop()->oxshops__oxseoactive = new oxField($this->_iSeoMode, oxField::T_RAW);
@@ -857,4 +862,57 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $this->assertEquals(0, $oLocator->UNITgetProductPos($oArticle, new oxlist(), $oLocatorTarget));
     }
 
+    /**
+     * #0006220 test case
+     */
+    public function testGetProductPosMixTypeKeys()
+    {
+        $oArticle = $this->_insertArticle('1234567');
+        $oOtherArticle = $this->_insertArticle('1234567A');
+
+        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType'));
+        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
+
+        $array = array();
+        $array['943ed656e21971fb2f1827facbba9bec'] = '943ed656e21971fb2f1827facbba9bec';
+        $array['1234567'] = '1234567';
+        $array['1234567A'] = '1234567A';
+        $array['6b6e718666bc8867719ab25a8020a978'] = '6b6e718666bc8867719ab25a8020a978';
+
+        $oList = new oxlist();
+        $oList->assign($array);
+
+        $oLocator = new testOxLocator();
+        $this->assertSame(2, $oLocator->UNITgetProductPos($oArticle, $oList, $oLocatorTarget));
+        $this->assertNotNull($oLocator->_oBackProduct);
+        $this->assertNotNull($oLocator->_oNextProduct);
+        $this->assertSame('943ed656e21971fb2f1827facbba9bec', $oLocator->_oBackProduct->getId());
+        $this->assertSame('1234567A', $oLocator->_oNextProduct->getId());
+
+        $oLocator = new testOxLocator();
+        $this->assertSame(3, $oLocator->UNITgetProductPos($oOtherArticle, $oList, $oLocatorTarget));
+        $this->assertNotNull($oLocator->_oBackProduct);
+        $this->assertNotNull($oLocator->_oNextProduct);
+        $this->assertSame('1234567', $oLocator->_oBackProduct->getId());
+        $this->assertSame('6b6e718666bc8867719ab25a8020a978', $oLocator->_oNextProduct->getId());
+
+    }
+
+    /**
+     * Make a copy of article for testing.
+     *
+     * @param string $sOxid Set this oxid for the article copy.
+     *
+     * @return oxArticle
+     */
+    private function _insertArticle($sOxid = '1234567')
+    {
+        $oArticle = oxNew('oxarticle');
+        $oArticle->disableLazyLoading();
+        $oArticle->load(self::SOURCE_ARTICLE_ID);
+        $oArticle->setId($sOxid );
+        $oArticle->save();
+
+        return $oArticle;
+    }
 }

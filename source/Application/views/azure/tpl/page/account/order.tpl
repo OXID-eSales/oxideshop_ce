@@ -84,7 +84,7 @@
                                     *}]
                                   </td>
                                 </tr>
-
+                                [{include file="page/account/inc/order_article_status.tpl"}]
                             [{/foreach}]
                         </table>
                   </td>

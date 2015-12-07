@@ -90,10 +90,7 @@
                         <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxcategories__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxcategories__oxtitle->value}]</a></div></td>
                         <td class="[{$listclass}]">
                             [{if !$readonly}]
-
-                                    [{if $listitem->oxcategories__oxleft->value + 1 == $listitem->oxcategories__oxright->value}]
-                                        <a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxcategories__oxid->value}]');" class="delete" id="del.[{$_cnt}]" [{include file="help.tpl" helpid=item_delete}]></a>
-                                    [{/if}]
+                                [{include file="inc/category_list_item_actions.tpl"}]
                             [{/if}]
                         </td>
                     [{/block}]

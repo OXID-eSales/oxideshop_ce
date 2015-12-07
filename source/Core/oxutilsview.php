@@ -281,31 +281,17 @@ class oxUtilsView extends oxSuperCfg
      */
     public function getTemplateDirs()
     {
-        $myConfig = oxRegistry::getConfig();
-
-        // get edition
-        $activeEdition = $this->getActiveEdition();
-
-        // if not CE, so lets add required directories to check
-        if ($activeEdition === EditionSelector::ENTERPRISE) {
-            $editionTemplatesDirectory = $this->addActiveThemeId($this->getEnterpriseEditionPath());
-            $this->setTemplateDir($editionTemplatesDirectory);
-        }
-
-        if ($activeEdition !== EditionSelector::COMMUNITY) {
-            $editionTemplatesDirectory = $this->addActiveThemeId($this->getProfessionalEditionPath());
-            $this->setTemplateDir($editionTemplatesDirectory);
-        }
+        $config = oxRegistry::getConfig();
 
         // buffer for CE (main) edition templates
-        $mainTemplatesDirectory = $myConfig->getTemplateDir($this->isAdmin());
+        $mainTemplatesDirectory = $config->getTemplateDir($this->isAdmin());
 
         // main templates directory has not much priority anymore
         $this->setTemplateDir($mainTemplatesDirectory);
 
         // out directory can have templates too
         if (!$this->isAdmin()) {
-            $this->setTemplateDir($this->addActiveThemeId($myConfig->getOutDir(true)));
+            $this->setTemplateDir($this->addActiveThemeId($config->getOutDir(true)));
         }
 
         return $this->_aTemplateDir;
@@ -601,7 +587,7 @@ class oxUtilsView extends oxSuperCfg
      *
      * @return string
      */
-    private function addActiveThemeId($themePath)
+    protected function addActiveThemeId($themePath)
     {
         $themeId = $this->getConfig()->getConfigParam('sTheme');
         if ($this->isAdmin()) {

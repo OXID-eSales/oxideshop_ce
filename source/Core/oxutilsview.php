@@ -230,7 +230,7 @@ class oxUtilsView extends oxSuperCfg
         $oSmarty->force_compile = $blRecompile;
 
         if (!$oActView) {
-            $oActView = oxNew('oxubase');
+            $oActView = oxNew('oxUBase');
             $oActView->addGlobalParams();
         }
 
@@ -333,7 +333,7 @@ class oxUtilsView extends oxSuperCfg
     /**
      * sets properties of smarty object
      *
-     * @param object $oSmarty template processor object (smarty)
+     * @param Smarty $oSmarty template processor object (smarty)
      */
     protected function _fillCommonSmartyProperties($oSmarty)
     {
@@ -342,10 +342,13 @@ class oxUtilsView extends oxSuperCfg
         $oSmarty->right_delimiter = '}]';
 
         $oSmarty->register_resource(
-            'ox', array('ox_get_template',
-                        'ox_get_timestamp',
-                        'ox_get_secure',
-                        'ox_get_trusted')
+            'ox',
+            array(
+                'ox_get_template',
+                'ox_get_timestamp',
+                'ox_get_secure',
+                'ox_get_trusted'
+            )
         );
 
         $sSmartyDir = $this->getSmartyDir();
@@ -355,7 +358,6 @@ class oxUtilsView extends oxSuperCfg
         $oSmarty->cache_dir = $sSmartyDir;
         $oSmarty->template_dir = $this->getTemplateDirs();
         $oSmarty->compile_id = $this->getTemplateCompileId();
-
         $oSmarty->default_template_handler_func = array(oxRegistry::get("oxUtilsView"), '_smartyDefaultTemplateHandler');
 
         include_once dirname(__FILE__) . '/smarty/plugins/prefilter.oxblock.php';

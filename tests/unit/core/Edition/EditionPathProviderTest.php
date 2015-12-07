@@ -21,6 +21,7 @@
  */
 
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 
 class EditionPathProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
 {
@@ -40,12 +41,20 @@ class EditionPathProviderTest extends OxidEsales\TestingLibrary\UnitTestCase
         $this->assertSame('/Setup/Sql/', $editionPathSelector->getDatabaseSqlDirectory());
     }
 
+    public function testReturnsSmartyPluginsDirectory()
+    {
+        $editionSelector = $this->getEditionPathSelectorMock();
+        $editionPathSelector = new EditionPathProvider($editionSelector);
+
+        $this->assertSame('/Core/Smarty/Plugin/', $editionPathSelector->getSmartyPluginsDirectory());
+    }
+
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return PHPUnit_Framework_MockObject_MockObject|EditionRootPathProvider
      */
     protected function getEditionPathSelectorMock()
     {
-        $editionSelector = $this->getMockBuilder('EditionSelector')->setMethods(array('getDirectoryPath'))->getMock();
+        $editionSelector = $this->getMockBuilder('EditionRootPathProvider')->setMethods(array('getDirectoryPath'))->getMock();
         $editionSelector->method('getDirectoryPath')->willReturn('/');
         return $editionSelector;
     }

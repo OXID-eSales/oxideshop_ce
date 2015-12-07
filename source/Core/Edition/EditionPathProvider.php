@@ -38,7 +38,7 @@ class EditionPathProvider
     private $editionPathSelector;
 
     /**
-     * @param $editionPathSelector
+     * @param EditionRootPathProvider $editionPathSelector
      */
     public function __construct($editionPathSelector)
     {
@@ -76,6 +76,16 @@ class EditionPathProvider
         return $this->getEditionPathSelector()->getDirectoryPath()
         . 'Application' . DIRECTORY_SEPARATOR
         . 'views' . DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * Method forms path to corresponding smarty plugins directory.
+     *
+     * @return string
+     */
+    public function getSmartyPluginsDirectory()
+    {
+        return $this->getEditionPathSelector()->getDirectoryPath() . 'Core/Smarty/Plugin/';
     }
 
     /**

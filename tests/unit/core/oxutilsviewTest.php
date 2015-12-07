@@ -505,24 +505,25 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $compileDirectory = $oVfsStreamWrapper->getRootPath().'tmp_directory';
         $config->setConfigParam('sCompileDir', $compileDirectory);
 
-        $aCheck = array('php_handling'    => 2,
-                        'security'        => false,
-                        'php_handling'    => (int) $config->getConfigParam('iSmartyPhpHandling'),
-                        'left_delimiter'  => '[{',
-                        'right_delimiter' => '}]',
-                        'caching'         => false,
-                        'compile_dir'     => $compileDirectory . "/smarty/",
-                        'cache_dir'       => $compileDirectory . "/smarty/",
-                        'template_dir'    => $aTemplatesDir,
-                        'compile_id'      => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
-                        'debugging'       => true,
-                        'compile_check'   => true);
-
+        $aCheck = array(
+            'security'        => false,
+            'php_handling'    => (int) $config->getConfigParam('iSmartyPhpHandling'),
+            'left_delimiter'  => '[{',
+            'right_delimiter' => '}]',
+            'caching'         => false,
+            'compile_dir'     => $compileDirectory . "/smarty/",
+            'cache_dir'       => $compileDirectory . "/smarty/",
+            'template_dir'    => $aTemplatesDir,
+            'compile_id'      => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
+            'debugging'       => true,
+            'compile_check'   => true,
+            'plugins_dir'     => array('plugins'),
+        );
 
         $oSmarty = $this->getMock('smarty', array('register_resource'));
         $oSmarty->expects($this->once())->method('register_resource');
 
-        $oUtilsView = oxNew('oxutilsview');
+        $oUtilsView = oxNew('oxUtilsView');
         $oUtilsView->setConfig($config);
         $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
         $oUtilsView->UNITsmartyCompileCheck($oSmarty);

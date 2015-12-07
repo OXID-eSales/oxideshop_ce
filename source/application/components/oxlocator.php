@@ -481,7 +481,7 @@ class oxLocator extends oxSuperCfg
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
             $sParentIdField = 'oxarticles__oxparentid';
             $sArticleId = $oArticle->$sParentIdField->value ? $oArticle->$sParentIdField->value : $oArticle->getId();
-            $iPos = array_search($sArticleId, $oIdList->arrayKeys());
+            $iPos = oxRegistry::getUtils()->arrayStringSearch($sArticleId, $oIdList->arrayKeys());
             $iPageNr = floor($iPos / $iNrofCatArticles);
         }
 
@@ -522,7 +522,7 @@ class oxLocator extends oxSuperCfg
         if ($oIdList->count() && isset($oIdList[$sOxid])) {
 
             $aIds = $oIdList->arrayKeys();
-            $iPos = array_search($sOxid, $aIds);
+            $iPos = oxRegistry::getUtils()->arrayStringSearch($sOxid, $aIds);
 
             if (array_key_exists($iPos - 1, $aIds)) {
                 $oBackProduct = oxNew('oxArticle');

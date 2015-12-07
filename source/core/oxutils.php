@@ -395,6 +395,37 @@ class oxUtils extends oxSuperCfg
     }
 
     /**
+     * Alphanumeric oxid and pure numeric oxid that start with the numeric part and only differ
+     * in postfixed alphabetical characters (e.g. "123" and "123X") are cast to the wrong type
+     * php internally which might result in wrong array_search results.
+     *
+     * Wrapper for php internal array_search function, ony usable for string search.
+     * In case we get unclear results make sure we typecast all data
+     * to string before performing array search.
+     *
+     * @param string $needle
+     * @param array $haystack
+     *
+     * @return mixed
+     */
+    public function arrayStringSearch($needle, $haystack)
+    {
+        $result = array_search((string) $needle, $haystack);
+        $second = array_search((string) $needle, $haystack, true);
+
+        //got a different result when using strict and not strict?
+        //do a detail check
+        if( $result != $second) {
+            $stringstack = array();
+            foreach ($haystack as $value) {
+                $stringstack[] = (string) $value;
+            }
+            $result = array_search((string) $needle, $stringstack, true);
+        }
+        return $result;
+    }
+
+    /**
      * Stores something into static cache to avoid double loading
      *
      * @param string $sName    name of the content

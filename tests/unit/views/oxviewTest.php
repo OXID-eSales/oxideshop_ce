@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -322,6 +322,27 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
 
     /**
+     * New action url getter tests, case we try to redirect to a not existing class
+     */
+    public function testExecuteNewActionNotExistingClass()
+    {
+        $this->getSession()->setId('SID');
+
+        oxAddClassModule("oxUtilsRedirectForoxviewTest", "oxutils");
+
+        $oConfig = $this->getMock('oxconfig', array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
+        $oConfig->expects($this->never())->method('isSsl');
+        $oConfig->expects($this->never())->method('getSslShopUrl');
+        $oConfig->expects($this->never())->method('getShopUrl');
+
+        $oView = $this->getMock('oxview', array('getConfig'));
+        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+
+        $this->setExpectedException('oxSystemComponentException', 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND');
+        $oView->UNITexecuteNewAction("testAction");
+    }
+
+    /**
      * New action url getter tests
      */
     public function testExecuteNewActionNonSsl()
@@ -339,8 +360,8 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
         $oView = $this->getMock('oxview', array('getConfig'));
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
-        $sUrl = $oView->UNITexecuteNewAction("testAction");
-        $this->assertEquals('shopurl/index.php?cl=testAction&' . $this->getSession()->sid(), oxRegistry::getUtils()->sRedirectUrl);
+        $sUrl = $oView->UNITexecuteNewAction("details");
+        $this->assertEquals('shopurl/index.php?cl=details&' . $this->getSession()->sid(), oxRegistry::getUtils()->sRedirectUrl);
 
         $oConfig = $this->getMock('oxconfig', array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
         $oConfig->expects($this->at(0))->method('getConfigParam')->will($this->returnValue(false));
@@ -351,8 +372,8 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
         $oView = $this->getMock('oxview', array('getConfig'));
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
-        $sUrl = $oView->UNITexecuteNewAction("testAction?someparam=12");
-        $this->assertEquals("shopurl/index.php?cl=testAction&someparam=12&" . $this->getSession()->sid(), oxRegistry::getUtils()->sRedirectUrl);
+        $sUrl = $oView->UNITexecuteNewAction("details?someparam=12");
+        $this->assertEquals("shopurl/index.php?cl=details&someparam=12&" . $this->getSession()->sid(), oxRegistry::getUtils()->sRedirectUrl);
 
     }
 
@@ -646,7 +667,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oView = new oxView();
         $sEdition = $oView->getShopEdition();
 
-        $this->assertTrue($sEdition == "CE" || $sEdition == "PE");
+            $this->assertTrue($sEdition == "CE" || $sEdition == "PE");
 
     }
 
@@ -665,7 +686,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oView = new oxView();
         $sEdition = $oView->getShopFullEdition();
 
-        $this->assertEquals("Community Edition", $sEdition);
+            $this->assertEquals("Community Edition", $sEdition);
 
     }
 
@@ -809,7 +830,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     public function testIsMall()
     {
         $oView = new oxView();
-        $this->assertFalse($oView->isMall());
+            $this->assertFalse($oView->isMall());
     }
 
     public function testIsCallForCache()

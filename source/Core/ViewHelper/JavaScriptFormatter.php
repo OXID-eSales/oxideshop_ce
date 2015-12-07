@@ -38,11 +38,11 @@ class JavaScriptFormatter
      * @param string $script
      * @param bool   $isDynamic
      */
-    public function addSnippet($script, $isDynamic)
+    public function addSnippet($script, $isDynamic = false)
     {
         $config = oxRegistry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
-        $scriptsParameterName = static::SNIPPETS_PARAMETER_NAME . $suffix . $suffix;
+        $scriptsParameterName = static::SNIPPETS_PARAMETER_NAME . $suffix;
         $scripts = (array) $config->getGlobalParameter($scriptsParameterName);
         $script = trim($script);
         if (!in_array($script, $scripts)) {
@@ -58,27 +58,21 @@ class JavaScriptFormatter
      * @param int    $priority
      * @param bool   $isDynamic
      */
-    public function addFile($file, $priority, $isDynamic)
+    public function addFile($file, $priority, $isDynamic = false)
     {
         $config = oxRegistry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
-        $filesParameterName = static::FILES_PARAMETER_NAME . $suffix . $suffix;
+        $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
         $includes = (array) $config->getGlobalParameter($filesParameterName);
-        $originalUrl = $file;
 
         if (!preg_match('#^https?://#', $file)) {
             $file = $this->formLocalFileUrl($file);
         }
 
-        if (!$file) {
-            if ($config->getConfigParam('iDebug') != 0) {
-                $error = "{oxscript} resource not found: " . getStr()->htmlspecialchars($originalUrl);
-                trigger_error($error, E_USER_WARNING);
-            }
-        } else {
+        if ($file) {
             $includes[$priority][] = $file;
             $includes[$priority] = array_unique($includes[$priority]);
-            $config->setGlobalParameter(static::FILES_PARAMETER_NAME . $suffix, $includes);
+            $config->setGlobalParameter($filesParameterName, $includes);
         }
     }
 
@@ -87,22 +81,26 @@ class JavaScriptFormatter
      *
      * @param string $widget      Widget name
      * @param bool   $forceRender Force rendering of scripts.
+     * @param bool   $isDynamic   Force rendering of scripts.
      *
      * @return string
      */
-    public function render($widget, $forceRender)
+    public function render($widget, $forceRender, $isDynamic = false)
     {
         $config = oxRegistry::getConfig();
         $output = '';
+        $suffix = $isDynamic ? '_dynamic' : '';
+        $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
+        $scriptsParameterName = static::SNIPPETS_PARAMETER_NAME . $suffix;
 
         $isAjaxRequest = $this->isAjaxRequest();
         $forceRender = $this->shouldForceRender($forceRender, $isAjaxRequest);
 
         if (!$widget || $forceRender) {
             if (!$isAjaxRequest) {
-                $includes = $this->getFilesToRender($widget);
-                $output .= $this->formFilesOutput($includes, $widget);
-                $config->setGlobalParameter(static::FILES_PARAMETER_NAME, null);
+                $files = $this->prepareFilesForRendering($config->getGlobalParameter($filesParameterName), $widget);
+                $output .= $this->formFilesOutput($files, $widget);
+                $config->setGlobalParameter($filesParameterName, null);
                 if ($widget) {
                     $dynamicIncludes = (array)$config->getGlobalParameter(static::FILES_PARAMETER_NAME . '_dynamic');
                     $output .= $this->formFilesOutput($dynamicIncludes, $widget);
@@ -111,9 +109,9 @@ class JavaScriptFormatter
             }
 
             // Form output for adds.
-            $scripts = (array)$config->getGlobalParameter(static::SNIPPETS_PARAMETER_NAME);
-            $scriptOutput = $this->formSnippetsOutput($scripts, $widget, $isAjaxRequest);
-            $config->setGlobalParameter(static::SNIPPETS_PARAMETER_NAME, null);
+            $snippets = (array)$config->getGlobalParameter($scriptsParameterName);
+            $scriptOutput = $this->formSnippetsOutput($snippets, $widget, $isAjaxRequest);
+            $config->setGlobalParameter($scriptsParameterName, null);
             if ($widget) {
                 $dynamicScripts = (array) $config->getGlobalParameter(static::SNIPPETS_PARAMETER_NAME . '_dynamic');
                 $scriptOutput .= $this->formSnippetsOutput($dynamicScripts, $widget, $isAjaxRequest);
@@ -132,9 +130,7 @@ class JavaScriptFormatter
      */
     protected function isAjaxRequest()
     {
-        $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
-
-        return $isAjax;
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
 
     /**
@@ -147,23 +143,20 @@ class JavaScriptFormatter
      */
     protected function shouldForceRender($forceRender, $isAjaxRequest)
     {
-
         return $isAjaxRequest ? true : $forceRender;
     }
 
     /**
      * Returns files list for rendering.
      *
+     * @param array  $files
      * @param string $widget
      *
      * @return array
      */
-    protected function getFilesToRender($widget)
+    protected function prepareFilesForRendering($files, $widget)
     {
-        $config = oxRegistry::getConfig();
-        $includes = (array) $config->getGlobalParameter(static::FILES_PARAMETER_NAME);
-
-        return $includes;
+        return (array) $files;
     }
 
     /**
@@ -178,14 +171,18 @@ class JavaScriptFormatter
         $config = oxRegistry::getConfig();
         $parts = explode('?', $file);
         $url = $config->getResourceUrl($parts[0], $config->isAdmin());
-
-        if ($url && count($parts) > 1) {
-            $url .= '?' . $parts[1];
-        } elseif ($path = $config->getResourcePath($file, $config->isAdmin())) {
-            $url .= '?' . filemtime($path);
+        $parameters = $parts[1];
+        if (empty($parameters)) {
+            $path = $config->getResourcePath($file, $config->isAdmin());
+            $parameters = filemtime($path);
         }
 
-        return $url;
+        if (empty($url) && $config->getConfigParam('iDebug') != 0) {
+            $error = "{oxscript} resource not found: " . getStr()->htmlspecialchars($file);
+            trigger_error($error, E_USER_WARNING);
+        }
+
+        return $url ? "$url?$parameters" : '';
     }
 
     /**

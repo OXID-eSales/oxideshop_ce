@@ -50,7 +50,7 @@ function smarty_function_oxscript($params, &$smarty)
     $isInWidget = !empty($params['inWidget']) ? $params['inWidget'] : false;
     $output = '';
 
-    $javaScriptFormatter = oxNew('\OxidEsales\Eshop\Core\ViewHelper\JavaScriptFormatter');
+    $javaScriptFormatter = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptFormatter');
 
     if (isset($params['add'])) {
         if (empty($params['add'])) {
@@ -67,7 +67,7 @@ function smarty_function_oxscript($params, &$smarty)
 
         $javaScriptFormatter->addFile($params['include'], $priority, $isDynamic);
     } else {
-        $output = $javaScriptFormatter->render($widget, $isInWidget);
+        $output = $javaScriptFormatter->render($widget, $isInWidget, $isDynamic);
     }
 
     return $output;

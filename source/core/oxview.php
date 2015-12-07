@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -544,6 +544,8 @@ class oxView extends oxSuperCfg
      * Input example: "view_name?param1=val1&param2=val2" => "cl=view_name&param1=val1&param2=val2"
      *
      * @param string $sNewAction new action params
+     *
+     * @throws oxSystemComponentException system component exception
      */
     protected function _executeNewAction($sNewAction)
     {
@@ -559,6 +561,17 @@ class oxView extends oxSuperCfg
             // looking for function name
             $aParams = explode('/', $aParams[0]);
             $sClassName = $aParams[0];
+            $realClassName = oxUtilsObject::getInstance()->getClassName($sClassName);
+
+            if (false === class_exists($realClassName)) {
+                //If redirect tries to use a not existing class throw an exception.
+                //we'll be redirected to start page directly.
+                /** @var oxSystemComponentException $exception */
+                $exception = oxNew('oxSystemComponentException');
+                $exception->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND');
+                $exception->setComponent($sClassName);
+                throw $exception;
+            }
 
             // building redirect path ...
             $sHeader = ($sClassName) ? "cl=$sClassName&" : ''; // adding view name

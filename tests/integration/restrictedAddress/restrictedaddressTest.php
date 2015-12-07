@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -67,6 +67,40 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
 
         $sLocation = "Location: " . $sRedirectUrl . "\r\n";
         $this->assertContains($sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.');
+    }
+
+
+    /**
+     * DataProvider return shop URL list to call.
+     *
+     * @return array
+     */
+    public function provider_RequestForbiddenMethod_RedirectedViaShopFramework()
+    {
+        $oConfig = $this->getConfig();
+        $sShopUrl = $oConfig->getShopMainUrl();
+
+        return array(
+            array($sShopUrl . '?fnc=%67etshopversion'),
+            array($sShopUrl . '?fnc=getCharSet'),
+            array($sShopUrl . '?fnc=getShopFullEdition'),
+            array($sShopUrl . '?fnc=isMall'),
+            array($sShopUrl . '?fnc=getCacheLifeTime'),
+            array($sShopUrl . '?fnc=addGlobalParams')
+        );
+    }
+
+    /**
+     * Verify redirect url does not contain function result when call to forbidden funciton is not
+     * covered by .htaccess rule
+     *
+     * @dataProvider provider_RequestForbiddenMethod_RedirectedViaShopFramework
+     */
+    public function test_RequestForbiddenMethod_RedirectedViaShopFramework($sForbiddenUrl)
+    {
+        $sResult = $this->callPage($sForbiddenUrl);
+
+        $this->assertContains('cl=start&redirected=1', $sResult, 'User should be redirected to front page.');
     }
 
     /**

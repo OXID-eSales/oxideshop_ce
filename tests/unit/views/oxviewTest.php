@@ -311,6 +311,27 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
 
     /**
+     * New action url getter tests, case we try to redirect to a not existing class
+     */
+    public function testExecuteNewActionNotExistingClass()
+    {
+        $this->getSession()->setId('SID');
+
+        oxAddClassModule("oxUtilsHelper", "oxutils");
+
+        $config = $this->getMock('oxconfig', array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
+        $config->expects($this->never())->method('isSsl');
+        $config->expects($this->never())->method('getSslShopUrl');
+        $config->expects($this->never())->method('getShopUrl');
+
+        $view = $this->getMock('oxview', array('getConfig'));
+        $view->expects($this->once())->method('getConfig')->will($this->returnValue($config));
+
+        $this->setExpectedException('oxSystemComponentException', 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND');
+        $view->_executeNewAction("testAction");
+    }
+
+    /**
      * New action url getter tests
      */
     public function testExecuteNewActionNonSsl()
@@ -328,8 +349,8 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
         $oView = $this->getMock('oxview', array('getConfig'));
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
-        $sUrl = $oView->UNITexecuteNewAction("testAction");
-        $this->assertEquals('shopurl/index.php?cl=testAction&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
+        $sUrl = $oView->_executeNewAction("details");
+        $this->assertEquals('shopurl/index.php?cl=details&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
 
         $oConfig = $this->getMock('oxconfig', array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
         $oConfig->expects($this->at(0))->method('getConfigParam')->will($this->returnValue(false));
@@ -340,8 +361,8 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
         $oView = $this->getMock('oxview', array('getConfig'));
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
-        $sUrl = $oView->UNITexecuteNewAction("testAction?someparam=12");
-        $this->assertEquals("shopurl/index.php?cl=testAction&someparam=12&" . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
+        $sUrl = $oView->_executeNewAction("details?someparam=12");
+        $this->assertEquals("shopurl/index.php?cl=details&someparam=12&" . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
 
     }
 

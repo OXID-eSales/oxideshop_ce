@@ -219,7 +219,9 @@
                 </tr>
             [{/block}]
 
-            [{include file="page/checkout/inc/basket_article_vpe.tpl"}]
+            [{block name="checkout_basketcontents_itemvpe"}]
+                [{include file="page/checkout/inc/basket_article_vpe.tpl"}]
+            [{/block}]
 
             [{block name="checkout_basketcontents_itemerror"}]
                 [{foreach from=$Errors.basket item=oEr key=key}]

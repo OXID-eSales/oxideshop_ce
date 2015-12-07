@@ -336,7 +336,9 @@
                     [{/if}]
                 [{/block}]
 
-                [{include file="page/details/inc/product_vpe.tpl"}]
+                [{block name="details_productmain_vpe"}]
+                    [{include file="page/details/inc/product_vpe.tpl"}]
+                [{/block}]
             </div>
 
             [{block name="details_productmain_social"}]

@@ -2,13 +2,10 @@
 
 <div class="actions">
     [{strip}]
-
         <ul>
             [{block name="admin_bottomnaviitem"}]
                 [{assign var="allowSharedEdit" value=true}]
-
                 [{if !$disablenew}]
-
                     [{* user *}]
                     [{if $bottom_buttons->user_new}]
                         <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWUSER"}]</a> |</li>
@@ -20,9 +17,9 @@
                         <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.newaddress" href="#" onClick="Javascript:top.oxid.admin.changeEditBar('user_address', 4); return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWADDRESS"}]</a> |</li>
                     [{/if}]
                     [{* payment *}]
-                        [{if $bottom_buttons->payment_new}]
-                            <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWPAYMENT"}]</a> |</li>
-                        [{/if}]
+                    [{if $bottom_buttons->payment_new}]
+                        <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWPAYMENT"}]</a> |</li>
+                    [{/if}]
                     [{* newsletter *}]
                     [{if $bottom_buttons->newsletter_new}]
                         <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWNEWSLETTER"}]</a> |</li>
@@ -32,13 +29,13 @@
                         <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWSHOP"}]</a> |</li>
                     [{/if}]
                     [{* usergroups *}]
-                    [{if $bottom_buttons->usergroup_new && $allowSharedEdit}]
+                    [{if $bottom_buttons->usergroup_new}]
                         <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWUSERGROUP"}]</a> |</li>
                     [{/if}]
                     [{* category *}]
-                        [{if $bottom_buttons->category_new}]
-                            <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWCATEGORY"}]</a> |</li>
-                        [{/if}]
+                    [{if $bottom_buttons->category_new}]
+                        <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWCATEGORY"}]</a> |</li>
+                    [{/if}]
                     [{if $bottom_buttons->category_refresh}]
                         <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.refresh" href="#" onClick="Javascript:var agree=confirm('[{oxmultilang ident="BOTTOMNAVIITEM_ATTENTION"}]');if (agree){top.oxid.admin.editThis( -1 );popupWin=window.open('[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]&cl=category_update', 'remote', 'scrollbars=yes,width=500,height=400')}" target="edit">[{oxmultilang ident="TOOLTIPS_NEWCATTREE"}]</a> |</li>
                     [{/if}]
@@ -46,9 +43,9 @@
                         <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.resetnrofarticles" href="#" onClick="Javascript:document.myedit.fnc.value='resetNrOfCatArticles';document.myedit.submit();" target="edit">[{oxmultilang ident="TOOLTIPS_RESETNROFARTICLESINCAT"}]</a> |</li>
                     [{/if}]
                     [{* article *}]
-                        [{if $bottom_buttons->article_new}]
-                            <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWARTICLE"}]</a> |</li>
-                        [{/if}]
+                    [{if $bottom_buttons->article_new}]
+                        <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWARTICLE"}]</a> |</li>
+                    [{/if}]
                     [{if $bottom_buttons->article_preview && $oxid != -1}]
                         <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.preview" href="[{if $edit}][{$edit->getStdLink()}][{else}][{$oViewConf->getBaseDir()}]?cl=details&anid=[{$oxid}][{/if}]&amp;preview=[{$oView->getPreviewId()}]" target="new">[{oxmultilang ident="TOOLTIPS_ARTICLEREVIEW"}]</a> |</li>
                     [{/if}]
@@ -56,10 +53,10 @@
                     [{if $bottom_buttons->attribute_new}]
                         <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWITEMS"}]</a> |</li>
                     [{/if}]
-                        [{* statistic *}]
-                        [{if $bottom_buttons->statistic_new}]
-                            <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWSTATISTIC"}]</a> |</li>
-                        [{/if}]
+                    [{* statistic *}]
+                    [{if $bottom_buttons->statistic_new}]
+                        <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWSTATISTIC"}]</a> |</li>
+                    [{/if}]
                     [{* selectlist *}]
                     [{if $bottom_buttons->selectlist_new}]
                         <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWSELECTLIST"}]</a> |</li>
@@ -123,16 +120,10 @@
                     [{if $bottom_buttons->wrapping_new}]
                         <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWWRAPPING"}]</a> |</li>
                     [{/if}]
-                        [{* actions *}]
-                        [{*
-                        <a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWACTIONS"}]</a> |</li>
-                        *}]
                     [{* content *}]
                     [{if $bottom_buttons->content_new}]
                         <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.new" href="#" onClick="Javascript:top.oxid.admin.editThis( -1 );return false" target="edit">[{oxmultilang ident="TOOLTIPS_NEWCONTENT"}]</a> |</li>
                     [{/if}]
-
-
                 [{/if}]
 
                 [{block name="admin_bottomnavicustom"}]

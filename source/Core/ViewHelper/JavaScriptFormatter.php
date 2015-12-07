@@ -29,17 +29,20 @@ use oxRegistry;
  */
 class JavaScriptFormatter
 {
+    const SNIPPETS_PARAMETER_NAME = 'scripts';
+    const FILES_PARAMETER_NAME = 'includes';
+
     /**
      * Register JavaScript code snippet for rendering.
      *
      * @param string $script
      * @param bool   $isDynamic
      */
-    public function addScript($script, $isDynamic)
+    public function addSnippet($script, $isDynamic)
     {
         $config = oxRegistry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
-        $scriptsParameterName = 'scripts' . $suffix;
+        $scriptsParameterName = static::SNIPPETS_PARAMETER_NAME . $suffix . $suffix;
         $scripts = (array) $config->getGlobalParameter($scriptsParameterName);
         $script = trim($script);
         if (!in_array($script, $scripts)) {
@@ -59,8 +62,10 @@ class JavaScriptFormatter
     {
         $config = oxRegistry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
-        $includeParameterName = 'includes' . $suffix;
+        $filesParameterName = static::FILES_PARAMETER_NAME . $suffix . $suffix;
+        $includes = (array) $config->getGlobalParameter($filesParameterName);
         $originalUrl = $file;
+
         if (!preg_match('#^https?://#', $file)) {
             $file = $this->formLocalFileUrl($file);
         }
@@ -73,55 +78,92 @@ class JavaScriptFormatter
         } else {
             $includes[$priority][] = $file;
             $includes[$priority] = array_unique($includes[$priority]);
-            $config->setGlobalParameter($includeParameterName, $includes);
+            $config->setGlobalParameter(static::FILES_PARAMETER_NAME . $suffix, $includes);
         }
     }
 
     /**
      * Renders all registered JavaScript snippets and files.
      *
-     * @param string $widget     Widget name
-     * @param bool   $isInWidget is script rendered inside widget
+     * @param string $widget      Widget name
+     * @param bool   $forceRender Force rendering of scripts.
      *
      * @return string
      */
-    public function render($widget, $isInWidget)
+    public function render($widget, $forceRender)
     {
         $config = oxRegistry::getConfig();
-        $scriptsParameterName = 'scripts';
-        $includesParameterName = 'includes';
-        $scripts = (array)$config->getGlobalParameter($scriptsParameterName);
-        $includes = (array)$config->getGlobalParameter($includesParameterName);
         $output = '';
 
-        $isAjaxRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+        $isAjaxRequest = $this->isAjaxRequest();
+        $forceRender = $this->shouldForceRender($forceRender, $isAjaxRequest);
 
-
-        if (!$widget || $isInWidget || $isAjaxRequest) {
+        if (!$widget || $forceRender) {
             if (!$isAjaxRequest) {
-                // Form output for includes.
-                $output .= $this->formFilesToInclude($includes, $widget);
-                $config->setGlobalParameter($includesParameterName, null);
+                $includes = $this->getFilesToRender($widget);
+                $output .= $this->formFilesOutput($includes, $widget);
+                $config->setGlobalParameter(static::FILES_PARAMETER_NAME, null);
                 if ($widget) {
-                    $dynamicIncludes = (array)$config->getGlobalParameter($includesParameterName . '_dynamic');
-                    $output .= $this->formFilesToInclude($dynamicIncludes, $widget);
-                    $config->setGlobalParameter($includesParameterName . '_dynamic', null);
+                    $dynamicIncludes = (array)$config->getGlobalParameter(static::FILES_PARAMETER_NAME . '_dynamic');
+                    $output .= $this->formFilesOutput($dynamicIncludes, $widget);
+                    $config->setGlobalParameter(static::FILES_PARAMETER_NAME . '_dynamic', null);
                 }
             }
 
             // Form output for adds.
-            $scriptOutput = '';
-            $scriptOutput .= $this->formSnippetsToInclude($scripts, $widget, $isAjaxRequest);
-            $config->setGlobalParameter($scriptsParameterName, null);
+            $scripts = (array)$config->getGlobalParameter(static::SNIPPETS_PARAMETER_NAME);
+            $scriptOutput = $this->formSnippetsOutput($scripts, $widget, $isAjaxRequest);
+            $config->setGlobalParameter(static::SNIPPETS_PARAMETER_NAME, null);
             if ($widget) {
-                $dynamicScripts = (array)$config->getGlobalParameter($scriptsParameterName . '_dynamic');
-                $scriptOutput .= $this->formSnippetsToInclude($dynamicScripts, $widget, $isAjaxRequest);
-                $config->setGlobalParameter($scriptsParameterName . '_dynamic', null);
+                $dynamicScripts = (array) $config->getGlobalParameter(static::SNIPPETS_PARAMETER_NAME . '_dynamic');
+                $scriptOutput .= $this->formSnippetsOutput($dynamicScripts, $widget, $isAjaxRequest);
+                $config->setGlobalParameter(static::SNIPPETS_PARAMETER_NAME . '_dynamic', null);
             }
             $output .= $this->enclose($scriptOutput, $widget, $isAjaxRequest);
         }
 
         return $output;
+    }
+
+    /**
+     * Returns if it is ajax request.
+     *
+     * @return bool
+     */
+    protected function isAjaxRequest()
+    {
+        $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
+        return $isAjax;
+    }
+
+    /**
+     * Returns whether rendering of scripts should be forced.
+     *
+     * @param bool $forceRender
+     * @param bool $isAjaxRequest
+     *
+     * @return bool
+     */
+    protected function shouldForceRender($forceRender, $isAjaxRequest)
+    {
+
+        return $isAjaxRequest ? true : $forceRender;
+    }
+
+    /**
+     * Returns files list for rendering.
+     *
+     * @param string $widget
+     *
+     * @return array
+     */
+    protected function getFilesToRender($widget)
+    {
+        $config = oxRegistry::getConfig();
+        $includes = (array) $config->getGlobalParameter(static::FILES_PARAMETER_NAME);
+
+        return $includes;
     }
 
     /**
@@ -154,7 +196,7 @@ class JavaScriptFormatter
      *
      * @return string
      */
-    protected function formFilesToInclude($includes, $widget)
+    protected function formFilesOutput($includes, $widget)
     {
         if (!count($includes)) {
             return '';
@@ -197,7 +239,7 @@ JS;
      *
      * @return string
      */
-    protected function formSnippetsToInclude($scripts, $widgetName, $ajaxRequest)
+    protected function formSnippetsOutput($scripts, $widgetName, $ajaxRequest)
     {
         $preparedScripts = array();
         foreach ($scripts as $script) {

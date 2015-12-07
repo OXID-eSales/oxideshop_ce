@@ -58,7 +58,7 @@ function smarty_function_oxscript($params, &$smarty)
             return '';
         }
 
-        $javaScriptFormatter->addScript($params['add'], $isDynamic);
+        $javaScriptFormatter->addSnippet($params['add'], $isDynamic);
     } elseif (isset($params['include'])) {
         if (empty($params['include'])) {
             $smarty->trigger_error("{oxscript} parameter 'include' can not be empty!");
@@ -67,7 +67,7 @@ function smarty_function_oxscript($params, &$smarty)
 
         $javaScriptFormatter->addFile($params['include'], $priority, $isDynamic);
     } else {
-        $output = $javaScriptFormatter->render($widget, $isInWidget, $isDynamic);
+        $output = $javaScriptFormatter->render($widget, $isInWidget);
     }
 
     return $output;

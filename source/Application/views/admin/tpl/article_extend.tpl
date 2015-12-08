@@ -5,7 +5,6 @@
     [{assign var="readonly" value=""}]
 [{/if}]
 
-
 <script type="text/javascript">
 <!--
 window.onload = function ()
@@ -52,8 +51,6 @@ function processUnitInput( oSelect, sInputId )
 <input type="hidden" name="voxid" value="[{$oxid}]">
 <input type="hidden" name="oxparentid" value="[{$oxparentid}]">
 <input type="hidden" name="editval[article__oxid]" value="[{$oxid}]">
-
-
 
   <table cellspacing="0" cellpadding="0" border="0" height="100%" width="100%">
     <tr height="10">
@@ -292,7 +289,6 @@ function processUnitInput( oSelect, sInputId )
       <td valign="top" class="edittext" align="left" width="55%" style="table-layout:fixed">
 
         <input [{$readonly}] type="button" value="[{oxmultilang ident="GENERAL_ASSIGNCATEGORIES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_extend&aoc=1&oxid=[{$oxid}]');">
-
 
           <br><br>
           <fieldset title="[{oxmultilang ident="ARTICLE_EXTEND_MEDIAURLS"}]" style="padding-left: 5px;">

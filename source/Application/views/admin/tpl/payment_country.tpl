@@ -1,5 +1,4 @@
-[{assign var="shopid" value="1"}]
-[{if $shopid != "1" || $readonly}]
+[{if $shopid != 'oxbaseshop' && $shopid != "1" || $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
 [{else}]
     [{assign var="readonly" value=""}]

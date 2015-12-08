@@ -1,7 +1,7 @@
-  <b>[{oxmultilang ident="REPORT_CANCELED_ORDERS"}]:</b>
-  <br><br>
+<b>[{oxmultilang ident="REPORT_CANCELED_ORDERS"}]:</b>
+<br><br>
 
-  [{if $oView->drawReport()}]
+[{if $oView->drawReport()}]
     <b>[{oxmultilang ident="GENERAL_INSHOPPERMONTH"}]:</b>
     <br><br>
     <img src="[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]&cl=reports/report_canceled_orders&fnc=visitor_month&time_from=[{$time_from}]&time_to=[{$time_to}]" hspace="0" vspace="0" border="0" align="baseline" alt="">
@@ -9,8 +9,8 @@
     <b>[{oxmultilang ident="GENERAL_INSHOPPERWEEK"}]:</b>
     <br><br>
     <img src="[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]&cl=reports/report_canceled_orders&fnc=visitor_week&time_from=[{$time_from}]&time_to=[{$time_to}]" hspace="0" vspace="0" border="0" align="baseline" alt="">
-  [{else}]
+[{else}]
     <b>[{oxmultilang ident="GENERAL_NODATA"}]</b>
-  [{/if}]
+[{/if}]
 
-  <br><br>
+<br><br>

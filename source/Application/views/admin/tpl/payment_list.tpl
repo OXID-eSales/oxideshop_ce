@@ -1,12 +1,11 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign box="list"}]
 [{assign var="where" value=$oView->getListFilter()}]
 
-
-  [{if $shopid != "oxbaseshop"}]
+[{if $shopid != "oxbaseshop" && $shopid != "1" || $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
-  [{else}]
+[{else}]
     [{assign var="readonly" value=""}]
-  [{/if}]
+[{/if}]
 
 <script type="text/javascript">
 <!--

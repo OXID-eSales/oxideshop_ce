@@ -1,11 +1,10 @@
+[{if $shopid != "oxbaseshop" && $shopid != "1" || $readonly}]
+    [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
+[{/if}]
 
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
-
-  [{if $shopid != "oxbaseshop"}]
-    [{assign var="readonly" value="readonly disabled"}]
-  [{else}]
-    [{assign var="readonly" value=""}]
-  [{/if}]
 
 [{assign var="aAllRDFaPayments" value=$oView->getAllRDFaPayments()}]
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">

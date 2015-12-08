@@ -43,19 +43,16 @@ window.onload = function ()
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
-
-
-
+    <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="return copyLongDesc('oxarticles__oxlongdesc');" style="padding: 0px;margin: 0px;height:0px;">
+      [{$oViewConf->getHiddenSid()}]
+      <input type="hidden" name="cl" value="article_main">
+      <input type="hidden" name="fnc" value="">
+      <input type="hidden" name="oxid" value="[{$oxid}]">
+      <input type="hidden" name="voxid" value="[{$oxid}]">
+      <input type="hidden" name="oxparentid" value="[{$oxparentid}]">
+      <input type="hidden" name="editval[oxarticles__oxid]" value="[{$oxid}]">
+      <input type="hidden" name="editval[oxarticles__oxlongdesc]" value="">
       <table cellspacing="0" cellpadding="0" border="0" style="width:98%;">
-        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="return copyLongDesc( 'oxarticles__oxlongdesc' );" style="padding: 0px;margin: 0px;height:0px;">
-        [{$oViewConf->getHiddenSid()}]
-        <input type="hidden" name="cl" value="article_main">
-        <input type="hidden" name="fnc" value="">
-        <input type="hidden" name="oxid" value="[{$oxid}]">
-        <input type="hidden" name="voxid" value="[{$oxid}]">
-        <input type="hidden" name="oxparentid" value="[{$oxparentid}]">
-        <input type="hidden" name="editval[oxarticles__oxid]" value="[{$oxid}]">
-        <input type="hidden" name="editval[oxarticles__oxlongdesc]" value="">
         <tr>
           <td valign="top" class="edittext" style="padding-top:10px;padding-left:10px;">
             <table cellspacing="0" cellpadding="0" border="0">
@@ -303,13 +300,13 @@ window.onload = function ()
     <!-- Anfang rechte Seite -->
           <td valign="top" class="edittext" align="left" style="width:100%;height:99%;padding-left:5px;padding-bottom:30px;padding-top:10px;">
             [{block name="admin_article_main_editor"}]
-                [{$editor}]
+              [{include file="include/editor.tpl"}]
             [{/block}]
           </td>
     <!-- Ende rechte Seite -->
         </tr>
-        </form>
       </table>
+    </form>
 
 [{include file="bottomnaviitem.tpl"}]
 

@@ -110,9 +110,9 @@ window.onload = function ()
         <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxpricealarm__oxid->value}]');" class="[{if $listitem->getPriceAlarmStatus()==1}]listitemred[{elseif $listitem->getPriceAlarmStatus()==2}]listitemgreen[{else}][{$listclass}][{/if}]">[{$listitem->getFProposedPrice()}]&nbsp;[{$listitem->oxpricealarm__oxcurrency->value}]</a></div></td>
         <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxpricealarm__oxid->value}]');" class="[{if $listitem->getPriceAlarmStatus()==1}]listitemred[{elseif $listitem->getPriceAlarmStatus()==2}]listitemgreen[{else}][{$listclass}][{/if}]">[{$listitem->getFPrice()}]&nbsp;[{$listitem->oxpricealarm__oxcurrency->value}]</a></div></td>
         <td class="[{$listclass}]">
-        [{include file="include/price_alarm_list_delete_button.tpl"}]
+            [{include file="include/price_alarm_list_delete_button.tpl"}]
+        </td>
     [{/block}]
-    </td>
 </tr>
 [{if $blWhite == "2"}]
 [{assign var="blWhite" value=""}]

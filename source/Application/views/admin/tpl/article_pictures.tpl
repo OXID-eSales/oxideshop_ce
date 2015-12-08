@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 <!--
-function DeletePic( iIndex )
+function DeletePic(iIndex)
 {
     var oForm = document.getElementById("myedit");
     oForm.fnc.value="deletePicture";
@@ -11,7 +11,7 @@ function DeletePic( iIndex )
 
     oForm.submit();
 }
-function editThis( sID )
+function editThis(sID)
 {
     var oTransfer = top.basefrm.edit.document.getElementById( "transfer" );
     oTransfer.oxid.value = sID;
@@ -27,8 +27,6 @@ function editThis( sID )
 }
 //-->
 </script>
-
-
 
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
@@ -57,10 +55,6 @@ function editThis( sID )
 [{if $oViewConf->isAltImageServerConfigured()}]
     <div class="warning">[{oxmultilang ident="ALTERNATIVE_IMAGE_SERVER_NOTE"}] [{oxinputhelp ident="HELP_ALTERNATIVE_IMAGE_SERVER_NOTE"}]</div>
 [{/if}]
-
-
-
-
 
     <table cellspacing="0" cellpadding="0" width="98%" border="0">
       <colgroup>
@@ -215,11 +209,9 @@ function editThis( sID )
 
             <input type="submit" class="edittext" name="save" value="[{ oxmultilang ident="ARTICLE_PICTURES_SAVE" }]" onClick="Javascript:document.myedit.fnc.value='save'"><br>
 
-
         </td>
       </tr>
    </table>
-
 
 </form>
 

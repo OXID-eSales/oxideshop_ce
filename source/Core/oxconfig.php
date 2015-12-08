@@ -1259,11 +1259,11 @@ class oxConfig extends oxSuperCfg
             return $sReturn;
         }
 
-        $sReturn = false;
+        $sReturn = $this->getEditionTemplate("{$sTheme}/{$sDir}/{$sFile}");
 
         // Check for custom template
         $sCustomTheme = $this->getConfigParam('sCustomTheme');
-        if (!$blAdmin && !$blIgnoreCust && $sCustomTheme && $sCustomTheme != $sTheme) {
+        if (!$sReturn && !$blAdmin && !$blIgnoreCust && $sCustomTheme && $sCustomTheme != $sTheme) {
             $sReturn = $this->getDir($sFile, $sDir, $blAdmin, $iLang, $iShop, $sCustomTheme, $blAbsolute);
         }
 
@@ -2286,5 +2286,33 @@ class oxConfig extends oxSuperCfg
     protected function calculateActiveShopId()
     {
         return $this->getBaseShopId();
+    }
+
+    /**
+     * Check and get template path by Edition if exists
+     *
+     * @param string $templateName
+     *
+     * @return false|string
+     */
+    protected function getEditionTemplate($templateName)
+    {
+        return false;
+    }
+
+    /**
+     * Check if file exists and is readable
+     *
+     * @param string $filePath
+     *
+     * @return bool
+     */
+    public function checkIfReadable($filePath)
+    {
+        if (is_file($filePath) && is_readable($filePath)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

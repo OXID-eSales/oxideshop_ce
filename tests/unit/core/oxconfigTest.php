@@ -1973,6 +1973,36 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertEquals($sOutDir . 'de/test5/text.txt', $sDir);
     }
 
+    public function testGetDirIfEditionTemplateFound()
+    {
+        $expectedResult = 'someEditionTemplateResponse';
+
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        $config = $this->getMock('oxConfig', array('getEditionTemplate'));
+        $config->expects($this->any())->method('getEditionTemplate')->will($this->returnValue($expectedResult));
+        $config->init();
+
+        $realResult = $config->getDir('xxx', 'xxx', false);
+        $this->assertEquals($expectedResult, $realResult);
+    }
+
+    public function testCheckIfReadable()
+    {
+        $filePath = 'somedir/somefile.txt';
+
+        $vfsStreamWrapper = $this->getVfsStreamWrapper();
+        $vfsStreamWrapper->createFile('somedir/somefile.txt', '');
+        $testDir = $vfsStreamWrapper->getRootPath();
+
+        $config = oxNew('oxConfig');
+        $this->assertTrue($config->checkIfReadable($testDir . '/' . $filePath));
+
+        chmod($testDir . '/' . $filePath, 0000);
+        $this->assertFalse($config->checkIfReadable($testDir . '/' . $filePath));
+
+        $this->assertFalse($config->checkIfReadable($testDir . '/notexists.txt'));
+    }
+
     public function testGetOutDir()
     {
         $oConfig = oxNew('oxConfig');

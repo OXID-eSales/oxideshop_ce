@@ -40,8 +40,8 @@
                     </td>
                     <td valign="top" class="edittext" align="left">
 
-                            [{$editor}]
-
+                        [{$editor}]
+                        [{include file="include/message_for_text_editor.tpl"}]
 
                     </td>
                   </tr>

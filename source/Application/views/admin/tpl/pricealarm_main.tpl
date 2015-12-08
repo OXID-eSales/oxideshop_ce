@@ -75,6 +75,7 @@ function editThis( sID, sListType)
           [{block name="admin_pricealarm_main_editor"}]
               <td valign="top" class="edittext" align="left">
                   [{$editor}]
+                  [{include file="include/message_for_text_editor.tpl"}]
               </td>
           [{/block}]
         </tr>

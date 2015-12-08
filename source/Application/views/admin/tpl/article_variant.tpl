@@ -4,23 +4,22 @@
 <!--
 function SetSticker( sStickerId, oObject)
 {
-    if ( oObject.selectedIndex != -1)
-    {   oSticker = document.getElementById(sStickerId);
+    if (oObject.selectedIndex != -1) {
+        oSticker = document.getElementById(sStickerId);
         oSticker.style.display = "";
         oSticker.style.backgroundColor = "#FFFFCC";
         oSticker.style.borderWidth = "1px";
         oSticker.style.borderColor = "#000000";
         oSticker.style.borderStyle = "solid";
         oSticker.innerHTML         = oObject.item(oObject.selectedIndex).innerHTML;
-    }
-    else
+    } else {
         oSticker.style.display = "none";
+    }
 }
 function deleteThis( sID)
 {
     blCheck = confirm("[{oxmultilang ident="ARTICLE_VARIANT_YOUWANTTODELETE"}]");
-    if( blCheck == true)
-    {
+    if (blCheck == true) {
         var oSearch = document.getElementById("search");
         oSearch.fnc.value='deletevariant';
         oSearch.voxid.value=sID;
@@ -58,25 +57,21 @@ function editThis( sID )
 </form>
 
 <form name="myedit1" id="myedit1" action="[{$oViewConf->getSelfLink()}]" method="post">
-[{$oViewConf->getHiddenSid()}]
-<input type="hidden" name="cl" value="article_variant">
-<input type="hidden" name="fnc" value="">
-<input type="hidden" name="oxid" value="[{$oxid}]">
-<input type="hidden" name="editval[article__oxid]" value="[{$oxid}]">
-<input type="hidden" name="voxid" value="[{$oxid}]">
-<input type="hidden" name="oxparentid" value="[{$oxparentid}]">
-<input type="hidden" name="editlanguage" value="[{$editlanguage}]">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="cl" value="article_variant">
+    <input type="hidden" name="fnc" value="">
+    <input type="hidden" name="oxid" value="[{$oxid}]">
+    <input type="hidden" name="editval[article__oxid]" value="[{$oxid}]">
+    <input type="hidden" name="voxid" value="[{$oxid}]">
+    <input type="hidden" name="oxparentid" value="[{$oxparentid}]">
+    <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
-
 
 [{assign var="blWhite" value=""}]
 [{assign var="listclass" value=listitem$blWhite}]
-
-
   <table border="0">
     <tr>
       <td class="edittext">
-
         <table cellspacing="0" cellpadding="0" border="0">
 
           <form name="myedit3" id="myedit3" action="[{ $oViewConf->getSelfLink() }]" method="post">

@@ -1,12 +1,11 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign box="list"}]
 [{assign var="where" value=$oView->getListFilter()}]
 
-
-  [{if $shopid != "oxbaseshop"}]
+[{if $shopid != "oxbaseshop" && $shopid != "1" || $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
-  [{else}]
+[{else}]
     [{assign var="readonly" value=""}]
-  [{/if}]
+[{/if}]
 
 <script type="text/javascript">
 <!--
@@ -111,11 +110,7 @@ window.onload = function ()
         <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxpricealarm__oxid->value}]');" class="[{if $listitem->getPriceAlarmStatus()==1}]listitemred[{elseif $listitem->getPriceAlarmStatus()==2}]listitemgreen[{else}][{$listclass}][{/if}]">[{$listitem->getFProposedPrice()}]&nbsp;[{$listitem->oxpricealarm__oxcurrency->value}]</a></div></td>
         <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxpricealarm__oxid->value}]');" class="[{if $listitem->getPriceAlarmStatus()==1}]listitemred[{elseif $listitem->getPriceAlarmStatus()==2}]listitemgreen[{else}][{$listclass}][{/if}]">[{$listitem->getFPrice()}]&nbsp;[{$listitem->oxpricealarm__oxcurrency->value}]</a></div></td>
         <td class="[{$listclass}]">
-          [{if !$listitem->isOx()}]
-            [{if $readonly == ""}]
-              <a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxpricealarm__oxid->value}]');" class="delete" id="del.[{$_cnt}]" [{include file="help.tpl" helpid=item_delete}]></a>
-            [{/if}]
-          [{/if}]
+        [{include file="include/price_alarm_list_delete_button.tpl"}]
     [{/block}]
     </td>
 </tr>

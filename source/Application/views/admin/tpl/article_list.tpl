@@ -22,7 +22,6 @@ window.onload = function ()
 
 <div id="liste">
 
-
 <form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
 [{include file="_formparams.tpl" cl="article_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -119,9 +118,7 @@ window.onload = function ()
         <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxarticles__oxid->value}]');" class="[{$listclass}]">[{$listitem->pwrsearchval|oxtruncate:200:"..":false}]</a></div></td>
         <td valign="top" class="[{$listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxarticles__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxarticles__oxshortdesc->value|strip_tags|oxtruncate:45:"..":true}]</a></div></td>
         <td class="[{$listclass}]">
-          [{if !$readonly}]
-              <a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxarticles__oxid->value}]');" class="delete" id="del.[{$_cnt}]"title="" [{include file="help.tpl" helpid=item_delete}]></a>
-          [{/if}]
+            [{include file="include/article_list_actions.tpl"}]
         </td>
     [{/block}]
 </tr>

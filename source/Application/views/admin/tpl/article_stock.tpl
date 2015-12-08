@@ -1,6 +1,5 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
 
-
 <script type="text/javascript">
 <!--
 function loadLang(obj)
@@ -33,24 +32,21 @@ function editThis( sID )
     [{assign var="readonly" value=""}]
 [{/if}]
 
-
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
     [{$oViewConf->getHiddenSid()}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="article_stock">
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
-
-
-        <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post">
-        [{ $oViewConf->getHiddenSid() }]
-        <input type="hidden" name="cl" value="article_stock">
-        <input type="hidden" name="fnc" value="">
-        <input type="hidden" name="oxid" value="[{ $oxid }]">
-        <input type="hidden" name="voxid" value="[{ $oxid }]">
-        <input type="hidden" name="oxparentid" value="[{ $oxparentid }]">
-        <input type="hidden" name="editval[article__oxid]" value="[{ $oxid }]">
-        <table cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+<form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post">
+    [{ $oViewConf->getHiddenSid() }]
+    <input type="hidden" name="cl" value="article_stock">
+    <input type="hidden" name="fnc" value="">
+    <input type="hidden" name="oxid" value="[{ $oxid }]">
+    <input type="hidden" name="voxid" value="[{ $oxid }]">
+    <input type="hidden" name="oxparentid" value="[{ $oxparentid }]">
+    <input type="hidden" name="editval[article__oxid]" value="[{ $oxid }]">
+    <table cellspacing="0" cellpadding="0" border="0" style="width:100%;">
         <tr>
           <td valign="top" class="edittext" style="padding-left:10px;width:50%">
             <table cellspacing="0" cellpadding="0" border="0">
@@ -277,9 +273,8 @@ function editThis( sID )
             </fieldset>
           </td>
         </tr>
-
-        </table>
-        </form>
+    </table>
+</form>
 [{include file="bottomnaviitem.tpl"}]
 
 [{include file="bottomitem.tpl"}]

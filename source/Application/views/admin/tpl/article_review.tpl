@@ -23,7 +23,6 @@
 <input type="hidden" name="oxparentid" value="[{$oxparentid}]">
 <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 
-
   <table cellspacing="0" cellpadding="0" border="0" height="100%" width="100%">
     <tr height="10">
       <td></td><td></td>

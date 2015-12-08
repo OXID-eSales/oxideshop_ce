@@ -32,6 +32,7 @@
                     <br>
                     [{oxmultilang ident="ORDER_OVERVIEW_VATID"}]
                     [{$edit->oxorder__oxbillustid->value}]<br>
+                    [{include file="include/message_vat_check_failed.tpl"}]
                 [{/if}]
                 <br>
                 [{oxmultilang ident="GENERAL_EMAIL"}]: <a href="mailto:[{$edit->oxorder__oxbillemail->value}]?subject=[{$actshop}] - [{oxmultilang ident="GENERAL_ORDERNUM"}] [{$edit->oxorder__oxordernr->value}]" class="edittext"><em>[{$edit->oxorder__oxbillemail->value}]</em></a><br>

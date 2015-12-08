@@ -36,8 +36,7 @@ function loadLang(obj)
         <input type="hidden" name="editval[oxnews__oxlongdesc]" value="">
 
         [{$editor}]
-
-
+        [{include file="include/message_for_text_editor.tpl"}]
         <br>
         [{if $languages}]<b>[{oxmultilang ident="GENERAL_LANGUAGE"}]</b>
         <select name="newslang" class="editinput" onchange="Javascript:loadLang(this)" [{$readonly}]>

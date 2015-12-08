@@ -19,7 +19,6 @@ window.onload = function ()
 //-->
 </script>
 
-
 <div id="liste">
 
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -59,7 +58,6 @@ window.onload = function ()
 [{foreach from=$mylist item=listitem}]
     [{assign var="_cnt" value=$_cnt+1}]
     <tr id="row.[{$_cnt}]">
-
         [{block name="admin_attribute_list_item"}]
             [{if $listitem->blacklist == 1}]
                 [{assign var="listclass" value=listitem3}]
@@ -71,10 +69,7 @@ window.onload = function ()
             [{/if}]
             <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxattribute__oxid->value}]');" class="[{$listclass}]">[{if $listitem->oxattribute__oxtitle->value}][{$listitem->oxattribute__oxtitle->value}][{else}]--[{/if}]</a></div></td>
             <td class="[{$listclass}]">
-              [{if !$readonly}]
-                  <a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxattribute__oxid->value}]');" class="delete" id="del.[{$_cnt}]" title="" [{include file="help.tpl" helpid=item_delete}]></a>
-                  <a href="Javascript:top.oxid.admin.deleteThis('[{ $listitem->oxattribute__oxid->value }]');" class="delete" id="del.[{$_cnt}]" title="" [{include file="help.tpl" helpid=item_delete}]></a>
-              [{/if}]
+                [{include file="include/attribute_list_actions.tpl"}]
             </td>
         [{/block}]
     </tr>

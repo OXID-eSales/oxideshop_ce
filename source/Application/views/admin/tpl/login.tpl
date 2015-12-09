@@ -33,6 +33,7 @@
 </head>
 <body>
 
+[{include file="include/login_messages.tpl"}]
 
 <div class="admin-login-box">
 

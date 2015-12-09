@@ -35,7 +35,7 @@ function loadLang(obj)
         <input type="hidden" name="catlang" value="[{$catlang}]">
         <input type="hidden" name="editval[oxcategories__oxlongdesc]" value="">
 
-        [{include file="inc/category_text_editor.tpl"}]
+        [{include file="include/category_text_editor.tpl"}]
     </form>
 
 [{include file="bottomnaviitem.tpl"}]

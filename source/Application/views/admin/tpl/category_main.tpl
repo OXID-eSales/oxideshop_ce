@@ -73,7 +73,7 @@ function LockAssignment(obj)
 <tr>
     <td valign="top" class="edittext">
 
-    [{include file="inc/category_main_form.tpl"}]
+    [{include file="include/category_main_form.tpl"}]
 
     </td>
     </tr>

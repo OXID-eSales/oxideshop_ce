@@ -27,7 +27,7 @@ use oxRegistry;
 /**
  * Class for preparing JavaScript.
  */
-class StyleFormatter
+class StyleRegistrator
 {
     const CONDITIONAL_STYLES_PARAMETER_NAME = 'conditional_styles';
     const STYLES_PARAMETER_NAME = 'styles';
@@ -62,74 +62,6 @@ class StyleFormatter
                 $config->setGlobalParameter($stylesParameterName, $styles);
             }
         }
-    }
-
-    /**
-     * @param string $widget
-     * @param bool   $forceRender
-     * @param bool   $isDynamic
-     *
-     * @return string
-     */
-    public function render($widget, $forceRender, $isDynamic)
-    {
-        $config = oxRegistry::getConfig();
-        $suffix = $isDynamic ? '_dynamic' : '';
-        $output = '';
-
-        if (!$widget || $this->shouldForceRender($forceRender)) {
-            $styles = (array) $config->getGlobalParameter(static::STYLES_PARAMETER_NAME . $suffix);
-            $output .= $this->formStylesOutput($styles);
-            $output .= PHP_EOL;
-            $conditionalStyles = (array) $config->getGlobalParameter(static::CONDITIONAL_STYLES_PARAMETER_NAME . $suffix);
-            $output .= $this->formConditionalStylesOutput($conditionalStyles);
-        }
-
-        return $output;
-    }
-
-    /**
-     * Returns whether rendering of scripts should be forced.
-     *
-     * @param bool $forceRender
-     *
-     * @return bool
-     */
-    protected function shouldForceRender($forceRender)
-    {
-        return $forceRender;
-    }
-
-    /**
-     * @param array $styles
-     *
-     * @return string
-     */
-    protected function formStylesOutput($styles)
-    {
-        $preparedStyles = array();
-        $template = '<link rel="stylesheet" type="text/css" href="%s" />';
-        foreach ($styles as $style) {
-            $preparedStyles[] = sprintf($template, $style);
-        }
-
-        return implode(PHP_EOL, $preparedStyles);
-    }
-
-    /**
-     * @param array $styles
-     *
-     * @return string
-     */
-    protected function formConditionalStylesOutput($styles)
-    {
-        $preparedStyles = array();
-        $template = '<!--[if %s]><link rel="stylesheet" type="text/css" href="%s"><![endif]-->';
-        foreach ($styles as $style => $condition) {
-            $preparedStyles[] = sprintf($template, $condition, $style);
-        }
-
-        return implode(PHP_EOL, $preparedStyles);
     }
 
     /**

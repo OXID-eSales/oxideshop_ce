@@ -60,6 +60,8 @@
 
 <p>[{oxmultilang ident='OXDIAG_ABOUT'}]</p>
 
+[{include file="include/support_contact_form.tpl"}]
+
 <table>
     <tr>
         <td valign="top">

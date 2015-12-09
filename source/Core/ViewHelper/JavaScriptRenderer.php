@@ -27,55 +27,8 @@ use oxRegistry;
 /**
  * Class for preparing JavaScript.
  */
-class JavaScriptFormatter
+class JavaScriptRenderer
 {
-    const SNIPPETS_PARAMETER_NAME = 'scripts';
-    const FILES_PARAMETER_NAME = 'includes';
-
-    /**
-     * Register JavaScript code snippet for rendering.
-     *
-     * @param string $script
-     * @param bool   $isDynamic
-     */
-    public function addSnippet($script, $isDynamic = false)
-    {
-        $config = oxRegistry::getConfig();
-        $suffix = $isDynamic ? '_dynamic' : '';
-        $scriptsParameterName = static::SNIPPETS_PARAMETER_NAME . $suffix;
-        $scripts = (array) $config->getGlobalParameter($scriptsParameterName);
-        $script = trim($script);
-        if (!in_array($script, $scripts)) {
-            $scripts[] = $script;
-        }
-        $config->setGlobalParameter($scriptsParameterName, $scripts);
-    }
-
-    /**
-     * Register JavaScript file (local or remote) for rendering.
-     *
-     * @param string $file
-     * @param int    $priority
-     * @param bool   $isDynamic
-     */
-    public function addFile($file, $priority, $isDynamic = false)
-    {
-        $config = oxRegistry::getConfig();
-        $suffix = $isDynamic ? '_dynamic' : '';
-        $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
-        $includes = (array) $config->getGlobalParameter($filesParameterName);
-
-        if (!preg_match('#^https?://#', $file)) {
-            $file = $this->formLocalFileUrl($file);
-        }
-
-        if ($file) {
-            $includes[$priority][] = $file;
-            $includes[$priority] = array_unique($includes[$priority]);
-            $config->setGlobalParameter($filesParameterName, $includes);
-        }
-    }
-
     /**
      * Renders all registered JavaScript snippets and files.
      *
@@ -90,8 +43,8 @@ class JavaScriptFormatter
         $config = oxRegistry::getConfig();
         $output = '';
         $suffix = $isDynamic ? '_dynamic' : '';
-        $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
-        $scriptsParameterName = static::SNIPPETS_PARAMETER_NAME . $suffix;
+        $filesParameterName = JavaScriptRegistrator::FILES_PARAMETER_NAME . $suffix;
+        $scriptsParameterName = JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . $suffix;
 
         $isAjaxRequest = $this->isAjaxRequest();
         $forceRender = $this->shouldForceRender($forceRender, $isAjaxRequest);
@@ -102,9 +55,9 @@ class JavaScriptFormatter
                 $output .= $this->formFilesOutput($files, $widget);
                 $config->setGlobalParameter($filesParameterName, null);
                 if ($widget) {
-                    $dynamicIncludes = (array)$config->getGlobalParameter(static::FILES_PARAMETER_NAME . '_dynamic');
+                    $dynamicIncludes = (array)$config->getGlobalParameter(JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic');
                     $output .= $this->formFilesOutput($dynamicIncludes, $widget);
-                    $config->setGlobalParameter(static::FILES_PARAMETER_NAME . '_dynamic', null);
+                    $config->setGlobalParameter(JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic', null);
                 }
             }
 
@@ -113,9 +66,9 @@ class JavaScriptFormatter
             $scriptOutput = $this->formSnippetsOutput($snippets, $widget, $isAjaxRequest);
             $config->setGlobalParameter($scriptsParameterName, null);
             if ($widget) {
-                $dynamicScripts = (array) $config->getGlobalParameter(static::SNIPPETS_PARAMETER_NAME . '_dynamic');
+                $dynamicScripts = (array) $config->getGlobalParameter(JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic');
                 $scriptOutput .= $this->formSnippetsOutput($dynamicScripts, $widget, $isAjaxRequest);
-                $config->setGlobalParameter(static::SNIPPETS_PARAMETER_NAME . '_dynamic', null);
+                $config->setGlobalParameter(JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic', null);
             }
             $output .= $this->enclose($scriptOutput, $widget, $isAjaxRequest);
         }
@@ -157,32 +110,6 @@ class JavaScriptFormatter
     protected function prepareFilesForRendering($files, $widget)
     {
         return (array) $files;
-    }
-
-    /**
-     * Separate query part, appends query part if needed, append file modification timestamp.
-     *
-     * @param string $file
-     *
-     * @return string
-     */
-    protected function formLocalFileUrl($file)
-    {
-        $config = oxRegistry::getConfig();
-        $parts = explode('?', $file);
-        $url = $config->getResourceUrl($parts[0], $config->isAdmin());
-        $parameters = $parts[1];
-        if (empty($parameters)) {
-            $path = $config->getResourcePath($file, $config->isAdmin());
-            $parameters = filemtime($path);
-        }
-
-        if (empty($url) && $config->getConfigParam('iDebug') != 0) {
-            $error = "{oxscript} resource not found: " . getStr()->htmlspecialchars($file);
-            trigger_error($error, E_USER_WARNING);
-        }
-
-        return $url ? "$url?$parameters" : '';
     }
 
     /**

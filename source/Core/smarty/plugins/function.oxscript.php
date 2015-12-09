@@ -50,24 +50,25 @@ function smarty_function_oxscript($params, &$smarty)
     $isInWidget = !empty($params['inWidget']) ? $params['inWidget'] : false;
     $output = '';
 
-    $javaScriptFormatter = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptFormatter');
-
     if (isset($params['add'])) {
         if (empty($params['add'])) {
             $smarty->trigger_error("{oxscript} parameter 'add' can not be empty!");
             return '';
         }
 
-        $javaScriptFormatter->addSnippet($params['add'], $isDynamic);
+        $register = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator');
+        $register->addSnippet($params['add'], $isDynamic);
     } elseif (isset($params['include'])) {
         if (empty($params['include'])) {
             $smarty->trigger_error("{oxscript} parameter 'include' can not be empty!");
             return '';
         }
 
-        $javaScriptFormatter->addFile($params['include'], $priority, $isDynamic);
+        $register = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator');
+        $register->addFile($params['include'], $priority, $isDynamic);
     } else {
-        $output = $javaScriptFormatter->render($widget, $isInWidget, $isDynamic);
+        $renderer = oxNew('OxidEsales\Eshop\Core\ViewHelper\JavaScriptRenderer');
+        $output = $renderer->render($widget, $isInWidget, $isDynamic);
     }
 
     return $output;

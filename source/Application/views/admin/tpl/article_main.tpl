@@ -300,7 +300,7 @@ window.onload = function ()
     <!-- Anfang rechte Seite -->
           <td valign="top" class="edittext" align="left" style="width:100%;height:99%;padding-left:5px;padding-bottom:30px;padding-top:10px;">
             [{block name="admin_article_main_editor"}]
-              [{include file="include/editor.tpl"}]
+              [{include file="include/editor.tpl" checkrights='oxlongdesc'}]
             [{/block}]
           </td>
     <!-- Ende rechte Seite -->

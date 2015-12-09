@@ -76,7 +76,7 @@
         <!-- Anfang rechte Seite -->
           <td valign="top" class="edittext vr" align="left">
               [{block name="admin_adminlinks_main_editor"}]
-                  [{$editor}]
+                [{include file="include/editor.tpl"}]
               [{/block}]
           </td>
         </tr>

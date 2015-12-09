@@ -1,10 +1,5 @@
+[{include file="include/prepare_readonly_variable.tpl"}]
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
-
-  [{if $shopid != "oxbaseshop"}]
-    [{assign var="readonly" value="readonly disabled"}]
-  [{else}]
-    [{assign var="readonly" value=""}]
-  [{/if}]
 
 [{assign var="aAllRDFaDeliveries" value=$oView->getAllRDFaDeliveries()}]
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">

@@ -1226,55 +1226,11 @@ function showInvitations()
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[sDecimalSeparator] value="[{$confstrs.sDecimalSeparator}]">
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_CSVDECIMALSEPARATOR"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_CSVDECIMALSEPARATOR"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
                     <input type=text class="txt" name=confstrs[iExportNrofLines] value="[{$confstrs.iExportNrofLines}]">
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_EXPORTNUMBEROFLINES"}]
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_CONFIG_EXPORTNUMBEROFLINES"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
-                    <input type=text class="txt" name=confstrs[iExportTickerRefresh] value="[{$confstrs.iExportTickerRefresh}]">
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_EXPORTTICKERREFRESH"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_EXPORTTICKERREFRESH"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
-                    <input type=text class="txt" name=confstrs[iImportNrofLines] value="[{$confstrs.iImportNrofLines}]">
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_IMPORTNUMBEROFLINES"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_IMPORTNUMBEROFLINES"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
-                    <input type=text class="txt" name=confstrs[iImportTickerRefresh] value="[{$confstrs.iImportTickerRefresh}]">
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_IMPORTTICKERREFRESH"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_IMPORTTICKERREFRESH"}]
                 </dd>
                 <div class="spacer"></div>
             </dl>

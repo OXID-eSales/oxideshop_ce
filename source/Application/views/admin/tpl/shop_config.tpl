@@ -32,6 +32,20 @@ function showInvitations()
     document.getElementById('pointsforregistration').className = 'rowhide';
   }
 }
+function editThis(sID)
+{
+    var oTransfer = top.basefrm.edit.document.getElementById("transfer");
+    oTransfer.oxid.value = '';
+    oTransfer.cl.value = top.oxid.admin.getClass( sID );
+
+    //forcing edit frame to reload after submit
+    top.forceReloadingEditFrame();
+
+    var oSearch = top.basefrm.list.document.getElementById("search");
+    oSearch.oxid.value = sID;
+    oSearch.updatenav.value = 1;
+    oSearch.submit();
+}
 //-->
 </script>
 
@@ -60,6 +74,7 @@ function showInvitations()
 <input type="hidden" name="oxid" value="[{$oxid}]">
 <input type="hidden" name="editval[oxshops__oxid]" value="[{$oxid}]">
 
+[{include file="include/update_views_notice.tpl"}]
 [{block name="admin_shop_config_options"}]
     <div class="groupExp">
         <div>
@@ -294,7 +309,6 @@ function showInvitations()
                 </dd>
                 <div class="spacer"></div>
             </dl>
-
             <dl>
                 <dt>
                     <input type=hidden name=confbools[blDisableDublArtOnCopy] value=false>
@@ -306,7 +320,6 @@ function showInvitations()
                 </dd>
                 <div class="spacer"></div>
             </dl>
-
          </div>
     </div>
 

@@ -2,16 +2,16 @@
 
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
-[{else}]
-    [{assign var="readonly" value=""}]
 [{/if}]
 
-
+[{if $oViewConfig->getEdition == 'EE' && !$allowSharedEdit}]
+    [{assign var="disableSharedEdit" value="readonly disabled"}]
+[{/if}]
 
 <script type="text/javascript">
 <!--
 
-function DeletePic( sField )
+function DeletePic(sField)
 {
     var oForm = document.getElementById("myedit");
     document.getElementById(sField).value="";
@@ -29,7 +29,7 @@ function DeletePic( sField )
 </form>
 
 
-<form name="myedit" enctype="multipart/form-data" id="myedit" onSubmit="copyLongDesc( 'oxactions__oxlongdesc' );" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="myedit" enctype="multipart/form-data" id="myedit" onSubmit="copyLongDesc('oxactions__oxlongdesc');" action="[{$oViewConf->getSelfLink()}]" method="post">
 [{$oViewConf->getHiddenSid()}]
 <input type="hidden" name="cl" value="actions_main">
 <input type="hidden" name="fnc" value="">
@@ -43,7 +43,6 @@ function DeletePic( sField )
 [{if $edit->oxactions__oxtype->value == 3 && $oViewConf->isAltImageServerConfigured()}]
      <div class="warning">[{oxmultilang ident="ALTERNATIVE_IMAGE_SERVER_NOTE"}] [{oxinputhelp ident="HELP_ALTERNATIVE_IMAGE_SERVER_NOTE"}]</div>
 [{/if}]
-
 <table cellspacing="0" cellpadding="0" border="0" width="98%">
 
 <tr>
@@ -250,9 +249,7 @@ function DeletePic( sField )
     </tr>
 </table>
 
-
 </form>
-
 
 </div>
 
@@ -266,7 +263,7 @@ function DeletePic( sField )
 
     [{if $sHelpURL}]
     [{* HELP *}]
-    <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.help" href="[{$sHelpURL}]/[{	$oViewConf->getActiveClassName()|oxlower}].html" OnClick="window.open('[{$sHelpURL}]/[{	$oViewConf->getActiveClassName()|lower}].html','OXID_Help','width=800,height=600,resizable=no,scrollbars=yes');return false;">[{oxmultilang ident="TOOLTIPS_OPENHELP"}]</a></li>
+    <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.help" href="[{$sHelpURL}]/[{$oViewConf->getActiveClassName()|oxlower}].html" OnClick="window.open('[{$sHelpURL}]/[{	$oViewConf->getActiveClassName()|lower}].html','OXID_Help','width=800,height=600,resizable=no,scrollbars=yes');return false;">[{oxmultilang ident="TOOLTIPS_OPENHELP"}]</a></li>
     [{/if}]
   </ul>
 [{/strip}]

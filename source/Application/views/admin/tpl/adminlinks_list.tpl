@@ -21,7 +21,6 @@ window.onload = function ()
 
 <div id="liste">
 
-
 <form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
 [{include file="_formparams.tpl" cl="adminlinks_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -89,10 +88,7 @@ window.onload = function ()
             <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxlinks__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxlinks__oxinsert|oxformdate}]</a></div></td>
             <td valign="top" class="[{$listclass}]"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxlinks__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxlinks__oxurl->value}]</a></div></td>
             <td class="[{$listclass}]">
-              [{if !$readonly}]
-                  <a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxlinks__oxid->value}]');" class="delete" id="del.[{$_cnt}]" [{include file="help.tpl" helpid=item_delete}]></a>
-                  <a href="Javascript:top.oxid.admin.deleteThis('[{ $listitem->oxlinks__oxid->value }]');" class="delete" id="del.[{$_cnt}]" [{include file="help.tpl" helpid=item_delete}]></a>
-              [{/if}]
+                [{include file="include/adminlinks_list_actions.tpl"}]
             </td>
         [{/block}]
     </tr>

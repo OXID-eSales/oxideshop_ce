@@ -1,9 +1,8 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
 
+[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
-[{else}]
-    [{assign var="readonly" value=""}]
 [{/if}]
 
 <ul class="req">
@@ -14,8 +13,12 @@
             <ul>
                 [{assign var="class" value=$oView->getModuleClass($iModuleState)}]
                 [{if $sModule == "memory_limit"}]
-                        <li id="[{$sModule}]" class="[{$class}]"><a href=[{$oView->getReqInfoUrl($sModule)}] target="_blank">[{oxmultilang ident="SYSREQ_MEMORY_LIMIT"}]</a></li>
-                        <li id="[{$sModule}]" class="[{ $class }]"><a href=[{$oView->getReqInfoUrl($sModule)}] target="_blank">[{ oxmultilang ident="SYSREQ_MEMORY_LIMIT" }]</a></li>
+                    <li id="[{$sModule}]" class="[{$class}]"><a href=[{$oView->getReqInfoUrl($sModule)}] target="_blank">[{oxmultilang ident="SYSREQ_MEMORY_LIMIT"}]</a></li>
+                    [{assign var="memoryLimitName" value="SYSREQ_MEMORY_LIMIT"}]
+                    [{if $oViewConfig->getEdition() == 'EE'}]
+                        [{assign var="memoryLimitName" value="readonly SYSREQ_MEMORY_LIMIT_EE"}]
+                    [{/if}]
+                    <li id="[{$sModule}]" class="[{$class}]"><a href=[{$oView->getReqInfoUrl($sModule)}] target="_blank">[{oxmultilang ident=$memoryLimitName}]</a></li>
                 [{else}]
                     <li id="[{$sModule}]" class="[{$class}]"><a href=[{$oView->getReqInfoUrl($sModule)}] target="_blank">[{oxmultilang ident="SYSREQ_"|cat:$sModule|oxupper}]</a></li>
                 [{/if}]
@@ -75,5 +78,4 @@
 [{/if}]
 
 [{include file="bottomnaviitem.tpl"}]
-
 [{include file="bottomitem.tpl"}]

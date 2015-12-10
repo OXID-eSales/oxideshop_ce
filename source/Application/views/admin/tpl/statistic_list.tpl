@@ -1,10 +1,9 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign box="list"}]
 [{assign var="where" value=$oView->getListFilter()}]
 
+[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
-[{else}]
-    [{assign var="readonly" value=""}]
 [{/if}]
 
 <script type="text/javascript">
@@ -20,8 +19,6 @@ window.onload = function ()
 </script>
 
 <div id="liste">
-
-
 <form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
 [{include file="_formparams.tpl" cl="statistic_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 <table cellspacing="0" cellpadding="0" border="0" width="100%">

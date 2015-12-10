@@ -193,8 +193,7 @@ function ShowMenueFields( iVal)
             <!-- Anfang rechte Seite -->
             <td valign="top" class="edittext" align="left">
                 [{block name="admin_content_main_editor"}]
-                    [{$editor}]
-                    [{include file="include/message_for_text_editor.tpl"}]
+                    [{include file="include/editor.tpl"}]
                 [{/block}]
             </td>
             <!-- Ende rechte Seite -->

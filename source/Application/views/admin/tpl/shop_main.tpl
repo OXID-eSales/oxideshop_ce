@@ -32,8 +32,20 @@ function modSmtpField()
         document.getElementsByName( 'oxsmtppwd' )[0].userValueSet = true;
     }
 }
+function editThis(sID)
+{
+    var oTransfer = top.basefrm.edit.document.getElementById( "transfer" );
+    oTransfer.oxid.value = '';
+    oTransfer.cl.value = top.oxid.admin.getClass( sID );
 
+    //forcing edit frame to reload after submit
+    top.forceReloadingEditFrame();
 
+    var oSearch = top.basefrm.list.document.getElementById( "search" );
+    oSearch.oxid.value = sID;
+    oSearch.updatenav.value = 1;
+    oSearch.submit();
+}
 window.onload = function ()
 {
     [{if $updatelist == 1}]
@@ -42,6 +54,9 @@ window.onload = function ()
 
     setSmtpField();
 
+    [{if $updatenav}]
+        top.oxid.admin.reloadNavigation('[{$oxid}]');
+    [{/if}]
 
     var oField = top.oxid.admin.getLockTarget();
     oField.onchange = oField.onkeyup = oField.onmouseout = top.oxid.admin.unlockSave;
@@ -49,10 +64,9 @@ window.onload = function ()
 //-->
 </script>
 
+[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
-[{else}]
-    [{assign var="readonly" value=""}]
 [{/if}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
@@ -65,16 +79,20 @@ window.onload = function ()
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
+[{if $sMandateWarning}]
+  <div class="errorbox">[{oxmultilang ident="SHOP_MAIN_MANDATE_WARNING"}]</div>
+[{/if}]
 
-
-
+[{if $sMaxShopWarning}]
+   <div class="errorbox">[{oxmultilang ident="SHOP_MAIN_MAXSHOP_WARNING"}]</div>
+[{/if}]
 
 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="unsetSmtpField()">
-[{$oViewConf->getHiddenSid()}]
-<input type="hidden" name="cl" value="shop_main">
-<input type="hidden" name="fnc" value="">
-<input type="hidden" name="oxid" value="[{$oxid}]">
-<input type="hidden" name="editval[oxshops__oxid]" value="[{$oxid}]">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="cl" value="shop_main">
+    <input type="hidden" name="fnc" value="">
+    <input type="hidden" name="oxid" value="[{$oxid}]">
+    <input type="hidden" name="editval[oxshops__oxid]" value="[{$oxid}]">
 
 <table border="0" width="98%">
 <tr>
@@ -110,7 +128,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext" width="100">
-                            [{oxmultilang ident="GENERAL_NAME"}]
+                    [{oxmultilang ident="GENERAL_NAME"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="10" maxlength="[{$edit->oxshops__oxfname->fldmax_length}]" name="editval[oxshops__oxfname]" value="[{$edit->oxshops__oxfname->value}]" [{$readonly}]>
@@ -120,7 +138,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext">
-                            [{oxmultilang ident="GENERAL_STREET"}]
+                    [{oxmultilang ident="GENERAL_STREET"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxstreet->fldmax_length}]" name="editval[oxshops__oxstreet]" value="[{$edit->oxshops__oxstreet->value}]" [{$readonly}]>
@@ -129,7 +147,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext">
-                            [{oxmultilang ident="GENERAL_ZIPCITY"}]
+                    [{oxmultilang ident="GENERAL_ZIPCITY"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="5" maxlength="[{$edit->oxshops__oxzip->fldmax_length}]" name="editval[oxshops__oxzip]" value="[{$edit->oxshops__oxzip->value}]" [{$readonly}]>
@@ -139,7 +157,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext">
-                            [{oxmultilang ident="GENERAL_COUNTRY"}]
+                    [{oxmultilang ident="GENERAL_COUNTRY"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxcountry->fldmax_length}]" name="editval[oxshops__oxcountry]" value="[{$edit->oxshops__oxcountry->value}]" [{$readonly}]>
@@ -148,7 +166,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext">
-                            [{oxmultilang ident="GENERAL_TELEPHONE"}]
+                    [{oxmultilang ident="GENERAL_TELEPHONE"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxtelefon->fldmax_length}]" name="editval[oxshops__oxtelefon]" value="[{$edit->oxshops__oxtelefon->value}]" [{$readonly}]>
@@ -157,7 +175,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext">
-                            [{oxmultilang ident="GENERAL_FAX"}]
+                    [{oxmultilang ident="GENERAL_FAX"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxtelefax->fldmax_length}]" name="editval[oxshops__oxtelefax]" value="[{$edit->oxshops__oxtelefax->value}]" [{$readonly}]>
@@ -166,7 +184,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext">
-                            [{oxmultilang ident="GENERAL_URL"}]
+                    [{oxmultilang ident="GENERAL_URL"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxurl->fldmax_length}]" name="editval[oxshops__oxurl]" value="[{$edit->oxshops__oxurl->value}]" [{$readonly}]>
@@ -175,7 +193,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext" >
-                            [{oxmultilang ident="SHOP_MAIN_BANKNAME"}]
+                    [{oxmultilang ident="SHOP_MAIN_BANKNAME"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxbankname->fldmax_length}]" name="editval[oxshops__oxbankname]" value="[{$edit->oxshops__oxbankname->value}]" [{$readonly}]>
@@ -184,7 +202,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext" >
-                            [{oxmultilang ident="SHOP_MAIN_BANKCODE"}]
+                    [{oxmultilang ident="SHOP_MAIN_BANKCODE"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxbankcode->fldmax_length}]" name="editval[oxshops__oxbankcode]" value="[{$edit->oxshops__oxbankcode->value}]" [{$readonly}]>
@@ -193,7 +211,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext" >
-                            [{oxmultilang ident="SHOP_MAIN_BANKNUMBER"}]
+                    [{oxmultilang ident="SHOP_MAIN_BANKNUMBER"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxbanknumber->fldmax_length}]" name="editval[oxshops__oxbanknumber]" value="[{$edit->oxshops__oxbanknumber->value}]" [{$readonly}]>
@@ -202,7 +220,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext" >
-                            [{oxmultilang ident="SHOP_MAIN_BICCODE"}]
+                    [{oxmultilang ident="SHOP_MAIN_BICCODE"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxbiccode->fldmax_length}]" name="editval[oxshops__oxbiccode]" value="[{$edit->oxshops__oxbiccode->value}]" [{$readonly}]>
@@ -211,7 +229,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext" >
-                            [{oxmultilang ident="SHOP_MAIN_IBANNUMBER"}]
+                    [{oxmultilang ident="SHOP_MAIN_IBANNUMBER"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxibannumber->fldmax_length}]" name="editval[oxshops__oxibannumber]" value="[{$edit->oxshops__oxibannumber->value}]" [{$readonly}]>
@@ -221,17 +239,17 @@ window.onload = function ()
 
             <tr>
                 <td class="edittext" >
-                            [{oxmultilang ident="SHOP_MAIN_VATNUMBER"}]
+                    [{oxmultilang ident="SHOP_MAIN_VATNUMBER"}]
                 </td>
                 <td class="edittext">
                 <input type="text" name="editval[oxshops__oxvatnumber]" value="[{$edit->oxshops__oxvatnumber->value}]" size="35" maxlength="[{$edit->oxshops__oxvatnumber->fldmax_length}]" class="editinput" [{$readonly}]>
                 [{oxinputhelp ident="HELP_SHOP_MAIN_VATNUMBER"}]
                 </td>
             </tr>
-            
+
             <tr>
                 <td class="edittext" >
-                            [{oxmultilang ident="SHOP_MAIN_TAXNUMBER"}]
+                    [{oxmultilang ident="SHOP_MAIN_TAXNUMBER"}]
                 </td>
                 <td class="edittext">
                 <input type="text" name="editval[oxshops__oxtaxnumber]" value="[{$edit->oxshops__oxtaxnumber->value}]" size="35" maxlength="[{$edit->oxshops__oxtaxnumber->fldmax_length}]" class="editinput" [{$readonly}]>
@@ -241,7 +259,7 @@ window.onload = function ()
 
             <tr>
                 <td class="edittext" >
-                            [{oxmultilang ident="SHOP_MAIN_HRBNR"}]
+                    [{oxmultilang ident="SHOP_MAIN_HRBNR"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxhrbnr->fldmax_length}]" name="editval[oxshops__oxhrbnr]" value="[{$edit->oxshops__oxhrbnr->value}]" [{$readonly}]>
@@ -250,7 +268,7 @@ window.onload = function ()
             </tr>
             <tr>
                 <td class="edittext" >
-                            [{oxmultilang ident="SHOP_MAIN_COURT"}]
+                    [{oxmultilang ident="SHOP_MAIN_COURT"}]
                 </td>
                 <td class="edittext">
                 <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxcourt->fldmax_length}]" name="editval[oxshops__oxcourt]" value="[{$edit->oxshops__oxcourt->value}]" [{$readonly}]>
@@ -259,20 +277,12 @@ window.onload = function ()
             </tr>
         [{/block}]
         </table>
-
-
     </td>
     <!-- Anfang rechte Seite -->
     <td valign="top" class="edittext" align="left">
         <table cellspacing="0" cellpadding="0" border="0">
         [{block name="admin_shop_main_leftform"}]
-
-            [{assign var="blContinue" value=1}]
-               [{if $oxid==-1 || (!$oView->isMall() && !$malladmin)}]
-                 [{assign var="blContinue" value=0}]
-               [{/if}]
-
-          [{if $blContinue}]
+            [{include file="include/shop_information.tpl"}]
             <tr>
                 <td class="edittext" >
                     [{oxmultilang ident="SHOP_MAIN_SHOPNAME"}]
@@ -341,16 +351,15 @@ window.onload = function ()
             [{/if}]
         [{/block}]
 
-        [{if $oxid != "-1"}]
           <tr>
             <td colspan="2">
               <FIELDSET id=fldLayout>
                 <LEGEND id=lgdLayout>
                   [{if $languages}]
                   <select name="subjlang" class="editinput" onchange="Javascript:loadLang(this)" [{$readonly}]>
-                  [{foreach key=key item=item from=$languages}]
-                  <option value="[{$key}]"[{if $subjlang == $key}] SELECTED[{/if}]>[{$item->name}]</option>
-                  [{/foreach}]
+                      [{foreach key=key item=item from=$languages}]
+                        <option value="[{$key}]"[{if $subjlang == $key}] SELECTED[{/if}]>[{$item->name}]</option>
+                      [{/foreach}]
                   </select>
                   [{/if}]
                 </LEGEND>
@@ -403,11 +412,7 @@ window.onload = function ()
               <input type="submit" class="edittext" id="oLockButton" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" [{if $oxid==-1}]disabled[{/if}] [{$readonly}]>
             </td>
           </tr>
-        [{else}]
-            [{oxmultilang ident="SHOP_MAIN_SELECTSHOP"}]
-        [{/if}]
         </table>
-      [{/if}]
 
     </td>
     </tr>
@@ -416,5 +421,4 @@ window.onload = function ()
 </form>
 
 [{include file="bottomnaviitem.tpl"}]
-
 [{include file="bottomitem.tpl"}]

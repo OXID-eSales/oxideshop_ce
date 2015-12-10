@@ -1,10 +1,9 @@
 [{include file="headitem.tpl" title="WRAPPING_LIST_TITLE"|oxmultilangassign box="list"}]
 [{assign var="where" value=$oView->getListFilter()}]
 
+[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
-[{else}]
-    [{assign var="readonly" value=""}]
 [{/if}]
 
 <script type="text/javascript">
@@ -89,18 +88,13 @@ window.onload = function ()
         <td valign="top" class="[{$listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxwrapping__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxwrapping__oxpic->value}]</a></div></td>
 
         <td class="[{$listclass}]">
-            [{if !$readonly}]
-                [{if !$listitem->isOx()}]
-                <a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxwrapping__oxid->value}]');" class="delete" id="del.[{$_cnt}]" title="" [{include file="help.tpl" helpid=item_delete}]></a>
-                [{/if}]
-            [{/if}]
+            [{include file="include/wrapping_list_actions.tpl"}]
         </td>
     [{/block}]
 </tr>
-[{if $blWhite == "2"}]
-[{assign var="blWhite" value=""}]
-[{else}]
 [{assign var="blWhite" value="2"}]
+[{if $blWhite == "2"}]
+    [{assign var="blWhite" value=""}]
 [{/if}]
 [{/foreach}]
 [{include file="pagenavisnippet.tpl" colspan="5"}]

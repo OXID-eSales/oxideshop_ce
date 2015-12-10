@@ -4,22 +4,19 @@
 <!--
 function chkInsert()
 {
-    if( document.myedit.elements["editval[oxuser__oxusername]"].value == "")
-     {    alert("Bitte eMail Adresse eingeben!");
-           document.myedit.elements["editval[oxuser__oxusername]"].focus();
-           return false;
+    if(document.myedit.elements["editval[oxuser__oxusername]"].value == "") {
+        alert("Bitte eMail Adresse eingeben!");
+        document.myedit.elements["editval[oxuser__oxusername]"].focus();
+        return false;
     }
     return true;
-
 }
-
 //-->
 </script>
 
+[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
-[{else}]
-    [{assign var="readonly" value=""}]
 [{/if}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
@@ -29,11 +26,11 @@ function chkInsert()
 </form>
 
 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="return chkInsert()">
-[{$oViewConf->getHiddenSid()}]
-<input type="hidden" name="cl" value="user_main">
-<input type="hidden" name="fnc" value="">
-<input type="hidden" name="oxid" value="[{$oxid}]">
-<input type="hidden" name="editval[oxuser__oxid]" value="[{$oxid}]">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="cl" value="user_main">
+    <input type="hidden" name="fnc" value="">
+    <input type="hidden" name="oxid" value="[{$oxid}]">
+    <input type="hidden" name="editval[oxuser__oxid]" value="[{$oxid}]">
 
 <table cellspacing="0" cellpadding="0" border="0" width="98%">
 <tr>
@@ -227,7 +224,7 @@ function chkInsert()
                 [{oxinputhelp ident="HELP_USER_MAIN_NEWPASSWORD"}]
                 </td>
             </tr>
-
+            [{include file="include/user_main_ldap.tpl"}]
         [{/block}]
         <tr>
             <td class="edittext">

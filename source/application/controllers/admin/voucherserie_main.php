@@ -67,6 +67,7 @@ class VoucherSerie_Main extends DynExportBase
             $oVoucherSerie = oxNew("oxvoucherserie");
             $oVoucherSerie->load($soxId);
             $this->_aViewData["edit"] = $oVoucherSerie;
+
         }
 
         return $this->_sThisTemplate;
@@ -148,7 +149,7 @@ class VoucherSerie_Main extends DynExportBase
      */
     public function start()
     {
-        $sVoucherNr = trim(oxRegistry::getConfig()->getRequestParameter("voucherNr"));
+        $sVoucherNr = oxRegistry::getConfig()->getRequestParameter("voucherNr");
         $bRandomNr = oxRegistry::getConfig()->getRequestParameter("randomVoucherNr");
         $sClass = oxRegistry::getConfig()->getRequestParameter("cl");
 

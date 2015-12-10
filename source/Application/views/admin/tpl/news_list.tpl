@@ -87,7 +87,7 @@ window.onload = function ()
             <td valign="top" class="[{$listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxnews__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxnews__oxshortdesc->value}]</a></div></td>
             <td class="[{$listclass}]">
               [{if !$readonly}]
-                [{include file="include/news_list_delete_button.tpl"}]
+                [{include file="include/news_list_actions.tpl"}]
               [{/if}]
             </td>
         [{/block}]

@@ -78,7 +78,7 @@ window.onload = function ()
         <td class="[{$listclass}]">
           [{if !$readonly}]
             <a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxselectlist__oxid->value}]');" class="delete" id="del.[{$_cnt}]" [{include file="help.tpl" helpid=item_delete}]></a>
-            [{include file='include/select_list_delete_button.tpl'}]
+            [{include file='include/select_list_actions.tpl'}]
           [{/if}]
         </td>
     [{/block}]

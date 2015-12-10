@@ -27,60 +27,23 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
 {
 
     /**
-     * DataProvider return shop URL list to call.
+     * DataProvider returns shop URL list to call.
      *
      * @return array
      */
-    public function provider_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest()
+    public function providerRequestFunctionThatResultsInNoValidNewActionGetsRedirectedToStart()
     {
-        $oConfig = $this->getConfig();
-        $sShopUrl = $oConfig->getShopMainUrl();
+        $sShopUrl = $this->getConfig()->getShopMainUrl();
 
         return array(
-            array($sShopUrl . '?fnc=getShopVersion', $sShopUrl),
-            array($sShopUrl . '?fnc=getShopEdition', $sShopUrl),
-            array($sShopUrl . '?fnc=getRevision', $sShopUrl),
-            array($sShopUrl . 'someSeoURL/?fnc=getRevision', $sShopUrl . 'someSeoURL/'),
-            array($sShopUrl . '?fnc=getShopVersion&n2=v2', $sShopUrl),
-            array($sShopUrl . '?fnc=getShopEdition&n2=v2', $sShopUrl),
-            array($sShopUrl . '?fnc=getRevision&n2=v2', $sShopUrl),
-            array($sShopUrl . 'someSeoURL/?fnc=getRevision&n2=v2', $sShopUrl . 'someSeoURL/'),
-            array($sShopUrl . '?name=value&fnc=getShopVersion', $sShopUrl),
-            array($sShopUrl . '?name=value&fnc=getShopEdition', $sShopUrl),
-            array($sShopUrl . '?name=value&fnc=getRevision', $sShopUrl),
-            array($sShopUrl . 'someSeoURL/?name=value&fnc=getRevision', $sShopUrl . 'someSeoURL/'),
-            array($sShopUrl . '?name=value&fnc=getShopVersion&n2=v2', $sShopUrl),
-            array($sShopUrl . '?name=value&fnc=getShopEdition&n2=v2', $sShopUrl),
-            array($sShopUrl . '?name=value&fnc=getRevision&n2=v2', $sShopUrl),
-            array($sShopUrl . 'someSeoURL/?name=value&fnc=getRevision&n2=v2', $sShopUrl . 'someSeoURL/'),
-        );
-    }
-
-    /**
-     * Fix for bug entry 0005569: Oxid leaks internal information to the outside when calling certain urls
-     *
-     * @dataProvider provider_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest
-     */
-    public function test_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest($sForbiddenUrl, $sRedirectUrl)
-    {
-        $sResult = $this->callPage($sForbiddenUrl);
-
-        $sLocation = "Location: " . $sRedirectUrl . "\r\n";
-        $this->assertContains($sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.');
-    }
-
-
-    /**
-     * DataProvider return shop URL list to call.
-     *
-     * @return array
-     */
-    public function provider_RequestForbiddenMethod_RedirectedViaShopFramework()
-    {
-        $oConfig = $this->getConfig();
-        $sShopUrl = $oConfig->getShopMainUrl();
-
-        return array(
+            array($sShopUrl . '?fnc=getShopVersion'),
+            array($sShopUrl . '?fnc=getShopEdition'),
+            array($sShopUrl . '?fnc=getShopVersion&n2=v2'),
+            array($sShopUrl . '?fnc=getShopEdition&n2=v2'),
+            array($sShopUrl . '?name=value&fnc=getShopVersion'),
+            array($sShopUrl . '?name=value&fnc=getShopEdition'),
+            array($sShopUrl . '?name=value&fnc=getShopVersion&n2=v2'),
+            array($sShopUrl . '?name=value&fnc=getShopEdition&n2=v2'),
             array($sShopUrl . '?fnc=%67etshopversion'),
             array($sShopUrl . '?fnc=getCharSet'),
             array($sShopUrl . '?fnc=getShopFullEdition'),
@@ -91,16 +54,64 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
     }
 
     /**
-     * Verify redirect url does not contain function result when call to forbidden funciton is not
-     * covered by .htaccess rule
+     * Test case that a function's return value is no callable new action, directly redirect
+     * to startpage without trying to call a not extisting view class.
      *
-     * @dataProvider provider_RequestForbiddenMethod_RedirectedViaShopFramework
+     * @dataProvider providerRequestFunctionThatResultsInNoValidNewActionGetsRedirectedToStart
      */
-    public function test_RequestForbiddenMethod_RedirectedViaShopFramework($sForbiddenUrl)
+    public function _testRequestFunctionThatResultsInNoValidNewActionGetsRedirectedToStart($sForbiddenUrl)
     {
+        $sShopUrl = $this->getConfig()->getShopMainUrl();
+
         $sResult = $this->callPage($sForbiddenUrl);
 
-        $this->assertContains('cl=start&redirected=1', $sResult, 'User should be redirected to front page.');
+        $sLocation = "Location: " .  $sShopUrl . 'index.php?force_sid=' . $this->_extractSessionId($sResult) .
+                     "&cl=start&redirected=1\r\n";
+        $this->assertContains($sLocation, $sResult, 'User should be redirected to shop front page.');
+    }
+
+    /**
+     * DataProvider returns shop URL list to call.
+     *
+     * @return array
+     */
+    public function providerRequestGetRevisionThatResultsInNoValidNewActionGetsRedirectedToStart()
+    {
+        $sShopUrl = $this->getConfig()->getShopMainUrl();
+
+        return array(
+                array($sShopUrl . '?fnc=getRevision'),
+                array($sShopUrl . 'Startseite/?fnc=getRevision'),
+                array($sShopUrl . '?fnc=getRevision&n2=v2'),
+                array($sShopUrl . 'Startseite/?fnc=getRevision&n2=v2'),
+                array($sShopUrl . '?name=value&fnc=getRevision'),
+                array($sShopUrl . 'Startseite/?name=value&fnc=getRevision'),
+                array($sShopUrl . '?name=value&fnc=getRevision&n2=v2'),
+                array($sShopUrl . 'Startseite/?name=value&fnc=getRevision&n2=v2')
+        );
+    }
+
+    /**
+     * Same test as before for function call to getRevision. In case we have no revision
+     * no new action is called, if function getRevision returns a value, shop redirects
+     * to start page as the return value is no valid view class.
+     *
+     * @dataProvider providerRequestGetRevisionThatResultsInNoValidNewActionGetsRedirectedToStart
+     */
+    public function testRequestGetRevisionThatResultsInNoValidNewActionGetsRedirectedToStart($sForbiddenUrl)
+    {
+        $sShopUrl = $this->getConfig()->getShopMainUrl();
+
+        $sResult = $this->callPage($sForbiddenUrl);
+
+        $sLocation = "Location: " .  $sShopUrl . 'index.php?force_sid=' . $this->_extractSessionId($sResult) .
+                     "&cl=start&redirected=1\r\n";
+        if (false == $this->getConfig()->getRevision()) {
+            $this->assertNotContains("Location:", $sResult, 'No revision means no redirect, no Location header');
+        } else {
+            $this->assertContains($sLocation, $sResult, 'User should be redirected to shop front page.');
+        }
+
     }
 
     /**
@@ -184,5 +195,19 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
         $sResultPage = $this->callPage($sShopUrl . $sFilePath);
 
         return $sResultPage;
+    }
+
+    /**
+     * Test helper to extract session id form curl response
+     *
+     * @param $sText
+     *
+     * @return string
+     */
+    private function _extractSessionId($sText)
+    {
+        $aParts = explode('Set-Cookie: sid=', $sText);
+        $aParts = explode(';', $aParts[1]);
+        return trim($aParts[0]);
     }
 }

@@ -1,0 +1,3 @@
+<span class="popUpStyle" id="category_recalcnrofarticles" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_RECALCNROFARTICLESINCAT"}]</span>
+<span class="popUpStyle" id="vendor_recalcnrofarticles" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_RECALCNROFARTICLESINVND"}]</span>
+<span class="popUpStyle" id="manufacturer_recalcnrofarticles" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_RECALCNROFARTICLESINMAN"}]</span>

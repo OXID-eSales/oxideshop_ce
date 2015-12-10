@@ -27,7 +27,7 @@
 <input type="hidden" name="oxid" value="[{$oxid}]">
 <input type="hidden" name="editval[oxshops__oxid]" value="[{$oxid}]">
 
-
+[{include file="include/update_views_notice.tpl"}]
    [{oxmultilang ident="SHOP_SEO_NEWINSTALL"}]<br>
    <br>
 

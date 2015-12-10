@@ -23,7 +23,7 @@
 
 
 
-
+[{include file="include/update_views_notice.tpl"}]
         <table id="tShopLicense" border="0" width="45%">
           <tr>
             <td class="edittext">

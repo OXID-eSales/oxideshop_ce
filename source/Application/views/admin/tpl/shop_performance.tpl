@@ -26,7 +26,7 @@
 <input type="hidden" name="oxid" value="[{$oxid}]">
 <input type="hidden" name="editval[oxshops__oxid]" value="[{$oxid}]">
 
-
+[{include file="include/update_views_notice.tpl"}]
     <table border=0>
         [{block name="admin_shop_performance_form"}]
             <tr class="conftext[{cycle}]">

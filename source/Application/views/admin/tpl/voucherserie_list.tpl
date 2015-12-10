@@ -21,7 +21,6 @@ window.onload = function ()
 
 <div id="liste">
 
-
 <form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
 [{include file="_formparams.tpl" cl="voucherserie_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -101,16 +100,13 @@ window.onload = function ()
         <td valign="top" class="[{$listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxvoucherseries__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxvoucherseries__oxenddate->value}]</a></div></td>
         <td valign="top" class="[{$listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxvoucherseries__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxvoucherseries__oxminimumvalue->value}]</a></div></td>
         <td class="[{$listclass}]">
-          [{if !$readonly}]
-              <a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxvoucherseries__oxid->value}]');" class="delete" id="del.[{$_cnt}]" title="" [{include file="help.tpl" helpid=item_delete}]></a>
-          [{/if}]
+            [{include file="include/voucherserie_list_actions.tpl"}]
         </td>
     [{/block}]
 </tr>
-[{if $blWhite == "2"}]
-[{assign var="blWhite" value=""}]
-[{else}]
 [{assign var="blWhite" value="2"}]
+[{if $blWhite == "2"}]
+    [{assign var="blWhite" value=""}]
 [{/if}]
 [{/foreach}]
 [{include file="pagenavisnippet.tpl" colspan="7"}]
@@ -120,10 +116,9 @@ window.onload = function ()
 
 [{include file="pagetabsnippet.tpl"}]
 
-
 <script type="text/javascript">
-if (parent.parent)
-{   parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname->getRawValue()|oxaddslashes}]";
+if (parent.parent) {
+    parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname->getRawValue()|oxaddslashes}]";
     parent.parent.sMenuItem    = "[{oxmultilang ident="VOUCHERSERIE_LIST_MENUITEM"}]";
     parent.parent.sMenuSubItem = "[{oxmultilang ident="VOUCHERSERIE_LIST_MENUSUBITEM"}]";
     parent.parent.sWorkArea    = "[{$_act}]";

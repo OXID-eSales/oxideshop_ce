@@ -1,10 +1,27 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
 
+<script type="text/javascript">
+<!--
+function editThis(sID)
+{
+    var oTransfer = top.basefrm.edit.document.getElementById( "transfer" );
+    oTransfer.oxid.value = '';
+    oTransfer.cl.value = top.oxid.admin.getClass( sID );
 
+    //forcing edit frame to reload after submit
+    top.forceReloadingEditFrame();
+
+    var oSearch = top.basefrm.list.document.getElementById( "search" );
+    oSearch.oxid.value = sID;
+    oSearch.updatenav.value = 1;
+    oSearch.submit();
+}
+//-->
+</script>
+
+[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
-[{else}]
-    [{assign var="readonly" value=""}]
 [{/if}]
 
 [{cycle assign="_clear_" values=",2"}]
@@ -19,15 +36,14 @@
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
-
 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
-[{$oViewConf->getHiddenSid()}]
-<input type="hidden" name="cl" value="shop_seo">
-<input type="hidden" name="fnc" value="">
-<input type="hidden" name="oxid" value="[{$oxid}]">
-<input type="hidden" name="editval[oxshops__oxid]" value="[{$oxid}]">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="cl" value="shop_seo">
+    <input type="hidden" name="fnc" value="">
+    <input type="hidden" name="oxid" value="[{$oxid}]">
+    <input type="hidden" name="editval[oxshops__oxid]" value="[{$oxid}]">
 
-[{include file="include/update_views_notice.tpl"}]
+   [{include file="include/update_views_notice.tpl"}]
    [{oxmultilang ident="SHOP_SEO_NEWINSTALL"}]<br>
    <br>
 
@@ -194,9 +210,7 @@
    <input type="submit" class="confinput" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]>
    <input type="submit" class="confinput" name="save" value="[{oxmultilang ident="SHOP_SEO_RESETIDS"}]" onClick="Javascript:var agree=confirm('[{oxmultilang ident="SHOP_SEO_QRESETIDS"}]');if (!agree) {return false;} else {document.myedit.fnc.value='dropSeoIds';return true;}" [{$readonly}]>
 
-
 </form>
 
 [{include file="bottomnaviitem.tpl"}]
-
 [{include file="bottomitem.tpl"}]

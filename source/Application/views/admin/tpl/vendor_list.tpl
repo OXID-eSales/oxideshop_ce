@@ -77,9 +77,7 @@ window.onload = function ()
         <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxvendor__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxvendor__oxtitle->value}]</a></div></td>
         <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxvendor__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxvendor__oxshortdesc->value}]</a></div></td>
         <td class="[{$listclass}]" align="right">
-          [{if !$readonly}]
-              <a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxvendor__oxid->value}]');" class="delete" id="del.[{$_cnt}]" title="" [{include file="help.tpl" helpid=item_delete}]></a>
-          [{/if}]
+            [{include file="include/vendor_list_actions.tpl"}]
         </td>
     [{/block}]
 </tr>

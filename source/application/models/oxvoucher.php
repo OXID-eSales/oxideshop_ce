@@ -67,7 +67,7 @@ class oxVoucher extends oxBase
     public function getVoucherByNr($sVoucherNr, $aVouchers = array(), $blCheckavalability = false)
     {
         $oRet = null;
-        if (!is_null($sVoucherNr)) {
+        if (!empty($sVoucherNr)) {
 
             $sViewName = $this->getViewName();
             $sSeriesViewName = getViewName('oxvoucherseries');

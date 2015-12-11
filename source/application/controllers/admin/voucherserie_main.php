@@ -149,7 +149,7 @@ class VoucherSerie_Main extends DynExportBase
      */
     public function start()
     {
-        $sVoucherNr = oxRegistry::getConfig()->getRequestParameter("voucherNr");
+        $sVoucherNr = trim(oxRegistry::getConfig()->getRequestParameter("voucherNr"));
         $bRandomNr = oxRegistry::getConfig()->getRequestParameter("randomVoucherNr");
         $sClass = oxRegistry::getConfig()->getRequestParameter("cl");
 

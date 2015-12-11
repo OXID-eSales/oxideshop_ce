@@ -145,8 +145,6 @@
                 <TAB id="tbclorder_downloads" cl="order_downloads" />
                 <BTN id="order_newremark" />
             </SUBMENU>
-            <SUBMENU id="mxorderovw" cl="list_order" />
-            <SUBMENU id="mxpacklist" cl="order_package" />
         </MAINMENU>
         <MAINMENU id="mxcustnews">
             <SUBMENU id="mxnews" cl="admin_news" list="news_list">

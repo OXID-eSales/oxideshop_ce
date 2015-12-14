@@ -1,6 +1,4 @@
-[{ $editor }]
-
-[{include file="include/message_for_text_editor.tpl"}]
+[{include file="include/editor.tpl"}]
 
 <table>
     <tr>

@@ -1,4 +1,8 @@
-[{include file="include/prepare_readonly_variable.tpl"}]
+[{if $shopid != "oxbaseshop" && $shopid != "1" || $readonly}]
+    [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
+[{/if}]
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
 
 [{assign var="aAllRDFaDeliveries" value=$oView->getAllRDFaDeliveries()}]
@@ -16,7 +20,6 @@
 <input type="hidden" name="oxid" value="[{$oxid}]">
 <input type="hidden" name="editval[oxobject2delivery__oxdeliveryid]" value="[{$oxid}]">
 <input type="hidden" name="editval[oxobject2delivery__oxtype]" value="rdfadeliveryset">
-
 
 <strong>[{oxmultilang ident="DELIVERY_RDFA_ASIGN_DELIVERY"}]</strong><br>
     [{assign var='oxDeliverySet' value=$edit->oxpayments__oxdesc->value}][{oxmultilang ident="DELIVERY_RDFA_ADVICE" args=$oxDeliverySet}].

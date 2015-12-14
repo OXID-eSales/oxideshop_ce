@@ -3,6 +3,7 @@
 [{if $error}]<div class="errorbox">[{$error}]</div>[{/if}]
 [{if $message}]<div class="messagebox">[{$message}]</div>[{/if}]
 
+[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
 [{/if}]

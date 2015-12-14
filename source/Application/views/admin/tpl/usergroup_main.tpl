@@ -6,7 +6,7 @@
 [{/if}]
 
 [{assign var="disableSharedEdit" value=""}]
-[{if $oViewConfig->getEdition == 'EE' && !$allowSharedEdit}]
+[{if $oViewConfig->getEdition() == 'EE' && !$allowSharedEdit}]
     [{assign var="disableSharedEdit" value="readonly disabled"}]
 [{/if}]
 

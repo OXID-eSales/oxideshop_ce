@@ -62,14 +62,24 @@ function smarty_function_oxscript($params, &$smarty)
     }
 
 
-    if ( !empty($params['add']) ) {
+    if ( isset($params['add']) ) {
+        if ('' == $params['add']) {
+            $smarty->trigger_error("{oxscript} parameter 'add' can not be empty!");
+            return '';
+        }
+
         $sScript = trim( $params['add'] );
         if ( !in_array($sScript, $aScript)) {
             $aScript[] = $sScript;
         }
         $myConfig->setGlobalParameter($sScripts, $aScript);
 
-    } elseif ( !empty($params['include']) ) {
+    } elseif ( isset($params['include']) ) {
+        if ('' == $params['include']) {
+            $smarty->trigger_error("{oxscript} parameter 'include' can not be empty!");
+            return '';
+        }
+
         $sScript = $params['include'];
         if (!preg_match('#^https?://#', $sScript)) {
             $sOriginalScript = $sScript;

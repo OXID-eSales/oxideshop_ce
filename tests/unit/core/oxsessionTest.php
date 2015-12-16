@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -212,6 +212,9 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         oxRemClassModule('Unit_oxsessionTest_oxUtilsObject');
 
         $this->oSession->freeze();
+
+        $reportingLevel = (int) getenv('TRAVIS_ERROR_LEVEL');
+        error_reporting($reportingLevel ? $reportingLevel : ((E_ALL ^ E_NOTICE) | E_STRICT));
 
         parent::tearDown();
     }
@@ -1563,6 +1566,21 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $oSubj = $this->getProxyClass('oxSession');
         $oSubj->setVariable('_rtoken', 'test1');
         $this->assertTrue($oSubj->UNITisValidRemoteAccessToken());
+    }
+
+    /**
+     * Test handling of supplying an array instead of a string for rtoken.
+     */
+    public function __testIsRemoteAccessTokenValidArrayRequestParameter()
+    {
+        //Suppress all error reporting on purpose for this test
+        error_reporting(0);
+
+        $this->setRequestParam('rtoken', array(1) );
+
+        $session = $this->getProxyClass('oxSession');
+        $session->setVariable('_rtoken', 'test1');
+        $this->assertFalse($session->_isValidRemoteAccessToken());
     }
 
     public function testIsTokenValidNot()

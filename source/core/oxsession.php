@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -1051,18 +1051,17 @@ class oxSession extends oxSuperCfg
     }
 
     /**
-     * Checks if token supplied over 'rtoken' parameter match remote accecss session token.
+     * Checks if token supplied over 'rtoken' parameter matches remote access session token.
      *
      * @return bool
      */
     protected function _isValidRemoteAccessToken()
     {
-        $sInputToken = $this->getConfig()->getRequestParameter('rtoken');
-        $sToken = $this->getRemoteAccessToken(false);
-        $blTokenEqual = !(bool) strcmp($sInputToken, $sToken);
-        $blValid = $sInputToken && $blTokenEqual;
+        $inputToken = $this->getConfig()->getRequestParameter('rtoken');
+        $token = $this->getRemoteAccessToken(false);
+        $isValid = !empty($inputToken) ? ($token === $inputToken) : false;
 
-        return $blValid;
+        return $isValid;
     }
 
     /**

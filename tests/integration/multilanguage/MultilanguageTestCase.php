@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -68,6 +68,7 @@ abstract class MultilanguageTestCase extends OxidTestCase
         //we need a fresh instance of language object in registry,
         //otherwise stale data is used for language abbreviations.
         oxRegistry::set('oxLang', null);
+        oxRegistry::set('oxTableViewNameGenerator', null);
 
         $this->updateViews();
 

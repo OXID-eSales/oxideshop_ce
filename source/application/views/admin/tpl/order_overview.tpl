@@ -73,19 +73,7 @@
                     [{if $listitem->getPersParams() }]
                     <td valign="top" class="edittext">
                         [{foreach key=sVar from=$listitem->getPersParams() item=aParam name=persparams}]
-[{*---------------------------------------------------------------------------------------------*}]
-[{*
-                            &nbsp;&nbsp;,&nbsp;<em>
-                                [{if $smarty.foreach.persparams.first && $smarty.foreach.persparams.last}]
-                                    [{ oxmultilang ident="GENERAL_LABEL" }]
-                                [{else}]
-                                    [{$sVar}] :
-                                [{/if}]
-                                [{$aParam}]
-                            </em>
-*}]
-[{include file="custom/persparams_output.tpl" sPersParamKey=$sVar sPersParamValue=$aParam tpl="admin__order_article" }]
-[{*---------------------------------------------------------------------------------------------*}]
+                            [{include file="pers_params/order_overview.tpl" sPersParamKey=$sVar sPersParamValue=$aParam }]
                         [{/foreach}]
                     </td>
                     [{/if}]

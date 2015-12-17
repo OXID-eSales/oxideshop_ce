@@ -1018,41 +1018,59 @@ class oxView extends oxSuperCfg
         return $sRet;
     }
 
+    /**
+     * persparam visible, or as hidden field (in checkout)
+     * 
+     * @param $s_paramKey string
+     *
+     * @return bool
+     */
+    public function showPersParam($s_paramKey) {
 
-// ------------------------------------------------------------------------------------------------
-	public function showPersParam($s_paramKey) {
+        $bRet = false;
 
-		$bRet = false;
+        if ($s_paramKey == "details")
+            $bRet = true;
 
-		if ( $s_paramKey == "details" )
-			$bRet = true;
+        return $bRet;
+    }
 
-		/*
-		 * extend with own module
-		 */
+    /**
+     * return label text for persparam (getter for text)
+     * 
+     * @param $sOxMultilangIdent
+     *
+     * @return string
+     */
+    public function getPersParamText($sOxMultilangIdent) {
 
-		return $bRet;
-	}
+        if ($sOxMultilangIdent == "details") {
+            // details has different multilang-idents
+            if (isAdmin())
+                $sOxMultilangIdent = "ORDER_PACKAGE_DETAILS";
+            else
+                $sOxMultilangIdent = "LABEL";
+        }
 
-	public function getPersParamText($sOxMultilangIdent) {
+        return oxRegistry::getLang()->translateString($sOxMultilangIdent);
+    }
 
-		return oxRegistry::getLang()->translateString($sOxMultilangIdent) . ":";
-	}
+    /**
+     * return value for persparam (getter for value)
+     * 
+     * @param $s_paramKey
+     * @param $s_paramValue
+     *
+     * @return null|other
+     */
+    public function getPersParamValue($s_paramKey, $s_paramValue) {
 
-	public function getPersParamValue($s_paramKey, $s_paramValue) {
+        $_ret = null;
 
-		$_ret = null;
+        if ($s_paramKey == "details")
+            $_ret = $s_paramValue;
 
-		if ( $s_paramKey == "details" )
-			$_ret = $s_paramValue;
-
-		/*
-		 * extend with own module
-		 */
-		
-		return $_ret;
-	}
-// ------------------------------------------------------------------------------------------------
-
+        return $_ret;
+    }
 
 }

@@ -1,4 +1,5 @@
 [{assign var="shop"      value=$oEmailView->getShop() }]
+[{assign var="oView"     value=$oEmailView->getView() }]
 [{assign var="oViewConf" value=$oEmailView->getViewConfig() }]
 [{assign var="oConf"     value=$oViewConf->getConfig() }]
 [{assign var="currency"  value=$oEmailView->getCurrency() }]
@@ -84,12 +85,7 @@
                             [{if $basketitem->getPersParams() }]
                                 <ul style="padding: 0 10px; margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
                                     [{foreach key=sVar from=$basketitem->getPersParams() item=aParam}]
-[{*---------------------------------------------------------------------------------------------*}]
-[{*
-                                        <li style="padding: 3px;">[{$sVar}] : [{$aParam}]</li>
-*}]
-[{include file="custom/persparams_output.tpl" sPersParamKey=$sVar sPersParamValue=$aParam tpl="email_html_order_cust" }]
-[{*---------------------------------------------------------------------------------------------*}]
+                                        [{include file="page/pers_params/email_html_order_cust.tpl" sPersParamKey=$sVar sPersParamValue=$aParam }]
                                     [{/foreach}]
                                 </ul>
                             [{/if}]

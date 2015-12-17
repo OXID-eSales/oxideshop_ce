@@ -57,20 +57,7 @@ function printWindow()
                             <td class="packitem" valign="top">[{ $article->oxorderarticles__oxtitle->value }]
 
                             [{foreach key=sVar from=$article->getPersParams() item=aParam name=persparams}]
-[{*---------------------------------------------------------------------------------------------*}]
-[{*
-                            	[{if $aParam }]
-                                    <br />
-                                    [{if $smarty.foreach.persparams.first && $smarty.foreach.persparams.last}]
-                                        [{ oxmultilang ident="ORDER_PACKAGE_DETAILS" }] 
-                                    [{else}]
-                                        [{$sVar}] : 
-                                    [{/if}]
-                                    [{$aParam}]
-                                [{/if }]
-*}]
-[{include file="custom/persparams_output.tpl" sPersParamKey=$sVar sPersParamValue=$aParam tpl="admin__order_package" }]
-[{*---------------------------------------------------------------------------------------------*}]
+                                [{include file="pers_params/order_article.tpl" sPersParamKey=$sVar sPersParamValue=$aParam }]
                             [{/foreach}]
 
                             </td>

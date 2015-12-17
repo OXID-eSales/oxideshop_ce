@@ -31,6 +31,13 @@
         "oxid-esales/coding-standards": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0"
     },
+    "autoload": {
+        "psr-4": {
+            "OxidEsales\\Eshop\\": "./",
+            "OxidEsales\\EshopProfessional\\": "Edition/Professional",
+            "OxidEsales\\EshopEnterprise\\": "Edition/Enterprise"
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {

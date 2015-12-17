@@ -20,6 +20,16 @@
  * @version   OXID eShop CE
  */
 
+if (!function_exists('registerPsr4Autoload')) {
+    /**
+     * Registers auto-loader from shop.
+     */
+    function registerPsr4Autoload()
+    {
+        require_once __DIR__ . '/../vendor/autoload.php';
+    }
+}
+
 if (!function_exists('registerShopAutoLoad')) {
     /**
      * Registers auto-loader from shop.
@@ -426,10 +436,8 @@ if (!function_exists('getRequestUrl')) {
     }
 }
 
-// Register namespaced classes autoloader.
-require_once __DIR__ . '/oxnamespacedautoloader.php';
-$namespacedAutoloader = new oxNamespacedAutoloader(getShopBasePath());
-spl_autoload_register(array($namespacedAutoloader, 'autoload'));
+// Composer autoloader.
+registerPsr4Autoload();
 
 // Register not overridable classes autoloader.
 $classMapProvider = new \OxidEsales\Eshop\Core\ClassMapProvider(new \OxidEsales\Eshop\Core\Edition\EditionSelector());

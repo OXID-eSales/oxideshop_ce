@@ -346,7 +346,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $at = 0;
         /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("getInstance", "execSql"));
-        $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Utils"))->will($this->returnValue($oUtils));
+        $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
         $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("update oxuser set oxusername='{$loginName}', oxpassword='" . hash('sha512', $password . $passwordSalt) . "', oxpasssalt='{$passwordSalt}' where oxid='oxdefaultadmin'"));
         $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("update oxnewssubscribed set oxemail='{$loginName}' where oxuserid='oxdefaultadmin'"));
         $database->writeAdminLoginData($loginName, $password);

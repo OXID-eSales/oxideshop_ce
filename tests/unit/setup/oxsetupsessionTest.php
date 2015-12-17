@@ -38,7 +38,7 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     /**
      * Prepare oxSetupSession proxy mock object.
      *
-     * @return oxSetupSession proxy mock class
+     * @return Session proxy mock class
      */
     protected function _getSessionMock($aMockFunctions = array())
     {

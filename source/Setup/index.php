@@ -33,5 +33,5 @@ ini_set('url_rewriter.tags', '');
  * Includes core setup file
  */
 require_once '../vendor/autoload.php';
-$oDispatcher = new oxSetupDispatcher();
+$oDispatcher = new dispatcher();
 $oDispatcher->run();

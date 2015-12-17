@@ -23,13 +23,13 @@
 require_once getShopBasePath() . '/Setup/oxsetup.php';
 
 /**
- * oxSetupView tests
+ * view tests
  */
 class Unit_Setup_oxSetupViewTest extends OxidTestCase
 {
 
     /**
-     * Testing oxSetupView::getTitle()
+     * Testing view::getTitle()
      *
      * @return null
      */
@@ -41,7 +41,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupView::setTitle()
+     * Testing view::setTitle()
      *
      * @return null
      */
@@ -54,7 +54,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupView::getMessages()
+     * Testing view::getMessages()
      *
      * @return null
      */
@@ -65,7 +65,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupView::setMessage()
+     * Testing view::setMessage()
      *
      * @return null
      */
@@ -81,7 +81,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupView::getText()
+     * Testing view::getText()
      *
      * @return null
      */
@@ -90,13 +90,13 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
         $oInst = $this->getMock("oxSetupLang", array("getText"));
         $oInst->expects($this->once())->method("getText")->with($this->equalTo("testId"));
 
-        $oSetupView = $this->getMock("oxSetupView", array("getInstance"));
+        $oSetupView = $this->getMock("view", array("getInstance"));
         $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("oxSetupLang"))->will($this->returnValue($oInst));
         $oSetupView->getText("testId", false);
     }
 
     /**
-     * Testing oxSetupView::setViewParam() and oxSetupView::getViewParam()
+     * Testing view::setViewParam() and view::getViewParam()
      *
      * @return null
      */
@@ -108,7 +108,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupView::getSetupStep()
+     * Testing view::getSetupStep()
      *
      * @return null
      */
@@ -123,7 +123,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupView::getNextSetupStep()
+     * Testing view::getNextSetupStep()
      *
      * @return null
      */
@@ -138,7 +138,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupView::getNextSetupStep()
+     * Testing view::getNextSetupStep()
      *
      * @return null
      */
@@ -153,7 +153,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupView::getSetupSteps()
+     * Testing view::getSetupSteps()
      *
      * @return null
      */
@@ -168,7 +168,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupView::getImageDir()
+     * Testing view::getImageDir()
      *
      * @return null
      */
@@ -179,7 +179,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupView::isDeletedSetup()
+     * Testing view::isDeletedSetup()
      *
      * @return null
      */
@@ -196,14 +196,14 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
         $oInst2->expects($this->at(1))->method("removeDir")->with($this->equalTo($sPath . "out/pictures/master"), $this->equalTo(true), $this->equalTo(1), $this->equalTo(array("nopic.jpg")))->will($this->returnValue(true));
         $oInst2->expects($this->at(2))->method("removeDir")->with($this->equalTo($sPath . "Setup"), $this->equalTo(true))->will($this->returnValue(true));
 
-        $oSetupView = $this->getMock("oxSetupView", array("getInstance"));
-        $oSetupView->expects($this->at(0))->method("getInstance")->with($this->equalTo("OxSetupSession"))->will($this->returnValue($oInst1));
+        $oSetupView = $this->getMock("view", array("getInstance"));
+        $oSetupView->expects($this->at(0))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oInst1));
         $oSetupView->expects($this->at(1))->method("getInstance")->with($this->equalTo("oxSetupUtils"))->will($this->returnValue($oInst2));
         $this->assertTrue($oSetupView->isDeletedSetup());
     }
 
     /**
-     * Testing oxSetupView::getReqInfoUrl()
+     * Testing view::getReqInfoUrl()
      *
      * @return null
      */
@@ -218,7 +218,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupView::getSid()
+     * Testing view::getSid()
      *
      * @return null
      */

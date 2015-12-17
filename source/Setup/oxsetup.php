@@ -225,7 +225,7 @@ if (!class_exists("Conf")) {
 /**
  * Core setup class, setup instance holder
  */
-class oxSetupCore
+class Core
 {
 
     /**
@@ -240,16 +240,16 @@ class oxSetupCore
      *
      * @param string $sInstanceName instance name
      *
-     * @return oxSetupCore
+     * @return Core
      */
     public function getInstance($sInstanceName)
     {
         $sInstanceName = strtolower($sInstanceName);
-        if (!isset(oxSetupCore::$_aInstances[$sInstanceName])) {
-            oxSetupCore::$_aInstances[$sInstanceName] = new $sInstanceName();
+        if (!isset(Core::$_aInstances[$sInstanceName])) {
+            Core::$_aInstances[$sInstanceName] = new $sInstanceName();
         }
 
-        return oxSetupCore::$_aInstances[$sInstanceName];
+        return Core::$_aInstances[$sInstanceName];
     }
 
     /**
@@ -281,7 +281,7 @@ class oxSetupCore
 /**
  * Setup manager class
  */
-class OxSetup extends oxSetupCore
+class Setup extends Core
 {
 
     /**
@@ -498,7 +498,7 @@ class OxSetup extends oxSetupCore
 /**
  * Setup language manager class
  */
-class OxSetupLang extends oxSetupCore
+class Language extends Core
 {
 
     /**
@@ -574,7 +574,7 @@ class OxSetupLang extends oxSetupCore
 /**
  * Setup session manager class
  */
-class OxSetupSession extends oxSetupCore
+class Session extends Core
 {
 
     /**
@@ -782,7 +782,7 @@ class OxSetupSession extends oxSetupCore
 /**
  * Setup database manager class
  */
-class OxSetupDb extends oxSetupCore
+class Database extends Core
 {
 
     /**
@@ -900,7 +900,7 @@ class OxSetupDb extends oxSetupCore
             $oSetup = $this->getInstance("oxSetup");
             // problems with file
             $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-            throw new Exception(sprintf($this->getInstance("oxSetupLang")->getText('ERROR_OPENING_SQL_FILE'), $sFilename), oxSetupDb::ERROR_OPENING_SQL_FILE);
+            throw new Exception(sprintf($this->getInstance("oxSetupLang")->getText('ERROR_OPENING_SQL_FILE'), $sFilename), Database::ERROR_OPENING_SQL_FILE);
         }
 
         $sQuery = fread($fp, filesize($sFilename));
@@ -968,21 +968,21 @@ class OxSetupDb extends oxSetupCore
                 $this->_oConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->_oConn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
-                /** @var oxSetup $oSetup */
+                /** @var Setup $oSetup */
                 $oSetup = $this->getInstance("oxSetup");
                 $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_DB_CONNECT') . " - " . $e->getMessage(), oxSetupDb::ERROR_DB_CONNECT, $e);
+                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_DB_CONNECT') . " - " . $e->getMessage(), Database::ERROR_DB_CONNECT, $e);
             }
 
             // testing version
             $oSysReq = getSystemReqCheck();
             if (!$oSysReq->checkMysqlVersion($this->getDatabaseVersion())) {
-                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS'), oxSetupDb::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS);
+                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS'), Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS);
             }
             try {
                 $this->_oConn->exec("USE `{$aParams['dbName']}`");
             } catch (Exception $e) {
-                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), oxSetupDb::ERROR_COULD_NOT_CREATE_DB, $e);
+                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), Database::ERROR_COULD_NOT_CREATE_DB, $e);
             }
         }
 
@@ -1014,9 +1014,9 @@ class OxSetupDb extends oxSetupCore
      */
     public function saveShopSettings($aParams)
     {
-        /** @var oxSetupUtils $oUtils */
+        /** @var Utils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
-        /** @var oxSetupSession $oSession */
+        /** @var Session $oSession */
         $oSession = $this->getInstance("oxSetupSession");
 
         $oConfk = new Conf();
@@ -1116,7 +1116,7 @@ class OxSetupDb extends oxSetupCore
     public function convertConfigTableToUtf()
     {
         $oConfk = new Conf();
-        /** @var oxSetupUtils $oUtils */
+        /** @var Utils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
 
         $pdo = $this->getConnection();
@@ -1240,7 +1240,7 @@ class OxSetupDb extends oxSetupCore
      */
     public function writeAdminLoginData($sLoginName, $sPassword)
     {
-        $sPassSalt = $this->getInstance("OxSetupUtils")->generateUID();
+        $sPassSalt = $this->getInstance("Utils")->generateUID();
 
         $sPassword = hash('sha512', $sPassword . $sPassSalt);
 
@@ -1254,11 +1254,11 @@ class OxSetupDb extends oxSetupCore
     /**
      * Adds config value if shop info should be set.
      *
-     * @param oxSetupUtils   $oUtils      Setup utilities
+     * @param Utils   $oUtils      Setup utilities
      * @param string         $sBaseShopId Shop id
      * @param array          $aParams     Parameters
      * @param Conf           $oConfk      Config key loader
-     * @param oxSetupSession $oSession    Setup session manager
+     * @param Session $oSession    Setup session manager
      */
     private function _addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession)
     {
@@ -1275,7 +1275,7 @@ class OxSetupDb extends oxSetupCore
 /**
  * Setup utilities class
  */
-class OxSetupUtils extends oxSetupCore
+class Utils extends Core
 {
 
     /**
@@ -1525,7 +1525,7 @@ class OxSetupUtils extends oxSetupCore
 
         clearstatcache();
         if (!file_exists($sHtaccessPath)) {
-            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_FIND_FILE'), $sHtaccessPath), OxSetupUtils::ERROR_COULD_NOT_FIND_FILE);
+            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_FIND_FILE'), $sHtaccessPath), Utils::ERROR_COULD_NOT_FIND_FILE);
         }
 
         @chmod($sHtaccessPath, getDefaultFileMode());
@@ -1533,7 +1533,7 @@ class OxSetupUtils extends oxSetupCore
             $sHtaccessFile = fread($fp, filesize($sHtaccessPath));
             fclose($fp);
         } else {
-            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_READ_FILE'), $sHtaccessPath), OxSetupUtils::ERROR_COULD_NOT_READ_FILE);
+            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_READ_FILE'), $sHtaccessPath), Utils::ERROR_COULD_NOT_READ_FILE);
         }
 
         // overwriting settings
@@ -1543,7 +1543,7 @@ class OxSetupUtils extends oxSetupCore
             fclose($fp);
         } else {
             // error ? strange !?
-            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_WRITE_TO_FILE'), $sHtaccessPath), OxSetupUtils::ERROR_COULD_NOT_WRITE_TO_FILE);
+            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_WRITE_TO_FILE'), $sHtaccessPath), Utils::ERROR_COULD_NOT_WRITE_TO_FILE);
         }
     }
 
@@ -1684,7 +1684,7 @@ class OxSetupUtils extends oxSetupCore
 /**
  * Setup view class
  */
-class oxSetupView extends oxSetupCore
+class view extends Core
 {
 
     /**
@@ -1889,7 +1889,7 @@ class oxSetupView extends oxSetupCore
     {
         //finalizing installation
         $blDeleted = true;
-        $oSession = $this->getInstance("OxSetupSession");
+        $oSession = $this->getInstance("Session");
         $oUtils = $this->getInstance("oxSetupUtils");
         $sPath = getInstallPath();
 
@@ -1931,18 +1931,18 @@ class oxSetupView extends oxSetupCore
 /**
  * Class holds scripts (controllers) needed to perform shop setup steps
  */
-class oxSetupController extends oxSetupCore
+class controller extends Core
 {
 
     /**
      * Returns view object
      *
-     * @return oxSetupView
+     * @return view
      */
     public function getView()
     {
         if ($this->_oView == null) {
-            $this->_oView = new oxSetupView();
+            $this->_oView = new view();
         }
 
         return $this->_oView;
@@ -2144,12 +2144,12 @@ class oxSetupController extends oxSetupCore
             $oDb = $this->getInstance("oxSetupDb");
             $oDb->openDatabase($aDB);
         } catch (Exception $oExcp) {
-            if ($oExcp->getCode() === oxSetupDb::ERROR_DB_CONNECT) {
+            if ($oExcp->getCode() === Database::ERROR_DB_CONNECT) {
                 $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
                 $oView->setMessage($oLang->getText('ERROR_DB_CONNECT') . " - " . $oExcp->getMessage());
 
                 return "default.php";
-            } elseif ($oExcp->getCode() === oxSetupDb::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS) {
+            } elseif ($oExcp->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS) {
                 $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
                 $oView->setMessage($oExcp->getMessage());
 
@@ -2181,7 +2181,7 @@ class oxSetupController extends oxSetupCore
      */
     public function dbCreate()
     {
-        /** @var oxSetup $oSetup */
+        /** @var Setup $oSetup */
         $oSetup = $this->getInstance("oxSetup");
         $oSession = $this->getInstance("oxSetupSession");
         $oLang = $this->getInstance("oxSetupLang");
@@ -2296,13 +2296,13 @@ class oxSetupController extends oxSetupCore
     {
         $oView = $this->getView();
 
-        /** @var oxSetup $oSetup */
+        /** @var Setup $oSetup */
         $oSetup = $this->getInstance("oxSetup");
-        /** @var oxSetupSession $oSession */
+        /** @var Session $oSession */
         $oSession = $this->getInstance("oxSetupSession");
-        /** @var oxSetupLang $oLang */
+        /** @var Lang $oLang */
         $oLang = $this->getInstance("oxSetupLang");
-        /** @var oxSetupUtils $oUtils */
+        /** @var Utils $oUtils */
         $oUtils = $this->getInstance("oxSetupUtils");
 
         $oView->setTitle('STEP_4_1_TITLE');
@@ -2436,7 +2436,7 @@ class oxSetupController extends oxSetupCore
 /**
  * Chooses and executes controller action which must be executec to render expected view
  */
-class oxSetupDispatcher extends oxSetupCore
+class dispatcher extends Core
 {
 
     /**
@@ -2448,7 +2448,7 @@ class oxSetupDispatcher extends oxSetupCore
         $sAction = $this->_chooseCurrentAction();
 
         // executing action which returns name of template to render
-        $oController = $this->getInstance("oxSetupController");
+        $oController = $this->getInstance("controller");
 
         // displaying output
         $oController->getView()->display($oController->$sAction());
@@ -2480,7 +2480,7 @@ class oxSetupDispatcher extends oxSetupCore
 /**
  * APS setup class
  */
-class oxSetupAps extends oxSetupCore
+class aps extends Core
 {
 
     /**
@@ -2511,7 +2511,7 @@ class oxSetupAps extends oxSetupCore
                 $this->upgrade();
                 break;
             default:
-                throw new Exception("Error: unknown command $sCommand.\n", oxSetupAps::ERROR_UNKNOWN_COMMAND);
+                throw new Exception("Error: unknown command $sCommand.\n", aps::ERROR_UNKNOWN_COMMAND);
                 break;
         }
     }

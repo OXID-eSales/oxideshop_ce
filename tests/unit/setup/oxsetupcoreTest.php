@@ -35,7 +35,7 @@ class Unit_Setup_oxSetupCoreTest extends OxidTestCase
      */
     public function testGetInstance()
     {
-        $oSetupCore = oxNew('oxSetupCore');
-        $this->assertTrue($oSetupCore->getInstance("oxSetupCore") instanceof oxSetupCore);
+        $oSetupCore = oxNew('Core');
+        $this->assertTrue($oSetupCore->getInstance("Core") instanceof Core);
     }
 }

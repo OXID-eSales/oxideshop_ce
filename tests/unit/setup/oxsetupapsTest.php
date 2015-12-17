@@ -23,19 +23,19 @@
 require_once getShopBasePath() . '/Setup/oxsetup.php';
 
 /**
- * oxSetupAps tests
+ * aps tests
  */
 class Unit_Setup_oxSetupApsTest extends OxidTestCase
 {
 
     /**
-     * Testing oxSetupAps::execute()
+     * Testing aps::execute()
      *
      * @return null
      */
     public function testExecute()
     {
-        $oSetupAps = $this->getMock("oxSetupAps", array("install", "remove", "configure", "upgrade"));
+        $oSetupAps = $this->getMock("aps", array("install", "remove", "configure", "upgrade"));
         $oSetupAps->expects($this->once())->method("install");
         $oSetupAps->expects($this->once())->method("remove");
         $oSetupAps->expects($this->once())->method("configure");
@@ -55,7 +55,7 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupAps::install()
+     * Testing aps::install()
      *
      * @return null
      */
@@ -104,7 +104,7 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
 
         $iAt = 0;
 
-        $oSetupAps = $this->getMock("oxSetupAps", array("getInstance"));
+        $oSetupAps = $this->getMock("aps", array("getInstance"));
         $oSetupAps->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupUtils"))->will($this->returnValue($oUtils));
         $oSetupAps->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupDb"))->will($this->returnValue($oDb));
 
@@ -115,7 +115,7 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupAps::remove()
+     * Testing aps::remove()
      *
      * @return null
      */
@@ -126,13 +126,13 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
         $oUtils->expects($this->at($iAt++))->method("removeDir");
 
         $iAt = 0;
-        $oSetupAps = $this->getMock("oxSetupAps", array("getInstance"));
+        $oSetupAps = $this->getMock("aps", array("getInstance"));
         $oSetupAps->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupUtils"))->will($this->returnValue($oUtils));
         $oSetupAps->remove();
     }
 
     /**
-     * Testing oxSetupAps::configure()
+     * Testing aps::configure()
      *
      * @return null
      */
@@ -158,7 +158,7 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
         $oSetup->expects($this->once())->method("getShopId");
 
         $iAt = 0;
-        $oSetupAps = $this->getMock("oxSetupAps", array("getInstance"));
+        $oSetupAps = $this->getMock("aps", array("getInstance"));
         $oSetupAps->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupUtils"))->will($this->returnValue($oUtils));
         $oSetupAps->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetupDb"))->will($this->returnValue($oDb));
         $oSetupAps->expects($this->at($iAt++))->method("getInstance")->with($this->equalTo("oxSetup"))->will($this->returnValue($oSetup));
@@ -166,14 +166,14 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupAps::upgrade()
+     * Testing aps::upgrade()
      *
      * @return null
      */
     public function testUpgrade()
     {
         // currently it does nothing
-        $oSetupAps = oxNew('oxSetupAps');
+        $oSetupAps = oxNew('aps');
         $this->assertNull($oSetupAps->upgrade());
     }
 }

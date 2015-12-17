@@ -35,7 +35,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
      */
     public function testSetTitleAndGetTitle()
     {
-        $oSetup = oxNew('OxSetup');
+        $oSetup = oxNew('Setup');
         $oSetup->setTitle("testTitle");
         $this->assertEquals("testTitle", $oSetup->getTitle());
     }
@@ -47,7 +47,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
      */
     public function testSetMessageAndGetMessage()
     {
-        $oSetup = oxNew('OxSetup');
+        $oSetup = oxNew('Setup');
         $oSetup->setMessage("testTMessage");
         $this->assertEquals("testTMessage", $oSetup->getMessage());
     }
@@ -75,7 +75,7 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
      */
     public function testSetNextStepAndGetNextStep()
     {
-        $oSetup = oxNew('OxSetup');
+        $oSetup = oxNew('Setup');
         $oSetup->setNextStep("testStep");
         $this->assertEquals("testStep", $oSetup->getNextStep());
     }

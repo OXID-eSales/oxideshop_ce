@@ -44,7 +44,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testExecSqlBadConnection()
     {
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("getConnection"));
         $database->expects($this->any())->method("getConnection")->will($this->throwException(new Exception('Test')));
 
@@ -57,7 +57,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testExecSql()
     {
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("getConnection"));
         $database->expects($this->once())->method("getConnection")->will($this->returnValue($this->createConnection()));
 
@@ -77,7 +77,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $language = $this->getMock("oxSetupLang", array("getText"));
         $language->expects($this->once())->method("getText");
 
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("getInstance"));
 
         $at = 0;
@@ -93,7 +93,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testQueryFile()
     {
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("getDatabaseVersion", "parseQuery", "execSql"));
 
         $at = 0;
@@ -115,7 +115,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $versionInfo = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll("SHOW VARIABLES LIKE 'version'");
         $version = $versionInfo[0]["Value"];
 
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("getConnection"));
         $database->expects($this->once())->method("getConnection")->will($this->returnValue($this->createConnection()));
         $this->assertEquals($version, $database->getDatabaseVersion());
@@ -126,7 +126,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testGetConnection()
     {
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("openDatabase"));
         $database->expects($this->once())->method("openDatabase")->will($this->returnValue("testConnection"));
 
@@ -144,7 +144,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
 
         $sessionMock = $this->getMockBuilder("oxSetupSession")->disableOriginalConstructor()->getMock();
 
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("getInstance"));
         $database->expects($this->any())->method("getInstance")->will($this->returnValue($sessionMock));
 
@@ -187,7 +187,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $this->setExpectedException('Exception');
 
         $sessionMock = $this->getMockBuilder("oxSetupSession")->disableOriginalConstructor()->getMock();
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("getDatabaseVersion", 'getInstance'));
         $database->expects($this->once())->method("getDatabaseVersion")->will($this->returnValue(4));
         $database->expects($this->any())->method("getInstance")->will($this->returnValue($sessionMock));
@@ -205,7 +205,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $parameters['dbPwd'] = $config->getConfigParam('dbPwd');
         $parameters['dbName'] = $config->getConfigParam('dbName');
 
-        $database = new oxSetupDb();
+        $database = new Database();
         $this->assertTrue((bool) $database->openDatabase($parameters));
     }
 
@@ -221,7 +221,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $oLang = $this->getMock("oxSetupLang", array("getText"));
         $oLang->expects($this->once())->method("getText")->with($this->equalTo("ERROR_COULD_NOT_CREATE_DB"));
 
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("execSql", "getInstance"));
         $database->expects($this->at(0))->method("execSql")->will($this->throwException(new Exception()));
         $database->expects($this->at(1))->method("getInstance")->with($this->equalTo("oxSetup"))->will($this->returnValue($oSetup));
@@ -258,7 +258,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $setup = $this->getMock("oxSetup", array("getShopId"));
         $setup->expects($this->any())->method("getShopId");
 
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("execSql", "getInstance", "getConnection"));
         $map = array(
             array('oxSetupUtils', $utils),
@@ -277,7 +277,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
     public function testSetMySqlCollationUtfMode()
     {
         $connection = $this->createConnectionMock();
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array('getConnection'));
         $database->expects($this->any())->method('getConnection')->will($this->returnValue($connection));
         $database->setMySqlCollation(1);
@@ -300,7 +300,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
     public function testSetMySqlCollation()
     {
         $connection = $this->createConnectionMock();
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("getConnection"));
         $database->expects($this->any())->method("getConnection")->will($this->returnValue($connection));
         $database->setMySqlCollation(0);
@@ -324,7 +324,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $query = "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue) values('iSetUtfMode', 'testShopId', 'iSetUtfMode', 'str', ENCODE( '1', '" . $configKey->sConfigKey . "') )";
 
         $at = 0;
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("getInstance", "execSql"));
         $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("oxSetup"))->will($this->returnValue($setup));
         $database->expects($this->at($at++))->method("execSql")->with($this->equalTo($query));
@@ -344,9 +344,9 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $oUtils->expects($this->once())->method("generateUID")->will($this->returnValue($passwordSalt));
 
         $at = 0;
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("getInstance", "execSql"));
-        $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("OxSetupUtils"))->will($this->returnValue($oUtils));
+        $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Utils"))->will($this->returnValue($oUtils));
         $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("update oxuser set oxusername='{$loginName}', oxpassword='" . hash('sha512', $password . $passwordSalt) . "', oxpasssalt='{$passwordSalt}' where oxid='oxdefaultadmin'"));
         $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("update oxnewssubscribed set oxemail='{$loginName}' where oxuserid='oxdefaultadmin'"));
         $database->writeAdminLoginData($loginName, $password);
@@ -363,7 +363,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $utils = $this->getMock("oxSetupUtils", array("convertToUtf8"));
         $utils->expects($this->exactly((int) $configRecordsCount))->method("convertToUtf8")->will($this->returnValue('testValue'));
 
-        /** @var oxSetupDb|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
         $database = $this->getMock("oxSetupDb", array("getInstance", "execSql", "getConnection"));
         $database->expects($this->once())->method("getInstance")->with($this->equalTo("oxSetupUtils"))->will($this->returnValue($utils));
         $database->expects($this->exactly(1))->method("getConnection")->will($this->returnValue($connection));

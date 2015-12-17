@@ -22,6 +22,8 @@
 
 namespace OxidEsales\Eshop\Setup;
 
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+
 /**
  * Setup language manager class
  */
@@ -39,19 +41,19 @@ class Language extends Core
      *
      * @return striong
      */
-    public function getSetupLang()
+    public function getLanguage()
     {
-        $oSession = $this->getInstance("oxSetupSession");
-        $oUtils = $this->getInstance("oxSetupUtils");
+        $oSession = $this->getInstance("Session");
+        $oUtils = $this->getInstance("Utilities");
 
-        $iSetupLang = $oUtils->getRequestVar("setup_lang", "post");
+        $iLanguage = $oUtils->getRequestVar("setup_lang", "post");
 
-        if (isset($iSetupLang)) {
-            $oSession->setSessionParam('setup_lang', $iSetupLang);
-            $iSetupLangSubmit = $oUtils->getRequestVar("setup_lang_submit", "post");
-            if (isset($iSetupLangSubmit)) {
+        if (isset($iLanguage)) {
+            $oSession->setSessionParam('setup_lang', $iLanguage);
+            $iLanguageSubmit = $oUtils->getRequestVar("setup_lang_submit", "post");
+            if (isset($iLanguageSubmit)) {
                 //updating setup language, so disabling redirect to next step, just reloading same step
-                $_GET['istep'] = $_POST['istep'] = $this->getInstance("oxSetup")->getStep('STEP_WELCOME');
+                $_GET['istep'] = $_POST['istep'] = $this->getInstance("Setup")->getStep('STEP_WELCOME');
             }
         } elseif ($oSession->getSessionParam('setup_lang') === null) {
             $aLangs = array('en', 'de');
@@ -74,7 +76,7 @@ class Language extends Core
     {
         if ($this->_aLangData === null) {
             $this->_aLangData = array();
-            $sLangFilePath = getInstallPath() . EditionPathProvider::SETUP_DIRECTORY . '/' . ucfirst($this->getSetupLang()) . '/lang.php';
+            $sLangFilePath = getInstallPath() . EditionPathProvider::SETUP_DIRECTORY . '/' . ucfirst($this->getLanguage()) . '/lang.php';
             if (file_exists($sLangFilePath) && is_readable($sLangFilePath)) {
                 include $sLangFilePath;
                 $this->_aLangData = $aLang;

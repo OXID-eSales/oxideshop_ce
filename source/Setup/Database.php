@@ -22,6 +22,12 @@
 
 namespace OxidEsales\Eshop\Setup;
 
+use Conf;
+use Exception;
+use PDO;
+use PDOException;
+use PDOStatement;
+
 /**
  * Setup database manager class
  */
@@ -87,7 +93,7 @@ class Database extends Core
 
         } catch (PDOException $e) {
             throw new Exception(
-                $this->getInstance("oxSetupLang")->getText('ERROR_BAD_SQL') . "( $sQ ): {$e->getMessage()}\n"
+                $this->getInstance("Language")->getText('ERROR_BAD_SQL') . "( $sQ ): {$e->getMessage()}\n"
             );
         }
     }
@@ -106,7 +112,7 @@ class Database extends Core
             $oPdo->exec($sQ);
         } catch (PDOException $e) {
             throw new Exception(
-                $this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_CREATE') . " {$e->getMessage()}\n"
+                $this->getInstance("Language")->getText('ERROR_VIEWS_CANT_CREATE') . " {$e->getMessage()}\n"
             );
         }
 
@@ -116,7 +122,7 @@ class Database extends Core
             $oPdo->query($sQ)->closeCursor();
         } catch (PDOException $e) {
             throw new Exception(
-                $this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_SELECT') . " {$e->getMessage()}\n"
+                $this->getInstance("Language")->getText('ERROR_VIEWS_CANT_SELECT') . " {$e->getMessage()}\n"
             );
         }
 
@@ -126,7 +132,7 @@ class Database extends Core
             $oPdo->exec($sQ);
         } catch (PDOException $e) {
             throw new Exception(
-                $this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_DROP') . " {$e->getMessage()}\n"
+                $this->getInstance("Language")->getText('ERROR_VIEWS_CANT_DROP') . " {$e->getMessage()}\n"
             );
         }
     }
@@ -140,10 +146,10 @@ class Database extends Core
     {
         $fp = @fopen($sFilename, "r");
         if (!$fp) {
-            $oSetup = $this->getInstance("oxSetup");
+            $oSetup = $this->getInstance("Setup");
             // problems with file
             $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-            throw new Exception(sprintf($this->getInstance("oxSetupLang")->getText('ERROR_OPENING_SQL_FILE'), $sFilename), Database::ERROR_OPENING_SQL_FILE);
+            throw new Exception(sprintf($this->getInstance("Language")->getText('ERROR_OPENING_SQL_FILE'), $sFilename), Database::ERROR_OPENING_SQL_FILE);
         }
 
         $sQuery = fread($fp, filesize($sFilename));
@@ -197,7 +203,7 @@ class Database extends Core
      */
     public function openDatabase($aParams)
     {
-        $aParams = (is_array($aParams) && count($aParams)) ? $aParams : $this->getInstance("oxSetupSession")->getSessionParam('aDB');
+        $aParams = (is_array($aParams) && count($aParams)) ? $aParams : $this->getInstance("Session")->getSessionParam('aDB');
         if ($this->_oConn === null) {
             // ok open DB
             try {
@@ -212,20 +218,20 @@ class Database extends Core
                 $this->_oConn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 /** @var Setup $oSetup */
-                $oSetup = $this->getInstance("oxSetup");
+                $oSetup = $this->getInstance("Setup");
                 $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_DB_CONNECT') . " - " . $e->getMessage(), Database::ERROR_DB_CONNECT, $e);
+                throw new Exception($this->getInstance("Language")->getText('ERROR_DB_CONNECT') . " - " . $e->getMessage(), Database::ERROR_DB_CONNECT, $e);
             }
 
             // testing version
             $oSysReq = getSystemReqCheck();
             if (!$oSysReq->checkMysqlVersion($this->getDatabaseVersion())) {
-                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS'), Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS);
+                throw new Exception($this->getInstance("Language")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS'), Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS);
             }
             try {
                 $this->_oConn->exec("USE `{$aParams['dbName']}`");
             } catch (Exception $e) {
-                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), Database::ERROR_COULD_NOT_CREATE_DB, $e);
+                throw new Exception($this->getInstance("Language")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), Database::ERROR_COULD_NOT_CREATE_DB, $e);
             }
         }
 
@@ -244,9 +250,9 @@ class Database extends Core
         try {
             $this->execSql("CREATE DATABASE `$sDbName`");
         } catch (Exception $e) {
-            $oSetup = $this->getInstance("oxSetup");
+            $oSetup = $this->getInstance("Setup");
             $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-            throw new Exception(sprintf($this->getInstance("oxSetupLang")->getText('ERROR_COULD_NOT_CREATE_DB'), $sDbName) . " - " . $e->getMessage(), $e->getCode(), $e);
+            throw new Exception(sprintf($this->getInstance("Language")->getText('ERROR_COULD_NOT_CREATE_DB'), $sDbName) . " - " . $e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -258,9 +264,9 @@ class Database extends Core
     public function saveShopSettings($aParams)
     {
         /** @var Utils $oUtils */
-        $oUtils = $this->getInstance("oxSetupUtils");
+        $oUtils = $this->getInstance("Utilities");
         /** @var Session $oSession */
-        $oSession = $this->getInstance("oxSetupSession");
+        $oSession = $this->getInstance("Session");
 
         $oConfk = new Conf();
 
@@ -276,7 +282,7 @@ class Database extends Core
         $blCheckForUpdates = isset($aParams["check_for_updates"]) ? $aParams["check_for_updates"] : $oSession->getSessionParam('check_for_updates');
         $sCountryLang = isset($aParams["country_lang"]) ? $aParams["country_lang"] : $oSession->getSessionParam('country_lang');
         $sShopLang = isset($aParams["sShopLang"]) ? $aParams["sShopLang"] : $oSession->getSessionParam('sShopLang');
-        $sBaseShopId = $this->getInstance("oxSetup")->getShopId();
+        $sBaseShopId = $this->getInstance("Setup")->getShopId();
 
         $oPdo->exec("update oxcountry set oxactive = '0'");
         $oPdo->exec("update oxcountry set oxactive = '1' where oxid = '$sCountryLang'");
@@ -360,7 +366,7 @@ class Database extends Core
     {
         $oConfk = new Conf();
         /** @var Utils $oUtils */
-        $oUtils = $this->getInstance("oxSetupUtils");
+        $oUtils = $this->getInstance("Utilities");
 
         $pdo = $this->getConnection();
 
@@ -468,7 +474,7 @@ class Database extends Core
      */
     public function writeUtfMode($iUtfMode)
     {
-        $sBaseShopId = $this->getInstance("oxSetup")->getShopId();
+        $sBaseShopId = $this->getInstance("Setup")->getShopId();
         $oConfk = new Conf();
         $sQ = "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue) values('iSetUtfMode', '$sBaseShopId', 'iSetUtfMode', 'str', ENCODE( '{$iUtfMode}', '" . $oConfk->sConfigKey . "') )";
 

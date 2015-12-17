@@ -22,6 +22,9 @@
 
 namespace OxidEsales\Eshop\Setup;
 
+use Exception;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+
 /**
  * Setup utilities class
  */
@@ -219,7 +222,7 @@ class Utilities extends Core
     {
         $sConfPath = $aParams['sShopDir'] . "/config.inc.php";
 
-        $oLang = $this->getInstance("oxSetupLang");
+        $oLang = $this->getInstance("Language");
 
         clearstatcache();
         @chmod($sConfPath, getDefaultFileMode());
@@ -256,7 +259,7 @@ class Utilities extends Core
      */
     public function updateHtaccessFile($aParams, $sSubFolder = "")
     {
-        $oLang = $this->getInstance("oxSetupLang");
+        $oLang = $this->getInstance("Language");
 
         // preparing rewrite base param
         if (!isset($aParams["sBaseUrlPath"]) || !$aParams["sBaseUrlPath"]) {

@@ -22,12 +22,13 @@
 
 namespace OxidEsales\Eshop\Setup;
 
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+
 /**
- * Setup view class
+ * Setup View class
  */
 class View extends Core
 {
-
     /**
      * View title
      *
@@ -117,7 +118,7 @@ class View extends Core
      */
     public function getText($sTextId, $blPrint = true)
     {
-        $sText = $this->getInstance("oxSetupLang")->getText($sTextId);
+        $sText = $this->getInstance("Language")->getText($sTextId);
 
         return $blPrint ? print($sText) : $sText;
     }
@@ -131,7 +132,7 @@ class View extends Core
      */
     public function getSid($blPrint = true)
     {
-        $sSid = $this->getInstance("oxSetupSession")->getSid();
+        $sSid = $this->getInstance("Session")->getSid();
 
         return $blPrint ? print($sSid) : $sSid;
     }
@@ -174,7 +175,7 @@ class View extends Core
      */
     public function getSetupStep($sStepId, $blPrint = true)
     {
-        $sStep = $this->getInstance("oxSetup")->getStep($sStepId);
+        $sStep = $this->getInstance("Setup")->getStep($sStepId);
 
         return $blPrint ? print($sStep) : $sStep;
     }
@@ -186,7 +187,7 @@ class View extends Core
      */
     public function getNextSetupStep()
     {
-        return $this->getInstance("oxSetup")->getNextStep();
+        return $this->getInstance("Setup")->getNextStep();
     }
 
     /**
@@ -196,7 +197,7 @@ class View extends Core
      */
     public function getCurrentSetupStep()
     {
-        return $this->getInstance("oxSetup")->getCurrentStep();
+        return $this->getInstance("Setup")->getCurrentStep();
     }
 
     /**
@@ -206,7 +207,7 @@ class View extends Core
      */
     public function getSetupSteps()
     {
-        return $this->getInstance("oxSetup")->getSteps();
+        return $this->getInstance("Setup")->getSteps();
     }
 
     /**
@@ -231,7 +232,7 @@ class View extends Core
         //finalizing installation
         $blDeleted = true;
         $oSession = $this->getInstance("Session");
-        $oUtils = $this->getInstance("oxSetupUtils");
+        $oUtils = $this->getInstance("Utilities");
         $sPath = getInstallPath();
 
         $aDemoConfig = $oSession->getSessionParam("aDB");

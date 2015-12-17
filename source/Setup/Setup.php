@@ -22,12 +22,13 @@
 
 namespace OxidEsales\Eshop\Setup;
 
+use Exception;
+
 /**
  * Setup manager class
  */
 class Setup extends Core
 {
-
     /**
      * Current setup step title
      *
@@ -115,7 +116,7 @@ class Setup extends Core
     public function getCurrentStep()
     {
         if ($this->_iCurrStep === null) {
-            if (($this->_iCurrStep = $this->getInstance("oxSetupUtils")->getRequestVar("istep")) === null) {
+            if (($this->_iCurrStep = $this->getInstance("Utilities")->getRequestVar("istep")) === null) {
                 $this->_iCurrStep = $this->getStep('STEP_SYSTEMREQ');
             }
             $this->_iCurrStep = (int) $this->_iCurrStep;

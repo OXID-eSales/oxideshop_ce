@@ -29,7 +29,6 @@ use oxSystemComponentException;
  */
 class Core
 {
-
     /**
      * Keeps instance cache
      *
@@ -46,7 +45,9 @@ class Core
      */
     public function getInstance($sInstanceName)
     {
-        $sInstanceName = strtolower($sInstanceName);
+        if (strpos($sInstanceName, '\\') === false) {
+            $sInstanceName = __NAMESPACE__ . '\\' . $sInstanceName;
+        }
         if (!isset(Core::$_aInstances[$sInstanceName])) {
             Core::$_aInstances[$sInstanceName] = new $sInstanceName();
         }

@@ -72,16 +72,10 @@ if (!function_exists('getSystemReqCheck')) {
     {
         $basePath = defined('OXID_PHP_UNIT') ? getShopBasePath() : getInstallPath();
 
-        include_once $basePath . '/Core/Edition/EditionSelector.php';
-
         $editionSelector = new EditionSelector();
-        include_once $basePath . '/Core/SystemRequirements.php';
         if ($editionSelector->getEdition() === 'EE') {
-            include_once $basePath . '/Edition/Professional/Core/SystemRequirements.php';
-            include_once $basePath . '/Edition/Enterprise/Core/SystemRequirements.php';
             $systemRequirements = new \OxidEsales\EshopEnterprise\Core\SystemRequirements;
         } elseif ($editionSelector->getEdition() === 'PE') {
-            include_once $basePath . '/Edition/Professional/Core/SystemRequirements.php';
             $systemRequirements = new OxidEsales\EshopProfessional\Core\SystemRequirements;
         } else {
             $systemRequirements = new OxidEsales\Eshop\Core\SystemRequirements;
@@ -172,10 +166,6 @@ if (!function_exists('getDefaultConfigFileMode')) {
         return 0444;
     }
 }
-
-require_once getShopBasePath() . '/Core/Edition/EditionSelector.php';
-require_once getShopBasePath() . '/Core/Edition/EditionRootPathProvider.php';
-require_once getShopBasePath() . '/Core/Edition/EditionPathProvider.php';
 
 
 if (!class_exists("Config")) {

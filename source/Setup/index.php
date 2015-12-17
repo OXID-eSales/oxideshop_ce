@@ -29,9 +29,12 @@ ini_set('session.use_cookies', 0);
 ini_set('session.use_trans_sid', 0);
 ini_set('url_rewriter.tags', '');
 
-/**
- * Includes core setup file
- */
+use OxidEsales\Eshop\Setup\Dispatcher;
+
 require_once '../vendor/autoload.php';
-$oDispatcher = new dispatcher();
+require_once 'functions.php';
+require_once '../Core/exception/oxexception.php';
+require_once '../Core/exception/oxsystemcomponentexception.php';
+
+$oDispatcher = new Dispatcher();
 $oDispatcher->run();

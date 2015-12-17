@@ -36,11 +36,11 @@ require "_header.php"; ?>
                         <option value=""><?php $this->getText('SELECT_PLEASE_CHOOSE'); ?></option>
                         <?php
                         $aLocations   = $this->getViewParam( "aLocations" );
-                        $sSetupLang   = $this->getViewParam( "sSetupLang" );
+                        $sLanguage   = $this->getViewParam( "sLanguage" );
                         $sLocationLang = $this->getViewParam( "sLocationLang" );
 
-                        if ( isset( $aLocations[$sSetupLang] ) ) {
-                            foreach ( $aLocations[$sSetupLang] as $sKey => $sValue ) {
+                        if ( isset( $aLocations[$sLanguage] ) ) {
+                            foreach ( $aLocations[$sLanguage] as $sKey => $sValue ) {
                                 $sSelected = ( $sLocationLang !== null && $sLocationLang == $sKey ) ? 'selected' : '';
                                 ?><option value="<?php echo $sKey; ?>" <?php echo $sSelected; ?>><?php echo $sValue; ?></option><?php
                             }
@@ -65,7 +65,7 @@ require "_header.php"; ?>
                 <input type="checkbox" id="use_dynamic_pages_ckbox" value="true" name="use_dynamic_pages" valign="" style="vertical-align:middle; width:20px; height:22px;<?php  if ( $sLocationLang === null ) echo " display: none;"?>" >
           </td>
           <td id="use_dynamic_pages_desc" style="<?php  if ( $sLocationLang === null ) echo "display: none;"?>">
-                <?php $this->getText('USE_DYNAMIC_PAGES'); ?><a href="<?php echo $sSetupLang; ?>/dyn_content_notice.php" onClick="showPopUp('<?php echo $sSetupLang; ?>/dyn_content_notice.php', 400, 200, 1); return false;" target="_blank"><u><?php $this->getText('PRIVACY_POLICY'); ?></u></a>.
+                <?php $this->getText('USE_DYNAMIC_PAGES'); ?><a href="<?php echo $sLanguage; ?>/dyn_content_notice.php" onClick="showPopUp('<?php echo $sLanguage; ?>/dyn_content_notice.php', 400, 200, 1); return false;" target="_blank"><u><?php $this->getText('PRIVACY_POLICY'); ?></u></a>.
           </td>
             </tr>
           </table>
@@ -80,11 +80,11 @@ require "_header.php"; ?>
                         <select name="country_lang" style="font-size: 11px;">
                             <?php
                                 $aCountries   = $this->getViewParam( "aCountries" );
-                                $sSetupLang   = $this->getViewParam( "sSetupLang" );
+                                $sLanguage   = $this->getViewParam( "sLanguage" );
                                 $sCountryLang = $this->getViewParam( "sCountryLang" );
 
-                                if ( isset( $aCountries[$sSetupLang] ) ) {
-                                    foreach ( $aCountries[$sSetupLang] as $sKey => $sValue ) {
+                                if ( isset( $aCountries[$sLanguage] ) ) {
+                                    foreach ( $aCountries[$sLanguage] as $sKey => $sValue ) {
                                         $sSelected = ( $sCountryLang !== null && $sCountryLang == $sKey ) ? 'selected' : '';
                                         ?><option value="<?php echo $sKey; ?>" <?php echo $sSelected; ?>><?php echo $sValue; ?></option><?php
                                     }

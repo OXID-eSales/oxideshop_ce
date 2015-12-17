@@ -25,7 +25,7 @@ namespace OxidEsales\Eshop\Setup;
 /**
  * Chooses and executes controller action which must be executec to render expected view
  */
-class Dispatcher extends \Core
+class Dispatcher extends Core
 {
 
     /**
@@ -37,7 +37,8 @@ class Dispatcher extends \Core
         $sAction = $this->_chooseCurrentAction();
 
         // executing action which returns name of template to render
-        $oController = $this->getInstance("controller");
+        /** @var Controller $oController */
+        $oController = $this->getInstance("Controller");
 
         // displaying output
         $oController->getView()->display($oController->$sAction());
@@ -50,6 +51,7 @@ class Dispatcher extends \Core
      */
     protected function _chooseCurrentAction()
     {
+        /** @var Setup $oSetup */
         $oSetup = $this->getInstance("Setup");
         $iCurrStep = $oSetup->getCurrentStep();
 

@@ -58,8 +58,6 @@ class Session extends Core
 
     /**
      * Initialize session class
-     *
-     * @return null
      */
     public function __construct()
     {
@@ -77,7 +75,7 @@ class Session extends Core
     {
         session_name($this->_sSessionName);
 
-        $oUtils = $this->getInstance("oxSetupUtils");
+        $oUtils = $this->getInstance("Utilities");
         $sSid = $oUtils->getRequestVar('sid', 'get');
 
         if (empty($sSid)) {
@@ -153,7 +151,7 @@ class Session extends Core
      */
     protected function _initSessionData()
     {
-        $oUtils = $this->getInstance("oxSetupUtils");
+        $oUtils = $this->getInstance("Utilities");
 
         //storring country value settings to session
         $sLocationLang = $oUtils->getRequestVar("location_lang", "post");

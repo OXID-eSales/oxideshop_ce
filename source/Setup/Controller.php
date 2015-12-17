@@ -22,21 +22,25 @@
 
 namespace OxidEsales\Eshop\Setup;
 
+use Exception;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
+
 /**
  * Class holds scripts (controllers) needed to perform shop setup steps
  */
 class Controller extends Core
 {
-
     /**
-     * Returns view object
+     * Returns View object
      *
-     * @return view
+     * @return View
      */
     public function getView()
     {
         if ($this->_oView == null) {
-            $this->_oView = new view();
+            $this->_oView = new View();
         }
 
         return $this->_oView;
@@ -50,9 +54,9 @@ class Controller extends Core
      */
     public function systemReq()
     {
-        $oSetup = $this->getInstance("oxSetup");
-        $oSetupLang = $this->getInstance("oxSetupLang");
-        $oUtils = $this->getInstance("oxSetupUtils");
+        $oSetup = $this->getInstance("Setup");
+        $oLanguage = $this->getInstance("Language");
+        $oUtils = $this->getInstance("Utilities");
         $oView = $this->getView();
 
         $blContinue = true;
@@ -73,7 +77,7 @@ class Controller extends Core
         $aInfo = $oSysReq->getSystemInfo();
         foreach ($aInfo as $sGroup => $aModules) {
             // translating
-            $sGroupName = $oSetupLang->getModuleName($sGroup);
+            $sGroupName = $oLanguage->getModuleName($sGroup);
             foreach ($aModules as $sModule => $iModuleState) {
                 // translating
                 $blContinue = $blContinue && ( bool ) abs($iModuleState);
@@ -87,7 +91,7 @@ class Controller extends Core
                 }
                 $aGroupModuleInfo[$sGroupName][] = array('module'     => $sModule,
                     'class'      => $sClass,
-                    'modulename' => $oSetupLang->getModuleName($sModule));
+                    'modulename' => $oLanguage->getModuleName($sModule));
             }
         }
 
@@ -95,7 +99,7 @@ class Controller extends Core
         $oView->setViewParam("blContinue", $blContinue);
         $oView->setViewParam("aGroupModuleInfo", $aGroupModuleInfo);
         $oView->setViewParam("aLanguages", getLanguages());
-        $oView->setViewParam("sSetupLang", $this->getInstance("oxSetupSession")->getSessionParam('setup_lang'));
+        $oView->setViewParam("sLanguage", $this->getInstance("Session")->getSessionParam('setup_lang'));
 
         return "systemreq.php";
     }
@@ -107,11 +111,11 @@ class Controller extends Core
      */
     public function welcome()
     {
-        $oSession = $this->getInstance("oxSetupSession");
+        $oSession = $this->getInstance("Session");
 
         //setting admin area default language
         $sAdminLang = $oSession->getSessionParam('setup_lang');
-        $this->getInstance("oxSetupUtils")->setCookie("oxidadminlanguage", $sAdminLang, time() + 31536000, "/");
+        $this->getInstance("Utilities")->setCookie("oxidadminlanguage", $sAdminLang, time() + 31536000, "/");
 
         $oView = $this->getView();
         $oView->setTitle('STEP_1_TITLE');
@@ -119,7 +123,7 @@ class Controller extends Core
         $oView->setViewParam("aLocations", getLocation());
         $oView->setViewParam("aLanguages", getLanguages());
         $oView->setViewParam("sShopLang", $oSession->getSessionParam('sShopLang'));
-        $oView->setViewParam("sSetupLang", $this->getInstance("oxSetupLang")->getSetupLang());
+        $oView->setViewParam("sLanguage", $this->getInstance("Language")->getLanguage());
         $oView->setViewParam("sLocationLang", $oSession->getSessionParam('location_lang'));
         $oView->setViewParam("sCountryLang", $oSession->getSessionParam('country_lang'));
 
@@ -139,9 +143,9 @@ class Controller extends Core
 
         $oView = $this->getView();
         $oView->setTitle('STEP_2_TITLE');
-        $oView->setViewParam("aLicenseText", $this->getInstance("oxSetupUtils")->getFileContents(
+        $oView->setViewParam("aLicenseText", $this->getInstance("Utilities")->getFileContents(
             $editionPathSelector->getSetupDirectory()
-            . '/'. ucfirst($this->getInstance("oxSetupLang")->getSetupLang())
+            . '/'. ucfirst($this->getInstance("Language")->getLanguage())
             . '/' . $sLicenseFile
         ));
 
@@ -156,14 +160,14 @@ class Controller extends Core
     public function dbInfo()
     {
         $oView = $this->getView();
-        $oSession = $this->getInstance("oxSetupSession");
+        $oSession = $this->getInstance("Session");
 
-        $iEula = $this->getInstance("oxSetupUtils")->getRequestVar("iEula", "post");
+        $iEula = $this->getInstance("Utilities")->getRequestVar("iEula", "post");
         $iEula = (int) ($iEula ? $iEula : $oSession->getSessionParam("eula"));
         if (!$iEula) {
-            $oSetup = $this->getInstance("oxSetup");
+            $oSetup = $this->getInstance("Setup");
             $oSetup->setNextStep($oSetup->getStep("STEP_WELCOME"));
-            $oView->setMessage($this->getInstance("oxSetupLang")->getText("ERROR_SETUP_CANCELLED"));
+            $oView->setMessage($this->getInstance("Language")->getText("ERROR_SETUP_CANCELLED"));
 
             return "licenseerror.php";
         }
@@ -195,12 +199,12 @@ class Controller extends Core
      */
     public function dirsInfo()
     {
-        $oSession = $this->getInstance("oxSetupSession");
+        $oSession = $this->getInstance("Session");
         $oView = $this->getView();
         $oView->setTitle('STEP_4_TITLE');
         $oView->setViewParam("aSetupConfig", $oSession->getSessionParam('aSetupConfig'));
         $oView->setViewParam("aAdminData", $oSession->getSessionParam('aAdminData'));
-        $oView->setViewParam("aPath", $this->getInstance("oxSetupUtils")->getDefaultPathParams());
+        $oView->setViewParam("aPath", $this->getInstance("Utilities")->getDefaultPathParams());
 
         return "dirsinfo.php";
     }
@@ -212,14 +216,14 @@ class Controller extends Core
      */
     public function dbConnect()
     {
-        $oSetup = $this->getInstance("oxSetup");
-        $oSession = $this->getInstance("oxSetupSession");
-        $oLang = $this->getInstance("oxSetupLang");
+        $oSetup = $this->getInstance("Setup");
+        $oSession = $this->getInstance("Session");
+        $oLang = $this->getInstance("Language");
 
         $oView = $this->getView();
         $oView->setTitle('STEP_3_1_TITLE');
 
-        $aDB = $this->getInstance("oxSetupUtils")->getRequestVar("aDB", "post");
+        $aDB = $this->getInstance("Utilities")->getRequestVar("aDB", "post");
         if (!isset($aDB['iUtfMode'])) {
             $aDB['iUtfMode'] = 0;
         }
@@ -235,7 +239,7 @@ class Controller extends Core
 
         try {
             // ok check DB Connection
-            $oDb = $this->getInstance("oxSetupDb");
+            $oDb = $this->getInstance("Database");
             $oDb->openDatabase($aDB);
         } catch (Exception $oExcp) {
             if ($oExcp->getCode() === Database::ERROR_DB_CONNECT) {
@@ -276,23 +280,23 @@ class Controller extends Core
     public function dbCreate()
     {
         /** @var Setup $oSetup */
-        $oSetup = $this->getInstance("oxSetup");
-        $oSession = $this->getInstance("oxSetupSession");
-        $oLang = $this->getInstance("oxSetupLang");
+        $oSetup = $this->getInstance("Setup");
+        $oSession = $this->getInstance("Session");
+        $oLang = $this->getInstance("Language");
 
         $oView = $this->getView();
         $oView->setTitle('STEP_3_2_TITLE');
 
         $aDB = $oSession->getSessionParam('aDB');
-        $blOverwrite = $this->getInstance("oxSetupUtils")->getRequestVar("ow", "get");
+        $blOverwrite = $this->getInstance("Utilities")->getRequestVar("ow", "get");
         if (!isset($blOverwrite)) {
             $blOverwrite = false;
         }
 
-        $oDb = $this->getInstance("oxSetupDb");
+        $oDb = $this->getInstance("Database");
         $oDb->openDatabase($aDB);
 
-        // testing if views can be created
+        // testing if Views can be created
         try {
             $oDb->testCreateView();
         } catch (Exception $oExcp) {
@@ -391,13 +395,13 @@ class Controller extends Core
         $oView = $this->getView();
 
         /** @var Setup $oSetup */
-        $oSetup = $this->getInstance("oxSetup");
+        $oSetup = $this->getInstance("Setup");
         /** @var Session $oSession */
-        $oSession = $this->getInstance("oxSetupSession");
+        $oSession = $this->getInstance("Session");
         /** @var Lang $oLang */
-        $oLang = $this->getInstance("oxSetupLang");
+        $oLang = $this->getInstance("Language");
         /** @var Utilities $oUtils */
-        $oUtils = $this->getInstance("oxSetupUtils");
+        $oUtils = $this->getInstance("Utilities");
 
         $oView->setTitle('STEP_4_1_TITLE');
 
@@ -458,7 +462,7 @@ class Controller extends Core
 
         try {
             // creating admin user
-            $this->getInstance("oxSetupDb")->writeAdminLoginData($aAdminData['sLoginName'], $aAdminData['sPassword']);
+            $this->getInstance("Database")->writeAdminLoginData($aAdminData['sLoginName'], $aAdminData['sPassword']);
         } catch (Exception $oExcp) {
             $oView->setMessage($oExcp->getMessage());
 
@@ -502,7 +506,7 @@ class Controller extends Core
      */
     public function finish()
     {
-        $oSession = $this->getInstance("oxSetupSession");
+        $oSession = $this->getInstance("Session");
         $aPath = $oSession->getSessionParam("aPath");
 
         $oView = $this->getView();

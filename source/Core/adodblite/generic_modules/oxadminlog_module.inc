@@ -20,19 +20,12 @@ class oxadminlog_ADOConnection extends mysql_oxadminlog_EXTENDER
             }
 
             if ($blInsert && $sSearch) {
-                $oUser = oxNew('oxUser');
-                if ($oUser->loadAdminUser()) {
-                    $sUserId = $oUser->getId();
-                } else {
-                    $sUserId = '';
-                }
 
-
-                $sQ = "insert into oxadminlog ( oxuserid, oxsql )
-                       values ( '{$sUserId}', " . $this->quote($sql) . " ) ";
+                $adminLogSqlDecorator = oxNew('OxidEsales\Eshop\Core\AdminLogSqlDecorator');
+                $adminLogSql = $adminLogSqlDecorator->prepareSqlForLogging($sql);
 
                 // write information
-                parent::Execute($sQ);
+                parent::Execute($adminLogSql);
             }
         }
         return parent::Execute($sql, $inputarr);

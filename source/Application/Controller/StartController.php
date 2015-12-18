@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+use oxUBase;
+
 /**
  * Starting shop page.
  * Shop starter, manages starting visible articles, etc.
  */
-class Start extends oxUBase
+class StartController extends oxUBase
 {
 
     /**

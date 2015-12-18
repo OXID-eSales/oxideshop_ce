@@ -20,12 +20,20 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+use oxrecommlist;
+use oxUBase;
+use oxRssFeed;
+use oxField;
+
 /**
  * Article suggestion page.
  * Collects some article base information, sets default recomendation text,
  * sends suggestion mail to user.
  */
-class RecommList extends AList
+class RecommListController extends \AList
 {
 
     /**

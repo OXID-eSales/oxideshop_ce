@@ -20,13 +20,21 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxArticle;
+use oxRegistry;
+use oxList;
+use oxBasketContentMarkGenerator;
+use oxBasket;
+
 /**
  * Current session shopping cart (basket item list).
  * Contains with user selected articles (with detail information), list of
  * similar products, top offer articles.
  * OXID eShop -> SHOPPING CART.
  */
-class Basket extends oxUBase
+class BasketController extends \oxUBase
 {
 
     /**

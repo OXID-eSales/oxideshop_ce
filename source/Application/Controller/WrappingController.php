@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -22,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxList;
+use oxRegistry;
+use oxUBase;
+
 /**
  * Managing Gift Wrapping
  */
-class Wrapping extends oxUBase
+class WrappingController extends oxUBase
 {
 
     /**

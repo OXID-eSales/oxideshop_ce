@@ -20,11 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * Comparing Products.
  * Takes a few products and show attribute values to compare them.
  */
-class Compare extends oxUBase
+class Compare extends \oxUBase
 {
 
     /**

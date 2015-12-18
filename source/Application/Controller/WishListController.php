@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+use oxUBase;
+use oxList;
+
 /**
  * The wishlist of someone else is displayed.
  */
-class Wishlist extends oxUBase
+class WishListController extends oxUBase
 {
 
     /**

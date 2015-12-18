@@ -20,11 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+use oxUBase;
+use oxSearch;
+
 /**
  * Articles searching class.
  * Performs searching through articles in database.
  */
-class Search extends oxUBase
+class SearchController extends oxUBase
 {
 
     /**

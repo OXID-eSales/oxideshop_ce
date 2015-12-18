@@ -20,11 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+use oxUBase;
+use oxBasket;
+use oxOrder;
+
 /**
  * Thankyou page.
  * Arranges Thankyou page, sets ordering status, other parameters
  */
-class Thankyou extends oxUBase
+class ThankYouController extends oxUBase
 {
 
     /**

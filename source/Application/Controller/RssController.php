@@ -20,10 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+use oxUBase;
+use oxRssFeed;
+
 /**
  * Shop RSS page.
  */
-class Rss extends oxUBase
+class RssController extends oxUBase
 {
 
     /**

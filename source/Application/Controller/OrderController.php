@@ -20,11 +20,23 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxAddress;
+use oxArticleInputException;
+use oxBasket;
+use oxBasketContentMarkGenerator;
+use oxNoArticleException;
+use oxOrder;
+use oxOutOfStockException;
+use oxRegistry;
+use oxUtilsObject;
+
 /**
  * Order manager. Arranges user ordering data, checks/validates
  * it, on success stores ordering data to DB.
  */
-class order extends oxUBase
+class OrderController extends \oxUBase
 {
 
     /**

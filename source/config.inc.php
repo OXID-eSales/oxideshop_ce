@@ -84,7 +84,6 @@
     // by default is set to convert euro sign symbol to html entity
     // $this->blSkipEuroReplace = true;
 
-
     // List of all Search-Engine Robots
     $this->aRobots = array(
                         'googlebot',
@@ -186,7 +185,6 @@
      */
     $this->blUseCron = false;
 
-
     /**
      * Do not disable module if class from extension path does not exist.
      */
@@ -201,3 +199,38 @@
      * Captcha encryption key.
      */
     $this->captchaKey = '<captchaKey>';
+
+    /**
+     * Enterprise Edition related config options.
+     * This options have no effect on Community/Professional Editions.
+     */
+
+    //Time limit in ms to be notified about slow queries
+    $this->iDebugSlowQueryTime = 20;
+
+    // enables Rights and Roles engine
+    // 0 - off,
+    // 1 - only in admin,
+    // 2 - only in shop,
+    // 3 - both
+    $this->blUseRightsRoles = 3;
+
+    //define oxarticles fields which could be edited individually in subshops
+    //do not forget to add these fields to oxfield2shop table
+    //note the field names are case sensitive here
+    $this->aMultishopArticleFields = array("OXPRICE", "OXPRICEA", "OXPRICEB", "OXPRICEC", "OXUPDATEPRICE", "OXUPDATEPRICEA", "OXUPDATEPRICEB", "OXUPDATEPRICEC", "OXUPDATEPRICETIME");
+
+    //Show "Update Views" button in admin
+    $this->blShowUpdateViews = true;
+
+    // If default 30 seconds is not enougth
+    // @set_time_limit(3000);
+
+    /**
+     * Database master-slave configuration:
+     * aSlaveHosts - array of slave hosts: array('localhost', '10.2.3.12')
+     * iMasterSlaveBalance - balance between master and slaves from 0 to 100; 0 - all select queries on slaves, 100 - all on master;
+     * To turn on balance between Master and Slave, Mater IP or host must be added to aSlaveHost array.
+     */
+    $this->aSlaveHosts = null;
+    $this->iMasterSlaveBalance = 0;

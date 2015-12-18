@@ -434,7 +434,6 @@ class oxDiscount extends oxI18n
         return oxDb::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '" . $this->getId() . "' and oxtype = 'oxcategories'");
     }
 
-
     /**
      * Checks if discount may be applied according amounts info
      *

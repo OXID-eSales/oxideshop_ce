@@ -142,7 +142,6 @@ class article_crossselling_ajax extends ajaxListComponent
             $sQ = "delete from oxobject2article where oxobject2article.oxid in (" . $sChosenArticles . ") ";
             oxDb::getDb()->Execute($sQ);
         }
-
     }
 
     /**

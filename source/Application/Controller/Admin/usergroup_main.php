@@ -84,7 +84,6 @@ class UserGroup_Main extends oxAdminDetails
      */
     public function save()
     {
-
         parent::save();
 
         $soxId = $this->getEditObjectId();

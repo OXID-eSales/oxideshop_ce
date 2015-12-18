@@ -20,14 +20,13 @@
  * @version   OXID eShop CE
  */
 
-require_once getShopBasePath() . '/Setup/oxsetup.php';
+use OxidEsales\Eshop\Setup\Core;
 
 /**
- * oxSetupCoreTest tests
+ * SetupCoreTest tests
  */
-class Unit_Setup_oxSetupCoreTest extends OxidTestCase
+class CoreTest extends OxidTestCase
 {
-
     /**
      * Test get instance.
      *
@@ -35,7 +34,7 @@ class Unit_Setup_oxSetupCoreTest extends OxidTestCase
      */
     public function testGetInstance()
     {
-        $oSetupCore = oxNew('Core');
+        $oSetupCore = new Core();
         $this->assertTrue($oSetupCore->getInstance("Core") instanceof Core);
     }
 }

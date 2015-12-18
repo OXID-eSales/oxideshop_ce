@@ -98,7 +98,7 @@ class Session extends Core
      */
     protected function _validateSession()
     {
-        if ($this->_blNewSession === true) {
+        if ($this->getIsNewSession() === true) {
             $this->setSessionParam('setup_session', true);
         } elseif ($this->getSessionParam('setup_session') !== true) {
             $sNewSid = $this->_getNewSessionID();
@@ -120,7 +120,7 @@ class Session extends Core
     protected function _getNewSessionID()
     {
         session_regenerate_id(false);
-        $this->_blNewSession = true;
+        $this->setIsNewSession(true);
 
         return session_id();
     }
@@ -198,6 +198,22 @@ class Session extends Core
     protected function &_getSessionData()
     {
         return $_SESSION;
+    }
+
+    /**
+     * @param bool $value
+     */
+    public function setIsNewSession($value)
+    {
+        $this->_blNewSession = $value;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsNewSession()
+    {
+        return $this->_blNewSession;
     }
 
     /**

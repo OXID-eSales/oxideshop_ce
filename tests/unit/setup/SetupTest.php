@@ -20,79 +20,79 @@
  * @version   OXID eShop CE
  */
 
-require_once getShopBasePath() . '/Setup/oxsetup.php';
+require_once getShopBasePath() . '/Setup/functions.php';
+use OxidEsales\Eshop\Setup\Setup;
 
 /**
- * oxSetup tests
+ * Setup tests
  */
-class Unit_Setup_oxSetupTest extends OxidTestCase
+class SetupTest extends OxidTestCase
 {
-
     /**
-     * Testing oxSetup::setTitle() and oxSetup::getTitle()
+     * Testing Setup::setTitle() and Setup::getTitle()
      *
      * @return null
      */
     public function testSetTitleAndGetTitle()
     {
-        $oSetup = oxNew('Setup');
+        $oSetup = new Setup();
         $oSetup->setTitle("testTitle");
         $this->assertEquals("testTitle", $oSetup->getTitle());
     }
 
     /**
-     * Testing oxSetup::setMessage() and oxSetup::getMessage()
+     * Testing Setup::setMessage() and Setup::getMessage()
      *
      * @return null
      */
     public function testSetMessageAndGetMessage()
     {
-        $oSetup = oxNew('Setup');
+        $oSetup = new Setup();
         $oSetup->setMessage("testTMessage");
         $this->assertEquals("testTMessage", $oSetup->getMessage());
     }
 
     /**
-     * Testing oxSetup::getCurrentStep()
+     * Testing Setup::getCurrentStep()
      *
      * @return null
      */
     public function testGetCurrentStep()
     {
-        $oUtils = $this->getMock("oxSetupUtils", array("getRequestVar"));
+        $oUtils = $this->getMock("Utilities", array("getRequestVar"));
         $oUtils->expects($this->once())->method("getRequestVar")->with($this->equalTo('istep'))->will($this->returnValue(null));
 
-        $oSetup = $this->getMock("oxSetup", array("getInstance", "getStep"));
-        $oSetup->expects($this->once())->method("getInstance")->with($this->equalTo('oxSetupUtils'))->will($this->returnValue($oUtils));
+        $oSetup = $this->getMock("OxidEsales\\Eshop\\Setup\\Setup", array("getInstance", "getStep"));
+        $oSetup->expects($this->once())->method("getInstance")->with($this->equalTo('Utilities'))->will($this->returnValue($oUtils));
         $oSetup->expects($this->once())->method("getStep")->will($this->returnValue(1));
         $this->assertEquals(1, $oSetup->getCurrentStep());
     }
 
     /**
-     * Testing oxSetup::setNextStep() and oxSetup::getNextStep()
+     * Testing Setup::setNextStep() and Setup::getNextStep()
      *
      * @return null
      */
     public function testSetNextStepAndGetNextStep()
     {
-        $oSetup = oxNew('Setup');
+        $oSetup = new Setup();
         $oSetup->setNextStep("testStep");
         $this->assertEquals("testStep", $oSetup->getNextStep());
     }
 
     /**
-     * Testing oxSetup::alreadySetUp()
+     * Testing Setup::alreadySetUp()
      *
      * @return null
      */
     public function testAlreadySetUp()
     {
-        $oSetup = oxNew('oxSetup');
+        $oSetup = new Setup();
         $this->assertTrue($oSetup->alreadySetUp());
     }
 
     /**
-     * Testing oxSetup::getShopId()
+     * Testing Setup::getShopId()
      *
      * @return null
      */
@@ -104,12 +104,12 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
             $sBaseShopId = '1';
         }
 
-        $oSetup = oxNew('oxSetup');
+        $oSetup = new Setup();
         $this->assertEquals($sBaseShopId, $oSetup->getShopId());
     }
 
     /**
-     * Testing oxSetup::getSteps()
+     * Testing Setup::getSteps()
      *
      * @return null
      */
@@ -121,30 +121,30 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
             $iCount = 9;
         }
 
-        $oSetup = oxNew('oxSetup');
+        $oSetup = new Setup();
         $this->assertEquals($iCount, count($oSetup->getSteps()));
     }
 
     /**
-     * Testing oxSetup::getStep()
+     * Testing Setup::getStep()
      *
      * @return null
      */
     public function testGetStep()
     {
-        $oSetup = oxNew('oxSetup');
+        $oSetup = new Setup();
         $this->assertEquals(100, $oSetup->getStep("STEP_SYSTEMREQ"));
         $this->assertNull($oSetup->getStep("TESTID"));
     }
 
     /**
-     * Testing oxSetup::getVersionPrefix()
+     * Testing Setup::getVersionPrefix()
      *
      * @return null
      */
     public function testGetVersionPrefix()
     {
-        $oSetup = oxNew('oxSetup');
+        $oSetup = new Setup();
         $sVerPrefix = '';
 
         if ($this->getTestConfig()->getShopEdition() === 'EE') {
@@ -162,13 +162,13 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetup::getModuleClass()
+     * Testing Setup::getModuleClass()
      *
      * @return null
      */
     public function testGetModuleClass()
     {
-        $oSetup = oxNew('oxSetup');
+        $oSetup = new Setup();
         $this->assertEquals('pass', $oSetup->getModuleClass(2));
         $this->assertEquals('pmin', $oSetup->getModuleClass(1));
         $this->assertEquals('null', $oSetup->getModuleClass(-1));

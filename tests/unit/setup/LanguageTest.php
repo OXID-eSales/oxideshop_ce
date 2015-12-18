@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-require_once getShopBasePath() . '/Setup/oxsetup.php';
+require_once getShopBasePath() . '/Setup/functions.php';
 
 /**
- * oxSetupLang tests
+ * Language tests
  */
-class Unit_Setup_oxSetupLangTest extends OxidTestCase
+class LanguageTest extends OxidTestCase
 {
 
     /**
@@ -45,33 +45,28 @@ class Unit_Setup_oxSetupLangTest extends OxidTestCase
         parent::tearDown();
     }
 
-    /**
-     * Testing oxSetupLang::getSetupLang()
-     *
-     * @return null
-     */
     public function testGetSetupLangLanguageIdentIsPassedByRequest()
     {
-        $oSession = $this->getMock("oxSetupSession", array("setSessionParam", "getSessionParam"), array(), '', null);
+        $oSession = $this->getMock("Session", array("setSessionParam", "getSessionParam"), array(), '', null);
         $oSession->expects($this->at(0))->method("setSessionParam")->with($this->equalTo('setup_lang'));
         $oSession->expects($this->at(1))->method("getSessionParam")->with($this->equalTo('setup_lang'));
 
-        $oUtils = $this->getMock("oxSetupUtils", array("getRequestVar"));
+        $oUtils = $this->getMock("Utilities", array("getRequestVar"));
         $oUtils->expects($this->at(0))->method("getRequestVar")->with($this->equalTo('setup_lang'), $this->equalTo('post'))->will($this->returnValue("de"));
         $oUtils->expects($this->at(1))->method("getRequestVar")->with($this->equalTo('setup_lang_submit'), $this->equalTo('post'))->will($this->returnValue("de"));
 
-        $oSetup = $this->getMock("oxSetup", array("getStep"));
+        $oSetup = $this->getMock("Setup", array("getStep"));
         $oSetup->expects($this->at(0))->method("getStep")->with($this->equalTo('STEP_WELCOME'));
 
-        $oLang = $this->getMock("oxSetupLang", array("getInstance", "setViewParam"));
-        $oLang->expects($this->at(0))->method("getInstance")->with($this->equalTo('oxSetupSession'))->will($this->returnValue($oSession));
-        $oLang->expects($this->at(1))->method("getInstance")->with($this->equalTo('oxSetupUtils'))->will($this->returnValue($oUtils));
-        $oLang->expects($this->at(2))->method("getInstance")->with($this->equalTo('oxSetup'))->will($this->returnValue($oSetup));
-        $oLang->getSetupLang();
+        $oLang = $this->getMock('OxidEsales\\Eshop\\Setup\\Language', array("getInstance", "setViewParam"));
+        $oLang->expects($this->at(0))->method("getInstance")->with($this->equalTo('Session'))->will($this->returnValue($oSession));
+        $oLang->expects($this->at(1))->method("getInstance")->with($this->equalTo('Utilities'))->will($this->returnValue($oUtils));
+        $oLang->expects($this->at(2))->method("getInstance")->with($this->equalTo('Setup'))->will($this->returnValue($oSetup));
+        $oLang->getLanguage();
     }
 
     /**
-     * Testing oxSetupLang::getSetupLang()
+     * Testing Language::getSetupLang()
      *
      * @return null
      */
@@ -81,40 +76,40 @@ class Unit_Setup_oxSetupLangTest extends OxidTestCase
         $sBrowserLang = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
         $sBrowserLang = (in_array($sBrowserLang, $aLangs)) ? $sBrowserLang : $aLangs[0];
 
-        $oSession = $this->getMock("oxSetupSession", array("setSessionParam", "getSessionParam"), array(), '', null);
+        $oSession = $this->getMock("Session", array("setSessionParam", "getSessionParam"), array(), '', null);
         $oSession->expects($this->at(0))->method("getSessionParam")->with($this->equalTo('setup_lang'))->will($this->returnValue(null));
         $oSession->expects($this->at(1))->method("setSessionParam")->with($this->equalTo('setup_lang'), $this->equalTo($sBrowserLang));
 
-        $oUtils = $this->getMock("oxSetupUtils", array("getRequestVar"));
+        $oUtils = $this->getMock("Utilities", array("getRequestVar"));
         $oUtils->expects($this->at(0))->method("getRequestVar")->with($this->equalTo('setup_lang'), $this->equalTo('post'))->will($this->returnValue(null));
 
-        $oLang = $this->getMock("oxSetupLang", array("getInstance", "setViewParam"));
-        $oLang->expects($this->at(0))->method("getInstance")->with($this->equalTo('oxSetupSession'))->will($this->returnValue($oSession));
-        $oLang->expects($this->at(1))->method("getInstance")->with($this->equalTo('oxSetupUtils'))->will($this->returnValue($oUtils));
-        $oLang->getSetupLang();
+        $oLang = $this->getMock('OxidEsales\\Eshop\\Setup\\Language', array("getInstance", "setViewParam"));
+        $oLang->expects($this->at(0))->method("getInstance")->with($this->equalTo('Session'))->will($this->returnValue($oSession));
+        $oLang->expects($this->at(1))->method("getInstance")->with($this->equalTo('Utilities'))->will($this->returnValue($oUtils));
+        $oLang->getLanguage();
     }
 
     /**
-     * Testing oxSetupLang::getText()
+     * Testing Language::getText()
      *
      * @return null
      */
     public function testGetText()
     {
-        $oLang = $this->getMock("oxSetupLang", array("getSetupLang"));
-        $oLang->expects($this->any())->method("getSetupLang")->will($this->returnValue('en'));
+        $oLang = $this->getMock('OxidEsales\\Eshop\\Setup\\Language', array("getLanguage"));
+        $oLang->expects($this->any())->method("getLanguage")->will($this->returnValue('en'));
         $this->assertEquals("System Requirements", $oLang->getText("TAB_0_TITLE"));
         $this->assertNull($oLang->getText("TEST_IDENT"));
     }
 
     /**
-     * Testing oxSetupLang::getModuleName()
+     * Testing Language::getModuleName()
      *
      * @return null
      */
     public function testGetModuleName()
     {
-        $oLang = $this->getMock("oxSetupLang", array("getText"));
+        $oLang = $this->getMock('OxidEsales\\Eshop\\Setup\\Language', array("getText"));
         $oLang->expects($this->at(0))->method("getText")->with($this->equalTo('MOD_MODULE1'))->will($this->returnValue('module1'));
         $oLang->expects($this->at(1))->method("getText")->with($this->equalTo('MOD_MODULE2'))->will($this->returnValue('module2'));
         $oLang->expects($this->at(2))->method("getText")->with($this->equalTo('MOD_MODULE3'))->will($this->returnValue('module3'));

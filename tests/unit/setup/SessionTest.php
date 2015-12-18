@@ -20,12 +20,10 @@
  * @version   OXID eShop CE
  */
 
-require_once getShopBasePath() . '/Setup/oxsetup.php';
-
 /**
- * oxSetupSession tests
+ * Session tests
  */
-class Unit_Setup_oxSetupSessionTest extends OxidTestCase
+class SessionTest extends OxidTestCase
 {
 
     public function setUp()
@@ -36,41 +34,41 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     }
 
     /**
-     * Prepare oxSetupSession proxy mock object.
+     * Prepare Session proxy mock object.
      *
      * @return Session proxy mock class
      */
     protected function _getSessionMock($aMockFunctions = array())
     {
         $aMockFunctions = array_merge($aMockFunctions, array('_startSession', '_initSessionData'));
-        $oSession = $this->getMock($this->getProxyClassName('oxSetupSession'), $aMockFunctions);
+        $oSession = $this->getMock('OxidEsales\\Eshop\\Setup\\Session', $aMockFunctions);
 
         return $oSession;
     }
 
     /**
-     * Testing oxSetupSession::_validateSession() - new session.
+     * Testing Session::_validateSession() - new session.
      *
      * @return null
      */
     public function testValidateSession_newsession()
     {
         $oSession = $this->_getSessionMock(array('setSessionParam', '_getNewSessionID'));
-        $oSession->setNonPublicVar('_blNewSession', true);
+        $oSession->setIsNewSession(true);
         $oSession->expects($this->at(0))->method('setSessionParam')->with($this->equalTo('setup_session'), $this->equalTo(true));
         $oSession->expects($this->never())->method('_getNewSessionID');
         $oSession->UNITvalidateSession();
     }
 
     /**
-     * Testing oxSetupSession::_validateSession() - old session, key param not set, invalid.
+     * Testing Session::_validateSession() - old session, key param not set, invalid.
      *
      * @return null
      */
     public function testValidateSession_oldsession_invalid()
     {
         $oSession = $this->_getSessionMock(array('setSessionParam', 'getSessionParam', '_getNewSessionID'));
-        $oSession->setNonPublicVar('_blNewSession', null);
+        $oSession->setIsNewSession(null);
         $oSession->expects($this->at(0))->method('getSessionParam')->with($this->equalTo('setup_session'))->will($this->returnValue(null));
         $oSession->expects($this->at(1))->method('_getNewSessionID')->will($this->returnValue('someSID'));
         $oSession->expects($this->at(2))->method('setSessionParam')->with($this->equalTo('setup_session'), $this->equalTo(true));
@@ -78,14 +76,14 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupSession::_validateSession() - old session, key param not set, valid.
+     * Testing Session::_validateSession() - old session, key param not set, valid.
      *
      * @return null
      */
     public function testValidateSession_oldsession_valid()
     {
         $oSession = $this->_getSessionMock(array('setSessionParam', 'getSessionParam', '_getNewSessionID'));
-        $oSession->setNonPublicVar('_blNewSession', null);
+        $oSession->setIsNewSession(null);
         $oSession->expects($this->at(0))->method('getSessionParam')->with($this->equalTo('setup_session'))->will($this->returnValue(true));
         $oSession->expects($this->never())->method('_getNewSessionID');
         $oSession->expects($this->never())->method('setSessionParam');
@@ -93,7 +91,7 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupSession::_getNewSessionID().
+     * Testing Session::_getNewSessionID().
      *
      * php bug id=55267 fixed in #55267
      * When unit testing session-related code in a CLI environment, appropriate PHP ini settings combined
@@ -112,25 +110,25 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
         }
 
         $oSession = $this->_getSessionMock();
-        $oSession->setNonPublicVar('_blNewSession', 'test');
+        $oSession->setIsNewSession('test');
         $oSession->UNITgetNewSessionID();
-        $this->assertSame(true, $oSession->getNonPublicVar('_blNewSession'));
+        $this->assertSame(true, $oSession->getIsNewSession());
     }
 
     /**
-     * Testing oxSetupSession::getSid()
+     * Testing Session::getSid()
      *
      * @return null
      */
     public function testGetSid()
     {
         $oSession = $this->_getSessionMock();
-        $oSession->setNonPublicVar('_sSid', 'testSessionSID');
+        $oSession->setSid('testSessionSID');
         $this->assertSame('testSessionSID', $oSession->getSid());
     }
 
     /**
-     * Testing oxSetupSession::setSid()
+     * Testing Session::setSid()
      *
      * @return null
      */
@@ -138,11 +136,11 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     {
         $oSession = $this->_getSessionMock();
         $oSession->setSid('testNewSessionSID');
-        $this->assertSame('testNewSessionSID', $oSession->getNonPublicVar('_sSid'));
+        $this->assertSame('testNewSessionSID', $oSession->getSid());
     }
 
     /**
-     * Testing oxSetupSession::getSessionParam() - non existing key.
+     * Testing Session::getSessionParam() - non existing key.
      *
      * @return null
      */
@@ -157,7 +155,7 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     }
 
     /**
-     * Testing oxSetupSession::getSessionParam() - existing key.
+     * Testing Session::getSessionParam() - existing key.
      *
      * @return null
      */

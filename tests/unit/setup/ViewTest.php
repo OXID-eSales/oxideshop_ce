@@ -20,14 +20,15 @@
  * @version   OXID eShop CE
  */
 
-require_once getShopBasePath() . '/Setup/oxsetup.php';
+use OxidEsales\Eshop\Setup\View;
+
+require_once getShopBasePath() . '/Setup/functions.php';
 
 /**
  * view tests
  */
-class Unit_Setup_oxSetupViewTest extends OxidTestCase
+class ViewTest extends OxidTestCase
 {
-
     /**
      * Testing view::getTitle()
      *
@@ -35,7 +36,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetTitle()
     {
-        $oSetupView = $this->getMock("oxsetupView", array("getText"));
+        $oSetupView = $this->getMock("\\OxidEsales\\Eshop\\Setup\\View", array("getText"));
         $oSetupView->expects($this->once())->method("getText")->with($this->equalTo(null), $this->equalTo(false))->will($this->returnValue("getText"));
         $this->assertEquals("getText", $oSetupView->getTitle());
     }
@@ -47,7 +48,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testSetTitle()
     {
-        $oSetupView = $this->getMock("oxsetupView", array("getText"));
+        $oSetupView = $this->getMock("\\OxidEsales\\Eshop\\Setup\\View", array("getText"));
         $oSetupView->expects($this->once())->method("getText")->with($this->equalTo("testTitle"));
         $oSetupView->setTitle("testTitle");
         $oSetupView->getTitle();
@@ -60,7 +61,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetMessages()
     {
-        $oSetupView = oxNew('oxsetupView');
+        $oSetupView = new View();
         $this->assertEquals(array(), $oSetupView->getMessages());
     }
 
@@ -71,7 +72,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testSetMessage()
     {
-        $oSetupView = oxNew('oxsetupView');
+        $oSetupView = new View();
         $oSetupView->setMessage("msg1");
         $this->assertEquals(array("msg1"), $oSetupView->getMessages());
         $oSetupView->setMessage("msg2");
@@ -87,11 +88,11 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetText()
     {
-        $oInst = $this->getMock("oxSetupLang", array("getText"));
+        $oInst = $this->getMock("Language", array("getText"));
         $oInst->expects($this->once())->method("getText")->with($this->equalTo("testId"));
 
-        $oSetupView = $this->getMock("view", array("getInstance"));
-        $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("oxSetupLang"))->will($this->returnValue($oInst));
+        $oSetupView = $this->getMock("\\OxidEsales\\Eshop\\Setup\\View", array("getInstance"));
+        $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($oInst));
         $oSetupView->getText("testId", false);
     }
 
@@ -102,7 +103,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testSetViewParamGetViewParam()
     {
-        $oSetupView = oxNew('oxsetupView');
+        $oSetupView = new View();
         $oSetupView->setViewParam("testParamName", "testParamValue");
         $this->assertEquals("testParamValue", $oSetupView->getViewParam("testParamName"));
     }
@@ -114,11 +115,11 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetSetupStep()
     {
-        $oInst = $this->getMock("oxSetup", array("getStep"));
+        $oInst = $this->getMock("Setup", array("getStep"));
         $oInst->expects($this->once())->method("getStep")->with($this->equalTo("testStepId"));
 
-        $oSetupView = $this->getMock("oxsetupView", array("getInstance"));
-        $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("oxSetup"))->will($this->returnValue($oInst));
+        $oSetupView = $this->getMock("\\OxidEsales\\Eshop\\Setup\\View", array("getInstance"));
+        $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oInst));
         $oSetupView->getSetupStep("testStepId", false);
     }
 
@@ -129,11 +130,11 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetNextSetupStep()
     {
-        $oInst = $this->getMock("oxSetup", array("getNextStep"));
+        $oInst = $this->getMock("Setup", array("getNextStep"));
         $oInst->expects($this->once())->method("getNextStep");
 
-        $oSetupView = $this->getMock("oxsetupView", array("getInstance"));
-        $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("oxSetup"))->will($this->returnValue($oInst));
+        $oSetupView = $this->getMock("\\OxidEsales\\Eshop\\Setup\\View", array("getInstance"));
+        $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oInst));
         $oSetupView->getNextSetupStep();
     }
 
@@ -144,11 +145,11 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetCurrentSetupStep()
     {
-        $oInst = $this->getMock("oxSetup", array("getCurrentStep"));
+        $oInst = $this->getMock("Setup", array("getCurrentStep"));
         $oInst->expects($this->once())->method("getCurrentStep");
 
-        $oSetupView = $this->getMock("oxsetupView", array("getInstance"));
-        $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("oxSetup"))->will($this->returnValue($oInst));
+        $oSetupView = $this->getMock("\\OxidEsales\\Eshop\\Setup\\View", array("getInstance"));
+        $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oInst));
         $oSetupView->getCurrentSetupStep();
     }
 
@@ -159,11 +160,11 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetSetupSteps()
     {
-        $oInst = $this->getMock("oxSetup", array("getSteps"));
+        $oInst = $this->getMock("Setup", array("getSteps"));
         $oInst->expects($this->once())->method("getSteps");
 
-        $oSetupView = $this->getMock("oxsetupView", array("getInstance"));
-        $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("oxSetup"))->will($this->returnValue($oInst));
+        $oSetupView = $this->getMock("\\OxidEsales\\Eshop\\Setup\\View", array("getInstance"));
+        $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oInst));
         $oSetupView->getSetupSteps();
     }
 
@@ -174,7 +175,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetImageDir()
     {
-        $oSetupView = oxNew('oxsetupView');
+        $oSetupView = new View();
         $this->assertEquals(getInstallPath() . 'out/admin/img', $oSetupView->getImageDir());
     }
 
@@ -187,18 +188,18 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     {
         $sPath = getInstallPath();
 
-        $oInst1 = $this->getMock("oxSetupSession", array("getSessionParam"), array(), '', null);
+        $oInst1 = $this->getMock("Session", array("getSessionParam"), array(), '', null);
         $oInst1->expects($this->at(0))->method("getSessionParam")->will($this->returnValue(array("dbiDemoData" => 0)));
         $oInst1->expects($this->at(1))->method("getSessionParam")->will($this->returnValue(array("blDelSetupDir" => true)));
 
-        $oInst2 = $this->getMock("oxSetupUtils", array("removeDir"));
+        $oInst2 = $this->getMock("Utilities", array("removeDir"));
         $oInst2->expects($this->at(0))->method("removeDir")->with($this->equalTo($sPath . "out/pictures/generated"), $this->equalTo(true))->will($this->returnValue(true));
         $oInst2->expects($this->at(1))->method("removeDir")->with($this->equalTo($sPath . "out/pictures/master"), $this->equalTo(true), $this->equalTo(1), $this->equalTo(array("nopic.jpg")))->will($this->returnValue(true));
         $oInst2->expects($this->at(2))->method("removeDir")->with($this->equalTo($sPath . "Setup"), $this->equalTo(true))->will($this->returnValue(true));
 
-        $oSetupView = $this->getMock("view", array("getInstance"));
+        $oSetupView = $this->getMock("\\OxidEsales\\Eshop\\Setup\\View", array("getInstance"));
         $oSetupView->expects($this->at(0))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oInst1));
-        $oSetupView->expects($this->at(1))->method("getInstance")->with($this->equalTo("oxSetupUtils"))->will($this->returnValue($oInst2));
+        $oSetupView->expects($this->at(1))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oInst2));
         $this->assertTrue($oSetupView->isDeletedSetup());
     }
 
@@ -211,7 +212,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     {
         $sUrl = "http://www.oxidforge.org/wiki/Installation";
 
-        $oSetupView = oxNew('oxsetupView');
+        $oSetupView = new View();
         $this->assertEquals($sUrl . "#PHP_version_at_least_5.3.25", $oSetupView->getReqInfoUrl("php_version", false));
         $this->assertEquals($sUrl, $oSetupView->getReqInfoUrl("none", false));
         $this->assertEquals($sUrl . "#Zend_Optimizer", $oSetupView->getReqInfoUrl("zend_optimizer", false));
@@ -224,11 +225,11 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetSid()
     {
-        $oInst = $this->getMock("oxSetupSession", array("getSid"), array(), '', false);
+        $oInst = $this->getMock("Session", array("getSid"), array(), '', false);
         $oInst->expects($this->once())->method("getSid")->will($this->returnValue("testSid"));
 
-        $oSetupView = $this->getMock("oxsetupView", array("getInstance"));
-        $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("oxSetupSession"))->will($this->returnValue($oInst));
+        $oSetupView = $this->getMock("\\OxidEsales\\Eshop\\Setup\\View", array("getInstance"));
+        $oSetupView->expects($this->once())->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oInst));
         $this->assertEquals("testSid", $oSetupView->getSid(false));
     }
 }

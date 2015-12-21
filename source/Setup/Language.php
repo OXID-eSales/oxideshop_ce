@@ -79,7 +79,7 @@ class Language extends Core
             $sLangFilePath = getInstallPath() . EditionPathProvider::SETUP_DIRECTORY . '/' . ucfirst($this->getLanguage()) . '/lang.php';
             if (file_exists($sLangFilePath) && is_readable($sLangFilePath)) {
                 include $sLangFilePath;
-                $this->_aLangData = $aLang;
+                $this->_aLangData = array_merge($aLang, $this->getAdditionalMessages());
             }
         }
 
@@ -96,5 +96,15 @@ class Language extends Core
     public function getModuleName($sModuleName)
     {
         return $this->getText('MOD_' . strtoupper($sModuleName));
+    }
+
+    /**
+     * Method is used for overriding.
+     *
+     * @return array
+     */
+    protected function getAdditionalMessages()
+    {
+        return array();
     }
 }

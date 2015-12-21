@@ -22,6 +22,8 @@
 
 namespace OxidEsales\Eshop\Setup;
 
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use oxSystemComponentException;
 
 /**
@@ -46,7 +48,7 @@ class Core
     public function getInstance($sInstanceName)
     {
         if (strpos($sInstanceName, '\\') === false) {
-            $sInstanceName = __NAMESPACE__ . '\\' . $sInstanceName;
+            $sInstanceName = $this->getClass($sInstanceName);
         }
         if (!isset(Core::$_aInstances[$sInstanceName])) {
             Core::$_aInstances[$sInstanceName] = new $sInstanceName();
@@ -78,5 +80,29 @@ class Core
         }
 
         throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+    }
+
+    /**
+     * Methods returns class according edition.
+     *
+     * @param string $sInstanceName
+     *
+     * @return string
+     */
+    protected function getClass($sInstanceName)
+    {
+        $editionSelector = new EditionSelector();
+        $class =  'OxidEsales\\Eshop\\Setup\\' . $sInstanceName;
+
+        $classEnterprise = '\\OxidEsales\\EshopEnterprise\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
+        $classProfessional = '\\OxidEsales\\EshopProfessional\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
+        if (($editionSelector->isProfessional() || $editionSelector->isEnterprise()) && class_exists($classProfessional)) {
+            $class = $classProfessional;
+        }
+        if ($editionSelector->isEnterprise() && class_exists($classEnterprise)) {
+            $class = $classEnterprise;
+        }
+
+        return $class;
     }
 }

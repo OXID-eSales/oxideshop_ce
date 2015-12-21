@@ -35,14 +35,14 @@ class EditionPathProvider
     const DATABASE_SQL_DIRECTORY = 'Sql';
 
     /** @var EditionRootPathProvider */
-    private $editionPathSelector;
+    private $editionRootPathProvider;
 
     /**
-     * @param EditionRootPathProvider $editionPathSelector
+     * @param EditionRootPathProvider $editionRootPathProvider
      */
-    public function __construct($editionPathSelector)
+    public function __construct($editionRootPathProvider)
     {
-        $this->editionPathSelector = $editionPathSelector;
+        $this->editionRootPathProvider = $editionRootPathProvider;
     }
 
     /**
@@ -52,7 +52,7 @@ class EditionPathProvider
      */
     public function getSetupDirectory()
     {
-        return $this->getEditionPathSelector()->getDirectoryPath()
+        return $this->getEditionRootPathProvider()->getDirectoryPath()
         . static::SETUP_DIRECTORY . DIRECTORY_SEPARATOR;
     }
 
@@ -73,7 +73,7 @@ class EditionPathProvider
      */
     public function getViewsDirectory()
     {
-        return $this->getEditionPathSelector()->getDirectoryPath()
+        return $this->getEditionRootPathProvider()->getDirectoryPath()
         . 'Application' . DIRECTORY_SEPARATOR
         . 'views' . DIRECTORY_SEPARATOR;
     }
@@ -85,14 +85,14 @@ class EditionPathProvider
      */
     public function getSmartyPluginsDirectory()
     {
-        return $this->getEditionPathSelector()->getDirectoryPath() . 'Core/Smarty/Plugin/';
+        return $this->getEditionRootPathProvider()->getDirectoryPath() . 'Core/Smarty/Plugin/';
     }
 
     /**
      * @return EditionRootPathProvider
      */
-    protected function getEditionPathSelector()
+    protected function getEditionRootPathProvider()
     {
-        return $this->editionPathSelector;
+        return $this->editionRootPathProvider;
     }
 }

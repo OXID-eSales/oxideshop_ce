@@ -22,8 +22,6 @@
 
 namespace OxidEsales\Eshop\Setup;
 
-use Exception;
-
 /**
  * Setup manager class
  */
@@ -66,7 +64,6 @@ class Setup extends Core
         'STEP_DIRS_WRITE'  => 510, // 41
         'STEP_FINISH'      => 700, // 6
     );
-
 
     /**
      * Returns current setup step title
@@ -145,7 +142,6 @@ class Setup extends Core
         $this->_iNextStep = $iStep;
     }
 
-
     /**
      * Checks if config file is alleady filled with data
      *
@@ -169,10 +165,7 @@ class Setup extends Core
      */
     public function getShopId()
     {
-        $sBaseShopId = 'oxbaseshop';
-
-
-        return $sBaseShopId;
+        return 'oxbaseshop';
     }
 
     /**
@@ -194,7 +187,8 @@ class Setup extends Core
      */
     public function getStep($sStepId)
     {
-        return isset($this->_aSetupSteps[$sStepId]) ? $this->_aSetupSteps[$sStepId] : null;
+        $steps = $this->getSteps();
+        return isset($steps[$sStepId]) ? $steps[$sStepId] : null;
     }
 
     /**

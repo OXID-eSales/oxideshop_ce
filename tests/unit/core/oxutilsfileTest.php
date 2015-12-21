@@ -556,6 +556,4 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
             $this->fail("could not delete $sSourceFilePath ");
         }
     }
-
-
 }

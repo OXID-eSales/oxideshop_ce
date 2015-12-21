@@ -21,6 +21,7 @@
  */
 
 require_once getShopBasePath() . '/Setup/functions.php';
+use OxidEsales\Eshop\Setup\Core;
 use OxidEsales\Eshop\Setup\Setup;
 
 /**
@@ -35,7 +36,9 @@ class SetupTest extends OxidTestCase
      */
     public function testSetTitleAndGetTitle()
     {
-        $oSetup = new Setup();
+        $core = new Core();
+        /** @var Setup $oSetup */
+        $oSetup = $core->getInstance('Setup');
         $oSetup->setTitle("testTitle");
         $this->assertEquals("testTitle", $oSetup->getTitle());
     }
@@ -47,7 +50,9 @@ class SetupTest extends OxidTestCase
      */
     public function testSetMessageAndGetMessage()
     {
-        $oSetup = new Setup();
+        $core = new Core();
+        /** @var Setup $oSetup */
+        $oSetup = $core->getInstance('Setup');
         $oSetup->setMessage("testTMessage");
         $this->assertEquals("testTMessage", $oSetup->getMessage());
     }
@@ -62,7 +67,9 @@ class SetupTest extends OxidTestCase
         $oUtils = $this->getMock("Utilities", array("getRequestVar"));
         $oUtils->expects($this->once())->method("getRequestVar")->with($this->equalTo('istep'))->will($this->returnValue(null));
 
-        $oSetup = $this->getMock("OxidEsales\\Eshop\\Setup\\Setup", array("getInstance", "getStep"));
+        $core = new Core();
+        $oSetup = $core->getInstance('Setup');
+        $oSetup = $this->getMock(get_class($oSetup), array("getInstance", "getStep"));
         $oSetup->expects($this->once())->method("getInstance")->with($this->equalTo('Utilities'))->will($this->returnValue($oUtils));
         $oSetup->expects($this->once())->method("getStep")->will($this->returnValue(1));
         $this->assertEquals(1, $oSetup->getCurrentStep());
@@ -75,7 +82,9 @@ class SetupTest extends OxidTestCase
      */
     public function testSetNextStepAndGetNextStep()
     {
-        $oSetup = new Setup();
+        $core = new Core();
+        /** @var Setup $oSetup */
+        $oSetup = $core->getInstance('Setup');
         $oSetup->setNextStep("testStep");
         $this->assertEquals("testStep", $oSetup->getNextStep());
     }
@@ -87,7 +96,9 @@ class SetupTest extends OxidTestCase
      */
     public function testAlreadySetUp()
     {
-        $oSetup = new Setup();
+        $core = new Core();
+        /** @var Setup $oSetup */
+        $oSetup = $core->getInstance('Setup');
         $this->assertTrue($oSetup->alreadySetUp());
     }
 
@@ -104,7 +115,9 @@ class SetupTest extends OxidTestCase
             $sBaseShopId = '1';
         }
 
-        $oSetup = new Setup();
+        $core = new Core();
+        /** @var Setup $oSetup */
+        $oSetup = $core->getInstance('Setup');
         $this->assertEquals($sBaseShopId, $oSetup->getShopId());
     }
 
@@ -121,7 +134,9 @@ class SetupTest extends OxidTestCase
             $iCount = 9;
         }
 
-        $oSetup = new Setup();
+        $core = new Core();
+        /** @var Setup $oSetup */
+        $oSetup = $core->getInstance('Setup');
         $this->assertEquals($iCount, count($oSetup->getSteps()));
     }
 
@@ -132,7 +147,9 @@ class SetupTest extends OxidTestCase
      */
     public function testGetStep()
     {
-        $oSetup = new Setup();
+        $core = new Core();
+        /** @var Setup $oSetup */
+        $oSetup = $core->getInstance('Setup');
         $this->assertEquals(100, $oSetup->getStep("STEP_SYSTEMREQ"));
         $this->assertNull($oSetup->getStep("TESTID"));
     }
@@ -144,7 +161,9 @@ class SetupTest extends OxidTestCase
      */
     public function testGetVersionPrefix()
     {
-        $oSetup = new Setup();
+        $core = new Core();
+        /** @var Setup $oSetup */
+        $oSetup = $core->getInstance('Setup');
         $sVerPrefix = '';
 
         if ($this->getTestConfig()->getShopEdition() === 'EE') {
@@ -168,7 +187,9 @@ class SetupTest extends OxidTestCase
      */
     public function testGetModuleClass()
     {
-        $oSetup = new Setup();
+        $core = new Core();
+        /** @var Setup $oSetup */
+        $oSetup = $core->getInstance('Setup');
         $this->assertEquals('pass', $oSetup->getModuleClass(2));
         $this->assertEquals('pmin', $oSetup->getModuleClass(1));
         $this->assertEquals('null', $oSetup->getModuleClass(-1));

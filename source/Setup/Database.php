@@ -263,7 +263,7 @@ class Database extends Core
      */
     public function saveShopSettings($aParams)
     {
-        /** @var Utils $oUtils */
+        /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
         /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
@@ -272,10 +272,7 @@ class Database extends Core
 
         $oPdo = $this->getConnection();
 
-        // disabling usage of dynamic pages if shop country is international
-        if ($oSession->getSessionParam('location_lang') === null) {
-            $oSession->setSessionParam('use_dynamic_pages', 'false');
-        }
+        $this->setIfDynamicPagesShouldBeUsed($oSession);
 
         $blUseDynPages = isset($aParams["use_dyn_pages"]) ? $aParams["use_dyn_pages"] : $oSession->getSessionParam('use_dynamic_pages');
         $sLocationLang = isset($aParams["location_lang"]) ? $aParams["location_lang"] : $oSession->getSessionParam('location_lang');
@@ -329,8 +326,7 @@ class Database extends Core
             )
         );
 
-
-        $this->_addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession);
+        $this->addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession);
 
         //set only one active language
         $oStatement = $oPdo->query("select oxvarname, oxvartype, DECODE( oxvarvalue, '" . $oConfk->sConfigKey . "') AS oxvarvalue from oxconfig where oxvarname='aLanguageParams'");
@@ -357,7 +353,6 @@ class Database extends Core
             );
         }
     }
-
 
     /**
      * Converts config table values to utf8
@@ -509,7 +504,7 @@ class Database extends Core
      * @param Conf           $oConfk      Config key loader
      * @param Session $oSession    Setup session manager
      */
-    private function _addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession)
+    protected function addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession)
     {
         $blSendShopDataToOxid = isset($aParams["blSendShopDataToOxid"]) ? $aParams["blSendShopDataToOxid"] : $oSession->getSessionParam('blSendShopDataToOxid');
 
@@ -518,5 +513,18 @@ class Database extends Core
             "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
                              values('$sID', '$sBaseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $oConfk->sConfigKey . "'))"
         );
+    }
+
+    /**
+     * Set to session if dynamic pages should be used.
+     *
+     * @param Session $oSession
+     */
+    protected function setIfDynamicPagesShouldBeUsed($oSession)
+    {
+        // disabling usage of dynamic pages if shop country is international
+        if ($oSession->getSessionParam('location_lang') === null) {
+            $oSession->setSessionParam('use_dynamic_pages', 'false');
+        }
     }
 }

@@ -70,12 +70,10 @@ if (!function_exists('getSystemReqCheck')) {
      */
     function getSystemReqCheck()
     {
-        $basePath = defined('OXID_PHP_UNIT') ? getShopBasePath() : getInstallPath();
-
         $editionSelector = new EditionSelector();
-        if ($editionSelector->getEdition() === 'EE') {
+        if ($editionSelector->isEnterprise()) {
             $systemRequirements = new \OxidEsales\EshopEnterprise\Core\SystemRequirements;
-        } elseif ($editionSelector->getEdition() === 'PE') {
+        } elseif ($editionSelector->isProfessional()) {
             $systemRequirements = new OxidEsales\EshopProfessional\Core\SystemRequirements;
         } else {
             $systemRequirements = new OxidEsales\Eshop\Core\SystemRequirements;
@@ -167,6 +165,18 @@ if (!function_exists('getDefaultConfigFileMode')) {
     }
 }
 
+$editionSelector = new EditionSelector();
+if (!function_exists('getSerial') && !$editionSelector->isCommunity()) {
+    /**
+     * Creates and returns oxSerial object
+     *
+     * @return oxSerial
+     */
+    function getSerial()
+    {
+        return new OxidEsales\EshopProfessional\Core\Serial();
+    }
+}
 
 if (!class_exists("Config")) {
     /**

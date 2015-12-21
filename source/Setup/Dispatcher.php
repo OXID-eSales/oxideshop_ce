@@ -27,7 +27,6 @@ namespace OxidEsales\Eshop\Setup;
  */
 class Dispatcher extends Core
 {
-
     /**
      * Executes current controller action
      */

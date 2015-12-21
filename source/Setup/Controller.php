@@ -488,8 +488,7 @@ class Controller extends Core
             return "default.php";
         }
 
-
-        $oSetup->setNextStep($oSetup->getStep('STEP_FINISH'));
+        $this->onDirsWriteSetStep($oSetup);
 
         $oView->setMessage($oLang->getText('STEP_4_1_DATA_WAS_WRITTEN'));
         $oView->setViewParam("aPath", $aPath);
@@ -497,7 +496,6 @@ class Controller extends Core
 
         return "default.php";
     }
-
 
     /**
      * Final setup step
@@ -525,5 +523,13 @@ class Controller extends Core
     {
         $editionPathSelector = new EditionRootPathProvider(new EditionSelector());
         return new EditionPathProvider($editionPathSelector);
+    }
+
+    /**
+     * @param Setup $oSetup
+     */
+    protected function onDirsWriteSetStep($oSetup)
+    {
+        $oSetup->setNextStep($oSetup->getStep('STEP_FINISH'));
     }
 }

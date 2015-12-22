@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -554,7 +554,7 @@ class Content extends oxUBase
         $oUtilsView = oxRegistry::get("oxUtilsView");
         return $oUtilsView->parseThroughSmarty($this->getContent()->oxcontents__oxcontent->value, $this->getContent()->getId(), null, true);
     }
-
+    
     /**
      * Returns view canonical url
      *
@@ -562,16 +562,16 @@ class Content extends oxUBase
      */
     public function getCanonicalUrl()
     {
-        $url = '';
-        if ($content = $this->getContent()) {
-            $utils = oxRegistry::get("oxUtilsUrl");
-            if (oxRegistry::getUtils()->seoIsActive()) {
-                $url = $utils->prepareCanonicalUrl($content->getBaseSeoLink($content->getLanguage()));
-            } else {
-                $url = $utils->prepareCanonicalUrl($content->getBaseStdLink($content->getLanguage()));
-            }
-        }
+        if (($oContent = $this->getContent())) {
 
-        return $url;
+            $oUtils = oxRegistry::get("oxUtilsUrl");
+            if (oxRegistry::getUtils()->seoIsActive()) {
+                $sUrl = $oUtils->prepareCanonicalUrl($oContent->getBaseSeoLink($oContent->getLanguage()));
+            } else {
+                $sUrl = $oUtils->prepareCanonicalUrl($oContent->getBaseStdLink($oContent->getLanguage()));
+            }
+
+            return $sUrl;
+        }
     }
 }

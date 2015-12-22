@@ -554,4 +554,24 @@ class Content extends oxUBase
         $oUtilsView = oxRegistry::get("oxUtilsView");
         return $oUtilsView->parseThroughSmarty($this->getContent()->oxcontents__oxcontent->value, $this->getContent()->getId(), null, true);
     }
+    
+    /**
+     * Returns view canonical url
+     *
+     * @return string
+     */
+    public function getCanonicalUrl()
+    {
+        if (($oContent = $this->getContent())) {
+
+            $oUtils = oxRegistry::get("oxUtilsUrl");
+            if (oxRegistry::getUtils()->seoIsActive()) {
+                $sUrl = $oUtils->prepareCanonicalUrl($oContent->getBaseSeoLink($oContent->getLanguage()));
+            } else {
+                $sUrl = $oUtils->prepareCanonicalUrl($oContent->getBaseStdLink($oContent->getLanguage()));
+            }
+
+            return $sUrl;
+        }
+    }
 }

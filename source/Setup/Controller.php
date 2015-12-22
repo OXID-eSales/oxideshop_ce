@@ -526,10 +526,10 @@ class Controller extends Core
     }
 
     /**
-     * @param Setup $oSetup
+     * @param Setup $setup
      */
-    protected function onDirsWriteSetStep($oSetup)
+    protected function onDirsWriteSetStep($setup)
     {
-        $oSetup->setNextStep($oSetup->getStep('STEP_FINISH'));
+        $setup->setNextStep($setup->getStep('STEP_FINISH'));
     }
 }

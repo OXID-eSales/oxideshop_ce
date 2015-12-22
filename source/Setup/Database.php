@@ -498,33 +498,33 @@ class Database extends Core
     /**
      * Adds config value if shop info should be set.
      *
-     * @param Utils   $oUtils      Setup utilities
-     * @param string         $sBaseShopId Shop id
-     * @param array          $aParams     Parameters
-     * @param Conf           $oConfk      Config key loader
-     * @param Session $oSession    Setup session manager
+     * @param Utilities   $utilities  Setup utilities
+     * @param string  $baseShopId Shop id
+     * @param array   $parameters Parameters
+     * @param Conf    $configKey  Config key loader
+     * @param Session $session    Setup session manager
      */
-    protected function addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession)
+    protected function addConfigValueIfShopInfoShouldBeSent($utilities, $baseShopId, $parameters, $configKey, $session)
     {
-        $blSendShopDataToOxid = isset($aParams["blSendShopDataToOxid"]) ? $aParams["blSendShopDataToOxid"] : $oSession->getSessionParam('blSendShopDataToOxid');
+        $blSendShopDataToOxid = isset($parameters["blSendShopDataToOxid"]) ? $parameters["blSendShopDataToOxid"] : $session->getSessionParam('blSendShopDataToOxid');
 
-        $sID = $oUtils->generateUid();
+        $sID = $utilities->generateUid();
         $this->execSql(
             "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                             values('$sID', '$sBaseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $oConfk->sConfigKey . "'))"
+                             values('$sID', '$baseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $configKey->sConfigKey . "'))"
         );
     }
 
     /**
      * Set to session if dynamic pages should be used.
      *
-     * @param Session $oSession
+     * @param Session $session
      */
-    protected function setIfDynamicPagesShouldBeUsed($oSession)
+    protected function setIfDynamicPagesShouldBeUsed($session)
     {
         // disabling usage of dynamic pages if shop country is international
-        if ($oSession->getSessionParam('location_lang') === null) {
-            $oSession->setSessionParam('use_dynamic_pages', 'false');
+        if ($session->getSessionParam('location_lang') === null) {
+            $session->setSessionParam('use_dynamic_pages', 'false');
         }
     }
 }

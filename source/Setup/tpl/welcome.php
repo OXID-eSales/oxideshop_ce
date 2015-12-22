@@ -31,7 +31,9 @@ require "_header.php"; ?>
               <tr>
                 <td style="padding-right: 3px;">
                     <select name="location_lang" style="font-size: 11px;"
-                onChange="update_dynpages_checkbox();"
+                    <?php if (!$editionSelector->isEnterprise()) { ?>
+                    onChange="update_dynpages_checkbox();"
+                    <?php } ?>
                     >
                         <option value=""><?php $this->getText('SELECT_PLEASE_CHOOSE'); ?></option>
                         <?php
@@ -54,19 +56,21 @@ require "_header.php"; ?>
                         <?php $this->getText('SELECT_SHOP_LOCATION_HINT'); ?>
                     </div>
                 </td>
-            <noscript>
-            <td>
-                <input type="submit" name="setup_lang_submit" value="<?php $this->getText('SELECT_SETUP_LANG_SUBMIT'); ?>" style="font-size: 11px;">
-            </td>
-            </noscript>
-           <td>
-            &nbsp;&nbsp;
-                <input type="hidden" value="false" name="use_dynamic_pages">
-                <input type="checkbox" id="use_dynamic_pages_ckbox" value="true" name="use_dynamic_pages" valign="" style="vertical-align:middle; width:20px; height:22px;<?php  if ( $sLocationLang === null ) echo " display: none;"?>" >
-          </td>
-          <td id="use_dynamic_pages_desc" style="<?php  if ( $sLocationLang === null ) echo "display: none;"?>">
-                <?php $this->getText('USE_DYNAMIC_PAGES'); ?><a href="<?php echo $sLanguage; ?>/dyn_content_notice.php" onClick="showPopUp('<?php echo $sLanguage; ?>/dyn_content_notice.php', 400, 200, 1); return false;" target="_blank"><u><?php $this->getText('PRIVACY_POLICY'); ?></u></a>.
-          </td>
+                <?php if (!$editionSelector->isEnterprise()) { ?>
+                <noscript>
+                <td>
+                    <input type="submit" name="setup_lang_submit" value="<?php $this->getText('SELECT_SETUP_LANG_SUBMIT'); ?>" style="font-size: 11px;">
+                </td>
+                </noscript>
+               <td>
+                &nbsp;&nbsp;
+                    <input type="hidden" value="false" name="use_dynamic_pages">
+                    <input type="checkbox" id="use_dynamic_pages_ckbox" value="true" name="use_dynamic_pages" valign="" style="vertical-align:middle; width:20px; height:22px;<?php  if ( $sLocationLang === null ) echo " display: none;"?>" >
+              </td>
+              <td id="use_dynamic_pages_desc" style="<?php  if ( $sLocationLang === null ) echo "display: none;"?>">
+                    <?php $this->getText('USE_DYNAMIC_PAGES'); ?><a href="<?php echo $sLanguage; ?>/dyn_content_notice.php" onClick="showPopUp('<?php echo $sLanguage; ?>/dyn_content_notice.php', 400, 200, 1); return false;" target="_blank"><u><?php $this->getText('PRIVACY_POLICY'); ?></u></a>.
+              </td>
+                <?php } ?>
             </tr>
           </table>
         </td>

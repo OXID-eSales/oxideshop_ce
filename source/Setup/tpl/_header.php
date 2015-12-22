@@ -19,6 +19,8 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+
+$editionSelector = new \OxidEsales\Eshop\Core\Edition\EditionSelector();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -38,17 +40,19 @@
         }
     }
 
-function update_dynpages_checkbox()
-{
-    sValue = document.forms[0].location_lang.value;
-    if ( sValue == '' ) {
-        document.getElementById('use_dynamic_pages_ckbox').style.display = 'none';
-        document.getElementById('use_dynamic_pages_desc').style.display = 'none';
-    } else {
-        document.getElementById('use_dynamic_pages_ckbox').style.display = '';
-        document.getElementById('use_dynamic_pages_desc').style.display = '';
+<?php if (!$editionSelector->isEnterprise()) { ?>
+    function update_dynpages_checkbox()
+    {
+        sValue = document.forms[0].location_lang.value;
+        if ( sValue == '' ) {
+            document.getElementById('use_dynamic_pages_ckbox').style.display = 'none';
+            document.getElementById('use_dynamic_pages_desc').style.display = 'none';
+        } else {
+            document.getElementById('use_dynamic_pages_ckbox').style.display = '';
+            document.getElementById('use_dynamic_pages_desc').style.display = '';
+        }
     }
-}
+<?php } ?>
     /**
      * Replaces password type field into plain and vice versa
      */
@@ -78,8 +82,18 @@ function update_dynpages_checkbox()
     <?php
         $iTabWidth = 147;
         $iSepWidth = 3;
-        $iTabCount = 6;
-        $sHColor = '#ff3600';
+        if ($editionSelector->isEnterprise()) {
+            $iTabCount = 7;
+            $sHColor = '#006ab4';
+        }
+        if ($editionSelector->isProfessional()) {
+            $iTabCount = 7;
+            $sHColor = '#cd0210';
+        }
+        if ($editionSelector->isCommunity()) {
+            $iTabCount = 6;
+            $sHColor = '#ff3600';
+        }
         $iDocWidth = ($iTabWidth + $iSepWidth)*$iTabCount;
     ?>
         body, p , form {margin:0; }

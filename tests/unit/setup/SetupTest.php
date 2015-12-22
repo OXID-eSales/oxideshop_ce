@@ -155,32 +155,6 @@ class SetupTest extends OxidTestCase
     }
 
     /**
-     * Testing Setup::getVersionPrefix()
-     *
-     * @return null
-     */
-    public function testGetVersionPrefix()
-    {
-        $core = new Core();
-        /** @var Setup $oSetup */
-        $oSetup = $core->getInstance('Setup');
-        $sVerPrefix = '';
-
-        if ($this->getTestConfig()->getShopEdition() === 'EE') {
-            $sVerPrefix = '_ee';
-        }
-        if ($this->getTestConfig()->getShopEdition() === 'PE') {
-            $sVerPrefix = '_pe';
-        }
-
-        if ($this->getTestConfig()->getShopEdition() === 'CE') {
-            $sVerPrefix = '_ce';
-        }
-
-        $this->assertEquals($sVerPrefix, $oSetup->getVersionPrefix());
-    }
-
-    /**
      * Testing Setup::getModuleClass()
      *
      * @return null

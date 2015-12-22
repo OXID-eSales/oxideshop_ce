@@ -424,8 +424,7 @@ class ControllerTest extends OxidTestCase
      */
     public function testDbCreateFailedDbCreation()
     {
-        $oSetup = $this->getMock("Setup", array("getVersionPrefix"));
-        $oSetup->expects($this->any())->method("getVersionPrefix");
+        $oSetup = $this->getMock("Setup");
 
         $oSession = $this->getMock("Session", array("getSessionParam"), array(), '', null);
         $oSession->expects($this->once())->method("getSessionParam")->with($this->equalTo("aDB"));
@@ -462,8 +461,7 @@ class ControllerTest extends OxidTestCase
      */
     public function testDbCreateFailedDataInsert()
     {
-        $oSetup = $this->getMock("Setup", array("getVersionPrefix"));
-        $oSetup->expects($this->any())->method("getVersionPrefix");
+        $oSetup = $this->getMock("Setup");
 
         $oSession = $this->getMock("Session", array("getSessionParam"), array(), '', null);
         $oSession->expects($this->once())->method("getSessionParam")->with($this->equalTo("aDB"))->will($this->returnValue(array("dbiDemoData" => 1)));
@@ -504,8 +502,7 @@ class ControllerTest extends OxidTestCase
      */
     public function testDbCreateFailedEnDataInsert()
     {
-        $oSetup = $this->getMock("Setup", array("getVersionPrefix"));
-        $oSetup->expects($this->any())->method("getVersionPrefix");
+        $oSetup = $this->getMock("Setup");
 
         $oSession = $this->getMock("Session", array("getSessionParam"), array(), '', null);
         $oSession->expects($this->at(0))->method("getSessionParam")->with($this->equalTo("aDB"))->will($this->returnValue(array("dbiDemoData" => 1)));
@@ -584,8 +581,7 @@ class ControllerTest extends OxidTestCase
      */
     public function testDbCreate()
     {
-        $oSetup = $this->getMock("Setup", array("getVersionPrefix", "setNextStep", "getStep"));
-        $oSetup->expects($this->any())->method("getVersionPrefix");
+        $oSetup = $this->getMock("Setup", array("setNextStep", "getStep"));
         $oSetup->expects($this->once())->method("setNextStep");
         $oSetup->expects($this->once())->method("getStep")->with($this->equalTo('STEP_DIRS_INFO'));
 

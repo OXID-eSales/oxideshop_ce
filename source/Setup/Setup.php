@@ -192,18 +192,6 @@ class Setup extends Core
     }
 
     /**
-     * Returns version prefix
-     *
-     * @return string
-     */
-    public function getVersionPrefix()
-    {
-        $sVerPrefix = '';
-
-        return $sVerPrefix;
-    }
-
-    /**
      * $iModuleState - module status:
      * -1 - unable to datect, should not block
      *  0 - missing, blocks setup

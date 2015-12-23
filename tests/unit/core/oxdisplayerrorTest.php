@@ -16,13 +16,13 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
 class Unit_Core_oxdisplayerrorTest extends OxidTestCase
 {
-
+    /** @var oxDisplayError */
     private $_oDisplayError;
 
     /**
@@ -61,4 +61,10 @@ class Unit_Core_oxdisplayerrorTest extends OxidTestCase
         $this->assertEquals($this->_oDisplayError->getValue("whatever"), "");
     }
 
+    public function testFormatingMessage()
+    {
+        $this->_oDisplayError->setMessage("Test %s string with %d values");
+        $this->_oDisplayError->setFormatParameters(array('formatting', 2));
+        $this->assertEquals("Test formatting string with 2 values", $this->_oDisplayError->getOxMessage());
+    }
 }

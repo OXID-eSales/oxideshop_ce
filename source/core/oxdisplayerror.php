@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -32,18 +32,26 @@ class oxDisplayError implements oxIDisplayError
      */
     protected $_sMessage;
 
+    /** @var array */
+    private $_aFormatParameters = array();
+
     /**
-     * returns the stored message
+     * Formats message using vsprintf if property _aFormatParameters was set and returns translated message.
      *
      * @return string stored message
      */
     public function getOxMessage()
     {
-        return oxRegistry::getLang()->translateString( $this->_sMessage );
+        $sTranslatedMessage = oxRegistry::getLang()->translateString($this->_sMessage);
+        if (!empty($this->_aFormatParameters)) {
+            $sTranslatedMessage = vsprintf($sTranslatedMessage, $this->_aFormatParameters);
+        }
+
+        return $sTranslatedMessage;
     }
 
     /**
-     * stored the message
+     * Stored the message.
      *
      * @param string $sMessage message
      *
@@ -52,6 +60,16 @@ class oxDisplayError implements oxIDisplayError
     public function setMessage( $sMessage )
     {
         $this->_sMessage = $sMessage;
+    }
+
+    /**
+     * Stes format parameters for message.
+     *
+     * @param array $aFormatParameters
+     */
+    public function setFormatParameters($aFormatParameters)
+    {
+        $this->_aFormatParameters = $aFormatParameters;
     }
 
     /**
@@ -69,7 +87,7 @@ class oxDisplayError implements oxIDisplayError
      *
      * @param string $sName value ignored
      *
-     * @return empty string
+     * @return string
      */
     public function getValue( $sName )
     {

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -112,13 +112,20 @@ class GenImport_Main extends oxAdminDetails
         }
 
         if ($sNavStep == 2) {
+            $configValidator = oxNew('oxNoJsValidator');
             //saving csv field terminator and encloser to config
-            if ($sTerminator = $oConfig->getRequestParameter('sGiCsvFieldTerminator')) {
+            $sTerminator = $oConfig->getRequestParameter('sGiCsvFieldTerminator');
+            if ($sTerminator && !$configValidator->isValid($sTerminator)) {
+                $this->setErrorToView($sTerminator);
+            } else {
                 $this->_sStringTerminator = $sTerminator;
                 $oConfig->saveShopConfVar('str', 'sGiCsvFieldTerminator', $sTerminator);
             }
 
-            if ($sEncloser = $oConfig->getRequestParameter('sGiCsvFieldEncloser')) {
+            $sEncloser = $oConfig->getRequestParameter('sGiCsvFieldEncloser');
+            if ($sEncloser && !$configValidator->isValid($sEncloser)) {
+                $this->setErrorToView($sEncloser);
+            } else {
                 $this->_sStringEncloser = $sEncloser;
                 $oConfig->saveShopConfVar('str', 'sGiCsvFieldEncloser', $sEncloser);
             }
@@ -352,5 +359,16 @@ class GenImport_Main extends oxAdminDetails
         }
 
         return $this->_sStringEncloser;
+    }
+
+    /**
+     * @param string $sInvalidData
+     */
+    private function setErrorToView($sInvalidData)
+    {
+        $error = oxNew('oxDisplayError');
+        $error->setFormatParameters(htmlspecialchars($sInvalidData));
+        $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
+        oxRegistry::get("oxUtilsView")->addErrorToDisplay($error);
     }
 }

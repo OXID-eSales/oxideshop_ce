@@ -39,11 +39,13 @@ class Language extends Core
     /**
      * Returns setup interface language id
      *
-     * @return striong
+     * @return string
      */
     public function getLanguage()
     {
+        /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
+        /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
 
         $iLanguage = $oUtils->getRequestVar("setup_lang", "post");
@@ -78,6 +80,7 @@ class Language extends Core
             $this->_aLangData = array();
             $sLangFilePath = getInstallPath() . EditionPathProvider::SETUP_DIRECTORY . '/' . ucfirst($this->getLanguage()) . '/lang.php';
             if (file_exists($sLangFilePath) && is_readable($sLangFilePath)) {
+                $aLang = array();
                 include $sLangFilePath;
                 $this->_aLangData = array_merge($aLang, $this->getAdditionalMessages());
             }

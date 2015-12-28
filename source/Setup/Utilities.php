@@ -68,7 +68,6 @@ class Utilities extends Core
     public function convertToUtf8($aData)
     {
         if (is_array($aData)) {
-
             $aKeys = array_keys($aData);
             $aValues = array_values($aData);
 
@@ -111,7 +110,7 @@ class Utilities extends Core
     }
 
     /**
-     * Recursivelly removes given path files and folders
+     * Recursively removes given path files and folders
      *
      * @param string $sPath           path to remove
      * @param bool   $blDeleteSuccess removal state marker
@@ -130,7 +129,6 @@ class Utilities extends Core
             $d->handle;
             while (false !== ($sEntry = $d->read())) {
                 if ($sEntry != "." && $sEntry != "..") {
-
                     $sFilePath = $sPath . "/" . $sEntry;
                     if (is_file($sFilePath)) {
                         if (!in_array(basename($sFilePath), $aSkipFiles)) {
@@ -259,6 +257,7 @@ class Utilities extends Core
      */
     public function updateHtaccessFile($aParams, $sSubFolder = "")
     {
+        /** @var Language $oLang */
         $oLang = $this->getInstance("Language");
 
         // preparing rewrite base param

@@ -75,6 +75,7 @@ class Session extends Core
     {
         session_name($this->_sSessionName);
 
+        /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
         $sSid = $oUtils->getRequestVar('sid', 'get');
 
@@ -151,33 +152,34 @@ class Session extends Core
      */
     protected function _initSessionData()
     {
+        /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
 
-        //storring country value settings to session
+        //storing country value settings to session
         $sLocationLang = $oUtils->getRequestVar("location_lang", "post");
         if (isset($sLocationLang)) {
             $this->setSessionParam('location_lang', $sLocationLang);
         }
 
-        //storring country value settings to session
+        //storing country value settings to session
         $sCountryLang = $oUtils->getRequestVar("country_lang", "post");
         if (isset($sCountryLang)) {
             $this->setSessionParam('country_lang', $sCountryLang);
         }
 
-        //storring shop language value settings to session
+        //storing shop language value settings to session
         $sShopLang = $oUtils->getRequestVar("sShopLang", "post");
         if (isset($sShopLang)) {
             $this->setSessionParam('sShopLang', $sShopLang);
         }
 
-        //storring dyn pages settings to session
+        //storing dyn pages settings to session
         $blUseDynPages = $oUtils->getRequestVar("use_dynamic_pages", "post");
         if (isset($blUseDynPages)) {
             $this->setSessionParam('use_dynamic_pages', $blUseDynPages);
         }
 
-        //storring dyn pages settings to session
+        //storing dyn pages settings to session
         $blCheckForUpdates = $oUtils->getRequestVar("check_for_updates", "post");
         if (isset($blCheckForUpdates)) {
             $this->setSessionParam('check_for_updates', $blCheckForUpdates);

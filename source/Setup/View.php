@@ -231,7 +231,9 @@ class View extends Core
     {
         //finalizing installation
         $blDeleted = true;
+        /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
+        /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
         $sPath = getInstallPath();
 

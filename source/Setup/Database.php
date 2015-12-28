@@ -146,6 +146,7 @@ class Database extends Core
     {
         $fp = @fopen($sFilename, "r");
         if (!$fp) {
+            /** @var Setup $oSetup */
             $oSetup = $this->getInstance("Setup");
             // problems with file
             $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
@@ -360,7 +361,7 @@ class Database extends Core
     public function convertConfigTableToUtf()
     {
         $oConfk = new Conf();
-        /** @var Utils $oUtils */
+        /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
 
         $pdo = $this->getConnection();
@@ -370,7 +371,6 @@ class Database extends Core
         $oUpdate = $pdo->prepare("UPDATE oxconfig SET oxvarvalue = ENCODE( :varValue, '{$oConfk->sConfigKey}') WHERE oxid = :oxid; ");
 
         while (false !== ($aRow = $oSelect->fetch())) {
-
             if ($aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr') {
                 $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue']);
             }
@@ -498,11 +498,11 @@ class Database extends Core
     /**
      * Adds config value if shop info should be set.
      *
-     * @param Utilities   $utilities  Setup utilities
-     * @param string  $baseShopId Shop id
-     * @param array   $parameters Parameters
-     * @param Conf    $configKey  Config key loader
-     * @param Session $session    Setup session manager
+     * @param Utilities $utilities  Setup utilities
+     * @param string    $baseShopId Shop id
+     * @param array     $parameters Parameters
+     * @param Conf      $configKey  Config key loader
+     * @param Session   $session    Setup session manager
      */
     protected function addConfigValueIfShopInfoShouldBeSent($utilities, $baseShopId, $parameters, $configKey, $session)
     {

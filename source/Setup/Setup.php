@@ -48,6 +48,9 @@ class Setup extends Core
      */
     protected $_iCurrStep = null;
 
+    /** @var int Next step index */
+    protected $_iNextStep = null;
+
     /**
      * Setup steps index array
      *

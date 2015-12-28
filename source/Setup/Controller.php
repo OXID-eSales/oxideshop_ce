@@ -32,6 +32,9 @@ use OxidEsales\Eshop\Core\Edition\EditionSelector;
  */
 class Controller extends Core
 {
+    /** @var View */
+    private $_oView = null;
+
     /**
      * Returns View object
      *
@@ -54,8 +57,11 @@ class Controller extends Core
      */
     public function systemReq()
     {
+        /** @var Setup $oSetup */
         $oSetup = $this->getInstance("Setup");
+        /** @var Language $oLanguage */
         $oLanguage = $this->getInstance("Language");
+        /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
         $oView = $this->getView();
 
@@ -111,6 +117,7 @@ class Controller extends Core
      */
     public function welcome()
     {
+        /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
 
         //setting admin area default language
@@ -160,11 +167,13 @@ class Controller extends Core
     public function dbInfo()
     {
         $oView = $this->getView();
+        /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
 
         $iEula = $this->getInstance("Utilities")->getRequestVar("iEula", "post");
         $iEula = (int) ($iEula ? $iEula : $oSession->getSessionParam("eula"));
         if (!$iEula) {
+            /** @var Setup $oSetup */
             $oSetup = $this->getInstance("Setup");
             $oSetup->setNextStep($oSetup->getStep("STEP_WELCOME"));
             $oView->setMessage($this->getInstance("Language")->getText("ERROR_SETUP_CANCELLED"));
@@ -199,6 +208,7 @@ class Controller extends Core
      */
     public function dirsInfo()
     {
+        /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
         $oView = $this->getView();
         $oView->setTitle('STEP_4_TITLE');
@@ -216,8 +226,11 @@ class Controller extends Core
      */
     public function dbConnect()
     {
+        /** @var Setup $oSetup */
         $oSetup = $this->getInstance("Setup");
+        /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
+        /** @var Language $oLang */
         $oLang = $this->getInstance("Language");
 
         $oView = $this->getView();
@@ -239,6 +252,7 @@ class Controller extends Core
 
         try {
             // ok check DB Connection
+            /** @var Database $oDb */
             $oDb = $this->getInstance("Database");
             $oDb->openDatabase($aDB);
         } catch (Exception $oExcp) {
@@ -281,7 +295,9 @@ class Controller extends Core
     {
         /** @var Setup $oSetup */
         $oSetup = $this->getInstance("Setup");
+        /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
+        /** @var Language $oLang */
         $oLang = $this->getInstance("Language");
 
         $oView = $this->getView();
@@ -293,6 +309,7 @@ class Controller extends Core
             $blOverwrite = false;
         }
 
+        /** @var Database $oDb */
         $oDb = $this->getInstance("Database");
         $oDb->openDatabase($aDB);
 
@@ -309,7 +326,6 @@ class Controller extends Core
 
         // check if DB is already UP and running
         if (!$blOverwrite) {
-
             try {
                 $blDbExists = true;
                 $oDb->execSql("select * from oxconfig");
@@ -331,7 +347,7 @@ class Controller extends Core
         $editionPathSelector = $this->getEditionPathProvider();
         $sqlDir = $editionPathSelector->getDatabaseSqlDirectory();
 
-        //settting database collation
+        //setting database collation
         $iUtfMode = isset($aDB['iUtfMode']) ? ((int) $aDB['iUtfMode']) : 0;
         $oDb->setMySqlCollation($iUtfMode);
 
@@ -344,7 +360,7 @@ class Controller extends Core
         }
 
         if ($aDB['dbiDemoData'] == '1') {
-            // install demodata
+            // install demo data
             try {
                 $oDb->queryFile("$sqlDir/demodata.sql");
             } catch (Exception $oExcp) {
@@ -398,7 +414,7 @@ class Controller extends Core
         $oSetup = $this->getInstance("Setup");
         /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
-        /** @var Lang $oLang */
+        /** @var Language $oLang */
         $oLang = $this->getInstance("Language");
         /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
@@ -504,6 +520,7 @@ class Controller extends Core
      */
     public function finish()
     {
+        /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
         $aPath = $oSession->getSessionParam("aPath");
 

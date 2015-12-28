@@ -21,6 +21,7 @@
  */
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopProfessional\Core\Serial;
 
 if (!function_exists('isAdmin')) {
     /**
@@ -170,11 +171,11 @@ if (!function_exists('getSerial') && !$editionSelector->isCommunity()) {
     /**
      * Creates and returns oxSerial object
      *
-     * @return oxSerial
+     * @return Serial
      */
     function getSerial()
     {
-        return new OxidEsales\EshopProfessional\Core\Serial();
+        return new Serial();
     }
 }
 
@@ -187,8 +188,6 @@ if (!class_exists("Config")) {
 
         /**
          * Class constructor, loads config file data
-         *
-         * @return null
          */
         public function __construct()
         {
@@ -203,11 +202,8 @@ if (!class_exists("Conf")) {
      */
     class Conf
     {
-
         /**
          * Class constructor, loads config key
-         *
-         * @return null
          */
         public function __construct()
         {

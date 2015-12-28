@@ -367,42 +367,12 @@ class oxDbMetaDataHandler extends oxSuperCfg
      * Add new multi-languages fields to table. Duplicates all multi-language
      * fields and fields indexes with next available language ID
      *
-     * @param string $sTable table name
+     * @param string $table table name
      */
-    public function addNewMultilangField($sTable)
+    public function addNewMultilangField($table)
     {
-        $aSql = array();
-        $aFields = $this->getMultilangFields($sTable);
-        $iMaxLang = $this->getCurrentMaxLangId();
-        $iNewLang = $this->getNextLangId();
-
-        $sTableSet = getLangTableName($sTable, $iNewLang);
-        if (!$this->tableExists($sTableSet)) {
-            $aSql[] = $this->_getCreateTableSetSql($sTable, $iNewLang);
-        }
-
-        if (is_array($aFields) && count($aFields) > 0) {
-            foreach ($aFields as $sField) {
-                $sNewFieldName = $sField . "_" . $iNewLang;
-                if ($iNewLang > 1) {
-                    $iPrevLang = $iNewLang - 1;
-                    $sPrevField = $sField . '_' . $iPrevLang;
-                } else {
-                    $sPrevField = $sField;
-                }
-
-                if (!$this->tableExists($sTableSet) || !$this->fieldExists($sNewFieldName, $sTableSet)) {
-
-                    //getting add field sql
-                    $aSql[] = $this->getAddFieldSql($sTable, $sField, $sNewFieldName, $sPrevField, $sTableSet);
-
-                    //getting add index sql on added field
-                    $aSql = array_merge($aSql, (array) $this->getAddFieldIndexSql($sTable, $sField, $sNewFieldName, $sTableSet));
-                }
-            }
-        }
-
-        $this->executeSql($aSql);
+        $newLang = $this->getNextLangId();
+        $this->ensureMultiLanguageFields($table, $newLang);
     }
 
     /**
@@ -522,6 +492,8 @@ class oxDbMetaDataHandler extends oxSuperCfg
         $oDb = oxDb::getDb();
         $oConfig = oxRegistry::getConfig();
 
+        $this->safeGuardAdditionalMultiLanguageTables();
+
         $aShops = $oDb->getAll("select * from oxshops");
 
         $aTables = $aTables ? $aTables : $oConfig->getConfigParam('aMultiShopTables');
@@ -560,5 +532,74 @@ class oxDbMetaDataHandler extends oxSuperCfg
             }
         }
         return $fields;
+    }
+
+    /**
+     * Ensure that all *_set* tables for all tables in config parameter 'aMultiLangTables'
+     * are created.
+     *
+     * @return null
+     */
+    protected function safeGuardAdditionalMultiLanguageTables()
+    {
+        $maxLang = $this->getCurrentMaxLangId();
+        $multiLanguageTables = $this->getConfig()->getConfigParam('aMultiLangTables');
+
+        if (!is_array($multiLanguageTables) || empty($multiLanguageTables)) {
+            return; //nothing to do
+        }
+
+        foreach ($multiLanguageTables as $table) {
+            if ($this->tableExists($table)) {
+                //We start with language id 1 and rely on that all fields for language 0 exists.
+                //For language id 0 we have e.g. OXTITLE and logic here would expect it to
+                //be OXTITLE_0, add that as new field, leading to incorrect data in views later on.
+                for ($i=1;$i<=$maxLang;$i++) {
+                    $this->ensureMultiLanguageFields($table, $i);
+                }
+            }
+        }
+    }
+
+    /**
+     * Make sure that all *_set* tables with all required multilanguage fields are created.
+     *
+     * @param $table
+     * @param $languagaId
+     *
+     * @return null
+     */
+    protected function ensureMultiLanguageFields($table, $languageId)
+    {
+        $fields = $this->getMultilangFields($table);
+        $sql = array();
+
+        $tableSet = getLangTableName($table, $languageId);
+        if (!$this->tableExists($tableSet)) {
+            $sql[] = $this->_getCreateTableSetSql($table, $languageId);
+        }
+
+        if (is_array($fields) && count($fields) > 0) {
+            foreach ($fields as $field) {
+                $newFieldName = $field . "_" . $languageId;
+                if ($languageId > 1) {
+                    $previousLanguage = $languageId - 1;
+                    $previousField = $field . '_' . $previousLanguage;
+                } else {
+                    $previousField = $field;
+                }
+
+                if (!$this->tableExists($tableSet) || !$this->fieldExists($newFieldName, $tableSet)) {
+
+                    //getting add field sql
+                    $sql[] = $this->getAddFieldSql($table, $field, $newFieldName, $previousField, $tableSet);
+
+                    //getting add index sql on added field
+                    $sql = array_merge($sql, (array) $this->getAddFieldIndexSql($table, $field, $newFieldName, $tableSet));
+                }
+            }
+        }
+
+        $this->executeSql($sql);
     }
 }

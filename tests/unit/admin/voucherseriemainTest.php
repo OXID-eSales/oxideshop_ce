@@ -141,6 +141,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
         $this->setRequestParameter("voucherAmount", "testvoucherAmount");
         $this->setRequestParameter("randomVoucherNr", "testrandomVoucherNr");
         $this->setRequestParameter("voucherNr", "testvoucherNr");
+        $this->setRequestParameter("cl", "voucherserie_generate");
 
         $oView = new VoucherSerie_Main();
         $oView->start();
@@ -151,6 +152,28 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
         $this->assertEquals($oSession->getVariable("voucherAmount"), 0);
         $this->assertEquals($oSession->getVariable("randomVoucherNr"), "testrandomVoucherNr");
         $this->assertEquals($oSession->getVariable("voucherNr"), "testvoucherNr");
+    }
+
+    /**
+     * Test covers #0006284
+     */
+    public function testNotAllowEmptyVoucherGeneration()
+    {
+        $this->setRequestParameter("voucherid", "testvoucherid");
+        $this->setRequestParameter("voucherAmount", "testvoucherAmount");
+        $this->setRequestParameter("randomVoucherNr", "");
+        $this->setRequestParameter("voucherNr", "");
+        $this->setRequestParameter("cl", "voucherserie_generate");
+
+        $oView = oxNew('VoucherSerie_Main');
+        $oView->start();
+
+        $oSession = $this->getSession();
+
+        $this->assertNull($oSession->getVariable("voucherid"), "testvoucherid");
+        $this->assertNull($oSession->getVariable("voucherAmount"), 0);
+        $this->assertNull($oSession->getVariable("randomVoucherNr"));
+        $this->assertNull($oSession->getVariable("voucherNr"));
     }
 
     /**

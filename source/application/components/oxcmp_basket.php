@@ -123,7 +123,7 @@ class oxcmp_basket extends oxView
      * @param double $dAmount    Product amount (default null)
      * @param array  $aSel       (default null)
      * @param array  $aPersParam (default null)
-     * @param bool   $blOverride If true means increase amount of chosen article (default false)
+     * @param bool   $blOverride If true amount in basket is replaced by $dAmount otherwise amount is increased by $dAmount (default false)
      *
      * @return mixed
      */

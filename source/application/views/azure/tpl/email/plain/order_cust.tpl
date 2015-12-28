@@ -226,7 +226,7 @@
 [{/block}]
 
 [{block name="email_plain_order_cust_address"}]
-[{oxmultilang ident="BILLING_ADDRESS" suffix="COLON}]
+[{oxmultilang ident="BILLING_ADDRESS" suffix="COLON"}]
 [{include file="email/plain/inc/billing_address.tpl"}]
 
 

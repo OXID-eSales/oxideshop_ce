@@ -180,13 +180,6 @@
                 <TAB id="tbclpricealarm_mail" cl="pricealarm_mail" />
             </SUBMENU>
         </MAINMENU>
-        <MAINMENU id="mxstat">
-            <SUBMENU id="mxshow" cl="statistic" list="statistic_list">
-                <TAB id="tbclstatistic_main" cl="statistic_main" />
-                <TAB id="tbclstatistic_service" cl="statistic_service" />
-                <BTN id="statistic_new" />
-            </SUBMENU>
-        </MAINMENU>
         <MAINMENU id="mxservice">
             <SUBMENU id="mxsysinfo" cl="systeminfo" rights="malladmin" disableForDemoShop="1" />
             <SUBMENU id="mxsysreq" cl="sysreq" list="sysreq_list">

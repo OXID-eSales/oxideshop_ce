@@ -36,7 +36,6 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         parent::tearDown();
 
-        oxDb::getDb()->execute("delete from oxlogs");
         modDB::getInstance()->cleanup();
     }
 
@@ -290,35 +289,6 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
             return;
         }
         $this->fail("Error while executing testStartCookieExceptionThrown_onlyInDebugMode()");
-    }
-
-    /**
-     * Testing oxShopControl::_log()
-     *
-     * @return null
-     */
-    public function testLog()
-    {
-        $oDb = oxDb::getDb();
-
-        $this->setSessionParam("actshop", "testshopid");
-        $this->setSessionParam("usr", "testusr");
-
-        $this->setRequestParameter("cnid", "testcnid");
-        $this->setRequestParameter("aid", "testaid");
-        $this->setRequestParameter("tpl", "testtpl.tpl");
-        $this->setRequestParameter("searchparam", "testsearchparam");
-
-        $this->assertEquals(0, $oDb->getOne("select count(*) from oxlogs"));
-
-        //
-        $oControl = oxNew('oxShopControl');
-        $oControl->UNITlog('content', 'testFnc1');
-        $oControl->UNITlog('search', 'testFnc2');
-
-        $this->assertEquals(2, $oDb->getOne("select count(*) from oxlogs"));
-        $this->assertTrue((bool) $oDb->getOne("select 1 from oxlogs where oxclass='content' and oxparameter='testtpl'"));
-        $this->assertTrue((bool) $oDb->getOne("select 1 from oxlogs where oxclass='search' and oxparameter='testsearchparam'"));
     }
 
     /**

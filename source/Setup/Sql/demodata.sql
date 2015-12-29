@@ -4190,12 +4190,6 @@ INSERT INTO `oxreviews` (`OXID`, `OXACTIVE`, `OXOBJECTID`, `OXTYPE`, `OXTEXT`, `
 UPDATE `oxshops` SET `OXDEFCAT` = '8a142c3e60a535f16.78077188' WHERE `OXID` = 'oxbaseshop';
 
 #
-# Data for table `oxstatistics`
-#
-INSERT INTO `oxstatistics` (`OXID`, `OXSHOPID`, `OXTITLE`, `OXVALUE`) VALUES
-  ('79c3fbcc7793ee6a2.42827424', 'oxbaseshop', 'Report 1', 'a:2:{i:0;s:27:"report_visitor_absolute.php";i:1;s:24:"report_searchstrings.php";}');
-
-#
 # Data for table `oxuser`
 #
 INSERT INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`, `OXPASSWORD`, `OXPASSSALT`, `OXCUSTNR`, `OXUSTID`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`, `OXCOUNTRYID`, `OXSTATEID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`, `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`, `OXURL`, `OXUPDATEKEY`, `OXUPDATEEXP`, `OXPOINTS`, `OXFBID`) VALUES

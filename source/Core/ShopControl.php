@@ -231,14 +231,6 @@ class ShopControl extends \oxSuperCfg
         // executing maintenance tasks
         $this->_executeMaintenanceTasks();
 
-        $utils = oxRegistry::getUtils();
-
-        if (!$utils->isSearchEngine() &&
-            !($this->isAdmin() || !$config->getConfigParam('blLogging'))
-        ) {
-            $this->_log($class, $function);
-        }
-
         // starting resource monitor
         $this->_startMonitor();
 
@@ -578,45 +570,6 @@ class ShopControl extends \oxSuperCfg
         }
 
         return false;
-    }
-
-    /**
-     * Logs user performed actions to DB. Skips action logging if
-     * it's search engine.
-     *
-     * @param string $class Name of class
-     * @param string $fnc   Name of executed class method
-     */
-    protected function _log($class, $fnc)
-    {
-        $database = oxDb::getDb();
-        $config = $this->getConfig();
-        $session = $this->getSession();
-
-        $shopId = $session->getVariable('actshop');
-        $time = date('Y-m-d H:i:s');
-        $sidQuoted = $database->quote($session->getId());
-        $userIDQuoted = $database->quote($session->getVariable('usr'));
-
-        $categoryId = $config->getRequestParameter('cnid');
-        $articleId = $config->getRequestParameter('aid') ? $config->getRequestParameter('aid') : $config->getRequestParameter('anid');
-
-        $parameter = '';
-
-        if ($class == 'content') {
-            $parameter = str_replace('.tpl', '', $config->getRequestParameter('tpl'));
-        } elseif ($class == 'search') {
-            $parameter = $config->getRequestParameter('searchparam');
-        }
-
-        $fncQuoted = $database->quote($fnc);
-        $classQuoted = $database->quote($class);
-        $parameterQuoted = $database->quote($parameter);
-
-        $query = "insert into oxlogs (oxtime, oxshopid, oxuserid, oxsessid, oxclass, oxfnc, oxcnid, oxanid, oxparameter) " .
-            "values( '$time', '$shopId', $userIDQuoted, $sidQuoted, $classQuoted, $fncQuoted, " . $database->quote($categoryId) . ", " . $database->quote($articleId) . ", $parameterQuoted )";
-
-        $database->execute($query);
     }
 
     /**

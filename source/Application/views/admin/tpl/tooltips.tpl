@@ -82,7 +82,6 @@ function popDown(currElem)
 <span class="popUpStyle" id="order_date" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_FORMAT"}]</span>
 <span class="popUpStyle" id="news_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWNEWS"}]</span>
 <span class="popUpStyle" id="voucher_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWVOUCHER"}]</span>
-<span class="popUpStyle" id="statistic_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWSTATISTIC"}]</span>
 <span class="popUpStyle" id="category_refresh" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWCATTREE"}]</span>
 <span class="popUpStyle" id="editvariant" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_EDITVAR"}]</span>
 <span class="popUpStyle" id="links_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWLINK"}]</span>
@@ -125,7 +124,6 @@ function popDown(currElem)
 <span class="popUpStyle" id="order_date" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_FORMAT"}]</span>
 <span class="popUpStyle" id="news_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWNEWS"}]</span>
 <span class="popUpStyle" id="voucher_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWVOUCHER"}]</span>
-<span class="popUpStyle" id="statistic_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWSTATISTIC"}]</span>
 <span class="popUpStyle" id="category_refresh" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWCATTREE"}]</span>
 <span class="popUpStyle" id="editvariant" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_EDITVAR"}]</span>
 <span class="popUpStyle" id="links_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWLINK"}]</span>

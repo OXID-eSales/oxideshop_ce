@@ -323,7 +323,7 @@ class View extends \oxSuperCfg
     /**
      * Returns view config object
      *
-     * @return oxViewConfig
+     * @return \oxViewConfig
      */
     public function getViewConfig()
     {

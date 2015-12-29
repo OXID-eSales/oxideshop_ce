@@ -82,7 +82,6 @@ class Unit_utf8Test extends OxidTestCase
         $this->cleanUpTable('oxvouchers');
         $this->cleanUpTable('oxvoucherseries');
         $this->cleanUpTable('oxwrapping');
-        $this->cleanUpTable('oxstatistics');
 
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->cleanUpTable('oxroles');
@@ -1295,31 +1294,6 @@ class Unit_utf8Test extends OxidTestCase
 
         foreach ($aFields as $sFieldName) {
             $this->assertTrue(strcmp($oShop->{$sFieldName}->value, $sValue) === 0, "$sFieldName (" . $oShop->{$sFieldName}->value . ")");
-        }
-    }
-
-    public function testOxStatisticsSaveAndLoad()
-    {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $this->markTestSkipped('This test is for Community and Professional editions only.');
-        }
-
-        $value = 'agentūЛитовfür';
-
-        $fields = array('oxstatistics__oxtitle', 'oxstatistics__oxvalue');
-
-        $statistics = oxNew('oxStatistic');
-        $statistics->setId('_testStat');
-        foreach ($fields as $fieldName) {
-            $statistics->{$fieldName} = new oxField($value);
-        }
-        $statistics->save();
-
-        $statistics = oxNew('oxStatistic');
-        $statistics->load('_testStat');
-
-        foreach ($fields as $fieldName) {
-            $this->assertTrue(strcmp($statistics->{$fieldName}->value, $value) === 0, "$fieldName (" . $statistics->{$fieldName}->value . ")");
         }
     }
 

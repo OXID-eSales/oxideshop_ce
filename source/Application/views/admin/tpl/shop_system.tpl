@@ -279,17 +279,6 @@ function editThis( sID )
                 </dd>
                 <div class="spacer"></div>
             </dl>
-            <dl>
-                <dt>
-                    <input [{$readonly}] type=hidden name=confbools[blLogging] value=false>
-                    <input type=checkbox name=confbools[blLogging] value=true  [{if ($confbools.blLogging)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_SYSTEM_BLLOGGING"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_SYSTEM_BLLOGGING"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
 
             [{if !$isdemoshop}]
             <dl>

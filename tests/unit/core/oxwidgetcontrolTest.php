@@ -27,7 +27,6 @@ class Unit_Core_oxWidgetControlTest extends OxidTestCase
     {
         parent::tearDown();
 
-        oxDb::getDb()->execute("delete from oxlogs");
         modDB::getInstance()->cleanup();
     }
 

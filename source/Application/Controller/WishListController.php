@@ -74,7 +74,6 @@ class WishListController extends oxUBase
      */
     protected $_blBargainAction = true;
 
-
     /**
      * return the user which is owner of the wish list
      *

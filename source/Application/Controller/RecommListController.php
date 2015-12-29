@@ -113,7 +113,6 @@ class RecommListController extends \AList
      */
     protected $_oPageNavigation = null;
 
-
     /**
      * Collects current view data, return current template file name
      *

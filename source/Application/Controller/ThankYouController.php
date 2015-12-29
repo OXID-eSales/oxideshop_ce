@@ -97,7 +97,6 @@ class ThankYouController extends oxUBase
      */
     protected $_blBargainAction = true;
 
-
     /**
      * Current class template name.
      *

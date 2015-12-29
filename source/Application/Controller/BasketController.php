@@ -108,7 +108,6 @@ class BasketController extends \oxUBase
      */
     protected $_aSimilarRecommListIds = null;
 
-
     /**
      * Executes parent::render(), creates list with basket articles
      * Returns name of template file basket::_sThisTemplate (for Search

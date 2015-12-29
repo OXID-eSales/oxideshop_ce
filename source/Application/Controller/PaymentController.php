@@ -137,7 +137,6 @@ class PaymentController extends \oxUBase
      */
     protected $_blDynDataFiltered = false;
 
-
     /**
      * Executes parent method parent::init().
      */

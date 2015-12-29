@@ -28,7 +28,7 @@ use oxRegistry;
  * Comparing Products.
  * Takes a few products and show attribute values to compare them.
  */
-class Compare extends \oxUBase
+class CompareController extends \oxUBase
 {
 
     /**
@@ -122,7 +122,6 @@ class Compare extends \oxUBase
      * @var array
      */
     protected $_aSimilarRecommListIds = null;
-
 
     /**
      * moves current article to the left in compare items array

@@ -123,7 +123,6 @@ class StartController extends oxUBase
      */
     protected $_blBargainAction = true;
 
-
     /**
      * Executes parent::render(), loads action articles
      * (oxarticlelist::loadActionArticles()). Returns name of

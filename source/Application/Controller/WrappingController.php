@@ -60,7 +60,6 @@ class WrappingController extends oxUBase
      */
     protected $_oCards = null;
 
-
     /**
      * Returns array of shopping basket articles
      *

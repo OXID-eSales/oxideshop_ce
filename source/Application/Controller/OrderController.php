@@ -144,7 +144,6 @@ class OrderController extends \oxUBase
      */
     protected $_iWrapCnt = null;
 
-
     /**
      * Loads basket oxsession::getBasket(), sets $this->oBasket->blCalcNeeded = true to
      * recalculate, sets back basket to session oxsession::setBasket(), executes

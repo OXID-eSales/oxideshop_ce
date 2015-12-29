@@ -53,7 +53,6 @@ class RssController extends oxUBase
      */
     protected $_aXmlDef = null;
 
-
     /**
      * Current class template name.
      *

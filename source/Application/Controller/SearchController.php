@@ -145,7 +145,6 @@ class SearchController extends oxUBase
      */
     protected $_aSimilarRecommListIds = null;
 
-
     /**
      * Fetches search parameter from GET/POST/session, prepares search
      * SQL (search::GetWhere()), and executes it forming the list of

@@ -62,10 +62,10 @@ class EditionSelector
 
         $edition = static::COMMUNITY;
 
-        if (OXID_VERSION_EE) {
+        if (defined('OXID_VERSION_EE') && OXID_VERSION_EE) {
             $edition = static::ENTERPRISE;
         }
-        if (OXID_VERSION_PE_PE) {
+        if (defined('OXID_VERSION_PE_PE') && OXID_VERSION_PE_PE) {
             $edition = static::PROFESSIONAL;
         }
 

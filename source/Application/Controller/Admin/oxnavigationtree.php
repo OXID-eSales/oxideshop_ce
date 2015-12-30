@@ -468,7 +468,6 @@ class OxNavigationTree extends oxSuperCfg
         $sDynLang = $this->_getDynMenuLang();
         $sLocalDynPath = "{$sTmpDir}{$sDynLang}_dynscreen.xml";
 
-
         // including std file
         if (file_exists($sMenuFile)) {
             $aFilesToLoad[] = $sMenuFile;

@@ -10,6 +10,7 @@ function _groupExp(el) {
 }
 //-->
 </script>
+[{include file="include/rdfa_script.tpl"}]
 
 [{assign var="readonly" value=""}]
 [{if $readonly}]

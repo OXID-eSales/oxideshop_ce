@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
 
 /**
  * Rss feed manager
@@ -84,11 +85,12 @@ class oxRssFeed extends oxSuperCfg
                 $this->_aChannel['managingEditor'] .= " ({$oShop->oxshops__oxfname} {$oShop->oxshops__oxlname})";
             }
         }
-        //$this->_aChannel['webMaster']      = '';
 
         $this->_aChannel['generator'] = $oShop->oxshops__oxname->value;
-        $this->_aChannel['image']['url'] = $this->getConfig()->getImageUrl() . 'logo.png';
 
+        $editionSelector = new EditionSelector();
+        $this->_aChannel['image']['url'] = $this->getConfig()->getImageUrl()
+            . 'logo_' . strtolower($editionSelector->getEdition()) . '.png';
 
         $this->_aChannel['image']['title'] = $this->_aChannel['title'];
         $this->_aChannel['image']['link'] = $this->_aChannel['link'];

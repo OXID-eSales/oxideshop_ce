@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
 
 /**
  * View config data access class. Keeps most
@@ -1501,10 +1502,10 @@ class oxViewConfig extends oxSuperCfg
     public function getShopLogo()
     {
         if (is_null($this->_sShopLogo)) {
-
             $sLogoImage = $this->getConfig()->getConfigParam('sShopLogo');
             if (empty($sLogoImage)) {
-                $sLogoImage = "logo.png";
+                $editionSelector = new EditionSelector();
+                $sLogoImage = "logo_" . strtolower($editionSelector->getEdition()) . ".png";
             }
 
             $this->setShopLogo($sLogoImage);

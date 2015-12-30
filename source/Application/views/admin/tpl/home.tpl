@@ -4,7 +4,7 @@
     [{block name="admin_home_head"}]
         <title>[{oxmultilang ident="MAIN_TITLE"}]</title>
         <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]main.css">
-        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors.css">
+        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors_[{$oViewConf->getEdition()|lower}].css">
         <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
     [{/block}]
 </head>

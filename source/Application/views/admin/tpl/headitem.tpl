@@ -9,9 +9,9 @@
   <link rel="shortcut icon" href="[{$oViewConf->getBaseDir()}]favicon.ico">
 
   [{block name="admin_headitem_inccss"}]
-      <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]main.css">
-      <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors.css">
-      <link rel="stylesheet" type="text/css" href="[{$oViewConf->getResourceUrl()}]yui/build/assets/skins/sam/container.css">
+        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]main.css">
+        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors_[{$oViewConf->getEdition()|lower}].css">
+        <link rel="stylesheet" type="text/css" href="[{$oViewConf->getResourceUrl()}]yui/build/assets/skins/sam/container.css">
   [{/block}]
 
   [{block name="admin_headitem_incjs"}]

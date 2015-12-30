@@ -29,7 +29,7 @@
         div.errorbox{color:#f00;text-align:center;margin:0 0 5px 0;}
         .notify {position: fixed; width: 100%; font-size: 16px; color: #fff; background-color: #f77704; padding: 8px 0 8px 0; text-align: center; border-bottom: 1px solid #d36706;}
     </style>
-    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors.css">
+    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors_[{$oViewConf->getEdition()|lower}].css">
 </head>
 <body>
 

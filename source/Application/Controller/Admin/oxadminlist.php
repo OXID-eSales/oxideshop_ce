@@ -27,6 +27,8 @@
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
  *
+ * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
+ *
  * @mixin \OxidEsales\EshopEnterprise\Application\Controller\Admin\AdminList
  */
 class oxAdminList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList

@@ -24,6 +24,8 @@
  * @inheritdoc
  *
  * This class must be empty because of others eShop editions classes which can be used instead of it.
+ *
+ * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
 class Newsletter extends \OxidEsales\Eshop\Application\Controller\NewsletterController
 {

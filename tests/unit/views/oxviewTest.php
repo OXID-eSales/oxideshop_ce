@@ -110,7 +110,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     {
         $oView = oxNew('search');
         $oView->init();
-        $this->assertEquals("search", $oView->getThisAction());
+        $this->assertEquals(strtolower(get_class($oView)), $oView->getThisAction());
     }
 
     /*

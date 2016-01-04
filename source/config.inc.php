@@ -33,7 +33,11 @@
     $this->sCompileDir  = '<sCompileDir>';
 
     // UTF-8 mode in shop 0 - off, 1 - on
-    $this->iUtfMode  = '<iUtfMode>';
+    $this->iUtfMode = '<iUtfMode>';
+
+    // Force shop edition. Even if enterprise or professional packages exists, shop edition can still be forced here.
+    // Possible options: CE|PE|EE or left empty (will be determined automatically).
+    $this->edition = '';
 
     // File type whitelist for file upload
     $this->aAllowedUploadTypes = array('jpg', 'gif', 'png', 'pdf', 'mp3', 'avi', 'mpg', 'mpeg', 'doc', 'xls', 'ppt');

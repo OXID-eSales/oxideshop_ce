@@ -22,6 +22,8 @@
 
 namespace OxidEsales\Eshop\Core\Edition;
 
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Class is responsible for returning edition.
  *
@@ -46,7 +48,7 @@ class EditionSelector
      */
     public function __construct($edition = null)
     {
-        $this->edition = $edition;
+        $this->edition = $edition ?: $this->findEdition();
     }
 
     /**
@@ -56,20 +58,7 @@ class EditionSelector
      */
     public function getEdition()
     {
-        if (!is_null($this->edition)) {
-            return $this->edition;
-        }
-
-        $edition = static::COMMUNITY;
-
-        if (defined('OXID_VERSION_EE') && OXID_VERSION_EE) {
-            $edition = static::ENTERPRISE;
-        }
-        if (defined('OXID_VERSION_PE_PE') && OXID_VERSION_PE_PE) {
-            $edition = static::PROFESSIONAL;
-        }
-
-        return $edition;
+        return $this->edition;
     }
 
     /**
@@ -94,5 +83,36 @@ class EditionSelector
     public function isCommunity()
     {
         return $this->getEdition() === static::COMMUNITY;
+    }
+
+    /**
+     * Check for forced edition in config file. If edition is not specified,
+     * determine it by ClassMap existence.
+     *
+     * @return string
+     */
+    protected function findEdition()
+    {
+        if (class_exists('OxidEsales\Eshop\Core\Registry') && Registry::instanceExists('oxConfigFile')) {
+            $edition = Registry::get('oxConfigFile')->getVar('edition');
+        }
+        return isset($edition) && !empty($edition) ? $edition : $this->findEditionByClassMap();
+    }
+
+    /**
+     * Determine shop version by ClassMap existence.
+     *
+     * @return string
+     */
+    protected function findEditionByClassMap()
+    {
+        $edition = static::COMMUNITY;
+        if (class_exists('OxidEsales\EshopEnterprise\ClassMap')) {
+            $edition = static::ENTERPRISE;
+        } elseif (class_exists('OxidEsales\EshopProfessional\ClassMap')) {
+            $edition = static::PROFESSIONAL;
+        }
+
+        return $edition;
     }
 }

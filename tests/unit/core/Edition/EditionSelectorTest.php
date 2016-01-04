@@ -88,4 +88,15 @@ class EditionSelectorTest extends OxidEsales\TestingLibrary\UnitTestCase
         $this->assertFalse($editionSelector->isEnterprise());
         $this->assertFalse($editionSelector->isProfessional());
     }
+
+    public function testForcingEditionByConfig()
+    {
+        $configFile = oxRegistry::get('oxConfigFile');
+        $configFile->setVar('edition', 'EE');
+
+        $editionSelector = new EditionSelector();
+        $this->assertTrue($editionSelector->isEnterprise());
+        $this->assertFalse($editionSelector->isCommunity());
+        $this->assertFalse($editionSelector->isProfessional());
+    }
 }

@@ -28,7 +28,6 @@ if (defined('E_DEPRECATED')) {
     error_reporting(E_ALL ^ E_NOTICE);
 }
 
-
 if (!defined('OX_BASE_PATH')) {
     define('OX_BASE_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 }

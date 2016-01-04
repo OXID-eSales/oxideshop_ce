@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -33,8 +33,6 @@ require_once dirname(__FILE__) . "/../bootstrap.php";
 // processing ..
 $blAjaxCall = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
 if ($blAjaxCall) {
-
-
     // Setting error reporting mode
     error_reporting(E_ALL ^ E_NOTICE);
 

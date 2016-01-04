@@ -20,7 +20,6 @@
  * @version   OXID eShop CE
  */
 
-
 error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
 
 //setting basic configuration parameters

@@ -35,7 +35,6 @@ if (!function_exists("getShopBasePath")) {
     }
 }
 
-
 // disables admin
 if (!function_exists('isAdmin')) {
     /**

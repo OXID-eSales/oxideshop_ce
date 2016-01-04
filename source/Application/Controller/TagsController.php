@@ -20,12 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * Shows bigger tag cloud
  */
-class Tags extends oxUBase
+class TagsController extends \oxUBase
 {
-
     /**
      * Class template
      *

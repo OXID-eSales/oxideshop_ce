@@ -20,14 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * Article suggestion page.
  * Collects some article base information, sets default recomendation text,
  * sends suggestion mail to user.
  */
-class Suggest extends oxUBase
+class SuggestController extends \oxUBase
 {
-
     /**
      * Current class template name.
      *

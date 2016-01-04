@@ -20,12 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * CMS - loads pages and displays it
  */
-class ClearCookies extends oxUBase
+class ClearCookiesController extends \oxUBase
 {
-
     /**
      * Current view template
      *

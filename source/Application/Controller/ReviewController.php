@@ -20,11 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxField;
+use oxRegistry;
+use oxUBase;
+use oxUser;
+
 /**
  * Review of chosen article.
  * Collects article review data, saves new review to DB.
  */
-class Review extends Details
+class ReviewController extends \Details
 {
 
     /**

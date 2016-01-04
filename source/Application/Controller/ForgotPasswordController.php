@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * Password reminder page.
  * Collects toparticle, bargain article list. There is a form with entry
@@ -27,7 +31,7 @@
  * information and submits "Request Password" button mail is sent to users email.
  * OXID eShop -> MY ACCOUNT -> "Forgot your password? - click here."
  */
-class ForgotPwd extends oxUBase
+class ForgotPasswordController extends \oxUBase
 {
 
     /**

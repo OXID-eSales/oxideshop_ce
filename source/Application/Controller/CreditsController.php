@@ -20,10 +20,12 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
 /**
  * Special page for Credits
  */
-class Credits extends Content
+class CreditsController extends \Content
 {
 
     /**

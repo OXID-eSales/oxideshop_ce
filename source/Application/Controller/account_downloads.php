@@ -20,32 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
-
-use oxRegistry;
-
 /**
- * Template preparation class.
- * Used only in some specific cases (usually when you need to outpt just template
- * having text information).
+ * @inheritdoc
  */
-class TemplateController extends \oxUBase
+class Account_Downloads extends \OxidEsales\Eshop\Application\Controller\AccountDownloadsController
 {
-    /**
-     * Executes parent method parent::render(), returns name of template file.
-     *
-     * @return  string  $sTplName   template file name
-     */
-    public function render()
-    {
-        parent::render();
-
-        // security fix so that you cant access files from outside template dir
-        $sTplName = basename((string) oxRegistry::getConfig()->getRequestParameter("tpl"));
-        if ($sTplName) {
-            $sTplName = 'custom/' . $sTplName;
-        }
-
-        return $sTplName;
-    }
 }

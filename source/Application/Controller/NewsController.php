@@ -20,13 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * Shop news window.
  * Arranges news texts. OXID eShop -> (click on News box on left side).
  */
-class News extends oxUBase
+class NewsController extends \oxUBase
 {
-
     /**
      * Newslist
      *

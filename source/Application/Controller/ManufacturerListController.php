@@ -20,13 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxManufacturer;
+use oxRegistry;
+use oxUBase;
+
 /**
  * List of articles for a selected Manufacturer.
  * Collects list of articles, according to it generates links for list gallery,
  * metatags (for search engines). Result - "manufacturerlist.tpl" template.
  * OXID eShop -> (Any selected shop product category).
  */
-class ManufacturerList extends AList
+class ManufacturerListController extends \AList
 {
 
     /**

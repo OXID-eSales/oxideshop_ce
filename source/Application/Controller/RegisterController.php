@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxField;
+use oxRegistry;
+
 /**
  * User registration window.
  * Collects and arranges user object data (information, like shipping address, etc.).
  */
-class Register extends User
+class RegisterController extends \User
 {
 
     /**

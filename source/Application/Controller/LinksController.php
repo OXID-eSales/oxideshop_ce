@@ -20,13 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * Interesting, useful links window.
  * Arranges interesting links window (contents may be changed in
  * administrator GUI) with short link description and URL. OXID
  * eShop -> LINKS.
  */
-class Links extends oxUBase
+class LinksController extends \oxUBase
 {
 
     /**

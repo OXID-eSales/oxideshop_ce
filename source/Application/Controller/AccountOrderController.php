@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * Current user order history review.
  * When user is logged in order review fulfils history about user
@@ -28,7 +32,7 @@
  * ordered articles information, button to add article to basket.
  * OXID eShop -> MY ACCOUNT -> Newsletter.
  */
-class Account_Order extends Account
+class AccountOrderController extends \Account
 {
 
     /**

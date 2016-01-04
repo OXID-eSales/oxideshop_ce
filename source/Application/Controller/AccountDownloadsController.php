@@ -19,14 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxArticleList;
+use oxOrderFileList;
+use oxRegistry;
 
 /**
  * Account article file download page.
- *
  */
-class Account_Downloads extends Account
+class AccountDownloadsController extends \Account
 {
-
     /**
      * Current class template name.
      *

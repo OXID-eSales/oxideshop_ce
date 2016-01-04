@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * Encapsulates methods for application initialization.
  */
-class oxStart extends oxUBase
+class OxidStartController extends \oxUBase
 {
     /**
      * Initializes globals and environment vars

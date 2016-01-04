@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -22,6 +20,11 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxField;
+use oxRegistry;
+
 /**
  * Pricealarm window.
  * Arranges "pricealarm" window, by sending eMail and storing into Database (etc.)
@@ -30,9 +33,8 @@
  * email.
  * OXID eShop -> pricealarm.
  */
-class Pricealarm extends oxUBase
+class PriceAlarmController extends \oxUBase
 {
-
     /**
      * Current class template name.
      *

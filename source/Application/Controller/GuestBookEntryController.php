@@ -20,11 +20,16 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxField;
+use oxRegistry;
+
 /**
  * Guest book entry manager class.
  * Manages guestbook entries, denies them, etc.
  */
-class GuestbookEntry extends GuestBook
+class GuestBookEntryController extends \GuestBook
 {
 
     /**

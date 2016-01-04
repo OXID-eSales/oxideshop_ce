@@ -20,15 +20,20 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+use oxUBase;
+use oxVendorList;
+
 /**
  * List of articles for a selected vendor.
  * Collects list of articles, according to it generates links for list gallery,
  * meta tags (for search engines). Result - "vendorlist.tpl" template.
  * OXID eShop -> (Any selected shop product category).
  */
-class VendorList extends AList
+class VendorListController extends \AList
 {
-
     /**
      * List type
      *

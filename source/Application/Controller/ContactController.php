@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * Contact window.
  * Arranges "CONTACT" window, by creating form for user opinion (etc.)
@@ -27,7 +31,7 @@
  * fulfils all required fields all information is sent to shop owner by
  * email. OXID eShop -> CONTACT.
  */
-class Contact extends oxUBase
+class ContactController extends \oxUBase
 {
 
     /**

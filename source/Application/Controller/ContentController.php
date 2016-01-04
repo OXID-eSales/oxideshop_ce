@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * CMS - loads pages and displays it
  */
-class Content extends oxUBase
+class ContentController extends \oxUBase
 {
 
     /**

@@ -20,15 +20,19 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxField;
+use oxRegistry;
+
 /**
  * Newsletter opt-in/out.
  * Arranges newsletter opt-in form, have some methods to confirm
  * user opt-in or remove user from newsletter list. OXID eShop ->
  * (Newsletter).
  */
-class Newsletter extends oxUBase
+class NewsletterController extends \oxUBase
 {
-
     /**
      * Action articlelist
      *

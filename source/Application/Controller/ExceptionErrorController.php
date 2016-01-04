@@ -20,10 +20,14 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * Displays exception errors
  */
-class ExceptionError extends oxUBase
+class ExceptionErrorController extends \oxUBase
 {
     /**
      * Current class template name.

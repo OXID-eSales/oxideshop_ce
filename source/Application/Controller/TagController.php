@@ -20,12 +20,17 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxField;
+use oxRegistry;
+use oxUBase;
+
 /**
  * Tag filter for articles
  */
-class Tag extends AList
+class TagController extends \AList
 {
-
     /**
      * List type
      *

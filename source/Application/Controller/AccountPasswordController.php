@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
 
 /**
  * Current user password change form.
@@ -29,7 +32,7 @@
  * etc. Some fields must be entered. OXID eShop -> MY ACCOUNT
  * -> Update your billing and delivery settings.
  */
-class Account_Password extends Account
+class AccountPasswordController extends \Account
 {
 
     /**

@@ -20,32 +20,11 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
-
-use oxRegistry;
-
 /**
- * Template preparation class.
- * Used only in some specific cases (usually when you need to outpt just template
- * having text information).
+ * @inheritdoc
+ *
+ * This class must be empty because of others eShop editions classes which can be used instead of it.
  */
-class TemplateController extends \oxUBase
+class RecommAdd extends \OxidEsales\Eshop\Application\Controller\RecommendationAddController
 {
-    /**
-     * Executes parent method parent::render(), returns name of template file.
-     *
-     * @return  string  $sTplName   template file name
-     */
-    public function render()
-    {
-        parent::render();
-
-        // security fix so that you cant access files from outside template dir
-        $sTplName = basename((string) oxRegistry::getConfig()->getRequestParameter("tpl"));
-        if ($sTplName) {
-            $sTplName = 'custom/' . $sTplName;
-        }
-
-        return $sTplName;
-    }
 }

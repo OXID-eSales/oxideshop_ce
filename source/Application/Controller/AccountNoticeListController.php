@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxRegistry;
+
 /**
  * Current user notice list manager.
  * When user is logged in in this manager window he can modify
@@ -27,7 +31,7 @@
  * store them to shopping basket, view detail information.
  * OXID eShop -> MY ACCOUNT -> Newsletter.
  */
-class Account_Noticelist extends Account
+class AccountNoticeListController extends \Account
 {
     /**
      * Current class template name.

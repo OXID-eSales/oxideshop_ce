@@ -20,13 +20,18 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\Eshop\Application\Controller;
+
+use oxException;
+use oxExceptionToDisplay;
+use oxRegistry;
+
 /**
  * Article file download page.
  *
  */
-class Download extends oxUBase
+class DownloadController extends \oxUBase
 {
-
     /**
      * Prevents from loading any component as this controller
      * only returns file content if token is valid

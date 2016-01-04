@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -75,32 +75,6 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $this->assertEquals("testValue", $oUserPayment->oxpayments__oxdesc->value);
     }
 
-
-    /**
-     * Order_Overview::Exportlex() test case
-     *
-     * @return null
-     */
-    public function testExportlex()
-    {
-        oxTestModules::addFunction('oximex', 'exportLexwareOrders', '{ return "testExportData"; }');
-        oxTestModules::addFunction('oxUtils', 'setHeader', '{ if ( !isset( $this->_aHeaderData ) ) { $this->_aHeaderData = array();} $this->_aHeaderData[] = $aA[0]; }');
-        oxTestModules::addFunction('oxUtils', 'getHeaders', '{ return $this->_aHeaderData; }');
-        oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ $this->_aHeaderData[] = $aA[0]; }');
-
-        // testing..
-        $oView = new Order_Overview();
-        $oView->exportlex();
-
-        $aHeaders = oxRegistry::getUtils()->getHeaders();
-        $this->assertEquals("Pragma: public", $aHeaders[0]);
-        $this->assertEquals("Cache-Control: must-revalidate, post-check=0, pre-check=0", $aHeaders[1]);
-        $this->assertEquals("Expires: 0", $aHeaders[2]);
-        $this->assertEquals("Content-type: application/x-download", $aHeaders[3]);
-        $this->assertEquals("Content-Length: " . strlen("testExportData"), $aHeaders[4]);
-        $this->assertEquals("Content-Disposition: attachment; filename=intern.xml", $aHeaders[5]);
-        $this->assertEquals("testExportData", $aHeaders[6]);
-    }
 
 
     /**

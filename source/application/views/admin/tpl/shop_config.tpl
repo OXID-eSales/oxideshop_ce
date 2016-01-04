@@ -1292,17 +1292,6 @@ function showInvitations()
 
             <dl>
                 <dt>
-                    <textarea class="txtfield" name=confaarrs[aLexwareVAT] [{$readonly}]>[{$confaarrs.aLexwareVAT}]</textarea>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_MWSTSETTING"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_MWSTSETTING"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
                     <input type=hidden name=confbools[blShowCookiesNotification] value=false>
                     <input type=checkbox name=confbools[blShowCookiesNotification] value=true  [{if ($confbools.blShowCookiesNotification)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_CONFIRMCOOKIE"}]

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -99,26 +99,6 @@ class Order_Overview extends oxAdminDetails
         }
 
         return $oUserPayment;
-    }
-
-    /**
-     * Performs Lexware export to user (outputs file to save).
-     */
-    public function exportlex()
-    {
-        $sOrderNr = oxRegistry::getConfig()->getRequestParameter("ordernr");
-        $sToOrderNr = oxRegistry::getConfig()->getRequestParameter("toordernr");
-        $oImex = oxNew("oximex");
-        if (($sLexware = $oImex->exportLexwareOrders($sOrderNr, $sToOrderNr))) {
-            $oUtils = oxRegistry::getUtils();
-            $oUtils->setHeader("Pragma: public");
-            $oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            $oUtils->setHeader("Expires: 0");
-            $oUtils->setHeader("Content-type: application/x-download");
-            $oUtils->setHeader("Content-Length: " . strlen($sLexware));
-            $oUtils->setHeader("Content-Disposition: attachment; filename=intern.xml");
-            $oUtils->showMessageAndExit($sLexware);
-        }
     }
 
     /**

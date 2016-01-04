@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -1142,7 +1142,6 @@ $aLang = array(
 'SHOP_CONFIG_EXPORTTICKERREFRESH'                          => 'Sekunden, nach denen der Exportticker neu geladen wird',
 'SHOP_CONFIG_IMPORTNUMBEROFLINES'                          => 'Anzahl von Zeilen im CSV, die pro Tick importiert werden',
 'SHOP_CONFIG_IMPORTTICKERREFRESH'                          => 'Sekunden, nach denen der Importticker neu geladen wird',
-'SHOP_CONFIG_MWSTSETTING'                                  => 'MwSt.-Einstellungen für XML-Export',
 'SHOP_CONFIG_NUMBEROFEMAILSPERTICK'                        => 'Anzahl von E-Mails, die der Newsletter pro Tick verschickt',
 'SHOP_CONFIG_UPDATEVIEWS'                                  => 'Datenbank Views müssen aktualisiert werden!',
 'SHOP_CONFIG_ASSIGNDEFAULTCAT'                             => 'Aktive Kategorie setzen',

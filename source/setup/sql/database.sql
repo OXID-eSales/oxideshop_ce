@@ -458,7 +458,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('mlabefd7ebdb5946e8f3f7e7a953b323', 'oxbaseshop', '', 'aLanguageSSLURLs', 'arr', 0x4dba832f74e74df4cdd5afca153f15e216aea908af01b8),
 ('mla50c74dd79703312ffb8cfd82c3741', 'oxbaseshop', '', 'aLanguageURLs', 'arr', 0x4dba832f74e74df4cdd5afca153f15e216aea908af01b8),
 ('3c4f033dfb8fd4fe692715dda19ecd28', 'oxbaseshop', '', 'aCurrencies', 'arr', 0x4dbace2972e14bf2cbd3a9a4e655024620eb2a8b1770b083941edcbf1c09b8fc7a380fb4fb661e5241a9210d3ffa59395ce3d820d2a79c058e9c3a17c6815dfd492d51e0c01ace28af380e907a09677cedf73adab55f42f0154d9fc9bee3386b61956857d73768557428bf4d2f57e672f2bc3aaea791227a0de72d60c14259edefcf1358c703cf1d639f6a59d1cc9334bf7275d37b679cc79f178db9ca504c0e43),
-('8563fba1965a43873.40898997', 'oxbaseshop', '', 'aLexwareVAT', 'aarr', 0x4dba682873e04a2acbd3a9a4113b832e198a7e75fb770da528d4e916d042856bcaa4b6795b839a7c836f43faae6ef75d3e6f91e3a0384990c0b7fae81c46aeca010521bb89b5),
 ('8563fba1baec4d3b7.61553539', 'oxbaseshop', '', 'iNrofSimilarArticles', 'str', 0x5d),
 ('8563fba1baec4f6d3.38812651', 'oxbaseshop', '', 'iNrofCustomerWhoArticles', 'str', 0x5d),
 ('8563fba1baec515d0.57265727', 'oxbaseshop', '', 'iNrofCrossellArticles', 'str', 0x5d),

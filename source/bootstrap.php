@@ -20,7 +20,6 @@
  * @version   OXID eShop CE
  */
 
-
 if (defined('E_DEPRECATED')) {
     //E_DEPRECATED is disabled particularly for PHP 5.3 as some 3rd party modules still uses deprecated functionality
     error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
@@ -37,6 +36,12 @@ require_once OX_BASE_PATH . 'modules/functions.php';
 
 // Generic utility method file including autoloading definition
 require_once OX_BASE_PATH . 'Core/oxfunctions.php';
+
+// Composer autoloader.
+registerComposerAutoload();
+registerModuleDependenciesAutoload();
+registerShopAutoLoad();
+registerModuleAutoload();
 
 //sets default PHP ini params
 setPhpIniParams();

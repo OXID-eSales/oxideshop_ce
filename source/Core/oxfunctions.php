@@ -20,11 +20,11 @@
  * @version   OXID eShop CE
  */
 
-if (!function_exists('registerPsr4Autoload')) {
+if (!function_exists('registerComposerAutoload')) {
     /**
-     * Registers auto-loader from shop.
+     * Registers auto-loader for shop namespaced classes.
      */
-    function registerPsr4Autoload()
+    function registerComposerAutoload()
     {
         require_once __DIR__ . '/../vendor/autoload.php';
     }
@@ -32,26 +32,40 @@ if (!function_exists('registerPsr4Autoload')) {
 
 if (!function_exists('registerShopAutoLoad')) {
     /**
-     * Registers auto-loader from shop.
+     * Registers auto-loader for shop legacy (non-namespaced) classes.
      */
     function registerShopAutoLoad()
     {
-        require_once __DIR__ . "/oxshopautoloader.php";
-        $shopAutoloader = new oxShopAutoloader();
+        $classMapProvider = new \OxidEsales\Eshop\Core\ClassMapProvider(new \OxidEsales\Eshop\Core\Edition\EditionSelector());
+        $notOverridableClassAutoloader = new \OxidEsales\Eshop\Core\Autoload\NotOverridableClassAutoload($classMapProvider->getNotOverridableClassMap());
+        spl_autoload_register(array($notOverridableClassAutoloader, 'autoload'));
+
+        $shopAutoloader = new \OxidEsales\Eshop\Core\Autoload\ShopAutoload();
         spl_autoload_register(array($shopAutoloader, 'autoload'));
     }
 }
 
-if (!function_exists('registerComposerAutoLoad')) {
+if (!function_exists('registerModuleDependenciesAutoload')) {
     /**
-     * Registers auto-loader from composer.
+     * Registers auto-loader for module dependencies.
      */
-    function registerComposerAutoLoad()
+    function registerModuleDependenciesAutoload()
     {
         $autoloaderPath = __DIR__ . '/../modules/vendor/autoload.php';
         if (file_exists($autoloaderPath)) {
             include_once $autoloaderPath;
         }
+    }
+}
+
+if (!function_exists('registerModuleAutoload')) {
+    /**
+     * Registers auto-loader for module files and extensions.
+     */
+    function registerModuleAutoload()
+    {
+        $moduleAutoloader = new \OxidEsales\Eshop\Core\Autoload\ModuleAutoload();
+        spl_autoload_register(array($moduleAutoloader, 'autoload'));
     }
 }
 
@@ -435,19 +449,3 @@ if (!function_exists('getRequestUrl')) {
         }
     }
 }
-
-// Composer autoloader.
-registerPsr4Autoload();
-
-// Register not overridable classes autoloader.
-$classMapProvider = new \OxidEsales\Eshop\Core\ClassMapProvider(new \OxidEsales\Eshop\Core\Edition\EditionSelector());
-$notOverridableClassAutoloader = new \OxidEsales\Eshop\Core\NotOverridableClassAutoloader($classMapProvider->getNotOverridableClassMap());
-spl_autoload_register(array($notOverridableClassAutoloader, 'autoload'));
-
-registerComposerAutoLoad();
-registerShopAutoLoad();
-
-// Register module classes autoloader.
-require_once __DIR__ . '/oxmoduleautoloader.php';
-$moduleAutoloader = new oxModuleAutoloader();
-spl_autoload_register(array($moduleAutoloader, 'autoload'));

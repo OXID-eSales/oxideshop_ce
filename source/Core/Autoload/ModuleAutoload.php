@@ -19,6 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Eshop\Core\Autoload;
+
+use oxUtilsObject;
 
 /**
  * Autoloader for module classes and extensions.
@@ -26,9 +29,8 @@
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxModuleAutoloader
+class ModuleAutoload
 {
-
     /** @var array Classes, for which extension class chain was created. */
     private $triedClasses = array();
 

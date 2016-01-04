@@ -19,6 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Eshop\Core\Autoload;
 
 /**
  * Autoloader for shop classes.
@@ -26,7 +27,7 @@
  * @internal Do not make a module extension for this class.
  * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxShopAutoloader
+class ShopAutoload
 {
     /** @var array List of all directories, where shop classes are located. */
     private $classDirectories = null;
@@ -41,7 +42,7 @@ class oxShopAutoloader
      */
     public function autoload($class)
     {
-        startProfile("oxAutoload");
+        startProfile("ShopAutoload");
 
         $class = strtolower(basename($class));
 
@@ -49,7 +50,7 @@ class oxShopAutoloader
             include $classPath;
         }
 
-        stopProfile("oxAutoload");
+        stopProfile("ShopAutoload");
     }
 
     /**

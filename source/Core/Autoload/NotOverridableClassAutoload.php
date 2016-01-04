@@ -19,13 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\Eshop\Core\Autoload;
 
 /**
  * Autoloader which is used to create class aliases for not overridable classes.
  */
-class NotOverridableClassAutoloader
+class NotOverridableClassAutoload
 {
     /**
      * Classes map which is used to create aliases.

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Eshop\Core\NotOverridableClassAutoloader;
+use OxidEsales\Eshop\Core\Autoload\NotOverridableClassAutoload;
 
 class ClassToCheckAliasCreation
 {
@@ -30,14 +30,14 @@ class NotOverridableClassAutoloaderTest extends OxidTestCase
 {
     public function testCreatesAlias()
     {
-        $autoloader = new NotOverridableClassAutoloader($this->getMap());
+        $autoloader = new NotOverridableClassAutoload($this->getMap());
         $autoloader->autoload('ClassAlias');
         $this->assertTrue(class_exists('ClassAlias'));
     }
 
     public function testDoesNotCreateAlias()
     {
-        $autoloader = new NotOverridableClassAutoloader($this->getMap());
+        $autoloader = new NotOverridableClassAutoload($this->getMap());
         $autoloader->autoload('notExistInMap');
         $this->assertFalse(class_exists('notExistInMap'));
     }

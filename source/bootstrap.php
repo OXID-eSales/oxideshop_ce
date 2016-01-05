@@ -20,6 +20,9 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\ConfigFile;
+use OxidEsales\Eshop\Core\Registry;
+
 if (defined('E_DEPRECATED')) {
     //E_DEPRECATED is disabled particularly for PHP 5.3 as some 3rd party modules still uses deprecated functionality
     error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
@@ -39,14 +42,14 @@ require_once OX_BASE_PATH . 'Core/oxfunctions.php';
 
 // Composer autoloader.
 registerComposerAutoload();
+
+//init config.inc.php file reader
+$oConfigFile = new ConfigFile(OX_BASE_PATH . "config.inc.php");
+Registry::set("oxConfigFile", $oConfigFile);
+
 registerModuleDependenciesAutoload();
 registerShopAutoLoad();
 registerModuleAutoload();
 
 //sets default PHP ini params
 setPhpIniParams();
-
-//init config.inc.php file reader
-$oConfigFile = new oxConfigFile(OX_BASE_PATH . "config.inc.php");
-
-oxRegistry::set("oxConfigFile", $oConfigFile);

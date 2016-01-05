@@ -19,62 +19,67 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Eshop\Core;
+
+use oxConfig;
+use oxLang;
+use oxSession;
+use oxUtils;
 
 /**
  * Object registry design pattern implementation. Stores the instances of objects
  */
-class oxRegistry
+class Registry
 {
-
     /**
      * Instance array
      *
      * @var array
      */
-    protected static $_aInstances = array();
+    protected static $instances = array();
 
     /**
      * Instance getter. Return existing instance or initializes the new one
      *
-     * @param string $sClassName Class name
+     * @param string $className Class name
      *
      * @static
      *
      * @return object
      */
-    public static function get($sClassName)
+    public static function get($className)
     {
-        $sClassName = strtolower($sClassName);
-        if (isset(self::$_aInstances[$sClassName])) {
-            return self::$_aInstances[$sClassName];
+        $className = strtolower($className);
+        if (isset(self::$instances[$className])) {
+            return self::$instances[$className];
         } else {
-            self::$_aInstances[$sClassName] = oxNew($sClassName);
+            self::$instances[$className] = oxNew($className);
 
-            return self::$_aInstances[$sClassName];
+            return self::$instances[$className];
         }
     }
 
     /**
      * Instance setter
      *
-     * @param string $sClassName Class name
-     * @param object $oInstance  Object instance
+     * @param string $className Class name
+     * @param object $instance  Object instance
      *
      * @static
      *
      * @return null
      */
-    public static function set($sClassName, $oInstance)
+    public static function set($className, $instance)
     {
-        $sClassName = strtolower($sClassName);
+        $className = strtolower($className);
 
-        if (is_null($oInstance)) {
-            unset(self::$_aInstances[$sClassName]);
+        if (is_null($instance)) {
+            unset(self::$instances[$className]);
 
             return;
         }
 
-        self::$_aInstances[$sClassName] = $oInstance;
+        self::$instances[$className] = $instance;
     }
 
     /**
@@ -132,6 +137,6 @@ class oxRegistry
      */
     public static function getKeys()
     {
-        return array_keys(self::$_aInstances);
+        return array_keys(self::$instances);
     }
 }

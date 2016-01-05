@@ -19,26 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+namespace OxidEsales\Eshop\Core;
 
 /**
  * Wraps and provides getters for configuration constants stored in configuration file (usually config.inc.php).
  */
-class OxConfigFile
+class ConfigFile
 {
-
-    /**
-     * Performs variable loading from configuration file by including the php file.
-     * It works with current configuration file format well,
-     * however in case the variable storage format is not satisfactory
-     * this method is a subject to be changed.
-     *
-     * @param string $sFileName Configuration file name
-     */
-    private function _loadVars($sFileName)
-    {
-        include $sFileName;
-    }
-
     /**
      * Initializes the instance. Loads config variables from the file.
      *
@@ -110,5 +97,17 @@ class OxConfigFile
         if (is_readable($sFileName)) {
             $this->_loadVars($sFileName);
         }
+    }
+    /**
+     * Performs variable loading from configuration file by including the php file.
+     * It works with current configuration file format well,
+     * however in case the variable storage format is not satisfactory
+     * this method is a subject to be changed.
+     *
+     * @param string $sFileName Configuration file name
+     */
+    private function _loadVars($sFileName)
+    {
+        include $sFileName;
     }
 }

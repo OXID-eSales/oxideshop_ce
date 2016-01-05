@@ -19,15 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\ConfigFile;
 
 /**
- * Base view class. Collects and passes data to template engine, sets some global
- * configuration parameters.
+ * Wraps and provides getters for configuration constants stored in configuration file (usually config.inc.php).
  *
- * This class must be empty because of others eShop editions classes which can be used instead of it.
- *
- * @mixin \OxidEsales\EshopEnterprise\Core\View
+ * @deprecated on b-dev This class should not be used for direct extending. Please use parent class instead.
  */
-class oxView extends \OxidEsales\Eshop\Core\View
+class OxConfigFile extends ConfigFile
 {
 }

@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Test case for OxReg
  */
-class unit_core_OxRegistryTest extends OxidTestCase
+class RegistryTest extends OxidTestCase
 {
 
     /**
@@ -31,7 +32,7 @@ class unit_core_OxRegistryTest extends OxidTestCase
      */
     public function testGet()
     {
-        $oStr = OxRegistry::get("oxstr");
+        $oStr = Registry::get("oxstr");
         $this->assertTrue($oStr instanceof OxStr);
     }
 
@@ -40,10 +41,10 @@ class unit_core_OxRegistryTest extends OxidTestCase
      */
     public function testSetGetCaseInsensitive()
     {
-        $oStr = OxRegistry::get("oxSTR");
+        $oStr = Registry::get("oxSTR");
         $oStr->test = "testValue";
         //differen case
-        $oStr2 = OxRegistry::get("OxStr");
+        $oStr2 = Registry::get("OxStr");
         $this->assertEquals("testValue", $oStr2->test);
     }
 
@@ -52,9 +53,9 @@ class unit_core_OxRegistryTest extends OxidTestCase
      */
     public function testGetSameInstance()
     {
-        $oStr = OxRegistry::get("oxstr");
+        $oStr = Registry::get("oxstr");
         $oStr->test = "testValue";
-        $oStr = OxRegistry::get("oxstr");
+        $oStr = Registry::get("oxstr");
         $this->assertEquals("testValue", $oStr->test);
     }
 
@@ -66,8 +67,8 @@ class unit_core_OxRegistryTest extends OxidTestCase
         $oTest = new stdClass();
         $oTest->testPublic = "testPublicVal";
 
-        OxRegistry::set("testCase", $oTest);
-        $oTest2 = OxRegistry::get("testCase");
+        Registry::set("testCase", $oTest);
+        $oTest2 = Registry::get("testCase");
 
         $this->assertEquals("testPublicVal", $oTest2->testPublic);
     }
@@ -83,34 +84,34 @@ class unit_core_OxRegistryTest extends OxidTestCase
 
     public function testGetSession()
     {
-        $oSubj = OxRegistry::getSession();
+        $oSubj = Registry::getSession();
         $this->assertTrue($oSubj instanceof oxSession);
     }
 
     public function testGetLang()
     {
-        $oSubj = OxRegistry::getLang();
+        $oSubj = Registry::getLang();
         $this->assertTrue($oSubj instanceof oxLang);
     }
 
     public function testGetLUtils()
     {
-        $oSubj = OxRegistry::getUtils();
+        $oSubj = Registry::getUtils();
         $this->assertTrue($oSubj instanceof oxUtils);
     }
 
     public function testGetKeys()
     {
-        oxRegistry::set("testKey", "testVal");
-        $this->assertTrue(in_array(strtolower("testKey"), oxRegistry::getKeys()));
+        Registry::set("testKey", "testVal");
+        $this->assertTrue(in_array(strtolower("testKey"), Registry::getKeys()));
     }
 
 
     public function testUnset()
     {
         oxRegistry::set("testKey", "testVal");
-        $this->assertTrue(in_array(strtolower("testKey"), oxRegistry::getKeys()));
+        $this->assertTrue(in_array(strtolower("testKey"), Registry::getKeys()));
         oxRegistry::set("testKey", null);
-        $this->assertFalse(in_array(strtolower("testKey"), oxRegistry::getKeys()));
+        $this->assertFalse(in_array(strtolower("testKey"), Registry::getKeys()));
     }
 }

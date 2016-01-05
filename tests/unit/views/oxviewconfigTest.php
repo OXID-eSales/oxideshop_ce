@@ -2429,8 +2429,8 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     {
         $oView = oxNew('oxViewConfig');
 
-        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
-        $sLogo = "logo$postfix.png";
+        $edition = strtolower($this->getTestConfig()->getShopEdition());
+        $sLogo = "logo_$edition.png";
 
         $this->assertEquals($sLogo, $oView->getShopLogo());
     }

@@ -52,7 +52,7 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
 
         $oRss->setConfig($oCfg);
         $oRss->p_loadBaseChannel();
-        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
+        $edition = strtolower($this->getTestConfig()->getShopEdition());
         $expect = array(
             'title'       => 'name',
             'link'        => 'http://homeurl/extra',
@@ -63,37 +63,22 @@ class Unit_Models_oxrssfeedTest extends OxidTestCase
             'generator'   => 'name',
             'image'       => array
             (
-                'url'   => "http://homeurl/lalala/logo$postfix.png",
+                'url'   => "http://homeurl/lalala/logo_$edition.png",
                 'title' => 'name',
                 'link'  => 'http://homeurl/extra',
             )
         );
 
         $this->assertEquals($expect, $oRss->getChannel());
-        $oShop->oxshops__oxinfoemail = new oxField('emaiail.com');
 
+        $oShop->oxshops__oxinfoemail = new oxField('emaiail.com');
         oxTestModules::addFunction('oxutils', 'isValidEmail', '{return 0;}');
         $oRss->p_loadBaseChannel();
         $this->assertEquals($expect, $oRss->getChannel());
+
         oxTestModules::addFunction('oxutils', 'isValidEmail', '{return 1;}');
         $oRss->p_loadBaseChannel();
-        $postfix = defined('OXID_VERSION_SUFIX') ? OXID_VERSION_SUFIX : '';
-        $expect = array(
-            'title'          => 'name',
-            'link'           => 'http://homeurl/extra',
-            'description'    => '',
-            'language'       => 'bb',
-            'copyright'      => 'name',
-            'selflink'       => '',
-            'managingEditor' => 'emaiail.com (John Doe)',
-            'generator'      => 'name',
-            'image'          => array(
-                'url'   => "http://homeurl/lalala/logo$postfix.png",
-                'title' => 'name',
-                'link'  => 'http://homeurl/extra',
-            )
-        );
-
+        $expect['managingEditor'] = 'emaiail.com (John Doe)';
         $this->assertEquals($expect, $oRss->getChannel());
     }
 

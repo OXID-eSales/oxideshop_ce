@@ -110,4 +110,23 @@ class EditionSelectorTest extends OxidEsales\TestingLibrary\UnitTestCase
         $this->assertFalse($editionSelector->isCommunity());
         $this->assertFalse($editionSelector->isProfessional());
     }
+
+    /**
+     * When oxConfigFile is not registered in registry (happens during setup), it should be created on the fly.
+     */
+    public function testForcingEditionByConfigWhenNotRegistered()
+    {
+        $path = $this->createFile('config.inc.php', '<?php $this->edition = "EE";');
+        $this->setConfigParam('sShopDir', dirname($path));
+
+        $configFile = oxRegistry::get('oxConfigFile');
+        oxRegistry::set('oxConfigFile', null);
+
+        $editionSelector = new EditionSelector();
+        $this->assertTrue($editionSelector->isEnterprise());
+        $this->assertFalse($editionSelector->isCommunity());
+        $this->assertFalse($editionSelector->isProfessional());
+
+        oxRegistry::set('oxConfigFile', $configFile);
+    }
 }

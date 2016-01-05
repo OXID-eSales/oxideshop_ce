@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Core\Edition;
 
+use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -93,9 +94,11 @@ class EditionSelector
      */
     protected function findEdition()
     {
-        if (class_exists('OxidEsales\Eshop\Core\Registry') && Registry::instanceExists('oxConfigFile')) {
-            $edition = Registry::get('oxConfigFile')->getVar('edition');
+        if (!class_exists('OxidEsales\Eshop\Core\Registry') || !Registry::instanceExists('oxConfigFile')) {
+            $configFile = new ConfigFile(getShopBasePath() . "config.inc.php");
         }
+        $configFile = isset($configFile) ? $configFile : Registry::get('oxConfigFile');
+        $edition = $configFile->getVar('edition');
         return isset($edition) && !empty($edition) ? strtoupper($edition) : $this->findEditionByClassMap();
     }
 

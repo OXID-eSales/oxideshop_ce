@@ -99,4 +99,15 @@ class EditionSelectorTest extends OxidEsales\TestingLibrary\UnitTestCase
         $this->assertFalse($editionSelector->isCommunity());
         $this->assertFalse($editionSelector->isProfessional());
     }
+
+    public function testForcingEditionByConfigWorksWithLowerCase()
+    {
+        $configFile = oxRegistry::get('oxConfigFile');
+        $configFile->setVar('edition', 'ee');
+
+        $editionSelector = new EditionSelector();
+        $this->assertTrue($editionSelector->isEnterprise());
+        $this->assertFalse($editionSelector->isCommunity());
+        $this->assertFalse($editionSelector->isProfessional());
+    }
 }

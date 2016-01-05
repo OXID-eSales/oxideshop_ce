@@ -96,7 +96,7 @@ class EditionSelector
         if (class_exists('OxidEsales\Eshop\Core\Registry') && Registry::instanceExists('oxConfigFile')) {
             $edition = Registry::get('oxConfigFile')->getVar('edition');
         }
-        return isset($edition) && !empty($edition) ? $edition : $this->findEditionByClassMap();
+        return isset($edition) && !empty($edition) ? strtoupper($edition) : $this->findEditionByClassMap();
     }
 
     /**

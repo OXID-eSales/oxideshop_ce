@@ -139,4 +139,17 @@ class Registry
     {
         return array_keys(self::$instances);
     }
+
+    /**
+     * Checks if instance with given key is set.
+     *
+     * @param string $className
+     *
+     * @return bool
+     */
+    public static function instanceExists($className)
+    {
+        $className = strtolower($className);
+        return isset(self::$instances[$className]);
+    }
 }

@@ -106,12 +106,19 @@ class RegistryTest extends OxidTestCase
         $this->assertTrue(in_array(strtolower("testKey"), Registry::getKeys()));
     }
 
-
     public function testUnset()
     {
         oxRegistry::set("testKey", "testVal");
         $this->assertTrue(in_array(strtolower("testKey"), Registry::getKeys()));
         oxRegistry::set("testKey", null);
         $this->assertFalse(in_array(strtolower("testKey"), Registry::getKeys()));
+    }
+
+    public function testInstanceExists()
+    {
+        oxRegistry::set("testKey", "testVal");
+        $this->assertTrue(Registry::instanceExists('testKey'));
+        oxRegistry::set("testKey", null);
+        $this->assertFalse(Registry::instanceExists('testKey'));
     }
 }

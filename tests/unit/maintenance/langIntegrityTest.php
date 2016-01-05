@@ -37,23 +37,12 @@
  */
 class Unit_Maintenance_langIntegrityTest extends OxidTestCase
 {
-
     /**
      * Theme to test against
      *
      * @var string
      */
     protected $_sTheme = 'azure';
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
 
     /**
      * @return string theme name
@@ -160,11 +149,14 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
         list($sFileContent) = array_values($aFileContent);
 
         $this->assertEquals(
-            $aLang['charset'], mb_detect_encoding($sFileContent, $aDetectOrder, true),
+            $aLang['charset'],
+            mb_detect_encoding($sFileContent, $aDetectOrder, true),
             "File encoding is equals to charset specified inside the file $sFileName."
         );
         $this->assertEquals(
-            utf8_decode($sFileContent), utf8_decode(utf8_decode($sFileContent)), "There are no double UTF-8 encoding in file $sFileName."
+            utf8_decode($sFileContent),
+            utf8_decode(utf8_decode($sFileContent)),
+            "There are no double UTF-8 encoding in file $sFileName."
         );
         $this->assertEquals(str_replace("\t", "", $sFileContent), $sFileContent, "There are no tab characters in file $sFileName.");
     }
@@ -186,7 +178,6 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
         $this->assertEquals(array(), array_diff_key($aMapIdentsEN, $aMapIdentsDE), 'Ident does not match DE misses some maps');
     }
 
-
     /**
      * Test if generic language file idents are the same.
      *
@@ -201,7 +192,6 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
         $this->assertEquals(array(), array_diff_key($aLangIdentsEN, $aLangIdentsDE), 'ident does not match, DE misses translations');
         $this->assertEquals(count($aLangIdentsDE), count($aLangIdentsEN), 'ident count does not match');
     }
-
 
     /**
      * Test if there are'nt any html encodings in language constants
@@ -270,7 +260,6 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
         $this->assertEquals(array(), $aIncorrectIndents, "html entities found. Params: lang - $sLang ");
     }
 
-
     /**
      * Test if mapped constants have translations
      *
@@ -298,7 +287,6 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
         $this->assertEquals(array(), $aIncorrectMap, "missing translations in generic $sLang file");
     }
 
-
     /**
      * Test if there are no colons at the end for strings. It ignores translations equaling to ':'
      * This does not test admin translations
@@ -307,11 +295,9 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
      */
     public function testColonsAtTheEnd($sLang, $sTheme)
     {
-
         $aIdents = $this->_getLanguage($sTheme, $sLang);
 
         $this->assertEquals(array(), $this->_getConstantsWithColons($aIdents), "$sLang has colons. Theme - $sTheme");
-
     }
 
     /**
@@ -402,7 +388,6 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
             }
         }
 
-
         $this->assertEquals('', $sDuplicates, 'some translations are duplicated');
     }
 
@@ -412,8 +397,6 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
      * Dependency added only for map, because can't add dependency on test with data provider.
      * Granted there are workarounds to make it depend on test with data provider, it is not the best practice.
      * So, if testIdentsMatch fails, this test might not give correct results. In such a case, fix idents first!
-     *
-     * @return null
      */
     public function testMissingTemplateConstants()
     {
@@ -426,7 +409,6 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
 
     /**
      * Test to make sure there are no unused and not needed translations
-     *
      */
     public function testNotUsedTranslations()
     {
@@ -434,8 +416,9 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
         $aUsedConstants = $this->_getTemplateConstants($this->getThemeName());
 
         $sFile = $this->getConfig()->getAppDir() . "/translations/de/lang.php";
-        include $sFile;
 
+        $aLang = array();
+        include $sFile;
 
         $aTemp = array_diff(array_keys($aLang), $aUsedConstants);
         $sConstructedFile = $this->getConfig()->getAppDir() . "/translations/de/constructed_lang.php";
@@ -450,7 +433,6 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
             $aExcludeFirst = array_merge($aExcludeFirst, $aLang);
         }
 
-
         $aTemp = array_diff($aTemp, array_keys($aExcludeFirst));
         // got some remaining stuff to check ? check in all files
         if (count($aTemp) > 10) {
@@ -464,43 +446,11 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
     }
 
     /**
-     * Copies constants to a certain file
-     *
-     * @param        $aConstants
-     * @param string $type prefix of filename $type_lang.php
-     */
-    private function _moveConstants($aConstants, $type = 'constructed')
-    {
-        $sLocation = $this->getConfig()->getAppDir() . '/translations/%s/%s_lang.php';
-        $aLangs = array('de', 'en');
-
-
-        foreach ($aLangs as $sLang) {
-            $sFile = sprintf($sLocation, $sLang, $type);
-            include $this->getConfig()->getAppDir() . "/translations/$sLang/lang.php";
-            $sOutput = "<?php \n //this is generated by langIntegrityTest\n//";
-            $sOutput .= $type . '_lang.php' . PHP_EOL . PHP_EOL;
-
-            $sOutput .= '$aLang = array( ' . PHP_EOL;
-            foreach ($aConstants as $sKey => $sValue) {
-                $sSpaces = space(63 - strlen($sValue));
-                $sOutput .= "'$sValue' $sSpaces => \"" . str_replace('"', '\"', $aLang[$sValue]) . "\",\n";
-            }
-
-            $sOutput .= "'charset' => 'ISO-8859-15');\n\n";
-            $sOutput .= '$sSearch = "/\b' . implode('\b|\b', $aConstants) . '\b/";' . PHP_EOL . PHP_EOL;
-            echo $sOutput;
-            file_put_contents($sFile, $sOutput);
-        }
-    }
-
-
-    /**
      * Reduces array by excluding some values according to pattern
      * This is being done, because some values can't be removed, and this saves the time and effort of writing
      * everything to assertEquals array
      *
-     * @param       $aData
+     * @param array $aData
      * @param array $aExclusionPatterns
      *
      * @return mixed
@@ -533,7 +483,7 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
     /**
      * Reduces array by excluding some values according to pattern
      *
-     * @param       $aData
+     * @param array $aData
      * @param array $aExclusionPatterns
      *
      * @return mixed
@@ -556,10 +506,6 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
                 unset ($aData[$key]);
             }
         }
-
-// these 2 functions copy not used and constructed constants to separate files
-//        $this->_moveConstants( $aExcludedConstants );
-//        $this->_moveConstants( $aData, "notused" );
         return $aData;
     }
 
@@ -573,7 +519,6 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
      */
     private function _getFiles($aIncludeDirs = array(), $aExcludePaths = array(), $aExtensions = array('*.*'))
     {
-        $aFiles = array();
         $aExcludeDirPattern = array();
 
         // default locations
@@ -591,7 +536,6 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
             $aExcludeDirPattern = $aExcludePaths;
         }
 
-
         $aFiles = array();
         $blBreak = false;
 
@@ -599,7 +543,8 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
             if (is_dir($sDir)) {
                 $aDirs = new RecursiveIteratorIterator(
                     new RecursiveDirectoryIterator($sDir),
-                    RecursiveIteratorIterator::SELF_FIRST);
+                    RecursiveIteratorIterator::SELF_FIRST
+                );
 
                 foreach ($aDirs as $oTplDir) {
                     foreach ($aExcludeDirPattern as $sPattern) {
@@ -625,12 +570,11 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
         return $aFiles;
     }
 
-
     /**
      * Find if given array constants are found anywhere in source
      *  this check will be slow
      *
-     * @param $aConstants array
+     * @param array $aConstants
      *
      * @return array
      */
@@ -666,7 +610,7 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
      * Removes parts from the constants, colons(:) by default,
      * anything else you want, added by parameters
      *
-     * @param $aTranslations
+     * @param array $aTranslations
      *
      * @return mixed
      */
@@ -681,7 +625,7 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
     /**
      * Get all constants that have colons at the end
      *
-     * @param $aLang
+     * @param array $aLang
      *
      * @return array
      */
@@ -730,14 +674,13 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
      */
     private function _getMap($sTheme, $sLang)
     {
+        $aMap = array();
         $sFile = $this->getConfig()->getAppDir() . "views/$sTheme/$sLang/map.php";
         if (is_readable($sFile)) {
             include $sFile;
-
-            return $aMap;
         }
 
-        return array();
+        return $aMap;
     }
 
     /**
@@ -754,14 +697,15 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
         $aAllLang = array();
         $sInputFile = $this->_getLanguageFilePath($sTheme, $sLang, $sFileName);
         if (is_readable($sInputFile)) {
+            $aLang = array();
             include $sInputFile;
-
             return $aLang;
         }
 
         // if we give pattern, not a direct file, do the search
         foreach (glob($sInputFile) as $sFile) {
             if (is_readable($sFile)) {
+                $aLang = array();
                 include $sFile;
                 $aAllLang = array_merge($aAllLang, $aLang);
             }
@@ -776,9 +720,9 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
     /**
      * Returns path to language file
      *
-     * @param $sType
-     * @param $sLang
-     * @param $sFile
+     * @param string $sType
+     * @param string $sLang
+     * @param string $sFile
      *
      * @return string pathname
      */
@@ -810,7 +754,8 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
         if (is_dir($sDir)) {
             $aDirs = new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator($sDir),
-                RecursiveIteratorIterator::SELF_FIRST);
+                RecursiveIteratorIterator::SELF_FIRST
+            );
 
             foreach ($aDirs as $oTplDir) {
                 if ($oTplDir->isDir()) {
@@ -900,48 +845,4 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
             }
         }
     }
-
-    /**
-     * Data provider with sql files for invalid encoding detection.
-     *
-     * @return array
-     */
-    public function providerSqlFilesForInvalidEncoding()
-    {
-        return array(
-            array(getShopBasePath() . '/Setup/sql' . OXID_VERSION_SUFIX . '/*.sql'),
-        );
-    }
-
-    /**
-     * Test if sql files don't have invalid encoding.
-     *
-     * @dataProvider providerSqlFilesForInvalidEncoding
-     *
-     * @param string $sFilePathPattern
-     */
-    public function testSqlFilesForInvalidEncoding($sFilePathPattern)
-    {
-        foreach (glob($sFilePathPattern) as $sFilePath) {
-            if (is_readable($sFilePath)) {
-                $sFileContent = file_get_contents($sFilePath);
-                foreach (array(0xEF, 0xBB, 0xBF, 0x9C) as $sCharacter) {
-                    $this->assertFalse(strpos($sFileContent, $sCharacter), "Character with invalid encoding found in {$sFilePath} file.");
-                }
-            }
-        }
-    }
-}
-
-/**
- * Recursive space placement
- * Simply for formatting the output easier
- */
-function space($amount)
-{
-    if ($amount <= 0) {
-        return ' ';
-    }
-
-    return ' ' . space($amount - 1);
 }

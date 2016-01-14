@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class oxNoJsValidatorTest extends OxidTestCase
+class Unit_Core_oxNoJsValidatorTest extends OxidTestCase
 {
     /**
      * @return array

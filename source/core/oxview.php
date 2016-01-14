@@ -1065,12 +1065,7 @@ class oxView extends oxSuperCfg
      */
     public function getPersParamValue($s_paramKey, $s_paramValue) {
 
-        $_ret = null;
-
-        if ($s_paramKey == "details")
-            $_ret = $s_paramValue;
-
-        return $_ret;
+        return $s_paramValue;
     }
 
 }

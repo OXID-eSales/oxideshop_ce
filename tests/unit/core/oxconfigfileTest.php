@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -28,11 +28,11 @@ class Unit_Core_OxConfigFileTest extends OxidTestCase
      */
     public function testGetVar()
     {
-        $oConfigFile = new OxConfigFile(getShopBasePath() . "config.inc.php");
+        $filePath = $this->createFile('config.inc.php', '<?php $this->testVar = "testValue";');
+        $oConfigFile = new oxConfigFile($filePath);
 
-        //taking random value from config.inc.php
-        $sVar = $oConfigFile->getVar("sTsUser");
-        $this->assertSame("oxid_esales", $sVar);
+        $sVar = $oConfigFile->getVar("testVar");
+        $this->assertSame("testValue", $sVar);
     }
 
     /**
@@ -40,13 +40,13 @@ class Unit_Core_OxConfigFileTest extends OxidTestCase
      */
     public function testSetVar()
     {
-        $oConfigFile = new OxConfigFile(getShopBasePath() . "config.inc.php");
+        $filePath = $this->createFile('config.inc.php', '<?php ');
+        $oConfigFile = new oxConfigFile($filePath);
 
-        //taking random value from config.inc.php
-        $oConfigFile->setVar("sTsUser", 'test_value');
+        $oConfigFile->setVar("testVar", 'testValue2');
 
-        $sVar = $oConfigFile->getVar("sTsUser");
-        $this->assertSame('test_value', $sVar);
+        $sVar = $oConfigFile->getVar("testVar");
+        $this->assertSame('testValue2', $sVar);
     }
 
     /**
@@ -54,9 +54,11 @@ class Unit_Core_OxConfigFileTest extends OxidTestCase
      */
     public function testIsVarSet()
     {
-        $oConfigFile = new OxConfigFile(getShopBasePath() . "config.inc.php");
-        $this->assertTrue($oConfigFile->isVarSet("sTsUser"), "Variable is supposed to be set");
-        $this->assertFalse($oConfigFile->isVarSet("nonexistingVar"), "Variable is not supposed to be set");
+        $filePath = $this->createFile('config.inc.php', '<?php $this->testVar = "testValue";');
+        $oConfigFile = new oxConfigFile($filePath);
+
+        $this->assertTrue($oConfigFile->isVarSet("testVar"), "Variable is supposed to be set");
+        $this->assertFalse($oConfigFile->isVarSet("nonExistingVar"), "Variable is not supposed to be set");
     }
 
     /**
@@ -64,21 +66,15 @@ class Unit_Core_OxConfigFileTest extends OxidTestCase
      */
     public function testGetVars()
     {
-        $oConfigFile = new OxConfigFile(getShopBasePath() . "config.inc.php");
-        $aVars = $oConfigFile->getVars();
-        $this->assertArrayHasKey("sTsUser", $aVars);
-        $this->assertEquals($aVars["sTsUser"], "oxid_esales");
-        $this->assertTrue(count($aVars) > 10);
-    }
+        $filePath = $this->createFile('config.inc.php', '<?php $this->testVar = "testValue"; $this->testVar2 = "testValue2";');
+        $oConfigFile = new oxConfigFile($filePath);
 
-    /**
-     * Test for OxConfigFile::getVars() method, checks that internal vars are not returned
-     */
-    public function testGetVarsPublicOnly()
-    {
-        $oConfigFile = new OxConfigFile(getShopBasePath() . "config.inc.php");
         $aVars = $oConfigFile->getVars();
-        $this->assertArrayNotHasKey("_aConfVars", $aVars, "Internal var is wrongly returned");
+        $expectedArray = array(
+            'testVar' => 'testValue',
+            'testVar2' => 'testValue2',
+        );
+        $this->assertSame($expectedArray, $aVars);
     }
 
     /**
@@ -86,33 +82,28 @@ class Unit_Core_OxConfigFileTest extends OxidTestCase
      */
     public function testFileIsLoadedOnlyOnce()
     {
-        $oConfigFile = new OxConfigFile(getShopBasePath() . "config.inc.php");
+        $filePath = $this->createFile('config.inc.php', '<?php $this->testVar = "testValue";');
+        $oConfigFile = new oxConfigFile($filePath);
 
-        $sVar = $oConfigFile->getVar("sTsUser");
-        $this->assertSame("oxid_esales", $sVar);
+        $sVar = $oConfigFile->getVar("testVar");
+        $this->assertSame("testValue", $sVar);
 
-        //we should not use any public vars however we set it here as small workaround for our tests
-        $oConfigFile->sTsUser = "test_value";
-        $oConfigFile->setVar("sTsUser", 'test_value');
+        $oConfigFile->setVar("testVar", 'testValue2');
 
-        //requesting once more
-        $sVar = $oConfigFile->getVar("sTsUser");
-        //new value should be returned, means the file was not parsed again
-        $this->assertSame("test_value", $sVar);
+        $this->assertSame("testValue2", $oConfigFile->getVar("testVar"));
     }
 
     /**
      * Tests that custom config is being set and variables from it are reachable
-     *
      */
     public function testSetFile()
     {
-        $customConfigInc = $this->createFile('config.inc.php', '<?php $this->custVar = test;');
+        $filePath = $this->createFile('config.inc.php', '<?php $this->testVar = "testValue";');
+        $oConfigFile = new oxConfigFile($filePath);
 
-        $oConfigFile = new oxConfigFile(getShopBasePath() . "config.inc.php");
+        $customConfigInc = $this->createFile('config.inc.php', '<?php $this->testVar2 = "testValue2";');
         $oConfigFile->setFile($customConfigInc);
-        $sVar = $oConfigFile->getVar("custVar");
 
-        $this->assertSame("test", $sVar);
+        $this->assertSame("testValue2", $oConfigFile->getVar("testVar2"));
     }
 }

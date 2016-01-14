@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -618,7 +618,8 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         if ($blReverse) {
             // replace now
             if (version_compare(PHP_VERSION, '5.3.4') >= 0) {
-                $aTransTbl = get_html_translation_table(HTML_ENTITIES, ENT_COMPAT, 'ISO-8859-1');
+                $encoding = $this->getConfig()->isUtf() ? 'UTF-8' : 'ISO-8859-1';
+                $aTransTbl = get_html_translation_table(HTML_ENTITIES, ENT_COMPAT, $encoding);
             } else {
                 $aTransTbl = get_html_translation_table(HTML_ENTITIES, ENT_COMPAT);
             }

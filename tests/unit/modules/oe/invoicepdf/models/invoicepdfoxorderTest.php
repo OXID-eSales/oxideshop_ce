@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
 */
 
@@ -997,7 +997,7 @@ public function testInvoicepdfOxOrder_replaceExtendedChars()
 
     $sInput = " &euro; &copy; &quot; &#039; &#97; &#98; some text";
     $sStr = $oInvoicepdfOxOrder->UNITreplaceExtendedChars($sInput, true);
-    $this->assertEquals( " " . chr(128) . " " . chr(169) . " \" ' a b some text", $sStr );
+    $this->assertEquals( " € © \" ' a b some text", $sStr );
 }
 
 /**

@@ -174,8 +174,9 @@ class oxDbMetaDataHandler extends oxSuperCfg
         $sTableSet = getLangTableName($sTable, $iLang);
 
         $aRes = oxDb::getDb()->getAll("show create table {$sTable}");
+        $collation = $this->getConfig()->isUtf() ? '' : 'COLLATE latin1_general_ci';
         $sSql = "CREATE TABLE `{$sTableSet}` (" .
-                "`OXID` char(32) NOT NULL, " .
+                "`OXID` char(32) $collation NOT NULL, " .
                 "PRIMARY KEY (`OXID`)" .
                 ") " . strstr($aRes[0][1], 'ENGINE=');
 

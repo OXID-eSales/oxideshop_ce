@@ -136,7 +136,21 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
      */
     public function testGetCreateTableSetSql()
     {
-        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+
+        $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
+
+        //comparing in case insensitive form
+        $this->assertEquals($sTestSql, $oDbMeta->UNITgetCreateTableSetSql("oxcountry", 8), '', 0, 10, false, true);
+    }
+
+    /*
+     * Test if returned sql for creating new table set is correct
+     */
+    public function testGetCreateTableSetSqlInIsoMode()
+    {
+        $this->setConfigParam('iUtfMode', 0);
+        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) COLLATE latin1_general_ci NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
 
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
 
@@ -267,7 +281,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
      */
     public function testAddNewMultilangFieldCreateTable()
     {
-        $aTestSql[] = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $aTestSql[] = "CREATE TABLE `oxcountry_set1` (`OXID` char(32)  NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Countries list'";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXTITLE_8` char(128) NOT NULL DEFAULT '' ";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXSHORTDESC_8` char(128) NOT NULL DEFAULT '' ";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXLONGDESC_8` char(255) NOT NULL DEFAULT '' ";

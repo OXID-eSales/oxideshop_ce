@@ -2445,24 +2445,15 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testLoadCustomConfig()
     {
-        $customConfigPath = getShopBasePath() . "/cust_config.inc.php";
+        $this->createFile('config.inc.php', '<?php $this->testVar = "testValue";');
+        $file = $this->createFile('cust_config.inc.php', '<?php $this->customVar = "customValue";');
+        $this->setConfigParam('sShopDir', dirname($file));
 
-        try {
-            $data = '<?php $this->custVar = test;';
-            file_put_contents($customConfigPath, $data);
+        /** @var oxConfig $config */
+        $config = $this->getMock('oxConfig', array('init'));
+        $config->_loadVarsFromFile();
 
-            /** @var oxConfig $oConfig */
-            $oConfig = $this->getProxyClass('oxconfig');
-            $oConfig->_loadVarsFromFile();
-            $sVar = $oConfig->getConfigParam("custVar");
-
-            $this->assertSame("test", $sVar);
-        } catch (Exception $e) {
-            @unlink($customConfigPath);
-            throw $e;
-        }
-
-        @unlink($customConfigPath);
+        $this->assertSame("customValue", $config->getConfigParam("customVar"));
     }
 
     /**

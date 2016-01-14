@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -544,21 +544,16 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
 
     /**
      * Testing if shop is debug mode
-     *
-     * @return null
      */
     public function testIsDebugMode()
     {
         $oControl = $this->getProxyClass("oxShopControl");
+        $oConfigFile = oxRegistry::get('oxConfigFile');
 
-        $oConfigFile = new OxConfigFile(OX_BASE_PATH . "config.inc.php");
         $oConfigFile->iDebug = -1;
-        OxRegistry::set("OxConfigFile", $oConfigFile);
         $this->assertTrue($oControl->UNITisDebugMode());
 
-        $oConfigFile = new OxConfigFile(OX_BASE_PATH . "config.inc.php");
         $oConfigFile->iDebug = 0;
-        OxRegistry::set("OxConfigFile", $oConfigFile);
         $this->assertFalse($oControl->UNITisDebugMode());
     }
 

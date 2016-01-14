@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -999,5 +999,65 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         $this->assertFalse($oCategoryList->getLoadFull());
     }
 
+    /**
+     * Test case for first cache call.
+     * Verify that the full category tree is loaded for caching.
+     * Verify that former load full flag setting is restored.
+     */
+    public function testLoadFromCacheLoadFullInitiallyFalse()
+    {
+        $this->markTestSkipped('EE only');
 
+        $oCacheBackend = $this->getMock('oxCacheBackend', array('get', 'set', 'isActive'), array(), '', false);
+        $oCacheBackend->expects($this->any())->method('get')->will($this->returnValue(null));
+        $oCacheBackend->expects($this->any())->method('isActive')->will($this->returnValue(true));
+
+        $oCategoryList = $this->getMock('oxCategoryList', array('_getCacheBackend'), array(), '', false);
+        $oCategoryList->expects($this->any())->method('_getCacheBackend')->will($this->returnValue($oCacheBackend));
+        $oCategoryList->setLoadFull(false);
+        $oCategoryList->load();
+
+        $this->assertSame(28, count($oCategoryList));
+        $this->assertFalse($oCategoryList->getLoadFull());
+    }
+
+    /**
+     * Test case for first cache call.
+     * Verify that the full category tree is loaded for caching.
+     * Verify that former load full flag setting is restored.
+     */
+    public function testLoadFromCacheLoadFullInitiallyTrue()
+    {
+        $this->markTestSkipped('EE only');
+
+        $oCacheBackend = $this->getMock('oxCacheBackend', array('get', 'set', 'isActive'), array(), '', false);
+        $oCacheBackend->expects($this->any())->method('get')->will($this->returnValue(null));
+        $oCacheBackend->expects($this->any())->method('isActive')->will($this->returnValue(true));
+
+        $oCategoryList = $this->getMock('oxCategoryList', array('_getCacheBackend'), array(), '', false);
+        $oCategoryList->expects($this->any())->method('_getCacheBackend')->will($this->returnValue($oCacheBackend));
+        $oCategoryList->setLoadFull(true);
+        $oCategoryList->load();
+
+        $this->assertSame(28, count($oCategoryList));
+        $this->assertTrue($oCategoryList->getLoadFull());
+    }
+
+    /**
+     * Calling function load in case cache is not activated.
+     */
+    public function testLoadFromDB()
+    {
+        $this->markTestSkipped('EE only');
+
+        $oCacheBackend = $this->getMock('oxCacheBackend', array('get', 'set', 'isActive'), array(), '', false);
+        $oCacheBackend->expects($this->any())->method('get')->will($this->returnValue(null));
+        $oCacheBackend->expects($this->any())->method('isActive')->will($this->returnValue(false));
+
+        $oCategoryList = $this->getMock('oxCategoryList', array('_getCacheBackend'), array(), '', false);
+        $oCategoryList->expects($this->any())->method('_getCacheBackend')->will($this->returnValue($oCacheBackend));
+        $oCategoryList->load();
+
+        $this->assertSame(21, count($oCategoryList));
+    }
 }

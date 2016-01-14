@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -241,11 +241,11 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
         $iLang = 0;
         $sObjectId = 'testobject';
 
-        $sInKeywords = "Laufräder '\"";
-        $sInDescription = "Laufräder '\"";
+        $sInKeywords = "LaufrÃ¤der '\"";
+        $sInDescription = "LaufrÃ¤der '\"";
 
-        $sOutKeywords = "Laufräder &#039;&quot;";
-        $sOutDescription = "Laufräder &#039;&quot;";
+        $sOutKeywords = "LaufrÃ¤der &#039;&quot;";
+        $sOutDescription = "LaufrÃ¤der &#039;&quot;";
 
         $oEncoder = new oxSeoEncoder();
         $oEncoder->addSeoEntry($sObjectId, $iShopId, $iLang, 'stdurl', 'seourl', 'oxarticle', 0, $sInKeywords, $sInDescription);
@@ -1200,7 +1200,7 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
     public function testPrepareTitle()
     {
         $oEncoder = new modSeoEncoder();
-        $sTitleIn = '///AA keyword1 keyword2 ä  ö ü Ü Ä Ö ß' . str_repeat(' a', 300);
+        $sTitleIn = '///AA keyword1 keyword2 Ã¤  Ã¶ Ã¼ Ãœ Ã„ Ã– ÃŸ' . str_repeat(' a', 300);
         $oEncoder->setSeparator();
         $sTitleOut = $oEncoder->p_prepareTitle($sTitleIn);
 
@@ -1676,9 +1676,9 @@ class Unit_Models_oxSeoEncoderTest extends OxidTestCase
 
     public function testEncodeString()
     {
-        $sString = '&quot;&lt;Flaschenöffner&#039;&amp;quot;';
+        $sString = '&quot;&lt;FlaschenÃ¶ffner&#039;&amp;quot;';
         $sEncodedString = "\"<Flaschenoeffner'";
-        $sPartEncodedString = '"<Flaschenöffner\'';
+        $sPartEncodedString = '"<FlaschenÃ¶ffner\'';
 
         $oEncoder = new oxSeoEncoder();
         $this->assertEquals($sEncodedString, $oEncoder->encodeString($sString));

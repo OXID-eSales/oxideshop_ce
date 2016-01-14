@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -49,8 +49,8 @@ class Unit_Core_oxutilsstringTest extends OxidTestCase
 
     public function testPrepareStrForSearch()
     {
-        $this->assertEquals(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', oxRegistry::get("oxUtilsString")->prepareStrForSearch(' ä ö ü Ä Ö Ü ß &amp;'));
-        $this->assertEquals(' h&auml;user', oxRegistry::get("oxUtilsString")->prepareStrForSearch(' häuser'));
+        $this->assertEquals(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', oxRegistry::get("oxUtilsString")->prepareStrForSearch(' Ã¤ Ã¶ Ã¼ Ã„ Ã– Ãœ ÃŸ &amp;'));
+        $this->assertEquals(' h&auml;user', oxRegistry::get("oxUtilsString")->prepareStrForSearch(' hÃ¤user'));
         $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareStrForSearch('qwertz'));
         $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareStrforSearch(''));
     }

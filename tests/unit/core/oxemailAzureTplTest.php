@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -170,9 +170,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
 
     protected function checkMailBody($sFuncName, $sBody, $blWriteToTestFile = false)
     {
-        $sUtf = ($this->getConfig()->isUtf()) ? '_utf8' : '';
-
-        $sPath = __DIR__ .'/../testData/email_templates/azure/' . $sFuncName . $sUtf . '.html';
+        $sPath = __DIR__ .'/../testData/email_templates/azure/' . $sFuncName . '.html';
         if (!($sExpectedBody = file_get_contents($sPath))) {
             return false;
         }

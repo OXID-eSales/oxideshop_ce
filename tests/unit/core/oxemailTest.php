@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -1010,19 +1010,19 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $this->assertEquals(getShopBasePath() . "core/phpmailer/", $this->_oEmail->PluginDir);
     }
 
-    /*
+    /**
      * Test passing mail body and alt body proccesing through oxoutput
      */
-    public function testMakeOutputProcessing()
+    public function testMakeOutputProcessingInUtf8Mode()
     {
-        $this->_oEmail->setBody('testbody 55 �'); //with euro sign
-        $this->_oEmail->setAltBody('testaltbody 55 �'); //with euro sign
+        $this->setConfigParam('iUtfMode', 1);
+        $this->_oEmail->setBody('testbody 55 €'); //with euro sign
+        $this->_oEmail->setAltBody('testaltbody 55 €'); //with euro sign
         $this->_oEmail->UNITmakeOutputProcessing();
 
-        $this->assertEquals('testbody 55 &euro;', $this->_oEmail->getBody());
-        $this->assertEquals('testaltbody 55 &euro;', $this->_oEmail->getAltBody());
+        $this->assertEquals('testbody 55 €', $this->_oEmail->getBody());
+        $this->assertEquals('testaltbody 55 €', $this->_oEmail->getAltBody());
     }
-
 
     public function testHeaderLine()
     {

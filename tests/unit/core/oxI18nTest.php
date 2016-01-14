@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -185,7 +185,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oObj->init("oxarticles");
         $oObj->loadInLang(0, 1127);
 
-        $this->assertEquals("Blinkende Eiswürfel FLASH", $oObj->oxarticles__oxtitle->value);
+        $this->assertEquals("Blinkende EiswÃ¼rfel FLASH", $oObj->oxarticles__oxtitle->value);
         $this->assertEquals(1127, $oObj->getId());
         $this->assertFalse(isset($oObj->oxarticles__oxtitle_1->value));
     }
@@ -207,7 +207,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oObj->init("oxarticles");
         $oObj->loadInLang(0, 1127);
         $this->assertEquals(1127, $oObj->getId());
-        $this->assertEquals("Blinkende Eiswürfel FLASH", $oObj->oxarticles__oxtitle->value);
+        $this->assertEquals("Blinkende EiswÃ¼rfel FLASH", $oObj->oxarticles__oxtitle->value);
         $this->assertEquals("Ice Cubes FLASH", $oObj->oxarticles__oxtitle_1->value);
     }
 
@@ -217,7 +217,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oObj->setEnableMultilang(false);
         $oObj->init("oxarticles");
         $oObj->loadInLang(1, 1127);
-        $this->assertEquals("Blinkende Eiswürfel FLASH", $oObj->oxarticles__oxtitle->value);
+        $this->assertEquals("Blinkende EiswÃ¼rfel FLASH", $oObj->oxarticles__oxtitle->value);
         $this->assertEquals("Ice Cubes FLASH", $oObj->oxarticles__oxtitle_1->value);
     }
 

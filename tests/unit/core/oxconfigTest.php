@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -262,15 +262,18 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertTrue($oConfig->isSsl());
     }
 
-    /**
-     * By default it should return false
-     *
-     * @return
-     */
-    public function testIsUtf()
+    public function testIsUtfWhenInUtfMode()
     {
-        $oConfig = new oxConfig();
+        $oConfig = $this->getMock('oxConfig', array('getConfigParam'));
+        $oConfig->expects($this->any())->method('getConfigParam')->with($this->equalTo('iUtfMode'))->will($this->returnValue(0));
         $this->assertFalse($oConfig->isUtf());
+    }
+
+    public function testIsUtfWhenInISOMode()
+    {
+        $oConfig = $this->getMock('oxConfig', array('getConfigParam'));
+        $oConfig->expects($this->any())->method('getConfigParam')->with($this->equalTo('iUtfMode'))->will($this->returnValue(1));
+        $this->assertTrue($oConfig->isUtf());
     }
 
     private function _getOutPath($oConfig, $sTheme = null, $blAbsolute = true)
@@ -1071,7 +1074,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oEur->rate = '1.00';
         $oEur->dec = ',';
         $oEur->thousand = '.';
-        $oEur->sign = '¤';
+        $oEur->sign = 'â‚¬';
         $oEur->decimal = '2';
         $oEur->selected = 1;
 
@@ -1081,7 +1084,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oGbp->rate = '0.8565';
         $oGbp->dec = '.';
         $oGbp->thousand = '';
-        $oGbp->sign = '£';
+        $oGbp->sign = 'Â£';
         $oGbp->decimal = '2';
         $oGbp->selected = 0;
 
@@ -1130,7 +1133,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oEur->rate = '1.00';
         $oEur->dec = ',';
         $oEur->thousand = '.';
-        $oEur->sign = '¤';
+        $oEur->sign = 'â‚¬';
         $oEur->decimal = '2';
         $oEur->selected = 0;
 
@@ -1674,7 +1677,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oGbp->rate = '0.8565';
         $oGbp->dec = '.';
         $oGbp->thousand = '';
-        $oGbp->sign = '£';
+        $oGbp->sign = 'Â£';
         $oGbp->decimal = '2';
         $oGbp->selected = 0;
 
@@ -1694,7 +1697,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oEur->rate = '1.00';
         $oEur->dec = ',';
         $oEur->thousand = '.';
-        $oEur->sign = '¤';
+        $oEur->sign = 'â‚¬';
         $oEur->decimal = '2';
         $oEur->selected = 0;
 

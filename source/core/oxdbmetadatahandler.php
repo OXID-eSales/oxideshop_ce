@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -175,7 +175,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
 
         $aRes = oxDb::getDb()->getAll("show create table {$sTable}");
         $sSql = "CREATE TABLE `{$sTableSet}` (" .
-                "`OXID` char(32) COLLATE latin1_general_ci NOT NULL, " .
+                "`OXID` char(32) NOT NULL, " .
                 "PRIMARY KEY (`OXID`)" .
                 ") " . strstr($aRes[0][1], 'ENGINE=');
 

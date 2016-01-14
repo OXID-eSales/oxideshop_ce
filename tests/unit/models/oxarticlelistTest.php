@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -752,13 +752,13 @@ class Unit_Models_oxarticlelistTest extends OxidTestCase
         $sArticleTable = $this->_getArticleTable();
         $sAEV = getViewName('oxartextends');
 
-        $sExpt = "and ( ( $sArticleTable.oxtitle like '%w¸rfel%' or $sArticleTable.oxtitle like '%w&uuml;rfel%' ";
-        $sExpt .= "or $sArticleTable.oxshortdesc like '%w¸rfel%' or $sArticleTable.oxshortdesc like '%w&uuml;rfel%' ";
-        $sExpt .= "or $sArticleTable.oxsearchkeys like '%w¸rfel%' or $sArticleTable.oxsearchkeys like '%w&uuml;rfel%' ";
-        $sExpt .= "or $sArticleTable.oxartnum like '%w¸rfel%' or $sArticleTable.oxartnum like '%w&uuml;rfel%' ";
-        $sExpt .= "or $sAEV.oxtags like '%w¸rfel%' or $sAEV.oxtags like '%w&uuml;rfel%' ) )";
+        $sExpt = "and ( ( $sArticleTable.oxtitle like '%w√ºrfel%' or $sArticleTable.oxtitle like '%w&uuml;rfel%' ";
+        $sExpt .= "or $sArticleTable.oxshortdesc like '%w√ºrfel%' or $sArticleTable.oxshortdesc like '%w&uuml;rfel%' ";
+        $sExpt .= "or $sArticleTable.oxsearchkeys like '%w√ºrfel%' or $sArticleTable.oxsearchkeys like '%w&uuml;rfel%' ";
+        $sExpt .= "or $sArticleTable.oxartnum like '%w√ºrfel%' or $sArticleTable.oxartnum like '%w&uuml;rfel%' ";
+        $sExpt .= "or $sAEV.oxtags like '%w√ºrfel%' or $sAEV.oxtags like '%w&uuml;rfel%' ) )";
 
-        $sRes = $oTest->UNITgetSearchSelect('w¸rfel ');
+        $sRes = $oTest->UNITgetSearchSelect('w√ºrfel ');
 
         $sExpt = str_replace(array("\n", "\r", " "), "", $sExpt);
         $sRes = str_replace(array("\n", "\r", " "), "", $sRes);

@@ -803,6 +803,7 @@ $aLang = array(
 'LANGUAGE_ABBRCHANGEMAINLANG_WARNING'                      => 'Warnung: Sie können nicht die Abkürzung der Hauptsprache (Sprach-ID 0) ändern!',
 'LANGUAGE_ALREADYEXISTS_ERROR'                             => 'Fehler: Eine Sprache mit diesem Sprachkürzel existiert bereits',
 'LANGUAGE_EMPTYLANGUAGENAME_ERROR'                         => 'Bitte geben Sie den Namen der Sprache ein!',
+'LANGUAGE_ABBREVIATION_INVALID_ERROR'                      => 'Sprachkürzel nicht zulässig! Erlaubte Zeichen sind a-z, A-Z, 0-9 und der Unterstrich.',
 'SETUP_DIRNOTDELETED_WARNING'                              => 'Bitte löschen Sie das Setup-Verzeichnis',
 'UPDATEAPP_DIRNOTDELETED_WARNING'                          => 'Bitte löschen Sie das updateApp-Verzeichnis',
 'SETUP_CONFIGPERMISSIONS_WARNING'                          => 'WICHTIG: Aus Sicherheitsgründen setzen Sie Ihre config.inc.php Datei auf read-only-Modus!',

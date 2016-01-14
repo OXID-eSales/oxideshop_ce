@@ -498,20 +498,20 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
     /**
      * Testing validation errors - abbreviation contains forbidden characters
      */
-    public function testValidateInput_invalidAbbreviation()
+    public function testValidateInputInvalidAbbreviation()
     {
         $this->setRequestParameter("oxid", "-1");
         $this->setRequestParameter("editval", array('abbr' => 'ch-xx'));
 
-        $oMainLang = $this->getMock("Language_Main", array("_checkLangExists"));
-        $oMainLang->expects($this->once())->method('_checkLangExists')->with($this->equalTo("ch-xx"))->will($this->returnValue(false));
+        $mainLanguage = $this->getMock("Language_Main", array("_checkLangExists"));
+        $mainLanguage->expects($this->once())->method('_checkLangExists')->with($this->equalTo("ch-xx"))->will($this->returnValue(false));
 
-        $this->assertFalse($oMainLang->UNITvalidateInput());
+        $this->assertFalse($mainLanguage->_validateInput());
 
-        $aEx = oxRegistry::getSession()->getVariable("Errors");
-        $oEx = unserialize($aEx["default"][0]);
-        $sErrMsg = oxRegistry::getLang()->translateString("LANGUAGE_ABBREVIATION_INVALID_ERROR");
+        $exceptions = oxRegistry::getSession()->getVariable("Errors");
+        $exception = unserialize($exceptions["default"][0]);
+        $errorMessage = oxRegistry::getLang()->translateString("LANGUAGE_ABBREVIATION_INVALID_ERROR");
 
-        $this->assertEquals($sErrMsg, $oEx->getOxMessage());
+        $this->assertEquals($errorMessage, $exception->getOxMessage());
     }
 }

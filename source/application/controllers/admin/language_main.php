@@ -462,39 +462,31 @@ class Language_Main extends oxAdminDetails
      */
     protected function _validateInput()
     {
-        $blResult = true;
+        $result = true;
 
-        $sOxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $oxid = $this->getEditObjectId();
+        $parameters = oxRegistry::getConfig()->getRequestParameter("editval");
 
         // if creating new language, checking if language already exists with
         // entered language abbreviation
-        if ($sOxId == -1) {
-            if ($this->_checkLangExists($aParams['abbr'])) {
-                $oEx = oxNew('oxExceptionToDisplay');
-                $oEx->setMessage('LANGUAGE_ALREADYEXISTS_ERROR');
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
-                $blResult = false;
-            }
+        if ( ($oxid == -1) && $this->_checkLangExists($parameters['abbr']) ) {
+            $this->addDisplayException('LANGUAGE_ALREADYEXISTS_ERROR');
+            $result = false;
         }
 
         // As the abbreviation is used in database view creation, check for allowed characters
-        if (!$this->_checkAbbreviationAllowedCharacters($aParams['abbr'])) {
-            $oEx = oxNew('oxExceptionToDisplay');
-            $oEx->setMessage('LANGUAGE_ABBREVIATION_INVALID_ERROR');
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
-            $blResult = false;
+        if (!$this->checkAbbreviationAllowedCharacters($parameters['abbr'])) {
+            $this->addDisplayException('LANGUAGE_ABBREVIATION_INVALID_ERROR');
+            $result = false;
         }
 
         // checking if language name is not empty
-        if (empty($aParams['desc'])) {
-            $oEx = oxNew('oxExceptionToDisplay');
-            $oEx->setMessage('LANGUAGE_EMPTYLANGUAGENAME_ERROR');
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
-            $blResult = false;
+        if (empty($parameters['desc'])) {
+            $this->addDisplayException('LANGUAGE_EMPTYLANGUAGENAME_ERROR');
+            $result = false;
         }
 
-        return $blResult;
+        return $result;
     }
 
     /**
@@ -503,16 +495,28 @@ class Language_Main extends oxAdminDetails
      * only allow characters [0-9,a-z,A-Z_] (basic Latin letters, digits 0-9, underscore).
      * Allowing other characters means table names would have to be escaped with backticks in all queries.
      *
-     * @param string $sAbbreviation language abbreviation
+     * @param string $abbreviation language abbreviation
      *
      * @return bool
      */
-    protected function _checkAbbreviationAllowedCharacters($sAbbreviation)
+    protected function checkAbbreviationAllowedCharacters($abbreviation)
     {
-        if (preg_match('/^[a-zA-Z0-9_]*$/', $sAbbreviation)) {
-            return true;
+        $return = false;
+        if (preg_match('/^[a-zA-Z0-9_]*$/', $abbreviation)) {
+            $return = true;
         }
-        return false;
+        return $return;
     }
 
+    /**
+     * Add exception to be displayed in frontend.
+     *
+     * @param $message Language constant
+     */
+    protected function addDisplayException($message)
+    {
+        $exception = oxNew('oxExceptionToDisplay');
+        $exception->setMessage($message);
+        oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception);
+    }
 }

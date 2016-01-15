@@ -59,8 +59,8 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
      */
     public function testRequestFunctionThatResultsInNoValidNewActionGetsRedirectedToStart($sForbiddenUrl)
     {
-        if ( -1 == $this->getConfig()->getConfigParam('iDebug')) {
-            $this->markTestSkipped('Shop does not redirect in debugmode -1');
+        if ( 0 != $this->getConfig()->getConfigParam('iDebug')) {
+            $this->markTestSkipped('Shop does not redirect in debugmode.');
         }
 
         $sShopUrl = $this->getConfig()->getShopMainUrl();
@@ -80,8 +80,8 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
      */
     public function testRequestFunctionThatResultsInNoValidNewActionDebugModeException($sForbiddenUrl)
     {
-        if ( -1 != $this->getConfig()->getConfigParam('iDebug')) {
-            $this->markTestSkipped('Test is only for debugmode -1');
+        if ( 0 == $this->getConfig()->getConfigParam('iDebug')) {
+            $this->markTestSkipped('Test is only for debugmode.');
         }
 
         $sResult = $this->callPage($sForbiddenUrl);
@@ -120,8 +120,8 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
      */
     public function testRequestGetRevisionThatResultsInNoValidNewActionGetsRedirectedToStart($sForbiddenUrl)
     {
-        if ( -1 == $this->getConfig()->getConfigParam('iDebug')) {
-            $this->markTestSkipped('Shop does not redirect in debugmode -1');
+        if ( 0 != $this->getConfig()->getConfigParam('iDebug')) {
+            $this->markTestSkipped('Shop does not redirect in debugmode.');
         }
 
         $sShopUrl = $this->getConfig()->getShopMainUrl();
@@ -146,8 +146,8 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
      */
     public function testRequestGetRevisionThatResultsInNoValidNewActionDebugmodeException($sForbiddenUrl)
     {
-        if ( -1 != $this->getConfig()->getConfigParam('iDebug')) {
-            $this->markTestSkipped('Test is only for debugmode -1');
+        if ( 0 == $this->getConfig()->getConfigParam('iDebug')) {
+            $this->markTestSkipped('Test is only for debugmode.');
         }
 
         $sResult = $this->callPage($sForbiddenUrl);

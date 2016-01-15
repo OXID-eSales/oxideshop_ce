@@ -59,8 +59,12 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
      *
      * @dataProvider providerRequestFunctionThatResultsInNoValidNewActionGetsRedirectedToStart
      */
-    public function _testRequestFunctionThatResultsInNoValidNewActionGetsRedirectedToStart($sForbiddenUrl)
+    public function testRequestFunctionThatResultsInNoValidNewActionGetsRedirectedToStart($sForbiddenUrl)
     {
+        if ( -1 == $this->getConfig()->getConfigParam('iDebug')) {
+            $this->markTestSkipped('Shop does not redirect in debugmode -1');
+        }
+
         $sShopUrl = $this->getConfig()->getShopMainUrl();
 
         $sResult = $this->callPage($sForbiddenUrl);
@@ -68,6 +72,24 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
         $sLocation = "Location: " .  $sShopUrl . 'index.php?force_sid=' . $this->_extractSessionId($sResult) .
                      "&cl=start&redirected=1\r\n";
         $this->assertContains($sLocation, $sResult, 'User should be redirected to shop front page.');
+    }
+
+    /**
+     * Test case that a function's return value is no callable new action.
+     * When shop is in debugmode -1, exception is displayed.
+     *
+     * @dataProvider providerRequestFunctionThatResultsInNoValidNewActionGetsRedirectedToStart
+     */
+    public function testRequestFunctionThatResultsInNoValidNewActionDebugModeException($sForbiddenUrl)
+    {
+        if ( -1 != $this->getConfig()->getConfigParam('iDebug')) {
+            $this->markTestSkipped('Test is only for debugmode -1');
+        }
+
+        $sResult = $this->callPage($sForbiddenUrl);
+
+        $sMessage = 'oxView->_executeNewAction';
+        $this->assertContains($sMessage, $sResult, 'User should see an error message.');
     }
 
     /**
@@ -100,6 +122,10 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
      */
     public function testRequestGetRevisionThatResultsInNoValidNewActionGetsRedirectedToStart($sForbiddenUrl)
     {
+        if ( -1 == $this->getConfig()->getConfigParam('iDebug')) {
+            $this->markTestSkipped('Shop does not redirect in debugmode -1');
+        }
+
         $sShopUrl = $this->getConfig()->getShopMainUrl();
 
         $sResult = $this->callPage($sForbiddenUrl);
@@ -111,7 +137,29 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
         } else {
             $this->assertContains($sLocation, $sResult, 'User should be redirected to shop front page.');
         }
+    }
 
+    /**
+     * Same test as before for function call to getRevision. In case we have no revision
+     * no new action is called, if function getRevision returns a value, shop redirects
+     * to start page as the return value is no valid view class.
+     *
+     * @dataProvider providerRequestGetRevisionThatResultsInNoValidNewActionGetsRedirectedToStart
+     */
+    public function testRequestGetRevisionThatResultsInNoValidNewActionDebugmodeException($sForbiddenUrl)
+    {
+        if ( -1 != $this->getConfig()->getConfigParam('iDebug')) {
+            $this->markTestSkipped('Test is only for debugmode -1');
+        }
+
+        $sResult = $this->callPage($sForbiddenUrl);
+
+        if (false == $this->getConfig()->getRevision()) {
+            $this->assertNotContains("Location:", $sResult, 'No revision means no redirect, no Location header');
+        } else {
+            $sMessage = 'oxView->_executeNewAction';
+            $this->assertContains($sMessage, $sResult, 'User should see an error message.');
+        }
     }
 
     /**

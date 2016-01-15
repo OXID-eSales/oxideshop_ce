@@ -35,7 +35,7 @@ class oxNoJsValidator
     public function isValid($configValue)
     {
         $isValid = true;
-        if (strpos($configValue, '<script>') !== false) {
+        if (preg_match('/<script.*>/', $configValue) !== 0) {
             $isValid = false;
         }
 

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -90,54 +90,61 @@ class GenImport_Main extends oxAdminDetails
      */
     public function render()
     {
-        $oConfig = $this->getConfig();
+        $config = $this->getConfig();
 
         $oErpImport = new oxErpGenImport();
         $this->_sCsvFilePath = null;
 
-        $sNavStep = $oConfig->getRequestParameter('sNavStep');
+        $navigationStep = $config->getRequestParameter('sNavStep');
 
-        if (!$sNavStep) {
-            $sNavStep = 1;
+        if (!$navigationStep) {
+            $navigationStep = 1;
         } else {
-            $sNavStep++;
+            $navigationStep++;
         }
 
 
-        $sNavStep = $this->_checkErrors($sNavStep);
+        $navigationStep = $this->_checkErrors($navigationStep);
 
-        if ($sNavStep == 1) {
+        if ($navigationStep == 1) {
             $this->_aViewData['sGiCsvFieldTerminator'] = oxStr::getStr()->htmlentities($this->_getCsvFieldsTerminator());
             $this->_aViewData['sGiCsvFieldEncloser'] = oxStr::getStr()->htmlentities($this->_getCsvFieldsEncolser());
         }
 
-        if ($sNavStep == 2) {
+        if ($navigationStep == 2) {
+            $noJsValidator = oxNew('oxNoJsValidator');
             //saving csv field terminator and encloser to config
-            if ($sTerminator = $oConfig->getRequestParameter('sGiCsvFieldTerminator')) {
-                $this->_sStringTerminator = $sTerminator;
-                $oConfig->saveShopConfVar('str', 'sGiCsvFieldTerminator', $sTerminator);
+            $terminator = $config->getRequestParameter('sGiCsvFieldTerminator');
+            if ($terminator && !$noJsValidator->isValid($terminator)) {
+                $this->setErrorToView($terminator);
+            } else {
+                $this->_sStringTerminator = $terminator;
+                $config->saveShopConfVar('str', 'sGiCsvFieldTerminator', $terminator);
             }
 
-            if ($sEncloser = $oConfig->getRequestParameter('sGiCsvFieldEncloser')) {
-                $this->_sStringEncloser = $sEncloser;
-                $oConfig->saveShopConfVar('str', 'sGiCsvFieldEncloser', $sEncloser);
+            $encloser = $config->getRequestParameter('sGiCsvFieldEncloser');
+            if ($encloser && !$noJsValidator->isValid($encloser)) {
+                $this->setErrorToView($encloser);
+            } else {
+                $this->_sStringEncloser = $encloser;
+                $config->saveShopConfVar('str', 'sGiCsvFieldEncloser', $encloser);
             }
 
-            $sType = $oConfig->getRequestParameter('sType');
-            $oType = $oErpImport->getImportObject($sType);
-            $this->_aViewData['sType'] = $sType;
+            $type = $config->getRequestParameter('sType');
+            $oType = $oErpImport->getImportObject($type);
+            $this->_aViewData['sType'] = $type;
             $this->_aViewData['sImportTable'] = $oType->getBaseTableName();
             $this->_aViewData['aCsvFieldsList'] = $this->_getCsvFieldsNames();
             $this->_aViewData['aDbFieldsList'] = $oType->getFieldList();
         }
 
-        if ($sNavStep == 3) {
-            $aCsvFields = $oConfig->getRequestParameter('aCsvFields');
-            $sType = $oConfig->getRequestParameter('sType');
+        if ($navigationStep == 3) {
+            $csvFields = $config->getRequestParameter('aCsvFields');
+            $type = $config->getRequestParameter('sType');
 
             $oErpImport = new oxErpGenImport();
-            $oErpImport->setImportTypePrefix($sType);
-            $oErpImport->setCsvFileFieldsOrder($aCsvFields);
+            $oErpImport->setImportTypePrefix($type);
+            $oErpImport->setCsvFileFieldsOrder($csvFields);
             $oErpImport->setCsvContainsHeader(oxRegistry::getSession()->getVariable('blCsvContainsHeader'));
 
             $oErpImport->doImport($this->_getUploadedCsvFilePath());
@@ -150,19 +157,19 @@ class GenImport_Main extends oxAdminDetails
             $this->_deleteCsvFile();
 
             //check if repeating import - then forsing first step
-            if ($oConfig->getRequestParameter('iRepeatImport')) {
+            if ($config->getRequestParameter('iRepeatImport')) {
                 $this->_aViewData['iRepeatImport'] = 1;
-                $sNavStep = 1;
+                $navigationStep = 1;
             }
         }
 
-        if ($sNavStep == 1) {
+        if ($navigationStep == 1) {
             $this->_aViewData['aImportTables'] = $oErpImport->getImportObjectsList();
             asort($this->_aViewData['aImportTables']);
             $this->_resetUploadedCsvData();
         }
 
-        $this->_aViewData['sNavStep'] = $sNavStep;
+        $this->_aViewData['sNavStep'] = $navigationStep;
 
         return parent::render();
     }
@@ -329,8 +336,8 @@ class GenImport_Main extends oxAdminDetails
     {
         if ($this->_sStringTerminator === null) {
             $this->_sStringTerminator = $this->_sDefaultStringTerminator;
-            if ($sChar = $this->getConfig()->getConfigParam('sGiCsvFieldTerminator')) {
-                $this->_sStringTerminator = $sChar;
+            if ($char = $this->getConfig()->getConfigParam('sGiCsvFieldTerminator')) {
+                $this->_sStringTerminator = $char;
             }
         }
 
@@ -346,11 +353,22 @@ class GenImport_Main extends oxAdminDetails
     {
         if ($this->_sStringEncloser === null) {
             $this->_sStringEncloser = $this->_sDefaultStringEncloser;
-            if ($sChar = $this->getConfig()->getConfigParam('sGiCsvFieldEncloser')) {
-                $this->_sStringEncloser = $sChar;
+            if ($char = $this->getConfig()->getConfigParam('sGiCsvFieldEncloser')) {
+                $this->_sStringEncloser = $char;
             }
         }
 
         return $this->_sStringEncloser;
+    }
+
+    /**
+     * @param string $invalidData
+     */
+    private function setErrorToView($invalidData)
+    {
+        $error = oxNew('oxDisplayError');
+        $error->setFormatParameters(htmlspecialchars($invalidData));
+        $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
+        oxRegistry::get("oxUtilsView")->addErrorToDisplay($error);
     }
 }

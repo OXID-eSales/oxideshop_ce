@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -133,12 +133,22 @@ class Shop_Config extends oxAdminDetails
 
         $sShopId = $this->getEditObjectId();
         $sModule = $this->_getModuleForConfigVars();
+
+        $configValidator = oxNew('oxNoJsValidator');
         foreach ($this->_aConfParams as $sType => $sParam) {
             $aConfVars = oxRegistry::getConfig()->getRequestParameter($sParam, true);
             if (is_array($aConfVars)) {
                 foreach ($aConfVars as $sName => $sValue) {
                     $oldValue = $myConfig->getConfigParam($sName);
                     if ($sValue !== $oldValue) {
+                        $sValueToValidate = is_array($sValue) ? join(', ', $sValue) : $sValue;
+                        if (!$configValidator->isValid($sValueToValidate)) {
+                            $error = oxNew('oxDisplayError');
+                            $error->setFormatParameters(htmlspecialchars($sValueToValidate));
+                            $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
+                            oxRegistry::get("oxUtilsView")->addErrorToDisplay($error);
+                            continue;
+                        }
                         $myConfig->saveShopConfVar(
                             $sType,
                             $sName,

@@ -1244,6 +1244,7 @@ $aLang = array(
 'SHOP_CONFIG_CONFIRMCOOKIE'                                => 'Customers have to confirm the usage of cookies',
 'SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED'       => 'Use IBAN/BIC only',
 'SHOP_CONFIG_PARCELSERVICE'                                => 'Shipping provider tracking URL',
+'SHOP_CONFIG_ERROR_INVALID_VALUE'                          => '[TR] Provided configuration value: %s is not valid.',
 'SHOP_SYSTEM_ATTRIBUTESPERCENT'                            => 'Number of equal Attributes for similar Products (%)',
 'SHOP_SYSTEM_DEFAULTIMAGEQUALITY'                          => 'Picture Quality - from 0 (poor Quality, small File Size) to 100 (best Quality, large File Size)',
 'SHOP_SYSTEM_DISABLENAVBARS'                               => "Don't display most Navigation Elements during Checkout",

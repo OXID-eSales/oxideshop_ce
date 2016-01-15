@@ -55,6 +55,9 @@ class Language_Main extends oxAdminDetails
      */
     protected $_aLanguagesSslUrls = null;
 
+    /** @var oxNoJsValidator */
+    private $noJsValidator;
+
     /**
      * Executes parent method parent::render(), creates oxCategoryList object,
      * passes it's data to Smarty engine and returns name of template file
@@ -165,27 +168,27 @@ class Language_Main extends oxAdminDetails
 
         $this->_aViewData["updatelist"] = "1";
 
-        //saving languages info
-        $this->getConfig()->saveShopConfVar('aarr', 'aLanguageParams', $this->_aLangData['params']);
-        $this->getConfig()->saveShopConfVar('aarr', 'aLanguages', $this->_aLangData['lang']);
-        $this->getConfig()->saveShopConfVar('arr', 'aLanguageURLs', $this->_aLangData['urls']);
-        $this->getConfig()->saveShopConfVar('arr', 'aLanguageSSLURLs', $this->_aLangData['sslUrls']);
-
-        //checking if added language already has created multilang fields
-        //with new base ID - if not, creating new fields
-        if ($blNewLanguage) {
-            if (!$this->_checkMultilangFieldsExistsInDb($sOxId)) {
-                $this->_addNewMultilangFieldsToDb();
-            } else {
-                $blViewError = true;
+        if ($this->isValidLanguageData($this->_aLangData)) {
+            //saving languages info
+            $this->getConfig()->saveShopConfVar('aarr', 'aLanguageParams', $this->_aLangData['params']);
+            $this->getConfig()->saveShopConfVar('aarr', 'aLanguages', $this->_aLangData['lang']);
+            $this->getConfig()->saveShopConfVar('arr', 'aLanguageURLs', $this->_aLangData['urls']);
+            $this->getConfig()->saveShopConfVar('arr', 'aLanguageSSLURLs', $this->_aLangData['sslUrls']);
+            //checking if added language already has created multilang fields
+            //with new base ID - if not, creating new fields
+            if ($blNewLanguage) {
+                if (!$this->_checkMultilangFieldsExistsInDb($sOxId)) {
+                    $this->_addNewMultilangFieldsToDb();
+                } else {
+                    $blViewError = true;
+                }
             }
-        }
-
-        // show message for user to generate views
-        if ($blViewError) {
-            $oEx = oxNew('oxExceptionToDisplay');
-            $oEx->setMessage('LANGUAGE_ERRORGENERATEVIEWS');
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            // show message for user to generate views
+            if ($blViewError) {
+                $oEx = oxNew('oxExceptionToDisplay');
+                $oEx->setMessage('LANGUAGE_ERRORGENERATEVIEWS');
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            }
         }
     }
 
@@ -518,5 +521,45 @@ class Language_Main extends oxAdminDetails
         $exception = oxNew('oxExceptionToDisplay');
         $exception->setMessage($message);
         oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception);
+    }
+
+    /**
+     * Validates provided language data and sets error to view in case it is not valid.
+     *
+     * @param array $aLanguageData
+     *
+     * @return bool
+     */
+    protected function isValidLanguageData($aLanguageData)
+    {
+        $blValid = true;
+        $configValidator = $this->getNoJsValidator();
+        foreach ($aLanguageData as $mLanguageDataParameters) {
+            if (is_array($mLanguageDataParameters)) {
+                // Recursion till we gonna have a string.
+                $blDeepResult = $this->isValidLanguageData($mLanguageDataParameters);
+                $blValid = $blDeepResult === false ? $blDeepResult : $blValid;
+            } elseif (!$configValidator->isValid($mLanguageDataParameters)) {
+                $blValid = false;
+                $error = oxNew('oxDisplayError');
+                $error->setFormatParameters(htmlspecialchars($mLanguageDataParameters));
+                $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($error);
+            }
+        }
+
+        return $blValid;
+    }
+
+    /**
+     * @return oxNoJsValidator
+     */
+    protected function getNoJsValidator()
+    {
+        if (is_null($this->noJsValidator)) {
+            $this->noJsValidator = oxNew('oxNoJsValidator');
+        }
+
+        return $this->noJsValidator;
     }
 }

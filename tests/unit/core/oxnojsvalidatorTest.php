@@ -30,6 +30,8 @@ class oxNoJsValidatorTest extends OxidTestCase
         return array(
             array('testConfigValue', true),
             array('<script>alert("test script");</script>', false),
+            array('<script parameters>alert("test script");</script>', false),
+            array('<script src="/assets/javascripts/application.js"></script>', false),
         );
     }
 

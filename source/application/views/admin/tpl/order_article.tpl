@@ -121,9 +121,9 @@ function StornoThisArticle( sID)
         <td valign="top" class="[{$listclass}]">[{$listitem->oxorderarticles__oxselvariant->value}]</td>
         <td valign="top" class="[{$listclass}]">
             [{if $listitem->getPersParams()}]
-                [{foreach key=sVar from=$listitem->getPersParams() item=aParam name=persparams}]
-                    [{include file="pers_params/order_article.tpl" sPersParamKey=$sVar sPersParamValue=$aParam }]
-                [{/foreach}]
+                [{block name="admin_order_article_persparams"}]
+                    [{include file="include/persparams.tpl" persParams=$listitem->getPersParams()}]
+                [{/block}]
             [{/if}]
         </td>
         <td valign="top" class="[{$listclass}]">[{$listitem->oxorderarticles__oxshortdesc->value|oxtruncate:20:""|strip_tags}]</td>

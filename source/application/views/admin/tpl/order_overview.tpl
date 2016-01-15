@@ -72,9 +72,9 @@
                     [{/if}]
                     [{if $listitem->getPersParams()}]
                     <td valign="top" class="edittext">
-                        [{foreach key=sVar from=$listitem->getPersParams() item=aParam name=persparams}]
-                            [{include file="pers_params/order_overview.tpl" sPersParamKey=$sVar sPersParamValue=$aParam }]
-                        [{/foreach}]
+                        [{block name="admin_order_overview_persparams"}]
+                            [{include file="include/persparams.tpl" persParams=$listitem->getPersParams()}]
+                        [{/block}]
                     </td>
                     [{/if}]
                 </tr>

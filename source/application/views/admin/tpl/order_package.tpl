@@ -55,11 +55,9 @@ function printWindow()
                             <td class="packitem" valign="top"><b>[{$article->oxorderarticles__oxamount->value}]</b></td>
                             <td class="packitem" valign="top">[{$article->oxorderarticles__oxartnum->value}] </td>
                             <td class="packitem" valign="top">[{$article->oxorderarticles__oxtitle->value}]
-
-                            [{foreach key=sVar from=$article->getPersParams() item=aParam name=persparams}]
-                                [{include file="pers_params/order_article.tpl" sPersParamKey=$sVar sPersParamValue=$aParam }]
-                            [{/foreach}]
-
+                            [{block name="admin_order_package_persparams"}]
+                                [{include file="include/persparams.tpl" persParams=$listitem->getPersParams()}]
+                            [{/block}]
                             </td>
                             <td class="packitem" valign="top">[{$article->oxorderarticles__oxselvariant->value}]</td>
                             <td class="packitem" valign="middle"><img src="[{$oViewConf->getImageUrl()}]/rectangle.gif" alt="" width="20" height="20" border="0"></td>

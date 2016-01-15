@@ -84,9 +84,15 @@
                             [{/if}]
                             [{if $basketitem->getPersParams()}]
                                 <ul style="padding: 0 10px; margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
-                                    [{foreach key=sVar from=$basketitem->getPersParams() item=aParam}]
-                                        [{include file="page/pers_params/email_html_order_cust.tpl" sPersParamKey=$sVar sPersParamValue=$aParam }]
-                                    [{/foreach}]
+                                    [{block name="email_html_order_cust_persparams"}]
+                                        [{foreach key=persParamKey from=$basketitem->getPersParams() item=persParamValue}]
+                                            [{if $oView->showPersParam($persParamKey)}]
+                                                <li style="padding: 3px;">
+                                                    [{include file="page/persparams/persparam.tpl" count=$persParams|@count key=$persParamKey value=$persParamValue}]
+                                                </li>
+                                            [{/if}]
+                                        [{/foreach}]
+                                    [{/block}]
                                 </ul>
                             [{/if}]
                             <br>

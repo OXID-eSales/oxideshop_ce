@@ -108,24 +108,34 @@
                             [{/if}]
 
                             [{if !$editable}]
-                                <p class="persparamBox">
-                                    [{foreach key=sVar from=$basketitem->getPersParams() item=aParam name=persparams}]
-                                        [{include file="page/pers_params/page_checkout_inc_basketcontents.tpl" sPersParamKey=$sVar sPersParamValue=$aParam}]
-                                    [{/foreach}]
-                                </p>
-                            [{else}]
-                                [{if $basketproduct->oxarticles__oxisconfigurable->value}]
-                                    [{if $basketitem->getPersParams()}]
-                                        <br />
-                                        [{foreach key=sVar from=$basketitem->getPersParams() item=aParam name=persparams}]
-                                            [{include file="page/pers_params/page_checkout_inc_basketcontents.tpl" sPersParamKey=$sVar sPersParamValue=$aParam basketindex=$basketindex}]
+                                [{block name="checkout_basketcontents_basketitem_persparam_readonly"}]
+                                    <p class="persparamBox">
+                                        [{foreach key=persParamKey from=$basketitem->getPersParams() item=persParamValue name=persparams}]
+                                            [{if $oView->showPersParam($persParamKey)}]
+                                                [{if !$smarty.foreach.persparams.first}]<br />[[{/if}]
+                                                [{include file="page/persparams/persparam.tpl" count=$persParams|@count key=$persParamKey value=$persParamValue}]
+                                            [{/if}]
                                         [{/foreach}]
-                                    [{else}]
-                                        [{include file="page/pers_params/page_checkout_inc_basketcontents.tpl" sPersParamKey="details" sPersParamValue="" basketindex=$basketindex}]
+                                    </p>
+                                [{/block}]
+                            [{else}]
+                                [{block name="checkout_basketcontents_basketitem_persparam_editable"}]
+                                    [{if $basketproduct->oxarticles__oxisconfigurable->value}]
+                                        [{if $basketitem->getPersParams()}]
+                                            <br />
+                                            [{foreach key=persParamKey from=$basketitem->getPersParams() item=persParamValue name=persparams}]
+                                                [{if $oView->showPersParam($persParamKey)}]
+                                                    <p>
+                                                        [{include file="page/persparams/persparam_input.tpl" label="LABEL" inputname="aproducts[$basketindex][persparam]" key=$persParamKey value=$persParamValue}]
+                                                    </p>
+                                                [{/if}]
+                                            [{/foreach}]
+                                        [{else}]
+                                            [{include file="page/persparams/persparam_input.tpl" label="LABEL" inputname="aproducts[$basketindex][persparam]" key="details" value=""}]
+                                        [{/if}]
                                     [{/if}]
-                                [{/if}]
+                                [{/block}]
                             [{/if}]
-
                         </td>
                     [{/block}]
 

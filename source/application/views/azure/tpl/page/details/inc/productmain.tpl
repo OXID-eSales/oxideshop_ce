@@ -229,7 +229,9 @@
             [{* pers params *}]
             [{block name="details_productmain_persparams"}]
                 [{if $oView->isPersParam()}]
-                    [{include file="page/pers_params/page_details_inc_productmain.tpl" sPersParamKey="details" sPersParamValue=$oDetailsProduct->aPersistParam.text}]
+                    <div class="persparamBox clear">
+                        [{include file="page/persparams/persparam_input.tpl" label="LABEL" inputname="persparam" key="details" value=$oDetailsProduct->aPersistParam.text}]
+                    </div>
                 [{/if}]
             [{/block}]
 

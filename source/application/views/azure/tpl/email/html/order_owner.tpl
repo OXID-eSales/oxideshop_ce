@@ -60,14 +60,20 @@
                                 <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 10px 0;">
                                     <b>[{$basketitem->getTitle()}]</b>
                                     [{if $basketitem->getChosenSelList()}],
-                                    [{foreach from=$basketitem->getChosenSelList() item=oList}]
-                                    [{$oList->name}] [{$oList->value}]&nbsp;
-                                    [{/foreach}]
+                                        [{foreach from=$basketitem->getChosenSelList() item=oList}]
+                                            [{$oList->name}] [{$oList->value}]&nbsp;
+                                        [{/foreach}]
                                     [{/if}]
                                     [{if $basketitem->getPersParams()}]
-                                    [{foreach key=sVar from=$basketitem->getPersParams() item=aParam}]
-                                        [{include file="page/pers_params/email_html_order_cust.tpl" sPersParamKey=$sVar sPersParamValue=$aParam }]
-                                    [{/foreach}]
+                                        [{block name="email_html_order_owner_persparams"}]
+                                            [{foreach key=persParamKey from=$basketitem->getPersParams() item=persParamValue}]
+                                                [{if $oView->showPersParam($persParamKey)}]
+                                                    ,&nbsp;<em>
+                                                    [{include file="page/persparams/persparam.tpl" count=$persParams|@count key=$persParamKey value=$persParamValue}]
+                                                    </em>
+                                                [{/if}]
+                                            [{/foreach}]
+                                        [{/block}]
                                     [{/if}]
                                     <br>[{oxmultilang ident="PRODUCT_NO" suffix="COLON"}] [{$basketproduct->oxarticles__oxartnum->value}]
                                 </p>

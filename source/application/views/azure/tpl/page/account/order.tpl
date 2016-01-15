@@ -66,9 +66,12 @@
                                     [{/if}]
                                         [{$orderitem->oxorderarticles__oxtitle->value}] [{$orderitem->oxorderarticles__oxselvariant->value}] <span class="amount"> - [{$orderitem->oxorderarticles__oxamount->value}] [{oxmultilang ident="QNT"}]</span>
                                     [{if $oArticle->oxarticles__oxid->value && $oArticle->isVisible()}]</a>[{/if}]
-                                    [{foreach key=sVar from=$orderitem->getPersParams() item=aParam}]
-                                        [{include file="page/pers_params/account_order.tpl" sPersParamKey=$sVar sPersParamValue=$aParam}]
-                                    [{/foreach}]
+                                      [{block name="account_order_persparams"}]
+                                        [{foreach key=persParamKey from=$orderitem->getPersParams() item=persParamValue}]
+                                            <br />
+                                            [{include file="page/persparams/persparam.tpl" count=$persParams|@count key=$persParamKey value=$persParamValue}]
+                                        [{/foreach}]
+                                      [{/block}]
                                   </td>
                                   <td class="small">
                                     [{* Commented due to Trusted Shops precertification. Enable if needed *}]

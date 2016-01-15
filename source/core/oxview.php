@@ -1032,53 +1032,14 @@ class oxView extends oxSuperCfg
     }
 
     /**
-     * persparam visible, or as hidden field (in checkout)
+     * Returns whether to show persistent parameter. Returns true as a default.
      * 
-     * @param $s_paramKey string
+     * @param string $persParamKey
      *
      * @return bool
      */
-    public function showPersParam($s_paramKey) {
-
-        $bRet = false;
-
-        if ($s_paramKey == "details")
-            $bRet = true;
-
-        return $bRet;
+    public function showPersParam($persParamKey)
+    {
+        return true;
     }
-
-    /**
-     * return label text for persparam (getter for text)
-     * 
-     * @param $sOxMultilangIdent
-     *
-     * @return string
-     */
-    public function getPersParamText($sOxMultilangIdent) {
-
-        if ($sOxMultilangIdent == "details") {
-            // details has different multilang-idents
-            if (isAdmin())
-                $sOxMultilangIdent = "ORDER_PACKAGE_DETAILS";
-            else
-                $sOxMultilangIdent = "LABEL";
-        }
-
-        return oxRegistry::getLang()->translateString($sOxMultilangIdent);
-    }
-
-    /**
-     * return value for persparam (getter for value)
-     * 
-     * @param $s_paramKey
-     * @param $s_paramValue
-     *
-     * @return null|other
-     */
-    public function getPersParamValue($s_paramKey, $s_paramValue) {
-
-        return $s_paramValue;
-    }
-
 }

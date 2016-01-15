@@ -157,6 +157,15 @@ class oxUtilsObject
         $blCacheObj = $this->shouldCacheObject($sClassName, $aArgs);
         $sClassName = strtolower($sClassName);
 
+        if($blCacheObj) {
+            foreach ($aArgs as $mArg) {
+                if (! ($mArg == null || is_scalar($mArg)) ) {
+                    $blCacheObj = false;
+                    break;
+                }
+            }
+        }
+
         if (isset(self::$_aClassInstances[$sClassName])) {
             return self::$_aClassInstances[$sClassName];
         }

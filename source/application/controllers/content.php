@@ -554,7 +554,7 @@ class Content extends oxUBase
         $oUtilsView = oxRegistry::get("oxUtilsView");
         return $oUtilsView->parseThroughSmarty($this->getContent()->oxcontents__oxcontent->value, $this->getContent()->getId(), null, true);
     }
-    
+
     /**
      * Returns view canonical url
      *
@@ -562,16 +562,16 @@ class Content extends oxUBase
      */
     public function getCanonicalUrl()
     {
-        if (($oContent = $this->getContent())) {
-
-            $oUtils = oxRegistry::get("oxUtilsUrl");
+        $url = '';
+        if ($content = $this->getContent()) {
+            $utils = oxRegistry::get("oxUtilsUrl");
             if (oxRegistry::getUtils()->seoIsActive()) {
-                $sUrl = $oUtils->prepareCanonicalUrl($oContent->getBaseSeoLink($oContent->getLanguage()));
+                $url = $utils->prepareCanonicalUrl($content->getBaseSeoLink($content->getLanguage()));
             } else {
-                $sUrl = $oUtils->prepareCanonicalUrl($oContent->getBaseStdLink($oContent->getLanguage()));
+                $url = $utils->prepareCanonicalUrl($content->getBaseStdLink($content->getLanguage()));
             }
-
-            return $sUrl;
         }
+
+        return $url;
     }
 }

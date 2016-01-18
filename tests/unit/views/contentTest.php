@@ -730,4 +730,48 @@ class Unit_Views_contentTest extends OxidTestCase
         $oContent = oxNew('content');
         $this->assertEquals('regenerated', $oContent->getParsedContent());
     }
+
+    /**
+     * Test get canonical url with seo on.
+     */
+    public function testGetCanonicalUrlSeoOn()
+    {
+        $this->setConfigParam('blSeoMode', true);
+
+        $contentMock = $this->getMock("oxcontent", array("getBaseSeoLink", "getBaseStdLink"));
+        $contentMock->expects($this->once())->method('getBaseSeoLink')->will($this->returnValue("testSeoUrl"));
+        $contentMock->expects($this->never())->method('getBaseStdLink')->will($this->returnValue("testStdUrl"));
+
+        $contentView = $this->getMock("Content", array("getContent"));
+        $contentView->expects($this->once())->method('getContent')->will($this->returnValue($contentMock));
+
+        $this->assertEquals("testSeoUrl", $contentView->getCanonicalUrl());
+    }
+
+    /**
+     * Test get canonical url with seo off.
+     */
+    public function testGetCanonicalUrlSeoOff()
+    {
+        $this->setConfigParam('blSeoMode', false);
+
+        $contentMock = $this->getMock("oxcontent", array("getBaseSeoLink", "getBaseStdLink"));
+        $contentMock->expects($this->never())->method('getBaseSeoLink')->will($this->returnValue("testSeoUrl"));
+        $contentMock->expects($this->once())->method('getBaseStdLink')->will($this->returnValue("testStdUrl"));
+
+        $contentView = $this->getMock("Content", array("getContent"));
+        $contentView->expects($this->once())->method('getContent')->will($this->returnValue($contentMock));
+
+        $this->assertEquals("testStdUrl", $contentView->getCanonicalUrl());
+    }
+
+    /**
+     * Test get cannonical url for no content.
+     */
+    public function testGetCanonicalUrlNoContent()
+    {
+        $contentView = $this->getMock('Content', array('getContent'));
+        $contentView->expects($this->once())->method('getContent')->will($this->returnValue(null));
+        $this->assertSame('', $contentView->getCanonicalUrl());
+    }
 }

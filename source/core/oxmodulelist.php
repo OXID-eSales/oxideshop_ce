@@ -742,6 +742,10 @@ class oxModuleList extends oxSuperCfg
 
         foreach ($aModules as $sOxClass => $aModulesList) {
             foreach ($aModulesList as $sModulePath) {
+                if (strpos($sModulePath, '\\')) {
+                    $sModulePath = str_replace('\\', '/', $sModulePath);
+                }
+                
                 $sExtPath = $this->getConfig()->getModulesDir() . $sModulePath . '.php';
                 if (!file_exists($sExtPath)) {
                     $aDeletedExt[$sOxClass][] = $sModulePath;

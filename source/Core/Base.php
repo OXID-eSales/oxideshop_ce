@@ -938,14 +938,14 @@ class Base extends \oxSuperCfg
 
         // has 'activefrom'/'activeto' fields ?
         if (isset($this->_aFieldNames['oxactivefrom']) && isset($this->_aFieldNames['oxactiveto'])) {
-            $sDate = date('Y-m-d H:i:s', oxRegistry::get('oxUtilsDate')->getTime());
+            $query = $this->_addSqlActiveRangeSnippet($query, $tableName);
 
-            $query = $query ? " $query or " : '';
-            $query = " ( $query ( $tableName.oxactivefrom < '$sDate' and $tableName.oxactiveto > '$sDate' ) ) ";
         }
 
         return $query;
     }
+
+
 
     /**
      * This function is triggered before the record is updated.
@@ -1540,5 +1540,38 @@ class Base extends \oxSuperCfg
     public function getLanguage()
     {
         return -1;
+    }
+
+    /**
+     * adds and activefrom/activeto to the query
+     * @param $query
+     * @param $tableName
+     *
+     * @return string
+     */
+    protected function _addSqlActiveRangeSnippet($query, $tableName)
+    {
+        $dateObj = oxRegistry::get('oxUtilsDate');
+        $sSecondsToRoundForQueryCache = $this->_getSecondsToRoundForQueryCache();
+        $databaseFormattedDate = $dateObj->getRoundedRequestDateDBFormatted($sSecondsToRoundForQueryCache);
+        $query = $query ? " $query or " : '';
+        $query = " ( $query ( $tableName.oxactivefrom < '$databaseFormattedDate' and $tableName.oxactiveto > '$databaseFormattedDate' ) ) ";
+
+        return $query;
+    }
+
+    /**
+     *  Return a number of seconds used to define a interval for rounding timestamps
+     *  e.g. this method returns the value 60 then it means timestamps should be rounded to full minutes
+     *  so the query may get an cache hit because it can be stable for an interval of one minute
+     *
+     *  it is a own method to allow overriding in child classes
+     *  @return int the amount of seconds
+     */
+    protected function _getSecondsToRoundForQueryCache()
+    {
+        //set default value cache time to 60 seconds
+        //because active from setting is based on minutes
+        return 60;
     }
 }

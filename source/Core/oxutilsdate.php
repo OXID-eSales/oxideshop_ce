@@ -548,13 +548,65 @@ class oxUtilsDate extends oxSuperCfg
     /**
      * Returns time according shop timezone configuration. Configures in
      * Admin -> Main menu -> Core Settings -> General
-     *
+     * @see getRequestTime
      * @return int current (modified according timezone) time
      */
     public function getTime()
     {
         return $this->shiftServerTime(time());
     }
+
+    /**
+     * Returns time wen the request was started according shop timezone configuration. Configures in
+     * Admin -> Main menu -> Core Settings -> General
+     * REQUEST TIME is faster because it is not an syscall like time
+     * @return int current (modified according timezone) time
+     */
+    public function getRequestTime()
+    {
+        return $this->shiftServerTime($_SERVER['REQUEST_TIME']);
+    }
+
+    /**
+     * Returns the the timestamp formatted as date string for the database
+     * @param $iTimestamp the timestamp to be formatted
+     *
+     * @return bool|string timestamp formatted as date string for the database, false on error
+     */
+    public function formatDBTimestamp($iTimestamp)
+    {
+        return date('Y-m-d H:i:s', $iTimestamp);
+    }
+
+    /**
+     * Returns the the timestamp formatted as date string for the database
+     * @param int $roundTo a amount of seconds to be rounded to e.g. 300 for rounding to 5 minutes
+     *
+     * @return bool|string  the data string formatted for the database (SQL), false on error
+     */
+    public function getRoundedRequestDateDBFormatted($roundTo)
+    {
+        $timestamp = $this->getRequestTime();
+        //round up x minutes so query cache can work
+        $timestamp = ceil($timestamp / $roundTo) * $roundTo;
+        //format date for sql query
+        $date = $this->formatDBTimestamp($timestamp);
+        return $date;
+    }
+
+
+
+
+    /**
+     * Returns the the request time formatted as date string for the database
+     *
+     * @return bool|string
+     */
+    public function getRequestTimeDBFormated()
+    {
+        return $this->formatDBTimestamp($this->getRequestTime());
+    }
+
 
     /**
      * Form time

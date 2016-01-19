@@ -110,7 +110,8 @@
                             [{if !$editable}]
                                 [{block name="checkout_basketcontents_basketitem_persparam_readonly"}]
                                     <p class="persparamBox">
-                                        [{foreach key=persParamKey from=$basketitem->getPersParams() item=persParamValue name=persparams}]
+                                        [{assign var="persParams" value=$basketitem->getPersParams()}]
+                                        [{foreach key=persParamKey from=$persParams item=persParamValue name=persparams}]
                                             [{if $oView->showPersParam($persParamKey)}]
                                                 [{if !$smarty.foreach.persparams.first}]<br />[[{/if}]
                                                 [{include file="page/persparams/persparam.tpl" count=$persParams|@count key=$persParamKey value=$persParamValue}]
@@ -121,18 +122,20 @@
                             [{else}]
                                 [{block name="checkout_basketcontents_basketitem_persparam_editable"}]
                                     [{if $basketproduct->oxarticles__oxisconfigurable->value}]
-                                        [{if $basketitem->getPersParams()}]
-                                            <br />
-                                            [{foreach key=persParamKey from=$basketitem->getPersParams() item=persParamValue name=persparams}]
-                                                [{if $oView->showPersParam($persParamKey)}]
-                                                    <p>
-                                                        [{include file="page/persparams/persparam_input.tpl" label="LABEL" inputname="aproducts[$basketindex][persparam]" key=$persParamKey value=$persParamValue}]
-                                                    </p>
-                                                [{/if}]
-                                            [{/foreach}]
-                                        [{else}]
-                                            [{include file="page/persparams/persparam_input.tpl" label="LABEL" inputname="aproducts[$basketindex][persparam]" key="details" value=""}]
-                                        [{/if}]
+                                        <br />
+                                        <p>
+                                            [{if $basketitem->getPersParams()}]
+                                                [{foreach key=persParamKey from=$basketitem->getPersParams() item=persParamValue name=persparams}]
+                                                    [{if $oView->showPersParam($persParamKey)}]
+
+                                                            [{include file="page/persparams/persparam_input.tpl" label="LABEL" inputname="aproducts[$basketindex][persparam]" key=$persParamKey value=$persParamValue}]
+
+                                                    [{/if}]
+                                                [{/foreach}]
+                                            [{else}]
+                                                [{include file="page/persparams/persparam_input.tpl" label="LABEL" inputname="aproducts[$basketindex][persparam]" key="details" value=""}]
+                                            [{/if}]
+                                        </p>
                                     [{/if}]
                                 [{/block}]
                             [{/if}]

@@ -255,8 +255,8 @@ class Unit_Models_oxActionListTest extends OxidTestCase
      */
     public function testLoadBanners()
     {
-        oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
-        $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+        oxTestModules::addFunction('oxUtilsDate', 'getRequestTime', '{return ' . (ceil(time() / 300) * 300) . ';}');
+        $sNow = (date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getRequestTime()));
         $sShopId = $this->getConfig()->getShopId();
 
         $sView = getViewName('oxactions');

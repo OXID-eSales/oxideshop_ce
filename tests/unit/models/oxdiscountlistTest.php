@@ -187,8 +187,8 @@ class Unit_Models_oxDiscountlistTest extends OxidTestCase
     // no user
     public function testGetFilterSelectNoUser()
     {
-        $iCurrTime = time();
-        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        $iCurrTime = 0;
+        oxTestModules::addFunction("oxUtilsDate", "getRequestTime", "{ return $iCurrTime; }");
         $sUserTable = getViewName('oxuser');
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');

@@ -223,26 +223,9 @@ if (!defined('MBTTF_DIR')) {
 }
 
 //
-// Check minimum PHP version
-//
-function CheckPHPVersion($aMinVersion) {
-    list($majorC, $minorC, $editC) = preg_split('/[\/.-]/', PHP_VERSION);
-    list($majorR, $minorR, $editR) = preg_split('/[\/.-]/', $aMinVersion);
-
-    if ($majorC != $majorR) return false;
-    if ($majorC < $majorR) return false;
-    // same major - check minor
-    if ($minorC > $minorR) return true;
-    if ($minorC < $minorR) return false;
-    // and same minor
-    if ($editC  >= $editR)  return true;
-    return true;
-}
-
-//
 // Make sure PHP version is high enough
 //
-if( !CheckPHPVersion(MIN_PHPVERSION) ) {
+if(version_compare(PHP_VERSION, MIN_PHPVERSION, '<')) {
     JpGraphError::RaiseL(13,PHP_VERSION,MIN_PHPVERSION);
     die();
 }

@@ -15,8 +15,14 @@ matrix:
     - php: "7.0"
   fast_finish: true
 
-# TRAVIS_ERROR_LEVEL = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_STRICT
-env: TRAVIS_ERROR_LEVEL=22519 OX_BASE_PATH="$TRAVIS_BUILD_DIR/source/"
+env:
+  global:
+    # TRAVIS_ERROR_LEVEL = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_STRICT
+    - TRAVIS_ERROR_LEVEL=22519
+    - OX_BASE_PATH="$TRAVIS_BUILD_DIR/source/"
+  matrix:
+    - UTF8_MODE=0
+    - UTF8_MODE=1
 
 services: mysql
 
@@ -44,7 +50,7 @@ before_script:
   - sudo service mysql restart
 
   # replace configuration values in config.inc.php
-  - sed -i 's|<dbHost_ce>|localhost|; s|<dbName_ce>|oxidehop_ce|; s|<dbUser_ce>|root|; s|<dbPwd_ce>||; s|<sShopURL_ce>|http://localhost|; s|<sShopDir_ce>|'$TRAVIS_BUILD_DIR'/source|; s|<sCompileDir_ce>|'$TRAVIS_BUILD_DIR'/source/tmp|; s|<iUtfMode>|0|; s|$this->iDebug = 0|$this->iDebug = 1|' source/config.inc.php
+  - sed -i 's|<dbHost_ce>|localhost|; s|<dbName_ce>|oxidehop_ce|; s|<dbUser_ce>|root|; s|<dbPwd_ce>||; s|<sShopURL_ce>|http://localhost|; s|<sShopDir_ce>|'$TRAVIS_BUILD_DIR'/source|; s|<sCompileDir_ce>|'$TRAVIS_BUILD_DIR'/source/tmp|; s|<iUtfMode>|'$UTF8_MODE'|; s|$this->iDebug = 0|$this->iDebug = 1|' source/config.inc.php
 
   # composer initiation
   - cd source && SHOP_PATH='' SHOP_TESTS_PATH='../tests' MODULES_PATH='' composer install

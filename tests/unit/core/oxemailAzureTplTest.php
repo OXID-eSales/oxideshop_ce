@@ -1011,9 +1011,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         // uncomment line to generate template for checking mail body
         // file_put_contents (__DIR__ ."/../TestData/email_templates/azure/$sFuncName.html", $sBody);
 
-        $sUtf = ($this->getConfig()->isUtf()) ? '_utf8' : '';
-
-        $sPath = __DIR__ .'/../testData/email_templates/azure/' . $sFuncName . $sUtf . '.html';
+        $sPath = __DIR__ .'/../testData/email_templates/azure/' . $sFuncName . '.html';
         if (!($sExpectedBody = file_get_contents($sPath))) {
             $this->fail("Template '$sPath' was not found!");
         }

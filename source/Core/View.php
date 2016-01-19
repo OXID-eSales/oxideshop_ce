@@ -22,8 +22,13 @@
 
 namespace OxidEsales\Eshop\Core;
 
+use oxCategory;
 use oxRegistry;
-use oxDb;
+use oxShop;
+use oxSystemComponentException;
+use oxUtilsObject;
+use oxView;
+use oxViewConfig;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
@@ -31,7 +36,6 @@ use oxDb;
  */
 class View extends \oxSuperCfg
 {
-
     /**
      * Array of data that is passed to template engine - array( "varName" => "varValue").
      *

@@ -58,12 +58,10 @@ class _oxutils_test
 
 class oxModuleUtilsObject extends \oxUtilsObject
 {
-
     public function getActiveModuleChain($aClassChain)
     {
         return parent::getActiveModuleChain($aClassChain);
     }
-
 }
 
 class Unit_Core_oxutilsobjectTest extends OxidTestCase
@@ -279,36 +277,6 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
         $this->setExpectedException('oxSystemComponentException', 'EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
 
         $oUtilsObject->getClassName($sClassName);
-    }
-
-    public function providerReturnsClassNameAliasFromClassName()
-    {
-        return array(
-            array('\OxidEsales\Enterprise\Core\DbMetaDataHandler', 'oxdbmetadatahandler'),
-            array('\OxidEsales\Enterprise\Core\NonExisting', null),
-            array('OxidEsales\Enterprise\Core\DbMetaDataHandler', 'oxdbmetadatahandler'),
-            array('OxidEsales\Enterprise\Core\NonExisting', null),
-        );
-    }
-
-    /**
-     * @param string $className
-     * @param string $classAliasName
-     *
-     * @dataProvider providerReturnsClassNameAliasFromClassName
-     */
-    public function testReturnsClassNameAliasFromClassName($className, $classAliasName)
-    {
-        $utilsObject = new oxUtilsObject();
-        $map = array(
-            'oxdbmetadatahandler' => '\OxidEsales\Enterprise\Core\DbMetaDataHandler',
-            'oxmodulecache' => '\OxidEsales\Enterprise\Core\Module\ModuleCache',
-            'oxmoduleinstaller' => '\OxidEsales\Enterprise\Core\Module\ModuleInstaller',
-        );
-
-        $utilsObject->setClassMap($map);
-
-        $this->assertSame($classAliasName, $utilsObject->getClassAliasName($className));
     }
 
     private function _prepareFakeModule($class, $extension)

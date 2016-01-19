@@ -1,0 +1,2 @@
+We store generated files for cached information in this dir. 
+The files in this dir are required to be present always (as an opposite to /tmp/ files which could be removed anytime and are generated on demand)

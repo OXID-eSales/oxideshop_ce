@@ -336,13 +336,10 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/Application/views/";
         $sTplPath .= $this->getConfig()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
 
-        $iAt = 0;
-        $oConfig = $this->getMock("oxConfig", array("setActiveView", "getTemplatePath", "getConfigParam", "pageClose"));
-        $oConfig->expects($this->at($iAt++))->method('getConfigParam')->with($this->equalTo("blLogging"))->will($this->returnValue(true));
-        $oConfig->expects($this->at($iAt++))->method('setActiveView');
-
-        $oConfig->expects($this->at($iAt++))->method('getTemplatePath')->will($this->returnValue($sTplPath));
-        $oConfig->expects($this->at($iAt++))->method('pageClose');
+        $oConfig = $this->getMock("oxConfig", array("getTemplatePath", "getConfigParam", "pageClose"));
+        $map = [['blLogging', null, true]];
+        $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValueMap($map));
+        $oConfig->expects($this->any())->method('getTemplatePath')->will($this->returnValue($sTplPath));
 
         $aTasks = array("isAdmin", "_log", "_startMonitor", "getConfig", "_stopMonitor", '_getOutputManager', '_executeMaintenanceTasks');
 
@@ -380,12 +377,10 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/Application/views/";
         $sTplPath .= $this->getConfig()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
 
-        $iAt = 0;
-        $oConfig = $this->getMock("oxConfig", array("setActiveView", "getTemplatePath", "getConfigParam", "pageClose"));
-        $oConfig->expects($this->at($iAt++))->method('getConfigParam')->with($this->equalTo("blLogging"))->will($this->returnValue(true));
-        $oConfig->expects($this->at($iAt++))->method('setActiveView');
-        $oConfig->expects($this->at($iAt++))->method('getTemplatePath')->will($this->returnValue($sTplPath));
-        $oConfig->expects($this->at($iAt++))->method('pageClose');
+        $oConfig = $this->getMock("oxConfig", array("getTemplatePath", "getConfigParam", "pageClose"));
+        $map = [['blLogging', null, true]];
+        $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValueMap($map));
+        $oConfig->expects($this->any())->method('getTemplatePath')->will($this->returnValue($sTplPath));
 
         $aTasks = array("isAdmin", "_log", "_startMonitor", "getConfig", "_stopMonitor", '_getOutputManager', '_getErrors', '_executeMaintenanceTasks');
 
@@ -425,13 +420,10 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/Application/views/";
         $sTplPath .= $this->getConfig()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
 
-        $iAt = 0;
-        $oConfig = $this->getMock("oxConfig", array("setActiveView", "getTemplatePath", "getConfigParam", "pageClose"));
-        $oConfig->expects($this->at($iAt++))->method('getConfigParam')->with($this->equalTo("blLogging"))->will($this->returnValue(true));
-        $oConfig->expects($this->at($iAt++))->method('setActiveView');
-
-        $oConfig->expects($this->at($iAt++))->method('getTemplatePath')->will($this->returnValue($sTplPath));
-        $oConfig->expects($this->at($iAt++))->method('pageClose');
+        $oConfig = $this->getMock("oxConfig", array("getTemplatePath", "getConfigParam", "pageClose"));
+        $map = [['blLogging', null, true]];
+        $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValueMap($map));
+        $oConfig->expects($this->any())->method('getTemplatePath')->will($this->returnValue($sTplPath));
 
         $aTasks = array("isAdmin", "_log", "_startMonitor", "getConfig", "_stopMonitor", '_getOutputManager', '_getErrors', '_executeMaintenanceTasks');
 

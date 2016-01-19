@@ -1,7 +1,15 @@
+# Shop configuration
+/source/config.inc.php
+
 # Log
 /source/log/
 !/source/log/.htaccess
 !/source/log/oxdebugdb_skipped.sql
+
+# Cache
+/source/cache/
+!/source/cache/.htaccess
+!/source/cache/dir.txt
 
 # Export
 /source/export/

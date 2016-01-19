@@ -698,7 +698,7 @@ class Unit_Models_oxsearchTest extends OxidTestCase
                  order by $sArticleTable.oxtitle";
 
         $oSearch = oxNew('oxSearch');
-        $sQ = $oSearch->UNITgetSearchSelect('ü a', $sIDCat, $sIDVend, $sIDMan, "$sArticleTable.oxtitle");
+        $sQ = $oSearch->UNITgetSearchSelect('Ã¼ a', $sIDCat, $sIDVend, $sIDMan, "$sArticleTable.oxtitle");
 
         //cleaning spaces, tabs and so on...
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");

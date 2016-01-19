@@ -143,6 +143,7 @@ class oxSeoEncoderVendor extends oxSeoEncoder
         $sIdQuoted = $oDb->quote($oVendor->getId());
         $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxvendor'");
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
+        $oDb->execute("delete from oxseohistory where oxobjectid = $sIdQuoted");
     }
 
     /**

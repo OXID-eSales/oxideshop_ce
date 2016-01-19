@@ -1201,8 +1201,12 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
         $sQ = "insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( 'article_id', '{$sShopId}', '0' )";
         $oDb->execute($sQ);
 
+        $sQ = "insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( 'article_id', '132', '{$sShopId}', '0' )";
+        $oDb->execute($sQ);
+
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'article_id'"));
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'article_id'"));
+        $this->assertTrue((bool) $oDb->getOne("select 1 from oxseohistory where oxobjectid = 'article_id'"));
 
         $oArticle = new oxbase();
         $oArticle->setId('article_id');
@@ -1212,6 +1216,7 @@ class Unit_Models_oxSeoEncoderArticleTest extends OxidTestCase
 
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'article_id'"));
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxobject2seodata where oxobjectid = 'article_id'"));
+        $this->assertFalse((bool) $oDb->getOne("select 1 from oxseohistory where oxobjectid = 'article_id'"));
     }
 
     public function testCreateArticleCategoryUri()

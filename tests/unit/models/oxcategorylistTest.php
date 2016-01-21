@@ -20,6 +20,10 @@
  * @version   OXID eShop CE
  */
 
+if (!class_exists('\OxidEsales\EshopEnterprise\Application\Model\CategoryList')) {
+    class_alias('oxCategoryList', '\OxidEsales\EshopEnterprise\Application\Model\CategoryList');
+}
+
 /**
  * Enterprise edition extending
  */

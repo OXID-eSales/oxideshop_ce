@@ -68,13 +68,11 @@ class ClassMapProviderTest extends OxidTestCase
         $editionSelector = $this->getMockBuilder('\OxidEsales\Eshop\Core\Edition\EditionSelector')->getMock();
         $editionSelector->expects($this->atLeastOnce())->method('getEdition')->will($this->returnValue($edition));
 
-        /** @var \OxidEsales\EshopProfessional\ClassMap|PHPUnit_Framework_MockObject_MockObject $classMapProfessional */
-        $classMapProfessional = $this->getMockBuilder('\OxidEsales\EshopProfessional\ClassMap')->getMock();
+        $classMapProfessional = $this->getMock('ProfessionalClassMap', array('getNotOverridableMap', 'getOverridableMap'));
         $classMapProfessional->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue($mapNotOverridableProfessional));
         $classMapProfessional->expects($this->any())->method('getOverridableMap')->will($this->returnValue(array()));
 
-        /** @var \OxidEsales\EshopEnterprise\ClassMap $classMapEnterprise|PHPUnit_Framework_MockObject_MockObject */
-        $classMapEnterprise = $this->getMockBuilder('\OxidEsales\EshopEnterprise\ClassMap')->getMock();
+        $classMapEnterprise = $this->getMock('EnterpriseClassMap', array('getNotOverridableMap', 'getOverridableMap'));
         $classMapEnterprise->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue($mapNotOverridableEnterprise));
         $classMapEnterprise->expects($this->any())->method('getOverridableMap')->will($this->returnValue(array()));
 
@@ -103,13 +101,11 @@ class ClassMapProviderTest extends OxidTestCase
         $editionSelector = $this->getMockBuilder('\OxidEsales\Eshop\Core\Edition\EditionSelector')->getMock();
         $editionSelector->expects($this->atLeastOnce())->method('getEdition')->will($this->returnValue($edition));
 
-        /** @var \OxidEsales\EshopProfessional\ClassMap|PHPUnit_Framework_MockObject_MockObject $classMapProfessional */
-        $classMapProfessional = $this->getMockBuilder('\OxidEsales\EshopProfessional\ClassMap')->getMock();
+        $classMapProfessional = $this->getMock('ProfessionalClassMap', array('getNotOverridableMap', 'getOverridableMap'));
         $classMapProfessional->expects($this->any())->method('getOverridableMap')->will($this->returnValue($mapOverridableProfessional));
         $classMapProfessional->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue(array()));
 
-        /** @var \OxidEsales\EshopEnterprise\ClassMap $classMapEnterprise|PHPUnit_Framework_MockObject_MockObject */
-        $classMapEnterprise = $this->getMockBuilder('\OxidEsales\EshopEnterprise\ClassMap')->getMock();
+        $classMapEnterprise = $this->getMock('EnterpriseClassMap', array('getNotOverridableMap', 'getOverridableMap'));
         $classMapEnterprise->expects($this->any())->method('getOverridableMap')->will($this->returnValue($mapOverridableEnterprise));
         $classMapEnterprise->expects($this->any())->method('getNotOverridableMap')->will($this->returnValue(array()));
 

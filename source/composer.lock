@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b8bab8268c60252616dc3ed3b385532d",
+    "hash": "2c2aa874123c3ac476dcfe12616a1215",
     "content-hash": "af855e436b215fe20d897b5bf843bd61",
     "packages": [],
     "packages-dev": [
@@ -676,7 +676,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/coding_standards/zipball/dfe0b130d6d5ef41f2ac9b8c876bb391ebb061b8",
+                "url": "https://api.github.com/repos/OXID-eSales/coding_standards/zipball/19d70663d95a4a8d1f8c9a72ac8d8600a97272a3",
                 "reference": "dfe0b130d6d5ef41f2ac9b8c876bb391ebb061b8",
                 "shasum": ""
             },
@@ -708,12 +708,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OXID-eSales/testing_library.git",
-                "reference": "a3ab1387931259920e33da9d210141612071a17a"
+                "reference": "f72af8fa5e80c914ed74b916e4ceb9d0e166925f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/a3ab1387931259920e33da9d210141612071a17a",
-                "reference": "a3ab1387931259920e33da9d210141612071a17a",
+                "url": "https://api.github.com/repos/OXID-eSales/testing_library/zipball/f72af8fa5e80c914ed74b916e4ceb9d0e166925f",
+                "reference": "f72af8fa5e80c914ed74b916e4ceb9d0e166925f",
                 "shasum": ""
             },
             "require": {
@@ -725,6 +725,7 @@
                 "pdepend/pdepend": "~1.1.3",
                 "phpunit/phpcov": "*",
                 "phpunit/phpunit": "4.*",
+                "symfony/dom-crawler": "v2.7.*",
                 "symfony/yaml": "~2.0"
             },
             "bin": [
@@ -775,10 +776,10 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/OXID-eSales/testing_library/tree/master-unit_tests_utf8-ESDEV3153",
+                "source": "https://github.com/OXID-eSales/testing_library/tree/master",
                 "issues": "https://github.com/OXID-eSales/testing_library/issues"
             },
-            "time": "2016-01-14 12:49:28"
+            "time": "2016-01-21 13:02:30"
         },
         {
             "name": "pdepend/pdepend",

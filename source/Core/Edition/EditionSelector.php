@@ -98,8 +98,10 @@ class EditionSelector
             $configFile = new ConfigFile(getShopBasePath() . "config.inc.php");
         }
         $configFile = isset($configFile) ? $configFile : Registry::get('oxConfigFile');
-        $edition = $configFile->getVar('edition');
-        return isset($edition) && !empty($edition) ? strtoupper($edition) : $this->findEditionByClassMap();
+        $edition = $configFile->getVar('edition') ?: $this->findEditionByClassMap();
+        $configFile->setVar('edition', $edition);
+
+        return $edition;
     }
 
     /**

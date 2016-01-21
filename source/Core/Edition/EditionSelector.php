@@ -101,7 +101,7 @@ class EditionSelector
         $edition = $configFile->getVar('edition') ?: $this->findEditionByClassMap();
         $configFile->setVar('edition', $edition);
 
-        return $edition;
+        return strtoupper($edition);
     }
 
     /**

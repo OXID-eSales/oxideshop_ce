@@ -4368,48 +4368,47 @@ class Unit_Models_oxbasketTest extends OxidTestCase
     }
 
     /**
-     * test for a vat calculation bug described in the following reports:
+     * Test for a vat calculation bug described in the following reports:
      *
      * #0005795: Percentual voucher assigned to article leads to wrong VAT and netto sum calculation in mixed baskets
      * #0006204: Vat calculation is wrong when article is assigned to coupon serie
      * #0006283: Voucher vat calculation
      *
-     * @return null
      */
     public function testForBugEntries5795_6204_6283()
     {
-        $sRegularArticleId = '1952';
-        $sDiscArticleId = '2024';
+        $regularArticleId = '1951'; // 14 EUR
+        $discountedArticleId = '1126'; //34 EUR
 
         $this->oVoucherSerie->oxvoucherseries__oxdiscounttype = new oxField('percent', oxField::T_RAW);
         $this->oVoucherSerie->save();
 
         // assigning voucher serie to Article 2024
-        $oDisc2Art = oxNew("oxBase");
-        $oDisc2Art->init("oxobject2discount");
-        $oDisc2Art->setId("_dsci1");
-        $oDisc2Art->oxobject2discount__oxdiscountid = new oxField($this->oVoucherSerie->getId(), oxField::T_RAW);
-        $oDisc2Art->oxobject2discount__oxobjectid = new oxField($sDiscArticleId, oxField::T_RAW);
-        $oDisc2Art->oxobject2discount__oxtype = new oxField('oxarticles', oxField::T_RAW);
-        $oDisc2Art->save();
+        $discount2Article = oxNew('oxBase');
+        $discount2Article->init('oxobject2discount');
+        $discount2Article->setId('_dsci1');
+        $discount2Article->oxobject2discount__oxdiscountid = new oxField($this->oVoucherSerie->getId(), oxField::T_RAW);
+        $discount2Article->oxobject2discount__oxobjectid = new oxField($discountedArticleId, oxField::T_RAW);
+        $discount2Article->oxobject2discount__oxtype = new oxField('oxarticles', oxField::T_RAW);
+        $discount2Article->save();
 
-        $oBasket = new oxbasket();
-        $oBasket->addToBasket($sRegularArticleId, 1);
-        $oBasket->addToBasket($sDiscArticleId, 1);
-        $oBasket->calculateBasket(false);
+        $basket = oxNew('oxbasket');
+        $basket->addToBasket($regularArticleId, 1);
+        $basket->addToBasket($discountedArticleId, 1);
+        $basket->calculateBasket(false);
 
         // add basket to session to make voucher addition possible
-        $this->getSession()->setBasket($oBasket);
+        $this->getSession()->setBasket($basket);
 
-        $oVoucher = reset($this->aVouchers);
-        $oBasket->addVoucher($oVoucher->oxvouchers__oxvouchernr->value); // 10 %
+        $voucher = reset($this->aVouchers);
+        $basket->addVoucher($voucher->oxvouchers__oxvouchernr->value); // 10 %
 
-        $oBasket->calculateBasket(false);
+        $basket->calculateBasket(false);
 
-        $aVats = $oBasket->getProductVats(false);
+        $vats = $basket->getProductVats(false);
 
-        $this->assertEquals(2.54, $aVats[19]);
-        $this->assertEquals(13.36, $oBasket->getNettoSum());
+        $this->assertEquals(7.12, oxRegistry::getUtils()->fRound($vats[19]));
+        $this->assertEquals(37.48, oxRegistry::getUtils()->fRound($basket->getNettoSum()));
     }
 
     /**

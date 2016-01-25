@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
 
+use oxDb;
 use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
 
 /** Search and sorting in admin. */

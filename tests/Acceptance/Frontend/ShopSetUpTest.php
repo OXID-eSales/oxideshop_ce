@@ -22,7 +22,10 @@
 
 namespace OxidEsales\Eshop\Tests\Acceptance\Frontend;
 
+use Exception;
+use oxConnectionException;
 use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
+use oxRegistry;
 
 /** Selenium tests for frontend navigation. */
 class ShopSetUpTest extends FrontendTestCase

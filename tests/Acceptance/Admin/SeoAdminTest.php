@@ -25,7 +25,7 @@ namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
 use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
 
 /** SEO functionality */
-class Admin_seoAdminTest extends AdminTestCase
+class SeoAdminTest extends AdminTestCase
 {
     /**
      * Sets default language to English.

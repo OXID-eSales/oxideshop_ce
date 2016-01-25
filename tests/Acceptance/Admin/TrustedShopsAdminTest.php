@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
 
+use Exception;
 use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
 
 /** Mall functionality: subshops & inheritance */

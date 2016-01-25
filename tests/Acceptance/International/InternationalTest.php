@@ -27,7 +27,7 @@ use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 
 /** Selenium tests for UTF-8 shop version. */
-class International_internationalTest extends \OxidEsales\TestingLibrary\AcceptanceTestCase
+class InternationalTest extends \OxidEsales\TestingLibrary\AcceptanceTestCase
 {
     /**
      * Sets up default environment for tests.

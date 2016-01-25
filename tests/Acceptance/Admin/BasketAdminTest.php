@@ -25,7 +25,7 @@ namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
 use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
 
 /** Tests related creating of orders in frontend. */
-class Admin_basketAdminTest extends AdminTestCase
+class BasketAdminTest extends AdminTestCase
 {
     /**
      * PersParam functionality in frontend

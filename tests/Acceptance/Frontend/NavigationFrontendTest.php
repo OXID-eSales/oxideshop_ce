@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Tests\Acceptance\Frontend;
 
+use oxDb;
 use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
 
 /** Selenium tests for new layout. */

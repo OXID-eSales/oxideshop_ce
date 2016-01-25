@@ -22,6 +22,7 @@
 
 namespace OxidEsales\Eshop\Tests\Acceptance\Frontend;
 
+use Exception;
 use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
 
 /** Mall functionality: subshops & inheritance */

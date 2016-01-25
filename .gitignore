@@ -26,6 +26,9 @@
 /source/test_config.yml
 /source/Services/
 
+# Editions
+/source/Edition/
+
 # IDE
 /.idea/
 /.phpstorm-oxid.meta.php

@@ -38,6 +38,11 @@
             "OxidEsales\\EshopEnterprise\\": "Edition/Enterprise"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "OxidEsales\\Eshop\\Tests\\": "../tests"
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {

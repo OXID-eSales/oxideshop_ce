@@ -12,7 +12,7 @@ First off, you have to fork the repository OXID-eSales/oxideshop_ce to your list
 
 You will find three branches now in youraccount/oxideshop_ce:
 
-* <b>b-dev-ce</b>, presently our main branch on this repo, is the so called <b>feature branch</b>: All new features will be developed here as well as bug fixes for the next major version.
+* <b>master</b>, presently our main branch on this repo, is the so called <b>feature branch</b>: All new features will be developed here as well as bug fixes for the next major version.
 * <b>b-5.2-ce</b> is the <b>maintenance branch</b> for the present major version. Only bug fixes here, no new features, no DB changes, no template changes if possible.
 * <b>b-5.1-ce</b> appears as the so called <b>legacy branch</b>: fixes for bugs with higher priority only.
 
@@ -21,7 +21,7 @@ In general, contributions can be taken over for all branches. Bug fixes committe
 <b>Best practice</b>:
 * please leave the the branch names as they are
 * if you want to fix a bug or develop a new feature, define an own branch in your repository off of one of the three branches above. Name it e.g. feature/foo or bug/bugname for better tracability
-* change whatever you want and push it back to the original branch (b-dev-ce).
+* change whatever you want and push it back to the original branch (master).
 
 For more information about this, please see:<br>
 http://codeinthehole.com/writing/pull-requests-and-other-good-practices-for-teams-using-github/

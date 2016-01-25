@@ -40,6 +40,7 @@ before_script:
   - sudo service mysql restart
 
   # replace configuration values in config.inc.php
+  - mv source/config.inc.php.dist source/config.inc.php
   - sed -i 's|<dbHost>|localhost|; s|<dbName>|oxidehop|; s|<dbUser>|root|; s|<dbPwd>||; s|<sShopURL>|http://localhost|; s|<sShopDir>|'$TRAVIS_BUILD_DIR'/source|; s|<sCompileDir>|'$TRAVIS_BUILD_DIR'/source/tmp|; s|<iUtfMode>|1|; s|$this->iDebug = 0|$this->iDebug = 1|' source/config.inc.php
 
   # composer initiation

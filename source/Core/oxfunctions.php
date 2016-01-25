@@ -203,13 +203,16 @@ function cmpart($a, $b)
 }
 
 if (!function_exists('startProfile')) {
-    /**
+	/**
      * Start profiling
      *
      * @param string $sProfileName name of profile
      */
     function startProfile($sProfileName)
     {
+		if (!OX_DEBUG) {
+            return;
+        }		
         global $aStartTimes;
         global $aExecutionCounts;
         if (!isset($aExecutionCounts[$sProfileName])) {
@@ -231,6 +234,9 @@ if (!function_exists('stopProfile')) {
      */
     function stopProfile($sProfileName)
     {
+		if (!OX_DEBUG) {
+            return;
+        }
         global $aProfileTimes;
         global $aStartTimes;
         if (!isset($aProfileTimes[$sProfileName])) {

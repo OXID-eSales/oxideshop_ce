@@ -343,6 +343,6 @@ class TrustedShopsFrontendTest extends FrontendTestCase
      */
     protected function getReferenceToCredentialsFile()
     {
-        return $this->getTestConfig()->getShopTestsPath() . '/acceptance/Admin/testData/trustedShopsData.php';
+        return $this->getTestConfig()->getShopTestsPath() . '/Acceptance/Admin/testData/trustedShopsData.php';
     }
 }

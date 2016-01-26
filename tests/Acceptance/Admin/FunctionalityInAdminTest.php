@@ -1066,7 +1066,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->assertEquals("Your Company Name", $this->getValue("editval[oxshops__oxcompany]"));
         $this->assertEquals("John", $this->getValue("editval[oxshops__oxfname]"));
         $this->assertEquals("Doe", $this->getValue("editval[oxshops__oxlname]"));
-        $this->assertEquals("on", $this->getValue("editval[oxshops__oxproductive]"));
+        $this->assertEquals("off", $this->getValue("editval[oxshops__oxproductive]"));
         $this->assertEquals("on", $this->getValue("editval[oxshops__oxactive]"));
         $this->assertEquals("Your Company Name", $this->getValue("editval[oxshops__oxcompany]"));
         $this->assertEquals("John", $this->getValue("editval[oxshops__oxfname]"));

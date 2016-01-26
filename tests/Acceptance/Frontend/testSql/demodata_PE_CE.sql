@@ -534,7 +534,7 @@ REPLACE INTO `oxreviews` (`OXID`,           `OXACTIVE`, `OXOBJECTID`, `OXTYPE`, 
                         ('testrecomreview', 0,         'testrecomm', 'oxrecommlist', 'recommendation for this list', 'testuser', '2009-11-10 12:18:29', 1,        3);
 
 #updating smtp and email information
-UPDATE `oxshops` SET `OXPRODUCTIVE` = 1, `OXINFOEMAIL` = 'example_test@oxid-esales.dev', `OXORDEREMAIL` = 'example_test@oxid-esales.dev', `OXOWNEREMAIL` = 'example_test@oxid-esales.dev', `OXSMTP` = 'localhost', `OXDEFCAT` = '' WHERE `OXID` = 'oxbaseshop';
+UPDATE `oxshops` SET `OXPRODUCTIVE` = 0, `OXINFOEMAIL` = 'example_test@oxid-esales.dev', `OXORDEREMAIL` = 'example_test@oxid-esales.dev', `OXOWNEREMAIL` = 'example_test@oxid-esales.dev', `OXSMTP` = 'localhost', `OXDEFCAT` = '' WHERE `OXID` = 'oxbaseshop';
 UPDATE `oxcountry` SET `OXVATSTATUS` = 0 WHERE `OXTITLE_1` = 'Austria';
 UPDATE `oxcountry` SET `OXACTIVE` = 1 WHERE `OXTITLE_1` = 'Germany';
 UPDATE `oxcountry` SET `OXACTIVE` = 1 WHERE `OXTITLE_1` = 'Austria';

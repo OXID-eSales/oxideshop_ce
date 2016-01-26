@@ -356,7 +356,7 @@ INSERT INTO `oxconfig` (`OXID`,                       `OXSHOPID`,   `OXMODULE`, 
                        ('bd9f44ba4062387b0678d3ad7a', 'oxbaseshop', 'theme:azure', 'iTopNaviCatCount', 'str',        0xb0);
 
 #updating smtp and email information
-UPDATE `oxshops` SET `OXPRODUCTIVE` = 1, `OXINFOEMAIL` = 'example_test@oxid-esales.dev', `OXORDEREMAIL` = 'example_test@oxid-esales.dev', `OXOWNEREMAIL` = 'example_test@oxid-esales.dev', `OXSMTP` = 'localhost', `OXDEFCAT` = '' WHERE `OXID` = 'oxbaseshop';
+UPDATE `oxshops` SET `OXPRODUCTIVE` = 0, `OXINFOEMAIL` = 'example_test@oxid-esales.dev', `OXORDEREMAIL` = 'example_test@oxid-esales.dev', `OXOWNEREMAIL` = 'example_test@oxid-esales.dev', `OXSMTP` = 'localhost', `OXDEFCAT` = '' WHERE `OXID` = 'oxbaseshop';
 
 UPDATE `oxcountry` SET `OXVATSTATUS` = 0 WHERE `OXTITLE` = 'Austria';
 UPDATE `oxcountry` SET `OXACTIVE` = 1 WHERE `OXTITLE` = 'Germany';

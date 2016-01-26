@@ -145,6 +145,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->type("aAdminData[sLoginName]", "admin@myoxideshop.com");
         $this->type("aAdminData[sPassword]", "admin0303");
         $this->type("aAdminData[sPasswordConfirm]", "admin0303");
+        $this->getElement("aSetupConfig[blDelSetupDir]")->setValue(0);
         $this->click("step4Submit");
         $this->waitForText("Check and writing data successful.");
         $this->waitForPageToLoad();

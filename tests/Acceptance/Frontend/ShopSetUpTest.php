@@ -25,6 +25,7 @@ namespace OxidEsales\Eshop\Tests\Acceptance\Frontend;
 use Exception;
 use oxConnectionException;
 use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
+use OxidEsales\TestingLibrary\ServiceCaller;
 use oxRegistry;
 
 /** Selenium tests for frontend navigation. */
@@ -34,6 +35,14 @@ class ShopSetUpTest extends FrontendTestCase
      * How much more time wait for these tests
      */
     protected $_iWaitTimeMultiplier = 7;
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        $oServiceCaller = new ServiceCaller($this->getTestConfig());
+        $oServiceCaller->callService('ViewsGenerator', 1);
+    }
 
     /**
      * Tests installation of new shop version (setup)
@@ -157,7 +166,10 @@ class ShopSetUpTest extends FrontendTestCase
             // There is a need to wait 3 seconds. _header.php file has meta tag with page refresh functionality.
             sleep(4);
             $this->assertNotEquals("", $this->getValue("sLicence"));
-            $this->type("sLicence", $this->getTestConfig()->getShopSerial());
+            $serial = $this->getTestConfig()->getShopSerial();
+            if ($serial) {
+                $this->type("sLicence", $serial);
+            }
             $this->click("step5Submit");
             $this->waitForText("License key successfully saved");
         } else {

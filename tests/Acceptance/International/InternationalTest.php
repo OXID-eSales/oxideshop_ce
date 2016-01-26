@@ -25,9 +25,10 @@ namespace OxidEsales\Eshop\Tests\Acceptance\International;
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Tests\Acceptance\AcceptanceTestCase;
 
 /** Selenium tests for UTF-8 shop version. */
-class InternationalTest extends \OxidEsales\TestingLibrary\AcceptanceTestCase
+class InternationalTest extends AcceptanceTestCase
 {
     /**
      * Sets up default environment for tests.

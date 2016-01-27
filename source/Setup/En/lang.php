@@ -22,7 +22,7 @@
 
 $aLang = array(
 
-'charset'                                       => 'ISO-8859-15',
+'charset'                                       => 'UTF-8',
 'HEADER_META_MAIN_TITLE'                        => 'OXID eShop installation wizard',
 'HEADER_TEXT_SETUP_NOT_RUNS_AUTOMATICLY'        => 'If setup does not continue in a few seconds, please click ',
 'FOOTER_OXID_ESALES'                            => '&copy; OXID eSales AG 2003 - '.@date("Y"),

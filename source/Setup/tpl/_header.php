@@ -25,8 +25,8 @@ $editionSelector = new \OxidEsales\Eshop\Core\Edition\EditionSelector();
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
+    <meta charset="utf-8"/>
     <title><?php $this->getText( 'HEADER_META_MAIN_TITLE'); ?> - <?php echo( $this->getTitle() ) ?></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php $this->getText( 'charset' ); ?>">
     <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
     <script language="JavaScript">
     <!--

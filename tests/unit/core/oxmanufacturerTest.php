@@ -77,9 +77,9 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
     public function testMagicGetter()
     {
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.jpg');
+        $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.png');
 
-        $this->assertEquals('big_matsol_1_mico.jpg', basename($oManufacturer->getIconUrl()));
+        $this->assertEquals('big_matsol_1_mico.png', basename($oManufacturer->getIconUrl()));
 
 
         $oManufacturer = $this->getMock('oxManufacturer', array('getLink', 'getNrOfArticles', 'getIsVisible', 'getHasVisibleSubCats'));
@@ -320,9 +320,9 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
     public function testGetIconUrl()
     {
         $oManufacturer = new oxManufacturer();
-        $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.jpg');
+        $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.png');
 
-        $this->assertEquals('big_matsol_1_mico.jpg', basename($oManufacturer->getIconUrl()));
+        $this->assertEquals('big_matsol_1_mico.png', basename($oManufacturer->getIconUrl()));
     }
 
     /**
@@ -338,10 +338,10 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
 
         $oManufacturer = $this->getMock("oxManufacturer", array("getConfig"), array(), '', false);
         $oManufacturer->expects($this->exactly(1))->method('getConfig')->will($this->returnValue($oConfig));
-        $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.jpg');
+        $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.png');
 
         $sUrl = oxRegistry::getConfig()->getOutUrl() . basename(oxRegistry::getConfig()->getPicturePath(""));
-        $sUrl .= "/generated/manufacturer/icon/87_87_75/big_matsol_1_mico.jpg";
+        $sUrl .= "/generated/manufacturer/icon/87_87_75/big_matsol_1_mico.png";
 
         $this->assertEquals($sUrl, $oManufacturer->getIconUrl());
     }

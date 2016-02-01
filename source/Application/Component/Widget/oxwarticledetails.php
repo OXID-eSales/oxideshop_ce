@@ -68,13 +68,6 @@ class oxwArticleDetails extends oxWidget
     protected $_blCanEditTags = null;
 
     /**
-     * Class handling CAPTCHA image.
-     *
-     * @var object
-     */
-    protected $_oCaptcha = null;
-
-    /**
      * Media files
      *
      * @var array
@@ -484,20 +477,6 @@ class oxwArticleDetails extends oxWidget
     public function getVariantList()
     {
         return $this->loadVariantInformation();
-    }
-
-    /**
-     * Template variable getter. Returns object of handling CAPTCHA image
-     *
-     * @return object
-     */
-    public function getCaptcha()
-    {
-        if ($this->_oCaptcha === null) {
-            $this->_oCaptcha = oxNew('oxCaptcha');
-        }
-
-        return $this->_oCaptcha;
     }
 
     /**

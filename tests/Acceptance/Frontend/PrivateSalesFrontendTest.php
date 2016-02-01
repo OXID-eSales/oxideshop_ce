@@ -230,7 +230,6 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->type("editval[send_email]", "example_test@oxid-esales.dev");
         $this->assertEquals("%HAVE_A_LOOK%:", $this->getValue("editval[send_subject]"));
         $this->type("editval[send_message]", "Invitation to shop");
-        $this->type("c_mac", $this->getText("verifyTextCode"));
         $this->clickAndWait("//button[text()='%SEND%']");
 
 
@@ -252,7 +251,6 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->type("editval[send_email]", "example_test@oxid-esales.dev");
         $this->assertEquals("%HAVE_A_LOOK%:", $this->getValue("editval[send_subject]"));
         $this->type("editval[send_message]", "Invitation to shop");
-        $this->type("c_mac", $this->getText("verifyTextCode"));
         $this->clickAndWait("//button[text()='%SEND%']");
         $this->assertEquals("%YOU_ARE_HERE%: / %INVITE_YOUR_FRIENDS%", $this->getText("breadCrumb"));
         $this->assertEquals("%INVITE_YOUR_FRIENDS%", $this->getText("//h1"));

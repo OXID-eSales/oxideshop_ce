@@ -77,16 +77,6 @@ class PriceAlarmController extends \oxUBase
         $myConfig = $this->getConfig();
         $myUtils = oxRegistry::getUtils();
 
-        //control captcha
-        $sMac = oxRegistry::getConfig()->getRequestParameter('c_mac');
-        $sMacHash = oxRegistry::getConfig()->getRequestParameter('c_mach');
-        $oCaptcha = oxNew('oxCaptcha');
-        if (!$oCaptcha->pass($sMac, $sMacHash)) {
-            $this->_iPriceAlarmStatus = 2;
-
-            return;
-        }
-
         $aParams = oxRegistry::getConfig()->getRequestParameter('pa');
         if (!isset($aParams['email']) || !$myUtils->isValidEmail($aParams['email'])) {
             $this->_iPriceAlarmStatus = 0;

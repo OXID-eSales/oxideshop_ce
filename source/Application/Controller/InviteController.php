@@ -81,13 +81,6 @@ class InviteController extends \oxUBase
     protected $_aInviteData = null;
 
     /**
-     * Class handling CAPTCHA image.
-     *
-     * @var object
-     */
-    protected $_oCaptcha = null;
-
-    /**
      * Email sent status status.
      *
      * @var integer
@@ -137,18 +130,6 @@ class InviteController extends \oxUBase
         // storing used written values
         $oParams = (object) $aParams;
         $this->setInviteData((object) oxRegistry::getConfig()->getRequestParameter('editval'));
-
-        // spam spider prevension
-        $sMac = oxRegistry::getConfig()->getRequestParameter('c_mac');
-        $sMacHash = oxRegistry::getConfig()->getRequestParameter('c_mach');
-        $oCaptcha = $this->getCaptcha();
-
-        if (!$oCaptcha->pass($sMac, $sMacHash)) {
-            // even if there is no exception, use this as a default display method
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('MESSAGE_WRONG_VERIFICATION_CODE');
-
-            return;
-        }
 
         $oUtilsView = oxRegistry::get("oxUtilsView");
 
@@ -247,20 +228,6 @@ class InviteController extends \oxUBase
     public function getInviteData()
     {
         return $this->_aInviteData;
-    }
-
-    /**
-     * Template variable getter. Returns object of handling CAPTCHA image
-     *
-     * @return object
-     */
-    public function getCaptcha()
-    {
-        if ($this->_oCaptcha === null) {
-            $this->_oCaptcha = oxNew('oxCaptcha');
-        }
-
-        return $this->_oCaptcha;
     }
 
     /**

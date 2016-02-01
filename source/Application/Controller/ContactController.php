@@ -56,13 +56,6 @@ class ContactController extends \oxUBase
     protected $_sContactMessage = null;
 
     /**
-     * Class handling CAPTCHA image.
-     *
-     * @var object
-     */
-    protected $_oCaptcha = null;
-
-    /**
      * Contact email send status.
      *
      * @var object
@@ -96,18 +89,6 @@ class ContactController extends \oxUBase
         // checking email address
         if (!oxRegistry::getUtils()->isValidEmail($aParams['oxuser__oxusername'])) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOVALIDEMAIL');
-
-            return false;
-        }
-
-        // spam spider prevension
-        $sMac = oxRegistry::getConfig()->getRequestParameter('c_mac');
-        $sMacHash = oxRegistry::getConfig()->getRequestParameter('c_mach');
-        $oCaptcha = $this->getCaptcha();
-
-        if (!$oCaptcha->pass($sMac, $sMacHash)) {
-            // even if there is no exception, use this as a default display method
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('MESSAGE_WRONG_VERIFICATION_CODE');
 
             return false;
         }
@@ -175,20 +156,6 @@ class ContactController extends \oxUBase
         }
 
         return $this->_sContactMessage;
-    }
-
-    /**
-     * Template variable getter. Returns object of handling CAPTCHA image
-     *
-     * @return object
-     */
-    public function getCaptcha()
-    {
-        if ($this->_oCaptcha === null) {
-            $this->_oCaptcha = oxNew('oxCaptcha');
-        }
-
-        return $this->_oCaptcha;
     }
 
     /**

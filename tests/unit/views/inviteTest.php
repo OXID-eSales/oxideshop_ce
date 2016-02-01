@@ -87,17 +87,6 @@ class Unit_Views_inviteTest extends OxidTestCase
     }
 
     /**
-     * Testing method getCaptcha()
-     *
-     * @return null
-     */
-    public function testGetCaptcha()
-    {
-        $oView = $this->getProxyClass('invite');
-        $this->assertEquals(oxNew('oxCaptcha'), $oView->getCaptcha());
-    }
-
-    /**
      * Testing method send() - no user input
      *
      * @return null
@@ -118,30 +107,6 @@ class Unit_Views_inviteTest extends OxidTestCase
     }
 
     /**
-     * Testing method send() - no captcha text
-     *
-     * @return null
-     */
-    public function testSend_withoutCaptcha()
-    {
-        $this->setRequestParameter('editval', array('rec_email' => 'testRecEmail@oxid-esales.com', 'send_name' => 'testSendName', 'send_email' => 'testSendEmail@oxid-esales.com', 'send_message' => 'testSendMessage', 'send_subject' => 'testSendSubject'));
-        $this->getConfig()->setConfigParam("blInvitationsEnabled", true);
-
-        $oEmail = $this->getMock('oxEmail', array('sendInviteMail'));
-        $oEmail->expects($this->never())->method('sendInviteMail');
-        oxTestModules::addModuleObject('oxEmail', $oEmail);
-
-        $oCaptcha = $this->getMock('oxCaptcha', array('pass'));
-        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(false));
-        oxTestModules::addModuleObject('oxCaptcha', $oCaptcha);
-
-        $oView = $this->getMock("invite", array("getUser"));
-        $oView->expects($this->once())->method('getUser')->will($this->returnValue(true));
-        $oView->send();
-        $this->assertFalse($oView->getInviteSendStatus());
-    }
-
-    /**
      * Testing method send()
      *
      * @return null
@@ -154,10 +119,6 @@ class Unit_Views_inviteTest extends OxidTestCase
         $oEmail = $this->getMock('oxEmail', array('sendInviteMail'));
         $oEmail->expects($this->once())->method('sendInviteMail')->will($this->returnValue(true));
         oxTestModules::addModuleObject('oxEmail', $oEmail);
-
-        $oCaptcha = $this->getMock('oxCaptcha', array('pass'));
-        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
-        oxTestModules::addModuleObject('oxCaptcha', $oCaptcha);
 
         $oView = $this->getMock("invite", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(new oxUser()));
@@ -196,10 +157,6 @@ class Unit_Views_inviteTest extends OxidTestCase
         $oEmail = $this->getMock('oxEmail', array('sendInviteMail'));
         $oEmail->expects($this->once())->method('sendInviteMail')->will($this->returnValue(true));
         oxTestModules::addModuleObject('oxEmail', $oEmail);
-
-        $oCaptcha = $this->getMock('oxCaptcha', array('pass'));
-        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
-        oxTestModules::addModuleObject('oxCaptcha', $oCaptcha);
 
         $oUser = $this->getMock('oxUser', array('updateInvitationStatistics'));
         $oUser->expects($this->once())->method('updateInvitationStatistics')->will($this->returnValue(true));

@@ -265,7 +265,6 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->type("editval[send_name]", "user");
         $this->type("editval[send_email]", "example_test@oxid-esales.dev");
         $this->type("editval[send_subject]", "Have a look at: Test product 1 [EN] šÄßüл");
-        $this->type("c_mac", $this->getText("verifyTextCode"));
         $this->clickAndWait("//button[text()='%SEND%']");
         $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//h1"));
     }
@@ -281,13 +280,10 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->callShopSC("oxConfig", null, null, array("iUseGDVersion" => array("type" => "str", "value" => 0)));
 
         $this->openArticle( 1001, true );
-        $this->assertFalse($this->isVisible("c_mac"));
         $this->assertElementPresent("link=%PRICE_ALERT%");
         $this->click("productLinks");
         $this->waitForItemAppear("//a[@id='priceAlarmLink']");
         $this->click("//a[@id='priceAlarmLink']");
-        $this->waitForItemAppear("c_mac");
-        $this->type("c_mac", $this->getText("verifyTextCode"));
         $this->type("pa[email]", "example_test@oxid-esales.dev");
         $this->type("pa[price]", "99.99");
         $this->clickAndWait("//form[@name='pricealarm']//button");
@@ -295,7 +291,6 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->click("//ul[@id='itemTabs']//a[text()='%DESCRIPTION%']");
         $this->waitForItemAppear("//*[@id='description']");
         $this->click("link=%PRICE_ALERT%");
-        $this->waitForItemAppear("c_mac");
 
         //disabling price alert for product(1001)
         $this->callShopSC("oxArticle", "save", "1001", array("oxblfixedprice" => 1), null, 1);
@@ -303,7 +298,6 @@ class ProductInfoFrontendTest extends FrontendTestCase
 
         $this->openArticle( 1001 );
         $this->assertElementNotPresent("link=%PRICE_ALERT%");
-        $this->assertElementNotPresent("c_mac");
         $this->assertElementNotPresent("pa[email]");
         $this->assertElementNotPresent("pa[price]");
 

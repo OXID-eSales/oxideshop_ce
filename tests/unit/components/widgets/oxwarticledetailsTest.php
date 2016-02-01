@@ -393,17 +393,6 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
     }
 
     /**
-     * Test getting object of handling CAPTCHA image
-     *
-     * @return null
-     */
-    public function testGetCaptcha()
-    {
-        $oObj = $this->getProxyClass('Contact');
-        $this->assertEquals(oxNew('oxCaptcha'), $oObj->getCaptcha());
-    }
-
-    /**
      * Test get media files.
      *
      * @return null

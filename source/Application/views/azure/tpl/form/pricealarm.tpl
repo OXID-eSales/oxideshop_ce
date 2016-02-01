@@ -11,8 +11,6 @@
         <input type="hidden" name="anid" value="[{$oDetailsProduct->oxarticles__oxid->value}]">
         [{/if}]
         <input type="hidden" name="fnc" value="addme">
-        [{assign var="oCaptcha" value=$oView->getCaptcha()}]
-        <input type="hidden" name="c_mach" value="[{$oCaptcha->getHash()}]"/>
     </div>
     <ul class="form">
         <li>
@@ -30,18 +28,9 @@
                 <span class="js-oxError_email">[{oxmultilang ident="ERROR_MESSAGE_INPUT_NOVALIDEMAIL"}]</span>
             </p>
         </li>
-        <li>
-            <label>[{oxmultilang ident="VERIFICATION_CODE" suffix="COLON"}]</label>
-            [{if $oCaptcha->isImageVisible()}]
-                <img class="verificationCode" src="[{$oCaptcha->getImageUrl()}]" alt="[{oxmultilang ident="VERIFICATION_CODE"}]">
-            [{else}]
-                <span class="verificationCode" id="verifyTextCode">[{$oCaptcha->getText()}]</span>
-            [{/if}]
-            <input class="js-oxValidate js-oxValidate_notEmpty" type="text" data-fieldsize="verify" name="c_mac" value="">
-            <p class="oxValidateError">
-                <span class="js-oxError_notEmpty">[{oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS"}]</span>
-            </p>
-        </li>
+
+        [{block name="captcha_form"}][{/block}]
+
         <li class="formSubmit">
             <button class="submitButton largeButton" type="submit">[{oxmultilang ident="SEND"}]</button>
         </li>

@@ -6,8 +6,6 @@
         [{$oViewConf->getHiddenSid()}]
         <input type="hidden" name="fnc" value="send"/>
         <input type="hidden" name="cl" value="contact"/>
-        [{assign var="oCaptcha" value=$oView->getCaptcha()}]
-        <input type="hidden" name="c_mach" value="[{$oCaptcha->getHash()}]"/>
     </div>
     <ul class="form clear">
         <li>
@@ -52,19 +50,9 @@
             <label>[{oxmultilang ident="MESSAGE" suffix="COLON"}]</label>
             <textarea rows="15" cols="70" name="c_message" class="areabox">[{$oView->getContactMessage()}]</textarea>
         </li>
-        <li class="verify">
-            <label class="req">[{oxmultilang ident="VERIFICATION_CODE" suffix="COLON"}]</label>
-            [{assign var="oCaptcha" value=$oView->getCaptcha()}]
-            [{if $oCaptcha->isImageVisible()}]
-                <img src="[{$oCaptcha->getImageUrl()}]" alt="">
-            [{else}]
-                <span class="verificationCode" id="verifyTextCode">[{$oCaptcha->getText()}]</span>
-            [{/if}]
-            <input type="text" data-fieldsize="verify" name="c_mac" value="" class="js-oxValidate js-oxValidate_notEmpty">
-            <p class="oxValidateError">
-                <span class="js-oxError_notEmpty">[{oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS"}]</span>
-            </p>
-        </li>
+
+        [{block name="captcha_form"}][{/block}]
+
         <li class="formNote">
             [{oxmultilang ident="COMPLETE_MARKED_FIELDS"}]
         </li>

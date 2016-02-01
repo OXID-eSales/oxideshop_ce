@@ -64,30 +64,6 @@ class Unit_Views_contactTest extends OxidTestCase
     }
 
     /**
-     * Test if send mail is not executed if CAPTCHA image is not entered
-     * and warning message is displayed
-     *
-     * @return null
-     */
-    public function testSave_withoutCaptcha()
-    {
-        oxRegistry::getSession()->deleteVariable('Errors');
-
-        $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
-        $this->setRequestParameter('editval', $aParams);
-        $oContact = oxNew('Contact');
-
-        $this->assertFalse($oContact->send());
-
-        //checking if warning was added to errors list
-        $sErr = oxRegistry::getLang()->translateString('MESSAGE_WRONG_VERIFICATION_CODE');
-        $aEx = oxRegistry::getSession()->getVariable('Errors');
-        $oErr = unserialize($aEx['default'][0]);
-
-        $this->assertEquals($sErr, $oErr->getOxMessage());
-    }
-
-    /**
      * Test if send mail is not executed if user data is not entered
      * and warning message is displayed
      *
@@ -96,7 +72,6 @@ class Unit_Views_contactTest extends OxidTestCase
     public function testSave_withoutUserData()
     {
         oxRegistry::getSession()->deleteVariable('Errors');
-        oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
 
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
         $this->setRequestParameter('editval', $aParams);
@@ -119,7 +94,6 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
         oxTestModules::addFunction('oxemail', 'sendContactMail', '{return true;}');
 
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
@@ -170,18 +144,7 @@ class Unit_Views_contactTest extends OxidTestCase
     }
 
     /**
-     * Test getting object of handling CAPTCHA image
-     *
-     * @return null
-     */
-    public function testGetCaptcha()
-    {
-        $oObj = $this->getProxyClass('Contact');
-        $this->assertEquals(oxNew('oxCaptcha'), $oObj->getCaptcha());
-    }
-
-    /**
-     * Test getting object of handling CAPTCHA image
+     * Test contact send status.
      *
      * @return null
      */
@@ -229,13 +192,8 @@ class Unit_Views_contactTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
 
-        /** @var oxCaptcha|PHPUnit_Framework_MockObject_MockObject $oCaptcha */
-        $oCaptcha = $this->getMock("oxCaptcha", array("pass"));
-        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
-
         /** @var Contact|PHPUnit_Framework_MockObject_MockObject $oContact */
-        $oContact = $this->getMock("Contact", array("getCaptcha"));
-        $oContact->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
+        $oContact = oxNew('Contact');
         $oContact->send();
     }
 
@@ -266,13 +224,8 @@ class Unit_Views_contactTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
 
-        /** @var oxCaptcha|PHPUnit_Framework_MockObject_MockObject $oCaptcha */
-        $oCaptcha = $this->getMock("oxCaptcha", array("pass"));
-        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
-
         /** @var Contact|PHPUnit_Framework_MockObject_MockObject $oContact */
-        $oContact = $this->getMock("Contact", array("getCaptcha"));
-        $oContact->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
+        $oContact = oxNew('Contact');
         $oContact->send();
     }
 

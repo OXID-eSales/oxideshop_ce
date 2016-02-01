@@ -55,36 +55,11 @@ class Unit_Views_pricealarmTest extends OxidTestCase
         $this->assertEquals('10,00', $oPriceAlarm->getBidPrice());
     }
 
-    public function testGetPriceAlarmStatus()
-    {
-        $oPriceAlarm = $this->getProxyClass('pricealarm');
-        $oPriceAlarm->addme();
-
-        $this->assertEquals(2, $oPriceAlarm->getPriceAlarmStatus());
-    }
-
-    public function testAddme_incorectCaptcha()
-    {
-        $oDb = oxDb::getDb();
-
-        $oPriceAlarm = $this->getProxyClass('pricealarm');
-        $this->setRequestParameter("c_mac", "aa");
-        $this->setRequestParameter("c_mach", "bb");
-
-        $oPriceAlarm->addme();
-
-        $this->assertEquals(2, $oPriceAlarm->getNonPublicVar("_iPriceAlarmStatus"));
-
-        $sSql = "select count(oxid) from oxpricealarm";
-        $this->assertEquals(0, $oDb->getOne($sSql));
-    }
-
     public function testAddme_incorectEmail()
     {
         $oDb = oxDb::getDb();
 
         $oPriceAlarm = $this->getProxyClass('pricealarm');
-        oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
 
         $this->setRequestParameter("pa", array("email" => "ladyGaga"));
         $oPriceAlarm->addme();
@@ -98,7 +73,6 @@ class Unit_Views_pricealarmTest extends OxidTestCase
     public function testAddme_savesAndSendsPriceAlarm()
     {
         $oPriceAlarm = $this->getProxyClass('pricealarm');
-        oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
         oxTestModules::addFunction('oxEmail', 'sendPricealarmNotification', '{return 999;}');
 
         $this->getSession()->setVariable('usr', "testUserId");
@@ -131,7 +105,6 @@ class Unit_Views_pricealarmTest extends OxidTestCase
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
         $oPriceAlarm = $this->getProxyClass('pricealarm');
-        oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
         oxTestModules::addFunction('oxEmail', 'sendPricealarmNotification', '{return 999;}');
 
         $this->getSession()->setVariable('usr', "testUserId");

@@ -96,7 +96,6 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testGetSuggestData()
     {
-        oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
         $this->setRequestParameter('editval', array('name' => 'test', 'value' => 'testvalue'));
 
         /** @var Suggest $oSuggest */
@@ -107,15 +106,6 @@ class Unit_Views_suggestTest extends OxidTestCase
 
         $this->assertEquals('test', $oParam->name);
         $this->assertEquals('testvalue', $oParam->value);
-    }
-
-    public function testSendSuggestWithoutCaptcha()
-    {
-        $this->setRequestParameter('editval', array('name' => 'test', 'value' => 'testvalue'));
-
-        /** @var Suggest $oSuggest */
-        $oSuggest = $this->getProxyClass("suggest");
-        $this->assertFalse($oSuggest->send());
     }
 
     public function testGetLink()
@@ -133,13 +123,6 @@ class Unit_Views_suggestTest extends OxidTestCase
         $this->assertEquals($oCfg->getShopURL() . 'empfehlen/?cnid=' . $sCnid . '&amp;anid=2000', $oV->getLink(0));
         $this->assertEquals($oCfg->getShopURL() . 'en/recommend/?cnid=' . $sCnid . '&amp;anid=2000', $oV->getLink(1));
     }
-
-    public function testGetCaptcha()
-    {
-        $oSuggest = $this->getProxyClass('suggest');
-        $this->assertEquals(oxNew('oxCaptcha'), $oSuggest->getCaptcha());
-    }
-
 
     /**
      * Test oxViewConfig::getShowListmania() affection
@@ -199,13 +182,9 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oProduct = $this->getMock("oxarticle", array('getId'));
         $oProduct->expects($this->once())->method('getId')->will($this->returnValue('XProduct'));
 
-        $oCaptcha = $this->getMock("stdclass", array('pass'));
-        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
-
         /** @var Suggest|PHPUnit_Framework_MockObject_MockObject $oSuggest */
-        $oSuggest = $this->getMock("suggest", array("getProduct", 'getCaptcha'));
+        $oSuggest = $this->getMock("suggest", array("getProduct"));
         $oSuggest->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
-        $oSuggest->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
 
         $this->setRequestParameter('searchparam', "searchparam&&A");
         $this->setRequestParameter('searchcnid', "searchcnid&&A");
@@ -241,13 +220,9 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oProduct = $this->getMock("stdclass", array('getId'));
         $oProduct->expects($this->never())->method('getId');
 
-        $oCaptcha = $this->getMock("stdclass", array('pass'));
-        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
-
         /** @var Suggest|PHPUnit_Framework_MockObject_MockObject $oSuggest */
-        $oSuggest = $this->getMock("suggest", array("getProduct", 'getCaptcha'));
+        $oSuggest = $this->getMock("suggest", array("getProduct"));
         $oSuggest->expects($this->never())->method('getProduct')->will($this->returnValue($oProduct));
-        $oSuggest->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
 
         $oUtilsView = $this->getMock("stdclass", array('addErrorToDisplay'));
         $oUtilsView->expects($this->once())->method('addErrorToDisplay');

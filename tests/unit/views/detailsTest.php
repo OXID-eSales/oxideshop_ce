@@ -545,17 +545,6 @@ class Unit_Views_detailsTest extends OxidTestCase
     }
 
     /**
-     * Test get Captcha.
-     *
-     * @return null
-     */
-    public function testGetCaptcha()
-    {
-        $oDetails = $this->getProxyClass('details');
-        $this->assertEquals(oxNew('oxCaptcha'), $oDetails->getCaptcha());
-    }
-
-    /**
      * Test get product.
      *
      * @return null
@@ -1613,31 +1602,8 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->assertSame('test_isactive', $oView->isReviewActive());
     }
 
-    public function testAddme_invalidCaptcha()
-    {
-        /** @var oxCaptcha|PHPUnit_Framework_MockObject_MockObject $oCaptcha */
-        $oCaptcha = $this->getMock('oxCaptcha', array('pass'));
-        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(false));
-
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
-        $oEmail->expects($this->never())->method('sendPricealarmNotification');
-        oxTestModules::addModuleObject('oxEmail', $oEmail);
-
-        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oView */
-        $oView = $this->getMock($this->getProxyClassName('Details'), array('getCaptcha'));
-        $oView->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
-
-        $oView->addme();
-        $this->assertSame(2, $oView->getNonPublicVar('_iPriceAlarmStatus'));
-    }
-
     public function testAddme_invalidEmail()
     {
-        /** @var oxCaptcha|PHPUnit_Framework_MockObject_MockObject $oCaptcha */
-        $oCaptcha = $this->getMock('oxCaptcha', array('pass'));
-        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
-
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
         $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
         $oEmail->expects($this->never())->method('sendPricealarmNotification');
@@ -1649,8 +1615,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         oxTestModules::addModuleObject('oxpricealarm', $oPriceAlarm);
 
         /** @var Details|PHPUnit_Framework_MockObject_MockObject $oView */
-        $oView = $this->getMock($this->getProxyClassName('Details'), array('getCaptcha'));
-        $oView->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
+        $oView = $this->getProxyClass('Details');
 
         $aParams = array();
         $aParams['email'] = 'test_email';
@@ -1662,10 +1627,6 @@ class Unit_Views_detailsTest extends OxidTestCase
 
     public function testAddme_mailsent()
     {
-        /** @var oxCaptcha|PHPUnit_Framework_MockObject_MockObject $oCaptcha */
-        $oCaptcha = $this->getMock('oxCapcha', array('pass'));
-        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
-
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
         $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
         $oEmail->expects($this->once())->method('sendPricealarmNotification')->will($this->returnValue(123));
@@ -1681,8 +1642,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oProduct->expects($this->once())->method('getId')->will($this->returnValue('test_artid'));
 
         /** @var Details|PHPUnit_Framework_MockObject_MockObject $oView */
-        $oView = $this->getMock($this->getProxyClassName('Details'), array('getCaptcha', 'getProduct'));
-        $oView->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
+        $oView = $this->getMock($this->getProxyClassName('Details'), array('getProduct'));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 
         $aParams = array();

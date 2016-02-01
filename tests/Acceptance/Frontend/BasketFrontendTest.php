@@ -665,8 +665,8 @@ class BasketFrontendTest extends FrontendTestCase
         //test for #1822
         $this->executeSql("UPDATE `oxdiscount` SET `OXACTIVE` = 1 WHERE `OXID` = 'testdiscount5';");
         $this->clickAndWait("link=%STEPS_BASKET%");
-        $this->clickAndWait("//ul[@id='topMenu']//a[text()='%LOGOUT%']");
-        $this->assertElementNotPresent("//a[text()='%LOGOUT%']");
+        #$this->clickAndWait("//ul[@id='topMenu']//a[text()='%LOGOUT%']");
+        #$this->assertElementNotPresent("//a[text()='%LOGOUT%']");
         $this->check("//tr[@id='cartItem_2']/td[1]/input");
         $this->type("am_1", "1");
         $this->clickAndWait("basketUpdate");

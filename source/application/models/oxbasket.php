@@ -1108,11 +1108,7 @@ class oxBasket extends oxSuperCfg
 
                         if ($dVoucherdiscount > 0) {
 
-                            if ($oVoucher->getDiscountType() == 'absolute') {
-                                $dVatPart = ($dPrice - $dVoucherdiscount) / $dPrice * 100;
-                            } else {
-                                $dVatPart = 100 - $oVoucher->getDiscount();
-                            }
+                            $dVatPart = ($dPrice - $dVoucherdiscount) / $dPrice * 100;
 
                             if (!$this->_aDiscountedVats) {
                                 if ($oPriceList = $this->getDiscountProductsPrice()) {

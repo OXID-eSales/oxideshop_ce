@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -744,11 +744,11 @@ class oxBasket extends oxSuperCfg
                     continue;
                 }
 
-                // adding item type bundles
-                $aArtBundles = $this->_getArticleBundles($oBasketItem);
+                    // adding item type bundles
+                    $aArtBundles = $this->_getArticleBundles($oBasketItem);
 
-                // adding bundles to basket
-                $this->_addBundlesToBasket($aArtBundles);
+                    // adding bundles to basket
+                    $this->_addBundlesToBasket($aArtBundles);
             } catch (oxNoArticleException $oEx) {
                 $this->removeItem($key);
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
@@ -1108,11 +1108,7 @@ class oxBasket extends oxSuperCfg
 
                         if ($dVoucherdiscount > 0) {
 
-                            if ($oVoucher->getDiscountType() == 'absolute') {
-                                $dVatPart = ($dPrice - $dVoucherdiscount) / $dPrice * 100;
-                            } else {
-                                $dVatPart = 100 - $oVoucher->getDiscount();
-                            }
+                            $dVatPart = ($dPrice - $dVoucherdiscount) / $dPrice * 100;
 
                             if (!$this->_aDiscountedVats) {
                                 if ($oPriceList = $this->getDiscountProductsPrice()) {

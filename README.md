@@ -1,7 +1,7 @@
 OXID eShop
 ==========
 
-[![Build Status](https://travis-ci.org/OXID-eSales/oxideshop_ce.svg)](https://travis-ci.org/OXID-eSales/oxideshop_ce)
+[![Build Status](https://travis-ci.org/OXID-eSales/oxideshop_ce.svg?branch=master)](https://travis-ci.org/OXID-eSales/oxideshop_ce)
 
 This repository contains the sources of OXID eShop Community Edition.
 
@@ -16,7 +16,9 @@ OXID eShop is just e-commerce software for agencies with deadlines :-)
 ![Image alt](frontend.png)
 
 
-Useful links:<br>
-Project home page - http://www.oxid-esales.com<br>
-Wiki - http://www.oxidforge.org<br>
-Bug tracker - https://bugs.oxid-esales.com
+### Useful links
+
+* Project home page - http://www.oxid-esales.com
+* Wiki - http://www.oxidforge.org
+* Bug tracker - https://bugs.oxid-esales.com
+* VM and SDK - https://github.com/OXID-eSales/oxvm_eshop

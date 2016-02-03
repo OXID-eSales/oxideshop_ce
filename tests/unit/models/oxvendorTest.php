@@ -27,8 +27,8 @@ class Unit_Models_oxvendorTest extends OxidTestCase
 {
 
     //
-    protected $_sVndIcon = "/vendor/icon/big_matsol_1_mico.jpg";
-    protected $_sManIcon = "/manufacturer/icon/big_matsol_1_mico.jpg";
+    protected $_sVndIcon = "/vendor/icon/big_matsol_1_mico.png";
+    protected $_sManIcon = "/manufacturer/icon/big_matsol_1_mico.png";
 
     /**
      * Test setup
@@ -110,9 +110,9 @@ class Unit_Models_oxvendorTest extends OxidTestCase
     public function testGetIconUrl()
     {
         $oVendor = $this->getProxyClass("oxvendor");
-        $oVendor->oxvendor__oxicon = new oxField('big_matsol_1_mico.jpg');
+        $oVendor->oxvendor__oxicon = new oxField('big_matsol_1_mico.png');
 
-        $this->assertEquals('big_matsol_1_mico.jpg', basename($oVendor->getIconUrl()));
+        $this->assertEquals('big_matsol_1_mico.png', basename($oVendor->getIconUrl()));
     }
 
     public function testAssignWithoutArticleCnt()
@@ -338,10 +338,10 @@ class Unit_Models_oxvendorTest extends OxidTestCase
     public function testGetIconUrlNewPath()
     {
         $oVendor = $this->getProxyClass("oxvendor");
-        $oVendor->oxvendor__oxicon = new oxField('big_matsol_1_mico.jpg');
+        $oVendor->oxvendor__oxicon = new oxField('big_matsol_1_mico.png');
 
         $sUrl = $this->getConfig()->getOutUrl() . basename($this->getConfig()->getPicturePath(""));
-        $sUrl .= "/generated/vendor/icon/100_100_75/big_matsol_1_mico.jpg";
+        $sUrl .= "/generated/vendor/icon/100_100_75/big_matsol_1_mico.png";
 
         $this->assertEquals($sUrl, $oVendor->getIconUrl());
     }

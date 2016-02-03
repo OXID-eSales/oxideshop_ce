@@ -852,21 +852,21 @@ INSERT INTO `oxlinks` (`OXID`, `OXSHOPID`, `OXACTIVE`, `OXURL`, `OXURLDESC`, `OX
 # Data for table `oxmanufacturers`
 #
 INSERT INTO `oxmanufacturers` (`OXID`, `OXSHOPID`, `OXACTIVE`, `OXICON`, `OXTITLE`, `OXSHORTDESC`, `OXTITLE_1`, `OXSHORTDESC_1`, `OXTITLE_2`, `OXSHORTDESC_2`, `OXTITLE_3`, `OXSHORTDESC_3`, `OXSHOWSUFFIX`) VALUES
-  ('90a8a18dd0cf0e7aec5238f30e1c6106', 'oxbaseshop', 1, 'naish_1_mico.jpg', 'Naish', '', 'Naish', '', '', '', '', '', 0),
+  ('90a8a18dd0cf0e7aec5238f30e1c6106', 'oxbaseshop', 1, 'naish_1_mico.png', 'Naish', '', 'Naish', '', '', '', '', '', 0),
   ('9434afb379a46d6c141de9c9e5b94fcf', 'oxbaseshop', 1, 'logo3_ico.png', 'Kuyichi', 'Eine stilbewusste Marke', 'Kuyichi', 'A style conscious brand', '', '', '', '', 0),
-  ('dc5ec524a9aa6175cf7a498d70ce510a', 'oxbaseshop', 1, 'npx_logo_1_mico.jpg', 'NPX', '', 'NPX', '', '', '', '', '', 0),
+  ('dc5ec524a9aa6175cf7a498d70ce510a', 'oxbaseshop', 1, 'npx_logo_1_mico.png', 'NPX', '', 'NPX', '', '', '', '', '', 0),
   ('dc59459d4d67189182c53ed0e4e777bc', 'oxbaseshop', 0, '', 'Flyboards', '', 'Flyboards', '', '', '', '', '', 0),
-  ('90a0b84564cde2394491df1c673b6aa0', 'oxbaseshop', 1, 'ion_logo_black_1_mico.jpg', 'ION', '', 'ION', '', '', '', '', '', 0),
-  ('90a3eccf9d7121a9ca7d659f29021b7a', 'oxbaseshop', 1, 'cabrinha_logo2011_1_mico.jpg', 'Cabrinha', '', 'Cabrinha', '', '', '', '', '', 0),
+  ('90a0b84564cde2394491df1c673b6aa0', 'oxbaseshop', 1, 'ion_logo_black_1_mico.png', 'ION', '', 'ION', '', '', '', '', '', 0),
+  ('90a3eccf9d7121a9ca7d659f29021b7a', 'oxbaseshop', 1, 'cabrinha_logo2011_1_mico.png', 'Cabrinha', '', 'Cabrinha', '', '', '', '', '', 0),
   ('dc50589ad69b6ec71721b25bdd403171', 'oxbaseshop', 0, '', 'Flysurfer', '', 'Flysurfer', '', '', '', '', '', 0),
-  ('adc566c366db8eaf30c6c124a09e82b3', 'oxbaseshop', 1, 'core_logo_1_mico.jpg', 'Core Kiteboarding', '', 'Core Kiteboarding', '', '', '', '', '', 0),
-  ('adc6df0977329923a6330cc8f3c0a906', 'oxbaseshop', 1, 'lf_kite_logo_1_mico.jpg', 'Liquid Force', '', 'Liquid Force Kite', '', '', '', '', '', 0),
+  ('adc566c366db8eaf30c6c124a09e82b3', 'oxbaseshop', 1, 'core_logo_1_mico.png', 'Core Kiteboarding', '', 'Core Kiteboarding', '', '', '', '', '', 0),
+  ('adc6df0977329923a6330cc8f3c0a906', 'oxbaseshop', 1, 'lf_kite_logo_1_mico.png', 'Liquid Force', '', 'Liquid Force Kite', '', '', '', '', '', 0),
   ('adca6aa4df3f95b6b46e28d4fc5855ba', 'oxbaseshop', 0, '', 'Spleene', '', 'Spleene', '', '', '', '', '', 0),
   ('adca51c88a3caa1c7b939fd6a229ae3a', 'oxbaseshop', 0, '', 'RRD', '', 'RRD', '', '', '', '', '', 0),
-  ('3a97c94553428daed76ba83e54d3876f', 'oxbaseshop', 1, 'big_matsol_1_mico.jpg', 'Big Matsol', '', 'Big Matsol', '', '', '', '', '', 0),
-  ('3a909e7c886063857e86982c7a3c5b84', 'oxbaseshop', 1, 'mauirippers_1_mico.jpg', 'Mauirippers', '', 'Mauirippers', '', '', '', '', '', 0),
-  ('3a9fd0ec4b41d001e770b1d2d7af3e73', 'oxbaseshop', 1, 'mikejucker_hawaii_1_mico.jpg', 'Jucker Hawaii', '', 'Jucker Hawaii', '', '', '', '', '', 0),
-  ('oiaf6ab7e12e86291e86dd3ff891fe40', 'oxbaseshop', 1, 'oreilly_1_mico.gif', 'O''Reilly', '', 'O''Reilly', '', '', '', '', '', 1);
+  ('3a97c94553428daed76ba83e54d3876f', 'oxbaseshop', 1, 'big_matsol_1_mico.png', 'Big Matsol', '', 'Big Matsol', '', '', '', '', '', 0),
+  ('3a909e7c886063857e86982c7a3c5b84', 'oxbaseshop', 1, 'mauirippers_1_mico.png', 'Mauirippers', '', 'Mauirippers', '', '', '', '', '', 0),
+  ('3a9fd0ec4b41d001e770b1d2d7af3e73', 'oxbaseshop', 1, 'mikejucker_hawaii_1_mico.png', 'Jucker Hawaii', '', 'Jucker Hawaii', '', '', '', '', '', 0),
+  ('oiaf6ab7e12e86291e86dd3ff891fe40', 'oxbaseshop', 1, 'oreilly_1_mico.png', 'O''Reilly', '', 'O''Reilly', '', '', '', '', '', 1);
 
 #
 # Data for table `oxnews`

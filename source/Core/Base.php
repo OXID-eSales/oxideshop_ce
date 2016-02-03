@@ -938,14 +938,14 @@ class Base extends \oxSuperCfg
 
         // has 'activefrom'/'activeto' fields ?
         if (isset($this->_aFieldNames['oxactivefrom']) && isset($this->_aFieldNames['oxactiveto'])) {
-            $sDate = date('Y-m-d H:i:s', oxRegistry::get('oxUtilsDate')->getTime());
+            $query = $this->_addSqlActiveRangeSnippet($query, $tableName);
 
-            $query = $query ? " $query or " : '';
-            $query = " ( $query ( $tableName.oxactivefrom < '$sDate' and $tableName.oxactiveto > '$sDate' ) ) ";
         }
 
         return $query;
     }
+
+
 
     /**
      * This function is triggered before the record is updated.
@@ -1540,5 +1540,23 @@ class Base extends \oxSuperCfg
     public function getLanguage()
     {
         return -1;
+    }
+
+    /**
+     * adds and activefrom/activeto to the query
+     * @param $query
+     * @param $tableName
+     *
+     * @return string
+     */
+    protected function _addSqlActiveRangeSnippet($query, $tableName)
+    {
+        $oDate = oxRegistry::get('oxUtilsDate');
+        $sDate = $oDate->getRoundedRequestDateDBFormatted(300);
+
+        $query = $query ? " $query or " : '';
+        $query = " ( $query ( $tableName.oxactivefrom < '$sDate' and $tableName.oxactiveto > '$sDate' ) ) ";
+
+        return $query;
     }
 }

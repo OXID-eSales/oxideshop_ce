@@ -4487,6 +4487,7 @@ a.sliderHover {
 }
 .categoryPicture {
     margin-bottom: 20px;
+    max-width: 748px;
 }
 
 /* --- Trusted shop logo --------------- */

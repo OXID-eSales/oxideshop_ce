@@ -630,7 +630,7 @@ class oxLang extends oxSuperCfg
     }
 
     /**
-     * Goes through language array and recodes its values. Returns recoded data
+     * Goes through language array and recodes its values if encoding does not fit with needed one. Returns recoded data
      *
      * @param array  $aLangArray   language data
      * @param string $sCharset     charset which was used while making file
@@ -640,18 +640,41 @@ class oxLang extends oxSuperCfg
      */
     protected function _recodeLangArray($aLangArray, $sCharset, $blRecodeKeys = false)
     {
+        $newEncoding = $this->getTranslationsExpectedEncoding();
+
+        if ($sCharset == $newEncoding) {
+            return $aLangArray;
+        }
+
         $aLangs = array();
         foreach ($aLangArray as $sKey => $sValue) {
             $sItemKey = $sKey;
             if ($blRecodeKeys === true) {
-                $sItemKey = iconv($sCharset, 'UTF-8', $sItemKey);
+                $sItemKey = iconv($sCharset, $newEncoding, $sItemKey);
             }
 
-            $aLangs[$sItemKey] = iconv($sCharset, 'UTF-8', $sValue);
+            $aLangs[$sItemKey] = iconv($sCharset, $newEncoding, $sValue);
             unset($aLangArray[$sKey]);
         }
 
         return $aLangs;
+    }
+
+    /**
+     * Returns the encoding all translations will be converted to.
+     *
+     * @return string
+     */
+    protected function getTranslationsExpectedEncoding()
+    {
+        $shopConfig = $this->getConfig();
+
+        $newEncoding = 'ISO-8859-15';
+        if ($shopConfig->isUtf()) {
+            $newEncoding = 'UTF-8';
+        }
+
+        return $newEncoding;
     }
 
     /**
@@ -888,7 +911,6 @@ class oxLang extends oxSuperCfg
         }
         if (!$aLangCache && $aLangFiles) {
             $aLangCache = array();
-            $sBaseCharset = false;
             $aLang = array();
             $aLangSeoReplaceChars = array();
             foreach ($aLangFiles as $sLangFile) {
@@ -900,24 +922,14 @@ class oxLang extends oxSuperCfg
                     // including only (!) those, which has charset defined
                     if (isset($aLang['charset'])) {
 
-                        // recoding only in utf
-                        if ($myConfig->isUtf()) {
-                            $aLang = $this->_recodeLangArray($aLang, $aLang['charset']);
+                        $aLang = $this->_recodeLangArray($aLang, $aLang['charset']);
 
-                            if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
-                                $aSeoReplaceChars = $this->_recodeLangArray($aSeoReplaceChars, $aLang['charset'], true);
-                            }
-
-                            // overriding charset
-                            $aLang['charset'] = 'UTF-8';
+                        if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
+                            $aSeoReplaceChars = $this->_recodeLangArray($aSeoReplaceChars, $aLang['charset'], true);
                         }
 
                         if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
                             $aLangSeoReplaceChars = array_merge($aLangSeoReplaceChars, $aSeoReplaceChars);
-                        }
-
-                        if (!$sBaseCharset) {
-                            $sBaseCharset = $aLang['charset'];
                         }
 
                         $aLangCache = array_merge($aLangCache, $aLang);
@@ -925,10 +937,7 @@ class oxLang extends oxSuperCfg
                 }
             }
 
-            // setting base charset
-            if ($sBaseCharset) {
-                $aLangCache['charset'] = $sBaseCharset;
-            }
+            $aLangCache['charset'] = $this->getTranslationsExpectedEncoding();
 
             // special character replacement list
             $aLangCache['_aSeoReplaceChars'] = $aLangSeoReplaceChars;

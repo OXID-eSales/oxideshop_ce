@@ -274,16 +274,23 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         //writing a test lang file
         $sFilePath = $this->getConfig()->getConfigParam('sCompileDir');
-        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "r1", "t2" => "r2", "t3" => "r3"); $aLang = array( "charset" => "baseCharset", "TESTKEY" => "baseVal");');
-        file_put_contents($sFilePath . "/testlang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "testCharset", "TESTKEY" => "testVal");');
+        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "r1", "t2" => "r2", "t3" => "r3"); $aLang = array( "charset" => "ISO-8859-15", "TESTKEY" => "baseVal");');
+        file_put_contents($sFilePath . "/testlang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "ISO-8859-15", "TESTKEY" => "testVal");');
 
         $aLangFilesPath = array($sFilePath . "/baselang$sFilePrefix.txt", $sFilePath . "/testlang$sFilePrefix.txt");
 
-        $aResult = array("charset" => "baseCharset", "TESTKEY" => "testVal", '_aSeoReplaceChars' => array("t1" => "overide1", "t2" => "r2", "t3" => "r3"));
+        $aResult = array(
+            "charset" => "ISO-8859-15",
+            "TESTKEY" => "testVal",
+            '_aSeoReplaceChars' => array(
+                "t1" => "overide1",
+                "t2" => "r2",
+                "t3" => "r3"
+            )
+        );
 
-        $oLang = $this->getMock("oxlang", array("_getLangFilesPathArray", "_recodeLangArray"));
+        $oLang = $this->getMock("oxlang", array("_getLangFilesPathArray"));
         $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
-        $oLang->expects($this->never())->method('_recodeLangArray');
         $oLangFilesData = $oLang->UNITgetLanguageFileData(false, 0);
 
         $this->assertEquals($aResult, $oLangFilesData);
@@ -299,14 +306,22 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         //writing a test lang file
         $sFilePath = $this->getConfig()->getConfigParam('sCompileDir');
-        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "r1", "t2" => "r2", "t3" => "r3"); $aLang = array( "charset" => "baseCharset", "TESTKEY" => "baseVal");');
-        file_put_contents($sFilePath . "/testlang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "testCharset", "TESTKEY" => "testVal");');
+        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "r1", "t2" => "r2", "t3" => "r3"); $aLang = array( "charset" => "ISO-8859-15", "TESTKEY" => "baseVal");');
+        file_put_contents($sFilePath . "/testlang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "ISO-8859-15", "TESTKEY" => "testVal");');
 
         $aLangFilesPath = array($sFilePath . "/baselang$sFilePrefix.txt", $sFilePath . "/testlang$sFilePrefix.txt");
 
-        $aResult = array("charset" => "UTF-8", '_aSeoReplaceChars' => array());
+        $aResult = array(
+            "charset" => "UTF-8",
+            '_aSeoReplaceChars' => array(
+                't1' => 'overide1',
+                't2' => 'r2',
+                't3' => 'r3'
+            ),
+            'TESTKEY' => 'testVal'
+        );
 
-        $oLang = $this->getMock("oxLang", array("_getLangFilesPathArray", "_recodeLangArray"));
+        $oLang = $this->getMock("oxLang", array("_getLangFilesPathArray"));
         $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
         $oLangFilesData = $oLang->UNITgetLanguageFileData(false, 0);
 
@@ -333,9 +348,9 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oConfig->expects($this->any())->method('isUtf')->will($this->returnValue(true));
 
         $oLang = $this->getMock("oxlang", array('_getLangFileCacheName', "_getLangFilesPathArray", "_recodeLangArray", "getConfig"));
-        $oLang->expects($this->at(0))->method('getConfig')->will($this->returnValue($oConfig));
-        $oLang->expects($this->at(1))->method('_getLangFileCacheName')->will($this->returnValue(false));
-        $oLang->expects($this->at(2))->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
+        $oLang->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        $oLang->expects($this->any())->method('_getLangFileCacheName')->will($this->returnValue(false));
+        $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
         $oLang->expects($this->at(3))->method('_recodeLangArray')->will($this->returnValue(array("charset" => "UTF-8", "TESTKEY" => "baseVal")));
         $oLang->expects($this->at(4))->method('_recodeLangArray')->will($this->returnValue(array("t1" => "overide1")));
         $oLang->expects($this->at(5))->method('_recodeLangArray')->will($this->returnValue(array("charset" => "UTF-8", "TESTKEY" => "testVal")));
@@ -397,12 +412,9 @@ class Unit_Core_oxLangTest extends OxidTestCase
             "oxlang", array('_getLangFileCacheName', "_getLangFilesPathArray", /*"_recodeLangArray",*/
                             "getConfig")
         );
-        $oLang->expects($this->at(0))->method('getConfig')->will($this->returnValue($oConfig));
-        $oLang->expects($this->at(1))->method('_getLangFileCacheName')->will($this->returnValue(false));
-        $oLang->expects($this->at(2))->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
-        //$oLang->expects( $this->at(3) )->method( '_recodeLangArray' )->will( $this->returnValue( array( "charset" => "UTF-8", "TESTKEY" => "baseVal" ) ) );
-        // $oLang->expects( $this->at(4) )->method( '_recodeLangArray' )->will( $this->returnValue( array("t1" => "overide1") ) );
-        //$oLang->expects( $this->at(5) )->method( '_recodeLangArray' )->will( $this->returnValue( array( "charset" => "UTF-8", "TESTKEY" => "testVal" ) ) );
+        $oLang->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        $oLang->expects($this->any())->method('_getLangFileCacheName')->will($this->returnValue(false));
+        $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
         $oLangFilesData = $oLang->UNITgetLanguageFileData(false, 0);
 
         $this->assertEquals($aResult, $oLangFilesData);
@@ -424,7 +436,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oLang = oxNew('oxLang');
         $sVersionPrefix = oxNew('oxUtils')->getEditionCacheFilePrefix();
 
-        $sVal = iconv('ISO-8859-15', 'UTF-8', "Zurück zum Shop");
+        $sVal = "Zurück zum Shop";
         $myConfig = $this->getConfig();
         $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . '_default';
 

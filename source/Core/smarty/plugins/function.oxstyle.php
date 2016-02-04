@@ -45,7 +45,7 @@ function smarty_function_oxstyle($params, &$smarty)
 {
     $widget = !empty($params['widget']) ? $params['widget'] : '';
     $forceRender = !empty($params['inWidget']) ? $params['inWidget'] : false;
-    $isDynamic = (bool) $smarty->_tpl_vars["__oxid_include_dynamic"];
+    $isDynamic = isset($smarty->_tpl_vars["__oxid_include_dynamic"]);
 
     $output = '';
     if (!empty($params['include'])) {

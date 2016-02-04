@@ -34,7 +34,7 @@
  */
 function smarty_function_oxid_include_widget($params, &$oSmarty)
 {
-    $class = strtolower($params['cl']);
+    $class = isset($params['cl']) ? strtolower($params['cl']) : '';
     unset($params['cl']);
 
     $parentViews = null;

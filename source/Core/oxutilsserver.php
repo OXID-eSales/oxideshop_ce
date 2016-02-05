@@ -444,8 +444,7 @@ class oxUtilsServer extends oxSuperCfg
 
         //fetch the path from SCRIPT_NAME and ad it to the $sServerHost
         $sScriptName = $this->getServerVar('SCRIPT_NAME');
-        $sScriptName = preg_replace('/\/modules\/[\w\/]*\//', '/', $sScriptName);
-        $sCurrentHost = preg_replace('/\/\w*\.php.*/', '', $sServerHost . $sScriptName);
+        $sCurrentHost = preg_replace('/\/(modules\/[\w\/]*)?\w*\.php.*/', '', $sServerHost . $sScriptName);
 
         //remove double slashes all the way
         $sCurrentHost = str_replace('/', '', $sCurrentHost);

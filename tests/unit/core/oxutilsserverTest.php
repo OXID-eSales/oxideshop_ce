@@ -394,6 +394,40 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
     }
 
     /**
+     * @return array
+     */
+    public function providerIsCurrentWithSameHost()
+    {
+        return [
+            ['/index.php', 'http://oxideshop.dev/index.php', true],
+            ['/shop1/index.php', 'http://oxideshop.dev/shop1/index.php', true],
+            ['/modules/oe/test_module/module_index.php', 'http://oxideshop.dev/module_index.php', true],
+            ['/modules/test_module/module_index.php', 'http://oxideshop.dev/module_index.php', true],
+            ['/shop1/modules/test_module/module_index.php', 'http://oxideshop.dev/shop1/module_index.php', true],
+            ['/shop1/index.php', 'http://oxideshop.dev/shop2/index.php', false],
+            ['/shop1/modules/test_module/module_index.php', 'http://oxideshop.dev/shop2/module_index.php', false],
+        ];
+    }
+
+    /**
+     * @param string $scriptName
+     * @param string $url
+     * @param bool   $result
+     *
+     * @dataProvider providerIsCurrentWithSameHost
+     */
+    public function testIsCurrentUrlWithSameHost($scriptName, $url, $result)
+    {
+        $oConfig = oxNew('oxConfig');
+        $oConfig->init();
+        $_SERVER['HTTP_HOST'] = 'oxideshop.dev';
+        $_SERVER['SCRIPT_NAME'] = $scriptName;
+        $sUrl = $url;
+
+        $this->assertSame($result, $oConfig->isCurrentUrl($sUrl));
+    }
+
+    /**
      * Testing URL checker
      *
      * by passing empty URL it returns false

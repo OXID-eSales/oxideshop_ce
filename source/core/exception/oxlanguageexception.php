@@ -16,12 +16,14 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
 /**
  * Exception class for a non existing language local
+ *
+ * @deprecated since 5.2.8 (2016.02.05); Will be removed as not used in code.
  */
 class oxLanguageException extends oxException
 {

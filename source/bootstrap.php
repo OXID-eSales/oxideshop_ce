@@ -46,6 +46,9 @@ registerComposerAutoload();
 //init config.inc.php file reader
 $oConfigFile = new ConfigFile(OX_BASE_PATH . "config.inc.php");
 Registry::set("oxConfigFile", $oConfigFile);
+if (!defined('OX_DEBUG')) {
+    define('OX_DEBUG', $oConfigFile->getVar('iDebug'));
+}
 
 registerModuleDependenciesAutoload();
 registerShopAutoLoad();

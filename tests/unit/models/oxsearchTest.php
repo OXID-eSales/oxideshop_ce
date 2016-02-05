@@ -768,7 +768,7 @@ class Unit_Models_oxsearchTest extends OxidTestCase
         $sArticleTable = $sTable = getViewName('oxarticles');
         $sAETable = getViewName('oxartextends');
 
-        $sQ = "select `$sArticleTable`.`oxid`, $sArticleTable.oxtimestamp from $sArticleTable left join $sAETable on $sArticleTable.oxid=$sAETable.oxid where (  ( $sArticleTable.oxactive = 1 or ( $sArticleTable.oxactivefrom < '$sSearchDate' and
+        $sQ = "select `$sArticleTable`.`oxid`, $sArticleTable.oxtimestamp from $sArticleTable left join $sAETable on $sArticleTable.oxid=$sAETable.oxid where (  ( $sArticleTable.oxactive = 1 and $sArticleTable.oxhidden = 0 or ( $sArticleTable.oxactivefrom < '$sSearchDate' and
                $sArticleTable.oxactiveto > '$sSearchDate' ) )  and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock +
                $sArticleTable.oxvarstock ) > 0  )  ";
         if (!$this->getConfig()->getConfigParam('blVariantParentBuyable')) {
@@ -805,7 +805,7 @@ class Unit_Models_oxsearchTest extends OxidTestCase
         $sArticleTable = $sTable = getViewName('oxarticles');
         $sAETable = getViewName('oxartextends');
 
-        $sQ = "select `$sArticleTable`.`oxid`, $sArticleTable.oxtimestamp from $sArticleTable LEFT JOIN $sAETable ON $sArticleTable.oxid=$sAETable.oxid where (  ( $sArticleTable.oxactive = 1 or ( $sArticleTable.oxactivefrom < '$sSearchDate' and
+        $sQ = "select `$sArticleTable`.`oxid`, $sArticleTable.oxtimestamp from $sArticleTable LEFT JOIN $sAETable ON $sArticleTable.oxid=$sAETable.oxid where (  ( $sArticleTable.oxactive = 1  and $sArticleTable.oxhidden = 0 or ( $sArticleTable.oxactivefrom < '$sSearchDate' and
                $sArticleTable.oxactiveto > '$sSearchDate' ) )  and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock +
                $sArticleTable.oxvarstock ) > 0  )  ";
         if (!$this->getConfig()->getConfigParam('blVariantParentBuyable')) {

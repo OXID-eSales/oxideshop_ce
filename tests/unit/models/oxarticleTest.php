@@ -355,19 +355,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oArticle = oxNew('oxArticle');
         $sTable = $oArticle->getViewName();
 
-        $sQ = "(  $sTable.oxactive = 1  or ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) ) ";
-        $this->assertEquals($sQ, $oArticle->getActiveCheckQuery());
-    }
-
-    /**
-     * Test get hidden check query.
-     */
-    public function testGetHiddenCheckQuery()
-    {
-        $oArticle = oxNew('oxArticle');
-        $sTable = $oArticle->getViewName();
-
-        $sQ = "(  $sTable.oxactive = 1 and $sTable.oxhidden = 1 ) ";
+        $sQ = "(  $sTable.oxactive = 1  and $sTable.oxhidden = 0  or ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) ) ";
         $this->assertEquals($sQ, $oArticle->getActiveCheckQuery());
     }
 
@@ -2150,7 +2138,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         if (!$this->getConfig()->getConfigParam('blVariantParentBuyable')) {
             $sInsert = " and IF( $sTable.oxvarcount = 0, 1, ( select 1 from $sTable as art where art.oxparentid=$sTable.oxid and ( art.oxactive = 1  ) and ( art.oxstockflag != 2 or art.oxstock > 0 ) limit 1 ) ) ";
         }
-        $sExpSelect = "(  $sTable.oxactive = 1   and ( $sTable.oxstockflag != 2 or ( $sTable.oxstock + $sTable.oxvarstock ) > 0  ) $sInsert ) ";
+        $sExpSelect = "(  $sTable.oxactive = 1  and $sTable.oxhidden = 0  and ( $sTable.oxstockflag != 2 or ( $sTable.oxstock + $sTable.oxvarstock ) > 0  ) $sInsert ) ";
         $sSelect = $oArticle->getSqlActiveSnippet();
         $this->assertEquals(str_replace(array(" ", "\n", "\t", "\r"), "", $sExpSelect), str_replace(array(" ", "\n", "\t", "\r"), "", $sSelect));
     }
@@ -2170,7 +2158,7 @@ class Unit_Models_oxArticleTest extends OxidTestCase
         $oArticle->setAdminMode(true);
         $sTable = $oArticle->getViewName();
         $sDate = date('Y-m-d H:i:s', $iCurrTime);
-        $sExpSelect = "( (  $sTable.oxactive = 1  or ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) )  ) ";
+        $sExpSelect = "( (  $sTable.oxactive = 1  and $sTable.oxhidden = 0  or ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) )  ) ";
         $sSelect = $oArticle->getSqlActiveSnippet();
         $this->assertEquals($sExpSelect, $sSelect);
     }

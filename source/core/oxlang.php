@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -420,8 +420,6 @@ class oxLang extends oxSuperCfg
      * @param string $sStringToTranslate Initial string
      * @param int    $iLang              optional language number
      * @param bool   $blAdminMode        on special case you can force mode, to load language constant from admin/shops language file
-     *
-     * @throws oxLanguageException in debug mode
      *
      * @return string
      */
@@ -1290,7 +1288,7 @@ class oxLang extends oxSuperCfg
      */
     protected function _getLanguageIdsFromDatabase($iShopId = null)
     {
-        $aLanguages = $this->getLanguageIds();
+            $aLanguages = $this->getLanguageIds();
 
 
         return $aLanguages;

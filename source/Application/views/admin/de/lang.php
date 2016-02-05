@@ -78,6 +78,7 @@ $aLang = array(
 'GENERAL_ARTICLE_OXSHOPID'                                 => 'Shop Identnr.',
 'GENERAL_ARTICLE_OXPARENTID'                               => 'Identnr. Hauptartikel',
 'GENERAL_ARTICLE_OXACTIVE'                                 => 'Aktiv',
+'GENERAL_ARTICLE_OXHIDDEN'                                 => 'Versteckt',
 'GENERAL_ARTICLE_OXSHORTDESC'                              => 'Kurzbeschreibung',
 'GENERAL_ARTICLE_OXLONGDESC'                               => 'Langtext',
 'GENERAL_ARTICLE_OXPRICE'                                  => 'Preis',

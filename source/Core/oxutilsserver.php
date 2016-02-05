@@ -421,8 +421,11 @@ class oxUtilsServer extends oxSuperCfg
         return $blIsCurrentUrl;
     }
 
-    /**
-     * Check if URL is same as used for request.
+   /**
+     * Check if the given URL is same as used for request.
+     * The URL in this context is the base address for the shop e.g. https://www.domain.com/shop/ 
+     * the protocol is optional (www.domain.com/shop/)
+     * but the protocol relative syntax (//www.domain.com/shop/) is not yet supported.
      *
      * @param string $sURL        URL to check if is same as request.
      * @param string $sServerHost request host.
@@ -438,7 +441,11 @@ class oxUtilsServer extends oxSuperCfg
         preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sServerHost, $matches);
         $sRealHost = $matches[3];
 
-        $sCurrentHost = preg_replace('/\/\w*\.php.*/', '', $sServerHost . $this->getServerVar('SCRIPT_NAME'));
+
+        //fetch the path from SCRIPT_NAME and ad it to the $sServerHost
+        $sScriptName = $this->getServerVar('SCRIPT_NAME');
+        $sScriptName = preg_replace('/\/modules\/[\w\/]*\//', '/', $sScriptName);
+        $sCurrentHost = preg_replace('/\/\w*\.php.*/', '', $sServerHost . $sScriptName);
 
         //remove double slashes all the way
         $sCurrentHost = str_replace('/', '', $sCurrentHost);

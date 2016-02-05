@@ -22,6 +22,8 @@
 
 /**
  * Exception class for a non existing language local
+ *
+ * @deprecated since 5.2.8 (2016.02.05); Will be removed as not used in code.
  */
 class oxLanguageException extends oxException
 {

@@ -412,6 +412,8 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testRecodeLangArray()
     {
+        $this->setConfigParam('iUtfMode', true);
+
         $aLang['ACCOUNT_MAIN_BACKTOSHOP'] = "Zurück zum Shop";
         $aRecoded['ACCOUNT_MAIN_BACKTOSHOP'] = iconv('ISO-8859-15', 'UTF-8', $aLang['ACCOUNT_MAIN_BACKTOSHOP']);
 

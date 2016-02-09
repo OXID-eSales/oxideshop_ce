@@ -42,6 +42,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
             array(new oxPrice(120012.1), $oUSDCurrency, 'USD120,012.100'),
             array(new oxPrice(1278), $oEURCurrency, '1.278,00 EUR'),
             array(new oxPrice(1992.45), $oEmptyCurrency, '1.992,45'),
+            //array(new oxPrice(1992.45), null, '1.992,45 EUR', null), // @todo: this leads to a bug in the oxprice->getPrice
             array(new oxPrice(1992.45), null, '1#992,45 EUR', array('EUR@ 1.00@ ,@ #@ EUR@ 2')),
         );
     }

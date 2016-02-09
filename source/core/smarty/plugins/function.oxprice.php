@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
 
@@ -48,6 +48,12 @@ function smarty_function_oxprice( $params, &$smarty )
 
         $sPrice = ( $mPrice instanceof oxPrice ) ? $mPrice->getPrice() : $mPrice;
         $oCurrency = isset( $params['currency'] ) ? $params['currency'] : null;
+
+        if ( is_null($oCurrency) ) {
+            $oConfig = oxRegistry::getConfig();
+
+            $oCurrency = $oConfig->getActShopCurrencyObject();
+        }
 
         if ( !is_null( $oCurrency ) ) {
             $sDecimalsSeparator = isset( $oCurrency->dec ) ? $oCurrency->dec : $sDecimalsSeparator;

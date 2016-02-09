@@ -46,14 +46,10 @@ function smarty_function_oxprice( $params, &$smarty )
 
     if ( !is_null( $mPrice ) ) {
 
+        $oConfig = oxRegistry::getConfig();
+
         $sPrice = ( $mPrice instanceof oxPrice ) ? $mPrice->getPrice() : $mPrice;
-        $oCurrency = isset( $params['currency'] ) ? $params['currency'] : null;
-
-        if ( is_null($oCurrency) ) {
-            $oConfig = oxRegistry::getConfig();
-
-            $oCurrency = $oConfig->getActShopCurrencyObject();
-        }
+        $oCurrency = isset( $params['currency'] ) ? $params['currency'] : $oConfig->getActShopCurrencyObject();
 
         if ( !is_null( $oCurrency ) ) {
             $sDecimalsSeparator = isset( $oCurrency->dec ) ? $oCurrency->dec : $sDecimalsSeparator;

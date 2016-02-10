@@ -1,3 +1,4 @@
+[{block name="pagenavisnippet_main"}]
 [{if $pagenavi}]
 
   [{assign var="linkSort" value=""}]
@@ -45,3 +46,4 @@
 </td>
 </tr>
 [{/if}]
+[{/block}]
